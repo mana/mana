@@ -1,5 +1,7 @@
 #!/bin/bash
 
+TMW_DEPENDENCIES="libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.2.0), libxml2 (>= 2.4.19), libphysfs-1.0-0 (>= 1.0.0-1)";
+
 echo "Debian Package Creation...";
 
 if [ $USER != "root" ]; # only root can create deb packages...
@@ -9,14 +11,30 @@ then
 	exit;
 fi
 
+if [ `automake --version | grep "1.9"` == "" ]
+then
+	echo "Your automake version is inferior to 1.9.";
+	echo "Installing  won't work. Please do :";
+	echo "'apt-get install automake1.9' and 'apt-get remove automake1.x";
+	echo "(x is your version number).";
+	echo "Aborting..";
+	exit;
+fi
+
+rm -f config.h;
+./autogen.sh;
+./configure;
 make clean;
 make;
 
-if [ ! -x ./tmw ]; # if tmw doesn't exist
+if [ ! -x ./src/tmw ]; # if tmw doesn't exist
 then
 	echo "Compilation failed somewhere. Please try to correct errors given by gcc output...";
 	echo "Aborting...";
 	exit;
+else
+	echo "Compilation successful !";
+	cp src/tmw ./tmw;
 fi
 
 if [ ! -d ./data ]; # if the data folder doesn't exist...
@@ -47,7 +65,7 @@ then
 	exit;
 fi
 
-TMW_VERSION=`grep "CORE_VERSION" ./src/main.h | cut -d'"' -f2`;
+TMW_VERSION=`cat config.h | grep "PACKAGE_VERSION" | cut -d'"' -f2`;
 echo "Version :" $TMW_VERSION;
 mkdir `echo 'Debian/manaworld_'$TMW_VERSION'_i386'`;
 cd `echo 'Debian/manaworld_'$TMW_VERSION'_i386'`;
@@ -56,7 +74,6 @@ mkdir usr;
 mkdir usr/share;
 mkdir usr/share/manaworld;
 cp ../../tmw ./usr/share/manaworld;
-cp ../../keyboard.dat ./usr/share/manaworld;
 cp -a ../../data ./usr/share/manaworld;
 cp -a ../../docs ./usr/share/manaworld;
 
@@ -102,7 +119,7 @@ echo 'Version: '$TMW_VERSION >>DEBIAN/control;
 echo 'Section: bin' >>DEBIAN/control;
 echo 'Priority: optional' >>DEBIAN/control;
 echo 'Architecture: i386' >>DEBIAN/control;
-echo 'Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.2.0), libxml2 (>= 2.4.19), libphysfs-1.0-0 (>= 1.0.0-1)' >>DEBIAN/control;
+echo 'Depends: '$TMW_DEPENDENCIES >>DEBIAN/control;
 echo 'Suggests: Nothing' >>DEBIAN/control;
 echo 'Installed-Size: 1200' >>DEBIAN/control;
 echo 'Maintainer: Ferreira Yohann <bertram@cegetel.net>' >>DEBIAN/control;
@@ -110,9 +127,7 @@ echo 'Description: The Mana World is a Great Online Game based upon the Seiken D
 echo ' It has its own universe, and and its own character management system, which will' >>DEBIAN/control;
 echo ' give you the opportunity to play in a 2D heroic-fantasy world forever.' >>DEBIAN/control;
 echo ' .' >>DEBIAN/control;
-echo ' You will find the not officially supported dependencies of this package on the website. Install them before trying to install this one.' >>DEBIAN/control;
-echo ' You need : libsdldebian1.2-all, libsdl-image1.2, libsdl-mixer1.2, and libphysfs-1.0-0 given by any Debian mirrors...' >>DEBIAN/control;
-echo ' You also need : libguichan which can be found on : http://guichan.darkbits.org/downloads.shtml' >>DEBIAN/control
+echo ' This package depends on the non-official package : libguichan which can be found on : http://guichan.darkbits.org/downloads.shtml' >>DEBIAN/control
 echo ' Look at the website for further informations...' >>DEBIAN/control;
 echo ' .' >>DEBIAN/control;
 echo ' Authors:' >>DEBIAN/control;
@@ -139,7 +154,7 @@ echo "Cleaning ...";
 rm -rf Debian;
 echo "Your Debian Package is normally ready :"
 echo "Its name is : manaworld_"$TMW_VERSION"_i386.deb";
-echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2, libxml2, libphysfs-1.0-0 and libguichan to install manaworld.";
+echo "Don't forget you need "$TMW_DEPENDENCIES".";
 echo "You can find libguichan in http://guichan.darkbits.org/downloads.shtml";
 echo "End of Debian Creation...";
 
