@@ -25,6 +25,7 @@
 #include "button.h"
 #include "slider.h"
 #include "scrollarea.h"
+#include "listbox.h"
 #include "../graphic/graphic.h"
 
 #include <sstream>
@@ -32,7 +33,7 @@
 SellDialog::SellDialog(gcn::Container *parent):
     Window(parent, "Sell")
 {
-    itemList = new gcn::ListBox(this);
+    itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");

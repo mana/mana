@@ -24,12 +24,13 @@
 #include "npc_text.h"
 #include "scrollarea.h"
 #include "button.h"
+#include "textbox.h"
 #include "../game.h"
 
 NpcTextDialog::NpcTextDialog(gcn::Container *parent):
     Window(parent, "NPC")
 {
-    textBox = new gcn::TextBox();
+    textBox = new TextBox();
     textBox->setEditable(false);
     scrollArea = new ScrollArea(textBox);
     okButton = new Button("OK");

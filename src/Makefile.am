@@ -12,6 +12,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/checkbox.cpp \
 	gui/gui.cpp \
 	gui/inventory.cpp \
+	gui/listbox.cpp \
 	gui/login.cpp \
 	gui/npc.cpp \
 	gui/npc_text.cpp \
@@ -27,6 +28,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/slider.cpp \
 	gui/status.cpp \
 	gui/stats.cpp \
+	gui/textbox.cpp \
 	gui/textfield.cpp \
 	gui/window.cpp \
 	net/network.cpp \

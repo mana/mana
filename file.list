@@ -11,6 +11,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/checkbox.cpp \
           src/gui/gui.cpp \
           src/gui/inventory.cpp \
+          src/gui/listbox.cpp \
           src/gui/login.cpp \
           src/gui/npc.cpp \
           src/gui/npc_text.cpp \
@@ -26,6 +27,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/slider.cpp \
           src/gui/stats.cpp \
           src/gui/status.cpp \
+          src/gui/textbox.cpp \
           src/gui/textfield.cpp \
           src/gui/window.cpp \
           src/net/network.cpp \

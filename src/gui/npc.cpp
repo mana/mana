@@ -24,12 +24,13 @@
 #include "npc.h"
 #include "button.h"
 #include "scrollarea.h"
+#include "listbox.h"
 #include "../game.h"
 
 NpcListDialog::NpcListDialog(gcn::Container *parent):
     Window(parent, "NPC")
 {
-    itemList = new gcn::ListBox(this);
+    itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");

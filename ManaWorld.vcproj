@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="SDL.lib"
-				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib libjgmod.lib alfont.lib ws2_32.lib "
+				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib ws2_32.lib "
 				OutputFile="tmw.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
