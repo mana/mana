@@ -61,8 +61,13 @@ VideoImage::~VideoImage() {
     destroy_bitmap(src);
 }
 
-void VideoImage::draw(BITMAP *dest, int x, int y) {
-    masked_blit(src, dest, 0, 0, x + offset_x, y + offset_y, src->w, src->h);
+void VideoImage::draw(BITMAP *dst, int x, int y) {
+    //SDL_Rect dst_rect;
+    //dst_rect.x = x + offset_x;
+    //dst_rect.y = y + offset_y;
+    //SDL_BlitSurface(src, NULL, dst, &dst_rect);
+
+    masked_blit(src, dst, 0, 0, x + offset_x, y + offset_y, src->w, src->h);
 }
 
 
@@ -75,30 +80,10 @@ Spriteset::Spriteset(std::string filename)
     int i = 0;
     while (datafile[i].type != DAT_END) {
         Image *temp_image;
-        if (gfx_capabilities & GFX_HW_VRAM_BLIT) {
-            BITMAP *temp_video_bitmap = create_video_bitmap(
-                    ((RLE_SPRITE *)datafile[i].dat)->w,
-                    ((RLE_SPRITE *)datafile[i].dat)->h);
-            if (temp_video_bitmap) {
-                clear_to_color(temp_video_bitmap, makecol(255, 0, 255));
-                draw_rle_sprite(temp_video_bitmap, 
-                        (RLE_SPRITE *)datafile[i].dat, 0, 0);
-                temp_image = new VideoImage(temp_video_bitmap,
-                        getProperty(&datafile[i], DAT_ID('X','C','R','P')),
-                        getProperty(&datafile[i], DAT_ID('Y','C','R','P')));
-            } else {
-                warning("You ran out of video memory!");
-                temp_image = new RleImage(
-                        (RLE_SPRITE*)datafile[i].dat,
-                        getProperty(&datafile[i], DAT_ID('X','C','R','P')),
-                        getProperty(&datafile[i], DAT_ID('Y','C','R','P')));
-            }
-        } else {
-            temp_image = new RleImage(
-                    (RLE_SPRITE*)datafile[i].dat,
-                    getProperty(&datafile[i], DAT_ID('X','C','R','P')),
-                    getProperty(&datafile[i], DAT_ID('Y','C','R','P')));
-        }
+        temp_image = new RleImage(
+                (RLE_SPRITE*)datafile[i].dat,
+                getProperty(&datafile[i], DAT_ID('X','C','R','P')),
+                getProperty(&datafile[i], DAT_ID('Y','C','R','P')));
         spriteset.push_back(temp_image);
         i++;
     }

@@ -21,6 +21,7 @@
 
 
 #include "configuration.h"
+#include <math.h>
 
 /**
     \brief read INI file and parse all options into memory
@@ -45,16 +46,17 @@ void Configuration::init(std::string filename) {
     while (inFile.good()) {
         getline(inFile, inBuffer, '\n');
 
-        if(inBuffer.substr(0,1) != INI_COMMENTER) {
+        if (inBuffer.substr(0, 1) != INI_COMMENTER) {
             position = inBuffer.find(INI_DELIMITER, 0);
 
-            if(position != std::string::npos) {
+            if (position != std::string::npos) {
                 // replace spaces with void :)
-                while(inBuffer.find(" ", 0) != std::string::npos) {
+                while (inBuffer.find(" ", 0) != std::string::npos) {
                     inBuffer.replace(inBuffer.find(" ", 0), 1, "");
                 }
                 std::string key = inBuffer.substr(0, position);
-                optionTmp.stringValue  = inBuffer.substr(position+1, inBuffer.length());
+                optionTmp.stringValue  = inBuffer.substr(position + 1,
+                        inBuffer.length());
                 inBuffer = inBuffer.substr(position+1, inBuffer.length());
 
                 optionTmp.numericValue = atof(inBuffer.c_str());
@@ -62,7 +64,9 @@ void Configuration::init(std::string filename) {
                 iniOptions[key] = optionTmp;
                 
                 #ifdef __DEBUG                
-                    std::cout << "Configuration::init(" << key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+                    std::cout << "Configuration::init(" << key << ", \"" <<
+                        optionTmp.stringValue << "\" / " <<
+                        optionTmp.numericValue << ")\n";
                 #endif
             }
         }
@@ -75,7 +79,8 @@ void Configuration::init(std::string filename) {
     \param filename full path to INI file (~/.manaworld/tmw.ini)
 */
 bool Configuration::write(std::string filename) {
-    std::ofstream out(filename.c_str(), std::ofstream::out | std::ofstream::trunc);
+    std::ofstream out(filename.c_str(),
+            std::ofstream::out | std::ofstream::trunc);
     char tmp[20];
 
     INI_OPTION optionTmp;
@@ -83,15 +88,24 @@ bool Configuration::write(std::string filename) {
         out.write(iter->first.c_str(), iter->first.length());
         out.write("=", 1);
 
-        if(iter->second.numericValue == 0) {
-            out.write(iter->second.stringValue.c_str(), iter->second.stringValue.length());
-        }else{
-            sprintf(tmp, "%f", iter->second.numericValue);
+        double numericValue = iter->second.numericValue;
+
+        if (numericValue == 0) {
+            out.write(iter->second.stringValue.c_str(),
+                    iter->second.stringValue.length());
+        }
+        else if (numericValue == floor(numericValue)) {
+            out << (int)numericValue;
+        }
+        else {
+            sprintf(tmp, "%f", numericValue);
             out.write(tmp, strlen(tmp));
             strcpy(tmp, "");
         }
         #ifdef __DEBUG
-            std::cout << "Configuration::write(" << iter->first.c_str() << ", \"" << iter->second.stringValue << "\" / " << iter->second.numericValue << ")\n";
+            std::cout << "Configuration::write(" << iter->first.c_str() <<
+                ", \"" << iter->second.stringValue << "\" / " <<
+                iter->second.numericValue << ")\n";
         #endif
         out.write("\n", 1);
     }
@@ -108,7 +122,8 @@ bool Configuration::write(std::string filename) {
 void Configuration::setValue(std::string key, std::string value) {
     INI_OPTION optionTmp;
     #ifdef __DEBUG
-        std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+        std::cout << "Configuration::setValue(" << key << ", " << value <<
+            ")\n";
     #endif
     optionTmp.stringValue = value;
     optionTmp.numericValue = 0;    
@@ -123,7 +138,8 @@ void Configuration::setValue(std::string key, std::string value) {
 void Configuration::setValue(std::string key, float value) {
     INI_OPTION optionTmp;
     #ifdef __DEBUG
-        std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+        std::cout << "Configuration::setValue(" << key << ", " << value <<
+            ")\n";
     #endif
     optionTmp.stringValue = "";
     optionTmp.numericValue = value;    
@@ -137,7 +153,7 @@ void Configuration::setValue(std::string key, float value) {
 */
 std::string Configuration::getValue(std::string key, std::string deflt) {
     iter = iniOptions.find(key);
-    if(iter != iniOptions.end()) {
+    if (iter != iniOptions.end()) {
         return iniOptions[key].stringValue;
     }
     return deflt;
@@ -150,7 +166,7 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
 */
 float Configuration::getValue(std::string key, float deflt) {
     iter = iniOptions.find(key);
-    if(iter != iniOptions.end()) {
+    if (iter != iniOptions.end()) {
         return iniOptions[key].numericValue;
     }
     return deflt;
