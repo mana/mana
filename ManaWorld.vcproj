@@ -161,6 +161,9 @@
 				RelativePath=".\map.cpp">
 			</File>
 			<File
+				RelativePath=".\player.cpp">
+			</File>
+			<File
 				RelativePath=".\Sound\Sound.cpp">
 			</File>
 			<File
@@ -223,6 +226,9 @@
 			</File>
 			<File
 				RelativePath=".\map.h">
+			</File>
+			<File
+				RelativePath=".\player.h">
 			</File>
 			<File
 				RelativePath=".\Sound\Sound.h">
