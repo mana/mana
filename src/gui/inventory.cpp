@@ -28,6 +28,7 @@
 #include "button.h"
 #include "../being.h"
 #include "../engine.h"
+#include "item_amount.h"
 #include <sstream>
 
 InventoryWindow::InventoryWindow():
