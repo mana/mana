@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl_mixer.lib sdl.lib alleg.lib ws2_32.lib masking.lib alfont.lib"
+				AdditionalDependencies="sdl_mixer.lib sdl.lib alleg.lib ws2_32.lib alfont.lib"
 				OutputFile="The Mana World.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
