@@ -26,8 +26,11 @@
 
 #include <guichan.hpp>
 #include "window.h"
+#include "progressbar.h"
  
 #define N_SKILL 100 // skill count constant
+#define N_SKILL_CAT 9 // skill category count
+#define N_SKILL_CAT_SIZE 10 // skill category maximum size
  
 struct nSkill {
     short level;
@@ -38,11 +41,10 @@ class NewSkillDialog : public Window, public gcn::ActionListener
 {
     private:
         // members
-        
-        gcn::ScrollArea *skillScrollArea;
-        gcn::Container *skillList;
+        int startPoint; // starting point of skill listing
+        ProgressBar *skillbar;
         gcn::Label *skillLabel;
-        gcn::Button *groupButtons;
+        gcn::Button *catButton[N_SKILL_CAT];
         gcn::Button *closeButton;
                     
     public:
