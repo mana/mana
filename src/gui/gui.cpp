@@ -1063,7 +1063,7 @@ if(mouse_b & 1)
 		if(d->d2==1)
 			{
 				//d->d1 = 1;
-				(*(getfuncptr)d->dp)(NULL, d->d1);
+				(*(int(__cdecl *)(void *, int))d->dp)(NULL, d->d1);
 				masked_blit(gui_skin.plus.bg.grid[1], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
 				draw = true;
 			} else {
