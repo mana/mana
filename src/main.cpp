@@ -217,9 +217,9 @@ void init_engine() {
     Image *hairImg = resman->getImage(
             "core/graphics/sprites/player_male_hair.png");
 
-    if (!login_wallpaper) error("Couldn't load login.bmp");
-    if (!playerImg) error("Couldn't load playerset.png");
-    if (!hairImg) error("Couldn't load hairset.bmp");
+    if (!login_wallpaper) error("Couldn't load login_wallpaper.png");
+    if (!playerImg) error("Couldn't load player_male_base.png");
+    if (!hairImg) error("Couldn't load player_male_hair.png");
 
     playerset = new Spriteset(playerImg, 160, 120);
     hairset = new Spriteset(hairImg, 40, 40);

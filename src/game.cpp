@@ -100,10 +100,10 @@ Uint32 second(Uint32 interval, void *param)
 
 short get_elapsed_time(short start_time) {
     if (start_time <= tick_time) {
-        return tick_time - start_time;
+        return (tick_time - start_time) * 10;
     }
     else {
-        return tick_time + (MAX_TIME - start_time);
+        return (tick_time + (MAX_TIME - start_time)) * 10;
     }
 }
 
@@ -111,21 +111,8 @@ void game() {
     do_init();
     Engine *engine = new Engine();
 
-    SDL_Event event;
-
     while (state != EXIT)
     {
-        // Handle SDL events
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = EXIT;
-                    break;
-            }
-
-            guiInput->pushInput(event);
-        }
-
         do_input();
         engine->draw();
         gui->logic();
@@ -175,157 +162,176 @@ void do_init() {
 void do_exit() {
 }
 
-void do_input() {
-    
-    
-     
-	// Get the state of the keyboard keys
-	Uint8* keys;
-	keys = SDL_GetKeyState(NULL);
-	
-	if (walk_status == 0 && player_node->action != DEAD) 
-	{
-		int x = player_node->x;
-		int y = player_node->y;
-		
-			
-		if ( keys[SDLK_UP] || keys[SDLK_KP8] )
-		{
-			// UP
-			if (get_walk(x, y - 1) != 0) 
-			{
-				walk(x, y-1, NORTH);
-				walk_status = 1;
-				src_x = x;
-				src_y = y;
-				player_node->action = WALK;
-				player_node->tick_time = tick_time;
-				player_node->y = y - 1;
-				player_node->direction = NORTH;
-			} else player_node->direction = NORTH;
-		}
-		else if ( keys[SDLK_DOWN] || keys[SDLK_KP2] )
-		{
-			// Down
-			if (get_walk(x, y + 1) != 0) 
-			{
-				walk(x, y + 1, SOUTH);
-				walk_status = 1;
-				src_x = x;
-				src_y = y;
-				player_node->action = WALK;
-				player_node->tick_time = tick_time;
-				player_node->y = y + 1;
-				player_node->direction = SOUTH;
-			} else player_node->direction = SOUTH;
-		} 
-		else if ( keys[SDLK_LEFT] || keys[SDLK_KP4] ) 
-		{
-			if (get_walk(x - 1, y) != 0) {
-				walk(x - 1, y, WEST);
-				walk_status = 1;
-				src_x = x;
-				src_y = y;
-				player_node->action = WALK;
-				player_node->tick_time = tick_time;
-				player_node->x = x - 1;
-				player_node->direction = WEST;
-			} else player_node->direction = WEST;
-		}
-		else if ( keys[SDLK_RIGHT] || keys[SDLK_KP6] ) 
-		{
-			if (get_walk(x + 1, y) != 0) {
-				walk(x + 1, y, EAST);
-				walk_status = 1;
-				src_x = x;
-				src_y = y;
-				player_node->action = WALK;
-				player_node->tick_time = tick_time;
-				player_node->x = x + 1;
-				player_node->direction = EAST;
-			} else player_node->direction = EAST;
-		}
-		
-		if (player_node->action == STAND) 
-		{
-			if ( keys[SDLK_LCTRL]) 
-			{
-				player_node->action = ATTACK;
-				attack(player_node->x,
-				player_node->y,
-				player_node->direction);
-				player_node->tick_time = tick_time;
-			}
-		}
-		// Events
-		SDL_Event event;
-		while ( SDL_PollEvent(&event) )
-		{
-		
-			// For discontinuous keys
-			if ( event.type == SDL_KEYDOWN )
-			{
-				
-				if ( (event.key.keysym.sym == SDLK_F5) && action_time) 
-				{
-					if (player_node->action == STAND)
-						action(2, 0);
-					else if (player_node->action == SIT)
-						action(3, 0);
-					action_time = false;
-				}
-				
-				 // Emotions, Skill dialog
-				 if ( event.key.keysym.mod == KMOD_ALT && action_time == true) 
-				 {
-        				if (player_node->emotion == 0) 
-					{
-						unsigned char emotion = 0;
-						if (event.key.keysym.sym == SDLK_1) emotion = 1;
-						else if (event.key.keysym.sym == SDLK_2) emotion = 2;
-						else if (event.key.keysym.sym == SDLK_3) emotion = 3;
-						else if (event.key.keysym.sym == SDLK_4) emotion = 4;
-						else if (event.key.keysym.sym == SDLK_5) emotion = 5;
-						else if (event.key.keysym.sym == SDLK_6) emotion = 6;
-						else if (event.key.keysym.sym == SDLK_7) emotion = 7;
-						else if (event.key.keysym.sym == SDLK_8) emotion = 8;
-						else if (event.key.keysym.sym == SDLK_9) emotion = 9;
-						else if (event.key.keysym.sym == SDLK_0) emotion = 10;
-						if (emotion != 0) {
-							WFIFOW(0) = net_w_value(0x00bf);
-							WFIFOB(2) = emotion;
-							WFIFOSET(3);
-							action_time = false;
-						}
-        				}
-    				}
-			} // End key down
-			
-			if ( event.button.type == SDL_MOUSEBUTTONDOWN )
-			{
-				if ( event.button.button == 3 )
-				{
-					// We click the right button
-					// NPC Call
-					int npc_x = event.motion.x / 32 + camera_x;
-        				int npc_y = event.motion.y / 32 + camera_y;
-        				int id = find_npc(npc_x, npc_y);
-        				if (id != 0) 
-					{
-						WFIFOW(0) = net_w_value(0x0090);
-						WFIFOL(2) = net_l_value(id);
-						WFIFOB(6) = 0;
-						WFIFOSET(7);
-					}
-					
-				}
-				
-			}
-		
-		} // End while
-	
-	} // End if alive
-	
+void do_input()
+{
+    // Get the state of the keyboard keys
+    Uint8* keys;
+    keys = SDL_GetKeyState(NULL);
+
+    // Events
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        // For discontinuous keys
+        if ( event.type == SDL_KEYDOWN )
+        {
+
+            if ( (event.key.keysym.sym == SDLK_F5) && action_time) 
+            {
+                if (player_node->action == STAND)
+                    action(2, 0);
+                else if (player_node->action == SIT)
+                    action(3, 0);
+                action_time = false;
+            }
+
+            // Emotions, Skill dialog
+            if ( event.key.keysym.mod == KMOD_ALT && action_time) 
+            {
+                if (player_node->emotion == 0) 
+                {
+                    unsigned char emotion = 0;
+                    if (event.key.keysym.sym == SDLK_1) emotion = 1;
+                    else if (event.key.keysym.sym == SDLK_2) emotion = 2;
+                    else if (event.key.keysym.sym == SDLK_3) emotion = 3;
+                    else if (event.key.keysym.sym == SDLK_4) emotion = 4;
+                    else if (event.key.keysym.sym == SDLK_5) emotion = 5;
+                    else if (event.key.keysym.sym == SDLK_6) emotion = 6;
+                    else if (event.key.keysym.sym == SDLK_7) emotion = 7;
+                    else if (event.key.keysym.sym == SDLK_8) emotion = 8;
+                    else if (event.key.keysym.sym == SDLK_9) emotion = 9;
+                    else if (event.key.keysym.sym == SDLK_0) emotion = 10;
+                    if (emotion != 0) {
+                        WFIFOW(0) = net_w_value(0x00bf);
+                        WFIFOB(2) = emotion;
+                        WFIFOSET(3);
+                        action_time = false;
+                    }
+                }
+            }
+
+            if (event.key.keysym.sym == SDLK_ESCAPE)
+            {
+                state = EXIT;
+            }
+
+            if (event.key.keysym.sym == SDLK_f)
+            {
+                if (event.key.keysym.mod & KMOD_CTRL)
+                {
+                    // Works with X11 only?
+                    SDL_WM_ToggleFullScreen(screen);
+                }
+            }
+        } // End key down
+
+        if ( event.button.type == SDL_MOUSEBUTTONDOWN )
+        {
+            if ( event.button.button == 3 )
+            {
+                // We click the right button
+                // NPC Call
+                int npc_x = event.motion.x / 32 + camera_x;
+                int npc_y = event.motion.y / 32 + camera_y;
+                int id = find_npc(npc_x, npc_y);
+                if (id != 0) 
+                {
+                    WFIFOW(0) = net_w_value(0x0090);
+                    WFIFOL(2) = net_l_value(id);
+                    WFIFOB(6) = 0;
+                    WFIFOSET(7);
+                }
+
+            }
+
+        }
+
+        // Push input to GUI
+        guiInput->pushInput(event);
+
+    } // End while
+
+
+    if (walk_status == 0 && player_node->action != DEAD) 
+    {
+        int x = player_node->x;
+        int y = player_node->y;
+
+        if ( keys[SDLK_UP] || keys[SDLK_KP8] )
+        {
+            // UP
+            if (get_walk(x, y - 1) != 0) 
+            {
+                walk(x, y-1, NORTH);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                player_node->y = y - 1;
+                player_node->direction = NORTH;
+            }
+            else player_node->direction = NORTH;
+        }
+        else if ( keys[SDLK_DOWN] || keys[SDLK_KP2] )
+        {
+            // Down
+            if (get_walk(x, y + 1) != 0) 
+            {
+                walk(x, y + 1, SOUTH);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                player_node->y = y + 1;
+                player_node->direction = SOUTH;
+            }
+            else player_node->direction = SOUTH;
+        } 
+        else if ( keys[SDLK_LEFT] || keys[SDLK_KP4] ) 
+        {
+            if (get_walk(x - 1, y) != 0) {
+                walk(x - 1, y, WEST);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                player_node->x = x - 1;
+                player_node->direction = WEST;
+            }
+            else player_node->direction = WEST;
+        }
+        else if ( keys[SDLK_RIGHT] || keys[SDLK_KP6] ) 
+        {
+            if (get_walk(x + 1, y) != 0) {
+                walk(x + 1, y, EAST);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                player_node->x = x + 1;
+                player_node->direction = EAST;
+            }
+            else player_node->direction = EAST;
+        }
+
+        if (player_node->action == STAND) 
+        {
+            if ( keys[SDLK_LCTRL]) 
+            {
+                player_node->action = ATTACK;
+                attack(player_node->x,
+                        player_node->y,
+                        player_node->direction);
+                player_node->tick_time = tick_time;
+            }
+        }
+
+    } // End if alive
+
 
 	// Old version
     /*
