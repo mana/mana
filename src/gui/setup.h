@@ -65,9 +65,9 @@ class Setup : public Window, public gcn::ActionListener {
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
 
-        // Setup dialog
-        static Setup *ptr;
 
+    public:
+    
         /**
          * Constructor.
          */
@@ -76,18 +76,13 @@ class Setup : public Window, public gcn::ActionListener {
         /**
          * Destructor.
          */
-        virtual ~Setup();
-
-    public:
+        virtual ~Setup();    
+    
         /**
          * Event handling method.
          */
         void action(const std::string& eventId);
 
-        /**
-         * Static method for creating singleton object.
-         */
-        static Setup *create_setup();
 };
 
 #endif

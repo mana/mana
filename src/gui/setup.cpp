@@ -175,15 +175,3 @@ void Setup::action(const std::string& eventId)
         setVisible(false);
     }
 }
-
-Setup *Setup::ptr = NULL;
-Setup *Setup::create_setup() {
-    if (ptr == NULL) {
-        ptr = new Setup();
-    }
-    else {
-        ptr->setVisible(true);
-    }
-
-    return ptr;
-}
