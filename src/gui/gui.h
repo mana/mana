@@ -111,32 +111,27 @@ extern gcn::Container* guiTop;                // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 extern gcn::ImageFont* guiFont;               // The gui font
 
-// Definition of the callback function prototypes
-typedef int (*gui_buttonCallback)(int id);
-typedef char *(*getfuncptr)(int, int *);
-
 void init_gui(BITMAP *dest_bitmap, const char *skin);
 void gui_exit();
-int  gui_update(DIALOG_PLAYER *player);
-int  gui_load_skin(const char* skinname);
+int gui_update(DIALOG_PLAYER *player);
+int gui_load_skin(const char* skinname);
 void gui_shutdown(void);
 
-// Helper procedures used for GUI drawing
+/** Helper procedure to draw skinned rectangles */
 void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin,
         int x, int y, int w, int h);
+
+/** Draw text for gui widgets */
 int gui_text(BITMAP *bmp, AL_CONST char *s,
         int x, int y, int color, int centre);
 
 // Old Allegro GUI procs
 int tmw_button_proc(int msg, DIALOG *d, int c);
-int tmw_radio_proc(int msg, DIALOG *d, int c);
-int tmw_list_proc(int msg, DIALOG *d, int c);
 int tmw_text_proc(int msg, DIALOG *d, int c);
 int tmw_dialog_proc(int msg, DIALOG *d, int c);
-int tmw_plus_proc(int msg, DIALOG *d, int c);
 
+// Last two remaining Allegro GUI dialogs
 void ok(const char *title, const char *message);
 unsigned int yes_no(const char *title, const char *message);
-
 
 #endif

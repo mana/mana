@@ -42,9 +42,17 @@ ServerSelectDialog::ServerSelectDialog(gcn::Container *parent):
     cancelButton = new Button("Cancel");
 
     setSize(200, 100);
-    scrollArea->setDimension(gcn::Rectangle(4, 4, 192, 55));
-    okButton->setPosition(120, 70);
-    cancelButton->setPosition(146, 70);
+
+    cancelButton->setPosition(
+            200 - cancelButton->getWidth() - 5,
+            100 - cancelButton->getHeight() - 5);
+    okButton->setPosition(
+            cancelButton->getX() - okButton->getWidth() - 5,
+            100 - okButton->getHeight() - 5);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, 200 - 2 * 5,
+                100 - 3 * 5 - cancelButton->getHeight() -
+                scrollArea->getBorderSize()));
 
     serverList->setEventId("ok");
     okButton->setEventId("ok");

@@ -73,7 +73,7 @@ int SkillListModel::getNumberOfElements()
 
 std::string SkillListModel::getElementAt(int i)
 {
-    if (i >= 0 && i < skillList.size())
+    if (i >= 0 && i < (int)skillList.size())
     {
         //return skill_db[skillList[i]->id];
         char tmp[128];
@@ -125,7 +125,8 @@ SkillDialog::SkillDialog(gcn::Container *parent)
     incButton->setEventId("inc");
     closeButton->setEventId("close");
 
-    skillScrollArea->setDimension(gcn::Rectangle(8, 4, 200, 180));
+    setSize(240, 240);
+    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 180));
     pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
     incButton->setPosition(64, 210);
     closeButton->setPosition(160, 210);
@@ -138,7 +139,6 @@ SkillDialog::SkillDialog(gcn::Container *parent)
     incButton->addActionListener(this);
     closeButton->addActionListener(this);
 
-    setSize(240, 240);
     setLocationRelativeTo(getParent());
 }
 

@@ -40,17 +40,22 @@ LoginDialog::LoginDialog(gcn::Container *parent):
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setSize(200, 80);
-    userLabel->setPosition(4, 11);
-    passLabel->setPosition(4, 31);
-    userField->setPosition(60, 10);
-    passField->setPosition(60, 30);
+    setSize(200, 75);
+
+    userLabel->setPosition(5, 5);
+    passLabel->setPosition(5, 14 + userLabel->getHeight());
+    userField->setPosition(65, 5);
+    passField->setPosition(65, 14 + userLabel->getHeight());
     userField->setWidth(130);
     passField->setWidth(130);
     keepCheck->setPosition(4, 52);
     keepCheck->setMarked(config.getValue("remember", 0));
-    okButton->setPosition(120, 52);
-    cancelButton->setPosition(146, 52);
+    cancelButton->setPosition(
+            200 - cancelButton->getWidth() - 5,
+            75 - cancelButton->getHeight() - 5);
+    okButton->setPosition(
+            cancelButton->getX() - okButton->getWidth() - 5,
+            75 - okButton->getHeight() - 5);
 
     userField->setEventId("ok");
     passField->setEventId("ok");

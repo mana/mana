@@ -30,7 +30,6 @@ BITMAP *buffer, *chat_background;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *skill_player, *skill_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
@@ -83,17 +82,6 @@ void BuySellListener::action(const std::string& eventId)
     buySellDialog->setVisible(false);
 }
 
-/*
-DIALOG skill_list_dialog[] = {
-   // (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) 
-   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Stats",     NULL, NULL  },
-   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'u',  D_EXIT,  0,                0,    (char *)"&Up",        NULL, NULL  },
-   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			           0,    (char *)"&Close",     NULL, NULL  },
-   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)skill_list,   NULL, NULL  },
-   { tmw_text_proc,       304,  326,  40,   20,   0,    0,    0,    0,       0,                0,    (char *)skill_points, NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
-};
-*/
 
 char hairtable[14][4][2] = {
     // S(x,y)  W(x,y)   N(x,y)   E(x,y)
@@ -195,9 +183,6 @@ GraphicEngine::GraphicEngine() {
     skillDialog = new SkillDialog(guiTop);
     skillDialog->setVisible(false);
 
-    //skill_player = init_dialog(skill_dialog, -1);
-    //skill_list_player = init_dialog(skill_list_dialog, -1);
-
     // Give focus to the chat input
     chatInput->requestFocus();
 
@@ -229,8 +214,6 @@ GraphicEngine::~GraphicEngine() {
     delete skillDialog;
     
     //delete tileset;
-
-    //shutdown_dialog(skill_player);
 }
 
 void GraphicEngine::refresh() {
@@ -468,13 +451,8 @@ void GraphicEngine::refresh() {
     /*
     if (show_skill_dialog) {
         update_skill_dialog();
-        if (gui_update(skill_player) == 0) {
-            show_skill_dialog = false;
-        }
     }
-    */
 
-    /*
     if (show_skill_list_dialog) {
         if (gui_update(skill_list_player) == 0) {
             int ret = shutdown_dialog(skill_list_player);
@@ -488,7 +466,6 @@ void GraphicEngine::refresh() {
             } else if(ret == 2) {
                 show_skill_list_dialog = false;
             }
-            skill_list_player = init_dialog(skill_list_dialog, -1);
         }
     }
     */
