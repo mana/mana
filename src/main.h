@@ -59,6 +59,16 @@
 #define CHAR_DEL    5
 #define GAME        6
 
+/* length definitions for several char[]s in order
+ * to be able to use strncpy instead of strcpy for
+ * security and stability reasons 
+ *
+ * best regards - kth5 */
+#define LEN_USERNAME 25
+#define LEN_PASSWORD 25
+
+
+
 typedef struct {
 	int address;
 	short port;

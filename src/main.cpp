@@ -81,8 +81,8 @@ PLAYER_INFO *char_info = new PLAYER_INFO;
 BITMAP *playerset, *hairset;
 DATAFILE *graphic, *emotions, *weaponset;
 
-char username[25];
-char password[25];
+char username[LEN_USERNAME];
+char password[LEN_PASSWORD];
 int map_address, char_ID;
 short map_port;
 char map_name[16];

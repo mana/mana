@@ -43,7 +43,10 @@ DIALOG login_dialog[] = {
 
 	if(get_config_int("login", "remember", 0)!=0) {
 		login_dialog[7].flags = D_SELECTED;
-		if(get_config_string("login", "username", 0))strcpy(username, get_config_string("login", "username", 0));
+		if(get_config_string("login", "username", 0)) {
+			strncpy(username, get_config_string("login", "username", 0), LEN_USERNAME);
+			username[LEN_USERNAME] = '\0';
+		}
         else strcpy(username, "player\0");
 	}
 	centre_dialog(login_dialog);
