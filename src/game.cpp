@@ -97,17 +97,12 @@ void game() {
   while(state!=EXIT) {
     status("INPUT");
     do_input();
-    //if(refresh) {
-      status("GRAPHIC");
-      do_graphic();
-			//refresh = false;
-    //}
+    status("GRAPHIC");
+    do_graphic();
     status("PARSE");
     do_parse();
     status("FLUSH");
     flush();
-		/*if(fps>30)
-			rest(15);*/
   }
 
   exit_graphic();
@@ -746,9 +741,12 @@ void do_parse() {
 					break;
 				// Add item to inventory after you bought it
 				case 0x00a0:
-					inventory.add_item(RFIFOW(2), RFIFOW(6), RFIFOW(4));
+				  if(RFIFOB(22)>0)
+				    chatlog.chat_log("Unable to pick up item", BY_SERVER, gui_font);
+				  else
+				    inventory.add_item(RFIFOW(2), RFIFOW(6), RFIFOW(4));
 					break;
-					// Remove item to inventory after you sold it
+				// Remove item to inventory after you sold it
 				case 0x00af:
           printf("sell %i\n",-RFIFOW(4));
 					inventory.increase_quantity(RFIFOW(2), -RFIFOW(4));
@@ -788,6 +786,12 @@ void do_parse() {
 				case 0x010c:
 					chatlog.chat_log("MVP player", BY_SERVER, gui_font);
 					break;
+				// Item drop
+				case 0x009e:
+				  WFIFOW(0) = net_w_value(0x009f);
+				  WFIFOL(2) = net_l_value(RFIFOL(2));
+				  WFIFOSET(6);
+				  break;				  
         // Manage non implemented packets
         default:
           //printf("%x\n",id);

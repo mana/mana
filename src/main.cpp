@@ -18,6 +18,10 @@
   You should have received a copy of the GNU General Public License
   along with The Mana World; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
+  
+     Bertram
 
 */
 
@@ -27,6 +31,15 @@
 #include "./graphic/2xsai.h"
 
 #include <iostream>
+
+// Part of the patch - bertram 
+#ifdef __USE_UNIX98
+#include <sys/stat.h>
+#include <pwd.h>
+#include <unistd.h>
+#include <errno.h>
+#endif
+// End of a part of the patch - bertram
 
 /* Account infos */
 int account_ID, session_ID1, session_ID2;
@@ -57,12 +70,109 @@ void request_exit() {
 
 /** Do all initialization stuff */
 void init_engine() {
-  allegro_init();
+	allegro_init();
   init_log();
   set_close_button_callback(request_exit);  // we should not use set_window_close_hook() since it's deprecated and might be gone in the future /-kth5
-  set_config_file("tmw.ini");
-  if(strcmp(get_config_string("system", "core_version", NULL), CORE_VERSION)!=0)
-    error("Wrong INI file");
+  
+  // A little sample of code that will add (or not) the home user directory to read the tmw.ini file in, if we are under Linux. - Bertram
+  
+  // This has the goal to have each user is own ini.file under linux. And I do this because i'm expecting to make packages of manaworld for linux, so the tmw.ini will be copied at the right place before the first execution of the application...
+  
+  char *dir = new char[400];
+	strcpy(dir, "");
+	
+	#ifndef __USE_UNIX98
+	// WIN32 and else...
+	printf("Windows and else version\n");
+	strcpy(dir, "tmw.ini");
+	#endif
+	
+	#ifdef __USE_UNIX98
+	printf("Linux Version\n");
+	// Linux !
+	char *userHome;
+
+	char *name = getlogin();
+
+	passwd *pass;
+
+	if (name != NULL)
+		pass = getpwnam(name);
+	else
+		pass = getpwuid(geteuid());
+
+	if (pass == NULL)
+	{
+		printf("Couldn't determine the user home directory. Exitting.\n");
+		exit(1);
+	}
+
+	userHome = pass->pw_dir;
+	
+	// Checking if homeuser/.manaworld folder exists.
+	sprintf(dir, "%s/.manaworld", userHome);
+	if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) && (errno != EEXIST))
+	{
+		printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
+		exit(1);
+	}
+	sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
+	//printf("file is : %s\n", dir);
+	
+	// You don't have to delete name and userHome, since they both point to datas that mustn't be destroyed while LINUX is running.
+	
+	#endif
+	
+	// Checking if the tmw.ini file exists... otherwise creates it with default options !
+	FILE *tmwFile = 0;
+	tmwFile = fopen(dir, "r");
+	
+	// If we can't read it, it doesn't exist !
+	if ( tmwFile == NULL )
+	{
+		// We reopen the file in write mode and we create it
+		printf("No file : %s\n, Creating Default Options...\n", dir);
+		tmwFile = fopen(dir, "wt");
+		if ( tmwFile == NULL )
+		{
+			printf("Can't create %s file. Using Defaults.\n", dir);
+		}
+		else
+		{
+			// tmw.ini creation
+			fprintf(tmwFile, "[system]\nsystem =\nkeyboard = en\nlanguage = \ncore_version = 0.0.8\n\n");
+			
+			fprintf(tmwFile, "[server]\nhost = animesites.de\nport = 6901\n\n");
+			fprintf(tmwFile, "[settings]\n; = Screen mode:\n; = 1 Fullscreen\n; = 2 Windowed\nscreen = 2\n");
+			fprintf(tmwFile, "; = Sound:\n; = 1 enabled\n; = 0 disabled\nsound = 0\n");
+			
+			
+			
+			char * chatlogFilename = new char [400];
+			#ifdef __USE_UNIX98
+			sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
+			#else
+			strcpy(chatlogFilename, "chatlog.txt");
+			#endif
+			fprintf(tmwFile, "; = Chat logfile location:\nchatlog = %s\n", chatlogFilename);
+			delete chatlogFilename; chatlogFilename = 0;
+			
+			fprintf(tmwFile, "; = Display strecth mode:\n; = 0 Disabled (Test only)\n; = 1 Normal\n; = 2 SuperEagle\n");
+			fprintf(tmwFile, "stretch = 1\n\n");
+			fprintf(tmwFile, "[login]\nremember = 1\nusername = Player\n");
+			
+			fclose(tmwFile);
+		}
+	}
+	
+	set_config_file(dir);
+	delete dir; dir = 0;
+ 
+  
+  
+  // End of portion of code revised... Bertram
+  
+  // set_config_file("tmw.ini");
   #ifdef MACOSX
   set_color_depth(32);
   Init_2xSaI(32);

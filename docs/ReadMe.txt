@@ -5,27 +5,29 @@
   umperio@users.sourceforge.net
 
   Release info:
-    - Version: 0.0.8 pre release
+    - Version: 0.0.8a
     - Date: ?/?/2004
 
   Development team:
     - Elven Programmer (Admin)
     - kth5 (Programmer)
+    - SimEdw (Programmer)
     - Ultramichy (Game server admin)
     - Rotonen (Background story and music)
 
   Special thanks:
     - Sull (Linux Developer)
+    - Neorice (Pixel Artist)
     - natsuki (Win32 Developer)
     - Genis (Win32 Developer)
     - RRC (Graphic Designer)
     - necromus (Pixel Artist)
     - LordNev (Artist)
     - jui-feng for helping in server development and php scripts.
-    - SimEdw for porting TMW to MacOS X
+    - Bertram for Debian installation script
 
   Powered by:
-    - Allegro, a game developing library
+    - Allegro
     - AllegroFont
     - JMod
 
@@ -69,7 +71,30 @@ Remember: the server is only for development or demo purposes (Thanks again to U
 ------------------
 
 0.0.8
-- Add application icon for Win32 binaries
+- added sound support for macosx
+- added primitive inventory
+- added action failed messages for all skills and known reasons
+  (0x0110 handled)
+- added sit capability with the right level
+- added "dead" message and restart packet
+- added skill dialog
+- added skill update (0x0141 handled)
+- added colored text for damage
+- added monster death animation
+- added icon to win32 executable
+- added 'enter' key support in login screen
+- added RLE sprites for tiles
+- added collision detection with beings
+- fix for mapserver segfault-bug in chatsystem (broken pipe for all users on 
+  screen)
+- partially added TMW GUI to inventory
+- added soundpool that can preload, play and remove items to/from ram
+- added tmw_bar_proc
+- added tmw_plus_proc && possibility to increase stats point, at each new level
+- added increase skill level dialog
+- added 2xSaI engine
+- added patch client v0.1 to Win32 version
+
 
 0.0.7e
 

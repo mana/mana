@@ -70,6 +70,8 @@ manual:
 3) Installing the Alfont library
 ================================
 
+NOTE: if you're using Debian check this package http://themanaworl.sourceforge.net/files/jgmod_0.99_i386.deb
+
 This is most likely not included in any distribution out there. So download
 the source from here:
   http://nekros.freeshell.org/delirium/alfont.php
@@ -99,8 +101,10 @@ the source from here:
 4) Installing the JGmod library 
 ================================ 
 
-This is not included in any distribution. Download source package from here: 
- http://www.geocities.com/jeffery_guan/jgmod/jgmod.zip 
+NOTE: if you're using Debian check this package http://themanaworl.sourceforge.net/files/libalfont_1.9.2_i386.deb
+
+This is not included in any distribution. Download source package from here:
+http://www.geocities.com/jeffery_guan/jgmod/jgmod.zip 
   
 1) extract archive and 'cd' into the directory 
 2) run 'sh fixunix.sh' 
