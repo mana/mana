@@ -222,7 +222,8 @@ void CharSelectDialog::serverCharSelect()
         }
         char_ID = RFIFOL(2);
         memset(map_path, '\0', 480);
-        append_filename(map_path, "./data/map/", RFIFOP(6), 480);
+        strcat(map_path, "./data/map/");
+        strncat(map_path, RFIFOP(6), 479 - strlen(map_path));
         map_address = RFIFOL(22);
         map_port = RFIFOW(26);
         state = GAME;
@@ -430,20 +431,32 @@ void charSelect()
 
     state = CHAR_SELECT;
 
-    while (!key[KEY_ESC] && !key[KEY_ENTER] && state == CHAR_SELECT)
+    while (/*!key[KEY_ESC] && !key[KEY_ENTER] &&*/ state == CHAR_SELECT)
     {
+        // Handle SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    state = EXIT;
+                    break;
+            }
+
+            guiInput->pushInput(event);
+        }
+
         if (n_character > 0) {
             sel->setPlayerInfo(char_info);
         }
 
         // Draw background
-        login_wallpaper->draw(buffer, 0, 0);
+        login_wallpaper->draw(screen, 0, 0);
 
         gui->logic();
         gui->draw();
 
         // Draw to screen
-        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+        guiGraphics->updateScreen();
     }
 
     delete sel;

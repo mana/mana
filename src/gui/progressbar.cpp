@@ -40,7 +40,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     int absx, absy;
     getAbsolutePosition(absx, absy);
-    
+    /*
     // outer bar
     int MyColor = makecol(abs(Red-70), abs(Green-70), abs(Blue-70));
     hline(buffer, absx+X+7, absy+Y, absx+X+Width, MyColor);
@@ -75,7 +75,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     line(buffer, absx+X+7, absy+Y+1, absx+X+2, absy+Y+7-1, MyColor);
 
     //rectfill(buffer, absx+7, absy+7, absx+39, absy+9, MyColor);
-    
+    */
 /*
     if (progress != 0) {
         masked_blit(gui_skin.bar.bg.grid[3], buffer,

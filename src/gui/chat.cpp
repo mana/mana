@@ -95,11 +95,11 @@ void ChatBox::draw(gcn::Graphics *graphics)
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
 
     getAbsolutePosition(x, y);
-    set_trans_blender(0, 0, 0, 100);
-    drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-    rectfill(buffer, x, y, x + getWidth(), y + getHeight(),
-            makecol(255, 255, 255));
-    drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
+    //set_trans_blender(0, 0, 0, 100);
+    //drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
+    //rectfill(buffer, x, y, x + getWidth(), y + getHeight(),
+    //        makecol(255, 255, 255));
+    //drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;

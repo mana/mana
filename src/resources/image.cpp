@@ -24,8 +24,9 @@
 #include "../log.h"
 #include "image.h"
 #include <iostream>
+#include <SDL_image.h>
 
-Image::Image(BITMAP *image):
+Image::Image(SDL_Surface *image):
     image(image)
 {
 }
@@ -41,13 +42,12 @@ Image* Image::load(const std::string &filePath)
     std::cout << "Image::load(" << filePath << ")\n";
 #endif
     // Attempt to use SDL_Image to load the file.
-    //image = IMG_Load(filePath.c_str());
-    BITMAP *image = load_bitmap(filePath.c_str(), NULL);
+    SDL_Surface *image = IMG_Load(filePath.c_str());
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
-        //log("Error", "Image load failed : %s", IMG_GetError());
-        log("Error", "Image load failed : %s", filePath.c_str());
+        log("Error", "Image load failed : %s", IMG_GetError());
+        //log("Error", "Image load failed : %s", filePath.c_str());
         return NULL;
     }
 
@@ -58,13 +58,11 @@ void Image::unload()
 {
     // Free the image surface.
     if (image != NULL) {
-        //SDL_FreeSurface(image);
-        destroy_bitmap(image);
+        SDL_FreeSurface(image);
         image = NULL;
         loaded = false;
     }
 }
-
 
 int Image::getWidth() const
 {
@@ -82,36 +80,34 @@ int Image::getHeight() const
     return 0;
 }
 
-Image* Image::getSubImage(int x, int y, int width, int height)
+Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
     return new SubImage(this, image, x, y, width, height);
 }
 
-Image* Image::getScaledInstance(int width, int height)
+Image *Image::getScaledInstance(int width, int height)
 {
     return new ScaledImage(this, image, width, height);
 }
 
-bool Image::draw(BITMAP *screen, int x, int y)
+bool Image::draw(SDL_Surface *screen, int x, int y)
 {
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
-    //SDL_Rect dst_rect;
-    //dst_rect.x = x + offset_x;
-    //dst_rect.y = y + offset_y;
-    //SDL_BlitSurface(src, NULL, dst, &dst_rect);
-    // Draw the image onto the screen.
-    draw_sprite(screen, image, x, y);
-    //if (SDL_BlitSurface(image, NULL, screen, &screenRect) < 0) {
-    //    return false;
-    //}
+    SDL_Rect dstRect;
+    dstRect.x = x;
+    dstRect.y = y;
+
+    if (SDL_BlitSurface(image, NULL, screen, &dstRect) < 0) {
+        return false;
+    }
 
     return true;
 }
 
-void Image::drawPattern(BITMAP *screen, int x, int y, int w, int h)
+void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
 {
     int iw = getWidth();              // Width of image
     int ih = getHeight();             // Height of image
@@ -133,58 +129,87 @@ void Image::drawPattern(BITMAP *screen, int x, int y, int w, int h)
 
 //============================================================================
 
-SubImage::SubImage(Image *parent, BITMAP *image,
+SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image(create_sub_bitmap(image, x, y, width, height)),
+    Image(image),
     parent(parent)
 {
-    //this->image = create_sub_bitmap(image, x, y, width, height);
     parent->incRef();
-    // Set up the clipping rectangle.
-    //clipRect.x = x;
-    //clipRect.y = y;
-    //clipRect.w = width;
-    //clipRect.h = height;
+
+    // Set up the rectangle.
+    rect.x = x;
+    rect.y = y;
+    rect.w = width;
+    rect.h = height;
 }
 
 SubImage::~SubImage()
 {
-    if (image) {
-        destroy_bitmap(image);
-        image = NULL;
-    }
+    image = NULL;
     // TODO: Enable when no longer a problem
     //parent->decRef();
 }
 
-bool SubImage::draw(BITMAP *screen, int x, int y)
+int SubImage::getWidth() const
+{
+    return rect.w;
+}
+
+int SubImage::getHeight() const
+{
+    return rect.h;
+}
+
+Image *SubImage::getSubImage(int x, int y, int w, int h)
+{
+    return NULL;
+}
+
+bool SubImage::draw(SDL_Surface *screen, int x, int y)
 {
     // Check that drawing preconditions are satisfied.
     if (screen == NULL || image == NULL) return false;
 
-    // Draw the image onto the screen.
-    draw_sprite(screen, image, x, y);
-    //if (SDL_BlitSurface(image, &clipRect, screen, &screenRect) < 0) {
-    //    return false;
-    //}
+    SDL_Rect dstRect;
+    dstRect.x = x;
+    dstRect.y = y;
+
+    // Draw subimage part to given location
+    if (SDL_BlitSurface(image, &rect, screen, &dstRect) < 0) {
+        return false;
+    }
 
     return true;
 }
 
 //============================================================================
 
-ScaledImage::ScaledImage(Image *parent, BITMAP *bmp, int width, int height):
-    Image(create_bitmap(width, height))
+ScaledImage::ScaledImage(
+        Image *parent, SDL_Surface *bmp, int width, int height):
+    Image(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32,
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+                0xff000000,
+                0x00ff0000,
+                0x0000ff00,
+                0x000000ff
+#else
+                0x000000ff,
+                0x0000ff00,
+                0x00ff0000,
+                0xff000000
+#endif
+                ))
 {
     if (image) {
-        stretch_blit(bmp, image, 0, 0, bmp->w, bmp->h, 0, 0, width, height);
+        // Somehow stretch the image using SDL_gfx
+        //stretch_blit(bmp, image, 0, 0, bmp->w, bmp->h, 0, 0, width, height);
     }
 }
 
 ScaledImage::~ScaledImage()
 {
     if (image) {
-        destroy_bitmap(image);
+        SDL_FreeSurface(image);
         image = NULL;
     }
 }

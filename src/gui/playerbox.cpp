@@ -58,12 +58,12 @@ void PlayerBox::draw(gcn::Graphics *graphics)
         getAbsolutePosition(x, y);
 
         // Draw character
-        playerset->spriteset[0]->draw(buffer, x - 25, y - 25);
+        playerset->spriteset[0]->draw(screen, x - 25, y - 25);
 
         // Draw his hair
         int hf = hairColor + 40 * (hairStyle);
         if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
-            hairset->spriteset[hf]->draw(buffer, x + 37, y + 5);
+            hairset->spriteset[hf]->draw(screen, x + 37, y + 5);
         }
     }
 }

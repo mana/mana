@@ -34,6 +34,7 @@
 #include "radiobutton.h"
 #include "ok_dialog.h"
 #include "../main.h"
+#include <SDL.h>
 
 #ifndef WIN32
 extern Sound sound;
@@ -141,15 +142,17 @@ void Setup::action(const std::string& eventId)
         if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 2)
         {
             config.setValue("screen", 1);
-            set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,
-                    modes[sel].height, modes[sel].width, 0, 0);
+            SDL_WM_ToggleFullScreen(SDL_GetVideoSurface());
+            //set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,
+            //        modes[sel].height, modes[sel].width, 0, 0);
 
         }
         else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
         {
             config.setValue("screen", 2);
-            set_gfx_mode(GFX_AUTODETECT_WINDOWED,
-                    modes[sel].height, modes[sel].width, 0, 0);
+            SDL_WM_ToggleFullScreen(SDL_GetVideoSurface());
+            //set_gfx_mode(GFX_AUTODETECT_WINDOWED,
+            //        modes[sel].height, modes[sel].width, 0, 0);
         }
 
         // Sound settings

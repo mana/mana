@@ -116,11 +116,24 @@ void char_server() {
     state = LOGIN;
 
     showServerList = 1;
-    while (showServerList) {
-        login_wallpaper->draw(buffer, 0, 0);
+    while (showServerList)
+    {
+        // Handle SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    state = EXIT;
+                    break;
+            }
+
+            guiInput->pushInput(event);
+        }
+
+        login_wallpaper->draw(screen, 0, 0);
         gui->logic();
         gui->draw();
-        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+        guiGraphics->updateScreen();
     }
 
     delete dialog;

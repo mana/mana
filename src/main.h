@@ -24,9 +24,6 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
-#include <guichan.hpp>
-#include <guichan/allegro.hpp>
-
 #include "configuration.h"
 #include "gui/login.h"
 #include "gui/gui.h"
@@ -35,10 +32,6 @@
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
-#include <allegro.h>
-#ifdef WIN32
-#include <winalleg.h>
-#endif
 #include <stdio.h>
 
 #define CORE_VERSION "0.0.8"

@@ -43,12 +43,12 @@ class Graphics;
 #include "../gui/skill.h"
 #include "../resources/resourcemanager.h"
 #include "spriteset.h"
-#include <allegro.h>
-#include <guichan/allegro.hpp>
+#include <SDL.h>
+#include <guichan/sdl.hpp>
 
 #define TILE_SIZE 32
 
-extern BITMAP *buffer;
+extern SDL_Surface *screen;
 extern char speech[255];
 extern char npc_text[1000];
 extern char skill_points[10];
@@ -111,7 +111,7 @@ struct ImageRect {
 /**
  * A central point of control for graphics.
  */
-class Graphics : public gcn::AllegroGraphics {
+class Graphics : public gcn::SDLGraphics {
     public:
         /**
          * Constructor.

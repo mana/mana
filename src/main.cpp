@@ -30,6 +30,8 @@
 #include "./graphic/graphic.h"
 #include "resources/resourcemanager.h"
 #include <iostream>
+#include <guichan.hpp>
+#include <SDL.h>
 
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
@@ -60,7 +62,6 @@ unsigned char direction;
 unsigned char stretch_mode, screen_mode;
 char *dir;
 
-// new sound-engine /- kth5
 #ifndef WIN32
 Sound sound;
 #endif /* not WIN32 */
@@ -99,19 +100,15 @@ void request_exit() {
  */
 void init_engine() {
     // Initialize SDL
-    //if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-    //    std::cerr << "Could not initialize SDL: " <<
-    //        SDL_GetError() << std::endl;
-    //    exit(1);
-    //}
-    //atexit(SDL_Quit);
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+        std::cerr << "Could not initialize SDL: " <<
+            SDL_GetError() << std::endl;
+        exit(1);
+    }
+    atexit(SDL_Quit);
 
-    // Initialize Allegro
-    allegro_init();
-
+    SDL_EnableUNICODE(1);
     init_log();
-    // SDL will send an event for this
-    set_close_button_callback(request_exit);
 
     dir = new char[400];
     strcpy(dir, "");
@@ -190,40 +187,24 @@ void init_engine() {
     config.init(dir);
 
 #ifdef MACOSX
-    set_color_depth(32);
+    //set_color_depth(32);
 #else
-    set_color_depth(16);
+    //set_color_depth(16);
 #endif
 
-    //SDL_WM_SetCaption("The Mana World", NULL);
-    set_window_title("The Mana World");
+    SDL_WM_SetCaption("The Mana World", NULL);
 
-    //screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE | SDL_ANYFORMAT);
-    //if (screen == NULL) {
-    //    std::cerr << "Couldn't set 800x600x16 video mode: " <<
-    //        SDL_GetError() << std::endl;
-    //    exit(1);
+    screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE | SDL_ANYFORMAT);
+    if (screen == NULL) {
+        std::cerr << "Couldn't set 800x600x16 video mode: " <<
+            SDL_GetError() << std::endl;
+        exit(1);
+    }
+
+    //if (set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600,
+    //            0, 0)) {
     //}
 
-    if (set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600,
-                0, 0)) {
-        error(allegro_error);
-    }
-
-    // In SDL these three are all done in the SDL_Init call
-    if (install_keyboard()) {
-        error("Unable to install keyboard");
-    }
-
-    if (install_timer()) {
-        error("Unable to install timer");
-    }
-
-    if (install_mouse() == -1) {
-        error("Unable to install mouse");
-    }
-
-    // Buffer creation shouldn't be necessary with SDL
     // Create the graphics context
     graphics = new Graphics();
 
@@ -253,9 +234,7 @@ void init_engine() {
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
          if (config.getValue("sound", 0) == 1) {
-             //SDL_InitSubSystem(SDL_INIT_AUDIO);
-             SDL_Init(SDL_INIT_AUDIO);
-             atexit(SDL_Quit);
+             SDL_InitSubSystem(SDL_INIT_AUDIO);
              sound.init(32, 20);
          }
          sound.setVolume(64);
@@ -280,14 +259,25 @@ void exit_engine() {
     delete dir;
     gui_exit();
     ResourceManager::deleteInstance();
-    allegro_exit();
 }
 
 /** Main */
 int main() {
     init_engine();
 
-    while (state != EXIT) {
+    SDL_Event event;
+
+    while (state != EXIT)
+    {
+        // Handle SDL events
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    state = EXIT;
+                    break;
+            }
+        }
+
         switch (state) {
             case LOGIN:
                 status("LOGIN");
@@ -317,11 +307,10 @@ int main() {
                 break;
             case ERROR:
                 // Redraw GUI
-                login_wallpaper->draw(buffer, 0, 0);
-                guiGraphics->setTarget(buffer);
+                login_wallpaper->draw(screen, 0, 0);
                 gui->logic();
                 gui->draw();
-                blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+                guiGraphics->updateScreen();
                 break;
             default:
                 state = EXIT;
@@ -332,4 +321,3 @@ int main() {
     exit_engine();
     return 0;
 }
-END_OF_MAIN();

@@ -24,15 +24,10 @@
 #ifndef _TMW_GAME_H
 #define _TMW_GAME_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include "main.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
 #include <stdio.h>
-#include <allegro.h>
 
 #define SPEECH_TIME 80
 #define EMOTION_TIME 40
@@ -62,7 +57,6 @@
 #define SE    7
 
 extern char map_path[480];
-extern DIALOG skill_dialog[];
 extern int fps, frame, current_npc;
 extern char walk_status;
 extern unsigned short src_x, src_y, x, y;

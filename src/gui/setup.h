@@ -27,7 +27,6 @@
 #include "gui.h"
 #include "../graphic/graphic.h"
 #include "../sound/sound.h"
-#include <allegro.h>
 
 /**
  * The list model for mode list.

@@ -35,6 +35,7 @@
 #include "./gui/ok_dialog.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
+#include <SDL.h>
 
 char map_path[480];
 
@@ -78,38 +79,24 @@ class DeatchNoticeListener : public gcn::ActionListener {
 char walk_status = 0;
 
 
-// SDL callbacks
-/*
 Uint32 refresh_time(Uint32 interval, void *param)
 {
     tick_time++;
     if (tick_time == MAX_TIME) tick_time = 0;
+    return interval;
 }
-
-Uint32 second(Uint32 interval, void *param)
-{
-    action_time = true;
-    fps = frame;
-    frame = 0;
-}
-*/
-
-void refresh_time(void) {
-    tick_time++;
-    if (tick_time == MAX_TIME) tick_time = 0;
-}
-END_OF_FUNCTION(refresh_frame);
 
 /**
  * Lets u only trigger an action every other second
  * tmp. counts fps
  */
-void second(void) {
+Uint32 second(Uint32 interval, void *param)
+{
     action_time = true;
     fps = frame;
     frame = 0;
+    return interval;
 }
-END_OF_FUNCTION(second);
 
 short get_elapsed_time(short start_time) {
     if (start_time <= tick_time) {
@@ -124,19 +111,20 @@ void game() {
     do_init();
     Engine *engine = new Engine();
 
-    //SDL_Event event;
-    //SDL_EnableUNICODE(1);
+    SDL_Event event;
 
-    while (state != EXIT) {
-
+    while (state != EXIT)
+    {
         // Handle SDL events
-        //while (SDL_PollEvent(&event)) {
-        //    switch (event.type) {
-        //        case SDL_QUIT:
-        //            state = EXIT;
-        //            break;
-        //    }
-        //}
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    state = EXIT;
+                    break;
+            }
+
+            guiInput->pushInput(event);
+        }
 
         do_input();
         engine->draw();
@@ -163,13 +151,8 @@ void do_init() {
     tick_time = 0;
 
     // The SDL way
-    //SDL_AddTimer(10, refresh_time, NULL);
-    //SDL_AddTimer(1000, second, NULL);
-
-    // The Allegro way
-    LOCK_VARIABLE(tick_time);
-    install_int_ex(refresh_time, MSEC_TO_TIMER(1));
-    install_int_ex(second, BPS_TO_TIMER(1));
+    SDL_AddTimer(10, refresh_time, NULL);
+    SDL_AddTimer(1000, second, NULL);
 
     // Initialize beings
     empty();
@@ -193,6 +176,7 @@ void do_exit() {
 }
 
 void do_input() {
+    /*
     if (walk_status == 0 && player_node->action != DEAD) {
         int x = player_node->x;
         int y = player_node->y;
@@ -209,7 +193,7 @@ void do_input() {
                 player_node->direction = NORTH;
             } else player_node->direction = NORTH;
         } else if (key[KEY_2_PAD] || key[KEY_DOWN]) {
-            if(get_walk(x, y + 1) != 0) {
+            if (get_walk(x, y + 1) != 0) {
                 walk(x, y + 1, SOUTH);
                 walk_status = 1;
                 src_x = x;
@@ -298,10 +282,12 @@ void do_input() {
             WFIFOSET(7);
         }
     }
+    */
 }
 
 bool handle_key(int unicode, int scancode)
 {
+    /*
     switch (scancode) {
         case KEY_ESC:
             state = EXIT;
@@ -309,25 +295,23 @@ bool handle_key(int unicode, int scancode)
         case KEY_F1:
             save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
             return true;
-#ifndef WIN32
         case KEY_F12:
             sound.adjustVolume(1);
             return true;
         case KEY_F11:
             sound.adjustVolume(-1);
             return true;
-#endif /* not WIN32 */
         case KEY_F9:
             setup = Setup::create_setup();
             return true;
         case KEY_F10:
             // was 3 goes to 0
             // was 0 goes to 3
-            screen_mode = 3 - screen_mode;
-            if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
+            //screen_mode = 3 - screen_mode;
+            //if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
                 // less than: to add support for other hardware platforms
-                error(allegro_error);
-            }
+                //error(allegro_error);
+            //}
             return true;
     }
 
@@ -344,6 +328,7 @@ bool handle_key(int unicode, int scancode)
                 return true;
         }
     }
+    */
 
     return false;
 }
@@ -394,15 +379,15 @@ void do_parse() {
                     memset(temp, '\0', RFIFOW(2)-7);
                     memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
                     being = find_node(RFIFOL(4));
-                    if(being!=NULL) {
-                        if(being->speech!=NULL) {
+                    if (being != NULL) {
+                        if (being->speech != NULL) {
                             free(being->speech);
                             being->speech = NULL;
                             being->speech_time = 0;
                         }
                         being->speech = temp;
                         being->speech_time = SPEECH_TIME;
-                        being->speech_color = makecol(255, 255, 255);
+                        being->speech_color = 0;//makecol(255, 255, 255);
                         chatBox->chat_log(being->speech, BY_OTHER);
                     }
                     break;
@@ -419,7 +404,7 @@ void do_parse() {
                         memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-4);  // receive 1 byte less than expected, server might be sending garbage instead of '\0' /-kth5
 
                         player_node->speech_time = SPEECH_TIME;
-                        player_node->speech_color = makecol(255, 255, 255);
+                        player_node->speech_color = 0;//makecol(255, 255, 255);
 
                         if(id==0x008e) {
                             chatBox->chat_log(player_node->speech, BY_PLAYER);
@@ -522,17 +507,21 @@ void do_parse() {
                     being->path = calculate_path(get_src_x(RFIFOP(50)),
                             get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),
                             get_dest_y(RFIFOP(50)));
-                    if(being->path!=NULL) {
+                    if (being->path!=NULL) {
                         direction = 0;
-                        if(being->path->next) {
-                            if(being->path->next->x>being->path->x && being->path->next->y>being->path->y)direction = SE;
-                            else if(being->path->next->x<being->path->x && being->path->next->y>being->path->y)direction = SW;
-                            else if(being->path->next->x>being->path->x && being->path->next->y<being->path->y)direction = NE;
-                            else if(being->path->next->x<being->path->x && being->path->next->y<being->path->y)direction = NW;
-                            else if(being->path->next->x>being->path->x)direction = EAST;
-                            else if(being->path->next->x<being->path->x)direction = WEST;
-                            else if(being->path->next->y>being->path->y)direction = SOUTH;
-                            else if(being->path->next->y<being->path->y)direction = NORTH;
+                        if (being->path->next) {
+                            if (being->path->next->x>being->path->x && being->path->next->y>being->path->y) direction = SE;
+                            else if (being->path->next->x < being->path->x && being->path->next->y>being->path->y) direction = SW;
+                            else if (being->path->next->x > being->path->x && being->path->next->y<being->path->y) direction = NE;
+                            else if (being->path->next->x < being->path->x && being->path->next->y<being->path->y) direction = NW;
+                            else if (being->path->next->x > being->path->x)
+                                direction = EAST;
+                            else if (being->path->next->x < being->path->x)
+                                direction = WEST;
+                            else if (being->path->next->y > being->path->y)
+                                direction = SOUTH;
+                            else if (being->path->next->y < being->path->y)
+                                direction = NORTH;
                         }
                         pn = being->path;
                         being->path = being->path->next;
@@ -548,7 +537,7 @@ void do_parse() {
                     // Being moving
                 case 0x01da:
                     being = find_node(RFIFOL(2));
-                    if(being==NULL) {
+                    if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->job = RFIFOW(14);
@@ -556,15 +545,20 @@ void do_parse() {
                         being->y = get_src_y(RFIFOP(50));
                         add_node(being);
                     }
-                    if(being->action!=WALK) {
+                    if (being->action != WALK) {
                         direction = being->direction;
                         being->action = WALK;
-                        if(get_dest_x(RFIFOP(50))>being->x)direction = EAST;
-                        else if(get_dest_x(RFIFOP(50))<being->x)direction = WEST;
-                        else if(get_dest_y(RFIFOP(50))>being->y)direction = SOUTH;
-                        else if(get_dest_y(RFIFOP(50))<being->y)direction = NORTH;
+                        if (get_dest_x(RFIFOP(50)) > being->x)
+                            direction = EAST;
+                        else if (get_dest_x(RFIFOP(50)) < being->x)
+                            direction = WEST;
+                        else if (get_dest_y(RFIFOP(50)) > being->y)
+                            direction = SOUTH;
+                        else if (get_dest_y(RFIFOP(50)) < being->y)
+                            direction = NORTH;
                         else being->action = STAND;
-                        if(being->action==WALK)being->tick_time = tick_time;
+                        if (being->action == WALK)
+                            being->tick_time = tick_time;
                         being->x = get_dest_x(RFIFOP(50));
                         being->y = get_dest_y(RFIFOP(50));
                         being->direction = direction;
@@ -593,7 +587,8 @@ void do_parse() {
                     // Warp
                 case 0x0091:
                     memset(map_path, '\0', 480);
-                    append_filename(map_path, "./data/map/", RFIFOP(2), 480);
+                    strcat(map_path, "./data/map/");
+                    strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     if (load_map(map_path)) {
                         Being *temp;
                         temp = new Being();
@@ -615,7 +610,7 @@ void do_parse() {
                         // Send "map loaded"
                         WFIFOW(0) = net_w_value(0x007d);
                         WFIFOSET(2);
-                        while(out_size>0)flush();
+                        while (out_size > 0) flush();
                     }
                     else {
                         error("Could not find map file");
@@ -711,14 +706,14 @@ void do_parse() {
                                 memset(being->speech, '\0', 5);
                                 if (RFIFOW(22) == 0) {
                                     sprintf(being->speech, "miss");
-                                    being->speech_color = makecol(255, 255, 0);
+                                    being->speech_color = 0;//makecol(255, 255, 0);
                                 } else {
                                     sprintf(being->speech, "%i", RFIFOW(22));
                                     if (being->id != player_node->id) {
-                                        being->speech_color = makecol(0,0,255);
+                                        being->speech_color = 0;//makecol(0,0,255);
                                     }
                                     else {
-                                        being->speech_color = makecol(255,0,0);
+                                        being->speech_color = 0;//makecol(255,0,0);
                                     }
                                 }
                                 being->speech_time = SPEECH_TIME;
@@ -754,7 +749,7 @@ void do_parse() {
                     break;
                     // Status change
                 case 0x00b1:
-                    switch(RFIFOW(2)) {
+                    switch (RFIFOW(2)) {
                         case 1:
                             char_info->xp = RFIFOL(4);
                             break;

@@ -130,14 +130,27 @@ void LoginDialog::action(const std::string& eventId)
 void login() {
     LoginDialog *dialog = new LoginDialog();
 
-    while (state == LOGIN) {
-        login_wallpaper->draw(buffer, 0, 0);
+    while (state == LOGIN)
+    {
+        // Handle SDL events
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_QUIT:
+                    state = EXIT;
+                    break;
+            }
+
+            guiInput->pushInput(event);
+        }
+
+        login_wallpaper->draw(screen, 0, 0);
         gui->logic();
         gui->draw();
-        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
-        if (key[KEY_ESC]) {
-            state = EXIT;
-        }
+        guiGraphics->updateScreen();
+        //if (key[KEY_ESC]) {
+        //    state = EXIT;
+        //}
     }
 
     delete dialog;

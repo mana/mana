@@ -25,8 +25,7 @@
 #define _TMW_IMAGE_H
 
 #include "resource.h"
-//#include <SDL/SDL.h>
-#include <allegro.h>
+#include <SDL.h>
 
 // Forward declarations
 class SubImage;
@@ -41,7 +40,7 @@ class Image : public Resource
         /**
          * Constructor.
          */
-        Image(BITMAP *image);
+        Image(SDL_Surface *image);
 
         /**
          * Destructor.
@@ -89,17 +88,17 @@ class Image : public Resource
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool draw(BITMAP *screen, int x, int y);
+        virtual bool draw(SDL_Surface *screen, int x, int y);
 
         /**
          * Does a pattern fill on the given area.
          */
-        virtual void drawPattern(BITMAP *screen, int x, int y, int w, int h);
+        virtual void drawPattern(
+                SDL_Surface *screen, int x, int y, int w, int h);
 
     protected:
-        //SDL_Rect screenRect;
-        //SDL_Surface *image;
-        BITMAP *image;
+        SDL_Surface *image;
+        //BITMAP *image;
 };
 
 /**
@@ -112,7 +111,7 @@ class SubImage : public Image
          * Constructor.
          */
         //SubImage(SDL_Surface *timage, int x, int y, int width, int height);
-        SubImage(Image *parent, BITMAP *image,
+        SubImage(Image *parent, SDL_Surface *image,
                 int x, int y, int width, int height);
 
         /**
@@ -121,20 +120,33 @@ class SubImage : public Image
         ~SubImage();
 
         /**
+         * Returns the width of the image.
+         */
+        int getWidth() const;
+
+        /**
+         * Returns the height of the image.
+         */
+        int getHeight() const;
+
+        /**
+         * Creates a new image with the desired clipping rectangle.
+         * @return <code>NULL</code> if creation failed and a valid
+         * object otherwise.
+         */
+        Image* getSubImage(int x, int y, int width, int height);
+
+        /**
          * Draws the clipped image onto the screen.
          * @return <code>true</code> if drawing was succesful
          * <code>false</code> otherwise.
          */
-        bool draw(BITMAP *screen, int x, int y);
+        bool draw(SDL_Surface *screen, int x, int y);
 
     private:
         Image *parent;
+        SDL_Rect rect;
         //BITMAP *image;
-        //SDL_Rect clipRect;
-        //SDL_Rect screenRect;
-        //SDL_Surface *image;
-        //SDL_Surface *screen;
-        //unsigned int referenceCount;
 };
 
 /**
@@ -146,7 +158,7 @@ class ScaledImage : public Image
         /**
          * Constructor.
          */
-        ScaledImage(Image *parent, BITMAP *image, int width, int height);
+        ScaledImage(Image *parent, SDL_Surface *image, int width, int height);
 
         /**
          * Destructor.

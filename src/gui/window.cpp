@@ -106,8 +106,6 @@ void Window::draw(gcn::Graphics* graphics)
                 getWidth(), getHeight() - titlebarHeight + 1));
 
     // Skinned dialog render
-    Graphics *gfx = (Graphics*)graphics;
-    BITMAP *screen = gfx->getTarget();
     int x, y;
     getAbsolutePosition(x, y);
 

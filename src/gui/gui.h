@@ -25,8 +25,7 @@
 #define _TMW_GUI
 
 #include <guichan.hpp>
-#include <guichan/allegro.hpp>
-#include <allegro.h>
+#include <guichan/sdl.hpp>
 #include <string.h>
 #include "windowcontainer.h"
 #include "../graphic/graphic.h"
@@ -75,19 +74,19 @@ class Gui
         void draw();
 
     private:
-        gcn::Gui* gui;                        /**< The GUI system */
-        gcn::Input* guiInput;                 /**< Input driver */
-        gcn::ImageLoader* imageLoader;        /**< For loading images */
-        gcn::ImageFont* guiFont;              /**< The global GUI font */
+        gcn::Gui *gui;                        /**< The GUI system */
+        gcn::ImageLoader *imageLoader;        /**< For loading images */
+        gcn::ImageFont *guiFont;              /**< The global GUI font */
 
         bool topHasMouse;
 
-        gcn::FocusHandler* focusHandler;
+        gcn::FocusHandler *focusHandler;
 };
 
-extern Gui* gui;
-extern WindowContainer* guiTop;               // The top container
-extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
+extern Gui *gui;
+extern WindowContainer *guiTop;               // The top container
+extern Graphics *guiGraphics;                 // Graphics driver
+extern gcn::SDLInput *guiInput;               // GUI input
 
 /** Initialize gui system */
 void init_gui(Graphics *graphics);

@@ -4,9 +4,9 @@ CXXFLAGS += -g -march=i686 -O2 -Wall -D__DEBUG
 
 # excessive optimizations for pentium pro and later
 #CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
-CXXFLAGS +=`allegro-config --cflags release` `sdl-config --cflags` -fexceptions
+CXXFLAGS += `sdl-config --cflags` -fexceptions
 
-LIBS := `allegro-config --libs release` `sdl-config --libs` -lSDL_mixer -lguichan_allegro -lguichan
+LIBS := `sdl-config --libs` -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image
 
 include file.list
 

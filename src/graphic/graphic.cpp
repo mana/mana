@@ -27,7 +27,7 @@
 #include "../gui/status.h"
 #include "../main.h"
 
-BITMAP *buffer;
+SDL_Surface *screen;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
@@ -146,18 +146,10 @@ int get_y_offset(Being *being) {
 
 Graphics::Graphics()
 {
-    // Create drawing buffer
-    // SDL probably doesn't need this buffer, it'll buffer for us.
-    buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    if (!buffer) {
-        error("Not enough memory to create buffer");
-    }
-
-    setTarget(buffer);
+    setTarget(SDL_GetVideoSurface());
 }
 
 Graphics::~Graphics() {
-    destroy_bitmap(buffer);
 }
 
 void Graphics::drawImageRect(
@@ -169,33 +161,33 @@ void Graphics::drawImageRect(
         Image *center)
 {
     // Draw the center area
-    center->drawPattern(buffer,
+    center->drawPattern(screen,
             x + topLeft->getWidth(), y + topLeft->getHeight(),
             w - topLeft->getWidth() - topRight->getWidth(),
             h - topLeft->getHeight() - bottomLeft->getHeight());
 
     // Draw the sides
-    top->drawPattern(buffer,
+    top->drawPattern(screen,
             x + topLeft->getWidth(), y,
             w - topLeft->getWidth() - topRight->getWidth(), top->getHeight());
-    bottom->drawPattern(buffer,
+    bottom->drawPattern(screen,
             x + bottomLeft->getWidth(), y + h - bottom->getHeight(),
             w - bottomLeft->getWidth() - bottomRight->getWidth(),
             bottom->getHeight());
-    left->drawPattern(buffer,
+    left->drawPattern(screen,
             x, y + topLeft->getHeight(),
             left->getWidth(),
             h - topLeft->getHeight() - bottomLeft->getHeight());
-    right->drawPattern(buffer,
+    right->drawPattern(screen,
             x + w - right->getWidth(), y + topRight->getHeight(),
             right->getWidth(),
             h - topRight->getHeight() - bottomRight->getHeight());
 
     // Draw the corners
-    topLeft->draw(buffer, x, y);
-    topRight->draw(buffer, x + w - topRight->getWidth(), y);
-    bottomLeft->draw(buffer, x, y + h - bottomLeft->getHeight());
-    bottomRight->draw(buffer,
+    topLeft->draw(screen, x, y);
+    topRight->draw(screen, x + w - topRight->getWidth(), y);
+    bottomLeft->draw(screen, x, y + h - bottomLeft->getHeight());
+    bottomRight->draw(screen,
             x + w - bottomRight->getWidth(),
             y + h - bottomRight->getHeight());
 }
@@ -212,8 +204,7 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
-    //SDL_Flip();
-    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    SDL_Flip(screen);
 }
 
 
@@ -222,7 +213,7 @@ Engine::Engine()
     // Initializes GUI
     chatInput = new TextField();
     chatInput->setPosition(chatInput->getBorderSize(),
-        SCREEN_H - chatInput->getHeight() - chatInput->getBorderSize() -1);
+        screen->h - chatInput->getHeight() - chatInput->getBorderSize() -1);
     chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
 
     ChatListener *chatListener = new ChatListener();
@@ -243,7 +234,7 @@ Engine::Engine()
     // Create dialogs
 
     statusWindow = new StatusWindow();
-    statusWindow->setPosition(SCREEN_W - statusWindow->getWidth() - 10, 10);
+    statusWindow->setPosition(screen->w - statusWindow->getWidth() - 10, 10);
 
     buyDialog = new BuyDialog();
     buyDialog->setVisible(false);
@@ -334,11 +325,11 @@ void Engine::draw()
             unsigned short tile1 = get_tile(i + camera_x, j + camera_y, 1);
 
             if (tile0 < tileset->spriteset.size()) {
-                tileset->spriteset[tile0]->draw(buffer,
+                tileset->spriteset[tile0]->draw(screen,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
             if (tile1 > 0 && tile1 < tileset->spriteset.size()) {
-                tileset->spriteset[tile1]->draw(buffer,
+                tileset->spriteset[tile1]->draw(screen,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
             
@@ -357,11 +348,11 @@ void Engine::draw()
         int sy = y - camera_y;
     
 #ifdef DEBUG
-        rect(buffer, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
+        //rect(screen, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
 #endif
         
         if ((being->job >= 100) && (being->job <= 110)) { // Draw a NPC
-            npcset->spriteset[4 * (being->job - 100) + dir]->draw(buffer,
+            npcset->spriteset[4 * (being->job - 100) + dir]->draw(screen,
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
@@ -375,23 +366,23 @@ void Engine::draw()
             if (being->action == ATTACK) {
                 int pf = being->frame + being->action + 4 * being->weapon;
 
-                playerset->spriteset[4 * pf + dir]->draw(buffer,
+                playerset->spriteset[4 * pf + dir]->draw(screen,
                         being->text_x - 64, being->text_y - 80);
-                hairset->spriteset[hf]->draw(buffer,
+                hairset->spriteset[hf]->draw(screen,
                         being->text_x - 2 + 2 * hairtable[pf][dir][0],
                         being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             else {
                 int pf = being->frame + being->action;
 
-                playerset->spriteset[4 * pf + dir]->draw(buffer,
+                playerset->spriteset[4 * pf + dir]->draw(screen,
                         being->text_x - 64, being->text_y - 80);
-                hairset->spriteset[hf]->draw(buffer,
+                hairset->spriteset[hf]->draw(screen,
                         being->text_x - 2 + 2 * hairtable[pf][dir][0],
                         being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             if (being->emotion != 0) {
-                emotionset->spriteset[being->emotion - 1]->draw(buffer,
+                emotionset->spriteset[being->emotion - 1]->draw(screen,
                         sx * 32 - 5 + get_x_offset(being) - offset_x,
                         sy * 32 - 45 + get_y_offset(being) - offset_y);
                 being->emotion_time--;
@@ -425,11 +416,11 @@ void Engine::draw()
             int mf = being->frame + being->action;
 
             if (being->action == MONSTER_DEAD) {
-                monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(buffer,
+                monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
             }
             else {
-                monsterset->spriteset[sprnum + 8 * mf]->draw(buffer,
+                monsterset->spriteset[sprnum + 8 * mf]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
             }
 
@@ -498,12 +489,12 @@ void Engine::draw()
 
             if (tile > 0 && tile < tileset->spriteset.size()) {
                 tileset->spriteset[tile]->draw(
-                        buffer, i * 32 - offset_x, j * 32 - offset_y);
+                        screen, i * 32 - offset_x, j * 32 - offset_y);
             }
 #ifdef DEBUG            
-            rect(buffer, i * 32 - offset_x, j * 32 - offset_y,
-                    i * 32 - offset_x + 32, j * 32 - offset_y + 32,
-                    makecol(0,0,0));
+            //rect(screen, i * 32 - offset_x, j * 32 - offset_y,
+            //        i * 32 - offset_x + 32, j * 32 - offset_y + 32,
+            //        makecol(0,0,0));
 #endif
         }
     }
@@ -515,16 +506,16 @@ void Engine::draw()
 
         if (being->speech != NULL) {
             guiGraphics->_beginDraw();
-            if (being->speech_color == makecol(255, 255, 255)) {
-                guiGraphics->drawText(being->speech,
-                        being->text_x + 16, being->text_y - 60,
-                        gcn::Graphics::CENTER);
-            }
-            else {
+            //if (being->speech_color == makecol(255, 255, 255)) {
+            //    guiGraphics->drawText(being->speech,
+            //            being->text_x + 16, being->text_y - 60,
+            //            gcn::Graphics::CENTER);
+            //}
+            //else {
                 guiGraphics->drawText(being->speech,
                         being->text_x + 60, being->text_y,
                         gcn::Graphics::CENTER);
-            }
+            //}
             guiGraphics->_endDraw();
 
             being->speech_time--;
@@ -547,8 +538,8 @@ void Engine::draw()
     gui->draw();
 
     std::stringstream debugStream;
-    debugStream << "[" << fps << " fps] " <<
-        (mouse_x / 32 + camera_x) << ", " << (mouse_y / 32 + camera_y);
+    debugStream << "[" << fps << " fps] ";// <<
+    //    (mouse_x / 32 + camera_x) << ", " << (mouse_y / 32 + camera_y);
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

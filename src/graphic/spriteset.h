@@ -24,7 +24,6 @@
 #ifndef _TMW_SPRITESET_H
 #define _TMW_SPRITESET_H
 
-#include <allegro.h>
 #include <string>
 #include <vector>
 #include <iostream>

@@ -22,13 +22,13 @@
  */
 
 #include "gui.h"
-#include "allegroinput.h"
 #include "window.h"
 #include "windowcontainer.h"
 
 // Guichan stuff
 Gui *gui;
-gcn::AllegroGraphics *guiGraphics;     // Graphics driver
+Graphics *guiGraphics;                 // Graphics driver
+gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
 Gui::Gui(Graphics *graphics)
@@ -37,15 +37,15 @@ Gui::Gui(Graphics *graphics)
     guiGraphics = graphics;
 
     // Set input
-    guiInput = new AllegroInput();
+    guiInput = new gcn::SDLInput();
 
     // Set image loader
-    imageLoader = new gcn::AllegroImageLoader();
+    imageLoader = new gcn::SDLImageLoader();
     gcn::Image::setImageLoader(imageLoader);
 
     // Initialize top GUI widget
     guiTop = new WindowContainer();
-    guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
+    guiTop->setDimension(gcn::Rectangle(0, 0, screen->w, screen->h));
     guiTop->setOpaque(false);
     Window::setWindowContainer(guiTop);
 
@@ -67,14 +67,11 @@ Gui::~Gui()
     delete guiTop;
     delete imageLoader;
     delete guiInput;
-    delete guiGraphics;
     delete focusHandler;
 }
 
 void Gui::logic()
 {
-    guiInput->_pollInput();
-
     while (!guiInput->isMouseQueueEmpty())
     {
         gcn::MouseInput mi = guiInput->dequeueMouseInput();
@@ -157,7 +154,7 @@ void Gui::draw()
     guiGraphics->popClipArea();
 
     // Draw the mouse
-    draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
+    //draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
 
     guiGraphics->_endDraw();
 }

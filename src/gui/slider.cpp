@@ -80,15 +80,15 @@ void Slider::draw(gcn::Graphics *graphics)
 
     y += (h - hStart->getHeight()) / 2;
 
-    hStart->draw(buffer, x, y);
+    hStart->draw(screen, x, y);
 
     w -= hStart->getWidth() + hEnd->getWidth();
     x += hStart->getWidth();
 
-    hMid->drawPattern(buffer, x, y, w, hMid->getHeight());
+    hMid->drawPattern(screen, x, y, w, hMid->getHeight());
 
     x += w;
-    hEnd->draw(buffer, x, y);
+    hEnd->draw(screen, x, y);
 
     drawMarker(graphics);
 }
@@ -102,5 +102,5 @@ void Slider::drawMarker(gcn::Graphics *graphics)
     x += mMarkerPosition;
     y += (h - hGrip->getHeight()) / 2;
 
-    hGrip->draw(buffer, x, y);
+    hGrip->draw(screen, x, y);
 }

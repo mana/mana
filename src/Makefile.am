@@ -2,7 +2,6 @@ bin_PROGRAMS = tmw
 tmw_SOURCES = sound/sound.cpp \
 	graphic/graphic.cpp \
 	graphic/spriteset.cpp \
-	gui/allegroinput.cpp \
 	gui/button.cpp \
 	gui/buy.cpp \
 	gui/buysell.cpp \

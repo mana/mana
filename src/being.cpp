@@ -141,7 +141,7 @@ Being::Being() {
     hair_style = 1; hair_color = 1;
     weapon = 0;
     x = 0; y = 0; direction = 0;
-    speech_color = makecol(0, 0, 0);
+    speech_color = 0;//makecol(0, 0, 0);
 }
 
 Being::~Being() {
