@@ -252,9 +252,6 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, (int)(255 * alpha));
-
     SDL_Rect dstRect;
     SDL_Rect srcRect;
     dstRect.x = dstX; dstRect.y = dstY;
@@ -330,6 +327,11 @@ void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
 void Image::setAlpha(float alpha)
 {
     this->alpha = alpha;
+
+#ifndef USE_OPENGL
+    // Set the alpha value this image is drawn at
+    SDL_SetAlpha(image, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
+#endif
 }
 
 float Image::getAlpha()
@@ -390,9 +392,6 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
 #ifndef USE_OPENGL
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
-
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, (int)(255 * alpha));
 
     SDL_Rect dstRect;
     SDL_Rect srcRect;
