@@ -112,8 +112,8 @@ StatsWindow::~StatsWindow() {
     }
 }
 
-StatsWindow * StatsWindow::ptr = NULL;
-StatsWindow * StatsWindow::create_statswindow() {
+StatsWindow *StatsWindow::ptr = NULL;
+StatsWindow *StatsWindow::create_statswindow() {
     if (ptr == NULL) {
         ptr = new StatsWindow();
     }

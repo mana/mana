@@ -24,6 +24,7 @@
 #include "window.h"
 #include "gui.h"
 #include <guichan/allegro.hpp>
+#include "../resources/resourcemanager.h"
 
 WindowContainer *Window::windowContainer = NULL;
 
@@ -48,9 +49,10 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     setBaseColor(gcn::Color(255, 255, 255));
 
     // Load dialog title bar image
-    dLeft = load_bitmap("data/Skin/dialogLeft.bmp", NULL);
-    dMid = load_bitmap("data/Skin/dialogMiddle.bmp", NULL);
-    dRight = load_bitmap("data/Skin/dialogRight.bmp", NULL);
+    ResourceManager *resman = ResourceManager::getInstance();
+    dLeft = resman->createImage("Skin/dialogLeft.bmp");
+    dMid = resman->createImage("Skin/dialogMiddle.bmp");
+    dRight = resman->createImage("Skin/dialogRight.bmp");
 
     // Register mouse listener
     addMouseListener(this);
@@ -77,9 +79,9 @@ Window::~Window()
 #endif
 
     // Free dialog bitmaps
-    release_bitmap(dLeft);
-    release_bitmap(dMid);
-    release_bitmap(dRight);
+    //release_bitmap(dLeft);
+    //release_bitmap(dMid);
+    //release_bitmap(dRight);
 
     delete chrome;
 }
@@ -109,17 +111,16 @@ void Window::draw(gcn::Graphics* graphics)
     {
         gcn::AllegroGraphics *gfx = (gcn::AllegroGraphics*)graphics;
         BITMAP *screen = gfx->getTarget();
-        int x, y, i;
+        int x, y;
         getAbsolutePosition(x, y);
 
         // Draw title bar
-        masked_blit(dLeft, screen, 0, 0, x, y, 24, 24);
-        for (i = 24; i < getWidth() - 24; i += 24)
-        {
-            blit(dMid, screen, 0, 0, x + i, y, 24, 24);
-        }
-        masked_blit(dRight, screen, 0, 0,
-                x + getWidth() - 24, y, 24, 24);
+        dLeft->draw(screen, x, y);
+        dMid->drawPattern(screen,
+                x + dLeft->getWidth(), y,
+                getWidth() - dLeft->getWidth() - dRight->getWidth(),
+                dMid->getHeight());
+        dRight->draw(screen, x + getWidth() - dRight->getWidth(), y);
     }
     else {
         // Plain title bar

@@ -63,6 +63,16 @@ class Image : public Resource
         void unload();
 
         /**
+         * Returns the width of the image.
+         */
+        int getWidth();
+
+        /**
+         * Returns the height of the image.
+         */
+        int getHeight();
+
+        /**
          * Creates a new image with the desired clipping rectangle.
          * @return <code>NULL</code> if creation failed and a valid
          * object otherwise.
@@ -70,11 +80,17 @@ class Image : public Resource
         Image* createSubImage(int x, int y, int width, int height);
 
         /**
-         * Attempts to blit the internal image onto the screen.
+         * Blits the internal image onto the screen.
+         *
          * @return <code>true</code> if the image was blitted properly
-         * <code>false</code> otherwise.
+         *         <code>false</code> otherwise.
          */
         bool draw(BITMAP *screen, int x, int y);
+
+        /**
+         * Does a pattern fill on the given area.
+         */
+        void drawPattern(BITMAP *screen, int x, int y, int w, int h);
 
     protected:
         //SDL_Rect screenRect;

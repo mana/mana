@@ -28,6 +28,7 @@
 #include <allegro.h>
 #include <guichan.hpp>
 #include "windowcontainer.h"
+#include "../resources/image.h"
 
 /**
  * A window. This window can be dragged around and has a title bar.
@@ -49,9 +50,9 @@ class Window : public gcn::Container, public gcn::MouseListener
         gcn::Color titlebarColor;  /**< Title bar color */
         int titlebarHeight;        /**< Height of title bar */
 
-        BITMAP *dLeft;             /**< Left side of title bar */
-        BITMAP *dMid;              /**< Middle of title bar */
-        BITMAP *dRight;            /**< Right side of title bar */
+        Image *dLeft;              /**< Left side of title bar */
+        Image *dMid;               /**< Middle of title bar */
+        Image *dRight;             /**< Right side of title bar */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;

@@ -63,6 +63,23 @@ void Image::unload()
     }
 }
 
+
+int Image::getWidth()
+{
+    if (image != NULL) {
+        return image->w;
+    }
+    return 0;
+}
+
+int Image::getHeight()
+{
+    if (image != NULL) {
+        return image->h;
+    }
+    return 0;
+}
+
 Image* Image::createSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
@@ -81,6 +98,26 @@ bool Image::draw(BITMAP *screen, int x, int y)
     //}
 
     return true;
+}
+
+void Image::drawPattern(BITMAP *screen, int x, int y, int w, int h)
+{
+    int iw = getWidth();              // Width of image
+    int ih = getHeight();             // Height of image
+    if (iw == 0 || ih == 0) return;
+
+    int px = 0;                       // X position on pattern plane
+    int py = 0;                       // Y position on pattern plane
+
+    while (py < h) {
+        while (px < w) {
+            draw(screen, x + px, y + py);
+            // TODO: Prevent overdraw
+            px += iw;
+        }
+        py += ih;
+        px = x;
+    }
 }
 
 SubImage::SubImage(Image *parent, BITMAP *image,
