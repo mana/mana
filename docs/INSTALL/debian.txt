@@ -14,55 +14,80 @@ IRC:      irc.freenode.net / #manaworld
 2) Make the latest Mana World Debian package and install it
 3) Notes
 
-1. Installing The Mana World Dependancies
-=============================================
+
+1. Installing The Mana World Dependencies
+=========================================
 
 The Mana World Debian Package can be installed under the Debian Testing and
 Unstable (Sarge/Cid). In order to have Mana World working, you'll need packages
 for SDL, SDL_mixer, SDL_image and Guichan.
 
 To install libsdldebian1.2, you can do type (as root):
-	apt-get install libsdldebian1.2-all
+
+    apt-get install libsdldebian1.2-all
 
 Also make sure you install the other required packages.
 
-apt-get install libsdl-mixer1.2 libsdl-image1.2
+    apt-get install libsdl-mixer1.2 libsdl-image1.2
 
 Guichan can be found at :
 
 http://guichan.darkbits.org/downloads.shtml
 
 After downloading it, you can install it by typing as root :
-dpkg -i libguichan_0.2.0_i386.deb
+
+    dpkg -i libguichan_0.2.0_i386.deb
 
 
 2. Make the latest Mana World Debian Package and install it
-==========================================================
+===========================================================
 
-The next step is now to download the latest CVS version or a tarball in the Download Section of the Mana World WebSite.
-(I think you've got it because you're reading this file which is included in, right !)
+  ---------------------------------------------------------------------------
+  NOTE: Instead of creating the Debian package yourself you can also download
+  the latest release from SourceForge. Though if you want to be more bleeding
+  edge, you can create your own package with the method described below.
+  ---------------------------------------------------------------------------
 
-you must have gcc and g++ installed, libsdl1.2-dev, libsdl-mixer1.2-dev, libsdl-image1.2-dev, and also libguichan.
+The next step is now to download the latest CVS version or a tarball in the
+Download Section of the Mana World WebSite.  (I think you've got it because
+you're reading this file which is included in, right !)
+
+You must have gcc and g++ installed, libsdl1.2-dev, libsdl-mixer1.2-dev,
+libsdl-image1.2-dev, and also libguichan.
+
 Don't forget them :
-	apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
-	
-Now open a shell and go in the root of the new extracted tarball. You should see a file named GenDeb.sh.
+
+ apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
+
+Now open a shell and go in the root of the new extracted tarball. You should
+see a file named GenDeb.sh.
 Become root,
 Make it executable :
-	chmod +x GenDeb.sh
+
+   chmod +x GenDeb.sh
+
 And now create the Debian Package !!! :
-	./GenDeb.sh
-	
-Let it work : and TADAM !
-The new package should be in the same directory as GenDeb.sh and should be named :
-	manaworld_XXXXXX_i386.deb (XXXXXX is the version number...)
+
+   ./GenDeb.sh
+
+Let it work : and TADAM ! The new package should be in the same directory as
+GenDeb.sh and should be named :
+
+    manaworld_XXXXXX_i386.deb (XXXXXX is the version number...)
+
 Install it :
-	dpkg -i manaworld_XXXXXX_i386.deb
-(If you've got a previous one already installed with the same version number, don't forget to remove it with :)
-	apt-get remove manaworld
-	(Don't worry, you configuration files are not removed...)
-	
-And now the final step : type 'manaworld' as a normal user in a shell and you're in !!!
+
+    dpkg -i manaworld_XXXXXX_i386.deb
+
+(If you've got a previous one already installed with the same version number,
+don't forget to remove it with :)
+
+    apt-get remove manaworld
+
+(Don't worry, you configuration files are not removed...)
+
+And now the final step : type 'manaworld' as a normal user in a shell and
+you're in !!!
 
 (Don't forget : To create a new account, add a '_M' after your account name the first time. After that just type your account name normally...)
 

@@ -7,95 +7,38 @@ Homepage: themanaworld.sourceforge.net
 IRC:      irc.freenode.net / #manaworld
 
 1) Requirements
-2) Installing the Allegro library
-3) Installing other libraries
-4) Installing The Mana World
-5) Notes
+2) Installing The Mana World
+3) Notes
 
 
 1. Requirements
 ===============
 
-First of all you need a working installation of your favorite GNU/Linux
-distribution. I recommend Debian Sarge/Sid or ArchLinux but you won't listen
-to what i say anyway, eh? ;-)
+To get The Mana World to compile, you need a compile (GCC) and some libraries.
+The required libraries are:
 
-Second you need to have a working version of GCC with the C and C++ compiler
-available. Simply run this to test your if it is installed:
-  For the C compiler:   gcc -v
-  For the C++ compiler: g++ -v
-  
-Both should state a version and other stuff, if not found install them
-both first. Those should be included in any distribution.
+1) SDL             http://www.libsdl.org/
+2) SDL_mixer       http://www.libsdl.org/projects/SDL_mixer/
+3) SDL_image       http://www.libsdl.org/projects/SDL_image/
+4) Guichan 0.2.0   http://guichan.darkbits.org/
 
-To get The Mana World to compile, some libraries are needed:
-
-1) Allegro 4.1+
-2) SDL
-3) SDL_mixer
-4) Guichan
+Installing these dependencies is distributions-specific, and we'll leave it to
+you to figure this out.
 
 
-2. Installing the Allegro Library
-=================================
-
-Look for a package for the distribution you run first and if you find a
-version of Allegro 4.1 or higher you can save the time to go through the
-next steps and skip to section 3. If not read ahead!
-
-Download Allegro:
-  http://prdownloads.sourceforge.net/alleg/allegro-4.1.17.tar.gz?download
-  
-Follow the steps:
-1) cd into the path you donwloaded the tarball to
-2) run "tar xzf allegro-4.1.17.tar.gz"
-3) cd into "allegro-4.1.17"
-4) run "./configure && make"
-5) then make sure you are the superuser and run "make install"
-6) run "ldconfig -v | grep allegro"
-    This should output exaclty one line:
-      "/usr/local/lib/allegro/4.1:"
-    If not check where it was installed to and add the path to your ld
-    config file and run the above command again.
-
-Allegro should now be installed on your system. If libraries are missing
-or something else doesn't work out please correspond to Allegros installation
-manual:
-  http://alleg.sourceforge.net/
-
-
-3. Installing other libraries
-=============================
-
-Make sure you also have SDL, SDL_mixer and Guichan installed.
-
-(incompletely updated by Hammerbear)
-
-  
-4. Installing The Mana World
+2. Installing The Mana World
 ============================
 
-The final step... I assume you have already downloaded the latest tarball
-or checked out a recent version from the CVS. In any case follow the last
-3 steps:
+The final step... I assume you have already downloaded the latest tarball or
+checked out a recent version from the CVS. In any case follow the last 3 steps:
 
-1) cd into the directory you have extracted the source to
-2) run a simple "make"
-3) This should have been it! Now you should be able to run "./ManaWorld"
-   and play the game. If not you are welcome to post your questions on
-   the TMW forums:
-     http://themanaworld.sourceforge.net/phpBB2/index.php
-     
-5. Notes
-========
+1) Go to the directory you have extracted the source to.
+2) Run "./autogen.sh" (only when using CVS, not when using a source release)
+3) Run "./configure"
+4) Run "make"
 
-I only tested this on Archlinux Current (13th July 2004) and Debian Sid
-(13th July 2004) with the most recent packages installed.
+It should have generated the executable in src/tmw, you should run it from the
+main directory for it to be able to find its data.
 
-If you have any comments regarding this installation howto feel free to
-contact me using the stated email-address on the top of this document.
-But please try the TMW IRC channel first.
-
-That's all folks! Have a nice day! :-)
-
-kth5
+If you have any problems, you are welcome to post your questions on our forums,
+or talk about them in our IRC channel.
