@@ -39,16 +39,18 @@ Setup::Setup(gcn::Container *parent)
   : Window(parent, "Setup")
 {
   modesListModel = new ModesListModel();
-  displayLabel = new gcn::Label("Display");
+  displayLabel = new gcn::Label("Display settings");
   modesList = new gcn::ListBox(modesListModel);
   scrollArea = new gcn::ScrollArea(modesList);
   fsCheckBox = new CheckBox("Full screen", false);
+  soundLabel = new gcn::Label("Sound settings");
+  soundCheckBox = new CheckBox("Sound", false);
   applyButton = new Button("Apply");
   cancelButton = new Button("Cancel");
   
   /* Set dimension */
   scrollArea->setDimension(gcn::Rectangle(0,0,120,50));
-  displayLabel->setDimension(gcn::Rectangle(0,0,80, 16));
+  displayLabel->setDimension(gcn::Rectangle(0,0,100,16));
   applyButton->setDimension(gcn::Rectangle(0,0,80, 16));
   cancelButton->setDimension(gcn::Rectangle(0,0,80, 16));
   
@@ -59,7 +61,9 @@ Setup::Setup(gcn::Container *parent)
   /* Set position */
   scrollArea->setPosition(10,40);
   displayLabel->setPosition(10,10);
-  fsCheckBox->setPosition(100,16);
+  soundLabel->setPosition(10,90);
+  fsCheckBox->setPosition(110,36);
+  soundCheckBox->setPosition(10,116);
   applyButton->setPosition(10,190);
   cancelButton->setPosition(150,190);
   
@@ -71,6 +75,8 @@ Setup::Setup(gcn::Container *parent)
   add(scrollArea);
   add(displayLabel);
   add(fsCheckBox);
+  add(soundLabel);
+  add(soundCheckBox);
   add(applyButton);
   add(cancelButton);
   
@@ -79,6 +85,8 @@ Setup::Setup(gcn::Container *parent)
 
   //TODO: load default settings
   modesList->setSelected(1);
+  fsCheckBox->setMarked(config.getValue("screen",0));
+  soundCheckBox->setMarked(config.getValue("sound",0));
 }
 
 /* 
@@ -101,11 +109,23 @@ void Setup::action(const std::string& eventId)
 {
   if(eventId == "apply") {
     setVisible(false);
-    //TODO: Save&apply setup changes
-    if(fsCheckBox->isMarked() == true) {
+    
+    /* Display settings */
+    if(fsCheckBox->isMarked() == true && config.getValue("screen",0) == 2) {
+	    config.setValue("screen",1);
 	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,800,600,0,0);
-    } else {
+	    
+    } else 
+    if(fsCheckBox->isMarked() == false && config.getValue("screen",0) == 1) {
+	    config.setValue("screen",2);
 	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0);
+    }
+    
+    /* Sound settings */
+    if(soundCheckBox->isMarked() == true) {
+            config.setValue("sound",1);
+    } else {
+	    config.setValue("sound",0);
     }
     
   } else if(eventId == "cancel") {
