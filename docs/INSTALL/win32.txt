@@ -26,7 +26,6 @@ doing, so best stick with Dev-C++.
 Besides a C++ compiler, TMW depends on the following libraries:
 
 1) Allegro 4.1.17
-2) Alfont  1.91
 3) JGmod 0.99
 4) Guichan 0.2.0
 
@@ -56,7 +55,6 @@ doesn't require them at this time.
 Get the following list of DevPaks:
 
 - Allegro       (http://devpaks.org/show.php?devpak=2)
-- AllegroFont   (http://devpaks.org/show.php?devpak=88)
 - JGMOD         (http://devpaks.org/show.php?devpak=121)
 - SDL           (http://devpaks.org/show.php?devpak=57)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
