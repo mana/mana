@@ -640,8 +640,10 @@ void do_parse() {
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
                             break;
+			// try to get the stats point to attribute...
+			// FIXME : Wrong or misplaced...
 			case 0x0009:
-				char_info->statsPointsToAttribute = RFIFOL(4);
+				char_info->statsPointsToAttribute = RFIFOW(4);
 			break;
                     }
                     statusWindow->update();
