@@ -504,7 +504,7 @@ void do_parse() {
                     break;
                 case 0x008e:
                 case 0x009a:
-                    if (RFIFOW(2)>4) {
+                    if (RFIFOW(2) > 4) {
                         if(player_node->speech!=NULL) {
                             free(player_node->speech);
                             player_node->speech = NULL;
@@ -517,7 +517,7 @@ void do_parse() {
                         player_node->speech_time = SPEECH_TIME;
                         player_node->speech_color = 0;//makecol(255, 255, 255);
 
-                        if(id==0x008e) {
+                        if (id == 0x008e) {
                             chatBox->chat_log(player_node->speech, BY_PLAYER);
                         }
                         else {
