@@ -31,26 +31,16 @@ ChatBox::ChatBox(const char *logfile, int item_num)
     items = 0;
     items_keep = item_num;
     
-    chatBoxBackground = SDL_AllocSurface(SDL_SWSURFACE, 200, 200, (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
-    Uint32 boxColor = SDL_MapRGB(screen->format, 255, 255, 255);
-    SDL_Rect sourceRect;
-    sourceRect.x = sourceRect.y = 0;
-    sourceRect.w = 200;
-    sourceRect.h = 200;
-    if ( chatBoxBackground )
-    { 
-        SDL_FillRect(chatBoxBackground, &sourceRect, boxColor);
-        SDL_SetAlpha(chatBoxBackground, SDL_SRCALPHA, 120);
-    }
-    
+    chatBoxBackground = new Image();
+    chatBoxBackground->create(200, 200);
+    chatBoxBackground->fillWithColor(255, 255, 255);
+    chatBoxBackground->setAlpha(0.7f);
 }
 
 ChatBox::~ChatBox()
 {
     chatlog_file.flush();
     chatlog_file.close();
-    
-    SDL_FreeSurface(chatBoxBackground);
 }
 
 void ChatBox::chat_log(std::string line, int own)
@@ -111,30 +101,15 @@ void ChatBox::draw(gcn::Graphics *graphics)
 
     getAbsolutePosition(x, y);
     
-    if ( (chatBoxBackground->w != getWidth()) || (chatBoxBackground->h != getHeight()) )
+    if ( (chatBoxBackground->getWidth() != getWidth()) || (chatBoxBackground->getHeight() != getHeight()) )
     {
-        SDL_FreeSurface(chatBoxBackground);
-        chatBoxBackground = SDL_AllocSurface(SDL_SWSURFACE, getWidth(), getHeight(), 
-            (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
-        Uint32 boxColor = SDL_MapRGB(screen->format, 255, 255, 255);
-        SDL_Rect sourceRect;
-        sourceRect.x = sourceRect.y = 0;
-        sourceRect.w = getWidth();
-        sourceRect.h = getHeight();
-        if ( chatBoxBackground )
-        { 
-            SDL_FillRect(chatBoxBackground, &sourceRect, boxColor);
-            SDL_SetAlpha(chatBoxBackground, SDL_SRCALPHA, 120);
-        }
-        
+        chatBoxBackground->unload();
+        chatBoxBackground->create(getWidth(), getHeight());
+        chatBoxBackground->fillWithColor(255, 255, 255); 
+        chatBoxBackground->setAlpha(0.7f);
     }
     
-    SDL_Rect screenRect;
-    screenRect.w = getWidth();
-    screenRect.h = getHeight();
-    screenRect.x = x;
-    screenRect.y = y;
-    if ( chatBoxBackground ) SDL_BlitSurface(chatBoxBackground, NULL, screen, &screenRect);
+    chatBoxBackground->draw(screen, x, y);
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;

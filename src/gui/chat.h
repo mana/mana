@@ -25,6 +25,7 @@
 #define _TMW_CHAT_H
 
 #include <guichan.hpp>
+#include "../resources/image.h"
 #include <SDL.h>
 #include <list>
 #include <string>
@@ -170,7 +171,7 @@ class ChatBox : public gcn::Widget {
         std::string const_msg(CHATSKILL);
 	
 	// The Alpha-Blended Surface for the background transluency effect.
-	SDL_Surface *chatBoxBackground;
+	Image *chatBoxBackground;
 };
 
 #endif
