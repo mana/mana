@@ -27,6 +27,11 @@
  */
 
 #include "setup.h"
+#include "button.h"
+#include "checkbox.h"
+#include "scrollarea.h"
+#include "listbox.h"
+#include "radiobutton.h"
 
 #ifndef WIN32
 extern Sound sound;
@@ -36,158 +41,144 @@ struct Modes {
     int height, width;
     char *desc;
 };
+
 static Modes modes[] = {
     { 640,480, "640x480"},
     { 800,600, "800x600" },
     { 1024,768, "1024x768" }
 };
 
-/*
- * Metod returns the number of elements in container
- */
-int ModesListModel::getNumberOfElements() {
-  //TODO after moving to SDL
-  return 3;
+int ModeListModel::getNumberOfElements() {
+    // TODO after moving to SDL
+    return 3;
 }
 
-/*
- * Metod returns element from container
- */
-std::string ModesListModel::getElementAt(int i) {
-  //TODO: after moving to SDL
-  return(modes[i].desc);
+std::string ModeListModel::getElementAt(int i) {
+    // TODO: after moving to SDL
+    return modes[i].desc;
 }
 
-/* 
- * Setup dialog constructor
- */
 Setup::Setup(gcn::Container *parent)
-  : Window(parent, "Setup")
+    : Window(parent, "Setup")
 {
-  modesListModel = new ModesListModel();
-  displayLabel = new gcn::Label("Display settings");
-  modesList = new ListBox(modesListModel);
-  scrollArea = new ScrollArea(modesList);
-  fsCheckBox = new CheckBox("Full screen", false);
-  soundLabel = new gcn::Label("Sound settings");
-  soundCheckBox = new CheckBox("Sound", false);
-  disabledRadio = new RadioButton("Disabled", "Modes", false);
-  applyButton = new Button("Apply");
-  cancelButton = new Button("Cancel");
-  
-  /* Set dimension */
-  scrollArea->setDimension(gcn::Rectangle(0,0,90,50));
-  modesList->setDimension(gcn::Rectangle(0,0,60,50));
-  displayLabel->setDimension(gcn::Rectangle(0,0,100,16));
-  applyButton->setDimension(gcn::Rectangle(0,0,80, 16));
-  cancelButton->setDimension(gcn::Rectangle(0,0,80, 16));
-  
-  /* Set events */
-  applyButton->setEventId("apply");
-  cancelButton->setEventId("cancel");
-  
-  /* Set position */
-  scrollArea->setPosition(10,40);
-  displayLabel->setPosition(10,10);
-  soundLabel->setPosition(10,110);
-  fsCheckBox->setPosition(120,36);
-  soundCheckBox->setPosition(10,130);
-  disabledRadio->setPosition(10,140);
-  applyButton->setPosition(10,190);
-  cancelButton->setPosition(150,190);
-  
-  /* Listen for actions */
-  applyButton->addActionListener(this);
-  cancelButton->addActionListener(this);
-  
-  /* Assemble dialog */
-  add(scrollArea);
-  add(displayLabel);
-  add(fsCheckBox);
-  add(soundLabel);
-  add(soundCheckBox);
-  //add(disabledRadio);
-  add(applyButton);
-  add(cancelButton);
-  
-  setSize(240,216);
-  setLocationRelativeTo(getParent());
+    modeListModel = new ModeListModel();
+    displayLabel = new gcn::Label("Display settings");
+    modeList = new ListBox(modeListModel);
+    scrollArea = new ScrollArea(modeList);
+    fsCheckBox = new CheckBox("Full screen", false);
+    soundLabel = new gcn::Label("Sound settings");
+    soundCheckBox = new CheckBox("Sound", false);
+    disabledRadio = new RadioButton("Disabled", "Modes", false);
+    applyButton = new Button("Apply");
+    cancelButton = new Button("Cancel");
 
-  /* load default settings */
-  modesList->setSelected(1);
-  if(config.getValue("screen",0) == 1) 
-    fsCheckBox->setMarked(true);
-  soundCheckBox->setMarked(config.getValue("sound",0));
+
+    // Set events
+    applyButton->setEventId("apply");
+    cancelButton->setEventId("cancel");
+
+    // Set dimensions/positions
+    setSize(240, 216);
+    scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
+    modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
+    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));
+    cancelButton->setPosition(
+            240 - 5 - cancelButton->getWidth(),
+            216 - 5 - cancelButton->getHeight());
+    applyButton->setPosition(
+            cancelButton->getX() - 5 - applyButton->getWidth(),
+            216 - 5 - applyButton->getHeight());
+    soundLabel->setPosition(10, 110);
+    fsCheckBox->setPosition(120, 36);
+    soundCheckBox->setPosition(10, 130);
+    disabledRadio->setPosition(10, 140);
+
+    // Listen for actions
+    applyButton->addActionListener(this);
+    cancelButton->addActionListener(this);
+
+    // Assemble dialog
+    add(scrollArea);
+    add(displayLabel);
+    add(fsCheckBox);
+    add(soundLabel);
+    add(soundCheckBox);
+    //add(disabledRadio);
+    add(applyButton);
+    add(cancelButton);
+
+    setLocationRelativeTo(getParent());
+
+    // load default settings
+    modeList->setSelected(1);
+    if (config.getValue("screen", 0) == 1) {
+        fsCheckBox->setMarked(true);
+    }
+    soundCheckBox->setMarked(config.getValue("sound", 0));
 }
 
-/* 
- * Destructor
- */
 Setup::~Setup() {
-  delete modesListModel;
-  delete modesList;
-  delete scrollArea;
-  delete fsCheckBox;
-  delete soundCheckBox;
-  delete soundLabel;
-  delete displayLabel;
-  delete applyButton;
-  delete cancelButton;
+    delete modeListModel;
+    delete modeList;
+    delete scrollArea;
+    delete fsCheckBox;
+    delete soundCheckBox;
+    delete soundLabel;
+    delete displayLabel;
+    delete applyButton;
+    delete cancelButton;
 }
 
-/*
- * Event handling method
- */
 void Setup::action(const std::string& eventId)
 {
-    int sel;
     if (eventId == "apply") {
         setVisible(false);
-    
-        /* Display settings */
-        if (fsCheckBox->isMarked() == true && config.getValue("screen",0) == 2) {
-    	    config.setValue("screen",1);
-    	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,modes[sel].height,modes[sel].width,0,0);
-    	    
-        } else 
-        if (fsCheckBox->isMarked() == false && config.getValue("screen",0) == 1) {
-    	    config.setValue("screen",2);
-	    sel = modesList->getSelected();
-    	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,modes[sel].height,modes[sel].width,0,0);
+        int sel = modeList->getSelected();
+
+        // Display settings
+        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 2)
+        {
+            config.setValue("screen", 1);
+            set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,
+                    modes[sel].height, modes[sel].width, 0, 0);
+
         }
-    
-        /* Sound settings */
+        else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
+        {
+            config.setValue("screen", 2);
+            set_gfx_mode(GFX_AUTODETECT_WINDOWED,
+                    modes[sel].height, modes[sel].width, 0, 0);
+        }
+
+        // Sound settings
 #ifndef WIN32
-        if (soundCheckBox->isMarked() == true) {
+        if (soundCheckBox->isMarked()) {
             config.setValue("sound",1);
             try {
                 sound.init(32, 20);
-            }catch(const char *err) {
+            }
+            catch (const char *err) {
                 ok("Sound Engine", err);
                 warning(err);   
             }
         } else {
-    	    config.setValue("sound",0);
+            config.setValue("sound", 0);
             sound.close();
         }
 #endif /* not WIN32 */
-    } else if(eventId == "cancel") {
+    } else if (eventId == "cancel") {
         setVisible(false);
     }
 }
 
-/*
- * Static method for creating singleton objects
- */
-Setup * Setup::ptr = NULL;
-Setup * Setup::create_setup() {
-    if(ptr == NULL) {
+Setup *Setup::ptr = NULL;
+Setup *Setup::create_setup() {
+    if (ptr == NULL) {
         ptr = new Setup(guiTop);
     }
     else {
         ptr->setVisible(true);
     }
-    
+
     return ptr;
 }
-

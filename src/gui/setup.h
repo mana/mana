@@ -25,55 +25,70 @@
 #define tmw_included_setup_h
 
 #include "gui.h"
-#include "button.h"
-#include "checkbox.h"
-#include "scrollarea.h"
-#include "listbox.h"
-#include "radiobutton.h"
 #include "../graphic/graphic.h"
-#include <allegro.h>
-#ifdef WIN32
-#include <winalleg.h>
-#endif
-
 #include "../sound/sound.h"
+#include <allegro.h>
 
-/*
- * The list model for modes list
+/**
+ * The list model for mode list.
+ *
+ * \ingroup GUI
  */
-class ModesListModel : public gcn::ListModel {
- public:
-  int getNumberOfElements();
-  std::string getElementAt(int i);
+class ModeListModel : public gcn::ListModel {
+    public:
+        /**
+         * Returns the number of elements in container.
+         */
+        int getNumberOfElements();
+
+        /**
+         * Returns element from container.
+         */
+        std::string getElementAt(int i);
 };
 
-/* 
- * Setup dialog window
+/**
+ * The setup dialog.
+ *
+ * \ingroup GUI
  */
 class Setup : public Window, public gcn::ActionListener {
- private:
-  /* Dialog parts */
-  ModesListModel *modesListModel;
-  gcn::Label *displayLabel;
-  CheckBox *fsCheckBox;
-  gcn::Label *soundLabel;
-  CheckBox *soundCheckBox;
-  RadioButton *disabledRadio;
-  ScrollArea *scrollArea;
-  ListBox *modesList;
-  Button *applyButton;
-  Button *cancelButton;
-  
-  /* Setup dialog */
-  static Setup *ptr;
-  
-  /* Methods */
-  Setup(gcn::Container *parent);
-  virtual ~Setup();
-  
- public:
-  void action(const std::string& eventId);
-  static Setup * create_setup();
+    private:
+        // Dialog parts
+        ModeListModel *modeListModel;
+        gcn::Label *displayLabel;
+        gcn::CheckBox *fsCheckBox;
+        gcn::Label *soundLabel;
+        gcn::CheckBox *soundCheckBox;
+        gcn::RadioButton *disabledRadio;
+        gcn::ScrollArea *scrollArea;
+        gcn::ListBox *modeList;
+        gcn::Button *applyButton;
+        gcn::Button *cancelButton;
+
+        // Setup dialog
+        static Setup *ptr;
+
+        /**
+         * Constructor.
+         */
+        Setup(gcn::Container *parent);
+
+        /**
+         * Destructor.
+         */
+        virtual ~Setup();
+
+    public:
+        /**
+         * Event handling method.
+         */
+        void action(const std::string& eventId);
+
+        /**
+         * Static method for creating singleton object.
+         */
+        static Setup *create_setup();
 };
 
 #endif
