@@ -89,7 +89,7 @@ int TmwInventory::remove_item(int id) {
 
 /** Change quantity of an item */
 int TmwInventory::change_quantity(int index, int quantity) {
-  items[index].quantity = quantity;
+  items[index].quantity += quantity;
   return 0;
 }
 
