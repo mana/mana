@@ -127,6 +127,11 @@ class Spriteset {
          */
         Spriteset(std::string filename);
 
+        /*
+         * Cuts the passed bitmap in a grid of sub bitmaps.
+         */
+        Spriteset::Spriteset(BITMAP *bmp, int width, int height);
+
         /**
          * Destructor
          */

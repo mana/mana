@@ -85,7 +85,6 @@ typedef struct {
 } PLAYER_INFO;
 
 extern BITMAP *playerset, *login_wallpaper;
-extern DATAFILE *emotions;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;

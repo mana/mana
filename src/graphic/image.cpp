@@ -104,9 +104,28 @@ Spriteset::Spriteset(std::string filename)
     }
 }
 
+Spriteset::Spriteset(BITMAP *bmp, int width, int height)
+{
+    /*
+     * We're creating sub bitmaps here for plain convenience. With SDL this'll
+     * probably need to be done different.
+     */
+    int x, y;
+
+    for (y = 0; y + height <= bmp->h; y += height)
+    {
+        for (x = 0; x + width <= bmp->w; x += width)
+        {
+            spriteset.push_back(new VideoImage(
+                        create_sub_bitmap(bmp, x, y, width, height),
+                        30, 40));
+        }
+    }
+}
+
 Spriteset::~Spriteset()
 {
-    for (int i = 0; i < spriteset.size(); i++) {
+    for (unsigned int i = 0; i < spriteset.size(); i++) {
         delete spriteset[i];
     }
 }

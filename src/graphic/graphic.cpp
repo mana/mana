@@ -204,10 +204,13 @@ GraphicEngine::GraphicEngine() {
     
     emotionset = new Spriteset("./data/graphic/emotionset.dat");
     hairset = new Spriteset("./data/graphic/hairset.dat");
-    monsterset = new Spriteset("./data/graphic/monsterset.dat");
     npcset = new Spriteset("./data/graphic/npcset.dat");
     playerset = new Spriteset("./data/graphic/playerset.dat");
     tileset = new Spriteset("./data/graphic/tileset.dat");
+
+    BITMAP *monsterbitmap = load_bitmap("data/graphic/monsterset.bmp", NULL);
+    if (!monsterbitmap) error("Unable to load monsterset.bmp");
+    monsterset = new Spriteset(monsterbitmap, 60, 60);
 }
 
 GraphicEngine::~GraphicEngine() {
