@@ -30,12 +30,27 @@ ChatBox::ChatBox(const char *logfile, int item_num)
     chatlog_file.open(logfile, std::ios::out | std::ios::app);
     items = 0;
     items_keep = item_num;
+    
+    chatBoxBackground = SDL_AllocSurface(SDL_SWSURFACE, 200, 200, (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+    Uint32 boxColor = SDL_MapRGB(screen->format, 255, 255, 255);
+    SDL_Rect sourceRect;
+    sourceRect.x = sourceRect.y = 0;
+    sourceRect.w = 200;
+    sourceRect.h = 200;
+    if ( chatBoxBackground )
+    { 
+        SDL_FillRect(chatBoxBackground, &sourceRect, boxColor);
+        SDL_SetAlpha(chatBoxBackground, SDL_SRCALPHA, 120);
+    }
+    
 }
 
 ChatBox::~ChatBox()
 {
     chatlog_file.flush();
     chatlog_file.close();
+    
+    SDL_FreeSurface(chatBoxBackground);
 }
 
 void ChatBox::chat_log(std::string line, int own)
@@ -96,13 +111,30 @@ void ChatBox::draw(gcn::Graphics *graphics)
 
     getAbsolutePosition(x, y);
     
+    if ( (chatBoxBackground->w != getWidth()) || (chatBoxBackground->h != getHeight()) )
+    {
+        SDL_FreeSurface(chatBoxBackground);
+        chatBoxBackground = SDL_AllocSurface(SDL_SWSURFACE, getWidth(), getHeight(), 
+            (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+        Uint32 boxColor = SDL_MapRGB(screen->format, 255, 255, 255);
+        SDL_Rect sourceRect;
+        sourceRect.x = sourceRect.y = 0;
+        sourceRect.w = getWidth();
+        sourceRect.h = getHeight();
+        if ( chatBoxBackground )
+        { 
+            SDL_FillRect(chatBoxBackground, &sourceRect, boxColor);
+            SDL_SetAlpha(chatBoxBackground, SDL_SRCALPHA, 120);
+        }
+        
+    }
+    
     SDL_Rect screenRect;
     screenRect.w = getWidth();
     screenRect.h = getHeight();
     screenRect.x = x;
     screenRect.y = y;
-    Uint32 boxColor = SDL_MapRGBA(screen->format, 255, 255, 255, 120);
-    SDL_FillRect(screen, &screenRect, boxColor);
+    if ( chatBoxBackground ) SDL_BlitSurface(chatBoxBackground, NULL, screen, &screenRect);
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;
