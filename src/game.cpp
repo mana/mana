@@ -47,7 +47,6 @@ volatile bool action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
 int fps = 0, frame = 0;
-int mouseX = 0, mouseY = 0;
 
 OkDialog *deathNotice = NULL;
 
@@ -285,12 +284,6 @@ void do_input()
                 }
 
             }
-        }
-        else if (event.type == SDL_MOUSEMOTION)
-        {
-            // Update the known mouse position
-            mouseX = event.motion.x;
-            mouseY = event.motion.y;
         }
 
         // Push input to GUI when not used

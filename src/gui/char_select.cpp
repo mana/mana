@@ -441,12 +441,6 @@ void charSelect()
                 case SDL_QUIT:
                     state = EXIT;
                     break;
-
-                case SDL_MOUSEMOTION:
-                    // Update the known mouse position
-                    mouseX = event.motion.x;
-                    mouseY = event.motion.y;
-                    break;
             }
 
             guiInput->pushInput(event);

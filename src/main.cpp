@@ -166,7 +166,8 @@ void init_engine() {
             // Fill tmw.ini with defaults
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
-            config.setValue("screen", 1);
+            config.setValue("hwaccel", 0);
+            config.setValue("screen", 0);
             config.setValue("sound", 1);
 #ifdef __USE_UNIX98
             char *chatlogFilename = new char[400];
@@ -308,12 +309,6 @@ int main(int argc, char *argv[]) {
             switch (event.type) {
                 case SDL_QUIT:
                     state = EXIT;
-                    break;
-
-                case SDL_MOUSEMOTION:
-                    // Update the known mouse position
-                    mouseX = event.motion.x;
-                    mouseY = event.motion.y;
                     break;
             }
 

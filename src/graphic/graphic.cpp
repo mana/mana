@@ -222,6 +222,8 @@ void Graphics::drawImageRect(
 void Graphics::updateScreen()
 {
     // Draw mouse before flipping
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
     mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
 
     SDL_Flip(screen);
@@ -338,6 +340,10 @@ Engine::~Engine()
 
 void Engine::draw()
 {
+    // Get the current mouse position
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+
     map_x = (player_node->x - 13) * 32 +
         get_x_offset(player_node);
     map_y = (player_node->y - 9) * 32 +
