@@ -135,6 +135,14 @@ void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
     items[index].equipment = equipment;
 }
 
+void ItemContainer::resetItems()
+{
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        items[i].id = -1;
+        items[i].quantity = 0;
+    }
+}
+
 void ItemContainer::removeItem(int id)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {

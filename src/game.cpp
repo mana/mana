@@ -775,7 +775,10 @@ void do_parse() {
                     break;
 
                     // Get the items
+                    // Only called on map load / warp
                 case 0x01ee:
+                    // Reset all items to not load them twice on map change
+                    inventoryWindow->items->resetItems();
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),

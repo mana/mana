@@ -109,6 +109,11 @@ class ItemContainer : public gcn::Widget
         void addItem(int index, int id, int quantity, bool equipment);
 
         /**
+         * Reset all item slots.
+         */
+        void resetItems();
+        
+        /**
          * Remove a item from the inventory.
          */
         void removeItem(int id);
