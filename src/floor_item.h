@@ -33,7 +33,6 @@ class FloorItem {
         unsigned int id;
         unsigned int int_id;
         unsigned short x, y;
-        unsigned short subx, suby;
         
         /**
          * Constructor.

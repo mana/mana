@@ -166,7 +166,6 @@ void do_input()
     while (SDL_PollEvent(&event))
     {
         bool used = false;
-
         // For discontinuous keys
         if (event.type == SDL_KEYDOWN)
         {
@@ -347,13 +346,12 @@ void do_input()
                     }
                 }
 
-            }
-        }
-
-        // Push input to GUI when not used
-        if (!used) {
-            guiInput->pushInput(event);
-        }
+	    }
+	}
+	// Push input to GUI when not used
+	if (!used) {
+	    guiInput->pushInput(event);
+	}
 
     } // End while
 
@@ -1044,8 +1042,6 @@ void do_parse() {
                     floorItem->id = net_w_value(RFIFOW(6));
                     floorItem->x = net_w_value(RFIFOW(9));
                     floorItem->y = net_w_value(RFIFOW(11));
-                    floorItem->subx = net_b_value(RFIFOB(15));
-                    floorItem->suby = net_b_value(RFIFOB(16));
                     floorItem->int_id = net_l_value(RFIFOL(2));
                     add_floor_item(floorItem);
                     break;
@@ -1055,8 +1051,6 @@ void do_parse() {
                     floorItem->id = net_w_value(RFIFOW(6));
                     floorItem->x = net_w_value(RFIFOW(9));
                     floorItem->y = net_w_value(RFIFOW(11));
-                    floorItem->subx = net_b_value(RFIFOB(13));
-                    floorItem->suby = net_b_value(RFIFOB(14));
                     floorItem->int_id = net_l_value(RFIFOL(2));
                     add_floor_item(floorItem);
                     break;

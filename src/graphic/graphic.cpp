@@ -401,14 +401,8 @@ void Engine::draw()
         unsigned short y = floorItem->y;
         int sx = x - camera_x;
         int sy = y - camera_y;
-        int absx = sx * 32 - floorItem->subx - offset_x;
-        int absy = sy * 32 - floorItem->suby - offset_y;
-        /**
-         * subx and suby are serverside randomly generated to be
-         * either 3, 6, 9 or 12.
-         * this seems to be a finer differentiation for coordinates.
-         * TODO: Find a better way to implement subx and suby.
-         */
+        int absx = sx * 32 - offset_x;
+        int absy = sy * 32 - offset_y;
         if (floorItem->id >= 501 && floorItem->id <= 1202) {
                 itemset->spriteset[floorItem->id - 501]->draw(screen,
                          absx,

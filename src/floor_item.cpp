@@ -75,7 +75,6 @@ FloorItem *find_floor_item_by_id(unsigned int int_id) {
 FloorItem::FloorItem() {
     id = 0; int_id = 0;
     x = 0; y = 0;
-    subx = 0; suby = 0;
 }
 
 FloorItem::~FloorItem() { 
