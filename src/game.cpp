@@ -451,7 +451,7 @@ void do_parse() {
                     // Success to walk request
                 case 0x0087:
                     if (walk_status == 1) {
-                        if (RFIFOL(2) > server_tick) {
+                        if ((unsigned int)(RFIFOL(2)) > (unsigned int)(server_tick)) {
                             walk_status = 2;
                             server_tick = RFIFOL(2);
                         }
