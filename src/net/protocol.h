@@ -24,6 +24,15 @@
 #ifndef _TMW_PROTOCOL_H
 #define _TMW_PROTOCOL_H
 
+// Packets from server to client
+#define SMSG_REMOVE_BEING         0x0080    // Died, logged out, teleport, etc.
+#define SMSG_MOVE_BEING           0x007b    // A nearby monster moves
+#define SMSG_PLAYER_UPDATE_1      0x01d8    //
+#define SMSG_PLAYER_UPDATE_2      0x01d9    //
+#define SMSG_MOVE_PLAYER_BEING    0x01da    // A nearby player moves
+
+
+
 /** Packet length by id */
 short get_length(short id);
 

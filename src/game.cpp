@@ -37,6 +37,7 @@
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
 #include "resources/mapreader.h"
+#include "net/protocol.h"
 #include <SDL.h>
 
 char map_path[480];
@@ -540,7 +541,7 @@ void do_parse() {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->speed = RFIFOW(6);
-                        if(being->speed==0) {
+                        if (being->speed == 0) {
                             being->speed = 150; // Else division by 0 when calculating frame
                         }
                         being->job = RFIFOW(14);
@@ -564,100 +565,96 @@ void do_parse() {
                         }
                     }
                     break;
-                    // Remove a being
-                case 0x0080:
+
+                case SMSG_REMOVE_BEING:
+                    // A being should be removed or has died
                     being = find_node(RFIFOL(2));
                     if (being != NULL) {
-                        if(RFIFOB(6)==1) { // Death
-                            if(being->job>110) {
+                        if (RFIFOB(6) == 1) { // Death
+                            if (being->job > 110) {
                                 being->action = MONSTER_DEAD;
                                 being->frame = 0;
                                 being->walk_time = tick_time;
                             }
-                            //else being->action = DEAD;
+                            else {
+                                being->action = DEAD;
+                            }
                             //remove_node(RFIFOL(2));
                         }
                         else remove_node(RFIFOL(2));
                     }
                     break;
-                    // Player moving
-                case 0x01d8:
-                case 0x01d9:
+
+                case SMSG_PLAYER_UPDATE_1:
+                case SMSG_PLAYER_UPDATE_2:
+                    // A message about a player, doesn't include movement.
                     being = find_node(RFIFOL(2));
+
                     if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
-                        being->job = RFIFOW(14);
-                        being->x = get_x(RFIFOP(46));
-                        being->y = get_y(RFIFOP(46));
-                        being->direction = get_direction(RFIFOP(46));
                         add_node(being);
-                        being->walk_time = tick_time;
-                        being->frame = 0;
-                        being->speed = RFIFOW(6);
-                        being->hair_color = RFIFOW(28);
-                        being->hair_style = RFIFOW(16);
                     }
+
+                    being->job = RFIFOW(14);
+                    being->x = get_x(RFIFOP(46));
+                    being->y = get_y(RFIFOP(46));
+                    being->direction = get_direction(RFIFOP(46));
+                    being->walk_time = tick_time;
+                    being->frame = 0;
+                    being->speed = RFIFOW(6);
+                    being->hair_color = RFIFOW(28);
+                    being->hair_style = RFIFOW(16);
                     break;
-                    // Monster moving
-                case 0x007b:
-                    //case 0x01da:
+
+                case SMSG_MOVE_BEING:
+                    // A being nearby is moving
                     being = find_node(RFIFOL(2));
-                    if(being == NULL) {
+
+                    if (being == NULL) {
                         being = new Being();
+                        being->id = RFIFOL(2);
                         add_node(being);
                     }
+
                     being->action = STAND;
                     being->x = get_src_x(RFIFOP(50));
                     being->y = get_src_y(RFIFOP(50));
-                    being->direction = 0;
-                    being->id = RFIFOL(2);
+                    being->destX = get_dest_x(RFIFOP(50));
+                    being->destY = get_dest_y(RFIFOP(50));
                     being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
                     being->weapon = RFIFOW(18);
-                    
-                    /*if(being->id==char_info->id) {                    
-                        char plr_wpn[20];
-                        sprintf(plr_wpn, "7b %i %i", being->id, being->weapon);
-                        chatBox->chat_log(plr_wpn,BY_SERVER);
-                    }*/
 
                     being->setPath(tiledMap->findPath(
-                                get_src_x(RFIFOP(50)),
-                                get_src_y(RFIFOP(50)),
-                                get_dest_x(RFIFOP(50)),
-                                get_dest_y(RFIFOP(50))));
+                                being->x, being->y,
+                                being->destX, being->destY));
                     break;
-                    // Being moving
-                case 0x01da:
+
+                case SMSG_MOVE_PLAYER_BEING:
+                    // A nearby player being moves
                     being = find_node(RFIFOL(2));
+
                     if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
-                        being->job = RFIFOW(14);
-                        being->x = get_src_x(RFIFOP(50));
-                        being->y = get_src_y(RFIFOP(50));
                         add_node(being);
                     }
-                    if (being->action != WALK) {
-                        direction = being->direction;
-                        being->action = WALK;
-                        if (get_dest_x(RFIFOP(50)) > being->x)
-                            direction = EAST;
-                        else if (get_dest_x(RFIFOP(50)) < being->x)
-                            direction = WEST;
-                        else if (get_dest_y(RFIFOP(50)) > being->y)
-                            direction = SOUTH;
-                        else if (get_dest_y(RFIFOP(50)) < being->y)
-                            direction = NORTH;
-                        else being->action = STAND;
-                        if (being->action == WALK)
-                            being->walk_time = tick_time;
-                        being->x = get_dest_x(RFIFOP(50));
-                        being->y = get_dest_y(RFIFOP(50));
-                        being->direction = direction;
-                    }
+
+                    being->speed = RFIFOW(6);
+                    being->job = RFIFOW(14);
+                    being->x = get_src_x(RFIFOP(50));
+                    being->y = get_src_y(RFIFOP(50));
+                    being->destX = get_dest_x(RFIFOP(50));
+                    being->destY = get_dest_y(RFIFOP(50));
+                    being->hair_style = RFIFOW(16);
+                    being->hair_color = RFIFOW(32);
+
+                    being->setPath(tiledMap->findPath(
+                                being->x, being->y,
+                                being->destX, being->destY));
                     break;
+
                     // NPC dialog
                 case 0x00b4:
                     npcTextDialog->addText(RFIFOP(8));
@@ -665,6 +662,7 @@ void do_parse() {
                     npcTextDialog->setVisible(true);
                     current_npc = RFIFOL(4);
                     break;
+
                     // Get the items
                 case 0x01ee:
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
@@ -1287,7 +1285,7 @@ void do_parse() {
                     break;
                     // Manage non implemented packets
                 default:
-                    //printf("%x\n",id);
+                    log("Unhandled packet: %x\n", id);
                     //alert(pkt_nfo,"","","","",0,0);
                     break;
             }

@@ -1,12 +1,10 @@
-EXTRA_DIST = architecture.txt \
-	     packages.txt \
+EXTRA_DIST = packages.txt \
 	     FAQ.txt \
 	     HACKING.txt \
 	     SOURCE/tmwdox.sh \
 	     SOURCE/tmw.doxcfg \
 	     items.txt \
 	     progression.txt \
-	     server.txt \
 	     INSTALL/debian.txt \
 	     INSTALL/win32.txt \
 	     INSTALL/linux.txt \

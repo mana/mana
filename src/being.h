@@ -45,6 +45,7 @@ class Being {
         unsigned int id;
         unsigned short job;
         unsigned short x, y;
+        unsigned short destX, destY;
         unsigned char direction;
         unsigned char type;
         unsigned char action;

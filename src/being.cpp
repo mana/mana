@@ -29,10 +29,8 @@ Being *player_node = NULL;
 std::list<Being*> beings;
 
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
-    next(NULL)
+    x(x), y(y), next(NULL)
 {
-    this->x = x;
-    this->y = y;
 }
 
 void empty() {
@@ -109,17 +107,19 @@ void sort() {
     beings.sort(BeingCompare());
 }
 
-Being::Being() {
-    id = 0; job = 0;
-    action = 0; frame = 0;
-    path = NULL; speech = NULL; speech_time = 0;
-    walk_time = 0; speed = 150;
-    emotion = 0; emotion_time = 0;
-    text_x = 0; text_y = 0;
-    hair_style = 1; hair_color = 1;
-    weapon = 0;
-    x = 0; y = 0; direction = 0;
-    speech_color = 0;//makecol(0, 0, 0);
+Being::Being():
+    path(NULL),
+    id(0), job(0),
+    x(0), y(0), destX(0), destY(0), direction(0),
+    type(0), action(0), frame(0),
+    speech(NULL), speech_time(0), speech_color(0),
+    walk_time(0),
+    speed(150),
+    emotion(0), emotion_time(0),
+    text_x(0), text_y(0),
+    hair_style(1), hair_color(1),
+    weapon(0)
+{
 }
 
 Being::~Being() {

@@ -295,7 +295,6 @@ int MapReader::getProperty(xmlNodePtr node, const char* name, int def)
 
 Image *MapReader::getTileWithGid(int gid)
 {
-    std::vector<Tileset*>::iterator i;
     Tileset *set = getTilesetWithGid(gid);
 
     if (set) {
