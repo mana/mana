@@ -1,4 +1,4 @@
-#include "stats_window.h"
+#include "stats.h"
 
 /*
  * Constructor
@@ -6,16 +6,16 @@
 StatsWindow::StatsWindow(gcn::Container *parent)
   : Window(parent, "Stats") 
 { 
-  stats_str[0] << "Strenght:    "  << char_info->STR;
-  stats_str[1] << "Agility:     "  << char_info->AGI;
-  stats_str[2] << "Vitality:    "  << char_info->VIT;
-  stats_str[3] << "Inteligence: "  << char_info->INT;
-  stats_str[4] << "Dexternity:  "  << char_info->DEX;
-  stats_str[5] << "Luck:        "  << char_info->LUK;
+  statsStr[0] << "Strenght:    "  << char_info->STR;
+  statsStr[1] << "Agility:     "  << char_info->AGI;
+  statsStr[2] << "Vitality:    "  << char_info->VIT;
+  statsStr[3] << "Inteligence: "  << char_info->INT;
+  statsStr[4] << "Dexternity:  "  << char_info->DEX;
+  statsStr[5] << "Luck:        "  << char_info->LUK;
   
   /* New labels */
-  for(int i=0; i<5;i++)
-    statsLabel[i] = new gcn::Label(stats_str[i]);
+  for(i=0; i<5;i++)
+    statsLabel[i] = new gcn::Label(statsStr[i].str());
   
   /* New buttons */
   for(i=0; i<5;i++)

@@ -4,6 +4,7 @@
 #include "button.h"
 #include "window.h"
 #include "main.h"
+#include <sstream>
 
 class StatsWindow : public Window, public gcn::ActionListener {
  public:
@@ -18,8 +19,9 @@ class StatsWindow : public Window, public gcn::ActionListener {
   void action(const std::string& eventId);
   
  private:
+    int i;
   /* Stats values  */
-  std::string statsStr[5];  
+  std::stringstream statsStr[5];  
   
   /* Stats captions */
   gcn::Label *statsLabel[5];
@@ -38,7 +40,7 @@ class StatsWindow : public Window, public gcn::ActionListener {
   /*
    * Destructor.
    */
-  virtual ~StatsWindow();
+  ~StatsWindow();
 };
 
 #endif /* _STATS_Window_H */
