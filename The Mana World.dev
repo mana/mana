@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=50
+UnitCount=52
 Type=0
 Ver=1
 ObjFiles=
@@ -33,7 +33,7 @@ CompilerSettings=0010001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=612
+Build=615
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -545,6 +545,26 @@ BuildCmd=
 
 [Unit50]
 FileName=src\gui\checkbox.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit51]
+FileName=src\gui\window.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit52]
+FileName=src\gui\window.h
 CompileCpp=1
 Folder=gui
 Compile=1
