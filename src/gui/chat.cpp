@@ -31,10 +31,11 @@ ChatBox::ChatBox(const char *logfile, int item_num)
     items = 0;
     items_keep = item_num;
     
-    chatBoxBackground = new Image();
-    chatBoxBackground->create(200, 200);
-    chatBoxBackground->fillWithColor(255, 255, 255);
-    chatBoxBackground->setAlpha(0.7f);
+    chatBoxBackground = Image::create(200, 200);
+    if (chatBoxBackground) {
+        chatBoxBackground->fillWithColor(255, 255, 255);
+        chatBoxBackground->setAlpha(0.7f);
+    }
 }
 
 ChatBox::~ChatBox()
@@ -128,16 +129,25 @@ void ChatBox::draw(gcn::Graphics *graphics)
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
 
     getAbsolutePosition(x, y);
-    
-    if ( (chatBoxBackground->getWidth() != getWidth()) || (chatBoxBackground->getHeight() != getHeight()) )
-    {
-        chatBoxBackground->unload();
-        chatBoxBackground->create(getWidth(), getHeight());
-        chatBoxBackground->fillWithColor(255, 255, 255); 
-        chatBoxBackground->setAlpha(0.7f);
+
+    // Potentially recreate background with new size
+    if (chatBoxBackground) {
+        if ((chatBoxBackground->getWidth() != getWidth()) ||
+                (chatBoxBackground->getHeight() != getHeight()))
+        {
+            delete chatBoxBackground;
+            chatBoxBackground = Image::create(getWidth(), getHeight());
+            if (chatBoxBackground) {
+                chatBoxBackground->fillWithColor(255, 255, 255); 
+                chatBoxBackground->setAlpha(0.7f);
+            }
+        }
     }
-    
-    chatBoxBackground->draw(screen, x, y);
+
+    // Draw background image
+    if (chatBoxBackground) {
+        chatBoxBackground->draw(screen, x, y);
+    }
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;

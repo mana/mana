@@ -47,22 +47,6 @@ class Image : public Resource
 {
     public:
         /**
-         * Constructor.
-         */
-#ifdef USE_OPENGL
-        Image(GLuint image,
-                int width, int height,
-                int texWidth, int texHeight);
-#else
-        Image(SDL_Surface *image);
-#endif
-
-        /**
-         * Two time intialization Contructor. For now : Only to be used with create.
-         */
-        Image();        
-
-        /**
          * Destructor.
          */
         virtual ~Image();
@@ -90,6 +74,11 @@ class Image : public Resource
          *         otherwise.
          */
         static Image *load(const char* buffer, unsigned int bufferSize);
+
+        /**
+         * Creates a new empty image with given height and width.
+         */
+        static Image *create(int width, int height);
 
         /**
          * Frees the resources created by SDL.
@@ -149,17 +138,24 @@ class Image : public Resource
         float getAlpha();
 
         /**
-         * Creates a new empty image with given height and width.
-         */
-        bool create(int width, int height);
-
-        /**
          * Fills the image with given color.
          */
-        void fillWithColor(unsigned char red, unsigned char green, unsigned blue);
+        void fillWithColor(
+                unsigned char red, unsigned char green, unsigned blue);
 
 
     protected:
+        /**
+         * Constructor.
+         */
+#ifdef USE_OPENGL
+        Image(GLuint image,
+                int width, int height,
+                int texWidth, int texHeight);
+#else
+        Image(SDL_Surface *image);
+#endif
+
 #ifdef USE_OPENGL
         GLuint image;
         int width, height;

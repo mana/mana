@@ -44,11 +44,6 @@ Image::Image(GLuint image, int width, int height, int texWidth, int texHeight):
     alpha = 1.0f;
 }
 
-Image::Image():image(image)
-{
-   alpha = 1.0f;
-}
-
 Image::~Image()
 {
     unload();
@@ -225,6 +220,24 @@ Image* Image::load(const char* buffer, unsigned int bufferSize)
 #endif
 }
 
+Image *Image::create(int width, int height)
+{
+#ifndef USE_OPENGL
+    SDL_Surface *surf =
+        SDL_AllocSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
+
+    if (surf) {
+        return new Image(surf);
+    }
+    else {
+        return NULL;
+    }
+#else
+    return NULL;
+#endif
+}
+
+
 void Image::unload()
 {
     // Free the image surface.
@@ -366,26 +379,19 @@ float Image::getAlpha()
     return alpha;
 }
 
-bool Image::create(int width, int height)
+void Image::fillWithColor(
+        unsigned char red, unsigned char green, unsigned blue)
 {
-   image = SDL_AllocSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-   if ( image )
-       return true;
-   else
-       return false;
-}
-
-void Image::fillWithColor(unsigned char red, unsigned char green, unsigned blue)
-{
-   Uint32 boxColor = SDL_MapRGB(SDL_GetVideoSurface()->format, red, green, blue);
-   if ( image )
-   {    
+#ifndef USE_OPENGL
+   if (image) {
+       Uint32 boxColor = SDL_MapRGB(image->format, red, green, blue);
        SDL_Rect sourceRect;
        sourceRect.x = sourceRect.y = 0;
        sourceRect.w = image->w;
        sourceRect.h = image->h;
        SDL_FillRect(image, &sourceRect, boxColor);
    }
+#endif
 }
 
 //============================================================================

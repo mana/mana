@@ -201,7 +201,7 @@ void ResourceManager::searchAndAddZipFiles()
         std::string filePath = std::string("data/") +
             std::string(findFileInfo.name);
 
-        std::cout << "Adding to PhysicsFS: " << findFileInfo.name << std::endl;
+        log("Adding to PhysicsFS: %s", findFileInfo.name);
 
         // Add the zip file to our PhysicsFS search path
         PHYSFS_addToSearchPath(filePath.c_str(), 1);
@@ -234,7 +234,7 @@ void ResourceManager::searchAndAddZipFiles()
             std::string filePath = std::string(programPath) +
                 std::string("/") + std::string(direntry->d_name);
 
-            std::cout << "Adding to PhysicsFS: " << filePath << std::endl;
+            log("Adding to PhysicsFS: %s", filePath.c_str());
 
             // Add the zip file to our PhysicsFS search path
             PHYSFS_addToSearchPath(filePath.c_str(), 1);

@@ -50,12 +50,12 @@ ModeListModel::ModeListModel()
     // Check if any modes available
     if (modes == (SDL_Rect**)0) {
         nmode = 0;
-        puts("No modes");
+        log("No modes");
     }
 
     // Check if modes restricted 
-    if (modes == (SDL_Rect**) - 1) {
-        puts("Modes restricted");
+    if (modes == (SDL_Rect**)-1) {
+        log("Modes unrestricted");
     }
 
     for (nmode = 0; modes[nmode]; ++nmode);
@@ -65,8 +65,9 @@ ModeListModel::ModeListModel()
     for (i = 0; modes[i]; ++i) {
         char *temp = (char*)malloc(20 * sizeof(char));
         mode[i] = temp;
-        if (sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
-            puts("Cannot allocate mode list");
+        if (sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1) {
+            log("Cannot allocate mode list");
+        }
     }
 }
 

@@ -63,17 +63,18 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     dBottomLeftBorder->setAlpha(1.0f);
     dBottomRightBorder->setAlpha(1.0f);
     
-    colorBar = new Image();
-    colorBar->create(getWidth() - 8, getHeight() - 8);
-    colorBar->fillWithColor(red, green, blue);
-    colorBar->setAlpha(0.7f);    
+    colorBar = Image::create(getWidth() - 8, getHeight() - 8);
+    if (colorBar) {
+        colorBar->fillWithColor(red, green, blue);
+        colorBar->setAlpha(0.7f);
+    }
 }
 
 ProgressBar::~ProgressBar()
 {
-    #ifndef USE_OPENGL
-    //SDL_FreeSurface(ColorBar);
-    #endif
+    if (colorBar) {
+        delete colorBar;
+    }
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)
@@ -102,8 +103,10 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     dRightBorder->drawPattern(screen, absx + getWidth() - 4, absy + 4,
             4, getHeight() - 8);
 
-    colorBar->draw(screen, 0, 0, absx + 4, absy + 4, 
-            (int)(progress * float(getWidth() - 4)), getHeight() - 8);
+    if (colorBar) {
+        colorBar->draw(screen, 0, 0, absx + 4, absy + 4, 
+                (int)(progress * float(getWidth() - 4)), getHeight() - 8);
+    }
 }
 
 void ProgressBar::setProgress(float progress)
