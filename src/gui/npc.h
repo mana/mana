@@ -27,7 +27,14 @@ struct ITEM {
 };
 
 char *item_list(int index, int *list_size);
+
+/**
+ * Fills the options list for an NPC dialog.
+ *
+ * @param string A string with the options separated with colons.
+ */
 void parse_items(const char *string);
+
 void remove_all_items();
 
 #endif
