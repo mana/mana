@@ -491,7 +491,7 @@ void do_graphic(void) {
 	update_stats_dialog();
 	gui_update(stats_player);
 
-	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i %i %i", fps, get_x(player_node->coordinates), get_y(player_node->coordinates),src_x,src_y);
+	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i %i %i %i", fps, get_x(player_node->coordinates), get_y(player_node->coordinates),src_x,src_y,server_tick);
 
 	//alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
 

@@ -75,7 +75,7 @@ extern DIALOG stats_dialog[];
 extern int fps, frame, current_npc;
 extern char walk_status;
 extern unsigned short src_x, src_y, x, y;
-extern volatile int tick_time;
+extern volatile int tick_time, server_tick;
 
 void game();
 void do_init();

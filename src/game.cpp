@@ -48,7 +48,7 @@ bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
 volatile bool refresh = false, action_time = false;
-int current_npc;
+int current_npc, server_tick;
 
 #define MAX_TIME 10000
 
@@ -386,7 +386,10 @@ void do_parse() {
 					    if(get_src_y(RFIFOP(6))==src_y)
 					      if(get_dest_x(RFIFOP(6))==get_x(player_node->coordinates))
 					        if(get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))*/
+					        if(RFIFOL(2)>server_tick) {
 					          walk_status = 2;
+					          server_tick = RFIFOL(2);
+					        }  
 					}  
           break;
         // Add new being / stop monster
