@@ -183,7 +183,7 @@ void init_engine() {
 		else
 		{
 			// tmw.ini creation
-			fprintf(tmwFile, "[system]\nsystem =\nkeyboard = en\nlanguage = \ncore_version = 0.0.8\n\n");
+			fprintf(tmwFile, "[system]\nsystem =\nkeyboard = en\nlanguage = \ncore_version = " CORE_VERSION "\n\n");
 			fprintf(tmwFile, "[server]\nhost = animesites.de\nport = 6901\n\n");
 			fprintf(tmwFile, "[settings]\n; = Screen mode:\n; = 1 Fullscreen\n; = 2 Windowed\nscreen = 2\n");
 			fprintf(tmwFile, "; = Sound:\n; = 1 enabled\n; = 0 disabled\nsound = 0\n");
