@@ -72,9 +72,8 @@ NewSkillDialog::NewSkillDialog():
 {
     skillLabel = new gcn::Label[N_SKILL_CAT_SIZE]("Empty               ");
     skillLevel = new gcn::Label[N_SKILL_CAT_SIZE]("00000");
-    skillbar = new ProgressBar[N_SKILL_CAT_SIZE](0.0f,0,0,270,0,0,255);
+    skillbar = new ProgressBar[N_SKILL_CAT_SIZE](0.0f,0,0,270,15,0,0,255);
     startPoint = 0;
-    resetNSD();
     for(int a=0;a<N_SKILL_CAT_SIZE;a++)
     {
         skillLevel[a].setAlignment(Graphics::RIGHT);
@@ -82,6 +81,13 @@ NewSkillDialog::NewSkillDialog():
         add(&skillLevel[a],200,50+a*20);
         add(&skillbar[a],250,50+a*20);
     }
+    // initialize the skills
+    for(int i=0;i<N_SKILL;i++)
+    {
+        playerSkill[i].level = 0;
+        playerSkill[i].exp = 0;
+    }
+    resetNSD();
     
     // create controls
     catButton[0] = new Button("Weapons");
