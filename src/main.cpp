@@ -192,7 +192,7 @@ void init_engine() {
 
     int displayFlags = SDL_ANYFORMAT;
 
-    if ((int)config.getValue("screen", 0)) {
+    if ((int)config.getValue("screen", 0) == 1) {
         displayFlags |= SDL_FULLSCREEN;
     }
 #ifndef USE_OPENGL
