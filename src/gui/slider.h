@@ -24,7 +24,8 @@
 #ifndef _TMW_SLIDER_H
 #define _TMW_SLIDER_H
 
-#include "gui.h"
+#include <guichan.hpp>
+#include "../resources/image.h"
 
 /**
  * Slider widget. Same as the Guichan slider but with custom look.
@@ -52,6 +53,15 @@ class Slider : public gcn::Slider {
          * Draws the marker.
          */
         void drawMarker(gcn::Graphics *graphics);
+
+    private:
+        /**
+         * Used to initialize instances.
+         */
+        void init();
+
+        Image *hStart, *hMid, *hEnd, *hGrip;
+        Image *vStart, *vMid, *vEnd, *vGrip;
 };
 
 #endif

@@ -22,19 +22,53 @@
  */
 
 #include "slider.h"
+#include "../resources/resourcemanager.h"
+#include "../graphic/graphic.h"
 
 Slider::Slider(double scaleEnd):
     gcn::Slider(scaleEnd)
 {
-    setBorderSize(0);
-    mMarkerWidth = gui_skin.slider.hGrip->w;
+    init();
 }
 
 Slider::Slider(double scaleStart, double scaleEnd):
     gcn::Slider(scaleStart, scaleEnd)
 {
+    init();
+}
+
+void Slider::init()
+{
+    int x, y, w, h,o1,o2;
     setBorderSize(0);
-    mMarkerWidth = gui_skin.slider.hGrip->w;
+
+    // Load resources
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *slider = resman->getImage("core/graphics/gui/slider.bmp");
+
+    x = 0; y = 0;
+    w = 15; h = 6;
+    o1 = 4; o2 = 11;
+    hStart = slider->getSubImage(x, y, o1 - x, h);
+    hMid = slider->getSubImage(o1, y, o2 - o1, h);
+    hEnd = slider->getSubImage(o2, y, w - o2 + x, h);
+
+    x = 0; y = 6;
+    w = 6; h = 21;
+    o1 = 10; o2 = 18;
+    vStart = slider->getSubImage(x, y, w, o1 - y);
+    vMid = slider->getSubImage(x, o1, w, o2 - o1);
+    vEnd = slider->getSubImage(x, o2, w, h - o2 + y);
+
+    x = 6; y = 8;
+    w = 9; h = 10;
+    vGrip = slider->getSubImage(x, y, w, h);
+
+    x = 6; y = 8;
+    w = 9; h = 10;
+    hGrip = slider->getSubImage(x, y, w, h);
+
+    mMarkerWidth = hGrip->getWidth();
 }
 
 void Slider::draw(gcn::Graphics *graphics)
@@ -44,21 +78,17 @@ void Slider::draw(gcn::Graphics *graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
-    y += (h - gui_skin.slider.hSlider[0]->h) / 2;
+    y += (h - hStart->getHeight()) / 2;
 
-    masked_blit(gui_skin.slider.hSlider[0], buffer, 0, 0, x, y,
-            gui_skin.slider.hSlider[0]->w, gui_skin.slider.hSlider[0]->h);
+    hStart->draw(buffer, x, y);
 
-    w -= gui_skin.slider.hSlider[0]->w + gui_skin.slider.hSlider[2]->w;
-    x += gui_skin.slider.hSlider[0]->w;
+    w -= hStart->getWidth() + hEnd->getWidth();
+    x += hStart->getWidth();
 
-    masked_stretch_blit(gui_skin.slider.hSlider[1], buffer, 0, 0,
-            gui_skin.slider.hSlider[1]->w, gui_skin.slider.hSlider[1]->h,
-            x, y, w, gui_skin.slider.hSlider[1]->h);
+    hMid->drawPattern(buffer, x, y, w, hMid->getHeight());
 
     x += w;
-    masked_blit(gui_skin.slider.hSlider[2], buffer, 0, 0, x, y,
-            gui_skin.slider.hSlider[2]->w, gui_skin.slider.hSlider[2]->h);
+    hEnd->draw(buffer, x, y);
 
     drawMarker(graphics);
 }
@@ -70,8 +100,7 @@ void Slider::drawMarker(gcn::Graphics *graphics)
     getAbsolutePosition(x, y);
 
     x += mMarkerPosition;
-    y += (h - gui_skin.slider.hGrip->h) / 2;
+    y += (h - hGrip->getHeight()) / 2;
 
-    masked_blit(gui_skin.slider.hGrip, buffer, 0, 0, x, y,
-            gui_skin.slider.hGrip->w, gui_skin.slider.hGrip->h);
+    hGrip->draw(buffer, x, y);
 }

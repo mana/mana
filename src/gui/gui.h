@@ -99,13 +99,6 @@ typedef struct {
 } LexButton;
 
 typedef struct {
-    BITMAP          *hSlider[3];
-    BITMAP          *vSlider[3];
-    BITMAP          *hGrip;
-    BITMAP          *vGrip;
-} LexSlider;
-
-typedef struct {
     LexSkinnedRect bg;
     int            textcolor[2];
 } LexTextbox;
@@ -118,7 +111,6 @@ typedef struct {
 
 typedef struct {
     LexButton      button;
-    LexSlider      slider;
     LexTextbox     textbox;
     LexListbox     listbox;
 } LexSkin;

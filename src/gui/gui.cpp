@@ -245,47 +245,6 @@ void loadButtonSkin() {
     }
 }
 
-void loadSliderSkin() {
-    int    x, y, w, h,o1,o2;
-    char **tokens;
-    int    tokenCount;
-
-    gui__repository[GUI_BMP_OFS_SLIDER] = (BITMAP *)gui_gfx[8].dat;
-    if (!gui__repository[GUI_BMP_OFS_SLIDER])alert("","","","","",0,0);
-
-    tokens = get_config_argv("slider", "slider_h", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-
-    tokens = get_config_argv("slider", "slider_h_ofs", &tokenCount);
-    o1 = atoi(tokens[0]); o2 = atoi(tokens[1]);
-
-    gui_skin.slider.hSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x , y, o1-x, h);
-    gui_skin.slider.hSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o1, y, o2-o1, h);
-    gui_skin.slider.hSlider[2] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o2, y, w-(o2-x), h);
-
-    tokens = get_config_argv("slider", "slider_v", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-
-    tokens = get_config_argv("slider", "slider_v_ofs", &tokenCount);
-    o1 = atoi(tokens[0]); o2 = atoi(tokens[1]);
-
-    gui_skin.slider.vSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x,  y, w, o1 -     y);
-    gui_skin.slider.vSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, o1, w, o2 -     o1);
-    gui_skin.slider.vSlider[2] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, o2, w,  h - (o2-y));
-
-    tokens = get_config_argv("slider", "handle_v", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.slider.vGrip = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
-
-    tokens = get_config_argv("slider", "handle_h", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.slider.hGrip = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
-}
-
 void loadTextboxSkin() {
     char **tokens;
     int tokenCount;
@@ -430,7 +389,6 @@ int gui_load_skin(const char* skinname) {
     set_config_file(skinname);
     gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
     loadButtonSkin();
-    loadSliderSkin();
     loadTextboxSkin();
     loadListboxSkin();
     pop_config_state();
@@ -454,14 +412,6 @@ void gui_shutdown(void) {
             destroy_bitmap(gui_skin.button.background[a].grid[b]);
         }
     }
-
-    /* Slider */
-    for (a = 0; a < 3; a++) {
-        destroy_bitmap(gui_skin.slider.hSlider[a]);
-        destroy_bitmap(gui_skin.slider.vSlider[a]);
-    }
-    destroy_bitmap(gui_skin.slider.hGrip);
-    destroy_bitmap(gui_skin.slider.vGrip);
 
     for (a = 0; a < GUI_BMP_COUNT; a++) {
         destroy_bitmap(gui__repository[a]);

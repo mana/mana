@@ -24,7 +24,9 @@
 #ifndef _TMW_CHECKBOX_H
 #define _TMW_CHECKBOX_H
 
-#include "gui.h"
+#include <guichan.hpp>
+#include <string>
+#include "../resources/image.h"
 
 /**
  * Check box widget. Same as the Guichan check box but with custom look.
