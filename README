@@ -1,17 +1,22 @@
- Release info:
-  - Version: 0.0.9
-  - Date: 29/1/2005
+THE MANA WORLD
+==============
+
+ Version: 0.0.10       Date: 5/3/2005
+
 
  Development team:
+
   - Elven Programmer (Admin)
   - Hammerbear (Admin)
   - kth5 (Programmer)
-  - SimEdw (Programmer)
   - Ultramichy (Game server admin)
   - Rotonen (Background story and music)
+  - Kyokai (Game systems design)
   - Bertram (Programmer)
+  - zenogais (Programmer)
 
  Special thanks:
+
   - Sull (Linux Developer)
   - Neorice (Pixel Artist)
   - natsuki (Win32 Developer)
@@ -20,12 +25,14 @@
   - necromus (Pixel Artist)
   - LordNev (Artist)
   - jui-feng for helping in server development and php scripts.
+  - SimEdw (Programmer)
 
  Powered by:
-  - SDL
-  - SDL_image
-  - SDL_mixer
-  - Guichan (gui framework)
+
+  - SDL, SDL_image, SDL_mixer (Media framework)
+  - Guichan (GUI framework)
+  - libxml2 (XML parsing and writing)
+  - PhysFS (Data files)
 
 
 0. Index
@@ -38,23 +45,25 @@
 ----------
 
 To create an account, add "_M" after your username when you login for the first
-time and enter a password of your choice.
-
-Remember: the server is only for development or demo purposes (Thanks again to
-Ultramichy for hosting the server).
+time and enter a password of your choice. Remember that the server is only for
+demo and development purposes.
 
 2. Commands
 -----------
 
-- Use arrow keys to move around.
-- Use right mouse button over NPC's feet to talk to them.
-- Left Ctrl to attack
-- Alt + 0-9 to show emotions
-- F1 to take a screenshot
-- F11 raise volume
-- F12 lower volume
-- Alt + K Show skills
-- Alt + S Show stats
-- Alt + I Show inventory
-- F5 to sit
+Use arrow keys to move around and the right mouse button over NPC's feet to
+talk to them. Other keys:
 
+- Left Ctrl  attack
+- Alt + 0-9  show emotions
+- F1         take a screenshot
+- F5         sit down / stand up
+- F6         toggle debug pathfinding feature
+- F11        raise volume
+- F12        lower volume
+- Alt + K    show skills
+- Alt + S    show stats
+- Alt + I    show inventory
+- Alt + E    show equipment
+- Alt + N    show new skill window in development
+- Ctrl + F   switch windowed / fullscreen
