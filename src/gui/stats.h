@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _STATS_WINDOW_H
-#define _STATS_WINDOW_H
+#ifndef _TMW_STATS_WINDOW_H
+#define _TMW_STATS_WINDOW_H
 
 #include "button.h"
 #include "window.h"
@@ -33,17 +33,17 @@
 class StatsWindow : public Window, public gcn::ActionListener {
  public:
     /**
-     * Create the Stats window
+     * Creates the Stats window.
      */
     static StatsWindow *create_statswindow();
     
     /**
-     * Metod called when receiving actions from widget.
+     * Called when receiving actions from widget.
      */
     void action(const std::string& eventId);
     
     /**
-     * Metod updates stats in window.
+     * Updates stats in window.
      */
     void update();
     
@@ -51,17 +51,17 @@ class StatsWindow : public Window, public gcn::ActionListener {
     int i;
 
     /** 
-     * Stats captions 
+     * Stats captions.
      */
     gcn::Label *statsLabel[6];
     
     /** 
-     * Stats buttons 
+     * Stats buttons.
      */
     Button *statsButton[6];
     
     /**
-     * Stats window ptr 
+     * Stats window ptr.
      */
     static StatsWindow *ptr;
     
@@ -76,4 +76,4 @@ class StatsWindow : public Window, public gcn::ActionListener {
     virtual ~StatsWindow();
 };
 
-#endif /* _STATS_Window_H */
+#endif /* _TMW_STATS_WINDOW_H */

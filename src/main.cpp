@@ -276,15 +276,15 @@ int main() {
     init_engine();
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
-         if(config.getValue("sound", 0)==1)
-         sound.Init(32,20);
-         sound.SetVol(128,128,128);
-    } catch(const char * err) {
+         if (config.getValue("sound", 0) == 1)
+         sound.Init(32, 20);
+         sound.SetVol(128, 128, 128);
+    } catch (const char *err) {
          ok("Sound Engine", err);
          warning(err);
     }
 
-    while(state!=EXIT) {
+    while (state != EXIT) {
         switch(state) {
         case LOGIN:
             status("LOGIN");

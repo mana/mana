@@ -554,5 +554,4 @@ void GraphicEngine::refresh() {
         "[%i fps] %i,%i", fps, mouse_x/32+camera_x, mouse_y/32+camera_y);
     
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-    
 }

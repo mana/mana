@@ -53,7 +53,6 @@ extern unsigned char screen_mode;
 
 Setup *setup = NULL;
 StatsWindow *stats = NULL;
-bool show_stats;
 
 #define MAX_TIME 10000
 
@@ -99,10 +98,9 @@ short get_elapsed_time(short start_time) {
 void game() {
     status("INIT");
     do_init();
-    //init_graphic();
     GraphicEngine *graphicEngine = new GraphicEngine();
 
-    while(state!=EXIT) {
+    while (state != EXIT) {
         status("INPUT");
         do_input();
         status("GRAPHIC");
@@ -113,13 +111,13 @@ void game() {
         flush();
     }
 
+    delete graphicEngine;
     close_session();
 }
 
 /** Initialize game engine */
 void do_init() {
-
-    if(!load_map(map_path)) {
+    if (!load_map(map_path)) {
         error("Could not find map file");
     }
 
@@ -150,7 +148,7 @@ void do_init() {
     player_node->speed = 150;
     player_node->hair_color = char_info->hair_color;
     player_node->hair_style = char_info->hair_style;
-    if(char_info->weapon==11) {
+    if (char_info->weapon == 11) {
         char_info->weapon = 1;
     }
     player_node->weapon = char_info->weapon;
@@ -243,68 +241,59 @@ void do_input() {
         //alert("","","","","",0,0);
     }
 
-	if(key[KEY_F10] && action_time==true) {
-		//was 3 goes to 0
-		//was 0 goes to 3
+    if (key[KEY_F10] && action_time == true) {
+        // was 3 goes to 0
+        // was 0 goes to 3
+        screen_mode = 3 - screen_mode;
+        if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
+            // less than: to add support for other hardware platforms
+            error(allegro_error);
+        }
+    }
 
-	  screen_mode = 1-(screen_mode-1)+1;//Bug is here
-	  if( 0 != set_gfx_mode(screen_mode, 800, 600, 0, 0))//less than: to add support for other hardware platforms
-	    error(allegro_error);
-	  }
+    if (key[KEY_F9] && action_time == true) {
+        setup = Setup::create_setup();
+    }
 
-	if(key[KEY_F9] && action_time==true) {
-	    setup = Setup::create_setup();
-	  }
-
-  // Emotions, Skill dialog
-	if(key_shifts & KB_ALT_FLAG && action_time == true) {
-		if(player_node->emotion==0) {
-      unsigned char emotion = 0;
-      if(key[KEY_1])
-        emotion = 1;
-      else if(key[KEY_2])
-        emotion = 2;
-			else if(key[KEY_3])
-        emotion = 3;
-			else if(key[KEY_4])
-        emotion = 4;
-			else if(key[KEY_5])
-        emotion = 5;
-			else if(key[KEY_6])
-        emotion = 6;
-			else if(key[KEY_7])
-        emotion = 7;
-			else if(key[KEY_8])
-        emotion = 8;
-			else if(key[KEY_9])
-        emotion = 9;
-			else if(key[KEY_0])
-        emotion = 10;
-			if(emotion!=0) {
-        WFIFOW(0) = net_w_value(0x00bf);
-        WFIFOB(2) = emotion;
-        WFIFOSET(3);
-        action_time = false;
-			}
-		}
+    // Emotions, Skill dialog
+    if (key_shifts & KB_ALT_FLAG && action_time == true) {
+        if (player_node->emotion == 0) {
+            unsigned char emotion = 0;
+            if (key[KEY_1]) emotion = 1;
+            else if (key[KEY_2]) emotion = 2;
+            else if (key[KEY_3]) emotion = 3;
+            else if (key[KEY_4]) emotion = 4;
+            else if (key[KEY_5]) emotion = 5;
+            else if (key[KEY_6]) emotion = 6;
+            else if (key[KEY_7]) emotion = 7;
+            else if (key[KEY_8]) emotion = 8;
+            else if (key[KEY_9]) emotion = 9;
+            else if (key[KEY_0]) emotion = 10;
+            if (emotion != 0) {
+                WFIFOW(0) = net_w_value(0x00bf);
+                WFIFOB(2) = emotion;
+                WFIFOSET(3);
+                action_time = false;
+            }
+        }
                 
-		if(key[KEY_S]) {
-                    show_stats = !show_stats;
-                    if(stats == NULL)
-                        stats = StatsWindow::create_statswindow();
-                    else if(show_stats)  stats->setVisible(true);
-                    else if(!show_stats) stats->setVisible(false);
-                    action_time = false;
-		} else if(key[KEY_I]) {
-                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
-                    action_time = false;
-		} else if(key[KEY_K]) {
-                    show_skill_list_dialog = !show_skill_dialog;
-                    action_time = false;
-		}
-	}
+        if (key[KEY_S]) {
+            if (stats == NULL)
+                stats = StatsWindow::create_statswindow();
+            else {
+                stats->setVisible(!stats->isVisible());
+            }
+            action_time = false;
+        } else if (key[KEY_I]) {
+            inventoryWindow->setVisible(!inventoryWindow->isVisible());
+            action_time = false;
+        } else if (key[KEY_K]) {
+            show_skill_list_dialog = !show_skill_dialog;
+            action_time = false;
+        }
+    }
 
-  if(mouse_b&2) {
+  if (mouse_b & 2) {
 		//if(show_npc_dialog==0) {
       int npc_x = mouse_x/32+camera_x;
       int npc_y = mouse_y/32+camera_y;
@@ -318,7 +307,7 @@ void do_input() {
     //}
   }
 
-    if(key[KEY_ESC]) {
+    if (key[KEY_ESC]) {
         state = EXIT;
     }
 }

@@ -25,30 +25,21 @@
 
 extern PLAYER_INFO *char_info;
 
-/**
- * Constructor
- */
 StatsWindow::StatsWindow(gcn::Container *parent)
     : Window(parent, "Stats") 
 {
-    std::stringstream statsStr[6];
-
-    statsStr[0] << "Strenght:    "  << char_info->STR;
-    statsStr[1] << "Agility:     "  << char_info->AGI;
-    statsStr[2] << "Vitality:    "  << char_info->VIT;
-    statsStr[3] << "Inteligence: "  << char_info->INT;
-    statsStr[4] << "Dexternity:  "  << char_info->DEX;
-    statsStr[5] << "Luck:        "  << char_info->LUK;
+    // New labels
+    for (i = 0; i < 6; i++) {
+        statsLabel[i] = new gcn::Label();
+    }
+    update();
     
-    /* New labels */
-    for (i = 0; i < 6; i++)
-        statsLabel[i] = new gcn::Label(statsStr[i].str());
-    
-    /* New buttons */
-    for (i = 0; i < 6; i++)
+    // New buttons
+    for (i = 0; i < 6; i++) {
         statsButton[i] = new Button("+");
+    }
     
-    /* Set button events Id */
+    // Set button events Id
     statsButton[0]->setEventId("STR");
     statsButton[1]->setEventId("AGI");
     statsButton[2]->setEventId("VIT");
@@ -56,13 +47,13 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     statsButton[4]->setEventId("DEX");
     statsButton[5]->setEventId("LUK");
     
-    /* Set position */
+    // Set position
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setPosition(10,(i*22)+10);
         statsButton[i]->setPosition(170,(i*22)+10);
     }
     
-    /* Assemble */
+    // Assemble
     for(i = 0; i < 6; i++) {
         add(statsLabel[i]);
         add(statsButton[i]);
@@ -72,27 +63,24 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     setSize(200, 150);
     setLocationRelativeTo(getParent());
 }
-/**
- * Method updates stats in window
- */
+
 void StatsWindow::update(){
     std::stringstream statsStr[6];
     
-    statsStr[0] << "Strenght:    "  << char_info->STR;
-    statsStr[1] << "Agility:     "  << char_info->AGI;
-    statsStr[2] << "Vitality:    "  << char_info->VIT;
-    statsStr[3] << "Inteligence: "  << char_info->INT;
-    statsStr[4] << "Dexternity:  "  << char_info->DEX;
-    statsStr[5] << "Luck:        "  << char_info->LUK;
+    statsStr[0] << "Strenght:    "  << (int)char_info->STR;
+    statsStr[1] << "Agility:     "  << (int)char_info->AGI;
+    statsStr[2] << "Vitality:    "  << (int)char_info->VIT;
+    statsStr[3] << "Inteligence: "  << (int)char_info->INT;
+    statsStr[4] << "Dexternity:  "  << (int)char_info->DEX;
+    statsStr[5] << "Luck:        "  << (int)char_info->LUK;
     
-    /* Update labels */
-    for (i = 0; i < 6; i++)
+    // Update labels
+    for (i = 0; i < 6; i++) {
         statsLabel[i]->setCaption(statsStr[i].str());
+        statsLabel[i]->adjustSize();
+    }
 }
 
-/**
- * Destructor
- */
 StatsWindow::~StatsWindow() {
     for(int i = 0; i < 6; i++) {
         delete statsLabel[i];
@@ -100,21 +88,17 @@ StatsWindow::~StatsWindow() {
     }
 }
 
-/**
- * Static method for creating singleton objects
- */
 StatsWindow * StatsWindow::ptr = NULL;
 StatsWindow * StatsWindow::create_statswindow() {
-    if (ptr == NULL)
+    if (ptr == NULL) {
         ptr = new StatsWindow(guiTop);
-    else
+    }
+    else {
         ptr->setVisible(true);
+    }
     return ptr;
 }
 
-/**
- * Event handling method
- */
 void StatsWindow::action(const std::string& eventId) {
     //TODO: update char_info
     if (eventId == "STR") {
