@@ -1022,6 +1022,9 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     return D_O_K;
 }
 
+/**
+	dialog box w/ left centered head
+*/
 int tmw_dialog_proc(int msg, DIALOG *d, int c) {
     int rtm;
   int x, y;
@@ -1068,6 +1071,9 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
     return D_O_K;
 }
 
+/**
+	dialog box w/ left aligned head
+*/
 int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
     int rtm;
   int x, y;
