@@ -55,13 +55,6 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);
     dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
     dLowerBorder = dBorders->getSubImage(4, 15, 3, 4);
-    
-    dBackground->setAlpha(0.8f);
-    dBorders->setAlpha(0.8f);
-    dUpperBorder->setAlpha(0.8f);
-    dLeftBorder->setAlpha(0.8f);
-    dRightBorder->setAlpha(0.8f);
-    dLowerBorder->setAlpha(0.8f);
 
     // Register mouse listener
     addMouseListener(this);
@@ -102,6 +95,13 @@ void Window::draw(gcn::Graphics* graphics)
 {
     int x, y;
     getAbsolutePosition(x, y);
+    
+    dBackground->setAlpha(0.8f);
+    dBorders->setAlpha(0.8f);
+    dUpperBorder->setAlpha(0.8f);
+    dLeftBorder->setAlpha(0.8f);
+    dRightBorder->setAlpha(0.8f);
+    dLowerBorder->setAlpha(0.8f);
 
     // Draw the background
     dBackground->drawPattern(
