@@ -49,8 +49,8 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     
     // Set position
     for (i = 0; i < 6; i++) {
-        statsLabel[i]->setPosition(10,(i*22)+10);
-        statsButton[i]->setPosition(170,(i*22)+10);
+        statsLabel[i]->setPosition(10,(i*23)+10);
+        statsButton[i]->setPosition(170,(i*23)+10);
     }
     
     // Assemble
@@ -100,29 +100,32 @@ StatsWindow * StatsWindow::create_statswindow() {
 }
 
 void StatsWindow::action(const std::string& eventId) {
-    //TODO: update char_info
+    WFIFOW(0) = net_w_value(0x00bb);
+    
     if (eventId == "STR") {
-        puts("STR");
+        WFIFOW(2) = net_w_value(0x000d);
         update();
     }
     if (eventId == "AGI") {
-        puts("AGI");
+        WFIFOW(2) = net_w_value(0x000e);
         update();
     }
     if (eventId == "VIT") {
-        puts("VIT");
+        WFIFOW(2) = net_w_value(0x000f);
         update();
     }
     if (eventId == "INT") {
-        puts("INT");
-        update();    
+        WFIFOW(2) = net_w_value(0x0010);
+        update();
     }
     if (eventId == "DEX") {
-        puts("DEX");
+        WFIFOW(2) = net_w_value(0x0011);
         update();
     }
     if (eventId == "LUK") {
-        puts("LUK");
+        WFIFOW(2) = net_w_value(0x0012);
         update();
     }
+    WFIFOW(4) = net_b_value(1);
+    WFIFOSET(5);
 }
