@@ -50,7 +50,7 @@ class Sound {
          * w/ the others. so missing ins- truments can be a result.  32/20
          * sounds realistic here.
          */
-        void init(int, int);
+        void init(int voices, int mod_voices);
 
         /**
          * \brief Deinstall all sound functionality
@@ -68,7 +68,7 @@ class Sound {
          * \param in   Full path to file
          * \param loop The number of times the song is played (-1 = infinite)
          */
-        void startBgm(char*, int);
+        void startBgm(char *in, int loop);
 
         /**
          * \brief Stop all currently running background music tracks
@@ -87,13 +87,13 @@ class Sound {
          *
          * All values may only be between 0-128 where 0 means muted.
          */
-        void setVolume(int);
+        void setVolume(int music);
 
         /**
          * \brief Adjusts current volume
          * \param amusic Volume difference
          */
-        void adjustVolume(int);
+        void adjustVolume(int amusic);
 
         /**
          * \brief Preloads a sound-item into buffer
@@ -106,7 +106,7 @@ class Sound {
          * The return value should be kept as a reference to the object loaded.
          * if not it is practicaly lost.
          */
-        SOUND_SID loadItem(char *);
+        SOUND_SID loadItem(char *fpath);
 
         /**
          * \brief Plays an item in soundpool
@@ -115,7 +115,7 @@ class Sound {
          * \param volume Volume the sound should be played with (possible
          *               range: 0-128)
          */
-        void startItem(SOUND_SID, int);
+        void startItem(SOUND_SID id, int volume);
         
         /**
          * \brief Wipe all items off the cache
@@ -147,7 +147,7 @@ class Sound {
          * \brief checks if value equals min-/maximum volume and returns
          *        <code>true</code> if that's the case.
          */
-        bool isMaxVol(int);
+        bool isMaxVol(int vol);
 };
 
 #endif

@@ -153,7 +153,7 @@ void Sound::clearCache()
 #endif
 }
 
-void Sound::close(void)
+void Sound::close()
 {
     isOk = -1;
     clearCache();
