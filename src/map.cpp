@@ -35,25 +35,105 @@
 
 Map tiledMap;
 
+#define OLD_MAP_WIDTH  200
+#define OLD_MAP_HEIGHT 200
+
+/**
+ * Old tile structure. Used for loading the old map format.
+ */
+struct TILE {
+    /**
+     * Data field filled at follows:
+     *
+     * <pre>
+     *  1st byte: [1][1][1][1][1][1][1][1]
+     *  2nd byte: [1][1][2][2][2][2][2][2]
+     *  3rd byte: [2][2][2][2][3][3][3][3]
+     *  4th byte: [3][3][3][3][3][3][W][A]
+     * </pre>
+     *
+     * Legend:
+     *  1 - Ground layer (grass, water, ...)
+     *  2 - Fringe layer (decoration on top of ground layer, but below beings)
+     *  3 - Over layer (roofs, tree leaves, ...)
+     *  W - Walkability flag
+     *  A - Animated tile flag
+     */
+    char data[4];
+    char flags;
+};
+
+/**
+ * Old map structure. Used for loading the old map format.
+ */
+struct MAP {
+    TILE tiles[OLD_MAP_WIDTH][OLD_MAP_HEIGHT];
+    char tileset[20];
+    char bg_music[20];
+};
+
+
+Tile::Tile():
+    whichList(0)
+{
+}
+
 
 bool Map::load(char *mapFile) {
     FILE *file = fopen(mapFile, "r");
+
     if (!file) {
         warning(mapFile);
         return false;
     }
-    fread(this, sizeof(Map), 1, file);
+
+    MAP oldMap;
+    fread(&oldMap, sizeof(MAP), 1, file);
     fclose(file);
+
+    // Transfer tile data
+    int x, y;
+    for (y = 0; y < OLD_MAP_HEIGHT; y++) {
+        for (x = 0; x < OLD_MAP_WIDTH; x++) {
+            unsigned short id;
+
+            // Layer 0
+            id = MAKEWORD(oldMap.tiles[x][y].data[1] & 0x00c0,
+                    oldMap.tiles[x][y].data[0]);
+            id >>= 6;
+            setTile(x, y, 0, id);
+
+            // Layer 1
+            id = MAKEWORD(oldMap.tiles[x][y].data[2] & 0x00f0,
+                    oldMap.tiles[x][y].data[1] & 0x003f);
+            id >>= 4;
+            setTile(x, y, 1, id);
+
+            // Layer 2
+            id = MAKEWORD(oldMap.tiles[x][y].data[3] & 0x00fc,
+                    oldMap.tiles[x][y].data[2] & 0x000f);
+            id >>= 2;
+            setTile(x, y, 2, id);
+
+            // Walkability
+            setWalk(x, y, (oldMap.tiles[x][y].data[3] & 0x0002) > 0);
+        }
+    }
+
     return true;
 }
 
 void Map::setWalk(int x, int y, bool walkable) {
-    if (walkable) tiles[x][y].data[3] |= 0x0002;
-    else tiles[x][y].data[3] &= 0x00fd;
+    if (walkable) {
+        tiles[x][y].flags |= TILE_WALKABLE;
+    }
+    else {
+        tiles[x][y].flags &= ~TILE_WALKABLE;
+    }
 }
 
 bool Map::getWalk(int x, int y) {
-    bool ret = (tiles[x][y].data[3] & 0x0002) > 0;
+    bool ret = (tiles[x][y].flags & TILE_WALKABLE) != 0;
 
     if (ret) {
         // Check for colliding into a being
@@ -70,47 +150,14 @@ bool Map::getWalk(int x, int y) {
     return ret;
 }
 
-void Map::setTile(int x, int y, int layer, unsigned short id) {
-    if (layer == 0) {
-        id <<= 6;
-        tiles[x][y].data[0] = HIBYTE(id);
-        tiles[x][y].data[1] &= 0x003f;
-        tiles[x][y].data[1] |= LOBYTE(id);
-    }
-    else if (layer == 1) {
-        id <<= 4;
-        tiles[x][y].data[1] &= 0x00c0;
-        tiles[x][y].data[1] |= HIBYTE(id);
-        tiles[x][y].data[2] &= 0x000f;
-        tiles[x][y].data[2] |= LOBYTE(id);
-    }
-    else if (layer == 2) {
-        id <<= 2;
-        tiles[x][y].data[2] &= 0x00f0;
-        tiles[x][y].data[2] |= HIBYTE(id);
-        tiles[x][y].data[3] &= 0x0003;
-        tiles[x][y].data[3] |= LOBYTE(id);
-    }
+void Map::setTile(int x, int y, int layer, int id)
+{
+    tiles[x][y].layers[layer] = id;
 }
 
-int Map::getTile(int x, int y, int layer) {
-    unsigned short id = 0;
-    if (layer == 0) {
-        id = MAKEWORD(tiles[x][y].data[1] & 0x00c0,
-                tiles[x][y].data[0]);
-        id >>= 6;
-    }
-    else if (layer == 1) {
-        id = MAKEWORD(tiles[x][y].data[2] & 0x00f0,
-                tiles[x][y].data[1] & 0x003f);
-        id >>= 4;
-    }
-    else if (layer == 2) {
-        id = MAKEWORD(tiles[x][y].data[3] & 0x00fc,
-                tiles[x][y].data[2] & 0x000f);
-        id >>= 2;
-    }
-    return id;
+int Map::getTile(int x, int y, int layer)
+{
+    return tiles[x][y].layers[layer];
 }
 
 int Map::getWidth()

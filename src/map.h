@@ -24,38 +24,23 @@
 #ifndef _TMW_MAP_H
 #define _TMW_MAP_H
 
-#define TILESET_WIDTH 30
+// Tile flags
+#define TILE_WALKABLE  1
+#define TILE_ANIMATED  2
 
-/** Struct representing a tile. A tile is composed of 3 layers.
-1st: Ground layer (used for grass, water, ...) -> bit 0-9 of data
-2nd: Fringe layer (objects that are overlapped by the player) -> bit 10-19 of data
-3rd: Over layer (roofs, tree leaves, ...) -> bit 20-29
-Walk flag: tells if a tile is walkable or not -> bit 30
-Animation flag: tells if a tile is animated or not -> bit 31
+class Tile
+{
+    public:
+        Tile();
 
-data field:
-1st byte: [1][1][1][1][1][1][1][1]
-2nd byte: [1][1][2][2][2][2][2][2]
-3rd byte: [2][2][2][2][3][3][3][3]
-4th byte: [3][3][3][3][3][3][W][A]
+        // Tile data
+        int layers[3];
+        char flags;
 
-Legend:
-1 - First layer
-2 - Second layer
-3 - Third layer
-W - Walkability flag
-A - Animated tile flag
-
-flags field:
-[l][l][f][f][f][f][f][f][f]
-
-Legend:
-l - Animated layer
-f - future use
-*/
-struct TILE {
-    char data[4];
-    char flags;
+        // Pathfinding members
+        int Fcost, Gcost, Hcost;
+        int whichList;
+        int parentX, parentY;
 };
 
 class Map
@@ -69,7 +54,7 @@ class Map
         /**
          * Set tile ID.
          */
-        void setTile(int x, int y, int layer, unsigned short id);
+        void setTile(int x, int y, int layer, int id);
 
         /**
          * Get tile ID.
@@ -99,7 +84,7 @@ class Map
     private:
         const static int width = 200;
         const static int height = 200;
-        TILE tiles[width][height];
+        Tile tiles[width][height];
         char tileset[20];
         char bg_music[20];
 };
