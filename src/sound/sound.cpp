@@ -170,7 +170,7 @@ SOUND_SID Sound::loadItem(char *fpath) {
         std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
     #endif
     Mix_Chunk *newItem;
-    if (newItem = Mix_LoadWAV(fpath)) {
+    if( (newItem = Mix_LoadWAV(fpath)) ) {
         soundpool[++items] = newItem;
         #ifdef __DEBUG
             std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
