@@ -463,20 +463,18 @@ void Engine::draw()
         Being *being = (*beingIterator);
 
         if (being->speech != NULL) {
+            guiGraphics->_beginDraw();
             if (being->speech_color == makecol(255, 255, 255)) {
-                textprintf_centre_ex(buffer, font,
-                        being->text_x,
-                        being->text_y - 60,
-                        being->speech_color, -1,
-                        "%s", being->speech);
+                guiGraphics->drawText(being->speech,
+                        being->text_x + 16, being->text_y - 60,
+                        gcn::Graphics::CENTER);
             }
             else {
-                textprintf_centre_ex(buffer, font,
-                        being->text_x + 60,
-                        being->text_y,
-                        being->speech_color, -1,
-                        "%s", being->speech);
+                guiGraphics->drawText(being->speech,
+                        being->text_x + 60, being->text_y,
+                        gcn::Graphics::CENTER);
             }
+            guiGraphics->_endDraw();
 
             being->speech_time--;
             if (being->speech_time == 0) {
