@@ -43,9 +43,9 @@ DIALOG_PLAYER *inventory_player;
 void TmwInventory::create(int tempxpos, int tempypos) {
 	xpos = tempxpos;
 	ypos = tempypos;
-	itemset = load_datafile("./items/item.dat");
-	empty = load_bitmap("items/empty.bmp", NULL);
-	selected = load_bitmap("items/selected.bmp", NULL);
+	itemset = load_datafile("./data/graphic/items.dat");
+	empty = load_bitmap("./data/graphic/empty.bmp", NULL);
+	selected = load_bitmap("./data/graphic/selected.bmp", NULL);
 
 	for(int i = 0; i< 10; i++) {
 		for(int ii = 0; ii< 10; ii++) {
@@ -163,9 +163,9 @@ void TmwInventory::draw(BITMAP * buffer) {
 
         //the number of that item
         if(!bigwindow)
-          alfont_textprintf_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
+          alfont_textprintf_centre_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
         else
-          alfont_textprintf_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
+          alfont_textprintf_centre_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
 
 			}
 		}
