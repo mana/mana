@@ -44,6 +44,9 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     int absx, absy;
     getAbsolutePosition(absx, absy);
+
+    // We're modifying pixels so we have to lock the screen.
+    SDL_LockSurface(screen);
     
     // outer bar
     DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y, absx+X+Width, absy+Y, abs(Red-70), abs(Green-70), abs(Blue-70));
@@ -70,8 +73,9 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     Temp = absx+X+int(float(Width)*progress)-2;
     if ( Temp < (absx+X+PROGRESSBAR_HEIGHT+1) ) Temp = absx+X+PROGRESSBAR_HEIGHT;
     DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT+1, absy+Y+1, Temp, absy+Y+1, abs(Red-40), abs(Green-40), abs(Blue-40));
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40));
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40)); 
     
+    SDL_UnlockSurface(screen);
 }
 
 void ProgressBar::setProgress(float progress)
