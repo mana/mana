@@ -232,22 +232,13 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\Gui\chat_dialog.cpp">
-				</File>
-				<File
-					RelativePath=".\Gui\guiproc.cpp">
+					RelativePath=".\chat.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\lexgui.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\login.cpp">
-				</File>
-				<File
-					RelativePath=".\Gui\login_dialog.cpp">
-				</File>
-				<File
-					RelativePath=".\Gui\TextBox.cpp">
 				</File>
 			</Filter>
 		</Filter>
@@ -326,22 +317,13 @@
 					RelativePath=".\Gui\char_server.h">
 				</File>
 				<File
-					RelativePath=".\Gui\chat_dialog.h">
-				</File>
-				<File
-					RelativePath=".\Gui\guiproc.h">
+					RelativePath=".\chat.h">
 				</File>
 				<File
 					RelativePath=".\Gui\lexgui.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login.h">
-				</File>
-				<File
-					RelativePath=".\Gui\login_dialog.h">
-				</File>
-				<File
-					RelativePath=".\Gui\TextBox.h">
 				</File>
 			</Filter>
 		</Filter>
