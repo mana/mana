@@ -104,28 +104,24 @@ void StatsWindow::action(const std::string& eventId) {
     
     if (eventId == "STR") {
         WFIFOW(2) = net_w_value(0x000d);
-        update();
     }
     if (eventId == "AGI") {
         WFIFOW(2) = net_w_value(0x000e);
-        update();
     }
     if (eventId == "VIT") {
         WFIFOW(2) = net_w_value(0x000f);
-        update();
     }
     if (eventId == "INT") {
         WFIFOW(2) = net_w_value(0x0010);
-        update();
     }
     if (eventId == "DEX") {
         WFIFOW(2) = net_w_value(0x0011);
-        update();
     }
     if (eventId == "LUK") {
         WFIFOW(2) = net_w_value(0x0012);
-        update();
     }
+    flush();
+    update();
     WFIFOW(4) = net_b_value(1);
     WFIFOSET(5);
 }

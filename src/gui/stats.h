@@ -27,6 +27,7 @@
 #include "button.h"
 #include "window.h"
 #include "../main.h"
+#include "../net/network.h"
 #include <string>
 #include <sstream>
 
