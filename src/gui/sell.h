@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_BUY_H
-#define _TMW_BUY_H
+#ifndef _TMW_SELL_H
+#define _TMW_SELL_H
 
 #include "gui.h"
 #include "window.h"
@@ -31,11 +31,11 @@
 #include <vector>
 
 /**
- * The buy dialog.
+ * The sell dialog.
  *
  * \ingroup GUI
  */
-class BuyDialog : public Window, public gcn::ActionListener,
+class SellDialog : public Window, public gcn::ActionListener,
                   public gcn::ListModel
 {
     public:
@@ -44,25 +44,20 @@ class BuyDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        BuyDialog(gcn::Container *parent);
+        SellDialog(gcn::Container *parent);
 
         /**
          * Destructor.
          */
-        ~BuyDialog();
+        ~SellDialog();
 
         /**
-         * Resets the dialog, clearing shop inventory.
+         * Resets the dialog, clearing inventory.
          */
         void reset();
 
         /**
-         * Sets the amount of available money.
-         */
-        void setMoney(int amount);
-
-        /**
-         * Adds an item to the shop inventory.
+         * Adds an item to the inventory.
          */
         void addItem(short id, int price);
 
@@ -72,12 +67,12 @@ class BuyDialog : public Window, public gcn::ActionListener,
         void action(const std::string& eventId);
 
         /**
-         * Returns the number of items in the shop inventory.
+         * Returns the number of items in the inventory.
          */
         int getNumberOfElements();
 
         /**
-         * Returns the name of item number i in the shop inventory.
+         * Returns the name of item number i in the inventory.
          */
         std::string getElementAt(int i);
 
@@ -92,7 +87,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
 
         std::vector<ITEM_SHOP> shopInventory;
 
-        int money;
+        int maxItems;
 };
 
 #endif

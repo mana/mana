@@ -26,6 +26,7 @@
 #include "../map.h"
 #include "../being.h"
 #include "../gui/buy.h"
+#include "../gui/sell.h"
 #include "../gui/buysell.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
@@ -54,6 +55,7 @@ extern char npc_button[10];
 
 extern StatusWindow *statusWindow;
 extern BuyDialog *buyDialog;
+extern SellDialog *sellDialog;
 extern BuySellDialog *buySellDialog;
 extern InventoryWindow *inventoryWindow;
 

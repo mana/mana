@@ -45,7 +45,6 @@ extern char itemCurrenyQ[10];
 extern char *item_db[];
 
 char *shop_list(int index, int *list_size);
-void add_buy_item(short id, int price);
 void add_sell_item(short index, int price);
 void changeQ(void *dp3, int d2);
 void close_shop();

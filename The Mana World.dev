@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=74
+UnitCount=76
 Type=0
 Ver=1
 ObjFiles=
@@ -804,6 +804,26 @@ BuildCmd=
 
 [Unit41]
 FileName=src\gui\npc.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit77]
+FileName=src\gui\buysell.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit78]
+FileName=src\gui\buysell.h
 CompileCpp=1
 Folder=gui
 Compile=1

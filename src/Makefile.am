@@ -19,6 +19,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/progressbar.cpp \
 	gui/radiobutton.cpp \
 	gui/scrollarea.cpp \
+	gui/sell.cpp \
 	gui/setup.cpp \
 	gui/shop.cpp \
 	gui/skill.cpp \

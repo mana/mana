@@ -759,13 +759,20 @@ void do_parse() {
 					break;
 				// Sell dialog
 				case 0x00c7:
-				  n_items = (len-4)/10;
-				  if(n_items>0) {
-				    show_npc_dialog = 4;
-				    for(int k=0;k<n_items;k++)
-				      add_sell_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
-		      } else chatlog.chat_log("Nothing to sell", BY_SERVER, font);
-					break;
+          n_items = (len - 4) / 10;
+          if (n_items > 0) {
+              sellDialog->reset();
+              sellDialog->setVisible(true);
+              for (int k = 0; k < n_items; k++) {
+                  sellDialog->addItem(
+                          RFIFOW(4 + 10 * k), RFIFOL(4 + 10 * k + 2));
+                  //add_sell_item(RFIFOW(4 + 10 * k), RFIFOL(4 + 10 * k + 2));
+              }
+          }
+          else {
+              chatlog.chat_log("Nothing to sell", BY_SERVER, font);
+          }
+          break;
 				// Answer to buy
 				case 0x00ca:
 					if(RFIFOB(2)==0)

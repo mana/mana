@@ -43,6 +43,7 @@ gcn::TextField *chatInput;
 
 StatusWindow *statusWindow;
 BuyDialog *buyDialog;
+SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 
@@ -85,18 +86,6 @@ DIALOG npc_dialog[] = {
    { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)npc_button,         NULL, NULL  },
    { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
-};
-
-
-DIALOG sell_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
-   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
-   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
-   { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
-   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
-   { tmw_text_proc,       514,  326,  40,  20,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
 DIALOG skill_list_dialog[] = {
@@ -201,6 +190,9 @@ GraphicEngine::GraphicEngine() {
     buyDialog = new BuyDialog(guiTop);
     buyDialog->setVisible(false);
 
+    sellDialog = new SellDialog(guiTop);
+    sellDialog->setVisible(false);
+
     buySellDialog = new BuySellDialog(guiTop, new BuySellListener());
     buySellDialog->setVisible(false);
 
@@ -211,7 +203,6 @@ GraphicEngine::GraphicEngine() {
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);
     skill_player = init_dialog(skill_dialog, -1);
-    sell_player = init_dialog(sell_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
     npc_list_player = init_dialog(npc_list_dialog, -1);
 
@@ -235,6 +226,8 @@ GraphicEngine::GraphicEngine() {
 GraphicEngine::~GraphicEngine() {
     delete statusWindow;
     delete buyDialog;
+    delete sellDialog;
+    delete buySellDialog;
     
     //delete tileset;
 
@@ -463,13 +456,6 @@ void GraphicEngine::refresh() {
         }       
         node = node->next;
     }
-    
-    // Update character status display
-    statusWindow->update();
-
-    // Update GUI
-    guiGraphics->setTarget(buffer);
-    gui_update(NULL);
 
     set_trans_blender(0, 0, 0, 110);
     draw_trans_sprite(buffer, chat_background, 0, SCREEN_H - 125);
@@ -484,27 +470,6 @@ void GraphicEngine::refresh() {
                 WFIFOW(0) = net_w_value(0x00b9);
                 WFIFOL(2) = net_l_value(current_npc);
                 WFIFOSET(6);
-            }
-            break;
-        case 4:
-            sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
-            
-            dialog_message(sell_dialog, MSG_DRAW, 0, 0);
-            if (!gui_update(sell_player)) {
-                show_npc_dialog = shutdown_dialog(sell_player);
-                sell_dialog[3].d1 = 0;
-                if (show_npc_dialog == 1) {
-                    WFIFOW(0) = net_w_value(0x00c9);
-                    WFIFOW(2) = net_w_value(8);
-                    WFIFOW(4) = net_w_value(get_item_index(sell_dialog[4].d1));
-                    WFIFOW(6) = net_w_value(sell_dialog[3].d2);
-                    WFIFOSET(8);
-                }
-                show_npc_dialog = 0;
-                sell_dialog[3].d2 = 0;
-                sprintf((char *)sell_dialog[5].dp, "%i", 0);
-                sell_player = init_dialog(sell_dialog, -1);
-                close_shop();
             }
             break;
         case 5:
@@ -548,10 +513,16 @@ void GraphicEngine::refresh() {
         }
     }
 
-    draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
-    
+    // Update character status display
+    statusWindow->update();
+
+    // Update GUI
+    guiGraphics->setTarget(buffer);
+    gui_update(NULL);
+
     textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), -1,
-        "[%i fps] %i,%i", fps, mouse_x/32+camera_x, mouse_y/32+camera_y);
-    
+            "[%i fps] %i,%i", fps,
+            mouse_x / 32 + camera_x, mouse_y / 32 + camera_y);
+
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 }

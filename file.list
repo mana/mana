@@ -18,6 +18,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/progressbar.cpp \
           src/gui/radiobutton.cpp \
           src/gui/scrollarea.cpp \
+          src/gui/sell.cpp \
           src/gui/setup.cpp \
           src/gui/shop.cpp \
           src/gui/skill.cpp \

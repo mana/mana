@@ -82,7 +82,7 @@ void StatsWindow::update(){
 }
 
 StatsWindow::~StatsWindow() {
-    for(int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         delete statsLabel[i];
         delete statsButton[i];
     }
