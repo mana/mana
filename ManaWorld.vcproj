@@ -212,7 +212,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\Gui\lexgui.cpp">
+					RelativePath=".\Gui\gui.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\login.cpp">
@@ -270,7 +270,7 @@
 					RelativePath=".\Graphic\datGraphics.h">
 				</File>
 				<File
-					RelativePath=".\Gui\lexgui.h">
+					RelativePath=".\Gui\gui.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login.h">
