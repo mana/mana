@@ -204,7 +204,7 @@ void do_input()
             }
             else if ((keysym.sym == SDLK_F7))
             {
-                SOUND_SID id = sound.loadItem("data/sfx/level.ogg");
+                SOUND_SID id = sound.loadItem("data/sfx/bow_shoot_1.ogg");
                 sound.startItem(id, 70);
             }
 
@@ -996,10 +996,10 @@ void do_parse() {
                     // Level up
                 case 0x019b:
                     if (RFIFOL(2) == player_node->id) {
-                        SOUND_SID sound_id = sound.loadItem(
-                                "data/sfx/level.ogg");
-                        sound.startItem(sound_id, 64);
-                        sound.clearCache();
+                        //SOUND_SID sound_id = sound.loadItem(
+                        //        "data/sfx/level.ogg");
+                        //sound.startItem(sound_id, 64);
+                        //sound.clearCache();
                     }
                     break;
                     // Emotion
