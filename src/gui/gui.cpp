@@ -95,7 +95,7 @@ void Gui::mousePress(int mx, int my, int button)
 
     // Experimental mouse walk support
     if (state == GAME) {
-        walk(mx, my, 0);
+        walk(tilex, tiley, 0);
         player_node->setPath(tiledMap->findPath(
                     player_node->x, player_node->y,
                     tilex, tiley));
