@@ -18,8 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
- *  kth5 aka Alexander Baldeck
+ *  $Id$
  */
 
 #ifdef WIN32
@@ -67,7 +66,6 @@
 
 extern char map_path[480];
 extern DIALOG skill_dialog[];
-extern DIALOG stats_dialog[];
 extern int fps, frame, current_npc;
 extern char walk_status;
 extern unsigned short src_x, src_y, x, y;

@@ -108,7 +108,7 @@ void char_server() {
 
     showServerList = 1;
     while (showServerList) {
-        blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
+        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
         gui_update(NULL);
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
     }

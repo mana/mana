@@ -72,8 +72,8 @@ char sex, n_server, n_character;
 SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
-BITMAP *playerset, *hairset;
-DATAFILE *graphic, *weaponset;
+BITMAP *playerset, *hairset, *login_wallpaper;
+DATAFILE *weaponset;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -267,14 +267,14 @@ void init_engine() {
         error("Not enough memory to create buffer");
     }
 
-    // TODO: Remove datafile usage
-    graphic = load_datafile("./data/graphic/graphic.dat");
-    if (graphic == NULL) {
-        error("Unable to load graphic datafile");
-    }
+    login_wallpaper = load_bitmap("./data/graphic/login.bmp", NULL);
+    if (!login_wallpaper) error("Couldn't load login.bmp");
 
-    playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
+    playerset = load_bitmap("./data/graphic/playerset.bmp", NULL);
+    if (!playerset) error("Couldn't load playerset.bmp");
+
     hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
+    if (!hairset) error("Couldn't load hairset.bmp");
 
     if (hairset == NULL) {
         error("Unable to load hairset bitmap");

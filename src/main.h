@@ -84,8 +84,8 @@ typedef struct {
 	short weapon;
 } PLAYER_INFO;
 
-extern BITMAP *playerset;
-extern DATAFILE *graphic, *emotions, *weaponset;
+extern BITMAP *playerset, *login_wallpaper;
+extern DATAFILE *emotions, *weaponset;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;

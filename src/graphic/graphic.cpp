@@ -163,8 +163,6 @@ GraphicEngine::GraphicEngine() {
 
     guiTop->add(chatInput);
 
-    chatInput->requestFocus();
-
     // Create dialogs
 
     statusWindow = new StatusWindow(guiTop);
@@ -192,6 +190,10 @@ GraphicEngine::GraphicEngine() {
     skill_player = init_dialog(skill_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
 
+    // Give focus to the chat input
+    chatInput->requestFocus();
+
+    // SDL probably doesn't need this buffer, it'll buffer for us.
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
     if (!buffer) {
         error("Not enough memory to create buffer");

@@ -225,7 +225,7 @@ void charSelect()
         }
 
         // Draw background
-        blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
+        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
 
         gui_update(NULL);
 
@@ -312,7 +312,7 @@ void charCreate()
             state != CHAR_SELECT)
     {
         // Draw background
-        blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
+        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
 
         gui_update(NULL);
 
