@@ -39,7 +39,7 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player;
+DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player, *npc_list_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
@@ -49,11 +49,12 @@ Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
 bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
+char npc_button[10] = "Close";
 
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"NPC",             NULL, NULL  },
-   { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Close",         NULL, NULL  },
+   { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)npc_button,         NULL, NULL  },
    { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
@@ -105,6 +106,15 @@ DIALOG chat_dialog[] = {
    /* (dialog proc)         (x)   (y)   (w)  (h) (fg) (bg)  (key) (flags)   (d1)               (d2)           (dp)         (dp2) (dp3) */
    { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
    { NULL,                   0,    0,    0,   0,  0,    0,    0,    0,       0,                0,             NULL,        NULL, NULL  }
+};
+
+DIALOG npc_list_dialog[] = {
+   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"NPC",    NULL, NULL  },
+   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
+   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)item_list, NULL, NULL  },
+   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
 char hairtable[10][4][2] = {
@@ -181,6 +191,7 @@ void init_graphic() {
 	buy_player = init_dialog(buy_dialog, -1);
 	sell_player = init_dialog(sell_dialog, -1);
 	skill_list_player = init_dialog(skill_list_dialog, -1);
+	npc_list_player = init_dialog(npc_list_dialog, -1);
   gui_bitmap = double_buffer;
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
@@ -361,7 +372,13 @@ void do_graphic(void) {
 	switch(show_npc_dialog) {
 		case 1:
       dialog_message(npc_dialog, MSG_DRAW, 0, 0);
-      if(!(show_npc_dialog = gui_update(npc_player)))strcpy(npc_text, "");
+      if(!(show_npc_dialog = gui_update(npc_player))) {
+        strcpy(npc_text, "");
+        WFIFOW(0) = net_w_value(0x00b9);
+        //alert("","","","","",0,0);
+        WFIFOL(2) = net_l_value(current_npc);
+        WFIFOSET(6);
+      }  
 			break;
 		case 2:
 			dialog_message(buy_sell_dialog, MSG_DRAW, 0, 0);
@@ -425,6 +442,21 @@ void do_graphic(void) {
 				close_shop();
 			}
 			break;
+		case 5:
+		  dialog_message(npc_list_dialog, MSG_DRAW, 0, 0);
+			if(!gui_update(npc_list_player)) {
+				show_npc_dialog = shutdown_dialog(npc_list_player);
+				if(show_npc_dialog==1) {
+          WFIFOW(0) = net_w_value(0x00b8);
+          WFIFOL(2) = net_l_value(current_npc);
+          WFIFOB(6) = net_b_value(npc_list_dialog[3].d1+1);
+          WFIFOSET(7);
+				}
+				show_npc_dialog = 0;
+        npc_list_player = init_dialog(npc_list_dialog, -1);
+				remove_all_items();
+			}
+		  break;
   }
 
 	if(show_skill_dialog) {

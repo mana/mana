@@ -58,7 +58,7 @@ DIALOG char_create_dialog[] = {
    { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
 };
 
-#define MAX_HAIR_COLOR 6
+#define MAX_HAIR_COLOR 10
 
 int tmw_incbutt_proc(int msg, DIALOG *d, int c) {
   if(msg==MSG_CLICK) {

@@ -39,6 +39,7 @@
 #include "../gui/shop.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
+#include "../gui/npc.h"
 #include "../../data/graphic/gfx_data.h"
 
 extern BITMAP *buffer, *double_buffer;
@@ -51,6 +52,7 @@ extern int show_npc_dialog;
 extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
 extern BITMAP *hairset;
+extern char npc_button[10];
 
 void set_npc_dialog(int show);
 void do_graphic(void);

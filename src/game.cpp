@@ -34,6 +34,7 @@
 #include "./gui/gui.h"
 #include "./gui/inventory.h"
 #include "./gui/shop.h"
+#include "./gui/npc.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
 
@@ -799,6 +800,34 @@ void do_parse() {
 				  WFIFOL(2) = net_l_value(RFIFOL(2));
 				  WFIFOSET(6);
 				  break;				  
+		    // Next button in NPC dialog
+		    case 0x00b5:
+		      strcpy(npc_button, "Next");
+		      current_npc = RFIFOL(2);
+		      break;		  
+        // Close button in NPC dialog
+        case 0x00b6:
+		      strcpy(npc_button, "Close");
+		      current_npc = RFIFOL(2);
+		      break;
+        // List in NPC dialog
+        case 0x00b7:
+          current_npc = RFIFOL(4);
+          alert(RFIFOP(8),"","","","",0,0);
+          parse_items(RFIFOP(8), RFIFOW(2));
+          show_npc_dialog = 5;
+          break;
+        // Look change
+        case 0x00c3:
+          // Change hair color
+          if(RFIFOB(6)==6) {
+            node = find_node(RFIFOL(2));
+            node->hair_color = RFIFOB(7);
+            /*char prova[100];
+            sprintf(prova, "%i %i %i", RFIFOL(2), RFIFOB(6), RFIFOB(7));
+            alert(prova,"","","","",0,0);*/
+          }  
+          break;               
         // Manage non implemented packets
         default:
           //printf("%x\n",id);

@@ -1,0 +1,73 @@
+How to install TMW on my GNU/Debian Box
+==================================================
+
+Author:  FERREIRA Yohann (Bertram)
+Email:    Bertram25@hotmail.com
+Homepage: http://www.behemoth.fr.fm (Take a tour on it with mozilla !)
+
+The Mana World project
+======================
+Homepage: themanaworld.sourceforge.net
+IRC:      irc.freenode.net / #manaworld
+
+1) Installing The Mana World Dependancies
+2) Make the latest Mana World Debian package and install it
+3) Notes
+
+1. Installing The Mana World Dependancies
+=============================================
+
+The Mana World Debian Package can be installed under the Debian Testing and Unstable (Sarge/Cid).
+In order to have Mana World working, you'll need the following packages that are situed in :
+
+- JGMod :
+http://themanaworl.sourceforge.net/files/jgmod_0.99_i386.deb
+- AlFont :
+http://themanaworl.sourceforge.net/files/libalfont_1.9.2_i386.deb
+
+Note : If the packages names mismatches, check the page : http://themanaworl.sourceforge.net/files/
+to look for the latest version of these packages.
+
+When you've grabbed them, install them (as root) with the commands :
+	dpkg -i jgmod_0.99_i386.deb
+	dpkg -i libalfont_1.9.2_i386.deb
+
+liballegro4.1 must be installed before doing the previous commands, you can do install it by typing (as root) :
+	apt-get install liballegro4.1
+
+2. Make the latest Mana World Debian Package and install it
+==========================================================
+
+The next step is now to download the latest CVS version or a tarball in the Download Section of the Mana World WebSite.
+(I think you've got it because you're reading this file which is included in, right !)
+
+you must have gcc and g++ installed, and also liballegro-dev.
+Don't forget them :
+	apt-get install gcc g++ liballegro-dev
+	
+Now open a shell and go in the root of the new extracted tarball. You should see a file named GenDeb.sh.
+Become root,
+Make it executable :
+	chmod +x GenDeb.sh
+And now create the Debian Package !!! :
+	./GenDeb.sh
+	
+Let it work : and TADAM !
+The new package should be in the same directory as GenDeb.sh and should be named :
+	manaworld_XXXXXX_i386.deb (XXXXXX is the version number...)
+Install it :
+	dpkg -i manaworld_XXXXXX_i386.deb
+(If you've got a previous one already installed with the same version number, don't forget to remove it with :)
+	apt-get remove manaworld
+	(Don't worry, you configuratio files are not removed...)
+	
+And now the final step : type 'manaworld' as a normal user in a shell and you're in !!!
+
+(Don't forget : To create a new account, add a '_M' after your account name the first time. After that just type your account name normally...)
+
+3. Notes
+========
+
+you can always join team people in the IRC of Manaworld :
+irc://irc.freenode.net#manaworld
+
