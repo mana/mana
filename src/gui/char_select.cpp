@@ -20,6 +20,7 @@
  */
 
 #include "char_select.h"
+#include "textfield.h"
 #include "../graphic/graphic.h"
 #include "../graphic/2xsai.h"
 
@@ -112,7 +113,7 @@ std::string curName;
 CharCreateDialog::CharCreateDialog(gcn::Container *parent)
     : Window(parent, "Create Character")
 {
-    nameField = new gcn::TextField("");
+    nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
     nextHairColorButton = new Button(">");
     prevHairColorButton = new Button("<");

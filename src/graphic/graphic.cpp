@@ -25,6 +25,7 @@
 #include "2xsai.h"
 #include "../gui/gui.h"
 #include "../gui/stats.h"
+#include "../gui/textfield.h"
 
 #define TILESET_W 480
 #define TILESET_H 320
@@ -215,14 +216,16 @@ void init_graphic() {
 
     clear_bitmap(screen);
     chat_background = create_bitmap(592, 100);
-    clear_to_color(chat_background, makecol(0,0,0));
+    clear_to_color(chat_background, makecol(0, 0, 0));
 
     // Initialize gui
 
     // Create chat input field
-    chatInput = new gcn::TextField();
-    chatInput->setPosition(0, SCREEN_H - chatInput->getHeight());
-    chatInput->setWidth(592);
+    chatInput = new TextField();
+    chatInput->setPosition(
+            chatInput->getBorderSize(),
+            SCREEN_H - chatInput->getHeight() - chatInput->getBorderSize() -1);
+    chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
 
     ChatListener *chatListener = new ChatListener();
     chatInput->setEventId("chatinput");

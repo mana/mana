@@ -19,27 +19,33 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUTTON_H
-#define _TMW_BUTTON_H
+#ifndef __TEXTFIELD_H__
+#define __TEXTFIELD_H__
 
-#include "gui.h"
+#include <allegro.h>
+#include <guichan.hpp>
 
 /**
- * Button widget. Same as the Guichan button but with custom look.
+ * A text field.
  *
  * \ingroup GUI
  */
-class Button : public gcn::Button {
+class TextField : public gcn::TextField {
     public:
         /**
-         * Constructor, sets the caption of the button to the given string.
+         * Constructor, initializes the text field with the given string.
          */
-        Button(const std::string& caption);
+        TextField(const std::string& text = "");
 
         /**
-         * Draws the button.
+         * Draws the text field.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
+
+        /**
+         * Draws the background and border.
+         */
+        void drawBorder(gcn::Graphics *graphics);
 };
 
 #endif

@@ -728,7 +728,6 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
 }
 
 int tmw_edit_proc(int msg, DIALOG *d, int c) {
-//    BITMAP *box = NULL;
     int     x;
     int     tx, ty, l;
     int     rtm = 0;
@@ -769,7 +768,7 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
             cr=gui_bitmap->w;
             cb=gui_bitmap->h;
         }
-        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + text_height(font)); // set_clip() is deprecated use set_clip_rect() instead
+        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + text_height(font));
         hack        = text[d->d2];
         text[d->d2] = '\0';
         l = text_length(font, text);

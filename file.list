@@ -15,6 +15,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/shop.cpp \
           src/gui/skill.cpp \
           src/gui/stats.cpp \
+          src/gui/textfield.cpp \
           src/gui/window.cpp \
           src/net/network.cpp \
           src/net/protocol.cpp \

@@ -22,7 +22,6 @@
 #ifndef __PROGRESSBAR_H__
 #define __PROGRESSBAR_H__
 
-#include <iostream>
 #include <allegro.h>
 #include <guichan.hpp>
 
@@ -33,11 +32,24 @@
  */
 class ProgressBar : public gcn::Widget {
     public:
+        /**
+         * Constructor, initializes the progress with the given value.
+         */
         ProgressBar(float progress = 0.0f);
 
+        /**
+         * Draws the progress bar.
+         */
         void draw(gcn::Graphics *graphics);
 
+        /**
+         * Sets the current progress.
+         */
         void setProgress(float progress);
+
+        /**
+         * Returns the current progress.
+         */
         float getProgress();
 
     private:

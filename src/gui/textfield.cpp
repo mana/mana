@@ -19,27 +19,43 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUTTON_H
-#define _TMW_BUTTON_H
-
+#include "textfield.h"
 #include "gui.h"
 
-/**
- * Button widget. Same as the Guichan button but with custom look.
- *
- * \ingroup GUI
- */
-class Button : public gcn::Button {
-    public:
-        /**
-         * Constructor, sets the caption of the button to the given string.
-         */
-        Button(const std::string& caption);
 
-        /**
-         * Draws the button.
-         */
-        void draw(gcn::Graphics* graphics);
-};
+TextField::TextField(const std::string& text):
+    gcn::TextField(text)
+{
+    setBorderSize(2);
+}
 
-#endif
+void TextField::draw(gcn::Graphics *graphics)
+{
+    int x, y, w, h, col;
+    getAbsolutePosition(x, y);
+    w = getWidth();
+    h = getHeight();
+
+    if (hasFocus()) {      
+        drawCaret(graphics,
+                getFont()->getWidth(mText.substr(0, mCaretPosition)) -
+                mXScroll);
+    }
+
+    graphics->setColor(getForegroundColor());
+    graphics->setFont(getFont());
+    graphics->drawText(mText, 1 - mXScroll, 1);  
+}
+
+void TextField::drawBorder(gcn::Graphics *graphics)
+{
+    int x, y, w, h, bs;
+    getAbsolutePosition(x, y);
+    bs = getBorderSize();
+    w = getWidth() + bs * 2;
+    h = getHeight() + bs * 2;
+    x -= bs;
+    y -= bs;
+
+    draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, x, y, w, h);
+}

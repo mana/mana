@@ -16,6 +16,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/shop.cpp \
 	gui/skill.cpp \
 	gui/stats.cpp \
+	gui/textfield.cpp \
 	gui/window.cpp \
 	net/network.cpp \
 	net/protocol.cpp \

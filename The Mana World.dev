@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=54
+UnitCount=56
 Type=0
 Ver=1
 ObjFiles=
@@ -585,6 +585,26 @@ BuildCmd=
 
 [Unit54]
 FileName=src\gui\progressbar.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit55]
+FileName=src\gui\textfield.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit56]
+FileName=src\gui\textfield.h
 CompileCpp=1
 Folder=gui
 Compile=1

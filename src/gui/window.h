@@ -49,7 +49,19 @@ class Window : public gcn::Container, public gcn::MouseListener
         BITMAP *dRight;            /**< Right side of title bar */
 
     public:
+        /**
+         * Constructor. Initializes the title to the given text and hooks
+         * itself into the given parent.
+         *
+         * @param parent The parent container to which this window will add
+         *               itself.
+         * @param text   The initial window title, "Window" by default.
+         */
         Window(gcn::Container *parent, const std::string& text = "Window");
+
+        /**
+         * Destructor.
+         */
         ~Window();
 
         /**
