@@ -56,7 +56,7 @@ class StatsWindow : public Window, public gcn::ActionListener {
      */
     gcn::Label *statsLabel[6];
     gcn::Label *statsDisplayLabel[6];
-    gcn::Label *remainingStatsPointsLabel;
+    //gcn::Label *remainingStatsPointsLabel;
     
     /** 
      * Stats buttons.
