@@ -284,7 +284,7 @@ void do_input() {
 			show_skill_dialog = !show_skill_dialog;
 			action_time = false;
 		} else if(key[KEY_I]) {
-			inventory.toggle();
+			inventory.setVisible(!inventory.isVisible());
 			action_time = false;
 		} else if(key[KEY_K]) {
 			show_skill_list_dialog = !show_skill_dialog;

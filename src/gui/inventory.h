@@ -33,7 +33,7 @@
 #include "../net/network.h"
 #include "gui.h"
 
-#define INVENTORY_SIZE 10
+#define INVENTORY_SIZE 100
 
 struct itemHolder { // the holder of a item
 	int id;       // the id of the item
