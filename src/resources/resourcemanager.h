@@ -101,6 +101,12 @@ class ResourceManager
         static void deleteInstance();
 
     private:
+        /**
+         * Searches for zip files and adds them to the PhsysicsFS search
+         * path.
+         */
+        void searchAndAddZipFiles();
+
         static ResourceManager *instance;
         std::map<std::string, ResourceEntry> resources;
 };

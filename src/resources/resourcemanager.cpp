@@ -25,11 +25,15 @@
 #include "../log.h"
 #include <iostream>
 #include <sstream>
+#include <physfs.h>
 
 #ifdef WIN32
+#include <io.h>
 #include <direct.h>
 #else
 #include <unistd.h>
+#include <dirent.h>
+
 #endif
 
 ResourceEntry::ResourceEntry():
@@ -41,6 +45,8 @@ ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
 {
+    // Add zip files to PhysicsFS
+    searchAndAddZipFiles();
 }
 
 ResourceManager::~ResourceManager()
@@ -78,18 +84,12 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
         return resIter->second.resource;
     }
 
-    // Attempt to load the object if it doesn't exist.
-
     // The filePath string.
     std::string filePath = "";
 
-    // Retrieve the current path for this program.
-    char programPath[260];
-    getcwd(programPath, 260);
-
     // Set the filePath variable to the appropriate value
     // this is only if we're not using a packed file.
-    filePath = std::string(programPath) + std::string("/data/") + idPath;
+    filePath = std::string("data/") + idPath;
 
     Resource *resource = NULL;
 
@@ -106,6 +106,29 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             // Attempt to create and load our image object.
             resource =
                 reinterpret_cast<Resource*>(Image::load(filePath, flags));
+
+            // If the object is invalid, try using PhysicsFS
+            if(resource == NULL) {
+                std::cout << "Check If Exists: " << filePath << std::endl;
+                // If the file is in the PhysicsFS search path
+                if(PHYSFS_exists(filePath.c_str()) != 0) {                    
+                    // Open the file for read
+                    PHYSFS_file* imageFile = PHYSFS_openRead(filePath.c_str());
+                    std::cout << filePath << " - " << PHYSFS_fileLength(imageFile) << " bytes" << std::endl;
+
+                    // Read the file data into a buffer
+                    char* buffer = new char[PHYSFS_fileLength(imageFile)];
+                    PHYSFS_read(imageFile, buffer, 1, PHYSFS_fileLength(imageFile));
+
+                    // Cast the file to a valid resource
+                    resource = reinterpret_cast<Resource*>(Image::load(buffer, PHYSFS_fileLength(imageFile)));
+
+                    // Close the file
+                    PHYSFS_close(imageFile);
+                    delete buffer;
+                }
+            }
+
             break;
         case SCRIPT:
             log("Warning: Script resource not supported.");
@@ -154,4 +177,75 @@ void ResourceManager::deleteInstance()
         delete instance;
         instance = NULL;
     }
+}
+
+void ResourceManager::searchAndAddZipFiles()
+{
+    // Define the path in which to search
+    std::string searchString = std::string("data/*.zip");
+
+#ifdef _WIN32
+    // Create our find file data structure
+    struct _finddata_t findFileInfo;
+
+    // Find the first zipped file
+    long handle = static_cast<long>(::_findfirst(searchString.c_str(), &findFileInfo));
+    long file   = handle;
+
+    // Loop until all files we're searching for are found
+    while (file >= 0) {
+        // Define the file path string
+        std::string filePath = std::string("data/") + std::string(findFileInfo.name);
+
+        // Add the zip file to our PhysicsFS search path
+        PHYSFS_addToSearchPath(filePath.c_str(), 1);
+
+        std::cout << "Add To PhysicsFS: " << findFileInfo.name << std::endl;
+
+        // Find the next file
+        file = ::_findnext(handle, &findFileInfo);
+    }
+
+    // Shutdown findfile stuff
+    ::_findclose(handle);
+#else
+    // Retrieve the current path
+    char programPath[256];
+    getcwd(programPath, 256);
+
+    // Create our directory structure
+    DIR directory = opendir(programPath);
+
+    // If the directory is invalid
+    if (directory == NULL) {
+        // Return from the function
+        return;
+    }
+
+    // Change the directory to the folder
+    chdir(programPath);
+
+    // Create the find file data structure
+    struct finddata_t* findFileInfo = &directory->dd_dta;
+
+    // Find the first occurence of the requested file
+    long handle = static_cast<long>(findfirst("*", "*.zip"));
+    long file   = handle;
+
+    // Loop until all files we're searching for are found
+    while (file >= 0) {
+        // Define the file path string
+        std::string filePath = std::string("data/") + std::string(findFileInfo->name);
+
+        // Add the zip file to our PhysicsFS search path
+        PHYSFS_addToSearchPath(filePath.c_str(), 1);
+        
+        // Find the next file
+        file = findnext(handle, findFileInfo);
+    }
+
+    // Perform cleanup
+    findclose(handle);
+    closedir(directory);
+#endif
 }
