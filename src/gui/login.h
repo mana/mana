@@ -24,17 +24,9 @@
 #ifndef _TMW_LOGIN_H
 #define _TMW_LOGIN_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
-#include "../main.h"
-#include "../log.h"
-#include "../net/network.h"
-#include "gui.h"
+#include <guichan.hpp>
+#include <string>
 #include "window.h"
-
-extern Configuration config;
 
 /**
  * The login dialog.

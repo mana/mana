@@ -24,16 +24,6 @@
 #ifndef _TMW_PROTOCOL_H
 #define _TMW_PROTOCOL_H
 
-#include "../main.h"
-#include "../being.h"
-
-#ifdef WIN32
-#include <windows.h>
-#else
-#include "win2linux.h"
-#endif
-
-
 /** Packet length by id */
 short get_length(short id);
 

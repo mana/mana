@@ -29,6 +29,7 @@
 #include "passwordfield.h"
 #include "ok_dialog.h"
 #include "../graphic/graphic.h"
+#include "../main.h"
 
 LoginDialog::LoginDialog():
     Window("Login")

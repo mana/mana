@@ -22,7 +22,6 @@
  */
 
 #include <stdio.h>
-
 #include "astar.h"
 #include "being.h"
 

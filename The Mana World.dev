@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=96
+UnitCount=94
 Type=0
 Ver=1
 ObjFiles=
@@ -10,9 +10,9 @@ Libs=
 PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=
+Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_
-Linker=-lguichan_@@_-lguichan_allegro_@@_-lalleg_@@_-lwsock32_@@_-lSDL_mixer_@@_-lSDL_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_
 IsCpp=1
 Icon=The Mana World.ico
 ExeOutput=
@@ -36,7 +36,7 @@ Release=8
 <<<<<<< The Mana World.dev
 Build=809
 =======
-Build=875
+Build=904
 >>>>>>> 1.76
 LanguageID=1033
 CharsetID=1252
@@ -757,7 +757,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit75]
-FileName=src\gui\allegroinput.cpp
+FileName=src\gui\npc_text.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -767,7 +767,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit76]
-FileName=src\gui\allegroinput.h
+FileName=src\gui\npc_text.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -797,26 +797,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit77]
-FileName=src\gui\npc_text.cpp
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit78]
-FileName=src\gui\npc_text.h
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit79]
 FileName=src\gui\listbox.h
 CompileCpp=1
 Folder=gui
@@ -826,7 +806,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit80]
+[Unit78]
 FileName=src\gui\listbox.cpp
 CompileCpp=1
 Folder=gui
@@ -836,7 +816,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit81]
+[Unit79]
 FileName=src\gui\textbox.cpp
 CompileCpp=1
 Folder=gui
@@ -846,7 +826,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit82]
+[Unit80]
 FileName=src\gui\textbox.h
 CompileCpp=1
 Folder=gui
@@ -856,17 +836,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit84]
-FileName=src\gui\windowcontainer.cpp
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit83]
+[Unit81]
 FileName=src\gui\windowcontainer.h
 CompileCpp=1
 Folder=gui
@@ -876,8 +846,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit85]
-FileName=src\gui\playerbox.h
+[Unit82]
+FileName=src\gui\windowcontainer.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -886,7 +856,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit86]
+[Unit84]
 FileName=src\gui\playerbox.cpp
 CompileCpp=1
 Folder=gui
@@ -896,7 +866,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit87]
+[Unit83]
+FileName=src\gui\playerbox.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit85]
 FileName=src\gui\confirm_dialog.cpp
 CompileCpp=1
 Folder=gui
@@ -906,7 +886,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit88]
+[Unit86]
 FileName=src\gui\confirm_dialog.h
 CompileCpp=1
 Folder=gui
@@ -916,7 +896,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit89]
+[Unit87]
 FileName=src\resources\image.cpp
 CompileCpp=1
 Folder=resources
@@ -926,7 +906,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit90]
+[Unit88]
 FileName=src\resources\image.h
 CompileCpp=1
 Folder=resources
@@ -936,7 +916,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit91]
+[Unit89]
 FileName=src\resources\resource.cpp
 CompileCpp=1
 Folder=resources
@@ -946,7 +926,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit92]
+[Unit90]
 FileName=src\resources\resource.h
 CompileCpp=1
 Folder=resources
@@ -956,7 +936,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit93]
+[Unit91]
 FileName=src\resources\resourcemanager.cpp
 CompileCpp=1
 Folder=resources
@@ -966,10 +946,30 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit94]
+[Unit92]
 FileName=src\resources\resourcemanager.h
 CompileCpp=1
 Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit93]
+FileName=src\graphic\spriteset.cpp
+CompileCpp=1
+Folder=graphic
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit94]
+FileName=src\graphic\spriteset.h
+CompileCpp=1
+Folder=graphic
 Compile=1
 Link=1
 Priority=1000

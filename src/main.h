@@ -24,9 +24,9 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
-#include "configuration.h"
 #include "gui/login.h"
 #include "gui/gui.h"
+#include "configuration.h"
 #include "graphic/spriteset.h"
 #include "resources/image.h"
 #include "log.h"

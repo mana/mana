@@ -24,7 +24,7 @@
 #ifndef _TMW_BEING_H
 #define _TMW_BEING_H
 
-#include "./net/protocol.h"
+#include "net/protocol.h"
 #include <list>
 
 struct PATH_NODE {

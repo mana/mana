@@ -262,7 +262,7 @@ void exit_engine() {
 }
 
 /** Main */
-int main() {
+int main(int argc, char *argv[]) {
     init_engine();
 
     SDL_Event event;

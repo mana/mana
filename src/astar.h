@@ -1,10 +1,6 @@
 #ifndef _ASTAR_H
 #define _ASTAR_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include "map.h"
 #include "being.h"
 
@@ -19,7 +15,7 @@ extern int G_cost[MAP_WIDTH+1][MAP_HEIGHT+1];
 void ReadPath(int pathfinderID,int currentX,int currentY, int pixelsPerFrame);
 int ReadPathX(int pathfinderID,int pathLocation);
 int ReadPathY(int pathfinderID,int pathLocation);
-void RenderScreen (bool stepByStep=false);
+void RenderScreen (bool stepByStep = false);
 PATH_NODE *find_path(int pathfinderID,int startingX, int startingY, int targetX, int targetY);
 void ReadPath(int pathfinderID);
 

@@ -26,6 +26,7 @@
 #include "../gui/textfield.h"
 #include "../gui/status.h"
 #include "../main.h"
+#include "../being.h"
 
 SDL_Surface *screen;
 

@@ -21,7 +21,17 @@
  *  $Id$
  */
 
+#include "../main.h"
+#include "../being.h"
 #include "protocol.h"
+#include "network.h"
+
+#ifdef WIN32
+#include <windows.h>
+#else
+#include "win2linux.h"
+#endif
+
 
 short packet_lengths[] = {
    10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
