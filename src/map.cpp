@@ -233,6 +233,15 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
         // add it to the closed list.
         Location curr = openList.top();
         openList.pop();
+
+        // If the tile is already on the closed list, this means it has already
+        // been processed with a shorter path to the start point (lower G cost)
+        if (curr.tile->whichList == onClosedList)
+        {
+            continue;
+        }
+
+        // Put the current tile on the closed list
         curr.tile->whichList = onClosedList;
 
         // Check the adjacent tiles
@@ -244,9 +253,8 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
                 int x = curr.x + dx;
                 int y = curr.y + dy;
 
-                // Skip if if we're checking the same tile we're leaving
-                // from, or if the new location falls outside of the map
-                // boundaries
+                // Skip if if we're checking the same tile we're leaving from,
+                // or if the new location falls outside of the map boundaries
                 if ((dx == 0 && dy == 0) ||
                         (x < 0 || y < 0 || x >= width || y >= height))
                 {
@@ -259,6 +267,21 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
                 if (newTile->whichList == onClosedList || !getWalk(x, y))
                 {
                     continue;
+                }
+
+                // When taking a diagonal step, verify that we can skip the
+                // corner. We allow skipping past beings but not past non-
+                // walkable tiles.
+                if (dx != 0 && dy != 0)
+                {
+                    Tile *t1 = getTile(curr.x, curr.y + dy);
+                    Tile *t2 = getTile(curr.x + dx, curr.y);
+
+                    if ((t1->flags & TILE_WALKABLE) == 0 ||
+                            (t2->flags & TILE_WALKABLE) == 0)
+                    {
+                        continue;
+                    }
                 }
 
                 // Calculate G cost for this route, 10 for moving straight and
@@ -315,9 +338,8 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
 
     // If a path has been found, iterate backwards using the parent locations
     // to extract it.
-    if (foundPath) {
-        //printf("Found path from (%d, %d) to (%d, %d):\n",
-        //        startX, startY, destX, destY);
+    if (foundPath)
+    {
         PATH_NODE *path = new PATH_NODE(destX, destY);
         int pathX = destX;
         int pathY = destY;
@@ -328,8 +350,6 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
             Tile *tile = getTile(pathX, pathY);
             pathX = tile->parentX;
             pathY = tile->parentY;
-
-            //printf("- (%d, %d)\n", pathX, pathY);
 
             // Add the new path node to the start of the path list
             PATH_NODE *pn = new PATH_NODE(pathX, pathY);

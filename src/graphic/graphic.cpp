@@ -505,9 +505,10 @@ void Engine::draw()
         Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
 
         std::stringstream cost;
-        cost << tile->Fcost;
+        cost << tile->Gcost;
         guiGraphics->_beginDraw();
-        guiGraphics->drawText(cost.str(), destRect.x - 12, destRect.y + 8);
+        guiGraphics->drawText(cost.str(), destRect.x + 4, destRect.y + 12,
+                gcn::Graphics::CENTER);
         guiGraphics->_endDraw();
 
         // Move to the next node
