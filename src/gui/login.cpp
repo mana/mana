@@ -25,6 +25,7 @@
 #include "gui.h"
 #include "button.h"
 #include "checkbox.h"
+#include "window.h"
 #include "../graphic/graphic.h"
 
 // Dialog parts
@@ -70,7 +71,7 @@ void LoginActionListener::action(const std::string& eventId)
  */
 void login() {
     // Create dialog
-    dialog = new gcn::Container();
+    dialog = new WindowContainer();
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
     userField = new gcn::TextField("player");
