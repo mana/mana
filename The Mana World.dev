@@ -11,8 +11,8 @@ PrivateResource=
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=-ljgmod -lalleg_@@_
-Linker=../lib/libjgmod.a_@@_../lib/liballeg.a_@@_../lib/libalfontdll.a_@@_../lib/libwsock32.a_@@_
+CppCompiler=
+Linker=../../lib/libjgmod.a_@@_../../lib/liballeg.a_@@_../../lib/libalfontdll.a_@@_../../lib/libwsock32.a_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -346,7 +346,6 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
-
 ########Text Field info#####
 dev-cpp projectfile for tmw by kth5 XD
+
