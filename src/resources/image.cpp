@@ -64,7 +64,7 @@ void Image::unload()
 }
 
 
-int Image::getWidth()
+int Image::getWidth() const
 {
     if (image != NULL) {
         return image->w;
@@ -72,7 +72,7 @@ int Image::getWidth()
     return 0;
 }
 
-int Image::getHeight()
+int Image::getHeight() const
 {
     if (image != NULL) {
         return image->h;
@@ -80,10 +80,15 @@ int Image::getHeight()
     return 0;
 }
 
-Image* Image::createSubImage(int x, int y, int width, int height)
+Image* Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
     return new SubImage(this, image, x, y, width, height);
+}
+
+Image* Image::getScaledInstance(int width, int height)
+{
+    return new ScaledImage(this, image, width, height);
 }
 
 bool Image::draw(BITMAP *screen, int x, int y)
@@ -91,6 +96,10 @@ bool Image::draw(BITMAP *screen, int x, int y)
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
+    //SDL_Rect dst_rect;
+    //dst_rect.x = x + offset_x;
+    //dst_rect.y = y + offset_y;
+    //SDL_BlitSurface(src, NULL, dst, &dst_rect);
     // Draw the image onto the screen.
     draw_sprite(screen, image, x, y);
     //if (SDL_BlitSurface(image, NULL, screen, &screenRect) < 0) {
@@ -120,6 +129,8 @@ void Image::drawPattern(BITMAP *screen, int x, int y, int w, int h)
     }
 }
 
+//============================================================================
+
 SubImage::SubImage(Image *parent, BITMAP *image,
         int x, int y, int width, int height):
     Image(create_sub_bitmap(image, x, y, width, height)),
@@ -138,12 +149,10 @@ SubImage::~SubImage()
 {
     if (image) {
         destroy_bitmap(image);
+        image = NULL;
     }
-    parent->decRef();
-}
-
-void SubImage::unload()
-{
+    // TODO: Enable when no longer a problem
+    //parent->decRef();
 }
 
 bool SubImage::draw(BITMAP *screen, int x, int y)
@@ -158,4 +167,22 @@ bool SubImage::draw(BITMAP *screen, int x, int y)
     //}
 
     return true;
+}
+
+//============================================================================
+
+ScaledImage::ScaledImage(Image *parent, BITMAP *bmp, int width, int height):
+    Image(create_bitmap(width, height))
+{
+    if (image) {
+        stretch_blit(bmp, image, 0, 0, bmp->w, bmp->h, 0, 0, width, height);
+    }
+}
+
+ScaledImage::~ScaledImage()
+{
+    if (image) {
+        destroy_bitmap(image);
+        image = NULL;
+    }
 }

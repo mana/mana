@@ -196,20 +196,21 @@ GraphicEngine::GraphicEngine() {
     gui_bitmap = this->buffer;
 
     // Load the sprite sets
-    BITMAP *npcbmp = load_bitmap("data/graphic/npcset.bmp", NULL);
-    BITMAP *emotionbmp = load_bitmap("data/graphic/emotionset.bmp", NULL);
-    BITMAP *tilesetbmp = load_bitmap("data/graphic/tileset.bmp", NULL);
-    BITMAP *monsterbitmap = load_bitmap("data/graphic/monsterset.bmp", NULL);
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *npcbmp = resman->getImage("graphic/npcset.bmp");
+    Image *emotionbmp = resman->getImage("graphic/emotionset.bmp");
+    Image *tilesetbmp = resman->getImage("graphic/tileset.bmp");
+    Image *monsterbitmap = resman->getImage("graphic/monsterset.bmp");
 
     if (!npcbmp) error("Unable to load npcset.bmp");
     if (!emotionbmp) error("Unable to load emotionset.bmp");
     if (!tilesetbmp) error("Unable to load tileset.bmp");
     if (!monsterbitmap) error("Unable to load monsterset.bmp");
 
-    npcset = new Spriteset(npcbmp, 50, 80, 0, 0);
-    emotionset = new Spriteset(emotionbmp, 19, 19, 0, 0);
-    tileset = new Spriteset(tilesetbmp, 32, 32, 0, 0);
-    monsterset = new Spriteset(monsterbitmap, 60, 60, 30, 40);
+    npcset = new Spriteset(npcbmp, 50, 80);
+    emotionset = new Spriteset(emotionbmp, 19, 19);
+    tileset = new Spriteset(tilesetbmp, 32, 32);
+    monsterset = new Spriteset(monsterbitmap, 60, 60);
 }
 
 GraphicEngine::~GraphicEngine() {
@@ -341,12 +342,12 @@ void GraphicEngine::refresh() {
             int mf = node->frame + node->action;
 
             if (node->action == MONSTER_DEAD) {
-                monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(
-                        buffer, node->text_x, node->text_y);
+                monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(buffer,
+                        node->text_x + 30, node->text_y + 40);
             }
             else {
                 monsterset->spriteset[sprnum + 8 * mf]->draw(buffer,
-                        node->text_x, node->text_y);
+                        node->text_x + 30, node->text_y + 40);
             }
 
             if (node->action != STAND) {

@@ -22,6 +22,8 @@
  */
 
 #include "inventory.h"
+#include "../resources/resourcemanager.h"
+#include "../resources/image.h"
 #include <sstream>
 
 InventoryWindow::InventoryWindow():
@@ -29,9 +31,10 @@ InventoryWindow::InventoryWindow():
 {
     setSize(322, 60);
 
-    BITMAP *itembmp = load_bitmap("data/graphic/items.bmp", NULL);
-    if (!itembmp) error("Unable to load items.bmp");
-    itemset = new Spriteset(itembmp, 20, 20, 0, 0);
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *itemImg = resman->getImage("graphic/items.bmp");
+    if (!itemImg) error("Unable to load items.bmp");
+    itemset = new Spriteset(itemImg, 20, 20);
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].id = -1;

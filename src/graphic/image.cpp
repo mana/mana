@@ -18,52 +18,20 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ *  $Id$
  */
 
 #include "image.h"
 
-
-// VideoImage
-
-VideoImage::VideoImage(BITMAP *src, int offset_x, int offset_y):
-    src(src),
-    offset_x(offset_x),
-    offset_y(offset_y)
+Spriteset::Spriteset(Image *img, int width, int height)
 {
-}
-
-VideoImage::~VideoImage() {
-    destroy_bitmap(src);
-}
-
-void VideoImage::draw(BITMAP *dst, int x, int y) {
-    //SDL_Rect dst_rect;
-    //dst_rect.x = x + offset_x;
-    //dst_rect.y = y + offset_y;
-    //SDL_BlitSurface(src, NULL, dst, &dst_rect);
-
-    masked_blit(src, dst, 0, 0, x + offset_x, y + offset_y, src->w, src->h);
-}
-
-
-// Spriteset
-
-Spriteset::Spriteset(BITMAP *bmp, int width, int height, int offx, int offy)
-{
-    /*
-     * We're creating sub bitmaps here for plain convenience. With SDL this'll
-     * probably need to be done different.
-     */
     int x, y;
 
-    for (y = 0; y + height <= bmp->h; y += height)
+    for (y = 0; y + height <= img->getHeight(); y += height)
     {
-        for (x = 0; x + width <= bmp->w; x += width)
+        for (x = 0; x + width <= img->getWidth(); x += width)
         {
-            spriteset.push_back(new VideoImage(
-                        create_sub_bitmap(bmp, x, y, width, height),
-                        offx, offy));
+            spriteset.push_back(img->getSubImage(x, y, width, height));
         }
     }
 }
@@ -74,7 +42,3 @@ Spriteset::~Spriteset()
         delete spriteset[i];
     }
 }
-
-int Spriteset::getProperty(DATAFILE *datafile, int type) {
-    return atoi(get_datafile_property(datafile, type));
-}  

@@ -39,7 +39,7 @@
 #include "../gui/inventory.h"
 #include "../gui/npc.h"
 #include "../gui/status.h"
-#include "../../data/graphic/gfx_data.h"
+#include "../resources/resourcemanager.h"
 #include "image.h"
 #include <allegro.h>
 

@@ -28,10 +28,9 @@
 //#include <SDL/SDL.h>
 #include <allegro.h>
 
-/**
- * A clipped version of a larger image.
- */
+// Forward declarations
 class SubImage;
+class ScaledImage;
 
 /**
  * Defines a class for loading and storing images.
@@ -60,24 +59,29 @@ class Image : public Resource
         /**
          * Frees the resources created by SDL.
          */
-        void unload();
+        virtual void unload();
 
         /**
          * Returns the width of the image.
          */
-        int getWidth();
+        virtual int getWidth() const;
 
         /**
          * Returns the height of the image.
          */
-        int getHeight();
+        virtual int getHeight() const;
 
         /**
          * Creates a new image with the desired clipping rectangle.
          * @return <code>NULL</code> if creation failed and a valid
          * object otherwise.
          */
-        Image* createSubImage(int x, int y, int width, int height);
+        virtual Image* getSubImage(int x, int y, int width, int height);
+
+        /**
+         * Creates a scaled version of this image.
+         */
+        virtual Image* getScaledInstance(int width, int height);
 
         /**
          * Blits the internal image onto the screen.
@@ -85,12 +89,12 @@ class Image : public Resource
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        bool draw(BITMAP *screen, int x, int y);
+        virtual bool draw(BITMAP *screen, int x, int y);
 
         /**
          * Does a pattern fill on the given area.
          */
-        void drawPattern(BITMAP *screen, int x, int y, int w, int h);
+        virtual void drawPattern(BITMAP *screen, int x, int y, int w, int h);
 
     protected:
         //SDL_Rect screenRect;
@@ -117,11 +121,6 @@ class SubImage : public Image
         ~SubImage();
 
         /**
-         * Redefines unload to not do anything.
-         */
-        void unload();
-
-        /**
          * Draws the clipped image onto the screen.
          * @return <code>true</code> if drawing was succesful
          * <code>false</code> otherwise.
@@ -136,6 +135,23 @@ class SubImage : public Image
         //SDL_Surface *image;
         //SDL_Surface *screen;
         //unsigned int referenceCount;
+};
+
+/**
+ * A scaled version of an image.
+ */
+class ScaledImage : public Image
+{
+    public:
+        /**
+         * Constructor.
+         */
+        ScaledImage(Image *parent, BITMAP *image, int width, int height);
+
+        /**
+         * Destructor.
+         */
+        ~ScaledImage();
 };
 
 #endif

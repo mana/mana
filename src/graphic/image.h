@@ -21,42 +21,15 @@
  *  $Id$
  */
 
-#ifndef _IMAGE_H
-#define _IMAGE_H
+#ifndef _TMW_SPRITESET_H
+#define _TMW_SPRITESET_H
 
 #include <allegro.h>
 #include <string>
 #include <vector>
 #include <iostream>
 #include "../log.h"
-
-/**
- * A video image stored in memory.
- */
-class VideoImage {
-    private:
-        BITMAP *src;
-        int offset_x, offset_y;
-
-    public:
-        /**
-         * Creates a VideoImage
-         * @param src is a reference to a BITMAP
-         * @param offset_x is the x offset from where to start drawing
-         * @param offset_y is the y offset from where to start drawing
-         */        
-        VideoImage(BITMAP *src, int offset_x, int offset_y);
-
-        /**
-         * Destructor
-         */
-        virtual ~VideoImage();
-
-        /**
-         * Draws a sprite
-         */
-        void draw(BITMAP *dest, int x, int y);
-};
+#include "../resources/image.h"
 
 /**
  * Stores a complete set of sprites.
@@ -64,25 +37,17 @@ class VideoImage {
 class Spriteset {
     public:
         // Vector storing the whole spriteset.
-        std::vector<VideoImage*> spriteset;
+        std::vector<Image*> spriteset;
 
         /*
-         * Cuts the passed bitmap in a grid of sub bitmaps.
+         * Cuts the passed image in a grid of sub images.
          */
-        Spriteset::Spriteset(BITMAP *bmp, int w, int h, int offx, int offy);
+        Spriteset::Spriteset(Image *img, int w, int h);
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~Spriteset();
-
-    private:
-        /**
-         * Helper function to get offset
-         * @param datafile is a reference to the whole spriteset
-         * @param type is the property of the datafile object         
-         */
-        int getProperty(DATAFILE *datafile, int type);
 };
 
 #endif

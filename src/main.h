@@ -39,7 +39,6 @@
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
-#include "../data/graphic/gfx_data.h"
 #include <allegro.h>
 #ifdef WIN32
 #include <winalleg.h>

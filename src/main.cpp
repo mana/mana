@@ -296,28 +296,22 @@ void init_engine() {
     ResourceManager *resman = ResourceManager::getInstance();
 
     login_wallpaper = resman->getImage("graphic/login.bmp");
+    Image *playerImg = resman->getImage("graphic/playerset.bmp");
+    Image *hairImg = resman->getImage("graphic/hairset.bmp");
+
     if (!login_wallpaper) error("Couldn't load login.bmp");
+    if (!playerImg) error("Couldn't load playerset.bmp");
+    if (!hairImg) error("Couldn't load hairset.bmp");
 
-    BITMAP *playerbitmap = load_bitmap("data/graphic/playerset.bmp", NULL);
-    if (!playerbitmap) error("Couldn't load playerset.bmp");
-    // Stretch the bitmap while it hasn't been replaced with higher res yet
-    BITMAP *playerbitmap2 = create_bitmap(
-            playerbitmap->w * 2, playerbitmap->h * 2);
-    stretch_blit(playerbitmap, playerbitmap2,
-            0, 0, playerbitmap->w, playerbitmap->h,
-            0, 0, playerbitmap2->w, playerbitmap2->h);
-    playerset = new Spriteset(playerbitmap2, 160, 120, 0, 0);
-    destroy_bitmap(playerbitmap);
+    // Stretch some bitmaps while they haven't been replaced with higher res
+    Image *scaledPlayerImg = playerImg->getScaledInstance(
+            playerImg->getWidth() * 2, playerImg->getHeight() * 2);
+    Image *scaledHairImg = hairImg->getScaledInstance(
+            hairImg->getWidth() * 2, hairImg->getHeight() * 2);
 
-    BITMAP *hairbitmap = load_bitmap("data/graphic/hairset.bmp", NULL);
-    if (!hairbitmap) error("Couldn't load hairset.bmp");
-    // Stretch the bitmap while it hasn't been replaced with higher res yet
-    BITMAP *hairbitmap2 = create_bitmap(hairbitmap->w * 2, hairbitmap->h * 2);
-    stretch_blit(hairbitmap, hairbitmap2,
-            0, 0, hairbitmap->w, hairbitmap->h,
-            0, 0, hairbitmap2->w, hairbitmap2->h);
-    hairset = new Spriteset(hairbitmap2, 40, 40, 0, 0);
-    destroy_bitmap(hairbitmap);
+    playerset = new Spriteset(scaledPlayerImg, 160, 120);
+    hairset = new Spriteset(scaledHairImg, 40, 40);
+
 
     // TODO: Remove Allegro config file usage from GUI look
     init_gui(buffer, "data/Skin/aqua.skin");
