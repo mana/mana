@@ -68,9 +68,9 @@ You should now be fully equipped for compiling the latest TMW CVS code!
 
 Check out The Mana World from CVS using either the command line cvs tool or
 TortoiseCVS, pick what you like to use most and install that. Next, check out
-the tmw module from our repository. The CVSROOT is:
+the tmw module from our repository. For anonymous users, the CVSROOT is:
 
-  :pserver:anoncvs@sull.homelinux.net:/var/home/cvs/repository
+  :pserver:anonymous@cvs.sourceforge.net:/cvsroot/themanaworld
 
 Open "The Mana World.dev" in Dev-C++. From there on you should be able to
 start compilition with Excute -> Compile. A file called tmw.exe should appear
