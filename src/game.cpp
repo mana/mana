@@ -298,7 +298,7 @@ int get_packet_length(short id) {
 void do_parse() {
   unsigned short id;
   char *temp;
-  char direction;
+  //char direction;
   NODE *node = NULL;
   int len;
 
@@ -689,7 +689,7 @@ void do_parse() {
 					break;
 				case 0x0119:
 					sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
-					alert(pkt_nfo,"","","","",0,0);
+					//alert(pkt_nfo,"","","","",0,0);
 					break;
         // Manage non implemented packets
         default:

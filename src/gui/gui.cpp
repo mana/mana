@@ -22,6 +22,7 @@
 */
 
 #include "gui.h"
+#include "../log.h"
 #include "allegro/internal/aintern.h"
 #include <math.h>
 #include <alfont.h>
@@ -128,6 +129,7 @@ void loadSliderSkin() {
     int    tokenCount;
 
 		gui__repository[GUI_BMP_OFS_SLIDER] = (BITMAP *)gui_gfx[8].dat;
+		if(!gui__repository[GUI_BMP_OFS_SLIDER])alert("","","","","",0,0);
 
     tokens = get_config_argv("slider", "slider_h", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
@@ -531,7 +533,7 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
     
     if (msg == MSG_DRAW) {
         if (d->w >= d->h) {
-            rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
+            //rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
             /* horiz */
             x = d->x;
             y = d->y + (d->h- gui_skin.slider.hSlider[0]->h)/2;
@@ -547,8 +549,12 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
             x+=w;
             masked_blit(gui_skin.slider.hSlider[2], gui_bitmap, 0, 0,  x, y, gui_skin.slider.hSlider[2]->w, gui_skin.slider.hSlider[2]->h);
 
+						if(d->d1==0)d->d1=1; // Fix by 0 division
+
             x  = d->x + ((d->w-gui_skin.slider.hGrip->w) * d->d2)/d->d1;
             y = d->y + (d->h - gui_skin.slider.hGrip->h)/2;
+						if(!gui_bitmap)error("gui_bitmap");
+						if(!gui_skin.slider.hGrip)error("hGrip");
             masked_blit(gui_skin.slider.hGrip, gui_bitmap, 0, 0,  x, y, gui_skin.slider.hGrip->w, gui_skin.slider.hGrip->h);
         } else {
             rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);

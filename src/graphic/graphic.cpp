@@ -311,9 +311,9 @@ void do_graphic(void) {
 				close_shop();
 			}
 			break;
-			case 4:
+		case 4:
+      sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
-			sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);
 				
