@@ -630,6 +630,9 @@ void do_parse() {
                         case 0x0008:
                             char_info->max_sp = RFIFOW(4);
                             break;
+			case 0x0009:
+			    char_info->statsPointsToAttribute = RFIFOW(4);
+			    break;
                         case 0x000b:
                             char_info->lv = RFIFOW(4);
                             break;
@@ -637,6 +640,12 @@ void do_parse() {
                             char_info->skill_point = RFIFOW(4);
                             skillDialog->setPoints(char_info->skill_point);
                             break;
+			 case 0x0016:
+			    char_info->xpForNextLevel = RFIFOW(4);
+			 break;
+			 case 0x0017:
+			    char_info->jobXpForNextLevel = RFIFOW(4);
+			 break;
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
                             break;
