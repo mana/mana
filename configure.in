@@ -98,7 +98,7 @@ FIND_PATH(allegro-config, LIBALLEGRO_CONFIG, [${prefix}/bin ${exec_prefix}/bin /
 ])
 
 if test -n "$LIBALLEGRO_CONFIG"; then
-  LIBALLEGRO_LIBS="`$LIBALLEGRO_CONFIG --libs` -ljgmod -lguichan -lguichan_allegro"
+  LIBALLEGRO_LIBS="`$LIBALLEGRO_CONFIG --libs` -lguichan_allegro -lguichan"
   LIBALLEGRO_RPATH=
   for args in $LIBALLEGRO_LIBS; do
        case $args in

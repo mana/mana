@@ -3,4 +3,4 @@
 AUTOMAKE_OPTIONS = foreign 1.4
 
 SUBDIRS = src
-LDFLAGS = -ljgmod `allegro-config --libs release` -lalfont -lguichan -lguichan_allegro
+LDFLAGS = `allegro-config --libs release` `sdl-config --libs` -lguichan_allegro -lguichan
