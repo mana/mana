@@ -1,6 +1,6 @@
 MODULES = src/sound/sound.cpp \
           src/graphic/graphic.cpp \
-          src/graphic/image.cpp \
+          src/graphic/spriteset.cpp \
           src/gui/allegroinput.cpp \
           src/gui/button.cpp \
           src/gui/buy.cpp \
