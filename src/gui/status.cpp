@@ -99,21 +99,23 @@ void StatusWindow::update()
     spValue->setCaption(tempstr);
     spValue->adjustSize();
     
-    sprintf(tempstr, "Exp: %d / %d", (int)char_info->xp, (int)char_info->xpForNextLevel);
+    sprintf(tempstr, "Exp: %d / %d",
+            (int)char_info->xp, (int)char_info->xpForNextLevel);
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
     
-    sprintf(tempstr, "Job Exp: %d / %d", (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
+    sprintf(tempstr, "Job Exp: %d / %d",
+            (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
-    if ( char_info->hp < int(char_info->max_hp / 3) )
+    if (char_info->hp < int(char_info->max_hp / 3))
     {
         healthBar->setColor(255, 0, 0); // Red
     }
     else
     {
-        if ( char_info->hp < int( (char_info->max_hp / 3)*2 ) )
+        if (char_info->hp < int((char_info->max_hp / 3) * 2))
         {
             healthBar->setColor(255, 181, 9); // orange
         }
@@ -127,7 +129,8 @@ void StatusWindow::update()
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
     
     xpBar->setProgress((float)char_info->xp / (float)char_info->xpForNextLevel);
-    jobXpBar->setProgress((float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
+    jobXpBar->setProgress(
+            (float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
 
-    delete tempstr;
+    delete[] tempstr;
 }

@@ -175,7 +175,7 @@ void Being::setPath(PATH_NODE *path)
         }
         PATH_NODE *pn = path;
         this->path = path->next;
-        free(pn);
+        delete pn;
         x = this->path->x;
         y = this->path->y;
         action = WALK;

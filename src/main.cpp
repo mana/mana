@@ -281,7 +281,7 @@ void init_engine() {
 /** Clear the engine */
 void exit_engine() {
     config.write(dir);
-    delete dir;
+    delete[] dir;
     gui_exit();
     ResourceManager::deleteInstance();
 }

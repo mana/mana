@@ -31,7 +31,8 @@ Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
-Gui::Gui(Graphics *graphics)
+Gui::Gui(Graphics *graphics):
+    topHasMouse(false)
 {
     // Set graphics
     guiGraphics = graphics;

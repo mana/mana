@@ -161,10 +161,10 @@ void server_char_server(int serverIndex) {
     WFIFOB(16) = net_b_value(sex);
     WFIFOSET(17);
 
-    while ((in_size<4)||(out_size>0))flush();
+    while ((in_size < 4) || (out_size > 0))flush();
     RFIFOSKIP(4);
 
-    while (in_size<3)flush();
+    while (in_size < 3) flush();
 
     if (RFIFOW(0) == 0x006b) {
         while(in_size < RFIFOW(2))flush();
