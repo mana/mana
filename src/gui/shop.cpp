@@ -28,8 +28,8 @@ char* selectedItem = "You got 4";
 ITEM_SHOP *shop = NULL;
 
 char *item_db[] = {
-	"Cactus Drink", "Cactus potion", "Casino coins", "Royal Jam", "Faerie Walnut",
-	"Cup of wishes", "Magic rope", "Midge mallet", "Flammie drum", "Moogle belt"
+	"Cactus Drink", "Cactus potion", "Casino coins", "Decor Candy", "Maggot Slime",
+	"Candy Cane", "Scorpion Stinger", "Xmas Cake", "Chocolate", "Candy", "Santa Hat"
 };
 
 char *shop_list(int index, int *list_size) {
@@ -49,7 +49,7 @@ char *shop_list(int index, int *list_size) {
 
 void add_buy_item(short id, int price) {
 	ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
-	if(id-501>=0 && id-501<=2)
+	if(id-501>=0 && id-501<=11)
     sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
 	else
 		sprintf(item_shop->name, "Unknown item %i gp", price);
