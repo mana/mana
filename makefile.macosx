@@ -3,9 +3,9 @@ CXX = g++
 #CXXFLAGS = -g -march=i686 -O2
 
 # excessive optimizations for pentium pro and later
-CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DMACOSX -fexceptions
+CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DMACOSX -fexceptions `sdl-config --cflags`
 
-CFLAGS=`allegro-config --libs release` -lguichan_allegro -lguichan /usr/lib/libjgmod.a
+CFLAGS=`allegro-config --libs release` `sdl-config --libs` -lSDL_mixer -lguichan_allegro -lguichan /usr/lib/libjgmod.a
 
 include file.list
 MODULES += src/net/win2mac.cpp
