@@ -508,7 +508,7 @@ void do_parse() {
                     if (being != NULL) {
                         // White
                         being->setSpeech(temp, SPEECH_TIME);
-                        chatBox->chat_log(temp, BY_OTHER);
+                        chatWindow->chat_log(temp, BY_OTHER);
                     }
                     free(temp);
                     break;
@@ -525,10 +525,10 @@ void do_parse() {
                         player_node->setSpeech(temp, SPEECH_TIME);
 
                         if (id == 0x008e) {
-                            chatBox->chat_log(temp, BY_PLAYER);
+                            chatWindow->chat_log(temp, BY_PLAYER);
                         }
                         else {
-                            chatBox->chat_log(temp, BY_GM);
+                            chatWindow->chat_log(temp, BY_GM);
                         }
 
                         free(temp);
@@ -683,7 +683,7 @@ void do_parse() {
                                 RFIFOW(4 + loop * 18), true);
                         /*char info[40];
                         sprintf(info, "1ee %i", RFIFOW(4+loop*18+2));
-                        chatBox->chat_log(info, BY_SERVER);*/
+                        chatWindow->chat_log(info, BY_SERVER);*/
                     }
                     break;
                     // Get the equipments
@@ -697,7 +697,7 @@ void do_parse() {
                             RFIFOB(4+loop*20+4), RFIFOB(4+loop*20+5),
                             RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
                             RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
-                        chatBox->chat_log(info, BY_SERVER);*/
+                        chatWindow->chat_log(info, BY_SERVER);*/
                         if(RFIFOW(4+loop*20+8)) {
                             int mask = 1;
                             int position = 0;
@@ -706,7 +706,7 @@ void do_parse() {
                                 position++;
                             }
                             /*sprintf(info, "%i %i", mask, position);
-                            chatBox->chat_log(info, BY_SERVER);*/
+                            chatWindow->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
                                 RFIFOW(4+loop*20+2));
                             equipmentWindow->equipments[position - 1].inventoryIndex =
@@ -719,7 +719,7 @@ void do_parse() {
                     // Can I use the item?
                 case 0x00a8:
                     if (RFIFOB(6) == 0) {
-                        chatBox->chat_log("Failed to use item", BY_OTHER);
+                        chatWindow->chat_log("Failed to use item", BY_OTHER);
                     } else {
                         inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(4));
                     }
@@ -780,7 +780,7 @@ void do_parse() {
                             action.bskill == BSKILL_EMOTE ) {
                         printf("Action: %d/%d", action.bskill, action.success);
                     }
-                    chatBox->chat_log(action);
+                    chatWindow->chat_log(action);
                     break;
                     // Update stat values
                 case 0x00b0:
@@ -814,12 +814,12 @@ void do_parse() {
                             char_info->statsPointsToAttribute = RFIFOW(4);
                             /*char points[20];
                             sprintf(points, "b0 0x0009 %i", RFIFOL(4));
-                            chatBox->chat_log(points, BY_SERVER);*/
+                            chatWindow->chat_log(points, BY_SERVER);*/
                             break;
                         default:
                             /*char unknown[20];
                             sprintf(unknown, "b0 %x %i", RFIFOW(2),RFIFOL(4));
-                            chatBox->chat_log(unknown, BY_SERVER);*/
+                            chatWindow->chat_log(unknown, BY_SERVER);*/
                             break;
                     }
                     statusWindow->update();
@@ -951,7 +951,7 @@ void do_parse() {
                     }
                     /*char unknown2[20];
                     sprintf(unknown2, "141 %i %i %i", RFIFOL(2),RFIFOL(6),RFIFOL(10));
-                    chatBox->chat_log(unknown2, BY_SERVER);*/
+                    chatWindow->chat_log(unknown2, BY_SERVER);*/
                     break;
                     // Buy/Sell dialog
                 case 0x00c4:
@@ -982,27 +982,27 @@ void do_parse() {
                         }
                     }
                     else {
-                        chatBox->chat_log("Nothing to sell", BY_SERVER);
+                        chatWindow->chat_log("Nothing to sell", BY_SERVER);
                     }
                     break;
                     // Answer to buy
                 case 0x00ca:
                     if (RFIFOB(2) == 0)
-                        chatBox->chat_log("Thanks for buying", BY_SERVER);
+                        chatWindow->chat_log("Thanks for buying", BY_SERVER);
                     else
-                        chatBox->chat_log("Unable to buy", BY_SERVER);
+                        chatWindow->chat_log("Unable to buy", BY_SERVER);
                     break;
                     // Answer to sell
                 case 0x00cb:
                     if (RFIFOB(2) == 0)
-                        chatBox->chat_log("Thanks for selling", BY_SERVER);
+                        chatWindow->chat_log("Thanks for selling", BY_SERVER);
                     else
-                        chatBox->chat_log("Unable to sell", BY_SERVER);
+                        chatWindow->chat_log("Unable to sell", BY_SERVER);
                     break;
                     // Add item to inventory after you bought it
                 case 0x00a0:
                     if (RFIFOB(22) > 0)
-                        chatBox->chat_log("Unable to pick up item", BY_SERVER);
+                        chatWindow->chat_log("Unable to pick up item", BY_SERVER);
                     else {
                         if(RFIFOW(19)) {
                             inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
@@ -1017,7 +1017,7 @@ void do_parse() {
                             RFIFOW(2), RFIFOW(4), RFIFOW(6),
                             RFIFOB(8), RFIFOB(9), RFIFOB(10),
                             RFIFOW(19), RFIFOB(21));
-                        chatBox->chat_log(info, BY_SERVER);*/
+                        chatWindow->chat_log(info, BY_SERVER);*/
                     }
                     break;
                     // Decrease quantity of an item in inventory
@@ -1063,7 +1063,7 @@ void do_parse() {
                     break;
                     // Display MVP player
                 case 0x010c:
-                    chatBox->chat_log("MVP player", BY_SERVER);
+                    chatWindow->chat_log("MVP player", BY_SERVER);
                     break;
                     // Item is found
                 case 0x009d:
@@ -1126,7 +1126,7 @@ void do_parse() {
                     // Answer to equip item
                 case 0x00aa:
                     if (RFIFOB(6) == 0)
-                        chatBox->chat_log("Unable to equip.", BY_SERVER);
+                        chatWindow->chat_log("Unable to equip.", BY_SERVER);
                     else {
                          if(RFIFOW(4)) {
                             int mask = 1;
@@ -1142,7 +1142,7 @@ void do_parse() {
                                     false);
                             /*char info3[40];           
                             sprintf(info3, "info3 %i %i", position-1,equippedId);
-                            chatBox->chat_log(info3, BY_SERVER);*/
+                            chatWindow->chat_log(info3, BY_SERVER);*/
 
                             inventoryWindow->items->setEquipped(RFIFOW(2),
                                 true);
@@ -1164,18 +1164,18 @@ void do_parse() {
                     }
                     /*char info[40];           
                     sprintf(info, "aa %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
-                    chatBox->chat_log(info, BY_SERVER);*/
+                    chatWindow->chat_log(info, BY_SERVER);*/
                     break;
                     // Equipment related
                 case 0x01d7:
                     /*char content[40];
                     sprintf(content, "1d7 %i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
-                    chatBox->chat_log(content, BY_SERVER);*/
+                    chatWindow->chat_log(content, BY_SERVER);*/
                     break;
                     // Answer to unequip item
                 case 0x00ac:
                     if (RFIFOB(6) == 0)
-                        chatBox->chat_log("Unable to unequip.", BY_SERVER);
+                        chatWindow->chat_log("Unable to unequip.", BY_SERVER);
                     else {
                         if(RFIFOW(4)) {
                             int mask = 1;
@@ -1196,28 +1196,28 @@ void do_parse() {
                     }
                     /*char info2[40];
                     sprintf(info2, "ac %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
-                    chatBox->chat_log(info2, BY_SERVER);*/
+                    chatWindow->chat_log(info2, BY_SERVER);*/
                     break;
                     // Arrows equipped
                 case 0x013c:
                     /*char info3[40];
                     sprintf(info3, "13c %i", RFIFOW(2));
-                    chatBox->chat_log(info3, BY_SERVER);*/
+                    chatWindow->chat_log(info3, BY_SERVER);*/
                     inventoryWindow->items->setEquipped(RFIFOW(2), true);
                     break;
                     // Various messages
                 case 0x013b:
                     /*char msg[40];
                     sprintf(msg, "13b %i", RFIFOW(2));
-                    chatBox->chat_log(msg, BY_SERVER);*/
+                    chatWindow->chat_log(msg, BY_SERVER);*/
                     if (RFIFOW(2) == 0)
-                        chatBox->chat_log("Equip arrows first", BY_SERVER);
+                        chatWindow->chat_log("Equip arrows first", BY_SERVER);
                     break;
                     // Updates a stat value
                 case 0x00bc:
                     /*char stat[20];
                     sprintf(stat, "bc %x %i %i", RFIFOW(2),RFIFOB(4),RFIFOB(5));
-                    chatBox->chat_log(stat, BY_SERVER);*/
+                    chatWindow->chat_log(stat, BY_SERVER);*/
                     if(RFIFOB(4)) {
                         switch(RFIFOW(2)) {
                             case 0x000d:
@@ -1260,7 +1260,7 @@ void do_parse() {
                     sprintf(stats, "%i %i %i %i %i %i %i %i %i %i %i %i",
                     RFIFOB(4),RFIFOB(5),RFIFOB(6),RFIFOB(7),RFIFOB(8),RFIFOB(9),
                     RFIFOB(10),RFIFOB(11),RFIFOB(12),RFIFOB(13),RFIFOB(14),RFIFOB(15));
-                    chatBox->chat_log(stats,BY_SERVER);*/
+                    chatWindow->chat_log(stats,BY_SERVER);*/
                     statusWindow->update();
                     break;
                     // Updates status point

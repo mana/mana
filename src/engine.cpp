@@ -42,11 +42,9 @@ bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
-gcn::TextField *chatInput;
 gcn::Label *debugInfo;
 
-Window *chatWindow;
-ChatBox *chatBox;
+ChatWindow *chatWindow;
 StatusWindow *statusWindow;
 BuyDialog *buyDialog;
 SellDialog *sellDialog;
@@ -62,18 +60,6 @@ Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
-
-void ChatListener::action(const std::string& eventId)
-{
-    if (eventId == "chatinput") {
-        std::string message = chatInput->getText();
-
-        if (message.length() > 0) {
-            chatBox->chat_send(char_info[0].name, message.c_str());
-            chatInput->setText("");
-        }
-    }
-}
 
 char hairtable[16][4][2] = {
     // S(x,y)  W(x,y)   N(x,y)   E(x,y)
@@ -135,37 +121,13 @@ int get_y_offset(Being *being) {
 Engine::Engine()
 {
     // Initializes GUI
-    chatWindow = new Window("Chat");
-    chatWindow->setSize(600, 100);
-    
-    chatInput = new TextField();
-    //chatInput->setPosition(chatInput->getBorderSize(),
-    //        screen->h - chatInput->getHeight() -
-    //        chatInput->getBorderSize());
-    chatInput->setPosition(chatInput->getBorderSize(),
-            chatWindow->getY() + 85);
-    
-    chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
-
-    ChatListener *chatListener = new ChatListener();
-    chatInput->setEventId("chatinput");
-    chatInput->addActionListener(chatListener);
-
     debugInfo = new gcn::Label();
-
-    chatBox = new ChatBox("./docs/chatlog.txt", 20);
-    chatBox->setSize(592, 100);
-    chatBox->setPosition(0, chatInput->getY() - 1 - chatBox->getHeight());
-
-    chatWindow->add(chatBox);
-    //chatWindow->add(debugInfo);
-    chatWindow->add(chatInput);
-    
-    chatWindow->setPosition(0, screen->h-12 - chatInput->getHeight() - chatBox->getHeight());
-    
-    guiTop->add(chatWindow);
+    guiTop->add(debugInfo);
 
     // Create dialogs
+
+    chatWindow = new ChatWindow("./docs/chatlog.txt", 20);
+    chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
 
     statusWindow = new StatusWindow();
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -202,7 +164,6 @@ Engine::Engine()
     newSkillWindow = new NewSkillDialog();
     newSkillWindow->setVisible(false);
 
-
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
     statsWindow->setPosition(
@@ -222,10 +183,10 @@ Engine::Engine()
     chargeDialog->setPosition(
             screen->w - 5 - chargeDialog->getWidth(),
             screen->h - chargeDialog->getHeight() - 15);
-    
-    // Give focus to the chat input
-    chatInput->requestFocus();
 
+    // Give focus to chat window
+    chatWindow->requestFocus();
+    
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
     Image *npcbmp = resman->getImage(
@@ -254,7 +215,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-    delete chatBox;
+    delete chatWindow;
     delete statusWindow;
     delete buyDialog;
     delete sellDialog;

@@ -49,12 +49,12 @@
 extern char speech[255];
 extern char npc_text[1000];
 extern char skill_points[10];
-extern ChatBox *chatBox;
 extern bool show_skill_dialog, show_skill_list_dialog;
 extern int show_npc_dialog;
 extern int map_x, map_y, camera_x, camera_y;
 extern char npc_button[10];
 
+extern ChatWindow *chatWindow;
 extern StatusWindow *statusWindow;
 extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
@@ -72,14 +72,6 @@ extern ChargeDialog* chargeDialog;
 
 char get_x_offset(char, char);
 char get_y_offset(char, char);
-
-/**
- * The action listener for the chat field.
- */
-class ChatListener : public gcn::ActionListener {
-    public:
-        void action(const std::string& eventId);
-};
 
 /**
  * Game engine that does the main drawing.

@@ -26,10 +26,8 @@
 
 #include "resource.h"
 #include <SDL.h>
-
-#ifdef USE_OPENGL
 #include <SDL_opengl.h>
-#endif
+#include <string>
 
 // This flag causes image alpha channel to be preserved, otherwise masking is
 // used.
@@ -97,8 +95,9 @@ class Image : public Resource
 
         /**
          * Creates a new image with the desired clipping rectangle.
+         *
          * @return <code>NULL</code> if creation failed and a valid
-         * object otherwise.
+         *         object otherwise.
          */
         virtual Image* getSubImage(int x, int y, int width, int height);
 

@@ -26,11 +26,12 @@
 
 #include <guichan.hpp>
 #include "../resources/image.h"
+#include "../net/network.h"
+#include "window.h"
 #include <SDL.h>
 #include <list>
 #include <string>
 #include <fstream>
-#include "../net/network.h"
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
@@ -96,17 +97,17 @@ struct CHATSKILL {
 /**
  * Simple chatlog object.
  */
-class ChatBox : public gcn::Widget {
+class ChatWindow : public Window, public gcn::ActionListener {
     public:
         /**
          * Constructor.
          */
-        ChatBox(const char *logfile, int item_num);
+        ChatWindow(const char *logfile, int item_num);
 
         /**
          * Destructor.
          */
-        ~ChatBox();
+        ~ChatWindow();
 
         /*
          * Adds a line of text to our message list. Parameters:
@@ -125,6 +126,16 @@ class ChatBox : public gcn::Widget {
          * Draws the chat box.
          */
         void draw(gcn::Graphics *graphics);
+
+        /**
+         * Performs action.
+         */
+        void action(const std::string &actionId);
+
+        /**
+         * Request focus.
+         */
+        void requestFocus();
 
         /*
          * Determines wether to send a command or an ordinary message, then
@@ -167,11 +178,11 @@ class ChatBox : public gcn::Widget {
         int items;
         int items_keep;
 
-        /** constructs failed messages for actions */
+        /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
-	
-	// The Alpha-Blended Surface for the background transluency effect.
-	Image *chatBoxBackground;
+
+        /** Input box for chat messages */
+        gcn::TextField *chatInput;
 };
 
 #endif

@@ -22,29 +22,39 @@
  */
 
 #include "chat.h"
+#include "textfield.h"
 #include "../graphics.h"
+#include "../main.h"
 #include <iostream>
 
-ChatBox::ChatBox(const char *logfile, int item_num)
+ChatWindow::ChatWindow(const char *logfile, int item_num):
+    Window("")
 {
     chatlog_file.open(logfile, std::ios::out | std::ios::app);
     items = 0;
     items_keep = item_num;
-    
-    chatBoxBackground = Image::create(200, 200);
-    if (chatBoxBackground) {
-        chatBoxBackground->fillWithColor(255, 255, 255);
-        chatBoxBackground->setAlpha(0.7f);
-    }
+
+    setSize(600, 100);
+
+    chatInput = new TextField();
+    chatInput->setPosition(
+            chatInput->getBorderSize(),
+            100 - chatInput->getHeight() - chatInput->getBorderSize());
+    chatInput->setWidth(600 - 2 * chatInput->getBorderSize());
+    chatInput->setEventId("chatinput");
+    chatInput->addActionListener(this);
+    add(chatInput);
 }
 
-ChatBox::~ChatBox()
+ChatWindow::~ChatWindow()
 {
+    delete chatInput;
+
     chatlog_file.flush();
     chatlog_file.close();
 }
 
-void ChatBox::chat_log(std::string line, int own)
+void ChatWindow::chat_log(std::string line, int own)
 {
     int pos;
     CHATLOG tmp;
@@ -78,7 +88,7 @@ void ChatBox::chat_log(std::string line, int own)
     
     // A try to get text sentences no too long...
     bool finished = false;
-    int maxLength = 80;
+    unsigned int maxLength = 80;
 
     while (!finished)
     {
@@ -113,43 +123,30 @@ void ChatBox::chat_log(std::string line, int own)
     }
 }
 
-void ChatBox::chat_log(CHATSKILL action) {
+void ChatWindow::chat_log(CHATSKILL action)
+{
     chat_log(const_msg(action), BY_SERVER);
 }
 
 
-void ChatBox::draw(gcn::Graphics *graphics)
+void ChatWindow::draw(gcn::Graphics *graphics)
 {
+    // Draw the window border/background and children
+    Window::draw(graphics);
+
+    // Draw the chat log
     int x, y;
     int n = 8;
-    int texty = getHeight() - 5, i = 0;
+    int texty = getHeight() - 5 - chatInput->getHeight() -
+        2 * chatInput->getBorderSize();
+    int i = 0;
     CHATLOG line;
     n -= 1;
 
     graphics->setColor(gcn::Color(203, 203, 203));
-    graphics->drawLine(95, 5, 95, getHeight() - 5);
-    graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    graphics->drawLine(95, 5, 95, texty);
 
     getAbsolutePosition(x, y);
-
-    // Potentially recreate background with new size
-    if (chatBoxBackground) {
-        if ((chatBoxBackground->getWidth() != getWidth()) ||
-                (chatBoxBackground->getHeight() != getHeight()))
-        {
-            delete chatBoxBackground;
-            chatBoxBackground = Image::create(getWidth(), getHeight());
-            if (chatBoxBackground) {
-                chatBoxBackground->fillWithColor(255, 255, 255); 
-                chatBoxBackground->setAlpha(0.7f);
-            }
-        }
-    }
-
-    // Draw background image
-    if (chatBoxBackground) {
-        chatBoxBackground->draw(screen, x, y);
-    }
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;
@@ -186,7 +183,25 @@ void ChatBox::draw(gcn::Graphics *graphics)
     }
 }
 
-char *ChatBox::chat_send(std::string nick, std::string msg)
+void ChatWindow::action(const std::string& eventId)
+{
+    if (eventId == "chatinput") {
+        std::string message = chatInput->getText();
+
+        if (message.length() > 0) {
+            chat_send(char_info[0].name, message.c_str());
+            chatInput->setText("");
+        }
+    }
+}
+
+void ChatWindow::requestFocus()
+{
+    // Give focus to the chat input
+    chatInput->requestFocus();
+}
+
+char *ChatWindow::chat_send(std::string nick, std::string msg)
 {
     short packid = 0x008c;
 
@@ -221,7 +236,8 @@ char *ChatBox::chat_send(std::string nick, std::string msg)
     return "";
 }
 
-std::string ChatBox::const_msg(CHATSKILL action) {
+std::string ChatWindow::const_msg(CHATSKILL action)
+{
     std::string msg;
     if (action.success == SKILL_FAILED && action.skill == SKILL_BASIC) {
         switch (action.bskill) {

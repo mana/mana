@@ -119,7 +119,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                                 fileSize));
 
                 // Cleanup
-                if(buffer != NULL) {
+                if (buffer != NULL) {
                     delete[] buffer;
                 }
             }

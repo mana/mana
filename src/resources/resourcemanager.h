@@ -103,8 +103,7 @@ class ResourceManager
 
     private:
         /**
-         * Searches for zip files and adds them to the PhsysicsFS search
-         * path.
+         * Searches for zip files and adds them to the PhysicsFS search path.
          */
         void searchAndAddZipFiles();
 
