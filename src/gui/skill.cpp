@@ -29,10 +29,10 @@
 
 char *skill_db[] = {
     // 0-99
-    "", "Basic", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
+    /* weapons 0-9 */ "Short Blades", "Long Blades", "Hammers", "Archery", "Exotic", "Throwing", "Piercing", "Hand to Hand", "", "",
+    /* magic 10-19 */ "Djin (Fire)", "Niksa (Water)", "Kerub (Earth)", "Ariel (Air)", "Paradin (Light)", "Tharsis (Dark)", "Crono (Time)", "Astra (Space)", "Gen (Mana)", "",
+    /* craft 20-29 */ "Smithy", "Jeweler", "Alchemist", "Cook", "Tailor", "Artisan", "", "", "", "",
+    /* general 30-39 */ "Running", "Searching", "Sneak", "Trading", "Intimidate", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
@@ -44,7 +44,7 @@ char *skill_db[] = {
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
-    "", "", "First aid", "Play as dead", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
@@ -52,11 +52,15 @@ char *skill_db[] = {
     "", "", "", "", "", "", "", "", "", "",
 };
 
+// pointer to the info struct the 
+// dialog is concerned with (to insure future flexibility)
+PLAYER_INFO** SkillList = &char_info; 
+
 
 SkillDialog::SkillDialog():
     Window("Skills")
 {
-    skillListBox = new ListBox(this);
+    /*skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");
     incButton = new Button(" Up ");
@@ -79,99 +83,23 @@ SkillDialog::SkillDialog():
     incButton->addActionListener(this);
     closeButton->addActionListener(this);
 
-    setLocationRelativeTo(getParent());
+    setLocationRelativeTo(getParent());*/
+
 }
 
 SkillDialog::~SkillDialog()
 {
-    delete skillListBox;
+   /* delete skillListBox;
     delete skillScrollArea;
     delete pointsLabel;
     delete incButton;
-    delete closeButton;
+    delete closeButton;*/
 
-    for (int i = skillList.size() - 1; i >= 0; i--)
-    {
-        delete skillList[i];
-        skillList.pop_back();
-    }
 }
 
 void SkillDialog::action(const std::string& eventId)
 {
-    if (eventId == "inc")
-    {
-        // Increment skill
-        int selectedSkill = skillListBox->getSelected();
-        std::cout << "SkillDialog::action(" << selectedSkill << ")\n";
-        if (char_info->skill_point > 0 && selectedSkill >= 0) {
-            std::cout << "Sending upgrade of id " << skillList[selectedSkill]->id << "\n";
-            WFIFOW(0) = net_w_value(0x0112);
-            WFIFOW(2) = net_w_value(
-                    skillList[selectedSkill]->id);
-            WFIFOSET(4);
-        }
-    }
-    else if (eventId == "close")
-    {
-        setVisible(false);
-    }
+    // GUI design
 }
 
-void SkillDialog::setPoints(int i)
-{
-    char tmp[128];
-    sprintf(tmp, "Skill points: %i", i);
-    if (pointsLabel != NULL) {
-        pointsLabel->setCaption(tmp);
-    }
-}
-
-int SkillDialog::getNumberOfElements()
-{
-    return skillList.size();
-}
-
-std::string SkillDialog::getElementAt(int i)
-{
-    if (i >= 0 && i < (int)skillList.size())
-    {
-        char tmp[128];
-        sprintf(tmp, "%s    Lv: %i    Sp: %i",
-                skill_db[skillList[i]->id],
-                skillList[i]->lv,
-                skillList[i]->sp);
-        return tmp;
-    }
-    return "";
-}
-
-bool SkillDialog::hasSkill(int id)
-{
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void SkillDialog::addSkill(int id, int lv, int sp)
-{
-    SKILL *tmp = new SKILL();
-    tmp->id = id;
-    tmp->lv = lv;
-    tmp->sp = sp;
-    skillList.push_back(tmp);
-}
-
-void SkillDialog::setSkill(int id, int lv, int sp)
-{
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
-            skillList[i]->lv = lv;
-            skillList[i]->sp = sp;
-        }
-    }
-}
 
