@@ -1120,9 +1120,9 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
       }
       draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
       rtm = text_mode(-1);
-      textprintf_centre(gui_bitmap, font,
+      textprintf_centre_ex(gui_bitmap, font,
 				d->x + d->w/2,
-				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, "%s", d->dp);
+				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", d->dp);
 			text_mode(rtm);
 			break;
 	}

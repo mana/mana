@@ -131,19 +131,19 @@ void Chat::chat_draw(BITMAP * bmp, int n, FONT * font) {
 
         switch (line.own) {
             case BY_GM :
-                textprintf(bmp, font, 1, y, COLOR_BLUE, "Global announcement: ");
-                textprintf(bmp, font, TEXT_GETWIDTH("Global announcement: "), y, COLOR_GREEN, line.text.c_str());
+                textprintf_ex(bmp, font, 1, y, COLOR_BLUE, -1, "Global announcement: ");
+                textprintf_ex(bmp, font, TEXT_GETWIDTH("Global announcement: "), y, -1, COLOR_GREEN, line.text.c_str());
                 break;
             case BY_PLAYER :
-                textprintf(bmp, font, 1, y, COLOR_YELLOW, line.nick.c_str());
-                textprintf(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
+                textprintf_ex(bmp, font, 1, y, COLOR_YELLOW, -1, line.nick.c_str());
+                textprintf_ex(bmp, font, line.width, y, COLOR_WHITE, -1, line.text.c_str());
                 break;
             case BY_OTHER :
-                textprintf(bmp, font, 1, y, COLOR_GREEN, line.nick.c_str());
-                textprintf(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
+                textprintf_ex(bmp, font, 1, y, COLOR_GREEN, -1, line.nick.c_str());
+                textprintf_ex(bmp, font, line.width, y, COLOR_WHITE, -1, line.text.c_str());
                 break;
             default :
-                textprintf(bmp, font, 1, y, COLOR_LIGHTBLUE, line.text.c_str());
+                textprintf_ex(bmp, font, 1, y, COLOR_LIGHTBLUE, -1, line.text.c_str());
         }
 
         if (i>=n) {

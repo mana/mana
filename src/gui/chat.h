@@ -58,6 +58,7 @@
 
 /** calculate text-width in pixel  */
 #define TEXT_GETWIDTH(str)  (text_length(font, str))
+#define TEXT_OUT(bmp, col, str)  (textprintf_ex(bmp, font, 1, y, col, str, 1))
 
 /** job dependend identifiers (?)  */
 #define		SKILL_BASIC			0x0001

@@ -244,7 +244,6 @@ void init_graphic() {
 	skill_list_player = init_dialog(skill_list_dialog, -1);
 	npc_list_player = init_dialog(npc_list_dialog, -1);
   //gui_bitmap = vpage[page_num];
-	alfont_text_mode(-1);
 	inventory.create(100, 100);
 
 #ifdef WIN32
