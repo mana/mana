@@ -25,6 +25,7 @@
 #include "map.h"
 #include "log.h"
 #include "being.h"
+#include <queue>
 
 #include <stdio.h>
 #ifdef WIN32
@@ -78,9 +79,19 @@ Tile::Tile():
 {
 }
 
+Location::Location(int x, int y, Tile *tile):
+    x(x), y(y), tile(tile)
+{
+}
+
+bool Location::operator< (const Location &loc) const
+{
+   return tile->Fcost < loc.tile->Fcost; 
+}
 
 Map::Map():
-    width(0), height(0)
+    width(0), height(0),
+    onClosedList(1), onOpenList(2)
 {
     tiles = new Tile[width * height];
 }
@@ -193,8 +204,32 @@ int Map::getHeight()
 
 PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
 {
+    // Declare open list, a list with open tiles sorted on F cost
+    std::priority_queue<Location> openList;
+
     // Return when destination not walkable
     if (!getWalk(destX, destY)) return NULL;
+
+    // Reset starting square's G cost to 0
+    Tile *startTile = &tiles[startX + startY * width];
+    startTile->Gcost = 0;
+
+    // Add the start point to the open list
+    openList.push(Location(startX, startY, startTile));
+
+    // Keep trying new open tiles until no more tiles to try or target found
+    while (!openList.empty()) {
+        // Take the location with the lowest F cost from the open list, and
+        // add it to the closed list.
+        Location curr = openList.top();
+        openList.pop();
+        curr.tile->whichList = onClosedList;
+    }
+
+    // Two new values to indicate wether a tile is on the open or closed list,
+    // this way we don't have to clear all the values between each pathfinding.
+    onClosedList += 2;
+    onOpenList += 2;
 
     // No path found
     return NULL;

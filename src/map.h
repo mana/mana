@@ -30,9 +30,15 @@
 #define TILE_WALKABLE  1
 #define TILE_ANIMATED  2
 
+/**
+ * A tile on a tile map.
+ */
 class Tile
 {
     public:
+        /**
+         * Constructor.
+         */
         Tile();
 
         // Tile data
@@ -45,6 +51,29 @@ class Tile
         int parentX, parentY;
 };
 
+/**
+ * A location on a tile map. Used for pathfinding, open list.
+ */
+class Location
+{
+    public:
+        /**
+         * Constructor.
+         */
+        Location(int x, int y, Tile *tile);
+
+        /**
+         * Comparison operator.
+         */
+        bool operator< (const Location &loc) const;
+
+        int x, y;
+        Tile *tile;
+};
+
+/**
+ * A tile map.
+ */
 class Map
 {
     public:
@@ -106,6 +135,9 @@ class Map
     private:
         int width, height;
         Tile *tiles;
+
+        // Pathfinding members
+        int onClosedList, onOpenList;
 };
 
 extern Map tiledMap;
