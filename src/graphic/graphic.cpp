@@ -160,6 +160,46 @@ Graphics::~Graphics() {
     destroy_bitmap(buffer);
 }
 
+void Graphics::drawImageRect(
+        int x, int y, int w, int h,
+        Image *topLeft, Image *topRight,
+        Image *bottomLeft, Image *bottomRight,
+        Image *top, Image *right,
+        Image *bottom, Image *left,
+        Image *center)
+{
+    // Draw the center area
+    center->drawPattern(buffer,
+            x + topLeft->getWidth(), y + topLeft->getHeight(),
+            w - topLeft->getWidth() - topRight->getWidth(),
+            h - topLeft->getHeight() - bottomLeft->getHeight());
+
+    // Draw the sides
+    top->drawPattern(buffer,
+            x + topLeft->getWidth(), y,
+            w - topLeft->getWidth() - topRight->getWidth(), top->getHeight());
+    bottom->drawPattern(buffer,
+            x + bottomLeft->getWidth(), y + h - bottom->getHeight(),
+            w - bottomLeft->getWidth() - bottomRight->getWidth(),
+            bottom->getHeight());
+    left->drawPattern(buffer,
+            x, y + topLeft->getHeight(),
+            left->getWidth(),
+            h - topLeft->getHeight() - bottomLeft->getHeight());
+    right->drawPattern(buffer,
+            x + w - right->getWidth(), y + topRight->getHeight(),
+            right->getWidth(),
+            h - topRight->getHeight() - bottomRight->getHeight());
+
+    // Draw the corners
+    topLeft->draw(buffer, x, y);
+    topRight->draw(buffer, x + w - topRight->getWidth(), y);
+    bottomLeft->draw(buffer, x, y + h - bottomLeft->getHeight());
+    bottomRight->draw(buffer,
+            x + w - bottomRight->getWidth(),
+            y + h - bottomRight->getHeight());
+}
+
 void Graphics::updateScreen()
 {
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);

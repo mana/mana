@@ -103,6 +103,18 @@ class Graphics : public gcn::AllegroGraphics {
         ~Graphics();
 
         /**
+         * Draws a rectangle using 4 corner images, 4 side images and 1 image
+         * for the inside.
+         */
+        void drawImageRect(
+                int x, int y, int w, int h,
+                Image *topLeft, Image *topRight,
+                Image *bottomLeft, Image *bottomRight,
+                Image *top, Image *right,
+                Image *bottom, Image *left,
+                Image *center);
+
+        /**
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
          */
