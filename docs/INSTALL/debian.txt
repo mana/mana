@@ -1,7 +1,7 @@
 How to install TMW on my GNU/Debian Box
 ==================================================
 
-Author:  FERREIRA Yohann (Bertram)
+Author:   FERREIRA Yohann (Bertram)
 Email:    Bertram25@hotmail.com
 Homepage: http://www.behemoth.fr.fm (Take a tour on it with mozilla !)
 
@@ -21,11 +21,11 @@ The Mana World Debian Package can be installed under the Debian Testing and Unst
 In order to have Mana World working, you'll need the following packages that are situed in :
 
 - JGMod :
-http://themanaworl.sourceforge.net/files/jgmod_0.99_i386.deb
+http://themanaworld.sourceforge.net/files/jgmod_0.99_i386.deb
 - AlFont :
-http://themanaworl.sourceforge.net/files/libalfont_1.9.2_i386.deb
+http://themanaworld.sourceforge.net/files/libalfont_1.9.2_i386.deb
 
-Note : If the packages names mismatches, check the page : http://themanaworl.sourceforge.net/files/
+Note : If the packages names mismatches, check the page : http://themanaworld.sourceforge.net/files/
 to look for the latest version of these packages.
 
 When you've grabbed them, install them (as root) with the commands :

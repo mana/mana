@@ -90,7 +90,7 @@ unsigned char state;
 unsigned short x, y;
 unsigned char direction;
 //unsigned short job, hair, hair_color;
-unsigned char stretch_mode;
+unsigned char stretch_mode, screen_mode;
 
 // new sound-engine /- kth5
 TmwSound sound;

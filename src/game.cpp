@@ -49,6 +49,7 @@ unsigned char keyb_state;
 volatile int tick_time;
 volatile bool refresh = false, action_time = false;
 int current_npc, server_tick;
+extern unsigned char screen_mode;
 
 #define MAX_TIME 10000
 
@@ -228,6 +229,17 @@ void do_input() {
 		action_time = false;
 		//alert("","","","","",0,0);
 	}
+	if(key[KEY_F12] && action_time==true) {
+	  if(screen_mode==2) {
+	    screen_mode = 1;
+    } else {
+      screen_mode = 2;    
+    }
+    if(set_gfx_mode(screen_mode, 800, 600, 0, 0)) {
+      error(allegro_error);
+    }
+    action_time = false;
+  }    
 
   if(key[KEY_ENTER]) {
     if(strcmp(speech, "")!=0) {
