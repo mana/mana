@@ -29,8 +29,6 @@
 #include <string>
 #include <fstream>
 
-using namespace std;
-
 #define BY_GM					0		// those should be self-explanatory =)
 #define BY_PLAYER			1
 #define BY_OTHER			2
@@ -114,30 +112,30 @@ class Chat {
 		Chat(const char *, int);
 		void chat_dlgrsize(int);
 
-		void chat_log(string, int, ALFONT_FONT *);
+		void chat_log(std::string, int, ALFONT_FONT *);
 		void chat_log(CHATSKILL, ALFONT_FONT *);
 
 		void chat_draw(BITMAP *, int, ALFONT_FONT *);
-		char * chat_send(string, string);
+		char * chat_send(std::string, std::string);
 		~Chat();
 	private :
-		ofstream chatlog_file;
+		std::ofstream chatlog_file;
 
 		typedef struct CHATLOG {									// list item container object
-			string nick;
-			string text;
+			std::string nick;
+			std::string text;
 			int own;
 			int width;
 		};
 
-		list<CHATLOG> chatlog;										// list object ready to accept out CHATLOG struct :)
-		list<CHATLOG>::iterator iter;
+		std::list<CHATLOG> chatlog;										// list object ready to accept out CHATLOG struct :)
+		std::list<CHATLOG>::iterator iter;
 
 		int items;
 		int items_keep;
 
-		string const_msg(CHATSKILL);							// contructs action-fail messages
-		string const_msg(int);										// constructs normal messages (not implemented yet)
+		std::string const_msg(CHATSKILL);							// contructs action-fail messages
+		std::string const_msg(int);										// constructs normal messages (not implemented yet)
 };
 
 #endif
