@@ -67,6 +67,9 @@ class Window : public gcn::Container, public gcn::MouseListener
          *
          * @param text   The initial window title, "Window" by default.
          * @param modal  Block input to other windows.
+         * @param parent The parent window. This is the window standing above
+         *               this one in the window hiearchy. When reordering,
+         *               a window will never go below its parent window.
          */
         Window(const std::string& text = "Window", bool modal = false,
                 Window *parent = NULL);

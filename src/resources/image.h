@@ -64,7 +64,12 @@ class Image : public Resource
 
         /**
          * Loads an image.
+         *
          * @param filePath The path to the image file to load.
+         * @param flags    These flags allow controlling the way the image is
+         *                 loaded. Currently only IMG_ALPHA is supported, which
+         *                 causes alpha layer to be preserved.
+         *
          * @return <code>NULL</code> if the an error occurred, a
          * valid pointer otherwise.
          */
@@ -72,10 +77,12 @@ class Image : public Resource
 
         /**
          * Loads an image from a buffer in memory.
-         * @param buffer The memory buffer containing the image
-         * data.
-         * @return <code>NULL</code> if the an error occurred, a
-         * valid pointer otherwise.
+         *
+         * @param buffer     The memory buffer containing the image data.
+         * @param bufferSize The size of the memory buffer in bytes.
+         *
+         * @return <code>NULL</code> if the an error occurred, a valid pointer
+         *         otherwise.
          */
         static Image *load(const char* buffer, unsigned int bufferSize);
 

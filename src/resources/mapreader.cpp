@@ -31,6 +31,13 @@
 #define DEFAULT_TILE_WIDTH  32
 #define DEFAULT_TILE_HEIGHT 32
 
+// MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
+// function at link time.
+#ifdef WIN32
+#undef xmlFree
+#define xmlFree(x) ;
+#endif
+
 std::vector<Tileset*> MapReader::tilesets;
 
 Tileset::Tileset(Image *img, int w, int h, int firstGid):
@@ -100,9 +107,7 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
     std::string pathDir = path.substr(0, path.rfind("/") + 1);
 
     prop = xmlGetProp(node, BAD_CAST "version");
-#ifndef WIN32
     xmlFree(prop);
-#endif
 
     int w = getProperty(node, "width", 0);
     int h = getProperty(node, "height", 0);
@@ -144,41 +149,49 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     // origin.
     while (node != NULL)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "tile") && y < h)
+        if (xmlStrEqual(node->name, BAD_CAST "data"))
         {
-            int gid = getProperty(node, "gid", -1);
-            Image *img = NULL;
+            xmlChar *encoding = xmlGetProp(node, BAD_CAST "encoding");
+            xmlChar *compression = xmlGetProp(node, BAD_CAST "compression");
 
-            if (gid > -1) {
-                std::vector<Tileset*>::iterator i;
-                Tileset *set = NULL;
+            if (encoding && xmlStrEqual(encoding, BAD_CAST "base64"))
+            {
+                xmlFree(encoding);
 
-                // Find the tileset with the highest firstGid below/eq to gid
-                for (i = tilesets.begin(); i != tilesets.end(); ++i) {
-                    if ((*i)->getFirstGid() <= gid) {
-                        set = (*i);
-                    }
+                if (compression) {
+                    log("Warning: no layer compression supported!");
+                    xmlFree(compression);
+                    return;
                 }
 
-                if (set && (gid - set->getFirstGid()) <
-                        (int)set->spriteset.size())
+                // Read base64 encoded map file
+                
+            }
+            else {
+                // Read plain XML map file
+                xmlNodePtr n2 = node->xmlChildrenNode;
+
+                while (n2 != NULL)
                 {
-                    img = set->spriteset[gid - set->getFirstGid()];
+                    if (xmlStrEqual(n2->name, BAD_CAST "tile") && y < h)
+                    {
+                        int gid = getProperty(n2, "gid", -1);
+                        if (layer == 0) map->setWalk(x, y, true);
+                        map->setTile(x, y, layer, getTileWithGid(gid));
+
+                        x++;
+                        if (x == w) {x = 0; y++;}
+                    }
+
+                    n2 = n2->next;
                 }
             }
 
-            if (layer == 0) map->setWalk(x, y, true);
-            map->setTile(x, y, layer, img);
-
-            x++;
-            if (x == w) {x = 0; y++;}
-        } 
-    
-        if (xmlStrEqual(node->name, BAD_CAST "data")) {
-            node = node->xmlChildrenNode;
-        } else {
-            node = node->next;
+            // There can be only one data element
+            break;
         }
+
+        node = node->next;
     }
 }
 
@@ -211,9 +224,7 @@ Tileset* MapReader::readTileset(
                 if (tilebmp)
                 {
                     Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
-#ifndef WIN32
                     xmlFree(source);
-#endif
                     return set;
                 }
                 else {
@@ -235,12 +246,34 @@ int MapReader::getProperty(xmlNodePtr node, const char* name, int def)
     xmlChar *prop = xmlGetProp(node, BAD_CAST name);
     if (prop) {
         int val = atoi((char*)prop);
-#ifndef WIN32
         xmlFree(prop);
-#endif
         return val;
     }
     else {
         return def;
     }
+}
+
+Image *MapReader::getTileWithGid(int gid)
+{
+    std::vector<Tileset*>::iterator i;
+    Tileset *set = NULL;
+
+    // Find the tileset with the highest firstGid below/eq to gid
+    for (i = tilesets.begin(); i != tilesets.end(); ++i)
+    {
+        if ((*i)->getFirstGid() <= gid) {
+            set = (*i);
+        }
+        else {
+            break;
+        }
+    }
+
+    if (set && (gid - set->getFirstGid()) < (int)set->spriteset.size())
+    {
+        return set->spriteset[gid - set->getFirstGid()];
+    }
+
+    return NULL;
 }

@@ -74,8 +74,9 @@ class ResourceManager
          * converted into the appropriate path for the current operating system
          * and the resource is loaded.
          *
-         * @param type The type of resource to load.
+         * @param type   The type of resource to load.
          * @param idPath The resource identifier path.
+         * @param flags  Flags to control the loading of certain resources.
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */

@@ -20,7 +20,7 @@
  *
  *  $Id$
  */
- 
+
  /* This file implements the new skill dialog for use under the latest
   * version of the skill system as of 2005/02/20
   */
@@ -45,41 +45,41 @@ char *skill_name[] = {
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", ""
 };
-  
+
 NewSkillDialog::NewSkillDialog():
     Window("Skills")
 {
     // the window
     setSize(400, 300);
-    
+
     // the skill labels
     skillLabel = new gcn::Label[N_SKILL];
-    for(int a=0;a<N_SKILL;a++) {
+    for (int a = 0; a < N_SKILL; a++) {
         skillLabel[a].setCaption(skill_name[a]);
         skillLabel[a].setDimension(gcn::Rectangle(8, 190, 200, 16));
     }
-    
+
     // the close button
     closeButton = new Button("Close");
     closeButton->setEventId("close");
     closeButton->setPosition(160, 210);
     add(closeButton);
-    
+
     // setting up the container
     skillList = new gcn::Container();
-    skillList->setDimension(gcn::Rectangle(0,0,230,600));
-    for(int b=0;b<N_SKILL;b++) {
-        skillList->add(&skillLabel[b],20,20*b);
+    skillList->setDimension(gcn::Rectangle(0, 0, 230, 600));
+    for (int b = 0; b < N_SKILL; b++) {
+        skillList->add(&skillLabel[b], 20, 20 * b);
     }
 
     // the scroll area (content = container)
-    skillScrollArea = new gcn::ScrollArea();
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 300));
+    skillScrollArea = new ScrollArea();
+    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 290));
     skillScrollArea->setContent(skillList);
     add(skillScrollArea);
 
- 
-    
+
+
 
     closeButton->addActionListener(this);
 
@@ -89,7 +89,7 @@ NewSkillDialog::NewSkillDialog():
 NewSkillDialog::~NewSkillDialog()
 {
     delete skillScrollArea;
-    delete skillLabel;
+    delete[] skillLabel;
     delete closeButton;
 }
 

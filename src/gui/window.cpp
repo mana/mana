@@ -56,12 +56,12 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
     dLowerBorder = dBorders->getSubImage(4, 15, 3, 4);
     
-    dBackground->setAlpha(0.7f);
-    dBorders->setAlpha(0.7f);
-    dUpperBorder->setAlpha(0.7f);
-    dLeftBorder->setAlpha(0.7f);
-    dRightBorder->setAlpha(0.7f);
-    dLowerBorder->setAlpha(0.7f);
+    dBackground->setAlpha(0.8f);
+    dBorders->setAlpha(0.8f);
+    dUpperBorder->setAlpha(0.8f);
+    dLeftBorder->setAlpha(0.8f);
+    dRightBorder->setAlpha(0.8f);
+    dLowerBorder->setAlpha(0.8f);
 
     // Register mouse listener
     addMouseListener(this);
@@ -190,7 +190,7 @@ void Window::add(gcn::Widget *w)
     chrome->add(w);
 }
 
-void Window::add(Widget *w, int x, int y)
+void Window::add(gcn::Widget *w, int x, int y)
 {
     chrome->add(w, x, y);
 }

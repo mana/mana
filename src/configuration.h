@@ -75,7 +75,7 @@ class Configuration {
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
-        float getValue(std::string key, float delflt);
+        float getValue(std::string key, float deflt);
     private:
         /**
          * Returns wether they given key exists.

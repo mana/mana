@@ -22,25 +22,12 @@
  */
 
 #include "sound.h"
+#include "log.h"
 
 #ifdef __DEBUG
 #include <iostream>
 #endif
 
-/**
-    \brief install the sound engine
-    \param voices overall reserved voices
-    \param mod_voices voices dedicated for mod-playback
-
-        NOTE:
-            overall voices must not be less or equal to the
-            specified amount of mod_voices!
-            if mod-voices is too low some mods will not sound
-            correctly since a couple of tracks are not going
-            to be played along w/ the others. so missing ins-
-            truments can be a result.
-            32/20 sounds realistic here.
-*/
 void Sound::init(int voices, int mod_voices)
 {
     if (isOk == 0) {
@@ -49,7 +36,7 @@ void Sound::init(int voices, int mod_voices)
 
     bgm = NULL;
     int audio_rate = 44100;
-    Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
+    Uint16 audio_format = AUDIO_S16; // 16-bit stereo
     int audio_channels = 2;
     int audio_buffers = 4096;
 
@@ -67,19 +54,9 @@ void Sound::init(int voices, int mod_voices)
     items = -1;
     isOk = 0;
 
-#ifdef __DEBUG
-    std::cout << "Sound::Init() Initializing Sound\n";
-#endif
+    log("Sound::Init() Initializing Sound");
 }
 
-/**
-    \brief set the volume value-range: 0-128
-    \param music volume value
-    
-    NOTE:
-        all values may only be between 0-128 where 0 means
-        muted.
-*/
 void Sound::setVolume(int music)
 {
     if (isOk == -1)
@@ -91,10 +68,6 @@ void Sound::setVolume(int music)
     }
 }
 
-/**
-    \brief adjusts current volume
-    \param amusic volume difference
-*/
 void Sound::adjustVolume(int amusic)
 {
     if (isOk == -1)
@@ -106,11 +79,6 @@ void Sound::adjustVolume(int amusic)
     }
 }
 
-/**
-    \brief start BGM
-    \param in full path to file
-    \param loop how many times should the midi be looped? (-1 = infinite)
-*/
 void Sound::startBgm(char * in, int loop)
 {
     if (isOk == -1)
@@ -127,16 +95,6 @@ void Sound::startBgm(char * in, int loop)
 #endif
 }
 
-/**
-    \brief stop all currently running BGM tracks
-
-    NOTE:
-        you need to stop all playback when you want to
-        switch from mod to midi. playing a new track is
-        usually simple as calling StartMIDI() or StartMOD() again.
-        passing NULL to the playing functions only means to make
-        playback stop.
-*/
 void Sound::stopBgm()
 {
     if (isOk == -1) {
@@ -154,19 +112,6 @@ void Sound::stopBgm()
     }
 }
 
-/**
-    \brief preloads a sound-item into buffer
-    \param fpath full path to file
-    \param type type of item (SOUND_MOD, SOUND_MID, SOUND_SFX)
-
-    NOTE:
-        please make sure that the object is not loaded more
-        than once since the function will not run any checks
-        on its own!
-
-        the return value should be kept as a reference to the
-        object loaded. if not it is practicaly lost.
-*/
 SOUND_SID Sound::loadItem(char *fpath)
 {
 #ifdef __DEBUG
@@ -184,11 +129,6 @@ SOUND_SID Sound::loadItem(char *fpath)
     return 0;
 }
 
-/**
-    \brief plays an item in soundpool
-    \param id id returned to the item in the soundpool
-    \param volume volume the sound should be played with (possible range: 0-128)
-*/
 void Sound::startItem(SOUND_SID id, int volume)
 {
     if (soundpool[id]) {
@@ -200,9 +140,6 @@ void Sound::startItem(SOUND_SID id, int volume)
     }
 }
 
-/**
-    \brief wipe all items off the cache
-*/
 void Sound::clearCache()
 {
     for(SOUND_SID i = 0; i == items; i++) {
@@ -216,30 +153,14 @@ void Sound::clearCache()
 #endif
 }
 
-/**
-    \brief deinstall all sound functionality
-
-    NOTE:
-        normally you won't need to call this since this is
-        done by SDL when shutting itself down. but if
-        you find a reason to delete the sound-engine from
-        memory (e.g. garbage-collection) feel free to use
-        it. :-P
-*/
 void Sound::close(void)
 {
     isOk = -1;
     clearCache();
     Mix_CloseAudio();
-#ifdef __DEBUG
-    std::cout << "Sound::close() shutting down Sound\n";
-#endif
+    log("Sound::close() shutting down Sound");
 }
 
-/**
-    \brief checks if value equals min-/maximum volume and returns
-    true if that's the case.
-*/
 bool Sound::isMaxVol(int vol)
 {
     if (vol > 0 && vol < 128) return false;

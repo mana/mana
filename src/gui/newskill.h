@@ -60,4 +60,4 @@ class NewSkillDialog : public Window, public gcn::ActionListener
         void action(const std::string&);     
 };
 
-#endif _TMW_NSKILL_H
+#endif

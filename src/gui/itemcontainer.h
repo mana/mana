@@ -55,8 +55,6 @@ class ItemContainer : public gcn::Widget
     public:
         /**
          * Constructor. Initializes the graphic.
-         *
-         * @param path  The file containing item images.
          */
         ItemContainer();
 

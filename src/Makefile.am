@@ -33,6 +33,8 @@ tmw_SOURCES = graphic/graphic.cpp \
 	      gui/login.h \
 	      gui/minimap.cpp \
 	      gui/minimap.h \
+	      gui/newskill.cpp \
+	      gui/newskill.h \
 	      gui/npc.cpp \
 	      gui/npc.h \
 	      gui/npc_text.cpp \

@@ -68,20 +68,26 @@ class MapReader
 
     private:
         /**
-         * Helper function that handles reading a map layer.
+         * Reads a map layer.
          */
         static void readLayer(xmlNodePtr node, Map *map, int layer);
 
         /**
-         * Helper function that handles reading a tile set.
+         * Reads a tile set.
          */
         static Tileset *readTileset(xmlNodePtr node, const std::string &path,
                 Map *map);
 
         /**
-         * Helper function to get an integer property.
+         * Gets an integer property from an xmlNodePtr.
          */
         static int getProperty(xmlNodePtr node, const char* name, int def);
+
+        /**
+         * Converts a global tile id to the Image* pointing to the associated
+         * tile image.
+         */
+        static Image *getTileWithGid(int gid);
 
         static std::vector<Tileset*> tilesets;
 };

@@ -1,8 +1,14 @@
 0.0.10
 - Added using and dropping of items
 - Added experimental support for OpenGL rendering
+- Added support for new map format in client
+- Added ability to load resources from zip files
+- Added start of a minimap
+- Added new GUI skin, wallpaper and mouse cursor
+- Reintroduced cancel button for npc choice dialog after Mra fixed it for us
 - Fixed crash in fullscreen with hardware acceleration enabled (win32)
-- Reimplemented A* pathfinding, hopefully stable now
+- Reimplemented A* pathfinding, more flexible and stable now
+- Removed background music that wasn't ours
 
 0.0.9  (30 Jan 2005)
 - Replaced Allegro library with SDL, SDL_image and SDL_mixer

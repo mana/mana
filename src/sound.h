@@ -32,32 +32,102 @@
 
 typedef short SOUND_SID;
 
-/**
- * Sound engine
+/** Sound engine
  *
  * \ingroup CORE
  */
 class Sound {
     public:
-        void  init(int, int);
-        void  close();
+        /**
+         * \brief Install the sound engine
+         *
+         * \param voices     Overall reserved voices
+         * \param mod_voices Voices dedicated for mod-playback
+         *
+         * Overall voices must not be less or equal to the specified amount of
+         * mod_voices!  if mod-voices is too low some mods will not sound
+         * correctly since a couple of tracks are not going to be played along
+         * w/ the others. so missing ins- truments can be a result.  32/20
+         * sounds realistic here.
+         */
+        void init(int, int);
 
-        void  startBgm(char*, int);
-        void  stopBgm();
+        /**
+         * \brief Deinstall all sound functionality
+         *
+         * Normally you won't need to call this since this is done by SDL when
+         * shutting itself down. but if you find a reason to delete the
+         * sound-engine from memory (e.g. garbage-collection) feel free to use
+         * it. :-P
+         */
+        void close();
+
+        /**
+         * \brief Start background music
+         *
+         * \param in   Full path to file
+         * \param loop The number of times the song is played (-1 = infinite)
+         */
+        void startBgm(char*, int);
+
+        /**
+         * \brief Stop all currently running background music tracks
+         *
+         * You need to stop all playback when you want to switch from mod to
+         * midi. playing a new track is usually simple as calling StartMIDI()
+         * or StartMOD() again.  passing NULL to the playing functions only
+         * means to make playback stop.
+         */
+        void stopBgm();
        
-        void  setVolume(int);
-        void  adjustVolume(int);
+        /**
+         * \brief Set the volume value-range: 0-128
+         * 
+         * \param music Volume value
+         *
+         * All values may only be between 0-128 where 0 means muted.
+         */
+        void setVolume(int);
 
+        /**
+         * \brief Adjusts current volume
+         * \param amusic Volume difference
+         */
+        void adjustVolume(int);
+
+        /**
+         * \brief Preloads a sound-item into buffer
+         *
+         * \param fpath Full path to file
+         *
+         * Please make sure that the object is not loaded more than once since
+         * the function will not run any checks on its own!
+         *
+         * The return value should be kept as a reference to the object loaded.
+         * if not it is practicaly lost.
+         */
         SOUND_SID loadItem(char *);
-        void      startItem(SOUND_SID, int);
-        
-        void      clearCache();
 
-        Sound() {isOk=-1;}
+        /**
+         * \brief Plays an item in soundpool
+         *
+         * \param id     Id returned to the item in the soundpool
+         * \param volume Volume the sound should be played with (possible
+         *               range: 0-128)
+         */
+        void startItem(SOUND_SID, int);
+        
+        /**
+         * \brief Wipe all items off the cache
+         */
+        void clearCache();
+
+        Sound() { isOk = -1; }
 
         /** if allegro is shut down or object is deleted any BGM is
            stopped and SFX run out */
-        ~Sound() {stopBgm(); close();};
+        ~Sound() { stopBgm(); close(); }
+
     private:
         /** initial value is -1 which means error or noninitialzed.
            you can only play sounds and bgm if this is 0.
@@ -73,6 +143,10 @@ class Sound {
         std::map<int, Mix_Chunk*> soundpool;
         SOUND_SID items;
 
+        /**
+         * \brief checks if value equals min-/maximum volume and returns
+         *        <code>true</code> if that's the case.
+         */
         bool isMaxVol(int);
 };
 

@@ -16,6 +16,7 @@ MODULES = src/sound.cpp \
           src/gui/listbox.cpp \
           src/gui/login.cpp \
           src/gui/minimap.cpp \
+          src/gui/newskill.cpp \
           src/gui/npc.cpp \
           src/gui/npc_text.cpp \
           src/gui/ok_dialog.cpp \
