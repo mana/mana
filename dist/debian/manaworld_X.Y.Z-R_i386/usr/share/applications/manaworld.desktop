@@ -1,0 +1,15 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Name=The Mana World
+Name[fr]=Le Monde de Mana
+GenericName=Strategy Game
+GenericName[fr]=Jeu d'Arcade En Ligne
+Comment=A fantasy on-line game
+Comment[fr]=Un jeu en ligne dans un univers fantastique
+Icon=/usr/share/games/manaworld/manaworld-icon.png
+FilePattern=manaworld
+TryExec=manaworld
+Exec=manaworld
+Categories=Application;Game;ArcadeGame;

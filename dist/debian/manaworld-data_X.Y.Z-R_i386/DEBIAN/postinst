@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ "$1" = "configure" ]; then
+   # Nothing at all for now
+   echo "";
+fi 
