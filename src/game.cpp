@@ -408,11 +408,11 @@ void do_parse() {
             }
             fclose(file);
             */
-//#ifdef DEBUG
+#ifdef DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-//#endif 
+#endif 
             // Parse packet based on their id
             switch(id) {
                 // Received speech
