@@ -69,7 +69,7 @@ CharSelectDialog::CharSelectDialog(gcn::Container *parent)
     newCharButton->addActionListener(this);
     delCharButton->addActionListener(this);
 
-    setDimension(gcn::Rectangle(240, 64, 240, 216));
+    setSize(240, 216);
     setLocationRelativeTo(getParent());
 }
 
@@ -156,7 +156,7 @@ CharCreateDialog::CharCreateDialog(gcn::Container *parent)
     add(hairStyleLabel);
     add(createButton);
 
-    setDimension(gcn::Rectangle(32, 32, 200, 128));
+    setSize(200, 128);
     setLocationRelativeTo(getParent());
 }
 
