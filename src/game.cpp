@@ -43,7 +43,6 @@
 char map_path[480];
 
 unsigned short dest_x, dest_y, src_x, src_y;
-unsigned int player_x, player_y;
 bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
@@ -493,6 +492,12 @@ void do_parse() {
 #endif
             // Parse packet based on their id
             switch (id) {
+                case SMSG_LOGIN_SUCCESS:
+                    // Connected to game server succesfully, set spawn point
+                    player_node->x = get_x(RFIFOP(6));
+                    player_node->y = get_y(RFIFOP(6));
+                    break;
+
                 // Received speech
                 case 0x008d:
                     temp = (char *)malloc(RFIFOW(2)-7);
@@ -1293,7 +1298,7 @@ void do_parse() {
                     break;
                     // Manage non implemented packets
                 default:
-                    log("Unhandled packet: %x\n", id);
+                    log("Unhandled packet: %x", id);
                     //alert(pkt_nfo,"","","","",0,0);
                     break;
             }

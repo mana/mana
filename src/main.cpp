@@ -29,6 +29,7 @@
 #include "sound.h"
 #include "graphics.h"
 #include "resources/resourcemanager.h"
+#include "net/protocol.h"
 
 #include <iostream>
 #include <guichan.hpp>

@@ -29,7 +29,6 @@
 #include "gui/skill.h"
 #include "graphic/spriteset.h"
 #include "resources/image.h"
-#include "net/protocol.h"
 #include "configuration.h"
 #include "game.h"
 #include "log.h"

@@ -23,6 +23,7 @@
 
 #include "being.h"
 #include "game.h"
+#include "net/protocol.h"
 
 Being *player_node = NULL;
 
