@@ -21,7 +21,7 @@
 
 */
 
-#include "SuperEagle.h"
+#include "super_eagle.h"
 
 static uint32 colorMask = 0xF7DEF7DE;
 static uint32 lowPixelMask = 0x08210821;

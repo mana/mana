@@ -24,12 +24,12 @@
 #include "map.h"
 #include "being.h"
 #include "log.h"
-#include "./Gui/chat.h"
-#include "./Gui/gui.h"
-#include "./Gui/inventory.h"
-#include "./Graphic/SuperEagle.h"
-#include "./Graphic/graphic.h"
-#include "./Sound/sound.h"
+#include "./gui/chat.h"
+#include "./gui/gui.h"
+#include "./gui/inventory.h"
+#include "./graphic/super_eagle.h"
+#include "./graphic/graphic.h"
+#include "./sound/sound.h"
 
 char map_path[480];
 
@@ -51,8 +51,6 @@ volatile bool refresh = false, action_time = false;
 		1 = Walking without confirm packet
 		2 = Walking with confirm */
 char walk_status = 0;
-
-
 
 void refresh_time(void) {
 	tick_time++;

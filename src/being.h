@@ -24,7 +24,7 @@
 #ifndef _BEING_H
 #define _BEING_H
 
-#include "./Net/protocol.h"
+#include "./net/protocol.h"
 
 #define ACTION_NODE  0
 #define PLAYER_NODE  1

@@ -36,9 +36,9 @@
 #include "../game.h"
 #include "../map.h"
 #include "../being.h"
-#include "../Gui/chat.h"
-#include "../Gui/inventory.h"
-#include "../data/graphic/gfx_data.h"
+#include "../gui/chat.h"
+#include "../gui/inventory.h"
+#include "../../data/graphic/gfx_data.h"
 
 BITMAP *buffer, *double_buffer, *chat_background;
 DATAFILE *tileset;
@@ -140,7 +140,7 @@ void do_graphic(void) {
 			if(get_tile(i+camera_x, j+camera_y, 1)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
-  NODE *node = get_head();
+	NODE *node = get_head();
 	NODE *old_node = NULL;
 	while(node) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
@@ -201,15 +201,19 @@ void do_graphic(void) {
 			remove_node(old_node->id);
 	}
 
-	for(int j=0;j<20;j++)
+	/*for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
 			if(get_tile(i+camera_x, j+camera_y, 2)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
-		}
+		}*/
+
+		
 
 	stretch_blit(buffer, double_buffer, 0, 0, 400, 300, 0, 0, 800, 600);
 
+	
+
 	// Draw player speech
-  node = get_head();
+  /*node = get_head();
   while(node) {
     if(node->speech!=NULL) {
       alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260-alfont_text_length(gui_font, node->speech)/2, node->text_y+100, node->speech_color, "%s", node->speech);
@@ -221,7 +225,7 @@ void do_graphic(void) {
       }
     }
     node = node->next;
-  }
+  }	
 
 	inventory.draw(double_buffer);
 
@@ -242,7 +246,7 @@ void do_graphic(void) {
 	}
   
 
-	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
+	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);*/
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
 

@@ -31,8 +31,8 @@
 #endif
 
 #include <allegro.h>
-#include "../Gui/chat.h"
-#include "../Gui/inventory.h"
+#include "../gui/chat.h"
+#include "../gui/inventory.h"
 
 extern BITMAP *buffer, *double_buffer;
 extern char speech[255];

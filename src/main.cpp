@@ -22,8 +22,8 @@
 */
 
 #include "main.h"
-#include "./Sound/sound.h"
-#include "./Graphic/graphic.h"
+#include "./sound/sound.h"
+#include "./graphic/graphic.h"
 
 /* Account infos */
 int account_ID, session_ID1, session_ID2;

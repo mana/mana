@@ -32,9 +32,9 @@
 #include <stdio.h>
 
 #include "main.h"
-#include "./Gui/gui.h"
-#include "./Gui/skill.h"
-#include "./Graphic/SuperEagle.h"
+#include "./gui/gui.h"
+#include "./gui/skill.h"
+#include "./graphic/super_eagle.h"
 
 #define SPEECH_TIME 40
 #define EMOTION_TIME 40

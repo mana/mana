@@ -34,13 +34,13 @@
 
 #include "log.h"
 #include "game.h" 
-#include "./Net/protocol.h"
-#include "./Gui/login.h"
-#include "./Gui/gui.h"
-#include "./Gui/char_server.h"
-#include "./Gui/char_select.h"
-#include "./Graphic/SuperEagle.h"
-#include "./data/graphic/gfx_data.h"
+#include "./net/protocol.h"
+#include "./gui/login.h"
+#include "./gui/gui.h"
+#include "./gui/char_server.h"
+#include "./gui/char_select.h"
+#include "./graphic/super_eagle.h"
+#include "../data/graphic/gfx_data.h"
 
 #define EXIT        0
 #define LOGIN       1

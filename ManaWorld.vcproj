@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="ManaWorld"
+	Name="TheManaWorld"
 	ProjectGUID="{DE31E83E-62BD-460E-8E6A-648CF98CC5A4}"
 	RootNamespace="ManaWorld"
 	Keyword="Win32Proj">
@@ -153,156 +153,136 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\astar.cpp">
+				RelativePath=".\src\astar.cpp">
 			</File>
 			<File
-				RelativePath=".\being.cpp">
+				RelativePath=".\src\astar.h">
 			</File>
 			<File
-				RelativePath=".\game.cpp">
+				RelativePath=".\src\being.cpp">
 			</File>
 			<File
-				RelativePath=".\Graphic\graphic.cpp">
+				RelativePath=".\src\being.h">
 			</File>
 			<File
-				RelativePath=".\log.cpp">
+				RelativePath=".\src\game.cpp">
 			</File>
 			<File
-				RelativePath=".\main.cpp">
+				RelativePath=".\src\game.h">
 			</File>
 			<File
-				RelativePath=".\map.cpp">
+				RelativePath=".\src\log.cpp">
 			</File>
 			<File
-				RelativePath=".\Sound\sound.cpp">
+				RelativePath=".\src\log.h">
 			</File>
 			<File
-				RelativePath=".\Graphic\SuperEagle.cpp">
+				RelativePath=".\src\main.cpp">
+			</File>
+			<File
+				RelativePath=".\src\main.h">
+			</File>
+			<File
+				RelativePath=".\src\map.cpp">
+			</File>
+			<File
+				RelativePath=".\src\map.h">
 			</File>
 			<Filter
-				Name="Net"
+				Name="graphic"
 				Filter="">
 				<File
-					RelativePath=".\Net\network.cpp">
+					RelativePath=".\src\graphic\graphic.cpp">
 				</File>
 				<File
-					RelativePath=".\Net\protocol.cpp">
+					RelativePath=".\src\graphic\graphic.h">
+				</File>
+				<File
+					RelativePath=".\src\graphic\super_eagle.cpp">
+				</File>
+				<File
+					RelativePath=".\src\graphic\super_eagle.h">
 				</File>
 			</Filter>
 			<Filter
-				Name="Gui"
+				Name="net"
 				Filter="">
 				<File
-					RelativePath=".\Gui\char_select.cpp">
+					RelativePath=".\src\net\network.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\char_server.cpp">
-					<FileConfiguration
-						Name="Debug|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Release|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Profile|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
-					</FileConfiguration>
+					RelativePath=".\src\net\network.h">
 				</File>
 				<File
-					RelativePath=".\Gui\chat.cpp">
+					RelativePath=".\src\net\protocol.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\gui.cpp">
+					RelativePath=".\src\net\protocol.h">
 				</File>
 				<File
-					RelativePath=".\Gui\inventory.cpp">
+					RelativePath=".\src\net\win2linux.h">
 				</File>
 				<File
-					RelativePath=".\Gui\login.cpp">
+					RelativePath=".\src\net\win2mac.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\skill.cpp">
-				</File>
-			</Filter>
-		</Filter>
-		<Filter
-			Name="Header Files"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
-			<File
-				RelativePath=".\astar.h">
-			</File>
-			<File
-				RelativePath=".\being.h">
-			</File>
-			<File
-				RelativePath=".\game.h">
-			</File>
-			<File
-				RelativePath=".\Graphic\graphic.h">
-			</File>
-			<File
-				RelativePath=".\log.h">
-			</File>
-			<File
-				RelativePath=".\main.h">
-			</File>
-			<File
-				RelativePath=".\map.h">
-			</File>
-			<File
-				RelativePath=".\resrc1.h">
-			</File>
-			<File
-				RelativePath=".\Sound\sound.h">
-			</File>
-			<File
-				RelativePath=".\Graphic\SuperEagle.h">
-			</File>
-			<Filter
-				Name="Net"
-				Filter="">
-				<File
-					RelativePath=".\Net\network.h">
-				</File>
-				<File
-					RelativePath=".\Net\protocol.h">
+					RelativePath=".\src\net\win2mac.h">
 				</File>
 			</Filter>
 			<Filter
-				Name="Gui"
+				Name="gui"
 				Filter="">
 				<File
-					RelativePath=".\Gui\char_select.h">
+					RelativePath=".\src\gui\char_select.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\char_server.h">
+					RelativePath=".\src\gui\char_select.h">
 				</File>
 				<File
-					RelativePath=".\Gui\chat.h">
+					RelativePath=".\src\gui\char_server.cpp">
 				</File>
 				<File
-					RelativePath=".\Graphic\datGraphics.h">
+					RelativePath=".\src\gui\char_server.h">
 				</File>
 				<File
-					RelativePath=".\Gui\gui.h">
+					RelativePath=".\src\gui\chat.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\inventory.h">
+					RelativePath=".\src\gui\chat.h">
 				</File>
 				<File
-					RelativePath=".\Gui\login.h">
+					RelativePath=".\src\gui\gui.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\skill.h">
+					RelativePath=".\src\gui\gui.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\inventory.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\inventory.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\login.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\login.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\skill.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\skill.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="sound"
+				Filter="">
+				<File
+					RelativePath=".\src\sound\sound.cpp">
+				</File>
+				<File
+					RelativePath=".\src\sound\sound.h">
 				</File>
 			</Filter>
 		</Filter>
