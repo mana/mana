@@ -51,9 +51,6 @@ BITMAP *gui_bitmap;
 bool drag;
 DATAFILE *gui_gfx;
 
-#ifndef WIN32
-extern Sound sound;
-#endif
 
 /* very internal update stuff */
 int (*gui__external_slider_callback)(void *, int);
