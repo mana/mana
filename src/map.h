@@ -1,4 +1,4 @@
-/**
+/*
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team

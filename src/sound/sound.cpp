@@ -174,15 +174,15 @@ void TmwSound::StartMIDI(char *in, int loop) {
 					and S3M (in UMX extension)
 */
 void TmwSound::StartMOD(char * in, int loop) {
-  if(isOk==-1)
-    return;
-  
-  mod = load_mod(in);
-  if(!mod) {  
-    isOk=-1;
-    throw("Error reading MOD file...");
-  }
-  play_mod(mod, TRUE);
+	if(isOk==-1)
+		return;
+
+	mod = load_mod(in);
+	if(!mod) {  
+		isOk=-1;
+		throw("Error reading MOD file...");
+	}
+	play_mod(mod, TRUE);
 }    
 
 /**
@@ -291,9 +291,11 @@ void TmwSound::Close(void) {
 	isOk = -1;
 }
 
-/** PRIVATE */
-
+/**
+	checks if value equals min-/maximum volume and returns
+	true if that's the case.
+*/
 bool TmwSound::isMaxVol(int vol) {
-  if( vol > 0 && vol < 255 ) return false;
-  else return true;
+	if( vol > 0 && vol < 255 ) return false;
+	else return true;
 }

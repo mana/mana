@@ -1,4 +1,4 @@
-/**
+/*
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team
@@ -33,7 +33,7 @@
 #include <alfont.h>
 
 #include "log.h"
-#include "game.h" 
+#include "game.h"
 #include "./net/protocol.h"
 #include "./gui/login.h"
 #include "./gui/gui.h"
