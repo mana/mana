@@ -2,3 +2,5 @@ The_Mana_World_private.h
 The_Mana_World_private.rc
 Makefile.win
 tmw
+*.dll
+*.exe
