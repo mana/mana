@@ -35,6 +35,7 @@
 #include "./gui/inventory.h"
 #include "./gui/shop.h"
 #include "./gui/npc.h"
+#include "./gui/setup.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
 
@@ -229,11 +230,15 @@ void do_input() {
 		action_time = false;
 		//alert("","","","","",0,0);
 	}
+
 	if(key[KEY_F10] && action_time==true) {
 	  screen_mode = 1-(screen_mode-1)+1;
 	  if(set_gfx_mode(screen_mode, 800, 600, 0, 0))
 	    error(allegro_error);
-  }    
+	  }    
+	
+	if(key[KEY_F11] && action_time==true)
+	    show_player_setup = true;
 
   if(key[KEY_ENTER]) {
     if(strcmp(speech, "")!=0) {

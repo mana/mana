@@ -25,6 +25,7 @@
 
 #include "graphic.h"
 #include "2xsai.h"
+#include "../gui/setup.h"
 
 #define TILESET_W 480
 #define TILESET_H 320
@@ -217,6 +218,7 @@ void init_graphic() {
 	sell_player = init_dialog(sell_dialog, -1);
 	skill_list_player = init_dialog(skill_list_dialog, -1);
 	npc_list_player = init_dialog(npc_list_dialog, -1);
+	init_setup();
   //gui_bitmap = vpage[page_num];
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
@@ -558,7 +560,7 @@ void do_graphic(void) {
 	// character status display
 	update_stats_dialog();
 	gui_update(stats_player);
-
+	update_setup();
 
 	
 	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
