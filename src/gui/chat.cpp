@@ -38,17 +38,23 @@ using namespace std;
 		pipe your questions, suggestions and flames to: kth5@gawab.com
 */
 
+/**
+*/
 Chat::Chat(const char * logfile, int item_num) {
 	chatlog_file.open(logfile, ios::out | ios::app);
 	items = 0;
 	items_keep = item_num;
 }
 
+/**
+*/
 Chat::~Chat() {
 	chatlog_file.flush();
 	chatlog_file.close();
 }
 
+/**
+*/
 void Chat::chat_dlgrsize(int) {
 }
 
@@ -102,7 +108,8 @@ void Chat::chat_log(string line, int own, ALFONT_FONT * font) {
 }
 
 /** function overload -> calls original chat_log()
-    after processing the packet */
+    after processing the packet
+*/
 void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
 	chat_log(const_msg(action), BY_SERVER, font);
 }

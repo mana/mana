@@ -31,19 +31,6 @@
 
 using namespace std;
 
-/**
-	Simple ChatLog Object v0.5 (i'd say...)
-
-	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
-
-	Author: kth5 aka Alexander Baldeck
-		pipe your questions, suggestions and flames to: kth5@gawab.com
-
-	NOTE:
-		i documented all functions in their implementation. ;-)
-*/
-
-
 #define BY_GM					0		// those should be self-explanatory =)
 #define BY_PLAYER			1
 #define BY_OTHER			2
@@ -114,6 +101,17 @@ struct CHATSKILL {
 	char  reason;
 };
 
+/**
+	Simple ChatLog Object v0.5 (i'd say...)
+
+	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
+
+	Author: kth5 aka Alexander Baldeck
+		pipe your questions, suggestions and flames to: kth5@gawab.com
+
+	NOTE:
+		i documented all functions in their implementation. ;-)
+*/
 class Chat {
 	public :
 		Chat(const char *, int);
