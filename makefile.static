@@ -1,0 +1,31 @@
+CXX = g++
+# for debugging
+#CXXFLAGS += -g -march=i686 -O2
+
+# excessive optimizations for pentium pro and later
+CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
+CXXFLAGS +=`allegro-config --cflags release`
+
+LIBS := -ljgmod `allegro-config --libs release` -lalfont -lguichan \
+	-lguichan_allegro
+
+include file.list
+
+OBJS := $(patsubst src%, obj%, $(patsubst %.cpp, %.o, $(MODULES)))
+
+tmw: $(OBJS)
+	$(CXX) -o tmw $(OBJS) $(LIBS)
+	@echo -
+	@echo -
+	@echo "TYPE ./tmw TO LAUCH THE GAME"
+
+clean:
+	- rm -fv obj/*.o
+	- rm -fv obj/net/*.o
+	- rm -fv obj/gui/*.o
+	- rm -fv obj/sound/*.o
+	- rm -fv obj/graphic/*.o
+	- rm -fv tmw
+
+obj/%.o: src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
