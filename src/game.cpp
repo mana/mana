@@ -229,8 +229,26 @@ void do_input()
             {
                 if (keysym.mod & KMOD_CTRL)
                 {
-                    // Works with X11 only?
-                    SDL_WM_ToggleFullScreen(screen);
+                    // Workaround for Win and else
+                    #if __USE_UNIX98
+                        SDL_WM_ToggleFullScreen(screen);
+                    #else
+                        int displayFlags = 0;
+                        if ((int)config.getValue("screen", 0)) {
+                        displayFlags |= SDL_FULLSCREEN;
+                            config.setValue("screen", 1);
+                        }
+                        else {
+                            config.setValue("screen", 0);
+                        }
+                        if ((int)config.getValue("hwaccel", 0)) {
+                            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+                        }
+                        else {
+                            displayFlags |= SDL_SWSURFACE;
+                        }
+                        screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
+                    #endif
                 }
             }
         } // End key down
@@ -348,86 +366,7 @@ void do_input()
 
     } // End if alive
 
-
-	// Old version
-    /*
-    if (key[KEY_F5] && action_time) {
-        if (player_node->action == STAND)
-            action(2, 0);
-        else if (player_node->action == SIT)
-            action(3, 0);
-        action_time = false;
-        //alert("","","","","",0,0);
-    }
-
-    // Emotions, Skill dialog
-    if (key_shifts & KB_ALT_FLAG && action_time == true) {
-        if (player_node->emotion == 0) {
-            unsigned char emotion = 0;
-            if (key[KEY_1]) emotion = 1;
-            else if (key[KEY_2]) emotion = 2;
-            else if (key[KEY_3]) emotion = 3;
-            else if (key[KEY_4]) emotion = 4;
-            else if (key[KEY_5]) emotion = 5;
-            else if (key[KEY_6]) emotion = 6;
-            else if (key[KEY_7]) emotion = 7;
-            else if (key[KEY_8]) emotion = 8;
-            else if (key[KEY_9]) emotion = 9;
-            else if (key[KEY_0]) emotion = 10;
-            if (emotion != 0) {
-                WFIFOW(0) = net_w_value(0x00bf);
-                WFIFOB(2) = emotion;
-                WFIFOSET(3);
-                action_time = false;
-            }
-        }
-    }
-
-    if (mouse_b & 2) {
-        // Make contact with NPC
-        int npc_x = mouse_x / 32 + camera_x;
-        int npc_y = mouse_y / 32 + camera_y;
-        int id = find_npc(npc_x, npc_y);
-        if (id != 0) {
-            WFIFOW(0) = net_w_value(0x0090);
-            WFIFOL(2) = net_l_value(id);
-            WFIFOB(6) = 0;
-            WFIFOSET(7);
-        }
-    }
-    */
 }
-
-    /*
-    switch (scancode) {
-        case KEY_F1:
-            save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
-            return true;
-        case KEY_F12:
-            sound.adjustVolume(1);
-            return true;
-        case KEY_F11:
-            sound.adjustVolume(-1);
-            return true;
-        case KEY_F9:
-            setup = Setup::create_setup();
-            return true;
-        case KEY_F10:
-            // was 3 goes to 0
-            // was 0 goes to 3
-            //screen_mode = 3 - screen_mode;
-            //if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
-                // less than: to add support for other hardware platforms
-                //error(allegro_error);
-            //}
-            return true;
-    }
-
-    if (key_shifts & KB_ALT_FLAG) {
-        switch (scancode) {
-        }
-    }
-    */
 
 int get_packet_length(short id) {
     int len = get_length(id);
