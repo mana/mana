@@ -4,12 +4,14 @@
  *  This module takes care of everything relating to the
  *  setup dialog.
  */
-
 #include "setup.h"
+#include <allegro.h>
+
 /*
  * Metod returns the number of elements in container
  */
 int ModesListModel::getNumberOfElements() {
+  //TODO after moving to SDL
   return 3;
 }
 
@@ -27,7 +29,6 @@ std::string ModesListModel::getElementAt(int i) {
     { 800,600, "800x600" },
     { 1024,768, "1024x768" }
   };
-  
   return(modes[i].desc);
 }
 
@@ -41,6 +42,7 @@ Setup::Setup(gcn::Container *parent)
   displayLabel = new gcn::Label("Display");
   modesList = new gcn::ListBox(modesListModel);
   scrollArea = new gcn::ScrollArea(modesList);
+  fsCheckBox = new CheckBox("Full screen", false);
   applyButton = new Button("Apply");
   cancelButton = new Button("Cancel");
   
@@ -57,6 +59,7 @@ Setup::Setup(gcn::Container *parent)
   /* Set position */
   scrollArea->setPosition(10,40);
   displayLabel->setPosition(10,10);
+  fsCheckBox->setPosition(100,16);
   applyButton->setPosition(10,190);
   cancelButton->setPosition(150,190);
   
@@ -67,6 +70,7 @@ Setup::Setup(gcn::Container *parent)
   /* Assemble dialog */
   add(scrollArea);
   add(displayLabel);
+  add(fsCheckBox);
   add(applyButton);
   add(cancelButton);
   
@@ -84,6 +88,7 @@ Setup::~Setup() {
   delete modesListModel;
   delete modesList;
   delete scrollArea;
+  delete fsCheckBox;
   delete displayLabel;
   delete applyButton;
   delete cancelButton;
@@ -97,8 +102,13 @@ void Setup::action(const std::string& eventId)
   if(eventId == "apply") {
     setVisible(false);
     //TODO: Save&apply setup changes
-  }
-  else if(eventId == "cancel") {
+    if(fsCheckBox->isMarked() == true) {
+	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,800,600,0,0);
+    } else {
+	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0);
+    }
+    
+  } else if(eventId == "cancel") {
     setVisible(false);
   }
 }

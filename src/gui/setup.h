@@ -7,6 +7,8 @@
 #define tmw_included_setup_h
 
 #include "gui.h"
+#include "button.h"
+#include "checkbox.h"
 #include "../graphic/graphic.h"
 #include <allegro.h>
 #ifdef WIN32
@@ -33,6 +35,7 @@ class Setup : public Window, public gcn::ActionListener {
   gcn::Label *displayLabel;
   gcn::ScrollArea *scrollArea;
   gcn::ListBox *modesList;
+  CheckBox *fsCheckBox;
   Button *applyButton;
   Button *cancelButton;
   
