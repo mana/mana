@@ -69,7 +69,7 @@ void TmwInventory::draw(BITMAP *buffer) {
             //masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
 
             textprintf_ex(gui_bitmap, font, inventory_dialog[0].x + 24 * i,
-                    inventory_dialog[0].y + 44, makecol(0, 0, 0), -1,
+                    inventory_dialog[0].y + 46, makecol(0, 0, 0), -1,
                     "%i", items[i].quantity);
         }
     }

@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=63
+UnitCount=64
 Type=0
 Ver=1
 ObjFiles=
@@ -33,7 +33,7 @@ CompilerSettings=0010001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=645
+Build=649
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -679,6 +679,15 @@ CompileCpp=1
 Folder=gui
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit64]
+FileName=small_icon.rc
+Folder=tmw
+Compile=1
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
