@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../graphic/graphic.h"
 #include "inventory.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"
@@ -54,8 +55,7 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    gcn::AllegroGraphics *alGraphics = (gcn::AllegroGraphics*)graphics;
-    BITMAP *target = alGraphics->getTarget();
+    BITMAP *target = ((Graphics*)graphics)->getTarget();
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].quantity > 0) {

@@ -99,9 +99,9 @@ unsigned int find_monster(unsigned short x, unsigned short y) {
 Being *find_node(unsigned int id) {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
-        Being *Being = (*i);
-        if (Being->id == id) {
-            return Being;
+        Being *being = (*i);
+        if (being->id == id) {
+            return being;
         }
     }
     return NULL;

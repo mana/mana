@@ -45,7 +45,6 @@ static BITMAP *gui__repository[GUI_BMP_COUNT];
 
 // The currently active skin
 LexSkin gui_skin;
-BITMAP *gui_bitmap;
 DATAFILE *gui_gfx;
 
 
@@ -55,11 +54,10 @@ gcn::AllegroGraphics *guiGraphics;     // Graphics driver
 WindowContainer *guiTop;               // The top container
 
 
-Gui::Gui(BITMAP *screen)
+Gui::Gui(Graphics *graphics)
 {
     // Set graphics
-    guiGraphics = new gcn::AllegroGraphics();
-    guiGraphics->setTarget(screen);
+    guiGraphics = graphics;
 
     // Set input
     guiInput = new AllegroInput();
@@ -94,15 +92,6 @@ Gui::~Gui()
     delete guiInput;
     delete guiGraphics;
     delete focusHandler;
-}
-
-void Gui::update()
-{
-    logic();
-    draw();
-
-    // Draw the mouse
-    draw_sprite(gui_bitmap, mouse_sprite, mouse_x, mouse_y);
 }
 
 void Gui::logic()
@@ -190,6 +179,9 @@ void Gui::draw()
     guiTop->draw(guiGraphics);
     guiGraphics->popClipArea();
 
+    // Draw the mouse
+    draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
+
     guiGraphics->_endDraw();
 }
 
@@ -199,12 +191,11 @@ void Gui::focusNone()
 }
 
 
-void init_gui(BITMAP *bitmap, const char *skin) {
-    gui = new Gui(bitmap);
+void init_gui(Graphics *graphics) {
+    gui = new Gui(graphics);
 
-    gui_bitmap = bitmap;
-    gui_load_skin(skin);
-    show_mouse(NULL);
+    // TODO: Remove Allegro config file usage from GUI look
+    gui_load_skin("data/Skin/aqua.skin");
 }
 
 

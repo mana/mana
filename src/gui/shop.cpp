@@ -22,85 +22,17 @@
  */
 
 #include "shop.h"
-#include "../graphic/graphic.h"
-
-int n_items;
-char* selectedItem = "You got 4";
-ITEM_SHOP *shop = NULL;
 
 char *item_db[] = {
-    "Cactus Drink", "Cactus potion", "Casino coins", "Decor Candy", "Maggot Slime",
-    "Candy Cane", "Scorpion Stinger", "Xmas Cake", "Chocolate", "Candy", "Santa Hat"
+    "Cactus Drink",
+    "Cactus potion",
+    "Casino coins",
+    "Decor Candy",
+    "Maggot Slime",
+    "Candy Cane",
+    "Scorpion Stinger",
+    "Xmas Cake",
+    "Chocolate",
+    "Candy",
+    "Santa Hat"
 };
-
-char *shop_list(int index, int *list_size) {
-    if(index<0) {
-        *list_size = n_items;
-        return NULL;
-    } else {
-        int iterator = 0;
-        ITEM_SHOP *item_shop = shop;
-        while(iterator<index) {
-            item_shop = item_shop->next;
-            iterator++;
-        }
-        return item_shop->name;
-    }
-}
-
-void close_shop() {
-    ITEM_SHOP *temp, *next;
-    temp = shop;
-    while(temp) {
-        next = temp->next;
-        free(temp);
-        temp = next;
-    }
-    shop = NULL;
-}
-
-short get_item_id(int index) {
-    int iterator = 0;
-    ITEM_SHOP *item_shop = shop;
-    while(iterator<index) {
-        item_shop = item_shop->next;
-        iterator++;
-    }
-    return item_shop->id;
-}
-
-int get_item_quantity(int index) {
-    int iterator = 0;
-    ITEM_SHOP *item_shop = shop;
-    while(iterator<index) {
-        item_shop = item_shop->next;
-        iterator++;
-    }
-    if(item_shop)return item_shop->quantity;
-    else return 0;
-}
-
-int get_item_index(int index) {
-    int iterator = 0;
-    ITEM_SHOP *item_shop = shop;
-    while(iterator<index) {
-        item_shop = item_shop->next;
-        iterator++;
-    }
-    return item_shop->index;
-}
-
-int get_item_price(int index) {
-    int iterator = 0;
-    ITEM_SHOP *item_shop = shop;
-    while(iterator<index) {
-        item_shop = item_shop->next;
-        iterator++;
-    }
-    return item_shop->price;
-}
-
-void changeQ(void *dp3, int d2) {
-    sprintf(itemCurrenyQ,"%i",d2);
-    printf("%s\n",itemCurrenyQ);
-}

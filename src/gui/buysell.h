@@ -24,7 +24,6 @@
 #ifndef _TMW_BUYSELL_H
 #define _TMW_BUYSELL_H
 
-#include "gui.h"
 #include "window.h"
 
 /**

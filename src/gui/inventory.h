@@ -25,12 +25,9 @@
 #define _INVENTORY_H 
 
 #include <allegro.h>
-#include "../main.h"
-#include "../game.h"
 #include "../log.h"
 #include "../net/network.h"
 #include "../graphic/spriteset.h"
-#include "gui.h"
 #include "window.h"
 
 #define INVENTORY_SIZE 100

@@ -24,10 +24,7 @@
 #ifndef _TMW_STATS_WINDOW_H
 #define _TMW_STATS_WINDOW_H
 
-#include "button.h"
 #include "window.h"
-#include "../main.h"
-#include "../net/network.h"
 #include <string>
 #include <sstream>
 
@@ -66,12 +63,7 @@ class StatsWindow : public Window, public gcn::ActionListener {
         /** 
          * Stats buttons.
          */
-        Button *statsButton[6];
-
-        /**
-         * Stats window ptr.
-         */
-        static StatsWindow *ptr;
+        gcn::Button *statsButton[6];
 };
 
 #endif /* _TMW_STATS_WINDOW_H */

@@ -107,27 +107,18 @@ void Window::draw(gcn::Graphics* graphics)
                 getWidth(), getHeight() - titlebarHeight + 1));
 
     // Skinned dialog render
-    if (typeid(*graphics) == typeid(gcn::AllegroGraphics))
-    {
-        gcn::AllegroGraphics *gfx = (gcn::AllegroGraphics*)graphics;
-        BITMAP *screen = gfx->getTarget();
-        int x, y;
-        getAbsolutePosition(x, y);
+    Graphics *gfx = (Graphics*)graphics;
+    BITMAP *screen = gfx->getTarget();
+    int x, y;
+    getAbsolutePosition(x, y);
 
-        // Draw title bar
-        dLeft->draw(screen, x, y);
-        dMid->drawPattern(screen,
-                x + dLeft->getWidth(), y,
-                getWidth() - dLeft->getWidth() - dRight->getWidth(),
-                dMid->getHeight());
-        dRight->draw(screen, x + getWidth() - dRight->getWidth(), y);
-    }
-    else {
-        // Plain title bar
-        graphics->setColor(titlebarColor);
-        graphics->fillRectangle(gcn::Rectangle(0, 0,
-                    getWidth(), titlebarHeight));
-    }
+    // Draw title bar
+    dLeft->draw(screen, x, y);
+    dMid->drawPattern(screen,
+            x + dLeft->getWidth(), y,
+            getWidth() - dLeft->getWidth() - dRight->getWidth(),
+            dMid->getHeight());
+    dRight->draw(screen, x + getWidth() - dRight->getWidth(), y);
 
     // Draw title
     graphics->setFont(getFont());

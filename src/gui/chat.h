@@ -24,121 +24,117 @@
 #ifndef _TMW_CHAT_H
 #define _TMW_CHAT_H
 
-#include "../main.h"
+#include "../net/network.h"
+#include <allegro.h>
 #include <list>
 #include <string>
 #include <fstream>
 
-#define BY_GM					0		// those should be self-explanatory =)
-#define BY_PLAYER			1
-#define BY_OTHER			2
-#define BY_SERVER			3
+#define BY_GM         0   // those should be self-explanatory =)
+#define BY_PLAYER     1
+#define BY_OTHER      2
+#define BY_SERVER     3
 
-#define ACT_WHISPER		4		// getting whispered at
-#define ACT_IS				5		// equivalent to "/me" in irc
+#define ACT_WHISPER   4   // getting whispered at
+#define ACT_IS        5   // equivalent to "/me" in irc
 
-#define IS_ANNOUNCE					"/announce "
-#define IS_ANNOUNCE_LENGTH	10
+#define IS_ANNOUNCE         "/announce "
+#define IS_ANNOUNCE_LENGTH  10
 #define IS_WHERE            "/where "
 #define IS_WHERE_LENGTH     7
 
 /**
-		gets in between usernick and message text depending on
-		message type
-*/
-#define CAT_NORMAL          ": "
-#define CAT_IS              ""
-#define CAT_WHISPER         " says: "
+ * gets in between usernick and message text depending on
+ * message type
+ */
+#define CAT_NORMAL        ": "
+#define CAT_IS            ""
+#define CAT_WHISPER       " says: "
 
 /** some generic color macros      */
-#define COLOR_WHITE				(makecol(255,255,255)) // plain white
-#define COLOR_BLUE				(makecol( 97,156,236)) // cold gm blue :P
-#define COLOR_YELLOW			(makecol(255,246, 98)) // sexy yellow
-#define COLOR_GREEN				(makecol( 39,197, 39)) // cool green
-#define COLOR_RED					(makecol(255,  0,  0)) // ack red XD
-#define COLOR_LIGHTBLUE		(makecol( 83,223,246)) // bright blue
+#define COLOR_WHITE       (makecol(255,255,255)) // plain white
+#define COLOR_BLUE        (makecol( 97,156,236)) // cold gm blue :P
+#define COLOR_YELLOW      (makecol(255,246, 98)) // sexy yellow
+#define COLOR_GREEN       (makecol( 39,197, 39)) // cool green
+#define COLOR_RED         (makecol(255,  0,  0)) // ack red XD
+#define COLOR_LIGHTBLUE   (makecol( 83,223,246)) // bright blue
 
 /** calculate text-width in pixel  */
 #define TEXT_GETWIDTH(str)  (text_length(font, str))
 #define TEXT_OUT(bmp, col, str)  (textprintf_ex(bmp, font, 1, y, col, str, 1))
 
 /** job dependend identifiers (?)  */
-#define		SKILL_BASIC			0x0001
-#define		SKILL_WARP			0x001b
-#define		SKILL_STEAL			0x0032
-#define		SKILL_ENVENOM		0x0034
+#define SKILL_BASIC       0x0001
+#define SKILL_WARP        0x001b
+#define SKILL_STEAL       0x0032
+#define SKILL_ENVENOM     0x0034
 
 /** basic skills identifiers       */
-#define		BSKILL_TRADE			0x0000
-#define		BSKILL_EMOTE			0x0001
-#define		BSKILL_SIT				0x0002
-#define		BSKILL_CREATECHAT	0x0003
-#define		BSKILL_JOINPARTY	0x0004
-#define		BSKILL_SHOUT			0x0005
-#define		BSKILL_PK					0x0006 // ??
-#define		BSKILL_SETALLIGN	0x0007 // ??
+#define BSKILL_TRADE      0x0000
+#define BSKILL_EMOTE      0x0001
+#define BSKILL_SIT        0x0002
+#define BSKILL_CREATECHAT 0x0003
+#define BSKILL_JOINPARTY  0x0004
+#define BSKILL_SHOUT      0x0005
+#define BSKILL_PK         0x0006 // ??
+#define BSKILL_SETALLIGN  0x0007 // ??
 
 /** reasons why action failed      */
-#define		RFAIL_SKILLDEP		0x00
-#define		RFAIL_INSUFHP			0x01
-#define		RFAIL_INSUFSP			0x02
-#define		RFAIL_NOMEMO			0x03
-#define		RFAIL_SKILLDELAY	0x04
-#define		RFAIL_ZENY				0x05
-#define		RFAIL_WEAPON			0x06
-#define		RFAIL_REDGEM			0x07
-#define		RFAIL_BLUEGEM			0x08
-#define		RFAIL_OVERWEIGHT	0x09
-#define		RFAIL_GENERIC			0x0a
+#define RFAIL_SKILLDEP    0x00
+#define RFAIL_INSUFHP     0x01
+#define RFAIL_INSUFSP     0x02
+#define RFAIL_NOMEMO      0x03
+#define RFAIL_SKILLDELAY  0x04
+#define RFAIL_ZENY        0x05
+#define RFAIL_WEAPON      0x06
+#define RFAIL_REDGEM      0x07
+#define RFAIL_BLUEGEM     0x08
+#define RFAIL_OVERWEIGHT  0x09
+#define RFAIL_GENERIC     0x0a
 
 /** should always be zero if failed */
-#define		SKILL_FAILED		0x00
+#define SKILL_FAILED    0x00
 
 struct CHATSKILL {
-	short skill;
-	short bskill;
-	short unused;
-	char  success;
-	char  reason;
+    short skill;
+    short bskill;
+    short unused;
+    char success;
+    char reason;
 };
 
 /**
-	Simple ChatLog Object v0.5 (i'd say...)
-
-	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
-
-	Author: kth5 aka Alexander Baldeck
-		pipe your questions, suggestions and flames to: kth5@gawab.com
-*/
+ * Simple chatlog object.
+ */
 class Chat {
-	public :
-		Chat(const char *, int);
-		void chat_dlgrsize(int);
+    public :
+        Chat(const char *, int);
+        void chat_dlgrsize(int);
 
-		void chat_log(std::string, int, FONT *);
-		void chat_log(CHATSKILL, FONT *);
+        void chat_log(std::string, int, FONT *);
+        void chat_log(CHATSKILL, FONT *);
 
-		void chat_draw(BITMAP *, int, FONT *);
-		char * chat_send(std::string, std::string);
-		~Chat();
-	private :
-		std::ofstream chatlog_file;
+        void chat_draw(BITMAP *, int, FONT *);
+        char * chat_send(std::string, std::string);
+        ~Chat();
+    private :
+        std::ofstream chatlog_file;
 
-		typedef struct CHATLOG {									// list item container object
-			std::string nick;
-			std::string text;
-			int own;
-			int width;
-		};
+        typedef struct CHATLOG {          // list item container object
+            std::string nick;
+            std::string text;
+            int own;
+            int width;
+        };
 
-		std::list<CHATLOG> chatlog;										// list object ready to accept out CHATLOG struct :)
-		std::list<CHATLOG>::iterator iter;
+        std::list<CHATLOG> chatlog;       // list object ready to accept out CHATLOG struct :)
+        std::list<CHATLOG>::iterator iter;
 
-		int items;
-		int items_keep;
+        int items;
+        int items_keep;
 
-		std::string const_msg(CHATSKILL);							// contructs action-fail messages
-		std::string const_msg(int);										// constructs normal messages (not implemented yet)
+        std::string const_msg(CHATSKILL); // contructs action-fail messages
+        std::string const_msg(int);       // constructs normal messages (not implemented yet)
 };
 
 #endif

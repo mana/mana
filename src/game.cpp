@@ -122,7 +122,7 @@ short get_elapsed_time(short start_time) {
 
 void game() {
     do_init();
-    GraphicEngine *graphicEngine = new GraphicEngine();
+    Engine *engine = new Engine();
 
     //SDL_Event event;
     //SDL_EnableUNICODE(1);
@@ -139,13 +139,13 @@ void game() {
         //}
 
         do_input();
-        graphicEngine->refresh();
+        engine->draw();
+        graphics->updateScreen();
         do_parse();
         flush();
     }
 
-
-    delete graphicEngine;
+    delete engine;
     close_session();
 }
 
@@ -359,7 +359,7 @@ void do_parse() {
     char direction;
     Being *being = NULL;
     PATH_NODE *pn;
-    int len;
+    int len, n_items;
 
     // We need at least 2 bytes to identify a packet
     if (in_size >= 2) {
@@ -700,15 +700,15 @@ void do_parse() {
                     switch (RFIFOB(26)) {
                         case 0: // Damage
                             being = find_node(RFIFOL(6));
-                            if(being!=NULL) {
-                                if(being->speech!=NULL) {
+                            if (being != NULL) {
+                                if (being->speech != NULL) {
                                     free(being->speech);
                                     being->speech = NULL;
                                     //being->speech_time = SPEECH_TIME;
                                 }
                                 being->speech = (char *)malloc(5);
                                 memset(being->speech, '\0', 5);
-                                if(RFIFOW(22)==0) {
+                                if (RFIFOW(22) == 0) {
                                     sprintf(being->speech, "miss");
                                     being->speech_color = makecol(255, 255, 0);
                                 } else {

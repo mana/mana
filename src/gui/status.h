@@ -25,11 +25,9 @@
 #pragma warning(disable:4312)
 #endif
 
-#ifndef _STATS_H
-#define _STATS_H
+#ifndef _TMW_STATS_H
+#define _TMW_STATS_H
 
-#include "../main.h"
-#include "gui.h"
 #include "window.h"
 #include "progressbar.h"
 #include <allegro.h>

@@ -59,5 +59,5 @@ void TextField::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, x, y, w, h);
+    draw_skinned_rect(buffer, &gui_skin.textbox.bg, x, y, w, h);
 }

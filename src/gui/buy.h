@@ -24,7 +24,6 @@
 #ifndef _TMW_BUY_H
 #define _TMW_BUY_H
 
-#include "gui.h"
 #include "window.h"
 #include "shop.h"
 

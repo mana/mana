@@ -57,6 +57,6 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
     x += 2;
     y += 2;
     if (box != NULL) {
-        box->draw(gui_bitmap, x, y);
+        box->draw(buffer, x, y);
     }
 }

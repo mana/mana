@@ -38,38 +38,6 @@
 #include <errno.h>
 #endif
 
-// Language map can probably be removed after switching to SDL
-typedef struct {
-    unsigned int code;
-    char* name;
-} LanguageMap;
-
-LanguageMap languageMap[] = {
-    { 0x0813, "BE" },
-    { 0x0416, "BR" },
-    { 0x1009, "CF" },
-    { 0x1009, "CF" },
-    { 0x0807, "CH" },
-    { 0x0405, "CZ" },
-    { 0x0407, "DE" },
-    { 0x0406, "DK" },
-    { 0x040a, "ES" },
-    { 0x040b, "FI" },
-    { 0x040c, "FR" },
-    { 0x0410, "IT" },
-    { 0x0414, "NO" },
-    { 0x0415, "PL" },
-    { 0x0416, "PT" },
-    { 0x0816, "PT" },
-    { 0x0419, "RU" },
-    { 0x041d, "SE" },
-    { 0x041b, "SK" },
-    { 0x0424, "SK" },
-    { 0x0809, "UK" },
-    { 0x0409, "US" },
-    { 0, NULL }
-};
-
 // Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
@@ -78,6 +46,7 @@ PLAYER_INFO *char_info = new PLAYER_INFO;
 
 Spriteset *hairset, *playerset;
 Image *login_wallpaper;
+Graphics *graphics;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -129,27 +98,6 @@ void request_exit() {
  * Do all initialization stuff
  */
 void init_engine() {
-#ifdef WIN32
-    // After switching to SDL this can probably be removed
-    char keyb_buffer[KL_NAMELENGTH + 1];
-    unsigned int langID;
-    char* code = NULL;
-    int running = 1;
-    int a;
-    if (GetKeyboardLayoutName(keyb_buffer)) {
-        //printf("layout name: %s\n", buffer);
-        langID = strtol(keyb_buffer, NULL, 16);
-        langID &= 0xffff;
-        //printf("language id: %x\n", langID);
-        for (a = 0; languageMap[a].code != 0; ++a) {
-            if (languageMap[a].code == langID) {
-                code = languageMap[a].name;
-                break;
-            }
-        }
-    }
-#endif
-
     // Initialize SDL
     //if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
     //    std::cerr << "Could not initialize SDL: " <<
@@ -217,17 +165,12 @@ void init_engine() {
         }
         else {
             fclose(tmwFile);
-            // tmw.ini creation
-            config.setValue("system", "");
-            config.setValue("keyboard", "en");
-            config.setValue("language", "");
+            // Fill tmw.ini with defaults
             config.setValue("core_version", CORE_VERSION);
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
             config.setValue("screen", 1);
             config.setValue("sound", 1);
-
-
 #ifdef __USE_UNIX98
             char *chatlogFilename = new char[400];
             sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
@@ -236,7 +179,6 @@ void init_engine() {
 #else
             config.setValue("chatlog", "chatlog.txt");
 #endif
-
             config.setValue("stretch", 1);
             config.setValue("remember", 1);
             config.setValue("username", "Player");
@@ -246,12 +188,6 @@ void init_engine() {
     }
 
     config.init(dir);
-#ifdef WIN32
-    // With SDL this part should probably just be removed
-    if (code) {
-        set_config_string("system", "keyboard", code);
-    }
-#endif
 
 #ifdef MACOSX
     set_color_depth(32);
@@ -288,10 +224,8 @@ void init_engine() {
     }
 
     // Buffer creation shouldn't be necessary with SDL
-    buffer = create_bitmap(800, 600);
-    if (!buffer) {
-        error("Not enough memory to create buffer");
-    }
+    // Create the graphics context
+    graphics = new Graphics();
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -312,9 +246,7 @@ void init_engine() {
     playerset = new Spriteset(scaledPlayerImg, 160, 120);
     hairset = new Spriteset(scaledHairImg, 40, 40);
 
-
-    // TODO: Remove Allegro config file usage from GUI look
-    init_gui(buffer, "data/Skin/aqua.skin");
+    init_gui(graphics);
     state = LOGIN;
 
 #ifndef WIN32
@@ -348,7 +280,6 @@ void exit_engine() {
     delete dir;
     gui_exit();
     ResourceManager::deleteInstance();
-    destroy_bitmap(buffer);
     allegro_exit();
 }
 
@@ -388,7 +319,8 @@ int main() {
                 // Redraw GUI
                 login_wallpaper->draw(buffer, 0, 0);
                 guiGraphics->setTarget(buffer);
-                gui->update();
+                gui->logic();
+                gui->draw();
                 blit(buffer, screen, 0, 0, 0, 0, 800, 600);
                 break;
             default:

@@ -48,7 +48,7 @@ void Button::draw(gcn::Graphics* graphics) {
     int x, y;
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(gui_bitmap, &gui_skin.button.background[mode],
+    draw_skinned_rect(buffer, &gui_skin.button.background[mode],
             x, y, getWidth(), getHeight());
 
     graphics->setColor(getForegroundColor());

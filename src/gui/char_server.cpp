@@ -118,7 +118,8 @@ void char_server() {
     showServerList = 1;
     while (showServerList) {
         login_wallpaper->draw(buffer, 0, 0);
-        gui->update();
+        gui->logic();
+        gui->draw();
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
     }
 

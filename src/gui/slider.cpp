@@ -46,18 +46,18 @@ void Slider::draw(gcn::Graphics *graphics)
 
     y += (h - gui_skin.slider.hSlider[0]->h) / 2;
 
-    masked_blit(gui_skin.slider.hSlider[0], gui_bitmap, 0, 0, x, y,
+    masked_blit(gui_skin.slider.hSlider[0], buffer, 0, 0, x, y,
             gui_skin.slider.hSlider[0]->w, gui_skin.slider.hSlider[0]->h);
 
     w -= gui_skin.slider.hSlider[0]->w + gui_skin.slider.hSlider[2]->w;
     x += gui_skin.slider.hSlider[0]->w;
 
-    masked_stretch_blit(gui_skin.slider.hSlider[1], gui_bitmap, 0, 0,
+    masked_stretch_blit(gui_skin.slider.hSlider[1], buffer, 0, 0,
             gui_skin.slider.hSlider[1]->w, gui_skin.slider.hSlider[1]->h,
             x, y, w, gui_skin.slider.hSlider[1]->h);
 
     x += w;
-    masked_blit(gui_skin.slider.hSlider[2], gui_bitmap, 0, 0, x, y,
+    masked_blit(gui_skin.slider.hSlider[2], buffer, 0, 0, x, y,
             gui_skin.slider.hSlider[2]->w, gui_skin.slider.hSlider[2]->h);
 
     drawMarker(graphics);
@@ -72,6 +72,6 @@ void Slider::drawMarker(gcn::Graphics *graphics)
     x += mMarkerPosition;
     y += (h - gui_skin.slider.hGrip->h) / 2;
 
-    masked_blit(gui_skin.slider.hGrip, gui_bitmap, 0, 0, x, y,
+    masked_blit(gui_skin.slider.hGrip, buffer, 0, 0, x, y,
             gui_skin.slider.hGrip->w, gui_skin.slider.hGrip->h);
 }

@@ -25,6 +25,7 @@
 #include "../gui/gui.h"
 #include "../gui/textfield.h"
 #include "../gui/status.h"
+#include "../main.h"
 
 BITMAP *buffer, *chat_background;
 
@@ -142,9 +143,30 @@ int get_y_offset(Being *being) {
 }
 
 
-GraphicEngine::GraphicEngine() {
-    clear_bitmap(screen);
-    
+Graphics::Graphics()
+{
+    // Create drawing buffer
+    // SDL probably doesn't need this buffer, it'll buffer for us.
+    buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    if (!buffer) {
+        error("Not enough memory to create buffer");
+    }
+
+    setTarget(buffer);
+}
+
+Graphics::~Graphics() {
+    destroy_bitmap(buffer);
+}
+
+void Graphics::updateScreen()
+{
+    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+}
+
+
+Engine::Engine()
+{
     // Initializes GUI
     chat_background = create_bitmap(592, 100);
     clear_to_color(chat_background, makecol(0, 0, 0));
@@ -193,15 +215,6 @@ GraphicEngine::GraphicEngine() {
     // Give focus to the chat input
     chatInput->requestFocus();
 
-    // SDL probably doesn't need this buffer, it'll buffer for us.
-    buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    if (!buffer) {
-        error("Not enough memory to create buffer");
-    }
-
-    // Initialize the gui bitmap to the page that will be drawn first
-    gui_bitmap = this->buffer;
-
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
     Image *npcbmp = resman->getImage("graphic/npcset.bmp");
@@ -220,7 +233,8 @@ GraphicEngine::GraphicEngine() {
     monsterset = new Spriteset(monsterbitmap, 60, 60);
 }
 
-GraphicEngine::~GraphicEngine() {
+Engine::~Engine()
+{
     delete statusWindow;
     delete buyDialog;
     delete sellDialog;
@@ -236,7 +250,8 @@ GraphicEngine::~GraphicEngine() {
     delete emotionset;
 }
 
-void GraphicEngine::refresh() {
+void Engine::draw()
+{
     map_x = (player_node->x - 13) * 32 +
         get_x_offset(player_node);
     map_y = (player_node->y - 9) * 32 +
@@ -473,17 +488,14 @@ void GraphicEngine::refresh() {
     if (statsWindow->isVisible()) {
         statsWindow->update();
     }
+    if (statusWindow->isVisible()) {
+        statusWindow->update();
+    }
 
-    // Update character status display
-    statusWindow->update();
-
-    // Update GUI
-    guiGraphics->setTarget(buffer);
-    gui->update();
+    gui->logic();
+    gui->draw();
 
     textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), -1,
             "[%i fps] %i,%i", fps,
             mouse_x / 32 + camera_x, mouse_y / 32 + camera_y);
-
-    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 }

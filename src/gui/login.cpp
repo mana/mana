@@ -132,7 +132,8 @@ void login() {
 
     while (state == LOGIN) {
         login_wallpaper->draw(buffer, 0, 0);
-        gui->update();
+        gui->logic();
+        gui->draw();
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
         if (key[KEY_ESC]) {
             state = EXIT;

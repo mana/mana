@@ -33,6 +33,7 @@
 #include <allegro.h>
 #include <string.h>
 #include "windowcontainer.h"
+#include "../graphic/graphic.h"
 
 /**
  * \defgroup GUI GUI related classes
@@ -49,7 +50,7 @@ class Gui
         /**
          * Constructor.
          */
-        Gui(BITMAP *screen);
+        Gui(Graphics *screen);
 
         /**
          * Destructor.
@@ -57,16 +58,10 @@ class Gui
         ~Gui();
 
         /**
-         * Performs GUI logic and drawing.
-         */
-        void update();
-
-        /**
          * Focus none of the Widgets in the Gui.
          */
         void focusNone();
 
-    private:
         /**
          * Performs the Gui:s logic by calling all logic functions
          * down in the Gui heirarchy. Logic can be just about anything
@@ -79,10 +74,11 @@ class Gui
 
         /**
          * Draws the whole Gui by calling draw functions down in the
-         * Gui hierarchy.
+         * Gui hierarchy. It also draws the mouse pointer.
          */
         void draw();
 
+    private:
         gcn::Gui* gui;                        /**< The GUI system */
         gcn::Input* guiInput;                 /**< Input driver */
         gcn::ImageLoader* imageLoader;        /**< For loading images */
@@ -147,21 +143,20 @@ typedef struct {
 } LexSkin;
 
 extern LexSkin gui_skin;
-extern BITMAP *gui_bitmap;
 
 extern Gui* gui;
 extern WindowContainer* guiTop;               // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 
 /** Initialize gui system */
-void init_gui(BITMAP *dest_bitmap, const char *skin);
+void init_gui(Graphics *graphics);
 
 void gui_exit();
 int gui_load_skin(const char* skinname);
 void gui_shutdown(void);
 
 /** Helper procedure to draw skinned rectangles */
-void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin,
+void draw_skinned_rect(BITMAP *dst, LexSkinnedRect *skin,
         int x, int y, int w, int h);
 
 #endif

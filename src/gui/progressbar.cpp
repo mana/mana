@@ -43,15 +43,15 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     
     // outer bar
     int MyColor = makecol(abs(Red-70), abs(Green-70), abs(Blue-70));
-    hline(gui_bitmap, absx+X+7, absy+Y, absx+X+Width, MyColor);
-    hline(gui_bitmap, absx+X, absy+Y+7, absx+X+Width-7, MyColor);
-    line(gui_bitmap, absx+X+7, absy+Y, absx+X, absy+Y+7, MyColor);
-    line(gui_bitmap, absx+X+Width, absy+Y, absx+X+Width-7, absy+Y+7, MyColor);
+    hline(buffer, absx+X+7, absy+Y, absx+X+Width, MyColor);
+    hline(buffer, absx+X, absy+Y+7, absx+X+Width-7, MyColor);
+    line(buffer, absx+X+7, absy+Y, absx+X, absy+Y+7, MyColor);
+    line(buffer, absx+X+Width, absy+Y, absx+X+Width-7, absy+Y+7, MyColor);
     
     // Shadow of outer bar
     MyColor = makeacol(0, 0, 0, 80);
-    hline(gui_bitmap, absx+X+1, absy+Y+7+1, absx+X+Width-7, MyColor);
-    line(gui_bitmap, absx+X+Width+1, absy+Y, absx+X+Width-7+1, absy+Y+7, MyColor);
+    hline(buffer, absx+X+1, absy+Y+7+1, absx+X+Width-7, MyColor);
+    line(buffer, absx+X+Width+1, absy+Y, absx+X+Width-7+1, absy+Y+7, MyColor);
     
     
     // Inner bar
@@ -62,48 +62,48 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     
     for(int i = 1; i < 7; i++)
     {
-    	Temp = absx+X+int(float(Width)*progress)-i-1;
-    	if ( Temp < (absx+X+8-i) ) Temp = (absx+X+8-i);
-	hline(gui_bitmap, absx+X+8-i, absy+Y+i, Temp, MyColor);
+        Temp = absx+X+int(float(Width)*progress)-i-1;
+        if (Temp < (absx + X + 8 - i)) Temp = (absx + X + 8 - i);
+        hline(buffer, absx+X+8-i, absy+Y+i, Temp, MyColor);
     }
     
     // Shadow of inner bar
     Temp = absx+X+int(float(Width)*progress)-2;
     if ( Temp < (absx+X+7+1) ) Temp = absx+X+7;
     MyColor = makeacol(abs(Red-40), abs(Green-40), abs(Blue-40), 80);
-    hline(gui_bitmap, absx+X+7+1, absy+Y+1, Temp, MyColor);
-    line(gui_bitmap, absx+X+7, absy+Y+1, absx+X+2, absy+Y+7-1, MyColor);
+    hline(buffer, absx+X+7+1, absy+Y+1, Temp, MyColor);
+    line(buffer, absx+X+7, absy+Y+1, absx+X+2, absy+Y+7-1, MyColor);
 
-    //rectfill(gui_bitmap, absx+7, absy+7, absx+39, absy+9, MyColor);
+    //rectfill(buffer, absx+7, absy+7, absx+39, absy+9, MyColor);
     
 /*
     if (progress != 0) {
-        masked_blit(gui_skin.bar.bg.grid[3], gui_bitmap,
-                0, 0, x, y, gui_bitmap->w, gui_bitmap->h);
+        masked_blit(gui_skin.bar.bg.grid[3], buffer,
+                0, 0, x, y, buffer->w, buffer->h);
     }
     else {
-        masked_blit(gui_skin.bar.bg.grid[0], gui_bitmap,
-                0, 0, x, y, gui_bitmap->w, gui_bitmap->h);
+        masked_blit(gui_skin.bar.bg.grid[0], buffer,
+                0, 0, x, y, buffer->w, buffer->h);
     }
 
     for (int i = 3; i < (w - 3); i++) {
         if (i < progress * w - 3) {
-            masked_blit(gui_skin.bar.bg.grid[4], gui_bitmap,
-                    0, 0, x + 1 * i, y, gui_bitmap->w, gui_bitmap->h);
+            masked_blit(gui_skin.bar.bg.grid[4], buffer,
+                    0, 0, x + 1 * i, y, buffer->w, buffer->h);
         }
         else {
-            masked_blit(gui_skin.bar.bg.grid[1], gui_bitmap,
-                    0, 0, x + 1 * i, y, gui_bitmap->w, gui_bitmap->h);
+            masked_blit(gui_skin.bar.bg.grid[1], buffer,
+                    0, 0, x + 1 * i, y, buffer->w, buffer->h);
         }
     }
 
     if (progress == 1) {
-        masked_blit(gui_skin.bar.bg.grid[5], gui_bitmap,
-                0, 0, x + w - 3, y, gui_bitmap->w, gui_bitmap->h);
+        masked_blit(gui_skin.bar.bg.grid[5], buffer,
+                0, 0, x + w - 3, y, buffer->w, buffer->h);
     }
     else {
-        masked_blit(gui_skin.bar.bg.grid[2], gui_bitmap,
-                0, 0, x + w - 3, y, gui_bitmap->w, gui_bitmap->h);
+        masked_blit(gui_skin.bar.bg.grid[2], buffer,
+                0, 0, x + w - 3, y, buffer->w, buffer->h);
     }*/
 }
 

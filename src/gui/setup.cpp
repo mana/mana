@@ -33,6 +33,7 @@
 #include "listbox.h"
 #include "radiobutton.h"
 #include "ok_dialog.h"
+#include "../main.h"
 
 #ifndef WIN32
 extern Sound sound;

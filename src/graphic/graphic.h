@@ -24,12 +24,12 @@
 #ifndef _GRAPHIC_H
 #define _GRAPHIC_H
 
-#include "../game.h"
+class Graphics;
+
 #include "../map.h"
-#include "../being.h"
-#include "../gui/buy.h"
 #include "../gui/npc.h"
 #include "../gui/npc_text.h"
+#include "../gui/buy.h"
 #include "../gui/sell.h"
 #include "../gui/buysell.h"
 #include "../gui/chat.h"
@@ -40,14 +40,15 @@
 #include "../gui/npc.h"
 #include "../gui/status.h"
 #include "../gui/stats.h"
+#include "../gui/skill.h"
 #include "../resources/resourcemanager.h"
 #include "spriteset.h"
 #include <allegro.h>
+#include <guichan/allegro.hpp>
 
 #define TILE_SIZE 32
 
 extern BITMAP *buffer;
-extern int page_num;
 extern char speech[255];
 extern char npc_text[1000];
 extern char skill_points[10];
@@ -86,15 +87,40 @@ class BuySellListener : public gcn::ActionListener {
         void action(const std::string& eventId);
 };
 
-class GraphicEngine {
+/**
+ * A central point of control for graphics.
+ */
+class Graphics : public gcn::AllegroGraphics {
+    public:
+        /**
+         * Constructor.
+         */
+        Graphics();
+
+        /**
+         * Destructor.
+         */
+        ~Graphics();
+
+        /**
+         * Updates the screen. This is done by either copying the buffer to the
+         * screen or swapping pages.
+         */
+        void updateScreen();
+};
+
+/**
+ * Game engine that does the main drawing.
+ */
+class Engine {
     private:
         Spriteset *tileset, *emotionset, *npcset, *monsterset;
-        BITMAP *buffer;
-        
+
     public:
-        GraphicEngine();
-        ~GraphicEngine();
-        void refresh();	
+        Engine();
+        ~Engine();
+
+        void draw();
 };
 
 #endif

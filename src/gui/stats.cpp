@@ -22,8 +22,9 @@
  */
 
 #include "stats.h"
-
-extern PLAYER_INFO *char_info;
+#include "button.h"
+#include "../main.h"
+#include "../net/network.h"
 
 StatsWindow::StatsWindow():
     Window("Stats")

@@ -104,7 +104,7 @@ void ScrollArea::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, x, y, w, h);
+    draw_skinned_rect(buffer, &gui_skin.textbox.bg, x, y, w, h);
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
@@ -133,7 +133,7 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalBarDimension();
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(gui_bitmap, &gui_skin.listbox.bg,
+    draw_skinned_rect(buffer, &gui_skin.listbox.bg,
             x + dim.x, y + dim.y, dim.width, dim.height);
 }
 
@@ -148,7 +148,7 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalMarkerDimension();
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll,
+    draw_skinned_rect(buffer, &gui_skin.listbox.vscroll,
             x + dim.x, y + dim.y, dim.width, dim.height);
 }
 

@@ -49,5 +49,5 @@ void CheckBox::drawBox(gcn::Graphics* graphics) {
     x += 2;
     y += 2;
 
-    masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
+    masked_blit(box, buffer, 0, 0, x, y, box->w, box->h);
 }

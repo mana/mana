@@ -22,6 +22,7 @@
  */
 
 #include "status.h"
+#include "../main.h"
 
 StatusWindow::StatusWindow():
     Window("%s Lvl: % 2i Job: % 2i")
