@@ -186,6 +186,9 @@
 					RelativePath=".\Net\net.cpp">
 				</File>
 				<File
+					RelativePath=".\Net\network.cpp">
+				</File>
+				<File
 					RelativePath=".\Net\packet_buffer.cpp">
 				</File>
 			</Filter>
@@ -205,10 +208,40 @@
 					RelativePath=".\Gui\char_sel_dialog.cpp">
 				</File>
 				<File
+					RelativePath=".\Gui\char_select.cpp">
+				</File>
+				<File
+					RelativePath=".\Gui\char_server.cpp">
+					<FileConfiguration
+						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Profile|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+					</FileConfiguration>
+				</File>
+				<File
 					RelativePath=".\Gui\chat_dialog.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\guiproc.cpp">
+				</File>
+				<File
+					RelativePath=".\Gui\lexgui.cpp">
+				</File>
+				<File
+					RelativePath=".\Gui\login.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.cpp">
@@ -230,6 +263,9 @@
 			</File>
 			<File
 				RelativePath=".\game_dialog.h">
+			</File>
+			<File
+				RelativePath=".\main.h">
 			</File>
 			<File
 				RelativePath=".\map.h">
@@ -259,6 +295,9 @@
 					RelativePath=".\Net\net.h">
 				</File>
 				<File
+					RelativePath=".\Net\network.h">
+				</File>
+				<File
 					RelativePath=".\Net\packet_buffer.h">
 				</File>
 				<File
@@ -281,10 +320,22 @@
 					RelativePath=".\Gui\char_sel_dialog.h">
 				</File>
 				<File
+					RelativePath=".\Gui\char_select.h">
+				</File>
+				<File
+					RelativePath=".\Gui\char_server.h">
+				</File>
+				<File
 					RelativePath=".\Gui\chat_dialog.h">
 				</File>
 				<File
 					RelativePath=".\Gui\guiproc.h">
+				</File>
+				<File
+					RelativePath=".\Gui\lexgui.h">
+				</File>
+				<File
+					RelativePath=".\Gui\login.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.h">
