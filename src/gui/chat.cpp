@@ -108,25 +108,25 @@ void ChatBox::draw(gcn::Graphics *graphics)
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                graphics->drawText("Global announcement: ", 1, texty);
+                graphics->drawText("Global announcement: ", 5, texty);
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
                 graphics->drawText(line.text, 100, texty);
                 break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
-                graphics->drawText(line.nick, 1, texty);
+                graphics->drawText(line.nick, 5, texty);
                 graphics->setColor(gcn::Color(255, 255, 255)); // White
                 graphics->drawText(line.text, 100, texty);
                 break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                graphics->drawText(line.nick, 1, texty);
+                graphics->drawText(line.nick, 5, texty);
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
                 graphics->drawText(line.text, 100, texty);
                 break;
             default:
                 graphics->setColor(gcn::Color(83, 233, 246)); // Light blue
-                graphics->drawText(line.text, 1, texty);
+                graphics->drawText(line.text, 5, texty);
         }
 
         if (i >= n) {

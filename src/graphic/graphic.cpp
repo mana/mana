@@ -306,7 +306,6 @@ void Engine::draw()
         int sy = y - camera_y;
     
 #ifdef DEBUG
-        textprintf_ex(buffer, font, sx*32, sy*32+40, makecol(255, 255, 255), -1, "%i,%i | %i", x, y, being->frame);
         rect(buffer, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
 #endif
         
