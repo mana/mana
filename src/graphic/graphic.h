@@ -38,7 +38,8 @@
 #include "image.h"
 #include <allegro.h>
 
-extern BITMAP *buffer, *double_buffer;
+extern BITMAP *buffer, *vpage[2];
+extern int page_num;
 extern char speech[255];
 extern char npc_text[1000];
 extern char skill_points[10];
@@ -58,7 +59,6 @@ class ChatListener : public gcn::ActionListener {
         void action(const std::string& eventId);
 };
 
-void set_npc_dialog(int show);
 void do_graphic(void);
 void init_graphic(void);
 void exit_graphic(void);

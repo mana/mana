@@ -152,13 +152,16 @@ void do_init() {
 	remove("./docs/packet.list");
 }
 
-/** Clean the engine */
+/**
+ * Clean the engine
+ */
 void do_exit() {
 }
 
-/** Check user input */
+/**
+ * Check user input
+ */
 void do_input() {
-
   if(walk_status==0) {
 		int x = get_x(player_node->coordinates);
 		int y = get_y(player_node->coordinates);
@@ -206,28 +209,31 @@ void do_input() {
     }
 	}
 
-  if(player_node->action==STAND)
-		if(key[KEY_LCONTROL]) {
-			player_node->action = ATTACK;
-			attack(get_x(player_node->coordinates), get_y(player_node->coordinates), get_direction(player_node->coordinates));
-			player_node->tick_time = tick_time;
-		}
+    if (player_node->action == STAND) {
+        if (key[KEY_LCONTROL]) {
+            player_node->action = ATTACK;
+            attack(get_x(player_node->coordinates),
+                    get_y(player_node->coordinates),
+                    get_direction(player_node->coordinates));
+            player_node->tick_time = tick_time;
+        }
+    }
 
-  if(key[KEY_F1]) {
-    save_bitmap("./data/graphic/screenshot.bmp", double_buffer, NULL);
-  } else if(key[KEY_F12]){
-    sound.SetAdjVol( 1, 1, 1);
-  } else if(key[KEY_F11]){
-    sound.SetAdjVol(-1,-1,-1);
-  }
-	if(key[KEY_F5] && action_time==true) {
-		if(player_node->action==STAND)
-      action(2, 0);
-		else if(player_node->action==SIT)
-			action(3, 0);
-		action_time = false;
-		//alert("","","","","",0,0);
-	}
+    if (key[KEY_F1]) {
+        save_bitmap("./data/graphic/screenshot.bmp", vpage[page_num], NULL);
+    } else if (key[KEY_F12]){
+        sound.SetAdjVol( 1, 1, 1);
+    } else if (key[KEY_F11]){
+        sound.SetAdjVol(-1,-1,-1);
+    }
+    if (key[KEY_F5] && action_time) {
+        if (player_node->action == STAND)
+            action(2, 0);
+        else if (player_node->action == SIT)
+            action(3, 0);
+        action_time = false;
+        //alert("","","","","",0,0);
+    }
 
 	if(key[KEY_F10] && action_time==true) {
 		//was 3 goes to 0

@@ -38,7 +38,7 @@ BITMAP *vbuffer, *vpage[2], *vtileset, *temp, *vnpcset, *vplayerset, *vmonsterse
 int page_num = 0;
 bool page_flipping;
 
-BITMAP *buffer, *double_buffer, *chat_background;
+BITMAP *buffer, *chat_background;
 DATAFILE *tileset;
 
 char itemCurrenyQ[10] = "0";
@@ -151,10 +151,6 @@ char hairtable[14][4][2] = {
     { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 4th frame
     { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} } // SIT
 };
-
-void set_npc_dialog(int show) {
-    show_npc_dialog = show;
-}
 
 int get_x_offset(NODE *node) {
     int offset = 0;
@@ -338,6 +334,7 @@ void do_graphic(void) {
             if (node->action == ATTACK) {
                 int pf = node->frame + node->action + 4 * node->weapon;
                 int wf = 16 * node->weapon + 4 * node->frame;
+
                 new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
                         node->text_x, node->text_y);
                 draw_rle_sprite(vbuffer, (RLE_SPRITE*)weaponset[wf + dir].dat,
@@ -351,6 +348,7 @@ void do_graphic(void) {
             }
             else {
                 int pf = node->frame + node->action;
+
                 new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
                         node->text_x, node->text_y);
                 masked_blit(hairset, vbuffer,
@@ -396,18 +394,22 @@ void do_graphic(void) {
             node->text_x = sx * 16 - 22 + get_x_offset(node) - offset_x;
             node->text_y = sy * 16 - 25 + get_y_offset(node) - offset_y;
 
-            //int r_x = node->text_x-get_x_offset(node);
-            //int r_y = node->text_y-get_y_offset(node);
+            int sprnum = dir + 4 * (node->job - 1002);
+            int mf = node->frame + node->action;
 
             if (node->action == MONSTER_DEAD) {
-                new_monsterset->spriteset[dir + 4 * (node->job - 1002) + 8 * MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
+                new_monsterset->spriteset[sprnum * MONSTER_DEAD]->draw(vbuffer,
+                        node->text_x, node->text_y);
             }
             else {
-                new_monsterset->spriteset[dir + 4 * (node->job - 1002) + 8 * (node->frame + node->action)]->draw(vbuffer, node->text_x, node->text_y);
+                new_monsterset->spriteset[sprnum + 8 * mf]->draw(vbuffer,
+                        node->text_x, node->text_y);
             }
 
             if (node->action != STAND) {
-                node->frame = (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+                node->frame =
+                    (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+
                 if (node->frame >= 4) {
                     if (node->action != MONSTER_DEAD && node->path) {
                         if (node->path->next) {
@@ -448,6 +450,7 @@ void do_graphic(void) {
                 }
             }
         }
+
         if (node->action == MONSTER_DEAD && node->frame >= 20) {
             NODE *temp = node;
             node = node->next;
@@ -476,6 +479,7 @@ void do_graphic(void) {
     release_bitmap(vbuffer);
     acquire_bitmap(vpage[page_num]);
 
+    // Stretch the map buffer onto the screen
     if (stretch_mode == 0) {
         stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
     }
@@ -560,13 +564,15 @@ void do_graphic(void) {
             char money[20];
             sprintf(money, "%i gp", char_info->gp);
             buy_dialog[4].dp = &money;
-            buy_dialog[5].d1 = (int)(char_info->gp/get_item_price(buy_dialog[3].d1));
-            if (buy_dialog[5].d2>buy_dialog[5].d1)
+            buy_dialog[5].d1 =
+                (int)(char_info->gp / get_item_price(buy_dialog[3].d1));
+
+            if (buy_dialog[5].d2 > buy_dialog[5].d1)
                 dialog_message(buy_dialog, MSG_DRAW, 0, 0);
             if (!gui_update(buy_player)) {
                 show_npc_dialog = shutdown_dialog(buy_player);
                 buy_dialog[5].d1 = 0;
-                if(show_npc_dialog==1) {
+                if (show_npc_dialog == 1) {
                     WFIFOW(0) = net_w_value(0x00c8);
                     WFIFOW(2) = net_w_value(8);
                     WFIFOW(4) = net_w_value(buy_dialog[5].d2);
@@ -634,7 +640,8 @@ void do_graphic(void) {
             if (ret == 1) {
                 if (char_info->skill_point > 0) {
                     WFIFOW(0) = net_w_value(0x0112);
-                    WFIFOW(2) = net_w_value(get_skill_id(skill_list_dialog[3].d1));
+                    WFIFOW(2) = net_w_value(
+                            get_skill_id(skill_list_dialog[3].d1));
                     WFIFOSET(4);
                 }
             } else if(ret == 2) {
