@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _SKILL_H
-#define _SKILL_H
+#ifndef _TMW_SKILL_H
+#define _TMW_SKILL_H
 
 #include <allegro.h>
 #include "button.h"
@@ -33,12 +33,17 @@ struct SKILL {
     short lv, sp;
 };
 
+/**
+ * The skill list model.
+ *
+ * \ingroup GUI
+ */
 class SkillListModel : public gcn::ListModel
 {
     std::vector<SKILL*> skillList;
     public:
         SkillListModel();
-        ~SkillListModel();
+        virtual ~SkillListModel();
 
         int getNumberOfElements();
         std::string getElementAt(int);
@@ -48,14 +53,22 @@ class SkillListModel : public gcn::ListModel
         void setSkill(int id, int lv, int sp);
 };
 
+/**
+ * The skill dialog.
+ *
+ * \ingroup GUI
+ */
 class SkillDialog : public Window, public gcn::ActionListener
 {
-    gcn::ListBox *skillListBox;
-    SkillListModel *skills;
-    gcn::Label *pointsLabel;
+    private:
+        gcn::ListBox *skillListBox;
+        gcn::ScrollArea *skillScrollArea;
+        SkillListModel *skills;
+        gcn::Label *pointsLabel;
 
-    Button *incButton;
-    Button *closeButton;
+        Button *incButton;
+        Button *closeButton;
+
     public:
         SkillDialog(gcn::Container *);
         ~SkillDialog();

@@ -22,6 +22,8 @@
  */
 
 #include "skill.h"
+#include "listbox.h"
+#include "scrollarea.h"
 
 extern PLAYER_INFO  *char_info;
 
@@ -53,7 +55,6 @@ char *skill_db[] = {
 
 SkillListModel::SkillListModel()
 {
-    //
 }
 
 SkillListModel::~SkillListModel()
@@ -72,7 +73,6 @@ int SkillListModel::getNumberOfElements()
 
 std::string SkillListModel::getElementAt(int i)
 {
-    //
     if (i >= 0 && i < skillList.size())
     {
         //return skill_db[skillList[i]->id];
@@ -85,9 +85,11 @@ std::string SkillListModel::getElementAt(int i)
 
 bool SkillListModel::hasSkill(int id)
 {
-    for (int i = 0; i < skillList.size(); i++)
-        if (skillList[i]->id == id)
+    for (unsigned int i = 0; i < skillList.size(); i++) {
+        if (skillList[i]->id == id) {
             return true;
+        }
+    }
     return false;
 }
 
@@ -102,20 +104,20 @@ void SkillListModel::addSkill(int id, int lv, int sp)
 
 void SkillListModel::setSkill(int id, int lv, int sp)
 {
-    if (!hasSkill(id))
+    if (!hasSkill(id)) {
         return;
+    }
     skillList[id]->lv = lv;
     skillList[id]->sp = sp;
 }
 
-//
 
 SkillDialog::SkillDialog(gcn::Container *parent)
     : Window(parent, "Skills")
 {
-    skills = new SkillListModel;
-
-    skillListBox = new gcn::ListBox(skills);
+    skills = new SkillListModel();
+    skillListBox = new ListBox(skills);
+    skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");
     incButton = new Button(" Up ");
     closeButton = new Button("Close");
@@ -123,15 +125,12 @@ SkillDialog::SkillDialog(gcn::Container *parent)
     incButton->setEventId("inc");
     closeButton->setEventId("close");
 
-    skillListBox->setDimension(gcn::Rectangle(0, 0, 200, 180));
-    pointsLabel->setDimension(gcn::Rectangle(0, 0, 200, 16));
-
-    skillListBox->setPosition(8, 4);
-    pointsLabel->setPosition(8, 190);
+    skillScrollArea->setDimension(gcn::Rectangle(8, 4, 200, 180));
+    pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
     incButton->setPosition(64, 210);
     closeButton->setPosition(160, 210);
 
-    add(skillListBox);
+    add(skillScrollArea);
     add(pointsLabel);
     add(incButton);
     add(closeButton);
@@ -146,6 +145,7 @@ SkillDialog::SkillDialog(gcn::Container *parent)
 SkillDialog::~SkillDialog()
 {
     delete skillListBox;
+    delete skillScrollArea;
     delete pointsLabel;
     delete incButton;
     delete closeButton;
@@ -158,7 +158,8 @@ void SkillDialog::action(const std::string& eventId)
     if (eventId == "inc")
     {
         //increment skill
-    } else if (eventId == "close")
+    }
+    else if (eventId == "close")
     {
         setVisible(false);
     }
@@ -168,7 +169,8 @@ void SkillDialog::setPoints(int i)
 {
     char tmp[128];
     sprintf(tmp, "Skill points: %i", i);
-    if (pointsLabel != NULL)
+    if (pointsLabel != NULL) {
         pointsLabel->setCaption(tmp);
+    }
 }
 
