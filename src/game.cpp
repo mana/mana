@@ -283,7 +283,7 @@ void do_input()
                 src_x = x;
                 src_y = y;
                 player_node->action = WALK;
-                player_node->tick_time = tick_time;
+                player_node->walk_time = tick_time;
                 player_node->y = y - 1;
                 player_node->direction = NORTH;
             }
@@ -299,7 +299,7 @@ void do_input()
                 src_x = x;
                 src_y = y;
                 player_node->action = WALK;
-                player_node->tick_time = tick_time;
+                player_node->walk_time = tick_time;
                 player_node->y = y + 1;
                 player_node->direction = SOUTH;
             }
@@ -313,7 +313,7 @@ void do_input()
                 src_x = x;
                 src_y = y;
                 player_node->action = WALK;
-                player_node->tick_time = tick_time;
+                player_node->walk_time = tick_time;
                 player_node->x = x - 1;
                 player_node->direction = WEST;
             }
@@ -327,7 +327,7 @@ void do_input()
                 src_x = x;
                 src_y = y;
                 player_node->action = WALK;
-                player_node->tick_time = tick_time;
+                player_node->walk_time = tick_time;
                 player_node->x = x + 1;
                 player_node->direction = EAST;
             }
@@ -342,7 +342,7 @@ void do_input()
                 attack(player_node->x,
                         player_node->y,
                         player_node->direction);
-                player_node->tick_time = tick_time;
+                player_node->walk_time = tick_time;
             }
         }
 
@@ -440,7 +440,6 @@ void do_parse() {
     char *temp;
     char direction;
     Being *being = NULL;
-    PATH_NODE *pn;
     int len, n_items;
 
     // We need at least 2 bytes to identify a packet
@@ -529,7 +528,7 @@ void do_parse() {
                             being->speed = 150; // Else division by 0 when calculating frame
                         }
                         being->job = RFIFOW(14);
-                        empty_path(being);
+                        being->clearPath();
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
@@ -539,12 +538,12 @@ void do_parse() {
                     }
                     else {
                         if (being) {
-                            empty_path(being);
+                            being->clearPath();
                             being->x = get_x(RFIFOP(46));
                             being->y = get_y(RFIFOP(46));
                             being->direction = get_direction(RFIFOP(46));
                             being->frame = 0;
-                            being->tick_time = tick_time;
+                            being->walk_time = tick_time;
                             being->action = STAND;
                         }
                     }
@@ -557,7 +556,7 @@ void do_parse() {
                             if(being->job>110) {
                                 being->action = MONSTER_DEAD;
                                 being->frame = 0;
-                                being->tick_time = tick_time;
+                                being->walk_time = tick_time;
                             }
                             //else being->action = DEAD;
                             //remove_node(RFIFOL(2));
@@ -577,7 +576,7 @@ void do_parse() {
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
                         add_node(being);
-                        being->tick_time = tick_time;
+                        being->walk_time = tick_time;
                         being->frame = 0;
                         being->speed = RFIFOW(6);
                         being->hair_color = RFIFOW(28);
@@ -599,36 +598,9 @@ void do_parse() {
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
-                    empty_path(being);
-                    being->path = calculate_path(get_src_x(RFIFOP(50)),
+                    being->setPath(calculate_path(get_src_x(RFIFOP(50)),
                             get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),
-                            get_dest_y(RFIFOP(50)));
-                    if (being->path!=NULL) {
-                        direction = 0;
-                        if (being->path->next) {
-                            if (being->path->next->x>being->path->x && being->path->next->y>being->path->y) direction = SE;
-                            else if (being->path->next->x < being->path->x && being->path->next->y>being->path->y) direction = SW;
-                            else if (being->path->next->x > being->path->x && being->path->next->y<being->path->y) direction = NE;
-                            else if (being->path->next->x < being->path->x && being->path->next->y<being->path->y) direction = NW;
-                            else if (being->path->next->x > being->path->x)
-                                direction = EAST;
-                            else if (being->path->next->x < being->path->x)
-                                direction = WEST;
-                            else if (being->path->next->y > being->path->y)
-                                direction = SOUTH;
-                            else if (being->path->next->y < being->path->y)
-                                direction = NORTH;
-                        }
-                        pn = being->path;
-                        being->path = being->path->next;
-                        free(pn);
-                        being->x = being->path->x;
-                        being->y = being->path->y;
-                        being->direction = direction;
-                        being->action = WALK;
-                        being->tick_time = tick_time;
-                        being->frame = 0;
-                    }
+                            get_dest_y(RFIFOP(50))));
                     break;
                     // Being moving
                 case 0x01da:
@@ -654,7 +626,7 @@ void do_parse() {
                             direction = NORTH;
                         else being->action = STAND;
                         if (being->action == WALK)
-                            being->tick_time = tick_time;
+                            being->walk_time = tick_time;
                         being->x = get_dest_x(RFIFOP(50));
                         being->y = get_dest_y(RFIFOP(50));
                         being->direction = direction;

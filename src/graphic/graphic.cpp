@@ -398,7 +398,7 @@ void Engine::draw()
             if (being->action != STAND && being->action != SIT
                     && being->action != DEAD) {
                 being->frame =
-                    (get_elapsed_time(being->tick_time) * 4) / (being->speed);
+                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
 
                 if (being->frame >= 4) {
                     being->frame = 0;
@@ -431,45 +431,11 @@ void Engine::draw()
 
             if (being->action != STAND) {
                 being->frame =
-                    (get_elapsed_time(being->tick_time) * 4) / (being->speed);
+                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
 
                 if (being->frame >= 4) {
-                    if (being->action != MONSTER_DEAD && being->path) {
-                        if (being->path->next) {
-                            int old_x, old_y, new_x, new_y;
-                            old_x = being->path->x;
-                            old_y = being->path->y;
-                            being->path = being->path->next;
-                            new_x = being->path->x;
-                            new_y = being->path->y;
-                            direction = 0;
-
-                            if (new_x > old_x) {
-                                if (new_y > old_y)      direction = SE;
-                                else if (new_y < old_y) direction = NE;
-                                else                    direction = EAST;
-                            }
-                            else if (new_x < old_x) {
-                                if (new_y > old_y)      direction = SW;
-                                else if (new_y < old_y) direction = NW;
-                                else                    direction = WEST;
-                            }
-                            else {
-                                if (new_y > old_y)      direction = SOUTH;
-                                else if (new_y < old_y) direction = NORTH;
-                            }
-
-                            being->x = being->path->x;
-                            being->y = being->path->y;
-                            being->direction = direction;
-                        } else {
-                            being->action = STAND;
-                        }
-                        if (being->action != MONSTER_DEAD) {
-                            being->frame = 0;
-                        }
-                        being->tick_time = tick_time;
-                        //being->frame = 0;
+                    if (being->action != MONSTER_DEAD && being->hasPath()) {
+                        being->nextStep();
                     }
                 }
             }
