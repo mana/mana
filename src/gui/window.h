@@ -38,12 +38,14 @@ class Window : public gcn::Container, public gcn::MouseListener
 {
     protected:
         gcn::Container *chrome;    /**< Contained container */
+        Window *parent;            /**< The parent window */
         std::string caption;       /**< Title bar caption */
         int z;                     /**< Z position of the window */
         int mousePX;               /**< Mouse down location */
         int mousePY;               /**< Mouse down location */
         int snapSize;              /**< Snap distance to window edge */
         bool mouseDown;            /**< Mouse button state */
+        bool modal;                /**< Window is modal */
         gcn::Color titlebarColor;  /**< Title bar color */
         int titlebarHeight;        /**< Height of title bar */
 
@@ -62,7 +64,8 @@ class Window : public gcn::Container, public gcn::MouseListener
          * @param text   The initial window title, "Window" by default.
          * @param modal  Block input to other windows.
          */
-        Window(const std::string& text = "Window", bool modal = false);
+        Window(const std::string& text = "Window", bool modal = false,
+                Window *parent = NULL);
 
         /**
          * Destructor.
@@ -118,6 +121,19 @@ class Window : public gcn::Container, public gcn::MouseListener
          * Sets the size of this window.
          */
         void setSize(int width, int height);
+
+        /**
+         * Returns the parent window.
+         *
+         * @return The parent window or <code>NULL</code> if there is none.
+         */
+        Window *getParentWindow();
+
+        /**
+         * Returns wether this window is modal. This doesn't necessarily mean
+         * that is gets input as a child modal window could get it.
+         */
+        bool isModal();
 
         // Mouse handling
 

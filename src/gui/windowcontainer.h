@@ -26,6 +26,8 @@
 
 #include <guichan.hpp>
 
+class Window;
+
 /**
  * A window container. This container makes draggable windows possible.
  *
@@ -54,7 +56,15 @@ class WindowContainer : public gcn::Container {
          * Adds a widget. The widget can be set to be modal, which will ensure
          * only that widget will receive input.
          */
-        void add(gcn::Widget *widget, bool modal = false);
+        void add(gcn::Widget *widget);
+
+        /**
+         * Adds a window. The window can be set to be modal, which will ensure
+         * only that window will receive input. Note that when a modal widget
+         * has already been set, a new window can only be made model when the
+         * previously modal window is its parent.
+         */
+        void WindowContainer::add(Window *window, bool modal);
 
         /**
          * Removes a widget.
@@ -78,13 +88,13 @@ class WindowContainer : public gcn::Container {
          *
          * @see Window::Window
          */
-        void setModalWidget(gcn::Widget *widget);
+        void setModalWindow(Window *window);
 
         /**
          * Returns the current modal widget, or <code>NULL</code> if there
          * is none.
          */
-        gcn::Widget *getModalWidget();
+        gcn::Widget *getModalWindow();
 
         /**
          * Schedule a widget for deletion. It will be deleted at the start of
@@ -94,7 +104,7 @@ class WindowContainer : public gcn::Container {
 
     protected:
         bool mouseDown;
-        gcn::Widget *modalWidget;
+        Window *modalWindow;
 
         std::list<gcn::Widget*> deathList;
 };

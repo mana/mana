@@ -25,8 +25,7 @@
 #include "listbox.h"
 #include "scrollarea.h"
 #include "button.h"
-
-extern PLAYER_INFO  *char_info;
+#include "../main.h"
 
 char *skill_db[] = {
 	// 0-99

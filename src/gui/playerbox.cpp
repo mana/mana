@@ -45,7 +45,9 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
         // Draw his hair
         int hf = hairColor + 40 * (hairStyle);
-        hairset->spriteset[hf]->draw(gui_bitmap, x + 37, y + 5);
+        if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
+            hairset->spriteset[hf]->draw(gui_bitmap, x + 37, y + 5);
+        }
     }
 }
 

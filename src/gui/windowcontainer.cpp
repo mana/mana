@@ -23,10 +23,11 @@
 
 #include <iostream>
 #include "windowcontainer.h"
+#include "window.h"
 
 WindowContainer::WindowContainer():
     mouseDown(false),
-    modalWidget(NULL)
+    modalWindow(NULL)
 {
 }
 
@@ -84,7 +85,7 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
     }
 
     if (mWidgetWithMouse && !mWidgetWithMouse->hasFocus() &&
-            (!modalWidget || modalWidget == mWidgetWithMouse)) {
+            (!modalWindow || (gcn::Widget*)modalWindow == mWidgetWithMouse)) {
         gcn::MouseInput mi = mouseInput;
         mi.x -= mWidgetWithMouse->getX();
         mi.y -= mWidgetWithMouse->getY();      
@@ -96,44 +97,66 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
     }
 }
 
-void WindowContainer::add(gcn::Widget *widget, bool modal)
+void WindowContainer::add(gcn::Widget *widget)
 {
     gcn::Container::add(widget);
+}
+
+void WindowContainer::add(Window *window, bool modal)
+{
+    gcn::Container::add(window);
     if (modal) {
-        setModalWidget(widget);
+        setModalWindow(window);
     }
 }
 
 void WindowContainer::remove(gcn::Widget *widget)
 {
-    if (modalWidget == widget) {
-        modalWidget = NULL;
+    if (modalWindow == widget) {
+        setModalWindow(NULL);
     }
     gcn::Container::remove(widget);
 }
 
 void WindowContainer::_announceDeath(gcn::Widget *widget)
 {
-    if (modalWidget == widget) {
-        modalWidget = NULL;
+    if (modalWindow == widget) {
+        setModalWindow(NULL);
     }
     gcn::Container::_announceDeath(widget);
 }
 
 void WindowContainer::clear()
 {
-    modalWidget = NULL;
+    modalWindow = NULL;
     gcn::Container::clear();
 }
 
-void WindowContainer::setModalWidget(gcn::Widget *widget)
+void WindowContainer::setModalWindow(Window *window)
 {
-    modalWidget = widget;
+    if (modalWindow != window) {
+        if (!window) {
+            // Removing modal window, at this point there must be a modal
+            // window set.
+            Window *modalParent = modalWindow->getParentWindow();
+            if (modalParent && modalParent->isModal()) {
+                // Return modality to parent.
+                modalWindow = modalParent;
+                return;
+            }
+        }
+        else if (modalWindow && window->getParentWindow() != modalWindow) {
+            // Adding a modal window, but failed sanity check.
+            std::cerr << "Error: existing modal window not parent.\n";
+            return;
+        }
+        modalWindow = window;
+    }
 }
 
-gcn::Widget *WindowContainer::getModalWidget()
+gcn::Widget *WindowContainer::getModalWindow()
 {
-    return modalWidget;
+    return modalWindow;
 }
 
 void WindowContainer::scheduleDelete(gcn::Widget *widget)

@@ -27,14 +27,20 @@
 
 WindowContainer *Window::windowContainer = NULL;
 
-Window::Window(const std::string& text, bool modal):
+Window::Window(const std::string& text, bool modal, Window *parent):
+    parent(parent),
     caption(text),
     mousePX(0),
     mousePY(0),
     snapSize(8),
     mouseDown(false),
+    modal(modal),
     titlebarHeight(20)
 {
+#ifdef __DEBUG
+    std::cout << "Window::Window(\"" << caption << "\")\n";
+#endif
+
     titlebarColor.r = 203;
     titlebarColor.g = 203;
     titlebarColor.b = 203;
@@ -66,6 +72,10 @@ Window::Window(const std::string& text, bool modal):
 
 Window::~Window()
 {
+#ifdef __DEBUG
+    std::cout << "Window::~Window(\"" << caption << "\")\n";
+#endif
+
     // Free dialog bitmaps
     release_bitmap(dLeft);
     release_bitmap(dMid);
@@ -170,6 +180,16 @@ void Window::setSize(int width, int height)
 {
     setWidth(width);
     setHeight(height);
+}
+
+Window *Window::getParentWindow()
+{
+    return parent;
+}
+
+bool Window::isModal()
+{
+    return modal;
 }
 
 void Window::add(gcn::Widget *w)

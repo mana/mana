@@ -421,8 +421,8 @@ void do_parse() {
                     break;
                     // Success to walk request
                 case 0x0087:
-                    if(walk_status==1) {
-                        if(RFIFOL(2)>server_tick) {
+                    if (walk_status == 1) {
+                        if (RFIFOL(2) > server_tick) {
                             walk_status = 2;
                             server_tick = RFIFOL(2);
                         }
@@ -430,7 +430,7 @@ void do_parse() {
                     break;
                     // Add new being / stop monster
                 case 0x0078:
-                    if(find_node(RFIFOL(2))==NULL) {
+                    if (find_node(RFIFOL(2)) == NULL) {
                         node = new NODE();
                         node->id = RFIFOL(2);
                         node->speed = RFIFOW(6);
@@ -445,7 +445,7 @@ void do_parse() {
                         add_node(node);
                     }
                     else {
-                        if(node) {
+                        if (node) {
                             empty_path(node);
                             memcpy(node->coordinates, RFIFOP(46), 3);
                             node->frame = 0;
@@ -457,7 +457,7 @@ void do_parse() {
                     // Remove a being
                 case 0x0080:
                     node = find_node(RFIFOL(2));
-                    if(node!=NULL) {
+                    if (node != NULL) {
                         if(RFIFOB(6)==1) { // Death
                             if(node->job>110) {
                                 node->action = MONSTER_DEAD;
@@ -473,7 +473,7 @@ void do_parse() {
                 case 0x01d8:
                 case 0x01d9:
                     node = find_node(RFIFOL(2));
-                    if(node==NULL) {
+                    if (node == NULL) {
                         node = new NODE();
                         node->id = RFIFOL(2);
                         node->job = RFIFOW(14);

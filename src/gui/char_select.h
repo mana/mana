@@ -51,6 +51,16 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
 
         PlayerBox *playerBox;
 
+        /**
+         * Communicate character deletion to the server.
+         */
+        void serverCharDelete();
+
+        /**
+         * Communicate character selection to the server.
+         */
+        void serverCharSelect();
+
     public:
         /**
          * Constructor.
@@ -97,7 +107,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
         /**
          * Constructor.
          */
-        CharCreateDialog();
+        CharCreateDialog(Window *parent = NULL);
 
         /**
          * Destructor.
@@ -110,9 +120,5 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
 };
 
 void charSelect();
-void serverCharSelect();
-
-void charCreate();
-void serverCharDelete();
 
 #endif

@@ -25,8 +25,6 @@
 #define _TMW_SKILL_H
 
 #include <allegro.h>
-#include "../main.h"
-#include "gui.h"
 #include "window.h"
 
 struct SKILL {

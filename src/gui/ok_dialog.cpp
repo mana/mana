@@ -24,8 +24,20 @@
 #include "ok_dialog.h"
 #include "button.h"
 
-OkDialog::OkDialog(const std::string& title, const std::string& msg):
+OkDialog::OkDialog(const std::string &title, const std::string &msg):
     Window(title, true)
+{
+    init(msg);
+}
+
+OkDialog::OkDialog(Window *parent, const std::string &title,
+        const std::string &msg):
+    Window(title, true, parent)
+{
+    init(msg);
+}
+
+void OkDialog::init(const std::string &msg)
 {
     userLabel = new gcn::Label(msg);
     okButton = new Button("OK");
@@ -59,7 +71,7 @@ OkDialog::~OkDialog()
     delete okButton;
 }
 
-void OkDialog::action(const std::string& eventId)
+void OkDialog::action(const std::string &eventId)
 {
     if (eventId == "ok") {
         windowContainer->scheduleDelete(this);

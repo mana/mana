@@ -102,49 +102,139 @@ CharSelectDialog::~CharSelectDialog()
 
 void CharSelectDialog::action(const std::string& eventId)
 {
-    if (eventId == "ok") {
+    if (eventId == "ok" && n_character > 0) {
         // Start game
-        state = GAME;
+        serverCharSelect();
+        close_session();
     }
     else if (eventId == "cancel") {
         state = EXIT;
     }
     else if (eventId == "new") {
-        // Create new character
-        if (n_character > 0)
-            return;
-        // Start new character dialog...
-        new CharCreateDialog();
+        if (n_character == 0) {
+            // Start new character dialog
+            new CharCreateDialog(this);
+        }
     } else if (eventId == "delete") {
         // Delete character
-        if (n_character <= 0)
-            return;
-        serverCharDelete();
+        if (n_character > 0) {
+            serverCharDelete();
+        }
     }
 }
 
 void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
 {
-    std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
+    if (pi) {
+        std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
 
-    nameCaption << pi->name;
-    levelCaption << "Lvl: " << pi->lv;
-    jobCaption << "Job Lvl: " << pi->job_lv;
-    moneyCaption << "Gold: " << pi->gp;
+        nameCaption << pi->name;
+        levelCaption << "Lvl: " << pi->lv;
+        jobCaption << "Job Lvl: " << pi->job_lv;
+        moneyCaption << "Gold: " << pi->gp;
 
-    nameLabel->setCaption(nameCaption.str());
-    levelLabel->setCaption(levelCaption.str());
-    jobLevelLabel->setCaption(jobCaption.str());
-    moneyLabel->setCaption(moneyCaption.str());
+        nameLabel->setCaption(nameCaption.str());
+        levelLabel->setCaption(levelCaption.str());
+        jobLevelLabel->setCaption(jobCaption.str());
+        moneyLabel->setCaption(moneyCaption.str());
 
-    playerBox->hairStyle = pi->hair_style - 1;
-    playerBox->hairColor = pi->hair_color - 1;
-    playerBox->showPlayer = true;
+        playerBox->hairStyle = pi->hair_style - 1;
+        playerBox->hairColor = pi->hair_color - 1;
+        playerBox->showPlayer = true;
+    }
+    else {
+        nameLabel->setCaption("Name");
+        levelLabel->setCaption("Level");
+        jobLevelLabel->setCaption("Job Level");
+        moneyLabel->setCaption("Money");
+
+        playerBox->hairStyle = 0;
+        playerBox->hairColor = 0;
+        playerBox->showPlayer = false;
+    }
 }
 
+void CharSelectDialog::serverCharDelete() {
+    // Delete a character
+    if (yes_no("Confirm", "Are you sure?") == 0) {
+        // Request character deletion
+        WFIFOW(0) = net_w_value(0x0068);
+        WFIFOL(2) = net_l_value(char_info->id);
+        WFIFOSET(46);
 
-CharCreateDialog::CharCreateDialog():
-    Window("Create Character", true)
+        while ((in_size < 2) || (out_size > 0)) flush();
+        if (RFIFOW(0) == 0x006f) {
+            RFIFOSKIP(2);
+            free(char_info);
+            n_character = 0;
+            setPlayerInfo(NULL);
+            new OkDialog(this, "Info", "Player deleted");
+        }
+        else if (RFIFOW(0) == 0x006c) {
+            switch (RFIFOB(2)) {
+                case 0:
+                    new OkDialog(this, "Error", "Access denied");
+                    break;
+                case 1:
+                    new OkDialog(this, "Error", "Cannot use this ID");
+                    break;
+            }
+            RFIFOSKIP(3);
+        }
+        else {
+            new OkDialog(this, "Error", "Unknown error");
+        }
+    }
+}
+
+void CharSelectDialog::serverCharSelect()
+{
+    // Request character selection
+    WFIFOW(0) = net_w_value(0x0066);
+    WFIFOB(2) = net_b_value(0);
+    WFIFOSET(3);
+
+    while ((in_size < 3) || (out_size > 0)) {
+        flush();
+    }
+
+    log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
+            RFIFOW(0),
+            get_length(RFIFOW(0)),
+            RFIFOW(2));
+    log("CharSelect", "In_size: %d", in_size);
+
+    if (RFIFOW(0) == 0x0071) {
+        while (in_size < 28) {
+            flush();
+        }
+        char_ID = RFIFOL(2);
+        memset(map_path, '\0', 480);
+        append_filename(map_path, "./data/map/", RFIFOP(6), 480);
+        map_address = RFIFOL(22);
+        map_port = RFIFOW(26);
+        state = GAME;
+
+        log("CharSelect", "Map: %s", map_name);
+        log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
+        RFIFOSKIP(28);
+        close_session();
+    } else if (RFIFOW(0) == 0x006c) {
+        switch (RFIFOB(2)) {
+            case 0:
+                new OkDialog(this, "Error", "Access denied");
+                break;
+            case 1:
+                new OkDialog(this, "Error", "Cannot use this ID");
+                break;
+        }
+        RFIFOSKIP(3);
+    }
+    // Todo: add other packets
+}
+
+CharCreateDialog::CharCreateDialog(Window *parent):
+    Window("Create Character", true, parent)
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -229,7 +319,6 @@ void CharCreateDialog::action(const std::string& eventId)
         // Attempt to create the character and schedule this dialog for
         // deletion.
         serverCharCreate();
-        windowContainer->scheduleDelete(this);
     }
     else if (eventId == "cancel") {
         windowContainer->scheduleDelete(this);
@@ -302,17 +391,22 @@ void CharCreateDialog::serverCharCreate()
     } else if (RFIFOW(0) == 0x006c) {
         switch (RFIFOB(2)) {
             case 0:
-                ok("Error", "Access denied");
+                new OkDialog(this, "Error", "Access denied");
                 break;
             case 1:
-                ok("Error", "Cannot use this ID");
+                new OkDialog(this, "Error", "Cannot use this ID");
                 break;
         }
         RFIFOSKIP(3);
         n_character = 0;
     } else {
-        ok("Error", "Unknown error");
+        new OkDialog(this, "Error", "Unknown error");
         n_character = 0;
+    }
+
+    // Remove window when succeeded
+    if (n_character == 1) {
+        windowContainer->scheduleDelete(this);
     }
 }
 
@@ -321,9 +415,9 @@ void charSelect()
     CharSelectDialog *sel;
     sel = new CharSelectDialog();
 
-    state = LOGIN;
+    state = CHAR_SELECT;
 
-    while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT && state == LOGIN)
+    while (!key[KEY_ESC] && !key[KEY_ENTER] && state == CHAR_SELECT)
     {
         if (n_character > 0) {
             sel->setPlayerInfo(char_info);
@@ -336,94 +430,8 @@ void charSelect()
 
         // Draw to screen
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
-
-    }
-
-    if (state == GAME)
-    {
-        serverCharSelect();
-        close_session();
     }
 
     delete sel;
 }
 
-void serverCharSelect()
-{
-    // Request character selection
-    WFIFOW(0) = net_w_value(0x0066);
-    WFIFOB(2) = net_b_value(0);
-    WFIFOSET(3);
-
-    while ((in_size < 3) || (out_size > 0)) {
-        flush();
-    }
-
-    log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
-            RFIFOW(0),
-            get_length(RFIFOW(0)),
-            RFIFOW(2));
-    log("CharSelect", "In_size: %d", in_size);
-
-    if (RFIFOW(0) == 0x0071) {
-        while (in_size < 28) {
-            flush();
-        }
-        char_ID = RFIFOL(2);
-        memset(map_path, '\0', 480);
-        append_filename(map_path, "./data/map/", RFIFOP(6), 480);
-        map_address = RFIFOL(22);
-        map_port = RFIFOW(26);
-        state = GAME;
-
-        log("CharSelect", "Map: %s", map_name);
-        log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
-        RFIFOSKIP(28);
-        close_session();
-    } else if (RFIFOW(0) == 0x006c) {
-        switch (RFIFOB(2)) {
-            case 0:
-                ok("Error", "Access denied");
-                break;
-            case 1:
-                ok("Error", "Cannot use this ID");
-                break;
-        }
-        state = CHAR_SELECT;
-        RFIFOSKIP(3);
-    }
-    // Todo: add other packets
-}
-
-void serverCharDelete() {
-    state = CHAR_SELECT;
-    // Delete a character
-    if (yes_no("Confirm", "Are you sure?") == 0) {
-        // Request character deletion
-        WFIFOW(0) = net_w_value(0x0068);
-        WFIFOL(2) = net_l_value(char_info->id);
-        WFIFOSET(46);
-
-        while ((in_size < 2) || (out_size > 0)) flush();
-        if (RFIFOW(0) == 0x006f) {
-            RFIFOSKIP(2);
-            free(char_info);
-            n_character = 0;
-            ok("Info", "Player deleted");
-        }
-        else if (RFIFOW(0) == 0x006c) {
-            switch (RFIFOB(2)) {
-                case 0:
-                    ok("Error", "Access denied");
-                    break;
-                case 1:
-                    ok("Error", "Cannot use this ID");
-                    break;
-            }
-            RFIFOSKIP(3);
-        }
-        else {
-            ok("Error", "Unknown error");
-        }
-    }
-}
