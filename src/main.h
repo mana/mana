@@ -96,6 +96,5 @@ extern PLAYER_INFO *char_info;
 extern unsigned char state;
 extern unsigned short x, y;
 extern unsigned char direction;
-extern unsigned char stretch_mode;
 
 #endif
