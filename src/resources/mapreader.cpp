@@ -82,7 +82,9 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
     xmlChar *prop;
 
     prop = xmlGetProp(node, BAD_CAST "version");
+#ifndef WIN32
     xmlFree(prop);
+#endif
 
     int w = getProperty(node, "width", 0);
     int h = getProperty(node, "height", 0);
@@ -142,7 +144,9 @@ void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
     xmlChar* prop = xmlGetProp(node, BAD_CAST "source");
     if (prop) {
         log("Warning: External tilesets not supported yet.");
+#ifndef WIN32
         xmlFree(prop);
+#endif
         return;
     }
 
@@ -169,7 +173,9 @@ void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
                     Spriteset *set = new Spriteset(tilebmp, tw, th);
                     //set->setFirstGid(firstgid);
                     // TODO: Like uhm, do something with this set!
+#ifndef WIN32
                     xmlFree(source);
+#endif
                 }
                 else {
                     log("Warning: Failed to load tileset (%s)\n", source);
@@ -188,7 +194,9 @@ int MapReader::getProperty(xmlNodePtr node, const char* name, int def)
     xmlChar *prop = xmlGetProp(node, BAD_CAST name);
     if (prop) {
         int val = atoi((char*)prop);
+#ifndef WIN32
         xmlFree(prop);
+#endif
         return val;
     }
     else {

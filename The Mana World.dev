@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=97
+UnitCount=99
 Type=0
 Ver=1
 ObjFiles=
@@ -10,7 +10,7 @@ Libs=
 PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
-Compiler=-Dmain=SDL_main_@@__@@_
+Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_-D__DEBUG_@@__@@_
 Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lphysfs_static_@@_
 IsCpp=1
@@ -1023,9 +1023,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit98]
-FileName=src\gui\equipment.cpp
+FileName=src\resources\mapreader.cpp
 CompileCpp=1
-Folder=gui
+Folder=resources
 Compile=1
 Link=1
 Priority=1000
@@ -1033,9 +1033,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit99]
-FileName=src\gui\equipment.h
+FileName=src\resources\mapreader.h
 CompileCpp=1
-Folder=gui
+Folder=resources
 Compile=1
 Link=1
 Priority=1000

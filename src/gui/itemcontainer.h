@@ -35,6 +35,7 @@ struct ITEM_HOLDER { // the holder of a item
     int id;          // the id of the item
     int quantity;    // number of items
     bool equipment;
+    bool equipped;
 };
 
 /**
@@ -80,6 +81,11 @@ class ItemContainer : public gcn::Widget
         int getIndex();
         
         /**
+         * Finds the index of an item.
+         */
+        int getIndex(int id);
+        
+        /**
          * Returns the id of the selected item.
          */
         int getId();
@@ -122,6 +128,10 @@ class ItemContainer : public gcn::Widget
         void _mouseInputMessage(const gcn::MouseInput &mouseInput);
         
         bool isEquipment(int index);
+        
+        bool isEquipped(int index);
+        
+        void setEquipped(int index, bool equipped);
 };
 
 #endif

@@ -55,7 +55,15 @@ class EquipmentWindow : public Window, gcn::ActionListener {
          */
         void action(const std::string& eventId);
         
+        void addEquipment(int index, int id);
+        
+        void removeEquipment(int index);
+        
+        int equipments[10];
+        
     private:
+        
+        Spriteset *itemset;
 
 };
 

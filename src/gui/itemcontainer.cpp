@@ -38,6 +38,7 @@ ItemContainer::ItemContainer()
         items[i].id = -1;
         items[i].quantity = 0;
         items[i].equipment = false;
+        items[i].equipped = false;
     }
 }
 
@@ -66,7 +67,8 @@ void ItemContainer::draw(gcn::Graphics* graphics)
             }
 
             std::stringstream ss;
-            ss << items[i].quantity;
+            if(!items[i].equipped)
+                ss << items[i].quantity;
             graphics->drawText(ss.str(), 24 * i + 10, 24 + 2,
                     gcn::Graphics::CENTER);
         }
@@ -81,6 +83,16 @@ void ItemContainer::draw(gcn::Graphics* graphics)
 int ItemContainer::getIndex()
 {
     return selectedItem;
+}
+
+int ItemContainer::getIndex(int id)
+{
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        if (items[i].id == id) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 int ItemContainer::getId()
@@ -160,4 +172,14 @@ void ItemContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
 bool ItemContainer::isEquipment(int index)
 {
     return items[index].equipment;
+}
+
+bool ItemContainer::isEquipped(int index)
+{
+    return items[index].equipped;
+}
+
+void ItemContainer::setEquipped(int index, bool equipped)
+{
+    items[index].equipped = equipped;
 }

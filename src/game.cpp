@@ -415,7 +415,7 @@ void do_parse() {
             }
             fclose(file);
             */
-#ifdef DEBUG
+#ifdef __DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
@@ -598,7 +598,8 @@ void do_parse() {
                 case 0x01ee:
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 18),
-                                RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6), false);
+                                RFIFOW(4 + loop * 18 + 2),
+                                RFIFOW(4 + loop * 18 + 6), false);
                     }
                     break;
                     // Get the equipments
@@ -971,16 +972,33 @@ void do_parse() {
                         being->hair_style = RFIFOB(7);
                     }
                     break;
-                    // Answer to equip items
+                    // Answer to equip item
                 case 0x00aa:
                     if (RFIFOB(6) == 0)
-                        chatBox->chat_log("Unable to equip.", BY_SERVER);                        
+                        chatBox->chat_log("Unable to equip.", BY_SERVER);
+                    else                       
+                        inventoryWindow->items->setEquipped(
+                            inventoryWindow->items->getIndex(), true);
                     break;
                     // Equipment related
                 case 0x01d7:
-                    char content[40];
-                    sprintf(content, "%i %i", RFIFOW(7), RFIFOW(9));
-                    chatBox->chat_log(content, BY_SERVER);
+                    /*char content[40];
+                    sprintf(content, "%i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
+                    chatBox->chat_log(content, BY_SERVER);*/
+                    equipmentWindow->addEquipment(RFIFOB(6), RFIFOW(7));
+                    if(inventoryWindow->items->getIndex(RFIFOW(7)));
+                        inventoryWindow->items->setEquipped(
+                            inventoryWindow->items->getIndex(RFIFOW(7)), true);
+                    break;
+                    // Answer to unequip item
+                case 0x00ac:
+                    if (RFIFOB(6) == 0)
+                        chatBox->chat_log("Unable to unequip.", BY_SERVER);
+                    else {
+                        equipmentWindow->removeEquipment(RFIFOW(2));
+                        inventoryWindow->items->setEquipped(
+                            inventoryWindow->items->getIndex(), false);
+                    }                        
                     break;
                     // Manage non implemented packets
                 default:

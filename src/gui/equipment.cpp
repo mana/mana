@@ -29,10 +29,17 @@
 EquipmentWindow::EquipmentWindow():
     Window("Equipment")
 {
-    setSize(300, 300);
+    setSize(70, 200);
     setPosition(40, 40);
     
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *itemImg = resman->getImage("core/graphics/sprites/items.png");
+    if (!itemImg) error("Unable to load items.png");
+    itemset = new Spriteset(itemImg, 20, 20);
     
+    for (int i = 0; i < 10; i++ ) {
+        equipments[i] = 0;
+    }
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -41,10 +48,29 @@ EquipmentWindow::~EquipmentWindow()
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
+    int x, y;
+    getAbsolutePosition(x, y);
+    
     // Draw window graphics
     Window::draw(graphics);
+    
+    for (int i = 0; i < 10; i++) {
+        if (equipments[i] > 0) {
+            itemset->spriteset[equipments[i] - 501]->draw(screen,
+                        x + 20, y + 24 * i);
+        }
+    }
 }
 
 void EquipmentWindow::action(const std::string &eventId)
 {
 }
+
+void EquipmentWindow::addEquipment(int index, int id) {
+    equipments[index] = id;
+}
+
+void EquipmentWindow::removeEquipment(int index) {
+    equipments[index] = 0;
+}
+

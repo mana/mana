@@ -124,13 +124,28 @@ void InventoryWindow::equipItem(int index) {
     while ((out_size > 0)) flush();
 }
 
+void InventoryWindow::unequipItem(int index) {
+    WFIFOW(0) = net_w_value(0x00ab);
+    WFIFOW(2) = net_w_value(index);
+    WFIFOSET(4);
+    while ((out_size > 0)) flush();
+
+}
+
 void InventoryWindow::action(const std::string &eventId)
 {
     //if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
     if (items->getIndex() != -1) {
         if (eventId == "use") {
             if(items->isEquipment(items->getIndex())) {
-                equipItem(items->getIndex());
+                if(items->isEquipped(items->getIndex())) {
+                    unequipItem(items->getIndex());
+                    std::cout << "Blah\n";
+                    
+                }
+                else {
+                    equipItem(items->getIndex());
+                }
             }
             else {
                 useItem(items->getIndex(), items->getId());
@@ -138,7 +153,7 @@ void InventoryWindow::action(const std::string &eventId)
         }
         else if (eventId == "drop") {
             dropItem(items->getIndex(), items->getQuantity());
-            // Temp: drop all the items, you should choose quantity instead
+            // TODO: now drop all the items, you should choose quantity instead
         }       
     }
 }
