@@ -215,12 +215,9 @@ void init_engine() {
     // set_config_file("tmw.ini");
     #ifdef MACOSX
         set_color_depth(32);
-        Init_2xSaI(32);
     #else
         set_color_depth(16);
-        Init_2xSaI(16);
     #endif
-    stretch_mode = (unsigned char)config.getValue("stretch", 0);
     set_window_title("The Mana World");
 
     if(set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600, 0, 0)) {
@@ -278,11 +275,11 @@ void exit_engine() {
 int main() {
     init_engine();
     // initialize sound-engine and start playing intro-theme /-kth5
-    try{
+    try {
          if(config.getValue("sound", 0)==1)
          sound.Init(32,20);
          sound.SetVol(128,128,128);
-    }catch(const char * err){
+    } catch(const char * err) {
          ok("Sound Engine", err);
          warning(err);
     }

@@ -28,17 +28,17 @@ OkDialog::OkDialog(gcn::Container *parent, std::string msg):
 {
     userLabel = new gcn::Label(msg);
     okButton = new Button("OK");
-
+    
     setSize(200, 80);
     userLabel->setPosition(4, 11);
     okButton->setPosition(120, 52);
     okButton->setEventId("ok");
-
+    
     okButton->addActionListener(this);
-
+    
     add(userLabel);
     add(okButton);
-
+    
     setLocationRelativeTo(getParent());
     okButton->requestFocus();
 }

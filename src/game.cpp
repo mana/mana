@@ -97,20 +97,20 @@ short get_elapsed_time(short start_time) {
 void game() {
     status("INIT");
     do_init();
-    init_graphic();
+    //init_graphic();
+    GraphicEngine *graphicEngine = new GraphicEngine();
 
     while(state!=EXIT) {
         status("INPUT");
         do_input();
         status("GRAPHIC");
-        do_graphic();
+        graphicEngine->refresh();
         status("PARSE");
         do_parse();
         status("FLUSH");
         flush();
     }
 
-    exit_graphic();
     close_session();
 }
 
@@ -226,7 +226,7 @@ void do_input() {
     }
 
     if (key[KEY_F1]) {
-        save_bitmap("./data/graphic/screenshot.bmp", vpage[page_num], NULL);
+        save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
     } else if (key[KEY_F12]){
         sound.SetAdjVol( 1, 1, 1);
     } else if (key[KEY_F11]){

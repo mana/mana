@@ -82,4 +82,26 @@ void empty_path(NODE *node);
 
 extern NODE *player_node;
 
+class Being {
+    public:
+        unsigned int id;
+        unsigned short x, y, direction;
+        unsigned short image;
+        unsigned char action, frame;
+};
+
+class Npc {
+};
+
+class Warp {
+};
+
+class Player {
+};
+
+class Monster {
+};
+
+//std::vector<Being *> beings;
+
 #endif

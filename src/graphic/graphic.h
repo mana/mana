@@ -38,7 +38,9 @@
 #include "image.h"
 #include <allegro.h>
 
-extern BITMAP *buffer, *vpage[2];
+#define TILE_SIZE 32
+
+extern BITMAP *buffer;
 extern int page_num;
 extern char speech[255];
 extern char npc_text[1000];
@@ -67,69 +69,11 @@ class BuySellListener : public gcn::ActionListener {
         void action(const std::string& eventId);
 };
 
-void do_graphic(void);
-void init_graphic(void);
-void exit_graphic(void);
-
-class Surface {
-    public:
-        BITMAP *buffer;
-        virtual void lock() = 0;
-        virtual void show() = 0;
-        virtual void update() = 0;
-};
-
-class VideoSurface : public Surface {
-    private:
-        int	current_page;
-        BITMAP *page[2];
-    public:
-        VideoSurface(BITMAP *page1, BITMAP *page2) {
-            page[0] = page1;
-            page[1] = page2;
-            current_page = 0;
-        }
-        ~VideoSurface() {
-            destroy_bitmap(page[0]);
-            destroy_bitmap(page[2]);
-        }
-        void lock() {
-            acquire_bitmap(buffer);
-        }
-        void show() {
-            release_bitmap(buffer);
-            show_video_bitmap(buffer);
-        }
-        void update() {
-            current_page++;
-            if (current_page == 2) {
-                current_page = 0;
-            }
-            buffer = page[current_page];
-        }
-};
-
-class MemorySurface : public Surface {
-    public:
-        MemorySurface(BITMAP *buffer) {
-            this->buffer = buffer;
-        }
-        ~MemorySurface() {
-            destroy_bitmap(buffer);
-        }
-        void lock() {
-        }
-        void show() {
-            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-        }
-        void update() {
-        }
-};		
-
 class GraphicEngine {
     private:
-        Surface *surface;
-        Spriteset *tileset;
+        Spriteset *tileset, *emotionset, *npcset, *playerset, *monsterset, *hairset;
+        BITMAP *buffer;
+        
     public:
         GraphicEngine();
         ~GraphicEngine();

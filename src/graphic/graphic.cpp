@@ -25,19 +25,7 @@
 #include "../gui/textfield.h"
 #include "../gui/status.h"
 
-#define TILESET_W 480
-#define TILESET_H 320
-
-#ifdef WIN32
-#pragma warning (disable:4312)
-#endif
-
-BITMAP *vbuffer, *vpage[2], *vtileset, *temp, *vnpcset, *vplayerset, *vmonsterset;
-int page_num = 0;
-bool page_flipping;
-
 BITMAP *buffer, *chat_background;
-DATAFILE *tileset;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
@@ -90,10 +78,6 @@ void BuySellListener::action(const std::string& eventId)
 
     buySellDialog->setVisible(false);
 }
-
-
-Spriteset *new_tileset, *new_playerset, *new_npcset, *new_emotionset;
-Spriteset *new_monsterset;
 
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -159,11 +143,11 @@ int get_x_offset(NODE *node) {
         if (direction!=NORTH && direction!=SOUTH) {
             offset = node->frame + 1;
             if (offset==5)offset = 0;
-            offset *= 4;
+            offset *= 8;
             if (direction == WEST || direction == NW || direction == SW) {
                 offset = -offset;
-                offset += 16;
-            } else offset -= 16;
+                offset += 32;
+            } else offset -= 32;
         }
     }
     return offset;
@@ -176,31 +160,29 @@ int get_y_offset(NODE *node) {
         if (direction != EAST && direction != WEST) {
             offset = node->frame + 1;
             if (offset == 5) offset = 0;
-            offset *= 4;
+            offset *= 8;
             if (direction == NORTH || direction == NW || direction == NE) {
                 offset = -offset;
-                offset += 16;
+                offset += 32;
             }
             else {
-                offset -= 16;
+                offset -= 32;
             }
         }
     }
     return offset;
 }
 
-void init_graphic() {
+
+GraphicEngine::GraphicEngine() {
     clear_bitmap(screen);
+    
+    // Initializes GUI
     chat_background = create_bitmap(592, 100);
     clear_to_color(chat_background, makecol(0, 0, 0));
-
-    // Initialize gui
-
-    // Create chat input field
     chatInput = new TextField();
-    chatInput->setPosition(
-            chatInput->getBorderSize(),
-            SCREEN_H - chatInput->getHeight() - chatInput->getBorderSize() -1);
+    chatInput->setPosition(chatInput->getBorderSize(),
+        SCREEN_H - chatInput->getHeight() - chatInput->getBorderSize() -1);
     chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
 
     ChatListener *chatListener = new ChatListener();
@@ -233,75 +215,48 @@ void init_graphic() {
     skill_list_player = init_dialog(skill_list_dialog, -1);
     npc_list_player = init_dialog(npc_list_dialog, -1);
 
-    vpage[0] = NULL;
-    vpage[1] = NULL;
-    page_flipping = false;
-
-    // Try to set up two video bitmaps for high performance drawing when
-    // simple stretching is used and hardware vram blit is possible.
-    if ((gfx_capabilities & GFX_HW_VRAM_BLIT) && stretch_mode == 0)
-    {
-        vpage[0] = create_video_bitmap(SCREEN_W, SCREEN_H);
-        vpage[1] = create_video_bitmap(SCREEN_W, SCREEN_H);
-
-        if (!vpage[0] || !vpage[1])
-        {
-            warning("Not enough video memory for page flipping");
-
-            if (vpage[0]) {
-                destroy_bitmap(vpage[0]);
-                vpage[0] = NULL;
-            }
-            if (vpage[1]) {
-                destroy_bitmap(vpage[1]);
-                vpage[1] = NULL;
-            }
-        }
-        else {
-            page_flipping = true;
-        }
+    buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    if(!buffer) {
+        error("Not enough memory to create buffer");
     }
-
-    // No videobitmap pages were created, so create a normal bitmap that'll
-    // be used as buffer.
-    if (!page_flipping) {
-        vpage[0] = create_bitmap(SCREEN_W, SCREEN_H);
-        vpage[1] = vpage[0];
-        if (!vpage[0]) error("Not enough memory for screen buffer");
-    }
-
-    // Create a buffer to draw the low resolution map on
-    vbuffer = create_bitmap(SCREEN_W / 2, SCREEN_H / 2);
-    if (!vbuffer) error("Not enough memory for map buffer");
 
     // Initialize the gui bitmap to the page that will be drawn first
-    gui_bitmap = vpage[page_num];
-
-    new_emotionset = new Spriteset("./data/graphic/emotionset.dat");
-    new_tileset = new Spriteset("./data/graphic/desert.dat");
-    new_npcset = new Spriteset("./data/graphic/npcset.dat");
-    new_playerset = new Spriteset("./data/graphic/playerset.dat");
-    new_monsterset = new Spriteset("./data/graphic/monsterset.dat");
+    gui_bitmap = this->buffer;
+    
+    tileset = new Spriteset("./data/graphic/tileset.dat");
+    hairset = new Spriteset("./data/graphic/hairset.dat");
+    emotionset = new Spriteset("./data/graphic/emotionset.dat");
+    npcset = new Spriteset("./data/graphic/npcset.dat");
+    playerset = new Spriteset("./data/graphic/playerset.dat");
+    monsterset = new Spriteset("./data/graphic/monsterset.dat");
+    
 }
 
-void do_graphic(void) {
-    map_x = (get_x(player_node->coordinates) - 13) * 16 +
+GraphicEngine::~GraphicEngine() {
+    delete statusWindow;
+    delete buyDialog;
+    
+    //delete tileset;
+
+    shutdown_dialog(npc_player);
+    shutdown_dialog(skill_player);
+}
+
+void GraphicEngine::refresh() {
+    map_x = (get_x(player_node->coordinates) - 13) * 32 +
         get_x_offset(player_node);
-    map_y = (get_y(player_node->coordinates) - 9) * 16 +
+    map_y = (get_y(player_node->coordinates) - 9) * 32 +
         get_y_offset(player_node);
 
-    camera_x = map_x >> 4;
-    camera_y = map_y >> 4;
+    camera_x = map_x >> 5;
+    camera_y = map_y >> 5;
 
-    int offset_x = map_x & 15;
-    int offset_y = map_y & 15;
+    int offset_x = map_x & 31;
+    int offset_y = map_y & 31;
 
     sort();
 
     frame++;
-    acquire_bitmap(vbuffer);
-
-    new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 
     // Draw tiles below nodes
     for (int j = 0; j < 20; j++) {
@@ -310,16 +265,17 @@ void do_graphic(void) {
             unsigned short tile1 = get_tile(i + camera_x, j + camera_y, 1);
 
             if (tile0 < 600) {
-                new_tileset->spriteset[tile0]->draw(
-                        vbuffer, i * 16 - offset_x, j * 16 - offset_y);
+                tileset->spriteset[tile0]->draw(buffer,
+                i * 32 - offset_x, j * 32 - offset_y);
             }
             if (tile1 > 0) { //&& tile1 < 600
-                new_tileset->spriteset[tile1]->draw(
-                        vbuffer, i * 16 - offset_x, j * 16 - offset_y);
+                tileset->spriteset[tile1]->draw(buffer,
+                i * 32 - offset_x, j * 32 - offset_y);
             }
+            
         }
     }
-
+        
     // Draw nodes
     NODE *node = get_head();
     while (node) {
@@ -328,47 +284,47 @@ void do_graphic(void) {
         unsigned char dir = get_direction(node->coordinates) / 2;
         int sx = x - camera_x;
         int sy = y - camera_y;
+    
+#ifdef DEBUG
+        textprintf_ex(buffer, font, sx*32, sy*32+40, makecol(255, 255, 255), -1, "%i,%i | %i", x, y, node->frame);
+        rect(buffer, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
+#endif
         
         if ((node->job >= 100) && (node->job <= 110)) { // Draw a NPC
-            new_npcset->spriteset[4 * (node->job - 100) + dir]->draw(vbuffer,
-                    sx * 16 - 4 - offset_x,
-                    sy * 16 - 24 - offset_y);
+            npcset->spriteset[4 * (node->job - 100) + dir]->draw(buffer,
+                    sx * 32 - 8 - offset_x,
+                    sy * 32 - 52 - offset_y);
         }
         else if (node->job < 10) { // Draw a player
-            node->text_x = sx * 16 - 34 + get_x_offset(node) - offset_x;
-            node->text_y = sy * 16 - 36 + get_y_offset(node) - offset_y;
+            node->text_x = sx * 32 + get_x_offset(node) - offset_x;
+            node->text_y = sy * 32 + get_y_offset(node) - offset_y;
+            
             if (node->action == SIT) node->frame = 0;
             if (node->action == ATTACK) {
                 int pf = node->frame + node->action + 4 * node->weapon;
                 int wf = 16 * node->weapon + 4 * node->frame;
 
-                new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
-                        node->text_x, node->text_y);
-                draw_rle_sprite(vbuffer, (RLE_SPRITE*)weaponset[wf + dir].dat,
-                        node->text_x, node->text_y);
-                masked_blit(hairset, vbuffer,
-                        20 * (node->hair_color - 1),
-                        20 * (dir + 4 * (node->hair_style - 1)),
-                        node->text_x + 31 + hairtable[pf][dir][0],
-                        node->text_y + 15 + hairtable[pf][dir][1],
-                        20, 20);
+                playerset->spriteset[4 * pf + dir]->draw(buffer,
+                        node->text_x-64, node->text_y-80);
+                /*draw_rle_sprite(buffer, (RLE_SPRITE*)weaponset[wf + dir].dat,
+                        node->text_x, node->text_y);*/
+                hairset->spriteset[node->hair_color-1+10*(dir+4*(node->hair_style-1))]->draw(
+                    buffer, node->text_x -2 + 2*hairtable[pf][dir][0],
+                    node->text_y -50 + 2*hairtable[pf][dir][1]);
             }
             else {
                 int pf = node->frame + node->action;
 
-                new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
-                        node->text_x, node->text_y);
-                masked_blit(hairset, vbuffer,
-                        20 * (node->hair_color - 1),
-                        20 * (dir + 4 * (node->hair_style - 1)),
-                        node->text_x + 31 + hairtable[pf][dir][0],
-                        node->text_y + 15 + hairtable[pf][dir][1],
-                        20, 20);
+                playerset->spriteset[4 * pf + dir]->draw(buffer,
+                        node->text_x-64, node->text_y-80);
+                hairset->spriteset[node->hair_color-1+10*(dir+4*(node->hair_style-1))]->draw(
+                    buffer, node->text_x - 2 + 2*hairtable[pf][dir][0],
+                    node->text_y - 50 + 2*hairtable[pf][dir][1]);
             }
             if (node->emotion != 0) {
-                new_emotionset->spriteset[node->emotion - 1]->draw(vbuffer,
-                        sx * 16 - 5 + get_x_offset(node) - offset_x,
-                        sy * 16 - 45 + get_y_offset(node) - offset_y);
+                emotionset->spriteset[node->emotion - 1]->draw(buffer,
+                        sx * 32 - 5 + get_x_offset(node) - offset_x,
+                        sy * 32 - 45 + get_y_offset(node) - offset_y);
                 node->emotion_time--;
                 if (node->emotion_time == 0) {
                     node->emotion = 0;
@@ -392,18 +348,18 @@ void do_graphic(void) {
             if (node->frame >= 4)
                 node->frame = 3;
 
-            node->text_x = sx * 16 - 22 + get_x_offset(node) - offset_x;
-            node->text_y = sy * 16 - 25 + get_y_offset(node) - offset_y;
+            node->text_x = sx * 32 - 42 + get_x_offset(node) - offset_x;
+            node->text_y = sy * 32 - 65 + get_y_offset(node) - offset_y;
 
             int sprnum = dir + 4 * (node->job - 1002);
             int mf = node->frame + node->action;
 
             if (node->action == MONSTER_DEAD) {
-                new_monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(
-                        vbuffer, node->text_x, node->text_y);
+                monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(
+                        buffer, node->text_x, node->text_y);
             }
             else {
-                new_monsterset->spriteset[sprnum + 8 * mf]->draw(vbuffer,
+                monsterset->spriteset[sprnum + 8 * mf]->draw(buffer,
                         node->text_x, node->text_y);
             }
 
@@ -451,7 +407,7 @@ void do_graphic(void) {
                 }
             }
         }
-
+        
         if (node->action == MONSTER_DEAD && node->frame >= 20) {
             NODE *temp = node;
             node = node->next;
@@ -471,44 +427,30 @@ void do_graphic(void) {
             unsigned short tile = get_tile(i + camera_x, j + camera_y, 2);
 
             if (tile > 0 && tile < 600) {
-                new_tileset->spriteset[tile]->draw(
-                        vbuffer, i * 16 - offset_x, j * 16 - offset_y);
+                tileset->spriteset[tile]->draw(
+                        buffer, i * 32 - offset_x, j * 32 - offset_y);
             }
+#ifdef DEBUG            
+            rect(buffer, i * 32 - offset_x, j * 32 - offset_y, i * 32 - offset_x+32, j * 32 - offset_y+32,makecol(0,0,0));
+#endif
         }
     }
-
-    release_bitmap(vbuffer);
-    acquire_bitmap(vpage[page_num]);
-
-    // Stretch the map buffer onto the screen
-    if (stretch_mode == 0) {
-        stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
-    }
-    else if (stretch_mode == 1) {
-        Super2xSaI(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
-    }
-    else if (stretch_mode == 2) {
-        SuperEagle(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
-    }
-
-    textprintf_ex(vpage[page_num], font, 0, 0, makecol(255, 255, 255), -1,
-            "[%i fps]", fps);
-
+    
     // Draw player speech
     node = get_head();
     while (node) {
         if (node->speech != NULL) {
             if (node->speech_color == makecol(255, 255, 255)) {
-                textprintf_centre_ex(vpage[page_num], font,
-                        node->text_x * 2 + 90,
-                        node->text_y * 2,
+                textprintf_centre_ex(buffer, font,
+                        node->text_x,
+                        node->text_y - 60,
                         node->speech_color, -1,
                         "%s", node->speech);
             }
             else {
-                textprintf_centre_ex(vpage[page_num], font,
-                        node->text_x * 2 + 60,
-                        node->text_y * 2,
+                textprintf_centre_ex(buffer, font,
+                        node->text_x + 60,
+                        node->text_y,
                         node->speech_color, -1,
                         "%s", node->speech);
             }
@@ -518,35 +460,35 @@ void do_graphic(void) {
                 free(node->speech);
                 node->speech = NULL;
             }
-        }
+        }       
         node = node->next;
     }
+    
+    // Update character status display
+    statusWindow->update();
 
+    // Update GUI
+    guiGraphics->setTarget(buffer);
+    gui_update(NULL);
 
     set_trans_blender(0, 0, 0, 110);
-    draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H - 125);
+    draw_trans_sprite(buffer, chat_background, 0, SCREEN_H - 125);
 
-    chatlog.chat_draw(vpage[page_num], 8, font);
-
+    chatlog.chat_draw(buffer, 8, font);
+    
     switch (show_npc_dialog) {
         case 1:
             dialog_message(npc_dialog, MSG_DRAW, 0, 0);
             if (!(show_npc_dialog = gui_update(npc_player))) {
                 strcpy(npc_text, "");
                 WFIFOW(0) = net_w_value(0x00b9);
-                //alert("","","","","",0,0);
                 WFIFOL(2) = net_l_value(current_npc);
                 WFIFOSET(6);
             }
             break;
         case 4:
-            //alert("","","","","",0,0);
-            //char ds[20];
             sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
-            //sprintf(ds, "%i", sell_dialog[3].d1);
-            //ok(ds,"");
-
-            //alfont_textprintf(vpage[page_num], font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
+            
             dialog_message(sell_dialog, MSG_DRAW, 0, 0);
             if (!gui_update(sell_player)) {
                 show_npc_dialog = shutdown_dialog(sell_player);
@@ -606,62 +548,11 @@ void do_graphic(void) {
         }
     }
 
-    // Update character status display
-    statusWindow->update();
-
-    // Update GUI
-    guiGraphics->setTarget(vpage[page_num]);
-    gui_update(NULL);
-
-    release_bitmap(vpage[page_num]);
-
-    if (page_flipping) {
-        show_video_bitmap(vpage[page_num]);
-    } else {
-        blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
-    }
-    page_num = 1 - page_num;
-    gui_bitmap = vpage[page_num];
-}
-
-void exit_graphic() {
-    delete statusWindow;
-    delete buyDialog;
-
-    shutdown_dialog(npc_player);
-    shutdown_dialog(skill_player);
-}
-
-GraphicEngine::GraphicEngine() {
-    tileset = new Spriteset("./data/graphic/tileset.dat");
-
-    if (gfx_capabilities & GFX_HW_VRAM_BLIT) {
-        BITMAP *page1 = create_video_bitmap(SCREEN_W, SCREEN_H);
-        BITMAP *page2 = create_video_bitmap(SCREEN_W, SCREEN_H);
-        if (page1 && page2) {
-            surface = new VideoSurface(page1, page2);
-        } else {
-            if (page1)destroy_bitmap(page1);
-            if (page2)destroy_bitmap(page2);
-            BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
-            if (!buffer) {
-                error("Not enough memory to create primary surface");
-            }
-            else {
-                warning("Not enough video memory to create primary surface");
-            }
-            surface = new MemorySurface(buffer);
-        }
-    }
-    else {
-        BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
-        if (!buffer) {
-            error("Not enough memory to create primary surface");
-        }
-        surface = new MemorySurface(buffer);
-    }
-}
-
-GraphicEngine::~GraphicEngine() {
-    delete tileset;
+    draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
+    
+    textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), -1,
+        "[%i fps] %i,%i", fps, mouse_x/32+camera_x, mouse_y/32+camera_y);
+    
+    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    
 }
