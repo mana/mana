@@ -401,6 +401,26 @@ void do_input()
         {
             xDirection = 1;
         }
+        if (keys[SDLK_KP1]) // Bottom Left
+        {
+            xDirection = -1;
+            yDirection = 1;
+        }
+        if (keys[SDLK_KP3]) // Bottom Right
+        {
+            xDirection = 1;
+            yDirection = 1;
+        }
+        if (keys[SDLK_KP7]) // Top Left
+        {
+            xDirection = -1;
+            yDirection = -1;
+        }
+        if (keys[SDLK_KP9]) // Top Right
+        {
+            xDirection = 1;
+            yDirection = -1;
+        }
 
         if ( xDirection == 1 && yDirection == 0 ) // Right
         {
