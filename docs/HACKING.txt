@@ -34,9 +34,12 @@ necessary.
   while (condition) {
   }
 
-  /*
+  /**
    * Documentation about behaviour
    * ...
+   *
+   * @param param1 the first argument
+   * @param param2 the second argument
    */
   void function(param1, param2) {
   }
@@ -74,6 +77,10 @@ necessary.
   /* text
   comment
   */
+
+  Note that for documenting functions, methods and other things that can use
+  documentation, you should use Doxygen style as in the function example above.
+  For details see the manual at http://www.doxygen.org/.
 
 * Whitespace examples:
 
