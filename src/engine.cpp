@@ -81,31 +81,43 @@ char hairtable[16][4][2] = {
     { { 0, 16}, {-1, 6}, {-1, 6}, {0, 6} } // DEAD
 };
 
-int get_x_offset(Being *being) {
+int get_x_offset(Being *being)
+{
     int offset = 0;
     char direction = being->direction;
-    if (being->action == WALK) {
-        if (direction != NORTH && direction != SOUTH) {
-            offset = being->frame + 1;
-            if (offset == 5) offset = 0;
-            offset *= 8;
+
+    if (being->action == WALK)
+    {
+        if (direction != NORTH && direction != SOUTH)
+        {
+            offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
+            if (offset > 32) offset = 32;
+
             if (direction == WEST || direction == NW || direction == SW) {
                 offset = -offset;
                 offset += 32;
-            } else offset -= 32;
+            }
+            else {
+                offset -= 32;
+            }
         }
     }
+
     return offset;
 }
 
-int get_y_offset(Being *being) {
+int get_y_offset(Being *being)
+{
     int offset = 0;
     char direction = being->direction;
-    if (being->action == WALK) {
-        if (direction != EAST && direction != WEST) {
-            offset = being->frame + 1;
-            if (offset == 5) offset = 0;
-            offset *= 8;
+
+    if (being->action == WALK)
+    {
+        if (direction != EAST && direction != WEST)
+        {
+            offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
+            if (offset > 32) offset = 32;
+
             if (direction == NORTH || direction == NW || direction == NE) {
                 offset = -offset;
                 offset += 32;
@@ -115,6 +127,7 @@ int get_y_offset(Being *being) {
             }
         }
     }
+
     return offset;
 }
 
@@ -125,64 +138,54 @@ Engine::Engine()
     guiTop->add(debugInfo);
 
     // Create dialogs
-
     chatWindow = new ChatWindow("./docs/chatlog.txt", 20);
-    chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
-
     statusWindow = new StatusWindow();
-    statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
-
     buyDialog = new BuyDialog();
-    buyDialog->setVisible(false);
-
     sellDialog = new SellDialog();
-    sellDialog->setVisible(false);
-
     buySellDialog = new BuySellDialog();
-    buySellDialog->setVisible(false);
-
     inventoryWindow = new InventoryWindow();
-    inventoryWindow->setVisible(false);
+    itemAmountWindow = new ItemAmountWindow();
+    npcTextDialog = new NpcTextDialog();
+    npcListDialog = new NpcListDialog();
+    skillDialog = new SkillDialog();
+    newSkillWindow = new NewSkillDialog();
+    statsWindow = new StatsWindow();
+    setupWindow = new Setup();
+    minimap = new Minimap();
+    equipmentWindow = new EquipmentWindow();
+    chargeDialog = new ChargeDialog();
+
+    // Initialize window posisitons
+    chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
+    statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
     inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
-
-    itemAmountWindow = new ItemAmountWindow();
-    itemAmountWindow->setVisible(false);
     itemAmountWindow->setPosition(screen->w - statusWindow->getWidth() - 
             inventoryWindow->getWidth() - 10, inventoryWindow->getHeight() + 
             10);
-
-    npcTextDialog = new NpcTextDialog();
-    npcTextDialog->setVisible(false);
-
-    npcListDialog = new NpcListDialog();
-    npcListDialog->setVisible(false);
-
-    skillDialog = new SkillDialog();
-    skillDialog->setVisible(false);
-
-    newSkillWindow = new NewSkillDialog();
-    newSkillWindow->setVisible(false);
-
-    statsWindow = new StatsWindow();
-    statsWindow->setVisible(false);
     statsWindow->setPosition(
             screen->w - 5 - statsWindow->getWidth(),
             statusWindow->getHeight() + 20);
-
-    setupWindow = new Setup();
-    setupWindow->setVisible(false);
-
-    minimap = new Minimap();
-
-    equipmentWindow = new EquipmentWindow();
-    equipmentWindow->setVisible(false);
-    
-    chargeDialog = new ChargeDialog();
-    chargeDialog->setVisible(true);
     chargeDialog->setPosition(
             screen->w - 5 - chargeDialog->getWidth(),
             screen->h - chargeDialog->getHeight() - 15);
+
+    // Set initial window visibility
+    chatWindow->setVisible(true);
+    statusWindow->setVisible(true);
+    buyDialog->setVisible(false);
+    sellDialog->setVisible(false);
+    buySellDialog->setVisible(false);
+    inventoryWindow->setVisible(false);
+    itemAmountWindow->setVisible(false);
+    npcTextDialog->setVisible(false);
+    npcListDialog->setVisible(false);
+    skillDialog->setVisible(false);
+    newSkillWindow->setVisible(false);
+    statsWindow->setVisible(false);
+    setupWindow->setVisible(false);
+    equipmentWindow->setVisible(false);
+    chargeDialog->setVisible(false);
 
     // Do not focus any text field
     gui->focusNone();
@@ -215,6 +218,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+    // Delete windows
     delete chatWindow;
     delete statusWindow;
     delete buyDialog;
@@ -229,7 +233,8 @@ Engine::~Engine()
     delete equipmentWindow;
     delete newSkillWindow;
     delete itemAmountWindow;
-	
+
+    // Delete sprite sets
     delete monsterset;
     delete npcset;
     delete emotionset;

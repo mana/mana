@@ -1,7 +1,9 @@
 0.0.11  (.... 2005)
 - Fixed get item button and chatWindow: Enter (de)focuses chat window
 - Added walking with mouse by clicking where you want to go
+- Added a choice dialog of how many items to drop
 - Chat now appears in a window
+- Beings now walk a lot smoother
 - More complete support for new map format (collision, compression)
 - Fixed problem where players would often turn up with black hair
 - Fixed not showing other players dead when they die
