@@ -200,7 +200,7 @@ void do_input() {
   if(player_node->action==STAND)
 		if(key[KEY_LCONTROL]) {
 			player_node->action = ATTACK;
-			attack(x, y, get_direction(player_node->coordinates));
+			attack(get_x(player_node->coordinates), get_y(player_node->coordinates), get_direction(player_node->coordinates));
 			player_node->tick_time = tick_time;
 		}
 	
@@ -229,22 +229,6 @@ void do_input() {
        strcpy(speech,"");
     }
   } 
-
-	//rect(screen, (mouse_x/32)*32,(mouse_y/32)*32, ((mouse_x/32)+1)*32, ((mouse_y/32)+1)*32, makecol(255,255,255));
-
-  if(mouse_b&2) {
-    if(!show_npc_dialog) {
-      int npc_x = mouse_x/32+map_x/32;
-      int npc_y = mouse_y/32+map_y/32;
-      int id = find_npc(npc_x, npc_y);
-      if(id!=0) {
-        WFIFOW(0) = net_w_value(0x0090);
-        WFIFOL(2) = net_l_value(id);
-        WFIFOB(6) = 0;
-        WFIFOSET(7);
-      }
-    }
-  }
 
   // Emotions, Skill dialog
 	if(key_shifts & KB_ALT_FLAG && action_time == true) {
@@ -283,6 +267,20 @@ void do_input() {
 			action_time = false;
 		}
 	}
+
+  if(mouse_b&2) {
+    if(!show_npc_dialog) {
+      int npc_x = mouse_x/32+camera_x;
+      int npc_y = mouse_y/32+camera_y;
+      int id = find_npc(npc_x, npc_y);
+      if(id!=0) {
+        WFIFOW(0) = net_w_value(0x0090);
+        WFIFOL(2) = net_l_value(id);
+        WFIFOB(6) = 0;
+        WFIFOSET(7);
+      }
+    }
+  }
 	
   if(key[KEY_ESC])state = EXIT;
 

@@ -43,7 +43,7 @@
 BITMAP *buffer, *double_buffer, *chat_background;
 DATAFILE *tileset;
 char page_num;
-int map_x, map_y;
+int map_x, map_y, camera_x, camera_y;
 DIALOG_PLAYER *chat_player, *npc_player, *skill_player;
 char speech[255] = "";
 char npc_text[1000] = "";
@@ -127,8 +127,8 @@ void do_graphic(void) {
 	map_x = (get_x(player_node->coordinates)-13)*16+get_x_offset(player_node);
 	map_y = (get_y(player_node->coordinates)-9)*16+get_y_offset(player_node);
 
-  int camera_x = map_x >> 4;
-	int camera_y = map_y >> 4;
+  camera_x = map_x >> 4;
+	camera_y = map_y >> 4;
 
   int offset_x = map_x & 15;
 	int offset_y = map_y & 15;
@@ -214,9 +214,10 @@ void do_graphic(void) {
 	// Draw player speech
   node = get_head();
   while(node) {
+		//alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260, node->text_y+100, node->speech_color, "%i,%i", get_x(node->coordinates),get_y(node->coordinates));
     if(node->speech!=NULL) {
       alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260-alfont_text_length(gui_font, node->speech)/2, node->text_y+100, node->speech_color, "%s", node->speech);
-      
+			      
       node->speech_time--;
       if(node->speech_time==0) {
         free(node->speech);
@@ -245,7 +246,7 @@ void do_graphic(void) {
 	}
   
 
-	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i", fps,get_x(player_node->coordinates),get_y(player_node->coordinates));
+	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
 

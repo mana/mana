@@ -156,11 +156,11 @@ unsigned int find_npc(unsigned short x, unsigned short y) {
 unsigned int find_monster(unsigned short x, unsigned short y) {
   NODE *node = head;
   while(node) {
-    //if((node->job>=46)&&(node->job<=125)) { // Check if is a NPC (only low job ids)
-      if((get_x(node->coordinates)==x)&&(get_y(node->coordinates)==y))
+    if(node->job>200) { // Check if is a MONSTER
+			if(get_x(node->coordinates)==x && get_y(node->coordinates)==y)
         return node->id;
-      else node = node->next;
-    //} else node = node->next;
+    }
+    node = node->next;
   }
   return 0;
 }

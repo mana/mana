@@ -41,7 +41,7 @@ extern Chat chatlog;
 extern bool show_skill_dialog;
 extern int show_npc_dialog;
 extern TmwInventory inventory;
-extern int map_x, map_y;
+extern int map_x, map_y, camera_x, camera_y;
 
 void do_graphic(void);
 void init_graphic(void);

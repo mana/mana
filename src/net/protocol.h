@@ -53,5 +53,6 @@ void map_start();
 void walk(unsigned short x, unsigned short y, unsigned char direction);
 void speak(char *speech);
 void attack(unsigned short x, unsigned short y, unsigned char direction);
-void action(short, int);
+void action(char type, int id);
+
 #endif

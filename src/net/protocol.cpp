@@ -218,11 +218,11 @@ void speak(char *speech) {
   WFIFOSET(len+4);
 }
 
-/** request action */
-void action(short type, int id) {
+/** Request action */
+void action(char type, int id) {
 	WFIFOW(0) = net_w_value(0x0089);
 	WFIFOL(2) = net_l_value(id);
-	WFIFOB(6) = net_l_value(type);
+	WFIFOB(6) = net_b_value(type);
 	WFIFOSET(7);
 }
 
@@ -231,34 +231,22 @@ void action(short type, int id) {
 void attack(unsigned short x, unsigned short y, unsigned char direction) {
 	int monster_id = 0;
 
-	if(direction==2) {
-		for(int j=-1;j<2;j++)
-			for(int i=-1;i<1;i++) {
-				monster_id = find_monster(x+i, y+j);
-				if(monster_id!=0)
-					action(0x07, monster_id);
-			}
-	} else if(direction==6) {
-		for(int j=-1;j<2;j++)
-			for(int i=0;i<2;i++) {
-        monster_id = find_monster(x+i, y+j);
-				if(monster_id!=0)
-					action(0x07, monster_id);
-			}
-	} else if(direction==4) {
-		for(int j=-1;j<1;j++)
-			for(int i=-1;i<2;i++) {
-        monster_id = find_monster(x+i, y+j);
-				if(monster_id!=0)
-					action(0x07, monster_id);
-			}
-	} else if(direction==0) {
-		for(int j=0;j<1;j++)
-			for(int i=-1;i<2;i++) {
-        monster_id = find_monster(x+i, y+j);
-				if(monster_id!=0)
-					action(0x07, monster_id);
-			}
+	if(direction==SOUTH) {
+		monster_id = find_monster(x, y+1);
+		if(monster_id!=0)
+      action(0, monster_id);
+	} else if(direction==WEST) {
+		monster_id = find_monster(x-1, y);
+    if(monster_id!=0)
+      action(0, monster_id);
+  } else if(direction==NORTH) {
+    monster_id = find_monster(x, y-1);
+		if(monster_id!=0)
+      action(0, monster_id);
+	} else if(direction==EAST) {
+    monster_id = find_monster(x+1, y);
+		if(monster_id!=0)
+			action(0, monster_id);
 	}
 }
 
