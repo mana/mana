@@ -54,6 +54,8 @@ bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
+Setup *setup;
+extern bool show_setup;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -224,7 +226,7 @@ void init_graphic() {
     clear_to_color(chat_background, makecol(0,0,0));
 
     // Initialize gui
-
+    
     // Create chat input field
     chatInput = new gcn::TextField();
     chatInput->setPosition(0, SCREEN_H - chatInput->getHeight());
@@ -245,7 +247,6 @@ void init_graphic() {
 	sell_player = init_dialog(sell_dialog, -1);
 	skill_list_player = init_dialog(skill_list_dialog, -1);
 	npc_list_player = init_dialog(npc_list_dialog, -1);
-	init_setup();
   //gui_bitmap = vpage[page_num];
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
@@ -587,8 +588,6 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 	// character status display
 	update_stats_dialog();
 	gui_update(stats_player);
-	update_setup();
-
 	
 	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
 #ifdef WIN32
