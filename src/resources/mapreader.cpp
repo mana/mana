@@ -117,24 +117,18 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     //xmlChar *name = xmlGetProp(node, BAD_CAST "name"); 
 
     node = node->xmlChildrenNode;
+    int h = map->getHeight();
+    int w = map->getWidth();
     int x = 0;
     int y = 0;
     
     // Load the tile data
-    /*
     while (node != NULL)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tile") && y < h)
         {
-            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
             int gid = getProperty(node, "gid", -1);
-
-            if (gid > -1) {
-                layer->setTile(Point(x, y), map->getTile(gid));
-            }
-            else {
-                layer->setTile(Point(x, y), NULL);
-            }
+            map->setTile(x, y, layer, (gid > -1) ? gid : 0);
 
             x++;
             if (x == w) {x = 0; y++;}
@@ -146,7 +140,6 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
             node = node->next;
         }
     }
-    */
 }
 
 /*

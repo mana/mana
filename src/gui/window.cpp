@@ -35,7 +35,8 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     snapSize(8),
     mouseDown(false),
     modal(modal),
-    titlebarHeight(20)
+    titlebarHeight(20),
+    padding(3)
 {
     log("Window::Window(\"%s\")", caption.c_str());
 
@@ -68,7 +69,7 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     // Add chrome
     chrome = new gcn::Container();
     chrome->setOpaque(false);
-    chrome->setY(titlebarHeight);
+    chrome->setPosition(padding, titlebarHeight + padding);
     gcn::Container::add(chrome);
 
     // Add this window to the window container
@@ -145,13 +146,13 @@ void Window::setDimension(const gcn::Rectangle &dimension)
 
 void Window::setWidth(int width)
 {
-    gcn::Container::setWidth(width);
+    gcn::Container::setWidth(width + 2 * padding);
     chrome->setWidth(width);
 }
 
 void Window::setHeight(int height)
 {
-    gcn::Container::setHeight(height + titlebarHeight);
+    gcn::Container::setHeight(height + titlebarHeight + 2 * padding);
     chrome->setHeight(height);
 }
 

@@ -48,13 +48,14 @@ class Window : public gcn::Container, public gcn::MouseListener
         bool modal;                /**< Window is modal */
         gcn::Color titlebarColor;  /**< Title bar color */
         int titlebarHeight;        /**< Height of title bar */
+        int padding;               /**< Space between contents and border */
 
-        Image *dBackground;              /**< Left side of title bar */
-        Image *dBorders;               /**< Middle of title bar */
-        Image *dUpperBorder;           /**< Upper border */
-        Image *dLowerBorder;           /**< Lower Border */
-        Image *dLeftBorder;            /**< Left Border */
-        Image *dRightBorder;           /**< Right Border */
+        Image *dBackground;        /**< Left side of title bar */
+        Image *dBorders;           /**< Middle of title bar */
+        Image *dUpperBorder;       /**< Upper border */
+        Image *dLowerBorder;       /**< Lower Border */
+        Image *dLeftBorder;        /**< Left Border */
+        Image *dRightBorder;       /**< Right Border */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
