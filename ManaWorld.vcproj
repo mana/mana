@@ -219,6 +219,9 @@
 					RelativePath=".\Gui\gui.cpp">
 				</File>
 				<File
+					RelativePath=".\Gui\inventory.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\login.cpp">
 				</File>
 			</Filter>
@@ -278,6 +281,9 @@
 				</File>
 				<File
 					RelativePath=".\Gui\gui.h">
+				</File>
+				<File
+					RelativePath=".\Gui\inventory.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login.h">
