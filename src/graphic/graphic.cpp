@@ -166,7 +166,7 @@ void do_graphic(void) {
 	      if(node->frame>=4) {
           node->frame = 0;
 					node->action = STAND;
-					node->tick_time;
+//					node->tick_time;
 					if(node->id==player_node->id)
             walk_status = 0;          
 				}
