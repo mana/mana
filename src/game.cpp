@@ -287,12 +287,6 @@ void do_input()
                 state = EXIT;
             }
             
-            // Debug
-            if (keysym.sym == SDLK_t)
-            {
-                tradeWindow->setVisible(true);
-            }
-            
             if (keysym.sym == SDLK_g)
             {
                 // Get the item code
