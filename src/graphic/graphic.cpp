@@ -179,8 +179,9 @@ int get_y_offset(NODE *node) {
 BITMAP *load_graphic_file(char *filename) {
   BITMAP *temp = load_bitmap(filename, NULL);
   if(!temp)error(filename);
+  BITMAP *vbmp;
 #ifdef WIN32
-  BITMAP *vbmp = create_video_bitmap(temp->w, temp->h);
+  vbmp = create_video_bitmap(temp->w, temp->h);
   if(!vbmp) {
     warning("Not enough video memory");
 #endif
