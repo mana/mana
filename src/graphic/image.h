@@ -30,79 +30,151 @@
 #include <iostream>
 #include "../log.h"
 
+/*
+ * A class storing a single sprite in video memory if available,
+ * else as a refernece to a RLE_SPRITE in a datafile.
+ * The class stores the offsets needed to compensate the cropping
+ * operated by the grabber utility.
+ */
 class Image {
-  protected:
-    int offset_x, offset_y;
-  public:
-    Image(int offset_x, int offset_y) {
-      this->offset_x = offset_x;
-      this->offset_y = offset_y;
-    }  
-    virtual void draw(BITMAP *dest, int x, int y) = 0;
+    protected:
+        // From where to start drawing
+        int offset_x, offset_y;
+    public:
+        /*
+         * Creates an Image
+         * \param offset_x is the x offset from where to start drawing
+         * \param offset_y is the y offset from where to start drawing
+         */
+        Image(int offset_x, int offset_y) {
+            this->offset_x = offset_x;
+            this->offset_y = offset_y;
+        }
+        /*
+         * Virtual function to draw a sprite
+         * \param dest is the destination bitmap on which to draw the sprite
+         * \param x is the horizontal position
+         * \param y is the vertical position
+         */ 
+        virtual void draw(BITMAP *dest, int x, int y) = 0;
 };
 
+/*
+ * A RLE sprite
+ */
 class RleImage : public Image {
-  private:
-    RLE_SPRITE *src;
-  public:
-    RleImage(RLE_SPRITE *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
-      this->src = src;
-    }
-    virtual ~RleImage() {
-      destroy_rle_sprite(src);
-    }  
-    void draw(BITMAP *dest, int x, int y) {
-      draw_rle_sprite(dest, src, x+offset_x, y+offset_y);
-    }    
+    private:
+        // Refernce to RLE_SPRITE
+        RLE_SPRITE *src;
+    public:
+        /*
+         * Creates a RleSprite
+         * \param src is a reference to a RLE_SPRITE in a datafile
+         * \param offset_x is the x offset from where to start drawing
+         * \param offset_y is the y offset from where to start drawing
+         */
+        RleImage(RLE_SPRITE *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
+            this->src = src;
+        }
+        /*
+         * Destroy a RleSprite
+         */
+        virtual ~RleImage() {
+            destroy_rle_sprite(src);
+        }  
+        /*
+         * Draw a sprite
+         */
+        void draw(BITMAP *dest, int x, int y) {
+            draw_rle_sprite(dest, src, x+offset_x, y+offset_y);
+        }    
 };
 
+/*
+ * An image stored in video memory
+ */
 class VideoImage : public Image {
-  private:
-    BITMAP *src;
-  public:
-    VideoImage(BITMAP *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
-      this->src = src;
-    }
-    virtual ~VideoImage() {
-      destroy_bitmap(src);
-    }
-    void draw(BITMAP *dest, int x, int y) {
-      masked_blit(src, dest, 0, 0, x+offset_x, y+offset_y, src->w, src->h);
-    }
+    private:
+        // Reference to bitmap stored in video memory
+        BITMAP *src;
+    public:
+        /*
+         * Creates a VideoImage
+         * \param src is a reference to a BITMAP in video memory
+         * \param offset_x is the x offset from where to start drawing
+         * \param offset_y is the y offset from where to start drawing
+         */        
+        VideoImage(BITMAP *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
+            this->src = src;
+        }
+        /*
+         * Destroy a VideoImage
+         */
+        virtual ~VideoImage() {
+            destroy_bitmap(src);
+        }
+        /*
+         * Draw a sprite
+         */
+        void draw(BITMAP *dest, int x, int y) {
+            masked_blit(src, dest, 0, 0, x+offset_x, y+offset_y, src->w, src->h);
+        }
 };
 
+/*
+ * Stores a complete set of sprites.
+ */
 class Spriteset {
     private:
+        /*
+         * Helper function to get offset
+         * \param datafile is a reference to the whole spriteset
+         * \param type is the property of the datafile object         
+         */
         int get_property(DATAFILE *datafile, int type) {
             return atoi(get_datafile_property(datafile, type));
         }  
     public:
-        std::vector<Image *> spriteset; 
-         
-    Spriteset(std::string filename) {
-      DATAFILE *datafile = load_datafile(filename.c_str());
-      if(!datafile)error("Unable to load graphic file: " + filename);
-      int i = 0;
-      while(datafile[i].type!=DAT_END) {
-        Image *temp_image;
-
-        if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
-          BITMAP *temp_video_bitmap = create_video_bitmap(((RLE_SPRITE *)datafile[i].dat)->w, ((RLE_SPRITE *)datafile[i].dat)->h);
-          if(temp_video_bitmap) {
-            clear_to_color(temp_video_bitmap, makecol(255,0,255));
-            draw_rle_sprite(temp_video_bitmap, (RLE_SPRITE *)datafile[i].dat, 0, 0);
-            temp_image = new VideoImage(temp_video_bitmap, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
-          } else {
-            warning("You ran out of video memory!");
-            temp_image = new RleImage((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
-          }          
-        } else {
-          temp_image = new RleImage((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+        // Vector storing the whole spriteset.
+        std::vector<Image *> spriteset;
+        /*
+         * Load a datafile containing the spriteset
+         * \param filename is the path of the datafile
+         */
+        Spriteset(std::string filename) {
+            DATAFILE *datafile = load_datafile(filename.c_str());
+            if(!datafile)error("Unable to load graphic file: " + filename);
+            int i = 0;
+            while(datafile[i].type!=DAT_END) {
+                Image *temp_image;
+                if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
+                    BITMAP *temp_video_bitmap = create_video_bitmap(
+                        ((RLE_SPRITE *)datafile[i].dat)->w,
+                        ((RLE_SPRITE *)datafile[i].dat)->h);
+                    if(temp_video_bitmap) {
+                        clear_to_color(temp_video_bitmap, makecol(255,0,255));
+                        draw_rle_sprite(temp_video_bitmap, 
+                            (RLE_SPRITE *)datafile[i].dat, 0, 0);
+                        temp_image = new VideoImage(temp_video_bitmap,
+                            get_property(&datafile[i], DAT_ID('X','C','R','P')),
+                            get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+                    } else {
+                        warning("You ran out of video memory!");
+                        temp_image = new RleImage(
+                            (RLE_SPRITE*)datafile[i].dat,
+                            get_property(&datafile[i], DAT_ID('X','C','R','P')),
+                            get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+                    }
+                } else {
+                    temp_image = new RleImage(
+                        (RLE_SPRITE*)datafile[i].dat,
+                        get_property(&datafile[i], DAT_ID('X','C','R','P')),
+                        get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+                }
+                spriteset.push_back(temp_image);
+                i++;
+            }
         }
-        spriteset.push_back(temp_image);
-        i++;
-      }  
-    }
 };
 
 #endif
