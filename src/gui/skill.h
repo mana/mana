@@ -44,8 +44,8 @@ typedef struct {
        // 20 * level^1.2
        } SKILL;
  
-class SkillDialog : public Window, public gcn::ActionListener,
-                    public gcn::ListModel
+class SkillDialog : public Window, public gcn::ActionListener
+//                    public gcn::ListModel
 {
     private:
         gcn::ListBox *skillListBox;
