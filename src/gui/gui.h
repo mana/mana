@@ -24,10 +24,6 @@
 #ifndef _TMW_GUI
 #define _TMW_GUI
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>
 #include <allegro.h>
@@ -89,34 +85,6 @@ class Gui
         gcn::FocusHandler* focusHandler;
 };
 
-typedef struct {
-    BITMAP *grid[9];
-} LexSkinnedRect;
-
-typedef struct {
-    LexSkinnedRect  background[4];
-    int             textcolor[4];
-} LexButton;
-
-typedef struct {
-    LexSkinnedRect bg;
-    int            textcolor[2];
-} LexTextbox;
-
-typedef struct {
-    LexSkinnedRect bg;
-    LexSkinnedRect vscroll;
-    int            textcolor[4];
-} LexListbox;
-
-typedef struct {
-    LexButton      button;
-    LexTextbox     textbox;
-    LexListbox     listbox;
-} LexSkin;
-
-extern LexSkin gui_skin;
-
 extern Gui* gui;
 extern WindowContainer* guiTop;               // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
@@ -125,11 +93,5 @@ extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 void init_gui(Graphics *graphics);
 
 void gui_exit();
-int gui_load_skin(const char* skinname);
-void gui_shutdown(void);
-
-/** Helper procedure to draw skinned rectangles */
-void draw_skinned_rect(BITMAP *dst, LexSkinnedRect *skin,
-        int x, int y, int w, int h);
 
 #endif

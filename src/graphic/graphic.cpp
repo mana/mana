@@ -200,8 +200,19 @@ void Graphics::drawImageRect(
             y + h - bottomRight->getHeight());
 }
 
+void Graphics::drawImageRect(
+        int x, int y, int w, int h,
+        const ImageRect &imgRect)
+{
+    drawImageRect(x, y, w, h,
+            imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
+            imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
+            imgRect.grid[4]);
+}
+
 void Graphics::updateScreen()
 {
+    //SDL_Flip();
     blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
 }
 

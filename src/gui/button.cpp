@@ -27,6 +27,30 @@ Button::Button(const std::string& caption):
     gcn::Button(caption)
 {
     setBorderSize(0);
+
+    // Load the skin
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *btn[4];
+    btn[0] = resman->getImage("core/graphics/gui/button.bmp");
+    btn[1] = resman->getImage("core/graphics/gui/buttonhi.bmp");
+    btn[2] = resman->getImage("core/graphics/gui/buttonpress.bmp");
+    btn[3] = resman->getImage("core/graphics/gui/button_disabled.bmp");
+    int bgridx[4] = {0, 9, 16, 25};
+    int bgridy[4] = {0, 4, 19, 24};
+    int a, x, y;
+
+    for (int mode = 0; mode < 4; mode++) {
+        a = 0;
+        for (y = 0; y < 3; y++) {
+            for (x = 0; x < 3; x++) {
+                button[mode].grid[a] = btn[mode]->getSubImage(
+                        bgridx[x], bgridy[y],
+                        bgridx[x + 1] - bgridx[x] + 1,
+                        bgridy[y + 1] - bgridy[y] + 1);
+                a++;
+            }
+        }
+    }
 }
 
 void Button::draw(gcn::Graphics* graphics) {
@@ -48,8 +72,8 @@ void Button::draw(gcn::Graphics* graphics) {
     int x, y;
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(buffer, &gui_skin.button.background[mode],
-            x, y, getWidth(), getHeight());
+    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+                                         button[mode]);
 
     graphics->setColor(getForegroundColor());
 

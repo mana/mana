@@ -24,8 +24,8 @@
 #ifndef __TMW_TEXTFIELD_H__
 #define __TMW_TEXTFIELD_H__
 
-#include <allegro.h>
 #include <guichan.hpp>
+#include "../graphic/graphic.h"
 
 /**
  * A text field.
@@ -48,6 +48,9 @@ class TextField : public gcn::TextField {
          * Draws the background and border.
          */
         void drawBorder(gcn::Graphics *graphics);
+
+    private:
+        ImageRect skin;
 };
 
 #endif

@@ -24,8 +24,8 @@
 #ifndef __TMW_SCROLLAREA_H__
 #define __TMW_SCROLLAREA_H__
 
-#include <allegro.h>
 #include <guichan.hpp>
+#include "../graphic/graphic.h"
 
 /**
  * A scroll area.
@@ -55,6 +55,11 @@ class ScrollArea : public gcn::ScrollArea {
         void drawBorder(gcn::Graphics *graphics);
 
     protected:
+        /**
+         * Initializes the scroll area.
+         */
+        void init();
+
         void drawUpButton(gcn::Graphics *graphics);
         void drawDownButton(gcn::Graphics *graphics);
         void drawLeftButton(gcn::Graphics *graphics);
@@ -63,6 +68,9 @@ class ScrollArea : public gcn::ScrollArea {
         void drawHBar(gcn::Graphics *graphics);
         void drawVMarker(gcn::Graphics *graphics);
         void drawHMarker(gcn::Graphics *graphics);
+
+        ImageRect background;
+        ImageRect vMarker;
 };
 
 #endif

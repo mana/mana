@@ -22,13 +22,28 @@
  */
 
 #include "textfield.h"
-#include "gui.h"
-
+#include "../resources/resourcemanager.h"
 
 TextField::TextField(const std::string& text):
     gcn::TextField(text)
 {
     setBorderSize(2);
+
+    // Load the skin
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *textbox = resman->getImage("core/graphics/gui/textbox.bmp");
+    int gridx[4] = {0, 9, 16, 25};
+    int gridy[4] = {0, 4, 19, 24};
+    int a = 0, x, y;
+
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
+            skin.grid[a] = textbox->getSubImage(
+                    gridx[x], gridy[y],
+                    gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y] + 1);
+            a++;
+        }
+    }
 }
 
 void TextField::draw(gcn::Graphics *graphics)
@@ -59,5 +74,5 @@ void TextField::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    draw_skinned_rect(buffer, &gui_skin.textbox.bg, x, y, w, h);
+    ((Graphics*)graphics)->drawImageRect(x, y, w, h, skin);
 }

@@ -24,8 +24,8 @@
 #ifndef __TMW_PLAYERBOX_H__
 #define __TMW_PLAYERBOX_H__
 
-#include <allegro.h>
 #include <guichan.hpp>
+#include "../graphic/graphic.h"
 
 /**
  * A box showing a player. Draws the various hair styles a player can have
@@ -53,6 +53,9 @@ class PlayerBox : public gcn::ScrollArea {
         int hairColor;         /**< The hair color index */
         int hairStyle;         /**< The hair style index */
         bool showPlayer;       /**< Wether to show the player or not */
+
+    private:
+        ImageRect background;
 };
 
 #endif

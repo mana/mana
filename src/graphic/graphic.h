@@ -88,6 +88,27 @@ class BuySellListener : public gcn::ActionListener {
 };
 
 /**
+ * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
+ * topology is as follows:
+ *
+ * <pre>
+ *  !-----!-----------------!-----!
+ *  !  0  !        1        !  2  !
+ *  !-----!-----------------!-----!
+ *  !  3  !        4        !  5  !
+ *  !-----!-----------------!-----!
+ *  !  6  !        7        !  8  !
+ *  !-----!-----------------!-----!
+ * </pre>
+ *
+ * Sections 0, 2, 6 and 8 will remain as is. 1, 3, 4, 5 and 7 will be
+ * repeated to fit the size of the widget.
+ */
+struct ImageRect {
+    Image *grid[9];
+};
+
+/**
  * A central point of control for graphics.
  */
 class Graphics : public gcn::AllegroGraphics {
@@ -103,8 +124,8 @@ class Graphics : public gcn::AllegroGraphics {
         ~Graphics();
 
         /**
-         * Draws a rectangle using 4 corner images, 4 side images and 1 image
-         * for the inside.
+         * Draws a rectangle using images. 4 corner images, 4 side images and 1
+         * image for the inside.
          */
         void drawImageRect(
                 int x, int y, int w, int h,
@@ -113,6 +134,14 @@ class Graphics : public gcn::AllegroGraphics {
                 Image *top, Image *right,
                 Image *bottom, Image *left,
                 Image *center);
+
+        /**
+         * Draws a rectangle using images. 4 corner images, 4 side images and 1
+         * image for the inside.
+         */
+        void drawImageRect(
+                int x, int y, int w, int h,
+                const ImageRect &imgRect);
 
         /**
          * Updates the screen. This is done by either copying the buffer to the

@@ -127,7 +127,7 @@ void Image::drawPattern(BITMAP *screen, int x, int y, int w, int h)
             px += iw;
         }
         py += ih;
-        px = x;
+        px = 0;
     }
 }
 

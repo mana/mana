@@ -28,13 +28,51 @@
 ScrollArea::ScrollArea():
     gcn::ScrollArea()
 {
-    setBorderSize(2);
+    init();
 }
 
 ScrollArea::ScrollArea(gcn::Widget *widget):
     gcn::ScrollArea(widget)
 {
+    init();
+}
+
+void ScrollArea::init()
+{
     setBorderSize(2);
+
+    // Load the background skin
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *textbox = resman->getImage("core/graphics/gui/textbox.bmp");
+    int bggridx[4] = {0, 9, 16, 25};
+    int bggridy[4] = {0, 4, 19, 24};
+    int a = 0, x, y;
+
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
+            background.grid[a] = textbox->getSubImage(
+                    bggridx[x], bggridy[y],
+                    bggridx[x + 1] - bggridx[x] + 1,
+                    bggridy[y + 1] - bggridy[y] + 1);
+            a++;
+        }
+    }
+
+    // Load vertical scrollbar skin
+    Image *vscroll = resman->getImage("core/graphics/gui/vscroll.bmp");
+    int vsgridx[4] = {0, 4, 8, 11};
+    int vsgridy[4] = {0, 4, 13, 19};
+    a = 0;
+
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
+            vMarker.grid[a] = vscroll->getSubImage(
+                    vsgridx[x], vsgridy[y],
+                    vsgridx[x + 1] - vsgridx[x] + 1,
+                    vsgridy[y + 1] - vsgridy[y] + 1);
+            a++;
+        }
+    }
 }
 
 void ScrollArea::draw(gcn::Graphics *graphics)
@@ -104,7 +142,7 @@ void ScrollArea::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    draw_skinned_rect(buffer, &gui_skin.textbox.bg, x, y, w, h);
+    ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
@@ -133,8 +171,8 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalBarDimension();
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(buffer, &gui_skin.listbox.bg,
-            x + dim.x, y + dim.y, dim.width, dim.height);
+    ((Graphics*)graphics)->drawImageRect(
+            x + dim.x, y + dim.y, dim.width, dim.height, background);
 }
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
@@ -148,8 +186,8 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalMarkerDimension();
     getAbsolutePosition(x, y);
 
-    draw_skinned_rect(buffer, &gui_skin.listbox.vscroll,
-            x + dim.x, y + dim.y, dim.width, dim.height);
+    ((Graphics*)graphics)->drawImageRect(
+            x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)

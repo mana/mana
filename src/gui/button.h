@@ -24,7 +24,9 @@
 #ifndef _TMW_BUTTON_H
 #define _TMW_BUTTON_H
 
-#include "gui.h"
+#include <guichan.hpp>
+#include <string>
+#include "../graphic/graphic.h"
 
 /**
  * Button widget. Same as the Guichan button but with custom look.
@@ -42,6 +44,9 @@ class Button : public gcn::Button {
          * Draws the button.
          */
         void draw(gcn::Graphics* graphics);
+
+    private:
+        ImageRect button[4];
 };
 
 #endif

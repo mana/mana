@@ -31,6 +31,23 @@ PlayerBox::PlayerBox():
     showPlayer(false)
 {
     setBorderSize(2);
+
+    // Load the background skin
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *textbox = resman->getImage("core/graphics/gui/textbox.bmp");
+    int bggridx[4] = {0, 9, 16, 25};
+    int bggridy[4] = {0, 4, 19, 24};
+    int a = 0, x, y;
+
+    for (y = 0; y < 3; y++) {
+        for (x = 0; x < 3; x++) {
+            background.grid[a] = textbox->getSubImage(
+                    bggridx[x], bggridy[y],
+                    bggridx[x + 1] - bggridx[x] + 1,
+                    bggridy[y + 1] - bggridy[y] + 1);
+            a++;
+        }
+    }
 }
 
 void PlayerBox::draw(gcn::Graphics *graphics)
@@ -61,5 +78,5 @@ void PlayerBox::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    draw_skinned_rect(buffer, &gui_skin.textbox.bg, x, y, w, h);
+    ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
 }
