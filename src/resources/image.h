@@ -77,7 +77,7 @@ class Image : public Resource
          * @return <code>NULL</code> if the an error occurred, a
          * valid pointer otherwise.
          */
-        static Image *load(const char* buffer, const unsigned int bufferSize);
+        static Image *load(const char* buffer, unsigned int bufferSize);
 
         /**
          * Frees the resources created by SDL.

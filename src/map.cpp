@@ -94,6 +94,13 @@ Map::Map():
     tiles = new Tile[width * height];
 }
 
+Map::Map(int width, int height):
+    width(width), height(height),
+    onClosedList(1), onOpenList(2)
+{
+    tiles = new Tile[width * height];
+}
+
 Map::~Map()
 {
     delete[] tiles;

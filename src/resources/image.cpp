@@ -198,7 +198,7 @@ Image* Image::load(const std::string &filePath, int flags)
 #endif
 }
 
-Image* Image::load(const char* buffer, const unsigned int bufferSize)
+Image* Image::load(const char* buffer, unsigned int bufferSize)
 {
     // Define our RWops structure
     SDL_RWops* rw = NULL;

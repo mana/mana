@@ -78,6 +78,8 @@ tmw_SOURCES = graphic/graphic.cpp \
 	      net/win2linux.h \
 	      resources/image.cpp \
 	      resources/image.h \
+	      resources/mapreader.cpp \
+	      resources/mapreader.h \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
@@ -105,5 +107,5 @@ INCLUDES= $(all_includes)
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan_sdl -lguichan `pkg-config --libs libxml-2.0`
 tmw_CXXFLAGS = $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0`
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_opengl -lguichan -lGL
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan_opengl -lguichan -lGL -lphysfs
 tmw_TARGET = ../tmw

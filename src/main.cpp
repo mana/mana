@@ -114,10 +114,6 @@ class InitWarningListener : public gcn::ActionListener {
  */
 void init_engine()
 {
-    // Initialize libxml2 and check for potential ABI mismatches between
-    // compiled version and the shared library actually used.
-    LIBXML_TEST_VERSION
-
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         std::cerr << "Could not initialize SDL: " <<
@@ -324,8 +320,14 @@ void exit_engine()
 /** Main */
 int main(int argc, char *argv[])
 {
-    init_engine();
+    // Initialize libxml2 and check for potential ABI mismatches between
+    // compiled version and the shared library actually used.
+    LIBXML_TEST_VERSION;
+
+    // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
+
+    init_engine();
 
     SDL_Event event;
 
