@@ -147,8 +147,8 @@ void server_login(const std::string& user, const std::string& pass) {
 
     // Connect to login server
     ret = open_session(
-            get_config_string("server", "host", 0),
-            get_config_int("server", "port", 0));
+            config.getValue("host", "animesites.de").c_str(),
+            (short)config.getValue("port", 0));
 
     if (ret == SOCKET_ERROR) {
         state = LOGIN;
