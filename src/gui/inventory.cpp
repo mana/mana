@@ -66,19 +66,11 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
 
 
 int InventoryWindow::addItem(int index, int id, int quantity, bool equipment) {
-    /*items[index].id = id;
-    items[index].quantity += quantity;*/
     items->addItem(index, id, quantity, equipment);
     return 0;
 }
 
 int InventoryWindow::removeItem(int id) {
-    /*for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].id == id) {
-            items[i].id = -1;
-            items[i].quantity = 0;
-        }
-    }*/
     items->removeItem(id);
     return 0;
 }
@@ -128,7 +120,6 @@ void InventoryWindow::unequipItem(int index) {
     WFIFOW(2) = net_w_value(index);
     WFIFOSET(4);
     while ((out_size > 0)) flush();
-
 }
 
 void InventoryWindow::action(const std::string &eventId)

@@ -33,6 +33,7 @@ StatsWindow::StatsWindow():
     for (i = 0; i < 6; i++) {
         statsLabel[i] = new gcn::Label();
         statsDisplayLabel[i] = new gcn::Label();
+        pointsLabel[i] = new gcn::Label("0");
     }
     remainingStatsPointsLabel = new gcn::Label();
 
@@ -51,9 +52,10 @@ StatsWindow::StatsWindow():
 
     // Set position
     for (i = 0; i < 6; i++) {
-        statsLabel[i]->setPosition(10,(i*23)+10);
-        statsDisplayLabel[i]->setPosition(120,(i*23)+10);
-        statsButton[i]->setPosition(170,(i*23)+10);
+        statsLabel[i]->setPosition(10,(i * 23) + 10);
+        statsDisplayLabel[i]->setPosition(120,(i * 23) + 10);
+        statsButton[i]->setPosition(150, (i * 23) + 5);
+        pointsLabel[i]->setPosition(180, (i * 23) + 10);
     }
     remainingStatsPointsLabel->setPosition(10, 156);
 
@@ -62,6 +64,7 @@ StatsWindow::StatsWindow():
         add(statsLabel[i]);
         add(statsDisplayLabel[i]);
         add(statsButton[i]);
+        add(pointsLabel[i]);
         statsButton[i]->addActionListener(this);
     }
     add(remainingStatsPointsLabel);
@@ -75,6 +78,7 @@ StatsWindow::StatsWindow():
 void StatsWindow::update(){
     std::stringstream statsStr[6];
     std::stringstream figureStr[6];
+    std::stringstream pointsStr[6];
     std::stringstream remainingStatsPointsStr;
 
     statsStr[0] << "Strength:";
@@ -90,9 +94,14 @@ void StatsWindow::update(){
     statsStr[5] << "Luck:";
     figureStr[5] << (int)char_info->LUK;
 
-    // for testing only...
-
-    //remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
+    remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
+    
+    pointsStr[0] << (int)char_info->STRUp;
+    pointsStr[1] << (int)char_info->AGIUp;
+    pointsStr[2] << (int)char_info->VITUp;
+    pointsStr[3] << (int)char_info->INTUp;
+    pointsStr[4] << (int)char_info->DEXUp;
+    pointsStr[5] << (int)char_info->LUKUp;
 
     // Update labels
     for (i = 0; i < 6; i++) {
@@ -100,6 +109,8 @@ void StatsWindow::update(){
         statsLabel[i]->adjustSize();
         statsDisplayLabel[i]->setCaption(figureStr[i].str());
         statsDisplayLabel[i]->adjustSize();
+        pointsLabel[i]->setCaption(pointsStr[i].str());
+        pointsLabel[i]->adjustSize();
     }
     remainingStatsPointsLabel->setCaption(remainingStatsPointsStr.str());
     remainingStatsPointsLabel->adjustSize();

@@ -148,8 +148,10 @@ void do_init()
     player_node->speed = 150;
     player_node->hair_color = char_info->hair_color;
     player_node->hair_style = char_info->hair_style;
+    std::cout << char_info->weapon << "\n";
     if (char_info->weapon == 11) {
-        char_info->weapon = 1;
+        char_info->weapon = 2;
+        std::cout << char_info->weapon << "\n";
     }
     player_node->weapon = char_info->weapon;
     add_node(player_node);
@@ -368,7 +370,7 @@ void do_input()
 
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
-            // UP
+            // Up
             if (tiledMap->getWalk(x, y - 1) != 0)
             {
                 walk(x, y-1, NORTH);
@@ -601,17 +603,25 @@ void do_parse() {
                 case 0x007b:
                     //case 0x01da:
                     being = find_node(RFIFOL(2));
-                    if(being==NULL) {
+                    if(being == NULL) {
                         being = new Being();
-                        being->action = STAND;
-                        being->x = get_src_x(RFIFOP(50));
-                        being->y = get_src_y(RFIFOP(50));
-                        being->direction = 0;
-                        being->id = RFIFOL(2);
-                        being->speed = RFIFOW(6);
-                        being->job = RFIFOW(14);
                         add_node(being);
                     }
+                    being->action = STAND;
+                    being->x = get_src_x(RFIFOP(50));
+                    being->y = get_src_y(RFIFOP(50));
+                    being->direction = 0;
+                    being->id = RFIFOL(2);
+                    being->speed = RFIFOW(6);
+                    being->job = RFIFOW(14);
+                    being->weapon = RFIFOW(18);
+                    
+                    /*if(being->id==char_info->id) {                    
+                        char plr_wpn[20];
+                        sprintf(plr_wpn, "7b %i %i", being->id, being->weapon);
+                        chatBox->chat_log(plr_wpn,BY_SERVER);
+                    }*/
+
                     being->setPath(tiledMap->findPath(
                                 get_src_x(RFIFOP(50)),
                                 get_src_y(RFIFOP(50)),
@@ -661,6 +671,13 @@ void do_parse() {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
+                        // Trick because arrows are not considered equipment
+                        if (RFIFOW(4 + loop * 18 + 2) == 1199)
+                            inventoryWindow->items->setEquipment(
+                                RFIFOW(4 + loop * 18), true);
+                        /*char info[40];
+                        sprintf(info, "1ee %i", RFIFOW(4+loop*18+2));
+                        chatBox->chat_log(info, BY_SERVER);*/
                     }
                     break;
                     // Get the equipments
@@ -676,16 +693,18 @@ void do_parse() {
                             RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
                         chatBox->chat_log(info, BY_SERVER);*/
                         if(RFIFOW(4+loop*20+8)) {
-                            int slot = 1;
+                            int mask = 1;
                             int position = 0;
-                            while(RFIFOW(4+loop*20+8) != slot) {
-                                slot *= 2;
+                            while(!(RFIFOW(4+loop*20+8) & mask)) {
+                                mask *= 2;
                                 position++;
                             }
-                            /*sprintf(info, "%i %i", slot, position);
+                            /*sprintf(info, "%i %i", mask, position);
                             chatBox->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
                                 RFIFOW(4+loop*20+2));
+                            equipmentWindow->equipments[position - 1].inventoryIndex =
+                                RFIFOW(4+loop*20);
                             inventoryWindow->items->setEquipped(
                                 RFIFOW(4+loop*20), true);
                         }
@@ -781,11 +800,17 @@ void do_parse() {
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
                             break;
-                        //case 0x0009:
-                            // try to get the stats point to attribute...
-                            // FIXME : Wrong or misplaced...
-                            //char_info->statsPointsToAttribute = RFIFOW(4);
-                            //break;
+                        case 0x0009:
+                            char_info->statsPointsToAttribute = RFIFOW(4);
+                            /*char points[20];
+                            sprintf(points, "b0 0x0009 %i", RFIFOL(4));
+                            chatBox->chat_log(points, BY_SERVER);*/
+                            break;
+                        default:
+                            /*char unknown[20];
+                            sprintf(unknown, "b0 %x %i", RFIFOW(2),RFIFOL(4));
+                            chatBox->chat_log(unknown, BY_SERVER);*/
+                            break;
                     }
                     statusWindow->update();
                     if (char_info->hp == 0 && deathNotice == NULL) {
@@ -924,6 +949,9 @@ void do_parse() {
                             char_info->LUK = RFIFOL(6) + RFIFOL(10);
                             break;
                     }
+                    /*char unknown2[20];
+                    sprintf(unknown2, "141 %i %i %i", RFIFOL(2),RFIFOL(6),RFIFOL(10));
+                    chatBox->chat_log(unknown2, BY_SERVER);*/
                     break;
                     // Buy/Sell dialog
                 case 0x00c4:
@@ -1100,33 +1128,48 @@ void do_parse() {
                         chatBox->chat_log("Unable to equip.", BY_SERVER);
                     else {
                          if(RFIFOW(4)) {
-                            int slot = 1;
+                            int mask = 1;
                             int position = 0;
-                            while(RFIFOW(4) != slot) {
-                                slot *= 2;
+                            while(!(RFIFOW(4) & mask)) {
+                                mask *= 2;
                                 position++;
                             }
+                            int equippedId = equipmentWindow->equipments[position - 1].id;
+                            if (equippedId > 0)
+                                inventoryWindow->items->setEquipped(
+                                    equipmentWindow->equipments[position - 1].inventoryIndex,
+                                    false);
+                            /*char info3[40];           
+                            sprintf(info3, "info3 %i %i", position-1,equippedId);
+                            chatBox->chat_log(info3, BY_SERVER);*/
+
                             inventoryWindow->items->setEquipped(RFIFOW(2),
                                 true);
                             equipmentWindow->addEquipment(position - 1,
                                 inventoryWindow->items->getId(RFIFOW(2)));
-
+                            equipmentWindow->equipments[position - 1].inventoryIndex = RFIFOW(2);
+                            
+                            // Trick to use the proper graphic until I find
+                            // the right packet
+                            switch(inventoryWindow->items->getId(RFIFOW(2))) {
+                                case 1201:
+                                    player_node->weapon = 1;
+                                    break;
+                                case 1200:
+                                    player_node->weapon = 2;
+                                    break;
+                            }
                         }
                     }
+                    /*char info[40];           
+                    sprintf(info, "aa %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
+                    chatBox->chat_log(info, BY_SERVER);*/
                     break;
                     // Equipment related
                 case 0x01d7:
                     /*char content[40];
-                    sprintf(content, "%i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
+                    sprintf(content, "1d7 %i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     chatBox->chat_log(content, BY_SERVER);*/
-                    /*equipmentWindow->addEquipment(RFIFOB(6), RFIFOW(7));
-                    if(inventoryWindow->items->getIndex(RFIFOW(7)));
-                        inventoryWindow->items->setEquipped(
-                            inventoryWindow->items->getIndex(RFIFOW(7)), true);*/
-                    /*char info[40];
-                    sprintf(info, "1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6),
-                        RFIFOW(7), RFIFOW(9));
-                    chatBox->chat_log(info, BY_SERVER);*/
                     break;
                     // Answer to unequip item
                 case 0x00ac:
@@ -1134,16 +1177,112 @@ void do_parse() {
                         chatBox->chat_log("Unable to unequip.", BY_SERVER);
                     else {
                         if(RFIFOW(4)) {
-                            int slot = 1;
+                            int mask = 1;
                             int position = 0;
-                            while(RFIFOW(4) != slot) {
-                                slot *= 2;
+                            while(!(RFIFOW(4) & mask)) {
+                                mask *= 2;
                                 position++;
                             }
+                            int equipmentId = equipmentWindow->equipments[position-1].id;
+                            if (equipmentId > 0)
+                                inventoryWindow->items->setEquipped(
+                                    equipmentWindow->equipments[position-1].inventoryIndex, false);
                             equipmentWindow->removeEquipment(position - 1);
                             inventoryWindow->items->setEquipped(
                                 inventoryWindow->items->getIndex(), false);
+                            player_node->weapon = 0;
                         }                        
+                    }
+                    /*char info2[40];
+                    sprintf(info2, "ac %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
+                    chatBox->chat_log(info2, BY_SERVER);*/
+                    break;
+                    // Arrows equipped
+                case 0x013c:
+                    /*char info3[40];
+                    sprintf(info3, "13c %i", RFIFOW(2));
+                    chatBox->chat_log(info3, BY_SERVER);*/
+                    inventoryWindow->items->setEquipped(RFIFOW(2), true);
+                    break;
+                    // Various messages
+                case 0x013b:
+                    /*char msg[40];
+                    sprintf(msg, "13b %i", RFIFOW(2));
+                    chatBox->chat_log(msg, BY_SERVER);*/
+                    if (RFIFOW(2) == 0)
+                        chatBox->chat_log("Equip arrows first", BY_SERVER);
+                    break;
+                    // Updates a stat value
+                case 0x00bc:
+                    /*char stat[20];
+                    sprintf(stat, "bc %x %i %i", RFIFOW(2),RFIFOB(4),RFIFOB(5));
+                    chatBox->chat_log(stat, BY_SERVER);*/
+                    if(RFIFOB(4)) {
+                        switch(RFIFOW(2)) {
+                            case 0x000d:
+                                char_info->STR = RFIFOB(5);
+                                break;
+                            case 0x000e:
+                                char_info->AGI = RFIFOB(5);
+                                break;
+                            case 0x000f:
+                                char_info->VIT = RFIFOB(5);
+                                break;
+                            case 0x0010:
+                                char_info->INT = RFIFOB(5);
+                                break;
+                            case 0x0011:
+                                char_info->DEX = RFIFOB(5);
+                                break;
+                            case 0x0012:
+                                char_info->LUK = RFIFOB(5);
+                                break;                                
+                        }
+                    }
+                    break;
+                    // Updates stats and status points
+                case 0x00bd:
+                    char_info->statsPointsToAttribute = RFIFOW(2);
+                    char_info->STR = RFIFOB(4);
+                    char_info->STRUp = RFIFOB(5);
+                    char_info->AGI = RFIFOB(6);
+                    char_info->AGIUp = RFIFOB(7);
+                    char_info->VIT = RFIFOB(8);
+                    char_info->VITUp = RFIFOB(9);
+                    char_info->INT = RFIFOB(10);
+                    char_info->INTUp = RFIFOB(11);
+                    char_info->DEX = RFIFOB(12);
+                    char_info->DEXUp = RFIFOB(13);
+                    char_info->LUK = RFIFOB(14);
+                    char_info->LUKUp = RFIFOB(15);
+                    /*char stats[100];
+                    sprintf(stats, "%i %i %i %i %i %i %i %i %i %i %i %i",
+                    RFIFOB(4),RFIFOB(5),RFIFOB(6),RFIFOB(7),RFIFOB(8),RFIFOB(9),
+                    RFIFOB(10),RFIFOB(11),RFIFOB(12),RFIFOB(13),RFIFOB(14),RFIFOB(15));
+                    chatBox->chat_log(stats,BY_SERVER);*/
+                    statusWindow->update();
+                    break;
+                    // Updates status point
+                case 0x00be:
+                    switch(RFIFOW(2)) {
+                        case 0x0020:
+                            char_info->STRUp = RFIFOB(4);
+                            break;
+                        case 0x0021:
+                            char_info->AGIUp = RFIFOB(4);
+                            break;
+                        case 0x0022:
+                            char_info->VITUp = RFIFOB(4);
+                            break;
+                        case 0x0023:
+                            char_info->INTUp = RFIFOB(4);
+                            break;
+                        case 0x0024:
+                            char_info->DEXUp = RFIFOB(4);
+                            break;
+                        case 0x0025:
+                            char_info->LUKUp = RFIFOB(4);
+                            break;
                     }
                     break;
                     // Manage non implemented packets

@@ -28,6 +28,11 @@
 #include "gui.h"
 #include "window.h"
 
+typedef struct {
+    int id;
+    int inventoryIndex;
+} EQUIPMENT_HOLDER;
+
 /**
  * Equipment dialog.
  *
@@ -59,7 +64,11 @@ class EquipmentWindow : public Window, gcn::ActionListener {
         
         void removeEquipment(int index);
         
-        int equipments[10];
+        void setInventoryIndex(int index, int inventoryIndex);
+        
+        int getInventoryIndex(int index);
+        
+        EQUIPMENT_HOLDER equipments[10];
         
     private:
         

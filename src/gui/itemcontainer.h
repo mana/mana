@@ -130,6 +130,8 @@ class ItemContainer : public gcn::Widget
         bool isEquipped(int index);
         
         void setEquipped(int index, bool equipped);
+        
+        void setEquipment(int index, bool equipment);
 };
 
 #endif

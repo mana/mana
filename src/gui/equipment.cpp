@@ -38,7 +38,8 @@ EquipmentWindow::EquipmentWindow():
     itemset = new Spriteset(itemImg, 20, 20);
     
     for (int i = 0; i < 10; i++ ) {
-        equipments[i] = 0;
+        equipments[i].id = 0;
+        equipments[i].inventoryIndex = -1;
     }
 }
 
@@ -55,12 +56,14 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
     
     for (int i = 0; i < 8; i++) {
-        if (equipments[i] > 0) {
-            itemset->spriteset[equipments[i] - 501]->draw(screen,
+        if (equipments[i].id > 0) {
+            itemset->spriteset[equipments[i].id - 501]->draw(screen,
                         x + 22, y + 24 * i + 20);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawRectangle(gcn::Rectangle(22, 24 * i + 20, 20, 20));
+        
+
     }
 }
 
@@ -69,10 +72,18 @@ void EquipmentWindow::action(const std::string &eventId)
 }
 
 void EquipmentWindow::addEquipment(int index, int id) {
-    equipments[index] = id;
+    equipments[index].id = id;
 }
 
 void EquipmentWindow::removeEquipment(int index) {
-    equipments[index] = 0;
+    equipments[index].id = 0;
+}
+
+void EquipmentWindow::setInventoryIndex(int index, int inventoryIndex) {
+    equipments[index].inventoryIndex = inventoryIndex;
+}
+
+int EquipmentWindow::getInventoryIndex(int index) {
+    return equipments[index].inventoryIndex;
 }
 

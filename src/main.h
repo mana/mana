@@ -79,6 +79,7 @@ typedef struct {
     int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
     short statp, skill_point, hair_color, hair_style;
     char STR, AGI, VIT, INT, DEX, LUK;
+    char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
     short weapon;  
     // skill list declaration
     std::vector<SKILL> m_Skill; // array of N_SKILLS skills

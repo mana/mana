@@ -184,3 +184,8 @@ void ItemContainer::setEquipped(int index, bool equipped)
 {
     items[index].equipped = equipped;
 }
+
+void ItemContainer::setEquipment(int index, bool equipment)
+{
+    items[index].equipment = equipment;
+}
