@@ -183,7 +183,7 @@ bool Being::hasPath()
 
 void Being::nextStep()
 {
-    if (path->next) {
+    if (path && path->next) {
         int old_x, old_y, new_x, new_y;
         old_x = path->x;
         old_y = path->y;

@@ -330,13 +330,14 @@ void do_input()
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
+            int mx = event.button.x / 32 + camera_x;
+            int my = event.button.y / 32 + camera_y;
+
             if (event.button.button == 3)
             {
                 // We click the right button
                 // NPC Call
-                int npc_x = event.button.x / 32 + camera_x;
-                int npc_y = event.button.y / 32 + camera_y;
-                int id = find_npc(npc_x, npc_y);
+                int id = find_npc(mx, my);
                 if (id != 0)
                 {
                     // Check if no conflicting npc window is open
@@ -349,6 +350,11 @@ void do_input()
                         current_npc = id;
                     }
                 }
+            }
+            else if (event.button.button == 1)
+            {
+                // Experimental mouse walk command
+                walk(mx, my, 0);
             }
         }
 
@@ -454,7 +460,6 @@ int get_packet_length(short id) {
 void do_parse() {
     unsigned short id;
     char *temp;
-    char direction;
     Being *being = NULL;
     FloorItem *floorItem = NULL;
     int len, n_items;
