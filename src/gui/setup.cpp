@@ -34,6 +34,10 @@
 #include "radiobutton.h"
 #include "ok_dialog.h"
 #include "../main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <memory.h>
 
 SDL_Rect **modes;
 
@@ -54,11 +58,13 @@ ModeListModel::ModeListModel() {
 	
 	for(nmode=0;modes[nmode];++nmode);
 	
-	mode = (char **) calloc(nmode,sizeof(char *));
+	mode = (char **) calloc(nmode, sizeof(char *));
 	
 	for(i=0;modes[i];++i) {
-		if(asprintf(&mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
-			puts("Cannot allocate mode list"); 
+        char *temp = (char *)malloc(20 * sizeof(char));
+        mode[i] = temp;
+		if(sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
+			puts("Cannot allocate mode list");
 	}
 }
 
