@@ -330,6 +330,7 @@ void do_graphic(void) {
 				}
 				show_npc_dialog = 0;
 				sell_dialog[3].d2 = 0;
+				sprintf((char *)sell_dialog[5].dp, "%i", 0);
         sell_player = init_dialog(sell_dialog, -1);
 				close_shop();
 			}
