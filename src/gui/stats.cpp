@@ -74,6 +74,7 @@ StatsWindow::StatsWindow():
 void StatsWindow::update(){
     std::stringstream statsStr[6];
     std::stringstream figureStr[6];
+    std::stringstream remainingStatsPointsStr;
     
     statsStr[0] << "Strength:";
     figureStr[0] << (int)char_info->STR;
@@ -88,6 +89,9 @@ void StatsWindow::update(){
     statsStr[5] << "Luck:";
     figureStr[5] << (int)char_info->LUK;
     
+    // for testing only...
+    remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
+    
     // Update labels
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setCaption(statsStr[i].str());
@@ -95,7 +99,7 @@ void StatsWindow::update(){
 	statsDisplayLabel[i]->setCaption(figureStr[i].str());
 	statsDisplayLabel[i]->adjustSize();
     }
-    remainingStatsPointsLabel->setCaption("Remaing Status Points : ??");
+    remainingStatsPointsLabel->setCaption(remainingStatsPointsStr.str());
     remainingStatsPointsLabel->adjustSize();
 }
 
@@ -140,6 +144,7 @@ void StatsWindow::action(const std::string& eventId) {
     if (eventId == "LUK") {
         WFIFOW(2) = net_w_value(0x0012);
     }
+    
     flush();
     update();
 }
