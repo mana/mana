@@ -29,8 +29,10 @@
 #include "../gui/equipment.h"
 #include "../gui/newskill.h"
 #include "../gui/chargedialog.h"
+#include "../gui/itemcontainer.h"
 #include "../main.h"
 #include "../being.h"
+#include "../floor_item.h"
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>
 #endif
@@ -321,16 +323,20 @@ Engine::Engine()
             "core/graphics/sprites/monsters.png");
     Image *weaponbitmap = resman->getImage(
             "core/graphics/sprites/weapons.png");
+    Image *itembitmap = resman->getImage(
+            "core/graphics/sprites/items.png");
 
     if (!npcbmp) error("Unable to load npcs.png");
     if (!emotionbmp) error("Unable to load emotions.png");
     if (!monsterbitmap) error("Unable to load monsters.png");
     if (!weaponbitmap) error("Unable to load weapons.png");
+    if (!itembitmap) error("Unable to load items.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
     monsterset = new Spriteset(monsterbitmap, 60, 60);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
+    itemset = new Spriteset(itembitmap, 20, 20); 
 }
 
 Engine::~Engine()
@@ -353,6 +359,7 @@ Engine::~Engine()
     delete npcset;
     delete emotionset;
     delete weaponset;
+    delete itemset;
 }
 
 void Engine::draw()
@@ -388,7 +395,33 @@ void Engine::draw()
             }
         }
     }
+    
+    // Draw items
+    std::list<FloorItem*>::iterator floorItemIterator = floorItems.begin();
+    while (floorItemIterator != floorItems.end())
+    {
+        FloorItem *floorItem = (*floorItemIterator);    
+        unsigned short x = floorItem->x;
+        unsigned short y = floorItem->y;
+        int sx = x - camera_x;
+        int sy = y - camera_y;
+        int absx = sx * 32 - floorItem->subx - offset_x;
+        int absy = sy * 32 - floorItem->suby - offset_y;
+        /**
+         * subx and suby are serverside randomly generated to be
+         * either 3, 6, 9 or 12.
+         * this seems to be a finer differentiation for coordinates.
+         * TODO: Find a better way to implement subx and suby.
+         */
+        if (floorItem->id >= 501 && floorItem->id <= 1202) {
+                itemset->spriteset[floorItem->id - 501]->draw(screen,
+                         absx,
+                         absy);
+        }
 
+        floorItemIterator++;
+    } 
+    
     // Draw nodes
     std::list<Being*>::iterator beingIterator = beings.begin();
     while (beingIterator != beings.end())

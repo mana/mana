@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=103
+UnitCount=105
 Type=0
 Ver=1
 ObjFiles=
@@ -1076,6 +1076,26 @@ BuildCmd=
 FileName=src\gui\chargedialog.cpp
 CompileCpp=1
 Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit104]
+FileName=src\floor_item.cpp
+CompileCpp=1
+Folder=tmw
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit105]
+FileName=src\floor_item.h
+CompileCpp=1
+Folder=tmw
 Compile=1
 Link=1
 Priority=1000

@@ -46,7 +46,8 @@ MODULES = src/sound.cpp \
           src/configuration.cpp \
           src/base64.cpp \
           src/being.cpp \
+          src/floor_item.cpp \
           src/game.cpp \
           src/main.cpp \
           src/map.cpp \
-          src/log.cpp
+          src/log.cpp 

@@ -106,6 +106,7 @@ int InventoryWindow::useItem(int index, int id) {
 }
 
 int InventoryWindow::dropItem(int index, int quantity) {
+    // TODO: Fix wrong coordinates of drops, serverside?
     WFIFOW(0) = net_w_value(0x00a2);
     WFIFOW(2) = net_w_value(index);
     WFIFOW(4) = net_w_value(quantity);

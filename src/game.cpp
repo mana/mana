@@ -24,6 +24,7 @@
 #include "main.h"
 #include "map.h"
 #include "being.h"
+#include "floor_item.h"
 #include "log.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
@@ -242,7 +243,54 @@ void do_input()
             {
                 state = EXIT;
             }
-
+            
+            if (keysym.sym == SDLK_g)
+            {
+                // Get the item code
+                
+                int id = 0;
+                id = find_floor_item_by_cor(player_node->x, player_node->y);
+                if (id != 0)
+                {
+                    WFIFOW(0) = net_w_value(0x009f);
+                    WFIFOL(2) = net_l_value(id);
+                    WFIFOSET(6);
+                }
+                else {
+                    switch (player_node->direction) {
+                        case NORTH:
+                            id = find_floor_item_by_cor(player_node->x, player_node->y-1);
+                            break;
+                        case SOUTH:
+                            id = find_floor_item_by_cor(player_node->x, player_node->y+1);
+                            break;
+                        case WEST:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y);
+                            break;
+                        case EAST:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y);
+                            break;
+                        case NW:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y-1);
+                            break;
+                        case NE:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y-1);
+                            break;
+                        case SW:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y+1);
+                            break;
+                        case SE:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y+1);
+                            break;
+                        default: 
+                            break;
+                    }
+                    WFIFOW(0) = net_w_value(0x009f);
+                    WFIFOL(2) = net_l_value(id);
+                    WFIFOSET(6);
+                }
+            }
+            
             if (keysym.sym == SDLK_f)
             {
                 if (keysym.mod & KMOD_CTRL)
@@ -406,6 +454,7 @@ void do_parse() {
     char *temp;
     char direction;
     Being *being = NULL;
+    FloorItem *floorItem = NULL;
     int len, n_items;
 
     // We need at least 2 bytes to identify a packet
@@ -989,13 +1038,38 @@ void do_parse() {
                 case 0x010c:
                     chatBox->chat_log("MVP player", BY_SERVER);
                     break;
+                    // Item is found
+                case 0x009d:
+                    floorItem = new FloorItem();
+                    floorItem->id = net_w_value(RFIFOW(6));
+                    floorItem->x = net_w_value(RFIFOW(9));
+                    floorItem->y = net_w_value(RFIFOW(11));
+                    floorItem->subx = net_b_value(RFIFOB(15));
+                    floorItem->suby = net_b_value(RFIFOB(16));
+                    floorItem->int_id = net_l_value(RFIFOL(2));
+                    add_floor_item(floorItem);
+                    break;
                     // Item drop
                 case 0x009e:
-                    WFIFOW(0) = net_w_value(0x009f);
-                    WFIFOL(2) = net_l_value(RFIFOL(2));
-                    WFIFOSET(6);
-                    // To be fixed or you will pick up again what you drop
+                    floorItem = new FloorItem();
+                    floorItem->id = net_w_value(RFIFOW(6));
+                    floorItem->x = net_w_value(RFIFOW(9));
+                    floorItem->y = net_w_value(RFIFOW(11));
+                    floorItem->subx = net_b_value(RFIFOB(13));
+                    floorItem->suby = net_b_value(RFIFOB(14));
+                    floorItem->int_id = net_l_value(RFIFOL(2));
+                    add_floor_item(floorItem);
                     break;
+                    // Item disappearing
+                case 0x00a1:
+                     floorItem = find_floor_item_by_id(net_l_value(RFIFOL(2)));
+                     if (floorItem != NULL) {
+                         remove_floor_item(net_l_value(RFIFOL(2)));
+                     }
+                     else {
+                         remove_floor_item(net_l_value(RFIFOL(2)));
+                     }
+                     break;
                     // Next button in NPC dialog
                 case 0x00b5:
                     strcpy(npc_button, "Next");

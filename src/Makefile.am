@@ -94,6 +94,8 @@ tmw_SOURCES = graphic/graphic.cpp \
 	      being.h \
 	      configuration.cpp \
 	      configuration.h \
+	      floor_item.cpp \
+	      floor_item.h \
 	      game.cpp \
 	      game.h \
 	      log.cpp \
