@@ -1,10 +1,12 @@
-0.0.11  (... April 2005)
-- Changed chat entry behaviour to focus on enter and defocus on send message
+0.0.11  (3 April 2005)
+- Added new maps, tiles and monsters
 - Added walking with mouse by clicking where you want to go
 - Added diagonal walking with keyboard
 - Added a choice dialog of how many items to drop
 - Added handling of window close button
 - Added config option for GUI opacity (guialpha)
+- Added warp between two maps
+- Changed chat entry behaviour to focus on enter and defocus on send message
 - Upgraded to Guichan 0.3.0
 - Chat now appears in a window
 - Beings now walk a lot smoother
