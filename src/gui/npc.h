@@ -24,19 +24,61 @@
 #ifndef _NPC_H
 #define _NPC_H
 
-struct ITEM {
-    char *name;
-};
-
-char *item_list(int index, int *list_size);
+#include <guichan.hpp>
+#include <vector>
+#include <string>
+#include "window.h"
 
 /**
- * Fills the options list for an NPC dialog.
+ * The npc list dialog.
  *
- * @param string A string with the options separated with colons.
+ * \ingroup GUI
  */
-void parse_items(const char *string);
+class NpcListDialog : public Window, public gcn::ActionListener,
+                      public gcn::ListModel
+{
+    public:
+        /**
+         * Constructor.
+         *
+         * @see Window::Window
+         */
+        NpcListDialog(gcn::Container *parent);
 
-void remove_all_items();
+        /**
+         * Called when receiving actions from the widgets.
+         */
+        void action(const std::string& eventId);
+
+        /**
+         * Returns the number of items in the choices list.
+         */
+        int getNumberOfElements();
+
+        /**
+         * Returns the name of item number i of the choices list.
+         */
+        std::string getElementAt(int i);
+
+        /**
+         * Fills the options list for an NPC dialog.
+         *
+         * @param string A string with the options separated with colons.
+         */
+        void parseItems(const char *string);
+
+        /**
+         * Resets the list by removing all items.
+         */
+        void reset();
+
+    private:
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
+        gcn::ListBox *itemList;
+        gcn::ScrollArea *scrollArea;
+
+        std::vector<std::string> items;
+};
 
 #endif

@@ -21,38 +21,50 @@
  *  $Id$
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "npc.h"
-#include <vector>
+#include "button.h"
+#include "scrollarea.h"
+#include "../game.h"
 
-std::vector<ITEM*> items;
+NpcListDialog::NpcListDialog(gcn::Container *parent):
+    Window(parent, "NPC")
+{
+    itemList = new gcn::ListBox(this);
+    scrollArea = new ScrollArea(itemList);
+    okButton = new Button("OK");
+    cancelButton = new Button("Cancel");
 
+    setSize(260, 175);
+    scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 130));
+    okButton->setPosition(180, 145);
+    cancelButton->setPosition(208, 145);
 
-char *item_list(int index, int *list_size) {
-    if (index < 0) {
-        *list_size = items.size();
-        return NULL;
-    } else {
-        return items[index]->name;
-    }
+    itemList->setEventId("item");
+    okButton->setEventId("ok");
+    cancelButton->setEventId("cancel");
+
+    itemList->addActionListener(this);
+    okButton->addActionListener(this);
+    cancelButton->addActionListener(this);
+
+    add(scrollArea);
+    add(okButton);
+    add(cancelButton);
+
+    setLocationRelativeTo(getParent());
 }
 
-void add_item(char *name) {
-    ITEM *item = (ITEM*)malloc(sizeof(ITEM));
-    item->name = name;
-    items.push_back(item);
+int NpcListDialog::getNumberOfElements()
+{
+    return items.size();
 }
 
-void remove_tail() {
-    free(items.back()->name);
-    free(items.back());
-    items.pop_back();
-}  
+std::string NpcListDialog::getElementAt(int i)
+{
+    return items[i];
+}
 
-void parse_items(const char *string) {
+void NpcListDialog::parseItems(const char *string) {
     char *copy = new char[strlen(string) + 1];
     strcpy(copy, string);
 
@@ -60,18 +72,32 @@ void parse_items(const char *string) {
     while (token != NULL) {
         char *temp = (char*)malloc(strlen(token) + 1);
         strcpy(temp, token);
-        add_item(temp);
+        items.push_back(std::string(temp));
         token = strtok(NULL, ":");
     }
     
     delete[] copy;
 } 
 
-void remove_all_items() {
-    int i;
-    for (i = 0; i < items.size(); i++) {
-        free(items[i]->name);
-        free(items[i]);
-    }
+void NpcListDialog::reset() {
     items.clear();
+}
+
+void NpcListDialog::action(const std::string& eventId)
+{
+    if (eventId == "ok") {
+        // Send the selected index back to the server
+        int selectedIndex = itemList->getSelected();
+        if (selectedIndex > -1) {
+            WFIFOW(0) = net_w_value(0x00b8);
+            WFIFOL(2) = net_l_value(current_npc);
+            WFIFOB(6) = net_b_value(selectedIndex + 1);
+            WFIFOSET(7);
+            setVisible(false);
+            reset();
+        }
+    } else if (eventId == "cancel") {
+        setVisible(false);
+        reset();
+    }
 }

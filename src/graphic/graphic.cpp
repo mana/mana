@@ -46,6 +46,7 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
+NpcListDialog *npcListDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -96,15 +97,6 @@ DIALOG skill_list_dialog[] = {
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)skill_list,   NULL, NULL  },
    { tmw_text_proc,       304,  326,  40,   20,   0,    0,    0,    0,       0,                0,    (char *)skill_points, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
-};
-
-DIALOG npc_list_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"NPC",    NULL, NULL  },
-   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
-   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
-   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)item_list, NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
 char hairtable[14][4][2] = {
@@ -200,11 +192,13 @@ GraphicEngine::GraphicEngine() {
     inventoryWindow->setVisible(false);
     inventoryWindow->setPosition(100, 100);
 
+    npcListDialog = new NpcListDialog(guiTop);
+    npcListDialog->setVisible(false);
+
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);
     skill_player = init_dialog(skill_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
-    npc_list_player = init_dialog(npc_list_dialog, -1);
 
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
     if(!buffer) {
@@ -291,28 +285,27 @@ void GraphicEngine::refresh() {
         else if (node->job < 10) { // Draw a player
             node->text_x = sx * 32 + get_x_offset(node) - offset_x;
             node->text_y = sy * 32 + get_y_offset(node) - offset_y;
+            int hf = node->hair_color - 1 + 10 * (dir + 4 *
+                    (node->hair_style - 1));
             
             if (node->action == SIT) node->frame = 0;
             if (node->action == ATTACK) {
                 int pf = node->frame + node->action + 4 * node->weapon;
-                int wf = 16 * node->weapon + 4 * node->frame;
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
-                        node->text_x-64, node->text_y-80);
-                /*draw_rle_sprite(buffer, (RLE_SPRITE*)weaponset[wf + dir].dat,
-                        node->text_x, node->text_y);*/
-                hairset->spriteset[node->hair_color-1+10*(dir+4*(node->hair_style-1))]->draw(
-                    buffer, node->text_x -2 + 2*hairtable[pf][dir][0],
-                    node->text_y -50 + 2*hairtable[pf][dir][1]);
+                        node->text_x - 64, node->text_y - 80);
+                hairset->spriteset[hf]->draw(
+                    buffer, node->text_x - 2 + 2 * hairtable[pf][dir][0],
+                    node->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             else {
                 int pf = node->frame + node->action;
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
-                        node->text_x-64, node->text_y-80);
-                hairset->spriteset[node->hair_color-1+10*(dir+4*(node->hair_style-1))]->draw(
-                    buffer, node->text_x - 2 + 2*hairtable[pf][dir][0],
-                    node->text_y - 50 + 2*hairtable[pf][dir][1]);
+                        node->text_x - 64, node->text_y - 80);
+                hairset->spriteset[hf]->draw(
+                    buffer, node->text_x - 2 + 2 * hairtable[pf][dir][0],
+                    node->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             if (node->emotion != 0) {
                 emotionset->spriteset[node->emotion - 1]->draw(buffer,
@@ -470,21 +463,6 @@ void GraphicEngine::refresh() {
                 WFIFOW(0) = net_w_value(0x00b9);
                 WFIFOL(2) = net_l_value(current_npc);
                 WFIFOSET(6);
-            }
-            break;
-        case 5:
-            dialog_message(npc_list_dialog, MSG_DRAW, 0, 0);
-            if (!gui_update(npc_list_player)) {
-                show_npc_dialog = shutdown_dialog(npc_list_player);
-                if (show_npc_dialog == 1) {
-                    WFIFOW(0) = net_w_value(0x00b8);
-                    WFIFOL(2) = net_l_value(current_npc);
-                    WFIFOB(6) = net_b_value(npc_list_dialog[3].d1+1);
-                    WFIFOSET(7);
-                }
-                show_npc_dialog = 0;
-                npc_list_player = init_dialog(npc_list_dialog, -1);
-                remove_all_items();
             }
             break;
     }

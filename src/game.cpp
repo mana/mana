@@ -871,22 +871,23 @@ void do_parse() {
         // List in NPC dialog
         case 0x00b7:
           current_npc = RFIFOL(4);
-          //alert(RFIFOP(8),"","","","",0,0);
+          // Hammerbear: Second argument here shouldn't be neccesary, instead
+          //   make sure the string is \0 terminated.
           //parse_items(RFIFOP(8), RFIFOW(2));
-          parse_items(RFIFOP(8));
+          npcListDialog->parseItems(RFIFOP(8));
           RFIFOW(2);
-          show_npc_dialog = 5;
+          npcListDialog->setVisible(true);
           break;
         // Look change
         case 0x00c3:
           // Change hair color
-          if(RFIFOB(6)==6) {
+          if (RFIFOB(6) == 6) {
             node = find_node(RFIFOL(2));
             node->hair_color = RFIFOB(7);
             /*char prova[100];
             sprintf(prova, "%i %i %i", RFIFOL(2), RFIFOB(6), RFIFOB(7));
             alert(prova,"","","","",0,0);*/
-          } else if(RFIFOB(6)==1) {
+          } else if (RFIFOB(6) == 1) {
             node = find_node(RFIFOL(2));
             node->hair_style = RFIFOB(7);
           }

@@ -567,7 +567,6 @@ int tmw_text_proc(int msg, DIALOG *d, int c) {
 
 int tmw_button_proc(int msg, DIALOG *d, int c) {
 
-    int rtm = 0;
     int col = 0;
     int ofs = 0;
     int ret = D_O_K;
@@ -684,7 +683,6 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
     BITMAP *box = NULL;
     int     x, y;
     int     tx, ty, l;
-    int     rtm = 0;
     int     col = 0;
 
 
@@ -746,7 +744,6 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
   int x,y,delta;
   int a, col;
   int w, h          = 0;
-  int rtm           = 0;
   int cl, cr, cb, ct;
   int th            = text_height(font);
 
@@ -914,7 +911,6 @@ return D_O_K;
 
 /* Dialog box with left centered head */
 int tmw_dialog_proc(int msg, DIALOG *d, int c) {
-  int rtm;
   int x, y;
 
 	switch(msg) {
@@ -954,7 +950,7 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
 
       textprintf_centre_ex(gui_bitmap, font,
 				d->x + d->w/2,
-				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", d->dp);
+				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", (char*)d->dp);
 
 			break;
 	}
@@ -966,7 +962,6 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
 	dialog box w/ left aligned head
 */
 int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
-    int rtm;
   int x, y;
 
   if (msg == MSG_CLICK) {
@@ -1003,7 +998,7 @@ int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
     }
         draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
 
-        textprintf_ex(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", d->dp);
+        textprintf_ex(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", (char*)d->dp);
     }
     return D_O_K;
 }
@@ -1061,7 +1056,6 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    int line = 0;
    int i = 0;
    int noignore;
-   int rtm;
 
    usetc(s+usetc(s, '.'), 0);
    usetc(text+usetc(text, ' '), 0);

@@ -26,6 +26,7 @@
 #include "../map.h"
 #include "../being.h"
 #include "../gui/buy.h"
+#include "../gui/npc.h"
 #include "../gui/sell.h"
 #include "../gui/buysell.h"
 #include "../gui/chat.h"
@@ -58,6 +59,7 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern BuySellDialog *buySellDialog;
 extern InventoryWindow *inventoryWindow;
+extern NpcListDialog *npcListDialog;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {
