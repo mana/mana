@@ -1,0 +1,107 @@
+--------------------
+Player's Progression
+--------------------
+
+
+Player's stats :
+----------------
+
+Strength     : The Strength determines how much a player will physically damage an enemy.
+Vitality     : The Vitality deals with the player's HP, and damage resistance.
+Agility      : The Agility determines the attacks frequency of a player, and the ability
+               to escape attacks from an encounter.
+Intelligence : The Intelligence determines how many MP a player can have, how many 
+               abilities he can master, and how strong his magic attacks can be.
+Spirit       : The Spirit deals with the player's magic resistance, and also with magic 
+               effectiveness.
+Luck         : The Player's Luck determines the player's evades, how he can deals 
+               critical attacks, and a little bit with the hit percentage.
+
+A Player has got 11 points to distribute to each stat before beginning at level 1.
+A Stat must have at least 1 point given to it.
+The Player earns 1 point for each level he reaches.
+
+       
+Player's Status :
+-----------------
+
+HP : Hit Points. How much a player can be hit before dying.
+     HP = (3 * Vitality) + Strength + Level
+
+MP : Magic Points. Used by Spells, or Special Skills.
+     MP = 2 * Intelligence + Spirit
+
+Attack        : The Attack tells how much exactly the player will reduce the opponent's HP, minus its defense and extra protection.
+                Attack = 3 * Strength + Luck
+Defense       : The Defense will reduce the HP damage taken by an opponent.
+                Defense = 2 * Vitality + Agility + Luck
+Magic Attack  : Same but for the might of your spells.
+                Magic Attack = 3 * Intelligence + Spirit
+Magic Defense : Same but for the defense against magic skills and spells.
+                Magic Defense = 3 * Spirit + Luck
+Hit (%)       : Indicate the chance a player has to hit an opponent. The Score is in percentage.
+                Hit = ((3 * Luck + 2 * Agility + Intelligence)/6) * 10 (Max : 125 %) 
+
+Evade (%)     : Indicate the chance a player has to evade an opponent's hit. The Score is in percentage.
+                Evade = ((3 * Luck + Spirit + Vitality )/5) (Max : 75 %)
+
+
+An Attack Process :
+-------------------
+
+An attack process is quite simple :
+The Hit(%) of the attacker is taken, minus the evade of the opponent.
+A random score is taken by the server and if it's less than the Attacker's Hit modified, the attacker actually hits the opponent.
+N.B. : A magic attack never miss if it isn't based on status changing.
+For instance, a fire ball always touches the opponent.
+
+Then, the attack plus the its modifiers (weapons attack upgrade, items bonus, ...) 
+minus the opponent defense (plus bonus) is taken to reduce the opponent HP.
+
+
+Levels :
+--------
+
+The XP-For-The-Next-Level of a player is calculated with his/her class number. Cf. Class Number for more information.
+Higher is the class, higher is the class number.
+
+Minimum XP For This Level = Level^3 + ClassNumber * Level.
+XP For Next Level = (Level + 1)^3  + ClassNumber * (Niveau + 1).
+
+To be of a level, a player must have an actual XP which is between minimum and xp for next level.
+N.B. : A player earns 1 stat point for each level he reaches.
+
+
+Job Points :
+------------
+
+Job Points are used to get skill points, that can be used to learned and reinforce special skills,
+which can be acquired by being of certain classes.
+
+Job points are obtained by job leveling. 
+!! : Changing the class of a character reset to the job level of the character the last time he was of that class.
+     It can be zero if the player has never been of this class!
+
+Job level : 20 + 2^Level + Level.
+
+Classes :
+---------
+
+A player can be one of mutiple classes ; A wizard is different from a archer, and can't held the same weapons, armors, etc...
+A score is associated with each class defining how hard it is to level for a player.
+Also, special skills can be learned from each classes, by giving them skill points, earned by gaining job points.
+
+Classes ---------- Class Number ------------- Skill Associated ------------------------------- Conditions
+
+Beginner              16                        Sitting (JobLvl : 4)
+Apprentice            17                        Fire Ball, Ice Needles (JobLvl : 4)            Beginner Lvl:10
+Archer                17                        Hard Shot, Line Shot (JL:5)                    Beginner Lvl:10
+Peon                  17                        Double Hit, Hard Hit(JL:5)                     Beginner Lvl:10
+...
+
+
+Notes:
+------
+
+Every of these notes have to be discussed, if you have any feedback, suggestions, updates, commit or tell them at :
+address : http://irc.freenode.net      channel :  #manaworld
