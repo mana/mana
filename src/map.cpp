@@ -272,13 +272,17 @@ int Map::getTileHeight()
     return tileHeight;
 }
 
-PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
+std::list<PATH_NODE> Map::findPath(
+        int startX, int startY, int destX, int destY)
 {
+    // Path to be built up (empty by default)
+    std::list<PATH_NODE> path;
+
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
 
     // Return when destination not walkable
-    if (!getWalk(destX, destY)) return NULL;
+    if (!getWalk(destX, destY)) return path;
 
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);
@@ -402,26 +406,20 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
     // to extract it.
     if (foundPath)
     {
-        PATH_NODE *path = new PATH_NODE(destX, destY);
         int pathX = destX;
         int pathY = destY;
 
         while (pathX != startX || pathY != startY)
         {
+            // Add the new path node to the start of the path list
+            path.push_front(PATH_NODE(pathX, pathY));
+
             // Find out the next parent
             MetaTile *tile = getMetaTile(pathX, pathY);
             pathX = tile->parentX;
             pathY = tile->parentY;
-
-            // Add the new path node to the start of the path list
-            PATH_NODE *pn = new PATH_NODE(pathX, pathY);
-            pn->next = path;
-            path = pn;
         }
-
-        return path;
     }
 
-    // No path found
-    return NULL;
+    return path;
 }

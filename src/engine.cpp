@@ -407,10 +407,8 @@ void Engine::draw()
                 being->frame =
                     (get_elapsed_time(being->walk_time) * 4) / (being->speed);
 
-                if (being->frame >= 4) {
-                    if (being->action != MONSTER_DEAD && being->hasPath()) {
-                        being->nextStep();
-                    }
+                if (being->frame >= 4 && being->action != MONSTER_DEAD) {
+                    being->nextStep();
                 }
             }
         }
@@ -436,28 +434,26 @@ void Engine::draw()
     // purposes.
     if (displayPathToMouse)
     {
-        PATH_NODE *debugPath = tiledMap->findPath(
+        std::list<PATH_NODE> debugPath = tiledMap->findPath(
                 player_node->x, player_node->y,
                 mouseX / 32 + camera_x, mouseY / 32 + camera_y);
 
-        while (debugPath)
+        while (!debugPath.empty())
         {
-            int squareX = (debugPath->x - camera_x) * 32 - offset_x + 12;
-            int squareY = (debugPath->y - camera_y) * 32 - offset_y + 12;
+            PATH_NODE node = debugPath.front();
+            debugPath.pop_front();
+
+            int squareX = (node.x - camera_x) * 32 - offset_x + 12;
+            int squareY = (node.y - camera_y) * 32 - offset_y + 12;
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
-            MetaTile *tile = tiledMap->getMetaTile(debugPath->x, debugPath->y);
+            MetaTile *tile = tiledMap->getMetaTile(node.x, node.y);
 
             std::stringstream cost;
             cost << tile->Gcost;
             guiGraphics->drawText(cost.str(), squareX + 4, squareY + 12,
                     gcn::Graphics::CENTER);
-
-            // Move to the next node
-            PATH_NODE *temp = debugPath->next;
-            delete debugPath;
-            debugPath = temp;
         }
     }
 
@@ -466,24 +462,10 @@ void Engine::draw()
     while (beingIterator != beings.end()) {
         Being *being = (*beingIterator);
 
-        if (being->speech != NULL) {
-            //if (being->speech_color == makecol(255, 255, 255)) {
-            //    guiGraphics->drawText(being->speech,
-            //            being->text_x + 16, being->text_y - 60,
-            //            gcn::Graphics::CENTER);
-            //}
-            //else {
-                guiGraphics->drawText(being->speech,
-                        being->text_x + 60, being->text_y - 60,
-                        gcn::Graphics::CENTER);
-            //}
+        // Tick the beings (gives them a sense of time)
+        being->tick();
 
-            being->speech_time--;
-            if (being->speech_time == 0) {
-                free(being->speech);
-                being->speech = NULL;
-            }
-        }
+        being->drawSpeech(guiGraphics);
 
         beingIterator++;
     }

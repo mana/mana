@@ -30,9 +30,8 @@
 
 void Sound::init(int voices, int mod_voices)
 {
-    if (isOk == 0) {
-        throw("Sound engine cannot be initialized twice!\n");
-    }
+    // Don't initialize sound engine twice
+    if (isOk == 0) return;
 
     bgm = NULL;
     int audio_rate = 44100;

@@ -25,6 +25,8 @@
 #define _TMW_BEING_H
 
 #include <list>
+#include <string>
+#include "graphics.h"
 
 struct PATH_NODE {
     /**
@@ -33,12 +35,13 @@ struct PATH_NODE {
     PATH_NODE(unsigned short x, unsigned short y);
 
     unsigned short x, y;
-    PATH_NODE *next;
 };
 
 class Being {
     private:
-        PATH_NODE *path;
+        std::list<PATH_NODE> path;
+        std::string speech;
+        unsigned char speech_time;
 
     public:
         unsigned int id;
@@ -49,8 +52,6 @@ class Being {
         unsigned char type;
         unsigned char action;
         unsigned char frame;
-        char *speech;
-        unsigned char speech_time;
         int speech_color;
         unsigned short walk_time;
         unsigned short speed;
@@ -78,21 +79,44 @@ class Being {
         /**
          * Sets the new path for this being.
          */
-        void setPath(PATH_NODE *path);
+        void setPath(std::list<PATH_NODE> path);
 
         /**
-         * Returns wether this being has a path to follow.
+         * Puts a "speech balloon" above this being for the specified amount
+         * of time.
+         *
+         * @param text The text that should appear.
+         * @param time The amount of time the text should stay in milliseconds.
          */
-        bool hasPath();
+        void setSpeech(const std::string &text, int time);
+
+        /**
+         * Sets the hair color for this being.
+         */
+        void setHairColor(int color);
+
+        /**
+         * Sets the hair style for this being.
+         */
+        void setHairStyle(int style);
 
         /**
          * Makes this being take the next step of his path.
          */
         void nextStep();
-};
 
-/** Removes all beings from the list */
-void empty();
+        /**
+         * Draws the speech text above the being.
+         */
+        void drawSpeech(Graphics *graphics);
+
+        /**
+         * Tick gives the being a sense of time. It should be called either a
+         * specific amount of times per second, or be modified to be passed a
+         * number that tells it the time since the last call.
+         */
+        void tick();
+};
 
 /** Add a Being to the list */
 void add_node(Being *being);

@@ -30,16 +30,8 @@ Being *player_node = NULL;
 std::list<Being*> beings;
 
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
-    x(x), y(y), next(NULL)
+    x(x), y(y)
 {
-}
-
-void empty() {
-    std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
-        delete (*i);
-    }
-    beings.clear();
 }
 
 void add_node(Being *being) {
@@ -109,11 +101,11 @@ void sort() {
 }
 
 Being::Being():
-    path(NULL),
+    speech_time(0),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     type(0), action(0), frame(0),
-    speech(NULL), speech_time(0), speech_color(0),
+    speech_color(0),
     walk_time(0),
     speed(150),
     emotion(0), emotion_time(0),
@@ -125,91 +117,64 @@ Being::Being():
 
 Being::~Being() {
     clearPath();
-    if (speech) {
-        free(speech);
-    }    
 }
 
 void Being::clearPath() {
-    PATH_NODE *temp = path;
-    PATH_NODE *next;
-    while (temp) {
-        next = temp->next;
-        delete temp;
-        temp = next;
-    }
-    path = NULL;
+    path.clear();
 }
 
-
-void Being::setPath(PATH_NODE *path)
+void Being::setPath(std::list<PATH_NODE> path)
 {
-    clearPath();
     this->path = path;
-    if (path != NULL) {
-        direction = 0;
-        if (path->next) {
-            if (path->next->x > path->x && path->next->y > path->y)
-                direction = SE;
-            else if (path->next->x < path->x && path->next->y > path->y)
-                direction = SW;
-            else if (path->next->x > path->x && path->next->y < path->y)
-                direction = NE;
-            else if (path->next->x < path->x && path->next->y < path->y)
-                direction = NW;
-            else if (path->next->x > path->x)
-                direction = EAST;
-            else if (path->next->x < path->x)
-                direction = WEST;
-            else if (path->next->y > path->y)
-                direction = SOUTH;
-            else if (path->next->y < path->y)
-                direction = NORTH;
-        }
-        PATH_NODE *pn = path;
-        this->path = path->next;
-        delete pn;
-        x = this->path->x;
-        y = this->path->y;
-        action = WALK;
-        walk_time = tick_time;
-        frame = 0;
-    }
+    nextStep();
 }
 
-bool Being::hasPath()
+void Being::setHairColor(int color)
 {
-    return path != NULL;
+    hair_color = color;
+}
+
+void Being::setHairStyle(int style)
+{
+    hair_style = style;
+}
+
+void Being::setSpeech(const std::string &text, int time)
+{
+    speech = text;
+    speech_time = time;
 }
 
 void Being::nextStep()
 {
-    if (path && path->next) {
-        int old_x, old_y, new_x, new_y;
-        old_x = path->x;
-        old_y = path->y;
-        path = path->next;
-        new_x = path->x;
-        new_y = path->y;
+    if (!path.empty()) {
+        PATH_NODE node = path.front();
+        path.pop_front();
+
+        int oldX = x;
+        int oldY = y;
+        int newX = node.x;
+        int newY = node.y;
         direction = 0;
 
-        if (new_x > old_x) {
-            if (new_y > old_y)      direction = SE;
-            else if (new_y < old_y) direction = NE;
+        if (newX > oldX) {
+            if (newY > oldY)      direction = SE;
+            else if (newY < oldY) direction = NE;
             else                    direction = EAST;
         }
-        else if (new_x < old_x) {
-            if (new_y > old_y)      direction = SW;
-            else if (new_y < old_y) direction = NW;
+        else if (newX < oldX) {
+            if (newY > oldY)      direction = SW;
+            else if (newY < oldY) direction = NW;
             else                    direction = WEST;
         }
         else {
-            if (new_y > old_y)      direction = SOUTH;
-            else if (new_y < old_y) direction = NORTH;
+            if (newY > oldY)      direction = SOUTH;
+            else if (newY < oldY) direction = NORTH;
         }
 
-        x = path->x;
-        y = path->y;
+        x = newX;
+        y = newY;
+        action = WALK;
     } else {
         action = STAND;
         if (this == player_node) {
@@ -218,4 +183,28 @@ void Being::nextStep()
     }
     frame = 0;
     walk_time = tick_time;
+}
+
+void Being::drawSpeech(Graphics *graphics)
+{
+    // Draw speech above this being
+    if (speech_time > 0) {
+        //if (being->speech_color == makecol(255, 255, 255)) {
+        //    guiGraphics->drawText(being->speech,
+        //            being->text_x + 16, being->text_y - 60,
+        //            gcn::Graphics::CENTER);
+        //}
+        //else {
+        graphics->drawText(speech,
+                text_x + 60, text_y - 60,
+                gcn::Graphics::CENTER);
+        //}
+    }
+}
+
+void Being::tick()
+{
+    if (speech_time > 0) {
+        speech_time--;
+    }
 }

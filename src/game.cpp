@@ -39,10 +39,11 @@
 #include "resources/mapreader.h"
 #include "net/protocol.h"
 #include <SDL.h>
+#include <sstream>
 
 char map_path[480];
 
-unsigned short dest_x, dest_y, src_x, src_y;
+unsigned short src_x, src_y;
 bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
@@ -140,20 +141,20 @@ void do_init()
     SDL_AddTimer(1000, second, NULL);
 
     // Initialize beings
-    empty();
     player_node = new Being();
     player_node->id = account_ID;
     player_node->x = x;
     player_node->y = y;
     player_node->speed = 150;
-    player_node->hair_color = char_info->hair_color;
-    player_node->hair_style = char_info->hair_style;
-    std::cout << char_info->weapon << "\n";
+    player_node->setHairColor(char_info->hair_color);
+    player_node->setHairStyle(char_info->hair_style);
+
     if (char_info->weapon == 11) {
         char_info->weapon = 2;
-        std::cout << char_info->weapon << "\n";
     }
+
     player_node->weapon = char_info->weapon;
+
     add_node(player_node);
 
     remove("./docs/packet.list");
@@ -505,38 +506,32 @@ void do_parse() {
                     memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
                     being = find_node(RFIFOL(4));
                     if (being != NULL) {
-                        if (being->speech != NULL) {
-                            free(being->speech);
-                            being->speech = NULL;
-                            being->speech_time = 0;
-                        }
-                        being->speech = temp;
-                        being->speech_time = SPEECH_TIME;
-                        being->speech_color = 0;//makecol(255, 255, 255);
-                        chatBox->chat_log(being->speech, BY_OTHER);
+                        // White
+                        being->setSpeech(temp, SPEECH_TIME);
+                        chatBox->chat_log(temp, BY_OTHER);
                     }
+                    free(temp);
                     break;
                 case 0x008e:
                 case 0x009a:
                     if (RFIFOW(2) > 4) {
-                        if(player_node->speech!=NULL) {
-                            free(player_node->speech);
-                            player_node->speech = NULL;
-                        }
+                        // Receiving 1 byte less than expected, server might be
+                        // sending garbage instead of '\0' /-kth5
+                        temp = (char *)malloc(RFIFOW(2) - 3);
+                        memset(temp, '\0', RFIFOW(2) - 3);
+                        memcpy(temp, RFIFOP(4), RFIFOW(2) - 4);
 
-                        player_node->speech = (char *)malloc(RFIFOW(2)-3);
-                        memset(player_node->speech, '\0', RFIFOW(2)-3);
-                        memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-4);  // receive 1 byte less than expected, server might be sending garbage instead of '\0' /-kth5
-
-                        player_node->speech_time = SPEECH_TIME;
-                        player_node->speech_color = 0;//makecol(255, 255, 255);
+                        // White
+                        player_node->setSpeech(temp, SPEECH_TIME);
 
                         if (id == 0x008e) {
-                            chatBox->chat_log(player_node->speech, BY_PLAYER);
+                            chatBox->chat_log(temp, BY_PLAYER);
                         }
                         else {
-                            chatBox->chat_log(player_node->speech, BY_GM);
+                            chatBox->chat_log(temp, BY_GM);
                         }
+
+                        free(temp);
                     }
                     break;
                     // Success to walk request
@@ -562,8 +557,8 @@ void do_parse() {
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
-                        being->hair_color = RFIFOW(28);
-                        being->hair_style = RFIFOW(16);
+                        being->setHairColor(RFIFOW(28));
+                        being->setHairStyle(RFIFOW(16));
                         add_node(being);
                     }
                     else {
@@ -616,8 +611,8 @@ void do_parse() {
                     being->walk_time = tick_time;
                     being->frame = 0;
                     being->speed = RFIFOW(6);
-                    being->hair_color = RFIFOW(28);
-                    being->hair_style = RFIFOW(16);
+                    being->setHairColor(RFIFOW(28));
+                    being->setHairStyle(RFIFOW(16));
                     break;
 
                 case SMSG_MOVE_BEING:
@@ -660,8 +655,8 @@ void do_parse() {
                     being->y = get_src_y(RFIFOP(50));
                     being->destX = get_dest_x(RFIFOP(50));
                     being->destY = get_dest_y(RFIFOP(50));
-                    being->hair_style = RFIFOW(16);
-                    being->hair_color = RFIFOW(32);
+                    being->setHairStyle(RFIFOW(16));
+                    being->setHairColor(RFIFOW(32));
 
                     being->setPath(tiledMap->findPath(
                                 being->x, being->y,
@@ -734,26 +729,30 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     strcat(map_path, "./data/map/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
+                    log("Warping to %s (%d, %d)\n",
+                            map_path, RFIFOW(18), RFIFOW(20));
+
                     if (tiledMap) delete tiledMap;
                     tiledMap = Map::load(map_path);
+
                     if (tiledMap) {
-                        Being *temp;
-                        temp = new Being();
-                        memcpy(temp, player_node, sizeof(Being));
-                        empty();
-                        /*player_node = new Being();
-                        player_node->job = 0;
+                        // Delete all beings except the local player
+                        std::list<Being *>::iterator i;
+                        for (i = beings.begin(); i != beings.end(); i++) {
+                            if ((*i) != player_node) {
+                                delete (*i);
+                            }
+                        }
+                        beings.clear();
+
+                        // Re-add the local player node
+                        add_node(player_node);
+
                         player_node->action = STAND;
-                        player_node->frame = 0;
-                        player_node->speed = 150;
-                        player_node->id = account_ID;*/
-                        add_node(temp);
-                        player_node = temp;
-                        player_node->action = STAND;
-                        current_npc = 0;
                         player_node->frame = 0;
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
+                        current_npc = 0;
                         walk_status = 0;
                         // Send "map loaded"
                         WFIFOW(0) = net_w_value(0x007d);
@@ -828,8 +827,7 @@ void do_parse() {
                         deathNotice = new OkDialog("Message",
                                 "You're now dead, press ok to restart",
                                 &deathNoticeListener);
-                        //remove_node(char_info->id);
-                        being->action = DEAD;
+                        player_node->action = DEAD;
                     }
                     break;
                     // Stop walking
@@ -851,26 +849,17 @@ void do_parse() {
                         case 0: // Damage
                             being = find_node(RFIFOL(6));
                             if (being != NULL) {
-                                if (being->speech != NULL) {
-                                    free(being->speech);
-                                    being->speech = NULL;
-                                    //being->speech_time = SPEECH_TIME;
-                                }
-                                being->speech = (char *)malloc(5);
-                                memset(being->speech, '\0', 5);
+
                                 if (RFIFOW(22) == 0) {
-                                    sprintf(being->speech, "miss");
-                                    being->speech_color = 0;//makecol(255, 255, 0);
+                                    // Yellow
+                                    being->setSpeech("miss", SPEECH_TIME);
                                 } else {
-                                    sprintf(being->speech, "%i", RFIFOW(22));
-                                    if (being->id != player_node->id) {
-                                        being->speech_color = 0;//makecol(0,0,255);
-                                    }
-                                    else {
-                                        being->speech_color = 0;//makecol(255,0,0);
-                                    }
+                                    // Blue for monster, red for player
+                                    std::stringstream ss;
+                                    ss << RFIFOW(22);
+                                    being->setSpeech(ss.str(), SPEECH_TIME);
                                 }
-                                being->speech_time = SPEECH_TIME;
+
                                 if (RFIFOL(2) != player_node->id) { // buggy
                                     being = find_node(RFIFOL(2));
                                     if (being != NULL) {
@@ -1122,17 +1111,18 @@ void do_parse() {
                     npcListDialog->parseItems(RFIFOP(8));
                     npcListDialog->setVisible(true);
                     break;
-                    // Look change
-                case 0x00c3:
-                    // Change hair color
-                    if (RFIFOB(6) == 6) {
-                        being = find_node(RFIFOL(2));
-                        being->hair_color = RFIFOB(7);
-                    } else if (RFIFOB(6) == 1) {
-                        being = find_node(RFIFOL(2));
-                        being->hair_style = RFIFOB(7);
+
+                case SMSG_CHANGE_BEING_LOOKS:
+                    being = find_node(RFIFOL(2));
+                    if (being) {
+                        if (RFIFOB(6) == 6) {
+                            being->setHairColor(RFIFOB(7));
+                        } else if (RFIFOB(6) == 1) {
+                            being->setHairStyle(RFIFOB(7));
+                        }
                     }
                     break;
+
                     // Answer to equip item
                 case 0x00aa:
                     if (RFIFOB(6) == 0)
@@ -1162,7 +1152,7 @@ void do_parse() {
                             
                             // Trick to use the proper graphic until I find
                             // the right packet
-                            switch(inventoryWindow->items->getId(RFIFOW(2))) {
+                            switch (inventoryWindow->items->getId(RFIFOW(2))) {
                                 case 1201:
                                     player_node->weapon = 1;
                                     break;
@@ -1299,7 +1289,6 @@ void do_parse() {
                     // Manage non implemented packets
                 default:
                     log("Unhandled packet: %x", id);
-                    //alert(pkt_nfo,"","","","",0,0);
                     break;
             }
 

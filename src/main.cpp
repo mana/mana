@@ -76,20 +76,6 @@ Sound sound;
 // ini file configuration reader
 Configuration config;
 
-// macros for safe object deletion
-#define SAFE_DELETE(object) { \
-    if (object != NULL) {     \
-        delete object;        \
-    }                         \
-}
-
-#define SAFE_DELETE_ARRAY(array) { \
-    if (array != NULL) {           \
-        delete [] array;           \
-    }                              \
-}
-
-
 /**
  * Listener used for responding to map start error dialog.
  */
@@ -313,9 +299,9 @@ void init_engine()
 void exit_engine()
 {
     config.write(dir);
-    SAFE_DELETE_ARRAY(dir);
-    SAFE_DELETE(gui);
-    SAFE_DELETE(graphics);
+    delete[] dir;
+    delete gui;
+    delete graphics;
 
     // Shutdown libxml
     xmlCleanupParser();

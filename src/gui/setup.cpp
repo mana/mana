@@ -223,7 +223,7 @@ void Setup::action(const std::string &eventId)
 
         // Sound settings
         if (soundCheckBox->isMarked()) {
-            config.setValue("sound",1);
+            config.setValue("sound", 1);
             try {
                 sound.init(32, 20);
             }

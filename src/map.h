@@ -27,6 +27,7 @@
 #include "being.h"
 #include "graphics.h"
 #include "resources/image.h"
+#include <list>
 
 /**
  * A meta tile stores additional information about a location on a tile map.
@@ -155,7 +156,8 @@ class Map
         /**
          * Find a path from one location to the next.
          */
-        PATH_NODE *findPath(int startX, int startY, int destX, int destY);
+        std::list<PATH_NODE> findPath(
+                int startX, int startY, int destX, int destY);
 
     private:
         int width, height;

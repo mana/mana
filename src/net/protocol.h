@@ -31,7 +31,7 @@
 #define SMSG_PLAYER_UPDATE_1      0x01d8    //
 #define SMSG_PLAYER_UPDATE_2      0x01d9    //
 #define SMSG_MOVE_PLAYER_BEING    0x01da    // A nearby player moves
-
+#define SMSG_CHANGE_BEING_LOOKS   0x00c3    //
 
 
 /** Packet length by id */
