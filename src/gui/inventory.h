@@ -61,12 +61,14 @@ class TmwInventory {
 		int increase_quantity(int index, int quantity); // increase quantity of a item
 		int use_item(int index, int id);
 		int quantityForIndex(int index) { return items[index].quantity; }
+		int drop_item(int index, int amunt);
 		//END API
-
+		
 		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
   private:
 		DATAFILE *itemset;
 		bool show_inventory;
+		int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
 };
 
 #endif

@@ -63,7 +63,47 @@ void TmwInventory::draw(BITMAP * buffer) {
 			}
 		}
 	}
+	if(mouse_b & 2)
+	{
+		for(int i=0;i<INVENTORY_SIZE;i++) {
+		if(items[i].quantity>0 && inventory_dialog[0].x+24*i+24 > mouse_x && inventory_dialog[0].x+24*i < mouse_x && inventory_dialog[0].y+44+24 > mouse_y && inventory_dialog[0].y+44 < mouse_y)
+			{
+			itemMeny = 1;
+			itemMeny_x = 24*i;
+			itemMeny_y = 44+24;
+			itemMeny_i = i;
+			}
+		}
+	
+	
+	}
+	
+	
+	if(itemMeny){
+	if(inventory_dialog[0].y+itemMeny_y < mouse_y && inventory_dialog[0].y+itemMeny_y+10 > mouse_y) {
+		if(mouse_b&1)
+			{
+			use_item(itemMeny_i,items[itemMeny_i].id);
+			itemMeny = 0;
+			}
+		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, makecol(255,237,33), "Use item");
+		} else {
+		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, MAKECOL_BLACK, "Use item");
+		}
+	if(inventory_dialog[0].y+itemMeny_y+10 < mouse_y && inventory_dialog[0].y+itemMeny_y+20 > mouse_y) {
+		if(mouse_b&1)
+			{
+			drop_item(itemMeny_i,1);
+			itemMeny = 0;
+			}
+		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, makecol(255,237,33), "Del item");
+		} else {
+		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, MAKECOL_BLACK, "Del item");
+		}
+	}
+
 }
+
 
 /** Set if inventory is visible */
 void TmwInventory::show(bool val) {
@@ -89,7 +129,7 @@ int TmwInventory::remove_item(int id) {
 
 /** Change quantity of an item */
 int TmwInventory::change_quantity(int index, int quantity) {
-  items[index].quantity += quantity;
+  items[index].quantity = quantity;
   return 0;
 }
 
@@ -108,3 +148,13 @@ int TmwInventory::use_item(int index, int id) {
 	while((out_size>0))flush();
 	return 0;
 }
+
+int TmwInventory::drop_item(int index, int amunt) {
+	WFIFOW(0) = net_w_value(0x00a7);
+	WFIFOW(2) = net_w_value(index);
+	WFIFOL(4) = net_l_value(amunt);
+	WFIFOSET(8);
+	while((out_size>0))flush();
+	return 0;
+}
+

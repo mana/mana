@@ -705,7 +705,11 @@ void do_parse() {
 					// Remove item to inventory after you sold it
 				case 0x00af:
 				printf("sell %i\n",-RFIFOW(4));
-					inventory.change_quantity(RFIFOW(2),-RFIFOW(4));
+					inventory.increase_quantity(RFIFOW(2),-RFIFOW(4));
+					break;
+				//use a item
+				case 0x01c8:
+					inventory.change_quantity(RFIFOW(2),RFIFOW(10));
 					break;
 				case 0x0119:
 					sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
@@ -713,7 +717,7 @@ void do_parse() {
 					break;
         // Manage non implemented packets
         default:
-			// use when debug packets :) printf("%x\n",id);
+		  //printf("%x\n",id);
           //alert(pkt_nfo,"","","","",0,0);
           break;
       }
