@@ -648,9 +648,9 @@ void do_parse() {
                     }
                     statusWindow->update();
                     if(char_info->hp==0) {
-                        OkDialog *death = new OkDialog("Message",
-                                "You're now dead, press ok to restart");
-                        alert("","","","","",0,0);
+                        //OkDialog *death = new OkDialog("Message",
+                         //       "You're now dead, press ok to restart");
+                        //alert("","","","","",0,0);
                         WFIFOW(0) = net_w_value(0x00b2);
                         WFIFOB(2) = 0;
                         WFIFOSET(3);

@@ -90,7 +90,8 @@ void StatsWindow::update(){
     figureStr[5] << (int)char_info->LUK;
     
     // for testing only...
-    remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
+    
+    //remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
     
     // Update labels
     for (i = 0; i < 6; i++) {
