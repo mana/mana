@@ -201,9 +201,9 @@ char * Chat::chat_send(string nick, string msg) {
 
 	// send processed message
 	WFIFOW(0) = net_w_value(packid);
-	WFIFOW(2) = net_w_value(msg.length()+4);
+	WFIFOW(2) = net_w_value((unsigned short)(msg.length()+4));
 	memcpy(WFIFOP(4), msg.c_str(), msg.length());
-	WFIFOSET(msg.length()+4);
+	WFIFOSET((int)msg.length()+4);
 	nick = msg = "";
 	return "";
 }    

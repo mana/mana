@@ -119,7 +119,7 @@ void init_graphic() {
 	skill_player = init_dialog(skill_dialog, -1);
   gui_bitmap = double_buffer;
 	alfont_text_mode(-1);
-	inventory.create(0, 0);
+	inventory.create(100, 100);
 }
 
 void do_graphic(void) {
@@ -149,7 +149,6 @@ void do_graphic(void) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
 			masked_blit((BITMAP *)graphic[NPCSET_BMP].dat, buffer, (get_direction(node->coordinates)/2+4*(node->job-100))*25, 0, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y, 25, 40);  
 		} else if(node->job<10) { // Draw a player
-
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
 			masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);
@@ -214,9 +213,11 @@ void do_graphic(void) {
 	// Draw player speech
   node = get_head();
   while(node) {
-		//alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260, node->text_y+100, node->speech_color, "%i,%i", get_x(node->coordinates),get_y(node->coordinates));
-    if(node->speech!=NULL) {
-      alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260-alfont_text_length(gui_font, node->speech)/2, node->text_y+100, node->speech_color, "%s", node->speech);
+		if(node->speech!=NULL) {
+			if(node->speech_color==makecol(255,255,255))
+        alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+90-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
+			else
+				alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+60-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
 			      
       node->speech_time--;
       if(node->speech_time==0) {
@@ -245,7 +246,6 @@ void do_graphic(void) {
     if(gui_update(skill_player)==0)show_skill_dialog = false;
 	}
   
-
 	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);

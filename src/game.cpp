@@ -218,11 +218,7 @@ void do_input() {
 			action(3, 0);
 		action_time = false;
 	}
-	if(key[KEY_F6] && action_time==true) {
-		inventory.toggle();
-		action_time = false;
-	}
-
+	
   if(key[KEY_ENTER]) {    
     if(strcmp(speech, "")!=0) {
        chatlog.chat_send(char_info[0].name, speech);
@@ -265,6 +261,9 @@ void do_input() {
 		if(key[KEY_S]) {
 			show_skill_dialog = !show_skill_dialog;
 			action_time = false;
+		} else if(key[KEY_I]) {
+			inventory.toggle();
+      action_time = false;
 		}
 	}
 
