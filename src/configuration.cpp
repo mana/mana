@@ -138,7 +138,7 @@ void Configuration::setValue(std::string key, std::string value) {
 */
 void Configuration::setValue(std::string key, float value) {
     INI_OPTION optionTmp;
-    if(getValue(key, 0) == 0) {
+    if(getValue(key, -111) == -111) {
         #ifdef __DEBUG
             std::cout << "Configuration::setValue(" << key << ", " << value << ") newly set\n";
         #endif
