@@ -129,7 +129,15 @@ int get_item_index(int index) {
   }
   return item_shop->index;
 }
-
+int get_item_price(int index) {
+  int iterator = 0;
+  ITEM_SHOP *item_shop = shop;
+  while(iterator<index) {
+    item_shop = item_shop->next;
+    iterator++;
+  }
+  return item_shop->price;
+}
 void changeQ(void *dp3, int d2)
 {
 sprintf(itemCurrenyQ,"%i",d2);

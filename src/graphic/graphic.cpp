@@ -74,11 +74,13 @@ DIALOG buy_sell_dialog[] = {
 
 DIALOG buy_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
-   { tmw_button_proc,     450,  326,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
-	 { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  260,  175,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
+   { tmw_button_proc,     450,  326+25,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
+	 { tmw_button_proc,     508,  326+25,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
-	 { tmw_text_proc,       304,  326,  180,  100,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
+	 { tmw_text_proc,       304,  326+25,  180,  100,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
+   { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
+   { tmw_text_proc,       514,  326,  40,  100,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
@@ -296,13 +298,15 @@ void do_graphic(void) {
 			char money[20];
 			sprintf(money, "%i gp", char_info->zeny);
 			buy_dialog[4].dp = &money;
+			buy_dialog[5].d1 = (int)(char_info->zeny/get_item_price(buy_dialog[6].d1));
 			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(buy_player)) {
 				show_npc_dialog = shutdown_dialog(buy_player);
+				buy_dialog[5].d1 = 0;
         if(show_npc_dialog==1) {
           WFIFOW(0) = net_w_value(0x00c8);
           WFIFOW(2) = net_w_value(8);
-          WFIFOW(4) = net_w_value(1);
+          WFIFOW(4) = net_w_value(buy_dialog[5].d2);
           WFIFOW(6) = net_w_value(get_item_id(buy_dialog[3].d1));
           WFIFOSET(8);
 				}
@@ -320,7 +324,7 @@ void do_graphic(void) {
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);
-				
+				sell_dialog[3].d1 = 0;
         if(show_npc_dialog==1) {
           WFIFOW(0) = net_w_value(0x00c9);
           WFIFOW(2) = net_w_value(8);

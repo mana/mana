@@ -54,4 +54,6 @@ void close_shop();
 short get_item_id(int index);
 int get_item_quantity(int index);
 int get_item_index(int index);
+int get_item_price(int index);
+
 #endif
