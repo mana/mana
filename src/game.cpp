@@ -47,6 +47,7 @@ volatile bool action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
 int fps = 0, frame = 0;
+bool displayPathToMouse = false;
 
 OkDialog *deathNotice = NULL;
 
@@ -175,6 +176,10 @@ void do_input()
                 else if (player_node->action == SIT)
                     action(3, 0);
                 action_time = false;
+            }
+            else if ((keysym.sym == SDLK_F6))
+            {
+                displayPathToMouse = !displayPathToMouse;
             }
 
             // Emotions, Skill dialog

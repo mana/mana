@@ -37,9 +37,7 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     modal(modal),
     titlebarHeight(20)
 {
-#ifdef __DEBUG
-    std::cout << "Window::Window(\"" << caption << "\")\n";
-#endif
+    log("Window::Window(\"%s\")", caption.c_str());
 
     titlebarColor.r = 203;
     titlebarColor.g = 203;
@@ -73,9 +71,7 @@ Window::Window(const std::string& text, bool modal, Window *parent):
 
 Window::~Window()
 {
-#ifdef __DEBUG
-    std::cout << "Window::~Window(\"" << caption << "\")\n";
-#endif
+    log("Window::~Window(\"%s\")", caption.c_str());
 
     // Free dialog bitmaps
     //release_bitmap(dLeft);

@@ -507,37 +507,39 @@ void Engine::draw()
         }
     }
 
-#ifdef __DEBUG
-    // Draw a debug path
-    PATH_NODE *debugPath = tiledMap.findPath(
-            player_node->x, player_node->y,
-            mouseX / 32 + camera_x, mouseY / 32 + camera_y);
-
-    while (debugPath)
+    if (displayPathToMouse)
     {
-        SDL_Rect destRect;
-        destRect.x = (debugPath->x - camera_x) * 32 - offset_x + 12;
-        destRect.y = (debugPath->y - camera_y) * 32 - offset_y + 12;
-        destRect.w = 8;
-        destRect.h = 8;
-        SDL_FillRect(screen, &destRect, SDL_MapRGB(screen->format, 255, 0, 0));
+        // Draw a debug path
+        PATH_NODE *debugPath = tiledMap.findPath(
+                player_node->x, player_node->y,
+                mouseX / 32 + camera_x, mouseY / 32 + camera_y);
 
-        Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
+        while (debugPath)
+        {
+            SDL_Rect destRect;
+            destRect.x = (debugPath->x - camera_x) * 32 - offset_x + 12;
+            destRect.y = (debugPath->y - camera_y) * 32 - offset_y + 12;
+            destRect.w = 8;
+            destRect.h = 8;
+            SDL_FillRect(screen, &destRect,
+                    SDL_MapRGB(screen->format, 255, 0, 0));
 
-        std::stringstream cost;
-        cost << tile->Gcost;
-        guiGraphics->_beginDraw();
-        guiGraphics->drawText(cost.str(), destRect.x + 4, destRect.y + 12,
-                gcn::Graphics::CENTER);
-        guiGraphics->_endDraw();
+            Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
 
-        // Move to the next node
-        PATH_NODE *temp = debugPath->next;
-        delete debugPath;
-        debugPath = temp;
+            std::stringstream cost;
+            cost << tile->Gcost;
+            guiGraphics->_beginDraw();
+            guiGraphics->drawText(cost.str(), destRect.x + 4, destRect.y + 12,
+                    gcn::Graphics::CENTER);
+            guiGraphics->_endDraw();
+
+            // Move to the next node
+            PATH_NODE *temp = debugPath->next;
+            delete debugPath;
+            debugPath = temp;
+        }
     }
-#endif
-    
+
     // Draw player speech
     beingIterator = beings.begin();
     while (beingIterator != beings.end()) {

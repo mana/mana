@@ -62,6 +62,7 @@ extern char walk_status;
 extern unsigned short src_x, src_y, x, y;
 extern volatile int tick_time;
 extern int server_tick;
+extern bool displayPathToMouse;
 
 /**
  * Main game loop
