@@ -73,7 +73,6 @@ SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
 BITMAP *playerset, *hairset, *login_wallpaper;
-DATAFILE *weaponset;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -278,12 +277,6 @@ void init_engine() {
 
     if (hairset == NULL) {
         error("Unable to load hairset bitmap");
-    }
-
-    // TODO: Remove datafile usage
-    weaponset = load_datafile("./data/graphic/weapon.dat");
-    if (weaponset == NULL) {
-        error("Unable to load weaponset datafile");
     }
 
     // TODO: Remove Allegro config file usage from GUI look

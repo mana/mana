@@ -202,12 +202,12 @@ GraphicEngine::GraphicEngine() {
     // Initialize the gui bitmap to the page that will be drawn first
     gui_bitmap = this->buffer;
     
-    tileset = new Spriteset("./data/graphic/tileset.dat");
-    hairset = new Spriteset("./data/graphic/hairset.dat");
     emotionset = new Spriteset("./data/graphic/emotionset.dat");
+    hairset = new Spriteset("./data/graphic/hairset.dat");
+    monsterset = new Spriteset("./data/graphic/monsterset.dat");
     npcset = new Spriteset("./data/graphic/npcset.dat");
     playerset = new Spriteset("./data/graphic/playerset.dat");
-    monsterset = new Spriteset("./data/graphic/monsterset.dat");
+    tileset = new Spriteset("./data/graphic/tileset.dat");
 }
 
 GraphicEngine::~GraphicEngine() {
