@@ -1581,3 +1581,5 @@ unsigned int yes_no(const char *title, const char *message) {
    gui_bitmap = temp;
    return ret-2;
 }
+
+
