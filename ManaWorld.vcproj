@@ -208,6 +208,9 @@
 					RelativePath=".\Gui\chat_dialog.cpp">
 				</File>
 				<File
+					RelativePath=".\Gui\guiproc.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\login_dialog.cpp">
 				</File>
 				<File
@@ -282,6 +285,9 @@
 				</File>
 				<File
 					RelativePath=".\Gui\chat_dialog.h">
+				</File>
+				<File
+					RelativePath=".\Gui\guiproc.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.h">
