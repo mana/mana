@@ -274,6 +274,7 @@ void Engine::logic()
 
 void Engine::draw()
 {
+    player_node->speed = 150;
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -473,7 +474,7 @@ void Engine::draw()
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " "
-        << player_node->weapon;
+        << (int)player_node->frame;
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

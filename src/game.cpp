@@ -144,6 +144,7 @@ void do_init()
     pathDir.insert(pathDir.size(), ".tmx");
     tiledMap = Map::load(pathDir);
 
+
     if (!tiledMap)
     {
         // Try .tmx.gz map file
@@ -833,6 +834,7 @@ void do_parse() {
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     logger.log("Warping to %s (%d, %d)\n",
                             map_path, RFIFOW(18), RFIFOW(20));
+                    strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
 
                     if (tiledMap) delete tiledMap;
                     tiledMap = Map::load(map_path);
