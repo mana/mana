@@ -19,15 +19,17 @@ class Setup : public Window, public gcn::ActionListener {
   gcn::Label *displayLabel;
   gcn::Button *applyButton;
   gcn::Button *cancelButton;
+
+  /* Setup dialog */
+  static Setup *ptr;
+  
+  /* Methods */
+  Setup(gcn::Container *parent);
+  virtual ~Setup();
   
  public:
-  Setup(gcn::Container *parent);
-  ~Setup();
-  
   void action(const std::string& eventId);
-  
+  static Setup * create_setup();  
 };
-
-void create_setup();
 
 #endif

@@ -18,9 +18,9 @@ Setup::Setup(gcn::Container *parent)
   cancelButton = new gcn::Button("Cancel");
   
   /* Set dimension */
-  displayLabel->setDimension(gcn::Rectangle(0,0,128, 16));
-  applyButton->setDimension(gcn::Rectangle(0,0,128, 16));
-  cancelButton->setDimension(gcn::Rectangle(0,0,128, 16));
+  displayLabel->setDimension(gcn::Rectangle(0,0,80, 16));
+  applyButton->setDimension(gcn::Rectangle(0,0,80, 16));
+  cancelButton->setDimension(gcn::Rectangle(0,0,80, 16));
   
   /* Set events */
   applyButton->setEventId("apply");
@@ -28,8 +28,8 @@ Setup::Setup(gcn::Container *parent)
   
   /* Set position */
   displayLabel->setPosition(10,10);
-  applyButton->setPosition(10,100);
-  cancelButton->setPosition(100,100);
+  applyButton->setPosition(10,190);
+  cancelButton->setPosition(150,190);
   
   /* Listen for actions */
   applyButton->addActionListener(this);
@@ -42,6 +42,9 @@ Setup::Setup(gcn::Container *parent)
   
   setSize(240,216);
   setLocationRelativeTo(getParent());
+  
+  /* Is hidden */
+  //setVisible(false);
 }
 
 Setup::~Setup() {  
@@ -52,22 +55,20 @@ Setup::~Setup() {
 
 void Setup::action(const std::string& eventId)
 {
-
   if(eventId == "apply") {
-    puts("apply");
+    setVisible(false);
   }
   else if(eventId == "cancel") {
-    puts("cancel");
+    setVisible(false);
   }
 }
 
-void create_setup() {
-  Setup *setup;
-  setup = new Setup(guiTop);
-  
-  while(!key[KEY_ESC] && !key[KEY_ENTER]) {
-    gui_update(NULL);
-  }
-  
-  delete setup;
+Setup * Setup::ptr = NULL;
+Setup * Setup::create_setup() {
+  if(ptr == NULL)
+    ptr = new Setup(guiTop);
+   else
+    ptr->setVisible(true);
+    
+  return ptr;
 }

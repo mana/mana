@@ -48,6 +48,7 @@ volatile int tick_time;
 volatile bool refresh = false, action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
+Setup *setup;
 
 #define MAX_TIME 10000
 
@@ -237,8 +238,9 @@ void do_input() {
 	    error(allegro_error);
 	  }
 
-	if(key[KEY_F11] && action_time==true)
-	    create_setup();
+	if(key[KEY_F9] && action_time==true) {
+	    setup = Setup::create_setup();
+	  }
 
   // Emotions, Skill dialog
 	if(key_shifts & KB_ALT_FLAG && action_time == true) {
