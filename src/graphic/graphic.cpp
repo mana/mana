@@ -41,6 +41,7 @@ int map_x, map_y, camera_x, camera_y;
 DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player;
 char speech[255] = "";
 char npc_text[1000] = "";
+char statsString2[255] = "n/a";
 TmwInventory inventory;
 Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
@@ -53,6 +54,7 @@ DIALOG npc_dialog[] = {
    { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
+
 
 DIALOG buy_sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */

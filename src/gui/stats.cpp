@@ -31,9 +31,10 @@ char stats_zeny[24];
 DIALOG stats_dialog[] = {
 	/* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp)        (dp2) (dp3) */
 	{ tmw_ldialog_proc,    493,  0,  300,   55,  0,    0,    0,    0,       0,    0,    stats_name, NULL, NULL  },
-	{ tmw_text_proc,       497,  22, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
+	{ tmw_text_proc,       497,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
+	{ tmw_bar_proc,        497,  22,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
 	{ tmw_text_proc,       607,  22, 296,  100,  0,    0,    0,    0,       0,    0,    stats_zeny, NULL, NULL  },
-	{ tmw_text_proc,       497,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
+	{ tmw_text_proc,       607,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
 	{ NULL,                0,    0,    0,    0,  0,    0,    0,    0,       0,    0,    NULL,       NULL, NULL  }
 };
 
@@ -45,4 +46,6 @@ void update_stats_dialog() {
 	sprintf(stats_hp,   "HP % 4d / % 4d",         char_info->hp, char_info->max_hp);
 	sprintf(stats_zeny, "Zeny % 5i",              char_info->zeny);
 	sprintf(stats_sp,   "SP % 4d / % 4d",         char_info->sp, char_info->max_sp);
+	stats_dialog[2].d1 = char_info->hp;
+	stats_dialog[2].d2 = char_info->max_hp;
 }

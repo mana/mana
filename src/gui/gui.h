@@ -80,6 +80,11 @@ typedef struct {
 } LexDialog;
 
 typedef struct {
+    LexSkinnedRect bg;
+} LexBar;
+
+
+typedef struct {
     LexButton      button;
     LexSlider      slider;
     LexCheckbox    checkbox;
@@ -87,6 +92,7 @@ typedef struct {
     LexTextbox     textbox;
     LexListbox     listbox;
     LexDialog      dialog;
+	LexBar		   bar;
 } LexSkin;
 
 extern LexSkin gui_skin;
@@ -115,6 +121,7 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c);
 int tmw_ldialog_proc(int msg, DIALOG *d, int c);
 int tmw_textbox_proc(int msg, DIALOG *d, int c);
 int tmw_bitmap_proc(int msg, DIALOG *d, int c);
+int tmw_bar_proc(int msg, DIALOG *d, int c);
 
 void ok(const char *title, const char *message);
 unsigned int yes_no(const char *title, const char *message);
