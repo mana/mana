@@ -33,7 +33,8 @@ void Sound::init(int voices, int mod_voices)
     bgm = NULL;
     int audio_rate = 44100;
     Uint16 audio_format = AUDIO_S16; // 16-bit stereo
-    int audio_channels = 2;
+    //int audio_channels = 2;
+    int audio_channels = 8; // Default
     int audio_buffers = 4096;
 
     if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
@@ -51,7 +52,9 @@ void Sound::init(int voices, int mod_voices)
     items = -1;
     isOk = 0;
 
-    logger.log("Sound::Init() Initializing Sound");
+    logger.log("Sound::init() Initializing Sound");
+    logger.log("Sound::init() Spec: %i %i %i", audio_rate, audio_format,
+            audio_channels);
 }
 
 void Sound::setVolume(int music)
