@@ -64,7 +64,7 @@ Evade (%)     : Indicate the chance a player has to evade an opponent's hit.
                 Evade = ((3 * Luck + Spirit + Vitality )/5) (Max : 75 %)
 
 
-3. AN ATTCK PROCESS
+3. AN ATTACK PROCESS
 
 An attack process is quite simple :
 The Hit(%) of the attacker is taken, minus the evade of the opponent.

@@ -35,6 +35,16 @@
 class ModeListModel : public gcn::ListModel {
     public:
         /**
+         * Constructor.
+         */
+        ModeListModel();
+
+        /**
+         * Destructor.
+         */
+        virtual ~ModeListModel();
+
+        /**
          * Returns the number of elements in container.
          */
         int getNumberOfElements();
@@ -44,19 +54,9 @@ class ModeListModel : public gcn::ListModel {
          */
         std::string getElementAt(int i);
 
-	/**
-	 * Constructor.
-	 */
-	ModeListModel();
-
-	/**
-	 * Destructor.
-	 */
-   	virtual ~ModeListModel();
-
     private:
-	int nmode;
-	char **mode;
+        int nmode;
+        char **mode;
 };
 
 /**
@@ -78,9 +78,9 @@ class Setup : public Window, public gcn::ActionListener {
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
 
-	// Video selections
-	int last_sel, sel;
-	
+        // Video selections
+        int last_sel, sel;
+
     public:
     
         /**

@@ -41,48 +41,55 @@
 
 SDL_Rect **modes;
 
-ModeListModel::ModeListModel() {
-	int i;
-	
-	modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
-	
-	// Check if any modes available
-	if(modes == (SDL_Rect **)0) {
-		nmode=0;
-		puts("No modes");
-	}
+ModeListModel::ModeListModel()
+{
+    int i;
 
-	// Check if modes restricted 
-	if(modes == (SDL_Rect **)-1)
-		puts("Modes restricted");
-	
-	for(nmode=0;modes[nmode];++nmode);
-	
-	mode = (char **) calloc(nmode, sizeof(char *));
-	
-	for(i=0;modes[i];++i) {
-        char *temp = (char *)malloc(20 * sizeof(char));
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
+
+    // Check if any modes available
+    if (modes == (SDL_Rect**)0) {
+        nmode = 0;
+        puts("No modes");
+    }
+
+    // Check if modes restricted 
+    if (modes == (SDL_Rect**) - 1) {
+        puts("Modes restricted");
+    }
+
+    for (nmode = 0; modes[nmode]; ++nmode);
+
+    mode = (char**)calloc(nmode, sizeof(char*));
+
+    for (i = 0; modes[i]; ++i) {
+        char *temp = (char*)malloc(20 * sizeof(char));
         mode[i] = temp;
-		if(sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
-			puts("Cannot allocate mode list");
-	}
+        if (sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
+            puts("Cannot allocate mode list");
+    }
 }
 
-ModeListModel::~ModeListModel() {
-	int i;
-	
-	// Cleanup 
-	for(i=0;i<nmode;i++)
-		free(mode[i]);
-	free(mode);
+ModeListModel::~ModeListModel()
+{
+    int i;
+
+    // Cleanup 
+    for (i = 0; i < nmode; i++) {
+        free(mode[i]);
+    }
+
+    free(mode);
 }
 
-int ModeListModel::getNumberOfElements() {
-	return nmode;
+int ModeListModel::getNumberOfElements()
+{
+    return nmode;
 }
 
-std::string ModeListModel::getElementAt(int i) {
-	return mode[i];
+std::string ModeListModel::getElementAt(int i)
+{
+    return mode[i];
 }
 
 Setup::Setup():
@@ -147,7 +154,8 @@ Setup::Setup():
     soundCheckBox->setMarked(config.getValue("sound", 0));
 }
 
-Setup::~Setup() {
+Setup::~Setup()
+{
     delete modeListModel;
     delete modeList;
     delete scrollArea;
@@ -159,53 +167,57 @@ Setup::~Setup() {
     delete cancelButton;
 }
 
-void Setup::action(const std::string& eventId)
+void Setup::action(const std::string &eventId)
 {
-    if (eventId == "apply") {
+    if (eventId == "apply")
+    {
         setVisible(false);
-	
-	// Select video mode
+
+        // Select video mode
         sel = modeList->getSelected();
-	
-	if(sel != last_sel) {
-		last_sel = sel;
-		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,  SDL_FULLSCREEN | SDL_HWSURFACE);	
-	}
-	
+
+        if (sel != last_sel) {
+            last_sel = sel;
+            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
+                    SDL_FULLSCREEN | SDL_HWSURFACE);
+        }
+
         // Display settings
         if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0)
         {
             config.setValue("screen", 1);
-            #if __USE_UNIX98
-                SDL_WM_ToggleFullScreen(screen);
-            #else
-                int displayFlags = 0;
-                displayFlags |= SDL_FULLSCREEN;
-                if ((int)config.getValue("hwaccel", 0)) {
-                    displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-                }
-                else {
-                    displayFlags |= SDL_SWSURFACE;
-                }
-		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32, displayFlags);
-	    #endif
+#if __USE_UNIX98
+            SDL_WM_ToggleFullScreen(screen);
+#else
+            int displayFlags = 0;
+            displayFlags |= SDL_FULLSCREEN;
+            if ((int)config.getValue("hwaccel", 0)) {
+                displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+            }
+            else {
+                displayFlags |= SDL_SWSURFACE;
+            }
+            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
+                    displayFlags);
+#endif
 
         }
         else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
         {
             config.setValue("screen", 0);
-            #if __USE_UNIX98
-                SDL_WM_ToggleFullScreen(screen);
-            #else
-                int displayFlags = 0;
-                if ((int)config.getValue("hwaccel", 0)) {
-                    displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-                }
-                else {
-                    displayFlags |= SDL_SWSURFACE;
-                }
-		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32, displayFlags);
-	    #endif
+#if __USE_UNIX98
+            SDL_WM_ToggleFullScreen(screen);
+#else
+            int displayFlags = 0;
+            if ((int)config.getValue("hwaccel", 0)) {
+                displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+            }
+            else {
+                displayFlags |= SDL_SWSURFACE;
+            }
+            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
+                    displayFlags);
+#endif
         }
 
         // Sound settings

@@ -38,11 +38,12 @@ class ProgressBar : public gcn::Widget {
          * Constructor, initializes the progress with the given value.
          */
         ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
-                int width = 40, int height = 7, unsigned char red = 150, unsigned green = 150,
+                int width = 40, int height = 7,
+                unsigned char red = 150, unsigned green = 150,
                 unsigned char blue = 150);
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~ProgressBar();
 
@@ -62,38 +63,47 @@ class ProgressBar : public gcn::Widget {
         float getProgress();
 
         /**
-         * Change the filling of the progress bar...
+         * Change the filling of the progress bar.
          */
         void setColor(
-                unsigned char MyRed,
-                unsigned char MyGreen,
-                unsigned char MyBlue);
+                unsigned char red,
+                unsigned char green,
+                unsigned char blue);
 
         /**
          * Get The red value of color
          */
         unsigned char getRed()
-        { return Red; }; 
+        {
+            return red;
+        }
 
          /**
          * Get The red value of color
          */
         unsigned char getGreen()
-        { return Green; }; 
+        {
+            return green;
+        }
 
          /**
          * Get The red value of color
          */
         unsigned char getBlue()
-        { return Blue; }; 
+        {
+            return blue;
+        }
 
     private:
         float progress;
-        unsigned char Red, Green, Blue;
+        unsigned char red, green, blue;
+
         // Bar Images
         Image *dBackground;
-        Image *dTopLeftBorder, *dTopRightBorder, *dBottomLeftBorder, *dBottomRightBorder;
+        Image *dTopLeftBorder, *dTopRightBorder, *dBottomLeftBorder;
+        Image *dBottomRightBorder;
         Image *dLeftBorder, *dRightBorder, *dTopBorder, *dBottomBorder;
+
         // Our color bar
         Image *colorBar;
 };

@@ -25,13 +25,12 @@
 #include "gui.h"
 #include "../resources/resourcemanager.h"
 
-ProgressBar::ProgressBar(float progress, int x, int y, int width, int height, unsigned char red, unsigned green, unsigned char blue) :
-gcn::Widget()
+ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
+        unsigned char red, unsigned green, unsigned char blue):
+    gcn::Widget(),
+    red(red), green(green), blue(blue)
 {
     setProgress(progress);
-    Red = red;
-    Green = green;
-    Blue = blue;
     setX(x);
     setY(y);
     setWidth(width);
@@ -66,7 +65,7 @@ gcn::Widget()
     
     colorBar = new Image();
     colorBar->create(getWidth() - 8, getHeight() - 8);
-    colorBar->fillWithColor(Red, Green, Blue);
+    colorBar->fillWithColor(red, green, blue);
     colorBar->setAlpha(0.7f);    
 }
 
@@ -79,29 +78,32 @@ ProgressBar::~ProgressBar()
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
-#ifndef USE_OPENGL
     int absx, absy;
     getAbsolutePosition(absx, absy);
     
     // We're drawing the bar itself first
     // Background
-    dBackground->drawPattern(screen, absx+4, absy+4, getWidth()-8, getHeight()-8);
+    dBackground->drawPattern(screen,
+            absx + 4, absy + 4,
+            getWidth() - 8, getHeight() - 8);
+
     // The corners
     dTopLeftBorder->draw(screen, absx, absy);
-    dTopRightBorder->draw(screen, absx+getWidth()-4, absy);
-    dBottomLeftBorder->draw(screen, absx, absy+getHeight()-4);
-    dBottomRightBorder->draw(screen, absx+getWidth()-4, absy+getHeight()-4);
+    dTopRightBorder->draw(screen, absx + getWidth() - 4, absy);
+    dBottomLeftBorder->draw(screen, absx, absy + getHeight() - 4);
+    dBottomRightBorder->draw(screen,
+            absx+getWidth() - 4, absy+getHeight() - 4);
     
     // The borders
-    dTopBorder->drawPattern(screen, absx+4, absy, getWidth()-8, 4);
-    dBottomBorder->drawPattern(screen, absx+4, absy+getHeight()-4, getWidth()-8, 4);
-    dLeftBorder->drawPattern(screen, absx, absy+4, 4, getHeight()-8);
-    dRightBorder->drawPattern(screen, absx+getWidth()-4, absy+4, 4, getHeight()-8);
+    dTopBorder->drawPattern(screen, absx + 4, absy, getWidth() - 8, 4);
+    dBottomBorder->drawPattern(screen, absx + 4, absy + getHeight() - 4,
+            getWidth() - 8, 4);
+    dLeftBorder->drawPattern(screen, absx, absy + 4, 4, getHeight() - 8);
+    dRightBorder->drawPattern(screen, absx + getWidth() - 4, absy + 4,
+            4, getHeight() - 8);
 
     colorBar->draw(screen, 0, 0, absx + 4, absy + 4, 
-                   int(progress*float(getWidth()-4)), getHeight() - 8);
-    
-#endif
+            (int)(progress * float(getWidth() - 4)), getHeight() - 8);
 }
 
 void ProgressBar::setProgress(float progress)
@@ -114,17 +116,15 @@ float ProgressBar::getProgress()
     return progress;
 }
 
-void ProgressBar::setColor(unsigned char MyRed, unsigned char MyGreen,
-                unsigned char MyBlue)
+void ProgressBar::setColor(
+        unsigned char newRed, unsigned char newGreen, unsigned char newBlue)
 {
-    if ( (Red == MyRed) && (Green == MyGreen) && (Blue == MyBlue) )
+    if (!(red == newRed) && (green == newGreen) && (blue == newBlue))
     {
-        // Nothing
-    }
-    else
-    {
-        Red = MyRed; Green = MyGreen; Blue = MyBlue;
-        colorBar->fillWithColor(Red, Green, Blue);
+        red = newRed;
+        green = newGreen;
+        blue = newBlue;
+        colorBar->fillWithColor(red, green, blue);
         colorBar->setAlpha(0.7f);
     }
 }
