@@ -440,23 +440,33 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
     guiGraphics->setTarget(vpage[page_num]);
     gui_update(NULL);
 
-	// Draw player speech
-  node = get_head();
-  while(node) {
-		if(node->speech!=NULL) {
-			if(node->speech_color==makecol(255,255,255))
-        alfont_textprintf_aa(vpage[page_num], gui_font, node->text_x*2+90-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
-			else
-				alfont_textprintf_aa(vpage[page_num], gui_font, node->text_x*2+60-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
+    // Draw player speech
+    node = get_head();
+    while (node) {
+        if (node->speech!=NULL) {
+            if (node->speech_color == makecol(255, 255, 255)) {
+                textprintf_centre_ex(vpage[page_num], font,
+                        node->text_x * 2 + 90,
+                        node->text_y * 2,
+                        node->speech_color, -1,
+                        "%s", node->speech);
+            }
+            else {
+                textprintf_centre_ex(vpage[page_num], font,
+                        node->text_x * 2 + 60,
+                        node->text_y * 2,
+                        node->speech_color, -1,
+                        "%s", node->speech);
+            }
 
-      node->speech_time--;
-      if(node->speech_time==0) {
-        free(node->speech);
-        node->speech = NULL;
-      }
+            node->speech_time--;
+            if (node->speech_time == 0) {
+                free(node->speech);
+                node->speech = NULL;
+            }
+        }
+        node = node->next;
     }
-    node = node->next;
-  }
 
 	inventory.draw(vpage[page_num]);
 
