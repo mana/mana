@@ -23,5 +23,4 @@ Misc
   - Minimap
 
 Optimization
-  - Bubble sort->quick sort
   - Fix A*
