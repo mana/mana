@@ -3,47 +3,31 @@ The Mana World Dev Team
 -----------------------
 
  ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
- Project leader, programmer (various parts)
+ Project leader, programmer
 
+== Programmers ==
 
-Programmers
+ Bertram          (SDL input, progress bar drawing, Debian package)
+ Bjorn lindeijer  (various parts, GUI, graphics, A* and map rewrites)
+ nym              (several GUI parts)
+ Shura            (configuration, sound, misc. ports)
+ zenogais         (resource manager)
 
- Bertram
- (SDL input, progress bar drawing)
+== Artists ==
 
- Hammerbear aka Bjorn lindeijer (bjorn@lindeijer.nl)
- (various parts, Guichan expert)
+ Chetic           (maps)
+ Gnulia           (conceptual art)
+ Neko-mon         (player sprites, various things)
+ Neorice          (monster sprites, tiles)
+ Rotonen          (backstory, art director, music, sound)
 
- nym
- (several GUI parts)
+== Misc thanks ==
 
- Shura
- (configuration, sound, Linux expert, misc. ports)
+ Ultramichy       (hosting test server)
 
- SimEdw
- (network code)
+== Inactive/retired ==
 
- Usiu
- (several GUI parts)
-
- zenogais
- (resource manager)
-
-
-Artists
-
- Chetic
- (maps)
-
- Gnulia
- (conceptual art)
-
- Neko-mon
-
- Neorice
-
- Rotonen
- (backstory, art director, music, sound)
-
- Vlady
- (several items)
+ Usiu             (several GUI parts)                 <-  Went missing
+ SimEdw           (network code)                      <-  Computer broke
+ Sull             (hosting CVS and related services)  <-  Went missing
+ Vlady            (several items)                     <-  In the army

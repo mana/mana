@@ -13,3 +13,5 @@ Makefile.in
 Makefile
 configure
 libtool
+autom4te.cache
+tmw.log

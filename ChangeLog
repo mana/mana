@@ -1,4 +1,6 @@
 0.0.10
+- Added using and dropping of items
+- Added experimental support for OpenGL rendering
 - Fixed crash in fullscreen with hardware acceleration enabled (win32)
 - Reimplemented A* pathfinding, hopefully stable now
 
