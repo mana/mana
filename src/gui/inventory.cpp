@@ -101,7 +101,7 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
         }
         else {
             textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y, MAKECOL_BLACK, -1, "Use item");
+                    y + itemMeny_y, makecol(0,0,0), -1, "Use item");
         }
         if (y + itemMeny_y + 10 < mouse_y && y + itemMeny_y + 20 > mouse_y) {
             if (mouse_b & 1) {
@@ -114,7 +114,7 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
         }
         else {
             textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y + 10, MAKECOL_BLACK, -1, "Del item");
+                    y + itemMeny_y + 10, makecol(0,0,0), -1, "Del item");
         }
     }
     */

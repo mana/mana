@@ -52,7 +52,6 @@ extern Chat chatlog;
 extern bool show_skill_dialog, show_skill_list_dialog;
 extern int show_npc_dialog;
 extern int map_x, map_y, camera_x, camera_y;
-extern BITMAP *hairset;
 extern char npc_button[10];
 
 extern StatusWindow *statusWindow;
@@ -77,7 +76,7 @@ class BuySellListener : public gcn::ActionListener {
 
 class GraphicEngine {
     private:
-        Spriteset *tileset, *emotionset, *npcset, *playerset, *monsterset, *hairset;
+        Spriteset *tileset, *emotionset, *npcset, *monsterset;
         BITMAP *buffer;
         
     public:

@@ -203,14 +203,12 @@ GraphicEngine::GraphicEngine() {
     gui_bitmap = this->buffer;
     
     emotionset = new Spriteset("./data/graphic/emotionset.dat");
-    hairset = new Spriteset("./data/graphic/hairset.dat");
     npcset = new Spriteset("./data/graphic/npcset.dat");
-    playerset = new Spriteset("./data/graphic/playerset.dat");
     tileset = new Spriteset("./data/graphic/tileset.dat");
 
     BITMAP *monsterbitmap = load_bitmap("data/graphic/monsterset.bmp", NULL);
     if (!monsterbitmap) error("Unable to load monsterset.bmp");
-    monsterset = new Spriteset(monsterbitmap, 60, 60);
+    monsterset = new Spriteset(monsterbitmap, 60, 60, 30, 40);
 }
 
 GraphicEngine::~GraphicEngine() {
@@ -291,18 +289,18 @@ void GraphicEngine::refresh() {
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
                         node->text_x - 64, node->text_y - 80);
-                hairset->spriteset[hf]->draw(
-                    buffer, node->text_x - 2 + 2 * hairtable[pf][dir][0],
-                    node->text_y - 50 + 2 * hairtable[pf][dir][1]);
+                hairset->spriteset[hf]->draw(buffer,
+                        node->text_x - 2 + 2 * hairtable[pf][dir][0],
+                        node->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             else {
                 int pf = node->frame + node->action;
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
                         node->text_x - 64, node->text_y - 80);
-                hairset->spriteset[hf]->draw(
-                    buffer, node->text_x - 2 + 2 * hairtable[pf][dir][0],
-                    node->text_y - 50 + 2 * hairtable[pf][dir][1]);
+                hairset->spriteset[hf]->draw(buffer,
+                        node->text_x - 2 + 2 * hairtable[pf][dir][0],
+                        node->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             if (node->emotion != 0) {
                 emotionset->spriteset[node->emotion - 1]->draw(buffer,

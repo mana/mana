@@ -24,6 +24,7 @@
 #include "char_select.h"
 #include "textfield.h"
 #include "../graphic/graphic.h"
+#include "../main.h"
 
 CharSelectDialog::CharSelectDialog(gcn::Container *parent)
     : Window(parent, "Select Character")
@@ -230,16 +231,16 @@ void charSelect()
         gui_update(NULL);
 
         // Draw character
-        const int pX = 16, pY = 32;
+        const int pX = 8, pY = 16;
         if (n_character > 0) {
-            masked_blit(playerset, buffer, 0, 0,
-                    pX + sel->getDimension().x,
-                    pY + sel->getDimension().y, 80, 60);
-            masked_blit(hairset, buffer,
-                    20 * (char_info->hair_color - 1),
-                    20 * 4 * (char_info->hair_style - 1),
-                    pX + 31 + sel->getDimension().x,
-                    pY + 15 + sel->getDimension().y, 20, 20);
+            playerset->spriteset[0]->draw(buffer,
+                    pX + sel->getX() - 31,
+                    pY + sel->getY() - 15);
+
+            int hf = char_info->hair_color + 40 * (char_info->hair_style) - 41;
+            hairset->spriteset[hf]->draw(buffer,
+                    pX + 31 + sel->getX(),
+                    pY + 15 + sel->getY());
         }
 
         // Draw to screen
@@ -318,12 +319,14 @@ void charCreate()
 
         // Draw character
         const int pX = 96, pY = 40;
-        masked_blit(playerset, buffer, 0, 0,
-                pX + create->getDimension().x,
-                pY + create->getDimension().y, 80, 60);
-        masked_blit(hairset, buffer, 20 * curHairColor, 20 * 4 * curHairStyle,
-                pX + 31 + create->getDimension().x,
-                pY + 15 + create->getDimension().y, 20, 20);
+        playerset->spriteset[0]->draw(buffer,
+                pX + create->getX() - 31,
+                pY + create->getY() - 15);
+
+        int hf = curHairColor + 40 * (curHairStyle);
+        hairset->spriteset[hf]->draw(buffer,
+                pX + 31 + create->getX(),
+                pY + 15 + create->getY());
 
         // Draw to screen
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);

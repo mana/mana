@@ -18,30 +18,29 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
+ *  $Id$
  */
+
+#ifndef _TMW_MAIN_H
+#define _TMW_MAIN_H
 
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
 
-#ifndef _MAIN_H
-#define _MAIN_H
-
-#define CORE_VERSION "0.0.8"
-
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>
 
-#include "./configuration.h"
-#include "./gui/login.h"
-#include "./gui/gui.h"
-#include "./gui/char_server.h"
-#include "./gui/char_select.h"
-#include "./gui/inventory.h"
+#include "configuration.h"
+#include "gui/login.h"
+#include "gui/gui.h"
+#include "gui/char_server.h"
+#include "gui/char_select.h"
+#include "gui/inventory.h"
+#include "graphic/image.h"
 #include "log.h"
 #include "game.h"
-#include "./net/protocol.h"
+#include "net/protocol.h"
 #include "../data/graphic/gfx_data.h"
 #include <allegro.h>
 #ifdef WIN32
@@ -49,6 +48,7 @@
 #endif
 #include <stdio.h>
 
+#define CORE_VERSION "0.0.8"
 
 #define EXIT        0
 #define LOGIN       1
@@ -60,8 +60,8 @@
 
 /* length definitions for several char[]s in order
  * to be able to use strncpy instead of strcpy for
- * security and stability reasons */
-
+ * security and stability reasons
+ */
 #define LEN_USERNAME 25
 #define LEN_PASSWORD 25
 
@@ -84,7 +84,8 @@ typedef struct {
 	short weapon;
 } PLAYER_INFO;
 
-extern BITMAP *playerset, *login_wallpaper;
+extern BITMAP *login_wallpaper;
+extern Spriteset *hairset, *playerset;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;
@@ -97,7 +98,6 @@ extern PLAYER_INFO *char_info;
 extern unsigned char state;
 extern unsigned short x, y;
 extern unsigned char direction;
-//extern unsigned short job, hair, hair_color;
 extern unsigned char stretch_mode;
 
 #endif

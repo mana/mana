@@ -72,7 +72,8 @@ char sex, n_server, n_character;
 SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
-BITMAP *playerset, *hairset, *login_wallpaper;
+Spriteset *hairset, *playerset;
+BITMAP *login_wallpaper;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -266,21 +267,30 @@ void init_engine() {
         error("Not enough memory to create buffer");
     }
 
-    login_wallpaper = load_bitmap("./data/graphic/login.bmp", NULL);
+    login_wallpaper = load_bitmap("data/graphic/login.bmp", NULL);
     if (!login_wallpaper) error("Couldn't load login.bmp");
 
-    playerset = load_bitmap("./data/graphic/playerset.bmp", NULL);
-    if (!playerset) error("Couldn't load playerset.bmp");
+    BITMAP *playerbitmap = load_bitmap("data/graphic/playerset.bmp", NULL);
+    if (!playerbitmap) error("Couldn't load playerset.bmp");
+    // Stretch the bitmap while it hasn't been replaced with higher res yet
+    BITMAP *playerbitmap2 = create_bitmap(
+            playerbitmap->w * 2, playerbitmap->h * 2);
+    stretch_blit(playerbitmap, playerbitmap2,
+            0, 0, playerbitmap->w, playerbitmap->h,
+            0, 0, playerbitmap2->w, playerbitmap2->h);
+    playerset = new Spriteset(playerbitmap2, 160, 120, 0, 0);
 
-    hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
-    if (!hairset) error("Couldn't load hairset.bmp");
-
-    if (hairset == NULL) {
-        error("Unable to load hairset bitmap");
-    }
+    BITMAP *hairbitmap = load_bitmap("data/graphic/hairset.bmp", NULL);
+    if (!hairbitmap) error("Couldn't load hairset.bmp");
+    // Stretch the bitmap while it hasn't been replaced with higher res yet
+    BITMAP *hairbitmap2 = create_bitmap(hairbitmap->w * 2, hairbitmap->h * 2);
+    stretch_blit(hairbitmap, hairbitmap2,
+            0, 0, hairbitmap->w, hairbitmap->h,
+            0, 0, hairbitmap2->w, hairbitmap2->h);
+    hairset = new Spriteset(hairbitmap2, 40, 40, 0, 0);
 
     // TODO: Remove Allegro config file usage from GUI look
-    init_gui(buffer, "./data/Skin/aqua.skin");
+    init_gui(buffer, "data/Skin/aqua.skin");
     state = LOGIN;
 }
 

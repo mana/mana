@@ -21,12 +21,12 @@
  *  $Id$
  */
 
+#ifndef _TMW_GAME_H
+#define _TMW_GAME_H
+
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-
-#ifndef _GAME_H
-#define _GAME_H
 
 #include "main.h"
 #include "./gui/gui.h"
@@ -37,9 +37,6 @@
 #define SPEECH_TIME 40
 #define EMOTION_TIME 40
 #define SPEECH_MAX_TIME 100
-
-#define MAKECOL_WHITE makecol(255,255,255)
-#define MAKECOL_BLACK makecol(0,0,0)
 
 // Action defines
 #define STAND       0

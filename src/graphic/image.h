@@ -130,7 +130,7 @@ class Spriteset {
         /*
          * Cuts the passed bitmap in a grid of sub bitmaps.
          */
-        Spriteset::Spriteset(BITMAP *bmp, int width, int height);
+        Spriteset::Spriteset(BITMAP *bmp, int w, int h, int offx, int offy);
 
         /**
          * Destructor
