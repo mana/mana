@@ -33,12 +33,12 @@ StatsWindow::StatsWindow(gcn::Container *parent)
 {
     std::stringstream statsStr[6];
 
-    statsStr[0] << "Strenght: "  << char_info->STR;
-    statsStr[1] << "Agility: "  << char_info->AGI;
-    statsStr[2] << "Vitality: "  << char_info->VIT;
+    statsStr[0] << "Strenght:    "  << char_info->STR;
+    statsStr[1] << "Agility:     "  << char_info->AGI;
+    statsStr[2] << "Vitality:    "  << char_info->VIT;
     statsStr[3] << "Inteligence: "  << char_info->INT;
-    statsStr[4] << "Dexternity: "  << char_info->DEX;
-    statsStr[5] << "Luck: "  << char_info->LUK;
+    statsStr[4] << "Dexternity:  "  << char_info->DEX;
+    statsStr[5] << "Luck:        "  << char_info->LUK;
     
     /* New labels */
     for (i = 0; i < 6; i++)
@@ -66,6 +66,7 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     for(i = 0; i < 6; i++) {
         add(statsLabel[i]);
         add(statsButton[i]);
+        statsButton[i]->addActionListener(this);
     }
     
     setSize(200, 150);
@@ -77,12 +78,12 @@ StatsWindow::StatsWindow(gcn::Container *parent)
 void StatsWindow::update(){
     std::stringstream statsStr[6];
     
-    statsStr[0] << "Strenght: "  << char_info->STR;
-    statsStr[1] << "Agility: "  << char_info->AGI;
-    statsStr[2] << "Vitality: "  << char_info->VIT;
+    statsStr[0] << "Strenght:    "  << char_info->STR;
+    statsStr[1] << "Agility:     "  << char_info->AGI;
+    statsStr[2] << "Vitality:    "  << char_info->VIT;
     statsStr[3] << "Inteligence: "  << char_info->INT;
-    statsStr[4] << "Dexternity: "  << char_info->DEX;
-    statsStr[5] << "Luck: "  << char_info->LUK;
+    statsStr[4] << "Dexternity:  "  << char_info->DEX;
+    statsStr[5] << "Luck:        "  << char_info->LUK;
     
     /* Update labels */
     for (i = 0; i < 6; i++)
@@ -140,5 +141,4 @@ void StatsWindow::action(const std::string& eventId) {
         puts("LUK");
         update();
     }
-    puts("default");
 }
