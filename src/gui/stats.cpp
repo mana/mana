@@ -26,14 +26,14 @@
 char stats_name[42];
 char stats_hp[24];
 char stats_sp[24];
-char stats_zeny[24];
+char stats_gp[24];
 
 DIALOG stats_dialog[] = {
 	/* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp)        (dp2) (dp3) */
 	{ tmw_ldialog_proc,    493,  0,  300,   55,  0,    0,    0,    0,       0,    0,    stats_name, NULL, NULL  },
 	{ tmw_text_proc,       497,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
 	{ tmw_bar_proc,        507,  22,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
-	{ tmw_text_proc,       707,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_zeny, NULL, NULL  },
+	{ tmw_text_proc,       707,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_gp, NULL, NULL  },
 	{ tmw_text_proc,       607,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
 	{ tmw_bar_proc,        617,  22,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
 	{ NULL,                0,    0,    0,    0,  0,    0,    0,    0,       0,    0,    NULL,       NULL, NULL  }
@@ -45,7 +45,7 @@ DIALOG stats_dialog[] = {
 void update_stats_dialog() {
 	sprintf(stats_name, "%s Lvl: % 2i Job: % 2i", char_info->name, char_info->lv, char_info->job_lv);
 	sprintf(stats_hp,   "HP % 4d / % 4d",         char_info->hp, char_info->max_hp);
-	sprintf(stats_zeny, "GP % 5i",                char_info->gp);
+	sprintf(stats_gp, "GP % 5i",                char_info->gp);
 	sprintf(stats_sp,   "SP % 4d / % 4d",         char_info->sp, char_info->max_sp);
 	stats_dialog[2].d1 = char_info->hp;
 	stats_dialog[2].d2 = char_info->max_hp;
