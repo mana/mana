@@ -18,16 +18,16 @@ IRC:      irc.freenode.net / #manaworld
 1. Requirements
 ===============
 
-In this tutorial we will use DevC++ because of the fact that it's a very good
+In this tutorial we will use Dev-C++ because of the fact that it's a very good
 free IDE for Win32 built around GCC. Remember, Win32 was not meant for GCC and
 stuff so you will probably run into trouble unless you really know what you're
 doing, so best stick with Dev-C++.
 
 Besides a C++ compiler, TMW depends on the following libraries:
 
-1) Allegro 4.1.17
-2) SDL
-3) SDL_mixer
+1) SDL
+2) SDL_mixer
+3) SDL_image
 4) Guichan 0.2.0
 
 
@@ -51,13 +51,14 @@ complex actions on your side.
 
 Get the following list of DevPaks:
 
-- Allegro       (http://devpaks.org/show.php?devpak=2)
 - SDL           (http://devpaks.org/show.php?devpak=57)
-- SDL_mixer     (http://devpaks.org/)
+- SDL_mixer     (http://devpaks.org/show.php?devpak=26)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
 - Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
 
-Install them all through the Dev-C++ package manager.
+Install them all through the Dev-C++ package manager. For SDL_image you may
+still need to manually get the SDL_image.lib file from the SDL_image homepage
+(devel VC6 zip file) and copy it to your Dev-Cpp/lib directory.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
@@ -75,9 +76,17 @@ Open "The Mana World.dev" in Dev-C++. From there on you should be able to
 start compilition with Excute -> Compile. A file called tmw.exe should appear
 in the same directory as where you opened the .dev from.
 
-Before you can actually run the executable be sure to copy over alleg41.dll,
-guichan.dll and guichan_allegro.dll from your Dev-Cpp/dll directory to the
-directory containing tmw.exe.
+Before you can actually run the executable be sure to copy over the following
+DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe:
+
+ SDL.dll
+ SDL_image.dll
+ SDL_mixer.dll
+ guichan.dll
+ guichan_sdl.dll
+ jpeg.dll
+ libpng1.dll
+ zlib.dll
 
 Have fun hacking The Mana World!
 
