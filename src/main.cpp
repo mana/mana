@@ -29,9 +29,11 @@
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
 #include "resources/resourcemanager.h"
+
 #include <iostream>
 #include <guichan.hpp>
 #include <SDL.h>
+#include <libxml/xmlversion.h>
 
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
@@ -58,7 +60,6 @@ char map_name[16];
 unsigned char state;
 unsigned short x, y;
 unsigned char direction;
-//unsigned short job, hair, hair_color;
 unsigned char screen_mode;
 char *dir;
 
@@ -97,7 +98,12 @@ void request_exit() {
 /**
  * Do all initialization stuff
  */
-void init_engine() {
+void init_engine()
+{
+    // Initialize libxml2 and check for potential ABI mismatches between
+    // compiled version and the shared library actually used.
+    LIBXML_TEST_VERSION
+
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         std::cerr << "Could not initialize SDL: " <<

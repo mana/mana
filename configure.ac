@@ -119,5 +119,7 @@ AC_SUBST(LIBSDL_LIBS)
 AC_SUBST(LIBSDL_CFLAGS)
 
 AC_CONFIG_FILES([Makefile
-                 src/Makefile])
+                 src/Makefile
+                 data/Makefile
+                 docs/Makefile])
 AC_OUTPUT
