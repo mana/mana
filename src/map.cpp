@@ -80,7 +80,7 @@ Tile::Tile():
 
 
 Map::Map():
-    width(200), height(200)
+    width(0), height(0)
 {
     tiles = new Tile[width * height];
 }
@@ -101,6 +101,8 @@ bool Map::load(char *mapFile) {
     MAP oldMap;
     fread(&oldMap, sizeof(MAP), 1, file);
     fclose(file);
+
+    setSize(OLD_MAP_WIDTH, OLD_MAP_HEIGHT);
 
     // Transfer tile data
     int x, y;
@@ -132,6 +134,14 @@ bool Map::load(char *mapFile) {
     }
 
     return true;
+}
+
+void Map::setSize(int width, int height)
+{
+    this->width = width;
+    this->height = height;
+    delete[] tiles;
+    tiles = new Tile[width * height];
 }
 
 void Map::setWalk(int x, int y, bool walkable) {

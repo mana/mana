@@ -64,6 +64,11 @@ class Map
         bool load(char *mapFile);
 
         /**
+         * Sets the size of the map. This will destroy any existing map data.
+         */
+        void setSize(int width, int height);
+
+        /**
          * Set tile ID.
          */
         void setTile(int x, int y, int layer, int id);
