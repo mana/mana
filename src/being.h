@@ -25,6 +25,7 @@
 #define _TMW_BEING_H
 
 #include "./net/protocol.h"
+#include <list>
 
 #define ACTION_NODE  0
 //#define PLAYER_NODE  1
@@ -50,7 +51,6 @@ struct NODE {
     unsigned int id;
     short job;
     char coordinates[3];
-    NODE *next;
     unsigned char type;
     unsigned char action;
     unsigned char frame;
@@ -70,9 +70,6 @@ struct NODE {
 /** Removes all beings from the list */
 void empty();
 
-/** Returns the first node of the list */
-NODE *get_head();
-
 /** Add a node to the list */
 void add_node(NODE *node);
 
@@ -82,15 +79,9 @@ NODE *find_node(unsigned int id);
 /** Remove a node */
 void remove_node(unsigned int id);
 
-/** Returns number of beings in the list */
-unsigned int get_count();
-
 PATH_NODE *calculate_path(
         unsigned short src_x, unsigned short src_y,
         unsigned short dest_x, unsigned short dest_y);
-
-/** Returns the id of a being in the list */
-unsigned int get_id(NODE *node);
 
 /** Find a NPC id based on its coordinates */
 unsigned int find_npc(unsigned short x, unsigned short y);
@@ -105,5 +96,7 @@ void sort();
 void empty_path(NODE *node);
 
 extern NODE *player_node;
+
+extern std::list<NODE*> beings;
 
 #endif

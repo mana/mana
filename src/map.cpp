@@ -52,16 +52,17 @@ void set_walk(short x_c, short y_c, bool walkable) {
 }
 
 bool get_walk(short x_c, short y_c) {
-	bool ret = (tiled_map.tiles[x_c][y_c].data[3] & 0x0002)>0;
-	if(ret==true) {
-    NODE *node = get_head();
-		while(node && ret==true) {
-			if(get_x(node->coordinates)==x_c && get_y(node->coordinates)==y_c)
-				ret = false;
-			node = node->next;
-		}
-		return ret;
-	} else return false;
+    bool ret = (tiled_map.tiles[x_c][y_c].data[3] & 0x0002)>0;
+    if (ret == true) {
+        std::list<NODE*>::iterator i = beings.begin();
+        while (i != beings.end() && ret == true) {
+            NODE *node = (*i);
+            if (get_x(node->coordinates)==x_c && get_y(node->coordinates)==y_c)
+                ret = false;
+            i++;
+        }
+        return ret;
+    } else return false;
 }
 
 unsigned char get_path_walk(unsigned short x, unsigned short y) {

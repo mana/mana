@@ -27,8 +27,8 @@
 #include "being.h"
 
 NODE *player_node = NULL;
-NODE *head = NULL; // First node of the list
-unsigned int b_count = 0; // Number of beings in the list
+
+std::list<NODE*> beings;
 
 
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
@@ -47,7 +47,6 @@ PATH_NODE *calculate_path(
 
 NODE::NODE():
     id(0), job(0),
-    next(NULL),
     action(0), frame(0),
     path(NULL),
     speech(NULL), speech_time(0),
@@ -61,147 +60,79 @@ NODE::NODE():
     speech_color = makecol(0, 0, 0);
 }
 
-NODE *get_head() {
-  return head;
-}
-
-unsigned int get_count() {
-    return b_count;
-}
-
 void empty() {
-    NODE *node = head;
-    NODE *next;
-    while(node) {
-        next = node->next;
-        delete node;
-        node = next;
+    std::list<NODE*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        delete (*i);
     }
-    b_count = 0;
-    head = NULL;
+    beings.clear();
 }
 
 void add_node(NODE *node) {
-    NODE *temp = head;
-    if(temp) {
-        while(temp->next)
-            temp = temp->next;
-        temp->next = node;
-    } else head = node;
-    b_count++;
+    beings.push_back(node);
 }
 
 void remove_node(unsigned int id) {
-    unsigned int temp;
-    NODE *node_old, *node_new;
-    node_old = head;
-    node_new = NULL;
-    while (node_old) {
-        temp = get_id(node_old);
-        if (temp==id) {
-            if (node_new==NULL) {
-                head = node_old->next;
-                delete node_old;
-                b_count--;
-                return;
-            } else {
-                node_new->next = node_old->next;
-                delete node_old;
-                b_count--;
-                return;
-            }
-        } else {
-            node_new = node_old;
-            node_old = node_old->next;
+    std::list<NODE*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        if ((*i)->id == id) {
+            delete (*i);
+            beings.erase(i);
+            return;
         }
     }
 }
 
-unsigned int get_id(NODE *node) {
-    return node->id;
-}
-
 unsigned int find_npc(unsigned short x, unsigned short y) {
-    NODE *node = head;
-    while (node) {
+    std::list<NODE*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        NODE *node = (*i);
         // Check if is a NPC (only low job ids)
-        if ((node->job >= 46) && (node->job <= 125)) {
-            if ((get_x(node->coordinates) == x) &&
-                    (get_y(node->coordinates) == y))
-            {
-                return node->id;
-            }
-            else {
-                node = node->next;
-            }
-        } else {
-            node = node->next;
+        if (node->job >= 46 && node->job <= 125 &&
+                get_x(node->coordinates) == x &&
+                get_y(node->coordinates) == y)
+        {
+            return node->id;
         }
     }
     return 0;
 }
 
 unsigned int find_monster(unsigned short x, unsigned short y) {
-    NODE *node = head;
-    while (node) {
+    std::list<NODE*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        NODE *node = (*i);
         // Check if is a MONSTER
-        if (node->job > 200) {
-            if (get_x(node->coordinates) == x &&
-                    get_y(node->coordinates) == y)
-            {
-                return node->id;
-            }
+        if (node->job > 200 &&
+                get_x(node->coordinates) == x &&
+                get_y(node->coordinates) == y)
+        {
+            return node->id;
         }
-        node = node->next;
     }
     return 0;
 }
 
 NODE *find_node(unsigned int id) {
-    NODE *node = head;
-    while (node) {
+    std::list<NODE*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        NODE *node = (*i);
         if (node->id == id) {
             return node;
         }
-        else {
-            node = node->next;
-        }
-        return NULL;
     }
+    return NULL;
 }
 
-void sort() {
-    NODE *p, *q, *r, *s, *temp;
-    s = NULL;
-
-    // Bubble sort
-    while (s != head->next) {
-        r = p = head;
-        q = p->next;
-
-        while (p != s) {
-            if (get_y(p->coordinates) > get_y(q->coordinates)) {
-                if (p == head) {
-                    temp = q->next;
-                    q->next = p;
-                    p->next = temp;
-                    head = q;
-                    r = q;
-                } else {
-                    temp = q->next;
-                    q->next = p;
-                    p->next = temp;
-                    r->next = q;
-                    r = q;
-                }
-            } else {
-                r = p;
-                p = p->next;
-            }
-            q = p->next;
-            if (q == s) s = p;
+class NODE_Compare {
+    public:
+        bool operator() (const NODE *a, const NODE *b) const {
+            return get_y(a->coordinates) < get_y(b->coordinates);
         }
-    }
+};
+
+void sort() {
+    beings.sort(NODE_Compare());
 }
 
 void empty_path(NODE *node) {

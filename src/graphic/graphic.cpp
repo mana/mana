@@ -261,8 +261,10 @@ void GraphicEngine::refresh() {
     }
         
     // Draw nodes
-    NODE *node = get_head();
-    while (node) {
+    std::list<NODE*>::iterator beingIterator = beings.begin();
+    while (beingIterator != beings.end()) {
+        NODE *node = (*beingIterator);
+
         unsigned short x = get_x(node->coordinates);
         unsigned short y = get_y(node->coordinates);
         unsigned char dir = get_direction(node->coordinates) / 2;
@@ -392,12 +394,11 @@ void GraphicEngine::refresh() {
         }
         
         if (node->action == MONSTER_DEAD && node->frame >= 20) {
-            NODE *temp = node;
-            node = node->next;
-            remove_node(temp->id);
+            delete node;
+            beingIterator = beings.erase(beingIterator);
         }
         else {
-            node = node->next;
+            beingIterator++;
         }
 
         // nodes are ordered so if the next node y is > then the
@@ -422,8 +423,10 @@ void GraphicEngine::refresh() {
     }
     
     // Draw player speech
-    node = get_head();
-    while (node) {
+    beingIterator = beings.begin();
+    while (beingIterator != beings.end()) {
+        NODE *node = (*beingIterator);
+
         if (node->speech != NULL) {
             if (node->speech_color == makecol(255, 255, 255)) {
                 textprintf_centre_ex(buffer, font,
@@ -445,8 +448,9 @@ void GraphicEngine::refresh() {
                 free(node->speech);
                 node->speech = NULL;
             }
-        }       
-        node = node->next;
+        }
+
+        beingIterator++;
     }
 
     set_trans_blender(0, 0, 0, 110);
