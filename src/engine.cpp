@@ -28,6 +28,7 @@
 #include "gui/minimap.h"
 #include "gui/chargedialog.h"
 #include "gui/itemcontainer.h"
+#include "gui/item_amount.h"
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
@@ -50,6 +51,7 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
+ItemAmountWindow *itemAmountWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
@@ -172,6 +174,12 @@ Engine::Engine()
     inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
 
+    itemAmountWindow = new ItemAmountWindow();
+    itemAmountWindow->setVisible(false);
+    itemAmountWindow->setPosition(screen->w - statusWindow->getWidth() - 
+            inventoryWindow->getWidth() - 10, inventoryWindow->getHeight() + 
+            10);
+
     npcTextDialog = new NpcTextDialog();
     npcTextDialog->setVisible(false);
 
@@ -249,7 +257,8 @@ Engine::~Engine()
     delete minimap;
     delete equipmentWindow;
     delete newSkillWindow;
-
+    delete itemAmountWindow;
+	
     delete monsterset;
     delete npcset;
     delete emotionset;

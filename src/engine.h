@@ -41,6 +41,7 @@
 #include "gui/setup.h"
 #include "gui/equipment.h"
 #include "gui/chargedialog.h"
+#include "gui/item_amount.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -59,6 +60,7 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern BuySellDialog *buySellDialog;
 extern InventoryWindow *inventoryWindow;
+extern ItemAmountWindow *itemAmountWindow;
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;

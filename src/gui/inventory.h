@@ -80,12 +80,13 @@ class InventoryWindow : public Window, gcn::ActionListener {
          */
         void action(const std::string& eventId);
         
+        int dropItem(int index, int quantity);
+        
         ItemContainer *items;
         
     private:
         gcn::Button *useButton, *dropButton;
         int useItem(int index, int id);
-        int dropItem(int index, int quantity);
         void unequipItem(int index);
 
 };

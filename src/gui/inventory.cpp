@@ -27,6 +27,7 @@
 #include "../resources/image.h"
 #include "button.h"
 #include "../being.h"
+#include "../engine.h"
 #include <sstream>
 
 InventoryWindow::InventoryWindow():
@@ -140,8 +141,8 @@ void InventoryWindow::action(const std::string &eventId)
             }                
         }
         else if (eventId == "drop") {
-            dropItem(items->getIndex(), items->getQuantity());
-            // TODO: now drop all the items, you should choose quantity instead
+            itemAmountWindow->resetAmount();
+            itemAmountWindow->setVisible(true);
         }       
     }
 }

@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=109
+UnitCount=111
 Type=0
 Ver=1
 ObjFiles=
@@ -1162,3 +1162,22 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit112]
+FileName=src\gui\item_amount.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit113]
+FileName=src\gui\item_amount.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
