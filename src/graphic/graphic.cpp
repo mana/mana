@@ -502,6 +502,14 @@ void Engine::draw()
         destRect.h = 8;
         SDL_FillRect(screen, &destRect, SDL_MapRGB(screen->format, 255, 0, 0));
 
+        Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
+
+        std::stringstream cost;
+        cost << tile->Fcost;
+        guiGraphics->_beginDraw();
+        guiGraphics->drawText(cost.str(), destRect.x - 12, destRect.y + 8);
+        guiGraphics->_endDraw();
+
         // Move to the next node
         PATH_NODE *temp = debugPath->next;
         delete debugPath;

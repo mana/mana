@@ -263,7 +263,7 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
 
                 // Calculate G cost for this route, 10 for moving straight and
                 // 14 for moving diagonal
-                int Gcost = curr.tile->Gcost + (dx == 0 || dy == 0) ? 10 : 14;
+                int Gcost = curr.tile->Gcost + ((dx == 0 || dy == 0) ? 10 : 14);
 
                 if (newTile->whichList != onOpenList)
                 {

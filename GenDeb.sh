@@ -122,7 +122,7 @@ echo ' Ultramichy <celdron15@hotmail.com>' >>DEBIAN/control;
 echo ' SimEdw <simon@crossnet.se>' >>DEBIAN/control;
 echo ' Rotonen <j_orponen@hotmail.com>' >>DEBIAN/control;
 echo ' Chetic <Chetic@gmail.com>' >>DEBIAN/control;
-echo ' HammerBear' >>DEBIAN/control
+echo ' HammerBear <bjorn@lindeijer.nl>' >>DEBIAN/control
 echo ' Bertram' >>DEBIAN/control
 echo ' .' >>DEBIAN/control;
 echo ' Web Site: http://themanaworld.sourceforge.net/' >>DEBIAN/control;
