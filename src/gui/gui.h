@@ -32,7 +32,7 @@
 #include <alfont.h>
 #include <string.h>
 
-typedef struct {    
+typedef struct {
     BITMAP *grid[9];
 } LexSkinnedRect;
 
@@ -112,10 +112,11 @@ int tmw_password_proc(int msg, DIALOG *d, int c);
 int tmw_list_proc(int msg, DIALOG *d, int c);
 int tmw_text_proc(int msg, DIALOG *d, int c);
 int tmw_dialog_proc(int msg, DIALOG *d, int c);
+int tmw_ldialog_proc(int msg, DIALOG *d, int c);
 int tmw_textbox_proc(int msg, DIALOG *d, int c);
 int tmw_bitmap_proc(int msg, DIALOG *d, int c);
 
 void ok(const char *title, const char *message);
 unsigned int yes_no(const char *title, const char *message);
 
-#endif 
+#endif

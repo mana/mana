@@ -41,7 +41,7 @@
 #define GUI_BMP_OFS_LISTBOX 8
 #define GUI_BMP_OFS_DIALOG 9
 
-#define GUI_CALL_BUTTONCALLBACK(d) 
+#define GUI_CALL_BUTTONCALLBACK(d)
 static BITMAP *gui__repository[GUI_BMP_COUNT];
 
 /* The currently active skin */
@@ -107,13 +107,13 @@ void loadButtonSkin() {
     gui__repository[GUI_BMP_OFS_BUTTON + 2] = (BITMAP *)gui_gfx[3].dat;
     gui__repository[GUI_BMP_OFS_BUTTON + 3] = (BITMAP *)gui_gfx[1].dat;
 
-    for (mode=0; mode < 4; mode++) {        
+    for (mode=0; mode < 4; mode++) {
         a=0;
         for (y=0; y < 3; y++) {
             for (x=0; x < 3; x++) {
                 gui_skin.button.background[mode].grid[a] = create_sub_bitmap(
                                 gui__repository[GUI_BMP_OFS_BUTTON + mode],
-                                gridx[x]             , gridy[y], 
+                                gridx[x]             , gridy[y],
                                 gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
                                 );
                 a++;
@@ -134,10 +134,10 @@ void loadSliderSkin() {
     tokens = get_config_argv("slider", "slider_h", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
-    
+
     tokens = get_config_argv("slider", "slider_h_ofs", &tokenCount);
     o1 = atoi(tokens[0]); o2 = atoi(tokens[1]);
-    
+
     gui_skin.slider.hSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x , y, o1-x    , h);
     gui_skin.slider.hSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o1, y, o2-o1   , h);
     gui_skin.slider.hSlider[2] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o2, y, w-(o2-x), h);
@@ -148,7 +148,7 @@ void loadSliderSkin() {
 
     tokens = get_config_argv("slider", "slider_v_ofs", &tokenCount);
     o1 = atoi(tokens[0]); o2 = atoi(tokens[1]);
-    
+
     gui_skin.slider.vSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x,  y, w, o1 -     y);
     gui_skin.slider.vSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, o1, w, o2 -     o1);
     gui_skin.slider.vSlider[2] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, o2, w,  h - (o2-y));
@@ -171,26 +171,26 @@ void loadCheckboxSkin()  {
 
 		gui__repository[GUI_BMP_OFS_CHECKBOX] = (BITMAP *)gui_gfx[4].dat;
 
-    
+
     tokens = get_config_argv("checkbox", "normal", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
     gui_skin.checkbox.normal = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-    
+
     tokens = get_config_argv("checkbox", "checked", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
     gui_skin.checkbox.checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-    
+
     tokens = get_config_argv("checkbox", "disabled", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
     gui_skin.checkbox.disabled = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-    
+
     tokens = get_config_argv("checkbox", "disabled_check", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.checkbox.disabled_checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);   
+    gui_skin.checkbox.disabled_checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
 
     tokens                        = get_config_argv("button", "textcol_norm", &tokenCount);
     gui_skin.checkbox.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
@@ -205,7 +205,7 @@ void loadTextboxSkin() {
     int    gridy[4];
     int    a = 0;
     int    x,y;
-    
+
     tokens = get_config_argv("textbox", "gridx", &tokenCount);
     for (a=0; a < 4; a++) {
         gridx[a] = atoi(tokens[a]);
@@ -222,14 +222,14 @@ void loadTextboxSkin() {
 
 		gui__repository[GUI_BMP_OFS_TEXTBOX] = (BITMAP *)gui_gfx[9].dat;
 
-    
+
 
     a=0;
     for (y=0; y < 3; y++) {
         for (x=0; x < 3; x++) {
             gui_skin.textbox.bg.grid[a] = create_sub_bitmap(
                             gui__repository[GUI_BMP_OFS_TEXTBOX],
-                            gridx[x]             , gridy[y], 
+                            gridx[x]             , gridy[y],
                             gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
                             );
             a++;
@@ -244,7 +244,7 @@ void loadListboxSkin() {
     int    gridy[4];
     int    a = 0;
     int    x,y;
-    
+
     tokens = get_config_argv("listbox", "gridx", &tokenCount);
     for (a=0; a < 4; a++) {
         gridx[a] = atoi(tokens[a]);
@@ -271,7 +271,7 @@ void loadListboxSkin() {
         for (x=0; x < 3; x++) {
             gui_skin.listbox.bg.grid[a] = create_sub_bitmap(
                             gui__repository[GUI_BMP_OFS_LISTBOX],
-                            gridx[x]             , gridy[y], 
+                            gridx[x]             , gridy[y],
                             gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
                             );
             a++;
@@ -291,7 +291,7 @@ void loadListboxSkin() {
         for (x=0; x < 3; x++) {
             gui_skin.listbox.vscroll.grid[a] = create_sub_bitmap(
                             gui__repository[GUI_BMP_OFS_LISTBOX+1],
-                            gridx[x]             , gridy[y], 
+                            gridx[x]             , gridy[y],
                             gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
                             );
             a++;
@@ -307,7 +307,7 @@ void loadDialogSkin() {
     int    gridy[4];
     int    a = 0;
     int    x,y;
-    
+
     tokens = get_config_argv("dialog", "gridx", &tokenCount);
     for (a=0; a < 4; a++) {
         gridx[a] = atoi(tokens[a]);
@@ -324,7 +324,7 @@ void loadDialogSkin() {
         for (x=0; x < 3; x++) {
             gui_skin.dialog.bg.grid[a] = create_sub_bitmap(
                             gui__repository[GUI_BMP_OFS_DIALOG],
-                            gridx[x]             , gridy[y], 
+                            gridx[x]             , gridy[y],
                             gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
                             );
             a++;
@@ -333,8 +333,8 @@ void loadDialogSkin() {
 }
 
 void drawSkinnedRect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int h) {
-    
-    BITMAP **grid = skin->grid;    
+
+    BITMAP **grid = skin->grid;
 
     int w0 = grid[0]->w;
     int w1 = w - grid[0]->w -grid[2]->w;
@@ -362,16 +362,16 @@ void drawSkinnedRect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int h
 
     cx += w1;
     cy  = y;
-    masked_blit(grid[2], dst, 0, 0, cx, cy,grid[2]->w,grid[2]->h);    
+    masked_blit(grid[2], dst, 0, 0, cx, cy,grid[2]->w,grid[2]->h);
     cy += h0;
     masked_stretch_blit(grid[5], dst, 0, 0, grid[5]->w,grid[5]->h,cx, cy,w2,h1);
     cy += h1;
-    masked_blit(grid[8], dst, 0, 0, cx, cy,grid[8]->w,grid[7]->h);        
+    masked_blit(grid[8], dst, 0, 0, cx, cy,grid[8]->w,grid[7]->h);
 }
 
 
 int gui_load_skin(const char* skinname) {
-	gui__external_slider_callback = NULL; 
+	gui__external_slider_callback = NULL;
   push_config_state();
   set_config_file(skinname);
 	gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
@@ -389,7 +389,7 @@ int gui_load_skin(const char* skinname) {
 
 void gui_exit() {
   //alfont_destroy_font(gui_font);
-  gui_shutdown();  
+  gui_shutdown();
   //alfont_exit();
 }
 
@@ -401,7 +401,7 @@ void gui_shutdown(void) {
         for (b=0; b < 9 ; b++) {
             destroy_bitmap(gui_skin.button.background[a].grid[b]);
         }
-        
+
     }
     /* Slider */
     for (a=0; a < 3; a++) {
@@ -511,12 +511,12 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
       alfont_text_mode(rtm);
     ret = D_O_K;
   } else {
-        ret =  d_button_proc(msg,d,c);        
+        ret =  d_button_proc(msg,d,c);
     }
     return ret;
 }
 
-int tmw_slider_proc(int msg, DIALOG *d, int c) {    
+int tmw_slider_proc(int msg, DIALOG *d, int c) {
     int w   = 0;
     int h   = 0;
     int x,y;
@@ -524,13 +524,13 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
     int ret = D_O_K;
 
   static int watchdog = 0;
-    
+
   watchdog++;
   if (watchdog == 1) {
     gui__external_slider_callback = (int(__cdecl *)(void *, int))d->dp2;
     d->dp2 = (void*)reroute_slider_proc;
   }
-    
+
     if (msg == MSG_DRAW) {
         if (d->w >= d->h) {
             //rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
@@ -540,12 +540,12 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
             masked_blit(gui_skin.slider.hSlider[0], gui_bitmap, 0, 0,  x, y, gui_skin.slider.hSlider[0]->w, gui_skin.slider.hSlider[0]->h);
             w   = d->w -gui_skin.slider.hSlider[0]->w - gui_skin.slider.hSlider[2]->w;
             x+= gui_skin.slider.hSlider[0]->w;
-            
+
             masked_stretch_blit(
-                    gui_skin.slider.hSlider[1], gui_bitmap, 
-                    0, 0,  gui_skin.slider.hSlider[1]->w, gui_skin.slider.hSlider[1]->h, 
+                    gui_skin.slider.hSlider[1], gui_bitmap,
+                    0, 0,  gui_skin.slider.hSlider[1]->w, gui_skin.slider.hSlider[1]->h,
                     x, y, w, gui_skin.slider.hSlider[1]->h);
-            
+
             x+=w;
             masked_blit(gui_skin.slider.hSlider[2], gui_bitmap, 0, 0,  x, y, gui_skin.slider.hSlider[2]->w, gui_skin.slider.hSlider[2]->h);
 
@@ -560,16 +560,16 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
             rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
             /* vertic */
             x = d->x+ (d->w- gui_skin.slider.vSlider[0]->w)/2;
-            y = d->y; 
+            y = d->y;
             masked_blit(gui_skin.slider.vSlider[0], gui_bitmap, 0, 0,  x, y, gui_skin.slider.vSlider[0]->w, gui_skin.slider.vSlider[0]->h);
             h   = d->h - gui_skin.slider.vSlider[0]->h - gui_skin.slider.vSlider[2]->h;
             y  += gui_skin.slider.vSlider[0]->h;
-            
+
             masked_stretch_blit(
-                    gui_skin.slider.vSlider[1], gui_bitmap, 
-                    0, 0,  gui_skin.slider.vSlider[1]->w, gui_skin.slider.vSlider[1]->h, 
+                    gui_skin.slider.vSlider[1], gui_bitmap,
+                    0, 0,  gui_skin.slider.vSlider[1]->w, gui_skin.slider.vSlider[1]->h,
                     x, y,  gui_skin.slider.vSlider[1]->w, h);
-            
+
             y+=h;
             masked_blit(gui_skin.slider.vSlider[2], gui_bitmap, 0, 0,  x, y, gui_skin.slider.vSlider[2]->w, gui_skin.slider.vSlider[2]->h);
 
@@ -583,15 +583,15 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
         //textprintf(gui_bitmap, gui_font,10, 10, makecol(255,255,255), "%i", d->d2);
     } else {
         ret = d_slider_proc(msg,d,c);
-    }     
+    }
   if (watchdog == 1) {
-    d->dp2 = (void*)gui__external_slider_callback;    
+    d->dp2 = (void*)gui__external_slider_callback;
   }
   watchdog--;
     return ret;
 }
 
-int tmw_check_proc(int msg, DIALOG *d, int c) {    
+int tmw_check_proc(int msg, DIALOG *d, int c) {
     BITMAP *box = NULL;
     int     x, y;
     int     tx, ty, l;
@@ -626,7 +626,7 @@ int tmw_check_proc(int msg, DIALOG *d, int c) {
         if (d->d1 != 0) {
             x  = d->x;
             tx = x + box->w + box->w/2;
-        } else {            
+        } else {
             x  = d->x + d->w - box->w;
             tx = x - box->w/2 - l;
         }
@@ -639,7 +639,7 @@ int tmw_check_proc(int msg, DIALOG *d, int c) {
             gui_text(gui_bitmap, (const char *)d->dp, tx, ty, col, 0);
             alfont_text_mode(rtm);
         }
-        
+
 
     } else {
         return d_check_proc(msg, d, c);
@@ -647,13 +647,13 @@ int tmw_check_proc(int msg, DIALOG *d, int c) {
     return D_O_K;
 }
 
-int tmw_radio_proc(int msg, DIALOG *d, int c) {    
+int tmw_radio_proc(int msg, DIALOG *d, int c) {
     BITMAP *box = NULL;
     int     x, y;
     int     tx, ty, l;
     int     rtm = 0;
     int     col = 0;
-    
+
 
     if (msg == MSG_DRAW) {
         rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
@@ -684,7 +684,7 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
         if (d->d2 != 0) {
             x  = d->x;
             tx = x + box->w + box->w/2;
-        } else {            
+        } else {
             x  = d->x + d->w - box->w;
             tx = x - box->w/2 - l;
         }
@@ -697,15 +697,15 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
             gui_text(gui_bitmap, (const char *)d->dp, tx, ty, col, 0);
             alfont_text_mode(rtm);
         }
-        
+
 
     } else {
-        return d_radio_proc(msg, d, c);        
+        return d_radio_proc(msg, d, c);
     }
     return D_O_K;
 }
 
-int tmw_edit_proc(int msg, DIALOG *d, int c) {    
+int tmw_edit_proc(int msg, DIALOG *d, int c) {
 //    BITMAP *box = NULL;
     int     x;
     int     tx, ty, l;
@@ -716,10 +716,10 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
     char    hack;
     int     cl, cr, cb, ct;
     int     lb, rb;
-    
+
 
     if (msg == MSG_DRAW) {
-        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);        
+        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
         drawSkinnedRect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
 
         if (d->flags & D_DISABLED) {
@@ -736,9 +736,9 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
 
         text  = (char *)d->dp;
         start = text;
-                
+
         rtm = alfont_text_mode(-1);
-        
+
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
             ct = gui_bitmap->ct;
@@ -754,12 +754,12 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
         text[d->d2] = '\0';
         l = alfont_text_length(gui_font, text);
         text[d->d2] = hack;
-        
+
         if (l > d->w-lb-rb) {
             tx += ((d->w-lb-rb) - l);
         }
         gui_text(gui_bitmap, start, tx, ty, col, 0);
-        
+
 
         if (d->flags & D_GOTFOCUS) {
             hack        = text[d->d2];
@@ -771,12 +771,12 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
         alfont_text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
-        return d_edit_proc(msg, d, c);        
+        return d_edit_proc(msg, d, c);
     }
     return D_O_K;
 }
 
-int tmw_password_proc(int msg, DIALOG *d, int c) {    
+int tmw_password_proc(int msg, DIALOG *d, int c) {
 //    BITMAP *box = NULL;
     int     x;
     int     tx, ty, l;
@@ -787,10 +787,10 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
     char    hack;
     int     cl, cr, cb, ct;
     int     lb, rb;
-    
+
 
     if (msg == MSG_DRAW) {
-        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);        
+        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
         drawSkinnedRect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
 
         if (d->flags & D_DISABLED) {
@@ -811,9 +811,9 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
     for(i=0;i<strlen((char *)d->dp);i++)text[i] = '*';
     text[i] = '\0';
         start = text;
-                
+
         rtm = alfont_text_mode(-1);
-        
+
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
             ct = gui_bitmap->ct;
@@ -830,12 +830,12 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
         text[d->d2] = '\0';
         l = alfont_text_length(gui_font, text);
         text[d->d2] = hack;
-        
+
         if (l > d->w-lb-rb) {
             tx += ((d->w-lb-rb) - l);
         }
         gui_text(gui_bitmap, start, tx, ty, col, 0);
-        
+
 
         if (d->flags & D_GOTFOCUS) {
             hack        = text[d->d2];
@@ -847,13 +847,13 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
         alfont_text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
-        return d_edit_proc(msg, d, c);        
+        return d_edit_proc(msg, d, c);
     }
     return D_O_K;
 }
 
-int tmw_list_proc(int msg, DIALOG *d, int c) {    
-//    BITMAP *box = NULL;    
+int tmw_list_proc(int msg, DIALOG *d, int c) {
+//    BITMAP *box = NULL;
 
     static int ignoreRedraw = FALSE;
 
@@ -878,13 +878,13 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     h = d->h - gui_skin.listbox.bg.grid[1]->h - gui_skin.listbox.bg.grid[7]->h;
     lastItem = MIN(itemCount-1, firstItem + h / alfont_text_height(gui_font));
 
-    
+
 
     if (msg == MSG_DRAW) {
         if (ignoreRedraw) {
             return D_O_K;
         }
-        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);        
+        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
         drawSkinnedRect(gui_bitmap, &gui_skin.listbox.bg, d->x, d->y, d->w, d->h);
 
         (*(getfuncptr)d->dp)(-1, &itemCount);
@@ -898,7 +898,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
             drawSkinnedRect(gui_bitmap, &gui_skin.listbox.vscroll, d->x+d->w-13, slidery, 11, sliderh);
         }
 
-        rtm = alfont_text_mode(-1);        
+        rtm = alfont_text_mode(-1);
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
             ct = gui_bitmap->ct;
@@ -910,7 +910,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
             cb=gui_bitmap->h;
         }
         x = d->x + gui_skin.listbox.bg.grid[0]->w;
-        y = d->y + gui_skin.listbox.bg.grid[0]->h;        
+        y = d->y + gui_skin.listbox.bg.grid[0]->h;
         set_clip_rect(gui_bitmap, x,y, x+w, y+h);
 
 
@@ -935,11 +935,11 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
 
         alfont_text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
-        
-    } else if (msg == MSG_CLICK) {        
+
+    } else if (msg == MSG_CLICK) {
 
         x = d->x + gui_skin.listbox.bg.grid[0]->w;
-        y = d->y + gui_skin.listbox.bg.grid[0]->h;        
+        y = d->y + gui_skin.listbox.bg.grid[0]->h;
 
         sliderh = MAX(((d->h-2)* (h / th)) / itemCount, gui_skin.listbox.bg.grid[0]->h*2);
         //sliderh = ((d->h-2)* (h / th)) / itemCount;
@@ -955,7 +955,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
                     a *= itemCount;
                     a /= (d->h-2);
                     a  = MID(0, a, itemCount- h/th);
-            
+
                     if (a != d->d2) {
                         d->d2 = a;
                         scare_mouse();
@@ -994,16 +994,16 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
 
             while (mouse_b) {
                 a = firstItem + (mouse_y-y) / alfont_text_height(gui_font);
-                
+
                 if (a <= lastItem && a != selectedItem) {
                     d->d1 = selectedItem = a;
                     scare_mouse();
                     object_message(d, MSG_DRAW, 0);
                     unscare_mouse();
-                }       
+                }
             }
         }
-    } else {        
+    } else {
         ignoreRedraw = (msg == MSG_GOTFOCUS || msg == MSG_LOSTFOCUS);
         a =  d_list_proc(msg, d, c);
 
@@ -1022,7 +1022,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     return D_O_K;
 }
 
-int tmw_dialog_proc(int msg, DIALOG *d, int c) {    
+int tmw_dialog_proc(int msg, DIALOG *d, int c) {
     int rtm;
   int x, y;
 
@@ -1059,10 +1059,54 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
       d->d2 = -1;
     }
         drawSkinnedRect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-        rtm = alfont_text_mode(-1); 
-        alfont_textprintf_centre_aa(gui_bitmap, gui_font, 
-                          d->x + d->w/2, 
+        rtm = alfont_text_mode(-1);
+        alfont_textprintf_centre_aa(gui_bitmap, gui_font,
+                          d->x + d->w/2,
                           d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
+        alfont_text_mode(rtm);
+    }
+    return D_O_K;
+}
+
+int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
+    int rtm;
+  int x, y;
+
+  if (msg == MSG_CLICK) {
+    if(mouse_y < d->y + gui_skin.dialog.bg.grid[1]->h) {
+            //drag = true;
+            d->d1 = mouse_x - d->x;
+            d->d2 = mouse_y - d->y;
+    }
+    } else if (msg == MSG_DRAW) {
+    if((mouse_b & 1)&&(d->d1>=0)&&(d->d2>=0)) {//(drag==true)) {
+      x = mouse_x-d->d1;
+      y = mouse_y-d->d2;
+      if(x<15) {
+        x=0;
+        position_mouse(d->d1, mouse_y);
+      }
+      if(y<15) {
+        y=0;
+        position_mouse(mouse_x, d->d2);
+      }
+      if(x+d->w>=785) {
+        x=800-d->w;
+        position_mouse(x+d->d1, mouse_y);
+      }
+      if(y+d->h>=585) {
+        y=600-d->h;
+        position_mouse(mouse_x, y+d->d2);
+      }
+          position_dialog(active_dialog, x, y);
+    } else {
+      //drag = false;
+      d->d1 = -1;
+      d->d2 = -1;
+    }
+        drawSkinnedRect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
+        rtm = alfont_text_mode(-1);
+        alfont_textprintf_aa(gui_bitmap, gui_font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
         alfont_text_mode(rtm);
     }
     return D_O_K;
@@ -1070,10 +1114,10 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
 
 int reroute_slider_proc(void *dp3, int d2) {
     int ret = 0;
-    
+
     if (gui__external_slider_callback != NULL) {
         ret = gui__external_slider_callback(dp3, d2);
-    }        
+    }
     return ret;
 }
 
@@ -1134,7 +1178,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    }
 
    /* choose the text color */
-   if (disabled) 
+   if (disabled)
       fg = disable;
 
    rtm = alfont_text_mode(-1);
@@ -1158,7 +1202,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    len = alfont_text_length(gui_font, s);
 
    /* modify length if its a tab */
-   if (ugetc(s) == '\t') 
+   if (ugetc(s) == '\t')
       len = tabsize * alfont_text_length(gui_font, space);
 
    /* check for the end of a line by excess width of next char */
@@ -1200,7 +1244,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
       ignore = NULL;
 
          /* check for endline at the convenient place */
-         if (ugetc(scanned) == '\n') 
+         if (ugetc(scanned) == '\n')
       scanned += uwidth(scanned);
       }
       /* we are done parsing the line end */
@@ -1251,7 +1295,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
       printed += uwidth(printed);
    }
    /* the last blank bit */
-   /*if (x1 <= x+w-3) 
+   /*if (x1 <= x+w-3)
       rectfill(gui_bitmap, x1, y1, x+w-3, y1+alfont_text_height(gui_font)-1, deselect);*/
 
    /* print the line end */
@@ -1265,7 +1309,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
       /* check if we are at the end of the string */
       if (!ugetc(printed)) {
    /* the under blank bit */
-   /*if (draw) 
+   /*if (draw)
       rectfill(gui_bitmap, x+1, y1, x+w-3, y+h-1, deselect);*/
 
    /* tell how many lines we found */
@@ -1291,7 +1335,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
       case MSG_START:
    /* measure how many lines of text we contain */
-   _gui_draw_textbox((char *)d->dp, &d->d1, 
+   _gui_draw_textbox((char *)d->dp, &d->d1,
            0, /* DONT DRAW anything */
            d->d2, !(d->flags & D_SELECTED), 8,
            d->x, d->y, d->w, d->h,
@@ -1301,7 +1345,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
       case MSG_DRAW:
    /* tell the object to sort of draw, but only calculate the listsize */
-   _gui_draw_textbox((char *)d->dp, &d->d1, 
+   _gui_draw_textbox((char *)d->dp, &d->d1,
            0, /* DONT DRAW anything */
            d->d2, !(d->flags & D_SELECTED), 8,
            d->x, d->y, d->w, d->h,
@@ -1325,7 +1369,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
    /* draw the frame around */
    _gui_draw_scrollable_frame(d, d->d1, d->d2, height, fg_color, d->bg);
-   
+
    break;
 
       case MSG_CLICK:
@@ -1347,41 +1391,41 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
    used = D_USED_CHAR;
 
    if (d->d1 > 0) {
-      if (d->d2 > 0) 
+      if (d->d2 > 0)
          top = d->d2+1;
-      else 
+      else
          top = 0;
 
       l = (d->h-8)/alfont_text_height(gui_font);
 
       bottom = d->d2 + l - 1;
-      if (bottom >= d->d1-1) 
+      if (bottom >= d->d1-1)
          bottom = d->d1-1;
-      else 
+      else
          bottom--;
 
-      if ((c>>8) == KEY_UP) 
+      if ((c>>8) == KEY_UP)
          d->d2--;
-      else if ((c>>8) == KEY_DOWN) 
+      else if ((c>>8) == KEY_DOWN)
          d->d2++;
-      else if ((c>>8) == KEY_HOME) 
+      else if ((c>>8) == KEY_HOME)
          d->d2 = 0;
-      else if ((c>>8) == KEY_END) 
+      else if ((c>>8) == KEY_END)
          d->d2 = d->d1-l;
-      else if ((c>>8) == KEY_PGUP) 
+      else if ((c>>8) == KEY_PGUP)
          d->d2 -= (bottom-top) ? bottom-top : 1;
-      else if ((c>>8) == KEY_PGDN) 
+      else if ((c>>8) == KEY_PGDN)
          d->d2 += (bottom-top) ? bottom-top : 1;
-      else 
+      else
          used = D_O_K;
 
       /* make sure that the list stays in bounds */
-      if (d->d2 > d->d1-l) 
+      if (d->d2 > d->d1-l)
          d->d2 = d->d1-l;
-      if (d->d2 < 0) 
+      if (d->d2 < 0)
          d->d2 = 0;
    }
-   else 
+   else
       used = D_O_K;
 
    /* if we changed something, better redraw... */
@@ -1390,7 +1434,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
    ret = used;
    break;
-      
+
       case MSG_WHEEL:
    l = (d->h-8)/alfont_text_height(gui_font);
    delta = (l > 3) ? 3 : 1;
@@ -1408,7 +1452,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
       case MSG_WANTFOCUS:
    /* if we don't have a scrollbar we can't do anything with the focus */
-   if (d->d1 > height) 
+   if (d->d1 > height)
       ret = D_WANTFOCUS;
    break;
 
