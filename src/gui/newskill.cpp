@@ -41,8 +41,8 @@ char *skill_name[] = {
     "Paradin (Light)", "Tharsis (Dark)", "Crono (Time)", "Astra (Space)",
     "Gen (Mana)", "",
     // craft skills 20-29
-    "Weaponsmithing", "Armorcrafting", "Jeweler", "Cook", "Tailor",
-    "Alchemist", "Artisan", "", "", "",
+    "Metalworking", "Woodworking", "Jeweler", "Cook", "Tailor",
+    "Alchemist", "Artisan", "Synthesis", "", "",
     // general skills 30-39
     "Running", "Jumping", "Searching", "Sneak", "Trading", "Intimidate",
     "", "", "", "",
@@ -57,7 +57,7 @@ char *skill_name[] = {
     "Shine (Light)", "Shadow (Dark)", "Decay (Time)", "Chaos (Space)", "", "",
     // hunting skills 70-79
     "Insects", "Birds", "Lizards", "Amorphs", "Undead", "Machines", "Arcana",
-    "Humanoids", "", "",
+    "Humanoids", "Plantoids", "",
     // stats 80-89
     "Strength", "Fortitude", "Vitality", "Menality", "Awareness", "Mana",
     "Dexterity", "", "", "",
@@ -75,11 +75,11 @@ NewSkillDialog::NewSkillDialog():
     {
         skillLabel[i] = new gcn::Label("Empty               ");
         skillLevel[i] = new gcn::Label("00000");
-        skillbar[i] = new ProgressBar(0.0f,0,0,270,15,0,0,255);
+        skillbar[i] = new ProgressBar(0.0f,0,0,100,15,0,0,255);
         skillLevel[i]->setAlignment(Graphics::RIGHT);
-        add(skillLabel[i],40,50+i*20);
-        add(skillLevel[i],200,50+i*20);
-        add(skillbar[i],250,50+i*20);
+        add(skillLabel[i],40,5+i*25);
+        add(skillLevel[i],150,5+i*25);
+        add(skillbar[i],180,5+i*25);
     }
     // initialize the skills
     for(int i=0;i<N_SKILL;i++)
@@ -116,27 +116,27 @@ NewSkillDialog::NewSkillDialog():
     closeButton->setEventId("close");
 
     // positioning
-    setSize(540, 250);
+    setSize(350, 250);
     catButton[0]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[0]->setPosition(0, 10);
+    catButton[0]->setPosition(290, 10);
     catButton[1]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[1]->setPosition(60, 10);
+    catButton[1]->setPosition(290, 30);
     catButton[2]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[2]->setPosition(120, 10);
+    catButton[2]->setPosition(290, 50);
     catButton[3]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[3]->setPosition(180, 10);
+    catButton[3]->setPosition(290, 70);
     catButton[4]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[4]->setPosition(240, 10);
+    catButton[4]->setPosition(290, 90);
     catButton[5]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[5]->setPosition(300, 10);
+    catButton[5]->setPosition(290, 110);
     catButton[6]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[6]->setPosition(360, 10);
+    catButton[6]->setPosition(290, 130);
     catButton[7]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[7]->setPosition(420, 10);
+    catButton[7]->setPosition(290, 150);
     catButton[8]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[8]->setPosition(480, 10);
+    catButton[8]->setPosition(290, 170);
     closeButton->setDimension(gcn::Rectangle(0,0,60,20));
-    closeButton->setPosition(480, 230);
+    closeButton->setPosition(290, 230);
 
     // add controls
     add(catButton[0]);
