@@ -137,8 +137,8 @@ cp `echo 'manaworld_'$TMW_VERSION'_i386.deb'` ..;
 cd ..
 echo "Cleaning ...";
 rm -rf Debian;
-echo "You Debian Package is normally ready :"
-echo "His name is : manaworld_"$TMW_VERSION"_i386.deb";
+echo "Your Debian Package is normally ready :"
+echo "Its name is : manaworld_"$TMW_VERSION"_i386.deb";
 echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2, libxml2 and libguichan to install manaworld.";
 echo "You can find libguichan in http://guichan.darkbits.org/downloads.shtml";
 echo "End of Debian Creation...";
