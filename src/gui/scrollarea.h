@@ -53,6 +53,16 @@ class ScrollArea : public gcn::ScrollArea {
          * Draws the background and border of the scroll area.
          */
         void drawBorder(gcn::Graphics *graphics);
+
+    protected:
+        void drawUpButton(gcn::Graphics *graphics);
+        void drawDownButton(gcn::Graphics *graphics);
+        void drawLeftButton(gcn::Graphics *graphics);
+        void drawRightButton(gcn::Graphics *graphics);
+        void drawVBar(gcn::Graphics *graphics);
+        void drawHBar(gcn::Graphics *graphics);
+        void drawVMarker(gcn::Graphics *graphics);
+        void drawHMarker(gcn::Graphics *graphics);
 };
 
 #endif

@@ -106,3 +106,53 @@ void ScrollArea::drawBorder(gcn::Graphics *graphics)
 
     draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, x, y, w, h);
 }
+
+void ScrollArea::drawUpButton(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawUpButton(graphics);
+}
+
+void ScrollArea::drawDownButton(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawDownButton(graphics);
+}
+
+void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawLeftButton(graphics);
+}
+
+void ScrollArea::drawRightButton(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawRightButton(graphics);
+}
+
+void ScrollArea::drawVBar(gcn::Graphics *graphics)
+{
+    int x, y;
+    gcn::Rectangle dim = getVerticalBarDimension();
+    getAbsolutePosition(x, y);
+
+    draw_skinned_rect(gui_bitmap, &gui_skin.listbox.bg,
+            x + dim.x, y + dim.y, dim.width, dim.height);
+}
+
+void ScrollArea::drawHBar(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawHBar(graphics);
+}
+
+void ScrollArea::drawVMarker(gcn::Graphics *graphics)
+{
+    int x, y;
+    gcn::Rectangle dim = getVerticalMarkerDimension();
+    getAbsolutePosition(x, y);
+
+    draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll,
+            x + dim.x, y + dim.y, dim.width, dim.height);
+}
+
+void ScrollArea::drawHMarker(gcn::Graphics *graphics)
+{
+    gcn::ScrollArea::drawHMarker(graphics);
+}
