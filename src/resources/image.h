@@ -83,7 +83,18 @@ class Image : public Resource
         virtual Image* getScaledInstance(int width, int height);
 
         /**
-         * Blits the internal image onto the screen.
+         * Blits the image onto the screen.
+         *
+         * @return <code>true</code> if the image was blitted properly
+         *         <code>false</code> otherwise.
+         */
+        virtual bool draw(SDL_Surface *screen,
+                int srcX, int srcY,
+                int dstX, int dstY,
+                int width, int height);
+
+        /**
+         * Blits the image onto the screen.
          *
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
@@ -135,6 +146,12 @@ class SubImage : public Image
          * object otherwise.
          */
         Image* getSubImage(int x, int y, int width, int height);
+
+        /**
+         * Draws this image.
+         */
+        bool draw(SDL_Surface *screen, int srcX, int srcY,
+                int dstX, int dstY, int width, int height);
 
         /**
          * Draws the clipped image onto the screen.

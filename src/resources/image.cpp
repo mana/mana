@@ -96,6 +96,26 @@ Image *Image::getScaledInstance(int width, int height)
     return new ScaledImage(this, image, width, height);
 }
 
+bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
+        int width, int height)
+{
+    // Check that preconditions for blitting are met.
+    if (screen == NULL || image == NULL) return false;
+
+    SDL_Rect dstRect;
+    SDL_Rect srcRect;
+    dstRect.x = dstX; dstRect.y = dstY;
+    srcRect.x = srcX; srcRect.y = srcY;
+    srcRect.w = width;
+    srcRect.h = height;
+
+    if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
+        return false;
+    }
+
+    return true;
+}
+
 bool Image::draw(SDL_Surface *screen, int x, int y)
 {
     // Check that preconditions for blitting are met.
@@ -123,8 +143,9 @@ void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
 
     while (py < h) {
         while (px < w) {
-            draw(screen, x + px, y + py);
-            // TODO: Prevent overdraw
+            int dw = (px + iw >= w) ? w - px : iw;
+            int dh = (py + ih >= h) ? h - py : ih;
+            draw(screen, 0, 0, x + px, y + py, dw, dh);
             px += iw;
         }
         py += ih;
@@ -168,6 +189,27 @@ int SubImage::getHeight() const
 Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
     return NULL;
+}
+
+bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
+        int dstX, int dstY, int width, int height)
+{
+    // Check that preconditions for blitting are met.
+    if (screen == NULL || image == NULL) return false;
+
+    SDL_Rect dstRect;
+    SDL_Rect srcRect;
+    dstRect.x = dstX; dstRect.y = dstY;
+    srcRect.x = rect.x + srcX;
+    srcRect.y = rect.y + srcY;
+    srcRect.w = width;
+    srcRect.h = height;
+
+    if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
+        return false;
+    }
+
+    return true;
 }
 
 bool SubImage::draw(SDL_Surface *screen, int x, int y)

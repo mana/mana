@@ -99,6 +99,7 @@ CharSelectDialog::CharSelectDialog():
     newCharButton->addActionListener(this);
     delCharButton->addActionListener(this);
 
+    selectButton->requestFocus();
     setLocationRelativeTo(getParent());
 }
 

@@ -75,6 +75,7 @@ ServerSelectDialog::ServerSelectDialog():
         serverList->setSelected(1);
     }
 
+    okButton->requestFocus();
     setLocationRelativeTo(getParent());
 }
 
