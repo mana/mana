@@ -44,11 +44,10 @@ Image* Image::load(const std::string &filePath)
 #endif
     // Attempt to use SDL_Image to load the file.
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
-    SDL_Surface *image = SDL_ConvertSurface(
-            tmpImage, screen->format, SDL_SWSURFACE);
+    SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
+            SDL_MapRGB(tmpImage->format, 255, 0, 255));
+    SDL_Surface *image = SDL_DisplayFormat(tmpImage);
     SDL_FreeSurface(tmpImage);
-    SDL_SetColorKey(image, SDL_SRCCOLORKEY | SDL_RLEACCEL,
-            SDL_MapRGB(image->format, 255, 0, 255));
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
