@@ -224,6 +224,9 @@
 				<File
 					RelativePath=".\Gui\login.cpp">
 				</File>
+				<File
+					RelativePath=".\Gui\skill.cpp">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -287,6 +290,9 @@
 				</File>
 				<File
 					RelativePath=".\Gui\login.h">
+				</File>
+				<File
+					RelativePath=".\Gui\skill.h">
 				</File>
 			</Filter>
 		</Filter>
