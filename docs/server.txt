@@ -37,6 +37,7 @@ that allow a scripting language to be used in these areas.
 In the messages described the following data types are being used:
 
   A - char array (null terminated)
+  C - char (1 byte)
   S - short (2 bytes)
   L - long (4 bytes)
 
@@ -54,14 +55,14 @@ In the messages described the following data types are being used:
 - Mostly static (at least doesn't move, but can change)
 - Has collision properties, which can change
 - Can be an item (allowing picking it up)
-- Can be animated (and change animation)
+- Can be animated and change animation (max 256 animations)
 - Can potentially be activated/used (door, chest, portal)
 
  Server to client:
 
-  MSG_NEW_OBJECT     { A name, L id, L x, L y }
-  MSG_REMOVE_OBJECT  { L id }
-  MSG_CHANGE_OBJECT  { L id, L x, L y, S currAnim, S flags }
+  MSG_NEW_OBJECT     { L objectTypeId, L objectId, L x, L y }
+  MSG_REMOVE_OBJECT  { L objectId }
+  MSG_CHANGE_OBJECT  { L objectId, L x, L y, C currAnim, S flags }
 
  Client to server:
 
@@ -74,7 +75,7 @@ In the messages described the following data types are being used:
 - Most properties specified in XML file.
 - Dynamic (can walk around)
 - Character animation, but could still show arbitrary animations.
-- Can equip stuff, which could change appearance
+- Can equip stuff, which could change appearance (max 256 equipment slots)
 - Has inventory
 - Connects to questing system
 - Can fight other beings
@@ -87,19 +88,23 @@ In the messages described the following data types are being used:
 
  Server to client:
 
-  MSG_NEW_BEING      { A name, L id, L clientId, L x, L y }
-  MSG_REMOVE_BEING   { L id }
-  MSG_INVENTORY_UPD  { L id, A itemName, L amount }
-  MSG_EQUIPMENT_UPD  { L id, S slot, A itemName }
-  MSG_ATTACK         { L attackerId, L targetId, L damage, S damType }
-  MSG_PATH           { L id, A path }
+  MSG_NEW_BEING      { L beingTypeId, L beingId, L clientId, L x, L y }
+  MSG_REMOVE_BEING   { L beingId }
+  MSG_INVENTORY_UPD  { L beingId, L itemTypeId, L amount }
+  MSG_EQUIPMENT_UPD  { L beingId, L itemTypeId, C slot }
+  MSG_ATTACK         { L beingId, L targetId, L damage, C damType }
+  MSG_PATH           { L beingId, A path }
 
  Client to server:
 
-  MSG_TARGET         { L id, L targetId }
-  MSG_WALK           { L id, L x, L y }
-  MSG_START_TRADE    { L id, L shopBeingId }    // Needs more related messages
-  MSG_START_TALK     { L id, L talkBeingId }    // Needs more related messages
+  MSG_TARGET         { L beingId, L targetId }
+  MSG_WALK           { L beingId, L x, L y }
+  MSG_START_TRADE    { L beingId, L shopBeingId }
+  MSG_START_TALK     { L beingId, L talkBeingId }
+  MSG_REQ_TRADE      { L beingId, L playerBeingId }
+
+More messages are needed for the talking with NPCs and trading with shops and
+other players.
 
 
 5. ITEM
@@ -112,8 +117,8 @@ In the messages described the following data types are being used:
 
  Client to server:
 
-  MSG_USE_ITEM       { L id, A itemName }
-  MSG_EQUIP          { L id, A itemName, S slot }
+  MSG_USE_ITEM       { L beingId, L itemTypeId }
+  MSG_EQUIP          { L beingId, L itemTypeId, C slot }
 
 
 6. CHAT
