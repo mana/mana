@@ -111,18 +111,19 @@ void exit_engine() {
 /** Main */
 int main() {
 	init_engine();
-  // initialize sound-engine and start playing intro-theme /-kth5
-  try{
-    if(get_config_int("settings", "sound", 0)==1)
-      sound.Init(32,20);                          // inits the sound-subsystem w/ 32 voices / 20 for mod
-    sound.SetVol(128,128,128);                    // sets intial volume parameters
-    //#ifdef WIN32
-      //sound.StartMIDI("Sound/Midis/city.mid",-1);   // play a midi file
-    //#endif
-  }catch(const char * err){                       // catch errors and show appropriate messages on-screen (elven plz... ^^)
-    ok("Sound Engine", err);
-    warning(err);
-  }
+	// initialize sound-engine and start playing intro-theme /-kth5
+	try{
+		if(get_config_int("settings", "sound", 0)==1)
+		sound.Init(32,20);                          // inits the sound-subsystem w/ 32 voices / 20 for mod
+		sound.SetVol(128,128,128);                    // sets intial volume parameters
+		//#ifdef WIN32
+			//sound.StartMIDI("Sound/Midis/city.mid",-1);   // play a midi file
+		//#endif
+		//sound.LoadItem("test.wav", TMWSOUND_SFX);
+	}catch(const char * err){                       // catch errors and show appropriate messages on-screen (elven plz... ^^)
+		ok("Sound Engine", err);
+		warning(err);
+	}
 
   while(state!=EXIT) {
     switch(state) {
