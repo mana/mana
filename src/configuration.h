@@ -47,6 +47,7 @@ class Configuration {
         std::string getValue(std::string, std::string);
         float       getValue(std::string, float);
     private:
+        bool        keyExists(std::string);
 
         typedef struct INI_OPTION {
             std::string key;

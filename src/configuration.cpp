@@ -109,7 +109,7 @@ bool Configuration::write(std::string filename) {
 */
 void Configuration::setValue(std::string key, std::string value) {
     INI_OPTION optionTmp;
-    if(getValue(key, "") == "") {
+    if(!keyExists(key)) {
         #ifdef __DEBUG
             std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") newly set\n";
         #endif
@@ -138,7 +138,7 @@ void Configuration::setValue(std::string key, std::string value) {
 */
 void Configuration::setValue(std::string key, float value) {
     INI_OPTION optionTmp;
-    if(getValue(key, -111) == -111) {
+    if(!keyExists(key)) {
         #ifdef __DEBUG
             std::cout << "Configuration::setValue(" << key << ", " << value << ") newly set\n";
         #endif
@@ -185,4 +185,13 @@ float Configuration::getValue(std::string key, float deflt) {
     }
 
     return deflt;
+}
+
+
+bool Configuration::keyExists(std::string key) {
+    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
+        if(iter->key == key)
+            return true;
+    }
+    return false;
 }
