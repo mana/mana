@@ -139,18 +139,46 @@ void Setup::action(const std::string& eventId)
         sel = modeList->getSelected();
 
         // Display settings
-        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 2)
+        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0)
         {
             config.setValue("screen", 1);
-            SDL_WM_ToggleFullScreen(SDL_GetVideoSurface());
+            #if __USE_UNIX98
+                SDL_WM_ToggleFullScreen(screen);
+                
+            #else
+                int displayFlags = 0;
+                displayFlags |= SDL_FULLSCREEN;
+                if ((int)config.getValue("hwaccel", 0)) {
+                    displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+                }
+                else {
+                    displayFlags |= SDL_SWSURFACE;
+                }
+                screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
+            #endif
+            
+	    // FIXME : Need to handle resolution
             //set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,
             //        modes[sel].height, modes[sel].width, 0, 0);
 
         }
         else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
         {
-            config.setValue("screen", 2);
-            SDL_WM_ToggleFullScreen(SDL_GetVideoSurface());
+            config.setValue("screen", 0);
+            #if __USE_UNIX98
+                SDL_WM_ToggleFullScreen(screen);
+                
+            #else
+                int displayFlags = 0;
+                if ((int)config.getValue("hwaccel", 0)) {
+                    displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+                }
+                else {
+                    displayFlags |= SDL_SWSURFACE;
+                }
+                screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
+            #endif
+	    // FIXME : Need to handle resolution
             //set_gfx_mode(GFX_AUTODETECT_WINDOWED,
             //        modes[sel].height, modes[sel].width, 0, 0);
         }
