@@ -53,30 +53,21 @@ void Configuration::init(std::string filename) {
                 while(inBuffer.find(" ", 0) != std::string::npos) {
                     inBuffer.replace(inBuffer.find(" ", 0), 1, "");
                 }
-                optionTmp.key = inBuffer.substr(0, position);
+                std::string key = inBuffer.substr(0, position);
                 optionTmp.stringValue  = inBuffer.substr(position+1, inBuffer.length());
                 inBuffer = inBuffer.substr(position+1, inBuffer.length());
 
                 optionTmp.numericValue = atof(inBuffer.c_str());
 
-                if(!keyExists(optionTmp.key)) {
-                    iniOptions.push_back(optionTmp);
-                } else {
-                    iter->key = optionTmp.key;
-                    iter->stringValue = optionTmp.stringValue;
-                    iter->numericValue = optionTmp.numericValue;
-                }
+                iniOptions[key] = optionTmp;
+                
+                #ifdef __DEBUG                
+                    std::cout << "Configuration::init(" << key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+                #endif
             }
         }
     }
     inFile.close();
-
-    #ifdef __DEBUG
-        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-            optionTmp = *iter;
-            std::cout << "Configuration::init(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
-        }
-    #endif
 }
 
 /**
@@ -89,19 +80,18 @@ bool Configuration::write(std::string filename) {
 
     INI_OPTION optionTmp;
     for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        optionTmp = *iter;
-        out.write(optionTmp.key.c_str(), optionTmp.key.length());
+        out.write(iter->first.c_str(), iter->first.length());
         out.write("=", 1);
 
         if(optionTmp.numericValue == 0) {
-            out.write(optionTmp.stringValue.c_str(), optionTmp.stringValue.length());
+            out.write(iter->second.stringValue.c_str(), iter->second.stringValue.length());
         }else{
-            sprintf(tmp, "%f", optionTmp.numericValue);
+            sprintf(tmp, "%f", iter->second.numericValue);
             out.write(tmp, strlen(tmp));
             strcpy(tmp, "");
         }
         #ifdef __DEBUG
-            std::cout << "Configuration::write(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+            std::cout << "Configuration::write(" << iter->first.c_str() << ", \"" << iter->second.stringValue << "\" / " << iter->second.numericValue << ")\n";
         #endif
         out.write("\n", 1);
     }
@@ -117,22 +107,12 @@ bool Configuration::write(std::string filename) {
 */
 void Configuration::setValue(std::string key, std::string value) {
     INI_OPTION optionTmp;
-    if(!keyExists(key)) {
-        #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") newly set\n";
-        #endif
-        optionTmp.key = key;
-        optionTmp.stringValue = value;
-        optionTmp.numericValue = 0;
-
-        iniOptions.push_back(optionTmp);
-    } else {
-        #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") reset\n";
-        #endif
-        iter->stringValue = value;
-        iter->numericValue = 0;
-    }
+    #ifdef __DEBUG
+        std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+    #endif
+    optionTmp.stringValue = value;
+    optionTmp.numericValue = 0;    
+    iniOptions[key] = optionTmp;
 }
 
 /**
@@ -142,21 +122,12 @@ void Configuration::setValue(std::string key, std::string value) {
 */
 void Configuration::setValue(std::string key, float value) {
     INI_OPTION optionTmp;
-    if(!keyExists(key)) {
-        #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", " << value << ") newly set\n";
-        #endif
-        optionTmp.key = key;
-        optionTmp.numericValue = value;
-
-        iniOptions.push_back(optionTmp);
-    } else {
-        #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", " << value << ") reset\n";
-        #endif
-        iter->stringValue = "";
-        iter->numericValue = value;
-    }
+    #ifdef __DEBUG
+        std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+    #endif
+    optionTmp.stringValue = "";
+    optionTmp.numericValue = value;    
+    iniOptions[key] = optionTmp;
 }
 
 /**
@@ -165,8 +136,9 @@ void Configuration::setValue(std::string key, float value) {
     \param deflt default option if not there or error
 */
 std::string Configuration::getValue(std::string key, std::string deflt) {
-    if(keyExists(key)) {
-        return iter->stringValue;
+    iter = iniOptions.find(key);
+    if(iter != iniOptions.end()) {
+        return iniOptions[key].stringValue;
     }
     return deflt;
 }
@@ -177,17 +149,9 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
     \param deflt default option if not there or error
 */
 float Configuration::getValue(std::string key, float deflt) {
-    if(keyExists(key)) {
-        return iter->numericValue;
+    iter = iniOptions.find(key);
+    if(iter != iniOptions.end()) {
+        return iniOptions[key].numericValue;
     }
     return deflt;
-}
-
-
-bool Configuration::keyExists(std::string key) {
-    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        if(iter->key == key)
-            return true;
-    }
-    return false;
 }

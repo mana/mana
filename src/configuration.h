@@ -25,7 +25,7 @@
 #define INI_DELIMITER "="
 #define INI_COMMENTER "#"
 
-#include <list>
+#include <map>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -50,13 +50,12 @@ class Configuration {
         bool        keyExists(std::string);
 
         typedef struct INI_OPTION {
-            std::string key;
             std::string stringValue;
             float       numericValue;
         };
 
-        std::list<INI_OPTION> iniOptions;
-        std::list<INI_OPTION>::iterator iter;
+        std::map<std::string, INI_OPTION> iniOptions;
+        std::map<std::string, INI_OPTION>::iterator iter;
 };
 
 #endif
