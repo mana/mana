@@ -211,8 +211,13 @@ Image* Image::load(const char* buffer, const unsigned int bufferSize)
 
     // Now free the SDL_RWops data
     //SDL_FreeRW(rw);
-
+    
+#ifndef USE_OPENGL
     return new Image(texture);
+#else
+    return new Image(0, 0, 0, 0, 0);
+    // Warning: need implementation to use with OpenGL
+#endif
 }
 
 void Image::unload()

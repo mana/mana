@@ -7,7 +7,7 @@ Timespan: 0.75 hours (21:00-21:45 GMT+1)
 
 
 * We agreed to try a monthly release schedule. So with 0.0.9 released on 30th
-  of Januari, 0.0.10 is scheduled by the end of this month, with the next
+  of January, 0.0.10 is scheduled by the end of this month, with the next
   version the month after that, etc. This should remove any doubt about when
   the next release is from both team members and players.
 
