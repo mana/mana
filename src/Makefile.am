@@ -12,6 +12,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/confirm_dialog.cpp \
 	gui/gui.cpp \
 	gui/inventory.cpp \
+	gui/itemcontainer.cpp \
 	gui/listbox.cpp \
 	gui/login.cpp \
 	gui/npc.cpp \

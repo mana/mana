@@ -70,7 +70,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         /**
          * Destructor.
          */
-        virtual ~Window();
+        ~Window();
 
         /**
          * Sets the window container to be used by new windows.
