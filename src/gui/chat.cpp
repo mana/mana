@@ -50,7 +50,7 @@ void Chat::chat_dlgrsize(int) {
 
 /*
  * Adds a line of text to our message list. Parameters:
- * 
+ *
  * line: message text
  * own:  type of message (usually the owner-type)
  * font: font that'll be used to draw the text later
@@ -115,7 +115,7 @@ void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
  * BITMAP * bmp: Allegro type bitmap buffer to draw onto
  * int n: number of lines to be drawn
  * ALFONT_FONT * font: font to use
- * 
+ *
  * NOTE:
  * take great care using this, make sure the buffer passed is
  * empty! ;-) anyway, line wrapping is not supported yet.
@@ -178,7 +178,7 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
  * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
  */
 char * Chat::chat_send(std::string nick, std::string msg) {
-    short packid;
+    short packid = 0x008c;
 
     // prepare command
     if(msg.substr(0,1)=="/") {
@@ -186,9 +186,6 @@ char * Chat::chat_send(std::string nick, std::string msg) {
         if(msg.substr(0,IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
             msg.erase(0,IS_ANNOUNCE_LENGTH);
             packid = 0x0099;
-        } else if(msg.substr(0,IS_WHERE_LENGTH) == IS_WHERE) {
-        } else {
-            packid = 0x008c;
         }
         // prepare ordinary message
     } else {
