@@ -398,8 +398,8 @@ void do_graphic(void) {
             int mf = node->frame + node->action;
 
             if (node->action == MONSTER_DEAD) {
-                new_monsterset->spriteset[sprnum * MONSTER_DEAD]->draw(vbuffer,
-                        node->text_x, node->text_y);
+                new_monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(
+                        vbuffer, node->text_x, node->text_y);
             }
             else {
                 new_monsterset->spriteset[sprnum + 8 * mf]->draw(vbuffer,

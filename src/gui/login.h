@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _TMW_LOGIN_H
+#define _TMW_LOGIN_H 
+
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-
-#ifndef _LOGIN_H
-#define _LOGIN_H 
 
 #include "../main.h"
 #include "../log.h"
@@ -43,7 +43,16 @@
  */
 class LoginDialog : public Window, public gcn::ActionListener {
     public:
+        /**
+         * Constructor
+         *
+         * @see Window::Window
+         */
         LoginDialog(gcn::Container *parent);
+
+        /**
+         * Destructor
+         */
         ~LoginDialog();
 
         /**

@@ -52,7 +52,16 @@ class ServerListModel : public gcn::ListModel {
  */
 class ServerSelectDialog : public Window, public gcn::ActionListener {
     public:
+        /**
+         * Constructor
+         *
+         * @see Window::Window
+         */
         ServerSelectDialog(gcn::Container *parent);
+
+        /**
+         * Destructor
+         */
         ~ServerSelectDialog();
 
         /**
