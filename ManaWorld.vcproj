@@ -84,6 +84,7 @@
 				OutputFile="The Mana World.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
