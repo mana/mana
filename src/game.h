@@ -35,7 +35,7 @@
 #include "./gui/gui.h"
 #include "./gui/skill.h"
 #include "./gui/stats.h"
-#include "./graphic/super_eagle.h"
+#include "./graphic/2xsai.h"
 
 #define SPEECH_TIME 40
 #define EMOTION_TIME 40

@@ -41,7 +41,7 @@
 #include "./gui/char_server.h"
 #include "./gui/char_select.h"
 #include "./gui/inventory.h"
-#include "./graphic/super_eagle.h"
+#include "./graphic/2xsai.h"
 #include "../data/graphic/gfx_data.h"
 
 #define EXIT        0

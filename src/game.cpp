@@ -34,7 +34,6 @@
 #include "./gui/gui.h"
 #include "./gui/inventory.h"
 #include "./gui/shop.h"
-#include "./graphic/super_eagle.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
 
