@@ -102,12 +102,12 @@ char hairtable[14][4][2] = {
     { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} } // SIT
 };
 
-int get_x_offset(NODE *node) {
+int get_x_offset(Being *being) {
     int offset = 0;
-    char direction = get_direction(node->coordinates);
-    if (node->action == WALK) {
+    char direction = being->direction;
+    if (being->action == WALK) {
         if (direction != NORTH && direction != SOUTH) {
-            offset = node->frame + 1;
+            offset = being->frame + 1;
             if (offset == 5)offset = 0;
             offset *= 8;
             if (direction == WEST || direction == NW || direction == SW) {
@@ -119,12 +119,12 @@ int get_x_offset(NODE *node) {
     return offset;
 }
 
-int get_y_offset(NODE *node) {
+int get_y_offset(Being *being) {
     int offset = 0;
-    char direction = get_direction(node->coordinates);
-    if (node->action == WALK) {
+    char direction = being->direction;
+    if (being->action == WALK) {
         if (direction != EAST && direction != WEST) {
-            offset = node->frame + 1;
+            offset = being->frame + 1;
             if (offset == 5) offset = 0;
             offset *= 8;
             if (direction == NORTH || direction == NW || direction == NE) {
@@ -235,9 +235,9 @@ GraphicEngine::~GraphicEngine() {
 }
 
 void GraphicEngine::refresh() {
-    map_x = (get_x(player_node->coordinates) - 13) * 32 +
+    map_x = (player_node->x - 13) * 32 +
         get_x_offset(player_node);
-    map_y = (get_y(player_node->coordinates) - 9) * 32 +
+    map_y = (player_node->y - 9) * 32 +
         get_y_offset(player_node);
 
     camera_x = map_x >> 5;
@@ -269,106 +269,106 @@ void GraphicEngine::refresh() {
     }
         
     // Draw nodes
-    std::list<NODE*>::iterator beingIterator = beings.begin();
+    std::list<Being*>::iterator beingIterator = beings.begin();
     while (beingIterator != beings.end()) {
-        NODE *node = (*beingIterator);
+        Being *being = (*beingIterator);
 
-        unsigned short x = get_x(node->coordinates);
-        unsigned short y = get_y(node->coordinates);
-        unsigned char dir = get_direction(node->coordinates) / 2;
+        unsigned short x = being->x;
+        unsigned short y = being->y;
+        unsigned char dir = being->direction / 2;
         int sx = x - camera_x;
         int sy = y - camera_y;
     
 #ifdef DEBUG
-        textprintf_ex(buffer, font, sx*32, sy*32+40, makecol(255, 255, 255), -1, "%i,%i | %i", x, y, node->frame);
+        textprintf_ex(buffer, font, sx*32, sy*32+40, makecol(255, 255, 255), -1, "%i,%i | %i", x, y, being->frame);
         rect(buffer, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
 #endif
         
-        if ((node->job >= 100) && (node->job <= 110)) { // Draw a NPC
-            npcset->spriteset[4 * (node->job - 100) + dir]->draw(buffer,
+        if ((being->job >= 100) && (being->job <= 110)) { // Draw a NPC
+            npcset->spriteset[4 * (being->job - 100) + dir]->draw(buffer,
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
-        else if (node->job < 10) { // Draw a player
-            node->text_x = sx * 32 + get_x_offset(node) - offset_x;
-            node->text_y = sy * 32 + get_y_offset(node) - offset_y;
-            int hf = node->hair_color - 1 + 10 * (dir + 4 *
-                    (node->hair_style - 1));
+        else if (being->job < 10) { // Draw a player
+            being->text_x = sx * 32 + get_x_offset(being) - offset_x;
+            being->text_y = sy * 32 + get_y_offset(being) - offset_y;
+            int hf = being->hair_color - 1 + 10 * (dir + 4 *
+                    (being->hair_style - 1));
             
-            if (node->action == SIT) node->frame = 0;
-            if (node->action == ATTACK) {
-                int pf = node->frame + node->action + 4 * node->weapon;
+            if (being->action == SIT) being->frame = 0;
+            if (being->action == ATTACK) {
+                int pf = being->frame + being->action + 4 * being->weapon;
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
-                        node->text_x - 64, node->text_y - 80);
+                        being->text_x - 64, being->text_y - 80);
                 hairset->spriteset[hf]->draw(buffer,
-                        node->text_x - 2 + 2 * hairtable[pf][dir][0],
-                        node->text_y - 50 + 2 * hairtable[pf][dir][1]);
+                        being->text_x - 2 + 2 * hairtable[pf][dir][0],
+                        being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
             else {
-                int pf = node->frame + node->action;
+                int pf = being->frame + being->action;
 
                 playerset->spriteset[4 * pf + dir]->draw(buffer,
-                        node->text_x - 64, node->text_y - 80);
+                        being->text_x - 64, being->text_y - 80);
                 hairset->spriteset[hf]->draw(buffer,
-                        node->text_x - 2 + 2 * hairtable[pf][dir][0],
-                        node->text_y - 50 + 2 * hairtable[pf][dir][1]);
+                        being->text_x - 2 + 2 * hairtable[pf][dir][0],
+                        being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
-            if (node->emotion != 0) {
-                emotionset->spriteset[node->emotion - 1]->draw(buffer,
-                        sx * 32 - 5 + get_x_offset(node) - offset_x,
-                        sy * 32 - 45 + get_y_offset(node) - offset_y);
-                node->emotion_time--;
-                if (node->emotion_time == 0) {
-                    node->emotion = 0;
+            if (being->emotion != 0) {
+                emotionset->spriteset[being->emotion - 1]->draw(buffer,
+                        sx * 32 - 5 + get_x_offset(being) - offset_x,
+                        sy * 32 - 45 + get_y_offset(being) - offset_y);
+                being->emotion_time--;
+                if (being->emotion_time == 0) {
+                    being->emotion = 0;
                 }
             }
-            if (node->action != STAND && node->action != SIT) {
-                node->frame =
-                    (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+            if (being->action != STAND && being->action != SIT) {
+                being->frame =
+                    (get_elapsed_time(being->tick_time) * 4) / (being->speed);
 
-                if (node->frame >= 4) {
-                    node->frame = 0;
-                    node->action = STAND;
-                    if (node->id == player_node->id) {
+                if (being->frame >= 4) {
+                    being->frame = 0;
+                    being->action = STAND;
+                    if (being->id == player_node->id) {
                         walk_status = 0;
                     }
                 }
             }
         }
-        else if (node->job == 45) { // Draw a warp
+        else if (being->job == 45) { // Draw a warp
         } else { // Draw a monster
-            if (node->frame >= 4)
-                node->frame = 3;
+            if (being->frame >= 4)
+                being->frame = 3;
 
-            node->text_x = sx * 32 - 42 + get_x_offset(node) - offset_x;
-            node->text_y = sy * 32 - 65 + get_y_offset(node) - offset_y;
+            being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
+            being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
 
-            int sprnum = dir + 4 * (node->job - 1002);
-            int mf = node->frame + node->action;
+            int sprnum = dir + 4 * (being->job - 1002);
+            int mf = being->frame + being->action;
 
-            if (node->action == MONSTER_DEAD) {
+            if (being->action == MONSTER_DEAD) {
                 monsterset->spriteset[sprnum + 8 * MONSTER_DEAD]->draw(buffer,
-                        node->text_x + 30, node->text_y + 40);
+                        being->text_x + 30, being->text_y + 40);
             }
             else {
                 monsterset->spriteset[sprnum + 8 * mf]->draw(buffer,
-                        node->text_x + 30, node->text_y + 40);
+                        being->text_x + 30, being->text_y + 40);
             }
 
-            if (node->action != STAND) {
-                node->frame =
-                    (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+            if (being->action != STAND) {
+                being->frame =
+                    (get_elapsed_time(being->tick_time) * 4) / (being->speed);
 
-                if (node->frame >= 4) {
-                    if (node->action != MONSTER_DEAD && node->path) {
-                        if (node->path->next) {
+                if (being->frame >= 4) {
+                    if (being->action != MONSTER_DEAD && being->path) {
+                        if (being->path->next) {
                             int old_x, old_y, new_x, new_y;
-                            old_x = node->path->x;
-                            old_y = node->path->y;
-                            node->path = node->path->next;
-                            new_x = node->path->x;
-                            new_y = node->path->y;
+                            old_x = being->path->x;
+                            old_y = being->path->y;
+                            being->path = being->path->next;
+                            new_x = being->path->x;
+                            new_y = being->path->y;
                             direction = 0;
 
                             if (new_x > old_x) {
@@ -386,30 +386,31 @@ void GraphicEngine::refresh() {
                                 else if (new_y < old_y) direction = NORTH;
                             }
 
-                            set_coordinates(node->coordinates,
-                                    node->path->x, node->path->y, direction);
+                            being->x = being->path->x;
+                            being->y = being->path->y;
+                            being->direction = direction;
                         } else {
-                            node->action = STAND;
+                            being->action = STAND;
                         }
-                        if (node->action != MONSTER_DEAD) {
-                            node->frame = 0;
+                        if (being->action != MONSTER_DEAD) {
+                            being->frame = 0;
                         }
-                        node->tick_time = tick_time;
-                        //node->frame = 0;
+                        being->tick_time = tick_time;
+                        //being->frame = 0;
                     }
                 }
             }
         }
         
-        if (node->action == MONSTER_DEAD && node->frame >= 20) {
-            delete node;
+        if (being->action == MONSTER_DEAD && being->frame >= 20) {
+            delete being;
             beingIterator = beings.erase(beingIterator);
         }
         else {
             beingIterator++;
         }
 
-        // nodes are ordered so if the next node y is > then the
+        // nodes are ordered so if the next being y is > then the
         // last drawed for fringe layer, draw the missing lines
     }
 
@@ -433,28 +434,28 @@ void GraphicEngine::refresh() {
     // Draw player speech
     beingIterator = beings.begin();
     while (beingIterator != beings.end()) {
-        NODE *node = (*beingIterator);
+        Being *being = (*beingIterator);
 
-        if (node->speech != NULL) {
-            if (node->speech_color == makecol(255, 255, 255)) {
+        if (being->speech != NULL) {
+            if (being->speech_color == makecol(255, 255, 255)) {
                 textprintf_centre_ex(buffer, font,
-                        node->text_x,
-                        node->text_y - 60,
-                        node->speech_color, -1,
-                        "%s", node->speech);
+                        being->text_x,
+                        being->text_y - 60,
+                        being->speech_color, -1,
+                        "%s", being->speech);
             }
             else {
                 textprintf_centre_ex(buffer, font,
-                        node->text_x + 60,
-                        node->text_y,
-                        node->speech_color, -1,
-                        "%s", node->speech);
+                        being->text_x + 60,
+                        being->text_y,
+                        being->speech_color, -1,
+                        "%s", being->speech);
             }
 
-            node->speech_time--;
-            if (node->speech_time == 0) {
-                free(node->speech);
-                node->speech = NULL;
+            being->speech_time--;
+            if (being->speech_time == 0) {
+                free(being->speech);
+                being->speech = NULL;
             }
         }
 

@@ -24,11 +24,11 @@
 #include <stdio.h>
 
 #include "astar.h"
-#include "being.h"
+#include "Being.h"
 
-NODE *player_node = NULL;
+Being *player_node = NULL;
 
-std::list<NODE*> beings;
+std::list<Being *> beings;
 
 
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
@@ -45,7 +45,7 @@ PATH_NODE *calculate_path(
     return find_path(1, src_x, src_y, dest_x, dest_y);
 }
 
-NODE::NODE():
+/*Being::Being():
     id(0), job(0),
     action(0), frame(0),
     path(NULL),
@@ -58,22 +58,22 @@ NODE::NODE():
 {
     memset(coordinates, 0, 3);
     speech_color = makecol(0, 0, 0);
-}
+}*/
 
 void empty() {
-    std::list<NODE*>::iterator i;
+    std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         delete (*i);
     }
     beings.clear();
 }
 
-void add_node(NODE *node) {
-    beings.push_back(node);
+void add_node(Being *Being) {
+    beings.push_back(Being);
 }
 
 void remove_node(unsigned int id) {
-    std::list<NODE*>::iterator i;
+    std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         if ((*i)->id == id) {
             delete (*i);
@@ -84,41 +84,40 @@ void remove_node(unsigned int id) {
 }
 
 unsigned int find_npc(unsigned short x, unsigned short y) {
-    std::list<NODE*>::iterator i;
+    std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
-        NODE *node = (*i);
+        Being *being = (*i);
         // Check if is a NPC (only low job ids)
-        if (node->job >= 46 && node->job <= 125 &&
-                get_x(node->coordinates) == x &&
-                get_y(node->coordinates) == y)
+        if (being->job >= 46 && being->job <= 125 &&
+                being->x == x && being->y == y)
         {
-            return node->id;
+            return being->id;
         }
     }
     return 0;
 }
 
 unsigned int find_monster(unsigned short x, unsigned short y) {
-    std::list<NODE*>::iterator i;
+    std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
-        NODE *node = (*i);
+        Being *being = (*i);
         // Check if is a MONSTER
-        if (node->job > 200 &&
-                get_x(node->coordinates) == x &&
-                get_y(node->coordinates) == y)
+        if (being->job > 200 &&
+                being->x == x &&
+                being->y == y)
         {
-            return node->id;
+            return being->id;
         }
     }
     return 0;
 }
 
-NODE *find_node(unsigned int id) {
-    std::list<NODE*>::iterator i;
+Being *find_node(unsigned int id) {
+    std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
-        NODE *node = (*i);
-        if (node->id == id) {
-            return node;
+        Being *Being = (*i);
+        if (Being->id == id) {
+            return Being;
         }
     }
     return NULL;
@@ -126,8 +125,8 @@ NODE *find_node(unsigned int id) {
 
 class NODE_Compare {
     public:
-        bool operator() (const NODE *a, const NODE *b) const {
-            return get_y(a->coordinates) < get_y(b->coordinates);
+        bool operator() (const Being *a, const Being *b) const {
+            return a->y < b->y;
         }
 };
 
@@ -135,16 +134,16 @@ void sort() {
     beings.sort(NODE_Compare());
 }
 
-void empty_path(NODE *node) {
-    if (node) {
-        PATH_NODE *temp = node->path;
+void empty_path(Being *Being) {
+    if (Being) {
+        PATH_NODE *temp = Being->path;
         PATH_NODE *next;
         while (temp) {
             next = temp->next;
             delete temp;
             temp = next;
         }
-        node->path = NULL;
+        Being->path = NULL;
     }
 }
 

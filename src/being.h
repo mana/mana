@@ -67,41 +67,16 @@ class Being {
         Being::~Being();       
 };
 
-struct NODE {
-    /**
-     * Constructor.
-     */
-    NODE();
-
-    unsigned int id;
-    short job;
-    char coordinates[3];
-    unsigned char type;
-    unsigned char action;
-    unsigned char frame;
-    PATH_NODE *path;
-    char *speech;
-    unsigned char speech_time;
-    int speech_color;
-    short tick_time;
-    short speed;
-    unsigned char emotion;
-    unsigned char emotion_time;
-    int text_x, text_y; // temp solution to fix speech position
-    short hair_style, hair_color;
-    short weapon;
-};
-
 /** Removes all beings from the list */
 void empty();
 
-/** Add a node to the list */
-void add_node(NODE *node);
+/** Add a Being to the list */
+void add_node(Being *Being);
 
-/** Return a specific id node */
-NODE *find_node(unsigned int id);
+/** Return a specific id Being */
+Being *find_node(unsigned int id);
 
-/** Remove a node */
+/** Remove a Being */
 void remove_node(unsigned int id);
 
 PATH_NODE *calculate_path(
@@ -118,10 +93,10 @@ unsigned int find_monster(unsigned short x, unsigned short y);
 void sort();
 
 /** Remove all path nodes from a being */
-void empty_path(NODE *node);
+void empty_path(Being *Being);
 
-extern NODE *player_node;
+extern Being *player_node;
 
-extern std::list<NODE*> beings;
+extern std::list<Being*> beings;
 
 #endif

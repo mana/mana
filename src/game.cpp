@@ -172,10 +172,12 @@ void do_init() {
 
     // Initialize beings
     empty();
-    player_node = new NODE();
+    player_node = new Being();
     player_node->id = account_ID;
     player_node->type = ACTION_NODE;
-    set_coordinates(player_node->coordinates, x, y, 0);
+    player_node->x = x;
+    player_node->y = y;
+    //set_coordinates(player_node->coordinates, x, y, 0);
     player_node->speed = 150;
     player_node->hair_color = char_info->hair_color;
     player_node->hair_style = char_info->hair_style;
@@ -193,8 +195,8 @@ void do_exit() {
 
 void do_input() {
     if (walk_status == 0) {
-        int x = get_x(player_node->coordinates);
-        int y = get_y(player_node->coordinates);
+        int x = player_node->x;
+        int y = player_node->y;
 
         if (key[KEY_8_PAD] || key[KEY_UP]) {
             if (get_walk(x, y - 1) != 0) {
@@ -204,8 +206,9 @@ void do_input() {
                 src_y = y;
                 player_node->action = WALK;
                 player_node->tick_time = tick_time;
-                set_coordinates(player_node->coordinates, x, y - 1, NORTH);
-            } else set_coordinates(player_node->coordinates, x, y, NORTH);
+                player_node->y = y - 1;
+                player_node->direction = NORTH;
+            } else player_node->direction = NORTH;
         } else if (key[KEY_2_PAD] || key[KEY_DOWN]) {
             if(get_walk(x, y + 1) != 0) {
                 walk(x, y + 1, SOUTH);
@@ -214,8 +217,9 @@ void do_input() {
                 src_y = y;
                 player_node->action = WALK;
                 player_node->tick_time = tick_time;
-                set_coordinates(player_node->coordinates, x, y + 1, SOUTH);
-            } else set_coordinates(player_node->coordinates, x, y, SOUTH);
+                player_node->y = y + 1;
+                player_node->direction = SOUTH;
+            } else player_node->direction = SOUTH;
         } else if (key[KEY_4_PAD] || key[KEY_LEFT]) {
             if (get_walk(x - 1, y) != 0) {
                 walk(x - 1, y, WEST);
@@ -224,8 +228,9 @@ void do_input() {
                 src_y = y;
                 player_node->action = WALK;
                 player_node->tick_time = tick_time;
-                set_coordinates(player_node->coordinates, x - 1, y, WEST);
-            } else set_coordinates(player_node->coordinates, x, y, WEST);
+                player_node->x = x - 1;
+                player_node->direction = WEST;
+            } else player_node->direction = WEST;
         } else if (key[KEY_6_PAD] || key[KEY_RIGHT]) {
             if (get_walk(x + 1, y) != 0) {
                 walk(x + 1, y, EAST);
@@ -234,17 +239,18 @@ void do_input() {
                 src_y = y;
                 player_node->action = WALK;
                 player_node->tick_time = tick_time;
-                set_coordinates(player_node->coordinates, x + 1, y, EAST);
-            } else set_coordinates(player_node->coordinates, x, y, EAST);
+                player_node->x = x + 1;
+                player_node->direction = EAST;
+            } else player_node->direction = EAST;
         }
     }
 
     if (player_node->action == STAND) {
         if (key[KEY_LCONTROL]) {
             player_node->action = ATTACK;
-            attack(get_x(player_node->coordinates),
-                    get_y(player_node->coordinates),
-                    get_direction(player_node->coordinates));
+            attack(player_node->x,
+                    player_node->y,
+                    player_node->direction);
             player_node->tick_time = tick_time;
         }
     }
@@ -353,7 +359,7 @@ void do_parse() {
     unsigned short id;
     char *temp;
     char direction;
-    NODE *node = NULL;
+    Being *being = NULL;
     PATH_NODE *pn;
     int len;
 
@@ -388,17 +394,17 @@ void do_parse() {
                     temp = (char *)malloc(RFIFOW(2)-7);
                     memset(temp, '\0', RFIFOW(2)-7);
                     memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
-                    node = find_node(RFIFOL(4));
-                    if(node!=NULL) {
-                        if(node->speech!=NULL) {
-                            free(node->speech);
-                            node->speech = NULL;
-                            node->speech_time = 0;
+                    being = find_node(RFIFOL(4));
+                    if(being!=NULL) {
+                        if(being->speech!=NULL) {
+                            free(being->speech);
+                            being->speech = NULL;
+                            being->speech_time = 0;
                         }
-                        node->speech = temp;
-                        node->speech_time = SPEECH_TIME;
-                        node->speech_color = makecol(255, 255, 255);
-                        chatlog.chat_log(node->speech, BY_OTHER, font);
+                        being->speech = temp;
+                        being->speech_time = SPEECH_TIME;
+                        being->speech_color = makecol(255, 255, 255);
+                        chatlog.chat_log(being->speech, BY_OTHER, font);
                     }
                     break;
                 case 0x008e:
@@ -436,38 +442,42 @@ void do_parse() {
                     // Add new being / stop monster
                 case 0x0078:
                     if (find_node(RFIFOL(2)) == NULL) {
-                        node = new NODE();
-                        node->id = RFIFOL(2);
-                        node->speed = RFIFOW(6);
-                        if(node->speed==0) {
-                            node->speed = 150; // Else division by 0 when calculating frame
+                        being = new Being();
+                        being->id = RFIFOL(2);
+                        being->speed = RFIFOW(6);
+                        if(being->speed==0) {
+                            being->speed = 150; // Else division by 0 when calculating frame
                         }
-                        node->job = RFIFOW(14);
-                        empty_path(node);
-                        memcpy(node->coordinates, RFIFOP(46), 3);
-                        node->hair_color = RFIFOW(28);
-                        node->hair_style = RFIFOW(16);
-                        add_node(node);
+                        being->job = RFIFOW(14);
+                        empty_path(being);
+                        being->x = get_x(RFIFOP(46));
+                        being->y = get_y(RFIFOP(46));
+                        being->direction = get_direction(RFIFOP(46));
+                        being->hair_color = RFIFOW(28);
+                        being->hair_style = RFIFOW(16);
+                        add_node(being);
                     }
                     else {
-                        if (node) {
-                            empty_path(node);
-                            memcpy(node->coordinates, RFIFOP(46), 3);
-                            node->frame = 0;
-                            node->tick_time = tick_time;
-                            node->action = STAND;
+                        if (being) {
+                            empty_path(being);
+                            being->x = get_x(RFIFOP(46));
+                            being->y = get_y(RFIFOP(46));
+                            being->direction = get_direction(RFIFOP(46));
+                            being->frame = 0;
+                            being->tick_time = tick_time;
+                            being->action = STAND;
                         }
                     }
                     break;
                     // Remove a being
                 case 0x0080:
-                    node = find_node(RFIFOL(2));
-                    if (node != NULL) {
+                    being = find_node(RFIFOL(2));
+                    if (being != NULL) {
                         if(RFIFOB(6)==1) { // Death
-                            if(node->job>110) {
-                                node->action = MONSTER_DEAD;
-                                node->frame = 0;
-                                node->tick_time = tick_time;
+                            if(being->job>110) {
+                                being->action = MONSTER_DEAD;
+                                being->frame = 0;
+                                being->tick_time = tick_time;
                             }
                             else remove_node(RFIFOL(2));
                         }
@@ -477,80 +487,87 @@ void do_parse() {
                     // Player moving
                 case 0x01d8:
                 case 0x01d9:
-                    node = find_node(RFIFOL(2));
-                    if (node == NULL) {
-                        node = new NODE();
-                        node->id = RFIFOL(2);
-                        node->job = RFIFOW(14);
-                        memcpy(node->coordinates, RFIFOP(46), 3);
-                        add_node(node);
-                        node->tick_time = tick_time;
-                        node->frame = 0;
-                        node->speed = RFIFOW(6);
-                        node->hair_color = RFIFOW(28);
-                        node->hair_style = RFIFOW(16);
+                    being = find_node(RFIFOL(2));
+                    if (being == NULL) {
+                        being = new Being();
+                        being->id = RFIFOL(2);
+                        being->job = RFIFOW(14);
+                        being->x = get_x(RFIFOP(46));
+                        being->y = get_y(RFIFOP(46));
+                        being->direction = get_direction(RFIFOP(46));
+                        add_node(being);
+                        being->tick_time = tick_time;
+                        being->frame = 0;
+                        being->speed = RFIFOW(6);
+                        being->hair_color = RFIFOW(28);
+                        being->hair_style = RFIFOW(16);
                     }
                     break;
                     // Monster moving
                 case 0x007b:
                     //case 0x01da:
-                    node = find_node(RFIFOL(2));
-                    if(node==NULL) {
-                        node = new NODE();
-                        node->action = STAND;
-                        set_coordinates(node->coordinates,
-                                get_src_x(RFIFOP(50)),
-                                get_src_y(RFIFOP(50)), 0);
-                        node->id = RFIFOL(2);
-                        node->speed = RFIFOW(6);
-                        node->job = RFIFOW(14);
-                        add_node(node);
+                    being = find_node(RFIFOL(2));
+                    if(being==NULL) {
+                        being = new Being();
+                        being->action = STAND;
+                        being->x = get_src_x(RFIFOP(50));
+                        being->y = get_src_y(RFIFOP(50));
+                        being->direction = 0;
+                        being->id = RFIFOL(2);
+                        being->speed = RFIFOW(6);
+                        being->job = RFIFOW(14);
+                        add_node(being);
                     }
-                    empty_path(node);
-                    node->path = calculate_path(get_src_x(RFIFOP(50)),
+                    empty_path(being);
+                    being->path = calculate_path(get_src_x(RFIFOP(50)),
                             get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),
                             get_dest_y(RFIFOP(50)));
-                    if(node->path!=NULL) {
+                    if(being->path!=NULL) {
                         direction = 0;
-                        if(node->path->next) {
-                            if(node->path->next->x>node->path->x && node->path->next->y>node->path->y)direction = SE;
-                            else if(node->path->next->x<node->path->x && node->path->next->y>node->path->y)direction = SW;
-                            else if(node->path->next->x>node->path->x && node->path->next->y<node->path->y)direction = NE;
-                            else if(node->path->next->x<node->path->x && node->path->next->y<node->path->y)direction = NW;
-                            else if(node->path->next->x>node->path->x)direction = EAST;
-                            else if(node->path->next->x<node->path->x)direction = WEST;
-                            else if(node->path->next->y>node->path->y)direction = SOUTH;
-                            else if(node->path->next->y<node->path->y)direction = NORTH;
+                        if(being->path->next) {
+                            if(being->path->next->x>being->path->x && being->path->next->y>being->path->y)direction = SE;
+                            else if(being->path->next->x<being->path->x && being->path->next->y>being->path->y)direction = SW;
+                            else if(being->path->next->x>being->path->x && being->path->next->y<being->path->y)direction = NE;
+                            else if(being->path->next->x<being->path->x && being->path->next->y<being->path->y)direction = NW;
+                            else if(being->path->next->x>being->path->x)direction = EAST;
+                            else if(being->path->next->x<being->path->x)direction = WEST;
+                            else if(being->path->next->y>being->path->y)direction = SOUTH;
+                            else if(being->path->next->y<being->path->y)direction = NORTH;
                         }
-                        pn = node->path;
-                        node->path = node->path->next;
+                        pn = being->path;
+                        being->path = being->path->next;
                         free(pn);
-                        set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
-                        node->action = WALK;
-                        node->tick_time = tick_time;
-                        node->frame = 0;
+                        being->x = being->path->x;
+                        being->y = being->path->y;
+                        being->direction = direction;
+                        being->action = WALK;
+                        being->tick_time = tick_time;
+                        being->frame = 0;
                     }
                     break;
                     // Being moving
                 case 0x01da:
-                    node = find_node(RFIFOL(2));
-                    if(node==NULL) {
-                        node = new NODE();
-                        node->id = RFIFOL(2);
-                        node->job = RFIFOW(14);
-                        set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
-                        add_node(node);
+                    being = find_node(RFIFOL(2));
+                    if(being==NULL) {
+                        being = new Being();
+                        being->id = RFIFOL(2);
+                        being->job = RFIFOW(14);
+                        being->x = get_src_x(RFIFOP(50));
+                        being->y = get_src_y(RFIFOP(50));
+                        add_node(being);
                     }
-                    if(node->action!=WALK) {
-                        direction = get_direction(node->coordinates);
-                        node->action = WALK;
-                        if(get_dest_x(RFIFOP(50))>get_x(node->coordinates))direction = EAST;
-                        else if(get_dest_x(RFIFOP(50))<get_x(node->coordinates))direction = WEST;
-                        else if(get_dest_y(RFIFOP(50))>get_y(node->coordinates))direction = SOUTH;
-                        else if(get_dest_y(RFIFOP(50))<get_y(node->coordinates))direction = NORTH;
-                        else node->action = STAND;
-                        if(node->action==WALK)node->tick_time = tick_time;
-                        set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
+                    if(being->action!=WALK) {
+                        direction = being->direction;
+                        being->action = WALK;
+                        if(get_dest_x(RFIFOP(50))>being->x)direction = EAST;
+                        else if(get_dest_x(RFIFOP(50))<being->x)direction = WEST;
+                        else if(get_dest_y(RFIFOP(50))>being->y)direction = SOUTH;
+                        else if(get_dest_y(RFIFOP(50))<being->y)direction = NORTH;
+                        else being->action = STAND;
+                        if(being->action==WALK)being->tick_time = tick_time;
+                        being->x = get_dest_x(RFIFOP(50));
+                        being->y = get_dest_y(RFIFOP(50));
+                        being->direction = direction;
                     }
                     break;
                     // NPC dialog
@@ -579,14 +596,15 @@ void do_parse() {
                     append_filename(map_path, "./data/map/", RFIFOP(2), 480);
                     if (load_map(map_path)) {
                         empty();
-                        player_node = new NODE();
+                        player_node = new Being();
                         player_node->job = 0;
                         player_node->action = STAND;
                         player_node->frame = 0;
                         player_node->type = ACTION_NODE;
                         player_node->speed = 150;
                         player_node->id = account_ID;
-                        set_coordinates(player_node->coordinates, RFIFOW(18), RFIFOW(20), 0);
+                        player_node->x = RFIFOW(18);
+                        player_node->y = RFIFOW(20);
                         add_node(player_node);
                         walk_status = 0;
                         // Send "map loaded"
@@ -660,14 +678,14 @@ void do_parse() {
                     break;
                     // Stop walking
                 case 0x0088:  // Disabled because giving some problems
-                    //if (node = find_node(RFIFOL(2))) {
-                    //    if (node->id!=player_node->id) {
+                    //if (being = find_node(RFIFOL(2))) {
+                    //    if (being->id!=player_node->id) {
                     //        char ids[20];
                     //        sprintf(ids,"%i",RFIFOL(2));
                     //        alert(ids,"","","","",0,0);
-                    //        node->action = STAND;
-                    //        node->frame = 0;
-                    //        set_coordinates(node->coordinates, RFIFOW(6), RFIFOW(8), get_direction(node->coordinates));
+                    //        being->action = STAND;
+                    //        being->frame = 0;
+                    //        set_coordinates(being->coordinates, RFIFOW(6), RFIFOW(8), get_direction(being->coordinates));
                     //    }
                     //}
                     //break;
@@ -675,53 +693,53 @@ void do_parse() {
                 case 0x008a:
                     switch (RFIFOB(26)) {
                         case 0: // Damage
-                            node = find_node(RFIFOL(6));
-                            if (node != NULL) {
-                                if (node->speech != NULL) {
-                                    free(node->speech);
-                                    node->speech = NULL;
-                                    //node->speech_time = SPEECH_TIME;
+                            being = find_node(RFIFOL(6));
+                            if(being!=NULL) {
+                                if(being->speech!=NULL) {
+                                    free(being->speech);
+                                    being->speech = NULL;
+                                    //being->speech_time = SPEECH_TIME;
                                 }
-                                node->speech = (char *)malloc(5);
-                                memset(node->speech, '\0', 5);
+                                being->speech = (char *)malloc(5);
+                                memset(being->speech, '\0', 5);
                                 if(RFIFOW(22)==0) {
-                                    sprintf(node->speech, "miss");
-                                    node->speech_color = makecol(255, 255, 0);
+                                    sprintf(being->speech, "miss");
+                                    being->speech_color = makecol(255, 255, 0);
                                 } else {
-                                    sprintf(node->speech, "%i", RFIFOW(22));
-                                    if (node->id != player_node->id) {
-                                        node->speech_color = makecol(0,0,255);
+                                    sprintf(being->speech, "%i", RFIFOW(22));
+                                    if (being->id != player_node->id) {
+                                        being->speech_color = makecol(0,0,255);
                                     }
                                     else {
-                                        node->speech_color = makecol(255,0,0);
+                                        being->speech_color = makecol(255,0,0);
                                     }
                                 }
-                                node->speech_time = SPEECH_TIME;
+                                being->speech_time = SPEECH_TIME;
                                 if (RFIFOL(2) != player_node->id) { // buggy
-                                    node = find_node(RFIFOL(2));
-                                    if (node != NULL) {
-                                        if (node->job<10) {
-                                            node->action = ATTACK;
+                                    being = find_node(RFIFOL(2));
+                                    if (being != NULL) {
+                                        if (being->job<10) {
+                                            being->action = ATTACK;
                                         }
                                         else {
-                                            node->action = MONSTER_ATTACK;
+                                            being->action = MONSTER_ATTACK;
                                         }
-                                        node->frame = 0;
+                                        being->frame = 0;
                                     }
                                 }
                             }
                             break;
                         case 2: // Sit
                         case 3: // Stand up
-                            node = find_node(RFIFOL(2));
-                            if (node != NULL) {
-                                node->frame = 0;
+                            being = find_node(RFIFOL(2));
+                            if (being != NULL) {
+                                being->frame = 0;
                                 if (RFIFOB(26) == 2) {
-                                    node->action = SIT;
+                                    being->action = SIT;
                                     walk_status = 0;
                                 }
                                 else if (RFIFOB(26) == 3) {
-                                    node->action = STAND;
+                                    being->action = STAND;
                                 }
                             }
                             break;
@@ -760,10 +778,10 @@ void do_parse() {
                     break;
                     // Emotion
                 case 0x00c0:
-                    node = find_node(RFIFOL(2));
-                    if(node) {
-                        node->emotion = RFIFOB(6);
-                        node->emotion_time = EMOTION_TIME;
+                    being = find_node(RFIFOL(2));
+                    if(being) {
+                        being->emotion = RFIFOB(6);
+                        being->emotion_time = EMOTION_TIME;
                     }
                     break;
                     // Update skill values
@@ -916,14 +934,14 @@ void do_parse() {
                 case 0x00c3:
                     // Change hair color
                     if (RFIFOB(6) == 6) {
-                        node = find_node(RFIFOL(2));
-                        node->hair_color = RFIFOB(7);
+                        being = find_node(RFIFOL(2));
+                        being->hair_color = RFIFOB(7);
                         //char prova[100];
                         //sprintf(prova, "%i %i %i", RFIFOL(2), RFIFOB(6), RFIFOB(7));
                         //alert(prova,"","","","",0,0);
                     } else if (RFIFOB(6) == 1) {
-                        node = find_node(RFIFOL(2));
-                        node->hair_style = RFIFOB(7);
+                        being = find_node(RFIFOL(2));
+                        being->hair_style = RFIFOB(7);
                     }
                     break;
                 case 0x00a4:
