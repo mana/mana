@@ -216,6 +216,15 @@ void init_engine()
         exit(1);
     }
 
+    char videoDriverName[64];
+
+    if (SDL_VideoDriverName(videoDriverName, 64)) {
+        log("Using video driver: %s", videoDriverName);
+    }
+    else {
+        log("Using video driver: unkown");
+    }
+
 #ifdef USE_OPENGL
     // Setup OpenGL
     glViewport(0, 0, 800, 600);

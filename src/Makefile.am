@@ -118,4 +118,4 @@ INCLUDES= $(all_includes)
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan_sdl -lguichan `pkg-config --libs libxml-2.0`
 tmw_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` -fno-inline
 tmw_LDADD = $(LIBSDL_LIBS) -lguichan_opengl -lguichan -lGL -lphysfs
-tmw_TARGET = ../tmw
+tmw_TARGET = tmw
