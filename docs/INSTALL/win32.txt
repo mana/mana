@@ -25,10 +25,10 @@ doing, so best stick with Dev-C++.
 
 Besides a C++ compiler, TMW depends on the following libraries:
 
-1) Allegro 4.1.x
+1) Allegro 4.1.17
 2) Alfont  1.91
 3) JGmod 0.99
-4) Guichan 0.1.0
+4) Guichan 0.2.0
 
 
 2. Installing Dev-C++
@@ -49,15 +49,20 @@ After you fetched it simply run and install.
 All the libs have DevPaks that are very easy drop-ins for Dev-C++, without any
 complex actions on your side.
 
+Because Guichan can work with SDL as well as Allegro, and because we plan to
+switch to SDL anyway, we'll install SDL and SDL_image too, even though TMW
+doesn't require them at this time.
+
 Get the following list of DevPaks:
 
 - Allegro       (http://devpaks.org/show.php?devpak=2)
 - AllegroFont   (http://devpaks.org/show.php?devpak=88)
 - JGMOD         (http://devpaks.org/show.php?devpak=121)
-- Guichan       (http://sull.homelinux.net/~ardaen/guichan.DevPak)
+- SDL           (http://devpaks.org/show.php?devpak=57)
+- SDL_image     (http://devpaks.org/show.php?devpak=25)
+- Guichan       (http://guichan.darkbits.org/downloads/guichan.DevPak)
 
-Install them all through the Dev-C++ package manager. Special thanks to Ardaen
-for providing us with a static DevPak for Guichan.
+Install them all through the Dev-C++ package manager.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
@@ -75,8 +80,9 @@ Open "The Mana World.dev" in Dev-C++. From there on you should be able to
 start compilition with Excute -> Compile. A file called tmw.exe should appear
 in the same directory as where you opened the .dev from.
 
-Before you can actually run the executable be sure to copy over alleg41.dll
-from your Dev-Cpp/dll directory to the directory containing tmw.exe.
+Before you can actually run the executable be sure to copy over alleg41.dll,
+guichan.dll and guichan_allegro.dll from your Dev-Cpp/dll directory to the
+directory containing tmw.exe.
 
 Have fun hacking The Mana World!
 
