@@ -95,7 +95,7 @@ void game() {
   status("INIT");
   do_init();
 	init_graphic();
-  while(state!=EXIT) {  
+  while(state!=EXIT) {
     status("INPUT");
     do_input();
     status("GRAPHIC");
@@ -104,7 +104,7 @@ void game() {
     do_parse();
     status("FLUSH");
     flush();
-    
+
     //rest(1); // This one should work only in Win32
   }
 
@@ -236,8 +236,8 @@ void do_input() {
 	  screen_mode = 1-(screen_mode-1)+1;//Bug is here
 	  if( 0 != set_gfx_mode(screen_mode, 800, 600, 0, 0))//less than: to add support for other hardware platforms
 	    error(allegro_error);
-	  }    
-	
+	  }
+
 	if(key[KEY_F11] && action_time==true)
 	    show_setup = true;
 
@@ -397,8 +397,8 @@ void do_parse() {
 					        if(RFIFOL(2)>server_tick) {
 					          walk_status = 2;
 					          server_tick = RFIFOL(2);
-					        }  
-					}  
+					        }
+					}
           break;
         // Add new being / stop monster
         case 0x0078:
@@ -577,9 +577,9 @@ void do_parse() {
 				// Update stat values
 				case 0x00b0:
 					switch(RFIFOW(2)) {
-            case 0x0000:
+            /*case 0x0000:
 							player_node->speed;
-							break;
+							break;*/
             case 0x0005:
               char_info->hp = RFIFOW(4);
 							break;
@@ -614,14 +614,14 @@ void do_parse() {
 				// Stop walking
 				/*case 0x0088:  // Disabled because giving some problems
 					if(node = find_node(RFIFOL(2))) {
-						//if(node->id!=player_node->id) {
-						/*char ids[20];
+						if(node->id!=player_node->id) {
+						char ids[20];
 						sprintf(ids,"%i",RFIFOL(2));
-						alert(ids,"","","","",0,0);*/
-              /*node->action = STAND;
+						alert(ids,"","","","",0,0);
+              node->action = STAND;
               node->frame = 0;
               set_coordinates(node->coordinates, RFIFOW(6), RFIFOW(8), get_direction(node->coordinates));
-						//}
+						}
 					}
           break;*/
 				// Damage, sit, stand up
@@ -746,7 +746,7 @@ void do_parse() {
 				    show_npc_dialog = 4;
 				    for(int k=0;k<n_items;k++)
 				      add_sell_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
-		      } else chatlog.chat_log("Nothing to sell", BY_SERVER, gui_font);  
+		      } else chatlog.chat_log("Nothing to sell", BY_SERVER, gui_font);
 					break;
 				// Answer to buy
 				case 0x00ca:
@@ -814,12 +814,12 @@ void do_parse() {
 				  WFIFOW(0) = net_w_value(0x009f);
 				  WFIFOL(2) = net_l_value(RFIFOL(2));
 				  WFIFOSET(6);
-				  break;				  
+				  break;
 		    // Next button in NPC dialog
 		    case 0x00b5:
 		      strcpy(npc_button, "Next");
 		      current_npc = RFIFOL(2);
-		      break;		  
+		      break;
         // Close button in NPC dialog
         case 0x00b6:
 		      strcpy(npc_button, "Close");
@@ -844,8 +844,8 @@ void do_parse() {
           } else if(RFIFOB(6)==1) {
             node = find_node(RFIFOL(2));
             node->hair_style = RFIFOB(7);
-          }  
-          break;               
+          }
+          break;
         // Manage non implemented packets
         default:
           //printf("%x\n",id);
