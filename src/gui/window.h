@@ -51,7 +51,10 @@ class Window : public gcn::Container, public gcn::MouseListener
 
         Image *dBackground;              /**< Left side of title bar */
         Image *dBorders;               /**< Middle of title bar */
-        SDL_Surface *dWindowSurface; /**< The Window Surface */
+        Image *dUpperBorder;           /**< Upper border */
+        Image *dLowerBorder;           /**< Lower Border */
+        Image *dLeftBorder;            /**< Left Border */
+        Image *dRightBorder;           /**< Right Border */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
