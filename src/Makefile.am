@@ -39,6 +39,7 @@ tmw_SOURCES = sound/sound.cpp \
 	resources/resource.cpp \
 	resources/resourcemanager.cpp \
 	astar.cpp \
+	base64.cpp \
 	being.cpp \
 	configuration.cpp \
 	game.cpp \

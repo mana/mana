@@ -39,6 +39,7 @@ MODULES = src/sound/sound.cpp \
           src/resources/resourcemanager.cpp \
           src/configuration.cpp \
           src/astar.cpp \
+          src/base64.cpp \
           src/being.cpp \
           src/game.cpp \
           src/main.cpp \
