@@ -32,6 +32,8 @@
 
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>
+
+#include "./configuration.h"
 #include "./gui/login.h"
 #include "./gui/gui.h"
 #include "./gui/stats.h"
