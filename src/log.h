@@ -27,6 +27,45 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string>
+#include <iostream>
+#include <fstream>
+
+/**
+ * The Log Class : Useful to write debug or info messages
+ */
+class Logger
+{
+public:
+
+/**
+ * Constructor :
+ * Initializes log file by opening it for writing.
+ */
+Logger(std::string logFilename);
+
+/**
+ * Destructor
+ */
+~Logger();
+
+/**
+ * Enters a message in the log. The message will be timestamped.
+ */
+void log(std::string log_text);
+void log(const char *log_text, ...);
+
+/**
+ * Log an error and quit. The error will pop-up in Windows and will be printed
+ * to standard error everywhere else. 
+ */
+void error(const std::string &error_text);
+
+private:
+
+std::ofstream logFile;
+
+};
+
 
 /**
  * Initializes log file by opening it for writing.

@@ -26,12 +26,100 @@
 
 FILE* logfile;
 
-#define LOG_FILE "tmw.log"
 
+Logger::Logger(std::string logFilename)
+{
+    logFile.open("tmw.log");
+    if ( !logFile.is_open() )
+    {
+        std::cout << "Warning: error while opening log file." << std::endl;
+    }
+
+}
+
+Logger::~Logger()
+{
+    logFile.close();
+}
+
+void Logger::log(std::string log_text)
+{
+    if ( logFile.is_open() )
+    {
+        // Time container
+        time_t t;
+        // Get the current system time
+        time(&t);
+        
+        // Print the log entry
+        std::string dateString = "[";
+        dateString += ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+        dateString += (((t / 60) / 60) % 24);
+        dateString += ":";
+        dateString += (((t / 60) % 60 < 10) ? "0" : "");
+        dateString += ((t / 60) % 60);
+        dateString += ":";
+        dateString += ((t % 60 < 10) ? "0" : "");
+        dateString += (t % 60);
+        dateString += "] ";
+        
+        // Print the log entry
+        logFile << dateString << log_text << std::endl;
+    }
+}
+
+void Logger::log(const char *log_text, ...)
+{
+    if ( logFile.is_open() )
+    {
+        char* buf = new char[1024];
+        va_list ap;
+        time_t t;
+
+        // Use a temporary buffer to fill in the variables
+        va_start(ap, log_text);
+        vsprintf(buf, log_text, ap);
+        va_end(ap);
+
+        // Get the current system time
+        time(&t);
+
+        // Print the log entry
+        std::string dateString = "[";
+        dateString += ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+        dateString += (((t / 60) / 60) % 24);
+        dateString += ":";
+        dateString += (((t / 60) % 60 < 10) ? "0" : "");
+        dateString += ((t / 60) % 60);
+        dateString += ":";
+        dateString += ((t % 60 < 10) ? "0" : "");
+        dateString += (t % 60);
+        dateString += "] ";
+        dateString += buf;
+        
+        logFile << dateString << std::endl;
+
+        // Delete temporary buffer
+        delete[] buf;
+    }
+}
+
+void Logger::error(const std::string &error_text)
+{
+    log(error_text);
+
+#ifdef WIN32
+    MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
+#else
+    log("Error :");
+    log(error_text);
+#endif
+    exit(1);
+}
 
 void init_log()
 {
-    logfile = fopen(LOG_FILE, "w");
+    logfile = fopen("tmw.log", "w");
     if (!logfile) {
         printf("Warning: error while opening log file.\n");
     }
