@@ -255,6 +255,9 @@
 				RelativePath=".\map.h">
 			</File>
 			<File
+				RelativePath=".\resrc1.h">
+			</File>
+			<File
 				RelativePath=".\Sound\sound.h">
 			</File>
 			<File
@@ -300,6 +303,15 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath=".\icon1.ico">
+			</File>
+			<File
+				RelativePath=".\resource.rc">
+			</File>
+			<File
+				RelativePath=".\tmw.ico">
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

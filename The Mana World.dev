@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=The Mana World
-UnitCount=34
+UnitCount=36
 Type=0
 Ver=1
 ObjFiles=
@@ -14,7 +14,7 @@ Compiler=
 CppCompiler=
 Linker=-ljgmod_@@_-lalfont_@@_-lalleg_@@_-lwsock32_@@_
 IsCpp=1
-Icon=
+Icon=The Mana World.ico
 ExeOutput=
 ObjectOutput=
 OverrideOutput=0
@@ -388,6 +388,25 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
-
 ########Text Field info#####
+
+[Unit35]
+FileName=Gui\skill.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit36]
+FileName=Gui\skill.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
