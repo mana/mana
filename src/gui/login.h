@@ -43,13 +43,8 @@
  */
 class LoginDialog : public Window, public gcn::ActionListener {
     public:
-        LoginDialog();
+        LoginDialog(gcn::Container *parent);
         ~LoginDialog();
-
-        /**
-         * Initializes the dialog. Should be called after adding it to the GUI.
-         */
-        void init();
 
         /**
          * Called when receiving actions from the widgets.
@@ -66,7 +61,14 @@ class LoginDialog : public Window, public gcn::ActionListener {
         gcn::Button *cancelButton;
 };
 
+/**
+ * Display login dialog
+ */
 void login();
+
+/**
+ * Attempt to login to login server
+ */
 void server_login(const std::string& user, const std::string& pass);
 
 #endif

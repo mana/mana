@@ -23,7 +23,7 @@
 #include "gui.h"
 #include <guichan/allegro.hpp>
 
-Window::Window(std::string text) :
+Window::Window(gcn::Container *parent, std::string text) :
     caption(text),
     mousePX(0),
     mousePY(0),
@@ -31,9 +31,9 @@ Window::Window(std::string text) :
     mouseDown(false),
     titlebarHeight(20)
 {
-    titlebarColor.r = 32;
-    titlebarColor.g = 32;
-    titlebarColor.b = 128;
+    titlebarColor.r = 203;
+    titlebarColor.g = 203;
+    titlebarColor.b = 203;
 
     setBaseColor(gcn::Color(255, 255, 255));
 
@@ -50,6 +50,9 @@ Window::Window(std::string text) :
     chrome->setOpaque(false);
     chrome->setY(titlebarHeight);
     gcn::Container::add(chrome);
+
+    // Add this window to the parent container
+    parent->add(this);
 }
 
 Window::~Window()
@@ -72,6 +75,10 @@ void Window::draw(gcn::Graphics* graphics)
                     getDimension().height - titlebarHeight));
     }
 
+    // Draw line around window
+    graphics->setColor(titlebarColor);
+    graphics->drawRectangle(gcn::Rectangle(0, titlebarHeight - 1,
+                getWidth(), getHeight() - titlebarHeight + 1));
 
     // Skinned dialog render
     if (typeid(*graphics) == typeid(gcn::AllegroGraphics))
@@ -95,7 +102,7 @@ void Window::draw(gcn::Graphics* graphics)
         // Plain title bar
         graphics->setColor(titlebarColor);
         graphics->fillRectangle(gcn::Rectangle(0, 0,
-                    getDimension().width, titlebarHeight));
+                    getWidth(), titlebarHeight));
     }
 
     // Draw title
@@ -173,7 +180,6 @@ void Window::mouseRelease(int mx, int my, int button)
     mouseDown = false;
 }
 
-//window move
 void Window::mouseMotion(int mx, int my)
 {
     if (mouseDown)
@@ -186,17 +192,17 @@ void Window::mouseMotion(int mx, int my)
         x = x - (mousePX - mx);
         y = y - (mousePY - my);
 
-        //keep guichan window inside window
+        // Keep guichan window inside window
         if (x < 0)
             x = 0;
         if (y < 0)
             y = 0;
         if (x + winWidth > 799)
             x = 799 - winWidth;
-        if (y + winWidth > 599)
+        if (y + winHeight > 599)
             y = 599 - winHeight;
 
-        //snap window to edges
+        // Snap window to edges
         if (x < snapSize)
             x = 0;
         if (y < snapSize)

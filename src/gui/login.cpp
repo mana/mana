@@ -28,8 +28,8 @@
 #include "../graphic/graphic.h"
 
 
-LoginDialog::LoginDialog():
-    Window("Login")
+LoginDialog::LoginDialog(gcn::Container *parent):
+    Window(parent, "Login")
 {
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
@@ -69,6 +69,17 @@ LoginDialog::LoginDialog():
     add(keepCheck);
     add(okButton);
     add(cancelButton);
+
+    setLocationRelativeTo(getParent());
+    userField->requestFocus();
+    userField->setCaretPosition(userField->getText().length());
+
+    if (get_config_int("login", "remember", 0)) {
+        if (get_config_string("login", "username", 0)) {
+            userField->setText(get_config_string("login", "username", ""));
+            passField->requestFocus();
+        }
+    }
 }
 
 LoginDialog::~LoginDialog()
@@ -80,20 +91,6 @@ LoginDialog::~LoginDialog()
     delete keepCheck;
     delete okButton;
     delete cancelButton;
-}
-
-void LoginDialog::init()
-{
-    setLocationRelativeTo(getParent());
-    userField->requestFocus();
-    userField->setCaretPosition(userField->getText().length());
-
-    if (get_config_int("login", "remember", 0)) {
-        if (get_config_string("login", "username", 0)) {
-            userField->setText(get_config_string("login", "username", ""));
-            passField->requestFocus();
-        }
-    }
 }
 
 void LoginDialog::action(const std::string& eventId)
@@ -124,13 +121,9 @@ void LoginDialog::action(const std::string& eventId)
     }
 }
 
-/**
- * Display login dialog
- */
+
 void login() {
-    LoginDialog *dialog = new LoginDialog();
-    guiTop->add(dialog);
-    dialog->init();
+    LoginDialog *dialog = new LoginDialog(guiTop);
 
     while (state == LOGIN) {
         clear_bitmap(buffer);
@@ -145,9 +138,7 @@ void login() {
     delete dialog;
 }
 
-/**
- * Attempt to login to login server
- */
+
 void server_login(const std::string& user, const std::string& pass) {
     strncpy(username, user.c_str(), LEN_USERNAME);
     strncpy(password, pass.c_str(), LEN_PASSWORD);

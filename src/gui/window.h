@@ -49,7 +49,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         BITMAP *dRight;            /**< Right side of title bar */
 
     public:
-        Window(std::string text = "Window");
+        Window(gcn::Container *parent, std::string text = "Window");
         ~Window();
 
         /**

@@ -30,8 +30,8 @@ char server[30];
 int showServerList = 1;
 
 
-ServerSelectDialog::ServerSelectDialog():
-    Window("Select Server")
+ServerSelectDialog::ServerSelectDialog(gcn::Container *parent):
+    Window(parent, "Select Server")
 {
     serverListModel = new ServerListModel();
     serverList = new gcn::ListBox(serverListModel);
@@ -63,6 +63,8 @@ ServerSelectDialog::ServerSelectDialog():
         // Select first server
         serverList->setSelected(1);
     }
+
+    setLocationRelativeTo(getParent());
 }
 
 ServerSelectDialog::~ServerSelectDialog()
@@ -72,11 +74,6 @@ ServerSelectDialog::~ServerSelectDialog()
     delete scrollArea;
     delete okButton;
     delete cancelButton;
-}
-
-void ServerSelectDialog::init()
-{
-    setLocationRelativeTo(getParent());
 }
 
 void ServerSelectDialog::action(const std::string& eventId)
@@ -103,9 +100,7 @@ std::string ServerListModel::getElementAt(int i) {
 
 
 void char_server() {
-    ServerSelectDialog *dialog = new ServerSelectDialog();
-    guiTop->add(dialog);
-    dialog->init();
+    ServerSelectDialog *dialog = new ServerSelectDialog(guiTop);
 
     state = LOGIN;
 

@@ -52,13 +52,8 @@ class ServerListModel : public gcn::ListModel {
  */
 class ServerSelectDialog : public Window, public gcn::ActionListener {
     public:
-        ServerSelectDialog();
+        ServerSelectDialog(gcn::Container *parent);
         ~ServerSelectDialog();
-
-        /**
-         * Initializes the dialog. Should be called after adding it to the GUI.
-         */
-        void init();
 
         /**
          * Called when receiving actions from the widgets.
