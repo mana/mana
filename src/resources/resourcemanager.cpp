@@ -109,24 +109,17 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             // If the object is invalid, try using PhysicsFS
             if (resource == NULL) {
                 std::cout << "Check if exists: " << filePath << std::endl;
-                // If the file is in the PhysicsFS search path
-                if (PHYSFS_exists(filePath.c_str()) != 0) {                    
-                    // Open the file for read
-                    PHYSFS_file* imageFile = PHYSFS_openRead(filePath.c_str());
-                    std::cout << filePath << " - " <<
-                        PHYSFS_fileLength(imageFile) << " bytes" << std::endl;
 
-                    // Read the file data into a buffer
-                    char* buffer = new char[PHYSFS_fileLength(imageFile)];
-                    PHYSFS_read(imageFile, buffer, 1,
-                            PHYSFS_fileLength(imageFile));
+                // Load the image resource file
+                void* buffer = NULL;
+                int fileSize = loadFile(filePath, buffer);
 
-                    // Cast the file to a valid resource
-                    resource = reinterpret_cast<Resource*>(Image::load(buffer,
-                                PHYSFS_fileLength(imageFile)));
+                // Let the image class load it
+                resource = reinterpret_cast<Resource*>(Image::load(buffer,
+                                fileSize));
 
-                    // Close the file
-                    PHYSFS_close(imageFile);
+                // Cleanup
+                if(buffer != NULL) {
                     delete[] buffer;
                 }
             }
@@ -243,4 +236,34 @@ void ResourceManager::searchAndAddZipFiles()
 
     closedir(dir);
 #endif
+}
+
+int ResourceManager::loadFile(const std::string& fileName, void* buffer)
+{
+    // If the file doesn't exist indicate failure
+    if (PHYSFS_exists(fileName.c_str()) != 0) return -1;
+
+    // Initialize the buffer value
+    buffer = NULL;
+
+    // Attempt to open the specified file using PhysicsFS
+    PHYSFS_file* file = PHYSFS_openRead(fileName.c_str());
+
+    // If the handler is an invalid pointer indicate failure
+    if (file == NULL) return -1;
+
+    // Print file information message
+    int fileLength = PHYSFS_fileLength(file);
+
+    std::cout << fileName   << " - "
+              << fileLength << " bytes" << std::endl;
+
+    // Allocate memory in the buffer and load the file
+    buffer = (void*)new char[fileLength];
+    PHYSFS_read(file, buffer, 1, fileLength);
+
+    // Close the file and let the user deallocate the memory (safe?)
+    PHYSFS_close(file);
+
+    return fileLength;
 }

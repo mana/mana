@@ -108,6 +108,17 @@ class ResourceManager
          */
         void searchAndAddZipFiles();
 
+        /**
+         * Allocates data into a buffer pointer for raw data loading
+         *
+         * @param fileName The name of the file to be loaded
+         * @param buffer The empty buffer into which the data will be loaded
+         *
+         * @return The size of the file that was loaded
+         */
+        int loadFile(const std::string& fileName, void* buffer);
+
+
         static ResourceManager *instance;
         std::map<std::string, ResourceEntry> resources;
 };
