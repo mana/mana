@@ -74,12 +74,41 @@ void ChatBox::chat_log(std::string line, int own)
         tmp.nick = "";
     }
     tmp.own  = own;
-    tmp.text = line;
+    
+    // A try to get text sentences no too long...
+    bool Finished = false;
+    while ( !Finished )
+    {
+    std::string TempText;
+    if ( line.length() > 60 )
+    {   std::cout << "long" << std::endl;
+        
+            if ( line.length() > 60 )
+                TempText = line.substr(0, 60);
+            else
+                TempText = line;
+        
+            tmp.text = TempText;
+        
+            //chatlog_file << tmp.nick << tmp.text << "\n";
+            //chatlog_file.flush();
 
-    chatlog_file << tmp.nick << tmp.text << "\n";
-    chatlog_file.flush();
+            chatlog.push_front(tmp);
+        
+            if ( line.length() > 60 )
+                line = line.substr(60, line.length() - 60);
+        }
+    
+    else // Normal message
+    {  std::cout << "Normal" << std::endl;
+        tmp.text = line;
+        //chatlog_file << tmp.nick << tmp.text << "\n";
+        //chatlog_file.flush();
 
-    chatlog.push_front(tmp);
+        chatlog.push_front(tmp);
+	Finished = true;
+    }
+    }
 }
 
 void ChatBox::chat_log(CHATSKILL action) {
