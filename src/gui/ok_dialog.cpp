@@ -29,12 +29,21 @@ OkDialog::OkDialog(const std::string& title, const std::string& msg):
 {
     userLabel = new gcn::Label(msg);
     okButton = new Button("OK");
-    
-    setSize(200, 80);
-    userLabel->setPosition(4, 11);
-    okButton->setPosition(120, 52);
-    okButton->setEventId("ok");
-    
+
+    int w = userLabel->getWidth() + 20;
+    int h = userLabel->getHeight() + 25 + okButton->getHeight();
+
+    if (okButton->getWidth() + 10 > w) {
+        w = okButton->getWidth() + 10;
+    }
+
+    setSize(w, h);
+    userLabel->setPosition(10, 10);
+    okButton->setPosition(
+            (w - okButton->getWidth()) / 2,
+            h - 5 - okButton->getHeight());
+
+    okButton->setEventId("ok");    
     okButton->addActionListener(this);
     
     add(userLabel);
@@ -53,7 +62,6 @@ OkDialog::~OkDialog()
 void OkDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
-        //getParent()->remove(this);
         windowContainer->scheduleDelete(this);
     }
 }

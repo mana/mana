@@ -22,6 +22,9 @@
  */
 
 #include "main.h"
+#include "gui/char_server.h"
+#include "gui/char_select.h"
+#include "gui/inventory.h"
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
 
@@ -306,9 +309,11 @@ void init_engine() {
          }
          sound.setVolume(64);
         
-         /* left here to serve as an example ;) 
+         // left here to serve as an example ;)
+         /*
          SOUND_SID id = sound.loadItem("./data/sound/wavs/level.ogg");
-         sound.startItem(id, 70);*/
+         sound.startItem(id, 70);
+         */
     } catch (const char *err) {
          ok("Sound Engine", err);
          warning(err);

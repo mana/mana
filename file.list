@@ -17,6 +17,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/npc_text.cpp \
           src/gui/ok_dialog.cpp \
           src/gui/passwordfield.cpp \
+          src/gui/playerbox.cpp \
           src/gui/progressbar.cpp \
           src/gui/radiobutton.cpp \
           src/gui/scrollarea.cpp \

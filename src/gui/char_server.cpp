@@ -151,31 +151,32 @@ void server_char_server(int serverIndex) {
 
     while (in_size<3)flush();
 
-    if (RFIFOW(0)==0x006b) {
-        while(in_size<RFIFOW(2))flush();
-        n_character = (RFIFOW(2)-24)/106;
+    if (RFIFOW(0) == 0x006b) {
+        while(in_size < RFIFOW(2))flush();
+        n_character = (RFIFOW(2) - 24) / 106;
         char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO) * n_character);
         for (int i = 0; i < n_character; i++) {
-            char_info[i].id = RFIFOL(24+106*i);
-            strcpy(char_info[i].name, RFIFOP(24+106*i+74));
-            char_info[i].hp = RFIFOW(24+106*i+42);
-            char_info[i].max_hp = RFIFOW(24+106*i+44);
-            char_info[i].xp = RFIFOL(24+106*i+4);
-            char_info[i].gp = RFIFOL(24+106*i+8);
-            char_info[i].job_xp = RFIFOL(24+106*i+12);
-            char_info[i].job_lv = RFIFOL(24+106*i+16);
-            char_info[i].sp = RFIFOW(24+106*i+46);
-            char_info[i].max_sp = RFIFOW(24+106*i+48);
-            char_info[i].lv = RFIFOW(24+106*i+58);
-            char_info[i].STR = RFIFOB(24+106*i+98);
-            char_info[i].AGI = RFIFOB(24+106*i+99);
-            char_info[i].VIT = RFIFOB(24+106*i+100);
-            char_info[i].INT = RFIFOB(24+106*i+101);
-            char_info[i].DEX = RFIFOB(24+106*i+102);
-            char_info[i].LUK = RFIFOB(24+106*i+103);
-            char_info[i].hair_style = RFIFOW(24+106*i+54);
-            char_info[i].hair_color = RFIFOW(24+106*i+70);
-            char_info[i].weapon = RFIFOW(24+106*i+56);
+            int n = 24 + 106 * i;
+            char_info[i].id = RFIFOL(n);
+            strcpy(char_info[i].name, RFIFOP(n + 74));
+            char_info[i].hp = RFIFOW( n+ 42);
+            char_info[i].max_hp = RFIFOW(n + 44);
+            char_info[i].xp = RFIFOL(n + 4);
+            char_info[i].gp = RFIFOL(n + 8);
+            char_info[i].job_xp = RFIFOL(n + 12);
+            char_info[i].job_lv = RFIFOL(n + 16);
+            char_info[i].sp = RFIFOW(n + 46);
+            char_info[i].max_sp = RFIFOW(n + 48);
+            char_info[i].lv = RFIFOW(n + 58);
+            char_info[i].STR = RFIFOB(n + 98);
+            char_info[i].AGI = RFIFOB(n + 99);
+            char_info[i].VIT = RFIFOB(n + 100);
+            char_info[i].INT = RFIFOB(n + 101);
+            char_info[i].DEX = RFIFOB(n + 102);
+            char_info[i].LUK = RFIFOB(n + 103);
+            char_info[i].hair_style = RFIFOW(n + 54);
+            char_info[i].hair_color = RFIFOW(n + 70);
+            char_info[i].weapon = RFIFOW(n + 56);
         }
         state = CHAR_SELECT;
 

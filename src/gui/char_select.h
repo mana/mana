@@ -29,6 +29,7 @@
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
+#include "playerbox.h"
 #include <guichan/allegro.hpp>
 
 /**
@@ -48,6 +49,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
         gcn::Label *jobLevelLabel;
         gcn::Label *moneyLabel;
 
+        PlayerBox *playerBox;
+
     public:
         /**
          * Constructor.
@@ -61,25 +64,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
 
         void action(const std::string& eventId);
 
-        void setName(const std::string name)
-        {
-            nameLabel->setCaption(name);
-        }
-
-        void setLevel(const std::string level)
-        {
-            levelLabel->setCaption(level);
-        }
-
-        void setJobLevel(const std::string level)
-        {
-            jobLevelLabel->setCaption(level);
-        }
-
-        void setMoney(const std::string money)
-        {
-            moneyLabel->setCaption(money);
-        }
+        void setPlayerInfo(PLAYER_INFO* pi);
 };
 
 /**
@@ -97,8 +82,16 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
         gcn::Button *nextHairStyleButton;
         gcn::Button *prevHairStyleButton;
         gcn::Label *hairStyleLabel;
-
         gcn::Button *createButton;
+        gcn::Button *cancelButton;
+
+        PlayerBox *playerBox;
+
+        /**
+         * Communicate character creation to the server and receive new char
+         * info.
+         */
+        void serverCharCreate();
 
     public:
         /**
@@ -113,9 +106,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
 
         void action(const std::string& eventId);
 
-        std::string getName() {
-            return nameField->getText();
-        }
+        std::string getName();
 };
 
 void charSelect();
@@ -123,6 +114,5 @@ void serverCharSelect();
 
 void charCreate();
 void serverCharDelete();
-void serverCharCreate();
 
 #endif

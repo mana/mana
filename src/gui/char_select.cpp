@@ -26,39 +26,49 @@
 #include "button.h"
 #include "ok_dialog.h"
 #include "../graphic/graphic.h"
-#include "../main.h"
+#include <sstream>
+
+#define NR_HAIR_STYLES 4
+#define NR_HAIR_COLORS 10
 
 CharSelectDialog::CharSelectDialog():
     Window("Select Character")
 {
-    selectButton = new Button(" OK ");
+    selectButton = new Button("OK");
     cancelButton = new Button("Cancel");
-    newCharButton = new Button(" New ");
+    newCharButton = new Button("New");
     delCharButton = new Button("Delete");
     nameLabel = new gcn::Label("Name");
     levelLabel = new gcn::Label("Level");
     jobLevelLabel = new gcn::Label("Job Level");
     moneyLabel = new gcn::Label("Money");
-
-    nameLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
-    levelLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
-    jobLevelLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
-    moneyLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
+    playerBox = new PlayerBox();
 
     selectButton->setEventId("ok");
     newCharButton->setEventId("new");
     cancelButton->setEventId("cancel");
     delCharButton->setEventId("delete");
 
-    selectButton->setPosition(128, 180);
-    cancelButton->setPosition(166, 180);
-    newCharButton->setPosition(4, 180);
-    delCharButton->setPosition(64, 180);
-    nameLabel->setPosition(10, 100);
-    levelLabel->setPosition(10, 116);
-    jobLevelLabel->setPosition(10, 132);
-    moneyLabel->setPosition(10, 148);
+    int w = 195;
+    int h = 195;
+    setSize(w, h);
+    playerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
+    nameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
+    levelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
+    jobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
+    moneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
+    newCharButton->setPosition(5, h - 5 - newCharButton->getHeight());
+    delCharButton->setPosition(
+            5 + newCharButton->getWidth() + 5,
+            newCharButton->getY());
+    cancelButton->setPosition(
+            w - 5 - cancelButton->getWidth(),
+            newCharButton->getY());
+    selectButton->setPosition(
+            cancelButton->getX() - 5 - selectButton->getWidth(),
+            newCharButton->getY());
 
+    add(playerBox);
     add(selectButton);
     add(cancelButton);
     add(newCharButton);
@@ -74,7 +84,6 @@ CharSelectDialog::CharSelectDialog():
     newCharButton->addActionListener(this);
     delCharButton->addActionListener(this);
 
-    setSize(240, 216);
     setLocationRelativeTo(getParent());
 }
 
@@ -83,6 +92,12 @@ CharSelectDialog::~CharSelectDialog()
     delete selectButton;
     delete cancelButton;
     delete newCharButton;
+    delete delCharButton;
+    delete nameLabel;
+    delete levelLabel;
+    delete jobLevelLabel;
+    delete moneyLabel;
+    delete playerBox;
 }
 
 void CharSelectDialog::action(const std::string& eventId)
@@ -99,7 +114,7 @@ void CharSelectDialog::action(const std::string& eventId)
         if (n_character > 0)
             return;
         // Start new character dialog...
-        charCreate();
+        new CharCreateDialog();
     } else if (eventId == "delete") {
         // Delete character
         if (n_character <= 0)
@@ -108,14 +123,28 @@ void CharSelectDialog::action(const std::string& eventId)
     }
 }
 
-#define MAX_HAIR_STYLE 3
-#define MAX_HAIR_COLOR 9
-int curHairColor = 0;
-int curHairStyle = 0;
-std::string curName;
+void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
+{
+    std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
+
+    nameCaption << pi->name;
+    levelCaption << "Lvl: " << pi->lv;
+    jobCaption << "Job Lvl: " << pi->job_lv;
+    moneyCaption << "Gold: " << pi->gp;
+
+    nameLabel->setCaption(nameCaption.str());
+    levelLabel->setCaption(levelCaption.str());
+    jobLevelLabel->setCaption(jobCaption.str());
+    moneyLabel->setCaption(moneyCaption.str());
+
+    playerBox->hairStyle = pi->hair_style - 1;
+    playerBox->hairColor = pi->hair_color - 1;
+    playerBox->showPlayer = true;
+}
+
 
 CharCreateDialog::CharCreateDialog():
-    Window("Create Character")
+    Window("Create Character", true)
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -126,31 +155,47 @@ CharCreateDialog::CharCreateDialog():
     prevHairStyleButton = new Button("<");
     hairStyleLabel = new gcn::Label("Hair Style:");
     createButton = new Button("Create");
+    cancelButton = new Button("Cancel");
+    playerBox = new PlayerBox();
+    playerBox->showPlayer = true;
 
+    nameField->setEventId("create");
     nextHairColorButton->setEventId("nextcolor");
     prevHairColorButton->setEventId("prevcolor");
     nextHairStyleButton->setEventId("nextstyle");
     prevHairStyleButton->setEventId("prevstyle");
     createButton->setEventId("create");
+    cancelButton->setEventId("cancel");
 
-    nameField->setDimension(gcn::Rectangle(0, 0, 96, 16));
+    int w = 200;
+    int h = 150;
+    setSize(w, h);
+    playerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
+    nameLabel->setPosition(5, 5);
+    nameField->setDimension(
+            gcn::Rectangle(45, 5, w - 45 - 7, nameField->getHeight()));
+    prevHairColorButton->setPosition(90, 35);
+    nextHairColorButton->setPosition(165, 35);
+    hairColorLabel->setPosition(5, 40);
+    prevHairStyleButton->setPosition(90, 64);
+    nextHairStyleButton->setPosition(165, 64);
+    hairStyleLabel->setPosition(5, 70);
+    cancelButton->setPosition(
+            w - 5 - cancelButton->getWidth(),
+            h - 5 - cancelButton->getHeight());
+    createButton->setPosition(
+            cancelButton->getX() - 5 - createButton->getWidth(),
+            h - 5 - cancelButton->getHeight());
 
-    nameField->setPosition(40, 4);
-    nameLabel->setPosition(4, 4);
-    nextHairColorButton->setPosition(160, 32);
-    prevHairColorButton->setPosition(96, 32);
-    hairColorLabel->setPosition(4, 34);
-    nextHairStyleButton->setPosition(160, 64);
-    prevHairStyleButton->setPosition(96, 64);
-    hairStyleLabel->setPosition(4, 66);
-    createButton->setPosition(125, 96);
-
+    nameField->addActionListener(this);
     nextHairColorButton->addActionListener(this);
     prevHairColorButton->addActionListener(this);
     nextHairStyleButton->addActionListener(this);
     prevHairStyleButton->addActionListener(this);
     createButton->addActionListener(this);
+    cancelButton->addActionListener(this);
 
+    add(playerBox);
     add(nameField);
     add(nameLabel);
     add(nextHairColorButton);
@@ -160,8 +205,8 @@ CharCreateDialog::CharCreateDialog():
     add(prevHairStyleButton);
     add(hairStyleLabel);
     add(createButton);
+    add(cancelButton);
 
-    setSize(200, 128);
     setLocationRelativeTo(getParent());
 }
 
@@ -175,37 +220,101 @@ CharCreateDialog::~CharCreateDialog()
     delete nextHairStyleButton;
     delete prevHairStyleButton;
     delete hairStyleLabel;
+    delete playerBox;
 }
 
 void CharCreateDialog::action(const std::string& eventId)
 {
     if (eventId == "create") {
-        // Create character (used to exit create dialog loop)
-        state = CHAR_SELECT;
+        // Attempt to create the character and schedule this dialog for
+        // deletion.
+        serverCharCreate();
+        windowContainer->scheduleDelete(this);
+    }
+    else if (eventId == "cancel") {
+        windowContainer->scheduleDelete(this);
     }
     else if (eventId == "nextcolor") {
-        curHairColor++;
+        playerBox->hairColor++;
     }
     else if (eventId == "prevcolor") {
-        curHairColor--;
+        playerBox->hairColor += NR_HAIR_COLORS - 1;
     }
     else if (eventId == "nextstyle") {
-        curHairStyle++;
+        playerBox->hairStyle++;
     }
     else if (eventId == "prevstyle") {
-        curHairStyle--;
+        playerBox->hairStyle += NR_HAIR_STYLES - 1;
     }
 
-    if (curHairColor < 0)
-        curHairColor = 0;
-    if (curHairColor > MAX_HAIR_COLOR)
-        curHairColor = MAX_HAIR_COLOR;
-    if (curHairStyle < 0)
-        curHairStyle = 0;
-    if (curHairStyle > MAX_HAIR_STYLE)
-        curHairStyle = MAX_HAIR_STYLE;
+    playerBox->hairColor %= NR_HAIR_COLORS;
+    playerBox->hairStyle %= NR_HAIR_STYLES;
 }
 
+std::string CharCreateDialog::getName() {
+    return nameField->getText();
+}
+
+void CharCreateDialog::serverCharCreate()
+{
+    n_character = 1;
+
+    WFIFOW(0) = net_w_value(0x0067);
+    strcpy(WFIFOP(2), getName().c_str());
+    WFIFOB(26) = net_b_value(5);
+    WFIFOB(27) = net_b_value(5);
+    WFIFOB(28) = net_b_value(5);
+    WFIFOB(29) = net_b_value(5);
+    WFIFOB(30) = net_b_value(5);
+    WFIFOB(31) = net_b_value(5);
+    WFIFOB(32) = net_b_value(0);
+    WFIFOW(33) = net_w_value(playerBox->hairColor + 1);
+    WFIFOW(35) = net_w_value(playerBox->hairStyle + 1);
+    WFIFOSET(37);
+
+    while ((in_size < 3) || (out_size > 0)) flush();
+    if (RFIFOW(0) == 0x006d) {
+        while (in_size < 108) flush();
+        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO));
+        char_info->id = RFIFOL(2);//account_ID;
+        memset(char_info->name, '\0', 24);
+        strcpy(char_info[0].name, RFIFOP(2 + 74));
+        char_info->hp = RFIFOW(2 + 42);
+        char_info->max_hp = RFIFOW(2 + 44);
+        char_info->sp = RFIFOW(2 + 46);
+        char_info->max_sp = RFIFOW(2 + 48);
+        char_info->job_lv = RFIFOL(2 + 16);
+        char_info->job_xp = RFIFOL(2 + 12);
+        char_info->lv = RFIFOW(2 + 58);
+        char_info->xp = RFIFOL(2 + 4);
+        char_info->gp = RFIFOL(2 + 8);
+        char_info->STR = RFIFOB(2 + 98);
+        char_info->AGI = RFIFOB(2 + 99);
+        char_info->VIT = RFIFOB(2 + 100);
+        char_info->INT = RFIFOB(2 + 101);
+        char_info->DEX = RFIFOB(2 + 102);
+        char_info->LUK = RFIFOB(2 + 103);
+        char_info->hair_style = RFIFOW(2 + 54);
+        char_info->hair_color = RFIFOW(2 + 70);
+        char_info->weapon = RFIFOW(2 + 56);
+        RFIFOSKIP(108);
+        //n_character++;
+    } else if (RFIFOW(0) == 0x006c) {
+        switch (RFIFOB(2)) {
+            case 0:
+                ok("Error", "Access denied");
+                break;
+            case 1:
+                ok("Error", "Cannot use this ID");
+                break;
+        }
+        RFIFOSKIP(3);
+        n_character = 0;
+    } else {
+        ok("Error", "Unknown error");
+        n_character = 0;
+    }
+}
 
 void charSelect()
 {
@@ -217,33 +326,13 @@ void charSelect()
     while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT && state == LOGIN)
     {
         if (n_character > 0) {
-            char tmpBuf[64];
-            sel->setName(char_info->name);
-            sprintf(tmpBuf, "Lvl: %d", char_info->lv);
-            sel->setLevel(tmpBuf);
-            sprintf(tmpBuf, "Job Lvl: %d", char_info->job_lv);
-            sel->setJobLevel(tmpBuf);
-            sprintf(tmpBuf, "Gold: %d", char_info->gp);
-            sel->setMoney(tmpBuf);
+            sel->setPlayerInfo(char_info);
         }
 
         // Draw background
         blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
 
         gui->update();
-
-        // Draw character
-        const int pX = 8, pY = 16;
-        if (n_character > 0) {
-            playerset->spriteset[0]->draw(buffer,
-                    pX + sel->getX() - 31,
-                    pY + sel->getY() - 15);
-
-            int hf = char_info->hair_color + 40 * (char_info->hair_style) - 41;
-            hairset->spriteset[hf]->draw(buffer,
-                    pX + 31 + sel->getX(),
-                    pY + 15 + sel->getY());
-        }
 
         // Draw to screen
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
@@ -306,43 +395,6 @@ void serverCharSelect()
     // Todo: add other packets
 }
 
-void charCreate()
-{
-    CharCreateDialog *create = new CharCreateDialog();
-
-    state = LOGIN;
-    while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT &&
-            state != CHAR_SELECT)
-    {
-        // Draw background
-        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
-
-        gui->update();
-
-        // Draw character
-        const int pX = 96, pY = 40;
-        playerset->spriteset[0]->draw(buffer,
-                pX + create->getX() - 31,
-                pY + create->getY() - 15);
-
-        int hf = curHairColor + 40 * (curHairStyle);
-        hairset->spriteset[hf]->draw(buffer,
-                pX + 31 + create->getX(),
-                pY + 15 + create->getY());
-
-        // Draw to screen
-        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
-
-        curName = create->getName();
-    }
-
-    if (state == CHAR_SELECT) {
-        serverCharCreate();
-    }
-
-    delete create;
-}
-
 void serverCharDelete() {
     state = CHAR_SELECT;
     // Delete a character
@@ -373,66 +425,5 @@ void serverCharDelete() {
         else {
             ok("Error", "Unknown error");
         }
-    }
-}
-
-void serverCharCreate()
-{
-    n_character = 1;
-
-    WFIFOW(0) = net_w_value(0x0067);
-    strcpy(WFIFOP(2), curName.c_str());
-    WFIFOB(26) = net_b_value(5);
-    WFIFOB(27) = net_b_value(5);
-    WFIFOB(28) = net_b_value(5);
-    WFIFOB(29) = net_b_value(5);
-    WFIFOB(30) = net_b_value(5);
-    WFIFOB(31) = net_b_value(5);
-    WFIFOB(32) = net_b_value(0);
-    WFIFOW(33) = net_w_value(curHairColor + 1);
-    WFIFOW(35) = net_w_value(curHairStyle + 1);
-    WFIFOSET(37);
-
-    while ((in_size < 3) || (out_size > 0)) flush();
-    if (RFIFOW(0) == 0x006d) {
-        while (in_size < 108) flush();
-        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO));
-        char_info->id = RFIFOL(2);//account_ID;
-        memset(char_info->name, '\0', 24);
-        strcpy(char_info[0].name, RFIFOP(2+74));
-        char_info->hp = RFIFOW(2+42);
-        char_info->max_hp = RFIFOW(2+44);
-        char_info->sp = RFIFOW(2+46);
-        char_info->max_sp = RFIFOW(2+48);
-        char_info->job_lv = RFIFOL(2+16);
-        char_info->job_xp = RFIFOL(2+12);
-        char_info->lv = RFIFOW(2+58);
-        char_info->xp = RFIFOL(2+4);
-        char_info->gp = RFIFOL(2+8);
-        char_info->STR = RFIFOB(2+98);
-        char_info->AGI = RFIFOB(2+99);
-        char_info->VIT = RFIFOB(2+100);
-        char_info->INT = RFIFOB(2+101);
-        char_info->DEX = RFIFOB(2+102);
-        char_info->LUK = RFIFOB(2+103);
-        char_info->hair_style = RFIFOW(2+54);
-        char_info->hair_color = RFIFOW(2+70);
-        char_info->weapon = RFIFOW(2+56);
-        RFIFOSKIP(108);
-        //n_character++;
-    } else if (RFIFOW(0) == 0x006c) {
-        switch (RFIFOB(2)) {
-            case 0:
-                ok("Error", "Access denied");
-                break;
-            case 1:
-                ok("Error", "Cannot use this ID");
-                break;
-        }
-        RFIFOSKIP(3);
-        n_character = 0;
-    } else {
-        ok("Error", "Unknown error");
-        n_character = 0;
     }
 }

@@ -34,9 +34,6 @@
 #include "configuration.h"
 #include "gui/login.h"
 #include "gui/gui.h"
-#include "gui/char_server.h"
-#include "gui/char_select.h"
-#include "gui/inventory.h"
 #include "graphic/image.h"
 #include "log.h"
 #include "game.h"
@@ -66,22 +63,21 @@
 #define LEN_PASSWORD 25
 
 
-
 typedef struct {
-	int address;
-	short port;
-	char name[20];
-	short online_users;
+    int address;
+    short port;
+    char name[20];
+    short online_users;
 } SERVER_INFO;
 
 typedef struct {
-	int id;
-	char name[24];
-	short hp, max_hp, sp, max_sp, lv;
-	int xp, gp, job_xp, job_lv;
-	short statp, skill_point, hair_color, hair_style;
-	char STR, AGI, VIT, INT, DEX, LUK;
-	short weapon;
+    int id;
+    char name[24];
+    short hp, max_hp, sp, max_sp, lv;
+    int xp, gp, job_xp, job_lv;
+    short statp, skill_point, hair_color, hair_style;
+    char STR, AGI, VIT, INT, DEX, LUK;
+    short weapon;
 } PLAYER_INFO;
 
 extern BITMAP *login_wallpaper;
