@@ -54,17 +54,64 @@ void Configuration::Init(std::string filename) {
     #ifdef __DEBUG
         for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
             optionTmp = *iter;
-            std::cout << "key=(" << optionTmp.key << ") stringValue=(" << optionTmp.stringValue << ") numericValue=(" << optionTmp.numericValue << ")\n";
+            std::cout << "Configuration::Init(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
         }
     #endif
 }
 
-bool Configuration::Write() {
+bool Configuration::Write(std::string filename) {
+    std::ofstream out(filename.c_str(), std::ofstream::out | std::ofstream::trunc);
+    char tmp[20];
+
+    INI_OPTION optionTmp;
+    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
+        optionTmp = *iter;
+        out.write(optionTmp.key.c_str(), optionTmp.key.length());
+        out.write("=", 1);
+
+        if(optionTmp.numericValue == 0) {
+            out.write(optionTmp.stringValue.c_str(), optionTmp.stringValue.length());
+        }else{
+            sprintf(tmp, "%19f", optionTmp.numericValue);
+            out.write(tmp, strlen(tmp));
+            strcpy(tmp, "");
+        }
+
+        out.write("\n", 1);
+    }
+
+    out.close();
     return true;
 }
 
-bool Configuration::setValue(std::string, std::string) {
-    return true;
+void Configuration::setValue(std::string key, std::string value) {
+    if(getValue(key, value) == value) {
+        #ifdef __DEBUG
+            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\")\n";
+        #endif
+        INI_OPTION optionTmp;
+
+        optionTmp.key = key;
+        optionTmp.stringValue = value;
+        optionTmp.numericValue = 0;
+
+        iniOptions.push_back(optionTmp);
+    }
+}
+
+void Configuration::setValue(std::string key, float value) {
+    if(getValue(key, value) == value) {
+        #ifdef __DEBUG
+            std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+        #endif
+
+        INI_OPTION optionTmp;
+
+        optionTmp.key = key;
+        optionTmp.numericValue = value;
+
+        iniOptions.push_back(optionTmp);
+    }
 }
 
 /**

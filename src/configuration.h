@@ -39,9 +39,11 @@ class Configuration {
     public:
         void Init(std::string);
 
-        bool Write();
+        bool Write(std::string);
 
-        bool        setValue(std::string, std::string);
+        void        setValue(std::string, std::string);
+        void        setValue(std::string, float);
+
         std::string getValue(std::string, std::string);
         float       getValue(std::string, float);
     private:

@@ -173,25 +173,32 @@ void init_engine() {
         if ( tmwFile == NULL ) {
             printf("Can't create %s file. Using Defaults.\n", dir);
         } else {
-            // tmw.ini creation
-            fprintf(tmwFile, "system=\nkeyboard=en\nlanguage=\ncore_version=" CORE_VERSION "\n\n");
-            fprintf(tmwFile, "host=animesites.de\nport=6901\n\n");
-            fprintf(tmwFile, "#=Screen mode:\n# = 1 Fullscreen\n# = 2 Windowed\nscreen=2\n");
-            fprintf(tmwFile, "# = Sound:\n#=1 enabled\n# = 0 disabled\nsound=0\n");
-
-            char * chatlogFilename = new char [400];
-            #ifdef __USE_UNIX98
-                sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
-            #else
-                strcpy(chatlogFilename, "chatlog.txt");
-            #endif
-            fprintf(tmwFile, "# = Chat logfile location:\nchatlog=%s\n", chatlogFilename);
-            delete chatlogFilename; chatlogFilename = 0;
-
-            fprintf(tmwFile, "#= Display strecth mode:\n# = 0 Disabled (Test only)\n# = 1 Normal\n# = 2 SuperEagle\n");
-            fprintf(tmwFile, "stretch=1\n\n");
-            fprintf(tmwFile, "[login]\nremember=1\nusername=Player\n");
             fclose(tmwFile);
+            // tmw.ini creation
+            config.setValue("system", "");
+            config.setValue("keyboard", "en");
+            config.setValue("language", "");
+            config.setValue("core_version", CORE_VERSION);
+
+
+            config.setValue("host", "animesites.de");
+            config.setValue("port", 6901);
+            config.setValue("screen", 1);
+            config.setValue("sound", 1);
+
+
+            #ifdef __USE_UNIX98
+                char * chatlogFilename = new char [400];
+                sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
+                config.setValue("chatlog", chatlogFilename);
+                delete chatlogFilename;
+            #else
+                config.setValue("chatlog", "chatlog.txt");
+            #endif
+
+            config.setValue("stretch", 1);
+            config.setValue("remember", 1);
+            config.setValue("username", "Player");
         }
     }
 
