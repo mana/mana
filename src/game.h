@@ -71,6 +71,7 @@
 
 extern char map_path[480];
 extern DIALOG skill_dialog[];
+extern DIALOG stats_dialog[];
 extern int fps, frame, current_npc;
 extern char walk_status;
 extern unsigned short src_x, src_y, x, y;

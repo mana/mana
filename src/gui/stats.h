@@ -24,9 +24,10 @@
 #ifndef _STATS_H
 #define _STATS_H
 
+#include <allegro.h>
 #include "../main.h"
 #include "gui.h"
 
-void charstats_display();
+void update_stats_dialog();
 
 #endif

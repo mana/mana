@@ -32,22 +32,13 @@
 #pragma warning (disable:4312)
 #endif
 
-#include <allegro.h>
-#include "../game.h"
-#include "../map.h"
-#include "../being.h"
-#include "../gui/chat.h"
-#include "../gui/inventory.h"
-#include "../gui/shop.h"
-#include "../../data/graphic/gfx_data.h"
-
 BITMAP *buffer, *double_buffer, *chat_background;
 DATAFILE *tileset;
 //extern char* itemCurrenyQ;
 char itemCurrenyQ[10] = "0";
 char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player;
+DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 TmwInventory inventory;
@@ -94,7 +85,7 @@ DIALOG sell_dialog[] = {
    { tmw_text_proc,       514,  326,  40,  100,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
- 
+
 DIALOG chat_dialog[] = {
    /* (dialog proc)         (x)   (y)   (w)  (h) (fg) (bg)  (key) (flags)   (d1)               (d2)           (dp)         (dp2) (dp3) */
    { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
@@ -152,6 +143,7 @@ void init_graphic() {
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
 	skill_player = init_dialog(skill_dialog, -1);
+	stats_player = init_dialog(stats_dialog, -1);
 	buy_sell_player = init_dialog(buy_sell_dialog, -1);
 	buy_player = init_dialog(buy_dialog, -1);
 	sell_player = init_dialog(sell_dialog, -1);
@@ -172,8 +164,8 @@ void do_graphic(void) {
 	int offset_y = map_y & 15;
 
 	sort();
-	
-	
+
+
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
 			if( /* get_tile(i+camera_x, j+camera_y, 0) >= 0 && */  get_tile(i+camera_x, j+camera_y, 0) < 600)
@@ -186,7 +178,7 @@ void do_graphic(void) {
 	NODE *old_node = NULL;
 	while(node) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
-			masked_blit((BITMAP *)graphic[NPCSET_BMP].dat, buffer, (get_direction(node->coordinates)/2+4*(node->job-100))*25, 0, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y, 25, 40);  
+			masked_blit((BITMAP *)graphic[NPCSET_BMP].dat, buffer, (get_direction(node->coordinates)/2+4*(node->job-100))*25, 0, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y, 25, 40);
 		} else if(node->job<10) { // Draw a player
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
@@ -206,7 +198,7 @@ void do_graphic(void) {
 					node->action = STAND;
 //					node->tick_time;
 					if(node->id==player_node->id)
-            walk_status = 0;          
+            walk_status = 0;
 				}
 			}
 
@@ -257,7 +249,7 @@ void do_graphic(void) {
         alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+90-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
 			else
 				alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+60-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
-			      
+
       node->speech_time--;
       if(node->speech_time==0) {
         free(node->speech);
@@ -265,13 +257,13 @@ void do_graphic(void) {
       }
     }
     node = node->next;
-  }	
+  }
 
 	inventory.draw(double_buffer);
 
 	set_trans_blender(0, 0, 0, 110);
   draw_trans_sprite(double_buffer, chat_background, 0, SCREEN_H-125);
-  
+
   chatlog.chat_draw(double_buffer, 8, gui_font);
   gui_update(chat_player);
 
@@ -343,9 +335,13 @@ void do_graphic(void) {
 
 	if(show_skill_dialog) {
 		update_skill_dialog();
-    if(gui_update(skill_player)==0)show_skill_dialog = false;
+		if(gui_update(skill_player)==0)show_skill_dialog = false;
 	}
-  
+
+	// character status display
+	update_stats_dialog();
+	gui_update(stats_player);
+
 	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);

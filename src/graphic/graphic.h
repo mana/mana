@@ -31,8 +31,15 @@
 #endif
 
 #include <allegro.h>
+#include "../game.h"
+#include "../map.h"
+#include "../being.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
+#include "../gui/shop.h"
+#include "../gui/chat.h"
+#include "../gui/inventory.h"
+#include "../../data/graphic/gfx_data.h"
 
 extern BITMAP *buffer, *double_buffer;
 extern char speech[255];
@@ -42,7 +49,6 @@ extern bool show_skill_dialog;
 extern int show_npc_dialog;
 extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
-extern TmwInventory inventory;
 
 void do_graphic(void);
 void init_graphic(void);
