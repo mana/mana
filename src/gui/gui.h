@@ -100,8 +100,8 @@ typedef struct {
     LexTextbox     textbox;
     LexListbox     listbox;
     LexDialog      dialog;
-	LexBar		   bar;
-	LexPlus		   plus;
+    LexBar		   bar;
+    LexPlus		   plus;
 } LexSkin;
 
 extern LexSkin gui_skin;
@@ -129,14 +129,10 @@ int gui_text(BITMAP *bmp, AL_CONST char *s,
 
 // Old Allegro GUI procs
 int tmw_button_proc(int msg, DIALOG *d, int c);
-int tmw_slider_proc(int msg, DIALOG *d, int c);
 int tmw_radio_proc(int msg, DIALOG *d, int c);
 int tmw_list_proc(int msg, DIALOG *d, int c);
 int tmw_text_proc(int msg, DIALOG *d, int c);
 int tmw_dialog_proc(int msg, DIALOG *d, int c);
-int tmw_ldialog_proc(int msg, DIALOG *d, int c);
-int tmw_textbox_proc(int msg, DIALOG *d, int c);
-int tmw_bitmap_proc(int msg, DIALOG *d, int c);
 int tmw_plus_proc(int msg, DIALOG *d, int c);
 
 void ok(const char *title, const char *message);

@@ -25,7 +25,6 @@
 #include "main.h"
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
-#include "./graphic/2xsai.h"
 
 #include <iostream>
 

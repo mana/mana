@@ -90,18 +90,6 @@ class Being {
         unsigned char action, frame;
 };
 
-class Npc {
-};
-
-class Warp {
-};
-
-class Player {
-};
-
-class Monster {
-};
-
 //std::vector<Being *> beings;
 
 #endif

@@ -20,7 +20,6 @@
  */
 
 #include "graphic.h"
-#include "2xsai.h"
 #include "../gui/gui.h"
 #include "../gui/textfield.h"
 #include "../gui/status.h"

@@ -42,7 +42,6 @@
 #include "log.h"
 #include "game.h"
 #include "./net/protocol.h"
-#include "./graphic/2xsai.h"
 #include "../data/graphic/gfx_data.h"
 #include <allegro.h>
 #ifdef WIN32

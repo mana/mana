@@ -24,7 +24,6 @@
 #include "char_select.h"
 #include "textfield.h"
 #include "../graphic/graphic.h"
-#include "../graphic/2xsai.h"
 
 CharSelectDialog::CharSelectDialog(gcn::Container *parent)
     : Window(parent, "Select Character")

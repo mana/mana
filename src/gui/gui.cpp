@@ -52,10 +52,6 @@ bool drag;
 DATAFILE *gui_gfx;
 
 
-/* very internal update stuff */
-int (*gui__external_slider_callback)(void *, int);
-int reroute_slider_proc(void *dp3, int d2);
-
 // Guichan Allegro stuff
 gcn::AllegroInput* guiInput;           // Input driver
 gcn::AllegroGraphics* guiGraphics;     // Graphics driver
@@ -166,7 +162,6 @@ void loadButtonSkin() {
         }
     }
 }
-
 
 void loadSliderSkin() {
     int    x, y, w, h,o1,o2;
@@ -344,38 +339,42 @@ void loadListboxSkin() {
     }
 
 }
+
 void loadBarSkin() {
-BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
-BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
-gui_skin.bar.bg.grid[0] = create_bitmap(3,11);
-gui_skin.bar.bg.grid[1] = create_bitmap(1,11);
-gui_skin.bar.bg.grid[2] = create_bitmap(3,11);
-blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
-blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
-blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
-gui_skin.bar.bg.grid[3] = create_bitmap(3,11);
-gui_skin.bar.bg.grid[4] = create_bitmap(1,11);
-gui_skin.bar.bg.grid[5] = create_bitmap(3,11);
-blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
-blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
-blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
+    BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
+    BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
+    gui_skin.bar.bg.grid[0] = create_bitmap(3,11);
+    gui_skin.bar.bg.grid[1] = create_bitmap(1,11);
+    gui_skin.bar.bg.grid[2] = create_bitmap(3,11);
+    blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
+    blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
+    blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
+    gui_skin.bar.bg.grid[3] = create_bitmap(3,11);
+    gui_skin.bar.bg.grid[4] = create_bitmap(1,11);
+    gui_skin.bar.bg.grid[5] = create_bitmap(3,11);
+    blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
+    blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
+    blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
 }
+
 void loadRadioSkin() {
-gui_skin.radiobutton.normal = load_bitmap("data/Skin/radioout.bmp", NULL);
-gui_skin.radiobutton.checked = load_bitmap("data/Skin/radioin.bmp", NULL);
-gui_skin.radiobutton.disabled = load_bitmap("data/Skin/radioout.bmp", NULL);
-gui_skin.radiobutton.disabled_checked = load_bitmap("data/Skin/radioin.bmp", NULL);
+    gui_skin.radiobutton.normal = load_bitmap("data/Skin/radioout.bmp", NULL);
+    gui_skin.radiobutton.checked = load_bitmap("data/Skin/radioin.bmp", NULL);
+    gui_skin.radiobutton.disabled = load_bitmap("data/Skin/radioout.bmp", NULL);
+    gui_skin.radiobutton.disabled_checked = load_bitmap("data/Skin/radioin.bmp", NULL);
 }
+
 void loadPlusSkin() {
-//BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
-//BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
-gui_skin.plus.bg.grid[0] = load_bitmap("data/plus.bmp", NULL);
-gui_skin.plus.bg.grid[1] = load_bitmap("data/plus_sel.bmp", NULL);
-gui_skin.plus.bg.grid[2] = load_bitmap("data/plus_dis.bmp", NULL);
-//blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
-//blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
-//blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
+    //BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
+    //BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
+    gui_skin.plus.bg.grid[0] = load_bitmap("data/plus.bmp", NULL);
+    gui_skin.plus.bg.grid[1] = load_bitmap("data/plus_sel.bmp", NULL);
+    gui_skin.plus.bg.grid[2] = load_bitmap("data/plus_dis.bmp", NULL);
+    //blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
+    //blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
+    //blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
 }
+
 void loadDialogSkin() {
     char **tokens;
     int    tokenCount;
@@ -446,7 +445,6 @@ void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int
 
 
 int gui_load_skin(const char* skinname) {
-    gui__external_slider_callback = NULL;
     push_config_state();
     set_config_file(skinname);
     gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
@@ -600,84 +598,6 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
     }
     return ret;
 }
-
-int tmw_slider_proc(int msg, DIALOG *d, int c) {
-    int w   = 0;
-    int h   = 0;
-    int x,y;
-
-    int ret = D_O_K;
-
-  static int watchdog = 0;
-
-  watchdog++;
-  if (watchdog == 1) {
-    gui__external_slider_callback = (int(__cdecl *)(void *, int))d->dp2;
-    d->dp2 = (void*)reroute_slider_proc;
-  }
-
-    if (msg == MSG_DRAW) {
-        if (d->w >= d->h) {
-            //rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-            /* horiz */
-            x = d->x;
-            y = d->y + (d->h- gui_skin.slider.hSlider[0]->h)/2;
-            masked_blit(gui_skin.slider.hSlider[0], gui_bitmap, 0, 0,  x, y, gui_skin.slider.hSlider[0]->w, gui_skin.slider.hSlider[0]->h);
-            w   = d->w -gui_skin.slider.hSlider[0]->w - gui_skin.slider.hSlider[2]->w;
-            x+= gui_skin.slider.hSlider[0]->w;
-
-            masked_stretch_blit(
-                    gui_skin.slider.hSlider[1], gui_bitmap,
-                    0, 0,  gui_skin.slider.hSlider[1]->w, gui_skin.slider.hSlider[1]->h,
-                    x, y, w, gui_skin.slider.hSlider[1]->h);
-
-            x+=w;
-            masked_blit(gui_skin.slider.hSlider[2], gui_bitmap, 0, 0,  x, y, gui_skin.slider.hSlider[2]->w, gui_skin.slider.hSlider[2]->h);
-
-						if(d->d1==0)d->d1=1; // Fix by 0 division
-
-            x  = d->x + ((d->w-gui_skin.slider.hGrip->w) * d->d2)/d->d1;
-            y = d->y + (d->h - gui_skin.slider.hGrip->h)/2;
-						if(!gui_bitmap)error("gui_bitmap");
-						if(!gui_skin.slider.hGrip)error("hGrip");
-            masked_blit(gui_skin.slider.hGrip, gui_bitmap, 0, 0,  x, y, gui_skin.slider.hGrip->w, gui_skin.slider.hGrip->h);
-        } else {
-            rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-            /* vertic */
-            x = d->x+ (d->w- gui_skin.slider.vSlider[0]->w)/2;
-            y = d->y;
-            masked_blit(gui_skin.slider.vSlider[0], gui_bitmap, 0, 0,  x, y, gui_skin.slider.vSlider[0]->w, gui_skin.slider.vSlider[0]->h);
-            h   = d->h - gui_skin.slider.vSlider[0]->h - gui_skin.slider.vSlider[2]->h;
-            y  += gui_skin.slider.vSlider[0]->h;
-
-            masked_stretch_blit(
-                    gui_skin.slider.vSlider[1], gui_bitmap,
-                    0, 0,  gui_skin.slider.vSlider[1]->w, gui_skin.slider.vSlider[1]->h,
-                    x, y,  gui_skin.slider.vSlider[1]->w, h);
-
-            y+=h;
-            masked_blit(gui_skin.slider.vSlider[2], gui_bitmap, 0, 0,  x, y, gui_skin.slider.vSlider[2]->w, gui_skin.slider.vSlider[2]->h);
-
-            y = d->y + d->h - (((d->h-gui_skin.slider.vGrip->h) * d->d2)/d->d1)-gui_skin.slider.vGrip->h;
-            x = d->x + (d->w - gui_skin.slider.vGrip->w)/2;
-            if (gui_skin.slider.vGrip->w % 2 !=0) {
-                x++;
-            }
-            masked_blit(gui_skin.slider.vGrip, gui_bitmap, 0, 0,  x, y, gui_skin.slider.vGrip->w, gui_skin.slider.vGrip->h);
-        }
-        //textprintf(gui_bitmap, font,10, 10, makecol(255,255,255), "%i", d->d2);
-    } else {
-      if(d->d1==0)d->d1 = 1;
-      ret = d_slider_proc(msg,d,c);
-    }
-
-  if (watchdog == 1) {
-    d->dp2 = (void*)gui__external_slider_callback;
-  }
-  watchdog--;
-    return ret;
-}
-
 
 int tmw_radio_proc(int msg, DIALOG *d, int c) {
     BITMAP *box = NULL;
@@ -958,60 +878,6 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
 }
 
 
-/**
-	dialog box w/ left aligned head
-*/
-int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
-  int x, y;
-
-  if (msg == MSG_CLICK) {
-    if(mouse_y < d->y + gui_skin.dialog.bg.grid[1]->h) {
-            //drag = true;
-            d->d1 = mouse_x - d->x;
-            d->d2 = mouse_y - d->y;
-    }
-    } else if (msg == MSG_DRAW) {
-    if((mouse_b & 1)&&(d->d1>=0)&&(d->d2>=0)) {//(drag==true)) {
-      x = mouse_x-d->d1;
-      y = mouse_y-d->d2;
-      if(x<15) {
-        x=0;
-        position_mouse(d->d1, mouse_y);
-      }
-      if(y<15) {
-        y=0;
-        position_mouse(mouse_x, d->d2);
-      }
-      if(x+d->w>=785) {
-        x=800-d->w;
-        position_mouse(x+d->d1, mouse_y);
-      }
-      if(y+d->h>=585) {
-        y=600-d->h;
-        position_mouse(mouse_x, y+d->d2);
-      }
-          position_dialog(active_dialog, x, y);
-    } else {
-      //drag = false;
-      d->d1 = -1;
-      d->d2 = -1;
-    }
-        draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-
-        textprintf_ex(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", (char*)d->dp);
-    }
-    return D_O_K;
-}
-
-int reroute_slider_proc(void *dp3, int d2) {
-    int ret = 0;
-
-    if (gui__external_slider_callback != NULL) {
-        ret = gui__external_slider_callback(dp3, d2);
-    }
-    return ret;
-}
-
 // Helper function to draw a scrollable bar
 void _gui_draw_scrollable_frame(DIALOG *d, int listsize, int offset, int height, int fg_color, int bg) {
     int i, len;
@@ -1205,152 +1071,6 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    return;
       }
    }
-}
-
-int tmw_textbox_proc(int msg, DIALOG *d, int c) {
-   int height, bar, ret = D_O_K;
-   int start, top, bottom, l;
-   int used, delta;
-   int fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
-
-   /* calculate the actual height */
-   height = (d->h-8) / text_height(font);
-
-   switch (msg) {
-
-      case MSG_START:
-   /* measure how many lines of text we contain */
-   _gui_draw_textbox((char *)d->dp, &d->d1,
-           0, /* DONT DRAW anything */
-           d->d2, !(d->flags & D_SELECTED), 8,
-           d->x, d->y, d->w, d->h,
-           (d->flags & D_DISABLED),
-           0, 0, 0);
-   break;
-
-      case MSG_DRAW:
-   /* tell the object to sort of draw, but only calculate the listsize */
-   _gui_draw_textbox((char *)d->dp, &d->d1,
-           0, /* DONT DRAW anything */
-           d->d2, !(d->flags & D_SELECTED), 8,
-           d->x, d->y, d->w, d->h,
-           (d->flags & D_DISABLED),
-           0, 0, 0);
-
-   if (d->d1 > height) {
-      bar = 12;
-   }
-   else {
-      bar = 0;
-      d->d2 = 0;
-   }
-
-   /* now do the actual drawing */
-   _gui_draw_textbox((char *)d->dp, &d->d1, 1, d->d2,
-           !(d->flags & D_SELECTED), 8,
-           d->x, d->y, d->w-bar, d->h,
-           (d->flags & D_DISABLED),
-           fg_color, d->bg, gui_mg_color);
-
-   /* draw the frame around */
-   _gui_draw_scrollable_frame(d, d->d1, d->d2, height, fg_color, d->bg);
-
-   break;
-
-      case MSG_CLICK:
-         /* figure out if it's on the text or the scrollbar */
-   bar = (d->d1 > height);
-
-   if ((!bar) || (gui_mouse_x() < d->x+d->w-13)) /* clicked on the text area */
-     ret = D_O_K;
-   else /* clicked on the scroll area */
-     //_handle_scrollable_scroll_click(d, d->d1, &d->d2, height);
-   break;
-
-      case MSG_CHAR:
-   start = d->d2;
-   used = D_USED_CHAR;
-
-   if (d->d1 > 0) {
-      if (d->d2 > 0)
-         top = d->d2+1;
-      else
-         top = 0;
-
-      l = (d->h-8)/text_height(font);
-
-      bottom = d->d2 + l - 1;
-      if (bottom >= d->d1-1)
-         bottom = d->d1-1;
-      else
-         bottom--;
-
-      if ((c>>8) == KEY_UP)
-         d->d2--;
-      else if ((c>>8) == KEY_DOWN)
-         d->d2++;
-      else if ((c>>8) == KEY_HOME)
-         d->d2 = 0;
-      else if ((c>>8) == KEY_END)
-         d->d2 = d->d1-l;
-      else if ((c>>8) == KEY_PGUP)
-         d->d2 -= (bottom-top) ? bottom-top : 1;
-      else if ((c>>8) == KEY_PGDN)
-         d->d2 += (bottom-top) ? bottom-top : 1;
-      else
-         used = D_O_K;
-
-      /* make sure that the list stays in bounds */
-      if (d->d2 > d->d1-l)
-         d->d2 = d->d1-l;
-      if (d->d2 < 0)
-         d->d2 = 0;
-   }
-   else
-      used = D_O_K;
-
-   /* if we changed something, better redraw... */
-   if (d->d2 != start)
-      d->flags |= D_DIRTY;
-
-   ret = used;
-   break;
-
-      case MSG_WHEEL:
-   l = (d->h-8)/text_height(font);
-   delta = (l > 3) ? 3 : 1;
-
-   /* scroll, making sure that the list stays in bounds */
-   start = d->d2;
-   d->d2 = (c > 0) ? MAX(0, d->d2-delta) : MIN(d->d1-l, d->d2+delta);
-
-   /* if we changed something, better redraw... */
-   if (d->d2 != start)
-      d->flags |= D_DIRTY;
-
-   ret = D_O_K;
-   break;
-
-      case MSG_WANTFOCUS:
-   /* if we don't have a scrollbar we can't do anything with the focus */
-   if (d->d1 > height)
-      ret = D_WANTFOCUS;
-   break;
-
-      default:
-   ret = D_O_K;
-   }
-
-   return ret;
-}
-
-int tmw_bitmap_proc(int msg, DIALOG *d, int c) {
-  if(msg==MSG_DRAW) {
-    draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
-    if(d->dp!=NULL)
-            masked_blit(((BITMAP *)d->dp), gui_bitmap, 0, 0, d->x+(d->w-d->d1)/2, d->y+2, d->d1, d->d2);
-  }
-  return D_O_K;
 }
 
 void ok(const char *title, const char *message) {
