@@ -199,6 +199,8 @@ void init_engine() {
             config.setValue("stretch", 1);
             config.setValue("remember", 1);
             config.setValue("username", "Player");
+
+            config.Write(dir);
         }
     }
 

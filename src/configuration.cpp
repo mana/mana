@@ -72,7 +72,7 @@ bool Configuration::Write(std::string filename) {
         if(optionTmp.numericValue == 0) {
             out.write(optionTmp.stringValue.c_str(), optionTmp.stringValue.length());
         }else{
-            sprintf(tmp, "%19f", optionTmp.numericValue);
+            sprintf(tmp, "%f", optionTmp.numericValue);
             out.write(tmp, strlen(tmp));
             strcpy(tmp, "");
         }
