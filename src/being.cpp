@@ -79,6 +79,7 @@ NODE *create_node() {
 	node->text_x = node->text_y = 0;
 	node->hair_style = 1;
 	node->hair_color = 1;
+	node->weapon = 0;
   return node;
 }
 

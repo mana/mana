@@ -144,8 +144,9 @@ void do_init() {
 	player_node->speed = 150;
 	player_node->hair_color = char_info->hair_color;
 	player_node->hair_style = char_info->hair_style;
+	if(char_info->weapon==11)char_info->weapon = 1;
+	player_node->weapon = char_info->weapon;
   add_node(player_node);
-  //keyb_state = IDLE;
 	show_npc_dialog = 0;
 
 	remove("./docs/packet.list");

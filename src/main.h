@@ -70,10 +70,11 @@ typedef struct {
 	int xp, gp, job_xp, job_lv;
 	short statp, skill_point, hair_color, hair_style;
 	char STR, AGI, VIT, INT, DEX, LUK;
+	short weapon;
 } PLAYER_INFO;
 
 extern BITMAP *playerset;
-extern DATAFILE *graphic, *emotions;
+extern DATAFILE *graphic, *emotions, *weaponset;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;

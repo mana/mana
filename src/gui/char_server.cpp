@@ -116,6 +116,7 @@ void server_char_server() {
 			char_info[i].LUK = RFIFOB(24+106*i+103);
 			char_info[i].hair_style = RFIFOW(24+106*i+54);
 			char_info[i].hair_color = RFIFOW(24+106*i+70);
+			char_info[i].weapon = RFIFOW(24+106*i+56);
 		}
 		state = CHAR_SELECT;
 

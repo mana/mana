@@ -48,7 +48,7 @@ SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
 BITMAP *playerset, *hairset;
-DATAFILE *graphic, *emotions;
+DATAFILE *graphic, *emotions, *weaponset;
 
 char username[25];
 char password[25];
@@ -207,7 +207,10 @@ void init_engine() {
 	hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
 	if(hairset==NULL)
 	  error("Unable to load hairset bitmap");
-
+  weaponset = load_datafile("./data/graphic/weapon.dat");
+  if(weaponset==NULL)
+    error("Unable to load weaponset datafile");
+  
 	init_gui(buffer, "./data/Skin/aqua.skin");
   state = LOGIN;
 }

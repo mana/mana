@@ -259,6 +259,7 @@ void server_char_delete() {
 				char_info->LUK = RFIFOB(2+103);
 				char_info->hair_style = RFIFOW(2+54);
 				char_info->hair_color = RFIFOW(2+70);
+				char_info->weapon = RFIFOW(2+56);
 				RFIFOSKIP(108);
 				//n_character++;
 			} else if(RFIFOW(0)==0x006c) {
