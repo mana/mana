@@ -27,7 +27,7 @@ struct ITEM {
 };
 
 char *item_list(int index, int *list_size);
-void parse_items(char *string, short len);
+void parse_items(const char *string);
 void remove_all_items();
 
 #endif

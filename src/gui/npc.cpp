@@ -45,29 +45,30 @@ void add_item(char *name) {
 }
 
 void remove_tail() {
-    //free(items.back()->name);
+    free(items.back()->name);
     free(items.back());
     items.pop_back();
 }  
 
-void parse_items(char *string, short len) {
-    char *token = strtok(string, ":");
+void parse_items(const char *string) {
+    char *copy = new char[strlen(string) + 1];
+    strcpy(copy, string);
+
+    char *token = strtok(copy, ":");
     while (token != NULL) {
-        // temp fix for the barber script
-        //if (strcmp(token, "you prefer?") != 0) {
-        char *temp = (char*)malloc(strlen(token));
+        char *temp = (char*)malloc(strlen(token) + 1);
         strcpy(temp, token);
         add_item(temp);
-        //}
         token = strtok(NULL, ":");
     }
-    remove_tail();  
+    
+    delete[] copy;
 } 
 
 void remove_all_items() {
     int i;
     for (i = 0; i < items.size(); i++) {
-        //free(items[i]->name);
+        free(items[i]->name);
         free(items[i]);
     }
     items.clear();

@@ -832,7 +832,9 @@ void do_parse() {
         case 0x00b7:
           current_npc = RFIFOL(4);
           //alert(RFIFOP(8),"","","","",0,0);
-          parse_items(RFIFOP(8), RFIFOW(2));
+          //parse_items(RFIFOP(8), RFIFOW(2));
+          parse_items(RFIFOP(8));
+          RFIFOW(2);
           show_npc_dialog = 5;
           break;
         // Look change
