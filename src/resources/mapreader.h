@@ -47,9 +47,15 @@ class MapReader
 
     private:
         /**
-         * Helper function that handler reading the map layers.
+         * Helper function that handles reading a map layer.
          */
         static void readLayer(xmlNodePtr node, Map *map, int layer);
+
+        /**
+         * Helper function that handles reading a tile set.
+         */
+        static void readTileset(xmlNodePtr node, const std::string &path,
+                Map *map);
 
         static int getProperty(xmlNodePtr node, const char* name, int def);
 };

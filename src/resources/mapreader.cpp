@@ -23,6 +23,8 @@
 
 #include "mapreader.h"
 #include "../log.h"
+#include "resourcemanager.h"
+#include "../graphic/spriteset.h"
 
 #include <iostream>
 
@@ -91,15 +93,12 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "tileset")) {
-            /*
-            Tileset* set = readTileset(node, path);
-            if (set) {
-                map->tilesets.push_back(set);
-            }
-            */
+        if (xmlStrEqual(node->name, BAD_CAST "tileset"))
+        {
+            readTileset(node, path, map);
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "layer")) {
+        else if (xmlStrEqual(node->name, BAD_CAST "layer"))
+        {
             log("- Loading layer %d", layerNr);
             readLayer(node, map, layerNr);
             layerNr++;
@@ -111,18 +110,14 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 
 void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 {
-    // Ignored layer attributes
-    //int w = getProperty(node, "width", 0);   // Map width is used
-    //int h = getProperty(node, "height", 0);  // Map height is used
-    //xmlChar *name = xmlGetProp(node, BAD_CAST "name"); 
-
     node = node->xmlChildrenNode;
     int h = map->getHeight();
     int w = map->getWidth();
     int x = 0;
     int y = 0;
     
-    // Load the tile data
+    // Load the tile data. Layers are assumed to be map size, with (0,0) as
+    // origin.
     while (node != NULL)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tile") && y < h)
@@ -142,44 +137,42 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     }
 }
 
-/*
-Tileset* MapReader::readTileset(xmlNodePtr node, const std::string &path)
+void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
 {
-    Tileset* set = NULL;
-
     xmlChar* prop = xmlGetProp(node, BAD_CAST "source");
     if (prop) {
-        console.log(CON_LOG, CON_ALWAYS,
-                "Warning: External tilesets not supported yet.");
+        log("Warning: External tilesets not supported yet.");
         xmlFree(prop);
-        return NULL;
+        return;
     }
 
     int firstgid = getProperty(node, "firstgid", 0);
-    int tw = getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    int th = getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
-    int ts = getProperty(node, "spacing", 0);
-    xmlChar* name = xmlGetProp(node, BAD_CAST "name");
+    int tw = getProperty(node, "tilewidth", map->getTileWidth());
+    int th = getProperty(node, "tileheight", map->getTileHeight());
 
     node = node->xmlChildrenNode;
 
-    while (node != NULL) {
-        if (xmlStrEqual(node->name, BAD_CAST "image")) {
+    while (node != NULL)
+    {
+        if (xmlStrEqual(node->name, BAD_CAST "image"))
+        {
             xmlChar* source = xmlGetProp(node, BAD_CAST "source");
 
-            if (source) {
-                char* srcname = get_filename((char*)source);
-                BITMAP* tilebmp = module->findBitmap(srcname);
+            if (source)
+            {
+                ResourceManager *resman = ResourceManager::getInstance();
+                Image* tilebmp = resman->getImage(path +
+                        std::string((const char*)source));
 
-                if (tilebmp) {
-                    set = new Tileset();
-                    set->importTileBitmap(tilebmp, (char*)source, tw, th, ts);
-                    set->setFirstGid(firstgid);
-                    if (name) { set->setName((char*)name); }
+                if (tilebmp)
+                {
+                    Spriteset *set = new Spriteset(tilebmp, tw, th);
+                    //set->setFirstGid(firstgid);
+                    // TODO: Like uhm, do something with this set!
                     xmlFree(source);
-                } else {
-                    printf("Warning: Failed to load tileset %s (%s)\n",
-                            srcname, (char*)name);
+                }
+                else {
+                    log("Warning: Failed to load tileset (%s)\n", source);
                 }
             }
 
@@ -188,12 +181,7 @@ Tileset* MapReader::readTileset(xmlNodePtr node, const std::string &path)
 
         node = node->next;
     }
-
-    xmlFree(name);
-
-    return set;
 }
-*/
 
 int MapReader::getProperty(xmlNodePtr node, const char* name, int def)
 {

@@ -89,6 +89,7 @@ bool Location::operator< (const Location &loc) const
 
 Map::Map():
     width(0), height(0),
+    tileWidth(32), tileHeight(32),
     onClosedList(1), onOpenList(2)
 {
     tiles = new Tile[width * height];
@@ -96,6 +97,7 @@ Map::Map():
 
 Map::Map(int width, int height):
     width(width), height(height),
+    tileWidth(32), tileHeight(32),
     onClosedList(1), onOpenList(2)
 {
     tiles = new Tile[width * height];
@@ -225,6 +227,16 @@ int Map::getWidth()
 int Map::getHeight()
 {
     return height;
+}
+
+int Map::getTileWidth()
+{
+    return tileWidth;
+}
+
+int Map::getTileHeight()
+{
+    return tileHeight;
 }
 
 PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)

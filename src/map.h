@@ -143,12 +143,23 @@ class Map
         int getHeight();
 
         /**
+         * Returns the tile width of this map.
+         */
+        int getTileWidth();
+
+        /**
+         * Returns the tile height used by this map.
+         */
+        int getTileHeight();
+
+        /**
          * Find a path from one location to the next.
          */
         PATH_NODE *findPath(int startX, int startY, int destX, int destY);
 
     private:
         int width, height;
+        int tileWidth, tileHeight;
         Tile *tiles;
 
         // Pathfinding members
