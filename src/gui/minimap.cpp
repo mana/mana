@@ -63,22 +63,26 @@ void Minimap::draw(gcn::Graphics *graphics)
         sourceRect.x = sourceRect.y = 0;
         sourceRect.w = getWidth();
         sourceRect.h = getHeight();
-        if ( mapBackground )
+
+        if (mapBackground)
         { 
             SDL_FillRect(mapBackground, &sourceRect, mapColor);
             SDL_SetAlpha(mapBackground, SDL_SRCALPHA, 120);
         }
-        
     }
     
-    SDL_Rect screenRect;
-    screenRect.w = getWidth();
-    screenRect.h = getHeight();
-    screenRect.x = x;
-    screenRect.y = y;
     if (mapBackground)
+    {
+        SDL_Rect screenRect;
+        screenRect.w = getWidth();
+        screenRect.h = getHeight();
+        screenRect.x = x;
+        screenRect.y = y;
+
         SDL_BlitSurface(mapBackground, NULL, screen, &screenRect);
+    }
     
+    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     graphics->setColor(gcn::Color(209, 52, 61));
     graphics->fillRectangle(gcn::Rectangle(player_node->x / 2,

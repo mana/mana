@@ -832,7 +832,7 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     strcat(map_path, "data/maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
-                    logger.log("Warping to %s (%d, %d)\n",
+                    logger.log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
 
