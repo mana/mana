@@ -22,6 +22,7 @@
  */
 
 #include "shop.h"
+#include "../graphic/graphic.h"
 
 int n_items;
 char* selectedItem = "You got 4";
@@ -69,8 +70,8 @@ void add_buy_item(short id, int price) {
 void add_sell_item(short index, int price) {
 	int id = inventory.items[index].id;
 	ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
-	if(id-501>=0 && id-501<=2)
-    sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
+	if(id>=501 && id<=511)
+		sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
 	else
 		sprintf(item_shop->name, "Unknown item %i gp", price);
 	item_shop->price = price;
