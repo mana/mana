@@ -26,6 +26,8 @@
 
 #include <allegro.h>
 #include "../main.h"
+#include "gui.h"
+#include "window.h"
 
 struct SKILL {
     short id; //index into "skill_db" array

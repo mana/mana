@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=86
+UnitCount=88
 Type=0
 Ver=1
 ObjFiles=
@@ -33,7 +33,7 @@ CompilerSettings=0010001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=787
+Build=797
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -675,7 +675,7 @@ BuildCmd=
 [Unit66]
 FileName=small_icon.rc
 CompileCpp=1
-Folder=Resources
+Folder=resources
 Compile=1
 Link=0
 Priority=1000
@@ -895,7 +895,7 @@ BuildCmd=
 [Unit85]
 FileName=src\gui\windowcontainer.h
 CompileCpp=1
-Folder=tmw/gui
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
@@ -905,7 +905,27 @@ BuildCmd=
 [Unit86]
 FileName=src\gui\windowcontainer.cpp
 CompileCpp=1
-Folder=tmw/gui
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit87]
+FileName=src\gui\playerbox.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit88]
+FileName=src\gui\playerbox.cpp
+CompileCpp=1
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
