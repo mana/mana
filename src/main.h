@@ -40,6 +40,7 @@
 #include "./gui/stats.h"
 #include "./gui/char_server.h"
 #include "./gui/char_select.h"
+#include "./gui/inventory.h"
 #include "./graphic/super_eagle.h"
 #include "../data/graphic/gfx_data.h"
 

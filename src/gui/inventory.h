@@ -45,7 +45,7 @@ struct itemHolder { // the holder of a item
 	//int index;    // item position
 };
 
-class TmwInventory{
+class TmwInventory {
 	public:
 		TmwInventory() {};
 		~TmwInventory() {};
@@ -61,8 +61,9 @@ class TmwInventory{
 		int increase_quantity(int index, int quantity); // increase quantity of a item
 		int use_item(int index, int id);
 		//END API
-	private:
+
 		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
+  private:
 		DATAFILE *itemset;
 		bool show_inventory;
 };

@@ -130,7 +130,7 @@ int get_y_offset(NODE *node) {
 }
 
 void init_graphic() {
-	tileset = load_datafile("./data/graphic/village.dat");
+	tileset = load_datafile("./data/graphic/desert.dat");
 	if(!tileset)error("Unable to load tileset datafile");
 	//if(!(gfx_capabilities & GFX_HW_VRAM_BLIT))allegro_message("Not supporting HW accelerated blit");
 	buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
@@ -206,12 +206,12 @@ void do_graphic(void) {
 		} else if(node->job==45) { // Draw a warp
       //rectfill(buffer, (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates)), (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates)), (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates))+16, (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates))+16, makecol(0,0,255));
     } else { // Draw a monster
-      
+
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-20+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
 
       if(node->action==MONSTER_DEAD)node->frame = 0;
-			masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60, 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
+			masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
         if(node->frame>=4) {

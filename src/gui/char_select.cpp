@@ -19,6 +19,8 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+
 */
 
 #include "char_select.h"
@@ -73,7 +75,7 @@ void char_select() {
 	int gui_exit = 1;
 	while ((!key[KEY_ESC])&&(gui_exit)&&(!key[KEY_ENTER])) {
 		clear_bitmap(buffer);
-		if(stretch_mode!=0)blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 80, 60, 640, 480);
+		if(stretch_mode!=0)blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
 		else blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, -120, -90, 640, 480);
 		gui_exit = gui_update(player);
 		blit(buffer, screen, 0, 0, 0, 0, 800, 600);
@@ -161,7 +163,7 @@ void server_char_delete() {
     int gui_exit = 1;
     while ((!key[KEY_ESC])&&(gui_exit)) {
       clear_bitmap(buffer);
-      if(stretch_mode!=0)blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 80, 60, 640, 480);
+      if(stretch_mode!=0)blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
       else blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, -120, -90, 640, 480);
       gui_exit = gui_update(player);
       blit(buffer, screen, 0, 0, 0, 0, 800, 600);

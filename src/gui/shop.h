@@ -29,6 +29,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "../graphic/graphic.h"
+
 struct ITEM_SHOP {
 	char name[30];
 	int price;
@@ -39,7 +41,8 @@ struct ITEM_SHOP {
 extern int n_items;
 
 char *shop_list(int index, int *list_size);
-void add_item(short id, int price);
+void add_buy_item(short id, int price);
+void add_sell_item(short index, int price);
 void close_shop();
 short get_item_id(int index);
 

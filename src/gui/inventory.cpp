@@ -106,6 +106,5 @@ int TmwInventory::use_item(int index, int id) {
 	// Note: id is dest of item, usually player_node->account_ID
 	WFIFOSET(8);
 	while((out_size>0))flush();
-
 	return 0;
 }

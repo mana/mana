@@ -410,6 +410,7 @@ void do_parse() {
           break;
         // Monster moving
         case 0x007b:
+				case 0x01da:
           node = find_node(RFIFOL(2));
 					if(node==NULL) {
 						node = create_node();
@@ -428,7 +429,7 @@ void do_parse() {
           }
           break;
         // Being moving
-        case 0x01da:
+        /*case 0x01da:
           node = find_node(RFIFOL(2));
           if(node==NULL) {
             node = create_node();
@@ -448,7 +449,7 @@ void do_parse() {
 					if(node->action==WALK)node->tick_time = tick_time;
           set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
           }
-          break;
+          break;*/
         // NPC dialog
         case 0x00b4:
           if(!strstr(npc_text, RFIFOP(8))) {
@@ -659,14 +660,14 @@ void do_parse() {
 					n_items = (len-4)/11;
 					show_npc_dialog = 3;
 					for(int k=0;k<n_items;k++)
-						add_item(RFIFOW(4+11*k+9), RFIFOL(4+11*k));
+						add_buy_item(RFIFOW(4+11*k+9), RFIFOL(4+11*k));
 					break;
 				// Sell dialog
 				case 0x00c7:
 					n_items = (len-4)/10;
 					show_npc_dialog = 4;
 					for(int k=0;k<n_items;k++)
-						add_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
+						add_sell_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
 					break;
 				// Answer to buy
 				case 0x00ca:
@@ -685,6 +686,10 @@ void do_parse() {
 				// Add item to inventory after you bought it
 				case 0x00a0:
 					inventory.add_item(RFIFOW(2), RFIFOW(6), RFIFOW(4));
+					break;
+				case 0x0119:
+					sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
+					alert(pkt_nfo,"","","","",0,0);
 					break;
         // Manage non implemented packets
         default:
