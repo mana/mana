@@ -21,36 +21,42 @@
 
 #include "log.h"
 
-int warning_n; // Keep warning number
 FILE* logfile;
 
 
 #define LOG_FILE "./docs/tmw.log"
 
 
-
+/*
+ * Initializes log file by opening it for writing.
+ */
 void init_log() {
     logfile = fopen(LOG_FILE, "w");
     if (!logfile) {
         printf("Warning: error while opening log file.\n");
     }
-    warning_n = 0;
 }
 
+/*
+ * Enter a message in the log with a certain category. The message will be
+ * timestamped.
+ */
 void log(const char *category, const char *log_text, ...) {
     if (logfile) {
         char* buf = new char[1024];
-
         va_list ap;
+        time_t t;
+
+        // Use a temporary buffer to fill in the variables
         va_start(ap, log_text);
         vsprintf(buf, log_text, ap);
         va_end(ap);
 
-        time_t t;
+        // Get the current system time
         time(&t);
 
-        fprintf(
-                logfile,
+        // Print the log entry
+        fprintf(logfile,
                 "[%s%d:%s%d:%s%d] %s: %s\n",
                 (((t / 60) / 60) % 24 < 10) ? "0" : "",
                 (int)(((t / 60) / 60) % 24),
@@ -60,28 +66,40 @@ void log(const char *category, const char *log_text, ...) {
                 (int)(t % 60),
                 category, buf
                );
+
+        // Flush the log file
         fflush(logfile);
 
+        // Delete temporary buffer
         delete[] buf;
     }
 }
 
-
+/*
+ * Log an error and quit. The error will pop-up in Windows and will be printed
+ * to standard error everywhere else. 
+ */
 void error(const char *error_text) {
     log("Error", error_text);
 
 #ifdef WIN32
     MessageBox(NULL, error_text, "Error", MB_ICONERROR|MB_OK);
 #else
-    printf("Error: %s", error_text);
+    fprintf(stderr, "Error: %s\n", error_text);
 #endif
     exit(1);
 }
 
+/*
+ * Shortcut to log a warning.
+ */
 void warning(const char *warning_text) {
     log("Warning", warning_text);
 }
 
+/*
+ * Shortcut to log a status update, will only really be logged in debug mode.
+ */
 void status(const char *status_text) {
 #ifdef DEBUG
     log("Status", status_text);
