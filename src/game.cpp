@@ -231,7 +231,7 @@ void do_input() {
 	if(key[KEY_F10] && action_time==true) {
 		//was 3 goes to 0
 		//was 0 goes to 3
-		if(is_windowed_mode())
+		if(true == is_windowed_mode())
 		{
 			set_color_depth(32);
 			if( 0 != set_gfx_mode(GFX_AUTODETECT_FULLSCREEN, 800, 600, 0, 0))//Not equal: to add support for other hardware platforms
