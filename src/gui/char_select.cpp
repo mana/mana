@@ -198,7 +198,7 @@ void server_char_delete() {
         char_info->job_xp = RFIFOL(2+12);
 				char_info->lv = RFIFOW(2+58);
 				char_info->xp = RFIFOL(2+4);
-				char_info->zeny = RFIFOL(2+8);
+				char_info->gp = RFIFOL(2+8);
 				char_info->STR = RFIFOB(2+98);
 				char_info->AGI = RFIFOB(2+99);
 				char_info->VIT = RFIFOB(2+100);

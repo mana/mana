@@ -619,7 +619,7 @@ void do_parse() {
 							char_info->job_xp = RFIFOL(4);
 							break;
 						case 20:
-							char_info->zeny = RFIFOL(4);
+							char_info->gp = RFIFOL(4);
 							break;
 						// case 16 and 17 missing
 					}

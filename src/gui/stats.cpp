@@ -45,7 +45,7 @@ DIALOG stats_dialog[] = {
 void update_stats_dialog() {
 	sprintf(stats_name, "%s Lvl: % 2i Job: % 2i", char_info->name, char_info->lv, char_info->job_lv);
 	sprintf(stats_hp,   "HP % 4d / % 4d",         char_info->hp, char_info->max_hp);
-	sprintf(stats_zeny, "Zeny % 5i",              char_info->zeny);
+	sprintf(stats_zeny, "GP % 5i",                char_info->zeny);
 	sprintf(stats_sp,   "SP % 4d / % 4d",         char_info->sp, char_info->max_sp);
 	stats_dialog[2].d1 = char_info->hp;
 	stats_dialog[2].d2 = char_info->max_hp;

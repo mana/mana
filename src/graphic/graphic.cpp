@@ -226,8 +226,8 @@ void do_graphic(void) {
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
         if(node->frame>=4) {
-          if(node->action!=MONSTER_DEAD) {
-						if(node->path->next  && node->action!=MONSTER_DEAD) {
+					if(node->action!=MONSTER_DEAD && node->path) {
+						if(node->path->next) {
               PATH_NODE *old = node->path;
 							node->path = node->path->next;
 							direction = 0;

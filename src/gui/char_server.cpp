@@ -101,7 +101,7 @@ void server_char_server() {
 			char_info[i].hp = RFIFOW(24+106*i+42);
 			char_info[i].max_hp = RFIFOW(24+106*i+44);
 			char_info[i].xp = RFIFOL(24+106*i+4);
-			char_info[i].zeny = RFIFOL(24+106*i+8);
+			char_info[i].gp = RFIFOL(24+106*i+8);
 			char_info[i].job_xp = RFIFOL(24+106*i+16);
 			char_info[i].job_lv = RFIFOL(24+106*i+24);
 			char_info[i].sp = RFIFOW(24+106*i+46);
