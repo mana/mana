@@ -290,7 +290,7 @@ Engine::Engine()
     minimap = new Minimap();
     
     equipmentWindow = new EquipmentWindow();
-    equipmentWindow->setVisible(true);
+    equipmentWindow->setVisible(false);
 
     // Give focus to the chat input
     chatInput->requestFocus();
