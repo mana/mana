@@ -733,10 +733,12 @@ void do_parse() {
 					break;
 				// Sell dialog
 				case 0x00c7:
-					n_items = (len-4)/10;
-					show_npc_dialog = 4;
-					for(int k=0;k<n_items;k++)
-						add_sell_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
+				  n_items = (len-4)/10;
+				  if(n_items>0) {
+				    show_npc_dialog = 4;
+				    for(int k=0;k<n_items;k++)
+				      add_sell_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
+		      } else chatlog.chat_log("Nothing to sell", BY_SERVER, gui_font);  
 					break;
 				// Answer to buy
 				case 0x00ca:

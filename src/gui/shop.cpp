@@ -30,7 +30,7 @@ char* selectedItem = "You got 4";
 ITEM_SHOP *shop = NULL;
 
 char *item_db[] = {
-	"Candy", "Medical Herb", "Chocolate", "Royal Jam", "Faerie Walnut",
+	"Cactus Drink", "Cactus potion", "Casino coins", "Royal Jam", "Faerie Walnut",
 	"Cup of wishes", "Magic rope", "Midge mallet", "Flammie drum", "Moogle belt"
 };
 
@@ -118,7 +118,8 @@ int get_item_quantity(int index) {
     item_shop = item_shop->next;
     iterator++;
   }
-  return item_shop->quantity;
+  if(item_shop)return item_shop->quantity;
+  else return 0;
 }
 
 int get_item_index(int index) {

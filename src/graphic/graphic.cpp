@@ -423,7 +423,11 @@ void do_graphic(void) {
 			}
 			break;
 		case 4:
+		  //alert("","","","","",0,0);
+		  //char ds[20];
       sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
+      //sprintf(ds, "%i", sell_dialog[3].d1);
+      //ok(ds,"");
 			/*if(sell_dialog[3].d2>sell_dialog[3].d1) {
         sell_dialog[3].d2 = sell_dialog[3].d1;
 				sprintf((char *)sell_dialog[5].dp, "%i %i", sell_dialog[3].d1, sell_dialog[3].d2);
