@@ -64,24 +64,16 @@ gcn::Widget()
     dBottomLeftBorder->setAlpha(1.0f);
     dBottomRightBorder->setAlpha(1.0f);
     
-    ColorBar = SDL_AllocSurface(SDL_SWSURFACE, getWidth()-8, getHeight()-8, (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
-    Uint32 boxColor = SDL_MapRGB(screen->format, Red, Green, Blue);
-    SDL_Rect sourceRect;
-    sourceRect.x = sourceRect.y = 0;
-    sourceRect.w = getWidth();
-    sourceRect.h = getHeight();
-    if ( ColorBar )
-    { 
-        SDL_FillRect(ColorBar, &sourceRect, boxColor);
-        SDL_SetAlpha(ColorBar, SDL_SRCALPHA, 120);
-    }
-    
+    colorBar = new Image();
+    colorBar->create(getWidth() - 8, getHeight() - 8);
+    colorBar->fillWithColor(Red, Green, Blue);
+    colorBar->setAlpha(0.7f);    
 }
 
 ProgressBar::~ProgressBar()
 {
     #ifndef USE_OPENGL
-    SDL_FreeSurface(ColorBar);
+    //SDL_FreeSurface(ColorBar);
     #endif
 }
 
@@ -106,20 +98,8 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     dLeftBorder->drawPattern(screen, absx, absy+4, 4, getHeight()-8);
     dRightBorder->drawPattern(screen, absx+getWidth()-4, absy+4, 4, getHeight()-8);
 
-    // And then, we color the bar to show the progress
-    if ( ColorBar )
-    {
-        SDL_Rect screenRect, colorBarRect;
-        colorBarRect.x = 0;
-        colorBarRect.y = 0;
-        colorBarRect.w = int(progress*float(getWidth()-4));
-        colorBarRect.h = getHeight();
-        screenRect.w = getWidth();
-        screenRect.h = getHeight()-4;
-        screenRect.x = absx+4;
-        screenRect.y = absy+4;
-        if ( ColorBar ) SDL_BlitSurface(ColorBar, &colorBarRect, screen, &screenRect);
-    }
+    colorBar->draw(screen, 0, 0, absx + 4, absy + 4, 
+                   int(progress*float(getWidth()-4)), getHeight() - 8);
     
 #endif
 }
@@ -138,20 +118,6 @@ void ProgressBar::setColor(unsigned char MyRed, unsigned char MyGreen,
                 unsigned char MyBlue)
 {
     Red = MyRed; Green = MyGreen; Blue = MyBlue;
-    
-    SDL_FreeSurface(ColorBar);
-    ColorBar = SDL_AllocSurface(SDL_SWSURFACE, getWidth()-8, getHeight()-8, 
-       (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
-    Uint32 boxColor = SDL_MapRGB(screen->format, Red, Green, Blue);
-    SDL_Rect sourceRect;
-    sourceRect.x = sourceRect.y = 0;
-    sourceRect.w = getWidth();
-    sourceRect.h = getHeight();
-    if ( ColorBar )
-    { 
-        SDL_FillRect(ColorBar, &sourceRect, boxColor);
-        SDL_SetAlpha(ColorBar, SDL_SRCALPHA, 120);
-    }
-        
-    
+    colorBar->fillWithColor(Red, Green, Blue);
+    colorBar->setAlpha(0.7f);
 }

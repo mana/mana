@@ -94,9 +94,8 @@ class ProgressBar : public gcn::Widget {
         Image *dBackground;
         Image *dTopLeftBorder, *dTopRightBorder, *dBottomLeftBorder, *dBottomRightBorder;
         Image *dLeftBorder, *dRightBorder, *dTopBorder, *dBottomBorder;
-        #ifndef USE_OPENGL
-        SDL_Surface *ColorBar;
-        #endif
+        // Our color bar
+        Image *colorBar;
 };
 
 #endif
