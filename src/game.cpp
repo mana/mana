@@ -164,19 +164,18 @@ void do_exit() {
 
 void do_input()
 {
-    // Get the state of the keyboard keys
-    Uint8* keys;
-    keys = SDL_GetKeyState(NULL);
-
     // Events
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        // For discontinuous keys
-        if ( event.type == SDL_KEYDOWN )
-        {
+        bool used = false;
 
-            if ( (event.key.keysym.sym == SDLK_F5) && action_time) 
+        // For discontinuous keys
+        if (event.type == SDL_KEYDOWN)
+        {
+            SDL_keysym keysym = event.key.keysym;
+
+            if ((keysym.sym == SDLK_F5) && action_time)
             {
                 if (player_node->action == STAND)
                     action(2, 0);
@@ -186,27 +185,44 @@ void do_input()
             }
 
             // Emotions, Skill dialog
-            if ( event.key.keysym.mod == KMOD_ALT && action_time) 
+            if (keysym.mod & KMOD_ALT && action_time)
             {
-                if (player_node->emotion == 0) 
+                if (player_node->emotion == 0)
                 {
                     unsigned char emotion = 0;
-                    if (event.key.keysym.sym == SDLK_1) emotion = 1;
-                    else if (event.key.keysym.sym == SDLK_2) emotion = 2;
-                    else if (event.key.keysym.sym == SDLK_3) emotion = 3;
-                    else if (event.key.keysym.sym == SDLK_4) emotion = 4;
-                    else if (event.key.keysym.sym == SDLK_5) emotion = 5;
-                    else if (event.key.keysym.sym == SDLK_6) emotion = 6;
-                    else if (event.key.keysym.sym == SDLK_7) emotion = 7;
-                    else if (event.key.keysym.sym == SDLK_8) emotion = 8;
-                    else if (event.key.keysym.sym == SDLK_9) emotion = 9;
-                    else if (event.key.keysym.sym == SDLK_0) emotion = 10;
+                    if (keysym.sym == SDLK_1) emotion = 1;
+                    else if (keysym.sym == SDLK_2) emotion = 2;
+                    else if (keysym.sym == SDLK_3) emotion = 3;
+                    else if (keysym.sym == SDLK_4) emotion = 4;
+                    else if (keysym.sym == SDLK_5) emotion = 5;
+                    else if (keysym.sym == SDLK_6) emotion = 6;
+                    else if (keysym.sym == SDLK_7) emotion = 7;
+                    else if (keysym.sym == SDLK_8) emotion = 8;
+                    else if (keysym.sym == SDLK_9) emotion = 9;
+                    else if (keysym.sym == SDLK_0) emotion = 10;
                     if (emotion != 0) {
                         WFIFOW(0) = net_w_value(0x00bf);
                         WFIFOB(2) = emotion;
                         WFIFOSET(3);
                         action_time = false;
+                        used = true;
                     }
+                }
+
+            }
+
+            if (keysym.mod & KMOD_ALT) {
+                if (keysym.sym == SDLK_i) {
+                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
+                    used = true;
+                }
+                else if (keysym.sym == SDLK_s) {
+                    statsWindow->setVisible(!statsWindow->isVisible());
+                    used = true;
+                }
+                else if (keysym.sym == SDLK_k) {
+                    skillDialog->setVisible(!skillDialog->isVisible());
+                    used = true;
                 }
             }
 
@@ -215,9 +231,9 @@ void do_input()
                 state = EXIT;
             }
 
-            if (event.key.keysym.sym == SDLK_f)
+            if (keysym.sym == SDLK_f)
             {
-                if (event.key.keysym.mod & KMOD_CTRL)
+                if (keysym.mod & KMOD_CTRL)
                 {
                     // Works with X11 only?
                     SDL_WM_ToggleFullScreen(screen);
@@ -225,16 +241,16 @@ void do_input()
             }
         } // End key down
 
-        if ( event.button.type == SDL_MOUSEBUTTONDOWN )
+        if (event.button.type == SDL_MOUSEBUTTONDOWN)
         {
-            if ( event.button.button == 3 )
+            if (event.button.button == 3)
             {
                 // We click the right button
                 // NPC Call
                 int npc_x = event.motion.x / 32 + camera_x;
                 int npc_y = event.motion.y / 32 + camera_y;
                 int id = find_npc(npc_x, npc_y);
-                if (id != 0) 
+                if (id != 0)
                 {
                     WFIFOW(0) = net_w_value(0x0090);
                     WFIFOL(2) = net_l_value(id);
@@ -246,21 +262,27 @@ void do_input()
 
         }
 
-        // Push input to GUI
-        guiInput->pushInput(event);
+        // Push input to GUI when not used
+        if (!used) {
+            guiInput->pushInput(event);
+        }
 
     } // End while
 
 
-    if (walk_status == 0 && player_node->action != DEAD) 
+    // Get the state of the keyboard keys
+    Uint8* keys;
+    keys = SDL_GetKeyState(NULL);
+
+    if (walk_status == 0 && player_node->action != DEAD)
     {
         int x = player_node->x;
         int y = player_node->y;
 
-        if ( keys[SDLK_UP] || keys[SDLK_KP8] )
+        if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
             // UP
-            if (get_walk(x, y - 1) != 0) 
+            if (get_walk(x, y - 1) != 0)
             {
                 walk(x, y-1, NORTH);
                 walk_status = 1;
@@ -273,10 +295,10 @@ void do_input()
             }
             else player_node->direction = NORTH;
         }
-        else if ( keys[SDLK_DOWN] || keys[SDLK_KP2] )
+        else if (keys[SDLK_DOWN] || keys[SDLK_KP2])
         {
             // Down
-            if (get_walk(x, y + 1) != 0) 
+            if (get_walk(x, y + 1) != 0)
             {
                 walk(x, y + 1, SOUTH);
                 walk_status = 1;
@@ -288,8 +310,8 @@ void do_input()
                 player_node->direction = SOUTH;
             }
             else player_node->direction = SOUTH;
-        } 
-        else if ( keys[SDLK_LEFT] || keys[SDLK_KP4] ) 
+        }
+        else if (keys[SDLK_LEFT] || keys[SDLK_KP4])
         {
             if (get_walk(x - 1, y) != 0) {
                 walk(x - 1, y, WEST);
@@ -303,7 +325,7 @@ void do_input()
             }
             else player_node->direction = WEST;
         }
-        else if ( keys[SDLK_RIGHT] || keys[SDLK_KP6] ) 
+        else if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
         {
             if (get_walk(x + 1, y) != 0) {
                 walk(x + 1, y, EAST);
@@ -318,9 +340,9 @@ void do_input()
             else player_node->direction = EAST;
         }
 
-        if (player_node->action == STAND) 
+        if (player_node->action == STAND)
         {
-            if ( keys[SDLK_LCTRL]) 
+            if (keys[SDLK_LCTRL])
             {
                 player_node->action = ATTACK;
                 attack(player_node->x,
@@ -335,67 +357,6 @@ void do_input()
 
 	// Old version
     /*
-    if (walk_status == 0 && player_node->action != DEAD) {
-        int x = player_node->x;
-        int y = player_node->y;
-
-        if (key[KEY_8_PAD] || key[KEY_UP]) {
-            if (get_walk(x, y - 1) != 0) {
-                walk(x, y-1, NORTH);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->tick_time = tick_time;
-                player_node->y = y - 1;
-                player_node->direction = NORTH;
-            } else player_node->direction = NORTH;
-        } else if (key[KEY_2_PAD] || key[KEY_DOWN]) {
-            if (get_walk(x, y + 1) != 0) {
-                walk(x, y + 1, SOUTH);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->tick_time = tick_time;
-                player_node->y = y + 1;
-                player_node->direction = SOUTH;
-            } else player_node->direction = SOUTH;
-        } else if (key[KEY_4_PAD] || key[KEY_LEFT]) {
-            if (get_walk(x - 1, y) != 0) {
-                walk(x - 1, y, WEST);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->tick_time = tick_time;
-                player_node->x = x - 1;
-                player_node->direction = WEST;
-            } else player_node->direction = WEST;
-        } else if (key[KEY_6_PAD] || key[KEY_RIGHT]) {
-            if (get_walk(x + 1, y) != 0) {
-                walk(x + 1, y, EAST);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->tick_time = tick_time;
-                player_node->x = x + 1;
-                player_node->direction = EAST;
-            } else player_node->direction = EAST;
-        }
-    } 
-
-    if (player_node->action == STAND) {
-        if (key[KEY_LCONTROL]) {
-            player_node->action = ATTACK;
-            attack(player_node->x,
-                    player_node->y,
-                    player_node->direction);
-            player_node->tick_time = tick_time;
-        }
-    }
-
     if (key[KEY_F5] && action_time) {
         if (player_node->action == STAND)
             action(2, 0);
@@ -443,29 +404,8 @@ void do_input()
     */
 }
 
-bool handle_key(int unicode, int scancode)
-{
-    
-	// Events
-	SDL_Event event;
-	while (SDL_PollEvent(&event) )
-	{	// For discontinuous keys
-		if ( event.type == SDL_KEYDOWN )
-		{
-			if ( event.key.keysym.sym == SDLK_ESCAPE )
-			{
-				// We quit
-				state = EXIT;
-				return true;
-			}
-		}
-	}
-    
     /*
     switch (scancode) {
-        case KEY_ESC:
-            state = EXIT;
-            return true;
         case KEY_F1:
             save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
             return true;
@@ -491,21 +431,9 @@ bool handle_key(int unicode, int scancode)
 
     if (key_shifts & KB_ALT_FLAG) {
         switch (scancode) {
-            case KEY_I:
-                inventoryWindow->setVisible(!inventoryWindow->isVisible());
-                return true;
-            case KEY_S:
-                statsWindow->setVisible(!statsWindow->isVisible());
-                return true;
-            case KEY_K:
-                skillDialog->setVisible(!skillDialog->isVisible());
-                return true;
         }
     }
     */
-
-    return false;
-}
 
 int get_packet_length(short id) {
     int len = get_length(id);

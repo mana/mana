@@ -108,6 +108,8 @@ void init_engine() {
     atexit(SDL_Quit);
 
     SDL_EnableUNICODE(1);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
+
     init_log();
 
     dir = new char[400];
