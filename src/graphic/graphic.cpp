@@ -492,7 +492,7 @@ void do_graphic(void) {
       //sprintf(ds, "%i", sell_dialog[3].d1);
       //ok(ds,"");
 			
-			alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
+			//alfont_textprintf(vpage[page_num], gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);
