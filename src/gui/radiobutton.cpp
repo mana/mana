@@ -29,10 +29,10 @@ RadioButton::RadioButton(const std::string& caption, const std::string& group,
     gcn::RadioButton(caption, group, marked)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    radioNormal = resman->getImage("core/graphics/gui/radioout.bmp");
-    radioChecked = resman->getImage("core/graphics/gui/radioin.bmp");
-    radioDisabled = resman->getImage("core/graphics/gui/radioout.bmp");
-    radioDisabledChecked = resman->getImage("core/graphics/gui/radioin.bmp");
+    radioNormal = resman->getImage("core/graphics/gui/radioout.png");
+    radioChecked = resman->getImage("core/graphics/gui/radioin.png");
+    radioDisabled = resman->getImage("core/graphics/gui/radioout.png");
+    radioDisabledChecked = resman->getImage("core/graphics/gui/radioin.png");
 }
 
 void RadioButton::drawBox(gcn::Graphics* graphics)
