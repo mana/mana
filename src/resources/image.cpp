@@ -253,7 +253,7 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
     if (screen == NULL || image == NULL) return false;
 
     // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
+    SDL_SetAlpha(image, SDL_SRCALPHA, (int)(255 * alpha));
 
     SDL_Rect dstRect;
     SDL_Rect srcRect;
@@ -303,55 +303,7 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
 
 bool Image::draw(SDL_Surface *screen, int x, int y)
 {
-#ifndef USE_OPENGL
-
-    // Check that preconditions for blitting are met.
-    if (screen == NULL || image == NULL) return false;
-
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
-
-    SDL_Rect dstRect;
-    dstRect.x = x;
-    dstRect.y = y;
-
-    if (SDL_BlitSurface(image, NULL, screen, &dstRect) < 0) {
-        return false;
-    }
-
-#else
-
-    // Find OpenGL texture coordinates
-    float texX1 = 0.0f;
-    float texY1 = 0.0f;
-    float texX2 = width / (float)texWidth;
-    float texY2 = height / (float)texHeight;
-
-    glBindTexture(GL_TEXTURE_2D, image);
-
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(x, y, 0);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(x + width, y, 0);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(x + width, y + height, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(x, y + height, 0);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-
-#endif
-    return true;
+    return draw(screen, 0, 0, x, y, getWidth(), getHeight());
 }
 
 void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
@@ -440,7 +392,7 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
     if (screen == NULL || image == NULL) return false;
 
     // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
+    SDL_SetAlpha(image, SDL_SRCALPHA, (int)(255 * alpha));
 
     SDL_Rect dstRect;
     SDL_Rect srcRect;
@@ -491,55 +443,5 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
 
 bool SubImage::draw(SDL_Surface *screen, int x, int y)
 {
-#ifndef USE_OPENGL
-    // Check that drawing preconditions are satisfied.
-    if (screen == NULL || image == NULL) return false;
-
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
-
-    SDL_Rect dstRect;
-    dstRect.x = x;
-    dstRect.y = y;
-
-    // Draw subimage part to given location
-    if (SDL_BlitSurface(image, &rect, screen, &dstRect) < 0) {
-        return false;
-    }
-
-#else
-
-    // Find OpenGL texture coordinates
-    float texX1 = rect.x / (float)texWidth;
-    float texY1 = rect.y / (float)texHeight;
-    float texX2 = (rect.x + rect.w) / (float)texWidth;
-    float texY2 = (rect.y + rect.h) / (float)texHeight;
-
-    glBindTexture(GL_TEXTURE_2D, image);
-
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(x, y, 0);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(x + rect.w, y, 0);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(x + rect.w, y + rect.h, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(x, y + rect.h, 0);
-
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-
-#endif
-    return true;
+    return draw(screen, 0, 0, x, y, getWidth(), getHeight());
 }
