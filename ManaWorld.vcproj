@@ -211,6 +211,9 @@
 					RelativePath=".\Gui\login_dialog.cpp">
 				</File>
 				<File
+					RelativePath=".\npc_dialog.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\TextBox.cpp">
 				</File>
 			</Filter>
@@ -282,6 +285,9 @@
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.h">
+				</File>
+				<File
+					RelativePath=".\npc_dialog.h">
 				</File>
 				<File
 					RelativePath=".\Gui\TextBox.h">
