@@ -168,13 +168,17 @@ NewSkillDialog::NewSkillDialog():
 
 NewSkillDialog::~NewSkillDialog()
 {
-    // You don't have to delete children widgets.
-    // GUIchan will do it.
-    //delete skillbar;
-    //delete []skillLabel;
-    //delete []skillLevel;
-    //delete closeButton;
-    //delete []catButton;
+    for (int i = 0; i < N_SKILL_CAT_SIZE; i++)
+    {    
+        delete skillbar[i];
+        delete skillLabel[i];
+        delete skillLevel[i];
+    }
+    for (int i = 0; i < N_SKILL_CAT; i++)
+    {
+        delete catButton[i];
+    }
+    delete closeButton;
 }
 
 void NewSkillDialog::action(const std::string& eventId)
