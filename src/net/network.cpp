@@ -49,12 +49,12 @@ void WFIFOSET(int len) {
 /** Convert an address from int format to string */
 char *iptostring(int address) {
 	short temp1, temp2;
+        static char asciiIP[16];
 
-	char *temp = (char *)malloc(sizeof(char[20]));
 	temp1 = LOWORD(address);
 	temp2 = HIWORD(address);
-	sprintf(temp, "%i.%i.%i.%i", LOBYTE(temp1), HIBYTE(temp1), LOBYTE(temp2), HIBYTE(temp2));
-	return temp;
+	sprintf(asciiIP, "%i.%i.%i.%i", LOBYTE(temp1), HIBYTE(temp1), LOBYTE(temp2), HIBYTE(temp2));
+	return asciiIP;
 }
 
 /** Open a session with a server */
