@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "inventory.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"

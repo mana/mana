@@ -22,7 +22,7 @@
  */
 
 #include "char_server.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "button.h"
 #include "window.h"
 #include "scrollarea.h"

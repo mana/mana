@@ -21,11 +21,14 @@
  *  $Id$
  */
 
+#include "being.h"
+#include "engine.h"
+#include "floor_item.h"
+#include "graphics.h"
+#include "log.h"
 #include "main.h"
 #include "map.h"
-#include "being.h"
-#include "floor_item.h"
-#include "log.h"
+#include "sound.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/inventory.h"
@@ -33,9 +36,7 @@
 #include "gui/npc.h"
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
-#include "graphic/graphic.h"
 #include "resources/mapreader.h"
-#include "sound.h"
 #include <SDL.h>
 
 char map_path[480];
@@ -345,13 +346,13 @@ void do_input()
                         current_npc = id;
                     }
                 }
+            }
+        }
 
-	    }
-	}
-	// Push input to GUI when not used
-	if (!used) {
-	    guiInput->pushInput(event);
-	}
+        // Push input to GUI when not used
+        if (!used) {
+            guiInput->pushInput(event);
+        }
 
     } // End while
 

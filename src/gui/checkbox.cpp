@@ -23,7 +23,7 @@
 
 #include "checkbox.h"
 #include "../resources/resourcemanager.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 
 CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)

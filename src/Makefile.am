@@ -1,7 +1,5 @@
 bin_PROGRAMS = tmw
-tmw_SOURCES = graphic/graphic.cpp \
-	      graphic/graphic.h \
-	      graphic/spriteset.cpp \
+tmw_SOURCES = graphic/spriteset.cpp \
 	      graphic/spriteset.h \
 	      gui/button.cpp \
 	      gui/button.h \
@@ -94,10 +92,14 @@ tmw_SOURCES = graphic/graphic.cpp \
 	      being.h \
 	      configuration.cpp \
 	      configuration.h \
+	      engine.cpp \
+	      engine.h \
 	      floor_item.cpp \
 	      floor_item.h \
 	      game.cpp \
 	      game.h \
+	      graphics.cpp \
+	      graphics.h \
 	      log.cpp \
 	      log.h \
 	      main.cpp \

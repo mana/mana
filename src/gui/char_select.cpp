@@ -25,7 +25,7 @@
 #include "textfield.h"
 #include "button.h"
 #include "ok_dialog.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include <sstream>
 
 #define NR_HAIR_STYLES 4

@@ -24,66 +24,13 @@
 #ifndef _GRAPHIC_H
 #define _GRAPHIC_H
 
-class Graphics;
-
-#include "../gui/npc.h"
-#include "../gui/npc_text.h"
-#include "../gui/buy.h"
-#include "../gui/sell.h"
-#include "../gui/buysell.h"
-#include "../gui/chat.h"
-#include "../gui/inventory.h"
-#include "../gui/shop.h"
-#include "../gui/chat.h"
-#include "../gui/inventory.h"
-#include "../gui/status.h"
-#include "../gui/stats.h"
-#include "../gui/skill.h"
-#include "../gui/newskill.h"
-#include "../gui/setup.h"
-#include "../gui/equipment.h"
-#include "../gui/chargedialog.h"
-#include "../resources/resourcemanager.h"
-#include "../map.h"
-#include "spriteset.h"
 #include <SDL.h>
+#include <SDL_opengl.h>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
+#include "resources/image.h"
 
 extern SDL_Surface *screen;
-extern char speech[255];
-extern char npc_text[1000];
-extern char skill_points[10];
-extern ChatBox *chatBox;
-extern bool show_skill_dialog, show_skill_list_dialog;
-extern int show_npc_dialog;
-extern int map_x, map_y, camera_x, camera_y;
-extern char npc_button[10];
-
-extern StatusWindow *statusWindow;
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern BuySellDialog *buySellDialog;
-extern InventoryWindow *inventoryWindow;
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
-extern SkillDialog *skillDialog;
-extern NewSkillDialog *newSkillWindow;
-extern StatsWindow *statsWindow;
-extern Setup *setupWindow;
-extern EquipmentWindow *equipmentWindow;
-extern ChargeDialog* chargeDialog;
-
-char get_x_offset(char, char);
-char get_y_offset(char, char);
-
-/**
- * The action listener for the chat field.
- */
-class ChatListener : public gcn::ActionListener {
-    public:
-        void action(const std::string& eventId);
-};
 
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
@@ -163,20 +110,6 @@ class Graphics : public gcn::SDLGraphics {
 
     private:
         Image *mouseCursor;
-};
-
-/**
- * Game engine that does the main drawing.
- */
-class Engine {
-    private:
-        Spriteset *emotionset, *npcset, *monsterset, *weaponset, *itemset;
-        
-    public:
-        Engine();
-        ~Engine();
-
-        void draw();
 };
 
 #endif

@@ -26,6 +26,7 @@
 #include "scrollarea.h"
 #include "button.h"
 #include "../main.h"
+#include "../net/network.h"
 
 char *skill_db[] = {
     // 0-99

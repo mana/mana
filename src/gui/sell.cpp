@@ -26,8 +26,10 @@
 #include "slider.h"
 #include "scrollarea.h"
 #include "listbox.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "../game.h"
+#include "../engine.h"
+#include "../net/network.h"
 
 #include <sstream>
 

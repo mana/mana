@@ -22,8 +22,8 @@
  */
 
 #include "window.h"
-#include "../graphic/graphic.h"
 #include "../resources/resourcemanager.h"
+#include "../log.h"
 
 WindowContainer *Window::windowContainer = NULL;
 
@@ -51,10 +51,15 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     dBorders = resman->getImage("core/graphics/gui/vscroll_grey.png");
     dBackground = resman->getImage("core/graphics/gui/bg_quad_dis.png");
 
-    dUpperBorder = dBorders->getSubImage(4, 0, 3, 4);
-    dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);
-    dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
-    dLowerBorder = dBorders->getSubImage(4, 15, 3, 4);
+    border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
+    border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
+    border.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
+    border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
+    border.grid[4] = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+    border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
+    border.grid[6] = dBorders->getSubImage(7, 15, 4, 4);
+    border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
+    border.grid[8] = dBorders->getSubImage(0, 15, 4, 4);
 
     // Register mouse listener
     addMouseListener(this);
@@ -98,28 +103,9 @@ void Window::draw(gcn::Graphics* graphics)
     
     dBackground->setAlpha(0.8f);
     dBorders->setAlpha(0.8f);
-    dUpperBorder->setAlpha(0.8f);
-    dLeftBorder->setAlpha(0.8f);
-    dRightBorder->setAlpha(0.8f);
-    dLowerBorder->setAlpha(0.8f);
 
-    // Draw the background
-    dBackground->drawPattern(
-            screen, x + 4, y + 4, getWidth() - 8, getHeight() - 8);
-
-    // Draw the borders
-    dBorders->draw(screen, 0, 0, x, y, 4, 4); // Top-Left
-    dBorders->draw(screen, 7, 0, x + getWidth() - 4, y, 4, 4); // Top-Right
-    dBorders->draw(screen, 7, 15,
-            x + getWidth() - 4, y + getHeight() - 4, 4, 4); // Bottom-Right
-    dBorders->draw(screen, 0, 15, x, y + getHeight() - 4, 4, 4); // Bottom-Left
-            
-    dUpperBorder->drawPattern(screen, x + 4, y, getWidth() - 8, 4);
-    dLeftBorder->drawPattern(screen, x, y + 4, 4, getHeight() - 8);
-    dRightBorder->drawPattern(
-            screen, x + getWidth() - 4, y + 4, 4, getHeight() - 8);
-    dLowerBorder->drawPattern(
-            screen, x + 4, y + getHeight() - 4, getWidth() - 8, 4);
+    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+                                         border);
 
     // Draw title
     graphics->setFont(getFont());

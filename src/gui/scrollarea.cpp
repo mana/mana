@@ -23,7 +23,7 @@
 
 #include "scrollarea.h"
 #include "gui.h"
-
+#include "../resources/resourcemanager.h"
 
 ScrollArea::ScrollArea():
     gcn::ScrollArea()

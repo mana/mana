@@ -22,7 +22,7 @@
  */
 
 #include "chat.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include <iostream>
 
 ChatBox::ChatBox(const char *logfile, int item_num)

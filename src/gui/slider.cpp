@@ -23,7 +23,7 @@
 
 #include "slider.h"
 #include "../resources/resourcemanager.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 
 Slider::Slider(double scaleEnd):
     gcn::Slider(scaleEnd)

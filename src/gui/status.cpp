@@ -24,6 +24,7 @@
 #include "status.h"
 #include "../main.h"
 #include "button.h"
+#include "../engine.h"
 
 StatusWindow::StatusWindow():
     Window("%s Lvl: % 2i Job: % 2i")

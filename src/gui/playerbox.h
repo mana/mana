@@ -25,7 +25,7 @@
 #define __TMW_PLAYERBOX_H__
 
 #include <guichan.hpp>
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 
 /**
  * A box showing a player. Draws the various hair styles a player can have

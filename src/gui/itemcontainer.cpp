@@ -22,8 +22,9 @@
  */
 
 #include "itemcontainer.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "../resources/resourcemanager.h"
+#include <sstream>
 
 ItemContainer::ItemContainer()
 {

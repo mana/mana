@@ -28,8 +28,9 @@
 #include "textfield.h"
 #include "passwordfield.h"
 #include "ok_dialog.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "../main.h"
+#include "../net/network.h"
 
 LoginDialog::LoginDialog():
     Window("Login")

@@ -24,6 +24,7 @@
 #include "buysell.h"
 #include "button.h"
 #include "../game.h"
+#include "../net/network.h"
 
 BuySellDialog::BuySellDialog():
     Window("Shop")

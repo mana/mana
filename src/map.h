@@ -25,7 +25,7 @@
 #define _TMW_MAP_H
 
 #include "being.h"
-#include "graphic/graphic.h"
+#include "graphics.h"
 #include "resources/image.h"
 
 /**

@@ -26,9 +26,8 @@
 
 #include <guichan.hpp>
 #include <guichan/sdl.hpp>
-#include <string.h>
 #include "windowcontainer.h"
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 
 /**
  * \defgroup GUI GUI related classes

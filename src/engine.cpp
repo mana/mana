@@ -21,19 +21,16 @@
  *  $Id$
  */
 
-#include "graphic.h"
-#include "../gui/gui.h"
-#include "../gui/textfield.h"
-#include "../gui/minimap.h"
-#include "../gui/chargedialog.h"
-#include "../gui/itemcontainer.h"
-#include "../main.h"
-#include "../being.h"
-#include "../floor_item.h"
-
-#include <SDL_opengl.h>
-
-SDL_Surface *screen;
+#include "engine.h"
+#include "graphics.h"
+#include "gui/gui.h"
+#include "gui/textfield.h"
+#include "gui/minimap.h"
+#include "gui/chargedialog.h"
+#include "gui/itemcontainer.h"
+#include "main.h"
+#include "being.h"
+#include "floor_item.h"
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
@@ -131,114 +128,6 @@ int get_y_offset(Being *being) {
     }
     return offset;
 }
-
-
-Graphics::Graphics():
-    mouseCursor(NULL)
-{
-#ifdef USE_OPENGL
-    setTargetPlane(800, 600);
-#else
-    setTarget(SDL_GetVideoSurface());
-#endif
-
-    // Hide the system mouse cursor
-    SDL_ShowCursor(SDL_DISABLE);
-
-    // Load the mouse cursor
-    ResourceManager *resman = ResourceManager::getInstance();
-    mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
-    if (!mouseCursor) {
-        error("Unable to load mouse cursor.");
-    }
-
-    // Initialize for drawing
-    _beginDraw();
-}
-
-Graphics::~Graphics()
-{
-    // Deinitialize for drawing
-    _endDraw();
-}
-
-int Graphics::getWidth()
-{
-    return screen->w;
-}
-
-int Graphics::getHeight()
-{
-    return screen->h;
-}
-
-void Graphics::drawImageRect(
-        int x, int y, int w, int h,
-        Image *topLeft, Image *topRight,
-        Image *bottomLeft, Image *bottomRight,
-        Image *top, Image *right,
-        Image *bottom, Image *left,
-        Image *center)
-{
-    // Draw the center area
-    center->drawPattern(screen,
-            x + topLeft->getWidth(), y + topLeft->getHeight(),
-            w - topLeft->getWidth() - topRight->getWidth(),
-            h - topLeft->getHeight() - bottomLeft->getHeight());
-
-    // Draw the sides
-    top->drawPattern(screen,
-            x + topLeft->getWidth(), y,
-            w - topLeft->getWidth() - topRight->getWidth(), top->getHeight());
-    bottom->drawPattern(screen,
-            x + bottomLeft->getWidth(), y + h - bottom->getHeight(),
-            w - bottomLeft->getWidth() - bottomRight->getWidth(),
-            bottom->getHeight());
-    left->drawPattern(screen,
-            x, y + topLeft->getHeight(),
-            left->getWidth(),
-            h - topLeft->getHeight() - bottomLeft->getHeight());
-    right->drawPattern(screen,
-            x + w - right->getWidth(), y + topRight->getHeight(),
-            right->getWidth(),
-            h - topRight->getHeight() - bottomRight->getHeight());
-
-    // Draw the corners
-    topLeft->draw(screen, x, y);
-    topRight->draw(screen, x + w - topRight->getWidth(), y);
-    bottomLeft->draw(screen, x, y + h - bottomLeft->getHeight());
-    bottomRight->draw(screen,
-            x + w - bottomRight->getWidth(),
-            y + h - bottomRight->getHeight());
-}
-
-void Graphics::drawImageRect(
-        int x, int y, int w, int h,
-        const ImageRect &imgRect)
-{
-    drawImageRect(x, y, w, h,
-            imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],
-            imgRect.grid[1], imgRect.grid[5], imgRect.grid[7], imgRect.grid[3],
-            imgRect.grid[4]);
-}
-
-void Graphics::updateScreen()
-{
-    // Draw mouse before flipping
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
-
-#ifdef USE_OPENGL
-    glFlush();
-    glFinish();
-    SDL_GL_SwapBuffers();
-    glClear(GL_COLOR_BUFFER_BIT);
-#else
-    SDL_Flip(screen);
-#endif
-}
-
 
 Engine::Engine()
 {

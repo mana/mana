@@ -26,6 +26,7 @@
 #include "button.h"
 #include "textbox.h"
 #include "../game.h"
+#include "../net/network.h"
 
 NpcTextDialog::NpcTextDialog():
     Window("NPC")

@@ -26,7 +26,7 @@
 
 #include <guichan.hpp>
 #include <string>
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 
 /**
  * Button widget. Same as the Guichan button but with custom look.

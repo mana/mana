@@ -24,15 +24,16 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
-#include "gui/login.h"
 #include "gui/gui.h"
-#include "configuration.h"
+#include "gui/login.h"
+#include "gui/skill.h"
 #include "graphic/spriteset.h"
 #include "resources/image.h"
-#include "gui/skill.h"
-#include "log.h"
-#include "game.h"
 #include "net/protocol.h"
+#include "configuration.h"
+#include "game.h"
+#include "log.h"
+#include "map.h"
 #include "sound.h"
 #include <stdio.h>
 #include <memory>

@@ -27,6 +27,7 @@
 #include "scrollarea.h"
 #include "listbox.h"
 #include "../game.h"
+#include "../net/network.h"
 
 #include <sstream>
 

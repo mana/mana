@@ -24,6 +24,7 @@
 #include "playerbox.h"
 #include "gui.h"
 #include "../main.h"
+#include "../resources/resourcemanager.h"
 
 PlayerBox::PlayerBox():
     hairColor(0),

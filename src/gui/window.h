@@ -28,6 +28,7 @@
 #include <guichan.hpp>
 #include "windowcontainer.h"
 #include "../resources/image.h"
+#include "../graphics.h"
 
 /**
  * A window. This window can be dragged around and has a title bar.
@@ -52,10 +53,8 @@ class Window : public gcn::Container, public gcn::MouseListener
 
         Image *dBackground;        /**< Left side of title bar */
         Image *dBorders;           /**< Middle of title bar */
-        Image *dUpperBorder;       /**< Upper border */
-        Image *dLowerBorder;       /**< Lower Border */
-        Image *dLeftBorder;        /**< Left Border */
-        Image *dRightBorder;       /**< Right Border */
+
+        ImageRect border;          /**< The window border */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;

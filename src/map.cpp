@@ -27,6 +27,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/mapreader.h"
 #include "graphic/spriteset.h"
+#include "net/network.h"
 
 #include <queue>
 

@@ -22,6 +22,7 @@
  */
 
 #include "button.h"
+#include "../resources/resourcemanager.h"
 
 Button::Button(const std::string& caption):
     gcn::Button(caption)

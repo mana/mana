@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "../graphic/graphic.h"
+#include "../graphics.h"
 #include "image.h"
 #include "../log.h"
 #include <iostream>
