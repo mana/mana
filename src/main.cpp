@@ -216,7 +216,7 @@ void init_engine() {
     stretch_mode = (unsigned char)config.getValue("stretch", 0);
     set_window_title("The Mana World");
 
-    if(set_gfx_mode(get_config_int("settings", "screen", 0), 800, 600, 0, 0)) {
+    if(set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600, 0, 0)) {
         error(allegro_error);
     }
 
