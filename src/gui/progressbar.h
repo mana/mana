@@ -67,10 +67,25 @@ class ProgressBar : public gcn::Widget {
         void setColor(
                 unsigned char MyRed,
                 unsigned char MyGreen,
-                unsigned char MyBlue)
-        {
-            Red = MyRed; Green = MyGreen; Blue = MyBlue;
-        }; 
+                unsigned char MyBlue);
+
+        /**
+         * Get The red value of color
+         */
+        unsigned char getRed()
+        { return Red; }; 
+
+         /**
+         * Get The red value of color
+         */
+        unsigned char getGreen()
+        { return Green; }; 
+
+         /**
+         * Get The red value of color
+         */
+        unsigned char getBlue()
+        { return Blue; }; 
 
     private:
         float progress;
