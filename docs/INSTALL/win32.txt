@@ -29,6 +29,7 @@ Besides a C++ compiler, TMW depends on the following libraries:
 2) SDL_mixer
 3) SDL_image
 4) Guichan 0.2.0
+5) libxml2
 
 
 2. Installing Dev-C++
@@ -55,10 +56,20 @@ Get the following list of DevPaks:
 - SDL_mixer     (http://devpaks.org/show.php?devpak=26)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
 - Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
+- libxml2 **    (ftp://ftp.zlatkovic.com/pub/libxml/)
 
 Install them all through the Dev-C++ package manager. For SDL_image you may
 still need to manually get the SDL_image.lib file from the SDL_image homepage
 (devel VC6 zip file) and copy it to your Dev-Cpp/lib directory.
+
+**) For libxml2, download the following files (these or newer versions):
+
+        libxml2-2.6.17.win32.zip
+        iconv-1.9.1.win32.zip
+        zlib-1.2.1.win32.zip
+
+    From each file, copy the headers to your include directory, the libs to
+    the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
@@ -87,6 +98,12 @@ DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe:
  jpeg.dll
  libpng1.dll
  zlib.dll
+
+And also make sure you have:
+
+ libxml2.dll
+ iconv.dll
+ zlib1.dll
 
 Have fun hacking The Mana World!
 

@@ -88,9 +88,14 @@ class Map
         ~Map();
 
         /**
-         * Loads a map file.
+         * Loads a map file (gat).
          */
-        bool load(char *mapFile);
+        bool load(const std::string &mapFile);
+        
+        /**
+         * Loads an XML map file (tmx).
+         */
+        bool loadXmlMap(const std::string &mapFile);
 
         /**
          * Sets the size of the map. This will destroy any existing map data.

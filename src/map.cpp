@@ -25,14 +25,10 @@
 #include "map.h"
 #include "log.h"
 #include "being.h"
-#include <queue>
 
-#include <stdio.h>
-#ifdef WIN32
-#include <windows.h>
-#else
-#include "./net/win2linux.h"
-#endif
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <queue>
 
 Map tiledMap;
 
@@ -103,11 +99,12 @@ Map::~Map()
     delete[] tiles;
 }
 
-bool Map::load(char *mapFile) {
-    FILE *file = fopen(mapFile, "r");
+bool Map::load(const std::string &mapFile)
+{
+    FILE *file = fopen(mapFile.c_str(), "r");
 
     if (!file) {
-        warning(mapFile);
+        warning(mapFile.c_str());
         return false;
     }
 
@@ -147,6 +144,20 @@ bool Map::load(char *mapFile) {
     }
 
     return true;
+}
+
+bool loadXmlMap(const std::string &mapFile)
+{
+    xmlDocPtr doc = xmlReadFile(mapFile.c_str(), NULL, 0);
+
+    if (!doc) {
+        warning(mapFile.c_str());
+        return false;
+    }
+
+    xmlFreeDoc(doc);
+
+    return false;
 }
 
 void Map::setSize(int width, int height)
