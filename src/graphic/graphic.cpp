@@ -162,6 +162,16 @@ Graphics::~Graphics()
     _endDraw();
 }
 
+int Graphics::getWidth()
+{
+    return screen->w;
+}
+
+int Graphics::getHeight()
+{
+    return screen->h;
+}
+
 void Graphics::drawImageRect(
         int x, int y, int w, int h,
         Image *topLeft, Image *topRight,
@@ -367,8 +377,8 @@ void Engine::draw()
     map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
     map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
 
-    camera_x = map_x >> 5;
-    camera_y = map_y >> 5;
+    camera_x = map_x / 32;
+    camera_y = map_y / 32;
 
     int offset_x = map_x & 31;
     int offset_y = map_y & 31;
@@ -378,20 +388,11 @@ void Engine::draw()
     frame++;
 
     // Draw tiles below nodes
-    for (int j = 0; j < 20; j++) {
-        for (int i = 0; i < 26; i++) {
-            Image *tile0 = tiledMap->getTile(i + camera_x, j + camera_y, 0);
-            Image *tile1 = tiledMap->getTile(i + camera_x, j + camera_y, 1);
-
-            if (tile0) {
-                tile0->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
-            }
-            if (tile1) {
-                tile1->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
-            }
-        }
+    if (tiledMap) {
+        tiledMap->draw(guiGraphics, map_x, map_y, 0);
+        tiledMap->draw(guiGraphics, map_x, map_y, 1);
     }
-    
+
     // Draw items
     std::list<FloorItem*>::iterator floorItemIterator = floorItems.begin();
     while (floorItemIterator != floorItems.end())
@@ -531,21 +532,9 @@ void Engine::draw()
         // last drawed for fringe layer, draw the missing lines
     }
 
-    // Draw tiles above nodes
-    for (int j = 0; j < 20; j++) {
-        for (int i = 0; i < 26; i++) {
-            Image *tile = tiledMap->getTile(i + camera_x, j + camera_y, 2);
-
-            if (tile) {
-                tile->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
-
-#ifdef DEBUG
-                guiGraphics->setColor(gcn::Color(0, 0, 0));
-                guiGraphics->drawRectangle(gcn::Rectangle(
-                            i * 32 - offset_x, j * 32 - offset_y, 32, 32));
-#endif
-            }
-        }
+    // Draw tiles below nodes
+    if (tiledMap) {
+        tiledMap->draw(guiGraphics, map_x, map_y, 2);
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug

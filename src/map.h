@@ -25,6 +25,7 @@
 #define _TMW_MAP_H
 
 #include "being.h"
+#include "graphic/graphic.h"
 #include "resources/image.h"
 
 /**
@@ -95,6 +96,11 @@ class Map
          * Loads a map file (gat).
          */
         static Map *load(const std::string &mapFile);
+
+        /**
+         * Draws the map to the given graphics output.
+         */
+        void draw(Graphics *graphics, int scrollX, int scrollY, int layer);
 
         /**
          * Sets the size of the map. This will destroy any existing map data.

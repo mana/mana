@@ -182,6 +182,30 @@ void Map::setSize(int width, int height)
     tiles = new Image*[width * height * 3];
 }
 
+void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
+{
+    int startX = scrollX / 32;
+    int startY = scrollY / 32;
+    int endX = (graphics->getWidth() + scrollX + 31) / 32;
+    int endY = (graphics->getHeight() + scrollY + 31) / 32;
+
+    if (startX < 0) startX = 0;
+    if (startY < 0) startY = 0;
+    if (endX >= width) endX = width - 1;
+    if (endY >= height) endY = height - 1;
+
+    for (int y = startY; y < endY; y++)
+    {
+        for (int x = startX; x < endX; x++)
+        {
+            Image *img = getTile(x, y, layer);
+            if (img) {
+                img->draw(screen, x * 32 - scrollX, y * 32 - scrollY);
+            }
+        }
+    }
+}
+
 void Map::setWalk(int x, int y, bool walkable)
 {
     metaTiles[x + y * width].walkable = walkable;

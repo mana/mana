@@ -151,6 +151,16 @@ class Graphics : public gcn::SDLGraphics {
          */
         void updateScreen();
 
+        /**
+         * Returns the width of the screen.
+         */
+        int getWidth();
+
+        /**
+         * Returns the height of the screen.
+         */
+        int getHeight();
+
     private:
         Image *mouseCursor;
 };
