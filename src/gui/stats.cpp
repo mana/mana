@@ -22,7 +22,8 @@
  */
 
 #include "stats.h"
-#include <sstream>
+
+extern PLAYER_INFO *char_info;
 
 /**
  * Constructor
@@ -47,12 +48,6 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     for (i = 0; i < 6; i++)
         statsButton[i] = new Button("+");
     
-    /* Set position */
-    for (i = 0; i < 6; i++) {
-        statsLabel[i]->setPosition(10,(i*22)+10);
-        statsButton[i]->setPosition(170,(i*22)+10);
-    }
-    
     /* Set button events Id */
     statsButton[0]->setEventId("STR");
     statsButton[1]->setEventId("AGI");
@@ -60,6 +55,12 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     statsButton[3]->setEventId("INT");
     statsButton[4]->setEventId("DEX");
     statsButton[5]->setEventId("LUK");
+    
+    /* Set position */
+    for (i = 0; i < 6; i++) {
+        statsLabel[i]->setPosition(10,(i*22)+10);
+        statsButton[i]->setPosition(170,(i*22)+10);
+    }
     
     /* Assemble */
     for(i = 0; i < 6; i++) {
@@ -69,6 +70,23 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     
     setSize(200, 150);
     setLocationRelativeTo(getParent());
+}
+/**
+ * Method updates stats in window
+ */
+void StatsWindow::update(){
+    std::stringstream statsStr[6];
+    
+    statsStr[0] << "Strenght: "  << char_info->STR;
+    statsStr[1] << "Agility: "  << char_info->AGI;
+    statsStr[2] << "Vitality: "  << char_info->VIT;
+    statsStr[3] << "Inteligence: "  << char_info->INT;
+    statsStr[4] << "Dexternity: "  << char_info->DEX;
+    statsStr[5] << "Luck: "  << char_info->LUK;
+    
+    /* Update labels */
+    for (i = 0; i < 6; i++)
+        statsLabel[i]->setCaption(statsStr[i].str());
 }
 
 /**
@@ -97,17 +115,30 @@ StatsWindow * StatsWindow::create_statswindow() {
  * Event handling method
  */
 void StatsWindow::action(const std::string& eventId) {
+    //TODO: update char_info
     if (eventId == "STR") {
-        setVisible(false);
+        puts("STR");
+        update();
     }
-    if (eventId == "AGI")
-        setVisible(false);
-    if (eventId == "VIT")
-        setVisible(false);
-    if (eventId == "INT")
-        setVisible(false);
-    if (eventId == "DEX")
-        setVisible(false);
-    if (eventId == "LUK")
-        setVisible(false);
+    if (eventId == "AGI") {
+        puts("AGI");
+        update();
+    }
+    if (eventId == "VIT") {
+        puts("VIT");
+        update();
+    }
+    if (eventId == "INT") {
+        puts("INT");
+        update();    
+    }
+    if (eventId == "DEX") {
+        puts("DEX");
+        update();
+    }
+    if (eventId == "LUK") {
+        puts("LUK");
+        update();
+    }
+    puts("default");
 }

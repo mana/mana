@@ -28,6 +28,7 @@
 #include "window.h"
 #include "../main.h"
 #include <string>
+#include <sstream>
 
 class StatsWindow : public Window, public gcn::ActionListener {
  public:
@@ -40,6 +41,11 @@ class StatsWindow : public Window, public gcn::ActionListener {
      * Metod called when receiving actions from widget.
      */
     void action(const std::string& eventId);
+    
+    /**
+     * Metod updates stats in window.
+     */
+    void update();
     
  private:
     int i;

@@ -50,8 +50,10 @@ volatile int tick_time;
 volatile bool refresh = false, action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
-Setup *setup;
-StatsWindow *stats;
+
+Setup *setup = NULL;
+StatsWindow *stats = NULL;
+bool show_stats;
 
 #define MAX_TIME 10000
 
@@ -168,13 +170,13 @@ void do_exit() {
  * Check user input
  */
 void do_input() {
-  if(walk_status==0) {
-		int x = get_x(player_node->coordinates);
-		int y = get_y(player_node->coordinates);
-
-    if(key[KEY_8_PAD] || key[KEY_UP]) {
-      if(get_walk(x, y-1)!=0) {
-        walk(x, y-1, NORTH);
+    if(walk_status==0) {
+        int x = get_x(player_node->coordinates);
+        int y = get_y(player_node->coordinates);
+        
+        if(key[KEY_8_PAD] || key[KEY_UP]) {
+            if(get_walk(x, y-1)!=0) {
+                walk(x, y-1, NORTH);
 				walk_status = 1;
         src_x = x;
         src_y = y;
@@ -285,17 +287,20 @@ void do_input() {
         action_time = false;
 			}
 		}
-
+                
 		if(key[KEY_S]) {
-			//show_skill_dialog = !show_skill_dialog;
-			stats = StatsWindow::create_statswindow();
-			action_time = false;
+                    show_stats = !show_stats;
+                    if(stats == NULL)
+                        stats = StatsWindow::create_statswindow();
+                    else if(show_stats)  stats->setVisible(true);
+                    else if(!show_stats) stats->setVisible(false);
+                    action_time = false;
 		} else if(key[KEY_I]) {
-			inventoryWindow->setVisible(!inventoryWindow->isVisible());
-			action_time = false;
+                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
+                    action_time = false;
 		} else if(key[KEY_K]) {
-			show_skill_list_dialog = !show_skill_dialog;
-			action_time = false;
+                    show_skill_list_dialog = !show_skill_dialog;
+                    action_time = false;
 		}
 	}
 
