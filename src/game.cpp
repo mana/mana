@@ -120,7 +120,8 @@ void game() {
     close_session();
 }
 
-void do_init() {
+void do_init()
+{
     if (!tiledMap.load(map_path)) {
         error("Could not find map file");
     }
@@ -130,8 +131,6 @@ void do_init() {
 
     // Initialize timers
     tick_time = 0;
-
-    // The SDL way
     SDL_AddTimer(10, refresh_time, NULL);
     SDL_AddTimer(1000, second, NULL);
 
@@ -242,31 +241,31 @@ void do_input()
                 if (keysym.mod & KMOD_CTRL)
                 {
                     // Workaround for Win and else
-                    #if __USE_UNIX98
-                        SDL_WM_ToggleFullScreen(screen);
-                        if ((int)config.getValue("screen", 0) == 0) {
-                            config.setValue("screen", 1);
-                        }
-                        else {
-                            config.setValue("screen", 0);
-                        }
-                    #else
-                        int displayFlags = 0;
-                        if ((int)config.getValue("screen", 0) == 0) {
+#if __USE_UNIX98
+                    SDL_WM_ToggleFullScreen(screen);
+                    if ((int)config.getValue("screen", 0) == 0) {
+                        config.setValue("screen", 1);
+                    }
+                    else {
+                        config.setValue("screen", 0);
+                    }
+#else
+                    int displayFlags = 0;
+                    if ((int)config.getValue("screen", 0) == 0) {
                         displayFlags |= SDL_FULLSCREEN;
-                            config.setValue("screen", 1);
-                        }
-                        else {
-                            config.setValue("screen", 0);
-                        }
-                        if ((int)config.getValue("hwaccel", 0)) {
-                            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-                        }
-                        else {
-                            displayFlags |= SDL_SWSURFACE;
-                        }
-                        screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
-                    #endif
+                        config.setValue("screen", 1);
+                    }
+                    else {
+                        config.setValue("screen", 0);
+                    }
+                    if ((int)config.getValue("hwaccel", 0)) {
+                        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+                    }
+                    else {
+                        displayFlags |= SDL_SWSURFACE;
+                    }
+                    screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
+#endif
                 }
             }
         } // End key down

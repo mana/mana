@@ -1,4 +1,4 @@
-AC_INIT([The Mana World], [0.0.9], [umperio@users.sourceforge.net])
+AC_INIT([The Mana World], [0.0.10], [umperio@users.sourceforge.net])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_LANG_CPLUSPLUS

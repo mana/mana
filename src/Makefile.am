@@ -75,6 +75,7 @@ tmw_SOURCES = graphic/graphic.cpp \
 	      net/network.h \
 	      net/protocol.cpp \
 	      net/protocol.h \
+	      net/win2linux.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/resource.cpp \
