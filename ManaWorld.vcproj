@@ -161,9 +161,6 @@
 				RelativePath=".\map.cpp">
 			</File>
 			<File
-				RelativePath=".\npc.cpp">
-			</File>
-			<File
 				RelativePath=".\Sound\Sound.cpp">
 			</File>
 			<File
@@ -204,13 +201,7 @@
 					RelativePath=".\Gui\chat_dialog.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\ColoredTextArea.cpp">
-				</File>
-				<File
 					RelativePath=".\Gui\dialog.cpp">
-				</File>
-				<File
-					RelativePath=".\Gui\lexgui.c">
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.cpp">
@@ -231,16 +222,10 @@
 				RelativePath=".\game.h">
 			</File>
 			<File
-				RelativePath=".\item.h">
-			</File>
-			<File
 				RelativePath=".\map.h">
 			</File>
 			<File
-				RelativePath=".\player.h">
-			</File>
-			<File
-				RelativePath=".\Sound.h">
+				RelativePath=".\Sound\Sound.h">
 			</File>
 			<File
 				RelativePath=".\Graphic\SuperEagle.h">
@@ -281,15 +266,6 @@
 				</File>
 				<File
 					RelativePath=".\Gui\chat_dialog.h">
-				</File>
-				<File
-					RelativePath=".\Gui\ColoredTextArea.h">
-				</File>
-				<File
-					RelativePath=".\Gui\dialog.h">
-				</File>
-				<File
-					RelativePath=".\Gui\lexgui.h">
 				</File>
 				<File
 					RelativePath=".\Gui\login_dialog.h">
