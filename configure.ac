@@ -1,19 +1,39 @@
-AC_INIT(configure.in)
-
-dnl Should probably try non-GNU tools...
-AC_PATH_PROGS(MAKE, make gmake, make)
-AC_PATH_PROG(NASM, nasm, nasm)
-AC_PATH_PROG(MKDIR, mkdir, mkdir)
-AC_PATH_PROG(RMDIR, rmdir, rmdir)
-AC_PATH_PROG(RM, rm, rm)
-AC_PATH_PROGS(INSTALL, install ginstall, install)
-AC_PATH_PROG(CHMOD, chmod, chmod)
-
-AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(tmw, 0.0.9)
-
+AC_INIT(The Mana World, 0.0.9, umperio@users.sourceforge.net)
+AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_HEADER([config.h])
 AC_LANG_CPLUSPLUS
+
+# Checks for programs.
 AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+# Checks for libraries
+# (doesn't seem right, or is it?)
+#AC_CHECK_LIB([guichan], [_ZN3gcn7TextBox6addRowESs])
+#AC_CHECK_LIB([guichan_sdl], [_ZN3gcn8SDLInput17dequeueMouseInputEv])
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_HEADER_TIME
+AC_C_VOLATILE
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
+
+AM_INIT_AUTOMAKE
+
 
 dnl FIND_PATH(programm-name, variable-name, list of directories,
 dnl     if-not-found, test-parameter)
@@ -94,4 +114,6 @@ fi
 AC_SUBST(LIBSDL_LIBS)
 AC_SUBST(LIBSDL_CFLAGS)
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_CONFIG_FILES([Makefile
+                 src/Makefile])
+AC_OUTPUT

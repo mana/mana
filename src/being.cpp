@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <stdio.h>
 #include "astar.h"
 #include "being.h"
 #include "game.h"
