@@ -1091,6 +1091,7 @@ void do_parse() {
                     }
                     else {
                         chatWindow->chat_log("Nothing to sell", BY_SERVER);
+                        current_npc = 0;
                     }
                     break;
                     // Answer to buy
