@@ -118,7 +118,7 @@ int get_x_offset(Being *being) {
     if (being->action == WALK) {
         if (direction != NORTH && direction != SOUTH) {
             offset = being->frame + 1;
-            if (offset == 5)offset = 0;
+            if (offset == 5) offset = 0;
             offset *= 8;
             if (direction == WEST || direction == NW || direction == SW) {
                 offset = -offset;
@@ -486,6 +486,28 @@ void Engine::draw()
 #endif
         }
     }
+
+#ifdef __DEBUG
+    // Draw a debug path
+    PATH_NODE *debugPath = tiledMap.findPath(
+            player_node->x, player_node->y,
+            mouseX / 32 + camera_x, mouseY / 32 + camera_y);
+
+    while (debugPath)
+    {
+        SDL_Rect destRect;
+        destRect.x = (debugPath->x - camera_x) * 32 - offset_x + 12;
+        destRect.y = (debugPath->y - camera_y) * 32 - offset_y + 12;
+        destRect.w = 8;
+        destRect.h = 8;
+        SDL_FillRect(screen, &destRect, SDL_MapRGB(screen->format, 255, 0, 0));
+
+        // Move to the next node
+        PATH_NODE *temp = debugPath->next;
+        delete debugPath;
+        debugPath = temp;
+    }
+#endif
     
     // Draw player speech
     beingIterator = beings.begin();
@@ -526,8 +548,8 @@ void Engine::draw()
     gui->draw();
 
     std::stringstream debugStream;
-    debugStream << "[" << fps << " fps] ";// <<
-    //    (mouse_x / 32 + camera_x) << ", " << (mouse_y / 32 + camera_y);
+    debugStream << "[" << fps << " fps] " <<
+        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

@@ -47,6 +47,7 @@ volatile bool action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
 int fps = 0, frame = 0;
+int mouseX = 0, mouseY = 0;
 
 OkDialog *deathNotice = NULL;
 
@@ -265,14 +266,14 @@ void do_input()
             }
         } // End key down
 
-        if (event.button.type == SDL_MOUSEBUTTONDOWN)
+        if (event.type == SDL_MOUSEBUTTONDOWN)
         {
             if (event.button.button == 3)
             {
                 // We click the right button
                 // NPC Call
-                int npc_x = event.motion.x / 32 + camera_x;
-                int npc_y = event.motion.y / 32 + camera_y;
+                int npc_x = event.button.x / 32 + camera_x;
+                int npc_y = event.button.y / 32 + camera_y;
                 int id = find_npc(npc_x, npc_y);
                 if (id != 0)
                 {
@@ -283,7 +284,12 @@ void do_input()
                 }
 
             }
-
+        }
+        else if (event.type == SDL_MOUSEMOTION)
+        {
+            // Update the known mouse position
+            mouseX = event.motion.x;
+            mouseY = event.motion.y;
         }
 
         // Push input to GUI when not used
@@ -377,7 +383,6 @@ void do_input()
         }
 
     } // End if alive
-
 }
 
 int get_packet_length(short id) {
@@ -399,7 +404,7 @@ void do_parse() {
         while (in_size >= (len = get_packet_length(id = RFIFOW(0)))) {
             // Add infos to log file and dump the latest received packet
             char pkt_nfo[60];
-            sprintf(pkt_nfo,"In-buffer size: %i Packet id: %x Packet length: %i",in_size,RFIFOW(0),len);
+            sprintf(pkt_nfo,"In-buffer size: %i Packet id: %x Packet length: %i", in_size, RFIFOW(0), len);
             /*
             log_hex("Packet", "Packet_ID", RFIFOW(0));
             log_int("Packet", "Packet_length", get_length(RFIFOW(0)));
@@ -418,7 +423,7 @@ void do_parse() {
             fclose(file);
 //#endif 
             // Parse packet based on their id
-            switch(id) {
+            switch (id) {
                 // Received speech
                 case 0x008d:
                     temp = (char *)malloc(RFIFOW(2)-7);
@@ -549,9 +554,11 @@ void do_parse() {
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
-                    being->setPath(calculate_path(get_src_x(RFIFOP(50)),
-                            get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),
-                            get_dest_y(RFIFOP(50))));
+                    being->setPath(tiledMap.findPath(
+                                get_src_x(RFIFOP(50)),
+                                get_src_y(RFIFOP(50)),
+                                get_dest_x(RFIFOP(50)),
+                                get_dest_y(RFIFOP(50))));
                     break;
                     // Being moving
                 case 0x01da:

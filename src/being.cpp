@@ -27,20 +27,13 @@
 
 Being *player_node = NULL;
 
-std::list<Being *> beings;
+std::list<Being*> beings;
 
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
     next(NULL)
 {
     this->x = x;
     this->y = y;
-}
-
-PATH_NODE *calculate_path(
-        unsigned short src_x, unsigned short src_y,
-        unsigned short dest_x, unsigned short dest_y)
-{
-    return find_path(1, src_x, src_y, dest_x, dest_y);
 }
 
 void empty() {

@@ -87,7 +87,7 @@ Location::Location(int x, int y, Tile *tile):
 
 bool Location::operator< (const Location &loc) const
 {
-   return tile->Fcost < loc.tile->Fcost; 
+   return tile->Fcost > loc.tile->Fcost; 
 }
 
 
@@ -194,6 +194,11 @@ int Map::getTile(int x, int y, int layer)
     return tiles[x + y * width].layers[layer];
 }
 
+Tile *Map::getTile(int x, int y)
+{
+    return &tiles[x + y * width];
+}
+
 int Map::getWidth()
 {
     return width;
@@ -212,28 +217,128 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
     // Return when destination not walkable
     if (!getWalk(destX, destY)) return NULL;
 
-    // Reset starting square's G cost to 0
-    Tile *startTile = &tiles[startX + startY * width];
+    // Reset starting tile's G cost to 0
+    Tile *startTile = getTile(startX, startY);
     startTile->Gcost = 0;
 
     // Add the start point to the open list
     openList.push(Location(startX, startY, startTile));
 
+    bool foundPath = false;
+
     // Keep trying new open tiles until no more tiles to try or target found
-    while (!openList.empty()) {
+    while (!openList.empty() && !foundPath)
+    {
         // Take the location with the lowest F cost from the open list, and
         // add it to the closed list.
         Location curr = openList.top();
         openList.pop();
         curr.tile->whichList = onClosedList;
 
+        // Check the adjacent tiles
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                // Calculate location of tile to check
+                int x = curr.x + dx;
+                int y = curr.y + dy;
 
+                // Skip if if we're checking the same tile we're leaving
+                // from, or if the new location falls outside of the map
+                // boundaries
+                if ((dx == 0 && dy == 0) ||
+                        (x < 0 || y < 0 || x >= width || y >= height))
+                {
+                    continue;
+                }
+
+                Tile *newTile = getTile(x, y);
+
+                // Skip if the tile is on the closed list or is not walkable
+                if (newTile->whichList == onClosedList || !getWalk(x, y))
+                {
+                    continue;
+                }
+
+                // Calculate G cost for this route, 10 for moving straight and
+                // 14 for moving diagonal
+                int Gcost = curr.tile->Gcost + (dx == 0 || dy == 0) ? 10 : 14;
+
+                if (newTile->whichList != onOpenList)
+                {
+                    // Found a new tile (not on open nor on closed list)
+                    // Update Hcost of the new tile using Manhatten distance
+                    newTile->Hcost = 10 * (abs(x - destX) + abs(y - destY));
+
+                    // Set the current tile as the parent of the new tile
+                    newTile->parentX = curr.x;
+                    newTile->parentY = curr.y;
+
+                    // Update Gcost and Fcost of new tile
+                    newTile->Gcost = Gcost;
+                    newTile->Fcost = newTile->Gcost + newTile->Hcost;
+
+                    if (x != destX || y != destY) {
+                        // Add this tile to the open list
+                        newTile->whichList = onOpenList;
+                        openList.push(Location(x, y, newTile));
+                    }
+                    else {
+                        // Target location was found
+                        foundPath = true;
+                    }
+                }
+                else if (Gcost < newTile->Gcost)
+                {
+                    // Found a shorter route.
+                    // Update Gcost and Fcost of the new tile
+                    newTile->Gcost = Gcost;
+                    newTile->Fcost = newTile->Gcost + newTile->Hcost;
+
+                    // Set the current tile as the parent of the new tile
+                    newTile->parentX = curr.x;
+                    newTile->parentY = curr.y;
+
+                    // Add this tile to the open list (it's already
+                    // there, but this instance has a lower F score)
+                    openList.push(Location(x, y, newTile));
+                }
+            }
+        }
     }
 
     // Two new values to indicate wether a tile is on the open or closed list,
     // this way we don't have to clear all the values between each pathfinding.
     onClosedList += 2;
     onOpenList += 2;
+
+    // If a path has been found, iterate backwards using the parent locations
+    // to extract it.
+    if (foundPath) {
+        //printf("Found path from (%d, %d) to (%d, %d):\n",
+        //        startX, startY, destX, destY);
+        PATH_NODE *path = new PATH_NODE(destX, destY);
+        int pathX = destX;
+        int pathY = destY;
+
+        while (pathX != startX || pathY != startY)
+        {
+            // Find out the next parent
+            Tile *tile = getTile(pathX, pathY);
+            pathX = tile->parentX;
+            pathY = tile->parentY;
+
+            //printf("- (%d, %d)\n", pathX, pathY);
+
+            // Add the new path node to the start of the path list
+            PATH_NODE *pn = new PATH_NODE(pathX, pathY);
+            pn->next = path;
+            path = pn;
+        }
+
+        return path;
+    }
 
     // No path found
     return NULL;

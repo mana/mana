@@ -108,6 +108,11 @@ class Map
         int getTile(int x, int y, int layer);
 
         /**
+         * Get tile reference.
+         */
+        Tile *getTile(int x, int y);
+
+        /**
          * Set walkability flag for a tile
          */
         void setWalk(int x, int y, bool walkable);

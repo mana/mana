@@ -103,10 +103,6 @@ Being *find_node(unsigned int id);
 /** Remove a Being */
 void remove_node(unsigned int id);
 
-PATH_NODE *calculate_path(
-        unsigned short src_x, unsigned short src_y,
-        unsigned short dest_x, unsigned short dest_y);
-
 /** Find a NPC id based on its coordinates */
 unsigned int find_npc(unsigned short x, unsigned short y);
 
