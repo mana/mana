@@ -4,3 +4,9 @@ Makefile.win
 tmw
 *.dll
 *.exe
+config.h.in
+config.h
+config.log
+aclocal.m4
+Makefile
+configure

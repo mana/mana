@@ -79,6 +79,7 @@ Tile::Tile():
 {
 }
 
+
 Location::Location(int x, int y, Tile *tile):
     x(x), y(y), tile(tile)
 {
@@ -88,6 +89,7 @@ bool Location::operator< (const Location &loc) const
 {
    return tile->Fcost < loc.tile->Fcost; 
 }
+
 
 Map::Map():
     width(0), height(0),
@@ -224,6 +226,8 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
         Location curr = openList.top();
         openList.pop();
         curr.tile->whichList = onClosedList;
+
+
     }
 
     // Two new values to indicate wether a tile is on the open or closed list,

@@ -10,11 +10,10 @@ AC_PATH_PROGS(INSTALL, install ginstall, install)
 AC_PATH_PROG(CHMOD, chmod, chmod)
 
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(tmw, 0.8.0)
+AM_INIT_AUTOMAKE(tmw, 0.0.9)
 
 AC_LANG_CPLUSPLUS
 AC_PROG_CXX
-AM_PROG_LIBTOOL
 
 dnl FIND_PATH(programm-name, variable-name, list of directories,
 dnl     if-not-found, test-parameter)
@@ -85,15 +84,6 @@ FIND_PATH(sdl-config, LIBSDL_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/loca
 
 if test -n "$LIBSDL_CONFIG"; then
   LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer"
-  LIBSDL_RPATH=
-  for args in $LIBSDL_LIBS; do
-       case $args in
-         -L*)
-            LIBSDL_RPATH="$LIBSDL_RPATH $args"
-            ;;
-       esac
-  done
-  LIBSDL_RPATH=`echo $LIBSDL_RPATH | sed -e "s/-L/-R/g"`
   LIBSDL_CFLAGS="`$LIBSDL_CONFIG --cflags`"
 
   AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 1, [Defines if your system has the LIBSDL library])
@@ -103,6 +93,5 @@ fi
 
 AC_SUBST(LIBSDL_LIBS)
 AC_SUBST(LIBSDL_CFLAGS)
-AC_SUBST(LIBSDL_RPATH)
 
 AC_OUTPUT(Makefile src/Makefile)
