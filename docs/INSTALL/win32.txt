@@ -28,7 +28,7 @@ Besides a C++ compiler, TMW depends on the following libraries:
 1) Allegro 4.1.x
 2) Alfont  1.91
 3) JGmod 0.99
-4) Guichan 0.1.0-CVS
+4) Guichan 0.1.0
 
 
 2. Installing Dev-C++
@@ -46,31 +46,18 @@ After you fetched it simply run and install.
 3. Installing the required libraries
 ====================================
 
-Lucky for us, all the libs have DevPaks that are very easy drop-ins for
-Dev-C++, without any complex actions on your side. We'll download them from
-http://devpaks.org/.
-
-Because Guichan can work with SDL as well as Allegro, and because we plan to
-switch to SDL anyway, we'll install SDL and SDL_image too, even though TMW
-doesn't require them at this time.
+All the libs have DevPaks that are very easy drop-ins for Dev-C++, without any
+complex actions on your side.
 
 Get the following list of DevPaks:
 
 - Allegro       (http://devpaks.org/show.php?devpak=2)
 - AllegroFont   (http://devpaks.org/show.php?devpak=88)
 - JGMOD         (http://devpaks.org/show.php?devpak=121)
-- SDL           (http://devpaks.org/show.php?devpak=57)
-- SDL_image     (http://devpaks.org/show.php?devpak=25)
-- Guichan       (http://guichan.darkbits.org/downloads/guichan.DevPak)
+- Guichan       (http://sull.homelinux.net/~ardaen/guichan.DevPak)
 
-Install them all through the Dev-C++ package manager.
-
-NOTE: At the time of writing there is a problem with the SDL_image package.
-You need to solve this by downloading the file SDL_image-devel-1.2.3-VC6.zip
-from the link below and extracting from it the SDL_image.lib file and put that
-in your Dev-C++ lib directory.
-
-  http://www.libsdl.org/projects/SDL_image/
+Install them all through the Dev-C++ package manager. Special thanks to Ardaen
+for providing us with a static DevPak for Guichan.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
