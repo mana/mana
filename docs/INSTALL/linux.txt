@@ -1,10 +1,6 @@
 How to compile and install TMW on my GNU/Linux Box
 ==================================================
 
-Author:  Alexander Baldeck (aka kth5)
-Email:    kth5@cboxx.de
-Homepage: alex.cboxx.de
-
 Thanks to hardskinone for writing the 'Installing JGmod' part
 
 The Mana World project
@@ -142,3 +138,5 @@ contact me using the stated email-address on the top of this document.
 But please try the TMW IRC channel first.
 
 That's all folks! Have a nice day! :-)
+
+kth5
