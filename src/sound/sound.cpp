@@ -1,42 +1,33 @@
 /*
-
 	The Mana World
 	Copyright 2004 The Mana World Development Team
 
-    This file is part of The Mana World.
+		This file is part of The Mana World.
 
-    The Mana World is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
+		The Mana World is free software; you can redistribute it and/or modify
+		it under the terms of the GNU General Public License as published by
+		the Free Software Foundation; either version 2 of the License, or
+		any later version.
 
-    The Mana World is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+		The Mana World is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with The Mana World; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
-
-/**
-	rewrite of non-existend sdl-soundengine using allegro
-
-	Author: kth5 aka Alexander Baldeck
-		pipe your question, suggestions and flames to: kth5@gawab.com
+		You should have received a copy of the GNU General Public License
+		along with The Mana World; if not, write to the Free Software
+		Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
 #ifdef WIN32
-  #pragma warning(disable:4312)
+	#pragma warning(disable:4312)
 #endif
 
 #include <allegro.h>
 
 
-  #include <jgmod.h>
-  #include "sound.h"
+#include <jgmod.h>
+#include "sound.h"
 
 /**
 	\brief install the sound engine
@@ -191,10 +182,9 @@ void TmwSound::StartMOD(char * in, int loop) {
 	NOTE:
 		you need to stop all playback when you want to
 		switch from mod to midi. playing a new track is
-		usually possibe simply by calling StartMIDI() ir
-		SartMOD() again.
-		passing NULL to the playing functions only means
-		to make playback stop.
+		usually simple as calling StartMIDI() or StartMOD() again.
+		passing NULL to the playing functions only means to make
+		playback stop.
 */
 void TmwSound::StopBGM() {
 	if(isOk==-1)
@@ -252,6 +242,9 @@ void TmwSound::StartWAV(char * in, int pan) {
 		please make sure that the object is not loaded more
 		than once since the function will not be able to run
 		checks for its own!
+
+		the return value should be kept as a reference to the
+		object loaded. if not it is practicaly lost.
 */
 TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
 	POOL_ITEM item;
