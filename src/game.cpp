@@ -473,9 +473,7 @@ void do_parse() {
             player_node->type = ACTION_NODE;
 						player_node->speed = 150;
 						player_node->id = account_ID;
-            x = RFIFOW(18);
-            y = RFIFOW(20);
-            set_coordinates(player_node->coordinates, x, y, 0);
+						set_coordinates(player_node->coordinates, RFIFOW(18), RFIFOW(20), 0);
             add_node(player_node);
 						walk_status = 0;
             // Send "map loaded"

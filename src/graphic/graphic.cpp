@@ -137,8 +137,8 @@ void do_graphic(void) {
 
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
-			draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 0)].dat, i*16-offset_x, j*16-offset_y);
-			if(get_tile(i+camera_x, j+camera_y, 1)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
+			if(get_tile(i+camera_x, j+camera_y, 0)>=0 && get_tile(i+camera_x, j+camera_y, 0)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 0)].dat, i*16-offset_x, j*16-offset_y);
+			if(get_tile(i+camera_x, j+camera_y, 1)>0 && get_tile(i+camera_x, j+camera_y, 1)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
 	NODE *node = get_head();
@@ -204,14 +204,10 @@ void do_graphic(void) {
 
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
-			if(get_tile(i+camera_x, j+camera_y, 2)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
+			if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
-		
-
 	stretch_blit(buffer, double_buffer, 0, 0, 400, 300, 0, 0, 800, 600);
-
-	
 
 	// Draw player speech
   node = get_head();
@@ -247,7 +243,7 @@ void do_graphic(void) {
 	}
   
 
-	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
+	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i", fps,get_x(player_node->coordinates),get_y(player_node->coordinates));
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
 
