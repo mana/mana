@@ -51,7 +51,7 @@ The easy way is to get our development package which should work with the latest
 CVS (I'll try to update it as much as I can).
 You can find it at:
 
-		http://themanaworld.homeip.net/tmw-cvs.DevPak
+         http://themanaworld.sourceforget.net/files/tmw-cvs.DevPak
 
 Just install this one and you should be ready to go. Remember to copy the required
 dlls from your dll folder in the Dev-Cpp root directory, to the folder where you

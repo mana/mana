@@ -140,6 +140,7 @@ void Being::clearPath() {
     path = NULL;
 }
 
+
 void Being::setPath(PATH_NODE *path)
 {
     clearPath();

@@ -21,11 +21,11 @@
  *  $Id$
  */
 
-#include "../log.h"
+#include "../graphic/graphic.h"
 #include "image.h"
+#include "../log.h"
 #include <iostream>
 #include <SDL_image.h>
-#include "../graphic/graphic.h"
 #include "resourcemanager.h"
 
 #ifndef USE_OPENGL
