@@ -620,15 +620,23 @@ void do_parse() {
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++) {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
-                        char info[40];
+                        /*char info[40];
                         sprintf(info, "a4 %i %i %i %i %i %i %i %i",
                             RFIFOW(4+loop*20), RFIFOW(4+loop*20+2),
                             RFIFOB(4+loop*20+4), RFIFOB(4+loop*20+5),
                             RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
                             RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
-                        chatBox->chat_log(info, BY_SERVER);
+                        chatBox->chat_log(info, BY_SERVER);*/
                         if(RFIFOW(4+loop*20+8)) {
-                            equipmentWindow->addEquipment(RFIFOB(4+loop*20),
+                            int slot = 1;
+                            int position = 0;
+                            while(RFIFOW(4+loop*20+8) != slot) {
+                                slot *= 2;
+                                position++;
+                            }
+                            /*sprintf(info, "%i %i", slot, position);
+                            chatBox->chat_log(info, BY_SERVER);*/
+                            equipmentWindow->addEquipment(position - 1,
                                 RFIFOW(4+loop*20+2));
                             inventoryWindow->items->setEquipped(
                                 RFIFOW(4+loop*20), true);
@@ -919,8 +927,22 @@ void do_parse() {
                 case 0x00a0:
                     if (RFIFOB(22) > 0)
                         chatBox->chat_log("Unable to pick up item", BY_SERVER);
-                    else
-                        inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4), false);
+                    else {
+                        if(RFIFOW(19)) {
+                            inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
+                                RFIFOW(4), true);
+                        }
+                        else {
+                            inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
+                                RFIFOW(4), false);
+                        }
+                        /*char info[40];
+                        sprintf(info, "a0 %i %i %i %i %i %i %i %i",
+                            RFIFOW(2), RFIFOW(4), RFIFOW(6),
+                            RFIFOB(8), RFIFOB(9), RFIFOB(10),
+                            RFIFOW(19), RFIFOB(21));
+                        chatBox->chat_log(info, BY_SERVER);*/
+                    }
                     break;
                     // Decrease quantity of an item in inventory
                 case 0x00af:
@@ -957,7 +979,9 @@ void do_parse() {
                             }
                         }
                     }
-                } break;
+                }
+                    break;
+
                     // MVP experience
                 case 0x010b:
                     break;
@@ -1006,9 +1030,19 @@ void do_parse() {
                     if (RFIFOB(6) == 0)
                         chatBox->chat_log("Unable to equip.", BY_SERVER);
                     else {
-                        inventoryWindow->items->setEquipped(RFIFOW(2), true);
-                        equipmentWindow->addEquipment(RFIFOW(2),
-                            inventoryWindow->items->getId(RFIFOW(2)));
+                         if(RFIFOW(4)) {
+                            int slot = 1;
+                            int position = 0;
+                            while(RFIFOW(4) != slot) {
+                                slot *= 2;
+                                position++;
+                            }
+                            inventoryWindow->items->setEquipped(RFIFOW(2),
+                                true);
+                            equipmentWindow->addEquipment(position - 1,
+                                inventoryWindow->items->getId(RFIFOW(2)));
+
+                        }
                     }
                     break;
                     // Equipment related
@@ -1020,19 +1054,27 @@ void do_parse() {
                     if(inventoryWindow->items->getIndex(RFIFOW(7)));
                         inventoryWindow->items->setEquipped(
                             inventoryWindow->items->getIndex(RFIFOW(7)), true);*/
-                    char info[40];
+                    /*char info[40];
                     sprintf(info, "1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6),
                         RFIFOW(7), RFIFOW(9));
-                    chatBox->chat_log(info, BY_SERVER);
+                    chatBox->chat_log(info, BY_SERVER);*/
                     break;
                     // Answer to unequip item
                 case 0x00ac:
                     if (RFIFOB(6) == 0)
                         chatBox->chat_log("Unable to unequip.", BY_SERVER);
                     else {
-                        equipmentWindow->removeEquipment(RFIFOW(2));
-                        inventoryWindow->items->setEquipped(
-                            inventoryWindow->items->getIndex(), false);
+                        if(RFIFOW(4)) {
+                            int slot = 1;
+                            int position = 0;
+                            while(RFIFOW(4) != slot) {
+                                slot *= 2;
+                                position++;
+                            }
+                            equipmentWindow->removeEquipment(position - 1);
+                            inventoryWindow->items->setEquipped(
+                                inventoryWindow->items->getIndex(), false);
+                        }                        
                     }
                     break;
                     // Manage non implemented packets

@@ -60,7 +60,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].quantity > 0) {
-            if (items[i].id >= 501 && items[i].id <= 2301) {
+            if (items[i].id >= 501 && items[i].id <= 1202) {
                 itemset->spriteset[items[i].id - 501]->draw(screen,
                         x + 24 * i, y + 2);
 

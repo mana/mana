@@ -43,6 +43,7 @@ SellDialog::SellDialog():
 
     setSize(260, 175);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
+    itemList->setDimension(gcn::Rectangle(5, 5, 240, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     quantityLabel->setPosition(215, 120);
     okButton->setPosition(180, 145);
@@ -89,7 +90,7 @@ void SellDialog::addItem(short index, int price)
     int id = inventoryWindow->items->getId(index);
     ITEM_SHOP item_shop;
 
-    if (id >= 501 && id <= 511) {
+    if (id >= 501 && id <= 2301) {
         sprintf(item_shop.name, "%s %i gp", item_db[id - 501], price);
     }
     else {

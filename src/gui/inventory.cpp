@@ -32,7 +32,7 @@
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setSize(322, 80);
+    setSize(322, 100);
     useButton = new Button("Use");
     useButton->setPosition(20, 50);
     dropButton = new Button("Drop");

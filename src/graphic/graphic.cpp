@@ -310,14 +310,18 @@ Engine::Engine()
             "core/graphics/sprites/emotions.png");
     Image *monsterbitmap = resman->getImage(
             "core/graphics/sprites/monsters.png");
+    Image *weaponbitmap = resman->getImage(
+            "core/graphics/sprites/weapons.png");
 
     if (!npcbmp) error("Unable to load npcs.png");
     if (!emotionbmp) error("Unable to load emotions.png");
     if (!monsterbitmap) error("Unable to load monsters.png");
+    if (!weaponbitmap) error("Unable to load weapons.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
     monsterset = new Spriteset(monsterbitmap, 60, 60);
+    weaponset = new Spriteset(weaponbitmap, 160, 120);
 }
 
 Engine::~Engine()
@@ -339,6 +343,7 @@ Engine::~Engine()
     delete monsterset;
     delete npcset;
     delete emotionset;
+    delete weaponset;
 }
 
 void Engine::draw()
@@ -413,6 +418,10 @@ void Engine::draw()
 
             playerset->spriteset[4 * pf + dir]->draw(screen,
                     being->text_x - 64, being->text_y - 80);
+            if (being->weapon != 0 && being->action == ATTACK) {
+                weaponset->spriteset[4 * being->frame + dir]->draw(screen,
+                    being->text_x - 64, being->text_y - 80);
+            }
 
             if (being->hair_color <= 10) {
                 int hf = being->hair_color - 1 + 10 * (dir + 4 *
@@ -574,7 +583,7 @@ void Engine::draw()
 
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
-        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
+        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " " << player_node->weapon;
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

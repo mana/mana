@@ -44,6 +44,7 @@ BuyDialog::BuyDialog():
 
     setSize(260, 175);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
+    itemList->setDimension(gcn::Rectangle(5, 5, 240, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     quantityLabel->setPosition(215, 120);
     moneyLabel->setPosition(5, 135);
@@ -99,7 +100,7 @@ void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    if (id - 501 >= 0 && id - 501 <= 11) {
+    if (id >= 501 && id <= 2301) {
         sprintf(item_shop.name, "%s %i gp", item_db[id - 501], price);
     }
     else {

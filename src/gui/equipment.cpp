@@ -29,7 +29,7 @@
 EquipmentWindow::EquipmentWindow():
     Window("Equipment")
 {
-    setSize(70, 200);
+    setSize(60, 200);
     setPosition(40, 40);
     
     ResourceManager *resman = ResourceManager::getInstance();
@@ -54,11 +54,13 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 8; i++) {
         if (equipments[i] > 0) {
             itemset->spriteset[equipments[i] - 501]->draw(screen,
-                        x + 20, y + 24 * i);
+                        x + 22, y + 24 * i + 20);
         }
+        graphics->setColor(gcn::Color(0, 0, 0));
+        graphics->drawRectangle(gcn::Rectangle(22, 24 * i + 20, 20, 20));
     }
 }
 
