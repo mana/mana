@@ -6,20 +6,28 @@ THE MANA WORLD INVENTORY SYSTEM
 2. DATABASE
 3. EQUIPMENT
 
+
 1. INTRODUCTION
 
-The inventory system will be based client side on a database realized by an XML document. The database will contain a list of all the items available ingame.
+The inventory system will be based client side on a database realized by an XML
+document. The database will contain a list of all the items available ingame.
+
 
 2. DATABASE
 
-The XML document (name to be defined, suggested items.xml) will contain a list of items.
-- itemId a progressive integer (will be used also to show the correct item picture).
-- itemImage (used if same images are used for different items)
-- itemName.
-- itemDescription (a brief description to be shown in shops, or in the inventory).
-- itemType (weapon, food, armor, stone, and so on...).
-- itemProperties (probably a series of flags).
+The XML document (name to be defined, suggested items.xml) will contain a list
+of items. An item can have the following properties:
+
+- id          (a positive integer uniquely identifying an item)
+- image       (used if same images are used for different items)
+- name
+- description (a brief description shown in shops, or in the inventory)
+- type        (weapon, food, armor, stone, and so on...)
+- properties  (probably a series of flags)
+
 
 3. EQUIPMENT
 
-Every being will have a variable number of slots to equip items. For a player we will have 6 slots: head, upper body, lower body, feet, left hand, right hand.
+Every being will have a variable number of slots to equip items. For a player
+we will have 6 slots: head, upper body, lower body, feet, left hand, right
+hand.
