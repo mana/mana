@@ -104,19 +104,6 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
             readLayer(node, map, layerNr);
             layerNr++;
         }
-        /*
-        else if (xmlStrEqual(node->name, BAD_CAST "object")) {
-            int x = getProperty(node, "x", 0);
-            int y = getProperty(node, "y", 0);
-
-            // Spawn the object
-            prop = xmlGetProp(node, BAD_CAST "type");
-            
-            log("- Adding %s at (%d, %d)", (char*)prop, x, y);
-            map->addObject(double(x) / tilew, double(y) / tileh, (char*)prop);
-            xmlFree(prop);
-        }
-        */
     }
 
     return map;
