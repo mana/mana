@@ -13,6 +13,7 @@ MODULES = src/sound.cpp \
           src/gui/gui.cpp \
           src/gui/inventory.cpp \
           src/gui/itemcontainer.cpp \
+          src/gui/item_amount.cpp \
           src/gui/listbox.cpp \
           src/gui/login.cpp \
           src/gui/minimap.cpp \
