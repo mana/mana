@@ -184,15 +184,8 @@ void CharSelectDialog::serverCharDelete() {
         setPlayerInfo(NULL);
         new OkDialog(this, "Info", "Player deleted");
     }
-    else if (RFIFOW(0) == 0x006c) {
-        switch (RFIFOB(2)) {
-            case 0:
-                new OkDialog(this, "Error", "Access denied");
-                break;
-            case 1:
-                new OkDialog(this, "Error", "Cannot use this ID");
-                break;
-        }
+    else if (RFIFOW(0) == 0x0070) {
+        new OkDialog(this, "Error", "Failed to delete character.");
         RFIFOSKIP(3);
     }
     else {
@@ -331,9 +324,14 @@ CharCreateDialog::~CharCreateDialog()
 void CharCreateDialog::action(const std::string& eventId)
 {
     if (eventId == "create") {
-        // Attempt to create the character and schedule this dialog for
-        // deletion.
-        serverCharCreate();
+        if (getName().length() >= 4) {
+            // Attempt to create the character
+            serverCharCreate();
+        }
+        else {
+            new OkDialog(this, "Error",
+                    "Your name needs to be at least 4 characters.");
+        }
     }
     else if (eventId == "cancel") {
         windowContainer->scheduleDelete(this);
@@ -403,15 +401,8 @@ void CharCreateDialog::serverCharCreate()
         char_info->weapon = RFIFOW(2 + 56);
         RFIFOSKIP(108);
         //n_character++;
-    } else if (RFIFOW(0) == 0x006c) {
-        switch (RFIFOB(2)) {
-            case 0:
-                new OkDialog(this, "Error", "Access denied");
-                break;
-            case 1:
-                new OkDialog(this, "Error", "Cannot use this ID");
-                break;
-        }
+    } else if (RFIFOW(0) == 0x006e) {
+        new OkDialog(this, "Error", "Failed to create character");
         RFIFOSKIP(3);
         n_character = 0;
     } else {
