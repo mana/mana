@@ -33,6 +33,7 @@
 #include "./gui/shop.h"
 #include "./gui/npc.h"
 #include "./gui/setup.h"
+#include "./gui/ok_dialog.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
 
@@ -323,58 +324,57 @@ int get_packet_length(short id) {
 
 /** Parse data received from map server into input buffer */
 void do_parse() {
-  unsigned short id;
-  char *temp;
-  char direction;
-  NODE *node = NULL;
+	unsigned short id;
+	char *temp;
+	char direction;
+	NODE *node = NULL;
 	PATH_NODE *pn;
-  int len;
-
-  // We need at least 2 bytes to identify a packet
-  if(in_size>=2) {
-    // Check if the received packet is complete
-    while(in_size>=(len = get_packet_length(id = RFIFOW(0)))) {
-      // Add infos to log file and dump the latest received packet
-      char pkt_nfo[60];
-      sprintf(pkt_nfo,"In-buffer size: %i Packet id: %x Packet length: %i",in_size,RFIFOW(0),len);
-      /*log_hex("Packet", "Packet_ID", RFIFOW(0));
-      log_int("Packet", "Packet_length", get_length(RFIFOW(0)));
-      log_int("Packet", "Packet_in_size", RFIFOW(2));
-      log_int("Packet", "In_size", in_size);
-      FILE *file = fopen("packet.dump", "wb");
-      for(int i=0;i<len;i++) {
-        fprintf(file, "%x|%i|%c ", RFIFOB(i), RFIFOB(i), RFIFOB(i));
-        if((i+1)%10==0)fprintf(file, "\n");
-      }
-      fclose(file);*/
-//#ifdef DEBUG
+	int len;
+	
+	// We need at least 2 bytes to identify a packet
+	if(in_size>=2) {
+		// Check if the received packet is complete
+		while(in_size>=(len = get_packet_length(id = RFIFOW(0)))) {
+			// Add infos to log file and dump the latest received packet
+			char pkt_nfo[60];
+			sprintf(pkt_nfo,"In-buffer size: %i Packet id: %x Packet length: %i",in_size,RFIFOW(0),len);
+			/*log_hex("Packet", "Packet_ID", RFIFOW(0));
+			log_int("Packet", "Packet_length", get_length(RFIFOW(0)));
+			log_int("Packet", "Packet_in_size", RFIFOW(2));
+			log_int("Packet", "In_size", in_size);
+			FILE *file = fopen("packet.dump", "wb");
+			for(int i=0;i<len;i++) {
+				fprintf(file, "%x|%i|%c ", RFIFOB(i), RFIFOB(i), RFIFOB(i));
+				if((i+1)%10==0)fprintf(file, "\n");
+			}
+			fclose(file);*/
+#ifdef DEBUG
 			FILE *file = fopen("./docs/packet.list", "ab");
 			fprintf(file, "%x\n", RFIFOW(0));
 			fclose(file);
-//#endif
-
-      // Parse packet based on their id
-      switch(id) {
-        // Received speech
-        case 0x008d:
-          temp = (char *)malloc(RFIFOW(2)-7);
-          memset(temp, '\0', RFIFOW(2)-7);
-          memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
-          node = find_node(RFIFOL(4));
-          if(node!=NULL) {
-            if(node->speech!=NULL) {
-              free(node->speech);
-              node->speech = NULL;
+#endif
+			// Parse packet based on their id
+			switch(id) {
+				// Received speech
+				case 0x008d:
+					temp = (char *)malloc(RFIFOW(2)-7);
+					memset(temp, '\0', RFIFOW(2)-7);
+					memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
+					node = find_node(RFIFOL(4));
+					if(node!=NULL) {
+						if(node->speech!=NULL) {
+							free(node->speech);
+							node->speech = NULL;
 							node->speech_time = 0;
-            }
-            node->speech = temp;
-            node->speech_time = SPEECH_TIME;
+						}
+						node->speech = temp;
+						node->speech_time = SPEECH_TIME;
 						node->speech_color = makecol(255, 255, 255);
-            chatlog.chat_log(node->speech, BY_OTHER, font);
-          }
-          break;
-        case 0x008e:
-        case 0x009a:
+						chatlog.chat_log(node->speech, BY_OTHER, font);
+					}
+					break;
+				case 0x008e:
+				case 0x009a:
 					if(RFIFOW(2)>4) {
 						if(player_node->speech!=NULL) {
 							free(player_node->speech);
@@ -388,238 +388,248 @@ void do_parse() {
 						player_node->speech_time = SPEECH_TIME;
 						player_node->speech_color = makecol(255, 255, 255);
 
-						if(id==0x008e)
+						if(id==0x008e) {
 							chatlog.chat_log(player_node->speech, BY_PLAYER, font);
-						else
+						}
+						else {
 							chatlog.chat_log(player_node->speech, BY_GM, font);
-          }
-				break;
-        // Success to walk request
-        case 0x0087:
-					if(walk_status==1) {
-					  /*if(get_src_x(RFIFOP(6))==src_x)
-					    if(get_src_y(RFIFOP(6))==src_y)
-					      if(get_dest_x(RFIFOP(6))==get_x(player_node->coordinates))
-					        if(get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))*/
-					        if(RFIFOL(2)>server_tick) {
-					          walk_status = 2;
-					          server_tick = RFIFOL(2);
-					        }
+						}
 					}
-          break;
-        // Add new being / stop monster
-        case 0x0078:
+					break;
+				// Success to walk request
+				case 0x0087:
+					if(walk_status==1) {
+						if(RFIFOL(2)>server_tick) {
+							walk_status = 2;
+							server_tick = RFIFOL(2);
+						}
+					}
+					break;
+				// Add new being / stop monster
+				case 0x0078:
 					if(find_node(RFIFOL(2))==NULL) {
-            node = new NODE();
-            node->id = RFIFOL(2);
+						node = new NODE();
+						node->id = RFIFOL(2);
 						node->speed = RFIFOW(6);
-						if(node->speed==0)node->speed = 150; // Else division by 0 when calculating frame
-            node->job = RFIFOW(14);
+						if(node->speed==0) {
+							node->speed = 150; // Else division by 0 when calculating frame
+						}
+						node->job = RFIFOW(14);
 						empty_path(node);
-            memcpy(node->coordinates, RFIFOP(46), 3);
-            node->hair_color = RFIFOW(28);
-            node->hair_style = RFIFOW(16);
-            add_node(node);
-					} else {
-						/*char set[30];
-						sprintf(set, "%i %i %i %i %i",RFIFOL(2),get_x(RFIFOP(46)),get_y(RFIFOP(46)),get_x(player_node->coordinates),get_y(player_node->coordinates));
-						alert("78",set,"","","",0,0);*/
+						memcpy(node->coordinates, RFIFOP(46), 3);
+						node->hair_color = RFIFOW(28);
+						node->hair_style = RFIFOW(16);
+						add_node(node);
+					}
+					else {
 						if(node) {
-              empty_path(node);
-              memcpy(node->coordinates, RFIFOP(46), 3);
+							empty_path(node);
+							memcpy(node->coordinates, RFIFOP(46), 3);
 							node->frame = 0;
 							node->tick_time = tick_time;
 							node->action = STAND;
 						}
 					}
-          break;
-        // Remove a being
-        case 0x0080:
+					break;
+				// Remove a being
+				case 0x0080:
 					node = find_node(RFIFOL(2));
 					if(node!=NULL) {
 						if(RFIFOB(6)==1) { // Death
-              if(node->job>110) {
-                node->action = MONSTER_DEAD;
-                node->frame = 0;
-                node->tick_time = tick_time;
-              } else remove_node(RFIFOL(2));
-						} else remove_node(RFIFOL(2));
+							if(node->job>110) {
+								node->action = MONSTER_DEAD;
+								node->frame = 0;
+								node->tick_time = tick_time;
+							}
+							else remove_node(RFIFOL(2));
+						}
+						else remove_node(RFIFOL(2));
 					}
-          break;
-        // Player moving
-        case 0x01d8:
-        case 0x01d9:
-          node = find_node(RFIFOL(2));
-          if(node==NULL) {
-            node = new NODE();
-            node->id = RFIFOL(2);
-            node->job = RFIFOW(14);
-            memcpy(node->coordinates, RFIFOP(46), 3);
-            add_node(node);
+					break;
+				// Player moving
+				case 0x01d8:
+				case 0x01d9:
+					node = find_node(RFIFOL(2));
+					if(node==NULL) {
+						node = new NODE();
+						node->id = RFIFOL(2);
+						node->job = RFIFOW(14);
+						memcpy(node->coordinates, RFIFOP(46), 3);
+						add_node(node);
 						node->tick_time = tick_time;
 						node->frame = 0;
 						node->speed = RFIFOW(6);
 						node->hair_color = RFIFOW(28);
 						node->hair_style = RFIFOW(16);
-          }
-          break;
-        // Monster moving
-        case 0x007b:
+					}
+					break;
+				// Monster moving
+				case 0x007b:
 				//case 0x01da:
-          node = find_node(RFIFOL(2));
+					node = find_node(RFIFOL(2));
 					if(node==NULL) {
 						node = new NODE();
 						node->action = STAND;
-						set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
+						set_coordinates(node->coordinates,
+							get_src_x(RFIFOP(50)),
+							get_src_y(RFIFOP(50)), 0);
 						node->id = RFIFOL(2);
 						node->speed = RFIFOW(6);
 						node->job = RFIFOW(14);
 						add_node(node);
 					}
 					empty_path(node);
-          node->path = calculate_path(get_src_x(RFIFOP(50)),get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),get_dest_y(RFIFOP(50)));
+					node->path = calculate_path(get_src_x(RFIFOP(50)),
+						get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),
+						get_dest_y(RFIFOP(50)));
 					if(node->path!=NULL) {
 						direction = 0;
 						if(node->path->next) {
-								if(node->path->next->x>node->path->x && node->path->next->y>node->path->y)direction = SE;
-								else if(node->path->next->x<node->path->x && node->path->next->y>node->path->y)direction = SW;
-								else if(node->path->next->x>node->path->x && node->path->next->y<node->path->y)direction = NE;
-								else if(node->path->next->x<node->path->x && node->path->next->y<node->path->y)direction = NW;
-								else if(node->path->next->x>node->path->x)direction = EAST;
-								else if(node->path->next->x<node->path->x)direction = WEST;
-								else if(node->path->next->y>node->path->y)direction = SOUTH;
-								else if(node->path->next->y<node->path->y)direction = NORTH;
+							if(node->path->next->x>node->path->x && node->path->next->y>node->path->y)direction = SE;
+							else if(node->path->next->x<node->path->x && node->path->next->y>node->path->y)direction = SW;
+							else if(node->path->next->x>node->path->x && node->path->next->y<node->path->y)direction = NE;
+							else if(node->path->next->x<node->path->x && node->path->next->y<node->path->y)direction = NW;
+							else if(node->path->next->x>node->path->x)direction = EAST;
+							else if(node->path->next->x<node->path->x)direction = WEST;
+							else if(node->path->next->y>node->path->y)direction = SOUTH;
+							else if(node->path->next->y<node->path->y)direction = NORTH;
 						}
 						pn = node->path;
 						node->path = node->path->next;
 						free(pn);
-            set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
-            node->action = WALK;
-            node->tick_time = tick_time;
+						set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
+						node->action = WALK;
+						node->tick_time = tick_time;
 						node->frame = 0;
-          }
-          break;
-        // Being moving
-        case 0x01da:
-          node = find_node(RFIFOL(2));
-          if(node==NULL) {
-            node = new NODE();
-            node->id = RFIFOL(2);
-            node->job = RFIFOW(14);
-            set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
-            add_node(node);
-          }
-          if(node->action!=WALK) {
-          direction = get_direction(node->coordinates);
-          node->action = WALK;
-          if(get_dest_x(RFIFOP(50))>get_x(node->coordinates))direction = EAST;
-          else if(get_dest_x(RFIFOP(50))<get_x(node->coordinates))direction = WEST;
-          else if(get_dest_y(RFIFOP(50))>get_y(node->coordinates))direction = SOUTH;
-          else if(get_dest_y(RFIFOP(50))<get_y(node->coordinates))direction = NORTH;
-          else node->action = STAND;
-					if(node->action==WALK)node->tick_time = tick_time;
-          set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
-          }
-          break;
-        // NPC dialog
-        case 0x00b4:
-          if(!strstr(npc_text, RFIFOP(8))) {
-            strcat(npc_text, RFIFOP(8));
-            strcat(npc_text, "\n");
-            show_npc_dialog = 1;
-          }
-          break;
-        //Get the items
-        case 0x01ee:
-			for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
-				inventoryDialog->addItem(RFIFOW(4 + loop * 18),
-                RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
-      }
-          break;
-        case 0x00a8: // could I use the item?
-          // index RFIFOW(2)
-          // succes or not RFIFOB(6);
-          //if (RFIFOB(6))
-          //  inventoryDialog->addItem(RFIFOW(2), RFIFOW(4));
-          break;
-        // Warp
-        case 0x0091:
-          memset(map_path, '\0', 480);
-          append_filename(map_path, "./data/map/", RFIFOP(2), 480);
-          if(load_map(map_path)) {
-            empty();
-            player_node = new NODE();
-						player_node->job = 0;
-						player_node->action = STAND;
-						player_node->frame = 0;
-            player_node->type = ACTION_NODE;
-						player_node->speed = 150;
-						player_node->id = account_ID;
-						set_coordinates(player_node->coordinates, RFIFOW(18), RFIFOW(20), 0);
-            add_node(player_node);
-						walk_status = 0;
-            // Send "map loaded"
-            WFIFOW(0) = net_w_value(0x007d);
-            WFIFOSET(2);
-            while(out_size>0)flush();
-          } else error("Could not find map file");
-          break;
-				// Skill ...
-				case 0x011a:
-					break;
-				case 0x01a4:
-					break;
-				// Action failed (ex. sit because you have not reached the right level)
-				case 0x0110:
-					CHATSKILL action;
-					action.skill   = RFIFOW(2);
-					action.bskill  = RFIFOW(4);
-					action.unused  = RFIFOW(6);
-					action.success = RFIFOB(8);
-					action.reason  = RFIFOB(9);
-					if(action.success != SKILL_FAILED &&
-						action.bskill == BSKILL_EMOTE ) {
-						printf("Action: %d/%d", action.bskill, action.success);
-					}
-					chatlog.chat_log(action, font);
-					break;
-				// Update stat values
-				case 0x00b0:
-					switch(RFIFOW(2)) {
-            /*case 0x0000:
-							player_node->speed;
-							break;*/
-            case 0x0005:
-              char_info->hp = RFIFOW(4);
-							break;
-						case 0x0006:
-							char_info->max_hp = RFIFOW(4);
-							break;
-						case 0x0007:
-							char_info->sp = RFIFOW(4);
-							break;
-						case 0x0008:
-							char_info->max_sp = RFIFOW(4);
-							break;
-						case 0x000b:
-							char_info->lv = RFIFOW(4);
-							break;
-						case 0x000c:
-							char_info->skill_point = RFIFOW(4);
-							sprintf(skill_points, "Skill points: %i", char_info->skill_point);
-							break;
-						case 0x0037:
-							char_info->job_lv = RFIFOW(4);
-							break;
-					}
-                                        statsDialog->update();
-					if(char_info->hp==0) {
-						ok("Message", "You're now dead, press ok to restart");
-						WFIFOW(0) = net_w_value(0x00b2);
-						WFIFOB(2) = 0;
-						WFIFOSET(3);
 					}
 					break;
+				// Being moving
+				case 0x01da:
+					node = find_node(RFIFOL(2));
+					if(node==NULL) {
+						node = new NODE();
+						node->id = RFIFOL(2);
+						node->job = RFIFOW(14);
+						set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
+						add_node(node);
+					}
+					if(node->action!=WALK) {
+						direction = get_direction(node->coordinates);
+						node->action = WALK;
+						if(get_dest_x(RFIFOP(50))>get_x(node->coordinates))direction = EAST;
+						else if(get_dest_x(RFIFOP(50))<get_x(node->coordinates))direction = WEST;
+						else if(get_dest_y(RFIFOP(50))>get_y(node->coordinates))direction = SOUTH;
+						else if(get_dest_y(RFIFOP(50))<get_y(node->coordinates))direction = NORTH;
+						else node->action = STAND;
+						if(node->action==WALK)node->tick_time = tick_time;
+						set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
+					}
+					break;
+				// NPC dialog
+				case 0x00b4:
+					if(!strstr(npc_text, RFIFOP(8))) {
+						strcat(npc_text, RFIFOP(8));
+						strcat(npc_text, "\n");
+						show_npc_dialog = 1;
+					}
+					break;
+				// Get the items
+				case 0x01ee:
+					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++) {
+						inventoryDialog->addItem(RFIFOW(4 + loop * 18),
+							RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
+					}
+					break;
+				// Can I use the item?
+				case 0x00a8:
+					// index RFIFOW(2)
+					// succes or not RFIFOB(6);
+					//if (RFIFOB(6))
+					//  inventoryDialog->addItem(RFIFOW(2), RFIFOW(4));
+					break;
+				// Warp
+					case 0x0091:
+						memset(map_path, '\0', 480);
+						append_filename(map_path, "./data/map/", RFIFOP(2), 480);
+						if(load_map(map_path)) {
+							empty();
+							player_node = new NODE();
+							player_node->job = 0;
+							player_node->action = STAND;
+							player_node->frame = 0;
+							player_node->type = ACTION_NODE;
+							player_node->speed = 150;
+							player_node->id = account_ID;
+							set_coordinates(player_node->coordinates, RFIFOW(18), RFIFOW(20), 0);
+							add_node(player_node);
+							walk_status = 0;
+							// Send "map loaded"
+							WFIFOW(0) = net_w_value(0x007d);
+							WFIFOSET(2);
+							while(out_size>0)flush();
+						}
+						else {
+							error("Could not find map file");
+						}
+						break;
+					// Skill ...
+					case 0x011a:
+						break;
+					case 0x01a4:
+						break;
+					// Action failed (ex. sit because you have not reached the right level)
+					case 0x0110:
+						CHATSKILL action;
+						action.skill   = RFIFOW(2);
+						action.bskill  = RFIFOW(4);
+						action.unused  = RFIFOW(6);
+						action.success = RFIFOB(8);
+						action.reason  = RFIFOB(9);
+						if(action.success != SKILL_FAILED &&
+							action.bskill == BSKILL_EMOTE ) {
+							printf("Action: %d/%d", action.bskill, action.success);
+						}
+						chatlog.chat_log(action, font);
+						break;
+					// Update stat values
+					case 0x00b0:
+						switch(RFIFOW(2)) {
+							/*case 0x0000:
+								player_node->speed;
+								break;*/
+							case 0x0005:
+								char_info->hp = RFIFOW(4);
+								break;
+							case 0x0006:
+								char_info->max_hp = RFIFOW(4);
+								break;
+							case 0x0007:
+								char_info->sp = RFIFOW(4);
+								break;
+							case 0x0008:
+								char_info->max_sp = RFIFOW(4);
+								break;
+							case 0x000b:
+								char_info->lv = RFIFOW(4);
+								break;
+							case 0x000c:
+								char_info->skill_point = RFIFOW(4);
+								sprintf(skill_points, "Skill points: %i", char_info->skill_point);
+								break;
+							case 0x0037:
+								char_info->job_lv = RFIFOW(4);
+								break;
+						}
+						statsDialog->update();
+						if(char_info->hp==0) {
+							OkDialog *death = new OkDialog(guiTop,
+								"You're now dead, press ok to restart");
+							alert("","","","","",0,0);
+							WFIFOW(0) = net_w_value(0x00b2);
+							WFIFOB(2) = 0;
+							WFIFOSET(3);
+						}
+						break;
 				// Stop walking
 				/*case 0x0088:  // Disabled because giving some problems
 					if(node = find_node(RFIFOL(2))) {
