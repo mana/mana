@@ -63,6 +63,7 @@ class SPRITESET {
       int i = 0;
       while(datafile[i].type!=DAT_END) {
         IMAGE *temp_image;
+
         if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
           BITMAP *temp_video_bitmap = create_video_bitmap(((RLE_SPRITE *)datafile[i].dat)->w, ((RLE_SPRITE *)datafile[i].dat)->h);
           if(temp_video_bitmap) {
@@ -70,20 +71,18 @@ class SPRITESET {
             draw_rle_sprite(temp_video_bitmap, (RLE_SPRITE *)datafile[i].dat, 0, 0);
             temp_image = new VIDEO_IMAGE(temp_video_bitmap, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
           } else {
-            warning("You run out of video memory");
-            RLE_SPRITE *temp_rle_sprite = (RLE_SPRITE *)malloc(datafile[i].size);
-            memcpy(temp_rle_sprite, datafile[i].dat, datafile[i].size);
-            temp_image = new RLE_IMAGE(temp_rle_sprite, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+            warning("You ran out of video memory!");
+            temp_image = new RLE_IMAGE((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
           }          
         } else {
-          RLE_SPRITE *temp_rle_sprite = (RLE_SPRITE *)malloc(datafile[i].size);
-          memcpy(temp_rle_sprite, datafile[i].dat, datafile[i].size);
-          temp_image = new RLE_IMAGE(temp_rle_sprite, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+          temp_image = new RLE_IMAGE((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
         }
         spriteset.push_back(temp_image);
         i++;
       }  
-      unload_datafile(datafile);
+      // Do not unload the datafile, instead just use the allocated memory
+      // directly without making copies.
+      //unload_datafile(datafile);
     }
 };
 

@@ -85,7 +85,7 @@ void error(const string error_text) {
 #ifdef WIN32
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR|MB_OK);
 #else
-    fprintf(stderr, "Error: %s\n", error_text);
+    fprintf(stderr, "Error: %s\n", error_text.c_str());
 #endif
     exit(1);
 }
