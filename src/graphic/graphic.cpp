@@ -204,7 +204,7 @@ void do_graphic(void) {
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
 			masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);
-			alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);
+			//alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);
 
 			if(node->emotion!=0) {
         draw_sprite(buffer, (BITMAP *)emotions[node->emotion-1].dat, (get_x(node->coordinates)-camera_x)*16-5+get_x_offset(node)-offset_x, (get_y(node->coordinates)-camera_y)*16-45+get_y_offset(node)-offset_y);
@@ -440,7 +440,7 @@ void do_graphic(void) {
 
 	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
-	alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
+	//alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
 

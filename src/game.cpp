@@ -213,7 +213,7 @@ void do_input() {
 		}
 
   if(key[KEY_F1]) {
-    save_bitmap("./Graphic/screenshot.bmp",double_buffer,NULL);
+    save_bitmap("./data/graphic/screenshot.bmp", double_buffer, NULL);
   } else if(key[KEY_F12]){
     sound.SetAdjVol( 1, 1, 1);
   } else if(key[KEY_F11]){
