@@ -25,6 +25,7 @@
 #include "../log.h"
 #include "resourcemanager.h"
 #include "../graphic/spriteset.h"
+#include "../base64.h"
 
 #include <iostream>
 
@@ -165,7 +166,46 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 }
 
                 // Read base64 encoded map file
-                
+                xmlNodePtr dataChild = node->xmlChildrenNode;
+                if (!dataChild) continue;
+
+                int len = strlen((const char*)dataChild->content) + 1;
+                unsigned char *charData = new unsigned char[len + 1];
+                const char *charStart = (const char*)dataChild->content;
+                unsigned char *charIndex = charData;
+
+                while (*charStart) {
+                    if (*charStart != ' ' && *charStart != '\t' &&
+                            *charStart != '\n')
+                    {
+                        *charIndex = *charStart;
+                        charIndex++;
+                    }
+                    charStart++;
+                }
+                *charIndex = '\0';
+
+                int binLen;
+                unsigned char *binData =
+                    php_base64_decode(charData, strlen((char*)charData),
+                            &binLen);
+
+                delete[] charData;
+
+                if (binData) {
+                    for (int i = 0; i < binLen - 3; i += 4) {
+                        int gid = binData[i] |
+                            binData[i + 1] << 8 |
+                            binData[i + 2] << 16 |
+                            binData[i + 3] << 24;
+
+                        setTileWithGid(map, x, y, layer, gid);
+
+                        x++;
+                        if (x == w) {x = 0; y++;}
+                    }
+                    free(binData);
+                }
             }
             else {
                 // Read plain XML map file
@@ -176,15 +216,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                     if (xmlStrEqual(n2->name, BAD_CAST "tile") && y < h)
                     {
                         int gid = getProperty(n2, "gid", -1);
-                        if (layer == 3)
-                        {
-                            Tileset *set = getTilesetWithGid(gid);
-                            map->setWalk(x, y,
-                                    !set || (gid - set->getFirstGid() == 0));
-                        }
-                        else if (layer < 3) {
-                            map->setTile(x, y, layer, getTileWithGid(gid));
-                        }
+                        setTileWithGid(map, x, y, layer, gid);
 
                         x++;
                         if (x == w) {x = 0; y++;}
@@ -295,4 +327,17 @@ Tileset *MapReader::getTilesetWithGid(int gid)
     }
 
     return NULL;
+}
+
+void MapReader::setTileWithGid(Map *map, int x, int y, int layer, int gid)
+{
+    if (layer == 3)
+    {
+        Tileset *set = getTilesetWithGid(gid);
+        map->setWalk(x, y,
+                !set || (gid - set->getFirstGid() == 0));
+    }
+    else if (layer < 3) {
+        map->setTile(x, y, layer, getTileWithGid(gid));
+    }
 }

@@ -1,104 +1,152 @@
 /*
- *  This file is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  any later version.
- *
- *  This file is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this file; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  $Id$
- */
+   +----------------------------------------------------------------------+
+   | PHP version 4.0                                                      |
+   +----------------------------------------------------------------------+
+   | Copyright (c) 1997, 1998, 1999, 2000 The PHP Group                   |
+   +----------------------------------------------------------------------+
+   | This source file is subject to version 2.02 of the PHP license,      |
+   | that is bundled with this package in the file LICENSE, and is        |
+   | available at through the world-wide-web at                           |
+   | http://www.php.net/license/2_02.txt.                                 |
+   | If you did not receive a copy of the PHP license and are unable to   |
+   | obtain it through the world-wide-web, please send a note to          |
+   | license@php.net so we can mail you a copy immediately.               |
+   +----------------------------------------------------------------------+
+   | Author: Jim Winstead (jimw@php.net)                                  |
+   +----------------------------------------------------------------------+
+   */
+/* $Id$ */
+
+#include <string.h>
+#include <stdlib.h>
 
 #include "base64.h"
-#include <ctype.h>
 
-static const char base64digits[] =
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-#define BAD     -1
-
-static const char base64val[] = {
-    BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD,
-    BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD,
-    BAD,BAD,BAD,BAD, BAD,BAD,BAD,BAD, BAD,BAD,BAD, 62, BAD,BAD,BAD, 63,
-    52,  53, 54, 55,  56, 57, 58, 59,  60, 61,BAD,BAD, BAD,BAD,BAD,BAD,
-    BAD,  0,  1,  2,   3,  4,  5,  6,   7,  8,  9, 10,  11, 12, 13, 14,
-    15,  16, 17, 18,  19, 20, 21, 22,  23, 24, 25,BAD, BAD,BAD,BAD,BAD,
-    BAD, 26, 27, 28,  29, 30, 31, 32,  33, 34, 35, 36,  37, 38, 39, 40,
-    41,  42, 43, 44,  45, 46, 47, 48,  49, 50, 51,BAD, BAD,BAD,BAD,BAD
-};
-
-#define DECODE64(c)  (isascii(c) ? base64val[c] : BAD)
-
-void to64frombits(unsigned char *out, const unsigned char *in, int inlen)
+static char base64_table[] =
 {
-    for (; inlen >= 3; inlen -= 3)
-    {
-        *out++ = base64digits[in[0] >> 2];
-        *out++ = base64digits[((in[0] << 4) & 0x30) | (in[1] >> 4)];
-        *out++ = base64digits[((in[1] << 2) & 0x3c) | (in[2] >> 6)];
-        *out++ = base64digits[in[2] & 0x3f];
-        in += 3;
-    }
-    if (inlen > 0)
-    {
-        unsigned char fragment;
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/', '\0'
+};
+static char base64_pad = '=';
 
-        *out++ = base64digits[in[0] >> 2];
-        fragment = (in[0] << 4) & 0x30;
-        if (inlen > 1)
-            fragment |= in[1] >> 4;
-        *out++ = base64digits[fragment];
-        *out++ = (inlen < 2) ? '=' : base64digits[(in[1] << 2) & 0x3c];
-        *out++ = '=';
+unsigned char *php_base64_encode(const unsigned char *str, int length, int *ret_length) {
+    const unsigned char *current = str;
+    int i = 0;
+    unsigned char *result = (unsigned char *)malloc(((length + 3 - length % 3) * 4 / 3 + 1) * sizeof(char));
+
+    while (length > 2) { /* keep going until we have less than 24 bits */
+        result[i++] = base64_table[current[0] >> 2];
+        result[i++] = base64_table[((current[0] & 0x03) << 4) + (current[1] >> 4)];
+        result[i++] = base64_table[((current[1] & 0x0f) << 2) + (current[2] >> 6)];
+        result[i++] = base64_table[current[2] & 0x3f];
+
+        current += 3;
+        length -= 3; /* we just handle 3 octets of data */
     }
-    *out = '\0';
+
+    /* now deal with the tail end of things */
+    if (length != 0) {
+        result[i++] = base64_table[current[0] >> 2];
+        if (length > 1) {
+            result[i++] = base64_table[((current[0] & 0x03) << 4) + (current[1] >> 4)];
+            result[i++] = base64_table[(current[1] & 0x0f) << 2];
+            result[i++] = base64_pad;
+        }
+        else {
+            result[i++] = base64_table[(current[0] & 0x03) << 4];
+            result[i++] = base64_pad;
+            result[i++] = base64_pad;
+        }
+    }
+    if(ret_length) {
+        *ret_length = i;
+    }
+    result[i] = '\0';
+    return result;
 }
 
-int from64tobits(char *out, const char *in)
-{
-    int len = 0;
-    register unsigned char digit1, digit2, digit3, digit4;
+/* as above, but backwards. :) */
+unsigned char *php_base64_decode(const unsigned char *str, int length, int *ret_length) {
+    const unsigned char *current = str;
+    int ch, i = 0, j = 0, k;
+    /* this sucks for threaded environments */
+    static short reverse_table[256];
+    static int table_built;
+    unsigned char *result;
 
-    if (in[0] == '+' && in[1] == ' ')
-        in += 2;
-    if (*in == '\r')
-        return(0);
-
-    do {
-        digit1 = in[0];
-        if (DECODE64(digit1) == BAD)
-            return(-1);
-        digit2 = in[1];
-        if (DECODE64(digit2) == BAD)
-            return(-1);
-        digit3 = in[2];
-        if (digit3 != '=' && DECODE64(digit3) == BAD)
-            return(-1); 
-        digit4 = in[3];
-        if (digit4 != '=' && DECODE64(digit4) == BAD)
-            return(-1);
-        in += 4;
-        *out++ = (DECODE64(digit1) << 2) | (DECODE64(digit2) >> 4);
-        ++len;
-        if (digit3 != '=')
-        {
-            *out++ = ((DECODE64(digit2) << 4) & 0xf0) | (DECODE64(digit3) >> 2);
-            ++len;
-            if (digit4 != '=')
-            {
-                *out++ = ((DECODE64(digit3) << 6) & 0xc0) | DECODE64(digit4);
-                ++len;
+    if (++table_built == 1) {
+        char *chp;
+        for(ch = 0; ch < 256; ch++) {
+            chp = strchr(base64_table, ch);
+            if(chp) {
+                reverse_table[ch] = chp - base64_table;
+            } else {
+                reverse_table[ch] = -1;
             }
         }
-    } while (*in && *in != '\r' && digit4 != '=');
+    }
 
-    return (len);
+    result = (unsigned char *)malloc(length + 1);
+    if (result == NULL) {
+        return NULL;
+    }
+
+    /* run through the whole string, converting as we go */
+    while ((ch = *current++) != '\0') {
+        if (ch == base64_pad) break;
+
+        /* When Base64 gets POSTed, all pluses are interpreted as spaces.
+           This line changes them back.  It's not exactly the Base64 spec,
+           but it is completely compatible with it (the spec says that
+           spaces are invalid).  This will also save many people considerable
+           headache.  - Turadg Aleahmad <turadg@wise.berkeley.edu>
+           */
+
+        if (ch == ' ') ch = '+'; 
+
+        ch = reverse_table[ch];
+        if (ch < 0) continue;
+
+        switch(i % 4) {
+            case 0:
+                result[j] = ch << 2;
+                break;
+            case 1:
+                result[j++] |= ch >> 4;
+                result[j] = (ch & 0x0f) << 4;
+                break;
+            case 2:
+                result[j++] |= ch >>2;
+                result[j] = (ch & 0x03) << 6;
+                break;
+            case 3:
+                result[j++] |= ch;
+                break;
+        }
+        i++;
+    }
+
+    k = j;
+    /* mop things up if we ended on a boundary */
+    if (ch == base64_pad) {
+        switch(i % 4) {
+            case 0:
+            case 1:
+                free(result);
+                return NULL;
+            case 2:
+                k++;
+            case 3:
+                result[k++] = 0;
+        }
+    }
+    if(ret_length) {
+        *ret_length = j;
+    }
+    result[k] = '\0';
+    return result;
 }
+

@@ -94,6 +94,13 @@ class MapReader
          */
         static Tileset *MapReader::getTilesetWithGid(int gid);
 
+        /**
+         * Sets a tile using a global tile id. Used by the layer loading
+         * routine.
+         */
+        static void MapReader::setTileWithGid(
+                Map *map, int x, int y, int layer, int gid);
+
         static std::vector<Tileset*> tilesets;
 };
 
