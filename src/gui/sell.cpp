@@ -77,6 +77,9 @@ SellDialog::~SellDialog()
 void SellDialog::reset()
 {
     shopInventory.clear();
+    slider->setValue(0.0);
+    quantityLabel->setCaption("0");
+    quantityLabel->adjustSize();
 }
 
 void SellDialog::addItem(short index, int price)

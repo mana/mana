@@ -766,7 +766,6 @@ void do_parse() {
               for (int k = 0; k < n_items; k++) {
                   sellDialog->addItem(
                           RFIFOW(4 + 10 * k), RFIFOL(4 + 10 * k + 2));
-                  //add_sell_item(RFIFOW(4 + 10 * k), RFIFOL(4 + 10 * k + 2));
               }
           }
           else {
