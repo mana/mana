@@ -44,7 +44,7 @@ necessary.
   void function(param1, param2) {
   }
 
-  class TheClass : public TheSubclass {
+  class TheClass : public TheSupclass {
   };
 
   Ending parenthesis may be on next line for clarity.
