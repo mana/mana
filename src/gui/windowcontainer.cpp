@@ -161,5 +161,8 @@ gcn::Widget *WindowContainer::getModalWindow()
 
 void WindowContainer::scheduleDelete(gcn::Widget *widget)
 {
+    if (widget == (gcn::Widget*)modalWindow) {
+        setModalWindow(NULL);
+    }
     deathList.push_back(widget);
 }

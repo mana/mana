@@ -31,6 +31,21 @@
 #define NR_HAIR_STYLES 4
 #define NR_HAIR_COLORS 10
 
+CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
+    ConfirmDialog(m,
+            "Confirm", "Are you sure you want to delete this character?"),
+    master(m)
+{
+}
+
+void CharSelectDialog::CharDeleteConfirm::action(const std::string &eventId)
+{
+    ConfirmDialog::action(eventId);
+    if (eventId == "yes") {
+        master->serverCharDelete();
+    }
+}
+
 CharSelectDialog::CharSelectDialog():
     Window("Select Character")
 {
@@ -118,7 +133,7 @@ void CharSelectDialog::action(const std::string& eventId)
     } else if (eventId == "delete") {
         // Delete character
         if (n_character > 0) {
-            serverCharDelete();
+            new CharDeleteConfirm(this);
         }
     }
 }
@@ -155,35 +170,32 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
 }
 
 void CharSelectDialog::serverCharDelete() {
-    // Delete a character
-    if (yes_no("Confirm", "Are you sure?") == 0) {
-        // Request character deletion
-        WFIFOW(0) = net_w_value(0x0068);
-        WFIFOL(2) = net_l_value(char_info->id);
-        WFIFOSET(46);
+    // Request character deletion
+    WFIFOW(0) = net_w_value(0x0068);
+    WFIFOL(2) = net_l_value(char_info->id);
+    WFIFOSET(46);
 
-        while ((in_size < 2) || (out_size > 0)) flush();
-        if (RFIFOW(0) == 0x006f) {
-            RFIFOSKIP(2);
-            free(char_info);
-            n_character = 0;
-            setPlayerInfo(NULL);
-            new OkDialog(this, "Info", "Player deleted");
+    while ((in_size < 2) || (out_size > 0)) flush();
+    if (RFIFOW(0) == 0x006f) {
+        RFIFOSKIP(2);
+        free(char_info);
+        n_character = 0;
+        setPlayerInfo(NULL);
+        new OkDialog(this, "Info", "Player deleted");
+    }
+    else if (RFIFOW(0) == 0x006c) {
+        switch (RFIFOB(2)) {
+            case 0:
+                new OkDialog(this, "Error", "Access denied");
+                break;
+            case 1:
+                new OkDialog(this, "Error", "Cannot use this ID");
+                break;
         }
-        else if (RFIFOW(0) == 0x006c) {
-            switch (RFIFOB(2)) {
-                case 0:
-                    new OkDialog(this, "Error", "Access denied");
-                    break;
-                case 1:
-                    new OkDialog(this, "Error", "Cannot use this ID");
-                    break;
-            }
-            RFIFOSKIP(3);
-        }
-        else {
-            new OkDialog(this, "Error", "Unknown error");
-        }
+        RFIFOSKIP(3);
+    }
+    else {
+        new OkDialog(this, "Error", "Unknown error");
     }
 }
 

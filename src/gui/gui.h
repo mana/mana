@@ -178,16 +178,4 @@ void gui_shutdown(void);
 void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin,
         int x, int y, int w, int h);
 
-/** Draw text for gui widgets */
-int gui_text(BITMAP *bmp, AL_CONST char *s,
-        int x, int y, int color, int centre);
-
-// Old Allegro GUI procs
-int tmw_button_proc(int msg, DIALOG *d, int c);
-int tmw_text_proc(int msg, DIALOG *d, int c);
-int tmw_dialog_proc(int msg, DIALOG *d, int c);
-
-// Last remaining Allegro GUI dialog
-unsigned int yes_no(const char *title, const char *message);
-
 #endif

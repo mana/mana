@@ -29,6 +29,7 @@
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
+#include "confirm_dialog.h"
 #include "playerbox.h"
 #include <guichan/allegro.hpp>
 
@@ -60,6 +61,18 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
          * Communicate character selection to the server.
          */
         void serverCharSelect();
+
+        /**
+         * Listener for confirming character deletion.
+         */
+        class CharDeleteConfirm : public ConfirmDialog
+        {
+            public:
+                CharDeleteConfirm(CharSelectDialog *master);
+                void action(const std::string &eventId);
+            private:
+                CharSelectDialog *master;
+        };
 
     public:
         /**
