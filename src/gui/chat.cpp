@@ -188,6 +188,8 @@ void ChatWindow::action(const std::string& eventId)
             chat_send(char_info[0].name, message.c_str());
             chatInput->setText("");
         }
+        gui->focusNone();
+
     }
 }
 
@@ -195,6 +197,11 @@ void ChatWindow::requestFocus()
 {
     // Give focus to the chat input
     chatInput->requestFocus();
+}
+
+bool ChatWindow::isFocused()
+{
+    return chatInput->hasFocus();
 }
 
 char *ChatWindow::chat_send(std::string nick, std::string msg)
@@ -340,3 +347,4 @@ std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLengt
 
     return std::string("");
 }
+

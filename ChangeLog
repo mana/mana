@@ -1,4 +1,5 @@
 0.0.11  (.... 2005)
+- Fixed get item button and chatWindow: Enter (de)focuses chat window
 - Added walking with mouse by clicking where you want to go
 - Chat now appears in a window
 - More complete support for new map format (collision, compression)

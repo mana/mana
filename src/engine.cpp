@@ -184,8 +184,8 @@ Engine::Engine()
             screen->w - 5 - chargeDialog->getWidth(),
             screen->h - chargeDialog->getHeight() - 15);
 
-    // Give focus to chat window
-    chatWindow->requestFocus();
+    // Do not focus any text field
+    gui->focusNone();
     
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();

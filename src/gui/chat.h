@@ -136,7 +136,12 @@ class ChatWindow : public Window, public gcn::ActionListener {
          * Request focus.
          */
         void requestFocus();
-
+        
+        /**
+         * Checks wether ChatWindow is Focused or not
+         */
+        bool isFocused();
+        
         /*
          * Determines wether to send a command or an ordinary message, then
          * contructs packets & sends them
@@ -196,3 +201,4 @@ class ChatWindow : public Window, public gcn::ActionListener {
 };
 
 #endif
+

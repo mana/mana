@@ -61,7 +61,8 @@ talk to them. Other keys:
 - F6         toggle debug pathfinding feature
 - F11        raise volume
 - F12        lower volume
-- G          get item 
+- G          get item
+- Enter      focus chat window / send message
 - Alt + K    show skills
 - Alt + S    show stats
 - Alt + I    show inventory
