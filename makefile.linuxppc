@@ -5,7 +5,7 @@ CXX = g++
 # excessive optimizations for pentium pro and later
 CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DLINUXPPC -fexceptions
 
-CFLAGS=-ljgmod `allegro-config --libs release` -lalfont
+CFLAGS=-ljgmod `allegro-config --libs release` -lguichan_allegro -lguichan
 
 include file.list
 MODULES += src/net/win2mac.cpp
