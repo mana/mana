@@ -21,5 +21,6 @@ EXTRA_DIST = map/new_3-1.gat \
 	     core/graphics/sprites/npcs.png \
 	     core/graphics/sprites/player_male_base.png \
 	     core/graphics/sprites/player_male_hair.png \
+	     core/graphics/sprites/weapons.png \
 	     core/graphics/images/login_wallpaper.png \
 	     sound/wavs/level.ogg

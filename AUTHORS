@@ -12,6 +12,7 @@ The Mana World Dev Team
  nym              (several GUI parts)
  Shura            (configuration, sound, misc. ports)
  zenogais         (resource manager)
+ Usiu             (several GUI parts)
 
 == Artists ==
 
@@ -27,7 +28,6 @@ The Mana World Dev Team
 
 == Inactive/retired ==
 
- Usiu             (several GUI parts)                 <-  Went missing
  SimEdw           (network code)                      <-  Computer broke
  Sull             (hosting CVS and related services)  <-  Went missing
  Vlady            (several items)                     <-  In the army

@@ -1,4 +1,4 @@
-0.0.10
+0.0.10  (5 March 2005)
 - Added using and dropping of items
 - Added experimental support for OpenGL rendering
 - Added support for new map format in client
