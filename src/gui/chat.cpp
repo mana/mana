@@ -21,13 +21,7 @@
 
 */
 
-#include "../main.h"
 #include "chat.h"
-#include <list>
-#include <string>
-#include <fstream>
-
-using namespace std;
 
 /**
 	Simple ChatLog Object v0.5 (i'd say...)
@@ -41,7 +35,7 @@ using namespace std;
 /**
 */
 Chat::Chat(const char * logfile, int item_num) {
-	chatlog_file.open(logfile, ios::out | ios::app);
+	chatlog_file.open(logfile, std::ios::out | std::ios::app);
 	items = 0;
 	items_keep = item_num;
 }
@@ -69,7 +63,7 @@ void Chat::chat_dlgrsize(int) {
 			i already store the width in pixel in the list rather than
 			calculating it again and again on every draw event. ;-)
 */
-void Chat::chat_log(string line, int own, ALFONT_FONT * font) {
+void Chat::chat_log(std::string line, int own, ALFONT_FONT * font) {
 	int pos;
 	CHATLOG tmp;
 
@@ -181,7 +175,7 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 			// for simple message by a user /- message
 			chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
 */
-char * Chat::chat_send(string nick, string msg) {
+char * Chat::chat_send(std::string nick, std::string msg) {
 	short packid;
 
 	// prepare command
@@ -223,8 +217,8 @@ char * Chat::chat_send(string nick, string msg) {
 */
 
 /** constructs failed messages for actions */
-string Chat::const_msg(CHATSKILL action) {
-	string msg;
+std::string Chat::const_msg(CHATSKILL action) {
+	std::string msg;
 	if(action.success == SKILL_FAILED && action.skill == SKILL_BASIC) {
 		switch(action.bskill) {
 			case BSKILL_TRADE :
@@ -299,7 +293,7 @@ string Chat::const_msg(CHATSKILL action) {
 	return msg;
 }
 
-string const_msg(int own) {
-  string msg;
+std::string const_msg(int own) {
+  std::string msg;
 	return msg;
 }

@@ -299,22 +299,7 @@ void loadListboxSkin() {
     }
 
 }
-void loadBarSkin() {
-BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
-BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
-gui_skin.bar.bg.grid[0] = create_bitmap(3,11);
-gui_skin.bar.bg.grid[1] = create_bitmap(1,11);
-gui_skin.bar.bg.grid[2] = create_bitmap(3,11);
-blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
-blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
-blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
-gui_skin.bar.bg.grid[3] = create_bitmap(3,11);
-gui_skin.bar.bg.grid[4] = create_bitmap(1,11);
-gui_skin.bar.bg.grid[5] = create_bitmap(3,11);
-blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
-blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
-blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
-}
+
 void loadDialogSkin() {
     char **tokens;
     int    tokenCount;
@@ -396,7 +381,6 @@ int gui_load_skin(const char* skinname) {
   loadTextboxSkin();
   loadListboxSkin();
   loadDialogSkin();
-  loadBarSkin();
   pop_config_state();
   set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
@@ -1036,26 +1020,6 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
         return a;
     }
     return D_O_K;
-}
-int tmw_bar_proc(int msg, DIALOG *d, int c)
-{
-float share2 = ((float)d->d1 / (float)d->d2);
-if(share2!=0)
-	masked_blit(gui_skin.bar.bg.grid[3], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-else
-	masked_blit(gui_skin.bar.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-	
-for(int i = 3; i < (d->w-3); i++)
-	if(i<share2*d->w-3)
-		masked_blit(gui_skin.bar.bg.grid[4], gui_bitmap, 0, 0, d->x+1*i, d->y, gui_bitmap->w, gui_bitmap->h);
-	else
-		masked_blit(gui_skin.bar.bg.grid[1], gui_bitmap, 0, 0, d->x+1*i, d->y, gui_bitmap->w, gui_bitmap->h);
-
-if(share2==1)
-	masked_blit(gui_skin.bar.bg.grid[5], gui_bitmap, 0, 0, d->x+d->w-3, d->y, gui_bitmap->w, gui_bitmap->h);
-else
-	masked_blit(gui_skin.bar.bg.grid[2], gui_bitmap, 0, 0, d->x+d->w-3, d->y, gui_bitmap->w, gui_bitmap->h);
-return D_O_K;
 }
 
 /**

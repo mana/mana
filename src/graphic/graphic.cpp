@@ -38,16 +38,13 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *player_stats_player, *stats_player;
+DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 TmwInventory inventory;
-char statsString[255] = "n/a";
-char statsString2[255] = "n/a";
 Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
 bool show_skill_dialog = false;
-bool show_stats_dialog = false;
 
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -56,15 +53,6 @@ DIALOG npc_dialog[] = {
    { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
-
-DIALOG player_stats_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     350,  200,  300,  45,  0,    -1,    0,    0,       0,                0,    statsString,   NULL, NULL  },
-   { tmw_text_proc,       355,  220,  180,  10,  0,    0,    0,    0,       0,                0,    (char *)"Hp:",              NULL, NULL  },
-   { tmw_bar_proc,      375,  225,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
-};
-
 
 DIALOG buy_sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -154,12 +142,9 @@ void init_graphic() {
   chat_player = init_dialog(chat_dialog, -1);
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
-	
 	skill_player = init_dialog(skill_dialog, -1);
-	//stats_player = init_dialog(stats_dialog, -1);
+	stats_player = init_dialog(stats_dialog, -1);
 	buy_sell_player = init_dialog(buy_sell_dialog, -1);
-	player_stats_player = init_dialog(player_stats_dialog, -1);
-	position_dialog(player_stats_dialog, 50, 5);
 	buy_player = init_dialog(buy_dialog, -1);
 	sell_player = init_dialog(sell_dialog, -1);
   gui_bitmap = double_buffer;
@@ -281,15 +266,7 @@ void do_graphic(void) {
 
   chatlog.chat_draw(double_buffer, 8, gui_font);
   gui_update(chat_player);
-  if(show_stats_dialog)
-  {
-  sprintf(statsString,"%s Lv: %i Exp: %i",char_info->name,char_info->lv,char_info->xp);
-  player_stats_dialog[2].d1 = char_info->hp;
-  player_stats_dialog[2].d2 = char_info->max_hp;
-  dialog_message(player_stats_dialog, MSG_DRAW, 0, 0);
-  gui_update(player_stats_player);
-  }
-  
+
 	switch(show_npc_dialog) {
 		case 1:
       dialog_message(npc_dialog, MSG_DRAW, 0, 0);
@@ -362,8 +339,8 @@ void do_graphic(void) {
 	}
 
 	// character status display
-	//update_stats_dialog();
-	//gui_update(stats_player);
+	update_stats_dialog();
+	gui_update(stats_player);
 
 	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
