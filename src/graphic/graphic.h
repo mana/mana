@@ -39,6 +39,7 @@
 #include "../gui/inventory.h"
 #include "../gui/npc.h"
 #include "../../data/graphic/gfx_data.h"
+#include "image.h"
 
 extern BITMAP *buffer, *double_buffer;
 extern char speech[255];

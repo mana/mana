@@ -53,6 +53,8 @@ bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
+SPRITESET *new_tileset, *new_playerset, *new_npcset, *new_emotionset, *new_monsterset;
+
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"NPC",             NULL, NULL  },
@@ -256,6 +258,13 @@ void init_graphic() {
   vmonsterset = load_graphic_file("./data/graphic/monsterset.bmp");
   
   gui_bitmap = vpage[page_num];
+
+  new_emotionset = new SPRITESET("./data/graphic/emotionset.dat");  
+  new_tileset = new SPRITESET("./data/graphic/desert.dat");
+  new_npcset = new SPRITESET("./data/graphic/npcset.dat");
+  new_playerset = new SPRITESET("./data/graphic/playerset.dat");
+  new_monsterset = new SPRITESET("./data/graphic/monsterset.dat");
+
   
 }
 
@@ -277,33 +286,36 @@ void do_graphic(void) {
 	if(is_video_bitmap(vbuffer))
 	  acquire_bitmap(vbuffer);
 #endif
+
+new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
     
   for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
-			//if(get_tile(i+camera_x, j+camera_y, 0) < 600)
-			  blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 0)*16, get_tile_y(i+camera_x, j+camera_y, 0)*16, i*16-offset_x, j*16-offset_y, 16, 16);
-	    if(get_tile(i+camera_x, j+camera_y, 1) > 0 /*&& get_tile(i+camera_x, j+camera_y, 1)<600*/)
-	      masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 1)*16, get_tile_y(i+camera_x, j+camera_y, 1)*16, i*16-offset_x, j*16-offset_y, 16, 16);
+		  
+			if(get_tile(i+camera_x, j+camera_y, 0) < 600)
+			  new_tileset->spriteset[get_tile(i+camera_x, j+camera_y, 0)]->draw(vbuffer, i*16-offset_x, j*16-offset_y);
+      if(get_tile(i+camera_x, j+camera_y, 1) > 0 /*&& get_tile(i+camera_x, j+camera_y, 1)<600*/)
+	      new_tileset->spriteset[get_tile(i+camera_x, j+camera_y, 1)]->draw(vbuffer, i*16-offset_x, j*16-offset_y);
 		}
 		
 	NODE *node = get_head();
 	while(node) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
-			masked_blit(vnpcset, vbuffer, (get_direction(node->coordinates)/2+4*(node->job-100))*25, 0, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y, 25, 40);		
+      new_npcset->spriteset[4*(node->job-100)+get_direction(node->coordinates)/2]->draw(vbuffer, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y);
 	} else if(node->job<10) { // Draw a player
 			node->text_x = (get_x(node->coordinates)-camera_x)*16 -34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16 -36+get_y_offset(node)-offset_y;
 			if(node->action==SIT)node->frame = 0;
 			if(node->action==ATTACK) {
-			  masked_blit(vplayerset, vbuffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action+4*node->weapon), node->text_x, node->text_y, 80, 60);
+			  new_playerset->spriteset[(get_direction(node->coordinates)/2)+4*(node->frame+node->action+4*node->weapon)]->draw(vbuffer, node->text_x, node->text_y);
   		  draw_rle_sprite(vbuffer, (RLE_SPRITE *)weaponset[16*node->weapon+4*node->frame+get_direction(node->coordinates)/2].dat, node->text_x, node->text_y);
   		  masked_blit(hairset, vbuffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame+4*node->weapon][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame+4*node->weapon][get_direction(node->coordinates)/2][1], 20, 20);
   		} else {
-  		  masked_blit(vplayerset, vbuffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);  
+  		  new_playerset->spriteset[4*(node->frame+node->action)+get_direction(node->coordinates)/2]->draw(vbuffer, node->text_x, node->text_y);
   		  masked_blit(hairset, vbuffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
   		}  
 			if(node->emotion!=0) {
-        draw_sprite(vbuffer, (BITMAP *)emotions[node->emotion-1].dat, (get_x(node->coordinates)-camera_x)*16-5+get_x_offset(node)-offset_x, (get_y(node->coordinates)-camera_y)*16-45+get_y_offset(node)-offset_y);
+        new_emotionset->spriteset[node->emotion-1]->draw(vbuffer, (get_x(node->coordinates)-camera_x)*16-5+get_x_offset(node)-offset_x, (get_y(node->coordinates)-camera_y)*16-45+get_y_offset(node)-offset_y);
         node->emotion_time--;
         if(node->emotion_time==0)
           node->emotion = 0;
@@ -319,16 +331,11 @@ void do_graphic(void) {
 			}
 
 		}	else if(node->job==45) { // Draw a warp
-      //rectfill(buffer, (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates)), (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates)), (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates))+16, (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates))+16, makecol(0,0,255));
     } else { // Draw a monster
 
-			//node->speed = 10000;
 
-			if(node->frame>=4) {
-				//alert("","","","","",0,0);
+			if(node->frame>=4)
 				node->frame = 3;
-			}
-
 
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-22+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
@@ -336,15 +343,10 @@ void do_graphic(void) {
 			int r_x = node->text_x-get_x_offset(node);
 			int r_y = node->text_y-get_y_offset(node);
 
-			//rectfill(buffer, node->text_x+22, node->text_y+25, node->text_x+16+22, node->text_y+16+25, makecol(0,0,255));
-
-      //if(node->action==MONSTER_DEAD)node->frame = 0;
 			if(node->action==MONSTER_DEAD)
-        masked_blit(vmonsterset, vbuffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*MONSTER_DEAD, node->text_x, node->text_y, 60, 60);
+        new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+16*MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
 			else 
-				masked_blit(vmonsterset, vbuffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
-			
-			//alfont_textprintf(buffer, gui_font, node->text_x, node->text_y, MAKECOL_WHITE, "%i", node->id);
+				new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+16*(node->frame+node->action)]->draw(vbuffer, node->text_x, node->text_y);
 			
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
@@ -394,7 +396,7 @@ void do_graphic(void) {
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++)
 		  if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)
-		    masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 2)*16, get_tile_y(i+camera_x, j+camera_y, 2)*16, i*16-offset_x, j*16-offset_y, 16, 16);
+		    new_tileset->spriteset[get_tile(i+camera_x, j+camera_y, 2)]->draw(vbuffer, i*16-offset_x, j*16-offset_y);
 #ifdef WIN32
   if(is_video_bitmap(vbuffer))
     release_bitmap(vbuffer);

@@ -204,6 +204,12 @@
 				<File
 					RelativePath=".\src\graphic\graphic.h">
 				</File>
+				<File
+					RelativePath=".\src\graphic\image.cpp">
+				</File>
+				<File
+					RelativePath=".\src\graphic\image.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="net"

@@ -150,7 +150,7 @@ void flush() {
         if(ret==SOCKET_ERROR) {
             error("Socket Error");
 #ifdef WIN32
-            log_int("Error", "socket_error", WSAGetLastError());
+            log("Error", "Socket error: %i ", WSAGetLastError());
 #else 
             log("Error", "socket_error", "Undefined socket error");
 #endif
@@ -164,7 +164,7 @@ void flush() {
       ret = recv(sock, in+in_size, RFIFOSPACE, 0);
       if(ret==SOCKET_ERROR) {
 #ifdef WIN32
-		  log_int("Error", "socket_error", WSAGetLastError());
+        log("Error", "Socket error: %i ", WSAGetLastError());
 #else 
 		  log("Error", "socket_error", "Undefined socket error");
 #endif

@@ -28,7 +28,7 @@
 
 NODE *player_node = NULL;
 NODE *head = NULL; // First node of the list
-unsigned int count = 0; // Number of beings in the list
+unsigned int b_count = 0; // Number of beings in the list
 
 /** Create a path node */
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
@@ -67,7 +67,7 @@ NODE::NODE():
 
 /** Returns number of beings in the list */
 unsigned int get_count() {
-  return count;
+  return b_count;
 }
 
 /** Removes all beings from the list */
@@ -79,7 +79,7 @@ void empty() {
     delete node;
     node = next;
   }
-  count = 0;
+  b_count = 0;
   head = NULL;
 }
 
@@ -91,7 +91,7 @@ void add_node(NODE *node) {
       temp = temp->next;
     temp->next = node;
   } else head = node;
-  count++;
+  b_count++;
 }
 
 /** Remove a node */
@@ -106,12 +106,12 @@ void remove_node(unsigned int id) {
       if(node_new==NULL) {
         head = node_old->next;
         delete node_old;
-        count--;
+        b_count--;
         return;
       } else {
                 node_new->next = node_old->next;
         delete node_old;
-        count--;
+        b_count--;
         return;
       }
         } else {

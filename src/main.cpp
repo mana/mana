@@ -76,7 +76,7 @@ SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
 BITMAP *playerset, *hairset;
-DATAFILE *graphic, *emotions, *weaponset;
+DATAFILE *graphic, *weaponset;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -259,9 +259,6 @@ void init_engine() {
   if(graphic==NULL)
     error("Unable to load graphic datafile");
 	playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
-	emotions = load_datafile("./data/graphic/emotions.dat");
-	if(emotions==NULL)
-		error("Unable to load emotions datafile");
 	hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
 	if(hairset==NULL)
 	  error("Unable to load hairset bitmap");

@@ -19,21 +19,23 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #ifndef _LOG_H
 #define _LOG_H
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string>
+using namespace std;
 #include <stdarg.h>
 #include <time.h>
+#ifdef WIN32
+#include <allegro.h>
+#include <winalleg.h>
+#endif
 
 void init_log();
 void log(const char *category, const char *log_text, ...);
-void error(const char *error_text);
+void error(string error_text);
 void warning(const char *warning_text);
 void status(const char *status_text);
 
