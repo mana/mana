@@ -28,10 +28,36 @@
 #include <time.h>
 #include <string>
 
+/**
+ * Initializes log file by opening it for writing.
+ */
 void init_log();
+
+/**
+ * Enters a message in the log with a certain category. The message will be
+ * timestamped.
+ */
 void log(const char *category, const char *log_text, ...);
-void error(std::string error_text);
+
+/**
+ * Enters a message in the log. The message will be timestamped.
+ */
+void log(const std::string &text);
+
+/**
+ * Log an error and quit. The error will pop-up in Windows and will be printed
+ * to standard error everywhere else. 
+ */
+void error(const std::string &error_text);
+
+/**
+ * Shortcut to log a warning.
+ */
 void warning(const char *warning_text);
+
+/**
+ * Shortcut to log a status update.
+ */
 void status(const char *status_text);
 
 #endif

@@ -62,11 +62,11 @@ ResourceManager::~ResourceManager()
     }
     resources.clear();
 
-#ifdef __DEBUG
-    std::cout << "ResourceManager::~ResourceManager() cleaned up " <<
+    std::stringstream msg;
+    msg << "ResourceManager::~ResourceManager() cleaned up " <<
         danglingReferences << " references to " << danglingResources <<
-        " resources\n";
-#endif
+        " resources";
+    log(msg.str());
 }
 
 Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,

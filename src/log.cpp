@@ -26,26 +26,21 @@
 
 FILE* logfile;
 
+#define LOG_FILE "tmw.log"
 
-#define LOG_FILE "./docs/tmw.log"
 
-
-/*
- * Initializes log file by opening it for writing.
- */
-void init_log() {
+void init_log()
+{
     logfile = fopen(LOG_FILE, "w");
     if (!logfile) {
         printf("Warning: error while opening log file.\n");
     }
 }
 
-/*
- * Enter a message in the log with a certain category. The message will be
- * timestamped.
- */
-void log(const char *category, const char *log_text, ...) {
-    if (logfile) {
+void log(const char *category, const char *log_text, ...)
+{
+    if (logfile)
+    {
         char* buf = new char[1024];
         va_list ap;
         time_t t;
@@ -78,11 +73,33 @@ void log(const char *category, const char *log_text, ...) {
     }
 }
 
-/*
- * Log an error and quit. The error will pop-up in Windows and will be printed
- * to standard error everywhere else. 
- */
-void error(const std::string error_text) {
+void log(const std::string &text)
+{
+    if (logfile)
+    {
+        // Get the current system time
+        time_t t;
+        time(&t);
+
+        // Print the log entry
+        fprintf(logfile,
+                "[%s%d:%s%d:%s%d] %s\n",
+                (((t / 60) / 60) % 24 < 10) ? "0" : "",
+                (int)(((t / 60) / 60) % 24),
+                ((t / 60) % 60 < 10) ? "0" : "",
+                (int)((t / 60) % 60),
+                (t % 60 < 10) ? "0" : "",
+                (int)(t % 60),
+                text.c_str()
+               );
+
+        // Flush the log file
+        fflush(logfile);
+    }
+}
+
+void error(const std::string &error_text)
+{
     log("Error", error_text.c_str());
 
 #ifdef WIN32
@@ -93,16 +110,12 @@ void error(const std::string error_text) {
     exit(1);
 }
 
-/*
- * Shortcut to log a warning.
- */
-void warning(const char *warning_text) {
+void warning(const char *warning_text)
+{
     log("Warning", warning_text);
 }
 
-/*
- * Shortcut to log a status update, will only really be logged in debug mode.
- */
-void status(const char *status_text) {
+void status(const char *status_text)
+{
     log("Status", status_text);
 }

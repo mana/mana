@@ -40,9 +40,10 @@ Image::~Image()
 
 Image* Image::load(const std::string &filePath, int flags)
 {
-#ifdef __DEBUG
-    std::cout << "Image::load(" << filePath << ")\n";
-#endif
+    std::stringstream msg;
+    msg << "Image::load(" << filePath << ")";
+    log(msg.str());
+
     // Attempt to use SDL_Image to load the file.
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
     SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
