@@ -1,0 +1,122 @@
+-----------------------------
+THE MANA WORLD PACKAGE SYSTEM
+-----------------------------
+
+1. INTRODUCTION
+2. LOCATION OF DATA
+3. CONTENTS OF DATA PACKAGE
+4. TYPES OF DATA
+5. INITIALIZING PACKAGE MANAGEMENT
+6. LOADING A REQUESTED RESOURCE
+
+
+1. INTRODUCTION
+
+The Mana World is expected to grow continuously with updates to the game world
+occurring relatively frequently. More often so than for example new releases
+of the game client. To make sure players don't have to update their data
+manually all the time, by for example downloading the latest from the website,
+the TMW client should be able to automatically obtain new data packages from
+the server.
+
+ Note: To reduce the load on the server (which isn't expected to have huge
+ free uploading resources), the idea is that the server will only send a
+ torrent file to the client and that the file is subsequently downloaded from
+ several locations that have volunteered to spread TMW data files. Ultimately
+ a simple option on the client will even allow players to contribute their
+ excess bandwidth to help other players get the updates faster.
+
+
+2. LOCATION OF DATA
+
+There are two locations where TMW can look for game data. The install data
+directory and the data directory in the user's home directory. The latter one
+doesn't have to be used for Windows users, but is required for dynamic updates
+for UNIX users, who generally won't have write permissions to the install
+data directory. So for UNIX the two locations are:
+
+ /usr/local/share/manaworld/data/*
+
+ ~/.manaworld/data/*
+
+While for Windows all the data will be located at:
+
+ C:\Program Files\The Mana World\data\*
+
+In the UNIX case it doesn't matter in which order the data directories are
+examined.
+
+
+3. CONTENTS OF DATA PACKAGE
+
+The contents of the data packages are strictly categorized and all packages
+share a single root, similar to the paths on a UNIX system. The name of the
+package is irrelevant. An example of the contents is given by:
+
+ /graphics/sprites/forest/pinetree.png
+ /graphics/sprites/furniture/bed.png
+ /graphics/tiles/dark_forest.png
+ /graphics/tiles/city.png
+ /music/eagles_are_watching.xm
+ /music/silent_rose.xm
+ /sound/battle/sword1.ogg
+ /sound/battle/sword2.ogg
+ /maps/deep_desert.tmx
+ /maps/desert_town.tmx
+ /tilesets/dark_forest.tsx
+ /tilesets/city.tsx
+ /scripts/Portal.rb
+ /scripts/PawnShop.rb
+ /scripts/Fountain.rb
+
+
+4. TYPES OF DATA
+
+ png - The preferred format for images
+ xm  - The preferred format for music (or other kinds of module formats)
+ ogg - The preferred format for sound effects
+ tmx - The map format (to be implemented)
+ tsx - The tile set format (to be implemented)
+ rb  - A Ruby script file (application to be discussed)
+
+
+5. INITIALIZING PACKAGE MANAGEMENT
+
+When TMW starts it will scan its data directories for both packages (archives)
+and directories. When a directory is found with the same name as a package, the
+directory is the preferred location to load data from as it is assumed to be
+more up to date.
+
+Each package will have an ID and a file listing associated with it. Having made
+a list of all packages they are processed in the order of their IDs. A mapping
+is made from file to package, as follows:
+
+ /music/eagles_are_watching.xm  -> /usr/local/share/manaworld/data/musicpack
+ /music/silent_rose.xm          -> /usr/local/share/manaworld/data/musicpack
+ /sound/battle/sword1.ogg       -> ~/.manaworld/data/patch1
+ /sound/battle/sword2.ogg       -> ~/.manaworld/data/patch1
+ ...
+
+Because the packages are loaded in the order of their IDs, it is made sure that
+each file will always point to the package in which is was last updated. The
+package IDs make sure that there is an absolute ordering of the packages.
+
+To allow the client to get rid of old packages, a package can declare an
+arbitrary amount of packages with a lower ID than itself as obsolete. These
+packages will then be ignored by the client, and optionally they can be
+automatically deleted.
+
+
+6. LOADING A REQUESTED RESOURCE
+
+When the game starts and during the game, resources will continuously be asked
+for. A resource manager will take care that each resource is only loaded once.
+It also makes sure that the resources are loaded from the right package using
+the constructed mapping.
+
+As noted above, the resource manager makes sure directories are preferred
+to package files when resources are loaded. The presence of directories is
+only expected in the case of developers that will relatively frequently update
+the data while working on the next package to be released.
+
+
