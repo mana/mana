@@ -235,7 +235,7 @@ Engine::Engine()
     // Create dialogs
 
     statusWindow = new StatusWindow();
-    statusWindow->setPosition(screen->w - statusWindow->getWidth() - 10, 10);
+    statusWindow->setPosition(screen->w - statusWindow->getWidth(), 0);
 
     buyDialog = new BuyDialog();
     buyDialog->setVisible(false);
@@ -261,7 +261,6 @@ Engine::Engine()
 
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
-
 
     // Give focus to the chat input
     chatInput->requestFocus();

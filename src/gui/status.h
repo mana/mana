@@ -24,6 +24,8 @@
 #ifndef _TMW_STATS_H
 #define _TMW_STATS_H
 
+#include <string>
+
 #include "window.h"
 #include "progressbar.h"
 
@@ -32,7 +34,7 @@
  *
  * \ingroup GUI
  */
-class StatusWindow : public Window {
+class StatusWindow : public Window, public gcn::ActionListener {
     public:
         /**
          * Constructor.
@@ -43,6 +45,11 @@ class StatusWindow : public Window {
          * Destructor.
          */
         ~StatusWindow();
+
+         /**
+         * Called when receiving actions from widget.
+         */
+        void action(const std::string& eventId);
 
         /**
          * Updates this dialog with values from PLAYER_INFO *char_info

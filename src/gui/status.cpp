@@ -40,8 +40,16 @@ StatusWindow::StatusWindow():
     jobExpLabel = new gcn::Label("Job");
     
     statsButton = new Button("Stats");
+    statsButton->setEventId("Stats");
+    statsButton->addActionListener(this);
+    
     skillsButton = new Button("Skills");
+    skillsButton->setEventId("Skills");
+    skillsButton->addActionListener(this);
+    
     inventoryButton = new Button("Inventory");
+    inventoryButton->setEventId("Inventory");
+    inventoryButton->addActionListener(this);
     
     hp->setPosition(WIN_BORDER, WIN_BORDER);
     sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
@@ -149,4 +157,20 @@ void StatusWindow::update()
             (float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
 
     delete[] tempstr;
+}
+
+void StatusWindow::action(const std::string& eventId) {
+
+    if (eventId == "Stats") {
+        // Show / Hide the stats dialog
+	statsWindow->setVisible(!statsWindow->isVisible());
+    }
+    if (eventId == "Skills") {
+        // Show / Hide the skills dialog
+	skillDialog->setVisible(!skillDialog->isVisible());
+    }
+    if (eventId == "Inventory") {
+        // Show / Hide the inventory dialog
+	inventoryWindow->setVisible(!inventoryWindow->isVisible());
+    }
 }
