@@ -82,6 +82,11 @@ class Window : public gcn::Window
         void draw(gcn::Graphics *graphics);
 
         /**
+         * Calls logic on content widget (cause Guichan 0.3.0 forgot this)
+         */
+        void logic();
+
+        /**
          * Adds a widget to the window.
          */
         void add(gcn::Widget *w);

@@ -88,6 +88,14 @@ void Window::setWindowContainer(WindowContainer *wc)
     windowContainer = wc;
 }
 
+void Window::logic()
+{
+    if (mContent != NULL)
+    {
+        mContent->logic();
+    }
+}
+
 void Window::draw(gcn::Graphics* graphics)
 {
     int x, y;
