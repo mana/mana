@@ -18,6 +18,9 @@ player, an enemy, a tree and an apple. In this document the player and enemy
 will go as beings, and the tree and apple will go as objects. Finally, the
 thing they're on is a map.
 
+o                                            O
+O : A Player          <> : A monster         | : A tree              o : An Apple.
+
   -----------------   Fig. 1) screen shot of TMW showing three kind of objects
   |               |
   |   o        O  |      MAP
@@ -26,8 +29,8 @@ thing they're on is a map.
   -----------------
 
 Each of these types has its own set of properties and things it can do in the
-game. A number of messages in the protocol can be grouped on these types. We'll
-go through each of them separately. Objects can be pickup up and change into
+game. A number of messages in the protocol will be grouped on these types. We'll
+go through each of them separately. Objects can be picked up and changed into
 items, we'll mention those too.
 
 The effects of using objects or items, talking to beings and attacking enemies
@@ -46,7 +49,8 @@ In the messages described the following data types are being used:
 
 - Stored as XML file (.tmx)
 - Refers to tile set images and potentially to music file(s) and objects
-- Beings can change from one map to another
+- Beings can change from one map to another meaning there are warp and spawn points
+  for players and monsters.
 
 
 3. OBJECT
