@@ -34,7 +34,6 @@
 #include <allegro.h>
 #include <jgmod.h>
 #include <string>
-using namespace std;
 
 /** mod file */
 #define TMWSOUND_MOD 1
@@ -100,14 +99,14 @@ class TmwSound {
 			/** type of item */
 			char type;
 			/** (file-)name of sfx only kept for human reasons ^_^ */
-			string fname;
+			std::string fname;
 			/** generic data */
 			void * data;
 		};
 
 		/** list of preloaded sound data / items */
-		list<POOL_ITEM> soundpool;
-		list<POOL_ITEM>::iterator sounditem;
+		std::list<POOL_ITEM> soundpool;
+		std::list<POOL_ITEM>::iterator sounditem;
 		TMWSOUND_SID items;
 
 		bool isMaxVol(int);

@@ -23,10 +23,6 @@
 	#pragma warning(disable:4312)
 #endif
 
-#include <allegro.h>
-
-
-#include <jgmod.h>
 #include "sound.h"
 
 /**
