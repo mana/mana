@@ -73,7 +73,7 @@ class Image : public Resource
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Image *load(const char* buffer, unsigned int bufferSize);
+        static Image *load(void* buffer, unsigned int bufferSize);
 
         /**
          * Creates a new empty image with given height and width.

@@ -199,13 +199,13 @@ Image* Image::load(const std::string &filePath, int flags)
 #endif
 }
 
-Image* Image::load(const char* buffer, unsigned int bufferSize)
+Image* Image::load(void* buffer, unsigned int bufferSize)
 {
     // Define our RWops structure
     SDL_RWops* rw = NULL;
 
     // Load the raw file data from the buffer
-    rw = SDL_RWFromMem((void*)buffer, bufferSize);
+    rw = SDL_RWFromMem(buffer, bufferSize);
 
     // Use SDL_Image to load the raw image data
     SDL_Surface* texture = IMG_Load_RW(rw, 1);
