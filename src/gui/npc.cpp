@@ -45,7 +45,7 @@ void add_item(char *name) {
 }
 
 void remove_tail() {
-    free(items.back()->name);
+    //free(items.back()->name);
     free(items.back());
     items.pop_back();
 }  
@@ -67,7 +67,7 @@ void parse_items(char *string, short len) {
 void remove_all_items() {
     int i;
     for (i = 0; i < items.size(); i++) {
-        free(items[i]->name);
+        //free(items[i]->name);
         free(items[i]);
     }
     items.clear();
