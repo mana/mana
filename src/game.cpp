@@ -232,6 +232,12 @@ void do_input()
                     // Workaround for Win and else
                     #if __USE_UNIX98
                         SDL_WM_ToggleFullScreen(screen);
+                        if ((int)config.getValue("screen", 0) == 0) {
+                            config.setValue("screen", 1);
+                        }
+                        else {
+                            config.setValue("screen", 0);
+                        }
                     #else
                         int displayFlags = 0;
                         if ((int)config.getValue("screen", 0)) {
