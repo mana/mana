@@ -42,7 +42,6 @@
 
 char map_path[480];
 
-unsigned short src_x, src_y;
 bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
@@ -462,8 +461,6 @@ void do_input()
             {
                 walk(x + xDirection, y + yDirection, Direction);
                 walk_status = 1;
-                src_x = x;
-                src_y = y;
                 player_node->action = WALK;
                 player_node->walk_time = tick_time;
                 player_node->x = x + xDirection;
@@ -483,8 +480,6 @@ void do_input()
                 yDirection = 0;
                 walk(x + xDirection, y + yDirection, Direction);
                 walk_status = 1;
-                src_x = x;
-                src_y = y;
                 player_node->action = WALK;
                 player_node->walk_time = tick_time;
                 player_node->x = x + xDirection;
@@ -504,8 +499,6 @@ void do_input()
                 xDirection = 0;
                 walk(x + xDirection, y + yDirection, Direction);
                 walk_status = 1;
-                src_x = x;
-                src_y = y;
                 player_node->action = WALK;
                 player_node->walk_time = tick_time;
                 player_node->x = x + xDirection;
@@ -513,7 +506,7 @@ void do_input()
                 player_node->direction = Direction;
             }
             else player_node->direction = Direction;
-        } // end if xDirection and yDirection != 0
+        }
         
         if (player_node->action == STAND)
         {
