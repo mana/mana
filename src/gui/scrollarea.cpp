@@ -43,7 +43,7 @@ void ScrollArea::init()
 
     // Load the background skin
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *textbox = resman->getImage("core/graphics/gui/textbox.png");
+    Image *textbox = resman->getImage("graphics/gui/textbox.png");
     int bggridx[4] = {0, 9, 16, 25};
     int bggridy[4] = {0, 4, 19, 24};
     int a = 0, x, y;
@@ -59,7 +59,7 @@ void ScrollArea::init()
     }
 
     // Load vertical scrollbar skin
-    Image *vscroll = resman->getImage("core/graphics/gui/vscroll_grey.png");
+    Image *vscroll = resman->getImage("graphics/gui/vscroll_grey.png");
     int vsgridx[4] = {0, 4, 7, 11};
     int vsgridy[4] = {0, 4, 15, 19};
     a = 0;

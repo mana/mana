@@ -193,15 +193,15 @@ Engine::Engine()
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
     Image *npcbmp = resman->getImage(
-            "core/graphics/sprites/npcs.png");
+            "graphics/sprites/npcs.png");
     Image *emotionbmp = resman->getImage(
-            "core/graphics/sprites/emotions.png");
+            "graphics/sprites/emotions.png");
     Image *monsterbitmap = resman->getImage(
-            "core/graphics/sprites/monsters.png");
+            "graphics/sprites/monsters.png");
     Image *weaponbitmap = resman->getImage(
-            "core/graphics/sprites/weapons.png");
+            "graphics/sprites/weapons.png");
     Image *itembitmap = resman->getImage(
-            "core/graphics/sprites/items.png", IMG_ALPHA);
+            "graphics/sprites/items.png", IMG_ALPHA);
 
     if (!npcbmp) logger.error("Unable to load npcs.png");
     if (!emotionbmp) logger.error("Unable to load emotions.png");

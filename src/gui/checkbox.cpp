@@ -29,7 +29,7 @@ CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *checkBox = resman->getImage("core/graphics/gui/checkbox.png");
+    Image *checkBox = resman->getImage("graphics/gui/checkbox.png");
     checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
     checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
     checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);

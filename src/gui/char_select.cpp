@@ -104,10 +104,6 @@ CharSelectDialog::CharSelectDialog():
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
-    
-    ResourceManager *resman = ResourceManager::getInstance();
-    login_wallpaper = resman->getImage(
-            "core/graphics/images/char_wallpaper.png");
 }
 
 CharSelectDialog::~CharSelectDialog()

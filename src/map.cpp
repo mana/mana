@@ -133,7 +133,7 @@ Map *Map::load(const std::string &mapFile)
 
     // Load the default tileset
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *tilesetbmp = resman->getImage("core/graphics/tiles/desert.png");
+    Image *tilesetbmp = resman->getImage("graphics/tiles/desert.png");
     if (!tilesetbmp) logger.error("Unable to load desert.png");
     Spriteset *tileset = new Spriteset(tilesetbmp, 32, 32);
 

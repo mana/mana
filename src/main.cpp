@@ -263,11 +263,11 @@ void init_engine()
     ResourceManager *resman = ResourceManager::getInstance();
 
     login_wallpaper = resman->getImage(
-            "core/graphics/images/login_wallpaper.png");
+            "graphics/images/login_wallpaper.png");
     Image *playerImg = resman->getImage(
-            "core/graphics/sprites/player_male_base.png");
+            "graphics/sprites/player_male_base.png");
     Image *hairImg = resman->getImage(
-            "core/graphics/sprites/player_male_hair.png");
+            "graphics/sprites/player_male_hair.png");
 
     if (!login_wallpaper) logger.error("Couldn't load login_wallpaper.png");
     if (!playerImg) logger.error("Couldn't load player_male_base.png");

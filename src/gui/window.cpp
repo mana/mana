@@ -41,14 +41,14 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
-    dBorders = resman->getImage("core/graphics/gui/vscroll_grey.png");
-    dBackground = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+    dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+    dBackground = resman->getImage("graphics/gui/bg_quad_dis.png");
 
     border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
     border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
     border.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
     border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
-    border.grid[4] = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+    border.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
     border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
     border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
     border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);

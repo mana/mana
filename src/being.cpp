@@ -148,7 +148,8 @@ void Being::setSpeech(const std::string &text, int time)
 
 void Being::nextStep()
 {
-    if (!path.empty()) {
+    if (!path.empty())
+    {
         PATH_NODE node = path.front();
         path.pop_front();
 

@@ -32,10 +32,10 @@ Button::Button(const std::string& caption):
     // Load the skin
     ResourceManager *resman = ResourceManager::getInstance();
     Image *btn[4];
-    btn[0] = resman->getImage("core/graphics/gui/button.png");
-    btn[1] = resman->getImage("core/graphics/gui/buttonhi.png");
-    btn[2] = resman->getImage("core/graphics/gui/buttonpress.png");
-    btn[3] = resman->getImage("core/graphics/gui/button_disabled.png");
+    btn[0] = resman->getImage("graphics/gui/button.png");
+    btn[1] = resman->getImage("graphics/gui/buttonhi.png");
+    btn[2] = resman->getImage("graphics/gui/buttonpress.png");
+    btn[3] = resman->getImage("graphics/gui/button_disabled.png");
     int bgridx[4] = {0, 9, 16, 25};
     int bgridy[4] = {0, 4, 19, 24};
     int a, x, y;

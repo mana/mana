@@ -44,7 +44,7 @@ void Slider::init()
 
     // Load resources
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *slider = resman->getImage("core/graphics/gui/slider.png");
+    Image *slider = resman->getImage("graphics/gui/slider.png");
 
     x = 0; y = 0;
     w = 15; h = 6;

@@ -38,8 +38,8 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *dBorders = resman->getImage("core/graphics/gui/vscroll_grey.png");
-    dBackground = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+    Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+    dBackground = resman->getImage("graphics/gui/bg_quad_dis.png");
 
     dTopBorder = dBorders->getSubImage(4, 0, 3, 4);
     dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);

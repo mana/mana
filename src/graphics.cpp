@@ -43,7 +43,7 @@ Graphics::Graphics():
 
     // Load the mouse cursor
     ResourceManager *resman = ResourceManager::getInstance();
-    mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
+    mouseCursor = resman->getImage("graphics/gui/mouse.png", IMG_ALPHA);
     if (!mouseCursor) {
         logger.error("Unable to load mouse cursor.");
     }

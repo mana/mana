@@ -31,7 +31,7 @@ TextField::TextField(const std::string& text):
 
     // Load the skin
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *textbox = resman->getImage("core/graphics/gui/textbox.png");
+    Image *textbox = resman->getImage("graphics/gui/textbox.png");
     int gridx[4] = {0, 9, 16, 25};
     int gridy[4] = {0, 4, 19, 24};
     int a = 0, x, y;
