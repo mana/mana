@@ -329,8 +329,8 @@ void do_parse() {
       switch(id) {
         // Received speech
         case 0x008d:
-          temp = (char *)malloc(RFIFOW(2)-8);
-          memset(temp, '\0', RFIFOW(2)-8);
+          temp = (char *)malloc(RFIFOW(2)-7);
+          memset(temp, '\0', RFIFOW(2)-7);
           memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
           node = find_node(RFIFOL(4));
           if(node!=NULL) {
@@ -353,9 +353,9 @@ void do_parse() {
 							player_node->speech = NULL;
 						}  
 
-						player_node->speech = (char *)malloc(RFIFOW(2)-4);
-						memset(player_node->speech, '\0', RFIFOW(2)-4);
-						memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-5);  // receive 1 byte less than expected, server might be sending garbage instead of '\0' /-kth5
+						player_node->speech = (char *)malloc(RFIFOW(2)-3);
+						memset(player_node->speech, '\0', RFIFOW(2)-3);
+						memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-4);  // receive 1 byte less than expected, server might be sending garbage instead of '\0' /-kth5
 
 						player_node->speech_time = SPEECH_TIME;
 						player_node->speech_color = makecol(255, 255, 255);
