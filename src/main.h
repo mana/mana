@@ -35,7 +35,7 @@
 #include "sound/sound.h"
 #include <stdio.h>
 
-#define CORE_VERSION "0.0.8"
+#define CORE_VERSION "0.0.9"
 
 #define EXIT        0
 #define LOGIN       1
