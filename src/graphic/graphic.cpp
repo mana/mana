@@ -137,8 +137,10 @@ void do_graphic(void) {
 
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
-			if(get_tile(i+camera_x, j+camera_y, 0)>=0 && get_tile(i+camera_x, j+camera_y, 0)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 0)].dat, i*16-offset_x, j*16-offset_y);
-			if(get_tile(i+camera_x, j+camera_y, 1)>0 && get_tile(i+camera_x, j+camera_y, 1)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
+			if( /* get_tile(i+camera_x, j+camera_y, 0) >= 0 && */  get_tile(i+camera_x, j+camera_y, 0) < 600)
+				draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 0)].dat, i*16-offset_x, j*16-offset_y);
+			if( get_tile(i+camera_x, j+camera_y, 1) > 0 && get_tile(i+camera_x, j+camera_y, 1)<600)
+				draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
 	NODE *node = get_head();
