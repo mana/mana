@@ -125,7 +125,8 @@ void do_init() {
         error("Could not find map file");
     }
 
-    sound.startBgm("./data/sound/Mods/somemp.xm", -1);
+    // Start playing background music
+    //sound.startBgm("./data/sound/Mods/somemp.xm", -1);
 
     // Initialize timers
     tick_time = 0;
