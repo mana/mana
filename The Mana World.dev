@@ -1,18 +1,18 @@
 [Project]
 FileName=The Mana World.dev
 Name=The Mana World
-UnitCount=30
-Type=1
+UnitCount=32
+Type=0
 Ver=1
 ObjFiles=
 Includes=
 Libs=
-PrivateResource=
+PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=
-Linker=../../lib/libjgmod.a_@@_../../lib/liballeg.a_@@_../../lib/libalfontdll.a_@@_../../lib/libwsock32.a_@@_
+CppCompiler=_@@_
+Linker=../../lib/libjgmod.a_@@_../../lib/libalfont.a_@@_../../lib/liballeg.a_@@_../../lib/libwsock32.a_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -25,9 +25,9 @@ CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=0
-SupportXPThemes=0
+SupportXPThemes=1
 CompilerSet=0
-CompilerSettings=0000000001001000000000
+CompilerSettings=0000001001001000001000
 
 [Unit1]
 FileName=main.cpp
@@ -348,4 +348,24 @@ OverrideBuildCmd=0
 BuildCmd=
 ########Text Field info#####
 dev-cpp projectfile for tmw by kth5 XD
+
+[Unit31]
+FileName=Chat\chat.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit32]
+FileName=Chat\chat.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
