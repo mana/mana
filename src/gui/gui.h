@@ -53,18 +53,43 @@ class Gui
         /**
          * Destructor.
          */
-        virtual ~Gui();
+        ~Gui();
 
         /**
          * Performs GUI logic and drawing.
          */
         void update();
 
+        /**
+         * Focus none of the Widgets in the Gui.
+         */
+        void focusNone();
+
     private:
+        /**
+         * Performs the Gui:s logic by calling all logic functions
+         * down in the Gui heirarchy. Logic can be just about anything
+         * like adjusting a Widgets size or doing some calculations.
+         *
+         * NOTE: Logic also deals with user input (Mouse and Keyboard)
+         *       for Widgets.
+         */
+        void logic();
+
+        /**
+         * Draws the whole Gui by calling draw functions down in the
+         * Gui hierarchy.
+         */
+        void draw();
+
         gcn::Gui* gui;                        /**< The GUI system */
         gcn::Input* guiInput;                 /**< Input driver */
         gcn::ImageLoader* imageLoader;        /**< For loading images */
         gcn::ImageFont* guiFont;              /**< The global GUI font */
+
+        bool topHasMouse;
+
+        gcn::FocusHandler* focusHandler;
 };
 
 typedef struct {

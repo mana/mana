@@ -45,32 +45,26 @@
 #define GUI_CALL_BUTTONCALLBACK(d)
 static BITMAP *gui__repository[GUI_BMP_COUNT];
 
-/* The currently active skin */
+// The currently active skin
 LexSkin gui_skin;
 BITMAP *gui_bitmap;
 DATAFILE *gui_gfx;
 
 
-// Guichan Allegro stuff
-gcn::AllegroGraphics* guiGraphics;     // Graphics driver
-
 // Guichan stuff
 Gui* gui;
-gcn::Container* guiTop;   // The top container
+gcn::AllegroGraphics* guiGraphics;     // Graphics driver
+gcn::Container* guiTop;                // The top container
 
 
 Gui::Gui(BITMAP *screen)
 {
-    gui = new gcn::Gui();
-
     // Set graphics
     guiGraphics = new gcn::AllegroGraphics();
     guiGraphics->setTarget(screen);
-    gui->setGraphics(guiGraphics);
 
     // Set input
     guiInput = new AllegroInput();
-    gui->setInput(guiInput);
 
     // Set image loader
     imageLoader = new gcn::AllegroImageLoader();
@@ -80,7 +74,10 @@ Gui::Gui(BITMAP *screen)
     guiTop = new gcn::Container();
     guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
     guiTop->setOpaque(false);
-    gui->setTop(guiTop);
+
+    // Create focus handler
+    focusHandler = new gcn::FocusHandler();
+    guiTop->_setFocusHandler(focusHandler);
 
     // Set global font
     guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
@@ -97,16 +94,109 @@ Gui::~Gui()
     delete imageLoader;
     delete guiInput;
     delete guiGraphics;
-    delete gui;
+    delete focusHandler;
 }
 
 void Gui::update()
 {
-    gui->logic();
-    gui->draw();
+    logic();
+    draw();
 
     // Draw the mouse
     draw_sprite(gui_bitmap, mouse_sprite, mouse_x, mouse_y);
+}
+
+void Gui::logic()
+{
+    guiInput->_pollInput();
+
+    while (!guiInput->isMouseQueueEmpty())
+    {
+        gcn::MouseInput mi = guiInput->dequeueMouseInput();
+        gcn::Widget* focused = focusHandler->getFocused();
+
+        if (mi.x > 0 && mi.y > 0 &&
+                guiTop->getDimension().isPointInRect(mi.x, mi.y))
+        {
+            if (!topHasMouse) {
+                guiTop->_mouseInMessage();
+                topHasMouse = true;
+            }
+
+            gcn::MouseInput mio = mi;
+            mio.x -= guiTop->getX();
+            mio.y -= guiTop->getY();
+
+            if (!guiTop->hasFocus()) {
+                guiTop->_mouseInputMessage(mio);
+            }
+        }
+        else {
+            if (topHasMouse) {
+                guiTop->_mouseOutMessage();
+                topHasMouse = false;
+            }
+        }
+
+        if (focusHandler->getFocused() && focused == focusHandler->getFocused())
+        {
+            int xOffset, yOffset;
+            focused->getAbsolutePosition(xOffset, yOffset);
+
+            gcn::MouseInput mio = mi;
+            mio.x -= xOffset;
+            mio.y -= yOffset;
+            focused->_mouseInputMessage(mio);
+        }
+    }
+
+    while (!guiInput->isKeyQueueEmpty())
+    {
+        gcn::KeyInput ki = guiInput->dequeueKeyInput();
+
+        // Handle tabbing
+        if (ki.getKey().getValue() == gcn::Key::TAB &&
+                ki.getType() == gcn::KeyInput::PRESS)
+        {
+            if (ki.getKey().isShiftPressed()) {
+                focusHandler->tabPrevious();
+            }
+            else {
+                focusHandler->tabNext();
+            }
+        }
+        else {
+            // Send key inputs to the focused widgets
+            gcn::Widget* focused = focusHandler->getFocused();
+            if (focused)
+            {
+                if (focused->isFocusable()) {
+                    focused->_keyInputMessage(ki);
+                }
+                else {
+                    focusHandler->focusNone();
+                }
+            }
+        }
+    }
+
+    guiTop->logic();
+}
+
+void Gui::draw()
+{
+    guiGraphics->_beginDraw();
+
+    guiGraphics->pushClipArea(guiTop->getDimension());
+    guiTop->draw(guiGraphics);
+    guiGraphics->popClipArea();
+
+    guiGraphics->_endDraw();
+}
+
+void Gui::focusNone()
+{
+    focusHandler->focusNone();
 }
 
 
