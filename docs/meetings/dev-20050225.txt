@@ -14,26 +14,28 @@ Timespan: 0.75 hours (21:00-21:45 GMT+1)
 
 * Mra decided to start working on item drops.
 
-* Since there was not much activity and Hammerbear was missing, I'll define what
-  we will discuss in the next meeting. I'd like every developer to be there.
+* Since there was not much activity and Hammerbear was missing, I'll define
+  what we will discuss in the next meeting. I'd like every developer to be
+  there.
 
-  - First of all we should discuss if we need to open a new project on SF for the
-    server. We could use the CVS to store the development docs and the database
-    to create an online database to check items as
+  - First of all we should discuss if we need to open a new project on SF for
+    the server. We could use the CVS to store the development docs and the
+    database to create an online database to check items as
     http://www.euro-ro.net/game/items/
 
   - Planned features for the client:
-    	* trading
+        * trading
         * parties
         * long range weapons
         * magic attacks
         * defining gui for long range attacks (target below monster)
-        * defining gui to trade, equip and inventory (how to use them by keyboard)
+        * defining gui to trade, equip and inventory (how to use them by
+          keyboard)
         * clothing weapons (also graphic part)
 
   - Define a server development roadmap. (maybe an eta too?)
 
-  - About the old server, we need to define more scripts and discuss about the next
-    step for world development.
+  - About the old server, we need to define more scripts and discuss about the
+    next step for world development.
 
   - Server control panel: ingame or external application through an open port.
