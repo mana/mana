@@ -36,7 +36,6 @@
 #include "gui/npc.h"
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
-#include "resources/mapreader.h"
 #include "net/protocol.h"
 #include <SDL.h>
 #include <sstream>
@@ -127,7 +126,6 @@ void game() {
 void do_init()
 {
     tiledMap = Map::load(map_path);
-    //tiledMap = MapReader::readMap("core/maps/tempdesert.tmx.gz");
     if (!tiledMap) {
         error("Could not find map file");
     }
