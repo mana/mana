@@ -15,7 +15,7 @@ THE MANA WORLD SERVER PROJECT
 
 First let me show you a screenshot of TMW. From left to right it shows a
 player, an enemy, a tree and an apple. In this document the player and enemy
-will go as beings, and the tree and apple will go as objectss. Finally, the
+will go as beings, and the tree and apple will go as objects. Finally, the
 thing they're on is a map.
 
   -----------------   Fig. 1) screenshot of TMW showing three kind of objects
