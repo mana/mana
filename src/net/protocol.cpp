@@ -17,12 +17,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
 
 #include "protocol.h"
 
 short packet_lengths[] = {
-	
    10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -64,186 +65,165 @@ short packet_lengths[] = {
    -1, -1, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56, -1,  4,  5, 10,
 // #0x200
    26,  0,  0,  0, 18,  0,  0,  0,  0,  0,  0, 19,
-
 };
 
-/** Packet length by id */
 short get_length(short id) {
-	return packet_lengths[id];
+    return packet_lengths[id];
 }
 
-/** Decodes dest x coord */
-unsigned short get_dest_x(char *data) {
-	short temp;
-	temp = MAKEWORD(data[3], data[2] & 0x000f);
-	temp >>= 2;
-	return temp;
+unsigned short get_dest_x(const char *data) {
+    short temp;
+    temp = MAKEWORD(data[3], data[2] & 0x000f);
+    temp >>= 2;
+    return temp;
 }
 
-/** Decodes dest y coord */
-unsigned short get_dest_y(char *data) {
-	short temp;
-	temp = MAKEWORD(data[4], data[3] & 0x0003);
-	return temp;
+unsigned short get_dest_y(const char *data) {
+    return MAKEWORD(data[4], data[3] & 0x0003);
 }
 
-/** Decodes src x coord */
-unsigned short get_src_x(char *data) {
-	short temp;
-	temp = MAKEWORD(data[1], data[0]);
-	temp >>= 6;
-	return temp;
+unsigned short get_src_x(const char *data) {
+    short temp;
+    temp = MAKEWORD(data[1], data[0]);
+    temp >>= 6;
+    return temp;
 }
 
-/** Decodes src y coord */
-unsigned short get_src_y(char *data) {
-	short temp;
-	temp = MAKEWORD(data[2], data[1] & 0x003f);
-	temp >>= 4;
-	return temp;
+unsigned short get_src_y(const char *data) {
+    short temp;
+    temp = MAKEWORD(data[2], data[1] & 0x003f);
+    temp >>= 4;
+    return temp;
 }
 
-/** Decodes src direction */
 unsigned char get_src_direction(char data) {
-	data >>= 4;
+    data >>= 4;
     return data;
 }
 
-/** Decodes dest direction */
 unsigned char get_dest_direction(char data) {
-	return data & 0x000f;
+    return data & 0x000f;
 }
 
-/** Decodes x coord */
-unsigned short get_x(char *data) {
-	short temp;
-	temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
-	temp >>= 6;
-	return temp;
+unsigned short get_x(const char *data) {
+    short temp;
+    temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
+    temp >>= 6;
+    return temp;
 }
 
-/** Decodes y coord */
-unsigned short get_y(char *data) {
-	short temp;
-	if(!data)error("Corrupted data");
-	temp = MAKEWORD(data[2] & 0x00f0, data[1] & 0x003f);
-	if(!temp)error("Corrupted data");
-	temp >>= 4;
-	return temp;
+unsigned short get_y(const char *data) {
+    short temp;
+    if(!data)error("Corrupted data");
+    temp = MAKEWORD(data[2] & 0x00f0, data[1] & 0x003f);
+    if(!temp)error("Corrupted data");
+    temp >>= 4;
+    return temp;
 }
 
-/** Decodes direction */
-unsigned char get_direction(char *data) {
-	char temp;
-	temp = data[2] & 0x000f;
-	return temp;
+unsigned char get_direction(const char *data) {
+    return data[2] & 0x000f;
 }
 
-/** Encodes coords and direction in 3 bytes data */
-void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction) {
-	short temp;
-	temp = x;
-	temp <<= 6;
-	data[0] = 0;
-	data[1] = 1;
-	data[2] = 2;
-	data[0] = HIBYTE(temp);
-	data[1] = LOBYTE(temp);
-	temp = y;
-	temp <<= 4;
-	data[1] |= HIBYTE(temp);
-	data[2] = LOBYTE(temp);
-	data[2] |= direction;
+void set_coordinates(char *data, unsigned short x, unsigned short y,
+        unsigned char direction)
+{
+    short temp;
+    temp = x;
+    temp <<= 6;
+    data[0] = 0;
+    data[1] = 1;
+    data[2] = 2;
+    data[0] = HIBYTE(temp);
+    data[1] = LOBYTE(temp);
+    temp = y;
+    temp <<= 4;
+    data[1] |= HIBYTE(temp);
+    data[2] = LOBYTE(temp);
+    data[2] |= direction;
 }
 
-/** Initialize connection with map server */
 void map_start() {
-	// Connect to map server
-	if(open_session(iptostring(map_address), map_port)==SOCKET_ERROR) {
-		warning("Unable to connect to map server");
-		state = LOGIN;
-		ok("Error", "Unable to connect to map server");
-		return;
-	}
-	
-	// Send login infos
-	WFIFOW(0) = net_w_value(0x0072);
-	WFIFOL(2) = net_l_value(account_ID);
-	WFIFOL(6) = net_l_value(char_ID);
-	WFIFOL(10) = net_l_value(session_ID1);
-	WFIFOL(14) = net_l_value(session_ID2);
-	WFIFOB(18) = net_b_value(sex);
-	WFIFOSET(19);
+    // Connect to map server
+    if(open_session(iptostring(map_address), map_port)==SOCKET_ERROR) {
+        warning("Unable to connect to map server");
+        state = LOGIN;
+        ok("Error", "Unable to connect to map server");
+        return;
+    }
 
-	while((in_size<4)||(out_size>0))flush();
-	RFIFOSKIP(4);
-		
-	while(in_size<2)flush();
+    // Send login infos
+    WFIFOW(0) = net_w_value(0x0072);
+    WFIFOL(2) = net_l_value(account_ID);
+    WFIFOL(6) = net_l_value(char_ID);
+    WFIFOL(10) = net_l_value(session_ID1);
+    WFIFOL(14) = net_l_value(session_ID2);
+    WFIFOB(18) = net_b_value(sex);
+    WFIFOSET(19);
 
-	if(RFIFOW(0)==0x0073) {
-		while(in_size<11)flush();
-		x = get_x(RFIFOP(6));
-		y = get_y(RFIFOP(6));
-		//direction = get_direction(RFIFOP(6));
-                log("Protocol", "Player position: (%d, %d), Direction: %d",
-                        x, y, direction);
-		RFIFOSKIP(11);
-	} else if(0x0081) {
-		warning("Map server D/C");
-	} else error("Unknown packet: map_start");
-	// Send "map loaded"
-	WFIFOW(0) = net_w_value(0x007d);
-	WFIFOSET(2);
-  while(out_size>0)flush();
+    while((in_size<4)||(out_size>0))flush();
+    RFIFOSKIP(4);
+
+    while(in_size<2)flush();
+
+    if(RFIFOW(0)==0x0073) {
+        while(in_size<11)flush();
+        x = get_x(RFIFOP(6));
+        y = get_y(RFIFOP(6));
+        //direction = get_direction(RFIFOP(6));
+        log("Protocol", "Player position: (%d, %d), Direction: %d",
+                x, y, direction);
+        RFIFOSKIP(11);
+    } else if(0x0081) {
+        warning("Map server D/C");
+    } else error("Unknown packet: map_start");
+    // Send "map loaded"
+    WFIFOW(0) = net_w_value(0x007d);
+    WFIFOSET(2);
+    while(out_size>0)flush();
 }
 
-/** Requests to walk */
 void walk(unsigned short x, unsigned short y, unsigned char direction) {
-	char temp[3];
-	set_coordinates(temp, x, y, direction);
-	WFIFOW(0) = net_w_value(0x0085);
-	memcpy(WFIFOP(2), temp, 3);
-	WFIFOSET(5);
+    char temp[3];
+    set_coordinates(temp, x, y, direction);
+    WFIFOW(0) = net_w_value(0x0085);
+    memcpy(WFIFOP(2), temp, 3);
+    WFIFOSET(5);
 }
 
-/** Request to speak */
 void speak(char *speech) {
-	int len = (int)strlen(speech);
-	WFIFOW(0) = net_w_value(0x008c);
-  WFIFOW(2) = net_w_value(len+4);
-  memcpy(WFIFOP(4), speech, len);
-  WFIFOSET(len+4);
+    int len = (int)strlen(speech);
+    WFIFOW(0) = net_w_value(0x008c);
+    WFIFOW(2) = net_w_value(len+4);
+    memcpy(WFIFOP(4), speech, len);
+    WFIFOSET(len + 4);
 }
 
-/** Request action */
 void action(char type, int id) {
-	WFIFOW(0) = net_w_value(0x0089);
-	WFIFOL(2) = net_l_value(id);
-	WFIFOB(6) = net_b_value(type);
-	WFIFOSET(7);
+    WFIFOW(0) = net_w_value(0x0089);
+    WFIFOL(2) = net_l_value(id);
+    WFIFOB(6) = net_b_value(type);
+    WFIFOSET(7);
 }
 
-
-/** Request to attack */
 void attack(unsigned short x, unsigned short y, unsigned char direction) {
-	int monster_id = 0;
+    int monster_id = 0;
 
-	if(direction==SOUTH) {
-		monster_id = find_monster(x, y+1);
-		if(monster_id!=0)
-      action(0, monster_id);
-	} else if(direction==WEST) {
-		monster_id = find_monster(x-1, y);
-    if(monster_id!=0)
-      action(0, monster_id);
-  } else if(direction==NORTH) {
-    monster_id = find_monster(x, y-1);
-		if(monster_id!=0)
-      action(0, monster_id);
-	} else if(direction==EAST) {
-    monster_id = find_monster(x+1, y);
-		if(monster_id!=0)
-			action(0, monster_id);
-	}
+    if (direction == SOUTH) {
+        monster_id = find_monster(x, y + 1);
+        if (monster_id != 0)
+            action(0, monster_id);
+    } else if(direction == WEST) {
+        monster_id = find_monster(x - 1, y);
+        if (monster_id != 0)
+            action(0, monster_id);
+    } else if(direction == NORTH) {
+        monster_id = find_monster(x, y - 1);
+        if (monster_id != 0)
+            action(0, monster_id);
+    } else if(direction==EAST) {
+        monster_id = find_monster(x + 1, y);
+        if (monster_id != 0)
+            action(0, monster_id);
+    }
 }
-

@@ -17,6 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
 
 #ifndef _TMW_MAP_H
@@ -67,12 +69,25 @@ struct MAP {
 	char bg_music[20];
 };
 
+/** Loads a map file */
 bool load_map(char *map_file);
+
+/** Set walkability flag for a tile */
 void set_walk(short x_c, short y_c, bool walkable);
+
+/** Tell if a tile is walkable or not */
 bool get_walk(short x_c, short y_c);
+
+/** Tell if a tile is walkable or not (0=walkable,1=not walkable) */
 unsigned char get_path_walk(unsigned short x, unsigned short y);
+
+/** Tell if a tile is animated or not */
 bool get_anim(short x_c, short y_c, char layer);
+
+/** Set tile ID */
 void set_tile(short x_c, short y_c, char layer, unsigned short id);
+
+/** Return tile ID */
 unsigned short get_tile(short x_c, short y_c, char layer);
 
 /** Return tile x coordinate in tileset */
