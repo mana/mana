@@ -11,10 +11,10 @@ PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=
+CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_
 Linker=-ljgmod_@@_-lalfont_@@_-lalleg_@@_-lwsock32_@@_
 IsCpp=1
-Icon=The Mana World.ico
+Icon=
 ExeOutput=
 ObjectOutput=
 OverrideOutput=0
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=1
 CompilerSet=0
-CompilerSettings=0000001001001001001001
+CompilerSettings=0000001001001000001101
 
 [VersionInfo]
 Major=0
@@ -450,6 +450,5 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 ########Text Field info#####
-
-
 ########Text Field info#####
+
