@@ -2,6 +2,7 @@
 - Fixed players standing on top of NPCs
 - Fixed getting stuck when trying to sell with nothing to sell
 - Fixed setup dialog windowed/fullscreen switching behaviour
+- Fixed gui opacity slider (windows only bug)
 - Fixed building up false inventory when warping
 
 0.0.11  (3 April 2005)
