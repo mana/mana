@@ -78,14 +78,14 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
-        Resource *create(
+        Resource *get(
                 const E_RESOURCE_TYPE &type,
                 const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create.
          */
-        Image *createImage(const std::string &idPath);
+        Image *getImage(const std::string &idPath);
 
         /**
          * Returns an instance of the class, creating one if it does not

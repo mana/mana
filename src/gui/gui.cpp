@@ -446,24 +446,6 @@ void loadBarSkin() {
     blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
 }
 
-void loadRadioSkin() {
-    gui_skin.radiobutton.normal = load_bitmap("data/Skin/radioout.bmp", NULL);
-    gui_skin.radiobutton.checked = load_bitmap("data/Skin/radioin.bmp", NULL);
-    gui_skin.radiobutton.disabled = load_bitmap("data/Skin/radioout.bmp", NULL);
-    gui_skin.radiobutton.disabled_checked = load_bitmap("data/Skin/radioin.bmp", NULL);
-}
-
-void loadPlusSkin() {
-    //BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
-    //BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
-    gui_skin.plus.bg.grid[0] = load_bitmap("data/plus.bmp", NULL);
-    gui_skin.plus.bg.grid[1] = load_bitmap("data/plus_sel.bmp", NULL);
-    gui_skin.plus.bg.grid[2] = load_bitmap("data/plus_dis.bmp", NULL);
-    //blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
-    //blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
-    //blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
-}
-
 void loadDialogSkin() {
     char **tokens;
     int tokenCount;
@@ -542,12 +524,10 @@ int gui_load_skin(const char* skinname) {
     loadButtonSkin();
     loadSliderSkin();
     loadCheckboxSkin();
-    loadRadioSkin();
     loadTextboxSkin();
     loadListboxSkin();
     loadDialogSkin();
     loadBarSkin();
-    loadPlusSkin();
     pop_config_state();
     set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
@@ -583,12 +563,6 @@ void gui_shutdown(void) {
     destroy_bitmap(gui_skin.checkbox.checked);
     destroy_bitmap(gui_skin.checkbox.disabled);
     destroy_bitmap(gui_skin.checkbox.disabled_checked);
-
-    /* Radiobutton */
-    destroy_bitmap(gui_skin.radiobutton.normal);
-    destroy_bitmap(gui_skin.radiobutton.checked);
-    destroy_bitmap(gui_skin.radiobutton.disabled);
-    destroy_bitmap(gui_skin.radiobutton.disabled_checked);
 
     for (a = 0; a < GUI_BMP_COUNT; a++) {
         destroy_bitmap(gui__repository[a]);

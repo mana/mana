@@ -25,6 +25,7 @@
 #define _TMW_RADIOBUTTON_H
 
 #include "gui.h"
+#include "../resources/image.h"
 
 /*
  * Guichan based RadioButton with custom look
@@ -34,12 +35,19 @@ class RadioButton : public gcn::RadioButton {
         /*
          * Constructor.
          */
-        RadioButton(const std::string& caption,const std::string& group, bool marked = false);
+        RadioButton(const std::string& caption,const std::string& group,
+                bool marked = false);
 
         /**
          * Draws the radiobutton, not the caption.
          */
         void drawBox(gcn::Graphics* graphics);
+
+    private:
+        Image *radioNormal;
+        Image *radioChecked;
+        Image *radioDisabled;
+        Image *radioDisabledChecked;
 };
 
 #endif /* _TMW_RADIOBUTTON_H */

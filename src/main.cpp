@@ -295,7 +295,7 @@ void init_engine() {
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    login_wallpaper = resman->createImage("graphic/login.bmp");
+    login_wallpaper = resman->getImage("graphic/login.bmp");
     if (!login_wallpaper) error("Couldn't load login.bmp");
 
     BITMAP *playerbitmap = load_bitmap("data/graphic/playerset.bmp", NULL);

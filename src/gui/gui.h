@@ -118,14 +118,6 @@ typedef struct {
 } LexCheckbox;
 
 typedef struct {
-    BITMAP *normal;
-    BITMAP *checked;
-    BITMAP *disabled;
-    BITMAP *disabled_checked;
-    int     textcolor[2];
-} LexRadiobutton;
-
-typedef struct {
     LexSkinnedRect bg;
     int            textcolor[2];
 } LexTextbox;
@@ -145,19 +137,13 @@ typedef struct {
 } LexBar;
 
 typedef struct {
-    LexSkinnedRect bg;
-} LexPlus;
-
-typedef struct {
     LexButton      button;
     LexSlider      slider;
     LexCheckbox    checkbox;
-    LexRadiobutton radiobutton;
     LexTextbox     textbox;
     LexListbox     listbox;
     LexDialog      dialog;
     LexBar		   bar;
-    LexPlus		   plus;
 } LexSkin;
 
 extern LexSkin gui_skin;

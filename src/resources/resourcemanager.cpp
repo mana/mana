@@ -69,7 +69,7 @@ ResourceManager::~ResourceManager()
 #endif
 }
 
-Resource* ResourceManager::create(const E_RESOURCE_TYPE &type,
+Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
         const std::string &idPath)
 {
     // Check if the id exists, and return the value if it does.
@@ -157,9 +157,9 @@ Resource* ResourceManager::create(const E_RESOURCE_TYPE &type,
     return resource;
 }
 
-Image *ResourceManager::createImage(const std::string &idPath)
+Image *ResourceManager::getImage(const std::string &idPath)
 {
-    return (Image*)create(IMAGE, idPath);
+    return (Image*)get(IMAGE, idPath);
 }
 
 ResourceManager* ResourceManager::getInstance()

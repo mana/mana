@@ -22,32 +22,41 @@
  */
 
 #include "radiobutton.h"
+#include "../resources/resourcemanager.h"
 
-RadioButton::RadioButton(const std::string& caption, const std::string& group, bool marked):
-    gcn::RadioButton(caption,group, marked)
+RadioButton::RadioButton(const std::string& caption, const std::string& group,
+        bool marked):
+    gcn::RadioButton(caption, group, marked)
 {
+    ResourceManager *resman = ResourceManager::getInstance();
+    radioNormal = resman->getImage("Skin/radioout.bmp");
+    radioChecked = resman->getImage("Skin/radioin.bmp");
+    radioDisabled = resman->getImage("Skin/radioout.bmp");
+    radioDisabledChecked = resman->getImage("Skin/radioin.bmp");
 }
 
-void RadioButton::drawBox(gcn::Graphics* graphics) {
-    BITMAP *box = NULL;
+void RadioButton::drawBox(gcn::Graphics* graphics)
+{
+    Image *box = NULL;
     int x, y;
 
     getAbsolutePosition(x, y);
 
     if (mMarked) {
         if (false /*disabled*/) {
-            box = gui_skin.radiobutton.disabled_checked;
+            box = radioDisabledChecked;
         } else {
-            box = gui_skin.radiobutton.checked;
+            box = radioChecked;
         }
     } else if (false /*disabled*/) {
-        box = gui_skin.radiobutton.disabled;
+        box = radioDisabled;
     } else {
-        box = gui_skin.radiobutton.normal;
+        box = radioNormal;
     }
 
     x += 2;
     y += 2;
-    if(box != NULL)
-	masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
+    if (box != NULL) {
+        box->draw(gui_bitmap, x, y);
+    }
 }
