@@ -76,29 +76,9 @@ class Configuration {
          * \param deflt Default option if not there or error.
          */
         float getValue(std::string key, float deflt);
+
     private:
-        /**
-         * Returns wether they given key exists.
-         */
-        bool keyExists(std::string key);
-
-        /**
-         * A simple data structure to store the value of a configuration
-         * option.
-         */
-        class OptionValue {
-            public:
-                /**
-                 * Constructor.
-                 */
-                OptionValue();
-
-                std::string stringValue;
-                float numericValue;
-        };
-
-        std::map<std::string, OptionValue> iniOptions;
-        std::map<std::string, OptionValue>::iterator iter;
+        std::map<std::string, std::string> options;
 };
 
 #endif
