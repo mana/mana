@@ -117,6 +117,16 @@ class Image : public Resource
         virtual void drawPattern(
                 SDL_Surface *screen, int x, int y, int w, int h);
 
+        /**
+         * Sets the alpha value of this image.
+         */
+        void setAlpha(float alpha);
+
+        /**
+         * Returns the alpha value of this image.
+         */
+        float getAlpha();
+
     protected:
 #ifdef USE_OPENGL
         GLuint image;
@@ -125,6 +135,7 @@ class Image : public Resource
 #else
         SDL_Surface *image;
 #endif
+        float alpha;
 };
 
 /**

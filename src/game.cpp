@@ -385,7 +385,7 @@ void do_input()
 
 int get_packet_length(short id) {
     int len = get_length(id);
-    if (len == -1)len = RFIFOW(2);
+    if (len == -1) len = RFIFOW(2);
     return len;
 }
 

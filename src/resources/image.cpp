@@ -40,6 +40,8 @@ Image::Image(GLuint image, int width, int height, int texWidth, int texHeight):
     texHeight(texHeight)
 #endif
 {
+    // Default to opaque
+    alpha = 1.0f;
 }
 
 Image::~Image()
@@ -250,6 +252,9 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
+    // Set the alpha value this image is drawn at
+    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
+
     SDL_Rect dstRect;
     SDL_Rect srcRect;
     dstRect.x = dstX; dstRect.y = dstY;
@@ -302,6 +307,9 @@ bool Image::draw(SDL_Surface *screen, int x, int y)
 
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
+
+    // Set the alpha value this image is drawn at
+    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
 
     SDL_Rect dstRect;
     dstRect.x = x;
@@ -367,6 +375,17 @@ void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
     }
 }
 
+void Image::setAlpha(float alpha)
+{
+    this->alpha = alpha;
+}
+
+float Image::getAlpha()
+{
+    return alpha;
+}
+
+
 //============================================================================
 
 #ifndef USE_OPENGL
@@ -420,6 +439,9 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
+    // Set the alpha value this image is drawn at
+    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
+
     SDL_Rect dstRect;
     SDL_Rect srcRect;
     dstRect.x = dstX; dstRect.y = dstY;
@@ -472,6 +494,9 @@ bool SubImage::draw(SDL_Surface *screen, int x, int y)
 #ifndef USE_OPENGL
     // Check that drawing preconditions are satisfied.
     if (screen == NULL || image == NULL) return false;
+
+    // Set the alpha value this image is drawn at
+    SDL_SetAlpha(image, SDL_SRCALPHA, 255 * alpha);
 
     SDL_Rect dstRect;
     dstRect.x = x;
