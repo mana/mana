@@ -3,9 +3,12 @@ CXX = g++
 #CXXFLAGS = -g -march=i686 -O2
 
 # excessive optimizations for pentium pro and later
-CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DMACOSX -fexceptions `sdl-config --cflags`
+CXXFLAGS = -Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer \
+	   -funroll-loops -DMACOSX -fexceptions `sdl-config --cflags` \
+	   `pkg-config --cflags libxml-2.0`
 
-CFLAGS=`allegro-config --libs release` `sdl-config --libs` -lSDL_mixer -lguichan_allegro -lguichan
+LIBS := `sdl-config --libs` -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image \
+        `pkg-config --libs libxml-2.0`
 
 include file.list
 MODULES += src/net/win2mac.cpp

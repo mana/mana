@@ -3,9 +3,10 @@ CXX = g++
 #CXXFLAGS += -g -march=i686 -O2
 
 # excessive optimizations for pentium pro and later
-CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
+CXXFLAGS += -Wall -march=i686 -O3 -fexpensive-optimizations -pipe \
+            -fomit-frame-pointer -funroll-loops -fexceptions
 
-LIBS := -lSDL -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image -lws2_32
+LIBS := -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image -lSDL -lws2_32
 
 include file.list
 

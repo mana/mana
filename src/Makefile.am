@@ -53,7 +53,7 @@ tmw_SOURCES = sound/sound.cpp \
 INCLUDES= $(all_includes)
 
 # the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan -lguichan_sdl
-tmw_CXXFLAGS = $(LIBSDL_CFLAGS)
+tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan -lguichan_sdl `pkg-config --libs libxml-2.0`
+tmw_CXXFLAGS = $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0`
 tmw_LDADD = $(LIBSDL_LIBS)
 tmw_TARGET = ../tmw

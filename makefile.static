@@ -4,9 +4,10 @@ CXXFLAGS += -g -march=i686 -O2 -Wall -D__DEBUG
 
 # excessive optimizations for pentium pro and later
 #CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
-CXXFLAGS += `sdl-config --cflags` -fexceptions
+CXXFLAGS += `sdl-config --cflags` -fexceptions `pkg-config --cflags libxml-2.0`
 
-LIBS := `sdl-config --libs` -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image
+LIBS := `sdl-config --libs` -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image \
+        `pkg-config --libs libxml-2.0`
 
 include file.list
 
