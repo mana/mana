@@ -392,6 +392,7 @@ void do_parse() {
             node->job = RFIFOW(14);
 						empty_path(node);
             memcpy(node->coordinates, RFIFOP(46), 3);
+            node->hair_color = RFIFOW(28);
 						/*char set[30];
 						sprintf(set, "%i %i %i %i",get_x(RFIFOP(46)),get_y(RFIFOP(46)),get_x(player_node->coordinates),get_y(player_node->coordinates));
 						alert("78",set,"","","",0,0);*/
@@ -435,6 +436,7 @@ void do_parse() {
 						node->tick_time = tick_time;
 						node->frame = 0;
 						node->speed = RFIFOW(6);
+						node->hair_color = RFIFOW(28);
           }
           break;
         // Monster moving
