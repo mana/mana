@@ -103,7 +103,6 @@ void LoginDialog::action(const std::string& eventId)
         // Store config settings
         config.setValue("remember", keepCheck->isMarked());
         if (keepCheck->isMarked()) {
-            std::cout << "blah\n";
             config.setValue("username", user);
         } else {
             config.setValue("username", "");

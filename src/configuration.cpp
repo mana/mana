@@ -25,12 +25,22 @@
 /**
     \brief read INI file and parse all options into memory
     \param filename full path to INI file (~/.manaworld/tmw.ini)
+
+    NOTE:
+        first a line is checked wether it is a comment or not by
+        looking for INI_COMMENTER. after this another check is
+        done for INI_DELIMITER if the previous check failed.
+        if this line is a valid option all spaces in it get
+        stripped away (including the value) and it is added to
+        the list iniOptions.
 */
 void Configuration::init(std::string filename) {
     std::ifstream inFile(filename.c_str(), std::ifstream::in);
     std::string inBuffer;
-    int position;
+    unsigned int position;
     INI_OPTION optionTmp;
+
+    iniOptions.clear();
 
     while (inFile.good()) {
         getline(inFile, inBuffer, '\n');
@@ -38,7 +48,11 @@ void Configuration::init(std::string filename) {
         if(inBuffer.substr(0,1) != INI_COMMENTER) {
             position = inBuffer.find(INI_DELIMITER, 0);
 
-            if(position > 0 && position >= -1) {
+            if(position != std::string::npos) {
+                // replace spaces with void :)
+                while(inBuffer.find(" ", 0) != std::string::npos) {
+                    inBuffer.replace(inBuffer.find(" ", 0), 1, "");
+                }
                 optionTmp.key = inBuffer.substr(0, position);
                 optionTmp.stringValue  = inBuffer.substr(position+1, inBuffer.length());
                 inBuffer = inBuffer.substr(position+1, inBuffer.length());
@@ -59,6 +73,10 @@ void Configuration::init(std::string filename) {
     #endif
 }
 
+/**
+    \brief write the current settings back to an ini-file
+    \param filename full path to INI file (~/.manaworld/tmw.ini)
+*/
 bool Configuration::write(std::string filename) {
     std::ofstream out(filename.c_str(), std::ofstream::out | std::ofstream::trunc);
     char tmp[20];
@@ -84,6 +102,11 @@ bool Configuration::write(std::string filename) {
     return true;
 }
 
+/**
+    \brief set an option using a string value
+    \param key option identifier
+    \param value value
+*/
 void Configuration::setValue(std::string key, std::string value) {
     INI_OPTION optionTmp;
     if(getValue(key, "") == "") {
@@ -108,6 +131,11 @@ void Configuration::setValue(std::string key, std::string value) {
     }
 }
 
+/**
+    \brief set an option using a numeric value
+    \param key option identifier
+    \param value value
+*/
 void Configuration::setValue(std::string key, float value) {
     INI_OPTION optionTmp;
     if(getValue(key, 0) == 0) {
