@@ -7,7 +7,8 @@ standard specifying how code is written down. Not doing so can cause quite some
 annoyance for certain coders and easily creates more version conflicts than
 necessary.
 
-* Code is indented using 4 spaces, no tabs.
+* Indentation:
+  Code is indented using 4 spaces, no tabs.
 
 * Control constructs like this:
 
@@ -24,6 +25,7 @@ necessary.
 
   /*
    * Documentation about behaviour
+   * ...
    */
   void function(param1, param2) {
   }
@@ -32,6 +34,13 @@ necessary.
   };
 
   Ending parenthesis may be on next line for clarity.
+  
+  Bad:
+
+  if (condition)
+      statement;
+      
+  if (condition) statement;
 
 * Use of whitespace example:
 

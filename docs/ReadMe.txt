@@ -27,9 +27,10 @@
     - Bertram for Debian installation script
 
   Powered by:
-    - Allegro
-    - AllegroFont
-    - JMod
+    - Allegro (game programming library)
+    - AllegroFont (truetype font drawing)
+    - JMod (module playback)
+    - Guichan (gui framework)
 
 
 0. Index
@@ -69,6 +70,10 @@ Remember: the server is only for development or demo purposes (Thanks again to U
 
 4. Version history
 ------------------
+
+0.0.8a
+- Added controlling player with arrow keys
+- Rewrote gui with Guichan
 
 0.0.8
 - added sound support for macosx

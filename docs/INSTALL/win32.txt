@@ -1,75 +1,96 @@
-How to compile and install TMW on my Win32 Box
-==============================================
-
-Author:   Alexander Baldeck (aka kth5)
-Email:    kth5@cboxx.de
-Homepage: alex.cboxx.de
+How setup Dev-C++ to compile TMW on a Win32 Box
+===============================================
 
 The Mana World project
 ======================
 Homepage: themanaworld.sourceforge.net
 IRC:      irc.freenode.net / #manaworld
 
+
 0. Index
 ========
 1. Requirements
 2. Installing Dev-C++
-3. Updating Dev-C++ and Allegro installation
-6. Installing The Mana World
-7. Notes
+3. Installing the required libraries
+4. Compiling The Mana World
+
 
 1. Requirements
 ===============
 
-In this tutorial we will use DevC++ b/c of the fact that
-it's a free and one of best - if not THE best - IDE you
-can get on Win32. Remember, Win32 was not meant for GCC
-and stuff so you will probably run into trouble unless
-you really know what you're doing, so best stick with
-Dev-C++.
+In this tutorial we will use DevC++ because of the fact that it's a very good
+free IDE for Win32 built around GCC. Remember, Win32 was not meant for GCC and
+stuff so you will probably run into trouble unless you really know what you're
+doing, so best stick with Dev-C++.
 
-Furthermore TMW depends on the following libraries:
+Besides a C++ compiler, TMW depends on the following libraries:
 
 1) Allegro 4.1.x
 2) Alfont  1.91
 3) JGmod 0.99
+4) Guichan 0.1.0-CVS
 
 
 2. Installing Dev-C++
 =====================
 
-I recommend that you get the latest stable version. Though
-this tutorial is written for and tested w/ Dev-C++ 4.9.90
-it may also apply to any later version. Get 4.9.90 here:
+I recommend that you get the latest beta version, which is 4.9.9.1 at the time
+of writing. Though this tutorial is written for and tested with that, it may
+also apply to the latest stable version. Get Dev-C++ here:
 
-  http://prdownloads.sourceforge.net/dev-cpp/devcpp4990setup.exe
+  http://www.bloodshed.net/
   
-After you fetched it simply run and install. As soon as it is
-installed you need to adjust a couple of enviroment-variables.
-I will assume that you know how to do this.
-
-If you have Dev-C++ installed to "C:\Dev-Cpp" - the default -
-your envars should contain these:
-
-SET PATH=C:\Dev-Cpp\bin;C:\otherpaths
-SET MINGDIR=C:\Dev-Cpp
-
-Don't worry this won't hurt your Win32 unless you replace the
-contents of PATH. ;-)
+After you fetched it simply run and install.
 
 
-3. Updating Dev-C++ and Allegro installation
-=====================
+3. Installing the required libraries
+====================================
 
-Since the GCC in Dev-C++ is pretty old, we should get something
-newer. This - fortunately - is not very hard to do. Simply fo to
-"Tools" and then to "Check for Upgrades/Packages".
-This will give you the Webupdate dialog where you should click
-on the "Check for upgrades" button.
-When you see the list  look for "g++-3.4.1" and "gcc-core-3.4.1"
-in the group "Dev-C++ MINGW System". After you have done that,
-select the group you might want to check out a group called
-"Allegro"! ;-)
+Lucky for us, all the libs have DevPaks that are very easy drop-ins for
+Dev-C++, without any complex actions on your side. We'll download them from
+http://devpaks.org/.
+
+Because Guichan can work with SDL as well as Allegro, and because we plan to
+switch to SDL anyway, we'll install SDL and SDL_image too, even though TMW
+doesn't require them at this time.
+
+Get the following list of DevPaks:
+
+- Allegro       (http://devpaks.org/show.php?devpak=2)
+- AllegroFont   (http://devpaks.org/show.php?devpak=88)
+- JGMOD         (http://devpaks.org/show.php?devpak=121)
+- SDL           (http://devpaks.org/show.php?devpak=57)
+- SDL_image     (http://devpaks.org/show.php?devpak=25)
+- Guichan       (http://guichan.darkbits.org/downloads/guichan.DevPak)
+
+Install them all through the Dev-C++ package manager.
+
+NOTE: At the time of writing there is a problem with the SDL_image package.
+You need to solve this by downloading the file SDL_image-devel-1.2.3-VC6.zip
+from the link below and extracting from it the SDL_image.lib file and put that
+in your Dev-C++ lib directory.
+
+  http://www.libsdl.org/projects/SDL_image/
+
+You should now be fully equipped for compiling the latest TMW CVS code!
 
 
-TODO
+4. Compiling The Mana World
+===========================
+
+Check out The Mana World from CVS using either the command line cvs tool or
+TortoiseCVS, pick what you like to use most and install that. Next, check out
+the tmw module from our repository. The CVSROOT is:
+
+  :pserver:anoncvs@sull.homelinux.net:/var/home/cvs/repository
+
+Open "The Mana World.dev" in Dev-C++. From there on you should be able to
+start compilition with Excute -> Compile. A file called tmw.exe should appear
+in the same directory as where you opened the .dev from.
+
+Before you can actually run the executable you may need to move a few DLLs over
+from your Dev-Cpp/dll directory to the directory containing tmw.exe. The
+currently required DLLs are alleg41.dll, guichan.dll and guichan_allegro.dll.
+
+Have fun hacking The Mana World!
+

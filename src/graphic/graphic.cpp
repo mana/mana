@@ -358,8 +358,8 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-22+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
 
-			int r_x = node->text_x-get_x_offset(node);
-			int r_y = node->text_y-get_y_offset(node);
+			//int r_x = node->text_x-get_x_offset(node);
+			//int r_y = node->text_y-get_y_offset(node);
 
 			if(node->action==MONSTER_DEAD)
         new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+8*MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);

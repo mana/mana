@@ -91,7 +91,6 @@ void login() {
 
     userField->setEventId("ok");
     passField->setEventId("ok");
-    keepCheck->setEventId("ok");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
 
