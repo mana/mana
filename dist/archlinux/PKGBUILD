@@ -1,0 +1,17 @@
+# Contributor: Bjorn Lindeijer <bjorn@lindeijer.nl>
+pkgname=the-mana-world
+pkgver=0.0.11
+pkgrel=1
+pkgdesc="An innovative free and open source MMORPG."
+url="http://themanaworld.sourceforge.net/"
+license="GPL"
+depends=('sdl' 'sdl_mixer' 'sdl_image' 'guichan' 'physfs' 'libxml2')
+makedepends=()
+source=(http://dl.sourceforge.net/sourceforge/themanaworld/$pkgname-$pkgver.tar.gz)
+
+build() {
+  cd $startdir/src/$pkgname-$pkgver
+  ./configure --prefix=/usr
+  make || return 1
+  make prefix=$startdir/pkg/usr install
+} 
