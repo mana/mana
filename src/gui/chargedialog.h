@@ -27,6 +27,8 @@
 #include "window.h"
 #include "progressbar.h"
  
+#define CHARGE_TIME 1000 // time in milliseconds it takes to charge up an attack
+
 class ChargeDialog : public Window, public gcn::ActionListener
 {
     private:
@@ -45,7 +47,8 @@ class ChargeDialog : public Window, public gcn::ActionListener
         ~ChargeDialog();  
         
         // action listener
-        void action(const std::string&);     
+        void action(const std::string&); 
+        void draw(gcn::Graphics *graphics);
 };
 
 #endif

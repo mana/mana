@@ -42,6 +42,7 @@ class Graphics;
 #include "../gui/newskill.h"
 #include "../gui/setup.h"
 #include "../gui/equipment.h"
+#include "../gui/chargedialog.h"
 #include "../resources/resourcemanager.h"
 #include "../map.h"
 #include "spriteset.h"
@@ -71,6 +72,7 @@ extern NewSkillDialog *newSkillWindow;
 extern StatsWindow *statsWindow;
 extern Setup *setupWindow;
 extern EquipmentWindow *equipmentWindow;
+extern ChargeDialog* chargeDialog;
 
 char get_x_offset(char, char);
 char get_y_offset(char, char);

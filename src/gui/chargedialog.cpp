@@ -29,13 +29,15 @@
 #include "scrollarea.h"
 #include "button.h"
 #include "../main.h"
-
+#include <time.h>
 
 ChargeDialog::ChargeDialog():
     Window("")
 {
-    setSize(200,100);
-    progBar = new ProgressBar(0.0f,50,40,100,15,128,128,128);
+    
+    
+    setSize(180,70);
+    progBar = new ProgressBar(0.0f,20,40,140,25,128,128,128);
     add(progBar);
 }
 
@@ -49,3 +51,15 @@ void ChargeDialog::action(const std::string& eventId)
 
 }
 
+// update the dialog
+void ChargeDialog::draw(gcn::Graphics *graphics)
+{
+    // calculate time since the last attack was made
+    char_info->lastAttackTime += .01; // this a hack until someone explains
+                                      // to me how to work the timer
+    if(char_info->lastAttackTime > 1){char_info->lastAttackTime=1;}
+    
+    // reset the progress bar to display accurate time since attack
+    progBar->setProgress(char_info->lastAttackTime); 
+    Window::draw(graphics);
+}

@@ -235,4 +235,6 @@ void attack(unsigned short x, unsigned short y, unsigned char direction) {
         if (monster_id != 0)
             action(0, monster_id);
     }
+    // implement charging attacks here
+    char_info->lastAttackTime = 0;
 }
