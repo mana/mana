@@ -143,3 +143,4 @@ void changeQ(void *dp3, int d2)
 sprintf(itemCurrenyQ,"%i",d2);
 printf("%s\n",itemCurrenyQ);
 }
+
