@@ -32,6 +32,7 @@
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
+#include "sound/sound.h"
 #include <stdio.h>
 
 #define CORE_VERSION "0.0.8"
@@ -87,5 +88,6 @@ extern unsigned char state;
 extern unsigned short x, y;
 extern unsigned char direction;
 extern Configuration config;
+extern Sound sound;
 
 #endif

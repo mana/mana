@@ -62,9 +62,8 @@ unsigned char direction;
 unsigned char stretch_mode, screen_mode;
 char *dir;
 
-#ifndef WIN32
 Sound sound;
-#endif /* not WIN32 */
+
 // ini file configuration reader
 Configuration config;
 
@@ -188,12 +187,6 @@ void init_engine() {
 
     config.init(dir);
 
-#ifdef MACOSX
-    //set_color_depth(32);
-#else
-    //set_color_depth(16);
-#endif
-
     SDL_WM_SetCaption("The Mana World", NULL);
 
 
@@ -217,6 +210,31 @@ void init_engine() {
         exit(1);
     }
 
+#ifdef __DEBUG
+    const SDL_VideoInfo *vi = SDL_GetVideoInfo();
+    std::cout << "It is " << ((vi->hw_available) ? "" : "not") <<
+        " possible to create hardware surfaces.\n";
+    std::cout << "There is " << ((vi->wm_available) ? "a" : "no") <<
+        " window manager available.\n";
+    std::cout << "Hardware to hardware blits are " <<
+        ((vi->blit_hw) ? "" : "not") << " accelerated.\n";
+    std::cout << "Hardware to hardware colorkey blits are " <<
+        ((vi->blit_hw_CC) ? "" : "not") << " accelerated.\n";
+    std::cout << "Hardware to hardware alpha blits are " <<
+        ((vi->blit_hw_A) ? "" : "not") << " accelerated.\n";
+    std::cout << "Software to hardware blits are " <<
+        ((vi->blit_sw) ? "" : "not") << " accelerated.\n";
+    std::cout << "Software to hardware colorkey blits are " <<
+        ((vi->blit_sw_CC) ? "" : "not") << " accelerated.\n";
+    std::cout << "Software to hardware alpha blits are " <<
+        ((vi->blit_sw_A) ? "" : "not") << " accelerated.\n";
+    std::cout << "Color fills are " <<
+        ((vi->blit_fill) ? "" : "not") << " accelerated.\n";
+    std::cout << "Available video memory: " << vi->video_mem << "\n";
+#endif
+
+    //vfmt Pixel format of the video device
+
     // Create the graphics context
     graphics = new Graphics();
 
@@ -239,7 +257,6 @@ void init_engine() {
     init_gui(graphics);
     state = LOGIN;
 
-#ifndef WIN32
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
          if (config.getValue("sound", 0) == 1) {
@@ -259,7 +276,6 @@ void init_engine() {
         new OkDialog("Sound Engine", err, &initWarningListener);
         warning(err);
     }
-#endif /* not WIN32 */
 }
 
 /** Clear the engine */
@@ -301,9 +317,7 @@ int main(int argc, char *argv[]) {
                 charSelect();
                 break;
             case GAME:
-#ifndef WIN32
                 sound.stopBgm();
-#endif /* not WIN32 */
                 status("GAME");
                 try {
                     map_start();

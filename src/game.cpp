@@ -39,10 +39,6 @@
 
 char map_path[480];
 
-#ifndef WIN32
-extern Sound sound;
-#endif /* not WIN32 */
-
 unsigned short dest_x, dest_y, src_x, src_y;
 unsigned int player_x, player_y;
 bool refresh_beings = false;
@@ -130,9 +126,7 @@ void do_init() {
         error("Could not find map file");
     }
 
-#ifndef WIN32
     sound.startBgm("./data/sound/Mods/somemp.xm", -1);
-#endif /* not WIN32 */
 
     // Initialize timers
     tick_time = 0;
@@ -872,12 +866,10 @@ void do_parse() {
                     // Level up
                 case 0x019b:
                     if (RFIFOL(2) == player_node->id) {
-#ifndef WIN32
                         SOUND_SID sound_id = sound.loadItem(
                                 "./data/sound/wavs/level.ogg");
                         sound.startItem(sound_id, 64);
                         sound.clearCache();
-#endif /* not WIN32 */
                     }
                     break;
                     // Emotion

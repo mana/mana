@@ -21,14 +21,11 @@
  *  $Id$
  */
 
-#ifndef WIN32
-
 #include "sound.h"
 
-#ifdef WIN32
-    #pragma warning(disable:4312)
+#ifdef __DEBUG
+    #include <iostream>
 #endif
-
 
 /**
     \brief install the sound engine
@@ -238,5 +235,3 @@ bool Sound::isMaxVol(int vol) {
     if (vol > 0 && vol < 128) return false;
     else return true;
 }
-
-#endif /* not WIN32 */

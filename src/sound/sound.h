@@ -24,20 +24,11 @@
 #ifndef _TMW_SOUND_H
 #define _TMW_SOUND_H
 
-#ifndef WIN32
-
-#ifdef WIN32
-    #pragma warning(disable:4312)
-#endif
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
 #include <map>
 #include <string>
 #include <fstream>
-
-#ifdef __DEBUG
-    #include <iostream>
-#endif
 
 typedef short SOUND_SID ;
 
@@ -85,5 +76,4 @@ class Sound {
         bool isMaxVol(int);
 };
 
-#endif /* not WIN32 */
 #endif
