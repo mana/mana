@@ -294,7 +294,7 @@ int main() {
         break;
       case CHAR_SELECT:
         status("CHAR_SELECT");
-        char_select();
+        charSelect();
         break;
       case GAME:
         sound.StopBGM();

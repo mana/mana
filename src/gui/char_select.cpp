@@ -17,226 +17,384 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
 #include "char_select.h"
 #include "../graphic/graphic.h"
 #include "../graphic/2xsai.h"
 
-char button_state[3];
-char address[41];
-char name[25];
-//short hair_color = 0;
-//short hair_style = 0;
+extern gcn::Gui *gui;
 
-DIALOG char_select_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)     (d1)                    (d2)  (dp)                          (dp2) (dp3) */
-   { tmw_dialog_proc,   300,  240,  200,  208,    0,  -1,    0,    0,          0,                 0,   (char*)"Char select",                      NULL, NULL  },
-   { tmw_text_proc,     304,  268,  192,   10,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
-   { tmw_player_proc,   304,  282,  142,  100,    0,   0,    0,    0,          80,                60,                  NULL,                      NULL, NULL  },
-   { tmw_button_proc,   398,  426,   44,   18,    0,  -1,    'o',  D_EXIT,    -1,                 0,           (char*)"&Ok",                      NULL, NULL  },
-   { tmw_button_proc,   446,  426,   44,   18,    0,  -1,    'c',  D_EXIT,    -1,                 0,       (char*)"&Cancel",                      NULL, NULL  },
-   { tmw_button_proc,   304,  426,   44,   18,    0,   0,    0,    D_EXIT,     0,                 0,           button_state,                      NULL, NULL  },
-/* { gui_button_proc,   304,  356,   20,   20,    0,   0,    0,    0,          0,                 0,                    "<",                      NULL, NULL  },
-   { gui_button_proc,   328,  356,   20,   20,    0,   0,    0,    0,          0,                 0,                    ">",                      NULL, NULL  },  */
-   { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
-};
+CharSelectDialog::CharSelectDialog(gcn::Container *parent)
+    : Window(parent, "Select Character")
+{
+    selectButton = new Button(" OK ");
+    cancelButton = new Button("Cancel");
+    newCharButton = new Button(" New ");
+    delCharButton = new Button("Delete");
+    nameLabel = new gcn::Label("Name");
+    levelLabel = new gcn::Label("Level");
+    jobLevelLabel = new gcn::Label("Job Level");
+    moneyLabel = new gcn::Label("Money");
 
-DIALOG char_create_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)     (d1)                    (d2)  (dp)                          (dp2) (dp3) */
-   { tmw_dialog_proc,   300,  240,  200,  208,    0,  -1,    0,    0,          0,                 0,   (char*)"Char create",                      NULL, NULL  },
-   { tmw_text_proc,     302,  386,  192,   20,    0,   0,    0,    0,          0,                 0,       (char *)"Name: ",                      NULL, NULL  },
-   { tmw_edit_proc,     340,  386,  156,   20,    0,   0,    0,    0,         24,                 0,                   name,                      NULL, NULL  },
-   { tmw_button_proc,   398,  426,   44,   18,    0,  -1,    'o',  D_EXIT,    -1,                 0,           (char*)"&Ok",                      NULL, NULL  },
-   { tmw_button_proc,   446,  426,   44,   18,    0,  -1,    'c',  D_EXIT,    -1,                 0,       (char*)"&Cancel",                      NULL, NULL  },
-   { tmw_player_proc,   304,  282,  142,  100,    0,   0,    0,    0,          80,                60,                  NULL,                      NULL, NULL  },
-   { tmw_incbutt_proc,  450,  282,   20,   20,    0,   0,    0,    0,          2,                 0,    (char*)"<",                      &char_info->hair_color, NULL  },
-   { tmw_incbutt_proc,  472,  282,   20,   20,    0,   0,    0,    0,          1,                 0,    (char*)">",                      &char_info->hair_color, NULL  },
-   { tmw_incbutt_proc2, 450,  304,   20,   20,    0,   0,    0,    0,          2,                 0,    (char*)"<",                      &char_info->hair_style, NULL  },
-   { tmw_incbutt_proc2, 472,  304,   20,   20,    0,   0,    0,    0,          1,                 0,    (char*)">",                      &char_info->hair_style, NULL  },
-   { NULL,              0,    0,     0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
-};
+    nameLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
+    levelLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
+    jobLevelLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
+    moneyLabel->setDimension(gcn::Rectangle(0, 0, 128, 16));
 
-#define MAX_HAIR_COLOR 9
+    selectButton->setEventId("ok");
+    newCharButton->setEventId("new");
+    cancelButton->setEventId("cancel");
+    delCharButton->setEventId("delete");
+
+    selectButton->setPosition(128, 180);
+    cancelButton->setPosition(166, 180);
+    newCharButton->setPosition(4, 180);
+    delCharButton->setPosition(64, 180);
+    nameLabel->setPosition(10, 100);
+    levelLabel->setPosition(10, 116);
+    jobLevelLabel->setPosition(10, 132);
+    moneyLabel->setPosition(10, 148);
+
+    add(selectButton);
+    add(cancelButton);
+    add(newCharButton);
+    add(delCharButton);
+    add(nameLabel);
+    add(levelLabel);
+    add(jobLevelLabel);
+    add(moneyLabel);
+
+    // Set up event listener
+    selectButton->addActionListener(this);
+    cancelButton->addActionListener(this);
+    newCharButton->addActionListener(this);
+    delCharButton->addActionListener(this);
+
+    setDimension(gcn::Rectangle(240, 64, 240, 216));
+    setLocationRelativeTo(getParent());
+}
+
+CharSelectDialog::~CharSelectDialog()
+{
+    delete selectButton;
+    delete cancelButton;
+    delete newCharButton;
+}
+
+void CharSelectDialog::action(const std::string& eventId)
+{
+    if (eventId == "ok") {
+        // Start game
+        state = GAME;
+    }
+    else if (eventId == "cancel") {
+        state = EXIT;
+    }
+    else if (eventId == "new") {
+        // Create new character
+        if (n_character > 0)
+            return;
+        // Start new character dialog...
+        charCreate();
+    } else if (eventId == "delete") {
+        // Delete character
+        if (n_character <= 0)
+            return;
+        serverCharDelete();
+    }
+}
+
 #define MAX_HAIR_STYLE 3
+#define MAX_HAIR_COLOR 9
+int curHairColor = 0;
+int curHairStyle = 0;
+std::string curName;
 
-int tmw_incbutt_proc(int msg, DIALOG *d, int c) {
-  if(msg==MSG_CLICK) {
-    if(d->d1==1)char_info->hair_color++;
-    else if(d->d1==2)char_info->hair_color--;
-    if(char_info->hair_color<1)char_info->hair_color = MAX_HAIR_COLOR+1;
-    if(char_info->hair_color>MAX_HAIR_COLOR+1)char_info->hair_color = 1;
-    d->flags = 0;
-    return D_O_K;
-  }
-  return tmw_button_proc(msg, d, c);
+CharCreateDialog::CharCreateDialog(gcn::Container *parent)
+    : Window(parent, "Create Character")
+{
+    nameField = new gcn::TextField("");
+    nameLabel = new gcn::Label("Name:");
+    nextHairColorButton = new Button(">");
+    prevHairColorButton = new Button("<");
+    hairColorLabel = new gcn::Label("Hair Color:");
+    nextHairStyleButton = new Button(">");
+    prevHairStyleButton = new Button("<");
+    hairStyleLabel = new gcn::Label("Hair Style:");
+    createButton = new Button("Create");
+
+    nextHairColorButton->setEventId("nextcolor");
+    prevHairColorButton->setEventId("prevcolor");
+    nextHairStyleButton->setEventId("nextstyle");
+    prevHairStyleButton->setEventId("prevstyle");
+    createButton->setEventId("create");
+
+    nameField->setDimension(gcn::Rectangle(0, 0, 96, 16));
+
+    nameField->setPosition(40, 4);
+    nameLabel->setPosition(4, 4);
+    nextHairColorButton->setPosition(160, 32);
+    prevHairColorButton->setPosition(96, 32);
+    hairColorLabel->setPosition(4, 34);
+    nextHairStyleButton->setPosition(160, 64);
+    prevHairStyleButton->setPosition(96, 64);
+    hairStyleLabel->setPosition(4, 66);
+    createButton->setPosition(125, 96);
+
+    nextHairColorButton->addActionListener(this);
+    prevHairColorButton->addActionListener(this);
+    nextHairStyleButton->addActionListener(this);
+    prevHairStyleButton->addActionListener(this);
+    createButton->addActionListener(this);
+
+    add(nameField);
+    add(nameLabel);
+    add(nextHairColorButton);
+    add(prevHairColorButton);
+    add(hairColorLabel);
+    add(nextHairStyleButton);
+    add(prevHairStyleButton);
+    add(hairStyleLabel);
+    add(createButton);
+
+    setDimension(gcn::Rectangle(32, 32, 200, 128));
+    setLocationRelativeTo(getParent());
 }
 
-int tmw_incbutt_proc2(int msg, DIALOG *d, int c) {
-  if(msg==MSG_CLICK) {
-    if(d->d1==1)char_info->hair_style++;
-    else if(d->d1==2)char_info->hair_style--;
-    if(char_info->hair_style<1)char_info->hair_style = MAX_HAIR_STYLE+1;
-    if(char_info->hair_style>MAX_HAIR_STYLE+1)char_info->hair_style = 1;
-    d->flags = 0;
-    return D_O_K;
-  }
-  return tmw_button_proc(msg, d, c);
+CharCreateDialog::~CharCreateDialog()
+{
+    delete nameField;
+    delete nameLabel;
+    delete nextHairColorButton;
+    delete prevHairColorButton;
+    delete hairColorLabel;
+    delete nextHairStyleButton;
+    delete prevHairStyleButton;
+    delete hairStyleLabel;
 }
 
-int tmw_player_proc(int msg, DIALOG *d, int c) {
-  if(msg==MSG_DRAW) {
-    tmw_bitmap_proc(MSG_DRAW, d, 0);
-    if(n_character>0) {
-      masked_blit(playerset, gui_bitmap, 0, 0, d->x-10+40, d->y-10+30, 80, 60);
-      masked_blit(hairset, gui_bitmap, 20*(char_info->hair_color-1), 20*4*(char_info->hair_style-1), d->x+21+40, d->y+5+30, 20, 20);
+void CharCreateDialog::action(const std::string& eventId)
+{
+    if (eventId == "create") {
+        // Create character (used to exit create dialog loop)
+        state = CHAR_SELECT;
     }
-    //textprintf(gui_bitmap, font, 0, 0, makecol(255,255,255), "%i", char_info->hair_style);
-    //Super2xSaI(temp, gui_bitmap, 0, 0, d->x, d->y, temp->w*2, temp->h*2);
-    //blit(temp, gui_bitmap, 0, 0, d->x, d->y, 60,50);
-  }
-  return D_O_K;
-}
-
-void char_select() {
-  state = LOGIN;
-  if(n_character>0) {
-    char_select_dialog[1].dp = char_info->name;
-		char_select_dialog[1].x = 400-text_length(font, char_info->name)/2;
-		//char_select_dialog[2].dp = playerset;
-		if(playerset==NULL)ok("Error", "Playerset not loaded");
-		strcpy(button_state, "Del");
-		char_select_dialog[3].flags &= D_CLOSE;
-	} else {
-		char *temp = (char *)malloc(3);
-		strcpy(temp, "");
-		char_select_dialog[1].dp = temp;
-		char_select_dialog[3].flags |= D_DISABLED;
-		char_select_dialog[2].dp = NULL;
-		strcpy(button_state, "New");
-		char_info->hair_color = 1;
-		char_info->hair_style = 1;
-	}
-  //centre_dialog(char_select_dialog);
-	DIALOG_PLAYER *player = init_dialog(char_select_dialog, -1);
-  //centre_dialog(char_select_dialog);
-	int gui_exit = 1;
-	while((!key[KEY_ESC])&&(gui_exit)&&(!key[KEY_ENTER])) {
-		clear_bitmap(buffer);
-		blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
-		gui_exit = gui_update(player);
-		blit(buffer, screen, 0, 0, 0, 0, 800, 600);
-	}
-	gui_exit = shutdown_dialog(player);
-	if((gui_exit==3)||((key[KEY_ENTER])&&(strcmp(button_state, "Del")==0)))server_char_select();
-	else if(gui_exit==4)close_session();
-	else if(gui_exit==5)server_char_delete();
- 	//alert("","","","","",0,0);
-	if(state==LOGIN)close_session();
-}
-
-void server_char_select() {
-  // Request character selection
-  WFIFOW(0) = net_w_value(0x0066);
-  WFIFOB(2) = net_b_value(0);
-  WFIFOSET(3);
-
-  while((in_size<3)||(out_size>0))flush();
-  log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
-          RFIFOW(0),
-          get_length(RFIFOW(0)),
-          RFIFOW(2));
-  log("CharSelect", "In_size: %d", in_size);
-
-  if(RFIFOW(0)==0x0071) {
-    while(in_size<28)flush();
-    char_ID = RFIFOL(2);
-    memset(map_path, '\0', 480);
-    append_filename(map_path, "./data/map/", RFIFOP(6), 480);
-    map_address = RFIFOL(22);
-    map_port = RFIFOW(26);
-    state = GAME;
-
-    log("CharSelect", "Map: %s", map_name);
-    log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
-    RFIFOSKIP(28);
-    close_session();
-  } else if(RFIFOW(0)==0x006c) {
-    switch(RFIFOB(2)) {
-      case 0:
-        ok("Error", "Access denied");
-        break;
-      case 1:
-        ok("Error", "Cannot use this ID");
-        break;
+    else if (eventId == "nextcolor") {
+        curHairColor++;
     }
-    state = CHAR_SELECT;
-    RFIFOSKIP(3);
-  }
-  // Todo: add other packets
+    else if (eventId == "prevcolor") {
+        curHairColor--;
+    }
+    else if (eventId == "nextstyle") {
+        curHairStyle++;
+    }
+    else if (eventId == "prevstyle") {
+        curHairStyle--;
+    }
+
+    if (curHairColor < 0)
+        curHairColor = 0;
+    if (curHairColor > MAX_HAIR_COLOR)
+        curHairColor = MAX_HAIR_COLOR;
+    if (curHairStyle < 0)
+        curHairStyle = 0;
+    if (curHairStyle > MAX_HAIR_STYLE)
+        curHairStyle = MAX_HAIR_STYLE;
 }
 
-void server_char_delete() {
-  state = CHAR_SELECT;
-  // Delete a character
-  if(!strcmp(button_state, "Del")) {
-    if(yes_no("Confirm", "Are you sure?")==0) {
-      // Request character deletion
-      WFIFOW(0) = net_w_value(0x0068);
-      WFIFOL(2) = net_l_value(char_info->id);
-      WFIFOSET(46);
 
-      while((in_size<2)||(out_size>0))flush();
-      if(RFIFOW(0)==0x006f) {
-        RFIFOSKIP(2);
-        ok("Info", "Player deleted");
-        free(char_info);
-        n_character = 0;
-      } else if(RFIFOW(0)==0x006c) {
-        switch(RFIFOB(2)) {
-          case 0:
-            ok("Error", "Access denied");
-            break;
-          case 1:
-            ok("Error", "Cannot use this ID");
-            break;
+void charSelect()
+{
+    CharSelectDialog *sel;
+    sel = new CharSelectDialog(guiTop);
+
+    state = LOGIN;
+
+    while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT && state == LOGIN)
+    {
+        if (n_character > 0) {
+            char tmpBuf[64];
+            sel->setName(char_info->name);
+            sprintf(tmpBuf, "Lvl: %d", char_info->lv);
+            sel->setLevel(tmpBuf);
+            sprintf(tmpBuf, "Job Lvl: %d", char_info->job_lv);
+            sel->setJobLevel(tmpBuf);
+            sprintf(tmpBuf, "Gold: %d", char_info->gp);
+            sel->setMoney(tmpBuf);
         }
-        RFIFOSKIP(3);
-      } else ok("Error", "Unknown error");
+
+        // Draw background
+        blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
+
+        // Update gui
+        gui->logic();
+        gui->draw();
+
+        gui_update(NULL);
+
+        // Draw character
+        const int pX = 16, pY = 32;
+        if (n_character > 0) {
+            masked_blit(playerset, buffer, 0, 0,
+                    pX + sel->getDimension().x,
+                    pY + sel->getDimension().y, 80, 60);
+            masked_blit(hairset, buffer,
+                    20 * (char_info->hair_color - 1),
+                    20 * 4 * (char_info->hair_style - 1),
+                    pX + 31 + sel->getDimension().x,
+                    pY + 15 + sel->getDimension().y, 20, 20);
+        }
+
+        // Draw to screen
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+
     }
-  // Create a new character
-  } else {
+
+    if (state == GAME)
+    {
+        serverCharSelect();
+        close_session();
+    }
+
+    delete sel;
+}
+
+void serverCharSelect()
+{
+    // Request character selection
+    WFIFOW(0) = net_w_value(0x0066);
+    WFIFOB(2) = net_b_value(0);
+    WFIFOSET(3);
+
+    while ((in_size < 3) || (out_size > 0)) {
+        flush();
+    }
+
+    log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
+            RFIFOW(0),
+            get_length(RFIFOW(0)),
+            RFIFOW(2));
+    log("CharSelect", "In_size: %d", in_size);
+
+    if (RFIFOW(0) == 0x0071) {
+        while (in_size < 28) {
+            flush();
+        }
+        char_ID = RFIFOL(2);
+        memset(map_path, '\0', 480);
+        append_filename(map_path, "./data/map/", RFIFOP(6), 480);
+        map_address = RFIFOL(22);
+        map_port = RFIFOW(26);
+        state = GAME;
+
+        log("CharSelect", "Map: %s", map_name);
+        log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
+        RFIFOSKIP(28);
+        close_session();
+    } else if (RFIFOW(0) == 0x006c) {
+        switch (RFIFOB(2)) {
+            case 0:
+                ok("Error", "Access denied");
+                break;
+            case 1:
+                ok("Error", "Cannot use this ID");
+                break;
+        }
+        state = CHAR_SELECT;
+        RFIFOSKIP(3);
+    }
+    // Todo: add other packets
+}
+
+void charCreate()
+{
+    CharCreateDialog *create = new CharCreateDialog(guiTop);
+
+    state = LOGIN;
+    while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT &&
+            state != CHAR_SELECT)
+    {
+        // Draw background
+        blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
+
+        // Update gui
+        gui->logic();
+        gui->draw();
+
+        gui_update(NULL);
+
+        // Draw character
+        const int pX = 96, pY = 40;
+        masked_blit(playerset, buffer, 0, 0,
+                pX + create->getDimension().x,
+                pY + create->getDimension().y, 80, 60);
+        masked_blit(hairset, buffer, 20 * curHairColor, 20 * 4 * curHairStyle,
+                pX + 31 + create->getDimension().x,
+                pY + 15 + create->getDimension().y, 20, 20);
+
+        // Draw to screen
+        blit(buffer, screen, 0, 0, 0, 0, 800, 600);
+
+        curName = create->getName();
+    }
+
+    if (state == CHAR_SELECT) {
+        serverCharCreate();
+    }
+
+    delete create;
+}
+
+void serverCharDelete() {
+    state = CHAR_SELECT;
+    // Delete a character
+    if (yes_no("Confirm", "Are you sure?")==0) {
+        // Request character deletion
+        WFIFOW(0) = net_w_value(0x0068);
+        WFIFOL(2) = net_l_value(char_info->id);
+        WFIFOSET(46);
+
+        while ((in_size < 2) || (out_size > 0)) flush();
+        if (RFIFOW(0) == 0x006f) {
+            RFIFOSKIP(2);
+            ok("Info", "Player deleted");
+            free(char_info);
+            n_character = 0;
+        } else if (RFIFOW(0) == 0x006c) {
+            switch (RFIFOB(2)) {
+                case 0:
+                    ok("Error", "Access denied");
+                    break;
+                case 1:
+                    ok("Error", "Cannot use this ID");
+                    break;
+            }
+            RFIFOSKIP(3);
+        } else ok("Error", "Unknown error");
+    }
+}
+
+void serverCharCreate()
+{
     n_character = 1;
 
-    centre_dialog(char_create_dialog);
-    DIALOG_PLAYER *player = init_dialog(char_create_dialog, -1);
-    int gui_exit = 1;
-    while ((!key[KEY_ESC])&&(gui_exit)) {
-      clear_bitmap(buffer);
-      blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
-      gui_exit = gui_update(player);
-      blit(buffer, screen, 0, 0, 0, 0, 800, 600);
-    }
-    gui_exit = shutdown_dialog(player);
-    if(gui_exit==3) {
-      WFIFOW(0) = net_w_value(0x0067);
-      strcpy(WFIFOP(2), name);
-      WFIFOB(26) = net_b_value(5);
-      WFIFOB(27) = net_b_value(5);
-      WFIFOB(28) = net_b_value(5);
-      WFIFOB(29) = net_b_value(5);
-      WFIFOB(30) = net_b_value(5);
-      WFIFOB(31) = net_b_value(5);
-      WFIFOB(32) = net_b_value(0);
-      WFIFOW(33) = net_w_value(char_info->hair_color);
-      WFIFOW(35) = net_w_value(char_info->hair_style);
-      WFIFOSET(37);
+    WFIFOW(0) = net_w_value(0x0067);
+    strcpy(WFIFOP(2), curName.c_str());
+    WFIFOB(26) = net_b_value(5);
+    WFIFOB(27) = net_b_value(5);
+    WFIFOB(28) = net_b_value(5);
+    WFIFOB(29) = net_b_value(5);
+    WFIFOB(30) = net_b_value(5);
+    WFIFOB(31) = net_b_value(5);
+    WFIFOB(32) = net_b_value(0);
+    WFIFOW(33) = net_w_value(curHairColor + 1);
+    WFIFOW(35) = net_w_value(curHairStyle + 1);
+    WFIFOSET(37);
 
-      while((in_size<3)||(out_size>0))flush();
-      if(RFIFOW(0)==0x006d) {
-        while(in_size<108)flush();
+    while ((in_size < 3) || (out_size > 0)) flush();
+    if (RFIFOW(0) == 0x006d) {
+        while (in_size < 108) flush();
         char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO));
         char_info->id = RFIFOL(2);//account_ID;
         memset(char_info->name, '\0', 24);
@@ -244,38 +402,36 @@ void server_char_delete() {
         char_info->hp = RFIFOW(2+42);
         char_info->max_hp = RFIFOW(2+44);
         char_info->sp = RFIFOW(2+46);
-				char_info->max_sp = RFIFOW(2+48);
-				char_info->job_lv = RFIFOL(2+16);
+        char_info->max_sp = RFIFOW(2+48);
+        char_info->job_lv = RFIFOL(2+16);
         char_info->job_xp = RFIFOL(2+12);
-				char_info->lv = RFIFOW(2+58);
-				char_info->xp = RFIFOL(2+4);
-				char_info->gp = RFIFOL(2+8);
-				char_info->STR = RFIFOB(2+98);
-				char_info->AGI = RFIFOB(2+99);
-				char_info->VIT = RFIFOB(2+100);
-				char_info->INT = RFIFOB(2+101);
-				char_info->DEX = RFIFOB(2+102);
-				char_info->LUK = RFIFOB(2+103);
-				char_info->hair_style = RFIFOW(2+54);
-				char_info->hair_color = RFIFOW(2+70);
-				char_info->weapon = RFIFOW(2+56);
-				RFIFOSKIP(108);
-				//n_character++;
-			} else if(RFIFOW(0)==0x006c) {
-				switch(RFIFOB(2)) {
-          case 0:
-            ok("Error", "Access denied");
-            break;
-          case 1:
-            ok("Error", "Cannot use this ID");
-            break;
+        char_info->lv = RFIFOW(2+58);
+        char_info->xp = RFIFOL(2+4);
+        char_info->gp = RFIFOL(2+8);
+        char_info->STR = RFIFOB(2+98);
+        char_info->AGI = RFIFOB(2+99);
+        char_info->VIT = RFIFOB(2+100);
+        char_info->INT = RFIFOB(2+101);
+        char_info->DEX = RFIFOB(2+102);
+        char_info->LUK = RFIFOB(2+103);
+        char_info->hair_style = RFIFOW(2+54);
+        char_info->hair_color = RFIFOW(2+70);
+        char_info->weapon = RFIFOW(2+56);
+        RFIFOSKIP(108);
+        //n_character++;
+    } else if (RFIFOW(0) == 0x006c) {
+        switch (RFIFOB(2)) {
+            case 0:
+                ok("Error", "Access denied");
+                break;
+            case 1:
+                ok("Error", "Cannot use this ID");
+                break;
         }
         RFIFOSKIP(3);
         n_character = 0;
-      } else {
+    } else {
         ok("Error", "Unknown error");
         n_character = 0;
-      }
-    } else n_character = 0;
-  }
+    }
 }

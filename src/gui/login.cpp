@@ -126,7 +126,6 @@ void login() {
     LoginDialog *dialog = new LoginDialog(guiTop);
 
     while (state == LOGIN) {
-        clear_bitmap(buffer);
         blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
         gui_update(NULL);
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);

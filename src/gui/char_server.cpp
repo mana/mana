@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
 #include "char_server.h"
@@ -106,7 +104,6 @@ void char_server() {
 
     showServerList = 1;
     while (showServerList) {
-        clear_bitmap(buffer);
         blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
         gui_update(NULL);
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
