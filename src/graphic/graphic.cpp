@@ -244,6 +244,11 @@ void do_graphic(void) {
 				node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
 	      if(node->frame>=4) {
           node->frame = 0;
+          if(node->action==WALK)
+            if(walk_status==1) {
+              set_coordinates(player_node->coordinates, src_x, src_y, direction);
+              walk_status = 0;
+            }  
 					node->action = STAND;
 //					node->tick_time;
 					if(node->id==player_node->id)
@@ -486,7 +491,7 @@ void do_graphic(void) {
 	update_stats_dialog();
 	gui_update(stats_player);
 
-	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i", fps, player_node->frame, player_node->action);
+	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i %i %i", fps, get_x(player_node->coordinates), get_y(player_node->coordinates),src_x,src_y);
 
 	//alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
 

@@ -39,6 +39,8 @@
 
 #define IS_ANNOUNCE					"/announce "
 #define IS_ANNOUNCE_LENGTH	10
+#define IS_WHERE            "/where "
+#define IS_WHERE_LENGTH     7
 
 /**
 		gets in between usernick and message text depending on

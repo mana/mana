@@ -50,7 +50,7 @@ char *item_list(int index, int *list_size) {
 void add_item(char *name) {
 	ITEM *item = item_head;
 	ITEM *temp = (ITEM *)malloc(sizeof(ITEM));
-	temp->name = NULL;
+	//temp->name = NULL;
 	temp->name = name;
 	temp->next = NULL;
 	if(!item_head)
@@ -63,16 +63,29 @@ void add_item(char *name) {
 	item_number++;
 }
 
+void remove_tail() {
+  int iterator = 0;
+  ITEM *temp = item_head;
+  while(iterator<item_number-2) {
+    temp = temp->next;
+    iterator++;
+  }
+  free(temp->next);
+  temp->next = NULL;
+  item_number--;
+}  
+
 void parse_items(char *string, short len) {
   char *token = strtok(string, ":");
   while(token!=NULL) {
-    if(strcmp(token, "you prefer?")!=0) { // temp fix for the barber script
+    //if(strcmp(token, "you prefer?")!=0) { // temp fix for the barber script
       char *temp = (char *)malloc(strlen(token));
       strcpy(temp, token);
       add_item(temp);
-    }  
+    //}  
     token = strtok(NULL, ":");
-  }  
+  }
+  remove_tail();  
 } 
 
 void remove_all_items() {
@@ -87,6 +100,5 @@ void remove_all_items() {
 	}
 	item_head = NULL;
 	item_number = 0;
-}   
-
+}
 

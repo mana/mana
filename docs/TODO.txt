@@ -1,13 +1,11 @@
 1) Gui
     - Fix drag & drop (ElvenProgrammer)
     - Add iconify button (ElvenProgrammer)
-    - Skill point assignement (ElvenProgrammer)
     - Trading system (SimEdw)
-    - Add config dialog
+    - Add config dialog (SimEdw)
 2) Sound engine
     - ogg/mp3 playback (kth5)
 3) Npc
-    - Multi-page dialogs (SimEdw)
     - Quest system (SimEdw)
 4) Chat
     - Shift when overlaying (kth5)
@@ -25,6 +23,6 @@
     - Clothing and hairstyling system
     - Item drops (ElvenProgrammer)
     - Minimap
-    - Trading system
 8) Optimization
     - Bubble sort->quick sort
+    - Fix A*

@@ -184,7 +184,8 @@ char * Chat::chat_send(std::string nick, std::string msg) {
 		if(msg.substr(0,IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
 			msg.erase(0,IS_ANNOUNCE_LENGTH);
 			packid = 0x0099;
-		} else {
+		} else if(msg.substr(0,IS_WHERE_LENGTH) == IS_WHERE) {
+    } else {
 			packid = 0x008c;
 		}
 	// prepare ordinary message

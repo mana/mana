@@ -121,6 +121,7 @@ void char_select() {
 	if((gui_exit==3)||((key[KEY_ENTER])&&(strcmp(button_state, "Del")==0)))server_char_select();
 	else if(gui_exit==4)close_session();
 	else if(gui_exit==5)server_char_delete();
+ 	//alert("","","","","",0,0);
 	if(state==LOGIN)close_session();
 }
 

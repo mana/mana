@@ -381,8 +381,13 @@ void do_parse() {
 				break;
         // Success to walk request
         case 0x0087:
-					if(walk_status==1)
-              walk_status = 2;
+					if(walk_status==1) {
+					  if(get_src_x(RFIFOP(6))==src_x)
+					    if(get_src_y(RFIFOP(6))==src_y)
+					      if(get_dest_x(RFIFOP(6))==get_x(player_node->coordinates))
+					        if(get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))
+					          walk_status = 2;
+					}  
           break;
         // Add new being / stop monster
         case 0x0078:
@@ -675,10 +680,8 @@ void do_parse() {
 					break;
 				// Level up
 				case 0x019b:
-					if(RFIFOW(2)==0) {
-						ok("Info", "Level up!");
-					} else if(RFIFOW(2)==1) {
-						ok("Info", "Job level up!");
+					if(RFIFOL(2)==player_node->id) {
+					  sound.StartWAV("./data/sound/wavs/level.wav", 10);
 					}
 					break;
 				// Emotion
