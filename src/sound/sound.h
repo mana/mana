@@ -24,8 +24,12 @@
 #ifndef __SOUND_H
 #define __SOUND_H
 
+#include <list>
+#include <string>
+#include <fstream>
+
 #ifdef WIN32
-  #pragma warning(disable:4312)
+	#pragma warning(disable:4312)
 #endif
 #include <allegro.h>
 #include <jgmod.h>
@@ -33,51 +37,78 @@
 using namespace std;
 
 /**
-  rewrite of non-existend sdl-soundengine using allegro
-  
-  Author: kth5 aka Alexander Baldeck
-    pipe your question, suggestions and flames to: kth5@gawab.com
+	rewrite of non-existend sdl-soundengine using allegro
 
-  NOTE:
-      i documented all functions in their implementation. ;-)
+	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
+
+	Author: kth5 aka Alexander Baldeck
+		pipe your question, suggestions and flames to: kth5@gawab.com
+
+	NOTE:
+			i documented all functions in their implementation. ;-)
 */
 
+#define TMWSOUND_MOD 1
+#define TMWSOUND_MID 2
+#define TMWSOUND_SFX 3
+
+typedef unsigned short TMWSOUND_SID ;
+
 class TmwSound {
-  public:
-    void  Init(int, int);
-    int   Close();
-    
-    void  StartMIDI(char *, int);
-    void  StartMOD(char *, int);
-    void  StopBGM(); 
+	public:
+		void  Init(int, int);
+		int   Close();
 
-    void  StartWAV(char *, int);
-    void  SetVol(int, int, int);
-    void  SetAdjVol(int adigi, int amid, int amod);
-    
-    TmwSound() {isOk=-1;}
-    ~TmwSound() {StopBGM(); Close();};  // if allegros shuts down or object is deleted
-                                        // any BGM is stopped and SFX runout
-  private:
-    int isOk;                           // initial value is -1 which means error.
-                                        // you can only play sounds and bgm if this is 0.
-                                        // should be the case after calling Init()
-                                        // successfully
-    
-    MIDI   * mid;
-    JGMOD  * mod;
-    SAMPLE * sfx;
+		void  StartMIDI(char *, int);
+		void  StartMOD(char *, int);
+		void  StopBGM(); 
 
-    int pan;
-    int pitch;
-    
-    int ret;
-    int vol_digi;
-    int vol_midi;
-    int vol_mod;
-    
-    bool isMaxVol(int);
+		void  StartWAV(char *, int);
+		void  SetVol(int, int, int);
+		void  SetAdjVol(int, int, int);
+
+		TMWSOUND_SID LoadItem(char *, char);
+
+		TmwSound() {isOk=-1;}
+
+		/* if allegro is shut down or object is deleted any BGM is
+		   stopped and SFX run out */
+		~TmwSound() {StopBGM(); Close();};
+	private:
+		/* initial value is -1 which means error or noninitialzed.
+		   you can only play sounds and bgm if this is 0.
+		   that should be the case after calling Init() successfully */
+		int isOk;
+
+		MIDI   * mid;
+		JGMOD  * mod;
+		SAMPLE * sfx;
+
+		int pan;
+		int pitch;
+		
+		int ret;
+		int vol_digi;
+		int vol_midi;
+		int vol_mod;
+
+		typedef struct POOL_ITEM {
+			/* incremental id of pool item */
+			TMWSOUND_SID id;
+			/* type of item */
+			char type;
+			/* (file-)name of sfx only kept for human reasons ^_^ */
+			string fname;
+			/* generic data casted before used */
+			void * data;
+		};
+
+		/* list of preloaded sound data / items */
+		list<POOL_ITEM> soundpool;
+		list<POOL_ITEM>::iterator sounditem;
+		TMWSOUND_SID items;
+
+		bool isMaxVol(int);
 };
-
 
 #endif

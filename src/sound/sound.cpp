@@ -53,33 +53,35 @@
        32/20 sounds realistic here.
 */
 void TmwSound::Init(int voices, int mod_voices) {
-  isOk = -1;
+	isOk = -1;
   
-  if(mod_voices >= voices)
-    throw("No voices left for SFX! Sound will be disabled!");
+	if(mod_voices >= voices)
+		throw("No voices left for SFX! Sound will be disabled!");
 
-  install_timer();
-  reserve_voices (voices, -1);
+	install_timer();
+	reserve_voices (voices, -1);
  
-  #ifdef WIN32
-    if (install_sound (DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) < 0)
-  #else
-    if (install_sound (DIGI_AUTODETECT, MIDI_NONE, NULL) < 0)
-  #endif
-      throw("Could not initialize sound... :-(");
+	#ifdef WIN32
+		if (install_sound (DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) < 0)
+	#else
+		if (install_sound (DIGI_AUTODETECT, MIDI_NONE, NULL) < 0)
+	#endif
+			throw("Could not initialize sound... :-(");
 
   
-  if (install_mod (mod_voices) < 0)
-    throw("Could not install MOD player... :-(");
+	if (install_mod (mod_voices) < 0)
+		throw("Could not install MOD player... :-(");
 
-  mod = NULL;
-  mid = NULL;
-  sfx = NULL;
+	mod = NULL;
+	mid = NULL;
+	sfx = NULL;
       
-  pan = 128;
-  pitch=1000;
+	pan = 128;
+	pitch=1000;
   
-  isOk = 0;
+	items = 0;
+
+	isOk = 0;
 }
 
 /**
@@ -123,6 +125,32 @@ void TmwSound::SetAdjVol(int adigi, int amid, int amod) {
   if(isMaxVol(vol_digi + adigi)==false) vol_digi += adigi;
   if(isMaxVol(vol_midi + amid) ==false) vol_midi += amid;
   if(isMaxVol(vol_mod  + amod) ==false) vol_mod  += amod;
+}
+
+/**
+	preloads a sound-item into buffer
+		char *fpath -> full path to file
+		char type   -> type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
+    
+	NOTE:
+			only TMWSOUND_SFX items get preloaded. everything 
+			else will only store the full path to the file
+*/
+TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
+	POOL_ITEM item;
+	if(type == TMWSOUND_SFX) {
+		item.data = (void*)load_sample(fpath);
+		if(item.data == NULL)
+			throw(sprintf("Unable to load sample: %s\n", fpath));
+	}
+	
+	items++;
+	item.id = items;
+	item.type = type;
+	item.fname = fpath;
+
+	soundpool.push_front(item);
+	return item.id;
 }
 
 /**
@@ -230,7 +258,7 @@ void TmwSound::StopBGM() {
 */
 void TmwSound::StartWAV(char * in, int pan) {
   if(isOk==-1)
-    return; 
+    return;
   
   sfx = load_sample(in);
   if (!sfx)
