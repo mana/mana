@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=58
+UnitCount=59
 Type=0
 Ver=1
 ObjFiles=
@@ -627,6 +627,16 @@ BuildCmd=
 FileName=src\gui\passwordfield.h
 CompileCpp=1
 Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit59]
+FileName=src\graphic\image.cpp
+CompileCpp=1
+Folder=graphic
 Compile=1
 Link=1
 Priority=1000

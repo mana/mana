@@ -322,35 +322,57 @@ void do_graphic(void) {
     while (node) {
         unsigned short x = get_x(node->coordinates);
         unsigned short y = get_y(node->coordinates);
-        unsigned char dir = get_direction(node->coordinates);
+        unsigned char dir = get_direction(node->coordinates) / 2;
         int sx = x - camera_x;
         int sy = y - camera_y;
         
         if ((node->job >= 100) && (node->job <= 110)) { // Draw a NPC
-            new_npcset->spriteset[4 * (node->job - 100) + dir / 2]->draw(vbuffer, sx * 16 - 4 - offset_x, sy * 16 - 24 - offset_y);
+            new_npcset->spriteset[4 * (node->job - 100) + dir]->draw(vbuffer,
+                    sx * 16 - 4 - offset_x,
+                    sy * 16 - 24 - offset_y);
         }
         else if (node->job < 10) { // Draw a player
             node->text_x = sx * 16 - 34 + get_x_offset(node) - offset_x;
             node->text_y = sy * 16 - 36 + get_y_offset(node) - offset_y;
             if (node->action == SIT) node->frame = 0;
             if (node->action == ATTACK) {
-                new_playerset->spriteset[(dir / 2) + 4 * (node->frame + node->action + 4 * node->weapon)]->draw(vbuffer, node->text_x, node->text_y);
-                draw_rle_sprite(vbuffer, (RLE_SPRITE*)weaponset[16 * node->weapon + 4 * node->frame + dir / 2].dat, node->text_x, node->text_y);
-                masked_blit(hairset, vbuffer, 20 * (node->hair_color - 1), 20 * (dir / 2 + 4 * (node->hair_style - 1)), node->text_x + 31 + hairtable[node->action + node->frame + 4 * node->weapon][dir / 2][0], node->text_y + 15 + hairtable[node->action + node->frame + 4 * node->weapon][dir / 2][1], 20, 20);
+                int pf = node->frame + node->action + 4 * node->weapon;
+                int wf = 16 * node->weapon + 4 * node->frame;
+                new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
+                        node->text_x, node->text_y);
+                draw_rle_sprite(vbuffer, (RLE_SPRITE*)weaponset[wf + dir].dat,
+                        node->text_x, node->text_y);
+                masked_blit(hairset, vbuffer,
+                        20 * (node->hair_color - 1),
+                        20 * (dir + 4 * (node->hair_style - 1)),
+                        node->text_x + 31 + hairtable[pf][dir][0],
+                        node->text_y + 15 + hairtable[pf][dir][1],
+                        20, 20);
             }
             else {
-                new_playerset->spriteset[4 * (node->frame + node->action) + dir / 2]->draw(vbuffer, node->text_x, node->text_y);
-                masked_blit(hairset, vbuffer, 20 * (node->hair_color - 1), 20 * (dir / 2 + 4 * (node->hair_style - 1)), node->text_x + 31 + hairtable[node->action + node->frame][dir / 2][0], node->text_y + 15 + hairtable[node->action + node->frame][dir / 2][1], 20, 20);
+                int pf = node->frame + node->action;
+                new_playerset->spriteset[4 * pf + dir]->draw(vbuffer,
+                        node->text_x, node->text_y);
+                masked_blit(hairset, vbuffer,
+                        20 * (node->hair_color - 1),
+                        20 * (dir + 4 * (node->hair_style - 1)),
+                        node->text_x + 31 + hairtable[pf][dir][0],
+                        node->text_y + 15 + hairtable[pf][dir][1],
+                        20, 20);
             }
             if (node->emotion != 0) {
-                new_emotionset->spriteset[node->emotion - 1]->draw(vbuffer, sx * 16 - 5 + get_x_offset(node) - offset_x, sy * 16 - 45 + get_y_offset(node) - offset_y);
+                new_emotionset->spriteset[node->emotion - 1]->draw(vbuffer,
+                        sx * 16 - 5 + get_x_offset(node) - offset_x,
+                        sy * 16 - 45 + get_y_offset(node) - offset_y);
                 node->emotion_time--;
                 if (node->emotion_time == 0) {
                     node->emotion = 0;
                 }
             }
             if (node->action != STAND && node->action != SIT) {
-                node->frame = (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+                node->frame =
+                    (get_elapsed_time(node->tick_time) * 4) / (node->speed);
+
                 if (node->frame >= 4) {
                     node->frame = 0;
                     node->action = STAND;
@@ -360,13 +382,11 @@ void do_graphic(void) {
                 }
             }
 
-            /*
             textprintf_centre_ex(vbuffer, font,
                     node->text_x + 45,
                     node->text_y + 55,
                     node->speech_color, -1,
-                    "(%d,%d)", x, y);
-            */
+                    "(%d,%d), %d", x, y, dir);
         }
         else if (node->job == 45) { // Draw a warp
         } else { // Draw a monster
@@ -380,10 +400,10 @@ void do_graphic(void) {
             //int r_y = node->text_y-get_y_offset(node);
 
             if (node->action == MONSTER_DEAD) {
-                new_monsterset->spriteset[(dir / 2) + 4 * (node->job - 1002) + 8 * MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
+                new_monsterset->spriteset[dir + 4 * (node->job - 1002) + 8 * MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
             }
             else {
-                new_monsterset->spriteset[(dir / 2) + 4 * (node->job - 1002) + 8 * (node->frame + node->action)]->draw(vbuffer, node->text_x, node->text_y);
+                new_monsterset->spriteset[dir + 4 * (node->job - 1002) + 8 * (node->frame + node->action)]->draw(vbuffer, node->text_x, node->text_y);
             }
 
             if (node->action != STAND) {
@@ -391,23 +411,31 @@ void do_graphic(void) {
                 if (node->frame >= 4) {
                     if (node->action != MONSTER_DEAD && node->path) {
                         if (node->path->next) {
-                            PATH_NODE *old = node->path;
+                            int old_x, old_y, new_x, new_y;
+                            old_x = node->path->x;
+                            old_y = node->path->y;
                             node->path = node->path->next;
+                            new_x = node->path->x;
+                            new_y = node->path->y;
                             direction = 0;
-                            //if(node->path->next) {
-                            if (node->path->x>old->x && node->path->y>old->y)direction = SE;
-                            else if (node->path->x<old->x && node->path->y>old->y)direction = SW;
-                            else if (node->path->x>old->x && node->path->y<old->y)direction = NE;
-                            else if (node->path->x<old->x && node->path->y<old->y)direction = NW;
-                            else if (node->path->x>old->x)direction = EAST;
-                            else if (node->path->x<old->x)direction = WEST;
-                            else if (node->path->y>old->y)direction = SOUTH;
-                            else if (node->path->y<old->y)direction = NORTH;
-                            //}
 
-                            set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
+                            if (new_x > old_x) {
+                                if (new_y > old_y)      direction = SE;
+                                else if (new_y < old_y) direction = NE;
+                                else                    direction = EAST;
+                            }
+                            else if (new_x < old_x) {
+                                if (new_y > old_y)      direction = SW;
+                                else if (new_y < old_y) direction = NW;
+                                else                    direction = WEST;
+                            }
+                            else {
+                                if (new_y > old_y)      direction = SOUTH;
+                                else if (new_y < old_y) direction = NORTH;
+                            }
 
-                            //node->tick_time = tick_time;
+                            set_coordinates(node->coordinates,
+                                    node->path->x, node->path->y, direction);
                         } else {
                             node->action = STAND;
                         }

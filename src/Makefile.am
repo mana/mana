@@ -2,6 +2,7 @@ bin_PROGRAMS = tmw
 tmw_SOURCES = sound/sound.cpp \
 	graphic/2xsai.cpp \
 	graphic/graphic.cpp \
+	graphic/image.cpp \
 	gui/button.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
