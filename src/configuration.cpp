@@ -17,6 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
 
 
@@ -46,7 +48,6 @@ void Configuration::init(std::string filename) {
 
     while (inFile.good()) {
         getline(inFile, inBuffer, '\n');
-        std::cout << inBuffer << std::endl;
 
         if (inBuffer.substr(0, 1) != INI_COMMENTER) {
             // Replace spaces with void
@@ -57,7 +58,6 @@ void Configuration::init(std::string filename) {
             position = inBuffer.find(INI_DELIMITER, 0);
 
             if (position != std::string::npos) {
-                std::cout << inBuffer << std::endl;
                 std::string key = inBuffer.substr(0, position);
 
                 if (inBuffer.length() > position + 1) {
