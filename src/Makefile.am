@@ -10,8 +10,6 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/setup.cpp \
 	gui/gui.cpp \
 	gui/login.cpp \
-	gui/mw_button.cpp \
-	gui/mw_checkbox.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
 	gui/inventory.cpp \
