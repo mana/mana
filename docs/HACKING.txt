@@ -1,0 +1,36 @@
+----------------------------
+The Mana World Hacking Guide
+----------------------------
+
+With multiple coders working on the same source files, there needs to be a
+standard specifying how code is written down. Not doing so can cause quite some
+annoyance for certain coders and easily creates more version conflicts than
+necessary.
+
+* Code is indented using 4 spaces, no tabs.
+
+* Control constructs like this:
+
+  if (condition) {
+  }
+
+  for (init; condition; step) {
+  }
+
+  while (condition) {
+  }
+
+  /*
+   * Documentation about behaviour
+   */
+  void function(param1, param2) {
+  }
+
+  Ending parenthesis may be on next line for clarity.
+
+* Use of whitespace example:
+
+  x = ((5 + 4) * 3) / 1.5;
+
+* Agreement on function/class/variable/method/member naming pending.
+
