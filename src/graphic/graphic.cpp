@@ -27,6 +27,7 @@
 #include "../gui/status.h"
 #include "../gui/minimap.h"
 #include "../gui/equipment.h"
+#include "../gui/newskill.h"
 #include "../main.h"
 #include "../being.h"
 #ifdef USE_OPENGL
@@ -56,6 +57,7 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
+NewSkillDialog *newSkillWindow;
 StatsWindow *statsWindow;
 Setup* setupWindow;
 Minimap *minimap;
@@ -302,6 +304,9 @@ Engine::Engine()
     skillDialog = new SkillDialog();
     skillDialog->setVisible(false);
 
+    newSkillWindow = new NewSkillDialog();
+    newSkillWindow->setVisible(false);
+
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
     statsWindow->setPosition(
@@ -351,6 +356,7 @@ Engine::~Engine()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
+    delete newSkillWindow;
 
     delete monsterset;
     delete npcset;

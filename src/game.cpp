@@ -220,6 +220,10 @@ void do_input()
                     statsWindow->setVisible(!statsWindow->isVisible());
                     used = true;
                 }
+                else if (keysym.sym == SDLK_n) {
+                    newSkillWindow->setVisible(!newSkillWindow->isVisible());
+                    used = true;
+                }
                 else if (keysym.sym == SDLK_k) {
                     skillDialog->setVisible(!skillDialog->isVisible());
                     used = true;

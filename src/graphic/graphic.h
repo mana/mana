@@ -39,6 +39,7 @@ class Graphics;
 #include "../gui/status.h"
 #include "../gui/stats.h"
 #include "../gui/skill.h"
+#include "../gui/newskill.h"
 #include "../gui/setup.h"
 #include "../gui/equipment.h"
 #include "../resources/resourcemanager.h"
@@ -70,6 +71,7 @@ extern InventoryWindow *inventoryWindow;
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;
+extern NewSkillDialog *newSkillWindow;
 extern StatsWindow *statsWindow;
 extern Setup *setupWindow;
 extern EquipmentWindow *equipmentWindow;
