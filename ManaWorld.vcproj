@@ -267,6 +267,9 @@
 					RelativePath=".\Gui\chat.h">
 				</File>
 				<File
+					RelativePath=".\Graphic\datGraphics.h">
+				</File>
+				<File
 					RelativePath=".\Gui\lexgui.h">
 				</File>
 				<File
