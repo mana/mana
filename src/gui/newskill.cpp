@@ -37,7 +37,7 @@ char *skill_name[] = {
     "Short Blades", "Long Blades", "Hammers", "Archery", "Whip",
     "Exotic", "Throwing ", "Piercing", "Hand to Hand", "",
     // magic skills 10-19
-    "Djin (Fire)", "Niksa (Water)", "Earth (Kerub)", "Air (Ariel)",
+    "Djin (Fire)", "Niksa (Water)", "Earth (Kerub)", "Ariel (Air)",
     "Paradin (Light)", "Tharsis (Dark)", "Crono (Time)", "Astra (Space)",
     "Gen (Mana)", "",
     // craft skills 20-29
@@ -65,9 +65,23 @@ char *skill_name[] = {
     "", "", "", "", "", "", "", "", "", ""
 };
 
+
+
 NewSkillDialog::NewSkillDialog():
     Window("Skills")
 {
+    skillLabel = new gcn::Label[N_SKILL_CAT_SIZE]("Empty               ");
+    skillLevel = new gcn::Label[N_SKILL_CAT_SIZE]("00000");
+    skillbar = new ProgressBar[N_SKILL_CAT_SIZE](0.0f,0,0,270,0,0,255);
+    startPoint = 0;
+    resetNSD();
+    for(int a=0;a<N_SKILL_CAT_SIZE;a++)
+    {
+        skillLevel[a].setAlignment(Graphics::RIGHT);
+        add(&skillLabel[a],40,50+a*20);
+        add(&skillLevel[a],200,50+a*20);
+        add(&skillbar[a],250,50+a*20);
+    }
     
     // create controls
     catButton[0] = new Button("Weapons");
@@ -96,17 +110,27 @@ NewSkillDialog::NewSkillDialog():
     closeButton->setEventId("close");
 
     // positioning
-    setSize(560, 300);
-    catButton[0]->setPosition(10, 10);
+    setSize(540, 250);
+    catButton[0]->setDimension(gcn::Rectangle(0,0,60,20));
+    catButton[0]->setPosition(0, 10);
+    catButton[1]->setDimension(gcn::Rectangle(0,0,60,20));
     catButton[1]->setPosition(60, 10);
-    catButton[2]->setPosition(100, 10);
+    catButton[2]->setDimension(gcn::Rectangle(0,0,60,20));
+    catButton[2]->setPosition(120, 10);
+    catButton[3]->setDimension(gcn::Rectangle(0,0,60,20));
     catButton[3]->setPosition(180, 10);
+    catButton[4]->setDimension(gcn::Rectangle(0,0,60,20));
     catButton[4]->setPosition(240, 10);
+    catButton[5]->setDimension(gcn::Rectangle(0,0,60,20));
     catButton[5]->setPosition(300, 10);
-    catButton[6]->setPosition(370, 10);
-    catButton[7]->setPosition(430, 10);
-    catButton[8]->setPosition(490, 10);
-    closeButton->setPosition(480, 280);
+    catButton[6]->setDimension(gcn::Rectangle(0,0,60,20));
+    catButton[6]->setPosition(360, 10);
+    catButton[7]->setDimension(gcn::Rectangle(0,0,60,20));
+    catButton[7]->setPosition(420, 10);
+    catButton[8]->setDimension(gcn::Rectangle(0,0,60,20));
+    catButton[8]->setPosition(480, 10);
+    closeButton->setDimension(gcn::Rectangle(0,0,60,20));
+    closeButton->setPosition(480, 230);
 
     // add controls
     add(catButton[0]);
@@ -132,23 +156,6 @@ NewSkillDialog::NewSkillDialog():
     catButton[8]->addActionListener(this);
     closeButton->addActionListener(this);
 
-    // setting up the container
-    /*skillList = new gcn::Container();
-    skillList->setOpaque(false);
-
-    skillList->setDimension(gcn::Rectangle(0, 0, 230, 600));
-    for (int b = 0; b < N_SKILL; b++) {
-        skillList->add(&skillLabel[b], 20, 20 * b);
-    }
-
-    // the scroll area (content = container)
-    skillScrollArea = new ScrollArea();
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 290));
-    skillScrollArea->setContent(skillList);
-    add(skillScrollArea);*/
-
-
-
     // finsihing touches
     setLocationRelativeTo(getParent());
 }
@@ -163,12 +170,73 @@ NewSkillDialog::~NewSkillDialog()
 
 void NewSkillDialog::action(const std::string& eventId)
 {
+     int osp = startPoint;
     if (eventId == "close")
     {
         setVisible(false);
     }
-    else if (eventId == "g1") // weapons group 0-10
+    else if (eventId == "g1") // weapons group 0-9
     {
         startPoint =0;
     }
+    else if (eventId == "g2") // magic group 10-19
+    {
+        startPoint =10;
+    }
+    else if (eventId == "g3") // craft group 20-29
+    {
+        startPoint =20;
+    }
+    else if (eventId == "g4") // general group 30-39
+    {
+        startPoint =30;
+    }
+    else if (eventId == "g5") // combat group 40-49
+    {
+        startPoint =40;
+    }
+    else if (eventId == "g6") // e. resist group 50-59
+    {
+        startPoint =50;
+    }
+    else if (eventId == "g7") // s resist group 60-69
+    {
+        startPoint =60;
+    }
+    else if (eventId == "g8") // hunting group 70-79
+    {
+        startPoint =70;
+    }
+    else if (eventId == "g9") // stats group 80-89
+    {
+        startPoint =80;
+    }
+    if(osp != startPoint)
+    {
+        resetNSD();
+    }
+}
+
+void NewSkillDialog::resetNSD()
+{
+     for(int a=0;a<N_SKILL_CAT_SIZE;a++)
+     {
+         if(skill_name[a+startPoint] != "")
+         {
+             skillLabel[a].setCaption(skill_name[a+startPoint]);
+             skillLabel[a].setVisible(true);
+             char tmp[5];
+             sprintf(tmp, "%d",playerSkill[a+startPoint].level);
+             skillLevel[a].setCaption(tmp);
+             skillLevel[a].setVisible(true);
+             skillbar[a].setProgress(0.0f);
+             skillbar[a].setVisible(true);
+         }
+         else
+         {
+             skillLevel[a].setVisible(false);
+             skillLabel[a].setVisible(false);
+             skillbar[a].setVisible(false);
+         }
+     }
 }
