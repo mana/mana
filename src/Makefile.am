@@ -22,6 +22,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/window.cpp \
 	net/network.cpp \
 	net/protocol.cpp \
+	configuration.cpp \
 	being.cpp \
 	game.cpp \
 	main.cpp \
