@@ -55,6 +55,7 @@ struct NODE {
 	unsigned char emotion;
 	unsigned char emotion_time;
 	int text_x, text_y; // temp solution to fix speech position
+	short hair_style, hair_color;
 };
 
 void empty();

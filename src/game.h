@@ -56,7 +56,7 @@
 #define WALK 1
 #define MONSTER_ATTACK 5
 #define MONSTER_DEAD 9
-#define ATTACK 7
+#define ATTACK 5
 #define LOCK 254
 #define IDLE 255
 

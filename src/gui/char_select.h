@@ -34,6 +34,8 @@
 #include "../net/network.h"
 #include "gui.h"
 
+int tmw_incbutt_proc(int msg, DIALOG *d, int c);
+int tmw_player_proc(int msg, DIALOG *d, int c);
 void char_select();
 void server_char_select();
 void server_char_delete();

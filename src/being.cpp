@@ -77,6 +77,8 @@ NODE *create_node() {
 	node->emotion = 0;
 	node->emotion_time = 0;
 	node->text_x = node->text_y = 0;
+	node->hair_style = 1;
+	node->hair_color = 1;
   return node;
 }
 

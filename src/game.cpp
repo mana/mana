@@ -103,6 +103,8 @@ void game() {
     do_parse();
     status("FLUSH");
     flush();
+    
+    rest(1); // This one should work only in Win32
   }
 
   exit_graphic();
@@ -139,6 +141,8 @@ void do_init() {
   player_node->type = ACTION_NODE;
   set_coordinates(player_node->coordinates, x, y, 0);
 	player_node->speed = 150;
+	player_node->hair_color = char_info->hair_color;
+	player_node->hair_style = char_info->hair_style;
   add_node(player_node);
   //keyb_state = IDLE;
 	show_npc_dialog = 0;

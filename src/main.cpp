@@ -47,7 +47,7 @@ char sex, n_server, n_character;
 SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
-BITMAP *playerset;
+BITMAP *playerset, *hairset;
 DATAFILE *graphic, *emotions;
 
 char username[25];
@@ -58,7 +58,7 @@ char map_name[16];
 unsigned char state;
 unsigned short x, y;
 unsigned char direction;
-unsigned short job, hair, hair_color;
+//unsigned short job, hair, hair_color;
 unsigned char stretch_mode;
 
 // new sound-engine /- kth5
@@ -204,6 +204,9 @@ void init_engine() {
 	emotions = load_datafile("./data/graphic/emotions.dat");
 	if(emotions==NULL)
 		error("Unable to load emotions datafile");
+	hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
+	if(hairset==NULL)
+	  error("Unable to load hairset bitmap");
 
 	init_gui(buffer, "./data/Skin/aqua.skin");
   state = LOGIN;

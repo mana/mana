@@ -2,24 +2,24 @@
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team
-
-    This file is part of The Mana World.
-
-    The Mana World is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-
-    The Mana World is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with The Mana World; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+	
+	This file is part of The Mana World.
+	
+	The Mana World is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	any later version.
+	
+	The Mana World is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with The Mana World; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	
+	By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
 
 */
 
@@ -114,6 +114,8 @@ void server_char_server() {
 			char_info[i].INT = RFIFOB(24+106*i+101);
 			char_info[i].DEX = RFIFOB(24+106*i+102);
 			char_info[i].LUK = RFIFOB(24+106*i+103);
+			char_info[i].hair_style = RFIFOW(24+106*i+54);
+			char_info[i].hair_color = RFIFOW(24+106*i+70);
 		}
 		state = CHAR_SELECT;
 

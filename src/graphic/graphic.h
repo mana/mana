@@ -50,6 +50,7 @@ extern bool show_skill_dialog, show_skill_list_dialog;
 extern int show_npc_dialog;
 extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
+extern BITMAP *hairset;
 
 void set_npc_dialog(int show);
 void do_graphic(void);

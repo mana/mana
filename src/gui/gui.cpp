@@ -540,7 +540,12 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
       alfont_text_mode(rtm);
     ret = D_O_K;
   } else {
-        ret =  d_button_proc(msg,d,c);
+    /*if(msg==MSG_CLICK) {
+      if(d->d1==1)((int)d->dp2) + 1;
+      else if(d->d1==2)((int)d->dp2) - 1;
+    }*/
+    
+    ret =  d_button_proc(msg,d,c);
     }
     return ret;
 }

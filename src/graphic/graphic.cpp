@@ -2,24 +2,24 @@
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team
-
-    This file is part of The Mana World.
-
-    The Mana World is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-
-    The Mana World is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with The Mana World; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+	
+	This file is part of The Mana World.
+	
+	The Mana World is free software; you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation; either version 2 of the License, or
+	any later version.
+	
+	The Mana World is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with The Mana World; if not, write to the Free Software
+	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+	
+	By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
 
 */
 
@@ -106,6 +106,19 @@ DIALOG chat_dialog[] = {
    { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
    { NULL,                   0,    0,    0,   0,  0,    0,    0,    0,       0,                0,             NULL,        NULL, NULL  }
 };
+
+char hairtable[9][4][2] = {
+  // S(x,y)  W(x,y)   N(x,y)   E(x,y)
+  { { 0, 0}, {-1, 2}, {-1, 2}, {0, 2}  }, // STAND 1st frame
+  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3}  }, // WALK 1st frame
+  { { 0, 3}, {-2, 4}, {-1, 3}, {1, 4}  }, // WALK 2nd frame
+  { { 0, 1}, {-2, 2}, {-1, 2}, {1, 2}  }, // WALK 3rd frame
+  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3}  }, // WALK 4th frame
+  { { 0, 1}, {1, 2}, {-1, 3}, {-2, 2} }, // ATTACK 1st frame
+  { { 0, 1}, {-1, 2}, {-1, 3}, {0, 2}  }, // ATTACK 2nd frame
+  { { 0, 2}, {-4, 3}, {0, 4}, {3, 3}  }, // ATTACK 3rd frame
+  { { 0, 2}, {-4, 3}, {0, 4}, {3, 3}  }  // ATTACK 4th frame
+};  
 
 void set_npc_dialog(int show) {
 	show_npc_dialog = show;
@@ -204,6 +217,7 @@ void do_graphic(void) {
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
 			masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);
+			masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
 			//alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);
 
 			if(node->emotion!=0) {
@@ -438,7 +452,7 @@ void do_graphic(void) {
 	update_stats_dialog();
 	gui_update(stats_player);
 
-	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
+	alfont_textprintf(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i", fps, player_node->frame, player_node->action);
 
 	//alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
 
