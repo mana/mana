@@ -67,7 +67,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         /**
          * Draws the window.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Adds a widget to the window.

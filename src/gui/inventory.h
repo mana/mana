@@ -32,68 +32,59 @@
 #include "../log.h"
 #include "../net/network.h"
 #include "gui.h"
+#include "window.h"
 
 #define INVENTORY_SIZE 100
 
-struct itemHolder { // the holder of a item
+struct ITEM_HOLDER { // the holder of a item
 	int id;       // the id of the item
 	int quantity; // number of items
 	//int index;    // item position
 };
 
-class TmwInventory {
+
+/**
+ * Inventory dialog.
+ *
+ * \ingroup GUI
+ */
+class InventoryDialog : public Window {
     public:
-        TmwInventory();
-        ~TmwInventory();
+        InventoryDialog(gcn::Container *parent);
+        ~InventoryDialog();
 
         /**
-         * Initialize inventory and create the window.
+         * Draws the inventory window.
          */
-        void create(int x, int y);
-
-        /**
-         * Draw inventory window.
-         */
-        void draw(BITMAP *);
-
-        /**
-         * Sets if inventory is visible.
-         */
-        void setVisible(bool visible);
-
-        /**
-         * Returns visibility of inventory.
-         */
-        bool isVisible();
+        void draw(gcn::Graphics *graphics);
 
         /**
          * Add an item the inventory.
          */
-        int add_item(int index, int id, int quantity);
+        int addItem(int index, int id, int quantity);
 
         /**
          * Remove a item from the inventory.
          */
-        int remove_item(int id);
+        int removeItem(int id);
 
         /**
          * Change quantity of an item.
          */
-        int change_quantity(int index, int quantity);
+        int changeQuantity(int index, int quantity);
 
         /**
          * Increase quantity of an item 
          */
-        int increase_quantity(int index, int quantity);
+        int increaseQuantity(int index, int quantity);
 
-        int use_item(int index, int id);
-        int quantityForIndex(int index) { return items[index].quantity; }
-        int drop_item(int index, int amunt);
+        ITEM_HOLDER items[INVENTORY_SIZE];  /**< this is the holder of items */
 
-        itemHolder items[INVENTORY_SIZE]; /**< this is the holder of items */
     private:
+        int useItem(int index, int id);
+        int dropItem(int index, int amunt);
+
         DATAFILE *itemset;
-        bool show_inventory;
         int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
 };
 

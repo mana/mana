@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
 #ifndef _GRAPHIC_H
@@ -47,13 +45,13 @@ extern char skill_points[10];
 extern Chat chatlog;
 extern bool show_skill_dialog, show_skill_list_dialog;
 extern int show_npc_dialog;
-extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
 extern BITMAP *hairset;
 extern char npc_button[10];
 
 extern StatsDialog *statsDialog;
 extern BuyDialog *buyDialog;
+extern InventoryDialog *inventoryDialog;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {
@@ -66,68 +64,68 @@ void init_graphic(void);
 void exit_graphic(void);
 
 class Surface {
-	public:
-		BITMAP *buffer;
-		virtual void lock() = 0;
-		virtual void show() = 0;
-		virtual void update() = 0;
+    public:
+        BITMAP *buffer;
+        virtual void lock() = 0;
+        virtual void show() = 0;
+        virtual void update() = 0;
 };
 
 class VideoSurface : public Surface {
-	private:
-		int	current_page;
-		BITMAP *page[2];
-	public:
-		VideoSurface(BITMAP *page1, BITMAP *page2) {
-			page[0] = page1;
-			page[1] = page2;
-			current_page = 0;
-		}
-		~VideoSurface() {
-			destroy_bitmap(page[0]);
-			destroy_bitmap(page[2]);
-		}
-		void lock() {
-			acquire_bitmap(buffer);
-		}
-		void show() {
-			release_bitmap(buffer);
-			show_video_bitmap(buffer);
-		}
-		void update() {
-			current_page++;
-			if (current_page == 2) {
-				current_page = 0;
-			}
-			buffer = page[current_page];
-		}
+    private:
+        int	current_page;
+        BITMAP *page[2];
+    public:
+        VideoSurface(BITMAP *page1, BITMAP *page2) {
+            page[0] = page1;
+            page[1] = page2;
+            current_page = 0;
+        }
+        ~VideoSurface() {
+            destroy_bitmap(page[0]);
+            destroy_bitmap(page[2]);
+        }
+        void lock() {
+            acquire_bitmap(buffer);
+        }
+        void show() {
+            release_bitmap(buffer);
+            show_video_bitmap(buffer);
+        }
+        void update() {
+            current_page++;
+            if (current_page == 2) {
+                current_page = 0;
+            }
+            buffer = page[current_page];
+        }
 };
 
 class MemorySurface : public Surface {
-	public:
-		MemorySurface(BITMAP *buffer) {
-			this->buffer = buffer;
-		}
-		~MemorySurface() {
-			destroy_bitmap(buffer);
-		}
-		void lock() {
-		}
-		void show() {
-			blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-		}
-		void update() {
-		}
+    public:
+        MemorySurface(BITMAP *buffer) {
+            this->buffer = buffer;
+        }
+        ~MemorySurface() {
+            destroy_bitmap(buffer);
+        }
+        void lock() {
+        }
+        void show() {
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        }
+        void update() {
+        }
 };		
 
 class GraphicEngine {
-	private:
-		Surface *surface;
-		Spriteset *tileset;
-	public:
-		GraphicEngine();
-		~GraphicEngine();
-		void refresh();	
+    private:
+        Surface *surface;
+        Spriteset *tileset;
+    public:
+        GraphicEngine();
+        ~GraphicEngine();
+        void refresh();	
 };
 
 #endif

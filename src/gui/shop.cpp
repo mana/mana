@@ -29,119 +29,119 @@ char* selectedItem = "You got 4";
 ITEM_SHOP *shop = NULL;
 
 char *item_db[] = {
-	"Cactus Drink", "Cactus potion", "Casino coins", "Decor Candy", "Maggot Slime",
-	"Candy Cane", "Scorpion Stinger", "Xmas Cake", "Chocolate", "Candy", "Santa Hat"
+    "Cactus Drink", "Cactus potion", "Casino coins", "Decor Candy", "Maggot Slime",
+    "Candy Cane", "Scorpion Stinger", "Xmas Cake", "Chocolate", "Candy", "Santa Hat"
 };
 
 char *shop_list(int index, int *list_size) {
-	if(index<0) {
-    *list_size = n_items;
-		return NULL;
-	} else {
-		int iterator = 0;
-		ITEM_SHOP *item_shop = shop;
-		while(iterator<index) {
-			item_shop = item_shop->next;
-			iterator++;
-		}
-		return item_shop->name;
-	}
+    if(index<0) {
+        *list_size = n_items;
+        return NULL;
+    } else {
+        int iterator = 0;
+        ITEM_SHOP *item_shop = shop;
+        while(iterator<index) {
+            item_shop = item_shop->next;
+            iterator++;
+        }
+        return item_shop->name;
+    }
 }
 
 void add_buy_item(short id, int price) {
-	ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
-	if(id-501>=0 && id-501<=11)
-    sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
-	else
-		sprintf(item_shop->name, "Unknown item %i gp", price);
-	item_shop->price = price;
-	item_shop->id = id;
-	item_shop->next = NULL;
-	if(shop==NULL) 
-		shop = item_shop;
-	else {
-    ITEM_SHOP *temp = shop;
-    while(temp->next)
-			temp = temp->next;
-		temp->next = item_shop;
-	}
+    ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
+    if(id-501>=0 && id-501<=11)
+        sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
+    else
+        sprintf(item_shop->name, "Unknown item %i gp", price);
+    item_shop->price = price;
+    item_shop->id = id;
+    item_shop->next = NULL;
+    if(shop==NULL) 
+        shop = item_shop;
+    else {
+        ITEM_SHOP *temp = shop;
+        while(temp->next)
+            temp = temp->next;
+        temp->next = item_shop;
+    }
 }
 
 void add_sell_item(short index, int price) {
-	int id = inventory.items[index].id;
-	ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
-	if(id>=501 && id<=511)
-		sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
-	else
-		sprintf(item_shop->name, "Unknown item %i gp", price);
-	item_shop->price = price;
-	item_shop->index = index;
-	item_shop->id = id;
-	item_shop->quantity  = inventory.items[index].quantity;
-	item_shop->next = NULL;
-	if(shop==NULL) 
-		shop = item_shop;
-	else {
-    ITEM_SHOP *temp = shop;
-    while(temp->next)
-			temp = temp->next;
-		temp->next = item_shop;
-	}
+    int id = inventoryDialog->items[index].id;
+    ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
+    if (id >= 501 && id <= 511)
+        sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
+    else
+        sprintf(item_shop->name, "Unknown item %i gp", price);
+    item_shop->price = price;
+    item_shop->index = index;
+    item_shop->id = id;
+    item_shop->quantity  = inventoryDialog->items[index].quantity;
+    item_shop->next = NULL;
+    if (shop == NULL) 
+        shop = item_shop;
+    else {
+        ITEM_SHOP *temp = shop;
+        while(temp->next)
+            temp = temp->next;
+        temp->next = item_shop;
+    }
 }
 
 void close_shop() {
-	ITEM_SHOP *temp, *next;
-	temp = shop;
-	while(temp) {
-		next = temp->next;
-		free(temp);
-		temp = next;
-	}
-	shop = NULL;
+    ITEM_SHOP *temp, *next;
+    temp = shop;
+    while(temp) {
+        next = temp->next;
+        free(temp);
+        temp = next;
+    }
+    shop = NULL;
 }
 
 short get_item_id(int index) {
-  int iterator = 0;
-  ITEM_SHOP *item_shop = shop;
-  while(iterator<index) {
-    item_shop = item_shop->next;
-    iterator++;
-  }
-  return item_shop->id;
+    int iterator = 0;
+    ITEM_SHOP *item_shop = shop;
+    while(iterator<index) {
+        item_shop = item_shop->next;
+        iterator++;
+    }
+    return item_shop->id;
 }
 
 int get_item_quantity(int index) {
-  int iterator = 0;
-  ITEM_SHOP *item_shop = shop;
-  while(iterator<index) {
-    item_shop = item_shop->next;
-    iterator++;
-  }
-  if(item_shop)return item_shop->quantity;
-  else return 0;
+    int iterator = 0;
+    ITEM_SHOP *item_shop = shop;
+    while(iterator<index) {
+        item_shop = item_shop->next;
+        iterator++;
+    }
+    if(item_shop)return item_shop->quantity;
+    else return 0;
 }
 
 int get_item_index(int index) {
-  int iterator = 0;
-  ITEM_SHOP *item_shop = shop;
-  while(iterator<index) {
-    item_shop = item_shop->next;
-    iterator++;
-  }
-  return item_shop->index;
+    int iterator = 0;
+    ITEM_SHOP *item_shop = shop;
+    while(iterator<index) {
+        item_shop = item_shop->next;
+        iterator++;
+    }
+    return item_shop->index;
 }
 
 int get_item_price(int index) {
-  int iterator = 0;
-  ITEM_SHOP *item_shop = shop;
-  while(iterator<index) {
-    item_shop = item_shop->next;
-    iterator++;
-  }
-  return item_shop->price;
+    int iterator = 0;
+    ITEM_SHOP *item_shop = shop;
+    while(iterator<index) {
+        item_shop = item_shop->next;
+        iterator++;
+    }
+    return item_shop->price;
 }
 
 void changeQ(void *dp3, int d2) {
-  sprintf(itemCurrenyQ,"%i",d2);
-  printf("%s\n",itemCurrenyQ);
+    sprintf(itemCurrenyQ,"%i",d2);
+    printf("%s\n",itemCurrenyQ);
 }

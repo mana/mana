@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
 #include "graphic.h"
@@ -42,13 +40,11 @@ BITMAP *buffer, *chat_background;
 DATAFILE *tileset;
 
 char itemCurrenyQ[10] = "0";
-//char page_num;
 int map_x, map_y, camera_x, camera_y;
 DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *sell_player, *skill_list_player, *npc_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
-TmwInventory inventory;
 Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
 bool show_skill_dialog = false;
@@ -56,8 +52,10 @@ bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
+
 StatsDialog *statsDialog;
 BuyDialog *buyDialog;
+InventoryDialog *inventoryDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -204,10 +202,12 @@ void init_graphic() {
     statsDialog = new StatsDialog(guiTop);
     statsDialog->setPosition(SCREEN_W - statsDialog->getWidth() - 10, 10);
 
-    // Create buy dialog
+    // Create buy and inventory dialog
     buyDialog = new BuyDialog(guiTop);
+    inventoryDialog = new InventoryDialog(guiTop);
     buyDialog->setVisible(false);
-
+    inventoryDialog->setVisible(false);
+    inventoryDialog->setPosition(100, 100);
 
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);
@@ -216,7 +216,6 @@ void init_graphic() {
     sell_player = init_dialog(sell_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
     npc_list_player = init_dialog(npc_list_dialog, -1);
-    inventory.create(100, 100);
 
     vpage[0] = NULL;
     vpage[1] = NULL;
@@ -514,7 +513,7 @@ void do_graphic(void) {
     guiGraphics->setTarget(vpage[page_num]);
     gui_update(NULL);
 
-    inventory.draw(vpage[page_num]);
+    //inventory.draw(vpage[page_num]);
 
     set_trans_blender(0, 0, 0, 110);
     draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H - 125);

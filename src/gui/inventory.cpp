@@ -20,67 +20,64 @@
  */
 
 #include "inventory.h"
+#include <sstream>
 
-DIALOG inventory_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)     (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,   300,  252,  322,   60,    0,  -1,    0,    0,          0,                      0,    (char*)"Inventory",         NULL, NULL  },
-   { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                      0,              NULL,         NULL, NULL  },
-};
-
-DIALOG_PLAYER *inventory_player;
-
-TmwInventory::TmwInventory()
+InventoryDialog::InventoryDialog(gcn::Container *parent):
+    Window(parent, "Inventory")
 {
-    show_inventory = false;
-}
+    setSize(322, 60);
 
-TmwInventory::~TmwInventory()
-{
-}
-
-void TmwInventory::create(int tempxpos, int tempypos) {
     itemset = load_datafile("./data/graphic/items.dat");
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].id = -1; // if id is negative there's no item
+        items[i].id = -1;
         items[i].quantity = 0;
     }
-
-    inventory_player = init_dialog(inventory_dialog, -1);
-    position_dialog(inventory_dialog, x, y);
-
-    show_inventory = false;
 }
 
-void TmwInventory::draw(BITMAP *buffer) {
-    if (!show_inventory) return;
+InventoryDialog::~InventoryDialog()
+{
+}
 
-    dialog_message(inventory_dialog, MSG_DRAW, 0, 0);
-    update_dialog(inventory_player);
+void InventoryDialog::draw(gcn::Graphics *graphics)
+{
+    int x, y;
+    getAbsolutePosition(x, y);
+
+    // Draw window graphics
+    Window::draw(graphics);
+
+    gcn::AllegroGraphics *alGraphics = (gcn::AllegroGraphics*)graphics;
+    BITMAP *target = alGraphics->getTarget();
+
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].quantity > 0) {
             if (items[i].id >= 501 && items[i].id <= 511) {
-                draw_rle_sprite(gui_bitmap,
+                draw_rle_sprite(target,
                         (RLE_SPRITE *)itemset[items[i].id - 501].dat,
-                        inventory_dialog[0].x + 24 * i,
-                        inventory_dialog[0].y + 26);
+                        x + 24 * i,
+                        y + 26);
             }
-            //else
-            //masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
+            //else {
+            //    masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0,
+            //            x + 24 * i, y + 26, 22, 22);
+            //}
 
-            textprintf_ex(gui_bitmap, font, inventory_dialog[0].x + 24 * i,
-                    inventory_dialog[0].y + 46, makecol(0, 0, 0), -1,
-                    "%i", items[i].quantity);
+            std::stringstream ss;
+            ss << items[i].quantity;
+            graphics->drawText(ss.str(), 24 * i + 10, 44,
+                    gcn::Graphics::CENTER);
         }
     }
 
+    /*
     if (mouse_b & 2) {
         for (int i = 0; i < INVENTORY_SIZE; i++) {
             if (items[i].quantity > 0 &&
-                    inventory_dialog[0].x + 24 * i + 24 > mouse_x &&
-                    inventory_dialog[0].x + 24 * i < mouse_x &&
-                    inventory_dialog[0].y + 44 + 24 > mouse_y &&
-                    inventory_dialog[0].y + 44 < mouse_y)
+                    x + 24 * i + 24 > mouse_x &&
+                    x + 24 * i < mouse_x &&
+                    y + 44 + 24 > mouse_y &&
+                    y + 44 < mouse_y)
             {
                 itemMeny = 1;
                 itemMeny_x = 24 * i;
@@ -91,54 +88,44 @@ void TmwInventory::draw(BITMAP *buffer) {
     }
 
     if (itemMeny) {
-        if (inventory_dialog[0].y + itemMeny_y < mouse_y &&
-                inventory_dialog[0].y + itemMeny_y + 10 > mouse_y)
+        if (y + itemMeny_y < mouse_y && y + itemMeny_y + 10 > mouse_y)
         {
             if (mouse_b & 1) {
-                use_item(itemMeny_i,items[itemMeny_i].id);
+                useItem(itemMeny_i,items[itemMeny_i].id);
                 itemMeny = 0;
             }
-            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
-                    inventory_dialog[0].y + itemMeny_y, makecol(255, 237, 33),
-                    -1, "Use item");
-        } else {
-            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
-                    inventory_dialog[0].y + itemMeny_y, MAKECOL_BLACK, -1,
-                    "Use item");
+            textprintf_ex(buffer, font, x + itemMeny_x,
+                    y + itemMeny_y, makecol(255, 237, 33), -1, "Use item");
         }
-        if (inventory_dialog[0].y + itemMeny_y + 10 < mouse_y &&
-                inventory_dialog[0].y + itemMeny_y + 20 > mouse_y) {
+        else {
+            textprintf_ex(buffer, font, x + itemMeny_x,
+                    y + itemMeny_y, MAKECOL_BLACK, -1, "Use item");
+        }
+        if (y + itemMeny_y + 10 < mouse_y && y + itemMeny_y + 20 > mouse_y) {
             if (mouse_b & 1) {
-                drop_item(itemMeny_i, 1);
+                dropItem(itemMeny_i, 1);
                 itemMeny = 0;
             }
-            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
-                    inventory_dialog[0].y + itemMeny_y + 10,
+            textprintf_ex(buffer, font, x + itemMeny_x,
+                    y + itemMeny_y + 10,
                     makecol(255, 237, 33), -1, "Del item");
-        } else {
-            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
-                    inventory_dialog[0].y + itemMeny_y + 10, MAKECOL_BLACK, -1,
-                    "Del item");
+        }
+        else {
+            textprintf_ex(buffer, font, x + itemMeny_x,
+                    y + itemMeny_y + 10, MAKECOL_BLACK, -1, "Del item");
         }
     }
+    */
 }
 
 
-void TmwInventory::setVisible(bool visible) {
-    show_inventory = visible;
-}
-
-bool TmwInventory::isVisible() {
-    return show_inventory;
-}
-
-int TmwInventory::add_item(int index, int id, int quantity) {
+int InventoryDialog::addItem(int index, int id, int quantity) {
     items[index].id = id;
     items[index].quantity += quantity;
     return 0;
 }
 
-int TmwInventory::remove_item(int id) {
+int InventoryDialog::removeItem(int id) {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].id == id) {
             items[i].id = -1;
@@ -148,17 +135,17 @@ int TmwInventory::remove_item(int id) {
     return 0;
 }
 
-int TmwInventory::change_quantity(int index, int quantity) {
+int InventoryDialog::changeQuantity(int index, int quantity) {
     items[index].quantity = quantity;
     return 0;
 }
 
-int TmwInventory::increase_quantity(int index, int quantity) {
+int InventoryDialog::increaseQuantity(int index, int quantity) {
     items[index].quantity += quantity;
     return 0;
 }
 
-int TmwInventory::use_item(int index, int id) {
+int InventoryDialog::useItem(int index, int id) {
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(id);
@@ -168,7 +155,7 @@ int TmwInventory::use_item(int index, int id) {
     return 0;
 }
 
-int TmwInventory::drop_item(int index, int amunt) {
+int InventoryDialog::dropItem(int index, int amunt) {
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(amunt);
