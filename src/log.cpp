@@ -29,7 +29,7 @@ FILE* logfile;
 
 Logger::Logger(std::string logFilename)
 {
-    logFile.open("tmw.log");
+    logFile.open(logFilename.c_str(), std::ios_base::trunc);
     if ( !logFile.is_open() )
     {
         std::cout << "Warning: error while opening log file." << std::endl;
@@ -52,19 +52,19 @@ void Logger::log(std::string log_text)
         time(&t);
         
         // Print the log entry
-        std::string dateString = "[";
-        dateString += ((((t / 60) / 60) % 24 < 10) ? "0" : "");
-        dateString += (((t / 60) / 60) % 24);
-        dateString += ":";
-        dateString += (((t / 60) % 60 < 10) ? "0" : "");
-        dateString += ((t / 60) % 60);
-        dateString += ":";
-        dateString += ((t % 60 < 10) ? "0" : "");
-        dateString += (t % 60);
-        dateString += "] ";
+        logFile << "[";
+        logFile << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+        logFile << (int)(((t / 60) / 60) % 24);
+        logFile << ":";
+        logFile << (((t / 60) % 60 < 10) ? "0" : "");
+        logFile << (int)((t / 60) % 60);
+        logFile << ":";
+        logFile << ((t % 60 < 10) ? "0" : "");
+        logFile << (int)(t % 60);
+        logFile << "] ";
         
         // Print the log entry
-        logFile << dateString << log_text << std::endl;
+        logFile << log_text << std::endl;
     }
 }
 
@@ -85,19 +85,18 @@ void Logger::log(const char *log_text, ...)
         time(&t);
 
         // Print the log entry
-        std::string dateString = "[";
-        dateString += ((((t / 60) / 60) % 24 < 10) ? "0" : "");
-        dateString += (((t / 60) / 60) % 24);
-        dateString += ":";
-        dateString += (((t / 60) % 60 < 10) ? "0" : "");
-        dateString += ((t / 60) % 60);
-        dateString += ":";
-        dateString += ((t % 60 < 10) ? "0" : "");
-        dateString += (t % 60);
-        dateString += "] ";
-        dateString += buf;
+        logFile << "[";
+        logFile << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+        logFile << (int)(((t / 60) / 60) % 24);
+        logFile << ":";
+        logFile << (((t / 60) % 60 < 10) ? "0" : "");
+        logFile << (int)((t / 60) % 60);
+        logFile << ":";
+        logFile << ((t % 60 < 10) ? "0" : "");
+        logFile << (int)(t % 60);
+        logFile << "] ";
         
-        logFile << dateString << std::endl;
+        logFile << buf << std::endl;
 
         // Delete temporary buffer
         delete[] buf;

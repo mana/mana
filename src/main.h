@@ -102,5 +102,6 @@ extern unsigned char state;
 extern Configuration config;
 extern Sound sound;
 extern Map *tiledMap;
+extern Logger logger;
 
 #endif

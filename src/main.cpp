@@ -70,6 +70,8 @@ Sound sound;
 
 // ini file configuration reader
 Configuration config;
+// Log object
+Logger logger("tmw.log2");
 
 /**
  * Listener used for responding to map start error dialog.
@@ -196,7 +198,7 @@ void init_engine()
     }
 #ifndef USE_OPENGL
     if ((int)config.getValue("hwaccel", 0)) {
-        log("Attempting to use hardware acceleration.");
+        logger.log("Attempting to use hardware acceleration.");
         displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
     }
     else {
@@ -217,10 +219,10 @@ void init_engine()
     char videoDriverName[64];
 
     if (SDL_VideoDriverName(videoDriverName, 64)) {
-        log("Using video driver: %s", videoDriverName);
+        logger.log("Using video driver: %s", videoDriverName);
     }
     else {
-        log("Using video driver: unkown");
+        logger.log("Using video driver: unkown");
     }
 
 #ifdef USE_OPENGL
@@ -229,31 +231,31 @@ void init_engine()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     int gotDoubleBuffer;
     SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
-    log("OpenGL is %s double buffering.",
+    logger.log("OpenGL is %s double buffering.",
             (gotDoubleBuffer ? "using" : "not using"));
 #endif
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
 
-    log("Possible to create hardware surfaces: %s",
+    logger.log("Possible to create hardware surfaces: %s",
             ((vi->hw_available) ? "yes" : "no "));
-    log("Window manager available: %s",
+    logger.log("Window manager available: %s",
             ((vi->wm_available) ? "yes" : "no"));
-    log("Accelerated hardware to hardware blits: %s",
+    logger.log("Accelerated hardware to hardware blits: %s",
             ((vi->blit_hw) ? "yes" : "no"));
-    log("Accelerated hardware to hardware colorkey blits: %s",
+    logger.log("Accelerated hardware to hardware colorkey blits: %s",
             ((vi->blit_hw_CC) ? "yes" : "no"));
-    log("Accelerated hardware to hardware alpha blits: %s",
+    logger.log("Accelerated hardware to hardware alpha blits: %s",
             ((vi->blit_hw_A) ? "yes" : "no"));
-    log("Accelerated software to hardware blits: %s",
+    logger.log("Accelerated software to hardware blits: %s",
             ((vi->blit_sw) ? "yes" : "no"));
-    log("Accelerated software to hardware colorkey blits: %s",
+    logger.log("Accelerated software to hardware colorkey blits: %s",
             ((vi->blit_sw_CC) ? "yes" : "no"));
-    log("Accelerated software to hardware alpha blits: %s",
+    logger.log("Accelerated software to hardware alpha blits: %s",
             ((vi->blit_sw_A) ? "yes" : "no"));
-    log("Accelerated color fills: %s",
+    logger.log("Accelerated color fills: %s",
             ((vi->blit_fill) ? "yes" : "no"));
-    log("Available video memory: %d", vi->video_mem);
+    logger.log("Available video memory: %d", vi->video_mem);
 
     //vfmt Pixel format of the video device
 
@@ -269,9 +271,9 @@ void init_engine()
     Image *hairImg = resman->getImage(
             "core/graphics/sprites/player_male_hair.png");
 
-    if (!login_wallpaper) error("Couldn't load login_wallpaper.png");
-    if (!playerImg) error("Couldn't load player_male_base.png");
-    if (!hairImg) error("Couldn't load player_male_hair.png");
+    if (!login_wallpaper) logger.error("Couldn't load login_wallpaper.png");
+    if (!playerImg) logger.error("Couldn't load player_male_base.png");
+    if (!hairImg) logger.error("Couldn't load player_male_hair.png");
 
     playerset = new Spriteset(playerImg, 160, 120);
     hairset = new Spriteset(hairImg, 40, 40);
@@ -296,7 +298,7 @@ void init_engine()
     catch (const char *err) {
         state = ERROR;
         new OkDialog("Sound Engine", err, &initWarningListener);
-        log("Warning: %s", err);
+        logger.log("Warning: %s", err);
     }
 }
 
@@ -344,20 +346,20 @@ int main(int argc, char *argv[])
 
         switch (state) {
             case LOGIN:
-                log("State: LOGIN");
+                logger.log("State: LOGIN");
                 login();
                 break;
             case CHAR_SERVER:
-                log("State: CHAR_SERVER");
+                logger.log("State: CHAR_SERVER");
                 char_server();
                 break;
             case CHAR_SELECT:
-                log("State: CHAR_SELECT");
+                logger.log("State: CHAR_SELECT");
                 charSelect();
                 break;
             case GAME:
                 sound.stopBgm();
-                log("State: GAME");
+                logger.log("State: GAME");
                 try {
                     map_start();
                     game();
@@ -379,7 +381,7 @@ int main(int argc, char *argv[])
                 break;
         }
     }
-    log("State: EXIT");
+    logger.log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();
     return 0;
