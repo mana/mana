@@ -24,7 +24,8 @@
 #include "main.h"
 #include "map.h"
 #include "log.h"
-#include "being.h"
+#include "resources/resourcemanager.h"
+#include "graphic/spriteset.h"
 
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -70,13 +71,13 @@ struct MAP {
 };
 
 
-Tile::Tile():
+MetaTile::MetaTile():
     whichList(0)
 {
 }
 
 
-Location::Location(int x, int y, Tile *tile):
+Location::Location(int x, int y, MetaTile *tile):
     x(x), y(y), tile(tile)
 {
 }
@@ -92,7 +93,8 @@ Map::Map():
     tileWidth(32), tileHeight(32),
     onClosedList(1), onOpenList(2)
 {
-    tiles = new Tile[width * height];
+    metaTiles = new MetaTile[width * height];
+    tiles = new Image*[width * height * 3];
 }
 
 Map::Map(int width, int height):
@@ -100,11 +102,13 @@ Map::Map(int width, int height):
     tileWidth(32), tileHeight(32),
     onClosedList(1), onOpenList(2)
 {
-    tiles = new Tile[width * height];
+    metaTiles = new MetaTile[width * height];
+    tiles = new Image*[width * height * 3];
 }
 
 Map::~Map()
 {
+    delete[] metaTiles;
     delete[] tiles;
 }
 
@@ -123,29 +127,45 @@ bool Map::load(const std::string &mapFile)
 
     setSize(OLD_MAP_WIDTH, OLD_MAP_HEIGHT);
 
+    // Load the default tileset
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *tilesetbmp = resman->getImage("core/graphics/tiles/desert.png");
+    if (!tilesetbmp) error("Unable to load desert.png");
+    Spriteset *tileset = new Spriteset(tilesetbmp, 32, 32);
+
     // Transfer tile data
-    int x, y;
+    int x, y, a;
     for (y = 0; y < OLD_MAP_HEIGHT; y++) {
         for (x = 0; x < OLD_MAP_WIDTH; x++) {
-            unsigned short id;
+            unsigned short id = 0;
 
-            // Layer 0
-            id = MAKEWORD(oldMap.tiles[x][y].data[1] & 0x00c0,
-                    oldMap.tiles[x][y].data[0]);
-            id >>= 6;
-            setTile(x, y, 0, id);
+            for (a = 0; a < 3; a++) {
+                // Different interpretation for each layer
+                switch (a) {
+                    case 0:
+                        id = MAKEWORD(oldMap.tiles[x][y].data[1] & 0x00c0,
+                                oldMap.tiles[x][y].data[0]);
+                        id >>= 6;
+                        break;
+                    case 1:
+                        id = MAKEWORD(oldMap.tiles[x][y].data[2] & 0x00f0,
+                                oldMap.tiles[x][y].data[1] & 0x003f);
+                        id >>= 4;
+                        break;
+                    case 2:
+                        id = MAKEWORD(oldMap.tiles[x][y].data[3] & 0x00fc,
+                                oldMap.tiles[x][y].data[2] & 0x000f);
+                        id >>= 2;
+                        break;
+                }
 
-            // Layer 1
-            id = MAKEWORD(oldMap.tiles[x][y].data[2] & 0x00f0,
-                    oldMap.tiles[x][y].data[1] & 0x003f);
-            id >>= 4;
-            setTile(x, y, 1, id);
-
-            // Layer 2
-            id = MAKEWORD(oldMap.tiles[x][y].data[3] & 0x00fc,
-                    oldMap.tiles[x][y].data[2] & 0x000f);
-            id >>= 2;
-            setTile(x, y, 2, id);
+                if (id < tileset->spriteset.size() && (a == 0 || id > 0)) {
+                    setTile(x, y, a, tileset->spriteset[id]);
+                }
+                else {
+                    setTile(x, y, a, NULL);
+                }
+            }
 
             // Walkability
             setWalk(x, y, (oldMap.tiles[x][y].data[3] & 0x0002) > 0);
@@ -173,21 +193,20 @@ void Map::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
+    delete[] metaTiles;
     delete[] tiles;
-    tiles = new Tile[width * height];
+    metaTiles = new MetaTile[width * height];
+    tiles = new Image*[width * height * 3];
 }
 
-void Map::setWalk(int x, int y, bool walkable) {
-    if (walkable) {
-        tiles[x + y * width].flags |= TILE_WALKABLE;
-    }
-    else {
-        tiles[x + y * width].flags &= ~TILE_WALKABLE;
-    }
+void Map::setWalk(int x, int y, bool walkable)
+{
+    metaTiles[x + y * width].walkable = walkable;
 }
 
-bool Map::getWalk(int x, int y) {
-    bool ret = (tiles[x + y * width].flags & TILE_WALKABLE) != 0;
+bool Map::getWalk(int x, int y)
+{
+    bool ret = metaTiles[x + y * width].walkable;
 
     if (ret) {
         // Check for colliding into a being
@@ -195,7 +214,7 @@ bool Map::getWalk(int x, int y) {
         while (i != beings.end() && ret) {
             Being *being = (*i);
             if (being->x == x && being->y == y) {
-                ret = false;
+                return false;
             }
             i++;
         }
@@ -204,19 +223,19 @@ bool Map::getWalk(int x, int y) {
     return ret;
 }
 
-void Map::setTile(int x, int y, int layer, int id)
+void Map::setTile(int x, int y, int layer, Image *img)
 {
-    tiles[x + y * width].layers[layer] = id;
+    tiles[x + y * width + layer * (width * height)] = img;
 }
 
-int Map::getTile(int x, int y, int layer)
+Image *Map::getTile(int x, int y, int layer)
 {
-    return tiles[x + y * width].layers[layer];
+    return tiles[x + y * width + layer * (width * height)];
 }
 
-Tile *Map::getTile(int x, int y)
+MetaTile *Map::getMetaTile(int x, int y)
 {
-    return &tiles[x + y * width];
+    return &metaTiles[x + y * width];
 }
 
 int Map::getWidth()
@@ -248,7 +267,7 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
     if (!getWalk(destX, destY)) return NULL;
 
     // Reset starting tile's G cost to 0
-    Tile *startTile = getTile(startX, startY);
+    MetaTile *startTile = getMetaTile(startX, startY);
     startTile->Gcost = 0;
 
     // Add the start point to the open list
@@ -291,7 +310,7 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
                     continue;
                 }
 
-                Tile *newTile = getTile(x, y);
+                MetaTile *newTile = getMetaTile(x, y);
 
                 // Skip if the tile is on the closed list or is not walkable
                 if (newTile->whichList == onClosedList || !getWalk(x, y))
@@ -304,11 +323,10 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
                 // walkable tiles.
                 if (dx != 0 && dy != 0)
                 {
-                    Tile *t1 = getTile(curr.x, curr.y + dy);
-                    Tile *t2 = getTile(curr.x + dx, curr.y);
+                    MetaTile *t1 = getMetaTile(curr.x, curr.y + dy);
+                    MetaTile *t2 = getMetaTile(curr.x + dx, curr.y);
 
-                    if ((t1->flags & TILE_WALKABLE) == 0 ||
-                            (t2->flags & TILE_WALKABLE) == 0)
+                    if (!(t1->walkable && t2->walkable))
                     {
                         continue;
                     }
@@ -377,7 +395,7 @@ PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
         while (pathX != startX || pathY != startY)
         {
             // Find out the next parent
-            Tile *tile = getTile(pathX, pathY);
+            MetaTile *tile = getMetaTile(pathX, pathY);
             pathX = tile->parentX;
             pathY = tile->parentY;
 

@@ -25,30 +25,29 @@
 #define _TMW_MAP_H
 
 #include "being.h"
-
-// Tile flags
-#define TILE_WALKABLE  1
-#define TILE_ANIMATED  2
+#include "resources/image.h"
 
 /**
- * A tile on a tile map.
+ * A meta tile stores additional information about a location on a tile map.
+ * This is information that doesn't need to be repeated for each tile in each
+ * layer of the map.
  */
-class Tile
+class MetaTile
 {
     public:
         /**
          * Constructor.
          */
-        Tile();
-
-        // Tile data
-        int layers[3];
-        char flags;
+        MetaTile();
 
         // Pathfinding members
-        int Fcost, Gcost, Hcost;
-        int whichList;
-        int parentX, parentY;
+        int Fcost;              /**< Estimation of total path cost */
+        int Gcost;              /**< Cost from start to this location */
+        int Hcost;              /**< Estimated cost to goal */
+        int whichList;          /**< No list, open list or closed list */
+        int parentX;            /**< X coordinate of parent tile */
+        int parentY;            /**< Y coordinate of parent tile */
+        bool walkable;          /**< Can beings walk on this tile */
 };
 
 /**
@@ -60,7 +59,7 @@ class Location
         /**
          * Constructor.
          */
-        Location(int x, int y, Tile *tile);
+        Location(int x, int y, MetaTile *tile);
 
         /**
          * Comparison operator.
@@ -68,7 +67,7 @@ class Location
         bool operator< (const Location &loc) const;
 
         int x, y;
-        Tile *tile;
+        MetaTile *tile;
 };
 
 /**
@@ -110,17 +109,17 @@ class Map
         /**
          * Set tile ID.
          */
-        void setTile(int x, int y, int layer, int id);
+        void setTile(int x, int y, int layer, Image *img);
 
         /**
          * Get tile ID.
          */
-        int getTile(int x, int y, int layer);
+        Image *getTile(int x, int y, int layer);
 
         /**
          * Get tile reference.
          */
-        Tile *getTile(int x, int y);
+        MetaTile *getMetaTile(int x, int y);
 
         /**
          * Set walkability flag for a tile
@@ -160,7 +159,8 @@ class Map
     private:
         int width, height;
         int tileWidth, tileHeight;
-        Tile *tiles;
+        MetaTile *metaTiles;
+        Image **tiles;
 
         // Pathfinding members
         int onClosedList, onOpenList;

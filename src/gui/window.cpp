@@ -123,7 +123,7 @@ void Window::draw(gcn::Graphics* graphics)
 
     // Draw title
     graphics->setFont(getFont());
-    graphics->drawText(caption, 4, 4, gcn::Graphics::LEFT);
+    graphics->drawText(caption, 7, 5, gcn::Graphics::LEFT);
 
     drawChildren(graphics);
 }

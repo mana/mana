@@ -307,12 +307,12 @@ Engine::Engine()
     statsWindow->setPosition(
             screen->w - 5 - statsWindow->getWidth(),
             statusWindow->getHeight() + 20);
-    
+
     setupWindow = new Setup();
     setupWindow->setVisible(false);
-    
+
     minimap = new Minimap();
-    
+
     equipmentWindow = new EquipmentWindow();
     equipmentWindow->setVisible(false);
 
@@ -325,19 +325,15 @@ Engine::Engine()
             "core/graphics/sprites/npcs.png");
     Image *emotionbmp = resman->getImage(
             "core/graphics/sprites/emotions.png");
-    Image *tilesetbmp = resman->getImage(
-            "core/graphics/tiles/desert.png");
     Image *monsterbitmap = resman->getImage(
             "core/graphics/sprites/monsters.png");
 
     if (!npcbmp) error("Unable to load npcs.png");
     if (!emotionbmp) error("Unable to load emotions.png");
-    if (!tilesetbmp) error("Unable to load desert.png");
     if (!monsterbitmap) error("Unable to load monsters.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
-    tileset = new Spriteset(tilesetbmp, 32, 32);
     monsterset = new Spriteset(monsterbitmap, 60, 60);
 }
 
@@ -355,8 +351,7 @@ Engine::~Engine()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    
-    delete tileset;
+
     delete monsterset;
     delete npcset;
     delete emotionset;
@@ -384,21 +379,18 @@ void Engine::draw()
     // Draw tiles below nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            int tile0 = tiledMap.getTile(i + camera_x, j + camera_y, 0);
-            int tile1 = tiledMap.getTile(i + camera_x, j + camera_y, 1);
+            Image *tile0 = tiledMap.getTile(i + camera_x, j + camera_y, 0);
+            Image *tile1 = tiledMap.getTile(i + camera_x, j + camera_y, 1);
 
-            if (tile0 < (int)tileset->spriteset.size()) {
-                tileset->spriteset[tile0]->draw(screen,
-                        i * 32 - offset_x, j * 32 - offset_y);
+            if (tile0) {
+                tile0->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
             }
-            if (tile1 > 0 && tile1 < (int)tileset->spriteset.size()) {
-                tileset->spriteset[tile1]->draw(screen,
-                        i * 32 - offset_x, j * 32 - offset_y);
+            if (tile1) {
+                tile1->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
             }
-            
         }
     }
-        
+
     // Draw nodes
     std::list<Being*>::iterator beingIterator = beings.begin();
     while (beingIterator != beings.end())
@@ -501,7 +493,7 @@ void Engine::draw()
                 }
             }
         }
-        
+
         if (being->action == MONSTER_DEAD && being->frame >= 20) {
             delete being;
             beingIterator = beings.erase(beingIterator);
@@ -517,11 +509,10 @@ void Engine::draw()
     // Draw tiles above nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            int tile = tiledMap.getTile(i + camera_x, j + camera_y, 2);
+            Image *tile = tiledMap.getTile(i + camera_x, j + camera_y, 2);
 
-            if (tile > 0 && tile < (int)tileset->spriteset.size()) {
-                tileset->spriteset[tile]->draw(
-                        screen, i * 32 - offset_x, j * 32 - offset_y);
+            if (tile) {
+                tile->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
 
 #ifdef DEBUG
                 guiGraphics->setColor(gcn::Color(0, 0, 0));
@@ -547,7 +538,7 @@ void Engine::draw()
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
-            Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
+            MetaTile *tile = tiledMap.getMetaTile(debugPath->x, debugPath->y);
 
             std::stringstream cost;
             cost << tile->Gcost;

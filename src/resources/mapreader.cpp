@@ -88,8 +88,9 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 
     int w = getProperty(node, "width", 0);
     int h = getProperty(node, "height", 0);
-    int tilew = getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    int tileh = getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
+    // We only support tile width of 32 at the moment
+    //int tilew = getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
+    //int tileh = getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
     int layerNr = 0;
     Map* map = new Map(w, h);
 
@@ -124,8 +125,9 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tile") && y < h)
         {
-            int gid = getProperty(node, "gid", -1);
-            map->setTile(x, y, layer, (gid > -1) ? gid : 0);
+            //int gid = getProperty(node, "gid", -1);
+            // TODO: Convert gid to Image* and set the tile
+            //map->setTile(x, y, layer, (gid > -1) ? gid : 0);
 
             x++;
             if (x == w) {x = 0; y++;}

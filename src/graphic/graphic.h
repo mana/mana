@@ -169,7 +169,7 @@ class Graphics : public gcn::SDLGraphics {
  */
 class Engine {
     private:
-        Spriteset *tileset, *emotionset, *npcset, *monsterset;
+        Spriteset *emotionset, *npcset, *monsterset;
 
     public:
         Engine();
