@@ -35,10 +35,6 @@
 #include "ok_dialog.h"
 #include "../main.h"
 
-#ifndef WIN32
-extern Sound sound;
-#endif /* no WIN32 */
-
 struct Modes {
     int height, width;
     char *desc;
@@ -184,7 +180,6 @@ void Setup::action(const std::string& eventId)
         }
 
         // Sound settings
-#ifndef WIN32
         if (soundCheckBox->isMarked()) {
             config.setValue("sound",1);
             try {
@@ -198,7 +193,6 @@ void Setup::action(const std::string& eventId)
             config.setValue("sound", 0);
             sound.close();
         }
-#endif /* not WIN32 */
     } else if (eventId == "cancel") {
         setVisible(false);
     }
