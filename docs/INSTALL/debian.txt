@@ -30,7 +30,7 @@ apt-get install libsdl-mixer1.2 libsdl-image1.2
 
 Guichan can be found at :
 
-http://themanaworld.sourceforge.net/files
+http://guichan.darkbits.org/downloads.shtml
 
 After downloading it, you can install it by typing as root :
 dpkg -i libguichan_0.2.0_i386.deb

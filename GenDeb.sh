@@ -114,7 +114,7 @@ echo ' give you the opportunity to play in a 2D heroic-fantasy world forever.' >
 echo ' .' >>DEBIAN/control;
 echo ' You will find the not officially supported dependencies of this package on the website. Install them before trying to install this one.' >>DEBIAN/control;
 echo ' You need : libsdldebian1.2-all, libsdl-image1.2, and libsdl-mixer1.2 given by any Debian mirrors...' >>DEBIAN/control;
-echo ' You also need : libguichan which can be found on : http://themanaworld.sourceforge.net/files' >>DEBIAN/control
+echo ' You also need : libguichan which can be found on : http://guichan.darkbits.org/downloads.shtml' >>DEBIAN/control
 echo ' Look at the website for further informations...' >>DEBIAN/control;
 echo ' .' >>DEBIAN/control;
 echo ' Authors:' >>DEBIAN/control;
@@ -142,6 +142,6 @@ rm -rf Debian;
 echo "You Debian Package is normally ready :"
 echo "His name is : manaworld_"$TMW_VERSION"_i386.deb";
 echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2 and libguichan to install manaworld.";
-echo "You can find libguichan in http://themanaworld.sourceforge.net/files";
+echo "You can find libguichan in http://guichan.darkbits.org/downloads.shtml";
 echo "End of Debian Creation...";
 
