@@ -102,6 +102,7 @@ int get_y_offset(NODE *node) {
 
 void init_graphic() {
 	tileset = load_datafile("./data/graphic/village.dat");
+	if(!tileset)error("Unable to load tileset datafile");
 	//if(!(gfx_capabilities & GFX_HW_VRAM_BLIT))allegro_message("Not supporting HW accelerated blit");
 	buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
 	double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
@@ -140,7 +141,7 @@ void do_graphic(void) {
 			if(get_tile(i+camera_x, j+camera_y, 1)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
-	/*NODE *node = get_head();
+	NODE *node = get_head();
 	NODE *old_node = NULL;
 	while(node) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
@@ -171,7 +172,7 @@ void do_graphic(void) {
 
 		} else if(node->job==45) { // Draw a warp
       //rectfill(buffer, (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates)), (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates)), (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates))+16, (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates))+16, makecol(0,0,255));
-    }/* else { // Draw a monster
+    } else { // Draw a monster
       
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-20+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
@@ -194,17 +195,17 @@ void do_graphic(void) {
 					}
         }
       }
-    }*/
-	/*	old_node = node;
+    }
+		old_node = node;
     node = node->next;
 		if(old_node->action==MONSTER_DEAD && old_node->frame>=4)
 			remove_node(old_node->id);
-	}*/
+	}
 
-	/*for(int j=0;j<20;j++)
+	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
 			if(get_tile(i+camera_x, j+camera_y, 2)!=0)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
-		}*/
+		}
 
 		
 
@@ -213,7 +214,7 @@ void do_graphic(void) {
 	
 
 	// Draw player speech
-  /*node = get_head();
+  node = get_head();
   while(node) {
     if(node->speech!=NULL) {
       alfont_textprintf_aa(double_buffer, gui_font, node->text_x+260-alfont_text_length(gui_font, node->speech)/2, node->text_y+100, node->speech_color, "%s", node->speech);
@@ -246,7 +247,7 @@ void do_graphic(void) {
 	}
   
 
-	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);*/
+	alfont_textprintf_aa(double_buffer, gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i", fps);
 
 	blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
 

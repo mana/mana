@@ -22,7 +22,7 @@
 */
 
 #include "char_server.h"
-#include "../Graphic/graphic.h"
+#include "../graphic/graphic.h"
 
 char server[30];
 

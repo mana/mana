@@ -29,7 +29,7 @@
 #ifdef WIN32
 #include <windows.h>
 #else
-#include "./src/net/win2linux.h"
+#include "./net/win2linux.h"
 #endif
 
 MAP map;
