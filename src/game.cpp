@@ -33,6 +33,7 @@
 #include "./gui/shop.h"
 #include "./gui/npc.h"
 #include "./gui/setup.h"
+#include "./gui/stats.h"
 #include "./gui/ok_dialog.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
@@ -50,6 +51,7 @@ volatile bool refresh = false, action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
 Setup *setup;
+StatsWindow *stats;
 
 #define MAX_TIME 10000
 
@@ -285,7 +287,8 @@ void do_input() {
 		}
 
 		if(key[KEY_S]) {
-			show_skill_dialog = !show_skill_dialog;
+			//show_skill_dialog = !show_skill_dialog;
+			stats = StatsWindow::create_statswindow();
 			action_time = false;
 		} else if(key[KEY_I]) {
 			inventoryWindow->setVisible(!inventoryWindow->isVisible());
