@@ -65,10 +65,19 @@ class Image : public Resource
         /**
          * Loads an image.
          * @param filePath The path to the image file to load.
-         * @return <code>true</code> if the image was loaded
-         * <code>false</code> otherwise.
+         * @return <code>NULL</code> if the an error occurred, a
+         * valid pointer otherwise.
          */
         static Image *load(const std::string &filePath, int flags);
+
+        /**
+         * Loads an image from a buffer in memory.
+         * @param buffer The memory buffer containing the image
+         * data.
+         * @return <code>NULL</code> if the an error occurred, a
+         * valid pointer otherwise.
+         */
+        static Image *load(const char* buffer, const unsigned int bufferSize);
 
         /**
          * Frees the resources created by SDL.

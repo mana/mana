@@ -198,6 +198,23 @@ Image* Image::load(const std::string &filePath, int flags)
 #endif
 }
 
+Image* Image::load(const char* buffer, const unsigned int bufferSize)
+{
+    // Define our RWops structure
+    SDL_RWops* rw = NULL;
+
+    // Load the raw file data from the buffer
+    rw = SDL_RWFromMem((void*)buffer, bufferSize);
+
+    // Use SDL_Image to load the raw image data
+    SDL_Surface* texture = IMG_Load_RW(rw, 1);
+
+    // Now free the SDL_RWops data
+    //SDL_FreeRW(rw);
+
+    return new Image(texture);
+}
+
 void Image::unload()
 {
     // Free the image surface.
