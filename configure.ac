@@ -1,6 +1,5 @@
 AC_INIT([The Mana World], [0.0.10], [umperio@users.sourceforge.net])
-AC_CONFIG_SRCDIR([config.h.in])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
 # Checks for programs.
