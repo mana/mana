@@ -39,9 +39,9 @@
   #include "sound.h"
 
 /**
-	install the sound engine
-		int voices      -> overall reserved voices
-		int mod_voices  -> voices dedicated for mod-playback
+	\brief install the sound engine
+	\param voices overall reserved voices
+	\param mod_voices voices dedicated for mod-playback
 
 		NOTE:
 			overall voices must not be less or equal to the
@@ -85,10 +85,10 @@ void TmwSound::Init(int voices, int mod_voices) {
 }
 
 /**
-	set the volume value-range: 0-255
-	int digi -> for digital playback
-	int mid  -> for midi playback
-	int mod  -> for... aw, you guess ^^
+	\brief set the volume value-range: 0-255
+	\param digi for digital playback
+	\param mid for midi playback
+	\param mod for... aw, you guess ^^
 
 	NOTE:
 		all values may only be between 0-255 where 0 means
@@ -107,10 +107,10 @@ void TmwSound::SetVol(int digi, int mid, int mod) {
 }
 
 /**
-	adjusts current volume
-	int digi -> for digital playback
-	int mid  -> for midi playback
-	int mod  -> for... aw, you guess ^^
+	\brief adjusts current volume
+	\param adigi for digital playback
+	\param amid for midi playback
+	\param amod for... aw, you guess ^^
 
 	NOTE:
 		all values may only be between 0-255 where 0 means
@@ -128,9 +128,9 @@ void TmwSound::SetAdjVol(int adigi, int amid, int amod) {
 }
 
 /**
-	start BGM using a midi file
-	char *in -> full path of midi file
-	int loop -> how many times should the midi be looped? (-1 = infinite)
+	\brief start BGM using a midi file
+	\param *in full path of midi file
+	\param loop how many times should the midi be looped? (-1 = infinite)
 
 	NOTE:
 		playing midi does not steal away any voices but
@@ -156,9 +156,9 @@ void TmwSound::StartMIDI(char *in, int loop) {
 }
 
 /**
-	start BGM using a mod file
-		char *in -> full path of mod file
-		int loop -> how many times should the midi be looped? (-1 = infinite)
+	\brief start BGM using a mod file
+	\param *in full path of mod file
+	\param loop how many times should the midi be looped? (-1 = infinite)
 
 	NOTE:
 		playing mod is a pretty good choice. most of the work
@@ -186,7 +186,7 @@ void TmwSound::StartMOD(char * in, int loop) {
 }
 
 /**
-	stop all currently running BGM tracks
+	\brief stop all currently running BGM tracks
 
 	NOTE:
 		you need to stop all playback when you want to
@@ -208,11 +208,9 @@ void TmwSound::StopBGM() {
 }
 
 /**
-	play short sample usually for sfx
-		char * in -> full path to the sample file
-		(int wavid -> the id of the preloaded wav file (not implemented yet))
-		int pan   -> panning of the sound, values can be 0-255 where 128 is
-									the middle
+	\brief play short sample usually for sfx
+	\param *in full path to the sample file
+	\param pan panning of the sound, values can be 0-255 where 128 is the middle
 
 	NOTE:
 		later on this will be a subsequent call to another
@@ -243,9 +241,9 @@ void TmwSound::StartWAV(char * in, int pan) {
 }
 
 /**
-	preloads a sound-item into buffer
-		char *fpath -> full path to file
-		char type   -> type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
+	\brief preloads a sound-item into buffer
+	\param *fpath full path to file
+	\param type type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
 
 	NOTE:
 		only TMWSOUND_SFX items get preloaded. everything
@@ -272,8 +270,8 @@ TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
 }
 
 /**
-	unloads an item from the soundpool
-		TMWSOUND_SID id -> id returned by LoadItem()
+	\brief unloads an item from the soundpool
+	\param id id returned by LoadItem()
 */
 void TmwSound::UnloadItem(TMWSOUND_SID id) {
 	int cnt = 0;
@@ -290,8 +288,9 @@ void TmwSound::UnloadItem(TMWSOUND_SID id) {
 }
 
 /**
-	plays an item in soundpool
-		TMWSOUND_SID id -> id returned by LoadItem()
+	\brief plays an item in soundpool
+	\param id id returned by LoadItem()
+	\param loop loop n times (-1 is infinite)
 */
 void TmwSound::PlayItem(TMWSOUND_SID id, int loop) {
 	POOL_ITEM item;
@@ -314,7 +313,7 @@ void TmwSound::PlayItem(TMWSOUND_SID id, int loop) {
 }
 
 /**
-	deinstall all sound functionality
+	\brief deinstall all sound functionality
 
 	NOTE:
 		normally you won't need to call this since this is
@@ -334,7 +333,7 @@ void TmwSound::Close(void) {
 }
 
 /**
-	checks if value equals min-/maximum volume and returns
+	\brief checks if value equals min-/maximum volume and returns
 	true if that's the case.
 */
 bool TmwSound::isMaxVol(int vol) {
