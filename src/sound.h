@@ -68,7 +68,7 @@ class Sound {
          * \param in   Full path to file
          * \param loop The number of times the song is played (-1 = infinite)
          */
-        void startBgm(char *in, int loop);
+        void startBgm(char *in, int loop = -1);
 
         /**
          * \brief Stop all currently running background music tracks

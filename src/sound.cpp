@@ -85,7 +85,12 @@ void Sound::startBgm(char *in, int loop)
     logger.log("Sound::startBgm() playing \"%s\" %d times", in, loop);
 
     bgm = Mix_LoadMUS(in);
-    Mix_PlayMusic(bgm, loop);
+    if (bgm) {
+        Mix_PlayMusic(bgm, loop);
+    }
+    else {
+        logger.log("Sound::startBgm() warning: error loading file.");
+    }
 }
 
 void Sound::stopBgm()

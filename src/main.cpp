@@ -339,6 +339,7 @@ int main(int argc, char *argv[])
         switch (state) {
             case LOGIN:
                 logger.log("State: LOGIN");
+                sound.startBgm("data/music/Ivano(de)Jeanette.ogg");
                 login();
                 break;
             case CHAR_SERVER:
