@@ -219,14 +219,14 @@ void Window::mouseMotion(int mx, int my)
         // Keep guichan window inside window
         if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x + winWidth > 799) x = 799 - winWidth;
-        if (y + winHeight > 599) y = 599 - winHeight;
+        if (x + winWidth > screen->w) x = screen->w - winWidth;
+        if (y + winHeight > screen->h) y = screen->h - winHeight;
 
         // Snap window to edges
         if (x < snapSize) x = 0;
         if (y < snapSize) y = 0;
-        if (x + winWidth + snapSize > 799) x = 799 - winWidth;
-        if (y + winHeight + snapSize > 599) y = 599 - winHeight;
+        if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
+        if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
 
         this->setPosition(x, y);
     }

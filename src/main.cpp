@@ -210,9 +210,9 @@ void init_engine() {
         displayFlags |= SDL_SWSURFACE;
     }
 
-    screen = SDL_SetVideoMode(800, 600, 16, displayFlags);
+    screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
     if (screen == NULL) {
-        std::cerr << "Couldn't set 800x600x16 video mode: " <<
+        std::cerr << "Couldn't set 800x600x32 video mode: " <<
             SDL_GetError() << std::endl;
         exit(1);
     }
