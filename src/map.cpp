@@ -30,7 +30,7 @@
 #include "./net/win2linux.h"
 #endif
 
-MAP map;
+MAP tiled_map;
 
 /** Loads a map file */
 bool load_map(char *map_file) {
@@ -39,7 +39,7 @@ bool load_map(char *map_file) {
 		warning(map_file);
 		return false;
 	}
-	pack_fread(&map, sizeof(MAP), file);
+	pack_fread(&tiled_map, sizeof(MAP), file);
 	pack_fclose(file);
 	return true;
 }
@@ -47,13 +47,13 @@ bool load_map(char *map_file) {
 
 /** Set walkability flag for a tile */
 void set_walk(short x_c, short y_c, bool walkable) {
-	if(walkable==true)map.tiles[x_c][y_c].data[3] |= 0x0002;
-	else map.tiles[x_c][y_c].data[3] &= 0x00fd;
+	if(walkable==true)tiled_map.tiles[x_c][y_c].data[3] |= 0x0002;
+	else tiled_map.tiles[x_c][y_c].data[3] &= 0x00fd;
 }
 
 /** Tell if a tile is walkable or not */
 bool get_walk(short x_c, short y_c) {
-	bool ret = (map.tiles[x_c][y_c].data[3] & 0x0002)>0;
+	bool ret = (tiled_map.tiles[x_c][y_c].data[3] & 0x0002)>0;
 	if(ret==true) {
     NODE *node = get_head();
 		while(node && ret==true) {
@@ -73,9 +73,9 @@ unsigned char get_path_walk(unsigned short x, unsigned short y) {
 
 /** Tell if a tile is animated or not */
 bool get_anim(short x_c, short y_c, char layer) {
-	char temp = map.tiles[x_c][y_c].flags & 0x00C0;
+	char temp = tiled_map.tiles[x_c][y_c].flags & 0x00C0;
 	temp>>=6;
-	if(abs(temp)==layer)return (map.tiles[x_c][y_c].data[3] & 0x0001)>0;
+	if(abs(temp)==layer)return (tiled_map.tiles[x_c][y_c].data[3] & 0x0001)>0;
 	else return false;
 }
 
@@ -83,21 +83,21 @@ bool get_anim(short x_c, short y_c, char layer) {
 void set_tile(short x_c, short y_c, char layer, unsigned short id) {
 	if(layer==0) {
 		id <<= 6;
-        map.tiles[x_c][y_c].data[0] = HIBYTE(id);
-		map.tiles[x_c][y_c].data[1] &= 0x003f;
-        map.tiles[x_c][y_c].data[1] |= LOBYTE(id);
+        tiled_map.tiles[x_c][y_c].data[0] = HIBYTE(id);
+		tiled_map.tiles[x_c][y_c].data[1] &= 0x003f;
+        tiled_map.tiles[x_c][y_c].data[1] |= LOBYTE(id);
 	} else if(layer==1) {
 		id  <<= 4;
-		map.tiles[x_c][y_c].data[1] &= 0x00c0;
-		map.tiles[x_c][y_c].data[1] |= HIBYTE(id);
-		map.tiles[x_c][y_c].data[2] &= 0x000f;
-		map.tiles[x_c][y_c].data[2] |= LOBYTE(id);
+		tiled_map.tiles[x_c][y_c].data[1] &= 0x00c0;
+		tiled_map.tiles[x_c][y_c].data[1] |= HIBYTE(id);
+		tiled_map.tiles[x_c][y_c].data[2] &= 0x000f;
+		tiled_map.tiles[x_c][y_c].data[2] |= LOBYTE(id);
 	} else if(layer==2) {
 		id <<= 2;
-		map.tiles[x_c][y_c].data[2] &= 0x00f0;
-		map.tiles[x_c][y_c].data[2] |= HIBYTE(id);
-		map.tiles[x_c][y_c].data[3] &= 0x0003;
-		map.tiles[x_c][y_c].data[3] |= LOBYTE(id);
+		tiled_map.tiles[x_c][y_c].data[2] &= 0x00f0;
+		tiled_map.tiles[x_c][y_c].data[2] |= HIBYTE(id);
+		tiled_map.tiles[x_c][y_c].data[3] &= 0x0003;
+		tiled_map.tiles[x_c][y_c].data[3] |= LOBYTE(id);
 	}
 }
 
@@ -105,13 +105,16 @@ void set_tile(short x_c, short y_c, char layer, unsigned short id) {
 unsigned short get_tile(short x_c, short y_c, char layer) {
 	unsigned short id;
 	if(layer==0) {
-        id = MAKEWORD(map.tiles[x_c][y_c].data[1] & 0x00c0, map.tiles[x_c][y_c].data[0]);
+        id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[1] & 0x00c0,
+                tiled_map.tiles[x_c][y_c].data[0]);
         id >>= 6;
 	} else if(layer==1) {
-		id = MAKEWORD(map.tiles[x_c][y_c].data[2] & 0x00f0, map.tiles[x_c][y_c].data[1] & 0x003f);
+		id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[2] & 0x00f0,
+                        tiled_map.tiles[x_c][y_c].data[1] & 0x003f);
 		id >>= 4;
 	} else if(layer==2) {
-		id = MAKEWORD(map.tiles[x_c][y_c].data[3] & 0x00fc, map.tiles[x_c][y_c].data[2] & 0x000f);
+		id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[3] & 0x00fc,
+                        tiled_map.tiles[x_c][y_c].data[2] & 0x000f);
 		id >>=2;
 	}
     return id;

@@ -19,11 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "gui.h"
-#include "../log.h"
-#include "allegro/internal/aintern.h"
+#include <allegro.h>
+#include <allegro/internal/aintern.h>
 #include <math.h>
 #include <alfont.h>
+#include "gui.h"
+#include "../log.h"
 #include "../sound/sound.h"
 
 #ifndef WIN32
@@ -55,24 +56,65 @@ extern TmwSound sound;
 int (*gui__external_slider_callback)(void *, int);
 int reroute_slider_proc(void *dp3, int d2);
 
+// Guichan Allegro stuff
+gcn::AllegroInput* input;              // Input driver
+gcn::AllegroGraphics* graphics;        // Graphics driver
+gcn::AllegroImageLoader* imageLoader;  // For loading images
+
+// Guichan stuff
+gcn::Gui* gui;            // A Gui object - binds it all together
+gcn::Container* guitop;   // The top container
+gcn::ImageFont* guiFont;  // A font
+
+
 
 
 /** Initialize gui system */
 void init_gui(BITMAP *bitmap, const char *skin) {
-  gui_bitmap = bitmap;
-  gui_load_skin(skin);
-  //alfont_init();
-  gui_font = alfont_load_font("./data/Skin/arial.ttf");
-  alfont_set_font_size(gui_font, 14);
-  drag = false;
-  show_mouse(NULL);
+    imageLoader = new gcn::AllegroImageLoader();
+    gcn::Image::setImageLoader(imageLoader);
+
+    graphics = new gcn::AllegroGraphics();
+    graphics->setTarget(bitmap);
+
+    input = new gcn::AllegroInput();
+
+    guitop = new gcn::Container();
+    guitop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
+    guitop->setOpaque(false);
+
+    gui = new gcn::Gui();
+    gui->setGraphics(graphics);
+    gui->setInput(input);
+    gui->setTop(guitop);
+    guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
+            " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+    gcn::Widget::setGlobalFont(guiFont);
+
+
+    gui_bitmap = bitmap;
+    gui_load_skin(skin);
+    //alfont_init();
+    gui_font = alfont_load_font("./data/Skin/arial.ttf");
+    alfont_set_font_size(gui_font, 14);
+    drag = false;
+    show_mouse(NULL);
 }
 
 int gui_update(DIALOG_PLAYER *player) {
-  dialog_message(player->dialog, MSG_DRAW, 0, 0);
-  int ret = update_dialog(player);
-	draw_sprite(gui_bitmap, mouse_sprite, mouse_x, mouse_y);
-  return ret;
+    int ret;
+    gui->logic();
+    gui->draw();
+
+    if (player) {
+        dialog_message(player->dialog, MSG_DRAW, 0, 0);
+        ret = update_dialog(player);
+    }
+
+    // Draw the mouse
+    draw_sprite(gui_bitmap, mouse_sprite, mouse_x, mouse_y);
+
+    return ret;
 }
 
 
@@ -415,9 +457,17 @@ int gui_load_skin(const char* skinname) {
 }
 
 void gui_exit() {
-  //alfont_destroy_font(gui_font);
-  gui_shutdown();
-  //alfont_exit();
+    delete guiFont;
+    delete guitop;
+    delete gui;
+
+    delete input;
+    delete graphics;
+    delete imageLoader;
+
+    //alfont_destroy_font(gui_font);
+    gui_shutdown();
+    //alfont_exit();
 }
 
 void gui_shutdown(void) {

@@ -35,7 +35,14 @@
 #include "../net/network.h"
 #include "gui.h"
 
+// The action listener for the login dialog
+class LoginActionListener : public gcn::ActionListener
+{
+    public:
+        void action(const std::string& eventId);
+};
+
 void login();
-void server_login();
+void server_login(const std::string& user, const std::string& pass);
 
 #endif

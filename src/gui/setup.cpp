@@ -25,7 +25,7 @@ int apply_setup(int msg, DIALOG *d, int c);  /* Need this here in order to acces
 /* 
  * Hard coded list cuz get_gfx_mode_list fails with AUTODETECT 
  */
-const LIST list[] = {           
+const LIST mode_list[] = {           
   { 1024,768, "1024x768" },
   { 800,600, "800x600" }, 
   { 640,480, "640x480"} 
@@ -40,7 +40,7 @@ char *get_listbox_video_modes(int index, int *list_size)
     *list_size = 3;
     return NULL;
   } else
-    return list[index].desc;					  
+    return mode_list[index].desc;					  
 }
 
 /*

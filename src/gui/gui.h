@@ -29,6 +29,8 @@
 #include <allegro.h>
 #include <alfont.h>
 #include <string.h>
+#include <guichan.hpp>
+#include <guichan/allegro.hpp>
 
 typedef struct {
     BITMAP *grid[9];
@@ -100,6 +102,8 @@ typedef struct {
 extern LexSkin gui_skin;
 extern BITMAP *gui_bitmap;
 extern ALFONT_FONT *gui_font;
+
+extern gcn::Container* guitop;      // The top container
 
 /* Definition of the callback function prototypes */
 typedef int (*gui_buttonCallback)(int id);
