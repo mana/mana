@@ -31,31 +31,74 @@
 #include <fstream>
 
 /**
- * INI configuration handler for reading (and writing)
+ * INI configuration handler for reading (and writing).
  *
  * \ingroup CORE
  */
 class Configuration {
     public:
-        void init(std::string);
+        /**
+         * \brief Reads INI file and parse all options into memory.
+         * \param filename Full path to INI file (~/.manaworld/tmw.ini)
+         */
+        void init(std::string filename);
 
-        bool write(std::string);
+        /**
+         * \brief Writes the current settings back to an ini-file.
+         * \param filename Full path to INI file (~/.manaworld/tmw.ini)
+         */
+        bool write(std::string filename);
 
-        void        setValue(std::string, std::string);
-        void        setValue(std::string, float);
+        /**
+         * \brief Sets an option using a string value.
+         * \param key Option identifier.
+         * \param value Value.
+         */
+        void setValue(std::string key, std::string value);
 
-        std::string getValue(std::string, std::string);
-        float       getValue(std::string, float);
+        /**
+         * \brief Sets an option using a numeric value.
+         * \param key Option identifier.
+         * \param value Value.
+         */
+        void setValue(std::string key, float value);
+
+        /**
+         * \brief Gets a value as string.
+         * \param key Option identifier.
+         * \param deflt Default option if not there or error.
+         */
+        std::string getValue(std::string key, std::string deflt);
+
+        /**
+         * \brief Gets a value as numeric (float).
+         * \param key Option identifier.
+         * \param deflt Default option if not there or error.
+         */
+        float getValue(std::string key, float delflt);
     private:
-        bool        keyExists(std::string);
+        /**
+         * Returns wether they given key exists.
+         */
+        bool keyExists(std::string key);
 
-        typedef struct INI_OPTION {
-            std::string stringValue;
-            float       numericValue;
+        /**
+         * A simple data structure to store the value of a configuration
+         * option.
+         */
+        class OptionValue {
+            public:
+                /**
+                 * Constructor.
+                 */
+                OptionValue();
+
+                std::string stringValue;
+                float numericValue;
         };
 
-        std::map<std::string, INI_OPTION> iniOptions;
-        std::map<std::string, INI_OPTION>::iterator iter;
+        std::map<std::string, OptionValue> iniOptions;
+        std::map<std::string, OptionValue>::iterator iter;
 };
 
 #endif
