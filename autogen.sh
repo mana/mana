@@ -4,9 +4,9 @@ echo "Generating build information using aclocal, autoheader, automake and autoc
 echo
 
 # Regerate configuration files
-aclocal-1.9
+aclocal
 autoheader
-automake-1.9 --gnu --add-missing --copy
+automake --gnu --add-missing --copy
 autoconf
 
 echo

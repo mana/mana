@@ -1,9 +1,10 @@
 0.0.11  (.... 2005)
 - Added walking with mouse by clicking where you want to go
+- Chat now appears in a window
 - More complete support for new map format (collision, compression)
 - Fixed problem where players would often turn up with black hair
 - Fixed not showing other players dead when they die
-- Fixed a crash in being path handling
+- Fixed multiple crashes in being path handling
 - Fixed initial starting position for new player characters
 
 0.0.10  (5 March 2005)

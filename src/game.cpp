@@ -537,15 +537,17 @@ void do_parse() {
                     break;
                     // Add new being / stop monster
                 case 0x0078:
-                    if (find_node(RFIFOL(2)) == NULL) {
+                    being = find_node(RFIFOL(2));
+
+                    if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->speed = RFIFOW(6);
                         if (being->speed == 0) {
-                            being->speed = 150; // Else division by 0 when calculating frame
+                            // Else division by 0 when calculating frame
+                            being->speed = 150;
                         }
                         being->job = RFIFOW(14);
-                        being->clearPath();
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
@@ -554,15 +556,13 @@ void do_parse() {
                         add_node(being);
                     }
                     else {
-                        if (being) {
-                            being->clearPath();
-                            being->x = get_x(RFIFOP(46));
-                            being->y = get_y(RFIFOP(46));
-                            being->direction = get_direction(RFIFOP(46));
-                            being->frame = 0;
-                            being->walk_time = tick_time;
-                            being->action = STAND;
-                        }
+                        being->clearPath();
+                        being->x = get_x(RFIFOP(46));
+                        being->y = get_y(RFIFOP(46));
+                        being->direction = get_direction(RFIFOP(46));
+                        being->frame = 0;
+                        being->walk_time = tick_time;
+                        being->action = STAND;
                     }
                     break;
 

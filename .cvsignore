@@ -15,3 +15,6 @@ configure
 libtool
 autom4te.cache
 tmw.log
+missing
+install-sh
+depcomp
