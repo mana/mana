@@ -155,6 +155,9 @@
 				RelativePath=".\game.cpp">
 			</File>
 			<File
+				RelativePath=".\game_dialog.cpp">
+			</File>
+			<File
 				RelativePath=".\main.cpp">
 			</File>
 			<File
@@ -223,6 +226,9 @@
 			</File>
 			<File
 				RelativePath=".\game.h">
+			</File>
+			<File
+				RelativePath=".\game_dialog.h">
 			</File>
 			<File
 				RelativePath=".\map.h">
