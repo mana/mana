@@ -27,18 +27,20 @@
 #define _NETWORK_H
 
 #ifdef WIN32
-#include <allegro.h>
-#include <winalleg.h>
+	#include <allegro.h>
+	#include <winalleg.h>
 #else
-#include "win2linux.h"
-#endif
-#include <stdio.h>
-#include "../log.h"
-#ifdef MACOSX
-#include "win2mac.h"
+	#include "win2linux.h"
 #endif
 
-/** Macros to write in output buffer, pos is the location where to write data 
+#include <stdio.h>
+#include "../log.h"
+
+#ifdef MACOSX
+	#include "win2mac.h"
+#endif
+
+/** Macros to write in output buffer, pos is the location where to write data
     After you wrote len bytes, you have to use WFIFOSET */
 #define WFIFOSPACE (buffer_size-out_size) // Number of bytes currently written in uotput buffer
 #define WFIFOP(pos) (out+(pos+out_size)) // Return a pointer to a specific location in output buffer
@@ -46,30 +48,33 @@
 #define WFIFOW(pos) (*(unsigned short *)(out+pos+out_size)) // Write a word (2 byte)
 #define WFIFOL(pos) (*(unsigned int *)(out+pos+out_size)) // Write a long (4 byte)
 //#define WFIFOSET(len) out_size+=len // Increase size of written data
+
 #ifdef MACOSX
-#define net_b_value(id) (id)
-#define net_w_value(id) DR_SwapTwoBytes(id)
-#define net_l_value(id) DR_SwapFourBytes(id)
+	#define net_b_value(id) (id)
+	#define net_w_value(id) DR_SwapTwoBytes(id)
+	#define net_l_value(id) DR_SwapFourBytes(id)
 #else
-#define net_b_value(id) (id)
-#define net_w_value(id) (id)
-#define net_l_value(id) (id)
+	#define net_b_value(id) (id)
+	#define net_w_value(id) (id)
+	#define net_l_value(id) (id)
 #endif
 
 
 /** Macros to read from input buffer, pos is the location of data to be read
     After you read len bytes, you should use RFIFOSKIP */
 #define RFIFOP(pos) (in+(pos)) // Get a pointer from a specific location in input buffer
+
 #ifdef MACOSX
-#define RFIFOB(pos) ((*(unsigned char*)(in+(pos)))) // Read a byte
-#define RFIFOW(pos) DR_SwapTwoBytes((*(unsigned short*)(in+(pos)))) // Read a word
-#define RFIFOL(pos) DR_SwapFourBytes((*(unsigned int*)(in+(pos)))) // Read a long
+	#define RFIFOB(pos) ((*(unsigned char*)(in+(pos)))) // Read a byte
+	#define RFIFOW(pos) DR_SwapTwoBytes((*(unsigned short*)(in+(pos)))) // Read a word
+	#define RFIFOL(pos) DR_SwapFourBytes((*(unsigned int*)(in+(pos)))) // Read a long
 #else
-#define RFIFOB(pos) (*(unsigned char*)(in+(pos))) // Read a byte
-#define RFIFOW(pos) (*(unsigned short*)(in+(pos))) // Read a word
-#define RFIFOL(pos) (*(unsigned int*)(in+(pos))) // Read a long
+	#define RFIFOB(pos) (*(unsigned char*)(in+(pos))) // Read a byte
+	#define RFIFOW(pos) (*(unsigned short*)(in+(pos))) // Read a word
+	#define RFIFOL(pos) (*(unsigned int*)(in+(pos))) // Read a long
 #endif
-#define RFIFOSKIP(len) (memcpy(in,in+len,in_size-len));in_size-=len; // Empty len bytes from input buffer 
+
+#define RFIFOSKIP(len) (memcpy(in,in+len,in_size-len));in_size-=len; // Empty len bytes from input buffer
 #define RFIFOSPACE (buffer_size-in_size) // Return input buffer size
 #define RFIFOSET(len) in_size+=len;
 
