@@ -195,6 +195,7 @@ void init_engine() {
     if ((int)config.getValue("screen", 0)) {
         displayFlags |= SDL_FULLSCREEN;
     }
+#ifndef USE_OPENGL
     if ((int)config.getValue("hwaccel", 0)) {
         std::cout << "Attempting to use hardware acceleration.\n";
         displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
@@ -202,6 +203,10 @@ void init_engine() {
     else {
         displayFlags |= SDL_SWSURFACE;
     }
+#else
+    displayFlags |= SDL_OPENGL;
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#endif
 
     screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
     if (screen == NULL) {
@@ -209,6 +214,12 @@ void init_engine() {
             SDL_GetError() << std::endl;
         exit(1);
     }
+
+#ifdef USE_OPENGL
+    // Setup OpenGL
+    glViewport(0, 0, 800, 600);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+#endif
 
 #ifdef __DEBUG
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
@@ -301,6 +312,8 @@ int main(int argc, char *argv[]) {
                     state = EXIT;
                     break;
             }
+
+            guiInput->pushInput(event);
         }
 
         switch (state) {
