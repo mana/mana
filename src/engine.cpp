@@ -45,6 +45,7 @@ char npc_button[10] = "Close";
 gcn::TextField *chatInput;
 gcn::Label *debugInfo;
 
+Window *chatWindow;
 ChatBox *chatBox;
 StatusWindow *statusWindow;
 BuyDialog *buyDialog;
@@ -134,10 +135,16 @@ int get_y_offset(Being *being) {
 Engine::Engine()
 {
     // Initializes GUI
+    chatWindow = new Window("Chat");
+    chatWindow->setSize(600, 100);
+    
     chatInput = new TextField();
+    //chatInput->setPosition(chatInput->getBorderSize(),
+    //        screen->h - chatInput->getHeight() -
+    //        chatInput->getBorderSize());
     chatInput->setPosition(chatInput->getBorderSize(),
-            screen->h - chatInput->getHeight() -
-            chatInput->getBorderSize());
+            chatWindow->getY() + 85);
+    
     chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
 
     ChatListener *chatListener = new ChatListener();
@@ -150,10 +157,13 @@ Engine::Engine()
     chatBox->setSize(592, 100);
     chatBox->setPosition(0, chatInput->getY() - 1 - chatBox->getHeight());
 
-    guiTop->add(chatBox);
-    guiTop->add(debugInfo);
-    guiTop->add(chatInput);
-
+    chatWindow->add(chatBox);
+    //chatWindow->add(debugInfo);
+    chatWindow->add(chatInput);
+    
+    chatWindow->setPosition(0, screen->h-12 - chatInput->getHeight() - chatBox->getHeight());
+    
+    guiTop->add(chatWindow);
 
     // Create dialogs
 
