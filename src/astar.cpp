@@ -177,16 +177,16 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
             // children are similar, conceptually, to the binary heap children
             // mentioned above, but don't confuse them. They are different.
             // Path children are portrayed in Demo 1 with grey pointers
-            // pointing toward their parents.) Add these adjacent child
-            // squares to the open list for later consideration if appropriate
-            // (see various if statements below).
+            // pointing toward their parents.) Add these adjacent child squares
+            // to the open list for later consideration if appropriate (see
+            // various if statements below).
 
             for (b = parentYval - 1; b <= parentYval + 1; b++) {
                 for (a = parentXval - 1; a <= parentXval + 1; a++) {
                     // Skip if off the map (do this first to avoid array
                     // out-of-bounds errors)
                     if (!(a != -1 && b != -1 &&
-                            a != MAP_WIDTH && b != MAP_HEIGHT))
+                                a != MAP_WIDTH && b != MAP_HEIGHT))
                     {
                         continue;
                     }
@@ -222,162 +222,158 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
                         }
                     }
 
-                    if (corner == WALKABLE) {
-                        // If not already on the open list, add it to the open
-                        // list.
-                        if (whichList[a][b] != onOpenList) {
-                            // Create a new open list item in the
-                            // binary heap.
-                            // Each new item has a unique ID #
-                            newOpenListItemID += 1;
-                            m = numberOfOpenListItems + 1;
+                    // We can't skip corners, skip to the next square instead.
+                    if (corner != WALKABLE) {
+                        continue;
+                    }
 
-                            // Place the new open list item (actually, its ID#)
-                            // at the bottom of the heap
-                            openList[m] = newOpenListItemID;
-                            // Record the x and y coordinates of the new item
-                            openX[newOpenListItemID] = a;
-                            openY[newOpenListItemID] = b;
+                    // If not already on the open list, add it to the open
+                    // list.
+                    if (whichList[a][b] != onOpenList) {
+                        // Create a new open list item in the binary heap.
+                        // Each new item has a unique ID #
+                        newOpenListItemID += 1;
+                        m = numberOfOpenListItems + 1;
 
-                            // Figure out its G_cost cost
-                            if (abs(a - parentXval) == 1 &&
-                                    abs(b - parentYval) == 1)
+                        // Place the new open list item (actually, its ID#)
+                        // at the bottom of the heap
+                        openList[m] = newOpenListItemID;
+                        // Record the x and y coordinates of the new item
+                        openX[newOpenListItemID] = a;
+                        openY[newOpenListItemID] = b;
+
+                        // Figure out its G_cost cost
+                        if (abs(a - parentXval) == 1 &&
+                                abs(b - parentYval) == 1)
+                        {
+                            // Cost of going to diagonal squares.
+                            addedGCost = 14;
+                        }
+                        else {
+                            // Cost of going to non-diagonal squares.
+                            addedGCost = 10;
+                        }
+
+                        G_cost[a][b] = G_cost[parentXval][parentYval] +
+                            addedGCost;
+
+                        // Figure out its H and F costs and parent.
+                        H_cost[openList[m]] =
+                            10 * (abs(a - e_x) + abs(b - e_y));
+                        F_cost[openList[m]] =
+                            G_cost[a][b] + H_cost[openList[m]];
+                        parentX[a][b] = parentXval;
+                        parentY[a][b] = parentYval;
+
+                        // Move the new open list item to the proper place in
+                        // the binary heap.  Starting at the bottom,
+                        // successively compare to parent items, swapping as
+                        // needed until the item finds its place in the heap or
+                        // bubbles all the way to the top (if it has the lowest
+                        // F cost).
+
+                        // While item hasn't bubbled to the top (m = 1)
+                        while (m != 1)
+                        {
+                            // Check if child's F cost is < parent's F
+                            // cost. If so, swap them.
+
+                            if (F_cost[openList[m]] <= F_cost[openList[m / 2]])
                             {
-                                // Cost of going to diagonal squares.
-                                addedGCost = 14;
+                                temp = openList[m / 2];
+                                openList[m / 2] = openList[m];
+                                openList[m] = temp;
+                                m = m / 2;
                             }
                             else {
-                                // Cost of going to non-diagonal squares.
-                                addedGCost = 10;
+                                break;
                             }
+                        }
 
-                            G_cost[a][b] = G_cost[parentXval][parentYval] +
-                                addedGCost;
+                        // Add one to the number of items in the heap.
+                        numberOfOpenListItems += 1;
+                        // Change whichList to show that the new item is on
+                        // the open list.
+                        whichList[a][b] = onOpenList;
+                    } else {
+                        // If whichList(a,b) = onOpenList
 
-                            // Figure out its H and F costs and parent.
-                            H_cost[openList[m]] =
-                                10 * (abs(a - e_x) + abs(b - e_y));
-                            F_cost[openList[m]] =
-                                G_cost[a][b] + H_cost[openList[m]];
+                        // If adjacent cell is already on the open list, check
+                        // to see if this path to that cell from the starting
+                        // location is a better one.  If so, change the parent
+                        // of the cell and its G_cost and F costs.  Figure out
+                        // the G_cost cost of this possible new path
+
+                        if (abs(a - parentXval) == 1 &&
+                                abs(b - parentYval) == 1)
+                        {
+                            // Cost of going to diagonal tiles
+                            addedGCost = 14;
+                        }
+                        else {
+                            // Cost of going to non-diagonal tiles
+                            addedGCost = 10;
+                        }
+
+                        tempG = G_cost[parentXval][parentYval]
+                            + addedGCost;
+
+                        // If this path is shorter (G_cost cost is lower)
+                        // then change the parent cell, G_cost cost and F
+                        // cost.
+                        if (tempG < G_cost[a][b])
+                        {
+                            // If G_cost cost is less,
+                            // change the square's parent
                             parentX[a][b] = parentXval;
                             parentY[a][b] = parentYval;
+                            // Change the G_cost cost
+                            G_cost[a][b] = tempG;
 
-                            // Move the new open list item to the proper place
-                            // in the binary heap.  Starting at the bottom,
-                            // successively compare to parent items, swapping
-                            // as needed until the item finds its place in the
-                            // heap or bubbles all the way to the top (if it
-                            // has the lowest F cost).
+                            // Because changing the G_cost cost also changes
+                            // the F cost, if the item is on the open list we
+                            // need to change the item's recorded F cost and
+                            // its position on the open list to make sure that
+                            // we maintain a properly ordered open list.
 
-                            // While item hasn't bubbled to the top (m = 1)
-                            while (m != 1)
+                            // Look for the item in the heap
+                            for (int x = 1; x <= numberOfOpenListItems; x++)
                             {
-                                // Check if child's F cost is < parent's F
-                                // cost. If so, swap them.
-
-                                if (F_cost[openList[m]] <=
-                                        F_cost[openList[m / 2]])
+                                if (openX[openList[x]] == a &&
+                                        openY[openList[x]] == b)
                                 {
-                                    temp = openList[m / 2];
-                                    openList[m / 2] = openList[m];
-                                    openList[m] = temp;
-                                    m = m / 2;
-                                }
-                                else {
-                                    break;
-                                }
-                            }
+                                    // Item FOUND, change the F cost
+                                    F_cost[openList[x]] = G_cost[a][b] +
+                                        H_cost[openList[x]];
 
-                            // Add one to the number of items in the heap.
-                            numberOfOpenListItems += 1;
-                            // Change whichList to show that the new item is on
-                            // the open list.
-                            whichList[a][b] = onOpenList;
-                        } else {
-                            // If whichList(a,b) = onOpenList
+                                    // See if changing the F score bubbles the
+                                    // item up from it's current location in
+                                    // the heap
+                                    m = x;
 
-                            // If adjacent cell is already on the open list,
-                            // check to see if this path to that cell from the
-                            // starting location is a better one.  If so,
-                            // change the parent of the cell and its G_cost and
-                            // F costs.  Figure out the G_cost cost of this
-                            // possible new path
-
-                            if (abs(a - parentXval) == 1 &&
-                                    abs(b - parentYval) == 1)
-                            {
-                                // Cost of going to diagonal tiles
-                                addedGCost = 14;
-                            }
-                            else {
-                                // Cost of going to non-diagonal
-                                // tiles
-                                addedGCost = 10;
-                            }
-
-                            tempG = G_cost[parentXval][parentYval]
-                                + addedGCost;
-
-                            // If this path is shorter (G_cost cost is lower)
-                            // then change the parent cell, G_cost cost and F
-                            // cost.
-                            if (tempG < G_cost[a][b])
-                            {
-                                // If G_cost cost is less,
-                                // change the square's parent
-                                parentX[a][b] = parentXval;
-                                parentY[a][b] = parentYval;
-                                // Change the G_cost cost
-                                G_cost[a][b] = tempG;
-
-                                // Because changing the G_cost cost also
-                                // changes the F cost, if the item is on the
-                                // open list we need to change the item's
-                                // recorded F cost and its position on the open
-                                // list to make sure that we maintain a
-                                // properly ordered open list.
-
-                                // Look for the item in the heap
-                                for (int x = 1; x <= numberOfOpenListItems;
-                                        x++)
-                                {
-                                    if (openX[openList[x]] == a &&
-                                            openY[openList[x]] == b)
+                                    // While item hasn't bubbled to the top
+                                    // (m = 1)
+                                    while (m != 1)
                                     {
-                                        // Item FOUND
-                                        // Change the F cost
-                                        F_cost[openList[x]] = G_cost[a][b] +
-                                            H_cost[openList[x]];
-
-                                        // See if changing the F score bubbles
-                                        // the item up from it's current
-                                        // location in the heap
-                                        m = x;
-
-                                        // While item hasn't bubbled to the top
-                                        // (m = 1)
-                                        while (m != 1)
-                                        {
-                                            // Check if child is < parent. If
-                                            // so, swap them.
-                                            if (F_cost[openList[m]] <
-                                                    F_cost[openList[m / 2]]) {
-                                                temp = openList[m / 2];
-                                                openList[m / 2] = openList[m];
-                                                openList[m] = temp;
-                                                m = m / 2;
-                                            }
-                                            else {
-                                                break;
-                                            }
+                                        // Check if child is < parent. If so,
+                                        // swap them.
+                                        if (F_cost[openList[m]] <
+                                                F_cost[openList[m / 2]]) {
+                                            temp = openList[m / 2];
+                                            openList[m / 2] = openList[m];
+                                            openList[m] = temp;
+                                            m = m / 2;
                                         }
-                                        // Exit for x = loop
-                                        break;
-                                    } // If openX(openList(x)) = a
-                                } // F x = 1 To nrOfOpenListItems
-                            } // If tempG < G_cost(a, b)
-                        } // else If whichList(a, b) = onOpenList
-                    } // If not cutting a corner
+                                        else {
+                                            break;
+                                        }
+                                    }
+                                    // Exit for x = loop
+                                    break;
+                                } // If openX(openList(x)) = a
+                            } // F x = 1 To nrOfOpenListItems
+                        } // If tempG < G_cost(a, b)
+                    } // else If whichList(a, b) = onOpenList
                 } // for (a = parentXval - 1; a <= parentXval + 1; a++)
             } // for (b = parentYval - 1; b <= parentYval + 1; b++)
         } else { // if (numberOfOpenListItems != 0)
