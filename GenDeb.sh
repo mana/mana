@@ -47,7 +47,7 @@ then
 	exit;
 fi
 
-TMW_VERSION=`grep "core_version" ./tmw.ini | cut -d'=' -f2 | cut -d' ' -f2`;
+TMW_VERSION=`grep "CORE_VERSION" ./src/main.h | cut -d'"' -f2`;
 echo "Version :" $TMW_VERSION;
 mkdir `echo 'Debian/manaworld_'$TMW_VERSION'_i386'`;
 cd `echo 'Debian/manaworld_'$TMW_VERSION'_i386'`;
@@ -104,16 +104,17 @@ echo 'Version: '$TMW_VERSION >>DEBIAN/control;
 echo 'Section: bin' >>DEBIAN/control;
 echo 'Priority: optional' >>DEBIAN/control;
 echo 'Architecture: i386' >>DEBIAN/control;
-echo 'Depends: liballegro4.1 (>= 4.1), libjgmod (>= 0.99), libguichan (>= 0.1.0)' >>DEBIAN/control;
+echo 'Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.2.0)' >>DEBIAN/control;
 echo 'Suggests: Nothing' >>DEBIAN/control;
 echo 'Installed-Size: 1200' >>DEBIAN/control;
-echo 'Maintainer: Ferreira Yohann <bertram25@hotmail.com>' >>DEBIAN/control;
+echo 'Maintainer: Ferreira Yohann <bertram@cegetel.net>' >>DEBIAN/control;
 echo 'Description: The Mana World is a Great Online Game based upon the Seiken Densetsu Serie.' >>DEBIAN/control;
 echo ' It has its own universe, and and its own character management system, which will' >>DEBIAN/control;
 echo ' give you the opportunity to play in a 2D heroic-fantasy world forever.' >>DEBIAN/control;
 echo ' .' >>DEBIAN/control;
-echo ' You will find the dependancy of this package on the website. Install them before trying to install this one.' >>DEBIAN/control;
-echo ' You need : libalfont, and libjgmod. liballegro4.1 is given by any Debian mirrors...' >>DEBIAN/control;
+echo ' You will find the not officially supported dependencies of this package on the website. Install them before trying to install this one.' >>DEBIAN/control;
+echo ' You need : libsdldebian1.2-all, libsdl-image1.2, and libsdl-mixer1.2 given by any Debian mirrors...' >>DEBIAN/control;
+echo ' You also need : libguichan which can be found on : http://themanaworld.sourceforge.net/files' >>DEBIAN/control
 echo ' Look at the website for further informations...' >>DEBIAN/control;
 echo ' .' >>DEBIAN/control;
 echo ' Authors:' >>DEBIAN/control;
@@ -123,6 +124,8 @@ echo ' Ultramichy <celdron15@hotmail.com>' >>DEBIAN/control;
 echo ' SimEdw <simon@crossnet.se>' >>DEBIAN/control;
 echo ' Rotonen <j_orponen@hotmail.com>' >>DEBIAN/control;
 echo ' Chetic <Chetic@gmail.com>' >>DEBIAN/control;
+echo ' HammerBear' >>DEBIAN/control
+echo ' Bertram' >>DEBIAN/control
 echo ' .' >>DEBIAN/control;
 echo ' Web Site: http://themanaworld.sourceforge.net/' >>DEBIAN/control;
 # End of control file...
@@ -138,7 +141,7 @@ echo "Cleaning ...";
 rm -rf Debian;
 echo "You Debian Package is normally ready :"
 echo "His name is : manaworld_"$TMW_VERSION"_i386.deb";
-echo "Don't forget you need libjgmod and libguichan to install manaworld.";
-echo "You can find them in http://themanaworld.sourceforge.net/files";
+echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2 and libguichan to install manaworld.";
+echo "You can find libguichan in http://themanaworld.sourceforge.net/files";
 echo "End of Debian Creation...";
 
