@@ -24,20 +24,21 @@
 #include "ok_dialog.h"
 #include "button.h"
 
-OkDialog::OkDialog(const std::string &title, const std::string &msg):
+OkDialog::OkDialog(const std::string &title, const std::string &msg,
+        gcn::ActionListener *listener):
     Window(title, true)
 {
-    init(msg);
+    init(msg, listener);
 }
 
 OkDialog::OkDialog(Window *parent, const std::string &title,
-        const std::string &msg):
+        const std::string &msg, gcn::ActionListener *listener):
     Window(title, true, parent)
 {
-    init(msg);
+    init(msg, listener);
 }
 
-void OkDialog::init(const std::string &msg)
+void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
     userLabel = new gcn::Label(msg);
     okButton = new Button("OK");
@@ -57,6 +58,9 @@ void OkDialog::init(const std::string &msg)
 
     okButton->setEventId("ok");    
     okButton->addActionListener(this);
+    if (listener) {
+        okButton->addActionListener(listener);
+    }
     
     add(userLabel);
     add(okButton);

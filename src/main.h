@@ -54,6 +54,7 @@
 #define CHAR_NEW    4
 #define CHAR_DEL    5
 #define GAME        6
+#define ERROR       7
 
 /* length definitions for several char[]s in order
  * to be able to use strncpy instead of strcpy for

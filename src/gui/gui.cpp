@@ -731,28 +731,6 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
     return D_O_K;
 }
 
-void ok(const char *title, const char *message) {
-    DIALOG alert_dialog[] = {
-        /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)     (d1)                    (d2)  (dp)              (dp2) (dp3) */
-        { tmw_dialog_proc,     0,    0,  0,     60,    0,  -1,    0,    0,          0,                      0,    (void *)title,    NULL, NULL  },
-        { tmw_text_proc,       2,   22,  0,      0,    0,   0,    0,    0,          0,                      0,    (void *)message,  NULL, NULL  },
-        { tmw_button_proc,     0,   40,  44,    18,    0,  -1,    'o',  D_EXIT,    -1,                      0,    (char *)"&Ok",    NULL, NULL  },
-        { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                      0,    NULL,             NULL, NULL  }
-    };
-
-    BITMAP *temp = gui_bitmap;
-    gui_bitmap = screen;
-    show_mouse(screen);
-    alert_dialog[0].w = text_length(font, message) + 4;
-    alert_dialog[1].w = text_length(font, message);
-    alert_dialog[1].h = text_height(font);
-    alert_dialog[2].x = text_length(font, message) / 2 - 22;
-    position_dialog(alert_dialog, 400 - alert_dialog[0].w / 2, 270);
-    do_dialog(alert_dialog, 2);
-    show_mouse(NULL);
-    gui_bitmap = temp;
-}
-
 unsigned int yes_no(const char *title, const char *message) {
     unsigned int ret;
     DIALOG alert_dialog[] = {

@@ -219,7 +219,8 @@ void CharSelectDialog::serverCharSelect()
         log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
         RFIFOSKIP(28);
         close_session();
-    } else if (RFIFOW(0) == 0x006c) {
+    }
+    else if (RFIFOW(0) == 0x006c) {
         switch (RFIFOB(2)) {
             case 0:
                 new OkDialog(this, "Error", "Access denied");

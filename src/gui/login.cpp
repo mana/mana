@@ -116,9 +116,7 @@ void LoginDialog::action(const std::string& eventId)
 
         // Check login
         if (user.length() == 0) {
-            ok("Error", "Enter your username first");
-            warning("Enter your username first");
-            state = LOGIN;
+            new OkDialog("Error", "Enter your username first");
         } else {
             server_login(user, passField->getText());
             close_session();
@@ -157,8 +155,7 @@ void server_login(const std::string& user, const std::string& pass) {
 
     if (ret == SOCKET_ERROR) {
         state = LOGIN;
-        ok("Error", "Unable to connect to login server");
-        warning("Unable to connect to login server");
+        new OkDialog("Error", "Unable to connect to login server");
         return;
     }
 

@@ -45,7 +45,7 @@
             32/20 sounds realistic here.
 */
 void Sound::init(int voices, int mod_voices) {
-    if(isOk == 0) {
+    if (isOk == 0) {
         throw("Sound engine cannot be initialized twice!\n");
     }
 
@@ -55,7 +55,7 @@ void Sound::init(int voices, int mod_voices) {
     int audio_channels = 2;
     int audio_buffers = 4096;
     
-    if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
+    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
         #ifndef __DEBUG
             throw("Unable to open audio device!\n");
         #else
@@ -83,10 +83,10 @@ void Sound::init(int voices, int mod_voices) {
         muted.
 */
 void Sound::setVolume(int music) {
-    if(isOk==-1)
+    if (isOk == -1)
         return;
     
-    if(isMaxVol(music) == false) {
+    if (isMaxVol(music) == false) {
         vol_music = music;
         Mix_VolumeMusic(vol_music);
     }
@@ -97,10 +97,10 @@ void Sound::setVolume(int music) {
     \param amusic volume difference
 */
 void Sound::adjustVolume(int amusic) {
-    if(isOk==-1)
+    if (isOk == -1)
         return;
     
-    if(isMaxVol(vol_music + amusic) == false) {
+    if (!isMaxVol(vol_music + amusic)) {
         vol_music += amusic;
         Mix_VolumeMusic(vol_music);
     }
@@ -112,10 +112,10 @@ void Sound::adjustVolume(int amusic) {
     \param loop how many times should the midi be looped? (-1 = infinite)
 */
 void Sound::startBgm(char * in, int loop) {
-    if(isOk==-1)
+    if (isOk == -1)
         return;
         
-    if(bgm != NULL) {
+    if (bgm != NULL) {
         stopBgm();
     }
     
@@ -137,7 +137,7 @@ void Sound::startBgm(char * in, int loop) {
         playback stop.
 */
 void Sound::stopBgm() {
-    if(isOk==-1) {
+    if (isOk == -1) {
         return;
     }
         
@@ -145,7 +145,7 @@ void Sound::stopBgm() {
         std::cout << "Sound::stopBgm()\n";
     #endif
         
-    if(bgm != NULL) {
+    if (bgm != NULL) {
         Mix_HaltMusic();
         Mix_FreeMusic(bgm);
         bgm = NULL;
@@ -170,7 +170,7 @@ SOUND_SID Sound::loadItem(char *fpath) {
         std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
     #endif
     Mix_Chunk *newItem;
-    if(newItem = Mix_LoadWAV(fpath)) {
+    if (newItem = Mix_LoadWAV(fpath)) {
         soundpool[++items] = newItem;
         #ifdef __DEBUG
             std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
@@ -187,7 +187,7 @@ SOUND_SID Sound::loadItem(char *fpath) {
     \param volume volume the sound should be played with (possible range: 0-128)
 */
 void Sound::startItem(SOUND_SID id, int volume) {
-    if(soundpool[id]) {
+    if (soundpool[id]) {
         #ifdef __DEBUG
             std::cout << "Sound::startItem() playing SOUND_SID = " << id << std::endl;
         #endif
@@ -235,7 +235,7 @@ void Sound::close(void) {
     true if that's the case.
 */
 bool Sound::isMaxVol(int vol) {
-    if( vol > 0 && vol < 128 ) return false;
+    if (vol > 0 && vol < 128) return false;
     else return true;
 }
 

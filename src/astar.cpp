@@ -297,12 +297,12 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y) {
 			temp->next = new PATH_NODE(
           path_bank[pathLocation * 2 - 2],
           path_bank[pathLocation * 2 - 1]);
-			if(temp->next==NULL)ok("Error", "Unable to create path node");
+			if(temp->next==NULL) throw "Unable to create path node";
       temp = temp->next;
       pathLocation++;
     }
 		if(temp!=NULL)temp->next = new PATH_NODE(e_x, e_y);
-		else ok("Error", "Null reference");
+		else throw "Null reference";
     return ret;
 
     }

@@ -32,6 +32,7 @@
 #include "scrollarea.h"
 #include "listbox.h"
 #include "radiobutton.h"
+#include "ok_dialog.h"
 
 #ifndef WIN32
 extern Sound sound;
@@ -158,7 +159,7 @@ void Setup::action(const std::string& eventId)
                 sound.init(32, 20);
             }
             catch (const char *err) {
-                ok("Sound Engine", err);
+                new OkDialog(this, "Sound Engine", err);
                 warning(err);   
             }
         } else {

@@ -187,8 +187,7 @@ int tmw_button_proc(int msg, DIALOG *d, int c);
 int tmw_text_proc(int msg, DIALOG *d, int c);
 int tmw_dialog_proc(int msg, DIALOG *d, int c);
 
-// Last two remaining Allegro GUI dialogs
-void ok(const char *title, const char *message);
+// Last remaining Allegro GUI dialog
 unsigned int yes_no(const char *title, const char *message);
 
 #endif

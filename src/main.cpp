@@ -25,6 +25,7 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/inventory.h"
+#include "gui/ok_dialog.h"
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
 
@@ -97,8 +98,31 @@ Sound sound;
 // ini file configuration reader
 Configuration config;
 
+
+/**
+ * Listener used for responding to map start error dialog.
+ */
+class MapStartErrorListener : public gcn::ActionListener {
+    void action(const std::string &eventId) {
+        if (eventId == "ok") {
+            state = LOGIN;
+        }
+    }
+} mapStartErrorListener;
+
+/**
+ * Listener used for responding to init warning.
+ */
+class InitWarningListener : public gcn::ActionListener {
+    void action(const std::string &eventId) {
+        if (eventId == "ok") {
+            state = LOGIN;
+        }
+    }
+} initWarningListener;
+
 void request_exit() {
-  state = EXIT;
+    state = EXIT;
 }
 
 /**
@@ -314,9 +338,11 @@ void init_engine() {
          SOUND_SID id = sound.loadItem("./data/sound/wavs/level.ogg");
          sound.startItem(id, 70);
          */
-    } catch (const char *err) {
-         ok("Sound Engine", err);
-         warning(err);
+    }
+    catch (const char *err) {
+        state = ERROR;
+        new OkDialog("Sound Engine", err, &initWarningListener);
+        warning(err);
     }
 #endif /* not WIN32 */
 }
@@ -353,9 +379,21 @@ int main() {
                 sound.stopBgm();
 #endif /* not WIN32 */
                 status("GAME");
-                map_start();
-                if (state == GAME)
+                try {
+                    map_start();
                     game();
+                }
+                catch (const char* err) {
+                    state = ERROR;
+                    new OkDialog("Error", err, &mapStartErrorListener);
+                }
+                break;
+            case ERROR:
+                // Redraw GUI
+                blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
+                guiGraphics->setTarget(buffer);
+                gui->update();
+                blit(buffer, screen, 0, 0, 0, 0, 800, 600);
                 break;
             default:
                 state = EXIT;

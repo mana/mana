@@ -42,7 +42,6 @@ void Configuration::init(std::string filename) {
     std::ifstream inFile(filename.c_str(), std::ifstream::in);
     std::string inBuffer;
     unsigned int position;
-    OptionValue optionTmp;
 
     iniOptions.clear();
 
@@ -57,10 +56,13 @@ void Configuration::init(std::string filename) {
 
             position = inBuffer.find(INI_DELIMITER, 0);
 
-            if (position != std::string::npos) {
+            if (position != std::string::npos)
+            {
                 std::string key = inBuffer.substr(0, position);
+                OptionValue optionTmp;
 
-                if (inBuffer.length() > position + 1) {
+                if (inBuffer.length() > position + 1)
+                {
                     optionTmp.stringValue = inBuffer.substr(
                             position + 1, inBuffer.length());
                     optionTmp.numericValue = atof(

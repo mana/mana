@@ -145,10 +145,9 @@ void set_coordinates(char *data, unsigned short x, unsigned short y,
 
 void map_start() {
     // Connect to map server
-    if(open_session(iptostring(map_address), map_port)==SOCKET_ERROR) {
+    if (open_session(iptostring(map_address), map_port) == SOCKET_ERROR) {
         warning("Unable to connect to map server");
-        state = LOGIN;
-        ok("Error", "Unable to connect to map server");
+        throw "Unable to connect to map server";
         return;
     }
 
@@ -161,13 +160,13 @@ void map_start() {
     WFIFOB(18) = net_b_value(sex);
     WFIFOSET(19);
 
-    while((in_size<4)||(out_size>0))flush();
+    while ((in_size < 4)|| (out_size > 0)) flush();
     RFIFOSKIP(4);
 
-    while(in_size<2)flush();
+    while (in_size < 2) flush();
 
-    if(RFIFOW(0)==0x0073) {
-        while(in_size<11)flush();
+    if (RFIFOW(0) == 0x0073) {
+        while (in_size < 11) flush();
         x = get_x(RFIFOP(6));
         y = get_y(RFIFOP(6));
         //direction = get_direction(RFIFOP(6));
@@ -180,7 +179,7 @@ void map_start() {
     // Send "map loaded"
     WFIFOW(0) = net_w_value(0x007d);
     WFIFOSET(2);
-    while(out_size>0)flush();
+    while (out_size > 0) flush();
 }
 
 void walk(unsigned short x, unsigned short y, unsigned char direction) {
@@ -194,7 +193,7 @@ void walk(unsigned short x, unsigned short y, unsigned char direction) {
 void speak(char *speech) {
     int len = (int)strlen(speech);
     WFIFOW(0) = net_w_value(0x008c);
-    WFIFOW(2) = net_w_value(len+4);
+    WFIFOW(2) = net_w_value(len + 4);
     memcpy(WFIFOP(4), speech, len);
     WFIFOSET(len + 4);
 }
