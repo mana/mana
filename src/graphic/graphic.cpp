@@ -61,7 +61,7 @@ void ChatListener::action(const std::string& eventId)
 {
     if (eventId == "chatinput") {
         std::string message = chatInput->getText();
-        
+
         if (message.length() > 0) {
             chatlog.chat_send(char_info[0].name, message.c_str());
             chatInput->setText("");
@@ -146,9 +146,9 @@ char hairtable[14][4][2] = {
   { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 1st frame
   { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 2nd frame
   { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 3rd frame
-  { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 4th frame  
+  { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 4th frame
   { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} } // SIT
-};  
+};
 
 void set_npc_dialog(int show) {
 	show_npc_dialog = show;
@@ -200,12 +200,12 @@ BITMAP *load_graphic_file(char *filename) {
     vbmp = create_bitmap(temp->w, temp->h);
     if(!vbmp)error("Not enough memory");
 #ifdef WIN32
-  }  
+  }
 #endif
   blit(temp, vbmp, 0, 0, 0, 0, temp->w, temp->h);
   destroy_bitmap(temp);
   return vbmp;
-}  
+}
 
 void init_graphic() {
     //tileset = load_datafile("./data/graphic/desert.dat");
@@ -219,7 +219,7 @@ void init_graphic() {
     clear_to_color(chat_background, makecol(0,0,0));
 
     // Initialize gui
-    
+
     // Create chat input field
     chatInput = new gcn::TextField();
     chatInput->setPosition(0, SCREEN_H - chatInput->getHeight());
@@ -228,7 +228,7 @@ void init_graphic() {
     ChatListener *chatListener = new ChatListener();
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(chatListener);
-    
+
     guiTop->add(chatInput);
 
   npc_player = init_dialog(npc_dialog, -1);
@@ -243,8 +243,8 @@ void init_graphic() {
   //gui_bitmap = vpage[page_num];
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
-	
-#ifdef WIN32	
+
+#ifdef WIN32
 	if((gfx_capabilities & GFX_HW_VRAM_BLIT)&& stretch_mode==0) {
 	  vpage[0] = create_video_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_video_bitmap(SCREEN_W, SCREEN_H);
@@ -252,18 +252,18 @@ void init_graphic() {
 	    warning("Not enough video memory [VPAGE_0]");
 	    vpage[0] = create_bitmap(SCREEN_W, SCREEN_W);
 	    if(!vpage[0])error("Not enough memory [VPAGE_0]");
-    } 
+    }
     if(!vpage[1]) {
 	    warning("Not enough video memory [VPAGE_1]");
 	    vpage[1] = create_bitmap(SCREEN_W, SCREEN_W);
 	    if(!vpage[1])error("Not enough memory [VPAGE_1]");
-    } 
+    }
 	} else {
 #endif
 	  vpage[0] = create_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_bitmap(SCREEN_W, SCREEN_H);
 #ifdef WIN32
-  }  
+  }
   vbuffer = create_video_bitmap(SCREEN_W/2, SCREEN_H/2);
   if(!vbuffer) {
     warning("Not enough video memory [BUFFER]");
@@ -273,17 +273,17 @@ void init_graphic() {
 #ifdef WIN32
   }
 #endif
- 
-  
+
+
   gui_bitmap = vpage[page_num];
 
-  new_emotionset = new SPRITESET("./data/graphic/emotionset.dat");  
+  new_emotionset = new SPRITESET("./data/graphic/emotionset.dat");
   new_tileset = new SPRITESET("./data/graphic/desert.dat");
   new_npcset = new SPRITESET("./data/graphic/npcset.dat");
   new_playerset = new SPRITESET("./data/graphic/playerset.dat");
   new_monsterset = new SPRITESET("./data/graphic/monsterset.dat");
 
-  
+
 }
 
 void do_graphic(void) {
@@ -298,7 +298,7 @@ void do_graphic(void) {
 	int offset_y = map_y & 15;
 
 	sort();
-	
+
 	frame++;
 #ifdef WIN32
 	if(is_video_bitmap(vbuffer))
@@ -306,16 +306,16 @@ void do_graphic(void) {
 #endif
 
 new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
-    
+
   for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
-		  
+
 			if(get_tile(i+camera_x, j+camera_y, 0) < 600)
 			  new_tileset->spriteset[get_tile(i+camera_x, j+camera_y, 0)]->draw(vbuffer, i*16-offset_x, j*16-offset_y);
       if(get_tile(i+camera_x, j+camera_y, 1) > 0 /*&& get_tile(i+camera_x, j+camera_y, 1)<600*/)
 	      new_tileset->spriteset[get_tile(i+camera_x, j+camera_y, 1)]->draw(vbuffer, i*16-offset_x, j*16-offset_y);
 		}
-		
+
 	NODE *node = get_head();
 	while(node) {
     if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
@@ -331,7 +331,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
   		} else {
   		  new_playerset->spriteset[4*(node->frame+node->action)+get_direction(node->coordinates)/2]->draw(vbuffer, node->text_x, node->text_y);
   		  masked_blit(hairset, vbuffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
-  		}  
+  		}
 			if(node->emotion!=0) {
         new_emotionset->spriteset[node->emotion-1]->draw(vbuffer, (get_x(node->coordinates)-camera_x)*16-5+get_x_offset(node)-offset_x, (get_y(node->coordinates)-camera_y)*16-45+get_y_offset(node)-offset_y);
         node->emotion_time--;
@@ -363,9 +363,9 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 
 			if(node->action==MONSTER_DEAD)
         new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+8*MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
-			else 
+			else
 				new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+8*(node->frame+node->action)]->draw(vbuffer, node->text_x, node->text_y);
-			
+
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
         if(node->frame>=4) {
@@ -384,12 +384,12 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 							else if(node->path->y>old->y)direction = SOUTH;
 							else if(node->path->y<old->y)direction = NORTH;
               //}
-			
+
               set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
 
 							//node->tick_time = tick_time;
-              
-              
+
+
 						} else {
               node->action = STAND;
 						}
@@ -405,12 +405,12 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 			node = node->next;
 			remove_node(temp->id);
 		} else node = node->next;
-		
 
-		// nodes are ordered so if the next node y is > then the 
+
+		// nodes are ordered so if the next node y is > then the
 		// last drawed for fringe layer, draw the missing lines
-  }  
-	
+  }
+
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++)
 		  if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)
@@ -419,7 +419,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
   if(is_video_bitmap(vbuffer))
     release_bitmap(vbuffer);
 #endif
-	
+
 	if(stretch_mode==0) {
 #ifdef WIN32
 	  acquire_bitmap(vpage[page_num]);
@@ -429,7 +429,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 		Super2xSaI(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
 	else if(stretch_mode==2)
 		SuperEagle(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
-		
+
 	textprintf_ex(vpage[page_num], font, 0, 0, makecol(255,255,255), -1, "[%i fps]", fps);
 
     // Update GUI
@@ -453,9 +453,9 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
     }
     node = node->next;
   }
-	
+
 	inventory.draw(vpage[page_num]);
-	
+
 	set_trans_blender(0, 0, 0, 110);
   draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H-125);
 
@@ -470,7 +470,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
         //alert("","","","","",0,0);
         WFIFOL(2) = net_l_value(current_npc);
         WFIFOSET(6);
-      }  
+      }
 			break;
 		case 2:
 			dialog_message(buy_sell_dialog, MSG_DRAW, 0, 0);
@@ -514,7 +514,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
       sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
       //sprintf(ds, "%i", sell_dialog[3].d1);
       //ok(ds,"");
-			
+
 			//alfont_textprintf(vpage[page_num], gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
@@ -555,14 +555,14 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 		update_skill_dialog();
 		if(gui_update(skill_player)==0)show_skill_dialog = false;
 	}
-	
+
 		if(show_skill_dialog) {
 		update_skill_dialog();
 		if(gui_update(skill_player)==0)show_skill_dialog = false;
 	}
 
 	if(show_skill_list_dialog) {
-		
+
 		if(gui_update(skill_list_player)==0) {
 			int ret = shutdown_dialog(skill_list_player);
 			if(ret==1) {
@@ -581,325 +581,17 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 	// character status display
 	update_stats_dialog();
 	gui_update(stats_player);
-	
+
 	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
 #ifdef WIN32
 	if(stretch_mode==0) {
 	  release_bitmap(vpage[page_num]);
 	  show_video_bitmap(vpage[page_num]);
-	} else 
+	} else
 #endif
     blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
 	page_num = 1-page_num;
 	gui_bitmap = vpage[page_num];
-
-	
-	
-	
-	/*acquire_bitmap(vbuffer);
-
-	for(int j=0;j<20;j++)
-		for(int i=0;i<26;i++) {
-			if( /* get_tile(i+camera_x, j+camera_y, 0) >= 0 && */ // get_tile(i+camera_x, j+camera_y, 0) < 600)
-				//draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 0)].dat, i*16-offset_x, j*16-offset_y);
-		//		blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 0)*16, get_tile_y(i+camera_x, j+camera_y, 0)*16, i*16-offset_x, j*16-offset_y, 16, 16);
-			//if(get_tile(i+camera_x, j+camera_y, 1) > 0 && get_tile(i+camera_x, j+camera_y, 1)<600)
-				//draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 1)].dat, i*16-offset_x, j*16-offset_y);
-				//masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 1)*16, get_tile_y(i+camera_x, j+camera_y, 1)*16, i*16-offset_x, j*16-offset_y, 16, 16);
-		//}
-
-	/*NODE *node = get_head();
-	NODE *old_node = NULL;
-	while(node) {
-    if((node->job>=100)&&(node->job<=110)) { // Draw a NPC
-			masked_blit((BITMAP *)graphic[NPCSET_BMP].dat, buffer, (get_direction(node->coordinates)/2+4*(node->job-100))*25, 0, (get_x(node->coordinates)-camera_x)*16-4-offset_x, (get_y(node->coordinates)-camera_y)*16-24-offset_y, 25, 40);
-		} else if(node->job<10) { // Draw a player
-			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
-			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
-			if(node->action==SIT)node->frame = 0;
-			if(node->action==ATTACK) {
-			  masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action+4*node->weapon), node->text_x, node->text_y, 80, 60);
-  		  draw_rle_sprite(buffer, (RLE_SPRITE *)weaponset[16*node->weapon+4*node->frame+get_direction(node->coordinates)/2].dat, node->text_x, node->text_y);
-  		  masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame+4*node->weapon][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame+4*node->weapon][get_direction(node->coordinates)/2][1], 20, 20);
-  		} else {
-  		  masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);  
-  		  masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
-  		}  
-
-			//alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);
-
-			if(node->emotion!=0) {
-        draw_sprite(buffer, (BITMAP *)emotions[node->emotion-1].dat, (get_x(node->coordinates)-camera_x)*16-5+get_x_offset(node)-offset_x, (get_y(node->coordinates)-camera_y)*16-45+get_y_offset(node)-offset_y);
-        node->emotion_time--;
-        if(node->emotion_time==0)
-          node->emotion = 0;
-			}
-
-			if(node->action!=STAND && node->action!=SIT) {
-				node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
-	      if(node->frame>=4) {
-          node->frame = 0;
-          node->action = STAND;
-//					node->tick_time;
-					if(node->id==player_node->id)
-            walk_status = 0;
-				}
-			}
-
-		} else if(node->job==45) { // Draw a warp
-      //rectfill(buffer, (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates)), (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates)), (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates))+16, (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates))+16, makecol(0,0,255));
-    } else { // Draw a monster
-
-			//node->speed = 10000;
-
-			if(node->frame>=4) {
-				//alert("","","","","",0,0);
-				node->frame = 3;
-			}
-
-
-			node->text_x = (get_x(node->coordinates)-camera_x)*16-22+get_x_offset(node)-offset_x;
-			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
-
-			int r_x = node->text_x-get_x_offset(node);
-			int r_y = node->text_y-get_y_offset(node);
-
-			//rectfill(buffer, node->text_x+22, node->text_y+25, node->text_x+16+22, node->text_y+16+25, makecol(0,0,255));
-
-      //if(node->action==MONSTER_DEAD)node->frame = 0;
-			if(node->action==MONSTER_DEAD)
-        masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*MONSTER_DEAD, node->text_x, node->text_y, 60, 60);
-			else 
-				masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
-			
-			//alfont_textprintf(buffer, gui_font, node->text_x, node->text_y, MAKECOL_WHITE, "%i", node->id);
-			
-      if(node->action!=STAND) {
-        node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
-        if(node->frame>=4) {
-					if(node->action!=MONSTER_DEAD && node->path) {
-						if(node->path->next) {
-              PATH_NODE *old = node->path;
-							node->path = node->path->next;
-							direction = 0;
-              //if(node->path->next) {
-              if(node->path->x>old->x && node->path->y>old->y)direction = SE;
-							else if(node->path->x<old->x && node->path->y>old->y)direction = SW;
-							else if(node->path->x>old->x && node->path->y<old->y)direction = NE;
-							else if(node->path->x<old->x && node->path->y<old->y)direction = NW;
-							else if(node->path->x>old->x)direction = EAST;
-							else if(node->path->x<old->x)direction = WEST;
-							else if(node->path->y>old->y)direction = SOUTH;
-							else if(node->path->y<old->y)direction = NORTH;
-              //}
-			
-              set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
-
-							//node->tick_time = tick_time;
-              
-              
-						} else {
-              node->action = STAND;
-						}
-            if(node->action!=MONSTER_DEAD)node->frame = 0;
-            node->tick_time = tick_time;
-						//node->frame = 0;
-					}
-        }
-      }
-    }
-
-		//old_node = node;
-		if(node->action==MONSTER_DEAD && node->frame>=20) {
-			NODE *temp = node;
-			node = node->next;
-			remove_node(temp->id);
-		} else node = node->next;
-		
-
-		// nodes are ordered so if the next node y is > then the 
-		// last drawed for fringe layer, draw the missing lines
-	}*/
-
-	// complete drawing fringe layer
-
-	/*for(int j=0;j<20;j++)
-		for(int i=0;i<26;i++) {
-			if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)//draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
-			masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 2)*16, get_tile_y(i+camera_x, j+camera_y, 2)*16, i*16-offset_x, j*16-offset_y, 16, 16);
-		}
-		
-	textprintf(vbuffer, font, 0, 0, MAKECOL_WHITE, "FPS: %i",fps);
-		
-	release_bitmap(vbuffer);
-	
-	acquire_bitmap(vpage[page_num]);
-	
-	
-
-	if(stretch_mode==0)
-    //stretch_blit(buffer, double_buffer, 0, 0, 400, 300, 0, 0, 800, 600);
-    stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
-	else if(stretch_mode==1)
-		Super2xSaI(buffer, double_buffer, 0, 0, 0, 0, 400, 300);
-	else if(stretch_mode==2)
-		SuperEagle(buffer, double_buffer, 0, 0, 0, 0, 400, 300);
-
-	// Draw player speech
-  /*node = get_head();
-  while(node) {
-		if(node->speech!=NULL) {
-			if(node->speech_color==makecol(255,255,255))
-        alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+90-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
-			else
-				alfont_textprintf_aa(double_buffer, gui_font, node->text_x*2+60-alfont_text_length(gui_font, node->speech)/2, node->text_y*2, node->speech_color, "%s", node->speech);
-
-      node->speech_time--;
-      if(node->speech_time==0) {
-        free(node->speech);
-        node->speech = NULL;
-      }
-    }
-    node = node->next;
-  }
-
-	inventory.draw(double_buffer);
-
-	set_trans_blender(0, 0, 0, 110);
-  draw_trans_sprite(double_buffer, chat_background, 0, SCREEN_H-125);
-
-  chatlog.chat_draw(double_buffer, 8, gui_font);
-  gui_update(chat_player);
-
-	switch(show_npc_dialog) {
-		case 1:
-      dialog_message(npc_dialog, MSG_DRAW, 0, 0);
-      if(!(show_npc_dialog = gui_update(npc_player))) {
-        strcpy(npc_text, "");
-        WFIFOW(0) = net_w_value(0x00b9);
-        //alert("","","","","",0,0);
-        WFIFOL(2) = net_l_value(current_npc);
-        WFIFOSET(6);
-      }  
-			break;
-		case 2:
-			dialog_message(buy_sell_dialog, MSG_DRAW, 0, 0);
-			if(!gui_update(buy_sell_player)) {
-				show_npc_dialog = shutdown_dialog(buy_sell_player);
-				if(show_npc_dialog==1 || show_npc_dialog==2) {
-          WFIFOW(0) = net_w_value(0x00c5);
-          WFIFOL(2) = net_l_value(current_npc);
-          WFIFOB(6) = net_b_value(show_npc_dialog-1);
-					WFIFOSET(7);
-				}
-				show_npc_dialog = 0;
-				buy_sell_player = init_dialog(buy_sell_dialog, -1);
-			}
-			break;
-		case 3:
-			char money[20];
-			sprintf(money, "%i gp", char_info->gp);
-			buy_dialog[4].dp = &money;
-			buy_dialog[5].d1 = (int)(char_info->gp/get_item_price(buy_dialog[3].d1));
-			if(buy_dialog[5].d2>buy_dialog[5].d1)
-			//alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", buy_dialog[5].d1);
-			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
-			if(!gui_update(buy_player)) {
-				show_npc_dialog = shutdown_dialog(buy_player);
-				buy_dialog[5].d1 = 0;
-        if(show_npc_dialog==1) {
-          WFIFOW(0) = net_w_value(0x00c8);
-          WFIFOW(2) = net_w_value(8);
-          WFIFOW(4) = net_w_value(buy_dialog[5].d2);
-          WFIFOW(6) = net_w_value(get_item_id(buy_dialog[3].d1));
-          WFIFOSET(8);
-				}
-				show_npc_dialog = 0;
-        buy_player = init_dialog(buy_dialog, -1);
-				close_shop();
-			}break;
-		case 4:
-		  //alert("","","","","",0,0);
-		  //char ds[20];
-      sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
-      //sprintf(ds, "%i", sell_dialog[3].d1);
-      //ok(ds,"");
-			
-			alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
-			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
-			if(!gui_update(sell_player)) {
-				show_npc_dialog = shutdown_dialog(sell_player);
-				sell_dialog[3].d1 = 0;
-        if(show_npc_dialog==1) {
-          WFIFOW(0) = net_w_value(0x00c9);
-          WFIFOW(2) = net_w_value(8);
-          WFIFOW(4) = net_w_value(get_item_index(sell_dialog[4].d1));
-          WFIFOW(6) = net_w_value(sell_dialog[3].d2);
-          WFIFOSET(8);
-				}
-				show_npc_dialog = 0;
-				sell_dialog[3].d2 = 0;
-				sprintf((char *)sell_dialog[5].dp, "%i", 0);
-        sell_player = init_dialog(sell_dialog, -1);
-				close_shop();
-			}
-			break;
-		case 5:
-		  dialog_message(npc_list_dialog, MSG_DRAW, 0, 0);
-			if(!gui_update(npc_list_player)) {
-				show_npc_dialog = shutdown_dialog(npc_list_player);
-				if(show_npc_dialog==1) {
-          WFIFOW(0) = net_w_value(0x00b8);
-          WFIFOL(2) = net_l_value(current_npc);
-          WFIFOB(6) = net_b_value(npc_list_dialog[3].d1+1);
-          WFIFOSET(7);
-				}
-				show_npc_dialog = 0;
-        npc_list_player = init_dialog(npc_list_dialog, -1);
-				remove_all_items();
-			}
-		  break;
-  }
-
-	if(show_skill_dialog) {
-		update_skill_dialog();
-		if(gui_update(skill_player)==0)show_skill_dialog = false;
-	}
-
-	if(show_skill_list_dialog) {
-		
-		if(gui_update(skill_list_player)==0) {
-			int ret = shutdown_dialog(skill_list_player);
-			if(ret==1) {
-				if(char_info->skill_point>0) {
-        WFIFOW(0) = net_w_value(0x0112);
-				WFIFOW(2) = net_w_value(get_skill_id(skill_list_dialog[3].d1));
-				WFIFOSET(4);
-				}
-			} else if(ret==2) {
-				show_skill_list_dialog = false;
-			}
-			skill_list_player = init_dialog(skill_list_dialog, -1);
-		}
-	}
-
-	// character status display
-	update_stats_dialog();
-	gui_update(stats_player);*/
-
-	//alfont_textprintf(vpage[0], gui_font, 0, 0, MAKECOL_WHITE, "FPS:%i %i %i %i %i %i %i", fps, get_x(player_node->coordinates), get_y(player_node->coordinates),src_x,src_y,server_tick,player_node->weapon);
-	//textprintf(vpage[0], font, 0, 0, MAKECOL_WHITE, "FPS:");
-
-	//alfont_textprintf(double_buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i", show_npc_dialog);
-	/*release_bitmap(vpage[page_num]);
-	
-	show_video_bitmap(vpage[page_num]);
-	page_num = 1-page_num;
-	//return;
-
-	//blit(double_buffer, screen, 0, 0, 0, 0, 800, 600);
-
-	frame++;*/
 }
 
 void exit_graphic() {
