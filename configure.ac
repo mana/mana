@@ -11,7 +11,7 @@ AC_PROG_MAKE_SET
 
 # Checks for libraries
 # (someone may want to exchange these symbols with
-   soemthing more meaningful in the future /- kth5)
+#  soemthing more meaningful in the future /- kth5)
 AC_CHECK_LIB([guichan], [_init])
 AC_CHECK_LIB([guichan_sdl], [_init])
 
