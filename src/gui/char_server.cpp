@@ -152,12 +152,14 @@ void char_server() {
 void server_char_server(int serverIndex) {
     int ret;
     state = LOGIN;
+    const char *ipstring = iptostring(server_info[serverIndex].address);
 
     // Connect to char server
-    ret = open_session(iptostring(server_info[serverIndex].address),
-            server_info[serverIndex].port);
+    ret = open_session(ipstring, server_info[serverIndex].port);
     if (ret == SOCKET_ERROR) {
-        new OkDialog("Error", "Unable to connect to char server");
+        std::string str = std::string("Unable to connect to char server ") +
+            std::string(ipstring);
+        new OkDialog("Error", str);
         return;
     }
 

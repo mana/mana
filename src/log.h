@@ -23,7 +23,6 @@
 #define _LOG_H
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
 #include <string>
@@ -35,34 +34,30 @@
  */
 class Logger
 {
-public:
+    public:
+        /**
+         * Constructor, opens log file for writing.
+         */
+        Logger(const std::string &logFilename);
 
-/**
- * Constructor :
- * Initializes log file by opening it for writing.
- */
-Logger(std::string logFilename);
+        /**
+         * Destructor, closes log file.
+         */
+        ~Logger();
 
-/**
- * Destructor
- */
-~Logger();
+        /**
+         * Enters a message in the log. The message will be timestamped.
+         */
+        void log(const char *log_text, ...);
 
-/**
- * Enters a message in the log. The message will be timestamped.
- */
-void log(const char *log_text, ...);
+        /**
+         * Log an error and quit. The error will pop-up in Windows and will be
+         * printed to standard error everywhere else. 
+         */
+        void error(const std::string &error_text);
 
-/**
- * Log an error and quit. The error will pop-up in Windows and will be printed
- * to standard error everywhere else. 
- */
-void error(const std::string &error_text);
-
-private:
-
-std::ofstream logFile;
-
+    private:
+        std::ofstream logFile;
 };
 
 #endif

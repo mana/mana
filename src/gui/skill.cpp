@@ -175,4 +175,3 @@ void SkillDialog::setSkill(int id, int lv, int sp)
         }
     }
 }
-

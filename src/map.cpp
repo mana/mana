@@ -112,6 +112,8 @@ Map::~Map()
 
 Map *Map::load(const std::string &mapFile)
 {
+    logger.log("Map::load(%s)", mapFile.c_str());
+
     if (mapFile.find(".tmx", 0) != std::string::npos)
     {
         // New map file format assumed

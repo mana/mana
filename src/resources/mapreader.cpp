@@ -56,21 +56,27 @@ int Tileset::getFirstGid()
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    logger.log("Attempting to parse XML map data");
-
     std::string name = /*std::string("data/") +*/ filename;
+
+    // Check that file exists before trying to parse it
+    std::fstream fin;
+    fin.open(name.c_str(), std::ios::in);
+    if (!fin.is_open()) {
+        logger.log("No such file!");
+        return NULL;
+    }
+    fin.close();
+
     xmlDocPtr doc = xmlParseFile(name.c_str());
 
     if (doc) {
-        logger.log("Looking for root node");
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
-            logger.log("Warning: No map file (%s)!", filename.c_str());
+            logger.log("Warning: Not a map file (%s)!", filename.c_str());
             return NULL;
         }
         
-        logger.log("Loading map from XML tree");
         return readMap(node, filename);
         xmlFreeDoc(doc);
     } else {

@@ -4,6 +4,7 @@
 - Added diagonal walking with keyboard
 - Added a choice dialog of how many items to drop
 - Added handling of window close button
+- Added config option for GUI opacity (guialpha)
 - Upgraded to Guichan 0.3.0
 - Chat now appears in a window
 - Beings now walk a lot smoother
