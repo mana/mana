@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001001000001101
+CompilerSettings=0010001001001001001001
 
 [VersionInfo]
 Major=0
@@ -36,7 +36,7 @@ Release=8
 <<<<<<< The Mana World.dev
 Build=809
 =======
-Build=904
+Build=1
 >>>>>>> 1.76
 LanguageID=1033
 CharsetID=1252
@@ -49,7 +49,7 @@ LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
 ProductVersion=0.0.8
-AutoIncBuildNr=1
+AutoIncBuildNr=0
 
 [Unit8]
 FileName=src\log.cpp

@@ -86,7 +86,7 @@ void error(const std::string error_text) {
     log("Error", error_text.c_str());
 
 #ifdef WIN32
-    MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR|MB_OK);
+    MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
 #else
     fprintf(stderr, "Error: %s\n", error_text.c_str());
 #endif
