@@ -28,13 +28,6 @@
 DIALOG inventory_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)     (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,   300,  252,  322,   60,    0,  -1,    0,    0,          0,                      0,    (char*)"Inventory",         NULL, NULL  },
-   /*{ tmw_text_proc,     304,  284,  50,    10,    0,   0,    0,    0,          0,                      0,    (char*)"Name:",         NULL, NULL  },
-   { tmw_text_proc,     304,  304,  50,    10,    0,   0,    0,    0,          0,                      0,(char*)"Password:",         NULL, NULL  },
-   { tmw_edit_proc,     360,  280,  130,   18,    0,  -1,    0,    0,          24,                     0,          username,         NULL, NULL  },
-   { tmw_password_proc, 360,  300,  130,   18,    0,  -1,    0,    0,          24,                     0,          password,         NULL, NULL  },
-   { tmw_button_proc,   398,  322,  44,    18,    0,  -1,    'o',  D_EXIT,    -1,                      0,      (char*)"&Ok",         NULL, NULL  },
-   { tmw_button_proc,   446,  322,  44,    18,    0,  -1,    'c',  D_EXIT,    -1,                      0,  (char*)"&Cancel",         NULL, NULL  },
-   { tmw_check_proc,    304,  322,  60,    18,    0,   0,    '1',  0,          0,                      0,     (char*)"keep",         NULL, NULL  }, */
    { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                      0,              NULL,         NULL, NULL  },
 };
 
@@ -159,8 +152,10 @@ void TmwInventory::draw(BITMAP * buffer) {
         ypos = inventory_dialog[0].y;
 
         if(items[itemX][itemY].flag) //draw the item
+					// If the item is known
 					if(items[itemX][itemY].itemIDNum>=501 && items[itemX][itemY].itemIDNum<=510)
-            masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum-501].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
+            masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum-500].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
+					// If the item is unknown
 					else
 						masked_blit((BITMAP *)itemset[0].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
 
