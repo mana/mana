@@ -57,9 +57,9 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
     border.grid[4] = resman->getImage("core/graphics/gui/bg_quad_dis.png");
     border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
-    border.grid[6] = dBorders->getSubImage(7, 15, 4, 4);
+    border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
     border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
-    border.grid[8] = dBorders->getSubImage(0, 15, 4, 4);
+    border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
 
     // Register mouse listener
     addMouseListener(this);

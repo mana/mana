@@ -1,4 +1,5 @@
-EXTRA_DIST = packages.txt \
+EXTRA_DIST = architecture.txt \
+	     packages.txt \
 	     FAQ.txt \
 	     HACKING.txt \
 	     SOURCE/tmwdox.sh \
@@ -11,4 +12,5 @@ EXTRA_DIST = packages.txt \
 	     INSTALL/linux.txt \
 	     meetings/dev-20050204.txt \
 	     meetings/dev-20050211.txt \
-	     meetings/dev-20050218.txt
+	     meetings/dev-20050218.txt \
+	     meetings/dev-20050225.txt
