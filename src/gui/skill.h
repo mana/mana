@@ -21,30 +21,49 @@
  *  $Id$
  */
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #ifndef _SKILL_H
 #define _SKILL_H
 
 #include <allegro.h>
+#include "button.h"
 #include "../main.h"
 
-//DIALOG skill_dialog[];
-
-extern int n_skills;
-
 struct SKILL {
-	short id, lv, sp;
-	SKILL *next;
+    short id; //index into "skill_db" array
+    short lv, sp;
 };
 
+class SkillListModel : public gcn::ListModel
+{
+    std::vector<SKILL*> skillList;
+    public:
+        SkillListModel();
+        ~SkillListModel();
 
-void update_skill_dialog();
-void add_skill(short id, short lv, short sp);
-char *skill_list(int index, int *list_size);
-int get_skill_id(int index);
-SKILL *is_skill(int id);
-void increaseStatus(void *dp3, int d1);
+        int getNumberOfElements();
+        std::string getElementAt(int);
+
+        bool hasSkill(int id);
+        void addSkill(int id, int lv, int sp);
+        void setSkill(int id, int lv, int sp);
+};
+
+class SkillDialog : public Window, public gcn::ActionListener
+{
+    gcn::ListBox *skillListBox;
+    SkillListModel *skills;
+    gcn::Label *pointsLabel;
+
+    Button *incButton;
+    Button *closeButton;
+    public:
+        SkillDialog(gcn::Container *);
+        ~SkillDialog();
+
+        void action(const std::string&);
+        SkillListModel* getModel() { return skills; }
+
+        void setPoints(int i);
+};
+
 #endif

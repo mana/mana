@@ -48,6 +48,7 @@ BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
+SkillDialog *skillDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -82,8 +83,9 @@ void BuySellListener::action(const std::string& eventId)
     buySellDialog->setVisible(false);
 }
 
+/*
 DIALOG skill_list_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   // (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) 
    { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Stats",     NULL, NULL  },
    { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'u',  D_EXIT,  0,                0,    (char *)"&Up",        NULL, NULL  },
    { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			           0,    (char *)"&Close",     NULL, NULL  },
@@ -91,6 +93,7 @@ DIALOG skill_list_dialog[] = {
    { tmw_text_proc,       304,  326,  40,   20,   0,    0,    0,    0,       0,                0,    (char *)skill_points, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
 };
+*/
 
 char hairtable[14][4][2] = {
     // S(x,y)  W(x,y)   N(x,y)   E(x,y)
@@ -189,8 +192,11 @@ GraphicEngine::GraphicEngine() {
     npcListDialog = new NpcListDialog(guiTop);
     npcListDialog->setVisible(false);
 
-    skill_player = init_dialog(skill_dialog, -1);
-    skill_list_player = init_dialog(skill_list_dialog, -1);
+    skillDialog = new SkillDialog(guiTop);
+    skillDialog->setVisible(false);
+
+    //skill_player = init_dialog(skill_dialog, -1);
+    //skill_list_player = init_dialog(skill_list_dialog, -1);
 
     // Give focus to the chat input
     chatInput->requestFocus();
@@ -220,10 +226,11 @@ GraphicEngine::~GraphicEngine() {
     delete buySellDialog;
     delete npcListDialog;
     delete npcTextDialog;
+    delete skillDialog;
     
     //delete tileset;
 
-    shutdown_dialog(skill_player);
+    //shutdown_dialog(skill_player);
 }
 
 void GraphicEngine::refresh() {
@@ -458,13 +465,16 @@ void GraphicEngine::refresh() {
 
     chatlog.chat_draw(buffer, 8, font);
     
+    /*
     if (show_skill_dialog) {
         update_skill_dialog();
         if (gui_update(skill_player) == 0) {
             show_skill_dialog = false;
         }
     }
+    */
 
+    /*
     if (show_skill_list_dialog) {
         if (gui_update(skill_list_player) == 0) {
             int ret = shutdown_dialog(skill_list_player);
@@ -481,6 +491,7 @@ void GraphicEngine::refresh() {
             skill_list_player = init_dialog(skill_list_dialog, -1);
         }
     }
+    */
 
     // Update character status display
     statusWindow->update();

@@ -345,7 +345,8 @@ bool handle_key(int unicode, int scancode)
                 }
                 return true;
             case KEY_K:
-                show_skill_list_dialog = !show_skill_dialog;
+                //show_skill_list_dialog = !show_skill_dialog;
+                skillDialog->setVisible(!skillDialog->isVisible());
                 return true;
         }
     }
@@ -656,7 +657,7 @@ void do_parse() {
                             break;
                         case 0x000c:
                             char_info->skill_point = RFIFOW(4);
-                            sprintf(skill_points, "Skill points: %i", char_info->skill_point);
+                            skillDialog->setPoints(char_info->skill_point);
                             break;
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
@@ -857,25 +858,22 @@ void do_parse() {
                     sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
                     //alert(pkt_nfo,"","","","",0,0);
                     break;
-                    // Skill list
+                    // Skill list TAG
                 case 0x010f:
-                    //n_skills = 0;
+                {
+                    int n_skills = (len - 4) / 37;
                     //SKILL *temp_skill = NULL;
-                    //n_skills = (len-4)/37;
                     for(int k=0;k<(len-4)/37;k++) {
                         if(RFIFOW(4+k*37+6)!=0 || RFIFOB(4+k*37+36)!=0) {
-                            SKILL *temp_skill = is_skill(RFIFOW(4+k*37));
-                            if(temp_skill) {
-                                temp_skill->lv = RFIFOW(4+k*37+6);
-                                temp_skill->sp = RFIFOW(4+k*37+36);
-                                if(temp_skill->sp<0)temp_skill->sp = 0;
+                            int skillId = RFIFOW(4+k*37);
+                            if(skillDialog->getModel()->hasSkill(skillId)) {
+                                skillDialog->getModel()->setSkill(skillId, RFIFOW(4+k*37+6), RFIFOW(4+k*37+36));
                             } else {
-                                n_skills++;
-                                add_skill(RFIFOW(4+k*37), RFIFOW(4+k*37+6), RFIFOW(4+k*37+8));
+                                skillDialog->getModel()->addSkill(RFIFOW(4+k*37), RFIFOW(4+k*37+6), RFIFOW(4+k*37+8));
                             }
                         }
                     }
-                    break;
+                } break;
                     // MVP experience
                 case 0x010b:
                     break;

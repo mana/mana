@@ -63,6 +63,7 @@ extern BuySellDialog *buySellDialog;
 extern InventoryWindow *inventoryWindow;
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
+extern SkillDialog *skillDialog;
 
 /**
  * The action listener for the chat field.

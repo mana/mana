@@ -25,16 +25,6 @@
 
 extern PLAYER_INFO  *char_info;
 
-int n_skills = 0;
-SKILL *skill_head = NULL;
-
-char str_string[8];
-char agi_string[8];
-char vit_string[8];
-char int_string[8];
-char dex_string[8];
-char luk_string[8];
-
 char *skill_db[] = {
 	// 0-99
 	"", "Basic", "", "", "", "", "", "", "", "",
@@ -60,119 +50,125 @@ char *skill_db[] = {
 	"", "", "", "", "", "", "", "", "", "",
 };
 
-DIALOG skill_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  150,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skills",  NULL, NULL  },
-   { tmw_text_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    str_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  224,  16,    16,    0,   0,    '0',  0,          0,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { tmw_text_proc,       304,  234,  252,  100,  0,    0,    0,    0,       0,                0,    agi_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  234,  16,    16,    0,   0,    '0',  0,          1,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { tmw_text_proc,       304,  244,  252,  100,  0,    0,    0,    0,       0,                0,    vit_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  244,  16,    16,    0,   0,    '0',  0,          2,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { tmw_text_proc,       374,  224,  252,  100,  0,    0,    0,    0,       0,                0,    int_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  224,  16,    16,    0,   0,    '0',  0,          3,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { tmw_text_proc,       374,  234,  252,  100,  0,    0,    0,    0,       0,                0,    dex_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  234,  16,    16,    0,   0,    '0',  0,          4,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { tmw_text_proc,       374,  244,  252,  100,  0,    0,    0,    0,       0,                0,    luk_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  244,  16,    16,    0,   0,    '0',  0,          5,			   1,     (void*)increaseStatus,NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
-};
 
-void update_skill_dialog() {
-	int skillTemp = 0;
-	for(int loop = 0; loop<=char_info->lv;loop++)
-		skillTemp += int( (float)loop / (float)5.0 ) + (int)2;
-	sprintf(str_string, "STR: %i", char_info->STR);
-	sprintf(agi_string, "AGI: %i", char_info->AGI);
-	sprintf(vit_string, "VIT: %i", char_info->VIT);
-	sprintf(int_string, "INT: %i", char_info->INT);
-	sprintf(dex_string, "DEX: %i", char_info->DEX);
-	sprintf(luk_string, "LUK: %i", char_info->LUK);
-	if(char_info->STR+char_info->AGI+char_info->VIT+char_info->INT+char_info->DEX+char_info->LUK == skillTemp)
-		{
-		skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 0;
-		} else {
-		skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 1;
-		}
+SkillListModel::SkillListModel()
+{
+    //
 }
 
-void add_skill(short id, short lv, short sp) {
-	SKILL *skill = skill_head;
-	SKILL *temp = (SKILL *)malloc(sizeof(SKILL));
-	temp->id = id;
-	temp->lv = lv;
-	temp->sp = sp;
-	temp->next = NULL;
-	if(!skill_head)
-		skill_head = temp;
-	else {
-		while(skill->next)
-			skill = skill->next;
-		skill->next = temp;
-	}
+SkillListModel::~SkillListModel()
+{
+    for (int i = skillList.size() - 1; i >= 0; i--)
+    {
+        delete skillList[i];
+        skillList.pop_back();
+    }
 }
 
-char *skill_list(int index, int *list_size) {
-	if(index<0) {
-    *list_size = n_skills;
-		return NULL;
-	} else {
-		int iterator = 0;
-		SKILL *temp = skill_head;
-		while(iterator<index) {
-			temp = temp->next;
-			iterator++;
-		}
-		char *name = (char *)malloc(30);
-		sprintf(name, "%s lv:%i %i SP", skill_db[temp->id], temp->lv, temp->sp);
-		return name;
-		// need to clean allocated memory
-	}
+int SkillListModel::getNumberOfElements()
+{
+    return skillList.size();
 }
 
-int get_skill_id(int index) {
-	int iterator = 0;
-  SKILL *temp = skill_head;
-  while(iterator<index) {
-    temp = temp->next;
-    iterator++;
-  }
-  return temp->id;
+std::string SkillListModel::getElementAt(int i)
+{
+    //
+    if (i >= 0 && i < skillList.size())
+    {
+        //return skill_db[skillList[i]->id];
+        char tmp[128];
+        sprintf(tmp, "%s    Lv: %i    Sp: %i", skill_db[skillList[i]->id], skillList[i]->lv, skillList[i]->sp);
+        return tmp;
+    }
+    return "";
 }
 
-SKILL *is_skill(int id) {
-	SKILL *temp = skill_head;
-	while(temp) {
-		if(temp->id==id)return temp;
-		temp = temp->next;
-	}
-	return NULL;
+bool SkillListModel::hasSkill(int id)
+{
+    for (int i = 0; i < skillList.size(); i++)
+        if (skillList[i]->id == id)
+            return true;
+    return false;
 }
 
-void increaseStatus(void *dp3, int d1) {
-	WFIFOW(0) = net_w_value(0x00bb);
-	switch(d1) {
-	case 0:
-		WFIFOW(2) = net_w_value(0x000d);
-		break;
-	case 1:
-		WFIFOW(2) = net_w_value(0x000e);
-		break;
-	case 2:
-		WFIFOW(2) = net_w_value(0x000f);
-		break;
-	case 3:
-		WFIFOW(2) = net_w_value(0x0010);
-		break;
-	case 4:
-		WFIFOW(2) = net_w_value(0x0011);
-		break;
-	case 5:
-		WFIFOW(2) = net_w_value(0x0012);
-		break;
-	}
-	WFIFOW(4) = net_b_value(1);
-	WFIFOSET(5);
-	while((out_size>0))flush();
-	skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 = skill_dialog[8].d2 = skill_dialog[10].d2 = 0;
+void SkillListModel::addSkill(int id, int lv, int sp)
+{
+    SKILL *tmp = new SKILL;
+    tmp->id = id;
+    tmp->lv = lv;
+    tmp->sp = sp;
+    skillList.push_back(tmp);
 }
+
+void SkillListModel::setSkill(int id, int lv, int sp)
+{
+    if (!hasSkill(id))
+        return;
+    skillList[id]->lv = lv;
+    skillList[id]->sp = sp;
+}
+
+//
+
+SkillDialog::SkillDialog(gcn::Container *parent)
+    : Window(parent, "Skills")
+{
+    skills = new SkillListModel;
+
+    skillListBox = new gcn::ListBox(skills);
+    pointsLabel = new gcn::Label("Skill Points:");
+    incButton = new Button(" Up ");
+    closeButton = new Button("Close");
+
+    incButton->setEventId("inc");
+    closeButton->setEventId("close");
+
+    skillListBox->setDimension(gcn::Rectangle(0, 0, 200, 180));
+    pointsLabel->setDimension(gcn::Rectangle(0, 0, 200, 16));
+
+    skillListBox->setPosition(8, 4);
+    pointsLabel->setPosition(8, 190);
+    incButton->setPosition(64, 210);
+    closeButton->setPosition(160, 210);
+
+    add(skillListBox);
+    add(pointsLabel);
+    add(incButton);
+    add(closeButton);
+
+    incButton->addActionListener(this);
+    closeButton->addActionListener(this);
+
+    setSize(240, 240);
+    setLocationRelativeTo(getParent());
+}
+
+SkillDialog::~SkillDialog()
+{
+    delete skillListBox;
+    delete pointsLabel;
+    delete incButton;
+    delete closeButton;
+
+    delete skills;
+}
+
+void SkillDialog::action(const std::string& eventId)
+{
+    if (eventId == "inc")
+    {
+        //increment skill
+    } else if (eventId == "close")
+    {
+        setVisible(false);
+    }
+}
+
+void SkillDialog::setPoints(int i)
+{
+    char tmp[128];
+    sprintf(tmp, "Skill points: %i", i);
+    if (pointsLabel != NULL)
+        pointsLabel->setCaption(tmp);
+}
+
