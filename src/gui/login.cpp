@@ -139,6 +139,7 @@ void login() {
     delete keepCheck;
     delete okButton;
     delete cancelButton;
+    delete loginActionListener;
 }
 
 /** Attempt to login to login server */

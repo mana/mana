@@ -24,8 +24,6 @@
 /*
  * Simple ChatLog Object v0.5 (i'd say...)
  *
- * Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
- *
  * Author: kth5 aka Alexander Baldeck
  * pipe your questions, suggestions and flames to: kth5@gawab.com
  */

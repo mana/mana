@@ -13,6 +13,8 @@ necessary.
 
   if (condition) {
   }
+  else {
+  }
 
   for (init; condition; step) {
   }
@@ -25,6 +27,9 @@ necessary.
    */
   void function(param1, param2) {
   }
+
+  class TheClass : public TheSubclass {
+  };
 
   Ending parenthesis may be on next line for clarity.
 

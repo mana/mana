@@ -32,8 +32,21 @@
 #include "../net/network.h"
 #include "gui.h"
 
+// The action listener for the server select dialog
+class ServerSelectListener : public gcn::ActionListener {
+    public:
+        void action(const std::string& eventId);
+};
+
+// The list model for the server list
+class ServerListModel : public gcn::ListModel {
+    public:
+        int getNumberOfElements();
+        std::string getElementAt(int i);
+};
+
 void char_server();
-void server_char_server();
+void server_char_server(int serverIndex);
 char *server_list(int index, int *size);
 
 #endif

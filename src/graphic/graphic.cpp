@@ -123,13 +123,6 @@ DIALOG skill_list_dialog[] = {
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
 };
 
-/*
-DIALOG chat_dialog[] = {
-   { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
-   { NULL,                   0,    0,    0,   0,  0,    0,    0,    0,       0,                0,             NULL,        NULL, NULL  }
-};
-*/
-
 DIALOG npc_list_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"NPC",    NULL, NULL  },
