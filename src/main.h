@@ -71,6 +71,7 @@ typedef struct {
        
 typedef struct {
     int id;
+    float lastAttackTime; // used to synchronize the charge dialog
     char name[24];
     short hp, max_hp, sp, max_sp, lv;
     short statsPointsToAttribute;
