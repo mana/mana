@@ -27,16 +27,9 @@
 #include "../log.h"
 #include "../net/network.h"
 #include "../graphic/spriteset.h"
+#include "itemcontainer.h"
 #include "gui.h"
 #include "window.h"
-
-#define INVENTORY_SIZE 12
-
-struct ITEM_HOLDER { // the holder of a item
-    int id;       // the id of the item
-    int quantity; // number of items
-    //int index;    // item position
-};
 
 /**
  * Inventory dialog.
@@ -85,20 +78,13 @@ class InventoryWindow : public Window, gcn::ActionListener {
          */
         void action(const std::string& eventId);
         
-        /**
-         * Handles mouse events
-         */
-        void mousePress(int mx, int my, int button);
-
-        ITEM_HOLDER items[INVENTORY_SIZE];  /**< this is the holder of items */
-
+        ItemContainer *items;
+        
     private:
         gcn::Button *useButton, *dropButton;
         int useItem(int index, int id);
         int dropItem(int index, int amunt);
 
-        Spriteset *itemset;
-        int selectedItem;
 };
 
 #endif

@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=94
+UnitCount=96
 Type=0
 Ver=1
 ObjFiles=
@@ -977,9 +977,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit95]
-FileName=src\graphic\spriteset.cpp
+FileName=src\gui\itemcontainer.h
 CompileCpp=1
-Folder=graphic
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
@@ -987,9 +987,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit96]
-FileName=src\graphic\spriteset.h
+FileName=src\gui\itemcontainer.cpp
 CompileCpp=1
-Folder=graphic
+Folder=gui
 Compile=1
 Link=1
 Priority=1000

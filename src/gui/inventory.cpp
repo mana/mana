@@ -44,19 +44,14 @@ InventoryWindow::InventoryWindow():
     dropButton->addActionListener(this);
     
     add(useButton);
-    add(dropButton);  
-
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("graphic/items.bmp");
-    if (!itemImg) error("Unable to load items.bmp");
-    itemset = new Spriteset(itemImg, 20, 20);
-
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].id = -1;
-        items[i].quantity = 0;
-    }
+    add(dropButton);
     
-    selectedItem = 4; /**< No item selected */
+    items = new ItemContainer();
+    items->setSize(318, 40);
+    items->setPosition(2, 2);
+    add(items);
+
+    
 }
 
 InventoryWindow::~InventoryWindow()
@@ -67,61 +62,38 @@ InventoryWindow::~InventoryWindow()
 
 void InventoryWindow::draw(gcn::Graphics *graphics)
 {
-    int x, y;
-    getAbsolutePosition(x, y);
-    
-    if(items[selectedItem].quantity <= 0)
-        selectedItem = -1;
-
     // Draw window graphics
     Window::draw(graphics);
-
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].quantity > 0) {
-            if (items[i].id >= 501 && items[i].id <= 511) {
-                itemset->spriteset[items[i].id - 501]->draw(screen,
-                        x + 24 * i,
-                        y + 26);
-            }
-
-            std::stringstream ss;
-            ss << items[i].quantity;
-            graphics->drawText(ss.str(), 24 * i + 10, 54,
-                    gcn::Graphics::CENTER);
-        }
-    }
-    
-    if (selectedItem >= 0) {
-        graphics->drawRectangle(gcn::Rectangle(24 * selectedItem + 1, 26,
-            22, 22));
-    }
-    
 }
 
 
 int InventoryWindow::addItem(int index, int id, int quantity) {
-    items[index].id = id;
-    items[index].quantity += quantity;
+    /*items[index].id = id;
+    items[index].quantity += quantity;*/
+    items->addItem(index, id, quantity);
     return 0;
 }
 
 int InventoryWindow::removeItem(int id) {
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
+    /*for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].id == id) {
             items[i].id = -1;
             items[i].quantity = 0;
         }
-    }
+    }*/
+    items->removeItem(id);
     return 0;
 }
 
 int InventoryWindow::changeQuantity(int index, int quantity) {
-    items[index].quantity = quantity;
+    //items[index].quantity = quantity;
+    items->changeQuantity(index, quantity);
     return 0;
 }
 
 int InventoryWindow::increaseQuantity(int index, int quantity) {
-    items[index].quantity += quantity;
+    //items[index].quantity += quantity;
+    items->increaseQuantity(index, quantity);
     return 0;
 }
 
@@ -146,22 +118,13 @@ int InventoryWindow::dropItem(int index, int quantity) {
 
 void InventoryWindow::action(const std::string &eventId)
 {
-    if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
+    //if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
+    if (items->getIndex() != -1) {
         if (eventId == "use") {
-            useItem(selectedItem, items[selectedItem].id);
+            useItem(items->getIndex(), items->getId());
         } else if (eventId == "drop") {
-            dropItem(selectedItem, items[selectedItem].quantity);
+            dropItem(items->getIndex(), items->getQuantity());
             // Temp: drop all the items, you should choose quantity instead
         }       
     }
 }
-
-void InventoryWindow::mousePress(int mx, int my, int button) {
-    if (button == gcn::MouseInput::LEFT)
-        selectedItem = mx / 24;
-    if (selectedItem > INVENTORY_SIZE)
-        selectedItem = INVENTORY_SIZE;
-    
-    Window::mousePress(mx, my, button);
-}
-

@@ -85,7 +85,7 @@ void SellDialog::reset()
 
 void SellDialog::addItem(short index, int price)
 {
-    int id = inventoryWindow->items[index].id;
+    int id = inventoryWindow->items->getId(index);
     ITEM_SHOP item_shop;
 
     if (id >= 501 && id <= 511) {
@@ -97,7 +97,7 @@ void SellDialog::addItem(short index, int price)
     item_shop.price = price;
     item_shop.index = index;
     item_shop.id = id;
-    item_shop.quantity = inventoryWindow->items[index].quantity;
+    item_shop.quantity = inventoryWindow->items->getQuantity(index);
 
     shopInventory.push_back(item_shop);
     itemList->adjustSize();
