@@ -32,7 +32,7 @@ unsigned int count = 0; // Number of beings in the list
 
 /** Create a path node */
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
-    next(NULL)
+  next(NULL)
 {
   this->x = x;
   this->y = y;

@@ -162,7 +162,7 @@ void do_input() {
 		int x = get_x(player_node->coordinates);
 		int y = get_y(player_node->coordinates);
 
-    if(key[KEY_8_PAD]) {
+    if(key[KEY_8_PAD] || key[KEY_UP]) {
       if(get_walk(x, y-1)!=0) {
         walk(x, y-1, NORTH);
 				walk_status = 1;
@@ -172,7 +172,7 @@ void do_input() {
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y-1, NORTH);
       } else set_coordinates(player_node->coordinates, x, y, NORTH);
-    } else if(key[KEY_2_PAD]) {
+    } else if(key[KEY_2_PAD] || key[KEY_DOWN]) {
       if(get_walk(x, y+1)!=0) {
         walk(x, y+1, SOUTH);
 				walk_status = 1;
@@ -182,7 +182,7 @@ void do_input() {
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y+1, SOUTH);
       } else set_coordinates(player_node->coordinates, x, y, SOUTH);
-    } else if(key[KEY_4_PAD]) {
+    } else if(key[KEY_4_PAD] || key[KEY_LEFT]) {
       if(get_walk(x-1, y)!=0) {
         walk(x-1, y, WEST);
 				walk_status = 1;
@@ -192,7 +192,7 @@ void do_input() {
 				player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x-1, y, WEST);
       } else set_coordinates(player_node->coordinates, x, y, WEST);
-    } else if(key[KEY_6_PAD]) {
+    } else if(key[KEY_6_PAD] || key[KEY_RIGHT]) {
       if(get_walk(x+1, y)!=0) {
         walk(x+1, y, EAST);
 				walk_status = 1;

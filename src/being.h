@@ -63,8 +63,6 @@ struct NODE {
 
 void empty();
 NODE *get_head();
-//NODE *create_node();
-//PATH_NODE *create_path_node(unsigned short x, unsigned short y);
 void add_node(NODE *node);
 NODE *find_node(unsigned int id);
 void remove_node(unsigned int id);
