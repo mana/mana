@@ -14,8 +14,8 @@ Programmers
  nym
  (several GUI parts)
 
- Shura aka kth5
- (configuration, sound, Linux expert)
+ Shura
+ (configuration, sound, Linux expert, misc. ports)
 
  SimEdw
  (network code)
