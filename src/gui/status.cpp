@@ -181,7 +181,7 @@ void StatusWindow::action(const std::string& eventId) {
         // Show / Hide the inventory dialog
 	inventoryWindow->setVisible(!inventoryWindow->isVisible());
     }
-    if (eventId == "Config") {
+    if (eventId == "Setup") {
         // Show / Hide the inventory dialog
 	setupWindow->setVisible(true);
     }
