@@ -85,7 +85,8 @@ Setup::Setup(gcn::Container *parent)
 
   //TODO: load default settings
   modesList->setSelected(1);
-  fsCheckBox->setMarked(config.getValue("screen",0));
+  if(config.getValue("screen",0) == 1) 
+    fsCheckBox->setMarked(true);
   soundCheckBox->setMarked(config.getValue("sound",0));
 }
 
