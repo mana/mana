@@ -216,7 +216,7 @@ void init_graphic() {
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
 	
-	if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
+	if((gfx_capabilities & GFX_HW_VRAM_BLIT)&& stretch_mode==0) {
 	  vpage[0] = create_video_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_video_bitmap(SCREEN_W, SCREEN_H);
 	} else {
@@ -235,7 +235,7 @@ void init_graphic() {
   vmonsterset = load_graphic_file("./data/graphic/monsterset.bmp");
   
   gui_bitmap = vpage[page_num];
-
+  
 }
 
 void do_graphic(void) {
@@ -373,14 +373,16 @@ void do_graphic(void) {
 		    masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 2)*16, get_tile_y(i+camera_x, j+camera_y, 2)*16, i*16-offset_x, j*16-offset_y, 16, 16);
 	release_bitmap(vbuffer);
 	
-	acquire_bitmap(vpage[page_num]);
-	if(stretch_mode==0)
-    stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
-	else if(stretch_mode==1)
+	if(stretch_mode==0) {
+	  acquire_bitmap(vpage[page_num]);
+	  stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
+	} else if(stretch_mode==1)
 		Super2xSaI(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
 	else if(stretch_mode==2)
 		SuperEagle(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
 	textprintf_ex(vpage[page_num], font, 0, 0, makecol(255,255,255), -1, "[%i fps]", fps);
+	
+
 	
 	// Draw player speech
   node = get_head();
@@ -532,9 +534,10 @@ void do_graphic(void) {
 
 	
 	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
-	release_bitmap(vpage[page_num]);
-	show_video_bitmap(vpage[page_num]);
-	//blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
+	if(stretch_mode==0) {
+	  release_bitmap(vpage[page_num]);
+	  show_video_bitmap(vpage[page_num]);
+	} else blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
 	page_num = 1-page_num;
 	gui_bitmap = vpage[page_num];
 
