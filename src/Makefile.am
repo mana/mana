@@ -4,6 +4,7 @@ tmw_SOURCES = sound/sound.cpp \
 	graphic/graphic.cpp \
 	graphic/image.cpp \
 	gui/button.cpp \
+	gui/buy.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
 	gui/chat.cpp \

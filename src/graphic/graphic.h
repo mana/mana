@@ -27,6 +27,7 @@
 #include "../game.h"
 #include "../map.h"
 #include "../being.h"
+#include "../gui/buy.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
 #include "../gui/shop.h"
@@ -52,6 +53,7 @@ extern BITMAP *hairset;
 extern char npc_button[10];
 
 extern StatsDialog *statsDialog;
+extern BuyDialog *buyDialog;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {

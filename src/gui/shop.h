@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "../graphic/graphic.h"
 #include "inventory.h"
 
 
@@ -43,6 +42,7 @@ struct ITEM_SHOP {
 extern int n_items;
 extern char* selectedItem;
 extern char itemCurrenyQ[10];
+extern char *item_db[];
 
 char *shop_list(int index, int *list_size);
 void add_buy_item(short id, int price);

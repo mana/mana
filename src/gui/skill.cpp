@@ -62,7 +62,7 @@ char *skill_db[] = {
 
 DIALOG skill_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  150,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skill",  NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  150,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skills",  NULL, NULL  },
    { tmw_text_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    str_string,       NULL, NULL  },
    { tmw_plus_proc,       354,  224,  16,    16,    0,   0,    '0',  0,          0,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       304,  234,  252,  100,  0,    0,    0,    0,       0,                0,    agi_string,       NULL, NULL  },

@@ -19,66 +19,78 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _CHAR_SEL_SERVER_H
-#define _CHAR_SEL_SERVER_H
+#ifndef _TMW_BUY_H
+#define _TMW_BUY_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
-#include "../main.h"
-#include "../net/network.h"
 #include "gui.h"
 #include "window.h"
+#include "shop.h"
 
-#include <allegro.h>
-
+#include <vector>
 
 /**
- * The list model for the server list.
+ * The buy dialog.
  *
  * \ingroup GUI
  */
-class ServerListModel : public gcn::ListModel {
-    public:
-        int getNumberOfElements();
-        std::string getElementAt(int i);
-};
-
-/**
- * The server select dialog.
- *
- * \ingroup GUI
- */
-class ServerSelectDialog : public Window, public gcn::ActionListener {
+class BuyDialog : public Window, public gcn::ActionListener,
+                  public gcn::ListModel
+{
     public:
         /**
          * Constructor
          *
          * @see Window::Window
          */
-        ServerSelectDialog(gcn::Container *parent);
+        BuyDialog(gcn::Container *parent);
 
         /**
          * Destructor
          */
-        ~ServerSelectDialog();
+        ~BuyDialog();
+
+        /**
+         * Resets the dialog, clearing shop inventory.
+         */
+        void reset();
+
+        /**
+         * Sets the amount of available money.
+         */
+        void setMoney(int amount);
+
+        /**
+         * Adds an item to the shop inventory.
+         */
+        void addItem(short id, int price);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
 
+        /**
+         * Returns the number of items in the shop inventory.
+         */
+        int getNumberOfElements();
+
+        /**
+         * Returns the name of item number i in the shop inventory.
+         */
+        std::string getElementAt(int i);
+
     private:
-        ServerListModel *serverListModel;
-        gcn::ListBox *serverList;
         gcn::Button *okButton;
         gcn::Button *cancelButton;
+        gcn::ListBox *itemList;
         gcn::ScrollArea *scrollArea;
-};
+        gcn::Label *moneyLabel;
+        gcn::Label *quantityLabel;
+        gcn::Slider *slider;
 
-void char_server();
-void server_char_server(int serverIndex);
-char *server_list(int index, int *size);
+        std::vector<ITEM_SHOP> shopInventory;
+
+        int money;
+};
 
 #endif

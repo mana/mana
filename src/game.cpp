@@ -734,17 +734,19 @@ void do_parse() {
 					break;
 				// Buy/Sell dialog
 				case 0x00c4:
-					//if(show_npc_dialog==0) {
-            show_npc_dialog = 2;
-            current_npc = RFIFOL(2);
-					//}
+          buyDialog->setVisible(false);
+          show_npc_dialog = 2;
+          current_npc = RFIFOL(2);
 					break;
 				// Buy dialog
 				case 0x00c6:
-					n_items = (len-4)/11;
-					show_npc_dialog = 3;
-					for(int k=0;k<n_items;k++)
-						add_buy_item(RFIFOW(4+11*k+9), RFIFOL(4+11*k));
+					n_items = (len - 4) / 11;
+          buyDialog->reset();
+          buyDialog->setMoney(char_info->gp);
+					buyDialog->setVisible(true);
+					for (int k = 0; k < n_items; k++) {
+						buyDialog->addItem(RFIFOW(4 + 11 * k + 9), RFIFOL(4 + 11 * k));
+          }
 					break;
 				// Sell dialog
 				case 0x00c7:

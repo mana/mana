@@ -44,7 +44,7 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 //char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *skill_list_player, *npc_list_player;
+DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *sell_player, *skill_list_player, *npc_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
@@ -57,6 +57,7 @@ char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
 StatsDialog *statsDialog;
+BuyDialog *buyDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -92,18 +93,6 @@ DIALOG buy_sell_dialog[] = {
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
 
-DIALOG buy_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
-   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
-	 { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
-   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
-	 { tmw_text_proc,       304,  326+25,  50,  20,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
-   { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
-   { tmw_text_proc,       514,  326,  40,  20,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
-};
-
 DIALOG sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
@@ -117,7 +106,7 @@ DIALOG sell_dialog[] = {
 
 DIALOG skill_list_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Skills",     NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Stats",     NULL, NULL  },
    { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'u',  D_EXIT,  0,                0,    (char *)"&Up",        NULL, NULL  },
    { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			           0,    (char *)"&Close",     NULL, NULL  },
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)skill_list,   NULL, NULL  },
@@ -215,12 +204,15 @@ void init_graphic() {
     statsDialog = new StatsDialog(guiTop);
     statsDialog->setPosition(SCREEN_W - statsDialog->getWidth() - 10, 10);
 
+    // Create buy dialog
+    buyDialog = new BuyDialog(guiTop);
+    buyDialog->setVisible(false);
+
 
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);
     skill_player = init_dialog(skill_dialog, -1);
     buy_sell_player = init_dialog(buy_sell_dialog, -1);
-    buy_player = init_dialog(buy_dialog, -1);
     sell_player = init_dialog(sell_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
     npc_list_player = init_dialog(npc_list_dialog, -1);
@@ -379,12 +371,6 @@ void do_graphic(void) {
                     }
                 }
             }
-
-            textprintf_centre_ex(vbuffer, font,
-                    node->text_x + 45,
-                    node->text_y + 55,
-                    node->speech_color, -1,
-                    "(%d,%d), %d", x, y, dir);
         }
         else if (node->job == 45) { // Draw a warp
         } else { // Draw a monster
@@ -561,6 +547,7 @@ void do_graphic(void) {
             }
             break;
         case 3:
+            /*
             char money[20];
             sprintf(money, "%i gp", char_info->gp);
             buy_dialog[4].dp = &money;
@@ -583,6 +570,7 @@ void do_graphic(void) {
                 buy_player = init_dialog(buy_dialog, -1);
                 close_shop();
             }
+            */
             break;
         case 4:
             //alert("","","","","",0,0);
@@ -664,6 +652,9 @@ void do_graphic(void) {
 }
 
 void exit_graphic() {
+    delete statsDialog;
+    delete buyDialog;
+
     shutdown_dialog(npc_player);
     shutdown_dialog(skill_player);
 }
