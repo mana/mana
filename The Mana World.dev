@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=The Mana World
-UnitCount=32
+UnitCount=34
 Type=0
 Ver=1
 ObjFiles=
@@ -11,8 +11,8 @@ PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=_@@_
-Linker=../../lib/libjgmod.a_@@_../../lib/libalfont.a_@@_../../lib/liballeg.a_@@_../../lib/libwsock32.a_@@_
+CppCompiler=
+Linker=-ljgmod_@@_-lalfont_@@_-lalleg_@@_-lwsock32_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=1
 CompilerSet=0
-CompilerSettings=0000001001001000001101
+CompilerSettings=0000001001001001001001
 
 [Unit1]
 FileName=main.cpp
@@ -369,3 +369,25 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit33]
+FileName=Gui\inventory.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit34]
+FileName=Gui\inventory.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+
+########Text Field info#####
