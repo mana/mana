@@ -457,16 +457,17 @@ void do_parse() {
             show_npc_dialog = 1;
           }
           break;
-		case 0x01ee: //Get the items
-			for(int loop = 0; loop < RFIFOW(4); loop++)
-				inventory.addItem(loop,RFIFOW(10+18*loop));
-			break;
-		case 0x00a8: // could I use the item?
-			// index RFIFOW(2)
-			// succes or not RFIFOB(6);
-			if(RFIFOB(6))
-        inventory.addItem(RFIFOW(2),RFIFOW(4));
-			break;
+        //Get the items
+        case 0x01ee:
+					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++)
+            inventory.addItem(RFIFOW(4+loop*18+2), RFIFOW(4+loop*18+6));
+          break;
+        case 0x00a8: // could I use the item?
+          // index RFIFOW(2)
+          // succes or not RFIFOB(6);
+          if(RFIFOB(6))
+            inventory.addItem(RFIFOW(2),RFIFOW(4));
+          break;
         // Warp
         case 0x0091:
           memset(map_path, '\0', 480);
@@ -594,9 +595,6 @@ void do_parse() {
 					break;
 				// Status change
 				case 0x00b1:
-					/*char sto[40];
-					sprintf(sto, "%i %i", RFIFOW(2), RFIFOL(4));
-					alert(sto,"","","","",0,0);*/
 					switch(RFIFOW(2)) {
             case 1:
 							char_info->xp = RFIFOL(4);
@@ -671,19 +669,20 @@ void do_parse() {
 				// Answer to buy
 				case 0x00ca:
 					if(RFIFOB(2)==0)
-            ok("Transaction", "Thanks for buying");
+            chatlog.chat_log("Thanks for buying", BY_SERVER, gui_font);
 					else
-						ok("Transaction", "Unable to buy");
+						chatlog.chat_log("Unable to buy", BY_SERVER, gui_font);
 					break;
 				// Answer to sell
 				case 0x00cb:
 					if(RFIFOB(2)==0)
-            ok("Transaction", "Thanks for selling");
+            chatlog.chat_log("Thanks for selling", BY_SERVER, gui_font);
 					else
-						ok("Transaction", "Unable to sell");
+						chatlog.chat_log("Unable to sell", BY_SERVER, gui_font);
 					break;
 				// Add item to inventory
 				case 0x00a0:
+					inventory.addItem(RFIFOW(6), RFIFOW(4));
 					break;
         // Manage non implemented packets
         default:

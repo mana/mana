@@ -29,10 +29,11 @@
 
 #ifndef _INVENTORY_H
 #define _INVENTORY_H 
+
 #include <allegro.h>
-#ifdef WIN32
+/*#ifdef WIN32
 #include <winalleg.h>
-#endif
+#endif*/
 #include "../main.h"
 #include "../game.h"
 #include "../log.h"
@@ -43,7 +44,7 @@ struct itemHolder { // the holder of a item
 	int flag;		 // don't really know why I use this :)
 	int itemIDNum;  // the id of the item
 	int num;	    // number of items
-	int xpos,ypos;  // where am I?
+	int xpos, ypos;  // where am I?
 };
 
 
@@ -55,12 +56,12 @@ class TmwInventory{
 
 		void create(int tempxpos, int tempypos); // create the window
 		void draw(BITMAP *); // draw the window (if areDisplaying != 0 )
-		void show(int val); // choose between the show and don't show the window
+		void show(int val); // choose between showing and not showing the window
 		void toggle() { if(areDisplaying){show(0);}else{show(1);} }
 		//API
 		int addItem(int idnum, int antal); //add a item
 		int rmItem(int idnum); //remove a item
-		int changeNum(int idnum, int antal); // change nummber of a item
+		int changeNum(int idnum, int antal); // change number of a item
 		int useItem(int idnum);
 		//END API
 	private:

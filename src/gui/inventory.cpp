@@ -159,7 +159,10 @@ void TmwInventory::draw(BITMAP * buffer) {
         ypos = inventory_dialog[0].y;
 
         if(items[itemX][itemY].flag) //draw the item
-          masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
+					if(items[itemX][itemY].itemIDNum>=501 && items[itemX][itemY].itemIDNum<=510)
+            masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum-501].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
+					else
+						masked_blit((BITMAP *)itemset[0].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
 
         //the number of that item
         if(!bigwindow)

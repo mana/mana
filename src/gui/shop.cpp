@@ -30,7 +30,10 @@
 int n_items;
 ITEM_SHOP *shop = NULL;
 
-char *item_db[] = { "Candy", "Medical Herb", "Chocolate" };
+char *item_db[] = {
+	"Candy", "Medical Herb", "Chocolate", "Royal Jam", "Faerie Walnut",
+	"Cup of wishes", "Magic rope", "Midge mallet", "Flammie drum", "Moogle belt"
+};
 
 char *shop_list(int index, int *list_size) {
 	if(index<0) {
