@@ -33,24 +33,27 @@ NpcListDialog::NpcListDialog(gcn::Container *parent):
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
     okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
+    //cancelButton = new Button("Cancel");
 
     setSize(260, 175);
-    scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 130));
-    okButton->setPosition(180, 145);
-    cancelButton->setPosition(208, 145);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, 250, 160 - okButton->getHeight()));
+    okButton->setPosition(
+            260 - 5 - okButton->getWidth(),
+            175 - 5 - okButton->getHeight());
+    //cancelButton->setPosition(208, 145);
 
     itemList->setEventId("item");
     okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
+    //cancelButton->setEventId("cancel");
 
     itemList->addActionListener(this);
     okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
+    //cancelButton->addActionListener(this);
 
     add(scrollArea);
     add(okButton);
-    add(cancelButton);
+    //add(cancelButton);
 
     setLocationRelativeTo(getParent());
 }
@@ -58,7 +61,7 @@ NpcListDialog::NpcListDialog(gcn::Container *parent):
 NpcListDialog::~NpcListDialog()
 {
     delete okButton;
-    delete cancelButton;
+    //delete cancelButton;
     delete itemList;
     delete scrollArea;
 }
@@ -105,8 +108,11 @@ void NpcListDialog::action(const std::string& eventId)
             setVisible(false);
             reset();
         }
-    } else if (eventId == "cancel") {
+    }
+    /*
+    else if (eventId == "cancel") {
         setVisible(false);
         reset();
     }
+    */
 }

@@ -197,7 +197,7 @@ GraphicEngine::GraphicEngine() {
     
     BITMAP *npcbmp = load_bitmap("data/graphic/npcset.bmp", NULL);
     if (!npcbmp) error("Unable to load npcset.bmp");
-    npcset = new Spriteset(npcbmp, 80, 50, 0, 0);
+    npcset = new Spriteset(npcbmp, 50, 80, 0, 0);
 
     BITMAP *emotionbmp = load_bitmap("data/graphic/emotionset.bmp", NULL);
     if (!emotionbmp) error("Unable to load emotionset.bmp");

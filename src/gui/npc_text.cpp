@@ -36,8 +36,11 @@ NpcTextDialog::NpcTextDialog(gcn::Container *parent):
     okButton = new Button("OK");
 
     setSize(260, 175);
-    scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 130));
-    okButton->setPosition(260 - 10 - okButton->getWidth(), 145);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, 250, 160 - okButton->getHeight()));
+    okButton->setPosition(
+            260 - 5 - okButton->getWidth(),
+            175 - 5 - okButton->getHeight());
 
     okButton->setEventId("ok");
     okButton->addActionListener(this);
