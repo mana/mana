@@ -76,7 +76,7 @@ FIND_PATH(sdl-config, LIBSDL_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/loca
 ])
 
 if test -n "$LIBSDL_CONFIG"; then
-  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs`"
+  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer"
   LIBSDL_RPATH=
   for args in $LIBSDL_LIBS; do
        case $args in
@@ -93,34 +93,8 @@ else
   AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 0, [Defines if your system has the LIBSDL library])
 fi
 
-FIND_PATH(allegro-config, LIBALLEGRO_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/local/bin /opt/local/bin], [
-  AC_MSG_ERROR([Could not find Allegro anywhere, check http://www.talula.demon.co.uk/allegro])
-])
-
-if test -n "$LIBALLEGRO_CONFIG"; then
-  LIBALLEGRO_LIBS="`$LIBALLEGRO_CONFIG --libs` -lguichan_allegro -lguichan"
-  LIBALLEGRO_RPATH=
-  for args in $LIBALLEGRO_LIBS; do
-       case $args in
-         -L*)
-            LIBALLEGRO_RPATH="$LIBALLEGRO_RPATH $args"
-            ;;
-       esac
-  done
-  LIBALLEGRO_RPATH=`echo $LIBALLEGRO_RPATH | sed -e "s/-L/-R/g"`
-  LIBALLEGRO_CFLAGS="`$LIBALLEGRO_CONFIG --cflags`"
-
-  AC_DEFINE_UNQUOTED(HAVE_LIBALLEGRO, 1, [Defines if your system has the LIBALLEGRO library])
-else
-  AC_DEFINE_UNQUOTED(HAVE_LIBALLEGRO, 0, [Defines if your system has the LIBALLEGRO library])
-fi
-
 AC_SUBST(LIBSDL_LIBS)
 AC_SUBST(LIBSDL_CFLAGS)
 AC_SUBST(LIBSDL_RPATH)
-
-AC_SUBST(LIBALLEGRO_LIBS)
-AC_SUBST(LIBALLEGRO_CFLAGS)
-AC_SUBST(LIBALLEGRO_RPATH)
 
 AC_OUTPUT(Makefile src/Makefile)

@@ -3,4 +3,3 @@
 AUTOMAKE_OPTIONS = foreign 1.4
 
 SUBDIRS = src
-LDFLAGS = `allegro-config --libs release` `sdl-config --libs` -lguichan_allegro -lguichan

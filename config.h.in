@@ -6,9 +6,6 @@
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
-/* Defines if your system has the LIBALLEGRO library */
-#undef HAVE_LIBALLEGRO
-
 /* Defines if your system has the LIBSDL library */
 #undef HAVE_LIBSDL
 
