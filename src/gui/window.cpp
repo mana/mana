@@ -215,3 +215,15 @@ void Window::mouseOut()
 {
     mouseDown = false;
 }
+
+void Window::_mouseInputMessage(const gcn::MouseInput &mouseInput)
+{
+    if (mouseInput.getType() == gcn::MouseInput::MOTION && mouseDown) {
+        // It's a window drag event
+        gcn::Widget::_mouseInputMessage(mouseInput);
+    }
+    else {
+        // It's something else
+        gcn::Container::_mouseInputMessage(mouseInput);
+    }
+}

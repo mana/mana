@@ -30,6 +30,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/textbox.cpp \
           src/gui/textfield.cpp \
           src/gui/window.cpp \
+          src/gui/windowcontainer.cpp \
           src/net/network.cpp \
           src/net/protocol.cpp \
           src/configuration.cpp \

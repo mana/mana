@@ -31,6 +31,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/textbox.cpp \
 	gui/textfield.cpp \
 	gui/window.cpp \
+	gui/windowcontainer.cpp \
 	net/network.cpp \
 	net/protocol.cpp \
 	astar.cpp \

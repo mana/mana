@@ -117,6 +117,8 @@ class Window : public gcn::Container, public gcn::MouseListener
         void mouseRelease(int mx, int my, int button);
         void mouseMotion(int mx, int my);
         void mouseOut();
+
+        void _mouseInputMessage(const gcn::MouseInput &mouseInput);
 };
 
 #endif

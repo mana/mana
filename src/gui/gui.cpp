@@ -28,10 +28,7 @@
 #include "../log.h"
 #include "../sound/sound.h"
 #include "allegroinput.h"
-
-#ifndef WIN32
-#define __cdecl __attribute__((cdecl))
-#endif
+#include "windowcontainer.h"
 
 #define GUI_BMP_COUNT 11
 #define GUI_BMP_OFS_BUTTON 0
@@ -71,7 +68,7 @@ Gui::Gui(BITMAP *screen)
     gcn::Image::setImageLoader(imageLoader);
 
     // Initialize top GUI widget
-    guiTop = new gcn::Container();
+    guiTop = new WindowContainer();
     guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
     guiTop->setOpaque(false);
 
