@@ -24,12 +24,12 @@
 #ifndef _TMW_CHAT_H
 #define _TMW_CHAT_H
 
-#include "../net/network.h"
 #include <guichan.hpp>
 #include <allegro.h>
 #include <list>
 #include <string>
 #include <fstream>
+#include "../net/network.h"
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
