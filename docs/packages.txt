@@ -8,6 +8,7 @@ THE MANA WORLD PACKAGE SYSTEM
 4. TYPES OF DATA
 5. INITIALIZING PACKAGE MANAGEMENT
 6. LOADING A REQUESTED RESOURCE
+7. RESOURCE MANAGEMENT DETAILS
 
 
 1. INTRODUCTION
@@ -120,3 +121,130 @@ only expected in the case of developers that will relatively frequently update
 the data while working on the next package to be released.
 
 
+7. RESOURCE MANAGEMENT DETAILS
+
+The resource management technique is critical to the overall success of the
+package management system as a whole.  Resources are loaded at runtime as they
+are needed, and unloaded as they become unused.  In order to ensure the 
+autonomous functioning of this process reference counting is the agreed upon 
+technique for managing loaded resources in TMW.  
+
+For those unfamiliar with the practice of reference counting, it involves 
+every resource object having a variable containing the number of references to
+the object. When a reference is added the function addRef() is called and when
+it is removed the function release() is called. When the reference count 
+reaches zero the object will automatically delete itself, thus handling the 
+cleanup of resources.
+
+Reference counting will form the core of the resource management system.  Each
+resource object will have the functionality of a reference counted object. The
+resource manager will hold ResourceEntry objects.  The resource entry object 
+contains a pointer to the resource as well as the location of the path of the 
+file the resource was loaded from.  This would look something like:
+
+  /**
+   * A generic reference counted resource object.
+   */
+  class Resource { 
+      public:
+          /**
+           * Loads the resource from the specified path.
+           * @param filePath The path to the file to be loaded.
+           * @return <code>true</code> if loaded <code>false</code> otherwise.
+           */
+          virtual bool Load(std::string filePath) = 0;
+          ...
+          /**
+           * Increments the reference counted of this object.
+           */
+          void addRef() { ++referenceCount; }
+ 
+          /**
+           * Decrements the reference count and deletes the object
+           * if no references are left.
+           * @return <code>true</code> if the object was deleted
+           * <code>false</code> otherwise.
+           */
+          void release() { 
+              --referenceCount;
+
+              if(!referenceCount)
+              {
+                  delete this;
+                  return true;
+              }
+
+              return false;
+          }
+      private:
+          unsigned int referenceCount;
+  };
+  ...
+  /**
+   * A resource entry descriptor.
+   */
+  struct ResourceEntry { 
+      Resource*   resource; 
+      std::string filePath; 
+  };
+  ...
+
+The resource manager would then hold a mapping containing the resource entry as
+well as the string defining its resource identification path. The resource 
+manager would thus look something like this:
+
+  /**
+   * A class for loading and managing resources.
+   */
+  class ResourceManager {
+      public:
+          ...
+      private:
+          std::map<std::string, ResourceEntry> resources;
+  };
+  ...
+
+This will allow the game to load resources with little awareness of the actual
+path from which they were loaded.  The resource manager will also act as a
+resource object factory.  A factory object is an object that creates an
+instance of an object derived from a common base class.  In this case it will
+create Resource objects. This would make the ResourceManager object look like
+this:
+
+  /**
+   * A class for loading and managing resources.
+   */
+  class ResourceManager {
+      public:
+          enum E_RESOURCE_TYPE
+          {
+             MAP,
+             MUSIC,
+             IMAGE,
+             SCRIPT,
+             TILESET,
+             SOUND_EFFECT
+          };
+
+          /**
+           * Creates a resource and adds it to the resource map.
+           * The idPath is converted into the appropriate path
+           * for the current operating system and the resource
+           * is loaded.
+           * @param type The type of resource to load.
+           * @param idPath The resource identifier path.
+           * @return A valid resource or <code>NULL</code> if
+           * the resource could not be loaded.
+           */
+          Resource* Create(const E_RESOURCE_TYPE& type,
+                                            std::string idPath);
+          ...
+      private:
+          std::map<std::string, ResourceEntry> resources;
+  };
+  ...
+
+Loading a resource would then look something like:
+
+  Image* img = (Image*) ResourceManager.Create(ResourceManager::IMAGE,
+                                         "/graphics/tiles/dark_forest.png");
