@@ -1,0 +1,50 @@
+----------------------------------------------------------------
+Minutes of the TMW Dev Meeting at Friday, 18th of February, 2005
+----------------------------------------------------------------
+
+Presence: Hammerbear, ElvenProgrammer, zenogais, Rotonen, maci
+Timespan: 0.75 hours (21:00-21:45 GMT+1)
+
+
+* We agreed to try a monthly release schedule. So with 0.0.9 released on 30th
+  of Januari, 0.0.10 is scheduled by the end of this month, with the next
+  version the month after that, etc. This should remove any doubt about when
+  the next release is from both team members and players.
+
+* With the 0.0.10 release less than 2 weeks away, we have still set the
+  following set of goals to be reached by then, on top of changes already made
+  since 0.0.9:
+
+  - PhysicsFS usage for loading data from packages (zenogais)
+  - XML map loading so that Tiled is supported (Hammerbear)
+  - New GUI look (Bertram)
+  - More functional inventory/equipment (ElvenProgrammer)
+  - New tileset (the artists)
+  - New, expanded, city map (Chetic)
+
+  These are all important milestones in the development of The Mana World,
+  and they don't go too far in the sense that things will need to be re-done
+  a great deal when we start working on our own server. Whatever isn't finished
+  by the end of this month will have to wait for 0.0.11 or 0.1.0.
+
+* If you haven't noticed already, we have a new team member, his name is
+  Kyokai. He's been writing on the forums, wiki and has been in discussion on
+  IRC, in order to involve everybody who would like to get involved in the
+  planning of our own skills and advancement system. A general concensus seems
+  to be almost reached, with specific parts still being discussed. Pretty soon
+  Kyokai could start to implement this system. Be sure to stay informed about
+  this development if you care about where TMW is heading in this area.
+
+* Rotonen is in need of a co-director in the art department. Rotonen is
+  currently the central contact point for the artists. The co-director will
+  have to know what needs to be done and what has been assigned to each artist.
+  The most important part may be to comment on the work of the artists, to
+  answer their questions and to give them directions.
+
+* maci asked wether Tiled has a feature to export the map as an image, and this
+  feature is indeed available. It would be nice if the result could be used to
+  create a nice looking minimap of the area.
+
+* Elven Programmer added an interesting part about server architecture in
+  docs/architecture.txt. Anybody who's interested or involved in development
+  of the server part should read this.

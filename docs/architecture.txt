@@ -11,13 +11,14 @@ SERVER ARCHITECTURE
 7. DATABASE
 8. REGISTRATION
 
+
 1. INTRODUCTION
 
-One of the most important thing in a online game is the architecture of
-the server system, which reflects in permormances (lag and denial of
-service), scalability, fault tolerance. In this article we will examine
-the pre-existing model and we will evaluate a way to improve it and to
-add custom fetures.
+One of the most important thing in a online game is the architecture of the
+server system, which reflects in performances (lag and denial of service),
+scalability, fault tolerance. In this article we will examine the pre-existing
+model and we will evaluate a way to improve it and to add custom features.
+
 
 2. RO REVIEW
 
@@ -25,24 +26,29 @@ Let's start by taking as reference the current server system used to play
 Ragnarok Online on the euRO server. (www.euro-ro.com)
 RO works by using 4 kinds of server:
 
- - Login Server (L): takes care of verifying accounts with
-   username-password system, allows also encrypted login.
- - Char Server (C): saves every player status (stats, items, equipment,
-   skills and so on.
+ - Login Server (L): takes care of verifying accounts with username-password
+   system, allows also encrypted login.
+
+ - Char Server (C): saves every player status (stats, items, equipment, skills
+   and so on.
+
  - Map Server (M): the real game server, work as interconnection between
-   clients, manage chat, monster AI, damage calculations and everything
-   you can see in game.
- - Inter Server (I): probably manages the messages between the other type
-   of servers.
+   clients, manage chat, monster AI, damage calculations and everything you can
+   see in game.
+
+ - Inter Server (I): probably manages the messages between the other type of
+   servers.
 
 In euRO there are 1 login server, 1 char server, 1 inter server and 14 map
 servers.
+
 
 3. EATHENA MODEL
 
 The eAthena system mirrors the way used by official RO servers. eAthena
 implements 3 servers: login, char and map. It is allowed to have more than one
 map server at a time. Every server communicates with all the others.
+
 
 4. TMW SERVER
 
@@ -60,6 +66,7 @@ The login server manages new connections and stores all the informations about
 the player. The map server is pretty the same as the eAthena one. The login
 server manages also connections to a new map server when changing map.        
 
+
 5. TCP - UDP
 
 RO is TCP based, mainly because you use the mouse to move the player. When you
@@ -67,18 +74,22 @@ want to reach a point on the map, you click on it and the client send a packet
 to the server with destination coordinates. The server replies with an
 agreement if there's a path to that way. Using this way you don't need high
 speed nor a lot of packets, so TCP it's pretty enough.
+
 With our custom server we want to achieve pixel movements, by that we mean that
 the player is not always positioned in the center of the tile, but will have
 fine coordinates.
+
 Asking the server if every destination coordinates is walkable means a lot of
 traffic from and to the server and probably will result in lag. Using UDP will
 probably help avoiding this problem.
+
 An idea could be using the system used for racing games where speed is
 fundamental. When you press a key to move, the client sends a packet with
 starting coordinates, direction and client time. When you release the key (or
 change direction) the client sends another packet with current coordinates and
 client time. According to the player speed the server check if the coordinates
 are right, if not reply with a packet with the correct position.
+
 
 6. SECURITY
 
@@ -90,14 +101,16 @@ Solutions to keep the server working and avoid unfair players.
         
  - Cheating/Botting:
         * First of all just keep every calculation done by the server.
-        
+
+
 7. DATABASE
 
 Player data should be stored using databases, probably MySQL. This way player
 infos could be easily accessed trough web.
 
+
 8. REGISTRATION
 
-Still to decide if we want to use a dialog (client registration) or to use a web
-based interface (web registration).
+Still to decide if we want to use a dialog (client registration) or to use a
+web based interface (web registration).
  
