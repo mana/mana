@@ -75,9 +75,8 @@ Open "The Mana World.dev" in Dev-C++. From there on you should be able to
 start compilition with Excute -> Compile. A file called tmw.exe should appear
 in the same directory as where you opened the .dev from.
 
-Before you can actually run the executable you may need to move a few DLLs over
-from your Dev-Cpp/dll directory to the directory containing tmw.exe. The
-currently required DLLs are alleg41.dll, guichan.dll and guichan_allegro.dll.
+Before you can actually run the executable be sure to copy over alleg41.dll
+from your Dev-Cpp/dll directory to the directory containing tmw.exe.
 
 Have fun hacking The Mana World!
 
