@@ -19,33 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TEXTFIELD_H__
-#define __TEXTFIELD_H__
+#ifndef __PASSWORDFIELD_H__
+#define __PASSWORDFIELD_H__
 
 #include <allegro.h>
 #include <guichan.hpp>
+#include "textfield.h"
 
 /**
- * A text field.
+ * A password field.
  *
  * \ingroup GUI
  */
-class TextField : public gcn::TextField {
+class PasswordField : public TextField {
     public:
         /**
-         * Constructor, initializes the text field with the given string.
+         * Constructor, initializes the password field with the given string.
          */
-        TextField(const std::string& text = "");
+        PasswordField(const std::string& text = "");
 
         /**
          * Draws the text field.
          */
-        virtual void draw(gcn::Graphics *graphics);
-
-        /**
-         * Draws the background and border.
-         */
-        void drawBorder(gcn::Graphics *graphics);
+        void draw(gcn::Graphics *graphics);
 };
 
 #endif

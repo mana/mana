@@ -19,33 +19,31 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __TEXTFIELD_H__
-#define __TEXTFIELD_H__
+#include "passwordfield.h"
+#include "gui.h"
 
-#include <allegro.h>
-#include <guichan.hpp>
 
-/**
- * A text field.
- *
- * \ingroup GUI
- */
-class TextField : public gcn::TextField {
-    public:
-        /**
-         * Constructor, initializes the text field with the given string.
-         */
-        TextField(const std::string& text = "");
+PasswordField::PasswordField(const std::string& text):
+    TextField(text)
+{
+}
 
-        /**
-         * Draws the text field.
-         */
-        virtual void draw(gcn::Graphics *graphics);
+void PasswordField::draw(gcn::Graphics *graphics)
+{
+    int x, y, w, h, col;
+    getAbsolutePosition(x, y);
+    w = getWidth();
+    h = getHeight();
+    std::string stars;
+    stars.assign(mText.length(), '*');
 
-        /**
-         * Draws the background and border.
-         */
-        void drawBorder(gcn::Graphics *graphics);
-};
+    if (hasFocus()) {      
+        drawCaret(graphics,
+                getFont()->getWidth(stars.substr(0, mCaretPosition)) -
+                mXScroll);
+    }
 
-#endif
+    graphics->setColor(getForegroundColor());
+    graphics->setFont(getFont());
+    graphics->drawText(stars, 1 - mXScroll, 1);  
+}

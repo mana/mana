@@ -129,8 +129,6 @@ int gui_text(BITMAP *bmp, AL_CONST char *s,
 int tmw_button_proc(int msg, DIALOG *d, int c);
 int tmw_slider_proc(int msg, DIALOG *d, int c);
 int tmw_radio_proc(int msg, DIALOG *d, int c);
-int tmw_edit_proc(int msg, DIALOG *d, int c);
-int tmw_password_proc(int msg, DIALOG *d, int c);
 int tmw_list_proc(int msg, DIALOG *d, int c);
 int tmw_text_proc(int msg, DIALOG *d, int c);
 int tmw_dialog_proc(int msg, DIALOG *d, int c);

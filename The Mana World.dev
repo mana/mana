@@ -613,3 +613,23 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit57]
+FileName=src\gui\passwordfield.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit58]
+FileName=src\gui\passwordfield.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+

@@ -26,6 +26,7 @@
 #include "button.h"
 #include "checkbox.h"
 #include "textfield.h"
+#include "passwordfield.h"
 #include "../graphic/graphic.h"
 
 
@@ -35,7 +36,7 @@ LoginDialog::LoginDialog(gcn::Container *parent):
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
     userField = new TextField("player");
-    passField = new TextField();
+    passField = new PasswordField();
     keepCheck = new CheckBox("Keep", false);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");

@@ -11,6 +11,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/inventory.cpp \
 	gui/login.cpp \
 	gui/npc.cpp \
+	gui/passwordfield.cpp \
 	gui/progressbar.cpp \
 	gui/setup.cpp \
 	gui/shop.cpp \
