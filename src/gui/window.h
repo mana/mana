@@ -26,38 +26,55 @@
 #include <allegro.h>
 #include <guichan.hpp>
 
-class WindowContainer : public gcn::Container, public gcn::MouseListener
+/**
+ * A window. This window can be dragged around and has a title bar.
+ *
+ * \ingroup GUI
+ */
+class Window : public gcn::Container, public gcn::MouseListener
 {
     private:
-        std::string caption;	//title bar caption
-        gcn::Label* captionLabel;	//TItle bar caption
-        int x, y;		//x and y positions of the window
-        int z;			//z position of window
-        int mousePX, mousePY;	//Mouse down location relative to 0,0 of window
-        int snapSize;		//Snap to window edge
-        bool mouseDown;		//mouse button state
-        gcn::Color titlebarColor;	//title bar color
+        gcn::Container *chrome;    /**< Contained container */
+        std::string caption;       /**< Title bar caption */
+        gcn::Label* captionLabel;  /**< Title bar caption label */
+        int z;                     /**< Z position of the window */
+        int mousePX;               /**< Mouse down location */
+        int mousePY;               /**< Mouse down location */
+        int snapSize;              /**< Snap distance to window edge */
+        bool mouseDown;            /**< Mouse button state */
+        gcn::Color titlebarColor;  /**< Title bar color */
+        int titlebarHeight;        /**< Height of title bar */
 
-        BITMAP *dLeft, *dMid, *dRight;
+        BITMAP *dLeft;             /**< Left side of title bar */
+        BITMAP *dMid;              /**< Middle of title bar */
+        BITMAP *dRight;            /**< Right side of title bar */
 
     public:
-        int titlebarHeight;	//height of title bar
+        Window(std::string text = "Window");
+        ~Window();
 
-        //constructor
-        WindowContainer(std::string text = "Window");
-        ~WindowContainer();
-
-        //draw window
+        /**
+         * Draws the window.
+         */
         void draw(gcn::Graphics* graphics);
 
-        //add to stop compiler complaining
-        void add(Widget *w);
-        //new add
-        void add(Widget *w, int x, int y);
+        /**
+         * Adds a widget to the window.
+         */
+        void add(gcn::Widget *w);
 
+        /**
+         * Adds a widget to the window and also specifices its position.
+         */
+        void add(gcn::Widget *w, int x, int y);
+
+        /**
+         * Set the dimension of the window contents.
+         */
         void setDimension(const gcn::Rectangle& dimension);
 
-        //Mouse handling
+        // Mouse handling
+
         void mousePress(int mx, int my, int button);
         void mouseRelease(int mx, int my, int button);
         void mouseMotion(int mx, int my);

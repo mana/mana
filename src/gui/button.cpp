@@ -26,6 +26,7 @@ Button::Button(const std::string& caption):
 {
     mouseDown = false;
     keyDown = false;
+    setBorderSize(0);
 }
 
 void Button::draw(gcn::Graphics* graphics) {
@@ -34,6 +35,8 @@ void Button::draw(gcn::Graphics* graphics) {
     int offset = 0;
 
     getAbsolutePosition(x, y);
+
+    //printf("draw - %d,%d\n", x, y);
 
     if (false /*disabled*/) {
         mode = 3;

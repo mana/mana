@@ -23,13 +23,13 @@
 #include "gui.h"
 #include <guichan/allegro.hpp>
 
-WindowContainer::WindowContainer(std::string text) :
+Window::Window(std::string text) :
     caption(text),
     mousePX(0),
     mousePY(0),
     snapSize(8),
     mouseDown(false),
-    titlebarHeight(48)
+    titlebarHeight(24)
 {
     titlebarColor.r = 32;
     titlebarColor.g = 32;
@@ -50,9 +50,14 @@ WindowContainer::WindowContainer(std::string text) :
 
     //register mouse listener
     addMouseListener(this);
+
+    // Add chrome
+    chrome = new gcn::Container();
+    chrome->setOpaque(false);
+    gcn::Container::add(chrome);
 }
 
-WindowContainer::~WindowContainer()
+Window::~Window()
 {
     //delete captionLabel;
 
@@ -60,17 +65,23 @@ WindowContainer::~WindowContainer()
     release_bitmap(dLeft);
     release_bitmap(dMid);
     release_bitmap(dRight);
+
+    delete chrome;
 }
 
-void WindowContainer::draw(gcn::Graphics* graphics)
+void Window::draw(gcn::Graphics* graphics)
 {
+    int x, y;
+    getAbsolutePosition(x, y);
+
     //draw container background
     //Container::draw(graphics);
     if (mOpaque)
     {
         graphics->setColor(getBaseColor());
-        graphics->fillRectangle(gcn::Rectangle(0, 24,
-                    getDimension().width, getDimension().height));
+        graphics->fillRectangle(gcn::Rectangle(0, titlebarHeight,
+                    getDimension().width,
+                    getDimension().height - titlebarHeight));
     }
 
 
@@ -103,33 +114,34 @@ void WindowContainer::draw(gcn::Graphics* graphics)
                     getDimension().width, titlebarHeight));
     }
 
-
     drawChildren(graphics);
 }
 
-//set dimension
-void WindowContainer::setDimension(const gcn::Rectangle &dimension)
+void Window::setDimension(const gcn::Rectangle &dimension)
 {
-    gcn::Widget::setDimension(gcn::Rectangle(dimension.x, dimension.y,
-                dimension.width, dimension.height + titlebarHeight));
+    gcn::Container::setDimension(gcn::Rectangle(
+                dimension.x,
+                dimension.y - titlebarHeight,
+                dimension.width,
+                dimension.height + titlebarHeight));
+    chrome->setDimension(gcn::Rectangle(0, titlebarHeight,
+                dimension.width, dimension.height));
 }
 
-//adding new widget
-void WindowContainer::add(gcn::Widget *w)
+void Window::add(gcn::Widget *w)
 {
-    w->setPosition(w->getDimension().x, w->getDimension().y + titlebarHeight);
-    gcn::Container::add(w);
-}
-void WindowContainer::add(Widget *w, int x, int y)
-{
-    w->setPosition(x, y + titlebarHeight);
-    gcn::Container::add(w);
+    chrome->add(w);
 }
 
-void WindowContainer::mousePress(int mx, int my, int button)
+void Window::add(Widget *w, int x, int y)
 {
-    x = this->getDimension().x;
-    y = this->getDimension().y;
+    chrome->add(w, x, y);
+}
+
+void Window::mousePress(int mx, int my, int button)
+{
+    int x = this->getDimension().x;
+    int y = this->getDimension().y;
 
     mouseDown = true;
 
@@ -137,20 +149,20 @@ void WindowContainer::mousePress(int mx, int my, int button)
     mousePY = my;
 }
 
-void WindowContainer::mouseRelease(int mx, int my, int button)
+void Window::mouseRelease(int mx, int my, int button)
 {
     mouseDown = false;
 }
 
 //window move
-void WindowContainer::mouseMotion(int mx, int my)
+void Window::mouseMotion(int mx, int my)
 {
     if (mouseDown)
     {
         int winWidth = this->getDimension().width;
         int winHeight = this->getDimension().height;
-        x = this->getDimension().x;
-        y = this->getDimension().y;
+        int x = this->getDimension().x;
+        int y = this->getDimension().y;
 
         x = x - (mousePX - mx);
         y = y - (mousePY - my);
@@ -179,7 +191,7 @@ void WindowContainer::mouseMotion(int mx, int my)
     }
 }
 
-void WindowContainer::mouseOut()
+void Window::mouseOut()
 {
     mouseDown = false;
 }

@@ -24,6 +24,7 @@
 #include "char_server.h"
 #include "../graphic/graphic.h"
 #include "button.h"
+#include "window.h"
 
 char server[30];
 int showServerList = 1;
@@ -62,7 +63,7 @@ void char_server() {
     gcn::ScrollArea *scrollArea;
 
     serverListModel = new ServerListModel();
-    dialog = new gcn::Container();
+    dialog = new Window("Select Server");
     serverList = new gcn::ListBox(serverListModel);
     scrollArea = new gcn::ScrollArea(serverList);
     okButton = new Button("OK");

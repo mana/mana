@@ -71,7 +71,7 @@ void LoginActionListener::action(const std::string& eventId)
  */
 void login() {
     // Create dialog
-    dialog = new WindowContainer();
+    dialog = new Window("Login");
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
     userField = new gcn::TextField("player");
@@ -114,14 +114,15 @@ void login() {
 
     guiTop->add(dialog);
 
+    userField->requestFocus();
+    userField->setCaretPosition(userField->getText().length());
+
     if (get_config_int("login", "remember", 0)) {
         if (get_config_string("login", "username", 0)) {
             userField->setText(get_config_string("login", "username", ""));
+            passField->requestFocus();
         }
     }
-
-    userField->requestFocus();
-    userField->setCaretPosition(userField->getText().length());
 
     while (state == LOGIN) {
         clear_bitmap(buffer);
