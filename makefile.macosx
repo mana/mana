@@ -8,11 +8,10 @@ CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funrol
 CFLAGS=`allegro-config --libs release` -lalfont /usr/lib/libjgmod.a
 
 OBJS = being.o game.o main.o map.o log.o astar.o
-OBJS += Chat/chat.o Gui/skill.o
-OBJS += Sound/sound.o Graphic/SuperEagle.o
+OBJS += Gui/chat.o Gui/skill.o
+OBJS += Sound/sound.o Graphic/SuperEagle.o Graphic/graphic.o
 OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o Gui/inventory.o
-OBJS += Net/network.o Net/protocol.o
-OBJS += Mac/mac.o
+OBJS += Net/network.o Net/protocol.o Net/win2mac.o
 
 tmw: $(OBJS)
 	$(CXX) -o tmw $(OBJS) $(CFLAGS)
