@@ -140,6 +140,13 @@ void login() {
                 case SDL_QUIT:
                     state = EXIT;
                     break;
+
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        state = EXIT;
+                    }
+                    break;
             }
 
             guiInput->pushInput(event);
@@ -149,9 +156,6 @@ void login() {
         gui->logic();
         gui->draw();
         guiGraphics->updateScreen();
-        //if (key[KEY_ESC]) {
-        //    state = EXIT;
-        //}
     }
 
     delete dialog;

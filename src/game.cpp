@@ -108,8 +108,8 @@ void game() {
     while (state != EXIT)
     {
         do_input();
-        engine->draw();
         gui->logic();
+        engine->draw();
         graphics->updateScreen();
         do_parse();
         flush();
