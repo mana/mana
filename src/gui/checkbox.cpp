@@ -26,11 +26,9 @@ CheckBox::CheckBox(const std::string& caption, bool marked):
 {
 }
 
-void CheckBox::draw(gcn::Graphics* graphics) {
+void CheckBox::drawBox(gcn::Graphics* graphics) {
     BITMAP *box = NULL;
     int x, y;
-    int tx, ty;
-    int col = 0;
 
     getAbsolutePosition(x, y);
 
@@ -46,20 +44,8 @@ void CheckBox::draw(gcn::Graphics* graphics) {
         box = gui_skin.checkbox.normal;
     }
 
-    if (false /*disabled*/) {
-        col = gui_skin.checkbox.textcolor[1];
-    } else {
-        col = gui_skin.checkbox.textcolor[0];
-    }
-
     x += 2;
     y += 2;
-    tx = x + box->w + 2;
-    ty = y - 2;
 
     masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
-
-    int rtm = alfont_text_mode(-1);
-    gui_text(gui_bitmap, getCaption().c_str(), tx, ty, col, 0);
-    alfont_text_mode(rtm);
 }

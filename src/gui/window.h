@@ -36,7 +36,6 @@ class Window : public gcn::Container, public gcn::MouseListener
     private:
         gcn::Container *chrome;    /**< Contained container */
         std::string caption;       /**< Title bar caption */
-        gcn::Label* captionLabel;  /**< Title bar caption label */
         int z;                     /**< Z position of the window */
         int mousePX;               /**< Mouse down location */
         int mousePY;               /**< Mouse down location */

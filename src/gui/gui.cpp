@@ -88,7 +88,8 @@ void init_gui(BITMAP *bitmap, const char *skin) {
     gui->setInput(guiInput);
     gui->setTop(guiTop);
     guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
-            " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
+            " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:"
+            );
     gcn::Widget::setGlobalFont(guiFont);
 
 

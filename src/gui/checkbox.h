@@ -35,7 +35,7 @@ class CheckBox : public gcn::CheckBox {
 
         // Inherited from Widget
 
-        void draw(gcn::Graphics* graphics);
+        void drawBox(gcn::Graphics* graphics);
 };
 
 #endif

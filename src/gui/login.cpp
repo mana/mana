@@ -81,8 +81,8 @@ void login() {
     cancelButton = new Button("Cancel");
 
     dialog->setDimension(gcn::Rectangle(300, 250, 200, 80));
-    userLabel->setPosition(4, 14);
-    passLabel->setPosition(4, 34);
+    userLabel->setPosition(4, 11);
+    passLabel->setPosition(4, 31);
     userField->setPosition(60, 10);
     passField->setPosition(60, 30);
     userField->setWidth(130);

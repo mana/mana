@@ -36,20 +36,6 @@ class Button : public gcn::Button {
         // Inherited from Widget
 
         void draw(gcn::Graphics* graphics);
-        void lostFocus();
-
-        // Inherited from MouseListener
-
-        void mousePress(int x, int y, int button);
-        void mouseRelease(int x, int y, int button);
-
-        // Inherited from KeyListener
-
-        void keyPress(const gcn::Key& key);
-        void keyRelease(const gcn::Key& key);
-
-    private:
-        bool mouseDown, keyDown;
 };
 
 #endif

@@ -24,26 +24,17 @@
 Button::Button(const std::string& caption):
     gcn::Button(caption)
 {
-    mouseDown = false;
-    keyDown = false;
     setBorderSize(0);
 }
 
 void Button::draw(gcn::Graphics* graphics) {
-    int x, y;
     int mode;
-    int offset = 0;
-
-    getAbsolutePosition(x, y);
-
-    //printf("draw - %d,%d\n", x, y);
 
     if (false /*disabled*/) {
         mode = 3;
     }
-    else if (hasMouse() && mouseDown || keyDown) {
+    else if (isPressed()) {
         mode = 2;
-        offset = 1;
     }
     else if (hasMouse()) {
         mode = 1;
@@ -52,48 +43,37 @@ void Button::draw(gcn::Graphics* graphics) {
         mode = 0;
     }
 
+    int x, y;
+    getAbsolutePosition(x, y);
+
     draw_skinned_rect(gui_bitmap, &gui_skin.button.background[mode],
             x, y, getWidth(), getHeight());
 
-    int rtm = alfont_text_mode(-1);
-    gui_text(gui_bitmap, getCaption().c_str(),
-            x + 2 + offset, y + 4 + offset,
-            gui_skin.button.textcolor[mode], FALSE);
-    alfont_text_mode(rtm);
-}
+    graphics->setColor(getForegroundColor());
 
-void Button::lostFocus() {
-    mouseDown = false;
-    keyDown = false;
-}
+    int textX;
+    int textY = getHeight() / 2 - getFont()->getHeight() / 2;
 
-void Button::mousePress(int x, int y, int button) {
-    if (button == gcn::MouseInput::LEFT && hasMouse()) {
-        mouseDown = true;
+    switch (getAlignment()) {
+        case gcn::Graphics::LEFT:
+            textX = 4;
+            break;
+        case gcn::Graphics::CENTER:
+            textX = getWidth() / 2;
+            break;
+        case gcn::Graphics::RIGHT:
+            textX = getWidth() - 4;
+            break;
+        default:
+            throw GCN_EXCEPTION("Button::draw. Uknown alignment.");
     }
-}
 
-void Button::mouseRelease(int x, int y, int button) {
-    if (button == gcn::MouseInput::LEFT) {
-        mouseDown = false;
+    graphics->setFont(getFont());
+
+    if (isPressed()) {
+        graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());
     }
+    else {
+        graphics->drawText(getCaption(), textX, textY, getAlignment());
+    }    
 }
-
-void Button::keyPress(const gcn::Key& key) {
-    if (key.getValue() == gcn::Key::ENTER ||
-        key.getValue() == gcn::Key::SPACE)
-    {
-        keyDown = true;
-    }
-    mouseDown = false;
-}
-
-void Button::keyRelease(const gcn::Key& key) {
-    if ((key.getValue() == gcn::Key::ENTER ||
-         key.getValue() == gcn::Key::SPACE) && keyDown)
-    {
-        keyDown = false;
-        generateAction();
-    }
-}
-

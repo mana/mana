@@ -37,12 +37,6 @@ Window::Window(std::string text) :
 
     gcn::Widget::setBaseColor(gcn::Color(255, 255, 255));
 
-    /* Crappy window caption
-       captionLabel = new Label(caption.c_str());
-       captionLabel->setPosition(3, 3);
-       add(captionLabel);
-       */
-
     //load dialog title bar image
     dLeft = load_bitmap("data/Skin/dialogLeft.bmp", NULL);
     dMid = load_bitmap("data/Skin/dialogMiddle.bmp", NULL);
@@ -59,9 +53,7 @@ Window::Window(std::string text) :
 
 Window::~Window()
 {
-    //delete captionLabel;
-
-    //free dialog bitmaps
+    // Free dialog bitmaps
     release_bitmap(dLeft);
     release_bitmap(dMid);
     release_bitmap(dRight);
@@ -71,13 +63,8 @@ Window::~Window()
 
 void Window::draw(gcn::Graphics* graphics)
 {
-    int x, y;
-    getAbsolutePosition(x, y);
-
-    //draw container background
-    //Container::draw(graphics);
-    if (mOpaque)
-    {
+    // Draw container background when opaque
+    if (mOpaque) {
         graphics->setColor(getBaseColor());
         graphics->fillRectangle(gcn::Rectangle(0, titlebarHeight,
                     getDimension().width,
@@ -85,34 +72,34 @@ void Window::draw(gcn::Graphics* graphics)
     }
 
 
-    //skinned dialog render
+    // Skinned dialog render
     if (typeid(*graphics) == typeid(gcn::AllegroGraphics))
     {
-        //its allegro !!
-        gcn::AllegroGraphics *gfx = (gcn::AllegroGraphics*)graphics;	//woo
-        BITMAP *screen = gfx->getTarget();			//get screen surface
+        gcn::AllegroGraphics *gfx = (gcn::AllegroGraphics*)graphics;
+        BITMAP *screen = gfx->getTarget();
+        int x, y;
+        getAbsolutePosition(x, y);
 
-        //left
+        // Draw title bar
         masked_blit(dLeft, screen, 0, 0, x, y, 24, 24);
-        //center
         for (int i = 1; i <= (getDimension().width - 24) / 24; i++)
         {
             blit(dMid, screen, 0, 0, x + i * 24, y, 24, 24);
         }
-        //right
-        masked_blit(dRight, screen, 0, 0, x + getDimension().width - 24, y, 24, 24);
-
-        //draw caption
-        int rtm = alfont_text_mode(-1);
-        gui_text(gui_bitmap, caption.c_str(), x + 4, y + 4, gui_skin.button.textcolor[0], FALSE);
-        alfont_text_mode(rtm);
-    } else
-    {
-        //plain title bar
+        masked_blit(dRight, screen, 0, 0,
+                x + getDimension().width - 24, y,
+                24, 24);
+    }
+    else {
+        // Plain title bar
         graphics->setColor(titlebarColor);
         graphics->fillRectangle(gcn::Rectangle(0, 0,
                     getDimension().width, titlebarHeight));
     }
+
+    // Draw title
+    graphics->setFont(getFont());
+    graphics->drawText(caption, 4, 4, gcn::Graphics::LEFT);
 
     drawChildren(graphics);
 }
