@@ -76,39 +76,38 @@ void ChatBox::chat_log(std::string line, int own)
     tmp.own  = own;
     
     // A try to get text sentences no too long...
-    bool Finished = false;
-    while ( !Finished )
-    {
-    std::string TempText;
-    if ( line.length() > 60 )
-    {   std::cout << "long" << std::endl;
-        
+    bool finished = false;
+        while ( !finished )
+        {
+            std::string tempText;
             if ( line.length() > 60 )
-                TempText = line.substr(0, 60);
-            else
-                TempText = line;
+            {   
         
-            tmp.text = TempText;
+                if ( line.length() > 60 )
+                    tempText = line.substr(0, 60);
+                else
+                    tempText = line;
         
-            //chatlog_file << tmp.nick << tmp.text << "\n";
-            //chatlog_file.flush();
+                tmp.text = tempText;
+        
+                //chatlog_file << tmp.nick << tmp.text << "\n";
+                //chatlog_file.flush();
 
-            chatlog.push_front(tmp);
+                chatlog.push_front(tmp);
         
-            if ( line.length() > 60 )
-                line = line.substr(60, line.length() - 60);
+                if ( line.length() > 60 )
+                    line = line.substr(60, line.length() - 60);
+            }
+            else // Normal message
+            {  
+                tmp.text = line;
+                //chatlog_file << tmp.nick << tmp.text << "\n";
+                //chatlog_file.flush();
+
+                chatlog.push_front(tmp);
+                finished = true;
+            }
         }
-    
-    else // Normal message
-    {  std::cout << "Normal" << std::endl;
-        tmp.text = line;
-        //chatlog_file << tmp.nick << tmp.text << "\n";
-        //chatlog_file.flush();
-
-        chatlog.push_front(tmp);
-	Finished = true;
-    }
-    }
 }
 
 void ChatBox::chat_log(CHATSKILL action) {
