@@ -1,0 +1,30 @@
+CXX = g++
+# for debugging
+#CXXFLAGS = -g -march=i686 -O2
+
+# excessive optimizations for pentium pro and later
+CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DMACOSX
+
+CFLAGS=`allegro-config --libs release` -lalfont
+
+OBJS = being.o game.o main.o map.o log.o astar.o
+OBJS += Sound/sound.o Graphic/SuperEagle.o
+OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o
+OBJS += Net/network.o Net/protocol.o
+OBJS += Mac/mac.o
+OBJS += ftlzw.o
+
+ManaWorld: $(OBJS)
+	$(CXX) -o ManaWorld $(OBJS) $(CFLAGS)
+	@echo -
+	@echo -
+	@echo "TYPE ./ManaWorld TO LAUCH THE GAME"
+
+clean:
+	- rm -fv *.o
+	- rm -fv Net/*.o
+	- rm -fv Gui/*.o
+	- rm -fv Sound/*.o
+	- rm -fv Graphic/*.o
+	- rm -fv ManaWorld
+	- cp Mac/ftlzw.o ftlzw.o
