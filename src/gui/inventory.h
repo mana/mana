@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By SimEdw
  */
 
 #ifdef WIN32
@@ -48,25 +46,55 @@ class TmwInventory {
         TmwInventory();
         ~TmwInventory();
 
-		void create(int x, int y); // create the window
-		void draw(BITMAP *); // draw the window (if areDisplaying != 0 )
-		void show(bool val); // choose between showing and not showing the window
-		void toggle() {if(show_inventory){show(0);}else{show(1);}}
-		//API
-		int add_item(int index, int id, int quantity); // add a item
-		int remove_item(int id); // remove a item
-		int change_quantity(int index, int quantity); // change number of a item
-		int increase_quantity(int index, int quantity); // increase quantity of a item
-		int use_item(int index, int id);
-		int quantityForIndex(int index) { return items[index].quantity; }
-		int drop_item(int index, int amunt);
-		//END API
-		
-		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
-  private:
-		DATAFILE *itemset;
-		bool show_inventory;
-		int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
+        /**
+         * Initialize inventory and create the window.
+         */
+        void create(int x, int y);
+
+        /**
+         * Draw inventory window.
+         */
+        void draw(BITMAP *);
+
+        /**
+         * Sets if inventory is visible.
+         */
+        void setVisible(bool visible);
+
+        /**
+         * Returns visibility of inventory.
+         */
+        bool isVisible();
+
+        /**
+         * Add an item the inventory.
+         */
+        int add_item(int index, int id, int quantity);
+
+        /**
+         * Remove a item from the inventory.
+         */
+        int remove_item(int id);
+
+        /**
+         * Change quantity of an item.
+         */
+        int change_quantity(int index, int quantity);
+
+        /**
+         * Increase quantity of an item 
+         */
+        int increase_quantity(int index, int quantity);
+
+        int use_item(int index, int id);
+        int quantityForIndex(int index) { return items[index].quantity; }
+        int drop_item(int index, int amunt);
+
+        itemHolder items[INVENTORY_SIZE]; /**< this is the holder of items */
+    private:
+        DATAFILE *itemset;
+        bool show_inventory;
+        int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
 };
 
 #endif
