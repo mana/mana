@@ -75,7 +75,7 @@ StatusWindow::StatusWindow():
     inventoryButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     setupButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     
-    setSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
+    setContentSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
     
     add(hp);
     add(sp);
@@ -117,7 +117,7 @@ void StatusWindow::update()
 
     sprintf(tempstr, "%s Lvl: % 2i Job: % 2i",
             char_info->name, char_info->lv, char_info->job_lv);
-    setTitle(tempstr);
+    setCaption(tempstr);
 
     sprintf(tempstr, "%d / %d", char_info->hp, char_info->max_hp);
     hpValue->setCaption(tempstr);

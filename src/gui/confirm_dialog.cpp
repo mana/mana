@@ -52,7 +52,7 @@ void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
         w = inWidth + 10;
     }
 
-    setSize(w, h);
+    setContentSize(w, h);
     userLabel->setPosition(10, 10);
     yesButton->setPosition(
             (w - inWidth) / 2,

@@ -38,7 +38,7 @@
  *
  * \ingroup GUI
  */
-class Gui : public gcn::MouseListener
+class Gui : public gcn::Gui, public gcn::MouseListener
 {
     public:
         /**
@@ -50,21 +50,6 @@ class Gui : public gcn::MouseListener
          * Destructor.
          */
         ~Gui();
-
-        /**
-         * Focus none of the Widgets in the Gui.
-         */
-        void focusNone();
-
-        /**
-         * Performs the Gui:s logic by calling all logic functions
-         * down in the Gui heirarchy. Logic can be just about anything
-         * like adjusting a Widgets size or doing some calculations.
-         *
-         * NOTE: Logic also deals with user input (Mouse and Keyboard)
-         *       for Widgets.
-         */
-        void logic();
 
         /**
          * Draws the whole Gui by calling draw functions down in the
@@ -86,8 +71,6 @@ class Gui : public gcn::MouseListener
         gcn::ImageFont *guiFont;              /**< The global GUI font */
 
         bool topHasMouse;
-
-        gcn::FocusHandler *focusHandler;
 };
 
 extern Gui *gui;

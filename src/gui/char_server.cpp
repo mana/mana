@@ -42,7 +42,7 @@ ServerSelectDialog::ServerSelectDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setSize(200, 100);
+    setContentSize(200, 100);
 
     cancelButton->setPosition(
             200 - cancelButton->getWidth() - 5,

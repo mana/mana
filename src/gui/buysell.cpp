@@ -38,7 +38,7 @@ BuySellDialog::BuySellDialog():
             buyButton->getX() + buyButton->getWidth() + 10, 10);
     cancelButton->setPosition(
             sellButton->getX() + sellButton->getWidth() + 10, 10);
-    setSize(cancelButton->getX() + cancelButton->getWidth() + 10,
+    setContentSize(cancelButton->getX() + cancelButton->getWidth() + 10,
             cancelButton->getY() + cancelButton->getHeight() + 10);
 
     buyButton->setEventId("buy");

@@ -50,7 +50,7 @@ class WindowContainer : public gcn::Container {
          * Handles mouse input messages. Differs from standard behaviour in
          * that widget with mouse doesn't change while a button is pressed.
          */
-        void _mouseInputMessage(const gcn::MouseInput &mouseInput);
+        //void _mouseInputMessage(const gcn::MouseInput &mouseInput);
 
         /**
          * Adds a widget. The widget can be set to be modal, which will ensure

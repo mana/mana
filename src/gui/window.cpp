@@ -28,24 +28,16 @@
 
 WindowContainer *Window::windowContainer = NULL;
 
-Window::Window(const std::string& text, bool modal, Window *parent):
+Window::Window(const std::string& caption, bool modal, Window *parent):
+    gcn::Window(caption),
     parent(parent),
-    caption(text),
-    mousePX(0),
-    mousePY(0),
     snapSize(8),
-    mouseDown(false),
-    modal(modal),
-    titlebarHeight(20),
-    padding(3)
+    modal(modal)
 {
     log("Window::Window(\"%s\")", caption.c_str());
 
-    titlebarColor.r = 203;
-    titlebarColor.g = 203;
-    titlebarColor.b = 203;
-
-    setBaseColor(gcn::Color(255, 255, 255));
+    setBorderSize(0);
+    setPadding(3);
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
@@ -62,14 +54,10 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
     border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
 
-    // Register mouse listener
-    addMouseListener(this);
-
     // Add chrome
     chrome = new gcn::Container();
     chrome->setOpaque(false);
-    chrome->setPosition(padding, titlebarHeight + padding);
-    gcn::Container::add(chrome);
+    setContent(chrome);
 
     // Add this window to the window container
     if (windowContainer) {
@@ -85,7 +73,7 @@ Window::Window(const std::string& text, bool modal, Window *parent):
 
 Window::~Window()
 {
-    log("Window::~Window(\"%s\")", caption.c_str());
+    log("Window::~Window(\"%s\")", getCaption().c_str());
 
     // Free dialog bitmaps
     //release_bitmap(dLeft);
@@ -113,37 +101,29 @@ void Window::draw(gcn::Graphics* graphics)
 
     // Draw title
     graphics->setFont(getFont());
-    graphics->drawText(caption, 7, 5, gcn::Graphics::LEFT);
+    graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
 
-    drawChildren(graphics);
+    if (mContent != NULL)
+    {
+        graphics->pushClipArea(getContentDimension());
+        graphics->pushClipArea(gcn::Rectangle(
+                    0, 0, mContent->getWidth(), mContent->getHeight()));
+        mContent->draw(graphics);
+        graphics->popClipArea();
+        graphics->popClipArea();
+    }
 }
 
-void Window::setTitle(const std::string& text)
+void Window::setContentWidth(int width)
 {
-    caption = std::string(text);
-}
-
-void Window::setDimension(const gcn::Rectangle &dimension)
-{
-    gcn::Container::setDimension(gcn::Rectangle(
-                dimension.x,
-                dimension.y - titlebarHeight,
-                dimension.width,
-                dimension.height + titlebarHeight));
-    chrome->setDimension(gcn::Rectangle(0, titlebarHeight,
-                dimension.width, dimension.height));
-}
-
-void Window::setWidth(int width)
-{
-    gcn::Container::setWidth(width + 2 * padding);
     chrome->setWidth(width);
+    resizeToContent();
 }
 
-void Window::setHeight(int height)
+void Window::setContentHeight(int height)
 {
-    gcn::Container::setHeight(height + titlebarHeight + 2 * padding);
     chrome->setHeight(height);
+    resizeToContent();
 }
 
 void Window::setLocationRelativeTo(gcn::Widget* widget)
@@ -159,10 +139,10 @@ void Window::setLocationRelativeTo(gcn::Widget* widget)
             getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
-void Window::setSize(int width, int height)
+void Window::setContentSize(int width, int height)
 {
-    setWidth(width);
-    setHeight(height);
+    setContentWidth(width);
+    setContentHeight(height);
 }
 
 Window *Window::getParentWindow()
@@ -185,62 +165,25 @@ void Window::add(gcn::Widget *w, int x, int y)
     chrome->add(w, x, y);
 }
 
-void Window::mousePress(int mx, int my, int button)
-{
-    mouseDown = true;
-
-    mousePX = mx;
-    mousePY = my;
-}
-
-void Window::mouseRelease(int mx, int my, int button)
-{
-    mouseDown = false;
-}
-
 void Window::mouseMotion(int mx, int my)
 {
-    if (mouseDown)
+    if (mMouseDrag && isMovable())
     {
-        int winWidth = this->getDimension().width;
-        int winHeight = this->getDimension().height;
-        int x = this->getDimension().x;
-        int y = this->getDimension().y;
-
-        x = x - (mousePX - mx);
-        y = y - (mousePY - my);
+        int x = mx - mMouseXOffset + getX();
+        int y = my - mMouseYOffset + getY();
 
         // Keep guichan window inside window
         if (x < 0) x = 0;
         if (y < 0) y = 0;
-        if (x + winWidth > screen->w) x = screen->w - winWidth;
-        if (y + winHeight > screen->h) y = screen->h - winHeight;
+        if (x + getWidth() > screen->w) x = screen->w - getWidth();
+        if (y + getHeight() > screen->h) y = screen->h - getHeight();
 
         // Snap window to edges
-        /*
-        if (x < snapSize) x = 0;
-        if (y < snapSize) y = 0;
-        if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
-        if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
-        */
+        //if (x < snapSize) x = 0;
+        //if (y < snapSize) y = 0;
+        //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
+        //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
 
-        this->setPosition(x, y);
-    }
-}
-
-void Window::mouseOut()
-{
-    mouseDown = false;
-}
-
-void Window::_mouseInputMessage(const gcn::MouseInput &mouseInput)
-{
-    if (mouseInput.getType() == gcn::MouseInput::MOTION && mouseDown) {
-        // It's a window drag event
-        gcn::Widget::_mouseInputMessage(mouseInput);
-    }
-    else {
-        // It's something else
-        gcn::Container::_mouseInputMessage(mouseInput);
+        setPosition(x, y);
     }
 }

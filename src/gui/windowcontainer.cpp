@@ -41,7 +41,7 @@ void WindowContainer::logic()
 
     gcn::Container::logic();
 }
-
+/*
 void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
 {
     if (mouseInput.getType() == gcn::MouseInput::PRESS)
@@ -96,7 +96,7 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
         gcn::Widget::_mouseInputMessage(mouseInput);
     }
 }
-
+*/
 void WindowContainer::add(gcn::Widget *widget)
 {
     gcn::Container::add(widget);

@@ -68,7 +68,7 @@ void Slider::init()
     w = 9; h = 10;
     hGrip = slider->getSubImage(x, y, w, h);
 
-    mMarkerWidth = hGrip->getWidth();
+    setMarkerLength(hGrip->getWidth());
 }
 
 void Slider::draw(gcn::Graphics *graphics)
@@ -99,7 +99,7 @@ void Slider::drawMarker(gcn::Graphics *graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
-    x += mMarkerPosition;
+    x += getMarkerPosition();
     y += (h - hGrip->getHeight()) / 2;
 
     hGrip->draw(screen, x, y);

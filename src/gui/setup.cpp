@@ -116,7 +116,7 @@ Setup::Setup():
     cancelButton->setEventId("cancel");
 
     // Set dimensions/positions
-    setSize(240, 216);
+    setContentSize(240, 216);
     scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
     displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));

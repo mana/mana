@@ -29,7 +29,7 @@
 EquipmentWindow::EquipmentWindow():
     Window("Equipment")
 {
-    setSize(60, 200);
+    setContentSize(60, 200);
     setPosition(40, 40);
     
     ResourceManager *resman = ResourceManager::getInstance();

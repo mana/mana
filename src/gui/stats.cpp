@@ -71,7 +71,7 @@ StatsWindow::StatsWindow():
 
     update();
 
-    setSize(200, 180);
+    setContentSize(200, 180);
     setLocationRelativeTo(getParent());
 }
 

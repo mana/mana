@@ -29,7 +29,7 @@
 
 Minimap::Minimap()
 {
-    setSize(MINIMAP_W, MINIMAP_H);
+    setContentSize(MINIMAP_W, MINIMAP_H);
     setPosition(20, 20);
     
     mapBackground = SDL_AllocSurface(SDL_SWSURFACE, MINIMAP_W, MINIMAP_H,

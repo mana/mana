@@ -35,21 +35,13 @@
  *
  * \ingroup GUI
  */
-class Window : public gcn::Container, public gcn::MouseListener
+class Window : public gcn::Window
 {
     protected:
         gcn::Container *chrome;    /**< Contained container */
         Window *parent;            /**< The parent window */
-        std::string caption;       /**< Title bar caption */
-        int z;                     /**< Z position of the window */
-        int mousePX;               /**< Mouse down location */
-        int mousePY;               /**< Mouse down location */
         int snapSize;              /**< Snap distance to window edge */
-        bool mouseDown;            /**< Mouse button state */
         bool modal;                /**< Window is modal */
-        gcn::Color titlebarColor;  /**< Title bar color */
-        int titlebarHeight;        /**< Height of title bar */
-        int padding;               /**< Space between contents and border */
         float guiAlpha;            /**< Opacity of GUI windows */
 
         Image *dBackground;        /**< Left side of title bar */
@@ -71,7 +63,7 @@ class Window : public gcn::Container, public gcn::MouseListener
          *               this one in the window hiearchy. When reordering,
          *               a window will never go below its parent window.
          */
-        Window(const std::string& text = "Window", bool modal = false,
+        Window(const std::string &caption = "Window", bool modal = false,
                 Window *parent = NULL);
 
         /**
@@ -100,24 +92,14 @@ class Window : public gcn::Container, public gcn::MouseListener
         void add(gcn::Widget *w, int x, int y);
 
         /**
-         * Sets the title of the window.
-         */
-        void setTitle(const std::string& text);
-
-        /**
-         * Sets the dimension of the window contents.
-         */
-        void setDimension(const gcn::Rectangle& dimension);
-
-        /**
          * Sets the width of the window contents.
          */
-        void setWidth(int width);
+        void setContentWidth(int width);
 
         /**
          * Sets the height of the window contents.
          */
-        void setHeight(int height);
+        void setContentHeight(int height);
 
         /**
          * Sets the location relative to the given widget.
@@ -127,7 +109,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         /**
          * Sets the size of this window.
          */
-        void setSize(int width, int height);
+        void setContentSize(int width, int height);
 
         /**
          * Returns the parent window.
@@ -142,14 +124,11 @@ class Window : public gcn::Container, public gcn::MouseListener
          */
         bool isModal();
 
-        // Mouse handling
-
-        void mousePress(int mx, int my, int button);
-        void mouseRelease(int mx, int my, int button);
+        /**
+         * Window dragging. This method also makes sure the window is not
+         * dragged outside of the screen.
+         */
         void mouseMotion(int mx, int my);
-        void mouseOut();
-
-        void _mouseInputMessage(const gcn::MouseInput &mouseInput);
 };
 
 #endif

@@ -66,7 +66,7 @@ SkillDialog::SkillDialog():
     incButton->setEventId("inc");
     closeButton->setEventId("close");
 
-    setSize(240, 240);
+    setContentSize(240, 240);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 180));
     pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
     incButton->setPosition(64, 210);

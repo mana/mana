@@ -50,7 +50,7 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
         w = okButton->getWidth() + 10;
     }
 
-    setSize(w, h);
+    setContentSize(w, h);
     userLabel->setPosition(10, 10);
     okButton->setPosition(
             (w - okButton->getWidth()) / 2,

@@ -34,14 +34,15 @@ Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
-Gui::Gui(Graphics *graphics):
-    topHasMouse(false)
+Gui::Gui(Graphics *graphics)
 {
     // Set graphics
     guiGraphics = graphics;
+    setGraphics(graphics);
 
     // Set input
     guiInput = new gcn::SDLInput();
+    setInput(guiInput);
 
     // Set image loader
 #ifndef USE_OPENGL
@@ -58,10 +59,7 @@ Gui::Gui(Graphics *graphics):
     guiTop->setOpaque(false);
     guiTop->addMouseListener(this);
     Window::setWindowContainer(guiTop);
-
-    // Create focus handler
-    focusHandler = new gcn::FocusHandler();
-    guiTop->_setFocusHandler(focusHandler);
+    setTop(guiTop);
 
     // Set global font
     guiFont = new gcn::ImageFont("./data/core/graphics/gui/fixedfont.png",
@@ -80,82 +78,6 @@ Gui::~Gui()
     delete hostImageLoader;
 #endif
     delete guiInput;
-    delete focusHandler;
-}
-
-void Gui::logic()
-{
-    while (!guiInput->isMouseQueueEmpty())
-    {
-        gcn::MouseInput mi = guiInput->dequeueMouseInput();
-        gcn::Widget* focused = focusHandler->getFocused();
-
-        if (mi.x > 0 && mi.y > 0 &&
-                guiTop->getDimension().isPointInRect(mi.x, mi.y))
-        {
-            if (!topHasMouse) {
-                guiTop->_mouseInMessage();
-                topHasMouse = true;
-            }
-
-            gcn::MouseInput mio = mi;
-            mio.x -= guiTop->getX();
-            mio.y -= guiTop->getY();
-
-            if (!guiTop->hasFocus()) {
-                guiTop->_mouseInputMessage(mio);
-            }
-        }
-        else {
-            if (topHasMouse) {
-                guiTop->_mouseOutMessage();
-                topHasMouse = false;
-            }
-        }
-
-        if (focusHandler->getFocused() && focused == focusHandler->getFocused())
-        {
-            int xOffset, yOffset;
-            focused->getAbsolutePosition(xOffset, yOffset);
-
-            gcn::MouseInput mio = mi;
-            mio.x -= xOffset;
-            mio.y -= yOffset;
-            focused->_mouseInputMessage(mio);
-        }
-    }
-
-    while (!guiInput->isKeyQueueEmpty())
-    {
-        gcn::KeyInput ki = guiInput->dequeueKeyInput();
-
-        // Handle tabbing
-        if (ki.getKey().getValue() == gcn::Key::TAB &&
-                ki.getType() == gcn::KeyInput::PRESS)
-        {
-            if (ki.getKey().isShiftPressed()) {
-                focusHandler->tabPrevious();
-            }
-            else {
-                focusHandler->tabNext();
-            }
-        }
-        else {
-            // Send key inputs to the focused widgets
-            gcn::Widget* focused = focusHandler->getFocused();
-            if (focused)
-            {
-                if (focused->isFocusable()) {
-                    focused->_keyInputMessage(ki);
-                }
-                else {
-                    focusHandler->focusNone();
-                }
-            }
-        }
-    }
-
-    guiTop->logic();
 }
 
 void Gui::draw()
@@ -165,11 +87,6 @@ void Gui::draw()
     guiGraphics->popClipArea();
 }
 
-void Gui::focusNone()
-{
-    focusHandler->focusNone();
-}
-
 void Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
@@ -177,8 +94,10 @@ void Gui::mousePress(int mx, int my, int button)
     int tiley = my / 32 + camera_y;
 
     // Experimental mouse walk support
-    walk(mx, my, 0);
-    player_node->setPath(tiledMap->findPath(
-                player_node->x, player_node->y,
-                tilex, tiley));
+    if (state == GAME) {
+        walk(mx, my, 0);
+        player_node->setPath(tiledMap->findPath(
+                    player_node->x, player_node->y,
+                    tilex, tiley));
+    }
 }

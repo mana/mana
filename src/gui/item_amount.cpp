@@ -52,7 +52,7 @@ ItemAmountWindow::ItemAmountWindow():
     itemAmountOkButton->setPosition(10, 40);
     itemAmountCancelButton->setPosition(60, 40);
     
-	// Assemble
+    // Assemble
     add(itemAmountLabel);
     add(itemAmountPlusButton);
     add(itemAmountMinusButton);
@@ -66,7 +66,7 @@ ItemAmountWindow::ItemAmountWindow():
    
     resetAmount();
 
-    setSize(200, 80);
+    setContentSize(200, 80);
     setLocationRelativeTo(getParent());
 }
 

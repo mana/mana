@@ -116,7 +116,7 @@ NewSkillDialog::NewSkillDialog():
     closeButton->setEventId("close");
 
     // positioning
-    setSize(350, 250);
+    setContentSize(350, 250);
     catButton[0]->setDimension(gcn::Rectangle(0,0,60,20));
     catButton[0]->setPosition(290, 0);
     catButton[1]->setDimension(gcn::Rectangle(0,0,60,20));

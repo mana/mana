@@ -34,7 +34,7 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
     items = 0;
     items_keep = item_num;
 
-    setSize(600, 100);
+    setContentSize(600, 100);
 
     chatInput = new TextField();
     chatInput->setPosition(

@@ -36,7 +36,7 @@ NpcTextDialog::NpcTextDialog():
     scrollArea = new ScrollArea(textBox);
     okButton = new Button("OK");
 
-    setSize(260, 175);
+    setContentSize(260, 175);
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 250, 160 - okButton->getHeight()));
     okButton->setPosition(

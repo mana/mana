@@ -43,7 +43,7 @@ BuyDialog::BuyDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setSize(260, 175);
+    setContentSize(260, 175);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 240, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));

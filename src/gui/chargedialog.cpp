@@ -33,10 +33,8 @@
 
 ChargeDialog::ChargeDialog():
     Window("")
-{
-    
-    
-    setSize(180,70);
+{ 
+    setContentSize(180,70);
     progBar = new ProgressBar(0.0f,20,40,140,25,128,128,128);
     add(progBar);
 }

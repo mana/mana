@@ -1,3 +1,4 @@
+AC_PREREQ(2.59)
 AC_INIT([The Mana World], [0.0.11], [umperio@users.sourceforge.net])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
@@ -11,11 +12,11 @@ AC_PROG_MAKE_SET
 # Checks for libraries
 # (someone may want to exchange these symbols with
 #  something more meaningful in the future /- kth5)
-AC_CHECK_LIB([guichan], [_init], ,
+AC_CHECK_LIB([guichan], [gcnGuichanVersion], ,
 AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.darkbits.org)]))
 
-AC_CHECK_LIB([guichan_sdl], [_init], ,
-AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.darkbits.org)]))
+#AC_CHECK_LIB([guichan_sdl], [_init], ,
+#AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.darkbits.org)]))
 
 AC_CHECK_LIB([physfs], [PHYSFS_init], ,
 AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))

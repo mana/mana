@@ -43,7 +43,7 @@ LoginDialog::LoginDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setSize(200, 75);
+    setContentSize(200, 75);
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());

@@ -67,7 +67,7 @@ CharSelectDialog::CharSelectDialog():
 
     int w = 195;
     int h = 195;
-    setSize(w, h);
+    setContentSize(w, h);
     playerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
     nameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
     levelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
@@ -268,7 +268,7 @@ CharCreateDialog::CharCreateDialog(Window *parent):
 
     int w = 200;
     int h = 150;
-    setSize(w, h);
+    setContentSize(w, h);
     playerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
     nameLabel->setPosition(5, 5);
     nameField->setDimension(
