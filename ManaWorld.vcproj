@@ -152,9 +152,6 @@
 				RelativePath=".\being.cpp">
 			</File>
 			<File
-				RelativePath=".\chat.cpp">
-			</File>
-			<File
 				RelativePath=".\game.cpp">
 			</File>
 			<File
@@ -229,9 +226,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
 				RelativePath=".\being.h">
-			</File>
-			<File
-				RelativePath=".\chat.h">
 			</File>
 			<File
 				RelativePath=".\game.h">
