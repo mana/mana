@@ -59,44 +59,49 @@ l - Animated layer
 f - future use
 */
 struct TILE {
-	char data[4];
-	char flags;
+    char data[4];
+    char flags;
 };
 
-struct MAP {
-	TILE tiles[MAP_WIDTH][MAP_HEIGHT];
-	char tileset[20];
-	char bg_music[20];
+class Map
+{
+    public:
+        /**
+         * Loads a map file
+         */
+        bool load(char *mapFile);
+
+        /**
+         * Set tile ID.
+         */
+        void setTile(int x, int y, int layer, unsigned short id);
+
+        /**
+         * Get tile ID.
+         */
+        int getTile(int x, int y, int layer);
+
+        /**
+         * Set walkability flag for a tile
+         */
+        void setWalk(int x, int y, bool walkable);
+
+        /**
+         * Tell if a tile is walkable or not
+         */
+        bool getWalk(int x, int y);
+
+        /**
+         * Tell if a tile is walkable or not (0=walkable,1=not walkable)
+         */
+        int getPathWalk(int x, int y);
+
+    private:
+        TILE tiles[MAP_WIDTH][MAP_HEIGHT];
+        char tileset[20];
+        char bg_music[20];
 };
 
-/** Loads a map file */
-bool load_map(char *map_file);
-
-/** Set walkability flag for a tile */
-void set_walk(short x_c, short y_c, bool walkable);
-
-/** Tell if a tile is walkable or not */
-bool get_walk(short x_c, short y_c);
-
-/** Tell if a tile is walkable or not (0=walkable,1=not walkable) */
-unsigned char get_path_walk(unsigned short x, unsigned short y);
-
-/** Tell if a tile is animated or not */
-bool get_anim(short x_c, short y_c, char layer);
-
-/** Set tile ID */
-void set_tile(short x_c, short y_c, char layer, unsigned short id);
-
-/** Return tile ID */
-unsigned short get_tile(short x_c, short y_c, char layer);
-
-/** Return tile x coordinate in tileset */
-inline int get_tile_x(int x, int y, int layer) {
-	return get_tile(x,y,layer)%TILESET_WIDTH;
-}
-/** Return tile y coordinate in tileset */
-inline int get_tile_y(int x, int y, int layer) {
-	return get_tile(x,y,layer)/TILESET_WIDTH;
-}
+extern Map tiledMap;
 
 #endif

@@ -120,7 +120,7 @@ void game() {
 }
 
 void do_init() {
-    if (!load_map(map_path)) {
+    if (!tiledMap.load(map_path)) {
         error("Could not find map file");
     }
 
@@ -302,7 +302,7 @@ void do_input()
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
             // UP
-            if (get_walk(x, y - 1) != 0)
+            if (tiledMap.getWalk(x, y - 1) != 0)
             {
                 walk(x, y-1, NORTH);
                 walk_status = 1;
@@ -318,7 +318,7 @@ void do_input()
         else if (keys[SDLK_DOWN] || keys[SDLK_KP2])
         {
             // Down
-            if (get_walk(x, y + 1) != 0)
+            if (tiledMap.getWalk(x, y + 1) != 0)
             {
                 walk(x, y + 1, SOUTH);
                 walk_status = 1;
@@ -333,7 +333,7 @@ void do_input()
         }
         else if (keys[SDLK_LEFT] || keys[SDLK_KP4])
         {
-            if (get_walk(x - 1, y) != 0) {
+            if (tiledMap.getWalk(x - 1, y) != 0) {
                 walk(x - 1, y, WEST);
                 walk_status = 1;
                 src_x = x;
@@ -347,7 +347,7 @@ void do_input()
         }
         else if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
         {
-            if (get_walk(x + 1, y) != 0) {
+            if (tiledMap.getWalk(x + 1, y) != 0) {
                 walk(x + 1, y, EAST);
                 walk_status = 1;
                 src_x = x;
@@ -604,7 +604,7 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     strcat(map_path, "./data/map/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
-                    if (load_map(map_path)) {
+                    if (tiledMap.load(map_path)) {
                         Being *temp;
                         temp = new Being();
                         memcpy(temp, player_node, sizeof(Being));

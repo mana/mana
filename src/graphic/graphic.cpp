@@ -331,14 +331,14 @@ void Engine::draw()
     // Draw tiles below nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            unsigned short tile0 = get_tile(i + camera_x, j + camera_y, 0);
-            unsigned short tile1 = get_tile(i + camera_x, j + camera_y, 1);
+            int tile0 = tiledMap.getTile(i + camera_x, j + camera_y, 0);
+            int tile1 = tiledMap.getTile(i + camera_x, j + camera_y, 1);
 
-            if (tile0 < tileset->spriteset.size()) {
+            if (tile0 < (int)tileset->spriteset.size()) {
                 tileset->spriteset[tile0]->draw(screen,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
-            if (tile1 > 0 && tile1 < tileset->spriteset.size()) {
+            if (tile1 > 0 && tile1 < (int)tileset->spriteset.size()) {
                 tileset->spriteset[tile1]->draw(screen,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
@@ -461,9 +461,9 @@ void Engine::draw()
     // Draw tiles above nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            unsigned short tile = get_tile(i + camera_x, j + camera_y, 2);
+            int tile = tiledMap.getTile(i + camera_x, j + camera_y, 2);
 
-            if (tile > 0 && tile < tileset->spriteset.size()) {
+            if (tile > 0 && tile < (int)tileset->spriteset.size()) {
                 tileset->spriteset[tile]->draw(
                         screen, i * 32 - offset_x, j * 32 - offset_y);
             }

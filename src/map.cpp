@@ -33,84 +33,86 @@
 #include "./net/win2linux.h"
 #endif
 
-MAP tiled_map;
+Map tiledMap;
 
-bool load_map(char *map_file) {
-    FILE *file = fopen(map_file, "r");
+
+bool Map::load(char *mapFile) {
+    FILE *file = fopen(mapFile, "r");
     if (!file) {
-        warning(map_file);
+        warning(mapFile);
         return false;
     }
-    fread(&tiled_map, sizeof(MAP), 1, file);
+    fread(this, sizeof(Map), 1, file);
     fclose(file);
     return true;
 }
 
-void set_walk(short x_c, short y_c, bool walkable) {
-    if (walkable == true) tiled_map.tiles[x_c][y_c].data[3] |= 0x0002;
-    else tiled_map.tiles[x_c][y_c].data[3] &= 0x00fd;
+void Map::setWalk(int x, int y, bool walkable) {
+    if (walkable) tiles[x][y].data[3] |= 0x0002;
+    else tiles[x][y].data[3] &= 0x00fd;
 }
 
-bool get_walk(short x_c, short y_c) {
-    bool ret = (tiled_map.tiles[x_c][y_c].data[3] & 0x0002)>0;
-    if (ret == true) {
-        std::list<Being *>::iterator i = beings.begin();
-        while (i != beings.end() && ret == true) {
+bool Map::getWalk(int x, int y) {
+    bool ret = (tiles[x][y].data[3] & 0x0002) > 0;
+
+    if (ret) {
+        // Check for colliding into a being
+        std::list<Being*>::iterator i = beings.begin();
+        while (i != beings.end() && ret) {
             Being *being = (*i);
-            if (being->x==x_c && being->y==y_c)
+            if (being->x == x && being->y == y) {
                 ret = false;
+            }
             i++;
         }
-        return ret;
-    } else return false;
+    }
+
+    return ret;
 }
 
-unsigned char get_path_walk(unsigned short x, unsigned short y) {
-    if (get_walk(x, y)) return 0;
+int Map::getPathWalk(int x, int y) {
+    if (getWalk(x, y)) return 0;
     else return 1;
 }
 
-bool get_anim(short x_c, short y_c, char layer) {
-    char temp = tiled_map.tiles[x_c][y_c].flags & 0x00C0;
-    temp >>= 6;
-    if(abs(temp)==layer)return (tiled_map.tiles[x_c][y_c].data[3] & 0x0001)>0;
-    else return false;
-}
-
-void set_tile(short x_c, short y_c, char layer, unsigned short id) {
+void Map::setTile(int x, int y, int layer, unsigned short id) {
     if (layer == 0) {
         id <<= 6;
-        tiled_map.tiles[x_c][y_c].data[0] = HIBYTE(id);
-        tiled_map.tiles[x_c][y_c].data[1] &= 0x003f;
-        tiled_map.tiles[x_c][y_c].data[1] |= LOBYTE(id);
-    } else if (layer == 1) {
+        tiles[x][y].data[0] = HIBYTE(id);
+        tiles[x][y].data[1] &= 0x003f;
+        tiles[x][y].data[1] |= LOBYTE(id);
+    }
+    else if (layer == 1) {
         id <<= 4;
-        tiled_map.tiles[x_c][y_c].data[1] &= 0x00c0;
-        tiled_map.tiles[x_c][y_c].data[1] |= HIBYTE(id);
-        tiled_map.tiles[x_c][y_c].data[2] &= 0x000f;
-        tiled_map.tiles[x_c][y_c].data[2] |= LOBYTE(id);
-    } else if (layer == 2) {
+        tiles[x][y].data[1] &= 0x00c0;
+        tiles[x][y].data[1] |= HIBYTE(id);
+        tiles[x][y].data[2] &= 0x000f;
+        tiles[x][y].data[2] |= LOBYTE(id);
+    }
+    else if (layer == 2) {
         id <<= 2;
-        tiled_map.tiles[x_c][y_c].data[2] &= 0x00f0;
-        tiled_map.tiles[x_c][y_c].data[2] |= HIBYTE(id);
-        tiled_map.tiles[x_c][y_c].data[3] &= 0x0003;
-        tiled_map.tiles[x_c][y_c].data[3] |= LOBYTE(id);
+        tiles[x][y].data[2] &= 0x00f0;
+        tiles[x][y].data[2] |= HIBYTE(id);
+        tiles[x][y].data[3] &= 0x0003;
+        tiles[x][y].data[3] |= LOBYTE(id);
     }
 }
 
-unsigned short get_tile(short x_c, short y_c, char layer) {
+int Map::getTile(int x, int y, int layer) {
     unsigned short id = 0;
     if (layer == 0) {
-        id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[1] & 0x00c0,
-                tiled_map.tiles[x_c][y_c].data[0]);
+        id = MAKEWORD(tiles[x][y].data[1] & 0x00c0,
+                tiles[x][y].data[0]);
         id >>= 6;
-    } else if (layer == 1) {
-        id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[2] & 0x00f0,
-                tiled_map.tiles[x_c][y_c].data[1] & 0x003f);
+    }
+    else if (layer == 1) {
+        id = MAKEWORD(tiles[x][y].data[2] & 0x00f0,
+                tiles[x][y].data[1] & 0x003f);
         id >>= 4;
-    } else if (layer == 2) {
-        id = MAKEWORD(tiled_map.tiles[x_c][y_c].data[3] & 0x00fc,
-                tiled_map.tiles[x_c][y_c].data[2] & 0x000f);
+    }
+    else if (layer == 2) {
+        id = MAKEWORD(tiles[x][y].data[3] & 0x00fc,
+                tiles[x][y].data[2] & 0x000f);
         id >>= 2;
     }
     return id;

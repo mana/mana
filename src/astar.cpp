@@ -1,39 +1,40 @@
 #include "astar.h"
 #include "being.h"
+#include "map.h"
 
 const int numberPeople = 1;
-  int onClosedList = 10;
-  const int notfinished = 0;// path-related constants
+int onClosedList = 10;
+const int notfinished = 0;// path-related constants
 
-  //Create needed arrays
-  //char get_path_walk [MAP_WIDTH][MAP_HEIGHT];
-  int openList[MAP_WIDTH*MAP_HEIGHT+2]; //1 dimensional array holding ID# of open list items
-  int whichList[MAP_WIDTH+1][MAP_HEIGHT+1];  //2 dimensional array used to record 
+//Create needed arrays
+//char tiledMap.getPathWalk [MAP_WIDTH][MAP_HEIGHT];
+int openList[MAP_WIDTH*MAP_HEIGHT+2]; //1 dimensional array holding ID# of open list items
+int whichList[MAP_WIDTH+1][MAP_HEIGHT+1];  //2 dimensional array used to record 
 //     whether a cell is on the open list or on the closed list.
-  int openX[MAP_WIDTH*MAP_HEIGHT+2]; //1d array stores the x location of an item on the open list
-  int openY[MAP_WIDTH*MAP_HEIGHT+2]; //1d array stores the y location of an item on the open list
-  int parentX[MAP_WIDTH+1][MAP_HEIGHT+1]; //2d array to store parent of each cell (x)
-  int parentY[MAP_WIDTH+1][MAP_HEIGHT+1]; //2d array to store parent of each cell (y)
-  int F_cost[MAP_WIDTH*MAP_HEIGHT+2];  //1d array to store F cost of a cell on the open list
-  int G_cost[MAP_WIDTH+1][MAP_HEIGHT+1];   //2d array to store G_cost cost for each cell.
-  int H_cost[MAP_WIDTH*MAP_HEIGHT+2];  //1d array to store H cost of a cell on the open list
-  int pathLength;     //stores length of the FOUND path for critter
-  int pathLocation;   //stores current position along the chosen path for critter    
-  int* path_bank ;
+int openX[MAP_WIDTH*MAP_HEIGHT+2]; //1d array stores the x location of an item on the open list
+int openY[MAP_WIDTH*MAP_HEIGHT+2]; //1d array stores the y location of an item on the open list
+int parentX[MAP_WIDTH+1][MAP_HEIGHT+1]; //2d array to store parent of each cell (x)
+int parentY[MAP_WIDTH+1][MAP_HEIGHT+1]; //2d array to store parent of each cell (y)
+int F_cost[MAP_WIDTH*MAP_HEIGHT+2];  //1d array to store F cost of a cell on the open list
+int G_cost[MAP_WIDTH+1][MAP_HEIGHT+1];   //2d array to store G_cost cost for each cell.
+int H_cost[MAP_WIDTH*MAP_HEIGHT+2];  //1d array to store H cost of a cell on the open list
+int pathLength;     //stores length of the FOUND path for critter
+int pathLocation;   //stores current position along the chosen path for critter    
+int* path_bank ;
 
-  //Path reading variables
-  int pathStatus;
-  int xPath;
-  int yPath;
+//Path reading variables
+int pathStatus;
+int xPath;
+int yPath;
 
 /** Initialize pathfinder */
 void pathfinder_init() {
-  path_bank = (int*)malloc(4);
+    path_bank = (int*)malloc(4);
 }
 
 /** Exit pathfinder */
 void pathfinder_exit() {
-  free(path_bank);
+    free(path_bank);
 }
 
 /** Find path */
@@ -49,7 +50,7 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y) {
   else if (s_x==e_x && s_y==e_y && pathLocation==0)return NULL;
 
    // If dest tile is NOT_WALKABLE, return that it's a NOT_FOUND path.
-  if(get_path_walk(e_x, e_y)==NOT_WALKABLE) {
+  if (tiledMap.getPathWalk(e_x, e_y) == NOT_WALKABLE) {
     xPath = s_x;
     yPath = s_y;
     return NULL;
@@ -121,31 +122,31 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y) {
 //  for later consideration if appropriate (see various if statements
 //  below).
 
-            for(b=parentYval-1;b<=parentYval+1;b++) {
-                for(a=parentXval-1;a<=parentXval+1;a++) {
+            for (b = parentYval - 1; b <= parentYval + 1; b++) {
+                for (a = parentXval - 1; a <= parentXval + 1; a++) {
                     //  If not off the map (do this first to avoid array out-of-bounds errors)
-                    if(a!=-1 && b!=-1 && a!=MAP_WIDTH && b!=MAP_HEIGHT) {
+                    if (a!=-1 && b!=-1 && a!=MAP_WIDTH && b!=MAP_HEIGHT) {
                         //  If not already on the closed list (items on the closed list have
                         //  already been considered and can now be ignored).
-                        if(whichList[a][b]!=onClosedList) { 
+                        if (whichList[a][b]!=onClosedList) { 
                             //  If not a wall/obstacle square.
-                            if (get_path_walk(a, b)!=NOT_WALKABLE) { 
+                            if (tiledMap.getPathWalk(a, b) != NOT_WALKABLE) { 
                                 //  Don't cut across corners
                                 corner = WALKABLE;  
-                                if(a==parentXval-1) {
-                                    if(b==parentYval-1) {
-                                        if(get_path_walk(parentXval-1, parentYval)==NOT_WALKABLE || get_path_walk(parentXval, parentYval-1)==NOT_WALKABLE) // cera slash
+                                if (a == parentXval-1) {
+                                    if (b == parentYval-1) {
+                                        if (tiledMap.getPathWalk(parentXval-1, parentYval)==NOT_WALKABLE || tiledMap.getPathWalk(parentXval, parentYval-1)==NOT_WALKABLE) // cera slash
                       corner = NOT_WALKABLE;
                                     } else if (b==parentYval+1) {
-                                        if(get_path_walk(parentXval, parentYval+1)==NOT_WALKABLE || get_path_walk(parentXval-1, parentYval)==NOT_WALKABLE) 
+                                        if (tiledMap.getPathWalk(parentXval, parentYval+1)==NOT_WALKABLE || tiledMap.getPathWalk(parentXval-1, parentYval)==NOT_WALKABLE) 
                                             corner = NOT_WALKABLE; 
                                     }
-                                } else if(a==parentXval+1) {
-                                    if(b==parentYval-1) {
-                                        if(get_path_walk(parentXval, parentYval-1)==NOT_WALKABLE || get_path_walk(parentXval+1, parentYval)==NOT_WALKABLE)
+                                } else if (a == parentXval+1) {
+                                    if (b == parentYval-1) {
+                                        if (tiledMap.getPathWalk(parentXval, parentYval-1)==NOT_WALKABLE || tiledMap.getPathWalk(parentXval+1, parentYval)==NOT_WALKABLE)
                                             corner = NOT_WALKABLE;
-                                    } else if(b==parentYval+1) {
-                                        if(get_path_walk(parentXval+1, parentYval)==NOT_WALKABLE || get_path_walk(parentXval, parentYval+1)==NOT_WALKABLE)
+                                    } else if (b==parentYval+1) {
+                                        if (tiledMap.getPathWalk(parentXval+1, parentYval)==NOT_WALKABLE || tiledMap.getPathWalk(parentXval, parentYval+1)==NOT_WALKABLE)
                                             corner = NOT_WALKABLE; 
                                     }
                                 }
@@ -288,41 +289,36 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y) {
 
     PATH_NODE *ret = NULL, *temp = NULL;
     pathLocation = 1;
-		ret = new PATH_NODE(s_x, s_y);
-		temp = ret;
-		//alert(stringa,"","","","",0,0);
+    ret = new PATH_NODE(s_x, s_y);
+    temp = ret;
+    //alert(stringa,"","","","",0,0);
     while(pathLocation<pathLength) {
 			sprintf(stringa,"%i %i",path_bank[pathLocation*2-2], path_bank[pathLocation*2-1]);
-			//alert(stringa,"","","","",0,0);
-			temp->next = new PATH_NODE(
+      //alert(stringa,"","","","",0,0);
+      temp->next = new PATH_NODE(
           path_bank[pathLocation * 2 - 2],
           path_bank[pathLocation * 2 - 1]);
-			if(temp->next==NULL) throw "Unable to create path node";
+      if(temp->next==NULL) throw "Unable to create path node";
       temp = temp->next;
       pathLocation++;
     }
-		if(temp!=NULL)temp->next = new PATH_NODE(e_x, e_y);
-		else throw "Null reference";
+    if(temp!=NULL)temp->next = new PATH_NODE(e_x, e_y);
+    else throw "Null reference";
     return ret;
 
     }
   return NULL; // Path not found
 }
 
-
-
 /** Read the path data */
 void ReadPath(int pathfinderID) {
-  //If a path exists, read the path data
-  //  from the pathbank.
-  pathLocation = 1; //set pathLocation to 1st step
-  while (pathLocation<pathLength) {
+    //If a path exists, read the path data
+    //  from the pathbank.
+    pathLocation = 1; //set pathLocation to 1st step
+    while (pathLocation<pathLength) {
         int a = path_bank [pathLocation*2-2];
         int b = path_bank [pathLocation*2-1];
-    pathLocation = pathLocation + 1;
-    whichList[a][b] = 3;//draw dotted path
-  } 
+        pathLocation = pathLocation + 1;
+        whichList[a][b] = 3;//draw dotted path
+    } 
 }
-
-
-
