@@ -25,6 +25,6 @@
 
 #include <iostream>
 
-int charstats_display(PLAYER_INFO * test) {
+void charstats_display() {
 	std::cout << "char_stats: " << std::endl;
 }

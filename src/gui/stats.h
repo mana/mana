@@ -24,19 +24,9 @@
 #ifndef _STATS_H
 #define _STATS_H
 
-#include <allegro.h>
 #include "../main.h"
 #include "gui.h"
 
-typedef struct {
-	int id;
-	char name[24];
-	short hp, max_hp, sp, max_sp, lv;
-	int xp, zeny, job_xp, job_lv;
-	short statp, skillp;
-	char STR, AGI, VIT, INT, DEX, LUK;
-} PLAYER_INFO;
-
-int charstats_display(PLAYER_INFO *);
+void charstats_display();
 
 #endif

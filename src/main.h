@@ -59,6 +59,15 @@ typedef struct {
 	short online_users;
 } SERVER_INFO;
 
+typedef struct {
+	int id;
+	char name[24];
+	short hp, max_hp, sp, max_sp, lv;
+	int xp, zeny, job_xp, job_lv;
+	short statp, skillp;
+	char STR, AGI, VIT, INT, DEX, LUK;
+} PLAYER_INFO;
+
 extern BITMAP *playerset;
 extern DATAFILE *graphic, *emotions;
 extern char username[25];
