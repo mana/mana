@@ -64,7 +64,7 @@ typedef struct {
 	char name[24];
 	short hp, max_hp, sp, max_sp, lv;
 	int xp, gp, job_xp, job_lv;
-	short statp, skillp;
+	short statp, skill_point;
 	char STR, AGI, VIT, INT, DEX, LUK;
 } PLAYER_INFO;
 

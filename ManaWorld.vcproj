@@ -192,16 +192,16 @@
 				Name="graphic"
 				Filter="">
 				<File
+					RelativePath=".\src\graphic\2xsai.cpp">
+				</File>
+				<File
+					RelativePath=".\src\graphic\2xsai.h">
+				</File>
+				<File
 					RelativePath=".\src\graphic\graphic.cpp">
 				</File>
 				<File
 					RelativePath=".\src\graphic\graphic.h">
-				</File>
-				<File
-					RelativePath=".\src\graphic\super_eagle.cpp">
-				</File>
-				<File
-					RelativePath=".\src\graphic\super_eagle.h">
 				</File>
 			</Filter>
 			<Filter

@@ -27,6 +27,9 @@
 
 extern PLAYER_INFO  *char_info;
 
+int n_skills = 0;
+SKILL *skill_head = NULL;
+
 char str_string[8];
 char agi_string[8];
 char vit_string[8];
@@ -34,21 +37,46 @@ char int_string[8];
 char dex_string[8];
 char luk_string[8];
 
+char *skill_db[] = {
+	// 0-99
+	"", "Basic", "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	// 100-199
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "First aid", "Play as dead", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+	"", "", "", "", "", "", "", "", "", "",
+};
+
 DIALOG skill_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  150,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skill",  NULL, NULL  },
    { tmw_text_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    str_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  224,  16,    16,    0,   0,    '0',  0,          0,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       354,  224,  16,    16,    0,   0,    '0',  0,          0,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       304,  234,  252,  100,  0,    0,    0,    0,       0,                0,    agi_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  234,  16,    16,    0,   0,    '0',  0,          1,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       354,  234,  16,    16,    0,   0,    '0',  0,          1,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       304,  244,  252,  100,  0,    0,    0,    0,       0,                0,    vit_string,       NULL, NULL  },
-   { tmw_plus_proc,       354,  244,  16,    16,    0,   0,    '0',  0,          2,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       354,  244,  16,    16,    0,   0,    '0',  0,          2,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       374,  224,  252,  100,  0,    0,    0,    0,       0,                0,    int_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  224,  16,    16,    0,   0,    '0',  0,          3,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       424,  224,  16,    16,    0,   0,    '0',  0,          3,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       374,  234,  252,  100,  0,    0,    0,    0,       0,                0,    dex_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  234,  16,    16,    0,   0,    '0',  0,          4,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       424,  234,  16,    16,    0,   0,    '0',  0,          4,			   1,     (void*)increaseStatus,NULL, NULL  },
    { tmw_text_proc,       374,  244,  252,  100,  0,    0,    0,    0,       0,                0,    luk_string,       NULL, NULL  },
-   { tmw_plus_proc,       424,  244,  16,    16,    0,   0,    '0',  0,          5,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_plus_proc,       424,  244,  16,    16,    0,   0,    '0',  0,          5,			   1,     (void*)increaseStatus,NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
 
@@ -70,11 +98,62 @@ void update_skill_dialog() {
 		}
 }
 
-void increaseStatus(void *dp3, int d1)
-{
+void add_skill(short id, short lv, short sp) {
+	SKILL *skill = skill_head;
+	SKILL *temp = (SKILL *)malloc(sizeof(SKILL));
+	temp->id = id;
+	temp->lv = lv;
+	temp->sp = sp;
+	temp->next = NULL;
+	if(!skill_head)
+		skill_head = temp;
+	else {
+		while(skill->next)
+			skill = skill->next;
+		skill->next = temp;
+	}
+}
+
+char *skill_list(int index, int *list_size) {
+	if(index<0) {
+    *list_size = n_skills;
+		return NULL;
+	} else {
+		int iterator = 0;
+		SKILL *temp = skill_head;
+		while(iterator<index) {
+			temp = temp->next;
+			iterator++;
+		}
+		char *name = (char *)malloc(30);
+		sprintf(name, "%s lv:%i %i SP", skill_db[temp->id], temp->lv, temp->sp);
+		return name;
+		// need to clean allocated memory
+	}
+}
+
+int get_skill_id(int index) {
+	int iterator = 0;
+  SKILL *temp = skill_head;
+  while(iterator<index) {
+    temp = temp->next;
+    iterator++;
+  }
+  return temp->id;
+}
+
+SKILL *is_skill(int id) {
+	SKILL *temp = skill_head;
+	while(temp) {
+		if(temp->id==id)return temp;
+		temp = temp->next;
+	}
+	return NULL;
+}
+
+void increaseStatus(void *dp3, int d1) {
 	WFIFOW(0) = net_w_value(0x00bb);
-	switch(d1)
-	{
+	switch(d1) {
 	case 0:
 		WFIFOW(2) = net_w_value(0x000d);
 		break;
@@ -83,16 +162,16 @@ void increaseStatus(void *dp3, int d1)
 		break;
 	case 2:
 		WFIFOW(2) = net_w_value(0x000f);
-		break;	
+		break;
 	case 3:
 		WFIFOW(2) = net_w_value(0x0010);
-		break;	
+		break;
 	case 4:
 		WFIFOW(2) = net_w_value(0x0011);
-		break;	
+		break;
 	case 5:
 		WFIFOW(2) = net_w_value(0x0012);
-		break;	
+		break;
 	}
 	WFIFOW(4) = net_b_value(1);
 	WFIFOSET(5);

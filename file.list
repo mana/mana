@@ -1,4 +1,4 @@
-OBJS =  src/sound/sound.o src/graphic/super_eagle.o src/graphic/graphic.o
+OBJS =  src/sound/sound.o src/graphic/2xsai.o src/graphic/graphic.o
 OBJS += src/gui/chat.o src/gui/skill.o src/gui/shop.o src/gui/stats.o
 OBJS += src/gui/gui.o src/gui/login.o src/gui/char_server.o src/gui/char_select.o src/gui/inventory.o
 OBJS += src/net/network.o src/net/protocol.o

@@ -19,6 +19,8 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+
 */
 
 #include <stdio.h>
@@ -207,4 +209,18 @@ void sort() {
       if(q==s)s = p;
     }
   }
+}
+
+/** Remove all path nodes from a being */
+void empty_path(NODE *node) {
+	if(node) {
+    PATH_NODE *temp = node->path;
+    PATH_NODE *next;
+    while(temp) {
+      next = temp->next;
+      free(temp);
+      temp = next;
+    }
+    node->path = NULL;
+	}
 }

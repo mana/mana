@@ -35,6 +35,18 @@
 
 //DIALOG skill_dialog[];
 
+extern int n_skills;
+
+struct SKILL {
+	short id, lv, sp;
+	SKILL *next;
+};
+
+
 void update_skill_dialog();
+void add_skill(short id, short lv, short sp);
+char *skill_list(int index, int *list_size);
+int get_skill_id(int index);
+SKILL *is_skill(int id);
 void increaseStatus(void *dp3, int d1);
 #endif

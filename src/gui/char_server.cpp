@@ -19,6 +19,8 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+
 */
 
 #include "char_server.h"
@@ -55,8 +57,7 @@ void char_server() {
 	if(n_server==0)char_server_dialog[2].flags |= D_DISABLED;
 	while ((!key[KEY_ESC])&&(gui_exit)&&(!key[KEY_ENTER])) {
 		clear_bitmap(buffer);
-		if(stretch_mode!=0)blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
-		else blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, -120, -90, 640, 480);
+		blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
 		gui_exit = gui_update(player);
 		blit(buffer, screen, 0, 0, 0, 0, 800, 600);
 	}
@@ -102,8 +103,8 @@ void server_char_server() {
 			char_info[i].max_hp = RFIFOW(24+106*i+44);
 			char_info[i].xp = RFIFOL(24+106*i+4);
 			char_info[i].gp = RFIFOL(24+106*i+8);
-			char_info[i].job_xp = RFIFOL(24+106*i+16);
-			char_info[i].job_lv = RFIFOL(24+106*i+24);
+			char_info[i].job_xp = RFIFOL(24+106*i+12);
+			char_info[i].job_lv = RFIFOL(24+106*i+16);
 			char_info[i].sp = RFIFOW(24+106*i+46);
 			char_info[i].max_sp = RFIFOW(24+106*i+48);
 			char_info[i].lv = RFIFOW(24+106*i+58);

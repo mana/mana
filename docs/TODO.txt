@@ -1,27 +1,29 @@
-1) network api (complete)
-    - needs optimization (flush called too often)
-2) gui (partial)
-    - character dialog (partial)
-    - ingame dialogs like inventory (missing)
-    - rewrite drawing subsystem with dirty rectangles (missing)
-    - make the gui redraw frame rate independant (missing)
-3) sound engine
-    - ogg/mp3 playback (missing) (kth5)
-3) movement
-    - mob movement (partial / buggy)
-4) npc
-    - basic dialog (one page)
-    - question system (missing)
-5) chat
-    - shift when overlaying (missing)  (kth5)
-    - chatlog (partial)  (kth5)
-    - linewrapping in chatbox (missing) (kth5)
-    - white text / black border (missing / nth ONLY)  (kth5)
-6) graphics & animation
-    - attack animations (partial)
-    - emoticons (partial / nth) (elven)
-    - animated and transparent tiles (missing) (elven)
-7) battle system (missing) (elven)
-8) misc
-    - bubble sort -> quick sort (optimization)
-    - keyboard shortcuts (missing)
+1) Gui
+    - Fix drag & drop (ElvenProgrammer)
+    - Add iconify button (ElvenProgrammer)
+    - Skill point assignement (ElvenProgrammer)
+    - Trading system (SimEdw)
+2) Sound engine
+    - ogg/mp3 playback (kth5)
+3) Npc
+    - Multi-page dialogs (SimEdw)
+    - Quest system (SimEdw)
+4) Chat
+    - Shift when overlaying (kth5)
+    - Linewrapping in chatbox (kth5)
+    - White text/black border (kth5)
+5) Graphics & animation
+    - Animated and transparent tiles (ElvenProgrammer)
+    - Fix fringe layer (ElvenProgrammer)
+6) Battle system 
+    - General fixes (ElvenProgrammer)
+    - Long range weapons
+    - Magic attacks
+7) Misc
+    - Keyboard shortcuts
+    - Clothing and hairstyling system
+    - Item drops (ElvenProgrammer)
+    - Minimap
+    - Trading system
+8) Optimization
+    - Bubble sort->quick sort

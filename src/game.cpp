@@ -18,6 +18,12 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
+
+		   kth5 aka Alexander Baldeck
+
+			 SimEdw
+
 */
 
 #include "main.h"
@@ -92,17 +98,17 @@ void game() {
   while(state!=EXIT) {
     status("INPUT");
     do_input();
-    if(refresh) {
+    //if(refresh) {
       status("GRAPHIC");
       do_graphic();
-			refresh = false;
-    }
+			//refresh = false;
+    //}
     status("PARSE");
     do_parse();
     status("FLUSH");
     flush();
-		if(fps>30)
-			rest(15);
+		/*if(fps>30)
+			rest(15);*/
   }
 
   exit_graphic();
@@ -114,7 +120,7 @@ void do_init() {
 
   if(!load_map(map_path))error("Could not find map file");
 
-  sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
+  //sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
 
 	// Initialize timers
   tick_time = 0;
@@ -122,7 +128,7 @@ void do_init() {
   LOCK_VARIABLE(tick_time);
 	LOCK_VARIABLE(refresh);
   install_int_ex(refresh_time, MSEC_TO_TIMER(1));
-	install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(75)); // Set max refresh rate to 75 fps
+	install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(200)); // Set max refresh rate to 75 fps
 	install_int_ex(second, BPS_TO_TIMER(1));
 
   // Interrupt drawing while in background
@@ -266,6 +272,9 @@ void do_input() {
 		} else if(key[KEY_I]) {
 			inventory.toggle();
 			action_time = false;
+		} else if(key[KEY_K]) {
+			show_skill_list_dialog = true;
+			action_time = false;
 		}
 	}
 
@@ -370,7 +379,7 @@ void do_parse() {
 					if(walk_status==1)
               walk_status = 2;
           break;
-        // Add new being
+        // Add new being / stop monster
         case 0x0078:
 					if(find_node(RFIFOL(2))==NULL) {
             node = create_node();
@@ -378,8 +387,23 @@ void do_parse() {
 						node->speed = RFIFOW(6);
 						if(node->speed==0)node->speed = 150; // Else division by 0 when calculating frame
             node->job = RFIFOW(14);
+						empty_path(node);
             memcpy(node->coordinates, RFIFOP(46), 3);
+						/*char set[30];
+						sprintf(set, "%i %i %i %i",get_x(RFIFOP(46)),get_y(RFIFOP(46)),get_x(player_node->coordinates),get_y(player_node->coordinates));
+						alert("78",set,"","","",0,0);*/
             add_node(node);
+					} else {
+						/*char set[30];
+						sprintf(set, "%i %i %i %i %i",RFIFOL(2),get_x(RFIFOP(46)),get_y(RFIFOP(46)),get_x(player_node->coordinates),get_y(player_node->coordinates));
+						alert("78",set,"","","",0,0);*/
+						if(node) {
+              empty_path(node);
+              memcpy(node->coordinates, RFIFOP(46), 3);
+							node->frame = 0;
+							node->tick_time = tick_time;
+							node->action = STAND;
+						}
 					}
           break;
         // Remove a being
@@ -406,6 +430,7 @@ void do_parse() {
             memcpy(node->coordinates, RFIFOP(46), 3);
             add_node(node);
 						node->tick_time = tick_time;
+						node->frame = 0;
 						node->speed = RFIFOW(6);
           }
           break;
@@ -422,6 +447,7 @@ void do_parse() {
 						node->job = RFIFOW(14);
 						add_node(node);
 					}
+					empty_path(node);
           node->path = calculate_path(get_src_x(RFIFOP(50)),get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),get_dest_y(RFIFOP(50)));
 					if(node->path!=NULL) {
 						direction = 0;
@@ -441,6 +467,7 @@ void do_parse() {
             set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
             node->action = WALK;
             node->tick_time = tick_time;
+						node->frame = 0;
           }
           break;
         // Being moving
@@ -514,13 +541,11 @@ void do_parse() {
 				// Action failed (ex. sit because you have not reached the right level)
 				case 0x0110:
 					CHATSKILL action;
-
 					action.skill   = RFIFOW(2);
 					action.bskill  = RFIFOW(4);
 					action.unused  = RFIFOW(6);
 					action.success = RFIFOB(8);
 					action.reason  = RFIFOB(9);
-
 					if(action.success != SKILL_FAILED &&
 						action.bskill == BSKILL_EMOTE ) {
 						printf("Action: %d/%d", action.bskill, action.success);
@@ -530,22 +555,32 @@ void do_parse() {
 				// Update stat values
 				case 0x00b0:
 					switch(RFIFOW(2)) {
-            case 5:
+            case 0x0000:
+							player_node->speed;
+							break;
+            case 0x0005:
               char_info->hp = RFIFOW(4);
 							break;
-						case 6:
+						case 0x0006:
 							char_info->max_hp = RFIFOW(4);
 							break;
-						case 7:
+						case 0x0007:
 							char_info->sp = RFIFOW(4);
 							break;
-						case 8:
+						case 0x0008:
 							char_info->max_sp = RFIFOW(4);
 							break;
-						case 11:
+						case 0x000b:
 							char_info->lv = RFIFOW(4);
 							break;
-						}
+						case 0x000c:
+							char_info->skill_point = RFIFOW(4);
+							sprintf(skill_points, "Skill points: %i", char_info->skill_point);
+							break;
+						case 0x0037:
+							char_info->job_lv = RFIFOW(4);
+							break;
+					}
 					update_stats_dialog();
 					if(char_info->hp==0) {
 						ok("Message", "You're now dead, press ok to restart");
@@ -555,15 +590,18 @@ void do_parse() {
 					}
 					break;
 				// Stop walking
-				/*case 0x0088:  // Disabled because giving some problems
+				case 0x0088:  // Disabled because giving some problems
 					if(node = find_node(RFIFOL(2))) {
-						if(node->id!=player_node->id) {
+						//if(node->id!=player_node->id) {
+						/*char ids[20];
+						sprintf(ids,"%i",RFIFOL(2));
+						alert(ids,"","","","",0,0);*/
               node->action = STAND;
               node->frame = 0;
               set_coordinates(node->coordinates, RFIFOW(6), RFIFOW(8), get_direction(node->coordinates));
-						}
+						//}
 					}
-          break;*/
+          break;
 				// Damage, sit, stand up
 				case 0x008a:
 					switch(RFIFOB(26)) {
@@ -573,7 +611,7 @@ void do_parse() {
                 if(node->speech!=NULL) {
                   free(node->speech);
                   node->speech = NULL;
-                  node->speech_time = SPEECH_TIME;
+                  //node->speech_time = SPEECH_TIME;
                 }
                 node->speech = (char *)malloc(5);
                 memset(node->speech, '\0', 5);
@@ -586,7 +624,7 @@ void do_parse() {
 									else node->speech_color = makecol(255, 0, 0);
 								}
                 node->speech_time = SPEECH_TIME;
-								if(RFIFOL(2)!=player_node->id) {
+								if(RFIFOL(2)!=player_node->id) { // buggy
                   node = find_node(RFIFOL(2));
 									if(node!=NULL) {
 										if(node->job<10)
@@ -704,20 +742,47 @@ void do_parse() {
 					break;
 					// Remove item to inventory after you sold it
 				case 0x00af:
-				printf("sell %i\n",-RFIFOW(4));
-					inventory.increase_quantity(RFIFOW(2),-RFIFOW(4));
+          printf("sell %i\n",-RFIFOW(4));
+					inventory.increase_quantity(RFIFOW(2), -RFIFOW(4));
 					break;
-				//use a item
+				// Use an item
 				case 0x01c8:
-					inventory.change_quantity(RFIFOW(2),RFIFOW(10));
+					inventory.change_quantity(RFIFOW(2), RFIFOW(10));
 					break;
+				// ??
 				case 0x0119:
 					sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
 					//alert(pkt_nfo,"","","","",0,0);
 					break;
+				// Skill list
+				case 0x010f:
+					//n_skills = 0;
+					//SKILL *temp_skill = NULL;
+					//n_skills = (len-4)/37;
+					for(int k=0;k<(len-4)/37;k++) {
+						if(RFIFOW(4+k*37+6)!=0 || RFIFOB(4+k*37+36)!=0) {
+							SKILL *temp_skill = is_skill(RFIFOW(4+k*37));
+							if(temp_skill) {
+								temp_skill->lv = RFIFOW(4+k*37+6);
+								temp_skill->sp = RFIFOW(4+k*37+36);
+								if(temp_skill->sp<0)temp_skill->sp = 0;
+							} else {
+                n_skills++;
+                add_skill(RFIFOW(4+k*37), RFIFOW(4+k*37+6), RFIFOW(4+k*37+8));
+							}
+						}
+					}
+					break;
+				// MVP experience
+				case 0x010b:
+					break;
+				// Display MVP payer
+				case 0x010c:
+					chatlog.chat_log("MVP player", BY_SERVER, gui_font);
+					break;
         // Manage non implemented packets
         default:
-		  //printf("%x\n",id);
+          //printf("%x\n",id);
           //alert(pkt_nfo,"","","","",0,0);
           break;
       }

@@ -30,12 +30,12 @@ char stats_gp[24];
 
 DIALOG stats_dialog[] = {
 	/* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp)        (dp2) (dp3) */
-	{ tmw_ldialog_proc,    493,  0,  300,   55,  0,    0,    0,    0,       0,    0,    stats_name, NULL, NULL  },
-	{ tmw_text_proc,       497,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
-	{ tmw_bar_proc,        507,  22,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
-	{ tmw_text_proc,       707,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_gp, NULL, NULL  },
-	{ tmw_text_proc,       607,  34, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
-	{ tmw_bar_proc,        617,  22,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
+	{ tmw_dialog_proc,    493-10,  0+10,  300,   55,  0,    0,    0,    0,       0,    0,    stats_name, NULL, NULL  },
+	{ tmw_text_proc,       497-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
+	{ tmw_bar_proc,        507-10,  22+10,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
+	{ tmw_text_proc,       707-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_gp, NULL, NULL  },
+	{ tmw_text_proc,       607-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
+	{ tmw_bar_proc,        617-10,  22+10,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
 	{ NULL,                0,    0,    0,    0,  0,    0,    0,    0,       0,    0,    NULL,       NULL, NULL  }
 };
 

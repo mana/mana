@@ -19,6 +19,8 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+
 */
 
 #ifndef _BEING_H
@@ -74,6 +76,7 @@ unsigned int get_id(NODE *node);
 unsigned int find_npc(unsigned short x, unsigned short y);
 unsigned int find_monster(unsigned short x, unsigned short y);
 void sort();
+void empty_path(NODE *node);
 
 extern NODE *player_node;
 

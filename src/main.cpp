@@ -24,6 +24,7 @@
 #include "main.h"
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
+#include "./graphic/2xsai.h"
 
 #include <iostream>
 
@@ -62,21 +63,16 @@ void init_engine() {
   set_config_file("tmw.ini");
   #ifdef MACOSX
   set_color_depth(32);
-  Init_SuperEagle(32);
+  Init_2xSaI(32);
   #else
   set_color_depth(16);
-  Init_SuperEagle(16);
+  Init_2xSaI(16);
   #endif
 	stretch_mode = get_config_int("settings", "stretch", 0);
 	set_window_title("The Mana World");
-	if(stretch_mode==0) {
-    if(set_gfx_mode(get_config_int("settings", "screen", 0), 400, 300, 0, 0))
-      error(allegro_error);
-	} else {
-		if(set_gfx_mode(get_config_int("settings", "screen", 0), 800, 600, 0, 0))
-      error(allegro_error);
-	}
-  if(install_keyboard())
+	if(set_gfx_mode(get_config_int("settings", "screen", 0), 800, 600, 0, 0))
+    error(allegro_error);
+	if(install_keyboard())
     error("Unable to install keyboard");
   if(install_timer())
     error("Unable to install timer");

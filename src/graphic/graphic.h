@@ -44,8 +44,9 @@
 extern BITMAP *buffer, *double_buffer;
 extern char speech[255];
 extern char npc_text[1000];
+extern char skill_points[10];
 extern Chat chatlog;
-extern bool show_skill_dialog;
+extern bool show_skill_dialog, show_skill_list_dialog;
 extern int show_npc_dialog;
 extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;

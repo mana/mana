@@ -120,6 +120,7 @@ int get_item_quantity(int index) {
   }
   return item_shop->quantity;
 }
+
 int get_item_index(int index) {
   int iterator = 0;
   ITEM_SHOP *item_shop = shop;
@@ -129,6 +130,7 @@ int get_item_index(int index) {
   }
   return item_shop->index;
 }
+
 int get_item_price(int index) {
   int iterator = 0;
   ITEM_SHOP *item_shop = shop;
@@ -138,9 +140,8 @@ int get_item_price(int index) {
   }
   return item_shop->price;
 }
-void changeQ(void *dp3, int d2)
-{
-sprintf(itemCurrenyQ,"%i",d2);
-printf("%s\n",itemCurrenyQ);
-}
 
+void changeQ(void *dp3, int d2) {
+  sprintf(itemCurrenyQ,"%i",d2);
+  printf("%s\n",itemCurrenyQ);
+}

@@ -359,7 +359,7 @@ void loadDialogSkin() {
     }
 }
 
-void drawSkinnedRect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int h) {
+void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int h) {
 
     BITMAP **grid = skin->grid;
 
@@ -522,17 +522,17 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
         rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, makecol(255,255,255));
 
         if (d->flags & D_DISABLED) {
-            drawSkinnedRect(gui_bitmap, &gui_skin.button.background[3], d->x, d->y, d->w, d->h);
+            draw_skinned_rect(gui_bitmap, &gui_skin.button.background[3], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[3];
         } else if (d->flags & D_SELECTED) {
-            drawSkinnedRect(gui_bitmap, &gui_skin.button.background[2], d->x, d->y, d->w, d->h);
+            draw_skinned_rect(gui_bitmap, &gui_skin.button.background[2], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[2];
             ofs = 1;
         } else if (d->flags & D_GOTMOUSE) {
-            drawSkinnedRect(gui_bitmap, &gui_skin.button.background[1], d->x, d->y, d->w, d->h);
+            draw_skinned_rect(gui_bitmap, &gui_skin.button.background[1], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[1];
         } else {
-            drawSkinnedRect(gui_bitmap, &gui_skin.button.background[0], d->x, d->y, d->w, d->h);
+            draw_skinned_rect(gui_bitmap, &gui_skin.button.background[0], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[0];
         }
         rtm = alfont_text_mode(-1);
@@ -751,7 +751,7 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
 
     if (msg == MSG_DRAW) {
         rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-        drawSkinnedRect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
+        draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
 
         if (d->flags & D_DISABLED) {
             col = gui_skin.textbox.textcolor[1];
@@ -822,7 +822,7 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
 
     if (msg == MSG_DRAW) {
         rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-        drawSkinnedRect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
+        draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
 
         if (d->flags & D_DISABLED) {
             col = gui_skin.textbox.textcolor[1];
@@ -884,173 +884,149 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
 }
 
 int tmw_list_proc(int msg, DIALOG *d, int c) {
-//    BITMAP *box = NULL;
+  static int ignoreRedraw = FALSE;
+  int itemCount     = 0;
+  int firstItem     = d->d2;
+  int lastItem      = 0;
+  int selectedItem  = d->d1;
+  int x,y,delta;
+  int a, col;
+  int w, h          = 0;
+  int rtm           = 0;
+  int cl, cr, cb, ct;
+  int th            = alfont_text_height(gui_font);
 
-    static int ignoreRedraw = FALSE;
+  int vscroll = 0;
+  int sliderh = 10;
+  int slidery = 0;
 
-    int itemCount     = 0;
-    int firstItem     = d->d2;
-    int lastItem      = 0;
-    int selectedItem  = d->d1;
-    int x,y,delta;
-    int a, col;
-    int w, h          = 0;
-    int rtm           = 0;
-    int cl, cr, cb, ct;
-    int th            = alfont_text_height(gui_font);
-
-    int vscroll = 0;
-    int sliderh = 10;
-    int slidery = 0;
-
-    (*(getfuncptr)d->dp)(-1, &itemCount);
-
-    w = d->w - gui_skin.listbox.bg.grid[0]->w - gui_skin.listbox.bg.grid[2]->w;
-    h = d->h - gui_skin.listbox.bg.grid[1]->h - gui_skin.listbox.bg.grid[7]->h;
-    lastItem = MIN(itemCount-1, firstItem + h / alfont_text_height(gui_font));
-
-
-
-    if (msg == MSG_DRAW) {
-        if (ignoreRedraw) {
-            return D_O_K;
-        }
-        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-        drawSkinnedRect(gui_bitmap, &gui_skin.listbox.bg, d->x, d->y, d->w, d->h);
-
-        (*(getfuncptr)d->dp)(-1, &itemCount);
-        vscroll = (h/th) < (itemCount-1);
-        if (vscroll) {
-            w = d->w - 17 - gui_skin.listbox.bg.grid[0]->w;
-            drawSkinnedRect(gui_bitmap, &gui_skin.listbox.bg, d->x+d->w-15, d->y+1, 14, d->h-2);
-            sliderh = MAX(((d->h-2)* (h / th)) / itemCount, gui_skin.listbox.bg.grid[0]->h*2);
-            slidery = ((d->h-2-sliderh) * firstItem) / (itemCount);
-            slidery+= d->y+1;
-            drawSkinnedRect(gui_bitmap, &gui_skin.listbox.vscroll, d->x+d->w-13, slidery, 11, sliderh);
-        }
-
-        rtm = alfont_text_mode(-1);
-        if (gui_bitmap->clip) {
-            cl = gui_bitmap->cl;
-            ct = gui_bitmap->ct;
-            cr = gui_bitmap->cr;
-            cb = gui_bitmap->cb;
-        } else {
-            cl=ct=0;
-            cr=gui_bitmap->w;
-            cb=gui_bitmap->h;
-        }
-        x = d->x + gui_skin.listbox.bg.grid[0]->w;
-        y = d->y + gui_skin.listbox.bg.grid[0]->h;
-        set_clip_rect(gui_bitmap, x,y, x+w, y+h);
-
-
-        if (d->flags & D_DISABLED) {
-            col = gui_skin.listbox.textcolor[3];
-            for (a=firstItem; a < lastItem; a++) {
-                alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
-                y += alfont_text_height(gui_font);
-            }
-        } else {
-            for (a=firstItem; a <= lastItem; a++) {
-                if (a==d->d1) {
-                    col = gui_skin.listbox.textcolor[1];
-                    rectfill(gui_bitmap, x, y, x+w, y+alfont_text_height(gui_font)-1, gui_skin.listbox.textcolor[2]);
-                } else {
-                    col = gui_skin.listbox.textcolor[0];
-                }
-                alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
-                y += alfont_text_height(gui_font);
-            }
-        }
-
-        alfont_text_mode(rtm);
-        set_clip_rect(gui_bitmap, cl, ct, cr, cb);
-
-    } else if (msg == MSG_CLICK) {
-
-        x = d->x + gui_skin.listbox.bg.grid[0]->w;
-        y = d->y + gui_skin.listbox.bg.grid[0]->h;
-
-        sliderh = MAX(((d->h-2)* (h / th)) / itemCount, gui_skin.listbox.bg.grid[0]->h*2);
-        //sliderh = ((d->h-2)* (h / th)) / itemCount;
-        slidery = ((d->h-2-sliderh) * firstItem) / (itemCount);
-        slidery+= d->y+1;
-
-        if (mouse_x > (d->x + d->w - 14) && mouse_x < (d->x+d->w-1)) {
-            // Ok, scroll bar
-            if (mouse_y >= slidery && mouse_y < slidery + sliderh) {
-                delta= mouse_y - slidery;
-                while (mouse_b) {
-                    a  = mouse_y - delta - d->y -1;
-                    a *= itemCount;
-                    a /= (d->h-2);
-                    a  = MID(0, a, itemCount- h/th);
-
-                    if (a != d->d2) {
-                        d->d2 = a;
-                        scare_mouse();
-                        object_message(d, MSG_DRAW, 0);
-                        unscare_mouse();
-                    }
-
-                    slidery = ((d->h-2) * firstItem) / (itemCount);
-                    slidery+= d->y+1;
-                }
-            } else if (mouse_y < slidery) {
-                a = d->d2 - (h/th)+1;
-                a = MID(0, a, itemCount- h/th);
-
-
-                d->d2 = a;
-                scare_mouse();
-                object_message(d, MSG_DRAW, 0);
-                unscare_mouse();
-
-                while (mouse_b) {
-                }
-            } else if (mouse_y > slidery + sliderh) {
-                a = d->d2 + (h/th)-1;
-                a = MID(0, a, itemCount- h/th);
-                d->d2 = a;
-
-                scare_mouse();
-                object_message(d, MSG_DRAW, 0);
-                unscare_mouse();
-
-                while (mouse_b) {
-                }
-            }
-        } else if (mouse_x >= x && mouse_x < x+w && mouse_y >= y && mouse_y < y+h) {
-
-            while (mouse_b) {
-                a = firstItem + (mouse_y-y) / alfont_text_height(gui_font);
-
-                if (a <= lastItem && a != selectedItem) {
-                    d->d1 = selectedItem = a;
-                    scare_mouse();
-                    object_message(d, MSG_DRAW, 0);
-                    unscare_mouse();
-                }
-            }
-        }
-    } else {
-        ignoreRedraw = (msg == MSG_GOTFOCUS || msg == MSG_LOSTFOCUS);
-        a =  d_list_proc(msg, d, c);
-
-        if (a == D_USED_CHAR) {
-            if (d->d1 < d->d2) {
-                if (d->d1 > 0) {
-                    d->d1 = d->d2;
-                }
-            } else if (d->d1 > d->d2 + h/th -1) {
-                d->d2 = d->d1 - h/th + 1;
-            }
-        }
-
-        return a;
+  (*(getfuncptr)d->dp)(-1, &itemCount);
+  w = d->w - gui_skin.listbox.bg.grid[0]->w - gui_skin.listbox.bg.grid[2]->w;
+	h = d->h - gui_skin.listbox.bg.grid[1]->h - gui_skin.listbox.bg.grid[7]->h;
+	lastItem = MIN(itemCount-1, firstItem + h / alfont_text_height(gui_font));
+  
+  if (msg == MSG_DRAW) {
+    if (ignoreRedraw) {
+      return D_O_K;
     }
-    return D_O_K;
+    rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
+		draw_skinned_rect(gui_bitmap, &gui_skin.listbox.bg, d->x, d->y, d->w, d->h);
+    (*(getfuncptr)d->dp)(-1, &itemCount);
+    vscroll = (h/th) < (itemCount-1);
+    if (vscroll) {
+      w = d->w - 17 - gui_skin.listbox.bg.grid[0]->w;
+      draw_skinned_rect(gui_bitmap, &gui_skin.listbox.bg, d->x+d->w-15, d->y+1, 14, d->h-2);
+      sliderh = MAX(((d->h-2)* (h / th)) / itemCount, gui_skin.listbox.bg.grid[0]->h*2);
+      slidery = ((d->h-2-sliderh) * firstItem) / (itemCount);
+      slidery+= d->y+1;
+      draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll, d->x+d->w-13, slidery, 11, sliderh);
+    }
+
+    rtm = alfont_text_mode(-1);
+    if (gui_bitmap->clip) {
+			cl = gui_bitmap->cl;
+			ct = gui_bitmap->ct;
+			cr = gui_bitmap->cr;
+			cb = gui_bitmap->cb;
+		} else {
+			cl=ct=0;
+			cr=gui_bitmap->w;
+			cb=gui_bitmap->h;
+		}
+		x = d->x + gui_skin.listbox.bg.grid[0]->w;
+		y = d->y + gui_skin.listbox.bg.grid[0]->h;
+		set_clip_rect(gui_bitmap, x,y, x+w, y+h);
+    if (d->flags & D_DISABLED) {
+			col = gui_skin.listbox.textcolor[3];
+			for (a=firstItem; a < lastItem; a++) {
+				alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				y += alfont_text_height(gui_font);
+			}
+		} else {
+			for (a=firstItem; a <= lastItem; a++) {
+				if (a==d->d1) {
+					col = gui_skin.listbox.textcolor[1];
+					rectfill(gui_bitmap, x, y, x+w, y+alfont_text_height(gui_font)-1, gui_skin.listbox.textcolor[2]);
+				} else {
+					col = gui_skin.listbox.textcolor[0];
+				}
+				alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				y += alfont_text_height(gui_font);
+			}
+		}
+    alfont_text_mode(rtm);
+    set_clip_rect(gui_bitmap, cl, ct, cr, cb);
+	} else if (msg == MSG_CLICK) {
+		x = d->x + gui_skin.listbox.bg.grid[0]->w;
+		y = d->y + gui_skin.listbox.bg.grid[0]->h;
+		sliderh = MAX(((d->h-2)* (h / th)) / itemCount, gui_skin.listbox.bg.grid[0]->h*2);
+		//sliderh = ((d->h-2)* (h / th)) / itemCount;
+		slidery = ((d->h-2-sliderh) * firstItem) / (itemCount);
+		slidery+= d->y+1;
+		if (mouse_x > (d->x + d->w - 14) && mouse_x < (d->x+d->w-1)) {
+			// Ok, scroll bar
+			if (mouse_y >= slidery && mouse_y < slidery + sliderh) {
+				delta= mouse_y - slidery;
+				while (mouse_b) {
+					a  = mouse_y - delta - d->y -1;
+					a *= itemCount;
+					a /= (d->h-2);
+					a  = MID(0, a, itemCount- h/th);
+          if (a != d->d2) {
+						d->d2 = a;
+						scare_mouse();
+						object_message(d, MSG_DRAW, 0);
+						unscare_mouse();
+					}
+					slidery = ((d->h-2) * firstItem) / (itemCount);
+					slidery+= d->y+1;
+				}
+			} else if (mouse_y < slidery) {
+				a = d->d2 - (h/th)+1;
+				a = MID(0, a, itemCount- h/th);
+
+        d->d2 = a;
+        scare_mouse();
+				object_message(d, MSG_DRAW, 0);
+				unscare_mouse();
+        while (mouse_b) {
+				}
+			} else if (mouse_y > slidery + sliderh) {
+				a = d->d2 + (h/th)-1;
+				a = MID(0, a, itemCount- h/th);
+				d->d2 = a;
+        scare_mouse();
+				object_message(d, MSG_DRAW, 0);
+				unscare_mouse();
+        while (mouse_b) {
+				}
+			}
+		} else if (mouse_x >= x && mouse_x < x+w && mouse_y >= y && mouse_y < y+h) {
+      while (mouse_b) {
+				a = firstItem + (mouse_y-y) / alfont_text_height(gui_font);
+        if (a <= lastItem && a != selectedItem) {
+					d->d1 = selectedItem = a;
+					scare_mouse();
+					object_message(d, MSG_DRAW, 0);
+					unscare_mouse();
+				}
+			}
+		}
+	} else {
+		ignoreRedraw = (msg == MSG_GOTFOCUS || msg == MSG_LOSTFOCUS);
+		a =  d_list_proc(msg, d, c);
+    if (a == D_USED_CHAR) {
+			if (d->d1 < d->d2) {
+				if (d->d1 > 0) {
+					d->d1 = d->d2;
+				}
+			} else if (d->d1 > d->d2 + h/th -1) {
+				d->d2 = d->d1 - h/th + 1;
+			}
+		}
+    return a;
+	}
+	return D_O_K;
 }
 int tmw_plus_proc(int msg, DIALOG *d, int c)
 {
@@ -1105,53 +1081,53 @@ else
 return D_O_K;
 }
 
-/**
-	dialog box w/ left centered head
-*/
+/* Dialog box with left centered head */
 int tmw_dialog_proc(int msg, DIALOG *d, int c) {
-    int rtm;
+  int rtm;
   int x, y;
 
-  if (msg == MSG_CLICK) {
-    if(mouse_y < d->y + gui_skin.dialog.bg.grid[1]->h) {
-            //drag = true;
-            d->d1 = mouse_x - d->x;
-            d->d2 = mouse_y - d->y;
-    }
-    } else if (msg == MSG_DRAW) {
-    if((mouse_b & 1)&&(d->d1>=0)&&(d->d2>=0)) {//(drag==true)) {
-      x = mouse_x-d->d1;
-      y = mouse_y-d->d2;
-      if(x<15) {
-        x=0;
-        position_mouse(d->d1, mouse_y);
+	switch(msg) {
+
+		case MSG_CLICK:
+      if(mouse_y<d->y+gui_skin.dialog.bg.grid[1]->h) {
+        d->d1 = mouse_x - d->x;
+        d->d2 = mouse_y - d->y;
       }
-      if(y<15) {
-        y=0;
-        position_mouse(mouse_x, d->d2);
+			break;
+		case MSG_DRAW:
+      if((mouse_b & 1)&&(d->d1>=0)&&(d->d2>=0)) {
+        x = mouse_x-d->d1;
+        y = mouse_y-d->d2;
+        if(x<15) {
+          x=0;
+          position_mouse(d->d1, mouse_y);
+        }
+        if(y<15) {
+          y=0;
+          position_mouse(mouse_x, d->d2);
+        }
+        if(x+d->w>=SCREEN_W-15) {
+          x=SCREEN_W-d->w;
+          position_mouse(x+d->d1, mouse_y);
+        }
+        if(y+d->h>=SCREEN_H-15) {
+          y=SCREEN_H-d->h;
+          position_mouse(mouse_x, y+d->d2);
+        }
+        position_dialog(d, x, y);
+      } else {
+        d->d1 = -1;
+        d->d2 = -1;
       }
-      if(x+d->w>=785) {
-        x=800-d->w;
-        position_mouse(x+d->d1, mouse_y);
-      }
-      if(y+d->h>=585) {
-        y=600-d->h;
-        position_mouse(mouse_x, y+d->d2);
-      }
-          position_dialog(active_dialog, x, y);
-    } else {
-      //drag = false;
-      d->d1 = -1;
-      d->d2 = -1;
-    }
-        drawSkinnedRect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-        rtm = alfont_text_mode(-1);
-        alfont_textprintf_centre_aa(gui_bitmap, gui_font,
-                          d->x + d->w/2,
-                          d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
-        alfont_text_mode(rtm);
-    }
-    return D_O_K;
+      draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
+      rtm = alfont_text_mode(-1);
+      alfont_textprintf_centre_aa(gui_bitmap, gui_font,
+				d->x + d->w/2,
+				d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
+			alfont_text_mode(rtm);
+			break;
+	}
+  return D_O_K;
 }
 
 
@@ -1194,7 +1170,7 @@ int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
       d->d1 = -1;
       d->d2 = -1;
     }
-        drawSkinnedRect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
+        draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
         rtm = alfont_text_mode(-1);
         alfont_textprintf_aa(gui_bitmap, gui_font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
         alfont_text_mode(rtm);
@@ -1225,9 +1201,9 @@ void _gui_draw_scrollable_frame(DIALOG *d, int listsize, int offset, int height,
         len = (((d->h-5) * offset) + listsize/2) / listsize;
     } else len = 0;
     if (yy+i < d->y+d->h-3) {
-    drawSkinnedRect(gui_bitmap, &gui_skin.listbox.vscroll, xx, yy+len, 10, i);
+    draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll, xx, yy+len, 10, i);
   } else {
-        drawSkinnedRect(gui_bitmap, &gui_skin.listbox.vscroll, xx, yy, 10, d->h-3);
+        draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll, xx, yy, 10, d->h-3);
   }
 }
 
@@ -1466,14 +1442,10 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
          /* figure out if it's on the text or the scrollbar */
    bar = (d->d1 > height);
 
-   if ((!bar) || (gui_mouse_x() < d->x+d->w-13)) {
-      /* clicked on the text area */
-      ret = D_O_K;
-   }
-   else {
-      /* clicked on the scroll area */
-      _handle_scrollable_scroll_click(d, d->d1, &d->d2, height);
-   }
+   if ((!bar) || (gui_mouse_x() < d->x+d->w-13)) /* clicked on the text area */      
+     ret = D_O_K;
+   else /* clicked on the scroll area */
+     //_handle_scrollable_scroll_click(d, d->d1, &d->d2, height);
    break;
 
       case MSG_CHAR:
@@ -1555,7 +1527,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
 
 int tmw_bitmap_proc(int msg, DIALOG *d, int c) {
   if(msg==MSG_DRAW) {
-    drawSkinnedRect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
+    draw_skinned_rect(gui_bitmap, &gui_skin.textbox.bg, d->x, d->y, d->w, d->h);
     if(d->dp!=NULL)
             masked_blit(((BITMAP *)d->dp), gui_bitmap, 0, 0, d->x+(d->w-d->d1)/2, d->y+2, d->d1, d->d2);
   }

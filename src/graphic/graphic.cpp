@@ -24,6 +24,7 @@
 */
 
 #include "graphic.h"
+#include "2xsai.h"
 
 #define TILESET_W 480
 #define TILESET_H 320
@@ -38,14 +39,16 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player;
+DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
+char skill_points[10] = "";
 TmwInventory inventory;
 Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
 bool show_skill_dialog = false;
+bool show_skill_list_dialog = false;
 
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -86,6 +89,16 @@ DIALOG sell_dialog[] = {
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
    { tmw_text_proc,       514,  326,  40,  20,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
+};
+
+DIALOG skill_list_dialog[] = {
+   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Skills",     NULL, NULL  },
+   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'u',  D_EXIT,  0,                0,    (char *)"&Up",        NULL, NULL  },
+   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			           0,    (char *)"&Close",     NULL, NULL  },
+   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)skill_list,   NULL, NULL  },
+   { tmw_text_proc,       304,  326,  40,   20,   0,    0,    0,    0,       0,                0,    (char *)skill_points, NULL, NULL  },
+   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
 };
 
 DIALOG chat_dialog[] = {
@@ -149,6 +162,7 @@ void init_graphic() {
 	buy_sell_player = init_dialog(buy_sell_dialog, -1);
 	buy_player = init_dialog(buy_dialog, -1);
 	sell_player = init_dialog(sell_dialog, -1);
+	skill_list_player = init_dialog(skill_list_dialog, -1);
   gui_bitmap = double_buffer;
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
@@ -210,18 +224,28 @@ void do_graphic(void) {
 
 			//node->speed = 10000;
 
-      //set_coordinates(node->coordinates, get_x(node->coordinates), get_y(node->coordinates), direction);*/
+			if(node->frame>=4) {
+				//alert("","","","","",0,0);
+				node->frame = 3;
+			}
 
-			node->text_x = (get_x(node->coordinates)-camera_x)*16-20+get_x_offset(node)-offset_x;
+			//set_coordinates(node->coordinates, get_x(node->coordinates), get_y(node->coordinates), direction);*/
+
+			node->text_x = (get_x(node->coordinates)-camera_x)*16-22+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
 
 			int r_x = node->text_x-get_x_offset(node);
 			int r_y = node->text_y-get_y_offset(node);
 
-      if(node->action==MONSTER_DEAD)node->frame = 0;
-			masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
-			//rectfill(buffer, r_x, r_y, r_x+16, r_y+16, makecol(0,0,255));
-			//alfont_textprintf(buffer, gui_font, node->text_x, node->text_y, MAKECOL_WHITE, "%i", node->frame);
+			//rectfill(buffer, node->text_x+22, node->text_y+25, node->text_x+16+22, node->text_y+16+25, makecol(0,0,255));
+
+      //if(node->action==MONSTER_DEAD)node->frame = 0;
+			if(node->action==MONSTER_DEAD)
+        masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*MONSTER_DEAD, node->text_x, node->text_y, 60, 60);
+			else 
+				masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
+			
+			//alfont_textprintf(buffer, gui_font, node->text_x, node->text_y, MAKECOL_WHITE, "%i", node->id);
 			
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
@@ -232,39 +256,59 @@ void do_graphic(void) {
 							node->path = node->path->next;
 							direction = 0;
               //if(node->path->next) {
-                if(node->path->x>old->x && node->path->y>old->y)direction = SE;
-								else if(node->path->x<old->x && node->path->y>old->y)direction = SW;
-								else if(node->path->x>old->x && node->path->y<old->y)direction = NE;
-								else if(node->path->x<old->x && node->path->y<old->y)direction = NW;
-								else if(node->path->x>old->x)direction = EAST;
-								else if(node->path->x<old->x)direction = WEST;
-								else if(node->path->y>old->y)direction = SOUTH;
-								else if(node->path->y<old->y)direction = NORTH;
+              if(node->path->x>old->x && node->path->y>old->y)direction = SE;
+							else if(node->path->x<old->x && node->path->y>old->y)direction = SW;
+							else if(node->path->x>old->x && node->path->y<old->y)direction = NE;
+							else if(node->path->x<old->x && node->path->y<old->y)direction = NW;
+							else if(node->path->x>old->x)direction = EAST;
+							else if(node->path->x<old->x)direction = WEST;
+							else if(node->path->y>old->y)direction = SOUTH;
+							else if(node->path->y<old->y)direction = NORTH;
               //}
 			
               set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
+
+							//node->tick_time = tick_time;
               
-              if(old!=NULL)
-                free(old);
-            } else node->action = STAND;
+              /*if(old!=NULL)
+                free(old);*/
+						} else {
+              node->action = STAND;
+						}
             if(node->action!=MONSTER_DEAD)node->frame = 0;
             node->tick_time = tick_time;
+						//node->frame = 0;
 					}
         }
       }
     }
-		old_node = node;
-    node = node->next;
-		if(old_node->action==MONSTER_DEAD && old_node->frame>=4)
-			remove_node(old_node->id);
+
+		//old_node = node;
+		if(node->action==MONSTER_DEAD && node->frame>=20) {
+			NODE *temp = node;
+			node = node->next;
+			remove_node(temp->id);
+		} else node = node->next;
+		/*if(old_node->action==MONSTER_DEAD && old_node->frame>=4)
+			remove_node(old_node->id);*/
+
+		// nodes are ordered so if the next node y is > then the 
+		// last drawed for fringe layer, draw the missing lines
 	}
+
+	// complete drawing fringe layer
 
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
 			if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)draw_rle_sprite(buffer, (RLE_SPRITE *)tileset[get_tile(i+camera_x, j+camera_y, 2)].dat, i*16-offset_x, j*16-offset_y);
 		}
 
-	stretch_blit(buffer, double_buffer, 0, 0, 400, 300, 0, 0, 800, 600);
+	if(stretch_mode==0)
+    stretch_blit(buffer, double_buffer, 0, 0, 400, 300, 0, 0, 800, 600);
+	else if(stretch_mode==1)
+		Super2xSaI(buffer, double_buffer, 0, 0, 0, 0, 400, 300);
+	else if(stretch_mode==2)
+		SuperEagle(buffer, double_buffer, 0, 0, 0, 0, 400, 300);
 
 	// Draw player speech
   node = get_head();
@@ -364,6 +408,24 @@ void do_graphic(void) {
 	if(show_skill_dialog) {
 		update_skill_dialog();
 		if(gui_update(skill_player)==0)show_skill_dialog = false;
+	}
+
+	if(show_skill_list_dialog) {
+		/*if(char_info->skill_point>0)skill_list_dialog[1].flags = 0;
+		else skill_list_dialog[1].flags |= D_DISABLED;*/
+		if(gui_update(skill_list_player)==0) {
+			int ret = shutdown_dialog(skill_list_player);
+			if(ret==1) {
+				if(char_info->skill_point>0) {
+        WFIFOW(0) = net_w_value(0x0112);
+				WFIFOW(2) = net_w_value(get_skill_id(skill_list_dialog[3].d1));
+				WFIFOSET(4);
+				}
+			} else if(ret==2) {
+				show_skill_list_dialog = false;
+			}
+			skill_list_player = init_dialog(skill_list_dialog, -1);
+		}
 	}
 
 	// character status display
