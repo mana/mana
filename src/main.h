@@ -36,7 +36,6 @@
 #include "./configuration.h"
 #include "./gui/login.h"
 #include "./gui/gui.h"
-#include "./gui/stats.h"
 #include "./gui/char_server.h"
 #include "./gui/char_select.h"
 #include "./gui/inventory.h"

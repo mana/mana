@@ -32,7 +32,6 @@
 #include "main.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
-#include "./gui/stats.h"
 #include "./graphic/2xsai.h"
 #include <stdio.h>
 #include <allegro.h>

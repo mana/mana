@@ -78,7 +78,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=src\gui\stats.h
+FileName=src\gui\status.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -200,7 +200,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit32]
-FileName=src\gui\stats.cpp
+FileName=src\gui\status.cpp
 CompileCpp=1
 Folder=gui
 Compile=1

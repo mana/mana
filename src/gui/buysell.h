@@ -32,7 +32,7 @@
  *
  * \ingroup GUI
  */
-class BuySellDialog : public Window, public gcn::ActionListener {
+class BuySellDialog : public Window {
     public:
         /**
          * Constructor. The action listener passed will receive "sell", "buy"
@@ -46,11 +46,6 @@ class BuySellDialog : public Window, public gcn::ActionListener {
          * Destructor.
          */
         ~BuySellDialog();
-
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
 
     private:
         gcn::Button *buyButton;

@@ -22,8 +22,8 @@
 #include "graphic.h"
 #include "2xsai.h"
 #include "../gui/gui.h"
-#include "../gui/stats.h"
 #include "../gui/textfield.h"
+#include "../gui/status.h"
 
 #define TILESET_W 480
 #define TILESET_H 320
@@ -53,7 +53,7 @@ char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
 
-StatsDialog *statsDialog;
+StatusDialog *statusDialog;
 BuyDialog *buyDialog;
 BuySellDialog *buySellDialog;
 InventoryDialog *inventoryDialog;
@@ -213,8 +213,8 @@ void init_graphic() {
 
     // Create dialogs
 
-    statsDialog = new StatsDialog(guiTop);
-    statsDialog->setPosition(SCREEN_W - statsDialog->getWidth() - 10, 10);
+    statusDialog = new StatusDialog(guiTop);
+    statusDialog->setPosition(SCREEN_W - statusDialog->getWidth() - 10, 10);
 
     buyDialog = new BuyDialog(guiTop);
     buyDialog->setVisible(false);
@@ -607,7 +607,7 @@ void do_graphic(void) {
     }
 
     // Update character status display
-    statsDialog->update();
+    statusDialog->update();
 
     // Update GUI
     guiGraphics->setTarget(vpage[page_num]);
@@ -625,7 +625,7 @@ void do_graphic(void) {
 }
 
 void exit_graphic() {
-    delete statsDialog;
+    delete statusDialog;
     delete buyDialog;
 
     shutdown_dialog(npc_player);

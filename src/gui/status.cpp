@@ -21,9 +21,9 @@
  *  $Id$
  */
 
-#include "stats.h"
+#include "status.h"
 
-StatsDialog::StatsDialog(gcn::Container *parent):
+StatusDialog::StatusDialog(gcn::Container *parent):
     Window(parent, "%s Lvl: % 2i Job: % 2i")
 {
     hp = new gcn::Label("HP");
@@ -46,7 +46,7 @@ StatsDialog::StatsDialog(gcn::Container *parent):
     add(manaBar);
 }
 
-StatsDialog::~StatsDialog()
+StatusDialog::~StatusDialog()
 {
     delete hp;
     delete sp;
@@ -55,7 +55,7 @@ StatsDialog::~StatsDialog()
     delete manaBar;
 }
 
-void StatsDialog::update()
+void StatusDialog::update()
 {
     char *tempstr = new char[64];
 

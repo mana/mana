@@ -61,9 +61,3 @@ BuySellDialog::~BuySellDialog()
     delete sellButton;
     delete cancelButton;
 }
-
-void BuySellDialog::action(const std::string& eventId)
-{
-    if (eventId == "cancel") {
-    }
-}

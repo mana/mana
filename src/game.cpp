@@ -620,7 +620,7 @@ void do_parse() {
 								char_info->job_lv = RFIFOW(4);
 								break;
 						}
-						statsDialog->update();
+						statusDialog->update();
 						if(char_info->hp==0) {
 							OkDialog *death = new OkDialog(guiTop,
 								"You're now dead, press ok to restart");

@@ -35,14 +35,14 @@
 #include <allegro.h>
 
 /**
- * The player statistics dialog.
+ * The player status dialog.
  *
  * \ingroup GUI
  */
-class StatsDialog : public Window {
+class StatusDialog : public Window {
     public:
-        StatsDialog(gcn::Container *parent);
-        ~StatsDialog();
+        StatusDialog(gcn::Container *parent);
+        ~StatusDialog();
 
         /**
          * Updates this dialog with values from PLAYER_INFO *char_info
