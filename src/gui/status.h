@@ -55,6 +55,7 @@ class StatusWindow : public Window {
         gcn::Label *expLabel, *jobExpLabel;
         ProgressBar *healthBar, *manaBar;
         ProgressBar *xpBar, *jobXpBar;
+	gcn::Button *statsButton, *skillsButton, *inventoryButton;
 };
 
 #endif

@@ -23,10 +23,14 @@
 
 #include "status.h"
 #include "../main.h"
+#include "button.h"
 
 StatusWindow::StatusWindow():
     Window("%s Lvl: % 2i Job: % 2i")
 {
+    #define WIN_BORDER 5
+    #define CONTROLS_SEPARATOR 4
+    
     hp = new gcn::Label("HP");
     sp = new gcn::Label("SP");
     hpValue = new gcn::Label();
@@ -35,23 +39,29 @@ StatusWindow::StatusWindow():
     expLabel = new gcn::Label("Exp");
     jobExpLabel = new gcn::Label("Job");
     
-    hp->setPosition(5, 5);
-    sp->setPosition(5, hp->getY() + hp->getHeight() + 5);
-    //healthBar->setDimension(gcn::Rectangle(25, hp->getY() + 1, 60, 18));
-    //manaBar->setDimension(gcn::Rectangle(25, sp->getY() + 1, 60, 18));
-    hpValue->setPosition(120, 5);
-    spValue->setPosition(120, hp->getY() + hp->getHeight() + 5);
-    gp->setPosition(180, 20);
-    expLabel->setPosition(6, 40);
-    jobExpLabel->setPosition(106, 40);
-    //xpBar->setDimension(gcn::Rectangle(16, 55, 60, 18));
-    //jobXpBar->setDimension(gcn::Rectangle(116, 55, 60, 18));
-
-    healthBar = new ProgressBar(1.0f, 20, 8, 80, 0, 255, 0);
-    manaBar = new ProgressBar(1.0f, 20, 26, 80, 0, 0, 255);
-    xpBar = new ProgressBar(1.0f, 6, 55, 70, 12, 194, 255);
-    jobXpBar = new ProgressBar(1.0f, 106, 55, 70, 200, 0, 0);
-    setSize(250, 70);
+    statsButton = new Button("Stats");
+    skillsButton = new Button("Skills");
+    inventoryButton = new Button("Inventory");
+    
+    hp->setPosition(WIN_BORDER, WIN_BORDER);
+    sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
+    healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER + 3, 80, 0, 255, 0);
+    hpValue->setPosition(healthBar->getX() + healthBar->getWidth() + 2*CONTROLS_SEPARATOR, WIN_BORDER);
+    manaBar = new ProgressBar(1.0f, WIN_BORDER + sp->getWidth() + CONTROLS_SEPARATOR,
+        hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR + 3, 80, 0, 0, 255);
+    spValue->setPosition(manaBar->getX() + manaBar->getWidth() + 2*CONTROLS_SEPARATOR, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
+    gp->setPosition(170, WIN_BORDER);
+    expLabel->setPosition(WIN_BORDER, sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
+    jobExpLabel->setPosition(spValue->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
+    
+    xpBar = new ProgressBar(1.0f, WIN_BORDER, expLabel->getY() + expLabel->getHeight() + CONTROLS_SEPARATOR, 70, 12, 194, 255);
+    jobXpBar = new ProgressBar(1.0f, spValue->getX(), jobExpLabel->getY() + jobExpLabel->getHeight() + CONTROLS_SEPARATOR, 70, 200, 0, 0);
+    
+    statsButton->setPosition(WIN_BORDER, xpBar->getY() + xpBar->getHeight() + 2*CONTROLS_SEPARATOR);
+    skillsButton->setPosition(statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
+    inventoryButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
+    
+    setSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
     
     add(hp);
     add(sp);
@@ -64,6 +74,9 @@ StatusWindow::StatusWindow():
     add(jobExpLabel);
     add(xpBar);
     add(jobXpBar);
+    add(statsButton);
+    add(skillsButton);
+    add(inventoryButton);
 }
 
 StatusWindow::~StatusWindow()
@@ -77,6 +90,9 @@ StatusWindow::~StatusWindow()
     delete manaBar;
     delete xpBar;
     delete jobXpBar;
+    delete statsButton;
+    delete skillsButton;
+    delete inventoryButton;
 }
 
 void StatusWindow::update()
