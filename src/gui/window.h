@@ -49,9 +49,9 @@ class Window : public gcn::Container, public gcn::MouseListener
         gcn::Color titlebarColor;  /**< Title bar color */
         int titlebarHeight;        /**< Height of title bar */
 
-        Image *dLeft;              /**< Left side of title bar */
-        Image *dMid;               /**< Middle of title bar */
-        Image *dRight;             /**< Right side of title bar */
+        Image *dBackground;              /**< Left side of title bar */
+        Image *dBorders;               /**< Middle of title bar */
+        SDL_Surface *dWindowSurface; /**< The Window Surface */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;

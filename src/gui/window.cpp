@@ -47,9 +47,21 @@ Window::Window(const std::string& text, bool modal, Window *parent):
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
-    dLeft = resman->getImage("core/graphics/gui/dialog_left.png");
-    dMid = resman->getImage("core/graphics/gui/dialog_middle.png");
-    dRight = resman->getImage("core/graphics/gui/dialog_right.png");
+    dBorders = resman->getImage("core/graphics/gui/vscroll_grey.png");
+    dBackground = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+    dWindowSurface = 0;
+    
+    dWindowSurface = SDL_AllocSurface(SDL_SWSURFACE, 20, 20, (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+    Uint32 boxColor = SDL_MapRGB(screen->format, 255, 0, 255);
+    SDL_Rect sourceRect;
+    sourceRect.x = sourceRect.y = 0;
+    sourceRect.w = 20;
+    sourceRect.h = 20;
+    if ( dWindowSurface )
+    { 
+        SDL_FillRect(dWindowSurface, &sourceRect, boxColor);
+        //SDL_SetAlpha(chatBoxBackground, SDL_SRCALPHA, 120);
+    }
 
     // Register mouse listener
     addMouseListener(this);
@@ -74,6 +86,7 @@ Window::~Window()
     log("Window::~Window(\"%s\")", caption.c_str());
 
     // Free dialog bitmaps
+    SDL_FreeSurface(dWindowSurface);
     //release_bitmap(dLeft);
     //release_bitmap(dMid);
     //release_bitmap(dRight);
@@ -88,30 +101,59 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics* graphics)
 {
-    // Draw container background when opaque
-    if (mOpaque) {
-        graphics->setColor(getBaseColor());
-        graphics->fillRectangle(gcn::Rectangle(0, titlebarHeight,
-                    getDimension().width,
-                    getDimension().height - titlebarHeight));
+
+    // Resize the Window Image if it's has to be done
+    if ( (dWindowSurface->w != getWidth()) || (dWindowSurface->h != getHeight()) )
+    {
+        SDL_FreeSurface(dWindowSurface);
+        dWindowSurface = SDL_AllocSurface(SDL_SWSURFACE | SDL_SRCCOLORKEY | SDL_SRCALPHA, getWidth(), getHeight(), 
+            (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+        SDL_Rect sourceRect;
+        sourceRect.x = sourceRect.y = 0;
+        sourceRect.w = getWidth();
+        sourceRect.h = getHeight();
+        if ( dWindowSurface )
+        { 
+            // Draw the background
+            dBackground->drawPattern(dWindowSurface, 0, 0, getWidth(), getHeight());
+            // Draw the borders
+            dBorders->draw(dWindowSurface, 0, 0, 0, 0, 4, 4); // Top-Left
+            dBorders->draw(dWindowSurface, 7, 0, getWidth()-3, 0, 4, 4); // Top-Right
+            dBorders->draw(dWindowSurface, 7, 15, getWidth()-3, getHeight()-3, 4, 4); // Bottom-Right
+            dBorders->draw(dWindowSurface, 0, 15, 0, getHeight()-3, 4, 4); // Bottom-Left
+            
+            // Upper Border
+            Image *dTemp = dBorders->getSubImage(4,0,1,3);
+            dTemp->drawPattern(dWindowSurface, 4, 0, getWidth()-4-3, 3);
+            delete dTemp;
+            // Left Border
+            dTemp = dBorders->getSubImage(0,4,3,1);
+            dTemp->drawPattern(dWindowSurface, 0, 4, 3, getHeight()-4-3);
+            delete dTemp;
+            // Right Border
+            dTemp = dBorders->getSubImage(8,4,3,1);
+            dTemp->drawPattern(dWindowSurface, getWidth()-2, 4, 3, getHeight()-4-3);
+            delete dTemp;
+            // Bottom Border
+            dTemp = dBorders->getSubImage(8,15,1,3);
+            dTemp->drawPattern(dWindowSurface, 4, getHeight()-2, getWidth()-4-3, 3);
+            delete dTemp;
+    
+            SDL_SetAlpha(dWindowSurface, SDL_SRCALPHA, 160);
+        }
+        
     }
-
-    // Draw line around window
-    graphics->setColor(titlebarColor);
-    graphics->drawRectangle(gcn::Rectangle(0, titlebarHeight - 1,
-                getWidth(), getHeight() - titlebarHeight + 1));
-
-    // Skinned dialog render
+    
     int x, y;
-    getAbsolutePosition(x, y);
-
-    // Draw title bar
-    dLeft->draw(screen, x, y);
-    dMid->drawPattern(screen,
-            x + dLeft->getWidth(), y,
-            getWidth() - dLeft->getWidth() - dRight->getWidth(),
-            dMid->getHeight());
-    dRight->draw(screen, x + getWidth() - dRight->getWidth(), y);
+    getAbsolutePosition(x, y);    
+    
+    // Draw the window image
+    SDL_Rect screenRect;
+    screenRect.w = getWidth();
+    screenRect.h = getHeight();
+    screenRect.x = x;
+    screenRect.y = y;
+    if ( dWindowSurface ) SDL_BlitSurface(dWindowSurface, NULL, screen, &screenRect);
 
     // Draw title
     graphics->setFont(getFont());
