@@ -57,17 +57,17 @@ StatusWindow::StatusWindow():
     
     hp->setPosition(WIN_BORDER, WIN_BORDER);
     sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
-    healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER + 3, 80, 0, 255, 0);
+    healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER, 80, 15, 0, 255, 0);
     hpValue->setPosition(healthBar->getX() + healthBar->getWidth() + 2*CONTROLS_SEPARATOR, WIN_BORDER);
     manaBar = new ProgressBar(1.0f, WIN_BORDER + sp->getWidth() + CONTROLS_SEPARATOR,
-        hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR + 3, 80, 0, 0, 255);
+        hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR, 80, 15, 0, 0, 255);
     spValue->setPosition(manaBar->getX() + manaBar->getWidth() + 2*CONTROLS_SEPARATOR, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
     gp->setPosition(170, WIN_BORDER);
     expLabel->setPosition(WIN_BORDER, sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
     jobExpLabel->setPosition(spValue->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
     
-    xpBar = new ProgressBar(1.0f, WIN_BORDER, expLabel->getY() + expLabel->getHeight() + CONTROLS_SEPARATOR, 70, 12, 194, 255);
-    jobXpBar = new ProgressBar(1.0f, spValue->getX(), jobExpLabel->getY() + jobExpLabel->getHeight() + CONTROLS_SEPARATOR, 70, 200, 0, 0);
+    xpBar = new ProgressBar(1.0f, WIN_BORDER, expLabel->getY() + expLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 12, 194, 255);
+    jobXpBar = new ProgressBar(1.0f, spValue->getX(), jobExpLabel->getY() + jobExpLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 200, 0, 0);
     
     statsButton->setPosition(WIN_BORDER, xpBar->getY() + xpBar->getHeight() + 2*CONTROLS_SEPARATOR);
     skillsButton->setPosition(statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
@@ -139,7 +139,7 @@ void StatusWindow::update()
             (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
-
+    
     if (char_info->hp < int(char_info->max_hp / 3))
     {
         healthBar->setColor(255, 0, 0); // Red

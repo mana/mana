@@ -25,7 +25,8 @@
 #define __PROGRESSBAR_H__
 
 #include <guichan.hpp>
-#define PROGRESSBAR_HEIGHT 7
+#include "../resources/image.h"
+
 /**
  * A progress bar.
  *
@@ -37,8 +38,13 @@ class ProgressBar : public gcn::Widget {
          * Constructor, initializes the progress with the given value.
          */
         ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
-                int width = 40, unsigned char red = 150, unsigned green = 150,
+                int width = 40, int height = 7, unsigned char red = 150, unsigned green = 150,
                 unsigned char blue = 150);
+
+        /**
+         * Destructor
+         */
+        ~ProgressBar();
 
         /**
          * Draws the progress bar.
@@ -66,26 +72,16 @@ class ProgressBar : public gcn::Widget {
             Red = MyRed; Green = MyGreen; Blue = MyBlue;
         }; 
 
-        int getHeight() {
-            return PROGRESSBAR_HEIGHT;
-        };
-
-        int getWidth() {
-            return Width;
-        };
-
-        int getX() {
-            return X;
-        };
-
-        int getY() {
-            return Y;
-        };
-
     private:
         float progress;
         unsigned char Red, Green, Blue;
-        int X, Y, Width;
+        // Bar Images
+        Image *dBackground;
+        Image *dTopLeftBorder, *dTopRightBorder, *dBottomLeftBorder, *dBottomRightBorder;
+        Image *dLeftBorder, *dRightBorder, *dTopBorder, *dBottomBorder;
+        #ifndef USE_OPENGL
+        SDL_Surface *ColorBar;
+        #endif
 };
 
 #endif

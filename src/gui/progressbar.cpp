@@ -23,21 +23,58 @@
 
 #include "progressbar.h"
 #include "gui.h"
+#include "../resources/resourcemanager.h"
 
-// To draw primitives without dependencies
-void DrawPixel(SDL_Surface * screen, int x, int y, Uint8 R, Uint8 G, Uint8 B);
-void DrawLine(SDL_Surface * screen, int x1, int y1, int x2, int y2, unsigned char Red, unsigned char Green, unsigned char Blue);
-
-
-ProgressBar::ProgressBar(float progress, int x, int y, int width, unsigned char red, unsigned green, unsigned char blue)
+ProgressBar::ProgressBar(float progress, int x, int y, int width, int height, unsigned char red, unsigned green, unsigned char blue) :
+gcn::Widget()
 {
     setProgress(progress);
     Red = red;
     Green = green;
     Blue = blue;
-    X = x;
-    Y = y;
-    Width = width;
+    setX(x);
+    setY(y);
+    setWidth(width);
+    setHeight(height);
+    
+    // Load dialog title bar image
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *dBorders = resman->getImage("core/graphics/gui/vscroll_grey.png");
+    dBackground = resman->getImage("core/graphics/gui/bg_quad_dis.png");
+
+    dTopBorder = dBorders->getSubImage(4, 0, 3, 4);
+    dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);
+    dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
+    dBottomBorder = dBorders->getSubImage(4, 15, 3, 4);
+    
+    dTopLeftBorder = dBorders->getSubImage(0, 0, 4, 4);
+    dTopRightBorder = dBorders->getSubImage(7, 0, 4, 4);
+    dBottomRightBorder = dBorders->getSubImage(7, 15, 4, 4);
+    dBottomLeftBorder = dBorders->getSubImage(0, 15, 4, 4);
+    
+    dBackground->setAlpha(1.0f);
+    
+    dTopBorder->setAlpha(1.0f);
+    dBottomBorder->setAlpha(1.0f);
+    dLeftBorder->setAlpha(1.0f);
+    dRightBorder->setAlpha(1.0f);
+    
+    dTopLeftBorder->setAlpha(1.0f);
+    dTopRightBorder->setAlpha(1.0f);
+    dBottomLeftBorder->setAlpha(1.0f);
+    dBottomRightBorder->setAlpha(1.0f);
+    
+    // The color bar
+    ColorBar = SDL_CreateRGBSurface(SDL_SWSURFACE, width-8, height-8, 32,
+            red, green, blue, 160);
+    
+}
+
+ProgressBar::~ProgressBar()
+{
+    #ifndef USE_OPENGL
+    SDL_FreeSurface(ColorBar);
+    #endif
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)
@@ -45,38 +82,38 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 #ifndef USE_OPENGL
     int absx, absy;
     getAbsolutePosition(absx, absy);
+    
+    // We're drawing the bar itself first
+    // Background
+    dBackground->drawPattern(screen, absx+4, absy+4, getWidth()-8, getHeight()-8);
+    // The corners
+    dTopLeftBorder->draw(screen, absx, absy);
+    dTopRightBorder->draw(screen, absx+getWidth()-4, absy);
+    dBottomLeftBorder->draw(screen, absx, absy+getHeight()-4);
+    dBottomRightBorder->draw(screen, absx+getWidth()-4, absy+getHeight()-4);
+    
+    // The borders
+    dTopBorder->drawPattern(screen, absx+4, absy, getWidth()-8, 4);
+    dBottomBorder->drawPattern(screen, absx+4, absy+getHeight()-4, getWidth()-8, 4);
+    dLeftBorder->drawPattern(screen, absx, absy+4, 4, getHeight()-8);
+    dRightBorder->drawPattern(screen, absx+getWidth()-4, absy+4, 4, getHeight()-8);
 
-    // We're modifying pixels so we have to lock the screen.
-    SDL_LockSurface(screen);
-    
-    // outer bar
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y, absx+X+Width, absy+Y, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X, absy+Y+PROGRESSBAR_HEIGHT, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y, absx+X, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X+Width, absy+Y, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
-    
-    // Shadow of outer bar
-    DrawLine(screen, absx+X+1, absy+Y+PROGRESSBAR_HEIGHT+1, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT+1, 20, 20, 20);
-    DrawLine(screen, absx+X+Width+1, absy+Y, absx+X+Width-PROGRESSBAR_HEIGHT+1, absy+Y+PROGRESSBAR_HEIGHT, 20, 20, 20);
-    
-    
-    // Inner bar
-    int Temp = 0;
-    
-    for(int i = 1; i < PROGRESSBAR_HEIGHT; i++)
+    // And then, we color the bar to show the progress
+    SDL_Rect srcRect, destRect;
+    destRect.x = absx+4;
+    destRect.y = absy+4;
+    srcRect.x = 0;
+    srcRect.y = 0;
+    srcRect.w = getWidth();
+    srcRect.h = getHeight();
+
+    if ( ColorBar )
     {
-        Temp = absx+X+int(float(Width)*progress)-i-1;
-        if (Temp < (absx + X + PROGRESSBAR_HEIGHT + 1 - i)) Temp = (absx + X + PROGRESSBAR_HEIGHT + 1 - i);
-        DrawLine(screen, absx + X + PROGRESSBAR_HEIGHT + 1 - i, absy+Y+i, Temp, absy+Y+i, Red, Green, Blue);
+        if ( ColorBar->w < (srcRect.w)) srcRect.w=ColorBar->w;
+        if ( ColorBar->h < (srcRect.h)) srcRect.h=ColorBar->h;
+        SDL_BlitSurface(ColorBar, &srcRect, screen, &destRect);
     }
     
-    // Shadow of inner bar
-    Temp = absx+X+int(float(Width)*progress)-2;
-    if ( Temp < (absx+X+PROGRESSBAR_HEIGHT+1) ) Temp = absx+X+PROGRESSBAR_HEIGHT;
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT+1, absy+Y+1, Temp, absy+Y+1, abs(Red-40), abs(Green-40), abs(Blue-40));
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40));
-
-    SDL_UnlockSurface(screen);
 #endif
 }
 
@@ -89,127 +126,3 @@ float ProgressBar::getProgress()
 {
     return progress;
 }
-
- // This function draws a pixel on the screen depending on the resolution etc...
- void DrawPixel(SDL_Surface * screen, int x, int y, Uint8 R, Uint8 G, Uint8 B)
-{
-	Uint32 color = SDL_MapRGB(screen->format, R, G, B);
-	if ( (x >= screen->w) || (x < 0) )
-		return;
-	if ( (y >= screen->h) || (y < 0) )
-		return;
-	
-	switch (screen->format->BytesPerPixel)
-	{
-		case 1:   // Pour 8 BPP
-		{	
-			Uint8 *bufp;
-			bufp = (Uint8 *) screen->pixels + y * screen ->pitch + x;
-			*bufp = color;
-		}	
-			break;
-		
-		case 2:  // 15 ou 16 BPP
-		{	
-			Uint16 * bufp;
-			bufp = (Uint16 *)screen->pixels + y * screen->pitch/2 + x;
-			*bufp = color;
-		}
-			break;
-			
-		case 3: // 24 BPP
-		{
-			Uint8 *bufp;
-			bufp = (Uint8 *)screen->pixels + y * screen->pitch + x * 3;
-			
-			if (SDL_BYTEORDER == SDL_LIL_ENDIAN)
-			{
-				bufp[0] = color;
-				bufp[1] = color >> 8;
-				bufp[2] = color >> 16;
-			} else {
-				bufp[2] = color;
-				bufp[1] = color >> 8;
-				bufp[0] = color >> 16;
-			}
-		}
-			break;
-			
-		case 4: // 32 BPP, the most useful !
-		{
-			Uint32 *bufp;
-			bufp = (Uint32 *)screen->pixels + y * screen->pitch/4 + x;
-			*bufp = color;
-		}
-			break;
-	} 
-} // End of DrawPixel
-
-// Draw A line.
-void DrawLine(SDL_Surface * screen, int x1, int y1, int x2, int y2, unsigned char Red, unsigned char Green, unsigned char Blue)
-{
-	float a, b, Temp_x1, Temp_x2, Temp_y1, Temp_y2;
-	
-	Temp_x1 = x1;
-	Temp_x2 = x2;
-	Temp_y1 = y1;
-	Temp_y2 = y2;
-	
-	if ( (x1-x2) != 0) 
-	{
-		a=(Temp_y1-Temp_y2)/(Temp_x1-Temp_x2); // the a in y=ax+b
-	}
-	else // The line is vertical
-	{
-		if ( y1 < y2)
-		{
-			for (int Y=y1; Y<=y2; Y++)
-			{
-				DrawPixel(screen, x1, Y, Red, Green, Blue);
-			}
-		}
-		else
-		{
-			for (int Y=y2; Y<=y1; Y++)
-			{
-				DrawPixel(screen, x1, Y, Red, Green, Blue);
-			}
-		}
-		
-		return;
-	}
-	
-	b=y1-a*x1;
-	
-	if ( x1 < x2)
-	{
-		for (int X = x1; X <= x2; X++)
-		{
-			DrawPixel(screen, X, int(a*X+b), Red, Green, Blue);
-		}
-	}
-	else
-	{
-		for (int X = x2; X <= x1; X++)
-		{
-			DrawPixel(screen, X, int(a*X+b), Red, Green, Blue);
-		}
-	}
-	
-	if ( y1 < y2)
-	{
-		for (int Y = y1; Y <= y2; Y++)
-		{
-			if (a != 0) DrawPixel(screen, int((Y-b)/a), Y, Red, Green, Blue);
-		}
-	}
-	else
-	{
-		for (int Y = y2; Y <= y1; Y++)
-		{
-			if (a != 0) DrawPixel(screen, int((Y-b)/a), Y, Red, Green, Blue);
-		}
-	}
-
-} // End of DrawLine 
-
