@@ -24,6 +24,7 @@
 #include "graphics.h"
 #include "log.h"
 #include "resources/resourcemanager.h"
+#include "main.h"
 
 SDL_Surface *screen;
 
@@ -44,7 +45,7 @@ Graphics::Graphics():
     ResourceManager *resman = ResourceManager::getInstance();
     mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
     if (!mouseCursor) {
-        error("Unable to load mouse cursor.");
+        logger.error("Unable to load mouse cursor.");
     }
 
     // Initialize for drawing

@@ -203,11 +203,11 @@ Engine::Engine()
     Image *itembitmap = resman->getImage(
             "core/graphics/sprites/items.png", IMG_ALPHA);
 
-    if (!npcbmp) error("Unable to load npcs.png");
-    if (!emotionbmp) error("Unable to load emotions.png");
-    if (!monsterbitmap) error("Unable to load monsters.png");
-    if (!weaponbitmap) error("Unable to load weapons.png");
-    if (!itembitmap) error("Unable to load items.png");
+    if (!npcbmp) logger.error("Unable to load npcs.png");
+    if (!emotionbmp) logger.error("Unable to load emotions.png");
+    if (!monsterbitmap) logger.error("Unable to load monsters.png");
+    if (!weaponbitmap) logger.error("Unable to load weapons.png");
+    if (!itembitmap) logger.error("Unable to load items.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
