@@ -120,8 +120,7 @@ class Chat {
 		void chat_dlgrsize(int);
 
 		void chat_log(string, int, ALFONT_FONT *);
-		void chat_log(CHATSKILL, ALFONT_FONT *);	// function overload -> calls original chat_log()
-																							//   after processing the packet
+		void chat_log(CHATSKILL, ALFONT_FONT *);
 
 		void chat_draw(BITMAP *, int, ALFONT_FONT *);
 		char * chat_send(string, string);

@@ -101,6 +101,8 @@ void Chat::chat_log(string line, int own, ALFONT_FONT * font) {
 	chatlog.push_front(tmp);
 }
 
+/** function overload -> calls original chat_log()
+    after processing the packet */
 void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
 	chat_log(const_msg(action), BY_SERVER, font);
 }
