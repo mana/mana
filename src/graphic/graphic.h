@@ -53,7 +53,7 @@ extern char npc_button[10];
 extern StatusWindow *statusWindow;
 extern BuyDialog *buyDialog;
 extern BuySellDialog *buySellDialog;
-extern InventoryDialog *inventoryDialog;
+extern InventoryWindow *inventoryWindow;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {

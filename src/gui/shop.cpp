@@ -68,7 +68,7 @@ void add_buy_item(short id, int price) {
 }
 
 void add_sell_item(short index, int price) {
-    int id = inventoryDialog->items[index].id;
+    int id = inventoryWindow->items[index].id;
     ITEM_SHOP *item_shop = (ITEM_SHOP *)malloc(sizeof(ITEM_SHOP));
     if (id >= 501 && id <= 511)
         sprintf(item_shop->name, "%s %i gp", item_db[id-501], price);
@@ -77,7 +77,7 @@ void add_sell_item(short index, int price) {
     item_shop->price = price;
     item_shop->index = index;
     item_shop->id = id;
-    item_shop->quantity  = inventoryDialog->items[index].quantity;
+    item_shop->quantity  = inventoryWindow->items[index].quantity;
     item_shop->next = NULL;
     if (shop == NULL) 
         shop = item_shop;

@@ -24,7 +24,7 @@
 #include "inventory.h"
 #include <sstream>
 
-InventoryDialog::InventoryDialog(gcn::Container *parent):
+InventoryWindow::InventoryWindow(gcn::Container *parent):
     Window(parent, "Inventory")
 {
     setSize(322, 60);
@@ -37,11 +37,11 @@ InventoryDialog::InventoryDialog(gcn::Container *parent):
     }
 }
 
-InventoryDialog::~InventoryDialog()
+InventoryWindow::~InventoryWindow()
 {
 }
 
-void InventoryDialog::draw(gcn::Graphics *graphics)
+void InventoryWindow::draw(gcn::Graphics *graphics)
 {
     int x, y;
     getAbsolutePosition(x, y);
@@ -121,13 +121,13 @@ void InventoryDialog::draw(gcn::Graphics *graphics)
 }
 
 
-int InventoryDialog::addItem(int index, int id, int quantity) {
+int InventoryWindow::addItem(int index, int id, int quantity) {
     items[index].id = id;
     items[index].quantity += quantity;
     return 0;
 }
 
-int InventoryDialog::removeItem(int id) {
+int InventoryWindow::removeItem(int id) {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].id == id) {
             items[i].id = -1;
@@ -137,17 +137,17 @@ int InventoryDialog::removeItem(int id) {
     return 0;
 }
 
-int InventoryDialog::changeQuantity(int index, int quantity) {
+int InventoryWindow::changeQuantity(int index, int quantity) {
     items[index].quantity = quantity;
     return 0;
 }
 
-int InventoryDialog::increaseQuantity(int index, int quantity) {
+int InventoryWindow::increaseQuantity(int index, int quantity) {
     items[index].quantity += quantity;
     return 0;
 }
 
-int InventoryDialog::useItem(int index, int id) {
+int InventoryWindow::useItem(int index, int id) {
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(id);
@@ -157,7 +157,7 @@ int InventoryDialog::useItem(int index, int id) {
     return 0;
 }
 
-int InventoryDialog::dropItem(int index, int amunt) {
+int InventoryWindow::dropItem(int index, int amunt) {
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(amunt);

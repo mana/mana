@@ -56,7 +56,7 @@ gcn::TextField *chatInput;
 StatusWindow *statusWindow;
 BuyDialog *buyDialog;
 BuySellDialog *buySellDialog;
-InventoryDialog *inventoryDialog;
+InventoryWindow *inventoryWindow;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -222,9 +222,9 @@ void init_graphic() {
     buySellDialog = new BuySellDialog(guiTop, new BuySellListener());
     buySellDialog->setVisible(false);
 
-    inventoryDialog = new InventoryDialog(guiTop);
-    inventoryDialog->setVisible(false);
-    inventoryDialog->setPosition(100, 100);
+    inventoryWindow = new InventoryWindow(guiTop);
+    inventoryWindow->setVisible(false);
+    inventoryWindow->setPosition(100, 100);
 
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);

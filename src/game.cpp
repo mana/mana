@@ -288,7 +288,7 @@ void do_input() {
 			show_skill_dialog = !show_skill_dialog;
 			action_time = false;
 		} else if(key[KEY_I]) {
-			inventoryDialog->setVisible(!inventoryDialog->isVisible());
+			inventoryWindow->setVisible(!inventoryWindow->isVisible());
 			action_time = false;
 		} else if(key[KEY_K]) {
 			show_skill_list_dialog = !show_skill_dialog;
@@ -536,7 +536,7 @@ void do_parse() {
 				// Get the items
 				case 0x01ee:
 					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++) {
-						inventoryDialog->addItem(RFIFOW(4 + loop * 18),
+						inventoryWindow->addItem(RFIFOW(4 + loop * 18),
 							RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
 					}
 					break;
@@ -545,7 +545,7 @@ void do_parse() {
 					// index RFIFOW(2)
 					// succes or not RFIFOB(6);
 					//if (RFIFOB(6))
-					//  inventoryDialog->addItem(RFIFOW(2), RFIFOW(4));
+					//  inventoryWindow->addItem(RFIFOW(2), RFIFOW(4));
 					break;
 				// Warp
 					case 0x0091:
@@ -788,16 +788,16 @@ void do_parse() {
 				  if(RFIFOB(22)>0)
 				    chatlog.chat_log("Unable to pick up item", BY_SERVER, font);
 				  else
-				    inventoryDialog->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4));
+				    inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4));
 					break;
 				// Remove item to inventory after you sold it
 				case 0x00af:
           printf("sell %i\n", -RFIFOW(4));
-					inventoryDialog->increaseQuantity(RFIFOW(2), -RFIFOW(4));
+					inventoryWindow->increaseQuantity(RFIFOW(2), -RFIFOW(4));
 					break;
 				// Use an item
 				case 0x01c8:
-					inventoryDialog->changeQuantity(RFIFOW(2), RFIFOW(10));
+					inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(10));
 					break;
 				// ??
 				case 0x0119:
@@ -871,7 +871,7 @@ void do_parse() {
           break;
           case 0x00a4:
 				for (int i = 0; i < (RFIFOW(2) - 4) / 20; i++)
-					inventoryDialog->addItem(RFIFOW(4 + 20 * i), RFIFOW(6 + 20 * i), 1);
+					inventoryWindow->addItem(RFIFOW(4 + 20 * i), RFIFOW(6 + 20 * i), 1);
 			break;
 
         // Manage non implemented packets

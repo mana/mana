@@ -50,10 +50,10 @@ struct ITEM_HOLDER { // the holder of a item
  *
  * \ingroup GUI
  */
-class InventoryDialog : public Window {
+class InventoryWindow : public Window {
     public:
-        InventoryDialog(gcn::Container *parent);
-        ~InventoryDialog();
+        InventoryWindow(gcn::Container *parent);
+        ~InventoryWindow();
 
         /**
          * Draws the inventory window.
