@@ -67,11 +67,11 @@ StatsWindow::StatsWindow():
 void StatsWindow::update(){
     std::stringstream statsStr[6];
     
-    statsStr[0] << "Strenght:    "  << (int)char_info->STR;
+    statsStr[0] << "Strength:    "  << (int)char_info->STR;
     statsStr[1] << "Agility:     "  << (int)char_info->AGI;
     statsStr[2] << "Vitality:    "  << (int)char_info->VIT;
-    statsStr[3] << "Inteligence: "  << (int)char_info->INT;
-    statsStr[4] << "Dexternity:  "  << (int)char_info->DEX;
+    statsStr[3] << "Intelligence: "  << (int)char_info->INT;
+    statsStr[4] << "Dexterity:  "  << (int)char_info->DEX;
     statsStr[5] << "Luck:        "  << (int)char_info->LUK;
     
     // Update labels

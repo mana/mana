@@ -29,21 +29,34 @@ StatusWindow::StatusWindow():
     hp = new gcn::Label("HP");
     sp = new gcn::Label("SP");
     gp = new gcn::Label("GP");
+    expLabel = new gcn::Label("Exp");
+    jobExpLabel = new gcn::Label("Job");
     healthBar = new ProgressBar(1.0f);
     manaBar = new ProgressBar(1.0f);
+    expBar = new ProgressBar(1.0f);
+    jobExpBar = new ProgressBar(1.0f);
+    
 
-    setSize(270, 40);
+    setSize(270, 80);
     hp->setPosition(6, 20);
     sp->setPosition(106, 20);
     gp->setPosition(206, 20);
+    expLabel->setPosition(6, 60);
+    jobExpLabel->setPosition(106, 60);
     healthBar->setDimension(gcn::Rectangle(16, 6, 60, 18));
     manaBar->setDimension(gcn::Rectangle(116, 6, 60, 18));
+    expBar->setDimension(gcn::Rectangle(16, 36, 60, 9));
+    jobExpBar->setDimension(gcn::Rectangle(116, 36, 60, 9));
 
     add(hp);
     add(sp);
     add(gp);
+    add(expLabel);
+    add(jobExpLabel);
     add(healthBar);
     add(manaBar);
+    add(expBar);
+    add(jobExpBar);
 }
 
 StatusWindow::~StatusWindow()
@@ -51,8 +64,12 @@ StatusWindow::~StatusWindow()
     delete hp;
     delete sp;
     delete gp;
+    delete expLabel;
+    delete jobExpLabel;
     delete healthBar;
     delete manaBar;
+    delete expBar;
+    delete jobExpBar;
 }
 
 void StatusWindow::update()
@@ -72,6 +89,14 @@ void StatusWindow::update()
     gp->adjustSize();
 
     sprintf(tempstr, "SP % 4d / % 4d", char_info->sp, char_info->max_sp);
+    sp->setCaption(tempstr);
+    sp->adjustSize();
+    
+    sprintf(tempstr, "Exp %d", char_info->xp);
+    expLabel->setCaption(tempstr);
+    expLabel->adjustSize();
+    
+    sprintf(tempstr, "Job Points %d", char_info->job_xp);
     sp->setCaption(tempstr);
     sp->adjustSize();
 
