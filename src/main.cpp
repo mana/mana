@@ -196,7 +196,14 @@ void init_engine() {
 
     SDL_WM_SetCaption("The Mana World", NULL);
 
-    screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE | SDL_ANYFORMAT);
+
+    int displayFlags = SDL_SWSURFACE | SDL_ANYFORMAT;
+
+    if ((int)config.getValue("screen", 0)) {
+        displayFlags |= SDL_FULLSCREEN;
+    }
+
+    screen = SDL_SetVideoMode(800, 600, 16, displayFlags);
     if (screen == NULL) {
         std::cerr << "Couldn't set 800x600x16 video mode: " <<
             SDL_GetError() << std::endl;
