@@ -148,7 +148,7 @@ void do_init() {
     player_node->weapon = char_info->weapon;
     add_node(player_node);
 
-    remove("./docs/packet.list");
+    //remove("./docs/packet.list");
 }
 
 void do_exit() {
@@ -408,11 +408,11 @@ void do_parse() {
             }
             fclose(file);
             */
-#ifdef DEBUG
+/*#ifdef DEBUG
             FILE *file = fopen("./docs/packet.list", "ab");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif
+#endif */
             // Parse packet based on their id
             switch(id) {
                 // Received speech
