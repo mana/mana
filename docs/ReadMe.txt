@@ -4,7 +4,7 @@
   irc://irc.freenode.net/manaworld
   umperio@users.sourceforge.net
 
-  Release info: 
+  Release info:
     - Version: 0.0.8 pre release
     - Date: ?/?/2004
 
@@ -13,7 +13,7 @@
     - kth5 (Programmer)
     - Ultramichy (Game server admin)
     - Rotonen (Background story and music)
-  
+
   Special thanks:
     - Sull (Linux Developer)
     - natsuki (Win32 Developer)
@@ -42,12 +42,13 @@
 1. Setup
 --------
 
-Before running the client please open tmw.ini and choose your keyboard layout so the GUI properly works.
+Before running the client please open tmw.ini and choose your keyboard layout so the GUI works properly.
 
 2. Account
 ----------
 
-To create an account, add _M after you username when you login for the first time and enter a password of your choice. Remember: the server is only for development or demo purposes (Thanks again to Ultramichy for hosting the server).
+To create an account, add "_M" after your username when you login for the first time and enter a password of your choice.
+Remember: the server is only for development or demo purposes (Thanks again to Ultramichy for hosting the server).
 
 3. Commands
 -----------
