@@ -95,11 +95,20 @@ void ChatBox::draw(gcn::Graphics *graphics)
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
 
     getAbsolutePosition(x, y);
-    //set_trans_blender(0, 0, 0, 100);
-    //drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
-    //rectfill(buffer, x, y, x + getWidth(), y + getHeight(),
-    //        makecol(255, 255, 255));
-    //drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
+    
+    SDL_Rect SourceRect, ScreenRect;
+    SourceRect.x = SourceRect.y = 0;
+    SourceRect.w = ScreenRect.w = getWidth();
+    SourceRect.h = ScreenRect.h = getHeight();
+    ScreenRect.x = x;
+    ScreenRect.y = y;
+    SDL_Surface *ChatBoxBackground = SDL_AllocSurface(SDL_HWSURFACE, getWidth(),getHeight(), (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+    Uint32 Color = SDL_MapRGB(screen->format, 255, 255, 255);
+    SDL_FillRect(ChatBoxBackground, &SourceRect, Color);
+    SDL_SetAlpha(ChatBoxBackground, SDL_SRCALPHA, 120);
+    SDL_BlitSurface(ChatBoxBackground, &SourceRect, screen, &ScreenRect);
+    SDL_FreeSurface(ChatBoxBackground);
+    //delete ChatBoxBackground;
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;
