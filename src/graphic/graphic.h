@@ -26,7 +26,6 @@
 
 class Graphics;
 
-#include "../map.h"
 #include "../gui/npc.h"
 #include "../gui/npc_text.h"
 #include "../gui/buy.h"
@@ -37,13 +36,13 @@ class Graphics;
 #include "../gui/shop.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
-#include "../gui/npc.h"
 #include "../gui/status.h"
 #include "../gui/stats.h"
 #include "../gui/skill.h"
 #include "../gui/setup.h"
 #include "../gui/equipment.h"
 #include "../resources/resourcemanager.h"
+#include "../map.h"
 #include "spriteset.h"
 #include <SDL.h>
 #include <guichan/sdl.hpp>
