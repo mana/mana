@@ -1,3 +1,26 @@
+/*
+ *  The Mana World
+ *  Copyright 2004 The Mana World Development Team
+ *
+ *  This file is part of The Mana World.
+ *
+ *  The Mana World is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  The Mana World is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Mana World; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ */
+
 #ifndef _IMAGE_H
 #define _IMAGE_H
 
@@ -7,26 +30,25 @@
 #include <iostream>
 #include "../log.h"
 
-
-class IMAGE {
+class Image {
   protected:
     int offset_x, offset_y;
   public:
-    IMAGE(int offset_x, int offset_y) {
+    Image(int offset_x, int offset_y) {
       this->offset_x = offset_x;
       this->offset_y = offset_y;
     }  
     virtual void draw(BITMAP *dest, int x, int y) = 0;
 };
 
-class RLE_IMAGE : public IMAGE {
+class RleImage : public Image {
   private:
     RLE_SPRITE *src;
   public:
-    RLE_IMAGE(RLE_SPRITE *src, int offset_x, int offset_y) : IMAGE(offset_x, offset_y) {
+    RleImage(RLE_SPRITE *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
       this->src = src;
     }
-    virtual ~RLE_IMAGE() {
+    virtual ~RleImage() {
       destroy_rle_sprite(src);
     }  
     void draw(BITMAP *dest, int x, int y) {
@@ -34,14 +56,14 @@ class RLE_IMAGE : public IMAGE {
     }    
 };
 
-class VIDEO_IMAGE : public IMAGE {
+class VideoImage : public Image {
   private:
     BITMAP *src;
   public:
-    VIDEO_IMAGE(BITMAP *src, int offset_x, int offset_y) : IMAGE(offset_x, offset_y) {
+    VideoImage(BITMAP *src, int offset_x, int offset_y) : Image(offset_x, offset_y) {
       this->src = src;
     }
-    virtual ~VIDEO_IMAGE() {
+    virtual ~VideoImage() {
       destroy_bitmap(src);
     }
     void draw(BITMAP *dest, int x, int y) {
@@ -49,15 +71,15 @@ class VIDEO_IMAGE : public IMAGE {
     }
 };
 
-class SPRITESET {
+class Spriteset {
     private:
         int get_property(DATAFILE *datafile, int type) {
             return atoi(get_datafile_property(datafile, type));
         }  
     public:
-        std::vector<IMAGE *> spriteset; 
+        std::vector<Image *> spriteset; 
          
-    SPRITESET(std::string filename) {
+    Spriteset(std::string filename) {
       DATAFILE *datafile = load_datafile(filename.c_str());
       if(!datafile)error("Unable to load graphic file: " + filename);
       int i = 0;
@@ -69,20 +91,17 @@ class SPRITESET {
           if(temp_video_bitmap) {
             clear_to_color(temp_video_bitmap, makecol(255,0,255));
             draw_rle_sprite(temp_video_bitmap, (RLE_SPRITE *)datafile[i].dat, 0, 0);
-            temp_image = new VIDEO_IMAGE(temp_video_bitmap, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+            temp_image = new VideoImage(temp_video_bitmap, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
           } else {
             warning("You ran out of video memory!");
-            temp_image = new RLE_IMAGE((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+            temp_image = new RleImage((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
           }          
         } else {
-          temp_image = new RLE_IMAGE((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
+          temp_image = new RleImage((RLE_SPRITE*)datafile[i].dat, get_property(&datafile[i], DAT_ID('X','C','R','P')), get_property(&datafile[i], DAT_ID('Y','C','R','P')));
         }
         spriteset.push_back(temp_image);
         i++;
       }  
-      // Do not unload the datafile, instead just use the allocated memory
-      // directly without making copies.
-      //unload_datafile(datafile);
     }
 };
 
