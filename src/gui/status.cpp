@@ -52,8 +52,8 @@ StatusWindow::StatusWindow():
     inventoryButton->setEventId("Inventory");
     inventoryButton->addActionListener(this);
     
-    setupButton = new Button("Config");
-    setupButton->setEventId("Config");
+    setupButton = new Button("Setup");
+    setupButton->setEventId("Setup");
     setupButton->addActionListener(this);
     
     hp->setPosition(WIN_BORDER, WIN_BORDER);
