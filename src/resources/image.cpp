@@ -103,7 +103,7 @@ Image* Image::load(const std::string &filePath, int flags)
             rmask, gmask, bmask, amask);
 
     if (formatImage == NULL) {
-        log("Error", "Image load failed: not enough memory");
+        logger.log("Error", "Image load failed: not enough memory");
     }
 
     SDL_Surface *image = SDL_ConvertSurface(
@@ -151,7 +151,7 @@ Image* Image::load(const std::string &filePath, int flags)
 
     GLuint texture;
     glGenTextures(1, &texture);
-    log("Binding texture %d (%dx%d)", texture, realWidth, realHeight);
+    logger.log("Binding texture %d (%dx%d)", texture, realWidth, realHeight);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(
             GL_TEXTURE_2D, 0, 4,
@@ -191,7 +191,7 @@ Image* Image::load(const std::string &filePath, int flags)
                 errmsg = "GL_OUT_OF_MEMORY";
                 break;
         }
-        log("Error: Image GL import failed: %s", errmsg.c_str());
+        logger.log("Error: Image GL import failed: %s", errmsg.c_str());
         return NULL;
     }
 

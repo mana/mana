@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#include "network.h"
 #include "../main.h"
+#include "network.h"
 #ifndef WIN32
 #include <unistd.h>
 #include <fcntl.h>
