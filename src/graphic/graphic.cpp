@@ -268,15 +268,19 @@ Engine::Engine()
 
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *npcbmp = resman->getImage("graphic/npcset.bmp");
-    Image *emotionbmp = resman->getImage("graphic/emotionset.bmp");
-    Image *tilesetbmp = resman->getImage("graphic/tileset.bmp");
-    Image *monsterbitmap = resman->getImage("graphic/monsterset.bmp");
+    Image *npcbmp = resman->getImage(
+            "core/graphics/sprites/npcs.png");
+    Image *emotionbmp = resman->getImage(
+            "core/graphics/sprites/emotions.png");
+    Image *tilesetbmp = resman->getImage(
+            "core/graphics/tiles/desert.png");
+    Image *monsterbitmap = resman->getImage(
+            "core/graphics/sprites/monsters.png");
 
-    if (!npcbmp) error("Unable to load npcset.bmp");
-    if (!emotionbmp) error("Unable to load emotionset.bmp");
-    if (!tilesetbmp) error("Unable to load tileset.bmp");
-    if (!monsterbitmap) error("Unable to load monsterset.bmp");
+    if (!npcbmp) error("Unable to load npcs.png");
+    if (!emotionbmp) error("Unable to load emotions.png");
+    if (!tilesetbmp) error("Unable to load desert.png");
+    if (!monsterbitmap) error("Unable to load monsters.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);

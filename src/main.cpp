@@ -210,22 +210,19 @@ void init_engine() {
 
     ResourceManager *resman = ResourceManager::getInstance();
 
-    login_wallpaper = resman->getImage("graphic/login.bmp");
-    Image *playerImg = resman->getImage("graphic/playerset.bmp");
-    Image *hairImg = resman->getImage("graphic/hairset.bmp");
+    login_wallpaper = resman->getImage(
+            "core/graphics/images/login_wallpaper.png");
+    Image *playerImg = resman->getImage(
+            "core/graphics/sprites/player_male_base.png");
+    Image *hairImg = resman->getImage(
+            "core/graphics/sprites/player_male_hair.png");
 
     if (!login_wallpaper) error("Couldn't load login.bmp");
-    if (!playerImg) error("Couldn't load playerset.bmp");
+    if (!playerImg) error("Couldn't load playerset.png");
     if (!hairImg) error("Couldn't load hairset.bmp");
 
-    // Stretch some bitmaps while they haven't been replaced with higher res
-    Image *scaledPlayerImg = playerImg->getScaledInstance(
-            playerImg->getWidth() * 2, playerImg->getHeight() * 2);
-    Image *scaledHairImg = hairImg->getScaledInstance(
-            hairImg->getWidth() * 2, hairImg->getHeight() * 2);
-
-    playerset = new Spriteset(scaledPlayerImg, 160, 120);
-    hairset = new Spriteset(scaledHairImg, 40, 40);
+    playerset = new Spriteset(playerImg, 160, 120);
+    hairset = new Spriteset(hairImg, 40, 40);
 
     init_gui(graphics);
     state = LOGIN;
