@@ -90,8 +90,6 @@ void game() {
   while(state!=EXIT) {
     status("INPUT");
     do_input();
-    status("LOGIC");
-    do_logic();
     if(refresh) {
       status("GRAPHIC");
       do_graphic();
@@ -112,7 +110,7 @@ void do_init() {
 
   if(!load_map(map_path))error("Could not find map file");
     
-  sound.StartMOD("Sound/Mods/somemp.xm",-1);
+  sound.StartMOD(".data/sound/mods/somemp.xm", -1);
 
 	// Initialize timers
   tick_time = 0;  
@@ -284,12 +282,6 @@ void do_input() {
 	
   if(key[KEY_ESC])state = EXIT;
 
-}
-
-
-
-/** Update game logic */
-void do_logic() {
 }
 
 /** Calculate packet length */

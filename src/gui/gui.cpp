@@ -25,7 +25,7 @@
 #include "allegro/internal/aintern.h"
 #include <math.h>
 #include <alfont.h>
-#include "../Sound/sound.h"
+#include "../sound/sound.h"
 
 #ifndef WIN32
 #define __cdecl __attribute__((cdecl))

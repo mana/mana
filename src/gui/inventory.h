@@ -34,7 +34,7 @@
 #include "../main.h"
 #include "../game.h"
 #include "../log.h"
-#include "../Net/network.h"
+#include "../net/network.h"
 #include "gui.h"
 
 struct itemHolder { // the holder of a item

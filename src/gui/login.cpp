@@ -22,7 +22,7 @@
 */
 
 #include "login.h"
-#include "../Graphic/graphic.h"
+#include "../graphic/graphic.h"
 
 /** Display login GUI */
 void login() {

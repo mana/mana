@@ -22,7 +22,7 @@
 */
 
 #include "char_select.h"
-#include "../Graphic/graphic.h"
+#include "../graphic/graphic.h"
 
 char button_state[3];
 char address[41];

@@ -31,7 +31,7 @@
 #include <allegro.h>
 
 #include "../main.h"
-#include "../Net/network.h"
+#include "../net/network.h"
 #include "gui.h"
 
 void char_server();
