@@ -1,26 +1,27 @@
-1) Gui
-    - Fix drag & drop (ElvenProgrammer)
-    - Add iconify button (ElvenProgrammer)
-    - Trading system (SimEdw)
-    - Add config dialog (SimEdw)
-2) Sound engine
-    - ogg/mp3 playback (kth5)
-3) Npc
-    - Quest system (SimEdw)
-4) Chat
-    - Linewrapping in chatbox (kth5)
-5) Graphics & animation
-    - Animated and transparent tiles (ElvenProgrammer)
-    - Fix fringe layer (ElvenProgrammer)
-6) Battle system 
-    - General fixes (ElvenProgrammer)
-    - Long range weapons
-    - Magic attacks
-7) Misc
-    - Keyboard shortcuts
-    - Clothing and hairstyling system
-    - Item drops (ElvenProgrammer)
-    - Minimap
-8) Optimization
-    - Bubble sort->quick sort
-    - Fix A*
+Gui
+  - Fix drag & drop (ElvenProgrammer)
+  - Add iconify button (ElvenProgrammer)
+  - Trading system (SimEdw)
+  - Add config dialog (SimEdw)
+
+Npc
+  - Quest system (SimEdw)
+
+Graphics & animation
+  - Animated and transparent tiles (ElvenProgrammer)
+  - Fix fringe layer (ElvenProgrammer)
+
+Battle system 
+  - General fixes (ElvenProgrammer)
+  - Long range weapons
+  - Magic attacks
+
+Misc
+  - Keyboard shortcuts
+  - Clothing and hairstyling system
+  - Item drops (ElvenProgrammer)
+  - Minimap
+
+Optimization
+  - Bubble sort->quick sort
+  - Fix A*

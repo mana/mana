@@ -67,35 +67,43 @@ struct NODE {
     short weapon;
 };
 
+/** Removes all beings from the list */
 void empty();
+
+/** Returns the first node of the list */
 NODE *get_head();
+
+/** Add a node to the list */
 void add_node(NODE *node);
+
+/** Return a specific id node */
 NODE *find_node(unsigned int id);
+
+/** Remove a node */
 void remove_node(unsigned int id);
+
+/** Returns number of beings in the list */
 unsigned int get_count();
-bool remove_being(char *data);
-void remove_being(unsigned int id);
-int get_beings_size();
-bool is_being(int id);
-void popup_being(unsigned char type, char *data);
-void move_being(char *data);
-PATH_NODE *calculate_path(unsigned short src_x, unsigned short src_y, unsigned short dest_x, unsigned short dest_y);
+
+PATH_NODE *calculate_path(
+        unsigned short src_x, unsigned short src_y,
+        unsigned short dest_x, unsigned short dest_y);
+
+/** Returns the id of a being in the list */
 unsigned int get_id(NODE *node);
+
+/** Find a NPC id based on its coordinates */
 unsigned int find_npc(unsigned short x, unsigned short y);
+
+/** Find a MONSTER id based on its coordinates */
 unsigned int find_monster(unsigned short x, unsigned short y);
+
+/** Sort beings in vertical order */
 void sort();
+
+/** Remove all path nodes from a being */
 void empty_path(NODE *node);
 
 extern NODE *player_node;
-
-class Being {
-    public:
-        unsigned int id;
-        unsigned short x, y, direction;
-        unsigned short image;
-        unsigned char action, frame;
-};
-
-//std::vector<Being *> beings;
 
 #endif
