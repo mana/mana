@@ -350,26 +350,6 @@ BuildCmd=
 dev-cpp projectfile for tmw by kth5 XD
 
 [Unit31]
-FileName=Chat\chat.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit32]
-FileName=Chat\chat.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit33]
 FileName=Gui\inventory.h
 CompileCpp=1
 Folder=The Mana World
@@ -379,8 +359,28 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit34]
+[Unit32]
 FileName=Gui\inventory.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit33]
+FileName=Gui\skill.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit34]
+FileName=Gui\skill.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -391,9 +391,9 @@ BuildCmd=
 ########Text Field info#####
 
 [Unit35]
-FileName=Gui\skill.h
+FileName=Gui\chat.cpp
 CompileCpp=1
-Folder=The Mana World
+Folder=The Mana World/login.h
 Compile=1
 Link=1
 Priority=1000
@@ -401,9 +401,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit36]
-FileName=Gui\skill.cpp
+FileName=Gui\chat.h
 CompileCpp=1
-Folder=The Mana World
+Folder=The Mana World/login.h
 Compile=1
 Link=1
 Priority=1000
