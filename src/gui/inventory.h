@@ -19,12 +19,12 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef _INVENTORY_H
+#define _INVENTORY_H 
+
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-
-#ifndef _INVENTORY_H
-#define _INVENTORY_H 
 
 #include <allegro.h>
 #include "../main.h"

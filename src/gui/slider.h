@@ -19,27 +19,37 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_CHECKBOX_H
-#define _TMW_CHECKBOX_H
+#ifndef _TMW_SLIDER_H
+#define _TMW_SLIDER_H
 
 #include "gui.h"
 
 /**
- * Check box widget. Same as the Guichan check box but with custom look.
+ * Slider widget. Same as the Guichan slider but with custom look.
  *
  * \ingroup GUI
  */
-class CheckBox : public gcn::CheckBox {
+class Slider : public gcn::Slider {
     public:
+        /**
+         * Constructor with scale start equal to 0.
+         */
+        Slider(double scaleEnd = 1.0);
+
         /**
          * Constructor.
          */
-        CheckBox(const std::string& caption, bool marked = false);
+        Slider(double scaleStart, double scaleEnd);
 
         /**
-         * Draws the check box, not the caption.
+         * Draws the slider.
          */
-        void drawBox(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
+
+        /**
+         * Draws the marker.
+         */
+        void drawMarker(gcn::Graphics *graphics);
 };
 
 #endif

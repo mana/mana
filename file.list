@@ -17,12 +17,13 @@ MODULES = src/sound/sound.cpp \
           src/gui/setup.cpp \
           src/gui/shop.cpp \
           src/gui/skill.cpp \
+          src/gui/slider.cpp \
           src/gui/stats.cpp \
           src/gui/textfield.cpp \
           src/gui/window.cpp \
           src/net/network.cpp \
           src/net/protocol.cpp \
-	  src/configuration.cpp \
+          src/configuration.cpp \
           src/astar.cpp \
           src/being.cpp \
           src/game.cpp \

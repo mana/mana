@@ -513,7 +513,6 @@ void do_graphic(void) {
     guiGraphics->setTarget(vpage[page_num]);
     gui_update(NULL);
 
-    //inventory.draw(vpage[page_num]);
 
     set_trans_blender(0, 0, 0, 110);
     draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H - 125);
