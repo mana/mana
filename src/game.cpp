@@ -752,9 +752,9 @@ void do_parse() {
                     break;
                     // Level up
                 case 0x019b:
-                    if(RFIFOL(2)==player_node->id) {
+                    if (RFIFOL(2) == player_node->id) {
 #ifndef WIN32
-                        SOUND_SID sound_id = sound.loadItem("./data/sound/wavs/level.wav");
+                        SOUND_SID sound_id = sound.loadItem("./data/sound/wavs/level.ogg");
                         sound.startItem(sound_id, 64);
                         sound.clearCache();
 #endif /* not WIN32 */

@@ -319,7 +319,7 @@ int main() {
          sound.setVolume(64);
         
          /* left here to serve as an example ;) 
-         SOUND_SID id = sound.loadItem("./data/sound/wavs/level.wav");
+         SOUND_SID id = sound.loadItem("./data/sound/wavs/level.ogg");
          sound.startItem(id, 70);*/
     } catch (const char *err) {
          ok("Sound Engine", err);
