@@ -18,7 +18,11 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+<<<<<<< newskill.cpp
  *  $Id$
+=======
+ *  $Id$
+>>>>>>> 1.2
  */
 
  /* This file implements the new skill dialog for use under the latest
@@ -34,9 +38,14 @@
 char *skill_name[] = {
     // 0-99
     // weapon skills 0-9
-    "Short Blades", "Long Blades", "Hammers", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
-    "", "", "", "", "", "", "", "", "", "",
+    "Short Blades", "Long Blades", "Hammers", "Archery", "Whip",
+    "Exotic", "Throwing ", "Piercing", "Hand to Hand", "",
+    // magic skills 10-19
+    "Djin (Fire)", "Niksa (Water)", "Earth (Kerub)", "Air (Ariel)",
+    "Paradin (Light)", "Tharsis (Dark)", "Crono (Time)", "Astra (Space)",
+    "Gen (Mana)", "",
+    // craft skills 20-29
+    "Weaponsmithing", "Armorcrafting", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
@@ -67,6 +76,10 @@ NewSkillDialog::NewSkillDialog():
 
     // setting up the container
     skillList = new gcn::Container();
+    skillList->setDimension(gcn::Rectangle(0,0,230,600));
+    for(int b=0;b<N_SKILL;b++) {
+        skillList->add(&skillLabel[b],20,6 + 12*b);}
+        
     skillList->setDimension(gcn::Rectangle(0, 0, 230, 600));
     for (int b = 0; b < N_SKILL; b++) {
         skillList->add(&skillLabel[b], 20, 20 * b);
@@ -89,7 +102,7 @@ NewSkillDialog::NewSkillDialog():
 NewSkillDialog::~NewSkillDialog()
 {
     delete skillScrollArea;
-    delete[] skillLabel;
+    delete []skillLabel;
     delete closeButton;
 }
 
