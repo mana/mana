@@ -39,137 +39,86 @@
             truments can be a result.
             32/20 sounds realistic here.
 */
-void TmwSound::Init(int voices, int mod_voices) {
-    isOk = -1;
+void Sound::init(int voices, int mod_voices) {
+    if(isOk == 0) {
+        throw("Sound engine cannot be initialized twice!\n");
+    }
 
-    if(mod_voices >= voices)
-        throw("No voices left for SFX! Sound will be disabled!");
-
-    install_timer();
-    reserve_voices (voices, -1);
-
-    #ifdef WIN32
-        if (install_sound (DIGI_AUTODETECT, MIDI_AUTODETECT, NULL) < 0)
-    #else
-        if (install_sound (DIGI_AUTODETECT, MIDI_NONE, NULL) < 0)
-    #endif
-            throw("Could not initialize sound... :-(");
-
-
-    if (install_mod (mod_voices) < 0)
-        throw("Could not install MOD player... :-(");
-
-    mod = NULL;
-    mid = NULL;
-    sfx = NULL;
-
+    bgm = NULL;
+    int audio_rate = 44100;
+    Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
+    int audio_channels = 2;
+    int audio_buffers = 4096;
+    
+    if(Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
+        #ifndef __DEBUG
+            throw("Unable to open audio device!\n");
+        #else
+            throw(Mix_GetError());
+        #endif
+    }
+    
+    Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
+    
     pan = 128;
-    pitch=1000;
-
-    items = 0;
-
+    items = -1;
     isOk = 0;
+    
+    #ifdef __DEBUG
+        std::cout << "Sound::Init() Initializing Sound\n";
+    #endif
 }
 
 /**
-    \brief set the volume value-range: 0-255
-    \param digi for digital playback
-    \param mid for midi playback
-    \param mod for... aw, you guess ^^
-
+    \brief set the volume value-range: 0-128
+    \param music volume value
+    
     NOTE:
-        all values may only be between 0-255 where 0 means
+        all values may only be between 0-128 where 0 means
         muted.
 */
-void TmwSound::SetVol(int digi, int mid, int mod) {
+void Sound::setVolume(int music) {
     if(isOk==-1)
         return;
-    set_volume(digi, mid);
-    set_mod_volume(mod);
-    set_hardware_volume(digi, mid);
-
-    if(isMaxVol(vol_digi + digi)==false) vol_digi += digi;
-    if(isMaxVol(vol_midi + mid) ==false) vol_midi += mid;
-    if(isMaxVol(vol_mod  + mod) ==false) vol_mod  += mod;
+    
+    if(isMaxVol(music) == false) {
+        vol_music = music;
+        Mix_VolumeMusic(vol_music);
+    }
 }
 
 /**
     \brief adjusts current volume
-    \param adigi for digital playback
-    \param amid for midi playback
-    \param amod for... aw, you guess ^^
-
-    NOTE:
-        all values may only be between 0-255 where 0 means
-        muted.
+    \param amusic volume difference
 */
-void TmwSound::SetAdjVol(int adigi, int amid, int amod) {
+void Sound::adjustVolume(int amusic) {
     if(isOk==-1)
         return;
-    set_volume(vol_digi + adigi, vol_midi + amid);
-    set_mod_volume(vol_mod + amod);
-
-    if(isMaxVol(vol_digi + adigi)==false) vol_digi += adigi;
-    if(isMaxVol(vol_midi + amid) ==false) vol_midi += amid;
-    if(isMaxVol(vol_mod  + amod) ==false) vol_mod  += amod;
+    
+    if(isMaxVol(vol_music + amusic) == false) {
+        vol_music += amusic;
+        Mix_VolumeMusic(vol_music);
+    }
 }
 
 /**
-    \brief start BGM using a midi file
-    \param in full path of midi file
+    \brief start BGM
+    \param in full path to file
     \param loop how many times should the midi be looped? (-1 = infinite)
-
-    NOTE:
-        playing midi does not steal away any voices but
-        does not work w/ most soundcards w/o software
-        emulation. this means that *nix-users will most
-        probably be left out. do not use this unless we
-        find a way to always get it to work. :-)
-
-        at this point of time only standard RMI midi files
-        can be played. so no m$ extensions like GS and such.
 */
-void TmwSound::StartMIDI(char *in, int loop) {
+void Sound::startBgm(char * in, int loop) {
     if(isOk==-1)
         return;
-
-    mid = load_midi(in);
-    if (!mid) {
-        isOk=-1;
-        throw("Could not load MIDI file!");
+        
+    if(bgm != NULL) {
+        stopBgm();
     }
-
-    play_midi(mid, TRUE);
-}
-
-/**
-    \brief start BGM using a mod file
-    \param in full path of mod file
-    \param loop how many times should the midi be looped? (-1 = infinite)
-
-    NOTE:
-        playing mod is a pretty good choice. most of the work
-        is being done by the cpu so it's not dependend on the
-        sound-card how things sound. if it works, it just
-        works! ;-)
-
-        JGMOD supports several formats:
-                MOD
-                S3M
-                XM
-                Unreal
-                and S3M (in UMX extension)
-*/
-void TmwSound::StartMOD(char * in, int loop) {
-    if(isOk==-1)
-        return;
-
-    mod = load_mod(in);
-    if(!mod) {
-        isOk=-1;
-        throw("Error reading MOD file...");
-    }
-    play_mod(mod, TRUE);
+    
+    bgm = Mix_LoadMUS(in);
+    Mix_PlayMusic(bgm, loop);
+    #ifdef __DEBUG
+        std::cout << "Sound::startBgm() Playing \"" << in << "\" " << loop << " times\n";
+    #endif
 }
 
 /**
@@ -182,123 +131,79 @@ void TmwSound::StartMOD(char * in, int loop) {
         passing NULL to the playing functions only means to make
         playback stop.
 */
-void TmwSound::StopBGM() {
-    if(isOk==-1)
+void Sound::stopBgm() {
+    if(isOk==-1) {
         return;
-
-    play_midi(NULL,-1);
-    stop_mod();
-
-    mod = NULL;
-    mid = NULL;
-}
-
-/**
-    \brief play short sample usually for sfx
-    \param in full path to the sample file
-    \param pan panning of the sound, values can be 0-255 where 128 is the middle
-
-    NOTE:
-        later on this will be a subsequent call to another
-        function that preloads all wavs corresponding to
-        the current area (e.g. monster screams) to memory.
-        right now the function loads the file from hdd
-        everytime you want it to be played. this is kind of
-        resource intensive even though most OS'ses cache a
-        already loaded file for some time.
-
-        allegro supports different formats but this is not
-        stated clear enough - these will work for sure:
-                WAV
-                VOC
-
-        i don't know what kind of samples are necessary so we
-        need to test this thoroughly.
-*/
-void TmwSound::StartWAV(char * in, int pan) {
-    if(isOk==-1)
-        return;
-
-    sfx = load_sample(in);
-    if (!sfx)
-        throw("Error reading WAV file...");
-
-    play_sample(sfx, vol_digi, pan, pitch, FALSE);
+    }
+        
+    #ifdef __DEBUG
+        std::cout << "Sound::stopBgm()\n";
+    #endif
+        
+    if(bgm != NULL) {
+        Mix_HaltMusic();
+        Mix_FreeMusic(bgm);
+        bgm = NULL;
+    }
 }
 
 /**
     \brief preloads a sound-item into buffer
     \param fpath full path to file
-    \param type type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
+    \param type type of item (SOUND_MOD, SOUND_MID, SOUND_SFX)
 
     NOTE:
-        only TMWSOUND_SFX items get preloaded. everything
-        else will only store the full path to the file.
-
         please make sure that the object is not loaded more
-        than once since the function will not be able to run
-        checks for its own!
+        than once since the function will not run any checks
+        on its own!
 
         the return value should be kept as a reference to the
         object loaded. if not it is practicaly lost.
 */
-TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
-    POOL_ITEM item;
-    if(type == TMWSOUND_SFX) {
-        if(!(item.data = (void*)load_sample(fpath)))
-            throw(sprintf("Unable to load sample: %s\n", fpath));
+SOUND_SID Sound::loadItem(char *fpath) {
+    #ifdef __DEBUG
+        std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
+    #endif
+    Mix_Chunk *newItem;
+    if(newItem = Mix_LoadWAV(fpath)) {
+        soundpool[++items] = newItem;
+        #ifdef __DEBUG
+            std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
+        #endif
+        return items;
     }
-
-    items++;
-    item.id = items;
-    item.type = type;
-    item.fname = fpath;
-
-    soundpool.push_front(item);
-    return item.id;
-}
-
-/**
-    \brief unloads an item from the soundpool
-    \param id id returned by LoadItem()
-*/
-void TmwSound::UnloadItem(TMWSOUND_SID id) {
-    int cnt = 0;
-    POOL_ITEM item;
-    for(sounditem = soundpool.begin(); sounditem != soundpool.end(); sounditem++) {
-        item = *sounditem;
-        if(item.id == id) {
-            destroy_sample((SAMPLE*)item.data);
-            soundpool.erase(sounditem);
-            return;
-        }
-        cnt++;
-    }
+        
+    return 0;
 }
 
 /**
     \brief plays an item in soundpool
-    \param id id returned by LoadItem()
-    \param loop loop n times (-1 is infinite)
+    \param id id returned to the item in the soundpool
+    \param volume volume the sound should be played with (possible range: 0-128)
 */
-void TmwSound::PlayItem(TMWSOUND_SID id, int loop) {
-    POOL_ITEM item;
-    for(sounditem = soundpool.begin(); sounditem != soundpool.end(); sounditem++) {
-        item = *sounditem;
-        if(item.id = id) {
-            switch(item.type) {
-                case TMWSOUND_SFX :
-                    play_sample((SAMPLE*)item.data, vol_digi, pan, pitch, FALSE);
-                    break;
-                case TMWSOUND_MOD :
-                    StartMOD((char*)item.fname.c_str(),loop);
-                    break;
-                case TMWSOUND_MID :
-                    StartMIDI((char*)item.fname.c_str(),loop);
-                    break;
-            }
-        }
+void Sound::startItem(SOUND_SID id, int volume) {
+    if(soundpool[id]) {
+        #ifdef __DEBUG
+            std::cout << "Sound::startItem() playing SOUND_SID = " << id << std::endl;
+        #endif
+        Mix_VolumeChunk(soundpool[id], volume);
+        Mix_PlayChannel(-1, soundpool[id], 0);
     }
+}
+
+/**
+    \brief wipe all items off the cache
+*/
+void Sound::clearCache() {
+    for(SOUND_SID i = 0; i == items; i++) {
+        Mix_FreeChunk(soundpool[i]);
+        soundpool[i] = NULL;
+    }
+    
+    soundpool.clear();
+    #ifdef __DEBUG
+        std::cout << "Sound::clearCache() wiped all items off the cache\n";
+    #endif
 }
 
 /**
@@ -306,26 +211,25 @@ void TmwSound::PlayItem(TMWSOUND_SID id, int loop) {
 
     NOTE:
         normally you won't need to call this since this is
-        done by allegro when shutting itself down. but if
+        done by SDL when shutting itself down. but if
         you find a reason to delete the sound-engine from
         memory (e.g. garbage-collection) feel free to use
         it. :-P
 */
-void TmwSound::Close(void) {
-    mod = NULL;
-    mid = NULL;
-    sfx = NULL;
-
-    remove_mod();
-    remove_sound();
+void Sound::close(void) {
     isOk = -1;
+    clearCache();
+    Mix_CloseAudio();
+    #ifdef __DEBUG
+        std::cout << "Sound::close() shutting down Sound\n";
+    #endif
 }
 
 /**
     \brief checks if value equals min-/maximum volume and returns
     true if that's the case.
 */
-bool TmwSound::isMaxVol(int vol) {
-    if( vol > 0 && vol < 255 ) return false;
+bool Sound::isMaxVol(int vol) {
+    if( vol > 0 && vol < 128 ) return false;
     else return true;
 }

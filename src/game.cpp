@@ -40,7 +40,7 @@
 
 char map_path[480];
 
-extern TmwSound sound;
+extern Sound sound;
 
 unsigned short dest_x, dest_y, src_x, src_y;
 unsigned int player_x, player_y;
@@ -121,7 +121,7 @@ void do_init() {
         error("Could not find map file");
     }
 
-    sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
+    sound.startBgm("./data/sound/Mods/somemp.xm", -1);
 
     // Initialize timers
     tick_time = 0;
@@ -228,9 +228,9 @@ void do_input() {
     if (key[KEY_F1]) {
         save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
     } else if (key[KEY_F12]){
-        sound.SetAdjVol( 1, 1, 1);
+        sound.adjustVolume(1);
     } else if (key[KEY_F11]){
-        sound.SetAdjVol(-1,-1,-1);
+        sound.adjustVolume(-1);
     }
     if (key[KEY_F5] && action_time) {
         if (player_node->action == STAND)
@@ -707,7 +707,9 @@ void do_parse() {
 				// Level up
 				case 0x019b:
 					if(RFIFOL(2)==player_node->id) {
-					  sound.StartWAV("./data/sound/wavs/level.wav", 10);
+					  SOUND_SID sound_id = sound.loadItem("./data/sound/wavs/level.wav");
+                                          sound.startItem(sound_id, 64);
+                                          sound.clearCache();
 					}
 					break;
 				// Emotion

@@ -35,6 +35,7 @@
 #include <winalleg.h>
 #endif
 
+#include "../sound/sound.h"
 
 /*
  * The list model for modes list
@@ -71,7 +72,7 @@ class Setup : public Window, public gcn::ActionListener {
   
  public:
   void action(const std::string& eventId);
-  static Setup * create_setup();  
+  static Setup * create_setup();
 };
 
 #endif

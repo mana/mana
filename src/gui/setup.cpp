@@ -27,7 +27,8 @@
  */
 
 #include "setup.h"
-#include <allegro.h>
+
+extern Sound sound;
 
 /*
  * Metod returns the number of elements in container
@@ -153,8 +154,10 @@ void Setup::action(const std::string& eventId)
     /* Sound settings */
     if(soundCheckBox->isMarked() == true) {
             config.setValue("sound",1);
+            sound.init(32, 20);
     } else {
 	    config.setValue("sound",0);
+            sound.close();
     }
     
   } else if(eventId == "cancel") {

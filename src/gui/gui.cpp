@@ -50,7 +50,7 @@ BITMAP *gui_bitmap;
 bool drag;
 DATAFILE *gui_gfx;
 
-extern TmwSound sound;
+extern Sound sound;
 
 /* very internal update stuff */
 int (*gui__external_slider_callback)(void *, int);

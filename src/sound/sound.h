@@ -26,82 +26,58 @@
 #ifdef WIN32
     #pragma warning(disable:4312)
 #endif
-#include <allegro.h>
-#include <jgmod.h>
-#include <list>
+#include <SDL.h>
+#include <SDL_mixer.h>
+#include <map>
 #include <string>
 #include <fstream>
 
-/** mod file */
-#define TMWSOUND_MOD 1
-/** midi file */
-#define TMWSOUND_MID 2
-/** sample file */
-#define TMWSOUND_SFX 3
+#ifdef __DEBUG
+    #include <iostream>
+#endif
 
-typedef unsigned short TMWSOUND_SID ;
+typedef short SOUND_SID ;
 
 /**
  * Sound engine
  *
  * \ingroup CORE
  */
-class TmwSound {
+class Sound {
     public:
-        void  Init(int, int);
-        void  Close();
+        void  init(int, int);
+        void  close();
 
-        void  StartMIDI(char *, int);
-        void  StartMOD(char *, int);
-        void  StopBGM();
+        void  startBgm(char *, int);
+        void  stopBgm();
+       
+        void  setVolume(int);
+        void  adjustVolume(int);
 
-        void  StartWAV(char *, int);
-        void  SetVol(int, int, int);
-        void  SetAdjVol(int, int, int);
+        SOUND_SID loadItem(char *);
+        void      startItem(SOUND_SID, int);
+        
+        void      clearCache();
 
-        TMWSOUND_SID LoadItem(char *, char);
-        void UnloadItem(TMWSOUND_SID);
-        void PlayItem(TMWSOUND_SID, int);
-
-        TmwSound() {isOk=-1;}
+        Sound() {isOk=-1;}
 
         /** if allegro is shut down or object is deleted any BGM is
            stopped and SFX run out */
-        ~TmwSound() {StopBGM(); Close();};
+        ~Sound() {stopBgm(); close();};
     private:
         /** initial value is -1 which means error or noninitialzed.
            you can only play sounds and bgm if this is 0.
            that should be the case after calling Init() successfully */
         int isOk;
 
-        MIDI   * mid;
-        JGMOD  * mod;
-        SAMPLE * sfx;
-
         int pan;
-        int pitch;
+        int vol_music;
 
-        int ret;
-        int vol_digi;
-        int vol_midi;
-        int vol_mod;
-
-        /** structure can hold a sound item's attributes and data (sample-only) */
-        typedef struct POOL_ITEM {
-            /** incremental id of pool item */
-            TMWSOUND_SID id;
-            /** type of item */
-            char type;
-            /** (file-)name of sfx only kept for human reasons ^_^ */
-            std::string fname;
-            /** generic data */
-            void * data;
-        };
-
+        Mix_Music *bgm;        
+        
         /** list of preloaded sound data / items */
-        std::list<POOL_ITEM> soundpool;
-        std::list<POOL_ITEM>::iterator sounditem;
-        TMWSOUND_SID items;
+        std::map<int, Mix_Chunk*> soundpool;
+        SOUND_SID items;
 
         bool isMaxVol(int);
 };

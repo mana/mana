@@ -91,7 +91,7 @@ unsigned char stretch_mode, screen_mode;
 char *dir;
 
 // new sound-engine /- kth5
-TmwSound sound;
+Sound sound;
 // ini file configuration reader
 Configuration config;
 
@@ -267,6 +267,7 @@ void exit_engine() {
     config.write(dir);
     delete dir;
     gui_exit();
+    SDL_Quit();
     destroy_bitmap(buffer);
     allegro_exit();
 }
@@ -276,9 +277,15 @@ int main() {
     init_engine();
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
-         if (config.getValue("sound", 0) == 1)
-         sound.Init(32, 20);
-         sound.SetVol(128, 128, 128);
+         if (config.getValue("sound", 0) == 1) {
+            SDL_Init(SDL_INIT_AUDIO);
+            sound.init(32, 20);
+         }
+         sound.setVolume(64);
+        
+         /* left here to serve as an example ;) 
+         SOUND_SID id = sound.loadItem("./data/sound/wavs/level.wav");
+         sound.startItem(id, 70);*/
     } catch (const char *err) {
          ok("Sound Engine", err);
          warning(err);
@@ -299,7 +306,7 @@ int main() {
             charSelect();
             break;
         case GAME:
-            sound.StopBGM();
+            sound.stopBgm();
             status("GAME");
             map_start();
             if( state==GAME )

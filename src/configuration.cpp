@@ -100,7 +100,9 @@ bool Configuration::write(std::string filename) {
             out.write(tmp, strlen(tmp));
             strcpy(tmp, "");
         }
-        std::cout << "Configuration::write(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+        #ifdef __DEBUG
+            std::cout << "Configuration::write(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+        #endif
         out.write("\n", 1);
     }
 
@@ -163,11 +165,9 @@ void Configuration::setValue(std::string key, float value) {
     \param deflt default option if not there or error
 */
 std::string Configuration::getValue(std::string key, std::string deflt) {
-    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        if(iter->key == key)
-            return iter->stringValue;
+    if(keyExists(key)) {
+        return iter->stringValue;
     }
-
     return deflt;
 }
 
@@ -177,11 +177,9 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
     \param deflt default option if not there or error
 */
 float Configuration::getValue(std::string key, float deflt) {
-    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        if(iter->key == key)
-            return iter->numericValue;
+    if(keyExists(key)) {
+        return iter->numericValue;
     }
-
     return deflt;
 }
 
