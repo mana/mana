@@ -642,9 +642,9 @@ void do_parse() {
                             break;
 			// try to get the stats point to attribute...
 			// FIXME : Wrong or misplaced...
-			case 0x0009:
-				char_info->statsPointsToAttribute = RFIFOW(4);
-			break;
+			//case 0x0009:
+			//	char_info->statsPointsToAttribute = RFIFOW(4);
+			//break;
                     }
                     statusWindow->update();
                     if(char_info->hp==0) {
