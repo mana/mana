@@ -74,6 +74,7 @@ Remember: the server is only for development or demo purposes (Thanks again to U
 0.0.8a
 - Added controlling player with arrow keys
 - Rewrote gui with Guichan
+- added scripts for easy autotools
 
 0.0.8
 - added sound support for macosx

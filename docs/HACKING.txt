@@ -102,5 +102,5 @@ necessary.
   To denote global variables and functions the lowercase_underscores style may
   be used. Hungarian style should be avoided.
 
-* Whenever you add a new source file somwhere in ./src do not forget to add them
+* Whenever you add a new source file somewhere in ./src do not forget to add them
   in ./src/Makefile.am as well!
