@@ -158,10 +158,10 @@
 				RelativePath=".\being.cpp">
 			</File>
 			<File
-				RelativePath=".\Chat\chat.cpp">
+				RelativePath=".\game.cpp">
 			</File>
 			<File
-				RelativePath=".\game.cpp">
+				RelativePath=".\Graphic\graphic.cpp">
 			</File>
 			<File
 				RelativePath=".\log.cpp">
@@ -216,6 +216,9 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\Gui\chat.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\gui.cpp">
 				</File>
 				<File
@@ -240,10 +243,10 @@
 				RelativePath=".\being.h">
 			</File>
 			<File
-				RelativePath=".\Chat\chat.h">
+				RelativePath=".\game.h">
 			</File>
 			<File
-				RelativePath=".\game.h">
+				RelativePath=".\Graphic\graphic.h">
 			</File>
 			<File
 				RelativePath=".\log.h">
@@ -283,6 +286,9 @@
 					RelativePath=".\Gui\char_server.h">
 				</File>
 				<File
+					RelativePath=".\Gui\chat.h">
+				</File>
+				<File
 					RelativePath=".\Graphic\datGraphics.h">
 				</File>
 				<File
@@ -303,9 +309,6 @@
 			Name="Resource Files"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-			<File
-				RelativePath=".\icon1.ico">
-			</File>
 			<File
 				RelativePath=".\resource.rc">
 			</File>
