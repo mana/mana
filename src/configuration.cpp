@@ -83,7 +83,7 @@ bool Configuration::write(std::string filename) {
         out.write(iter->first.c_str(), iter->first.length());
         out.write("=", 1);
 
-        if(optionTmp.numericValue == 0) {
+        if(iter->second.numericValue == 0) {
             out.write(iter->second.stringValue.c_str(), iter->second.stringValue.length());
         }else{
             sprintf(tmp, "%f", iter->second.numericValue);
