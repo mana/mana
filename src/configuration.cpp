@@ -31,67 +31,80 @@
 #include <sstream>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <libxml/xmlwriter.h>
+
+// MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
+// function at link time.
+#ifdef WIN32
+#undef xmlFree
+#define xmlFree(x) ;
+#endif
 
 void Configuration::init(std::string filename)
 {
-    //xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
-    std::ifstream inFile(filename.c_str(), std::ifstream::in);
-    std::string inBuffer;
-    unsigned int position;
+    xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
 
-    options.clear();
+    if (!doc) return;
 
-    while (inFile.good())
+    xmlNodePtr node = xmlDocGetRootElement(doc);
+
+    if (!node || !xmlStrEqual(node->name, BAD_CAST "configuration")) {
+        log("Warning: No configuration file (%s)", filename.c_str());
+        return;
+    }
+
+    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        std::getline(inFile, inBuffer, '\n');
-
-        if (inBuffer.substr(0, 1) != INI_COMMENTER)
+        if (xmlStrEqual(node->name, BAD_CAST "option"))
         {
-            // Replace spaces with void
-            while (inBuffer.find(" ", 0) != std::string::npos) {
-                inBuffer.replace(inBuffer.find(" ", 0), 1, "");
+            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
+            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+
+            if (name && value) {
+                options[std::string((const char*)name)] =
+                    std::string((const char*)value);
             }
 
-            position = inBuffer.find(INI_DELIMITER, 0);
-
-            if (position != std::string::npos)
-            {
-                std::string key = inBuffer.substr(0, position);
-
-                if (inBuffer.length() > position + 1)
-                {
-                    options[key] =
-                        inBuffer.substr(position + 1, inBuffer.length());
-                }
-
-                log("Configuration::init(%s, \"%s\")",
-                        key.c_str(), options[key].c_str());
-            }
+            if (name) xmlFree(name);
+            if (value) xmlFree(value);
         }
     }
 
-    inFile.close();
+    xmlFreeDoc(doc);
 }
 
 bool Configuration::write(std::string filename)
 {
-    std::map<std::string, std::string>::iterator iter;
-    std::ofstream out(filename.c_str(),
-            std::ofstream::out | std::ofstream::trunc);
+    xmlTextWriterPtr writer = xmlNewTextWriterFilename(filename.c_str(), 0);
 
-    for (iter = options.begin(); iter != options.end(); iter++)
+    if (writer)
     {
-        log("Configuration::write(%s, \"%s\")",
-                iter->first.c_str(), iter->second.c_str());
+        xmlTextWriterSetIndent(writer, 1);
+        xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+        xmlTextWriterStartElement(writer, BAD_CAST "configuration");
 
-        out.write(iter->first.c_str(), iter->first.length());
-        out.write("=", 1);
-        out.write(iter->second.c_str(), iter->second.length());
-        out.write("\n", 1);
+        std::map<std::string, std::string>::iterator iter;
+
+        for (iter = options.begin(); iter != options.end(); iter++)
+        {
+            log("Configuration::write(%s, \"%s\")",
+                    iter->first.c_str(), iter->second.c_str());
+
+            xmlTextWriterStartElement(writer, BAD_CAST "option");
+            xmlTextWriterWriteAttribute(writer,
+                    BAD_CAST "name", BAD_CAST iter->first.c_str());
+            xmlTextWriterWriteAttribute(writer,
+                    BAD_CAST "value", BAD_CAST iter->second.c_str());
+            xmlTextWriterEndElement(writer);
+        }
+
+        xmlTextWriterEndDocument(writer);
+        xmlFreeTextWriter(writer);
+
+        return true;
     }
 
-    out.close();
-    return true;
+    return false;
 }
 
 void Configuration::setValue(std::string key, std::string value)

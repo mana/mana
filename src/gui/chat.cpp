@@ -78,13 +78,13 @@ void ChatBox::chat_log(std::string line, int own)
     
     // A try to get text sentences no too long...
     bool finished = false;
-        while ( !finished )
+        while (!finished)
         {
             std::string tempText;
-            if ( line.length() > 60 )
+            if (line.length() > 60)
             {   
         
-                if ( line.length() > 60 )
+                if (line.length() > 60)
                     tempText = line.substr(0, 60);
                 else
                     tempText = line;

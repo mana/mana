@@ -35,6 +35,7 @@
 #include <SDL/SDL.h>
 #include <physfs.h>
 #include <libxml/xmlversion.h>
+#include <libxml/parser.h>
 
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>
@@ -133,7 +134,7 @@ void init_engine()
 
 #ifndef __USE_UNIX98
     // WIN32 and others
-    strcpy(dir, "tmw.ini");
+    strcpy(dir, "config.xml");
 #else
     // UNIX
     char *userHome;
@@ -162,10 +163,10 @@ void init_engine()
         printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
         exit(1);
     }
-    sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
+    sprintf(dir, "%s/.manaworld/config.xml", userHome);
 #endif
 
-    // Checking if the tmw.ini file exists... otherwise creates it with
+    // Checking if the configuration file exists... otherwise creates it with
     // default options !
     FILE *tmwFile = 0;
     tmwFile = fopen(dir, "r");
@@ -180,7 +181,7 @@ void init_engine()
         }
         else {
             fclose(tmwFile);
-            // Fill tmw.ini with defaults
+            // Fill configuration with defaults
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
             config.setValue("hwaccel", 0);
@@ -195,7 +196,6 @@ void init_engine()
             config.setValue("chatlog", "chatlog.txt");
 #endif
             config.setValue("remember", 1);
-            config.setValue("username", "Player");
 
             config.write(dir);
         }
@@ -315,6 +315,10 @@ void exit_engine()
     SAFE_DELETE_ARRAY(dir);
     SAFE_DELETE(gui);
     SAFE_DELETE(graphics);
+
+    // Shutdown libxml
+    xmlCleanupParser();
+
     ResourceManager::deleteInstance();
 }
 
@@ -323,6 +327,7 @@ int main(int argc, char *argv[])
 {
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
+    xmlInitParser();
     LIBXML_TEST_VERSION;
 
     // Initialize PhysicsFS
