@@ -58,6 +58,11 @@ class Image : public Resource
 #endif
 
         /**
+         * Two time intialization Contructor. For now : Only to be used with create.
+         */
+        Image();        
+
+        /**
          * Destructor.
          */
         virtual ~Image();
@@ -142,6 +147,17 @@ class Image : public Resource
          * Returns the alpha value of this image.
          */
         float getAlpha();
+
+        /**
+         * Creates a new empty image with given height and width.
+         */
+        bool create(int width, int height);
+
+        /**
+         * Fills the image with given color.
+         */
+        void fillWithColor(unsigned char red, unsigned char green, unsigned blue);
+
 
     protected:
 #ifdef USE_OPENGL

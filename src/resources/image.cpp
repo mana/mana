@@ -44,6 +44,11 @@ Image::Image(GLuint image, int width, int height, int texWidth, int texHeight):
     alpha = 1.0f;
 }
 
+Image::Image():image(image)
+{
+   alpha = 1.0f;
+}
+
 Image::~Image()
 {
     unload();
@@ -361,7 +366,30 @@ float Image::getAlpha()
     return alpha;
 }
 
+bool Image::create(int width, int height)
+{
+   image = SDL_AllocSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
+   if ( image )
+       return true;
+   else
+       return false;
+}
 
+void Image::fillWithColor(unsigned char red, unsigned char green, unsigned blue)
+{
+   Uint32 boxColor = SDL_MapRGB(SDL_GetVideoSurface()->format, red, green, blue);
+   if ( image )
+   {    
+       SDL_Rect sourceRect;
+       sourceRect.x = sourceRect.y = 0;
+       sourceRect.w = image->w;
+       sourceRect.h = image->h;
+       SDL_FillRect(image, &sourceRect, boxColor);
+   }
+}
+
+//============================================================================
+// SubImage Class
 //============================================================================
 
 #ifndef USE_OPENGL
