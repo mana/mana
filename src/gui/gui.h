@@ -38,7 +38,7 @@
  *
  * \ingroup GUI
  */
-class Gui
+class Gui : public gcn::MouseListener
 {
     public:
         /**
@@ -71,6 +71,11 @@ class Gui
          * Gui hierarchy. It also draws the mouse pointer.
          */
         void draw();
+
+        /**
+         * Handles mouse press on map.
+         */
+        void mousePress(int mx, int my, int button);
 
     private:
         gcn::Gui *gui;                        /**< The GUI system */

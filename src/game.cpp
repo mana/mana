@@ -351,14 +351,6 @@ void do_input()
                     }
                 }
             }
-            else if (event.button.button == 1)
-            {
-                // Experimental mouse walk support
-                walk(mx, my, 0);
-                player_node->setPath(tiledMap->findPath(
-                            player_node->x, player_node->y,
-                            mx, my));
-            }
         }
 
         // Push input to GUI when not used

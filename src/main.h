@@ -37,8 +37,6 @@
 #include <stdio.h>
 #include <memory>
 
-#define CORE_VERSION "0.0.9"
-
 #ifdef ERROR
 #undef ERROR
 #endif

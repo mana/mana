@@ -24,6 +24,9 @@
 #include "gui.h"
 #include "window.h"
 #include "windowcontainer.h"
+#include "../engine.h"
+#include "../net/protocol.h"
+#include "../main.h"
 
 // Guichan stuff
 Gui *gui;
@@ -53,6 +56,7 @@ Gui::Gui(Graphics *graphics):
     guiTop = new WindowContainer();
     guiTop->setDimension(gcn::Rectangle(0, 0, screen->w, screen->h));
     guiTop->setOpaque(false);
+    guiTop->addMouseListener(this);
     Window::setWindowContainer(guiTop);
 
     // Create focus handler
@@ -164,4 +168,17 @@ void Gui::draw()
 void Gui::focusNone()
 {
     focusHandler->focusNone();
+}
+
+void Gui::mousePress(int mx, int my, int button)
+{
+    // Mouse pressed on window container (basically, the map)
+    int tilex = mx / 32 + camera_x;
+    int tiley = my / 32 + camera_y;
+
+    // Experimental mouse walk support
+    walk(mx, my, 0);
+    player_node->setPath(tiledMap->findPath(
+                player_node->x, player_node->y,
+                tilex, tiley));
 }
