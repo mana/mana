@@ -240,13 +240,6 @@ void do_input() {
 	if(key[KEY_F11] && action_time==true)
 	    show_player_setup = true;
 
-  if(key[KEY_ENTER]) {
-    if(strcmp(speech, "")!=0) {
-       chatlog.chat_send(char_info[0].name, speech);
-       strcpy(speech,"");
-    }
-  }
-
   // Emotions, Skill dialog
 	if(key_shifts & KB_ALT_FLAG && action_time == true) {
 		if(player_node->emotion==0) {

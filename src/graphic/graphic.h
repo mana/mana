@@ -53,6 +53,12 @@ extern int map_x, map_y, camera_x, camera_y;
 extern BITMAP *hairset;
 extern char npc_button[10];
 
+// The action listener for the chat field
+class ChatListener : public gcn::ActionListener {
+    public:
+        void action(const std::string& eventId);
+};
+
 void set_npc_dialog(int show);
 void do_graphic(void);
 void init_graphic(void);

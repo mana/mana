@@ -57,13 +57,13 @@ int (*gui__external_slider_callback)(void *, int);
 int reroute_slider_proc(void *dp3, int d2);
 
 // Guichan Allegro stuff
-gcn::AllegroInput* input;              // Input driver
-gcn::AllegroGraphics* graphics;        // Graphics driver
+gcn::AllegroInput* guiInput;           // Input driver
+gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 gcn::AllegroImageLoader* imageLoader;  // For loading images
 
 // Guichan stuff
 gcn::Gui* gui;            // A Gui object - binds it all together
-gcn::Container* guitop;   // The top container
+gcn::Container* guiTop;   // The top container
 gcn::ImageFont* guiFont;  // A font
 
 
@@ -74,19 +74,19 @@ void init_gui(BITMAP *bitmap, const char *skin) {
     imageLoader = new gcn::AllegroImageLoader();
     gcn::Image::setImageLoader(imageLoader);
 
-    graphics = new gcn::AllegroGraphics();
-    graphics->setTarget(bitmap);
+    guiGraphics = new gcn::AllegroGraphics();
+    guiGraphics->setTarget(bitmap);
 
-    input = new gcn::AllegroInput();
+    guiInput = new gcn::AllegroInput();
 
-    guitop = new gcn::Container();
-    guitop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
-    guitop->setOpaque(false);
+    guiTop = new gcn::Container();
+    guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
+    guiTop->setOpaque(false);
 
     gui = new gcn::Gui();
-    gui->setGraphics(graphics);
-    gui->setInput(input);
-    gui->setTop(guitop);
+    gui->setGraphics(guiGraphics);
+    gui->setInput(guiInput);
+    gui->setTop(guiTop);
     guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
             " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
     gcn::Widget::setGlobalFont(guiFont);
@@ -102,13 +102,17 @@ void init_gui(BITMAP *bitmap, const char *skin) {
 }
 
 int gui_update(DIALOG_PLAYER *player) {
-    int ret;
-    gui->logic();
-    gui->draw();
+    int ret = 0;
 
     if (player) {
+        // Update Allegro dialog (to be replaced)
         dialog_message(player->dialog, MSG_DRAW, 0, 0);
         ret = update_dialog(player);
+    }
+    else {
+        // Update new GUI system using Guichan
+        gui->logic();
+        gui->draw();
     }
 
     // Draw the mouse
@@ -458,11 +462,11 @@ int gui_load_skin(const char* skinname) {
 
 void gui_exit() {
     delete guiFont;
-    delete guitop;
+    delete guiTop;
     delete gui;
 
-    delete input;
-    delete graphics;
+    delete guiInput;
+    delete guiGraphics;
     delete imageLoader;
 
     //alfont_destroy_font(gui_font);

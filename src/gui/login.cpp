@@ -110,7 +110,7 @@ void login() {
     dialog->add(okButton);
     dialog->add(cancelButton);
 
-    guitop->add(dialog);
+    guiTop->add(dialog);
     
     if (get_config_int("login", "remember", 0)) {
         if (get_config_string("login", "username", 0)) {

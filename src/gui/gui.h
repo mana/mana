@@ -103,7 +103,8 @@ extern LexSkin gui_skin;
 extern BITMAP *gui_bitmap;
 extern ALFONT_FONT *gui_font;
 
-extern gcn::Container* guitop;      // The top container
+extern gcn::Container* guiTop;                // The top container
+extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 
 /* Definition of the callback function prototypes */
 typedef int (*gui_buttonCallback)(int id);

@@ -36,8 +36,7 @@
 #include "gui.h"
 
 // The action listener for the login dialog
-class LoginActionListener : public gcn::ActionListener
-{
+class LoginActionListener : public gcn::ActionListener {
     public:
         void action(const std::string& eventId);
 };

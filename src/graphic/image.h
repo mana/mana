@@ -26,7 +26,7 @@ class RLE_IMAGE : public IMAGE {
     RLE_IMAGE(RLE_SPRITE *src, int offset_x, int offset_y) : IMAGE(offset_x, offset_y) {
       this->src = src;
     }
-    ~RLE_IMAGE() {
+    virtual ~RLE_IMAGE() {
       destroy_rle_sprite(src);
     }  
     void draw(BITMAP *dest, int x, int y) {
@@ -41,7 +41,7 @@ class VIDEO_IMAGE : public IMAGE {
     VIDEO_IMAGE(BITMAP *src, int offset_x, int offset_y) : IMAGE(offset_x, offset_y) {
       this->src = src;
     }
-    ~VIDEO_IMAGE() {
+    virtual ~VIDEO_IMAGE() {
       destroy_bitmap(src);
     }
     void draw(BITMAP *dest, int x, int y) {

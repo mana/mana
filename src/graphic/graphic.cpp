@@ -23,6 +23,7 @@
 
 #include "graphic.h"
 #include "2xsai.h"
+#include "../gui/gui.h"
 #include "../gui/setup.h"
 
 #define TILESET_W 480
@@ -41,8 +42,7 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 //char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player, *npc_list_player;
-char speech[255] = "";
+DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player, *npc_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
@@ -52,6 +52,21 @@ int show_npc_dialog = 0;
 bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
+
+gcn::TextField *chatInput;
+
+void ChatListener::action(const std::string& eventId)
+{
+    if (eventId == "chatinput") {
+        std::string message = chatInput->getText();
+        
+        if (message.length() > 0) {
+            chatlog.chat_send(char_info[0].name, message.c_str());
+            chatInput->setText("");
+        }
+    }
+}
+
 
 SPRITESET *new_tileset, *new_playerset, *new_npcset, *new_emotionset, *new_monsterset;
 
@@ -106,11 +121,12 @@ DIALOG skill_list_dialog[] = {
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,                 NULL, NULL  }
 };
 
+/*
 DIALOG chat_dialog[] = {
-   /* (dialog proc)         (x)   (y)   (w)  (h) (fg) (bg)  (key) (flags)   (d1)               (d2)           (dp)         (dp2) (dp3) */
    { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
    { NULL,                   0,    0,    0,   0,  0,    0,    0,    0,       0,                0,             NULL,        NULL, NULL  }
 };
+*/
 
 DIALOG npc_list_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -197,18 +213,29 @@ BITMAP *load_graphic_file(char *filename) {
 }  
 
 void init_graphic() {
-	//tileset = load_datafile("./data/graphic/desert.dat");
-	//if(!tileset)error("Unable to load tileset datafile");
-	//buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
-	//double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    //tileset = load_datafile("./data/graphic/desert.dat");
+    //if(!tileset)error("Unable to load tileset datafile");
+    //buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
+    //double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
 
-  alfont_set_font_size(gui_font, 16);
-	clear_bitmap(screen);
-  chat_background = create_bitmap(592, 100);
-  clear_to_color(chat_background, makecol(0,0,0));
+    alfont_set_font_size(gui_font, 16);
+    clear_bitmap(screen);
+    chat_background = create_bitmap(592, 100);
+    clear_to_color(chat_background, makecol(0,0,0));
 
-	// Initialize gui
-  chat_player = init_dialog(chat_dialog, -1);
+    // Initialize gui
+
+    // Create chat input field
+    chatInput = new gcn::TextField();
+    chatInput->setPosition(0, SCREEN_H - chatInput->getHeight());
+    chatInput->setWidth(592);
+
+    ChatListener *chatListener = new ChatListener();
+    chatInput->setEventId("chatinput");
+    chatInput->addActionListener(chatListener);
+    
+    guiTop->add(chatInput);
+
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
 	skill_player = init_dialog(skill_dialog, -1);
@@ -410,7 +437,11 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 		SuperEagle(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
 		
 	textprintf_ex(vpage[page_num], font, 0, 0, makecol(255,255,255), -1, "[%i fps]", fps);
-	
+
+    // Update GUI
+    guiGraphics->setTarget(vpage[page_num]);
+    gui_update(NULL);
+
 	// Draw player speech
   node = get_head();
   while(node) {
@@ -435,7 +466,6 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
   draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H-125);
 
   chatlog.chat_draw(vpage[page_num], 8, gui_font);
-  gui_update(chat_player);
 
 	switch(show_npc_dialog) {
 		case 1:
@@ -881,7 +911,6 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 }
 
 void exit_graphic() {
-	shutdown_dialog(npc_player);
-  shutdown_dialog(chat_player);
-	shutdown_dialog(skill_player);
+    shutdown_dialog(npc_player);
+    shutdown_dialog(skill_player);
 }
