@@ -57,8 +57,11 @@ class StatusWindow : public Window {
         void update();
 
     private:
-        gcn::Label *hp, *sp, *gp, *expLabel, *jobExpLabel;
-        ProgressBar *healthBar, *manaBar, *expBar, *jobExpBar;
+        gcn::Label *hp, *sp, *gp;
+        gcn::Label *hpValue, *spValue;
+        gcn::Label *expLabel, *jobExpLabel;
+        ProgressBar *healthBar, *manaBar;
+        ProgressBar *xpBar, *jobXpBar;
 };
 
 #endif
