@@ -242,6 +242,36 @@ Engine::~Engine()
     delete itemset;
 }
 
+void Engine::logic()
+{
+    // Update beings
+    std::list<Being*>::iterator beingIterator = beings.begin();
+    while (beingIterator != beings.end())
+    {
+        Being *being = (*beingIterator);
+
+        if (being->job < 10) { // A player
+            if (being->action != STAND && being->action != SIT
+                    && being->action != DEAD) {
+                being->frame =
+                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
+
+                if (being->frame >= 4) {
+                    being->nextStep();
+                }
+            }
+        }
+
+        if (being->action == MONSTER_DEAD && being->frame >= 20) {
+            delete being;
+            beingIterator = beings.erase(beingIterator);
+        }
+        else {
+            beingIterator++;
+        }
+    }
+}
+
 void Engine::draw()
 {
     // Get the current mouse position
@@ -349,15 +379,6 @@ void Engine::draw()
                     being->emotion = 0;
                 }
             }
-            if (being->action != STAND && being->action != SIT
-                    && being->action != DEAD) {
-                being->frame =
-                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
-
-                if (being->frame >= 4) {
-                    being->nextStep();
-                }
-            }
         }
         else if (being->job == 45) { // Draw a warp
         } else { // Draw a monster
@@ -389,13 +410,7 @@ void Engine::draw()
             }
         }
 
-        if (being->action == MONSTER_DEAD && being->frame >= 20) {
-            delete being;
-            beingIterator = beings.erase(beingIterator);
-        }
-        else {
-            beingIterator++;
-        }
+        beingIterator++;
 
         // nodes are ordered so if the next being y is > then the
         // last drawed for fringe layer, draw the missing lines

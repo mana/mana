@@ -51,6 +51,7 @@ int server_tick;
 int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 int startX = 0, startY = 0;
+int gameTime = 0;
 
 OkDialog *deathNotice = NULL;
 
@@ -96,7 +97,8 @@ Uint32 second(Uint32 interval, void *param)
     return interval;
 }
 
-short get_elapsed_time(short start_time) {
+short get_elapsed_time(short start_time)
+{
     if (start_time <= tick_time) {
         return (tick_time - start_time) * 10;
     }
@@ -105,13 +107,23 @@ short get_elapsed_time(short start_time) {
     }
 }
 
-void game() {
+void game()
+{
     do_init();
     Engine *engine = new Engine();
 
+    gameTime = tick_time;
+
     while (state != EXIT)
     {
-        do_input();
+        while (get_elapsed_time(gameTime) > 0)
+        {
+            do_input();
+            engine->logic();
+            gameTime++;
+        }
+        gameTime = tick_time;
+
         gui->logic();
         engine->draw();
         graphics->updateScreen();
@@ -172,7 +184,8 @@ void do_init()
     remove("./docs/packet.list");
 }
 
-void do_exit() {
+void do_exit()
+{
 }
 
 void do_input()

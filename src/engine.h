@@ -84,6 +84,7 @@ class Engine {
         Engine();
         ~Engine();
 
+        void logic();
         void draw();
 };
 
