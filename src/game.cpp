@@ -148,7 +148,7 @@ void do_init() {
   //keyb_state = IDLE;
 	show_npc_dialog = 0;
 
-	remove("packet.list");
+	remove("./docs/packet.list");
 }
 
 /** Clean the engine */
@@ -333,7 +333,7 @@ void do_parse() {
         if((i+1)%10==0)fprintf(file, "\n");
       }
       fclose(file);*/
-			FILE *file = fopen("packet.list", "ab");
+			FILE *file = fopen("./docs/packet.list", "ab");
 			fprintf(file, "%x\n", RFIFOW(0));
 			fclose(file);
 
