@@ -66,6 +66,11 @@ class InventoryWindow : public Window, gcn::ActionListener {
         void equipItem(int index);
 
         /**
+         * Unequips an item.
+         */
+        void unequipItem(int index);
+        
+        /**
          * Change quantity of an item.
          */
         int changeQuantity(int index, int quantity);
@@ -87,7 +92,6 @@ class InventoryWindow : public Window, gcn::ActionListener {
     private:
         gcn::Button *useButton, *dropButton;
         int useItem(int index, int id);
-        void unequipItem(int index);
 
 };
 
