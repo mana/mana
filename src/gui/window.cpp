@@ -29,20 +29,20 @@ Window::Window(std::string text) :
     mousePY(0),
     snapSize(8),
     mouseDown(false),
-    titlebarHeight(24)
+    titlebarHeight(20)
 {
     titlebarColor.r = 32;
     titlebarColor.g = 32;
     titlebarColor.b = 128;
 
-    gcn::Widget::setBaseColor(gcn::Color(255, 255, 255));
+    setBaseColor(gcn::Color(255, 255, 255));
 
-    //load dialog title bar image
+    // Load dialog title bar image
     dLeft = load_bitmap("data/Skin/dialogLeft.bmp", NULL);
     dMid = load_bitmap("data/Skin/dialogMiddle.bmp", NULL);
     dRight = load_bitmap("data/Skin/dialogRight.bmp", NULL);
 
-    //register mouse listener
+    // Register mouse listener
     addMouseListener(this);
 
     // Add chrome
