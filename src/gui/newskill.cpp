@@ -35,17 +35,17 @@ char *skill_name[] = {
     // 0-99
     // weapon skills 0-9
     "Short Blades", "Long Blades", "Hammers", "Archery", "Whip",
-    "Exotic", "Throwing ", "Piercing", "Hand to Hand", "",
+    "Staves", "Throwing", "Piercing", "Hand to Hand", "",
     // magic skills 10-19
-    "Djin (Fire)", "Niksa (Water)", "Earth (Kerub)", "Ariel (Air)",
-    "Paradin (Light)", "Tharsis (Dark)", "Crono (Time)", "Astra (Space)",
+    "Epyri (Fire)", "Merene (Water)", "Geon (Earth)", "Izurial (Air)",
+    "Lumine (Light)", "Tenebrae (Dark)", "Chronos (Time)", "Teless (Space)",
     "Gen (Mana)", "",
     // craft skills 20-29
     "Metalworking", "Woodworking", "Jeweler", "Cook", "Tailor",
     "Alchemist", "Artisan", "Synthesis", "", "",
     // general skills 30-39
-    "Running", "Jumping", "Searching", "Sneak", "Trading", "Intimidate",
-    "", "", "", "",
+    "Running", "Searching", "Sneak", "Trading", "Intimidate",
+    "Athletics", "", "", "","",
     // combat skills 40-49
     "Dodge", "Accuracy", "Critical", "Block", "Parry", "Diehard", "Magic Aura",
     "Counter", "", "",
@@ -118,23 +118,23 @@ NewSkillDialog::NewSkillDialog():
     // positioning
     setSize(350, 250);
     catButton[0]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[0]->setPosition(290, 10);
+    catButton[0]->setPosition(290, 0);
     catButton[1]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[1]->setPosition(290, 30);
+    catButton[1]->setPosition(290, 20);
     catButton[2]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[2]->setPosition(290, 50);
+    catButton[2]->setPosition(290, 40);
     catButton[3]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[3]->setPosition(290, 70);
+    catButton[3]->setPosition(290, 60);
     catButton[4]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[4]->setPosition(290, 90);
+    catButton[4]->setPosition(290, 80);
     catButton[5]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[5]->setPosition(290, 110);
+    catButton[5]->setPosition(290, 100);
     catButton[6]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[6]->setPosition(290, 130);
+    catButton[6]->setPosition(290, 120);
     catButton[7]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[7]->setPosition(290, 150);
+    catButton[7]->setPosition(290, 140);
     catButton[8]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[8]->setPosition(290, 170);
+    catButton[8]->setPosition(290, 160);
     closeButton->setDimension(gcn::Rectangle(0,0,60,20));
     closeButton->setPosition(290, 230);
 
