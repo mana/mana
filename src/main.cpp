@@ -91,6 +91,8 @@ unsigned char stretch_mode, screen_mode;
 
 // new sound-engine /- kth5
 TmwSound sound;
+// ini file configuration reader
+Configuration config;
 
 void request_exit() {
   state = EXIT;
@@ -98,189 +100,188 @@ void request_exit() {
 
 /** Do all initialization stuff */
 void init_engine() {
-#ifdef WIN32
-  char keyb_buffer[KL_NAMELENGTH+1];
-  unsigned int langID;
-  char* code = NULL;
-  int running = 1;
-  int a;
-  if (GetKeyboardLayoutName(keyb_buffer)) {
-    //printf("layout name: %s\n", buffer);
-    langID = strtol(keyb_buffer, NULL, 16);
-    langID &= 0xffff;
-    //printf("language id: %x\n", langID);
-    for(a=0;languageMap[a].code!=0;++a) {
-      if (languageMap[a].code == langID) {
-        code = languageMap[a].name;
-        break;
-      }
+    #ifdef WIN32
+        char keyb_buffer[KL_NAMELENGTH+1];
+        unsigned int langID;
+        char* code = NULL;
+        int running = 1;
+        int a;
+        if (GetKeyboardLayoutName(keyb_buffer)) {
+            //printf("layout name: %s\n", buffer);
+            langID = strtol(keyb_buffer, NULL, 16);
+            langID &= 0xffff;
+            //printf("language id: %x\n", langID);
+            for(a=0;languageMap[a].code!=0;++a) {
+                if (languageMap[a].code == langID) {
+                    code = languageMap[a].name;
+                    break;
+                }
+            }
+        }
+    #endif
+
+    allegro_init();
+
+    init_log();
+    set_close_button_callback(request_exit);
+
+    char *dir = new char[400];
+    strcpy(dir, "");
+
+    #ifndef __USE_UNIX98
+        // WIN32 and others
+        strcpy(dir, "tmw.ini");
+    #endif
+
+    #ifdef __USE_UNIX98
+        char *userHome;
+        char *name = getlogin();
+        passwd *pass;
+
+        if (name != NULL)
+            pass = getpwnam(name);
+        else
+            pass = getpwuid(geteuid());
+
+        if (pass == NULL)
+        {
+            printf("Couldn't determine the user home directory. Exitting.\n");
+            exit(1);
+        }
+
+        userHome = pass->pw_dir;
+
+        // Checking if homeuser/.manaworld folder exists.
+        sprintf(dir, "%s/.manaworld", userHome);
+        if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) && (errno != EEXIST))
+        {
+            printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
+            exit(1);
+        }
+        sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
+    #endif
+
+    // Checking if the tmw.ini file exists... otherwise creates it with default options !
+    FILE *tmwFile = 0;
+    tmwFile = fopen(dir, "r");
+
+    // If we can't read it, it doesn't exist !
+    if ( tmwFile == NULL ) {
+        // We reopen the file in write mode and we create it
+        printf("No file : %s\n, Creating Default Options...\n", dir);
+        tmwFile = fopen(dir, "wt");
+        if ( tmwFile == NULL ) {
+            printf("Can't create %s file. Using Defaults.\n", dir);
+        } else {
+            // tmw.ini creation
+            fprintf(tmwFile, "system=\nkeyboard=en\nlanguage=\ncore_version=" CORE_VERSION "\n\n");
+            fprintf(tmwFile, "host=animesites.de\nport=6901\n\n");
+            fprintf(tmwFile, "#=Screen mode:\n# = 1 Fullscreen\n# = 2 Windowed\nscreen=2\n");
+            fprintf(tmwFile, "# = Sound:\n#=1 enabled\n# = 0 disabled\nsound=0\n");
+
+            char * chatlogFilename = new char [400];
+            #ifdef __USE_UNIX98
+                sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
+            #else
+                strcpy(chatlogFilename, "chatlog.txt");
+            #endif
+            fprintf(tmwFile, "# = Chat logfile location:\nchatlog=%s\n", chatlogFilename);
+            delete chatlogFilename; chatlogFilename = 0;
+
+            fprintf(tmwFile, "#= Display strecth mode:\n# = 0 Disabled (Test only)\n# = 1 Normal\n# = 2 SuperEagle\n");
+            fprintf(tmwFile, "stretch=1\n\n");
+            fprintf(tmwFile, "[login]\nremember=1\nusername=Player\n");
+            fclose(tmwFile);
+        }
     }
-    if(code) {
-      //printf("allegro-id: %s\n", code);
+
+    //set_config_file(dir);
+    config.Init(dir);
+    #ifdef WIN32
+        if(code) {
+            set_config_string("system", "keyboard", code);
+        }
+    #endif
+
+    delete dir; dir = 0;
+
+    // set_config_file("tmw.ini");
+    #ifdef MACOSX
+        set_color_depth(32);
+        Init_2xSaI(32);
+    #else
+        set_color_depth(16);
+        Init_2xSaI(16);
+    #endif
+    stretch_mode = get_config_int("settings", "stretch", 0);
+    //stretch_mode = (float)config.getValue("stretch", 0);
+    set_window_title("The Mana World");
+
+    if(set_gfx_mode(get_config_int("settings", "screen", 0), 800, 600, 0, 0)) {
+        error(allegro_error);
     }
-  }
-#endif
 
-	allegro_init();
+    if(install_keyboard()) {
+        error("Unable to install keyboard");
+    }
 
-  init_log();
-  set_close_button_callback(request_exit);
+    if(install_timer()) {
+        error("Unable to install timer");
+    }
 
-  // A little sample of code that will add (or not) the home user directory to read the tmw.ini file in, if we are under Linux. - Bertram
+    if(install_mouse()==-1) {
+        error("Unable to install mouse");
+    }
 
-  // This has the goal to have each user is own ini.file under linux. And I do this because i'm expecting to make packages of manaworld for linux, so the tmw.ini will be copied at the right place before the first execution of the application...
+    buffer = create_bitmap(800, 600);
+    if(!buffer) {
+        error("Not enough memory to create buffer");
+    }
 
-  char *dir = new char[400];
-	strcpy(dir, "");
+    graphic = load_datafile("./data/graphic/graphic.dat");
+    if(graphic==NULL) {
+        error("Unable to load graphic datafile");
+    }
 
-	#ifndef __USE_UNIX98
-		// WIN32 and else...
-		strcpy(dir, "tmw.ini");
-	#endif
+    playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
+    hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
 
-	#ifdef __USE_UNIX98
-		// Linux !
-		char *userHome;
-		char *name = getlogin();
-		passwd *pass;
+    if(hairset==NULL) {
+        error("Unable to load hairset bitmap");
+    }
 
-		if (name != NULL)
-			pass = getpwnam(name);
-		else
-			pass = getpwuid(geteuid());
+    weaponset = load_datafile("./data/graphic/weapon.dat");
+    if(weaponset==NULL) {
+        error("Unable to load weaponset datafile");
+    }
 
-		if (pass == NULL)
-		{
-			printf("Couldn't determine the user home directory. Exitting.\n");
-			exit(1);
-		}
-
-		userHome = pass->pw_dir;
-
-		// Checking if homeuser/.manaworld folder exists.
-		sprintf(dir, "%s/.manaworld", userHome);
-		if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) && (errno != EEXIST))
-		{
-			printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
-			exit(1);
-		}
-		sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
-	#endif
-
-	// Checking if the tmw.ini file exists... otherwise creates it with default options !
-	FILE *tmwFile = 0;
-	tmwFile = fopen(dir, "r");
-
-	// If we can't read it, it doesn't exist !
-	if ( tmwFile == NULL )
-	{
-		// We reopen the file in write mode and we create it
-		printf("No file : %s\n, Creating Default Options...\n", dir);
-		tmwFile = fopen(dir, "wt");
-		if ( tmwFile == NULL ) {
-			printf("Can't create %s file. Using Defaults.\n", dir);
-		}
-		else
-		{
-			// tmw.ini creation
-			fprintf(tmwFile, "[system]\nsystem =\nkeyboard = en\nlanguage = \ncore_version = " CORE_VERSION "\n\n");
-			fprintf(tmwFile, "[server]\nhost = animesites.de\nport = 6901\n\n");
-			fprintf(tmwFile, "[settings]\n; = Screen mode:\n; = 1 Fullscreen\n; = 2 Windowed\nscreen = 2\n");
-			fprintf(tmwFile, "; = Sound:\n; = 1 enabled\n; = 0 disabled\nsound = 0\n");
-
-
-
-			char * chatlogFilename = new char [400];
-			#ifdef __USE_UNIX98
-				sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
-			#else
-				strcpy(chatlogFilename, "chatlog.txt");
-			#endif
-				fprintf(tmwFile, "; = Chat logfile location:\nchatlog = %s\n", chatlogFilename);
-			delete chatlogFilename; chatlogFilename = 0;
-
-			fprintf(tmwFile, "; = Display strecth mode:\n; = 0 Disabled (Test only)\n; = 1 Normal\n; = 2 SuperEagle\n");
-			fprintf(tmwFile, "stretch = 1\n\n");
-			fprintf(tmwFile, "[login]\nremember = 1\nusername = Player\n");
-
-			fclose(tmwFile);
-		}
-	}
-
-	set_config_file(dir);
-#ifdef WIN32
-	if(code) {
-	  set_config_string("system", "keyboard", code);
-  }
-#endif
-
-	delete dir; dir = 0;
-
-
-
-  // End of portion of code revised... Bertram
-
-  // set_config_file("tmw.ini");
-  #ifdef MACOSX
-  set_color_depth(32);
-  Init_2xSaI(32);
-  #else
-  set_color_depth(16);
-  Init_2xSaI(16);
-  #endif
-	stretch_mode = get_config_int("settings", "stretch", 0);
-	set_window_title("The Mana World");
-	if(set_gfx_mode(get_config_int("settings", "screen", 0), 800, 600, 0, 0))
-    error(allegro_error);
-	if(install_keyboard())
-    error("Unable to install keyboard");
-  if(install_timer())
-    error("Unable to install timer");
-  if(install_mouse()==-1)
-    error("Unable to install mouse");
-
-  buffer = create_bitmap(800, 600);
-  if(!buffer)
-    error("Not enough memory to create buffer");
-
-  graphic = load_datafile("./data/graphic/graphic.dat");
-  if(graphic==NULL)
-    error("Unable to load graphic datafile");
-	playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
-	hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
-	if(hairset==NULL)
-	  error("Unable to load hairset bitmap");
-  weaponset = load_datafile("./data/graphic/weapon.dat");
-  if(weaponset==NULL)
-    error("Unable to load weaponset datafile");
-
-	init_gui(buffer, "./data/Skin/aqua.skin");
-  state = LOGIN;
+    init_gui(buffer, "./data/Skin/aqua.skin");
+    state = LOGIN;
 }
 
 /** Clear the engine */
 void exit_engine() {
-  gui_exit();
-  destroy_bitmap(buffer);
-  allegro_exit();
+    gui_exit();
+    destroy_bitmap(buffer);
+    allegro_exit();
 }
 
 /** Main */
 int main() {
-	init_engine();
-	// initialize sound-engine and start playing intro-theme /-kth5
-	try{
-		if(get_config_int("settings", "sound", 0)==1)
-		sound.Init(32,20);                          // inits the sound-subsystem w/ 32 voices / 20 for mod
-		sound.SetVol(128,128,128);                    // sets intial volume parameters
-		//#ifdef WIN32
-			//sound.StartMIDI("Sound/Midis/city.mid",-1);   // play a midi file
-		//#endif
-		//sound.LoadItem("test.wav", TMWSOUND_SFX);
-	}catch(const char * err){                       // catch errors and show appropriate messages on-screen (elven plz... ^^)
-		ok("Sound Engine", err);
-		warning(err);
-	}
+     init_engine();
+     // initialize sound-engine and start playing intro-theme /-kth5
+     try{
+          if(get_config_int("settings", "sound", 0)==1)
+          sound.Init(32,20);                          // inits the sound-subsystem w/ 32 voices / 20 for mod
+          sound.SetVol(128,128,128);                    // sets intial volume parameters
+          //#ifdef WIN32
+               //sound.StartMIDI("Sound/Midis/city.mid",-1);   // play a midi file
+          //#endif
+          //sound.LoadItem("test.wav", TMWSOUND_SFX);
+     }catch(const char * err){                       // catch errors and show appropriate messages on-screen (elven plz... ^^)
+          ok("Sound Engine", err);
+          warning(err);
+     }
 
   while(state!=EXIT) {
     switch(state) {
