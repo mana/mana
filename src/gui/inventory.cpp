@@ -26,9 +26,7 @@
 void TmwInventory::create(int tempxpos, int tempypos) {
 	xpos =tempxpos;
 	ypos =tempypos;
-
-	itemPIC[0].pic = load_bitmap("items/herb.bmp", NULL); //ID=0
-	itemPIC[1].pic = load_bitmap("items/magicthing.bmp", NULL); //ID=1
+	itemset = load_datafile("./items/item.dat");
 	empty = load_bitmap("items/empty.bmp", NULL);
 	selected = load_bitmap("items/selected.bmp", NULL);
 
@@ -41,15 +39,16 @@ void TmwInventory::create(int tempxpos, int tempypos) {
 			items[i][ii].num = 0;
 		}
 	}
+	//draw_rle_sprite(buffer, (RLE_SPRITE *)itemPIC[items[itemX][itemY].itemIDNum].pic, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos));
 
 	//create two fake items
-	items[0][0].flag = 1;
+	/*items[0][0].flag = 1;
 	items[0][0].itemIDNum = 0;
 	items[0][0].num = 1;
 
 	items[2][0].flag = 1;
 	items[2][0].itemIDNum = 1;
-	items[2][0].num = 3;
+	items[2][0].num = 3;*/
 
 	backgroundSmall = create_bitmap(empty->w*10+10, empty->h+10);
 	backgroundBig = create_bitmap(empty->w*10+10, empty->h*10+10);
@@ -62,6 +61,7 @@ void TmwInventory::create(int tempxpos, int tempypos) {
 	lastSelectedX = -1;
 	lastSelectedY = -1;
 	bigwindow = 0; //false 
+
 }
 
 void TmwInventory::draw(BITMAP * buffer) {
@@ -79,7 +79,6 @@ void TmwInventory::draw(BITMAP * buffer) {
 		for(int itemX = 0; itemX< 10; itemX++) {
 			for(int itemY = 0;itemY<max;itemY++) {
 				int draw = 0;
-	
 				blit(empty, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
 	
 				if(mouse_b&1) {
@@ -117,7 +116,17 @@ void TmwInventory::draw(BITMAP * buffer) {
 						}
 						dragingItem = 0; // stop dragging
 					}
-	
+			if(mouse_b&2 && items[itemX][itemY].flag) {
+					if(xpos+items[itemX][itemY].xpos+empty->w > mouse_x && xpos+items[itemX][itemY].xpos < mouse_x)
+						if(ypos+items[itemX][itemY].ypos+empty->h > mouse_y && ypos+items[itemX][itemY].ypos < mouse_y) {
+						//selected
+						masked_blit(selected, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
+						draw = 1;
+						if(itemMeny){ itemMeny=0; } else { itemMeny=1; itemIdn =items[itemX][itemY].itemIDNum ;itemMeny_x = (xpos+items[itemX][itemY].xpos)+selected->w;itemMeny_y = (ypos+items[itemX][itemY].ypos)+selected->h;}
+						}
+					}
+				
+						
 					if(xpos+items[itemX][itemY].xpos+empty->w > mouse_x && xpos+items[itemX][itemY].xpos < mouse_x && ypos+items[itemX][itemY].ypos+empty->h > mouse_y && ypos+items[itemX][itemY].ypos < mouse_y ) {
 							// a hoover
 							lastSelectedX = itemX;
@@ -125,7 +134,7 @@ void TmwInventory::draw(BITMAP * buffer) {
 					}
 		
 					if(items[itemX][itemY].flag) //draw the item
-						masked_blit(itemPIC[items[itemX][itemY].itemIDNum].pic, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
+						masked_blit(itemset[items[itemX][itemY].itemIDNum].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
 		
 					//the number of that item
 					if(!bigwindow)
@@ -162,10 +171,34 @@ void TmwInventory::draw(BITMAP * buffer) {
 	}
 			
 	if(dragingItem) { //moving the item
- 		masked_blit(itemPIC[ghostID].pic, buffer, 0, 0, ghostX, ghostY, 800, 600);
+ 		masked_blit(itemset[ghostID].dat, buffer, 0, 0, ghostX, ghostY, 800, 600);
 		ghostX = mouse_x;
 		ghostY = mouse_y;
 	}
+	
+	if(itemMeny){
+	if(itemMeny_y < mouse_y && itemMeny_y+10 > mouse_y) {
+		if(mouse_b&1)
+			{
+			useItem(itemIdn);
+			itemMeny = 0;
+			}
+		alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y, makecol(255,237,33), "Use item");
+		} else {
+		alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y, MAKECOL_BLACK, "Use item");
+		}
+	if(itemMeny_y+10 < mouse_y && itemMeny_y+20 > mouse_y) {
+		if(mouse_b&1)
+			{
+			rmItem(itemIdn);
+			itemMeny = 0;
+			}
+		alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y+10, makecol(255,237,33), "Del item");
+		} else {
+		alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y+10, MAKECOL_BLACK, "Del item");
+		}
+	}
+
 }
 
 
@@ -246,4 +279,13 @@ for(int i = 0; i< 10; i++)
 		}
 	}
 return -1;
+}
+
+int TmwInventory::useItem(int idnum)
+{
+	printf("Use item %i\n",idnum);
+	WFIFOW(0) = net_w_value(0x00a7);
+	WFIFOW(2) = net_w_value(idnum);
+	WFIFOSET(4);
+	while((out_size>0))flush();
 }

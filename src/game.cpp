@@ -462,6 +462,20 @@ void do_parse() {
             show_npc_dialog = 1;
           }
           break;
+		case 0x01ee: //Get the items
+			for(int loop = 0; loop < RFIFOW(4); loop++)
+				{
+				inventory.addItem(loop,RFIFOW(10+18*loop));
+				}
+			break;
+		case 0x00a8: // could I use the item?
+			// index RFIFOW(2)
+			// succes or not RFIFOB(6);
+			if(RFIFOB(6))
+			{
+			inventory.addItem(RFIFOW(2),RFIFOW(4));
+			}
+			break;
         // Warp
         case 0x0091:
           memset(map_path, '\0', 480);

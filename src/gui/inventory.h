@@ -44,9 +44,7 @@ struct itemHolder { // the holder of a item
 	int xpos,ypos;  // where am I?
 };
 
-struct itemID {//the holder of the pictures for each item, maybe more in the future
-	BITMAP * pic;
-};
+
 
 class TmwInventory{
 	public:
@@ -61,6 +59,7 @@ class TmwInventory{
 		int addItem(int idnum, int antal); //add a item
 		int rmItem(int idnum); //remove a item
 		int changeNum(int idnum, int antal); // change nummber of a item
+		int useItem(int idnum);
 		//END API
 	private:
 		BITMAP * backgroundSmall;
@@ -69,12 +68,16 @@ class TmwInventory{
 		BITMAP * empty;
 		BITMAP * selected;
 		itemHolder items[10][10]; // this is the test holder of items
-		itemID     itemPIC[2]; // I only got two items
+		DATAFILE *itemset;
 		int			ghostX, ghostY, ghostID, ghostOldIDX,ghostOldIDY; //info needed when moving item
 		int dragingItem, lastSelectedX,lastSelectedY; //info needed when moving item
 		int areDisplaying, dragingWindow;
 		int bigwindow;
 		int xpos, ypos; // Where am I ?
+		int itemMeny;
+		int itemMeny_x, itemMeny_y;
+		int itemIdn;
+		
 };
 
 #endif
