@@ -135,7 +135,7 @@ void do_init()
     std::cout << map_path << std::endl;
 
     if (!tiledMap) {
-        error("Could not find map file");
+        logger.error("Could not find map file");
     }
 
     // Start playing background music
@@ -807,7 +807,7 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     strcat(map_path, "./core/maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
-                    log("Warping to %s (%d, %d)\n",
+                    logger.log("Warping to %s (%d, %d)\n",
                             map_path, RFIFOW(18), RFIFOW(20));
 
                     if (tiledMap) delete tiledMap;
@@ -838,7 +838,7 @@ void do_parse() {
                         while (out_size > 0) flush();
                     }
                     else {
-                        error("Could not find map file");
+                        logger.error("Could not find map file");
                     }
                     break;
                     // Skill ...
@@ -1366,7 +1366,7 @@ void do_parse() {
                     break;
                     // Manage non implemented packets
                 default:
-                    log("Unhandled packet: %x", id);
+                    logger.log("Unhandled packet: %x", id);
                     break;
             }
 
