@@ -71,7 +71,9 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
-	      gui/window.cpp \
+          gui/trade.cpp \
+          gui/trade.h \
+		  gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \

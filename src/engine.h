@@ -42,6 +42,7 @@
 #include "gui/equipment.h"
 #include "gui/chargedialog.h"
 #include "gui/item_amount.h"
+#include "gui/trade.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -69,7 +70,7 @@ extern StatsWindow *statsWindow;
 extern Setup *setupWindow;
 extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
-
+extern TradeWindow *tradeWindow;
 char get_x_offset(char, char);
 char get_y_offset(char, char);
 

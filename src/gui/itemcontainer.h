@@ -104,10 +104,15 @@ class ItemContainer : public gcn::Widget
         int getQuantity(int index);
         
         /**
+         * Returns id of next free slot or -1 i all occupied.
+         */
+        int getFreeSlot();
+        
+        /**
          * Adds a new item.
          */
         void addItem(int index, int id, int quantity, bool equipment);
-
+            
         /**
          * Reset all item slots.
          */

@@ -29,6 +29,7 @@
 #include "gui/chargedialog.h"
 #include "gui/itemcontainer.h"
 #include "gui/item_amount.h"
+#include "gui/trade.h"
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
@@ -60,6 +61,7 @@ Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
+TradeWindow *tradeWindow;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -154,7 +156,7 @@ Engine::Engine()
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow();
     chargeDialog = new ChargeDialog();
-
+    tradeWindow = new TradeWindow();
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -169,7 +171,9 @@ Engine::Engine()
     chargeDialog->setPosition(
             screen->w - 5 - chargeDialog->getWidth(),
             screen->h - chargeDialog->getHeight() - 15);
-
+    tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
+            tradeWindow->getWidth() - 10,
+            chatWindow->getHeight() + 15);
     // Set initial window visibility
     chatWindow->setVisible(true);
     statusWindow->setVisible(true);
@@ -186,7 +190,7 @@ Engine::Engine()
     setupWindow->setVisible(false);
     equipmentWindow->setVisible(false);
     chargeDialog->setVisible(false);
-
+    tradeWindow->setVisible(false);
     // Do not focus any text field
     gui->focusNone();
     
@@ -233,6 +237,7 @@ Engine::~Engine()
     delete equipmentWindow;
     delete newSkillWindow;
     delete itemAmountWindow;
+    delete tradeWindow;
 
     // Delete sprite sets
     delete monsterset;

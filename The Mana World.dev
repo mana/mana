@@ -1182,3 +1182,21 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit112]
+FileName=src\gui\trade.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit113]
+FileName=src\gui\trade.h
+CompileCpp=1
+Folder=gui
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=

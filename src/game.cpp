@@ -287,6 +287,12 @@ void do_input()
                 state = EXIT;
             }
             
+            // Debug
+            if (keysym.sym == SDLK_t)
+            {
+                tradeWindow->setVisible(true);
+            }
+            
             if (keysym.sym == SDLK_g)
             {
                 // Get the item code
@@ -779,8 +785,9 @@ void do_parse() {
                 case 0x01ee:
                     // Reset all items to not load them twice on map change
                     inventoryWindow->items->resetItems();
+                    
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
-                        inventoryWindow->addItem(RFIFOW(4 + loop * 18),
+                       inventoryWindow->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
                         // Trick because arrows are not considered equipment

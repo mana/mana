@@ -35,6 +35,7 @@ MODULES = src/sound.cpp \
           src/gui/status.cpp \
           src/gui/textbox.cpp \
           src/gui/textfield.cpp \
+          src/gui/trade.cpp \
           src/gui/window.cpp \
           src/gui/windowcontainer.cpp \
           src/net/network.cpp \

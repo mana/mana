@@ -54,7 +54,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     getAbsolutePosition(x, y);
     w = getWidth();
     h = getHeight();
-    
+    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(0, 0, w, h));
     
     if(items[selectedItem].quantity <= 0)
@@ -133,6 +133,17 @@ void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
     items[index].id = id;
     items[index].quantity += quantity;
     items[index].equipment = equipment;
+}
+
+int ItemContainer::getFreeSlot()
+{
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        printf("i %d id %d\n", i, items[i].id);
+        if (items[i].id == -1) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void ItemContainer::resetItems()
