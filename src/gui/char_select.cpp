@@ -144,10 +144,11 @@ void server_char_select() {
   WFIFOSET(3);
 
   while((in_size<3)||(out_size>0))flush();
-  log_hex("Char_Select_Packet", "Packet_ID", RFIFOW(0));
-  log_int("Char_Select_Packet", "Packet_length", get_length(RFIFOW(0)));
-  log_int("Char_Select_Packet", "Packet_in_size", RFIFOW(2));
-  log_int("Char_Select_Packet", "In_size", in_size);
+  log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
+          RFIFOW(0),
+          get_length(RFIFOW(0)),
+          RFIFOW(2));
+  log("CharSelect", "In_size: %d", in_size);
 
   if(RFIFOW(0)==0x0071) {
     while(in_size<28)flush();
@@ -158,9 +159,8 @@ void server_char_select() {
     map_port = RFIFOW(26);
     state = GAME;
 
-    log("Player", "map", map_name);
-    log("Char_Select_packet", "server_address", iptostring(map_address));
-    log_int("Char_Select_packet", "server_port", map_port);
+    log("CharSelect", "Map: %s", map_name);
+    log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
     RFIFOSKIP(28);
     close_session();
   } else if(RFIFOW(0)==0x006c) {

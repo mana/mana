@@ -118,9 +118,8 @@ void server_char_server() {
 		}
 		state = CHAR_SELECT;
 
-		log("Player", "name", char_info->name);
-		log_hex("Char_Server_Packet", "Packet_ID", RFIFOW(0));
-    log_int("Char_Server_Packet", "Packet_length", RFIFOW(2));
+                log("CharServer", "Player: %s (Packet ID: %x, Length: %d",
+                        char_info->name, RFIFOW(0), RFIFOW(2));
 
 
 		RFIFOSKIP(RFIFOW(2));

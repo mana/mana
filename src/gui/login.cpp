@@ -62,7 +62,7 @@ DIALOG login_dialog[] = {
     if(!username)strcpy(username, "player\0");
     set_config_string("login", "username", username);
   } else set_config_string("login", "username", "player\0");
-	log("Player", "username", username);
+	log("Network", "Username is %s", username);
   gui_exit = shutdown_dialog(player);
 	if((gui_exit==5)||(key[KEY_ENTER])) {
         if(username[0]=='\0') {
@@ -101,8 +101,8 @@ void server_login() {
 	WFIFOSET(55);
 
 	while((in_size<23)||(out_size>0))flush();
-	log_hex("Login_Packet", "Packet_ID", RFIFOW(0));
-    log_int("Login_Packet", "Packet_length", get_packet_length(RFIFOW(0)));
+	log("Network", "Packet ID: %x", RFIFOW(0));
+        log("Network", "Packet length: %d", get_packet_length(RFIFOW(0)));
 		
 	if(RFIFOW(0)==0x0069) {
 		while(in_size<RFIFOW(2))flush();
@@ -119,10 +119,10 @@ void server_login() {
 			server_info[i].port = RFIFOW(47+32*i+4);
 			state = CHAR_SERVER;
 		}
-		log("Login_Packet", "server_address", iptostring(server_info[0].address));
-		log("Login_Packet", "server_name", server_info[0].name);
-		log_int("Login_Packet", "server_users", server_info[0].online_users);
-		log_int("Login_Packet", "server_port", server_info[0].port);
+                log("Network", "Server: %s (%s:%d)", server_info[0].name,
+                        iptostring(server_info[0].address),
+                        server_info[0].port);
+                log("Network", "Users: %d", server_info[0].online_users);
 		RFIFOSKIP(RFIFOW(2));
 	} else if(RFIFOW(0)==0x006a) {
 		switch(RFIFOB(2)) {

@@ -26,16 +26,13 @@
 #ifndef _LOG_H
 #define _LOG_H
 
-#include <allegro.h>
-#ifdef WIN32
-#include <winalleg.h>
-#endif
+#include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
+#include <time.h>
 
 void init_log();
-void log(const char *log_section, const char *log_name, const char *log_text);
-void log_hex(const char *log_section, const char *log_name, const short log_value);
-void log_int(const char *log_section, const char *log_name, const int log_value);
+void log(const char *category, const char *log_text, ...);
 void error(const char *error_text);
 void warning(const char *warning_text);
 void status(const char *status_text);

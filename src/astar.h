@@ -1,8 +1,9 @@
+#ifndef _ASTAR_H
+#define _ASTAR_H
+
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-
-#include <allegro.h>
 
 #include "map.h"
 #include "being.h"
@@ -22,4 +23,4 @@ void RenderScreen (bool stepByStep=false);
 PATH_NODE *find_path(int pathfinderID,int startingX, int startingY, int targetX, int targetY);
 void ReadPath(int pathfinderID);
 
-
+#endif

@@ -184,10 +184,9 @@ void map_start() {
 		while(in_size<11)flush();
 		x = get_x(RFIFOP(6));
 		y = get_y(RFIFOP(6));
-		log_int("Player", "x", x);
-		log_int("Player", "y", y);
 		//direction = get_direction(RFIFOP(6));
-		log_int("Player", "direction", direction);
+                log("Protocol", "Player position: (%d, %d), Direction: %d",
+                        x, y, direction);
 		RFIFOSKIP(11);
 	} else if(0x0081) {
 		warning("Map server D/C");
