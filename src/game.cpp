@@ -48,7 +48,6 @@ int current_npc, server_tick;
 extern unsigned char screen_mode;
 int fps = 0, frame = 0;
 
-//Setup *setupWindow = NULL;
 OkDialog *deathNotice = NULL;
 
 #define MAX_TIME 10000
