@@ -1,12 +1,12 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=44
+UnitCount=45
 Type=0
 Ver=1
 ObjFiles=
-Includes=
-Libs=
+Includes=C:\Dev-Cpp\alfont\include;C:\Dev-Cpp\jgmod\src
+Libs=C:\Dev-Cpp\alfont\lib\mingw32;C:\Dev-Cpp\jgmod\lib\mingw32
 PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
@@ -14,7 +14,7 @@ Compiler=
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_
 Linker=-ljgmod_@@_-lalfont_@@_-lalleg_@@_-lwsock32_@@_
 IsCpp=1
-Icon=The Mana World.ico
+Icon=
 ExeOutput=
 ObjectOutput=src\objects
 OverrideOutput=1
@@ -33,7 +33,7 @@ CompilerSettings=0000001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=325
+Build=331
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -484,9 +484,19 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit44]
-FileName=src\weapon.h
+FileName=src\gui\setup.cpp
 CompileCpp=1
-Folder=tmw
+Folder=tmw/gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit45]
+FileName=src\gui\setup.h
+CompileCpp=1
+Folder=tmw/gui
 Compile=1
 Link=1
 Priority=1000
