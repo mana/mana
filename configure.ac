@@ -13,10 +13,13 @@ AC_PROG_MAKE_SET
 # (someone may want to exchange these symbols with
 #  something more meaningful in the future /- kth5)
 AC_CHECK_LIB([guichan], [gcnGuichanVersion], ,
-AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.darkbits.org)]))
+AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.sf.net)]))
 
-#AC_CHECK_LIB([guichan_sdl], [_init], ,
-#AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.darkbits.org)]))
+#AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
+#AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.sf.net)]))
+
+#AC_CHECK_LIB([guichan_opengl], [gcnOpenGL], ,
+#AC_MSG_ERROR([ *** Unable to find Guichan OpenGL library (guichan.sf.net)]))
 
 AC_CHECK_LIB([physfs], [PHYSFS_init], ,
 AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))

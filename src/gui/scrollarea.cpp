@@ -77,6 +77,8 @@ void ScrollArea::init()
 
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
+    checkPolicies();
+
     int alpha = getBaseColor().a;
     gcn::Color highlightColor = getBaseColor() + 0x303030;
     highlightColor.a = alpha;    

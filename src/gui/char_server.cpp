@@ -125,6 +125,7 @@ void char_server() {
             switch (event.type) {
                 case SDL_QUIT:
                     state = EXIT;
+                    showServerList = false;
                     break;
 
                 case SDL_KEYDOWN:

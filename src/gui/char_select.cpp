@@ -433,6 +433,13 @@ void charSelect()
                 case SDL_QUIT:
                     state = EXIT;
                     break;
+
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        state = EXIT;
+                    }
+                    break;
             }
 
             guiInput->pushInput(event);
