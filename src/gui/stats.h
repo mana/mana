@@ -27,7 +27,6 @@
 #include "button.h"
 #include "window.h"
 #include "../main.h"
-#include <sstream>
 #include <string>
 
 class StatsWindow : public Window, public gcn::ActionListener {
@@ -44,21 +43,16 @@ class StatsWindow : public Window, public gcn::ActionListener {
     
  private:
     int i;
-    
-    /**  
-     * Stats values
-     */
-    std::stringstream statsStr[5];  
-    
+
     /** 
      * Stats captions 
      */
-    gcn::Label *statsLabel[5];
+    gcn::Label *statsLabel[6];
     
     /** 
      * Stats buttons 
      */
-    Button *statsButton[5];
+    Button *statsButton[6];
     
     /**
      * Stats window ptr 

@@ -22,6 +22,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/shop.cpp \
           src/gui/skill.cpp \
           src/gui/slider.cpp \
+          src/gui/stats.cpp \
           src/gui/status.cpp \
           src/gui/textfield.cpp \
           src/gui/window.cpp \

@@ -22,13 +22,16 @@
  */
 
 #include "stats.h"
+#include <sstream>
 
 /**
  * Constructor
  */
 StatsWindow::StatsWindow(gcn::Container *parent)
     : Window(parent, "Stats") 
-{ 
+{
+    std::stringstream statsStr[6];
+
     statsStr[0] << "Strenght: "  << char_info->STR;
     statsStr[1] << "Agility: "  << char_info->AGI;
     statsStr[2] << "Vitality: "  << char_info->VIT;
@@ -37,15 +40,15 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     statsStr[5] << "Luck: "  << char_info->LUK;
     
     /* New labels */
-    for(i=0; i<5;i++)
+    for (i = 0; i < 6; i++)
         statsLabel[i] = new gcn::Label(statsStr[i].str());
     
     /* New buttons */
-    for(i=0; i<5;i++)
+    for (i = 0; i < 6; i++)
         statsButton[i] = new Button("+");
     
     /* Set position */
-    for(i=0;i<5;i++) {
+    for (i = 0; i < 6; i++) {
         statsLabel[i]->setPosition(10,(i*22)+10);
         statsButton[i]->setPosition(170,(i*22)+10);
     }
@@ -59,12 +62,12 @@ StatsWindow::StatsWindow(gcn::Container *parent)
     statsButton[5]->setEventId("LUK");
     
     /* Assemble */
-    for(i=0; i<5; i++) {
+    for(i = 0; i < 6; i++) {
         add(statsLabel[i]);
         add(statsButton[i]);
     }
     
-    setSize(200,150);
+    setSize(200, 150);
     setLocationRelativeTo(getParent());
 }
 
@@ -72,7 +75,7 @@ StatsWindow::StatsWindow(gcn::Container *parent)
  * Destructor
  */
 StatsWindow::~StatsWindow() {
-    for(int i=0; i<5; i++) {
+    for(int i = 0; i < 6; i++) {
         delete statsLabel[i];
         delete statsButton[i];
     }
@@ -83,7 +86,7 @@ StatsWindow::~StatsWindow() {
  */
 StatsWindow * StatsWindow::ptr = NULL;
 StatsWindow * StatsWindow::create_statswindow() {
-    if(ptr == NULL)
+    if (ptr == NULL)
         ptr = new StatsWindow(guiTop);
     else
         ptr->setVisible(true);
@@ -94,17 +97,17 @@ StatsWindow * StatsWindow::create_statswindow() {
  * Event handling method
  */
 void StatsWindow::action(const std::string& eventId) {
-    if(eventId == "STR") {
+    if (eventId == "STR") {
         setVisible(false);
     }
-    if(eventId == "AGI")
+    if (eventId == "AGI")
         setVisible(false);
-    if(eventId == "VIT")
+    if (eventId == "VIT")
         setVisible(false);
-    if(eventId == "INT")
+    if (eventId == "INT")
         setVisible(false);
-    if(eventId == "DEX")
+    if (eventId == "DEX")
         setVisible(false);
-    if(eventId == "LUK")
+    if (eventId == "LUK")
         setVisible(false);
 }
