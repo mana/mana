@@ -37,6 +37,6 @@ typedef struct {
 	char STR, AGI, VIT, INT, DEX, LUK;
 } PLAYER_INFO;
 
-int charstats_display(CHAR_INFO *);
+int charstats_display(PLAYER_INFO *);
 
 #endif
