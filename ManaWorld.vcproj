@@ -158,6 +158,9 @@
 				RelativePath=".\being.cpp">
 			</File>
 			<File
+				RelativePath=".\Chat\chat.cpp">
+			</File>
+			<File
 				RelativePath=".\game.cpp">
 			</File>
 			<File
@@ -229,6 +232,9 @@
 			</File>
 			<File
 				RelativePath=".\being.h">
+			</File>
+			<File
+				RelativePath=".\Chat\chat.h">
 			</File>
 			<File
 				RelativePath=".\game.h">
