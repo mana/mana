@@ -26,6 +26,7 @@
 #include "shop.h"
 
 int n_items;
+char* selectedItem = "You got 4";
 ITEM_SHOP *shop = NULL;
 
 char *item_db[] = {
@@ -75,7 +76,9 @@ void add_sell_item(short index, int price) {
 	else
 		sprintf(item_shop->name, "Unknown item %i gp", price);
 	item_shop->price = price;
+	item_shop->index = index;
 	item_shop->id = id;
+	item_shop->quantity  = inventory.items[index].quantity;
 	item_shop->next = NULL;
 	if(shop==NULL) 
 		shop = item_shop;
@@ -106,4 +109,29 @@ short get_item_id(int index) {
     iterator++;
   }
   return item_shop->id;
+}
+
+int get_item_quantity(int index) {
+  int iterator = 0;
+  ITEM_SHOP *item_shop = shop;
+  while(iterator<index) {
+    item_shop = item_shop->next;
+    iterator++;
+  }
+  return item_shop->quantity;
+}
+int get_item_index(int index) {
+  int iterator = 0;
+  ITEM_SHOP *item_shop = shop;
+  while(iterator<index) {
+    item_shop = item_shop->next;
+    iterator++;
+  }
+  return item_shop->index;
+}
+
+void changeQ(void *dp3, int d2)
+{
+sprintf(itemCurrenyQ,"%i",d2);
+printf("%s\n",itemCurrenyQ);
 }

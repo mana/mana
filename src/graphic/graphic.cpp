@@ -43,6 +43,8 @@
 
 BITMAP *buffer, *double_buffer, *chat_background;
 DATAFILE *tileset;
+//extern char* itemCurrenyQ;
+char itemCurrenyQ[10] = "0";
 char page_num;
 int map_x, map_y, camera_x, camera_y;
 DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player;
@@ -82,13 +84,15 @@ DIALOG buy_dialog[] = {
 
 DIALOG sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
-   { tmw_button_proc,     450,  326,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
-	 { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  260,  175,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
+   { tmw_button_proc,     450,  326+25,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
+   { tmw_button_proc,     508,  326+25,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
+   { tmw_text_proc,       514,  326,  40,  100,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
-
+ 
 DIALOG chat_dialog[] = {
    /* (dialog proc)         (x)   (y)   (w)  (h) (fg) (bg)  (key) (flags)   (d1)               (d2)           (dp)         (dp2) (dp3) */
    { tmw_edit_proc,          0,  574,  592,  25,  0,    0,    'c',  0,       90,               0,           speech,        NULL, NULL  },
@@ -166,7 +170,8 @@ void do_graphic(void) {
 	int offset_y = map_y & 15;
 
 	sort();
-
+	
+	
 	for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
 			if( /* get_tile(i+camera_x, j+camera_y, 0) >= 0 && */  get_tile(i+camera_x, j+camera_y, 0) < 600)
@@ -308,13 +313,15 @@ void do_graphic(void) {
 			break;
 			case 4:
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
+			sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);
+				
         if(show_npc_dialog==1) {
           WFIFOW(0) = net_w_value(0x00c9);
           WFIFOW(2) = net_w_value(8);
-          WFIFOW(4) = net_w_value(1);
-          WFIFOW(6) = net_w_value(get_item_id(sell_dialog[3].d1));
+          WFIFOW(4) = net_w_value(get_item_index(sell_dialog[4].d1));
+          WFIFOW(6) = net_w_value(sell_dialog[3].d2);
           WFIFOSET(8);
 				}
 				show_npc_dialog = 0;

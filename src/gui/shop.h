@@ -30,20 +30,28 @@
 #include <stdio.h>
 
 #include "../graphic/graphic.h"
+#include "inventory.h"
+
 
 struct ITEM_SHOP {
 	char name[30];
 	int price;
 	short id;
+	int index;
+	int quantity;
 	ITEM_SHOP *next;
 };
 
 extern int n_items;
+extern char* selectedItem;
+extern char itemCurrenyQ[10];
 
 char *shop_list(int index, int *list_size);
 void add_buy_item(short id, int price);
 void add_sell_item(short index, int price);
+void changeQ(void *dp3, int d2);
 void close_shop();
 short get_item_id(int index);
-
+int get_item_quantity(int index);
+int get_item_index(int index);
 #endif

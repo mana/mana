@@ -60,6 +60,7 @@ class TmwInventory {
 		int change_quantity(int index, int quantity); // change number of a item
 		int increase_quantity(int index, int quantity); // increase quantity of a item
 		int use_item(int index, int id);
+		int quantityForIndex(int index) { return items[index].quantity; }
 		//END API
 
 		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
