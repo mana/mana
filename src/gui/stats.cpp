@@ -22,7 +22,6 @@
 */
 
 #include "stats.h"
-
 #include <iostream>
 
 extern PLAYER_INFO  *char_info;
@@ -44,14 +43,3 @@ void update_stats_dialog() {
 	sprintf(stats_hp, "HP %i / %i", char_info->hp, char_info->max_hp);
 	sprintf(stats_sp, "SP %i / %i", char_info->sp, char_info->max_sp);
 }
-
-/*
-typedef struct {
-	int id;
-	char name[24];
-	short hp, max_hp, sp, max_sp, lv;
-	int xp, zeny, job_xp, job_lv;
-	short statp, skillp;
-	char STR, AGI, VIT, INT, DEX, LUK;
-} PLAYER_INFO;
-*/
