@@ -17,6 +17,12 @@ AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.darkbits.org)]))
 AC_CHECK_LIB([guichan_sdl], [_init], ,
 AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.darkbits.org)]))
 
+AC_CHECK_LIB([physfs], [PHYSFS_init], ,
+AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))
+
+AC_CHECK_LIB([xml2], [xmlInitParser], ,
+AC_MSG_ERROR([ *** Unable to find libxml2 library (xmlsoft.org)]))
+
 AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
