@@ -68,7 +68,7 @@ extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;
 extern StatsWindow *statsWindow;
-extern Setup *setupWindow;
+//extern Setup *setupWindow;
 
 char get_x_offset(char, char);
 char get_y_offset(char, char);
