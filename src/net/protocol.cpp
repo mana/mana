@@ -188,7 +188,7 @@ void map_start() {
 		y = get_y(RFIFOP(6));
 		log_int("Player", "x", x);
 		log_int("Player", "y", y);
-		direction = get_direction(RFIFOP(6));
+		//direction = get_direction(RFIFOP(6));
 		log_int("Player", "direction", direction);
 		RFIFOSKIP(11);
 	} else if(0x0081) {

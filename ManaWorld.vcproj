@@ -280,6 +280,12 @@
 				<File
 					RelativePath=".\src\gui\skill.h">
 				</File>
+				<File
+					RelativePath=".\src\gui\stats.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\stats.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="sound"

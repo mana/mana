@@ -65,24 +65,24 @@ DIALOG buy_sell_dialog[] = {
 
 DIALOG buy_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  175,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
-   { tmw_button_proc,     450,  326+25,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
-	 { tmw_button_proc,     508,  326+25,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
+   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
+	 { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
-	 { tmw_text_proc,       304,  326+25,  180,  100,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
+	 { tmw_text_proc,       304,  326+25,  50,  20,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
    { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
-   { tmw_text_proc,       514,  326,  40,  100,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
+   { tmw_text_proc,       514,  326,  40,  20,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
 DIALOG sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  175,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
-   { tmw_button_proc,     450,  326+25,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
-   { tmw_button_proc,     508,  326+25,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
+   { tmw_button_proc,     450,  376,  50,   20,   255,  0,    'o',  D_EXIT,  0,             0,    (char *)"&Ok",     NULL, NULL  },
+   { tmw_button_proc,     508,  376,  50,   20,   255,  0,    'c',  D_EXIT,  0,			   0,    (char *)"&Cancel", NULL, NULL  },
    { tmw_slider_proc,     304,  326,  200,   20,   255,  0,    0,  0,		10,				   0,	 NULL,   (void *)changeQ, NULL  },
    { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
-   { tmw_text_proc,       514,  326,  40,  100,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
+   { tmw_text_proc,       514,  326,  40,  20,  0,    0,    0,    0,       0,                0,    (char *)itemCurrenyQ, NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
@@ -96,11 +96,11 @@ int get_x_offset(NODE *node) {
 	int offset = 0;
 	char direction = get_direction(node->coordinates);
 	if(node->action==WALK) {
-		if(direction==WEST || direction==EAST) {
+		if(direction!=NORTH && direction!=SOUTH) {
       offset = node->frame + 1;
       if(offset==5)offset = 0;
       offset *= 4;
-			if(direction==WEST) {
+			if(direction==WEST || direction==NW || direction==SW) {
 				offset = -offset;
 				offset += 16;
 			} else offset -= 16;
@@ -113,11 +113,11 @@ int get_y_offset(NODE *node) {
 	int offset = 0;
 	char direction = get_direction(node->coordinates);
 	if(node->action==WALK) {
-		if(direction==SOUTH || direction==NORTH) {
+		if(direction!=EAST && direction!=WEST) {
       offset = node->frame + 1;
       if(offset==5)offset = 0;
       offset *= 4;
-			if(direction==NORTH) {
+			if(direction==NORTH || direction==NW || direction==NE) {
 				offset = -offset;
 				offset += 16;
 			} else offset -= 16;
@@ -206,19 +206,42 @@ void do_graphic(void) {
       //rectfill(buffer, (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates)), (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates)), (get_x(node->coordinates)-map_x)*16-player_x-get_x_offset(node->frame, get_direction(node->coordinates))+16, (get_y(node->coordinates)-map_y)*16-player_y-get_y_offset(node->frame, get_direction(node->coordinates))+16, makecol(0,0,255));
     } else { // Draw a monster
 
+			//node->speed = 10000;
+
+      //set_coordinates(node->coordinates, get_x(node->coordinates), get_y(node->coordinates), direction);*/
+
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-20+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-25+get_y_offset(node)-offset_y;
 
+			int r_x = node->text_x-get_x_offset(node);
+			int r_y = node->text_y-get_y_offset(node);
+
       if(node->action==MONSTER_DEAD)node->frame = 0;
 			masked_blit((BITMAP *)graphic[MOBSET_BMP].dat, buffer, (get_direction(node->coordinates)/2)*60+240*(node->job-1002), 60*(node->frame+node->action), node->text_x, node->text_y, 60, 60);
+			//rectfill(buffer, r_x, r_y, r_x+16, r_y+16, makecol(0,0,255));
+			//alfont_textprintf(buffer, gui_font, node->text_x, node->text_y, MAKECOL_WHITE, "%i", node->frame);
+			
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
         if(node->frame>=4) {
           if(node->action!=MONSTER_DEAD) {
-            if(node->path  && node->action!=MONSTER_DEAD) {
+						if(node->path->next  && node->action!=MONSTER_DEAD) {
               PATH_NODE *old = node->path;
-              set_coordinates(node->coordinates, node->path->x, node->path->y, 0);
-              node->path = node->path->next;
+							node->path = node->path->next;
+							direction = 0;
+              //if(node->path->next) {
+                if(node->path->x>old->x && node->path->y>old->y)direction = SE;
+								else if(node->path->x<old->x && node->path->y>old->y)direction = SW;
+								else if(node->path->x>old->x && node->path->y<old->y)direction = NE;
+								else if(node->path->x<old->x && node->path->y<old->y)direction = NW;
+								else if(node->path->x>old->x)direction = EAST;
+								else if(node->path->x<old->x)direction = WEST;
+								else if(node->path->y>old->y)direction = SOUTH;
+								else if(node->path->y<old->y)direction = NORTH;
+              //}
+			
+              set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
+              
               if(old!=NULL)
                 free(old);
             } else node->action = STAND;
@@ -290,7 +313,9 @@ void do_graphic(void) {
 			char money[20];
 			sprintf(money, "%i gp", char_info->zeny);
 			buy_dialog[4].dp = &money;
-			buy_dialog[5].d1 = (int)(char_info->zeny/get_item_price(buy_dialog[6].d1));
+			buy_dialog[5].d1 = (int)(char_info->zeny/get_item_price(buy_dialog[3].d1));
+			if(buy_dialog[5].d2>buy_dialog[5].d1)
+			//alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", buy_dialog[5].d1);
 			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(buy_player)) {
 				show_npc_dialog = shutdown_dialog(buy_player);
@@ -313,6 +338,7 @@ void do_graphic(void) {
         sell_dialog[3].d2 = sell_dialog[3].d1;
 				sprintf((char *)sell_dialog[5].dp, "%i %i", sell_dialog[3].d1, sell_dialog[3].d2);
 			}*/
+			alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);

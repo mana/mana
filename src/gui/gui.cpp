@@ -582,8 +582,10 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
         }
         //textprintf(gui_bitmap, gui_font,10, 10, makecol(255,255,255), "%i", d->d2);
     } else {
-        ret = d_slider_proc(msg,d,c);
-    }
+      if(d->d1==0)d->d1 = 1;
+      ret = d_slider_proc(msg,d,c);
+    }     
+
   if (watchdog == 1) {
     d->dp2 = (void*)gui__external_slider_callback;
   }

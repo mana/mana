@@ -298,8 +298,9 @@ int get_packet_length(short id) {
 void do_parse() {
   unsigned short id;
   char *temp;
-  //char direction;
+  char direction;
   NODE *node = NULL;
+	PATH_NODE *pn;
   int len;
 
   // We need at least 2 bytes to identify a packet
@@ -422,8 +423,22 @@ void do_parse() {
 						add_node(node);
 					}
           node->path = calculate_path(get_src_x(RFIFOP(50)),get_src_y(RFIFOP(50)),get_dest_x(RFIFOP(50)),get_dest_y(RFIFOP(50)));
-          if(node->path!=NULL) {
-            set_coordinates(node->coordinates, node->path->x, node->path->y, 0);
+					if(node->path!=NULL) {
+						direction = 0;
+						if(node->path->next) {
+								if(node->path->next->x>node->path->x && node->path->next->y>node->path->y)direction = SE;
+								else if(node->path->next->x<node->path->x && node->path->next->y>node->path->y)direction = SW;
+								else if(node->path->next->x>node->path->x && node->path->next->y<node->path->y)direction = NE;
+								else if(node->path->next->x<node->path->x && node->path->next->y<node->path->y)direction = NW;
+								else if(node->path->next->x>node->path->x)direction = EAST;
+								else if(node->path->next->x<node->path->x)direction = WEST;
+								else if(node->path->next->y>node->path->y)direction = SOUTH;
+								else if(node->path->next->y<node->path->y)direction = NORTH;
+						}
+						pn = node->path;
+						node->path = node->path->next;
+						free(pn);
+            set_coordinates(node->coordinates, node->path->x, node->path->y, direction);
             node->action = WALK;
             node->tick_time = tick_time;
           }

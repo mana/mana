@@ -21,6 +21,10 @@
 
 */
 
+#ifdef WIN32
+#pragma warning(disable:4312)
+#endif
+
 #ifndef _STATS_H
 #define _STATS_H
 
