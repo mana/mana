@@ -8,7 +8,7 @@ CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funrol
 CFLAGS=`allegro-config --libs release` -lalfont
 
 OBJS = being.o game.o main.o map.o log.o astar.o
-OBJS += Sound/sound.o Graphic/SuperEagle.o
+OBJS += Sound/sound.o Graphic/SuperEagle.o chat/chat.o
 OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o
 OBJS += Net/network.o Net/protocol.o
 OBJS += Mac/mac.o
