@@ -24,7 +24,6 @@
 #include "graphic.h"
 #include "2xsai.h"
 #include "../gui/gui.h"
-#include "../gui/setup.h"
 #include "../gui/stats.h"
 
 #define TILESET_W 480
@@ -56,8 +55,6 @@ char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
 StatsDialog *statsDialog;
-Setup *setup;
-extern bool show_setup;
 
 void ChatListener::action(const std::string& eventId)
 {

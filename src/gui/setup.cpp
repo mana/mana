@@ -7,69 +7,67 @@
 
 #include "setup.h"
 
-extern bool show_setup;
-
-/*
- * Setup action listener
- */
-void SetupActionListener::action(const std::string& eventId) {
-  if(eventId == "apply") {
-    puts("apply");
-    show_setup = false;
-  } else if (eventId == "cancel") {
-    puts("calncel");
-    show_setup = false;
-  }
-}
-
 /* 
  * Display setup dialog
  */
-Setup::Setup() {
-  visible = false;
-  setupDialog = new gcn::Container();
+Setup::Setup(gcn::Container *parent)
+  : Window(parent, "Setup")
+{
   displayLabel = new gcn::Label("Display");
   applyButton = new gcn::Button("Apply");
   cancelButton = new gcn::Button("Cancel");
   
-  /* Set dialog elements */
-  setupDialog->setDimension(gcn::Rectangle(300,300,200,200));
-  displayLabel->setPosition(4,14);
-  applyButton->setPosition(30,162);
-  cancelButton->setPosition(146,162);
+  /* Set dimension */
+  displayLabel->setDimension(gcn::Rectangle(0,0,128, 16));
+  applyButton->setDimension(gcn::Rectangle(0,0,128, 16));
+  cancelButton->setDimension(gcn::Rectangle(0,0,128, 16));
   
   /* Set events */
   applyButton->setEventId("apply");
   cancelButton->setEventId("cancel");
   
+  /* Set position */
+  displayLabel->setPosition(10,10);
+  applyButton->setPosition(10,100);
+  cancelButton->setPosition(100,100);
+  
   /* Listen for actions */
-  SetupActionListener *setupActionListener = new SetupActionListener();
-  applyButton->addActionListener(setupActionListener);
-  cancelButton->addActionListener(setupActionListener);
+  applyButton->addActionListener(this);
+  cancelButton->addActionListener(this);
   
   /* Assemble dialog */
-  setupDialog->add(displayLabel);
-  setupDialog->add(applyButton);
-  setupDialog->add(cancelButton);
-
-  setupDialog->setVisible(visible);
-  guiTop->add(setupDialog);
+  add(displayLabel);
+  add(applyButton);
+  add(cancelButton);
+  
+  setSize(240,216);
+  setLocationRelativeTo(getParent());
 }
 
 Setup::~Setup() {  
-  delete setupDialog;
   delete displayLabel;
   delete applyButton;
   delete cancelButton;
 }
 
-void Setup::toggleVisible(bool toggle) {
-    if (!visible && toggle) {
-        visible = true;
-    }
-    else if (visible && !toggle) {
-        visible = false;
-    }
+void Setup::action(const std::string& eventId)
+{
+
+  if(eventId == "apply") {
+    puts("apply");
+  }
+  else if(eventId == "cancel") {
+    puts("cancel");
+  }
+}
+
+void create_setup() {
+  Setup *setup;
+  setup = new Setup(guiTop);
   
-  setupDialog->setVisible(visible);
+  while(!key[KEY_ESC] && !key[KEY_ENTER]) {
+    gui_update(NULL);
+  }
+  
+  delete setup;
 }

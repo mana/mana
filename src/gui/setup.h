@@ -13,26 +13,21 @@
 #include <winalleg.h>
 #endif
 
-class Setup {
- public:
-  Setup();
-  ~Setup();
-  void toggleVisible(bool toggle);
-  
+class Setup : public Window, public gcn::ActionListener {
  private:
-  bool visible;
   /* Dialog parts */
-  gcn::Container *setupDialog;
   gcn::Label *displayLabel;
   gcn::Button *applyButton;
   gcn::Button *cancelButton;
+  
+ public:
+  Setup(gcn::Container *parent);
+  ~Setup();
+  
+  void action(const std::string& eventId);
+  
 };
 
-/* The action listener for setup dialog */
-class SetupActionListener : public gcn::ActionListener
-{
- public:
-  void action(const std::string& eventId);
-};
+void create_setup();
 
 #endif
