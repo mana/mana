@@ -117,7 +117,7 @@ void char_server() {
     showServerList = 1;
     while (showServerList) {
         blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
-        gui_update(NULL);
+        gui->update();
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
     }
 

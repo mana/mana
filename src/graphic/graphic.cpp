@@ -194,21 +194,21 @@ GraphicEngine::GraphicEngine() {
 
     // Initialize the gui bitmap to the page that will be drawn first
     gui_bitmap = this->buffer;
-    
+
+    // Load the sprite sets
     BITMAP *npcbmp = load_bitmap("data/graphic/npcset.bmp", NULL);
-    if (!npcbmp) error("Unable to load npcset.bmp");
-    npcset = new Spriteset(npcbmp, 50, 80, 0, 0);
-
     BITMAP *emotionbmp = load_bitmap("data/graphic/emotionset.bmp", NULL);
-    if (!emotionbmp) error("Unable to load emotionset.bmp");
-    emotionset = new Spriteset(emotionbmp, 19, 19, 0, 0);
-
     BITMAP *tilesetbmp = load_bitmap("data/graphic/tileset.bmp", NULL);
-    if (!tilesetbmp) error("Unable to load tileset.bmp");
-    tileset = new Spriteset(tilesetbmp, 32, 32, 0, 0);
-
     BITMAP *monsterbitmap = load_bitmap("data/graphic/monsterset.bmp", NULL);
+
+    if (!npcbmp) error("Unable to load npcset.bmp");
+    if (!emotionbmp) error("Unable to load emotionset.bmp");
+    if (!tilesetbmp) error("Unable to load tileset.bmp");
     if (!monsterbitmap) error("Unable to load monsterset.bmp");
+
+    npcset = new Spriteset(npcbmp, 50, 80, 0, 0);
+    emotionset = new Spriteset(emotionbmp, 19, 19, 0, 0);
+    tileset = new Spriteset(tilesetbmp, 32, 32, 0, 0);
     monsterset = new Spriteset(monsterbitmap, 60, 60, 30, 40);
 }
 
@@ -486,7 +486,7 @@ void GraphicEngine::refresh() {
 
     // Update GUI
     guiGraphics->setTarget(buffer);
-    gui_update(NULL);
+    gui->update();
 
     textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), -1,
             "[%i fps] %i,%i", fps,

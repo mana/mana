@@ -164,7 +164,7 @@ Being::Being() {
 }
 
 Being::~Being() {
-    if(path) {
+    if (path) {
         PATH_NODE *temp = path;
         PATH_NODE *next;
         while (temp) {
@@ -174,7 +174,7 @@ Being::~Being() {
         }
         path = NULL;        
     }
-    if(speech) {
+    if (speech) {
         free(speech);
     }    
 }

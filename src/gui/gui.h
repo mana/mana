@@ -37,6 +37,36 @@
  * \defgroup GUI GUI related classes
  */
 
+/**
+ * Main GUI class.
+ *
+ * \ingroup GUI
+ */
+class Gui
+{
+    public:
+        /**
+         * Constructor.
+         */
+        Gui(BITMAP *screen);
+
+        /**
+         * Destructor.
+         */
+        virtual ~Gui();
+
+        /**
+         * Performs GUI logic and drawing.
+         */
+        void update();
+
+    private:
+        gcn::Gui* gui;                        /**< The GUI system */
+        gcn::Input* guiInput;                 /**< Input driver */
+        gcn::ImageLoader* imageLoader;        /**< For loading images */
+        gcn::ImageFont* guiFont;              /**< The global GUI font */
+};
+
 typedef struct {
     BITMAP *grid[9];
 } LexSkinnedRect;
@@ -107,13 +137,14 @@ typedef struct {
 extern LexSkin gui_skin;
 extern BITMAP *gui_bitmap;
 
+extern Gui* gui;
 extern gcn::Container* guiTop;                // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
-extern gcn::ImageFont* guiFont;               // The gui font
 
+/** Initialize gui system */
 void init_gui(BITMAP *dest_bitmap, const char *skin);
+
 void gui_exit();
-int gui_update(DIALOG_PLAYER *player);
 int gui_load_skin(const char* skinname);
 void gui_shutdown(void);
 

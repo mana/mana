@@ -228,7 +228,7 @@ void charSelect()
         // Draw background
         blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
 
-        gui_update(NULL);
+        gui->update();
 
         // Draw character
         const int pX = 8, pY = 16;
@@ -315,7 +315,7 @@ void charCreate()
         // Draw background
         blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
 
-        gui_update(NULL);
+        gui->update();
 
         // Draw character
         const int pX = 96, pY = 40;

@@ -279,6 +279,7 @@ void init_engine() {
             0, 0, playerbitmap->w, playerbitmap->h,
             0, 0, playerbitmap2->w, playerbitmap2->h);
     playerset = new Spriteset(playerbitmap2, 160, 120, 0, 0);
+    destroy_bitmap(playerbitmap);
 
     BITMAP *hairbitmap = load_bitmap("data/graphic/hairset.bmp", NULL);
     if (!hairbitmap) error("Couldn't load hairset.bmp");
@@ -288,6 +289,7 @@ void init_engine() {
             0, 0, hairbitmap->w, hairbitmap->h,
             0, 0, hairbitmap2->w, hairbitmap2->h);
     hairset = new Spriteset(hairbitmap2, 40, 40, 0, 0);
+    destroy_bitmap(hairbitmap);
 
     // TODO: Remove Allegro config file usage from GUI look
     init_gui(buffer, "data/Skin/aqua.skin");

@@ -48,72 +48,74 @@ static BITMAP *gui__repository[GUI_BMP_COUNT];
 /* The currently active skin */
 LexSkin gui_skin;
 BITMAP *gui_bitmap;
-bool drag;
 DATAFILE *gui_gfx;
 
 
 // Guichan Allegro stuff
-gcn::AllegroInput* guiInput;           // Input driver
 gcn::AllegroGraphics* guiGraphics;     // Graphics driver
-gcn::AllegroImageLoader* imageLoader;  // For loading images
 
 // Guichan stuff
-gcn::Gui* gui;            // A Gui object - binds it all together
+Gui* gui;
 gcn::Container* guiTop;   // The top container
-gcn::ImageFont* guiFont;  // A font
 
 
+Gui::Gui(BITMAP *screen)
+{
+    gui = new gcn::Gui();
 
+    // Set graphics
+    guiGraphics = new gcn::AllegroGraphics();
+    guiGraphics->setTarget(screen);
+    gui->setGraphics(guiGraphics);
 
-/** Initialize gui system */
-void init_gui(BITMAP *bitmap, const char *skin) {
+    // Set input
+    guiInput = new AllegroInput();
+    gui->setInput(guiInput);
+
+    // Set image loader
     imageLoader = new gcn::AllegroImageLoader();
     gcn::Image::setImageLoader(imageLoader);
 
-    guiGraphics = new gcn::AllegroGraphics();
-    guiGraphics->setTarget(bitmap);
-
-    guiInput = new AllegroInput();
-
+    // Initialize top GUI widget
     guiTop = new gcn::Container();
     guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
     guiTop->setOpaque(false);
-
-    gui = new gcn::Gui();
-    gui->setGraphics(guiGraphics);
-    gui->setInput(guiInput);
     gui->setTop(guiTop);
+
+    // Set global font
     guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
             " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:@"
             "!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
             );
     gcn::Widget::setGlobalFont(guiFont);
-
-
-    gui_bitmap = bitmap;
-    gui_load_skin(skin);
-    drag = false;
-    show_mouse(NULL);
 }
 
-int gui_update(DIALOG_PLAYER *player) {
-    int ret = 0;
+Gui::~Gui()
+{
+    delete guiFont;
+    delete guiTop;
+    delete imageLoader;
+    delete guiInput;
+    delete guiGraphics;
+    delete gui;
+}
 
-    if (player) {
-        // Update Allegro dialog (to be replaced)
-        dialog_message(player->dialog, MSG_DRAW, 0, 0);
-        ret = update_dialog(player);
-    }
-    else {
-        // Update new GUI system using Guichan
-        gui->logic();
-        gui->draw();
-    }
+void Gui::update()
+{
+    gui->logic();
+    gui->draw();
 
     // Draw the mouse
     draw_sprite(gui_bitmap, mouse_sprite, mouse_x, mouse_y);
+}
 
-    return ret;
+
+void init_gui(BITMAP *bitmap, const char *skin) {
+    gui = new Gui(bitmap);
+
+    gui_bitmap = bitmap;
+    gui_load_skin(skin);
+    show_mouse(NULL);
 }
 
 
@@ -134,17 +136,17 @@ void loadButtonSkin() {
         gridy[a] = atoi(tokens[a]);
     }
 
-    tokens                      = get_config_argv("button", "textcol_norm", &tokenCount);
+    tokens = get_config_argv("button", "textcol_norm", &tokenCount);
     gui_skin.button.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                      = get_config_argv("button", "textcol_hilite", &tokenCount);
+    tokens = get_config_argv("button", "textcol_hilite", &tokenCount);
     gui_skin.button.textcolor[1] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                      = get_config_argv("button", "textcol_pressed", &tokenCount);
+    tokens = get_config_argv("button", "textcol_pressed", &tokenCount);
     gui_skin.button.textcolor[2] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                      = get_config_argv("button", "textcol_disabled", &tokenCount);
+    tokens = get_config_argv("button", "textcol_disabled", &tokenCount);
     gui_skin.button.textcolor[3] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
 
     gui__repository[GUI_BMP_OFS_BUTTON + 0] = (BITMAP *)gui_gfx[0].dat;
-		gui__repository[GUI_BMP_OFS_BUTTON + 1] = (BITMAP *)gui_gfx[2].dat;
+    gui__repository[GUI_BMP_OFS_BUTTON + 1] = (BITMAP *)gui_gfx[2].dat;
     gui__repository[GUI_BMP_OFS_BUTTON + 2] = (BITMAP *)gui_gfx[3].dat;
     gui__repository[GUI_BMP_OFS_BUTTON + 3] = (BITMAP *)gui_gfx[1].dat;
 
@@ -153,10 +155,10 @@ void loadButtonSkin() {
         for (y = 0; y < 3; y++) {
             for (x = 0; x < 3; x++) {
                 gui_skin.button.background[mode].grid[a] = create_sub_bitmap(
-                                gui__repository[GUI_BMP_OFS_BUTTON + mode],
-                                gridx[x]             , gridy[y],
-                                gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
-                                );
+                        gui__repository[GUI_BMP_OFS_BUTTON + mode],
+                        gridx[x], gridy[y],
+                        gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y]+1
+                        );
                 a++;
             }
         }
@@ -168,8 +170,8 @@ void loadSliderSkin() {
     char **tokens;
     int    tokenCount;
 
-		gui__repository[GUI_BMP_OFS_SLIDER] = (BITMAP *)gui_gfx[8].dat;
-		if(!gui__repository[GUI_BMP_OFS_SLIDER])alert("","","","","",0,0);
+    gui__repository[GUI_BMP_OFS_SLIDER] = (BITMAP *)gui_gfx[8].dat;
+    if (!gui__repository[GUI_BMP_OFS_SLIDER])alert("","","","","",0,0);
 
     tokens = get_config_argv("slider", "slider_h", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
@@ -178,8 +180,8 @@ void loadSliderSkin() {
     tokens = get_config_argv("slider", "slider_h_ofs", &tokenCount);
     o1 = atoi(tokens[0]); o2 = atoi(tokens[1]);
 
-    gui_skin.slider.hSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x , y, o1-x    , h);
-    gui_skin.slider.hSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o1, y, o2-o1   , h);
+    gui_skin.slider.hSlider[0] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x , y, o1-x, h);
+    gui_skin.slider.hSlider[1] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o1, y, o2-o1, h);
     gui_skin.slider.hSlider[2] = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], o2, y, w-(o2-x), h);
 
     tokens = get_config_argv("slider", "slider_v", &tokenCount);
@@ -196,20 +198,20 @@ void loadSliderSkin() {
     tokens = get_config_argv("slider", "handle_v", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.slider.vGrip   = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
+    gui_skin.slider.vGrip = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
 
     tokens = get_config_argv("slider", "handle_h", &tokenCount);
     x = atoi(tokens[0]); y = atoi(tokens[1]);
     w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.slider.hGrip   = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
+    gui_skin.slider.hGrip = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
 }
 
 void loadCheckboxSkin()  {
-    int    x, y, w,h;
+    int x, y, w,h;
     char **tokens;
-    int    tokenCount;
+    int tokenCount;
 
-		gui__repository[GUI_BMP_OFS_CHECKBOX] = (BITMAP *)gui_gfx[4].dat;
+    gui__repository[GUI_BMP_OFS_CHECKBOX] = (BITMAP *)gui_gfx[4].dat;
 
 
     tokens = get_config_argv("checkbox", "normal", &tokenCount);
@@ -232,9 +234,9 @@ void loadCheckboxSkin()  {
     w = atoi(tokens[2]); h = atoi(tokens[3]);
     gui_skin.checkbox.disabled_checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
 
-    tokens                        = get_config_argv("button", "textcol_norm", &tokenCount);
+    tokens = get_config_argv("button", "textcol_norm", &tokenCount);
     gui_skin.checkbox.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                        = get_config_argv("button", "textcol_disabled", &tokenCount);
+    tokens = get_config_argv("button", "textcol_disabled", &tokenCount);
     gui_skin.checkbox.textcolor[1] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
 }
 
@@ -255,21 +257,21 @@ void loadTextboxSkin() {
         gridy[a] = atoi(tokens[a]);
     }
 
-    tokens                       = get_config_argv("textbox", "textcol_norm", &tokenCount);
+    tokens = get_config_argv("textbox", "textcol_norm", &tokenCount);
     gui_skin.textbox.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                       = get_config_argv("textbox", "textcol_disabled", &tokenCount);
+    tokens = get_config_argv("textbox", "textcol_disabled", &tokenCount);
     gui_skin.textbox.textcolor[1] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
 
-		gui__repository[GUI_BMP_OFS_TEXTBOX] = (BITMAP *)gui_gfx[9].dat;
+    gui__repository[GUI_BMP_OFS_TEXTBOX] = (BITMAP *)gui_gfx[9].dat;
 
     a = 0;
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             gui_skin.textbox.bg.grid[a] = create_sub_bitmap(
-                            gui__repository[GUI_BMP_OFS_TEXTBOX],
-                            gridx[x]             , gridy[y],
-                            gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
-                            );
+                    gui__repository[GUI_BMP_OFS_TEXTBOX],
+                    gridx[x], gridy[y],
+                    gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y] + 1
+                    );
             a++;
         }
     }
@@ -292,26 +294,26 @@ void loadListboxSkin() {
         gridy[a] = atoi(tokens[a]);
     }
 
-    tokens                       = get_config_argv("listbox", "textcol_norm", &tokenCount);
+    tokens = get_config_argv("listbox", "textcol_norm", &tokenCount);
     gui_skin.listbox.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                       = get_config_argv("listbox", "textcol_selected", &tokenCount);
+    tokens = get_config_argv("listbox", "textcol_selected", &tokenCount);
     gui_skin.listbox.textcolor[1] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                       = get_config_argv("listbox", "textbg_selected", &tokenCount);
+    tokens = get_config_argv("listbox", "textbg_selected", &tokenCount);
     gui_skin.listbox.textcolor[2] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens                       = get_config_argv("listbox", "textcol_disabled", &tokenCount);
+    tokens = get_config_argv("listbox", "textcol_disabled", &tokenCount);
     gui_skin.listbox.textcolor[3] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
 
-		gui__repository[GUI_BMP_OFS_LISTBOX + 0] = (BITMAP*)gui_gfx[6].dat;
-		gui__repository[GUI_BMP_OFS_LISTBOX + 1] = (BITMAP*)gui_gfx[10].dat;
+    gui__repository[GUI_BMP_OFS_LISTBOX + 0] = (BITMAP*)gui_gfx[6].dat;
+    gui__repository[GUI_BMP_OFS_LISTBOX + 1] = (BITMAP*)gui_gfx[10].dat;
 
     a = 0;
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             gui_skin.listbox.bg.grid[a] = create_sub_bitmap(
-                            gui__repository[GUI_BMP_OFS_LISTBOX],
-                            gridx[x]             , gridy[y],
-                            gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
-                            );
+                    gui__repository[GUI_BMP_OFS_LISTBOX],
+                    gridx[x], gridy[y],
+                    gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y] + 1
+                    );
             a++;
         }
     }
@@ -328,10 +330,10 @@ void loadListboxSkin() {
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             gui_skin.listbox.vscroll.grid[a] = create_sub_bitmap(
-                            gui__repository[GUI_BMP_OFS_LISTBOX+1],
-                            gridx[x]             , gridy[y],
-                            gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
-                            );
+                    gui__repository[GUI_BMP_OFS_LISTBOX+1],
+                    gridx[x], gridy[y],
+                    gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y] + 1
+                    );
             a++;
         }
     }
@@ -390,7 +392,7 @@ void loadDialogSkin() {
         gridy[a] = atoi(tokens[a]);
     }
 
-		gui__repository[GUI_BMP_OFS_DIALOG] = (BITMAP *)gui_gfx[5].dat;
+    gui__repository[GUI_BMP_OFS_DIALOG] = (BITMAP *)gui_gfx[5].dat;
 
     a = 0;
     for (y = 0; y < 3; y++) {
@@ -464,13 +466,7 @@ int gui_load_skin(const char* skinname) {
 }
 
 void gui_exit() {
-    delete guiFont;
-    delete guiTop;
     delete gui;
-
-    delete guiInput;
-    delete guiGraphics;
-    delete imageLoader;
 
     gui_shutdown();
 }
@@ -637,7 +633,7 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
                     d->x, d->y, d->w, d->h);
 
             textprintf_centre_ex(gui_bitmap, font,
-                    d->x + d->w/2,
+                    d->x + d->w / 2,
                     d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font)) / 2,
                     d->fg, -1, "%s", (char*)d->dp);
 
