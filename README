@@ -59,6 +59,7 @@ talk to them. Other keys:
 - F1         take a screenshot
 - F5         sit down / stand up
 - F6         toggle debug pathfinding feature
+- F7         play levelup sound
 - F11        raise volume
 - F12        lower volume
 - G          get item

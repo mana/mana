@@ -286,12 +286,6 @@ void init_engine()
              sound.init(32, 20);
          }
          sound.setVolume(64);
-        
-         // left here to serve as an example ;)
-         /*
-         SOUND_SID id = sound.loadItem("./data/sound/wavs/level.ogg");
-         sound.startItem(id, 70);
-         */
     }
     catch (const char *err) {
         state = ERROR;

@@ -85,7 +85,6 @@ typedef struct {
 } PLAYER_INFO;
 
 
-
 extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
 extern Graphics *graphics;

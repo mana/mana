@@ -130,7 +130,7 @@ void do_init()
 
     /*std::string pathDir = path.substr(0, path.rfind(".") + 1);
     pathDir.insert(pathDir.size(), "tmx.gz");*/
-    
+
     tiledMap = Map::load(map_path);
     std::cout << map_path << std::endl;
 
@@ -201,6 +201,11 @@ void do_input()
             else if ((keysym.sym == SDLK_F6))
             {
                 displayPathToMouse = !displayPathToMouse;
+            }
+            else if ((keysym.sym == SDLK_F7))
+            {
+                SOUND_SID id = sound.loadItem("data/sfx/level.ogg");
+                sound.startItem(id, 70);
             }
 
             // Emotions, Skill dialog
@@ -992,7 +997,7 @@ void do_parse() {
                 case 0x019b:
                     if (RFIFOL(2) == player_node->id) {
                         SOUND_SID sound_id = sound.loadItem(
-                                "./data/sound/wavs/level.ogg");
+                                "data/sfx/level.ogg");
                         sound.startItem(sound_id, 64);
                         sound.clearCache();
                     }
