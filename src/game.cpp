@@ -337,11 +337,11 @@ void do_parse() {
         if((i+1)%10==0)fprintf(file, "\n");
       }
       fclose(file);*/
-#ifdef DEBUG
+//#ifdef DEBUG
 			FILE *file = fopen("./docs/packet.list", "ab");
 			fprintf(file, "%x\n", RFIFOW(0));
 			fclose(file);
-#endif
+//#endif
 
       // Parse packet based on their id
       switch(id) {
@@ -521,8 +521,8 @@ void do_parse() {
           break;
         //Get the items
         case 0x01ee:
-					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++)
-            inventory.add_item(RFIFOW(4+loop*18), RFIFOW(4+loop*18+2), RFIFOW(4+loop*18+6));
+			for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++) {
+				inventory.add_item(RFIFOW(4+loop*18), RFIFOW(4+loop*18+2), RFIFOW(4+loop*18+6));			}
           break;
         case 0x00a8: // could I use the item?
           // index RFIFOW(2)
@@ -843,6 +843,11 @@ void do_parse() {
             node->hair_style = RFIFOB(7);
           }
           break;
+          case 0x00a4:
+				for(int i=0;i<(RFIFOW(2)-4)/20;i++)
+					inventory.add_item(RFIFOW(4+20*i), RFIFOW(6+20*i), 1);
+			break;
+				
         // Manage non implemented packets
         default:
           //printf("%x\n",id);
