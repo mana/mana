@@ -117,3 +117,13 @@ int Map::getTile(int x, int y, int layer) {
     }
     return id;
 }
+
+int Map::getWidth()
+{
+    return width;
+}
+
+int Map::getHeight()
+{
+    return height;
+}

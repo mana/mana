@@ -24,8 +24,6 @@
 #ifndef _TMW_MAP_H
 #define _TMW_MAP_H
 
-#define MAP_WIDTH  200
-#define MAP_HEIGHT 200
 #define TILESET_WIDTH 30
 
 #define WALKABLE 0
@@ -96,8 +94,20 @@ class Map
          */
         int getPathWalk(int x, int y);
 
+        /**
+         * Returns the width of this map.
+         */
+        int getWidth();
+
+        /**
+         * Returns the height of this map.
+         */
+        int getHeight();
+
     private:
-        TILE tiles[MAP_WIDTH][MAP_HEIGHT];
+        const static int width = 200;
+        const static int height = 200;
+        TILE tiles[width][height];
         char tileset[20];
         char bg_music[20];
 };
