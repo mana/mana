@@ -42,74 +42,85 @@ TmwInventory::~TmwInventory()
 
 /** Initialize inventory */
 void TmwInventory::create(int tempxpos, int tempypos) {
-	itemset = load_datafile("./data/graphic/items.dat");
+    itemset = load_datafile("./data/graphic/items.dat");
 
-	for(int i=0;i<INVENTORY_SIZE;i++) {
-		items[i].id = -1; // if id is negative there's no item
-		items[i].quantity = 0;
-	}
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        items[i].id = -1; // if id is negative there's no item
+        items[i].quantity = 0;
+    }
 
-	inventory_player = init_dialog(inventory_dialog, -1);
-	position_dialog(inventory_dialog, x, y);
+    inventory_player = init_dialog(inventory_dialog, -1);
+    position_dialog(inventory_dialog, x, y);
 
-	show_inventory = false;
+    show_inventory = false;
 }
 
 /** Draw inventory window */
-void TmwInventory::draw(BITMAP * buffer) {
-	if(show_inventory) {
-		dialog_message(inventory_dialog,MSG_DRAW,0,0);
-		update_dialog(inventory_player);
-		for(int i=0;i<INVENTORY_SIZE;i++) {
-			if(items[i].quantity>0) {
-				if(items[i].id>=501 && items[i].id<=511)
-					draw_rle_sprite(gui_bitmap, (RLE_SPRITE *)itemset[items[i].id-501].dat, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26);
-				//else
-					//masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
-				
-				textprintf_ex(gui_bitmap, font, inventory_dialog[0].x+24*i, inventory_dialog[0].y+44, makecol(0,0,0), -1, "%i", items[i].quantity);
-			}
-		}
-	}
-	if(mouse_b & 2)
-	{
-		for(int i=0;i<INVENTORY_SIZE;i++) {
-		if(items[i].quantity>0 && inventory_dialog[0].x+24*i+24 > mouse_x && inventory_dialog[0].x+24*i < mouse_x && inventory_dialog[0].y+44+24 > mouse_y && inventory_dialog[0].y+44 < mouse_y)
-			{
-			itemMeny = 1;
-			itemMeny_x = 24*i;
-			itemMeny_y = 44+24;
-			itemMeny_i = i;
-			}
-		}
+void TmwInventory::draw(BITMAP *buffer) {
+    if (!show_inventory) return;
 
+    dialog_message(inventory_dialog, MSG_DRAW, 0, 0);
+    update_dialog(inventory_player);
+    for (int i = 0; i < INVENTORY_SIZE; i++) {
+        if (items[i].quantity > 0) {
+            if (items[i].id >= 501 && items[i].id <= 511)
+                draw_rle_sprite(gui_bitmap, (RLE_SPRITE *)itemset[items[i].id-501].dat, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26);
+            //else
+            //masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
 
-	}
+            textprintf_ex(gui_bitmap, font, inventory_dialog[0].x + 24 * i,
+                    inventory_dialog[0].y + 44, makecol(0, 0, 0), -1,
+                    "%i", items[i].quantity);
+        }
+    }
 
+    if (mouse_b & 2) {
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (items[i].quantity > 0 &&
+                    inventory_dialog[0].x + 24 * i + 24 > mouse_x &&
+                    inventory_dialog[0].x + 24 * i < mouse_x &&
+                    inventory_dialog[0].y + 44 + 24 > mouse_y &&
+                    inventory_dialog[0].y + 44 < mouse_y)
+            {
+                itemMeny = 1;
+                itemMeny_x = 24 * i;
+                itemMeny_y = 44 + 24;
+                itemMeny_i = i;
+            }
+        }
+    }
 
-	if(itemMeny){
-	if(inventory_dialog[0].y+itemMeny_y < mouse_y && inventory_dialog[0].y+itemMeny_y+10 > mouse_y) {
-		if(mouse_b&1)
-			{
-			use_item(itemMeny_i,items[itemMeny_i].id);
-			itemMeny = 0;
-			}
-		textprintf_ex(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, makecol(255,237,33), -1, "Use item");
-		} else {
-		textprintf_ex(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, MAKECOL_BLACK, -1, "Use item");
-		}
-	if(inventory_dialog[0].y+itemMeny_y+10 < mouse_y && inventory_dialog[0].y+itemMeny_y+20 > mouse_y) {
-		if(mouse_b&1)
-			{
-			drop_item(itemMeny_i,1);
-			itemMeny = 0;
-			}
-		textprintf_ex(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, makecol(255,237,33), -1, "Del item");
-		} else {
-		textprintf_ex(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, MAKECOL_BLACK, -1, "Del item");
-		}
-	}
-
+    if (itemMeny) {
+        if (inventory_dialog[0].y + itemMeny_y < mouse_y &&
+                inventory_dialog[0].y + itemMeny_y + 10 > mouse_y)
+        {
+            if (mouse_b & 1) {
+                use_item(itemMeny_i,items[itemMeny_i].id);
+                itemMeny = 0;
+            }
+            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
+                    inventory_dialog[0].y + itemMeny_y, makecol(255, 237, 33),
+                    -1, "Use item");
+        } else {
+            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
+                    inventory_dialog[0].y + itemMeny_y, MAKECOL_BLACK, -1,
+                    "Use item");
+        }
+        if (inventory_dialog[0].y + itemMeny_y + 10 < mouse_y &&
+                inventory_dialog[0].y + itemMeny_y + 20 > mouse_y) {
+            if (mouse_b & 1) {
+                drop_item(itemMeny_i, 1);
+                itemMeny = 0;
+            }
+            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
+                    inventory_dialog[0].y + itemMeny_y + 10,
+                    makecol(255, 237, 33), -1, "Del item");
+        } else {
+            textprintf_ex(buffer, font, inventory_dialog[0].x + itemMeny_x,
+                    inventory_dialog[0].y + itemMeny_y + 10, MAKECOL_BLACK, -1,
+                    "Del item");
+        }
+    }
 }
 
 
