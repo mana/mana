@@ -11,7 +11,7 @@ PrivateResource=
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=_@@_
+CppCompiler=-ljgmod -lalleg_@@_
 Linker=../lib/libjgmod.a_@@_../lib/liballeg.a_@@_../lib/libalfontdll.a_@@_../lib/libwsock32.a_@@_
 IsCpp=1
 Icon=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=00000010010010000010c1
+CompilerSettings=0000000001001000000000
 
 [Unit1]
 FileName=main.cpp
@@ -347,3 +347,6 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+
+########Text Field info#####
+dev-cpp projectfile for tmw by kth5 XD
