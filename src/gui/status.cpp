@@ -103,7 +103,7 @@ void StatusWindow::update()
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
     
-    sprintf(tempstr, "Job Points: %d", (int)char_info->job_xp);
+    sprintf(tempstr, "Job Exp: %d", (int)char_info->job_xp);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
