@@ -10,8 +10,19 @@ necessary.
 * Indentation:
   Code is indented using 4 spaces, no tabs.
 
+* Line length:
+  Should not exceed 79 characters.
+  
+  One reason for this is to keep code readable. In such cases it would often be
+  better to spread the line over multiple lines or use some extra temporary
+  variables. Another reason is that some of us are using editors that default
+  to an 80 character wide screen, and often put two instances next to
+  eachother. 79 character wide lines leave just a spot for the cursor at the
+  end of the line.
+
 * Control constructs like this:
 
+  Good:
   if (condition) {
   }
   else {
@@ -36,15 +47,51 @@ necessary.
   Ending parenthesis may be on next line for clarity.
   
   Bad:
-
   if (condition)
       statement;
       
   if (condition) statement;
 
-* Use of whitespace example:
+* Comments:
+  Single line C++ style comments are indented the same as the previous line.
 
+  Good:
+  // comment
+
+  Multiple line C style comments are initially indented like previous line
+  except every new line of the comment begins with a asterisk ('*') which lines
+  up with the initial asterisk of the comment opening (1 space indent). The
+  comment is closed also with the asterisk lining up. Comment text is only
+  placed on a line starting with a asterisk.
+
+  Good:
+  /*
+   * Some comment
+   * additional comment material
+   */
+
+  Bad:
+  /* text
+  comment
+  */
+
+* Whitespace examples:
+
+  Good:
   x = ((5 + 4) * 3) / 1.5;
+  afunction(12, 3, (1 + 1));
 
-* Agreement on function/class/variable/method/member naming pending.
+  Bad:
+  x = ( ( 5 + 4 ) * 3 ) / 1.5;
+  afunction(12,3,(1+1));
+
+* Method, class, member and constant naming is based on the
+  generally accepted way Java code is written.
+
+  Class:            CapitalizedWords
+  Method/member:    camelCase
+  Constant:         UPPERCASE_UNDERSCORES
+
+  To denote global variables and functions the lowercase_underscores style may
+  be used. Hungarian style should be avoided.
 
