@@ -3,12 +3,12 @@
 - A huge amount of small GUI improvements
 - Lots of internal changes including a resource manager
 
-0.0.8a
+0.0.8a  (27 Dec 2004)
 - Added controlling player with arrow keys
 - Rewrote gui with Guichan
 - Added scripts for easy autotools
 
-0.0.8
+0.0.8  (30 Oct 2004)
 - Added sound support for macosx
 - Added primitive inventory
 - Added action failed messages for all skills and known reasons
@@ -34,8 +34,7 @@
 - Added patch client v0.1 to Win32 version
 
 
-0.0.7e
-
+0.0.7e  (31 Aug 2004)
 - Tons of bugfixes & improvements (again)
 - MacOS X support
 - Confirmed support for GNU/Linux on ppc
@@ -45,8 +44,7 @@
 - Added warps
 - Changed makefile for GCC to optimize more
 
-0.0.7d:
-
+0.0.7d  (18 Aug 2004)
 - Tons of bugfixes
 - Added a bit of prediction to player walking
 - Added Ultramichy's server to client
@@ -54,14 +52,12 @@
 - Added a* system (still not applied to player, but only to monster walking)
 - Started rewriting of chat system
 
-0.0.7c:
-
+0.0.7c  (22 Jul 2004)
 - Started rewriting of graphic engine
 - Fixed walking problems
 - Server: features a custom map
 
-0.0.7b:
-
+0.0.7b  (10 Jul 2004)
 - Completely rewrited network functions
   - Removed listening thread
   - Replaced blocking calls to socket
@@ -73,8 +69,7 @@
 - Decreased the number of files in source code
 - The code is now a little more organized and easy to understand
 
-0.0.7a:
-
+0.0.7a  (30 Jun 2004)
 - Win32 binaries come with an installer
 - Renew login GUI:
   - Change from dialogs to windows
@@ -82,10 +77,11 @@
   - Add player creation dialog
 - Add NPC GUI
 
-0.0.7:
-
+0.0.7  (26 Jun 2004)
 - Some kind of multiplayer
 - Cross-compiler source code
 - Added setup utility
 - Minor changes
 - Bugfixes
+
+0.0.6a  (13 Jun 2004)
