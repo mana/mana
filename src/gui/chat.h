@@ -108,9 +108,6 @@ struct CHATSKILL {
 
 	Author: kth5 aka Alexander Baldeck
 		pipe your questions, suggestions and flames to: kth5@gawab.com
-
-	NOTE:
-		i documented all functions in their implementation. ;-)
 */
 class Chat {
 	public :
