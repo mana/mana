@@ -50,9 +50,9 @@ Window::Window(const std::string& text, bool modal, Window *parent):
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
-    dLeft = resman->getImage("Skin/dialogLeft.bmp");
-    dMid = resman->getImage("Skin/dialogMiddle.bmp");
-    dRight = resman->getImage("Skin/dialogRight.bmp");
+    dLeft = resman->getImage("core/graphics/gui/dialog_left.bmp");
+    dMid = resman->getImage("core/graphics/gui/dialog_middle.bmp");
+    dRight = resman->getImage("core/graphics/gui/dialog_right.bmp");
 
     // Register mouse listener
     addMouseListener(this);

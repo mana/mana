@@ -129,17 +129,12 @@ typedef struct {
 } LexDialog;
 
 typedef struct {
-    LexSkinnedRect bg;
-} LexBar;
-
-typedef struct {
     LexButton      button;
     LexSlider      slider;
     LexCheckbox    checkbox;
     LexTextbox     textbox;
     LexListbox     listbox;
     LexDialog      dialog;
-    LexBar		   bar;
 } LexSkin;
 
 extern LexSkin gui_skin;

@@ -420,23 +420,6 @@ void loadListboxSkin() {
 
 }
 
-void loadBarSkin() {
-    BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
-    BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
-    gui_skin.bar.bg.grid[0] = create_bitmap(3,11);
-    gui_skin.bar.bg.grid[1] = create_bitmap(1,11);
-    gui_skin.bar.bg.grid[2] = create_bitmap(3,11);
-    blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
-    blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
-    blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
-    gui_skin.bar.bg.grid[3] = create_bitmap(3,11);
-    gui_skin.bar.bg.grid[4] = create_bitmap(1,11);
-    gui_skin.bar.bg.grid[5] = create_bitmap(3,11);
-    blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
-    blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
-    blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
-}
-
 void loadDialogSkin() {
     char **tokens;
     int tokenCount;
@@ -518,7 +501,6 @@ int gui_load_skin(const char* skinname) {
     loadTextboxSkin();
     loadListboxSkin();
     loadDialogSkin();
-    loadBarSkin();
     pop_config_state();
     set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
