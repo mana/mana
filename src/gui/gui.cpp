@@ -535,7 +535,7 @@ int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre)
 
     if (centre)x -= pix_len / 2;
     if (bmp) {
-        textout(bmp, font, tmp, x, y, color);
+        textprintf_ex(bmp, font, x, y, color, -1, tmp);
         if (hline_pos >= 0) {
             c = ugetat(tmp, hline_pos);
             usetat(tmp, hline_pos, 0);
@@ -551,10 +551,7 @@ int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre)
 
 int tmw_text_proc(int msg, DIALOG *d, int c) {
     if (msg==MSG_DRAW) {
-        int rtm;
-        rtm = text_mode(-1);
         gui_text(gui_bitmap, (char *)d->dp, d->x, d->y, d->fg, FALSE);
-        text_mode(rtm);
     }
     return D_O_K;
 }
@@ -584,9 +581,7 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
             draw_skinned_rect(gui_bitmap, &gui_skin.button.background[0], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[0];
         }
-        rtm = text_mode(-1);
       gui_text(gui_bitmap, (const char *)d->dp, d->x+d->w/2+ofs, d->y+d->h/2-text_height(font)/2+ofs, col, TRUE);
-      text_mode(rtm);
     ret = D_O_K;
   } else {
     /*if(msg==MSG_CLICK) {
@@ -723,9 +718,7 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
 
         masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
         if (d->dp != NULL) {
-            rtm = text_mode(-1);
             gui_text(gui_bitmap, (const char *)d->dp, tx, ty, col, 0);
-            text_mode(rtm);
         }
 
 
@@ -767,8 +760,6 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
         text  = (char *)d->dp;
         start = text;
 
-        rtm = text_mode(-1);
-
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
             ct = gui_bitmap->ct;
@@ -798,7 +789,6 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
             vline(gui_bitmap, x, ty, ty + text_height(font), col);
             text[d->d2] = hack;
         }
-        text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
         return d_edit_proc(msg, d, c);
@@ -842,8 +832,6 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
     text[i] = '\0';
         start = text;
 
-        rtm = text_mode(-1);
-
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
             ct = gui_bitmap->ct;
@@ -874,7 +862,7 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
             vline(gui_bitmap, x, ty, ty + text_height(font), col);
             text[d->d2] = hack;
         }
-        text_mode(rtm);
+
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
         return d_edit_proc(msg, d, c);
@@ -921,7 +909,6 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
       draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll, d->x+d->w-13, slidery, 11, sliderh);
     }
 
-    rtm = text_mode(-1);
     if (gui_bitmap->clip) {
 			cl = gui_bitmap->cl;
 			ct = gui_bitmap->ct;
@@ -938,7 +925,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     if (d->flags & D_DISABLED) {
 			col = gui_skin.listbox.textcolor[3];
 			for (a=firstItem; a < lastItem; a++) {
-				textout(gui_bitmap, font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				textprintf_ex(gui_bitmap, font, x, y, col, -1, (*(getfuncptr)d->dp)(a, 0));
 				y += text_height(font);
 			}
 		} else {
@@ -949,11 +936,10 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
 				} else {
 					col = gui_skin.listbox.textcolor[0];
 				}
-				textout(gui_bitmap, font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				textprintf_ex(gui_bitmap, font, x, y, col, -1, (*(getfuncptr)d->dp)(a, 0));
 				y += text_height(font);
 			}
 		}
-    text_mode(rtm);
     set_clip_rect(gui_bitmap, cl, ct, cr, cb);
 	} else if (msg == MSG_CLICK) {
 		x = d->x + gui_skin.listbox.bg.grid[0]->w;
@@ -1119,11 +1105,11 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
         d->d2 = -1;
       }
       draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-      rtm = text_mode(-1);
+
       textprintf_centre_ex(gui_bitmap, font,
 				d->x + d->w/2,
 				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", d->dp);
-			text_mode(rtm);
+
 			break;
 	}
   return D_O_K;
@@ -1170,9 +1156,8 @@ int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
       d->d2 = -1;
     }
         draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-        rtm = text_mode(-1);
-        textprintf(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, "%s", d->dp);
-        text_mode(rtm);
+
+        textprintf_ex(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, -1, "%s", d->dp);
     }
     return D_O_K;
 }
@@ -1245,8 +1230,6 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    /* choose the text color */
    if (disabled)
       fg = disable;
-
-   rtm = text_mode(-1);
 
    /* loop over the entire string */
    while (1) {
@@ -1342,7 +1325,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
          case '\t':
       for (i=0; i<tabsize; i++) {
          usetc(s+usetc(s, ' '), 0);
-         textout(gui_bitmap, font, s, x1, y1, fg);
+         textprintf_ex(gui_bitmap, font, x1, y1, fg, -1, s);
          x1 += text_length(font, s);
       }
       break;
@@ -1351,7 +1334,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
          default:
       if (printed != ignore) {
          usetc(s+usetc(s, ugetc(printed)), 0);
-         textout(gui_bitmap, font, s, x1, y1, fg);
+         textprintf_ex(gui_bitmap, font, x1, y1, fg, -1, s);
          x1 += text_length(font, s);
       }
       }
@@ -1379,12 +1362,9 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
 
    /* tell how many lines we found */
    *listsize = line;
-   text_mode(rtm);
    return;
       }
    }
-
-   text_mode(rtm);
 }
 
 int tmw_textbox_proc(int msg, DIALOG *d, int c) {

@@ -30,6 +30,6 @@ INCLUDES= $(all_includes)
 
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) $(LIBALLEGRO_RPATH)
-tmw_CXXFLAGS = $(LIBSDL_CFLAGS) $(LIBALLEGRO_CFLAGS) -Wno-deprecated
+tmw_CXXFLAGS = $(LIBSDL_CFLAGS) $(LIBALLEGRO_CFLAGS)
 tmw_LDADD = $(LIBSDL_LIBS) $(LIBALLEGRO_LIBS)
 tmw_TARGET = ../tmw
