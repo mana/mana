@@ -252,10 +252,7 @@ void init_graphic() {
 #ifdef WIN32
   }
 #endif
-  vtileset = load_graphic_file("./data/graphic/tileset.bmp");
-  vnpcset = load_graphic_file("./data/graphic/npcset.bmp");
-  vplayerset = load_graphic_file("./data/graphic/playerset.bmp");
-  vmonsterset = load_graphic_file("./data/graphic/monsterset.bmp");
+ 
   
   gui_bitmap = vpage[page_num];
 
@@ -344,9 +341,9 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 			int r_y = node->text_y-get_y_offset(node);
 
 			if(node->action==MONSTER_DEAD)
-        new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+16*MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
+        new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+8*MONSTER_DEAD]->draw(vbuffer, node->text_x, node->text_y);
 			else 
-				new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+16*(node->frame+node->action)]->draw(vbuffer, node->text_x, node->text_y);
+				new_monsterset->spriteset[(get_direction(node->coordinates)/2)+4*(node->job-1002)+8*(node->frame+node->action)]->draw(vbuffer, node->text_x, node->text_y);
 			
       if(node->action!=STAND) {
         node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
