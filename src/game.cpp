@@ -382,10 +382,10 @@ void do_parse() {
         // Success to walk request
         case 0x0087:
 					if(walk_status==1) {
-					  if(get_src_x(RFIFOP(6))==src_x)
+					  /*if(get_src_x(RFIFOP(6))==src_x)
 					    if(get_src_y(RFIFOP(6))==src_y)
 					      if(get_dest_x(RFIFOP(6))==get_x(player_node->coordinates))
-					        if(get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))
+					        if(get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))*/
 					          walk_status = 2;
 					}  
           break;
@@ -400,9 +400,7 @@ void do_parse() {
 						empty_path(node);
             memcpy(node->coordinates, RFIFOP(46), 3);
             node->hair_color = RFIFOW(28);
-						/*char set[30];
-						sprintf(set, "%i %i %i %i",get_x(RFIFOP(46)),get_y(RFIFOP(46)),get_x(player_node->coordinates),get_y(player_node->coordinates));
-						alert("78",set,"","","",0,0);*/
+            node->hair_style = RFIFOW(16);
             add_node(node);
 					} else {
 						/*char set[30];
@@ -437,13 +435,14 @@ void do_parse() {
           if(node==NULL) {
             node = create_node();
             node->id = RFIFOL(2);
-            node->job = RFIFOW(16);
+            node->job = RFIFOW(14);
             memcpy(node->coordinates, RFIFOP(46), 3);
             add_node(node);
 						node->tick_time = tick_time;
 						node->frame = 0;
 						node->speed = RFIFOW(6);
 						node->hair_color = RFIFOW(28);
+						node->hair_style = RFIFOW(16);
           }
           break;
         // Monster moving
@@ -829,6 +828,9 @@ void do_parse() {
             /*char prova[100];
             sprintf(prova, "%i %i %i", RFIFOL(2), RFIFOB(6), RFIFOB(7));
             alert(prova,"","","","",0,0);*/
+          } else if(RFIFOB(6)==1) {
+            node = find_node(RFIFOL(2));
+            node->hair_style = RFIFOB(7);
           }  
           break;               
         // Manage non implemented packets

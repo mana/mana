@@ -230,7 +230,7 @@ void do_graphic(void) {
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
 			if(node->action==SIT)node->frame = 0;
 			masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);
-			masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
+			masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2+4*(node->hair_style-1)), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
 			//alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);
 
 			if(node->emotion!=0) {
@@ -244,11 +244,11 @@ void do_graphic(void) {
 				node->frame = (get_elapsed_time(node->tick_time)*4)/(node->speed);
 	      if(node->frame>=4) {
           node->frame = 0;
-          if(node->action==WALK)
+          /*if(node->action==WALK)
             if(walk_status==1) {
               set_coordinates(player_node->coordinates, src_x, src_y, direction);
               walk_status = 0;
-            }  
+            }  */
 					node->action = STAND;
 //					node->tick_time;
 					if(node->id==player_node->id)

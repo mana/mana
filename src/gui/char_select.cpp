@@ -53,20 +53,34 @@ DIALOG char_create_dialog[] = {
    { tmw_button_proc,   398,  426,   44,   18,    0,  -1,    'o',  D_EXIT,    -1,                 0,           (char*)"&Ok",                      NULL, NULL  },
    { tmw_button_proc,   446,  426,   44,   18,    0,  -1,    'c',  D_EXIT,    -1,                 0,       (char*)"&Cancel",                      NULL, NULL  },
    { tmw_player_proc,   304,  282,  142,  100,    0,   0,    0,    0,          80,                60,                  NULL,                      NULL, NULL  },
-   { tmw_incbutt_proc,   450,  282,   20,   20,    0,   0,    0,    0,          2,                 0,    (char*)"<",                      &char_info->hair_color, NULL  },
-   { tmw_incbutt_proc,   472,  282,   20,   20,    0,   0,    0,    0,          1,                 0,    (char*)">",                      &char_info->hair_color, NULL  },
-   { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
+   { tmw_incbutt_proc,  450,  282,   20,   20,    0,   0,    0,    0,          2,                 0,    (char*)"<",                      &char_info->hair_color, NULL  },
+   { tmw_incbutt_proc,  472,  282,   20,   20,    0,   0,    0,    0,          1,                 0,    (char*)">",                      &char_info->hair_color, NULL  },
+   { tmw_incbutt_proc2, 450,  304,   20,   20,    0,   0,    0,    0,          2,                 0,    (char*)"<",                      &char_info->hair_style, NULL  },
+   { tmw_incbutt_proc2, 472,  304,   20,   20,    0,   0,    0,    0,          1,                 0,    (char*)">",                      &char_info->hair_style, NULL  },
+   { NULL,              0,    0,     0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
 };
 
-#define MAX_HAIR_COLOR 10
+#define MAX_HAIR_COLOR 9
+#define MAX_HAIR_STYLE 3
 
 int tmw_incbutt_proc(int msg, DIALOG *d, int c) {
   if(msg==MSG_CLICK) {
-    //alert("","","","","",0,0);
     if(d->d1==1)char_info->hair_color++;
     else if(d->d1==2)char_info->hair_color--;
     if(char_info->hair_color<1)char_info->hair_color = MAX_HAIR_COLOR+1;
     if(char_info->hair_color>MAX_HAIR_COLOR+1)char_info->hair_color = 1;
+    d->flags = 0;
+    return D_O_K;
+  }
+  return tmw_button_proc(msg, d, c);
+}
+
+int tmw_incbutt_proc2(int msg, DIALOG *d, int c) {
+  if(msg==MSG_CLICK) {
+    if(d->d1==1)char_info->hair_style++;
+    else if(d->d1==2)char_info->hair_style--;
+    if(char_info->hair_style<1)char_info->hair_style = MAX_HAIR_STYLE+1;
+    if(char_info->hair_style>MAX_HAIR_STYLE+1)char_info->hair_style = 1;
     d->flags = 0;
     return D_O_K;
   }
@@ -76,12 +90,11 @@ int tmw_incbutt_proc(int msg, DIALOG *d, int c) {
 int tmw_player_proc(int msg, DIALOG *d, int c) {
   if(msg==MSG_DRAW) {
     tmw_bitmap_proc(MSG_DRAW, d, 0);
-    //BITMAP *temp = create_bitmap(60, 50);
-    //clear_to_color(temp, makecol(255, 255, 255));
     if(n_character>0) {
       masked_blit(playerset, gui_bitmap, 0, 0, d->x-10+40, d->y-10+30, 80, 60);
-      masked_blit(hairset, gui_bitmap, 20*(char_info->hair_color-1), 0, d->x+21+40, d->y+5+30, 20, 20);
-    }  
+      masked_blit(hairset, gui_bitmap, 20*(char_info->hair_color-1), 20*4*(char_info->hair_style-1), d->x+21+40, d->y+5+30, 20, 20);
+    }
+    //textprintf(gui_bitmap, font, 0, 0, makecol(255,255,255), "%i", char_info->hair_style);
     //Super2xSaI(temp, gui_bitmap, 0, 0, d->x, d->y, temp->w*2, temp->h*2);
     //blit(temp, gui_bitmap, 0, 0, d->x, d->y, 60,50);
   }
