@@ -28,6 +28,7 @@
 #include "../gui/minimap.h"
 #include "../gui/equipment.h"
 #include "../gui/newskill.h"
+#include "../gui/chargedialog.h"
 #include "../main.h"
 #include "../being.h"
 #ifdef USE_OPENGL
@@ -62,6 +63,7 @@ StatsWindow *statsWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
+ChargeDialog *chargeDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -285,6 +287,7 @@ Engine::Engine()
     newSkillWindow = new NewSkillDialog();
     newSkillWindow->setVisible(false);
 
+
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
     statsWindow->setPosition(
@@ -298,7 +301,13 @@ Engine::Engine()
 
     equipmentWindow = new EquipmentWindow();
     equipmentWindow->setVisible(false);
-
+    
+    chargeDialog = new ChargeDialog();
+    chargeDialog->setVisible(true);
+    chargeDialog->setPosition(
+            screen->w - 5 - chargeDialog->getWidth(),
+            screen->h - chargeDialog->getHeight() - 15);
+    
     // Give focus to the chat input
     chatInput->requestFocus();
 
