@@ -28,7 +28,7 @@
 #include "gui/ok_dialog.h"
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
-
+#include "resources/resourcemanager.h"
 #include <iostream>
 
 #ifdef __USE_UNIX98
@@ -77,7 +77,7 @@ SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
 Spriteset *hairset, *playerset;
-BITMAP *login_wallpaper;
+Image *login_wallpaper;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -222,7 +222,6 @@ void init_engine() {
             config.setValue("keyboard", "en");
             config.setValue("language", "");
             config.setValue("core_version", CORE_VERSION);
-
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
             config.setValue("screen", 1);
@@ -294,7 +293,9 @@ void init_engine() {
         error("Not enough memory to create buffer");
     }
 
-    login_wallpaper = load_bitmap("data/graphic/login.bmp", NULL);
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    login_wallpaper = resman->createImage("graphic/login.bmp");
     if (!login_wallpaper) error("Couldn't load login.bmp");
 
     BITMAP *playerbitmap = load_bitmap("data/graphic/playerset.bmp", NULL);
@@ -352,6 +353,7 @@ void exit_engine() {
     config.write(dir);
     delete dir;
     gui_exit();
+    ResourceManager::deleteInstance();
     destroy_bitmap(buffer);
     allegro_exit();
 }
@@ -390,7 +392,7 @@ int main() {
                 break;
             case ERROR:
                 // Redraw GUI
-                blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
+                login_wallpaper->draw(buffer, 0, 0);
                 guiGraphics->setTarget(buffer);
                 gui->update();
                 blit(buffer, screen, 0, 0, 0, 0, 800, 600);

@@ -35,6 +35,7 @@
 #include "gui/login.h"
 #include "gui/gui.h"
 #include "graphic/image.h"
+#include "resources/image.h"
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
@@ -82,7 +83,7 @@ typedef struct {
     short weapon;
 } PLAYER_INFO;
 
-extern BITMAP *login_wallpaper;
+extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
 extern char username[25];
 extern char password[25];

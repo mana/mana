@@ -23,6 +23,7 @@ clean:
 	- rm -fv obj/gui/*.o
 	- rm -fv obj/sound/*.o
 	- rm -fv obj/graphic/*.o
+	- rm -fv obj/resources/*.o
 	- rm -fv tmw
 
 obj/%.o: src/%.cpp

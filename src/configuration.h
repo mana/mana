@@ -29,8 +29,6 @@
 
 #include <map>
 #include <string>
-#include <iostream>
-#include <fstream>
 
 /**
  * INI configuration handler for reading (and writing).

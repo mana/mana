@@ -35,6 +35,9 @@ MODULES = src/sound/sound.cpp \
           src/gui/windowcontainer.cpp \
           src/net/network.cpp \
           src/net/protocol.cpp \
+          src/resources/image.cpp \
+          src/resources/resource.cpp \
+          src/resources/resourcemanager.cpp \
           src/configuration.cpp \
           src/astar.cpp \
           src/being.cpp \

@@ -36,6 +36,9 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/windowcontainer.cpp \
 	net/network.cpp \
 	net/protocol.cpp \
+	resources/image.cpp \
+	resources/resource.cpp \
+	resources/resourcemanager.cpp \
 	astar.cpp \
 	being.cpp \
 	configuration.cpp \

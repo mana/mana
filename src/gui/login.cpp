@@ -131,7 +131,7 @@ void login() {
     LoginDialog *dialog = new LoginDialog();
 
     while (state == LOGIN) {
-        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
+        login_wallpaper->draw(buffer, 0, 0);
         gui->update();
         blit(buffer, screen, 0, 0, 0, 0, 800, 600);
         if (key[KEY_ESC]) {

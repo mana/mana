@@ -437,7 +437,7 @@ void charSelect()
         }
 
         // Draw background
-        blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
+        login_wallpaper->draw(buffer, 0, 0);
 
         gui->update();
 

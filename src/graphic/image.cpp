@@ -24,37 +24,13 @@
 #include "image.h"
 
 
-// Image
-
-Image::Image(int offset_x, int offset_y) {
-    this->offset_x = offset_x;
-    this->offset_y = offset_y;
-}
-
-
-// RleImage
-
-RleImage::RleImage(RLE_SPRITE *src, int offset_x, int offset_y):
-    Image(offset_x, offset_y)
-{
-    this->src = src;
-}
-
-RleImage::~RleImage() {
-    destroy_rle_sprite(src);
-}
-
-void RleImage::draw(BITMAP *dest, int x, int y) {
-    draw_rle_sprite(dest, src, x + offset_x, y + offset_y);
-}    
-
-
 // VideoImage
 
 VideoImage::VideoImage(BITMAP *src, int offset_x, int offset_y):
-    Image(offset_x, offset_y)
+    src(src),
+    offset_x(offset_x),
+    offset_y(offset_y)
 {
-    this->src = src;
 }
 
 VideoImage::~VideoImage() {
@@ -72,22 +48,6 @@ void VideoImage::draw(BITMAP *dst, int x, int y) {
 
 
 // Spriteset
-
-Spriteset::Spriteset(std::string filename)
-{
-    DATAFILE *datafile = load_datafile(filename.c_str());
-    if (!datafile)error("Unable to load graphic file: " + filename);
-    int i = 0;
-    while (datafile[i].type != DAT_END) {
-        Image *temp_image;
-        temp_image = new RleImage(
-                (RLE_SPRITE*)datafile[i].dat,
-                getProperty(&datafile[i], DAT_ID('X','C','R','P')),
-                getProperty(&datafile[i], DAT_ID('Y','C','R','P')));
-        spriteset.push_back(temp_image);
-        i++;
-    }
-}
 
 Spriteset::Spriteset(BITMAP *bmp, int width, int height, int offx, int offy)
 {

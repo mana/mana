@@ -24,6 +24,8 @@
 
 #include "configuration.h"
 #include <math.h>
+#include <iostream>
+#include <fstream>
 
 Configuration::OptionValue::OptionValue():
     numericValue(0.0f)
@@ -46,7 +48,7 @@ void Configuration::init(std::string filename) {
     iniOptions.clear();
 
     while (inFile.good()) {
-        getline(inFile, inBuffer, '\n');
+        std::getline(inFile, inBuffer, '\n');
 
         if (inBuffer.substr(0, 1) != INI_COMMENTER) {
             // Replace spaces with void
