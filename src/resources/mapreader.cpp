@@ -58,28 +58,7 @@ Map *MapReader::readMap(const std::string &filename)
     log("Attempting to parse XML map data");
 
     std::string name = std::string("data/") + filename;
-
-    FILE* f = fopen(name.c_str(), "rb");
-    char *map_string;
-
-    if (!f) {
-        error(std::string("Error: failed to open ") + filename);
-    }
-
-    // Get size of file
-    fseek(f, 0, SEEK_END);
-    long size = ftell(f);
-    rewind(f);
-
-    // Read file into character array
-    map_string = new char[size + 1];
-    fread(map_string, 1, size, f);
-    map_string[size] = '\0';
-
-    fclose(f);
-
-    xmlDocPtr doc = xmlReadMemory(map_string, size, NULL, NULL, 0);
-    delete[] map_string;
+    xmlDocPtr doc = xmlParseFile(name.c_str());
 
     if (doc) {
         log("Looking for root node");
