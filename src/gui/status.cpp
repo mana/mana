@@ -99,11 +99,11 @@ void StatusWindow::update()
     spValue->setCaption(tempstr);
     spValue->adjustSize();
     
-    sprintf(tempstr, "Exp: %d", (int)char_info->xp);
+    sprintf(tempstr, "Exp: %d / %d", (int)char_info->xp, (int)char_info->xpForNextLevel);
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
     
-    sprintf(tempstr, "Job Exp: %d", (int)char_info->job_xp);
+    sprintf(tempstr, "Job Exp: %d / %d", (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
