@@ -99,6 +99,8 @@ void game() {
     do_parse();
     status("FLUSH");
     flush();
+		if(fps>30)
+			rest(15);
   }
 
   exit_graphic();
@@ -345,22 +347,25 @@ void do_parse() {
           break;
         case 0x008e:
         case 0x009a:
-          temp = (char *)malloc(RFIFOW(2)-4);
-          memset(temp, '\0', RFIFOW(2)-4);
-          memcpy(temp, RFIFOP(4), RFIFOW(2)-4);
-          if(player_node->speech!=NULL) {
-            free(player_node->speech);
-            player_node->speech = NULL;
-            //node->speech_time = 0;
+					if(RFIFOW(2)>4) {
+						if(player_node->speech!=NULL) {
+							free(player_node->speech);
+							player_node->speech = NULL;
+						}  
+	
+						player_node->speech = (char *)malloc(RFIFOW(2)-4);
+						memset(player_node->speech, '\0', RFIFOW(2)-4);
+						memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-5);
+						
+						player_node->speech_time = SPEECH_TIME;
+						player_node->speech_color = makecol(255, 255, 255);
+	
+						if(id==0x008e)
+							chatlog.chat_log(player_node->speech, BY_PLAYER, gui_font);
+						else
+							chatlog.chat_log(player_node->speech, BY_GM, gui_font);
           }
-          player_node->speech = temp;
-          player_node->speech_time = SPEECH_TIME;
-					player_node->speech_color = makecol(255, 255, 255);
-          if(id==0x008e)
-            chatlog.chat_log(player_node->speech, BY_PLAYER, gui_font);
-          else
-            chatlog.chat_log(player_node->speech, BY_GM, gui_font);
-          break;
+				break;
         // Success to walk request
         case 0x0087:
 					if(walk_status==1)
