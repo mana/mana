@@ -11,7 +11,7 @@ then
 	exit;
 fi
 
-if [ `automake --version | grep "1.9"` == "" ]
+if [ "`automake --version | grep \"1.9\"`" == "" ]
 then
 	echo "Your automake version is inferior to 1.9.";
 	echo "Installing  won't work. Please do :";
