@@ -163,7 +163,6 @@ class Graphics : public gcn::SDLGraphics {
 class Engine {
     private:
         Spriteset *emotionset, *npcset, *monsterset, *weaponset, *itemset;
-        // Fix this number to an appropriate
         
     public:
         Engine();
