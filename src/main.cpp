@@ -197,10 +197,17 @@ void init_engine() {
     SDL_WM_SetCaption("The Mana World", NULL);
 
 
-    int displayFlags = SDL_SWSURFACE | SDL_ANYFORMAT;
+    int displayFlags = SDL_ANYFORMAT;
 
     if ((int)config.getValue("screen", 0)) {
         displayFlags |= SDL_FULLSCREEN;
+    }
+    if ((int)config.getValue("hwaccel", 0)) {
+        std::cout << "Attempting to use hardware acceleration.\n";
+        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+    }
+    else {
+        displayFlags |= SDL_SWSURFACE;
     }
 
     screen = SDL_SetVideoMode(800, 600, 16, displayFlags);
@@ -209,10 +216,6 @@ void init_engine() {
             SDL_GetError() << std::endl;
         exit(1);
     }
-
-    //if (set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600,
-    //            0, 0)) {
-    //}
 
     // Create the graphics context
     graphics = new Graphics();
