@@ -26,21 +26,13 @@
 #ifndef _CHAR_SEL_SERVER_H
 #define _CHAR_SEL_SERVER_H
 
-#include <allegro.h>
-
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
+#include "window.h"
 
-/**
- * The action listener for the server select dialog.
- *
- * \ingroup GUI
- */
-class ServerSelectListener : public gcn::ActionListener {
-    public:
-        void action(const std::string& eventId);
-};
+#include <allegro.h>
+
 
 /**
  * The list model for the server list.
@@ -51,6 +43,34 @@ class ServerListModel : public gcn::ListModel {
     public:
         int getNumberOfElements();
         std::string getElementAt(int i);
+};
+
+/**
+ * The server select dialog.
+ *
+ * \ingroup GUI
+ */
+class ServerSelectDialog : public Window, public gcn::ActionListener {
+    public:
+        ServerSelectDialog();
+        ~ServerSelectDialog();
+
+        /**
+         * Initializes the dialog. Should be called after adding it to the GUI.
+         */
+        void init();
+
+        /**
+         * Called when receiving actions from the widgets.
+         */
+        void action(const std::string& eventId);
+
+    private:
+        ServerListModel *serverListModel;
+        gcn::ListBox *serverList;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
+        gcn::ScrollArea *scrollArea;
 };
 
 void char_server();

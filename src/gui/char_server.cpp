@@ -29,11 +29,53 @@
 char server[30];
 int showServerList = 1;
 
-ServerListModel *serverListModel;
-gcn::ListBox *serverList;
 
+ServerSelectDialog::ServerSelectDialog():
+    Window("Select Server")
+{
+    serverListModel = new ServerListModel();
+    serverList = new gcn::ListBox(serverListModel);
+    scrollArea = new gcn::ScrollArea(serverList);
+    okButton = new Button("OK");
+    cancelButton = new Button("Cancel");
 
-void ServerSelectListener::action(const std::string& eventId) {
+    setDimension(gcn::Rectangle(300, 200, 200, 100));
+    scrollArea->setDimension(gcn::Rectangle(4, 4, 192, 55));
+    okButton->setPosition(120, 70);
+    cancelButton->setPosition(146, 70);
+
+    serverList->setEventId("ok");
+    okButton->setEventId("ok");
+    cancelButton->setEventId("cancel");
+
+    serverList->addActionListener(this);
+    okButton->addActionListener(this);
+    cancelButton->addActionListener(this);
+
+    add(scrollArea);
+    add(okButton);
+    add(cancelButton);
+
+    if (n_server == 0) {
+        // Disable Ok button
+        //okButton->char_server_dialog[2].flags |= D_DISABLED;
+    } else {
+        // Select first server
+        serverList->setSelected(1);
+    }
+}
+
+ServerSelectDialog::~ServerSelectDialog()
+{
+    delete serverList;
+    delete serverListModel;
+    delete scrollArea;
+    delete okButton;
+    delete cancelButton;
+}
+
+void ServerSelectDialog::action(const std::string& eventId)
+{
     if (eventId == "ok") {
         server_char_server(serverList->getSelected());
     }
@@ -56,48 +98,11 @@ std::string ServerListModel::getElementAt(int i) {
 
 
 void char_server() {
-    // Create dialog
-    gcn::Container *dialog;
-    gcn::Button *okButton;
-    gcn::Button *cancelButton;
-    gcn::ScrollArea *scrollArea;
-
-    serverListModel = new ServerListModel();
-    dialog = new Window("Select Server");
-    serverList = new gcn::ListBox(serverListModel);
-    scrollArea = new gcn::ScrollArea(serverList);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
-
-    dialog->setDimension(gcn::Rectangle(300, 200, 200, 100));
-    scrollArea->setDimension(gcn::Rectangle(4, 4, 192, 55));
-    okButton->setPosition(120, 70);
-    cancelButton->setPosition(146, 70);
-
-    serverList->setEventId("ok");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
-
-    ServerSelectListener *actionListener = new ServerSelectListener();
-    serverList->addActionListener(actionListener);
-    okButton->addActionListener(actionListener);
-    cancelButton->addActionListener(actionListener);
-
-    dialog->add(scrollArea);
-    dialog->add(okButton);
-    dialog->add(cancelButton);
+    ServerSelectDialog *dialog = new ServerSelectDialog();
 
     guiTop->add(dialog);
 
     state = LOGIN;
-
-    if (n_server == 0) {
-        // Disable Ok button
-        //okButton->char_server_dialog[2].flags |= D_DISABLED;
-    } else {
-        // Select first server
-        serverList->setSelected(1);
-    }
 
     showServerList = 1;
     while (showServerList) {
@@ -108,12 +113,6 @@ void char_server() {
     }
 
     delete dialog;
-    delete serverList;
-    delete serverListModel;
-    delete scrollArea;
-    delete okButton;
-    delete cancelButton;
-    delete actionListener;
 }
 
 void server_char_server(int serverIndex) {

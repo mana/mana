@@ -25,20 +25,77 @@
 #include "gui.h"
 #include "button.h"
 #include "checkbox.h"
-#include "window.h"
 #include "../graphic/graphic.h"
 
-// Dialog parts
-gcn::Container *dialog;
-gcn::Label *userLabel;
-gcn::Label *passLabel;
-gcn::TextField *userField;
-gcn::TextField *passField;
-gcn::CheckBox *keepCheck;
-gcn::Button *okButton;
-gcn::Button *cancelButton;
 
-void LoginActionListener::action(const std::string& eventId)
+LoginDialog::LoginDialog():
+    Window("Login")
+{
+    userLabel = new gcn::Label("Name:");
+    passLabel = new gcn::Label("Password:");
+    userField = new gcn::TextField("player");
+    passField = new gcn::TextField();
+    keepCheck = new CheckBox("Keep", false);
+    okButton = new Button("OK");
+    cancelButton = new Button("Cancel");
+
+    setDimension(gcn::Rectangle(300, 250, 200, 80));
+    userLabel->setPosition(4, 11);
+    passLabel->setPosition(4, 31);
+    userField->setPosition(60, 10);
+    passField->setPosition(60, 30);
+    userField->setWidth(130);
+    passField->setWidth(130);
+    keepCheck->setPosition(4, 52);
+    keepCheck->setMarked(get_config_int("login", "remember", 0));
+    okButton->setPosition(120, 52);
+    cancelButton->setPosition(146, 52);
+
+    userField->setEventId("ok");
+    passField->setEventId("ok");
+    okButton->setEventId("ok");
+    cancelButton->setEventId("cancel");
+
+    userField->addActionListener(this);
+    passField->addActionListener(this);
+    keepCheck->addActionListener(this);
+    okButton->addActionListener(this);
+    cancelButton->addActionListener(this);
+
+    add(userLabel);
+    add(passLabel);
+    add(userField);
+    add(passField);
+    add(keepCheck);
+    add(okButton);
+    add(cancelButton);
+}
+
+LoginDialog::~LoginDialog()
+{
+    delete userLabel;
+    delete passLabel;
+    delete userField;
+    delete passField;
+    delete keepCheck;
+    delete okButton;
+    delete cancelButton;
+}
+
+void LoginDialog::init()
+{
+    userField->requestFocus();
+    userField->setCaretPosition(userField->getText().length());
+
+    if (get_config_int("login", "remember", 0)) {
+        if (get_config_string("login", "username", 0)) {
+            userField->setText(get_config_string("login", "username", ""));
+            passField->requestFocus();
+        }
+    }
+}
+
+void LoginDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         const std::string user = userField->getText();
@@ -66,63 +123,13 @@ void LoginActionListener::action(const std::string& eventId)
     }
 }
 
-/*
- * Display login GUI
+/**
+ * Display login dialog
  */
 void login() {
-    // Create dialog
-    dialog = new Window("Login");
-    userLabel = new gcn::Label("Name:");
-    passLabel = new gcn::Label("Password:");
-    userField = new gcn::TextField("player");
-    passField = new gcn::TextField();
-    keepCheck = new CheckBox("Keep", false);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
-
-    dialog->setDimension(gcn::Rectangle(300, 250, 200, 80));
-    userLabel->setPosition(4, 11);
-    passLabel->setPosition(4, 31);
-    userField->setPosition(60, 10);
-    passField->setPosition(60, 30);
-    userField->setWidth(130);
-    passField->setWidth(130);
-    keepCheck->setPosition(4, 52);
-    keepCheck->setMarked(get_config_int("login", "remember", 0));
-    okButton->setPosition(120, 52);
-    cancelButton->setPosition(146, 52);
-
-    userField->setEventId("ok");
-    passField->setEventId("ok");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
-
-    LoginActionListener *loginActionListener = new LoginActionListener();
-    userField->addActionListener(loginActionListener);
-    passField->addActionListener(loginActionListener);
-    keepCheck->addActionListener(loginActionListener);
-    okButton->addActionListener(loginActionListener);
-    cancelButton->addActionListener(loginActionListener);
-
-    dialog->add(userLabel);
-    dialog->add(passLabel);
-    dialog->add(userField);
-    dialog->add(passField);
-    dialog->add(keepCheck);
-    dialog->add(okButton);
-    dialog->add(cancelButton);
-
+    LoginDialog *dialog = new LoginDialog();
     guiTop->add(dialog);
-
-    userField->requestFocus();
-    userField->setCaretPosition(userField->getText().length());
-
-    if (get_config_int("login", "remember", 0)) {
-        if (get_config_string("login", "username", 0)) {
-            userField->setText(get_config_string("login", "username", ""));
-            passField->requestFocus();
-        }
-    }
+    dialog->init();
 
     while (state == LOGIN) {
         clear_bitmap(buffer);
@@ -135,17 +142,11 @@ void login() {
     }
 
     delete dialog;
-    delete userLabel;
-    delete passLabel;
-    delete userField;
-    delete passField;
-    delete keepCheck;
-    delete okButton;
-    delete cancelButton;
-    delete loginActionListener;
 }
 
-/** Attempt to login to login server */
+/**
+ * Attempt to login to login server
+ */
 void server_login(const std::string& user, const std::string& pass) {
     strncpy(username, user.c_str(), LEN_USERNAME);
     strncpy(password, pass.c_str(), LEN_PASSWORD);

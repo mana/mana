@@ -30,19 +30,40 @@
 #include "../log.h"
 #include "../net/network.h"
 #include "gui.h"
+#include "window.h"
 #include <allegro.h>
 #ifdef WIN32
 #include <winalleg.h>
 #endif
 
 /**
- * The action listener for the login dialog.
+ * The login dialog.
  *
  * \ingroup GUI
  */
-class LoginActionListener : public gcn::ActionListener {
+class LoginDialog : public Window, public gcn::ActionListener {
     public:
+        LoginDialog();
+        ~LoginDialog();
+
+        /**
+         * Initializes the dialog. Should be called after adding it to the GUI.
+         */
+        void init();
+
+        /**
+         * Called when receiving actions from the widgets.
+         */
         void action(const std::string& eventId);
+
+    private:
+        gcn::Label *userLabel;
+        gcn::Label *passLabel;
+        gcn::TextField *userField;
+        gcn::TextField *passField;
+        gcn::CheckBox *keepCheck;
+        gcn::Button *okButton;
+        gcn::Button *cancelButton;
 };
 
 void login();
