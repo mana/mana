@@ -5,11 +5,12 @@ CXX = g++
 # excessive optimizations for pentium pro and later
 CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -DMACOSX -fexceptions
 
-CFLAGS=`allegro-config --libs release` -lalfont
+CFLAGS=`allegro-config --libs release` -lalfont /usr/lib/libjgmod.a
 
 OBJS = being.o game.o main.o map.o log.o astar.o
-OBJS += Sound/sound.o Graphic/SuperEagle.o Chat/chat.o
-OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o
+OBJS += Chat/chat.o Gui/skill.o
+OBJS += Sound/sound.o Graphic/SuperEagle.o
+OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o Gui/inventory.o
 OBJS += Net/network.o Net/protocol.o
 OBJS += Mac/mac.o
 
@@ -19,6 +20,27 @@ tmw: $(OBJS)
 	@echo -
 	@echo "TYPE ./tmw TO LAUCH THE GAME"
 
+tmw-app: $(OBJS)
+	$(CXX) -o tmw-app $(OBJS) $(CFLAGS) -DMACOSX_APP
+
+app: tmw-app
+	rm -rf tmw.app
+	mkdir tmw.app
+	mkdir tmw.app/Contents
+	mkdir tmw.app/Contents/Resources
+	mkdir tmw.app/Contents/MacOS
+	cp tmw-app tmw.app/Contents/MacOS/
+	cp *.dat tmw.app/Contents/Resources/
+	cp -R Sound tmw.app/Contents/Resources/
+	cp -R items tmw.app/Contents/Resources/
+	cp -R Graphic tmw.app/Contents/Resources/
+	cp -R Aqua tmw.app/Contents/Resources/
+	cp -R Maps	tmw.app/Contents/Resources/
+	cp aqua.skin	tmw.app/Contents/Resources/
+	cp tmw.ini	tmw.app/Contents/Resources/
+	mv tmw.app tmw.app2
+	mv tmw.app2 tmw.app
+
 clean:
 	- rm -fv *.o
 	- rm -fv Net/*.o
@@ -26,3 +48,4 @@ clean:
 	- rm -fv Sound/*.o
 	- rm -fv Graphic/*.o
 	- rm -fv tmw 
+	- rm -rf tmw.app 
