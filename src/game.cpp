@@ -242,7 +242,7 @@ void do_input()
                         }
                     #else
                         int displayFlags = 0;
-                        if ((int)config.getValue("screen", 0)) {
+                        if ((int)config.getValue("screen", 0) == 0) {
                         displayFlags |= SDL_FULLSCREEN;
                             config.setValue("screen", 1);
                         }
