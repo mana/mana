@@ -272,7 +272,7 @@ void do_input() {
 			inventory.toggle();
 			action_time = false;
 		} else if(key[KEY_K]) {
-			show_skill_list_dialog = true;
+			show_skill_list_dialog = !show_skill_dialog;
 			action_time = false;
 		}
 	}
