@@ -164,7 +164,6 @@ void init_engine() {
         else {
             fclose(tmwFile);
             // Fill tmw.ini with defaults
-            config.setValue("core_version", CORE_VERSION);
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
             config.setValue("screen", 1);
