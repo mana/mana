@@ -169,9 +169,6 @@
 				RelativePath=".\map.cpp">
 			</File>
 			<File
-				RelativePath=".\player.cpp">
-			</File>
-			<File
 				RelativePath=".\Sound\Sound.cpp">
 			</File>
 			<File
@@ -215,9 +212,6 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath=".\Gui\chat.cpp">
-				</File>
-				<File
 					RelativePath=".\Gui\lexgui.cpp">
 				</File>
 				<File
@@ -248,9 +242,6 @@
 				RelativePath=".\map.h">
 			</File>
 			<File
-				RelativePath=".\player.h">
-			</File>
-			<File
 				RelativePath=".\Sound\Sound.h">
 			</File>
 			<File
@@ -274,9 +265,6 @@
 				</File>
 				<File
 					RelativePath=".\Gui\char_server.h">
-				</File>
-				<File
-					RelativePath=".\Gui\chat.h">
 				</File>
 				<File
 					RelativePath=".\Graphic\datGraphics.h">
