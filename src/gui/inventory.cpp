@@ -49,9 +49,7 @@ InventoryWindow::InventoryWindow():
     items = new ItemContainer();
     items->setSize(318, 40);
     items->setPosition(2, 2);
-    add(items);
-
-    
+    add(items);    
 }
 
 InventoryWindow::~InventoryWindow()
@@ -140,8 +138,6 @@ void InventoryWindow::action(const std::string &eventId)
             if(items->isEquipment(items->getIndex())) {
                 if(items->isEquipped(items->getIndex())) {
                     unequipItem(items->getIndex());
-                    std::cout << "Blah\n";
-                    
                 }
                 else {
                     equipItem(items->getIndex());

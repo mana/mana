@@ -607,6 +607,19 @@ void do_parse() {
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++) {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
+                        char info[40];
+                        sprintf(info, "a4 %i %i %i %i %i %i %i %i",
+                            RFIFOW(4+loop*20), RFIFOW(4+loop*20+2),
+                            RFIFOB(4+loop*20+4), RFIFOB(4+loop*20+5),
+                            RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
+                            RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
+                        chatBox->chat_log(info, BY_SERVER);
+                        if(RFIFOW(4+loop*20+8)) {
+                            equipmentWindow->addEquipment(RFIFOB(4+loop*20),
+                                RFIFOW(4+loop*20+2));
+                            inventoryWindow->items->setEquipped(
+                                RFIFOW(4+loop*20), true);                        
+                        }                        
                     }
                     break;
                     // Can I use the item?
@@ -931,7 +944,7 @@ void do_parse() {
                     // MVP experience
                 case 0x010b:
                     break;
-                    // Display MVP payer
+                    // Display MVP player
                 case 0x010c:
                     chatBox->chat_log("MVP player", BY_SERVER);
                     break;
@@ -976,19 +989,25 @@ void do_parse() {
                 case 0x00aa:
                     if (RFIFOB(6) == 0)
                         chatBox->chat_log("Unable to equip.", BY_SERVER);
-                    else                       
-                        inventoryWindow->items->setEquipped(
-                            inventoryWindow->items->getIndex(), true);
+                    else {                      
+                        inventoryWindow->items->setEquipped(RFIFOW(2), true);
+                        equipmentWindow->addEquipment(RFIFOW(2),
+                            inventoryWindow->items->getId(RFIFOW(2)));
+                    }
                     break;
                     // Equipment related
                 case 0x01d7:
                     /*char content[40];
                     sprintf(content, "%i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     chatBox->chat_log(content, BY_SERVER);*/
-                    equipmentWindow->addEquipment(RFIFOB(6), RFIFOW(7));
+                    /*equipmentWindow->addEquipment(RFIFOB(6), RFIFOW(7));
                     if(inventoryWindow->items->getIndex(RFIFOW(7)));
                         inventoryWindow->items->setEquipped(
-                            inventoryWindow->items->getIndex(RFIFOW(7)), true);
+                            inventoryWindow->items->getIndex(RFIFOW(7)), true);*/
+                    char info[40];
+                    sprintf(info, "1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6),
+                        RFIFOW(7), RFIFOW(9));
+                    chatBox->chat_log(info, BY_SERVER);
                     break;
                     // Answer to unequip item
                 case 0x00ac:
