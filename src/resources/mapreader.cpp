@@ -176,8 +176,15 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                     if (xmlStrEqual(n2->name, BAD_CAST "tile") && y < h)
                     {
                         int gid = getProperty(n2, "gid", -1);
-                        if (layer == 0) map->setWalk(x, y, true);
-                        map->setTile(x, y, layer, getTileWithGid(gid));
+                        if (layer == 3)
+                        {
+                            Tileset *set = getTilesetWithGid(gid);
+                            map->setWalk(x, y,
+                                    !set || (gid - set->getFirstGid() == 0));
+                        }
+                        else if (layer < 3) {
+                            map->setTile(x, y, layer, getTileWithGid(gid));
+                        }
 
                         x++;
                         if (x == w) {x = 0; y++;}
@@ -257,6 +264,18 @@ int MapReader::getProperty(xmlNodePtr node, const char* name, int def)
 Image *MapReader::getTileWithGid(int gid)
 {
     std::vector<Tileset*>::iterator i;
+    Tileset *set = getTilesetWithGid(gid);
+
+    if (set) {
+        return set->spriteset[gid - set->getFirstGid()];
+    }
+
+    return NULL;
+}
+
+Tileset *MapReader::getTilesetWithGid(int gid)
+{
+    std::vector<Tileset*>::iterator i;
     Tileset *set = NULL;
 
     // Find the tileset with the highest firstGid below/eq to gid
@@ -272,7 +291,7 @@ Image *MapReader::getTileWithGid(int gid)
 
     if (set && (gid - set->getFirstGid()) < (int)set->spriteset.size())
     {
-        return set->spriteset[gid - set->getFirstGid()];
+        return set;
     }
 
     return NULL;

@@ -89,6 +89,11 @@ class MapReader
          */
         static Image *getTileWithGid(int gid);
 
+        /**
+         * Finds the tile set that a tile with the given global id is part of.
+         */
+        static Tileset *MapReader::getTilesetWithGid(int gid);
+
         static std::vector<Tileset*> tilesets;
 };
 
