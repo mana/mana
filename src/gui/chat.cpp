@@ -76,23 +76,23 @@ void Chat::chat_log(string line, int own, ALFONT_FONT * font) {
 	pos = 0;
 	pos = (int)line.find(" : ", 0);
 	if(pos > 0) {
-			tmp.nick = line.substr(0,pos);
-			switch(own) {
-				case ACT_IS :
-						tmp.nick += CAT_IS;
-					break;
-				case ACT_WHISPER :
-					tmp.nick += CAT_WHISPER;
-					break;
-				default :
-						tmp.nick += CAT_NORMAL;
-			}
-			tmp.width = TEXT_GETWIDTH(tmp.nick.c_str())+2;
-			line.erase(0,pos+3);
+		tmp.nick = line.substr(0,pos);
+		switch(own) {
+			case ACT_IS :
+				tmp.nick += CAT_IS;
+				break;
+			case ACT_WHISPER :
+				tmp.nick += CAT_WHISPER;
+				break;
+			default :
+				tmp.nick += CAT_NORMAL;
+		}
+		tmp.width = TEXT_GETWIDTH(tmp.nick.c_str())+2;
+		line.erase(0,pos+3);
 	}else {
 			tmp.nick = "";
 			tmp.width = 1;
-    }    
+	}    
 	tmp.own  = own;	
 	tmp.text = line;	
 
@@ -174,8 +174,7 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 			chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
 */
 char * Chat::chat_send(string nick, string msg) {
-	short len = 0, packid;
-	char *temp = NULL;
+	short packid;
 
 	// prepare command
 	if(msg.substr(0,1)=="/") {
@@ -185,9 +184,7 @@ char * Chat::chat_send(string nick, string msg) {
 			packid = 0x0099;
 		} else {
 			packid = 0x008c;
-			len = (short)msg.length()+4;
 		}
-		len = (short)msg.length()+4;
 	// prepare ordinary message
 	} else {
 		// temporary hack to make messed-up-keyboard-ppl able to send GM commands
@@ -198,17 +195,15 @@ char * Chat::chat_send(string nick, string msg) {
 		nick += msg;
 		msg = nick;
 		packid = 0x008c;
-		len = (short)(nick.length()+msg.length()+3);     
 	}    
 
+	msg += "\0";
+
 	// send processed message
-	temp = new char[len];
-	memcpy(temp, msg.c_str(), len);
 	WFIFOW(0) = net_w_value(packid);
-	WFIFOW(2) = net_w_value(len+4);
-	memcpy(WFIFOP(4), temp, len);
-	WFIFOSET(len+4);
-	delete temp;
+	WFIFOW(2) = net_w_value(msg.length()+4);
+	memcpy(WFIFOP(4), msg.c_str(), msg.length());
+	WFIFOSET(msg.length()+4);
 	nick = msg = "";
 	return "";
 }    
@@ -300,4 +295,3 @@ string const_msg(int own) {
   string msg;
 	return msg;
 }
-
