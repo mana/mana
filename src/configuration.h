@@ -30,6 +30,11 @@
 #include <iostream>
 #include <fstream>
 
+/**
+ * INI configuration handler for reading (and writing)
+ *
+ * \ingroup CORE
+ */
 class Configuration {
     public:
         void Init(std::string);

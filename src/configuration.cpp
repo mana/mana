@@ -22,6 +22,10 @@
 
 #include "configuration.h"
 
+/**
+    \brief read INI file and parse all options into memory
+    \param filename full path to INI file (~/.manaworld/tmw.ini)
+*/
 void Configuration::Init(std::string filename) {
     inFile.open(filename.c_str(), std::ifstream::in);
     std::string inBuffer;
@@ -63,6 +67,11 @@ bool Configuration::setValue(std::string, std::string) {
     return true;
 }
 
+/**
+    \brief get a value as string
+    \param key option identifier
+    \param deflt default option if not there or error
+*/
 std::string Configuration::getValue(std::string key, std::string deflt) {
     INI_OPTION optionTmp;
     for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
@@ -74,6 +83,11 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
     return deflt;
 }
 
+/**
+    \brief get a value as numeric value (float)
+    \param key option identifier
+    \param deflt default option if not there or error
+*/
 float Configuration::getValue(std::string key, float deflt) {
     INI_OPTION optionTmp;
     for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
