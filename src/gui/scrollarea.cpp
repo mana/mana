@@ -59,17 +59,17 @@ void ScrollArea::init()
     }
 
     // Load vertical scrollbar skin
-    Image *vscroll = resman->getImage("core/graphics/gui/vscroll.png");
-    int vsgridx[4] = {0, 4, 8, 11};
-    int vsgridy[4] = {0, 4, 13, 19};
+    Image *vscroll = resman->getImage("core/graphics/gui/vscroll_grey.png");
+    int vsgridx[4] = {0, 4, 7, 11};
+    int vsgridy[4] = {0, 4, 15, 19};
     a = 0;
 
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             vMarker.grid[a] = vscroll->getSubImage(
                     vsgridx[x], vsgridy[y],
-                    vsgridx[x + 1] - vsgridx[x] + 1,
-                    vsgridy[y + 1] - vsgridy[y] + 1);
+                    vsgridx[x + 1] - vsgridx[x],
+                    vsgridy[y + 1] - vsgridy[y]);
             a++;
         }
     }
