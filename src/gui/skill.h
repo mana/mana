@@ -89,7 +89,8 @@ class SkillDialog : public Window, public gcn::ActionListener
         ~SkillDialog();
 
         void action(const std::string&);
-        SkillListModel* getModel() { return skills; }
+
+        SkillListModel* getModel();
 
         void setPoints(int i);
 };

@@ -32,51 +32,46 @@
 #include <sstream>
 
 class StatsWindow : public Window, public gcn::ActionListener {
- public:
-    /**
-     * Creates the Stats window.
-     */
-    static StatsWindow *create_statswindow();
-    
-    /**
-     * Called when receiving actions from widget.
-     */
-    void action(const std::string& eventId);
-    
-    /**
-     * Updates stats in window.
-     */
-    void update();
-    
- private:
-    int i;
+    public:
+        /**
+         * Constructor.
+         */
+        StatsWindow();
 
-    /** 
-     * Stats captions.
-     */
-    gcn::Label *statsLabel[6];
-    gcn::Label *statsDisplayLabel[6];
-    gcn::Label *remainingStatsPointsLabel;
-    
-    /** 
-     * Stats buttons.
-     */
-    Button *statsButton[6];
-    
-    /**
-     * Stats window ptr.
-     */
-    static StatsWindow *ptr;
-    
-    /**
-     * Constructor.
-     */
-    StatsWindow();
-    
-    /**
-     * Destructor.
-     */
-    virtual ~StatsWindow();
+        /**
+         * Destructor.
+         */
+        virtual ~StatsWindow();
+
+        /**
+         * Called when receiving actions from widget.
+         */
+        void action(const std::string& eventId);
+
+        /**
+         * Updates stats in window.
+         */
+        void update();
+
+    private:
+        int i;
+
+        /** 
+         * Stats captions.
+         */
+        gcn::Label *statsLabel[6];
+        gcn::Label *statsDisplayLabel[6];
+        gcn::Label *remainingStatsPointsLabel;
+
+        /** 
+         * Stats buttons.
+         */
+        Button *statsButton[6];
+
+        /**
+         * Stats window ptr.
+         */
+        static StatsWindow *ptr;
 };
 
 #endif /* _TMW_STATS_WINDOW_H */

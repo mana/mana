@@ -26,22 +26,20 @@
 extern PLAYER_INFO *char_info;
 
 StatsWindow::StatsWindow():
-    Window("Stats") 
+    Window("Stats")
 {
     // New labels
     for (i = 0; i < 6; i++) {
         statsLabel[i] = new gcn::Label();
-	statsDisplayLabel[i] = new gcn::Label();
+        statsDisplayLabel[i] = new gcn::Label();
     }
     remainingStatsPointsLabel = new gcn::Label();
-    
-    update();
-    
+
     // New buttons
     for (i = 0; i < 6; i++) {
         statsButton[i] = new Button("+");
     }
-    
+
     // Set button events Id
     statsButton[0]->setEventId("STR");
     statsButton[1]->setEventId("AGI");
@@ -49,24 +47,26 @@ StatsWindow::StatsWindow():
     statsButton[3]->setEventId("INT");
     statsButton[4]->setEventId("DEX");
     statsButton[5]->setEventId("LUK");
-    
+
     // Set position
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setPosition(10,(i*23)+10);
-	statsDisplayLabel[i]->setPosition(120,(i*23)+10);
+        statsDisplayLabel[i]->setPosition(120,(i*23)+10);
         statsButton[i]->setPosition(170,(i*23)+10);
     }
     remainingStatsPointsLabel->setPosition(10, 156);
-    
+
     // Assemble
     for(i = 0; i < 6; i++) {
         add(statsLabel[i]);
-	add(statsDisplayLabel[i]);
+        add(statsDisplayLabel[i]);
         add(statsButton[i]);
         statsButton[i]->addActionListener(this);
     }
     add(remainingStatsPointsLabel);
-    
+
+    update();
+
     setSize(200, 180);
     setLocationRelativeTo(getParent());
 }
@@ -75,7 +75,7 @@ void StatsWindow::update(){
     std::stringstream statsStr[6];
     std::stringstream figureStr[6];
     std::stringstream remainingStatsPointsStr;
-    
+
     statsStr[0] << "Strength:";
     figureStr[0] << (int)char_info->STR;
     statsStr[1] << "Agility:";
@@ -88,17 +88,17 @@ void StatsWindow::update(){
     figureStr[4] << (int)char_info->DEX;
     statsStr[5] << "Luck:";
     figureStr[5] << (int)char_info->LUK;
-    
+
     // for testing only...
-    
+
     //remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
-    
+
     // Update labels
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setCaption(statsStr[i].str());
         statsLabel[i]->adjustSize();
-	statsDisplayLabel[i]->setCaption(figureStr[i].str());
-	statsDisplayLabel[i]->adjustSize();
+        statsDisplayLabel[i]->setCaption(figureStr[i].str());
+        statsDisplayLabel[i]->adjustSize();
     }
     remainingStatsPointsLabel->setCaption(remainingStatsPointsStr.str());
     remainingStatsPointsLabel->adjustSize();
@@ -107,26 +107,15 @@ void StatsWindow::update(){
 StatsWindow::~StatsWindow() {
     for (int i = 0; i < 6; i++) {
         delete statsLabel[i];
-	delete statsDisplayLabel[i];
+        delete statsDisplayLabel[i];
         delete statsButton[i];
-	delete remainingStatsPointsLabel;
     }
-}
-
-StatsWindow *StatsWindow::ptr = NULL;
-StatsWindow *StatsWindow::create_statswindow() {
-    if (ptr == NULL) {
-        ptr = new StatsWindow();
-    }
-    else {
-        ptr->setVisible(true);
-    }
-    return ptr;
+    delete remainingStatsPointsLabel;
 }
 
 void StatsWindow::action(const std::string& eventId) {
     WFIFOW(0) = net_w_value(0x00bb);
-    
+
     if (eventId == "STR") {
         WFIFOW(2) = net_w_value(0x000d);
     }
@@ -145,7 +134,8 @@ void StatsWindow::action(const std::string& eventId) {
     if (eventId == "LUK") {
         WFIFOW(2) = net_w_value(0x0012);
     }
-    
+
     flush();
-    update();
+    WFIFOW(4) = net_b_value(1);
+    WFIFOSET(5);
 }

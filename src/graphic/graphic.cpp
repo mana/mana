@@ -48,6 +48,7 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
+StatsWindow *statsWindow;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -183,6 +184,10 @@ GraphicEngine::GraphicEngine() {
     skillDialog = new SkillDialog();
     skillDialog->setVisible(false);
 
+    statsWindow = new StatsWindow();
+    statsWindow->setVisible(false);
+
+
     // Give focus to the chat input
     chatInput->requestFocus();
 
@@ -221,6 +226,7 @@ GraphicEngine::~GraphicEngine() {
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
+    delete statsWindow;
     
     delete tileset;
     delete monsterset;
@@ -252,11 +258,11 @@ void GraphicEngine::refresh() {
 
             if (tile0 < 600) {
                 tileset->spriteset[tile0]->draw(buffer,
-                i * 32 - offset_x, j * 32 - offset_y);
+                        i * 32 - offset_x, j * 32 - offset_y);
             }
             if (tile1 > 0) { //&& tile1 < 600
                 tileset->spriteset[tile1]->draw(buffer,
-                i * 32 - offset_x, j * 32 - offset_y);
+                        i * 32 - offset_x, j * 32 - offset_y);
             }
             
         }
@@ -460,27 +466,9 @@ void GraphicEngine::refresh() {
 
     chatlog.chat_draw(buffer, 8, font);
     
-    /*
-    if (show_skill_dialog) {
-        update_skill_dialog();
+    if (statsWindow->isVisible()) {
+        statsWindow->update();
     }
-
-    if (show_skill_list_dialog) {
-        if (gui_update(skill_list_player) == 0) {
-            int ret = shutdown_dialog(skill_list_player);
-            if (ret == 1) {
-                if (char_info->skill_point > 0) {
-                    WFIFOW(0) = net_w_value(0x0112);
-                    WFIFOW(2) = net_w_value(
-                            get_skill_id(skill_list_dialog[3].d1));
-                    WFIFOSET(4);
-                }
-            } else if(ret == 2) {
-                show_skill_list_dialog = false;
-            }
-        }
-    }
-    */
 
     // Update character status display
     statusWindow->update();

@@ -148,7 +148,6 @@ ResourceManager* ResourceManager::getInstance()
 {
     // Create a new instance if necessary.
     if (instance == NULL) instance = new ResourceManager();
-
     return instance;
 }
 

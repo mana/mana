@@ -53,7 +53,6 @@ extern unsigned char screen_mode;
 int fps = 0, frame = 0;
 
 Setup *setup = NULL;
-StatsWindow *stats = NULL;
 
 #define MAX_TIME 10000
 
@@ -322,14 +321,9 @@ bool handle_key(int unicode, int scancode)
                 inventoryWindow->setVisible(!inventoryWindow->isVisible());
                 return true;
             case KEY_S:
-                if (stats == NULL)
-                    stats = StatsWindow::create_statswindow();
-                else {
-                    stats->setVisible(!stats->isVisible());
-                }
+                statsWindow->setVisible(!statsWindow->isVisible());
                 return true;
             case KEY_K:
-                //show_skill_list_dialog = !show_skill_dialog;
                 skillDialog->setVisible(!skillDialog->isVisible());
                 return true;
         }
@@ -647,7 +641,7 @@ void do_parse() {
 			//break;
                     }
                     statusWindow->update();
-                    if(char_info->hp==0) {
+                    if (char_info->hp == 0) {
                         //OkDialog *death = new OkDialog("Message",
                          //       "You're now dead, press ok to restart");
                         //alert("","","","","",0,0);
@@ -845,21 +839,29 @@ void do_parse() {
                     break;
                     // ??
                 case 0x0119:
-                    sprintf(pkt_nfo, "%i %i %i %i", RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
-                    //alert(pkt_nfo,"","","","",0,0);
+                    sprintf(pkt_nfo, "%i %i %i %i",
+                            RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
                     break;
                     // Skill list TAG
                 case 0x010f:
                 {
                     int n_skills = (len - 4) / 37;
-                    //SKILL *temp_skill = NULL;
-                    for(int k=0;k<(len-4)/37;k++) {
-                        if(RFIFOW(4+k*37+6)!=0 || RFIFOB(4+k*37+36)!=0) {
-                            int skillId = RFIFOW(4+k*37);
-                            if(skillDialog->getModel()->hasSkill(skillId)) {
-                                skillDialog->getModel()->setSkill(skillId, RFIFOW(4+k*37+6), RFIFOW(4+k*37+36));
-                            } else {
-                                skillDialog->getModel()->addSkill(RFIFOW(4+k*37), RFIFOW(4+k*37+6), RFIFOW(4+k*37+8));
+                    for (int k = 0; k < n_skills; k++)
+                    {
+                        if (RFIFOW(4 + k * 37 + 6) != 0 ||
+                                RFIFOB(4 + k * 37 + 36)!=0)
+                        {
+                            int skillId = RFIFOW(4 + k * 37);
+                            if (skillDialog->getModel()->hasSkill(skillId)) {
+                                skillDialog->getModel()->setSkill(skillId,
+                                        RFIFOW(4 + k * 37 + 6),
+                                        RFIFOW(4 + k * 37 + 36));
+                            }
+                            else {
+                                skillDialog->getModel()->addSkill(
+                                        RFIFOW(4 + k * 37),
+                                        RFIFOW(4 + k * 37 + 6),
+                                        RFIFOW(4 + k * 37 + 8));
                             }
                         }
                     }
@@ -894,7 +896,6 @@ void do_parse() {
                     //  instead make sure the string is \0 terminated.
                     //parse_items(RFIFOP(8), RFIFOW(2));
                     npcListDialog->parseItems(RFIFOP(8));
-                    RFIFOW(2);
                     npcListDialog->setVisible(true);
                     break;
                     // Look change
@@ -922,7 +923,6 @@ void do_parse() {
                     //alert(pkt_nfo,"","","","",0,0);
                     break;
             }
-            //alert(pkt_nfo,"","","","",0,0);
 
             RFIFOSKIP(len);
         }

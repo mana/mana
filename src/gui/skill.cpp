@@ -77,7 +77,10 @@ std::string SkillListModel::getElementAt(int i)
     {
         //return skill_db[skillList[i]->id];
         char tmp[128];
-        sprintf(tmp, "%s    Lv: %i    Sp: %i", skill_db[skillList[i]->id], skillList[i]->lv, skillList[i]->sp);
+        sprintf(tmp, "%s    Lv: %i    Sp: %i",
+                skill_db[skillList[i]->id],
+                skillList[i]->lv,
+                skillList[i]->sp);
         return tmp;
     }
     return "";
@@ -158,11 +161,22 @@ void SkillDialog::action(const std::string& eventId)
     if (eventId == "inc")
     {
         //increment skill
+        //if (char_info->skill_point > 0) {
+        //    WFIFOW(0) = net_w_value(0x0112);
+        //    WFIFOW(2) = net_w_value(
+        //            get_skill_id(skill_list_dialog[3].d1));
+        //    WFIFOSET(4);
+        //}
     }
     else if (eventId == "close")
     {
         setVisible(false);
     }
+}
+
+SkillListModel* SkillDialog::getModel()
+{
+    return skills;
 }
 
 void SkillDialog::setPoints(int i)
