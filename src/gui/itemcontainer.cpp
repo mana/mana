@@ -37,6 +37,7 @@ ItemContainer::ItemContainer()
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].id = -1;
         items[i].quantity = 0;
+        items[i].equipment = false;
     }
 }
 
@@ -113,10 +114,11 @@ int ItemContainer::getQuantity(int index)
     return items[index].quantity;
 }
 
-void ItemContainer::addItem(int index, int id, int quantity)
+void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
 {
     items[index].id = id;
     items[index].quantity += quantity;
+    items[index].equipment = equipment;
 }
 
 void ItemContainer::removeItem(int id)
@@ -155,3 +157,7 @@ void ItemContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
     }
 }
 
+bool ItemContainer::isEquipment(int index)
+{
+    return items[index].equipment;
+}

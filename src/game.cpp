@@ -220,6 +220,10 @@ void do_input()
                     setupWindow->setVisible(true);
                     used = true;
                 }
+                else if (keysym.sym == SDLK_e) {
+                    equipmentWindow->setVisible(!equipmentWindow->isVisible());
+                    used = true;
+                }
             }
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
@@ -408,11 +412,11 @@ void do_parse() {
             }
             fclose(file);
             */
-#ifdef DEBUG
+//#ifdef DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif 
+//#endif 
             // Parse packet based on their id
             switch(id) {
                 // Received speech
@@ -589,7 +593,14 @@ void do_parse() {
                 case 0x01ee:
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 18),
-                                RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
+                                RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6), false);
+                    }
+                    break;
+                    // Get the equipments
+                case 0x00a4:
+                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++) {
+                        inventoryWindow->addItem(RFIFOW(4 + loop * 20),
+                                RFIFOW(4 + loop * 20 + 2), 1, true);
                     }
                     break;
                     // Can I use the item?
@@ -874,7 +885,7 @@ void do_parse() {
                     if (RFIFOB(22) > 0)
                         chatBox->chat_log("Unable to pick up item", BY_SERVER);
                     else
-                        inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4));
+                        inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4), false);
                     break;
                     // Decrease quantity of an item in inventory
                 case 0x00af:
@@ -956,11 +967,17 @@ void do_parse() {
                         being->hair_style = RFIFOB(7);
                     }
                     break;
-                case 0x00a4:
-                    for (int i = 0; i < (RFIFOW(2) - 4) / 20; i++)
-                        inventoryWindow->addItem(RFIFOW(4 + 20 * i), RFIFOW(6 + 20 * i), 1);
+                    // Answer to equip items
+                case 0x00aa:
+                    if (RFIFOB(6) == 0)
+                        chatBox->chat_log("Unable to equip.", BY_SERVER);                        
                     break;
-
+                    // Equipment related
+                case 0x01d7:
+                    char content[40];
+                    sprintf(content, "%i %i", RFIFOW(7), RFIFOW(9));
+                    chatBox->chat_log(content, BY_SERVER);
+                    break;
                     // Manage non implemented packets
                 default:
                     //printf("%x\n",id);

@@ -34,6 +34,7 @@
 struct ITEM_HOLDER { // the holder of a item
     int id;          // the id of the item
     int quantity;    // number of items
+    bool equipment;
 };
 
 /**
@@ -101,7 +102,7 @@ class ItemContainer : public gcn::Widget
         /**
          * Adds a new item.
          */
-        void addItem(int index, int id, int quantity);
+        void addItem(int index, int id, int quantity, bool equipment);
 
         /**
          * Remove a item from the inventory.
@@ -119,6 +120,8 @@ class ItemContainer : public gcn::Widget
         void increaseQuantity(int index, int quantity);
         
         void _mouseInputMessage(const gcn::MouseInput &mouseInput);
+        
+        bool isEquipment(int index);
 };
 
 #endif

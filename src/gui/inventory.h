@@ -56,12 +56,14 @@ class InventoryWindow : public Window, gcn::ActionListener {
         /**
          * Add an item the inventory.
          */
-        int addItem(int index, int id, int quantity);
+        int addItem(int index, int id, int quantity, bool equipment);
 
         /**
          * Remove a item from the inventory.
          */
         int removeItem(int id);
+        
+        void equipItem(int index);
 
         /**
          * Change quantity of an item.
@@ -83,7 +85,7 @@ class InventoryWindow : public Window, gcn::ActionListener {
     private:
         gcn::Button *useButton, *dropButton;
         int useItem(int index, int id);
-        int dropItem(int index, int amunt);
+        int dropItem(int index, int quantity);
 
 };
 

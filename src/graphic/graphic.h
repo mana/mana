@@ -42,6 +42,7 @@ class Graphics;
 #include "../gui/stats.h"
 #include "../gui/skill.h"
 #include "../gui/setup.h"
+#include "../gui/equipment.h"
 #include "../resources/resourcemanager.h"
 #include "spriteset.h"
 #include <SDL.h>
@@ -69,6 +70,7 @@ extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;
 extern StatsWindow *statsWindow;
 extern Setup *setupWindow;
+extern EquipmentWindow *equipmentWindow;
 
 char get_x_offset(char, char);
 char get_y_offset(char, char);

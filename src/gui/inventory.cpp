@@ -67,10 +67,10 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
 }
 
 
-int InventoryWindow::addItem(int index, int id, int quantity) {
+int InventoryWindow::addItem(int index, int id, int quantity, bool equipment) {
     /*items[index].id = id;
     items[index].quantity += quantity;*/
-    items->addItem(index, id, quantity);
+    items->addItem(index, id, quantity, equipment);
     return 0;
 }
 
@@ -116,13 +116,27 @@ int InventoryWindow::dropItem(int index, int quantity) {
     return 0;
 }
 
+void InventoryWindow::equipItem(int index) {
+    WFIFOW(0) = net_w_value(0x00a9);
+    WFIFOW(2) = net_w_value(index);
+    WFIFOW(4) = net_w_value(0);
+    WFIFOSET(6);
+    while ((out_size > 0)) flush();
+}
+
 void InventoryWindow::action(const std::string &eventId)
 {
     //if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
     if (items->getIndex() != -1) {
         if (eventId == "use") {
-            useItem(items->getIndex(), items->getId());
-        } else if (eventId == "drop") {
+            if(items->isEquipment(items->getIndex())) {
+                equipItem(items->getIndex());
+            }
+            else {
+                useItem(items->getIndex(), items->getId());
+            }                
+        }
+        else if (eventId == "drop") {
             dropItem(items->getIndex(), items->getQuantity());
             // Temp: drop all the items, you should choose quantity instead
         }       

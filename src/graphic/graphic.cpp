@@ -26,6 +26,7 @@
 #include "../gui/textfield.h"
 #include "../gui/status.h"
 #include "../gui/minimap.h"
+#include "../gui/equipment.h"
 #include "../main.h"
 #include "../being.h"
 
@@ -55,6 +56,7 @@ SkillDialog *skillDialog;
 StatsWindow *statsWindow;
 Setup* setupWindow;
 Minimap *minimap;
+EquipmentWindow *equipmentWindow;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -269,9 +271,10 @@ Engine::Engine()
     setupWindow = new Setup();
     setupWindow->setVisible(false);
     
-    // Create minimap
-    
     minimap = new Minimap();
+    
+    equipmentWindow = new EquipmentWindow();
+    equipmentWindow->setVisible(true);
 
     // Give focus to the chat input
     chatInput->requestFocus();
@@ -310,6 +313,8 @@ Engine::~Engine()
     delete skillDialog;
     delete statsWindow;
     delete setupWindow;
+    delete minimap;
+    delete equipmentWindow;
     
     delete tileset;
     delete monsterset;
