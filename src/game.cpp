@@ -155,7 +155,6 @@ void do_init() {
     }
     player_node->weapon = char_info->weapon;
     add_node(player_node);
-    show_npc_dialog = 0;
 
     remove("./docs/packet.list");
 }
@@ -260,17 +259,16 @@ void do_input() {
     }
 
     if (mouse_b & 2) {
-        //if(show_npc_dialog==0) {
-        int npc_x = mouse_x/32+camera_x;
-        int npc_y = mouse_y/32+camera_y;
+        // Make contact with NPC
+        int npc_x = mouse_x / 32 + camera_x;
+        int npc_y = mouse_y / 32 + camera_y;
         int id = find_npc(npc_x, npc_y);
-        if(id!=0) {
+        if (id != 0) {
             WFIFOW(0) = net_w_value(0x0090);
             WFIFOL(2) = net_l_value(id);
             WFIFOB(6) = 0;
             WFIFOSET(7);
         }
-        //}
     }
 }
 
@@ -538,19 +536,17 @@ void do_parse() {
 					break;
 				// NPC dialog
 				case 0x00b4:
-					if(!strstr(npc_text, RFIFOP(8))) {
-						strcat(npc_text, RFIFOP(8));
-						strcat(npc_text, "\n");
-						show_npc_dialog = 1;
-					}
-					break;
-				// Get the items
-				case 0x01ee:
-					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++) {
-						inventoryWindow->addItem(RFIFOW(4 + loop * 18),
-							RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
-					}
-					break;
+          npcTextDialog->addText(RFIFOP(8));
+          npcListDialog->setVisible(false);
+          npcTextDialog->setVisible(true);
+          break;
+        // Get the items
+        case 0x01ee:
+          for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
+              inventoryWindow->addItem(RFIFOW(4 + loop * 18),
+                      RFIFOW(4 + loop * 18 + 2), RFIFOW(4 + loop * 18 + 6));
+          }
+          break;
 				// Can I use the item?
 				case 0x00a8:
 					// index RFIFOW(2)
@@ -562,7 +558,7 @@ void do_parse() {
 					case 0x0091:
 						memset(map_path, '\0', 480);
 						append_filename(map_path, "./data/map/", RFIFOP(2), 480);
-						if(load_map(map_path)) {
+						if (load_map(map_path)) {
 							empty();
 							player_node = new NODE();
 							player_node->job = 0;

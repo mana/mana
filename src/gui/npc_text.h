@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_NPC_H
-#define _TMW_NPC_H
+#ifndef _TMW_NPC_TEXT_H
+#define _TMW_NPC_TEXT_H
 
 #include <guichan.hpp>
 #include <vector>
@@ -30,12 +30,11 @@
 #include "window.h"
 
 /**
- * The npc list dialog.
+ * The npc text dialog.
  *
  * \ingroup GUI
  */
-class NpcListDialog : public Window, public gcn::ActionListener,
-                      public gcn::ListModel
+class NpcTextDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -43,12 +42,12 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        NpcListDialog(gcn::Container *parent);
+        NpcTextDialog(gcn::Container *parent);
 
         /**
          * Destructor.
          */
-        ~NpcListDialog();
+        ~NpcTextDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -56,34 +55,24 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         void action(const std::string& eventId);
 
         /**
-         * Returns the number of items in the choices list.
-         */
-        int getNumberOfElements();
-
-        /**
-         * Returns the name of item number i of the choices list.
-         */
-        std::string getElementAt(int i);
-
-        /**
-         * Fills the options list for an NPC dialog.
+         * Sets the text shows in the dialog.
          *
-         * @param string A string with the options separated with colons.
+         * @param string The new text.
          */
-        void parseItems(const char *string);
+        void setText(const char *string);
 
         /**
-         * Resets the list by removing all items.
+         * Adds the text to the text shows in the dialog. Also adds a newline
+         * to the end.
+         *
+         * @param string The text to add.
          */
-        void reset();
+        void addText(const char *string);
 
     private:
         gcn::Button *okButton;
-        gcn::Button *cancelButton;
-        gcn::ListBox *itemList;
+        gcn::TextBox *textBox;
         gcn::ScrollArea *scrollArea;
-
-        std::vector<std::string> items;
 };
 
 #endif

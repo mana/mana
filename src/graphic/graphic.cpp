@@ -29,12 +29,11 @@ BITMAP *buffer, *chat_background;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *npc_player, *skill_player, *sell_player, *skill_list_player, *npc_list_player;
+DIALOG_PLAYER *skill_player, *skill_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
 Chat chatlog("./docs/chatlog.txt", 20);
-int show_npc_dialog = 0;
 bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
@@ -47,6 +46,7 @@ SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
+NpcTextDialog *npcTextDialog;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -81,14 +81,6 @@ void BuySellListener::action(const std::string& eventId)
     buySellDialog->setVisible(false);
 }
 
-DIALOG npc_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"NPC",             NULL, NULL  },
-   { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)npc_button,         NULL, NULL  },
-   { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
-};
-
 DIALOG skill_list_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
    { tmw_dialog_proc,     300,  200,  260,  200,  0,    0,    0,    0,       0,                0,    (char *)"Stats",     NULL, NULL  },
@@ -121,9 +113,9 @@ int get_x_offset(NODE *node) {
     int offset = 0;
     char direction = get_direction(node->coordinates);
     if (node->action == WALK) {
-        if (direction!=NORTH && direction!=SOUTH) {
+        if (direction != NORTH && direction != SOUTH) {
             offset = node->frame + 1;
-            if (offset==5)offset = 0;
+            if (offset == 5)offset = 0;
             offset *= 8;
             if (direction == WEST || direction == NW || direction == SW) {
                 offset = -offset;
@@ -192,16 +184,17 @@ GraphicEngine::GraphicEngine() {
     inventoryWindow->setVisible(false);
     inventoryWindow->setPosition(100, 100);
 
+    npcTextDialog = new NpcTextDialog(guiTop);
+    npcTextDialog->setVisible(false);
+
     npcListDialog = new NpcListDialog(guiTop);
     npcListDialog->setVisible(false);
 
-    npc_player = init_dialog(npc_dialog, -1);
-    position_dialog(npc_dialog, 300, 200);
     skill_player = init_dialog(skill_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
 
     buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    if(!buffer) {
+    if (!buffer) {
         error("Not enough memory to create buffer");
     }
 
@@ -214,7 +207,6 @@ GraphicEngine::GraphicEngine() {
     npcset = new Spriteset("./data/graphic/npcset.dat");
     playerset = new Spriteset("./data/graphic/playerset.dat");
     monsterset = new Spriteset("./data/graphic/monsterset.dat");
-    
 }
 
 GraphicEngine::~GraphicEngine() {
@@ -222,10 +214,11 @@ GraphicEngine::~GraphicEngine() {
     delete buyDialog;
     delete sellDialog;
     delete buySellDialog;
+    delete npcListDialog;
+    delete npcTextDialog;
     
     //delete tileset;
 
-    shutdown_dialog(npc_player);
     shutdown_dialog(skill_player);
 }
 
@@ -455,18 +448,6 @@ void GraphicEngine::refresh() {
 
     chatlog.chat_draw(buffer, 8, font);
     
-    switch (show_npc_dialog) {
-        case 1:
-            dialog_message(npc_dialog, MSG_DRAW, 0, 0);
-            if (!(show_npc_dialog = gui_update(npc_player))) {
-                strcpy(npc_text, "");
-                WFIFOW(0) = net_w_value(0x00b9);
-                WFIFOL(2) = net_l_value(current_npc);
-                WFIFOSET(6);
-            }
-            break;
-    }
-
     if (show_skill_dialog) {
         update_skill_dialog();
         if (gui_update(skill_player) == 0) {

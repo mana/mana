@@ -54,6 +54,14 @@ NpcListDialog::NpcListDialog(gcn::Container *parent):
     setLocationRelativeTo(getParent());
 }
 
+NpcListDialog::~NpcListDialog()
+{
+    delete okButton;
+    delete cancelButton;
+    delete itemList;
+    delete scrollArea;
+}
+
 int NpcListDialog::getNumberOfElements()
 {
     return items.size();

@@ -32,7 +32,7 @@ PasswordField::PasswordField(const std::string& text):
 
 void PasswordField::draw(gcn::Graphics *graphics)
 {
-    int x, y, w, h, col;
+    int x, y, w, h;
     getAbsolutePosition(x, y);
     w = getWidth();
     h = getHeight();

@@ -172,9 +172,6 @@ void Window::add(Widget *w, int x, int y)
 
 void Window::mousePress(int mx, int my, int button)
 {
-    int x = this->getDimension().x;
-    int y = this->getDimension().y;
-
     mouseDown = true;
 
     mousePX = mx;
@@ -199,24 +196,16 @@ void Window::mouseMotion(int mx, int my)
         y = y - (mousePY - my);
 
         // Keep guichan window inside window
-        if (x < 0)
-            x = 0;
-        if (y < 0)
-            y = 0;
-        if (x + winWidth > 799)
-            x = 799 - winWidth;
-        if (y + winHeight > 599)
-            y = 599 - winHeight;
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x + winWidth > 799) x = 799 - winWidth;
+        if (y + winHeight > 599) y = 599 - winHeight;
 
         // Snap window to edges
-        if (x < snapSize)
-            x = 0;
-        if (y < snapSize)
-            y = 0;
-        if (x + winWidth + snapSize > 799)
-            x = 799 - winWidth;
-        if (y + winHeight + snapSize > 599)
-            y = 599 - winHeight;
+        if (x < snapSize) x = 0;
+        if (y < snapSize) y = 0;
+        if (x + winWidth + snapSize > 799) x = 799 - winWidth;
+        if (y + winHeight + snapSize > 599) y = 599 - winHeight;
 
         this->setPosition(x, y);
     }

@@ -33,7 +33,7 @@ TextField::TextField(const std::string& text):
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    int x, y, w, h, col;
+    int x, y, w, h;
     getAbsolutePosition(x, y);
     w = getWidth();
     h = getHeight();

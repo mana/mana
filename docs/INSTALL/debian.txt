@@ -17,23 +17,17 @@ IRC:      irc.freenode.net / #manaworld
 1. Installing The Mana World Dependancies
 =============================================
 
-The Mana World Debian Package can be installed under the Debian Testing and Unstable (Sarge/Cid).
-In order to have Mana World working, you'll need the following packages that are situed in :
+The Mana World Debian Package can be installed under the Debian Testing and
+Unstable (Sarge/Cid). In order to have Mana World working, you'll need packages
+for Allegro, SDL, SDL_mixer and Guichan.
 
-- JGMod :
-http://themanaworld.sourceforge.net/files/jgmod_0.99_i386.deb
-- AlFont :
-http://themanaworld.sourceforge.net/files/libalfont_1.9.2_i386.deb
-
-Note : If the packages names mismatches, check the page : http://themanaworld.sourceforge.net/files/
-to look for the latest version of these packages.
-
-When you've grabbed them, install them (as root) with the commands :
-	dpkg -i jgmod_0.99_i386.deb
-	dpkg -i libalfont_1.9.2_i386.deb
-
-liballegro4.1 must be installed before doing the previous commands, you can do install it by typing (as root) :
+To install liballegro4.1, you can do type (as root):
 	apt-get install liballegro4.1
+
+Also make sure you install the other required packages.
+
+(incompletely updated by Hammerbear)
+
 
 2. Make the latest Mana World Debian Package and install it
 ==========================================================

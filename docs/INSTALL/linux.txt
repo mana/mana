@@ -1,8 +1,6 @@
 How to compile and install TMW on my GNU/Linux Box
 ==================================================
 
-Thanks to hardskinone for writing the 'Installing JGmod' part
-
 The Mana World project
 ======================
 Homepage: themanaworld.sourceforge.net
@@ -10,10 +8,10 @@ IRC:      irc.freenode.net / #manaworld
 
 1) Requirements
 2) Installing the Allegro library
-3) Installing the Alfont library
-4) Installing the JGmod library
-5) Installing The Mana World
-6) Notes
+3) Installing other libraries
+4) Installing The Mana World
+5) Notes
+
 
 1. Requirements
 ===============
@@ -33,23 +31,25 @@ both first. Those should be included in any distribution.
 To get The Mana World to compile, some libraries are needed:
 
 1) Allegro 4.1+
-2) Alfont  1.91
-3) JGmod 0.99
+2) SDL
+3) SDL_mixer
+4) Guichan
 
-2) Installing the Allegro Libraries
-===================================
+
+2. Installing the Allegro Library
+=================================
 
 Look for a package for the distribution you run first and if you find a
 version of Allegro 4.1 or higher you can save the time to go through the
 next steps and skip to section 3. If not read ahead!
 
 Download Allegro:
-  http://prdownloads.sourceforge.net/alleg/allegro-4.1.14.tar.gz?download
+  http://prdownloads.sourceforge.net/alleg/allegro-4.1.17.tar.gz?download
   
 Follow the steps:
 1) cd into the path you donwloaded the tarball to
-2) run "tar xzf allegro-4.1.14.tar.gz"
-3) cd into "allegro-4.1.14"
+2) run "tar xzf allegro-4.1.17.tar.gz"
+3) cd into "allegro-4.1.17"
 4) run "./configure && make"
 5) then make sure you are the superuser and run "make install"
 6) run "ldconfig -v | grep allegro"
@@ -62,58 +62,17 @@ Allegro should now be installed on your system. If libraries are missing
 or something else doesn't work out please correspond to Allegros installation
 manual:
   http://alleg.sourceforge.net/
+
+
+3. Installing other libraries
+=============================
+
+Make sure you also have SDL, SDL_mixer and Guichan installed.
+
+(incompletely updated by Hammerbear)
+
   
-3) Installing the Alfont library
-================================
-
-NOTE: if you're using Debian check this package http://themanaworl.sourceforge.net/files/jgmod_0.99_i386.deb
-
-This is most likely not included in any distribution out there. So download
-the source from here:
-  http://nekros.freeshell.org/delirium/alfont.php
-  
-1) extract the archive, i recommend unzip :-)
-2) cd into the directory
-3) edit "Makefile" so it looks like this:
-  
-  [..]
-    # Makefile for AllegroFont using FreeType 2
-    
-    # select (uncomment) one target and comment DJGPP if you are not aiming
-    # for that platform
-    #TARGET=DJGPP_STATIC
-    #TARGET=MINGW32_STATIC
-    #TARGET=MINGW32_DLL
-    TARGET=LINUX_STATIC
-  [..]
-4) run "sh fixunix.sh"
-5) run "make"
-6) make sure you're the superuser and do the following:
-  cp lib/linux/libalfont.a /usr/lib
-  cp include/* /usr/include
-  ldconfig
-7) this should finish the Alfont installation
-
-4) Installing the JGmod library 
-================================ 
-
-NOTE: if you're using Debian check this package http://themanaworl.sourceforge.net/files/libalfont_1.9.2_i386.deb
-
-This is not included in any distribution. Download source package from here:
-http://www.geocities.com/jeffery_guan/jgmod/jgmod.zip 
-  
-1) extract archive and 'cd' into the directory 
-2) run 'sh fixunix.sh' 
-3) cd in 'src' subdirectory 
-4) run 'make' and 'make install as root 
-5) now you should have following files: 
-   /usr/local/lib/libjgmod.so 
-   /usr/local/include/jgmod.h 
-
-*Note for GNU/Gentoo user: 
-  It's possible that 'make install' command create a file named /usr/local/include instead. To fix rename it 'jgmod.h', create a dir '/usr/local/include/' and put in that file. 
-
-5. Installing The Mana World
+4. Installing The Mana World
 ============================
 
 The final step... I assume you have already downloaded the latest tarball
@@ -127,7 +86,7 @@ or checked out a recent version from the CVS. In any case follow the last
    the TMW forums:
      http://themanaworld.sourceforge.net/phpBB2/index.php
      
-6. Notes
+5. Notes
 ========
 
 I only tested this on Archlinux Current (13th July 2004) and Debian Sid

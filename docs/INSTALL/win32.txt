@@ -26,7 +26,8 @@ doing, so best stick with Dev-C++.
 Besides a C++ compiler, TMW depends on the following libraries:
 
 1) Allegro 4.1.17
-3) JGmod 0.99
+2) SDL
+3) SDL_mixer
 4) Guichan 0.2.0
 
 
@@ -48,15 +49,11 @@ After you fetched it simply run and install.
 All the libs have DevPaks that are very easy drop-ins for Dev-C++, without any
 complex actions on your side.
 
-Because Guichan can work with SDL as well as Allegro, and because we plan to
-switch to SDL anyway, we'll install SDL and SDL_image too, even though TMW
-doesn't require them at this time.
-
 Get the following list of DevPaks:
 
 - Allegro       (http://devpaks.org/show.php?devpak=2)
-- JGMOD         (http://devpaks.org/show.php?devpak=121)
 - SDL           (http://devpaks.org/show.php?devpak=57)
+- SDL_mixer     (http://devpaks.org/)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
 - Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
 

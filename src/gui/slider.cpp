@@ -65,7 +65,6 @@ void Slider::draw(gcn::Graphics *graphics)
 
 void Slider::drawMarker(gcn::Graphics *graphics)
 {
-    int w = getWidth();
     int h = getHeight();
     int x, y;
     getAbsolutePosition(x, y);
