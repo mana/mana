@@ -39,7 +39,7 @@ LoginDialog::LoginDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setDimension(gcn::Rectangle(300, 250, 200, 80));
+    setSize(200, 80);
     userLabel->setPosition(4, 11);
     passLabel->setPosition(4, 31);
     userField->setPosition(60, 10);
@@ -84,6 +84,7 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::init()
 {
+    setLocationRelativeTo(getParent());
     userField->requestFocus();
     userField->setCaretPosition(userField->getText().length());
 

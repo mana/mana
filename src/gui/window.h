@@ -68,9 +68,29 @@ class Window : public gcn::Container, public gcn::MouseListener
         void add(gcn::Widget *w, int x, int y);
 
         /**
-         * Set the dimension of the window contents.
+         * Sets the dimension of the window contents.
          */
         void setDimension(const gcn::Rectangle& dimension);
+
+        /**
+         * Sets the width of the window contents.
+         */
+        void setWidth(int width);
+
+        /**
+         * Sets the height of the window contents.
+         */
+        void setHeight(int height);
+
+        /**
+         * Sets the location relative to the given widget.
+         */
+        void setLocationRelativeTo(gcn::Widget* widget);
+
+        /**
+         * Sets the size of this window.
+         */
+        void setSize(int width, int height);
 
         // Mouse handling
 

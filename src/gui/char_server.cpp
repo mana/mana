@@ -39,7 +39,7 @@ ServerSelectDialog::ServerSelectDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 
-    setDimension(gcn::Rectangle(300, 200, 200, 100));
+    setSize(200, 100);
     scrollArea->setDimension(gcn::Rectangle(4, 4, 192, 55));
     okButton->setPosition(120, 70);
     cancelButton->setPosition(146, 70);
@@ -74,6 +74,11 @@ ServerSelectDialog::~ServerSelectDialog()
     delete cancelButton;
 }
 
+void ServerSelectDialog::init()
+{
+    setLocationRelativeTo(getParent());
+}
+
 void ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
@@ -99,8 +104,8 @@ std::string ServerListModel::getElementAt(int i) {
 
 void char_server() {
     ServerSelectDialog *dialog = new ServerSelectDialog();
-
     guiTop->add(dialog);
+    dialog->init();
 
     state = LOGIN;
 

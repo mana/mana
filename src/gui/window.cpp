@@ -48,6 +48,7 @@ Window::Window(std::string text) :
     // Add chrome
     chrome = new gcn::Container();
     chrome->setOpaque(false);
+    chrome->setY(titlebarHeight);
     gcn::Container::add(chrome);
 }
 
@@ -113,6 +114,37 @@ void Window::setDimension(const gcn::Rectangle &dimension)
                 dimension.height + titlebarHeight));
     chrome->setDimension(gcn::Rectangle(0, titlebarHeight,
                 dimension.width, dimension.height));
+}
+
+void Window::setWidth(int width)
+{
+    gcn::Container::setWidth(width);
+    chrome->setWidth(width);
+}
+
+void Window::setHeight(int height)
+{
+    gcn::Container::setHeight(height + titlebarHeight);
+    chrome->setHeight(height);
+}
+
+void Window::setLocationRelativeTo(gcn::Widget* widget)
+{
+    int wx, wy;
+    int x, y;
+
+    widget->getAbsolutePosition(wx, wy);
+    getAbsolutePosition(x, y);
+
+    setPosition(
+            getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),
+            getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
+}
+
+void Window::setSize(int width, int height)
+{
+    setWidth(width);
+    setHeight(height);
 }
 
 void Window::add(gcn::Widget *w)
