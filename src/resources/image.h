@@ -27,6 +27,10 @@
 #include "resource.h"
 #include <SDL.h>
 
+#ifdef USE_OPENGL
+#include <SDL_opengl.h>
+#endif
+
 // This flag causes image alpha channel to be preserved, otherwise masking is
 // used.
 #define IMG_ALPHA  1
@@ -45,7 +49,13 @@ class Image : public Resource
         /**
          * Constructor.
          */
+#ifdef USE_OPENGL
+        Image(GLuint image,
+                int width, int height,
+                int texWidth, int texHeight);
+#else
         Image(SDL_Surface *image);
+#endif
 
         /**
          * Destructor.
@@ -83,11 +93,6 @@ class Image : public Resource
         virtual Image* getSubImage(int x, int y, int width, int height);
 
         /**
-         * Creates a scaled version of this image.
-         */
-        virtual Image* getScaledInstance(int width, int height);
-
-        /**
          * Blits the image onto the screen.
          *
          * @return <code>true</code> if the image was blitted properly
@@ -113,8 +118,13 @@ class Image : public Resource
                 SDL_Surface *screen, int x, int y, int w, int h);
 
     protected:
+#ifdef USE_OPENGL
+        GLuint image;
+        int width, height;
+        int texWidth, texHeight;
+#else
         SDL_Surface *image;
-        //BITMAP *image;
+#endif
 };
 
 /**
@@ -127,8 +137,13 @@ class SubImage : public Image
          * Constructor.
          */
         //SubImage(SDL_Surface *timage, int x, int y, int width, int height);
+#ifndef USE_OPENGL
         SubImage(Image *parent, SDL_Surface *image,
                 int x, int y, int width, int height);
+#else
+        SubImage(Image *parent, GLuint image, int x, int y,
+                int width, int height, int texWidth, int textHeight);
+#endif
 
         /**
          * Destructor.
@@ -168,24 +183,6 @@ class SubImage : public Image
     private:
         Image *parent;
         SDL_Rect rect;
-        //BITMAP *image;
-};
-
-/**
- * A scaled version of an image.
- */
-class ScaledImage : public Image
-{
-    public:
-        /**
-         * Constructor.
-         */
-        ScaledImage(Image *parent, SDL_Surface *image, int width, int height);
-
-        /**
-         * Destructor.
-         */
-        ~ScaledImage();
 };
 
 #endif

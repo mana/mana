@@ -41,7 +41,12 @@ Gui::Gui(Graphics *graphics):
     guiInput = new gcn::SDLInput();
 
     // Set image loader
+#ifndef USE_OPENGL
     imageLoader = new gcn::SDLImageLoader();
+#else
+    hostImageLoader = new gcn::SDLImageLoader();
+    imageLoader = new gcn::OpenGLImageLoader(hostImageLoader);
+#endif
     gcn::Image::setImageLoader(imageLoader);
 
     // Initialize top GUI widget
@@ -67,6 +72,9 @@ Gui::~Gui()
     delete guiFont;
     delete guiTop;
     delete imageLoader;
+#ifdef USE_OPENGL
+    delete hostImageLoader;
+#endif
     delete guiInput;
     delete focusHandler;
 }
@@ -148,16 +156,13 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    guiGraphics->_beginDraw();
+    //guiGraphics->_beginDraw();
 
     guiGraphics->pushClipArea(guiTop->getDimension());
     guiTop->draw(guiGraphics);
     guiGraphics->popClipArea();
 
-    // Draw the mouse
-    //draw_sprite(buffer, mouse_sprite, mouse_x, mouse_y);
-
-    guiGraphics->_endDraw();
+    //guiGraphics->_endDraw();
 }
 
 void Gui::focusNone()

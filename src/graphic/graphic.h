@@ -47,6 +47,9 @@ class Graphics;
 #include "spriteset.h"
 #include <SDL.h>
 #include <guichan/sdl.hpp>
+#ifdef USE_OPENGL
+#include <guichan/opengl.hpp>
+#endif
 
 #define TILE_SIZE 32
 
@@ -115,7 +118,11 @@ struct ImageRect {
 /**
  * A central point of control for graphics.
  */
+#ifdef USE_OPENGL
+class Graphics : public gcn::OpenGLGraphics {
+#else
 class Graphics : public gcn::SDLGraphics {
+#endif
     public:
         /**
          * Constructor.

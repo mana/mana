@@ -28,8 +28,17 @@
 #include "../graphic/graphic.h"
 #include "resourcemanager.h"
 
+#ifndef USE_OPENGL
 Image::Image(SDL_Surface *image):
     image(image)
+#else
+Image::Image(GLuint image, int width, int height, int texWidth, int texHeight):
+    image(image),
+    width(width),
+    height(height),
+    texWidth(texWidth),
+    texHeight(texHeight)
+#endif
 {
 }
 
@@ -44,67 +53,200 @@ Image* Image::load(const std::string &filePath, int flags)
 
     // Attempt to use SDL_Image to load the file.
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
-    SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
-            SDL_MapRGB(tmpImage->format, 255, 0, 255));
-    SDL_Surface *image = NULL;
+
+    // Check if the file was opened and return the appropriate value.
+    if (!tmpImage) {
+        log("Error: Image load failed.");
+        return NULL;
+    }
+
+#ifndef USE_OPENGL
+
+    SDL_Surface *image;
     if (flags & IMG_ALPHA) {
         image = SDL_DisplayFormatAlpha(tmpImage);
     }
     else {
+        SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
+                SDL_MapRGB(tmpImage->format, 255, 0, 255));
         image = SDL_DisplayFormat(tmpImage);
     }
     SDL_FreeSurface(tmpImage);
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
-        log("Error: Image load failed: %s", IMG_GetError());
-        //log("Error: Image load failed: %s", filePath.c_str());
+        log("Error: Image convert failed.");
         return NULL;
     }
 
     return new Image(image);
+
+#else
+
+    Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    rmask = 0xff000000;
+    gmask = 0x00ff0000;
+    bmask = 0x0000ff00;
+    amask = 0x000000ff;
+#else
+    rmask = 0x000000ff;
+    gmask = 0x0000ff00;
+    bmask = 0x00ff0000;
+    amask = 0xff000000;
+#endif
+
+    SDL_Surface *formatImage = SDL_CreateRGBSurface(SDL_SWSURFACE, 0, 0, 32,
+            rmask, gmask, bmask, amask);
+
+    if (formatImage == NULL) {
+        log("Error", "Image load failed: not enough memory");
+    }
+
+    SDL_Surface *image = SDL_ConvertSurface(
+            tmpImage, formatImage->format, SDL_SWSURFACE);
+    SDL_FreeSurface(formatImage);
+    SDL_FreeSurface(tmpImage);
+
+    unsigned int *rawData = (unsigned int *)image->pixels;
+    int width = image->w;
+    int height = image->h;
+    int realWidth = 1, realHeight = 1;
+
+    while (realWidth < width && realWidth < 1024) {
+        realWidth *= 2;
+    }
+
+    while (realHeight < height && realHeight < 1024) {
+        realHeight *= 2;
+    }
+
+    unsigned int *realData = new unsigned int[realWidth * realHeight];
+    int x, y;
+
+    for (y = 0; y < realHeight; y++)
+    {
+        for (x = 0; x < realWidth; x++)
+        {
+            if (x < width && y < height)
+            {
+                if (rawData[x + y * width] == 0xffff00ff)
+                {
+                    realData[x + y * realWidth] = 0x00000000;
+                }
+                else
+                {
+                    realData[x + y * realWidth] = rawData[x + y * width];
+                }
+            }
+            else
+            {
+                realData[x + y * realWidth] = 0;
+            }
+        }
+    }
+
+    GLuint texture;
+    glGenTextures(1, &texture);
+    log("Binding texture %d (%dx%d)", texture, realWidth, realHeight);
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glTexImage2D(
+            GL_TEXTURE_2D, 0, 4,
+            realWidth, realHeight,
+            0, GL_RGBA, GL_UNSIGNED_BYTE,
+            realData);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    delete[] realData;
+    SDL_FreeSurface(image);
+
+    GLenum error = glGetError();
+    if (error)
+    {
+        std::string errmsg = "Unkown error";
+        switch (error)
+        {
+            case GL_INVALID_ENUM:
+                errmsg = "GL_INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                errmsg = "GL_INVALID_VALUE";
+                break;
+            case GL_INVALID_OPERATION:
+                errmsg = "GL_INVALID_OPERATION";
+                break;
+            case GL_STACK_OVERFLOW:
+                errmsg = "GL_STACK_OVERFLOW";
+                break;
+            case GL_STACK_UNDERFLOW:
+                errmsg = "GL_STACK_UNDERFLOW";
+                break;
+            case GL_OUT_OF_MEMORY:
+                errmsg = "GL_OUT_OF_MEMORY";
+                break;
+        }
+        log("Error: Image GL import failed: %s", errmsg.c_str());
+        return NULL;
+    }
+
+    return new Image(texture, width, height, realWidth, realHeight);
+
+#endif
 }
 
 void Image::unload()
 {
     // Free the image surface.
+#ifndef USE_OPENGL
     if (image != NULL) {
         SDL_FreeSurface(image);
         image = NULL;
         loaded = false;
     }
+#endif
+    loaded = false;
 }
 
 int Image::getWidth() const
 {
+#ifndef USE_OPENGL
     if (image != NULL) {
         return image->w;
     }
+#else
+    return width;
+#endif
     return 0;
 }
 
 int Image::getHeight() const
 {
+#ifndef USE_OPENGL
     if (image != NULL) {
         return image->h;
     }
+#else
+    return height;
+#endif
     return 0;
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
+#ifdef USE_OPENGL
+    return new SubImage(this, image, x, y, width, height, texWidth, texHeight);
+#else
     return new SubImage(this, image, x, y, width, height);
-}
-
-Image *Image::getScaledInstance(int width, int height)
-{
-    return new ScaledImage(this, image, width, height);
+#endif
 }
 
 bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
         int width, int height)
 {
+#ifndef USE_OPENGL
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
@@ -119,11 +261,45 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
         return false;
     }
 
+#else
+
+    // Find OpenGL texture coordinates
+    float texX1 = srcX / (float)texWidth;
+    float texY1 = srcY / (float)texHeight;
+    float texX2 = (srcX + width) / (float)texWidth;
+    float texY2 = (srcY + height) / (float)texHeight;
+
+    glBindTexture(GL_TEXTURE_2D, image);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    // Draw a textured quad -- the image
+    glBegin(GL_QUADS);
+    glTexCoord2f(texX1, texY1);
+    glVertex3i(dstX, dstY, 0);
+
+    glTexCoord2f(texX2, texY1);
+    glVertex3i(dstX + width, dstY, 0);
+
+    glTexCoord2f(texX2, texY2);
+    glVertex3i(dstX + width, dstY + height, 0);
+
+    glTexCoord2f(texX1, texY2);
+    glVertex3i(dstX, dstY + height, 0);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+
+#endif
     return true;
 }
 
 bool Image::draw(SDL_Surface *screen, int x, int y)
 {
+#ifndef USE_OPENGL
+
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
@@ -135,6 +311,38 @@ bool Image::draw(SDL_Surface *screen, int x, int y)
         return false;
     }
 
+#else
+
+    // Find OpenGL texture coordinates
+    float texX1 = 0.0f;
+    float texY1 = 0.0f;
+    float texX2 = width / (float)texWidth;
+    float texY2 = height / (float)texHeight;
+
+    glBindTexture(GL_TEXTURE_2D, image);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    // Draw a textured quad -- the image
+    glBegin(GL_QUADS);
+    glTexCoord2f(texX1, texY1);
+    glVertex3i(x, y, 0);
+
+    glTexCoord2f(texX2, texY1);
+    glVertex3i(x + width, y, 0);
+
+    glTexCoord2f(texX2, texY2);
+    glVertex3i(x + width, y + height, 0);
+
+    glTexCoord2f(texX1, texY2);
+    glVertex3i(x, y + height, 0);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+
+#endif
     return true;
 }
 
@@ -161,9 +369,15 @@ void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
 
 //============================================================================
 
+#ifndef USE_OPENGL
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
     Image(image),
+#else
+SubImage::SubImage(Image *parent, GLuint image,
+        int x, int y, int width, int height, int texWidth, int texHeight):
+    Image(image, width, height, texWidth, texHeight),
+#endif
     parent(parent)
 {
     parent->incRef();
@@ -177,7 +391,9 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 
 SubImage::~SubImage()
 {
+#ifndef USE_OPENGL
     image = NULL;
+#endif
     // TODO: Enable when no longer a problem
     //parent->decRef();
 }
@@ -200,6 +416,7 @@ Image *SubImage::getSubImage(int x, int y, int w, int h)
 bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
+#ifndef USE_OPENGL
     // Check that preconditions for blitting are met.
     if (screen == NULL || image == NULL) return false;
 
@@ -215,11 +432,44 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
         return false;
     }
 
+#else
+
+    // Find OpenGL texture coordinates
+    float texX1 = (rect.x + srcX) / (float)texWidth;
+    float texY1 = (rect.y + srcY) / (float)texHeight;
+    float texX2 = (rect.x + srcX + width) / (float)texWidth;
+    float texY2 = (rect.y + srcY + height) / (float)texHeight;
+
+    glBindTexture(GL_TEXTURE_2D, image);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    // Draw a textured quad -- the image
+    glBegin(GL_QUADS);
+    glTexCoord2f(texX1, texY1);
+    glVertex3i(dstX, dstY, 0);
+
+    glTexCoord2f(texX2, texY1);
+    glVertex3i(dstX + width, dstY, 0);
+
+    glTexCoord2f(texX2, texY2);
+    glVertex3i(dstX + width, dstY + height, 0);
+
+    glTexCoord2f(texX1, texY2);
+    glVertex3i(dstX, dstY + height, 0);
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+
+#endif
     return true;
 }
 
 bool SubImage::draw(SDL_Surface *screen, int x, int y)
 {
+#ifndef USE_OPENGL
     // Check that drawing preconditions are satisfied.
     if (screen == NULL || image == NULL) return false;
 
@@ -232,37 +482,39 @@ bool SubImage::draw(SDL_Surface *screen, int x, int y)
         return false;
     }
 
-    return true;
-}
-
-//============================================================================
-
-ScaledImage::ScaledImage(
-        Image *parent, SDL_Surface *bmp, int width, int height):
-    Image(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32,
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-                0xff000000,
-                0x00ff0000,
-                0x0000ff00,
-                0x000000ff
 #else
-                0x000000ff,
-                0x0000ff00,
-                0x00ff0000,
-                0xff000000
-#endif
-                ))
-{
-    if (image) {
-        // Somehow stretch the image using SDL_gfx
-        //stretch_blit(bmp, image, 0, 0, bmp->w, bmp->h, 0, 0, width, height);
-    }
-}
 
-ScaledImage::~ScaledImage()
-{
-    if (image) {
-        SDL_FreeSurface(image);
-        image = NULL;
-    }
+    // Find OpenGL texture coordinates
+    float texX1 = rect.x / (float)texWidth;
+    float texY1 = rect.y / (float)texHeight;
+    float texX2 = (rect.x + rect.w) / (float)texWidth;
+    float texY2 = (rect.y + rect.h) / (float)texHeight;
+
+    glBindTexture(GL_TEXTURE_2D, image);
+
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    // Draw a textured quad -- the image
+    glBegin(GL_QUADS);
+
+    glTexCoord2f(texX1, texY1);
+    glVertex3i(x, y, 0);
+
+    glTexCoord2f(texX2, texY1);
+    glVertex3i(x + rect.w, y, 0);
+
+    glTexCoord2f(texX2, texY2);
+    glVertex3i(x + rect.w, y + rect.h, 0);
+
+    glTexCoord2f(texX1, texY2);
+    glVertex3i(x, y + rect.h, 0);
+
+    glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_BLEND);
+
+#endif
+    return true;
 }

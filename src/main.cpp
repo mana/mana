@@ -35,6 +35,10 @@
 #include <SDL.h>
 #include <libxml/xmlversion.h>
 
+#ifdef USE_OPENGL
+#include <SDL_opengl.h>
+#endif
+
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
 #include <pwd.h>
@@ -224,6 +228,10 @@ void init_engine()
     // Setup OpenGL
     glViewport(0, 0, 800, 600);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    int gotDoubleBuffer;
+    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
+    log("OpenGL is %s double buffering.",
+            (gotDoubleBuffer ? "using" : "not using"));
 #endif
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();

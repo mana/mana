@@ -29,6 +29,9 @@
 #include "../gui/equipment.h"
 #include "../main.h"
 #include "../being.h"
+#ifdef USE_OPENGL
+#include <SDL_opengl.h>
+#endif
 
 SDL_Surface *screen;
 
@@ -153,8 +156,13 @@ int get_y_offset(Being *being) {
 Graphics::Graphics():
     mouseCursor(NULL)
 {
+#ifdef USE_OPENGL
+    setTargetPlane(800, 600);
+#else
     setTarget(SDL_GetVideoSurface());
+#endif
 
+#ifndef USE_OPENGL
     // Load the mouse cursor
     ResourceManager *resman = ResourceManager::getInstance();
     mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
@@ -164,6 +172,7 @@ Graphics::Graphics():
 
     // Hide the system mouse cursor
     SDL_ShowCursor(SDL_DISABLE);
+#endif
 }
 
 Graphics::~Graphics() {
@@ -221,12 +230,19 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
+#ifdef USE_OPENGL
+    glFlush();
+    glFinish();
+    SDL_GL_SwapBuffers();
+    glClear(GL_COLOR_BUFFER_BIT);
+#else
     // Draw mouse before flipping
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
 
     SDL_Flip(screen);
+#endif
 }
 
 
@@ -340,14 +356,14 @@ Engine::~Engine()
 
 void Engine::draw()
 {
+    guiGraphics->_beginDraw();
+
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
-    map_x = (player_node->x - 13) * 32 +
-        get_x_offset(player_node);
-    map_y = (player_node->y - 9) * 32 +
-        get_y_offset(player_node);
+    map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
+    map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
 
     camera_x = map_x >> 5;
     camera_y = map_y >> 5;
@@ -528,10 +544,8 @@ void Engine::draw()
 
             std::stringstream cost;
             cost << tile->Gcost;
-            guiGraphics->_beginDraw();
             guiGraphics->drawText(cost.str(), destRect.x + 4, destRect.y + 12,
                     gcn::Graphics::CENTER);
-            guiGraphics->_endDraw();
 
             // Move to the next node
             PATH_NODE *temp = debugPath->next;
@@ -546,7 +560,6 @@ void Engine::draw()
         Being *being = (*beingIterator);
 
         if (being->speech != NULL) {
-            guiGraphics->_beginDraw();
             //if (being->speech_color == makecol(255, 255, 255)) {
             //    guiGraphics->drawText(being->speech,
             //            being->text_x + 16, being->text_y - 60,
@@ -557,7 +570,6 @@ void Engine::draw()
                         being->text_x + 60, being->text_y - 60,
                         gcn::Graphics::CENTER);
             //}
-            guiGraphics->_endDraw();
 
             being->speech_time--;
             if (being->speech_time == 0) {
@@ -583,4 +595,6 @@ void Engine::draw()
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
+
+    guiGraphics->_endDraw();
 }

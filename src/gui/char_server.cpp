@@ -126,14 +126,24 @@ void char_server() {
                 case SDL_QUIT:
                     state = EXIT;
                     break;
+
+                case SDL_KEYDOWN:
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                    {
+                        showServerList = false;
+                    }
+                    break;
             }
 
             guiInput->pushInput(event);
         }
 
-        login_wallpaper->draw(screen, 0, 0);
         gui->logic();
+
+        guiGraphics->_beginDraw();
+        login_wallpaper->draw(screen, 0, 0);
         gui->draw();
+        guiGraphics->_endDraw();
         guiGraphics->updateScreen();
     }
 

@@ -75,6 +75,9 @@ class Gui
 
     private:
         gcn::Gui *gui;                        /**< The GUI system */
+#ifdef USE_OPENGL
+        gcn::ImageLoader *hostImageLoader;    /**< For loading images in GL */
+#endif
         gcn::ImageLoader *imageLoader;        /**< For loading images */
         gcn::ImageFont *guiFont;              /**< The global GUI font */
 

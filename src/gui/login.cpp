@@ -152,9 +152,12 @@ void login() {
             guiInput->pushInput(event);
         }
 
-        login_wallpaper->draw(screen, 0, 0);
         gui->logic();
+
+        guiGraphics->_beginDraw();
+        login_wallpaper->draw(screen, 0, 0);
         gui->draw();
+        guiGraphics->_endDraw();
         guiGraphics->updateScreen();
     }
 

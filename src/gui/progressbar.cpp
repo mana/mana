@@ -42,6 +42,7 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, unsigned char 
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
+#ifndef USE_OPENGL
     int absx, absy;
     getAbsolutePosition(absx, absy);
 
@@ -73,9 +74,10 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     Temp = absx+X+int(float(Width)*progress)-2;
     if ( Temp < (absx+X+PROGRESSBAR_HEIGHT+1) ) Temp = absx+X+PROGRESSBAR_HEIGHT;
     DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT+1, absy+Y+1, Temp, absy+Y+1, abs(Red-40), abs(Green-40), abs(Blue-40));
-    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40)); 
-    
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40));
+
     SDL_UnlockSurface(screen);
+#endif
 }
 
 void ProgressBar::setProgress(float progress)
