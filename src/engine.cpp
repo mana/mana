@@ -371,11 +371,11 @@ void Engine::draw()
             int mf = being->frame + being->action;
 
             if (being->action == MONSTER_DEAD) {
-                monsterset->spriteset[sprnum + 16 * MONSTER_DEAD]->draw(screen,
+                monsterset->spriteset[sprnum + 20 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
             }
             else {
-                monsterset->spriteset[sprnum + 16 * mf]->draw(screen,
+                monsterset->spriteset[sprnum + 20 * mf]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
             }
 

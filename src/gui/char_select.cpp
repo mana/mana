@@ -104,6 +104,7 @@ CharSelectDialog::CharSelectDialog():
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
+
 }
 
 CharSelectDialog::~CharSelectDialog()

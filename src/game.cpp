@@ -125,14 +125,16 @@ void game() {
 
 void do_init()
 {
-    //tiledMap = Map::load(map_path);
-    //std::string path(map_path);
+    /*tiledMap = Map::load(map_path);
+    std::cout << map_path << std::endl;*/
+    std::string path(map_path);
 
-    /*std::string pathDir = path.substr(0, path.rfind(".") + 1);
-    pathDir.insert(pathDir.size(), "tmx.gz");*/
-
+    std::string pathDir = path.substr(0, path.rfind(".") + 1);
+    pathDir.insert(pathDir.size(), "tmx");
+    
+    //tiledMap = Map::load("data/maps/new_3-1.tmx.gz");
+    //std::cout << pathDir << std::endl;
     tiledMap = Map::load(map_path);
-    std::cout << map_path << std::endl;
 
     if (!tiledMap) {
         logger.error("Could not find map file");
