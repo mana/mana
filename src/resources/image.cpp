@@ -158,6 +158,7 @@ Image* Image::load(const std::string &filePath, int flags)
             0, GL_RGBA, GL_UNSIGNED_BYTE,
             realData);
 
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -311,8 +312,8 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
     float texX2 = (srcX + width) / (float)texWidth;
     float texY2 = (srcY + height) / (float)texHeight;
 
+    glColor4f(1.0f, 1.0f, 1.0f, alpha);
     glBindTexture(GL_TEXTURE_2D, image);
-
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
@@ -469,8 +470,8 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
     float texX2 = (rect.x + srcX + width) / (float)texWidth;
     float texY2 = (rect.y + srcY + height) / (float)texHeight;
 
+    glColor4f(1.0f, 1.0f, 1.0f, alpha);
     glBindTexture(GL_TEXTURE_2D, image);
-
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
