@@ -79,8 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:LIBCMT"
-				AdditionalDependencies="libjgmod.lib alfont.lib alleg.lib ws2_32.lib "
+				AdditionalDependencies="sdl_mixer.lib sdl.lib alfont.lib alleg.lib ws2_32.lib "
 				OutputFile="The Mana World.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -170,7 +169,7 @@
 				RelativePath=".\map.cpp">
 			</File>
 			<File
-				RelativePath=".\Sound\sound.cpp">
+				RelativePath=".\Sound\Sound.cpp">
 			</File>
 			<File
 				RelativePath=".\Graphic\SuperEagle.cpp">
@@ -243,7 +242,7 @@
 				RelativePath=".\map.h">
 			</File>
 			<File
-				RelativePath=".\Sound\sound.h">
+				RelativePath=".\Sound\Sound.h">
 			</File>
 			<File
 				RelativePath=".\Graphic\SuperEagle.h">
