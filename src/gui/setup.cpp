@@ -34,7 +34,6 @@
 #include "radiobutton.h"
 #include "ok_dialog.h"
 #include "../main.h"
-#include <SDL.h>
 
 #ifndef WIN32
 extern Sound sound;
@@ -136,7 +135,8 @@ void Setup::action(const std::string& eventId)
 {
     if (eventId == "apply") {
         setVisible(false);
-        int sel = modeList->getSelected();
+        int sel = 0;
+        sel = modeList->getSelected();
 
         // Display settings
         if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 2)

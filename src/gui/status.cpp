@@ -51,6 +51,10 @@ StatusWindow::StatusWindow():
     inventoryButton->setEventId("Inventory");
     inventoryButton->addActionListener(this);
     
+    setupButton = new Button("Config");
+    setupButton->setEventId("Config");
+    setupButton->addActionListener(this);
+    
     hp->setPosition(WIN_BORDER, WIN_BORDER);
     sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
     healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER + 3, 80, 0, 255, 0);
@@ -68,6 +72,7 @@ StatusWindow::StatusWindow():
     statsButton->setPosition(WIN_BORDER, xpBar->getY() + xpBar->getHeight() + 2*CONTROLS_SEPARATOR);
     skillsButton->setPosition(statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     inventoryButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
+    setupButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     
     setSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
     
@@ -85,6 +90,7 @@ StatusWindow::StatusWindow():
     add(statsButton);
     add(skillsButton);
     add(inventoryButton);
+    add(setupButton);
 }
 
 StatusWindow::~StatusWindow()
@@ -101,6 +107,7 @@ StatusWindow::~StatusWindow()
     delete statsButton;
     delete skillsButton;
     delete inventoryButton;
+    delete setupButton;
 }
 
 void StatusWindow::update()
@@ -172,5 +179,9 @@ void StatusWindow::action(const std::string& eventId) {
     if (eventId == "Inventory") {
         // Show / Hide the inventory dialog
 	inventoryWindow->setVisible(!inventoryWindow->isVisible());
+    }
+    if (eventId == "Config") {
+        // Show / Hide the inventory dialog
+	setupWindow->setVisible(true);
     }
 }

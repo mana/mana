@@ -62,7 +62,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *expLabel, *jobExpLabel;
         ProgressBar *healthBar, *manaBar;
         ProgressBar *xpBar, *jobXpBar;
-	gcn::Button *statsButton, *skillsButton, *inventoryButton;
+	gcn::Button *statsButton, *skillsButton, *inventoryButton, *setupButton;
 };
 
 #endif
