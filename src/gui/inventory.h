@@ -31,47 +31,39 @@
 #define _INVENTORY_H 
 
 #include <allegro.h>
-/*#ifdef WIN32
-#include <winalleg.h>
-#endif*/
 #include "../main.h"
 #include "../game.h"
 #include "../log.h"
 #include "../net/network.h"
 #include "gui.h"
 
+#define INVENTORY_SIZE 10
+
 struct itemHolder { // the holder of a item
-	int flag;		 // don't really know why I use this :)
-	int itemIDNum;  // the id of the item
-	int num;	    // number of items
-	int xpos, ypos;  // where am I?
+	int id;       // the id of the item
+	int quantity; // number of items
+	//int index;    // item position
 };
-
-
 
 class TmwInventory{
 	public:
 		TmwInventory() {};
 		~TmwInventory() {};
 
-		void create(int tempxpos, int tempypos); // create the window
+		void create(int x, int y); // create the window
 		void draw(BITMAP *); // draw the window (if areDisplaying != 0 )
-		void show(int val); // choose between showing and not showing the window
+		void show(bool val); // choose between showing and not showing the window
 		void toggle() { if(areDisplaying){show(0);}else{show(1);} }
 		//API
-		int addItem(int idnum, int antal); //add a item
-		int rmItem(int idnum); //remove a item
+		int add_item(int index, int id, int quantity); // add a item
+		int remove_item(int id); // remove a item
 		int changeNum(int idnum, int antal); // change number of a item
 		int useItem(int idnum);
 		//END API
 	private:
-		BITMAP * backgroundSmall;
-		BITMAP * backgroundBig;
-		BITMAP * title;
-		BITMAP * empty;
-		BITMAP * selected;
-		itemHolder items[10][10]; // this is the test holder of items
+		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
 		DATAFILE *itemset;
+		bool show_inventory;
 		int			ghostX, ghostY, ghostID, ghostOldIDX,ghostOldIDY; //info needed when moving item
 		int dragingItem, lastSelectedX,lastSelectedY; //info needed when moving item
 		int areDisplaying, dragingWindow;

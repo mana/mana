@@ -33,270 +33,55 @@ DIALOG inventory_dialog[] = {
 
 DIALOG_PLAYER *inventory_player;
 
+/** Initialize inventory */
 void TmwInventory::create(int tempxpos, int tempypos) {
-	xpos = tempxpos;
-	ypos = tempypos;
 	itemset = load_datafile("./data/graphic/items.dat");
-	empty = load_bitmap("./data/graphic/empty.bmp", NULL);
-	selected = load_bitmap("./data/graphic/selected.bmp", NULL);
-
-	for(int i = 0; i< 10; i++) {
-		for(int ii = 0; ii< 10; ii++) {
-			items[i][ii].flag = 0; //doesn't hold anything
-			items[i][ii].itemIDNum = -1; //doesn't exist :)
-			items[i][ii].xpos = empty->w*i+1;
-			items[i][ii].ypos = empty->h*ii+20;
-			items[i][ii].num = 0;
-		}
+	
+	for(int i=0;i<INVENTORY_SIZE;i++) {
+		items[i].id = -1; // if id is negative there's no item
+		items[i].quantity = 0;
 	}
-	//draw_rle_sprite(buffer, (RLE_SPRITE *)itemPIC[items[itemX][itemY].itemIDNum].pic, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos));
+	
+	inventory_player = init_dialog(inventory_dialog, -1);
+	position_dialog(inventory_dialog, x, y);
 
-	//create two fake items
-	/*items[0][0].flag = 1;
-	items[0][0].itemIDNum = 0;
-	items[0][0].num = 1;
-
-	items[2][0].flag = 1;
-	items[2][0].itemIDNum = 1;
-	items[2][0].num = 3;*/
-
-	backgroundSmall = create_bitmap(empty->w*10+10, empty->h+10);
-	backgroundBig = create_bitmap(empty->w*10+10, empty->h*10+10);
-	title = create_bitmap(15, backgroundSmall->h);
-	clear_to_color(title, makecol(0, 0, 200));
-	clear_to_color(backgroundSmall, makecol(0,0,100));
-	clear_to_color(backgroundBig, makecol(0,0,100));
-	areDisplaying = 0;
-	dragingWindow = 0;
-	lastSelectedX = -1;
-	lastSelectedY = -1;
-	bigwindow = 0; //false 
-
-  inventory_player = init_dialog(inventory_dialog, -1);
-
+	show_inventory = false;
 }
 
+/** Draw inventory window */
 void TmwInventory::draw(BITMAP * buffer) {
-	// let's draw the inventory
-	if(areDisplaying) {
-		position_dialog(inventory_dialog, xpos, ypos);
+	if(show_inventory) {
 		dialog_message(inventory_dialog,MSG_DRAW,0,0);
-		update_dialog(inventory_player);
-		int max = 1;
-		/*if(!bigwindow) {
-			max = 1;
-			blit(backgroundSmall, buffer, 0, 0, xpos-5, ypos-5, 800, 600);
-		} else {
-			max = 10;
-			blit(backgroundBig, buffer, 0, 0, xpos-5, ypos-5, 800, 600);
-		}*/
-		//blit(title, buffer, 0, 0, xpos+backgroundSmall->w-5, ypos+-5, 800, 600);
-		for(int itemX=0;itemX<10;itemX++) {
-			for(int itemY=0;itemY<max;itemY++) {
-				int draw = 0;
-				//blit(empty, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
-	
-				if(mouse_b&1) {
-					if(xpos+items[itemX][itemY].xpos+empty->w > mouse_x && xpos+items[itemX][itemY].xpos < mouse_x)
-						if(ypos+items[itemX][itemY].ypos+empty->h > mouse_y && ypos+items[itemX][itemY].ypos < mouse_y) {
-						//selected
-              masked_blit(selected, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
-              draw = 1;
-              if(items[itemX][itemY].flag) // have a item
-                if(!dragingItem) { //not dragging it
-                  dragingItem=1; //begin to drag
-                  ghostOldIDX = itemX;
-                  ghostOldIDY = itemY; 
-                  ghostID = items[itemX][itemY].itemIDNum;
-                  ghostX = mouse_x;
-                  ghostY = mouse_y;
-                }
-            }
-        } else { // if !mouse_b&1
-          if(lastSelectedX != -1 && dragingItem) { // have stoped dragging it over a itemholder
-            //swap place
-            itemHolder temp;
-            int txpos1,typos1,txpos2,typos2;
-            txpos1 = items[lastSelectedX][lastSelectedY].xpos;
-            typos1 = items[lastSelectedX][lastSelectedY].ypos;
-            txpos2 = items[ghostOldIDX][ghostOldIDY].xpos;
-            typos2 = items[ghostOldIDX][ghostOldIDY].ypos;
-            temp = items[lastSelectedX][lastSelectedY];
-            items[lastSelectedX][lastSelectedY] = items[ghostOldIDX][ghostOldIDY];
-            items[ghostOldIDX][ghostOldIDY] = temp;
-            items[lastSelectedX][lastSelectedY].xpos = txpos1;
-            items[lastSelectedX][lastSelectedY].ypos = typos1;
-            items[ghostOldIDX][ghostOldIDY].xpos = txpos2;
-            items[ghostOldIDX][ghostOldIDY].ypos = typos2;
-          }
-          dragingItem = 0; // stop dragging
-        }
-
-        if(mouse_b&2 && items[itemX][itemY].flag) { // if roght mouse button over an item
-					if(xpos+items[itemX][itemY].xpos+empty->w > mouse_x && xpos+items[itemX][itemY].xpos < mouse_x)
-						if(ypos+items[itemX][itemY].ypos+empty->h > mouse_y && ypos+items[itemX][itemY].ypos < mouse_y) {
-						//selected
-              masked_blit(selected, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
-              draw = 1;
-              if(itemMeny){ itemMeny=0; } else { itemMeny=1; itemIdn =items[itemX][itemY].itemIDNum ;itemMeny_x = (xpos+items[itemX][itemY].xpos)+selected->w;itemMeny_y = (ypos+items[itemX][itemY].ypos)+selected->h;}
-						}
-				}
-
-        if(xpos+items[itemX][itemY].xpos+empty->w > mouse_x && xpos+items[itemX][itemY].xpos < mouse_x && ypos+items[itemX][itemY].ypos+empty->h > mouse_y && ypos+items[itemX][itemY].ypos < mouse_y ) {
-          // a hoover
-          lastSelectedX = itemX;
-          lastSelectedY = itemY;
-        }
-
-				xpos = inventory_dialog[0].x;
-        ypos = inventory_dialog[0].y;
-
-        if(items[itemX][itemY].flag) //draw the item
-					// If the item is known
-					if(items[itemX][itemY].itemIDNum>=501 && items[itemX][itemY].itemIDNum<=510)
-            masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum-500].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
-					// If the item is unknown
-					else
-						masked_blit((BITMAP *)itemset[0].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 32, 32);
-
-        //the number of that item
-        if(!bigwindow)
-          alfont_textprintf_centre_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
-        else
-          alfont_textprintf_centre_aa(buffer, gui_font, xpos+items[itemX][itemY].xpos+20, ypos+items[itemX][itemY].ypos+empty->h-15, makecol(0,0,0), "%i",items[itemX][itemY].num);
-
-			}
-		}
-
-    if(mouse_b&2)	{
-      if(xpos+title->w+backgroundSmall->w > mouse_x && xpos+backgroundSmall->w < mouse_x)
-        if(ypos+title->h > mouse_y && ypos < mouse_y) {
-          if(bigwindow)
-						bigwindow=0;
-					else
-						bigwindow = 1;
-				}
-		}
-	}
-
-	/*if(mouse_b&1) {
-		if(xpos+title->w+backgroundSmall->w > mouse_x && xpos+backgroundSmall->w < mouse_x)
-			if(ypos+title->h > mouse_y && ypos < mouse_y) { //begin to move the window
-				xpos = mouse_x-(backgroundSmall->w);
-				ypos = mouse_y;
-				dragingWindow=1;
-			}
-	} else { dragingWindow=0;}*/
-				
-	/*if(dragingWindow) { //moving the window ?
-		xpos = mouse_x-(backgroundSmall->w);
-		ypos = mouse_y;
-	}*/
-			
-	if(dragingItem) { //moving the item
- 		masked_blit((BITMAP *)itemset[ghostID].dat, buffer, 0, 0, ghostX, ghostY, 800, 600);
-		ghostX = mouse_x;
-		ghostY = mouse_y;
-	}
-	
-	if(itemMeny){
-    if(itemMeny_y < mouse_y && itemMeny_y+10 > mouse_y) {
-      if(mouse_b&1) {
-        useItem(itemIdn);
-        itemMeny = 0;
-			}
-      alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y, makecol(255,237,33), "Use item");
-    } else {
-      alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y, MAKECOL_BLACK, "Use item");
-		}
-    if(itemMeny_y+10 < mouse_y && itemMeny_y+20 > mouse_y) {
-      if(mouse_b&1) {
-        rmItem(itemIdn);
-        itemMeny = 0;
-			}
-      alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y+10, makecol(255,237,33), "Del item");
-    } else {
-      alfont_textprintf_aa(buffer, gui_font, itemMeny_x, itemMeny_y+10, MAKECOL_BLACK, "Del item");
-		}
+		update_dialog(inventory_player);		
 	}
 }
 
-
-void TmwInventory::show(int val) {
-	if(val)
-		areDisplaying = 1;
-
-	if(!val)
-		areDisplaying = 0; 
+/** Set if inventory is visible */
+void TmwInventory::show(bool val) {
+	show_inventory = val;
 }
 
-int TmwInventory::addItem(int idnum, int antal) {
-	int found, tempi, tempii = 0;
-	found = 0;
-	tempi = -1;
-	for(int i = 0; i< 10; i++) {
-		for(int ii = 0; ii< 10; ii++) {
-				if(items[i][ii].itemIDNum == idnum) {
-					found = 1; items[i][ii].num = antal;
-					return -2;
-				}
-			}
-		}
-
-	if(!found) {
-		for(int ii = 0; ii< 10; ii++) {
-			for(int i = 0; i< 10; i++) {
-				if(items[i][ii].flag == 0) {
-					tempi = i;
-					tempii = ii;
-					ii=10;
-					i=10;
-				}
-			}
-		}
-
-		if(tempi != -1) {
-			items[tempi][tempii].flag = 1;
-			items[tempi][tempii].itemIDNum = idnum;
-			items[tempi][tempii].num = antal;
-			return 1;
-		} else {
-			return -1;
-		}
-	}
-	return -3;
+/** Add an item the inventory */
+int TmwInventory::add_item(int index, int id, int quantity) {
+	items[index].id = id;
+	items[index].quantity = quantity;
+	return 0;
 }
 
-int TmwInventory::rmItem(int idnum) {
-  int found, tempi;
-  found = 0;
-  tempi = -1;
-  for(int i = 0; i< 10; i++) {
-    for(int ii = 0; ii< 10; ii++) {
-      if(items[i][ii].itemIDNum == idnum) {
-				items[i][ii].itemIDNum = -1;
-        items[i][ii].flag = 0;
-        items[i][ii].num = 0;
-        return 1;
-      }
-    }
-	}
-  return -1;
+/** Remove a item from the inventory */
+int TmwInventory::remove_item(int id) {
+	for(int i=0;i<INVENTORY_SIZE;i++)
+		if(items[i].id==id) {
+			items[i].id = -1;
+			items[i].quantity = 0;
+		}  
+	return 0;
 }
 
-int TmwInventory::changeNum(int idnum, int antal) {
-  int found, tempi;
-  found = 0;
-  tempi = -1;
-	for(int i = 0; i< 10; i++) {
-    for(int ii = 0; ii< 10; ii++) {
-      if(items[i][ii].itemIDNum == idnum) {
-				items[i][ii].num = antal;
-				return 1;
-			}
-    }
-  }
-  return -1;
+/** Change quantity of an item */
+int TmwInventory::change_quantity(int index, int quantity) {
+  items[index].quantity = quantity;
+  return 0;
 }
 
 int TmwInventory::useItem(int idnum) {
@@ -307,4 +92,4 @@ int TmwInventory::useItem(int idnum) {
 	while((out_size>0))flush();
 
 	return 0;
-}
+}*/

@@ -460,13 +460,13 @@ void do_parse() {
         //Get the items
         case 0x01ee:
 					for(int loop=0;loop<(RFIFOW(2)-4)/18;loop++)
-            inventory.addItem(RFIFOW(4+loop*18+2), RFIFOW(4+loop*18+6));
+            inventory.add_item(RFIFOW(4+loop*18), RFIFOW(4+loop*18+2), RFIFOW(4+loop*18+6));
           break;
         case 0x00a8: // could I use the item?
           // index RFIFOW(2)
           // succes or not RFIFOB(6);
-          if(RFIFOB(6))
-            inventory.addItem(RFIFOW(2),RFIFOW(4));
+          //if(RFIFOB(6))
+          //  inventory.add_item(RFIFOW(2),RFIFOW(4));
           break;
         // Warp
         case 0x0091:
@@ -649,8 +649,10 @@ void do_parse() {
 					break;
 				// Buy/Sell dialog
 				case 0x00c4:
-					show_npc_dialog = 2;
-					current_npc = RFIFOL(2);
+					if(show_npc_dialog==0) {
+            show_npc_dialog = 2;
+            current_npc = RFIFOL(2);
+					}
 					break;
 				// Buy dialog
 				case 0x00c6:
@@ -682,7 +684,7 @@ void do_parse() {
 					break;
 				// Add item to inventory
 				case 0x00a0:
-					inventory.addItem(RFIFOW(6), RFIFOW(4));
+					inventory.add_item(RFIFOW(2), RFIFOW(6), RFIFOW(4));
 					break;
         // Manage non implemented packets
         default:

@@ -63,9 +63,10 @@ DIALOG npc_dialog[] = {
 
 DIALOG buy_sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     350,  200,  100,  80,   0,    0,    0,    0,       0,                0,    (char *)"Shop",   NULL, NULL  },
-   { tmw_button_proc,     360,  225,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&BUY",   NULL, NULL  },
-	 { tmw_button_proc,     360,  250,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&SELL",  NULL, NULL  },
+   { tmw_dialog_proc,     350,  200,  100,  105,  0,    0,    0,    0,       0,                0,    (char *)"Shop",   NULL, NULL  },
+   { tmw_button_proc,     360,  225,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Buy",   NULL, NULL  },
+	 { tmw_button_proc,     360,  250,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Sell",  NULL, NULL  },
+	 { tmw_button_proc,     360,  275,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Cancel",NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
 
