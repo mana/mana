@@ -79,6 +79,17 @@ Tile::Tile():
 }
 
 
+Map::Map():
+    width(200), height(200)
+{
+    tiles = new Tile[width * height];
+}
+
+Map::~Map()
+{
+    delete[] tiles;
+}
+
 bool Map::load(char *mapFile) {
     FILE *file = fopen(mapFile, "r");
 
@@ -125,15 +136,15 @@ bool Map::load(char *mapFile) {
 
 void Map::setWalk(int x, int y, bool walkable) {
     if (walkable) {
-        tiles[x][y].flags |= TILE_WALKABLE;
+        tiles[x + y * width].flags |= TILE_WALKABLE;
     }
     else {
-        tiles[x][y].flags &= ~TILE_WALKABLE;
+        tiles[x + y * width].flags &= ~TILE_WALKABLE;
     }
 }
 
 bool Map::getWalk(int x, int y) {
-    bool ret = (tiles[x][y].flags & TILE_WALKABLE) != 0;
+    bool ret = (tiles[x + y * width].flags & TILE_WALKABLE) != 0;
 
     if (ret) {
         // Check for colliding into a being
@@ -152,12 +163,12 @@ bool Map::getWalk(int x, int y) {
 
 void Map::setTile(int x, int y, int layer, int id)
 {
-    tiles[x][y].layers[layer] = id;
+    tiles[x + y * width].layers[layer] = id;
 }
 
 int Map::getTile(int x, int y, int layer)
 {
-    return tiles[x][y].layers[layer];
+    return tiles[x + y * width].layers[layer];
 }
 
 int Map::getWidth()
@@ -168,4 +179,13 @@ int Map::getWidth()
 int Map::getHeight()
 {
     return height;
+}
+
+PATH_NODE *Map::findPath(int startX, int startY, int destX, int destY)
+{
+    // Return when destination not walkable
+    if (!getWalk(destX, destY)) return NULL;
+
+    // No path found
+    return NULL;
 }

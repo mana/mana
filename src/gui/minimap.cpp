@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $IdS
+ *  $Id$
  */
  
 #define MINIMAP_W 100
@@ -52,11 +52,12 @@ void Minimap::draw(gcn::Graphics *graphics)
     
     getAbsolutePosition(x, y);
     
-    if ( (mapBackground->w != getWidth()) || (mapBackground->h != getHeight()) )
+    if ((mapBackground->w != getWidth()) || (mapBackground->h != getHeight()))
     {
         SDL_FreeSurface(mapBackground);
-        mapBackground = SDL_AllocSurface(SDL_SWSURFACE, getWidth(), getHeight(), 
-            (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
+        mapBackground = SDL_AllocSurface(SDL_SWSURFACE,
+                getWidth(), getHeight(), 
+                (screen->format->BytesPerPixel * 8), 0, 0, 0, 0);
         Uint32 mapColor = SDL_MapRGB(screen->format, 52, 149, 210);
         SDL_Rect sourceRect;
         sourceRect.x = sourceRect.y = 0;
@@ -75,10 +76,11 @@ void Minimap::draw(gcn::Graphics *graphics)
     screenRect.h = getHeight();
     screenRect.x = x;
     screenRect.y = y;
-    if ( mapBackground ) SDL_BlitSurface(mapBackground, NULL, screen, &screenRect);
+    if (mapBackground)
+        SDL_BlitSurface(mapBackground, NULL, screen, &screenRect);
     
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     graphics->setColor(gcn::Color(209, 52, 61));
-    graphics->fillRectangle(gcn::Rectangle(player_node->x /2,
+    graphics->fillRectangle(gcn::Rectangle(player_node->x / 2,
             player_node->y / 2, 3, 3));
 }

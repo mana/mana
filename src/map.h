@@ -24,6 +24,8 @@
 #ifndef _TMW_MAP_H
 #define _TMW_MAP_H
 
+#include "being.h"
+
 // Tile flags
 #define TILE_WALKABLE  1
 #define TILE_ANIMATED  2
@@ -47,7 +49,17 @@ class Map
 {
     public:
         /**
-         * Loads a map file
+         * Constructor.
+         */
+        Map();
+
+        /**
+         * Destructor.
+         */
+        ~Map();
+
+        /**
+         * Loads a map file.
          */
         bool load(char *mapFile);
 
@@ -81,12 +93,14 @@ class Map
          */
         int getHeight();
 
+        /**
+         * Find a path from one location to the next.
+         */
+        PATH_NODE *findPath(int startX, int startY, int destX, int destY);
+
     private:
-        const static int width = 200;
-        const static int height = 200;
-        Tile tiles[width][height];
-        char tileset[20];
-        char bg_music[20];
+        int width, height;
+        Tile *tiles;
 };
 
 extern Map tiledMap;

@@ -6,6 +6,10 @@
 #define WALKABLE     0
 #define NOT_WALKABLE 1
 
+#define NOT_STARTED 0
+#define FOUND 1
+#define NOT_FOUND 2
+
 // path-related constants
 const int numberPeople = 1;
 int onClosedList = 10;
@@ -469,18 +473,4 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
 
     // Path not found
     return NULL;
-}
-
-void ReadPath(int pathfinderID)
-{
-    // If a path exists, read the path data from the pathbank.
-    // Set pathLocation to 1st step
-    pathLocation = 1;
-    while (pathLocation<pathLength) {
-        int a = path_bank[pathLocation * 2 - 2];
-        int b = path_bank[pathLocation * 2 - 1];
-        pathLocation = pathLocation + 1;
-        // Draw dotted path
-        whichList[a][b] = 3;
-    }
 }
