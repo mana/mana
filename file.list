@@ -25,6 +25,7 @@ MODULES = src/sound.cpp \
           src/gui/playerbox.cpp \
           src/gui/progressbar.cpp \
           src/gui/radiobutton.cpp \
+          src/gui/requesttrade.cpp \
           src/gui/scrollarea.cpp \
           src/gui/sell.cpp \
           src/gui/setup.cpp \

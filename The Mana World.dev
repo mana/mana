@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=113
+UnitCount=115
 Type=0
 Ver=1
 ObjFiles=
@@ -1192,3 +1192,22 @@ OverrideBuildCmd=0
 BuildCmd=
 Compile=1
 
+[Unit114]
+FileName=src\gui\requesttrade.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit115]
+FileName=src\gui\requesttrade.h
+CompileCpp=1
+Folder=gui
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+Compile=1

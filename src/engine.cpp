@@ -33,6 +33,7 @@
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
+#include "gui/requesttrade.h"
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
@@ -62,6 +63,7 @@ Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
+RequestTradeDialog *requestTradeDialog;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -157,6 +159,7 @@ Engine::Engine()
     equipmentWindow = new EquipmentWindow();
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
+    requestTradeDialog = new RequestTradeDialog();
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -174,6 +177,10 @@ Engine::Engine()
     tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
             chatWindow->getHeight() + 15);
+    requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 
+            requestTradeDialog->getWidth() - 10, 
+            chatWindow->getHeight() + 15);
+    
     // Set initial window visibility
     chatWindow->setVisible(true);
     statusWindow->setVisible(true);
@@ -191,6 +198,7 @@ Engine::Engine()
     equipmentWindow->setVisible(false);
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
+    requestTradeDialog->setVisible(false);
     // Do not focus any text field
     gui->focusNone();
     
@@ -238,6 +246,7 @@ Engine::~Engine()
     delete newSkillWindow;
     delete itemAmountWindow;
     delete tradeWindow;
+    delete requestTradeDialog;
 
     // Delete sprite sets
     delete monsterset;

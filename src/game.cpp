@@ -358,6 +358,14 @@ void do_input()
                         WFIFOSET(7);
                         current_npc = id;
                     }
+                } else {
+                    id = find_pc(mx, my);
+                    if (id != 0) {
+                        // Begin a trade
+                        WFIFOW(0) = net_w_value(0x00e4);
+                        WFIFOL(2) = net_l_value(id);
+                        WFIFOSET(6);
+                    }
                 }
             }
         }
@@ -740,7 +748,62 @@ void do_parse() {
                     npcTextDialog->setVisible(true);
                     current_npc = RFIFOL(4);
                     break;
-
+                
+                // Trade: Receiving a request to trade
+                case 0x00e5:
+                    //printf("Getting a call from %s\n", RFIFOP(2));
+                    requestTradeDialog->request(RFIFOP(2));
+                    break;
+                    
+                // Trade: Response
+                case 0x00e7:
+                    switch (RFIFOB(2)) {
+                        case 0:
+                            // too far away
+                            chatWindow->chat_log("Trading isn't possible. Trade partner is too far away.", BY_SERVER);
+                            break;
+                        case 1:
+                            // Character doesn't exist
+                            chatWindow->chat_log("Trading isn't possible. Character doesn't exist.", BY_SERVER);
+                            break;
+                        case 2:
+                            // invite request check failed...
+                            chatWindow->chat_log("Trade cancelled due to an unknown reason.", BY_SERVER);
+                            break;
+                        case 3:
+                            // Trade accepted
+                            tradeWindow->setVisible(true);
+                            break;
+                        case 4:
+                            // Trade cancelled
+                            chatWindow->chat_log("Trade cancelled.", BY_SERVER);
+                            break;
+                        default:
+                            // Shouldn't happen as well, but to be sure
+                            chatWindow->chat_log("Unhandled trade cancel packet",
+                                   BY_SERVER);
+                            break;
+                    }
+                    break;
+                // Trade: Item successfully added
+                case 0x00ea:
+                    switch (RFIFOB(4)) {
+                        case 0:
+                            //printf("Item successfully added\n");
+                            // Add code to be added
+                            break;
+                        default:
+                            //printf("Unhandled 0x00ea byte!\n");
+                            break;
+                    }
+                    break;
+                   
+                // Trade: Trade cancelled
+                case 0x00ee:
+                    chatWindow->chat_log("Trade cancelled.", BY_SERVER);
+                    tradeWindow->setVisible(false);
+                    break;
+                    
                     // Get the items
                     // Only called on map load / warp
                 case 0x01ee:

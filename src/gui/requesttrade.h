@@ -18,72 +18,52 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id $
+ *  $Id$
  */
 
-#ifndef _TMW_TRADE_H
-#define _TMW_TRADE_H 
+#ifndef _TMW_REQUESTTRADE_H
+#define _TMW_REQUESTTRADE_H
 
-#include "../log.h"
-#include "../net/network.h"
-#include "../graphic/spriteset.h"
-#include "itemcontainer.h"
-#include "gui.h"
+#include <guichan.hpp>
+#include <vector>
+#include <string>
+#include <sstream>
 #include "window.h"
 
 /**
- * Trade dialog.
+ * The request trade dialog.
  *
  * \ingroup GUI
  */
-class TradeWindow : public Window, gcn::ActionListener {
+class RequestTradeDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.
+         *
+         * @see Window::Window
          */
-        TradeWindow();
+        RequestTradeDialog();
 
         /**
          * Destructor.
          */
-        ~TradeWindow();
+        ~RequestTradeDialog();
 
         /**
-         * Draws the trade window.
+         * Changes caption and brings window to the top
          */
-        void draw(gcn::Graphics *graphics);
+        void request(const char *name);
 
-        /**
-         * Add an item the trade window.
-         */
-        int addItem(int index, int id, bool own, int quantity, bool equipment);
-
-        /**
-         * Remove a item from the trade window.
-         */
-        int removeItem(int id, bool own);
-
-        /**
-         * Change quantity of an item.
-         */
-        int changeQuantity(int index, bool own, int quantity);
-
-        /**
-         * Increase quantity of an item.
-         */
-        int increaseQuantity(int index, bool own, int quantity);
-        
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
-        ItemContainer *my_items;
-        ItemContainer *trade_items;
-    
+
     private:
-        gcn::Label *nameLabel;
-        gcn::Button *addButton, *cancelButton;
+        gcn::Button *acceptButton;
+        gcn::Button *cancelButton;
+        gcn::Label *nameLabel[1];
 };
 
 #endif

@@ -34,13 +34,19 @@ TradeWindow::TradeWindow():
     Window("Trade: You")
 {
     setContentSize(322, 130);
+    
     addButton = new Button("Add");
+    cancelButton = new Button("Cancel");
     addButton->setPosition(2, 105);
+    cancelButton->setPosition(200, 105);
     
     addButton->setEventId("add");
+    cancelButton->setEventId("cancel");
     addButton->addActionListener(this);
+    cancelButton->addActionListener(this);
     
     add(addButton);
+    add(cancelButton);
     
     nameLabel = new gcn::Label("Other one");
     nameLabel->setPosition(2, 45);
@@ -62,6 +68,7 @@ TradeWindow::TradeWindow():
 TradeWindow::~TradeWindow()
 {
     delete addButton;
+    delete cancelButton;
     delete nameLabel;
 }
 
@@ -149,8 +156,15 @@ void TradeWindow::action(const std::string &eventId)
             if (i >= 0) {
                 printf("successfull\n");
 
-                addItem(i, inventoryWindow->items->getId(), true, inventoryWindow->items->getQuantity(), inventoryWindow->items->isEquipment(inventoryWindow->items->getIndex()));
-                inventoryWindow->changeQuantity(inventoryWindow->items->getIndex(), 0);
+                //addItem(i, inventoryWindow->items->getId(), true, inventoryWindow->items->getQuantity(), inventoryWindow->items->isEquipment(inventoryWindow->items->getIndex()));
+                
+                WFIFOW(0) = net_w_value(0x00e8);
+                WFIFOW(2) = net_w_value(inventoryWindow->items->getIndex());
+                WFIFOL(4) = net_l_value(inventoryWindow->items->getQuantity());
+                WFIFOSET(8);
+                while ((out_size > 0)) flush();
+                
+                //inventoryWindow->changeQuantity(inventoryWindow->items->getIndex(), 0);
                 
             } else {
                 printf("not successfull\n");
@@ -158,6 +172,10 @@ void TradeWindow::action(const std::string &eventId)
 
                             
         }
+    } else if (eventId == "cancel") {
+        WFIFOW(0) = net_w_value(0x00ed);
+        WFIFOSET(2);
+        while ((out_size > 0)) flush();
     }
     //if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
     

@@ -130,6 +130,9 @@ void remove_node(unsigned int id);
 /** Find a NPC id based on its coordinates */
 unsigned int find_npc(unsigned short x, unsigned short y);
 
+/** Find a PC id based on its coordinates */
+unsigned int find_pc(unsigned short x, unsigned short y);
+
 /** Find a MONSTER id based on its coordinates */
 unsigned int find_monster(unsigned short x, unsigned short y);
 

@@ -63,6 +63,18 @@ unsigned int find_npc(unsigned short x, unsigned short y) {
     return 0;
 }
 
+unsigned int find_pc(unsigned short x, unsigned short y) {
+    std::list<Being *>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        Being *being = (*i);
+        // Check if is a player
+        if (being->job < 10 && being->x == x && being->y == y) {
+            return being->id;
+        }
+    }
+    return 0;
+}
+
 unsigned int find_monster(unsigned short x, unsigned short y) {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
