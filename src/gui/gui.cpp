@@ -57,6 +57,8 @@ extern TmwSound sound;
 int (*gui__external_slider_callback)(void *, int);
 int reroute_slider_proc(void *dp3, int d2);
 
+
+
 /** Initialize gui system */
 void init_gui(BITMAP *bitmap, const char *skin) {
   gui_bitmap = bitmap;
@@ -315,6 +317,16 @@ blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
 blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
 blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
 }
+void loadPlusSkin() {
+//BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
+//BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
+gui_skin.plus.bg.grid[0] = load_bitmap("data/plus.bmp", NULL);
+gui_skin.plus.bg.grid[1] = load_bitmap("data/plus_sel.bmp", NULL);
+gui_skin.plus.bg.grid[2] = load_bitmap("data/plus_dis.bmp", NULL);
+//blit(temp1, gui_skin.bar.bg.grid[0], 0, 0, 0, 0, 3, 11);
+//blit(temp1, gui_skin.bar.bg.grid[1], 4, 0, 0, 0, 1, 11);
+//blit(temp1, gui_skin.bar.bg.grid[2], 13, 0, 0, 0, 3, 11);
+}
 void loadDialogSkin() {
     char **tokens;
     int    tokenCount;
@@ -397,6 +409,7 @@ int gui_load_skin(const char* skinname) {
   loadListboxSkin();
   loadDialogSkin();
   loadBarSkin();
+  loadPlusSkin();
   pop_config_state();
   set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
@@ -1039,6 +1052,38 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     }
     return D_O_K;
 }
+int tmw_plus_proc(int msg, DIALOG *d, int c)
+{
+//d->d1 = 0;
+bool draw = false;
+
+if(mouse_b & 1)
+	{
+	if(d->x+d->w > mouse_x && d->x < mouse_x && d->y+d->h > mouse_y && d->y < mouse_y)
+		if(d->d2==1)
+			{
+				//d->d1 = 1;
+				(*(getfuncptr)d->dp)(NULL, d->d1);
+				masked_blit(gui_skin.plus.bg.grid[1], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
+				draw = true;
+			} else {
+				masked_blit(gui_skin.plus.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
+				draw = true;
+			}
+	} else {
+		if (!d->d2) {
+ 			//disable
+			masked_blit(gui_skin.plus.bg.grid[2], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
+			draw = true;
+		}
+	}
+		if(!draw)
+			masked_blit(gui_skin.plus.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
+			
+
+return D_O_K;
+}
+
 int tmw_bar_proc(int msg, DIALOG *d, int c)
 {
 float share2 = ((float)d->d1 / (float)d->d2);
@@ -1108,6 +1153,7 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
     }
     return D_O_K;
 }
+
 
 /**
 	dialog box w/ left aligned head

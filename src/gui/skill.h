@@ -36,5 +36,5 @@
 //DIALOG skill_dialog[];
 
 void update_skill_dialog();
-
+void increaseStatus(void *dp3, int d1);
 #endif

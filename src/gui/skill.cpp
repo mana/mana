@@ -36,21 +36,66 @@ char luk_string[8];
 
 DIALOG skill_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     300,  200,  120,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skill",  NULL, NULL  },
+   { tmw_dialog_proc,     300,  200,  150,   60,  0,    0,    0,    0,       0,                0,    (char *)"Skill",  NULL, NULL  },
    { tmw_text_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    str_string,       NULL, NULL  },
+   { tmw_plus_proc,       354,  224,  16,    16,    0,   0,    '0',  0,          0,			   1,     (void*)increaseStatus,NULL, NULL  }, 
    { tmw_text_proc,       304,  234,  252,  100,  0,    0,    0,    0,       0,                0,    agi_string,       NULL, NULL  },
+   { tmw_plus_proc,       354,  234,  16,    16,    0,   0,    '0',  0,          1,			   1,     (void*)increaseStatus,NULL, NULL  }, 
    { tmw_text_proc,       304,  244,  252,  100,  0,    0,    0,    0,       0,                0,    vit_string,       NULL, NULL  },
-   { tmw_text_proc,       364,  224,  252,  100,  0,    0,    0,    0,       0,                0,    int_string,       NULL, NULL  },
-   { tmw_text_proc,       364,  234,  252,  100,  0,    0,    0,    0,       0,                0,    dex_string,       NULL, NULL  },
-   { tmw_text_proc,       364,  244,  252,  100,  0,    0,    0,    0,       0,                0,    luk_string,       NULL, NULL  },
+   { tmw_plus_proc,       354,  244,  16,    16,    0,   0,    '0',  0,          2,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_text_proc,       374,  224,  252,  100,  0,    0,    0,    0,       0,                0,    int_string,       NULL, NULL  },
+   { tmw_plus_proc,       424,  224,  16,    16,    0,   0,    '0',  0,          3,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_text_proc,       374,  234,  252,  100,  0,    0,    0,    0,       0,                0,    dex_string,       NULL, NULL  },
+   { tmw_plus_proc,       424,  234,  16,    16,    0,   0,    '0',  0,          4,			   1,     (void*)increaseStatus,NULL, NULL  }, 
+   { tmw_text_proc,       374,  244,  252,  100,  0,    0,    0,    0,       0,                0,    luk_string,       NULL, NULL  },
+   { tmw_plus_proc,       424,  244,  16,    16,    0,   0,    '0',  0,          5,			   1,     (void*)increaseStatus,NULL, NULL  }, 
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
 
 void update_skill_dialog() {
+	int skillTemp = 0;
+	for(int loop = 0; loop<=char_info->lv;loop++)
+		skillTemp += int( (float)loop / (float)5.0 ) + (int)2;
 	sprintf(str_string, "STR: %i", char_info->STR);
 	sprintf(agi_string, "AGI: %i", char_info->AGI);
 	sprintf(vit_string, "VIT: %i", char_info->VIT);
 	sprintf(int_string, "INT: %i", char_info->INT);
 	sprintf(dex_string, "DEX: %i", char_info->DEX);
 	sprintf(luk_string, "LUK: %i", char_info->LUK);
+	if(char_info->STR+char_info->AGI+char_info->VIT+char_info->INT+char_info->DEX+char_info->LUK == skillTemp)
+		{
+		skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 0;
+		} else {
+		skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 1;
+		}
+}
+
+void increaseStatus(void *dp3, int d1)
+{
+	WFIFOW(0) = net_w_value(0x00bb);
+	switch(d1)
+	{
+	case 0:
+		WFIFOW(2) = net_w_value(0x000d);
+		break;
+	case 1:
+		WFIFOW(2) = net_w_value(0x000e);
+		break;
+	case 2:
+		WFIFOW(2) = net_w_value(0x000f);
+		break;	
+	case 3:
+		WFIFOW(2) = net_w_value(0x0010);
+		break;	
+	case 4:
+		WFIFOW(2) = net_w_value(0x0011);
+		break;	
+	case 5:
+		WFIFOW(2) = net_w_value(0x0012);
+		break;	
+	}
+	WFIFOW(4) = net_b_value(1);
+	WFIFOSET(5);
+	while((out_size>0))flush();
+	skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 0;
 }
