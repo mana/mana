@@ -74,7 +74,8 @@ typedef struct {
     int id;
     char name[24];
     short hp, max_hp, sp, max_sp, lv;
-    int xp, gp, job_xp, job_lv;
+    short statsPointsToAttribute;
+    int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
     short statp, skill_point, hair_color, hair_style;
     char STR, AGI, VIT, INT, DEX, LUK;
     short weapon;
