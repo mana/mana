@@ -27,6 +27,7 @@
 #include "./gui/chat.h"
 #include "./gui/gui.h"
 #include "./gui/inventory.h"
+#include "./gui/shop.h"
 #include "./graphic/super_eagle.h"
 #include "./graphic/graphic.h"
 #include "./sound/sound.h"
@@ -41,6 +42,7 @@ bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
 volatile bool refresh = false, action_time = false;
+int current_npc;
 
 #define MAX_TIME 10000
 
@@ -300,7 +302,6 @@ void do_parse() {
   NODE *node = NULL;
   int len;
 
-
   // We need at least 2 bytes to identify a packet
   if(in_size>=2) {
     // Check if the received packet is complete
@@ -317,10 +318,10 @@ void do_parse() {
         fprintf(file, "%x|%i|%c ", RFIFOB(i), RFIFOB(i), RFIFOB(i));
         if((i+1)%10==0)fprintf(file, "\n");
       }
-      fclose(file);
-			file = fopen("packet.list", "ab");
+      fclose(file);*/
+			FILE *file = fopen("packet.list", "ab");
 			fprintf(file, "%x\n", RFIFOW(0));
-			fclose(file);*/
+			fclose(file);
 
       // Parse packet based on their id
       switch(id) {
@@ -458,17 +459,13 @@ void do_parse() {
           break;
 		case 0x01ee: //Get the items
 			for(int loop = 0; loop < RFIFOW(4); loop++)
-				{
 				inventory.addItem(loop,RFIFOW(10+18*loop));
-				}
 			break;
 		case 0x00a8: // could I use the item?
 			// index RFIFOW(2)
 			// succes or not RFIFOB(6);
 			if(RFIFOB(6))
-			{
-			inventory.addItem(RFIFOW(2),RFIFOW(4));
-			}
+        inventory.addItem(RFIFOW(2),RFIFOW(4));
 			break;
         // Warp
         case 0x0091:
@@ -597,6 +594,9 @@ void do_parse() {
 					break;
 				// Status change
 				case 0x00b1:
+					/*char sto[40];
+					sprintf(sto, "%i %i", RFIFOW(2), RFIFOL(4));
+					alert(sto,"","","","",0,0);*/
 					switch(RFIFOW(2)) {
             case 1:
 							char_info->xp = RFIFOL(4);
@@ -604,7 +604,7 @@ void do_parse() {
 						case 2:
 							char_info->job_xp = RFIFOL(4);
 							break;
-						case 14:
+						case 20:
 							char_info->zeny = RFIFOL(4);
 							break;
 						// case 16 and 17 missing
@@ -648,6 +648,42 @@ void do_parse() {
 							char_info->LUK = RFIFOL(6) + RFIFOL(10);
 							break;
 					}
+					break;
+				// Buy/Sell dialog
+				case 0x00c4:
+					show_npc_dialog = 2;
+					current_npc = RFIFOL(2);
+					break;
+				// Buy dialog
+				case 0x00c6:
+					n_items = (len-4)/11;
+					show_npc_dialog = 3;
+					for(int k=0;k<n_items;k++)
+						add_item(RFIFOW(4+11*k+9), RFIFOL(4+11*k));
+					break;
+				// Sell dialog
+				case 0x00c7:
+					n_items = (len-4)/10;
+					show_npc_dialog = 4;
+					for(int k=0;k<n_items;k++)
+						add_item(RFIFOW(4+10*k), RFIFOL(4+10*k+2));
+					break;
+				// Answer to buy
+				case 0x00ca:
+					if(RFIFOB(2)==0)
+            ok("Transaction", "Thanks for buying");
+					else
+						ok("Transaction", "Unable to buy");
+					break;
+				// Answer to sell
+				case 0x00cb:
+					if(RFIFOB(2)==0)
+            ok("Transaction", "Thanks for selling");
+					else
+						ok("Transaction", "Unable to sell");
+					break;
+				// Add item to inventory
+				case 0x00a0:
 					break;
         // Manage non implemented packets
         default:

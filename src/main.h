@@ -68,7 +68,7 @@ extern char map_name[16];
 extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern SERVER_INFO *server_info;
-extern CHAR_INFO *char_info;
+extern PLAYER_INFO *char_info;
 extern unsigned char state;
 extern unsigned short x, y;
 extern unsigned char direction;

@@ -1,7 +1,7 @@
-/*
+/**
 
-	The Mana World
-	Copyright 2004 The Mana World Development Team
+  The Mana World
+  Copyright 2004 The Mana World Development Team
 
     This file is part of The Mana World.
 
@@ -19,24 +19,28 @@
     along with The Mana World; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+		By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+
 */
 
-#ifndef _STATS_H
-#define _STATS_H
+#ifndef _SHOP_H
+#define _SHOP_H
 
-#include <allegro.h>
-#include "../main.h"
-#include "gui.h"
+#include <stdlib.h>
+#include <stdio.h>
 
-typedef struct {
-	int id;
-	char name[24];
-	short hp, max_hp, sp, max_sp, lv;
-	int xp, zeny, job_xp, job_lv;
-	short statp, skillp;
-	char STR, AGI, VIT, INT, DEX, LUK;
-} PLAYER_INFO;
+struct ITEM_SHOP {
+	char name[30];
+	int price;
+	short id;
+	ITEM_SHOP *next;
+};
 
-int charstats_display(CHAR_INFO *);
+extern int n_items;
+
+char *shop_list(int index, int *list_size);
+void add_item(short id, int price);
+void close_shop();
+short get_item_id(int index);
 
 #endif

@@ -25,7 +25,7 @@
 
 #include "skill.h"
 
-extern CHAR_INFO  *char_info;
+extern PLAYER_INFO  *char_info;
 
 char str_string[8];
 char agi_string[8];

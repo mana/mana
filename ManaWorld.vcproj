@@ -269,6 +269,12 @@
 					RelativePath=".\src\gui\login.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\shop.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\shop.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\skill.cpp">
 				</File>
 				<File

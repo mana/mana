@@ -184,7 +184,7 @@ void server_char_delete() {
       while((in_size<3)||(out_size>0))flush();
       if(RFIFOW(0)==0x006d) {
         while(in_size<108)flush();
-        char_info = (CHAR_INFO *)malloc(sizeof(CHAR_INFO));
+        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO));
         char_info->id = account_ID;
         memset(char_info->name, '\0', 24);
         strcpy(char_info[0].name, RFIFOP(2+74));

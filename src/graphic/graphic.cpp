@@ -38,13 +38,14 @@
 #include "../being.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
+#include "../gui/shop.h"
 #include "../../data/graphic/gfx_data.h"
 
 BITMAP *buffer, *double_buffer, *chat_background;
 DATAFILE *tileset;
 char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *chat_player, *npc_player, *skill_player;
+DIALOG_PLAYER *chat_player, *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 TmwInventory inventory;
@@ -58,6 +59,33 @@ DIALOG npc_dialog[] = {
    { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Close",         NULL, NULL  },
    { tmw_textbox_proc,    304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    npc_text,         NULL, NULL  },
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
+};
+
+DIALOG buy_sell_dialog[] = {
+   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   { tmw_dialog_proc,     350,  200,  100,  80,   0,    0,    0,    0,       0,                0,    (char *)"Shop",   NULL, NULL  },
+   { tmw_button_proc,     360,  225,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&BUY",   NULL, NULL  },
+	 { tmw_button_proc,     360,  250,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&SELL",  NULL, NULL  },
+   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
+};
+
+DIALOG buy_dialog[] = {
+   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"Buy",     NULL, NULL  },
+   { tmw_button_proc,     450,  326,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
+	 { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
+	 { tmw_text_proc,       304,  326,  180,  100,  0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  },
+   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
+};
+
+DIALOG sell_dialog[] = {
+   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
+   { tmw_dialog_proc,     300,  200,  260,  150,  0,    0,    0,    0,       0,                0,    (char *)"Sell",    NULL, NULL  },
+   { tmw_button_proc,     450,  326,  50,   20,   255,  0,    'o',  D_EXIT,  0,                0,    (char *)"&Ok",     NULL, NULL  },
+	 { tmw_button_proc,     508,  326,  50,   20,   255,  0,    'c',  D_EXIT,  0,                0,    (char *)"&Cancel", NULL, NULL  },
+   { tmw_list_proc,       304,  224,  252,  100,  0,    0,    0,    0,       0,                0,    (char *)shop_list, NULL, NULL  },
+   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,              NULL, NULL  }
 };
 
 DIALOG chat_dialog[] = {
@@ -117,6 +145,9 @@ void init_graphic() {
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
 	skill_player = init_dialog(skill_dialog, -1);
+	buy_sell_player = init_dialog(buy_sell_dialog, -1);
+	buy_player = init_dialog(buy_dialog, -1);
+	sell_player = init_dialog(sell_dialog, -1);
   gui_bitmap = double_buffer;
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
@@ -236,9 +267,60 @@ void do_graphic(void) {
   chatlog.chat_draw(double_buffer, 8, gui_font);
   gui_update(chat_player);
 
-  if(show_npc_dialog) {
-    dialog_message(npc_dialog,MSG_DRAW,0,0);
-    if(!(show_npc_dialog = gui_update(npc_player)))strcpy(npc_text, "");
+	switch(show_npc_dialog) {
+		case 1:
+      dialog_message(npc_dialog, MSG_DRAW, 0, 0);
+      if(!(show_npc_dialog = gui_update(npc_player)))strcpy(npc_text, "");
+			break;
+		case 2:
+			dialog_message(buy_sell_dialog, MSG_DRAW, 0, 0);
+			if(!gui_update(buy_sell_player)) {
+				show_npc_dialog = shutdown_dialog(buy_sell_player);
+				if(show_npc_dialog==1 || show_npc_dialog==2) {
+          WFIFOW(0) = net_w_value(0x00c5);
+          WFIFOL(2) = net_l_value(current_npc);
+          WFIFOB(6) = net_b_value(show_npc_dialog-1);
+					WFIFOSET(7);
+				}
+				show_npc_dialog = 0;
+				buy_sell_player = init_dialog(buy_sell_dialog, -1);
+			}
+			break;
+		case 3:
+			char money[20];
+			sprintf(money, "%i gp", char_info->zeny);
+			buy_dialog[4].dp = &money;
+			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
+			if(!gui_update(buy_player)) {
+				show_npc_dialog = shutdown_dialog(buy_player);
+        if(show_npc_dialog==1) {
+          WFIFOW(0) = net_w_value(0x00c8);
+          WFIFOW(2) = net_w_value(8);
+          WFIFOW(4) = net_w_value(1);
+          WFIFOW(6) = net_w_value(get_item_id(buy_dialog[3].d1));
+          WFIFOSET(8);
+				}
+				show_npc_dialog = 0;
+        buy_player = init_dialog(buy_dialog, -1);
+				close_shop();
+			}
+			break;
+			case 4:
+			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
+			if(!gui_update(sell_player)) {
+				show_npc_dialog = shutdown_dialog(sell_player);
+        if(show_npc_dialog==1) {
+          WFIFOW(0) = net_w_value(0x00c9);
+          WFIFOW(2) = net_w_value(8);
+          WFIFOW(4) = net_w_value(1);
+          WFIFOW(6) = net_w_value(get_item_id(sell_dialog[3].d1));
+          WFIFOSET(8);
+				}
+				show_npc_dialog = 0;
+        sell_player = init_dialog(sell_dialog, -1);
+				close_shop();
+			}
+			break;
   }
 
 	if(show_skill_dialog) {

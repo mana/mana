@@ -94,7 +94,7 @@ void server_char_server() {
 	if(RFIFOW(0)==0x006b) {
 		while(in_size<RFIFOW(2))flush();
 		n_character = (RFIFOW(2)-24)/106;
-		char_info = (CHAR_INFO *)malloc(sizeof(CHAR_INFO)*n_character);
+		char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO)*n_character);
 		for(int i=0;i<n_character;i++) {
 			char_info[i].id = RFIFOL(24+106*i);
 			strcpy(char_info[i].name, RFIFOP(24+106*i+74));
