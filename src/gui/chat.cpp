@@ -347,4 +347,3 @@ std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLengt
 
     return std::string("");
 }
-

@@ -24,10 +24,6 @@
 #include "sound.h"
 #include "log.h"
 
-#ifdef __DEBUG
-#include <iostream>
-#endif
-
 void Sound::init(int voices, int mod_voices)
 {
     // Don't initialize sound engine twice
@@ -39,9 +35,10 @@ void Sound::init(int voices, int mod_voices)
     int audio_channels = 2;
     int audio_buffers = 4096;
 
-    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
+    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
+    {
 #ifndef __DEBUG
-        throw("Unable to open audio device!\n");
+        throw("Unable to open audio device!");
 #else
         throw(Mix_GetError());
 #endif
@@ -58,10 +55,9 @@ void Sound::init(int voices, int mod_voices)
 
 void Sound::setVolume(int music)
 {
-    if (isOk == -1)
-        return;
+    if (isOk == -1) return;
     
-    if (isMaxVol(music) == false) {
+    if (!isMaxVol(music)) {
         vol_music = music;
         Mix_VolumeMusic(vol_music);
     }
@@ -69,8 +65,7 @@ void Sound::setVolume(int music)
 
 void Sound::adjustVolume(int amusic)
 {
-    if (isOk == -1)
-        return;
+    if (isOk == -1) return;
     
     if (!isMaxVol(vol_music + amusic)) {
         vol_music += amusic;
@@ -78,31 +73,25 @@ void Sound::adjustVolume(int amusic)
     }
 }
 
-void Sound::startBgm(char * in, int loop)
+void Sound::startBgm(char *in, int loop)
 {
-    if (isOk == -1)
-        return;
+    if (isOk == -1) return;
         
     if (bgm != NULL) {
         stopBgm();
     }
     
+    log("Sound::startBgm() playing \"%s\" %d times", in, loop);
+
     bgm = Mix_LoadMUS(in);
     Mix_PlayMusic(bgm, loop);
-#ifdef __DEBUG
-    std::cout << "Sound::startBgm() Playing \"" << in << "\" " << loop << " times\n";
-#endif
 }
 
 void Sound::stopBgm()
 {
-    if (isOk == -1) {
-        return;
-    }
+    if (isOk == -1) return;
 
-#ifdef __DEBUG
-    std::cout << "Sound::stopBgm()\n";
-#endif
+    log("Sound::stopBgm()");
         
     if (bgm != NULL) {
         Mix_HaltMusic();
@@ -113,15 +102,12 @@ void Sound::stopBgm()
 
 SOUND_SID Sound::loadItem(char *fpath)
 {
-#ifdef __DEBUG
-    std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
-#endif
+    log("Sound::loadItem() precaching \"%s\"", fpath);
+
     Mix_Chunk *newItem;
     if ((newItem = Mix_LoadWAV(fpath))) {
         soundpool[++items] = newItem;
-#ifdef __DEBUG
-        std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
-#endif
+        log("Sound::loadItem() success SOUND_SID = %d", items);
         return items;
     }
         
@@ -131,9 +117,7 @@ SOUND_SID Sound::loadItem(char *fpath)
 void Sound::startItem(SOUND_SID id, int volume)
 {
     if (soundpool[id]) {
-#ifdef __DEBUG
-        std::cout << "Sound::startItem() playing SOUND_SID = " << id << std::endl;
-#endif
+        log("Sound::startItem() playing SOUND_SID = %d", id);
         Mix_VolumeChunk(soundpool[id], volume);
         Mix_PlayChannel(-1, soundpool[id], 0);
     }
@@ -141,15 +125,13 @@ void Sound::startItem(SOUND_SID id, int volume)
 
 void Sound::clearCache()
 {
-    for(SOUND_SID i = 0; i == items; i++) {
+    for (SOUND_SID i = 0; i == items; i++) {
         Mix_FreeChunk(soundpool[i]);
         soundpool[i] = NULL;
     }
     
     soundpool.clear();
-#ifdef __DEBUG
-    std::cout << "Sound::clearCache() wiped all items off the cache\n";
-#endif
+    log("Sound::clearCache() wiped all items off the cache");
 }
 
 void Sound::close()

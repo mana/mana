@@ -127,7 +127,7 @@ void game() {
 void do_init()
 {
     tiledMap = Map::load(map_path);
-    //tiledMap = MapReader::readMap("core/maps/desert.tmx");
+    //tiledMap = MapReader::readMap("core/maps/tempdesert.tmx.gz");
     if (!tiledMap) {
         error("Could not find map file");
     }
