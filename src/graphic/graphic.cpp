@@ -48,7 +48,7 @@ DIALOG_PLAYER *chat_player, *npc_player, *skill_player;
 char speech[255] = "";
 char npc_text[1000] = "";
 TmwInventory inventory;
-Chat chatlog("chatlog.txt", 20);
+Chat chatlog("./docs/chatlog.txt", 20);
 int show_npc_dialog = 0;
 bool show_skill_dialog = false;
 

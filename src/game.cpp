@@ -228,11 +228,13 @@ void do_input() {
     }
   } 
 
+	rect(screen, (mouse_x/32)*32,(mouse_y/32)*32, ((mouse_x/32)+1)*32, ((mouse_y/32)+1)*32, makecol(255,255,255));
+
   if(mouse_b&2) {
     if(!show_npc_dialog) {
       int npc_x = mouse_x/32+map_x/32;
       int npc_y = mouse_y/32+map_y/32;
-      int id = find_npc(npc_x+1, npc_y+1);
+      int id = find_npc(npc_x, npc_y);
       if(id!=0) {
         WFIFOW(0) = net_w_value(0x0090);
         WFIFOL(2) = net_l_value(id);

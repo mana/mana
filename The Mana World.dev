@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=The Mana World
-UnitCount=38
+UnitCount=37
 Type=0
 Ver=1
 ObjFiles=
@@ -48,7 +48,7 @@ ProductVersion=
 AutoIncBuildNr=0
 
 [Unit5]
-FileName=Graphic\SuperEagle.h
+FileName=src\gui\char_select.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -58,7 +58,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit8]
-FileName=Gui\char_select.h
+FileName=src\gui\char_server.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -68,7 +68,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit10]
-FileName=Gui\char_server.h
+FileName=src\gui\chat.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -78,7 +78,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=Gui\inventory.cpp
+FileName=src\gui\inventory.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -88,7 +88,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=Gui\inventory.h
+FileName=src\gui\inventory.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -98,7 +98,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=Gui\login.cpp
+FileName=src\gui\login.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -108,7 +108,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit16]
-FileName=Gui\login.h
+FileName=src\gui\login.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -118,7 +118,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit17]
-FileName=Gui\skill.cpp
+FileName=src\gui\skill.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -128,7 +128,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=Net\protocol.cpp
+FileName=src\net\network.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -138,7 +138,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit21]
-FileName=Net\protocol.h
+FileName=src\net\protocol.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -148,7 +148,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit22]
-FileName=Net\win2linux.h
+FileName=src\net\protocol.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -158,7 +158,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit23]
-FileName=Sound\sound.cpp
+FileName=src\net\win2linux.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -168,7 +168,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit24]
-FileName=Sound\sound.h
+FileName=src\sound\sound.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -178,7 +178,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit25]
-FileName=astar.cpp
+FileName=src\sound\sound.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -188,7 +188,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=astar.h
+FileName=src\astar.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -198,7 +198,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit28]
-FileName=being.h
+FileName=src\being.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -208,7 +208,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit29]
-FileName=game.cpp
+FileName=src\being.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -218,7 +218,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=game.h
+FileName=src\game.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -230,7 +230,7 @@ BuildCmd=
 dev-cpp projectfile for tmw by kth5 XD
 
 [Unit31]
-FileName=log.cpp
+FileName=src\game.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -240,7 +240,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit32]
-FileName=log.h
+FileName=src\log.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -250,7 +250,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit33]
-FileName=main.cpp
+FileName=src\log.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -260,7 +260,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=main.h
+FileName=src\main.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -271,7 +271,7 @@ BuildCmd=
 ########Text Field info#####
 
 [Unit35]
-FileName=map.cpp
+FileName=src\main.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -281,7 +281,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit36]
-FileName=map.h
+FileName=src\map.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -291,7 +291,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit2]
-FileName=Graphic\graphic.cpp
+FileName=src\graphic\graphic.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -301,7 +301,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit3]
-FileName=Graphic\graphic.h
+FileName=src\graphic\super_eagle.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -311,7 +311,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit4]
-FileName=Graphic\SuperEagle.cpp
+FileName=src\graphic\super_eagle.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -321,7 +321,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit6]
-FileName=Gui\skill.h
+FileName=src\gui\char_select.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -331,7 +331,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit7]
-FileName=Gui\char_select.cpp
+FileName=src\gui\char_server.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -341,7 +341,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit9]
-FileName=Gui\char_server.cpp
+FileName=src\gui\chat.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -351,7 +351,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=Net\network.cpp
+FileName=src\gui\skill.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -361,7 +361,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=Net\network.h
+FileName=src\net\network.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -371,7 +371,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=being.cpp
+FileName=src\astar.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -411,7 +411,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit1]
-FileName=Graphic\datGraphics.h
+FileName=src\graphic\graphic.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -421,7 +421,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit11]
-FileName=Gui\gui.cpp
+FileName=src\gui\gui.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -431,7 +431,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit12]
-FileName=Gui\gui.h
+FileName=src\gui\gui.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -441,7 +441,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit37]
-FileName=Gui\chat.cpp
+FileName=src\map.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -449,6 +449,7 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+########Text Field info#####
 
 
 ########Text Field info#####

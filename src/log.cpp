@@ -25,7 +25,7 @@
 
 int warning_n; // Keep warning number
 
-#define LOG_FILE "The Mana World.log"
+#define LOG_FILE "./docs/tmw.log"
 #define LOG_VERSION "0.3"
 
 void init_log() {
