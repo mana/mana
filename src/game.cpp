@@ -376,6 +376,9 @@ void do_input()
     // Get the state of the keyboard keys
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
+    int xDirection = 0;
+    int yDirection = 0;
+    int Direction = 0;
 
     if (walk_status == 0 && player_node->action != DEAD && current_npc == 0)
     {
@@ -384,66 +387,113 @@ void do_input()
 
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
-            // Up
-            if (tiledMap->getWalk(x, y - 1) != 0)
-            {
-                walk(x, y-1, NORTH);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->y = y - 1;
-                player_node->direction = NORTH;
-            }
-            else player_node->direction = NORTH;
+            yDirection = -1;
         }
-        else if (keys[SDLK_DOWN] || keys[SDLK_KP2])
+        if (keys[SDLK_DOWN] || keys[SDLK_KP2])
         {
-            // Down
-            if (tiledMap->getWalk(x, y + 1) != 0)
-            {
-                walk(x, y + 1, SOUTH);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->y = y + 1;
-                player_node->direction = SOUTH;
-            }
-            else player_node->direction = SOUTH;
+            yDirection = 1;
         }
-        else if (keys[SDLK_LEFT] || keys[SDLK_KP4])
+        if (keys[SDLK_LEFT] || keys[SDLK_KP4])
         {
-            if (tiledMap->getWalk(x - 1, y) != 0) {
-                walk(x - 1, y, WEST);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->x = x - 1;
-                player_node->direction = WEST;
-            }
-            else player_node->direction = WEST;
-           
+            xDirection = -1;
         }
-        else if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
+        if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
         {
-            if (tiledMap->getWalk(x + 1, y) != 0) {
-                walk(x + 1, y, EAST);
-                walk_status = 1;
-                src_x = x;
-                src_y = y;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->x = x + 1;
-                player_node->direction = EAST;
-            }
-            else player_node->direction = EAST;
+            xDirection = 1;
         }
 
+        if ( xDirection == 1 && yDirection == 0 ) // Right
+        {
+            Direction = EAST;
+        }
+        if ( xDirection == -1 && yDirection == 0 ) // Left
+        {
+            Direction = WEST;
+        }
+        if ( xDirection == 0 && yDirection == -1 ) // Up
+        {
+            Direction = NORTH;
+        }
+        if ( xDirection == 0 && yDirection == 1 ) // Down
+        {
+            Direction = SOUTH;
+        }
+        if ( xDirection == 1 && yDirection == 1 ) // Bottom-Right
+        {
+            Direction = SE;
+        }
+        if ( xDirection == -1 && yDirection == -1 ) // Top-left
+        {
+            Direction = NW;
+        }
+        if ( xDirection == 1 && yDirection == -1 ) // Top-Right
+        {
+            Direction = NE;
+        }
+        if ( xDirection == -1 && yDirection == 1 ) // Bottom-Left
+        {
+            Direction = SW;
+        }
+
+        if ( xDirection != 0 || yDirection != 0 )
+        {
+            if (tiledMap->getWalk(x + xDirection, y + yDirection) != 0)
+            {
+                walk(x + xDirection, y + yDirection, Direction);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->walk_time = tick_time;
+                player_node->x = x + xDirection;
+                player_node->y = y + yDirection;
+                player_node->direction = Direction;
+            }
+            else if (tiledMap->getWalk(x + xDirection, y) != 0) 
+            { // Going back to straight direction Left or right
+                if ( xDirection == 1 ) //right
+                {
+                    Direction = EAST;
+                }
+                else // left
+                {
+                    Direction = WEST;
+                }
+                yDirection = 0;
+                walk(x + xDirection, y + yDirection, Direction);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->walk_time = tick_time;
+                player_node->x = x + xDirection;
+                player_node->y = y + yDirection;
+                player_node->direction = Direction;
+            }
+            else if (tiledMap->getWalk(x, y + yDirection) != 0) 
+            { // Going back to straight direction up or down
+                if ( yDirection == 1 ) //Down
+                {
+                    Direction = SOUTH;
+                }
+                else // Up
+                {
+                    Direction = NORTH;
+                }
+                xDirection = 0;
+                walk(x + xDirection, y + yDirection, Direction);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->walk_time = tick_time;
+                player_node->x = x + xDirection;
+                player_node->y = y + yDirection;
+                player_node->direction = Direction;
+            }
+            else player_node->direction = Direction;
+        } // end if xDirection and yDirection != 0
+        
         if (player_node->action == STAND)
         {
             if (keys[SDLK_LCTRL])
