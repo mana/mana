@@ -70,16 +70,16 @@ char *skill_name[] = {
 NewSkillDialog::NewSkillDialog():
     Window("Skills")
 {
-    skillLabel = new gcn::Label[N_SKILL_CAT_SIZE]("Empty               ");
-    skillLevel = new gcn::Label[N_SKILL_CAT_SIZE]("00000");
-    skillbar = new ProgressBar[N_SKILL_CAT_SIZE](0.0f,0,0,270,15,0,0,255);
-    startPoint = 0;
-    for(int a=0;a<N_SKILL_CAT_SIZE;a++)
+    startPoint = 0;   
+    for ( int i = 0; i < N_SKILL_CAT_SIZE; i++)
     {
-        skillLevel[a].setAlignment(Graphics::RIGHT);
-        add(&skillLabel[a],40,50+a*20);
-        add(&skillLevel[a],200,50+a*20);
-        add(&skillbar[a],250,50+a*20);
+        skillLabel[i] = new gcn::Label("Empty               ");
+        skillLevel[i] = new gcn::Label("00000");
+        skillbar[i] = new ProgressBar(0.0f,0,0,270,15,0,0,255);
+        skillLevel[i]->setAlignment(Graphics::RIGHT);
+        add(skillLabel[i],40,50+i*20);
+        add(skillLevel[i],200,50+i*20);
+        add(skillbar[i],250,50+i*20);
     }
     // initialize the skills
     for(int i=0;i<N_SKILL;i++)
@@ -168,10 +168,13 @@ NewSkillDialog::NewSkillDialog():
 
 NewSkillDialog::~NewSkillDialog()
 {
-    delete skillbar;
-    delete []skillLabel;
-    delete closeButton;
-    delete []catButton;
+    // You don't have to delete children widgets.
+    // GUIchan will do it.
+    //delete skillbar;
+    //delete []skillLabel;
+    //delete []skillLevel;
+    //delete closeButton;
+    //delete []catButton;
 }
 
 void NewSkillDialog::action(const std::string& eventId)
@@ -229,20 +232,20 @@ void NewSkillDialog::resetNSD()
      {
          if(skill_name[a+startPoint] != "")
          {
-             skillLabel[a].setCaption(skill_name[a+startPoint]);
-             skillLabel[a].setVisible(true);
+             skillLabel[a]->setCaption(skill_name[a+startPoint]);
+             skillLabel[a]->setVisible(true);
              char tmp[5];
              sprintf(tmp, "%d",playerSkill[a+startPoint].level);
-             skillLevel[a].setCaption(tmp);
-             skillLevel[a].setVisible(true);
-             skillbar[a].setProgress(0.0f);
-             skillbar[a].setVisible(true);
+             skillLevel[a]->setCaption(tmp);
+             skillLevel[a]->setVisible(true);
+             skillbar[a]->setProgress(0.0f);
+             skillbar[a]->setVisible(true);
          }
          else
          {
-             skillLevel[a].setVisible(false);
-             skillLabel[a].setVisible(false);
-             skillbar[a].setVisible(false);
+             skillLevel[a]->setVisible(false);
+             skillLabel[a]->setVisible(false);
+             skillbar[a]->setVisible(false);
          }
      }
 }

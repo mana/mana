@@ -42,9 +42,9 @@ class NewSkillDialog : public Window, public gcn::ActionListener
     private:
         // members
         int startPoint; // starting point of skill listing
-        ProgressBar *skillbar;
-        gcn::Label *skillLabel;
-        gcn::Label *skillLevel;
+        ProgressBar *skillbar[N_SKILL_CAT_SIZE];
+        gcn::Label *skillLabel[N_SKILL_CAT_SIZE];
+        gcn::Label *skillLevel[N_SKILL_CAT_SIZE];
         gcn::Button *catButton[N_SKILL_CAT];
         gcn::Button *closeButton;
         nSkill playerSkill[N_SKILL]; // pointer to an array of skill values
