@@ -118,7 +118,6 @@ int  gui_load_skin(const char* skinname);
 void gui_shutdown(void);
 
 // Helper procedures used for GUI drawing
-gcn::Rectangle getScreenDimension(gcn::Widget *widget);
 void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin,
         int x, int y, int w, int h);
 int gui_text(BITMAP *bmp, AL_CONST char *s,
@@ -127,7 +126,6 @@ int gui_text(BITMAP *bmp, AL_CONST char *s,
 // Old Allegro GUI procs
 int tmw_button_proc(int msg, DIALOG *d, int c);
 int tmw_slider_proc(int msg, DIALOG *d, int c);
-int tmw_check_proc(int msg, DIALOG *d, int c);
 int tmw_radio_proc(int msg, DIALOG *d, int c);
 int tmw_edit_proc(int msg, DIALOG *d, int c);
 int tmw_password_proc(int msg, DIALOG *d, int c);

@@ -509,22 +509,6 @@ void gui_shutdown(void) {
 }
 
 /*
- * Find out the screen area of a Guichan widget
- */
-gcn::Rectangle getScreenDimension(gcn::Widget *widget) {
-    gcn::Rectangle rect = gcn::Rectangle(widget->getDimension());
-    gcn::BasicContainer *parent = widget->getParent();
-
-    while (parent != NULL) {
-        rect.x += parent->getX();
-        rect.y += parent->getY();
-        parent = parent->getParent();
-    }
-
-    return rect;
-}
-
-/*
  * Draw text for gui widgets
  */
 int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre) {
@@ -696,61 +680,6 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
     return ret;
 }
 
-int tmw_check_proc(int msg, DIALOG *d, int c) {
-    BITMAP *box = NULL;
-    int     x, y;
-    int     tx, ty, l;
-    int     rtm = 0;
-    int     col = 0;
-    if (msg == MSG_DRAW) {
-//        rectfill(gui_bitmap, d->x, d->y, d->x + d->w, d->y+d->h, d->bg);
-        if (d->flags & D_SELECTED) {
-            if (d->flags & D_DISABLED) {
-                box = gui_skin.checkbox.disabled_checked;
-            } else {
-                box = gui_skin.checkbox.checked;
-            }
-        } else if (d->flags & D_DISABLED) {
-            box = gui_skin.checkbox.disabled;
-        } else {
-            box = gui_skin.checkbox.normal;
-        }
-
-        if (d->flags & D_DISABLED) {
-            col = gui_skin.checkbox.textcolor[1];
-        } else {
-            col = gui_skin.checkbox.textcolor[0];
-        }
-
-        if (d->dp != NULL) {
-            l = gui_strlen((const char *)d->dp);
-        } else {
-            l = 0;
-        }
-
-        if (d->d1 != 0) {
-            x  = d->x;
-            tx = x + box->w + box->w/2;
-        } else {
-            x  = d->x + d->w - box->w;
-            tx = x - box->w/2 - l;
-        }
-        y  = d->y + (d->h - box->h)/ 2;
-        ty = d->y + (d->h - alfont_text_height(gui_font)) / 2;
-
-        masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
-        if (d->dp != NULL) {
-            rtm = alfont_text_mode(-1);
-            gui_text(gui_bitmap, (const char *)d->dp, tx, ty, col, 0);
-            alfont_text_mode(rtm);
-        }
-
-
-    } else {
-        return d_check_proc(msg, d, c);
-    }
-    return D_O_K;
-}
 
 int tmw_radio_proc(int msg, DIALOG *d, int c) {
     BITMAP *box = NULL;

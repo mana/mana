@@ -29,9 +29,11 @@ MWButton::MWButton(const std::string& caption):
 }
 
 void MWButton::draw(gcn::Graphics* graphics) {
-    gcn::Rectangle screenRect = getScreenDimension(this);
+    int x, y;
     int mode;
     int offset = 0;
+
+    getAbsolutePosition(x, y);
 
     if (false /*disabled*/) {
         mode = 3;
@@ -48,13 +50,11 @@ void MWButton::draw(gcn::Graphics* graphics) {
     }
 
     draw_skinned_rect(gui_bitmap, &gui_skin.button.background[mode],
-            screenRect.x, screenRect.y,
-            screenRect.width, screenRect.height);
+            x, y, getWidth(), getHeight());
 
     int rtm = alfont_text_mode(-1);
     gui_text(gui_bitmap, getCaption().c_str(),
-            screenRect.x + 2 + offset,
-            screenRect.y + 4 + offset,
+            x + 2 + offset, y + 4 + offset,
             gui_skin.button.textcolor[mode], FALSE);
     alfont_text_mode(rtm);
 }

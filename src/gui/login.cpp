@@ -24,6 +24,7 @@
 #include "login.h"
 #include "gui.h"
 #include "mw_button.h"
+#include "mw_checkbox.h"
 #include "../graphic/graphic.h"
 
 // Dialog parts
@@ -74,7 +75,7 @@ void login() {
     passLabel = new gcn::Label("Password:");
     userField = new gcn::TextField("player");
     passField = new gcn::TextField();
-    keepCheck = new gcn::CheckBox("Keep", false);
+    keepCheck = new MWCheckBox("Keep", false);
     okButton = new MWButton("OK");
     cancelButton = new MWButton("Cancel");
 
@@ -111,7 +112,7 @@ void login() {
     dialog->add(cancelButton);
 
     guiTop->add(dialog);
-    
+
     if (get_config_int("login", "remember", 0)) {
         if (get_config_string("login", "username", 0)) {
             userField->setText(get_config_string("login", "username", ""));
@@ -149,14 +150,17 @@ void server_login(const std::string& user, const std::string& pass) {
     int ret;
 
     // Connect to login server
-    ret = open_session(get_config_string("server", "host", 0), get_config_int("server", "port", 0));
+    ret = open_session(
+            get_config_string("server", "host", 0),
+            get_config_int("server", "port", 0));
+
     if (ret == SOCKET_ERROR) {
         state = LOGIN;
         ok("Error", "Unable to connect to login server");
         warning("Unable to connect to login server");
         return;
     }
-	
+
     // Send login infos
 
     WFIFOW(0) = net_w_value(0x0064);
@@ -167,41 +171,49 @@ void server_login(const std::string& user, const std::string& pass) {
     WFIFOB(54) = 0;
     WFIFOSET(55);
 
-    while((in_size<23)||(out_size>0))flush();
+    while ((in_size < 23) || (out_size > 0)) {
+        flush();
+    }
     log("Network", "Packet ID: %x", RFIFOW(0));
     log("Network", "Packet length: %d", get_packet_length(RFIFOW(0)));
-		
-	if(RFIFOW(0)==0x0069) {
-		while(in_size<RFIFOW(2))flush();
-		n_server = (RFIFOW(2)-47)/32;
-		server_info = (SERVER_INFO *)malloc(sizeof(SERVER_INFO)*n_server);
-		account_ID = RFIFOL(8);
-		session_ID1 = RFIFOL(4);
-		session_ID2 = RFIFOL(12);
-		sex = RFIFOB(46);
-		for(int i=0;i<n_server;i++) {
-			server_info[i].address = RFIFOL(47+32*i);
-			memcpy(server_info[i].name, RFIFOP(47+32*i+6), 20);
-			server_info[i].online_users = RFIFOW(47+32*i+26);
-			server_info[i].port = RFIFOW(47+32*i+4);
-			state = CHAR_SERVER;
-		}
-                log("Network", "Server: %s (%s:%d)", server_info[0].name,
-                        iptostring(server_info[0].address),
-                        server_info[0].port);
-                log("Network", "Users: %d", server_info[0].online_users);
-		RFIFOSKIP(RFIFOW(2));
-	} else if(RFIFOW(0)==0x006a) {
-		switch(RFIFOB(2)) {
-			case 0:
-				ok("Error", "Unregistered ID");
-				break;
-			case 1:
-				ok("Error", "Wrong password");
-				break;
-		}
-		state = LOGIN;
-		RFIFOSKIP(23);
-	} else ok("Error", "Unknown error");
-	// Todo: add other packets, also encrypted
+
+    if (RFIFOW(0) == 0x0069) {
+        while (in_size < RFIFOW(2)) {
+            flush();
+        }
+        n_server = (RFIFOW(2)-47)/32;
+        server_info = (SERVER_INFO*)malloc(sizeof(SERVER_INFO)*n_server);
+        account_ID = RFIFOL(8);
+        session_ID1 = RFIFOL(4);
+        session_ID2 = RFIFOL(12);
+        sex = RFIFOB(46);
+        for (int i = 0; i < n_server; i++) {
+            server_info[i].address = RFIFOL(47+32*i);
+            memcpy(server_info[i].name, RFIFOP(47+32*i+6), 20);
+            server_info[i].online_users = RFIFOW(47+32*i+26);
+            server_info[i].port = RFIFOW(47+32*i+4);
+            state = CHAR_SERVER;
+        }
+        log("Network", "Server: %s (%s:%d)", server_info[0].name,
+                iptostring(server_info[0].address),
+                server_info[0].port);
+        log("Network", "Users: %d", server_info[0].online_users);
+        RFIFOSKIP(RFIFOW(2));
+    }
+    else if (RFIFOW(0) == 0x006a) {
+        switch (RFIFOB(2)) {
+            case 0:
+                ok("Error", "Unregistered ID");
+                break;
+            case 1:
+                ok("Error", "Wrong password");
+                break;
+        }
+        state = LOGIN;
+        RFIFOSKIP(23);
+    }
+    else {
+        ok("Error", "Unknown error");
+    }
+    // Todo: add other packets, also encrypted
 }

@@ -19,32 +19,18 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_BUTTON_H
-#define _TMW_BUTTON_H
+#ifndef _TMW_CHECKBOX_H
+#define _TMW_CHECKBOX_H
 
 #include "gui.h"
 
-class MWButton : public gcn::Button {
+class MWCheckBox : public gcn::CheckBox {
     public:
-        MWButton(const std::string& caption);
+        MWCheckBox(const std::string& caption, bool marked = false);
 
         // Inherited from Widget
 
         void draw(gcn::Graphics* graphics);
-        void lostFocus();
-
-        // Inherited from MouseListener
-
-        void mousePress(int x, int y, int button);
-        void mouseRelease(int x, int y, int button);
-
-        // Inherited from KeyListener
-
-        void keyPress(const gcn::Key& key);
-        void keyRelease(const gcn::Key& key);
-
-    private:
-        bool mouseDown, keyDown;
 };
 
 #endif
