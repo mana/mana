@@ -145,7 +145,7 @@ std::string Configuration::getValue(const std::string &key, std::string deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
     if (iter != options.end()) {
-        return options[key];
+        return (*iter).second;
     }
     return deflt;
 }
@@ -154,7 +154,7 @@ float Configuration::getValue(const std::string &key, float deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
     if (iter != options.end()) {
-        return atof(options[key].c_str());
+        return atof((*iter).second.c_str());
     }
     return deflt;
 }

@@ -52,6 +52,11 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         ~Gui();
 
         /**
+         * Works around Guichan bug
+         */
+        void logic();
+
+        /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */

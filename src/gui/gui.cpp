@@ -80,6 +80,15 @@ Gui::~Gui()
     delete guiInput;
 }
 
+void Gui::logic()
+{
+    gcn::Gui::logic();
+
+    // Work around Guichan bug of only applying focus on mouse or keyboard
+    // events.
+    mFocusHandler->applyChanges();
+}
+
 void Gui::draw()
 {
     guiGraphics->pushClipArea(guiTop->getDimension());
