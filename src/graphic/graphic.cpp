@@ -256,11 +256,11 @@ void GraphicEngine::refresh() {
             unsigned short tile0 = get_tile(i + camera_x, j + camera_y, 0);
             unsigned short tile1 = get_tile(i + camera_x, j + camera_y, 1);
 
-            if (tile0 < 600) {
+            if (tile0 < tileset->spriteset.size()) {
                 tileset->spriteset[tile0]->draw(buffer,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
-            if (tile1 > 0) { //&& tile1 < 600
+            if (tile1 > 0 && tile1 < tileset->spriteset.size()) {
                 tileset->spriteset[tile1]->draw(buffer,
                         i * 32 - offset_x, j * 32 - offset_y);
             }
@@ -418,7 +418,7 @@ void GraphicEngine::refresh() {
         for (int i = 0; i < 26; i++) {
             unsigned short tile = get_tile(i + camera_x, j + camera_y, 2);
 
-            if (tile > 0 && tile < 600) {
+            if (tile > 0 && tile < tileset->spriteset.size()) {
                 tileset->spriteset[tile]->draw(
                         buffer, i * 32 - offset_x, j * 32 - offset_y);
             }

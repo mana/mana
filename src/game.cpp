@@ -53,8 +53,19 @@ extern unsigned char screen_mode;
 int fps = 0, frame = 0;
 
 Setup *setup = NULL;
+OkDialog *deathNotice = NULL;
 
 #define MAX_TIME 10000
+
+class DeatchNoticeListener : public gcn::ActionListener {
+    public:
+        void action(const std::string &eventId) {
+            WFIFOW(0) = net_w_value(0x00b2);
+            WFIFOB(2) = 0;
+            WFIFOSET(3);
+            deathNotice = NULL;
+        }
+} deathNoticeListener;
 
 /**
  * Finite states machine to keep track of player walking status (2 steps
@@ -634,20 +645,17 @@ void do_parse() {
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
                             break;
-			// try to get the stats point to attribute...
-			// FIXME : Wrong or misplaced...
-			//case 0x0009:
-			//	char_info->statsPointsToAttribute = RFIFOW(4);
-			//break;
+                        //case 0x0009:
+                            // try to get the stats point to attribute...
+                            // FIXME : Wrong or misplaced...
+                            //char_info->statsPointsToAttribute = RFIFOW(4);
+                            //break;
                     }
                     statusWindow->update();
-                    if (char_info->hp == 0) {
-                        //OkDialog *death = new OkDialog("Message",
-                         //       "You're now dead, press ok to restart");
-                        //alert("","","","","",0,0);
-                        WFIFOW(0) = net_w_value(0x00b2);
-                        WFIFOB(2) = 0;
-                        WFIFOSET(3);
+                    if (char_info->hp == 0 && deathNotice == NULL) {
+                        deathNotice = new OkDialog("Message",
+                                "You're now dead, press ok to restart",
+                                &deathNoticeListener);
                     }
                     break;
                     // Stop walking
@@ -665,11 +673,11 @@ void do_parse() {
                     //break;
                     // Damage, sit, stand up
                 case 0x008a:
-                    switch(RFIFOB(26)) {
+                    switch (RFIFOB(26)) {
                         case 0: // Damage
                             node = find_node(RFIFOL(6));
-                            if(node!=NULL) {
-                                if(node->speech!=NULL) {
+                            if (node != NULL) {
+                                if (node->speech != NULL) {
                                     free(node->speech);
                                     node->speech = NULL;
                                     //node->speech_time = SPEECH_TIME;
@@ -681,16 +689,23 @@ void do_parse() {
                                     node->speech_color = makecol(255, 255, 0);
                                 } else {
                                     sprintf(node->speech, "%i", RFIFOW(22));
-                                    if(node->id!=player_node->id)node->speech_color = makecol(0, 0, 255);
-                                    else node->speech_color = makecol(255, 0, 0);
+                                    if (node->id != player_node->id) {
+                                        node->speech_color = makecol(0,0,255);
+                                    }
+                                    else {
+                                        node->speech_color = makecol(255,0,0);
+                                    }
                                 }
                                 node->speech_time = SPEECH_TIME;
-                                if(RFIFOL(2)!=player_node->id) { // buggy
+                                if (RFIFOL(2) != player_node->id) { // buggy
                                     node = find_node(RFIFOL(2));
-                                    if(node!=NULL) {
-                                        if(node->job<10)
+                                    if (node != NULL) {
+                                        if (node->job<10) {
                                             node->action = ATTACK;
-                                        else node->action = MONSTER_ATTACK;
+                                        }
+                                        else {
+                                            node->action = MONSTER_ATTACK;
+                                        }
                                         node->frame = 0;
                                     }
                                 }
@@ -699,15 +714,15 @@ void do_parse() {
                         case 2: // Sit
                         case 3: // Stand up
                             node = find_node(RFIFOL(2));
-                            if(node!=NULL) {
+                            if (node != NULL) {
                                 node->frame = 0;
-                                if(RFIFOB(26)==2) {
+                                if (RFIFOB(26) == 2) {
                                     node->action = SIT;
-                                    //alert("","","","","",0,0);
                                     walk_status = 0;
                                 }
-                                else if(RFIFOB(26)==3)
+                                else if (RFIFOB(26) == 3) {
                                     node->action = STAND;
+                                }
                             }
                             break;
                     }
@@ -724,21 +739,20 @@ void do_parse() {
                         case 20:
                             char_info->gp = RFIFOL(4);
                             break;
-                            // case 16 and 17 missing
-
-			case 0x0016:
-				char_info->xpForNextLevel = RFIFOL(4);
-			break;
-			case 0x0017:
-				char_info->jobXpForNextLevel = RFIFOL(4);
-			break;
+                        case 0x0016:
+                            char_info->xpForNextLevel = RFIFOL(4);
+                            break;
+                        case 0x0017:
+                            char_info->jobXpForNextLevel = RFIFOL(4);
+                            break;
                     }
                     break;
                     // Level up
                 case 0x019b:
                     if (RFIFOL(2) == player_node->id) {
 #ifndef WIN32
-                        SOUND_SID sound_id = sound.loadItem("./data/sound/wavs/level.ogg");
+                        SOUND_SID sound_id = sound.loadItem(
+                                "./data/sound/wavs/level.ogg");
                         sound.startItem(sound_id, 64);
                         sound.clearCache();
 #endif /* not WIN32 */

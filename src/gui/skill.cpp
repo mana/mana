@@ -107,11 +107,12 @@ void SkillListModel::addSkill(int id, int lv, int sp)
 
 void SkillListModel::setSkill(int id, int lv, int sp)
 {
-    if (!hasSkill(id)) {
-        return;
+    for (unsigned int i = 0; i < skillList.size(); i++) {
+        if (skillList[i]->id == id) {
+            skillList[i]->lv = lv;
+            skillList[i]->sp = sp;
+        }
     }
-    skillList[id]->lv = lv;
-    skillList[id]->sp = sp;
 }
 
 

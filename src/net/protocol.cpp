@@ -114,9 +114,8 @@ unsigned short get_x(const char *data) {
 
 unsigned short get_y(const char *data) {
     short temp;
-    if(!data)error("Corrupted data");
+    if (!data) throw "Corrupted data";
     temp = MAKEWORD(data[2] & 0x00f0, data[1] & 0x003f);
-    if(!temp)error("Corrupted data");
     temp >>= 4;
     return temp;
 }
