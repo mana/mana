@@ -214,10 +214,16 @@ void Map::setWalk(int x, int y, bool walkable)
 
 bool Map::getWalk(int x, int y)
 {
+    // You can't walk outside of the map
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+        return false;
+    }
+
+    // Check if the tile is walkable
     bool ret = metaTiles[x + y * width].walkable;
 
+    // If walkable, check for colliding into a being
     if (ret) {
-        // Check for colliding into a being
         std::list<Being*>::iterator i = beings.begin();
         while (i != beings.end() && ret) {
             Being *being = (*i);
