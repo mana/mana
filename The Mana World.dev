@@ -20,7 +20,7 @@ ObjectOutput=obj
 OverrideOutput=1
 OverrideOutputName=tmw.exe
 HostApplication=
-Folders=graphic,gui,net,resources,sound
+Folders=graphic,gui,net,resources
 CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
@@ -245,9 +245,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit36]
-FileName=src\sound\sound.h
+FileName=src\sound.h
 CompileCpp=1
-Folder=sound
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -355,9 +355,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit37]
-FileName=src\sound\sound.cpp
+FileName=src\sound.cpp
 CompileCpp=1
-Folder=sound
+Folder=
 Compile=1
 Link=1
 Priority=1000

@@ -26,8 +26,8 @@
 #include "gui/char_select.h"
 #include "gui/inventory.h"
 #include "gui/ok_dialog.h"
-#include "./sound/sound.h"
-#include "./graphic/graphic.h"
+#include "sound.h"
+#include "graphic/graphic.h"
 #include "resources/resourcemanager.h"
 
 #include <iostream>

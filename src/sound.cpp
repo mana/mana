@@ -24,7 +24,7 @@
 #include "sound.h"
 
 #ifdef __DEBUG
-    #include <iostream>
+#include <iostream>
 #endif
 
 /**
@@ -41,7 +41,8 @@
             truments can be a result.
             32/20 sounds realistic here.
 */
-void Sound::init(int voices, int mod_voices) {
+void Sound::init(int voices, int mod_voices)
+{
     if (isOk == 0) {
         throw("Sound engine cannot be initialized twice!\n");
     }
@@ -51,13 +52,13 @@ void Sound::init(int voices, int mod_voices) {
     Uint16 audio_format = AUDIO_S16; /* 16-bit stereo */
     int audio_channels = 2;
     int audio_buffers = 4096;
-    
+
     if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers)) {
-        #ifndef __DEBUG
-            throw("Unable to open audio device!\n");
-        #else
-            throw(Mix_GetError());
-        #endif
+#ifndef __DEBUG
+        throw("Unable to open audio device!\n");
+#else
+        throw(Mix_GetError());
+#endif
     }
     
     Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
@@ -65,10 +66,10 @@ void Sound::init(int voices, int mod_voices) {
     pan = 128;
     items = -1;
     isOk = 0;
-    
-    #ifdef __DEBUG
-        std::cout << "Sound::Init() Initializing Sound\n";
-    #endif
+
+#ifdef __DEBUG
+    std::cout << "Sound::Init() Initializing Sound\n";
+#endif
 }
 
 /**
@@ -79,7 +80,8 @@ void Sound::init(int voices, int mod_voices) {
         all values may only be between 0-128 where 0 means
         muted.
 */
-void Sound::setVolume(int music) {
+void Sound::setVolume(int music)
+{
     if (isOk == -1)
         return;
     
@@ -93,7 +95,8 @@ void Sound::setVolume(int music) {
     \brief adjusts current volume
     \param amusic volume difference
 */
-void Sound::adjustVolume(int amusic) {
+void Sound::adjustVolume(int amusic)
+{
     if (isOk == -1)
         return;
     
@@ -108,7 +111,8 @@ void Sound::adjustVolume(int amusic) {
     \param in full path to file
     \param loop how many times should the midi be looped? (-1 = infinite)
 */
-void Sound::startBgm(char * in, int loop) {
+void Sound::startBgm(char * in, int loop)
+{
     if (isOk == -1)
         return;
         
@@ -118,9 +122,9 @@ void Sound::startBgm(char * in, int loop) {
     
     bgm = Mix_LoadMUS(in);
     Mix_PlayMusic(bgm, loop);
-    #ifdef __DEBUG
-        std::cout << "Sound::startBgm() Playing \"" << in << "\" " << loop << " times\n";
-    #endif
+#ifdef __DEBUG
+    std::cout << "Sound::startBgm() Playing \"" << in << "\" " << loop << " times\n";
+#endif
 }
 
 /**
@@ -133,14 +137,15 @@ void Sound::startBgm(char * in, int loop) {
         passing NULL to the playing functions only means to make
         playback stop.
 */
-void Sound::stopBgm() {
+void Sound::stopBgm()
+{
     if (isOk == -1) {
         return;
     }
-        
-    #ifdef __DEBUG
-        std::cout << "Sound::stopBgm()\n";
-    #endif
+
+#ifdef __DEBUG
+    std::cout << "Sound::stopBgm()\n";
+#endif
         
     if (bgm != NULL) {
         Mix_HaltMusic();
@@ -162,16 +167,17 @@ void Sound::stopBgm() {
         the return value should be kept as a reference to the
         object loaded. if not it is practicaly lost.
 */
-SOUND_SID Sound::loadItem(char *fpath) {
-    #ifdef __DEBUG
-        std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
-    #endif
+SOUND_SID Sound::loadItem(char *fpath)
+{
+#ifdef __DEBUG
+    std::cout << "Sound::loadItem() precaching \"" << fpath << "\"\n";
+#endif
     Mix_Chunk *newItem;
-    if( (newItem = Mix_LoadWAV(fpath)) ) {
+    if ((newItem = Mix_LoadWAV(fpath))) {
         soundpool[++items] = newItem;
-        #ifdef __DEBUG
-            std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
-        #endif
+#ifdef __DEBUG
+        std::cout << "Sound::loadItem() success SOUND_SID = " << items << std::endl;
+#endif
         return items;
     }
         
@@ -183,11 +189,12 @@ SOUND_SID Sound::loadItem(char *fpath) {
     \param id id returned to the item in the soundpool
     \param volume volume the sound should be played with (possible range: 0-128)
 */
-void Sound::startItem(SOUND_SID id, int volume) {
+void Sound::startItem(SOUND_SID id, int volume)
+{
     if (soundpool[id]) {
-        #ifdef __DEBUG
-            std::cout << "Sound::startItem() playing SOUND_SID = " << id << std::endl;
-        #endif
+#ifdef __DEBUG
+        std::cout << "Sound::startItem() playing SOUND_SID = " << id << std::endl;
+#endif
         Mix_VolumeChunk(soundpool[id], volume);
         Mix_PlayChannel(-1, soundpool[id], 0);
     }
@@ -196,16 +203,17 @@ void Sound::startItem(SOUND_SID id, int volume) {
 /**
     \brief wipe all items off the cache
 */
-void Sound::clearCache() {
+void Sound::clearCache()
+{
     for(SOUND_SID i = 0; i == items; i++) {
         Mix_FreeChunk(soundpool[i]);
         soundpool[i] = NULL;
     }
     
     soundpool.clear();
-    #ifdef __DEBUG
-        std::cout << "Sound::clearCache() wiped all items off the cache\n";
-    #endif
+#ifdef __DEBUG
+    std::cout << "Sound::clearCache() wiped all items off the cache\n";
+#endif
 }
 
 /**
@@ -218,20 +226,22 @@ void Sound::clearCache() {
         memory (e.g. garbage-collection) feel free to use
         it. :-P
 */
-void Sound::close(void) {
+void Sound::close(void)
+{
     isOk = -1;
     clearCache();
     Mix_CloseAudio();
-    #ifdef __DEBUG
-        std::cout << "Sound::close() shutting down Sound\n";
-    #endif
+#ifdef __DEBUG
+    std::cout << "Sound::close() shutting down Sound\n";
+#endif
 }
 
 /**
     \brief checks if value equals min-/maximum volume and returns
     true if that's the case.
 */
-bool Sound::isMaxVol(int vol) {
+bool Sound::isMaxVol(int vol)
+{
     if (vol > 0 && vol < 128) return false;
     else return true;
 }

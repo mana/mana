@@ -1,7 +1,5 @@
 bin_PROGRAMS = tmw
-tmw_SOURCES = sound/sound.cpp \
-	      sound/sound.h \
-	      graphic/graphic.cpp \
+tmw_SOURCES = graphic/graphic.cpp \
 	      graphic/graphic.h \
 	      graphic/spriteset.cpp \
 	      graphic/spriteset.h \
@@ -96,7 +94,9 @@ tmw_SOURCES = sound/sound.cpp \
 	      main.cpp \
 	      main.h \
 	      map.cpp\
-	      map.h
+	      map.h \
+	      sound.cpp \
+	      sound.h
 
 # set the include path found by configure
 INCLUDES= $(all_includes)

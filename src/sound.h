@@ -30,7 +30,7 @@
 #include <string>
 #include <fstream>
 
-typedef short SOUND_SID ;
+typedef short SOUND_SID;
 
 /**
  * Sound engine
@@ -42,7 +42,7 @@ class Sound {
         void  init(int, int);
         void  close();
 
-        void  startBgm(char *, int);
+        void  startBgm(char*, int);
         void  stopBgm();
        
         void  setVolume(int);

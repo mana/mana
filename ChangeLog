@@ -1,4 +1,8 @@
-0.0.9
+0.0.10
+- Fixed crash in fullscreen with hardware acceleration enabled (win32)
+- Reimplemented A* pathfinding, hopefully stable now
+
+0.0.9  (30 Jan 2005)
 - Replaced Allegro library with SDL, SDL_image and SDL_mixer
 - A huge amount of small GUI improvements
 - Lots of internal changes including a resource manager

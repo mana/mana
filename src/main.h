@@ -32,7 +32,7 @@
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
-#include "sound/sound.h"
+#include "sound.h"
 #include <stdio.h>
 
 #define CORE_VERSION "0.0.9"

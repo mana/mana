@@ -25,7 +25,7 @@
 #define tmw_included_setup_h
 
 #include "window.h"
-#include "../sound/sound.h"
+#include "../sound.h"
 
 /**
  * The list model for mode list.

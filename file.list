@@ -1,4 +1,4 @@
-MODULES = src/sound/sound.cpp \
+MODULES = src/sound.cpp \
           src/graphic/graphic.cpp \
           src/graphic/spriteset.cpp \
           src/gui/button.cpp \
