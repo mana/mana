@@ -18,11 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
-<<<<<<< newskill.cpp
  *  $Id$
-=======
- *  $Id$
->>>>>>> 1.2
  */
 
  /* This file implements the new skill dialog for use under the latest
@@ -76,10 +72,8 @@ NewSkillDialog::NewSkillDialog():
 
     // setting up the container
     skillList = new gcn::Container();
-    skillList->setDimension(gcn::Rectangle(0,0,230,600));
-    for(int b=0;b<N_SKILL;b++) {
-        skillList->add(&skillLabel[b],20,6 + 12*b);}
-        
+    skillList->setOpaque(false);
+
     skillList->setDimension(gcn::Rectangle(0, 0, 230, 600));
     for (int b = 0; b < N_SKILL; b++) {
         skillList->add(&skillLabel[b], 20, 20 * b);
