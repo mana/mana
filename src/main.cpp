@@ -231,7 +231,7 @@ void init_engine()
     log("Possible to create hardware surfaces: %s",
             ((vi->hw_available) ? "yes" : "no "));
     log("Window manager available: %s",
-            ((vi->hw_available) ? "yes" : "no"));
+            ((vi->wm_available) ? "yes" : "no"));
     log("Accelerated hardware to hardware blits: %s",
             ((vi->blit_hw) ? "yes" : "no"));
     log("Accelerated hardware to hardware colorkey blits: %s",
