@@ -1,0 +1,75 @@
+How to compile and install TMW on my Win32 Box
+==============================================
+
+Author:   Alexander Baldeck (aka kth5)
+Email:    kth5@cboxx.de
+Homepage: alex.cboxx.de
+
+The Mana World project
+======================
+Homepage: themanaworld.sourceforge.net
+IRC:      irc.freenode.net / #manaworld
+
+0. Index
+========
+1. Requirements
+2. Installing Dev-C++
+3. Updating Dev-C++ and Allegro installation
+6. Installing The Mana World
+7. Notes
+
+1. Requirements
+===============
+
+In this tutorial we will use DevC++ b/c of the fact that
+it's a free and one of best - if not THE best - IDE you
+can get on Win32. Remember, Win32 was not meant for GCC
+and stuff so you will probably run into trouble unless
+you really know what you're doing, so best stick with
+Dev-C++.
+
+Furthermore TMW depends on the following libraries:
+
+1) Allegro 4.1.x
+2) Alfont  1.91
+3) JGmod 0.99
+
+
+2. Installing Dev-C++
+=====================
+
+I recommend that you get the latest stable version. Though
+this tutorial is written for and tested w/ Dev-C++ 4.9.90
+it may also apply to any later version. Get 4.9.90 here:
+
+  http://prdownloads.sourceforge.net/dev-cpp/devcpp4990setup.exe
+  
+After you fetched it simply run and install. As soon as it is
+installed you need to adjust a couple of enviroment-variables.
+I will assume that you know how to do this.
+
+If you have Dev-C++ installed to "C:\Dev-Cpp" - the default -
+your envars should contain these:
+
+SET PATH=C:\Dev-Cpp\bin;C:\otherpaths
+SET MINGDIR=C:\Dev-Cpp
+
+Don't worry this won't hurt your Win32 unless you replace the
+contents of PATH. ;-)
+
+
+3. Updating Dev-C++ and Allegro installation
+=====================
+
+Since the GCC in Dev-C++ is pretty old, we should get something
+newer. This - fortunately - is not very hard to do. Simply fo to
+"Tools" and then to "Check for Upgrades/Packages".
+This will give you the Webupdate dialog where you should click
+on the "Check for upgrades" button.
+When you see the list  look for "g++-3.4.1" and "gcc-core-3.4.1"
+in the group "Dev-C++ MINGW System". After you have done that,
+select the group you might want to check out a group called
+"Allegro"! ;-)
+
+
+TODO
