@@ -85,18 +85,17 @@ void Window::draw(gcn::Graphics* graphics)
     {
         gcn::AllegroGraphics *gfx = (gcn::AllegroGraphics*)graphics;
         BITMAP *screen = gfx->getTarget();
-        int x, y;
+        int x, y, i;
         getAbsolutePosition(x, y);
 
         // Draw title bar
         masked_blit(dLeft, screen, 0, 0, x, y, 24, 24);
-        for (int i = 1; i <= (getDimension().width - 24) / 24; i++)
+        for (i = 24; i < getWidth() - 24; i += 24)
         {
-            blit(dMid, screen, 0, 0, x + i * 24, y, 24, 24);
+            blit(dMid, screen, 0, 0, x + i, y, 24, 24);
         }
         masked_blit(dRight, screen, 0, 0,
-                x + getDimension().width - 24, y,
-                24, 24);
+                x + getWidth() - 24, y, 24, 24);
     }
     else {
         // Plain title bar
