@@ -192,7 +192,7 @@ void do_exit() {
 }
 
 void do_input() {
-    if (walk_status == 0) {
+    if (walk_status == 0 && player_node->action != DEAD) {
         int x = player_node->x;
         int y = player_node->y;
 
@@ -477,7 +477,8 @@ void do_parse() {
                                 being->frame = 0;
                                 being->tick_time = tick_time;
                             }
-                            else remove_node(RFIFOL(2));
+                            //else being->action = DEAD;
+                            //remove_node(RFIFOL(2));
                         }
                         else remove_node(RFIFOL(2));
                     }
@@ -593,16 +594,22 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     append_filename(map_path, "./data/map/", RFIFOP(2), 480);
                     if (load_map(map_path)) {
+                        Being *temp;
+                        temp = new Being();
+                        memcpy(temp, player_node, sizeof(Being));
                         empty();
-                        player_node = new Being();
+                        /*player_node = new Being();
                         player_node->job = 0;
                         player_node->action = STAND;
                         player_node->frame = 0;
                         player_node->speed = 150;
-                        player_node->id = account_ID;
+                        player_node->id = account_ID;*/
+                        add_node(temp);
+                        player_node = temp;
+                        player_node->action = STAND;
+                        player_node->frame = 0;
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
-                        add_node(player_node);
                         walk_status = 0;
                         // Send "map loaded"
                         WFIFOW(0) = net_w_value(0x007d);
@@ -671,6 +678,8 @@ void do_parse() {
                         deathNotice = new OkDialog("Message",
                                 "You're now dead, press ok to restart",
                                 &deathNoticeListener);
+                        //remove_node(char_info->id);
+                        being->action = DEAD;
                     }
                     break;
                     // Stop walking

@@ -84,7 +84,7 @@ void BuySellListener::action(const std::string& eventId)
 }
 
 
-char hairtable[14][4][2] = {
+char hairtable[16][4][2] = {
     // S(x,y)  W(x,y)   N(x,y)   E(x,y)
     { { 0, 0}, {-1, 2}, {-1, 2}, {0, 2} }, // STAND
     { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3} }, // WALK 1st frame
@@ -99,7 +99,9 @@ char hairtable[14][4][2] = {
     { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 2nd frame
     { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 3rd frame
     { { 0, 0}, {-1, 2}, {-1, 2}, {-1, 2}  }, // BOW_ATTACK 4th frame
-    { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} } // SIT
+    { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} }, // SIT
+    { { 0, 0}, {0, 0}, {0, 0}, {0, 0} }, // ?? HIT
+    { { 0, 16}, {-1, 6}, {-1, 6}, {0, 6} } // DEAD
 };
 
 int get_x_offset(Being *being) {
@@ -295,7 +297,7 @@ void GraphicEngine::refresh() {
             int hf = being->hair_color - 1 + 10 * (dir + 4 *
                     (being->hair_style - 1));
             
-            if (being->action == SIT) being->frame = 0;
+            if (being->action == SIT || being->action == DEAD) being->frame = 0;
             if (being->action == ATTACK) {
                 int pf = being->frame + being->action + 4 * being->weapon;
 
@@ -323,7 +325,8 @@ void GraphicEngine::refresh() {
                     being->emotion = 0;
                 }
             }
-            if (being->action != STAND && being->action != SIT) {
+            if (being->action != STAND && being->action != SIT
+                    && being->action != DEAD) {
                 being->frame =
                     (get_elapsed_time(being->tick_time) * 4) / (being->speed);
 

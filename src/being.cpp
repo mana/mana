@@ -24,7 +24,7 @@
 #include <stdio.h>
 
 #include "astar.h"
-#include "Being.h"
+#include "being.h"
 
 Being *player_node = NULL;
 

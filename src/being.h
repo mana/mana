@@ -59,14 +59,14 @@ class Being {
         unsigned short weapon;
         
         Being();
-        Being::~Being();       
+        ~Being();       
 };
 
 /** Removes all beings from the list */
 void empty();
 
 /** Add a Being to the list */
-void add_node(Being *Being);
+void add_node(Being *being);
 
 /** Return a specific id Being */
 Being *find_node(unsigned int id);
@@ -88,7 +88,7 @@ unsigned int find_monster(unsigned short x, unsigned short y);
 void sort();
 
 /** Remove all path nodes from a being */
-void empty_path(Being *Being);
+void empty_path(Being *being);
 
 extern Being *player_node;
 
