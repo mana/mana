@@ -1,0 +1,41 @@
+----------------------------------------------------------------
+Minutes of the TMW Dev Meeting at Friday, 11th of February, 2005
+----------------------------------------------------------------
+
+Presence: Rotonen, Hammerbear, ElvenProgrammer
+Timespan: 0.75 hours (21:00-21:45 GMT+1)
+
+
+* We will continue with server planning/design while working on adding basic
+  features to the client.
+
+* Hammerbear should implement .tmx map loading using libxml2, after it's been
+  verified wether this will work with Dev-C++.
+
+* It's been agreed to move AUTHORS, README, COPYING, etc. files to their more
+  common location in the root of the project tree.
+
+* Planning for the new server will also require us to start trying to
+  specify/define objects and beings in XML. They have lots of properties as
+  defined in server.txt, and we need to work towards a convenient format to
+  store these properties.
+
+* Release 0.1.0 is planned to be the last eAthena release with the basics
+  functional. After that we'll be working towards our own server, which when
+  finished will form 0.2.0 release.
+
+* Rotonen promises to have a lot of time for The Mana World in the middle
+  of March, and even more the beginning of June. :-)
+
+* In the graphics department:
+
+  - It's important the desert tileset is expanded so that we can map the area
+    around the city. Also the tileset needs to be converted to the higher
+    resolution we're currently using. Finally tiles need to be added for a
+    market and other buildings.
+
+  - Complete a high resolution player set.
+
+* Rotonen can make sounds after he buys a new microphone. As for music, Rotonen
+  pointed out we have to decide what kind of atmospherical element suits each
+  environment.
