@@ -51,12 +51,12 @@ void Configuration::Init(std::string filename) {
     }
     inFile.close();
 
-    for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        optionTmp = *iter;
-        #ifdef __DEBUG
+    #ifdef __DEBUG
+        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
+            optionTmp = *iter;
             std::cout << "key=(" << optionTmp.key << ") stringValue=(" << optionTmp.stringValue << ") numericValue=(" << optionTmp.numericValue << ")\n";
-        #endif
-    }
+        }
+    #endif
 }
 
 bool Configuration::Write() {
@@ -84,7 +84,7 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
 }
 
 /**
-    \brief get a value as numeric value (float)
+    \brief get a value as numeric (float)
     \param key option identifier
     \param deflt default option if not there or error
 */

@@ -24,7 +24,7 @@
 
 
 #ifdef WIN32
-	#pragma warning(disable:4312)
+    #pragma warning(disable:4312)
 #endif
 #include <allegro.h>
 #include <jgmod.h>
@@ -42,71 +42,68 @@
 typedef unsigned short TMWSOUND_SID ;
 
 /**
-	rewrite of non-existend sdl-soundengine using allegro
-
-	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
-
-	Author: kth5 aka Alexander Baldeck
-		pipe your question, suggestions and flames to: kth5@gawab.com
-*/
+ * Sound engine
+ *
+ * \ingroup CORE
+ */
 class TmwSound {
-	public:
-		void  Init(int, int);
-		void  Close();
+    public:
+        void  Init(int, int);
+        void  Close();
 
-		void  StartMIDI(char *, int);
-		void  StartMOD(char *, int);
-		void  StopBGM();
+        void  StartMIDI(char *, int);
+        void  StartMOD(char *, int);
+        void  StopBGM();
 
-		void  StartWAV(char *, int);
-		void  SetVol(int, int, int);
-		void  SetAdjVol(int, int, int);
+        void  StartWAV(char *, int);
+        void  SetVol(int, int, int);
+        void  SetAdjVol(int, int, int);
 
-		TMWSOUND_SID LoadItem(char *, char);
-		void UnloadItem(TMWSOUND_SID);
-		void PlayItem(TMWSOUND_SID, int);
+        TMWSOUND_SID LoadItem(char *, char);
+        void UnloadItem(TMWSOUND_SID);
+        void PlayItem(TMWSOUND_SID, int);
 
-		TmwSound() {isOk=-1;}
+        TmwSound() {isOk=-1;}
 
-		/** if allegro is shut down or object is deleted any BGM is
-		   stopped and SFX run out */
-		~TmwSound() {StopBGM(); Close();};
-	private:
-		/** initial value is -1 which means error or noninitialzed.
-		   you can only play sounds and bgm if this is 0.
-		   that should be the case after calling Init() successfully */
-		int isOk;
+        /** if allegro is shut down or object is deleted any BGM is
+           stopped and SFX run out */
+        ~TmwSound() {StopBGM(); Close();};
+    private:
+        /** initial value is -1 which means error or noninitialzed.
+           you can only play sounds and bgm if this is 0.
+           that should be the case after calling Init() successfully */
+        int isOk;
 
-		MIDI   * mid;
-		JGMOD  * mod;
-		SAMPLE * sfx;
+        MIDI   * mid;
+        JGMOD  * mod;
+        SAMPLE * sfx;
 
-		int pan;
-		int pitch;
+        int pan;
+        int pitch;
 
-		int ret;
-		int vol_digi;
-		int vol_midi;
-		int vol_mod;
+        int ret;
+        int vol_digi;
+        int vol_midi;
+        int vol_mod;
 
-		/** structure can hold a sound item's attributes and data (sample-only) */
-		typedef struct POOL_ITEM {
-			/** incremental id of pool item */
-			TMWSOUND_SID id;
-			/** type of item */
-			char type;
-			/** (file-)name of sfx only kept for human reasons ^_^ */
-			std::string fname;
-			/** generic data */
-			void * data;
-		};
+        /** structure can hold a sound item's attributes and data (sample-only) */
+        typedef struct POOL_ITEM {
+            /** incremental id of pool item */
+            TMWSOUND_SID id;
+            /** type of item */
+            char type;
+            /** (file-)name of sfx only kept for human reasons ^_^ */
+            std::string fname;
+            /** generic data */
+            void * data;
+        };
 
-		/** list of preloaded sound data / items */
-		std::list<POOL_ITEM> soundpool;
-		std::list<POOL_ITEM>::iterator sounditem;
-		TMWSOUND_SID items;
+        /** list of preloaded sound data / items */
+        std::list<POOL_ITEM> soundpool;
+        std::list<POOL_ITEM>::iterator sounditem;
+        TMWSOUND_SID items;
 
-		bool isMaxVol(int);
+        bool isMaxVol(int);
 };
 
 #endif
