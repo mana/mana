@@ -44,9 +44,9 @@ WindowContainer::WindowContainer(std::string text) :
        */
 
     //load dialog title bar image
-    dLeft = load_bitmap("skin/dialogLeft.bmp", NULL);
-    dMid = load_bitmap("skin/dialogMiddle.bmp", NULL);
-    dRight = load_bitmap("skin/dialogRight.bmp", NULL);
+    dLeft = load_bitmap("data/Skin/dialogLeft.bmp", NULL);
+    dMid = load_bitmap("data/Skin/dialogMiddle.bmp", NULL);
+    dRight = load_bitmap("data/Skin/dialogRight.bmp", NULL);
 
     //register mouse listener
     addMouseListener(this);
