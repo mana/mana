@@ -33,7 +33,7 @@ EquipmentWindow::EquipmentWindow():
     setPosition(40, 40);
     
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("core/graphics/sprites/items.png");
+    Image *itemImg = resman->getImage("core/graphics/sprites/items.png", IMG_ALPHA);
     if (!itemImg) error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
     

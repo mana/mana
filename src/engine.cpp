@@ -227,7 +227,7 @@ Engine::Engine()
     Image *weaponbitmap = resman->getImage(
             "core/graphics/sprites/weapons.png");
     Image *itembitmap = resman->getImage(
-            "core/graphics/sprites/items.png");
+            "core/graphics/sprites/items.png", IMG_ALPHA);
 
     if (!npcbmp) error("Unable to load npcs.png");
     if (!emotionbmp) error("Unable to load emotions.png");
