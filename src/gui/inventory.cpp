@@ -99,11 +99,12 @@ int TmwInventory::increase_quantity(int index, int quantity) {
 	return 0;
 }
 
-int TmwInventory::useItem(int idnum) {
-	printf("Use item %i\n",idnum);
+int TmwInventory::use_item(int index, int id) {
 	WFIFOW(0) = net_w_value(0x00a7);
-	WFIFOW(2) = net_w_value(idnum);
-	WFIFOSET(4);
+	WFIFOW(2) = net_w_value(index);
+	WFIFOL(4) = net_l_value(id);
+	// Note: id is dest of item, usually player_node->account_ID
+	WFIFOSET(8);
 	while((out_size>0))flush();
 
 	return 0;

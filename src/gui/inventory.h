@@ -59,7 +59,7 @@ class TmwInventory{
 		int remove_item(int id); // remove a item
 		int change_quantity(int index, int quantity); // change number of a item
 		int increase_quantity(int index, int quantity); // increase quantity of a item
-		int useItem(int idnum);
+		int use_item(int index, int id);
 		//END API
 	private:
 		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
