@@ -489,7 +489,7 @@ void Engine::draw()
             //}
             //else {
                 guiGraphics->drawText(being->speech,
-                        being->text_x + 60, being->text_y,
+                        being->text_x + 60, being->text_y - 60,
                         gcn::Graphics::CENTER);
             //}
             guiGraphics->_endDraw();
