@@ -31,7 +31,8 @@ class Setup : public Window, public gcn::ActionListener {
   /* Dialog parts */
   ModesListModel *modesListModel;
   gcn::Label *displayLabel;
-  gcn::ListBox *modeslist;
+  gcn::ScrollArea *scrollArea;
+  gcn::ListBox *modesList;
   Button *applyButton;
   Button *cancelButton;
   
