@@ -190,53 +190,30 @@ void Setup::action(const std::string &eventId)
     else if (eventId == "apply")
     {
         setVisible(false);
-
-        // Select video mode
-        sel = modeList->getSelected();
-
-        if (sel != last_sel) {
-            last_sel = sel;
-            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
-                    SDL_FULLSCREEN | SDL_HWSURFACE);
-        }
-
-        // Display settings
-        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0)
-        {
+        
+        /*screenW = modes[sel]->w;
+        screenH = modes[sel]->h;*/
+        
+        if (fsCheckBox->isMarked()) { // Fullscreen
             config.setValue("screen", 1);
-#if __USE_UNIX98
-            SDL_WM_ToggleFullScreen(screen);
-#else
-            int displayFlags = 0;
             displayFlags |= SDL_FULLSCREEN;
-            if ((int)config.getValue("hwaccel", 0)) {
-                displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-            }
-            else {
-                displayFlags |= SDL_SWSURFACE;
-            }
-            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
-                    displayFlags);
-#endif
-
         }
-        else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
-        {
+        else { // Windowed
             config.setValue("screen", 0);
-#if __USE_UNIX98
-            SDL_WM_ToggleFullScreen(screen);
-#else
-            int displayFlags = 0;
-            if ((int)config.getValue("hwaccel", 0)) {
-                displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-            }
-            else {
-                displayFlags |= SDL_SWSURFACE;
-            }
-            screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,
-                    displayFlags);
-#endif
+            displayFlags &= ~SDL_FULLSCREEN;
         }
+        
+        screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+        
+/*            if (displayFlags & SDL_FULLSCREEN) {
+#ifdef WIN32
+                displayFlags ^= SDL_FULLSCREEN;
+                screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+#else
+                SDL_WM_ToggleFullScreen(screen);
+#endif
+            }*/
+
 
         // Sound settings
         if (soundCheckBox->isMarked()) {

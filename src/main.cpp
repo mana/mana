@@ -65,6 +65,7 @@ char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
 char *dir = NULL;
+int displayFlags, screenW, screenH, bitDepth;
 
 Sound sound;
 
@@ -189,7 +190,7 @@ void init_engine()
     SDL_WM_SetCaption("The Mana World", NULL);
 
 
-    int displayFlags = SDL_ANYFORMAT;
+    displayFlags = SDL_ANYFORMAT;
 
     if ((int)config.getValue("screen", 0) == 1) {
         displayFlags |= SDL_FULLSCREEN;
@@ -207,10 +208,15 @@ void init_engine()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 #endif
 
-    screen = SDL_SetVideoMode(800, 600, 16, displayFlags);
+    // TODO: the following variables should be loaded from config file
+    screenW = 800;
+    screenH = 600;
+    bitDepth = 16;
+
+    screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
     if (screen == NULL) {
-        std::cerr << "Couldn't set 800x600x16 video mode: " <<
-            SDL_GetError() << std::endl;
+        std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
+            bitDepth << " video mode: " << SDL_GetError() << std::endl;
         exit(1);
     }
 

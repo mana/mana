@@ -102,5 +102,6 @@ extern Configuration config;
 extern Sound sound;
 extern Map *tiledMap;
 extern Logger logger;
+extern int screenW, screenH, bitDepth, displayFlags;
 
 #endif

@@ -336,39 +336,6 @@ void do_input()
                     }
                 }
             }
-            
-            if (keysym.sym == SDLK_f)
-            {
-                if (keysym.mod & KMOD_CTRL)
-                {
-                    // Workaround for Win and else
-#if __USE_UNIX98
-                    SDL_WM_ToggleFullScreen(screen);
-                    if ((int)config.getValue("screen", 0) == 0) {
-                        config.setValue("screen", 1);
-                    }
-                    else {
-                        config.setValue("screen", 0);
-                    }
-#else
-                    int displayFlags = 0;
-                    if ((int)config.getValue("screen", 0) == 0) {
-                        displayFlags |= SDL_FULLSCREEN;
-                        config.setValue("screen", 1);
-                    }
-                    else {
-                        config.setValue("screen", 0);
-                    }
-                    if ((int)config.getValue("hwaccel", 0)) {
-                        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-                    }
-                    else {
-                        displayFlags |= SDL_SWSURFACE;
-                    }
-                    screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
-#endif
-                }
-            }
         } // End key down
         else if (event.type == SDL_MOUSEBUTTONDOWN)
         {
