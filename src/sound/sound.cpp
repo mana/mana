@@ -129,7 +129,7 @@ void TmwSound::SetAdjVol(int adigi, int amid, int amod) {
 
 /**
 	\brief start BGM using a midi file
-	\param *in full path of midi file
+	\param in full path of midi file
 	\param loop how many times should the midi be looped? (-1 = infinite)
 
 	NOTE:
@@ -157,7 +157,7 @@ void TmwSound::StartMIDI(char *in, int loop) {
 
 /**
 	\brief start BGM using a mod file
-	\param *in full path of mod file
+	\param in full path of mod file
 	\param loop how many times should the midi be looped? (-1 = infinite)
 
 	NOTE:
@@ -209,7 +209,7 @@ void TmwSound::StopBGM() {
 
 /**
 	\brief play short sample usually for sfx
-	\param *in full path to the sample file
+	\param in full path to the sample file
 	\param pan panning of the sound, values can be 0-255 where 128 is the middle
 
 	NOTE:
@@ -242,7 +242,7 @@ void TmwSound::StartWAV(char * in, int pan) {
 
 /**
 	\brief preloads a sound-item into buffer
-	\param *fpath full path to file
+	\param fpath full path to file
 	\param type type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
 
 	NOTE:
