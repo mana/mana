@@ -179,22 +179,26 @@ int get_y_offset(NODE *node) {
 BITMAP *load_graphic_file(char *filename) {
   BITMAP *temp = load_bitmap(filename, NULL);
   if(!temp)error(filename);
+#ifdef WIN32
   BITMAP *vbmp = create_video_bitmap(temp->w, temp->h);
   if(!vbmp) {
     warning("Not enough video memory");
+#endif
     vbmp = create_bitmap(temp->w, temp->h);
     if(!vbmp)error("Not enough memory");
+#ifdef WIN32
   }  
+#endif
   blit(temp, vbmp, 0, 0, 0, 0, temp->w, temp->h);
   destroy_bitmap(temp);
   return vbmp;
 }  
 
 void init_graphic() {
-	tileset = load_datafile("./data/graphic/desert.dat");
-	if(!tileset)error("Unable to load tileset datafile");
-	buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
-	double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
+	//tileset = load_datafile("./data/graphic/desert.dat");
+	//if(!tileset)error("Unable to load tileset datafile");
+	//buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
+	//double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
 
   alfont_set_font_size(gui_font, 16);
 	clear_bitmap(screen);
@@ -216,6 +220,7 @@ void init_graphic() {
 	alfont_text_mode(-1);
 	inventory.create(100, 100);
 	
+#ifdef WIN32	
 	if((gfx_capabilities & GFX_HW_VRAM_BLIT)&& stretch_mode==0) {
 	  vpage[0] = create_video_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_video_bitmap(SCREEN_W, SCREEN_H);
@@ -230,15 +235,20 @@ void init_graphic() {
 	    if(!vpage[1])error("Not enough memory [VPAGE_1]");
     } 
 	} else {
+#endif
 	  vpage[0] = create_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_bitmap(SCREEN_W, SCREEN_H);
+#ifdef WIN32
   }  
   vbuffer = create_video_bitmap(SCREEN_W/2, SCREEN_H/2);
   if(!vbuffer) {
     warning("Not enough video memory [BUFFER]");
+#endif
     vbuffer = create_bitmap(SCREEN_W/2, SCREEN_W/2);
     if(!vbuffer)error("Not enough memory [BUFFER]");
+#ifdef WIN32
   }
+#endif
   vtileset = load_graphic_file("./data/graphic/tileset.bmp");
   vnpcset = load_graphic_file("./data/graphic/npcset.bmp");
   vplayerset = load_graphic_file("./data/graphic/playerset.bmp");
@@ -262,8 +272,10 @@ void do_graphic(void) {
 	sort();
 	
 	frame++;
+#ifdef WIN32
 	if(is_video_bitmap(vbuffer))
 	  acquire_bitmap(vbuffer);
+#endif
     
   for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
@@ -382,11 +394,15 @@ void do_graphic(void) {
 		for(int i=0;i<26;i++)
 		  if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)
 		    masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 2)*16, get_tile_y(i+camera_x, j+camera_y, 2)*16, i*16-offset_x, j*16-offset_y, 16, 16);
+#ifdef WIN32
   if(is_video_bitmap(vbuffer))
     release_bitmap(vbuffer);
+#endif
 	
 	if(stretch_mode==0) {
+#ifdef WIN32
 	  acquire_bitmap(vpage[page_num]);
+#endif
 	  stretch_blit(vbuffer, vpage[page_num], 0, 0, 400, 300, 0, 0, 800, 600);
 	} else if(stretch_mode==1)
 		Super2xSaI(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
@@ -545,10 +561,13 @@ void do_graphic(void) {
 
 	
 	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
+#ifdef WIN32
 	if(stretch_mode==0) {
 	  release_bitmap(vpage[page_num]);
 	  show_video_bitmap(vpage[page_num]);
-	} else blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
+	} else 
+#endif
+    blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
 	page_num = 1-page_num;
 	gui_bitmap = vpage[page_num];
 
