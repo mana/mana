@@ -21,13 +21,13 @@
  *  $Id$
  */
 
-#ifndef _GRAPHIC_H
-#define _GRAPHIC_H
+#ifndef _GRAPHICS_H
+#define _GRAPHICS_H
 
-#include <SDL.h>
-#include <SDL_opengl.h>
 #include <guichan/sdl.hpp>
 #include <guichan/opengl.hpp>
+#include <SDL.h>
+#include <SDL_opengl.h>
 #include "resources/image.h"
 
 extern SDL_Surface *screen;

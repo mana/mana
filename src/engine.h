@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _GRAPHICS_H
-#define _GRAPHICS_H
+#ifndef _ENGINE_H
+#define _ENGINE_H
 
 #include "gui/npc.h"
 #include "gui/npc_text.h"
