@@ -35,10 +35,10 @@ StatusWindow::StatusWindow():
     jobExpLabel = new gcn::Label("Job");
     healthBar = new ProgressBar(1.0f);
     manaBar = new ProgressBar(1.0f);
-    //xpBar = new ProgressBar(1.0f);
-    //jobXpBar = new ProgressBar(1.0f);
+    xpBar = new ProgressBar(1.0f);
+    jobXpBar = new ProgressBar(1.0f);
 
-    setSize(250, 60);
+    setSize(250, 70);
     hp->setPosition(5, 5);
     sp->setPosition(5, hp->getY() + hp->getHeight() + 5);
     healthBar->setDimension(gcn::Rectangle(25, hp->getY() + 1, 60, 18));
@@ -50,8 +50,8 @@ StatusWindow::StatusWindow():
     gp->setPosition(180, 20);
     expLabel->setPosition(6, 40);
     jobExpLabel->setPosition(106, 40);
-    //xpBar->setDimension(gcn::Rectangle(16, 6, 60, 18));
-    //jobXpBar->setDimension(gcn::Rectangle(116, 15, 60, 18));
+    xpBar->setDimension(gcn::Rectangle(16, 55, 60, 18));
+    jobXpBar->setDimension(gcn::Rectangle(116, 55, 60, 18));
 
     add(hp);
     add(sp);
@@ -62,8 +62,8 @@ StatusWindow::StatusWindow():
     add(gp);
     add(expLabel);
     add(jobExpLabel);
-    //add(xpBar);
-    //add(jobXpBar);
+    add(xpBar);
+    add(jobXpBar);
 }
 
 StatusWindow::~StatusWindow()
@@ -75,8 +75,8 @@ StatusWindow::~StatusWindow()
     delete jobExpLabel;
     delete healthBar;
     delete manaBar;
-    //delete xpBar;
-    //delete jobXpBar;
+    delete xpBar;
+    delete jobXpBar;
 }
 
 void StatusWindow::update()
@@ -108,6 +108,9 @@ void StatusWindow::update()
     jobExpLabel->adjustSize();
 
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
+    
+    xpBar->setProgress((float)char_info->xp / (float)char_info->xpForNextLevel);
+    jobXpBar->setProgress((float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
 
     delete tempstr;
 }
