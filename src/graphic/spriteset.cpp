@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "image.h"
+#include "spriteset.h"
 
 Spriteset::Spriteset(Image *img, int width, int height)
 {

@@ -25,6 +25,7 @@
 #include "image.h"
 #include "resourcemanager.h"
 #include <iostream>
+#include <sstream>
 
 #ifdef WIN32
 #include <direct.h>
@@ -96,7 +97,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     // Flip all of the idPath '/' to '\'
     unsigned int begPos = 0;
     unsigned int endPos = idPath.find("/");
-    std::strstream result;
+    std::stringstream result;
 
     // Loop through and replace all the characters.
     while (endPos != std::string::npos) {

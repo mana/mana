@@ -34,7 +34,7 @@
 #include "configuration.h"
 #include "gui/login.h"
 #include "gui/gui.h"
-#include "graphic/image.h"
+#include "graphic/spriteset.h"
 #include "resources/image.h"
 #include "log.h"
 #include "game.h"

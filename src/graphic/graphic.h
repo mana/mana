@@ -40,7 +40,7 @@
 #include "../gui/npc.h"
 #include "../gui/status.h"
 #include "../resources/resourcemanager.h"
-#include "image.h"
+#include "spriteset.h"
 #include <allegro.h>
 
 #define TILE_SIZE 32

@@ -24,16 +24,12 @@
 #ifndef _INVENTORY_H
 #define _INVENTORY_H 
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include <allegro.h>
 #include "../main.h"
 #include "../game.h"
 #include "../log.h"
 #include "../net/network.h"
-#include "../graphic/image.h"
+#include "../graphic/spriteset.h"
 #include "gui.h"
 #include "window.h"
 
