@@ -33,6 +33,7 @@
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
 #include "../gui/npc.h"
+#include "../gui/stats.h"
 #include "../../data/graphic/gfx_data.h"
 #include "image.h"
 #include <allegro.h>
@@ -48,6 +49,8 @@ extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
 extern BITMAP *hairset;
 extern char npc_button[10];
+
+extern StatsDialog *statsDialog;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {

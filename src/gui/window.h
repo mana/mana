@@ -49,7 +49,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         BITMAP *dRight;            /**< Right side of title bar */
 
     public:
-        Window(gcn::Container *parent, std::string text = "Window");
+        Window(gcn::Container *parent, const std::string& text = "Window");
         ~Window();
 
         /**
@@ -66,6 +66,11 @@ class Window : public gcn::Container, public gcn::MouseListener
          * Adds a widget to the window and also specifices its position.
          */
         void add(gcn::Widget *w, int x, int y);
+
+        /**
+         * Sets the title of the window.
+         */
+        void setTitle(const std::string& text);
 
         /**
          * Sets the dimension of the window contents.

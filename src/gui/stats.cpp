@@ -21,30 +21,59 @@
 
 #include "stats.h"
 
-char stats_name[42];
-char stats_hp[24];
-char stats_sp[24];
-char stats_gp[24];
+StatsDialog::StatsDialog(gcn::Container *parent):
+    Window(parent, "%s Lvl: % 2i Job: % 2i")
+{
+    hp = new gcn::Label("HP");
+    sp = new gcn::Label("SP");
+    gp = new gcn::Label("GP");
+    healthBar = new ProgressBar(1.0f);
+    manaBar = new ProgressBar(1.0f);
 
-DIALOG stats_dialog[] = {
-	/* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)  (d2)  (dp)        (dp2) (dp3) */
-	{ tmw_dialog_proc,    493-10,  0+10,  300,   55,  0,    0,    0,    0,       0,    0,    stats_name, NULL, NULL  },
-	{ tmw_text_proc,       497-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_hp,   NULL, NULL  },
-	{ tmw_bar_proc,        507-10,  22+10,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
-	{ tmw_text_proc,       707-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_gp, NULL, NULL  },
-	{ tmw_text_proc,       607-10,  34+10, 296,  100,  0,    0,    0,    0,       0,    0,    stats_sp,   NULL, NULL  },
-	{ tmw_bar_proc,        617-10,  22+10,  60,    18,    0,   0,    '1',  0,          1,                      1,				NULL,         NULL, NULL  }, 
-	{ NULL,                0,    0,    0,    0,  0,    0,    0,    0,       0,    0,    NULL,       NULL, NULL  }
-};
+    setSize(270, 40);
+    hp->setPosition(6, 20);
+    sp->setPosition(106, 20);
+    gp->setPosition(206, 20);
+    healthBar->setDimension(gcn::Rectangle(16, 6, 60, 18));
+    manaBar->setDimension(gcn::Rectangle(116, 6, 60, 18));
 
-/**
-	updates stats_dialog w/ values from PLAYER_INFO *char_info
-*/
-void update_stats_dialog() {
-	sprintf(stats_name, "%s Lvl: % 2i Job: % 2i", char_info->name, char_info->lv, char_info->job_lv);
-	sprintf(stats_hp,   "HP % 4d / % 4d",         char_info->hp, char_info->max_hp);
-	sprintf(stats_gp, "GP % 5i",                char_info->gp);
-	sprintf(stats_sp,   "SP % 4d / % 4d",         char_info->sp, char_info->max_sp);
-	stats_dialog[2].d1 = char_info->hp;
-	stats_dialog[2].d2 = char_info->max_hp;
+    add(hp);
+    add(sp);
+    add(gp);
+    add(healthBar);
+    add(manaBar);
+}
+
+StatsDialog::~StatsDialog()
+{
+    delete hp;
+    delete sp;
+    delete gp;
+    delete healthBar;
+    delete manaBar;
+}
+
+void StatsDialog::update()
+{
+    char *tempstr = new char[64];
+
+    sprintf(tempstr, "%s Lvl: % 2i Job: % 2i",
+            char_info->name, char_info->lv, char_info->job_lv);
+    setTitle(tempstr);
+
+    sprintf(tempstr, "HP % 4d / % 4d", char_info->hp, char_info->max_hp);
+    hp->setCaption(tempstr);
+    hp->adjustSize();
+
+    sprintf(tempstr, "GP % 6i", char_info->gp);
+    gp->setCaption(tempstr);
+    gp->adjustSize();
+
+    sprintf(tempstr, "SP % 4d / % 4d", char_info->sp, char_info->max_sp);
+    sp->setCaption(tempstr);
+    sp->adjustSize();
+
+    healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
+
+    delete tempstr;
 }

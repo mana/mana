@@ -3,18 +3,19 @@ tmw_SOURCES = sound/sound.cpp \
 	graphic/2xsai.cpp \
 	graphic/graphic.cpp \
 	gui/button.cpp \
-	gui/chat.cpp \
-	gui/checkbox.cpp \
-	gui/skill.cpp \
-	gui/shop.cpp \
-	gui/stats.cpp \
-	gui/npc.cpp \
-	gui/setup.cpp \
-	gui/gui.cpp \
-	gui/login.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
+	gui/chat.cpp \
+	gui/checkbox.cpp \
+	gui/gui.cpp \
 	gui/inventory.cpp \
+	gui/login.cpp \
+	gui/npc.cpp \
+	gui/progressbar.cpp \
+	gui/setup.cpp \
+	gui/shop.cpp \
+	gui/skill.cpp \
+	gui/stats.cpp \
 	gui/window.cpp \
 	net/network.cpp \
 	net/protocol.cpp \

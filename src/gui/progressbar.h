@@ -19,37 +19,29 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifdef WIN32
-#pragma warning(disable:4312)
-#endif
+#ifndef __PROGRESSBAR_H__
+#define __PROGRESSBAR_H__
 
-#ifndef _STATS_H
-#define _STATS_H
-
-#include "../main.h"
-#include "gui.h"
-#include "window.h"
-#include "progressbar.h"
+#include <iostream>
 #include <allegro.h>
+#include <guichan.hpp>
 
 /**
- * The player statistics dialog.
+ * A progress bar.
  *
  * \ingroup GUI
  */
-class StatsDialog : public Window {
+class ProgressBar : public gcn::Widget {
     public:
-        StatsDialog(gcn::Container *parent);
-        ~StatsDialog();
+        ProgressBar(float progress = 0.0f);
 
-        /**
-         * Updates this dialog with values from PLAYER_INFO *char_info
-         */
-        void update();
+        void draw(gcn::Graphics *graphics);
+
+        void setProgress(float progress);
+        float getProgress();
 
     private:
-        gcn::Label *hp, *sp, *gp;
-        ProgressBar *healthBar, *manaBar;
+        float progress;
 };
 
 #endif

@@ -23,7 +23,7 @@
 #include "gui.h"
 #include <guichan/allegro.hpp>
 
-Window::Window(gcn::Container *parent, std::string text) :
+Window::Window(gcn::Container *parent, const std::string& text) :
     caption(text),
     mousePX(0),
     mousePY(0),
@@ -110,6 +110,11 @@ void Window::draw(gcn::Graphics* graphics)
     graphics->drawText(caption, 4, 4, gcn::Graphics::LEFT);
 
     drawChildren(graphics);
+}
+
+void Window::setTitle(const std::string& text)
+{
+    caption = std::string(text);
 }
 
 void Window::setDimension(const gcn::Rectangle &dimension)

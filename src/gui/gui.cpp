@@ -1045,27 +1045,6 @@ if(mouse_b & 1)
 return D_O_K;
 }
 
-int tmw_bar_proc(int msg, DIALOG *d, int c)
-{
-float share2 = ((float)d->d1 / (float)d->d2);
-if(share2!=0)
-	masked_blit(gui_skin.bar.bg.grid[3], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-else
-	masked_blit(gui_skin.bar.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-
-for(int i = 3; i < (d->w-3); i++)
-	if(i<share2*d->w-3)
-		masked_blit(gui_skin.bar.bg.grid[4], gui_bitmap, 0, 0, d->x+1*i, d->y, gui_bitmap->w, gui_bitmap->h);
-	else
-		masked_blit(gui_skin.bar.bg.grid[1], gui_bitmap, 0, 0, d->x+1*i, d->y, gui_bitmap->w, gui_bitmap->h);
-
-if(share2==1)
-	masked_blit(gui_skin.bar.bg.grid[5], gui_bitmap, 0, 0, d->x+d->w-3, d->y, gui_bitmap->w, gui_bitmap->h);
-else
-	masked_blit(gui_skin.bar.bg.grid[2], gui_bitmap, 0, 0, d->x+d->w-3, d->y, gui_bitmap->w, gui_bitmap->h);
-return D_O_K;
-}
-
 /* Dialog box with left centered head */
 int tmw_dialog_proc(int msg, DIALOG *d, int c) {
   int rtm;

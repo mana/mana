@@ -599,7 +599,7 @@ void do_parse() {
 							char_info->job_lv = RFIFOW(4);
 							break;
 					}
-					update_stats_dialog();
+                                        statsDialog->update();
 					if(char_info->hp==0) {
 						ok("Message", "You're now dead, press ok to restart");
 						WFIFOW(0) = net_w_value(0x00b2);

@@ -25,6 +25,7 @@
 #include "2xsai.h"
 #include "../gui/gui.h"
 #include "../gui/setup.h"
+#include "../gui/stats.h"
 
 #define TILESET_W 480
 #define TILESET_H 320
@@ -42,7 +43,7 @@ DATAFILE *tileset;
 char itemCurrenyQ[10] = "0";
 //char page_num;
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *stats_player, *skill_list_player, *npc_list_player;
+DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *buy_player, *sell_player, *skill_list_player, *npc_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
@@ -54,6 +55,7 @@ bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
+StatsDialog *statsDialog;
 Setup *setup;
 extern bool show_setup;
 
@@ -233,18 +235,20 @@ void init_graphic() {
 
     chatInput->requestFocus();
 
+    // Create stats dialog
+    statsDialog = new StatsDialog(guiTop);
+    statsDialog->setPosition(SCREEN_W - statsDialog->getWidth() - 10, 10);
+
 
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
 	skill_player = init_dialog(skill_dialog, -1);
-	stats_player = init_dialog(stats_dialog, -1);
 	buy_sell_player = init_dialog(buy_sell_dialog, -1);
 	buy_player = init_dialog(buy_dialog, -1);
 	sell_player = init_dialog(sell_dialog, -1);
 	skill_list_player = init_dialog(skill_list_dialog, -1);
 	npc_list_player = init_dialog(npc_list_dialog, -1);
   //gui_bitmap = vpage[page_num];
-	text_mode(-1);
 	inventory.create(100, 100);
 
 #ifdef WIN32
@@ -590,20 +594,19 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 		}
 	}
 
-	// character status display
-	update_stats_dialog();
-	gui_update(stats_player);
+    // character status display
+    statsDialog->update();
 
-	draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
+    draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
 #ifdef WIN32
-	if(stretch_mode==0) {
-	  release_bitmap(vpage[page_num]);
-	  show_video_bitmap(vpage[page_num]);
-	} else
+    if (stretch_mode == 0) {
+        release_bitmap(vpage[page_num]);
+        show_video_bitmap(vpage[page_num]);
+    } else
 #endif
-    blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
-	page_num = 1-page_num;
-	gui_bitmap = vpage[page_num];
+        blit(vpage[page_num], screen, 0, 0, 0, 0, 800, 600);
+    page_num = 1-page_num;
+    gui_bitmap = vpage[page_num];
 }
 
 void exit_graphic() {
