@@ -102,7 +102,7 @@ echo 'Version: '$TMW_VERSION >>DEBIAN/control;
 echo 'Section: bin' >>DEBIAN/control;
 echo 'Priority: optional' >>DEBIAN/control;
 echo 'Architecture: i386' >>DEBIAN/control;
-echo 'Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.2.0)' >>DEBIAN/control;
+echo 'Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.2.0), libxml2 (>= 2.4.19)' >>DEBIAN/control;
 echo 'Suggests: Nothing' >>DEBIAN/control;
 echo 'Installed-Size: 1200' >>DEBIAN/control;
 echo 'Maintainer: Ferreira Yohann <bertram@cegetel.net>' >>DEBIAN/control;
@@ -139,7 +139,7 @@ echo "Cleaning ...";
 rm -rf Debian;
 echo "You Debian Package is normally ready :"
 echo "His name is : manaworld_"$TMW_VERSION"_i386.deb";
-echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2 and libguichan to install manaworld.";
+echo "Don't forget you need libsdldebian1.2, lisdl-mixer1.2, libsdl-image1.2, libxml2 and libguichan to install manaworld.";
 echo "You can find libguichan in http://guichan.darkbits.org/downloads.shtml";
 echo "End of Debian Creation...";
 
