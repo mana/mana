@@ -25,18 +25,58 @@
 #include "gui.h"
 
 
-ProgressBar::ProgressBar(float progress)
+ProgressBar::ProgressBar(float progress, int x, int y, int width, unsigned char red, unsigned green, unsigned char blue)
 {
     setProgress(progress);
+    Red = red;
+    Green = green;
+    Blue = blue;
+    X = x;
+    Y = y;
+    Width = width;
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
-    int x, y, w, h;
-    getAbsolutePosition(x, y);
-    w = getWidth();
-    h = getHeight();
+    int absx, absy;
+    getAbsolutePosition(absx, absy);
+    
+    // outer bar
+    int MyColor = makecol(abs(Red-70), abs(Green-70), abs(Blue-70));
+    hline(gui_bitmap, absx+X+7, absy+Y, absx+X+Width, MyColor);
+    hline(gui_bitmap, absx+X, absy+Y+7, absx+X+Width-7, MyColor);
+    line(gui_bitmap, absx+X+7, absy+Y, absx+X, absy+Y+7, MyColor);
+    line(gui_bitmap, absx+X+Width, absy+Y, absx+X+Width-7, absy+Y+7, MyColor);
+    
+    // Shadow of outer bar
+    MyColor = makeacol(0, 0, 0, 80);
+    hline(gui_bitmap, absx+X+1, absy+Y+7+1, absx+X+Width-7, MyColor);
+    line(gui_bitmap, absx+X+Width+1, absy+Y, absx+X+Width-7+1, absy+Y+7, MyColor);
+    
+    
+    // Inner bar
+    MyColor = makecol(Red, Green, Blue);
+    
+    int Temp = 0;
+    
+    
+    for(int i = 1; i < 7; i++)
+    {
+    	Temp = absx+X+int(float(Width)*progress)-i-1;
+    	if ( Temp < (absx+X+8-i) ) Temp = (absx+X+8-i);
+	hline(gui_bitmap, absx+X+8-i, absy+Y+i, Temp, MyColor);
+    }
+    
+    // Shadow of inner bar
+    Temp = absx+X+int(float(Width)*progress)-2;
+    if ( Temp < (absx+X+7+1) ) Temp = absx+X+7;
+    MyColor = makeacol(abs(Red-40), abs(Green-40), abs(Blue-40), 80);
+    hline(gui_bitmap, absx+X+7+1, absy+Y+1, Temp, MyColor);
+    line(gui_bitmap, absx+X+7, absy+Y+1, absx+X+2, absy+Y+7-1, MyColor);
 
+    //rectfill(gui_bitmap, absx+7, absy+7, absx+39, absy+9, MyColor);
+    
+/*
     if (progress != 0) {
         masked_blit(gui_skin.bar.bg.grid[3], gui_bitmap,
                 0, 0, x, y, gui_bitmap->w, gui_bitmap->h);
@@ -64,7 +104,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     else {
         masked_blit(gui_skin.bar.bg.grid[2], gui_bitmap,
                 0, 0, x + w - 3, y, gui_bitmap->w, gui_bitmap->h);
-    }
+    }*/
 }
 
 void ProgressBar::setProgress(float progress)

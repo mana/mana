@@ -33,26 +33,25 @@ StatusWindow::StatusWindow():
     gp = new gcn::Label("GP");
     expLabel = new gcn::Label("Exp");
     jobExpLabel = new gcn::Label("Job");
-    healthBar = new ProgressBar(1.0f);
-    manaBar = new ProgressBar(1.0f);
-    xpBar = new ProgressBar(1.0f);
-    jobXpBar = new ProgressBar(1.0f);
-
-    setSize(250, 70);
+    
     hp->setPosition(5, 5);
     sp->setPosition(5, hp->getY() + hp->getHeight() + 5);
-    healthBar->setDimension(gcn::Rectangle(25, hp->getY() + 1, 60, 18));
-    manaBar->setDimension(gcn::Rectangle(25, sp->getY() + 1, 60, 18));
-    hpValue->setPosition(
-            healthBar->getX() + healthBar->getWidth() + 5, hp->getY());
-    spValue->setPosition(
-            manaBar->getX() + manaBar->getWidth() + 5, sp->getY());
+    //healthBar->setDimension(gcn::Rectangle(25, hp->getY() + 1, 60, 18));
+    //manaBar->setDimension(gcn::Rectangle(25, sp->getY() + 1, 60, 18));
+    hpValue->setPosition(120, 5);
+    spValue->setPosition(120, hp->getY() + hp->getHeight() + 5);
     gp->setPosition(180, 20);
     expLabel->setPosition(6, 40);
     jobExpLabel->setPosition(106, 40);
-    xpBar->setDimension(gcn::Rectangle(16, 55, 60, 18));
-    jobXpBar->setDimension(gcn::Rectangle(116, 55, 60, 18));
-
+    //xpBar->setDimension(gcn::Rectangle(16, 55, 60, 18));
+    //jobXpBar->setDimension(gcn::Rectangle(116, 55, 60, 18));
+	
+    healthBar = new ProgressBar(1.0f, 20, 8, 80, 0, 255, 0);
+    manaBar = new ProgressBar(1.0f, 20, 26, 80, 0, 0, 255);
+    xpBar = new ProgressBar(1.0f, 6, 55, 70, 12, 194, 255);
+    jobXpBar = new ProgressBar(1.0f, 106, 55, 70, 200, 0, 0);
+    setSize(250, 70);
+    
     add(hp);
     add(sp);
     add(healthBar);
@@ -107,6 +106,23 @@ void StatusWindow::update()
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
+    if ( char_info->hp < int(char_info->max_hp / 3) )
+    {
+    	healthBar->setColor(255, 0, 0); // Red
+    }
+    else
+    {
+    	if ( char_info->hp < int( (char_info->max_hp / 3)*2 ) )
+	{
+		healthBar->setColor(255, 181, 9); // orange
+	}
+	else
+	{
+		healthBar->setColor(0, 255, 0); // Green
+	}
+    }
+    
+    
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
     
     xpBar->setProgress((float)char_info->xp / (float)char_info->xpForNextLevel);
