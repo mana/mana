@@ -313,9 +313,9 @@ void do_graphic(void) {
 			break;
 		case 3:
 			char money[20];
-			sprintf(money, "%i gp", char_info->zeny);
+			sprintf(money, "%i gp", char_info->gp);
 			buy_dialog[4].dp = &money;
-			buy_dialog[5].d1 = (int)(char_info->zeny/get_item_price(buy_dialog[3].d1));
+			buy_dialog[5].d1 = (int)(char_info->gp/get_item_price(buy_dialog[3].d1));
 			if(buy_dialog[5].d2>buy_dialog[5].d1)
 			//alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", buy_dialog[5].d1);
 			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
