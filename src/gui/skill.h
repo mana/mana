@@ -24,28 +24,21 @@
 #ifndef _TMW_SKILL_H
 #define _TMW_SKILL_H
 
-
 #include <guichan.hpp>
 #include "window.h"
-#include <vector>
+
+struct SKILL {
+    short id;      /**< Index into "skill_db" array */
+    short lv, sp;
+};
+
 /**
  * The skill dialog.
  *
  * \ingroup GUI
  */
- 
-// skill struct, by Kyokai
-// skill names are stored in a table elsewhere. (SkillDialog.cpp)
-typedef struct {
-       short level; // level of the skill
-       short exp; // exp value
-       double mod; // value of the modifier (0,0.5,1,2,4)
-       // next value can be calculated when needed by the function:
-       // 20 * level^1.2
-       } SKILL;
- 
-class SkillDialog : public Window, public gcn::ActionListener
-//                    public gcn::ListModel
+class SkillDialog : public Window, public gcn::ActionListener,
+                    public gcn::ListModel
 {
     private:
         gcn::ListBox *skillListBox;
@@ -53,6 +46,8 @@ class SkillDialog : public Window, public gcn::ActionListener
         gcn::Label *pointsLabel;
         gcn::Button *incButton;
         gcn::Button *closeButton;
+
+        std::vector<SKILL*> skillList;
 
     public:
         /**
@@ -66,6 +61,15 @@ class SkillDialog : public Window, public gcn::ActionListener
         ~SkillDialog();
 
         void action(const std::string&);
+
+        void setPoints(int i);
+
+        int getNumberOfElements();
+        std::string getElementAt(int);
+
+        bool hasSkill(int id);
+        void addSkill(int id, int lv, int sp);
+        void setSkill(int id, int lv, int sp);
 };
 
 #endif

@@ -393,6 +393,7 @@ int main(int argc, char *argv[])
 // This function also increases the XP of the skill by the given parameter.
 // Call n_base to return the actual value, regardless of equipment modifiers.
 // ---by Kyokai
+/*
 int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
 {
     if (n_ID > N_SKILLS || n_ID < 0) // out of cheese error, abort function
@@ -418,4 +419,4 @@ int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
 
     return r; // return the value                    
 }
-
+*/

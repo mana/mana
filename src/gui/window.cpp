@@ -227,10 +227,12 @@ void Window::mouseMotion(int mx, int my)
         if (y + winHeight > screen->h) y = screen->h - winHeight;
 
         // Snap window to edges
+        /*
         if (x < snapSize) x = 0;
         if (y < snapSize) y = 0;
         if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
         if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
+        */
 
         this->setPosition(x, y);
     }

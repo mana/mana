@@ -47,9 +47,11 @@ int Tileset::getFirstGid()
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    std::cout << "Attempting to parse XML map data";
+    log("Attempting to parse XML map data");
 
-    FILE* f = fopen(filename.c_str(), "rb");
+    std::string name = std::string("data/") + filename;
+
+    FILE* f = fopen(name.c_str(), "rb");
     char *map_string;
 
     if (!f) {
@@ -72,7 +74,7 @@ Map *MapReader::readMap(const std::string &filename)
     delete[] map_string;
 
     if (doc) {
-        std::cout << "Looking for root node";
+        log("Looking for root node");
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
@@ -80,7 +82,7 @@ Map *MapReader::readMap(const std::string &filename)
             return NULL;
         }
         
-        std::cout << "Loading map from XML tree";
+        log("Loading map from XML tree");
         return readMap(node, filename);
         xmlFreeDoc(doc);
     } else {
@@ -93,6 +95,9 @@ Map *MapReader::readMap(const std::string &filename)
 Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 {
     xmlChar *prop;
+    
+    // Take the filename off the path
+    std::string pathDir = path.substr(0, path.rfind("/") + 1);
 
     prop = xmlGetProp(node, BAD_CAST "version");
 #ifndef WIN32
@@ -111,7 +116,7 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tileset"))
         {
-            Tileset *tileset = readTileset(node, path, map);
+            Tileset *tileset = readTileset(node, pathDir, map);
             if (tileset) {
                 tilesets.push_back(tileset);
             }
@@ -162,6 +167,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 }
             }
 
+            if (layer == 0) map->setWalk(x, y, true);
             map->setTile(x, y, layer, img);
 
             x++;

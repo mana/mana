@@ -33,6 +33,7 @@
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
 #include "graphic/graphic.h"
+#include "resources/mapreader.h"
 #include "sound.h"
 #include <SDL.h>
 
@@ -123,6 +124,7 @@ void game() {
 void do_init()
 {
     tiledMap = Map::load(map_path);
+    //tiledMap = MapReader::readMap("map/desert.tmx");
     if (!tiledMap) {
         error("Could not find map file");
     }
@@ -707,6 +709,7 @@ void do_parse() {
                             break;
                         case 0x000c:
                             char_info->skill_point = RFIFOW(4);
+                            skillDialog->setPoints(char_info->skill_point);
                             break;
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
@@ -926,7 +929,7 @@ void do_parse() {
                     int n_skills = (len - 4) / 37;
                     for (int k = 0; k < n_skills; k++)
                     {
-                        /*if (RFIFOW(4 + k * 37 + 6) != 0 ||
+                        if (RFIFOW(4 + k * 37 + 6) != 0 ||
                                 RFIFOB(4 + k * 37 + 36)!=0)
                         {
                             int skillId = RFIFOW(4 + k * 37);
@@ -941,7 +944,7 @@ void do_parse() {
                                         RFIFOW(4 + k * 37 + 6),
                                         RFIFOW(4 + k * 37 + 8));
                             }
-                        }*/
+                        }
                     }
                 } break;
                     // MVP experience
