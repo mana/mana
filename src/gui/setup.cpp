@@ -40,7 +40,7 @@
 #include <string.h>
 #include <memory.h>
 
-SDL_Rect **modes;
+/*SDL_Rect **modes;
 
 ModeListModel::ModeListModel()
 {
@@ -92,15 +92,15 @@ int ModeListModel::getNumberOfElements()
 std::string ModeListModel::getElementAt(int i)
 {
     return mode[i];
-}
+}*/
 
 Setup::Setup():
     Window("Setup")
 {
-    modeListModel = new ModeListModel();
-    displayLabel = new gcn::Label("Display settings");
-    modeList = new ListBox(modeListModel);
-    scrollArea = new ScrollArea(modeList);
+    //modeListModel = new ModeListModel();
+    //displayLabel = new gcn::Label("Display settings");
+    //modeList = new ListBox(modeListModel);
+    //scrollArea = new ScrollArea(modeList);
     fsCheckBox = new CheckBox("Full screen", false);
     soundLabel = new gcn::Label("Sound settings");
     soundCheckBox = new CheckBox("Sound", false);
@@ -121,9 +121,9 @@ Setup::Setup():
 
     // Set dimensions/positions
     setContentSize(240, 216);
-    scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
+    /*scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));
+    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));*/
     cancelButton->setPosition(
             240 - 5 - cancelButton->getWidth(),
             216 - 5 - cancelButton->getHeight());
@@ -144,8 +144,8 @@ Setup::Setup():
     alphaSlider->addActionListener(this);
 
     // Assemble dialog
-    add(scrollArea);
-    add(displayLabel);
+    //add(scrollArea);
+    //add(displayLabel);
     add(fsCheckBox);
     add(soundLabel);
     add(soundCheckBox);
@@ -158,7 +158,7 @@ Setup::Setup():
     setLocationRelativeTo(getParent());
 
     // load default settings
-    modeList->setSelected(1);
+    //modeList->setSelected(1);
     if (config.getValue("screen", 0) == 1) {
         fsCheckBox->setMarked(true);
     }
