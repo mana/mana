@@ -219,6 +219,16 @@ void init_graphic() {
 	if((gfx_capabilities & GFX_HW_VRAM_BLIT)&& stretch_mode==0) {
 	  vpage[0] = create_video_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_video_bitmap(SCREEN_W, SCREEN_H);
+	  if(!vpage[0]) {
+	    warning("Not enough video memory [VPAGE_0]");
+	    vpage[0] = create_bitmap(SCREEN_W, SCREEN_W);
+	    if(!vpage[0])error("Not enough memory [VPAGE_0]");
+    } 
+    if(!vpage[1]) {
+	    warning("Not enough video memory [VPAGE_1]");
+	    vpage[1] = create_bitmap(SCREEN_W, SCREEN_W);
+	    if(!vpage[1])error("Not enough memory [VPAGE_1]");
+    } 
 	} else {
 	  vpage[0] = create_bitmap(SCREEN_W, SCREEN_H);
 	  vpage[1] = create_bitmap(SCREEN_W, SCREEN_H);
@@ -252,7 +262,8 @@ void do_graphic(void) {
 	sort();
 	
 	frame++;
-  acquire_bitmap(vbuffer);
+	if(is_video_bitmap(vbuffer))
+	  acquire_bitmap(vbuffer);
     
   for(int j=0;j<20;j++)
 		for(int i=0;i<26;i++) {
@@ -371,7 +382,8 @@ void do_graphic(void) {
 		for(int i=0;i<26;i++)
 		  if(get_tile(i+camera_x, j+camera_y, 2)>0 && get_tile(i+camera_x, j+camera_y, 2)<600)
 		    masked_blit(vtileset, vbuffer, get_tile_x(i+camera_x, j+camera_y, 2)*16, get_tile_y(i+camera_x, j+camera_y, 2)*16, i*16-offset_x, j*16-offset_y, 16, 16);
-	release_bitmap(vbuffer);
+  if(is_video_bitmap(vbuffer))
+    release_bitmap(vbuffer);
 	
 	if(stretch_mode==0) {
 	  acquire_bitmap(vpage[page_num]);
@@ -380,9 +392,8 @@ void do_graphic(void) {
 		Super2xSaI(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
 	else if(stretch_mode==2)
 		SuperEagle(vbuffer, vpage[page_num], 0, 0, 0, 0, 400, 300);
+		
 	textprintf_ex(vpage[page_num], font, 0, 0, makecol(255,255,255), -1, "[%i fps]", fps);
-	
-
 	
 	// Draw player speech
   node = get_head();

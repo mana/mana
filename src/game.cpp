@@ -229,16 +229,10 @@ void do_input() {
 		action_time = false;
 		//alert("","","","","",0,0);
 	}
-	if(key[KEY_F12] && action_time==true) {
-	  if(screen_mode==2) {
-	    screen_mode = 1;
-    } else {
-      screen_mode = 2;    
-    }
-    if(set_gfx_mode(screen_mode, 800, 600, 0, 0)) {
-      error(allegro_error);
-    }
-    action_time = false;
+	if(key[KEY_F10] && action_time==true) {
+	  screen_mode = 1-(screen_mode-1)+1;
+	  if(set_gfx_mode(screen_mode, 800, 600, 0, 0))
+	    error(allegro_error);
   }    
 
   if(key[KEY_ENTER]) {
