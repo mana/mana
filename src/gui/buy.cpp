@@ -24,6 +24,7 @@
 #include "buy.h"
 #include "button.h"
 #include "slider.h"
+#include "scrollarea.h"
 
 #include <sstream>
 
@@ -32,7 +33,7 @@ BuyDialog::BuyDialog(gcn::Container *parent):
     money(0)
 {
     itemList = new gcn::ListBox(this);
-    scrollArea = new gcn::ScrollArea(itemList);
+    scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
     moneyLabel = new gcn::Label("350 G");

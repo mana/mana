@@ -25,6 +25,7 @@
 #include "../graphic/graphic.h"
 #include "button.h"
 #include "window.h"
+#include "scrollarea.h"
 
 char server[30];
 int showServerList = 1;
@@ -35,7 +36,7 @@ ServerSelectDialog::ServerSelectDialog(gcn::Container *parent):
 {
     serverListModel = new ServerListModel();
     serverList = new gcn::ListBox(serverListModel);
-    scrollArea = new gcn::ScrollArea(serverList);
+    scrollArea = new ScrollArea(serverList);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
 

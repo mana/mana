@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=68
+UnitCount=70
 Type=0
 Ver=1
 ObjFiles=
@@ -728,6 +728,26 @@ FileName=small_icon.rc
 Folder=tmw
 Compile=1
 Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit69]
+FileName=src\gui\scrollarea.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit70]
+FileName=src\gui\scrollarea.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

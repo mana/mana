@@ -15,6 +15,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/ok_dialog.cpp \
           src/gui/passwordfield.cpp \
           src/gui/progressbar.cpp \
+          src/gui/scrollarea.cpp \
           src/gui/setup.cpp \
           src/gui/shop.cpp \
           src/gui/skill.cpp \

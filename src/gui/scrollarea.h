@@ -21,31 +21,36 @@
  *  $Id$
  */
 
-#ifndef __TMW_TEXTFIELD_H__
-#define __TMW_TEXTFIELD_H__
+#ifndef __TMW_SCROLLAREA_H__
+#define __TMW_SCROLLAREA_H__
 
 #include <allegro.h>
 #include <guichan.hpp>
 
 /**
- * A text field.
+ * A scroll area.
  *
  * \ingroup GUI
  */
-class TextField : public gcn::TextField {
+class ScrollArea : public gcn::ScrollArea {
     public:
         /**
-         * Constructor, initializes the text field with the given string.
+         * Constructor.
          */
-        TextField(const std::string& text = "");
+        ScrollArea();
 
         /**
-         * Draws the text field.
+         * Constructor.
          */
-        virtual void draw(gcn::Graphics *graphics);
+        ScrollArea(gcn::Widget *content);
 
         /**
-         * Draws the background and border.
+         * Draws the scroll area.
+         */
+        void draw(gcn::Graphics *graphics);
+
+        /**
+         * Draws the background and border of the scroll area.
          */
         void drawBorder(gcn::Graphics *graphics);
 };
