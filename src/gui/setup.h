@@ -24,8 +24,7 @@
 #ifndef tmw_included_setup_h
 #define tmw_included_setup_h
 
-#include "gui.h"
-#include "../graphic/graphic.h"
+#include "window.h"
 #include "../sound/sound.h"
 
 /**
@@ -76,7 +75,7 @@ class Setup : public Window, public gcn::ActionListener {
         /**
          * Destructor.
          */
-        virtual ~Setup();    
+        ~Setup();    
     
         /**
          * Event handling method.

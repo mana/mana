@@ -52,6 +52,7 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
 StatsWindow *statsWindow;
+Setup* setupWindow;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -262,6 +263,9 @@ Engine::Engine()
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
     statsWindow->setPosition(screen->w - 5 - statsWindow->getWidth(), statusWindow->getHeight() + 20);
+    
+    setupWindow = new Setup();
+    setupWindow->setVisible(false);
 
     // Give focus to the chat input
     chatInput->requestFocus();
@@ -299,6 +303,7 @@ Engine::~Engine()
     delete npcTextDialog;
     delete skillDialog;
     delete statsWindow;
+    delete setupWindow;
     
     delete tileset;
     delete monsterset;

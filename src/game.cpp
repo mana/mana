@@ -30,7 +30,6 @@
 #include "./gui/inventory.h"
 #include "./gui/shop.h"
 #include "./gui/npc.h"
-#include "./gui/setup.h"
 #include "./gui/stats.h"
 #include "./gui/ok_dialog.h"
 #include "./graphic/graphic.h"
@@ -49,7 +48,7 @@ int current_npc, server_tick;
 extern unsigned char screen_mode;
 int fps = 0, frame = 0;
 
-Setup *setup = NULL;
+//Setup *setupWindow = NULL;
 OkDialog *deathNotice = NULL;
 
 #define MAX_TIME 10000
@@ -216,6 +215,10 @@ void do_input()
                 }
                 else if (keysym.sym == SDLK_k) {
                     skillDialog->setVisible(!skillDialog->isVisible());
+                    used = true;
+                }
+                else if (keysym.sym == SDLK_c) {
+                    setupWindow->setVisible(true);
                     used = true;
                 }
             }
