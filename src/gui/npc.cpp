@@ -110,7 +110,6 @@ void NpcListDialog::action(const std::string& eventId)
             setVisible(false);
             current_npc = 0;
             reset();
-           
         }
     }
     else if (eventId == "cancel") {

@@ -5,9 +5,10 @@
 - Added ability to load resources from zip files
 - Added start of a minimap
 - Added new GUI skin, wallpaper and mouse cursor
-- Reintroduced cancel button for npc choice dialog after Mra fixed it for us
+- Fixed and reintroduced cancel button for NPC choice dialog (Mra)
 - Fixed character creation and deletion error handling
 - Fixed crash in fullscreen with hardware acceleration enabled (win32)
+- Fixed talking to NPCs while NPC window is still open (Mra)
 - Reimplemented A* pathfinding, more flexible and stable now
 - Removed background music that wasn't ours
 
