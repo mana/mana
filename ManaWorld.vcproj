@@ -204,9 +204,6 @@
 					RelativePath=".\Gui\chat_dialog.cpp">
 				</File>
 				<File
-					RelativePath=".\Gui\dialog.cpp">
-				</File>
-				<File
 					RelativePath=".\Gui\login_dialog.cpp">
 				</File>
 				<File
