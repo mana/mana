@@ -207,9 +207,9 @@ void init_engine()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 #endif
 
-    screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
+    screen = SDL_SetVideoMode(800, 600, 16, displayFlags);
     if (screen == NULL) {
-        std::cerr << "Couldn't set 800x600x32 video mode: " <<
+        std::cerr << "Couldn't set 800x600x16 video mode: " <<
             SDL_GetError() << std::endl;
         exit(1);
     }
