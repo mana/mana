@@ -67,6 +67,23 @@ StatsWindow *stats = NULL;
  */
 char walk_status = 0;
 
+
+// SDL callbacks
+/*
+Uint32 refresh_time(Uint32 interval, void *param)
+{
+    tick_time++;
+    if (tick_time == MAX_TIME) tick_time = 0;
+}
+
+Uint32 second(Uint32 interval, void *param)
+{
+    action_time = true;
+    fps = frame;
+    frame = 0;
+}
+*/
+
 void refresh_time(void) {
     tick_time++;
     if (tick_time == MAX_TIME) tick_time = 0;
@@ -79,7 +96,7 @@ END_OF_FUNCTION(refresh_frame);
  */
 void second(void) {
     action_time = true;
-    fps = (fps + frame) / 2;
+    fps = frame;
     frame = 0;
 }
 END_OF_FUNCTION(second);
@@ -104,12 +121,26 @@ void game() {
     do_init();
     GraphicEngine *graphicEngine = new GraphicEngine();
 
+    //SDL_Event event;
+    //SDL_EnableUNICODE(1);
+
     while (state != EXIT) {
+
+        // Handle SDL events
+        //while (SDL_PollEvent(&event)) {
+        //    switch (event.type) {
+        //        case SDL_QUIT:
+        //            state = EXIT;
+        //            break;
+        //    }
+        //}
+
         do_input();
         graphicEngine->refresh();
         do_parse();
         flush();
     }
+
 
     delete graphicEngine;
     close_session();
@@ -129,6 +160,12 @@ void do_init() {
 
     // Initialize timers
     tick_time = 0;
+
+    // The SDL way
+    //SDL_AddTimer(10, refresh_time, NULL);
+    //SDL_AddTimer(1000, second, NULL);
+
+    // The Allegro way
     LOCK_VARIABLE(tick_time);
     install_int_ex(refresh_time, MSEC_TO_TIMER(1));
     install_int_ex(second, BPS_TO_TIMER(1));
@@ -329,12 +366,12 @@ int get_packet_length(short id) {
  * Parse data received from map server into input buffer
  */
 void do_parse() {
-	unsigned short id;
-	char *temp;
-	char direction;
-	NODE *node = NULL;
-	PATH_NODE *pn;
-	int len;
+    unsigned short id;
+    char *temp;
+    char direction;
+    NODE *node = NULL;
+    PATH_NODE *pn;
+    int len;
 	
 	// We need at least 2 bytes to identify a packet
 	if(in_size>=2) {

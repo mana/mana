@@ -18,8 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
- *  Bertram
+ *  $Id$
  */
 
 #include "main.h"
@@ -28,15 +27,14 @@
 
 #include <iostream>
 
-// Part of the patch - bertram
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
 #include <pwd.h>
 #include <unistd.h>
 #include <errno.h>
 #endif
-// End of a part of the patch - bertram
 
+// Language map can probably be removed after switching to SDL
 typedef struct {
     unsigned int code;
     char* name;
@@ -68,7 +66,7 @@ LanguageMap languageMap[] = {
     { 0, NULL }
 };
 
-/* Account infos */
+// Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
 SERVER_INFO *server_info;
@@ -100,81 +98,97 @@ void request_exit() {
   state = EXIT;
 }
 
-/** Do all initialization stuff */
+/**
+ * Do all initialization stuff
+ */
 void init_engine() {
-    #ifdef WIN32
-        char keyb_buffer[KL_NAMELENGTH+1];
-        unsigned int langID;
-        char* code = NULL;
-        int running = 1;
-        int a;
-        if (GetKeyboardLayoutName(keyb_buffer)) {
-            //printf("layout name: %s\n", buffer);
-            langID = strtol(keyb_buffer, NULL, 16);
-            langID &= 0xffff;
-            //printf("language id: %x\n", langID);
-            for(a=0;languageMap[a].code!=0;++a) {
-                if (languageMap[a].code == langID) {
-                    code = languageMap[a].name;
-                    break;
-                }
+#ifdef WIN32
+    // After switching to SDL this can probably be removed
+    char keyb_buffer[KL_NAMELENGTH + 1];
+    unsigned int langID;
+    char* code = NULL;
+    int running = 1;
+    int a;
+    if (GetKeyboardLayoutName(keyb_buffer)) {
+        //printf("layout name: %s\n", buffer);
+        langID = strtol(keyb_buffer, NULL, 16);
+        langID &= 0xffff;
+        //printf("language id: %x\n", langID);
+        for (a = 0; languageMap[a].code != 0; ++a) {
+            if (languageMap[a].code == langID) {
+                code = languageMap[a].name;
+                break;
             }
         }
-    #endif
+    }
+#endif
 
+    // Initialize SDL
+    //if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+    //    std::cerr << "Could not initialize SDL: " <<
+    //        SDL_GetError() << std::endl;
+    //    exit(1);
+    //}
+    //atexit(SDL_Quit);
+
+    // Initialize Allegro
     allegro_init();
 
     init_log();
+    // SDL will send an event for this
     set_close_button_callback(request_exit);
 
     dir = new char[400];
     strcpy(dir, "");
 
-    #ifndef __USE_UNIX98
-        // WIN32 and others
-        strcpy(dir, "tmw.ini");
-    #endif
+#ifndef __USE_UNIX98
+    // WIN32 and others
+    strcpy(dir, "tmw.ini");
+#else
+    // UNIX
+    char *userHome;
+    char *name = getlogin();
+    passwd *pass;
 
-    #ifdef __USE_UNIX98
-        char *userHome;
-        char *name = getlogin();
-        passwd *pass;
+    if (name != NULL) {
+        pass = getpwnam(name);
+    }
+    else {
+        pass = getpwuid(geteuid());
+    }
 
-        if (name != NULL)
-            pass = getpwnam(name);
-        else
-            pass = getpwuid(geteuid());
+    if (pass == NULL) {
+        printf("Couldn't determine the user home directory. Exitting.\n");
+        exit(1);
+    }
 
-        if (pass == NULL)
-        {
-            printf("Couldn't determine the user home directory. Exitting.\n");
-            exit(1);
-        }
+    userHome = pass->pw_dir;
 
-        userHome = pass->pw_dir;
+    // Checking if homeuser/.manaworld folder exists.
+    sprintf(dir, "%s/.manaworld", userHome);
+    if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) &&
+            (errno != EEXIST))
+    {
+        printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
+        exit(1);
+    }
+    sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
+#endif
 
-        // Checking if homeuser/.manaworld folder exists.
-        sprintf(dir, "%s/.manaworld", userHome);
-        if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) && (errno != EEXIST))
-        {
-            printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
-            exit(1);
-        }
-        sprintf(dir, "%s/.manaworld/tmw.ini", userHome);
-    #endif
-
-    // Checking if the tmw.ini file exists... otherwise creates it with default options !
+    // Checking if the tmw.ini file exists... otherwise creates it with
+    // default options !
     FILE *tmwFile = 0;
     tmwFile = fopen(dir, "r");
 
     // If we can't read it, it doesn't exist !
-    if ( tmwFile == NULL ) {
+    if (tmwFile == NULL) {
         // We reopen the file in write mode and we create it
         printf("No file : %s\n, Creating Default Options...\n", dir);
         tmwFile = fopen(dir, "wt");
-        if ( tmwFile == NULL ) {
+        if (tmwFile == NULL) {
             printf("Can't create %s file. Using Defaults.\n", dir);
-        } else {
+        }
+        else {
             fclose(tmwFile);
             // tmw.ini creation
             config.setValue("system", "");
@@ -182,21 +196,20 @@ void init_engine() {
             config.setValue("language", "");
             config.setValue("core_version", CORE_VERSION);
 
-
             config.setValue("host", "animesites.de");
             config.setValue("port", 6901);
             config.setValue("screen", 1);
             config.setValue("sound", 1);
 
 
-            #ifdef __USE_UNIX98
-                char * chatlogFilename = new char [400];
-                sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
-                config.setValue("chatlog", chatlogFilename);
-                delete chatlogFilename;
-            #else
-                config.setValue("chatlog", "chatlog.txt");
-            #endif
+#ifdef __USE_UNIX98
+            char *chatlogFilename = new char[400];
+            sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
+            config.setValue("chatlog", chatlogFilename);
+            delete chatlogFilename;
+#else
+            config.setValue("chatlog", "chatlog.txt");
+#endif
 
             config.setValue("stretch", 1);
             config.setValue("remember", 1);
@@ -207,58 +220,73 @@ void init_engine() {
     }
 
     config.init(dir);
-    #ifdef WIN32
-        if(code) {
-            set_config_string("system", "keyboard", code);
-        }
-    #endif
+#ifdef WIN32
+    // With SDL this part should probably just be removed
+    if (code) {
+        set_config_string("system", "keyboard", code);
+    }
+#endif
 
-    // set_config_file("tmw.ini");
-    #ifdef MACOSX
-        set_color_depth(32);
-    #else
-        set_color_depth(16);
-    #endif
+#ifdef MACOSX
+    set_color_depth(32);
+#else
+    set_color_depth(16);
+#endif
+
+    //SDL_WM_SetCaption("The Mana World", NULL);
     set_window_title("The Mana World");
 
-    if(set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600, 0, 0)) {
+    //screen = SDL_SetVideoMode(800, 600, 16, SDL_SWSURFACE | SDL_ANYFORMAT);
+    //if (screen == NULL) {
+    //    std::cerr << "Couldn't set 800x600x16 video mode: " <<
+    //        SDL_GetError() << std::endl;
+    //    exit(1);
+    //}
+
+    if (set_gfx_mode((unsigned char)config.getValue("screen", 0), 800, 600,
+                0, 0)) {
         error(allegro_error);
     }
 
-    if(install_keyboard()) {
+    // In SDL these three are all done in the SDL_Init call
+    if (install_keyboard()) {
         error("Unable to install keyboard");
     }
 
-    if(install_timer()) {
+    if (install_timer()) {
         error("Unable to install timer");
     }
 
-    if(install_mouse()==-1) {
+    if (install_mouse() == -1) {
         error("Unable to install mouse");
     }
 
+    // Buffer creation shouldn't be necessary with SDL
     buffer = create_bitmap(800, 600);
-    if(!buffer) {
+    if (!buffer) {
         error("Not enough memory to create buffer");
     }
 
+    // TODO: Remove datafile usage
     graphic = load_datafile("./data/graphic/graphic.dat");
-    if(graphic==NULL) {
+    if (graphic == NULL) {
         error("Unable to load graphic datafile");
     }
 
     playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
     hairset = load_bitmap("./data/graphic/hairset.bmp", NULL);
 
-    if(hairset==NULL) {
+    if (hairset == NULL) {
         error("Unable to load hairset bitmap");
     }
 
+    // TODO: Remove datafile usage
     weaponset = load_datafile("./data/graphic/weapon.dat");
-    if(weaponset==NULL) {
+    if (weaponset == NULL) {
         error("Unable to load weaponset datafile");
     }
 
+    // TODO: Remove Allegro config file usage from GUI look
     init_gui(buffer, "./data/Skin/aqua.skin");
     state = LOGIN;
 }
@@ -268,9 +296,6 @@ void exit_engine() {
     config.write(dir);
     delete dir;
     gui_exit();
-#ifndef WIN32
-    SDL_Quit();
-#endif /* not WIN32 */
     destroy_bitmap(buffer);
     allegro_exit();
 }
@@ -279,11 +304,14 @@ void exit_engine() {
 int main() {
     init_engine();
 #ifndef WIN32
+
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
          if (config.getValue("sound", 0) == 1) {
-            SDL_Init(SDL_INIT_AUDIO);
-            sound.init(32, 20);
+             //SDL_InitSubSystem(SDL_INIT_AUDIO);
+             SDL_Init(SDL_INIT_AUDIO);
+             atexit(SDL_Quit);
+             sound.init(32, 20);
          }
          sound.setVolume(64);
         
