@@ -9,6 +9,12 @@
 /* Defines if your system has the LIBSDL library */
 #undef HAVE_LIBSDL
 
+/* Define to 1 if you have the `SDL_image' library (-lSDL_image). */
+#undef HAVE_LIBSDL_IMAGE
+
+/* Define to 1 if you have the `SDL_mixer' library (-lSDL_mixer). */
+#undef HAVE_LIBSDL_MIXER
+
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
