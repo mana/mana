@@ -127,6 +127,7 @@ void Being::setPath(std::list<PATH_NODE> path)
 {
     this->path = path;
     nextStep();
+    walk_time = tick_time;
 }
 
 void Being::setHairColor(int color)
@@ -175,6 +176,7 @@ void Being::nextStep()
         x = newX;
         y = newY;
         action = WALK;
+        walk_time += speed / 10;
     } else {
         action = STAND;
         if (this == player_node) {
@@ -182,7 +184,6 @@ void Being::nextStep()
         }
     }
     frame = 0;
-    walk_time = tick_time;
 }
 
 void Being::drawSpeech(Graphics *graphics)
