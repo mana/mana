@@ -40,9 +40,7 @@ Image::~Image()
 
 Image* Image::load(const std::string &filePath, int flags)
 {
-    std::stringstream msg;
-    msg << "Image::load(" << filePath << ")";
-    log(msg.str());
+    log("Image::load(%s)", filePath.c_str());
 
     // Attempt to use SDL_Image to load the file.
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
@@ -59,8 +57,8 @@ Image* Image::load(const std::string &filePath, int flags)
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
-        log("Error", "Image load failed : %s", IMG_GetError());
-        //log("Error", "Image load failed : %s", filePath.c_str());
+        log("Error: Image load failed: %s", IMG_GetError());
+        //log("Error: Image load failed: %s", filePath.c_str());
         return NULL;
     }
 

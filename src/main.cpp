@@ -202,7 +202,7 @@ void init_engine()
     }
 #ifndef USE_OPENGL
     if ((int)config.getValue("hwaccel", 0)) {
-        std::cout << "Attempting to use hardware acceleration.\n";
+        log("Attempting to use hardware acceleration.");
         displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
     }
     else {
@@ -226,28 +226,27 @@ void init_engine()
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 #endif
 
-#ifdef __DEBUG
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
-    std::cout << "It is " << ((vi->hw_available) ? "" : "not") <<
-        " possible to create hardware surfaces.\n";
-    std::cout << "There is " << ((vi->wm_available) ? "a" : "no") <<
-        " window manager available.\n";
-    std::cout << "Hardware to hardware blits are " <<
-        ((vi->blit_hw) ? "" : "not") << " accelerated.\n";
-    std::cout << "Hardware to hardware colorkey blits are " <<
-        ((vi->blit_hw_CC) ? "" : "not") << " accelerated.\n";
-    std::cout << "Hardware to hardware alpha blits are " <<
-        ((vi->blit_hw_A) ? "" : "not") << " accelerated.\n";
-    std::cout << "Software to hardware blits are " <<
-        ((vi->blit_sw) ? "" : "not") << " accelerated.\n";
-    std::cout << "Software to hardware colorkey blits are " <<
-        ((vi->blit_sw_CC) ? "" : "not") << " accelerated.\n";
-    std::cout << "Software to hardware alpha blits are " <<
-        ((vi->blit_sw_A) ? "" : "not") << " accelerated.\n";
-    std::cout << "Color fills are " <<
-        ((vi->blit_fill) ? "" : "not") << " accelerated.\n";
-    std::cout << "Available video memory: " << vi->video_mem << "\n";
-#endif
+
+    log("Possible to create hardware surfaces: %s",
+            ((vi->hw_available) ? "yes" : "no "));
+    log("Window manager available: %s",
+            ((vi->hw_available) ? "yes" : "no"));
+    log("Accelerated hardware to hardware blits: %s",
+            ((vi->blit_hw) ? "yes" : "no"));
+    log("Accelerated hardware to hardware colorkey blits: %s",
+            ((vi->blit_hw_CC) ? "yes" : "no"));
+    log("Accelerated hardware to hardware alpha blits: %s",
+            ((vi->blit_hw_A) ? "yes" : "no"));
+    log("Accelerated software to hardware blits: %s",
+            ((vi->blit_sw) ? "yes" : "no"));
+    log("Accelerated software to hardware colorkey blits: %s",
+            ((vi->blit_sw_CC) ? "yes" : "no"));
+    log("Accelerated software to hardware alpha blits: %s",
+            ((vi->blit_sw_A) ? "yes" : "no"));
+    log("Accelerated color fills: %s",
+            ((vi->blit_fill) ? "yes" : "no"));
+    log("Available video memory: %d", vi->video_mem);
 
     //vfmt Pixel format of the video device
 
@@ -290,7 +289,7 @@ void init_engine()
     catch (const char *err) {
         state = ERROR;
         new OkDialog("Sound Engine", err, &initWarningListener);
-        warning(err);
+        log("Warning: %s", err);
     }
 }
 
@@ -323,20 +322,20 @@ int main(int argc, char *argv[]) {
 
         switch (state) {
             case LOGIN:
-                status("LOGIN");
+                log("State: LOGIN");
                 login();
                 break;
             case CHAR_SERVER:
-                status("CHAR_SERVER");
+                log("State: CHAR_SERVER");
                 char_server();
                 break;
             case CHAR_SELECT:
-                status("CHAR_SELECT");
+                log("State: CHAR_SELECT");
                 charSelect();
                 break;
             case GAME:
                 sound.stopBgm();
-                status("GAME");
+                log("State: GAME");
                 try {
                     map_start();
                     game();
@@ -358,7 +357,7 @@ int main(int argc, char *argv[]) {
                 break;
         }
     }
-    status("EXIT");
+    log("State: EXIT");
     exit_engine();
     return 0;
 }

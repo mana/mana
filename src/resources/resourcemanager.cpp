@@ -62,11 +62,8 @@ ResourceManager::~ResourceManager()
     }
     resources.clear();
 
-    std::stringstream msg;
-    msg << "ResourceManager::~ResourceManager() cleaned up " <<
-        danglingReferences << " references to " << danglingResources <<
-        " resources";
-    log(msg.str());
+    log("ResourceManager::~ResourceManager() cleaned up %d references to %d"
+            " resources", danglingReferences, danglingResources);
 }
 
 Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
@@ -100,10 +97,10 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     switch (type)
     {
         case MAP:
-            warning("Map resource not supported.");
+            log("Warning: Map resource not supported.");
             break;
         case MUSIC:
-            warning("Music resource not supported.");
+            log("Warning: Music resource not supported.");
             break;
         case IMAGE:
             // Attempt to create and load our image object.
@@ -111,16 +108,16 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 reinterpret_cast<Resource*>(Image::load(filePath, flags));
             break;
         case SCRIPT:
-            warning("Script resource not supported.");
+            log("Warning: Script resource not supported.");
             break;
         case TILESET:
-            warning("Tileset resource not supported.");
+            log("Warning: Tileset resource not supported.");
             break;
         case SOUND_EFFECT:
-            warning("Sound FX resource not supported.");
+            log("Warning: Sound FX resource not supported.");
             break;
         default: 
-            warning("Unknown resource type");
+            log("Warning: Unknown resource type");
             break;
     }
 

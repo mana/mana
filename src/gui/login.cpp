@@ -105,7 +105,7 @@ void LoginDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         const std::string user = userField->getText();
-        log("Network", "Username is %s", user.c_str());
+        log("Network: Username is %s", user.c_str());
 
         // Store config settings
         config.setValue("remember", keepCheck->isMarked());
@@ -191,8 +191,8 @@ void server_login(const std::string& user, const std::string& pass) {
     while ((in_size < 23) || (out_size > 0)) {
         flush();
     }
-    log("Network", "Packet ID: %x", RFIFOW(0));
-    log("Network", "Packet length: %d", get_packet_length(RFIFOW(0)));
+    log("Network: Packet ID: %x", RFIFOW(0));
+    log("Network: Packet length: %d", get_packet_length(RFIFOW(0)));
 
     if (RFIFOW(0) == 0x0069) {
         while (in_size < RFIFOW(2)) {
@@ -211,10 +211,10 @@ void server_login(const std::string& user, const std::string& pass) {
             server_info[i].port = RFIFOW(47 + 32 * i + 4);
             state = CHAR_SERVER;
         }
-        log("Network", "Server: %s (%s:%d)", server_info[0].name,
+        log("Network: Server: %s (%s:%d)", server_info[0].name,
                 iptostring(server_info[0].address),
                 server_info[0].port);
-        log("Network", "Users: %d", server_info[0].online_users);
+        log("Network: Users: %d", server_info[0].online_users);
         RFIFOSKIP(RFIFOW(2));
     }
     else if (RFIFOW(0) == 0x006a) {

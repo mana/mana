@@ -195,7 +195,7 @@ void server_char_server(int serverIndex) {
         }
         state = CHAR_SELECT;
 
-        log("CharServer", "Player: %s (Packet ID: %x, Length: %d",
+        log("CharServer: Player: %s (Packet ID: %x, Length: %d",
                 char_info->name, RFIFOW(0), RFIFOW(2));
 
 

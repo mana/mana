@@ -75,10 +75,19 @@
 #define RFIFOSPACE (buffer_size-in_size) // Return input buffer size
 #define RFIFOSET(len) in_size+=len;
 
+/** Increase size of written data */
 void WFIFOSET(int len);
+
+/** Convert an address from int format to string */
 char *iptostring(int address);
+
+/** Open a session with a server */
 SOCKET open_session(const char* address, short port);
+
+/** Close a session */
 void close_session();
+
+/** Send and receive data waiting in the buffers */
 void flush();
 
 extern char *in, *out; // Input, output buffer

@@ -211,11 +211,11 @@ void CharSelectDialog::serverCharSelect()
         flush();
     }
 
-    log("CharSelect", "Packet ID: %x, Length: %d, Packet_in_size %d",
+    log("CharSelect: Packet ID: %x, Length: %d, Packet_in_size %d",
             RFIFOW(0),
             get_length(RFIFOW(0)),
             RFIFOW(2));
-    log("CharSelect", "In_size: %d", in_size);
+    log("CharSelect: In_size: %d", in_size);
 
     if (RFIFOW(0) == 0x0071) {
         while (in_size < 28) {
@@ -229,8 +229,8 @@ void CharSelectDialog::serverCharSelect()
         map_port = RFIFOW(26);
         state = GAME;
 
-        log("CharSelect", "Map: %s", map_name);
-        log("CharSelect", "Server: %s:%d", iptostring(map_address), map_port);
+        log("CharSelect: Map: %s", map_name);
+        log("CharSelect: Server: %s:%d", iptostring(map_address), map_port);
         RFIFOSKIP(28);
         close_session();
     }

@@ -41,15 +41,18 @@ SOCKADDR_IN addr;
 fd_set read_socket;
 fd_set write_socket;
 
-/** Increase size of written data */
-void WFIFOSET(int len) {
-    if(out_size+len>=buffer_size)
-        warning("Output buffer full");
-    else out_size+=len;
+void WFIFOSET(int len)
+{
+    if (out_size + len >= buffer_size) {
+        log("Warning: Output buffer full");
+    }
+    else {
+        out_size += len;
+    }
 }
 
-/** Convert an address from int format to string */
-char *iptostring(int address) {
+char *iptostring(int address)
+{
     short temp1, temp2;
     static char asciiIP[16];
 
@@ -59,8 +62,8 @@ char *iptostring(int address) {
     return asciiIP;
 }
 
-/** Open a session with a server */
-SOCKET open_session(const char* address, short port) {
+SOCKET open_session(const char* address, short port)
+{
     #ifdef WIN32
     WSADATA wsda;
     #endif
@@ -101,8 +104,8 @@ SOCKET open_session(const char* address, short port) {
     return sock;
 }
 
-/** Close a session */
-void close_session() {
+void close_session()
+{
     FD_CLR(sock,&read_socket);
     FD_CLR(sock,&write_socket);
     closesocket(sock);
@@ -119,8 +122,8 @@ void close_session() {
     WSACleanup();
 }
 
-/** Send and receive data waiting in the buffers */
-void flush() {
+void flush()
+{
     int ret = 0;
     void *buf = out;
     timeval time_out;
@@ -152,14 +155,14 @@ void flush() {
         if (ret == SOCKET_ERROR) {
             error("Socket Error");
 #ifdef WIN32
-            log("Error", "Socket error: %i ", WSAGetLastError());
+            log("Error: Socket error: %i ", WSAGetLastError());
             if (WSAGetLastError() == 10053)
-            log("Error", "Packet size error");
+            log("Error: Packet size error");
             /** Probably the last packet you sent, was defined with
              *  wrong size: WFIFOSET(size);
              */
 #else
-            log("Error", "socket_error", "Undefined socket error");
+            log("Error: Undefined socket error");
 #endif
         }
     }
@@ -171,9 +174,9 @@ void flush() {
         ret = recv(sock, in+in_size, RFIFOSPACE, 0);
         if(ret==SOCKET_ERROR) {
 #ifdef WIN32
-            log("Error", "Socket error: %i ", WSAGetLastError());
+            log("Error: Socket error: %i ", WSAGetLastError());
 #else
-            log("Error", "socket_error", "Undefined socket error");
+            log("Error: Undefined socket error");
 #endif
         } else RFIFOSET(ret); // Set size of available data to read
     }

@@ -187,7 +187,7 @@ void Setup::action(const std::string& eventId)
             }
             catch (const char *err) {
                 new OkDialog(this, "Sound Engine", err);
-                warning(err);   
+                log("Warning: %s", err);   
             }
         } else {
             config.setValue("sound", 0);

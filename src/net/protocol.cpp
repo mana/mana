@@ -152,10 +152,11 @@ void set_coordinates(char *data, unsigned short x, unsigned short y,
     data[2] |= direction;
 }
 
-void map_start() {
+void map_start()
+{
     // Connect to map server
     if (open_session(iptostring(map_address), map_port) == SOCKET_ERROR) {
-        warning("Unable to connect to map server");
+        log("Warning: Unable to connect to map server");
         throw "Unable to connect to map server";
         return;
     }
@@ -179,11 +180,11 @@ void map_start() {
         x = get_x(RFIFOP(6));
         y = get_y(RFIFOP(6));
         //direction = get_direction(RFIFOP(6));
-        log("Protocol", "Player position: (%d, %d), Direction: %d",
+        log("Protocol: Player position: (%d, %d), Direction: %d",
                 x, y, direction);
         RFIFOSKIP(11);
     } else if(0x0081) {
-        warning("Map server D/C");
+        log("Warning: Map server D/C");
     } else error("Unknown packet: map_start");
     // Send "map loaded"
     WFIFOW(0) = net_w_value(0x007d);

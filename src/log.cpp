@@ -37,7 +37,7 @@ void init_log()
     }
 }
 
-void log(const char *category, const char *log_text, ...)
+void log(const char *log_text, ...)
 {
     if (logfile)
     {
@@ -55,14 +55,14 @@ void log(const char *category, const char *log_text, ...)
 
         // Print the log entry
         fprintf(logfile,
-                "[%s%d:%s%d:%s%d] %s: %s\n",
+                "[%s%d:%s%d:%s%d] %s\n",
                 (((t / 60) / 60) % 24 < 10) ? "0" : "",
                 (int)(((t / 60) / 60) % 24),
                 ((t / 60) % 60 < 10) ? "0" : "",
                 (int)((t / 60) % 60),
                 (t % 60 < 10) ? "0" : "",
                 (int)(t % 60),
-                category, buf
+                buf
                );
 
         // Flush the log file
@@ -73,34 +73,9 @@ void log(const char *category, const char *log_text, ...)
     }
 }
 
-void log(const std::string &text)
-{
-    if (logfile)
-    {
-        // Get the current system time
-        time_t t;
-        time(&t);
-
-        // Print the log entry
-        fprintf(logfile,
-                "[%s%d:%s%d:%s%d] %s\n",
-                (((t / 60) / 60) % 24 < 10) ? "0" : "",
-                (int)(((t / 60) / 60) % 24),
-                ((t / 60) % 60 < 10) ? "0" : "",
-                (int)((t / 60) % 60),
-                (t % 60 < 10) ? "0" : "",
-                (int)(t % 60),
-                text.c_str()
-               );
-
-        // Flush the log file
-        fflush(logfile);
-    }
-}
-
 void error(const std::string &error_text)
 {
-    log("Error", error_text.c_str());
+    log(error_text.c_str());
 
 #ifdef WIN32
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
@@ -108,14 +83,4 @@ void error(const std::string &error_text)
     fprintf(stderr, "Error: %s\n", error_text.c_str());
 #endif
     exit(1);
-}
-
-void warning(const char *warning_text)
-{
-    log("Warning", warning_text);
-}
-
-void status(const char *status_text)
-{
-    log("Status", status_text);
 }

@@ -104,7 +104,7 @@ bool Map::load(const std::string &mapFile)
     FILE *file = fopen(mapFile.c_str(), "r");
 
     if (!file) {
-        warning(mapFile.c_str());
+        log("Warning: %s", mapFile.c_str());
         return false;
     }
 
@@ -151,7 +151,7 @@ bool loadXmlMap(const std::string &mapFile)
     xmlDocPtr doc = xmlReadFile(mapFile.c_str(), NULL, 0);
 
     if (!doc) {
-        warning(mapFile.c_str());
+        log("Warning: %s", mapFile.c_str());
         return false;
     }
 
