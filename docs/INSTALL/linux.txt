@@ -5,6 +5,8 @@ Author:  Alexander Baldeck (aka kth5)
 Email:    kth5@cboxx.de
 Homepage: alex.cboxx.de
 
+Thanks to hardskinone for writing the 'Installing JGmod' part
+
 The Mana World project
 ======================
 Homepage: themanaworld.sourceforge.net
@@ -94,8 +96,22 @@ the source from here:
   ldconfig
 7) this should finish the Alfont installation
 
-4) Installing the JGmod library
-TODO
+4) Installing the JGmod library 
+================================ 
+
+This is not included in any distribution. Download source package from here: 
+ http://www.geocities.com/jeffery_guan/jgmod/jgmod.zip 
+  
+1) extract archive and 'cd' into the directory 
+2) run 'sh fixunix.sh' 
+3) cd in 'src' subdirectory 
+4) run 'make' and 'make install as root 
+5) now you should have following files: 
+   /usr/local/lib/libjgmod.so 
+   /usr/local/include/jgmod.h 
+
+*Note for GNU/Gentoo user: 
+  It's possible that 'make install' command create a file named /usr/local/include instead. To fix rename it 'jgmod.h', create a dir '/usr/local/include/' and put in that file. 
 
 5. Installing The Mana World
 ============================
