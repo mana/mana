@@ -102,7 +102,9 @@ void StatsWindow::update(){
 StatsWindow::~StatsWindow() {
     for (int i = 0; i < 6; i++) {
         delete statsLabel[i];
+	delete statsDisplayLabel[i];
         delete statsButton[i];
+	delete remainingStatsPointsLabel;
     }
 }
 
