@@ -1,4 +1,4 @@
-/**
+/*
 
   The Mana World
   Copyright 2004 The Mana World Development Team
@@ -21,15 +21,6 @@
 
 */
 
-/**
-	Simple ChatLog Object v0.5 (i'd say...)
-
-	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
-
-	Author: kth5 aka Alexander Baldeck
-		pipe your questions, suggestions and flames to: kth5@gawab.com
-*/
-
 #include "../main.h"
 #include "chat.h"
 #include <list>
@@ -38,6 +29,14 @@
 
 using namespace std;
 
+/**
+	Simple ChatLog Object v0.5 (i'd say...)
+
+	Bestviewd w/ Bitstream Vera Sans Mono @ 9pt and a tab-width of 2 spaces
+
+	Author: kth5 aka Alexander Baldeck
+		pipe your questions, suggestions and flames to: kth5@gawab.com
+*/
 
 Chat::Chat(const char * logfile, int item_num) {
 	chatlog_file.open(logfile, ios::out | ios::app);
@@ -58,7 +57,7 @@ void Chat::chat_dlgrsize(int) {
 		string line					-> message text
 		int own							-> type of message (usually the owner-type)
 		ALFONT_FONT * font	-> font that'll be used to draw the text later
-   
+
 		NOTE:
 			to all of you who wonder why the font needs to be passed, simple.
 			i already store the width in pixel in the list rather than
@@ -92,13 +91,13 @@ void Chat::chat_log(string line, int own, ALFONT_FONT * font) {
 	}else {
 			tmp.nick = "";
 			tmp.width = 1;
-	}    
-	tmp.own  = own;	
-	tmp.text = line;	
+	}
+	tmp.own  = own;
+	tmp.text = line;
 
 	chatlog_file << tmp.nick << tmp.text << "\n";
 	chatlog_file.flush();
-	
+
 	chatlog.push_front(tmp);
 }
 
@@ -113,7 +112,7 @@ void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
 		BITMAP * bmp				-> Allegro type bitmap buffer to draw onto
 		int n								-> number of lines to be drawn
 		ALFONT_FONT * font	-> font to use
-   
+
 		NOTE:
 			take great care using this, make sure the buffer passed is
 			empty! ;-) anyway, line wrapping is not supported yet.
@@ -122,11 +121,11 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 	int y = 600-35, i = 0;
 	CHATLOG line;
 	n -= 1;
-	
-    for(iter = chatlog.begin(); iter != chatlog.end(); iter++) {
+
+	for(iter = chatlog.begin(); iter != chatlog.end(); iter++) {
 		line = *iter;
 		y -=11;
- 
+
 		switch(line.own) {
 			case BY_GM :
 				alfont_textprintf_aa(bmp, font, 1, y, COLOR_BLUE, "Global announcement: ");
@@ -143,7 +142,7 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 			default :
 				alfont_textprintf_aa(bmp, font, 1, y, COLOR_LIGHTBLUE, line.text.c_str());
 		}
-    
+
 		if(i>=n)
 			return;
 		i++;
@@ -155,7 +154,7 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 
 		string nick -> the character's name to display infront
 		string msg  -> the message's text which is to be send.
-   
+
 		NOTE:
 			the nickname is required by the server, if not specified
 			the message may not be sent unless a command was intended
@@ -195,7 +194,7 @@ char * Chat::chat_send(string nick, string msg) {
 		nick += msg;
 		msg = nick;
 		packid = 0x008c;
-	}    
+	}
 
 	msg += "\0";
 
@@ -206,13 +205,13 @@ char * Chat::chat_send(string nick, string msg) {
 	WFIFOSET((int)msg.length()+4);
 	nick = msg = "";
 	return "";
-}    
+}
 
-/** PRIVATE : 
+/** PRIVATE :
 	NOTE:
 		these usually will be left undocumented coz u can't call them
 		directly anyway. ;-)
-*/ 
+*/
 
 /** constructs failed messages for actions */
 string Chat::const_msg(CHATSKILL action) {
@@ -238,7 +237,7 @@ string Chat::const_msg(CHATSKILL action) {
 				msg = "Cannot shout!";
 				break;
 		}
-		
+
 		switch(action.reason) {
 			case RFAIL_SKILLDEP :
 				msg += " You have not yet reached a high enough lvl!";
@@ -287,7 +286,7 @@ string Chat::const_msg(CHATSKILL action) {
 				break;
 		}
 	}
-	
+
 	return msg;
 }
 

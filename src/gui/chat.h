@@ -1,4 +1,4 @@
-/**
+/*
 
   The Mana World
   Copyright 2004 The Mana World Development Team
@@ -57,7 +57,7 @@ using namespace std;
 
 /**
 		gets in between usernick and message text depending on
-		message type                   
+		message type
 */
 #define CAT_NORMAL          ": "
 #define CAT_IS              ""
@@ -135,13 +135,13 @@ class Chat {
 			int own;
 			int width;
 		};
-		
+
 		list<CHATLOG> chatlog;										// list object ready to accept out CHATLOG struct :)
 		list<CHATLOG>::iterator iter;
 
 		int items;
 		int items_keep;
-		
+
 		string const_msg(CHATSKILL);							// contructs action-fail messages
 		string const_msg(int);										// constructs normal messages (not implemented yet)
 };
