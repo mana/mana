@@ -27,6 +27,7 @@
 #include "ok_dialog.h"
 #include "../graphics.h"
 #include "../net/protocol.h"
+#include "../resources/resourcemanager.h"
 #include <sstream>
 
 #define NR_HAIR_STYLES 4
@@ -102,6 +103,10 @@ CharSelectDialog::CharSelectDialog():
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
+    
+    ResourceManager *resman = ResourceManager::getInstance();
+    login_wallpaper = resman->getImage(
+            "core/graphics/images/char_wallpaper.png");
 }
 
 CharSelectDialog::~CharSelectDialog()
@@ -217,7 +222,7 @@ void CharSelectDialog::serverCharSelect()
         }
         char_ID = RFIFOL(2);
         memset(map_path, '\0', 480);
-        strcat(map_path, "./core/maps/");
+        strcat(map_path, "./data/map/");
         strncat(map_path, RFIFOP(6), 479 - strlen(map_path));
         map_address = RFIFOL(22);
         map_port = RFIFOW(26);

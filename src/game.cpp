@@ -37,6 +37,7 @@
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
 #include "net/protocol.h"
+#include "resources/mapreader.h"
 #include <SDL.h>
 #include <sstream>
 
@@ -124,7 +125,15 @@ void game() {
 
 void do_init()
 {
+    //tiledMap = Map::load(map_path);
+    //std::string path(map_path);
+
+    /*std::string pathDir = path.substr(0, path.rfind(".") + 1);
+    pathDir.insert(pathDir.size(), "tmx.gz");*/
+    
     tiledMap = Map::load(map_path);
+    std::cout << map_path << std::endl;
+
     if (!tiledMap) {
         error("Could not find map file");
     }
@@ -796,7 +805,7 @@ void do_parse() {
                     // Warp
                 case 0x0091:
                     memset(map_path, '\0', 480);
-                    strcat(map_path, "./data/map/");
+                    strcat(map_path, "./core/maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     log("Warping to %s (%d, %d)\n",
                             map_path, RFIFOW(18), RFIFOW(20));
