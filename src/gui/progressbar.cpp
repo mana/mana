@@ -117,7 +117,14 @@ float ProgressBar::getProgress()
 void ProgressBar::setColor(unsigned char MyRed, unsigned char MyGreen,
                 unsigned char MyBlue)
 {
-    Red = MyRed; Green = MyGreen; Blue = MyBlue;
-    colorBar->fillWithColor(Red, Green, Blue);
-    colorBar->setAlpha(0.7f);
+    if ( (Red == MyRed) && (Green == MyGreen) && (Blue == MyBlue) )
+    {
+        // Nothing
+    }
+    else
+    {
+        Red = MyRed; Green = MyGreen; Blue = MyBlue;
+        colorBar->fillWithColor(Red, Green, Blue);
+        colorBar->setAlpha(0.7f);
+    }
 }
