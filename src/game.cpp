@@ -45,9 +45,9 @@ bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
 volatile bool action_time = false;
-int current_npc, server_tick;
+int server_tick;
 extern unsigned char screen_mode;
-int fps = 0, frame = 0;
+int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 
 OkDialog *deathNotice = NULL;
@@ -124,7 +124,7 @@ void game() {
 void do_init()
 {
     tiledMap = Map::load(map_path);
-    //tiledMap = MapReader::readMap("map/desert.tmx");
+    //tiledMap = MapReader::readMap("core/maps/desert.tmx");
     if (!tiledMap) {
         error("Could not find map file");
     }
@@ -288,10 +288,15 @@ void do_input()
                 int id = find_npc(npc_x, npc_y);
                 if (id != 0)
                 {
-                    WFIFOW(0) = net_w_value(0x0090);
-                    WFIFOL(2) = net_l_value(id);
-                    WFIFOB(6) = 0;
-                    WFIFOSET(7);
+                    // Check if no conflicting npc window is open
+                    if (current_npc == 0)
+                    {
+                        WFIFOW(0) = net_w_value(0x0090);
+                        WFIFOL(2) = net_l_value(id);
+                        WFIFOB(6) = 0;
+                        WFIFOSET(7);
+                        current_npc = id;
+                    }
                 }
 
             }
@@ -309,7 +314,7 @@ void do_input()
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
 
-    if (walk_status == 0 && player_node->action != DEAD)
+    if (walk_status == 0 && player_node->action != DEAD && current_npc == 0)
     {
         int x = player_node->x;
         int y = player_node->y;
@@ -426,7 +431,7 @@ void do_parse() {
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif 
+#endif
             // Parse packet based on their id
             switch (id) {
                 // Received speech
@@ -600,6 +605,7 @@ void do_parse() {
                     npcTextDialog->addText(RFIFOP(8));
                     npcListDialog->setVisible(false);
                     npcTextDialog->setVisible(true);
+                    current_npc = RFIFOL(4);
                     break;
                     // Get the items
                 case 0x01ee:
@@ -625,8 +631,8 @@ void do_parse() {
                             equipmentWindow->addEquipment(RFIFOB(4+loop*20),
                                 RFIFOW(4+loop*20+2));
                             inventoryWindow->items->setEquipped(
-                                RFIFOW(4+loop*20), true);                        
-                        }                        
+                                RFIFOW(4+loop*20), true);
+                        }
                     }
                     break;
                     // Can I use the item?
@@ -658,6 +664,7 @@ void do_parse() {
                         add_node(temp);
                         player_node = temp;
                         player_node->action = STAND;
+                        current_npc = 0;
                         player_node->frame = 0;
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
@@ -973,7 +980,6 @@ void do_parse() {
                     // Close button in NPC dialog
                 case 0x00b6:
                     strcpy(npc_button, "Close");
-                    current_npc = RFIFOL(2);
                     break;
                     // List in NPC dialog
                 case 0x00b7:
@@ -999,7 +1005,7 @@ void do_parse() {
                 case 0x00aa:
                     if (RFIFOB(6) == 0)
                         chatBox->chat_log("Unable to equip.", BY_SERVER);
-                    else {                      
+                    else {
                         inventoryWindow->items->setEquipped(RFIFOW(2), true);
                         equipmentWindow->addEquipment(RFIFOW(2),
                             inventoryWindow->items->getId(RFIFOW(2)));
@@ -1027,7 +1033,7 @@ void do_parse() {
                         equipmentWindow->removeEquipment(RFIFOW(2));
                         inventoryWindow->items->setEquipped(
                             inventoryWindow->items->getIndex(), false);
-                    }                        
+                    }
                     break;
                     // Manage non implemented packets
                 default:

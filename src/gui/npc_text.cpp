@@ -76,4 +76,5 @@ void NpcTextDialog::action(const std::string& eventId)
     WFIFOSET(6);
     setText("");
     setVisible(false);
+    current_npc = 0;                               
 }

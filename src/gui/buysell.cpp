@@ -23,8 +23,9 @@
 
 #include "buysell.h"
 #include "button.h"
+#include "../game.h"
 
-BuySellDialog::BuySellDialog(gcn::ActionListener *al):
+BuySellDialog::BuySellDialog():
     Window("Shop")
 {
     buyButton = new Button("Buy");
@@ -43,9 +44,9 @@ BuySellDialog::BuySellDialog(gcn::ActionListener *al):
     sellButton->setEventId("sell");
     cancelButton->setEventId("cancel");
 
-    buyButton->addActionListener(al);
-    sellButton->addActionListener(al);
-    cancelButton->addActionListener(al);
+    buyButton->addActionListener(this);
+    sellButton->addActionListener(this);
+    cancelButton->addActionListener(this);
 
     add(buyButton);
     add(sellButton);
@@ -60,4 +61,26 @@ BuySellDialog::~BuySellDialog()
     delete buyButton;
     delete sellButton;
     delete cancelButton;
+}
+
+void BuySellDialog::action(const std::string& eventId)
+{
+    int actionId = -1;
+
+    if (eventId == "buy") {
+        actionId = 0;
+    }
+    else if (eventId == "sell") {
+        actionId = 1;
+    } else if (eventId == "cancel") {
+        current_npc = 0;
+    }
+    if (actionId > -1) {
+        WFIFOW(0) = net_w_value(0x00c5);
+        WFIFOL(2) = net_l_value(current_npc);
+        WFIFOB(6) = net_b_value(actionId);
+        WFIFOSET(7);
+    }
+
+    setVisible(false);
 }

@@ -27,6 +27,7 @@
 #include "scrollarea.h"
 #include "listbox.h"
 #include "../graphic/graphic.h"
+#include "../game.h"
 
 #include <sstream>
 
@@ -132,9 +133,11 @@ void SellDialog::action(const std::string& eventId)
             }
         }
         setVisible(false);
+        current_npc = 0;
     }
     else if (eventId == "cancel") {
         setVisible(false);
+        current_npc = 0;
     }
 }
 

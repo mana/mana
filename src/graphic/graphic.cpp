@@ -75,28 +75,6 @@ void ChatListener::action(const std::string& eventId)
     }
 }
 
-void BuySellListener::action(const std::string& eventId)
-{
-    int actionId = -1;
-
-    if (eventId == "buy") {
-        actionId = 0;
-    }
-    else if (eventId == "sell") {
-        actionId = 1;
-    }
-
-    if (actionId > -1) {
-        WFIFOW(0) = net_w_value(0x00c5);
-        WFIFOL(2) = net_l_value(current_npc);
-        WFIFOB(6) = net_b_value(actionId);
-        WFIFOSET(7);
-    }
-
-    buySellDialog->setVisible(false);
-}
-
-
 char hairtable[16][4][2] = {
     // S(x,y)  W(x,y)   N(x,y)   E(x,y)
     { { 0, 0}, {-1, 2}, {-1, 2}, {0, 2} }, // STAND
@@ -287,7 +265,7 @@ Engine::Engine()
     sellDialog = new SellDialog();
     sellDialog->setVisible(false);
 
-    buySellDialog = new BuySellDialog(new BuySellListener());
+    buySellDialog = new BuySellDialog();
     buySellDialog->setVisible(false);
 
     inventoryWindow = new InventoryWindow();

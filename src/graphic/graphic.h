@@ -88,14 +88,6 @@ class ChatListener : public gcn::ActionListener {
 };
 
 /**
- * The action listener for the buy or sell dialog.
- */
-class BuySellListener : public gcn::ActionListener {
-    public:
-        void action(const std::string& eventId);
-};
-
-/**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
  * topology is as follows:
  *

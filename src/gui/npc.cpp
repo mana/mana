@@ -108,7 +108,9 @@ void NpcListDialog::action(const std::string& eventId)
             WFIFOB(6) = net_b_value(selectedIndex + 1);
             WFIFOSET(7);
             setVisible(false);
+            current_npc = 0;
             reset();
+           
         }
     }
     else if (eventId == "cancel") {
@@ -119,5 +121,6 @@ void NpcListDialog::action(const std::string& eventId)
         WFIFOSET(7);
         setVisible(false);
         reset();
+        current_npc = 0;
     }
 }
