@@ -32,6 +32,16 @@
 extern Sound sound;
 #endif /* no WIN32 */
 
+struct Modes {
+    int height, width;
+    char *desc;
+};
+static Modes modes[] = {
+    { 640,480, "640x480"},
+    { 800,600, "800x600" },
+    { 1024,768, "1024x768" }
+};
+
 /*
  * Metod returns the number of elements in container
  */
@@ -44,16 +54,7 @@ int ModesListModel::getNumberOfElements() {
  * Metod returns element from container
  */
 std::string ModesListModel::getElementAt(int i) {
-  //TODO: change hardcoded modes after moving to SDL
-  struct Modes {
-    int height, width;
-    char *desc;
-  };
-  static Modes modes[] = {
-    { 640,480, "640x480"},
-    { 800,600, "800x600" },
-    { 1024,768, "1024x768" }
-  };
+  //TODO: after moving to SDL
   return(modes[i].desc);
 }
 
@@ -65,7 +66,7 @@ Setup::Setup(gcn::Container *parent)
 {
   modesListModel = new ModesListModel();
   displayLabel = new gcn::Label("Display settings");
-  modesList = new gcn::ListBox(modesListModel);
+  modesList = new ListBox(modesListModel);
   scrollArea = new ScrollArea(modesList);
   fsCheckBox = new CheckBox("Full screen", false);
   soundLabel = new gcn::Label("Sound settings");
@@ -105,7 +106,7 @@ Setup::Setup(gcn::Container *parent)
   add(fsCheckBox);
   add(soundLabel);
   add(soundCheckBox);
-  add(disabledRadio);
+  //add(disabledRadio);
   add(applyButton);
   add(cancelButton);
   
@@ -139,18 +140,20 @@ Setup::~Setup() {
  */
 void Setup::action(const std::string& eventId)
 {
+    int sel;
     if (eventId == "apply") {
         setVisible(false);
     
         /* Display settings */
         if (fsCheckBox->isMarked() == true && config.getValue("screen",0) == 2) {
     	    config.setValue("screen",1);
-    	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,800,600,0,0);
+    	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,modes[sel].height,modes[sel].width,0,0);
     	    
         } else 
         if (fsCheckBox->isMarked() == false && config.getValue("screen",0) == 1) {
     	    config.setValue("screen",2);
-    	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0);
+	    sel = modesList->getSelected();
+    	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,modes[sel].height,modes[sel].width,0,0);
         }
     
         /* Sound settings */

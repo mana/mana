@@ -28,6 +28,7 @@
 #include "button.h"
 #include "checkbox.h"
 #include "scrollarea.h"
+#include "listbox.h"
 #include "radiobutton.h"
 #include "../graphic/graphic.h"
 #include <allegro.h>
@@ -59,7 +60,7 @@ class Setup : public Window, public gcn::ActionListener {
   CheckBox *soundCheckBox;
   RadioButton *disabledRadio;
   ScrollArea *scrollArea;
-  gcn::ListBox *modesList;
+  ListBox *modesList;
   Button *applyButton;
   Button *cancelButton;
   
