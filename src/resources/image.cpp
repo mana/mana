@@ -26,6 +26,7 @@
 #include <iostream>
 #include <SDL_image.h>
 #include "../graphic/graphic.h"
+#include "resourcemanager.h"
 
 Image::Image(SDL_Surface *image):
     image(image)
@@ -37,7 +38,7 @@ Image::~Image()
     unload();
 }
 
-Image* Image::load(const std::string &filePath)
+Image* Image::load(const std::string &filePath, int flags)
 {
 #ifdef __DEBUG
     std::cout << "Image::load(" << filePath << ")\n";
@@ -46,7 +47,13 @@ Image* Image::load(const std::string &filePath)
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
     SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
             SDL_MapRGB(tmpImage->format, 255, 0, 255));
-    SDL_Surface *image = SDL_DisplayFormat(tmpImage);
+    SDL_Surface *image = NULL;
+    if (flags & IMG_ALPHA) {
+        image = SDL_DisplayFormatAlpha(tmpImage);
+    }
+    else {
+        image = SDL_DisplayFormat(tmpImage);
+    }
     SDL_FreeSurface(tmpImage);
 
     // Check if the file was opened and return the appropriate value.

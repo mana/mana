@@ -24,9 +24,6 @@
 #ifndef _TMW_RESOURCE_H
 #define _TMW_RESOURCE_H
 
-#include <string>
-//#include <SDL/SDL.h>
-
 /**
  * A generic reference counted resource object.
  */

@@ -27,6 +27,11 @@
 #include "resource.h"
 #include <SDL.h>
 
+// This flag causes image alpha channel to be preserved, otherwise masking is
+// used.
+#define IMG_ALPHA  1
+
+
 // Forward declarations
 class SubImage;
 class ScaledImage;
@@ -53,7 +58,7 @@ class Image : public Resource
          * @return <code>true</code> if the image was loaded
          * <code>false</code> otherwise.
          */
-        static Image *load(const std::string &filePath);
+        static Image *load(const std::string &filePath, int flags);
 
         /**
          * Frees the resources created by SDL.

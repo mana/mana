@@ -21,9 +21,8 @@
  *  $Id$
  */
 
-#include "../log.h"
-#include "image.h"
 #include "resourcemanager.h"
+#include "../log.h"
 #include <iostream>
 #include <sstream>
 
@@ -71,7 +70,7 @@ ResourceManager::~ResourceManager()
 }
 
 Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
-        const std::string &idPath)
+        const std::string &idPath, int flags)
 {
     // Check if the id exists, and return the value if it does.
     std::map<std::string, ResourceEntry>::iterator resIter =
@@ -108,7 +107,8 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             break;
         case IMAGE:
             // Attempt to create and load our image object.
-            resource = reinterpret_cast<Resource*>(Image::load(filePath));
+            resource =
+                reinterpret_cast<Resource*>(Image::load(filePath, flags));
             break;
         case SCRIPT:
             warning("Script resource not supported.");
@@ -139,9 +139,9 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     return resource;
 }
 
-Image *ResourceManager::getImage(const std::string &idPath)
+Image *ResourceManager::getImage(const std::string &idPath, int flags)
 {
-    return (Image*)get(IMAGE, idPath);
+    return (Image*)get(IMAGE, idPath, flags);
 }
 
 ResourceManager* ResourceManager::getInstance()

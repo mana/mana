@@ -59,7 +59,7 @@ unsigned char state;
 unsigned short x, y;
 unsigned char direction;
 //unsigned short job, hair, hair_color;
-unsigned char stretch_mode, screen_mode;
+unsigned char screen_mode;
 char *dir;
 
 Sound sound;
@@ -176,7 +176,6 @@ void init_engine() {
 #else
             config.setValue("chatlog", "chatlog.txt");
 #endif
-            config.setValue("stretch", 1);
             config.setValue("remember", 1);
             config.setValue("username", "Player");
 
@@ -309,6 +308,12 @@ int main(int argc, char *argv[]) {
             switch (event.type) {
                 case SDL_QUIT:
                     state = EXIT;
+                    break;
+
+                case SDL_MOUSEMOTION:
+                    // Update the known mouse position
+                    mouseX = event.motion.x;
+                    mouseY = event.motion.y;
                     break;
             }
 

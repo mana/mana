@@ -27,6 +27,7 @@
 #include <map>
 #include <string>
 #include "resource.h"
+#include "image.h"
 
 /**
  * A resource entry descriptor.
@@ -80,12 +81,13 @@ class ResourceManager
          */
         Resource *get(
                 const E_RESOURCE_TYPE &type,
-                const std::string &idPath);
+                const std::string &idPath,
+                int flags = 0);
 
         /**
          * Convenience wrapper around ResourceManager::create.
          */
-        Image *getImage(const std::string &idPath);
+        Image *getImage(const std::string &idPath, int flags = 0);
 
         /**
          * Returns an instance of the class, creating one if it does not

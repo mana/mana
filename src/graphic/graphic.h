@@ -152,6 +152,9 @@ class Graphics : public gcn::SDLGraphics {
          * screen or swapping pages.
          */
         void updateScreen();
+
+    private:
+        Image *mouseCursor;
 };
 
 /**

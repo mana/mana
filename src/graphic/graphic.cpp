@@ -150,9 +150,20 @@ int get_y_offset(Being *being) {
 }
 
 
-Graphics::Graphics()
+Graphics::Graphics():
+    mouseCursor(NULL)
 {
     setTarget(SDL_GetVideoSurface());
+
+    // Load the mouse cursor
+    ResourceManager *resman = ResourceManager::getInstance();
+    mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
+    if (!mouseCursor) {
+        error("Unable to load mouse cursor.");
+    }
+
+    // Hide the system mouse cursor
+    SDL_ShowCursor(SDL_DISABLE);
 }
 
 Graphics::~Graphics() {
@@ -210,6 +221,9 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
+    // Draw mouse before flipping
+    mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+
     SDL_Flip(screen);
 }
 
