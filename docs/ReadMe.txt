@@ -1,4 +1,4 @@
-123  The Mana World (C) 2004
+  The Mana World (C) 2004
 
   http://themanaworld.sourceforge.net
   irc://irc.freenode.net/manaworld
