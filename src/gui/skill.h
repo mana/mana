@@ -24,41 +24,12 @@
 #ifndef _TMW_SKILL_H
 #define _TMW_SKILL_H
 
-#include <allegro.h>
+#include <guichan.hpp>
 #include "window.h"
 
 struct SKILL {
-    short id; //index into "skill_db" array
+    short id;      /**< Index into "skill_db" array */
     short lv, sp;
-};
-
-/**
- * The skill list model.
- *
- * \ingroup GUI
- */
-class SkillListModel : public gcn::ListModel
-{
-    private:
-        std::vector<SKILL*> skillList;
-
-    public:
-        /**
-         * Constructor.
-         */
-        SkillListModel();
-
-        /**
-         * Destructor.
-         */
-        virtual ~SkillListModel();
-
-        int getNumberOfElements();
-        std::string getElementAt(int);
-
-        bool hasSkill(int id);
-        void addSkill(int id, int lv, int sp);
-        void setSkill(int id, int lv, int sp);
 };
 
 /**
@@ -66,16 +37,17 @@ class SkillListModel : public gcn::ListModel
  *
  * \ingroup GUI
  */
-class SkillDialog : public Window, public gcn::ActionListener
+class SkillDialog : public Window, public gcn::ActionListener,
+                    public gcn::ListModel
 {
     private:
         gcn::ListBox *skillListBox;
         gcn::ScrollArea *skillScrollArea;
-        SkillListModel *skills;
         gcn::Label *pointsLabel;
-
         gcn::Button *incButton;
         gcn::Button *closeButton;
+
+        std::vector<SKILL*> skillList;
 
     public:
         /**
@@ -90,9 +62,14 @@ class SkillDialog : public Window, public gcn::ActionListener
 
         void action(const std::string&);
 
-        SkillListModel* getModel();
-
         void setPoints(int i);
+
+        int getNumberOfElements();
+        std::string getElementAt(int);
+
+        bool hasSkill(int id);
+        void addSkill(int id, int lv, int sp);
+        void setSkill(int id, int lv, int sp);
 };
 
 #endif

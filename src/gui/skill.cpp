@@ -28,99 +28,35 @@
 #include "../main.h"
 
 char *skill_db[] = {
-	// 0-99
-	"", "Basic", "", "", "", "", "", "", "", "",
-  "", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	// 100-199
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "First aid", "Play as dead", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
-	"", "", "", "", "", "", "", "", "", "",
+    // 0-99
+    "", "Basic", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    // 100-199
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "First aid", "Play as dead", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "",
 };
-
-
-SkillListModel::SkillListModel()
-{
-}
-
-SkillListModel::~SkillListModel()
-{
-    for (int i = skillList.size() - 1; i >= 0; i--)
-    {
-        delete skillList[i];
-        skillList.pop_back();
-    }
-}
-
-int SkillListModel::getNumberOfElements()
-{
-    return skillList.size();
-}
-
-std::string SkillListModel::getElementAt(int i)
-{
-    if (i >= 0 && i < (int)skillList.size())
-    {
-        //return skill_db[skillList[i]->id];
-        char tmp[128];
-        sprintf(tmp, "%s    Lv: %i    Sp: %i",
-                skill_db[skillList[i]->id],
-                skillList[i]->lv,
-                skillList[i]->sp);
-        return tmp;
-    }
-    return "";
-}
-
-bool SkillListModel::hasSkill(int id)
-{
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
-            return true;
-        }
-    }
-    return false;
-}
-
-void SkillListModel::addSkill(int id, int lv, int sp)
-{
-    SKILL *tmp = new SKILL;
-    tmp->id = id;
-    tmp->lv = lv;
-    tmp->sp = sp;
-    skillList.push_back(tmp);
-}
-
-void SkillListModel::setSkill(int id, int lv, int sp)
-{
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
-            skillList[i]->lv = lv;
-            skillList[i]->sp = sp;
-        }
-    }
-}
 
 
 SkillDialog::SkillDialog():
     Window("Skills")
 {
-    skills = new SkillListModel();
-    skillListBox = new ListBox(skills);
+    skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");
     incButton = new Button(" Up ");
@@ -154,30 +90,32 @@ SkillDialog::~SkillDialog()
     delete incButton;
     delete closeButton;
 
-    delete skills;
+    for (int i = skillList.size() - 1; i >= 0; i--)
+    {
+        delete skillList[i];
+        skillList.pop_back();
+    }
 }
 
 void SkillDialog::action(const std::string& eventId)
 {
     if (eventId == "inc")
     {
-        //increment skill
-        //if (char_info->skill_point > 0) {
-        //    WFIFOW(0) = net_w_value(0x0112);
-        //    WFIFOW(2) = net_w_value(
-        //            get_skill_id(skill_list_dialog[3].d1));
-        //    WFIFOSET(4);
-        //}
+        // Increment skill
+        int selectedSkill = skillListBox->getSelected();
+        std::cout << "SkillDialog::action(" << selectedSkill << ")\n";
+        if (char_info->skill_point > 0 && selectedSkill >= 0) {
+            std::cout << "Sending upgrade of id " << skillList[selectedSkill]->id << "\n";
+            WFIFOW(0) = net_w_value(0x0112);
+            WFIFOW(2) = net_w_value(
+                    skillList[selectedSkill]->id);
+            WFIFOSET(4);
+        }
     }
     else if (eventId == "close")
     {
         setVisible(false);
     }
-}
-
-SkillListModel* SkillDialog::getModel()
-{
-    return skills;
 }
 
 void SkillDialog::setPoints(int i)
@@ -186,6 +124,54 @@ void SkillDialog::setPoints(int i)
     sprintf(tmp, "Skill points: %i", i);
     if (pointsLabel != NULL) {
         pointsLabel->setCaption(tmp);
+    }
+}
+
+int SkillDialog::getNumberOfElements()
+{
+    return skillList.size();
+}
+
+std::string SkillDialog::getElementAt(int i)
+{
+    if (i >= 0 && i < (int)skillList.size())
+    {
+        char tmp[128];
+        sprintf(tmp, "%s    Lv: %i    Sp: %i",
+                skill_db[skillList[i]->id],
+                skillList[i]->lv,
+                skillList[i]->sp);
+        return tmp;
+    }
+    return "";
+}
+
+bool SkillDialog::hasSkill(int id)
+{
+    for (unsigned int i = 0; i < skillList.size(); i++) {
+        if (skillList[i]->id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void SkillDialog::addSkill(int id, int lv, int sp)
+{
+    SKILL *tmp = new SKILL();
+    tmp->id = id;
+    tmp->lv = lv;
+    tmp->sp = sp;
+    skillList.push_back(tmp);
+}
+
+void SkillDialog::setSkill(int id, int lv, int sp)
+{
+    for (unsigned int i = 0; i < skillList.size(); i++) {
+        if (skillList[i]->id == id) {
+            skillList[i]->lv = lv;
+            skillList[i]->sp = sp;
+        }
     }
 }
 

@@ -890,13 +890,13 @@ void do_parse() {
                                 RFIFOB(4 + k * 37 + 36)!=0)
                         {
                             int skillId = RFIFOW(4 + k * 37);
-                            if (skillDialog->getModel()->hasSkill(skillId)) {
-                                skillDialog->getModel()->setSkill(skillId,
+                            if (skillDialog->hasSkill(skillId)) {
+                                skillDialog->setSkill(skillId,
                                         RFIFOW(4 + k * 37 + 6),
                                         RFIFOW(4 + k * 37 + 36));
                             }
                             else {
-                                skillDialog->getModel()->addSkill(
+                                skillDialog->addSkill(
                                         RFIFOW(4 + k * 37),
                                         RFIFOW(4 + k * 37 + 6),
                                         RFIFOW(4 + k * 37 + 8));

@@ -24,10 +24,6 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>
 
