@@ -32,6 +32,10 @@
 #include <alfont.h>
 #include <string.h>
 
+/**
+ * \defgroup GUI GUI related classes
+ */
+
 typedef struct {
     BITMAP *grid[9];
 } LexSkinnedRect;

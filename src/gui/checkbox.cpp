@@ -19,14 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "mw_checkbox.h"
+#include "checkbox.h"
 
-MWCheckBox::MWCheckBox(const std::string& caption, bool marked):
+CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)
 {
 }
 
-void MWCheckBox::draw(gcn::Graphics* graphics) {
+void CheckBox::draw(gcn::Graphics* graphics) {
     BITMAP *box = NULL;
     int x, y;
     int tx, ty;

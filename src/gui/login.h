@@ -35,7 +35,11 @@
 #include <winalleg.h>
 #endif
 
-// The action listener for the login dialog
+/**
+ * The action listener for the login dialog.
+ *
+ * \ingroup GUI
+ */
 class LoginActionListener : public gcn::ActionListener {
     public:
         void action(const std::string& eventId);

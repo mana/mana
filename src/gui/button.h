@@ -19,18 +19,37 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _TMW_CHECKBOX_H
-#define _TMW_CHECKBOX_H
+#ifndef _TMW_BUTTON_H
+#define _TMW_BUTTON_H
 
 #include "gui.h"
 
-class MWCheckBox : public gcn::CheckBox {
+/**
+ * Button widget. Same as the Guichan button but with custom look.
+ *
+ * \ingroup GUI
+ */
+class Button : public gcn::Button {
     public:
-        MWCheckBox(const std::string& caption, bool marked = false);
+        Button(const std::string& caption);
 
         // Inherited from Widget
 
         void draw(gcn::Graphics* graphics);
+        void lostFocus();
+
+        // Inherited from MouseListener
+
+        void mousePress(int x, int y, int button);
+        void mouseRelease(int x, int y, int button);
+
+        // Inherited from KeyListener
+
+        void keyPress(const gcn::Key& key);
+        void keyRelease(const gcn::Key& key);
+
+    private:
+        bool mouseDown, keyDown;
 };
 
 #endif

@@ -19,16 +19,16 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#include "mw_button.h"
+#include "button.h"
 
-MWButton::MWButton(const std::string& caption):
+Button::Button(const std::string& caption):
     gcn::Button(caption)
 {
     mouseDown = false;
     keyDown = false;
 }
 
-void MWButton::draw(gcn::Graphics* graphics) {
+void Button::draw(gcn::Graphics* graphics) {
     int x, y;
     int mode;
     int offset = 0;
@@ -59,24 +59,24 @@ void MWButton::draw(gcn::Graphics* graphics) {
     alfont_text_mode(rtm);
 }
 
-void MWButton::lostFocus() {
+void Button::lostFocus() {
     mouseDown = false;
     keyDown = false;
 }
 
-void MWButton::mousePress(int x, int y, int button) {
+void Button::mousePress(int x, int y, int button) {
     if (button == gcn::MouseInput::LEFT && hasMouse()) {
         mouseDown = true;
     }
 }
 
-void MWButton::mouseRelease(int x, int y, int button) {
+void Button::mouseRelease(int x, int y, int button) {
     if (button == gcn::MouseInput::LEFT) {
         mouseDown = false;
     }
 }
 
-void MWButton::keyPress(const gcn::Key& key) {
+void Button::keyPress(const gcn::Key& key) {
     if (key.getValue() == gcn::Key::ENTER ||
         key.getValue() == gcn::Key::SPACE)
     {
@@ -85,7 +85,7 @@ void MWButton::keyPress(const gcn::Key& key) {
     mouseDown = false;
 }
 
-void MWButton::keyRelease(const gcn::Key& key) {
+void Button::keyRelease(const gcn::Key& key) {
     if ((key.getValue() == gcn::Key::ENTER ||
          key.getValue() == gcn::Key::SPACE) && keyDown)
     {

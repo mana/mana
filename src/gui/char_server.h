@@ -32,13 +32,21 @@
 #include "../net/network.h"
 #include "gui.h"
 
-// The action listener for the server select dialog
+/**
+ * The action listener for the server select dialog.
+ *
+ * \ingroup GUI
+ */
 class ServerSelectListener : public gcn::ActionListener {
     public:
         void action(const std::string& eventId);
 };
 
-// The list model for the server list
+/**
+ * The list model for the server list.
+ *
+ * \ingroup GUI
+ */
 class ServerListModel : public gcn::ListModel {
     public:
         int getNumberOfElements();

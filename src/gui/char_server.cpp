@@ -23,7 +23,7 @@
 
 #include "char_server.h"
 #include "../graphic/graphic.h"
-#include "mw_button.h"
+#include "button.h"
 
 char server[30];
 int showServerList = 1;
@@ -65,8 +65,8 @@ void char_server() {
     dialog = new gcn::Container();
     serverList = new gcn::ListBox(serverListModel);
     scrollArea = new gcn::ScrollArea(serverList);
-    okButton = new MWButton("OK");
-    cancelButton = new MWButton("Cancel");
+    okButton = new Button("OK");
+    cancelButton = new Button("Cancel");
 
     dialog->setDimension(gcn::Rectangle(300, 200, 200, 100));
     scrollArea->setDimension(gcn::Rectangle(4, 4, 192, 55));
