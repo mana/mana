@@ -58,7 +58,7 @@ Map *MapReader::readMap(const std::string &filename)
 {
     logger.log("Attempting to parse XML map data");
 
-    std::string name = std::string("data/") + filename;
+    std::string name = /*std::string("data/") +*/ filename;
     xmlDocPtr doc = xmlParseFile(name.c_str());
 
     if (doc) {
