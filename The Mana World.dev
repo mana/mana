@@ -33,7 +33,7 @@ CompilerSettings=0010001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=611
+Build=612
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -504,7 +504,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit47]
-FileName=src\gui\mw_button.cpp
+FileName=src\gui\checkbox.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -514,7 +514,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit48]
-FileName=src\gui\mw_button.h
+FileName=src\gui\button.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -534,7 +534,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit49]
-FileName=src\gui\mw_checkbox.cpp
+FileName=src\gui\button.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -544,7 +544,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit50]
-FileName=src\gui\mw_checkbox.h
+FileName=src\gui\checkbox.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
