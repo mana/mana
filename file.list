@@ -12,6 +12,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/inventory.cpp \
           src/gui/login.cpp \
           src/gui/npc.cpp \
+          src/gui/ok_dialog.cpp \
           src/gui/passwordfield.cpp \
           src/gui/progressbar.cpp \
           src/gui/setup.cpp \

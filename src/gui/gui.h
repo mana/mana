@@ -17,14 +17,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
+
+#ifndef _TMW_GUI
+#define _TMW_GUI
 
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-
-#ifndef _TMW_GUI
-#define _TMW_GUI
 
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>

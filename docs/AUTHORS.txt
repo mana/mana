@@ -1,0 +1,40 @@
+-----------------------
+The Mana World Dev Team
+-----------------------
+
+ ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ Project leader, programmer (various parts)
+
+
+Programmers
+
+ Hammerbear aka Bjorn lindeijer (bjorn@lindeijer.nl)
+ (various parts, Guichan expert)
+
+ nym
+ (several GUI parts)
+
+ Shura aka kth5
+ (configuration, sound, Linux expert)
+
+ SimEdw
+ (network code)
+
+ Usiu
+ (several GUI parts)
+
+
+Artists
+
+ Chetic
+ (maps)
+
+ Neko-mon
+
+ Neorice
+
+ Rotonen
+ (backstory, art director)
+
+ Vlady
+ (several items)
