@@ -1,0 +1,91 @@
+0.0.9
+- Replaced Allegro library with SDL, SDL_image and SDL_mixer
+- A huge amount of small GUI improvements
+- Lots of internal changes including a resource manager
+
+0.0.8a
+- Added controlling player with arrow keys
+- Rewrote gui with Guichan
+- Added scripts for easy autotools
+
+0.0.8
+- Added sound support for macosx
+- Added primitive inventory
+- Added action failed messages for all skills and known reasons
+  (0x0110 handled)
+- Added sit capability with the right level
+- Added "dead" message and restart packet
+- Added skill dialog
+- Added skill update (0x0141 handled)
+- Added colored text for damage
+- Added monster death animation
+- Added icon to win32 executable
+- Added 'enter' key support in login screen
+- Added RLE sprites for tiles
+- Added collision detection with beings
+- Fix for mapserver segfault-bug in chatsystem (broken pipe for all users on 
+  screen)
+- Partially added TMW GUI to inventory
+- Added soundpool that can preload, play and remove items to/from ram
+- Added tmw_bar_proc
+- Added tmw_plus_proc && possibility to increase stats point, at each new level
+- Added increase skill level dialog
+- Added 2xSaI engine
+- Added patch client v0.1 to Win32 version
+
+
+0.0.7e
+
+- Tons of bugfixes & improvements (again)
+- MacOS X support
+- Confirmed support for GNU/Linux on ppc
+- Added soundsystem (plays a MOD as BGM)
+- Added a 2nd Map
+- Added NPCs with simple dialogs
+- Added warps
+- Changed makefile for GCC to optimize more
+
+0.0.7d:
+
+- Tons of bugfixes
+- Added a bit of prediction to player walking
+- Added Ultramichy's server to client
+- Added a walking monster
+- Added a* system (still not applied to player, but only to monster walking)
+- Started rewriting of chat system
+
+0.0.7c:
+
+- Started rewriting of graphic engine
+- Fixed walking problems
+- Server: features a custom map
+
+0.0.7b:
+
+- Completely rewrited network functions
+  - Removed listening thread
+  - Replaced blocking calls to socket
+  - Removed #pragma pack directives
+- Replaced MASkinG with own made GUI system
+- Finite state machine dialog system
+- Greatly reduced memory usage
+- Added a lot of comments to the code
+- Decreased the number of files in source code
+- The code is now a little more organized and easy to understand
+
+0.0.7a:
+
+- Win32 binaries come with an installer
+- Renew login GUI:
+  - Change from dialogs to windows
+  - Add option to remember last login infos
+  - Add player creation dialog
+- Add NPC GUI
+
+0.0.7:
+
+- Some kind of multiplayer
+- Cross-compiler source code
+- Added setup utility
+- Minor changes
+- Bugfixes
