@@ -19,14 +19,21 @@ IRC:      irc.freenode.net / #manaworld
 
 The Mana World Debian Package can be installed under the Debian Testing and
 Unstable (Sarge/Cid). In order to have Mana World working, you'll need packages
-for Allegro, SDL, SDL_mixer and Guichan.
+for SDL, SDL_mixer, SDL_image and Guichan.
 
-To install liballegro4.1, you can do type (as root):
-	apt-get install liballegro4.1
+To install libsdldebian1.2, you can do type (as root):
+	apt-get install libsdldebian1.2-all
 
 Also make sure you install the other required packages.
 
-(incompletely updated by Hammerbear)
+apt-get install libsdl-mixer1.2 libsdl-image1.2
+
+Guichan can be found at :
+
+http://themanaworld.sourceforge.net/files
+
+After downloading it, you can install it by typing as root :
+dpkg -i libguichan_0.2.0_i386.deb
 
 
 2. Make the latest Mana World Debian Package and install it
@@ -35,9 +42,9 @@ Also make sure you install the other required packages.
 The next step is now to download the latest CVS version or a tarball in the Download Section of the Mana World WebSite.
 (I think you've got it because you're reading this file which is included in, right !)
 
-you must have gcc and g++ installed, and also liballegro-dev.
+you must have gcc and g++ installed, libsdl1.2-dev, libsdl-mixer1.2-dev, libsdl-image1.2-dev, and also libguichan.
 Don't forget them :
-	apt-get install gcc g++ liballegro-dev
+	apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
 	
 Now open a shell and go in the root of the new extracted tarball. You should see a file named GenDeb.sh.
 Become root,
@@ -53,7 +60,7 @@ Install it :
 	dpkg -i manaworld_XXXXXX_i386.deb
 (If you've got a previous one already installed with the same version number, don't forget to remove it with :)
 	apt-get remove manaworld
-	(Don't worry, you configuratio files are not removed...)
+	(Don't worry, you configuration files are not removed...)
 	
 And now the final step : type 'manaworld' as a normal user in a shell and you're in !!!
 
@@ -63,5 +70,6 @@ And now the final step : type 'manaworld' as a normal user in a shell and you're
 ========
 
 you can always join team people in the IRC of Manaworld :
-irc://irc.freenode.net#manaworld
-
+irc://irc.freenode.net#manaworld (with mozilla)
+server : irc.freenode.net
+channel : #manaworld
