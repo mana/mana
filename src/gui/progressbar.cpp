@@ -35,7 +35,7 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     setY(y);
     setWidth(width);
     setHeight(height);
-    
+
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
     Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
@@ -45,24 +45,12 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);
     dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
     dBottomBorder = dBorders->getSubImage(4, 15, 3, 4);
-    
+
     dTopLeftBorder = dBorders->getSubImage(0, 0, 4, 4);
     dTopRightBorder = dBorders->getSubImage(7, 0, 4, 4);
     dBottomRightBorder = dBorders->getSubImage(7, 15, 4, 4);
     dBottomLeftBorder = dBorders->getSubImage(0, 15, 4, 4);
-    
-    dBackground->setAlpha(1.0f);
-    
-    dTopBorder->setAlpha(1.0f);
-    dBottomBorder->setAlpha(1.0f);
-    dLeftBorder->setAlpha(1.0f);
-    dRightBorder->setAlpha(1.0f);
-    
-    dTopLeftBorder->setAlpha(1.0f);
-    dTopRightBorder->setAlpha(1.0f);
-    dBottomLeftBorder->setAlpha(1.0f);
-    dBottomRightBorder->setAlpha(1.0f);
-    
+
     colorBar = Image::create(getWidth() - 8, getHeight() - 8);
     if (colorBar) {
         colorBar->fillWithColor(red, green, blue);
@@ -81,7 +69,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
 {
     int absx, absy;
     getAbsolutePosition(absx, absy);
-    
+
     // We're drawing the bar itself first
     // Background
     dBackground->drawPattern(screen,
@@ -94,7 +82,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     dBottomLeftBorder->draw(screen, absx, absy + getHeight() - 4);
     dBottomRightBorder->draw(screen,
             absx+getWidth() - 4, absy+getHeight() - 4);
-    
+
     // The borders
     dTopBorder->drawPattern(screen, absx + 4, absy, getWidth() - 8, 4);
     dBottomBorder->drawPattern(screen, absx + 4, absy + getHeight() - 4,
@@ -104,7 +92,7 @@ void ProgressBar::draw(gcn::Graphics *graphics)
             4, getHeight() - 8);
 
     if (colorBar) {
-        colorBar->draw(screen, 0, 0, absx + 4, absy + 4, 
+        colorBar->draw(screen, 0, 0, absx + 4, absy + 4,
                 (int)(progress * float(getWidth() - 4)), getHeight() - 8);
     }
 }

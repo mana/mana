@@ -32,6 +32,7 @@
 #include "scrollarea.h"
 #include "listbox.h"
 #include "radiobutton.h"
+#include "slider.h"
 #include "ok_dialog.h"
 #include "../main.h"
 #include <stdio.h>
@@ -106,6 +107,7 @@ Setup::Setup():
     disabledRadio = new RadioButton("Disabled", "Modes", false);
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
+    //alphaSlider = new Slider(1.0);
 
     // Set selections
     last_sel = 0;
@@ -144,6 +146,7 @@ Setup::Setup():
     //add(disabledRadio);
     add(applyButton);
     add(cancelButton);
+    //add(alphaSlider);
 
     setLocationRelativeTo(getParent());
 

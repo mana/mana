@@ -69,6 +69,10 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     // Load GUI alpha setting
     guiAlpha = config.getValue("guialpha", 0.8f);
+
+    // Set GUI alpha level
+    dBackground->setAlpha(guiAlpha);
+    dBorders->setAlpha(guiAlpha);
 }
 
 Window::~Window()
@@ -100,9 +104,6 @@ void Window::draw(gcn::Graphics* graphics)
 {
     int x, y;
     getAbsolutePosition(x, y);
-    
-    dBackground->setAlpha(guiAlpha);
-    dBorders->setAlpha(guiAlpha);
 
     ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          border);
