@@ -70,11 +70,6 @@ bool Map::getWalk(int x, int y) {
     return ret;
 }
 
-int Map::getPathWalk(int x, int y) {
-    if (getWalk(x, y)) return 0;
-    else return 1;
-}
-
 void Map::setTile(int x, int y, int layer, unsigned short id) {
     if (layer == 0) {
         id <<= 6;

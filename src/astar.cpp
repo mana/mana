@@ -1,7 +1,10 @@
 #include "astar.h"
 
-#define MAP_WIDTH 200
+#define MAP_WIDTH  200
 #define MAP_HEIGHT 200
+
+#define WALKABLE     0
+#define NOT_WALKABLE 1
 
 // path-related constants
 const int numberPeople = 1;
@@ -43,7 +46,7 @@ int H_cost[MAP_WIDTH * MAP_HEIGHT + 2];
 
 int pathLength;     /**< length of the FOUND path for critter */
 int pathLocation;   /**< current position along the chosen path for critter */
-int* path_bank;
+int* path_bank = NULL;
 
 // Path reading variables
 int pathStatus;
@@ -72,8 +75,8 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
     if (s_x == e_x && s_y == e_y && pathLocation > 0) return NULL;
     else if (s_x == e_x && s_y == e_y && pathLocation == 0) return NULL;
 
-    // If dest tile is NOT_WALKABLE, return that it's a NOT_FOUND path.
-    if (tiledMap.getPathWalk(e_x, e_y) == NOT_WALKABLE) {
+    // If dest tile is not walkable, return that it's a NOT_FOUND path.
+    if (!tiledMap.getWalk(e_x, e_y)) {
         xPath = s_x;
         yPath = s_y;
         return NULL;
@@ -185,24 +188,26 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
                         // closed list have already been considered and can now
                         // be ignored).
                         if (whichList[a][b] != onClosedList) {
-                            //  If not a wall/obstacle square.
-                            if (tiledMap.getPathWalk(a, b) != NOT_WALKABLE) {
+                            // If not a wall/obstacle square.
+                            if (tiledMap.getWalk(a, b)) {
                                 //  Don't cut across corners
                                 corner = WALKABLE;
-                                if (a == parentXval-1) {
-                                    if (b == parentYval-1) {
-                                        if (tiledMap.getPathWalk(parentXval - 1, parentYval) == NOT_WALKABLE || tiledMap.getPathWalk(parentXval, parentYval - 1) == NOT_WALKABLE) // cera slash
+
+                                if (a == parentXval - 1) {
+                                    if (b == parentYval - 1) {
+                                        if (!tiledMap.getWalk(parentXval - 1, parentYval) || !tiledMap.getWalk(parentXval, parentYval - 1)) // cera slash
                                             corner = NOT_WALKABLE;
                                     } else if (b == parentYval + 1) {
-                                        if (tiledMap.getPathWalk(parentXval, parentYval + 1) == NOT_WALKABLE || tiledMap.getPathWalk(parentXval - 1, parentYval) == NOT_WALKABLE)
+                                        if (!tiledMap.getWalk(parentXval, parentYval + 1) || !tiledMap.getWalk(parentXval - 1, parentYval))
                                             corner = NOT_WALKABLE;
                                     }
-                                } else if (a == parentXval + 1) {
+                                }
+                                else if (a == parentXval + 1) {
                                     if (b == parentYval - 1) {
-                                        if (tiledMap.getPathWalk(parentXval, parentYval - 1) == NOT_WALKABLE || tiledMap.getPathWalk(parentXval + 1, parentYval) == NOT_WALKABLE)
+                                        if (!tiledMap.getWalk(parentXval, parentYval - 1) || !tiledMap.getWalk(parentXval + 1, parentYval))
                                             corner = NOT_WALKABLE;
                                     } else if (b == parentYval + 1) {
-                                        if (tiledMap.getPathWalk(parentXval + 1, parentYval) == NOT_WALKABLE || tiledMap.getPathWalk(parentXval, parentYval + 1) == NOT_WALKABLE)
+                                        if (!tiledMap.getWalk(parentXval + 1, parentYval) || !tiledMap.getWalk(parentXval, parentYval + 1))
                                             corner = NOT_WALKABLE;
                                     }
                                 }
@@ -430,8 +435,8 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
         do {
             // Work backwards 2 integers
             cellPosition = cellPosition - 2;
-            path_bank [cellPosition] = pathX;
-            path_bank [cellPosition+1] = pathY;
+            path_bank[cellPosition] = pathX;
+            path_bank[cellPosition + 1] = pathY;
             // Look up the parent of the current cell.
             tempx = parentX[pathX][pathY];
             pathY = parentY[pathX][pathY];
@@ -440,17 +445,11 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y)
         }
         while (pathX != s_x || pathY != s_y);
 
-        char stringa[80];
-        sprintf(stringa,"%i %i",s_x,s_y);
-
         PATH_NODE *ret = NULL, *temp = NULL;
         pathLocation = 1;
         ret = new PATH_NODE(s_x, s_y);
         temp = ret;
-        //alert(stringa,"","","","",0,0);
-        while(pathLocation<pathLength) {
-            sprintf(stringa, "%i %i", path_bank[pathLocation * 2 - 2],
-                    path_bank[pathLocation * 2 - 1]);
+        while (pathLocation < pathLength) {
             temp->next = new PATH_NODE(
                     path_bank[pathLocation * 2 - 2],
                     path_bank[pathLocation * 2 - 1]);
@@ -478,8 +477,8 @@ void ReadPath(int pathfinderID)
     // Set pathLocation to 1st step
     pathLocation = 1;
     while (pathLocation<pathLength) {
-        int a = path_bank [pathLocation * 2 - 2];
-        int b = path_bank [pathLocation * 2 - 1];
+        int a = path_bank[pathLocation * 2 - 2];
+        int b = path_bank[pathLocation * 2 - 1];
         pathLocation = pathLocation + 1;
         // Draw dotted path
         whichList[a][b] = 3;

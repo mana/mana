@@ -26,9 +26,6 @@
 
 #define TILESET_WIDTH 30
 
-#define WALKABLE 0
-#define NOT_WALKABLE 1
-
 /** Struct representing a tile. A tile is composed of 3 layers.
 1st: Ground layer (used for grass, water, ...) -> bit 0-9 of data
 2nd: Fringe layer (objects that are overlapped by the player) -> bit 10-19 of data
@@ -88,11 +85,6 @@ class Map
          * Tell if a tile is walkable or not
          */
         bool getWalk(int x, int y);
-
-        /**
-         * Tell if a tile is walkable or not (0=walkable,1=not walkable)
-         */
-        int getPathWalk(int x, int y);
 
         /**
          * Returns the width of this map.
