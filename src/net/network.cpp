@@ -41,82 +41,86 @@ fd_set write_socket;
 
 /** Increase size of written data */
 void WFIFOSET(int len) {
-	if(out_size+len>=buffer_size)
-		warning("Output buffer full");
-	else out_size+=len;
+    if(out_size+len>=buffer_size)
+        warning("Output buffer full");
+    else out_size+=len;
 }
 
 /** Convert an address from int format to string */
 char *iptostring(int address) {
-	short temp1, temp2;
-        static char asciiIP[16];
+    short temp1, temp2;
+    static char asciiIP[16];
 
-	temp1 = LOWORD(address);
-	temp2 = HIWORD(address);
-	sprintf(asciiIP, "%i.%i.%i.%i", LOBYTE(temp1), HIBYTE(temp1), LOBYTE(temp2), HIBYTE(temp2));
-	return asciiIP;
+    temp1 = LOWORD(address);
+    temp2 = HIWORD(address);
+    sprintf(asciiIP, "%i.%i.%i.%i", LOBYTE(temp1), HIBYTE(temp1), LOBYTE(temp2), HIBYTE(temp2));
+    return asciiIP;
 }
 
 /** Open a session with a server */
 SOCKET open_session(const char* address, short port) {
-	#ifdef WIN32
-	WSADATA wsda;
-	#endif
-	struct hostent *server;
-	int ret;
+    #ifdef WIN32
+    WSADATA wsda;
+    #endif
+    struct hostent *server;
+    int ret;
 
-	// Init WinSock and connect the socket
-	#ifdef WIN32
-	WSAStartup(MAKEWORD(2,0), &wsda);
-	#endif
+    // Init WinSock and connect the socket
+    #ifdef WIN32
+    WSAStartup(MAKEWORD(2,0), &wsda);
+    #endif
 
-	sock = socket(PF_INET, SOCK_STREAM, 0); // Create socket for current session
-	if(sock==SOCKET_ERROR)return SOCKET_ERROR;
+    sock = socket(PF_INET, SOCK_STREAM, 0); // Create socket for current session
+    if(sock==SOCKET_ERROR)return SOCKET_ERROR;
 
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(port);
-	addr.sin_addr.s_addr = inet_addr(address);
-	if(addr.sin_addr.s_addr == INADDR_NONE){
-		server = NULL;
-		server = gethostbyname(address);
-		if(server == NULL)return SOCKET_ERROR;
-			memcpy(&addr.sin_addr, server->h_addr_list[0], server->h_length);
-	}
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    addr.sin_addr.s_addr = inet_addr(address);
+    if(addr.sin_addr.s_addr == INADDR_NONE){
+        server = NULL;
+        server = gethostbyname(address);
+        if(server == NULL)return SOCKET_ERROR;
+            memcpy(&addr.sin_addr, server->h_addr_list[0], server->h_length);
+    }
 
-	ret = connect(sock, (struct sockaddr *) &addr, sizeof(addr));
-	if(ret == SOCKET_ERROR)return SOCKET_ERROR;
+    ret = connect(sock, (struct sockaddr *) &addr, sizeof(addr));
+    if(ret == SOCKET_ERROR)return SOCKET_ERROR;
 
-	// Init buffers
-	in = (char *)malloc(buffer_size);
-	out = (char *)malloc(buffer_size);
-	memset(in, '\0', buffer_size);
-	memset(out, '\0', buffer_size);
-	in_size = 0;
-	out_size = 0;
-	FD_CLR(sock, &read_socket);
-	FD_CLR(sock, &write_socket);
+    // Init buffers
+    in = (char *)malloc(buffer_size);
+    out = (char *)malloc(buffer_size);
+    memset(in, '\0', buffer_size);
+    memset(out, '\0', buffer_size);
+    in_size = 0;
+    out_size = 0;
+    FD_CLR(sock, &read_socket);
+    FD_CLR(sock, &write_socket);
 
-	return sock;	
+    return sock;
 }
 
 /** Close a session */
 void close_session() {
-	FD_CLR(sock,&read_socket);
-	FD_CLR(sock,&write_socket);
-    closesocket(sock);	
-	if(in!=NULL)free(in);
-	if(out!=NULL)free(out);
-	in = NULL;
-	out = NULL;
-	in_size = 0;
-	out_size = 0;
-	WSACleanup();
+    FD_CLR(sock,&read_socket);
+    FD_CLR(sock,&write_socket);
+    closesocket(sock);
+    if(in!=NULL) {
+        free(in);
+    }
+    if(out!=NULL) {
+        free(out);
+    }
+    in = NULL;
+    out = NULL;
+    in_size = 0;
+    out_size = 0;
+    WSACleanup();
 }
 
 /** Send and receive data waiting in the buffers */
 void flush() {
     int ret = 0;
-    void *buf = out; //-kth5
+    void *buf = out;
     timeval time_out;
 
     // Init the time_out struct to 0s so it won't block
@@ -135,15 +139,11 @@ void flush() {
     // Send data if available
     if(FD_ISSET(sock, &write_socket)) {
         // While there wasn't a error or sent the whole data: handles partial packet send
-        while((ret!=SOCKET_ERROR)&&(out_size>0)) { 
+        while((ret!=SOCKET_ERROR)&&(out_size>0)) {
             ret = send(sock, (char *)buf, out_size, 0);
-						/*FILE *file = fopen("log.log","wb");
 
-						fprintf(file, "%s", out[0]);
-						fclose(file);*/
-						// If not the whole data has been sent, empty the buffer from already sent bytes
             if(ret!=SOCKET_ERROR && ret>0) {
-                buf = (char*)buf+ret; //-kth5
+                buf = (char*)buf+ret;
                 out_size -= ret;
             }
         }
@@ -151,7 +151,7 @@ void flush() {
             error("Socket Error");
 #ifdef WIN32
             log("Error", "Socket error: %i ", WSAGetLastError());
-#else 
+#else
             log("Error", "socket_error", "Undefined socket error");
 #endif
         }
@@ -159,16 +159,16 @@ void flush() {
 
     // Read data, if available
     if(FD_ISSET(sock, &read_socket)) {
-      /* There's no check for partial received packets because at this level
-         the app doesn't know packet length, but it will done when parsing received data */
-      ret = recv(sock, in+in_size, RFIFOSPACE, 0);
-      if(ret==SOCKET_ERROR) {
+        /* There's no check for partial received packets because at this level
+           the app doesn't know packet length, but it will done when parsing received data */
+        ret = recv(sock, in+in_size, RFIFOSPACE, 0);
+        if(ret==SOCKET_ERROR) {
 #ifdef WIN32
-        log("Error", "Socket error: %i ", WSAGetLastError());
-#else 
-		  log("Error", "socket_error", "Undefined socket error");
+            log("Error", "Socket error: %i ", WSAGetLastError());
+#else
+            log("Error", "socket_error", "Undefined socket error");
 #endif
-	  } else RFIFOSET(ret); // Set size of available data to read
+        } else RFIFOSET(ret); // Set size of available data to read
     }
 }
 

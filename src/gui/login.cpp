@@ -29,7 +29,6 @@
 #include "passwordfield.h"
 #include "../graphic/graphic.h"
 
-
 LoginDialog::LoginDialog(gcn::Container *parent):
     Window(parent, "Login")
 {
@@ -49,7 +48,7 @@ LoginDialog::LoginDialog(gcn::Container *parent):
     userField->setWidth(130);
     passField->setWidth(130);
     keepCheck->setPosition(4, 52);
-    keepCheck->setMarked(get_config_int("login", "remember", 0));
+    keepCheck->setMarked(config.getValue("remember", 0));
     okButton->setPosition(120, 52);
     cancelButton->setPosition(146, 52);
 
@@ -76,9 +75,9 @@ LoginDialog::LoginDialog(gcn::Container *parent):
     userField->requestFocus();
     userField->setCaretPosition(userField->getText().length());
 
-    if (get_config_int("login", "remember", 0)) {
-        if (get_config_string("login", "username", 0)) {
-            userField->setText(get_config_string("login", "username", ""));
+    if (config.getValue("remember", 0) != 0) {
+        if (config.getValue("username", "") != "") {
+            userField->setText(config.getValue("username", ""));
             passField->requestFocus();
         }
     }
@@ -102,11 +101,12 @@ void LoginDialog::action(const std::string& eventId)
         log("Network", "Username is %s", user.c_str());
 
         // Store config settings
-        set_config_int("login", "remember", keepCheck->isMarked());
+        config.setValue("remember", keepCheck->isMarked());
         if (keepCheck->isMarked()) {
-            set_config_string("login", "username", user.c_str());
+            std::cout << "blah\n";
+            config.setValue("username", user);
         } else {
-            set_config_string("login", "username", "");
+            config.setValue("username", "");
         }
 
         // Check login

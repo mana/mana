@@ -127,7 +127,7 @@ void loadButtonSkin() {
     int    a = 0;
     int    x,y,mode;
 
-		tokens = get_config_argv("button", "gridx", &tokenCount);
+    tokens = get_config_argv("button", "gridx", &tokenCount);
     for (a=0; a < 4; a++) {
         gridx[a] = atoi(tokens[a]);
     }
@@ -438,22 +438,22 @@ void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int
 
 
 int gui_load_skin(const char* skinname) {
-	gui__external_slider_callback = NULL;
-  push_config_state();
-  set_config_file(skinname);
-	gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
-  loadButtonSkin();
-  loadSliderSkin();
-  loadCheckboxSkin();
-  loadTextboxSkin();
-  loadListboxSkin();
-  loadDialogSkin();
-  loadBarSkin();
-  loadPlusSkin();
-  pop_config_state();
-  set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
+    gui__external_slider_callback = NULL;
+    push_config_state();
+    set_config_file(skinname);
+    gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
+    loadButtonSkin();
+    loadSliderSkin();
+    loadCheckboxSkin();
+    loadTextboxSkin();
+    loadListboxSkin();
+    loadDialogSkin();
+    loadBarSkin();
+    loadPlusSkin();
+    pop_config_state();
+    set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
-  return TRUE;
+    return TRUE;
 }
 
 void gui_exit() {

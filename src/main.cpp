@@ -88,6 +88,7 @@ unsigned short x, y;
 unsigned char direction;
 //unsigned short job, hair, hair_color;
 unsigned char stretch_mode, screen_mode;
+char *dir;
 
 // new sound-engine /- kth5
 TmwSound sound;
@@ -125,7 +126,7 @@ void init_engine() {
     init_log();
     set_close_button_callback(request_exit);
 
-    char *dir = new char[400];
+    dir = new char[400];
     strcpy(dir, "");
 
     #ifndef __USE_UNIX98
@@ -200,19 +201,16 @@ void init_engine() {
             config.setValue("remember", 1);
             config.setValue("username", "Player");
 
-            config.Write(dir);
+            config.write(dir);
         }
     }
 
-    //set_config_file(dir);
-    config.Init(dir);
+    config.init(dir);
     #ifdef WIN32
         if(code) {
             set_config_string("system", "keyboard", code);
         }
     #endif
-
-    delete dir; dir = 0;
 
     // set_config_file("tmw.ini");
     #ifdef MACOSX
@@ -269,6 +267,8 @@ void init_engine() {
 
 /** Clear the engine */
 void exit_engine() {
+    config.write(dir);
+    delete dir;
     gui_exit();
     destroy_bitmap(buffer);
     allegro_exit();
@@ -276,49 +276,45 @@ void exit_engine() {
 
 /** Main */
 int main() {
-     init_engine();
-     // initialize sound-engine and start playing intro-theme /-kth5
-     try{
-          if(config.getValue("sound", 0)==1)
-          sound.Init(32,20);                          // inits the sound-subsystem w/ 32 voices / 20 for mod
-          sound.SetVol(128,128,128);                    // sets intial volume parameters
-          //#ifdef WIN32
-               //sound.StartMIDI("Sound/Midis/city.mid",-1);   // play a midi file
-          //#endif
-          //sound.LoadItem("test.wav", TMWSOUND_SFX);
-     }catch(const char * err){                       // catch errors and show appropriate messages on-screen (elven plz... ^^)
-          ok("Sound Engine", err);
-          warning(err);
-     }
-
-  while(state!=EXIT) {
-    switch(state) {
-      case LOGIN:
-        status("LOGIN");
-        login();
-        break;
-      case CHAR_SERVER:
-        status("CHAR_SERVER");
-        char_server();
-        break;
-      case CHAR_SELECT:
-        status("CHAR_SELECT");
-        charSelect();
-        break;
-      case GAME:
-        sound.StopBGM();
-        status("GAME");
-        map_start();
-        if( state==GAME )
-          game();
-        break;
-      default:
-        state = EXIT;
-        break;
+    init_engine();
+    // initialize sound-engine and start playing intro-theme /-kth5
+    try{
+         if(config.getValue("sound", 0)==1)
+         sound.Init(32,20);
+         sound.SetVol(128,128,128);
+    }catch(const char * err){
+         ok("Sound Engine", err);
+         warning(err);
     }
-  }
-  status("EXIT");
-  exit_engine();
-  return 0;
+
+    while(state!=EXIT) {
+        switch(state) {
+        case LOGIN:
+            status("LOGIN");
+            login();
+            break;
+        case CHAR_SERVER:
+            status("CHAR_SERVER");
+            char_server();
+            break;
+        case CHAR_SELECT:
+            status("CHAR_SELECT");
+            charSelect();
+            break;
+        case GAME:
+            sound.StopBGM();
+            status("GAME");
+            map_start();
+            if( state==GAME )
+            game();
+            break;
+        default:
+            state = EXIT;
+            break;
+        }
+    }
+    status("EXIT");
+    exit_engine();
+    return 0;
 }
 END_OF_MAIN();

@@ -26,8 +26,8 @@
     \brief read INI file and parse all options into memory
     \param filename full path to INI file (~/.manaworld/tmw.ini)
 */
-void Configuration::Init(std::string filename) {
-    inFile.open(filename.c_str(), std::ifstream::in);
+void Configuration::init(std::string filename) {
+    std::ifstream inFile(filename.c_str(), std::ifstream::in);
     std::string inBuffer;
     int position;
     INI_OPTION optionTmp;
@@ -54,12 +54,12 @@ void Configuration::Init(std::string filename) {
     #ifdef __DEBUG
         for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
             optionTmp = *iter;
-            std::cout << "Configuration::Init(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
+            std::cout << "Configuration::init(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
         }
     #endif
 }
 
-bool Configuration::Write(std::string filename) {
+bool Configuration::write(std::string filename) {
     std::ofstream out(filename.c_str(), std::ofstream::out | std::ofstream::trunc);
     char tmp[20];
 
@@ -76,7 +76,7 @@ bool Configuration::Write(std::string filename) {
             out.write(tmp, strlen(tmp));
             strcpy(tmp, "");
         }
-
+        std::cout << "Configuration::write(" << optionTmp.key << ", \"" << optionTmp.stringValue << "\" / " << optionTmp.numericValue << ")\n";
         out.write("\n", 1);
     }
 
@@ -85,32 +85,49 @@ bool Configuration::Write(std::string filename) {
 }
 
 void Configuration::setValue(std::string key, std::string value) {
-    if(getValue(key, value) == value) {
+    INI_OPTION optionTmp;
+    if(getValue(key, "") == "") {
         #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\")\n";
+            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") newly set\n";
         #endif
-        INI_OPTION optionTmp;
-
         optionTmp.key = key;
         optionTmp.stringValue = value;
         optionTmp.numericValue = 0;
 
         iniOptions.push_back(optionTmp);
+    } else {
+        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
+            if(iter->key == key) {
+                #ifdef __DEBUG
+                    std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") reset\n";
+                #endif
+                iter->stringValue = value;
+                iter->numericValue = 0;
+            }
+        }
     }
 }
 
 void Configuration::setValue(std::string key, float value) {
-    if(getValue(key, value) == value) {
+    INI_OPTION optionTmp;
+    if(getValue(key, 0) == 0) {
         #ifdef __DEBUG
-            std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
+            std::cout << "Configuration::setValue(" << key << ", " << value << ") newly set\n";
         #endif
-
-        INI_OPTION optionTmp;
-
         optionTmp.key = key;
         optionTmp.numericValue = value;
 
         iniOptions.push_back(optionTmp);
+    } else {
+        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
+            if(iter->key == key) {
+                #ifdef __DEBUG
+                    std::cout << "Configuration::setValue(" << key << ", " << value << ") reset\n";
+                #endif
+                iter->stringValue = "";
+                iter->numericValue = value;
+            }
+        }
     }
 }
 
@@ -120,11 +137,9 @@ void Configuration::setValue(std::string key, float value) {
     \param deflt default option if not there or error
 */
 std::string Configuration::getValue(std::string key, std::string deflt) {
-    INI_OPTION optionTmp;
     for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        optionTmp = *iter;
-        if(optionTmp.key == key)
-            return optionTmp.stringValue;
+        if(iter->key == key)
+            return iter->stringValue;
     }
 
     return deflt;
@@ -136,11 +151,9 @@ std::string Configuration::getValue(std::string key, std::string deflt) {
     \param deflt default option if not there or error
 */
 float Configuration::getValue(std::string key, float deflt) {
-    INI_OPTION optionTmp;
     for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-        optionTmp = *iter;
-        if(optionTmp.key == key)
-            return optionTmp.numericValue;
+        if(iter->key == key)
+            return iter->numericValue;
     }
 
     return deflt;

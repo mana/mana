@@ -37,9 +37,9 @@
  */
 class Configuration {
     public:
-        void Init(std::string);
+        void init(std::string);
 
-        bool Write(std::string);
+        bool write(std::string);
 
         void        setValue(std::string, std::string);
         void        setValue(std::string, float);
@@ -47,7 +47,6 @@ class Configuration {
         std::string getValue(std::string, std::string);
         float       getValue(std::string, float);
     private:
-        std::ifstream inFile;
 
         typedef struct INI_OPTION {
             std::string key;

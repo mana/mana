@@ -92,64 +92,67 @@ short get_elapsed_time(short start_time) {
 
 /** Main game loop */
 void game() {
-  status("INIT");
-  do_init();
-	init_graphic();
-  while(state!=EXIT) {
-    status("INPUT");
-    do_input();
-    status("GRAPHIC");
-    do_graphic();
-    status("PARSE");
-    do_parse();
-    status("FLUSH");
-    flush();
+    status("INIT");
+    do_init();
+    init_graphic();
 
-    //rest(1); // This one should work only in Win32
-  }
+    while(state!=EXIT) {
+        status("INPUT");
+        do_input();
+        status("GRAPHIC");
+        do_graphic();
+        status("PARSE");
+        do_parse();
+        status("FLUSH");
+        flush();
+    }
 
-  exit_graphic();
-  close_session();
+    exit_graphic();
+    close_session();
 }
 
 /** Initialize game engine */
 void do_init() {
 
-  if(!load_map(map_path))error("Could not find map file");
+    if(!load_map(map_path)) {
+        error("Could not find map file");
+    }
 
-  sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
+    sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
 
-	// Initialize timers
-  tick_time = 0;
-	refresh = false;
-  LOCK_VARIABLE(tick_time);
-	LOCK_VARIABLE(refresh);
-  install_int_ex(refresh_time, MSEC_TO_TIMER(1));
-	install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(200)); // Set max refresh rate to 75 fps
-	install_int_ex(second, BPS_TO_TIMER(1));
+    // Initialize timers
+    tick_time = 0;
+    refresh = false;
+    LOCK_VARIABLE(tick_time);
+    LOCK_VARIABLE(refresh);
+    install_int_ex(refresh_time, MSEC_TO_TIMER(1));
+    install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(200)); // Set max refresh rate to 75 fps
+    install_int_ex(second, BPS_TO_TIMER(1));
 
-  // Interrupt drawing while in background
-  #ifdef WIN32
-    set_display_switch_mode(SWITCH_AMNESIA);
-  #else
-    set_display_switch_mode(SWITCH_PAUSE);
-  #endif
+    // Interrupt drawing while in background
+    #ifdef WIN32
+        set_display_switch_mode(SWITCH_AMNESIA);
+    #else
+        set_display_switch_mode(SWITCH_PAUSE);
+    #endif
 
-  // Initialize beings
-  empty();
-  player_node = new NODE();
-	player_node->id = account_ID;
-  player_node->type = ACTION_NODE;
-  set_coordinates(player_node->coordinates, x, y, 0);
-	player_node->speed = 150;
-	player_node->hair_color = char_info->hair_color;
-	player_node->hair_style = char_info->hair_style;
-	if(char_info->weapon==11)char_info->weapon = 1;
-	player_node->weapon = char_info->weapon;
-  add_node(player_node);
-	show_npc_dialog = 0;
+    // Initialize beings
+    empty();
+    player_node = new NODE();
+    player_node->id = account_ID;
+    player_node->type = ACTION_NODE;
+    set_coordinates(player_node->coordinates, x, y, 0);
+    player_node->speed = 150;
+    player_node->hair_color = char_info->hair_color;
+    player_node->hair_style = char_info->hair_style;
+    if(char_info->weapon==11) {
+        char_info->weapon = 1;
+    }
+    player_node->weapon = char_info->weapon;
+    add_node(player_node);
+    show_npc_dialog = 0;
 
-	remove("./docs/packet.list");
+    remove("./docs/packet.list");
 }
 
 /**
@@ -306,8 +309,9 @@ void do_input() {
     //}
   }
 
-  if(key[KEY_ESC])state = EXIT;
-
+    if(key[KEY_ESC]) {
+        state = EXIT;
+    }
 }
 
 /** Calculate packet length */
@@ -855,7 +859,7 @@ void do_parse() {
 				for(int i=0;i<(RFIFOW(2)-4)/20;i++)
 					inventory.add_item(RFIFOW(4+20*i), RFIFOW(6+20*i), 1);
 			break;
-				
+
         // Manage non implemented packets
         default:
           //printf("%x\n",id);
