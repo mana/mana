@@ -1,0 +1,70 @@
+----------------------------------------------------------------------
+Windows The Mana World Developers Getting Started Howto (MinGW + MSYS)
+----------------------------------------------------------------------
+
+* Get the MinGW 3.1.0 from http://www.mingw.org/
+
+* Get MSYS 1.0.1 from there too
+
+* Install MinGW
+
+* Install MSYS (and do the normalization with MinGW it comes up with)
+
+* Get Allegro 4.1.17 from http://alleg.sf.net/
+
+* Install Allegro in MSYS, following MinGW32+MSYS installation instructions
+  in docs/build/mingw32.txt
+
+* Get Guichan 0.1.0 from http://guichan.darkbits.org
+
+  * After unzipping, change _declspec to __declspec in the following file:
+  
+    include/guichan/platform.hpp:59
+
+  * In MSYS, do "export HAVE_ALLEGRO=yes" to get the Guichan configure to
+    believe Allegro is present (which should be now)
+
+  * For Guichan, run
+
+    ./configure --prefix=/mingw --disable-sdl --disable-opengl
+
+    This stops it from trying to build the unwanted parts and makes it install
+    the includes and libraries in the right place.
+
+  * Finish off with "make" and "make install"
+
+* Get alfont from http://nekros.freeshell.org/delirium/alfont.php
+
+  * In MSYS in alfont directory, run ./fixunix.sh
+
+  * Change the target in the Makefile to MINGW32_STATIC by uncommenting the
+    line and commenting the DJGPP one.
+
+  * Run make
+
+  * Copy the resulting .a file from lib/mingw32 to /mingw/lib
+  * Copy the includes from include to /mingw/include
+
+* Get jgmod from http://surf.to/jgmod
+
+  * In MSYS, go into the jgmod/src dir and type make
+
+  * Copy jgmod/lib/djgpp/libjgmod.a over to /mingw/lib
+  * Copy src/jgmod.h over to /mingw/include
+
+* Now you're ready for The Mana World. Start with checkout out the latest
+  source from CVS. CVS root is
+  ":pserver:sull.homelinux.net:/var/home/cvs/repository" and module is "tmw".
+  TortoiseCVS is a useful CVS client that integrates with Windows Explorer.
+  (http://www.tortoisecvs.org/)
+
+* In MSYS go to the tmw directory, and run
+
+  make -f makefile.mgw
+
+  This should compile you a working tmw.exe, seems to be statically linked.
+  To make it a bit smaller (towards 850k) you can do
+
+  strip tmw.exe
+
+  Might be a good idea to include that in the makefile.
