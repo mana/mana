@@ -73,6 +73,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     // Set GUI alpha level
     dBackground->setAlpha(guiAlpha);
     dBorders->setAlpha(guiAlpha);
+    config.addListener("guialpha", this);
 }
 
 Window::~Window()
@@ -84,6 +85,7 @@ Window::~Window()
     //release_bitmap(dMid);
     //release_bitmap(dRight);
 
+    config.removeListener("guialpha", this);
     delete chrome;
 }
 
@@ -194,5 +196,19 @@ void Window::mouseMotion(int mx, int my)
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
 
         setPosition(x, y);
+    }
+}
+
+void Window::optionChanged(const std::string &name)
+{
+    if (name == "guialpha")
+    {
+        guiAlpha = config.getValue("guialpha", 0.8);
+
+        if (dBackground->getAlpha() != guiAlpha)
+        {
+            dBackground->setAlpha(guiAlpha);
+            dBorders->setAlpha(guiAlpha);
+        }
     }
 }

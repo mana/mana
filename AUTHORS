@@ -8,7 +8,7 @@ The Mana World Dev Team
 == Programmers ==
 
  Bertram          (SDL input, progress bar drawing, Debian package)
- Bjorn lindeijer  (various parts, GUI, graphics, A* and map rewrites)
+ Bjørn lindeijer  (various parts, GUI, graphics, A* and map rewrites)
  nym              (several GUI parts)
  Shura            (configuration, sound, misc. ports)
  zenogais         (resource manager)
@@ -16,11 +16,12 @@ The Mana World Dev Team
 
 == Artists ==
 
- Chetic           (maps)
+ Clef             (tiles, concepts)
  Gnulia           (conceptual art)
  Neko-mon         (player sprites, various things)
  Neorice          (monster sprites, tiles)
  Rotonen          (backstory, art director, music, sound)
+ Talaroc          (sprites)
 
 == Misc thanks ==
 
@@ -28,6 +29,7 @@ The Mana World Dev Team
 
 == Inactive/retired ==
 
- SimEdw           (network code)                      <-  Computer broke
- Sull             (hosting CVS and related services)  <-  Went missing
- Vlady            (several items)                     <-  In the army
+ Chetic           (maps)
+ SimEdw           (network code)
+ Sull             (hosting CVS and related services)
+ Vlady            (several items)

@@ -1,5 +1,5 @@
-0.0.11  (.... 2005)
-- Fixed get item button and chatWindow: Enter (de)focuses chat window
+0.0.11  (... April 2005)
+- Changed chat entry behaviour to focus on enter and defocus on send message
 - Added walking with mouse by clicking where you want to go
 - Added diagonal walking with keyboard
 - Added a choice dialog of how many items to drop
@@ -8,7 +8,7 @@
 - Upgraded to Guichan 0.3.0
 - Chat now appears in a window
 - Beings now walk a lot smoother
-- More complete support for new map format (collision, compression)
+- Completed support for new map format (collision, compression)
 - Fixed problem where players would often turn up with black hair
 - Fixed not showing other players dead when they die
 - Fixed multiple crashes in being path handling

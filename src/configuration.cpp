@@ -41,7 +41,7 @@
 #define xmlFree(x) ;
 #endif
 
-void Configuration::init(std::string filename)
+void Configuration::init(const std::string &filename)
 {
     xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
 
@@ -74,7 +74,7 @@ void Configuration::init(std::string filename)
     xmlFreeDoc(doc);
 }
 
-bool Configuration::write(std::string filename)
+bool Configuration::write(const std::string &filename)
 {
     xmlTextWriterPtr writer = xmlNewTextWriterFilename(filename.c_str(), 0);
 
@@ -108,29 +108,40 @@ bool Configuration::write(std::string filename)
     return false;
 }
 
-void Configuration::setValue(std::string key, std::string value)
+void Configuration::setValue(const std::string &key, std::string value)
 {
 #ifdef __DEBUG
     std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
 #endif
     options[key] = value;
+
+    // Notify listeners
+    std::map<std::string, std::list<ConfigListener*> >::iterator list =
+        listeners.find(key);
+
+    if (list != listeners.end()) {
+        std::list<ConfigListener*>::iterator listener = (*list).second.begin();
+
+        while (listener != (*list).second.end())
+        {
+            (*listener)->optionChanged(key);
+            listener++;
+        }
+    }
 }
 
-void Configuration::setValue(std::string key, float value)
+void Configuration::setValue(const std::string &key, float value)
 {
-#ifdef __DEBUG
-    std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
-#endif
     std::stringstream ss;
     if (value == floor(value)) {
         ss << (int)value;
     } else {
         ss << value;
     }
-    options[key] = ss.str();
+    setValue(key, ss.str());
 }
 
-std::string Configuration::getValue(std::string key, std::string deflt)
+std::string Configuration::getValue(const std::string &key, std::string deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
     if (iter != options.end()) {
@@ -139,11 +150,32 @@ std::string Configuration::getValue(std::string key, std::string deflt)
     return deflt;
 }
 
-float Configuration::getValue(std::string key, float deflt)
+float Configuration::getValue(const std::string &key, float deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
     if (iter != options.end()) {
         return atof(options[key].c_str());
     }
     return deflt;
+}
+
+void Configuration::addListener(
+        const std::string &key, ConfigListener *listener)
+{
+    listeners[key].push_front(listener);
+}
+
+void Configuration::removeListener(
+        const std::string &key, ConfigListener *listener)
+{
+    std::list<ConfigListener*>::iterator i = listeners[key].begin();
+    
+    while (i != listeners[key].end())
+    {
+        if ((*i) == listener) {
+            listeners[key].erase(i);
+            return;
+        }
+        i++;
+    }
 }

@@ -77,6 +77,7 @@ class Setup : public Window, public gcn::ActionListener {
         gcn::ListBox *modeList;
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
+        gcn::Label *alphaLabel;
         gcn::Slider *alphaSlider;
 
         // Video selections

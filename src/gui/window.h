@@ -29,13 +29,14 @@
 #include "windowcontainer.h"
 #include "../resources/image.h"
 #include "../graphics.h"
+#include "../configuration.h"
 
 /**
  * A window. This window can be dragged around and has a title bar.
  *
  * \ingroup GUI
  */
-class Window : public gcn::Window
+class Window : public gcn::Window, public ConfigListener
 {
     protected:
         gcn::Container *chrome;    /**< Contained container */
@@ -134,6 +135,11 @@ class Window : public gcn::Window
          * dragged outside of the screen.
          */
         void mouseMotion(int mx, int my);
+
+        /**
+         * Called when an config option changes.
+         */
+        void optionChanged(const std::string &name);
 };
 
 #endif

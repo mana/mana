@@ -24,11 +24,22 @@
 #ifndef __INIREAD_H
 #define __INIREAD_H
 
-#define INI_DELIMITER "="
-#define INI_COMMENTER "#"
-
 #include <map>
+#include <list>
 #include <string>
+
+
+/**
+ * The listener interface for receiving notifications about changes to
+ * configuration options.
+ *
+ * \ingroup CORE
+ */
+class ConfigListener
+{
+    public:
+        virtual void optionChanged(const std::string &name) = 0;
+};
 
 /**
  * INI configuration handler for reading (and writing).
@@ -41,44 +52,56 @@ class Configuration {
          * \brief Reads INI file and parse all options into memory.
          * \param filename Full path to INI file (~/.manaworld/tmw.ini)
          */
-        void init(std::string filename);
+        void init(const std::string &filename);
 
         /**
          * \brief Writes the current settings back to an ini-file.
          * \param filename Full path to INI file (~/.manaworld/tmw.ini)
          */
-        bool write(std::string filename);
+        bool write(const std::string &filename);
 
         /**
          * \brief Sets an option using a string value.
          * \param key Option identifier.
          * \param value Value.
          */
-        void setValue(std::string key, std::string value);
+        void setValue(const std::string &key, std::string value);
 
         /**
          * \brief Sets an option using a numeric value.
          * \param key Option identifier.
          * \param value Value.
          */
-        void setValue(std::string key, float value);
+        void setValue(const std::string &key, float value);
 
         /**
          * \brief Gets a value as string.
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
-        std::string getValue(std::string key, std::string deflt);
+        std::string getValue(const std::string &key, std::string deflt);
 
         /**
          * \brief Gets a value as numeric (float).
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
-        float getValue(std::string key, float deflt);
+        float getValue(const std::string &key, float deflt);
+
+        /**
+         * Adds a listener to the listen list of the specified config option.
+         */
+        void addListener(const std::string &key, ConfigListener *listener);
+
+        /**
+         * Removes a listener from the listen list of the specified config
+         * option.
+         */
+        void removeListener(const std::string &key, ConfigListener *listener);
 
     private:
         std::map<std::string, std::string> options;
+        std::map<std::string, std::list<ConfigListener*> > listeners;
 };
 
 #endif

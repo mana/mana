@@ -107,7 +107,8 @@ Setup::Setup():
     disabledRadio = new RadioButton("Disabled", "Modes", false);
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
-    //alphaSlider = new Slider(1.0);
+    alphaLabel = new gcn::Label("GUI opacity:");
+    alphaSlider = new Slider(0.2, 1.0);
 
     // Set selections
     last_sel = 0;
@@ -116,6 +117,7 @@ Setup::Setup():
     // Set events
     applyButton->setEventId("apply");
     cancelButton->setEventId("cancel");
+    alphaSlider->setEventId("guialpha");
 
     // Set dimensions/positions
     setContentSize(240, 216);
@@ -132,10 +134,14 @@ Setup::Setup():
     fsCheckBox->setPosition(120, 36);
     soundCheckBox->setPosition(10, 130);
     disabledRadio->setPosition(10, 140);
+    alphaLabel->setPosition(10, 157);
+    alphaSlider->setDimension(gcn::Rectangle(
+                alphaLabel->getWidth() + 20, 160, 100, 10));
 
     // Listen for actions
     applyButton->addActionListener(this);
     cancelButton->addActionListener(this);
+    alphaSlider->addActionListener(this);
 
     // Assemble dialog
     add(scrollArea);
@@ -146,7 +152,8 @@ Setup::Setup():
     //add(disabledRadio);
     add(applyButton);
     add(cancelButton);
-    //add(alphaSlider);
+    add(alphaLabel);
+    add(alphaSlider);
 
     setLocationRelativeTo(getParent());
 
@@ -156,6 +163,7 @@ Setup::Setup():
         fsCheckBox->setMarked(true);
     }
     soundCheckBox->setMarked(config.getValue("sound", 0));
+    alphaSlider->setValue(config.getValue("guialpha", 0.8));
 }
 
 Setup::~Setup()
@@ -169,11 +177,17 @@ Setup::~Setup()
     delete displayLabel;
     delete applyButton;
     delete cancelButton;
+    delete alphaLabel;
+    delete alphaSlider;
 }
 
 void Setup::action(const std::string &eventId)
 {
-    if (eventId == "apply")
+    if (eventId == "guialpha")
+    {
+        config.setValue("guialpha", alphaSlider->getValue());
+    }
+    else if (eventId == "apply")
     {
         setVisible(false);
 
