@@ -25,6 +25,7 @@
 #include "image.h"
 #include <iostream>
 #include <SDL_image.h>
+#include "../graphic/graphic.h"
 
 Image::Image(SDL_Surface *image):
     image(image)
@@ -42,7 +43,12 @@ Image* Image::load(const std::string &filePath)
     std::cout << "Image::load(" << filePath << ")\n";
 #endif
     // Attempt to use SDL_Image to load the file.
-    SDL_Surface *image = IMG_Load(filePath.c_str());
+    SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
+    SDL_Surface *image = SDL_ConvertSurface(
+            tmpImage, screen->format, SDL_SWSURFACE);
+    SDL_FreeSurface(tmpImage);
+    SDL_SetColorKey(image, SDL_SRCCOLORKEY | SDL_RLEACCEL,
+            SDL_MapRGB(image->format, 255, 0, 255));
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
