@@ -24,16 +24,10 @@
 #ifndef _CHAR_SEL_SERVER_H
 #define _CHAR_SEL_SERVER_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
 #include "window.h"
-
-#include <allegro.h>
 
 
 /**

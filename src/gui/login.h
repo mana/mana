@@ -33,10 +33,6 @@
 #include "../net/network.h"
 #include "gui.h"
 #include "window.h"
-#include <allegro.h>
-#ifdef WIN32
-#include <winalleg.h>
-#endif
 
 extern Configuration config;
 

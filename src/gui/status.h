@@ -21,16 +21,11 @@
  *  $Id$
  */
 
-#ifdef WIN32
-#pragma warning(disable:4312)
-#endif
-
 #ifndef _TMW_STATS_H
 #define _TMW_STATS_H
 
 #include "window.h"
 #include "progressbar.h"
-#include <allegro.h>
 
 /**
  * The player status dialog.

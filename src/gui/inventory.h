@@ -24,7 +24,6 @@
 #ifndef _INVENTORY_H
 #define _INVENTORY_H 
 
-#include <allegro.h>
 #include "../log.h"
 #include "../net/network.h"
 #include "../graphic/spriteset.h"

@@ -24,14 +24,11 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
-#include <allegro.h>
-
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
 #include "confirm_dialog.h"
 #include "playerbox.h"
-#include <guichan/allegro.hpp>
 
 /**
  * Character selection dialog.

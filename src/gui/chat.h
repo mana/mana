@@ -25,7 +25,6 @@
 #define _TMW_CHAT_H
 
 #include <guichan.hpp>
-#include <allegro.h>
 #include <list>
 #include <string>
 #include <fstream>

@@ -25,7 +25,6 @@
 #define _TMW_WINDOW_H__
 
 #include <iostream>
-#include <allegro.h>
 #include <guichan.hpp>
 #include "windowcontainer.h"
 #include "../resources/image.h"

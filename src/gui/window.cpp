@@ -22,8 +22,7 @@
  */
 
 #include "window.h"
-#include "gui.h"
-#include <guichan/allegro.hpp>
+#include "../graphic/graphic.h"
 #include "../resources/resourcemanager.h"
 
 WindowContainer *Window::windowContainer = NULL;

@@ -24,16 +24,10 @@
 #ifndef _TMW_PROTOCOL_H
 #define _TMW_PROTOCOL_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
 #include "../main.h"
 #include "../being.h"
 
-#include <allegro.h>
 #ifdef WIN32
-#include <winalleg.h>
 #include <windows.h>
 #else
 #include "win2linux.h"

@@ -26,10 +26,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
-#ifdef WIN32
-#include <allegro.h>
-#include <winalleg.h>
-#endif
 #include <string>
 
 void init_log();

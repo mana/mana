@@ -24,22 +24,15 @@
 #ifndef _TMW_NETWORK_H
 #define _TMW_NETWORK_H
 
-#ifdef WIN32
-  #pragma warning (disable:4312)
-#endif
-
-#ifdef WIN32
-	#include <allegro.h>
-	#include <winalleg.h>
-#else
-	#include "win2linux.h"
+#ifndef WIN32
+#include "win2linux.h"
 #endif
 
 #include <stdio.h>
 #include "../log.h"
 
 #ifdef MACOSX
-	#include "win2mac.h"
+#include "win2mac.h"
 #endif
 
 /** Macros to write in output buffer, pos is the location where to write data

@@ -24,7 +24,6 @@
 #ifndef __PASSWORDFIELD_H__
 #define __PASSWORDFIELD_H__
 
-#include <allegro.h>
 #include <guichan.hpp>
 #include "textfield.h"
 

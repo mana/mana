@@ -24,7 +24,6 @@
 #ifndef __PROGRESSBAR_H__
 #define __PROGRESSBAR_H__
 
-#include <allegro.h>
 #include <guichan.hpp>
 
 /**
@@ -37,7 +36,9 @@ class ProgressBar : public gcn::Widget {
         /**
          * Constructor, initializes the progress with the given value.
          */
-        ProgressBar(float progress = 0.0f, int x = 0, int y = 0, int width = 40, unsigned char red = 150, unsigned green = 150, unsigned char blue = 150);
+        ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
+                int width = 40, unsigned char red = 150, unsigned green = 150,
+                unsigned char blue = 150);
 
         /**
          * Draws the progress bar.
@@ -53,31 +54,38 @@ class ProgressBar : public gcn::Widget {
          * Returns the current progress.
          */
         float getProgress();
-	
-	/**
-	* Change the filling of the progress bar...
-	*/
-	void setColor(unsigned char MyRed, unsigned char MyGreen, unsigned char MyBlue)
-	{
-		Red = MyRed; Green = MyGreen; Blue = MyBlue;
-	}; 
-	
-	int getHeight()
-	{ return 7; };
-	
-	int getWidth()
-	{ return Width; };
-	
-	int getX()
-	{ return X; };
-	
-	int getY()
-	{ return Y; };
+
+        /**
+         * Change the filling of the progress bar...
+         */
+        void setColor(
+                unsigned char MyRed,
+                unsigned char MyGreen,
+                unsigned char MyBlue)
+        {
+            Red = MyRed; Green = MyGreen; Blue = MyBlue;
+        }; 
+
+        int getHeight() {
+            return 7;
+        };
+
+        int getWidth() {
+            return Width;
+        };
+
+        int getX() {
+            return X;
+        };
+
+        int getY() {
+            return Y;
+        };
 
     private:
         float progress;
-	unsigned char Red, Green, Blue;
-	int X, Y, Width;
+        unsigned char Red, Green, Blue;
+        int X, Y, Width;
 };
 
 #endif
