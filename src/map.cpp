@@ -36,13 +36,13 @@
 MAP tiled_map;
 
 bool load_map(char *map_file) {
-    PACKFILE *file = pack_fopen(map_file, "rp");
+    FILE *file = fopen(map_file, "r");
     if (!file) {
         warning(map_file);
         return false;
     }
-    pack_fread(&tiled_map, sizeof(MAP), file);
-    pack_fclose(file);
+    fread(&tiled_map, sizeof(MAP), 1, file);
+    fclose(file);
     return true;
 }
 
