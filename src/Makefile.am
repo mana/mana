@@ -1,4 +1,4 @@
-bin_PROGRAMS = ../tmw
+bin_PROGRAMS = tmw
 tmw_SOURCES = sound/sound.cpp \
 	graphic/2xsai.cpp \
 	graphic/graphic.cpp \
