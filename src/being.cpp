@@ -160,12 +160,12 @@ void Being::nextStep()
         if (newX > oldX) {
             if (newY > oldY)      direction = SE;
             else if (newY < oldY) direction = NE;
-            else                    direction = EAST;
+            else                  direction = EAST;
         }
         else if (newX < oldX) {
             if (newY > oldY)      direction = SW;
             else if (newY < oldY) direction = NW;
-            else                    direction = WEST;
+            else                  direction = WEST;
         }
         else {
             if (newY > oldY)      direction = SOUTH;

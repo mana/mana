@@ -339,8 +339,7 @@ void do_input()
                 }
             }
         } // End key down
-
-        if (event.type == SDL_MOUSEBUTTONDOWN)
+        else if (event.type == SDL_MOUSEBUTTONDOWN)
         {
             int mx = event.button.x / 32 + camera_x;
             int my = event.button.y / 32 + camera_y;
@@ -363,6 +362,10 @@ void do_input()
                     }
                 }
             }
+        }
+        else if (event.type == SDL_QUIT)
+        {
+            state = EXIT;
         }
 
         // Push input to GUI when not used

@@ -1,7 +1,9 @@
 0.0.11  (.... 2005)
 - Fixed get item button and chatWindow: Enter (de)focuses chat window
 - Added walking with mouse by clicking where you want to go
+- Added diagonal walking with keyboard
 - Added a choice dialog of how many items to drop
+- Added handling of window close button
 - Chat now appears in a window
 - Beings now walk a lot smoother
 - More complete support for new map format (collision, compression)
@@ -37,12 +39,11 @@
 0.0.8  (30 Oct 2004)
 - Added sound support for macosx
 - Added primitive inventory
-- Added action failed messages for all skills and known reasons
-  (0x0110 handled)
+- Added action failed messages for all skills and known reasons (R 0x0110)
 - Added sit capability with the right level
 - Added "dead" message and restart packet
 - Added skill dialog
-- Added skill update (0x0141 handled)
+- Added skill update (R 0x0141)
 - Added colored text for damage
 - Added monster death animation
 - Added icon to win32 executable
@@ -58,7 +59,6 @@
 - Added increase skill level dialog
 - Added 2xSaI engine
 - Added patch client v0.1 to Win32 version
-
 
 0.0.7e  (31 Aug 2004)
 - Tons of bugfixes & improvements (again)
