@@ -56,7 +56,8 @@ You can find it at:
 
 Just install this one and you should be ready to go. Remember to copy the
 required dlls from your dll folder in the Dev-Cpp root directory, to the folder
-where you have your copy of The Mana World.  If you can't get the package or
+where you have your copy of The Mana World. You should also add the SDL include
+folder in your C++ include paths. If you can't get the package or you are
 experiencing problems with it, just send me an email at
 elvenprogrammer@gmail.com or continue reading.
 
