@@ -136,7 +136,7 @@ void do_init() {
 
   // Initialize beings
   empty();
-  player_node = create_node();
+  player_node = new NODE();
 	player_node->id = account_ID;
   player_node->type = ACTION_NODE;
   set_coordinates(player_node->coordinates, x, y, 0);
@@ -409,7 +409,7 @@ void do_parse() {
         // Add new being / stop monster
         case 0x0078:
 					if(find_node(RFIFOL(2))==NULL) {
-            node = create_node();
+            node = new NODE();
             node->id = RFIFOL(2);
 						node->speed = RFIFOW(6);
 						if(node->speed==0)node->speed = 150; // Else division by 0 when calculating frame
@@ -450,7 +450,7 @@ void do_parse() {
         case 0x01d9:
           node = find_node(RFIFOL(2));
           if(node==NULL) {
-            node = create_node();
+            node = new NODE();
             node->id = RFIFOL(2);
             node->job = RFIFOW(14);
             memcpy(node->coordinates, RFIFOP(46), 3);
@@ -467,7 +467,7 @@ void do_parse() {
 				//case 0x01da:
           node = find_node(RFIFOL(2));
 					if(node==NULL) {
-						node = create_node();
+						node = new NODE();
 						node->action = STAND;
 						set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
 						node->id = RFIFOL(2);
@@ -502,7 +502,7 @@ void do_parse() {
         case 0x01da:
           node = find_node(RFIFOL(2));
           if(node==NULL) {
-            node = create_node();
+            node = new NODE();
             node->id = RFIFOL(2);
             node->job = RFIFOW(14);
             set_coordinates(node->coordinates, get_src_x(RFIFOP(50)), get_src_y(RFIFOP(50)), 0);
@@ -545,7 +545,7 @@ void do_parse() {
           append_filename(map_path, "./data/map/", RFIFOP(2), 480);
           if(load_map(map_path)) {
             empty();
-            player_node = create_node();
+            player_node = new NODE();
 						player_node->job = 0;
 						player_node->action = STAND;
 						player_node->frame = 0;

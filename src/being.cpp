@@ -22,14 +22,6 @@
  */
 
 #include <stdio.h>
-#include <memory.h>
-#ifndef MACOSX
-  #include <malloc.h>
-#endif
-
-#ifdef LINUXPPC
-  #include <malloc.h>
-#endif
 
 #include "astar.h"
 #include "being.h"
@@ -39,12 +31,11 @@ NODE *head = NULL; // First node of the list
 unsigned int count = 0; // Number of beings in the list
 
 /** Create a path node */
-PATH_NODE *create_path_node(unsigned short x, unsigned short y) {
-  PATH_NODE *ret = (PATH_NODE *)malloc(sizeof(PATH_NODE));
-  ret->x = x;
-  ret->y = y;
-  ret->next = NULL;
-  return ret;
+PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
+    next(NULL)
+{
+  this->x = x;
+  this->y = y;
 }
 
 /** Return a* path */
@@ -58,27 +49,20 @@ NODE *get_head() {
 }
 
 /** Creates a empty node */
-NODE *create_node() {
-  NODE *node = (NODE *)malloc(sizeof(NODE));
-  node->id = 0;
-  node->job = 0;
-  memset(node->coordinates, 0, 3);
-  node->next = NULL;
-  node->action = 0;
-  node->frame = 0;
-  node->path = NULL;
-  node->speech = NULL;
-  node->speech_time = 0;
-	node->speech_color = makecol(255,255,255);
-	node->tick_time = 0;
-	node->speed = 150;
-	node->emotion = 0;
-	node->emotion_time = 0;
-	node->text_x = node->text_y = 0;
-	node->hair_style = 1;
-	node->hair_color = 1;
-	node->weapon = 0;
-  return node;
+NODE::NODE():
+  id(0), job(0),
+  next(NULL),
+  action(0), frame(0),
+  path(NULL),
+  speech(NULL), speech_time(0),
+  tick_time(0), speed(150),
+  emotion(0), emotion_time(0),
+  text_x(0), text_y(0),
+  hair_style(1), hair_color(1),
+  weapon(0)
+{
+  memset(coordinates, 0, 3);
+  speech_color = makecol(255,255,255);
 }
 
 /** Returns number of beings in the list */
@@ -92,7 +76,7 @@ void empty() {
   NODE *next;
   while(node) {
     next = node->next;
-    free(node);
+    delete node;
     node = next;
   }
   count = 0;
@@ -121,12 +105,12 @@ void remove_node(unsigned int id) {
         if(temp==id) {
       if(node_new==NULL) {
         head = node_old->next;
-        free(node_old);
+        delete node_old;
         count--;
         return;
       } else {
                 node_new->next = node_old->next;
-        free(node_old);
+        delete node_old;
         count--;
         return;
       }
@@ -222,7 +206,7 @@ void empty_path(NODE *node) {
     PATH_NODE *next;
     while(temp) {
       next = temp->next;
-      free(temp);
+      delete temp;
       temp = next;
     }
     node->path = NULL;

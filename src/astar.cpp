@@ -288,18 +288,20 @@ PATH_NODE *find_path(int pathfinderID, int s_x, int s_y, int e_x, int e_y) {
 
     PATH_NODE *ret = NULL, *temp = NULL;
     pathLocation = 1;
-		ret = create_path_node(s_x,s_y);
+		ret = new PATH_NODE(s_x, s_y);
 		temp = ret;
 		//alert(stringa,"","","","",0,0);
     while(pathLocation<pathLength) {
 			sprintf(stringa,"%i %i",path_bank[pathLocation*2-2], path_bank[pathLocation*2-1]);
 			//alert(stringa,"","","","",0,0);
-			temp->next = create_path_node(path_bank[pathLocation*2-2], path_bank[pathLocation*2-1]);
+			temp->next = new PATH_NODE(
+          path_bank[pathLocation * 2 - 2],
+          path_bank[pathLocation * 2 - 1]);
 			if(temp->next==NULL)ok("Error", "Unable to create path node");
       temp = temp->next;
       pathLocation++;
     }
-		if(temp!=NULL)temp->next = create_path_node(e_x, e_y);
+		if(temp!=NULL)temp->next = new PATH_NODE(e_x, e_y);
 		else ok("Error", "Null reference");
     return ret;
 

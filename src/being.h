@@ -32,35 +32,39 @@
 #define MONSTER_NODE 3
 
 struct PATH_NODE {
-	unsigned short x, y;
-	PATH_NODE *next;
+    PATH_NODE(unsigned short x, unsigned short y);
+
+    unsigned short x, y;
+    PATH_NODE *next;
 };
 
 struct NODE {
-	unsigned int id;
-	short job;
-	char coordinates[3];
-	NODE *next;
-	unsigned char type;
-	unsigned char action;
-	unsigned char frame;
-	PATH_NODE *path;
-	char *speech;
-	unsigned char speech_time;
-	int speech_color;
-	short tick_time;
-	short speed;
-	unsigned char emotion;
-	unsigned char emotion_time;
-	int text_x, text_y; // temp solution to fix speech position
-	short hair_style, hair_color;
-	short weapon;
+    NODE();
+
+    unsigned int id;
+    short job;
+    char coordinates[3];
+    NODE *next;
+    unsigned char type;
+    unsigned char action;
+    unsigned char frame;
+    PATH_NODE *path;
+    char *speech;
+    unsigned char speech_time;
+    int speech_color;
+    short tick_time;
+    short speed;
+    unsigned char emotion;
+    unsigned char emotion_time;
+    int text_x, text_y; // temp solution to fix speech position
+    short hair_style, hair_color;
+    short weapon;
 };
 
 void empty();
 NODE *get_head();
-NODE *create_node();
-PATH_NODE *create_path_node(unsigned short x, unsigned short y);
+//NODE *create_node();
+//PATH_NODE *create_path_node(unsigned short x, unsigned short y);
 void add_node(NODE *node);
 NODE *find_node(unsigned int id);
 void remove_node(unsigned int id);
