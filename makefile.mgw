@@ -5,7 +5,7 @@ CXX = g++
 # excessive optimizations for pentium pro and later
 CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
 
-LIBS := -lSDL -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image
+LIBS := -lSDL -lguichan_sdl -lguichan -lSDL_mixer -lSDL_image -lws2_32
 
 include file.list
 
