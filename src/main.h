@@ -61,9 +61,8 @@
 
 /* length definitions for several char[]s in order
  * to be able to use strncpy instead of strcpy for
- * security and stability reasons 
- *
- * best regards - kth5 */
+ * security and stability reasons */
+
 #define LEN_USERNAME 25
 #define LEN_PASSWORD 25
 
