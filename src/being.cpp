@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ *  $Id$
  */
 
 #include <stdio.h>
@@ -30,16 +30,17 @@ NODE *player_node = NULL;
 NODE *head = NULL; // First node of the list
 unsigned int b_count = 0; // Number of beings in the list
 
-/** Create a path node */
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
-  next(NULL)
+    next(NULL)
 {
-  this->x = x;
-  this->y = y;
+    this->x = x;
+    this->y = y;
 }
 
-/** Return a* path */
-PATH_NODE *calculate_path(unsigned short src_x, unsigned short src_y, unsigned short dest_x, unsigned short dest_y) {
+PATH_NODE *calculate_path(
+        unsigned short src_x, unsigned short src_y,
+        unsigned short dest_x, unsigned short dest_y)
+{
     return find_path(1, src_x, src_y, dest_x, dest_y);
 }
 
@@ -61,8 +62,8 @@ NODE::NODE():
   hair_style(1), hair_color(1),
   weapon(0)
 {
-  memset(coordinates, 0, 3);
-  speech_color = makecol(255,255,255);
+    memset(coordinates, 0, 3);
+    speech_color = makecol(0, 0, 0);
 }
 
 /** Returns number of beings in the list */

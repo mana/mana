@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ *  $Id$
  */
 
 #ifndef _TMW_BEING_H
@@ -27,11 +27,14 @@
 #include "./net/protocol.h"
 
 #define ACTION_NODE  0
-#define PLAYER_NODE  1
-#define NPC_NODE     2
-#define MONSTER_NODE 3
+//#define PLAYER_NODE  1
+//#define NPC_NODE     2
+//#define MONSTER_NODE 3
 
 struct PATH_NODE {
+    /**
+     * Constructor.
+     */
     PATH_NODE(unsigned short x, unsigned short y);
 
     unsigned short x, y;
@@ -39,6 +42,9 @@ struct PATH_NODE {
 };
 
 struct NODE {
+    /**
+     * Constructor.
+     */
     NODE();
 
     unsigned int id;

@@ -17,6 +17,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
 
 #include "graphic.h"
@@ -412,7 +414,9 @@ void GraphicEngine::refresh() {
                         buffer, i * 32 - offset_x, j * 32 - offset_y);
             }
 #ifdef DEBUG            
-            rect(buffer, i * 32 - offset_x, j * 32 - offset_y, i * 32 - offset_x+32, j * 32 - offset_y+32,makecol(0,0,0));
+            rect(buffer, i * 32 - offset_x, j * 32 - offset_y,
+                    i * 32 - offset_x + 32, j * 32 - offset_y + 32,
+                    makecol(0,0,0));
 #endif
         }
     }

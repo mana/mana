@@ -105,7 +105,7 @@ bool Configuration::write(std::string filename) {
         #ifdef __DEBUG
             std::cout << "Configuration::write(" << iter->first.c_str() <<
                 ", \"" << iter->second.stringValue << "\" / " <<
-                iter->second.numericValue << ")\n";
+                numericValue << ")\n";
         #endif
         out.write("\n", 1);
     }
