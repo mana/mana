@@ -121,7 +121,7 @@ Map *Map::load(const std::string &mapFile)
     FILE *file = fopen(mapFile.c_str(), "r");
 
     if (!file) {
-        log("Warning: %s", mapFile.c_str());
+        logger.log("Warning: %s", mapFile.c_str());
         return NULL;
     }
 
@@ -134,7 +134,7 @@ Map *Map::load(const std::string &mapFile)
     // Load the default tileset
     ResourceManager *resman = ResourceManager::getInstance();
     Image *tilesetbmp = resman->getImage("core/graphics/tiles/desert.png");
-    if (!tilesetbmp) error("Unable to load desert.png");
+    if (!tilesetbmp) logger.error("Unable to load desert.png");
     Spriteset *tileset = new Spriteset(tilesetbmp, 32, 32);
 
     // Transfer tile data

@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "../graphics.h"
 #include "equipment.h"
 #include "../resources/resourcemanager.h"
@@ -34,7 +35,7 @@ EquipmentWindow::EquipmentWindow():
     
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("core/graphics/sprites/items.png", IMG_ALPHA);
-    if (!itemImg) error("Unable to load items.png");
+    if (!itemImg) logger.error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
     
     for (int i = 0; i < 10; i++ ) {

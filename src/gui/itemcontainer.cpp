@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "itemcontainer.h"
 #include "../graphics.h"
 #include "../resources/resourcemanager.h"
@@ -30,7 +31,7 @@ ItemContainer::ItemContainer()
 {
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("core/graphics/sprites/items.png", IMG_ALPHA);
-    if (!itemImg) error("Unable to load items.png");
+    if (!itemImg) logger.error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
 
     selectedItem = -1; /**< No item selected */

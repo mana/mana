@@ -24,6 +24,7 @@
 
 #include "configuration.h"
 #include "log.h"
+#include "main.h"
 
 #include <math.h>
 #include <iostream>
@@ -49,7 +50,7 @@ void Configuration::init(std::string filename)
     xmlNodePtr node = xmlDocGetRootElement(doc);
 
     if (!node || !xmlStrEqual(node->name, BAD_CAST "configuration")) {
-        log("Warning: No configuration file (%s)", filename.c_str());
+        logger.log("Warning: No configuration file (%s)", filename.c_str());
         return;
     }
 
@@ -87,7 +88,7 @@ bool Configuration::write(std::string filename)
 
         for (iter = options.begin(); iter != options.end(); iter++)
         {
-            log("Configuration::write(%s, \"%s\")",
+            logger.log("Configuration::write(%s, \"%s\")",
                     iter->first.c_str(), iter->second.c_str());
 
             xmlTextWriterStartElement(writer, BAD_CAST "option");
