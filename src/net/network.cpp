@@ -22,6 +22,7 @@
  */
 
 #include "network.h"
+#include "../main.h"
 #ifndef WIN32
 #include <unistd.h>
 #include <fcntl.h>
@@ -44,7 +45,7 @@ fd_set write_socket;
 void WFIFOSET(int len)
 {
     if (out_size + len >= buffer_size) {
-        log("Warning: Output buffer full");
+        logger.log("Warning: Output buffer full");
     }
     else {
         out_size += len;
@@ -153,30 +154,30 @@ void flush()
             }
         }
         if (ret == SOCKET_ERROR) {
-            error("Socket Error");
+            logger.error("Socket Error");
 #ifdef WIN32
-            log("Error: Socket error: %i ", WSAGetLastError());
+            logger.log("Error: Socket error: %i ", WSAGetLastError());
             if (WSAGetLastError() == 10053)
-            log("Error: Packet size error");
+            logger.log("Error: Packet size error");
             /** Probably the last packet you sent, was defined with
              *  wrong size: WFIFOSET(size);
              */
 #else
-            log("Error: Undefined socket error");
+            logger.log("Error: Undefined socket error");
 #endif
         }
     }
 
     // Read data, if available
-    if(FD_ISSET(sock, &read_socket)) {
+    if (FD_ISSET(sock, &read_socket)) {
         /* There's no check for partial received packets because at this level
            the app doesn't know packet length, but it will done when parsing received data */
         ret = recv(sock, in+in_size, RFIFOSPACE, 0);
-        if(ret==SOCKET_ERROR) {
+        if (ret == SOCKET_ERROR) {
 #ifdef WIN32
-            log("Error: Socket error: %i ", WSAGetLastError());
+            logger.log("Error: Socket error: %i ", WSAGetLastError());
 #else
-            log("Error: Undefined socket error");
+            logger.log("Error: Undefined socket error");
 #endif
         } else RFIFOSET(ret); // Set size of available data to read
     }
