@@ -224,6 +224,7 @@ void do_input() {
 		else if(player_node->action==SIT)
 			action(3, 0);
 		action_time = false;
+		//alert("","","","","",0,0);
 	}
 
   if(key[KEY_ENTER]) {
@@ -647,7 +648,7 @@ void do_parse() {
 								node->frame = 0;
 								if(RFIFOB(26)==2) {
                   node->action = SIT;
-									alert("","","","","",0,0);
+									//alert("","","","","",0,0);
 									walk_status = 0;
 								}
                 else if(RFIFOB(26)==3)

@@ -107,17 +107,18 @@ DIALOG chat_dialog[] = {
    { NULL,                   0,    0,    0,   0,  0,    0,    0,    0,       0,                0,             NULL,        NULL, NULL  }
 };
 
-char hairtable[9][4][2] = {
+char hairtable[10][4][2] = {
   // S(x,y)  W(x,y)   N(x,y)   E(x,y)
-  { { 0, 0}, {-1, 2}, {-1, 2}, {0, 2}  }, // STAND 1st frame
-  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3}  }, // WALK 1st frame
-  { { 0, 3}, {-2, 4}, {-1, 3}, {1, 4}  }, // WALK 2nd frame
-  { { 0, 1}, {-2, 2}, {-1, 2}, {1, 2}  }, // WALK 3rd frame
-  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3}  }, // WALK 4th frame
+  { { 0, 0}, {-1, 2}, {-1, 2}, {0, 2} }, // STAND
+  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3} }, // WALK 1st frame
+  { { 0, 3}, {-2, 4}, {-1, 3}, {1, 4} }, // WALK 2nd frame
+  { { 0, 1}, {-2, 2}, {-1, 2}, {1, 2} }, // WALK 3rd frame
+  { { 0, 2}, {-2, 3}, {-1, 2}, {1, 3} }, // WALK 4th frame
   { { 0, 1}, {1, 2}, {-1, 3}, {-2, 2} }, // ATTACK 1st frame
-  { { 0, 1}, {-1, 2}, {-1, 3}, {0, 2}  }, // ATTACK 2nd frame
+  { { 0, 1}, {-1, 2}, {-1, 3}, {0, 2} }, // ATTACK 2nd frame
   { { 0, 2}, {-4, 3}, {0, 4}, {3, 3}  }, // ATTACK 3rd frame
-  { { 0, 2}, {-4, 3}, {0, 4}, {3, 3}  }  // ATTACK 4th frame
+  { { 0, 2}, {-4, 3}, {0, 4}, {3, 3}  }, // ATTACK 4th frame
+  { { 0, 4}, {-1, 6}, {-1, 6}, {0, 6} }, // SIT
 };  
 
 void set_npc_dialog(int show) {
@@ -216,6 +217,7 @@ void do_graphic(void) {
 		} else if(node->job<10) { // Draw a player
 			node->text_x = (get_x(node->coordinates)-camera_x)*16-34+get_x_offset(node)-offset_x;
 			node->text_y = (get_y(node->coordinates)-camera_y)*16-36+get_y_offset(node)-offset_y;
+			if(node->action==SIT)node->frame = 0;
 			masked_blit((BITMAP *)graphic[PLAYERSET_BMP].dat, buffer, 80*(get_direction(node->coordinates)/2), 60*(node->frame+node->action), node->text_x, node->text_y, 80, 60);
 			masked_blit(hairset, buffer, 20*(node->hair_color-1), 20*(get_direction(node->coordinates)/2), node->text_x+31+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][0], node->text_y+15+hairtable[node->action+node->frame][get_direction(node->coordinates)/2][1], 20, 20);
 			//alfont_textprintf(buffer, gui_font, 0, 20, MAKECOL_WHITE, "%i %i", node->text_x,node->text_y);

@@ -51,7 +51,7 @@
 #define GET_STANDING_SPEECH_YCOORDS ((get_y(node->coordinates)-map_y+6)*16-55-player_y)
 
 #define PLAYERSETS 4
-#define SIT   17
+#define SIT   9
 #define STAND 0
 #define WALK 1
 #define MONSTER_ATTACK 5
