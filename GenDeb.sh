@@ -19,16 +19,16 @@ then
 	exit;
 fi
 
-if [ ! -f ./tmw.ini ]; # if tmw.ini doesn't exist
+if [ ! -d ./data ]; # if the data folder doesn't exist...
 then
-	echo "Can't find the tmw.ini file. Maybe this tmw version is uncomplete...";
+	echo "Can't find the Mana World datas..."
 	echo "Aborting...";
 	exit;
 fi
 
-if [ ! -d ./data ]; # if the data folder doesn't exist...
+if [ ! -d ./docs ]; # if the docs folder doesn't exist...
 then
-	echo "Can't find the Mana World datas..."
+	echo "Can't find the Mana World docs..."
 	echo "Aborting...";
 	exit;
 fi
@@ -55,7 +55,6 @@ mkdir DEBIAN;
 mkdir usr;
 mkdir usr/share;
 mkdir usr/share/manaworld;
-#cp ../../tmw.ini ./usr/share/manaworld;
 cp ../../tmw ./usr/share/manaworld;
 cp ../../keyboard.dat ./usr/share/manaworld;
 cp -a ../../data ./usr/share/manaworld;
@@ -77,7 +76,6 @@ echo "Creating Rules for the Debian package..."
 touch DEBIAN/postinst;
 echo "#!/bin/sh" >>DEBIAN/postinst;
 echo 'if [ "$1" = "configure" ]; then' >>DEBIAN/postinst;
-echo '   chmod -R 777 /usr/share/manaworld/docs;' >>DEBIAN/postinst;
 echo '   if [ -d /usr/games ]; then' >>DEBIAN/postinst;
 echo '      cp /usr/share/manaworld/manaworld /usr/games/manaworld;' >>DEBIAN/postinst;
 echo '      chmod +x /usr/share/manaworld/manaworld;' >>DEBIAN/postinst;
