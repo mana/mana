@@ -26,6 +26,7 @@
 #include "button.h"
 #include "ok_dialog.h"
 #include "../graphics.h"
+#include "../net/protocol.h"
 #include <sstream>
 
 #define NR_HAIR_STYLES 4

@@ -25,6 +25,7 @@
 #define _TMW_PROTOCOL_H
 
 // Packets from server to client
+#define SMSG_LOGIN_SUCCESS        0x0073    // Logged in, starting location
 #define SMSG_REMOVE_BEING         0x0080    // Died, logged out, teleport, etc.
 #define SMSG_MOVE_BEING           0x007b    // A nearby monster moves
 #define SMSG_PLAYER_UPDATE_1      0x01d8    //
