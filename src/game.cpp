@@ -110,7 +110,7 @@ void do_init() {
 
   if(!load_map(map_path))error("Could not find map file");
     
-  sound.StartMOD(".data/sound/Mods/somemp.xm", -1);
+  sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
 
 	// Initialize timers
   tick_time = 0;  
