@@ -101,7 +101,5 @@ void warning(const char *warning_text) {
  * Shortcut to log a status update, will only really be logged in debug mode.
  */
 void status(const char *status_text) {
-#ifdef DEBUG
     log("Status", status_text);
-#endif
 }

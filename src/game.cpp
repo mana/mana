@@ -47,67 +47,67 @@ unsigned int player_x, player_y;
 bool refresh_beings = false;
 unsigned char keyb_state;
 volatile int tick_time;
-volatile bool refresh = false, action_time = false;
+volatile bool action_time = false;
 int current_npc, server_tick;
 extern unsigned char screen_mode;
+int fps = 0, frame = 0;
 
 Setup *setup = NULL;
 StatsWindow *stats = NULL;
 
 #define MAX_TIME 10000
 
-/** Finite states machine to keep track
-		of player walking status (2 steps linear
-		prediction)
-		0 = Standing
-		1 = Walking without confirm packet
-		2 = Walking with confirm */
+/**
+ * Finite states machine to keep track of player walking status (2 steps
+ * linear prediction)
+ *
+ *  0 = Standing
+ *  1 = Walking without confirm packet
+ *  2 = Walking with confirm
+ */
 char walk_status = 0;
 
 void refresh_time(void) {
-	tick_time++;
-	if(tick_time==MAX_TIME)tick_time = 0;
+    tick_time++;
+    if (tick_time == MAX_TIME) tick_time = 0;
 }
 END_OF_FUNCTION(refresh_frame);
 
-void refresh_screen(void) {
-	refresh = true;
-}
-END_OF_FUNCTION(refresh_screen);
-
-int fps = 0, frame = 0;
-/** lets u only trigger an action every other second
-			tmp. counts fps*/
+/**
+ * Lets u only trigger an action every other second
+ * tmp. counts fps
+ */
 void second(void) {
-	action_time = true;
-	fps = (fps + frame)/2;
-	frame = 0;
+    action_time = true;
+    fps = (fps + frame) / 2;
+    frame = 0;
 }
 END_OF_FUNCTION(second);
 
-/** Return elapsed time (Warning: very unsafe
-    function. It supposes the delay is always < 10s) */
+/**
+ * Return elapsed time (Warning: very unsafe function. It supposes the delay
+ * is always < MAX_TIME ms)
+ */
 short get_elapsed_time(short start_time) {
-	if(start_time<=tick_time)
-		return tick_time-start_time;
-	else
-		return tick_time+(MAX_TIME-start_time);
+    if (start_time <= tick_time) {
+        return tick_time - start_time;
+    }
+    else {
+        return tick_time + (MAX_TIME - start_time);
+    }
 }
 
-/** Main game loop */
+/**
+ * Main game loop
+ */
 void game() {
-    status("INIT");
     do_init();
     GraphicEngine *graphicEngine = new GraphicEngine();
 
     while (state != EXIT) {
-        status("INPUT");
         do_input();
-        status("GRAPHIC");
         graphicEngine->refresh();
-        status("PARSE");
         do_parse();
-        status("FLUSH");
         flush();
     }
 
@@ -115,7 +115,9 @@ void game() {
     close_session();
 }
 
-/** Initialize game engine */
+/**
+ * Initialize game engine
+ */
 void do_init() {
     if (!load_map(map_path)) {
         error("Could not find map file");
@@ -127,19 +129,9 @@ void do_init() {
 
     // Initialize timers
     tick_time = 0;
-    refresh = false;
     LOCK_VARIABLE(tick_time);
-    LOCK_VARIABLE(refresh);
     install_int_ex(refresh_time, MSEC_TO_TIMER(1));
-    install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(200)); // Set max refresh rate to 75 fps
     install_int_ex(second, BPS_TO_TIMER(1));
-
-    // Interrupt drawing while in background
-    #ifdef WIN32
-        set_display_switch_mode(SWITCH_AMNESIA);
-    #else
-        set_display_switch_mode(SWITCH_PAUSE);
-    #endif
 
     // Initialize beings
     empty();
@@ -324,14 +316,18 @@ bool handle_key(int unicode, int scancode)
     return false;
 }
 
-/** Calculate packet length */
+/**
+ * Calculate packet length
+ */
 int get_packet_length(short id) {
-  int len = get_length(id);
-  if(len==-1)len = RFIFOW(2);
-  return len;
+    int len = get_length(id);
+    if (len == -1)len = RFIFOW(2);
+    return len;
 }
 
-/** Parse data received from map server into input buffer */
+/**
+ * Parse data received from map server into input buffer
+ */
 void do_parse() {
 	unsigned short id;
 	char *temp;
