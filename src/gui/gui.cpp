@@ -360,6 +360,12 @@ blit(temp2, gui_skin.bar.bg.grid[3], 0, 0, 0, 0, 3, 11);
 blit(temp2, gui_skin.bar.bg.grid[4], 4, 0, 0, 0, 1, 11);
 blit(temp2, gui_skin.bar.bg.grid[5], 13, 0, 0, 0, 3, 11);
 }
+void loadRadioSkin() {
+gui_skin.radiobutton.normal = load_bitmap("data/Skin/radioout.bmp", NULL);
+gui_skin.radiobutton.checked = load_bitmap("data/Skin/radioin.bmp", NULL);
+gui_skin.radiobutton.disabled = load_bitmap("data/Skin/radioout.bmp", NULL);
+gui_skin.radiobutton.disabled_checked = load_bitmap("data/Skin/radioin.bmp", NULL);
+}
 void loadPlusSkin() {
 //BITMAP *temp1 = load_bitmap("data/bar.bmp", NULL);
 //BITMAP *temp2 = load_bitmap("data/bar_filled.bmp", NULL);
@@ -447,6 +453,7 @@ int gui_load_skin(const char* skinname) {
     loadButtonSkin();
     loadSliderSkin();
     loadCheckboxSkin();
+    loadRadioSkin();
     loadTextboxSkin();
     loadListboxSkin();
     loadDialogSkin();

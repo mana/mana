@@ -67,6 +67,7 @@ Setup::Setup(gcn::Container *parent)
   fsCheckBox = new CheckBox("Full screen", false);
   soundLabel = new gcn::Label("Sound settings");
   soundCheckBox = new CheckBox("Sound", false);
+  disabledRadio = new RadioButton("Disabled", "Modes", false);
   applyButton = new Button("Apply");
   cancelButton = new Button("Cancel");
   
@@ -87,6 +88,7 @@ Setup::Setup(gcn::Container *parent)
   soundLabel->setPosition(10,110);
   fsCheckBox->setPosition(120,36);
   soundCheckBox->setPosition(10,130);
+  disabledRadio->setPosition(10,140);
   applyButton->setPosition(10,190);
   cancelButton->setPosition(150,190);
   
@@ -100,6 +102,7 @@ Setup::Setup(gcn::Container *parent)
   add(fsCheckBox);
   add(soundLabel);
   add(soundCheckBox);
+  add(disabledRadio);
   add(applyButton);
   add(cancelButton);
   

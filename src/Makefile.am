@@ -9,6 +9,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/char_select.cpp \
 	gui/chat.cpp \
 	gui/checkbox.cpp \
+	gui/radiobutton.cpp \
 	gui/gui.cpp \
 	gui/inventory.cpp \
 	gui/login.cpp \
