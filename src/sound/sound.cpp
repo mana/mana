@@ -19,11 +19,14 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#ifndef WIN32
+
+#include "sound.h"
+
 #ifdef WIN32
     #pragma warning(disable:4312)
 #endif
 
-#include "sound.h"
 
 /**
     \brief install the sound engine
@@ -233,3 +236,5 @@ bool Sound::isMaxVol(int vol) {
     if( vol > 0 && vol < 128 ) return false;
     else return true;
 }
+
+#endif /* not WIN32 */

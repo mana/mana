@@ -38,7 +38,9 @@
 
 char map_path[480];
 
+#ifndef WIN32
 extern Sound sound;
+#endif /* not WIN32 */
 
 unsigned short dest_x, dest_y, src_x, src_y;
 unsigned int player_x, player_y;
@@ -119,7 +121,9 @@ void do_init() {
         error("Could not find map file");
     }
 
+#ifndef WIN32
     sound.startBgm("./data/sound/Mods/somemp.xm", -1);
+#endif /* not WIN32 */
 
     // Initialize timers
     tick_time = 0;
@@ -279,12 +283,14 @@ bool handle_key(int unicode, int scancode)
         case KEY_F1:
             save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
             return true;
+#ifndef WIN32
         case KEY_F12:
             sound.adjustVolume(1);
             return true;
         case KEY_F11:
             sound.adjustVolume(-1);
             return true;
+#endif /* not WIN32 */
         case KEY_F9:
             setup = Setup::create_setup();
             return true;
@@ -715,9 +721,11 @@ void do_parse() {
 				// Level up
 				case 0x019b:
 					if(RFIFOL(2)==player_node->id) {
+#ifndef WIN32
 					  SOUND_SID sound_id = sound.loadItem("./data/sound/wavs/level.wav");
-                                          sound.startItem(sound_id, 64);
-                                          sound.clearCache();
+					  sound.startItem(sound_id, 64);
+					  sound.clearCache();
+#endif /* not WIN32 */
 					}
 					break;
 				// Emotion

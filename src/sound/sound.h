@@ -22,6 +22,7 @@
 #ifndef __SOUND_H
 #define __SOUND_H
 
+#ifndef WIN32
 
 #ifdef WIN32
     #pragma warning(disable:4312)
@@ -82,4 +83,5 @@ class Sound {
         bool isMaxVol(int);
 };
 
+#endif /* not WIN32 */
 #endif

@@ -28,7 +28,9 @@
 
 #include "setup.h"
 
+#ifndef WIN32
 extern Sound sound;
+#endif /* no WIN32 */
 
 /*
  * Metod returns the number of elements in container
@@ -137,32 +139,33 @@ Setup::~Setup() {
  */
 void Setup::action(const std::string& eventId)
 {
-  if(eventId == "apply") {
-    setVisible(false);
+    if (eventId == "apply") {
+        setVisible(false);
     
-    /* Display settings */
-    if(fsCheckBox->isMarked() == true && config.getValue("screen",0) == 2) {
-	    config.setValue("screen",1);
-	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,800,600,0,0);
-	    
-    } else 
-    if(fsCheckBox->isMarked() == false && config.getValue("screen",0) == 1) {
-	    config.setValue("screen",2);
-	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0);
-    }
+        /* Display settings */
+        if (fsCheckBox->isMarked() == true && config.getValue("screen",0) == 2) {
+    	    config.setValue("screen",1);
+    	    set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,800,600,0,0);
+    	    
+        } else 
+        if (fsCheckBox->isMarked() == false && config.getValue("screen",0) == 1) {
+    	    config.setValue("screen",2);
+    	    set_gfx_mode(GFX_AUTODETECT_WINDOWED,800,600,0,0);
+        }
     
-    /* Sound settings */
-    if(soundCheckBox->isMarked() == true) {
+        /* Sound settings */
+#ifndef WIN32
+        if (soundCheckBox->isMarked() == true) {
             config.setValue("sound",1);
             sound.init(32, 20);
-    } else {
-	    config.setValue("sound",0);
+        } else {
+    	    config.setValue("sound",0);
             sound.close();
+        }
+#endif /* not WIN32 */
+    } else if(eventId == "cancel") {
+        setVisible(false);
     }
-    
-  } else if(eventId == "cancel") {
-    setVisible(false);
-  }
 }
 
 /*
@@ -170,11 +173,13 @@ void Setup::action(const std::string& eventId)
  */
 Setup * Setup::ptr = NULL;
 Setup * Setup::create_setup() {
-  if(ptr == NULL)
-    ptr = new Setup(guiTop);
-   else
-    ptr->setVisible(true);
+    if(ptr == NULL) {
+        ptr = new Setup(guiTop);
+    }
+    else {
+        ptr->setVisible(true);
+    }
     
-  return ptr;
+    return ptr;
 }
 

@@ -91,7 +91,9 @@ unsigned char stretch_mode, screen_mode;
 char *dir;
 
 // new sound-engine /- kth5
+#ifndef WIN32
 Sound sound;
+#endif /* not WIN32 */
 // ini file configuration reader
 Configuration config;
 
@@ -267,7 +269,9 @@ void exit_engine() {
     config.write(dir);
     delete dir;
     gui_exit();
+#ifndef WIN32
     SDL_Quit();
+#endif /* not WIN32 */
     destroy_bitmap(buffer);
     allegro_exit();
 }
@@ -275,6 +279,7 @@ void exit_engine() {
 /** Main */
 int main() {
     init_engine();
+#ifndef WIN32
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
          if (config.getValue("sound", 0) == 1) {
@@ -290,6 +295,7 @@ int main() {
          ok("Sound Engine", err);
          warning(err);
     }
+#endif /* not WIN32 */
 
     while (state != EXIT) {
         switch(state) {
@@ -306,7 +312,9 @@ int main() {
             charSelect();
             break;
         case GAME:
+#ifndef WIN32
             sound.stopBgm();
+#endif /* not WIN32 */
             status("GAME");
             map_start();
             if( state==GAME )
