@@ -93,26 +93,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
 
     // Set the filePath variable to the appropriate value
     // this is only if we're not using a packed file.
-#ifdef WIN32
-    // Flip all of the idPath '/' to '\'
-    unsigned int begPos = 0;
-    unsigned int endPos = idPath.find("/");
-    std::stringstream result;
-
-    // Loop through and replace all the characters.
-    while (endPos != std::string::npos) {
-        result << idPath.substr(begPos, endPos - begPos);
-        result << "\\";
-
-        begPos = endPos + 1;
-        endPos = (unsigned int)idPath.find("/");
-    }
-
-    filePath = std::string(programPath) + std::string("\\data\\") +
-        std::string(result.str());
-#else
     filePath = std::string(programPath) + std::string("/data/") + idPath;
-#endif
 
     Resource *resource = NULL;
 

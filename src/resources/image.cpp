@@ -37,9 +37,11 @@ Image::~Image()
 
 Image* Image::load(const std::string &filePath)
 {
+#ifdef __DEBUG
+    std::cout << "Image::load(" << filePath << ")\n";
+#endif
     // Attempt to use SDL_Image to load the file.
     //image = IMG_Load(filePath.c_str());
-    std::cout << "Attempting to load image from " << filePath << std::endl;
     BITMAP *image = load_bitmap(filePath.c_str(), NULL);
 
     // Check if the file was opened and return the appropriate value.
