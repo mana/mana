@@ -23,8 +23,6 @@
 #include "../graphic/graphic.h"
 #include "../graphic/2xsai.h"
 
-extern gcn::Gui *gui;
-
 CharSelectDialog::CharSelectDialog(gcn::Container *parent)
     : Window(parent, "Select Character")
 {
@@ -227,10 +225,6 @@ void charSelect()
         // Draw background
         blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
 
-        // Update gui
-        gui->logic();
-        gui->draw();
-
         gui_update(NULL);
 
         // Draw character
@@ -317,10 +311,6 @@ void charCreate()
     {
         // Draw background
         blit((BITMAP *)graphic[LOGIN_BMP].dat, buffer, 0, 0, 0, 0, 800, 600);
-
-        // Update gui
-        gui->logic();
-        gui->draw();
 
         gui_update(NULL);
 
