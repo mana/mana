@@ -60,13 +60,15 @@ class TmwSound {
 
 		void  StartMIDI(char *, int);
 		void  StartMOD(char *, int);
-		void  StopBGM(); 
+		void  StopBGM();
 
 		void  StartWAV(char *, int);
 		void  SetVol(int, int, int);
 		void  SetAdjVol(int, int, int);
 
 		TMWSOUND_SID LoadItem(char *, char);
+		void UnloadItem(TMWSOUND_SID);
+		void PlayItem(TMWSOUND_SID, int);
 
 		TmwSound() {isOk=-1;}
 
@@ -85,7 +87,7 @@ class TmwSound {
 
 		int pan;
 		int pitch;
-		
+
 		int ret;
 		int vol_digi;
 		int vol_midi;
@@ -103,7 +105,7 @@ class TmwSound {
 			void * data;
 		};
 
-		/* list of preloaded sound data / items */
+		/** list of preloaded sound data / items */
 		list<POOL_ITEM> soundpool;
 		list<POOL_ITEM>::iterator sounditem;
 		TMWSOUND_SID items;
