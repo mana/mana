@@ -25,13 +25,10 @@
 #include "map.h"
 #include "log.h"
 #include "resources/resourcemanager.h"
+#include "resources/mapreader.h"
 #include "graphic/spriteset.h"
 
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include <queue>
-
-Map tiledMap;
 
 #define OLD_MAP_WIDTH  200
 #define OLD_MAP_HEIGHT 200
@@ -112,20 +109,20 @@ Map::~Map()
     delete[] tiles;
 }
 
-bool Map::load(const std::string &mapFile)
+Map *Map::load(const std::string &mapFile)
 {
     FILE *file = fopen(mapFile.c_str(), "r");
 
     if (!file) {
         log("Warning: %s", mapFile.c_str());
-        return false;
+        return NULL;
     }
 
     MAP oldMap;
     fread(&oldMap, sizeof(MAP), 1, file);
     fclose(file);
 
-    setSize(OLD_MAP_WIDTH, OLD_MAP_HEIGHT);
+    Map *map = new Map(OLD_MAP_WIDTH, OLD_MAP_HEIGHT);
 
     // Load the default tileset
     ResourceManager *resman = ResourceManager::getInstance();
@@ -160,33 +157,19 @@ bool Map::load(const std::string &mapFile)
                 }
 
                 if (id < tileset->spriteset.size() && (a == 0 || id > 0)) {
-                    setTile(x, y, a, tileset->spriteset[id]);
+                    map->setTile(x, y, a, tileset->spriteset[id]);
                 }
                 else {
-                    setTile(x, y, a, NULL);
+                    map->setTile(x, y, a, NULL);
                 }
             }
 
             // Walkability
-            setWalk(x, y, (oldMap.tiles[x][y].data[3] & 0x0002) > 0);
+            map->setWalk(x, y, (oldMap.tiles[x][y].data[3] & 0x0002) > 0);
         }
     }
 
-    return true;
-}
-
-bool loadXmlMap(const std::string &mapFile)
-{
-    xmlDocPtr doc = xmlReadFile(mapFile.c_str(), NULL, 0);
-
-    if (!doc) {
-        log("Warning: %s", mapFile.c_str());
-        return false;
-    }
-
-    xmlFreeDoc(doc);
-
-    return false;
+    return map;
 }
 
 void Map::setSize(int width, int height)

@@ -41,7 +41,7 @@ class Spriteset {
         /*
          * Cuts the passed image in a grid of sub images.
          */
-        Spriteset::Spriteset(Image *img, int w, int h);
+        Spriteset(Image *img, int w, int h);
 
         /**
          * Destructor.

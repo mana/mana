@@ -379,8 +379,8 @@ void Engine::draw()
     // Draw tiles below nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            Image *tile0 = tiledMap.getTile(i + camera_x, j + camera_y, 0);
-            Image *tile1 = tiledMap.getTile(i + camera_x, j + camera_y, 1);
+            Image *tile0 = tiledMap->getTile(i + camera_x, j + camera_y, 0);
+            Image *tile1 = tiledMap->getTile(i + camera_x, j + camera_y, 1);
 
             if (tile0) {
                 tile0->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
@@ -509,7 +509,7 @@ void Engine::draw()
     // Draw tiles above nodes
     for (int j = 0; j < 20; j++) {
         for (int i = 0; i < 26; i++) {
-            Image *tile = tiledMap.getTile(i + camera_x, j + camera_y, 2);
+            Image *tile = tiledMap->getTile(i + camera_x, j + camera_y, 2);
 
             if (tile) {
                 tile->draw(screen, i * 32 - offset_x, j * 32 - offset_y);
@@ -527,7 +527,7 @@ void Engine::draw()
     // purposes.
     if (displayPathToMouse)
     {
-        PATH_NODE *debugPath = tiledMap.findPath(
+        PATH_NODE *debugPath = tiledMap->findPath(
                 player_node->x, player_node->y,
                 mouseX / 32 + camera_x, mouseY / 32 + camera_y);
 
@@ -538,7 +538,7 @@ void Engine::draw()
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
-            MetaTile *tile = tiledMap.getMetaTile(debugPath->x, debugPath->y);
+            MetaTile *tile = tiledMap->getMetaTile(debugPath->x, debugPath->y);
 
             std::stringstream cost;
             cost << tile->Gcost;

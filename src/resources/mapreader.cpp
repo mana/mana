@@ -31,6 +31,19 @@
 #define DEFAULT_TILE_WIDTH  32
 #define DEFAULT_TILE_HEIGHT 32
 
+std::vector<Tileset*> MapReader::tilesets;
+
+Tileset::Tileset(Image *img, int w, int h, int firstGid):
+    Spriteset(img, w, h),
+    firstGid(firstGid)
+{
+}
+
+int Tileset::getFirstGid()
+{
+    return firstGid;
+}
+
 
 Map *MapReader::readMap(const std::string &filename)
 {
@@ -98,7 +111,10 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tileset"))
         {
-            readTileset(node, path, map);
+            Tileset *tileset = readTileset(node, path, map);
+            if (tileset) {
+                tilesets.push_back(tileset);
+            }
         }
         else if (xmlStrEqual(node->name, BAD_CAST "layer"))
         {
@@ -125,9 +141,28 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     {
         if (xmlStrEqual(node->name, BAD_CAST "tile") && y < h)
         {
-            //int gid = getProperty(node, "gid", -1);
-            // TODO: Convert gid to Image* and set the tile
-            //map->setTile(x, y, layer, (gid > -1) ? gid : 0);
+            int gid = getProperty(node, "gid", -1);
+            Image *img = NULL;
+
+            if (gid > -1) {
+                std::vector<Tileset*>::iterator i;
+                Tileset *set = NULL;
+
+                // Find the tileset with the highest firstGid below/eq to gid
+                for (i = tilesets.begin(); i != tilesets.end(); ++i) {
+                    if ((*i)->getFirstGid() <= gid) {
+                        set = (*i);
+                    }
+                }
+
+                if (set && (gid - set->getFirstGid()) <
+                        (int)set->spriteset.size())
+                {
+                    img = set->spriteset[gid - set->getFirstGid()];
+                }
+            }
+
+            map->setTile(x, y, layer, img);
 
             x++;
             if (x == w) {x = 0; y++;}
@@ -141,18 +176,15 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     }
 }
 
-void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
+Tileset* MapReader::readTileset(
+        xmlNodePtr node, const std::string &path, Map *map)
 {
-    xmlChar* prop = xmlGetProp(node, BAD_CAST "source");
-    if (prop) {
+    if (xmlHasProp(node, BAD_CAST "source")) {
         log("Warning: External tilesets not supported yet.");
-#ifndef WIN32
-        xmlFree(prop);
-#endif
-        return;
+        return NULL;
     }
 
-    int firstgid = getProperty(node, "firstgid", 0);
+    int firstGid = getProperty(node, "firstgid", 0);
     int tw = getProperty(node, "tilewidth", map->getTileWidth());
     int th = getProperty(node, "tileheight", map->getTileHeight());
 
@@ -172,12 +204,11 @@ void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
 
                 if (tilebmp)
                 {
-                    Spriteset *set = new Spriteset(tilebmp, tw, th);
-                    //set->setFirstGid(firstgid);
-                    // TODO: Like uhm, do something with this set!
+                    Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
 #ifndef WIN32
                     xmlFree(source);
 #endif
+                    return set;
                 }
                 else {
                     log("Warning: Failed to load tileset (%s)\n", source);
@@ -189,6 +220,8 @@ void MapReader::readTileset(xmlNodePtr node, const std::string &path, Map *map)
 
         node = node->next;
     }
+
+    return NULL;
 }
 
 int MapReader::getProperty(xmlNodePtr node, const char* name, int def)

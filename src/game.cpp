@@ -122,7 +122,8 @@ void game() {
 
 void do_init()
 {
-    if (!tiledMap.load(map_path)) {
+    tiledMap = Map::load(map_path);
+    if (!tiledMap) {
         error("Could not find map file");
     }
 
@@ -310,7 +311,7 @@ void do_input()
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
             // UP
-            if (tiledMap.getWalk(x, y - 1) != 0)
+            if (tiledMap->getWalk(x, y - 1) != 0)
             {
                 walk(x, y-1, NORTH);
                 walk_status = 1;
@@ -326,7 +327,7 @@ void do_input()
         else if (keys[SDLK_DOWN] || keys[SDLK_KP2])
         {
             // Down
-            if (tiledMap.getWalk(x, y + 1) != 0)
+            if (tiledMap->getWalk(x, y + 1) != 0)
             {
                 walk(x, y + 1, SOUTH);
                 walk_status = 1;
@@ -341,7 +342,7 @@ void do_input()
         }
         else if (keys[SDLK_LEFT] || keys[SDLK_KP4])
         {
-            if (tiledMap.getWalk(x - 1, y) != 0) {
+            if (tiledMap->getWalk(x - 1, y) != 0) {
                 walk(x - 1, y, WEST);
                 walk_status = 1;
                 src_x = x;
@@ -355,7 +356,7 @@ void do_input()
         }
         else if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
         {
-            if (tiledMap.getWalk(x + 1, y) != 0) {
+            if (tiledMap->getWalk(x + 1, y) != 0) {
                 walk(x + 1, y, EAST);
                 walk_status = 1;
                 src_x = x;
@@ -552,7 +553,7 @@ void do_parse() {
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
-                    being->setPath(tiledMap.findPath(
+                    being->setPath(tiledMap->findPath(
                                 get_src_x(RFIFOP(50)),
                                 get_src_y(RFIFOP(50)),
                                 get_dest_x(RFIFOP(50)),
@@ -635,7 +636,9 @@ void do_parse() {
                     memset(map_path, '\0', 480);
                     strcat(map_path, "./data/map/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
-                    if (tiledMap.load(map_path)) {
+                    if (tiledMap) delete tiledMap;
+                    tiledMap = Map::load(map_path);
+                    if (tiledMap) {
                         Being *temp;
                         temp = new Being();
                         memcpy(temp, player_node, sizeof(Being));

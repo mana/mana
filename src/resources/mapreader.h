@@ -25,8 +25,29 @@
 #define _INCLUDED_MAPREADER_H
 
 #include "../map.h"
+#include "../graphic/spriteset.h"
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <vector>
+
+/**
+ * A tileset, which is basically just a spriteset but it stores a firstgid.
+ */
+class Tileset : public Spriteset {
+    public:
+        /**
+         * Constructor.
+         */
+        Tileset(Image *img, int w, int h, int firstGid);
+
+        /**
+         * Returns the first gid.
+         */
+        int getFirstGid();
+
+    private:
+        int firstGid;
+};
 
 /**
  * Reader for XML map files (*.tmx)
@@ -54,10 +75,15 @@ class MapReader
         /**
          * Helper function that handles reading a tile set.
          */
-        static void readTileset(xmlNodePtr node, const std::string &path,
+        static Tileset *readTileset(xmlNodePtr node, const std::string &path,
                 Map *map);
 
+        /**
+         * Helper function to get an integer property.
+         */
         static int getProperty(xmlNodePtr node, const char* name, int def);
+
+        static std::vector<Tileset*> tilesets;
 };
 
 #endif

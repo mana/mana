@@ -94,12 +94,7 @@ class Map
         /**
          * Loads a map file (gat).
          */
-        bool load(const std::string &mapFile);
-        
-        /**
-         * Loads an XML map file (tmx).
-         */
-        bool loadXmlMap(const std::string &mapFile);
+        static Map *load(const std::string &mapFile);
 
         /**
          * Sets the size of the map. This will destroy any existing map data.
@@ -165,7 +160,5 @@ class Map
         // Pathfinding members
         int onClosedList, onOpenList;
 };
-
-extern Map tiledMap;
 
 #endif

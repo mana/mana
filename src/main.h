@@ -103,5 +103,6 @@ extern unsigned short x, y;
 extern unsigned char direction;
 extern Configuration config;
 extern Sound sound;
+extern Map *tiledMap;
 
 #endif

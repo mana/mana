@@ -55,7 +55,8 @@ PLAYER_INFO *char_info = new PLAYER_INFO;
 
 Spriteset *hairset = NULL, *playerset = NULL;
 Image *login_wallpaper = NULL;
-Graphics* graphics;
+Graphics *graphics;
+Map *tiledMap;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -394,27 +395,27 @@ int main(int argc, char *argv[])
 // ---by Kyokai
 int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
 {
-    if(n_ID>N_SKILLS||n_ID<0) // out of cheese error, abort function
-           return 0;
-      // 1. raise the exp value     
-      m_Skill[n_ID].exp+=(n_XP*m_Skill[n_ID].mod); 
-      
-      // 2. Check for level up  
-      if(m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))   
-      {
-           m_Skill[n_ID].level += 1;
-           m_Skill[n_ID].exp = 0;
-           // TO DO: send the user a message that tells him his
-           // skill just leveled up!
-      }
-      
-      // 3. getting the return value
-      int r = m_Skill[n_ID].level;
-      if(n_base)
-      {
-           // TO DO: alter values based on equipment bonuses
-      }            
-      
-      return r; // return the value                    
+    if (n_ID > N_SKILLS || n_ID < 0) // out of cheese error, abort function
+        return 0;
+    // 1. raise the exp value     
+    m_Skill[n_ID].exp += (short)(n_XP * m_Skill[n_ID].mod); 
+
+    // 2. Check for level up  
+    if (m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))   
+    {
+        m_Skill[n_ID].level += 1;
+        m_Skill[n_ID].exp = 0;
+        // TO DO: send the user a message that tells him his
+        // skill just leveled up!
+    }
+
+    // 3. getting the return value
+    int r = m_Skill[n_ID].level;
+    if (n_base)
+    {
+        // TO DO: alter values based on equipment bonuses
+    }            
+
+    return r; // return the value                    
 }
 
