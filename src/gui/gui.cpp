@@ -55,7 +55,7 @@ Gui::Gui(Graphics *graphics):
     guiTop->_setFocusHandler(focusHandler);
 
     // Set global font
-    guiFont = new gcn::ImageFont("./data/graphic/fixedfont.bmp",
+    guiFont = new gcn::ImageFont("./data/core/graphics/gui/fixedfont.png",
             " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:@"
             "!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
             );
