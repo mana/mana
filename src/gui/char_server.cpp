@@ -140,10 +140,8 @@ void char_server() {
 
         gui->logic();
 
-        guiGraphics->_beginDraw();
         login_wallpaper->draw(screen, 0, 0);
         gui->draw();
-        guiGraphics->_endDraw();
         guiGraphics->updateScreen();
     }
 
@@ -205,7 +203,7 @@ void server_char_server(int serverIndex) {
         }
         state = CHAR_SELECT;
 
-        log("CharServer: Player: %s (Packet ID: %x, Length: %d",
+        log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
                 char_info->name, RFIFOW(0), RFIFOW(2));
 
 

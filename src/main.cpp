@@ -95,10 +95,6 @@ class InitWarningListener : public gcn::ActionListener {
     }
 } initWarningListener;
 
-void request_exit() {
-    state = EXIT;
-}
-
 /**
  * Do all initialization stuff
  */
@@ -277,7 +273,7 @@ void init_engine()
     playerset = new Spriteset(playerImg, 160, 120);
     hairset = new Spriteset(hairImg, 40, 40);
 
-    init_gui(graphics);
+    gui = new Gui(graphics);
     state = LOGIN;
 
     // initialize sound-engine and start playing intro-theme /-kth5
@@ -302,15 +298,18 @@ void init_engine()
 }
 
 /** Clear the engine */
-void exit_engine() {
+void exit_engine()
+{
     config.write(dir);
     delete[] dir;
-    gui_exit();
+    delete gui;
+    delete graphics;
     ResourceManager::deleteInstance();
 }
 
 /** Main */
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     init_engine();
 
     SDL_Event event;

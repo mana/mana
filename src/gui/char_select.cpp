@@ -452,10 +452,8 @@ void charSelect()
 
         gui->logic();
 
-        guiGraphics->_beginDraw();
         login_wallpaper->draw(screen, 0, 0);
         gui->draw();
-        guiGraphics->_endDraw();
         guiGraphics->updateScreen();
     }
 

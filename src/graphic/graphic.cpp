@@ -162,7 +162,9 @@ Graphics::Graphics():
     setTarget(SDL_GetVideoSurface());
 #endif
 
-#ifndef USE_OPENGL
+    // Hide the system mouse cursor
+    SDL_ShowCursor(SDL_DISABLE);
+
     // Load the mouse cursor
     ResourceManager *resman = ResourceManager::getInstance();
     mouseCursor = resman->getImage("core/graphics/gui/mouse.png", IMG_ALPHA);
@@ -170,12 +172,14 @@ Graphics::Graphics():
         error("Unable to load mouse cursor.");
     }
 
-    // Hide the system mouse cursor
-    SDL_ShowCursor(SDL_DISABLE);
-#endif
+    // Initialize for drawing
+    _beginDraw();
 }
 
-Graphics::~Graphics() {
+Graphics::~Graphics()
+{
+    // Deinitialize for drawing
+    _endDraw();
 }
 
 void Graphics::drawImageRect(
@@ -230,17 +234,17 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
+    // Draw mouse before flipping
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+
 #ifdef USE_OPENGL
     glFlush();
     glFinish();
     SDL_GL_SwapBuffers();
     glClear(GL_COLOR_BUFFER_BIT);
 #else
-    // Draw mouse before flipping
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
-
     SDL_Flip(screen);
 #endif
 }
@@ -251,7 +255,8 @@ Engine::Engine()
     // Initializes GUI
     chatInput = new TextField();
     chatInput->setPosition(chatInput->getBorderSize(),
-        screen->h - chatInput->getHeight() - chatInput->getBorderSize() -1);
+            screen->h - chatInput->getHeight() -
+            chatInput->getBorderSize());
     chatInput->setWidth(592 - 2 * chatInput->getBorderSize());
 
     ChatListener *chatListener = new ChatListener();
@@ -285,7 +290,8 @@ Engine::Engine()
 
     inventoryWindow = new InventoryWindow();
     inventoryWindow->setVisible(false);
-    inventoryWindow->setPosition(screen->w - statusWindow->getWidth() - inventoryWindow->getWidth() - 10, 5);
+    inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
+            inventoryWindow->getWidth() - 10, 5);
 
     npcTextDialog = new NpcTextDialog();
     npcTextDialog->setVisible(false);
@@ -298,7 +304,9 @@ Engine::Engine()
 
     statsWindow = new StatsWindow();
     statsWindow->setVisible(false);
-    statsWindow->setPosition(screen->w - 5 - statsWindow->getWidth(), statusWindow->getHeight() + 20);
+    statsWindow->setPosition(
+            screen->w - 5 - statsWindow->getWidth(),
+            statusWindow->getHeight() + 20);
     
     setupWindow = new Setup();
     setupWindow->setVisible(false);
@@ -356,8 +364,6 @@ Engine::~Engine()
 
 void Engine::draw()
 {
-    guiGraphics->_beginDraw();
-
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -395,7 +401,8 @@ void Engine::draw()
         
     // Draw nodes
     std::list<Being*>::iterator beingIterator = beings.begin();
-    while (beingIterator != beings.end()) {
+    while (beingIterator != beings.end())
+    {
         Being *being = (*beingIterator);
 
         unsigned short x = being->x;
@@ -403,11 +410,12 @@ void Engine::draw()
         unsigned char dir = being->direction / 2;
         int sx = x - camera_x;
         int sy = y - camera_y;
-    
+
 #ifdef DEBUG
-        //rect(screen, sx*32, sy*32, sx*32+32, sy*32+32, makecol(0,0,255));
+        guiGraphics->setColor(gcn::Color(0, 0, 255));
+        guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
 #endif
-        
+
         if ((being->job >= 100) && (being->job <= 110)) { // Draw a NPC
             npcset->spriteset[4 * (being->job - 100) + dir]->draw(screen,
                     sx * 32 - 8 - offset_x,
@@ -514,37 +522,36 @@ void Engine::draw()
             if (tile > 0 && tile < (int)tileset->spriteset.size()) {
                 tileset->spriteset[tile]->draw(
                         screen, i * 32 - offset_x, j * 32 - offset_y);
-            }
-#ifdef DEBUG            
-            //rect(screen, i * 32 - offset_x, j * 32 - offset_y,
-            //        i * 32 - offset_x + 32, j * 32 - offset_y + 32,
-            //        makecol(0,0,0));
+
+#ifdef DEBUG
+                guiGraphics->setColor(gcn::Color(0, 0, 0));
+                guiGraphics->drawRectangle(gcn::Rectangle(
+                            i * 32 - offset_x, j * 32 - offset_y, 32, 32));
 #endif
+            }
         }
     }
 
+    // Find a path from the player to the mouse, and draw it. This is for debug
+    // purposes.
     if (displayPathToMouse)
     {
-        // Draw a debug path
         PATH_NODE *debugPath = tiledMap.findPath(
                 player_node->x, player_node->y,
                 mouseX / 32 + camera_x, mouseY / 32 + camera_y);
 
         while (debugPath)
         {
-            SDL_Rect destRect;
-            destRect.x = (debugPath->x - camera_x) * 32 - offset_x + 12;
-            destRect.y = (debugPath->y - camera_y) * 32 - offset_y + 12;
-            destRect.w = 8;
-            destRect.h = 8;
-            SDL_FillRect(screen, &destRect,
-                    SDL_MapRGB(screen->format, 255, 0, 0));
+            int squareX = (debugPath->x - camera_x) * 32 - offset_x + 12;
+            int squareY = (debugPath->y - camera_y) * 32 - offset_y + 12;
+            guiGraphics->setColor(gcn::Color(255, 0, 0));
+            guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
             Tile *tile = tiledMap.getTile(debugPath->x, debugPath->y);
 
             std::stringstream cost;
             cost << tile->Gcost;
-            guiGraphics->drawText(cost.str(), destRect.x + 4, destRect.y + 12,
+            guiGraphics->drawText(cost.str(), squareX + 4, squareY + 12,
                     gcn::Graphics::CENTER);
 
             // Move to the next node
@@ -595,6 +602,4 @@ void Engine::draw()
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
-
-    guiGraphics->_endDraw();
 }

@@ -156,24 +156,12 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    //guiGraphics->_beginDraw();
-
     guiGraphics->pushClipArea(guiTop->getDimension());
     guiTop->draw(guiGraphics);
     guiGraphics->popClipArea();
-
-    //guiGraphics->_endDraw();
 }
 
 void Gui::focusNone()
 {
     focusHandler->focusNone();
-}
-
-void init_gui(Graphics *graphics) {
-    gui = new Gui(graphics);
-}
-
-void gui_exit() {
-    delete gui;
 }

@@ -91,9 +91,4 @@ extern WindowContainer *guiTop;               // The top container
 extern Graphics *guiGraphics;                 // Graphics driver
 extern gcn::SDLInput *guiInput;               // GUI input
 
-/** Initialize gui system */
-void init_gui(Graphics *graphics);
-
-void gui_exit();
-
 #endif
