@@ -68,8 +68,8 @@ ResourceManager::~ResourceManager()
     }
     resources.clear();
 
-    logger.log("ResourceManager::~ResourceManager() cleaned up %d references to %d"
-            " resources", danglingReferences, danglingResources);
+    logger.log("ResourceManager::~ResourceManager() cleaned up %d references "
+            "to %d resources", danglingReferences, danglingResources);
 }
 
 Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
@@ -84,12 +84,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
         return resIter->second.resource;
     }
 
-    // The filePath string.
-    std::string filePath = "";
-
-    // Set the filePath variable to the appropriate value
-    // this is only if we're not using a packed file.
-    filePath = std::string("data/") + idPath;
+    logger.log("ResourceManager::get(%s)", idPath.c_str());
 
     Resource *resource = NULL;
 
@@ -103,26 +98,24 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             logger.log("Warning: Music resource not supported.");
             break;
         case IMAGE:
-            // Attempt to create and load our image object.
-            resource =
-                reinterpret_cast<Resource*>(Image::load(filePath, flags));
-
-            // If the object is invalid, try using PhysicsFS
-            if (resource == NULL) {
-                std::cout << "Check if exists: " << filePath << std::endl;
-
+            {
                 // Load the image resource file
-                void* buffer = NULL;
-                int fileSize = loadFile(filePath, buffer);
+                int fileSize;
+                void *buffer = loadFile(idPath, fileSize);
 
-                // Let the image class load it
-                resource = reinterpret_cast<Resource*>(Image::load(buffer,
-                                fileSize));
+                if (buffer != NULL)
+                {
+                    // Let the image class load it
+                    resource = reinterpret_cast<Resource*>(Image::load(buffer,
+                                fileSize, flags));
 
-                // Cleanup
-                if (buffer != NULL) {
-                    delete[] buffer;
+                    // Cleanup
+                    free(buffer);
                 }
+                else {
+                    logger.log("Warning: resource doesn't exist!");
+                }
+
             }
 
             break;
@@ -145,7 +138,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
 
         // Create the resource entry for this object.
         ResourceEntry entry;
-        entry.filePath = filePath;
+        entry.filePath = idPath;
         entry.resource = resource;
 
         resources[idPath] = entry;
@@ -177,6 +170,9 @@ void ResourceManager::deleteInstance()
 
 void ResourceManager::searchAndAddZipFiles()
 {
+    // Add the main data directory to our PhysicsFS search path
+    PHYSFS_addToSearchPath("data", 1);
+
     // Define the path in which to search
     std::string searchString = std::string("data/*.zip");
 
@@ -239,32 +235,29 @@ void ResourceManager::searchAndAddZipFiles()
 #endif
 }
 
-int ResourceManager::loadFile(const std::string& fileName, void* buffer)
+void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
     // If the file doesn't exist indicate failure
-    if (PHYSFS_exists(fileName.c_str()) != 0) return -1;
-
-    // Initialize the buffer value
-    buffer = NULL;
+    if (!PHYSFS_exists(fileName.c_str())) {
+        logger.log("Warning: %s not found!", fileName.c_str());
+        return NULL;
+    }
 
     // Attempt to open the specified file using PhysicsFS
     PHYSFS_file* file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
-    if (file == NULL) return -1;
+    if (file == NULL) return NULL;
 
     // Print file information message
-    int fileLength = PHYSFS_fileLength(file);
-
-    std::cout << fileName   << " - "
-              << fileLength << " bytes" << std::endl;
+    fileSize = PHYSFS_fileLength(file);
 
     // Allocate memory in the buffer and load the file
-    buffer = (void*)new char[fileLength];
-    PHYSFS_read(file, buffer, 1, fileLength);
+    void *buffer = malloc(fileSize);
+    PHYSFS_read(file, buffer, 1, fileSize);
 
     // Close the file and let the user deallocate the memory (safe?)
     PHYSFS_close(file);
 
-    return fileLength;
+    return buffer;
 }

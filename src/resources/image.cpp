@@ -50,18 +50,16 @@ Image::~Image()
     unload();
 }
 
-Image* Image::load(const std::string &filePath, int flags)
+Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
 {
-    logger.log("Image::load(%s)", filePath.c_str());
+    // Load the raw file data from the buffer in an RWops structure
+    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
-    // Attempt to use SDL_Image to load the file.
-    SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
+    // Use SDL_Image to load the raw image data
+    SDL_Surface* tmpImage = IMG_Load_RW(rw, 1);
 
-    // Check if the file was opened and return the appropriate value.
-    if (!tmpImage) {
-        logger.log("Error: Image load failed.");
-        return NULL;
-    }
+    // Now free the SDL_RWops data
+    //SDL_FreeRW(rw);
 
 #ifndef USE_OPENGL
 
@@ -196,26 +194,6 @@ Image* Image::load(const std::string &filePath, int flags)
     }
 
     return new Image(texture, width, height, realWidth, realHeight);
-
-#endif
-}
-
-Image* Image::load(void* buffer, unsigned int bufferSize)
-{
-    // Load the raw file data from the buffer in an RWops structure
-    SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
-
-    // Use SDL_Image to load the raw image data
-    SDL_Surface* texture = IMG_Load_RW(rw, 1);
-
-    // Now free the SDL_RWops data
-    //SDL_FreeRW(rw);
-    
-#ifndef USE_OPENGL
-    return new Image(texture);
-#else
-    return new Image(0, 0, 0, 0, 0);
-    // Warning: need implementation to use with OpenGL
 #endif
 }
 

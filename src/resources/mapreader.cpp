@@ -236,9 +236,11 @@ Tileset* MapReader::readTileset(
 
             if (source)
             {
+                std::string sourceStr = std::string((const char*)source);
+                sourceStr.erase(0, 3);  // Remove "../"
+
                 ResourceManager *resman = ResourceManager::getInstance();
-                Image* tilebmp = resman->getImage(path +
-                        std::string((const char*)source));
+                Image* tilebmp = resman->getImage(sourceStr);
 
                 if (tilebmp)
                 {
@@ -247,7 +249,7 @@ Tileset* MapReader::readTileset(
                     return set;
                 }
                 else {
-                    logger.log("Warning: Failed to load tileset (%s)\n", source);
+                    logger.log("Warning: Failed to load tileset (%s)", source);
                 }
             }
 

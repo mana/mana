@@ -36,7 +36,7 @@ struct ResourceEntry
 {
     ResourceEntry();
 
-    Resource* resource;
+    Resource *resource;
     std::string filePath;
 };
 
@@ -115,7 +115,7 @@ class ResourceManager
          *
          * @return The size of the file that was loaded
          */
-        int loadFile(const std::string& fileName, void* buffer);
+        void *loadFile(const std::string &fileName, int &fileSize);
 
 
         static ResourceManager *instance;

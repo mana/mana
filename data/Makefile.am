@@ -1,26 +1,26 @@
-EXTRA_DIST = map/new_3-1.gat \
-	     core/graphics/gui/bg_quad_dis.png \
-	     core/graphics/gui/button.png \
-	     core/graphics/gui/button_disabled.png \
-	     core/graphics/gui/buttonhi.png \
-	     core/graphics/gui/buttonpress.png \
-	     core/graphics/gui/checkbox.png \
-	     core/graphics/gui/fixedfont.png \
-	     core/graphics/gui/mouse.png \
-	     core/graphics/gui/radioin.png \
-	     core/graphics/gui/radioout.png \
-	     core/graphics/gui/slider.png \
-	     core/graphics/gui/textbox.png \
-	     core/graphics/gui/vscroll_blue.png \
-	     core/graphics/gui/vscroll_grey.png \
-	     core/graphics/gui/vscroll_red.png \
-	     core/graphics/tiles/desert.png \
-	     core/graphics/sprites/emotions.png \
-	     core/graphics/sprites/items.png \
-	     core/graphics/sprites/monsters.png \
-	     core/graphics/sprites/npcs.png \
-	     core/graphics/sprites/player_male_base.png \
-	     core/graphics/sprites/player_male_hair.png \
-	     core/graphics/sprites/weapons.png \
-	     core/graphics/images/login_wallpaper.png \
-	     sound/wavs/level.ogg
+EXTRA_DIST = maps/new_3-1.gat \
+	     graphics/gui/bg_quad_dis.png \
+	     graphics/gui/button.png \
+	     graphics/gui/button_disabled.png \
+	     graphics/gui/buttonhi.png \
+	     graphics/gui/buttonpress.png \
+	     graphics/gui/checkbox.png \
+	     graphics/gui/fixedfont.png \
+	     graphics/gui/mouse.png \
+	     graphics/gui/radioin.png \
+	     graphics/gui/radioout.png \
+	     graphics/gui/slider.png \
+	     graphics/gui/textbox.png \
+	     graphics/gui/vscroll_blue.png \
+	     graphics/gui/vscroll_grey.png \
+	     graphics/gui/vscroll_red.png \
+	     graphics/tiles/desert.png \
+	     graphics/sprites/emotions.png \
+	     graphics/sprites/items.png \
+	     graphics/sprites/monsters.png \
+	     graphics/sprites/npcs.png \
+	     graphics/sprites/player_male_base.png \
+	     graphics/sprites/player_male_hair.png \
+	     graphics/sprites/weapons.png \
+	     graphics/images/login_wallpaper.png \
+	     sfx/level.ogg

@@ -50,28 +50,18 @@ class Image : public Resource
         virtual ~Image();
 
         /**
-         * Loads an image.
-         *
-         * @param filePath The path to the image file to load.
-         * @param flags    These flags allow controlling the way the image is
-         *                 loaded. Currently only IMG_ALPHA is supported, which
-         *                 causes alpha layer to be preserved.
-         *
-         * @return <code>NULL</code> if the an error occurred, a
-         * valid pointer otherwise.
-         */
-        static Image *load(const std::string &filePath, int flags);
-
-        /**
          * Loads an image from a buffer in memory.
          *
          * @param buffer     The memory buffer containing the image data.
          * @param bufferSize The size of the memory buffer in bytes.
+         * @param flags    These flags allow controlling the way the image is
+         *                 loaded. Currently only IMG_ALPHA is supported, which
+         *                 causes alpha layer to be preserved.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Image *load(void* buffer, unsigned int bufferSize);
+        static Image *load(void* buffer, unsigned int bufferSize, int flags);
 
         /**
          * Creates a new empty image with given height and width.
