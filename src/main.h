@@ -34,6 +34,9 @@
 
 #include <stdio.h>
 #include <allegro.h>
+#ifdef WIN32
+#include <winalleg.h>
+#endif
 #include <alfont.h>
 
 #include "log.h"

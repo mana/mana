@@ -41,6 +41,37 @@
 #endif
 // End of a part of the patch - bertram
 
+typedef struct {
+    unsigned int code;
+    char* name;
+} LanguageMap;
+
+LanguageMap languageMap[] = {
+    { 0x0813, "BE" },
+    { 0x0416, "BR" },
+    { 0x1009, "CF" },
+    { 0x1009, "CF" },
+    { 0x0807, "CH" },
+    { 0x0405, "CZ" },
+    { 0x0407, "DE" },
+    { 0x0406, "DK" },
+    { 0x040a, "ES" },
+    { 0x040b, "FI" },
+    { 0x040c, "FR" },
+    { 0x0410, "IT" },
+    { 0x0414, "NO" },
+    { 0x0415, "PL" },
+    { 0x0416, "PT" },
+    { 0x0816, "PT" },
+    { 0x0419, "RU" },
+    { 0x041d, "SE" },
+    { 0x041b, "SK" },
+    { 0x0424, "SK" },
+    { 0x0809, "UK" },
+    { 0x0409, "US" },
+    { 0, NULL }    
+};
+
 /* Account infos */
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
@@ -70,7 +101,31 @@ void request_exit() {
 
 /** Do all initialization stuff */
 void init_engine() {
+#ifdef WIN32
+  char keyb_buffer[KL_NAMELENGTH+1];
+  unsigned int langID;
+  char* code = NULL;
+  int running = 1;
+  int a;
+  if (GetKeyboardLayoutName(keyb_buffer)) {
+    //printf("layout name: %s\n", buffer);
+    langID = strtol(keyb_buffer, NULL, 16);
+    langID &= 0xffff;
+    //printf("language id: %x\n", langID);
+    for(a=0;languageMap[a].code!=0;++a) {
+      if (languageMap[a].code == langID) {
+        code = languageMap[a].name;
+        break;
+      }
+    }
+    if(code) {
+      //printf("allegro-id: %s\n", code);
+    }
+  }
+#endif
+
 	allegro_init();
+
   init_log();
   set_close_button_callback(request_exit);  // we should not use set_window_close_hook() since it's deprecated and might be gone in the future /-kth5
   
@@ -166,6 +221,12 @@ void init_engine() {
 	}
 	
 	set_config_file(dir);
+#ifdef WIN32
+	if(code) {
+	  set_config_string("system", "keyboard", code);
+  }
+#endif
+
 	delete dir; dir = 0;
  
   
