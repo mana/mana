@@ -75,6 +75,14 @@ extern unsigned short src_x, src_y, x, y;
 extern volatile int tick_time;
 extern int server_tick;
 
+/**
+ * Handle a key press.
+ *
+ * @return <code>true</code> when the key is used, <code>false</code>
+ *         otherwise.
+ */
+bool handle_key(int unicode, int scancode);
+
 void game();
 void do_init();
 void do_input();

@@ -18,9 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
- *  kth5 aka Alexander Baldeck
- *  SimEdw
+ *  $Id$
  */
 
 #include "main.h"
@@ -168,52 +166,52 @@ void do_exit() {
  * Check user input
  */
 void do_input() {
-    if(walk_status==0) {
+    if (walk_status == 0) {
         int x = get_x(player_node->coordinates);
         int y = get_y(player_node->coordinates);
-        
-        if(key[KEY_8_PAD] || key[KEY_UP]) {
-            if(get_walk(x, y-1)!=0) {
+
+        if (key[KEY_8_PAD] || key[KEY_UP]) {
+            if (get_walk(x, y - 1) != 0) {
                 walk(x, y-1, NORTH);
-				walk_status = 1;
-        src_x = x;
-        src_y = y;
-        player_node->action = WALK;
-        player_node->tick_time = tick_time;
-        set_coordinates(player_node->coordinates, x, y-1, NORTH);
-      } else set_coordinates(player_node->coordinates, x, y, NORTH);
-    } else if(key[KEY_2_PAD] || key[KEY_DOWN]) {
-      if(get_walk(x, y+1)!=0) {
-        walk(x, y+1, SOUTH);
-				walk_status = 1;
-        src_x = x;
-        src_y = y;
-        player_node->action = WALK;
-        player_node->tick_time = tick_time;
-        set_coordinates(player_node->coordinates, x, y+1, SOUTH);
-      } else set_coordinates(player_node->coordinates, x, y, SOUTH);
-    } else if(key[KEY_4_PAD] || key[KEY_LEFT]) {
-      if(get_walk(x-1, y)!=0) {
-        walk(x-1, y, WEST);
-				walk_status = 1;
-        src_x = x;
-        src_y = y;
-        player_node->action = WALK;
-				player_node->tick_time = tick_time;
-        set_coordinates(player_node->coordinates, x-1, y, WEST);
-      } else set_coordinates(player_node->coordinates, x, y, WEST);
-    } else if(key[KEY_6_PAD] || key[KEY_RIGHT]) {
-      if(get_walk(x+1, y)!=0) {
-        walk(x+1, y, EAST);
-				walk_status = 1;
-        src_x = x;
-        src_y = y;
-        player_node->action = WALK;
-				player_node->tick_time = tick_time;
-        set_coordinates(player_node->coordinates, x+1, y, EAST);
-      } else set_coordinates(player_node->coordinates, x, y, EAST);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                set_coordinates(player_node->coordinates, x, y - 1, NORTH);
+            } else set_coordinates(player_node->coordinates, x, y, NORTH);
+        } else if (key[KEY_2_PAD] || key[KEY_DOWN]) {
+            if(get_walk(x, y + 1) != 0) {
+                walk(x, y + 1, SOUTH);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                set_coordinates(player_node->coordinates, x, y + 1, SOUTH);
+            } else set_coordinates(player_node->coordinates, x, y, SOUTH);
+        } else if (key[KEY_4_PAD] || key[KEY_LEFT]) {
+            if (get_walk(x - 1, y) != 0) {
+                walk(x - 1, y, WEST);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                set_coordinates(player_node->coordinates, x - 1, y, WEST);
+            } else set_coordinates(player_node->coordinates, x, y, WEST);
+        } else if (key[KEY_6_PAD] || key[KEY_RIGHT]) {
+            if (get_walk(x + 1, y) != 0) {
+                walk(x + 1, y, EAST);
+                walk_status = 1;
+                src_x = x;
+                src_y = y;
+                player_node->action = WALK;
+                player_node->tick_time = tick_time;
+                set_coordinates(player_node->coordinates, x + 1, y, EAST);
+            } else set_coordinates(player_node->coordinates, x, y, EAST);
+        }
     }
-	}
 
     if (player_node->action == STAND) {
         if (key[KEY_LCONTROL]) {
@@ -225,13 +223,6 @@ void do_input() {
         }
     }
 
-    if (key[KEY_F1]) {
-        save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
-    } else if (key[KEY_F12]){
-        sound.adjustVolume(1);
-    } else if (key[KEY_F11]){
-        sound.adjustVolume(-1);
-    }
     if (key[KEY_F5] && action_time) {
         if (player_node->action == STAND)
             action(2, 0);
@@ -239,20 +230,6 @@ void do_input() {
             action(3, 0);
         action_time = false;
         //alert("","","","","",0,0);
-    }
-
-    if (key[KEY_F10] && action_time == true) {
-        // was 3 goes to 0
-        // was 0 goes to 3
-        screen_mode = 3 - screen_mode;
-        if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
-            // less than: to add support for other hardware platforms
-            error(allegro_error);
-        }
-    }
-
-    if (key[KEY_F9] && action_time == true) {
-        setup = Setup::create_setup();
     }
 
     // Emotions, Skill dialog
@@ -276,40 +253,71 @@ void do_input() {
                 action_time = false;
             }
         }
-                
-        if (key[KEY_S]) {
-            if (stats == NULL)
-                stats = StatsWindow::create_statswindow();
-            else {
-                stats->setVisible(!stats->isVisible());
+    }
+
+    if (mouse_b & 2) {
+        //if(show_npc_dialog==0) {
+        int npc_x = mouse_x/32+camera_x;
+        int npc_y = mouse_y/32+camera_y;
+        int id = find_npc(npc_x, npc_y);
+        if(id!=0) {
+            WFIFOW(0) = net_w_value(0x0090);
+            WFIFOL(2) = net_l_value(id);
+            WFIFOB(6) = 0;
+            WFIFOSET(7);
+        }
+        //}
+    }
+}
+
+bool handle_key(int unicode, int scancode)
+{
+    switch (scancode) {
+        case KEY_ESC:
+            state = EXIT;
+            return true;
+        case KEY_F1:
+            save_bitmap("./data/graphic/screenshot.bmp", buffer, NULL);
+            return true;
+        case KEY_F12:
+            sound.adjustVolume(1);
+            return true;
+        case KEY_F11:
+            sound.adjustVolume(-1);
+            return true;
+        case KEY_F9:
+            setup = Setup::create_setup();
+            return true;
+        case KEY_F10:
+            // was 3 goes to 0
+            // was 0 goes to 3
+            screen_mode = 3 - screen_mode;
+            if (set_gfx_mode(screen_mode, 800, 600, 0, 0) != 0) {
+                // less than: to add support for other hardware platforms
+                error(allegro_error);
             }
-            action_time = false;
-        } else if (key[KEY_I]) {
-            inventoryWindow->setVisible(!inventoryWindow->isVisible());
-            action_time = false;
-        } else if (key[KEY_K]) {
-            show_skill_list_dialog = !show_skill_dialog;
-            action_time = false;
+            return true;
+    }
+
+    if (key_shifts & KB_ALT_FLAG) {
+        switch (scancode) {
+            case KEY_I:
+                inventoryWindow->setVisible(!inventoryWindow->isVisible());
+                return true;
+            case KEY_S:
+                if (stats == NULL)
+                    stats = StatsWindow::create_statswindow();
+                else {
+                    stats->setVisible(!stats->isVisible());
+                }
+                return true;
+            case KEY_K:
+                show_skill_list_dialog = !show_skill_dialog;
+                return true;
         }
     }
 
-  if (mouse_b & 2) {
-		//if(show_npc_dialog==0) {
-      int npc_x = mouse_x/32+camera_x;
-      int npc_y = mouse_y/32+camera_y;
-      int id = find_npc(npc_x, npc_y);
-      if(id!=0) {
-        WFIFOW(0) = net_w_value(0x0090);
-        WFIFOL(2) = net_l_value(id);
-        WFIFOB(6) = 0;
-        WFIFOSET(7);
-      }
-    //}
-  }
-
-    if (key[KEY_ESC]) {
-        state = EXIT;
-    }
+    return false;
 }
 
 /** Calculate packet length */
@@ -746,6 +754,7 @@ void do_parse() {
 				// Buy/Sell dialog
 				case 0x00c4:
           buyDialog->setVisible(false);
+          sellDialog->setVisible(false);
           buySellDialog->setVisible(true);
           current_npc = RFIFOL(2);
 					break;

@@ -2,6 +2,7 @@ MODULES = src/sound/sound.cpp \
           src/graphic/2xsai.cpp \
           src/graphic/graphic.cpp \
           src/graphic/image.cpp \
+          src/gui/allegroinput.cpp \
           src/gui/button.cpp \
           src/gui/buy.cpp \
           src/gui/buysell.cpp \

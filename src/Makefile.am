@@ -3,6 +3,7 @@ tmw_SOURCES = sound/sound.cpp \
 	graphic/2xsai.cpp \
 	graphic/graphic.cpp \
 	graphic/image.cpp \
+	gui/allegroinput.cpp \
 	gui/button.cpp \
 	gui/buy.cpp \
 	gui/buysell.cpp \

@@ -27,6 +27,7 @@
 #include <math.h>
 #include "../log.h"
 #include "../sound/sound.h"
+#include "allegroinput.h"
 
 #ifndef WIN32
 #define __cdecl __attribute__((cdecl))
@@ -77,7 +78,7 @@ void init_gui(BITMAP *bitmap, const char *skin) {
     guiGraphics = new gcn::AllegroGraphics();
     guiGraphics->setTarget(bitmap);
 
-    guiInput = new gcn::AllegroInput();
+    guiInput = new AllegroInput();
 
     guiTop = new gcn::Container();
     guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
