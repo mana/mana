@@ -27,11 +27,6 @@
 #include "./net/protocol.h"
 #include <list>
 
-#define ACTION_NODE  0
-//#define PLAYER_NODE  1
-//#define NPC_NODE     2
-//#define MONSTER_NODE 3
-
 struct PATH_NODE {
     /**
      * Constructor.

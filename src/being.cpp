@@ -30,7 +30,6 @@ Being *player_node = NULL;
 
 std::list<Being *> beings;
 
-
 PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
     next(NULL)
 {
@@ -45,21 +44,6 @@ PATH_NODE *calculate_path(
     return find_path(1, src_x, src_y, dest_x, dest_y);
 }
 
-/*Being::Being():
-    id(0), job(0),
-    action(0), frame(0),
-    path(NULL),
-    speech(NULL), speech_time(0),
-    tick_time(0), speed(150),
-    emotion(0), emotion_time(0),
-    text_x(0), text_y(0),
-    hair_style(1), hair_color(1),
-    weapon(0)
-{
-    memset(coordinates, 0, 3);
-    speech_color = makecol(0, 0, 0);
-}*/
-
 void empty() {
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
@@ -68,8 +52,8 @@ void empty() {
     beings.clear();
 }
 
-void add_node(Being *Being) {
-    beings.push_back(Being);
+void add_node(Being *being) {
+    beings.push_back(being);
 }
 
 void remove_node(unsigned int id) {
@@ -123,7 +107,7 @@ Being *find_node(unsigned int id) {
     return NULL;
 }
 
-class NODE_Compare {
+class BeingCompare {
     public:
         bool operator() (const Being *a, const Being *b) const {
             return a->y < b->y;
@@ -131,23 +115,21 @@ class NODE_Compare {
 };
 
 void sort() {
-    beings.sort(NODE_Compare());
+    beings.sort(BeingCompare());
 }
 
-void empty_path(Being *Being) {
-    if (Being) {
-        PATH_NODE *temp = Being->path;
+void empty_path(Being *being) {
+    if (being) {
+        PATH_NODE *temp = being->path;
         PATH_NODE *next;
         while (temp) {
             next = temp->next;
             delete temp;
             temp = next;
         }
-        Being->path = NULL;
+        being->path = NULL;
     }
 }
-
-// Beings restructuration
 
 Being::Being() {
     id = 0; job = 0;

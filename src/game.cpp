@@ -174,10 +174,8 @@ void do_init() {
     empty();
     player_node = new Being();
     player_node->id = account_ID;
-    player_node->type = ACTION_NODE;
     player_node->x = x;
     player_node->y = y;
-    //set_coordinates(player_node->coordinates, x, y, 0);
     player_node->speed = 150;
     player_node->hair_color = char_info->hair_color;
     player_node->hair_style = char_info->hair_style;
@@ -600,7 +598,6 @@ void do_parse() {
                         player_node->job = 0;
                         player_node->action = STAND;
                         player_node->frame = 0;
-                        player_node->type = ACTION_NODE;
                         player_node->speed = 150;
                         player_node->id = account_ID;
                         player_node->x = RFIFOW(18);
