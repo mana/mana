@@ -179,7 +179,12 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    gcn::ScrollArea::drawHBar(graphics);
+    int x, y;
+    gcn::Rectangle dim = getHorizontalBarDimension();
+    getAbsolutePosition(x, y);
+
+    ((Graphics*)graphics)->drawImageRect(
+            x + dim.x, y + dim.y, dim.width, dim.height, background);
 }
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
@@ -194,5 +199,10 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
-    gcn::ScrollArea::drawHMarker(graphics);
+    int x, y;
+    gcn::Rectangle dim = getHorizontalMarkerDimension();
+    getAbsolutePosition(x, y);
+
+    ((Graphics*)graphics)->drawImageRect(
+            x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
 }
