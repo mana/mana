@@ -1,0 +1,126 @@
+AC_INIT(configure.in)
+
+dnl Should probably try non-GNU tools...
+AC_PATH_PROGS(MAKE, make gmake, make)
+AC_PATH_PROG(NASM, nasm, nasm)
+AC_PATH_PROG(MKDIR, mkdir, mkdir)
+AC_PATH_PROG(RMDIR, rmdir, rmdir)
+AC_PATH_PROG(RM, rm, rm)
+AC_PATH_PROGS(INSTALL, install ginstall, install)
+AC_PATH_PROG(CHMOD, chmod, chmod)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(tmw, 0.8.0)
+
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+
+dnl FIND_PATH(programm-name, variable-name, list of directories,
+dnl     if-not-found, test-parameter)
+AC_DEFUN(FIND_PATH,
+[
+   AC_MSG_CHECKING([for $1])
+   if test -n "$$2"; then
+        cv_path="$$2";
+   else
+        cache=`echo $1 | sed 'y%./+-%__p_%'`
+
+        AC_CACHE_VAL(cv_path_cache,
+        [
+        cv_path="NONE"
+        dirs="$3"
+        save_IFS=$IFS
+        IFS=':'
+        for dir in $PATH; do
+          dirs="$dirs $dir"
+        done
+        IFS=$save_IFS
+
+        for dir in $dirs; do
+          if test -x "$dir/$1"; then
+            if test -n "$5"
+            then
+              evalstr="$dir/$1 $5 2>&1 "
+              if eval $evalstr; then
+                cv_path="$dir/$1"
+                break
+              fi
+            else
+                cv_path="$dir/$1"
+                break
+            fi
+          fi
+        done
+
+        eval "cv_path_$cache=$cv_path"
+
+        ])
+
+      eval "cv_path=\"`echo '$cv_path_'$cache`\""
+
+   fi
+
+   if test -z "$cv_path" || test "$cv_path" = NONE; then
+      AC_MSG_RESULT(not found)
+      $4
+   else
+      AC_MSG_RESULT($cv_path)
+      $2=$cv_path
+
+   fi
+])
+
+FIND_PATH(sdl-config, LIBSDL_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/local/bin /opt/local/bin], [
+  AC_MSG_ERROR([Could not find libsdl anywhere, check http://www.sdl.org])
+])
+
+if test -n "$LIBSDL_CONFIG"; then
+  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs`"
+  LIBSDL_RPATH=
+  for args in $LIBSDL_LIBS; do
+       case $args in
+         -L*)
+            LIBSDL_RPATH="$LIBSDL_RPATH $args"
+            ;;
+       esac
+  done
+  LIBSDL_RPATH=`echo $LIBSDL_RPATH | sed -e "s/-L/-R/g"`
+  LIBSDL_CFLAGS="`$LIBSDL_CONFIG --cflags`"
+
+  AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 1, [Defines if your system has the LIBSDL library])
+else
+  AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 0, [Defines if your system has the LIBSDL library])
+fi
+
+FIND_PATH(allegro-config, LIBALLEGRO_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/local/bin /opt/local/bin], [
+  AC_MSG_ERROR([Could not find Allegro anywhere, check http://www.talula.demon.co.uk/allegro])
+])
+
+if test -n "$LIBALLEGRO_CONFIG"; then
+  LIBALLEGRO_LIBS="`$LIBALLEGRO_CONFIG --libs` -ljgmod -lalfont -lguichan -lguichan_allegro"
+  LIBALLEGRO_RPATH=
+  for args in $LIBALLEGRO_LIBS; do
+       case $args in
+         -L*)
+            LIBALLEGRO_RPATH="$LIBALLEGRO_RPATH $args"
+            ;;
+       esac
+  done
+  LIBALLEGRO_RPATH=`echo $LIBALLEGRO_RPATH | sed -e "s/-L/-R/g"`
+  LIBALLEGRO_CFLAGS="`$LIBALLEGRO_CONFIG --cflags`"
+
+  AC_DEFINE_UNQUOTED(HAVE_LIBALLEGRO, 1, [Defines if your system has the LIBALLEGRO library])
+else
+  AC_DEFINE_UNQUOTED(HAVE_LIBALLEGRO, 0, [Defines if your system has the LIBALLEGRO library])
+fi
+
+AC_SUBST(LIBSDL_LIBS)
+AC_SUBST(LIBSDL_CFLAGS)
+AC_SUBST(LIBSDL_RPATH)
+
+AC_SUBST(LIBALLEGRO_LIBS)
+AC_SUBST(LIBALLEGRO_CFLAGS)
+AC_SUBST(LIBALLEGRO_RPATH)
+
+AC_OUTPUT(Makefile src/Makefile)
