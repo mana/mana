@@ -8,7 +8,9 @@ CXXFLAGS =-Wall -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funrol
 CFLAGS=-ljgmod `allegro-config --libs release` -lalfont
 
 include file.list
-OBJS +=src/net/win2mac.o
+MODULES += src/net/win2mac.cpp
+
+OBJS := $(patsubst src%, obj%, $(patsubst %.cpp, %.o, $(MODULES)))
 
 tmw: $(OBJS)
 	$(CXX) -o tmw $(OBJS) $(CFLAGS)
@@ -17,9 +19,12 @@ tmw: $(OBJS)
 	@echo "TYPE ./tmw TO LAUCH THE GAME"
 
 clean:
-	- rm -fv *.o
-	- rm -fv Net/*.o
-	- rm -fv Gui/*.o
-	- rm -fv Sound/*.o
-	- rm -fv Graphic/*.o
-	- rm -fv tmw 
+	- rm -fv obj/*.o
+	- rm -fv obj/net/*.o
+	- rm -fv obj/gui/*.o
+	- rm -fv obj/sound/*.o
+	- rm -fv obj/graphic/*.o
+	- rm -fv tmw
+
+obj/%.o: src/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
