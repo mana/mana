@@ -27,8 +27,8 @@
 #ifdef WIN32
     #pragma warning(disable:4312)
 #endif
-#include <SDL.h>
-#include <SDL_mixer.h>
+#include <SDL/SDL.h>
+#include <SDL/SDL_mixer.h>
 #include <map>
 #include <string>
 #include <fstream>
