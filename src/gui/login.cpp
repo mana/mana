@@ -23,6 +23,7 @@
 
 #include "login.h"
 #include "gui.h"
+#include "mw_button.h"
 #include "../graphic/graphic.h"
 
 // Dialog parts
@@ -74,8 +75,8 @@ void login() {
     userField = new gcn::TextField("player");
     passField = new gcn::TextField();
     keepCheck = new gcn::CheckBox("Keep", false);
-    okButton = new gcn::Button("OK");
-    cancelButton = new gcn::Button("Cancel");
+    okButton = new MWButton("OK");
+    cancelButton = new MWButton("Cancel");
 
     dialog->setDimension(gcn::Rectangle(300, 250, 200, 80));
     userLabel->setPosition(4, 14);

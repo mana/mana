@@ -404,7 +404,6 @@ void loadDialogSkin() {
 }
 
 void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin, int x, int y,int w, int h) {
-
     BITMAP **grid = skin->grid;
 
     int w0 = grid[0]->w;
@@ -509,7 +508,25 @@ void gui_shutdown(void) {
     }
 }
 
-/** Draw text for gui widgets */
+/*
+ * Find out the screen area of a Guichan widget
+ */
+gcn::Rectangle getScreenDimension(gcn::Widget *widget) {
+    gcn::Rectangle rect = gcn::Rectangle(widget->getDimension());
+    gcn::BasicContainer *parent = widget->getParent();
+
+    while (parent != NULL) {
+        rect.x += parent->getX();
+        rect.y += parent->getY();
+        parent = parent->getParent();
+    }
+
+    return rect;
+}
+
+/*
+ * Draw text for gui widgets
+ */
 int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre) {
     char tmp[1024];
     int hline_pos = -1;
