@@ -20,10 +20,12 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -32,8 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib SDLmain.lib"
-				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib alfont.lib ws2_32.lib"
+				AdditionalDependencies="physfs.lib sdl.lib sdlmain.lib sdl_image.lib sdl_mixer.lib guichan.lib guichan_sdl.lib ws2_32.lib libxml2.lib iconv.lib"
 				OutputFile="$(OutDir)/ManaWorld.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -69,8 +70,10 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;D:\Programming\Libraries\LibXml\libxml2-2.6.17.win32\lib&quot;;&quot;D:\Programming\Libraries\LibXml\libxml2-2.6.17.win32\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
+				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
@@ -79,8 +82,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib"
-				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib ws2_32.lib "
+				AdditionalDependencies="physfs.lib alleg.lib guichan.lib guichan_sdl.lib sdl.lib sdlmain.lib sdl_mixer.lib sdl_image.lib ws2_32.lib libxml2.lib iconv.lib"
 				OutputFile="tmw.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -154,16 +156,22 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
-				RelativePath=".\src\astar.cpp">
+				RelativePath=".\src\base64.cpp">
 			</File>
 			<File
-				RelativePath=".\src\astar.h">
+				RelativePath=".\src\base64.h">
 			</File>
 			<File
 				RelativePath=".\src\being.cpp">
 			</File>
 			<File
 				RelativePath=".\src\being.h">
+			</File>
+			<File
+				RelativePath=".\src\configuration.cpp">
+			</File>
+			<File
+				RelativePath=".\src\configuration.h">
 			</File>
 			<File
 				RelativePath=".\src\game.cpp">
@@ -189,15 +197,15 @@
 			<File
 				RelativePath=".\src\map.h">
 			</File>
+			<File
+				RelativePath=".\src\sound.cpp">
+			</File>
+			<File
+				RelativePath=".\src\sound.h">
+			</File>
 			<Filter
 				Name="graphic"
 				Filter="">
-				<File
-					RelativePath=".\src\graphic\2xsai.cpp">
-				</File>
-				<File
-					RelativePath=".\src\graphic\2xsai.h">
-				</File>
 				<File
 					RelativePath=".\src\graphic\graphic.cpp">
 				</File>
@@ -205,10 +213,10 @@
 					RelativePath=".\src\graphic\graphic.h">
 				</File>
 				<File
-					RelativePath=".\src\graphic\image.cpp">
+					RelativePath=".\src\graphic\spriteset.cpp">
 				</File>
 				<File
-					RelativePath=".\src\graphic\image.h">
+					RelativePath=".\src\graphic\spriteset.h">
 				</File>
 			</Filter>
 			<Filter
@@ -240,6 +248,24 @@
 				Name="gui"
 				Filter="">
 				<File
+					RelativePath=".\src\gui\button.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\button.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\buy.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\buy.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\buysell.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\buysell.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\char_select.cpp">
 				</File>
 				<File
@@ -258,6 +284,24 @@
 					RelativePath=".\src\gui\chat.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\checkbox.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\checkbox.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\confirm_dialog.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\confirm_dialog.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\equipment.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\equipment.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\gui.cpp">
 				</File>
 				<File
@@ -270,16 +314,88 @@
 					RelativePath=".\src\gui\inventory.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\itemcontainer.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\itemcontainer.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\listbox.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\listbox.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\login.cpp">
 				</File>
 				<File
 					RelativePath=".\src\gui\login.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\minimap.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\minimap.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\npc.cpp">
 				</File>
 				<File
 					RelativePath=".\src\gui\npc.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\npc_text.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\npc_text.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\ok_dialog.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\ok_dialog.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\passwordfield.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\passwordfield.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\playerbox.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\playerbox.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\progressbar.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\progressbar.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\radiobutton.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\radiobutton.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\scrollarea.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\scrollarea.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\sell.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\sell.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\setup.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\setup.h">
 				</File>
 				<File
 					RelativePath=".\src\gui\shop.cpp">
@@ -294,30 +410,74 @@
 					RelativePath=".\src\gui\skill.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\slider.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\slider.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\stats.cpp">
 				</File>
 				<File
 					RelativePath=".\src\gui\stats.h">
 				</File>
+				<File
+					RelativePath=".\src\gui\status.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\status.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\textbox.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\textbox.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\textfield.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\textfield.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\window.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\window.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\windowcontainer.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\windowcontainer.h">
+				</File>
+				<Filter
+					Name="sound"
+					Filter="">
+				</Filter>
 			</Filter>
 			<Filter
-				Name="sound"
+				Name="resources"
 				Filter="">
 				<File
-					RelativePath=".\src\sound\sound.cpp">
+					RelativePath=".\src\resources\image.cpp">
 				</File>
 				<File
-					RelativePath=".\src\sound\sound.h">
+					RelativePath=".\src\resources\image.h">
+				</File>
+				<File
+					RelativePath=".\src\resources\resource.cpp">
+				</File>
+				<File
+					RelativePath=".\src\resources\resource.h">
+				</File>
+				<File
+					RelativePath=".\src\resources\resourcemanager.cpp">
+				</File>
+				<File
+					RelativePath=".\src\resources\resourcemanager.h">
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Resource Files"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
-			<File
-				RelativePath=".\src\resource.rc">
-			</File>
 		</Filter>
 	</Files>
 	<Globals>
