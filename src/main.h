@@ -37,6 +37,7 @@
 #include "./net/protocol.h"
 #include "./gui/login.h"
 #include "./gui/gui.h"
+#include "./gui/stats.h"
 #include "./gui/char_server.h"
 #include "./gui/char_select.h"
 #include "./graphic/super_eagle.h"
@@ -57,15 +58,6 @@ typedef struct {
 	short online_users;
 } SERVER_INFO;
 
-typedef struct {
-	int id;
-	char name[24];
-	short hp, max_hp, sp, max_sp, lv;
-	int xp, zeny, job_xp, job_lv;
-	short statp, skillp;
-	char STR, AGI, VIT, INT, DEX, LUK;
-} CHAR_SEL_INFO;
-
 extern BITMAP *playerset;
 extern DATAFILE *graphic, *emotions;
 extern char username[25];
@@ -76,7 +68,7 @@ extern char map_name[16];
 extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern SERVER_INFO *server_info;
-extern CHAR_SEL_INFO *char_info;
+extern CHAR_INFO *char_info;
 extern unsigned char state;
 extern unsigned short x, y;
 extern unsigned char direction;

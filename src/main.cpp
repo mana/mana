@@ -31,7 +31,7 @@
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
 SERVER_INFO *server_info;
-CHAR_SEL_INFO *char_info;
+CHAR_INFO *char_info = new CHAR_INFO;
 
 BITMAP *playerset;
 DATAFILE *graphic, *emotions;

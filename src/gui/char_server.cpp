@@ -75,8 +75,8 @@ void server_char_server() {
 	if(ret==SOCKET_ERROR) {
 		ok("Error", "Unable to connect to char server");
 		return;
-	}	
-	
+	}
+
 	// Send login infos
 	WFIFOW(0) = net_w_value(0x0065);
 	WFIFOL(2) = net_l_value(account_ID);
@@ -90,11 +90,11 @@ void server_char_server() {
 	RFIFOSKIP(4);
 
     while(in_size<3)flush();
-	
+
 	if(RFIFOW(0)==0x006b) {
 		while(in_size<RFIFOW(2))flush();
 		n_character = (RFIFOW(2)-24)/106;
-		char_info = (CHAR_SEL_INFO *)malloc(sizeof(CHAR_SEL_INFO)*n_character);
+		char_info = (CHAR_INFO *)malloc(sizeof(CHAR_INFO)*n_character);
 		for(int i=0;i<n_character;i++) {
 			char_info[i].id = RFIFOL(24+106*i);
 			strcpy(char_info[i].name, RFIFOP(24+106*i+74));
@@ -116,12 +116,12 @@ void server_char_server() {
 		}
 		state = CHAR_SELECT;
 
-		log("Player", "name", char_info->name);		
+		log("Player", "name", char_info->name);
 		log_hex("Char_Server_Packet", "Packet_ID", RFIFOW(0));
     log_int("Char_Server_Packet", "Packet_length", RFIFOW(2));
- 
 
-		RFIFOSKIP(RFIFOW(2));		
+
+		RFIFOSKIP(RFIFOW(2));
 	} else if(RFIFOW(0)==0x006c) {
 		switch(RFIFOB(2)) {
 			case 0:

@@ -34,6 +34,7 @@
 #include "main.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
+#include "./gui/stats.h"
 #include "./graphic/super_eagle.h"
 
 #define SPEECH_TIME 40

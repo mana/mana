@@ -64,7 +64,7 @@ void refresh_screen(void) {
 END_OF_FUNCTION(refresh_screen);
 
 int fps = 0, frame = 0;
-/** lets u only trigger an action every other second 
+/** lets u only trigger an action every other second
 			tmp. counts fps*/
 void second(void) {
 	action_time = true;
@@ -94,7 +94,7 @@ void game() {
       status("GRAPHIC");
       do_graphic();
 			refresh = false;
-    }		
+    }
     status("PARSE");
     do_parse();
     status("FLUSH");
@@ -111,24 +111,24 @@ void game() {
 void do_init() {
 
   if(!load_map(map_path))error("Could not find map file");
-    
+
   sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
 
 	// Initialize timers
-  tick_time = 0;  
+  tick_time = 0;
 	refresh = false;
   LOCK_VARIABLE(tick_time);
 	LOCK_VARIABLE(refresh);
   install_int_ex(refresh_time, MSEC_TO_TIMER(1));
 	install_int_ex(refresh_screen, /*MSEC_TO_TIMER(2000)*/BPS_TO_TIMER(75)); // Set max refresh rate to 75 fps
-	install_int_ex(second, BPS_TO_TIMER(1));  
+	install_int_ex(second, BPS_TO_TIMER(1));
 
   // Interrupt drawing while in background
   #ifdef WIN32
     set_display_switch_mode(SWITCH_AMNESIA);
   #else
     set_display_switch_mode(SWITCH_PAUSE);
-  #endif	
+  #endif
 
   // Initialize beings
   empty();
@@ -163,7 +163,7 @@ void do_input() {
         player_node->action = WALK;
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y-1, NORTH);
-      } else set_coordinates(player_node->coordinates, x, y, NORTH); 
+      } else set_coordinates(player_node->coordinates, x, y, NORTH);
     } else if(key[KEY_DOWN]) {
       if(get_walk(x, y+1)!=0) {
         walk(x, y+1, SOUTH);
@@ -173,7 +173,7 @@ void do_input() {
         player_node->action = WALK;
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y+1, SOUTH);
-      } else set_coordinates(player_node->coordinates, x, y, SOUTH); 
+      } else set_coordinates(player_node->coordinates, x, y, SOUTH);
     } else if(key[KEY_LEFT]) {
       if(get_walk(x-1, y)!=0) {
         walk(x-1, y, WEST);
@@ -183,7 +183,7 @@ void do_input() {
         player_node->action = WALK;
 				player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x-1, y, WEST);
-      } else set_coordinates(player_node->coordinates, x, y, WEST); 
+      } else set_coordinates(player_node->coordinates, x, y, WEST);
     } else if(key[KEY_RIGHT]) {
       if(get_walk(x+1, y)!=0) {
         walk(x+1, y, EAST);
@@ -193,8 +193,8 @@ void do_input() {
         player_node->action = WALK;
 				player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x+1, y, EAST);
-      } else set_coordinates(player_node->coordinates, x, y, EAST); 
-    }  
+      } else set_coordinates(player_node->coordinates, x, y, EAST);
+    }
 	}
 
   if(player_node->action==STAND)
@@ -203,7 +203,7 @@ void do_input() {
 			attack(get_x(player_node->coordinates), get_y(player_node->coordinates), get_direction(player_node->coordinates));
 			player_node->tick_time = tick_time;
 		}
-	
+
   if(key[KEY_F1]) {
     save_bitmap("./Graphic/screenshot.bmp",double_buffer,NULL);
   } else if(key[KEY_F12]){
@@ -218,13 +218,13 @@ void do_input() {
 			action(3, 0);
 		action_time = false;
 	}
-	
-  if(key[KEY_ENTER]) {    
+
+  if(key[KEY_ENTER]) {
     if(strcmp(speech, "")!=0) {
        chatlog.chat_send(char_info[0].name, speech);
        strcpy(speech,"");
     }
-  } 
+  }
 
   // Emotions, Skill dialog
 	if(key_shifts & KB_ALT_FLAG && action_time == true) {
@@ -280,7 +280,7 @@ void do_input() {
       }
     }
   }
-	
+
   if(key[KEY_ESC])state = EXIT;
 
 }
@@ -322,7 +322,7 @@ void do_parse() {
 			fprintf(file, "%x\n", RFIFOW(0));
 			fclose(file);*/
 
-      // Parse packet based on their id                  
+      // Parse packet based on their id
       switch(id) {
         // Received speech
         case 0x008d:
@@ -348,7 +348,7 @@ void do_parse() {
 						if(player_node->speech!=NULL) {
 							free(player_node->speech);
 							player_node->speech = NULL;
-						}  
+						}
 
 						player_node->speech = (char *)malloc(RFIFOW(2)-3);
 						memset(player_node->speech, '\0', RFIFOW(2)-3);
@@ -408,7 +408,7 @@ void do_parse() {
           }
           break;
         // Monster moving
-        case 0x007b:          
+        case 0x007b:
           node = find_node(RFIFOL(2));
 					if(node==NULL) {
 						node = create_node();
@@ -445,7 +445,7 @@ void do_parse() {
           else if(get_dest_y(RFIFOP(50))<get_y(node->coordinates))direction = NORTH;
           else node->action = STAND;
 					if(node->action==WALK)node->tick_time = tick_time;
-          set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);          
+          set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
           }
           break;
         // NPC dialog
@@ -506,7 +506,7 @@ void do_parse() {
 					action.unused  = RFIFOW(6);
 					action.success = RFIFOB(8);
 					action.reason  = RFIFOB(9);
-      		
+
 					if(action.success != SKILL_FAILED &&
 						action.bskill == BSKILL_EMOTE ) {
 						printf("Action: %d/%d", action.bskill, action.success);
@@ -531,7 +531,8 @@ void do_parse() {
 						case 11:
 							char_info->lv = RFIFOW(4);
 							break;
-					}
+						}
+					charstats_display(char_info);
 					if(char_info->hp==0) {
 						ok("Message", "You're now dead, press ok to restart");
 						WFIFOW(0) = net_w_value(0x00b2);
@@ -650,11 +651,11 @@ void do_parse() {
 					break;
         // Manage non implemented packets
         default:
-          //alert(pkt_nfo,"","","","",0,0);                  
+          //alert(pkt_nfo,"","","","",0,0);
           break;
       }
-      //alert(pkt_nfo,"","","","",0,0);                  
-            
+      //alert(pkt_nfo,"","","","",0,0);
+
       RFIFOSKIP(len);
     }
   }

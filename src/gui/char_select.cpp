@@ -35,8 +35,8 @@ DIALOG char_select_dialog[] = {
    { tmw_bitmap_proc,   304,  282,  192,   70,    0,   0,    0,    0,          80,                60,             playerset,                      NULL, NULL  },
    { tmw_button_proc,   398,  426,   44,   18,    0,  -1,    'o',  D_EXIT,    -1,                 0,           (char*)"&Ok",                      NULL, NULL  },
    { tmw_button_proc,   446,  426,   44,   18,    0,  -1,    'c',  D_EXIT,    -1,                 0,       (char*)"&Cancel",                      NULL, NULL  },
-   { tmw_button_proc,   304,  426,   44,   18,    0,   0,    0,    D_EXIT,     0,                 0,           button_state,                      NULL, NULL  }, 
-/* { gui_button_proc,   304,  356,   20,   20,    0,   0,    0,    0,          0,                 0,                    "<",                      NULL, NULL  },  
+   { tmw_button_proc,   304,  426,   44,   18,    0,   0,    0,    D_EXIT,     0,                 0,           button_state,                      NULL, NULL  },
+/* { gui_button_proc,   304,  356,   20,   20,    0,   0,    0,    0,          0,                 0,                    "<",                      NULL, NULL  },
    { gui_button_proc,   328,  356,   20,   20,    0,   0,    0,    0,          0,                 0,                    ">",                      NULL, NULL  },  */
    { NULL,                0,    0,   0,     0,    0,   0,    0,    0,          0,                 0,                   NULL,                      NULL, NULL  },
 };
@@ -97,7 +97,7 @@ void server_char_select() {
   log_int("Char_Select_Packet", "Packet_in_size", RFIFOW(2));
   log_int("Char_Select_Packet", "In_size", in_size);
 
-  if(RFIFOW(0)==0x0071) {         
+  if(RFIFOW(0)==0x0071) {
     while(in_size<28)flush();
     char_ID = RFIFOL(2);
     memset(map_path, '\0', 480);
@@ -137,7 +137,7 @@ void server_char_delete() {
       WFIFOSET(46);
 
       while((in_size<2)||(out_size>0))flush();
-      if(RFIFOW(0)==0x006f) {           
+      if(RFIFOW(0)==0x006f) {
         RFIFOSKIP(2);
         ok("Info", "Player deleted");
         free(char_info);
@@ -184,7 +184,7 @@ void server_char_delete() {
       while((in_size<3)||(out_size>0))flush();
       if(RFIFOW(0)==0x006d) {
         while(in_size<108)flush();
-        char_info = (CHAR_SEL_INFO *)malloc(sizeof(CHAR_SEL_INFO));
+        char_info = (CHAR_INFO *)malloc(sizeof(CHAR_INFO));
         char_info->id = account_ID;
         memset(char_info->name, '\0', 24);
         strcpy(char_info[0].name, RFIFOP(2+74));
@@ -203,7 +203,7 @@ void server_char_delete() {
 				char_info->INT = RFIFOB(2+101);
 				char_info->DEX = RFIFOB(2+102);
 				char_info->LUK = RFIFOB(2+103);
-				RFIFOSKIP(108);         
+				RFIFOSKIP(108);
 				n_character++;
 			} else if(RFIFOW(0)==0x006c) {
 				switch(RFIFOB(2)) {
