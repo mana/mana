@@ -44,9 +44,9 @@ struct itemHolder { // the holder of a item
 };
 
 class TmwInventory {
-	public:
-		TmwInventory() {};
-		~TmwInventory() {};
+    public:
+        TmwInventory();
+        ~TmwInventory();
 
 		void create(int x, int y); // create the window
 		void draw(BITMAP *); // draw the window (if areDisplaying != 0 )

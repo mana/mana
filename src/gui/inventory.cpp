@@ -31,6 +31,15 @@ DIALOG inventory_dialog[] = {
 
 DIALOG_PLAYER *inventory_player;
 
+TmwInventory::TmwInventory()
+{
+    show_inventory = false;
+}
+
+TmwInventory::~TmwInventory()
+{
+}
+
 /** Initialize inventory */
 void TmwInventory::create(int tempxpos, int tempypos) {
 	itemset = load_datafile("./data/graphic/items.dat");
