@@ -86,19 +86,15 @@ class VideoSurface : public Surface {
 			destroy_bitmap(page[2]);
 		}
 		void lock() {
-#ifdef WIN32
 			acquire_bitmap(buffer);
-#endif
 		}
 		void show() {
-#ifdef WIN32
 			release_bitmap(buffer);
-#endif
 			show_video_bitmap(buffer);
 		}
 		void update() {
 			current_page++;
-			if(current_page=2) {
+			if (current_page == 2) {
 				current_page = 0;
 			}
 			buffer = page[current_page];

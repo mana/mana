@@ -17,8 +17,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
 #include <stdio.h>
@@ -26,77 +24,51 @@
 #include <string.h>
 
 #include "npc.h"
+#include <vector>
 
-ITEM *item_head = NULL;
-int item_number = 0;
+std::vector<ITEM*> items;
+
 
 char *item_list(int index, int *list_size) {
-  if(index<0) {
-    *list_size = item_number;
-		return NULL;
-	} else {
-		int iterator = 0;
-		ITEM *temp = item_head;
-		while(iterator<index) {
-			temp = temp->next;
-			iterator++;
-		}
-		return temp->name;
-	}
+    if (index < 0) {
+        *list_size = items.size();
+        return NULL;
+    } else {
+        return items[index]->name;
+    }
 }
 
 void add_item(char *name) {
-	ITEM *item = item_head;
-	ITEM *temp = (ITEM *)malloc(sizeof(ITEM));
-	//temp->name = NULL;
-	temp->name = name;
-	temp->next = NULL;
-	if(!item_head)
-		item_head = temp;
-	else {
-		while(item->next)
-			item = item->next;
-		item->next = temp;
-	}
-	item_number++;
+    ITEM *item = (ITEM*)malloc(sizeof(ITEM));
+    item->name = name;
+    items.push_back(item);
 }
 
 void remove_tail() {
-  int iterator = 0;
-  ITEM *temp = item_head;
-  while(iterator<item_number-2) {
-    temp = temp->next;
-    iterator++;
-  }
-  free(temp->next);
-  temp->next = NULL;
-  item_number--;
+    free(items.back()->name);
+    free(items.back());
+    items.pop_back();
 }  
 
 void parse_items(char *string, short len) {
-  char *token = strtok(string, ":");
-  while(token!=NULL) {
-    //if(strcmp(token, "you prefer?")!=0) { // temp fix for the barber script
-      char *temp = (char *)malloc(strlen(token));
-      strcpy(temp, token);
-      add_item(temp);
-    //}  
-    token = strtok(NULL, ":");
-  }
-  remove_tail();  
+    char *token = strtok(string, ":");
+    while (token != NULL) {
+        // temp fix for the barber script
+        //if (strcmp(token, "you prefer?") != 0) {
+        char *temp = (char*)malloc(strlen(token));
+        strcpy(temp, token);
+        add_item(temp);
+        //}
+        token = strtok(NULL, ":");
+    }
+    remove_tail();  
 } 
 
 void remove_all_items() {
-  ITEM *temp, *next;
-	temp = item_head;
-	while(temp) {
-		next = temp->next;
-		/*if(temp->name!=NULL)
-      free(temp->name);*/ //buggy
-		free(temp);
-		temp = next;
-	}
-	item_head = NULL;
-	item_number = 0;
+    int i;
+    for (i = 0; i < items.size(); i++) {
+        free(items[i]->name);
+        free(items[i]);
+    }
+    items.clear();
 }
-

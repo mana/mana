@@ -39,7 +39,7 @@ class PasswordField : public TextField {
         PasswordField(const std::string& text = "");
 
         /**
-         * Draws the text field.
+         * Draws the password field.
          */
         void draw(gcn::Graphics *graphics);
 };
