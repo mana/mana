@@ -50,7 +50,7 @@ extern int map_x, map_y, camera_x, camera_y;
 extern BITMAP *hairset;
 extern char npc_button[10];
 
-extern StatusDialog *statusDialog;
+extern StatusWindow *statusWindow;
 extern BuyDialog *buyDialog;
 extern BuySellDialog *buySellDialog;
 extern InventoryDialog *inventoryDialog;

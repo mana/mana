@@ -39,10 +39,10 @@
  *
  * \ingroup GUI
  */
-class StatusDialog : public Window {
+class StatusWindow : public Window {
     public:
-        StatusDialog(gcn::Container *parent);
-        ~StatusDialog();
+        StatusWindow(gcn::Container *parent);
+        ~StatusWindow();
 
         /**
          * Updates this dialog with values from PLAYER_INFO *char_info

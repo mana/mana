@@ -23,7 +23,7 @@
 
 #include "status.h"
 
-StatusDialog::StatusDialog(gcn::Container *parent):
+StatusWindow::StatusWindow(gcn::Container *parent):
     Window(parent, "%s Lvl: % 2i Job: % 2i")
 {
     hp = new gcn::Label("HP");
@@ -46,7 +46,7 @@ StatusDialog::StatusDialog(gcn::Container *parent):
     add(manaBar);
 }
 
-StatusDialog::~StatusDialog()
+StatusWindow::~StatusWindow()
 {
     delete hp;
     delete sp;
@@ -55,7 +55,7 @@ StatusDialog::~StatusDialog()
     delete manaBar;
 }
 
-void StatusDialog::update()
+void StatusWindow::update()
 {
     char *tempstr = new char[64];
 

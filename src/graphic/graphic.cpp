@@ -53,7 +53,7 @@ char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
 
-StatusDialog *statusDialog;
+StatusWindow *statusWindow;
 BuyDialog *buyDialog;
 BuySellDialog *buySellDialog;
 InventoryDialog *inventoryDialog;
@@ -213,8 +213,8 @@ void init_graphic() {
 
     // Create dialogs
 
-    statusDialog = new StatusDialog(guiTop);
-    statusDialog->setPosition(SCREEN_W - statusDialog->getWidth() - 10, 10);
+    statusWindow = new StatusWindow(guiTop);
+    statusWindow->setPosition(SCREEN_W - statusWindow->getWidth() - 10, 10);
 
     buyDialog = new BuyDialog(guiTop);
     buyDialog->setVisible(false);
@@ -607,7 +607,7 @@ void do_graphic(void) {
     }
 
     // Update character status display
-    statusDialog->update();
+    statusWindow->update();
 
     // Update GUI
     guiGraphics->setTarget(vpage[page_num]);
@@ -625,7 +625,7 @@ void do_graphic(void) {
 }
 
 void exit_graphic() {
-    delete statusDialog;
+    delete statusWindow;
     delete buyDialog;
 
     shutdown_dialog(npc_player);
