@@ -2,27 +2,27 @@
 
   The Mana World
   Copyright 2004 The Mana World Development Team
-    This file is part of The Mana World.
-
-    The Mana World is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-
-    The Mana World is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with The Mana World; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-		By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
-
-		   kth5 aka Alexander Baldeck
-
-			 SimEdw
+  This file is part of The Mana World.
+  
+  The Mana World is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  any later version.
+  
+  The Mana World is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with The Mana World; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+  By ElvenProgrammer aka Eugenio Favalli (umperio@users.upagiro.net)
+  
+     kth5 aka Alexander Baldeck
+     
+     SimEdw
 
 */
 
@@ -594,18 +594,18 @@ void do_parse() {
 					}
 					break;
 				// Stop walking
-				case 0x0088:  // Disabled because giving some problems
+				/*case 0x0088:  // Disabled because giving some problems
 					if(node = find_node(RFIFOL(2))) {
 						//if(node->id!=player_node->id) {
 						/*char ids[20];
 						sprintf(ids,"%i",RFIFOL(2));
 						alert(ids,"","","","",0,0);*/
-              node->action = STAND;
+              /*node->action = STAND;
               node->frame = 0;
               set_coordinates(node->coordinates, RFIFOW(6), RFIFOW(8), get_direction(node->coordinates));
 						//}
 					}
-          break;
+          break;*/
 				// Damage, sit, stand up
 				case 0x008a:
 					switch(RFIFOB(26)) {

@@ -1,5 +1,7 @@
 /*
 
+
+
 	The Mana World
 	Copyright 2004 The Mana World Development Team
 
@@ -27,6 +29,8 @@
 
 #ifndef _MAIN_H
 #define _MAIN_H
+
+#define CORE_VERSION "0.0.8"
 
 #include <stdio.h>
 #include <allegro.h>

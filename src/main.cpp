@@ -2,22 +2,22 @@
 
   The Mana World
   Copyright 2004 The Mana World Development Team
-
-    This file is part of The Mana World.
-
-    The Mana World is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    any later version.
-
-    The Mana World is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with The Mana World; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  
+  This file is part of The Mana World.
+  
+  The Mana World is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  any later version.
+  
+  The Mana World is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+  You should have received a copy of the GNU General Public License
+  along with The Mana World; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
 
@@ -57,10 +57,12 @@ void request_exit() {
 
 /** Do all initialization stuff */
 void init_engine() {
-	allegro_init();
+  allegro_init();
   init_log();
   set_close_button_callback(request_exit);  // we should not use set_window_close_hook() since it's deprecated and might be gone in the future /-kth5
   set_config_file("tmw.ini");
+  if(strcmp(get_config_string("system", "core_version", NULL), CORE_VERSION)!=0)
+    error("Wrong INI file");
   #ifdef MACOSX
   set_color_depth(32);
   Init_2xSaI(32);
