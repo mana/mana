@@ -47,11 +47,7 @@ class Graphics;
 #include "spriteset.h"
 #include <SDL.h>
 #include <guichan/sdl.hpp>
-#ifdef USE_OPENGL
 #include <guichan/opengl.hpp>
-#endif
-
-#define TILE_SIZE 32
 
 extern SDL_Surface *screen;
 extern char speech[255];

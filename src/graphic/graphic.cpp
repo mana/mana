@@ -24,18 +24,14 @@
 #include "graphic.h"
 #include "../gui/gui.h"
 #include "../gui/textfield.h"
-#include "../gui/status.h"
 #include "../gui/minimap.h"
-#include "../gui/equipment.h"
-#include "../gui/newskill.h"
 #include "../gui/chargedialog.h"
 #include "../gui/itemcontainer.h"
 #include "../main.h"
 #include "../being.h"
 #include "../floor_item.h"
-#ifdef USE_OPENGL
+
 #include <SDL_opengl.h>
-#endif
 
 SDL_Surface *screen;
 
@@ -625,7 +621,8 @@ void Engine::draw()
 
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
-        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " " << player_node->weapon;
+        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " "
+        << player_node->weapon;
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }
