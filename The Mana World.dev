@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=The Mana World
-UnitCount=36
+UnitCount=38
 Type=0
 Ver=1
 ObjFiles=
@@ -29,16 +29,6 @@ SupportXPThemes=1
 CompilerSet=0
 CompilerSettings=0000001001001001001001
 
-[Unit1]
-FileName=main.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [VersionInfo]
 Major=0
 Minor=1
@@ -57,137 +47,7 @@ ProductName=
 ProductVersion=
 AutoIncBuildNr=0
 
-[Unit2]
-FileName=astar.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit3]
-FileName=astar.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit4]
-FileName=being.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit5]
-FileName=being.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit6]
-FileName=game.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit7]
-FileName=game.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit8]
-FileName=log.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit9]
-FileName=log.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit10]
-FileName=main.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit11]
-FileName=map.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit12]
-FileName=map.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit13]
-FileName=Graphic\datGraphics.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit14]
-FileName=Graphic\SuperEagle.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit15]
 FileName=Graphic\SuperEagle.h
 CompileCpp=1
 Folder=The Mana World
@@ -197,17 +57,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit16]
-FileName=Gui\char_select.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit17]
+[Unit8]
 FileName=Gui\char_select.h
 CompileCpp=1
 Folder=The Mana World
@@ -217,17 +67,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit18]
-FileName=Gui\char_server.cpp
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit19]
+[Unit10]
 FileName=Gui\char_server.h
 CompileCpp=1
 Folder=The Mana World
@@ -237,8 +77,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit20]
-FileName=Gui\gui.cpp
+[Unit13]
+FileName=Gui\inventory.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -247,8 +87,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit21]
-FileName=Gui\gui.h
+[Unit14]
+FileName=Gui\inventory.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -257,7 +97,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit22]
+[Unit15]
 FileName=Gui\login.cpp
 CompileCpp=1
 Folder=The Mana World
@@ -267,7 +107,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit23]
+[Unit16]
 FileName=Gui\login.h
 CompileCpp=1
 Folder=The Mana World
@@ -277,8 +117,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit24]
-FileName=Net\network.cpp
+[Unit17]
+FileName=Gui\skill.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -287,17 +127,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit25]
-FileName=Net\network.h
-CompileCpp=1
-Folder=The Mana World
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit26]
+[Unit20]
 FileName=Net\protocol.cpp
 CompileCpp=1
 Folder=The Mana World
@@ -307,7 +137,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit27]
+[Unit21]
 FileName=Net\protocol.h
 CompileCpp=1
 Folder=The Mana World
@@ -317,7 +147,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit28]
+[Unit22]
 FileName=Net\win2linux.h
 CompileCpp=1
 Folder=The Mana World
@@ -327,8 +157,58 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit23]
+FileName=Sound\sound.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit24]
+FileName=Sound\sound.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=astar.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit26]
+FileName=astar.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit28]
+FileName=being.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit29]
-FileName=Sound\Sound.cpp
+FileName=game.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -338,7 +218,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=Sound\Sound.h
+FileName=game.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -350,7 +230,7 @@ BuildCmd=
 dev-cpp projectfile for tmw by kth5 XD
 
 [Unit31]
-FileName=Gui\inventory.h
+FileName=log.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -360,7 +240,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit32]
-FileName=Gui\inventory.cpp
+FileName=log.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -370,7 +250,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit33]
-FileName=Gui\skill.h
+FileName=main.cpp
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -380,7 +260,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit34]
-FileName=Gui\skill.cpp
+FileName=main.h
 CompileCpp=1
 Folder=The Mana World
 Compile=1
@@ -391,9 +271,9 @@ BuildCmd=
 ########Text Field info#####
 
 [Unit35]
-FileName=Gui\chat.cpp
+FileName=map.cpp
 CompileCpp=1
-Folder=The Mana World/login.h
+Folder=The Mana World
 Compile=1
 Link=1
 Priority=1000
@@ -401,12 +281,174 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit36]
-FileName=Gui\chat.h
+FileName=map.h
 CompileCpp=1
-Folder=The Mana World/login.h
+Folder=The Mana World
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit2]
+FileName=Graphic\graphic.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=Graphic\graphic.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit4]
+FileName=Graphic\SuperEagle.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit6]
+FileName=Gui\skill.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit7]
+FileName=Gui\char_select.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit9]
+FileName=Gui\char_server.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit18]
+FileName=Net\network.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit19]
+FileName=Net\network.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit27]
+FileName=being.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit38]
+FileName=Gui\chat.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit39]
+FileName=map.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit40]
+FileName=map.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit1]
+FileName=Graphic\datGraphics.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit11]
+FileName=Gui\gui.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit12]
+FileName=Gui\gui.h
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit37]
+FileName=Gui\chat.cpp
+CompileCpp=1
+Folder=The Mana World
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+
+########Text Field info#####
