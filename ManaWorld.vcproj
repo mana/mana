@@ -4,6 +4,7 @@
 	Version="7.10"
 	Name="ManaWorld"
 	ProjectGUID="{DE31E83E-62BD-460E-8E6A-648CF98CC5A4}"
+	RootNamespace="ManaWorld"
 	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
@@ -174,22 +175,10 @@
 				Name="Net"
 				Filter="">
 				<File
-					RelativePath=".\Net\char_server.cpp">
-				</File>
-				<File
-					RelativePath=".\Net\login_server.cpp">
-				</File>
-				<File
-					RelativePath=".\Net\map_server.cpp">
-				</File>
-				<File
-					RelativePath=".\Net\net.cpp">
-				</File>
-				<File
 					RelativePath=".\Net\network.cpp">
 				</File>
 				<File
-					RelativePath=".\Net\packet_buffer.cpp">
+					RelativePath=".\Net\protocol.cpp">
 				</File>
 			</Filter>
 			<Filter
@@ -259,25 +248,10 @@
 				Name="Net"
 				Filter="">
 				<File
-					RelativePath=".\Net\char_server.h">
-				</File>
-				<File
-					RelativePath=".\Net\login_server.h">
-				</File>
-				<File
-					RelativePath=".\Net\map_server.h">
-				</File>
-				<File
-					RelativePath=".\Net\net.h">
-				</File>
-				<File
 					RelativePath=".\Net\network.h">
 				</File>
 				<File
-					RelativePath=".\Net\packet_buffer.h">
-				</File>
-				<File
-					RelativePath=".\Net\server_includes.h">
+					RelativePath=".\Net\protocol.h">
 				</File>
 			</Filter>
 			<Filter
