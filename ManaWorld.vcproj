@@ -31,6 +31,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="SDL.lib SDL_Mixer.lib"
 				AdditionalDependencies="alleg.lib masking.lib alfont.lib ws2_32.lib"
 				OutputFile="$(OutDir)/ManaWorld.exe"
 				LinkIncremental="2"
@@ -155,9 +156,6 @@
 				RelativePath=".\game.cpp">
 			</File>
 			<File
-				RelativePath=".\game_dialog.cpp">
-			</File>
-			<File
 				RelativePath=".\main.cpp">
 			</File>
 			<File
@@ -195,13 +193,13 @@
 				Name="Gui"
 				Filter="">
 				<File
+					RelativePath=".\Gui\char_create_dialog.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\char_del_dialog.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\char_dialog.cpp">
-				</File>
-				<File
-					RelativePath=".\Gui\char_new_dialog.cpp">
 				</File>
 				<File
 					RelativePath=".\Gui\char_sel_dialog.cpp">
@@ -268,13 +266,13 @@
 				Name="Gui"
 				Filter="">
 				<File
+					RelativePath=".\Gui\char_create_dialog.h">
+				</File>
+				<File
 					RelativePath=".\Gui\char_del_dialog.h">
 				</File>
 				<File
 					RelativePath=".\Gui\char_dialog.h">
-				</File>
-				<File
-					RelativePath=".\Gui\char_new_dialog.h">
 				</File>
 				<File
 					RelativePath=".\Gui\char_sel_dialog.h">
