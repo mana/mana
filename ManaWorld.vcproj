@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="alfont.lib alleg.lib ws2_32.lib "
+				AdditionalDependencies="libjgmod.lib alfont.lib alleg.lib ws2_32.lib "
 				OutputFile="The Mana World.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
