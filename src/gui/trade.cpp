@@ -143,34 +143,15 @@ void TradeWindow::action(const std::string &eventId)
     if (eventId == "add") {
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
-            if (inventoryWindow->items->isEquipment(
-                        inventoryWindow->items->getIndex())) {
-                if (inventoryWindow->items->isEquipped(
-                            inventoryWindow->items->getIndex())) {
-                    inventoryWindow->unequipItem(
-                            inventoryWindow->items->getIndex());
-                }
-            }
-            int i = tradeWindow->my_items->getFreeSlot();
-            printf("%d\n", i);
-            if (i >= 0) {
-                printf("successfull\n");
+            if (tradeWindow->my_items->getFreeSlot() >= 0) {
 
-                //addItem(i, inventoryWindow->items->getId(), true, inventoryWindow->items->getQuantity(), inventoryWindow->items->isEquipment(inventoryWindow->items->getIndex()));
-                
                 WFIFOW(0) = net_w_value(0x00e8);
                 WFIFOW(2) = net_w_value(inventoryWindow->items->getIndex());
                 WFIFOL(4) = net_l_value(inventoryWindow->items->getQuantity());
                 WFIFOSET(8);
                 while ((out_size > 0)) flush();
                 
-                //inventoryWindow->changeQuantity(inventoryWindow->items->getIndex(), 0);
-                
-            } else {
-                printf("not successfull\n");
             }
-
-                            
         }
     } else if (eventId == "cancel") {
         WFIFOW(0) = net_w_value(0x00ed);

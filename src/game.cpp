@@ -785,12 +785,30 @@ void do_parse() {
                             break;
                     }
                     break;
-                // Trade: Item successfully added
+                // Trade: Item add response
                 case 0x00ea:
                     switch (RFIFOB(4)) {
                         case 0:
-                            //printf("Item successfully added\n");
-                            // Add code to be added
+                            // Successfully added item
+                            int ind = RFIFOW(2);
+                            if (inventoryWindow->items->isEquipment(ind)) {
+                                if (inventoryWindow->items->isEquipped(ind)) {
+                                    inventoryWindow->unequipItem(ind);
+                                }
+                            }
+
+                            tradeWindow->addItem(
+                                    tradeWindow->my_items->getFreeSlot(),
+                                    inventoryWindow->items->getId(ind),
+                                    true,
+                                    inventoryWindow->items->getQuantity(ind),
+                                    inventoryWindow->items->isEquipment(ind));
+                            inventoryWindow->changeQuantity(ind, 0);
+                            break;
+                        case 1:
+                            // Add item failed - player overweighted
+                            chatWindow->chat_log("Failed adding item. Trade partner is over weighted.",
+                                   BY_SERVER);
                             break;
                         default:
                             //printf("Unhandled 0x00ea byte!\n");

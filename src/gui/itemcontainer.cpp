@@ -138,7 +138,6 @@ void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
 int ItemContainer::getFreeSlot()
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        printf("i %d id %d\n", i, items[i].id);
         if (items[i].id == -1) {
             return i;
         }
