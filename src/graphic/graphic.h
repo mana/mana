@@ -24,10 +24,6 @@
 #ifndef _GRAPHIC_H
 #define _GRAPHIC_H
 
-#ifdef WIN32
-#pragma warning (disable:4312)
-#endif
-
 #include "../game.h"
 #include "../map.h"
 #include "../being.h"
@@ -63,5 +59,74 @@ void set_npc_dialog(int show);
 void do_graphic(void);
 void init_graphic(void);
 void exit_graphic(void);
+
+class Surface {
+	public:
+		BITMAP *buffer;
+		virtual void lock() = 0;
+		virtual void show() = 0;
+		virtual void update() = 0;
+};
+
+class VideoSurface : public Surface {
+	private:
+		int	current_page;
+		BITMAP *page[2];
+	public:
+		VideoSurface(BITMAP *page1, BITMAP *page2) {
+			page[0] = page1;
+			page[1] = page2;
+			current_page = 0;
+		}
+		~VideoSurface() {
+			destroy_bitmap(page[0]);
+			destroy_bitmap(page[2]);
+		}
+		void lock() {
+#ifdef WIN32
+			acquire_bitmap(buffer);
+#endif
+		}
+		void show() {
+#ifdef WIN32
+			release_bitmap(buffer);
+#endif
+			show_video_bitmap(buffer);
+		}
+		void update() {
+			current_page++;
+			if(current_page=2) {
+				current_page = 0;
+			}
+			buffer = page[current_page];
+		}
+};
+
+class MemorySurface : public Surface {
+	public:
+		MemorySurface(BITMAP *buffer) {
+			this->buffer = buffer;
+		}
+		~MemorySurface() {
+			destroy_bitmap(buffer);
+		}
+		void lock() {
+		}
+		void show() {
+			blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+		}
+		void update() {
+		}
+};		
+
+class GraphicEngine {
+	private:
+		Surface *surface;
+		Spriteset *tileset;
+	public:
+		GraphicEngine();
+		~GraphicEngine();
+		void refresh();	
+};
 
 #endif

@@ -244,6 +244,7 @@ void init_graphic() {
 	skill_list_player = init_dialog(skill_list_dialog, -1);
 	npc_list_player = init_dialog(npc_list_dialog, -1);
   //gui_bitmap = vpage[page_num];
+	text_mode(-1);
 	inventory.create(100, 100);
 
 #ifdef WIN32
@@ -608,4 +609,38 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 void exit_graphic() {
     shutdown_dialog(npc_player);
     shutdown_dialog(skill_player);
+}
+
+GraphicEngine::GraphicEngine() {
+	tileset = new Spriteset("./data/graphic/tileset.dat");
+	
+	if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
+		BITMAP *page1 = create_video_bitmap(SCREEN_W, SCREEN_H);
+		BITMAP *page2 = create_video_bitmap(SCREEN_W, SCREEN_H);
+		if(page1 && page2) {
+			surface = new VideoSurface(page1, page2);
+		} else {
+			if(page1)destroy_bitmap(page1);
+			if(page2)destroy_bitmap(page2);
+			BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
+			if(!buffer) {
+				error("Not enough memory to create primary surface");
+			}
+			else {
+				warning("Not enough video memory to create primary surface");
+			}
+			surface = new MemorySurface(buffer);
+		}
+	}
+	else {
+		BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
+		if(!buffer) {
+			error("Not enough memory to create primary surface");
+		}
+		surface = new MemorySurface(buffer);
+	}
+}
+
+GraphicEngine::~GraphicEngine() {
+	delete tileset;
 }

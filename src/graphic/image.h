@@ -175,6 +175,13 @@ class Spriteset {
                 i++;
             }
         }
+        /**
+         * Destoy a spriteset
+         */
+        ~Spriteset() {
+			for(int i=0;i<spriteset.size();i++)
+				delete spriteset[i];
+		}
 };
 
 #endif
