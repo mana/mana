@@ -149,7 +149,10 @@ unsigned int find_npc(unsigned short x, unsigned short y) {
       if((get_x(node->coordinates)==x)&&(get_y(node->coordinates)==y))
         return node->id;
       else node = node->next;
-    } else node = node->next;
+		} else {
+			node = node->next;
+			//alert("id","","","","",0,0);
+		}
   }
   return 0;
 }

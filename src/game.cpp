@@ -119,7 +119,7 @@ void do_init() {
 
   if(!load_map(map_path))error("Could not find map file");
 
-  //sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
+  sound.StartMOD("./data/sound/Mods/somemp.xm", -1);
 
 	// Initialize timers
   tick_time = 0;
@@ -145,7 +145,8 @@ void do_init() {
   set_coordinates(player_node->coordinates, x, y, 0);
 	player_node->speed = 150;
   add_node(player_node);
-  keyb_state = IDLE;
+  //keyb_state = IDLE;
+	show_npc_dialog = 0;
 
 	remove("packet.list");
 }
@@ -278,17 +279,21 @@ void do_input() {
 	}
 
   if(mouse_b&2) {
-    if(!show_npc_dialog) {
+		//if(show_npc_dialog==0) {
       int npc_x = mouse_x/32+camera_x;
       int npc_y = mouse_y/32+camera_y;
       int id = find_npc(npc_x, npc_y);
+			/*char tyr[20];
+			sprintf(tyr,"%i %i %i", npc_x, npc_y, id);
+			alert(tyr,"","","","",0,0);
+			alfont_textprintf(screen, gui_font, mouse_x+20, mouse_y+20, MAKECOL_WHITE, "%i %i", npc_x, npc_y);*/
       if(id!=0) {
         WFIFOW(0) = net_w_value(0x0090);
         WFIFOL(2) = net_l_value(id);
         WFIFOB(6) = 0;
         WFIFOSET(7);
       }
-    }
+    //}
   }
 
   if(key[KEY_ESC])state = EXIT;
@@ -297,7 +302,7 @@ void do_input() {
 
 /** Calculate packet length */
 int get_packet_length(short id) {
-    int len = get_length(id);
+  int len = get_length(id);
   if(len==-1)len = RFIFOW(2);
   return len;
 }
@@ -638,8 +643,12 @@ void do_parse() {
             case 3: // Stand up
               node = find_node(RFIFOL(2));
 							if(node!=NULL) {
-                if(RFIFOB(26)==2)
+								node->frame = 0;
+								if(RFIFOB(26)==2) {
                   node->action = SIT;
+									alert("","","","","",0,0);
+									walk_status = 0;
+								}
                 else if(RFIFOB(26)==3)
                   node->action = STAND;
 							}
@@ -702,10 +711,10 @@ void do_parse() {
 					break;
 				// Buy/Sell dialog
 				case 0x00c4:
-					if(show_npc_dialog==0) {
+					//if(show_npc_dialog==0) {
             show_npc_dialog = 2;
             current_npc = RFIFOL(2);
-					}
+					//}
 					break;
 				// Buy dialog
 				case 0x00c6:

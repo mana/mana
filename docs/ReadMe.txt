@@ -60,6 +60,10 @@ Remember: the server is only for development or demo purposes (Thanks again to U
 - F1 to take a screenshot
 - F11 raise volume
 - F12 lower volume
+- Alt + K Show skills
+- Alt + S Show stats
+- Alt + I Show inventory
+- F5 to sit
 
 4. Version history
 ------------------

@@ -176,5 +176,5 @@ void increaseStatus(void *dp3, int d1) {
 	WFIFOW(4) = net_b_value(1);
 	WFIFOSET(5);
 	while((out_size>0))flush();
-	skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 =skill_dialog[8].d2 =skill_dialog[10].d2 = 0;
+	skill_dialog[2].d2 = skill_dialog[4].d2 = skill_dialog[6].d2 = skill_dialog[8].d2 = skill_dialog[10].d2 = 0;
 }

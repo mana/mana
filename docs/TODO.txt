@@ -3,6 +3,7 @@
     - Add iconify button (ElvenProgrammer)
     - Skill point assignement (ElvenProgrammer)
     - Trading system (SimEdw)
+    - Add config dialog
 2) Sound engine
     - ogg/mp3 playback (kth5)
 3) Npc

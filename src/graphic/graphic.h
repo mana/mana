@@ -51,6 +51,7 @@ extern int show_npc_dialog;
 extern TmwInventory inventory;
 extern int map_x, map_y, camera_x, camera_y;
 
+void set_npc_dialog(int show);
 void do_graphic(void);
 void init_graphic(void);
 void exit_graphic(void);
