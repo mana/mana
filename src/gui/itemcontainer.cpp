@@ -28,8 +28,8 @@
 ItemContainer::ItemContainer()
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("graphic/items.bmp");
-    if (!itemImg) error("Unable to load items.bmp");
+    Image *itemImg = resman->getImage("core/graphics/sprites/items.png");
+    if (!itemImg) error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
 
     selectedItem = -1; /**< No item selected */
@@ -58,9 +58,10 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].quantity > 0) {
-            if (items[i].id >= 501 && items[i].id <= 511) {
+            if (items[i].id >= 501 && items[i].id <= 2301) {
                 itemset->spriteset[items[i].id - 501]->draw(screen,
                         x + 24 * i, y + 2);
+
             }
 
             std::stringstream ss;
