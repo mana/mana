@@ -53,26 +53,18 @@ class TmwInventory{
 		void create(int x, int y); // create the window
 		void draw(BITMAP *); // draw the window (if areDisplaying != 0 )
 		void show(bool val); // choose between showing and not showing the window
-		void toggle() { if(areDisplaying){show(0);}else{show(1);} }
+		void toggle() {if(show_inventory){show(0);}else{show(1);}}
 		//API
 		int add_item(int index, int id, int quantity); // add a item
 		int remove_item(int id); // remove a item
-		int changeNum(int idnum, int antal); // change number of a item
+		int change_quantity(int index, int quantity); // change number of a item
+		int increase_quantity(int index, int quantity); // increase quantity of a item
 		int useItem(int idnum);
 		//END API
 	private:
 		itemHolder items[INVENTORY_SIZE]; // this is the holder of items
 		DATAFILE *itemset;
 		bool show_inventory;
-		int			ghostX, ghostY, ghostID, ghostOldIDX,ghostOldIDY; //info needed when moving item
-		int dragingItem, lastSelectedX,lastSelectedY; //info needed when moving item
-		int areDisplaying, dragingWindow;
-		int bigwindow;
-		int xpos, ypos; // Where am I ?
-		int itemMeny;
-		int itemMeny_x, itemMeny_y;
-		int itemIdn;
-		
 };
 
 #endif

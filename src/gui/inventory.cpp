@@ -52,7 +52,16 @@ void TmwInventory::create(int tempxpos, int tempypos) {
 void TmwInventory::draw(BITMAP * buffer) {
 	if(show_inventory) {
 		dialog_message(inventory_dialog,MSG_DRAW,0,0);
-		update_dialog(inventory_player);		
+		update_dialog(inventory_player);
+		for(int i=0;i<INVENTORY_SIZE;i++) {
+			if(items[i].quantity>0) {
+				if(items[i].id>=501 && items[i].id<=510)
+					masked_blit((BITMAP *)itemset[items[i].id-500].dat, gui_bitmap, 0, 0, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+26, 22, 22);
+				else
+					masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+26, 22, 22);
+				alfont_textprintf_aa(gui_bitmap, gui_font, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+44, makecol(0,0,0), "%i", items[i].quantity);
+			}
+		}
 	}
 }
 
@@ -64,7 +73,7 @@ void TmwInventory::show(bool val) {
 /** Add an item the inventory */
 int TmwInventory::add_item(int index, int id, int quantity) {
 	items[index].id = id;
-	items[index].quantity = quantity;
+	items[index].quantity += quantity;
 	return 0;
 }
 
@@ -84,6 +93,12 @@ int TmwInventory::change_quantity(int index, int quantity) {
   return 0;
 }
 
+/** Increase quantity of an item */
+int TmwInventory::increase_quantity(int index, int quantity) {
+	items[index].quantity += quantity;
+	return 0;
+}
+
 int TmwInventory::useItem(int idnum) {
 	printf("Use item %i\n",idnum);
 	WFIFOW(0) = net_w_value(0x00a7);
@@ -92,4 +107,4 @@ int TmwInventory::useItem(int idnum) {
 	while((out_size>0))flush();
 
 	return 0;
-}*/
+}

@@ -682,7 +682,7 @@ void do_parse() {
 					else
 						chatlog.chat_log("Unable to sell", BY_SERVER, gui_font);
 					break;
-				// Add item to inventory
+				// Add item to inventory after you bought it
 				case 0x00a0:
 					inventory.add_item(RFIFOW(2), RFIFOW(6), RFIFOW(4));
 					break;
