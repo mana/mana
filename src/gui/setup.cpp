@@ -14,8 +14,8 @@ Setup::Setup(gcn::Container *parent)
   : Window(parent, "Setup")
 {
   displayLabel = new gcn::Label("Display");
-  applyButton = new gcn::Button("Apply");
-  cancelButton = new gcn::Button("Cancel");
+  applyButton = new Button("Apply");
+  cancelButton = new Button("Cancel");
   
   /* Set dimension */
   displayLabel->setDimension(gcn::Rectangle(0,0,80, 16));

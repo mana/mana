@@ -13,13 +13,28 @@
 #include <winalleg.h>
 #endif
 
+
+/*
+ * The list model for modes list
+ */
+class ModesListModel : public gcn::ListModel {
+ public:
+  int getNumberOfElements();
+  std::string getElementAt(int i);
+};
+
+/* 
+ * Setup dialog window
+ */
 class Setup : public Window, public gcn::ActionListener {
  private:
   /* Dialog parts */
+  ModesListModel *modesListModel;
   gcn::Label *displayLabel;
-  gcn::Button *applyButton;
-  gcn::Button *cancelButton;
-
+  gcn::ListBox *modeslist;
+  Button *applyButton;
+  Button *cancelButton;
+  
   /* Setup dialog */
   static Setup *ptr;
   
