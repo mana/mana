@@ -410,7 +410,7 @@ void do_parse() {
           break;
         // Monster moving
         case 0x007b:
-				case 0x01da:
+				//case 0x01da:
           node = find_node(RFIFOL(2));
 					if(node==NULL) {
 						node = create_node();
@@ -429,7 +429,7 @@ void do_parse() {
           }
           break;
         // Being moving
-        /*case 0x01da:
+        case 0x01da:
           node = find_node(RFIFOL(2));
           if(node==NULL) {
             node = create_node();
@@ -449,7 +449,7 @@ void do_parse() {
 					if(node->action==WALK)node->tick_time = tick_time;
           set_coordinates(node->coordinates, get_dest_x(RFIFOP(50)), get_dest_y(RFIFOP(50)), direction);
           }
-          break;*/
+          break;
         // NPC dialog
         case 0x00b4:
           if(!strstr(npc_text, RFIFOP(8))) {

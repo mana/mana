@@ -313,6 +313,10 @@ void do_graphic(void) {
 			break;
 		case 4:
       sell_dialog[3].d1 = get_item_quantity(sell_dialog[4].d1);
+			/*if(sell_dialog[3].d2>sell_dialog[3].d1) {
+        sell_dialog[3].d2 = sell_dialog[3].d1;
+				sprintf((char *)sell_dialog[5].dp, "%i %i", sell_dialog[3].d1, sell_dialog[3].d2);
+			}*/
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);
@@ -325,6 +329,7 @@ void do_graphic(void) {
           WFIFOSET(8);
 				}
 				show_npc_dialog = 0;
+				sell_dialog[3].d2 = 0;
         sell_player = init_dialog(sell_dialog, -1);
 				close_shop();
 			}
