@@ -32,7 +32,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="SDL.lib SDL_Mixer.lib"
+				AdditionalOptions="SDL.lib SDLmain.lib"
 				AdditionalDependencies="alleg.lib masking.lib alfont.lib ws2_32.lib"
 				OutputFile="$(OutDir)/ManaWorld.exe"
 				LinkIncremental="2"
@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalOptions="/NODEFAULTLIB:LIBCMT"
+				AdditionalOptions="SDL.lib"
 				AdditionalDependencies="libjgmod.lib alfont.lib alleg.lib ws2_32.lib "
 				OutputFile="tmw.exe"
 				LinkIncremental="1"
@@ -122,6 +122,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalOptions="SDL.lib"
 				AdditionalDependencies="allp.lib"/>
 			<Tool
 				Name="VCMIDLTool"/>
