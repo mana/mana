@@ -256,6 +256,7 @@ int TmwSound::Close(void) {
   mid = NULL;
   sfx = NULL;
   
+	remove_mod();
   remove_sound();
   isOk = -1;
   return 0;
