@@ -1,0 +1,163 @@
+-----------------------------
+THE MANA WORLD SERVER PROJECT
+-----------------------------
+
+1. INTRODUCTION
+2. MAP
+3. OBJECT
+4. BEING
+5. ITEM
+6. CHAT
+7. AUTHENTICATION
+
+
+1. INTRODUCTION
+
+First let me show you a screenshot of TMW. From left to right it shows a
+player, an enemy, a tree and an apple. In this document the player and enemy
+will go as beings, and the tree and apple will go as objectss. Finally, the
+thing they're on is a map.
+
+  -----------------   Fig. 1) screenshot of TMW showing three kind of objects
+  |               |
+  |   o        O  |      MAP
+  |   O <>     |o |      OBJECT
+  |               |      BEING
+  -----------------
+
+Each of these types has its own set of properties and things it can do in the
+game. A number of messages in the protocol can be grouped on these types. We'll
+go through each of them separately. Objects can be pickup up and change into
+items, we'll mention those too.
+
+The effects of using objects or items, talking to beings and attacking enemies
+are all calculated server side. It is interesting to think about approaches
+that allow a scripting language to be used in there areas.
+
+In the messages described the following datatypes are being used:
+
+  A - char array (null terminated)
+  S - short (2 bytes)
+  L - long (4 bytes)
+
+
+2. MAP
+
+- Stored as XML file (.tmx)
+- Refers to tileset images and potentially to music file(s) and objects
+- Beings can change from one map to another
+
+
+3. OBJECT
+
+- Most properties specified in XML file
+- Mostly static (at least doesn't move, but can change)
+- Has collision properties, which can change
+- Can be an item (allowing picking it up)
+- Can be animated (and change animation)
+- Can potentially be activated/used (door, chest, portal)
+
+ Server to client:
+
+  MSG_NEW_OBJECT     { A name, L id, L x, L y }
+  MSG_REMOVE_OBJECT  { L id }
+  MSG_CHANGE_OBJECT  { L id, L x, L y, S currAnim, S flags }
+
+ Client to server:
+
+  MSG_PICKUP         { L beingId, L objectId }
+  MSG_USE_OBJECT     { L beingId, L objectId }
+
+
+4. BEING
+
+- Most properties specified in XML file.
+- Dynamic (can walk around)
+- Character animation, but could still show arbitrary animations.
+- Can equip stuff, which could change appearance
+- Has inventory
+- Connects to questing system
+- Can fight other beings
+- Dispositions: friendly, neutral, enemy
+- Can be shop
+- Can be talked to, potentially to gain quests
+- Controlled either by player or AI, AI could be either server or client side.
+- Carries money
+- Can be associated with a client
+
+ Server to client:
+
+  MSG_NEW_BEING      { A name, L id, L clientId, L x, L y }
+  MSG_REMOVE_BEING   { L id }
+  MSG_INVENTORY_UPD  { L id, A itemName, L amount }
+  MSG_EQUIPMENT_UPD  { L id, S slot, A itemName }
+  MSG_ATTACK         { L attackerId, L targetId, L damage, S damType }
+  MSG_PATH           { L id, A path }
+
+ Client to server:
+
+  MSG_TARGET         { L id, L targetId }
+  MSG_WALK           { L id, L x, L y }
+  MSG_START_TRADE    { L id, L shopBeingId }    // Needs more related messages
+  MSG_START_TALK     { L id, L talkBeingId }    // Needs more related messages
+
+
+5. ITEM
+
+- Properties specified in XML file
+- Beings can carry them around
+- Can be traded between beings
+- Can potentially be equipped (in a certain slot)
+- Can potentially be used
+
+ Client to server:
+
+  MSG_USE_ITEM       { L id, A itemName }
+  MSG_EQUIP          { L id, A itemName, S slot }
+
+
+6. CHAT
+
+There are several channels in the chat system: 
+
+ Area    -  To players around you             (default)
+ Region  -  To players on the same map        (default)
+ Global  -  To all players in the game        (default)
+ Team    -  To players in the same team       (when in team)
+ Guild   -  To players in the same guild      (when in guild)
+
+In addition to these there are also system messages, and accouncements made
+by moderators / administrators.
+
+ Server to client:
+
+  MSG_CHAT           { L beingId, A name, A message, S channel }
+  MSG_SYSTEM         { A message }
+  MSG_ANNOUNCEMENT   { A message }
+
+ Client to server:
+
+  MSG_SAY            { L beingId, A message, S channel }
+  MSG_ANNOUNCE       { A message }
+
+
+7. AUTHENTICATION
+
+Of course before the client can send/receive any of this, he needs to login to
+the server. The idea is that the client will send login info to the server,
+and that the server either denies the request (giving a reason) or sends the
+client a client id. The client later uses the client id to determine which
+being(s) are to be controlled.
+
+ Server to client:
+
+  MSG_ACCEPT_GAME    { L clientId }     // Accepted into the game
+  MSG_ACCEPT_CREATE  { }                // Accepted into character creation
+  MSG_DENY           { A reason }
+
+ Client to server:
+
+  MSG_LOGIN          { A name, A password }
+  MSG_CHAR_CREATE    { ... }
+
+The character creation process will need to be thought out.
