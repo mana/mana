@@ -22,47 +22,24 @@
  */
 
 #include "chat.h"
+#include "../graphic/graphic.h"
+#include <iostream>
 
-/*
- * Simple ChatLog Object v0.5 (i'd say...)
- *
- * Author: kth5 aka Alexander Baldeck
- * pipe your questions, suggestions and flames to: kth5@gawab.com
- */
-
-/*
- */
-Chat::Chat(const char * logfile, int item_num) {
+ChatBox::ChatBox(const char *logfile, int item_num)
+{
     chatlog_file.open(logfile, std::ios::out | std::ios::app);
     items = 0;
     items_keep = item_num;
 }
 
-/*
- */
-Chat::~Chat() {
+ChatBox::~ChatBox()
+{
     chatlog_file.flush();
     chatlog_file.close();
 }
 
-/*
- */
-void Chat::chat_dlgrsize(int) {
-}
-
-/*
- * Adds a line of text to our message list. Parameters:
- *
- * line: message text
- * own:  type of message (usually the owner-type)
- * font: font that'll be used to draw the text later
- *
- * NOTE:
- * To all of you who wonder why the font needs to be passed, simple.
- * i already store the width in pixel in the list rather than
- * calculating it again and again on every draw event. ;-)
-*/
-void Chat::chat_log(std::string line, int own, FONT * font) {
+void ChatBox::chat_log(std::string line, int own)
+{
     int pos;
     CHATLOG tmp;
 
@@ -77,7 +54,7 @@ void Chat::chat_log(std::string line, int own, FONT * font) {
     pos = (int)line.find(" : ", 0);
     if (pos > 0) {
         tmp.nick = line.substr(0,pos);
-        switch(own) {
+        switch (own) {
             case ACT_IS :
                 tmp.nick += CAT_IS;
                 break;
@@ -87,11 +64,9 @@ void Chat::chat_log(std::string line, int own, FONT * font) {
             default :
                 tmp.nick += CAT_NORMAL;
         }
-        tmp.width = TEXT_GETWIDTH(tmp.nick.c_str())+2;
-        line.erase(0,pos+3);
+        line.erase(0, pos + 3);
     } else {
         tmp.nick = "";
-        tmp.width = 1;
     }
     tmp.own  = own;
     tmp.text = line;
@@ -102,98 +77,82 @@ void Chat::chat_log(std::string line, int own, FONT * font) {
     chatlog.push_front(tmp);
 }
 
-/*
- * function overload -> calls original chat_log() after processing the packet
- */
-void Chat::chat_log(CHATSKILL action, FONT * font) {
-    chat_log(const_msg(action), BY_SERVER, font);
+void ChatBox::chat_log(CHATSKILL action) {
+    chat_log(const_msg(action), BY_SERVER);
 }
 
 
-/*
- * Draw first n lines of the list onto a Allegro type bitmap buffer using
- * Alfont.
- *
- * BITMAP * bmp: Allegro type bitmap buffer to draw onto
- * int n: number of lines to be drawn
- * FONT * font: Allegro's system font
- *
- * NOTE:
- * take great care using this, make sure the buffer passed is
- * empty! ;-) anyway, line wrapping is not supported yet.
-*/
-void Chat::chat_draw(BITMAP * bmp, int n, FONT * font) {
-    int y = 600-35, i = 0;
+void ChatBox::draw(gcn::Graphics *graphics)
+{
+    int x, y;
+    int n = 8;
+    int texty = getHeight() - 5, i = 0;
     CHATLOG line;
     n -= 1;
 
+    graphics->setColor(gcn::Color(203, 203, 203));
+    graphics->drawLine(95, 5, 95, getHeight() - 5);
+    graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+
+    getAbsolutePosition(x, y);
+    set_trans_blender(0, 0, 0, 100);
+    drawing_mode(DRAW_MODE_TRANS, NULL, 0, 0);
+    rectfill(buffer, x, y, x + getWidth(), y + getHeight(),
+            makecol(255, 255, 255));
+    drawing_mode(DRAW_MODE_SOLID, NULL, 0, 0);
+
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;
-        y -=11;
+        texty -= getFont()->getHeight() - 2;
 
         switch (line.own) {
-            case BY_GM :
-                textprintf_ex(bmp, font, 1, y, COLOR_BLUE, -1, "Global announcement: ");
-                textprintf_ex(bmp, font, TEXT_GETWIDTH("Global announcement: "), y, -1, COLOR_GREEN, line.text.c_str());
+            case BY_GM:
+                graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
+                graphics->drawText("Global announcement: ", 1, texty);
+                graphics->setColor(gcn::Color(39, 197, 39)); // Green
+                graphics->drawText(line.text, 100, texty);
                 break;
-            case BY_PLAYER :
-                textprintf_ex(bmp, font, 1, y, COLOR_YELLOW, -1, line.nick.c_str());
-                textprintf_ex(bmp, font, line.width, y, COLOR_WHITE, -1, line.text.c_str());
+            case BY_PLAYER:
+                graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
+                graphics->drawText(line.nick, 1, texty);
+                graphics->setColor(gcn::Color(255, 255, 255)); // White
+                graphics->drawText(line.text, 100, texty);
                 break;
-            case BY_OTHER :
-                textprintf_ex(bmp, font, 1, y, COLOR_GREEN, -1, line.nick.c_str());
-                textprintf_ex(bmp, font, line.width, y, COLOR_WHITE, -1, line.text.c_str());
+            case BY_OTHER:
+                graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
+                graphics->drawText(line.nick, 1, texty);
+                graphics->setColor(gcn::Color(39, 197, 39)); // Green
+                graphics->drawText(line.text, 100, texty);
                 break;
-            default :
-                textprintf_ex(bmp, font, 1, y, COLOR_LIGHTBLUE, -1, line.text.c_str());
+            default:
+                graphics->setColor(gcn::Color(83, 233, 246)); // Light blue
+                graphics->drawText(line.text, 1, texty);
         }
 
-        if (i>=n) {
+        if (i >= n) {
             return;
         }
         i++;
     }
 }
 
-/*
- * Determines wether to send a command or an ordinary message, then
- * contructs packets & sends them
- *
- * string nick -> the character's name to display infront
- * string msg  -> the message's text which is to be send.
- *
- * NOTE:
- * the nickname is required by the server, if not specified
- * the message may not be sent unless a command was intended
- * which requires another packet to be constructed! you can
- * achieve this by putting a slash ("/") infront of the
- * message followed by the command name and the message.
- * of course all slash-commands need implemented handler-
- * routines. ;-)
- * remember, a line starting w/ "@" is not a command that needs
- * to be parsed rather is sent using the normal chat-packet.
- *
- * EXAMPLE:
- * // for an global announcement   /- command
- * chatlog.chat_send("", "/announce Hello to all logged in users!");
- * // for simple message by a user /- message
- * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
- */
-char * Chat::chat_send(std::string nick, std::string msg) {
+char *ChatBox::chat_send(std::string nick, std::string msg)
+{
     short packid = 0x008c;
 
     // prepare command
-    if(msg.substr(0,1)=="/") {
+    if (msg.substr(0, 1) == "/") {
         // global announcement
-        if(msg.substr(0,IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
-            msg.erase(0,IS_ANNOUNCE_LENGTH);
+        if(msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
+            msg.erase(0, IS_ANNOUNCE_LENGTH);
             packid = 0x0099;
         }
         // prepare ordinary message
-    } else {
+    }
+    else {
         // temporary hack to make messed-up-keyboard-ppl able to send GM commands
-        if(msg.substr(0,1)=="#")
-            msg.replace(0,1,"@");
+        if (msg.substr(0, 1) == "#")
+            msg.replace(0, 1, "@");
         // end temp. hack XD
         nick += " : ";
         nick += msg;
@@ -212,15 +171,7 @@ char * Chat::chat_send(std::string nick, std::string msg) {
     return "";
 }
 
-/*
- * PRIVATE :
- * NOTE:
- * these usually will be left undocumented coz u can't call them
- * directly anyway. ;-)
- */
-
-/** constructs failed messages for actions */
-std::string Chat::const_msg(CHATSKILL action) {
+std::string ChatBox::const_msg(CHATSKILL action) {
     std::string msg;
     if (action.success == SKILL_FAILED && action.skill == SKILL_BASIC) {
         switch (action.bskill) {
@@ -293,10 +244,5 @@ std::string Chat::const_msg(CHATSKILL action) {
         }
     }
 
-    return msg;
-}
-
-std::string const_msg(int own) {
-    std::string msg;
     return msg;
 }

@@ -46,7 +46,7 @@ StatusWindow::StatusWindow():
     jobExpLabel->setPosition(106, 40);
     //xpBar->setDimension(gcn::Rectangle(16, 55, 60, 18));
     //jobXpBar->setDimension(gcn::Rectangle(116, 55, 60, 18));
-	
+
     healthBar = new ProgressBar(1.0f, 20, 8, 80, 0, 255, 0);
     manaBar = new ProgressBar(1.0f, 20, 26, 80, 0, 0, 255);
     xpBar = new ProgressBar(1.0f, 6, 55, 70, 12, 194, 255);
@@ -109,18 +109,18 @@ void StatusWindow::update()
 
     if ( char_info->hp < int(char_info->max_hp / 3) )
     {
-    	healthBar->setColor(255, 0, 0); // Red
+        healthBar->setColor(255, 0, 0); // Red
     }
     else
     {
-    	if ( char_info->hp < int( (char_info->max_hp / 3)*2 ) )
-	{
-		healthBar->setColor(255, 181, 9); // orange
-	}
-	else
-	{
-		healthBar->setColor(0, 255, 0); // Green
-	}
+        if ( char_info->hp < int( (char_info->max_hp / 3)*2 ) )
+        {
+            healthBar->setColor(255, 181, 9); // orange
+        }
+        else
+        {
+            healthBar->setColor(0, 255, 0); // Green
+        }
     }
     
     

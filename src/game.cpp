@@ -140,6 +140,7 @@ void game() {
 
         do_input();
         engine->draw();
+        gui->logic();
         graphics->updateScreen();
         do_parse();
         flush();
@@ -402,7 +403,7 @@ void do_parse() {
                         being->speech = temp;
                         being->speech_time = SPEECH_TIME;
                         being->speech_color = makecol(255, 255, 255);
-                        chatlog.chat_log(being->speech, BY_OTHER, font);
+                        chatBox->chat_log(being->speech, BY_OTHER);
                     }
                     break;
                 case 0x008e:
@@ -421,10 +422,10 @@ void do_parse() {
                         player_node->speech_color = makecol(255, 255, 255);
 
                         if(id==0x008e) {
-                            chatlog.chat_log(player_node->speech, BY_PLAYER, font);
+                            chatBox->chat_log(player_node->speech, BY_PLAYER);
                         }
                         else {
-                            chatlog.chat_log(player_node->speech, BY_GM, font);
+                            chatBox->chat_log(player_node->speech, BY_GM);
                         }
                     }
                     break;
@@ -637,7 +638,7 @@ void do_parse() {
                             action.bskill == BSKILL_EMOTE ) {
                         printf("Action: %d/%d", action.bskill, action.success);
                     }
-                    chatlog.chat_log(action, font);
+                    chatBox->chat_log(action);
                     break;
                     // Update stat values
                 case 0x00b0:
@@ -842,27 +843,27 @@ void do_parse() {
                         }
                     }
                     else {
-                        chatlog.chat_log("Nothing to sell", BY_SERVER, font);
+                        chatBox->chat_log("Nothing to sell", BY_SERVER);
                     }
                     break;
                     // Answer to buy
                 case 0x00ca:
-                    if(RFIFOB(2)==0)
-                        chatlog.chat_log("Thanks for buying", BY_SERVER, font);
+                    if (RFIFOB(2) == 0)
+                        chatBox->chat_log("Thanks for buying", BY_SERVER);
                     else
-                        chatlog.chat_log("Unable to buy", BY_SERVER, font);
+                        chatBox->chat_log("Unable to buy", BY_SERVER);
                     break;
                     // Answer to sell
                 case 0x00cb:
-                    if(RFIFOB(2)==0)
-                        chatlog.chat_log("Thanks for selling", BY_SERVER, font);
+                    if (RFIFOB(2) == 0)
+                        chatBox->chat_log("Thanks for selling", BY_SERVER);
                     else
-                        chatlog.chat_log("Unable to sell", BY_SERVER, font);
+                        chatBox->chat_log("Unable to sell", BY_SERVER);
                     break;
                     // Add item to inventory after you bought it
                 case 0x00a0:
-                    if(RFIFOB(22)>0)
-                        chatlog.chat_log("Unable to pick up item", BY_SERVER, font);
+                    if (RFIFOB(22) > 0)
+                        chatBox->chat_log("Unable to pick up item", BY_SERVER);
                     else
                         inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4));
                     break;
@@ -909,7 +910,7 @@ void do_parse() {
                     break;
                     // Display MVP payer
                 case 0x010c:
-                    chatlog.chat_log("MVP player", BY_SERVER, font);
+                    chatBox->chat_log("MVP player", BY_SERVER);
                     break;
                     // Item drop
                 case 0x009e:

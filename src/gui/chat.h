@@ -25,6 +25,7 @@
 #define _TMW_CHAT_H
 
 #include "../net/network.h"
+#include <guichan.hpp>
 #include <allegro.h>
 #include <list>
 #include <string>
@@ -50,18 +51,6 @@
 #define CAT_NORMAL        ": "
 #define CAT_IS            ""
 #define CAT_WHISPER       " says: "
-
-/** some generic color macros      */
-#define COLOR_WHITE       (makecol(255,255,255)) // plain white
-#define COLOR_BLUE        (makecol( 97,156,236)) // cold gm blue :P
-#define COLOR_YELLOW      (makecol(255,246, 98)) // sexy yellow
-#define COLOR_GREEN       (makecol( 39,197, 39)) // cool green
-#define COLOR_RED         (makecol(255,  0,  0)) // ack red XD
-#define COLOR_LIGHTBLUE   (makecol( 83,223,246)) // bright blue
-
-/** calculate text-width in pixel  */
-#define TEXT_GETWIDTH(str)  (text_length(font, str))
-#define TEXT_OUT(bmp, col, str)  (textprintf_ex(bmp, font, 1, y, col, str, 1))
 
 /** job dependend identifiers (?)  */
 #define SKILL_BASIC       0x0001
@@ -106,17 +95,62 @@ struct CHATSKILL {
 /**
  * Simple chatlog object.
  */
-class Chat {
-    public :
-        Chat(const char *, int);
-        void chat_dlgrsize(int);
+class ChatBox : public gcn::Widget {
+    public:
+        /**
+         * Constructor.
+         */
+        ChatBox(const char *logfile, int item_num);
 
-        void chat_log(std::string, int, FONT *);
-        void chat_log(CHATSKILL, FONT *);
+        /**
+         * Destructor.
+         */
+        ~ChatBox();
 
-        void chat_draw(BITMAP *, int, FONT *);
-        char * chat_send(std::string, std::string);
-        ~Chat();
+        /*
+         * Adds a line of text to our message list. Parameters:
+         *
+         * @param line Text message.
+         * @parem own  Type of message (usually the owner-type).
+         */
+        void chat_log(std::string line, int own);
+
+        /*
+         * Calls original chat_log() after processing the packet.
+         */
+        void chat_log(CHATSKILL);
+
+        /*
+         * Draws the chat box.
+         */
+        void draw(gcn::Graphics *graphics);
+
+        /*
+         * Determines wether to send a command or an ordinary message, then
+         * contructs packets & sends them
+         *
+         * @param nick The character's name to display in front.
+         * @param msg  The message text which is to be send.
+         *
+         * NOTE:
+         * the nickname is required by the server, if not specified
+         * the message may not be sent unless a command was intended
+         * which requires another packet to be constructed! you can
+         * achieve this by putting a slash ("/") infront of the
+         * message followed by the command name and the message.
+         * of course all slash-commands need implemented handler-
+         * routines. ;-)
+         * remember, a line starting with "@" is not a command that needs
+         * to be parsed rather is sent using the normal chat-packet.
+         *
+         * EXAMPLE:
+         * // for an global announcement   /- command
+         * chatlog.chat_send("", "/announce Hello to all logged in users!");
+         * // for simple message by a user /- message
+         * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
+         */
+        char *chat_send(std::string nick, std::string msg);
+
     private :
         std::ofstream chatlog_file;
 
@@ -124,7 +158,6 @@ class Chat {
             std::string nick;
             std::string text;
             int own;
-            int width;
         };
 
         std::list<CHATLOG> chatlog;       // list object ready to accept out CHATLOG struct :)
@@ -133,8 +166,8 @@ class Chat {
         int items;
         int items_keep;
 
-        std::string const_msg(CHATSKILL); // contructs action-fail messages
-        std::string const_msg(int);       // constructs normal messages (not implemented yet)
+        /** constructs failed messages for actions */
+        std::string const_msg(CHATSKILL);
 };
 
 #endif

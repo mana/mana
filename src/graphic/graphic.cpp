@@ -27,20 +27,21 @@
 #include "../gui/status.h"
 #include "../main.h"
 
-BITMAP *buffer, *chat_background;
+BITMAP *buffer;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
-Chat chatlog("./docs/chatlog.txt", 20);
 bool show_skill_dialog = false;
 bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
 gcn::TextField *chatInput;
+gcn::Label *debugInfo;
 
+ChatBox *chatBox;
 StatusWindow *statusWindow;
 BuyDialog *buyDialog;
 SellDialog *sellDialog;
@@ -57,7 +58,7 @@ void ChatListener::action(const std::string& eventId)
         std::string message = chatInput->getText();
 
         if (message.length() > 0) {
-            chatlog.chat_send(char_info[0].name, message.c_str());
+            chatBox->chat_send(char_info[0].name, message.c_str());
             chatInput->setText("");
         }
     }
@@ -168,8 +169,6 @@ void Graphics::updateScreen()
 Engine::Engine()
 {
     // Initializes GUI
-    chat_background = create_bitmap(592, 100);
-    clear_to_color(chat_background, makecol(0, 0, 0));
     chatInput = new TextField();
     chatInput->setPosition(chatInput->getBorderSize(),
         SCREEN_H - chatInput->getHeight() - chatInput->getBorderSize() -1);
@@ -179,7 +178,16 @@ Engine::Engine()
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(chatListener);
 
+    debugInfo = new gcn::Label();
+
+    chatBox = new ChatBox("./docs/chatlog.txt", 20);
+    chatBox->setSize(592, 100);
+    chatBox->setPosition(0, chatInput->getY() - 1 - chatBox->getHeight());
+
+    guiTop->add(chatBox);
+    guiTop->add(debugInfo);
     guiTop->add(chatInput);
+
 
     // Create dialogs
 
@@ -235,6 +243,7 @@ Engine::Engine()
 
 Engine::~Engine()
 {
+    delete chatBox;
     delete statusWindow;
     delete buyDialog;
     delete sellDialog;
@@ -480,11 +489,6 @@ void Engine::draw()
         beingIterator++;
     }
 
-    set_trans_blender(0, 0, 0, 110);
-    draw_trans_sprite(buffer, chat_background, 0, SCREEN_H - 125);
-
-    chatlog.chat_draw(buffer, 8, font);
-    
     if (statsWindow->isVisible()) {
         statsWindow->update();
     }
@@ -492,10 +496,11 @@ void Engine::draw()
         statusWindow->update();
     }
 
-    gui->logic();
     gui->draw();
 
-    textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), -1,
-            "[%i fps] %i,%i", fps,
-            mouse_x / 32 + camera_x, mouse_y / 32 + camera_y);
+    std::stringstream debugStream;
+    debugStream << "[" << fps << " fps] " <<
+        (mouse_x / 32 + camera_x) << ", " << (mouse_y / 32 + camera_y);
+    debugInfo->setCaption(debugStream.str());
+    debugInfo->adjustSize();
 }
