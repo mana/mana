@@ -386,3 +386,35 @@ int main(int argc, char *argv[])
     PHYSFS_deinit();
     return 0;
 }
+
+// GetSkill Function
+// Retrieves the level of the skill for the ID value given.
+// This function also increases the XP of the skill by the given parameter.
+// Call n_base to return the actual value, regardless of equipment modifiers.
+// ---by Kyokai
+int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
+{
+    if(n_ID>N_SKILLS||n_ID<0) // out of cheese error, abort function
+           return 0;
+      // 1. raise the exp value     
+      m_Skill[n_ID].exp+=(n_XP*m_Skill[n_ID].mod); 
+      
+      // 2. Check for level up  
+      if(m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))   
+      {
+           m_Skill[n_ID].level += 1;
+           m_Skill[n_ID].exp = 0;
+           // TO DO: send the user a message that tells him his
+           // skill just leveled up!
+      }
+      
+      // 3. getting the return value
+      int r = m_Skill[n_ID].level;
+      if(n_base)
+      {
+           // TO DO: alter values based on equipment bonuses
+      }            
+      
+      return r; // return the value                    
+}
+

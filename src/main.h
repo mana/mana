@@ -29,6 +29,7 @@
 #include "configuration.h"
 #include "graphic/spriteset.h"
 #include "resources/image.h"
+#include "gui/skill.h"
 #include "log.h"
 #include "game.h"
 #include "net/protocol.h"
@@ -58,6 +59,8 @@
 #define LEN_USERNAME 25
 #define LEN_PASSWORD 25
 
+#define N_SKILLS 100 // skill count constant value
+#define XP_CONSTANT 1.2 // the exponent which determines skill exp curve
 
 typedef struct {
     int address;
@@ -65,7 +68,7 @@ typedef struct {
     char name[20];
     short online_users;
 } SERVER_INFO;
-
+       
 typedef struct {
     int id;
     char name[24];
@@ -74,8 +77,14 @@ typedef struct {
     int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
     short statp, skill_point, hair_color, hair_style;
     char STR, AGI, VIT, INT, DEX, LUK;
-    short weapon;
+    short weapon;  
+    // skill list declaration
+    std::vector<SKILL> m_Skill; // array of N_SKILLS skills
+    // gets the requested skills level from char_info
+    int GetSkill(int n_ID, int n_XP=2, int n_base = false); // implemented in the body (main.cpp)
 } PLAYER_INFO;
+
+
 
 extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
