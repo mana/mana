@@ -772,6 +772,7 @@ void do_parse() {
                             break;
                         case 3:
                             // Trade accepted
+                            tradeWindow->reset();
                             tradeWindow->setVisible(true);
                             break;
                         case 4:
@@ -784,6 +785,16 @@ void do_parse() {
                                    BY_SERVER);
                             break;
                     }
+                    break;
+                // Trade: Item added on trade partner's side
+                case 0x00e9:
+                    // Should do:
+                    // Maybe also handle indentified, etc
+                    // later also de-clicked the ok button
+                    // handle zeny as well
+                    tradeWindow->addItem(
+                            tradeWindow->trade_items->getFreeSlot(), RFIFOW(6),
+                            false, RFIFOL(2), false);
                     break;
                 // Trade: Item add response
                 case 0x00ea:
@@ -820,6 +831,7 @@ void do_parse() {
                 case 0x00ee:
                     chatWindow->chat_log("Trade cancelled.", BY_SERVER);
                     tradeWindow->setVisible(false);
+                    tradeWindow->reset();
                     break;
                     
                     // Get the items

@@ -64,6 +64,11 @@ class TradeWindow : public Window, gcn::ActionListener {
         int removeItem(int id, bool own);
 
         /**
+         * Reset both item containers
+         */
+        int reset();
+
+        /**
          * Change quantity of an item.
          */
         int changeQuantity(int index, bool own, int quantity);

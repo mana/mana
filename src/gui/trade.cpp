@@ -81,24 +81,44 @@ void TradeWindow::draw(gcn::Graphics *graphics)
 
 int TradeWindow::addItem(int index, int id, bool own, int quantity,
         bool equipment) {
-    my_items->addItem(index, id, quantity, equipment);
-    return 0;
+    if (own) {
+        my_items->addItem(index, id, quantity, equipment);
+    } else {
+        trade_items->addItem(index, id, quantity, equipment);
+    }
+        return 0;
 }
 
 int TradeWindow::removeItem(int id, bool own) {
-    my_items->removeItem(id);
+    if (own) {
+        my_items->removeItem(id);
+    } else {
+        trade_items->removeItem(id);
+    }
     return 0;
 }
 
 int TradeWindow::changeQuantity(int index, bool own, int quantity) {
-    //items[index].quantity = quantity;
-    my_items->changeQuantity(index, quantity);
-    return 0;
+    if (own) {
+        my_items->changeQuantity(index, quantity);
+    } else {
+        trade_items->changeQuantity(index, quantity);
+    }
+        return 0;
 }
 
 int TradeWindow::increaseQuantity(int index, bool own, int quantity) {
-    //items[index].quantity += quantity;
-    my_items->increaseQuantity(index, quantity);
+    if (own) {
+        my_items->increaseQuantity(index, quantity);
+    } else {
+        trade_items->increaseQuantity(index, quantity);
+    }
+    return 0;
+}
+
+int TradeWindow::reset() {
+    my_items->resetItems();
+    trade_items->resetItems();
     return 0;
 }
 
