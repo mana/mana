@@ -375,28 +375,29 @@ void Engine::draw()
         else if (being->job < 10) { // Draw a player
             being->text_x = sx * 32 + get_x_offset(being) - offset_x;
             being->text_y = sy * 32 + get_y_offset(being) - offset_y;
-            int hf = being->hair_color - 1 + 10 * (dir + 4 *
-                    (being->hair_style - 1));
-            
-            if (being->action == SIT || being->action == DEAD) being->frame = 0;
+
+            if (being->action == SIT || being->action == DEAD) {
+                being->frame = 0;
+            }
+
+            int pf = being->frame + being->action;
+
             if (being->action == ATTACK) {
-                int pf = being->frame + being->action + 4 * being->weapon;
+                pf += 4 * being->weapon;
+            }
 
-                playerset->spriteset[4 * pf + dir]->draw(screen,
-                        being->text_x - 64, being->text_y - 80);
+            playerset->spriteset[4 * pf + dir]->draw(screen,
+                    being->text_x - 64, being->text_y - 80);
+
+            if (being->hair_color <= 10) {
+                int hf = being->hair_color - 1 + 10 * (dir + 4 *
+                        (being->hair_style - 1));
+
                 hairset->spriteset[hf]->draw(screen,
                         being->text_x - 2 + 2 * hairtable[pf][dir][0],
                         being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
-            else {
-                int pf = being->frame + being->action;
 
-                playerset->spriteset[4 * pf + dir]->draw(screen,
-                        being->text_x - 64, being->text_y - 80);
-                hairset->spriteset[hf]->draw(screen,
-                        being->text_x - 2 + 2 * hairtable[pf][dir][0],
-                        being->text_y - 50 + 2 * hairtable[pf][dir][1]);
-            }
             if (being->emotion != 0) {
                 emotionset->spriteset[being->emotion - 1]->draw(screen,
                         sx * 32 - 5 + get_x_offset(being) - offset_x,
