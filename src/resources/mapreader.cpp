@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "mapreader.h"
 #include "../log.h"
 #include "resourcemanager.h"
@@ -55,25 +56,25 @@ int Tileset::getFirstGid()
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    log("Attempting to parse XML map data");
+    logger.log("Attempting to parse XML map data");
 
     std::string name = std::string("data/") + filename;
     xmlDocPtr doc = xmlParseFile(name.c_str());
 
     if (doc) {
-        log("Looking for root node");
+        logger.log("Looking for root node");
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
-            log("Warning: No map file (%s)!", filename.c_str());
+            logger.log("Warning: No map file (%s)!", filename.c_str());
             return NULL;
         }
         
-        log("Loading map from XML tree");
+        logger.log("Loading map from XML tree");
         return readMap(node, filename);
         xmlFreeDoc(doc);
     } else {
-        log("Error while parsing map file (%s)!", filename.c_str());
+        logger.log("Error while parsing map file (%s)!", filename.c_str());
     }
 
     return NULL;
@@ -108,7 +109,7 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
         else if (xmlStrEqual(node->name, BAD_CAST "layer"))
         {
-            log("- Loading layer %d", layerNr);
+            logger.log("- Loading layer %d", layerNr);
             readLayer(node, map, layerNr);
             layerNr++;
         }
@@ -139,7 +140,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 xmlFree(encoding);
 
                 if (compression) {
-                    log("Warning: no layer compression supported!");
+                    logger.log("Warning: no layer compression supported!");
                     xmlFree(compression);
                     return;
                 }
@@ -217,7 +218,7 @@ Tileset* MapReader::readTileset(
         xmlNodePtr node, const std::string &path, Map *map)
 {
     if (xmlHasProp(node, BAD_CAST "source")) {
-        log("Warning: External tilesets not supported yet.");
+        logger.log("Warning: External tilesets not supported yet.");
         return NULL;
     }
 
@@ -246,7 +247,7 @@ Tileset* MapReader::readTileset(
                     return set;
                 }
                 else {
-                    log("Warning: Failed to load tileset (%s)\n", source);
+                    logger.log("Warning: Failed to load tileset (%s)\n", source);
                 }
             }
 

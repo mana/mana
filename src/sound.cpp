@@ -23,6 +23,7 @@
 
 #include "sound.h"
 #include "log.h"
+#include "main.h"
 
 void Sound::init(int voices, int mod_voices)
 {
@@ -50,7 +51,7 @@ void Sound::init(int voices, int mod_voices)
     items = -1;
     isOk = 0;
 
-    log("Sound::Init() Initializing Sound");
+    logger.log("Sound::Init() Initializing Sound");
 }
 
 void Sound::setVolume(int music)
@@ -81,7 +82,7 @@ void Sound::startBgm(char *in, int loop)
         stopBgm();
     }
     
-    log("Sound::startBgm() playing \"%s\" %d times", in, loop);
+    logger.log("Sound::startBgm() playing \"%s\" %d times", in, loop);
 
     bgm = Mix_LoadMUS(in);
     Mix_PlayMusic(bgm, loop);
@@ -91,7 +92,7 @@ void Sound::stopBgm()
 {
     if (isOk == -1) return;
 
-    log("Sound::stopBgm()");
+    logger.log("Sound::stopBgm()");
         
     if (bgm != NULL) {
         Mix_HaltMusic();
@@ -102,12 +103,12 @@ void Sound::stopBgm()
 
 SOUND_SID Sound::loadItem(char *fpath)
 {
-    log("Sound::loadItem() precaching \"%s\"", fpath);
+    logger.log("Sound::loadItem() precaching \"%s\"", fpath);
 
     Mix_Chunk *newItem;
     if ((newItem = Mix_LoadWAV(fpath))) {
         soundpool[++items] = newItem;
-        log("Sound::loadItem() success SOUND_SID = %d", items);
+        logger.log("Sound::loadItem() success SOUND_SID = %d", items);
         return items;
     }
         
@@ -117,7 +118,7 @@ SOUND_SID Sound::loadItem(char *fpath)
 void Sound::startItem(SOUND_SID id, int volume)
 {
     if (soundpool[id]) {
-        log("Sound::startItem() playing SOUND_SID = %d", id);
+        logger.log("Sound::startItem() playing SOUND_SID = %d", id);
         Mix_VolumeChunk(soundpool[id], volume);
         Mix_PlayChannel(-1, soundpool[id], 0);
     }
@@ -131,7 +132,7 @@ void Sound::clearCache()
     }
     
     soundpool.clear();
-    log("Sound::clearCache() wiped all items off the cache");
+    logger.log("Sound::clearCache() wiped all items off the cache");
 }
 
 void Sound::close()
@@ -139,7 +140,7 @@ void Sound::close()
     isOk = -1;
     clearCache();
     Mix_CloseAudio();
-    log("Sound::close() shutting down Sound");
+    logger.log("Sound::close() shutting down Sound");
 }
 
 bool Sound::isMaxVol(int vol)

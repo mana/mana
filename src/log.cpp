@@ -42,32 +42,6 @@ Logger::~Logger()
     logFile.close();
 }
 
-void Logger::log(std::string log_text)
-{
-    if ( logFile.is_open() )
-    {
-        // Time container
-        time_t t;
-        // Get the current system time
-        time(&t);
-        
-        // Print the log entry
-        logFile << "[";
-        logFile << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
-        logFile << (int)(((t / 60) / 60) % 24);
-        logFile << ":";
-        logFile << (((t / 60) % 60 < 10) ? "0" : "");
-        logFile << (int)((t / 60) % 60);
-        logFile << ":";
-        logFile << ((t % 60 < 10) ? "0" : "");
-        logFile << (int)(t % 60);
-        logFile << "] ";
-        
-        // Print the log entry
-        logFile << log_text << std::endl;
-    }
-}
-
 void Logger::log(const char *log_text, ...)
 {
     if ( logFile.is_open() )
@@ -105,69 +79,13 @@ void Logger::log(const char *log_text, ...)
 
 void Logger::error(const std::string &error_text)
 {
-    log(error_text);
 
 #ifdef WIN32
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
 #else
     log("Error :");
-    log(error_text);
-#endif
-    exit(1);
-}
-
-void init_log()
-{
-    logfile = fopen("tmw.log", "w");
-    if (!logfile) {
-        printf("Warning: error while opening log file.\n");
-    }
-}
-
-void log(const char *log_text, ...)
-{
-    if (logfile)
-    {
-        char* buf = new char[1024];
-        va_list ap;
-        time_t t;
-
-        // Use a temporary buffer to fill in the variables
-        va_start(ap, log_text);
-        vsprintf(buf, log_text, ap);
-        va_end(ap);
-
-        // Get the current system time
-        time(&t);
-
-        // Print the log entry
-        fprintf(logfile,
-                "[%s%d:%s%d:%s%d] %s\n",
-                (((t / 60) / 60) % 24 < 10) ? "0" : "",
-                (int)(((t / 60) / 60) % 24),
-                ((t / 60) % 60 < 10) ? "0" : "",
-                (int)((t / 60) % 60),
-                (t % 60 < 10) ? "0" : "",
-                (int)(t % 60),
-                buf
-               );
-
-        // Flush the log file
-        fflush(logfile);
-
-        // Delete temporary buffer
-        delete[] buf;
-    }
-}
-
-void error(const std::string &error_text)
-{
     log(error_text.c_str());
-
-#ifdef WIN32
-    MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
-#else
-    fprintf(stderr, "Error: %s\n", error_text.c_str());
 #endif
     exit(1);
 }
+

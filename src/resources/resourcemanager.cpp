@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "resourcemanager.h"
 #include "../log.h"
 #include <iostream>
@@ -67,7 +68,7 @@ ResourceManager::~ResourceManager()
     }
     resources.clear();
 
-    log("ResourceManager::~ResourceManager() cleaned up %d references to %d"
+    logger.log("ResourceManager::~ResourceManager() cleaned up %d references to %d"
             " resources", danglingReferences, danglingResources);
 }
 
@@ -96,10 +97,10 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     switch (type)
     {
         case MAP:
-            log("Warning: Map resource not supported.");
+            logger.log("Warning: Map resource not supported.");
             break;
         case MUSIC:
-            log("Warning: Music resource not supported.");
+            logger.log("Warning: Music resource not supported.");
             break;
         case IMAGE:
             // Attempt to create and load our image object.
@@ -126,16 +127,16 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
 
             break;
         case SCRIPT:
-            log("Warning: Script resource not supported.");
+            logger.log("Warning: Script resource not supported.");
             break;
         case TILESET:
-            log("Warning: Tileset resource not supported.");
+            logger.log("Warning: Tileset resource not supported.");
             break;
         case SOUND_EFFECT:
-            log("Warning: Sound FX resource not supported.");
+            logger.log("Warning: Sound FX resource not supported.");
             break;
         default: 
-            log("Warning: Unknown resource type");
+            logger.log("Warning: Unknown resource type");
             break;
     }
 
@@ -227,7 +228,7 @@ void ResourceManager::searchAndAddZipFiles()
             std::string filePath = std::string(programPath) +
                 std::string("/") + std::string(direntry->d_name);
 
-            log("Adding to PhysicsFS: %s", filePath.c_str());
+            logger.log("Adding to PhysicsFS: %s", filePath.c_str());
 
             // Add the zip file to our PhysicsFS search path
             PHYSFS_addToSearchPath(filePath.c_str(), 1);

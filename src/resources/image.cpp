@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "../graphics.h"
 #include "image.h"
 #include "../log.h"
@@ -51,14 +52,14 @@ Image::~Image()
 
 Image* Image::load(const std::string &filePath, int flags)
 {
-    log("Image::load(%s)", filePath.c_str());
+    logger.log("Image::load(%s)", filePath.c_str());
 
     // Attempt to use SDL_Image to load the file.
     SDL_Surface *tmpImage = IMG_Load(filePath.c_str());
 
     // Check if the file was opened and return the appropriate value.
     if (!tmpImage) {
-        log("Error: Image load failed.");
+        logger.log("Error: Image load failed.");
         return NULL;
     }
 
@@ -77,7 +78,7 @@ Image* Image::load(const std::string &filePath, int flags)
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
-        log("Error: Image convert failed.");
+        logger.log("Error: Image convert failed.");
         return NULL;
     }
 

@@ -50,12 +50,12 @@ ModeListModel::ModeListModel()
     // Check if any modes available
     if (modes == (SDL_Rect**)0) {
         nmode = 0;
-        log("No modes");
+        logger.log("No modes");
     }
 
     // Check if modes restricted 
     if (modes == (SDL_Rect**)-1) {
-        log("Modes unrestricted");
+        logger.log("Modes unrestricted");
     }
 
     for (nmode = 0; modes[nmode]; ++nmode);
@@ -66,7 +66,7 @@ ModeListModel::ModeListModel()
         char *temp = (char*)malloc(20 * sizeof(char));
         mode[i] = temp;
         if (sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1) {
-            log("Cannot allocate mode list");
+            logger.log("Cannot allocate mode list");
         }
     }
 }
@@ -229,7 +229,7 @@ void Setup::action(const std::string &eventId)
             }
             catch (const char *err) {
                 new OkDialog(this, "Sound Engine", err);
-                log("Warning: %s", err);   
+                logger.log("Warning: %s", err);   
             }
         } else {
             config.setValue("sound", 0);

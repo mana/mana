@@ -51,7 +51,6 @@ Logger(std::string logFilename);
 /**
  * Enters a message in the log. The message will be timestamped.
  */
-void log(std::string log_text);
 void log(const char *log_text, ...);
 
 /**
@@ -65,22 +64,5 @@ private:
 std::ofstream logFile;
 
 };
-
-
-/**
- * Initializes log file by opening it for writing.
- */
-void init_log();
-
-/**
- * Enters a message in the log. The message will be timestamped.
- */
-void log(const char *log_text, ...);
-
-/**
- * Log an error and quit. The error will pop-up in Windows and will be printed
- * to standard error everywhere else. 
- */
-void error(const std::string &error_text);
 
 #endif

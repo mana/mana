@@ -71,7 +71,7 @@ Sound sound;
 // ini file configuration reader
 Configuration config;
 // Log object
-Logger logger("tmw.log2");
+Logger logger("tmw.log");
 
 /**
  * Listener used for responding to map start error dialog.
@@ -110,8 +110,6 @@ void init_engine()
 
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
-    init_log();
 
     dir = new char[400];
     strcpy(dir, "");
