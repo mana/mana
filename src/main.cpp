@@ -238,8 +238,6 @@ void init_engine() {
     error("Unable to install timer");
   if(install_mouse()==-1)
     error("Unable to install mouse");
-  if(alfont_init()!=ALFONT_OK)
-    error("Unable to install AllegroFont");
 
   buffer = create_bitmap(800, 600);
   if(!buffer)
@@ -263,7 +261,6 @@ void init_engine() {
 /** Clear the engine */
 void exit_engine() {
   gui_exit();
-  //alfont_exit();
   destroy_bitmap(buffer);
   allegro_exit();
 }

@@ -34,12 +34,12 @@ DIALOG_PLAYER *inventory_player;
 /** Initialize inventory */
 void TmwInventory::create(int tempxpos, int tempypos) {
 	itemset = load_datafile("./data/graphic/items.dat");
-	
+
 	for(int i=0;i<INVENTORY_SIZE;i++) {
 		items[i].id = -1; // if id is negative there's no item
 		items[i].quantity = 0;
 	}
-	
+
 	inventory_player = init_dialog(inventory_dialog, -1);
 	position_dialog(inventory_dialog, x, y);
 
@@ -57,7 +57,7 @@ void TmwInventory::draw(BITMAP * buffer) {
 					masked_blit((BITMAP *)itemset[items[i].id-500].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
 				else
 					masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
-				alfont_textprintf_aa(gui_bitmap, gui_font, inventory_dialog[0].x+24*i, inventory_dialog[0].y+44, makecol(0,0,0), "%i", items[i].quantity);
+					textprintf(gui_bitmap, font, inventory_dialog[0].x+24*i, inventory_dialog[0].y+44, makecol(0,0,0), "%i", items[i].quantity);
 			}
 		}
 	}
@@ -72,11 +72,11 @@ void TmwInventory::draw(BITMAP * buffer) {
 			itemMeny_i = i;
 			}
 		}
-	
-	
+
+
 	}
-	
-	
+
+
 	if(itemMeny){
 	if(inventory_dialog[0].y+itemMeny_y < mouse_y && inventory_dialog[0].y+itemMeny_y+10 > mouse_y) {
 		if(mouse_b&1)
@@ -84,9 +84,9 @@ void TmwInventory::draw(BITMAP * buffer) {
 			use_item(itemMeny_i,items[itemMeny_i].id);
 			itemMeny = 0;
 			}
-		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, makecol(255,237,33), "Use item");
+		textprintf(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, makecol(255,237,33), "Use item");
 		} else {
-		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, MAKECOL_BLACK, "Use item");
+		textprintf(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y, MAKECOL_BLACK, "Use item");
 		}
 	if(inventory_dialog[0].y+itemMeny_y+10 < mouse_y && inventory_dialog[0].y+itemMeny_y+20 > mouse_y) {
 		if(mouse_b&1)
@@ -94,9 +94,9 @@ void TmwInventory::draw(BITMAP * buffer) {
 			drop_item(itemMeny_i,1);
 			itemMeny = 0;
 			}
-		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, makecol(255,237,33), "Del item");
+		textprintf(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, makecol(255,237,33), "Del item");
 		} else {
-		alfont_textprintf_aa(buffer, gui_font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, MAKECOL_BLACK, "Del item");
+		textprintf(buffer, font, inventory_dialog[0].x+itemMeny_x, inventory_dialog[0].y+itemMeny_y+10, MAKECOL_BLACK, "Del item");
 		}
 	}
 
@@ -121,7 +121,7 @@ int TmwInventory::remove_item(int id) {
 		if(items[i].id==id) {
 			items[i].id = -1;
 			items[i].quantity = 0;
-		}  
+		}
 	return 0;
 }
 

@@ -60,7 +60,7 @@ void Chat::chat_dlgrsize(int) {
  * i already store the width in pixel in the list rather than
  * calculating it again and again on every draw event. ;-)
 */
-void Chat::chat_log(std::string line, int own, ALFONT_FONT * font) {
+void Chat::chat_log(std::string line, int own, FONT * font) {
     int pos;
     CHATLOG tmp;
 
@@ -103,7 +103,7 @@ void Chat::chat_log(std::string line, int own, ALFONT_FONT * font) {
 /*
  * function overload -> calls original chat_log() after processing the packet
  */
-void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
+void Chat::chat_log(CHATSKILL action, FONT * font) {
     chat_log(const_msg(action), BY_SERVER, font);
 }
 
@@ -114,13 +114,13 @@ void Chat::chat_log(CHATSKILL action, ALFONT_FONT * font) {
  *
  * BITMAP * bmp: Allegro type bitmap buffer to draw onto
  * int n: number of lines to be drawn
- * ALFONT_FONT * font: font to use
+ * FONT * font: Allegro's system font
  *
  * NOTE:
  * take great care using this, make sure the buffer passed is
  * empty! ;-) anyway, line wrapping is not supported yet.
 */
-void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
+void Chat::chat_draw(BITMAP * bmp, int n, FONT * font) {
     int y = 600-35, i = 0;
     CHATLOG line;
     n -= 1;
@@ -131,19 +131,19 @@ void Chat::chat_draw(BITMAP * bmp, int n, ALFONT_FONT * font) {
 
         switch (line.own) {
             case BY_GM :
-                alfont_textprintf_aa(bmp, font, 1, y, COLOR_BLUE, "Global announcement: ");
-                alfont_textprintf_aa(bmp, font, TEXT_GETWIDTH("Global announcement: "), y, COLOR_GREEN, line.text.c_str());
+                textprintf(bmp, font, 1, y, COLOR_BLUE, "Global announcement: ");
+                textprintf(bmp, font, TEXT_GETWIDTH("Global announcement: "), y, COLOR_GREEN, line.text.c_str());
                 break;
             case BY_PLAYER :
-                alfont_textprintf_aa(bmp, font, 1, y, COLOR_YELLOW, line.nick.c_str());
-                alfont_textprintf_aa(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
+                textprintf(bmp, font, 1, y, COLOR_YELLOW, line.nick.c_str());
+                textprintf(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
                 break;
             case BY_OTHER :
-                alfont_textprintf_aa(bmp, font, 1, y, COLOR_GREEN, line.nick.c_str());
-                alfont_textprintf_aa(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
+                textprintf(bmp, font, 1, y, COLOR_GREEN, line.nick.c_str());
+                textprintf(bmp, font, line.width, y, COLOR_WHITE, line.text.c_str());
                 break;
             default :
-                alfont_textprintf_aa(bmp, font, 1, y, COLOR_LIGHTBLUE, line.text.c_str());
+                textprintf(bmp, font, 1, y, COLOR_LIGHTBLUE, line.text.c_str());
         }
 
         if (i>=n) {

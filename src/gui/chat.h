@@ -57,7 +57,7 @@
 #define COLOR_LIGHTBLUE		(makecol( 83,223,246)) // bright blue
 
 /** calculate text-width in pixel  */
-#define TEXT_GETWIDTH(str)  (alfont_text_length(font, str))
+#define TEXT_GETWIDTH(str)  (text_length(font, str))
 
 /** job dependend identifiers (?)  */
 #define		SKILL_BASIC			0x0001
@@ -112,10 +112,10 @@ class Chat {
 		Chat(const char *, int);
 		void chat_dlgrsize(int);
 
-		void chat_log(std::string, int, ALFONT_FONT *);
-		void chat_log(CHATSKILL, ALFONT_FONT *);
+		void chat_log(std::string, int, FONT *);
+		void chat_log(CHATSKILL, FONT *);
 
-		void chat_draw(BITMAP *, int, ALFONT_FONT *);
+		void chat_draw(BITMAP *, int, FONT *);
 		char * chat_send(std::string, std::string);
 		~Chat();
 	private :

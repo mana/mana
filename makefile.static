@@ -6,7 +6,7 @@ CXX = g++
 CXXFLAGS +=-Wall -march=i686 -O3 -fexpensive-optimizations -pipe -fomit-frame-pointer -funroll-loops -fexceptions
 CXXFLAGS +=`allegro-config --cflags release`
 
-LIBS := -ljgmod `allegro-config --libs release` -lalfont -lguichan_allegro -lguichan
+LIBS := -ljgmod `allegro-config --libs release` -lguichan_allegro -lguichan
 
 include file.list
 

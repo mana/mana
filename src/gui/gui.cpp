@@ -46,7 +46,6 @@ static BITMAP *gui__repository[GUI_BMP_COUNT];
 /* The currently active skin */
 LexSkin gui_skin;
 BITMAP *gui_bitmap;
-ALFONT_FONT *gui_font;
 bool drag;
 DATAFILE *gui_gfx;
 
@@ -96,9 +95,6 @@ void init_gui(BITMAP *bitmap, const char *skin) {
 
     gui_bitmap = bitmap;
     gui_load_skin(skin);
-    //alfont_init();
-    gui_font = alfont_load_font("./data/Skin/arial.ttf");
-    alfont_set_font_size(gui_font, 14);
     drag = false;
     show_mouse(NULL);
 }
@@ -470,9 +466,7 @@ void gui_exit() {
     delete guiGraphics;
     delete imageLoader;
 
-    //alfont_destroy_font(gui_font);
     gui_shutdown();
-    //alfont_exit();
 }
 
 void gui_shutdown(void) {
@@ -537,19 +531,19 @@ int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre)
         }
     }
     usetc(tmp+out_pos, 0);
-    pix_len = alfont_text_length(gui_font, tmp);
+    pix_len = text_length(font, tmp);
 
     if (centre)x -= pix_len / 2;
     if (bmp) {
-        alfont_textout_aa(bmp, gui_font, tmp, x, y, color);
+        textout(bmp, font, tmp, x, y, color);
         if (hline_pos >= 0) {
             c = ugetat(tmp, hline_pos);
             usetat(tmp, hline_pos, 0);
-            hline_pos = alfont_text_length(gui_font, tmp);
+            hline_pos = text_length(font, tmp);
             c = usetc(tmp, c);
             usetc(tmp+c, 0);
-            c = alfont_text_length(gui_font, tmp);
-            hline(bmp, x+hline_pos, y+alfont_text_height(gui_font)-gui_font_baseline, x+hline_pos+c-1, color);
+            c = text_length(font, tmp);
+            hline(bmp, x+hline_pos, y+text_height(font)-gui_font_baseline, x+hline_pos+c-1, color);
         }
     }
     return pix_len;
@@ -558,9 +552,9 @@ int gui_text(BITMAP *bmp, AL_CONST char *s, int x, int y, int color, int centre)
 int tmw_text_proc(int msg, DIALOG *d, int c) {
     if (msg==MSG_DRAW) {
         int rtm;
-        rtm = alfont_text_mode(-1);
+        rtm = text_mode(-1);
         gui_text(gui_bitmap, (char *)d->dp, d->x, d->y, d->fg, FALSE);
-        alfont_text_mode(rtm);
+        text_mode(rtm);
     }
     return D_O_K;
 }
@@ -590,16 +584,16 @@ int tmw_button_proc(int msg, DIALOG *d, int c) {
             draw_skinned_rect(gui_bitmap, &gui_skin.button.background[0], d->x, d->y, d->w, d->h);
             col = gui_skin.button.textcolor[0];
         }
-        rtm = alfont_text_mode(-1);
-      gui_text(gui_bitmap, (const char *)d->dp, d->x+d->w/2+ofs, d->y+d->h/2-alfont_text_height(gui_font)/2+ofs, col, TRUE);
-      alfont_text_mode(rtm);
+        rtm = text_mode(-1);
+      gui_text(gui_bitmap, (const char *)d->dp, d->x+d->w/2+ofs, d->y+d->h/2-text_height(font)/2+ofs, col, TRUE);
+      text_mode(rtm);
     ret = D_O_K;
   } else {
     /*if(msg==MSG_CLICK) {
       if(d->d1==1)((int)d->dp2) + 1;
       else if(d->d1==2)((int)d->dp2) - 1;
     }*/
-    
+
     ret =  d_button_proc(msg,d,c);
     }
     return ret;
@@ -669,11 +663,11 @@ int tmw_slider_proc(int msg, DIALOG *d, int c) {
             }
             masked_blit(gui_skin.slider.vGrip, gui_bitmap, 0, 0,  x, y, gui_skin.slider.vGrip->w, gui_skin.slider.vGrip->h);
         }
-        //textprintf(gui_bitmap, gui_font,10, 10, makecol(255,255,255), "%i", d->d2);
+        //textprintf(gui_bitmap, font,10, 10, makecol(255,255,255), "%i", d->d2);
     } else {
       if(d->d1==0)d->d1 = 1;
       ret = d_slider_proc(msg,d,c);
-    }     
+    }
 
   if (watchdog == 1) {
     d->dp2 = (void*)gui__external_slider_callback;
@@ -725,13 +719,13 @@ int tmw_radio_proc(int msg, DIALOG *d, int c) {
             tx = x - box->w/2 - l;
         }
         y  = d->y + (d->h - box->h)/ 2;
-        ty = d->y + (d->h - alfont_text_height(gui_font)) / 2;
+        ty = d->y + (d->h - text_height(font)) / 2;
 
         masked_blit(box, gui_bitmap, 0, 0, x, y, box->w, box->h);
         if (d->dp != NULL) {
-            rtm = alfont_text_mode(-1);
+            rtm = text_mode(-1);
             gui_text(gui_bitmap, (const char *)d->dp, tx, ty, col, 0);
-            alfont_text_mode(rtm);
+            text_mode(rtm);
         }
 
 
@@ -767,13 +761,13 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
         lb = gui_skin.textbox.bg.grid[0]->w;
         rb = gui_skin.textbox.bg.grid[2]->w;
         tx = d->x + lb;
-        ty = d->y + (d->h - alfont_text_height(gui_font))/2;
+        ty = d->y + (d->h - text_height(font))/2;
 
 
         text  = (char *)d->dp;
         start = text;
 
-        rtm = alfont_text_mode(-1);
+        rtm = text_mode(-1);
 
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
@@ -785,10 +779,10 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
             cr=gui_bitmap->w;
             cb=gui_bitmap->h;
         }
-        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + alfont_text_height(gui_font)); // set_clip() is deprecated use set_clip_rect() instead
+        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + text_height(font)); // set_clip() is deprecated use set_clip_rect() instead
         hack        = text[d->d2];
         text[d->d2] = '\0';
-        l = alfont_text_length(gui_font, text);
+        l = text_length(font, text);
         text[d->d2] = hack;
 
         if (l > d->w-lb-rb) {
@@ -800,11 +794,11 @@ int tmw_edit_proc(int msg, DIALOG *d, int c) {
         if (d->flags & D_GOTFOCUS) {
             hack        = text[d->d2];
             text[d->d2] = '\0';
-            x = tx + alfont_text_length(gui_font, text);
-            vline(gui_bitmap, x, ty, ty + alfont_text_height(gui_font), col);
+            x = tx + text_length(font, text);
+            vline(gui_bitmap, x, ty, ty + text_height(font), col);
             text[d->d2] = hack;
         }
-        alfont_text_mode(rtm);
+        text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
         return d_edit_proc(msg, d, c);
@@ -838,7 +832,7 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
         lb = gui_skin.textbox.bg.grid[0]->w;
         rb = gui_skin.textbox.bg.grid[2]->w;
         tx = d->x + lb;
-        ty = d->y + (d->h - alfont_text_height(gui_font))/2;
+        ty = d->y + (d->h - text_height(font))/2;
 
 
         text  = (char *)malloc(strlen((char *)d->dp)+1);
@@ -848,7 +842,7 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
     text[i] = '\0';
         start = text;
 
-        rtm = alfont_text_mode(-1);
+        rtm = text_mode(-1);
 
         if (gui_bitmap->clip) {
             cl = gui_bitmap->cl;
@@ -860,11 +854,11 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
             cr=gui_bitmap->w;
             cb=gui_bitmap->h;
         }
-        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + alfont_text_height(gui_font));
+        set_clip_rect(gui_bitmap, tx, ty, d->x+d->w-rb, ty + text_height(font));
 
         hack        = text[d->d2];
         text[d->d2] = '\0';
-        l = alfont_text_length(gui_font, text);
+        l = text_length(font, text);
         text[d->d2] = hack;
 
         if (l > d->w-lb-rb) {
@@ -876,11 +870,11 @@ int tmw_password_proc(int msg, DIALOG *d, int c) {
         if (d->flags & D_GOTFOCUS) {
             hack        = text[d->d2];
             text[d->d2] = '\0';
-            x = tx + alfont_text_length(gui_font, text);
-            vline(gui_bitmap, x, ty, ty + alfont_text_height(gui_font), col);
+            x = tx + text_length(font, text);
+            vline(gui_bitmap, x, ty, ty + text_height(font), col);
             text[d->d2] = hack;
         }
-        alfont_text_mode(rtm);
+        text_mode(rtm);
         set_clip_rect(gui_bitmap, cl, ct, cr, cb);
     } else {
         return d_edit_proc(msg, d, c);
@@ -899,7 +893,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
   int w, h          = 0;
   int rtm           = 0;
   int cl, cr, cb, ct;
-  int th            = alfont_text_height(gui_font);
+  int th            = text_height(font);
 
   int vscroll = 0;
   int sliderh = 10;
@@ -908,8 +902,8 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
   (*(getfuncptr)d->dp)(-1, &itemCount);
   w = d->w - gui_skin.listbox.bg.grid[0]->w - gui_skin.listbox.bg.grid[2]->w;
 	h = d->h - gui_skin.listbox.bg.grid[1]->h - gui_skin.listbox.bg.grid[7]->h;
-	lastItem = MIN(itemCount-1, firstItem + h / alfont_text_height(gui_font));
-  
+	lastItem = MIN(itemCount-1, firstItem + h / text_height(font));
+
   if (msg == MSG_DRAW) {
     if (ignoreRedraw) {
       return D_O_K;
@@ -927,7 +921,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
       draw_skinned_rect(gui_bitmap, &gui_skin.listbox.vscroll, d->x+d->w-13, slidery, 11, sliderh);
     }
 
-    rtm = alfont_text_mode(-1);
+    rtm = text_mode(-1);
     if (gui_bitmap->clip) {
 			cl = gui_bitmap->cl;
 			ct = gui_bitmap->ct;
@@ -944,22 +938,22 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
     if (d->flags & D_DISABLED) {
 			col = gui_skin.listbox.textcolor[3];
 			for (a=firstItem; a < lastItem; a++) {
-				alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
-				y += alfont_text_height(gui_font);
+				textout(gui_bitmap, font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				y += text_height(font);
 			}
 		} else {
 			for (a=firstItem; a <= lastItem; a++) {
 				if (a==d->d1) {
 					col = gui_skin.listbox.textcolor[1];
-					rectfill(gui_bitmap, x, y, x+w, y+alfont_text_height(gui_font)-1, gui_skin.listbox.textcolor[2]);
+					rectfill(gui_bitmap, x, y, x+w, y+text_height(font)-1, gui_skin.listbox.textcolor[2]);
 				} else {
 					col = gui_skin.listbox.textcolor[0];
 				}
-				alfont_textout_aa(gui_bitmap, gui_font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
-				y += alfont_text_height(gui_font);
+				textout(gui_bitmap, font, (*(getfuncptr)d->dp)(a, 0), x, y, col);
+				y += text_height(font);
 			}
 		}
-    alfont_text_mode(rtm);
+    text_mode(rtm);
     set_clip_rect(gui_bitmap, cl, ct, cr, cb);
 	} else if (msg == MSG_CLICK) {
 		x = d->x + gui_skin.listbox.bg.grid[0]->w;
@@ -1008,7 +1002,7 @@ int tmw_list_proc(int msg, DIALOG *d, int c) {
 			}
 		} else if (mouse_x >= x && mouse_x < x+w && mouse_y >= y && mouse_y < y+h) {
       while (mouse_b) {
-				a = firstItem + (mouse_y-y) / alfont_text_height(gui_font);
+				a = firstItem + (mouse_y-y) / text_height(font);
         if (a <= lastItem && a != selectedItem) {
 					d->d1 = selectedItem = a;
 					scare_mouse();
@@ -1060,7 +1054,7 @@ if(mouse_b & 1)
 	}
 		if(!draw)
 			masked_blit(gui_skin.plus.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-			
+
 
 return D_O_K;
 }
@@ -1072,7 +1066,7 @@ if(share2!=0)
 	masked_blit(gui_skin.bar.bg.grid[3], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
 else
 	masked_blit(gui_skin.bar.bg.grid[0], gui_bitmap, 0, 0, d->x, d->y, gui_bitmap->w, gui_bitmap->h);
-	
+
 for(int i = 3; i < (d->w-3); i++)
 	if(i<share2*d->w-3)
 		masked_blit(gui_skin.bar.bg.grid[4], gui_bitmap, 0, 0, d->x+1*i, d->y, gui_bitmap->w, gui_bitmap->h);
@@ -1125,11 +1119,11 @@ int tmw_dialog_proc(int msg, DIALOG *d, int c) {
         d->d2 = -1;
       }
       draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-      rtm = alfont_text_mode(-1);
-      alfont_textprintf_centre_aa(gui_bitmap, gui_font,
+      rtm = text_mode(-1);
+      textprintf_centre(gui_bitmap, font,
 				d->x + d->w/2,
-				d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
-			alfont_text_mode(rtm);
+				d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, "%s", d->dp);
+			text_mode(rtm);
 			break;
 	}
   return D_O_K;
@@ -1176,9 +1170,9 @@ int tmw_ldialog_proc(int msg, DIALOG *d, int c) {
       d->d2 = -1;
     }
         draw_skinned_rect(gui_bitmap, &gui_skin.dialog.bg, d->x, d->y, d->w, d->h);
-        rtm = alfont_text_mode(-1);
-        alfont_textprintf_aa(gui_bitmap, gui_font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - alfont_text_height(gui_font))/2, d->fg, "%s", d->dp);
-        alfont_text_mode(rtm);
+        rtm = text_mode(-1);
+        textprintf(gui_bitmap, font, d->x + 4, d->y + (gui_skin.dialog.bg.grid[1]->h - text_height(font))/2, d->fg, "%s", d->dp);
+        text_mode(rtm);
     }
     return D_O_K;
 }
@@ -1252,7 +1246,7 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    if (disabled)
       fg = disable;
 
-   rtm = alfont_text_mode(-1);
+   rtm = text_mode(-1);
 
    /* loop over the entire string */
    while (1) {
@@ -1270,11 +1264,11 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
 
    /* the next character length */
    usetc(s+usetc(s, ugetc(scanned)), 0);
-   len = alfont_text_length(gui_font, s);
+   len = text_length(font, s);
 
    /* modify length if its a tab */
    if (ugetc(s) == '\t')
-      len = tabsize * alfont_text_length(gui_font, space);
+      len = tabsize * text_length(font, space);
 
    /* check for the end of a line by excess width of next char */
    if (width+len >= ww) {
@@ -1348,8 +1342,8 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
          case '\t':
       for (i=0; i<tabsize; i++) {
          usetc(s+usetc(s, ' '), 0);
-         alfont_textout_aa(gui_bitmap, gui_font, s, x1, y1, fg);
-         x1 += alfont_text_length(gui_font, s);
+         textout(gui_bitmap, font, s, x1, y1, fg);
+         x1 += text_length(font, s);
       }
       break;
 
@@ -1357,8 +1351,8 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
          default:
       if (printed != ignore) {
          usetc(s+usetc(s, ugetc(printed)), 0);
-         alfont_textout_aa(gui_bitmap, gui_font, s, x1, y1, fg);
-         x1 += alfont_text_length(gui_font, s);
+         textout(gui_bitmap, font, s, x1, y1, fg);
+         x1 += text_length(font, s);
       }
       }
 
@@ -1367,10 +1361,10 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
    }
    /* the last blank bit */
    /*if (x1 <= x+w-3)
-      rectfill(gui_bitmap, x1, y1, x+w-3, y1+alfont_text_height(gui_font)-1, deselect);*/
+      rectfill(gui_bitmap, x1, y1, x+w-3, y1+alfont_text_height(font)-1, deselect);*/
 
    /* print the line end */
-   y1 += alfont_text_height(gui_font);
+   y1 += text_height(font);
       }
       printed = scanned;
 
@@ -1385,12 +1379,12 @@ void _gui_draw_textbox(char *thetext, int *listsize, int draw, int offset,
 
    /* tell how many lines we found */
    *listsize = line;
-   alfont_text_mode(rtm);
+   text_mode(rtm);
    return;
       }
    }
 
-   alfont_text_mode(rtm);
+   text_mode(rtm);
 }
 
 int tmw_textbox_proc(int msg, DIALOG *d, int c) {
@@ -1400,7 +1394,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
    int fg_color = (d->flags & D_DISABLED) ? gui_mg_color : d->fg;
 
    /* calculate the actual height */
-   height = (d->h-8) / alfont_text_height(gui_font);
+   height = (d->h-8) / text_height(font);
 
    switch (msg) {
 
@@ -1447,7 +1441,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
          /* figure out if it's on the text or the scrollbar */
    bar = (d->d1 > height);
 
-   if ((!bar) || (gui_mouse_x() < d->x+d->w-13)) /* clicked on the text area */      
+   if ((!bar) || (gui_mouse_x() < d->x+d->w-13)) /* clicked on the text area */
      ret = D_O_K;
    else /* clicked on the scroll area */
      //_handle_scrollable_scroll_click(d, d->d1, &d->d2, height);
@@ -1463,7 +1457,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
       else
          top = 0;
 
-      l = (d->h-8)/alfont_text_height(gui_font);
+      l = (d->h-8)/text_height(font);
 
       bottom = d->d2 + l - 1;
       if (bottom >= d->d1-1)
@@ -1503,7 +1497,7 @@ int tmw_textbox_proc(int msg, DIALOG *d, int c) {
    break;
 
       case MSG_WHEEL:
-   l = (d->h-8)/alfont_text_height(gui_font);
+   l = (d->h-8)/text_height(font);
    delta = (l > 3) ? 3 : 1;
 
    /* scroll, making sure that the list stays in bounds */
@@ -1550,10 +1544,10 @@ DIALOG alert_dialog[] = {
    BITMAP *temp = gui_bitmap;
    gui_bitmap = screen;
    show_mouse(screen);
-   alert_dialog[0].w = alfont_text_length(gui_font, message)+4;
-   alert_dialog[1].w = alfont_text_length(gui_font, message);
-   alert_dialog[1].h = alfont_text_height(gui_font);
-   alert_dialog[2].x = alfont_text_length(gui_font, message)/2-22;
+   alert_dialog[0].w = text_length(font, message)+4;
+   alert_dialog[1].w = text_length(font, message);
+   alert_dialog[1].h = text_height(font);
+   alert_dialog[2].x = text_length(font, message)/2-22;
    position_dialog(alert_dialog, 400-alert_dialog[0].w/2, 270);
    do_dialog(alert_dialog, 2);
    show_mouse(NULL);
@@ -1573,11 +1567,11 @@ unsigned int yes_no(const char *title, const char *message) {
    BITMAP *temp = gui_bitmap;
    gui_bitmap = screen;
    show_mouse(screen);
-   int width = alfont_text_length(gui_font, message)+4;
+   int width = text_length(font, message)+4;
    if(width<100)width=100;
    alert_dialog[0].w = width;
-   alert_dialog[1].w = alfont_text_length(gui_font, message);
-   alert_dialog[1].h = alfont_text_height(gui_font);
+   alert_dialog[1].w = text_length(font, message);
+   alert_dialog[1].h = text_height(font);
    alert_dialog[2].x = width/2-46;
    alert_dialog[2].x = width/2+2;
    position_dialog(alert_dialog, 400-width/2, 270);

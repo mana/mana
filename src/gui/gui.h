@@ -105,7 +105,6 @@ typedef struct {
 
 extern LexSkin gui_skin;
 extern BITMAP *gui_bitmap;
-extern ALFONT_FONT *gui_font;
 
 extern gcn::Container* guiTop;                // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver

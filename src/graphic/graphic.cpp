@@ -214,7 +214,6 @@ void init_graphic() {
     //buffer = create_bitmap(SCREEN_W/2, SCREEN_H/2);
     //double_buffer = create_bitmap(SCREEN_W, SCREEN_H);
 
-    alfont_set_font_size(gui_font, 16);
     clear_bitmap(screen);
     chat_background = create_bitmap(592, 100);
     clear_to_color(chat_background, makecol(0,0,0));
@@ -233,7 +232,7 @@ void init_graphic() {
     guiTop->add(chatInput);
 
     chatInput->requestFocus();
-    
+
 
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
@@ -473,7 +472,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 	set_trans_blender(0, 0, 0, 110);
   draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H-125);
 
-  chatlog.chat_draw(vpage[page_num], 8, gui_font);
+  chatlog.chat_draw(vpage[page_num], 8, font);
 
 	switch(show_npc_dialog) {
 		case 1:
@@ -506,7 +505,6 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
 			buy_dialog[4].dp = &money;
 			buy_dialog[5].d1 = (int)(char_info->gp/get_item_price(buy_dialog[3].d1));
 			if(buy_dialog[5].d2>buy_dialog[5].d1)
-			//alfont_textprintf(double_buffer, gui_font, 0, 10, MAKECOL_WHITE, "%i", buy_dialog[5].d1);
 			dialog_message(buy_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(buy_player)) {
 				show_npc_dialog = shutdown_dialog(buy_player);
@@ -529,7 +527,7 @@ new_tileset->spriteset[0]->draw(vbuffer, 0, 0);
       //sprintf(ds, "%i", sell_dialog[3].d1);
       //ok(ds,"");
 
-			//alfont_textprintf(vpage[page_num], gui_font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
+			//alfont_textprintf(vpage[page_num], font, 0, 10, MAKECOL_WHITE, "%i", sell_dialog[3].d1);
 			dialog_message(sell_dialog, MSG_DRAW, 0, 0);
 			if(!gui_update(sell_player)) {
 				show_npc_dialog = shutdown_dialog(sell_player);

@@ -84,7 +84,7 @@ int tmw_incbutt_proc2(int msg, DIALOG *d, int c) {
     return D_O_K;
   }
   return tmw_button_proc(msg, d, c);
-}  
+}
 
 int tmw_player_proc(int msg, DIALOG *d, int c) {
   if(msg==MSG_DRAW) {
@@ -104,7 +104,7 @@ void char_select() {
   state = LOGIN;
   if(n_character>0) {
     char_select_dialog[1].dp = char_info->name;
-		char_select_dialog[1].x = 400-alfont_text_length(gui_font, char_info->name)/2;
+		char_select_dialog[1].x = 400-text_length(font, char_info->name)/2;
 		//char_select_dialog[2].dp = playerset;
 		if(playerset==NULL)ok("Error", "Playerset not loaded");
 		strcpy(button_state, "Del");
@@ -208,8 +208,8 @@ void server_char_delete() {
     }
   // Create a new character
   } else {
-    n_character = 1;    
-    
+    n_character = 1;
+
     centre_dialog(char_create_dialog);
     DIALOG_PLAYER *player = init_dialog(char_create_dialog, -1);
     int gui_exit = 1;
@@ -275,7 +275,7 @@ void server_char_delete() {
       } else {
         ok("Error", "Unknown error");
         n_character = 0;
-      }  
+      }
     } else n_character = 0;
   }
 }

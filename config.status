@@ -558,7 +558,7 @@ s,@LIBTOOL@,$(SHELL) $(top_builddir)/libtool,;t t
 s,@LIBSDL_LIBS@,-L/usr/lib -Wl,-rpath,/usr/lib -lSDL -lpthread,;t t
 s,@LIBSDL_CFLAGS@,-I/usr/include/SDL -D_REENTRANT,;t t
 s,@LIBSDL_RPATH@,-R/usr/lib,;t t
-s,@LIBALLEGRO_LIBS@,-L/usr/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.1.16 -lalleg_unsharable -ljgmod -lalfont -lguichan -lguichan_allegro,;t t
+s,@LIBALLEGRO_LIBS@,-L/usr/lib -L/usr/X11R6/lib -Wl,-export-dynamic -lalleg-4.1.16 -lalleg_unsharable -ljgmod -lguichan -lguichan_allegro,;t t
 s,@LIBALLEGRO_CFLAGS@,-I/usr/include,;t t
 s,@LIBALLEGRO_RPATH@,-R/usr/lib -R/usr/X11R6/lib,;t t
 s,@LIBOBJS@,,;t t
