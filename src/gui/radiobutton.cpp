@@ -43,15 +43,15 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
     getAbsolutePosition(x, y);
 
     if (mMarked) {
-        if (false /*disabled*/) {
-            box = radioDisabledChecked;
-        } else {
+        if (isEnabled()) {
             box = radioChecked;
+        } else {
+            box = radioDisabledChecked;
         }
-    } else if (false /*disabled*/) {
-        box = radioDisabled;
-    } else {
+    } else if (isEnabled()) {
         box = radioNormal;
+    } else {
+        box = radioDisabled;
     }
 
     x += 2;

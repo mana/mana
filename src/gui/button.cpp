@@ -57,7 +57,7 @@ Button::Button(const std::string& caption):
 void Button::draw(gcn::Graphics* graphics) {
     int mode;
 
-    if (false /*disabled*/) {
+    if (!isEnabled()) {
         mode = 3;
     }
     else if (isPressed()) {

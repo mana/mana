@@ -63,8 +63,6 @@ int map_address, char_ID;
 short map_port;
 char map_name[16];
 unsigned char state;
-unsigned short x, y;
-unsigned char direction;
 unsigned char screen_mode;
 char *dir = NULL;
 

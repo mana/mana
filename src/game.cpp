@@ -47,9 +47,9 @@ unsigned char keyb_state;
 volatile int tick_time;
 volatile bool action_time = false;
 int server_tick;
-extern unsigned char screen_mode;
 int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
+int startX = 0, startY = 0;
 
 OkDialog *deathNotice = NULL;
 
@@ -140,8 +140,8 @@ void do_init()
     // Initialize beings
     player_node = new Being();
     player_node->id = account_ID;
-    player_node->x = x;
-    player_node->y = y;
+    player_node->x = startX;
+    player_node->y = startY;
     player_node->speed = 150;
     player_node->setHairColor(char_info->hair_color);
     player_node->setHairStyle(char_info->hair_style);

@@ -43,15 +43,15 @@ void CheckBox::drawBox(gcn::Graphics* graphics) {
     getAbsolutePosition(x, y);
 
     if (mMarked) {
-        if (false /*disabled*/) {
-            box = checkBoxDisabledChecked;
-        } else {
+        if (isEnabled()) {
             box = checkBoxChecked;
+        } else {
+            box = checkBoxDisabledChecked;
         }
-    } else if (false /*disabled*/) {
-        box = checkBoxDisabled;
-    } else {
+    } else if (isEnabled()) {
         box = checkBoxNormal;
+    } else {
+        box = checkBoxDisabled;
     }
 
     x += 2;

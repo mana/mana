@@ -59,10 +59,10 @@
 extern char map_path[480];
 extern int fps, frame, current_npc;
 extern char walk_status;
-extern unsigned short src_x, src_y, x, y;
 extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;
+extern int startX, startY;
 
 /**
  * Main game loop
@@ -92,7 +92,7 @@ void do_exit();
 /**
  * Calculate packet length
  */
-int  get_packet_length(short);
+int get_packet_length(short);
 
 /**
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay

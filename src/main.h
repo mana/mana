@@ -88,7 +88,7 @@ typedef struct {
 
 extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
-extern Graphics* graphics;
+extern Graphics *graphics;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;
@@ -99,8 +99,6 @@ extern char sex, n_server, n_character;
 extern SERVER_INFO *server_info;
 extern PLAYER_INFO *char_info;
 extern unsigned char state;
-extern unsigned short x, y;
-extern unsigned char direction;
 extern Configuration config;
 extern Sound sound;
 extern Map *tiledMap;

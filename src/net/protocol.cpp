@@ -23,6 +23,7 @@
 
 #include "../main.h"
 #include "../being.h"
+#include "../game.h"
 #include "protocol.h"
 #include "network.h"
 
@@ -175,17 +176,20 @@ void map_start()
 
     while (in_size < 2) flush();
 
-    if (RFIFOW(0) == 0x0073) {
+    if (RFIFOW(0) == SMSG_LOGIN_SUCCESS) {
         while (in_size < 11) flush();
-        x = get_x(RFIFOP(6));
-        y = get_y(RFIFOP(6));
-        //direction = get_direction(RFIFOP(6));
-        log("Protocol: Player position: (%d, %d), Direction: %d",
-                x, y, direction);
+        startX = get_x(RFIFOP(6));
+        startY = get_y(RFIFOP(6));
+        int direction = get_direction(RFIFOP(6));
+        log("Protocol: Player start position: (%d, %d), Direction: %d",
+                startX, startY, direction);
         RFIFOSKIP(11);
-    } else if(0x0081) {
+    } else if (0x0081) {
         log("Warning: Map server D/C");
-    } else error("Unknown packet: map_start");
+    } else {
+        error("Unknown packet: map_start");
+    }
+
     // Send "map loaded"
     WFIFOW(0) = net_w_value(0x007d);
     WFIFOSET(2);
