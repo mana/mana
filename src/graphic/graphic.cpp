@@ -360,11 +360,13 @@ void do_graphic(void) {
                 }
             }
 
+            /*
             textprintf_centre_ex(vbuffer, font,
                     node->text_x + 45,
                     node->text_y + 55,
                     node->speech_color, -1,
                     "(%d,%d)", x, y);
+            */
         }
         else if (node->job == 45) { // Draw a warp
         } else { // Draw a monster
