@@ -30,7 +30,8 @@ you to figure this out.
 ============================
 
 The final step... I assume you have already downloaded the latest tarball or
-checked out a recent version from the CVS. In any case follow the last 3 steps:
+checked out a recent version from the CVS. 
+In any case follow the last 3 steps: (recommend)
 
 1) Go to the directory you have extracted the source to.
 2) Run "./autogen.sh" (only when using CVS, not when using a source release)
@@ -39,6 +40,13 @@ checked out a recent version from the CVS. In any case follow the last 3 steps:
 
 It should have generated the executable in src/tmw, you should run it from the
 main directory for it to be able to find its data.
+
+If this does not work for you try the following: (not recommend)
+
+1) Go to the directory you have extracted the source to.
+2) Run "make -f makefile.static"
+
+Now you should be able to run "./tmw".
 
 If you have any problems, you are welcome to post your questions on our forums,
 or talk about them in our IRC channel.
