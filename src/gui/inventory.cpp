@@ -210,39 +210,41 @@ void TmwInventory::show(int val) {
 		areDisplaying = 0; 
 }
 
-int TmwInventory::addItem(int idnum, int antal)
-{
-int found, tempi, tempii;
-found = 0;
-tempi = -1;
-for(int i = 0; i< 10; i++)
-	{
-	for(int ii = 0; ii< 10; ii++)
-		{
-		if(items[i][ii].itemIDNum == idnum)
-			{ found = 1; items[i][ii].num = antal; return -2; }
+int TmwInventory::addItem(int idnum, int antal) {
+	int found, tempi, tempii = 0;
+	found = 0;
+	tempi = -1;
+	for(int i = 0; i< 10; i++) {
+		for(int ii = 0; ii< 10; ii++) {
+				if(items[i][ii].itemIDNum == idnum) {
+					found = 1; items[i][ii].num = antal;
+					return -2;
+				}
+			}
+		}
+
+	if(!found) {
+		for(int ii = 0; ii< 10; ii++) {
+			for(int i = 0; i< 10; i++) {
+				if(items[i][ii].flag == 0) {
+					tempi = i;
+					tempii = ii;
+					ii=10;
+					i=10;
+				}
+			}
+		}
+
+		if(tempi != -1) {
+			items[tempi][tempii].flag = 1;
+			items[tempi][tempii].itemIDNum = idnum;
+			items[tempi][tempii].num = antal;
+			return 1;
+		} else {
+			return -1;
 		}
 	}
-if(!found)
-{
-for(int ii = 0; ii< 10; ii++)
-	{
-	for(int i = 0; i< 10; i++)
-		{
-	if(items[i][ii].flag == 0)
-		{tempi = i; tempii = ii; ii=10;i=10;}
-		}
-	}
-	if(tempi != -1)
-	{
-	items[tempi][tempii].flag = 1;
-	items[tempi][tempii].itemIDNum = idnum;
-	items[tempi][tempii].num = antal;
-	return 1;
-	} else { return -1; }
-	
-}
-return -3;
+	return -3;
 }
 
 int TmwInventory::rmItem(int idnum)
