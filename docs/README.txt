@@ -9,6 +9,7 @@ Release info:
     - SimEdw (Programmer)
     - Ultramichy (Game server admin)
     - Rotonen (Background story and music)
+    - Bertram (Programmer)
 
   Special thanks:
     - Sull (Linux Developer)
@@ -19,7 +20,6 @@ Release info:
     - necromus (Pixel Artist)
     - LordNev (Artist)
     - jui-feng for helping in server development and php scripts.
-    - Bertram for Debian installation script
 
   Powered by:
     - SDL
