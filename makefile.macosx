@@ -12,7 +12,7 @@ OBJS += Sound/sound.o Graphic/SuperEagle.o chat/chat.o
 OBJS += Gui/gui.o Gui/login.o Gui/char_server.o Gui/char_select.o
 OBJS += Net/network.o Net/protocol.o
 OBJS += Mac/mac.o
-OBJS += ftlzw.o
+#OBJS += ftlzw.o
 
 ManaWorld: $(OBJS)
 	$(CXX) -o ManaWorld $(OBJS) $(CFLAGS)
