@@ -1,0 +1,27 @@
+1) network api (complete)
+    - needs optimization (flush called too often)
+2) gui (partial)
+    - character dialog (partial)
+    - ingame dialogs like inventory (missing)
+    - rewrite drawing subsystem with dirty rectangles (missing)
+    - make the gui redraw frame rate independant (missing)
+3) sound engine
+    - ogg/mp3 playback (missing) (kth5)
+3) movement
+    - mob movement (partial / buggy)
+4) npc
+    - basic dialog (one page)
+    - question system (missing)
+5) chat
+    - shift when overlaying (missing)  (kth5)
+    - chatlog (partial)  (kth5)
+    - linewrapping in chatbox (missing) (kth5)
+    - white text / black border (missing / nth ONLY)  (kth5)
+6) graphics & animation
+    - attack animations (partial)
+    - emoticons (partial / nth) (elven)
+    - animated and transparent tiles (missing) (elven)
+7) battle system (missing) (elven)
+8) misc
+    - bubble sort -> quick sort (optimization)
+    - keyboard shortcuts (missing)
