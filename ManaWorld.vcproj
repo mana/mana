@@ -198,6 +198,9 @@
 					RelativePath=".\Gui\char_dialog.cpp">
 				</File>
 				<File
+					RelativePath=".\char_new_dialog.cpp">
+				</File>
+				<File
 					RelativePath=".\Gui\char_sel_dialog.cpp">
 				</File>
 				<File
@@ -263,6 +266,9 @@
 				</File>
 				<File
 					RelativePath=".\Gui\char_dialog.h">
+				</File>
+				<File
+					RelativePath=".\char_new_dialog.h">
 				</File>
 				<File
 					RelativePath=".\Gui\char_sel_dialog.h">
