@@ -35,25 +35,48 @@
 #include "ok_dialog.h"
 #include "../main.h"
 
-struct Modes {
-    int height, width;
-    char *desc;
-};
+SDL_Rect **modes;
 
-static Modes modes[] = {
-    { 640,480, "640x480"},
-    { 800,600, "800x600" },
-    { 1024,768, "1024x768" }
-};
+ModeListModel::ModeListModel() {
+	int i;
+	
+	modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+	
+	// Check if any modes available
+	if(modes == (SDL_Rect **)0) {
+		nmode=0;
+		puts("No modes");
+	}
+
+	// Check if modes restricted 
+	if(modes == (SDL_Rect **)-1)
+		puts("Modes restricted");
+	
+	for(nmode=0;modes[nmode];++nmode);
+	
+	mode = (char **) calloc(nmode,sizeof(char *));
+	
+	for(i=0;modes[i];++i) {
+		if(asprintf(&mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1)
+			puts("Cannot allocate mode list"); 
+	}
+}
+
+ModeListModel::~ModeListModel() {
+	int i;
+	
+	// Cleanup 
+	for(i=0;i<nmode;i++)
+		free(mode[i]);
+	free(mode);
+}
 
 int ModeListModel::getNumberOfElements() {
-    // TODO after moving to SDL
-    return 3;
+	return nmode;
 }
 
 std::string ModeListModel::getElementAt(int i) {
-    // TODO: after moving to SDL
-    return modes[i].desc;
+	return mode[i];
 }
 
 Setup::Setup():
@@ -70,6 +93,9 @@ Setup::Setup():
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
 
+    // Set selections
+    last_sel = 0;
+    sel = 1;
 
     // Set events
     applyButton->setEventId("apply");
@@ -131,16 +157,21 @@ void Setup::action(const std::string& eventId)
 {
     if (eventId == "apply") {
         setVisible(false);
-        int sel = 0;
+	
+	// Select video mode
         sel = modeList->getSelected();
-
+	
+	if(sel != last_sel) {
+		last_sel = sel;
+		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32,  SDL_FULLSCREEN | SDL_HWSURFACE);	
+	}
+	
         // Display settings
         if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0)
         {
             config.setValue("screen", 1);
             #if __USE_UNIX98
                 SDL_WM_ToggleFullScreen(screen);
-                
             #else
                 int displayFlags = 0;
                 displayFlags |= SDL_FULLSCREEN;
@@ -150,12 +181,8 @@ void Setup::action(const std::string& eventId)
                 else {
                     displayFlags |= SDL_SWSURFACE;
                 }
-                screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
-            #endif
-            
-	    // FIXME : Need to handle resolution
-            //set_gfx_mode(GFX_AUTODETECT_FULLSCREEN,
-            //        modes[sel].height, modes[sel].width, 0, 0);
+		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32, displayFlags);
+	    #endif
 
         }
         else if (!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1)
@@ -163,7 +190,6 @@ void Setup::action(const std::string& eventId)
             config.setValue("screen", 0);
             #if __USE_UNIX98
                 SDL_WM_ToggleFullScreen(screen);
-                
             #else
                 int displayFlags = 0;
                 if ((int)config.getValue("hwaccel", 0)) {
@@ -172,11 +198,8 @@ void Setup::action(const std::string& eventId)
                 else {
                     displayFlags |= SDL_SWSURFACE;
                 }
-                screen = SDL_SetVideoMode(800, 600, 32, displayFlags);
-            #endif
-	    // FIXME : Need to handle resolution
-            //set_gfx_mode(GFX_AUTODETECT_WINDOWED,
-            //        modes[sel].height, modes[sel].width, 0, 0);
+		screen = SDL_SetVideoMode(modes[sel]->w, modes[sel]->h, 32, displayFlags);
+	    #endif
         }
 
         // Sound settings
