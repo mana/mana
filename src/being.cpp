@@ -211,6 +211,9 @@ void Being::nextStep()
         y = path->y;
     } else {
         action = STAND;
+        if (this == player_node) {
+            walk_status = 0;
+        }
     }
     frame = 0;
     walk_time = tick_time;

@@ -379,11 +379,7 @@ void Engine::draw()
                     (get_elapsed_time(being->walk_time) * 4) / (being->speed);
 
                 if (being->frame >= 4) {
-                    being->frame = 0;
-                    being->action = STAND;
-                    if (being->id == player_node->id) {
-                        walk_status = 0;
-                    }
+                    being->nextStep();
                 }
             }
         }
