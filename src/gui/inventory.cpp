@@ -25,12 +25,26 @@
 #include "inventory.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"
+#include "button.h"
+#include "../being.h"
 #include <sstream>
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setSize(322, 60);
+    setSize(322, 80);
+    useButton = new Button("Use");
+    useButton->setPosition(20, 50);
+    dropButton = new Button("Drop");
+    dropButton->setPosition(60, 50);
+    
+    useButton->setEventId("use");
+    dropButton->setEventId("drop");
+    useButton->addActionListener(this);
+    dropButton->addActionListener(this);
+    
+    add(useButton);
+    add(dropButton);  
 
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphic/items.bmp");
@@ -41,16 +55,23 @@ InventoryWindow::InventoryWindow():
         items[i].id = -1;
         items[i].quantity = 0;
     }
+    
+    selectedItem = 4; /**< No item selected */
 }
 
 InventoryWindow::~InventoryWindow()
 {
+    delete useButton;
+    delete dropButton;
 }
 
 void InventoryWindow::draw(gcn::Graphics *graphics)
 {
     int x, y;
     getAbsolutePosition(x, y);
+    
+    if(items[selectedItem].quantity <= 0)
+        selectedItem = -1;
 
     // Draw window graphics
     Window::draw(graphics);
@@ -65,57 +86,16 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
 
             std::stringstream ss;
             ss << items[i].quantity;
-            graphics->drawText(ss.str(), 24 * i + 10, 44,
+            graphics->drawText(ss.str(), 24 * i + 10, 54,
                     gcn::Graphics::CENTER);
         }
     }
-
-    /*
-    if (mouse_b & 2) {
-        for (int i = 0; i < INVENTORY_SIZE; i++) {
-            if (items[i].quantity > 0 &&
-                    x + 24 * i + 24 > mouse_x &&
-                    x + 24 * i < mouse_x &&
-                    y + 44 + 24 > mouse_y &&
-                    y + 44 < mouse_y)
-            {
-                itemMeny = 1;
-                itemMeny_x = 24 * i;
-                itemMeny_y = 44 + 24;
-                itemMeny_i = i;
-            }
-        }
+    
+    if (selectedItem >= 0) {
+        graphics->drawRectangle(gcn::Rectangle(24 * selectedItem + 1, 26,
+            22, 22));
     }
-
-    if (itemMeny) {
-        if (y + itemMeny_y < mouse_y && y + itemMeny_y + 10 > mouse_y)
-        {
-            if (mouse_b & 1) {
-                useItem(itemMeny_i,items[itemMeny_i].id);
-                itemMeny = 0;
-            }
-            textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y, makecol(255, 237, 33), -1, "Use item");
-        }
-        else {
-            textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y, makecol(0,0,0), -1, "Use item");
-        }
-        if (y + itemMeny_y + 10 < mouse_y && y + itemMeny_y + 20 > mouse_y) {
-            if (mouse_b & 1) {
-                dropItem(itemMeny_i, 1);
-                itemMeny = 0;
-            }
-            textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y + 10,
-                    makecol(255, 237, 33), -1, "Del item");
-        }
-        else {
-            textprintf_ex(buffer, font, x + itemMeny_x,
-                    y + itemMeny_y + 10, makecol(0,0,0), -1, "Del item");
-        }
-    }
-    */
+    
 }
 
 
@@ -149,18 +129,39 @@ int InventoryWindow::useItem(int index, int id) {
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(id);
-    // Note: id is dest of item, usually player_node->account_ID
+    // Note: id is dest of item, usually player_node->account_ID ??
     WFIFOSET(8);
     while ((out_size > 0)) flush();
     return 0;
 }
 
-int InventoryWindow::dropItem(int index, int amunt) {
-    WFIFOW(0) = net_w_value(0x00a7);
+int InventoryWindow::dropItem(int index, int quantity) {
+    WFIFOW(0) = net_w_value(0x00a2);
     WFIFOW(2) = net_w_value(index);
-    WFIFOL(4) = net_l_value(amunt);
-    WFIFOSET(8);
+    WFIFOW(4) = net_w_value(quantity);
+    WFIFOSET(6);
     while ((out_size > 0)) flush();
     return 0;
+}
+
+void InventoryWindow::action(const std::string &eventId)
+{
+    if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
+        if (eventId == "use") {
+            useItem(selectedItem, items[selectedItem].id);
+        } else if (eventId == "drop") {
+            dropItem(selectedItem, items[selectedItem].quantity);
+            // Temp: drop all the items, you should choose quantity instead
+        }       
+    }
+}
+
+void InventoryWindow::mousePress(int mx, int my, int button) {
+    if (button == gcn::MouseInput::LEFT)
+        selectedItem = mx / 24;
+    if (selectedItem > INVENTORY_SIZE)
+        selectedItem = INVENTORY_SIZE;
+    
+    Window::mousePress(mx, my, button);
 }
 

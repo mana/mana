@@ -21,15 +21,16 @@
  *  $Id$
  */
 
-#ifndef _INVENTORY_H
-#define _INVENTORY_H 
+#ifndef _TMW_INVENTORY_H
+#define _TMW_INVENTORY_H 
 
 #include "../log.h"
 #include "../net/network.h"
 #include "../graphic/spriteset.h"
+#include "gui.h"
 #include "window.h"
 
-#define INVENTORY_SIZE 100
+#define INVENTORY_SIZE 12
 
 struct ITEM_HOLDER { // the holder of a item
     int id;       // the id of the item
@@ -42,7 +43,7 @@ struct ITEM_HOLDER { // the holder of a item
  *
  * \ingroup GUI
  */
-class InventoryWindow : public Window {
+class InventoryWindow : public Window, gcn::ActionListener {
     public:
         /**
          * Constructor.
@@ -78,15 +79,26 @@ class InventoryWindow : public Window {
          * Increase quantity of an item.
          */
         int increaseQuantity(int index, int quantity);
+        
+        /**
+         * Called when receiving actions from the widgets.
+         */
+        void action(const std::string& eventId);
+        
+        /**
+         * Handles mouse events
+         */
+        void mousePress(int mx, int my, int button);
 
         ITEM_HOLDER items[INVENTORY_SIZE];  /**< this is the holder of items */
 
     private:
+        gcn::Button *useButton, *dropButton;
         int useItem(int index, int id);
         int dropItem(int index, int amunt);
 
         Spriteset *itemset;
-        int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
+        int selectedItem;
 };
 
 #endif

@@ -148,7 +148,7 @@ void do_init() {
     player_node->weapon = char_info->weapon;
     add_node(player_node);
 
-    //remove("./docs/packet.list");
+    remove("./docs/packet.list");
 }
 
 void do_exit() {
@@ -408,11 +408,11 @@ void do_parse() {
             }
             fclose(file);
             */
-/*#ifdef DEBUG
-            FILE *file = fopen("./docs/packet.list", "ab");
+//#ifdef DEBUG
+            FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif */
+//#endif 
             // Parse packet based on their id
             switch(id) {
                 // Received speech
@@ -594,10 +594,11 @@ void do_parse() {
                     break;
                     // Can I use the item?
                 case 0x00a8:
-                    // index RFIFOW(2)
-                    // succes or not RFIFOB(6);
-                    //if (RFIFOB(6))
-                    //  inventoryWindow->addItem(RFIFOW(2), RFIFOW(4));
+                    if (RFIFOB(6) == 0) {
+                        chatBox->chat_log("Failed to use item", BY_OTHER);
+                    } else {
+                        inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(4));
+                    }
                     break;
                     // Warp
                 case 0x0091:
@@ -875,7 +876,7 @@ void do_parse() {
                     else
                         inventoryWindow->addItem(RFIFOW(2), RFIFOW(6), RFIFOW(4));
                     break;
-                    // Remove item to inventory after you sold it
+                    // Decrease quantity of an item in inventory
                 case 0x00af:
                     printf("sell %i\n", -RFIFOW(4));
                     inventoryWindow->increaseQuantity(RFIFOW(2), -RFIFOW(4));
@@ -886,8 +887,6 @@ void do_parse() {
                     break;
                     // ??
                 case 0x0119:
-                    sprintf(pkt_nfo, "%i %i %i %i",
-                            RFIFOL(2), RFIFOW(6), RFIFOW(8), RFIFOW(10));
                     break;
                     // Skill list TAG
                 case 0x010f:
@@ -925,6 +924,7 @@ void do_parse() {
                     WFIFOW(0) = net_w_value(0x009f);
                     WFIFOL(2) = net_l_value(RFIFOL(2));
                     WFIFOSET(6);
+                    // To be fixed or you will pick up again what you drop
                     break;
                     // Next button in NPC dialog
                 case 0x00b5:
@@ -951,9 +951,6 @@ void do_parse() {
                     if (RFIFOB(6) == 6) {
                         being = find_node(RFIFOL(2));
                         being->hair_color = RFIFOB(7);
-                        //char prova[100];
-                        //sprintf(prova, "%i %i %i", RFIFOL(2), RFIFOB(6), RFIFOB(7));
-                        //alert(prova,"","","","",0,0);
                     } else if (RFIFOB(6) == 1) {
                         being = find_node(RFIFOL(2));
                         being->hair_style = RFIFOB(7);

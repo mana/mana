@@ -149,10 +149,15 @@ void flush() {
                 out_size -= ret;
             }
         }
-        if(ret==SOCKET_ERROR) {
+        if (ret == SOCKET_ERROR) {
             error("Socket Error");
 #ifdef WIN32
             log("Error", "Socket error: %i ", WSAGetLastError());
+            if (WSAGetLastError() == 10053)
+            log("Error", "Packet size error");
+            /** Probably the last packet you sent, was defined with
+             *  wrong size: WFIFOSET(size);
+             */
 #else
             log("Error", "socket_error", "Undefined socket error");
 #endif
