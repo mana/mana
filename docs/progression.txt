@@ -1,10 +1,13 @@
---------------------
-Player's Progression
---------------------
+-----------------------------------
+THE MANA WORLD PLAYER'S PROGRESSION
+-----------------------------------
 
+1. PLAYER'S STATS
+2. PLAYER'S STATUS
+3. AN ATTACK PROCESS
+4. LEVELS
 
-Player's stats :
-----------------
+1. PLAYER'S STATS
 
 Strength     : The Strength determines how much a player will physically damage
                an enemy.
@@ -30,8 +33,7 @@ level 1. A Stat must have at least 1 point given to it. The Player earns 1
 point for each level he reaches.
 
        
-Player's Status :
------------------
+2. PLAYER'S STATUS
 
 HP : Hit Points. How much a player can be hit before dying.
      HP = (3 * Vitality) + Strength + Level
@@ -62,8 +64,7 @@ Evade (%)     : Indicate the chance a player has to evade an opponent's hit.
                 Evade = ((3 * Luck + Spirit + Vitality )/5) (Max : 75 %)
 
 
-An Attack Process :
--------------------
+3. AN ATTCK PROCESS
 
 An attack process is quite simple :
 The Hit(%) of the attacker is taken, minus the evade of the opponent.
@@ -77,8 +78,7 @@ Then, the attack plus the its modifiers (weapons attack upgrade, items bonus,
 HP.
 
 
-Levels :
---------
+4. LEVELS
 
 The XP-For-The-Next-Level of a player is calculated with his/her class number.
 Cf. Class Number for more information. Higher is the class, higher is the class
@@ -92,8 +92,7 @@ xp for next level.
 N.B. : A player earns 1 stat point for each level he reaches.
 
 
-Job Points :
-------------
+5. JOB POINTS
 
 Job Points are used to get skill points, that can be used to learned and
 reinforce special skills, which can be acquired by being of certain classes.
@@ -105,8 +104,7 @@ Job points are obtained by job leveling.
 
 Job level : 20 + 2^Level + Level.
 
-Classes :
----------
+6. CLASSES
 
 A player can be one of mutiple classes ; A wizard is different from a archer,
 and can't held the same weapons, armors, etc... A score is associated with each
@@ -123,10 +121,9 @@ Peon        17          Double Hit, Hard Hit(JL:5)           Beginner Lvl:10
 ...
 
 
-Notes:
-------
+7. NOTES
 
 Every of these notes have to be discussed, if you have any feedback,
 suggestions, updates, commit or tell them at:
 
-address: http://irc.freenode.net      channel:  #manaworld
+address: irc://irc.freenode.net      channel:  #manaworld
