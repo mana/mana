@@ -26,6 +26,7 @@
 #include "../map.h"
 #include "../being.h"
 #include "../gui/buy.h"
+#include "../gui/buysell.h"
 #include "../gui/chat.h"
 #include "../gui/inventory.h"
 #include "../gui/shop.h"
@@ -51,10 +52,17 @@ extern char npc_button[10];
 
 extern StatsDialog *statsDialog;
 extern BuyDialog *buyDialog;
+extern BuySellDialog *buySellDialog;
 extern InventoryDialog *inventoryDialog;
 
 // The action listener for the chat field
 class ChatListener : public gcn::ActionListener {
+    public:
+        void action(const std::string& eventId);
+};
+
+// The action listener for the buy or sell dialog
+class BuySellListener : public gcn::ActionListener {
     public:
         void action(const std::string& eventId);
 };

@@ -5,11 +5,11 @@ tmw_SOURCES = sound/sound.cpp \
 	graphic/image.cpp \
 	gui/button.cpp \
 	gui/buy.cpp \
+	gui/buysell.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
 	gui/chat.cpp \
 	gui/checkbox.cpp \
-	gui/radiobutton.cpp \
 	gui/gui.cpp \
 	gui/inventory.cpp \
 	gui/login.cpp \
@@ -17,6 +17,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/ok_dialog.cpp \
 	gui/passwordfield.cpp \
 	gui/progressbar.cpp \
+	gui/radiobutton.cpp \
 	gui/scrollarea.cpp \
 	gui/setup.cpp \
 	gui/shop.cpp \
@@ -27,13 +28,13 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/window.cpp \
 	net/network.cpp \
 	net/protocol.cpp \
-	configuration.cpp \
+	astar.cpp \
 	being.cpp \
+	configuration.cpp \
 	game.cpp \
-	main.cpp \
-	map.cpp \
 	log.cpp \
-	astar.cpp
+	main.cpp \
+	map.cpp
 
 # set the include path found by configure
 INCLUDES= $(all_includes)

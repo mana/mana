@@ -41,7 +41,7 @@ DATAFILE *tileset;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
-DIALOG_PLAYER *npc_player, *skill_player, *buy_sell_player, *sell_player, *skill_list_player, *npc_list_player;
+DIALOG_PLAYER *npc_player, *skill_player, *sell_player, *skill_list_player, *npc_list_player;
 char npc_text[1000] = "";
 char statsString2[255] = "n/a";
 char skill_points[10] = "";
@@ -55,6 +55,7 @@ gcn::TextField *chatInput;
 
 StatsDialog *statsDialog;
 BuyDialog *buyDialog;
+BuySellDialog *buySellDialog;
 InventoryDialog *inventoryDialog;
 
 void ChatListener::action(const std::string& eventId)
@@ -69,6 +70,27 @@ void ChatListener::action(const std::string& eventId)
     }
 }
 
+void BuySellListener::action(const std::string& eventId)
+{
+    int actionId = -1;
+
+    if (eventId == "buy") {
+        actionId = 0;
+    }
+    else if (eventId == "sell") {
+        actionId = 1;
+    }
+
+    if (actionId > -1) {
+        WFIFOW(0) = net_w_value(0x00c5);
+        WFIFOL(2) = net_l_value(current_npc);
+        WFIFOB(6) = net_b_value(actionId);
+        WFIFOSET(7);
+    }
+
+    buySellDialog->setVisible(false);
+}
+
 
 Spriteset *new_tileset, *new_playerset, *new_npcset, *new_emotionset;
 Spriteset *new_monsterset;
@@ -81,15 +103,6 @@ DIALOG npc_dialog[] = {
    { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
 };
 
-
-DIALOG buy_sell_dialog[] = {
-   /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
-   { tmw_dialog_proc,     350,  200,  100,  105,  0,    0,    0,    0,       0,                0,    (char *)"Shop",   NULL, NULL  },
-   { tmw_button_proc,     360,  225,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Buy",   NULL, NULL  },
-	 { tmw_button_proc,     360,  250,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Sell",  NULL, NULL  },
-	 { tmw_button_proc,     360,  275,  80,   20,   255,  0,    0,    D_EXIT,  0,                0,    (char *)"&Cancel",NULL, NULL  },
-   { NULL,                0,    0,    0,    0,    0,    0,    0,    0,       0,                0,    NULL,             NULL, NULL  }
-};
 
 DIALOG sell_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -198,21 +211,24 @@ void init_graphic() {
 
     chatInput->requestFocus();
 
-    // Create stats dialog
+    // Create dialogs
+
     statsDialog = new StatsDialog(guiTop);
     statsDialog->setPosition(SCREEN_W - statsDialog->getWidth() - 10, 10);
 
-    // Create buy and inventory dialog
     buyDialog = new BuyDialog(guiTop);
-    inventoryDialog = new InventoryDialog(guiTop);
     buyDialog->setVisible(false);
+
+    buySellDialog = new BuySellDialog(guiTop, new BuySellListener());
+    buySellDialog->setVisible(false);
+
+    inventoryDialog = new InventoryDialog(guiTop);
     inventoryDialog->setVisible(false);
     inventoryDialog->setPosition(100, 100);
 
     npc_player = init_dialog(npc_dialog, -1);
     position_dialog(npc_dialog, 300, 200);
     skill_player = init_dialog(skill_dialog, -1);
-    buy_sell_player = init_dialog(buy_sell_dialog, -1);
     sell_player = init_dialog(sell_dialog, -1);
     skill_list_player = init_dialog(skill_list_dialog, -1);
     npc_list_player = init_dialog(npc_list_dialog, -1);
@@ -506,13 +522,6 @@ void do_graphic(void) {
         node = node->next;
     }
 
-    // Update character status display
-    statsDialog->update();
-
-    // Update GUI
-    guiGraphics->setTarget(vpage[page_num]);
-    gui_update(NULL);
-
 
     set_trans_blender(0, 0, 0, 110);
     draw_trans_sprite(vpage[page_num], chat_background, 0, SCREEN_H - 125);
@@ -529,46 +538,6 @@ void do_graphic(void) {
                 WFIFOL(2) = net_l_value(current_npc);
                 WFIFOSET(6);
             }
-            break;
-        case 2:
-            dialog_message(buy_sell_dialog, MSG_DRAW, 0, 0);
-            if (!gui_update(buy_sell_player)) {
-                show_npc_dialog = shutdown_dialog(buy_sell_player);
-                if (show_npc_dialog == 1 || show_npc_dialog == 2) {
-                    WFIFOW(0) = net_w_value(0x00c5);
-                    WFIFOL(2) = net_l_value(current_npc);
-                    WFIFOB(6) = net_b_value(show_npc_dialog-1);
-                    WFIFOSET(7);
-                }
-                show_npc_dialog = 0;
-                buy_sell_player = init_dialog(buy_sell_dialog, -1);
-            }
-            break;
-        case 3:
-            /*
-            char money[20];
-            sprintf(money, "%i gp", char_info->gp);
-            buy_dialog[4].dp = &money;
-            buy_dialog[5].d1 =
-                (int)(char_info->gp / get_item_price(buy_dialog[3].d1));
-
-            if (buy_dialog[5].d2 > buy_dialog[5].d1)
-                dialog_message(buy_dialog, MSG_DRAW, 0, 0);
-            if (!gui_update(buy_player)) {
-                show_npc_dialog = shutdown_dialog(buy_player);
-                buy_dialog[5].d1 = 0;
-                if (show_npc_dialog == 1) {
-                    WFIFOW(0) = net_w_value(0x00c8);
-                    WFIFOW(2) = net_w_value(8);
-                    WFIFOW(4) = net_w_value(buy_dialog[5].d2);
-                    WFIFOW(6) = net_w_value(get_item_id(buy_dialog[3].d1));
-                    WFIFOSET(8);
-                }
-                show_npc_dialog = 0;
-                buy_player = init_dialog(buy_dialog, -1);
-                close_shop();
-            }
-            */
             break;
         case 4:
             //alert("","","","","",0,0);
@@ -637,7 +606,13 @@ void do_graphic(void) {
         }
     }
 
-    draw_sprite(vpage[page_num], mouse_sprite, mouse_x, mouse_y);
+    // Update character status display
+    statsDialog->update();
+
+    // Update GUI
+    guiGraphics->setTarget(vpage[page_num]);
+    gui_update(NULL);
+
     release_bitmap(vpage[page_num]);
 
     if (page_flipping) {
