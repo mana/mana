@@ -22,15 +22,15 @@
 #ifdef WIN32
   #pragma warning (disable:4312)
 #endif
-#include "login.h"
+
 #ifndef _TMW_GUI
 #define _TMW_GUI
 
+#include <guichan.hpp>
+#include <guichan/allegro.hpp>
 #include <allegro.h>
 #include <alfont.h>
 #include <string.h>
-#include <guichan.hpp>
-#include <guichan/allegro.hpp>
 
 typedef struct {
     BITMAP *grid[9];

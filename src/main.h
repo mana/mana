@@ -30,12 +30,12 @@
 
 #define CORE_VERSION "0.0.8"
 
-#include <stdio.h>
 #include <allegro.h>
 #ifdef WIN32
 #include <winalleg.h>
 #endif
 #include <alfont.h>
+#include <stdio.h>
 
 #include "log.h"
 #include "game.h"

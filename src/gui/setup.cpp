@@ -64,10 +64,12 @@ Setup::~Setup() {
 }
 
 void Setup::toggleVisible(bool toggle) {
-  if(visible == false && toggle == true)
-    visible == true;
-    else
-  if(visible == true && toggle == false) visible == false;
+    if (!visible && toggle) {
+        visible = true;
+    }
+    else if (visible && !toggle) {
+        visible = false;
+    }
   
   setupDialog->setVisible(visible);
 }

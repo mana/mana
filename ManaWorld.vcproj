@@ -33,7 +33,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="SDL.lib SDLmain.lib"
-				AdditionalDependencies="alleg.lib masking.lib alfont.lib ws2_32.lib"
+				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib alfont.lib ws2_32.lib"
 				OutputFile="$(OutDir)/ManaWorld.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -80,7 +80,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="SDL.lib"
-				AdditionalDependencies="libjgmod.lib alfont.lib alleg.lib ws2_32.lib "
+				AdditionalDependencies="alleg.lib guichan.lib guichan_allegro.lib libjgmod.lib alfont.lib ws2_32.lib "
 				OutputFile="tmw.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"

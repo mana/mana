@@ -19,11 +19,11 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include "gui.h"
 #include <allegro.h>
 #include <allegro/internal/aintern.h>
 #include <math.h>
 #include <alfont.h>
-#include "gui.h"
 #include "../log.h"
 #include "../sound/sound.h"
 

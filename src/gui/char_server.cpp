@@ -32,7 +32,6 @@ gcn::ListBox *serverList;
 
 
 void ServerSelectListener::action(const std::string& eventId) {
-    printf("%s\n", eventId.c_str());
     if (eventId == "ok") {
         server_char_server(serverList->getSelected());
     }

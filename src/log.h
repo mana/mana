@@ -24,18 +24,17 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string>
-using namespace std;
 #include <stdarg.h>
 #include <time.h>
 #ifdef WIN32
 #include <allegro.h>
 #include <winalleg.h>
 #endif
+#include <string>
 
 void init_log();
 void log(const char *category, const char *log_text, ...);
-void error(string error_text);
+void error(std::string error_text);
 void warning(const char *warning_text);
 void status(const char *status_text);
 

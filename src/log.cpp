@@ -79,7 +79,7 @@ void log(const char *category, const char *log_text, ...) {
  * Log an error and quit. The error will pop-up in Windows and will be printed
  * to standard error everywhere else. 
  */
-void error(const string error_text) {
+void error(const std::string error_text) {
     log("Error", error_text.c_str());
 
 #ifdef WIN32

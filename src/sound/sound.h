@@ -22,16 +22,15 @@
 #ifndef __SOUND_H
 #define __SOUND_H
 
-#include <list>
-#include <string>
-#include <fstream>
 
 #ifdef WIN32
 	#pragma warning(disable:4312)
 #endif
 #include <allegro.h>
 #include <jgmod.h>
+#include <list>
 #include <string>
+#include <fstream>
 
 /** mod file */
 #define TMWSOUND_MOD 1

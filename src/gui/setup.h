@@ -8,7 +8,7 @@
 
 #include <allegro.h>
 #ifdef WIN32
-#include <winallegro.h>
+#include <winalleg.h>
 #endif
 #include "gui.h"
 #include "../graphic/graphic.h"

@@ -1,12 +1,12 @@
 #ifndef _IMAGE_H
 #define _IMAGE_H
 
+#include <allegro.h>
 #include <string>
 #include <vector>
 #include <iostream>
-#include <allegro.h>
 #include "../log.h"
-using namespace std;
+
 
 class IMAGE {
   protected:
@@ -50,14 +50,14 @@ class VIDEO_IMAGE : public IMAGE {
 };
 
 class SPRITESET {
-  private:
-    int get_property(DATAFILE *datafile, int type) {
-      return atoi(get_datafile_property(datafile, type));
-    }  
-  public:
-    vector<IMAGE *> spriteset; 
+    private:
+        int get_property(DATAFILE *datafile, int type) {
+            return atoi(get_datafile_property(datafile, type));
+        }  
+    public:
+        std::vector<IMAGE *> spriteset; 
          
-    SPRITESET(string filename) {
+    SPRITESET(std::string filename) {
       DATAFILE *datafile = load_datafile(filename.c_str());
       if(!datafile)error("Unable to load graphic file: " + filename);
       int i = 0;
