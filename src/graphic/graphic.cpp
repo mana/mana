@@ -70,7 +70,8 @@ void ChatListener::action(const std::string& eventId)
 }
 
 
-SPRITESET *new_tileset, *new_playerset, *new_npcset, *new_emotionset, *new_monsterset;
+Spriteset *new_tileset, *new_playerset, *new_npcset, *new_emotionset;
+Spriteset *new_monsterset;
 
 DIALOG npc_dialog[] = {
    /* (dialog proc)     (x)   (y)   (w)   (h)   (fg)  (bg)  (key) (flags)  (d1)                    (d2)  (dp)              (dp2) (dp3) */
@@ -280,11 +281,11 @@ void init_graphic() {
 
   gui_bitmap = vpage[page_num];
 
-  new_emotionset = new SPRITESET("./data/graphic/emotionset.dat");
-  new_tileset = new SPRITESET("./data/graphic/desert.dat");
-  new_npcset = new SPRITESET("./data/graphic/npcset.dat");
-  new_playerset = new SPRITESET("./data/graphic/playerset.dat");
-  new_monsterset = new SPRITESET("./data/graphic/monsterset.dat");
+  new_emotionset = new Spriteset("./data/graphic/emotionset.dat");
+  new_tileset = new Spriteset("./data/graphic/desert.dat");
+  new_npcset = new Spriteset("./data/graphic/npcset.dat");
+  new_playerset = new Spriteset("./data/graphic/playerset.dat");
+  new_monsterset = new Spriteset("./data/graphic/monsterset.dat");
 
 
 }

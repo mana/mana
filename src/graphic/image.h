@@ -84,7 +84,7 @@ class Spriteset {
       if(!datafile)error("Unable to load graphic file: " + filename);
       int i = 0;
       while(datafile[i].type!=DAT_END) {
-        IMAGE *temp_image;
+        Image *temp_image;
 
         if(gfx_capabilities & GFX_HW_VRAM_BLIT) {
           BITMAP *temp_video_bitmap = create_video_bitmap(((RLE_SPRITE *)datafile[i].dat)->w, ((RLE_SPRITE *)datafile[i].dat)->h);
