@@ -157,7 +157,12 @@ void Setup::action(const std::string& eventId)
 #ifndef WIN32
         if (soundCheckBox->isMarked() == true) {
             config.setValue("sound",1);
-            sound.init(32, 20);
+            try {
+                sound.init(32, 20);
+            }catch(const char *err) {
+                ok("Sound Engine", err);
+                warning(err);   
+            }
         } else {
     	    config.setValue("sound",0);
             sound.close();
