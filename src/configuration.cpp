@@ -59,7 +59,13 @@ void Configuration::init(std::string filename) {
 
                 optionTmp.numericValue = atof(inBuffer.c_str());
 
-                iniOptions.push_back(optionTmp);
+                if(!keyExists(optionTmp.key)) {
+                    iniOptions.push_back(optionTmp);
+                } else {
+                    iter->key = optionTmp.key;
+                    iter->stringValue = optionTmp.stringValue;
+                    iter->numericValue = optionTmp.numericValue;
+                }
             }
         }
     }
@@ -119,15 +125,11 @@ void Configuration::setValue(std::string key, std::string value) {
 
         iniOptions.push_back(optionTmp);
     } else {
-        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-            if(iter->key == key) {
-                #ifdef __DEBUG
-                    std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") reset\n";
-                #endif
-                iter->stringValue = value;
-                iter->numericValue = 0;
-            }
-        }
+        #ifdef __DEBUG
+            std::cout << "Configuration::setValue(" << key << ", \"" << value << "\") reset\n";
+        #endif
+        iter->stringValue = value;
+        iter->numericValue = 0;
     }
 }
 
@@ -147,15 +149,11 @@ void Configuration::setValue(std::string key, float value) {
 
         iniOptions.push_back(optionTmp);
     } else {
-        for (iter = iniOptions.begin(); iter != iniOptions.end(); iter++) {
-            if(iter->key == key) {
-                #ifdef __DEBUG
-                    std::cout << "Configuration::setValue(" << key << ", " << value << ") reset\n";
-                #endif
-                iter->stringValue = "";
-                iter->numericValue = value;
-            }
-        }
+        #ifdef __DEBUG
+            std::cout << "Configuration::setValue(" << key << ", " << value << ") reset\n";
+        #endif
+        iter->stringValue = "";
+        iter->numericValue = value;
     }
 }
 
