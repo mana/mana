@@ -96,13 +96,13 @@ void ChatBox::draw(gcn::Graphics *graphics)
 
     getAbsolutePosition(x, y);
     
-    SDL_Rect ScreenRect;
-    ScreenRect.w = getWidth();
-    ScreenRect.h = getHeight();
-    ScreenRect.x = x;
-    ScreenRect.y = y;
-    Uint32 Color = SDL_MapRGBA(screen->format, 255, 255, 255, 120);
-    SDL_FillRect(screen, &ScreenRect, Color);
+    SDL_Rect screenRect;
+    screenRect.w = getWidth();
+    screenRect.h = getHeight();
+    screenRect.x = x;
+    screenRect.y = y;
+    Uint32 boxColor = SDL_MapRGBA(screen->format, 255, 255, 255, 120);
+    SDL_FillRect(screen, &screenRect, boxColor);
 
     for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
         line = *iter;
