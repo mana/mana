@@ -63,7 +63,7 @@ Setup::Setup(gcn::Container *parent)
   modesListModel = new ModesListModel();
   displayLabel = new gcn::Label("Display settings");
   modesList = new gcn::ListBox(modesListModel);
-  scrollArea = new gcn::ScrollArea(modesList);
+  scrollArea = new ScrollArea(modesList);
   fsCheckBox = new CheckBox("Full screen", false);
   soundLabel = new gcn::Label("Sound settings");
   soundCheckBox = new CheckBox("Sound", false);
@@ -71,7 +71,8 @@ Setup::Setup(gcn::Container *parent)
   cancelButton = new Button("Cancel");
   
   /* Set dimension */
-  scrollArea->setDimension(gcn::Rectangle(0,0,120,50));
+  scrollArea->setDimension(gcn::Rectangle(0,0,90,50));
+  modesList->setDimension(gcn::Rectangle(0,0,60,50));
   displayLabel->setDimension(gcn::Rectangle(0,0,100,16));
   applyButton->setDimension(gcn::Rectangle(0,0,80, 16));
   cancelButton->setDimension(gcn::Rectangle(0,0,80, 16));
@@ -83,9 +84,9 @@ Setup::Setup(gcn::Container *parent)
   /* Set position */
   scrollArea->setPosition(10,40);
   displayLabel->setPosition(10,10);
-  soundLabel->setPosition(10,90);
-  fsCheckBox->setPosition(110,36);
-  soundCheckBox->setPosition(10,116);
+  soundLabel->setPosition(10,110);
+  fsCheckBox->setPosition(120,36);
+  soundCheckBox->setPosition(10,130);
   applyButton->setPosition(10,190);
   cancelButton->setPosition(150,190);
   
@@ -105,7 +106,7 @@ Setup::Setup(gcn::Container *parent)
   setSize(240,216);
   setLocationRelativeTo(getParent());
 
-  //TODO: load default settings
+  /* load default settings */
   modesList->setSelected(1);
   if(config.getValue("screen",0) == 1) 
     fsCheckBox->setMarked(true);
@@ -120,6 +121,8 @@ Setup::~Setup() {
   delete modesList;
   delete scrollArea;
   delete fsCheckBox;
+  delete soundCheckBox;
+  delete soundLabel;
   delete displayLabel;
   delete applyButton;
   delete cancelButton;

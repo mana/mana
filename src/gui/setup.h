@@ -27,6 +27,7 @@
 #include "gui.h"
 #include "button.h"
 #include "checkbox.h"
+#include "scrollarea.h"
 #include "../graphic/graphic.h"
 #include <allegro.h>
 #ifdef WIN32
@@ -54,7 +55,7 @@ class Setup : public Window, public gcn::ActionListener {
   CheckBox *fsCheckBox;
   gcn::Label *soundLabel;
   CheckBox *soundCheckBox;
-  gcn::ScrollArea *scrollArea;
+  ScrollArea *scrollArea;
   gcn::ListBox *modesList;
   Button *applyButton;
   Button *cancelButton;
