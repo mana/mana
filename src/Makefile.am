@@ -10,6 +10,7 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/chat.cpp \
 	gui/checkbox.cpp \
 	gui/confirm_dialog.cpp \
+	gui/equipment.cpp \
 	gui/gui.cpp \
 	gui/inventory.cpp \
 	gui/itemcontainer.cpp \

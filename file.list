@@ -9,6 +9,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/chat.cpp \
           src/gui/checkbox.cpp \
           src/gui/confirm_dialog.cpp \
+          src/gui/equipment.cpp \
           src/gui/gui.cpp \
           src/gui/inventory.cpp \
           src/gui/itemcontainer.cpp \

@@ -1,4 +1,4 @@
-AC_INIT(The Mana World, 0.0.9, umperio@users.sourceforge.net)
+AC_INIT([The Mana World], [0.0.9], [umperio@users.sourceforge.net])
 AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADER([config.h])
 AC_LANG_CPLUSPLUS
@@ -13,6 +13,14 @@ AC_PROG_MAKE_SET
 # (doesn't seem right, or is it?)
 #AC_CHECK_LIB([guichan], [_ZN3gcn7TextBox6addRowESs])
 #AC_CHECK_LIB([guichan_sdl], [_ZN3gcn8SDLInput17dequeueMouseInputEv])
+
+# Check for SDL_image and SDL_mixer library
+AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
+AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
+(http://www.libsdl.org/projects/SDL_image/)]))
+AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, , 
+AC_MSG_ERROR([ *** Unable to find SDL_mixer library 
+(http://www.libsdl.org/projects/SDL_mixer/)]))
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -89,14 +97,6 @@ AC_DEFUN(FIND_PATH,
 
    fi
 ])
-
-# Check for SDL_image and SDL_mixer library
-AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
-AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support 
-(http://www.libsdl.org/projects/SDL_image/)]))
-AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, , 
-AC_MSG_ERROR([ *** Unable to find SDL_mixer library 
-(http://www.libsdl.org/projects/SDL_mixer/)]))
 
 FIND_PATH(sdl-config, LIBSDL_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/local/bin /opt/local/bin], [
   AC_MSG_ERROR([Could not find libsdl anywhere, check http://www.sdl.org])
