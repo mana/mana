@@ -47,7 +47,6 @@
 #ifdef WIN32
 #include <winalleg.h>
 #endif
-#include <alfont.h>
 #include <stdio.h>
 
 

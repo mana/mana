@@ -29,7 +29,6 @@
 #include <guichan.hpp>
 #include <guichan/allegro.hpp>
 #include <allegro.h>
-#include <alfont.h>
 #include <string.h>
 
 /**

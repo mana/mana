@@ -23,7 +23,6 @@
 #include <allegro.h>
 #include <allegro/internal/aintern.h>
 #include <math.h>
-#include <alfont.h>
 #include "../log.h"
 #include "../sound/sound.h"
 
