@@ -134,7 +134,7 @@ void TmwInventory::draw(BITMAP * buffer) {
 					}
 		
 					if(items[itemX][itemY].flag) //draw the item
-						masked_blit(itemset[items[itemX][itemY].itemIDNum].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
+						masked_blit((BITMAP *)itemset[items[itemX][itemY].itemIDNum].dat, buffer, 0, 0, (xpos+items[itemX][itemY].xpos), (ypos+items[itemX][itemY].ypos), 800, 600);
 		
 					//the number of that item
 					if(!bigwindow)
@@ -171,7 +171,7 @@ void TmwInventory::draw(BITMAP * buffer) {
 	}
 			
 	if(dragingItem) { //moving the item
- 		masked_blit(itemset[ghostID].dat, buffer, 0, 0, ghostX, ghostY, 800, 600);
+ 		masked_blit((BITMAP *)itemset[ghostID].dat, buffer, 0, 0, ghostX, ghostY, 800, 600);
 		ghostX = mouse_x;
 		ghostY = mouse_y;
 	}
@@ -288,4 +288,6 @@ int TmwInventory::useItem(int idnum)
 	WFIFOW(2) = net_w_value(idnum);
 	WFIFOSET(4);
 	while((out_size>0))flush();
+
+	return 0;
 }
