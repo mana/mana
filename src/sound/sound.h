@@ -1,4 +1,4 @@
-/**
+/*
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team
@@ -36,6 +36,15 @@
 #include <string>
 using namespace std;
 
+/** mod file */
+#define TMWSOUND_MOD 1
+/** midi file */
+#define TMWSOUND_MID 2
+/** sample file */
+#define TMWSOUND_SFX 3
+
+typedef unsigned short TMWSOUND_SID ;
+
 /**
 	rewrite of non-existend sdl-soundengine using allegro
 
@@ -43,21 +52,11 @@ using namespace std;
 
 	Author: kth5 aka Alexander Baldeck
 		pipe your question, suggestions and flames to: kth5@gawab.com
-
-	NOTE:
-			i documented all functions in their implementation. ;-)
 */
-
-#define TMWSOUND_MOD 1
-#define TMWSOUND_MID 2
-#define TMWSOUND_SFX 3
-
-typedef unsigned short TMWSOUND_SID ;
-
 class TmwSound {
 	public:
 		void  Init(int, int);
-		int   Close();
+		void  Close();
 
 		void  StartMIDI(char *, int);
 		void  StartMOD(char *, int);
@@ -71,11 +70,11 @@ class TmwSound {
 
 		TmwSound() {isOk=-1;}
 
-		/* if allegro is shut down or object is deleted any BGM is
+		/** if allegro is shut down or object is deleted any BGM is
 		   stopped and SFX run out */
 		~TmwSound() {StopBGM(); Close();};
 	private:
-		/* initial value is -1 which means error or noninitialzed.
+		/** initial value is -1 which means error or noninitialzed.
 		   you can only play sounds and bgm if this is 0.
 		   that should be the case after calling Init() successfully */
 		int isOk;
@@ -92,14 +91,15 @@ class TmwSound {
 		int vol_midi;
 		int vol_mod;
 
+		/** structure can hold a sound item's attributes and data (sample-only) */
 		typedef struct POOL_ITEM {
-			/* incremental id of pool item */
+			/** incremental id of pool item */
 			TMWSOUND_SID id;
-			/* type of item */
+			/** type of item */
 			char type;
-			/* (file-)name of sfx only kept for human reasons ^_^ */
+			/** (file-)name of sfx only kept for human reasons ^_^ */
 			string fname;
-			/* generic data casted before used */
+			/** generic data */
 			void * data;
 		};
 

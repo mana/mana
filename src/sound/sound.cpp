@@ -1,4 +1,4 @@
-/**
+/*
 
 	The Mana World
 	Copyright 2004 The Mana World Development Team
@@ -128,32 +128,6 @@ void TmwSound::SetAdjVol(int adigi, int amid, int amod) {
 }
 
 /**
-	preloads a sound-item into buffer
-		char *fpath -> full path to file
-		char type   -> type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
-    
-	NOTE:
-			only TMWSOUND_SFX items get preloaded. everything 
-			else will only store the full path to the file
-*/
-TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
-	POOL_ITEM item;
-	if(type == TMWSOUND_SFX) {
-		item.data = (void*)load_sample(fpath);
-		if(item.data == NULL)
-			throw(sprintf("Unable to load sample: %s\n", fpath));
-	}
-	
-	items++;
-	item.id = items;
-	item.type = type;
-	item.fname = fpath;
-
-	soundpool.push_front(item);
-	return item.id;
-}
-
-/**
    start BGM using a midi file
     char *in -> full path of midi file
     int loop -> how many times should the midi be looped? (-1 = infinite)    
@@ -161,12 +135,12 @@ TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
    NOTE:
        playing midi does not steal away any voices but
        does not work w/ most soundcards w/o software
-       emulation. this means than linux-users will most
+       emulation. this means that *nix-users will most
        probably be left out. do not use this unless we
        find a way to always get it to work. :-)
        
        at this point of time only standard RMI midi files
-       can be played. so no m$ extensions like GS and stuff.
+       can be played. so no m$ extensions like GS and such.
 */
 void TmwSound::StartMIDI(char *in, int loop) {
   if(isOk==-1)
@@ -182,21 +156,22 @@ void TmwSound::StartMIDI(char *in, int loop) {
 }
 
 /**
-   start BGM using a mod file
-    char *in -> full path of mod file
-    int loop -> how many times should the midi be looped? (-1 = infinite)
+	start BGM using a mod file
+		char *in -> full path of mod file
+		int loop -> how many times should the midi be looped? (-1 = infinite)
 
-   NOTE:
-       playing mod is a pretty good choice. most of the work
-       is being done by the cpu so it's not dependend on the
-       sound-card how things sound as long as it works. ;-)
+	NOTE:
+			playing mod is a pretty good choice. most of the work
+			is being done by the cpu so it's not dependend on the
+			sound-card how things sound. if it works, it just
+			works! ;-)
        
-       JGMOD supports several formats:
-           MOD
-           S3M
-           XM
-           Unreal
-           and S3M (in UMX extension)
+			JGMOD supports several formats:
+					MOD
+					S3M
+					XM
+					Unreal
+					and S3M (in UMX extension)
 */
 void TmwSound::StartMOD(char * in, int loop) {
   if(isOk==-1)
@@ -268,6 +243,35 @@ void TmwSound::StartWAV(char * in, int pan) {
 }
 
 /**
+	preloads a sound-item into buffer
+		char *fpath -> full path to file
+		char type   -> type of item (TMWSOUND_MOD, TMWSOUND_MID, TMWSOUND_SFX)
+    
+	NOTE:
+			only TMWSOUND_SFX items get preloaded. everything 
+			else will only store the full path to the file.
+
+			please make sure that the object is not loaded more
+			than once since the function will not be able to run
+			checks for its own!
+*/
+TMWSOUND_SID TmwSound::LoadItem(char *fpath, char type) {
+	POOL_ITEM item;
+	if(type == TMWSOUND_SFX) {
+		if(!(item.data = (void*)load_sample(fpath)))
+			throw(sprintf("Unable to load sample: %s\n", fpath));
+	}
+
+	items++;
+	item.id = items;
+	item.type = type;
+	item.fname = fpath;
+
+	soundpool.push_front(item);
+	return item.id;
+}
+
+/**
    deinstall all sound functionality
 
    NOTE:
@@ -277,17 +281,14 @@ void TmwSound::StartWAV(char * in, int pan) {
        memory (e.g. garbage-collection) feel free to use
        it. :-P
 */
-int TmwSound::Close(void) {
-  if(isOk==-1)
-    return -1;  
-  mod = NULL;
-  mid = NULL;
-  sfx = NULL;
-  
+void TmwSound::Close(void) {
+	mod = NULL;
+	mid = NULL;
+	sfx = NULL;
+	
 	remove_mod();
-  remove_sound();
-  isOk = -1;
-  return 0;
+	remove_sound();
+	isOk = -1;
 }
 
 /** PRIVATE */
