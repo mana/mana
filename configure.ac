@@ -11,14 +11,17 @@ AC_PROG_MAKE_SET
 
 # Checks for libraries
 # (someone may want to exchange these symbols with
-#  soemthing more meaningful in the future /- kth5)
-AC_CHECK_LIB([guichan], [_init])
-AC_CHECK_LIB([guichan_sdl], [_init])
+#  something more meaningful in the future /- kth5)
+AC_CHECK_LIB([guichan], [_init], ,
+AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.darkbits.org)]))
 
-# Check for SDL_image and SDL_mixer library
+AC_CHECK_LIB([guichan_sdl], [_init], ,
+AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.darkbits.org)]))
+
 AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
+
 AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, , 
 AC_MSG_ERROR([ *** Unable to find SDL_mixer library 
 (http://www.libsdl.org/projects/SDL_mixer/)]))
