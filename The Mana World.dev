@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=47
+UnitCount=46
 Type=0
 Ver=1
 ObjFiles=
@@ -484,9 +484,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit44]
-FileName=src\weapon.h
+FileName=src\graphic\image.h
 CompileCpp=1
-Folder=tmw
+Folder=graphic
 Compile=1
 Link=1
 Priority=1000
@@ -494,7 +494,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit46]
-FileName=src\gui\setup.h
+FileName=src\gui\setup.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -524,9 +524,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit45]
-FileName=src\graphic\image.h
+FileName=src\gui\setup.h
 CompileCpp=1
-Folder=graphic
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
