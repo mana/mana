@@ -1,6 +1,6 @@
 [Project]
 FileName=The Mana World.dev
-Name=The Mana World
+Name=tmw
 UnitCount=41
 Type=0
 Ver=1
@@ -14,11 +14,11 @@ Compiler=
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_
 Linker=-ljgmod_@@_-lalfont_@@_-lalleg_@@_-lwsock32_@@_
 IsCpp=1
-Icon=
+Icon=The Mana World.ico
 ExeOutput=
 ObjectOutput=
-OverrideOutput=0
-OverrideOutputName=The Mana World.exe
+OverrideOutput=1
+OverrideOutputName=tmw.exe
 HostApplication=
 Folders=graphic,gui,net,sound
 CommandLine=
@@ -68,7 +68,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit13]
-FileName=src\graphic\super_eagle.h
+FileName=src\graphic\graphic.cpp
 CompileCpp=1
 Folder=graphic
 Compile=1
@@ -78,26 +78,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit15]
-FileName=src\graphic\graphic.h
-CompileCpp=1
-Folder=graphic
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit16]
-FileName=src\graphic\super_eagle.cpp
-CompileCpp=1
-Folder=graphic
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit17]
 FileName=src\gui\stats.h
 CompileCpp=1
 Folder=gui
@@ -107,27 +87,27 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit16]
+FileName=src\gui\char_select.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit17]
+FileName=src\gui\char_select.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit21]
-FileName=src\gui\char_server.h
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit22]
-FileName=src\gui\chat.cpp
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit23]
 FileName=src\gui\chat.h
 CompileCpp=1
 Folder=gui
@@ -137,7 +117,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit24]
+[Unit22]
 FileName=src\gui\gui.cpp
 CompileCpp=1
 Folder=gui
@@ -147,7 +127,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit25]
+[Unit23]
 FileName=src\gui\gui.h
 CompileCpp=1
 Folder=gui
@@ -157,8 +137,28 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit24]
+FileName=src\gui\inventory.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit25]
+FileName=src\gui\inventory.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit28]
-FileName=src\gui\login.cpp
+FileName=src\gui\shop.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -168,7 +168,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit29]
-FileName=src\gui\login.h
+FileName=src\gui\shop.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -178,7 +178,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit30]
-FileName=src\gui\shop.cpp
+FileName=src\gui\skill.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -190,26 +190,6 @@ BuildCmd=
 dev-cpp projectfile for tmw by kth5 XD
 
 [Unit31]
-FileName=src\gui\shop.h
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit32]
-FileName=src\gui\skill.cpp
-CompileCpp=1
-Folder=gui
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit33]
 FileName=src\gui\skill.h
 CompileCpp=1
 Folder=gui
@@ -219,7 +199,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit34]
+[Unit32]
 FileName=src\gui\stats.cpp
 CompileCpp=1
 Folder=gui
@@ -228,9 +208,8 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-########Text Field info#####
 
-[Unit35]
+[Unit33]
 FileName=src\net\win2linux.h
 CompileCpp=1
 Folder=net
@@ -240,8 +219,29 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit36]
+[Unit34]
 FileName=src\net\network.cpp
+CompileCpp=1
+Folder=net
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+########Text Field info#####
+
+[Unit35]
+FileName=src\net\network.h
+CompileCpp=1
+Folder=net
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit36]
+FileName=src\net\protocol.cpp
 CompileCpp=1
 Folder=net
 Compile=1
@@ -291,7 +291,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit18]
-FileName=src\gui\char_select.cpp
+FileName=src\gui\char_server.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -301,7 +301,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit19]
-FileName=src\gui\char_select.h
+FileName=src\gui\char_server.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -311,7 +311,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit27]
-FileName=src\gui\inventory.h
+FileName=src\gui\login.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -321,9 +321,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit38]
-FileName=src\net\protocol.cpp
+FileName=src\sound\sound.h
 CompileCpp=1
-Folder=net
+Folder=sound
 Compile=1
 Link=1
 Priority=1000
@@ -331,9 +331,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit39]
-FileName=src\net\protocol.h
+FileName=src\sound\sound.cpp
 CompileCpp=1
-Folder=net
+Folder=sound
 Compile=1
 Link=1
 Priority=1000
@@ -341,9 +341,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit40]
-FileName=src\sound\sound.h
+FileName=src\graphic\2xsai.h
 CompileCpp=1
-Folder=sound
+Folder=graphic
 Compile=1
 Link=1
 Priority=1000
@@ -361,7 +361,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit37]
-FileName=src\net\network.h
+FileName=src\net\protocol.h
 CompileCpp=1
 Folder=net
 Compile=1
@@ -423,7 +423,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit14]
-FileName=src\graphic\graphic.cpp
+FileName=src\graphic\graphic.h
 CompileCpp=1
 Folder=graphic
 Compile=1
@@ -433,7 +433,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit20]
-FileName=src\gui\char_server.cpp
+FileName=src\gui\chat.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -443,7 +443,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit26]
-FileName=src\gui\inventory.cpp
+FileName=src\gui\login.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -453,14 +453,13 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit41]
-FileName=src\sound\sound.cpp
+FileName=src\graphic\2xsai.cpp
 CompileCpp=1
-Folder=sound
+Folder=graphic
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-
-
 ########Text Field info#####
+
