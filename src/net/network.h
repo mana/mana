@@ -26,6 +26,9 @@
 
 #ifndef WIN32
 #include "win2linux.h"
+#else
+#include "allegro.h"
+#include "winalleg.h"
 #endif
 
 #include <stdio.h>
