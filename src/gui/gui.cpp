@@ -61,7 +61,7 @@ void init_gui(BITMAP *bitmap, const char *skin) {
   gui_bitmap = bitmap;
   gui_load_skin(skin);
   //alfont_init();
-  gui_font = alfont_load_font("./data/skin/arial.ttf");
+  gui_font = alfont_load_font("./data/Skin/arial.ttf");
   alfont_set_font_size(gui_font, 14);
   drag = false;
   show_mouse(NULL);

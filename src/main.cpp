@@ -25,6 +25,8 @@
 #include "./sound/sound.h"
 #include "./graphic/graphic.h"
 
+#include <iostream>
+
 /* Account infos */
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
@@ -54,7 +56,7 @@ void request_exit() {
 
 /** Do all initialization stuff */
 void init_engine() {
-  allegro_init();
+	allegro_init();
   init_log();
   set_close_button_callback(request_exit);  // we should not use set_window_close_hook() since it's deprecated and might be gone in the future /-kth5
   set_config_file("tmw.ini");
@@ -85,16 +87,16 @@ void init_engine() {
   buffer = create_bitmap(800, 600);
   if(!buffer)
     error("Not enough memory to create buffer");
+
   graphic = load_datafile("./data/graphic/graphic.dat");
   if(graphic==NULL)
     error("Unable to load graphic datafile");
-  playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
+	playerset = (BITMAP*)graphic[PLAYERSET_BMP].dat;
 	emotions = load_datafile("./data/graphic/emotions.dat");
 	if(emotions==NULL)
 		error("Unable to load emotions datafile");
 
-	init_gui(buffer, "./data/skin/aqua.skin");
-
+	init_gui(buffer, "./data/Skin/aqua.skin");
   state = LOGIN;
 }
 
@@ -108,8 +110,7 @@ void exit_engine() {
 
 /** Main */
 int main() {
-  init_engine();
-
+	init_engine();
   // initialize sound-engine and start playing intro-theme /-kth5
   try{
     if(get_config_int("settings", "sound", 0)==1)
