@@ -20,7 +20,7 @@ ObjectOutput=obj
 OverrideOutput=1
 OverrideOutputName=tmw.exe
 HostApplication=
-Folders=graphic,gui,net,sound
+Folders=graphic,gui,net,resources,sound
 CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
@@ -33,7 +33,7 @@ CompilerSettings=0010001001001000001101
 Major=0
 Minor=0
 Release=8
-Build=778
+Build=785
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
@@ -872,20 +872,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit83]
-FileName=src\gui\textbox.cpp
+[Unit84]
+FileName=src\gui\textbox.h
 CompileCpp=1
-Folder=tmw
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit84]
-FileName=src\gui\textbox.h
+[Unit83]
+FileName=src\gui\textbox.cpp
 CompileCpp=1
-Folder=tmw
+Folder=gui
 Compile=1
 Link=1
 Priority=1000

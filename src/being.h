@@ -42,6 +42,31 @@ struct PATH_NODE {
     PATH_NODE *next;
 };
 
+class Being {
+    public:
+        unsigned int id;
+        unsigned short job;
+        unsigned short x, y;
+        unsigned char direction;
+        unsigned char type;
+        unsigned char action;
+        unsigned char frame;
+        PATH_NODE *path;
+        char *speech;
+        unsigned char speech_time;
+        int speech_color;
+        unsigned short tick_time;
+        unsigned short speed;
+        unsigned char emotion;
+        unsigned char emotion_time;
+        unsigned int text_x, text_y; // temp solution to fix speech position
+        unsigned short hair_style, hair_color;
+        unsigned short weapon;
+        
+        Being();
+        Being::~Being();       
+};
+
 struct NODE {
     /**
      * Constructor.

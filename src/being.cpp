@@ -147,3 +147,34 @@ void empty_path(NODE *node) {
         node->path = NULL;
     }
 }
+
+// Beings restructuration
+
+Being::Being() {
+    id = 0; job = 0;
+    action = 0; frame = 0;
+    path = NULL; speech = NULL; speech_time = 0;
+    tick_time = 0; speed = 150;
+    emotion = 0; emotion_time = 0;
+    text_x = 0; text_y = 0;
+    hair_style = 1; hair_color = 1;
+    weapon = 0;
+    x = 0; y = 0; direction = 0;
+    speech_color = makecol(0, 0, 0);
+}
+
+Being::~Being() {
+    if(path) {
+        PATH_NODE *temp = path;
+        PATH_NODE *next;
+        while (temp) {
+            next = temp->next;
+            delete temp;
+            temp = next;
+        }
+        path = NULL;        
+    }
+    if(speech) {
+        free(speech);
+    }    
+}
