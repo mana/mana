@@ -26,28 +26,36 @@
 CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)
 {
+    ResourceManager *resman = ResourceManager::getInstance();
+    Image *checkBox = resman->getImage("core/graphics/gui/checkbox.bmp");
+    checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
+    checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
+    checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
+    checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
+    
 }
 
 void CheckBox::drawBox(gcn::Graphics* graphics) {
-    BITMAP *box = NULL;
+    Image *box = NULL;
     int x, y;
 
     getAbsolutePosition(x, y);
 
     if (mMarked) {
         if (false /*disabled*/) {
-            box = gui_skin.checkbox.disabled_checked;
+            box = checkBoxDisabledChecked;
         } else {
-            box = gui_skin.checkbox.checked;
+            box = checkBoxChecked;
         }
     } else if (false /*disabled*/) {
-        box = gui_skin.checkbox.disabled;
+        box = checkBoxDisabled;
     } else {
-        box = gui_skin.checkbox.normal;
+        box = checkBoxNormal;
     }
 
     x += 2;
-    y += 2;
-
-    masked_blit(box, buffer, 0, 0, x, y, box->w, box->h);
+    y += 2;    
+    if(box != NULL) {
+        box->draw(buffer, x, y);
+    }
 }

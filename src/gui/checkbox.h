@@ -42,6 +42,12 @@ class CheckBox : public gcn::CheckBox {
          * Draws the check box, not the caption.
          */
         void drawBox(gcn::Graphics* graphics);
+        
+    private:
+        Image *checkBoxNormal;
+        Image *checkBoxChecked;
+        Image *checkBoxDisabled;
+        Image *checkBoxDisabledChecked;
 };
 
 #endif
