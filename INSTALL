@@ -21,6 +21,7 @@ and some libraries. The required libraries are:
 3) SDL_image       http://www.libsdl.org/projects/SDL_image/
 4) Guichan 0.2.0   http://guichan.darkbits.org/
 5) libxml2         http://www.xmlsoft.org/
+6) physfs 1.0.0    http://icculus.org/physfs/
 
 If you checked TMW out from CVS you will also need these tools to compile:
 

@@ -30,6 +30,7 @@ Besides a C++ compiler, TMW depends on the following libraries:
 3) SDL_image
 4) Guichan 0.2.0
 5) libxml2
+6) PhysFS
 
 
 2. Installing Dev-C++
@@ -59,29 +60,34 @@ where you have your copy of The Mana World.  If you can't get the package or
 experiencing problems with it, just send me an email at
 elvenprogrammer@gmail.com or continue reading.
 
-All the libs have DevPaks that are very easy drop-ins for Dev-C++, without any
-complex actions on your side.
+Most of the libs have DevPaks that are very easy drop-ins for Dev-C++, without
+any complex actions on your side.
 
-Get the following list of DevPaks:
+Get the following DevPaks and archives:
 
 - SDL           (http://devpaks.org/show.php?devpak=57)
 - SDL_mixer     (http://devpaks.org/show.php?devpak=26)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
 - Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
 - libxml2 **    (ftp://ftp.zlatkovic.com/pub/libxml/)
+- PhysFS ***    (http://icculus.org/physfs/)
 
 Install them all through the Dev-C++ package manager. For SDL_image you may
 still need to manually get the SDL_image.lib file from the SDL_image homepage
 (devel VC6 zip file) and copy it to your Dev-Cpp/lib directory.
 
-**) For libxml2, download the following files (these or newer versions):
+ **) For libxml2, download the following files (these or newer versions):
 
         libxml2-2.6.17.win32.zip
         iconv-1.9.1.win32.zip
         zlib-1.2.1.win32.zip
 
-    From each file, copy the headers to your include directory, the libs to
-    the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
+     From each file, copy the headers to your include directory, the libs to
+     the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
+
+***) PhysFS binaries still to located. At least Elven Programmer has been able
+     to add them to the tmw-cvs.DevPak above, but it seems he has forgotten
+     how he did that.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
