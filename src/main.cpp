@@ -32,7 +32,8 @@
 
 #include <iostream>
 #include <guichan.hpp>
-#include <SDL.h>
+#include <SDL/SDL.h>
+#include <physfs.h>
 #include <libxml/xmlversion.h>
 
 #ifdef USE_OPENGL
@@ -52,9 +53,9 @@ char sex, n_server, n_character;
 SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
-Spriteset *hairset, *playerset;
-Image *login_wallpaper;
-Graphics *graphics;
+Spriteset *hairset = NULL, *playerset = NULL;
+Image *login_wallpaper = NULL;
+Graphics* graphics;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];
@@ -65,12 +66,25 @@ unsigned char state;
 unsigned short x, y;
 unsigned char direction;
 unsigned char screen_mode;
-char *dir;
+char *dir = NULL;
 
 Sound sound;
 
 // ini file configuration reader
 Configuration config;
+
+// macros for safe object deletion
+#define SAFE_DELETE(object) { \
+    if (object != NULL) {     \
+        delete object;        \
+    }                         \
+}
+
+#define SAFE_DELETE_ARRAY(array) { \
+    if (array != NULL) {           \
+        delete [] array;           \
+    }                              \
+}
 
 
 /**
@@ -301,9 +315,9 @@ void init_engine()
 void exit_engine()
 {
     config.write(dir);
-    delete[] dir;
-    delete gui;
-    delete graphics;
+    SAFE_DELETE_ARRAY(dir);
+    SAFE_DELETE(gui);
+    SAFE_DELETE(graphics);
     ResourceManager::deleteInstance();
 }
 
@@ -311,6 +325,7 @@ void exit_engine()
 int main(int argc, char *argv[])
 {
     init_engine();
+    PHYSFS_init(argv[0]);
 
     SDL_Event event;
 
@@ -357,7 +372,7 @@ int main(int argc, char *argv[])
                 login_wallpaper->draw(screen, 0, 0);
                 gui->logic();
                 gui->draw();
-                guiGraphics->updateScreen();
+                graphics->updateScreen();
                 break;
             default:
                 state = EXIT;
@@ -366,5 +381,6 @@ int main(int argc, char *argv[])
     }
     log("State: EXIT");
     exit_engine();
+    PHYSFS_deinit();
     return 0;
 }

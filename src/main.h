@@ -34,8 +34,13 @@
 #include "net/protocol.h"
 #include "sound.h"
 #include <stdio.h>
+#include <memory>
 
 #define CORE_VERSION "0.0.9"
+
+#ifdef ERROR
+#undef ERROR
+#endif
 
 #define EXIT        0
 #define LOGIN       1
@@ -74,7 +79,7 @@ typedef struct {
 
 extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
-extern Graphics *graphics;
+extern Graphics* graphics;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;
