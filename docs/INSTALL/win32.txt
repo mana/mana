@@ -60,7 +60,7 @@ Get the following list of DevPaks:
 - JGMOD         (http://devpaks.org/show.php?devpak=121)
 - SDL           (http://devpaks.org/show.php?devpak=57)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
-- Guichan       (http://guichan.darkbits.org/downloads/guichan.DevPak)
+- Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
 
 Install them all through the Dev-C++ package manager.
 
