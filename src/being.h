@@ -21,8 +21,8 @@
  *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
  */
 
-#ifndef _BEING_H
-#define _BEING_H
+#ifndef _TMW_BEING_H
+#define _TMW_BEING_H
 
 #include "./net/protocol.h"
 

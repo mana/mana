@@ -29,14 +29,13 @@
 #ifndef _GAME_H
 #define _GAME_H
 
-#include <allegro.h>
-#include <stdio.h>
-
 #include "main.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
 #include "./gui/stats.h"
 #include "./graphic/2xsai.h"
+#include <stdio.h>
+#include <allegro.h>
 
 #define SPEECH_TIME 40
 #define EMOTION_TIME 40

@@ -30,6 +30,19 @@
 
 #define CORE_VERSION "0.0.8"
 
+#include <guichan.hpp>
+#include <guichan/allegro.hpp>
+#include "./gui/login.h"
+#include "./gui/gui.h"
+#include "./gui/stats.h"
+#include "./gui/char_server.h"
+#include "./gui/char_select.h"
+#include "./gui/inventory.h"
+#include "log.h"
+#include "game.h"
+#include "./net/protocol.h"
+#include "./graphic/2xsai.h"
+#include "../data/graphic/gfx_data.h"
 #include <allegro.h>
 #ifdef WIN32
 #include <winalleg.h>
@@ -37,17 +50,6 @@
 #include <alfont.h>
 #include <stdio.h>
 
-#include "log.h"
-#include "game.h"
-#include "./net/protocol.h"
-#include "./gui/login.h"
-#include "./gui/gui.h"
-#include "./gui/stats.h"
-#include "./gui/char_server.h"
-#include "./gui/char_select.h"
-#include "./gui/inventory.h"
-#include "./graphic/2xsai.h"
-#include "../data/graphic/gfx_data.h"
 
 #define EXIT        0
 #define LOGIN       1

@@ -6,12 +6,12 @@
 #ifndef tmw_included_setup_h
 #define tmw_included_setup_h
 
+#include "gui.h"
+#include "../graphic/graphic.h"
 #include <allegro.h>
 #ifdef WIN32
 #include <winalleg.h>
 #endif
-#include "gui.h"
-#include "../graphic/graphic.h"
 
 class Setup {
  public:

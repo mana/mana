@@ -26,14 +26,14 @@
 #ifndef _LOGIN_H
 #define _LOGIN_H 
 
-#include <allegro.h>
-#ifdef WIN32
-#include <winalleg.h>
-#endif
 #include "../main.h"
 #include "../log.h"
 #include "../net/network.h"
 #include "gui.h"
+#include <allegro.h>
+#ifdef WIN32
+#include <winalleg.h>
+#endif
 
 // The action listener for the login dialog
 class LoginActionListener : public gcn::ActionListener {

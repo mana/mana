@@ -28,7 +28,6 @@
 #pragma warning (disable:4312)
 #endif
 
-#include <allegro.h>
 #include "../game.h"
 #include "../map.h"
 #include "../being.h"
@@ -40,6 +39,7 @@
 #include "../gui/npc.h"
 #include "../../data/graphic/gfx_data.h"
 #include "image.h"
+#include <allegro.h>
 
 extern BITMAP *buffer, *double_buffer;
 extern char speech[255];

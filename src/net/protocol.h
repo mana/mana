@@ -23,8 +23,11 @@
   #pragma warning (disable:4312)
 #endif
   
-#ifndef _PROTOCOL_H
-#define _PROTOCOL_H
+#ifndef _TMW_PROTOCOL_H
+#define _TMW_PROTOCOL_H
+
+#include "../main.h"
+#include "../being.h"
 
 #include <allegro.h>
 #ifdef WIN32
@@ -34,8 +37,6 @@
 #include "win2linux.h"
 #endif
 
-#include "../main.h"
-#include "../being.h"
 
 short get_length(short id);
 unsigned short get_x(char *data);
