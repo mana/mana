@@ -24,6 +24,7 @@
 #include "window.h"
 #include "../resources/resourcemanager.h"
 #include "../log.h"
+#include "../main.h"
 
 WindowContainer *Window::windowContainer = NULL;
 
@@ -77,6 +78,9 @@ Window::Window(const std::string& text, bool modal, Window *parent):
     else {
         throw GCN_EXCEPTION("Window::Window. no windowContainer set");
     }
+
+    // Load GUI alpha setting
+    guiAlpha = config.getValue("guialpha", 0.8f);
 }
 
 Window::~Window()
@@ -101,8 +105,8 @@ void Window::draw(gcn::Graphics* graphics)
     int x, y;
     getAbsolutePosition(x, y);
     
-    dBackground->setAlpha(0.8f);
-    dBorders->setAlpha(0.8f);
+    dBackground->setAlpha(guiAlpha);
+    dBorders->setAlpha(guiAlpha);
 
     ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          border);

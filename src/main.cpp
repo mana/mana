@@ -33,14 +33,11 @@
 
 #include <iostream>
 #include <guichan.hpp>
-#include <SDL/SDL.h>
 #include <physfs.h>
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
-
-#ifdef USE_OPENGL
+#include <SDL.h>
 #include <SDL_opengl.h>
-#endif
 
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
@@ -174,6 +171,7 @@ void init_engine()
             config.setValue("hwaccel", 0);
             config.setValue("screen", 0);
             config.setValue("sound", 1);
+            config.setValue("guialpha", 0.8f);
 #ifdef __USE_UNIX98
             char *chatlogFilename = new char[400];
             sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);

@@ -50,6 +50,7 @@ class Window : public gcn::Container, public gcn::MouseListener
         gcn::Color titlebarColor;  /**< Title bar color */
         int titlebarHeight;        /**< Height of title bar */
         int padding;               /**< Space between contents and border */
+        float guiAlpha;            /**< Opacity of GUI windows */
 
         Image *dBackground;        /**< Left side of title bar */
         Image *dBorders;           /**< Middle of title bar */
