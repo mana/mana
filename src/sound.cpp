@@ -33,8 +33,7 @@ void Sound::init(int voices, int mod_voices)
     bgm = NULL;
     int audio_rate = 44100;
     Uint16 audio_format = AUDIO_S16; // 16-bit stereo
-    //int audio_channels = 2;
-    int audio_channels = 8; // Default
+    int audio_channels = 2;
     int audio_buffers = 4096;
 
     if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
@@ -47,13 +46,24 @@ void Sound::init(int voices, int mod_voices)
     }
     
     Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
+    char *format_str="Unknown";
+    switch(audio_format) {
+        case AUDIO_U8: format_str="U8"; break;
+        case AUDIO_S8: format_str="S8"; break;
+        case AUDIO_U16LSB: format_str="U16LSB"; break;
+        case AUDIO_S16LSB: format_str="S16LSB"; break;
+        case AUDIO_U16MSB: format_str="U16MSB"; break;
+        case AUDIO_S16MSB: format_str="S16MSB"; break;
+    }
     
     pan = 128;
     items = -1;
     isOk = 0;
 
     logger.log("Sound::init() Initializing Sound");
-    logger.log("Sound::init() Spec: %i %i %i", audio_rate, audio_format,
+    char driver[40];
+    logger.log("Sound::init() Driver name: %s", SDL_AudioDriverName(driver, 40));
+    logger.log("Sound::init() Spec: %i %s %i", audio_rate, format_str,
             audio_channels);
 }
 
