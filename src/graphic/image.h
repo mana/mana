@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  By ElvenProgrammer aka Eugenio Favalli (umperio@users.sourceforge.net)
+ *  $Id$
  */
 
 #ifndef _IMAGE_H
@@ -119,7 +119,7 @@ class VideoImage : public Image {
 class Spriteset {
     public:
         // Vector storing the whole spriteset.
-        std::vector<Image *> spriteset;
+        std::vector<Image*> spriteset;
 
         /**
          * Load a datafile containing the spriteset

@@ -195,9 +195,17 @@ GraphicEngine::GraphicEngine() {
     // Initialize the gui bitmap to the page that will be drawn first
     gui_bitmap = this->buffer;
     
-    emotionset = new Spriteset("./data/graphic/emotionset.dat");
-    npcset = new Spriteset("./data/graphic/npcset.dat");
-    tileset = new Spriteset("./data/graphic/tileset.dat");
+    BITMAP *npcbmp = load_bitmap("data/graphic/npcset.bmp", NULL);
+    if (!npcbmp) error("Unable to load npcset.bmp");
+    npcset = new Spriteset(npcbmp, 80, 50, 0, 0);
+
+    BITMAP *emotionbmp = load_bitmap("data/graphic/emotionset.bmp", NULL);
+    if (!emotionbmp) error("Unable to load emotionset.bmp");
+    emotionset = new Spriteset(emotionbmp, 19, 19, 0, 0);
+
+    BITMAP *tilesetbmp = load_bitmap("data/graphic/tileset.bmp", NULL);
+    if (!tilesetbmp) error("Unable to load tileset.bmp");
+    tileset = new Spriteset(tilesetbmp, 32, 32, 0, 0);
 
     BITMAP *monsterbitmap = load_bitmap("data/graphic/monsterset.bmp", NULL);
     if (!monsterbitmap) error("Unable to load monsterset.bmp");
@@ -213,7 +221,10 @@ GraphicEngine::~GraphicEngine() {
     delete npcTextDialog;
     delete skillDialog;
     
-    //delete tileset;
+    delete tileset;
+    delete monsterset;
+    delete npcset;
+    delete emotionset;
 }
 
 void GraphicEngine::refresh() {

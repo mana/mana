@@ -33,6 +33,7 @@
 #include "../game.h"
 #include "../log.h"
 #include "../net/network.h"
+#include "../graphic/image.h"
 #include "gui.h"
 #include "window.h"
 
@@ -86,7 +87,7 @@ class InventoryWindow : public Window {
         int useItem(int index, int id);
         int dropItem(int index, int amunt);
 
-        DATAFILE *itemset;
+        Spriteset *itemset;
         int itemMeny, itemMeny_x, itemMeny_y, itemMeny_i;
 };
 

@@ -29,7 +29,9 @@ InventoryWindow::InventoryWindow(gcn::Container *parent):
 {
     setSize(322, 60);
 
-    itemset = load_datafile("./data/graphic/items.dat");
+    BITMAP *itembmp = load_bitmap("data/graphic/items.bmp", NULL);
+    if (!itembmp) error("Unable to load items.bmp");
+    itemset = new Spriteset(itembmp, 20, 20, 0, 0);
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].id = -1;
@@ -55,15 +57,10 @@ void InventoryWindow::draw(gcn::Graphics *graphics)
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (items[i].quantity > 0) {
             if (items[i].id >= 501 && items[i].id <= 511) {
-                draw_rle_sprite(target,
-                        (RLE_SPRITE *)itemset[items[i].id - 501].dat,
+                itemset->spriteset[items[i].id - 501]->draw(target,
                         x + 24 * i,
                         y + 26);
             }
-            //else {
-            //    masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0,
-            //            x + 24 * i, y + 26, 22, 22);
-            //}
 
             std::stringstream ss;
             ss << items[i].quantity;
