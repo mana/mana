@@ -32,7 +32,6 @@ CheckBox::CheckBox(const std::string& caption, bool marked):
     checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
     checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
     checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
-    
 }
 
 void CheckBox::drawBox(gcn::Graphics* graphics) {
@@ -55,7 +54,7 @@ void CheckBox::drawBox(gcn::Graphics* graphics) {
 
     x += 2;
     y += 2;    
-    if(box != NULL) {
+    if (box != NULL) {
         box->draw(buffer, x, y);
     }
 }

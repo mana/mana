@@ -286,40 +286,6 @@ void loadSliderSkin() {
     gui_skin.slider.hGrip = create_sub_bitmap(gui__repository[GUI_BMP_OFS_SLIDER], x, y, w, h);
 }
 
-void loadCheckboxSkin()  {
-    int x, y, w,h;
-    char **tokens;
-    int tokenCount;
-
-    gui__repository[GUI_BMP_OFS_CHECKBOX] = (BITMAP *)gui_gfx[4].dat;
-
-
-    tokens = get_config_argv("checkbox", "normal", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.checkbox.normal = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-
-    tokens = get_config_argv("checkbox", "checked", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.checkbox.checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-
-    tokens = get_config_argv("checkbox", "disabled", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.checkbox.disabled = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-
-    tokens = get_config_argv("checkbox", "disabled_check", &tokenCount);
-    x = atoi(tokens[0]); y = atoi(tokens[1]);
-    w = atoi(tokens[2]); h = atoi(tokens[3]);
-    gui_skin.checkbox.disabled_checked = create_sub_bitmap(gui__repository[GUI_BMP_OFS_CHECKBOX], x , y, w, h);
-
-    tokens = get_config_argv("button", "textcol_norm", &tokenCount);
-    gui_skin.checkbox.textcolor[0] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-    tokens = get_config_argv("button", "textcol_disabled", &tokenCount);
-    gui_skin.checkbox.textcolor[1] = makecol(atoi(tokens[0]),atoi(tokens[1]),atoi(tokens[2]));
-}
-
 void loadTextboxSkin() {
     char **tokens;
     int tokenCount;
@@ -420,38 +386,6 @@ void loadListboxSkin() {
 
 }
 
-void loadDialogSkin() {
-    char **tokens;
-    int tokenCount;
-    int gridx[4];
-    int gridy[4];
-    int a = 0;
-    int x, y;
-
-    tokens = get_config_argv("dialog", "gridx", &tokenCount);
-    for (a = 0; a < 4; a++) {
-        gridx[a] = atoi(tokens[a]);
-    }
-    tokens = get_config_argv("dialog", "gridy", &tokenCount);
-    for (a = 0; a < 4; a++) {
-        gridy[a] = atoi(tokens[a]);
-    }
-
-    gui__repository[GUI_BMP_OFS_DIALOG] = (BITMAP *)gui_gfx[5].dat;
-
-    a = 0;
-    for (y = 0; y < 3; y++) {
-        for (x = 0; x < 3; x++) {
-            gui_skin.dialog.bg.grid[a] = create_sub_bitmap(
-                            gui__repository[GUI_BMP_OFS_DIALOG],
-                            gridx[x]             , gridy[y],
-                            gridx[x+1]-gridx[x]+1, gridy[y+1]-gridy[y]+1
-                            );
-            a++;
-        }
-    }
-}
-
 void draw_skinned_rect(BITMAP*dst, LexSkinnedRect *skin,
         int x, int y, int w, int h)
 {
@@ -497,10 +431,8 @@ int gui_load_skin(const char* skinname) {
     gui_gfx = load_datafile(get_config_string("skin", "gfx", 0));
     loadButtonSkin();
     loadSliderSkin();
-    loadCheckboxSkin();
     loadTextboxSkin();
     loadListboxSkin();
-    loadDialogSkin();
     pop_config_state();
     set_mouse_sprite((BITMAP *)gui_gfx[7].dat);
 
@@ -530,12 +462,6 @@ void gui_shutdown(void) {
     }
     destroy_bitmap(gui_skin.slider.hGrip);
     destroy_bitmap(gui_skin.slider.vGrip);
-
-    /* Checkbox */
-    destroy_bitmap(gui_skin.checkbox.normal);
-    destroy_bitmap(gui_skin.checkbox.checked);
-    destroy_bitmap(gui_skin.checkbox.disabled);
-    destroy_bitmap(gui_skin.checkbox.disabled_checked);
 
     for (a = 0; a < GUI_BMP_COUNT; a++) {
         destroy_bitmap(gui__repository[a]);
