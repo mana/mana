@@ -1,4 +1,4 @@
-bin_PROGRAMS = tmw
+bin_PROGRAMS = ../tmw
 tmw_SOURCES = sound/sound.cpp \
 	graphic/2xsai.cpp \
 	graphic/graphic.cpp \
@@ -10,8 +10,8 @@ tmw_SOURCES = sound/sound.cpp \
 	gui/setup.cpp \
 	gui/gui.cpp \
 	gui/login.cpp \
-        gui/button.cpp \
-	gui/checkbox.cpp \			    
+	gui/button.cpp \
+	gui/checkbox.cpp \
 	gui/char_server.cpp \
 	gui/char_select.cpp \
 	gui/inventory.cpp \

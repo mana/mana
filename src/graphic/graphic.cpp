@@ -231,6 +231,9 @@ void init_graphic() {
 
     guiTop->add(chatInput);
 
+    chatInput->requestFocus();
+    
+
   npc_player = init_dialog(npc_dialog, -1);
 	position_dialog(npc_dialog, 300, 200);
 	skill_player = init_dialog(skill_dialog, -1);
