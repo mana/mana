@@ -37,8 +37,15 @@ char *item_db[] = {
     "Chocolate",
     "Candy",
     "Santa Hat",
-    
-    "","","","","","","","","",
+    "Ginger bread man",
+    "Slice of cake",
+    "Xmas candy cane",
+    "Purple present",
+    "Yellow present",
+    "Red scorpion stinger",
+    "Bug leg",
+    "Cherry cake",
+    "Easter Egg",
     "","","","","","","","","","",
     "","","","","","","","","","",
     "","","","","","","","","","",
@@ -118,7 +125,7 @@ char *item_db[] = {
     "","","","","","","","","","",
     "","","","","","","","","","",
     "","","","","","","","","","",
-    "","","","","","","","","","",
+    "","","","","","","","","Arrow","Bow",
     
     // 1201
     "Knife","Cotton Shirt","","","","","","","","",
