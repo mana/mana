@@ -352,14 +352,14 @@ void do_parse() {
 							free(player_node->speech);
 							player_node->speech = NULL;
 						}  
-	
+
 						player_node->speech = (char *)malloc(RFIFOW(2)-4);
 						memset(player_node->speech, '\0', RFIFOW(2)-4);
-						memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-5);
-						
+						memcpy(player_node->speech, RFIFOP(4), RFIFOW(2)-5);  // receive 1 byte less than expected, server might be sending garbage instead of '\0' /-kth5
+
 						player_node->speech_time = SPEECH_TIME;
 						player_node->speech_color = makecol(255, 255, 255);
-	
+
 						if(id==0x008e)
 							chatlog.chat_log(player_node->speech, BY_PLAYER, gui_font);
 						else
