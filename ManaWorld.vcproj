@@ -158,9 +158,6 @@
 				RelativePath=".\game.cpp">
 			</File>
 			<File
-				RelativePath=".\gui.cpp">
-			</File>
-			<File
 				RelativePath=".\main.cpp">
 			</File>
 			<File
@@ -296,9 +293,6 @@
 				</File>
 				<File
 					RelativePath=".\Gui\dialog.h">
-				</File>
-				<File
-					RelativePath=".\gui.h">
 				</File>
 				<File
 					RelativePath=".\Gui\lexgui.h">
