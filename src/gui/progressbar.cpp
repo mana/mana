@@ -46,31 +46,31 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     getAbsolutePosition(absx, absy);
     
     // outer bar
-    DrawLine(screen, absx+X+7, absy+Y, absx+X+Width, absy+Y, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X, absy+Y+7, absx+X+Width-7, absy+Y+7, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X+7, absy+Y, absx+X, absy+Y+7, abs(Red-70), abs(Green-70), abs(Blue-70));
-    DrawLine(screen, absx+X+Width, absy+Y, absx+X+Width-7, absy+Y+7, abs(Red-70), abs(Green-70), abs(Blue-70));
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y, absx+X+Width, absy+Y, abs(Red-70), abs(Green-70), abs(Blue-70));
+    DrawLine(screen, absx+X, absy+Y+PROGRESSBAR_HEIGHT, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y, absx+X, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
+    DrawLine(screen, absx+X+Width, absy+Y, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT, abs(Red-70), abs(Green-70), abs(Blue-70));
     
     // Shadow of outer bar
-    DrawLine(screen, absx+X+1, absy+Y+7+1, absx+X+Width-7, absy+Y+7+1, 20, 20, 20);
-    DrawLine(screen, absx+X+Width+1, absy+Y, absx+X+Width-7+1, absy+Y+7, 20, 20, 20);
+    DrawLine(screen, absx+X+1, absy+Y+PROGRESSBAR_HEIGHT+1, absx+X+Width-PROGRESSBAR_HEIGHT, absy+Y+PROGRESSBAR_HEIGHT+1, 20, 20, 20);
+    DrawLine(screen, absx+X+Width+1, absy+Y, absx+X+Width-PROGRESSBAR_HEIGHT+1, absy+Y+PROGRESSBAR_HEIGHT, 20, 20, 20);
     
     
     // Inner bar
     int Temp = 0;
     
-    for(int i = 1; i < 7; i++)
+    for(int i = 1; i < PROGRESSBAR_HEIGHT; i++)
     {
         Temp = absx+X+int(float(Width)*progress)-i-1;
-        if (Temp < (absx + X + 8 - i)) Temp = (absx + X + 8 - i);
-        DrawLine(screen, absx+X+8-i, absy+Y+i, Temp, absy+Y+i, Red, Green, Blue);
+        if (Temp < (absx + X + PROGRESSBAR_HEIGHT + 1 - i)) Temp = (absx + X + PROGRESSBAR_HEIGHT + 1 - i);
+        DrawLine(screen, absx + X + PROGRESSBAR_HEIGHT + 1 - i, absy+Y+i, Temp, absy+Y+i, Red, Green, Blue);
     }
     
     // Shadow of inner bar
     Temp = absx+X+int(float(Width)*progress)-2;
-    if ( Temp < (absx+X+7+1) ) Temp = absx+X+7;
-    DrawLine(screen, absx+X+7+1, absy+Y+1, Temp, absy+Y+1, abs(Red-40), abs(Green-40), abs(Blue-40));
-    DrawLine(screen, absx+X+7, absy+Y+1, absx+X+2, absy+Y+7-1, abs(Red-40), abs(Green-40), abs(Blue-40));
+    if ( Temp < (absx+X+PROGRESSBAR_HEIGHT+1) ) Temp = absx+X+PROGRESSBAR_HEIGHT;
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT+1, absy+Y+1, Temp, absy+Y+1, abs(Red-40), abs(Green-40), abs(Blue-40));
+    DrawLine(screen, absx+X+PROGRESSBAR_HEIGHT, absy+Y+1, absx+X+2, absy+Y+PROGRESSBAR_HEIGHT-1, abs(Red-40), abs(Green-40), abs(Blue-40));
     
 }
 

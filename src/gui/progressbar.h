@@ -25,7 +25,7 @@
 #define __PROGRESSBAR_H__
 
 #include <guichan.hpp>
-
+#define PROGRESSBAR_HEIGHT 7
 /**
  * A progress bar.
  *
@@ -67,7 +67,7 @@ class ProgressBar : public gcn::Widget {
         }; 
 
         int getHeight() {
-            return 7;
+            return PROGRESSBAR_HEIGHT;
         };
 
         int getWidth() {
