@@ -31,7 +31,10 @@ StatsWindow::StatsWindow():
     // New labels
     for (i = 0; i < 6; i++) {
         statsLabel[i] = new gcn::Label();
+	statsDisplayLabel[i] = new gcn::Label();
     }
+    remainingStatsPointsLabel = new gcn::Label();
+    
     update();
     
     // New buttons
@@ -50,35 +53,50 @@ StatsWindow::StatsWindow():
     // Set position
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setPosition(10,(i*23)+10);
+	statsDisplayLabel[i]->setPosition(120,(i*23)+10);
         statsButton[i]->setPosition(170,(i*23)+10);
     }
+    remainingStatsPointsLabel->setPosition(10, 156);
     
     // Assemble
     for(i = 0; i < 6; i++) {
         add(statsLabel[i]);
+	add(statsDisplayLabel[i]);
         add(statsButton[i]);
         statsButton[i]->addActionListener(this);
     }
+    add(remainingStatsPointsLabel);
     
-    setSize(200, 150);
+    setSize(200, 180);
     setLocationRelativeTo(getParent());
 }
 
 void StatsWindow::update(){
     std::stringstream statsStr[6];
+    std::stringstream figureStr[6];
     
-    statsStr[0] << "Strength:    "  << (int)char_info->STR;
-    statsStr[1] << "Agility:     "  << (int)char_info->AGI;
-    statsStr[2] << "Vitality:    "  << (int)char_info->VIT;
-    statsStr[3] << "Intelligence: "  << (int)char_info->INT;
-    statsStr[4] << "Dexterity:  "  << (int)char_info->DEX;
-    statsStr[5] << "Luck:        "  << (int)char_info->LUK;
+    statsStr[0] << "Strength:";
+    figureStr[0] << (int)char_info->STR;
+    statsStr[1] << "Agility:";
+    figureStr[1] << (int)char_info->AGI;
+    statsStr[2] << "Vitality:";
+    figureStr[2] << (int)char_info->VIT;
+    statsStr[3] << "Intelligence:";
+    figureStr[3] << (int)char_info->INT;
+    statsStr[4] << "Dexterity:";
+    figureStr[4] << (int)char_info->DEX;
+    statsStr[5] << "Luck:";
+    figureStr[5] << (int)char_info->LUK;
     
     // Update labels
     for (i = 0; i < 6; i++) {
         statsLabel[i]->setCaption(statsStr[i].str());
         statsLabel[i]->adjustSize();
+	statsDisplayLabel[i]->setCaption(figureStr[i].str());
+	statsDisplayLabel[i]->adjustSize();
     }
+    remainingStatsPointsLabel->setCaption("Remaing Status Points : ??");
+    remainingStatsPointsLabel->adjustSize();
 }
 
 StatsWindow::~StatsWindow() {
@@ -122,6 +140,4 @@ void StatsWindow::action(const std::string& eventId) {
     }
     flush();
     update();
-    WFIFOW(4) = net_b_value(1);
-    WFIFOSET(5);
 }
