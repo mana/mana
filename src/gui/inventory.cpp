@@ -56,10 +56,10 @@ void TmwInventory::draw(BITMAP * buffer) {
 		for(int i=0;i<INVENTORY_SIZE;i++) {
 			if(items[i].quantity>0) {
 				if(items[i].id>=501 && items[i].id<=510)
-					masked_blit((BITMAP *)itemset[items[i].id-500].dat, gui_bitmap, 0, 0, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+26, 22, 22);
+					masked_blit((BITMAP *)itemset[items[i].id-500].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
 				else
-					masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+26, 22, 22);
-				alfont_textprintf_aa(gui_bitmap, gui_font, inventory_dialog[0].x-90+24*i, inventory_dialog[0].y+44, makecol(0,0,0), "%i", items[i].quantity);
+					masked_blit((BITMAP *)itemset[0].dat, gui_bitmap, 0, 0, inventory_dialog[0].x+24*i, inventory_dialog[0].y+26, 22, 22);
+				alfont_textprintf_aa(gui_bitmap, gui_font, inventory_dialog[0].x+24*i, inventory_dialog[0].y+44, makecol(0,0,0), "%i", items[i].quantity);
 			}
 		}
 	}

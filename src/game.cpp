@@ -265,6 +265,9 @@ void do_input() {
 			action_time = false;
 		} else if(key[KEY_I]) {
 			inventory.toggle();
+      action_time = false;
+		} else if(key[KEY_T]) {
+			show_stats_dialog = !show_stats_dialog;
 			action_time = false;
 		}
 	}
@@ -531,7 +534,7 @@ void do_parse() {
 							char_info->lv = RFIFOW(4);
 							break;
 						}
-					update_stats_dialog();
+					//update_stats_dialog();
 					if(char_info->hp==0) {
 						ok("Message", "You're now dead, press ok to restart");
 						WFIFOW(0) = net_w_value(0x00b2);
