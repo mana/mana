@@ -10,9 +10,10 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 # Checks for libraries
-# (doesn't seem right, or is it?)
-#AC_CHECK_LIB([guichan], [_ZN3gcn7TextBox6addRowESs])
-#AC_CHECK_LIB([guichan_sdl], [_ZN3gcn8SDLInput17dequeueMouseInputEv])
+# (someone may want to exchange these symbols with
+   soemthing more meaningful in the future /- kth5)
+AC_CHECK_LIB([guichan], [_init])
+AC_CHECK_LIB([guichan_sdl], [_init])
 
 # Check for SDL_image and SDL_mixer library
 AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
