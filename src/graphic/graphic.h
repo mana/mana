@@ -65,6 +65,9 @@ extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;
 
+char get_x_offset(char, char);
+char get_y_offset(char, char);
+
 /**
  * The action listener for the chat field.
  */

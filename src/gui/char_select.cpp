@@ -23,11 +23,13 @@
 
 #include "char_select.h"
 #include "textfield.h"
+#include "button.h"
+#include "ok_dialog.h"
 #include "../graphic/graphic.h"
 #include "../main.h"
 
-CharSelectDialog::CharSelectDialog(gcn::Container *parent)
-    : Window(parent, "Select Character")
+CharSelectDialog::CharSelectDialog():
+    Window("Select Character")
 {
     selectButton = new Button(" OK ");
     cancelButton = new Button("Cancel");
@@ -112,8 +114,8 @@ int curHairColor = 0;
 int curHairStyle = 0;
 std::string curName;
 
-CharCreateDialog::CharCreateDialog(gcn::Container *parent)
-    : Window(parent, "Create Character")
+CharCreateDialog::CharCreateDialog():
+    Window("Create Character")
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -208,7 +210,7 @@ void CharCreateDialog::action(const std::string& eventId)
 void charSelect()
 {
     CharSelectDialog *sel;
-    sel = new CharSelectDialog(guiTop);
+    sel = new CharSelectDialog();
 
     state = LOGIN;
 
@@ -306,7 +308,7 @@ void serverCharSelect()
 
 void charCreate()
 {
-    CharCreateDialog *create = new CharCreateDialog(guiTop);
+    CharCreateDialog *create = new CharCreateDialog();
 
     state = LOGIN;
     while (!key[KEY_ESC] && !key[KEY_ENTER] && state != EXIT &&
@@ -344,7 +346,7 @@ void charCreate()
 void serverCharDelete() {
     state = CHAR_SELECT;
     // Delete a character
-    if (yes_no("Confirm", "Are you sure?")==0) {
+    if (yes_no("Confirm", "Are you sure?") == 0) {
         // Request character deletion
         WFIFOW(0) = net_w_value(0x0068);
         WFIFOL(2) = net_l_value(char_info->id);
@@ -353,10 +355,11 @@ void serverCharDelete() {
         while ((in_size < 2) || (out_size > 0)) flush();
         if (RFIFOW(0) == 0x006f) {
             RFIFOSKIP(2);
-            ok("Info", "Player deleted");
             free(char_info);
             n_character = 0;
-        } else if (RFIFOW(0) == 0x006c) {
+            ok("Info", "Player deleted");
+        }
+        else if (RFIFOW(0) == 0x006c) {
             switch (RFIFOB(2)) {
                 case 0:
                     ok("Error", "Access denied");
@@ -366,7 +369,10 @@ void serverCharDelete() {
                     break;
             }
             RFIFOSKIP(3);
-        } else ok("Error", "Unknown error");
+        }
+        else {
+            ok("Error", "Unknown error");
+        }
     }
 }
 

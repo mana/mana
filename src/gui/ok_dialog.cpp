@@ -22,9 +22,10 @@
  */
 
 #include "ok_dialog.h"
+#include "button.h"
 
-OkDialog::OkDialog(gcn::Container *parent, std::string msg):
-    Window(parent, "Message")
+OkDialog::OkDialog(const std::string& title, const std::string& msg):
+    Window(title, true)
 {
     userLabel = new gcn::Label(msg);
     okButton = new Button("OK");
@@ -52,5 +53,7 @@ OkDialog::~OkDialog()
 void OkDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
+        //getParent()->remove(this);
+        windowContainer->scheduleDelete(this);
     }
 }

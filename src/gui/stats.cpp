@@ -25,8 +25,8 @@
 
 extern PLAYER_INFO *char_info;
 
-StatsWindow::StatsWindow(gcn::Container *parent)
-    : Window(parent, "Stats") 
+StatsWindow::StatsWindow():
+    Window("Stats") 
 {
     // New labels
     for (i = 0; i < 6; i++) {
@@ -91,7 +91,7 @@ StatsWindow::~StatsWindow() {
 StatsWindow * StatsWindow::ptr = NULL;
 StatsWindow * StatsWindow::create_statswindow() {
     if (ptr == NULL) {
-        ptr = new StatsWindow(guiTop);
+        ptr = new StatsWindow();
     }
     else {
         ptr->setVisible(true);

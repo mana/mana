@@ -40,7 +40,7 @@ class BuySellDialog : public Window {
          *
          * @see Window::Window
          */
-        BuySellDialog(gcn::Container *parent, gcn::ActionListener *al);
+        BuySellDialog(gcn::ActionListener *al);
 
         /**
          * Destructor.

@@ -43,7 +43,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        NpcListDialog(gcn::Container *parent);
+        NpcListDialog();
 
         /**
          * Destructor.

@@ -30,8 +30,8 @@
 
 #include <sstream>
 
-SellDialog::SellDialog(gcn::Container *parent):
-    Window(parent, "Sell")
+SellDialog::SellDialog():
+    Window("Sell")
 {
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);

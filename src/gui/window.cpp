@@ -25,7 +25,9 @@
 #include "gui.h"
 #include <guichan/allegro.hpp>
 
-Window::Window(gcn::Container *parent, const std::string& text) :
+WindowContainer *Window::windowContainer = NULL;
+
+Window::Window(const std::string& text, bool modal):
     caption(text),
     mousePX(0),
     mousePY(0),
@@ -53,8 +55,13 @@ Window::Window(gcn::Container *parent, const std::string& text) :
     chrome->setY(titlebarHeight);
     gcn::Container::add(chrome);
 
-    // Add this window to the parent container
-    parent->add(this);
+    // Add this window to the window container
+    if (windowContainer) {
+        windowContainer->add(this, modal);
+    }
+    else {
+        throw GCN_EXCEPTION("Window::Window. no windowContainer set");
+    }
 }
 
 Window::~Window()
@@ -65,6 +72,11 @@ Window::~Window()
     release_bitmap(dRight);
 
     delete chrome;
+}
+
+void Window::setWindowContainer(WindowContainer *wc)
+{
+    windowContainer = wc;
 }
 
 void Window::draw(gcn::Graphics* graphics)

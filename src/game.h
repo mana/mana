@@ -77,18 +77,40 @@ extern int server_tick;
  */
 bool handle_key(int unicode, int scancode);
 
+/**
+ * Main game loop
+ */
 void game();
+
+/**
+ * Initialize game engine
+ */
 void do_init();
+
+/**
+ * Check user input
+ */
 void do_input();
+
+/**
+ * Parse data received from map server into input buffer
+ */
 void do_parse();
-void do_graphic();
-void do_logic();
+
+/**
+ * Clean the engine
+ */
 void do_exit();
+
+/**
+ * Calculate packet length
+ */
 int  get_packet_length(short);
 
-char get_x_offset(char, char);
-char get_y_offset(char, char);
-
+/**
+ * Returns elapsed time. (Warning: very unsafe function, it supposes the delay
+ * is always < 10 seconds)
+ */
 short get_elapsed_time(short start_time);
 
 #endif

@@ -69,7 +69,7 @@ class StatsWindow : public Window, public gcn::ActionListener {
     /**
      * Constructor.
      */
-    StatsWindow(gcn::Container *parent);
+    StatsWindow();
     
     /**
      * Destructor.

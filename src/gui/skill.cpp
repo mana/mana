@@ -24,6 +24,7 @@
 #include "skill.h"
 #include "listbox.h"
 #include "scrollarea.h"
+#include "button.h"
 
 extern PLAYER_INFO  *char_info;
 
@@ -112,8 +113,8 @@ void SkillListModel::setSkill(int id, int lv, int sp)
 }
 
 
-SkillDialog::SkillDialog(gcn::Container *parent)
-    : Window(parent, "Skills")
+SkillDialog::SkillDialog():
+    Window("Skills")
 {
     skills = new SkillListModel();
     skillListBox = new ListBox(skills);

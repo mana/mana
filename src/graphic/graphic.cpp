@@ -158,29 +158,29 @@ GraphicEngine::GraphicEngine() {
 
     // Create dialogs
 
-    statusWindow = new StatusWindow(guiTop);
+    statusWindow = new StatusWindow();
     statusWindow->setPosition(SCREEN_W - statusWindow->getWidth() - 10, 10);
 
-    buyDialog = new BuyDialog(guiTop);
+    buyDialog = new BuyDialog();
     buyDialog->setVisible(false);
 
-    sellDialog = new SellDialog(guiTop);
+    sellDialog = new SellDialog();
     sellDialog->setVisible(false);
 
-    buySellDialog = new BuySellDialog(guiTop, new BuySellListener());
+    buySellDialog = new BuySellDialog(new BuySellListener());
     buySellDialog->setVisible(false);
 
-    inventoryWindow = new InventoryWindow(guiTop);
+    inventoryWindow = new InventoryWindow();
     inventoryWindow->setVisible(false);
     inventoryWindow->setPosition(100, 100);
 
-    npcTextDialog = new NpcTextDialog(guiTop);
+    npcTextDialog = new NpcTextDialog();
     npcTextDialog->setVisible(false);
 
-    npcListDialog = new NpcListDialog(guiTop);
+    npcListDialog = new NpcListDialog();
     npcListDialog->setVisible(false);
 
-    skillDialog = new SkillDialog(guiTop);
+    skillDialog = new SkillDialog();
     skillDialog->setVisible(false);
 
     // Give focus to the chat input

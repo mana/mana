@@ -23,8 +23,8 @@
 
 #include "status.h"
 
-StatusWindow::StatusWindow(gcn::Container *parent):
-    Window(parent, "%s Lvl: % 2i Job: % 2i")
+StatusWindow::StatusWindow():
+    Window("%s Lvl: % 2i Job: % 2i")
 {
     hp = new gcn::Label("HP");
     sp = new gcn::Label("SP");

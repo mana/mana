@@ -58,8 +58,8 @@ std::string ModeListModel::getElementAt(int i) {
     return modes[i].desc;
 }
 
-Setup::Setup(gcn::Container *parent)
-    : Window(parent, "Setup")
+Setup::Setup():
+    Window("Setup")
 {
     modeListModel = new ModeListModel();
     displayLabel = new gcn::Label("Display settings");
@@ -174,7 +174,7 @@ void Setup::action(const std::string& eventId)
 Setup *Setup::ptr = NULL;
 Setup *Setup::create_setup() {
     if (ptr == NULL) {
-        ptr = new Setup(guiTop);
+        ptr = new Setup();
     }
     else {
         ptr->setVisible(true);

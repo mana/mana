@@ -27,13 +27,14 @@
 #include "window.h"
 #include "scrollarea.h"
 #include "listbox.h"
+#include "ok_dialog.h"
 
 char server[30];
 int showServerList = 1;
 
 
-ServerSelectDialog::ServerSelectDialog(gcn::Container *parent):
-    Window(parent, "Select Server")
+ServerSelectDialog::ServerSelectDialog():
+    Window("Select Server")
 {
     serverListModel = new ServerListModel();
     serverList = new ListBox(serverListModel);
@@ -110,7 +111,7 @@ std::string ServerListModel::getElementAt(int i) {
 
 
 void char_server() {
-    ServerSelectDialog *dialog = new ServerSelectDialog(guiTop);
+    ServerSelectDialog *dialog = new ServerSelectDialog();
 
     state = LOGIN;
 
@@ -132,7 +133,7 @@ void server_char_server(int serverIndex) {
     ret = open_session(iptostring(server_info[serverIndex].address),
             server_info[serverIndex].port);
     if (ret == SOCKET_ERROR) {
-        ok("Error", "Unable to connect to char server");
+        new OkDialog("Error", "Unable to connect to char server");
         return;
     }
 
@@ -145,16 +146,16 @@ void server_char_server(int serverIndex) {
     WFIFOB(16) = net_b_value(sex);
     WFIFOSET(17);
 
-    while((in_size<4)||(out_size>0))flush();
+    while ((in_size<4)||(out_size>0))flush();
     RFIFOSKIP(4);
 
-    while(in_size<3)flush();
+    while (in_size<3)flush();
 
-    if(RFIFOW(0)==0x006b) {
+    if (RFIFOW(0)==0x006b) {
         while(in_size<RFIFOW(2))flush();
         n_character = (RFIFOW(2)-24)/106;
-        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO)*n_character);
-        for(int i=0;i<n_character;i++) {
+        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO) * n_character);
+        for (int i = 0; i < n_character; i++) {
             char_info[i].id = RFIFOL(24+106*i);
             strcpy(char_info[i].name, RFIFOP(24+106*i+74));
             char_info[i].hp = RFIFOW(24+106*i+42);
@@ -183,20 +184,19 @@ void server_char_server(int serverIndex) {
 
 
         RFIFOSKIP(RFIFOW(2));
-    } else if(RFIFOW(0)==0x006c) {
-        switch(RFIFOB(2)) {
-            case 0:
-                ok("Error", "Access denied");
-                break;
-            case 1:
-                ok("Error", "Cannot use this ID");
-                break;
-            default:
-                ok("Error", "Rejected from server");
-                break;
+    }
+    else if (RFIFOW(0) == 0x006c) {
+        std::string errorStr;
+        switch (RFIFOB(2)) {
+            case 0: errorStr = "Access denied"; break;
+            case 1: errorStr = "Cannot use this ID"; break;
+            default: errorStr = "Rejected from server"; break;
         }
+        new OkDialog("Error", errorStr);
         RFIFOSKIP(3);
         close_session();
-    } else ok("Error", "Unknown error");
+    } else {
+        new OkDialog("Error", "Unknown error");
+    }
     // Todo: add other packets
 }

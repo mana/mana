@@ -24,8 +24,8 @@
 #include "buysell.h"
 #include "button.h"
 
-BuySellDialog::BuySellDialog(gcn::Container *parent, gcn::ActionListener *al):
-    Window(parent, "Shop")
+BuySellDialog::BuySellDialog(gcn::ActionListener *al):
+    Window("Shop")
 {
     buyButton = new Button("Buy");
     sellButton = new Button("Sell");

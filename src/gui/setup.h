@@ -72,7 +72,7 @@ class Setup : public Window, public gcn::ActionListener {
         /**
          * Constructor.
          */
-        Setup(gcn::Container *parent);
+        Setup();
 
         /**
          * Destructor.

@@ -27,6 +27,7 @@
 #include <iostream>
 #include <allegro.h>
 #include <guichan.hpp>
+#include "windowcontainer.h"
 
 /**
  * A window. This window can be dragged around and has a title bar.
@@ -35,7 +36,7 @@
  */
 class Window : public gcn::Container, public gcn::MouseListener
 {
-    private:
+    protected:
         gcn::Container *chrome;    /**< Contained container */
         std::string caption;       /**< Title bar caption */
         int z;                     /**< Z position of the window */
@@ -50,21 +51,28 @@ class Window : public gcn::Container, public gcn::MouseListener
         BITMAP *dMid;              /**< Middle of title bar */
         BITMAP *dRight;            /**< Right side of title bar */
 
+        /** The window container windows add themselves to. */
+        static WindowContainer* windowContainer;
+
     public:
         /**
          * Constructor. Initializes the title to the given text and hooks
-         * itself into the given parent.
+         * itself into the window container.
          *
-         * @param parent The parent container to which this window will add
-         *               itself.
          * @param text   The initial window title, "Window" by default.
+         * @param modal  Block input to other windows.
          */
-        Window(gcn::Container *parent, const std::string& text = "Window");
+        Window(const std::string& text = "Window", bool modal = false);
 
         /**
          * Destructor.
          */
-        ~Window();
+        virtual ~Window();
+
+        /**
+         * Sets the window container to be used by new windows.
+         */
+        static void setWindowContainer(WindowContainer *windowContainer);
 
         /**
          * Draws the window.

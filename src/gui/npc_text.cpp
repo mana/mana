@@ -27,8 +27,8 @@
 #include "textbox.h"
 #include "../game.h"
 
-NpcTextDialog::NpcTextDialog(gcn::Container *parent):
-    Window(parent, "NPC")
+NpcTextDialog::NpcTextDialog():
+    Window("NPC")
 {
     textBox = new TextBox();
     textBox->setEditable(false);

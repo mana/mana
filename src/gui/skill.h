@@ -25,7 +25,6 @@
 #define _TMW_SKILL_H
 
 #include <allegro.h>
-#include "button.h"
 #include "../main.h"
 
 struct SKILL {
@@ -40,9 +39,18 @@ struct SKILL {
  */
 class SkillListModel : public gcn::ListModel
 {
-    std::vector<SKILL*> skillList;
+    private:
+        std::vector<SKILL*> skillList;
+
     public:
+        /**
+         * Constructor.
+         */
         SkillListModel();
+
+        /**
+         * Destructor.
+         */
         virtual ~SkillListModel();
 
         int getNumberOfElements();
@@ -66,11 +74,18 @@ class SkillDialog : public Window, public gcn::ActionListener
         SkillListModel *skills;
         gcn::Label *pointsLabel;
 
-        Button *incButton;
-        Button *closeButton;
+        gcn::Button *incButton;
+        gcn::Button *closeButton;
 
     public:
-        SkillDialog(gcn::Container *);
+        /**
+         * Constructor.
+         */
+        SkillDialog();
+
+        /**
+         * Destructor.
+         */
         ~SkillDialog();
 
         void action(const std::string&);

@@ -29,7 +29,6 @@
 #include "../main.h"
 #include "../net/network.h"
 #include "gui.h"
-#include "button.h"
 #include <guichan/allegro.hpp>
 
 /**
@@ -39,10 +38,10 @@
  */
 class CharSelectDialog : public Window, public gcn::ActionListener {
     private:
-        Button *selectButton;
-        Button *cancelButton;
-        Button *newCharButton;
-        Button *delCharButton;
+        gcn::Button *selectButton;
+        gcn::Button *cancelButton;
+        gcn::Button *newCharButton;
+        gcn::Button *delCharButton;
 
         gcn::Label *nameLabel;
         gcn::Label *levelLabel;
@@ -50,22 +49,33 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
         gcn::Label *moneyLabel;
 
     public:
-        CharSelectDialog(gcn::Container *parent);
+        /**
+         * Constructor.
+         */
+        CharSelectDialog();
+
+        /**
+         * Destructor.
+         */
         ~CharSelectDialog();
 
         void action(const std::string& eventId);
+
         void setName(const std::string name)
         {
             nameLabel->setCaption(name);
         }
+
         void setLevel(const std::string level)
         {
             levelLabel->setCaption(level);
         }
+
         void setJobLevel(const std::string level)
         {
             jobLevelLabel->setCaption(level);
         }
+
         void setMoney(const std::string money)
         {
             moneyLabel->setCaption(money);
@@ -81,21 +91,31 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
     private:
         gcn::TextField *nameField;
         gcn::Label *nameLabel;
-        Button *nextHairColorButton;
-        Button *prevHairColorButton;
+        gcn::Button *nextHairColorButton;
+        gcn::Button *prevHairColorButton;
         gcn::Label *hairColorLabel;
-        Button *nextHairStyleButton;
-        Button *prevHairStyleButton;
+        gcn::Button *nextHairStyleButton;
+        gcn::Button *prevHairStyleButton;
         gcn::Label *hairStyleLabel;
 
-        Button *createButton;
+        gcn::Button *createButton;
 
     public:
-        CharCreateDialog(gcn::Container *parent);
+        /**
+         * Constructor.
+         */
+        CharCreateDialog();
+
+        /**
+         * Destructor.
+         */
         ~CharCreateDialog();
 
         void action(const std::string& eventId);
-        std::string getName() { return nameField->getText(); }
+
+        std::string getName() {
+            return nameField->getText();
+        }
 };
 
 void charSelect();

@@ -59,7 +59,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        ServerSelectDialog(gcn::Container *parent);
+        ServerSelectDialog();
 
         /**
          * Destructor

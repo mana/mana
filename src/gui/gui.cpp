@@ -28,6 +28,7 @@
 #include "../log.h"
 #include "../sound/sound.h"
 #include "allegroinput.h"
+#include "window.h"
 #include "windowcontainer.h"
 
 #define GUI_BMP_COUNT 11
@@ -49,9 +50,9 @@ DATAFILE *gui_gfx;
 
 
 // Guichan stuff
-Gui* gui;
-gcn::AllegroGraphics* guiGraphics;     // Graphics driver
-gcn::Container* guiTop;                // The top container
+Gui *gui;
+gcn::AllegroGraphics *guiGraphics;     // Graphics driver
+WindowContainer *guiTop;               // The top container
 
 
 Gui::Gui(BITMAP *screen)
@@ -71,6 +72,7 @@ Gui::Gui(BITMAP *screen)
     guiTop = new WindowContainer();
     guiTop->setDimension(gcn::Rectangle(0, 0, SCREEN_W, SCREEN_H));
     guiTop->setOpaque(false);
+    Window::setWindowContainer(guiTop);
 
     // Create focus handler
     focusHandler = new gcn::FocusHandler();

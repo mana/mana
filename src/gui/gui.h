@@ -32,6 +32,7 @@
 #include <guichan/allegro.hpp>
 #include <allegro.h>
 #include <string.h>
+#include "windowcontainer.h"
 
 /**
  * \defgroup GUI GUI related classes
@@ -163,7 +164,7 @@ extern LexSkin gui_skin;
 extern BITMAP *gui_bitmap;
 
 extern Gui* gui;
-extern gcn::Container* guiTop;                // The top container
+extern WindowContainer* guiTop;               // The top container
 extern gcn::AllegroGraphics* guiGraphics;     // Graphics driver
 
 /** Initialize gui system */

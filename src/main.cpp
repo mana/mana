@@ -294,22 +294,8 @@ void init_engine() {
     // TODO: Remove Allegro config file usage from GUI look
     init_gui(buffer, "data/Skin/aqua.skin");
     state = LOGIN;
-}
 
-/** Clear the engine */
-void exit_engine() {
-    config.write(dir);
-    delete dir;
-    gui_exit();
-    destroy_bitmap(buffer);
-    allegro_exit();
-}
-
-/** Main */
-int main() {
-    init_engine();
 #ifndef WIN32
-
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
          if (config.getValue("sound", 0) == 1) {
@@ -328,33 +314,47 @@ int main() {
          warning(err);
     }
 #endif /* not WIN32 */
+}
+
+/** Clear the engine */
+void exit_engine() {
+    config.write(dir);
+    delete dir;
+    gui_exit();
+    destroy_bitmap(buffer);
+    allegro_exit();
+}
+
+/** Main */
+int main() {
+    init_engine();
 
     while (state != EXIT) {
-        switch(state) {
-        case LOGIN:
-            status("LOGIN");
-            login();
-            break;
-        case CHAR_SERVER:
-            status("CHAR_SERVER");
-            char_server();
-            break;
-        case CHAR_SELECT:
-            status("CHAR_SELECT");
-            charSelect();
-            break;
-        case GAME:
+        switch (state) {
+            case LOGIN:
+                status("LOGIN");
+                login();
+                break;
+            case CHAR_SERVER:
+                status("CHAR_SERVER");
+                char_server();
+                break;
+            case CHAR_SELECT:
+                status("CHAR_SELECT");
+                charSelect();
+                break;
+            case GAME:
 #ifndef WIN32
-            sound.stopBgm();
+                sound.stopBgm();
 #endif /* not WIN32 */
-            status("GAME");
-            map_start();
-            if( state==GAME )
-            game();
-            break;
-        default:
-            state = EXIT;
-            break;
+                status("GAME");
+                map_start();
+                if (state == GAME)
+                    game();
+                break;
+            default:
+                state = EXIT;
+                break;
         }
     }
     status("EXIT");

@@ -27,10 +27,11 @@
 #include "checkbox.h"
 #include "textfield.h"
 #include "passwordfield.h"
+#include "ok_dialog.h"
 #include "../graphic/graphic.h"
 
-LoginDialog::LoginDialog(gcn::Container *parent):
-    Window(parent, "Login")
+LoginDialog::LoginDialog():
+    Window("Login")
 {
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
@@ -129,7 +130,7 @@ void LoginDialog::action(const std::string& eventId)
 
 
 void login() {
-    LoginDialog *dialog = new LoginDialog(guiTop);
+    LoginDialog *dialog = new LoginDialog();
 
     while (state == LOGIN) {
         blit(login_wallpaper, buffer, 0, 0, 0, 0, 800, 600);
@@ -181,17 +182,17 @@ void server_login(const std::string& user, const std::string& pass) {
         while (in_size < RFIFOW(2)) {
             flush();
         }
-        n_server = (RFIFOW(2)-47)/32;
-        server_info = (SERVER_INFO*)malloc(sizeof(SERVER_INFO)*n_server);
+        n_server = (RFIFOW(2) - 47) / 32;
+        server_info = (SERVER_INFO*)malloc(sizeof(SERVER_INFO) * n_server);
         account_ID = RFIFOL(8);
         session_ID1 = RFIFOL(4);
         session_ID2 = RFIFOL(12);
         sex = RFIFOB(46);
         for (int i = 0; i < n_server; i++) {
-            server_info[i].address = RFIFOL(47+32*i);
-            memcpy(server_info[i].name, RFIFOP(47+32*i+6), 20);
-            server_info[i].online_users = RFIFOW(47+32*i+26);
-            server_info[i].port = RFIFOW(47+32*i+4);
+            server_info[i].address = RFIFOL(47 + 32 * i);
+            memcpy(server_info[i].name, RFIFOP(47 + 32 * i + 6), 20);
+            server_info[i].online_users = RFIFOW(47 + 32 * i + 26);
+            server_info[i].port = RFIFOW(47 + 32 * i + 4);
             state = CHAR_SERVER;
         }
         log("Network", "Server: %s (%s:%d)", server_info[0].name,
@@ -203,17 +204,17 @@ void server_login(const std::string& user, const std::string& pass) {
     else if (RFIFOW(0) == 0x006a) {
         switch (RFIFOB(2)) {
             case 0:
-                ok("Error", "Unregistered ID");
+                new OkDialog("Error", "Unregistered ID");
                 break;
             case 1:
-                ok("Error", "Wrong password");
+                new OkDialog("Error", "Wrong password");
                 break;
         }
         state = LOGIN;
         RFIFOSKIP(23);
     }
     else {
-        ok("Error", "Unknown error");
+        new OkDialog("Error", "Unknown error");
     }
     // Todo: add other packets, also encrypted
 }

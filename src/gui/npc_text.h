@@ -42,7 +42,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        NpcTextDialog(gcn::Container *parent);
+        NpcTextDialog();
 
         /**
          * Destructor.

@@ -21,12 +21,24 @@
  *  $Id$
  */
 
+#include <iostream>
 #include "windowcontainer.h"
 
 WindowContainer::WindowContainer():
-    gcn::Container(),
-    mouseDown(false)
+    mouseDown(false),
+    modalWidget(NULL)
 {
+}
+
+void WindowContainer::logic()
+{
+    std::list<gcn::Widget*>::iterator i = deathList.begin();
+    while (i != deathList.end()) {
+        delete (*i);
+        i = deathList.erase(i);
+    }
+
+    gcn::Container::logic();
 }
 
 void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
@@ -40,19 +52,18 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
         mouseDown = false;
     }
 
-    /*
-     * Make drag events not change widget with mouse. The Window instances
-     * need this behaviour to be able to handle window dragging.
-     */
+    // Make drag events not change widget with mouse. The Window instances
+    // need this behaviour to be able to handle window dragging.
     if (!(mouseInput.getType() == gcn::MouseInput::MOTION && mouseDown))
     {
         Widget* tempWidgetWithMouse = NULL;
 
-        WidgetIterator iter;    
+        WidgetIterator iter;
         for (iter = mWidgets.begin(); iter != mWidgets.end(); iter++)
         {
             if ((*iter)->getDimension().isPointInRect(
-                        mouseInput.x, mouseInput.y) && (*iter)->isVisible())
+                        mouseInput.x, mouseInput.y) &&
+                    (*iter)->isVisible())
             {
                 tempWidgetWithMouse = (*iter);
             }
@@ -72,7 +83,8 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
         }
     }
 
-    if (mWidgetWithMouse && !mWidgetWithMouse->hasFocus()) {
+    if (mWidgetWithMouse && !mWidgetWithMouse->hasFocus() &&
+            (!modalWidget || modalWidget == mWidgetWithMouse)) {
         gcn::MouseInput mi = mouseInput;
         mi.x -= mWidgetWithMouse->getX();
         mi.y -= mWidgetWithMouse->getY();      
@@ -82,4 +94,49 @@ void WindowContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
     if (mWidgetWithMouse == NULL) {
         gcn::Widget::_mouseInputMessage(mouseInput);
     }
+}
+
+void WindowContainer::add(gcn::Widget *widget, bool modal)
+{
+    gcn::Container::add(widget);
+    if (modal) {
+        setModalWidget(widget);
+    }
+}
+
+void WindowContainer::remove(gcn::Widget *widget)
+{
+    if (modalWidget == widget) {
+        modalWidget = NULL;
+    }
+    gcn::Container::remove(widget);
+}
+
+void WindowContainer::_announceDeath(gcn::Widget *widget)
+{
+    if (modalWidget == widget) {
+        modalWidget = NULL;
+    }
+    gcn::Container::_announceDeath(widget);
+}
+
+void WindowContainer::clear()
+{
+    modalWidget = NULL;
+    gcn::Container::clear();
+}
+
+void WindowContainer::setModalWidget(gcn::Widget *widget)
+{
+    modalWidget = widget;
+}
+
+gcn::Widget *WindowContainer::getModalWidget()
+{
+    return modalWidget;
+}
+
+void WindowContainer::scheduleDelete(gcn::Widget *widget)
+{
+    deathList.push_back(widget);
 }

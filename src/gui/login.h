@@ -52,7 +52,7 @@ class LoginDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        LoginDialog(gcn::Container *parent);
+        LoginDialog();
 
         /**
          * Destructor

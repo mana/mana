@@ -44,7 +44,7 @@ class SellDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        SellDialog(gcn::Container *parent);
+        SellDialog();
 
         /**
          * Destructor.

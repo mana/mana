@@ -41,7 +41,14 @@
  */
 class StatusWindow : public Window {
     public:
-        StatusWindow(gcn::Container *parent);
+        /**
+         * Constructor.
+         */
+        StatusWindow();
+
+        /**
+         * Destructor.
+         */
         ~StatusWindow();
 
         /**

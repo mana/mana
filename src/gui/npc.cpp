@@ -27,8 +27,8 @@
 #include "listbox.h"
 #include "../game.h"
 
-NpcListDialog::NpcListDialog(gcn::Container *parent):
-    Window(parent, "NPC")
+NpcListDialog::NpcListDialog():
+    Window("NPC")
 {
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);

@@ -26,7 +26,6 @@
 
 #include "gui.h"
 #include "window.h"
-#include "button.h"
 
 /**
  * An 'Ok' button dialog.
@@ -36,14 +35,14 @@
 class OkDialog : public Window, public gcn::ActionListener {
     public:
         /**
-         * Constructor
+         * Constructor.
          *
          * @see Window::Window
          */
-        OkDialog(gcn::Container *parent, std::string);
+        OkDialog(const std::string &title, const std::string &msg);
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~OkDialog();
 

@@ -44,7 +44,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        BuyDialog(gcn::Container *parent);
+        BuyDialog();
 
         /**
          * Destructor.

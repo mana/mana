@@ -24,8 +24,8 @@
 #include "inventory.h"
 #include <sstream>
 
-InventoryWindow::InventoryWindow(gcn::Container *parent):
-    Window(parent, "Inventory")
+InventoryWindow::InventoryWindow():
+    Window("Inventory")
 {
     setSize(322, 60);
 

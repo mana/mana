@@ -101,10 +101,6 @@ void second(void) {
 }
 END_OF_FUNCTION(second);
 
-/**
- * Return elapsed time (Warning: very unsafe function. It supposes the delay
- * is always < MAX_TIME ms)
- */
 short get_elapsed_time(short start_time) {
     if (start_time <= tick_time) {
         return tick_time - start_time;
@@ -114,9 +110,6 @@ short get_elapsed_time(short start_time) {
     }
 }
 
-/**
- * Main game loop
- */
 void game() {
     do_init();
     GraphicEngine *graphicEngine = new GraphicEngine();
@@ -146,9 +139,6 @@ void game() {
     close_session();
 }
 
-/**
- * Initialize game engine
- */
 void do_init() {
     if (!load_map(map_path)) {
         error("Could not find map file");
@@ -188,15 +178,9 @@ void do_init() {
     remove("./docs/packet.list");
 }
 
-/**
- * Clean the engine
- */
 void do_exit() {
 }
 
-/**
- * Check user input
- */
 void do_input() {
     if (walk_status == 0) {
         int x = get_x(player_node->coordinates);
@@ -354,18 +338,12 @@ bool handle_key(int unicode, int scancode)
     return false;
 }
 
-/**
- * Calculate packet length
- */
 int get_packet_length(short id) {
     int len = get_length(id);
     if (len == -1)len = RFIFOW(2);
     return len;
 }
 
-/**
- * Parse data received from map server into input buffer
- */
 void do_parse() {
     unsigned short id;
     char *temp;
@@ -665,7 +643,7 @@ void do_parse() {
                     }
                     statusWindow->update();
                     if(char_info->hp==0) {
-                        OkDialog *death = new OkDialog(guiTop,
+                        OkDialog *death = new OkDialog("Message",
                                 "You're now dead, press ok to restart");
                         alert("","","","","",0,0);
                         WFIFOW(0) = net_w_value(0x00b2);

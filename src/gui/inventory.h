@@ -40,11 +40,10 @@
 #define INVENTORY_SIZE 100
 
 struct ITEM_HOLDER { // the holder of a item
-	int id;       // the id of the item
-	int quantity; // number of items
-	//int index;    // item position
+    int id;       // the id of the item
+    int quantity; // number of items
+    //int index;    // item position
 };
-
 
 /**
  * Inventory dialog.
@@ -53,7 +52,14 @@ struct ITEM_HOLDER { // the holder of a item
  */
 class InventoryWindow : public Window {
     public:
-        InventoryWindow(gcn::Container *parent);
+        /**
+         * Constructor.
+         */
+        InventoryWindow();
+
+        /**
+         * Destructor.
+         */
         ~InventoryWindow();
 
         /**
@@ -77,7 +83,7 @@ class InventoryWindow : public Window {
         int changeQuantity(int index, int quantity);
 
         /**
-         * Increase quantity of an item 
+         * Increase quantity of an item.
          */
         int increaseQuantity(int index, int quantity);
 

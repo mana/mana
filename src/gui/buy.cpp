@@ -29,8 +29,8 @@
 
 #include <sstream>
 
-BuyDialog::BuyDialog(gcn::Container *parent):
-    Window(parent, "Buy"),
+BuyDialog::BuyDialog():
+    Window("Buy"),
     money(0)
 {
     itemList = new ListBox(this);
