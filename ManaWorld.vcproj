@@ -79,7 +79,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="sdl_mixer.lib sdl.lib alleg.lib ws2_32.lib alfont.lib"
+				AdditionalDependencies="sdl_mixer.lib sdl.lib alfont.lib alleg.lib ws2_32.lib "
 				OutputFile="The Mana World.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
@@ -157,6 +157,9 @@
 				RelativePath=".\game.cpp">
 			</File>
 			<File
+				RelativePath=".\log.cpp">
+			</File>
+			<File
 				RelativePath=".\main.cpp">
 			</File>
 			<File
@@ -228,6 +231,9 @@
 			</File>
 			<File
 				RelativePath=".\game.h">
+			</File>
+			<File
+				RelativePath=".\log.h">
 			</File>
 			<File
 				RelativePath=".\main.h">
