@@ -96,10 +96,9 @@ void ChatWindow::chat_log(std::string line, int own)
         if (line.length() > maxLength)
         {   
 
+            tempText = line;
             if (line.length() > maxLength)
-                tempText = line.substr(0, maxLength);
-            else
-                tempText = line;
+                line = cut_string(tempText, maxLength);
 
             tmp.text = tempText;
 
@@ -107,9 +106,6 @@ void ChatWindow::chat_log(std::string line, int own)
             //chatlog_file.flush();
 
             chatlog.push_front(tmp);
-
-            if (line.length() > maxLength)
-                line = line.substr(maxLength, line.length() - maxLength);
         }
         else // Normal message
         {  
@@ -311,4 +307,36 @@ std::string ChatWindow::const_msg(CHATSKILL action)
     }
 
     return msg;
+}
+
+std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLength)
+{
+    // If the string exceeds the maximum length
+    if(value.length() > maximumLength)
+    {
+        unsigned int index = 0;
+        unsigned int lastSpace = 0;
+        std::string  cutOff = "";
+
+        for(index = 0; index < maximumLength; index++) {
+            if(value.at(index) == ' ') {
+                lastSpace = index;
+            }
+        }
+
+        // If the last space is at the beginning of the string
+        if(lastSpace == 0) {
+            // Just cut it right off from the end
+            cutOff = value.substr(maximumLength);
+            value  = value.substr(0, maximumLength);
+        } else {
+            // Cut it off from the last space forward
+            cutOff = value.substr(lastSpace + 1);
+            value  = value.substr(0, lastSpace);
+        }
+
+        return cutOff;
+    }
+
+    return std::string("");
 }
