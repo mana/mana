@@ -84,9 +84,7 @@ float ProgressBar::getProgress()
     return progress;
 }
 
-// Cette fonction permet de dessiner facilement une pixel sur l'écran, en gérant automatiquement le nombre de couleurs
- // de ce dernier...
- // Il suffit de lui passer la surface à peindre, les coordonnées (x,y), et la couleur (R,G,B) [0 ... 255]
+ // This function draws a pixel on the screen depending on the resolution etc...
  void DrawPixel(SDL_Surface * screen, int x, int y, Uint8 R, Uint8 G, Uint8 B)
 {
 	Uint32 color = SDL_MapRGB(screen->format, R, G, B);
@@ -113,7 +111,7 @@ float ProgressBar::getProgress()
 		}
 			break;
 			
-		case 3: // 24 BPP, peu utilisé, mais bon ...
+		case 3: // 24 BPP
 		{
 			Uint8 *bufp;
 			bufp = (Uint8 *)screen->pixels + y * screen->pitch + x * 3;
@@ -131,7 +129,7 @@ float ProgressBar::getProgress()
 		}
 			break;
 			
-		case 4: // 32 BPP, le plus utilisé !
+		case 4: // 32 BPP, the most useful !
 		{
 			Uint32 *bufp;
 			bufp = (Uint32 *)screen->pixels + y * screen->pitch/4 + x;
@@ -139,9 +137,9 @@ float ProgressBar::getProgress()
 		}
 			break;
 	} 
-} // Fin DrawLine
+} // End of DrawPixel
 
-// Dessine une ligne à l'écran avec une couleur et des coordonnées fournies.
+// Draw A line.
 void DrawLine(SDL_Surface * screen, int x1, int y1, int x2, int y2, unsigned char Red, unsigned char Green, unsigned char Blue)
 {
 	float a, b, Temp_x1, Temp_x2, Temp_y1, Temp_y2;
@@ -153,9 +151,9 @@ void DrawLine(SDL_Surface * screen, int x1, int y1, int x2, int y2, unsigned cha
 	
 	if ( (x1-x2) != 0) 
 	{
-		a=(Temp_y1-Temp_y2)/(Temp_x1-Temp_x2); // La pente // -350/-410=0.00
+		a=(Temp_y1-Temp_y2)/(Temp_x1-Temp_x2); // the a in y=ax+b
 	}
-	else // la ligne est verticale !
+	else // The line is vertical
 	{
 		if ( y1 < y2)
 		{
@@ -207,5 +205,5 @@ void DrawLine(SDL_Surface * screen, int x1, int y1, int x2, int y2, unsigned cha
 		}
 	}
 
-} // Fin DrawLine 
+} // End of DrawLine 
 
