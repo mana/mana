@@ -228,7 +228,7 @@ void do_input() {
     }
   } 
 
-	rect(screen, (mouse_x/32)*32,(mouse_y/32)*32, ((mouse_x/32)+1)*32, ((mouse_y/32)+1)*32, makecol(255,255,255));
+	//rect(screen, (mouse_x/32)*32,(mouse_y/32)*32, ((mouse_x/32)+1)*32, ((mouse_y/32)+1)*32, makecol(255,255,255));
 
   if(mouse_b&2) {
     if(!show_npc_dialog) {
@@ -351,7 +351,7 @@ void do_parse() {
           if(player_node->speech!=NULL) {
             free(player_node->speech);
             player_node->speech = NULL;
-            node->speech_time = 0;
+            //node->speech_time = 0;
           }
           player_node->speech = temp;
           player_node->speech_time = SPEECH_TIME;
@@ -363,16 +363,8 @@ void do_parse() {
           break;
         // Success to walk request
         case 0x0087:
-					/*if(walk_status==1) {
-            if(get_dest_x(RFIFOP(6))==get_x(player_node->coordinates) && get_dest_y(RFIFOP(6))==get_y(player_node->coordinates))*/
 					if(walk_status==1)
               walk_status = 2;
-            /*else {
-              walk_status = 0;
-              set_coordinates(player_node->coordinates, src_x, src_y, get_direction(player_node->coordinates));
-              player_node->action = STAND;
-						}
-					}*/
           break;
         // Add new being
         case 0x0078:
