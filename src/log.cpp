@@ -185,5 +185,7 @@ void warning(const char *warning_text) {
 }
 
 void status(const char *status_text) {
+#ifdef DEBUG
 	log("Status", "last_function", status_text);
+#endif
 }

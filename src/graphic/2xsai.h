@@ -7,9 +7,6 @@
 
 #include <allegro.h>
 #include <allegro/internal/aintern.h>
-//#include <string.h>
-
-
 
 #define uint32 unsigned long
 #define uint16 unsigned short

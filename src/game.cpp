@@ -96,7 +96,7 @@ void game() {
   status("INIT");
   do_init();
 	init_graphic();
-  while(state!=EXIT) {
+  while(state!=EXIT) {  
     status("INPUT");
     do_input();
     status("GRAPHIC");
@@ -106,7 +106,7 @@ void game() {
     status("FLUSH");
     flush();
     
-    rest(1); // This one should work only in Win32
+    //rest(1); // This one should work only in Win32
   }
 
   exit_graphic();
@@ -164,7 +164,7 @@ void do_input() {
 		int x = get_x(player_node->coordinates);
 		int y = get_y(player_node->coordinates);
 
-    if(key[KEY_UP]) {
+    if(key[KEY_8_PAD]) {
       if(get_walk(x, y-1)!=0) {
         walk(x, y-1, NORTH);
 				walk_status = 1;
@@ -174,7 +174,7 @@ void do_input() {
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y-1, NORTH);
       } else set_coordinates(player_node->coordinates, x, y, NORTH);
-    } else if(key[KEY_DOWN]) {
+    } else if(key[KEY_2_PAD]) {
       if(get_walk(x, y+1)!=0) {
         walk(x, y+1, SOUTH);
 				walk_status = 1;
@@ -184,7 +184,7 @@ void do_input() {
         player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x, y+1, SOUTH);
       } else set_coordinates(player_node->coordinates, x, y, SOUTH);
-    } else if(key[KEY_LEFT]) {
+    } else if(key[KEY_4_PAD]) {
       if(get_walk(x-1, y)!=0) {
         walk(x-1, y, WEST);
 				walk_status = 1;
@@ -194,7 +194,7 @@ void do_input() {
 				player_node->tick_time = tick_time;
         set_coordinates(player_node->coordinates, x-1, y, WEST);
       } else set_coordinates(player_node->coordinates, x, y, WEST);
-    } else if(key[KEY_RIGHT]) {
+    } else if(key[KEY_6_PAD]) {
       if(get_walk(x+1, y)!=0) {
         walk(x+1, y, EAST);
 				walk_status = 1;
@@ -347,9 +347,11 @@ void do_parse() {
         if((i+1)%10==0)fprintf(file, "\n");
       }
       fclose(file);*/
+#ifdef DEBUG
 			FILE *file = fopen("./docs/packet.list", "ab");
 			fprintf(file, "%x\n", RFIFOW(0));
 			fclose(file);
+#endif
 
       // Parse packet based on their id
       switch(id) {
