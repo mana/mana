@@ -25,6 +25,7 @@
 #include "../gui/gui.h"
 #include "../gui/textfield.h"
 #include "../gui/status.h"
+#include "../gui/minimap.h"
 #include "../main.h"
 #include "../being.h"
 
@@ -53,6 +54,7 @@ NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
 StatsWindow *statsWindow;
 Setup* setupWindow;
+Minimap *minimap;
 
 void ChatListener::action(const std::string& eventId)
 {
@@ -266,6 +268,10 @@ Engine::Engine()
     
     setupWindow = new Setup();
     setupWindow->setVisible(false);
+    
+    // Create minimap
+    
+    minimap = new Minimap();
 
     // Give focus to the chat input
     chatInput->requestFocus();

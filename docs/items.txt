@@ -31,3 +31,5 @@ of items. An item can have the following properties:
 Every being will have a variable number of slots to equip items. For a player
 we will have 6 slots: head, upper body, lower body, feet, left hand, right
 hand.
+To equip an item you should go to the inventory, select the desired item and push the "Equip"
+button. To uneqip, push the "Unequip" button in the equipment window. Unequipped items should automatically go back in the inventory.

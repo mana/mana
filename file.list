@@ -14,6 +14,7 @@ MODULES = src/sound/sound.cpp \
           src/gui/itemcontainer.cpp \
           src/gui/listbox.cpp \
           src/gui/login.cpp \
+          src/gui/minimap.cpp \
           src/gui/npc.cpp \
           src/gui/npc_text.cpp \
           src/gui/ok_dialog.cpp \
