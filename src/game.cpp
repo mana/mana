@@ -358,7 +358,8 @@ void do_input()
                         WFIFOSET(7);
                         current_npc = id;
                     }
-                } else {
+                } /*
+                else {
                     id = find_pc(mx, my);
                     if (id != 0) {
                         // Begin a trade
@@ -366,7 +367,7 @@ void do_input()
                         WFIFOL(2) = net_l_value(id);
                         WFIFOSET(6);
                     }
-                }
+                } */
             }
         }
         else if (event.type == SDL_QUIT)
