@@ -799,6 +799,8 @@ void do_parse() {
                     break;
                 // Trade: Item add response
                 case 0x00ea:
+                    tradeWindow->setTradeButton(false);
+                    //chatWindow->chat_log("add response got", BY_SERVER);
                     switch (RFIFOB(4)) {
                         case 0:
                             // Successfully added item
@@ -827,10 +829,29 @@ void do_parse() {
                             break;
                     }
                     break;
-                   
+                // Trade: Received Ok message
+                case 0x00ec:
+                    switch (RFIFOB(2)) {
+                        // Received ok from myself
+                        case 0:
+                            tradeWindow->receivedOk(true);
+                            break;
+                        // Received ok from the other
+                        case 1:
+                            tradeWindow->receivedOk(false);
+                            break;
+                    }
+                    break;
                 // Trade: Trade cancelled
                 case 0x00ee:
                     chatWindow->chat_log("Trade cancelled.", BY_SERVER);
+                    tradeWindow->setVisible(false);
+                    tradeWindow->reset();
+                    break;
+                
+                // Trade: Trade completed
+                case 0x00f0:
+                    chatWindow->chat_log("Trade completed.", BY_SERVER);
                     tradeWindow->setVisible(false);
                     tradeWindow->reset();
                     break;
@@ -854,6 +875,7 @@ void do_parse() {
                         chatWindow->chat_log(info, BY_SERVER);*/
                     }
                     break;
+
                     // Get the equipments
                 case 0x00a4:
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++) {

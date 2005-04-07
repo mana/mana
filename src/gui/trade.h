@@ -77,6 +77,16 @@ class TradeWindow : public Window, gcn::ActionListener {
          * Increase quantity of an item.
          */
         int increaseQuantity(int index, bool own, int quantity);
+       
+        /**
+         * Set trade Button disabled
+         */
+        int setTradeButton(bool enabled);
+        
+        /**
+         * Player received ok message from server
+         */
+        int receivedOk(bool own);
         
         /**
          * Called when receiving actions from the widgets.
@@ -88,7 +98,8 @@ class TradeWindow : public Window, gcn::ActionListener {
     
     private:
         gcn::Label *nameLabel;
-        gcn::Button *addButton, *cancelButton;
+        gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
+        bool ok_other, ok_me;
 };
 
 #endif

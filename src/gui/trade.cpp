@@ -36,17 +36,31 @@ TradeWindow::TradeWindow():
     setContentSize(322, 130);
     
     addButton = new Button("Add");
+    okButton = new Button("Ok");
     cancelButton = new Button("Cancel");
+    tradeButton = new Button("Trade");
+    
     addButton->setPosition(2, 105);
-    cancelButton->setPosition(200, 105);
+    okButton->setPosition(30, 105);
+    cancelButton->setPosition(270, 105);
+    tradeButton->setPosition(230,105);
     
     addButton->setEventId("add");
+    okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
+    tradeButton->setEventId("trade");
+    
     addButton->addActionListener(this);
+    okButton->addActionListener(this);
     cancelButton->addActionListener(this);
+    tradeButton->addActionListener(this);
+
+    tradeButton->setEnabled(false);
     
     add(addButton);
+    add(okButton);
     add(cancelButton);
+    add(tradeButton);
     
     nameLabel = new gcn::Label("Other one");
     nameLabel->setPosition(2, 45);
@@ -68,7 +82,9 @@ TradeWindow::TradeWindow():
 TradeWindow::~TradeWindow()
 {
     delete addButton;
+    delete okButton;
     delete cancelButton;
+    delete tradeButton;
     delete nameLabel;
 }
 
@@ -119,6 +135,38 @@ int TradeWindow::increaseQuantity(int index, bool own, int quantity) {
 int TradeWindow::reset() {
     my_items->resetItems();
     trade_items->resetItems();
+    tradeButton->setEnabled(false);
+    okButton->setEnabled(true);
+    ok_other = false;
+    ok_me = false;
+    return 0;
+}
+
+int TradeWindow::setTradeButton(bool enabled) {
+    tradeButton->setEnabled(enabled);
+    return 0;
+}
+
+int TradeWindow::receivedOk(bool own) {
+    if (own) {
+        ok_me = true;
+        if (ok_other) {
+            tradeButton->setEnabled(true);
+            okButton->setEnabled(false);
+        } else {
+            tradeButton->setEnabled(false);
+            okButton->setEnabled(false);
+        }
+    } else {
+        ok_other = true;
+        if (ok_me) {
+            tradeButton->setEnabled(true);
+            okButton->setEnabled(false);
+        } else {
+            tradeButton->setEnabled(false);
+            okButton->setEnabled(true);
+        }
+    }
     return 0;
 }
 
@@ -161,6 +209,8 @@ void TradeWindow::action(const std::string &eventId)
 {
     
     if (eventId == "add") {
+        // This is still kinda buggy, when ok is clicked, will need to play
+        // RO a bit to review its trade behaviour
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
             if (tradeWindow->my_items->getFreeSlot() >= 0) {
@@ -169,12 +219,21 @@ void TradeWindow::action(const std::string &eventId)
                 WFIFOW(2) = net_w_value(inventoryWindow->items->getIndex());
                 WFIFOL(4) = net_l_value(inventoryWindow->items->getQuantity());
                 WFIFOSET(8);
+                //chatWindow->chat_log("add packet sent", BY_SERVER);
                 while ((out_size > 0)) flush();
-                
+                              
             }
         }
     } else if (eventId == "cancel") {
         WFIFOW(0) = net_w_value(0x00ed);
+        WFIFOSET(2);
+        while ((out_size > 0)) flush();
+    } else if (eventId == "ok") {
+        WFIFOW(0) = net_w_value(0x00eb);
+        WFIFOSET(2);
+        while ((out_size > 0)) flush();
+    } else if (eventId == "trade") {
+        WFIFOW(0) = net_w_value(0x00ef);
         WFIFOSET(2);
         while ((out_size > 0)) flush();
     }
