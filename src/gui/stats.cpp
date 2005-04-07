@@ -94,7 +94,9 @@ void StatsWindow::update(){
     statsStr[5] << "Luck:";
     figureStr[5] << (int)char_info->LUK;
 
-    remainingStatsPointsStr << "Remaining Status Points : " << char_info->statsPointsToAttribute;
+    int statusPoints = char_info->statsPointsToAttribute;
+
+    remainingStatsPointsStr << "Remaining Status Points: " << statusPoints;
     
     pointsStr[0] << (int)char_info->STRUp;
     pointsStr[1] << (int)char_info->AGIUp;
@@ -102,6 +104,14 @@ void StatsWindow::update(){
     pointsStr[3] << (int)char_info->INTUp;
     pointsStr[4] << (int)char_info->DEXUp;
     pointsStr[5] << (int)char_info->LUKUp;
+
+    // Enable buttons for which there are enough status points
+    statsButton[0]->setEnabled(char_info->STRUp <= statusPoints);
+    statsButton[1]->setEnabled(char_info->AGIUp <= statusPoints);
+    statsButton[2]->setEnabled(char_info->VITUp <= statusPoints);
+    statsButton[3]->setEnabled(char_info->INTUp <= statusPoints);
+    statsButton[4]->setEnabled(char_info->DEXUp <= statusPoints);
+    statsButton[5]->setEnabled(char_info->LUKUp <= statusPoints);
 
     // Update labels
     for (i = 0; i < 6; i++) {

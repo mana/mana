@@ -55,7 +55,8 @@ char *skill_db[] = {
 
 
 SkillDialog::SkillDialog():
-    Window("Skills")
+    Window("Skills"),
+    skillPoints(0)
 {
     skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
@@ -63,6 +64,7 @@ SkillDialog::SkillDialog():
     incButton = new Button(" Up ");
     closeButton = new Button("Close");
 
+    skillListBox->setEventId("skill");
     incButton->setEventId("inc");
     closeButton->setEventId("close");
 
@@ -77,6 +79,7 @@ SkillDialog::SkillDialog():
     add(incButton);
     add(closeButton);
 
+    skillListBox->addActionListener(this);
     incButton->addActionListener(this);
     closeButton->addActionListener(this);
 
@@ -106,12 +109,19 @@ void SkillDialog::action(const std::string& eventId)
         int selectedSkill = skillListBox->getSelected();
         std::cout << "SkillDialog::action(" << selectedSkill << ")\n";
         if (char_info->skill_point > 0 && selectedSkill >= 0) {
-            std::cout << "Sending upgrade of id " << skillList[selectedSkill]->id << "\n";
+            std::cout << "Sending upgrade of id " <<
+                skillList[selectedSkill]->id << "\n";
             WFIFOW(0) = net_w_value(0x0112);
             WFIFOW(2) = net_w_value(
                     skillList[selectedSkill]->id);
             WFIFOSET(4);
         }
+    }
+    else if (eventId == "skill")
+    {
+        incButton->setEnabled(
+                skillListBox->getSelected() > -1 &&
+                skillPoints > 0);
     }
     else if (eventId == "close")
     {
@@ -121,11 +131,15 @@ void SkillDialog::action(const std::string& eventId)
 
 void SkillDialog::setPoints(int i)
 {
-    char tmp[128];
-    sprintf(tmp, "Skill points: %i", i);
+    skillPoints = i;
+
     if (pointsLabel != NULL) {
+        char tmp[128];
+        sprintf(tmp, "Skill points: %i", skillPoints);
         pointsLabel->setCaption(tmp);
     }
+
+    incButton->setEnabled(skillListBox->getSelected() > -1 && skillPoints > 0);
 }
 
 int SkillDialog::getNumberOfElements()

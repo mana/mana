@@ -48,6 +48,7 @@ class SkillDialog : public Window, public gcn::ActionListener,
         gcn::Button *closeButton;
 
         std::vector<SKILL*> skillList;
+        int skillPoints;
 
     public:
         /**
