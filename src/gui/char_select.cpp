@@ -104,6 +104,7 @@ CharSelectDialog::CharSelectDialog():
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
+    setPlayerInfo(NULL);
 }
 
 CharSelectDialog::~CharSelectDialog()
@@ -156,6 +157,9 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         levelLabel->setCaption(levelCaption.str());
         jobLevelLabel->setCaption(jobCaption.str());
         moneyLabel->setCaption(moneyCaption.str());
+        newCharButton->setEnabled(false);
+        delCharButton->setEnabled(true);
+        selectButton->setEnabled(true);
 
         playerBox->hairStyle = pi->hair_style - 1;
         playerBox->hairColor = pi->hair_color - 1;
@@ -166,6 +170,9 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         levelLabel->setCaption("Level");
         jobLevelLabel->setCaption("Job Level");
         moneyLabel->setCaption("Money");
+        newCharButton->setEnabled(true);
+        delCharButton->setEnabled(false);
+        selectButton->setEnabled(false);
 
         playerBox->hairStyle = 0;
         playerBox->hairColor = 0;
