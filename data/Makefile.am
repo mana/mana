@@ -1,4 +1,5 @@
-EXTRA_DIST = maps/new_3-1.gat \
+EXTRA_DIST = maps/new_1-1.tmx.gz \
+	     maps/new_3-1.tmx.gz \
 	     graphics/gui/bg_quad_dis.png \
 	     graphics/gui/button.png \
 	     graphics/gui/button_disabled.png \
@@ -14,7 +15,9 @@ EXTRA_DIST = maps/new_3-1.gat \
 	     graphics/gui/vscroll_blue.png \
 	     graphics/gui/vscroll_grey.png \
 	     graphics/gui/vscroll_red.png \
-	     graphics/tiles/desert.png \
+	     graphics/tiles/desert1.png \
+	     graphics/tiles/desert2.png \
+	     graphics/tiles/collision.png \
 	     graphics/sprites/emotions.png \
 	     graphics/sprites/items.png \
 	     graphics/sprites/monsters.png \
@@ -23,4 +26,4 @@ EXTRA_DIST = maps/new_3-1.gat \
 	     graphics/sprites/player_male_hair.png \
 	     graphics/sprites/weapons.png \
 	     graphics/images/login_wallpaper.png \
-	     sfx/level.ogg
+	     sfx/bow_shoot_1.ogg

@@ -40,7 +40,8 @@
 #include <string.h>
 #include <memory.h>
 
-/*SDL_Rect **modes;
+/*
+SDL_Rect **modes;
 
 ModeListModel::ModeListModel()
 {
@@ -92,7 +93,8 @@ int ModeListModel::getNumberOfElements()
 std::string ModeListModel::getElementAt(int i)
 {
     return mode[i];
-}*/
+}
+*/
 
 Setup::Setup():
     Window("Setup")
@@ -121,9 +123,11 @@ Setup::Setup():
 
     // Set dimensions/positions
     setContentSize(240, 216);
-    /*scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
+    /*
+    scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));*/
+    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));
+    */
     cancelButton->setPosition(
             240 - 5 - cancelButton->getWidth(),
             216 - 5 - cancelButton->getHeight());
@@ -168,13 +172,13 @@ Setup::Setup():
 
 Setup::~Setup()
 {
-    delete modeListModel;
-    delete modeList;
-    delete scrollArea;
+    //delete modeListModel;
+    //delete modeList;
+    //delete scrollArea;
     delete fsCheckBox;
     delete soundCheckBox;
     delete soundLabel;
-    delete displayLabel;
+    //delete displayLabel;
     delete applyButton;
     delete cancelButton;
     delete alphaLabel;

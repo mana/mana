@@ -1,10 +1,10 @@
-Cause it wouldn't be convenient if everybody fixed every small map error he
+Because it wouldn't be convenient if everybody fixed every small map error he
 encounters, instead one can add it to this list and a mapper can include the
 fixes the next time he updates the map. Suggestions can be done here as well.
 
 Errors:
-- House roof in too low layer at 103,24 in new_3-1
-- Palm in too low layer at 65,66 in new_3-1
+- No known errors
 
 Suggestions:
 - The large empty area at 44,34 in new_3-1 is reserved for the city's "palace"
+- Place some more rock ridges in new_1-1

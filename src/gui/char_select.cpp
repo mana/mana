@@ -180,7 +180,8 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
     }
 }
 
-void CharSelectDialog::serverCharDelete() {
+void CharSelectDialog::serverCharDelete()
+{
     // Request character deletion
     WFIFOW(0) = net_w_value(0x0068);
     WFIFOL(2) = net_l_value(char_info->id);

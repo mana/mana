@@ -32,7 +32,7 @@ void Sound::init(int voices, int mod_voices)
 
     bgm = NULL;
     int audio_rate = 44100;
-    Uint16 audio_format = AUDIO_S16; // 16-bit stereo
+    Uint16 audio_format = MIX_DEFAULT_FORMAT;
     int audio_channels = 2;
     int audio_buffers = 4096;
 
@@ -47,7 +47,7 @@ void Sound::init(int voices, int mod_voices)
     
     Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
     char *format_str="Unknown";
-    switch(audio_format) {
+    switch (audio_format) {
         case AUDIO_U8: format_str="U8"; break;
         case AUDIO_S8: format_str="S8"; break;
         case AUDIO_U16LSB: format_str="U16LSB"; break;

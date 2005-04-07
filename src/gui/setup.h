@@ -67,14 +67,14 @@ class ModeListModel : public gcn::ListModel {
 class Setup : public Window, public gcn::ActionListener {
     private:
         // Dialog parts
-        ModeListModel *modeListModel;
-        gcn::Label *displayLabel;
+        //ModeListModel *modeListModel;
+        //gcn::Label *displayLabel;
         gcn::CheckBox *fsCheckBox;
         gcn::Label *soundLabel;
         gcn::CheckBox *soundCheckBox;
         gcn::RadioButton *disabledRadio;
-        gcn::ScrollArea *scrollArea;
-        gcn::ListBox *modeList;
+        //gcn::ScrollArea *scrollArea;
+        //gcn::ListBox *modeList;
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
         gcn::Label *alphaLabel;

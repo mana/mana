@@ -165,7 +165,7 @@ void init_engine()
         else {
             fclose(tmwFile);
             // Fill configuration with defaults
-            config.setValue("host", "animesites.de");
+            config.setValue("host", "www.lindeijer.nl");
             config.setValue("port", 6901);
             config.setValue("hwaccel", 0);
             config.setValue("screen", 0);

@@ -39,7 +39,8 @@ Minimap::Minimap()
     sourceRect.x = sourceRect.y = 0;
     sourceRect.w = MINIMAP_W;
     sourceRect.h = MINIMAP_H;
-    if ( mapBackground )
+
+    if (mapBackground)
     { 
         SDL_FillRect(mapBackground, &sourceRect, mapColor);
         SDL_SetAlpha(mapBackground, SDL_SRCALPHA, 120);
@@ -59,18 +60,18 @@ void Minimap::draw(gcn::Graphics *graphics)
                 getWidth(), getHeight(), 
                 (screen->format->BytesPerPixel * 8), 0, 0, 0, 0);
         Uint32 mapColor = SDL_MapRGB(screen->format, 52, 149, 210);
-        SDL_Rect sourceRect;
-        sourceRect.x = sourceRect.y = 0;
-        sourceRect.w = getWidth();
-        sourceRect.h = getHeight();
 
         if (mapBackground)
         { 
+            SDL_Rect sourceRect;
+            sourceRect.x = sourceRect.y = 0;
+            sourceRect.w = getWidth();
+            sourceRect.h = getHeight();
             SDL_FillRect(mapBackground, &sourceRect, mapColor);
             SDL_SetAlpha(mapBackground, SDL_SRCALPHA, 120);
         }
     }
-    
+
     if (mapBackground)
     {
         SDL_Rect screenRect;
@@ -81,7 +82,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
         SDL_BlitSurface(mapBackground, NULL, screen, &screenRect);
     }
-    
+
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     graphics->setColor(gcn::Color(209, 52, 61));

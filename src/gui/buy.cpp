@@ -42,6 +42,7 @@ BuyDialog::BuyDialog():
     moneyLabel = new gcn::Label("350 G");
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
+    okButton->setEnabled(false);
 
     setContentSize(260, 175);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
@@ -121,11 +122,17 @@ void BuyDialog::action(const std::string& eventId)
     if (eventId == "slider" || eventId == "item") {
         if (selectedItem > -1) {
             int maxItems = money / shopInventory[selectedItem].price;
+            int numItems = (int)(slider->getValue() * maxItems);
             std::stringstream ss;
 
-            ss << (int)(slider->getValue() * maxItems);
+            ss << numItems;
             quantityLabel->setCaption(ss.str());
             quantityLabel->adjustSize();
+
+            okButton->setEnabled(numItems > 0);
+        }
+        else {
+            okButton->setEnabled(false);
         }
     }
     else if (eventId == "ok") {
