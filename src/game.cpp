@@ -801,20 +801,20 @@ void do_parse() {
                     switch (RFIFOB(4)) {
                         case 0:
                             // Successfully added item
-                            int ind = RFIFOW(2);
-                            if (inventoryWindow->items->isEquipment(ind)) {
-                                if (inventoryWindow->items->isEquipped(ind)) {
-                                    inventoryWindow->unequipItem(ind);
+                            if (inventoryWindow->items->isEquipment(RFIFOW(2))) {
+                                if (inventoryWindow->items->isEquipped(RFIFOW(2))) {
+                                    inventoryWindow->unequipItem(RFIFOW(2));
                                 }
                             }
 
                             tradeWindow->addItem(
                                     tradeWindow->my_items->getFreeSlot(),
-                                    inventoryWindow->items->getId(ind),
-                                    true,
-                                    inventoryWindow->items->getQuantity(ind),
-                                    inventoryWindow->items->isEquipment(ind));
-                            inventoryWindow->changeQuantity(ind, 0);
+                                    inventoryWindow->items->getId(RFIFOW(2)),
+                                    true, inventoryWindow->items->getQuantity(
+                                    RFIFOW(2)),
+                                    inventoryWindow->items->isEquipment(
+                                    RFIFOW(2)));
+                            inventoryWindow->changeQuantity(RFIFOW(2), 0);
                             break;
                         case 1:
                             // Add item failed - player overweighted
