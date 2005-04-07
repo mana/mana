@@ -55,11 +55,11 @@ ServerSelectDialog::ServerSelectDialog():
                 100 - 3 * 5 - cancelButton->getHeight() -
                 scrollArea->getBorderSize()));
 
-    serverList->setEventId("ok");
+    //serverList->setEventId("ok");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
 
-    serverList->addActionListener(this);
+    //serverList->addActionListener(this);
     okButton->addActionListener(this);
     cancelButton->addActionListener(this);
 

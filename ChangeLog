@@ -1,9 +1,11 @@
-0.0.12  (~30 April 2005)
+0.0.11a  (7 April 2005)
+- Buttons are now disabled when appropriate
 - Fixed players standing on top of NPCs
 - Fixed getting stuck when trying to sell with nothing to sell
 - Fixed setup dialog windowed/fullscreen switching behaviour
-- Fixed gui opacity slider (windows only bug)
+- Fixed gui opacity slider (win32)
 - Fixed building up false inventory when warping
+- Fixed crash on startup with sound enabled (win32)
 
 0.0.11  (3 April 2005)
 - Added new maps, tiles and monsters
