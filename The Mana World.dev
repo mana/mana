@@ -1193,7 +1193,7 @@ BuildCmd=
 Compile=1
 
 [Unit114]
-FileName=src\gui\requesttrade.cpp
+FileName=src\gui\requesttrade.h
 CompileCpp=1
 Folder=gui
 Compile=1
@@ -1203,11 +1203,12 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit115]
-FileName=src\gui\requesttrade.h
+FileName=src\gui\requesttrade.cpp
 CompileCpp=1
 Folder=gui
+Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-Compile=1
+
