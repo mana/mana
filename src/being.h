@@ -43,6 +43,10 @@ class Being {
         std::string speech;
         unsigned char speech_time;
 
+	std::string damage;
+	unsigned char damage_time;
+	float damage_y;			//Y coord of damage text
+
     public:
         unsigned int id;
         unsigned short job;
@@ -89,6 +93,15 @@ class Being {
          * @param time The amount of time the text should stay in milliseconds.
          */
         void setSpeech(const std::string &text, int time);
+
+        /**
+         * Puts a damage bubble above this being for the specified amount
+         * of time.
+         *
+         * @param text The text that should appear.
+         * @param time The amount of time the text should stay in milliseconds.
+         */
+        void setDamage(const std::string &text, int time);
 
         /**
          * Sets the hair color for this being.

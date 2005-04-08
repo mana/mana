@@ -1043,12 +1043,12 @@ void do_parse() {
 
                                 if (RFIFOW(22) == 0) {
                                     // Yellow
-                                    being->setSpeech("miss", SPEECH_TIME);
+                                    being->setDamage("miss", SPEECH_TIME);
                                 } else {
                                     // Blue for monster, red for player
                                     std::stringstream ss;
                                     ss << RFIFOW(22);
-                                    being->setSpeech(ss.str(), SPEECH_TIME);
+                                    being->setDamage(ss.str(), SPEECH_TIME);
                                 }
 
                                 if (RFIFOL(2) != player_node->id) { // buggy
