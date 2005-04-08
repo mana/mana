@@ -50,6 +50,10 @@ class Window : public gcn::Window, public ConfigListener
 
         ImageRect border;          /**< The window border */
 
+	bool isWinResizeable;       /**< Window can be resized */
+	int minWinWidth;           /**< Minimum window width */
+	int minWinHeight;          /**< Minimum window height */
+
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
 
@@ -116,6 +120,26 @@ class Window : public gcn::Window, public ConfigListener
          * Sets the size of this window.
          */
         void setContentSize(int width, int height);
+
+	/**
+	 * Sets whether of not the window can be resized
+	 */
+	void setResizeable(bool resize);
+
+	/**
+	 * Returns the current value of isResizable
+	 */
+	bool getResizeable();
+
+	/**
+	 * Sets the minimum width of the window
+	 */
+	void setMinWidth(unsigned int width);
+
+	/**
+	 * Sets the minimum height of the window
+	 */
+	void setMinHeight(unsigned int height);
 
         /**
          * Returns the parent window.

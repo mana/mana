@@ -32,7 +32,10 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     parent(parent),
     snapSize(8),
-    modal(modal)
+    modal(modal),
+    minWinWidth(256),
+    minWinHeight(128),
+    isWinResizeable(false)
 {
     logger.log("Window::Window(\"%s\")", caption.c_str());
 
@@ -156,6 +159,26 @@ void Window::setContentSize(int width, int height)
     setContentHeight(height);
 }
 
+void Window::setMinWidth(unsigned int width)
+{
+    minWinWidth = width;
+}
+
+void Window::setMinHeight(unsigned int height)
+{
+    minWinHeight = height;
+}
+
+void Window::setResizeable(bool r)
+{
+	isWinResizeable = r;
+}
+
+bool Window::getResizeable()
+{
+	return isWinResizeable;
+}
+
 Window *Window::getParentWindow()
 {
     return parent;
@@ -194,8 +217,19 @@ void Window::mouseMotion(int mx, int my)
         //if (y < snapSize) y = 0;
         //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
-
-        setPosition(x, y);
+	
+	if (isWinResizeable && mx > getWidth() - 16) {
+            //resize
+	    if (mx < minWinWidth)
+		    mx = minWinWidth;
+	    if (my < minWinHeight)
+		    my = minWinHeight;
+            setWidth(mx);
+	    setHeight(my);
+	} else {
+            //move
+            setPosition(x, y);
+	}
     }
 }
 
