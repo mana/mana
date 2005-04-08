@@ -360,6 +360,8 @@ void do_input()
                     }
                 }
                 else {
+                    // Search for player character to trade with
+                    /*
                     id = find_pc(mx, my);
                     if (id != 0) {
                         // Begin a trade
@@ -367,6 +369,7 @@ void do_input()
                         WFIFOL(2) = net_l_value(id);
                         WFIFOSET(6);
                     }
+                    */
                 }
             }
         }
