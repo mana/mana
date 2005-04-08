@@ -1,0 +1,38 @@
+--------------------------------
+THE MANA WORLD SOUND DEVELOPMENT
+--------------------------------
+
+1. INTRODUCTION
+2. SPECS
+3. DATA REQUIRED
+4. SUGGESTION
+
+1. INTRODUCTION
+
+In The Mana World we plan to have both background music and sound effects
+linked to beings actions.
+
+2. SPECS
+
+The preferred file format is Ogg mastered at 22.050 Hz. Quality factor 3.0
+should be enough.
+We strongly recomend to not convert the file from a previous format to avoid
+loss of quality. 22 Khz is not the best quality we can have, that's why is
+really important to have the sound digitally recorded and without noise at
+all.
+
+3. DATA REQUIRED
+
+- Login BGM (need to be remastered to improve quality, tempo and remove noise)
+- Amzeroth (or whatever it's the name) BGM
+- South field BGM
+- Level up SFX
+- Sword slash SFX
+- Bow shot SFX
+- Monsters attack SFX
+- Monsters death SFX
+- Potion SFX (used for every recovery item)
+
+4. SUGGESTIONS
+
+As placeholders we could use Wesnoth SFX/BGM to test the sound engine.
