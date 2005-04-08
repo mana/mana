@@ -63,7 +63,7 @@ class RequestTradeDialog : public Window, public gcn::ActionListener
     private:
         gcn::Button *acceptButton;
         gcn::Button *cancelButton;
-        gcn::Label *nameLabel[1];
+        gcn::Label *nameLabel[2];
 };
 
 #endif
