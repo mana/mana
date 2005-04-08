@@ -114,6 +114,7 @@ void sort() {
 
 Being::Being():
     speech_time(0),
+    damage(""), damage_time(0), damage_y(0.0),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     type(0), action(0), frame(0),
@@ -123,8 +124,7 @@ Being::Being():
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
     hair_style(1), hair_color(1),
-    weapon(0),
-    damage(""), damage_time(0), damage_y(0.0)
+    weapon(0)
 {
 }
 
@@ -163,6 +163,7 @@ void Being::setDamage(const std::string &text, int time)
 {
     damage = text;
     damage_time = time;
+    damage_y = 0;
 }
 
 void Being::nextStep()
@@ -226,8 +227,7 @@ void Being::drawSpeech(Graphics *graphics)
                            text_x + 60, text_y - 60 - (int)damage_y,
                            gcn::Graphics::CENTER);
         damage_y += 0.5;
-    } else
-        damage_y = 0;
+    }
 }
 
 void Being::tick()
