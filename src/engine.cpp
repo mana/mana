@@ -288,7 +288,6 @@ void Engine::logic()
 
 void Engine::draw()
 {
-    player_node->speed = 150;
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);

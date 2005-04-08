@@ -99,14 +99,17 @@ void Gui::draw()
 void Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
-    int tilex = mx / 32 + camera_x;
-    int tiley = my / 32 + camera_y;
-
     // Experimental mouse walk support
-    if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
-        walk(tilex, tiley, 0);
-        player_node->setPath(tiledMap->findPath(
-                    player_node->x, player_node->y,
-                    tilex, tiley));
+
+    if (button == gcn::MouseInput::LEFT) {
+        int tilex = mx / 32 + camera_x;
+        int tiley = my / 32 + camera_y;
+
+        if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
+            walk(tilex, tiley, 0);
+            player_node->setPath(tiledMap->findPath(
+                        player_node->x, player_node->y,
+                        tilex, tiley));
+        }
     }
 }
