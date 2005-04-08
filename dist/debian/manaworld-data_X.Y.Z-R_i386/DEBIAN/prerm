@@ -1,5 +1,0 @@
-#!/bin/sh
-if [ \( "$1" = "upgrade" -o "$1" = "remove" \) ]; then
-   # Nothing at all for the moment
-   echo "";
-fi 

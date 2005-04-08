@@ -1,7 +1,0 @@
-?package(manaworld): \
- needs="X11" \
- section="Games/Arcade" \
- title="The Mana World" \
- longtitle="The Mana World is an Online Fantasy arcade game." \
- command="/usr/games/manaworld" \
- icon="/usr/share/pixmaps/manaworld-icon.xpm"

@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ "$1" = "configure" ]; then
-   # Update Menus
-   if [ -x update-menus ]; then
-       update-menus;
-   fi
-fi 
