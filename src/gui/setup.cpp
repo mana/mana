@@ -207,7 +207,14 @@ void Setup::action(const std::string &eventId)
             displayFlags &= ~SDL_FULLSCREEN;
         }
         
+        displayFlags |= SDL_DOUBLEBUF;
+        
         screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+        if (screen == NULL) {
+            std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
+                bitDepth << " video mode: " << SDL_GetError() << std::endl;
+            exit(1);
+        }
         
 /*            if (displayFlags & SDL_FULLSCREEN) {
 #ifdef WIN32
