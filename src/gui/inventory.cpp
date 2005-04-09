@@ -168,9 +168,10 @@ void InventoryWindow::mouseMotion(int mx, int my)
 void InventoryWindow::updateWidgets()
 {
 	//resize widgets
-	useButton->setPosition(20, getHeight() - 48);
-	dropButton->setPosition(60, getHeight() - 48);
-	items->setSize(getWidth() - 24 - 12 - 8 - 1, (getHeight() - 40 - 8 - 1) + items->getQuantity() * 24 - 1);
-	invenScroll->setSize(getWidth() - 32, getHeight() - 48 - 8);
+	useButton->setPosition(20, getHeight() - 24);
+	dropButton->setPosition(60, getHeight() - 24);
+	items->setSize(getWidth() - 24 - 12 - 8 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+	invenScroll->setSize(getWidth() - 32, getHeight() - 32 - 8);
 	setContentSize(getWidth(), getHeight());
 }
+

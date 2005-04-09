@@ -53,6 +53,9 @@ class Window : public gcn::Window, public ConfigListener
 	bool isWinResizeable;       /**< Window can be resized */
 	int minWinWidth;           /**< Minimum window width */
 	int minWinHeight;          /**< Minimum window height */
+	int maxWinWidth;           /**< Maximum window width */
+	int maxWinHeight;          /**< Maximum window height */
+
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
@@ -140,6 +143,17 @@ class Window : public gcn::Window, public ConfigListener
 	 * Sets the minimum height of the window
 	 */
 	void setMinHeight(unsigned int height);
+
+	/**
+	 * Sets the maximum width of the window
+	 */
+	void setMaxWidth(unsigned int width);
+
+	/**
+	 * Sets the minimum height of the window
+	 */
+	void setMaxHeight(unsigned int height);
+
 
         /**
          * Returns the parent window.

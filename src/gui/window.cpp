@@ -35,6 +35,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     modal(modal),
     minWinWidth(256),
     minWinHeight(128),
+    maxWinWidth(512),
+    maxWinHeight(512),
     isWinResizeable(false)
 {
     logger.log("Window::Window(\"%s\")", caption.c_str());
@@ -169,6 +171,16 @@ void Window::setMinHeight(unsigned int height)
     minWinHeight = height;
 }
 
+void Window::setMaxWidth(unsigned int width)
+{
+    maxWinWidth = width;
+}
+
+void Window::setMaxHeight(unsigned int height)
+{
+    maxWinHeight = height;
+}
+
 void Window::setResizeable(bool r)
 {
 	isWinResizeable = r;
@@ -224,6 +236,11 @@ void Window::mouseMotion(int mx, int my)
 		    mx = minWinWidth;
 	    if (my < minWinHeight)
 		    my = minWinHeight;
+	    if (mx >= maxWinWidth)
+		    mx = maxWinWidth - 1;
+	    if (my >= maxWinHeight)
+		    my = maxWinHeight - 1;
+
             setWidth(mx);
 	    setHeight(my);
 	} else {
