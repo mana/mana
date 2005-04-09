@@ -60,6 +60,7 @@ class LoginDialog : public Window, public gcn::ActionListener {
         gcn::CheckBox *keepCheck;
         gcn::Button *okButton;
         gcn::Button *cancelButton;
+        gcn::Button *registerButton;
 };
 
 /**

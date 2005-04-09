@@ -31,6 +31,7 @@
 #include "../graphics.h"
 #include "../main.h"
 #include "../net/network.h"
+#include <string>
 
 LoginDialog::LoginDialog():
     Window("Login")
@@ -42,6 +43,7 @@ LoginDialog::LoginDialog():
     keepCheck = new CheckBox("Keep", false);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
+    registerButton = new Button("Register");
 
     setContentSize(200, 75);
 
@@ -59,17 +61,21 @@ LoginDialog::LoginDialog():
     okButton->setPosition(
             cancelButton->getX() - okButton->getWidth() - 5,
             75 - okButton->getHeight() - 5);
+    registerButton->setPosition(keepCheck->getX() + keepCheck->getWidth() + 10,
+            75 - registerButton->getHeight() - 5);
 
     userField->setEventId("ok");
     passField->setEventId("ok");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
+    registerButton->setEventId("register");
 
     userField->addActionListener(this);
     passField->addActionListener(this);
     keepCheck->addActionListener(this);
     okButton->addActionListener(this);
     cancelButton->addActionListener(this);
+    registerButton->addActionListener(this);
 
     add(userLabel);
     add(passLabel);
@@ -78,6 +84,7 @@ LoginDialog::LoginDialog():
     add(keepCheck);
     add(okButton);
     add(cancelButton);
+    add(registerButton);
 
     setLocationRelativeTo(getParent());
     userField->requestFocus();
@@ -119,14 +126,33 @@ void LoginDialog::action(const std::string& eventId)
         // Check login
         if (user.length() == 0) {
             new OkDialog("Error", "Enter your username first");
-        } else if (user.length() < 4) {
-            new OkDialog("Error", "The username needs to be at least 4 characters");
         } else {
             server_login(user, passField->getText());
             close_session();
         }
     } else if (eventId == "cancel") {
         state = EXIT;
+    } else if (eventId == "register") {
+        const std::string user = userField->getText();
+        logger.log("LoginDialog::register Username is %s", user.c_str());
+
+        // Store config settings
+        config.setValue("remember", keepCheck->isMarked());
+        if (keepCheck->isMarked()) {
+            config.setValue("username", user);
+        } else {
+            config.setValue("username", "");
+        }
+        
+        // Check login
+        if (user.length() == 0) {
+            new OkDialog("Error", "Enter a username first");
+        } else if (user.length() < 4) {
+            new OkDialog("Error", "The username needs to be at least 4 characters");
+        } else {
+            server_login(user + "_M", passField->getText());
+            close_session();
+        }
     }
 }
 
