@@ -119,6 +119,8 @@ void LoginDialog::action(const std::string& eventId)
         // Check login
         if (user.length() == 0) {
             new OkDialog("Error", "Enter your username first");
+        } else if (user.length() < 4) {
+            new OkDialog("Error", "The username needs to be at least 4 characters");
         } else {
             server_login(user, passField->getText());
             close_session();
@@ -193,8 +195,6 @@ void server_login(const std::string& user, const std::string& pass) {
     while ((in_size < 23) || (out_size > 0)) {
         flush();
     }
-    logger.log("Network: Packet ID: %x", RFIFOW(0));
-    logger.log("Network: Packet length: %d", get_packet_length(RFIFOW(0)));
 
     if (RFIFOW(0) == 0x0069) {
         while (in_size < RFIFOW(2)) {
@@ -216,7 +216,6 @@ void server_login(const std::string& user, const std::string& pass) {
         logger.log("Network: Server: %s (%s:%d)", server_info[0].name,
                 iptostring(server_info[0].address),
                 server_info[0].port);
-        logger.log("Network: Users: %d", server_info[0].online_users);
         RFIFOSKIP(RFIFOW(2));
     }
     else if (RFIFOW(0) == 0x006a) {
