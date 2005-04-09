@@ -61,24 +61,32 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         selectedItem = -1;
         
     for (int i = 0; i < INVENTORY_SIZE; i++) {
+        int itemX = (((i - 2) * 24) % (getWidth() - 24));
+        int itemY = (((i - 2) * 24) / (getWidth() - 24)) * 24;
+	itemX -= itemX % 24;
         if (items[i].quantity > 0) {
             if (items[i].id >= 501 && items[i].id <= 1202) {
                 itemset->spriteset[items[i].id - 501]->draw(screen,
-                        x + 24 * i, y + 2);
-
+							    x + itemX,
+							    y + itemY);
             }
 
             std::stringstream ss;
             if(!items[i].equipped)
                 ss << items[i].quantity;
-            graphics->drawText(ss.str(), 24 * i + 10, 24 + 2,
-                    gcn::Graphics::CENTER);
+            graphics->drawText(ss.str(),
+			       itemX + 12,
+			       itemY + 16,
+			       gcn::Graphics::CENTER);
         }
     }
     
     if (selectedItem >= 0) {
-        graphics->drawRectangle(gcn::Rectangle(24 * selectedItem + 1, 2,
-            20, 20));
+        int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
+        int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
+	itemX -= itemX % 24;
+        graphics->drawRectangle(gcn::Rectangle(itemX, itemY,
+					       24, 24));
     }
 }
 
@@ -176,7 +184,7 @@ void ItemContainer::increaseQuantity(int index, int quantity)
 void ItemContainer::mousePress(int mx, int my, int button)
 {
     if (button == gcn::MouseInput::LEFT)
-        selectedItem = mx / 24;
+        selectedItem = ((mx + 48) / 24) + ((my / 24) * (getWidth() / 24));
     if (selectedItem > INVENTORY_SIZE)
         selectedItem = INVENTORY_SIZE;
 }

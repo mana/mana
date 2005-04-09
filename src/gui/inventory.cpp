@@ -36,9 +36,15 @@ InventoryWindow::InventoryWindow():
 {
     setContentSize(322, 100);
     useButton = new Button("Use");
-    useButton->setPosition(20, 50);
+    useButton->setPosition(20, getHeight() - 48);
     dropButton = new Button("Drop");
-    dropButton->setPosition(60, 50);
+    dropButton->setPosition(60, getHeight() - 48);
+
+    items = new ItemContainer();
+    items->setPosition(2, 2);
+
+    invenScroll = new gcn::ScrollArea(items);
+    invenScroll->setPosition(4, 4);
     
     useButton->setEventId("use");
     dropButton->setEventId("drop");
@@ -47,11 +53,13 @@ InventoryWindow::InventoryWindow():
     
     add(useButton);
     add(dropButton);
-    
-    items = new ItemContainer();
-    items->setSize(318, 40);
-    items->setPosition(2, 2);
-    add(items);    
+    add(invenScroll);
+
+    setResizeable(true);
+    setMinWidth(240);
+    setMinHeight(96);
+
+    updateWidgets();
 }
 
 InventoryWindow::~InventoryWindow()
@@ -146,4 +154,23 @@ void InventoryWindow::action(const std::string &eventId)
             itemAmountWindow->setVisible(true);
         }       
     }
+}
+
+void InventoryWindow::mouseMotion(int mx, int my)
+{
+    int tmpWidth = getWidth(), tmpHeight = getHeight();
+    Window::mouseMotion(mx, my);
+    if (getWidth() != tmpWidth || getHeight() != tmpHeight) {
+	updateWidgets();
+    }
+}
+
+void InventoryWindow::updateWidgets()
+{
+	//resize widgets
+	useButton->setPosition(20, getHeight() - 48);
+	dropButton->setPosition(60, getHeight() - 48);
+	items->setSize(getWidth() - 24 - 12 - 8 - 1, (getHeight() - 40 - 8 - 1) + items->getQuantity() * 24 - 1);
+	invenScroll->setSize(getWidth() - 32, getHeight() - 48 - 8);
+	setContentSize(getWidth(), getHeight());
 }

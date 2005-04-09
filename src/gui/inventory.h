@@ -86,12 +86,16 @@ class InventoryWindow : public Window, gcn::ActionListener {
         void action(const std::string& eventId);
         
         int dropItem(int index, int quantity);
+
+	void mouseMotion(int mx, int my);
         
         ItemContainer *items;
         
     private:
         gcn::Button *useButton, *dropButton;
+	gcn::ScrollArea *invenScroll;
         int useItem(int index, int id);
+	void updateWidgets();
 
 };
 
