@@ -245,12 +245,25 @@ void server_login(const std::string& user, const std::string& pass) {
         RFIFOSKIP(RFIFOW(2));
     }
     else if (RFIFOW(0) == 0x006a) {
+        logger.log("Login::error code: %i", RFIFOB(2));
         switch (RFIFOB(2)) {
             case 0:
                 new OkDialog("Error", "Unregistered ID");
                 break;
             case 1:
                 new OkDialog("Error", "Wrong password");
+                break;
+            case 2:
+                new OkDialog("Error", "This ID is expired");
+                break;
+            case 3:
+                new OkDialog("Error", "Rejected from server");
+                break;
+            case 4:
+                new OkDialog("Error", "You have been blocked by the GM Team");
+                break;
+            case 9:
+                new OkDialog("Error", "The username does already exist.");
                 break;
         }
         state = LOGIN;
