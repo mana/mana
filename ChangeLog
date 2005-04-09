@@ -1,7 +1,7 @@
-0.0.11.2  (... April 2005)
+0.0.11.2  (8 April 2005)
 - Damage text now floats upwards
 - Mouse walk now only works with left mouse button
-- Fixed occasional crash on startup and exit
+- Fixed frequest crash on startup and exit that crept into 0.0.11.1
 
 0.0.11.1  (7 April 2005)
 - Buttons are now disabled when appropriate
