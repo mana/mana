@@ -134,6 +134,7 @@ Being::Being():
     hair_style(1), hair_color(1),
     weapon(0)
 {
+    strcpy(name, "");
 }
 
 Being::~Being() {

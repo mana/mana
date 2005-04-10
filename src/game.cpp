@@ -575,11 +575,11 @@ void do_parse() {
             }
             fclose(file);
             */
-//#ifdef __DEBUG
+#ifdef __DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-//#endif
+#endif
             // Parse packet based on their id
             switch (id) {
                 case SMSG_LOGIN_SUCCESS:
