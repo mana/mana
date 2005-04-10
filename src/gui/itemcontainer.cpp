@@ -23,7 +23,6 @@
 
 #include "../main.h"
 #include "itemcontainer.h"
-#include "../graphics.h"
 #include "../resources/resourcemanager.h"
 #include <sstream>
 
@@ -33,6 +32,9 @@ ItemContainer::ItemContainer()
     Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
     if (!itemImg) logger.error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
+
+    selImg = resman->getImage("graphics/gui/selection.png", IMG_ALPHA);
+    if (!selImg) logger.error("Unable to load items.png");
 
     selectedItem = -1; /**< No item selected */
     
@@ -84,8 +86,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
         int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
         itemX -= itemX % 24;
-        graphics->drawRectangle(gcn::Rectangle(itemX, itemY,
-                    24, 24));
+    	selImg->draw(screen, x + itemX, y+itemY);
     }
 }
 

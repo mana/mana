@@ -26,6 +26,7 @@
 
 #include <iostream>
 #include <guichan.hpp>
+#include "../graphics.h"
 #include "../resources/image.h"
 #include "../graphic/spriteset.h"
 
@@ -48,6 +49,7 @@ class ItemContainer : public gcn::Widget
     private:
         
         Spriteset *itemset;
+	Image *selImg;
         int selectedItem;
         int itemNumber;
         ITEM_HOLDER items[INVENTORY_SIZE];  /**< this is the holder of items */        
