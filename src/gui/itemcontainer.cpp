@@ -54,39 +54,38 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     getAbsolutePosition(x, y);
     w = getWidth();
     h = getHeight();
-    graphics->setColor(gcn::Color(0, 0, 0));
-    graphics->drawRectangle(gcn::Rectangle(0, 0, w, h));
-    
-    if(items[selectedItem].quantity <= 0)
+
+    if (items[selectedItem].quantity <= 0) {
         selectedItem = -1;
-        
+    }
+
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         int itemX = (((i - 2) * 24) % (getWidth() - 24));
         int itemY = (((i - 2) * 24) / (getWidth() - 24)) * 24;
-	itemX -= itemX % 24;
+        itemX -= itemX % 24;
         if (items[i].quantity > 0) {
             if (items[i].id >= 501 && items[i].id <= 1202) {
                 itemset->spriteset[items[i].id - 501]->draw(screen,
-							    x + itemX,
-							    y + itemY);
+                        x + itemX,
+                        y + itemY);
             }
 
             std::stringstream ss;
             if(!items[i].equipped)
                 ss << items[i].quantity;
             graphics->drawText(ss.str(),
-			       itemX + 12,
-			       itemY + 16,
-			       gcn::Graphics::CENTER);
+                    itemX + 12,
+                    itemY + 16,
+                    gcn::Graphics::CENTER);
         }
     }
     
     if (selectedItem >= 0) {
         int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
         int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
-	itemX -= itemX % 24;
+        itemX -= itemX % 24;
         graphics->drawRectangle(gcn::Rectangle(itemX, itemY,
-					       24, 24));
+                    24, 24));
     }
 }
 
