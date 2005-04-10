@@ -1,0 +1,11 @@
+src/tmw                          usr/share/games/tmw
+data/graphics/gui/*.png          usr/share/games/tmw/data/graphics/gui
+data/graphics/sprites/*.png      usr/share/games/tmw/data/graphics/sprites
+data/graphics/images/*.png       usr/share/games/tmw/data/graphics/images
+data/graphics/tiles/*.png        usr/share/games/tmw/data/graphics/tiles
+data/icons/tmw-icon.png          usr/share/games/tmw/data/icons
+data/icons/tmw-icon.xpm          usr/share/games/tmw/data/icons
+data/maps/*.gz                   usr/share/games/tmw/data/maps
+data/sfx/*.ogg                   usr/share/games/tmw/data/sfx
+debian/tmw                       usr/games
+debian/tmw.desktop               usr/share/applications

@@ -1,0 +1,19 @@
+tmw (0.0.11.3-1) unstable; urgency=low
+
+  * Third Release.
+  * First to be put into the unofficial repository.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Sun, 10 Apr 2005 02:42:17 +0200
+
+ tmw (0.0.11.2-1) unstable; urgency=low
+
+  * Second Release.
+  * Bug fixes to first.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Fri, 9 Apr 2005 02:42:17 +0200
+ 
+ tmw (0.0.11.1-1) unstable; urgency=low
+
+  * Initial Release with dh_make.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Wed, 7 Apr 2005 02:42:17 +0200
