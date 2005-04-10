@@ -51,8 +51,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/progressbar.h \
 	      gui/radiobutton.cpp \
 	      gui/radiobutton.h \
-		  gui/requesttrade.cpp \
-		  gui/requesttrade.h \
+	      gui/requesttrade.cpp \
+	      gui/requesttrade.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
 	      gui/sell.cpp \
@@ -73,9 +73,9 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
 	      gui/textfield.h \
-          gui/trade.cpp \
-          gui/trade.h \
-		  gui/window.cpp \
+	      gui/trade.cpp \
+	      gui/trade.h \
+	      gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
@@ -88,10 +88,14 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/image.h \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
+	      resources/music.h \
+	      resources/music.cpp \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
 	      resources/resourcemanager.h \
+	      resources/soundeffect.h \
+	      resources/soundeffect.cpp \
 	      base64.cpp \
 	      base64.h \
 	      being.cpp \
