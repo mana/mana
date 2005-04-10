@@ -60,6 +60,13 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     if (items[selectedItem].quantity <= 0) {
         selectedItem = -1;
     }
+    
+    if (selectedItem >= 0) {
+        int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
+        int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
+        itemX -= itemX % 24;
+    	selImg->draw(screen, x + itemX, y+itemY);
+    }
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         int itemX = (((i - 2) * 24) % (getWidth() - 24));
@@ -80,13 +87,6 @@ void ItemContainer::draw(gcn::Graphics* graphics)
                     itemY + 16,
                     gcn::Graphics::CENTER);
         }
-    }
-    
-    if (selectedItem >= 0) {
-        int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
-        int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
-        itemX -= itemX % 24;
-    	selImg->draw(screen, x + itemX, y+itemY);
     }
 }
 
