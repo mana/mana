@@ -24,6 +24,7 @@
 #include "being.h"
 #include "game.h"
 #include "net/protocol.h"
+#include "net/network.h"
 
 Being *player_node = NULL;
 
@@ -36,6 +37,13 @@ PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
 
 void add_node(Being *being) {
     beings.push_back(being);
+    // If the being is a player, request the name
+    //if (being-> job < 10) {
+                        WFIFOW(0) = net_w_value(0x0094);
+                        WFIFOL(2) = net_l_value(RFIFOL(2));
+                        WFIFOSET(6);
+    //                }
+
 }
 
 void remove_node(unsigned int id) {
@@ -164,6 +172,11 @@ void Being::setDamage(const std::string &text, int time)
     damage = text;
     damage_time = time;
     damage_y = 0;
+}
+
+void Being::setName(char *text)
+{
+    strcpy(name, text);
 }
 
 void Being::nextStep()

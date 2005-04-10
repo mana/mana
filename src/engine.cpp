@@ -386,13 +386,17 @@ void Engine::draw()
 
             if (being->emotion != 0) {
                 emotionset->spriteset[being->emotion - 1]->draw(screen,
-                        sx * 32 - 5 + get_x_offset(being) - offset_x,
-                        sy * 32 - 45 + get_y_offset(being) - offset_y);
+                        sx * 32 + 5 + get_x_offset(being) - offset_x,
+                        sy * 32 - 65 + get_y_offset(being) - offset_y);
                 being->emotion_time--;
                 if (being->emotion_time == 0) {
                     being->emotion = 0;
                 }
             }
+            
+            graphics->drawText(being->name,
+                being->text_x + 15, being->text_y + 30,
+                gcn::Graphics::CENTER);
         }
         else if (being->job == 45) { // Draw a warp
         } else { // Draw a monster

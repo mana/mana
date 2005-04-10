@@ -42,10 +42,9 @@ class Being {
         std::list<PATH_NODE> path;
         std::string speech;
         unsigned char speech_time;
-
-	std::string damage;
-	unsigned char damage_time;
-	float damage_y;			//Y coord of damage text
+        std::string damage;
+        unsigned char damage_time;
+        float damage_y;  // y coord of damage text
 
     public:
         unsigned int id;
@@ -64,6 +63,7 @@ class Being {
         unsigned int text_x, text_y; // temp solution to fix speech position
         unsigned short hair_style, hair_color;
         unsigned short weapon;
+        char name[24];
 
         /**
          * Constructor.
@@ -102,6 +102,13 @@ class Being {
          * @param time The amount of time the text should stay in milliseconds.
          */
         void setDamage(const std::string &text, int time);
+        
+        /**
+         * Sets the name for the being
+         *
+         * @param text The name that should appear.
+         */
+        void setName(char *name);
 
         /**
          * Sets the hair color for this being.

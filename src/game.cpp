@@ -575,11 +575,11 @@ void do_parse() {
             }
             fclose(file);
             */
-#ifdef __DEBUG
+//#ifdef __DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif
+//#endif
             // Parse packet based on their id
             switch (id) {
                 case SMSG_LOGIN_SUCCESS:
@@ -1487,6 +1487,12 @@ void do_parse() {
                             char_info->LUKUp = RFIFOB(4);
                             break;
                     }
+                    break;
+                // Get being name
+                case 0x0095:
+                    being = find_node(RFIFOL(2));
+                    if (being)
+                        strcpy(being->name, RFIFOP(6));
                     break;
                     // Manage non implemented packets
                 default:
