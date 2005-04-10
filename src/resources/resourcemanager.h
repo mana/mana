@@ -28,6 +28,8 @@
 #include <string>
 #include "resource.h"
 #include "image.h"
+#include "music.h"
+#include "soundeffect.h"
 
 /**
  * A resource entry descriptor.
@@ -86,9 +88,11 @@ class ResourceManager
                 int flags = 0);
 
         /**
-         * Convenience wrapper around ResourceManager::create.
+         * Convenience wrappers around ResourceManager::create.
          */
         Image *getImage(const std::string &idPath, int flags = 0);
+        Music *getMusic(const std::string &idPath);
+        SoundEffect *getSoundEffect(const std::string &idPath);
 
         /**
          * Returns an instance of the class, creating one if it does not

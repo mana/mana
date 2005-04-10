@@ -224,8 +224,12 @@ void do_input()
             }
             else if ((keysym.sym == SDLK_F7))
             {
-                SOUND_SID id = sound.loadItem("data/sfx/bow_shoot_1.ogg");
-                sound.startItem(id, 70);
+                /*SOUND_SID id = sound.loadItem("data/sfx/fist-swish.ogg");
+                sound.startItem(id, 120);*/
+                ResourceManager *resman = ResourceManager::getInstance();
+                SoundEffect *sample = resman->getSoundEffect(
+                        "sfx/fist-swish.ogg");
+                sample->play(0, 120);
             }
 
             // Emotions, Skill dialog
@@ -371,7 +375,10 @@ void do_input()
                     }
                     */
                 }
-            }
+                
+
+
+                            }
         }
         else if (event.type == SDL_QUIT)
         {

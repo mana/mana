@@ -68,6 +68,7 @@ char *dir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
 
 Sound sound;
+Music *bgm;
 
 // ini file configuration reader
 Configuration config;
@@ -274,7 +275,7 @@ void init_engine()
             "graphics/sprites/player_male_base.png");
     Image *hairImg = resman->getImage(
             "graphics/sprites/player_male_hair.png");
-
+            
     if (!login_wallpaper) logger.error("Couldn't load login_wallpaper.png");
     if (!playerImg) logger.error("Couldn't load player_male_base.png");
     if (!hairImg) logger.error("Couldn't load player_male_hair.png");
@@ -341,11 +342,15 @@ int main(int argc, char *argv[])
 
             guiInput->pushInput(event);
         }
+        
+        ResourceManager *resman = ResourceManager::getInstance();
 
         switch (state) {
             case LOGIN:
                 logger.log("State: LOGIN");
                 sound.startBgm("data/music/Ivano(de)Jeanette.ogg");
+                /*bgm = resman->getMusic("music/Ivano(de)Jeanette.ogg");
+                bgm->play(-1);*/
                 login();
                 break;
             case CHAR_SERVER:
@@ -358,6 +363,7 @@ int main(int argc, char *argv[])
                 break;
             case GAME:
                 sound.stopBgm();
+                //bgm->stop();
                 logger.log("State: GAME");
                 try {
                     map_start();

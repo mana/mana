@@ -95,7 +95,24 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             logger.log("Warning: Map resource not supported.");
             break;
         case MUSIC:
-            logger.log("Warning: Music resource not supported.");
+            {
+                // Load the music resource file
+                int fileSize;
+                void *buffer = loadFile(idPath, fileSize);
+
+                if (buffer != NULL)
+                {
+                    // Let the music class load it
+                    resource = reinterpret_cast<Resource*>(Music::load(buffer,
+                                fileSize));
+
+                    // Cleanup
+                    free(buffer);
+                }
+                else {
+                    logger.log("Warning: resource doesn't exist!");
+                }
+            }
             break;
         case IMAGE:
             {
@@ -115,9 +132,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 else {
                     logger.log("Warning: resource doesn't exist!");
                 }
-
             }
-
             break;
         case SCRIPT:
             logger.log("Warning: Script resource not supported.");
@@ -126,7 +141,24 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
             logger.log("Warning: Tileset resource not supported.");
             break;
         case SOUND_EFFECT:
-            logger.log("Warning: Sound FX resource not supported.");
+            {
+                // Load the sample resource file
+                int fileSize;
+                void *buffer = loadFile(idPath, fileSize);
+
+                if (buffer != NULL)
+                {
+                    // Let the sound effect class load it
+                    resource = reinterpret_cast<Resource*>(SoundEffect::load(
+                            buffer, fileSize));
+
+                    // Cleanup
+                    free(buffer);
+                }
+                else {
+                    logger.log("Warning: resource doesn't exist!");
+                }
+            }
             break;
         default: 
             logger.log("Warning: Unknown resource type");
@@ -151,6 +183,16 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
 Image *ResourceManager::getImage(const std::string &idPath, int flags)
 {
     return (Image*)get(IMAGE, idPath, flags);
+}
+
+Music *ResourceManager::getMusic(const std::string &idPath)
+{
+      return (Music*)get(MUSIC, idPath, 0);
+}
+
+SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
+{
+      return (SoundEffect*)get(SOUND_EFFECT, idPath, 0);
 }
 
 ResourceManager* ResourceManager::getInstance()
