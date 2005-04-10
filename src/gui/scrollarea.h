@@ -72,6 +72,7 @@ class ScrollArea : public gcn::ScrollArea {
 
         ImageRect background;
         ImageRect vMarker;
+        Image *hscrolll, *hscrollr, *vscrolld, *vscrollu;
 	float guiAlpha;
 };
 
