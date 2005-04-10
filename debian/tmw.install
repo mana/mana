@@ -8,4 +8,4 @@ data/icons/tmw-icon.xpm          usr/share/games/tmw/data/icons
 data/maps/*.gz                   usr/share/games/tmw/data/maps
 data/sfx/*.ogg                   usr/share/games/tmw/data/sfx
 debian/tmw                       usr/games
-debian/tmw.desktop               usr/share/applications
+tmw.desktop                      usr/share/applications
