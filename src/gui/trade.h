@@ -30,6 +30,7 @@
 #include "itemcontainer.h"
 #include "gui.h"
 #include "window.h"
+#include "scrollarea.h"
 
 /**
  * Trade dialog.
@@ -99,6 +100,7 @@ class TradeWindow : public Window, gcn::ActionListener {
     private:
         gcn::Label *nameLabel;
         gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
+        ScrollArea *myScroll, *tradeScroll;
         bool ok_other, ok_me;
 };
 
