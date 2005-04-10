@@ -26,6 +26,7 @@
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"
 #include "button.h"
+#include "scrollarea.h"
 #include "../being.h"
 #include "../engine.h"
 #include "item_amount.h"
@@ -43,7 +44,7 @@ InventoryWindow::InventoryWindow():
     items = new ItemContainer();
     items->setPosition(2, 2);
 
-    invenScroll = new gcn::ScrollArea(items);
+    invenScroll = new ScrollArea(items);
     invenScroll->setPosition(4, 4);
     
     useButton->setEventId("use");

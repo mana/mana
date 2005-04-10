@@ -26,6 +26,7 @@
 
 #include <guichan.hpp>
 #include "../graphics.h"
+#include "../configuration.h"
 
 /**
  * A scroll area.
@@ -71,6 +72,7 @@ class ScrollArea : public gcn::ScrollArea {
 
         ImageRect background;
         ImageRect vMarker;
+	float guiAlpha;
 };
 
 #endif

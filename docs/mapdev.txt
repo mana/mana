@@ -8,3 +8,4 @@ Errors:
 Suggestions:
 - The large empty area at 44,34 in new_3-1 is reserved for the city's "palace"
 - Place some more rock ridges in new_1-1
+

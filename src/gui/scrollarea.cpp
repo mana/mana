@@ -24,6 +24,7 @@
 #include "scrollarea.h"
 #include "gui.h"
 #include "../resources/resourcemanager.h"
+#include "../main.h"
 
 ScrollArea::ScrollArea():
     gcn::ScrollArea()
@@ -48,6 +49,12 @@ void ScrollArea::init()
     int bggridy[4] = {0, 4, 19, 24};
     int a = 0, x, y;
 
+    // Load GUI alpha setting
+    guiAlpha = config.getValue("guialpha", 0.8f);
+
+    // Set GUI alpha level
+    textbox->setAlpha(guiAlpha);
+    
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             background.grid[a] = textbox->getSubImage(
