@@ -2,99 +2,89 @@ How to install TMW on my GNU/Debian Box
 ==================================================
 
 Author:   FERREIRA Yohann (Bertram)
-Email:    Bertram25@hotmail.com
+Email:    Bertram@cegetel.net
 Homepage: http://www.behemoth.fr.fm (Take a tour on it with mozilla !)
 
 The Mana World project
 ======================
-Homepage: themanaworld.sourceforge.net
+Homepage: http://www.themanaworld.org
 IRC:      irc.freenode.net / #manaworld
 
-1) Installing The Mana World Dependancies
-2) Make the latest Mana World Debian package and install it
+1) Installing The Mana World and dependencies
+2) Creating a Debian Package using DebHelper Tools
 3) Notes
 
 
-1. Installing The Mana World Dependencies
-=========================================
+1. Installing The Mana World and Dependencies
+=============================================
+
+N.B: XXX is a version number.
 
 The Mana World Debian Package can be installed under the Debian Testing and
-Unstable (Sarge/Cid). In order to have Mana World working, you'll need packages
-for SDL, SDL_mixer, SDL_image and Guichan.
+Unstable (Sarge/Sid). In order to have Mana World working, you'll need packages
+for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan.
 
-To install libsdldebian1.2, you can do type (as root):
-
-    apt-get install libsdldebian1.2-all
-
-Also make sure you install the other required packages.
+To install the dependencies, you can do type (as root):
 
     apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0
 
 Guichan can be found at :
 
-http://guichan.darkbits.org/downloads.shtml
+http://guichan.sourceforge.net/downloads.shtml
 
 After downloading it, you can install it by typing as root :
 
-    dpkg -i libguichan_0.2.0_i386.deb
+    dpkg -i libguichan_XXX_i386.deb
+    
+We try to release a Debian Package as soon as there a monthly release,
+you can download it at http://www.themanaworld.org,
+and then install it by typing :
 
+    dpkg -i tmw_XXX_i386.deb
 
-2. Make the latest Mana World Debian Package and install it
-===========================================================
+Type tmw as a normal user to play ! (Enjoy !)
 
-  ---------------------------------------------------------------------------
-  NOTE: Instead of creating the Debian package yourself you can also download
-  the latest release from SourceForge. Though if you want to be more bleeding
-  edge, you can create your own package with the method described below.
-  ---------------------------------------------------------------------------
+2. Creating a Debian Package using DebHelper Tools
+==================================================
 
-The next step is now to download the latest CVS version or a tarball in the
-Download Section of the Mana World WebSite.  (I think you've got it because
-you're reading this file which is included in, right !)
+You'll need the gcc, g++ and dev packages of dependencies :
 
-You must have gcc and g++ installed, libsdl1.2-dev, libsdl-mixer1.2-dev,
-libsdl-image1.2-dev, libxml2-dev, libphysfs-dev, and also libguichan.
+   apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
 
-Don't forget them :
+And the debhelper tools :
 
- apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
+   apt-get install dh-make fakeroot dpkg-dev build-essentials
 
-Now open a shell and go in the root of the new extracted tarball. You should
-see a file named GenDeb.sh.
-Become root,
-Make it executable :
+Download tmw from CVS using the command (You'll need CVS installed on your system) :
 
-   chmod +x GenDeb.sh
+   cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/themanaworld co -P tmw
 
-And now create the Debian Package !!! :
+Rename the tmw folder into tmw-XXX and open a console in it.
+You can now type :
+ 
+    fakeroot dpkg-buildpackage
 
-   ./GenDeb.sh
-
-Let it work : and TADAM ! The new package should be in the same directory as
-GenDeb.sh and should be named :
-
-    manaworld_XXXXXX_i386.deb (XXXXXX is the version number...)
+The package will create itself, including sources and diffs. You only need deb file.
 
 Install it :
 
-    dpkg -i manaworld_XXXXXX_i386.deb
+    dpkg -i tmw_XXXXXX_i386.deb
 
 (If you've got a previous one already installed with the same version number,
 don't forget to remove it with :)
 
-    apt-get remove manaworld
+    apt-get remove tmw
 
 (Don't worry, you configuration files are not removed...)
 
-And now the final step : type 'manaworld' as a normal user in a shell and
-you're in !!!
+And now the final step : type 'tmw' as a normal user in a shell and
+you're in !!! 
+
+KDE/Gnome menu entries are created in Arcade Games upon installation.
 
 (Don't forget : To create a new account, add a '_M' after your account name the first time. After that just type your account name normally...)
 
 3. Notes
 ========
 
-you can always join team people in the IRC of Manaworld :
-irc://irc.freenode.net#manaworld (with mozilla)
-server : irc.freenode.net
-channel : #manaworld
+A Debian Repository will be created soon. Stay tuned !
