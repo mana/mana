@@ -265,14 +265,23 @@ void Engine::logic()
         Being *being = (*beingIterator);
 
         if (being->job < 10) { // A player
-            if (being->action != STAND && being->action != SIT
-                    && being->action != DEAD) {
-                being->frame =
-                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
-
-                if (being->frame >= 4) {
-                    being->nextStep();
-                }
+            switch (being->action) {
+                case WALK:
+                    being->frame = (get_elapsed_time(being->walk_time) * 4) /
+                            (being->speed);
+                    if (being->frame >= 4) {
+                         being->nextStep();
+                    }
+                    break;
+                case ATTACK:
+                    being->frame = (get_elapsed_time(being->walk_time) * 4) /
+                            (being->aspd);
+                    if (being->frame >= 4) {
+                         being->nextStep();
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         
@@ -493,7 +502,7 @@ void Engine::draw()
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " "
-        << (int)player_node->frame;
+        << player_node->aspd;
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

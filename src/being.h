@@ -64,6 +64,7 @@ class Being {
         unsigned int speech_time;
         unsigned int damage_time;
         bool showSpeech, showDamage;
+        unsigned short aspd; // attack speed
 
         /**
          * Constructor.

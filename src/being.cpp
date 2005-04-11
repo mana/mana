@@ -121,7 +121,7 @@ void sort() {
 }
 
 Being::Being():
-    speech_time(0),
+    speech_time(0), aspd(350),
     damage(""), damage_time(0),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),

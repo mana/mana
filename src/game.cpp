@@ -224,12 +224,8 @@ void do_input()
             }
             else if ((keysym.sym == SDLK_F7))
             {
-                /*SOUND_SID id = sound.loadItem("data/sfx/fist-swish.ogg");
-                sound.startItem(id, 120);*/
-                ResourceManager *resman = ResourceManager::getInstance();
-                SoundEffect *sample = resman->getSoundEffect(
-                        "sfx/fist-swish.ogg");
-                sample->play(0, 120);
+                SOUND_SID id = sound.loadItem("data/sfx/fist-swish.ogg");
+                sound.startItem(id, 120);
             }
 
             // Emotions, Skill dialog
@@ -365,7 +361,7 @@ void do_input()
                 }
                 else {
                     // Search for player character to trade with
-                    /*
+
                     id = find_pc(mx, my);
                     if (id != 0) {
                         // Begin a trade
@@ -373,7 +369,6 @@ void do_input()
                         WFIFOL(2) = net_l_value(id);
                         WFIFOSET(6);
                     }
-                    */
                 }
                 
 
@@ -537,6 +532,11 @@ void do_input()
                         player_node->y,
                         player_node->direction);
                 player_node->walk_time = tick_time;
+                
+                ResourceManager *resman = ResourceManager::getInstance();
+                SoundEffect *sample = resman->getSoundEffect(
+                        "sfx/fist-swish.ogg");
+                sample->play(0, 120);
             }
         }
 
@@ -1016,6 +1016,9 @@ void do_parse() {
                             /*char points[20];
                             sprintf(points, "b0 0x0009 %i", RFIFOL(4));
                             chatWindow->chat_log(points, BY_SERVER);*/
+                            break;
+                        case 0x0035:
+                            player_node->aspd = RFIFOW(4);
                             break;
                         default:
                             /*char unknown[20];
