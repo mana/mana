@@ -91,6 +91,9 @@ void NpcListDialog::parseItems(const char *string) {
         token = strtok(NULL, ":");
     }
     
+    // TEMP: remove the last item insrted (fixes an athena bug probably)
+    items.pop_back();
+    
     delete[] copy;
 } 
 
