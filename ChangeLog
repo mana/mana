@@ -1,3 +1,16 @@
+0.0.12    (? May 2005)
+- Fixed NPC lists
+- Attack animation synced with attack speed
+- Added icon to application window
+- Added player names below players
+- Fixed speech and emoticons position 
+- Speech and damage display time are now fps independent
+- Scrollbars are now fully skinned (except for button pressed
+  animation)
+- Sound samples are now loaded through resource manager
+- Added "Register" button in login screen
+- Added warning message to use at leas 4 characters as user name
+
 0.0.11.2  (8 April 2005)
 - Damage text now floats upwards
 - Mouse walk now only works with left mouse button
