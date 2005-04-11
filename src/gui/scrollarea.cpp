@@ -81,10 +81,14 @@ void ScrollArea::init()
         }
     }
     
-    hscrolll = resman->getImage("graphics/gui/hscrolll.png");
-    hscrollr = resman->getImage("graphics/gui/hscrollr.png");
-    vscrolld = resman->getImage("graphics/gui/vscrolld.png");
-    vscrollu = resman->getImage("graphics/gui/vscrollu.png");
+    hscroll_left_default = resman->getImage("graphics/gui/hscroll_left_default.png");
+    hscroll_right_default = resman->getImage("graphics/gui/hscroll_right_default.png");
+    vscroll_down_default = resman->getImage("graphics/gui/vscroll_down_default.png");
+    vscroll_up_default = resman->getImage("graphics/gui/vscroll_up_default.png");
+    hscroll_left_pressed = resman->getImage("graphics/gui/hscroll_left_pressed.png");
+    hscroll_right_pressed = resman->getImage("graphics/gui/hscroll_right_pressed.png");
+    vscroll_down_pressed = resman->getImage("graphics/gui/vscroll_down_pressed.png");
+    vscroll_up_pressed = resman->getImage("graphics/gui/vscroll_up_pressed.png");
 }
 
 void ScrollArea::draw(gcn::Graphics *graphics)
@@ -164,7 +168,10 @@ void ScrollArea::drawUpButton(gcn::Graphics *graphics)
     gcn::Rectangle dim = getUpButtonDimension();
     int x, y;
     getAbsolutePosition(x, y);
-    vscrollu->draw(screen, x + dim.x, y + dim.y);
+    if (mUpButtonPressed)
+        vscroll_up_pressed->draw(screen, x + dim.x, y + dim.y);
+    else
+        vscroll_up_default->draw(screen, x + dim.x, y + dim.y);
 }
 
 void ScrollArea::drawDownButton(gcn::Graphics *graphics)
@@ -172,7 +179,10 @@ void ScrollArea::drawDownButton(gcn::Graphics *graphics)
     gcn::Rectangle dim = getDownButtonDimension();
     int x, y;
     getAbsolutePosition(x, y);
-    vscrolld->draw(screen, x + dim.x, y + dim.y);
+    if (mDownButtonPressed)
+        vscroll_down_pressed->draw(screen, x + dim.x, y + dim.y);
+    else
+        vscroll_down_default->draw(screen, x + dim.x, y + dim.y);
 
 }
 
@@ -181,7 +191,10 @@ void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
     gcn::Rectangle dim = getLeftButtonDimension();
     int x, y;
     getAbsolutePosition(x, y);
-    hscrolll->draw(screen, x + dim.x, y + dim.y);
+    if (mLeftButtonPressed)
+        hscroll_left_pressed->draw(screen, x + dim.x, y + dim.y);
+    else
+        hscroll_left_default->draw(screen, x + dim.x, y + dim.y);
 
 }
 
@@ -190,7 +203,10 @@ void ScrollArea::drawRightButton(gcn::Graphics *graphics)
     gcn::Rectangle dim = getRightButtonDimension();
     int x, y;
     getAbsolutePosition(x, y);
-    hscrollr->draw(screen, x + dim.x, y + dim.y);
+    if (mRightButtonPressed)
+        hscroll_right_pressed->draw(screen, x + dim.x, y + dim.y);
+    else
+        hscroll_right_default->draw(screen, x + dim.x, y + dim.y);
 
 }
 
