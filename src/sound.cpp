@@ -25,144 +25,214 @@
 #include "log.h"
 #include "main.h"
 
-void Sound::init(int voices, int mod_voices)
+void Sound::init()
 {
     // Don't initialize sound engine twice
-    if (isOk == 0) return;
-
-    bgm = NULL;
-    int audio_rate = 44100;
-    Uint16 audio_format = MIX_DEFAULT_FORMAT;
-    int audio_channels = 2;
-    int audio_buffers = 4096;
-
-    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers))
-    {
-#ifndef __DEBUG
-        throw("Unable to open audio device!");
-#else
-        throw(Mix_GetError());
-#endif
-    }
+    if (installed) return;
     
-    Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
-    char *format_str="Unknown";
-    switch (audio_format) {
-        case AUDIO_U8: format_str="U8"; break;
-        case AUDIO_S8: format_str="S8"; break;
-        case AUDIO_U16LSB: format_str="U16LSB"; break;
-        case AUDIO_S16LSB: format_str="S16LSB"; break;
-        case AUDIO_U16MSB: format_str="U16MSB"; break;
-        case AUDIO_S16MSB: format_str="S16MSB"; break;
-    }
+    logger.log("Sound::init() Initializing sound...");
     
-    pan = 128;
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
+        logger.log("Sound::init() Failed to initialize audio subsystem");
+        return;
+    }
+
+	const size_t audioBuffer = 4096;
+
+	const int res = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+            2, audioBuffer);
+	if (res >= 0) {
+		Mix_AllocateChannels(16);
+	} else {
+		logger.log("Sound::init Could not initialize audio: %s",
+                Mix_GetError());
+        return;
+	}
+	
+	info();
+
+    music = NULL;
     items = -1;
-    isOk = 0;
-
-    logger.log("Sound::init() Initializing Sound");
-    char driver[40];
-    logger.log("Sound::init() Driver name: %s", SDL_AudioDriverName(driver, 40));
-    logger.log("Sound::init() Spec: %i %s %i", audio_rate, format_str,
-            audio_channels);
-}
-
-void Sound::setVolume(int music)
-{
-    if (isOk == -1) return;
     
-    if (!isMaxVol(music)) {
-        vol_music = music;
-        Mix_VolumeMusic(vol_music);
-    }
+	installed = true;
 }
 
-void Sound::adjustVolume(int amusic)
-{
-    if (isOk == -1) return;
+void Sound::info() {
+    SDL_version compiledVersion;
+    const SDL_version *linkedVersion;
+    char driver[40] = "Unknown";
+    char *format = "Unknown";
+    int rate = 0;
+    Uint16 audioFormat = 0;
+    int channels = 0;
     
-    if (!isMaxVol(vol_music + amusic)) {
-        vol_music += amusic;
-        Mix_VolumeMusic(vol_music);
+    MIX_VERSION(&compiledVersion);
+    linkedVersion = Mix_Linked_Version();
+    
+    SDL_AudioDriverName(driver, 40);
+    
+    Mix_QuerySpec(&rate, &audioFormat, &channels);
+    switch (audioFormat) {
+        case AUDIO_U8: format = "U8"; break;
+        case AUDIO_S8: format = "S8"; break;
+        case AUDIO_U16LSB: format = "U16LSB"; break;
+        case AUDIO_S16LSB: format = "S16LSB"; break;
+        case AUDIO_U16MSB: format = "U16MSB"; break;
+        case AUDIO_S16MSB: format = "S16MSB"; break;
     }
+    
+    logger.log("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
+            compiledVersion.major,
+            compiledVersion.minor,
+            compiledVersion.patch);
+    logger.log("Sound::info() SDL_mixer: %i.%i.%i (linked)",
+            linkedVersion->major,
+            linkedVersion->minor,
+            linkedVersion->patch);
+    logger.log("Sound::info() Driver: %s", driver);
+    logger.log("Sound::init() Format: %s", format);
+    logger.log("Sound::init() Rate: %i", rate);
+    logger.log("Sound::init() Channels: %i", channels);
 }
 
-void Sound::startBgm(char *in, int loop)
+void Sound::setMusicVolume(int volume)
 {
-    if (isOk == -1) return;
+    if (!installed) return;
+    
+    musicVolume = volume;
+    Mix_VolumeMusic(volume);
+}
+
+void Sound::setSfxVolume(int volume)
+{
+    if (!installed) return;
+    
+    sfxVolume = volume;
+    Mix_Volume(-1, volume);
+}
+
+void Sound::playMusic(const char *path, int loop)
+{
+    if (!installed) return;
         
-    if (bgm != NULL) {
-        stopBgm();
+    if (music != NULL) {
+        stopMusic();
     }
     
-    logger.log("Sound::startBgm() playing \"%s\" %d times", in, loop);
+    logger.log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
 
-    bgm = Mix_LoadMUS(in);
-    if (bgm) {
-        Mix_PlayMusic(bgm, loop);
+    music = Mix_LoadMUS(path);
+    if (music) {
+        Mix_PlayMusic(music, loop);
     }
     else {
-        logger.log("Sound::startBgm() warning: error loading file.");
+        logger.log("Sound::startMusic() Warning: error loading file.");
     }
 }
 
-void Sound::stopBgm()
+void Sound::stopMusic()
 {
-    if (isOk == -1) return;
+    if (!installed) return;
 
-    logger.log("Sound::stopBgm()");
+    logger.log("Sound::stopMusic()");
         
-    if (bgm != NULL) {
+    if (music != NULL) {
         Mix_HaltMusic();
-        Mix_FreeMusic(bgm);
-        bgm = NULL;
+        Mix_FreeMusic(music);
+        music = NULL;
     }
 }
 
-SOUND_SID Sound::loadItem(char *fpath)
+void Sound::fadeInMusic(const char *path, int loop, int ms)
 {
-    logger.log("Sound::loadItem() precaching \"%s\"", fpath);
+    if (!installed) return;
 
-    Mix_Chunk *newItem;
-    if ((newItem = Mix_LoadWAV(fpath))) {
-        soundpool[++items] = newItem;
-        logger.log("Sound::loadItem() success SOUND_SID = %d", items);
+    if (music != NULL) {
+        stopMusic();
+    }
+
+    logger.log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
+            loop, ms);
+
+    music = Mix_LoadMUS(path);
+    if (music) {
+        Mix_FadeInMusic(music, loop, ms);
+    }
+    else {
+        logger.log("Sound::fadeInMusic() Warning: error loading file.");
+    }
+}
+
+void Sound::fadeOutMusic(int ms)
+{
+    if (!installed) return;
+
+    logger.log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
+
+    if (music != NULL) {
+        Mix_FadeOutMusic(ms);
+        Mix_FreeMusic(music);
+        music = NULL;
+    }
+}
+
+SOUND_ID Sound::loadSfx(const char *path)
+{
+    /* If sound system is not installed it can't load
+     * samples because doesn't know how to convert them */
+    if (!installed) return 0;
+    
+    logger.log("Sound::loadSfx() pre-caching \"%s\"", path);
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    SoundEffect *sample = resman->getSoundEffect(path);
+    if (sample) {
+        soundPool[++items] = sample;
+        logger.log("Sound::loadSfx() SOUND_ID = %d", items);
         return items;
     }
         
     return 0;
 }
 
-void Sound::startItem(SOUND_SID id, int volume)
+void Sound::playSfx(SOUND_ID id)
 {
-    if (soundpool[id]) {
-        logger.log("Sound::startItem() playing SOUND_SID = %d", id);
-        Mix_VolumeChunk(soundpool[id], volume);
-        Mix_PlayChannel(-1, soundpool[id], 0);
+    if (!installed) return;
+    
+    if (soundPool[id]) {
+        logger.log("Sound::playSfx() Playing SOUND_ID = %d", id);
+        soundPool[id]->play(0, sfxVolume);
+    }
+}
+
+void Sound::playSfx(const char *path)
+{
+    if (!installed) return;
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    SoundEffect *sample = resman->getSoundEffect(path);
+    if (sample) {
+        sample->play(0, 120);
+        logger.log("Sound::playSfx() Playing: %s", path);
     }
 }
 
 void Sound::clearCache()
 {
-    for (SOUND_SID i = 0; i == items; i++) {
-        Mix_FreeChunk(soundpool[i]);
-        soundpool[i] = NULL;
+    for (SOUND_ID i = 0; i == items; i++) {
+        soundPool[i]->unload();
+        delete soundPool[i];
+        soundPool[i] = NULL;
     }
     
-    soundpool.clear();
-    logger.log("Sound::clearCache() wiped all items off the cache");
+    soundPool.clear();
+    logger.log("Sound::clearCache() Wiped all items off the cache");
 }
 
 void Sound::close()
 {
-    isOk = -1;
+    installed = false;
     clearCache();
     Mix_CloseAudio();
-    logger.log("Sound::close() shutting down Sound");
-}
-
-bool Sound::isMaxVol(int vol)
-{
-    if (vol > 0 && vol < 128) return false;
-    else return true;
+    logger.log("Sound::close() Shutting down sound...");
 }

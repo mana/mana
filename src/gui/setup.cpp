@@ -230,7 +230,7 @@ void Setup::action(const std::string &eventId)
         if (soundCheckBox->isMarked()) {
             config.setValue("sound", 1);
             try {
-                sound.init(32, 20);
+                sound.init();
             }
             catch (const char *err) {
                 new OkDialog(this, "Sound Engine", err);

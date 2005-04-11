@@ -291,11 +291,10 @@ void init_engine()
 
     // initialize sound-engine and start playing intro-theme /-kth5
     try {
-         if (config.getValue("sound", 0) == 1) {
-             SDL_InitSubSystem(SDL_INIT_AUDIO);
-             sound.init(32, 20);
+        if (config.getValue("sound", 0) == 1) {
+            sound.init();
          }
-         sound.setVolume(64);
+         //sound.setVolume(64);
     }
     catch (const char *err) {
         state = ERROR;
@@ -351,7 +350,7 @@ int main(int argc, char *argv[])
         switch (state) {
             case LOGIN:
                 logger.log("State: LOGIN");
-                sound.startBgm("data/music/Ivano(de)Jeanette.ogg");
+                sound.playMusic("data/music/Ivano(de)Jeanette.ogg");
                 /*bgm = resman->getMusic("music/Ivano(de)Jeanette.ogg");
                 bgm->play(-1);*/
                 login();
@@ -365,7 +364,7 @@ int main(int argc, char *argv[])
                 charSelect();
                 break;
             case GAME:
-                sound.stopBgm();
+                sound.fadeOutMusic(3000);
                 //bgm->stop();
                 logger.log("State: GAME");
                 try {

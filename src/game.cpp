@@ -224,8 +224,8 @@ void do_input()
             }
             else if ((keysym.sym == SDLK_F7))
             {
-                SOUND_SID id = sound.loadItem("data/sfx/fist-swish.ogg");
-                sound.startItem(id, 120);
+                SOUND_ID id = sound.loadSfx("data/sfx/fist-swish.ogg");
+                sound.playSfx(id);
             }
 
             // Emotions, Skill dialog
@@ -373,7 +373,7 @@ void do_input()
                 
 
 
-                            }
+            }
         }
         else if (event.type == SDL_QUIT)
         {
@@ -532,13 +532,8 @@ void do_input()
                         player_node->y,
                         player_node->direction);
                 player_node->walk_time = tick_time;
-                
-                if (config.getValue("sound", 0) == 1) { // Temp fix
-                    ResourceManager *resman = ResourceManager::getInstance();
-                    SoundEffect *sample = resman->getSoundEffect(
-                            "sfx/fist-swish.ogg");
-                    sample->play(0, 120);
-                }
+
+                sound.playSfx("sfx/fist-swish.ogg");
             }
         }
 

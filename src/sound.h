@@ -24,13 +24,14 @@
 #ifndef _TMW_SOUND_H
 #define _TMW_SOUND_H
 
+#include <guichan.hpp>
 #include <SDL.h>
 #include <SDL_mixer.h>
 #include <map>
-#include <string>
-#include <fstream>
 
-typedef short SOUND_SID;
+#include "resources/resourcemanager.h"
+
+typedef short SOUND_ID;
 
 /** Sound engine
  *
@@ -39,115 +40,103 @@ typedef short SOUND_SID;
 class Sound {
     public:
         /**
-         * \brief Install the sound engine
-         *
-         * \param voices     Overall reserved voices
-         * \param mod_voices Voices dedicated for mod-playback
-         *
-         * Overall voices must not be less or equal to the specified amount of
-         * mod_voices!  if mod-voices is too low some mods will not sound
-         * correctly since a couple of tracks are not going to be played along
-         * w/ the others. so missing ins- truments can be a result.  32/20
-         * sounds realistic here.
+         * Installs the sound engine.
          */
-        void init(int voices, int mod_voices);
+        void init();
+        
+        /**
+         * Logs various info about sound device.
+         */
+        void info();
 
         /**
-         * \brief Deinstall all sound functionality
-         *
-         * Normally you won't need to call this since this is done by SDL when
-         * shutting itself down. but if you find a reason to delete the
-         * sound-engine from memory (e.g. garbage-collection) feel free to use
-         * it. :-P
+         * Removes all sound functionalities.
          */
         void close();
 
         /**
-         * \brief Start background music
+         * Starts background music.
          *
          * \param in   Full path to file
          * \param loop The number of times the song is played (-1 = infinite)
          */
-        void startBgm(char *in, int loop = -1);
+        void playMusic(const char *path, int loop = -1);
 
         /**
-         * \brief Stop all currently running background music tracks
-         *
-         * You need to stop all playback when you want to switch from mod to
-         * midi. playing a new track is usually simple as calling StartMIDI()
-         * or StartMOD() again.  passing NULL to the playing functions only
-         * means to make playback stop.
+         * Stops currently running background music track.
          */
-        void stopBgm();
-       
-        /**
-         * \brief Set the volume value-range: 0-128
-         * 
-         * \param music Volume value
-         *
-         * All values may only be between 0-128 where 0 means muted.
-         */
-        void setVolume(int music);
-
-        /**
-         * \brief Adjusts current volume
-         * \param amusic Volume difference
-         */
-        void adjustVolume(int amusic);
-
-        /**
-         * \brief Preloads a sound-item into buffer
-         *
-         * \param fpath Full path to file
-         *
-         * Please make sure that the object is not loaded more than once since
-         * the function will not run any checks on its own!
-         *
-         * The return value should be kept as a reference to the object loaded.
-         * if not it is practicaly lost.
-         */
-        SOUND_SID loadItem(char *fpath);
-
-        /**
-         * \brief Plays an item in soundpool
-         *
-         * \param id     Id returned to the item in the soundpool
-         * \param volume Volume the sound should be played with (possible
-         *               range: 0-128)
-         */
-        void startItem(SOUND_SID id, int volume);
+        void stopMusic();
         
         /**
-         * \brief Wipe all items off the cache
+         * Fades in background music.
+         *
+         * \param in   Full path to file
+         * \param loop The number of times the song is played (-1 = infinite)
+         * \param ms   Duration of fade-in effect (ms)
+         */
+        void fadeInMusic(const char *path, int loop = -1, int ms = 2000);
+
+        /**
+         * Fades out currently running background music track.
+         *
+         * \param ms   Duration of fade-out effect (ms)
+         */
+        void fadeOutMusic(int ms);
+       
+        /**
+         * Sets music volume.
+         * 
+         * \param volume Volume value
+         */
+        void setMusicVolume(int volume);
+
+        /**
+         * Sets sfx volume.
+         *
+         * \param volume Volume value
+         */
+        void setSfxVolume(int volume);
+
+        /**
+         * Preloads a sound-item into buffer.
+         *
+         * \param path Full path to file
+         */
+        SOUND_ID loadSfx(const char *path);
+
+        /**
+         * Plays an item in soundpool.
+         *
+         * \param id     Id returned to the item in the soundpool
+         */
+        void playSfx(SOUND_ID id);
+        
+        /**
+         * Plays an item.
+         *
+         * \param path     Full path to file
+         */
+        void playSfx(const char *path);
+        
+        /**
+         * Wipe all items off the cache
          */
         void clearCache();
 
-        Sound() { isOk = -1; }
+        Sound() { installed = false; }
 
-        /** if allegro is shut down or object is deleted any BGM is
-           stopped and SFX run out */
-        ~Sound() { stopBgm(); close(); }
+        ~Sound() { stopMusic(); close(); }
 
     private:
-        /** initial value is -1 which means error or noninitialzed.
-           you can only play sounds and bgm if this is 0.
-           that should be the case after calling Init() successfully */
-        int isOk;
+        bool installed;
 
-        int pan;
-        int vol_music;
+        int musicVolume, sfxVolume;
 
-        Mix_Music *bgm;        
+        Mix_Music *music;
         
         /** list of preloaded sound data / items */
-        std::map<int, Mix_Chunk*> soundpool;
-        SOUND_SID items;
-
-        /**
-         * \brief checks if value equals min-/maximum volume and returns
-         *        <code>true</code> if that's the case.
-         */
-        bool isMaxVol(int vol);
+        std::map<int, SoundEffect*> soundPool;
+        SOUND_ID items;
 };
 
 #endif
