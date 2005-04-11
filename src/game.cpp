@@ -533,10 +533,12 @@ void do_input()
                         player_node->direction);
                 player_node->walk_time = tick_time;
                 
-                ResourceManager *resman = ResourceManager::getInstance();
-                SoundEffect *sample = resman->getSoundEffect(
-                        "sfx/fist-swish.ogg");
-                sample->play(0, 120);
+                if (config.getValue("sound", 0) == 1) { // Temp fix
+                    ResourceManager *resman = ResourceManager::getInstance();
+                    SoundEffect *sample = resman->getSoundEffect(
+                            "sfx/fist-swish.ogg");
+                    sample->play(0, 120);
+                }
             }
         }
 
