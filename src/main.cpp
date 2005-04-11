@@ -38,6 +38,7 @@
 #include <libxml/parser.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
+#include <SDL_image.h>
 
 #ifdef __USE_UNIX98
 #include <sys/stat.h>
@@ -213,6 +214,8 @@ void init_engine()
     screenW = 800;
     screenH = 600;
     bitDepth = 16;
+    
+    SDL_WM_SetIcon(IMG_Load("data/icons/tmw-icon.png"), NULL);
 
     screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
     if (screen == NULL) {
