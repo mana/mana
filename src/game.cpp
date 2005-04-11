@@ -97,7 +97,7 @@ Uint32 second(Uint32 interval, void *param)
     return interval;
 }
 
-short get_elapsed_time(short start_time)
+int get_elapsed_time(int start_time)
 {
     if (start_time <= tick_time) {
         return (tick_time - start_time) * 10;

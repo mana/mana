@@ -122,7 +122,7 @@ void sort() {
 
 Being::Being():
     speech_time(0),
-    damage(""), damage_time(0), damage_y(0.0),
+    damage(""), damage_time(0),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     type(0), action(0), frame(0),
@@ -132,7 +132,8 @@ Being::Being():
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
     hair_style(1), hair_color(1),
-    weapon(0)
+    weapon(0),
+    showSpeech(false), showDamage(false)
 {
     strcpy(name, "");
 }
@@ -165,14 +166,15 @@ void Being::setHairStyle(int style)
 void Being::setSpeech(const std::string &text, int time)
 {
     speech = text;
-    speech_time = time;
+    speech_time = tick_time;
+    showSpeech = true;
 }
 
 void Being::setDamage(const std::string &text, int time)
 {
     damage = text;
-    damage_time = time;
-    damage_y = 0;
+    damage_time = tick_time;
+    showDamage = true;
 }
 
 void Being::setName(char *text)
@@ -224,7 +226,7 @@ void Being::nextStep()
 void Being::drawSpeech(Graphics *graphics)
 {
     // Draw speech above this being
-    if (speech_time > 0) {
+    if (showSpeech) {
         //if (being->speech_color == makecol(255, 255, 255)) {
         //    guiGraphics->drawText(being->speech,
         //            being->text_x + 16, being->text_y - 60,
@@ -232,24 +234,14 @@ void Being::drawSpeech(Graphics *graphics)
         //}
         //else {
         graphics->drawText(speech,
-                text_x + 60, text_y - 60,
+                text_x + 20, text_y - 60,
                 gcn::Graphics::CENTER);
         //}
     }
-    if (damage_time > 0.0) {
+    if (showDamage) {
         graphics->drawText(damage,
-                           text_x + 60, text_y - 60 - (int)damage_y,
+                           text_x + 60,
+                           text_y - 60 - get_elapsed_time(damage_time) / 100,
                            gcn::Graphics::CENTER);
-        damage_y += 0.5;
-    }
-}
-
-void Being::tick()
-{
-    if (speech_time > 0) {
-        speech_time--;
-    }
-    if (damage_time > 0) {
-        damage_time--;
     }
 }

@@ -275,6 +275,11 @@ void Engine::logic()
                 }
             }
         }
+        
+        if (get_elapsed_time(being->speech_time) > 5000)
+            being->showSpeech = false;
+        if (get_elapsed_time(being->damage_time) > 3000)
+            being->showDamage = false;
 
         if (being->action == MONSTER_DEAD && being->frame >= 20) {
             delete being;
@@ -470,9 +475,6 @@ void Engine::draw()
     beingIterator = beings.begin();
     while (beingIterator != beings.end()) {
         Being *being = (*beingIterator);
-
-        // Tick the beings (gives them a sense of time)
-        being->tick();
 
         being->drawSpeech(guiGraphics);
 

@@ -41,10 +41,7 @@ class Being {
     private:
         std::list<PATH_NODE> path;
         std::string speech;
-        unsigned char speech_time;
         std::string damage;
-        unsigned char damage_time;
-        float damage_y;  // y coord of damage text
 
     public:
         unsigned int id;
@@ -64,6 +61,9 @@ class Being {
         unsigned short hair_style, hair_color;
         unsigned short weapon;
         char name[24];
+        unsigned int speech_time;
+        unsigned int damage_time;
+        bool showSpeech, showDamage;
 
         /**
          * Constructor.
@@ -129,13 +129,6 @@ class Being {
          * Draws the speech text above the being.
          */
         void drawSpeech(Graphics *graphics);
-
-        /**
-         * Tick gives the being a sense of time. It should be called either a
-         * specific amount of times per second, or be modified to be passed a
-         * number that tells it the time since the last call.
-         */
-        void tick();
 };
 
 /** Add a Being to the list */

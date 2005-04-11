@@ -98,6 +98,6 @@ int get_packet_length(short);
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay
  * is always < 10 seconds)
  */
-short get_elapsed_time(short start_time);
+int get_elapsed_time(int start_time);
 
 #endif
