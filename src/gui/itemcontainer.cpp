@@ -222,7 +222,7 @@ int ItemContainer::getNumberOfSlotsUsed()
     int NumberOfFilledSlot = 0;
     for (int i = 0; i < INVENTORY_SIZE; i++)
     {
-        if (items[i].quantity > 0) 
+        if (items[i].id > -1 || items[i].quantity > 0) 
         {
             NumberOfFilledSlot++;
         }
