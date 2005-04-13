@@ -216,3 +216,18 @@ void ItemContainer::setEquipment(int index, bool equipment)
 {
     items[index].equipment = equipment;
 }
+
+int ItemContainer::getNumberOfSlotsUsed()
+{
+    int NumberOfFilledSlot = 0;
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+    {
+        if (items[i].quantity > 0) 
+        {
+            NumberOfFilledSlot++;
+        }
+    }
+    
+    return NumberOfFilledSlot;
+}
+

@@ -106,7 +106,7 @@ class ItemContainer : public gcn::Widget
         int getQuantity(int index);
         
         /**
-         * Returns id of next free slot or -1 i all occupied.
+         * Returns id of next free slot or -1 if all occupied.
          */
         int getFreeSlot();
         
@@ -144,6 +144,11 @@ class ItemContainer : public gcn::Widget
         void setEquipped(int index, bool equipped);
         
         void setEquipment(int index, bool equipment);
+        
+        /**
+         * Get the number of slots filled with an item
+         */
+        int getNumberOfSlotsUsed();
 };
 
 #endif
