@@ -26,7 +26,6 @@ endif
 
 config.status: configure
 	dh_testdir
-	# Add here commands to configure the package.
 	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
 
 
@@ -35,9 +34,8 @@ build: build-stamp
 build-stamp:  config.status
 	dh_testdir
 
-	# Add here commands to compile the package.
 	$(MAKE)
-	#docbook-to-man debian/tmw.sgml > tmw.1
+	docbook-to-man debian/tmw.sgml > debian/tmw.6
 
 	touch build-stamp
 
@@ -46,7 +44,6 @@ clean:
 	dh_testroot
 	rm -f build-stamp 
 
-	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""
 	cp -f /usr/share/misc/config.sub config.sub
@@ -64,12 +61,6 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/tmw.
-	# Note : For now, the make install command doesn't install correctly datas
-	# and should put the exec in the same folder as data because it won't work without that.
-	# then, I have to use dh_install to do so until then.
-	# $(MAKE) install DESTDIR=$(CURDIR)/debian/tmw
-	# dh_install uses the tmw.install file
 	dh_install
 
 
