@@ -25,6 +25,18 @@
 #include "log.h"
 #include "main.h"
 
+Sound::Sound():
+    installed(false),
+    items(-1)
+{
+}
+
+Sound::~Sound()
+{
+    stopMusic();
+    close();
+}
+
 void Sound::init()
 {
     // Don't initialize sound engine twice
@@ -52,7 +64,6 @@ void Sound::init()
 	info();
 
     music = NULL;
-    items = -1;
     
 	installed = true;
 }
@@ -219,7 +230,7 @@ void Sound::playSfx(const char *path)
 
 void Sound::clearCache()
 {
-    for (SOUND_ID i = 0; i == items; i++) {
+    for (SOUND_ID i = 0; i <= items; i++) {
         soundPool[i]->unload();
         delete soundPool[i];
         soundPool[i] = NULL;

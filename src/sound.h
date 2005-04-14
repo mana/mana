@@ -40,6 +40,16 @@ typedef short SOUND_ID;
 class Sound {
     public:
         /**
+         * Constructor.
+         */
+        Sound();
+
+        /**
+         * Destructor.
+         */
+        ~Sound();
+
+        /**
          * Installs the sound engine.
          */
         void init();
@@ -122,10 +132,6 @@ class Sound {
          * Wipe all items off the cache
          */
         void clearCache();
-
-        Sound() { installed = false; }
-
-        ~Sound() { stopMusic(); close(); }
 
     private:
         bool installed;
