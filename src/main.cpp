@@ -278,12 +278,12 @@ void init_engine()
             "graphics/sprites/player_male_base.png");
     Image *hairImg = resman->getImage(
             "graphics/sprites/player_male_hair.png");
-            
+
     if (!login_wallpaper) logger.error("Couldn't load login_wallpaper.png");
     if (!playerImg) logger.error("Couldn't load player_male_base.png");
     if (!hairImg) logger.error("Couldn't load player_male_hair.png");
 
-    playerset = new Spriteset(playerImg, 160, 120);
+    playerset = new Spriteset(playerImg, 64, 120);
     hairset = new Spriteset(hairImg, 40, 40);
 
     gui = new Gui(graphics);

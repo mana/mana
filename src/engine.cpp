@@ -329,7 +329,7 @@ void Engine::draw()
     std::list<FloorItem*>::iterator floorItemIterator = floorItems.begin();
     while (floorItemIterator != floorItems.end())
     {
-        FloorItem *floorItem = (*floorItemIterator);    
+        FloorItem *floorItem = (*floorItemIterator);
         unsigned short x = floorItem->x;
         unsigned short y = floorItem->y;
         int sx = x - camera_x;
@@ -343,8 +343,8 @@ void Engine::draw()
         }
 
         floorItemIterator++;
-    } 
-    
+    }
+
     // Draw nodes
     std::list<Being*>::iterator beingIterator = beings.begin();
     while (beingIterator != beings.end())
@@ -383,7 +383,7 @@ void Engine::draw()
             }
 
             playerset->spriteset[4 * pf + dir]->draw(screen,
-                    being->text_x - 64, being->text_y - 80);
+                    being->text_x - 16, being->text_y - 80);
             if (being->weapon != 0 && being->action == ATTACK) {
                 weaponset->spriteset[4 * being->frame + dir]->draw(screen,
                     being->text_x - 64, being->text_y - 80);
@@ -407,7 +407,7 @@ void Engine::draw()
                     being->emotion = 0;
                 }
             }
-            
+
             graphics->drawText(being->name,
                 being->text_x + 15, being->text_y + 30,
                 gcn::Graphics::CENTER);
