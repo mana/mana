@@ -1112,11 +1112,9 @@ void do_parse() {
                     break;
                     // Level up
                 case 0x019b:
+                    logger.log("Level up");
                     if (RFIFOL(2) == player_node->id) {
-                        //SOUND_SID sound_id = sound.loadItem(
-                        //        "data/sfx/level.ogg");
-                        //sound.startItem(sound_id, 64);
-                        //sound.clearCache();
+                        sound.playSfx("sfx/levelup.ogg");
                     }
                     break;
                     // Emotion

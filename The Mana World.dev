@@ -37,14 +37,14 @@ Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.11.1
+FileVersion=0.0.12
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2005 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.11.1
+ProductVersion=0.0.12
 AutoIncBuildNr=0
 
 [Unit8]
@@ -186,8 +186,6 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-########Text Field info#####
-dev-cpp projectfile for tmw by kth5 XD
 
 [Unit31]
 FileName=src\net\network.h
@@ -228,7 +226,6 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-########Text Field info#####
 
 [Unit35]
 FileName=src\sound.cpp
@@ -349,8 +346,6 @@ Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
-########Text Field info#####
-########Text Field info#####
 
 [Unit1]
 FileName=src\map.h

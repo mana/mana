@@ -1,12 +1,15 @@
 0.0.12    (? May 2005)
+- Added volume sliders in setup window
+- Added attack and level up samples
 - Fixed NPC lists
+- Improved sound engine
+- Added fade-in and fade-out features
 - Attack animation synced with attack speed
 - Added icon to application window
 - Added player names below players
 - Fixed speech and emoticons position 
 - Speech and damage display time are now fps independent
-- Scrollbars are now fully skinned (except for button pressed
-  animation)
+- Scrollbars are now fully skinned
 - Sound samples are now loaded through resource manager
 - Added "Register" button in login screen
 - Added warning message to use at leas 4 characters as user name
