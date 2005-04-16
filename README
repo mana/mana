@@ -1,32 +1,11 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.11.2     Date: 8/4/2005
+ Version: 0.0.12    Date: ?/5/2005
 
 
  Development team:
-
-  - Elven Programmer (Admin)
-  - Hammerbear (Admin)
-  - kth5 (Programmer)
-  - Ultramichy (Game server admin)
-  - Rotonen (Background story and music)
-  - Kyokai (Game systems design)
-  - Bertram (Programmer)
-  - zenogais (Programmer)
-
- Special thanks:
-
-  - Sull (Linux Developer)
-  - Neorice (Pixel Artist)
-  - natsuki (Win32 Developer)
-  - Genis (Win32 Developer)
-  - RRC (Graphic Designer)
-  - necromus (Pixel Artist)
-  - LordNev (Artist)
-  - jui-feng for helping in server development and php scripts.
-  - SimEdw (Programmer)
-  - Ti Sing Hao (Music)
+  - See AUTHORS file for a list
 
  Powered by:
 
@@ -52,22 +31,21 @@ demo and development purposes.
 2. Commands
 -----------
 
-Use arrow keys to move around and the right mouse button over NPC's feet to
-talk to them. Other keys:
+Use arrow keys (or left mouse button) to move around and the right mouse button
+over NPC's feet to talk to them. Other keys:
 
 - Left Ctrl  attack
 - Alt + 0-9  show emotions
 - F1         take a screenshot
 - F5         sit down / stand up
 - F6         toggle debug pathfinding feature
-- F7         play levelup sound
-- F11        raise volume
-- F12        lower volume
-- G          get item
+- F7         play test sound
+- G          pick up item
 - Enter      focus chat window / send message
 - Alt + K    show skills
 - Alt + S    show stats
 - Alt + I    show inventory
 - Alt + E    show equipment
-- Alt + N    show new skill window in development
-- Ctrl + F   switch windowed / fullscreen
+- Alt + C    show setup window
+
+Please read docs/faq.txt if you're having troubles.

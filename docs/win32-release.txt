@@ -33,4 +33,7 @@ Every Win32 releaser should follow this checklist when creating a new package.
      * !define PRODUCT_VERSION
      * OutFile
      * all the required files (install/uninstall)
+ - Test the script with a fresh installation (uninstall and delete
+   previous installations). Test also uninstall process to check if
+   it removes all the files.
    
