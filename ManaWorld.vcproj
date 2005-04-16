@@ -174,10 +174,28 @@
 				RelativePath=".\src\configuration.h">
 			</File>
 			<File
+				RelativePath=".\src\engine.cpp">
+			</File>
+			<File
+				RelativePath=".\src\engine.h">
+			</File>
+			<File
+				RelativePath=".\src\floor_item.cpp">
+			</File>
+			<File
+				RelativePath=".\src\floor_item.h">
+			</File>
+			<File
 				RelativePath=".\src\game.cpp">
 			</File>
 			<File
 				RelativePath=".\src\game.h">
+			</File>
+			<File
+				RelativePath=".\src\graphics.cpp">
+			</File>
+			<File
+				RelativePath=".\src\graphics.h">
 			</File>
 			<File
 				RelativePath=".\src\log.cpp">
@@ -206,12 +224,6 @@
 			<Filter
 				Name="graphic"
 				Filter="">
-				<File
-					RelativePath=".\src\graphic\graphic.cpp">
-				</File>
-				<File
-					RelativePath=".\src\graphic\graphic.h">
-				</File>
 				<File
 					RelativePath=".\src\graphic\spriteset.cpp">
 				</File>
@@ -278,6 +290,12 @@
 					RelativePath=".\src\gui\char_server.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\chargedialog.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\chargedialog.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\chat.cpp">
 				</File>
 				<File
@@ -314,6 +332,12 @@
 					RelativePath=".\src\gui\inventory.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\item_amount.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\item_amount.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\itemcontainer.cpp">
 				</File>
 				<File
@@ -336,6 +360,12 @@
 				</File>
 				<File
 					RelativePath=".\src\gui\minimap.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\newskill.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\newskill.h">
 				</File>
 				<File
 					RelativePath=".\src\gui\npc.cpp">
@@ -378,6 +408,12 @@
 				</File>
 				<File
 					RelativePath=".\src\gui\radiobutton.h">
+				</File>
+				<File
+					RelativePath=".\src\gui\requesttrade.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\requesttrade.h">
 				</File>
 				<File
 					RelativePath=".\src\gui\scrollarea.cpp">
@@ -440,6 +476,12 @@
 					RelativePath=".\src\gui\textfield.h">
 				</File>
 				<File
+					RelativePath=".\src\gui\trade.cpp">
+				</File>
+				<File
+					RelativePath=".\src\gui\trade.h">
+				</File>
+				<File
 					RelativePath=".\src\gui\window.cpp">
 				</File>
 				<File
@@ -451,10 +493,6 @@
 				<File
 					RelativePath=".\src\gui\windowcontainer.h">
 				</File>
-				<Filter
-					Name="sound"
-					Filter="">
-				</Filter>
 			</Filter>
 			<Filter
 				Name="resources"
@@ -464,6 +502,18 @@
 				</File>
 				<File
 					RelativePath=".\src\resources\image.h">
+				</File>
+				<File
+					RelativePath=".\src\resources\mapreader.cpp">
+				</File>
+				<File
+					RelativePath=".\src\resources\mapreader.h">
+				</File>
+				<File
+					RelativePath=".\src\resources\music.cpp">
+				</File>
+				<File
+					RelativePath=".\src\resources\music.h">
 				</File>
 				<File
 					RelativePath=".\src\resources\resource.cpp">
@@ -476,6 +526,12 @@
 				</File>
 				<File
 					RelativePath=".\src\resources\resourcemanager.h">
+				</File>
+				<File
+					RelativePath=".\src\resources\soundeffect.cpp">
+				</File>
+				<File
+					RelativePath=".\src\resources\soundeffect.h">
 				</File>
 			</Filter>
 		</Filter>
