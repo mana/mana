@@ -1352,6 +1352,8 @@ void do_parse() {
                             // Trick to use the proper graphic until I find
                             // the right packet
                             switch (inventoryWindow->items->getId(RFIFOW(2))) {
+                                case 521:
+                                case 522:
                                 case 1201:
                                     player_node->weapon = 1;
                                     break;
