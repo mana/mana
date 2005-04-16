@@ -58,7 +58,7 @@ Q: How can I contribute?
 
 A: There are a lot of ways:
    
-   - If you're a programer or an artist you can be part of the development
+   - If you're a programmer or an artist you can be part of the development
      team. Send an e-mail to umperio@users.sourceforge.net explaining what you
      want to do.
    

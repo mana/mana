@@ -1,0 +1,36 @@
+--------------------------------------
+THE MANA WORLD WIN32 RELEASE CHECKLIST
+--------------------------------------
+
+Every Win32 releaser should follow this checklist when creating a new package.
+
+- Update version fields in Project -> Project Options -> Version Info
+    * Version details
+    * File version
+    * Product version
+    * Eventually Legal Copyright
+- Compile OpenGL version (Using -DUSE_OPENGL option) and rename the executable
+  from tmw.exe to tmw_opengl.exe
+- Compile normal version (Do not use special flags as __DEBUG or USE_OPENGL)
+- Check if the dlls where compressed (SDL.dll, SDL_Image.dll, SDL_Mixer.dll)
+- Check config.xml for default values:
+    <?xml version="1.0"?>
+      <configuration>
+        <option name="chatlog" value="chatlog.txt"/>
+        <option name="guialpha" value="0.8"/>
+        <option name="host" value="animesites.de"/>
+        <option name="hwaccel" value="0"/>
+        <option name="port" value="6901"/>
+        <option name="remember" value="0"/>
+        <option name="screen" value="0"/>
+        <option name="sfxVolume" value="100"/>
+        <option name="musicVolume" value="60"/>
+        <option name="sound" value="1"/>
+        <option name="username" value="player"/>
+      </configuration>
+ - Update install script (the most recent version can be found at
+   http://themanaworld.homeip.net/tmw/setup.nsi)
+     * !define PRODUCT_VERSION
+     * OutFile
+     * all the required files (install/uninstall)
+   
