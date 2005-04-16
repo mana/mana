@@ -12,9 +12,9 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@__@@__@@_
-Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lphysfs_static_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lphysfs_@@_
 IsCpp=1
-Icon=data\icons\tmw-icon.ico
+Icon=The Mana World.ico
 ExeOutput=
 ObjectOutput=obj
 OverrideOutput=1
@@ -27,13 +27,13 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001001001001001
+CompilerSettings=0010001001001001001101
 
 [VersionInfo]
 Major=0
 Minor=0
-Release=11
-Build=1
+Release=12
+Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team

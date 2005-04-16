@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef tmw_included_setup_h
-#define tmw_included_setup_h
+#ifndef _TMW_SETUP_H
+#define _TMW_SETUP_H
 
 #include "window.h"
 #include "../sound.h"
@@ -55,8 +55,7 @@ class ModeListModel : public gcn::ListModel {
         std::string getElementAt(int i);
 
     private:
-        int nmode;
-        char **mode;
+        std::vector<std::string> videoModes;
 };
 
 /**
@@ -66,22 +65,20 @@ class ModeListModel : public gcn::ListModel {
  */
 class Setup : public Window, public gcn::ActionListener {
     private:
-        // Dialog parts
-        //ModeListModel *modeListModel;
-        //gcn::Label *displayLabel;
+        // Dialog widgets
+        gcn::Label *videoLabel, *audioLabel;
+        gcn::ListBox *modeList;
+        ModeListModel *modeListModel;
+        gcn::ScrollArea *scrollArea;
         gcn::CheckBox *fsCheckBox;
-        gcn::Label *soundLabel;
+        gcn::CheckBox *openGlCheckBox;
+        gcn::Slider *alphaSlider;
+        gcn::Label *alphaLabel;
         gcn::CheckBox *soundCheckBox;
-        gcn::RadioButton *disabledRadio;
-        //gcn::ScrollArea *scrollArea;
-        //gcn::ListBox *modeList;
+        gcn::Slider *sfxSlider, *musicSlider;
+        gcn::Label *sfxLabel, *musicLabel;
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
-        gcn::Label *alphaLabel;
-        gcn::Slider *alphaSlider;
-
-        // Video selections
-        int last_sel, sel;
 
     public:
     
@@ -93,7 +90,7 @@ class Setup : public Window, public gcn::ActionListener {
         /**
          * Destructor.
          */
-        ~Setup();    
+        ~Setup();
     
         /**
          * Event handling method.

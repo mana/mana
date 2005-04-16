@@ -21,11 +21,6 @@
  *  $Id$
  */
 
-/*
- *  This module takes care of everything relating to the
- *  setup dialog.
- */
-
 #include "setup.h"
 #include "button.h"
 #include "checkbox.h"
@@ -35,168 +30,178 @@
 #include "slider.h"
 #include "ok_dialog.h"
 #include "../main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <memory.h>
+#include <sstream>
 
-/*
-SDL_Rect **modes;
+#define SETUP_WIDTH 240
 
 ModeListModel::ModeListModel()
 {
-    int i;
+    SDL_Rect **modes;
 
-    modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
-
-    // Check if any modes available
-    if (modes == (SDL_Rect**)0) {
-        nmode = 0;
-        logger.log("No modes");
+    /* Get available fullscreen/hardware modes */
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+    
+    /* Check is there are any modes available */
+    if(modes == (SDL_Rect **)0) {
+        logger.log("No modes available");
     }
-
-    // Check if modes restricted 
-    if (modes == (SDL_Rect**)-1) {
-        logger.log("Modes unrestricted");
+    
+    /* Check if our resolution is restricted */
+    if(modes == (SDL_Rect **)-1) {
+        logger.log("All resolutions available");
     }
-
-    for (nmode = 0; modes[nmode]; ++nmode);
-
-    mode = (char**)calloc(nmode, sizeof(char*));
-
-    for (i = 0; modes[i]; ++i) {
-        char *temp = (char*)malloc(20 * sizeof(char));
-        mode[i] = temp;
-        if (sprintf(mode[i], "%d x %d", modes[i]->w, modes[i]->h) == -1) {
-            logger.log("Cannot allocate mode list");
+    else{
+        /* Print valid modes */
+        logger.log("Available Modes");
+        for (int i = 0; modes[i]; ++i) {
+            logger.log("  %dx%d", modes[i]->w, modes[i]->h);
+            std::stringstream mode;
+            mode << (int)modes[i]->w << "x" << (int)modes[i]->h;
+            videoModes.push_back(mode.str());
         }
     }
 }
 
 ModeListModel::~ModeListModel()
 {
-    int i;
-
-    // Cleanup 
-    for (i = 0; i < nmode; i++) {
-        free(mode[i]);
-    }
-
-    free(mode);
+    //delete videoModes;
 }
 
 int ModeListModel::getNumberOfElements()
 {
-    return nmode;
+    return videoModes.size();
 }
 
 std::string ModeListModel::getElementAt(int i)
 {
-    return mode[i];
+    return videoModes[i];
 }
-*/
+
 
 Setup::Setup():
     Window("Setup")
 {
-    //modeListModel = new ModeListModel();
-    //displayLabel = new gcn::Label("Display settings");
-    //modeList = new ListBox(modeListModel);
-    //scrollArea = new ScrollArea(modeList);
+    videoLabel = new gcn::Label("Video settings");
+    modeListModel = new ModeListModel();
+    modeList = new ListBox(modeListModel);
+    modeList->setEnabled(false);
+    scrollArea = new ScrollArea(modeList);
     fsCheckBox = new CheckBox("Full screen", false);
-    soundLabel = new gcn::Label("Sound settings");
+    openGlCheckBox = new CheckBox("OpenGL", false);
+    openGlCheckBox->setEnabled(false);
+    alphaLabel = new gcn::Label("Gui opacity:");
+    alphaSlider = new Slider(0.2, 1.0);
+    audioLabel = new gcn::Label("Audio settings");
     soundCheckBox = new CheckBox("Sound", false);
-    disabledRadio = new RadioButton("Disabled", "Modes", false);
+    sfxSlider = new Slider(0, 128);
+    musicSlider = new Slider(0, 128);
+    sfxLabel = new gcn::Label("Sfx volume");
+    musicLabel = new gcn::Label("Music volume");
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
-    alphaLabel = new gcn::Label("GUI opacity:");
-    alphaSlider = new Slider(0.2, 1.0);
-
-    // Set selections
-    last_sel = 0;
-    sel = 1;
 
     // Set events
     applyButton->setEventId("apply");
     cancelButton->setEventId("cancel");
     alphaSlider->setEventId("guialpha");
+    sfxSlider->setEventId("sfx");
+    musicSlider->setEventId("music");
 
     // Set dimensions/positions
-    setContentSize(240, 216);
-    /*
-    scrollArea->setDimension(gcn::Rectangle(10, 40, 90, 50));
+    setContentSize(SETUP_WIDTH, 216);
+    videoLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 10);
+    scrollArea->setDimension(gcn::Rectangle(10, 30, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    displayLabel->setDimension(gcn::Rectangle(10, 10, 100,16));
-    */
+    fsCheckBox->setPosition(110, 30);
+    openGlCheckBox->setPosition(110, 50);
+    alphaSlider->setDimension(gcn::Rectangle(10, 90, 100, 10));
+    alphaLabel->setPosition(20 + alphaSlider->getWidth(), 87);
+    audioLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 110);
+    soundCheckBox->setPosition(10, 130);
+    sfxSlider->setDimension(gcn::Rectangle(10, 150, 100, 10));
+    musicSlider->setDimension(gcn::Rectangle(10, 170, 100, 10));
+    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 147);
+    musicLabel->setPosition(20 + musicSlider->getWidth(), 167);
     cancelButton->setPosition(
-            240 - 5 - cancelButton->getWidth(),
+            SETUP_WIDTH - 5 - cancelButton->getWidth(),
             216 - 5 - cancelButton->getHeight());
     applyButton->setPosition(
             cancelButton->getX() - 5 - applyButton->getWidth(),
             216 - 5 - applyButton->getHeight());
-    soundLabel->setPosition(10, 110);
-    fsCheckBox->setPosition(120, 36);
-    soundCheckBox->setPosition(10, 130);
-    disabledRadio->setPosition(10, 140);
-    alphaLabel->setPosition(10, 157);
-    alphaSlider->setDimension(gcn::Rectangle(
-                alphaLabel->getWidth() + 20, 160, 100, 10));
-
+    
     // Listen for actions
     applyButton->addActionListener(this);
     cancelButton->addActionListener(this);
     alphaSlider->addActionListener(this);
-
+    sfxSlider->addActionListener(this);
+    musicSlider->addActionListener(this);
+    
     // Assemble dialog
-    //add(scrollArea);
-    //add(displayLabel);
+    add(videoLabel);
+    add(scrollArea);
     add(fsCheckBox);
-    add(soundLabel);
+    add(openGlCheckBox);
+    add(audioLabel);
     add(soundCheckBox);
-    //add(disabledRadio);
     add(applyButton);
     add(cancelButton);
-    add(alphaLabel);
     add(alphaSlider);
+    add(alphaLabel);
+    add(sfxSlider);
+    add(musicSlider);
+    add(sfxLabel);
+    add(musicLabel);
 
     setLocationRelativeTo(getParent());
 
-    // load default settings
-    //modeList->setSelected(1);
+    // Load default settings
+    modeList->setSelected(-1);
     if (config.getValue("screen", 0) == 1) {
         fsCheckBox->setMarked(true);
     }
     soundCheckBox->setMarked(config.getValue("sound", 0));
     alphaSlider->setValue(config.getValue("guialpha", 0.8));
+    sfxSlider->setValue(config.getValue("sfxVolume", 100));
+    musicSlider->setValue(config.getValue("musicVolume", 60));
 }
 
 Setup::~Setup()
 {
-    //delete modeListModel;
-    //delete modeList;
-    //delete scrollArea;
+    delete modeListModel;
+    delete modeList;
+    delete scrollArea;
     delete fsCheckBox;
     delete soundCheckBox;
-    delete soundLabel;
-    //delete displayLabel;
+    delete audioLabel;
     delete applyButton;
     delete cancelButton;
-    delete alphaLabel;
     delete alphaSlider;
+    delete alphaLabel;
+    delete sfxSlider;
+    delete musicSlider;
+    delete sfxLabel;
+    delete musicLabel;
 }
 
 void Setup::action(const std::string &eventId)
 {
-    if (eventId == "guialpha")
+    if (eventId == "sfx")
+    {
+        config.setValue("sfxVolume", (int)sfxSlider->getValue());
+        sound.setSfxVolume(sfxSlider->getValue());
+    }
+    else if (eventId == "music")
+    {
+        config.setValue("musicVolume", (int)musicSlider->getValue());
+        sound.setMusicVolume(musicSlider->getValue());
+    }
+    else if (eventId == "guialpha")
     {
         config.setValue("guialpha", alphaSlider->getValue());
     }
     else if (eventId == "apply")
     {
         setVisible(false);
-        
-        /*screenW = modes[sel]->w;
-        screenH = modes[sel]->h;*/
         
         if (fsCheckBox->isMarked()) { // Fullscreen
             config.setValue("screen", 1);
@@ -216,16 +221,6 @@ void Setup::action(const std::string &eventId)
             exit(1);
         }
         
-/*            if (displayFlags & SDL_FULLSCREEN) {
-#ifdef WIN32
-                displayFlags ^= SDL_FULLSCREEN;
-                screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
-#else
-                SDL_WM_ToggleFullScreen(screen);
-#endif
-            }*/
-
-
         // Sound settings
         if (soundCheckBox->isMarked()) {
             config.setValue("sound", 1);

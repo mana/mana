@@ -27,11 +27,8 @@
 #include <guichan.hpp>
 #include <SDL.h>
 #include <SDL_mixer.h>
-#include <map>
 
 #include "resources/resourcemanager.h"
-
-typedef short SOUND_ID;
 
 /** Sound engine
  *
@@ -108,41 +105,18 @@ class Sound {
         void setSfxVolume(int volume);
 
         /**
-         * Preloads a sound-item into buffer.
-         *
-         * \param path Full path to file
-         */
-        SOUND_ID loadSfx(const char *path);
-
-        /**
-         * Plays an item in soundpool.
-         *
-         * \param id     Id returned to the item in the soundpool
-         */
-        void playSfx(SOUND_ID id);
-        
-        /**
          * Plays an item.
          *
          * \param path     Full path to file
          */
         void playSfx(const char *path);
         
-        /**
-         * Wipe all items off the cache
-         */
-        void clearCache();
-
     private:
         bool installed;
 
         int musicVolume, sfxVolume;
 
         Mix_Music *music;
-        
-        /** list of preloaded sound data / items */
-        std::map<int, SoundEffect*> soundPool;
-        SOUND_ID items;
 };
 
 #endif

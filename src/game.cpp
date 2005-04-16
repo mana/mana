@@ -224,8 +224,7 @@ void do_input()
             }
             else if ((keysym.sym == SDLK_F7))
             {
-                SOUND_ID id = sound.loadSfx("data/sfx/fist-swish.ogg");
-                sound.playSfx(id);
+                sound.playSfx("sfx/fist-swish.ogg");
             }
 
             // Emotions, Skill dialog

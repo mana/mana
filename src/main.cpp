@@ -182,6 +182,8 @@ void init_engine()
             config.setValue("chatlog", "chatlog.txt");
 #endif
             config.setValue("remember", 1);
+            config.setValue("sfxVolume", 100);
+            config.setValue("musicVolume", 60);
 
             config.write(dir);
         }
@@ -294,7 +296,8 @@ void init_engine()
         if (config.getValue("sound", 0) == 1) {
             sound.init();
          }
-         //sound.setVolume(64);
+         sound.setSfxVolume(config.getValue("sfxVolume", 100));
+         sound.setMusicVolume(config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
         state = ERROR;

@@ -27,7 +27,8 @@
 
 Sound::Sound():
     installed(false),
-    items(-1)
+    sfxVolume(100),
+    musicVolume(60)
 {
 }
 
@@ -187,35 +188,6 @@ void Sound::fadeOutMusic(int ms)
     }
 }
 
-SOUND_ID Sound::loadSfx(const char *path)
-{
-    /* If sound system is not installed it can't load
-     * samples because doesn't know how to convert them */
-    if (!installed) return 0;
-    
-    logger.log("Sound::loadSfx() pre-caching \"%s\"", path);
-
-    ResourceManager *resman = ResourceManager::getInstance();
-    SoundEffect *sample = resman->getSoundEffect(path);
-    if (sample) {
-        soundPool[++items] = sample;
-        logger.log("Sound::loadSfx() SOUND_ID = %d", items);
-        return items;
-    }
-        
-    return 0;
-}
-
-void Sound::playSfx(SOUND_ID id)
-{
-    if (!installed) return;
-    
-    if (soundPool[id]) {
-        logger.log("Sound::playSfx() Playing SOUND_ID = %d", id);
-        soundPool[id]->play(0, sfxVolume);
-    }
-}
-
 void Sound::playSfx(const char *path)
 {
     if (!installed) return;
@@ -228,22 +200,9 @@ void Sound::playSfx(const char *path)
     }
 }
 
-void Sound::clearCache()
-{
-    for (SOUND_ID i = 0; i <= items; i++) {
-        soundPool[i]->unload();
-        delete soundPool[i];
-        soundPool[i] = NULL;
-    }
-    
-    soundPool.clear();
-    logger.log("Sound::clearCache() Wiped all items off the cache");
-}
-
 void Sound::close()
 {
     installed = false;
-    clearCache();
     Mix_CloseAudio();
     logger.log("Sound::close() Shutting down sound...");
 }
