@@ -137,8 +137,7 @@ void sort() {
 }
 
 Being::Being():
-    speech_time(0), aspd(350),
-    damage(""), damage_time(0),
+    damage(""),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     type(0), action(0), frame(0),
@@ -149,7 +148,10 @@ Being::Being():
     text_x(0), text_y(0),
     hair_style(1), hair_color(1),
     weapon(0),
-    showSpeech(false), showDamage(false)
+    speech_time(0),
+    damage_time(0),
+    showSpeech(false), showDamage(false),
+    aspd(350)
 {
     strcpy(name, "");
 }

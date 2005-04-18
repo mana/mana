@@ -16,7 +16,7 @@
 - Scrollbars are now fully skinned
 - Sound samples are now loaded through resource manager
 - Added "Register" button in login screen
-- Added warning message to use at leas 4 characters as user name
+- Added warning message to use at least 4 characters as user name
 
 0.0.11.2  (8 April 2005)
 - Damage text now floats upwards

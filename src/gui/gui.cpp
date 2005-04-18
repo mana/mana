@@ -45,12 +45,13 @@ Gui::Gui(Graphics *graphics)
     setInput(guiInput);
 
     // Set image loader
-#ifndef USE_OPENGL
-    imageLoader = new gcn::SDLImageLoader();
-#else
-    hostImageLoader = new gcn::SDLImageLoader();
-    imageLoader = new gcn::OpenGLImageLoader(hostImageLoader);
-#endif
+    if (useOpenGL) {
+        hostImageLoader = new gcn::SDLImageLoader();
+        imageLoader = new gcn::OpenGLImageLoader(hostImageLoader);
+    }
+    else {
+        imageLoader = new gcn::SDLImageLoader();
+    }
     gcn::Image::setImageLoader(imageLoader);
 
     // Initialize top GUI widget

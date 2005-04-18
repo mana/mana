@@ -32,6 +32,16 @@ SDL_Surface *screen;
 Graphics::Graphics():
     mouseCursor(NULL)
 {
+    if (useOpenGL) {
+        // Setup OpenGL
+        glViewport(0, 0, 800, 600);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        int gotDoubleBuffer;
+        SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
+        logger.log("Using OpenGL %s double buffering.",
+                (gotDoubleBuffer ? "with" : "without"));
+    }
+
 #ifdef USE_OPENGL
     setTargetPlane(800, 600);
 #else
@@ -125,12 +135,13 @@ void Graphics::updateScreen()
     SDL_GetMouseState(&mouseX, &mouseY);
     mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
 
-#ifdef USE_OPENGL
-    glFlush();
-    glFinish();
-    SDL_GL_SwapBuffers();
-    glClear(GL_COLOR_BUFFER_BIT);
-#else
-    SDL_Flip(screen);
-#endif
+    if (useOpenGL) {
+        glFlush();
+        glFinish();
+        SDL_GL_SwapBuffers();
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    else {
+        SDL_Flip(screen);
+    }
 }

@@ -67,6 +67,7 @@ unsigned char state;
 unsigned char screen_mode;
 char *dir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
+bool useOpenGL = false;
 
 Sound sound;
 Music *bgm;
@@ -170,6 +171,7 @@ void init_engine()
             config.setValue("host", "www.lindeijer.nl");
             config.setValue("port", 6901);
             config.setValue("hwaccel", 0);
+            config.setValue("opengl", 0);
             config.setValue("screen", 0);
             config.setValue("sound", 1);
             config.setValue("guialpha", 0.8f);
@@ -193,29 +195,36 @@ void init_engine()
 
     SDL_WM_SetCaption("The Mana World", NULL);
 
+#ifdef USE_OPENGL
+    useOpenGL = true;
+#else
+    useOpenGL = false;
+#endif
 
     displayFlags = SDL_ANYFORMAT;
 
     if ((int)config.getValue("screen", 0) == 1) {
         displayFlags |= SDL_FULLSCREEN;
     }
-#ifndef USE_OPENGL
-    if ((int)config.getValue("hwaccel", 0)) {
-        logger.log("Attempting to use hardware acceleration.");
-        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+
+    if (useOpenGL) {
+        displayFlags |= SDL_OPENGL;
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     }
     else {
-        displayFlags |= SDL_SWSURFACE;
+        if ((int)config.getValue("hwaccel", 0)) {
+            logger.log("Attempting to use hardware acceleration.");
+            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+        }
+        else {
+            displayFlags |= SDL_SWSURFACE;
+        }
     }
-#else
-    displayFlags |= SDL_OPENGL;
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-#endif
 
     // TODO: the following variables should be loaded from config file
-    screenW = 800;
-    screenH = 600;
-    bitDepth = 16;
+    screenW = (int)config.getValue("screenwidth", 800);
+    screenH = (int)config.getValue("screenheight", 600);
+    bitDepth = (int)config.getValue("bitdepth", 16);
     
     SDL_WM_SetIcon(IMG_Load("data/icons/tmw-icon.png"), NULL);
 
@@ -234,16 +243,6 @@ void init_engine()
     else {
         logger.log("Using video driver: unkown");
     }
-
-#ifdef USE_OPENGL
-    // Setup OpenGL
-    glViewport(0, 0, 800, 600);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    int gotDoubleBuffer;
-    SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
-    logger.log("OpenGL is %s double buffering.",
-            (gotDoubleBuffer ? "using" : "not using"));
-#endif
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
 
@@ -291,13 +290,13 @@ void init_engine()
     gui = new Gui(graphics);
     state = LOGIN;
 
-    // initialize sound-engine and start playing intro-theme /-kth5
+    // Initialize sound engine
     try {
         if (config.getValue("sound", 0) == 1) {
             sound.init();
-         }
-         sound.setSfxVolume(config.getValue("sfxVolume", 100));
-         sound.setMusicVolume(config.getValue("musicVolume", 60));
+        }
+        sound.setSfxVolume(config.getValue("sfxVolume", 100));
+        sound.setMusicVolume(config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
         state = ERROR;

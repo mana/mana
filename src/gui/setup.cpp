@@ -188,12 +188,12 @@ void Setup::action(const std::string &eventId)
     if (eventId == "sfx")
     {
         config.setValue("sfxVolume", (int)sfxSlider->getValue());
-        sound.setSfxVolume(sfxSlider->getValue());
+        sound.setSfxVolume((int)sfxSlider->getValue());
     }
     else if (eventId == "music")
     {
         config.setValue("musicVolume", (int)musicSlider->getValue());
-        sound.setMusicVolume(musicSlider->getValue());
+        sound.setMusicVolume((int)musicSlider->getValue());
     }
     else if (eventId == "guialpha")
     {
