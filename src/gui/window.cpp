@@ -33,11 +33,11 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     parent(parent),
     snapSize(8),
     modal(modal),
+    resizeable(false),
     minWinWidth(256),
     minWinHeight(128),
     maxWinWidth(512),
-    maxWinHeight(512),
-    isWinResizeable(false)
+    maxWinHeight(512)
 {
     logger.log("Window::Window(\"%s\")", caption.c_str());
 
@@ -183,12 +183,12 @@ void Window::setMaxHeight(unsigned int height)
 
 void Window::setResizeable(bool r)
 {
-	isWinResizeable = r;
+    resizeable = r;
 }
 
 bool Window::getResizeable()
 {
-	return isWinResizeable;
+    return resizeable;
 }
 
 Window *Window::getParentWindow()
@@ -229,24 +229,24 @@ void Window::mouseMotion(int mx, int my)
         //if (y < snapSize) y = 0;
         //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
-	
-	if (isWinResizeable && mx > getWidth() - 16) {
-            //resize
-	    if (mx < minWinWidth)
-		    mx = minWinWidth;
-	    if (my < minWinHeight)
-		    my = minWinHeight;
-	    if (mx >= maxWinWidth)
-		    mx = maxWinWidth - 1;
-	    if (my >= maxWinHeight)
-		    my = maxWinHeight - 1;
+
+        if (resizeable && mx > getWidth() - 16) {
+            // Resize
+            if (mx < minWinWidth)
+                mx = minWinWidth;
+            if (my < minWinHeight)
+                my = minWinHeight;
+            if (mx >= maxWinWidth)
+                mx = maxWinWidth - 1;
+            if (my >= maxWinHeight)
+                my = maxWinHeight - 1;
 
             setWidth(mx);
-	    setHeight(my);
-	} else {
-            //move
+            setHeight(my);
+        } else {
+            // Move
             setPosition(x, y);
-	}
+        }
     }
 }
 

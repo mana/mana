@@ -197,7 +197,8 @@ void map_start()
     while (out_size > 0) flush();
 }
 
-void walk(unsigned short x, unsigned short y, unsigned char direction) {
+void walk(unsigned short x, unsigned short y, unsigned char direction)
+{
     char temp[3];
     set_coordinates(temp, x, y, direction);
     WFIFOW(0) = net_w_value(0x0085);
@@ -205,7 +206,8 @@ void walk(unsigned short x, unsigned short y, unsigned char direction) {
     WFIFOSET(5);
 }
 
-void speak(char *speech) {
+void speak(char *speech)
+{
     int len = (int)strlen(speech);
     WFIFOW(0) = net_w_value(0x008c);
     WFIFOW(2) = net_w_value(len + 4);
@@ -213,14 +215,16 @@ void speak(char *speech) {
     WFIFOSET(len + 4);
 }
 
-void action(char type, int id) {
+void action(char type, int id)
+{
     WFIFOW(0) = net_w_value(0x0089);
     WFIFOL(2) = net_l_value(id);
     WFIFOB(6) = net_b_value(type);
     WFIFOSET(7);
 }
 
-void attack(unsigned short x, unsigned short y, unsigned char direction) {
+void attack(unsigned short x, unsigned short y, unsigned char direction)
+{
     int monster_id = 0;
 
     if (direction == SOUTH) {

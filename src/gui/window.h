@@ -50,11 +50,11 @@ class Window : public gcn::Window, public ConfigListener
 
         ImageRect border;          /**< The window border */
 
-	bool isWinResizeable;       /**< Window can be resized */
-	int minWinWidth;           /**< Minimum window width */
-	int minWinHeight;          /**< Minimum window height */
-	int maxWinWidth;           /**< Maximum window width */
-	int maxWinHeight;          /**< Maximum window height */
+        bool resizeable;           /**< Window can be resized */
+        int minWinWidth;           /**< Minimum window width */
+        int minWinHeight;          /**< Minimum window height */
+        int maxWinWidth;           /**< Maximum window width */
+        int maxWinHeight;          /**< Maximum window height */
 
 
         /** The window container windows add themselves to. */
@@ -124,35 +124,35 @@ class Window : public gcn::Window, public ConfigListener
          */
         void setContentSize(int width, int height);
 
-	/**
-	 * Sets whether of not the window can be resized
-	 */
-	void setResizeable(bool resize);
+        /**
+         * Sets whether of not the window can be resized.
+         */
+        void setResizeable(bool resize);
 
-	/**
-	 * Returns the current value of isResizable
-	 */
-	bool getResizeable();
+        /**
+         * Returns whether the window can be resized.
+         */
+        bool getResizeable();
 
-	/**
-	 * Sets the minimum width of the window
-	 */
-	void setMinWidth(unsigned int width);
+        /**
+         * Sets the minimum width of the window.
+         */
+        void setMinWidth(unsigned int width);
 
-	/**
-	 * Sets the minimum height of the window
-	 */
-	void setMinHeight(unsigned int height);
+        /**
+         * Sets the minimum height of the window.
+         */
+        void setMinHeight(unsigned int height);
 
-	/**
-	 * Sets the maximum width of the window
-	 */
-	void setMaxWidth(unsigned int width);
+        /**
+         * Sets the maximum width of the window.
+         */
+        void setMaxWidth(unsigned int width);
 
-	/**
-	 * Sets the minimum height of the window
-	 */
-	void setMaxHeight(unsigned int height);
+        /**
+         * Sets the minimum height of the window.
+         */
+        void setMaxHeight(unsigned int height);
 
 
         /**

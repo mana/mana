@@ -76,7 +76,7 @@ Map *MapReader::readMap(const std::string &filename)
             logger.log("Warning: Not a map file (%s)!", filename.c_str());
             return NULL;
         }
-        
+
         return readMap(node, filename);
         xmlFreeDoc(doc);
     } else {
@@ -89,7 +89,7 @@ Map *MapReader::readMap(const std::string &filename)
 Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 {
     xmlChar *prop;
-    
+
     // Take the filename off the path
     std::string pathDir = path.substr(0, path.rfind("/") + 1);
 
@@ -120,6 +120,10 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
             layerNr++;
         }
     }
+
+    // Clean up tilesets
+    // TODO: Dereference them somewhere
+    tilesets.clear();
 
     return map;
 }
