@@ -1,4 +1,8 @@
 0.0.12    (? May 2005)
+- New map (Shimris dungeon)
+- New monsters (yellow and red slime, black scorpion)
+- Dynamic loading of monstersets
+- New items (dagger, sharp knife, leather shirt, fancy hat)
 - Added volume sliders in setup window
 - Added attack and level up samples
 - Fixed NPC lists
