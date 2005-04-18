@@ -35,6 +35,8 @@
 #include "floor_item.h"
 #include "gui/requesttrade.h"
 
+#define MONSTERS_NUMBER 8
+
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
 char npc_text[1000] = "";
@@ -64,6 +66,7 @@ EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 RequestTradeDialog *requestTradeDialog;
+std::vector<Spriteset*> monsterset;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -208,8 +211,6 @@ Engine::Engine()
             "graphics/sprites/npcs.png");
     Image *emotionbmp = resman->getImage(
             "graphics/sprites/emotions.png");
-    Image *monsterbitmap = resman->getImage(
-            "graphics/sprites/monsters.png");
     Image *weaponbitmap = resman->getImage(
             "graphics/sprites/weapons.png");
     Image *itembitmap = resman->getImage(
@@ -217,15 +218,19 @@ Engine::Engine()
 
     if (!npcbmp) logger.error("Unable to load npcs.png");
     if (!emotionbmp) logger.error("Unable to load emotions.png");
-    if (!monsterbitmap) logger.error("Unable to load monsters.png");
     if (!weaponbitmap) logger.error("Unable to load weapons.png");
     if (!itembitmap) logger.error("Unable to load items.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
-    monsterset = new Spriteset(monsterbitmap, 60, 60);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
-    itemset = new Spriteset(itembitmap, 20, 20); 
+    itemset = new Spriteset(itembitmap, 20, 20);
+    
+    // Loads all the monsters
+    for (int i = 0; i < MONSTERS_NUMBER; i++)
+    {
+        monsterset.push_back(NULL);
+    }
 }
 
 Engine::~Engine()
@@ -249,7 +254,7 @@ Engine::~Engine()
     delete requestTradeDialog;
 
     // Delete sprite sets
-    delete monsterset;
+    //delete monsterset;
     delete npcset;
     delete emotionset;
     delete weaponset;
@@ -413,23 +418,23 @@ void Engine::draw()
                 gcn::Graphics::CENTER);
         }
         else if (being->job == 45) { // Draw a warp
-        } else { // Draw a monster
+        }
+        else { // Draw a monster
             if (being->frame >= 4)
                 being->frame = 3;
 
             being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
             being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
 
-            int sprnum = dir + 4 * (being->job - 1002);
             int mf = being->frame + being->action;
-
+            
             if (being->action == MONSTER_DEAD) {
-                monsterset->spriteset[sprnum + 20 * MONSTER_DEAD]->draw(screen,
+                monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
             }
             else {
-                monsterset->spriteset[sprnum + 20 * mf]->draw(screen,
-                        being->text_x + 30, being->text_y + 40);
+                monsterset[being->job - 1002]->spriteset[dir + 4 * mf]->draw(
+                        screen, being->text_x + 30, being->text_y + 40);
             }
 
             if (being->action != STAND) {
@@ -501,8 +506,7 @@ void Engine::draw()
 
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
-        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y) << " "
-        << player_node->aspd;
+        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

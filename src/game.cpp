@@ -686,6 +686,7 @@ void do_parse() {
                     if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
+                        being->job = RFIFOW(14);
                         add_node(being);
                     }
 
@@ -707,6 +708,7 @@ void do_parse() {
                     if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
+                        being->job = RFIFOW(14);
                         add_node(being);
                     }
 
@@ -731,6 +733,7 @@ void do_parse() {
                     if (being == NULL) {
                         being = new Being();
                         being->id = RFIFOL(2);
+                        being->job = RFIFOW(14);
                         add_node(being);
                     }
 

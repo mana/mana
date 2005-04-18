@@ -73,6 +73,7 @@ extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
 extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
+extern std::vector<Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);
 
@@ -81,7 +82,7 @@ char get_y_offset(char, char);
  */
 class Engine {
     private:
-        Spriteset *emotionset, *npcset, *monsterset, *weaponset, *itemset;
+        Spriteset *emotionset, *npcset, *weaponset, *itemset;
         
     public:
         Engine();

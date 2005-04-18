@@ -23,8 +23,10 @@
 
 #include "being.h"
 #include "game.h"
+#include "engine.h"
 #include "net/protocol.h"
 #include "net/network.h"
+#include "resources/resourcemanager.h"
 
 Being *player_node = NULL;
 
@@ -38,11 +40,25 @@ PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
 void add_node(Being *being) {
     beings.push_back(being);
     // If the being is a player, request the name
-    //if (being-> job < 10) {
-                        WFIFOW(0) = net_w_value(0x0094);
-                        WFIFOL(2) = net_l_value(RFIFOL(2));
-                        WFIFOSET(6);
-    //                }
+    if (being-> job < 10) {
+        WFIFOW(0) = net_w_value(0x0094);
+        WFIFOL(2) = net_l_value(RFIFOL(2));
+        WFIFOSET(6);
+    }
+    // If the being is a monster then load the monsterset
+    else if (being->job >= 1002 && monsterset[being->job - 1002] == NULL) {
+        std::stringstream filename;
+        filename << "graphics/sprites/monster" << (being->job - 1002) << ".png";
+        logger.log("%s",filename.str().c_str());
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *monsterbitmap = resman->getImage(filename.str());
+        if (!monsterbitmap) {
+            logger.error("Unable to load monster.png");
+        }
+        else {
+            monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);
+        }
+    }
 
 }
 
