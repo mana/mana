@@ -1,4 +1,5 @@
 0.0.12    (? May 2005)
+- Fixed crash when map server is down
 - New map (Shimris dungeon)
 - New monsters (yellow and red slime, black scorpion)
 - Dynamic loading of monstersets

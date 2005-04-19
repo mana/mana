@@ -9,6 +9,7 @@ Every Win32 releaser should follow this checklist when creating a new package.
     * File version
     * Product version
     * Eventually Legal Copyright
+- Update README and ChangeLog if not already
 - Compile OpenGL version (Using -DUSE_OPENGL option) and rename the executable
   from tmw.exe to tmw_opengl.exe
 - Compile normal version (Do not use special flags as __DEBUG or USE_OPENGL)
