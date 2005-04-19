@@ -249,6 +249,12 @@ void CharSelectDialog::serverCharSelect()
         }
         RFIFOSKIP(3);
     }
+    else if (RFIFOW(0) == 0x0081) {
+        new OkDialog(this, "Error",
+                "Map server is down, please try again later");
+        close_session();
+        state = LOGIN;
+    }
     // Todo: add other packets
 }
 
