@@ -32,11 +32,15 @@
 
 #define INVENTORY_SIZE 100
 
-struct ITEM_HOLDER { // the holder of a item
-    int id;          // the id of the item
-    int quantity;    // number of items
-    bool equipment;
-    bool equipped;
+/**
+ * The holder of a item.
+ */
+struct ITEM_HOLDER
+{
+    int id;          /**< The id of the item */
+    int quantity;    /**< The number of items */
+    bool equipment;  /**< Whether this item is equipment */
+    bool equipped;   /**< Whether this item is equipped */
 };
 
 /**
@@ -44,15 +48,14 @@ struct ITEM_HOLDER { // the holder of a item
  *
  * \ingroup GUI
  */
-class ItemContainer : public gcn::Widget
+class ItemContainer : public gcn::Widget, public gcn::MouseListener
 {
     private:
-        
         Spriteset *itemset;
-	Image *selImg;
+        Image *selImg;
         int selectedItem;
         int itemNumber;
-        ITEM_HOLDER items[INVENTORY_SIZE];  /**< this is the holder of items */        
+        ITEM_HOLDER items[INVENTORY_SIZE];  /**< The holder of items */
 
     public:
         /**
@@ -74,52 +77,52 @@ class ItemContainer : public gcn::Widget
          * Handles mouse click.
          */
         void mousePress(int mx, int my, int button);
-        
+
         /**
          * Returns index of the selected item.
          */
         int getIndex();
-        
+
         /**
          * Finds the index of an item.
          */
         int getIndex(int id);
-        
+
         /**
          * Returns the id of the selected item.
          */
         int getId();
-        
+
         /**
          * Returns the id of an item.
          */
         int getId(int index);
-        
+
         /**
          * Returns the quantity of the selected item.
          */
         int getQuantity();
-        
+
         /**
          * Returns the quantity of an item.
          */
         int getQuantity(int index);
-        
+
         /**
          * Returns id of next free slot or -1 if all occupied.
          */
         int getFreeSlot();
-        
+
         /**
          * Adds a new item.
          */
         void addItem(int index, int id, int quantity, bool equipment);
-            
+
         /**
          * Reset all item slots.
          */
         void resetItems();
-        
+
         /**
          * Remove a item from the inventory.
          */
@@ -134,17 +137,27 @@ class ItemContainer : public gcn::Widget
          * Increase quantity of an item.
          */
         void increaseQuantity(int index, int quantity);
-        
-        void _mouseInputMessage(const gcn::MouseInput &mouseInput);
-        
+
+        /**
+         * Returns whether the item at the specified index is equipment.
+         */
         bool isEquipment(int index);
-        
+
+        /**
+         * Returns whether the item at the specified index is equipped.
+         */
         bool isEquipped(int index);
-        
+
+        /**
+         * Sets whether the item at the specified index is equipped.
+         */
         void setEquipped(int index, bool equipped);
-        
+
+        /**
+         * Sets whether the item at the specified index is equipment.
+         */
         void setEquipment(int index, bool equipment);
-        
+
         /**
          * Get the number of slots filled with an item
          */

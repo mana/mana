@@ -103,8 +103,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 if (buffer != NULL)
                 {
                     // Let the music class load it
-                    resource = reinterpret_cast<Resource*>(Music::load(buffer,
-                                fileSize));
+                    resource = Music::load(buffer, fileSize);
 
                     // Cleanup
                     free(buffer);
@@ -123,8 +122,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 if (buffer != NULL)
                 {
                     // Let the image class load it
-                    resource = reinterpret_cast<Resource*>(Image::load(buffer,
-                                fileSize, flags));
+                    resource = Image::load(buffer, fileSize, flags);
 
                     // Cleanup
                     free(buffer);
@@ -149,8 +147,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 if (buffer != NULL)
                 {
                     // Let the sound effect class load it
-                    resource = reinterpret_cast<Resource*>(SoundEffect::load(
-                            buffer, fileSize));
+                    resource = SoundEffect::load(buffer, fileSize);
 
                     // Cleanup
                     free(buffer);

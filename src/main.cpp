@@ -143,10 +143,10 @@ void init_engine()
 
     // Checking if homeuser/.manaworld folder exists.
     sprintf(dir, "%s/.manaworld", userHome);
-    if ((mkdir(dir, S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH) != 0) &&
+    if ((mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
-        printf("%s can't be made... And doesn't exist ! Exitting ...", dir);
+        printf("%s can't be made, but it doesn't exist! Exitting.\n", dir);
         exit(1);
     }
     sprintf(dir, "%s/.manaworld/config.xml", userHome);
@@ -221,11 +221,10 @@ void init_engine()
         }
     }
 
-    // TODO: the following variables should be loaded from config file
     screenW = (int)config.getValue("screenwidth", 800);
     screenH = (int)config.getValue("screenheight", 600);
-    bitDepth = (int)config.getValue("bitdepth", 16);
-    
+    bitDepth = (int)config.getValue("colordepth", 16);
+
     SDL_WM_SetIcon(IMG_Load("data/icons/tmw-icon.png"), NULL);
 
     screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
@@ -295,8 +294,8 @@ void init_engine()
         if (config.getValue("sound", 0) == 1) {
             sound.init();
         }
-        sound.setSfxVolume(config.getValue("sfxVolume", 100));
-        sound.setMusicVolume(config.getValue("musicVolume", 60));
+        sound.setSfxVolume((int)config.getValue("sfxVolume", 100));
+        sound.setMusicVolume((int)config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
         state = ERROR;
@@ -346,7 +345,7 @@ int main(int argc, char *argv[])
 
             guiInput->pushInput(event);
         }
-        
+
         ResourceManager *resman = ResourceManager::getInstance();
 
         switch (state) {
@@ -366,7 +365,7 @@ int main(int argc, char *argv[])
                 charSelect();
                 break;
             case GAME:
-                sound.fadeOutMusic(3000);
+                sound.fadeOutMusic(1000);
                 //bgm->stop();
                 logger.log("State: GAME");
                 try {
@@ -406,11 +405,11 @@ int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
 {
     if (n_ID > N_SKILLS || n_ID < 0) // out of cheese error, abort function
         return 0;
-    // 1. raise the exp value     
-    m_Skill[n_ID].exp += (short)(n_XP * m_Skill[n_ID].mod); 
+    // 1. raise the exp value
+    m_Skill[n_ID].exp += (short)(n_XP * m_Skill[n_ID].mod);
 
-    // 2. Check for level up  
-    if (m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))   
+    // 2. Check for level up
+    if (m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))
     {
         m_Skill[n_ID].level += 1;
         m_Skill[n_ID].exp = 0;
@@ -423,8 +422,8 @@ int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
     if (n_base)
     {
         // TO DO: alter values based on equipment bonuses
-    }            
+    }
 
-    return r; // return the value                    
+    return r; // return the value
 }
 */

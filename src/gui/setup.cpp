@@ -39,15 +39,15 @@ ModeListModel::ModeListModel()
     SDL_Rect **modes;
 
     /* Get available fullscreen/hardware modes */
-    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
-    
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN | SDL_HWSURFACE);
+
     /* Check is there are any modes available */
-    if(modes == (SDL_Rect **)0) {
+    if (modes == (SDL_Rect **)0) {
         logger.log("No modes available");
     }
-    
+
     /* Check if our resolution is restricted */
-    if(modes == (SDL_Rect **)-1) {
+    if (modes == (SDL_Rect **)-1) {
         logger.log("All resolutions available");
     }
     else{
@@ -64,7 +64,6 @@ ModeListModel::ModeListModel()
 
 ModeListModel::~ModeListModel()
 {
-    //delete videoModes;
 }
 
 int ModeListModel::getNumberOfElements()
@@ -89,7 +88,7 @@ Setup::Setup():
     fsCheckBox = new CheckBox("Full screen", false);
     openGlCheckBox = new CheckBox("OpenGL", false);
     openGlCheckBox->setEnabled(false);
-    alphaLabel = new gcn::Label("Gui opacity:");
+    alphaLabel = new gcn::Label("Gui opacity");
     alphaSlider = new Slider(0.2, 1.0);
     audioLabel = new gcn::Label("Audio settings");
     soundCheckBox = new CheckBox("Sound", false);
@@ -128,14 +127,14 @@ Setup::Setup():
     applyButton->setPosition(
             cancelButton->getX() - 5 - applyButton->getWidth(),
             216 - 5 - applyButton->getHeight());
-    
+
     // Listen for actions
     applyButton->addActionListener(this);
     cancelButton->addActionListener(this);
     alphaSlider->addActionListener(this);
     sfxSlider->addActionListener(this);
     musicSlider->addActionListener(this);
-    
+
     // Assemble dialog
     add(videoLabel);
     add(scrollArea);
@@ -202,7 +201,7 @@ void Setup::action(const std::string &eventId)
     else if (eventId == "apply")
     {
         setVisible(false);
-        
+
         if (fsCheckBox->isMarked()) { // Fullscreen
             config.setValue("screen", 1);
             displayFlags |= SDL_FULLSCREEN;
@@ -211,16 +210,16 @@ void Setup::action(const std::string &eventId)
             config.setValue("screen", 0);
             displayFlags &= ~SDL_FULLSCREEN;
         }
-        
+
         displayFlags |= SDL_DOUBLEBUF;
-        
+
         screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
         if (screen == NULL) {
             std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
                 bitDepth << " video mode: " << SDL_GetError() << std::endl;
             exit(1);
         }
-        
+
         // Sound settings
         if (soundCheckBox->isMarked()) {
             config.setValue("sound", 1);
@@ -229,7 +228,7 @@ void Setup::action(const std::string &eventId)
             }
             catch (const char *err) {
                 new OkDialog(this, "Sound Engine", err);
-                logger.log("Warning: %s", err);   
+                logger.log("Warning: %s", err);
             }
         } else {
             config.setValue("sound", 0);

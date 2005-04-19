@@ -34,16 +34,18 @@ ItemContainer::ItemContainer()
     itemset = new Spriteset(itemImg, 20, 20);
 
     selImg = resman->getImage("graphics/gui/selection.png", IMG_ALPHA);
-    if (!selImg) logger.error("Unable to load items.png");
+    if (!selImg) logger.error("Unable to load selection.png");
 
-    selectedItem = -1; /**< No item selected */
-    
+    selectedItem = -1; // No item selected
+
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].id = -1;
         items[i].quantity = 0;
         items[i].equipment = false;
         items[i].equipped = false;
     }
+
+    addMouseListener(this);
 }
 
 ItemContainer::~ItemContainer()
@@ -60,12 +62,12 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     if (items[selectedItem].quantity <= 0) {
         selectedItem = -1;
     }
-    
+
     if (selectedItem >= 0) {
         int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
         int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
         itemX -= itemX % 24;
-    	selImg->draw(screen, x + itemX, y+itemY);
+        selImg->draw(screen, x + itemX, y+itemY);
     }
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
@@ -183,17 +185,11 @@ void ItemContainer::increaseQuantity(int index, int quantity)
 
 void ItemContainer::mousePress(int mx, int my, int button)
 {
-    if (button == gcn::MouseInput::LEFT)
+    if (button == gcn::MouseInput::LEFT) {
         selectedItem = ((mx + 48) / 24) + ((my / 24) * (getWidth() / 24));
-    if (selectedItem > INVENTORY_SIZE)
+    }
+    if (selectedItem > INVENTORY_SIZE) {
         selectedItem = INVENTORY_SIZE;
-}
-
-void ItemContainer::_mouseInputMessage(const gcn::MouseInput &mouseInput)
-{
-    if (mouseInput.getButton() == gcn::MouseInput::LEFT) {
-        gcn::Widget::_mouseInputMessage(mouseInput);
-        mousePress(mouseInput.x, mouseInput.y, mouseInput.getButton());
     }
 }
 
@@ -227,7 +223,7 @@ int ItemContainer::getNumberOfSlotsUsed()
             NumberOfFilledSlot++;
         }
     }
-    
+
     return NumberOfFilledSlot;
 }
 
