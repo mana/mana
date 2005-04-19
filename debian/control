@@ -2,12 +2,12 @@ Source: tmw
 Section: games
 Priority: optional
 Maintainer: FERREIRA Yohann <bertram@cegetel.net>
-Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan-dev (>= 0.3.0), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1)
+Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan-dev (>= 0.3.0-2), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1)
 Standards-Version: 3.6.1
 
 Package: tmw
 Architecture: i386
-Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.3.0), libxml2 (>= 2.4.19), libphysfs-1.0-0 (>= 1.0.0-1)
+Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.3.0-2), libxml2 (>= 2.4.19), libphysfs-1.0-0 (>= 1.0.0-1)
 Suggests: Nothing
 Installed-Size: 1991
 Maintainer: Ferreira Yohann <bertram@cegetel.net>
@@ -19,9 +19,10 @@ Description: The Mana World is a Great Online Game
  to play in a 2D heroic-fantasy world forever.
  .
  This package depends on the non-official package : 
- libguichan which can be found on : 
- http://guichan.darkbits.org/downloads.shtml
- A repository will be created soon.
+ libguichan which website is : 
+ http://guichan.sourceforge.net/
+ A repository has been created, if you don't use it,
+ you should :)
  .
  Look at the website for further informations...
  .
