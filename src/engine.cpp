@@ -394,9 +394,9 @@ void Engine::draw()
                     being->text_x - 64, being->text_y - 80);
             }
 
-            if (being->hair_color <= 10) {
-                int hf = being->hair_color - 1 + 10 * (dir + 4 *
-                        (being->hair_style - 1));
+            if (being->getHairColor() <= 10) {
+                int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
+                        (being->getHairStyle() - 1));
 
                 hairset->spriteset[hf]->draw(screen,
                         being->text_x - 2 + 2 * hairtable[pf][dir][0],
@@ -433,7 +433,7 @@ void Engine::draw()
                         being->text_x + 30, being->text_y + 40);
             }
             else {
-                monsterset[being->job - 1002]->spriteset[dir + 4 * mf]->draw(
+                monsterset[being->job-1002]->spriteset[dir + 4 * mf]->draw(
                         screen, being->text_x + 30, being->text_y + 40);
             }
 
@@ -446,7 +446,7 @@ void Engine::draw()
                 }
             }
         }
-
+        
         beingIterator++;
 
         // nodes are ordered so if the next being y is > then the

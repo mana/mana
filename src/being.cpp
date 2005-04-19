@@ -146,7 +146,7 @@ Being::Being():
     speed(150),
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
-    hair_style(1), hair_color(1),
+    hairStyle(1), hairColor(1),
     weapon(0),
     speech_time(0),
     damage_time(0),
@@ -173,12 +173,30 @@ void Being::setPath(std::list<PATH_NODE> path)
 
 void Being::setHairColor(int color)
 {
-    hair_color = color;
+    hairColor = color;
+    if (hairColor < 1 || hairColor > 11)
+    {
+        hairColor = 1;
+    }
 }
 
 void Being::setHairStyle(int style)
 {
-    hair_style = style;
+    hairStyle = style;
+    if (hairStyle < 1 || hairStyle > 2)
+    {
+        hairStyle = 1;
+    }
+}
+
+unsigned short Being::getHairColor()
+{
+    return hairColor;
+}
+
+unsigned short Being::getHairStyle()
+{
+    return hairStyle;
 }
 
 void Being::setSpeech(const std::string &text, int time)

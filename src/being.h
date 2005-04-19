@@ -42,6 +42,7 @@ class Being {
         std::list<PATH_NODE> path;
         std::string speech;
         std::string damage;
+        unsigned short hairStyle, hairColor;
 
     public:
         unsigned int id;
@@ -58,7 +59,7 @@ class Being {
         unsigned char emotion;
         unsigned char emotion_time;
         unsigned int text_x, text_y; // temp solution to fix speech position
-        unsigned short hair_style, hair_color;
+
         unsigned short weapon;
         char name[24];
         unsigned int speech_time;
@@ -120,6 +121,16 @@ class Being {
          * Sets the hair style for this being.
          */
         void setHairStyle(int style);
+        
+        /**
+         * Gets the hair color for this being.
+         */
+        unsigned short getHairColor();
+        
+        /**
+         * Gets the hair style for this being.
+         */
+        unsigned short getHairStyle();
 
         /**
          * Makes this being take the next step of his path.
