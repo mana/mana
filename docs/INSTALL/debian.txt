@@ -87,4 +87,16 @@ KDE/Gnome menu entries are created in Arcade Games upon installation.
 3. Notes
 ========
 
-A Debian Repository will be created soon. Stay tuned !
+A Debian Repository has been created.
+
+Simply add in your /etc/apt/sources.list file :
+
+	deb http://www.themanaworld.org/files/debrepo ./
+	deb-src http://www.themanaworld.org/files/debrepo ./
+
+Then, as root, do :
+
+	apt-get update
+	apt-get install tmw
+
+and you're done !
