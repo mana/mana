@@ -29,6 +29,7 @@
 #include "sound.h"
 #include "graphics.h"
 #include "resources/resourcemanager.h"
+#include "resources/itemmanager.h"
 #include "net/protocol.h"
 
 #include <iostream>
@@ -72,10 +73,12 @@ bool useOpenGL = false;
 Sound sound;
 Music *bgm;
 
-// ini file configuration reader
+// Xml file configuration reader
 Configuration config;
 // Log object
 Logger logger("tmw.log");
+// Item database object
+ItemManager itemDb;
 
 /**
  * Listener used for responding to map start error dialog.

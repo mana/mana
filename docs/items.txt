@@ -58,7 +58,7 @@ C&S means info is used by both
     * ANCIENT_WIZARD
     * NOT_IDENTIFIABLE   reserved for future use
     
-- weigth       (S)   -> unsigned short
+- weight       (S)   -> unsigned short
 
     used by server to calculate if the being can carry more items.
     
