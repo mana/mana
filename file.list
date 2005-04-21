@@ -29,7 +29,6 @@ MODULES = src/sound.cpp \
           src/gui/scrollarea.cpp \
           src/gui/sell.cpp \
           src/gui/setup.cpp \
-          src/gui/shop.cpp \
           src/gui/skill.cpp \
           src/gui/slider.cpp \
           src/gui/stats.cpp \

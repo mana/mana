@@ -102,12 +102,7 @@ void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    if (id >= 501 && id <= 2301) {
-        sprintf(item_shop.name, "%s %i gp", item_db[id - 501], price);
-    }
-    else {
-        sprintf(item_shop.name, "Unknown item %i gp", price);
-    }
+    sprintf(item_shop.name, "%s %i gp", itemDb.getName(id).c_str(), price);
     item_shop.price = price;
     item_shop.id = id;
 

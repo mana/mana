@@ -63,6 +63,7 @@ class ItemManager
     protected:
         // Items database
         std::map <int, ItemInfo *> db;
+        int minId, maxId;
 
 };
 

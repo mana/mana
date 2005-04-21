@@ -35,6 +35,4 @@ struct ITEM_SHOP {
     int quantity;
 };
 
-extern char *item_db[];
-
 #endif

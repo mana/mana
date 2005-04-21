@@ -93,12 +93,7 @@ void SellDialog::addItem(short index, int price)
     int id = inventoryWindow->items->getId(index);
     ITEM_SHOP item_shop;
 
-    if (id >= 501 && id <= 2301) {
-        sprintf(item_shop.name, "%s %i gp", item_db[id - 501], price);
-    }
-    else {
-        sprintf(item_shop.name, "Unknown item %i gp", price);
-    }
+    sprintf(item_shop.name, "%s %i gp", itemDb.getName(id).c_str(), price);
     item_shop.price = price;
     item_shop.index = index;
     item_shop.id = id;

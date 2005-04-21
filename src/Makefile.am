@@ -59,7 +59,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/sell.h \
 	      gui/setup.cpp \
 	      gui/setup.h \
-	      gui/shop.cpp \
 	      gui/shop.h \
 	      gui/skill.cpp \
 	      gui/skill.h \

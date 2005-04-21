@@ -29,6 +29,7 @@
 #include "gui/skill.h"
 #include "graphic/spriteset.h"
 #include "resources/image.h"
+#include "resources/itemmanager.h"
 #include "configuration.h"
 #include "game.h"
 #include "log.h"
@@ -104,5 +105,5 @@ extern Map *tiledMap;
 extern Logger logger;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
-
+extern ItemManager itemDb;
 #endif
