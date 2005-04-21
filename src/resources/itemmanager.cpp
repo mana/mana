@@ -107,6 +107,9 @@ ItemManager::ItemManager()
     } else {
         logger.log("Error while parsing item database!");
     }
+    
+    unknown = new ItemInfo();
+    unknown->setName("Unknown item");
 }
 
 ItemManager::~ItemManager()
@@ -118,6 +121,6 @@ ItemInfo *ItemManager::getItemInfo(int id)
     if (db.find(id) != db.end())
         return db[id];
     else
-        return NULL;
+        return unknown;
 }
 
