@@ -36,8 +36,7 @@
 #define xmlFree(x) ;
 #endif
 
-ItemManager::ItemManager() :
-    minId(10000), maxId(0)
+ItemManager::ItemManager()
 {
     // Check that file exists before trying to parse it
     std::fstream dbFile;
@@ -63,8 +62,6 @@ ItemManager::ItemManager() :
                     xmlChar *prop;
                     prop = xmlGetProp(node, BAD_CAST "id");
                     int id = atoi((const char*)prop);
-                    if (id < minId) minId = id;
-                    if (id > maxId) maxId = id;
                     xmlFree(prop);
                     prop = xmlGetProp(node, BAD_CAST "image");
                     int image = atoi((const char*)prop);
@@ -116,58 +113,11 @@ ItemManager::~ItemManager()
 {
 }
 
-short ItemManager::getImage(int id)
+ItemInfo *ItemManager::getItemInfo(int id)
 {
-    if (id >= minId && id <= maxId)
-        return db[id]->getImage();
+    if (db.find(id) != db.end())
+        return db[id];
     else
-        return 0;
+        return NULL;
 }
 
-short ItemManager::getArt(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getArt();
-    else
-        return 0;
-}
-
-std::string ItemManager::getName(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getName();
-    else
-        return "Unknown";
-}
-
-std::string ItemManager::getDescription(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getDescription();
-    else
-        return "";
-}
-
-short ItemManager::getType(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getType();
-    else
-        return 0;
-}
-
-short ItemManager::getWeight(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getWeight();
-    else
-        return 0;
-}
-
-char ItemManager::getSlot(int id)
-{
-    if (id >= minId && id <= maxId)
-        return db[id]->getSlot();
-    else
-        return 0;
-}

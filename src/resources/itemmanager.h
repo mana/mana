@@ -45,26 +45,11 @@ class ItemManager
          */
         ~ItemManager();
 
-        short getImage(int id);
+        ItemInfo *getItemInfo(int id);
         
-        short getArt(int id);
-        
-        std::string getName(int id);
-        
-        std::string getDescription(int id);
-        
-        short getType(int id);
-        
-        short getWeight(int id);
-        
-        char getSlot(int id);
-
-
     protected:
         // Items database
         std::map <int, ItemInfo *> db;
-        int minId, maxId;
-
 };
 
 #endif

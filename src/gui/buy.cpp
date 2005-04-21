@@ -102,7 +102,8 @@ void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    sprintf(item_shop.name, "%s %i gp", itemDb.getName(id).c_str(), price);
+    sprintf(item_shop.name, "%s %i gp",
+            itemDb.getItemInfo(id)->getName().c_str(), price);
     item_shop.price = price;
     item_shop.id = id;
 

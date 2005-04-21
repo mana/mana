@@ -1,6 +1,7 @@
 0.0.12    (? May 2005)
+- Added XML item database
 - Fixed crash when map server is down
-- New map (Shimris dungeon)
+- New map (Shimris cave)
 - New monsters (yellow and red slime, black scorpion)
 - Dynamic loading of monstersets
 - New items (dagger, sharp knife, leather shirt, fancy hat)

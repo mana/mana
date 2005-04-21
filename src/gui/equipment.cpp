@@ -58,7 +58,8 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     
     for (int i = 0; i < 8; i++) {
         if (equipments[i].id > 0) {
-            itemset->spriteset[itemDb.getImage(equipments[i].id) - 1]->draw(
+            itemset->spriteset[itemDb.getItemInfo(
+                    equipments[i].id)->getImage() - 1]->draw(
                     screen, x + 22, y + 24 * i + 20);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
