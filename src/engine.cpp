@@ -341,10 +341,9 @@ void Engine::draw()
         int sy = y - camera_y;
         int absx = sx * 32 - offset_x;
         int absy = sy * 32 - offset_y;
-        if (floorItem->id >= 501 && floorItem->id <= 1202) {
-                itemset->spriteset[floorItem->id - 501]->draw(screen,
-                         absx,
-                         absy);
+        if (itemDb.getImage(floorItem->id) > 0) {
+            itemset->spriteset[itemDb.getImage(floorItem->id) - 1]->draw(screen,
+                    absx, absy);
         }
 
         floorItemIterator++;

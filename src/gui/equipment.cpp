@@ -58,8 +58,8 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     
     for (int i = 0; i < 8; i++) {
         if (equipments[i].id > 0) {
-            itemset->spriteset[equipments[i].id - 501]->draw(screen,
-                        x + 22, y + 24 * i + 20);
+            itemset->spriteset[itemDb.getImage(equipments[i].id) - 1]->draw(
+                    screen, x + 22, y + 24 * i + 20);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawRectangle(gcn::Rectangle(22, 24 * i + 20, 20, 20));

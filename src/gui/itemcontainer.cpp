@@ -75,10 +75,9 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         int itemY = (((i - 2) * 24) / (getWidth() - 24)) * 24;
         itemX -= itemX % 24;
         if (items[i].quantity > 0) {
-            if (items[i].id >= 501 && items[i].id <= 1202) {
-                itemset->spriteset[items[i].id - 501]->draw(screen,
-                        x + itemX,
-                        y + itemY);
+            if (itemDb.getImage(items[i].id) > 0) {
+                itemset->spriteset[itemDb.getImage(items[i].id) - 1]->draw(
+                        screen, x + itemX, y + itemY);
             }
 
             std::stringstream ss;
