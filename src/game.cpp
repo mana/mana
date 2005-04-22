@@ -358,6 +358,14 @@ void do_input()
                     }
                     else if (target->isMonster()) {
                         if (player_node->action == STAND) {
+                            if (my > player_node->y)
+                                player_node->direction = SOUTH;
+                            else if (my < player_node->y)
+                                player_node->direction = NORTH;
+                            else if (mx > player_node->x)
+                                player_node->direction = EAST;
+                            else if (mx < player_node->x)
+                                player_node->direction = WEST;
                             player_node->action = ATTACK;
                             action(0, target->id);
                             player_node->walk_time = tick_time;
