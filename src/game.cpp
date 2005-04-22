@@ -343,35 +343,35 @@ void do_input()
 
             if (event.button.button == 3)
             {
-                // We click the right button
-                // NPC Call
-                int id = find_npc(mx, my);
-                if (id != 0)
-                {
-                    // Check if no conflicting npc window is open
-                    if (current_npc == 0)
-                    {
-                        WFIFOW(0) = net_w_value(0x0090);
-                        WFIFOL(2) = net_l_value(id);
-                        WFIFOB(6) = 0;
-                        WFIFOSET(7);
-                        current_npc = id;
+                Being *target = findNode(mx, my);
+                if (target) {
+                    if (target->isNpc()) {
+                        // Check if no conflicting npc window is open
+                        if (current_npc == 0)
+                        {
+                            WFIFOW(0) = net_w_value(0x0090);
+                            WFIFOL(2) = net_l_value(target->id);
+                            WFIFOB(6) = 0;
+                            WFIFOSET(7);
+                            current_npc = target->id;
+                        }
                     }
-                }
-                else {
-                    // Search for player character to trade with
-
-                    id = find_pc(mx, my);
-                    if (id != 0) {
+                    else if (target->isMonster()) {
+                        player_node->action = ATTACK;
+                        action(0, target->id);
+                        player_node->walk_time = tick_time;
+                        if (player_node->weapon == 2)
+                            sound.playSfx("sfx/bow_shoot_1.ogg");
+                        else
+                            sound.playSfx("sfx/fist-swish.ogg");
+                    }
+                    else if (target->isPlayer()) {
                         // Begin a trade
                         WFIFOW(0) = net_w_value(0x00e4);
-                        WFIFOL(2) = net_l_value(id);
+                        WFIFOL(2) = net_l_value(target->id);
                         WFIFOSET(6);
                     }
                 }
-                
-
-
             }
         }
         else if (event.type == SDL_QUIT)
@@ -592,7 +592,7 @@ void do_parse() {
                     temp = (char *)malloc(RFIFOW(2)-7);
                     memset(temp, '\0', RFIFOW(2)-7);
                     memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
-                    being = find_node(RFIFOL(4));
+                    being = findNode(RFIFOL(4));
                     if (being != NULL) {
                         // White
                         being->setSpeech(temp, SPEECH_TIME);
@@ -633,7 +633,7 @@ void do_parse() {
                     break;
                     // Add new being / stop monster
                 case 0x0078:
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
 
                     if (being == NULL) {
                         being = new Being();
@@ -664,7 +664,7 @@ void do_parse() {
 
                 case SMSG_REMOVE_BEING:
                     // A being should be removed or has died
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
                     if (being != NULL) {
                         if (RFIFOB(6) == 1) { // Death
                             if (being->job > 110) {
@@ -684,7 +684,7 @@ void do_parse() {
                 case SMSG_PLAYER_UPDATE_1:
                 case SMSG_PLAYER_UPDATE_2:
                     // A message about a player, doesn't include movement.
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
 
                     if (being == NULL) {
                         being = new Being();
@@ -706,7 +706,7 @@ void do_parse() {
 
                 case SMSG_MOVE_BEING:
                     // A being nearby is moving
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
 
                     if (being == NULL) {
                         being = new Being();
@@ -731,7 +731,7 @@ void do_parse() {
 
                 case SMSG_MOVE_PLAYER_BEING:
                     // A nearby player being moves
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
 
                     if (being == NULL) {
                         being = new Being();
@@ -1039,7 +1039,7 @@ void do_parse() {
                     break;
                     // Stop walking
                 case 0x0088:  // Disabled because giving some problems
-                    //if (being = find_node(RFIFOL(2))) {
+                    //if (being = findNode(RFIFOL(2))) {
                     //    if (being->id!=player_node->id) {
                     //        char ids[20];
                     //        sprintf(ids,"%i",RFIFOL(2));
@@ -1054,7 +1054,7 @@ void do_parse() {
                 case 0x008a:
                     switch (RFIFOB(26)) {
                         case 0: // Damage
-                            being = find_node(RFIFOL(6));
+                            being = findNode(RFIFOL(6));
                             if (being != NULL) {
 
                                 if (RFIFOW(22) == 0) {
@@ -1068,7 +1068,7 @@ void do_parse() {
                                 }
 
                                 if (RFIFOL(2) != player_node->id) { // buggy
-                                    being = find_node(RFIFOL(2));
+                                    being = findNode(RFIFOL(2));
                                     if (being != NULL) {
                                         if (being->job<10) {
                                             being->action = ATTACK;
@@ -1083,7 +1083,7 @@ void do_parse() {
                             break;
                         case 2: // Sit
                         case 3: // Stand up
-                            being = find_node(RFIFOL(2));
+                            being = findNode(RFIFOL(2));
                             if (being != NULL) {
                                 being->frame = 0;
                                 if (RFIFOB(26) == 2) {
@@ -1126,7 +1126,7 @@ void do_parse() {
                     break;
                     // Emotion
                 case 0x00c0:
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
                     if(being) {
                         being->emotion = RFIFOB(6);
                         being->emotion_time = EMOTION_TIME;
@@ -1325,7 +1325,7 @@ void do_parse() {
                     break;
 
                 case SMSG_CHANGE_BEING_LOOKS:
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
                     if (being) {
                         if (RFIFOB(6) == 6) {
                             being->setHairColor(RFIFOB(7));
@@ -1510,7 +1510,7 @@ void do_parse() {
                     break;
                 // Get being name
                 case 0x0095:
-                    being = find_node(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
                     if (being)
                         strcpy(being->name, RFIFOP(6));
                     break;

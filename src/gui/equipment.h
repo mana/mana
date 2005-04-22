@@ -65,9 +65,9 @@ class EquipmentWindow : public Window, gcn::ActionListener {
         void removeEquipment(int index);
         
         void setInventoryIndex(int index, int inventoryIndex);
-        
+
         int getInventoryIndex(int index);
-        
+
         void setArrows(int id);
         
         EQUIPMENT_HOLDER equipments[10];

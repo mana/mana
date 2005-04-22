@@ -228,19 +228,19 @@ void attack(unsigned short x, unsigned short y, unsigned char direction)
     int monster_id = 0;
 
     if (direction == SOUTH) {
-        monster_id = find_monster(x, y + 1);
+        monster_id = findMonster(x, y + 1);
         if (monster_id != 0)
             action(0, monster_id);
     } else if(direction == WEST) {
-        monster_id = find_monster(x - 1, y);
+        monster_id = findMonster(x - 1, y);
         if (monster_id != 0)
             action(0, monster_id);
     } else if(direction == NORTH) {
-        monster_id = find_monster(x, y - 1);
+        monster_id = findMonster(x, y - 1);
         if (monster_id != 0)
             action(0, monster_id);
     } else if(direction==EAST) {
-        monster_id = find_monster(x + 1, y);
+        monster_id = findMonster(x + 1, y);
         if (monster_id != 0)
             action(0, monster_id);
     }

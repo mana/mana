@@ -141,25 +141,43 @@ class Being {
          * Draws the speech text above the being.
          */
         void drawSpeech(Graphics *graphics);
+        
+        /**
+         * Checks if the being is a player.
+         */
+        bool isPlayer();
+        
+        /**
+         * Checks if the being is a npc.
+         */
+        bool isNpc();
+        
+        /**
+         * Checks if the being is a monster.
+         */
+        bool isMonster();
 };
 
 /** Add a Being to the list */
 void add_node(Being *being);
 
 /** Return a specific id Being */
-Being *find_node(unsigned int id);
+Being *findNode(unsigned int id);
+
+/** Return a being at specific coordinates */
+Being *findNode(unsigned short x, unsigned short y);
 
 /** Remove a Being */
 void remove_node(unsigned int id);
 
 /** Find a NPC id based on its coordinates */
-unsigned int find_npc(unsigned short x, unsigned short y);
+unsigned int findNpc(unsigned short x, unsigned short y);
 
-/** Find a PC id based on its coordinates */
-unsigned int find_pc(unsigned short x, unsigned short y);
+/** Find a PLAYER id based on its coordinates */
+unsigned int findPlayer(unsigned short x, unsigned short y);
 
 /** Find a MONSTER id based on its coordinates */
-unsigned int find_monster(unsigned short x, unsigned short y);
+unsigned int findMonster(unsigned short x, unsigned short y);
 
 /** Sort beings in vertical order */
 void sort();

@@ -73,7 +73,7 @@ void remove_node(unsigned int id) {
     }
 }
 
-unsigned int find_npc(unsigned short x, unsigned short y) {
+unsigned int findNpc(unsigned short x, unsigned short y) {
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -87,7 +87,7 @@ unsigned int find_npc(unsigned short x, unsigned short y) {
     return 0;
 }
 
-unsigned int find_pc(unsigned short x, unsigned short y) {
+unsigned int findPlayer(unsigned short x, unsigned short y) {
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -99,7 +99,7 @@ unsigned int find_pc(unsigned short x, unsigned short y) {
     return 0;
 }
 
-unsigned int find_monster(unsigned short x, unsigned short y) {
+unsigned int findMonster(unsigned short x, unsigned short y) {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -114,11 +114,22 @@ unsigned int find_monster(unsigned short x, unsigned short y) {
     return 0;
 }
 
-Being *find_node(unsigned int id) {
+Being *findNode(unsigned int id) {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         if (being->id == id) {
+            return being;
+        }
+    }
+    return NULL;
+}
+
+Being *findNode(unsigned short x, unsigned short y) {
+    std::list<Being*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        Being *being = (*i);
+        if (being->x == x && being->y == y) {
             return being;
         }
     }
@@ -280,4 +291,22 @@ void Being::drawSpeech(Graphics *graphics)
                            text_y - 60 - get_elapsed_time(damage_time) / 100,
                            gcn::Graphics::CENTER);
     }
+}
+
+bool Being::isPlayer() {
+    if (job < 10)
+        return true;
+    return false;
+}
+
+bool Being::isNpc() {
+    if (job > 45 && job <126)
+        return true;
+    return false;
+}
+
+bool Being::isMonster() {
+    if (job > 200)
+        return true;
+    return false;
 }
