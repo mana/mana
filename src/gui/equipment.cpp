@@ -27,10 +27,12 @@
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"
 
+#include <sstream>
+
 EquipmentWindow::EquipmentWindow():
-    Window("Equipment")
+    Window("Equipment"), arrows(0)
 {
-    setContentSize(60, 200);
+    setContentSize(134, 60);
     setPosition(40, 40);
     
     ResourceManager *resman = ResourceManager::getInstance();
@@ -60,12 +62,21 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         if (equipments[i].id > 0) {
             itemset->spriteset[itemDb.getItemInfo(
                     equipments[i].id)->getImage() - 1]->draw(
-                    screen, x + 22, y + 24 * i + 20);
+                    screen, x + 24 * (i % 4) + 10, y + 24 * (i / 4) + 25);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
-        graphics->drawRectangle(gcn::Rectangle(22, 24 * i + 20, 20, 20));
-        
-
+        graphics->drawRectangle(gcn::Rectangle(10 + 24 * (i % 4),
+                24 * (i / 4) + 25, 20, 20));
+    }
+    graphics->setColor(gcn::Color(0, 0, 0));
+    graphics->drawRectangle(gcn::Rectangle(110, 25, 20, 20));
+    if (arrows) {
+        itemset->spriteset[itemDb.getItemInfo(arrows)->getImage() - 1]->draw(
+                screen, x + 110, y + 25);
+        std::stringstream n;
+        n << arrowsNumber;
+        graphics->drawText(n.str(), 120, 50,
+                    gcn::Graphics::CENTER);
     }
 }
 
@@ -73,19 +84,27 @@ void EquipmentWindow::action(const std::string &eventId)
 {
 }
 
-void EquipmentWindow::addEquipment(int index, int id) {
+void EquipmentWindow::addEquipment(int index, int id)
+{
     equipments[index].id = id;
 }
 
-void EquipmentWindow::removeEquipment(int index) {
+void EquipmentWindow::removeEquipment(int index)
+{
     equipments[index].id = 0;
 }
 
-void EquipmentWindow::setInventoryIndex(int index, int inventoryIndex) {
+void EquipmentWindow::setInventoryIndex(int index, int inventoryIndex)
+{
     equipments[index].inventoryIndex = inventoryIndex;
 }
 
-int EquipmentWindow::getInventoryIndex(int index) {
+int EquipmentWindow::getInventoryIndex(int index)
+{
     return equipments[index].inventoryIndex;
 }
 
+void EquipmentWindow::setArrows(int id)
+{
+    arrows = id;
+}

@@ -68,10 +68,14 @@ class EquipmentWindow : public Window, gcn::ActionListener {
         
         int getInventoryIndex(int index);
         
+        void setArrows(int id);
+        
         EQUIPMENT_HOLDER equipments[10];
         
-    private:
+        int arrowsNumber;
         
+    private:
+        int arrows;
         Spriteset *itemset;
 
 };

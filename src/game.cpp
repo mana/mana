@@ -571,11 +571,11 @@ void do_parse() {
             }
             fclose(file);
             */
-#ifdef __DEBUG
+//#ifdef __DEBUG
             FILE *file = fopen("./docs/packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
-#endif
+//#endif
             // Parse packet based on their id
             switch (id) {
                 case SMSG_LOGIN_SUCCESS:
@@ -876,7 +876,8 @@ void do_parse() {
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
                         // Trick because arrows are not considered equipment
-                        if (RFIFOW(4 + loop * 18 + 2) == 1199)
+                        if (RFIFOW(4 + loop * 18 + 2) == 1199 ||
+                            RFIFOW(4 + loop * 18 + 2) == 529)
                             inventoryWindow->items->setEquipment(
                                 RFIFOW(4 + loop * 18), true);
                         /*char info[40];
@@ -1226,6 +1227,12 @@ void do_parse() {
                 case 0x00af:
                     printf("sell %i\n", -RFIFOW(4));
                     inventoryWindow->increaseQuantity(RFIFOW(2), -RFIFOW(4));
+                    // If the item is arrow decrease number from equipment
+                    // window when equipped
+                    if (inventoryWindow->items->isEquipped(RFIFOW(2)) && (
+                        inventoryWindow->items->getId(RFIFOW(2)) == 529 ||
+                        inventoryWindow->items->getId(RFIFOW(2)) == 1199 ) )
+                            equipmentWindow->arrowsNumber -= RFIFOW(4);
                     break;
                     // Use an item
                 case 0x01c8:
@@ -1327,6 +1334,7 @@ void do_parse() {
 
                     // Answer to equip item
                 case 0x00aa:
+                    logger.log("Equipping: %i %i %i", RFIFOW(2), RFIFOW(4), RFIFOB(6));
                     if (RFIFOB(6) == 0)
                         chatWindow->chat_log("Unable to equip.", BY_SERVER);
                     else {
@@ -1337,14 +1345,13 @@ void do_parse() {
                                 mask *= 2;
                                 position++;
                             }
+                            logger.log("Position %i", position-1);
                             int equippedId = equipmentWindow->equipments[position - 1].id;
                             if (equippedId > 0)
                                 inventoryWindow->items->setEquipped(
                                     equipmentWindow->equipments[position - 1].inventoryIndex,
                                     false);
-                            /*char info3[40];           
-                            sprintf(info3, "info3 %i %i", position-1,equippedId);
-                            chatWindow->chat_log(info3, BY_SERVER);*/
+                            
 
                             inventoryWindow->items->setEquipped(RFIFOW(2),
                                 true);
@@ -1360,21 +1367,18 @@ void do_parse() {
                                 case 1201:
                                     player_node->weapon = 1;
                                     break;
+                                case 530:
                                 case 1200:
                                     player_node->weapon = 2;
                                     break;
                             }
+                            //player_node->weapon = 0;
                         }
                     }
-                    /*char info[40];           
-                    sprintf(info, "aa %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
-                    chatWindow->chat_log(info, BY_SERVER);*/
                     break;
                     // Equipment related
                 case 0x01d7:
-                    /*char content[40];
-                    sprintf(content, "1d7 %i %i %i", RFIFOB(6), RFIFOW(7), RFIFOW(9));
-                    chatWindow->chat_log(content, BY_SERVER);*/
+                    logger.log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     break;
                     // Answer to unequip item
                 case 0x00ac:
@@ -1388,34 +1392,39 @@ void do_parse() {
                                 mask *= 2;
                                 position++;
                             }
-                            int equipmentId = equipmentWindow->equipments[position-1].id;
-                            if (equipmentId > 0)
-                                inventoryWindow->items->setEquipped(
-                                    equipmentWindow->equipments[position-1].inventoryIndex, false);
-                            equipmentWindow->removeEquipment(position - 1);
-                            inventoryWindow->items->setEquipped(
-                                inventoryWindow->items->getIndex(), false);
+                            inventoryWindow->items->setEquipped(RFIFOW(2), false);
+                            switch (inventoryWindow->items->getId(RFIFOW(2))) {
+                                case 529:
+                                case 1199:
+                                    equipmentWindow->setArrows(0);
+                                    equipmentWindow->arrowsNumber = 0;
+                                    break;
+                                default:
+                                    equipmentWindow->removeEquipment(position - 1);
+                                    break;
+                            }
                             player_node->weapon = 0;
-                        }                        
+                            logger.log("Unequipping: %i %i(%i) %i", RFIFOW(2),RFIFOW(4),RFIFOB(6), position -1);
+                        }
                     }
-                    /*char info2[40];
-                    sprintf(info2, "ac %i %i %i", RFIFOW(2),RFIFOW(4),RFIFOB(6));
-                    chatWindow->chat_log(info2, BY_SERVER);*/
                     break;
                     // Arrows equipped
                 case 0x013c:
-                    /*char info3[40];
-                    sprintf(info3, "13c %i", RFIFOW(2));
-                    chatWindow->chat_log(info3, BY_SERVER);*/
-                    inventoryWindow->items->setEquipped(RFIFOW(2), true);
+                    if (RFIFOW(2) > 1) {
+                        inventoryWindow->items->setEquipped(RFIFOW(2), true);
+                        equipmentWindow->setArrows(
+                            inventoryWindow->items->getId(RFIFOW(2)));
+                        equipmentWindow->arrowsNumber =
+                            inventoryWindow->items->getQuantity(RFIFOW(2));
+                            logger.log("Arrows equipped: %i", RFIFOW(2));
+                    }
                     break;
                     // Various messages
                 case 0x013b:
-                    /*char msg[40];
-                    sprintf(msg, "13b %i", RFIFOW(2));
-                    chatWindow->chat_log(msg, BY_SERVER);*/
                     if (RFIFOW(2) == 0)
                         chatWindow->chat_log("Equip arrows first", BY_SERVER);
+                    else
+                        logger.log("0x013b: Unhandled message %i", RFIFOW(2));
                     break;
                     // Updates a stat value
                 case 0x00bc:

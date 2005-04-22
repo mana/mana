@@ -390,7 +390,7 @@ void Engine::draw()
             playerset->spriteset[4 * pf + dir]->draw(screen,
                     being->text_x - 16, being->text_y - 80);
             if (being->weapon != 0 && being->action == ATTACK) {
-                weaponset->spriteset[4 * being->frame + dir]->draw(screen,
+                weaponset->spriteset[16 * (being->weapon - 1) + 4 * being->frame + dir]->draw(screen,
                     being->text_x - 64, being->text_y - 80);
             }
 
