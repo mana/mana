@@ -357,13 +357,15 @@ void do_input()
                         }
                     }
                     else if (target->isMonster()) {
-                        player_node->action = ATTACK;
-                        action(0, target->id);
-                        player_node->walk_time = tick_time;
-                        if (player_node->weapon == 2)
-                            sound.playSfx("sfx/bow_shoot_1.ogg");
-                        else
-                            sound.playSfx("sfx/fist-swish.ogg");
+                        if (player_node->action == STAND) {
+                            player_node->action = ATTACK;
+                            action(0, target->id);
+                            player_node->walk_time = tick_time;
+                            if (player_node->weapon == 2)
+                                sound.playSfx("sfx/bow_shoot_1.ogg");
+                            else
+                                sound.playSfx("sfx/fist-swish.ogg");
+                        }
                     }
                     else if (target->isPlayer()) {
                         // Begin a trade
