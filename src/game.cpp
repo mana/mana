@@ -1399,11 +1399,17 @@ void do_parse() {
                                     equipmentWindow->setArrows(0);
                                     equipmentWindow->arrowsNumber = 0;
                                     break;
+                                case 521:
+                                case 522:
+                                case 530:
+                                case 1200:
+                                case 1201:
+                                    player_node->weapon = 0;
+                                    break;
                                 default:
                                     equipmentWindow->removeEquipment(position - 1);
                                     break;
                             }
-                            player_node->weapon = 0;
                             logger.log("Unequipping: %i %i(%i) %i", RFIFOW(2),RFIFOW(4),RFIFOB(6), position -1);
                         }
                     }
