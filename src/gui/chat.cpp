@@ -144,26 +144,41 @@ void ChatWindow::draw(gcn::Graphics *graphics)
 
     getAbsolutePosition(x, y);
 
-    for (iter = chatlog.begin(); iter != chatlog.end(); iter++) {
+    for (iter = chatlog.begin(); iter != chatlog.end(); iter++)
+    {
         line = *iter;
+
         texty -= getFont()->getHeight() - 2;
+
+        graphics->pushClipArea(gcn::Rectangle(0, 0, 95, getHeight()));
 
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
                 graphics->drawText("Global announcement: ", 5, texty);
-                graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                graphics->drawText(line.text, 100, texty);
                 break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
                 graphics->drawText(line.nick, 5, texty);
-                graphics->setColor(gcn::Color(255, 255, 255)); // White
-                graphics->drawText(line.text, 100, texty);
                 break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
                 graphics->drawText(line.nick, 5, texty);
+                break;
+        }
+
+        graphics->popClipArea();
+
+        switch (line.own) {
+            case BY_GM:
+                graphics->setColor(gcn::Color(39, 197, 39)); // Green
+                graphics->drawText(line.text, 100, texty);
+                break;
+            case BY_PLAYER:
+                graphics->setColor(gcn::Color(255, 255, 255)); // White
+                graphics->drawText(line.text, 100, texty);
+                break;
+            case BY_OTHER:
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
                 graphics->drawText(line.text, 100, texty);
                 break;

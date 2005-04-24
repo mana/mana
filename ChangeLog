@@ -1,30 +1,28 @@
-0.0.12    (? May 2005)
-- Right mouse button to attack (enables also ranged attacks)
-- Added XML item database
-- Fixed crash when map server is down
-- New map (Shimris cave)
-- New monsters (yellow and red slime, black scorpion)
-- Dynamic loading of monstersets
-- New items (dagger, sharp knife, leather shirt, fancy hat)
+0.0.12  (? May 2005)
+- Added new map (a cave), tiles, monsters and items
 - Added volume sliders in setup window
 - Added attack and level up samples
-- Fixed NPC lists
-- Improved sound engine
-- Added fade-in and fade-out features
-- Attack animation synced with attack speed
 - Added icon to application window
 - Added player names below players
-- Fixed speech and emoticons position 
-- Speech and damage display time are now fps independent
-- Scrollbars are now fully skinned
-- Sound samples are now loaded through resource manager
-- Added "Register" button in login screen
+- Added register button in login screen
 - Added warning message to use at least 4 characters as user name
+- Improved skin on scrollbars, arrows and slider
+- Improved sound engine and fade in and out option for music
+- Now you can use right mouse button to attack (enables also ranged attacks)
+- Sound samples are now loaded through resource manager
+- Item information is now stored in an XML file
+- Monstersets are now loaded dynamically
+- Fixed crash when map server is down
+- Fixed NPC lists not to show garbage
+- Fixed attack animation to be synced with attack speed
+- Fixed speech and emoticons position
+- Fixed long nicknames to be clipped in chat window
+- Fixed speech and damage display to be framerate independent
 
 0.0.11.2  (8 April 2005)
 - Damage text now floats upwards
 - Mouse walk now only works with left mouse button
-- Fixed frequest crash on startup and exit that crept into 0.0.11.1
+- Fixed frequent crash on startup and exit that crept into 0.0.11.1
 
 0.0.11.1  (7 April 2005)
 - Buttons are now disabled when appropriate
