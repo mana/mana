@@ -7,7 +7,7 @@ Homepage: http://www.behemoth.fr.fm (Take a tour on it with mozilla !)
 
 The Mana World project
 ======================
-Homepage: http://www.themanaworld.org
+Homepage: http://themanaworld.org/
 IRC:      irc.freenode.net / #manaworld
 
 1) Installing The Mana World and dependencies
@@ -35,7 +35,7 @@ http://guichan.sourceforge.net/downloads.shtml
 After downloading it, you can install it by typing as root :
 
     dpkg -i libguichan_XXX_i386.deb
-    
+
 We try to release a Debian Package as soon as there a monthly release,
 you can download it at http://www.themanaworld.org,
 and then install it by typing :

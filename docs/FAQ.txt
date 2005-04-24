@@ -60,7 +60,8 @@ A: That's because /<commands> are not implemented at the moment of writing.
 
 Q: I can't recover HP anymore.
 
-A: Check your inventory, if you've got lots of stuff probably you're overweight, try to give away some of them.
+A: Check your inventory, if you've got lots of stuff probably you're
+   overweight, try to give away some of them.
 
 
 DEVELOPMENT

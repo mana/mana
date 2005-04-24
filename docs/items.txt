@@ -11,17 +11,17 @@ THE MANA WORLD INVENTORY SYSTEM
 7. PROTOCOL
 
 An item will have the following properties:
-    
+
 C   means info is used only by the client
 S   means info is used only by the server
 C&S means info is used by both
 
 - id           (C&S) -> unsigned int
-  
+
     a positive integer uniquely identifying an item.
 
 - image        (C)   -> unsigned int
-  
+
     used if same images are used for different items.
     Maybe we need more image ids to tell which image (bigger one) to show in
     equipment window or when equipping items in weapon slot.
@@ -31,11 +31,11 @@ C&S means info is used by both
     to be shown in inventory.
 
 - description  (C)   -> char[100]
-  
+
     a brief description shown in shops, or in the inventory
 
 - type         (S)   -> unsigned char
-   
+
     server uses it to check if is an item or an equipment and send the
     appropriate packet.
 
@@ -43,12 +43,12 @@ C&S means info is used by both
     * EQUIPMENT_ITEM (weapons, armors, ...)
     * SLOT_ITEM (cards, materias, summoned beings, ...)
     * SLOTTED_ITEM (bags, small chests, ...)
-    
+
 - identify     (S)   -> unsigned char
 
-    the server will check this flag if the items can be identified by the
+    The server will check this flag if the items can be identified by the
     player.
-    
+
     * IDENTIFIED         no need to identify the item
     * IDENTIFY_ITEM      you can identify it by using a special item
     * IDENTIFY_MAGIC     you can identify it by using a particular spell
@@ -57,36 +57,75 @@ C&S means info is used by both
     * ANCIENT_BLACKSMITH
     * ANCIENT_WIZARD
     * NOT_IDENTIFIABLE   reserved for future use
-    
-- weight       (S)   -> unsigned short
 
-    used by server to calculate if the being can carry more items.
-    
+- weight       (C&S) -> unsigned short
+
+    Used by server to calculate if the being can carry more items. The client
+    uses it to display the information to the player.
+
 - # of slots   (C&S) -> unsigned char
 
-    if this field is greater than 0 it means this one is a slotted item.
+    If this field is greater than 0 it means this one is a slotted item.
     (Probably we can remove SLOTTED_ITEM from the type enumeration)
     For example a bag will have 4 slots, while a chest about 10.
 
 - script       (S)   -> probably a file name to reference the script file
+  or class              or name of class object
 
-    script to be executed when item is used/equipped.
-    
+    Script to be executed when item is used/equipped. Events include:
+
+    onPickup(Being b)             The item is picked up by being b
+    onDrop(Being b)               The item is dropped by being b
+    onUse(Being b)                The item is used by being b
+    onUseWith(Being b, Object o)  The item is used with object o by being b
+    onEquip(Being b)              The item is equipped by being b
+
 
 3. INVENTORY
 
 Inventory will contain any kind of weapons including non equipped items and
 slotted items. Every being will have a variable number of slots to store items.
 For example a maggot won't have any slot, while players could have a number of
-slots depending on his strength. A pet could have one slot used to add a bag and 
+slots depending on his strength. A pet could have one slot used to add a bag and
 help the player carrying items.
+
+Hammerbear says: I think here we should go all the way with weight approach and
+not have a slot limit. The same could be used for container items, that simply
+have a contents that can hold a certain total weight. Places where slots are
+then used is for equipment, where each slot maps onto a certain body part, and
+possibly certain slotted items that have slots that can only hold a certain
+type of item.
 
 
 4. EQUIPMENT
 
-Every being will have a variable number of slots to equip items. For a player
-we will have 6 slots: head, upper body, lower body, feet, left hand, right
-hand. We can also add slots to equip rings, whistlet and elbowpad.
+Every being will have a variable number of slots to equip items. For a human
+player we will have the following slots:
+
+*  0 body
+*  1 hair
+   2 head              (hat, helmet, etc.)
+   3 neck              (necklace)
+   4 torso             (body armour)
+   5 right hand        (weapons)
+   6 left hand         (shield, only available with no or one-handed weapon)
+                       (ammunition, only available with certain weapons)
+   7 left ring finger
+   8 right ring finger
+   9 legs              (pants)
+  10 feet              (shoes)
+
+These slots will composite to form the character graphic. The order of the
+composition is not the same in each direction and some slots do not contribute
+to the final graphic. Draw order for each direction:
+
+  left    0, 1, 2, 10, 9, 5, 4, 6
+  right   0, 1, 2, 10, 9, 6, 4, 5
+  up      0, 1, 2, 10, 9, 5, 6, 4
+  down    0, 1, 2, 10, 9, 4, 6, 5
+
+*) These slots are not under player control, but are merely used by the engine
+so be able to change this as part of the same system.
 
 
 5. IMPLEMENTATION
@@ -99,7 +138,7 @@ hard to represent them as an int. Probably a more complex structure is needed.
 struct ITEM_HOLDER {
     int id;
     int quantity;
-    ITEM_HOLDER *item;    
+    ITEM_HOLDER *item;
 }
 
 ITEM_HOLDER inventory[number_of_slots];
@@ -113,27 +152,46 @@ inventory. In one slot you can store only items with the same id (except slotted
 items which need separate slots). When you pick up/receive a new item, total
 weigth you can carry is checked if the item can be stored.
 
+
 6. SPECIAL ITEMS
 
-A special case is represented by arrows holder. Three solutions will apply:
-    
-    - equipment will have a special slot where you can equip only arrows
-     (or stones)
-     
-    - item with one slot
-    
-    - arrows can be simply stored in inventory
-    
+A special case is represented by arrow holder. Possible solutions:
+
+    - Equipment will have a special slot where you can equip only arrows
+      (or stones)
+
+    - Item with one slot
+
+    - Arrows can be simply stored in inventory
+
+    - Arrow holder has special slot for items of type "arrow" that can hold up
+      to a certain maximum number of arrows.
+
 Weapons can store a limited number of items in their slots. In this kind of
-slots you can store materia, demons or arrows. Some examples:
-    
-    * arrows holder = max 100 arrows (1 slot)
-    
-    * sword = max 1 materia + 1 demon (2 slot)
-    
-    * magic sword = max 2 materias (1 slot)
-    
-    * sword of cahos = max 1 materia + 2 demons (2 slot)
+slots you can store materia, demons or arrows. Some examples, with XML test
+cases based on 4th solution above.
+
+    * Arrow holder = max 100 arrows (1 slot)
+
+      <item name="Medium quiver" ...>
+        <slot type="arrow" max="100"/>
+      </item>
+
+    * Sword of chaos = max 1 materia + 2 demons (2 slot)
+
+      <item name="Sword of chaos" ...>
+        <slot type="materia" max="1"/>
+        <slot type="demon" max="2"/>
+      </item>
+
+    * Bag that can hold 5 kg of arbitrary stuff (container).
+
+      <item name="Leather bag" weight="1" ... capacity="5"/>
+
+      The rationale of being able to carry 5 kg of stuff at the cost of only
+      1 kg is that the bag helps you carry the stuff by providing a convenient
+      way to hold it.
+
 
 7. PROTOCOL
 
