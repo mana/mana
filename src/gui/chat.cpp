@@ -211,11 +211,13 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
     // prepare command
     if (msg.substr(0, 1) == "/") {
         // global announcement
-        if(msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
+        /*if(msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
             msg.erase(0, IS_ANNOUNCE_LENGTH);
             packid = 0x0099;
-        }
+        }*/
         // prepare ordinary message
+        chat_log("Sorry but /commands are not available yet", BY_PLAYER);
+        return "";
     }
     else {
         // temporary hack to make messed-up-keyboard-ppl able to send GM commands
