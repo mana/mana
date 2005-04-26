@@ -145,7 +145,7 @@ Engine::Engine()
     guiTop->add(debugInfo);
 
     // Create dialogs
-    chatWindow = new ChatWindow("./docs/chatlog.txt", 20);
+    chatWindow = new ChatWindow("chatlog.txt", 20);
     statusWindow = new StatusWindow();
     buyDialog = new BuyDialog();
     sellDialog = new SellDialog();
@@ -183,7 +183,7 @@ Engine::Engine()
     requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 
             requestTradeDialog->getWidth() - 10, 
             chatWindow->getHeight() + 15);
-    
+
     // Set initial window visibility
     chatWindow->setVisible(true);
     statusWindow->setVisible(true);
@@ -204,7 +204,7 @@ Engine::Engine()
     requestTradeDialog->setVisible(false);
     // Do not focus any text field
     gui->focusNone();
-    
+
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
     Image *npcbmp = resman->getImage(
@@ -225,7 +225,7 @@ Engine::Engine()
     emotionset = new Spriteset(emotionbmp, 19, 19);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
     itemset = new Spriteset(itembitmap, 20, 20);
-    
+
     // Loads all the monsters
     for (int i = 0; i < MONSTERS_NUMBER; i++)
     {
@@ -289,7 +289,7 @@ void Engine::logic()
                     break;
             }
         }
-        
+
         if (get_elapsed_time(being->speech_time) > 5000)
             being->showSpeech = false;
         if (get_elapsed_time(being->damage_time) > 3000)
@@ -427,7 +427,7 @@ void Engine::draw()
             being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
 
             int mf = being->frame + being->action;
-            
+
             if (being->action == MONSTER_DEAD) {
                 monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
@@ -446,7 +446,7 @@ void Engine::draw()
                 }
             }
         }
-        
+
         beingIterator++;
 
         // nodes are ordered so if the next being y is > then the

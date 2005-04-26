@@ -182,7 +182,7 @@ void do_init()
 
     add_node(player_node);
 
-    remove("./docs/packet.list");
+    remove("packet.list");
 }
 
 void do_exit()
@@ -402,13 +402,14 @@ void do_input()
     keys = SDL_GetKeyState(NULL);
     int xDirection = 0;
     int yDirection = 0;
-    int Direction = 0;
+    int Direction = DIR_NONE;
 
     if (walk_status == 0 && player_node->action != DEAD && current_npc == 0)
     {
         int x = player_node->x;
         int y = player_node->y;
 
+        // Translate pressed keys to movement
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
             yDirection = -1;
@@ -446,92 +447,68 @@ void do_input()
             yDirection = -1;
         }
 
-        if ( xDirection == 1 && yDirection == 0 ) // Right
+        // Translate movement to direction
+        if (xDirection == 1 && yDirection == 0) // Right
         {
             Direction = EAST;
         }
-        if ( xDirection == -1 && yDirection == 0 ) // Left
+        if (xDirection == -1 && yDirection == 0) // Left
         {
             Direction = WEST;
         }
-        if ( xDirection == 0 && yDirection == -1 ) // Up
+        if (xDirection == 0 && yDirection == -1) // Up
         {
             Direction = NORTH;
         }
-        if ( xDirection == 0 && yDirection == 1 ) // Down
+        if (xDirection == 0 && yDirection == 1) // Down
         {
             Direction = SOUTH;
         }
-        if ( xDirection == 1 && yDirection == 1 ) // Bottom-Right
+        if (xDirection == 1 && yDirection == 1) // Bottom-Right
         {
             Direction = SE;
         }
-        if ( xDirection == -1 && yDirection == -1 ) // Top-left
+        if (xDirection == -1 && yDirection == -1) // Top-left
         {
             Direction = NW;
         }
-        if ( xDirection == 1 && yDirection == -1 ) // Top-Right
+        if (xDirection == 1 && yDirection == -1) // Top-Right
         {
             Direction = NE;
         }
-        if ( xDirection == -1 && yDirection == 1 ) // Bottom-Left
+        if (xDirection == -1 && yDirection == 1) // Bottom-Left
         {
             Direction = SW;
         }
 
-        if ( xDirection != 0 || yDirection != 0 )
-        {
-            if (tiledMap->getWalk(x + xDirection, y + yDirection) != 0)
-            {
-                walk(x + xDirection, y + yDirection, Direction);
-                walk_status = 1;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->x = x + xDirection;
-                player_node->y = y + yDirection;
-                player_node->direction = Direction;
-            }
-            else if (tiledMap->getWalk(x + xDirection, y) != 0) 
-            { // Going back to straight direction Left or right
-                if ( xDirection == 1 ) //right
-                {
-                    Direction = EAST;
-                }
-                else // left
-                {
-                    Direction = WEST;
-                }
-                yDirection = 0;
-                walk(x + xDirection, y + yDirection, Direction);
-                walk_status = 1;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->x = x + xDirection;
-                player_node->y = y + yDirection;
-                player_node->direction = Direction;
-            }
-            else if (tiledMap->getWalk(x, y + yDirection) != 0) 
-            { // Going back to straight direction up or down
-                if ( yDirection == 1 ) //Down
-                {
-                    Direction = SOUTH;
-                }
-                else // Up
-                {
-                    Direction = NORTH;
-                }
-                xDirection = 0;
-                walk(x + xDirection, y + yDirection, Direction);
-                walk_status = 1;
-                player_node->action = WALK;
-                player_node->walk_time = tick_time;
-                player_node->x = x + xDirection;
-                player_node->y = y + yDirection;
-                player_node->direction = Direction;
-            }
-            else player_node->direction = Direction;
+        // Update the player direction to where he wants to walk
+        // Warning: Not communicated to the server yet
+        if (Direction != DIR_NONE) {
+            player_node->direction = Direction;
         }
-        
+
+        // Prevent skipping corners over colliding tiles
+        if (xDirection != 0 && tiledMap->tileCollides(x + xDirection, y)) {
+            xDirection = 0;
+        }
+        if (yDirection != 0 && tiledMap->tileCollides(x, y + yDirection)) {
+            yDirection = 0;
+        }
+
+        // Choose a straight direction when diagonal target is blocked
+        if (yDirection != 0 && xDirection != 0 &&
+                !tiledMap->getWalk(x + xDirection, y + yDirection)) {
+            xDirection = 0;
+        }
+
+        // Walk to where the player can actually go
+        if ((xDirection != 0 || yDirection != 0) &&
+                tiledMap->getWalk(x + xDirection, y + yDirection))
+        {
+            walk(x + xDirection, y + yDirection, Direction);
+            player_node->setDestination(x + xDirection, y + yDirection);
+        }
+
         if (player_node->action == STAND)
         {
             if (keys[SDLK_LCTRL])
@@ -541,24 +518,27 @@ void do_input()
                         player_node->y,
                         player_node->direction);
                 player_node->walk_time = tick_time;
-                
-                if (player_node->weapon == 2)
+
+                if (player_node->weapon == 2) {
                     sound.playSfx("sfx/bow_shoot_1.ogg");
-                else
+                }
+                else {
                     sound.playSfx("sfx/fist-swish.ogg");
+                }
             }
         }
-
-    } // End if alive
+    }
 }
 
-int get_packet_length(short id) {
+int get_packet_length(short id)
+{
     int len = get_length(id);
     if (len == -1) len = RFIFOW(2);
     return len;
 }
 
-void do_parse() {
+void do_parse()
+{
     unsigned short id;
     char *temp;
     Being *being = NULL;
@@ -585,7 +565,7 @@ void do_parse() {
             fclose(file);
             */
 #ifdef __DEBUG
-            FILE *file = fopen("./docs/packet.list", "a");
+            FILE *file = fopen("packet.list", "a");
             fprintf(file, "%x\n", RFIFOW(0));
             fclose(file);
 #endif
@@ -597,32 +577,39 @@ void do_parse() {
                     player_node->y = get_y(RFIFOP(6));
                     break;
 
-                // Received speech
-                case 0x008d:
-                    temp = (char *)malloc(RFIFOW(2)-7);
-                    memset(temp, '\0', RFIFOW(2)-7);
-                    memcpy(temp, RFIFOP(8), RFIFOW(2)-8);
+                // Received speech from being
+                case SMSG_BEING_CHAT:
                     being = findNode(RFIFOL(4));
                     if (being != NULL) {
-                        // White
-                        being->setSpeech(temp, SPEECH_TIME);
-                        chatWindow->chat_log(temp, BY_OTHER);
-                    }
-                    free(temp);
-                    break;
-                case 0x008e:
-                case 0x009a:
-                    if (RFIFOW(2) > 4) {
-                        // Receiving 1 byte less than expected, server might be
-                        // sending garbage instead of '\0' /-kth5
-                        temp = (char *)malloc(RFIFOW(2) - 3);
-                        memset(temp, '\0', RFIFOW(2) - 3);
-                        memcpy(temp, RFIFOP(4), RFIFOW(2) - 4);
+                        int length = RFIFOW(2) - 8;
+                        temp = (char*)malloc(length + 1);
+                        temp[length] = '\0';
+                        memcpy(temp, RFIFOP(8), length);
+                        std::string msg = std::string(temp);
+                        msg.erase(0, msg.find(" : ", 0) + 3);
 
-                        // White
-                        player_node->setSpeech(temp, SPEECH_TIME);
+                        being->setSpeech(msg, SPEECH_TIME);
+                        chatWindow->chat_log(temp, BY_OTHER);
+
+                        free(temp);
+                    }
+                    break;
+
+                case SMSG_MY_BEING_CHAT:
+                case SMSG_GM_CHAT:
+                    if (RFIFOW(2) > 4) {
+                        int length = RFIFOW(2) - 4;
+                        temp = (char*)malloc(length + 1);
+                        temp[length] = '\0';
+                        memcpy(temp, RFIFOP(4), length);
+                        std::string msg = std::string(temp);
+                        unsigned int pos = msg.find(" : ", 0);
 
                         if (id == 0x008e) {
+                            if (pos != std::string::npos) {
+                                msg.erase(0, pos + 3);
+                            }
+                            player_node->setSpeech(msg, SPEECH_TIME);
                             chatWindow->chat_log(temp, BY_PLAYER);
                         }
                         else {
@@ -632,6 +619,7 @@ void do_parse() {
                         free(temp);
                     }
                     break;
+
                     // Success to walk request
                 case 0x0087:
                     if (walk_status == 1) {
@@ -734,9 +722,9 @@ void do_parse() {
                     being->job = RFIFOW(14);
                     being->weapon = RFIFOW(18);
 
-                    being->setPath(tiledMap->findPath(
-                                being->x, being->y,
-                                being->destX, being->destY));
+                    being->setDestination(
+                            get_dest_x(RFIFOP(50)),
+                            get_dest_y(RFIFOP(50)));
                     break;
 
                 case SMSG_MOVE_PLAYER_BEING:
@@ -759,9 +747,9 @@ void do_parse() {
                     being->setHairStyle(RFIFOW(16));
                     being->setHairColor(RFIFOW(32));
 
-                    being->setPath(tiledMap->findPath(
-                                being->x, being->y,
-                                being->destX, being->destY));
+                    being->setDestination(
+                            get_dest_x(RFIFOP(50)),
+                            get_dest_y(RFIFOP(50)));
                     break;
 
                     // NPC dialog

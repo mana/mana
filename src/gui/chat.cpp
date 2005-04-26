@@ -69,15 +69,15 @@ void ChatWindow::chat_log(std::string line, int own)
     pos = 0;
     pos = (int)line.find(" : ", 0);
     if (pos > 0) {
-        tmp.nick = line.substr(0,pos);
+        tmp.nick = line.substr(0, pos);
         switch (own) {
-            case ACT_IS :
+            case ACT_IS:
                 tmp.nick += CAT_IS;
                 break;
-            case ACT_WHISPER :
+            case ACT_WHISPER:
                 tmp.nick += CAT_WHISPER;
                 break;
-            default :
+            default:
                 tmp.nick += CAT_NORMAL;
         }
         line.erase(0, pos + 3);
@@ -85,7 +85,7 @@ void ChatWindow::chat_log(std::string line, int own)
         tmp.nick = "";
     }
     tmp.own  = own;
-    
+
     // A try to get text sentences no too long...
     bool finished = false;
     unsigned int maxLength = 80;
@@ -94,7 +94,7 @@ void ChatWindow::chat_log(std::string line, int own)
     {
         std::string tempText;
         if (line.length() > maxLength)
-        {   
+        {
 
             tempText = line;
             if (line.length() > maxLength)
@@ -108,7 +108,7 @@ void ChatWindow::chat_log(std::string line, int own)
             chatlog.push_front(tmp);
         }
         else // Normal message
-        {  
+        {
             tmp.text = line;
             //chatlog_file << tmp.nick << tmp.text << "\n";
             //chatlog_file.flush();

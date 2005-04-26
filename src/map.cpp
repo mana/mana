@@ -222,27 +222,32 @@ void Map::setWalk(int x, int y, bool walkable)
 
 bool Map::getWalk(int x, int y)
 {
-    // You can't walk outside of the map
-    if (x < 0 || y < 0 || x >= width || y >= height) {
-        return false;
-    }
-
-    // Check if the tile is walkable
-    bool ret = metaTiles[x + y * width].walkable;
-
     // If walkable, check for colliding into a being
-    if (ret) {
+    if (!tileCollides(x, y)) {
         std::list<Being*>::iterator i = beings.begin();
-        while (i != beings.end() && ret) {
+        while (i != beings.end()) {
             Being *being = (*i);
             if (being->x == x && being->y == y) {
                 return false;
             }
             i++;
         }
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool Map::tileCollides(int x, int y)
+{
+    // You can't walk outside of the map
+    if (x < 0 || y < 0 || x >= width || y >= height) {
+        return true;
     }
 
-    return ret;
+    // Check if the tile is walkable
+    return !metaTiles[x + y * width].walkable;
 }
 
 void Map::setTile(int x, int y, int layer, Image *img)
@@ -405,7 +410,7 @@ std::list<PATH_NODE> Map::findPath(
         }
     }
 
-    // Two new values to indicate wether a tile is on the open or closed list,
+    // Two new values to indicate whether a tile is on the open or closed list,
     // this way we don't have to clear all the values between each pathfinding.
     onClosedList += 2;
     onOpenList += 2;

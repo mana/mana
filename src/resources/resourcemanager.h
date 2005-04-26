@@ -88,11 +88,34 @@ class ResourceManager
                 int flags = 0);
 
         /**
-         * Convenience wrappers around ResourceManager::create.
+         * Convenience wrapper around ResourceManager::create for loading
+         * images.
          */
         Image *getImage(const std::string &idPath, int flags = 0);
+
+        /**
+         * Convenience wrapper around ResourceManager::create for loading
+         * songs.
+         */
         Music *getMusic(const std::string &idPath);
+
+        /**
+         * Convenience wrapper around ResourceManager::create for loading
+         * samples.
+         */
         SoundEffect *getSoundEffect(const std::string &idPath);
+
+        /**
+         * Allocates data into a buffer pointer for raw data loading. The
+         * returned data is expected to be freed using <code>free()</code>.
+         *
+         * @param fileName The name of the file to be loaded.
+         * @param fileSize The size of the file that was loaded.
+         *
+         * @return An allocated byte array containing the data that was loaded,
+         *         or <code>NULL</code> on fail.
+         */
+        void *loadFile(const std::string &fileName, int &fileSize);
 
         /**
          * Returns an instance of the class, creating one if it does not
@@ -110,16 +133,6 @@ class ResourceManager
          * Searches for zip files and adds them to the PhysicsFS search path.
          */
         void searchAndAddZipFiles();
-
-        /**
-         * Allocates data into a buffer pointer for raw data loading
-         *
-         * @param fileName The name of the file to be loaded
-         * @param buffer The empty buffer into which the data will be loaded
-         *
-         * @return The size of the file that was loaded
-         */
-        void *loadFile(const std::string &fileName, int &fileSize);
 
 
         static ResourceManager *instance;

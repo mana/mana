@@ -37,13 +37,8 @@ struct PATH_NODE {
     unsigned short x, y;
 };
 
-class Being {
-    private:
-        std::list<PATH_NODE> path;
-        std::string speech;
-        std::string damage;
-        unsigned short hairStyle, hairColor;
-
+class Being
+{
     public:
         unsigned int id;
         unsigned short job;
@@ -83,9 +78,9 @@ class Being {
         void clearPath();
 
         /**
-         * Sets the new path for this being.
+         * Sets a new destination for this being to walk to.
          */
-        void setPath(std::list<PATH_NODE> path);
+        void setDestination(int x, int y);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -104,7 +99,7 @@ class Being {
          * @param time The amount of time the text should stay in milliseconds.
          */
         void setDamage(const std::string &text, int time);
-        
+
         /**
          * Sets the name for the being
          *
@@ -121,12 +116,12 @@ class Being {
          * Sets the hair style for this being.
          */
         void setHairStyle(int style);
-        
+
         /**
          * Gets the hair color for this being.
          */
         unsigned short getHairColor();
-        
+
         /**
          * Gets the hair style for this being.
          */
@@ -141,21 +136,32 @@ class Being {
          * Draws the speech text above the being.
          */
         void drawSpeech(Graphics *graphics);
-        
+
         /**
          * Checks if the being is a player.
          */
         bool isPlayer();
-        
+
         /**
          * Checks if the being is a npc.
          */
         bool isNpc();
-        
+
         /**
          * Checks if the being is a monster.
          */
         bool isMonster();
+
+    private:
+        /**
+         * Sets the new path for this being.
+         */
+        void setPath(std::list<PATH_NODE> path);
+
+        std::list<PATH_NODE> path;
+        std::string speech;
+        std::string damage;
+        unsigned short hairStyle, hairColor;
 };
 
 /** Add a Being to the list */

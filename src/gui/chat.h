@@ -136,14 +136,14 @@ class ChatWindow : public Window, public gcn::ActionListener {
          * Request focus.
          */
         void requestFocus();
-        
+
         /**
-         * Checks wether ChatWindow is Focused or not
+         * Checks whether ChatWindow is Focused or not.
          */
         bool isFocused();
-        
+
         /*
-         * Determines wether to send a command or an ordinary message, then
+         * Determines whether to send a command or an ordinary message, then
          * contructs packets & sends them
          *
          * @param nick The character's name to display in front.

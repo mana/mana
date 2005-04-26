@@ -34,7 +34,8 @@ Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
-Gui::Gui(Graphics *graphics)
+Gui::Gui(Graphics *graphics):
+    hostImageLoader(NULL)
 {
     // Set graphics
     guiGraphics = graphics;
@@ -75,9 +76,9 @@ Gui::~Gui()
     delete guiFont;
     delete guiTop;
     delete imageLoader;
-#ifdef USE_OPENGL
-    delete hostImageLoader;
-#endif
+    if (hostImageLoader) {
+        delete hostImageLoader;
+    }
     delete guiInput;
 }
 
@@ -108,9 +109,7 @@ void Gui::mousePress(int mx, int my, int button)
 
         if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
             walk(tilex, tiley, 0);
-            player_node->setPath(tiledMap->findPath(
-                        player_node->x, player_node->y,
-                        tilex, tiley));
+            player_node->setDestination(tilex, tiley);
         }
     }
 }

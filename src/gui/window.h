@@ -163,7 +163,7 @@ class Window : public gcn::Window, public ConfigListener
         Window *getParentWindow();
 
         /**
-         * Returns wether this window is modal. This doesn't necessarily mean
+         * Returns whether this window is modal. This doesn't necessarily mean
          * that is gets input as a child modal window could get it.
          */
         bool isModal();

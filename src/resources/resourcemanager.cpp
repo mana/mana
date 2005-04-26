@@ -286,16 +286,19 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     PHYSFS_file* file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
-    if (file == NULL) return NULL;
+    if (file == NULL) {
+        logger.log("Warning: %s failed to load!", fileName.c_str());
+        return NULL;
+    }
 
-    // Print file information message
+    // Get the size of the file
     fileSize = PHYSFS_fileLength(file);
 
-    // Allocate memory in the buffer and load the file
+    // Allocate memory and load the file
     void *buffer = malloc(fileSize);
     PHYSFS_read(file, buffer, 1, fileSize);
 
-    // Close the file and let the user deallocate the memory (safe?)
+    // Close the file and let the user deallocate the memory
     PHYSFS_close(file);
 
     return buffer;

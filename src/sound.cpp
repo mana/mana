@@ -42,31 +42,31 @@ void Sound::init()
 {
     // Don't initialize sound engine twice
     if (installed) return;
-    
+
     logger.log("Sound::init() Initializing sound...");
-    
+
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
         logger.log("Sound::init() Failed to initialize audio subsystem");
         return;
     }
 
-	const size_t audioBuffer = 4096;
+    const size_t audioBuffer = 4096;
 
-	const int res = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
+    const int res = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
             2, audioBuffer);
-	if (res >= 0) {
-		Mix_AllocateChannels(16);
-	} else {
-		logger.log("Sound::init Could not initialize audio: %s",
+    if (res >= 0) {
+        Mix_AllocateChannels(16);
+    } else {
+        logger.log("Sound::init Could not initialize audio: %s",
                 Mix_GetError());
         return;
-	}
-	
-	info();
+    }
+
+    info();
 
     music = NULL;
-    
-	installed = true;
+
+    installed = true;
 }
 
 void Sound::info() {
@@ -77,12 +77,12 @@ void Sound::info() {
     int rate = 0;
     Uint16 audioFormat = 0;
     int channels = 0;
-    
+
     MIX_VERSION(&compiledVersion);
     linkedVersion = Mix_Linked_Version();
-    
+
     SDL_AudioDriverName(driver, 40);
-    
+
     Mix_QuerySpec(&rate, &audioFormat, &channels);
     switch (audioFormat) {
         case AUDIO_U8: format = "U8"; break;
@@ -92,7 +92,7 @@ void Sound::info() {
         case AUDIO_U16MSB: format = "U16MSB"; break;
         case AUDIO_S16MSB: format = "S16MSB"; break;
     }
-    
+
     logger.log("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
             compiledVersion.major,
             compiledVersion.minor,
@@ -110,7 +110,7 @@ void Sound::info() {
 void Sound::setMusicVolume(int volume)
 {
     if (!installed) return;
-    
+
     musicVolume = volume;
     Mix_VolumeMusic(volume);
 }
@@ -118,7 +118,7 @@ void Sound::setMusicVolume(int volume)
 void Sound::setSfxVolume(int volume)
 {
     if (!installed) return;
-    
+
     sfxVolume = volume;
     Mix_Volume(-1, volume);
 }
@@ -126,11 +126,11 @@ void Sound::setSfxVolume(int volume)
 void Sound::playMusic(const char *path, int loop)
 {
     if (!installed) return;
-        
+
     if (music != NULL) {
         stopMusic();
     }
-    
+
     logger.log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
 
     music = Mix_LoadMUS(path);
@@ -147,7 +147,7 @@ void Sound::stopMusic()
     if (!installed) return;
 
     logger.log("Sound::stopMusic()");
-        
+
     if (music != NULL) {
         Mix_HaltMusic();
         Mix_FreeMusic(music);

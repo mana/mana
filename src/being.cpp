@@ -148,7 +148,6 @@ void sort() {
 }
 
 Being::Being():
-    damage(""),
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     type(0), action(0), frame(0),
@@ -157,21 +156,23 @@ Being::Being():
     speed(150),
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
-    hairStyle(1), hairColor(1),
     weapon(0),
     speech_time(0),
     damage_time(0),
     showSpeech(false), showDamage(false),
-    aspd(350)
+    aspd(350),
+    hairStyle(1), hairColor(1)
 {
     strcpy(name, "");
 }
 
-Being::~Being() {
+Being::~Being()
+{
     clearPath();
 }
 
-void Being::clearPath() {
+void Being::clearPath()
+{
     path.clear();
 }
 
@@ -180,6 +181,13 @@ void Being::setPath(std::list<PATH_NODE> path)
     this->path = path;
     nextStep();
     walk_time = tick_time;
+}
+
+void Being::setDestination(int destX, int destY)
+{
+    this->destX = destX;
+    this->destY = destY;
+    setPath(tiledMap->findPath(x, y, destX, destY));
 }
 
 void Being::setHairColor(int color)
@@ -261,6 +269,9 @@ void Being::nextStep()
         y = newY;
         action = WALK;
         walk_time += speed / 10;
+        if (this == player_node) {
+            walk_status = 1;
+        }
     } else {
         action = STAND;
         if (this == player_node) {
@@ -274,16 +285,9 @@ void Being::drawSpeech(Graphics *graphics)
 {
     // Draw speech above this being
     if (showSpeech) {
-        //if (being->speech_color == makecol(255, 255, 255)) {
-        //    guiGraphics->drawText(being->speech,
-        //            being->text_x + 16, being->text_y - 60,
-        //            gcn::Graphics::CENTER);
-        //}
-        //else {
         graphics->drawText(speech,
                 text_x + 20, text_y - 60,
                 gcn::Graphics::CENTER);
-        //}
     }
     if (showDamage) {
         graphics->drawText(damage,
@@ -293,20 +297,17 @@ void Being::drawSpeech(Graphics *graphics)
     }
 }
 
-bool Being::isPlayer() {
-    if (job < 10)
-        return true;
-    return false;
+bool Being::isPlayer()
+{
+    return job < 10;
 }
 
-bool Being::isNpc() {
-    if (job > 45 && job <126)
-        return true;
-    return false;
+bool Being::isNpc()
+{
+    return job > 45 && job < 126;
 }
 
-bool Being::isMonster() {
-    if (job > 200)
-        return true;
-    return false;
+bool Being::isMonster()
+{
+    return job > 200;
 }

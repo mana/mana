@@ -32,6 +32,9 @@
 #define SMSG_PLAYER_UPDATE_2      0x01d9    //
 #define SMSG_MOVE_PLAYER_BEING    0x01da    // A nearby player moves
 #define SMSG_CHANGE_BEING_LOOKS   0x00c3    //
+#define SMSG_BEING_CHAT           0x008d    // A being talks
+#define SMSG_MY_BEING_CHAT        0x008e    // My being talks
+#define SMSG_GM_CHAT              0x009a    // GM announce
 
 
 /** Packet length by id */

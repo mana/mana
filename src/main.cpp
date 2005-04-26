@@ -66,6 +66,7 @@ char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
 char *dir = NULL;
+char *homeDir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
 bool useOpenGL = false;
 
@@ -120,11 +121,15 @@ void init_engine()
     dir = new char[400];
     strcpy(dir, "");
 
+    homeDir = new char[256];
 #ifndef __USE_UNIX98
     // WIN32 and others
     strcpy(dir, "config.xml");
+
+    // In Windows and other systems we currently store data next to executable.
+    strcpy(homeDir, "");
 #else
-    // UNIX
+    // In UNIX we store data in ~/.manaworld/
     char *userHome;
     char *name = getlogin();
     passwd *pass;
@@ -152,6 +157,8 @@ void init_engine()
         exit(1);
     }
     sprintf(dir, "%s/.manaworld/config.xml", userHome);
+
+    //strcpy(homeDir, "%s/.manaworld/", userHome);
 #endif
 
     // Checking if the configuration file exists... otherwise creates it with
@@ -177,18 +184,9 @@ void init_engine()
             config.setValue("screen", 0);
             config.setValue("sound", 1);
             config.setValue("guialpha", 0.8f);
-#ifdef __USE_UNIX98
-            char *chatlogFilename = new char[400];
-            sprintf(chatlogFilename, "%s/.manaworld/chatlog.txt", userHome);
-            config.setValue("chatlog", chatlogFilename);
-            delete chatlogFilename;
-#else
-            config.setValue("chatlog", "chatlog.txt");
-#endif
             config.setValue("remember", 1);
             config.setValue("sfxVolume", 100);
             config.setValue("musicVolume", 60);
-
             config.write(dir);
         }
     }

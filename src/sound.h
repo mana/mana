@@ -50,7 +50,7 @@ class Sound {
          * Installs the sound engine.
          */
         void init();
-        
+
         /**
          * Logs various info about sound device.
          */
@@ -73,7 +73,7 @@ class Sound {
          * Stops currently running background music track.
          */
         void stopMusic();
-        
+
         /**
          * Fades in background music.
          *
@@ -89,7 +89,7 @@ class Sound {
          * \param ms   Duration of fade-out effect (ms)
          */
         void fadeOutMusic(int ms);
-       
+
         /**
          * Sets music volume.
          * 
@@ -110,11 +110,12 @@ class Sound {
          * \param path     Full path to file
          */
         void playSfx(const char *path);
-        
+
     private:
         bool installed;
 
-        int musicVolume, sfxVolume;
+        int sfxVolume;
+        int musicVolume;
 
         Mix_Music *music;
 };

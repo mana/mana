@@ -47,6 +47,7 @@
 #define LOCK 254
 #define IDLE 255
 
+#define DIR_NONE -1
 #define SOUTH 0
 #define SW    1
 #define WEST  2

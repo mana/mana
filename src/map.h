@@ -129,9 +129,14 @@ class Map
         void setWalk(int x, int y, bool walkable);
 
         /**
-         * Tell if a tile is walkable or not
+         * Tell if a tile is walkable or not, includes checking beings.
          */
         bool getWalk(int x, int y);
+
+        /**
+         * Tell if a tile collides, not including a check on beings.
+         */
+        bool tileCollides(int x, int y);
 
         /**
          * Returns the width of this map.
