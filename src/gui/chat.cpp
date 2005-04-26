@@ -23,6 +23,7 @@
 
 #include "chat.h"
 #include "textfield.h"
+#include "textbox.h"
 #include "../graphics.h"
 #include "../main.h"
 #include <iostream>
@@ -40,7 +41,8 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
     textOutput->setEditable(false);
     scrollArea = new ScrollArea(textOutput);
     scrollArea->setDimension(gcn::Rectangle(
-                5, 5, 590, 85 - chatInput->getHeight()));
+                2, 0, 596, 98 - chatInput->getHeight() - 5));
+    scrollArea->setOpaque(false);
     chatInput->setPosition(
             chatInput->getBorderSize(),
             100 - chatInput->getHeight() - chatInput->getBorderSize());
@@ -59,21 +61,13 @@ ChatWindow::~ChatWindow()
     chatlog_file.close();
 }
 
-void ChatWindow::addOutput(std::string output)
-{
-	textOutput->setText(textOutput->getText() + output);
-	//textOutput->setText(output);
-}
-
 void ChatWindow::chat_log(std::string line, int own)
 {
     int pos;
     CHATLOG tmp;
 
-    if (items <= items_keep) {
-        items++;     // delete overhead from the end of the list
-    }
-    else {
+    // Delete overhead from the end of the list
+    while (chatlog.size() > items_keep) {
         chatlog.pop_back();
     }
 
@@ -88,6 +82,8 @@ void ChatWindow::chat_log(std::string line, int own)
             case ACT_WHISPER:
                 tmp.nick += CAT_WHISPER;
                 break;
+            case BY_GM:
+                tmp.nick += std::string("Global announcement: ");
             default:
                 tmp.nick += CAT_NORMAL;
         }
@@ -97,36 +93,43 @@ void ChatWindow::chat_log(std::string line, int own)
     }
     tmp.own  = own;
 
+    line = tmp.nick + line;
+
     // A try to get text sentences no too long...
     bool finished = false;
     unsigned int maxLength = 80;
 
     while (!finished)
     {
-        std::string tempText;
+        std::string tempText = line;
+
         if (line.length() > maxLength)
         {
-
-            tempText = line;
-            if (line.length() > maxLength)
+            if (line.length() > maxLength) {
                 line = cut_string(tempText, maxLength);
+            }
 
-            tmp.text = tempText;
+            //tmp.text = tempText;
 
             //chatlog_file << tmp.nick << tmp.text << "\n";
             //chatlog_file.flush();
 
-            chatlog.push_front(tmp);
+            //chatlog.push_front(tmp);
         }
         else // Normal message
         {
-            tmp.text = line;
+            //tmp.text = line;
             //chatlog_file << tmp.nick << tmp.text << "\n";
             //chatlog_file.flush();
 
-            chatlog.push_front(tmp);
+            //chatlog.push_front(tmp);
             finished = true;
         }
+
+        textOutput->setText(
+                textOutput->getText() + std::string("\n") + tempText);
+        scrollArea->setVerticalScrollAmount(
+                scrollArea->getVerticalMaxScroll());
     }
 }
 
@@ -142,6 +145,7 @@ void ChatWindow::draw(gcn::Graphics *graphics)
     Window::draw(graphics);
 
     // Draw the chat log
+    /*
     int x, y;
     int n = 8;
     int texty = getHeight() - 5 - chatInput->getHeight() -
@@ -161,48 +165,32 @@ void ChatWindow::draw(gcn::Graphics *graphics)
 
         texty -= getFont()->getHeight() - 2;
 
-        //graphics->pushClipArea(gcn::Rectangle(0, 0, 95, getHeight()));
-
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
                 //graphics->drawText("Global announcement: ", 5, texty);
-		addOutput(std::string("Global announcement: "));
-		break;
+                addOutput(std::string("Global announcement: "));
+                break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
-                //graphics->drawText(line.nick, 5, texty);
-		addOutput(std::string(line.nick));
                 break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                //graphics->drawText(line.nick, 5, texty);
-		addOutput(std::string(line.nick));
                 break;
-	}
-
-        //graphics->popClipArea();
+        }
 
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                //graphics->drawText(line.text, 100, texty);
-		addOutput(std::string(line.text) + std::string("\n"));
-		break;
+                break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 255, 255)); // White
-                //graphics->drawText(line.text, 100, texty);
-		addOutput(std::string(line.text) + std::string("\n"));
-		break;
+                break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                //graphics->drawText(line.text, 100, texty);
-		addOutput(std::string(line.text) + std::string("\n"));
                 break;
             default:
                 graphics->setColor(gcn::Color(83, 233, 246)); // Light blue
-                //graphics->drawText(line.text, 5, texty);
-		addOutput(std::string(line.text) + std::string("\n"));
         }
 
         if (i >= n) {
@@ -210,6 +198,7 @@ void ChatWindow::draw(gcn::Graphics *graphics)
         }
         i++;
     }
+    */
 }
 
 void ChatWindow::action(const std::string& eventId)

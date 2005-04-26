@@ -55,6 +55,16 @@ class ScrollArea : public gcn::ScrollArea {
          */
         void drawBorder(gcn::Graphics *graphics);
 
+        /**
+         * Sets whether the widget should draw its background or not.
+         */
+        void setOpaque(bool opaque);
+
+        /**
+         * Returns whether the widget draws its background or not.
+         */
+        bool isOpaque();
+
     protected:
         /**
          * Initializes the scroll area.
@@ -77,6 +87,7 @@ class ScrollArea : public gcn::ScrollArea {
         Image *hscroll_left_pressed, *hscroll_right_pressed,
              *vscroll_down_pressed, *vscroll_up_pressed;
         float guiAlpha;
+        bool opaque;
 };
 
 #endif

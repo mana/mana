@@ -40,7 +40,9 @@ ScrollArea::ScrollArea(gcn::Widget *widget):
 
 void ScrollArea::init()
 {
+    // Draw background by default
     setBorderSize(2);
+    opaque = true;
 
     // Load the background skin
     ResourceManager *resman = ResourceManager::getInstance();
@@ -54,7 +56,7 @@ void ScrollArea::init()
 
     // Set GUI alpha level
     textbox->setAlpha(guiAlpha);
-    
+
     for (y = 0; y < 3; y++) {
         for (x = 0; x < 3; x++) {
             background.grid[a] = textbox->getSubImage(
@@ -80,7 +82,7 @@ void ScrollArea::init()
             a++;
         }
     }
-    
+
     hscroll_left_default = resman->getImage("graphics/gui/hscroll_left_default.png");
     hscroll_right_default = resman->getImage("graphics/gui/hscroll_right_default.png");
     vscroll_down_default = resman->getImage("graphics/gui/vscroll_down_default.png");
@@ -97,8 +99,8 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
     int alpha = getBaseColor().a;
     gcn::Color highlightColor = getBaseColor() + 0x303030;
-    highlightColor.a = alpha;    
-    gcn::Color shadowColor = getBaseColor() - 0x303030;      
+    highlightColor.a = alpha;
+    gcn::Color shadowColor = getBaseColor() - 0x303030;
     shadowColor.a = alpha;
 
     if (mVBarVisible)
@@ -128,7 +130,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
     if (mContent)
     {
-        gcn::Rectangle contdim = mContent->getDimension();        
+        gcn::Rectangle contdim = mContent->getDimension();
         graphics->pushClipArea(getContentDimension());
 
         if (mContent->getBorderSize() > 0)
@@ -137,7 +139,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
             rec.x -= mContent->getBorderSize();
             rec.y -= mContent->getBorderSize();
             rec.width += 2 * mContent->getBorderSize();
-            rec.height += 2 * mContent->getBorderSize();					
+            rec.height += 2 * mContent->getBorderSize();
             graphics->pushClipArea(rec);
             mContent->drawBorder(graphics);
             graphics->popClipArea();
@@ -160,7 +162,26 @@ void ScrollArea::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
+    if (isOpaque()) {
+        ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
+    }
+}
+
+void ScrollArea::setOpaque(bool opaque)
+{
+    this->opaque = opaque;
+
+    if (opaque) {
+        setBorderSize(2);
+    }
+    else {
+        setBorderSize(0);
+    }
+}
+
+bool ScrollArea::isOpaque()
+{
+    return opaque;
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)

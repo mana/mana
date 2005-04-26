@@ -28,7 +28,6 @@
 #include "../resources/image.h"
 #include "../net/network.h"
 #include "window.h"
-#include "textbox.h"
 #include "scrollarea.h"
 #include <SDL.h>
 #include <list>
@@ -110,9 +109,6 @@ class ChatWindow : public Window, public gcn::ActionListener {
          * Destructor.
          */
         ~ChatWindow();
-
-
-	void addOutput(std::string output);
 
         /*
          * Adds a line of text to our message list. Parameters:
@@ -203,8 +199,8 @@ class ChatWindow : public Window, public gcn::ActionListener {
 
         /** Input box for chat messages */
         gcn::TextField *chatInput;
-	TextBox *textOutput;
-	ScrollArea *scrollArea;
+        gcn::TextBox *textOutput;
+        ScrollArea *scrollArea;
 };
 
 #endif
