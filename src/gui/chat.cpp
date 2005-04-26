@@ -35,14 +35,19 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
     items_keep = item_num;
 
     setContentSize(600, 100);
-
+    textOutput = new TextBox();
     chatInput = new TextField();
+    textOutput->setEditable(false);
+    scrollArea = new ScrollArea(textOutput);
+    scrollArea->setDimension(gcn::Rectangle(
+                5, 5, 590, 85 - chatInput->getHeight()));
     chatInput->setPosition(
             chatInput->getBorderSize(),
             100 - chatInput->getHeight() - chatInput->getBorderSize());
     chatInput->setWidth(600 - 2 * chatInput->getBorderSize());
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(this);
+    add(scrollArea);
     add(chatInput);
 }
 
@@ -52,6 +57,12 @@ ChatWindow::~ChatWindow()
 
     chatlog_file.flush();
     chatlog_file.close();
+}
+
+void ChatWindow::addOutput(std::string output)
+{
+	textOutput->setText(textOutput->getText() + output);
+	//textOutput->setText(output);
 }
 
 void ChatWindow::chat_log(std::string line, int own)
@@ -150,41 +161,48 @@ void ChatWindow::draw(gcn::Graphics *graphics)
 
         texty -= getFont()->getHeight() - 2;
 
-        graphics->pushClipArea(gcn::Rectangle(0, 0, 95, getHeight()));
+        //graphics->pushClipArea(gcn::Rectangle(0, 0, 95, getHeight()));
 
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                graphics->drawText("Global announcement: ", 5, texty);
-                break;
+                //graphics->drawText("Global announcement: ", 5, texty);
+		addOutput(std::string("Global announcement: "));
+		break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
-                graphics->drawText(line.nick, 5, texty);
+                //graphics->drawText(line.nick, 5, texty);
+		addOutput(std::string(line.nick));
                 break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                graphics->drawText(line.nick, 5, texty);
+                //graphics->drawText(line.nick, 5, texty);
+		addOutput(std::string(line.nick));
                 break;
-        }
+	}
 
-        graphics->popClipArea();
+        //graphics->popClipArea();
 
         switch (line.own) {
             case BY_GM:
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                graphics->drawText(line.text, 100, texty);
-                break;
+                //graphics->drawText(line.text, 100, texty);
+		addOutput(std::string(line.text) + std::string("\n"));
+		break;
             case BY_PLAYER:
                 graphics->setColor(gcn::Color(255, 255, 255)); // White
-                graphics->drawText(line.text, 100, texty);
-                break;
+                //graphics->drawText(line.text, 100, texty);
+		addOutput(std::string(line.text) + std::string("\n"));
+		break;
             case BY_OTHER:
                 graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                graphics->drawText(line.text, 100, texty);
+                //graphics->drawText(line.text, 100, texty);
+		addOutput(std::string(line.text) + std::string("\n"));
                 break;
             default:
                 graphics->setColor(gcn::Color(83, 233, 246)); // Light blue
-                graphics->drawText(line.text, 5, texty);
+                //graphics->drawText(line.text, 5, texty);
+		addOutput(std::string(line.text) + std::string("\n"));
         }
 
         if (i >= n) {
