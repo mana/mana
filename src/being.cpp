@@ -202,7 +202,7 @@ void Being::setHairColor(int color)
 void Being::setHairStyle(int style)
 {
     hairStyle = style;
-    if (hairStyle < 1 || hairStyle > 2)
+    if (hairStyle < 1 || hairStyle > 4)
     {
         hairStyle = 1;
     }

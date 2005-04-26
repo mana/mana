@@ -97,7 +97,7 @@ void ChatWindow::chat_log(std::string line, int own)
 
     // A try to get text sentences no too long...
     bool finished = false;
-    unsigned int maxLength = 80;
+    unsigned int maxLength = 98;
 
     while (!finished)
     {
