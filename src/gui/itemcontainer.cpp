@@ -59,20 +59,25 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     w = getWidth();
     h = getHeight();
 
+    int itemWidth = getWidth() / 24;
+
     if (items[selectedItem].quantity <= 0) {
         selectedItem = -1;
     }
 
     if (selectedItem >= 0) {
-        int itemX = (((selectedItem - 2) * 24) % (getWidth() - 24));
-        int itemY = (((selectedItem - 2) * 24) / (getWidth() - 24)) * 24;
+        int itemX = ((selectedItem - 2) % itemWidth) * 24;
+        int itemY = ((selectedItem - 2) / itemWidth) * 24;
+
         itemX -= itemX % 24;
         selImg->draw(screen, x + itemX, y+itemY);
     }
 
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        int itemX = (((i - 2) * 24) % (getWidth() - 24));
-        int itemY = (((i - 2) * 24) / (getWidth() - 24)) * 24;
+        int itemX = ((i - 2) % itemWidth) * 24;
+        int itemY = ((i - 2) / itemWidth) * 24;
+
+
         itemX -= itemX % 24;
         if (items[i].quantity > 0) {
             if (itemDb.getItemInfo(items[i].id)->getImage() > 0) {

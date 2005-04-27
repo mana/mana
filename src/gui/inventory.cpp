@@ -37,15 +37,15 @@ InventoryWindow::InventoryWindow():
 {
     setContentSize(322, 100);
     useButton = new Button("Use");
-    useButton->setPosition(20, getHeight() - 48);
+    useButton->setPosition(8, getHeight() - 48);
     dropButton = new Button("Drop");
-    dropButton->setPosition(60, getHeight() - 48);
+    dropButton->setPosition(40, getHeight() - 48);
 
     items = new ItemContainer();
     items->setPosition(2, 2);
 
     invenScroll = new ScrollArea(items);
-    invenScroll->setPosition(4, 4);
+    invenScroll->setPosition(8, 8);
     
     useButton->setEventId("use");
     dropButton->setEventId("drop");
@@ -168,11 +168,11 @@ void InventoryWindow::mouseMotion(int mx, int my)
 
 void InventoryWindow::updateWidgets()
 {
-	//resize widgets
-	useButton->setPosition(20, getHeight() - 24);
-	dropButton->setPosition(60, getHeight() - 24);
-	items->setSize(getWidth() - 24 - 12 - 8 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-	invenScroll->setSize(getWidth() - 32, getHeight() - 32 - 8);
-	setContentSize(getWidth(), getHeight());
+    //resize widgets
+    useButton->setPosition(8, getHeight() - 24);
+    dropButton->setPosition(40, getHeight() - 24);
+    items->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    invenScroll->setSize(getWidth() - 16, getHeight() - 32 - 8);
+    setContentSize(getWidth(), getHeight());
 }
 
