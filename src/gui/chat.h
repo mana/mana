@@ -25,6 +25,7 @@
 #define _TMW_CHAT_H
 
 #include <guichan.hpp>
+#include <guichan/key.hpp>
 #include "../resources/image.h"
 #include "../net/network.h"
 #include "window.h"
@@ -169,6 +170,14 @@ class ChatWindow : public Window, public gcn::ActionListener {
          */
         char *chat_send(std::string nick, std::string msg);
 
+	/** History */
+	void update_history(const char *ptr);
+	void arrow_up(void);
+	void arrow_down(void);
+
+	/** Called when key is pressed */
+	void keyPress(const gcn::Key& key);
+	
     private :
         std::ofstream chatlog_file;
 
@@ -201,6 +210,7 @@ class ChatWindow : public Window, public gcn::ActionListener {
         gcn::TextField *chatInput;
         gcn::TextBox *textOutput;
         ScrollArea *scrollArea;
+
 };
 
 #endif

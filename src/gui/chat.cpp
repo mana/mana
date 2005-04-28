@@ -28,6 +28,11 @@
 #include "../main.h"
 #include <iostream>
 
+/** History */
+#define HIST_LEN 10
+static char *buf[HIST_LEN];
+static int f,s,t;
+
 ChatWindow::ChatWindow(const char *logfile, int item_num):
     Window("")
 {
@@ -370,4 +375,77 @@ std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLengt
     }
 
     return std::string("");
+}
+
+void ChatWindow::update_history(const char *ptr)
+{
+	f = t;
+	if(*ptr == 0) return;
+	
+	// prevent duplicates
+	if(f != s && strcmp(ptr, buf[(f + HIST_LEN -1) % HIST_LEN]) == 0) return;
+
+	buf[f] = strdup(ptr);
+	f = ( f + 1) % HIST_LEN;
+
+	if(f == s) {
+		free(buf[f]);
+		buf[s] = 0;
+		s = (s + 1) % HIST_LEN;
+	}
+
+	t = f;
+}
+
+void ChatWindow::arrow_up(void)
+{
+	const char *ptr;
+
+	ptr = chatInput->getText().c_str();
+	
+	if(*ptr) {
+		if(t == f || strcmp(ptr, buf[t]) != 0) {
+			update_history(ptr);
+			t = (f + HIST_LEN -1) % HIST_LEN;
+		}
+	}
+
+	if(t != s)
+		t = (t + HIST_LEN -1) % HIST_LEN;
+	if(buf[t])
+		update_history(buf[t]);
+	else
+		update_history("");
+}
+
+void ChatWindow::arrow_down(void)
+{
+	const char *ptr;
+
+	ptr = chatInput->getText().c_str();
+
+	if(*ptr) {
+		if(t == f || strcmp(ptr, buf[t]) != 0) {
+			update_history(ptr);
+			t = (f + HIST_LEN -1) % HIST_LEN;
+		}
+	}
+
+	if(t != f)
+		t = (t + 1) % HIST_LEN;
+	
+	if(buf[t])
+		update_history(buf[t]);
+	else
+		update_history("");
+}
+
+void ChatWindow::keyPress(const gcn::Key& key) 
+{
+	if(key.getValue() == key.DOWN)
+		arrow_down();
+	else if(key.getValue() == key.UP) 
+		arrow_up();
+
+	chatInput->setText(std::string(buf[t]));
 }
