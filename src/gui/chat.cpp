@@ -54,8 +54,12 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
     chatInput->setWidth(600 - 2 * chatInput->getBorderSize());
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(this);
+
     add(scrollArea);
     add(chatInput);
+
+    // Add key listener to chat input to be able to respond to up/down
+    chatInput->addKeyListener(this);
 }
 
 ChatWindow::~ChatWindow()
@@ -72,7 +76,7 @@ void ChatWindow::chat_log(std::string line, int own)
     CHATLOG tmp;
 
     // Delete overhead from the end of the list
-    while (chatlog.size() > items_keep) {
+    while ((int)chatlog.size() > items_keep) {
         chatlog.pop_back();
     }
 
@@ -102,7 +106,7 @@ void ChatWindow::chat_log(std::string line, int own)
 
     // A try to get text sentences no too long...
     bool finished = false;
-    unsigned int maxLength = 98;
+    unsigned int maxLength = 97;
 
     while (!finished)
     {
@@ -111,7 +115,7 @@ void ChatWindow::chat_log(std::string line, int own)
         if (line.length() > maxLength)
         {
             if (line.length() > maxLength) {
-                line = cut_string(tempText, maxLength);
+                line = cutString(tempText, maxLength);
             }
 
             //tmp.text = tempText;
@@ -247,10 +251,6 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
         return "";
     }
     else {
-        // temporary hack to make messed-up-keyboard-ppl able to send GM commands
-        if (msg.substr(0, 1) == "#")
-            msg.replace(0, 1, "@");
-        // end temp. hack XD
         nick += " : ";
         nick += msg;
         msg = nick;
@@ -345,23 +345,23 @@ std::string ChatWindow::const_msg(CHATSKILL action)
     return msg;
 }
 
-std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLength)
+std::string ChatWindow::cutString(std::string& value, unsigned int maximumLength)
 {
     // If the string exceeds the maximum length
-    if(value.length() > maximumLength)
+    if (value.length() > maximumLength)
     {
         unsigned int index = 0;
         unsigned int lastSpace = 0;
         std::string  cutOff = "";
 
-        for(index = 0; index < maximumLength; index++) {
-            if(value.at(index) == ' ') {
+        for (index = 0; index < maximumLength; index++) {
+            if (value.at(index) == ' ') {
                 lastSpace = index;
             }
         }
 
         // If the last space is at the beginning of the string
-        if(lastSpace == 0) {
+        if (lastSpace == 0) {
             // Just cut it right off from the end
             cutOff = value.substr(maximumLength);
             value  = value.substr(0, maximumLength);
@@ -377,75 +377,79 @@ std::string ChatWindow::cut_string(std::string& value, unsigned int maximumLengt
     return std::string("");
 }
 
-void ChatWindow::update_history(const char *ptr)
+void ChatWindow::updateHistory(const char *ptr)
 {
-	f = t;
-	if(*ptr == 0) return;
-	
-	// prevent duplicates
-	if(f != s && strcmp(ptr, buf[(f + HIST_LEN -1) % HIST_LEN]) == 0) return;
+    f = t;
+    if(*ptr == 0) return;
 
-	buf[f] = strdup(ptr);
-	f = ( f + 1) % HIST_LEN;
+    // prevent duplicates
+    if(f != s && strcmp(ptr, buf[(f + HIST_LEN -1) % HIST_LEN]) == 0) return;
 
-	if(f == s) {
-		free(buf[f]);
-		buf[s] = 0;
-		s = (s + 1) % HIST_LEN;
-	}
+    buf[f] = strdup(ptr);
+    f = ( f + 1) % HIST_LEN;
 
-	t = f;
+    if(f == s) {
+        free(buf[f]);
+        buf[s] = 0;
+        s = (s + 1) % HIST_LEN;
+    }
+
+    t = f;
 }
 
-void ChatWindow::arrow_up(void)
+void ChatWindow::arrowUp(void)
 {
-	const char *ptr;
+    printf("arrowUp\n");
+    const char *ptr;
 
-	ptr = chatInput->getText().c_str();
-	
-	if(*ptr) {
-		if(t == f || strcmp(ptr, buf[t]) != 0) {
-			update_history(ptr);
-			t = (f + HIST_LEN -1) % HIST_LEN;
-		}
-	}
+    ptr = chatInput->getText().c_str();
 
-	if(t != s)
-		t = (t + HIST_LEN -1) % HIST_LEN;
-	if(buf[t])
-		update_history(buf[t]);
-	else
-		update_history("");
+    if (*ptr) {
+        if(t == f || strcmp(ptr, buf[t]) != 0) {
+            updateHistory(ptr);
+            t = (f + HIST_LEN - 1) % HIST_LEN;
+        }
+    }
+
+    if (t != s)
+        t = (t + HIST_LEN -1) % HIST_LEN;
+    if (buf[t])
+        updateHistory(buf[t]);
+    else
+        updateHistory("");
 }
 
-void ChatWindow::arrow_down(void)
+void ChatWindow::arrowDown(void)
 {
-	const char *ptr;
+    printf("arrowDown\n");
+    const char *ptr;
 
-	ptr = chatInput->getText().c_str();
+    ptr = chatInput->getText().c_str();
 
-	if(*ptr) {
-		if(t == f || strcmp(ptr, buf[t]) != 0) {
-			update_history(ptr);
-			t = (f + HIST_LEN -1) % HIST_LEN;
-		}
-	}
+    if (*ptr) {
+        if(t == f || strcmp(ptr, buf[t]) != 0) {
+            updateHistory(ptr);
+            t = (f + HIST_LEN - 1) % HIST_LEN;
+        }
+    }
 
-	if(t != f)
-		t = (t + 1) % HIST_LEN;
-	
-	if(buf[t])
-		update_history(buf[t]);
-	else
-		update_history("");
+    if (t != f)
+        t = (t + 1) % HIST_LEN;
+
+    if (buf[t])
+        updateHistory(buf[t]);
+    else
+        updateHistory("");
 }
 
-void ChatWindow::keyPress(const gcn::Key& key) 
+void ChatWindow::keyPress(const gcn::Key &key)
 {
-	if(key.getValue() == key.DOWN)
-		arrow_down();
-	else if(key.getValue() == key.UP) 
-		arrow_up();
+    if (key.getValue() == key.DOWN)
+        arrowDown();
+    else if (key.getValue() == key.UP)
+        arrowUp();
 
-	chatInput->setText(std::string(buf[t]));
+    if (buf[t]) {
+        chatInput->setText(std::string(buf[t]));
+    }
 }

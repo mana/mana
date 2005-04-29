@@ -88,7 +88,8 @@
 /** should always be zero if failed */
 #define SKILL_FAILED    0x00
 
-struct CHATSKILL {
+struct CHATSKILL
+{
     short skill;
     short bskill;
     short unused;
@@ -99,7 +100,9 @@ struct CHATSKILL {
 /**
  * Simple chatlog object.
  */
-class ChatWindow : public Window, public gcn::ActionListener {
+class ChatWindow : public Window, public gcn::ActionListener,
+                   public gcn::KeyListener
+{
     public:
         /**
          * Constructor.
@@ -170,14 +173,14 @@ class ChatWindow : public Window, public gcn::ActionListener {
          */
         char *chat_send(std::string nick, std::string msg);
 
-	/** History */
-	void update_history(const char *ptr);
-	void arrow_up(void);
-	void arrow_down(void);
+        /** History */
+        void updateHistory(const char *ptr);
+        void arrowUp(void);
+        void arrowDown(void);
 
-	/** Called when key is pressed */
-	void keyPress(const gcn::Key& key);
-	
+        /** Called when key is pressed */
+        void keyPress(const gcn::Key& key);
+
     private :
         std::ofstream chatlog_file;
 
@@ -197,20 +200,19 @@ class ChatWindow : public Window, public gcn::ActionListener {
         std::string const_msg(CHATSKILL);
 
         /**
-         * Cuts a string into two on a per word basis
-         * @param value The string to be cut, it may be modified
-         * in the function.
+         * Cuts a string into two on a per word basis.
+         *
+         * @param value         The string to be cut, it may be modified
+         *                      in the function.
          * @param maximumLength The length after which the string
-         * should be cut.
+         *                      should be cut.
          * @return The cut off section of the string
          */
-        std::string cut_string(std::string& value, unsigned int maximumLength);
+        std::string cutString(std::string& value, unsigned int maximumLength);
 
-        /** Input box for chat messages */
-        gcn::TextField *chatInput;
-        gcn::TextBox *textOutput;
-        ScrollArea *scrollArea;
-
+        gcn::TextField *chatInput; /**< Input box for typing chat messages */
+        gcn::TextBox *textOutput;  /**< Text box for displaying chat history */
+        ScrollArea *scrollArea;    /**< Scroll area around text output */
 };
 
 #endif
