@@ -28,11 +28,6 @@
 #include "../main.h"
 #include <iostream>
 
-/** History */
-#define HIST_LEN 10
-static char *buf[HIST_LEN];
-static int f,s,t;
-
 ChatWindow::ChatWindow(const char *logfile, int item_num):
     Window("")
 {
@@ -60,6 +55,7 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
 
     // Add key listener to chat input to be able to respond to up/down
     chatInput->addKeyListener(this);
+    curHist = history.end();
 }
 
 ChatWindow::~ChatWindow()
@@ -212,15 +208,19 @@ void ChatWindow::draw(gcn::Graphics *graphics)
 
 void ChatWindow::action(const std::string& eventId)
 {
-    if (eventId == "chatinput") {
+    if (eventId == "chatinput")
+    {
         std::string message = chatInput->getText();
 
         if (message.length() > 0) {
+            if (message != history.back()) {
+                history.push_back(message);
+            }
+            curHist = history.end();
             chat_send(char_info[0].name, message.c_str());
             chatInput->setText("");
         }
         gui->focusNone();
-
     }
 }
 
@@ -377,79 +377,26 @@ std::string ChatWindow::cutString(std::string& value, unsigned int maximumLength
     return std::string("");
 }
 
-void ChatWindow::updateHistory(const char *ptr)
-{
-    f = t;
-    if(*ptr == 0) return;
-
-    // prevent duplicates
-    if(f != s && strcmp(ptr, buf[(f + HIST_LEN -1) % HIST_LEN]) == 0) return;
-
-    buf[f] = strdup(ptr);
-    f = ( f + 1) % HIST_LEN;
-
-    if(f == s) {
-        free(buf[f]);
-        buf[s] = 0;
-        s = (s + 1) % HIST_LEN;
-    }
-
-    t = f;
-}
-
-void ChatWindow::arrowUp(void)
-{
-    printf("arrowUp\n");
-    const char *ptr;
-
-    ptr = chatInput->getText().c_str();
-
-    if (*ptr) {
-        if(t == f || strcmp(ptr, buf[t]) != 0) {
-            updateHistory(ptr);
-            t = (f + HIST_LEN - 1) % HIST_LEN;
-        }
-    }
-
-    if (t != s)
-        t = (t + HIST_LEN -1) % HIST_LEN;
-    if (buf[t])
-        updateHistory(buf[t]);
-    else
-        updateHistory("");
-}
-
-void ChatWindow::arrowDown(void)
-{
-    printf("arrowDown\n");
-    const char *ptr;
-
-    ptr = chatInput->getText().c_str();
-
-    if (*ptr) {
-        if(t == f || strcmp(ptr, buf[t]) != 0) {
-            updateHistory(ptr);
-            t = (f + HIST_LEN - 1) % HIST_LEN;
-        }
-    }
-
-    if (t != f)
-        t = (t + 1) % HIST_LEN;
-
-    if (buf[t])
-        updateHistory(buf[t]);
-    else
-        updateHistory("");
-}
-
 void ChatWindow::keyPress(const gcn::Key &key)
 {
-    if (key.getValue() == key.DOWN)
-        arrowDown();
-    else if (key.getValue() == key.UP)
-        arrowUp();
-
-    if (buf[t]) {
-        chatInput->setText(std::string(buf[t]));
+    if (key.getValue() == key.DOWN && curHist != history.end())
+    {
+        // Move forward through the history
+        std::list<std::string>::iterator prevHist = curHist++;
+        if (curHist != history.end()) {
+            chatInput->setText(*curHist);
+            chatInput->setCaretPosition(chatInput->getText().length());
+        }
+        else {
+            curHist = prevHist;
+        }
+    }
+    else if (key.getValue() == key.UP && curHist != history.begin() &&
+            history.size() > 0)
+    {
+        // Move backward through the history
+        curHist--;
+        chatInput->setText(*curHist);
+        chatInput->setCaretPosition(chatInput->getText().length());
     }
 }

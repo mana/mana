@@ -173,25 +173,20 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         char *chat_send(std::string nick, std::string msg);
 
-        /** History */
-        void updateHistory(const char *ptr);
-        void arrowUp(void);
-        void arrowDown(void);
-
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);
 
-    private :
+    private:
         std::ofstream chatlog_file;
 
-        typedef struct CHATLOG {          // list item container object
+        /** One item in the chat log */
+        typedef struct CHATLOG {
             std::string nick;
             std::string text;
             int own;
         };
 
-        std::list<CHATLOG> chatlog;       // list object ready to accept out CHATLOG struct :)
-        std::list<CHATLOG>::iterator iter;
+        std::list<CHATLOG> chatlog;               /**< Chat log */
 
         int items;
         int items_keep;
@@ -213,6 +208,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         gcn::TextField *chatInput; /**< Input box for typing chat messages */
         gcn::TextBox *textOutput;  /**< Text box for displaying chat history */
         ScrollArea *scrollArea;    /**< Scroll area around text output */
+
+        std::list<std::string> history;           /**< Command history */
+        std::list<std::string>::iterator curHist; /**< History iterator */
 };
 
 #endif
