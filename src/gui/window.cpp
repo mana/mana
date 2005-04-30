@@ -46,8 +46,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
-    dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
-    dBackground = resman->getImage("graphics/gui/bg_quad_dis.png");
+    Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
 
     border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
     border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
@@ -58,6 +57,9 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
     border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
     border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+
+    dBorders->decRef();
+    dBorders = NULL;
 
     // Add chrome
     chrome = new gcn::Container();
@@ -72,12 +74,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
         throw GCN_EXCEPTION("Window::Window. no windowContainer set");
     }
 
-    // Load GUI alpha setting
-    guiAlpha = config.getValue("guialpha", 0.8f);
-
-    // Set GUI alpha level
-    dBackground->setAlpha(guiAlpha);
-    dBorders->setAlpha(guiAlpha);
+    // Send GUI alpha changed for initialization
+    optionChanged("guialpha");
     config.addListener("guialpha", this);
 }
 
@@ -254,12 +252,14 @@ void Window::optionChanged(const std::string &name)
 {
     if (name == "guialpha")
     {
-        guiAlpha = config.getValue("guialpha", 0.8);
+        float guiAlpha = config.getValue("guialpha", 0.8);
 
-        if (dBackground->getAlpha() != guiAlpha)
+        for (int i = 0; i < 9; i++)
         {
-            dBackground->setAlpha(guiAlpha);
-            dBorders->setAlpha(guiAlpha);
+            if (border.grid[i]->getAlpha() != guiAlpha)
+            {
+                border.grid[i]->setAlpha(guiAlpha);
+            }
         }
     }
 }

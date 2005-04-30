@@ -43,12 +43,8 @@ class Window : public gcn::Window, public ConfigListener
         Window *parent;            /**< The parent window */
         int snapSize;              /**< Snap distance to window edge */
         bool modal;                /**< Window is modal */
-        float guiAlpha;            /**< Opacity of GUI windows */
 
-        Image *dBackground;        /**< Left side of title bar */
-        Image *dBorders;           /**< Middle of title bar */
-
-        ImageRect border;          /**< The window border */
+        ImageRect border;          /**< The window border and background */
 
         bool resizeable;           /**< Window can be resized */
         int minWinWidth;           /**< Minimum window width */
