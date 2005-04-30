@@ -17,8 +17,8 @@
 - Fixed NPC lists not to show garbage
 - Fixed attack animation to be synced with attack speed
 - Fixed speech and emoticons position
-- Fixed speech and damage display to be framerate independent
-- Fixed rendering of some monsters and items in OpenGL mode
+- Fixed speech, damage and emoticon display to be framerate independent
+- Fixed rendering of certain monsters, items and NPCs in OpenGL mode
 - Fixed skipping with mouse walk and made interruptable with keyboard
 - Fixed mouse walk when dead or talking with NPC
 

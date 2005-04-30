@@ -288,6 +288,13 @@ void Engine::logic()
                 default:
                     break;
             }
+
+            if (being->emotion != 0) {
+                being->emotion_time--;
+                if (being->emotion_time == 0) {
+                    being->emotion = 0;
+                }
+            }
         }
 
         if (get_elapsed_time(being->speech_time) > 5000)
@@ -367,8 +374,8 @@ void Engine::draw()
         guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
 #endif
 
-        if ((being->job >= 100) && (being->job <= 110)) { // Draw a NPC
-            npcset->spriteset[4 * (being->job - 100) + dir]->draw(screen,
+        if ((being->job >= 100) && (being->job < 110)) { // Draw a NPC
+            npcset->spriteset[being->job - 100]->draw(screen,
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
@@ -407,10 +414,6 @@ void Engine::draw()
                 emotionset->spriteset[being->emotion - 1]->draw(screen,
                         sx * 32 + 5 + get_x_offset(being) - offset_x,
                         sy * 32 - 65 + get_y_offset(being) - offset_y);
-                being->emotion_time--;
-                if (being->emotion_time == 0) {
-                    being->emotion = 0;
-                }
             }
 
             graphics->drawText(being->name,

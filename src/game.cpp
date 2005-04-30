@@ -55,6 +55,7 @@ int gameTime = 0;
 
 OkDialog *deathNotice = NULL;
 
+#define EMOTION_TIME 150
 #define MAX_TIME 10000
 
 class DeatchNoticeListener : public gcn::ActionListener {

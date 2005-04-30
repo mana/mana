@@ -30,7 +30,6 @@
 #include <stdio.h>
 
 #define SPEECH_TIME 80
-#define EMOTION_TIME 40
 #define SPEECH_MAX_TIME 100
 
 // Action defines
