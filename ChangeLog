@@ -19,6 +19,8 @@
 - Fixed speech and emoticons position
 - Fixed speech and damage display to be framerate independent
 - Fixed rendering of some monsters and items in OpenGL mode
+- Fixed skipping with mouse walk and made interruptable with keyboard
+- Fixed mouse walk when dead or talking with NPC
 
 0.0.11.2  (8 April 2005)
 - Damage text now floats upwards

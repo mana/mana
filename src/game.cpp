@@ -209,7 +209,7 @@ void do_input()
                     used = true;
                 }
             }
-            
+
             if ((keysym.sym == SDLK_F5) && action_time)
             {
                 if (player_node->action == STAND)
@@ -285,7 +285,7 @@ void do_input()
             {
                 state = EXIT;
             }
-            
+
             if (keysym.sym == SDLK_g)
             {
                 // Get the item code
@@ -404,7 +404,7 @@ void do_input()
     int yDirection = 0;
     int Direction = DIR_NONE;
 
-    if (walk_status == 0 && player_node->action != DEAD && current_npc == 0)
+    if (player_node->action != DEAD && current_npc == 0)
     {
         int x = player_node->x;
         int y = player_node->y;
@@ -447,66 +447,76 @@ void do_input()
             yDirection = -1;
         }
 
-        // Translate movement to direction
-        if (xDirection == 1 && yDirection == 0) // Right
-        {
-            Direction = EAST;
-        }
-        if (xDirection == -1 && yDirection == 0) // Left
-        {
-            Direction = WEST;
-        }
-        if (xDirection == 0 && yDirection == -1) // Up
-        {
-            Direction = NORTH;
-        }
-        if (xDirection == 0 && yDirection == 1) // Down
-        {
-            Direction = SOUTH;
-        }
-        if (xDirection == 1 && yDirection == 1) // Bottom-Right
-        {
-            Direction = SE;
-        }
-        if (xDirection == -1 && yDirection == -1) // Top-left
-        {
-            Direction = NW;
-        }
-        if (xDirection == 1 && yDirection == -1) // Top-Right
-        {
-            Direction = NE;
-        }
-        if (xDirection == -1 && yDirection == 1) // Bottom-Left
-        {
-            Direction = SW;
-        }
-
-        // Update the player direction to where he wants to walk
-        // Warning: Not communicated to the server yet
-        if (Direction != DIR_NONE) {
-            player_node->direction = Direction;
-        }
-
-        // Prevent skipping corners over colliding tiles
-        if (xDirection != 0 && tiledMap->tileCollides(x + xDirection, y)) {
-            xDirection = 0;
-        }
-        if (yDirection != 0 && tiledMap->tileCollides(x, y + yDirection)) {
-            yDirection = 0;
-        }
-
-        // Choose a straight direction when diagonal target is blocked
-        if (yDirection != 0 && xDirection != 0 &&
-                !tiledMap->getWalk(x + xDirection, y + yDirection)) {
-            xDirection = 0;
-        }
-
-        // Walk to where the player can actually go
+        // Allow keyboard control to interrupt an existing path
         if ((xDirection != 0 || yDirection != 0) &&
-                tiledMap->getWalk(x + xDirection, y + yDirection))
+                player_node->action == WALK)
         {
-            walk(x + xDirection, y + yDirection, Direction);
-            player_node->setDestination(x + xDirection, y + yDirection);
+            player_node->setDestination(player_node->x, player_node->y);
+        }
+
+        if (player_node->action != WALK)
+        {
+            // Translate movement to direction
+            if (xDirection == 1 && yDirection == 0) // Right
+            {
+                Direction = EAST;
+            }
+            if (xDirection == -1 && yDirection == 0) // Left
+            {
+                Direction = WEST;
+            }
+            if (xDirection == 0 && yDirection == -1) // Up
+            {
+                Direction = NORTH;
+            }
+            if (xDirection == 0 && yDirection == 1) // Down
+            {
+                Direction = SOUTH;
+            }
+            if (xDirection == 1 && yDirection == 1) // Bottom-Right
+            {
+                Direction = SE;
+            }
+            if (xDirection == -1 && yDirection == -1) // Top-left
+            {
+                Direction = NW;
+            }
+            if (xDirection == 1 && yDirection == -1) // Top-Right
+            {
+                Direction = NE;
+            }
+            if (xDirection == -1 && yDirection == 1) // Bottom-Left
+            {
+                Direction = SW;
+            }
+
+            // Prevent skipping corners over colliding tiles
+            if (xDirection != 0 && tiledMap->tileCollides(x + xDirection, y)) {
+                xDirection = 0;
+            }
+            if (yDirection != 0 && tiledMap->tileCollides(x, y + yDirection)) {
+                yDirection = 0;
+            }
+
+            // Choose a straight direction when diagonal target is blocked
+            if (yDirection != 0 && xDirection != 0 &&
+                    !tiledMap->getWalk(x + xDirection, y + yDirection)) {
+                xDirection = 0;
+            }
+
+            // Walk to where the player can actually go
+            if ((xDirection != 0 || yDirection != 0) &&
+                    tiledMap->getWalk(x + xDirection, y + yDirection))
+            {
+                walk(x + xDirection, y + yDirection, Direction);
+                player_node->setDestination(x + xDirection, y + yDirection);
+            }
+            else if (Direction != DIR_NONE)
+            {
+                // Update the player direction to where he wants to walk
+                // Warning: Not communicated to the server yet
+                player_node->direction = Direction;
+            }
         }
 
         if (player_node->action == STAND)
@@ -759,13 +769,13 @@ void do_parse()
                     npcTextDialog->setVisible(true);
                     current_npc = RFIFOL(4);
                     break;
-                
+
                 // Trade: Receiving a request to trade
                 case 0x00e5:
                     //printf("Getting a call from %s\n", RFIFOP(2));
                     requestTradeDialog->request(RFIFOP(2));
                     break;
-                    
+
                 // Trade: Response
                 case 0x00e7:
                     switch (RFIFOB(2)) {
@@ -831,15 +841,16 @@ void do_parse()
                             break;
                         case 1:
                             // Add item failed - player overweighted
-                            chatWindow->chat_log("Failed adding item. Trade partner is over weighted.",
-                                   BY_SERVER);
+                            chatWindow->chat_log("Failed adding item. Trade "
+                                    "partner is over weighted.", BY_SERVER);
                             break;
                         default:
                             //printf("Unhandled 0x00ea byte!\n");
                             break;
                     }
                     break;
-                // Trade: Received Ok message
+
+                // Trade received Ok message
                 case 0x00ec:
                     switch (RFIFOB(2)) {
                         // Received ok from myself
@@ -852,27 +863,29 @@ void do_parse()
                             break;
                     }
                     break;
-                // Trade: Trade cancelled
+
+                // Trade cancelled
                 case 0x00ee:
                     chatWindow->chat_log("Trade cancelled.", BY_SERVER);
                     tradeWindow->setVisible(false);
                     tradeWindow->reset();
                     break;
-                
-                // Trade: Trade completed
+
+                // Trade completed
                 case 0x00f0:
                     chatWindow->chat_log("Trade completed.", BY_SERVER);
                     tradeWindow->setVisible(false);
                     tradeWindow->reset();
                     break;
-                    
+
                     // Get the items
                     // Only called on map load / warp
                 case 0x01ee:
                     // Reset all items to not load them twice on map change
                     inventoryWindow->items->resetItems();
-                    
-                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++) {
+
+                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++)
+                    {
                        inventoryWindow->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
@@ -889,7 +902,8 @@ void do_parse()
 
                     // Get the equipments
                 case 0x00a4:
-                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++) {
+                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++)
+                    {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
                         /*char info[40];
@@ -899,7 +913,8 @@ void do_parse()
                             RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
                             RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
                         chatWindow->chat_log(info, BY_SERVER);*/
-                        if(RFIFOW(4+loop*20+8)) {
+                        if (RFIFOW(4 + loop * 20 + 8))
+                        {
                             int mask = 1;
                             int position = 0;
                             while(!(RFIFOW(4+loop*20+8) & mask)) {

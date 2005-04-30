@@ -367,6 +367,13 @@ std::list<PATH_NODE> Map::findPath(
                 // 14 for moving diagonal
                 int Gcost = curr.tile->Gcost + ((dx == 0 || dy == 0) ? 10 : 14);
 
+                // Skip if Gcost becomes too much
+                // Warning: probably not entirely accurate
+                if (Gcost > 200)
+                {
+                    continue;
+                }
+
                 if (newTile->whichList != onOpenList)
                 {
                     // Found a new tile (not on open nor on closed list)

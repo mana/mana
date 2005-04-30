@@ -213,13 +213,21 @@ void ChatWindow::action(const std::string& eventId)
         std::string message = chatInput->getText();
 
         if (message.length() > 0) {
+            // If message different from previous, put it in the history
             if (history.size() == 0 || message != history.back()) {
                 history.push_back(message);
             }
+
+            // Reset history iterator
             curHist = history.end();
+
+            // Send the message to the server
             chat_send(char_info[0].name, message.c_str());
+
+            // Clear the text from the chat input
             chatInput->setText("");
         }
+
         gui->focusNone();
     }
 }

@@ -37,7 +37,8 @@ PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
 {
 }
 
-void add_node(Being *being) {
+void add_node(Being *being)
+{
     beings.push_back(being);
     // If the being is a player, request the name
     if (being-> job < 10) {
@@ -59,10 +60,10 @@ void add_node(Being *being) {
             monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);
         }
     }
-
 }
 
-void remove_node(unsigned int id) {
+void remove_node(unsigned int id)
+{
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         if ((*i)->id == id) {
@@ -73,7 +74,8 @@ void remove_node(unsigned int id) {
     }
 }
 
-unsigned int findNpc(unsigned short x, unsigned short y) {
+unsigned int findNpc(unsigned short x, unsigned short y)
+{
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -87,7 +89,8 @@ unsigned int findNpc(unsigned short x, unsigned short y) {
     return 0;
 }
 
-unsigned int findPlayer(unsigned short x, unsigned short y) {
+unsigned int findPlayer(unsigned short x, unsigned short y)
+{
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -99,7 +102,8 @@ unsigned int findPlayer(unsigned short x, unsigned short y) {
     return 0;
 }
 
-unsigned int findMonster(unsigned short x, unsigned short y) {
+unsigned int findMonster(unsigned short x, unsigned short y)
+{
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -114,7 +118,8 @@ unsigned int findMonster(unsigned short x, unsigned short y) {
     return 0;
 }
 
-Being *findNode(unsigned int id) {
+Being *findNode(unsigned int id)
+{
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -125,7 +130,8 @@ Being *findNode(unsigned int id) {
     return NULL;
 }
 
-Being *findNode(unsigned short x, unsigned short y) {
+Being *findNode(unsigned short x, unsigned short y)
+{
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
@@ -179,8 +185,12 @@ void Being::clearPath()
 void Being::setPath(std::list<PATH_NODE> path)
 {
     this->path = path;
-    nextStep();
-    walk_time = tick_time;
+
+    if (action != WALK)
+    {
+        nextStep();
+        walk_time = tick_time;
+    }
 }
 
 void Being::setDestination(int destX, int destY)

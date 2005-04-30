@@ -101,9 +101,11 @@ void Gui::draw()
 void Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
-    // Experimental mouse walk support
 
-    if (button == gcn::MouseInput::LEFT) {
+    // When conditions for walking are met, set new player destination
+    if (player_node->action != DEAD && current_npc == 0 &&
+            button == gcn::MouseInput::LEFT)
+    {
         int tilex = mx / 32 + camera_x;
         int tiley = my / 32 + camera_y;
 
