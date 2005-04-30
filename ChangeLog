@@ -6,6 +6,7 @@
 - Added player names below players
 - Added register button in login screen
 - Added warning message to use at least 4 characters as user name
+- Added scrollbar and command history to chat window
 - Improved skin on scrollbars, arrows and slider
 - Improved sound engine and added fade in and out option for music
 - Now you can use right mouse button to attack (enables also ranged attacks)
@@ -16,7 +17,6 @@
 - Fixed NPC lists not to show garbage
 - Fixed attack animation to be synced with attack speed
 - Fixed speech and emoticons position
-- Fixed long nicknames to be clipped in chat window
 - Fixed speech and damage display to be framerate independent
 - Fixed rendering of some monsters and items in OpenGL mode
 

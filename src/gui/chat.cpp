@@ -213,7 +213,7 @@ void ChatWindow::action(const std::string& eventId)
         std::string message = chatInput->getText();
 
         if (message.length() > 0) {
-            if (message != history.back()) {
+            if (history.size() == 0 || message != history.back()) {
                 history.push_back(message);
             }
             curHist = history.end();
