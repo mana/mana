@@ -64,10 +64,18 @@ Gui::Gui(Graphics *graphics):
     setTop(guiTop);
 
     // Set global font
-    guiFont = new gcn::ImageFont(TMW_DATADIR "data/graphics/gui/fixedfont.png",
-            " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:@"
-            "!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
-            );
+    try {
+        guiFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/fixedfont.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
+                "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
+                );
+    }
+    catch (gcn::Exception e)
+    {
+        logger.error("Unable to load fixedfont.png!");
+    }
+
     gcn::Widget::setGlobalFont(guiFont);
 }
 
