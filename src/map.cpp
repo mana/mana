@@ -227,7 +227,8 @@ bool Map::getWalk(int x, int y)
         std::list<Being*>::iterator i = beings.begin();
         while (i != beings.end()) {
             Being *being = (*i);
-            if (being->x == x && being->y == y) {
+            // Collision when non-portal being is found at this location
+            if (being->x == x && being->y == y && being->job != 45) {
                 return false;
             }
             i++;
