@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=122
+UnitCount=124
 Type=0
 Ver=1
 ObjFiles=
@@ -1268,9 +1268,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit123]
-FileName=src\resources\itemmanager.h
+FileName=src\gui\chatinput.h
 CompileCpp=1
-Folder=resources
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
@@ -1279,6 +1279,16 @@ BuildCmd=
 
 [Unit24]
 FileName=src\gui\shop.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit124]
+FileName=src\gui\chatinput.cpp
 CompileCpp=1
 Folder=gui
 Compile=1

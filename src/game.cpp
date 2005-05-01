@@ -1233,12 +1233,10 @@ void do_parse()
                             inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
                                 RFIFOW(4), false);
                         }
-                        /*char info[40];
-                        sprintf(info, "a0 %i %i %i %i %i %i %i %i",
-                            RFIFOW(2), RFIFOW(4), RFIFOW(6),
-                            RFIFOB(8), RFIFOB(9), RFIFOB(10),
-                            RFIFOW(19), RFIFOB(21));
-                        chatWindow->chat_log(info, BY_SERVER);*/
+                        if (equipmentWindow->getArrows() == RFIFOW(6))
+                        {
+                            equipmentWindow->arrowsNumber += RFIFOW(4);
+                        }
                     }
                     break;
                     // Decrease quantity of an item in inventory

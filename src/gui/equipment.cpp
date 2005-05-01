@@ -108,3 +108,8 @@ void EquipmentWindow::setArrows(int id)
 {
     arrows = id;
 }
+
+int EquipmentWindow::getArrows()
+{
+    return arrows;
+}

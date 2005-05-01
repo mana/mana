@@ -70,6 +70,8 @@ class EquipmentWindow : public Window, gcn::ActionListener {
 
         void setArrows(int id);
         
+        int getArrows();
+        
         EQUIPMENT_HOLDER equipments[10];
         
         int arrowsNumber;
