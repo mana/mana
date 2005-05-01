@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.12    Date: ?/5/2005
+ Version: 0.0.12    Date: 1/5/2005
 
 
  Development team:
@@ -36,19 +36,19 @@ demo and development purposes.
 Use arrow keys (or left mouse button) to move around and the right mouse button
 over NPC's feet to talk to them. Other keys:
 
-- Left Ctrl  attack
-- Alt + 0-9  show emotions
-- F1         take a screenshot
-- F5         sit down / stand up
-- F6         toggle debug pathfinding feature
-- F7         play test sound
-- G          pick up item
-- Enter      focus chat window / send message
-- Alt + K    show skills
-- Alt + S    show stats
-- Alt + I    show inventory
-- Alt + E    show equipment
-- Alt + C    show setup window
+- Left Ctrl          attack
+- Left mouse button  attack
+- Alt + 0-9          show emotions
+- F5                 sit down / stand up
+- F6                 toggle debug pathfinding feature
+- F7                 play test sound
+- G                  pick up item
+- Enter              focus chat window / send message
+- Alt + K            show skills
+- Alt + S            show stats
+- Alt + I            show inventory
+- Alt + E            show equipment
+- Alt + C            show setup window
 
 3. Skills
 ---------
