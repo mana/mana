@@ -7,6 +7,7 @@ MODULES = src/sound.cpp \
           src/gui/char_server.cpp \
           src/gui/char_select.cpp \
           src/gui/chat.cpp \
+          src/gui/chatinput.cpp \
           src/gui/checkbox.cpp \
           src/gui/confirm_dialog.cpp \
           src/gui/equipment.cpp \

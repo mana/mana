@@ -1,0 +1,46 @@
+--------------------
+CLIENT AUTO-UPDATING
+--------------------
+
+UPDATING CLIENT DATA
+
+For future clients we need to develop a way in which they can automatically
+update to new data like for example new images, maps or item, being and skill
+definitions. Here is described the sequence of actions that could implement
+this functionality:
+
+ 1. Client loads initial core data for login screen (always included with
+    release)
+ 2. Client logs on
+ 3. Server sends client list of required packages (maybe with versions)
+ 4. Client notices he doesn't have a certain package yet or is out of date
+ 5. Client requests from server .torrent files (or maybe at first just URL)
+    from where to get the the missing packages
+ 6. Client downloads them and puts them in "data" directory (~/.tmw/data on
+    Linux, cause that's writable)
+ 7. Client loads the list of files server mentioned in PhysFS virtual
+    filesystem
+ 8. Client tells server that it is up to date
+ 9. Client could load some common data like item definitions here
+10. Server sends client player position and so on, game starts, client loads
+    and unloads additional data like maps, tilesets, sprites, etc. on demand.
+
+
+UPDATING THE CLIENT BINARY
+
+Updates to the actual client binary are also being considered, especially on
+the Windows operating system. While the plan is to move any specific game data
+outside of the binary, sometimes an update to the binary will be required for
+being able to play the game. Also especially Windows users are used to
+automatic update checks for many applications (possibly because of the lack of
+such a feature system-wide).
+
+On Linux this would require either installing a statically linked binary
+(which could still have some issues) or automatically compiling/installing
+from source. Neither are very attractive options, and I (Hammerbear) would
+prefer not to deal with automatic binary updates on Linux.
+
+On Windows a binary can't be replaced while it is running, so probably a
+separate update tool would need to be written that is run before the client
+to check for updates to the client and possibly replaces the client before
+running it.

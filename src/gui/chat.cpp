@@ -24,6 +24,7 @@
 #include "chat.h"
 #include "textfield.h"
 #include "textbox.h"
+#include "chatinput.h"
 #include "../graphics.h"
 #include "../main.h"
 #include <iostream>
@@ -37,7 +38,7 @@ ChatWindow::ChatWindow(const char *logfile, int item_num):
 
     setContentSize(600, 100);
     textOutput = new TextBox();
-    chatInput = new TextField();
+    chatInput = new ChatInput();
     textOutput->setEditable(false);
     scrollArea = new ScrollArea(textOutput);
     scrollArea->setDimension(gcn::Rectangle(
@@ -228,13 +229,16 @@ void ChatWindow::action(const std::string& eventId)
             chatInput->setText("");
         }
 
+        // Remove focus and hide input
         gui->focusNone();
+        chatInput->setVisible(false);
     }
 }
 
-void ChatWindow::requestFocus()
+void ChatWindow::requestChatFocus()
 {
     // Give focus to the chat input
+    chatInput->setVisible(true);
     chatInput->requestFocus();
 }
 

@@ -206,7 +206,7 @@ void do_input()
             {
                 if (!chatWindow->isFocused())
                 {
-                    chatWindow->requestFocus();
+                    chatWindow->requestChatFocus();
                     used = true;
                 }
             }
@@ -287,7 +287,7 @@ void do_input()
                 state = EXIT;
             }
 
-            if (keysym.sym == SDLK_g)
+            if (keysym.sym == SDLK_g && !chatWindow->isFocused())
             {
                 // Get the item code
                 if (!chatWindow->isFocused())
@@ -405,7 +405,8 @@ void do_input()
     int yDirection = 0;
     int Direction = DIR_NONE;
 
-    if (player_node->action != DEAD && current_npc == 0)
+    if (player_node->action != DEAD && current_npc == 0 &&
+            !chatWindow->isFocused())
     {
         int x = player_node->x;
         int y = player_node->y;
@@ -1368,14 +1369,13 @@ void do_parse()
                                 inventoryWindow->items->setEquipped(
                                     equipmentWindow->equipments[position - 1].inventoryIndex,
                                     false);
-                            
 
                             inventoryWindow->items->setEquipped(RFIFOW(2),
                                 true);
                             equipmentWindow->addEquipment(position - 1,
                                 inventoryWindow->items->getId(RFIFOW(2)));
                             equipmentWindow->equipments[position - 1].inventoryIndex = RFIFOW(2);
-                            
+
                             // Trick to use the proper graphic until I find
                             // the right packet
                             switch (inventoryWindow->items->getId(RFIFOW(2))) {

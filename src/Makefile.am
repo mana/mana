@@ -15,6 +15,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \
 	      gui/chat.h \
+	      gui/chatinput.cpp \
+	      gui/chatinput.h \
 	      gui/checkbox.cpp \
 	      gui/checkbox.h \
 	      gui/confirm_dialog.cpp \

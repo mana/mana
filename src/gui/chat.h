@@ -138,9 +138,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void action(const std::string &actionId);
 
         /**
-         * Request focus.
+         * Request focus for typing chat message.
          */
-        void requestFocus();
+        void requestChatFocus();
 
         /**
          * Checks whether ChatWindow is Focused or not.
