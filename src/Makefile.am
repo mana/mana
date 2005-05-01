@@ -125,7 +125,9 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      sound.h
 
 # set the include path found by configure
-INCLUDES= $(all_includes)
+INCLUDES =					\
+	$(all_includes)				\
+	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
 
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan_sdl -lguichan `pkg-config --libs libxml-2.0`

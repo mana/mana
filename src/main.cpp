@@ -225,7 +225,7 @@ void init_engine()
     screenH = (int)config.getValue("screenheight", 600);
     bitDepth = (int)config.getValue("colordepth", 16);
 
-    SDL_WM_SetIcon(IMG_Load("data/icons/tmw-icon.png"), NULL);
+    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
     screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
     if (screen == NULL) {
@@ -351,7 +351,7 @@ int main(int argc, char *argv[])
         switch (state) {
             case LOGIN:
                 logger.log("State: LOGIN");
-                sound.playMusic("data/music/Ivano(de)Jeanette.ogg");
+                sound.playMusic(TMW_DATADIR "data/music/Ivano(de)Jeanette.ogg");
                 /*bgm = resman->getMusic("music/Ivano(de)Jeanette.ogg");
                 bgm->play(-1);*/
                 login();

@@ -945,7 +945,7 @@ void do_parse()
                     // Warp
                 case 0x0091:
                     memset(map_path, '\0', 480);
-                    strcat(map_path, "data/maps/");
+                    strcat(map_path, TMW_DATADIR "data/maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     logger.log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));

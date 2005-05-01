@@ -38,6 +38,10 @@
 #include <stdio.h>
 #include <memory>
 
+#ifndef TMW_DATADIR
+#define TMW_DATADIR ""
+#endif
+
 #ifdef ERROR
 #undef ERROR
 #endif

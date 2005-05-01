@@ -40,14 +40,14 @@ ItemManager::ItemManager()
 {
     // Check that file exists before trying to parse it
     std::fstream dbFile;
-    dbFile.open("./data/items.xml", std::ios::in);
+    dbFile.open(TMW_DATADIR "data/items.xml", std::ios::in);
     if (!dbFile.is_open()) {
         logger.log("Cannot find item database!");
         return;
     }
     dbFile.close();
     
-    xmlDocPtr doc = xmlParseFile("./data/items.xml");
+    xmlDocPtr doc = xmlParseFile(TMW_DATADIR "data/items.xml");
 
     if (doc) {
         xmlNodePtr node = xmlDocGetRootElement(doc);

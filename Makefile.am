@@ -1,8 +1,9 @@
-# Subdirectories to include in a distribution
-DIST_SUBDIRS = src data docs
-
 # Subdirectories to build
-SUBDIRS = src
+SUBDIRS = data docs src
+
+desktopdir = $(datadir)/applications
+
+desktop_DATA = tmw.desktop
 
 # Extra files to include
-EXTRA_DIST = tmw.desktop
+EXTRA_DIST = $(desktop_DATA)
