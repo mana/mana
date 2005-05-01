@@ -107,10 +107,9 @@ unsigned int findMonster(unsigned short x, unsigned short y)
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
-        // Check if is a MONSTER
-        if (being->job > 200 &&
-                being->x == x &&
-                being->y == y)
+        // Check if is a MONSTER that is alive
+        if (being->job > 200 && being->x == x && being->y == y &&
+                being->action != MONSTER_DEAD)
         {
             return being->id;
         }
@@ -135,7 +134,8 @@ Being *findNode(unsigned short x, unsigned short y)
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
-        if (being->x == x && being->y == y) {
+        // Return being if found and it is not a dead monster
+        if (being->x == x && being->y == y && being->action != MONSTER_DEAD) {
             return being;
         }
     }
