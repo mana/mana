@@ -1,8 +1,5 @@
 0.0.12  (1 May 2005)
-- Added installation of game data, install required on *nix systems
 - Updated desktop file to work better
-- Install the desktop file to the standard location
-- Install the icon as tmw.png in the standard pixmaps data dir
 - Added new map (a cave), tiles, monsters and items
 - Added volume sliders in setup window
 - Added attack and level up samples
@@ -11,6 +8,7 @@
 - Added register button in login screen
 - Added warning message to use at least 4 characters as user name
 - Added scrollbar and command history to chat window
+- Added proper support for installation of the game on *nix systems
 - Improved skin on scrollbars, arrows and slider
 - Improved sound engine and added fade in and out option for music
 - Now you can use right mouse button to attack (enables also ranged attacks)
