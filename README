@@ -34,10 +34,9 @@ demo and development purposes.
 -----------
 
 Use arrow keys (or left mouse button) to move around and the right mouse button
-over NPC's feet to talk to them. Other keys:
+over NPC's feet to talk to them or over a monster to attack it. Other keys:
 
 - Left Ctrl          attack
-- Left mouse button  attack
 - Alt + 0-9          show emotions
 - F5                 sit down / stand up
 - F6                 toggle debug pathfinding feature
