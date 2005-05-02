@@ -145,7 +145,8 @@ Engine::Engine()
     guiTop->add(debugInfo);
 
     // Create dialogs
-    chatWindow = new ChatWindow("chatlog.txt", 20);
+    chatWindow = new ChatWindow(
+            std::string(homeDir) + std::string("chatlog.txt"));
     statusWindow = new StatusWindow();
     buyDialog = new BuyDialog();
     sellDialog = new SellDialog();
@@ -216,10 +217,10 @@ Engine::Engine()
     Image *itembitmap = resman->getImage(
             "graphics/sprites/items.png", IMG_ALPHA);
 
-    if (!npcbmp) logger.error("Unable to load npcs.png");
-    if (!emotionbmp) logger.error("Unable to load emotions.png");
-    if (!weaponbitmap) logger.error("Unable to load weapons.png");
-    if (!itembitmap) logger.error("Unable to load items.png");
+    if (!npcbmp) logger->error("Unable to load npcs.png");
+    if (!emotionbmp) logger->error("Unable to load emotions.png");
+    if (!weaponbitmap) logger->error("Unable to load weapons.png");
+    if (!itembitmap) logger->error("Unable to load items.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);

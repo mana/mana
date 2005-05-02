@@ -43,18 +43,18 @@ ModeListModel::ModeListModel()
 
     /* Check is there are any modes available */
     if (modes == (SDL_Rect **)0) {
-        logger.log("No modes available");
+        logger->log("No modes available");
     }
 
     /* Check if our resolution is restricted */
     if (modes == (SDL_Rect **)-1) {
-        logger.log("All resolutions available");
+        logger->log("All resolutions available");
     }
     else{
         /* Print valid modes */
-        logger.log("Available Modes");
+        logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i) {
-            logger.log("  %dx%d", modes[i]->w, modes[i]->h);
+            logger->log("  %dx%d", modes[i]->w, modes[i]->h);
             std::stringstream mode;
             mode << (int)modes[i]->w << "x" << (int)modes[i]->h;
             videoModes.push_back(mode.str());
@@ -228,7 +228,7 @@ void Setup::action(const std::string &eventId)
             }
             catch (const char *err) {
                 new OkDialog(this, "Sound Engine", err);
-                logger.log("Warning: %s", err);
+                logger->log("Warning: %s", err);
             }
         } else {
             config.setValue("sound", 0);

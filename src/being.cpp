@@ -50,11 +50,11 @@ void add_node(Being *being)
     else if (being->job >= 1002 && monsterset[being->job - 1002] == NULL) {
         std::stringstream filename;
         filename << "graphics/sprites/monster" << (being->job - 1002) << ".png";
-        logger.log("%s",filename.str().c_str());
+        logger->log("%s",filename.str().c_str());
         ResourceManager *resman = ResourceManager::getInstance();
         Image *monsterbitmap = resman->getImage(filename.str());
         if (!monsterbitmap) {
-            logger.error("Unable to load monster.png");
+            logger->error("Unable to load monster.png");
         }
         else {
             monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);

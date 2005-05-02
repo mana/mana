@@ -29,12 +29,12 @@
 #include "../main.h"
 #include <iostream>
 
-ChatWindow::ChatWindow(const char *logfile, int item_num):
+ChatWindow::ChatWindow(const std::string &logfile):
     Window("")
 {
-    chatlog_file.open(logfile, std::ios::out | std::ios::app);
+    chatlog_file.open(logfile.c_str(), std::ios::out | std::ios::app);
     items = 0;
-    items_keep = item_num;
+    items_keep = 20;
 
     setContentSize(600, 100);
     textOutput = new TextBox();

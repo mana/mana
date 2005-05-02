@@ -154,7 +154,7 @@ void do_init()
 
         if (!tiledMap)
         {
-            logger.error("Could not find map file!");
+            logger->error("Could not find map file!");
         }
     }
 
@@ -947,7 +947,7 @@ void do_parse()
                     memset(map_path, '\0', 480);
                     strcat(map_path, TMW_DATADIR "data/maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
-                    logger.log("Warping to %s (%d, %d)",
+                    logger->log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
 
@@ -979,7 +979,7 @@ void do_parse()
                         while (out_size > 0) flush();
                     }
                     else {
-                        logger.error("Could not find map file");
+                        logger->error("Could not find map file");
                     }
                     break;
                     // Skill ...
@@ -1134,7 +1134,7 @@ void do_parse()
                     break;
                     // Level up
                 case 0x019b:
-                    logger.log("Level up");
+                    logger->log("Level up");
                     if (RFIFOL(2) == player_node->id) {
                         sound.playSfx("sfx/levelup.ogg");
                     }
@@ -1350,7 +1350,7 @@ void do_parse()
 
                     // Answer to equip item
                 case 0x00aa:
-                    logger.log("Equipping: %i %i %i", RFIFOW(2), RFIFOW(4), RFIFOB(6));
+                    logger->log("Equipping: %i %i %i", RFIFOW(2), RFIFOW(4), RFIFOB(6));
                     if (RFIFOB(6) == 0)
                         chatWindow->chat_log("Unable to equip.", BY_SERVER);
                     else {
@@ -1361,7 +1361,7 @@ void do_parse()
                                 mask *= 2;
                                 position++;
                             }
-                            logger.log("Position %i", position-1);
+                            logger->log("Position %i", position-1);
                             int equippedId = equipmentWindow->equipments[position - 1].id;
                             if (equippedId > 0)
                                 inventoryWindow->items->setEquipped(
@@ -1393,7 +1393,7 @@ void do_parse()
                     break;
                     // Equipment related
                 case 0x01d7:
-                    logger.log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
+                    logger->log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     break;
                     // Answer to unequip item
                 case 0x00ac:
@@ -1425,7 +1425,7 @@ void do_parse()
                                     equipmentWindow->removeEquipment(position - 1);
                                     break;
                             }
-                            logger.log("Unequipping: %i %i(%i) %i", RFIFOW(2),RFIFOW(4),RFIFOB(6), position -1);
+                            logger->log("Unequipping: %i %i(%i) %i", RFIFOW(2),RFIFOW(4),RFIFOB(6), position -1);
                         }
                     }
                     break;
@@ -1437,7 +1437,7 @@ void do_parse()
                             inventoryWindow->items->getId(RFIFOW(2)));
                         equipmentWindow->arrowsNumber =
                             inventoryWindow->items->getQuantity(RFIFOW(2));
-                            logger.log("Arrows equipped: %i", RFIFOW(2));
+                            logger->log("Arrows equipped: %i", RFIFOW(2));
                     }
                     break;
                     // Various messages
@@ -1445,7 +1445,7 @@ void do_parse()
                     if (RFIFOW(2) == 0)
                         chatWindow->chat_log("Equip arrows first", BY_SERVER);
                     else
-                        logger.log("0x013b: Unhandled message %i", RFIFOW(2));
+                        logger->log("0x013b: Unhandled message %i", RFIFOW(2));
                     break;
                     // Updates a stat value
                 case 0x00bc:
@@ -1528,7 +1528,7 @@ void do_parse()
                     break;
                     // Manage non implemented packets
                 default:
-                    logger.log("Unhandled packet: %x", id);
+                    logger->log("Unhandled packet: %x", id);
                     break;
             }
 

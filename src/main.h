@@ -71,7 +71,7 @@ typedef struct {
     char name[20];
     short online_users;
 } SERVER_INFO;
-       
+
 typedef struct {
     int id;
     float lastAttackTime; // used to synchronize the charge dialog
@@ -106,8 +106,10 @@ extern unsigned char state;
 extern Configuration config;
 extern Sound sound;
 extern Map *tiledMap;
-extern Logger logger;
+extern Logger *logger;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
 extern ItemManager itemDb;
+extern char *homeDir;
+
 #endif

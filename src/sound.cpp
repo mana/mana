@@ -43,10 +43,10 @@ void Sound::init()
     // Don't initialize sound engine twice
     if (installed) return;
 
-    logger.log("Sound::init() Initializing sound...");
+    logger->log("Sound::init() Initializing sound...");
 
     if (SDL_InitSubSystem(SDL_INIT_AUDIO) == -1) {
-        logger.log("Sound::init() Failed to initialize audio subsystem");
+        logger->log("Sound::init() Failed to initialize audio subsystem");
         return;
     }
 
@@ -57,7 +57,7 @@ void Sound::init()
     if (res >= 0) {
         Mix_AllocateChannels(16);
     } else {
-        logger.log("Sound::init Could not initialize audio: %s",
+        logger->log("Sound::init Could not initialize audio: %s",
                 Mix_GetError());
         return;
     }
@@ -93,18 +93,18 @@ void Sound::info() {
         case AUDIO_S16MSB: format = "S16MSB"; break;
     }
 
-    logger.log("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
+    logger->log("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
             compiledVersion.major,
             compiledVersion.minor,
             compiledVersion.patch);
-    logger.log("Sound::info() SDL_mixer: %i.%i.%i (linked)",
+    logger->log("Sound::info() SDL_mixer: %i.%i.%i (linked)",
             linkedVersion->major,
             linkedVersion->minor,
             linkedVersion->patch);
-    logger.log("Sound::info() Driver: %s", driver);
-    logger.log("Sound::init() Format: %s", format);
-    logger.log("Sound::init() Rate: %i", rate);
-    logger.log("Sound::init() Channels: %i", channels);
+    logger->log("Sound::info() Driver: %s", driver);
+    logger->log("Sound::init() Format: %s", format);
+    logger->log("Sound::init() Rate: %i", rate);
+    logger->log("Sound::init() Channels: %i", channels);
 }
 
 void Sound::setMusicVolume(int volume)
@@ -131,14 +131,14 @@ void Sound::playMusic(const char *path, int loop)
         stopMusic();
     }
 
-    logger.log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
+    logger->log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
 
     music = Mix_LoadMUS(path);
     if (music) {
         Mix_PlayMusic(music, loop);
     }
     else {
-        logger.log("Sound::startMusic() Warning: error loading file.");
+        logger->log("Sound::startMusic() Warning: error loading file.");
     }
 }
 
@@ -146,7 +146,7 @@ void Sound::stopMusic()
 {
     if (!installed) return;
 
-    logger.log("Sound::stopMusic()");
+    logger->log("Sound::stopMusic()");
 
     if (music != NULL) {
         Mix_HaltMusic();
@@ -163,7 +163,7 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
         stopMusic();
     }
 
-    logger.log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
+    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
             loop, ms);
 
     music = Mix_LoadMUS(path);
@@ -171,7 +171,7 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
         Mix_FadeInMusic(music, loop, ms);
     }
     else {
-        logger.log("Sound::fadeInMusic() Warning: error loading file.");
+        logger->log("Sound::fadeInMusic() Warning: error loading file.");
     }
 }
 
@@ -179,7 +179,7 @@ void Sound::fadeOutMusic(int ms)
 {
     if (!installed) return;
 
-    logger.log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
+    logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
     if (music != NULL) {
         Mix_FadeOutMusic(ms);
@@ -196,7 +196,7 @@ void Sound::playSfx(const char *path)
     SoundEffect *sample = resman->getSoundEffect(path);
     if (sample) {
         sample->play(0, 120);
-        logger.log("Sound::playSfx() Playing: %s", path);
+        logger->log("Sound::playSfx() Playing: %s", path);
     }
 }
 
@@ -204,5 +204,5 @@ void Sound::close()
 {
     installed = false;
     Mix_CloseAudio();
-    logger.log("Sound::close() Shutting down sound...");
+    logger->log("Sound::close() Shutting down sound...");
 }

@@ -39,7 +39,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     maxWinWidth(512),
     maxWinHeight(512)
 {
-    logger.log("Window::Window(\"%s\")", caption.c_str());
+    logger->log("Window::Window(\"%s\")", caption.c_str());
 
     setBorderSize(0);
     setPadding(3);
@@ -81,7 +81,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
 Window::~Window()
 {
-    logger.log("Window::~Window(\"%s\")", getCaption().c_str());
+    logger->log("Window::~Window(\"%s\")", getCaption().c_str());
 
     // Free dialog bitmaps
     //release_bitmap(dLeft);

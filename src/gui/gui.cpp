@@ -73,7 +73,7 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger.error("Unable to load fixedfont.png!");
+        logger->error("Unable to load fixedfont.png!");
     }
 
     gcn::Widget::setGlobalFont(guiFont);

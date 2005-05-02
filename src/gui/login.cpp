@@ -113,7 +113,7 @@ void LoginDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         const std::string user = userField->getText();
-        logger.log("Network: Username is %s", user.c_str());
+        logger->log("Network: Username is %s", user.c_str());
 
         // Store config settings
         config.setValue("remember", keepCheck->isMarked());
@@ -134,7 +134,7 @@ void LoginDialog::action(const std::string& eventId)
         state = EXIT;
     } else if (eventId == "register") {
         const std::string user = userField->getText();
-        logger.log("LoginDialog::register Username is %s", user.c_str());
+        logger->log("LoginDialog::register Username is %s", user.c_str());
 
         // Store config settings
         config.setValue("remember", keepCheck->isMarked());
@@ -239,13 +239,13 @@ void server_login(const std::string& user, const std::string& pass) {
             server_info[i].port = RFIFOW(47 + 32 * i + 4);
             state = CHAR_SERVER;
         }
-        logger.log("Network: Server: %s (%s:%d)", server_info[0].name,
+        logger->log("Network: Server: %s (%s:%d)", server_info[0].name,
                 iptostring(server_info[0].address),
                 server_info[0].port);
         RFIFOSKIP(RFIFOW(2));
     }
     else if (RFIFOW(0) == 0x006a) {
-        logger.log("Login::error code: %i", RFIFOB(2));
+        logger->log("Login::error code: %i", RFIFOB(2));
         switch (RFIFOB(2)) {
             case 0:
                 new OkDialog("Error", "Unregistered ID");

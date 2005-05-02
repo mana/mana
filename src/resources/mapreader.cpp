@@ -62,7 +62,7 @@ Map *MapReader::readMap(const std::string &filename)
     std::fstream fin;
     fin.open(name.c_str(), std::ios::in);
     if (!fin.is_open()) {
-        logger.log("No such file!");
+        logger->log("No such file!");
         return NULL;
     }
     fin.close();
@@ -73,14 +73,14 @@ Map *MapReader::readMap(const std::string &filename)
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
-            logger.log("Warning: Not a map file (%s)!", filename.c_str());
+            logger->log("Warning: Not a map file (%s)!", filename.c_str());
             return NULL;
         }
 
         return readMap(node, filename);
         xmlFreeDoc(doc);
     } else {
-        logger.log("Error while parsing map file (%s)!", filename.c_str());
+        logger->log("Error while parsing map file (%s)!", filename.c_str());
     }
 
     return NULL;
@@ -115,7 +115,7 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
         else if (xmlStrEqual(node->name, BAD_CAST "layer"))
         {
-            logger.log("- Loading layer %d", layerNr);
+            logger->log("- Loading layer %d", layerNr);
             readLayer(node, map, layerNr);
             layerNr++;
         }
@@ -150,7 +150,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 xmlFree(encoding);
 
                 if (compression) {
-                    logger.log("Warning: no layer compression supported!");
+                    logger->log("Warning: no layer compression supported!");
                     xmlFree(compression);
                     return;
                 }
@@ -228,7 +228,7 @@ Tileset* MapReader::readTileset(
         xmlNodePtr node, const std::string &path, Map *map)
 {
     if (xmlHasProp(node, BAD_CAST "source")) {
-        logger.log("Warning: External tilesets not supported yet.");
+        logger->log("Warning: External tilesets not supported yet.");
         return NULL;
     }
 
@@ -259,7 +259,7 @@ Tileset* MapReader::readTileset(
                     return set;
                 }
                 else {
-                    logger.log("Warning: Failed to load tileset (%s)", source);
+                    logger->log("Warning: Failed to load tileset (%s)", source);
                 }
             }
 

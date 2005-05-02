@@ -107,7 +107,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Constructor.
          */
-        ChatWindow(const char *logfile, int item_num);
+        ChatWindow(const std::string &logfile);
 
         /**
          * Destructor.

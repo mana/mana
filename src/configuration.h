@@ -58,7 +58,7 @@ class Configuration {
          * \brief Writes the current settings back to an ini-file.
          * \param filename Full path to INI file (~/.manaworld/tmw.ini)
          */
-        bool write(const std::string &filename);
+        bool write();
 
         /**
          * \brief Sets an option using a string value.
@@ -102,6 +102,8 @@ class Configuration {
     private:
         std::map<std::string, std::string> options;
         std::map<std::string, std::list<ConfigListener*> > listeners;
+
+        std::string configPath;          /**< Location of config file */
 };
 
 #endif

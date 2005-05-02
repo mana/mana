@@ -68,7 +68,7 @@ ResourceManager::~ResourceManager()
     }
     resources.clear();
 
-    logger.log("ResourceManager::~ResourceManager() cleaned up %d references "
+    logger->log("ResourceManager::~ResourceManager() cleaned up %d references "
             "to %d resources", danglingReferences, danglingResources);
 }
 
@@ -84,7 +84,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
         return resIter->second.resource;
     }
 
-    logger.log("ResourceManager::get(%s)", idPath.c_str());
+    logger->log("ResourceManager::get(%s)", idPath.c_str());
 
     Resource *resource = NULL;
 
@@ -92,7 +92,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     switch (type)
     {
         case MAP:
-            logger.log("Warning: Map resource not supported.");
+            logger->log("Warning: Map resource not supported.");
             break;
         case MUSIC:
             {
@@ -109,7 +109,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                     free(buffer);
                 }
                 else {
-                    logger.log("Warning: resource doesn't exist!");
+                    logger->log("Warning: resource doesn't exist!");
                 }
             }
             break;
@@ -128,15 +128,15 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                     free(buffer);
                 }
                 else {
-                    logger.log("Warning: resource doesn't exist!");
+                    logger->log("Warning: resource doesn't exist!");
                 }
             }
             break;
         case SCRIPT:
-            logger.log("Warning: Script resource not supported.");
+            logger->log("Warning: Script resource not supported.");
             break;
         case TILESET:
-            logger.log("Warning: Tileset resource not supported.");
+            logger->log("Warning: Tileset resource not supported.");
             break;
         case SOUND_EFFECT:
             {
@@ -153,12 +153,12 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                     free(buffer);
                 }
                 else {
-                    logger.log("Warning: resource doesn't exist!");
+                    logger->log("Warning: resource doesn't exist!");
                 }
             }
             break;
         default: 
-            logger.log("Warning: Unknown resource type");
+            logger->log("Warning: Unknown resource type");
             break;
     }
 
@@ -231,7 +231,7 @@ void ResourceManager::searchAndAddZipFiles()
         std::string filePath = std::string("data/") +
             std::string(findFileInfo.name);
 
-        logger.log("Adding to PhysicsFS: %s", findFileInfo.name);
+        logger->log("Adding to PhysicsFS: %s", findFileInfo.name);
 
         // Add the zip file to our PhysicsFS search path
         PHYSFS_addToSearchPath(filePath.c_str(), 1);
@@ -264,7 +264,7 @@ void ResourceManager::searchAndAddZipFiles()
             std::string filePath = std::string(programPath) +
                 std::string("/") + std::string(direntry->d_name);
 
-            logger.log("Adding to PhysicsFS: %s", filePath.c_str());
+            logger->log("Adding to PhysicsFS: %s", filePath.c_str());
 
             // Add the zip file to our PhysicsFS search path
             PHYSFS_addToSearchPath(filePath.c_str(), 1);
@@ -279,7 +279,7 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
     // If the file doesn't exist indicate failure
     if (!PHYSFS_exists(fileName.c_str())) {
-        logger.log("Warning: %s not found!", fileName.c_str());
+        logger->log("Warning: %s not found!", fileName.c_str());
         return NULL;
     }
 
@@ -288,7 +288,7 @@ void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 
     // If the handler is an invalid pointer indicate failure
     if (file == NULL) {
-        logger.log("Warning: %s failed to load!", fileName.c_str());
+        logger->log("Warning: %s failed to load!", fileName.c_str());
         return NULL;
     }
 

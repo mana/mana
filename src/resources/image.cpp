@@ -76,7 +76,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
 
     // Check if the file was opened and return the appropriate value.
     if (!image) {
-        logger.log("Error: Image convert failed.");
+        logger->log("Error: Image convert failed.");
         return NULL;
     }
 
@@ -101,7 +101,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
             rmask, gmask, bmask, amask);
 
     if (formatImage == NULL) {
-        logger.log("Error", "Image load failed: not enough memory");
+        logger->log("Error", "Image load failed: not enough memory");
     }
 
     SDL_Surface *image = SDL_ConvertSurface(
@@ -149,7 +149,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
 
     GLuint texture;
     glGenTextures(1, &texture);
-    logger.log("Binding texture %d (%dx%d)", texture, realWidth, realHeight);
+    logger->log("Binding texture %d (%dx%d)", texture, realWidth, realHeight);
     glBindTexture(GL_TEXTURE_2D, texture);
     glTexImage2D(
             GL_TEXTURE_2D, 0, 4,
@@ -189,7 +189,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
                 errmsg = "GL_OUT_OF_MEMORY";
                 break;
         }
-        logger.log("Error: Image GL import failed: %s", errmsg.c_str());
+        logger->log("Error: Image GL import failed: %s", errmsg.c_str());
         return NULL;
     }
 

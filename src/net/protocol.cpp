@@ -158,7 +158,7 @@ void map_start()
     // Connect to map server
     if (open_session(iptostring(map_address), map_port) == SOCKET_ERROR)
     {
-        logger.log("Warning: Unable to connect to map server");
+        logger->log("Warning: Unable to connect to map server");
         throw "Unable to connect to map server";
         return;
     }
@@ -182,13 +182,13 @@ void map_start()
         startX = get_x(RFIFOP(6));
         startY = get_y(RFIFOP(6));
         int direction = get_direction(RFIFOP(6));
-        logger.log("Protocol: Player start position: (%d, %d), Direction: %d",
+        logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
                 startX, startY, direction);
         RFIFOSKIP(11);
     } else if (0x0081) {
-        logger.log("Warning: Map server D/C");
+        logger->log("Warning: Map server D/C");
     } else {
-        logger.error("Unknown packet: map_start");
+        logger->error("Unknown packet: map_start");
     }
 
     // Send "map loaded"

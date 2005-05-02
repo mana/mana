@@ -65,7 +65,6 @@ short map_port;
 char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
-char *dir = NULL;
 char *homeDir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
 bool useOpenGL = false;
@@ -73,12 +72,9 @@ bool useOpenGL = false;
 Sound sound;
 Music *bgm;
 
-// Xml file configuration reader
-Configuration config;
-// Log object
-Logger logger("tmw.log");
-// Item database object
-ItemManager itemDb;
+Configuration config;        /**< Xml file configuration reader */
+Logger *logger;              /**< Log object */
+ItemManager itemDb;          /**< Item database object */
 
 /**
  * Listener used for responding to map start error dialog.
@@ -118,19 +114,12 @@ void init_engine()
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    dir = new char[400];
-    strcpy(dir, "");
-
     homeDir = new char[256];
 #ifndef __USE_UNIX98
-    // WIN32 and others
-    strcpy(dir, "config.xml");
-
     // In Windows and other systems we currently store data next to executable.
     strcpy(homeDir, "");
 #else
-    // In UNIX we store data in ~/.manaworld/
-    char *userHome;
+    // In UNIX we store data in ~/.tmw/
     char *name = getlogin();
     passwd *pass;
 
@@ -146,52 +135,55 @@ void init_engine()
         exit(1);
     }
 
-    userHome = pass->pw_dir;
-
-    // Checking if homeuser/.manaworld folder exists.
-    sprintf(dir, "%s/.manaworld", userHome);
-    if ((mkdir(dir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+    // Checking if homeuser/.tmw folder exists.
+    sprintf(homeDir, "%s/.tmw/", pass->pw_dir);
+    if ((mkdir(homeDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
-        printf("%s can't be made, but it doesn't exist! Exitting.\n", dir);
+        printf("%s can't be made, but it doesn't exist! Exitting.\n", homeDir);
         exit(1);
     }
-    sprintf(dir, "%s/.manaworld/config.xml", userHome);
-
-    //strcpy(homeDir, "%s/.manaworld/", userHome);
 #endif
+
+    // Initialize logger
+    logger = new Logger(std::string(homeDir) + std::string("tmw.log"));
+
+    // Fill configuration with defaults
+    config.setValue("host", "animesites.de");
+    config.setValue("port", 6901);
+    config.setValue("hwaccel", 0);
+    config.setValue("opengl", 0);
+    config.setValue("screen", 0);
+    config.setValue("sound", 1);
+    config.setValue("guialpha", 0.8f);
+    config.setValue("remember", 1);
+    config.setValue("sfxVolume", 100);
+    config.setValue("musicVolume", 60);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
     FILE *tmwFile = 0;
-    tmwFile = fopen(dir, "r");
+    char configPath[256];
+    sprintf(configPath, "%sconfig.xml", homeDir);
+    tmwFile = fopen(configPath, "r");
 
     // If we can't read it, it doesn't exist !
     if (tmwFile == NULL) {
         // We reopen the file in write mode and we create it
-        printf("No file : %s\n, Creating Default Options...\n", dir);
-        tmwFile = fopen(dir, "wt");
+        printf("No file : %s\n, Creating Default Options...\n", configPath);
+        tmwFile = fopen(configPath, "wt");
         if (tmwFile == NULL) {
-            printf("Can't create %s file. Using Defaults.\n", dir);
+            printf("Can't create %s file. Using Defaults.\n", configPath);
         }
         else {
             fclose(tmwFile);
-            // Fill configuration with defaults
-            config.setValue("host", "animesites.de");
-            config.setValue("port", 6901);
-            config.setValue("hwaccel", 0);
-            config.setValue("opengl", 0);
-            config.setValue("screen", 0);
-            config.setValue("sound", 1);
-            config.setValue("guialpha", 0.8f);
-            config.setValue("remember", 1);
-            config.setValue("sfxVolume", 100);
-            config.setValue("musicVolume", 60);
-            config.write(dir);
+            config.init(configPath);
         }
     }
-
-    config.init(dir);
+    else {
+        fclose(tmwFile);
+        config.init(configPath);
+    }
 
     SDL_WM_SetCaption("The Mana World", NULL);
 
@@ -213,7 +205,7 @@ void init_engine()
     }
     else {
         if ((int)config.getValue("hwaccel", 0)) {
-            logger.log("Attempting to use hardware acceleration.");
+            logger->log("Attempting to use hardware acceleration.");
             displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
         }
         else {
@@ -237,33 +229,33 @@ void init_engine()
     char videoDriverName[64];
 
     if (SDL_VideoDriverName(videoDriverName, 64)) {
-        logger.log("Using video driver: %s", videoDriverName);
+        logger->log("Using video driver: %s", videoDriverName);
     }
     else {
-        logger.log("Using video driver: unkown");
+        logger->log("Using video driver: unkown");
     }
 
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
 
-    logger.log("Possible to create hardware surfaces: %s",
+    logger->log("Possible to create hardware surfaces: %s",
             ((vi->hw_available) ? "yes" : "no "));
-    logger.log("Window manager available: %s",
+    logger->log("Window manager available: %s",
             ((vi->wm_available) ? "yes" : "no"));
-    logger.log("Accelerated hardware to hardware blits: %s",
+    logger->log("Accelerated hardware to hardware blits: %s",
             ((vi->blit_hw) ? "yes" : "no"));
-    logger.log("Accelerated hardware to hardware colorkey blits: %s",
+    logger->log("Accelerated hardware to hardware colorkey blits: %s",
             ((vi->blit_hw_CC) ? "yes" : "no"));
-    logger.log("Accelerated hardware to hardware alpha blits: %s",
+    logger->log("Accelerated hardware to hardware alpha blits: %s",
             ((vi->blit_hw_A) ? "yes" : "no"));
-    logger.log("Accelerated software to hardware blits: %s",
+    logger->log("Accelerated software to hardware blits: %s",
             ((vi->blit_sw) ? "yes" : "no"));
-    logger.log("Accelerated software to hardware colorkey blits: %s",
+    logger->log("Accelerated software to hardware colorkey blits: %s",
             ((vi->blit_sw_CC) ? "yes" : "no"));
-    logger.log("Accelerated software to hardware alpha blits: %s",
+    logger->log("Accelerated software to hardware alpha blits: %s",
             ((vi->blit_sw_A) ? "yes" : "no"));
-    logger.log("Accelerated color fills: %s",
+    logger->log("Accelerated color fills: %s",
             ((vi->blit_fill) ? "yes" : "no"));
-    logger.log("Available video memory: %d", vi->video_mem);
+    logger->log("Available video memory: %d", vi->video_mem);
 
     //vfmt Pixel format of the video device
 
@@ -279,9 +271,9 @@ void init_engine()
     Image *hairImg = resman->getImage(
             "graphics/sprites/player_male_hair.png");
 
-    if (!login_wallpaper) logger.error("Couldn't load login_wallpaper.png");
-    if (!playerImg) logger.error("Couldn't load player_male_base.png");
-    if (!hairImg) logger.error("Couldn't load player_male_hair.png");
+    if (!login_wallpaper) logger->error("Couldn't load login_wallpaper.png");
+    if (!playerImg) logger->error("Couldn't load player_male_base.png");
+    if (!hairImg) logger->error("Couldn't load player_male_hair.png");
 
     playerset = new Spriteset(playerImg, 64, 120);
     hairset = new Spriteset(hairImg, 40, 40);
@@ -300,15 +292,15 @@ void init_engine()
     catch (const char *err) {
         state = ERROR;
         new OkDialog("Sound Engine", err, &initWarningListener);
-        logger.log("Warning: %s", err);
+        logger->log("Warning: %s", err);
     }
 }
 
 /** Clear the engine */
 void exit_engine()
 {
-    config.write(dir);
-    delete[] dir;
+    config.write();
+    delete[] homeDir;
     delete gui;
     delete graphics;
 
@@ -316,6 +308,7 @@ void exit_engine()
     xmlCleanupParser();
 
     ResourceManager::deleteInstance();
+    delete logger;
 }
 
 /** Main */
@@ -350,24 +343,24 @@ int main(int argc, char *argv[])
 
         switch (state) {
             case LOGIN:
-                logger.log("State: LOGIN");
+                logger->log("State: LOGIN");
                 sound.playMusic(TMW_DATADIR "data/music/Ivano(de)Jeanette.ogg");
                 /*bgm = resman->getMusic("music/Ivano(de)Jeanette.ogg");
                 bgm->play(-1);*/
                 login();
                 break;
             case CHAR_SERVER:
-                logger.log("State: CHAR_SERVER");
+                logger->log("State: CHAR_SERVER");
                 char_server();
                 break;
             case CHAR_SELECT:
-                logger.log("State: CHAR_SELECT");
+                logger->log("State: CHAR_SELECT");
                 charSelect();
                 break;
             case GAME:
                 sound.fadeOutMusic(1000);
                 //bgm->stop();
-                logger.log("State: GAME");
+                logger->log("State: GAME");
                 try {
                     map_start();
                     game();
@@ -389,7 +382,7 @@ int main(int argc, char *argv[])
                 break;
         }
     }
-    logger.log("State: EXIT");
+    logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();
     return 0;

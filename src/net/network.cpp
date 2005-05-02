@@ -45,7 +45,7 @@ fd_set write_socket;
 void WFIFOSET(int len)
 {
     if (out_size + len >= buffer_size) {
-        logger.log("Warning: Output buffer full");
+        logger->log("Warning: Output buffer full");
     }
     else {
         out_size += len;
@@ -154,16 +154,16 @@ void flush()
             }
         }
         if (ret == SOCKET_ERROR) {
-            logger.error("Socket Error");
+            logger->error("Socket Error");
 #ifdef WIN32
-            logger.log("Error: Socket error: %i ", WSAGetLastError());
+            logger->log("Error: Socket error: %i ", WSAGetLastError());
             if (WSAGetLastError() == 10053)
-            logger.log("Error: Packet size error");
+            logger->log("Error: Packet size error");
             /** Probably the last packet you sent, was defined with
              *  wrong size: WFIFOSET(size);
              */
 #else
-            logger.log("Error: Undefined socket error");
+            logger->log("Error: Undefined socket error");
 #endif
         }
     }
@@ -175,9 +175,9 @@ void flush()
         ret = recv(sock, in+in_size, RFIFOSPACE, 0);
         if (ret == SOCKET_ERROR) {
 #ifdef WIN32
-            logger.log("Error: Socket error: %i ", WSAGetLastError());
+            logger->log("Error: Socket error: %i ", WSAGetLastError());
 #else
-            logger.log("Error: Undefined socket error");
+            logger->log("Error: Undefined socket error");
 #endif
         } else RFIFOSET(ret); // Set size of available data to read
     }

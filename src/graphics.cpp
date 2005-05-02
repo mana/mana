@@ -38,7 +38,7 @@ Graphics::Graphics():
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         int gotDoubleBuffer;
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
-        logger.log("Using OpenGL %s double buffering.",
+        logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
     }
 
@@ -55,7 +55,7 @@ Graphics::Graphics():
     ResourceManager *resman = ResourceManager::getInstance();
     mouseCursor = resman->getImage("graphics/gui/mouse.png", IMG_ALPHA);
     if (!mouseCursor) {
-        logger.error("Unable to load mouse cursor.");
+        logger->error("Unable to load mouse cursor.");
     }
 
     // Initialize for drawing

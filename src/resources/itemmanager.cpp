@@ -42,18 +42,18 @@ ItemManager::ItemManager()
     std::fstream dbFile;
     dbFile.open(TMW_DATADIR "data/items.xml", std::ios::in);
     if (!dbFile.is_open()) {
-        logger.log("Cannot find item database!");
+        logger->log("Cannot find item database!");
         return;
     }
     dbFile.close();
-    
+
     xmlDocPtr doc = xmlParseFile(TMW_DATADIR "data/items.xml");
 
     if (doc) {
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "items")) {
-            logger.log("Warning: Not a valid database file!");
+            logger->log("Warning: Not a valid database file!");
         } else {
             for (node = node->xmlChildrenNode; node != NULL; node = node->next)
             {
@@ -84,7 +84,7 @@ ItemManager::ItemManager()
                     prop = xmlGetProp(node, BAD_CAST "slot");
                     int slot = atoi((const char*)prop);
                     xmlFree(prop);
-                    
+
                     ItemInfo *itemInfo = new ItemInfo();
                     itemInfo->setImage(image);
                     itemInfo->setArt(art);
@@ -94,20 +94,20 @@ ItemManager::ItemManager()
                     itemInfo->setWeight(weight);
                     itemInfo->setSlot(slot);
                     db[id] = itemInfo;
-                    
-                    /*logger.log("Item: %i %i %i %s %s %i %i %i", id,
+
+                    /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
                         getImage(id), getArt(id), getName(id).c_str(),
                         getDescription(id).c_str(), getType(id), getWeight(id),
                         getSlot(id));*/
                 }
             }
         }
-        
+
         xmlFreeDoc(doc);
     } else {
-        logger.log("Error while parsing item database!");
+        logger->log("Error while parsing item database!");
     }
-    
+
     unknown = new ItemInfo();
     unknown->setName("Unknown item");
 }

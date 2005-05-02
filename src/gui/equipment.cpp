@@ -34,12 +34,12 @@ EquipmentWindow::EquipmentWindow():
 {
     setContentSize(134, 60);
     setPosition(40, 40);
-    
+
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
-    if (!itemImg) logger.error("Unable to load items.png");
+    if (!itemImg) logger->error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
-    
+
     for (int i = 0; i < 10; i++ ) {
         equipments[i].id = 0;
         equipments[i].inventoryIndex = -1;

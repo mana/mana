@@ -43,6 +43,17 @@
 
 void Configuration::init(const std::string &filename)
 {
+    configPath = filename;
+
+    // Do not attempt to read config from non-existant file
+    FILE *testFile = fopen(configPath.c_str(), "r");
+    if (!testFile) {
+        return;
+    }
+    else {
+        fclose(testFile);
+    }
+
     xmlDocPtr doc = xmlReadFile(filename.c_str(), NULL, 0);
 
     if (!doc) return;
@@ -50,7 +61,7 @@ void Configuration::init(const std::string &filename)
     xmlNodePtr node = xmlDocGetRootElement(doc);
 
     if (!node || !xmlStrEqual(node->name, BAD_CAST "configuration")) {
-        logger.log("Warning: No configuration file (%s)", filename.c_str());
+        logger->log("Warning: No configuration file (%s)", filename.c_str());
         return;
     }
 
@@ -74,9 +85,9 @@ void Configuration::init(const std::string &filename)
     xmlFreeDoc(doc);
 }
 
-bool Configuration::write(const std::string &filename)
+bool Configuration::write()
 {
-    xmlTextWriterPtr writer = xmlNewTextWriterFilename(filename.c_str(), 0);
+    xmlTextWriterPtr writer = xmlNewTextWriterFilename(configPath.c_str(), 0);
 
     if (writer)
     {
@@ -88,7 +99,7 @@ bool Configuration::write(const std::string &filename)
 
         for (iter = options.begin(); iter != options.end(); iter++)
         {
-            logger.log("Configuration::write(%s, \"%s\")",
+            logger->log("Configuration::write(%s, \"%s\")",
                     iter->first.c_str(), iter->second.c_str());
 
             xmlTextWriterStartElement(writer, BAD_CAST "option");
