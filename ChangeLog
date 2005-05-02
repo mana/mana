@@ -1,5 +1,4 @@
 0.0.12  (1 May 2005)
-- Updated desktop file to work better
 - Added new map (a cave), tiles, monsters and items
 - Added volume sliders in setup window
 - Added attack and level up samples
@@ -23,6 +22,7 @@
 - Fixed rendering of certain monsters, items and NPCs in OpenGL mode
 - Fixed skipping with mouse walk and made interruptable with keyboard
 - Fixed mouse walk when dead or talking with NPC
+- Fixed log files to be created in ~/.tmw on Linux systems
 
 0.0.11.2  (8 April 2005)
 - Damage text now floats upwards
