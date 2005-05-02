@@ -33,7 +33,8 @@ Logger::Logger(const std::string &logFilename)
 
     if (!logFile.is_open())
     {
-        std::cout << "Warning: error while opening log file.\n";
+        std::cout << "Warning: error while opening " << logFilename <<
+            " for writing.\n";
     }
 }
 

@@ -85,8 +85,17 @@ void Configuration::init(const std::string &filename)
     xmlFreeDoc(doc);
 }
 
-bool Configuration::write()
+void Configuration::write()
 {
+    // Do not attempt to write to file that cannot be opened for writing
+    FILE *testFile = fopen(configPath.c_str(), "w");
+    if (!testFile) {
+        return;
+    }
+    else {
+        fclose(testFile);
+    }
+
     xmlTextWriterPtr writer = xmlNewTextWriterFilename(configPath.c_str(), 0);
 
     if (writer)
@@ -112,11 +121,7 @@ bool Configuration::write()
 
         xmlTextWriterEndDocument(writer);
         xmlFreeTextWriter(writer);
-
-        return true;
     }
-
-    return false;
 }
 
 void Configuration::setValue(const std::string &key, std::string value)

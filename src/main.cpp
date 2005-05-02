@@ -170,10 +170,9 @@ void init_engine()
     // If we can't read it, it doesn't exist !
     if (tmwFile == NULL) {
         // We reopen the file in write mode and we create it
-        printf("No file : %s\n, Creating Default Options...\n", configPath);
         tmwFile = fopen(configPath, "wt");
         if (tmwFile == NULL) {
-            printf("Can't create %s file. Using Defaults.\n", configPath);
+            printf("Can't create %s. Using Defaults.\n", configPath);
         }
         else {
             fclose(tmwFile);
@@ -318,6 +317,10 @@ int main(int argc, char *argv[])
     // compiled version and the shared library actually used.
     xmlInitParser();
     LIBXML_TEST_VERSION;
+
+    // Redirect libxml errors to /dev/null
+    FILE *nullFile = fopen("/dev/null", "w");
+    xmlSetGenericErrorFunc(nullFile, NULL);
 
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);

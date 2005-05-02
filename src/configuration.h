@@ -58,7 +58,7 @@ class Configuration {
          * \brief Writes the current settings back to an ini-file.
          * \param filename Full path to INI file (~/.manaworld/tmw.ini)
          */
-        bool write();
+        void write();
 
         /**
          * \brief Sets an option using a string value.
