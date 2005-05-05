@@ -26,7 +26,8 @@ endif
 
 config.status: configure
 	dh_testdir
-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=\$${prefix}/share/man --infodir=\$${prefix}/share/info
+	./autogen.sh
+	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man6/man --infodir=/usr/share/doc/tmw --datadir=/usr/share/games --bindir=/usr/games
 
 
 build: build-stamp
@@ -61,12 +62,15 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	dh_install
-
-
 # Build architecture-independent files here.
 binary-indep: build install
-# We have nothing to do by default.
+	DESTDIR=$(CURDIR)/debian/tmp/ \
+		$(MAKE) install datadir=/usr/share/games  bindir=/usr/games \
+		desktopdir=/usr/share/applications
+
+	cp data/icons/tmw-icon.xpm debian/tmp/usr/share/pixmaps/tmw.xpm
+	mv data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
+
 
 # Build architecture-dependent files here.
 binary-arch: build install
