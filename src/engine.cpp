@@ -184,6 +184,7 @@ Engine::Engine()
     requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 
             requestTradeDialog->getWidth() - 10, 
             chatWindow->getHeight() + 15);
+    equipmentWindow->setPosition(5,140);
 
     // Set initial window visibility
     chatWindow->setVisible(true);
