@@ -1,6 +1,0 @@
-#!/bin/sh
-
-cd /usr/share/games/tmw;
-./tmw;
-cd -; 
-echo "Thanks for playing The Mana World !";
