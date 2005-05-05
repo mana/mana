@@ -185,10 +185,10 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
 
         // Show Name and Description
         std::string SomeText;
-        SomeText = "Name: " + itemDb.getItemInfo(items->getIndex())->getName();
+        SomeText = "Name: " + itemDb.getItemInfo(items->getId())->getName();
         itemNameLabel->setCaption(SomeText);
         itemNameLabel->adjustSize();
-        SomeText = "Description: " + itemDb.getItemInfo(items->getIndex())->getDescription();
+        SomeText = "Description: " + itemDb.getItemInfo(items->getId())->getDescription();
         itemDescriptionLabel->setCaption(SomeText);
         itemDescriptionLabel->adjustSize();
     }
