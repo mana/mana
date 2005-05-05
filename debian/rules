@@ -69,7 +69,7 @@ binary-indep: build install
 		desktopdir=/usr/share/applications
 
 	cp data/icons/tmw-icon.xpm debian/tmp/usr/share/pixmaps/tmw.xpm
-	mv data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
+	cp data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
 
 
 # Build architecture-dependent files here.
