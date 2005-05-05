@@ -55,8 +55,10 @@ class LoginDialog : public Window, public gcn::ActionListener {
     private:
         gcn::Label *userLabel;
         gcn::Label *passLabel;
+        gcn::Label *serverLabel;
         gcn::TextField *userField;
         gcn::TextField *passField;
+        gcn::TextField *serverField;
         gcn::CheckBox *keepCheck;
         gcn::Button *okButton;
         gcn::Button *cancelButton;

@@ -38,14 +38,16 @@ LoginDialog::LoginDialog():
 {
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
+    serverLabel = new gcn::Label("Server:");
     userField = new TextField("player");
     passField = new PasswordField();
+    serverField = new TextField();
     keepCheck = new CheckBox("Keep", false);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
     registerButton = new Button("Register");
 
-    setContentSize(200, 75);
+    setContentSize(200, 100);
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());
@@ -53,19 +55,23 @@ LoginDialog::LoginDialog():
     passField->setPosition(65, 14 + userLabel->getHeight());
     userField->setWidth(130);
     passField->setWidth(130);
-    keepCheck->setPosition(4, 52);
+    serverField->setWidth(130);
+    serverLabel->setPosition(5,19 + userLabel->getHeight() + passField->getHeight());
+    serverField->setPosition(65,19 + userField->getHeight() + passField->getHeight());
+    keepCheck->setPosition(4, 74);
     keepCheck->setMarked(config.getValue("remember", 0));
     cancelButton->setPosition(
             200 - cancelButton->getWidth() - 5,
-            75 - cancelButton->getHeight() - 5);
+            97 - cancelButton->getHeight() - 5);
     okButton->setPosition(
             cancelButton->getX() - okButton->getWidth() - 5,
-            75 - okButton->getHeight() - 5);
+            97 - okButton->getHeight() - 5);
     registerButton->setPosition(keepCheck->getX() + keepCheck->getWidth() + 10,
-            75 - registerButton->getHeight() - 5);
+            97 - registerButton->getHeight() - 5);
 
     userField->setEventId("ok");
     passField->setEventId("ok");
+    serverField->setEventId("ok");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
     registerButton->setEventId("register");
@@ -79,8 +85,10 @@ LoginDialog::LoginDialog():
 
     add(userLabel);
     add(passLabel);
+    add(serverLabel);
     add(userField);
     add(passField);
+    add(serverField);
     add(keepCheck);
     add(okButton);
     add(cancelButton);
@@ -96,14 +104,19 @@ LoginDialog::LoginDialog():
             passField->requestFocus();
         }
     }
+
+    serverField->setText(config.getValue("host", ""));
+
 }
 
 LoginDialog::~LoginDialog()
 {
     delete userLabel;
     delete passLabel;
+    delete serverLabel;
     delete userField;
     delete passField;
+    delete serverField;
     delete keepCheck;
     delete okButton;
     delete cancelButton;
@@ -119,6 +132,7 @@ void LoginDialog::action(const std::string& eventId)
         config.setValue("remember", keepCheck->isMarked());
         if (keepCheck->isMarked()) {
             config.setValue("username", user);
+            config.setValue("host", serverField->getText());
         } else {
             config.setValue("username", "");
         }
