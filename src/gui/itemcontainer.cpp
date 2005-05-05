@@ -89,6 +89,8 @@ void ItemContainer::draw(gcn::Graphics* graphics)
             std::stringstream ss;
             if(!items[i].equipped)
                 ss << items[i].quantity;
+            else
+                ss << "Eq.";
             graphics->drawText(ss.str(),
                     itemX + 12,
                     itemY + 16,

@@ -88,6 +88,7 @@ class InventoryWindow : public Window, gcn::ActionListener {
         
         int dropItem(int index, int quantity);
 
+        void mouseClick(int x, int y, int button, int count);
 	void mouseMotion(int mx, int my);
         
         ItemContainer *items;
