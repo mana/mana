@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "../graphics.h"
 #include "inventory.h"
 #include "../resources/resourcemanager.h"
@@ -30,12 +31,12 @@
 #include "../being.h"
 #include "../engine.h"
 #include "item_amount.h"
-#include <sstream>
+#include <string>
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setContentSize(322, 100);
+    setContentSize(322, 150);
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
@@ -44,28 +45,39 @@ InventoryWindow::InventoryWindow():
 
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
-    
+
     useButton->setEventId("use");
     dropButton->setEventId("drop");
     useButton->addActionListener(this);
     dropButton->addActionListener(this);
-    
+
+    itemNameLabel = new gcn::Label("Name:");
+    itemDescriptionLabel = new gcn::Label("Description:");
+
+    itemNameLabel->setPosition(8,80);
+    itemDescriptionLabel->setPosition(8,92);
+
     add(useButton);
     add(dropButton);
     add(invenScroll);
+    add(itemNameLabel);
+    add(itemDescriptionLabel);
 
     setResizeable(true);
     setMinWidth(240);
-    setMinHeight(96);
+    setMinHeight(150);
 
     updateWidgets();
     useButton->setSize(48, useButton->getHeight());
+
 }
 
 InventoryWindow::~InventoryWindow()
 {
     delete useButton;
     delete dropButton;
+    delete itemNameLabel;
+    delete itemDescriptionLabel;
 }
 
 void InventoryWindow::draw(gcn::Graphics *graphics)
@@ -160,8 +172,9 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-    //differentiate items & equipment
-    if (items->getIndex() != -1) {
+    if (items->getIndex() != -1)
+    {
+        // Differentiate items & equipment
         if (items->isEquipment(items->getIndex()))
             if (items->isEquipped(items->getIndex()))
                 useButton->setCaption("Unequip");
@@ -169,6 +182,15 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
                 useButton->setCaption("Equip");
         else
             useButton ->setCaption("Use");
+
+        // Show Name and Description
+        std::string SomeText;
+        SomeText = "Name: " + itemDb.getItemInfo(items->getIndex())->getName();
+        itemNameLabel->setCaption(SomeText);
+        itemNameLabel->adjustSize();
+        SomeText = "Description: " + itemDb.getItemInfo(items->getIndex())->getDescription();
+        itemDescriptionLabel->setCaption(SomeText);
+        itemDescriptionLabel->adjustSize();
     }
 }
 
@@ -187,7 +209,7 @@ void InventoryWindow::updateWidgets()
     useButton->setPosition(8, getHeight() - 24);
     dropButton->setPosition(48 + 16, getHeight() - 24);
     items->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    invenScroll->setSize(getWidth() - 16, getHeight() - 32 - 8);
+    invenScroll->setSize(getWidth() - 16, 70);
     setContentSize(getWidth(), getHeight());
 }
 

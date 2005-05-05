@@ -99,6 +99,9 @@ class InventoryWindow : public Window, gcn::ActionListener {
         int useItem(int index, int id);
 	void updateWidgets();
 
+    gcn::Label *itemNameLabel;
+    gcn::Label *itemDescriptionLabel;
+
 };
 
 #endif
