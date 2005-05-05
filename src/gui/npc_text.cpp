@@ -61,13 +61,32 @@ NpcTextDialog::~NpcTextDialog()
 
 void NpcTextDialog::setText(const char *text)
 {
-    textBox->setText(std::string(text));
+    std::string tmp = "";
+    int lineWidth = 0;
+    int w = scrollArea->getWidth();
+    for (unsigned int i = 0; i < strlen(text); i++)
+    {
+        if (text[i] != '\n')
+        {
+            std::string tmpChar = ""; tmpChar += text[i];
+            lineWidth += getFont()->getWidth(tmpChar);
+            if (lineWidth > w) {
+                tmp += '\n';
+                lineWidth = 0;
+            }
+        } else
+        {
+            lineWidth = 0;
+        }
+        tmp += text[i];
+    }
+    textBox->setText(tmp);
 }
 
 void NpcTextDialog::addText(const char *text)
 {
-    textBox->setText(
-            textBox->getText() + std::string(text) + std::string("\n"));
+    std::string tmp = textBox->getText() + std::string(text) + std::string("\n");
+    setText(tmp.c_str());
 }
 
 void NpcTextDialog::action(const std::string& eventId)
