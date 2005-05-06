@@ -43,15 +43,20 @@ BuyDialog::BuyDialog():
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
     okButton->setEnabled(false);
+    itemNameLabel = new gcn::Label("Name:");
+    itemDescLabel = new gcn::Label("Description:");
 
-    setContentSize(260, 175);
+    setContentSize(260, 198);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     quantityLabel->setPosition(215, 120);
-    moneyLabel->setPosition(5, 135);
-    okButton->setPosition(180, 145);
-    cancelButton->setPosition(208, 145);
+    moneyLabel->setPosition(5, 133);
+    okButton->setPosition(180, 174);
+    cancelButton->setPosition(208, 174);
+
+    itemNameLabel->setDimension(gcn::Rectangle(5, 145, 240, 14));
+    itemDescLabel->setDimension(gcn::Rectangle(5, 157, 240, 14));
 
     itemList->setEventId("item");
     slider->setEventId("slider");
@@ -63,12 +68,15 @@ BuyDialog::BuyDialog():
     okButton->addActionListener(this);
     cancelButton->addActionListener(this);
 
+
     add(scrollArea);
     add(slider);
     add(quantityLabel);
     add(moneyLabel);
     add(okButton);
     add(cancelButton);
+    add(itemNameLabel);
+    add(itemDescLabel);
 
     setLocationRelativeTo(getParent());
 }
@@ -81,6 +89,8 @@ BuyDialog::~BuyDialog()
     delete slider;
     delete itemList;
     delete scrollArea;
+    delete itemNameLabel;
+    delete itemDescLabel;
 }
 
 void BuyDialog::setMoney(int amount)
@@ -151,6 +161,21 @@ void BuyDialog::action(const std::string& eventId)
     else if (eventId == "cancel") {
         setVisible(false);
         current_npc = 0;
+    }
+}
+
+void BuyDialog::mouseClick(int x, int y, int button, int count)
+{
+    Window::mouseClick(x, y, button, count);
+
+//    shopInventory[selectedItem];
+    int selectedItem = itemList->getSelected();
+    if (selectedItem > -1)
+    {
+        itemNameLabel->setCaption("Name: " +
+                itemDb.getItemInfo(shopInventory[selectedItem].id)->getName());
+        itemDescLabel->setCaption("Description: " +
+                itemDb.getItemInfo(shopInventory[selectedItem].id)->getDescription());
     }
 }
 

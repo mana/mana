@@ -76,6 +76,11 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int getNumberOfElements();
 
         /**
+         * Mouse callback
+         */
+        void mouseClick(int x, int y, int buton, int count);
+
+        /**
          * Returns the name of item number i in the shop inventory.
          */
         std::string getElementAt(int i);
@@ -85,6 +90,8 @@ class BuyDialog : public Window, public gcn::ActionListener,
         gcn::Button *cancelButton;
         gcn::ListBox *itemList;
         gcn::ScrollArea *scrollArea;
+        gcn::Label *itemNameLabel;
+        gcn::Label *itemDescLabel;
         gcn::Label *moneyLabel;
         gcn::Label *quantityLabel;
         gcn::Slider *slider;
