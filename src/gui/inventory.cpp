@@ -54,8 +54,6 @@ InventoryWindow::InventoryWindow():
     itemNameLabel = new gcn::Label("Name:");
     itemDescriptionLabel = new gcn::Label("Description:");
 
-    itemNameLabel->setPosition(8,80);
-    itemDescriptionLabel->setPosition(8,92);
 
     add(useButton);
     add(dropButton);
@@ -209,7 +207,11 @@ void InventoryWindow::updateWidgets()
     useButton->setPosition(8, getHeight() - 24);
     dropButton->setPosition(48 + 16, getHeight() - 24);
     items->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    invenScroll->setSize(getWidth() - 16, 70);
+    invenScroll->setSize(getWidth() - 16, getHeight() - 72);
+
+    itemNameLabel->setPosition(8, invenScroll->getY() + invenScroll->getHeight() + 4);
+    itemDescriptionLabel->setPosition(8, itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
+
     setContentSize(getWidth(), getHeight());
 }
 
