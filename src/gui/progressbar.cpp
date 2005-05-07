@@ -110,7 +110,7 @@ float ProgressBar::getProgress()
 void ProgressBar::setColor(
         unsigned char newRed, unsigned char newGreen, unsigned char newBlue)
 {
-    if (!(red == newRed) || !(green == newGreen) || !(blue == newBlue))
+    if (red != newRed || green != newGreen || blue != newBlue)
     {
         red = newRed;
         green = newGreen;
