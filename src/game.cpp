@@ -284,7 +284,7 @@ void do_input()
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
-                state = EXIT;
+                quitDialog->setVisible(true);
             }
 
             if (keysym.sym == SDLK_g && !chatWindow->isFocused())

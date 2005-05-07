@@ -32,7 +32,6 @@
 #include "gui/chat.h"
 #include "gui/inventory.h"
 #include "gui/shop.h"
-#include "gui/chat.h"
 #include "gui/inventory.h"
 #include "gui/status.h"
 #include "gui/stats.h"
@@ -44,6 +43,7 @@
 #include "gui/item_amount.h"
 #include "gui/trade.h"
 #include "gui/requesttrade.h"
+#include "gui/confirm_dialog.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -73,6 +73,7 @@ extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
 extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
+extern ConfirmDialog *quitDialog;
 extern std::vector<Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);

@@ -66,7 +66,23 @@ EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 RequestTradeDialog *requestTradeDialog;
+ConfirmDialog *quitDialog;
 std::vector<Spriteset*> monsterset;
+
+/**
+ * Listener used for exitting handling.
+ */
+class ExitListener : public gcn::ActionListener {
+    void action(const std::string &eventId) {
+        if (eventId == "yes") {
+            state = EXIT;
+        }
+        else
+        {
+            quitDialog->setVisible(false);
+        }
+    }
+} exitListener;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -164,6 +180,7 @@ Engine::Engine()
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
     requestTradeDialog = new RequestTradeDialog();
+    quitDialog = new ConfirmDialog("Quit", "Are you sure you want to quit ?", (gcn::ActionListener*)&exitListener);
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -204,6 +221,7 @@ Engine::Engine()
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
     requestTradeDialog->setVisible(false);
+    quitDialog->setVisible(false);
     // Do not focus any text field
     gui->focusNone();
 
@@ -254,6 +272,7 @@ Engine::~Engine()
     delete itemAmountWindow;
     delete tradeWindow;
     delete requestTradeDialog;
+    delete quitDialog;
 
     // Delete sprite sets
     //delete monsterset;
