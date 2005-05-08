@@ -1,3 +1,10 @@
+0.0.13  (... 2005)
+- Added server field to login dialog
+- Added item descriptions to inventory and buy/sell dialogs
+- Added confirmation dialog before quitting
+- Added button to show/hide equipment window
+- Fixed a crash in OpenGL mode
+
 0.0.12  (1 May 2005)
 - Added new map (a cave), tiles, monsters and items
 - Added volume sliders in setup window
