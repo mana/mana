@@ -115,7 +115,9 @@ void ProgressBar::setColor(
         red = newRed;
         green = newGreen;
         blue = newBlue;
-        colorBar->fillWithColor(red, green, blue);
-        colorBar->setAlpha(0.7f);
+        if (colorBar) {
+            colorBar->fillWithColor(red, green, blue);
+            colorBar->setAlpha(0.7f);
+        }
     }
 }
