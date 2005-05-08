@@ -26,13 +26,11 @@
 #include "textfield.h"
 #include "button.h"
 #include "ok_dialog.h"
+#include "being.h"
 #include "../graphics.h"
 #include "../net/protocol.h"
 #include "../resources/resourcemanager.h"
 #include <sstream>
-
-#define NR_HAIR_STYLES 4
-#define NR_HAIR_COLORS 10
 
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,

@@ -28,6 +28,9 @@
 #include <string>
 #include "graphics.h"
 
+#define NR_HAIR_STYLES 5
+#define NR_HAIR_COLORS 10
+
 struct PATH_NODE {
     /**
      * Constructor.

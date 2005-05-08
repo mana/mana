@@ -422,7 +422,7 @@ void Engine::draw()
                     being->text_x - 64, being->text_y - 80);
             }
 
-            if (being->getHairColor() <= 10) {
+            if (being->getHairColor() <= NR_HAIR_COLORS) {
                 int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
                         (being->getHairStyle() - 1));
 

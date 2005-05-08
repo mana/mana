@@ -23,6 +23,7 @@
 
 #include "playerbox.h"
 #include "gui.h"
+#include "../being.h"
 #include "../main.h"
 #include "../resources/resourcemanager.h"
 
@@ -63,7 +64,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
         // Draw his hair
         if (hairColor >= 0 && hairStyle >= 0 &&
-                hairColor < 10 && hairStyle < 4)
+                hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
         {
             int hf = hairColor + 40 * (hairStyle);
             if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
