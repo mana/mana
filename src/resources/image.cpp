@@ -341,9 +341,9 @@ void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
     }
 }
 
-void Image::setAlpha(float alpha)
+void Image::setAlpha(float a)
 {
-    this->alpha = alpha;
+    alpha = a;
 
 #ifndef USE_OPENGL
     // Set the alpha value this image is drawn at
