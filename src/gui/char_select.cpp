@@ -26,7 +26,7 @@
 #include "textfield.h"
 #include "button.h"
 #include "ok_dialog.h"
-#include "being.h"
+#include "../being.h"
 #include "../graphics.h"
 #include "../net/protocol.h"
 #include "../resources/resourcemanager.h"
