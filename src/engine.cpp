@@ -201,6 +201,8 @@ Engine::Engine()
     tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
             chatWindow->getHeight() + 15);
+    buddyWindow->setPosition(10, 
+	    minimap->getHeight() + 30);
     requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 
             requestTradeDialog->getWidth() - 10, 
             chatWindow->getHeight() + 15);
