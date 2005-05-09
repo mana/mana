@@ -21,6 +21,7 @@
  */
 
 #include "buddylist.h"
+#include <iostream>
 
 BuddyList::BuddyList()
 {	
@@ -32,22 +33,50 @@ BuddyList::~BuddyList()
 
 bool BuddyList::addBuddy(const std::string buddy)
 {
-	buddylist.push_back(buddy);	
+	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+	{	
+		// Buddy already exist
+		if(*buddyit == buddy) return false;
+	}
+	
+	// Buddy doesnt exist
+	buddylist.push_back(buddy);
 	return true;
 }
 
 bool BuddyList::removeBuddy(const std::string buddy)
 {
-	return true;
+	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+	{	
+		// Buddy exist, remove it
+		if(*buddyit == buddy) {
+			buddylist.remove(buddy);
+			return true;
+		}
+	}
+	
+	// Buddy doesnt exist
+	return false;
 }
 
 int  BuddyList::getBuddyNumber(void)
 {
-	return 0;
+	int ret = 0;
+	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+		ret++;
+	return ret;
 }
 
 std::string BuddyList::getBuddy(int number)
 {
+	int i = 0;
+	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+	{	
+		if(i == number) 
+			return *buddyit;
+		i++;
+	}
+
 	return "";
 }
 

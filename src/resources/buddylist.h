@@ -60,7 +60,7 @@ class BuddyList {
 
 	private:
 		std::list<std::string> buddylist;		/**< Buddy list */
-		
+		std::list<std::string>::iterator buddyit;       /**< Iterator */
 };
 
 #endif /* _TMW_BUDDYLIST_H */
