@@ -29,6 +29,7 @@
 #include "gui/buy.h"
 #include "gui/sell.h"
 #include "gui/buysell.h"
+#include "gui/buddywindow.h"
 #include "gui/chat.h"
 #include "gui/inventory.h"
 #include "gui/shop.h"
@@ -73,6 +74,7 @@ extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
 extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
+extern BuddyWindow *buddyWindow;
 extern ConfirmDialog *quitDialog;
 extern std::vector<Spriteset*> monsterset;
 char get_x_offset(char, char);

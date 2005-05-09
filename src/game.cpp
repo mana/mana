@@ -280,6 +280,10 @@ void do_input()
                     equipmentWindow->setVisible(!equipmentWindow->isVisible());
                     used = true;
                 }
+		else if (keysym.sym == SDLK_b) {
+                    buddyWindow->setVisible(!buddyWindow->isVisible());
+                    used = true;
+                }
             }
 
             if (event.key.keysym.sym == SDLK_ESCAPE)

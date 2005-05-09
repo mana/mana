@@ -1,6 +1,8 @@
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/spriteset.cpp \
 	      graphic/spriteset.h \
+	      gui/buddywindow.cpp \
+	      gui/buddywindow.h \
 	      gui/button.cpp \
 	      gui/button.h \
 	      gui/buy.cpp \

@@ -30,6 +30,7 @@
 #include "gui/itemcontainer.h"
 #include "gui/item_amount.h"
 #include "gui/trade.h"
+#include "gui/buddywindow.h"
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
@@ -67,6 +68,7 @@ ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 RequestTradeDialog *requestTradeDialog;
 ConfirmDialog *quitDialog;
+BuddyWindow *buddyWindow;
 std::vector<Spriteset*> monsterset;
 
 /**
@@ -179,6 +181,7 @@ Engine::Engine()
     equipmentWindow = new EquipmentWindow();
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
+    buddyWindow = new BuddyWindow();
     requestTradeDialog = new RequestTradeDialog();
     quitDialog = new ConfirmDialog("Quit", "Are you sure you want to quit ?", (gcn::ActionListener*)&exitListener);
     // Initialize window posisitons
@@ -220,6 +223,7 @@ Engine::Engine()
     equipmentWindow->setVisible(false);
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
+    buddyWindow->setVisible(false);
     requestTradeDialog->setVisible(false);
     quitDialog->setVisible(false);
     // Do not focus any text field
@@ -271,6 +275,7 @@ Engine::~Engine()
     delete newSkillWindow;
     delete itemAmountWindow;
     delete tradeWindow;
+    delete buddyWindow;
     delete requestTradeDialog;
     delete quitDialog;
 
