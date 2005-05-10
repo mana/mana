@@ -820,7 +820,7 @@ void do_parse()
                     // later also de-clicked the ok button
                     // handle zeny as well
                     tradeWindow->addItem(
-                            tradeWindow->trade_items->getFreeSlot(), RFIFOW(6),
+                            tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);
                     break;
                 // Trade: Item add response
@@ -837,7 +837,7 @@ void do_parse()
                             }
 
                             tradeWindow->addItem(
-                                    tradeWindow->my_items->getFreeSlot(),
+                                    tradeWindow->myItems->getFreeSlot(),
                                     inventoryWindow->items->getId(RFIFOW(2)),
                                     true, inventoryWindow->items->getQuantity(
                                     RFIFOW(2)),

@@ -57,50 +57,51 @@ class TradeWindow : public Window, gcn::ActionListener {
         /**
          * Add an item the trade window.
          */
-        int addItem(int index, int id, bool own, int quantity, bool equipment);
+        void addItem(int index, int id, bool own, int quantity, bool equipment);
 
         /**
          * Remove a item from the trade window.
          */
-        int removeItem(int id, bool own);
+        void removeItem(int id, bool own);
 
         /**
          * Reset both item containers
          */
-        int reset();
+        void reset();
 
         /**
          * Change quantity of an item.
          */
-        int changeQuantity(int index, bool own, int quantity);
+        void changeQuantity(int index, bool own, int quantity);
 
         /**
          * Increase quantity of an item.
          */
-        int increaseQuantity(int index, bool own, int quantity);
+        void increaseQuantity(int index, bool own, int quantity);
        
         /**
          * Set trade Button disabled
          */
-        int setTradeButton(bool enabled);
+        void setTradeButton(bool enabled);
         
         /**
          * Player received ok message from server
          */
-        int receivedOk(bool own);
+        void receivedOk(bool own);
         
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
         
-        ItemContainer *my_items;
-        ItemContainer *trade_items;
+        ItemContainer *myItems;
+        ItemContainer *partnerItems;
     
     private:
-        gcn::Label *nameLabel;
+        gcn::Label *itemNameLabel;
+        gcn::Label *itemDescriptionLabel;
         gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
-        ScrollArea *myScroll, *tradeScroll;
+        ScrollArea *myScroll, *partnerScroll;
         bool ok_other, ok_me;
 };
 

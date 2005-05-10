@@ -34,17 +34,24 @@
 TradeWindow::TradeWindow():
     Window("Trade: You")
 {
-    setContentSize(322, 130);
+    setContentSize(322, 150);
     
     addButton = new Button("Add");
     okButton = new Button("Ok");
     cancelButton = new Button("Cancel");
     tradeButton = new Button("Trade");
     
-    addButton->setPosition(2, 105);
-    okButton->setPosition(30, 105);
-    cancelButton->setPosition(270, 105);
-    tradeButton->setPosition(230,105);
+    myItems = new ItemContainer();
+    myItems->setPosition(2, 2);
+    
+    myScroll = new ScrollArea(myItems);
+    myScroll->setPosition(8, 8);
+    
+    partnerItems = new ItemContainer();
+    partnerItems->setPosition(2, 58);
+    
+    partnerScroll = new ScrollArea(partnerItems);
+    partnerScroll->setPosition(8, 64);
     
     addButton->setEventId("add");
     okButton->setEventId("ok");
@@ -58,32 +65,32 @@ TradeWindow::TradeWindow():
 
     tradeButton->setEnabled(false);
     
+    itemNameLabel = new gcn::Label("Name:");
+    itemDescriptionLabel = new gcn::Label("Description:");
+    
+    add(myScroll);
+    add(partnerScroll);
     add(addButton);
     add(okButton);
     add(cancelButton);
     add(tradeButton);
+    add(itemNameLabel);
+    add(itemDescriptionLabel);
     
-    nameLabel = new gcn::Label("Other one");
-    nameLabel->setPosition(2, 45);
-   
-    my_items = new ItemContainer();
-    trade_items = new ItemContainer();
-   
-    my_items->setSize(200, 40);
-    trade_items->setSize(200,40);
+    addButton->setPosition(8, getHeight() - 24);
+    okButton->setPosition(48 + 16, getHeight() - 24);
+    tradeButton->setPosition(getWidth() - 92, getHeight() - 24);
+    cancelButton->setPosition(getWidth() - 52, getHeight() - 24);
     
-    my_items->setPosition(2, 2);
-    trade_items->setPosition(2, 60);
+    myItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    myScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+    partnerItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    partnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
     
-    myScroll = new ScrollArea(my_items);
-    tradeScroll = new ScrollArea(trade_items);
+    itemNameLabel->setPosition(8, partnerScroll->getY() + partnerScroll->getHeight() + 4);
+    itemDescriptionLabel->setPosition(8, itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
 
-    myScroll->setPosition(4, 4);
-    tradeScroll->setPosition(4, 62);
-    
-    add(nameLabel);
-    add(myScroll);
-    add(tradeScroll);
+    setContentSize(getWidth(), getHeight());
 }
 
 TradeWindow::~TradeWindow()
@@ -92,7 +99,8 @@ TradeWindow::~TradeWindow()
     delete okButton;
     delete cancelButton;
     delete tradeButton;
-    delete nameLabel;
+    delete itemNameLabel;
+    delete itemDescriptionLabel;
 }
 
 void TradeWindow::draw(gcn::Graphics *graphics)
@@ -102,59 +110,53 @@ void TradeWindow::draw(gcn::Graphics *graphics)
 }
 
 
-int TradeWindow::addItem(int index, int id, bool own, int quantity,
+void TradeWindow::addItem(int index, int id, bool own, int quantity,
         bool equipment) {
     if (own) {
-        my_items->addItem(index, id, quantity, equipment);
+        myItems->addItem(index, id, quantity, equipment);
     } else {
-        trade_items->addItem(index, id, quantity, equipment);
+        partnerItems->addItem(index, id, quantity, equipment);
     }
-        return 0;
 }
 
-int TradeWindow::removeItem(int id, bool own) {
+void TradeWindow::removeItem(int id, bool own) {
     if (own) {
-        my_items->removeItem(id);
+        myItems->removeItem(id);
     } else {
-        trade_items->removeItem(id);
+        partnerItems->removeItem(id);
     }
-    return 0;
 }
 
-int TradeWindow::changeQuantity(int index, bool own, int quantity) {
+void TradeWindow::changeQuantity(int index, bool own, int quantity) {
     if (own) {
-        my_items->changeQuantity(index, quantity);
+        myItems->changeQuantity(index, quantity);
     } else {
-        trade_items->changeQuantity(index, quantity);
+        partnerItems->changeQuantity(index, quantity);
     }
-        return 0;
 }
 
-int TradeWindow::increaseQuantity(int index, bool own, int quantity) {
+void TradeWindow::increaseQuantity(int index, bool own, int quantity) {
     if (own) {
-        my_items->increaseQuantity(index, quantity);
+        myItems->increaseQuantity(index, quantity);
     } else {
-        trade_items->increaseQuantity(index, quantity);
+        partnerItems->increaseQuantity(index, quantity);
     }
-    return 0;
 }
 
-int TradeWindow::reset() {
-    my_items->resetItems();
-    trade_items->resetItems();
+void TradeWindow::reset() {
+    myItems->resetItems();
+    partnerItems->resetItems();
     tradeButton->setEnabled(false);
     okButton->setEnabled(true);
     ok_other = false;
     ok_me = false;
-    return 0;
 }
 
-int TradeWindow::setTradeButton(bool enabled) {
+void TradeWindow::setTradeButton(bool enabled) {
     tradeButton->setEnabled(enabled);
-    return 0;
 }
 
-int TradeWindow::receivedOk(bool own) {
+void TradeWindow::receivedOk(bool own) {
     if (own) {
         ok_me = true;
         if (ok_other) {
@@ -174,7 +176,6 @@ int TradeWindow::receivedOk(bool own) {
             okButton->setEnabled(true);
         }
     }
-    return 0;
 }
 
 void TradeWindow::action(const std::string &eventId)
@@ -185,7 +186,7 @@ void TradeWindow::action(const std::string &eventId)
         // RO a bit to review its trade behaviour
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
-            if (tradeWindow->my_items->getFreeSlot() >= 0) {
+            if (tradeWindow->myItems->getFreeSlot() >= 0) {
 
                 WFIFOW(0) = net_w_value(0x00e8);
                 WFIFOW(2) = net_w_value(inventoryWindow->items->getIndex());
