@@ -80,8 +80,8 @@ void ItemContainer::draw(gcn::Graphics* graphics)
 
         itemX -= itemX % 24;
         if (items[i].quantity > 0) {
-            if (itemDb.getItemInfo(items[i].id)->getImage() > 0) {
-                itemset->spriteset[itemDb.getItemInfo(
+            if (itemDb->getItemInfo(items[i].id)->getImage() > 0) {
+                itemset->spriteset[itemDb->getItemInfo(
                         items[i].id)->getImage() - 1]->draw(
                         screen, x + itemX, y + itemY);
             }

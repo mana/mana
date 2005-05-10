@@ -94,7 +94,7 @@ void SellDialog::addItem(short index, int price)
     ITEM_SHOP item_shop;
 
     sprintf(item_shop.name, "%s %i gp",
-            itemDb.getItemInfo(id)->getName().c_str(), price);
+            itemDb->getItemInfo(id)->getName().c_str(), price);
     item_shop.price = price;
     item_shop.index = index;
     item_shop.id = id;

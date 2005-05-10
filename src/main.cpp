@@ -74,7 +74,7 @@ Music *bgm;
 
 Configuration config;        /**< Xml file configuration reader */
 Logger *logger;              /**< Log object */
-ItemManager itemDb;          /**< Item database object */
+ItemManager *itemDb;          /**< Item database object */
 
 /**
  * Listener used for responding to map start error dialog.
@@ -258,6 +258,9 @@ void init_engine()
 
     //vfmt Pixel format of the video device
 
+    // Initialize item manager
+    itemDb = new ItemManager();
+    
     // Create the graphics context
     graphics = new Graphics();
 

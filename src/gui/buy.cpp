@@ -113,7 +113,7 @@ void BuyDialog::addItem(short id, int price)
     ITEM_SHOP item_shop;
 
     sprintf(item_shop.name, "%s %i gp",
-            itemDb.getItemInfo(id)->getName().c_str(), price);
+            itemDb->getItemInfo(id)->getName().c_str(), price);
     item_shop.price = price;
     item_shop.id = id;
 
@@ -173,9 +173,9 @@ void BuyDialog::mouseClick(int x, int y, int button, int count)
     if (selectedItem > -1)
     {
         itemNameLabel->setCaption("Name: " +
-                itemDb.getItemInfo(shopInventory[selectedItem].id)->getName());
+                itemDb->getItemInfo(shopInventory[selectedItem].id)->getName());
         itemDescLabel->setCaption("Description: " +
-                itemDb.getItemInfo(shopInventory[selectedItem].id)->getDescription());
+                itemDb->getItemInfo(shopInventory[selectedItem].id)->getDescription());
     }
 }
 

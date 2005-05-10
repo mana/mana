@@ -60,7 +60,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     
     for (int i = 0; i < 8; i++) {
         if (equipments[i].id > 0) {
-            itemset->spriteset[itemDb.getItemInfo(
+            itemset->spriteset[itemDb->getItemInfo(
                     equipments[i].id)->getImage() - 1]->draw(
                     screen, x + 24 * (i % 4) + 10, y + 24 * (i / 4) + 25);
         }
@@ -71,7 +71,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(110, 25, 20, 20));
     if (arrows) {
-        itemset->spriteset[itemDb.getItemInfo(arrows)->getImage() - 1]->draw(
+        itemset->spriteset[itemDb->getItemInfo(arrows)->getImage() - 1]->draw(
                 screen, x + 110, y + 25);
         std::stringstream n;
         n << arrowsNumber;

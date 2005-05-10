@@ -109,7 +109,7 @@ extern Map *tiledMap;
 extern Logger *logger;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
-extern ItemManager itemDb;
+extern ItemManager *itemDb;
 extern char *homeDir;
 
 #endif
