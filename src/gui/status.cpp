@@ -26,12 +26,12 @@
 #include "button.h"
 #include "../engine.h"
 
+#define WIN_BORDER 5
+#define CONTROLS_SEPARATOR 4
+
 StatusWindow::StatusWindow():
     Window("%s Lvl: % 2i Job: % 2i")
 {
-    #define WIN_BORDER 5
-    #define CONTROLS_SEPARATOR 4
-    
     hp = new gcn::Label("HP");
     sp = new gcn::Label("SP");
     hpValue = new gcn::Label();
@@ -39,19 +39,19 @@ StatusWindow::StatusWindow():
     gp = new gcn::Label("GP");
     expLabel = new gcn::Label("Exp");
     jobExpLabel = new gcn::Label("Job");
-    
+
     statsButton = new Button("Stats");
     statsButton->setEventId("Stats");
     statsButton->addActionListener(this);
-    
+
     skillsButton = new Button("Skills");
     skillsButton->setEventId("Skills");
     skillsButton->addActionListener(this);
-    
+
     inventoryButton = new Button("Inventory");
     inventoryButton->setEventId("Inventory");
     inventoryButton->addActionListener(this);
-    
+
     setupButton = new Button("Setup");
     setupButton->setEventId("Setup");
     setupButton->addActionListener(this);
@@ -59,7 +59,7 @@ StatusWindow::StatusWindow():
     equipmentButton = new Button("Equip.");
     equipmentButton->setEventId("Equipment");
     equipmentButton->addActionListener(this);
-    
+
     hp->setPosition(WIN_BORDER, WIN_BORDER);
     sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
     healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER, 80, 15, 0, 255, 0);
@@ -70,18 +70,18 @@ StatusWindow::StatusWindow():
     gp->setPosition(170, WIN_BORDER);
     expLabel->setPosition(WIN_BORDER, sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
     jobExpLabel->setPosition(spValue->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
-    
+
     xpBar = new ProgressBar(1.0f, WIN_BORDER, expLabel->getY() + expLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 12, 194, 255);
     jobXpBar = new ProgressBar(1.0f, spValue->getX(), jobExpLabel->getY() + jobExpLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 200, 0, 0);
-    
+
     statsButton->setPosition(WIN_BORDER, xpBar->getY() + xpBar->getHeight() + 2*CONTROLS_SEPARATOR);
     skillsButton->setPosition(statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     inventoryButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     setupButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
     equipmentButton->setPosition(setupButton->getX() + setupButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
-    
+
     setContentSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
-    
+
     add(hp);
     add(sp);
     add(healthBar);
@@ -137,17 +137,17 @@ void StatusWindow::update()
     sprintf(tempstr, "%d / %d", char_info->sp, char_info->max_sp);
     spValue->setCaption(tempstr);
     spValue->adjustSize();
-    
+
     sprintf(tempstr, "Exp: %d / %d",
             (int)char_info->xp, (int)char_info->xpForNextLevel);
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
-    
+
     sprintf(tempstr, "Job Exp: %d / %d",
             (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
-    
+
     if (char_info->hp < int(char_info->max_hp / 3))
     {
         healthBar->setColor(255, 0, 0); // Red
@@ -163,10 +163,10 @@ void StatusWindow::update()
             healthBar->setColor(0, 255, 0); // Green
         }
     }
-    
-    
+
+
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
-    
+
     xpBar->setProgress((float)char_info->xp / (float)char_info->xpForNextLevel);
     jobXpBar->setProgress(
             (float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
@@ -174,26 +174,26 @@ void StatusWindow::update()
     delete[] tempstr;
 }
 
-void StatusWindow::action(const std::string& eventId) {
-
+void StatusWindow::action(const std::string& eventId)
+{
     if (eventId == "Stats") {
         // Show / Hide the stats dialog
-	statsWindow->setVisible(!statsWindow->isVisible());
+        statsWindow->setVisible(!statsWindow->isVisible());
     }
     if (eventId == "Skills") {
         // Show / Hide the skills dialog
-	skillDialog->setVisible(!skillDialog->isVisible());
+        skillDialog->setVisible(!skillDialog->isVisible());
     }
     if (eventId == "Inventory") {
         // Show / Hide the inventory dialog
-	inventoryWindow->setVisible(!inventoryWindow->isVisible());
+        inventoryWindow->setVisible(!inventoryWindow->isVisible());
     }
     if (eventId == "Setup") {
         // Show / Hide the inventory dialog
-	setupWindow->setVisible(true);
+        setupWindow->setVisible(true);
     }
     if (eventId == "Equipment") {
         // Show / Hide the inventory dialog
-    equipmentWindow->setVisible(!equipmentWindow->isVisible());
+        equipmentWindow->setVisible(!equipmentWindow->isVisible());
     }
 }

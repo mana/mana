@@ -26,7 +26,7 @@
 #include "../resources/resourcemanager.h"
 
 ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
-        unsigned char red, unsigned green, unsigned char blue):
+        int red, int green, int blue):
     gcn::Widget(),
     red(red), green(green), blue(blue)
 {
@@ -50,19 +50,10 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     dTopRightBorder = dBorders->getSubImage(7, 0, 4, 4);
     dBottomRightBorder = dBorders->getSubImage(7, 15, 4, 4);
     dBottomLeftBorder = dBorders->getSubImage(0, 15, 4, 4);
-
-    colorBar = Image::create(getWidth() - 8, getHeight() - 8);
-    if (colorBar) {
-        colorBar->fillWithColor(red, green, blue);
-        colorBar->setAlpha(0.7f);
-    }
 }
 
 ProgressBar::~ProgressBar()
 {
-    if (colorBar) {
-        delete colorBar;
-    }
 }
 
 void ProgressBar::draw(gcn::Graphics *graphics)
@@ -70,7 +61,6 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     int absx, absy;
     getAbsolutePosition(absx, absy);
 
-    // We're drawing the bar itself first
     // Background
     dBackground->drawPattern(screen,
             absx + 4, absy + 4,
@@ -91,15 +81,19 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     dRightBorder->drawPattern(screen, absx + getWidth() - 4, absy + 4,
             4, getHeight() - 8);
 
-    if (colorBar) {
-        colorBar->draw(screen, 0, 0, absx + 4, absy + 4,
-                (int)(progress * float(getWidth() - 4)), getHeight() - 8);
+    // The bar
+    if (progress > 0) {
+        graphics->setColor(gcn::Color(red, green, blue, 200));
+        graphics->fillRectangle(gcn::Rectangle(4, 4,
+                    (int)(progress * (getWidth() - 8)), getHeight() - 8));
     }
 }
 
 void ProgressBar::setProgress(float progress)
 {
-    this->progress = progress;
+    if (progress < 0.0f) this->progress = 0.0;
+    else if (progress > 1.0f) this->progress = 1.0;
+    else this->progress = progress;
 }
 
 float ProgressBar::getProgress()
@@ -107,17 +101,9 @@ float ProgressBar::getProgress()
     return progress;
 }
 
-void ProgressBar::setColor(
-        unsigned char newRed, unsigned char newGreen, unsigned char newBlue)
+void ProgressBar::setColor(int red, int green, int blue)
 {
-    if (red != newRed || green != newGreen || blue != newBlue)
-    {
-        red = newRed;
-        green = newGreen;
-        blue = newBlue;
-        if (colorBar) {
-            colorBar->fillWithColor(red, green, blue);
-            colorBar->setAlpha(0.7f);
-        }
-    }
+    this->red = red;
+    this->green = green;
+    this->blue = blue;
 }

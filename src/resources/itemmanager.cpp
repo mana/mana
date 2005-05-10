@@ -42,7 +42,7 @@ ItemManager::ItemManager()
     std::fstream dbFile;
     dbFile.open(TMW_DATADIR "data/items.xml", std::ios::in);
     if (!dbFile.is_open()) {
-        logger->log("Cannot find item database!");
+        logger->error("Cannot find item database (items.xml)!");
         return;
     }
     dbFile.close();
@@ -53,7 +53,7 @@ ItemManager::ItemManager()
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "items")) {
-            logger->log("Warning: Not a valid database file!");
+            logger->error("items.xml is not a valid database file!");
         } else {
             for (node = node->xmlChildrenNode; node != NULL; node = node->next)
             {
@@ -105,7 +105,7 @@ ItemManager::ItemManager()
 
         xmlFreeDoc(doc);
     } else {
-        logger->log("Error while parsing item database!");
+        logger->error("Error while parsing item database (items.xml)!");
     }
 
     unknown = new ItemInfo();
