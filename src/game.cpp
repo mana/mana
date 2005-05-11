@@ -815,10 +815,10 @@ void do_parse()
                     break;
                 // Trade: Item added on trade partner's side
                 case 0x00e9:
-                    // Should do:
-                    // Maybe also handle indentified, etc
-                    // later also de-clicked the ok button
+                    // todo:
+                    // Maybe also handle identified, etc
                     // handle zeny as well
+                    
                     tradeWindow->addItem(
                             tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);

@@ -117,7 +117,12 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
          * Adds a new item.
          */
         void addItem(int index, int id, int quantity, bool equipment);
-
+        
+        /**
+         * Set selected item to -1.
+         */
+        void selectNone();
+        
         /**
          * Reset all item slots.
          */

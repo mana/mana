@@ -90,6 +90,11 @@ class TradeWindow : public Window, gcn::ActionListener {
         void receivedOk(bool own);
         
         /**
+         * Called on mouse click.
+         */
+        void mouseClick(int x, int y, int button, int count);
+        
+        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

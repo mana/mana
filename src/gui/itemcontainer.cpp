@@ -169,6 +169,11 @@ void ItemContainer::resetItems()
     }
 }
 
+void ItemContainer::selectNone()
+{
+    selectedItem = -1;
+}
+
 void ItemContainer::removeItem(int id)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {

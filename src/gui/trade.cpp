@@ -21,6 +21,7 @@
  *  $Id $
  */
 
+#include "../main.h"
 #include "../graphics.h"
 #include "trade.h"
 #include "../resources/resourcemanager.h"
@@ -84,6 +85,7 @@ TradeWindow::TradeWindow():
     
     myItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     myScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+
     partnerItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     partnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
     
@@ -178,12 +180,56 @@ void TradeWindow::receivedOk(bool own) {
     }
 }
 
+void TradeWindow::mouseClick(int x, int y, int button, int count)
+{
+
+    Window::mouseClick(x, y, button, count);
+    
+    // myItems selected
+    if (x >= myScroll->getX() + 3
+        && x <= myScroll->getX() + myScroll->getWidth() - 10
+        && y >= myScroll->getY() + 16
+        && y <= myScroll->getY() + myScroll->getHeight() + 15)
+    {
+        if (myItems->getIndex() != -1)
+        {
+            partnerItems->selectNone();
+            
+            // Show Name and Description
+            std::string SomeText;
+            SomeText = "Name: " + itemDb->getItemInfo(myItems->getId())->getName();
+            itemNameLabel->setCaption(SomeText);
+            itemNameLabel->adjustSize();
+            SomeText = "Description: " + itemDb->getItemInfo(myItems->getId())->getDescription();
+            itemDescriptionLabel->setCaption(SomeText);
+            itemDescriptionLabel->adjustSize();
+        }
+    // partnerItems selected
+    } else if (x >= partnerScroll->getX() + 3
+        && x <= partnerScroll->getX() + partnerScroll->getWidth() - 20
+        && y >= partnerScroll->getY() + 16
+        && y <= partnerScroll->getY() + partnerScroll->getHeight() + 15)
+    {
+        if (partnerItems->getIndex() != -1)
+        {   
+            myItems->selectNone();
+            
+            // Show Name and Description
+            std::string SomeText;
+            SomeText = "Name: " + itemDb->getItemInfo(partnerItems->getId())->getName();
+            itemNameLabel->setCaption(SomeText);
+            itemNameLabel->adjustSize();
+            SomeText = "Description: " + itemDb->getItemInfo(partnerItems->getId())->getDescription();
+            itemDescriptionLabel->setCaption(SomeText);
+            itemDescriptionLabel->adjustSize();
+        }
+    }
+}
+
 void TradeWindow::action(const std::string &eventId)
 {
     
     if (eventId == "add") {
-        // This is still kinda buggy, when ok is clicked, will need to play
-        // RO a bit to review its trade behaviour
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
             if (tradeWindow->myItems->getFreeSlot() >= 0) {
