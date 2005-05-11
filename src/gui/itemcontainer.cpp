@@ -77,7 +77,6 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         int itemX = ((i - 2) % itemWidth) * 24;
         int itemY = ((i - 2) / itemWidth) * 24;
 
-
         itemX -= itemX % 24;
         if (items[i].quantity > 0) {
             if (itemDb->getItemInfo(items[i].id)->getImage() > 0) {
@@ -154,7 +153,7 @@ void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
 
 int ItemContainer::getFreeSlot()
 {
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
+    for (int i = 2; i < INVENTORY_SIZE; i++) {
         if (items[i].id == -1) {
             return i;
         }
@@ -233,4 +232,3 @@ int ItemContainer::getNumberOfSlotsUsed()
 
     return NumberOfFilledSlot;
 }
-
