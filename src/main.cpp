@@ -305,6 +305,7 @@ void exit_engine()
     delete[] homeDir;
     delete gui;
     delete graphics;
+    delete itemDb;
 
     // Shutdown libxml
     xmlCleanupParser();
