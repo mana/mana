@@ -200,7 +200,7 @@ Engine::Engine()
             screen->h - chargeDialog->getHeight() - 15);
     tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
-            chatWindow->getHeight() + 15);
+            inventoryWindow->getY() + inventoryWindow->getHeight());
     buddyWindow->setPosition(10, 
 	    minimap->getHeight() + 30);
     requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 

@@ -289,6 +289,7 @@ void do_input()
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
                 quitDialog->setVisible(true);
+                quitDialog->requestMoveToTop();
             }
 
             if (keysym.sym == SDLK_g && !chatWindow->isFocused())
@@ -815,7 +816,7 @@ void do_parse()
                     break;
                 // Trade: Item added on trade partner's side
                 case 0x00e9:
-                    // todo:
+                    // TODO:
                     // Maybe also handle identified, etc
                     // handle zeny as well
                     
@@ -835,7 +836,7 @@ void do_parse()
                                     inventoryWindow->unequipItem(RFIFOW(2));
                                 }
                             }
-
+                            //TODO: Fix this lines (to handle correct quantity)
                             tradeWindow->addItem(
                                     tradeWindow->myItems->getFreeSlot(),
                                     inventoryWindow->items->getId(RFIFOW(2)),

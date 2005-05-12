@@ -24,6 +24,7 @@
 #include "../main.h"
 #include "../graphics.h"
 #include "trade.h"
+#include "item_amount.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/image.h"
 #include "button.h"
@@ -50,7 +51,7 @@ TradeWindow::TradeWindow():
     
     partnerItems = new ItemContainer();
     partnerItems->setPosition(2, 58);
-    
+
     partnerScroll = new ScrollArea(partnerItems);
     partnerScroll->setPosition(8, 64);
     
@@ -83,14 +84,18 @@ TradeWindow::TradeWindow():
     tradeButton->setPosition(getWidth() - 92, getHeight() - 24);
     cancelButton->setPosition(getWidth() - 52, getHeight() - 24);
     
-    myItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    myItems->setSize(getWidth() - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     myScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
 
-    partnerItems->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    partnerItems->setSize(getWidth() - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     partnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
     
-    itemNameLabel->setPosition(8, partnerScroll->getY() + partnerScroll->getHeight() + 4);
-    itemDescriptionLabel->setPosition(8, itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
+    itemNameLabel->setPosition(8,
+        partnerScroll->getY() + partnerScroll->getHeight() + 4);
+    itemDescriptionLabel->setPosition(8,
+        itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
 
     setContentSize(getWidth(), getHeight());
 }
@@ -180,6 +185,15 @@ void TradeWindow::receivedOk(bool own) {
     }
 }
 
+void TradeWindow::tradeItem(int index, int quantity)
+{
+    WFIFOW(0) = net_w_value(0x00e8);
+    WFIFOW(2) = net_w_value(index);
+    WFIFOL(4) = net_l_value(quantity);
+    WFIFOSET(8);
+    while ((out_size > 0)) flush();
+}
+
 void TradeWindow::mouseClick(int x, int y, int button, int count)
 {
 
@@ -197,10 +211,12 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
             
             // Show Name and Description
             std::string SomeText;
-            SomeText = "Name: " + itemDb->getItemInfo(myItems->getId())->getName();
+            SomeText = "Name: " +
+                itemDb->getItemInfo(myItems->getId())->getName();
             itemNameLabel->setCaption(SomeText);
             itemNameLabel->adjustSize();
-            SomeText = "Description: " + itemDb->getItemInfo(myItems->getId())->getDescription();
+            SomeText = "Description: " +
+                itemDb->getItemInfo(myItems->getId())->getDescription();
             itemDescriptionLabel->setCaption(SomeText);
             itemDescriptionLabel->adjustSize();
         }
@@ -216,10 +232,12 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
             
             // Show Name and Description
             std::string SomeText;
-            SomeText = "Name: " + itemDb->getItemInfo(partnerItems->getId())->getName();
+            SomeText = "Name: " +
+                itemDb->getItemInfo(partnerItems->getId())->getName();
             itemNameLabel->setCaption(SomeText);
             itemNameLabel->adjustSize();
-            SomeText = "Description: " + itemDb->getItemInfo(partnerItems->getId())->getDescription();
+            SomeText = "Description: " +
+                itemDb->getItemInfo(partnerItems->getId())->getDescription();
             itemDescriptionLabel->setCaption(SomeText);
             itemDescriptionLabel->adjustSize();
         }
@@ -233,14 +251,9 @@ void TradeWindow::action(const std::string &eventId)
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
             if (tradeWindow->myItems->getFreeSlot() >= 0) {
-
-                WFIFOW(0) = net_w_value(0x00e8);
-                WFIFOW(2) = net_w_value(inventoryWindow->items->getIndex());
-                WFIFOL(4) = net_l_value(inventoryWindow->items->getQuantity());
-                WFIFOSET(8);
-                //chatWindow->chat_log("add packet sent", BY_SERVER);
-                while ((out_size > 0)) flush();
-                              
+                itemAmountWindow->setUsage(AMOUNT_TRADE_ADD);
+                itemAmountWindow->setVisible(true);
+                itemAmountWindow->requestMoveToTop();
             }
         }
     } else if (eventId == "cancel") {

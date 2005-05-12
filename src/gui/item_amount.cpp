@@ -80,8 +80,27 @@ ItemAmountWindow::~ItemAmountWindow() {
 
 void ItemAmountWindow::resetAmount() {
     amount = 1;
-    itemAmountLabel->setCaption("1");
+    itemAmountLabel->setCaption("1");    
 }
+
+void ItemAmountWindow::setUsage(int usage) {
+    resetAmount();
+    switch (usage) {
+        case AMOUNT_TRADE_ADD:
+            setCaption("Select amount of items to trade.");
+            itemAmountOkButton->setEventId("AddTrade");
+            break;
+        case AMOUNT_ITEM_DROP:
+            setCaption("Select amount of items to drop.");
+            itemAmountOkButton->setEventId("Drop");
+            break;
+        default:
+
+            break;
+    }
+            
+}
+    
 
 void ItemAmountWindow::action(const std::string& eventId) {
     if (eventId == "Cancel")
@@ -91,6 +110,11 @@ void ItemAmountWindow::action(const std::string& eventId) {
     } else if (eventId == "Drop")
     {
         inventoryWindow->dropItem(inventoryWindow->items->getIndex(), amount);
+        resetAmount();
+        setVisible(false);
+    } else if (eventId == "AddTrade")
+    {
+        tradeWindow->tradeItem(inventoryWindow->items->getIndex(), amount);
         resetAmount();
         setVisible(false);
     } else if (eventId == "Plus")
@@ -108,35 +132,10 @@ void ItemAmountWindow::action(const std::string& eventId) {
         if (amount > 1)
         {
             char tmpminus[128];
-            amount = amount - 1;
+            amount--;
             sprintf(tmpminus, "%i", amount);
             itemAmountLabel->setCaption(tmpminus);
             itemAmountLabel->adjustSize();
         }
     }
-    
-    /*WFIFOW(0) = net_w_value(0x00bb);
-
-    if (eventId == "STR") {
-        WFIFOW(2) = net_w_value(0x000d);
-    }
-    if (eventId == "AGI") {
-        WFIFOW(2) = net_w_value(0x000e);
-    }
-    if (eventId == "VIT") {
-        WFIFOW(2) = net_w_value(0x000f);
-    }
-    if (eventId == "INT") {
-        WFIFOW(2) = net_w_value(0x0010);
-    }
-    if (eventId == "DEX") {
-        WFIFOW(2) = net_w_value(0x0011);
-    }
-    if (eventId == "LUK") {
-        WFIFOW(2) = net_w_value(0x0012);
-    }
-
-    flush();
-    WFIFOW(4) = net_b_value(1);
-    WFIFOSET(5); */
 }

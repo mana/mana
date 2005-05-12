@@ -160,8 +160,9 @@ void InventoryWindow::action(const std::string &eventId)
             }                
         }
         else if (eventId == "drop") {
-            itemAmountWindow->resetAmount();
+            itemAmountWindow->setUsage(AMOUNT_ITEM_DROP);
             itemAmountWindow->setVisible(true);
+            itemAmountWindow->requestMoveToTop();
         }       
     }
 }
@@ -214,4 +215,3 @@ void InventoryWindow::updateWidgets()
 
     setContentSize(getWidth(), getHeight());
 }
-
