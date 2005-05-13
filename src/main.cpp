@@ -260,7 +260,7 @@ void init_engine()
 
     // Initialize item manager
     itemDb = new ItemManager();
-    
+
     // Create the graphics context
     graphics = new Graphics();
 

@@ -120,6 +120,7 @@ LoginDialog::~LoginDialog()
     delete keepCheck;
     delete okButton;
     delete cancelButton;
+    delete registerButton;
 }
 
 void LoginDialog::action(const std::string& eventId)
@@ -157,7 +158,7 @@ void LoginDialog::action(const std::string& eventId)
         } else {
             config.setValue("username", "");
         }
-        
+
         // Check login
         if (user.length() == 0) {
             new OkDialog("Error", "Enter a username first");
@@ -171,7 +172,8 @@ void LoginDialog::action(const std::string& eventId)
 }
 
 
-void login() {
+void login()
+{
     LoginDialog *dialog = new LoginDialog();
 
     while (state == LOGIN)

@@ -197,24 +197,6 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
 #endif
 }
 
-Image *Image::create(int width, int height)
-{
-#ifndef USE_OPENGL
-    SDL_Surface *surf =
-        SDL_AllocSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-
-    if (surf) {
-        return new Image(surf);
-    }
-    else {
-        return NULL;
-    }
-#else
-    return NULL;
-#endif
-}
-
-
 void Image::unload()
 {
     // Free the image surface.
@@ -354,21 +336,6 @@ void Image::setAlpha(float a)
 float Image::getAlpha()
 {
     return alpha;
-}
-
-void Image::fillWithColor(
-        unsigned char red, unsigned char green, unsigned blue)
-{
-#ifndef USE_OPENGL
-   if (image) {
-       Uint32 boxColor = SDL_MapRGB(image->format, red, green, blue);
-       SDL_Rect sourceRect;
-       sourceRect.x = sourceRect.y = 0;
-       sourceRect.w = image->w;
-       sourceRect.h = image->h;
-       SDL_FillRect(image, &sourceRect, boxColor);
-   }
-#endif
 }
 
 //============================================================================

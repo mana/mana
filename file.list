@@ -6,7 +6,6 @@ MODULES = src/sound.cpp \
           src/gui/chargedialog.cpp \
           src/gui/char_server.cpp \
           src/gui/char_select.cpp \
-          src/gui/progressbar.cpp \
           src/gui/chat.cpp \
           src/gui/chatinput.cpp \
           src/gui/checkbox.cpp \
@@ -25,6 +24,7 @@ MODULES = src/sound.cpp \
           src/gui/ok_dialog.cpp \
           src/gui/passwordfield.cpp \
           src/gui/playerbox.cpp \
+          src/gui/progressbar.cpp \
           src/gui/radiobutton.cpp \
           src/gui/requesttrade.cpp \
           src/gui/scrollarea.cpp \

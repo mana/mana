@@ -64,11 +64,6 @@ class Image : public Resource
         static Image *load(void* buffer, unsigned int bufferSize, int flags);
 
         /**
-         * Creates a new empty image with given height and width.
-         */
-        static Image *create(int width, int height);
-
-        /**
          * Frees the resources created by SDL.
          */
         virtual void unload();
@@ -125,12 +120,6 @@ class Image : public Resource
          * Returns the alpha value of this image.
          */
         float getAlpha();
-
-        /**
-         * Fills the image with given color.
-         */
-        void fillWithColor(
-                unsigned char red, unsigned char green, unsigned blue);
 
 
     protected:

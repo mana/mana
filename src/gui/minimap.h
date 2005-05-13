@@ -43,10 +43,6 @@ class Minimap : public Window {
          * Draws the minimap.
          */
         void draw(gcn::Graphics *graphics);
-
-    private:
-        /** The Alpha-Blended Surface for the background transluency effect. */
-        SDL_Surface *mapBackground;
 };
 
 #endif

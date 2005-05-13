@@ -20,71 +20,31 @@
  *
  *  $Id$
  */
- 
-#define MINIMAP_W 100
-#define MINIMAP_H 100
 
 #include "minimap.h"
 #include "../being.h"
 
 Minimap::Minimap()
 {
-    setContentSize(MINIMAP_W, MINIMAP_H);
+    setContentSize(100, 100);
     setPosition(20, 20);
-    
-    mapBackground = SDL_AllocSurface(SDL_SWSURFACE, MINIMAP_W, MINIMAP_H,
-            (screen->format->BytesPerPixel*8), 0, 0, 0, 0);
-    Uint32 mapColor = SDL_MapRGB(screen->format, 255, 255, 255);
-    SDL_Rect sourceRect;
-    sourceRect.x = sourceRect.y = 0;
-    sourceRect.w = MINIMAP_W;
-    sourceRect.h = MINIMAP_H;
-
-    if (mapBackground)
-    { 
-        SDL_FillRect(mapBackground, &sourceRect, mapColor);
-        SDL_SetAlpha(mapBackground, SDL_SRCALPHA, 120);
-    }
 }
 
 void Minimap::draw(gcn::Graphics *graphics)
 {
     int x, y;
-    
+
     getAbsolutePosition(x, y);
-    
-    if ((mapBackground->w != getWidth()) || (mapBackground->h != getHeight()))
-    {
-        SDL_FreeSurface(mapBackground);
-        mapBackground = SDL_AllocSurface(SDL_SWSURFACE,
-                getWidth(), getHeight(), 
-                (screen->format->BytesPerPixel * 8), 0, 0, 0, 0);
-        Uint32 mapColor = SDL_MapRGB(screen->format, 52, 149, 210);
 
-        if (mapBackground)
-        { 
-            SDL_Rect sourceRect;
-            sourceRect.x = sourceRect.y = 0;
-            sourceRect.w = getWidth();
-            sourceRect.h = getHeight();
-            SDL_FillRect(mapBackground, &sourceRect, mapColor);
-            SDL_SetAlpha(mapBackground, SDL_SRCALPHA, 120);
-        }
-    }
+    // Transparent background
+    graphics->setColor(gcn::Color(52, 149, 210, 120));
+    graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
 
-    if (mapBackground)
-    {
-        SDL_Rect screenRect;
-        screenRect.w = getWidth();
-        screenRect.h = getHeight();
-        screenRect.x = x;
-        screenRect.y = y;
-
-        SDL_BlitSurface(mapBackground, NULL, screen, &screenRect);
-    }
-
+    // Black border
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+
+    // Player dot
     graphics->setColor(gcn::Color(209, 52, 61));
     graphics->fillRectangle(gcn::Rectangle(player_node->x / 2,
             player_node->y / 2, 3, 3));
