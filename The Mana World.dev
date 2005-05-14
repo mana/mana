@@ -12,9 +12,9 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@__@@__@@_
-Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lphysfs_static_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lphysfs_@@_
 IsCpp=1
-Icon=data\icons\tmw-icon.ico
+Icon=The Mana World.ico
 ExeOutput=
 ObjectOutput=obj
 OverrideOutput=1

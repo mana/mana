@@ -31,6 +31,9 @@
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)
+ */
+
+/**
  * \defgroup Interface User interface related classes (windows, dialogs)
  */
 
