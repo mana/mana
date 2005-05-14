@@ -130,10 +130,14 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
-    // Draw mouse before flipping
     int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-    mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+
+    if (SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
+    {
+        // Draw mouse before flipping
+        mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+    }
 
     if (useOpenGL) {
         glFlush();

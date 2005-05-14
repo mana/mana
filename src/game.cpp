@@ -68,16 +68,6 @@ class DeatchNoticeListener : public gcn::ActionListener {
         }
 } deathNoticeListener;
 
-/**
- * Finite states machine to keep track of player walking status (2 steps
- * linear prediction)
- *
- *  0 = Standing
- *  1 = Walking without confirm packet
- *  2 = Walking with confirm
- */
-char walk_status = 0;
-
 
 Uint32 refresh_time(Uint32 interval, void *param)
 {
@@ -280,7 +270,7 @@ void do_input()
                     equipmentWindow->setVisible(!equipmentWindow->isVisible());
                     used = true;
                 }
-		else if (keysym.sym == SDLK_b) {
+                else if (keysym.sym == SDLK_b) {
                     buddyWindow->setVisible(!buddyWindow->isVisible());
                     used = true;
                 }
@@ -332,7 +322,7 @@ void do_input()
                             case SE:
                                 id = find_floor_item_by_cor(player_node->x+1, player_node->y+1);
                                 break;
-                            default: 
+                            default:
                                 break;
                         }
                         WFIFOW(0) = net_w_value(0x009f);
@@ -637,15 +627,13 @@ void do_parse()
                     }
                     break;
 
-                    // Success to walk request
-                case 0x0087:
-                    if (walk_status == 1) {
-                        if ((unsigned int)(RFIFOL(2)) > (unsigned int)(server_tick)) {
-                            walk_status = 2;
-                            server_tick = RFIFOL(2);
-                        }
-                    }
+                case SMSG_WALK_RESPONSE:
+                    // It is assumed by the client any request to walk actually
+                    // succeeds on the server. The plan is to have a correction
+                    // message when the server senses the client has the wrong
+                    // idea.
                     break;
+
                     // Add new being / stop monster
                 case 0x0078:
                     being = findNode(RFIFOL(2));
@@ -819,7 +807,7 @@ void do_parse()
                     // TODO:
                     // Maybe also handle identified, etc
                     // handle zeny as well
-                    
+
                     tradeWindow->addItem(
                             tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);
@@ -977,7 +965,6 @@ void do_parse()
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
                         current_npc = 0;
-                        walk_status = 0;
                         // Send "map loaded"
                         WFIFOW(0) = net_w_value(0x007d);
                         WFIFOSET(2);
@@ -1108,7 +1095,6 @@ void do_parse()
                                 being->frame = 0;
                                 if (RFIFOB(26) == 2) {
                                     being->action = SIT;
-                                    walk_status = 0;
                                 }
                                 else if (RFIFOB(26) == 3) {
                                     being->action = STAND;

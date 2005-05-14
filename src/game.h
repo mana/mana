@@ -58,7 +58,6 @@
 
 extern char map_path[480];
 extern int fps, frame, current_npc;
-extern char walk_status;
 extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;

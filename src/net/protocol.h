@@ -25,16 +25,17 @@
 #define _TMW_PROTOCOL_H
 
 // Packets from server to client
-#define SMSG_LOGIN_SUCCESS        0x0073    // Logged in, starting location
-#define SMSG_REMOVE_BEING         0x0080    // Died, logged out, teleport, etc.
-#define SMSG_MOVE_BEING           0x007b    // A nearby monster moves
-#define SMSG_PLAYER_UPDATE_1      0x01d8    //
-#define SMSG_PLAYER_UPDATE_2      0x01d9    //
-#define SMSG_MOVE_PLAYER_BEING    0x01da    // A nearby player moves
-#define SMSG_CHANGE_BEING_LOOKS   0x00c3    //
-#define SMSG_BEING_CHAT           0x008d    // A being talks
-#define SMSG_MY_BEING_CHAT        0x008e    // My being talks
-#define SMSG_GM_CHAT              0x009a    // GM announce
+#define SMSG_LOGIN_SUCCESS        0x0073 /**< Logged in, starting location */
+#define SMSG_REMOVE_BEING         0x0080 /**< Died, logged out, teleport ... */
+#define SMSG_MOVE_BEING           0x007b /**< A nearby monster moves */
+#define SMSG_PLAYER_UPDATE_1      0x01d8
+#define SMSG_PLAYER_UPDATE_2      0x01d9
+#define SMSG_MOVE_PLAYER_BEING    0x01da /**< A nearby player moves */
+#define SMSG_CHANGE_BEING_LOOKS   0x00c3
+#define SMSG_BEING_CHAT           0x008d /**< A being talks */
+#define SMSG_MY_BEING_CHAT        0x008e /**< My being talks */
+#define SMSG_GM_CHAT              0x009a /**< GM announce */
+#define SMSG_WALK_RESPONSE        0x0087
 
 
 /** Packet length by id */

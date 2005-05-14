@@ -279,14 +279,8 @@ void Being::nextStep()
         y = newY;
         action = WALK;
         walk_time += speed / 10;
-        if (this == player_node) {
-            walk_status = 1;
-        }
     } else {
         action = STAND;
-        if (this == player_node) {
-            walk_status = 0;
-        }
     }
     frame = 0;
 }
