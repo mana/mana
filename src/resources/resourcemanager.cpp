@@ -213,10 +213,10 @@ void ResourceManager::searchAndAddZipFiles()
     PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
     PHYSFS_addToSearchPath("data", 1);
 
+#ifdef _WIN32
     // Define the path in which to search
     std::string searchString = std::string("data/*.zip");
 
-#ifdef _WIN32
     // Create our find file data structure
     struct _finddata_t findFileInfo;
 

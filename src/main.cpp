@@ -68,6 +68,7 @@ unsigned char screen_mode;
 char *homeDir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
 bool useOpenGL = false;
+volatile int framesToDraw = 0;
 
 Sound sound;
 Music *bgm;
@@ -75,6 +76,15 @@ Music *bgm;
 Configuration config;        /**< Xml file configuration reader */
 Logger *logger;              /**< Log object */
 ItemManager *itemDb;          /**< Item database object */
+
+/**
+ * Allows the next frame to be drawn (part of framerate limiting)
+ */
+Uint32 nextFrame(Uint32 interval, void *param)
+{
+    framesToDraw++;
+    return interval;
+}
 
 /**
  * Listener used for responding to map start error dialog.
@@ -159,6 +169,7 @@ void init_engine()
     config.setValue("remember", 1);
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
+    config.setValue("fpslimit", 0);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
@@ -295,6 +306,15 @@ void init_engine()
         state = ERROR;
         new OkDialog("Sound Engine", err, &initWarningListener);
         logger->log("Warning: %s", err);
+    }
+
+    // Set frame counter when using fps limit
+    int fpsLimit = (int)config.getValue("fpslimit", 0);
+    if (fpsLimit)
+    {
+        if (fpsLimit < 20) fpsLimit = 20;
+        if (fpsLimit > 200) fpsLimit = 200;
+        SDL_AddTimer(1000 / fpsLimit, nextFrame, NULL);
     }
 }
 

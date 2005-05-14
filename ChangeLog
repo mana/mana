@@ -3,6 +3,7 @@
 - Added item descriptions to inventory and buy/sell dialogs
 - Added confirmation dialog before quitting
 - Added button to show/hide equipment window
+- Added framerate limiter to config options
 - Fixed a crash in OpenGL mode
 - Fixed rendering of minimap, progress bars and player sprite in OpenGL mode
 

@@ -68,8 +68,10 @@ class DeatchNoticeListener : public gcn::ActionListener {
         }
 } deathNoticeListener;
 
-
-Uint32 refresh_time(Uint32 interval, void *param)
+/**
+ * Advances game logic counter.
+ */
+Uint32 nextTick(Uint32 interval, void *param)
 {
     tick_time++;
     if (tick_time == MAX_TIME) tick_time = 0;
@@ -80,7 +82,7 @@ Uint32 refresh_time(Uint32 interval, void *param)
  * Lets u only trigger an action every other second
  * tmp. counts fps
  */
-Uint32 second(Uint32 interval, void *param)
+Uint32 nextSecond(Uint32 interval, void *param)
 {
     action_time = true;
     fps = frame;
@@ -107,6 +109,7 @@ void game()
 
     while (state != EXIT)
     {
+        // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
             do_input();
@@ -115,9 +118,12 @@ void game()
         }
         gameTime = tick_time;
 
+        // Draw next frame
         gui->logic();
         engine->draw();
         graphics->updateScreen();
+
+        // Handle network stuff and flush it
         do_parse();
         flush();
     }
@@ -153,8 +159,8 @@ void do_init()
 
     // Initialize timers
     tick_time = 0;
-    SDL_AddTimer(10, refresh_time, NULL);
-    SDL_AddTimer(1000, second, NULL);
+    SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
+    SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
     // Initialize beings
     player_node = new Being();

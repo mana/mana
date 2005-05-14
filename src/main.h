@@ -111,5 +111,6 @@ extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
 extern ItemManager *itemDb;
 extern char *homeDir;
+extern volatile int framesToDraw;
 
 #endif

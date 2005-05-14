@@ -148,4 +148,13 @@ void Graphics::updateScreen()
     else {
         SDL_Flip(screen);
     }
+
+    // Decrement frame counter when using framerate limiting
+    if (framesToDraw > 1) framesToDraw--;
+
+    // Wait while we're not allowed to draw next frame yet
+    while (framesToDraw == 1)
+    {
+        SDL_Delay(10);
+    }
 }
