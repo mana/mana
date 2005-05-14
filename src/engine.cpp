@@ -183,14 +183,15 @@ Engine::Engine()
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
     requestTradeDialog = new RequestTradeDialog();
-    quitDialog = new ConfirmDialog("Quit", "Are you sure you want to quit ?", (gcn::ActionListener*)&exitListener);
+    quitDialog = new ConfirmDialog("Quit", "Are you sure you want to quit ?",
+            (gcn::ActionListener*)&exitListener);
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
     inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
-    itemAmountWindow->setPosition(screen->w - statusWindow->getWidth() - 
-            inventoryWindow->getWidth() - 10, inventoryWindow->getHeight() + 
+    itemAmountWindow->setPosition(screen->w - statusWindow->getWidth() -
+            inventoryWindow->getWidth() - 10, inventoryWindow->getHeight() +
             10);
     statsWindow->setPosition(
             screen->w - 5 - statsWindow->getWidth(),
@@ -201,10 +202,10 @@ Engine::Engine()
     tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
             inventoryWindow->getY() + inventoryWindow->getHeight());
-    buddyWindow->setPosition(10, 
-	    minimap->getHeight() + 30);
-    requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() - 
-            requestTradeDialog->getWidth() - 10, 
+    buddyWindow->setPosition(10,
+            minimap->getHeight() + 30);
+    requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() -
+            requestTradeDialog->getWidth() - 10,
             chatWindow->getHeight() + 15);
     equipmentWindow->setPosition(5,140);
 
@@ -418,12 +419,13 @@ void Engine::draw()
             int pf = being->frame + being->action;
 
             if (being->action == ATTACK) {
-                if(being->weapon > 0)
+                if (being->weapon > 0)
                     pf += 4 * (being->weapon - 1);
             }
 
-            playerset->spriteset[4 * pf + dir]->draw(screen,
-                    being->text_x - 16, being->text_y - 80);
+            playerset->spriteset[pf + 16 * dir]->draw(screen,
+                    being->text_x - 16, being->text_y - 32);
+
             if (being->weapon != 0 && being->action == ATTACK) {
                 weaponset->spriteset[16 * (being->weapon - 1) + 4 * being->frame + dir]->draw(screen,
                     being->text_x - 64, being->text_y - 80);

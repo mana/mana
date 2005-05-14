@@ -277,7 +277,7 @@ void init_engine()
     if (!playerImg) logger->error("Couldn't load player_male_base.png");
     if (!hairImg) logger->error("Couldn't load player_male_hair.png");
 
-    playerset = new Spriteset(playerImg, 64, 120);
+    playerset = new Spriteset(playerImg, 64, 64);
     hairset = new Spriteset(hairImg, 40, 40);
 
     gui = new Gui(graphics);
