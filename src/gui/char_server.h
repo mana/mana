@@ -32,8 +32,6 @@
 
 /**
  * The list model for the server list.
- *
- * \ingroup GUI
  */
 class ServerListModel : public gcn::ListModel {
     public:
@@ -44,7 +42,7 @@ class ServerListModel : public gcn::ListModel {
 /**
  * The server select dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class ServerSelectDialog : public Window, public gcn::ActionListener {
     public:

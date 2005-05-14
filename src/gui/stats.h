@@ -28,6 +28,11 @@
 #include <string>
 #include <sstream>
 
+/**
+ * Window showing player stats.
+ *
+ * \ingroup Interface
+ */
 class StatsWindow : public Window, public gcn::ActionListener {
     public:
         /**

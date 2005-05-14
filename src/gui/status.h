@@ -32,7 +32,7 @@
 /**
  * The player status dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class StatusWindow : public Window, public gcn::ActionListener {
     public:

@@ -36,7 +36,7 @@ typedef struct {
 /**
  * Equipment dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class EquipmentWindow : public Window, gcn::ActionListener {
     public:

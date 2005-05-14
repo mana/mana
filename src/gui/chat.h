@@ -98,7 +98,9 @@ struct CHATSKILL
 };
 
 /**
- * Simple chatlog object.
+ * The chat window.
+ *
+ * \ingroup Interface
  */
 class ChatWindow : public Window, public gcn::ActionListener,
                    public gcn::KeyListener

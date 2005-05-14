@@ -30,7 +30,7 @@
 /**
  * The list model for mode list.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class ModeListModel : public gcn::ListModel {
     public:

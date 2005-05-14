@@ -31,7 +31,13 @@
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2
 
-class ItemAmountWindow : public Window, public gcn::ActionListener {
+/**
+ * Window used for selecting the amount of items to drop.
+ *
+ * \ingroup Interface
+ */
+class ItemAmountWindow : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.
@@ -59,15 +65,8 @@ class ItemAmountWindow : public Window, public gcn::ActionListener {
         void resetAmount();
 
     private:
-        /**
-         * Amount of items to be dropped.
-         */
-        int amount;
-    
-        /** 
-         * Item Amount captions.
-         */
-        gcn::Label *itemAmountLabel;
+        int amount;                      /**< Amount of items to be dropped. */
+        gcn::Label *itemAmountLabel;     /**< Item amount caption. */
 
         /** 
          * Item Amount buttons.

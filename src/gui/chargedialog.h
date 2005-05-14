@@ -29,6 +29,9 @@
  
 #define CHARGE_TIME 1000 // time in milliseconds it takes to charge up an attack
 
+/**
+ * \ingroup Interface
+ */
 class ChargeDialog : public Window, public gcn::ActionListener
 {
     private:

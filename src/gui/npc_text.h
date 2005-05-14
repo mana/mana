@@ -32,7 +32,7 @@
 /**
  * The npc text dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class NpcTextDialog : public Window, public gcn::ActionListener
 {

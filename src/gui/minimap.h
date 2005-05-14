@@ -30,7 +30,7 @@
 /**
  * Minimap dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class Minimap : public Window {
     public:

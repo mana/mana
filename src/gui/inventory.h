@@ -35,7 +35,7 @@
 /**
  * Inventory dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class InventoryWindow : public Window, gcn::ActionListener {
     public:
@@ -80,28 +80,29 @@ class InventoryWindow : public Window, gcn::ActionListener {
          * Increase quantity of an item.
          */
         int increaseQuantity(int index, int quantity);
-        
+
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
+
         int dropItem(int index, int quantity);
 
         void mouseClick(int x, int y, int button, int count);
-	void mouseMotion(int mx, int my);
-        
+        void mouseMotion(int mx, int my);
+
         ItemContainer *items;
-        
+
     private:
         gcn::Button *useButton, *dropButton;
-	ScrollArea *invenScroll;
+        ScrollArea *invenScroll;
+
         int useItem(int index, int id);
-	void updateWidgets();
+        void updateWidgets();    /** Updates widgets size/position */
+        void updateUseButton();  /** Updates use button to selected item */
 
-    gcn::Label *itemNameLabel;
-    gcn::Label *itemDescriptionLabel;
-
+        gcn::Label *itemNameLabel;
+        gcn::Label *itemDescriptionLabel;
 };
 
 #endif

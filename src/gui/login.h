@@ -31,7 +31,7 @@
 /**
  * The login dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class LoginDialog : public Window, public gcn::ActionListener {
     public:

@@ -163,25 +163,20 @@ void InventoryWindow::action(const std::string &eventId)
             itemAmountWindow->setUsage(AMOUNT_ITEM_DROP);
             itemAmountWindow->setVisible(true);
             itemAmountWindow->requestMoveToTop();
-        }       
+        }
+
+        updateUseButton();
     }
 }
 
 void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
+    
+    updateUseButton();
 
     if (items->getIndex() != -1)
     {
-        // Differentiate items & equipment
-        if (items->isEquipment(items->getIndex()))
-            if (items->isEquipped(items->getIndex()))
-                useButton->setCaption("Unequip");
-            else
-                useButton->setCaption("Equip");
-        else
-            useButton ->setCaption("Use");
-
         // Show Name and Description
         std::string SomeText;
         SomeText = "Name: " + itemDb->getItemInfo(items->getId())->getName();
@@ -198,20 +193,40 @@ void InventoryWindow::mouseMotion(int mx, int my)
     int tmpWidth = getWidth(), tmpHeight = getHeight();
     Window::mouseMotion(mx, my);
     if (getWidth() != tmpWidth || getHeight() != tmpHeight) {
-	updateWidgets();
+        updateWidgets();
     }
 }
 
 void InventoryWindow::updateWidgets()
 {
-    //resize widgets
+    // Resize widgets
     useButton->setPosition(8, getHeight() - 24);
     dropButton->setPosition(48 + 16, getHeight() - 24);
-    items->setSize(getWidth() - 24 - 12 - 1, (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
+    items->setSize(getWidth() - 24 - 12 - 1,
+            (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     invenScroll->setSize(getWidth() - 16, getHeight() - 72);
 
     itemNameLabel->setPosition(8, invenScroll->getY() + invenScroll->getHeight() + 4);
-    itemDescriptionLabel->setPosition(8, itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
+    itemDescriptionLabel->setPosition(8,
+            itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
 
     setContentSize(getWidth(), getHeight());
+}
+
+void InventoryWindow::updateUseButton()
+{
+    if (items->getIndex() != -1 && items->isEquipment(items->getIndex()))
+    {
+        if (items->isEquipped(items->getIndex())) {
+            useButton->setCaption("Unequip");
+        }
+        else {
+            useButton->setCaption("Equip");
+        }
+    }
+    else {
+        useButton ->setCaption("Use");
+    }
+    
+    useButton->setEnabled(items->getIndex() != -1);
 }

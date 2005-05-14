@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef __PROGRESSBAR_H__
-#define __PROGRESSBAR_H__
+#ifndef _TMW_PROGRESSBAR_H
+#define _TMW_PROGRESSBAR_H
 
 #include <guichan.hpp>
 #include "../resources/image.h"

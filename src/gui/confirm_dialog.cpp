@@ -69,12 +69,15 @@ void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
         yesButton->addActionListener(listener);
         noButton->addActionListener(listener);
     }
-    
+
     add(userLabel);
     add(yesButton);
     add(noButton);
-    
-    setLocationRelativeTo(getParent());
+
+    if (getParent()) {
+        setLocationRelativeTo(getParent());
+        getParent()->moveToTop(this);
+    }
     yesButton->requestFocus();
 }
 

@@ -30,7 +30,8 @@
 #include "../graphics.h"
 
 /**
- * \defgroup GUI GUI related classes
+ * \defgroup GUI Core GUI related classes (widgets)
+ * \defgroup Interface User interface related classes (windows, dialogs)
  */
 
 /**

@@ -33,7 +33,7 @@
 /**
  * Character selection dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class CharSelectDialog : public Window, public gcn::ActionListener {
     private:

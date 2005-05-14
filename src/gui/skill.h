@@ -35,7 +35,7 @@ struct SKILL {
 /**
  * The skill dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class SkillDialog : public Window, public gcn::ActionListener,
                     public gcn::ListModel

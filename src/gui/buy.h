@@ -32,7 +32,7 @@
 /**
  * The buy dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class BuyDialog : public Window, public gcn::ActionListener,
                   public gcn::ListModel

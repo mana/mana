@@ -36,7 +36,12 @@ struct nSkill {
     short level;
     short exp;
 };
- 
+
+/**
+ * Dialog showing the skills in the planned skill model.
+ *
+ * \ingroup Interface
+ */
 class NewSkillDialog : public Window, public gcn::ActionListener
 {
     private:

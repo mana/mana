@@ -29,7 +29,6 @@
 ItemAmountWindow::ItemAmountWindow():
     Window("Select amount of items to drop.")
 {
-    
     // New labels
     itemAmountLabel = new gcn::Label("1");
 
@@ -98,11 +97,10 @@ void ItemAmountWindow::setUsage(int usage) {
 
             break;
     }
-            
 }
-    
 
-void ItemAmountWindow::action(const std::string& eventId) {
+void ItemAmountWindow::action(const std::string& eventId)
+{
     if (eventId == "Cancel")
     {
         resetAmount();

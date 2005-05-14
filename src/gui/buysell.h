@@ -29,7 +29,7 @@
 /**
  * A dialog to choose between buying or selling at a shop.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class BuySellDialog : public Window, public gcn::ActionListener
 {

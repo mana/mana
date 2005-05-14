@@ -29,11 +29,16 @@
 #include "textbox.h"
 #include "../resources/buddylist.h"
 
+/**
+ * Window showing buddy list.
+ *
+ * \ingroup Interface
+ */
 class BuddyWindow : public Window, public BuddyList,
 		    public gcn::ActionListener
 {
     public:
- 	/**
+        /**
          * Constructor.
          */
         BuddyWindow();
@@ -43,19 +48,19 @@ class BuddyWindow : public Window, public BuddyList,
          */
         ~BuddyWindow();
 
-	/**
+        /**
          * Draws updated list
          */
         void draw(gcn::Graphics *graphics);
 
-	/**
-	* Performs action.
-	*/
-	void action(const std::string &actionId);
+        /**
+         * Performs action.
+         */
+        void action(const std::string &actionId);
 	
     private:
-	TextBox *textlist;
-	ScrollArea *scrollArea;
+        TextBox *textlist;
+        ScrollArea *scrollArea;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */

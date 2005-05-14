@@ -32,7 +32,7 @@
 /**
  * The sell dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class SellDialog : public Window, public gcn::ActionListener,
                   public gcn::ListModel

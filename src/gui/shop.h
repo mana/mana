@@ -24,9 +24,6 @@
 #ifndef _SHOP_H
 #define _SHOP_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
 struct ITEM_SHOP {
     char name[30];
     int price;

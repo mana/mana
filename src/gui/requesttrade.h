@@ -33,7 +33,7 @@
 /**
  * The request trade dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class RequestTradeDialog : public Window, public gcn::ActionListener
 {

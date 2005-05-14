@@ -35,7 +35,7 @@
 /**
  * Trade dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class TradeWindow : public Window, gcn::ActionListener {
     public:

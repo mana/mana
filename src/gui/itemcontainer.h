@@ -44,7 +44,7 @@ struct ITEM_HOLDER
 };
 
 /**
- * An item container. Used to show items in inventory.
+ * An item container. Used to show items in inventory and trade dialog.
  *
  * \ingroup GUI
  */

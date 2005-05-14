@@ -32,7 +32,7 @@
 /**
  * The npc list dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class NpcListDialog : public Window, public gcn::ActionListener,
                       public gcn::ListModel
