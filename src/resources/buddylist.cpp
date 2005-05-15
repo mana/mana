@@ -69,7 +69,7 @@ int  BuddyList::getNumberOfElements(void)
 
 std::string BuddyList::getElementAt(int number)
 {
-	if(number <= buddylist.size()) 
+	if(number <= buddylist.size() - 1) 
 	{	
 		buddyit = buddylist.begin();
 		std::advance(buddyit, number);

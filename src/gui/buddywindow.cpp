@@ -26,9 +26,16 @@ BuddyWindow::BuddyWindow():
 	Window("Buddys")
 {
     setContentSize(80,200);
+    
     listbox = new gcn::ListBox();
     listbox->setListModel(dynamic_cast<ListModel*>(this));
+    
     scrollArea = new ScrollArea(listbox);
+    scrollArea->setDimension(gcn::Rectangle(
+                2, 0, 76, 180));
+    add(scrollArea);
+    
+    addBuddy("Usiu"); // for testing
 }
 
 BuddyWindow::~BuddyWindow()
@@ -41,7 +48,6 @@ void BuddyWindow::draw(gcn::Graphics *graphics)
 {
     // Draw the children
     Window::draw(graphics);
-
 }
 
 void BuddyWindow::action(const std::string& eventId)
