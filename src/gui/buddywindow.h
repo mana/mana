@@ -26,7 +26,6 @@
 #include <guichan.hpp>
 #include "window.h"
 #include "scrollarea.h"
-#include "textbox.h"
 #include "../resources/buddylist.h"
 
 /**
@@ -59,7 +58,7 @@ class BuddyWindow : public Window, public BuddyList,
         void action(const std::string &actionId);
 	
     private:
-        TextBox *textlist;
+	gcn::ListBox *listbox;
         ScrollArea *scrollArea;
 };
 

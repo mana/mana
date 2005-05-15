@@ -24,7 +24,7 @@
 #include <iostream>
 
 BuddyList::BuddyList()
-{	
+{
 }
 
 BuddyList::~BuddyList()
@@ -39,19 +39,22 @@ bool BuddyList::addBuddy(const std::string buddy)
 		if(*buddyit == buddy) return false;
 	}
 	
-	// Buddy doesnt exist
+	// Buddy doesnt exist, add it
 	buddylist.push_back(buddy);
+	
 	return true;
 }
 
 bool BuddyList::removeBuddy(const std::string buddy)
 {
-	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
-	{	
-		// Buddy exist, remove it
-		if(*buddyit == buddy) {
-			buddylist.remove(buddy);
-			return true;
+	if(buddylist.size() > 0) {
+		for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+		{	
+			// Buddy exist, remove it
+			if(*buddyit == buddy) {
+				buddylist.remove(buddy);
+				return true;
+			}
 		}
 	}
 	
@@ -59,24 +62,20 @@ bool BuddyList::removeBuddy(const std::string buddy)
 	return false;
 }
 
-int  BuddyList::getBuddyNumber(void)
+int  BuddyList::getNumberOfElements(void)
 {
-	int ret = 0;
-	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
-		ret++;
-	return ret;
+	return buddylist.size();
 }
 
-std::string BuddyList::getBuddy(int number)
+std::string BuddyList::getElementAt(int number)
 {
-	int i = 0;
-	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+	if(number <= buddylist.size()) 
 	{	
-		if(i == number) 
-			return *buddyit;
-		i++;
+		buddyit = buddylist.begin();
+		std::advance(buddyit, number);
+		return *buddyit;
 	}
-
+	
 	return "";
 }
 

@@ -23,17 +23,17 @@
 #include "buddywindow.h"
 
 BuddyWindow::BuddyWindow():
-	Window("")
+	Window("Buddys")
 {
     setContentSize(80,200);
-    textlist = new TextBox();
-    textlist->setEditable(false);
-    scrollArea = new ScrollArea(textlist);
+    listbox = new gcn::ListBox();
+    listbox->setListModel(dynamic_cast<ListModel*>(this));
+    scrollArea = new ScrollArea(listbox);
 }
 
 BuddyWindow::~BuddyWindow()
 {
-    delete textlist;
+    delete listbox;
     delete scrollArea;
 }
 
@@ -41,6 +41,7 @@ void BuddyWindow::draw(gcn::Graphics *graphics)
 {
     // Draw the children
     Window::draw(graphics);
+
 }
 
 void BuddyWindow::action(const std::string& eventId)

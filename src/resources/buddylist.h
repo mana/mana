@@ -23,10 +23,11 @@
 #ifndef _TMW_BUDDYLIST_H
 #define _TMW_BUDDYLIST_H
 
+#include <guichan.hpp>
 #include <list>
 #include <string>
 
-class BuddyList {
+class BuddyList : public gcn::ListModel {
 	public:
 		/**
 		 * Constructor
@@ -36,27 +37,27 @@ class BuddyList {
 		/**
 		 * Destructor
 		 */
-		~BuddyList();
+		virtual ~BuddyList();
 		
 		/**
-		 * Adds 'buddy' to the list
+		 * Adds buddy to the list
 		 */
 		bool addBuddy(const std::string buddy);
 
 		/**
-		 * Removes 'buddy' from the list
+		 * Removes buddy from the list
 		 */
 		bool removeBuddy(const std::string buddy);
 		
 		/**
 		 * Returns the number of buddy on the list
 		 */
-		int  getBuddyNumber(void);
+		int  getNumberOfElements(void);
 		
 		/**
 		 * Returns the buddy of the number or null
 		 */
-		std::string getBuddy(int number);
+		std::string getElementAt(int number);
 
 	private:
 		std::list<std::string> buddylist;		/**< Buddy list */
