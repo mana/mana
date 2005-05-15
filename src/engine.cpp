@@ -36,8 +36,6 @@
 #include "floor_item.h"
 #include "gui/requesttrade.h"
 
-#define MONSTERS_NUMBER 8
-
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
 char npc_text[1000] = "";
@@ -69,7 +67,7 @@ TradeWindow *tradeWindow;
 RequestTradeDialog *requestTradeDialog;
 ConfirmDialog *quitDialog;
 BuddyWindow *buddyWindow;
-std::vector<Spriteset*> monsterset;
+std::map<int, Spriteset*> monsterset;
 
 /**
  * Listener used for exitting handling.
@@ -252,12 +250,6 @@ Engine::Engine()
     emotionset = new Spriteset(emotionbmp, 19, 19);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
     itemset = new Spriteset(itembitmap, 20, 20);
-
-    // Loads all the monsters
-    for (int i = 0; i < MONSTERS_NUMBER; i++)
-    {
-        monsterset.push_back(NULL);
-    }
 }
 
 Engine::~Engine()

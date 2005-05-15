@@ -52,13 +52,13 @@ ModeListModel::ModeListModel()
     }
     else{
         /* Print valid modes */
-        logger->log("Available Modes");
+        /*logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i) {
             logger->log("  %dx%d", modes[i]->w, modes[i]->h);
             std::stringstream mode;
             mode << (int)modes[i]->w << "x" << (int)modes[i]->h;
             videoModes.push_back(mode.str());
-        }
+        }*/
     }
 }
 

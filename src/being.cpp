@@ -47,7 +47,8 @@ void add_node(Being *being)
         WFIFOSET(6);
     }
     // If the being is a monster then load the monsterset
-    else if (being->job >= 1002 && monsterset[being->job - 1002] == NULL) {
+    else if (being->job >= 1002 && monsterset.find(
+            being->job - 1002) == monsterset.end()) {
         std::stringstream filename;
         filename << "graphics/sprites/monster" << (being->job - 1002) << ".png";
         logger->log("%s",filename.str().c_str());

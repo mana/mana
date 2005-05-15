@@ -76,7 +76,7 @@ extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
 extern ConfirmDialog *quitDialog;
-extern std::vector<Spriteset*> monsterset;
+extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);
 
