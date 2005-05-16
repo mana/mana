@@ -53,6 +53,22 @@ AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
 
 AM_INIT_AUTOMAKE
 
+dnl Check for guichan headers
+AC_CHECK_HEADERS(guichan.hpp, have_guichan_h=yes, have_guichan_h=no)
+if test "$have_guichan_h" != yes; then
+    AC_MSG_ERROR([*** Library found but cannot find headers (guichan.sf.net) *** ])
+fi
+
+dnl Option to enable OpenGL
+AC_ARG_WITH(opengl,[  --with-opengl		  use OpenGL ] )
+if test "x$with_opengl" == "xyes"; then    
+    with_opengl=yes
+    OPENGL_CFLAGS=' -DUSE_OPENGL'
+    OPENGL_LIBS=' -lGL -lguichan-opengl'
+    AC_SUBST(OPENGL_CFLAGS)
+else
+    with_opengl=no
+fi
 
 dnl FIND_PATH(programm-name, variable-name, list of directories,
 dnl     if-not-found, test-parameter)
@@ -141,3 +157,9 @@ docs/Makefile
 ])
 
 AC_OUTPUT
+
+echo
+echo Build with OpenGL........... : $with_opengl
+echo
+echo configure comlete, not type \"make\"
+echo
