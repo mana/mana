@@ -16,6 +16,10 @@ gui_DATA =				\
 	hscroll_right_highlight.png	\
 	hscroll_right_pressed.png	\
 	mouse.png			\
+	menuitemD.png			\
+	menuitemF.png			\
+	menuitemN.png			\
+	menuitemP.png			\
 	radioin.png			\
 	radioout.png			\
 	selection.png			\

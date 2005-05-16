@@ -160,5 +160,5 @@ AC_OUTPUT
 echo
 echo Build with OpenGL: $with_opengl
 echo
-echo configure comlete, not type \"make\"
+echo configure complete, now type \"make\"
 echo
