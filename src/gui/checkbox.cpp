@@ -25,18 +25,45 @@
 #include "../resources/resourcemanager.h"
 #include "../graphics.h"
 
+int CheckBox::instances = 0;
+Image *CheckBox::checkBoxNormal;
+Image *CheckBox::checkBoxChecked;
+Image *CheckBox::checkBoxDisabled;
+Image *CheckBox::checkBoxDisabledChecked;
+
 CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *checkBox = resman->getImage("graphics/gui/checkbox.png");
-    checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
-    checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
-    checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
-    checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
+
+    if (instances == 0)
+    {
+        Image *checkBox = resman->getImage("graphics/gui/checkbox.png");
+        checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
+        checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);
+        checkBoxDisabled = checkBox->getSubImage(18, 0, 9, 10);
+        checkBoxDisabledChecked = checkBox->getSubImage(27, 0, 9, 10);
+        checkBox->decRef();
+    }
+
+    instances++;
 }
 
-void CheckBox::drawBox(gcn::Graphics* graphics) {
+CheckBox::~CheckBox()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        delete checkBoxNormal;
+        delete checkBoxChecked;
+        delete checkBoxDisabled;
+        delete checkBoxDisabledChecked;
+    }
+}
+
+void CheckBox::drawBox(gcn::Graphics* graphics)
+{
     Image *box = NULL;
     int x, y;
 

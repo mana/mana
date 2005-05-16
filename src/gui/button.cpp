@@ -24,31 +24,62 @@
 #include "button.h"
 #include "../resources/resourcemanager.h"
 
+ImageRect Button::button[4];
+int Button::instances = 0;
+
 Button::Button(const std::string& caption):
     gcn::Button(caption)
 {
     setBorderSize(0);
 
-    // Load the skin
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *btn[4];
-    btn[0] = resman->getImage("graphics/gui/button.png");
-    btn[1] = resman->getImage("graphics/gui/buttonhi.png");
-    btn[2] = resman->getImage("graphics/gui/buttonpress.png");
-    btn[3] = resman->getImage("graphics/gui/button_disabled.png");
-    int bgridx[4] = {0, 9, 16, 25};
-    int bgridy[4] = {0, 4, 19, 24};
-    int a, x, y;
+    if (instances == 0)
+    {
+        // Load the skin
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *btn[4];
+        btn[0] = resman->getImage("graphics/gui/button.png");
+        btn[1] = resman->getImage("graphics/gui/buttonhi.png");
+        btn[2] = resman->getImage("graphics/gui/buttonpress.png");
+        btn[3] = resman->getImage("graphics/gui/button_disabled.png");
+        int bgridx[4] = {0, 9, 16, 25};
+        int bgridy[4] = {0, 4, 19, 24};
+        int a, x, y, mode;
 
-    for (int mode = 0; mode < 4; mode++) {
-        a = 0;
-        for (y = 0; y < 3; y++) {
-            for (x = 0; x < 3; x++) {
-                button[mode].grid[a] = btn[mode]->getSubImage(
-                        bgridx[x], bgridy[y],
-                        bgridx[x + 1] - bgridx[x] + 1,
-                        bgridy[y + 1] - bgridy[y] + 1);
-                a++;
+        for (mode = 0; mode < 4; mode++)
+        {
+            a = 0;
+            for (y = 0; y < 3; y++) {
+                for (x = 0; x < 3; x++) {
+                    button[mode].grid[a] = btn[mode]->getSubImage(
+                            bgridx[x], bgridy[y],
+                            bgridx[x + 1] - bgridx[x] + 1,
+                            bgridy[y + 1] - bgridy[y] + 1);
+                    a++;
+                }
+            }
+            btn[mode]->decRef();
+        }
+    }
+
+    instances++;
+}
+
+Button::~Button()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        int a, x, y, mode;
+
+        for (mode = 0; mode < 4; mode++)
+        {
+            a = 0;
+            for (y = 0; y < 3; y++) {
+                for (x = 0; x < 3; x++) {
+                    delete button[mode].grid[a];
+                    a++;
+                }
             }
         }
     }
@@ -102,5 +133,5 @@ void Button::draw(gcn::Graphics* graphics) {
     }
     else {
         graphics->drawText(getCaption(), textX, textY, getAlignment());
-    }    
+    }
 }

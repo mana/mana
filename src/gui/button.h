@@ -41,12 +41,18 @@ class Button : public gcn::Button {
         Button(const std::string& caption);
 
         /**
+         * Destructor.
+         */
+        ~Button();
+
+        /**
          * Draws the button.
          */
         void draw(gcn::Graphics* graphics);
 
     private:
-        ImageRect button[4];
+        static ImageRect button[4];    /**< Button state graphics */
+        static int instances;          /**< Number of button instances */
 };
 
 #endif

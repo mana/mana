@@ -41,15 +41,21 @@ class CheckBox : public gcn::CheckBox {
         CheckBox(const std::string& caption, bool marked = false);
 
         /**
+         * Destructor.
+         */
+        ~CheckBox();
+
+        /**
          * Draws the check box, not the caption.
          */
         void drawBox(gcn::Graphics* graphics);
-        
+
     private:
-        Image *checkBoxNormal;
-        Image *checkBoxChecked;
-        Image *checkBoxDisabled;
-        Image *checkBoxDisabledChecked;
+        static int instances;
+        static Image *checkBoxNormal;
+        static Image *checkBoxChecked;
+        static Image *checkBoxDisabled;
+        static Image *checkBoxDisabledChecked;
 };
 
 #endif

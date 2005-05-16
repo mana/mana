@@ -72,19 +72,16 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         void mousePress(int mx, int my, int button);
 
     private:
-        gcn::Gui *gui;                        /**< The GUI system */
 #ifdef USE_OPENGL
         gcn::ImageLoader *hostImageLoader;    /**< For loading images in GL */
 #endif
         gcn::ImageLoader *imageLoader;        /**< For loading images */
         gcn::ImageFont *guiFont;              /**< The global GUI font */
-
-        bool topHasMouse;
 };
 
-extern Gui *gui;
-extern WindowContainer *guiTop;               // The top container
-extern Graphics *guiGraphics;                 // Graphics driver
-extern gcn::SDLInput *guiInput;               // GUI input
+extern Gui *gui;                              /**< The GUI system */
+extern WindowContainer *guiTop;               /**< The top container */
+extern Graphics *guiGraphics;                 /**< Graphics driver */
+extern gcn::SDLInput *guiInput;               /**< GUI input */
 
 #endif

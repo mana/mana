@@ -24,15 +24,39 @@
 #include "radiobutton.h"
 #include "../resources/resourcemanager.h"
 
+int RadioButton::instances = 0;
+Image *RadioButton::radioNormal;
+Image *RadioButton::radioChecked;
+Image *RadioButton::radioDisabled;
+Image *RadioButton::radioDisabledChecked;
+
 RadioButton::RadioButton(const std::string& caption, const std::string& group,
         bool marked):
     gcn::RadioButton(caption, group, marked)
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-    radioNormal = resman->getImage("graphics/gui/radioout.png");
-    radioChecked = resman->getImage("graphics/gui/radioin.png");
-    radioDisabled = resman->getImage("graphics/gui/radioout.png");
-    radioDisabledChecked = resman->getImage("graphics/gui/radioin.png");
+    if (instances == 0)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        radioNormal = resman->getImage("graphics/gui/radioout.png");
+        radioChecked = resman->getImage("graphics/gui/radioin.png");
+        radioDisabled = resman->getImage("graphics/gui/radioout.png");
+        radioDisabledChecked = resman->getImage("graphics/gui/radioin.png");
+    }
+
+    instances++;
+}
+
+RadioButton::~RadioButton()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        radioNormal->decRef();
+        radioChecked->decRef();
+        radioDisabled->decRef();
+        radioDisabledChecked->decRef();
+    }
 }
 
 void RadioButton::drawBox(gcn::Graphics* graphics)

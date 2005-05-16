@@ -39,15 +39,21 @@ class RadioButton : public gcn::RadioButton {
                 bool marked = false);
 
         /**
+         * Destructor.
+         */
+        ~RadioButton();
+
+        /**
          * Draws the radiobutton, not the caption.
          */
         void drawBox(gcn::Graphics* graphics);
 
     private:
-        Image *radioNormal;
-        Image *radioChecked;
-        Image *radioDisabled;
-        Image *radioDisabledChecked;
+        static int instances;
+        static Image *radioNormal;
+        static Image *radioChecked;
+        static Image *radioDisabled;
+        static Image *radioDisabledChecked;
 };
 
 #endif /* _TMW_RADIOBUTTON_H */
