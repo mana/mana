@@ -64,8 +64,9 @@ AC_ARG_WITH(opengl,[  --with-opengl		  use OpenGL ] )
 if test "x$with_opengl" == "xyes"; then    
     with_opengl=yes
     OPENGL_CFLAGS=' -DUSE_OPENGL'
-    OPENGL_LIBS=' -lGL -lguichan-opengl'
+    OPENGL_LIBS=' -lGL -lguichan_opengl'
     AC_SUBST(OPENGL_CFLAGS)
+    AC_SUBST(OPENGL_LIBS)
 else
     with_opengl=no
 fi
