@@ -272,38 +272,7 @@ void Engine::logic()
     {
         Being *being = (*beingIterator);
 
-        if (being->job < 10) { // A player
-            switch (being->action) {
-                case WALK:
-                    being->frame = (get_elapsed_time(being->walk_time) * 4) /
-                            (being->speed);
-                    if (being->frame >= 4) {
-                         being->nextStep();
-                    }
-                    break;
-                case ATTACK:
-                    being->frame = (get_elapsed_time(being->walk_time) * 4) /
-                            (being->aspd);
-                    if (being->frame >= 4) {
-                         being->nextStep();
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-            if (being->emotion != 0) {
-                being->emotion_time--;
-                if (being->emotion_time == 0) {
-                    being->emotion = 0;
-                }
-            }
-        }
-
-        if (get_elapsed_time(being->speech_time) > 5000)
-            being->showSpeech = false;
-        if (get_elapsed_time(being->damage_time) > 3000)
-            being->showDamage = false;
+        being->logic();
 
         if (being->action == MONSTER_DEAD && being->frame >= 20) {
             delete being;

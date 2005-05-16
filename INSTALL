@@ -46,14 +46,14 @@ with "tmw". By default all files are installed to /usr/local, you can pass a
 different prefix to configure as usual.
 
 
-  EXPERIMENTAL: For those people with modern video cards and fast OpenGL
-  performance, we have been working on OpenGL support. At the moment there is
-  no way to switch between SDL and OpenGL dynamically and you need to do this
-  at compile time. To try this perform step 3 as follows:
+  NOTE: For those people with modern video cards and fast OpenGL performance,
+  we have been working on OpenGL support. At the moment there is no way to
+  switch between SDL and OpenGL dynamically and you need to do this at compile
+  time. To try this perform step 3 as follows:
 
-    "./configure CXXFLAGS=-DUSE_OPENGL"
+    "./configure --with-opengl"
 
-  And rebuild the executable from scratch using "make clean" and then "make".
+  Rebuild the executable from scratch using "make clean" and then "make".
 
 
 3. Notes

@@ -40,8 +40,9 @@ PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
 void add_node(Being *being)
 {
     beings.push_back(being);
+
     // If the being is a player, request the name
-    if (being-> job < 10) {
+    if (being->isPlayer()) {
         WFIFOW(0) = net_w_value(0x0094);
         WFIFOL(2) = net_l_value(RFIFOL(2));
         WFIFOSET(6);
@@ -96,7 +97,7 @@ unsigned int findPlayer(unsigned short x, unsigned short y)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Check if is a player
-        if (being->job < 10 && being->x == x && being->y == y) {
+        if (being->isPlayer() && being->x == x && being->y == y) {
             return being->id;
         }
     }
@@ -109,7 +110,7 @@ unsigned int findMonster(unsigned short x, unsigned short y)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Check if is a MONSTER that is alive
-        if (being->job > 200 && being->x == x && being->y == y &&
+        if (being->isMonster() && being->x == x && being->y == y &&
                 being->action != MONSTER_DEAD)
         {
             return being->id;
@@ -164,11 +165,11 @@ Being::Being():
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
     weapon(0),
+    aspd(350),
+    hairStyle(1), hairColor(1),
     speech_time(0),
     damage_time(0),
-    showSpeech(false), showDamage(false),
-    aspd(350),
-    hairStyle(1), hairColor(1)
+    showSpeech(false), showDamage(false)
 {
     strcpy(name, "");
 }
@@ -204,7 +205,7 @@ void Being::setDestination(int destX, int destY)
 void Being::setHairColor(int color)
 {
     hairColor = color;
-    if (hairColor < 1 || hairColor > 11)
+    if (hairColor < 1 || hairColor > NR_HAIR_COLORS + 1)
     {
         hairColor = 1;
     }
@@ -284,6 +285,41 @@ void Being::nextStep()
         action = STAND;
     }
     frame = 0;
+}
+
+void Being::logic()
+{
+    if (isPlayer())
+    {
+        switch (action) {
+            case WALK:
+                frame = (get_elapsed_time(walk_time) * 4) / speed;
+                if (frame >= 4) {
+                    nextStep();
+                }
+                break;
+            case ATTACK:
+                frame = (get_elapsed_time(walk_time) * 4) / aspd;
+                if (frame >= 4) {
+                    nextStep();
+                }
+                break;
+        }
+
+        if (emotion != 0) {
+            emotion_time--;
+            if (emotion_time == 0) {
+                emotion = 0;
+            }
+        }
+    }
+
+    if (get_elapsed_time(speech_time) > 5000) {
+        showSpeech = false;
+    }
+    if (get_elapsed_time(damage_time) > 3000) {
+        showDamage = false;
+    }
 }
 
 void Being::drawSpeech(Graphics *graphics)

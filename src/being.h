@@ -56,14 +56,11 @@ class Being
         unsigned short speed;
         unsigned char emotion;
         unsigned char emotion_time;
-        unsigned int text_x, text_y; // temp solution to fix speech position
+        unsigned int text_x, text_y;  // temp solution to fix speech position
 
         unsigned short weapon;
         char name[24];
-        unsigned int speech_time;
-        unsigned int damage_time;
-        bool showSpeech, showDamage;
-        unsigned short aspd; // attack speed
+        unsigned short aspd;          /**< Attack speed */
 
         /**
          * Constructor.
@@ -136,6 +133,11 @@ class Being
         void nextStep();
 
         /**
+         * Performs being logic.
+         */
+        void logic();
+
+        /**
          * Draws the speech text above the being.
          */
         void drawSpeech(Graphics *graphics);
@@ -165,6 +167,9 @@ class Being
         std::string speech;
         std::string damage;
         unsigned short hairStyle, hairColor;
+        unsigned int speech_time;
+        unsigned int damage_time;
+        bool showSpeech, showDamage;
 };
 
 /** Add a Being to the list */

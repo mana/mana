@@ -250,7 +250,7 @@ void init_engine()
     const SDL_VideoInfo *vi = SDL_GetVideoInfo();
 
     logger->log("Possible to create hardware surfaces: %s",
-            ((vi->hw_available) ? "yes" : "no "));
+            ((vi->hw_available) ? "yes" : "no"));
     logger->log("Window manager available: %s",
             ((vi->wm_available) ? "yes" : "no"));
     logger->log("Accelerated hardware to hardware blits: %s",
