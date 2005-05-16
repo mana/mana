@@ -23,8 +23,10 @@
 
 #include "menuitem.h"
 #include "../resources/resourcemanager.h"
+#include <guichan/mouseinput.hpp>
 
-MenuItem::MenuItem(const std::string& label)
+MenuItem::MenuItem(const std::string& label):
+    gcn::Button(label)
 {
     setBorderSize(0);
 
@@ -36,7 +38,7 @@ MenuItem::MenuItem(const std::string& label)
     item[0] = resman->getImage("graphics/gui/menuitemN.png");
     item[1] = resman->getImage("graphics/gui/menuitemF.png");
     item[2] = resman->getImage("graphics/gui/menuitemP.png");
-    item[3] = resman->getImage("graphics/gui/menuitemP.png");
+    item[3] = resman->getImage("graphics/gui/menuitemD.png");
 
     int bgridx[4] = {0, 9, 16, 25};
     int bgridy[4] = {0, 4, 19, 24};
@@ -64,14 +66,51 @@ MenuItem::~MenuItem()
 
 void MenuItem::draw(gcn::Graphics* graphics)
 {
-    int mode = 0;
+    int mode;
+
+    if (!isEnabled()) {
+        mode = 3;
+    }
+    else if (isPressed()) {
+        mode = 2;
+    }
+    else if (hasMouse()) {
+        mode = 1;
+    }
+    else {
+        mode = 0;
+    }
+
     int x, y;
     getAbsolutePosition(x, y);
 
     ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          menuitem[mode]);
-}
+    graphics->setColor(getForegroundColor());
 
-void MenuItem::mousePress(int x, int y, int button)
-{
+    int textX;
+    int textY = getHeight() / 2 - getFont()->getHeight() / 2;
+
+    switch (getAlignment()) {
+        case gcn::Graphics::LEFT:
+            textX = 4;
+            break;
+        case gcn::Graphics::CENTER:
+            textX = getWidth() / 2;
+            break;
+        case gcn::Graphics::RIGHT:
+            textX = getWidth() - 4;
+            break;
+        default:
+            throw GCN_EXCEPTION("Button::draw. Uknown alignment.");
+    }
+
+    graphics->setFont(getFont());
+
+    if (isPressed()) {
+        graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());
+    }
+    else {
+        graphics->drawText(getCaption(), textX, textY, getAlignment());
+    }
 }

@@ -28,7 +28,7 @@
 #include "../resources/image.h"
 #include "../graphics.h"
 
-class MenuItem : public gcn::Widget, public gcn::MouseListener
+class MenuItem : public gcn::Button
 {
     public:
         /**
@@ -45,11 +45,6 @@ class MenuItem : public gcn::Widget, public gcn::MouseListener
          * Draws the MenuItem.
          */
         void draw(gcn::Graphics* graphics);
-
-        /**
-         * Handles mouse
-         */
-        void mousePress(int x, int y, int button);
 
     private:
         ImageRect menuitem[4];
