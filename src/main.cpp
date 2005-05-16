@@ -37,7 +37,9 @@
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
 #include <SDL.h>
+#ifdef USE_OPENGL
 #include <SDL_opengl.h>
+#endif
 #include <SDL_image.h>
 
 #ifdef __USE_UNIX98

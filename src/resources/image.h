@@ -26,7 +26,9 @@
 
 #include "resource.h"
 #include <SDL.h>
+#ifdef USE_OPENGL
 #include <SDL_opengl.h>
+#endif
 #include <string>
 
 // This flag causes image alpha channel to be preserved, otherwise masking is

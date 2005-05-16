@@ -34,8 +34,7 @@ Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
-Gui::Gui(Graphics *graphics):
-    hostImageLoader(NULL)
+Gui::Gui(Graphics *graphics)
 {
     // Set graphics
     guiGraphics = graphics;
@@ -46,13 +45,19 @@ Gui::Gui(Graphics *graphics):
     setInput(guiInput);
 
     // Set image loader
+#ifdef USE_OPENGL
     if (useOpenGL) {
         hostImageLoader = new gcn::SDLImageLoader();
         imageLoader = new gcn::OpenGLImageLoader(hostImageLoader);
     }
     else {
+        hostImageLoader = NULL;
         imageLoader = new gcn::SDLImageLoader();
     }
+#else
+    imageLoader = new gcn::SDLImageLoader();
+#endif
+
     gcn::Image::setImageLoader(imageLoader);
 
     // Initialize top GUI widget
@@ -84,9 +89,11 @@ Gui::~Gui()
     delete guiFont;
     delete guiTop;
     delete imageLoader;
+#ifdef USE_OPENGL
     if (hostImageLoader) {
         delete hostImageLoader;
     }
+#endif
     delete guiInput;
 }
 

@@ -32,6 +32,7 @@ SDL_Surface *screen;
 Graphics::Graphics():
     mouseCursor(NULL)
 {
+#ifdef USE_OPENGL
     if (useOpenGL) {
         // Setup OpenGL
         glViewport(0, 0, 800, 600);
@@ -41,6 +42,7 @@ Graphics::Graphics():
         logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
     }
+#endif
 
 #ifdef USE_OPENGL
     setTargetPlane(800, 600);
@@ -139,6 +141,7 @@ void Graphics::updateScreen()
         mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
     }
 
+#ifdef USE_OPENGL
     if (useOpenGL) {
         glFlush();
         glFinish();
@@ -148,6 +151,9 @@ void Graphics::updateScreen()
     else {
         SDL_Flip(screen);
     }
+#else
+    SDL_Flip(screen);
+#endif
 
     // Decrement frame counter when using framerate limiting
     if (framesToDraw > 1) framesToDraw--;

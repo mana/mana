@@ -138,5 +138,5 @@ INCLUDES =					\
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan_sdl -lguichan `pkg-config --libs libxml-2.0`
 tmw_CXXFLAGS = -Wall $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` -fno-inline
-tmw_LDADD = $(OPENGL_LIBS) $(LIBSDL_LIBS) -lguichan -lphysfs
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan $(OPENGL_LIBS) -lphysfs
 tmw_TARGET = tmw

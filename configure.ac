@@ -25,17 +25,21 @@ AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))
 AC_CHECK_LIB([xml2], [xmlInitParser], ,
 AC_MSG_ERROR([ *** Unable to find libxml2 library (xmlsoft.org)]))
 
-AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, , 
+AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
 
-AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, , 
-AC_MSG_ERROR([ *** Unable to find SDL_mixer library 
+AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, ,
+AC_MSG_ERROR([ *** Unable to find SDL_mixer library
 (http://www.libsdl.org/projects/SDL_mixer/)]))
 
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
+
+# Check for guichan headers
+AC_CHECK_HEADERS([guichan.hpp], ,
+AC_MSG_ERROR([*** Library found but cannot find headers (guichan.sf.net) *** ]))
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -53,15 +57,9 @@ AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
 
 AM_INIT_AUTOMAKE
 
-dnl Check for guichan headers
-AC_CHECK_HEADERS(guichan.hpp, have_guichan_h=yes, have_guichan_h=no)
-if test "$have_guichan_h" != yes; then
-    AC_MSG_ERROR([*** Library found but cannot find headers (guichan.sf.net) *** ])
-fi
-
-dnl Option to enable OpenGL
-AC_ARG_WITH(opengl,[  --with-opengl		  use OpenGL ] )
-if test "x$with_opengl" == "xyes"; then    
+# Option to enable OpenGL
+AC_ARG_WITH(opengl,[  --with-opengl           use OpenGL ] )
+if test "x$with_opengl" == "xyes"; then
     with_opengl=yes
     OPENGL_CFLAGS=' -DUSE_OPENGL'
     OPENGL_LIBS=' -lGL -lguichan_opengl'
@@ -71,8 +69,8 @@ else
     with_opengl=no
 fi
 
-dnl FIND_PATH(programm-name, variable-name, list of directories,
-dnl     if-not-found, test-parameter)
+# FIND_PATH(programm-name, variable-name, list of directories,
+#     if-not-found, test-parameter)
 AC_DEFUN(FIND_PATH,
 [
    AC_MSG_CHECKING([for $1])
@@ -160,7 +158,7 @@ docs/Makefile
 AC_OUTPUT
 
 echo
-echo Build with OpenGL........... : $with_opengl
+echo Build with OpenGL: $with_opengl
 echo
 echo configure comlete, not type \"make\"
 echo
