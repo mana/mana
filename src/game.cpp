@@ -54,10 +54,14 @@ int startX = 0, startY = 0;
 int gameTime = 0;
 
 OkDialog *deathNotice = NULL;
+ConfirmDialog *exitConfirm = NULL;
 
 #define EMOTION_TIME 150
 #define MAX_TIME 10000
 
+/**
+ * Listener used for handling death message.
+ */
 class DeatchNoticeListener : public gcn::ActionListener {
     public:
         void action(const std::string &eventId) {
@@ -67,6 +71,18 @@ class DeatchNoticeListener : public gcn::ActionListener {
             deathNotice = NULL;
         }
 } deathNoticeListener;
+
+/**
+ * Listener used for exitting handling.
+ */
+class ExitListener : public gcn::ActionListener {
+    void action(const std::string &eventId) {
+        if (eventId == "yes") {
+            state = EXIT;
+        }
+        exitConfirm = NULL;
+    }
+} exitListener;
 
 /**
  * Advances game logic counter.
@@ -284,8 +300,13 @@ void do_input()
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
             {
-                quitDialog->setVisible(true);
-                quitDialog->requestMoveToTop();
+                // Spawn confirm dialog for quitting
+                if (!exitConfirm)
+                {
+                    exitConfirm = new ConfirmDialog(
+                            "Quit", "Are you sure you want to quit?",
+                            (gcn::ActionListener*)&exitListener);
+                }
             }
 
             if (keysym.sym == SDLK_g && !chatWindow->isFocused())

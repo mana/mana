@@ -91,7 +91,6 @@ ConfirmDialog::~ConfirmDialog()
 void ConfirmDialog::action(const std::string &eventId)
 {
     if (eventId == "yes" || eventId == "no") {
-        // I prefer it to be a window, not a dialog
-        //windowContainer->scheduleDelete(this); 
+        windowContainer->scheduleDelete(this);
     }
 }
