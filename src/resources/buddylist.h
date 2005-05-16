@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_BUDDYLIST_H
@@ -28,41 +29,40 @@
 #include <string>
 
 class BuddyList : public gcn::ListModel {
-	public:
-		/**
-		 * Constructor
-		 */
-		BuddyList();
+    public:
+        /**
+         * Constructor
+         */
+        BuddyList();
 
-		/**
-		 * Destructor
-		 */
-		virtual ~BuddyList();
-		
-		/**
-		 * Adds buddy to the list
-		 */
-		bool addBuddy(const std::string buddy);
+        /**
+         * Destructor
+         */
+        virtual ~BuddyList();
 
-		/**
-		 * Removes buddy from the list
-		 */
-		bool removeBuddy(const std::string buddy);
-		
-		/**
-		 * Returns the number of buddy on the list
-		 */
-		int  getNumberOfElements(void);
-		
-		/**
-		 * Returns the buddy of the number or null
-		 */
-		std::string getElementAt(int number);
+        /**
+         * Adds buddy to the list
+         */
+        bool addBuddy(const std::string buddy);
 
-	private:
-		std::list<std::string> buddylist;		/**< Buddy list */
-		std::list<std::string>::iterator buddyit;       /**< Iterator */
+        /**
+         * Removes buddy from the list
+         */
+        bool removeBuddy(const std::string buddy);
+
+        /**
+         * Returns the number of buddy on the list
+         */
+        int  getNumberOfElements(void);
+
+        /**
+         * Returns the buddy of the number or null
+         */
+        std::string getElementAt(int number);
+
+    private:
+        std::list<std::string> buddylist;               /**< Buddy list */
+        std::list<std::string>::iterator buddyit;       /**< Iterator */
 };
 
 #endif /* _TMW_BUDDYLIST_H */
-

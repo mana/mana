@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "buddylist.h"
@@ -33,49 +34,48 @@ BuddyList::~BuddyList()
 
 bool BuddyList::addBuddy(const std::string buddy)
 {
-	for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
-	{	
-		// Buddy already exist
-		if(*buddyit == buddy) return false;
-	}
-	
-	// Buddy doesnt exist, add it
-	buddylist.push_back(buddy);
-	
-	return true;
+    for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+    {
+        // Buddy already exist
+        if (*buddyit == buddy) return false;
+    }
+
+    // Buddy doesnt exist, add it
+    buddylist.push_back(buddy);
+
+    return true;
 }
 
 bool BuddyList::removeBuddy(const std::string buddy)
 {
-	if(buddylist.size() > 0) {
-		for(buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
-		{	
-			// Buddy exist, remove it
-			if(*buddyit == buddy) {
-				buddylist.remove(buddy);
-				return true;
-			}
-		}
-	}
-	
-	// Buddy doesnt exist
-	return false;
+    if (buddylist.size() > 0) {
+        for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+        {
+            // Buddy exist, remove it
+            if (*buddyit == buddy) {
+                buddylist.remove(buddy);
+                return true;
+            }
+        }
+    }
+
+    // Buddy doesnt exist
+    return false;
 }
 
 int  BuddyList::getNumberOfElements(void)
 {
-	return buddylist.size();
+    return buddylist.size();
 }
 
 std::string BuddyList::getElementAt(int number)
 {
-	if(number <= buddylist.size() - 1) 
-	{	
-		buddyit = buddylist.begin();
-		std::advance(buddyit, number);
-		return *buddyit;
-	}
-	
-	return "";
-}
+    if (number <= buddylist.size() - 1)
+    {
+        buddyit = buddylist.begin();
+        std::advance(buddyit, number);
+        return *buddyit;
+    }
 
+    return "";
+}

@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_MENUITEM_H
@@ -29,29 +30,29 @@
 
 class MenuItem : public gcn::Widget, public gcn::MouseListener
 {
-	public:
-		/**
-		 * Constructor.
-		 */
-		MenuItem(const std::string& label);
+    public:
+        /**
+         * Constructor.
+         */
+        MenuItem(const std::string& label);
 
-		/**
-		 * Destructor.
-		 */
-		~MenuItem();
-		
-		/**
-         	 * Draws the MenuItem.
-         	 */
-        	void draw(gcn::Graphics* graphics);
+        /**
+         * Destructor.
+         */
+        ~MenuItem();
 
-		/**
-		 * Handles mouse
-		 */
-		void mousePress(int x, int y, int button);
-		
-	private:
-		ImageRect menuitem[4];
-};	
+        /**
+         * Draws the MenuItem.
+         */
+        void draw(gcn::Graphics* graphics);
+
+        /**
+         * Handles mouse
+         */
+        void mousePress(int x, int y, int button);
+
+    private:
+        ImageRect menuitem[4];
+};
+
 #endif /* _TMW_MENUITEM_H */
-

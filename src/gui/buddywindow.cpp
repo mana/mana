@@ -18,26 +18,28 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "buddywindow.h"
 #include "menuitem.h"
 
 BuddyWindow::BuddyWindow():
-	Window("Buddys")
+    Window("Buddys")
 {
-    setContentSize(80,200);
-    
+    setContentSize(80, 200);
+
     listbox = new gcn::ListBox();
     listbox->setListModel(dynamic_cast<ListModel*>(this));
-    
+
     scrollArea = new ScrollArea(listbox);
     scrollArea->setDimension(gcn::Rectangle(
                 2, 0, 76, 180));
     add(scrollArea);
-    
+
     addBuddy("Usiu"); // for testing
     MenuItem *item = new MenuItem("Test");
+    item->setPosition(0, 200 - item->getHeight());
     add(item);
 }
 
@@ -55,6 +57,5 @@ void BuddyWindow::draw(gcn::Graphics *graphics)
 
 void BuddyWindow::action(const std::string& eventId)
 {
-	
 }
 

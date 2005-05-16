@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_BUDDYWINDOW_H
@@ -34,7 +35,7 @@
  * \ingroup Interface
  */
 class BuddyWindow : public Window, public BuddyList,
-		    public gcn::ActionListener
+                    public gcn::ActionListener
 {
     public:
         /**
@@ -56,11 +57,10 @@ class BuddyWindow : public Window, public BuddyList,
          * Performs action.
          */
         void action(const std::string &actionId);
-	
+
     private:
-	gcn::ListBox *listbox;
+        gcn::ListBox *listbox;
         ScrollArea *scrollArea;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */
-
