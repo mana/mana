@@ -25,7 +25,7 @@
 
 Resource::Resource():
     referenceCount(0)
-{ 
+{
 }
 
 bool Resource::isLoaded() const
@@ -49,7 +49,7 @@ bool Resource::decRef()
     --referenceCount;
 
     if (!referenceCount) {
-        delete this;
+        //delete this;
         return true;
     }
 

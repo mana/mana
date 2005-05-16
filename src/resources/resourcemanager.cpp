@@ -210,8 +210,8 @@ void ResourceManager::deleteInstance()
 void ResourceManager::searchAndAddZipFiles()
 {
     // Add the main data directory to our PhysicsFS search path
-    PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
     PHYSFS_addToSearchPath("data", 1);
+    PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
 
 #ifdef _WIN32
     // Define the path in which to search
