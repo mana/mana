@@ -251,9 +251,14 @@ void TradeWindow::action(const std::string &eventId)
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
             if (tradeWindow->myItems->getFreeSlot() >= 0) {
-                itemAmountWindow->setUsage(AMOUNT_TRADE_ADD);
-                itemAmountWindow->setVisible(true);
-                itemAmountWindow->requestMoveToTop();
+                if (inventoryWindow->items->getQuantity() == 1) {
+                    tradeItem(inventoryWindow->items->getIndex(), 1);
+                }
+                else {
+                    itemAmountWindow->setUsage(AMOUNT_TRADE_ADD);
+                    itemAmountWindow->setVisible(true);
+                    itemAmountWindow->requestMoveToTop();
+                }
             }
         }
     } else if (eventId == "cancel") {
