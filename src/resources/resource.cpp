@@ -35,7 +35,7 @@ bool Resource::isLoaded() const
 
 void Resource::incRef()
 {
-    ++referenceCount;
+    referenceCount++;
 }
 
 bool Resource::decRef()
@@ -46,12 +46,20 @@ bool Resource::decRef()
      * this function until that is solved. Probably we'll have to make it
      * so that decrementing count goes through resource manager too.
      */
-    --referenceCount;
+    if (referenceCount > 0)
+    {
+        referenceCount--;
 
-    if (!referenceCount) {
-        //delete this;
+        if (referenceCount == 0) {
+            //delete this;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    else {
+        // Warning: Shouldn't get here!
         return true;
     }
-
-    return false;
 }
