@@ -22,7 +22,7 @@
  */
 
 #include "buddywindow.h"
-#include "menuitem.h"
+#include "menu.h"
 
 BuddyWindow::BuddyWindow():
     Window("Buddys")
@@ -38,9 +38,6 @@ BuddyWindow::BuddyWindow():
     add(scrollArea);
 
     addBuddy("Usiu"); // for testing
-    MenuItem *item = new MenuItem("Test");
-    item->setPosition(0, 200 - item->getHeight());
-    add(item);
 }
 
 BuddyWindow::~BuddyWindow()

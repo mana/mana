@@ -23,8 +23,23 @@
 
 #include "menu.h"
 
-Menu::Menu(const std::vector<MenuItem>& items)
+Menu::Menu(const std::string& menulabel, std::vector<MenuItem>& items):
+    Window(menulabel)
 {
-
+    setContentSize(40,60);
+    fill(items);
 }
 
+Menu::~Menu()
+{
+}
+
+void Menu::fill(std::vector<MenuItem>& items)
+{   
+    for(std::vector<MenuItem>::iterator item = items.begin();
+            item != items.end(); ++item) 
+    {
+        item->setPosition(0,0);
+        add(&*item);
+    }
+}

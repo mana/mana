@@ -66,6 +66,7 @@ ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 RequestTradeDialog *requestTradeDialog;
 BuddyWindow *buddyWindow;
+Menu *menu;
 std::map<int, Spriteset*> monsterset;
 
 char hairtable[16][4][2] = {
@@ -165,7 +166,12 @@ Engine::Engine()
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
     requestTradeDialog = new RequestTradeDialog();
-
+    
+    /* Menu items */
+    std::vector<MenuItem> items;
+    items.push_back(MenuItem("First"));
+    menu = new Menu("Menu", items);
+    
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -189,6 +195,7 @@ Engine::Engine()
             requestTradeDialog->getWidth() - 10,
             chatWindow->getHeight() + 15);
     equipmentWindow->setPosition(5,140);
+    menu->setPosition(5,140);
 
     // Set initial window visibility
     chatWindow->setVisible(true);
@@ -209,6 +216,7 @@ Engine::Engine()
     tradeWindow->setVisible(false);
     buddyWindow->setVisible(false);
     requestTradeDialog->setVisible(false);
+    menu->setVisible(false);
 
     // Do not focus any text field
     gui->focusNone();

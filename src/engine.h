@@ -42,6 +42,7 @@
 #include "gui/equipment.h"
 #include "gui/chargedialog.h"
 #include "gui/item_amount.h"
+#include "gui/menu.h"
 #include "gui/trade.h"
 #include "gui/requesttrade.h"
 #include "gui/confirm_dialog.h"
@@ -76,6 +77,7 @@ extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
 extern ConfirmDialog *quitDialog;
+extern Menu *menu;
 extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);

@@ -296,6 +296,10 @@ void do_input()
                     buddyWindow->setVisible(!buddyWindow->isVisible());
                     used = true;
                 }
+		else if (keysym.sym == SDLK_m) {
+                    menu->setVisible(!menu->isVisible());
+                    used = true;
+                }
             }
 
             if (event.key.keysym.sym == SDLK_ESCAPE)

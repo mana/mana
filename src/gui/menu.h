@@ -26,17 +26,22 @@
 
 #include <guichan.hpp>
 #include "menuitem.h"
+#include "window.h"
 
-class Menu : public gcn::Widget
-{
+class Menu : public Window {
     public:
         /**
          * Constructor.
          */
-        Menu(const std::vector<MenuItem>& items);
+        Menu(const std::string& menulabel, std::vector<MenuItem>& items);
 
-    private:
-        int i;
+        /**
+         * Destructor.
+         */
+        ~Menu();
+
+        void fill(std::vector<MenuItem>& items);
+
 };
 
 #endif /* _TMW_MENU_H */
