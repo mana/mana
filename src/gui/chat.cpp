@@ -231,7 +231,6 @@ void ChatWindow::action(const std::string& eventId)
 
         // Remove focus and hide input
         gui->focusNone();
-        chatInput->setVisible(false);
     }
 }
 

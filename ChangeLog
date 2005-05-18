@@ -4,6 +4,8 @@
 - Added confirmation dialog before quitting
 - Added button to show/hide equipment window
 - Added framerate limiter to config options
+- Upgraded to Guichan 0.4.0
+- Dialogs are now modal when appropriate
 - Fixed a crash in OpenGL mode
 - Fixed rendering of minimap, progress bars and player sprite in OpenGL mode
 

@@ -47,65 +47,12 @@ class WindowContainer : public gcn::Container {
         void logic();
 
         /**
-         * Handles mouse input messages. Differs from standard behaviour in
-         * that widget with mouse doesn't change while a button is pressed.
-         */
-        //void _mouseInputMessage(const gcn::MouseInput &mouseInput);
-
-        /**
-         * Adds a widget. The widget can be set to be modal, which will ensure
-         * only that widget will receive input.
-         */
-        void add(gcn::Widget *widget);
-
-        /**
-         * Adds a window. The window can be set to be modal, which will ensure
-         * only that window will receive input. Note that when a modal widget
-         * has already been set, a new window can only be made model when the
-         * previously modal window is its parent.
-         */
-        void WindowContainer::add(Window *window, bool modal);
-
-        /**
-         * Removes a widget.
-         */
-        void remove(gcn::Widget *widget);
-
-        /**
-         * This function is called by the containers children when they get
-         * destroyed.
-         */
-        void _announceDeath(gcn::Widget *widget);
-
-        /**
-         * Clears the container of all widgets.
-         */
-        void clear();
-
-        /**
-         * Sets the modal widget. This will ensure only this widget will
-         * receive mouse or keyboard input events.
-         *
-         * @see Window::Window
-         */
-        void setModalWindow(Window *window);
-
-        /**
-         * Returns the current modal widget, or <code>NULL</code> if there
-         * is none.
-         */
-        gcn::Widget *getModalWindow();
-
-        /**
          * Schedule a widget for deletion. It will be deleted at the start of
          * the next logic update.
          */
         void scheduleDelete(gcn::Widget *widget);
 
     protected:
-        bool mouseDown;
-        Window *modalWindow;
-
         std::list<gcn::Widget*> deathList;
 };
 

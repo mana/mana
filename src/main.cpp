@@ -368,14 +368,10 @@ int main(int argc, char *argv[])
             guiInput->pushInput(event);
         }
 
-        ResourceManager *resman = ResourceManager::getInstance();
-
         switch (state) {
             case LOGIN:
                 logger->log("State: LOGIN");
                 sound.playMusic(TMW_DATADIR "data/music/Ivano(de)Jeanette.ogg");
-                /*bgm = resman->getMusic("music/Ivano(de)Jeanette.ogg");
-                bgm->play(-1);*/
                 login();
                 break;
             case CHAR_SERVER:

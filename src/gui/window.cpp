@@ -27,9 +27,12 @@
 #include "../main.h"
 
 WindowContainer *Window::windowContainer = NULL;
+int Window::instances = 0;
+ImageRect Window::border;
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
+    prevModal(NULL),
     parent(parent),
     snapSize(8),
     modal(modal),
@@ -41,25 +44,27 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
+    if (instances == 0)
+    {
+        // Load static resources
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+        border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
+        border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
+        border.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
+        border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
+        border.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
+        border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
+        border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
+        border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
+        border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+        dBorders->decRef();
+    }
+
+    instances++;
+
     setBorderSize(0);
     setPadding(3);
-
-    // Load dialog title bar image
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
-
-    border.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
-    border.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
-    border.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
-    border.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
-    border.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
-    border.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
-    border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
-    border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
-    border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
-
-    dBorders->decRef();
-    dBorders = NULL;
 
     // Add chrome
     chrome = new gcn::Container();
@@ -68,7 +73,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     // Add this window to the window container
     if (windowContainer) {
-        windowContainer->add(this, modal);
+        windowContainer->add(this);
     }
     else {
         throw GCN_EXCEPTION("Window::Window. no windowContainer set");
@@ -77,32 +82,54 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     // Send GUI alpha changed for initialization
     optionChanged("guialpha");
     config.addListener("guialpha", this);
+
+    if (modal)
+    {
+        gcn::FocusHandler *focusHandler = _getFocusHandler();
+        prevModal = focusHandler->getModalFocused();
+        focusHandler->releaseModalFocus(prevModal);
+        requestModalFocus();
+    }
 }
 
 Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
 
-    // Free dialog bitmaps
-    //release_bitmap(dLeft);
-    //release_bitmap(dMid);
-    //release_bitmap(dRight);
+    instances--;
+
+    if (instances == 0)
+    {
+        // Clean up static resources
+        delete border.grid[0];
+        delete border.grid[1];
+        delete border.grid[2];
+        delete border.grid[3];
+        border.grid[4]->decRef();
+        delete border.grid[5];
+        delete border.grid[6];
+        delete border.grid[7];
+        delete border.grid[8];
+    }
 
     config.removeListener("guialpha", this);
     delete chrome;
+
+    if (hasModalFocus())
+    {
+        releaseModalFocus();
+    }
+
+    if (prevModal)
+    {
+        gcn::FocusHandler *focusHandler = _getFocusHandler();
+        focusHandler->requestModalFocus(prevModal);
+    }
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
 {
     windowContainer = wc;
-}
-
-void Window::logic()
-{
-    if (mContent != NULL)
-    {
-        mContent->logic();
-    }
 }
 
 void Window::draw(gcn::Graphics* graphics)

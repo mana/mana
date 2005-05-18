@@ -30,6 +30,5 @@ ChatInput::ChatInput()
 
 void ChatInput::lostFocus()
 {
-    // TODO: Never mind this, it'll probably work in next Guichan version.
-    //setVisible(false);
+    setVisible(false);
 }

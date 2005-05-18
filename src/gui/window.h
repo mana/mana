@@ -38,24 +38,6 @@
  */
 class Window : public gcn::Window, public ConfigListener
 {
-    protected:
-        gcn::Container *chrome;    /**< Contained container */
-        Window *parent;            /**< The parent window */
-        int snapSize;              /**< Snap distance to window edge */
-        bool modal;                /**< Window is modal */
-
-        ImageRect border;          /**< The window border and background */
-
-        bool resizeable;           /**< Window can be resized */
-        int minWinWidth;           /**< Minimum window width */
-        int minWinHeight;          /**< Minimum window height */
-        int maxWinWidth;           /**< Maximum window width */
-        int maxWinHeight;          /**< Maximum window height */
-
-
-        /** The window container windows add themselves to. */
-        static WindowContainer* windowContainer;
-
     public:
         /**
          * Constructor. Initializes the title to the given text and hooks
@@ -84,11 +66,6 @@ class Window : public gcn::Window, public ConfigListener
          * Draws the window.
          */
         void draw(gcn::Graphics *graphics);
-
-        /**
-         * Calls logic on content widget (cause Guichan 0.3.0 forgot this)
-         */
-        void logic();
 
         /**
          * Adds a widget to the window.
@@ -174,6 +151,34 @@ class Window : public gcn::Window, public ConfigListener
          * Called when an config option changes.
          */
         void optionChanged(const std::string &name);
+
+    protected:
+        gcn::Container *chrome;    /**< Contained container */
+        gcn::Widget *prevModal;    /**< Previous modal widget */
+        Window *parent;            /**< The parent window */
+        int snapSize;              /**< Snap distance to window edge */
+        bool modal;                /**< Window is modal */
+        bool resizeable;           /**< Window can be resized */
+        int minWinWidth;           /**< Minimum window width */
+        int minWinHeight;          /**< Minimum window height */
+        int maxWinWidth;           /**< Maximum window width */
+        int maxWinHeight;          /**< Maximum window height */
+
+        /** The window container windows add themselves to. */
+        static WindowContainer* windowContainer;
+
+        static int instances;      /**< Number of Window instances */
+        static ImageRect border;   /**< The window border and background */
+
+        /**
+         * Loads window resources.
+         */
+        void loadResources();
+
+        /**
+         * Unloads window resources.
+         */
+        void unloadResources();
 };
 
 #endif
