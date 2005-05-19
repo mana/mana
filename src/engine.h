@@ -41,11 +41,9 @@
 #include "gui/setup.h"
 #include "gui/equipment.h"
 #include "gui/chargedialog.h"
-#include "gui/item_amount.h"
 #include "gui/menu.h"
 #include "gui/trade.h"
 #include "gui/requesttrade.h"
-#include "gui/confirm_dialog.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -64,7 +62,6 @@ extern BuyDialog *buyDialog;
 extern SellDialog *sellDialog;
 extern BuySellDialog *buySellDialog;
 extern InventoryWindow *inventoryWindow;
-extern ItemAmountWindow *itemAmountWindow;
 extern NpcListDialog *npcListDialog;
 extern NpcTextDialog *npcTextDialog;
 extern SkillDialog *skillDialog;
@@ -76,7 +73,6 @@ extern ChargeDialog* chargeDialog;
 extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
-extern ConfirmDialog *quitDialog;
 extern Menu *menu;
 extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
@@ -88,7 +84,7 @@ char get_y_offset(char, char);
 class Engine {
     private:
         Spriteset *emotionset, *npcset, *weaponset, *itemset;
-        
+
     public:
         Engine();
         ~Engine();

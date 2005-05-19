@@ -41,8 +41,6 @@ InventoryWindow::InventoryWindow():
     dropButton = new Button("Drop");
 
     items = new ItemContainer();
-    items->setPosition(2, 2);
-
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
 
@@ -53,7 +51,6 @@ InventoryWindow::InventoryWindow():
 
     itemNameLabel = new gcn::Label("Name:");
     itemDescriptionLabel = new gcn::Label("Description:");
-
 
     add(useButton);
     add(dropButton);
@@ -67,47 +64,46 @@ InventoryWindow::InventoryWindow():
 
     updateWidgets();
     useButton->setSize(48, useButton->getHeight());
-
 }
 
 InventoryWindow::~InventoryWindow()
 {
     delete useButton;
     delete dropButton;
+    delete invenScroll;
+    delete items;
     delete itemNameLabel;
     delete itemDescriptionLabel;
 }
 
-void InventoryWindow::draw(gcn::Graphics *graphics)
+int InventoryWindow::addItem(int index, int id, int quantity, bool equipment)
 {
-    // Draw window graphics
-    Window::draw(graphics);
-}
-
-
-int InventoryWindow::addItem(int index, int id, int quantity, bool equipment) {
     items->addItem(index, id, quantity, equipment);
     return 0;
 }
 
-int InventoryWindow::removeItem(int id) {
+int InventoryWindow::removeItem(int id)
+{
     items->removeItem(id);
     return 0;
 }
 
-int InventoryWindow::changeQuantity(int index, int quantity) {
+int InventoryWindow::changeQuantity(int index, int quantity)
+{
     //items[index].quantity = quantity;
     items->changeQuantity(index, quantity);
     return 0;
 }
 
-int InventoryWindow::increaseQuantity(int index, int quantity) {
+int InventoryWindow::increaseQuantity(int index, int quantity)
+{
     //items[index].quantity += quantity;
     items->increaseQuantity(index, quantity);
     return 0;
 }
 
-int InventoryWindow::useItem(int index, int id) {
+int InventoryWindow::useItem(int index, int id)
+{
     WFIFOW(0) = net_w_value(0x00a7);
     WFIFOW(2) = net_w_value(index);
     WFIFOL(4) = net_l_value(id);
@@ -117,7 +113,8 @@ int InventoryWindow::useItem(int index, int id) {
     return 0;
 }
 
-int InventoryWindow::dropItem(int index, int quantity) {
+int InventoryWindow::dropItem(int index, int quantity)
+{
     // TODO: Fix wrong coordinates of drops, serverside?
     WFIFOW(0) = net_w_value(0x00a2);
     WFIFOW(2) = net_w_value(index);
@@ -127,7 +124,8 @@ int InventoryWindow::dropItem(int index, int quantity) {
     return 0;
 }
 
-void InventoryWindow::equipItem(int index) {
+void InventoryWindow::equipItem(int index)
+{
     WFIFOW(0) = net_w_value(0x00a9);
     WFIFOW(2) = net_w_value(index);
     WFIFOW(4) = net_w_value(0);
@@ -135,7 +133,8 @@ void InventoryWindow::equipItem(int index) {
     while ((out_size > 0)) flush();
 }
 
-void InventoryWindow::unequipItem(int index) {
+void InventoryWindow::unequipItem(int index)
+{
     WFIFOW(0) = net_w_value(0x00ab);
     WFIFOW(2) = net_w_value(index);
     WFIFOSET(4);
@@ -144,25 +143,26 @@ void InventoryWindow::unequipItem(int index) {
 
 void InventoryWindow::action(const std::string &eventId)
 {
-    //if(selectedItem >= 0 && selectedItem <= INVENTORY_SIZE) {
-    if (items->getIndex() != -1) {
+    int selectedItem = items->getIndex();
+
+    if (selectedItem != -1) {
         if (eventId == "use") {
-            if(items->isEquipment(items->getIndex())) {
-                if(items->isEquipped(items->getIndex())) {
-                    unequipItem(items->getIndex());
+            if(items->isEquipment(selectedItem)) {
+                if(items->isEquipped(selectedItem)) {
+                    unequipItem(selectedItem);
                 }
                 else {
-                    equipItem(items->getIndex());
+                    equipItem(selectedItem);
                 }
             }
             else {
-                useItem(items->getIndex(), items->getId());
-            }                
+                useItem(selectedItem, items->getId());
+            }
         }
-        else if (eventId == "drop") {
-            itemAmountWindow->setUsage(AMOUNT_ITEM_DROP);
-            itemAmountWindow->setVisible(true);
-            itemAmountWindow->requestMoveToTop();
+        else if (eventId == "drop")
+        {
+            // Choose amount of items to drop
+            new ItemAmountWindow(AMOUNT_ITEM_DROP, this);
         }
 
         updateUseButton();
@@ -172,7 +172,7 @@ void InventoryWindow::action(const std::string &eventId)
 void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
-    
+
     updateUseButton();
 
     if (items->getIndex() != -1)
@@ -227,6 +227,6 @@ void InventoryWindow::updateUseButton()
     else {
         useButton ->setCaption("Use");
     }
-    
+
     useButton->setEnabled(items->getIndex() != -1);
 }

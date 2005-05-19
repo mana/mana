@@ -31,44 +31,6 @@
 
 #include <queue>
 
-#define OLD_MAP_WIDTH  200
-#define OLD_MAP_HEIGHT 200
-
-/**
- * Old tile structure. Used for loading the old map format.
- */
-struct TILE {
-    /**
-     * Data field filled at follows:
-     *
-     * <pre>
-     *  1st byte: [1][1][1][1][1][1][1][1]
-     *  2nd byte: [1][1][2][2][2][2][2][2]
-     *  3rd byte: [2][2][2][2][3][3][3][3]
-     *  4th byte: [3][3][3][3][3][3][W][A]
-     * </pre>
-     *
-     * Legend:
-     *  1 - Ground layer (grass, water, ...)
-     *  2 - Fringe layer (decoration on top of ground layer, but below beings)
-     *  3 - Over layer (roofs, tree leaves, ...)
-     *  W - Walkability flag
-     *  A - Animated tile flag
-     */
-    char data[4];
-    char flags;
-};
-
-/**
- * Old map structure. Used for loading the old map format.
- */
-struct MAP {
-    TILE tiles[OLD_MAP_WIDTH][OLD_MAP_HEIGHT];
-    char tileset[20];
-    char bg_music[20];
-};
-
-
 MetaTile::MetaTile():
     whichList(0)
 {
@@ -108,77 +70,6 @@ Map::~Map()
 {
     delete[] metaTiles;
     delete[] tiles;
-}
-
-Map *Map::load(const std::string &mapFile)
-{
-    logger->log("Map::load(%s)", mapFile.c_str());
-
-    if (mapFile.find(".tmx", 0) != std::string::npos)
-    {
-        // New map file format assumed
-        return MapReader::readMap(mapFile);
-    }
-
-    FILE *file = fopen(mapFile.c_str(), "r");
-
-    if (!file) {
-        logger->log("Warning: %s", mapFile.c_str());
-        return NULL;
-    }
-
-    MAP oldMap;
-    fread(&oldMap, sizeof(MAP), 1, file);
-    fclose(file);
-
-    Map *map = new Map(OLD_MAP_WIDTH, OLD_MAP_HEIGHT);
-
-    // Load the default tileset
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *tilesetbmp = resman->getImage("graphics/tiles/desert.png");
-    if (!tilesetbmp) logger->error("Unable to load desert.png");
-    Spriteset *tileset = new Spriteset(tilesetbmp, 32, 32);
-
-    // Transfer tile data
-    int x, y, a;
-    for (y = 0; y < OLD_MAP_HEIGHT; y++) {
-        for (x = 0; x < OLD_MAP_WIDTH; x++) {
-            unsigned short id = 0;
-
-            for (a = 0; a < 3; a++) {
-                // Different interpretation for each layer
-                switch (a) {
-                    case 0:
-                        id = MAKEWORD(oldMap.tiles[x][y].data[1] & 0x00c0,
-                                oldMap.tiles[x][y].data[0]);
-                        id >>= 6;
-                        break;
-                    case 1:
-                        id = MAKEWORD(oldMap.tiles[x][y].data[2] & 0x00f0,
-                                oldMap.tiles[x][y].data[1] & 0x003f);
-                        id >>= 4;
-                        break;
-                    case 2:
-                        id = MAKEWORD(oldMap.tiles[x][y].data[3] & 0x00fc,
-                                oldMap.tiles[x][y].data[2] & 0x000f);
-                        id >>= 2;
-                        break;
-                }
-
-                if (id < tileset->spriteset.size() && (a == 0 || id > 0)) {
-                    map->setTile(x, y, a, tileset->spriteset[id]);
-                }
-                else {
-                    map->setTile(x, y, a, NULL);
-                }
-            }
-
-            // Walkability
-            map->setWalk(x, y, (oldMap.tiles[x][y].data[3] & 0x0002) > 0);
-        }
-    }
-
-    return map;
 }
 
 void Map::setSize(int width, int height)

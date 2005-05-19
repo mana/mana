@@ -50,11 +50,6 @@ class InventoryWindow : public Window, gcn::ActionListener {
         ~InventoryWindow();
 
         /**
-         * Draws the inventory window.
-         */
-        void draw(gcn::Graphics *graphics);
-
-        /**
          * Add an item the inventory.
          */
         int addItem(int index, int id, int quantity, bool equipment);

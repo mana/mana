@@ -127,7 +127,6 @@ class Window : public gcn::Window, public ConfigListener
          */
         void setMaxHeight(unsigned int height);
 
-
         /**
          * Returns the parent window.
          *
@@ -136,10 +135,10 @@ class Window : public gcn::Window, public ConfigListener
         Window *getParentWindow();
 
         /**
-         * Returns whether this window is modal. This doesn't necessarily mean
-         * that is gets input as a child modal window could get it.
+         * Schedule this window for deletion. It will be deleted at the start
+         * of the next logic update.
          */
-        bool isModal();
+        void scheduleDelete();
 
         /**
          * Window dragging. This method also makes sure the window is not
@@ -169,16 +168,6 @@ class Window : public gcn::Window, public ConfigListener
 
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */
-
-        /**
-         * Loads window resources.
-         */
-        void loadResources();
-
-        /**
-         * Unloads window resources.
-         */
-        void unloadResources();
 };
 
 #endif

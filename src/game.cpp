@@ -36,6 +36,7 @@
 #include "gui/npc.h"
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
+#include "gui/confirm_dialog.h"
 #include "net/protocol.h"
 #include "resources/mapreader.h"
 #include <SDL.h>
@@ -155,14 +156,13 @@ void do_init()
 
     // Try .tmx map file
     pathDir.insert(pathDir.size(), ".tmx");
-    tiledMap = Map::load(pathDir);
-
+    tiledMap = MapReader::readMap(pathDir);
 
     if (!tiledMap)
     {
         // Try .tmx.gz map file
         pathDir.insert(pathDir.size(), ".gz");
-        tiledMap = Map::load(pathDir);
+        tiledMap = MapReader::readMap(pathDir);
 
         if (!tiledMap)
         {
@@ -976,7 +976,7 @@ void do_parse()
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
 
                     if (tiledMap) delete tiledMap;
-                    tiledMap = Map::load(map_path);
+                    tiledMap = MapReader::readMap(map_path);
 
                     if (tiledMap) {
                         // Delete all beings except the local player

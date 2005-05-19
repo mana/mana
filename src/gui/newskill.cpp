@@ -70,7 +70,7 @@ char *skill_name[] = {
 NewSkillDialog::NewSkillDialog():
     Window("Skills")
 {
-    startPoint = 0;   
+    startPoint = 0;
     for ( int i = 0; i < N_SKILL_CAT_SIZE; i++)
     {
         skillLabel[i] = new gcn::Label("Empty               ");
@@ -88,7 +88,7 @@ NewSkillDialog::NewSkillDialog():
         playerSkill[i].exp = 0;
     }
     resetNSD();
-    
+
     // create controls
     catButton[0] = new Button("Weapons");
     catButton[1] = new Button("Magic");
@@ -102,7 +102,7 @@ NewSkillDialog::NewSkillDialog():
     closeButton = new Button("Close");
 
     // captions
-    
+
     // events
     catButton[0]->setEventId("g1");
     catButton[1]->setEventId("g2");
@@ -169,7 +169,7 @@ NewSkillDialog::NewSkillDialog():
 NewSkillDialog::~NewSkillDialog()
 {
     for (int i = 0; i < N_SKILL_CAT_SIZE; i++)
-    {    
+    {
         delete skillbar[i];
         delete skillLabel[i];
         delete skillLevel[i];

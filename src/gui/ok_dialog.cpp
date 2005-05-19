@@ -56,15 +56,15 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
             (w - okButton->getWidth()) / 2,
             h - 5 - okButton->getHeight());
 
-    okButton->setEventId("ok");    
+    okButton->setEventId("ok");
     okButton->addActionListener(this);
     if (listener) {
         okButton->addActionListener(listener);
     }
-    
+
     add(userLabel);
     add(okButton);
-    
+
     setLocationRelativeTo(getParent());
     okButton->requestFocus();
 }

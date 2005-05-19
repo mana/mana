@@ -28,7 +28,6 @@
 #include "gui/minimap.h"
 #include "gui/chargedialog.h"
 #include "gui/itemcontainer.h"
-#include "gui/item_amount.h"
 #include "gui/trade.h"
 #include "gui/buddywindow.h"
 #include "main.h"
@@ -53,7 +52,6 @@ BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
 InventoryWindow *inventoryWindow;
-ItemAmountWindow *itemAmountWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
@@ -153,7 +151,6 @@ Engine::Engine()
     sellDialog = new SellDialog();
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
-    itemAmountWindow = new ItemAmountWindow();
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
@@ -166,20 +163,17 @@ Engine::Engine()
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
     requestTradeDialog = new RequestTradeDialog();
-    
+
     /* Menu items */
     std::vector<MenuItem> items;
     items.push_back(MenuItem("First"));
     menu = new Menu("Menu", items);
-    
+
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
     inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
-    itemAmountWindow->setPosition(screen->w - statusWindow->getWidth() -
-            inventoryWindow->getWidth() - 10, inventoryWindow->getHeight() +
-            10);
     statsWindow->setPosition(
             screen->w - 5 - statsWindow->getWidth(),
             statusWindow->getHeight() + 20);
@@ -204,7 +198,6 @@ Engine::Engine()
     sellDialog->setVisible(false);
     buySellDialog->setVisible(false);
     inventoryWindow->setVisible(false);
-    itemAmountWindow->setVisible(false);
     npcTextDialog->setVisible(false);
     npcListDialog->setVisible(false);
     skillDialog->setVisible(false);
@@ -259,7 +252,6 @@ Engine::~Engine()
     delete minimap;
     delete equipmentWindow;
     delete newSkillWindow;
-    delete itemAmountWindow;
     delete tradeWindow;
     delete buddyWindow;
     delete requestTradeDialog;

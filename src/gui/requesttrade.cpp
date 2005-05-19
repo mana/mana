@@ -35,7 +35,7 @@ RequestTradeDialog::RequestTradeDialog():
     cancelButton = new Button("Cancel");
 
     setContentSize(260, 75);
-    
+
     nameLabel[0]->setPosition(5, 30);
     nameLabel[1]->setPosition(5, 40);
     cancelButton->setPosition(
@@ -44,7 +44,7 @@ RequestTradeDialog::RequestTradeDialog():
     acceptButton->setPosition(
             cancelButton->getX() - 5 - acceptButton->getWidth(),
             cancelButton->getY());
-    
+
     acceptButton->setEventId("accept");
     cancelButton->setEventId("cancel");
 

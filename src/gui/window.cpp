@@ -122,8 +122,7 @@ Window::~Window()
 
     if (prevModal)
     {
-        gcn::FocusHandler *focusHandler = _getFocusHandler();
-        focusHandler->requestModalFocus(prevModal);
+        prevModal->requestModalFocus();
     }
 }
 
@@ -221,9 +220,9 @@ Window *Window::getParentWindow()
     return parent;
 }
 
-bool Window::isModal()
+void Window::scheduleDelete()
 {
-    return modal;
+    windowContainer->scheduleDelete(this);
 }
 
 void Window::add(gcn::Widget *w)

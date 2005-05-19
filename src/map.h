@@ -94,11 +94,6 @@ class Map
         ~Map();
 
         /**
-         * Loads a map file (gat).
-         */
-        static Map *load(const std::string &mapFile);
-
-        /**
          * Draws the map to the given graphics output.
          */
         void draw(Graphics *graphics, int scrollX, int scrollY, int layer);

@@ -42,7 +42,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        ItemAmountWindow();
+        ItemAmountWindow(int usage, Window *parent);
 
         /**
          * Destructor.
@@ -55,11 +55,6 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         void action(const std::string& eventId);
 
         /**
-         * Has to be called before setVisible(true).
-         */
-        void ItemAmountWindow::setUsage(int usage);
-    
-        /**
          * Sets default amount value.
          */
         void resetAmount();
@@ -68,13 +63,13 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         int amount;                      /**< Amount of items to be dropped. */
         gcn::Label *itemAmountLabel;     /**< Item amount caption. */
 
-        /** 
+        /**
          * Item Amount buttons.
          */
         gcn::Button *itemAmountPlusButton;
-	    gcn::Button *itemAmountMinusButton;
-	    gcn::Button *itemAmountOkButton;
-	    gcn::Button *itemAmountCancelButton;
+        gcn::Button *itemAmountMinusButton;
+        gcn::Button *itemAmountOkButton;
+        gcn::Button *itemAmountCancelButton;
 };
 
 #endif /* _TMW_ITEM_AMOUNT_WINDOW_H */

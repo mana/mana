@@ -26,8 +26,8 @@
 #include "../engine.h"
 #include "../main.h"
 
-ItemAmountWindow::ItemAmountWindow():
-    Window("Select amount of items to drop.")
+ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
+    Window("Select amount of items to drop.", true, parent)
 {
     // New labels
     itemAmountLabel = new gcn::Label("1");
@@ -37,20 +37,20 @@ ItemAmountWindow::ItemAmountWindow():
     itemAmountPlusButton = new Button("+");
     itemAmountOkButton = new Button("Okay");
     itemAmountCancelButton = new Button("Cancel");
-    
+
     // Set button events Id
     itemAmountMinusButton->setEventId("Minus");
     itemAmountPlusButton->setEventId("Plus");
     itemAmountOkButton->setEventId("Drop");
     itemAmountCancelButton->setEventId("Cancel");
-    
+
     // Set position
     itemAmountLabel->setPosition(35, 10);
     itemAmountPlusButton->setPosition(60, 5);
     itemAmountMinusButton->setPosition(10, 5);
     itemAmountOkButton->setPosition(10, 40);
     itemAmountCancelButton->setPosition(60, 40);
-    
+
     // Assemble
     add(itemAmountLabel);
     add(itemAmountPlusButton);
@@ -62,28 +62,9 @@ ItemAmountWindow::ItemAmountWindow():
     itemAmountMinusButton->addActionListener(this);
     itemAmountOkButton->addActionListener(this);
     itemAmountCancelButton->addActionListener(this);
-   
+
     resetAmount();
 
-    setContentSize(200, 80);
-    setLocationRelativeTo(getParent());
-}
-
-ItemAmountWindow::~ItemAmountWindow() {
-    delete itemAmountLabel;
-    delete itemAmountPlusButton;
-    delete itemAmountMinusButton;
-    delete itemAmountOkButton;
-    delete itemAmountCancelButton;
-}
-
-void ItemAmountWindow::resetAmount() {
-    amount = 1;
-    itemAmountLabel->setCaption("1");    
-}
-
-void ItemAmountWindow::setUsage(int usage) {
-    resetAmount();
     switch (usage) {
         case AMOUNT_TRADE_ADD:
             setCaption("Select amount of items to trade.");
@@ -94,28 +75,45 @@ void ItemAmountWindow::setUsage(int usage) {
             itemAmountOkButton->setEventId("Drop");
             break;
         default:
-
             break;
     }
+
+    setContentSize(200, 80);
+    setLocationRelativeTo(getParentWindow());
+}
+
+ItemAmountWindow::~ItemAmountWindow()
+{
+    delete itemAmountLabel;
+    delete itemAmountPlusButton;
+    delete itemAmountMinusButton;
+    delete itemAmountOkButton;
+    delete itemAmountCancelButton;
+}
+
+void ItemAmountWindow::resetAmount()
+{
+    amount = 1;
+    itemAmountLabel->setCaption("1");
 }
 
 void ItemAmountWindow::action(const std::string& eventId)
 {
     if (eventId == "Cancel")
     {
-        resetAmount();
-        setVisible(false);
-    } else if (eventId == "Drop")
+        scheduleDelete();
+    }
+    else if (eventId == "Drop")
     {
         inventoryWindow->dropItem(inventoryWindow->items->getIndex(), amount);
-        resetAmount();
-        setVisible(false);
-    } else if (eventId == "AddTrade")
+        scheduleDelete();
+    }
+    else if (eventId == "AddTrade")
     {
         tradeWindow->tradeItem(inventoryWindow->items->getIndex(), amount);
-        resetAmount();
-        setVisible(false);
-    } else if (eventId == "Plus")
+        scheduleDelete();
+    }
+    else if (eventId == "Plus")
     {
         if (amount < inventoryWindow->items->getQuantity())
         {
@@ -125,7 +123,8 @@ void ItemAmountWindow::action(const std::string& eventId)
             itemAmountLabel->setCaption(tmpplus);
             itemAmountLabel->adjustSize();
         }
-    } else if (eventId == "Minus")
+    }
+    else if (eventId == "Minus")
     {
         if (amount > 1)
         {

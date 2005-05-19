@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_TRADE_H
-#define _TMW_TRADE_H 
+#define _TMW_TRADE_H
 
 #include "../log.h"
 #include "../net/network.h"
@@ -37,7 +37,8 @@
  *
  * \ingroup Interface
  */
-class TradeWindow : public Window, gcn::ActionListener {
+class TradeWindow : public Window, gcn::ActionListener
+{
     public:
         /**
          * Constructor.
@@ -48,11 +49,6 @@ class TradeWindow : public Window, gcn::ActionListener {
          * Destructor.
          */
         ~TradeWindow();
-
-        /**
-         * Draws the trade window.
-         */
-        void draw(gcn::Graphics *graphics);
 
         /**
          * Add an item the trade window.
@@ -78,35 +74,35 @@ class TradeWindow : public Window, gcn::ActionListener {
          * Increase quantity of an item.
          */
         void increaseQuantity(int index, bool own, int quantity);
-       
+
         /**
          * Set trade Button disabled
          */
         void setTradeButton(bool enabled);
-        
+
         /**
          * Player received ok message from server
          */
         void receivedOk(bool own);
-        
+
         /**
          * Send trade packet.
          */
         void TradeWindow::tradeItem(int index, int quantity);
-        
+
         /**
          * Called on mouse click.
          */
         void mouseClick(int x, int y, int button, int count);
-        
+
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
+
         ItemContainer *myItems;
         ItemContainer *partnerItems;
-    
+
     private:
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
