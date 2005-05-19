@@ -28,7 +28,7 @@ Besides a C++ compiler, TMW depends on the following libraries:
 1) SDL
 2) SDL_mixer
 3) SDL_image
-4) Guichan 0.2.0
+4) Guichan 0.4.0
 5) libxml2
 6) PhysFS
 
@@ -52,14 +52,17 @@ The easy way is to get our development package which should work with the latest
 CVS (I'll try to update it as much as I can).
 You can find it at:
 
-         http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak
+  http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak (by ElvenProgrammer)
+  http://pandamachine.top.tc/devpaks/
 
 Just install this one and you should be ready to go. Remember to copy the
 required dlls from your dll folder in the Dev-Cpp root directory, to the folder
 where you have your copy of The Mana World. You should also add the SDL include
-folder in your C++ include paths. If you can't get the package or you are
-experiencing problems with it, just send me an email at
-elvenprogrammer@gmail.com or continue reading.
+folder in your C++ include paths. (This has become obsolete since our .dev does
+that for you now, but it's still a nice thing to do if you want your other apps
+to find SDL as well.) If you can't get the package or you are experiencing
+problems with it, just send me an email at elvenprogrammer@gmail.com or
+continue reading.
 
 Most of the libs have DevPaks that are very easy drop-ins for Dev-C++, without
 any complex actions on your side.
@@ -69,7 +72,7 @@ Get the following DevPaks and archives:
 - SDL           (http://devpaks.org/show.php?devpak=57)
 - SDL_mixer     (http://devpaks.org/show.php?devpak=26)
 - SDL_image     (http://devpaks.org/show.php?devpak=25)
-- Guichan       (http://guichan.darkbits.org/downloads/guichan-0.2.0.DevPak)
+- Guichan       (http://guichan.sourceforge.net/downloads.shtml)
 - libxml2 **    (ftp://ftp.zlatkovic.com/pub/libxml/)
 - PhysFS ***    (http://icculus.org/physfs/downloads/unsupported/)
 
@@ -106,7 +109,8 @@ start compilition with Excute -> Compile. A file called tmw.exe should appear
 in the same directory as where you opened the .dev from.
 
 Before you can actually run the executable be sure to copy over the following
-DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe:
+DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe (or 
+alternatively into your c:\windows\system\):
 
  SDL.dll
  SDL_image.dll
@@ -121,6 +125,10 @@ And also make sure you have:
 
  libxml2.dll
  iconv.dll
+
+Additionally don't forget to copy any updated .dll (when libs are updated,
+the dll are usually updated too) to the folder containing tmw.exe (or to the
+c:\windows\system\).
 
 Have fun hacking The Mana World!
 
