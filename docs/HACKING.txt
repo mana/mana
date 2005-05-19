@@ -12,7 +12,7 @@ necessary.
 
 * Line length:
   Should not exceed 79 characters.
-  
+
   One reason for this is to keep code readable. In such cases it would often be
   better to spread the line over multiple lines or use some extra temporary
   variables. Another reason is that some of us are using editors that default
@@ -23,15 +23,20 @@ necessary.
 * Control constructs like this:
 
   Good:
-  if (condition) {
+
+  if (condition)
+  {
   }
-  else {
+  else
+  {
   }
 
-  for (init; condition; step) {
+  for (init; condition; step)
+  {
   }
 
-  while (condition) {
+  while (condition)
+  {
   }
 
   /**
@@ -41,18 +46,22 @@ necessary.
    * @param param1 the first argument
    * @param param2 the second argument
    */
-  void function(param1, param2) {
+  void function(param1, param2)
+  {
   }
 
-  class TheClass : public TheSupclass {
+  class TheClass : public TheSubclass
+  {
   };
 
-  Ending parenthesis may be on next line for clarity.
-  
-  Bad:
+  For if, for and while constructs, opening parenthesis may be placed on the
+  same line to save space.
+
+  In most cases these are bad:
+
   if (condition)
       statement;
-      
+
   if (condition) statement;
 
 * Comments:
@@ -102,5 +111,5 @@ necessary.
   To denote global variables and functions the lowercase_underscores style may
   be used. Hungarian style should be avoided.
 
-* Whenever you add a new source file somewhere in ./src do not forget to add them
-  in ./src/Makefile.am as well!
+* Whenever you add a new source file somewhere in ./src do not forget to add
+  them in ./src/Makefile.am as well!
