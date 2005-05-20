@@ -384,23 +384,26 @@ void do_input()
                         }
                     }
                     else if (target->isMonster()) {
-                        if (player_node->action == STAND) {
-                            if (my > player_node->y)
+                        int dist_x = mx - player_node->x;
+                        int dist_y = my - player_node->y;
+                        if (abs(dist_y) >= abs(dist_x)) {
+                            if (dist_y > 0)
                                 player_node->direction = SOUTH;
-                            else if (my < player_node->y)
-                                player_node->direction = NORTH;
-                            else if (mx > player_node->x)
-                                player_node->direction = EAST;
-                            else if (mx < player_node->x)
-                                player_node->direction = WEST;
-                            player_node->action = ATTACK;
-                            action(0, target->id);
-                            player_node->walk_time = tick_time;
-                            if (player_node->weapon == 2)
-                                sound.playSfx("sfx/bow_shoot_1.ogg");
                             else
-                                sound.playSfx("sfx/fist-swish.ogg");
+                                player_node->direction = NORTH;
+                        } else {
+                            if (dist_x > 0)
+                                player_node->direction = EAST;
+                            else
+                                player_node->direction = WEST;
                         }
+                        player_node->action = ATTACK;
+                        action(0, target->id);
+                        player_node->walk_time = tick_time;
+                        if (player_node->weapon == 2)
+                            sound.playSfx("sfx/bow_shoot_1.ogg");
+                        else
+                            sound.playSfx("sfx/fist-swish.ogg");
                     }
                     else if (target->isPlayer()) {
                         // Begin a trade
@@ -1242,7 +1245,7 @@ void do_parse()
                     else
                         chatWindow->chat_log("Unable to sell", BY_SERVER);
                     break;
-                    // Add item to inventory after you bought it
+                    // Add item to inventory after you bought it/picked up
                 case 0x00a0:
                     if (RFIFOB(22) > 0)
                         chatWindow->chat_log("Unable to pick up item", BY_SERVER);
@@ -1312,16 +1315,8 @@ void do_parse()
                 case 0x010c:
                     chatWindow->chat_log("MVP player", BY_SERVER);
                     break;
-                    // Item is found
+                    // Item found/dropped
                 case 0x009d:
-                    floorItem = new FloorItem();
-                    floorItem->id = net_w_value(RFIFOW(6));
-                    floorItem->x = net_w_value(RFIFOW(9));
-                    floorItem->y = net_w_value(RFIFOW(11));
-                    floorItem->int_id = net_l_value(RFIFOL(2));
-                    add_floor_item(floorItem);
-                    break;
-                    // Item drop
                 case 0x009e:
                     floorItem = new FloorItem();
                     floorItem->id = net_w_value(RFIFOW(6));
