@@ -8,6 +8,7 @@
 - Dialogs are now modal when appropriate
 - Fixed a crash in OpenGL mode
 - Fixed rendering of minimap, progress bars and player sprite in OpenGL mode
+- Fixed 100% CPU usage when minimized
 
 0.0.12  (1 May 2005)
 - Added new map (a cave), tiles, monsters and items

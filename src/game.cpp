@@ -131,14 +131,22 @@ void game()
         {
             do_input();
             engine->logic();
+            gui->logic();
             gameTime++;
         }
+
         gameTime = tick_time;
 
-        // Draw next frame
-        gui->logic();
-        engine->draw();
-        graphics->updateScreen();
+        // Update the screen when application is active, delay otherwise
+        if (SDL_GetAppState() & SDL_APPACTIVE)
+        {
+            engine->draw();
+            graphics->updateScreen();
+        }
+        else
+        {
+            SDL_Delay(10);
+        }
 
         // Handle network stuff and flush it
         do_parse();
@@ -296,7 +304,7 @@ void do_input()
                     buddyWindow->setVisible(!buddyWindow->isVisible());
                     used = true;
                 }
-		else if (keysym.sym == SDLK_m) {
+                else if (keysym.sym == SDLK_m) {
                     menu->setVisible(!menu->isVisible());
                     used = true;
                 }
