@@ -165,8 +165,9 @@ Engine::Engine()
     requestTradeDialog = new RequestTradeDialog();
 
     /* Menu items */
-    std::vector<MenuItem> items;
-    items.push_back(MenuItem("First"));
+    std::vector<MenuItem*> items;
+    items.push_back(new MenuItem("First"));
+    items.push_back(new MenuItem("Second"));
     menu = new Menu("Menu", items);
 
     // Initialize window posisitons

@@ -23,10 +23,10 @@
 
 #include "menu.h"
 
-Menu::Menu(const std::string& menulabel, std::vector<MenuItem>& items):
+Menu::Menu(const std::string& menulabel, std::vector<MenuItem *> items):
     Window(menulabel)
 {
-    setContentSize(40,60);
+    setContentSize(52,60);
     fill(items);
 }
 
@@ -34,12 +34,19 @@ Menu::~Menu()
 {
 }
 
-void Menu::fill(std::vector<MenuItem>& items)
+void Menu::fill(std::vector<MenuItem *> items)
 {   
-    for(std::vector<MenuItem>::iterator item = items.begin();
+    int i=0;
+        
+    for(std::vector<MenuItem *>::iterator item = items.begin();
             item != items.end(); ++item) 
     {
-        item->setPosition(0,0);
-        add(&*item);
+        MenuItem *optr;
+        optr = *item;
+        optr->setSize(50,10);
+        optr->setPosition(0,i);
+        i=i+10;
+        add(*item);
     }
 }
+

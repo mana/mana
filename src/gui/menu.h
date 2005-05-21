@@ -33,14 +33,17 @@ class Menu : public Window {
         /**
          * Constructor.
          */
-        Menu(const std::string& menulabel, std::vector<MenuItem>& items);
+        Menu(const std::string& menulabel, std::vector<MenuItem *> items);
 
         /**
          * Destructor.
          */
         ~Menu();
 
-        void fill(std::vector<MenuItem>& items);
+        /**
+         * Fill menu with menuitems
+         */
+        void fill(std::vector<MenuItem *> items);
 
 };
 

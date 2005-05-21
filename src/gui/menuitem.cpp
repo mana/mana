@@ -57,7 +57,6 @@ MenuItem::MenuItem(const std::string& label):
         }
     }
     addMouseListener(this);
-    setSize(50,10);
 }
 
 MenuItem::~MenuItem()
