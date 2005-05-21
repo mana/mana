@@ -24,7 +24,7 @@ gui_DATA =				\
 	radioout.png			\
 	selection.png			\
 	slider.png			\
-	textbox.png			\
+	deepbox.png			\
 	thickborder.png			\
 	vscroll_blue.png		\
 	vscroll_down_default.png	\
