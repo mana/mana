@@ -24,24 +24,50 @@
 #include "textfield.h"
 #include "../resources/resourcemanager.h"
 
+int TextField::instances = 0;
+ImageRect TextField::skin;
+
 TextField::TextField(const std::string& text):
     gcn::TextField(text)
 {
     setBorderSize(2);
 
-    // Load the skin
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *textbox = resman->getImage("graphics/gui/textbox.png");
-    int gridx[4] = {0, 9, 16, 25};
-    int gridy[4] = {0, 4, 19, 24};
-    int a = 0, x, y;
+    if (instances == 0)
+    {
+        // Load the skin
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        int gridx[4] = {0, 3, 28, 31};
+        int gridy[4] = {0, 3, 28, 31};
+        //Image *textbox = resman->getImage("graphics/gui/textbox.png");
+        //int gridx[4] = {0, 5, 26, 31};
+        //int gridy[4] = {0, 5, 26, 31};
+        int a = 0, x, y;
 
-    for (y = 0; y < 3; y++) {
-        for (x = 0; x < 3; x++) {
-            skin.grid[a] = textbox->getSubImage(
-                    gridx[x], gridy[y],
-                    gridx[x + 1] - gridx[x] + 1, gridy[y + 1] - gridy[y] + 1);
-            a++;
+        for (y = 0; y < 3; y++) {
+            for (x = 0; x < 3; x++) {
+                skin.grid[a] = textbox->getSubImage(
+                        gridx[x], gridy[y],
+                        gridx[x + 1] - gridx[x] + 1,
+                        gridy[y + 1] - gridy[y] + 1);
+                a++;
+            }
+        }
+
+        textbox->decRef();
+    }
+
+    instances++;
+}
+
+TextField::~TextField()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        for (int a = 0; a < 9; a++) {
+            delete skin.grid[a];
         }
     }
 }
@@ -53,7 +79,7 @@ void TextField::draw(gcn::Graphics *graphics)
     w = getWidth();
     h = getHeight();
 
-    if (hasFocus()) {      
+    if (hasFocus()) {
         drawCaret(graphics,
                 getFont()->getWidth(mText.substr(0, mCaretPosition)) -
                 mXScroll);
@@ -61,7 +87,7 @@ void TextField::draw(gcn::Graphics *graphics)
 
     graphics->setColor(getForegroundColor());
     graphics->setFont(getFont());
-    graphics->drawText(mText, 1 - mXScroll, 1);  
+    graphics->drawText(mText, 1 - mXScroll, 1);
 }
 
 void TextField::drawBorder(gcn::Graphics *graphics)

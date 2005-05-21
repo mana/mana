@@ -26,6 +26,18 @@
 #include "../resources/resourcemanager.h"
 #include "../main.h"
 
+int ScrollArea::instances = 0;
+ImageRect ScrollArea::background;
+ImageRect ScrollArea::vMarker;
+Image *ScrollArea::hscroll_left_default;
+Image *ScrollArea::hscroll_right_default;
+Image *ScrollArea::vscroll_down_default;
+Image *ScrollArea::vscroll_up_default;
+Image *ScrollArea::hscroll_left_pressed;
+Image *ScrollArea::hscroll_right_pressed;
+Image *ScrollArea::vscroll_down_pressed;
+Image *ScrollArea::vscroll_up_pressed;
+
 ScrollArea::ScrollArea():
     gcn::ScrollArea()
 {
@@ -38,59 +50,91 @@ ScrollArea::ScrollArea(gcn::Widget *widget):
     init();
 }
 
+ScrollArea::~ScrollArea()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        for (int a = 0; a < 9; a++) {
+            delete background.grid[a];
+            delete vMarker.grid[a];
+        }
+
+        hscroll_left_default->decRef();
+        hscroll_right_default->decRef();
+        vscroll_down_default->decRef();
+        vscroll_up_default->decRef();
+        hscroll_left_pressed->decRef();
+        hscroll_right_pressed->decRef();
+        vscroll_down_pressed->decRef();
+        vscroll_up_pressed->decRef();
+    }
+}
+
 void ScrollArea::init()
 {
     // Draw background by default
-    setBorderSize(2);
-    opaque = true;
+    setOpaque(true);
 
-    // Load the background skin
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *textbox = resman->getImage("graphics/gui/textbox.png");
-    int bggridx[4] = {0, 9, 16, 25};
-    int bggridy[4] = {0, 4, 19, 24};
-    int a = 0, x, y;
+    if (instances == 0)
+    {
+        // Load the background skin
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        int bggridx[4] = {0, 3, 28, 31};
+        int bggridy[4] = {0, 3, 28, 31};
+        int a = 0, x, y;
 
-    // Load GUI alpha setting
-    guiAlpha = config.getValue("guialpha", 0.8f);
-
-    // Set GUI alpha level
-    textbox->setAlpha(guiAlpha);
-
-    for (y = 0; y < 3; y++) {
-        for (x = 0; x < 3; x++) {
-            background.grid[a] = textbox->getSubImage(
-                    bggridx[x], bggridy[y],
-                    bggridx[x + 1] - bggridx[x] + 1,
-                    bggridy[y + 1] - bggridy[y] + 1);
-            a++;
+        for (y = 0; y < 3; y++) {
+            for (x = 0; x < 3; x++) {
+                background.grid[a] = textbox->getSubImage(
+                        bggridx[x], bggridy[y],
+                        bggridx[x + 1] - bggridx[x] + 1,
+                        bggridy[y + 1] - bggridy[y] + 1);
+                a++;
+            }
         }
+
+        textbox->decRef();
+
+        // Load vertical scrollbar skin
+        Image *vscroll = resman->getImage("graphics/gui/vscroll_grey.png");
+        int vsgridx[4] = {0, 4, 7, 11};
+        int vsgridy[4] = {0, 4, 15, 19};
+        a = 0;
+
+        for (y = 0; y < 3; y++) {
+            for (x = 0; x < 3; x++) {
+                vMarker.grid[a] = vscroll->getSubImage(
+                        vsgridx[x], vsgridy[y],
+                        vsgridx[x + 1] - vsgridx[x],
+                        vsgridy[y + 1] - vsgridy[y]);
+                a++;
+            }
+        }
+
+        vscroll->decRef();
+
+        hscroll_left_default =
+            resman->getImage("graphics/gui/hscroll_left_default.png");
+        hscroll_right_default =
+            resman->getImage("graphics/gui/hscroll_right_default.png");
+        vscroll_down_default =
+            resman->getImage("graphics/gui/vscroll_down_default.png");
+        vscroll_up_default =
+            resman->getImage("graphics/gui/vscroll_up_default.png");
+        hscroll_left_pressed =
+            resman->getImage("graphics/gui/hscroll_left_pressed.png");
+        hscroll_right_pressed =
+            resman->getImage("graphics/gui/hscroll_right_pressed.png");
+        vscroll_down_pressed =
+            resman->getImage("graphics/gui/vscroll_down_pressed.png");
+        vscroll_up_pressed =
+            resman->getImage("graphics/gui/vscroll_up_pressed.png");
     }
 
-    // Load vertical scrollbar skin
-    Image *vscroll = resman->getImage("graphics/gui/vscroll_grey.png");
-    int vsgridx[4] = {0, 4, 7, 11};
-    int vsgridy[4] = {0, 4, 15, 19};
-    a = 0;
-
-    for (y = 0; y < 3; y++) {
-        for (x = 0; x < 3; x++) {
-            vMarker.grid[a] = vscroll->getSubImage(
-                    vsgridx[x], vsgridy[y],
-                    vsgridx[x + 1] - vsgridx[x],
-                    vsgridy[y + 1] - vsgridy[y]);
-            a++;
-        }
-    }
-
-    hscroll_left_default = resman->getImage("graphics/gui/hscroll_left_default.png");
-    hscroll_right_default = resman->getImage("graphics/gui/hscroll_right_default.png");
-    vscroll_down_default = resman->getImage("graphics/gui/vscroll_down_default.png");
-    vscroll_up_default = resman->getImage("graphics/gui/vscroll_up_default.png");
-    hscroll_left_pressed = resman->getImage("graphics/gui/hscroll_left_pressed.png");
-    hscroll_right_pressed = resman->getImage("graphics/gui/hscroll_right_pressed.png");
-    vscroll_down_pressed = resman->getImage("graphics/gui/vscroll_down_pressed.png");
-    vscroll_up_pressed = resman->getImage("graphics/gui/vscroll_up_pressed.png");
+    instances++;
 }
 
 void ScrollArea::draw(gcn::Graphics *graphics)
@@ -233,22 +277,26 @@ void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
-    int x, y;
+    //int x, y;
     gcn::Rectangle dim = getVerticalBarDimension();
-    getAbsolutePosition(x, y);
+    //getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(
-            x + dim.x, y + dim.y, dim.width, dim.height, background);
+    graphics->setColor(gcn::Color(0, 0, 0, 32));
+    graphics->fillRectangle(dim);
+    //((Graphics*)graphics)->drawImageRect(
+    //        x + dim.x, y + dim.y, dim.width, dim.height, background);
 }
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    int x, y;
+    //int x, y;
     gcn::Rectangle dim = getHorizontalBarDimension();
-    getAbsolutePosition(x, y);
+    //getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(
-            x + dim.x, y + dim.y, dim.width, dim.height, background);
+    graphics->setColor(gcn::Color(0, 0, 0, 32));
+    graphics->fillRectangle(dim);
+    //((Graphics*)graphics)->drawImageRect(
+    //        x + dim.x, y + dim.y, dim.width, dim.height, background);
 }
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)

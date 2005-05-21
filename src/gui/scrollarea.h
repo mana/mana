@@ -46,6 +46,11 @@ class ScrollArea : public gcn::ScrollArea {
         ScrollArea(gcn::Widget *content);
 
         /**
+         * Destructor.
+         */
+        ~ScrollArea();
+
+        /**
          * Draws the scroll area.
          */
         void draw(gcn::Graphics *graphics);
@@ -80,13 +85,14 @@ class ScrollArea : public gcn::ScrollArea {
         void drawVMarker(gcn::Graphics *graphics);
         void drawHMarker(gcn::Graphics *graphics);
 
-        ImageRect background;
-        ImageRect vMarker;
-        Image *hscroll_left_default, *hscroll_right_default,
-             *vscroll_down_default, *vscroll_up_default;
-        Image *hscroll_left_pressed, *hscroll_right_pressed,
-             *vscroll_down_pressed, *vscroll_up_pressed;
-        float guiAlpha;
+        static int instances;
+        static ImageRect background;
+        static ImageRect vMarker;
+        static Image *hscroll_left_default, *hscroll_right_default;
+        static Image *vscroll_down_default, *vscroll_up_default;
+        static Image *hscroll_left_pressed, *hscroll_right_pressed;
+        static Image *vscroll_down_pressed, *vscroll_up_pressed;
+
         bool opaque;
 };
 

@@ -33,12 +33,18 @@
  *
  * \ingroup GUI
  */
-class PlayerBox : public gcn::ScrollArea {
+class PlayerBox : public gcn::ScrollArea
+{
     public:
         /**
          * Constructor.
          */
         PlayerBox();
+
+        /**
+         * Destructor.
+         */
+        ~PlayerBox();
 
         /**
          * Draws the scroll area.
@@ -55,7 +61,8 @@ class PlayerBox : public gcn::ScrollArea {
         bool showPlayer;       /**< Wether to show the player or not */
 
     private:
-        ImageRect background;
+        static int instances;
+        static ImageRect background;
 };
 
 #endif

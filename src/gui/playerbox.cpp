@@ -27,6 +27,9 @@
 #include "../main.h"
 #include "../resources/resourcemanager.h"
 
+int PlayerBox::instances = 0;
+ImageRect PlayerBox::background;
+
 PlayerBox::PlayerBox():
     hairColor(0),
     hairStyle(0),
@@ -34,20 +37,39 @@ PlayerBox::PlayerBox():
 {
     setBorderSize(2);
 
-    // Load the background skin
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *textbox = resman->getImage("graphics/gui/textbox.png");
-    int bggridx[4] = {0, 9, 16, 25};
-    int bggridy[4] = {0, 4, 19, 24};
-    int a = 0, x, y;
+    if (instances == 0)
+    {
+        // Load the background skin
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *textbox = resman->getImage("graphics/gui/deepbox.png");
+        int bggridx[4] = {0, 3, 28, 31};
+        int bggridy[4] = {0, 3, 28, 31};
+        int a = 0, x, y;
 
-    for (y = 0; y < 3; y++) {
-        for (x = 0; x < 3; x++) {
-            background.grid[a] = textbox->getSubImage(
-                    bggridx[x], bggridy[y],
-                    bggridx[x + 1] - bggridx[x] + 1,
-                    bggridy[y + 1] - bggridy[y] + 1);
-            a++;
+        for (y = 0; y < 3; y++) {
+            for (x = 0; x < 3; x++) {
+                background.grid[a] = textbox->getSubImage(
+                        bggridx[x], bggridy[y],
+                        bggridx[x + 1] - bggridx[x] + 1,
+                        bggridy[y + 1] - bggridy[y] + 1);
+                a++;
+            }
+        }
+
+        textbox->decRef();
+    }
+
+    instances++;
+}
+
+PlayerBox::~PlayerBox()
+{
+    instances--;
+
+    if (instances == 0)
+    {
+        for (int a = 0; a < 9; a++) {
+            delete background.grid[a];
         }
     }
 }

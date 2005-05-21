@@ -40,6 +40,11 @@ class TextField : public gcn::TextField {
         TextField(const std::string& text = "");
 
         /**
+         * Destructor.
+         */
+        ~TextField();
+
+        /**
          * Draws the text field.
          */
         virtual void draw(gcn::Graphics *graphics);
@@ -50,7 +55,8 @@ class TextField : public gcn::TextField {
         void drawBorder(gcn::Graphics *graphics);
 
     private:
-        ImageRect skin;
+        static int instances;
+        static ImageRect skin;
 };
 
 #endif
