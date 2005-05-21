@@ -854,7 +854,39 @@ void do_parse()
                             tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);
                     break;
-                // Trade: Item add response
+                // Trade: New Item add response
+                case 0x0215:
+                    switch (RFIFOB(6)) {
+                        case 0:
+                            // Successfully added item
+                            if (inventoryWindow->items->isEquipment(RFIFOW(2)))
+                            {
+                                if (inventoryWindow->items->isEquipped(RFIFOW(2)))
+                                {
+                                    inventoryWindow->unequipItem(RFIFOW(2));
+                                }
+                            }
+                            tradeWindow->addItem(
+                                    tradeWindow->myItems->getFreeSlot(),
+                                    inventoryWindow->items->getId(RFIFOW(2)),
+                                    true, RFIFOW(4),
+                                    inventoryWindow->items->isEquipment(
+                                    RFIFOW(2)));
+                            inventoryWindow->changeQuantity(RFIFOW(2),
+                                (inventoryWindow->items->getQuantity(RFIFOW(2))
+                                - RFIFOW(4)));
+                            break;
+                        case 1:
+                            // Add item failed - player overweighted
+                            chatWindow->chat_log("Failed adding item. Trade "
+                                    "partner is over weighted.", BY_SERVER);
+                            break;
+                        default:
+                            //printf("Unhandled 0x00ea byte!\n");
+                            break;
+                    }
+                    break;
+                // Trade: Old Item add response
                 case 0x00ea:
                     tradeWindow->setTradeButton(false);
                     //chatWindow->chat_log("add response got", BY_SERVER);
