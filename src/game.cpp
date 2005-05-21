@@ -855,7 +855,7 @@ void do_parse()
                             false, RFIFOL(2), false);
                     break;
                 // Trade: New Item add response
-                case 0x0215:
+                case 0x01b1:
                     switch (RFIFOB(6)) {
                         case 0:
                             // Successfully added item
