@@ -32,6 +32,7 @@ ItemContainer::ItemContainer()
     Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
     if (!itemImg) logger->error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 20, 20);
+    itemImg->decRef();
 
     selImg = resman->getImage("graphics/gui/selection.png", IMG_ALPHA);
     if (!selImg) logger->error("Unable to load selection.png");
@@ -50,6 +51,8 @@ ItemContainer::ItemContainer()
 
 ItemContainer::~ItemContainer()
 {
+    delete itemset;
+    selImg->decRef();
 }
 
 void ItemContainer::draw(gcn::Graphics* graphics)

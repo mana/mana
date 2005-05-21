@@ -146,7 +146,6 @@ void Graphics::updateScreen()
         glFlush();
         glFinish();
         SDL_GL_SwapBuffers();
-        glClear(GL_COLOR_BUFFER_BIT);
     }
     else {
         SDL_Flip(screen);

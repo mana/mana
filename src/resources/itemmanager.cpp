@@ -26,6 +26,7 @@
 #include <iostream>
 
 #include "itemmanager.h"
+#include "resourcemanager.h"
 #include "../main.h"
 #include "../log.h"
 
@@ -38,16 +39,16 @@
 
 ItemManager::ItemManager()
 {
-    // Check that file exists before trying to parse it
-    std::fstream dbFile;
-    dbFile.open(TMW_DATADIR "data/items.xml", std::ios::in);
-    if (!dbFile.is_open()) {
-        logger->error("Cannot find item database (items.xml)!");
-        return;
-    }
-    dbFile.close();
+    ResourceManager *resman = ResourceManager::getInstance();
+    int size;
+    char *data = (char*)resman->loadFile("items.xml", size);
 
-    xmlDocPtr doc = xmlParseFile(TMW_DATADIR "data/items.xml");
+    if (!data) {
+        logger->error("Could not find items.xml!");
+    }
+
+    xmlDocPtr doc = xmlParseMemory(data, size);
+    free(data);
 
     if (doc) {
         xmlNodePtr node = xmlDocGetRootElement(doc);
@@ -104,7 +105,8 @@ ItemManager::ItemManager()
         }
 
         xmlFreeDoc(doc);
-    } else {
+    }
+    else {
         logger->error("Error while parsing item database (items.xml)!");
     }
 

@@ -37,7 +37,8 @@
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window, gcn::ActionListener {
+class InventoryWindow : public Window, gcn::ActionListener
+{
     public:
         /**
          * Constructor.
@@ -50,6 +51,11 @@ class InventoryWindow : public Window, gcn::ActionListener {
         ~InventoryWindow();
 
         /**
+         * Logic (updates buttons)
+         */
+        void logic();
+
+        /**
          * Add an item the inventory.
          */
         int addItem(int index, int id, int quantity, bool equipment);
@@ -58,14 +64,17 @@ class InventoryWindow : public Window, gcn::ActionListener {
          * Remove a item from the inventory.
          */
         int removeItem(int id);
-        
+
+        /**
+         * Equips an item.
+         */
         void equipItem(int index);
 
         /**
          * Unequips an item.
          */
         void unequipItem(int index);
-        
+
         /**
          * Change quantity of an item.
          */
@@ -94,7 +103,7 @@ class InventoryWindow : public Window, gcn::ActionListener {
 
         int useItem(int index, int id);
         void updateWidgets();    /** Updates widgets size/position */
-        void updateUseButton();  /** Updates use button to selected item */
+        void updateButtons();    /** Updates button states */
 
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;

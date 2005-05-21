@@ -41,6 +41,10 @@
 #define xmlFree(x) ;
 #endif
 
+ConfigListener::~ConfigListener()
+{
+}
+
 void Configuration::init(const std::string &filename)
 {
     configPath = filename;
@@ -185,7 +189,7 @@ void Configuration::removeListener(
         const std::string &key, ConfigListener *listener)
 {
     std::list<ConfigListener*>::iterator i = listeners[key].begin();
-    
+
     while (i != listeners[key].end())
     {
         if ((*i) == listener) {

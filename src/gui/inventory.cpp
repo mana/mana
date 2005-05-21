@@ -76,6 +76,13 @@ InventoryWindow::~InventoryWindow()
     delete itemDescriptionLabel;
 }
 
+void InventoryWindow::logic()
+{
+    // It would be nicer if this update could be event based, needs some
+    // redesign of InventoryWindow and ItemContainer probably.
+    updateButtons();
+}
+
 int InventoryWindow::addItem(int index, int id, int quantity, bool equipment)
 {
     items->addItem(index, id, quantity, equipment);
@@ -90,14 +97,12 @@ int InventoryWindow::removeItem(int id)
 
 int InventoryWindow::changeQuantity(int index, int quantity)
 {
-    //items[index].quantity = quantity;
     items->changeQuantity(index, quantity);
     return 0;
 }
 
 int InventoryWindow::increaseQuantity(int index, int quantity)
 {
-    //items[index].quantity += quantity;
     items->increaseQuantity(index, quantity);
     return 0;
 }
@@ -147,8 +152,8 @@ void InventoryWindow::action(const std::string &eventId)
 
     if (selectedItem != -1) {
         if (eventId == "use") {
-            if(items->isEquipment(selectedItem)) {
-                if(items->isEquipped(selectedItem)) {
+            if (items->isEquipment(selectedItem)) {
+                if (items->isEquipped(selectedItem)) {
                     unequipItem(selectedItem);
                 }
                 else {
@@ -164,16 +169,12 @@ void InventoryWindow::action(const std::string &eventId)
             // Choose amount of items to drop
             new ItemAmountWindow(AMOUNT_ITEM_DROP, this);
         }
-
-        updateUseButton();
     }
 }
 
 void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
-
-    updateUseButton();
 
     if (items->getIndex() != -1)
     {
@@ -213,7 +214,7 @@ void InventoryWindow::updateWidgets()
     setContentSize(getWidth(), getHeight());
 }
 
-void InventoryWindow::updateUseButton()
+void InventoryWindow::updateButtons()
 {
     if (items->getIndex() != -1 && items->isEquipment(items->getIndex()))
     {
@@ -229,4 +230,5 @@ void InventoryWindow::updateUseButton()
     }
 
     useButton->setEnabled(items->getIndex() != -1);
+    dropButton->setEnabled(items->getIndex() != -1);
 }

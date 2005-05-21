@@ -859,12 +859,11 @@ void do_parse()
                     switch (RFIFOB(6)) {
                         case 0:
                             // Successfully added item
-                            if (inventoryWindow->items->isEquipment(RFIFOW(2)))
+                            if (inventoryWindow->items->isEquipment(RFIFOW(2))
+                                    && inventoryWindow->items->isEquipped(
+                                        RFIFOW(2)))
                             {
-                                if (inventoryWindow->items->isEquipped(RFIFOW(2)))
-                                {
-                                    inventoryWindow->unequipItem(RFIFOW(2));
-                                }
+                                inventoryWindow->unequipItem(RFIFOW(2));
                             }
                             tradeWindow->addItem(
                                     tradeWindow->myItems->getFreeSlot(),
@@ -922,14 +921,16 @@ void do_parse()
 
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++)
                     {
-                       inventoryWindow->addItem(RFIFOW(4 + loop * 18),
+                        inventoryWindow->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
                         // Trick because arrows are not considered equipment
                         if (RFIFOW(4 + loop * 18 + 2) == 1199 ||
                             RFIFOW(4 + loop * 18 + 2) == 529)
+                        {
                             inventoryWindow->items->setEquipment(
                                 RFIFOW(4 + loop * 18), true);
+                        }
                         /*char info[40];
                         sprintf(info, "1ee %i", RFIFOW(4+loop*18+2));
                         chatWindow->chat_log(info, BY_SERVER);*/
@@ -948,7 +949,7 @@ void do_parse()
                             RFIFOB(4+loop*20+4), RFIFOB(4+loop*20+5),
                             RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
                             RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
-                        chatWindow->chat_log(info, BY_SERVER);*/
+                            chatWindow->chat_log(info, BY_SERVER);*/
                         if (RFIFOW(4 + loop * 20 + 8))
                         {
                             int mask = 1;
@@ -958,13 +959,13 @@ void do_parse()
                                 position++;
                             }
                             /*sprintf(info, "%i %i", mask, position);
-                            chatWindow->chat_log(info, BY_SERVER);*/
+                              chatWindow->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
-                                RFIFOW(4+loop*20+2));
+                                    RFIFOW(4+loop*20+2));
                             equipmentWindow->equipments[position - 1].inventoryIndex =
                                 RFIFOW(4+loop*20);
                             inventoryWindow->items->setEquipped(
-                                RFIFOW(4+loop*20), true);
+                                    RFIFOW(4+loop*20), true);
                         }
                     }
                     break;

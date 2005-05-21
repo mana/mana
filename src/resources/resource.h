@@ -36,6 +36,11 @@ class Resource
         Resource();
 
         /**
+         * Destructor.
+         */
+        virtual ~Resource();
+
+        /**
          * Frees this objects internal resources.
          */
         virtual void unload() = 0;

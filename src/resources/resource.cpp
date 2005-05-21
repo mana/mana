@@ -28,6 +28,11 @@ Resource::Resource():
 {
 }
 
+Resource::~Resource()
+{
+    // TODO: Notify resource manager about this resource being deleted
+}
+
 bool Resource::isLoaded() const
 {
     return loaded;

@@ -155,7 +155,6 @@ class SubImage : public Image
         /**
          * Constructor.
          */
-        //SubImage(SDL_Surface *timage, int x, int y, int width, int height);
 #ifndef USE_OPENGL
         SubImage(Image *parent, SDL_Surface *image,
                 int x, int y, int width, int height);

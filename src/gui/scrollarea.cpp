@@ -277,26 +277,18 @@ void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
-    //int x, y;
     gcn::Rectangle dim = getVerticalBarDimension();
-    //getAbsolutePosition(x, y);
-
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     graphics->fillRectangle(dim);
-    //((Graphics*)graphics)->drawImageRect(
-    //        x + dim.x, y + dim.y, dim.width, dim.height, background);
+    graphics->setColor(gcn::Color(255, 255, 255));
 }
 
 void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
-    //int x, y;
     gcn::Rectangle dim = getHorizontalBarDimension();
-    //getAbsolutePosition(x, y);
-
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     graphics->fillRectangle(dim);
-    //((Graphics*)graphics)->drawImageRect(
-    //        x + dim.x, y + dim.y, dim.width, dim.height, background);
+    graphics->setColor(gcn::Color(255, 255, 255));
 }
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
