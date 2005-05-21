@@ -255,12 +255,18 @@ void TradeWindow::action(const std::string &eventId)
         if (inventoryWindow->items->getIndex() >= 0 &&
                 inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
             if (tradeWindow->myItems->getFreeSlot() >= 0) {
-                if (inventoryWindow->items->getQuantity() == 1) {
-                    tradeItem(inventoryWindow->items->getIndex(), 1);
-                }
-                else {
-                    // Choose amount of items to trade
-                    new ItemAmountWindow(AMOUNT_TRADE_ADD, this);
+                if (tradeWindow->myItems->getIndex(
+                    inventoryWindow->items->getId()) == -1) {
+                    if (inventoryWindow->items->getQuantity() == 1) {
+                        tradeItem(inventoryWindow->items->getIndex(), 1);
+                    }
+                    else {
+                        // Choose amount of items to trade
+                        new ItemAmountWindow(AMOUNT_TRADE_ADD, this);
+                    }
+                } else {
+                    chatWindow->chat_log("Failed adding item. You can not "
+                        "overlap one kind of item on the window.", BY_SERVER);
                 }
             }
         }
