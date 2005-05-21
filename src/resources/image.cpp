@@ -292,6 +292,7 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
 
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 #endif
     return true;
@@ -435,6 +436,7 @@ bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
 
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
+    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
 #endif
     return true;

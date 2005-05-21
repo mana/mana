@@ -78,6 +78,8 @@ InventoryWindow::~InventoryWindow()
 
 void InventoryWindow::logic()
 {
+    Window::logic();
+
     // It would be nicer if this update could be event based, needs some
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
