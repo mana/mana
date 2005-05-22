@@ -241,14 +241,15 @@ int attack(unsigned short x, unsigned short y, unsigned char direction)
         attack(target);
         return target->id;
     }
-        
+
     // Implement charging attacks here
     char_info->lastAttackTime = 0;
-    
+
     return 0;
 }
 
-void attack(Being *target) {
+void attack(Being *target)
+{
     int dist_x = target->x - player_node->x;
     int dist_y = target->y - player_node->y;
     if (abs(dist_y) >= abs(dist_x)) {
