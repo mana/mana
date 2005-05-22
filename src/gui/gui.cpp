@@ -128,5 +128,7 @@ void Gui::mousePress(int mx, int my, int button)
             walk(tilex, tiley, 0);
             player_node->setDestination(tilex, tiley);
         }
+        
+        autoTarget = 0;
     }
 }

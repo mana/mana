@@ -53,6 +53,7 @@ int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 int startX = 0, startY = 0;
 int gameTime = 0;
+int autoTarget = 0;
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
@@ -212,6 +213,10 @@ void do_exit()
 
 void do_input()
 {
+    // Get the state of the keyboard keys
+    Uint8* keys;
+    keys = SDL_GetKeyState(NULL);
+    
     // Events
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -390,26 +395,11 @@ void do_input()
                         }
                     }
                     else if (target->isMonster()) {
-                        int dist_x = mx - player_node->x;
-                        int dist_y = my - player_node->y;
-                        if (abs(dist_y) >= abs(dist_x)) {
-                            if (dist_y > 0)
-                                player_node->direction = SOUTH;
-                            else
-                                player_node->direction = NORTH;
-                        } else {
-                            if (dist_x > 0)
-                                player_node->direction = EAST;
-                            else
-                                player_node->direction = WEST;
+                        if (keys[SDLK_LSHIFT]) {
+                            if (target->action != MONSTER_DEAD)
+                                autoTarget = target->id;
                         }
-                        player_node->action = ATTACK;
-                        action(0, target->id);
-                        player_node->walk_time = tick_time;
-                        if (player_node->weapon == 2)
-                            sound.playSfx("sfx/bow_shoot_1.ogg");
-                        else
-                            sound.playSfx("sfx/fist-swish.ogg");
+                        attack(target);
                     }
                     else if (target->isPlayer()) {
                         // Begin a trade
@@ -432,10 +422,6 @@ void do_input()
 
     } // End while
 
-
-    // Get the state of the keyboard keys
-    Uint8* keys;
-    keys = SDL_GetKeyState(NULL);
     int xDirection = 0;
     int yDirection = 0;
     int Direction = DIR_NONE;

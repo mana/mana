@@ -408,6 +408,8 @@ void Engine::draw()
             if (being->action == MONSTER_DEAD) {
                 monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
+                if (autoTarget == being->id)
+                    autoTarget = 0;
             }
             else {
                 monsterset[being->job-1002]->spriteset[dir + 4 * mf]->draw(

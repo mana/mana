@@ -248,3 +248,26 @@ void attack(unsigned short x, unsigned short y, unsigned char direction)
     // implement charging attacks here
     char_info->lastAttackTime = 0;
 }
+
+void attack(Being *target) {
+    int dist_x = target->x - player_node->x;
+    int dist_y = target->y - player_node->y;
+    if (abs(dist_y) >= abs(dist_x)) {
+        if (dist_y > 0)
+            player_node->direction = SOUTH;
+        else
+            player_node->direction = NORTH;
+    } else {
+        if (dist_x > 0)
+            player_node->direction = EAST;
+        else
+            player_node->direction = WEST;
+    }
+    player_node->action = ATTACK;
+    action(0, target->id);
+    player_node->walk_time = tick_time;
+    if (player_node->weapon == 2)
+        sound.playSfx("sfx/bow_shoot_1.ogg");
+    else
+        sound.playSfx("sfx/fist-swish.ogg");
+}

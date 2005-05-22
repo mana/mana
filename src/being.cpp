@@ -302,6 +302,9 @@ void Being::logic()
                 frame = (get_elapsed_time(walk_time) * 4) / aspd;
                 if (frame >= 4) {
                     nextStep();
+                    if (autoTarget > 0 && this == player_node) {
+                        attack(findNode(autoTarget));
+                    }
                 }
                 break;
         }

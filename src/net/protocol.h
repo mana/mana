@@ -83,6 +83,9 @@ void speak(char *speech);
 /** Request to attack */
 void attack(unsigned short x, unsigned short y, unsigned char direction);
 
+/** Request to attack */
+void attack(Being *target);
+
 /** Request action */
 void action(char type, int id);
 
