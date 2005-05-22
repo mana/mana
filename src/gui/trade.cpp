@@ -189,6 +189,7 @@ void TradeWindow::reset()
     ok_other = false;
     ok_me = false;
     moneyLabel->setCaption("You get: 0z");
+    moneyField->setEnabled(true);
     moneyField->setText("");
 }
 
@@ -326,7 +327,7 @@ void TradeWindow::action(const std::string &eventId)
         } else {
             moneyField->setText("");
         }
-
+        moneyField->setEnabled(false);
         WFIFOW(0) = net_w_value(0x00eb);
         WFIFOSET(2);
         while ((out_size > 0)) flush();
