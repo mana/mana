@@ -45,6 +45,7 @@ SellDialog::SellDialog():
     okButton->setEnabled(false);
 
     setContentSize(260, 175);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));

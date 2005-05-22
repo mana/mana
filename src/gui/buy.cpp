@@ -47,6 +47,7 @@ BuyDialog::BuyDialog():
     itemDescLabel = new gcn::Label("Description:");
 
     setContentSize(260, 198);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));

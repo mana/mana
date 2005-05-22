@@ -37,6 +37,7 @@ NpcListDialog::NpcListDialog():
     cancelButton = new Button("Cancel");
 
     setContentSize(260, 175);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 250, 160 - okButton->getHeight()));
     cancelButton->setPosition(

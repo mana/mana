@@ -137,6 +137,27 @@ void ScrollArea::init()
     instances++;
 }
 
+void ScrollArea::logic()
+{
+    gcn::ScrollArea::logic();
+
+    // When no scrollbar in a certain direction, adapt content size to match
+    // the content dimension exactly.
+    if (mContent != NULL)
+    {
+        if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
+        {
+            mContent->setWidth(getContentDimension().width -
+                    2 * mContent->getBorderSize());
+        }
+        if (getVerticalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
+        {
+            mContent->setHeight(getContentDimension().height -
+                    2 * mContent->getBorderSize());
+        }
+    }
+}
+
 void ScrollArea::draw(gcn::Graphics *graphics)
 {
     checkPolicies();

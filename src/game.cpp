@@ -321,53 +321,51 @@ void do_input()
                 }
             }
 
-            if (keysym.sym == SDLK_g && !chatWindow->isFocused())
+            if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
+                    !chatWindow->isFocused())
             {
                 // Get the item code
-                if (!chatWindow->isFocused())
+                used = true;
+                int id = 0;
+                id = find_floor_item_by_cor(player_node->x, player_node->y);
+                if (id != 0)
                 {
-                    used = true;
-                    int id = 0;
-                    id = find_floor_item_by_cor(player_node->x, player_node->y);
-                    if (id != 0)
-                    {
-                        WFIFOW(0) = net_w_value(0x009f);
-                        WFIFOL(2) = net_l_value(id);
-                        WFIFOSET(6);
+                    WFIFOW(0) = net_w_value(0x009f);
+                    WFIFOL(2) = net_l_value(id);
+                    WFIFOSET(6);
+                }
+                else {
+                    switch (player_node->direction) {
+                        case NORTH:
+                            id = find_floor_item_by_cor(player_node->x, player_node->y-1);
+                            break;
+                        case SOUTH:
+                            id = find_floor_item_by_cor(player_node->x, player_node->y+1);
+                            break;
+                        case WEST:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y);
+                            break;
+                        case EAST:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y);
+                            break;
+                        case NW:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y-1);
+                            break;
+                        case NE:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y-1);
+                            break;
+                        case SW:
+                            id = find_floor_item_by_cor(player_node->x-1, player_node->y+1);
+                            break;
+                        case SE:
+                            id = find_floor_item_by_cor(player_node->x+1, player_node->y+1);
+                            break;
+                        default:
+                            break;
                     }
-                    else {
-                        switch (player_node->direction) {
-                            case NORTH:
-                                id = find_floor_item_by_cor(player_node->x, player_node->y-1);
-                                break;
-                            case SOUTH:
-                                id = find_floor_item_by_cor(player_node->x, player_node->y+1);
-                                break;
-                            case WEST:
-                                id = find_floor_item_by_cor(player_node->x-1, player_node->y);
-                                break;
-                            case EAST:
-                                id = find_floor_item_by_cor(player_node->x+1, player_node->y);
-                                break;
-                            case NW:
-                                id = find_floor_item_by_cor(player_node->x-1, player_node->y-1);
-                                break;
-                            case NE:
-                                id = find_floor_item_by_cor(player_node->x+1, player_node->y-1);
-                                break;
-                            case SW:
-                                id = find_floor_item_by_cor(player_node->x-1, player_node->y+1);
-                                break;
-                            case SE:
-                                id = find_floor_item_by_cor(player_node->x+1, player_node->y+1);
-                                break;
-                            default:
-                                break;
-                        }
-                        WFIFOW(0) = net_w_value(0x009f);
-                        WFIFOL(2) = net_l_value(id);
-                        WFIFOSET(6);
-                    }
+                    WFIFOW(0) = net_w_value(0x009f);
+                    WFIFOL(2) = net_l_value(id);
+                    WFIFOSET(6);
                 }
             }
         } // End key down

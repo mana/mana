@@ -41,7 +41,7 @@ over NPC's feet to talk to them or over a monster to attack it. Other keys:
 - F5                 sit down / stand up
 - F6                 toggle debug pathfinding feature
 - F7                 play test sound
-- G                  pick up item
+- G or Z             pick up item
 - Enter              focus chat window / send message
 - Alt + K            show skills
 - Alt + S            show stats

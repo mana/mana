@@ -51,6 +51,12 @@ class ScrollArea : public gcn::ScrollArea {
         ~ScrollArea();
 
         /**
+         * Logic function optionally adapts width or height of contents. This
+         * depends on the scrollbar settings.
+         */
+        void logic();
+
+        /**
          * Draws the scroll area.
          */
         void draw(gcn::Graphics *graphics);

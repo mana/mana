@@ -50,6 +50,7 @@ ServerSelectDialog::ServerSelectDialog():
     okButton->setPosition(
             cancelButton->getX() - okButton->getWidth() - 5,
             100 - okButton->getHeight() - 5);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 200 - 2 * 5,
                 100 - 3 * 5 - cancelButton->getHeight() -
