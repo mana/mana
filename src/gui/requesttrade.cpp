@@ -26,8 +26,8 @@
 #include "../game.h"
 #include "../net/network.h"
 
-RequestTradeDialog::RequestTradeDialog():
-    Window("Request for Trade")
+RequestTradeDialog::RequestTradeDialog(const char *name):
+    Window("Request for Trade", true)
 {
     nameLabel[0] = new gcn::Label("");
     nameLabel[1] = new gcn::Label("");
@@ -56,6 +56,15 @@ RequestTradeDialog::RequestTradeDialog():
     add(acceptButton);
     add(cancelButton);
 
+    std::stringstream cap[2];
+    cap[0] << name << " wants to trade with you.";
+    cap[1] << "Do you want to accept?";
+
+    nameLabel[0]->setCaption(cap[0].str());
+    nameLabel[0]->adjustSize();
+    nameLabel[1]->setCaption(cap[1].str());
+    nameLabel[1]->adjustSize();
+
     setLocationRelativeTo(getParent());
 }
 
@@ -66,19 +75,6 @@ RequestTradeDialog::~RequestTradeDialog()
     for (int i = 0; i < 2; i++) {
         delete nameLabel[i];
     }
-} 
-
-void RequestTradeDialog::request(const char *name)
-{
-    std::stringstream cap;
-    std::stringstream captwo;
-    cap << name << " wants to trade with you.";
-    captwo << "Do you want to accept?";
-    nameLabel[0]->setCaption(cap.str());
-    nameLabel[0]->adjustSize();
-    nameLabel[1]->setCaption(captwo.str());
-    nameLabel[1]->adjustSize();
-    setVisible(true);
 }
 
 void RequestTradeDialog::action(const std::string& eventId)
@@ -88,13 +84,13 @@ void RequestTradeDialog::action(const std::string& eventId)
         WFIFOW(0) = net_w_value(0x00e6);
         WFIFOB(2) = net_b_value(3);
         WFIFOSET(3);
-        setVisible(false);
+        scheduleDelete();
     }
     else if (eventId == "cancel") {
         // 0xff packet means cancel
         WFIFOW(0) = net_w_value(0x00e6);
         WFIFOB(2) = net_b_value(4);
         WFIFOSET(3);
-        setVisible(false);
+        scheduleDelete();
     }
 }

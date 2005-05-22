@@ -33,7 +33,6 @@
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
-#include "gui/requesttrade.h"
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
@@ -62,7 +61,6 @@ Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
-RequestTradeDialog *requestTradeDialog;
 BuddyWindow *buddyWindow;
 Menu *menu;
 std::map<int, Spriteset*> monsterset;
@@ -162,7 +160,6 @@ Engine::Engine()
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
-    requestTradeDialog = new RequestTradeDialog();
 
     /* Menu items */
     std::vector<MenuItem*> items;
@@ -186,9 +183,6 @@ Engine::Engine()
             inventoryWindow->getY() + inventoryWindow->getHeight());
     buddyWindow->setPosition(10,
             minimap->getHeight() + 30);
-    requestTradeDialog->setPosition(screen->w - statusWindow->getWidth() -
-            requestTradeDialog->getWidth() - 10,
-            chatWindow->getHeight() + 15);
     equipmentWindow->setPosition(5,140);
     menu->setPosition(5,140);
 
@@ -209,7 +203,6 @@ Engine::Engine()
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
     buddyWindow->setVisible(false);
-    requestTradeDialog->setVisible(false);
     menu->setVisible(false);
 
     // Do not focus any text field
@@ -255,7 +248,6 @@ Engine::~Engine()
     delete newSkillWindow;
     delete tradeWindow;
     delete buddyWindow;
-    delete requestTradeDialog;
 
     // Delete sprite sets
     //delete monsterset;

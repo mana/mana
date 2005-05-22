@@ -37,6 +37,7 @@
 #include "gui/stats.h"
 #include "gui/ok_dialog.h"
 #include "gui/confirm_dialog.h"
+#include "gui/requesttrade.h"
 #include "net/protocol.h"
 #include "resources/mapreader.h"
 #include <SDL.h>
@@ -786,8 +787,7 @@ void do_parse()
 
                 // Trade: Receiving a request to trade
                 case 0x00e5:
-                    //printf("Getting a call from %s\n", RFIFOP(2));
-                    requestTradeDialog->request(RFIFOP(2));
+                    new RequestTradeDialog(RFIFOP(2));
                     break;
 
                 // Trade: Response

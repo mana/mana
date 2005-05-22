@@ -43,17 +43,12 @@ class RequestTradeDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        RequestTradeDialog();
+        RequestTradeDialog(const char *name);
 
         /**
          * Destructor.
          */
         ~RequestTradeDialog();
-
-        /**
-         * Changes caption and brings window to the top
-         */
-        void request(const char *name);
 
         /**
          * Called when receiving actions from the widgets.

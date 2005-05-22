@@ -43,7 +43,6 @@
 #include "gui/chargedialog.h"
 #include "gui/menu.h"
 #include "gui/trade.h"
-#include "gui/requesttrade.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -70,7 +69,6 @@ extern StatsWindow *statsWindow;
 extern Setup *setupWindow;
 extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
-extern RequestTradeDialog *requestTradeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
 extern Menu *menu;
