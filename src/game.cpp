@@ -846,11 +846,14 @@ void do_parse()
                 case 0x00e9:
                     // TODO:
                     // Maybe also handle identified, etc
-                    // handle zeny as well
-
-                    tradeWindow->addItem(
+                    if (RFIFOW(6) == 0)
+                    {
+                        tradeWindow->addMoney(RFIFOL(2));
+                    } else {
+                        tradeWindow->addItem(
                             tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);
+                    }
                     break;
                 // Trade: New Item add response
                 case 0x01b1:

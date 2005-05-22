@@ -29,6 +29,7 @@
 #include "../resources/image.h"
 #include "button.h"
 #include "scrollarea.h"
+#include "textfield.h"
 #include "../being.h"
 #include "../engine.h"
 #include <sstream>
@@ -54,11 +55,19 @@ TradeWindow::TradeWindow():
 
     partnerScroll = new ScrollArea(partnerItems);
     partnerScroll->setPosition(8, 64);
-
+    
+    moneyLabel = new gcn::Label("You get: 0z");
+    moneyField = new TextField();
+    
     addButton->setEventId("add");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
     tradeButton->setEventId("trade");
+
+    addButton->adjustSize();
+    okButton->adjustSize();
+    cancelButton->adjustSize();
+    tradeButton->adjustSize();
 
     addButton->addActionListener(this);
     okButton->addActionListener(this);
@@ -78,11 +87,21 @@ TradeWindow::TradeWindow():
     add(tradeButton);
     add(itemNameLabel);
     add(itemDescriptionLabel);
+    add(moneyField);
+    add(moneyLabel);
 
-    addButton->setPosition(8, getHeight() - 24);
-    okButton->setPosition(48 + 16, getHeight() - 24);
-    tradeButton->setPosition(getWidth() - 92, getHeight() - 24);
-    cancelButton->setPosition(getWidth() - 52, getHeight() - 24);
+    moneyField->setPosition(8, getHeight() - 20);
+    moneyField->setWidth(50);
+    
+    moneyLabel->setPosition(8+ 50 + 6, getHeight() - 20);
+    
+    cancelButton->setPosition(getWidth() - 48, getHeight() - 24);
+    tradeButton->setPosition(cancelButton->getX() - 40
+        , getHeight() - 24);
+    okButton->setPosition(tradeButton->getX() - 24,
+        getHeight() - 24);
+    addButton->setPosition(okButton->getX() - 32,
+        getHeight() - 24);
 
     myItems->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
@@ -112,6 +131,16 @@ TradeWindow::~TradeWindow()
     delete partnerScroll;
     delete itemNameLabel;
     delete itemDescriptionLabel;
+    delete moneyField;
+    delete moneyLabel;
+}
+
+void TradeWindow::addMoney(int amount)
+{
+    std::stringstream tempMoney;
+    tempMoney << "You get: " << amount << "z";
+    moneyLabel->setCaption(tempMoney.str());
+    moneyLabel->adjustSize();
 }
 
 void TradeWindow::addItem(int index, int id, bool own, int quantity,
@@ -159,6 +188,8 @@ void TradeWindow::reset()
     okButton->setEnabled(true);
     ok_other = false;
     ok_me = false;
+    moneyLabel->setCaption("You get: 0z");
+    moneyField->setText("");
 }
 
 void TradeWindow::setTradeButton(bool enabled)
@@ -279,6 +310,23 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "ok")
     {
+        std::stringstream tempMoney[2];
+        tempMoney[0] << moneyField->getText();
+        int tempInt;
+        if (tempMoney[0] >> tempInt)
+        {
+            tempMoney[1] << tempInt;
+            moneyField->setText(tempMoney[1].str());
+
+            WFIFOW(0) = net_w_value(0x00e8);
+            WFIFOW(2) = net_w_value(0);
+            WFIFOL(4) = net_l_value(tempInt);
+            WFIFOSET(8);
+            while ((out_size > 0)) flush();
+        } else {
+            moneyField->setText("");
+        }
+
         WFIFOW(0) = net_w_value(0x00eb);
         WFIFOSET(2);
         while ((out_size > 0)) flush();

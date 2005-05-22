@@ -51,7 +51,12 @@ class TradeWindow : public Window, gcn::ActionListener
         ~TradeWindow();
 
         /**
-         * Add an item the trade window.
+         * Add money to the trade window.
+         */
+        void addMoney(int quantity);
+
+        /**
+         * Add an item to the trade window.
          */
         void addItem(int index, int id, bool own, int quantity, bool equipment);
 
@@ -106,8 +111,10 @@ class TradeWindow : public Window, gcn::ActionListener
     private:
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
+        gcn::Label *moneyLabel;
         gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
         ScrollArea *myScroll, *partnerScroll;
+        gcn::TextField *moneyField;
         bool ok_other, ok_me;
 };
 
