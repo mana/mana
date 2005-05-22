@@ -224,29 +224,28 @@ void action(char type, int id)
     WFIFOSET(7);
 }
 
-void attack(unsigned short x, unsigned short y, unsigned char direction)
+int attack(unsigned short x, unsigned short y, unsigned char direction)
 {
-    int monster_id = 0;
+    Being *target;
 
     if (direction == SOUTH) {
-        monster_id = findMonster(x, y + 1);
-        if (monster_id != 0)
-            action(0, monster_id);
+        target = findNode(x, y + 1);
     } else if(direction == WEST) {
-        monster_id = findMonster(x - 1, y);
-        if (monster_id != 0)
-            action(0, monster_id);
+        target = findNode(x - 1, y);
     } else if(direction == NORTH) {
-        monster_id = findMonster(x, y - 1);
-        if (monster_id != 0)
-            action(0, monster_id);
+        target = findNode(x, y - 1);
     } else if(direction==EAST) {
-        monster_id = findMonster(x + 1, y);
-        if (monster_id != 0)
-            action(0, monster_id);
+        target = findNode(x + 1, y);
     }
-    // implement charging attacks here
+    if (target && target->isMonster()) {
+        attack(target);
+        return target->id;
+    }
+        
+    // Implement charging attacks here
     char_info->lastAttackTime = 0;
+    
+    return 0;
 }
 
 void attack(Being *target) {

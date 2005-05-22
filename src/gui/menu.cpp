@@ -48,5 +48,7 @@ void Menu::fill(std::vector<MenuItem *> items)
         i=i+10;
         add(*item);
     }
+    
+    resizeToContent();
 }
 

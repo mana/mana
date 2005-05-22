@@ -547,17 +547,10 @@ void do_input()
             if (keys[SDLK_LCTRL])
             {
                 player_node->action = ATTACK;
-                attack(player_node->x,
-                        player_node->y,
-                        player_node->direction);
-                player_node->walk_time = tick_time;
-
-                if (player_node->weapon == 2) {
-                    sound.playSfx("sfx/bow_shoot_1.ogg");
-                }
-                else {
-                    sound.playSfx("sfx/fist-swish.ogg");
-                }
+                int monsterId = attack(player_node->x,
+                        player_node->y, player_node->direction);
+                if (keys[SDLK_LSHIFT])
+                    autoTarget = monsterId;
             }
         }
     }
