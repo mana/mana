@@ -1,4 +1,5 @@
 0.0.13  (5 June 2005)
+- Added ability to trade items and money
 - Added server field to login dialog
 - Added item descriptions to inventory and buy/sell dialogs
 - Added confirmation dialog before quitting
