@@ -224,7 +224,7 @@ void action(char type, int id)
     WFIFOSET(7);
 }
 
-int attack(unsigned short x, unsigned short y, unsigned char direction)
+Being* attack(unsigned short x, unsigned short y, unsigned char direction)
 {
     Being *target;
 
@@ -237,32 +237,38 @@ int attack(unsigned short x, unsigned short y, unsigned char direction)
     } else if(direction==EAST) {
         target = findNode(x + 1, y);
     }
+
     if (target && target->isMonster()) {
         attack(target);
-        return target->id;
+        return target;
     }
 
     // Implement charging attacks here
     char_info->lastAttackTime = 0;
 
-    return 0;
+    return NULL;
 }
 
 void attack(Being *target)
 {
     int dist_x = target->x - player_node->x;
     int dist_y = target->y - player_node->y;
-    if (abs(dist_y) >= abs(dist_x)) {
+
+    if (abs(dist_y) >= abs(dist_x))
+    {
         if (dist_y > 0)
             player_node->direction = SOUTH;
         else
             player_node->direction = NORTH;
-    } else {
+    }
+    else
+    {
         if (dist_x > 0)
             player_node->direction = EAST;
         else
             player_node->direction = WEST;
     }
+
     player_node->action = ATTACK;
     action(0, target->id);
     player_node->walk_time = tick_time;

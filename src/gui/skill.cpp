@@ -107,10 +107,8 @@ void SkillDialog::action(const std::string& eventId)
     {
         // Increment skill
         int selectedSkill = skillListBox->getSelected();
-        std::cout << "SkillDialog::action(" << selectedSkill << ")\n";
-        if (char_info->skill_point > 0 && selectedSkill >= 0) {
-            std::cout << "Sending upgrade of id " <<
-                skillList[selectedSkill]->id << "\n";
+        if (char_info->skill_point > 0 && selectedSkill >= 0)
+        {
             WFIFOW(0) = net_w_value(0x0112);
             WFIFOW(2) = net_w_value(
                     skillList[selectedSkill]->id);

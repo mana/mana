@@ -83,7 +83,7 @@ void walk(unsigned short x, unsigned short y, unsigned char direction);
 void speak(char *speech);
 
 /** Request to attack */
-int attack(unsigned short x, unsigned short y, unsigned char direction);
+Being* attack(unsigned short x, unsigned short y, unsigned char direction);
 
 /** Request to attack */
 void attack(Being *target);

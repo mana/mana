@@ -69,7 +69,8 @@ void Sound::init()
     installed = true;
 }
 
-void Sound::info() {
+void Sound::info()
+{
     SDL_version compiledVersion;
     const SDL_version *linkedVersion;
     char driver[40] = "Unknown";
@@ -102,9 +103,9 @@ void Sound::info() {
             linkedVersion->minor,
             linkedVersion->patch);
     logger->log("Sound::info() Driver: %s", driver);
-    logger->log("Sound::init() Format: %s", format);
-    logger->log("Sound::init() Rate: %i", rate);
-    logger->log("Sound::init() Channels: %i", channels);
+    logger->log("Sound::info() Format: %s", format);
+    logger->log("Sound::info() Rate: %i", rate);
+    logger->log("Sound::info() Channels: %i", channels);
 }
 
 void Sound::setMusicVolume(int volume)

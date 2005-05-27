@@ -67,8 +67,13 @@ void add_node(Being *being)
 void remove_node(unsigned int id)
 {
     std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
-        if ((*i)->id == id) {
+    for (i = beings.begin(); i != beings.end(); i++)
+    {
+        if ((*i)->id == id)
+        {
+            if (autoTarget == (*i)) {
+                autoTarget = NULL;
+            }
             delete (*i);
             beings.erase(i);
             return;
@@ -302,8 +307,8 @@ void Being::logic()
                 frame = (get_elapsed_time(walk_time) * 4) / aspd;
                 if (frame >= 4) {
                     nextStep();
-                    if (autoTarget > 0 && this == player_node) {
-                        attack(findNode(autoTarget));
+                    if (autoTarget && this == player_node) {
+                        attack(autoTarget);
                     }
                 }
                 break;
@@ -335,9 +340,14 @@ void Being::drawSpeech(Graphics *graphics)
     }
     if (showDamage) {
         graphics->drawText(damage,
-                           text_x + 60,
-                           text_y - 60 - get_elapsed_time(damage_time) / 100,
-                           gcn::Graphics::CENTER);
+                text_x + 60,
+                text_y - 60 - get_elapsed_time(damage_time) / 100,
+                gcn::Graphics::CENTER);
+    }
+    if (this == autoTarget) {
+        graphics->drawText("[TARGET]",
+                text_x + 60, text_y,
+                gcn::Graphics::CENTER);
     }
 }
 

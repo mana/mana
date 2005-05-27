@@ -25,6 +25,7 @@
 #define _TMW_GAME_H
 
 #include "main.h"
+#include "being.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
 #include <stdio.h>
@@ -62,7 +63,7 @@ extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;
 extern int startX, startY;
-extern int autoTarget;
+extern Being* autoTarget;
 
 /**
  * Main game loop

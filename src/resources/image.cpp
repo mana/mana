@@ -55,11 +55,8 @@ Image* Image::load(void* buffer, unsigned int bufferSize, int flags)
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
-    // Use SDL_Image to load the raw image data
+    // Use SDL_Image to load the raw image data and have it free the data
     SDL_Surface* tmpImage = IMG_Load_RW(rw, 1);
-
-    // Now free the SDL_RWops data
-    //SDL_FreeRW(rw);
 
 #ifndef USE_OPENGL
 

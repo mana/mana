@@ -267,7 +267,11 @@ void Engine::logic()
 
         being->logic();
 
-        if (being->action == MONSTER_DEAD && being->frame >= 20) {
+        if (being->action == MONSTER_DEAD && being->frame >= 20)
+        {
+            if (autoTarget == being) {
+                autoTarget = NULL;
+            }
             delete being;
             beingIterator = beings.erase(beingIterator);
         }
@@ -400,8 +404,10 @@ void Engine::draw()
             if (being->action == MONSTER_DEAD) {
                 monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD]->draw(screen,
                         being->text_x + 30, being->text_y + 40);
-                if (autoTarget == being->id)
-                    autoTarget = 0;
+
+                if (autoTarget == being) {
+                    autoTarget = NULL;
+                }
             }
             else {
                 monsterset[being->job-1002]->spriteset[dir + 4 * mf]->draw(

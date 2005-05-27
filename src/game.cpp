@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include "being.h"
 #include "engine.h"
 #include "floor_item.h"
 #include "graphics.h"
@@ -54,7 +53,7 @@ int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 int startX = 0, startY = 0;
 int gameTime = 0;
-int autoTarget = 0;
+Being* autoTarget = NULL;
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
@@ -217,7 +216,7 @@ void do_input()
     // Get the state of the keyboard keys
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
-    
+
     // Events
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -385,7 +384,7 @@ void do_input()
                 Being *target = findNode(mx, my);
                 if (target) {
                     if (target->isNpc()) {
-                        // Check if no conflicting npc window is open
+                        // Check if no conflicting NPC window is open
                         if (current_npc == 0)
                         {
                             WFIFOW(0) = net_w_value(0x0090);
@@ -397,8 +396,9 @@ void do_input()
                     }
                     else if (target->isMonster()) {
                         if (keys[SDLK_LSHIFT]) {
-                            if (target->action != MONSTER_DEAD)
-                                autoTarget = target->id;
+                            if (target->action != MONSTER_DEAD) {
+                                autoTarget = target;
+                            }
                         }
                         attack(target);
                     }
@@ -548,10 +548,11 @@ void do_input()
             if (keys[SDLK_LCTRL])
             {
                 player_node->action = ATTACK;
-                int monsterId = attack(player_node->x,
+                Being *monster = attack(player_node->x,
                         player_node->y, player_node->direction);
-                if (keys[SDLK_LSHIFT])
-                    autoTarget = monsterId;
+                if (keys[SDLK_LSHIFT]) {
+                    autoTarget = monster;
+                }
             }
         }
     }
