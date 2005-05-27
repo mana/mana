@@ -53,16 +53,23 @@ CVS (I'll try to update it as much as I can).
 You can find it at:
 
   http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak (by ElvenProgrammer)
-  http://pandamachine.top.tc/devpaks/
+  http://pandamachine.top.tc/devpaks/ (by Rotonen)
 
-Just install this one and you should be ready to go. Remember to copy the
-required dlls from your dll folder in the Dev-Cpp root directory, to the folder
-where you have your copy of The Mana World. You should also add the SDL include
-folder in your C++ include paths. (This has become obsolete since our .dev does
-that for you now, but it's still a nice thing to do if you want your other apps
-to find SDL as well.) If you can't get the package or you are experiencing
-problems with it, just send me an email at elvenprogrammer@gmail.com or
-continue reading.
+
+Elven's devpak is usually more recommended than Rotonen's, but Rotonen's might
+be more up to date, although it might also include stuff like a new compiler
+and such, so it might be more unstable to use, a tweaker / power user oriented
+devpak.
+
+Just install this one and you should be ready to go. (Although please remember
+to remove anything the devpak might overlap before installing, for example the
+previous devpak.) Remember to copy the required dlls from your dll folder in
+the Dev-Cpp root directory, to the folder where you have your copy of The Mana
+World. You also have to add the SDL include folder in your C++ include paths.
+If you can't get the package or you are experiencing problems with it, just
+send me an email at elvenprogrammer@gmail.com or continue reading.(Or to
+joni.orponen@gmail.com if you're using Rotonen's devpak. Coming to bug us on
+the IRC channel is a valid alternative too.)
 
 Most of the libs have DevPaks that are very easy drop-ins for Dev-C++, without
 any complex actions on your side.
