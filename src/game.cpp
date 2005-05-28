@@ -1041,6 +1041,12 @@ void do_parse()
                             char_info->skill_point = RFIFOW(4);
                             skillDialog->setPoints(char_info->skill_point);
                             break;
+                        case 0x0018:
+                            char_info->totalWeight = RFIFOW(4);
+                            break;
+                        case 0x0019:
+                            char_info->maxWeight = RFIFOW(4);
+                            break;
                         case 0x0037:
                             char_info->job_lv = RFIFOW(4);
                             break;

@@ -51,7 +51,7 @@ class InventoryWindow : public Window, gcn::ActionListener
         ~InventoryWindow();
 
         /**
-         * Logic (updates buttons)
+         * Logic (updates buttons and weight information)
          */
         void logic();
 
@@ -93,6 +93,7 @@ class InventoryWindow : public Window, gcn::ActionListener
         int dropItem(int index, int quantity);
 
         void mouseClick(int x, int y, int button, int count);
+
         void mouseMotion(int mx, int my);
 
         ItemContainer *items;
@@ -107,6 +108,7 @@ class InventoryWindow : public Window, gcn::ActionListener
 
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
+        gcn::Label *weightLabel;
 };
 
 #endif

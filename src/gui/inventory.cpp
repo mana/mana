@@ -36,7 +36,7 @@
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setContentSize(322, 150);
+    setContentSize(322, 160);
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
@@ -51,12 +51,17 @@ InventoryWindow::InventoryWindow():
 
     itemNameLabel = new gcn::Label("Name:");
     itemDescriptionLabel = new gcn::Label("Description:");
+    weightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
+    weightLabel->setPosition(8, 8);
+    invenScroll->setPosition(8,
+            weightLabel->getY() + weightLabel->getHeight() + 5);
 
     add(useButton);
     add(dropButton);
     add(invenScroll);
     add(itemNameLabel);
     add(itemDescriptionLabel);
+    add(weightLabel);
 
     setResizeable(true);
     setMinWidth(240);
@@ -74,6 +79,7 @@ InventoryWindow::~InventoryWindow()
     delete items;
     delete itemNameLabel;
     delete itemDescriptionLabel;
+    delete weightLabel;
 }
 
 void InventoryWindow::logic()
@@ -83,6 +89,13 @@ void InventoryWindow::logic()
     // It would be nicer if this update could be event based, needs some
     // redesign of InventoryWindow and ItemContainer probably.
     updateButtons();
+
+    // Update weight information
+    char tempstr[128];
+    sprintf(tempstr, "Total Weight: %2i - Maximum Weight: %2i",
+            char_info->totalWeight, char_info->maxWeight);
+    weightLabel->setCaption(tempstr);
+    weightLabel->adjustSize();
 }
 
 int InventoryWindow::addItem(int index, int id, int quantity, bool equipment)
@@ -207,7 +220,7 @@ void InventoryWindow::updateWidgets()
     dropButton->setPosition(48 + 16, getHeight() - 24);
     items->setSize(getWidth() - 24 - 12 - 1,
             (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    invenScroll->setSize(getWidth() - 16, getHeight() - 72);
+    invenScroll->setSize(getWidth() - 16, getHeight() - 90);
 
     itemNameLabel->setPosition(8, invenScroll->getY() + invenScroll->getHeight() + 4);
     itemDescriptionLabel->setPosition(8,

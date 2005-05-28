@@ -82,7 +82,8 @@ typedef struct {
     short statp, skill_point, hair_color, hair_style;
     char STR, AGI, VIT, INT, DEX, LUK;
     char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
-    short weapon;  
+    int totalWeight, maxWeight;
+    short weapon;
     // skill list declaration
     std::vector<SKILL> m_Skill; // array of N_SKILLS skills
     // gets the requested skills level from char_info
