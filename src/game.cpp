@@ -668,11 +668,11 @@ void do_parse()
                             being->speed = 150;
                         }
                         being->job = RFIFOW(14);
+                        being->setHairStyle(RFIFOW(16));
+                        being->setHairColor(RFIFOW(28));
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
-                        being->setHairColor(RFIFOW(28));
-                        being->setHairStyle(RFIFOW(16));
                         add_node(being);
                     }
                     else {
@@ -717,15 +717,19 @@ void do_parse()
                         add_node(being);
                     }
 
+                    being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
+                    being->setHairStyle(RFIFOW(16));
+                    being->setHairColor(RFIFOW(28));
                     being->x = get_x(RFIFOP(46));
                     being->y = get_y(RFIFOP(46));
                     being->direction = get_direction(RFIFOP(46));
                     being->walk_time = tick_time;
                     being->frame = 0;
-                    being->speed = RFIFOW(6);
-                    being->setHairColor(RFIFOW(28));
-                    being->setHairStyle(RFIFOW(16));
+
+                    if (RFIFOB(51) == 2) {
+                        being->action = SIT;
+                    }
                     break;
 
                 case SMSG_MOVE_BEING:
