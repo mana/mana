@@ -149,6 +149,7 @@ data/graphics/gui/Makefile
 data/graphics/images/Makefile
 data/graphics/sprites/Makefile
 data/graphics/tiles/Makefile
+data/help/Makefile
 data/icons/Makefile
 data/maps/Makefile
 data/sfx/Makefile
