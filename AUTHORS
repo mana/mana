@@ -8,7 +8,8 @@ The Mana World Dev Team
 == Programmers ==
 
  Bertram          (SDL input, progress bar drawing, Debian package)
- BjÃ¸rn lindeijer  (various parts, GUI, graphics, A* and map rewrites)
+ Bjørn lindeijer  (various parts, GUI, graphics, A* and map rewrites)
+ Javila           (various parts, GUI)
  nym              (several GUI parts)
  Shura            (configuration, sound, misc. ports)
  zenogais         (resource manager)
