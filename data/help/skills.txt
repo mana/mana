@@ -1,0 +1,21 @@
+               T  H  E      M  A  N  A      W  O  R  L  D
+               ==========================================
+
+           Version: 0.0.13                  Date: 5 June 2005
+
+                    Website: http://themanaworld.org
+
+
+@index-> Back to Index
+
+
+                             === SKILLS ===
+
+ You can improve your skills by increasing job level. Each job level
+ gives you 1 point to spend on basic skills.
+
+     Level 1: enables the ability to trade with others
+     Level 2: enables the ability to express emotions
+     Level 3: enables character to sit
+
+ Other levels are still not implemented.

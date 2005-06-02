@@ -1,0 +1,28 @@
+               T  H  E      M  A  N  A      W  O  R  L  D
+               ==========================================
+
+           Version: 0.0.13                  Date: 5 June 2005
+
+                    Website: http://themanaworld.org
+
+
+@index-> Back to Index
+
+
+                         === RECENT CHANGES ===
+
+ - Added ability to trade items and money
+ - Added server field to login dialog
+ - Added item descriptions to inventory and buy/sell dialogs
+ - Added confirmation dialog before quitting
+ - Added button to show/hide equipment window
+ - Added framerate limiter to config options
+ - Added ability to auto attack
+ - Upgraded to Guichan 0.4.0
+ - Dialogs are now modal when appropriate
+ - Fixed a crash in OpenGL mode
+ - Fixed rendering of minimap, progress bars and player sprite in
+   OpenGL mode
+ - Fixed 100% CPU usage when minimized
+ - Fixed players not always appearing to sit when they are in fact
+   sitting

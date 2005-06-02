@@ -1,0 +1,55 @@
+               T  H  E      M  A  N  A      W  O  R  L  D
+               ==========================================
+
+           Version: 0.0.13                  Date: 5 June 2005
+
+                    Website: http://themanaworld.org
+
+
+@index-> Back to Index
+
+
+                        === DEVELOPMENT TEAM ===
+
+ Project Leader:
+
+     ElvenProgrammer aka Eugenio Favalli (elvenprogrammer@gmail.com)
+ 
+
+ Programmers:
+
+     Bertram             (SDL input, progress bar drawing, Debian
+                          package)
+     Bjorn lindeijer     (various parts, GUI, graphics, A* and map
+                          rewrites)
+     Javila              (various parts, GUI)
+     nym                 (several GUI parts)
+     Shura               (configuration, sound, misc. ports)
+     zenogais            (resource manager)
+     Usiu                (several GUI parts)
+     Mra                 (some GUI parts)
+
+
+ Artists:
+
+     Clef                (tiles, concepts)
+     Gnulia              (conceptual art)
+     Magick              (music and sound effects)
+     Neko-mon            (player sprites, various things)
+     Neorice             (monster sprites, tiles)
+     Rotonen             (backstory, art director, music, sound)
+     Talaroc             (sprites)
+     Ti Sing Hao         (music)
+
+
+ Misc. thanks:
+
+     Ultramichy          (hosting test server)
+
+
+ Inactive/retired:
+
+     Chetic              (maps)
+     SimEdw              (network code)
+     Sull                (hosting CVS and related services)
+     Vlady               (several items)

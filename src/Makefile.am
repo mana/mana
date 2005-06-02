@@ -27,6 +27,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/equipment.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
+	      gui/help.cpp \
+	      gui/help.h \
 	      gui/inventory.cpp \
 	      gui/inventory.h \
 	      gui/itemcontainer.cpp \

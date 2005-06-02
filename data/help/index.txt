@@ -1,0 +1,24 @@
+               T  H  E      M  A  N  A      W  O  R  L  D
+               ==========================================
+
+           Version: 0.0.13                  Date: 5 June 2005
+
+                    Website: http://themanaworld.org
+
+
+                             === INDEX ===
+
+@team-> Development team
+@changes-> Recent Changes
+@accounts-> Accounts
+@commands-> Commands
+@skills-> Skills
+@support-> Support
+
+
+                           === Powered By ===
+
+               SDL, SDL_image, SDL_mixer (Media framework)
+                      Guichan (GUI framework)
+                 libxml2 (XML parsing and writing)
+                        PhysFS (Data files)

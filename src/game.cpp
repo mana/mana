@@ -37,8 +37,10 @@
 #include "gui/ok_dialog.h"
 #include "gui/confirm_dialog.h"
 #include "gui/requesttrade.h"
+#include "gui/help.h"
 #include "net/protocol.h"
 #include "resources/mapreader.h"
+
 #include <SDL.h>
 #include <sstream>
 
@@ -226,7 +228,12 @@ void do_input()
         if (event.type == SDL_KEYDOWN)
         {
             SDL_keysym keysym = event.key.keysym;
-
+            
+            if (keysym.sym == SDLK_F1)
+            {
+                new HelpWindow();
+            }
+            
             if (keysym.sym == SDLK_RETURN)
             {
                 if (!chatWindow->isFocused())
