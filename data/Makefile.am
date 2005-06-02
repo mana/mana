@@ -1,5 +1,5 @@
 
-SUBDIRS = graphics icons maps sfx
+SUBDIRS = graphics help icons maps sfx
 
 tmwdatadir = $(pkgdatadir)/data
 
