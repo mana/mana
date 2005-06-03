@@ -10,7 +10,6 @@
 
 @team-> Development team
 @changes-> Recent Changes
-@accounts-> Accounts
 @commands-> Commands
 @skills-> Skills
 @support-> Support

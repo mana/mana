@@ -24,10 +24,8 @@
 #ifndef _TMW_HELP_H
 #define _TMW_HELP_H
 
+#include <guichan.hpp>
 #include "window.h"
-#include "scrollarea.h"
-#include "button.h"
-#include "textbox.h"
 
 struct HELP_LINK {
     int yPos;
@@ -63,13 +61,13 @@ class HelpWindow : public Window, public gcn::ActionListener
         /**
          * Load help in the dialog.
          */
-        void loadHelp(std::string helpFile);
+        void loadHelp(const std::string &helpFile);
 
     private:
-        std::vector<HELP_LINK> links;        
+        std::vector<HELP_LINK> links;
         gcn::Button *okButton;
         gcn::TextBox *textBox;
-        ScrollArea *scrollArea;
+        gcn::ScrollArea *scrollArea;
 };
 
 #endif

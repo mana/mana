@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.12    Date: 1/5/2005
+ Version: 0.0.13    Date: 5/6/2005
 
 
  Development team:
@@ -38,6 +38,7 @@ over NPC's feet to talk to them or over a monster to attack it. Other keys:
 
 - Left Ctrl          attack
 - Alt + 0-9          show emotions
+- F1                 show the online help
 - F5                 sit down / stand up
 - F6                 toggle debug pathfinding feature
 - F7                 play test sound

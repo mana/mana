@@ -22,6 +22,9 @@
  */
 
 #include "help.h"
+#include "scrollarea.h"
+#include "button.h"
+#include "textbox.h"
 #include "../main.h"
 #include <fstream>
 
@@ -29,7 +32,7 @@ HelpWindow::HelpWindow():
     Window("Help")
 {
     setContentSize(455, 350);
-    
+
     textBox = new TextBox();
     textBox->setEditable(false);
     scrollArea = new ScrollArea(textBox);
@@ -57,7 +60,6 @@ HelpWindow::~HelpWindow()
     delete textBox;
     delete scrollArea;
     links.clear();
-
 }
 
 void HelpWindow::action(const std::string& eventId)
@@ -69,13 +71,13 @@ void HelpWindow::mousePress(int mx, int my, int button)
 {
     getParent()->moveToTop(this);
 
-    if (button == gcn::MouseInput::LEFT) {
-        
+    if (button == gcn::MouseInput::LEFT)
+    {
         int x1 = scrollArea->getX() + 10;
         int y1 = scrollArea->getY() + 15;
         int x2 = x1 + scrollArea->getWidth() - 25;
         int y2 = y1 + scrollArea->getHeight();
-        
+
         if ((mx >= x1) && (my >= y1) && (mx <= x2) && (my <= y2))
         {
             for (unsigned int i = 0; i < links.size(); i++)
@@ -83,8 +85,9 @@ void HelpWindow::mousePress(int mx, int my, int button)
                 int y1 = links[i].yPos * textBox->getFont()->getHeight() + 5 -
                     scrollArea->getVerticalScrollAmount();
                 int y2 = y1 + textBox->getFont()->getHeight();
-                if ((my > y1) && (my < y2)) {
-                    std::string tmp = links[i].file;
+
+                if ((my > y1) && (my < y2))
+                {
                     loadHelp(links[i].file);
                 }
             }
@@ -95,20 +98,21 @@ void HelpWindow::mousePress(int mx, int my, int button)
             mMouseXOffset = mx;
             mMouseYOffset = my;
         }
-    }    
+    }
 }
 
-void HelpWindow::loadHelp(std::string helpFile) {
-    helpFile = TMW_DATADIR "data/help/" + helpFile + ".txt";
-    
+void HelpWindow::loadHelp(const std::string &helpFile)
+{
+    std::string helpPath = TMW_DATADIR "data/help/" + helpFile + ".txt";
+
     std::ifstream fin;
-    fin.open(helpFile.c_str());
+    fin.open(helpPath.c_str());
     if (fin.fail())
     {
-        logger->log("Couldn't load help file: %s", helpFile.c_str());
+        logger->log("Couldn't load help file: %s", helpPath.c_str());
         return;
     }
-    
+
     links.clear();
     textBox->setText("");
 
@@ -116,23 +120,24 @@ void HelpWindow::loadHelp(std::string helpFile) {
     {
         std::string line = "";
         getline(fin, line);
-        
+
         // Check for links
         if (line.substr(0, 1) == "@")
-        {            
+        {
             int idx = line.find("->");
             HELP_LINK hlink;
             hlink.yPos = textBox->getNumberOfRows() + 1;
             hlink.file = line.substr(1, idx - 1);
             links.push_back(hlink);
-            
+
             line = "    " + line.erase(0, idx);
         }
-        
+
         textBox->addRow(line);
     }
+
     scrollArea->setVerticalScrollAmount(0);
     setVisible(true);
 
-    fin.close();    
+    fin.close();
 }
