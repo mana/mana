@@ -88,6 +88,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
+	      gui/inttextbox.h \
+	      gui/inttextbox.cpp \
 	      net/network.cpp \
 	      net/network.h \
 	      net/protocol.cpp \

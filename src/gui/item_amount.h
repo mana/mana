@@ -25,6 +25,7 @@
 #define _TMW_ITEM_AMOUNT_WINDOW_H
 
 #include "window.h"
+#include "inttextbox.h"
 #include <string>
 #include <sstream>
 
@@ -60,8 +61,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         void resetAmount();
 
     private:
-        int amount;                      /**< Amount of items to be dropped. */
-        gcn::Label *itemAmountLabel;     /**< Item amount caption. */
+        IntTextBox *itemAmountTextBox;   /**< Item amount caption. */
 
         /**
          * Item Amount buttons.

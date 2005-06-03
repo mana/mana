@@ -30,13 +30,15 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     Window("Select amount of items to drop.", true, parent)
 {
     // New labels
-    itemAmountLabel = new gcn::Label("1");
+    itemAmountTextBox = new IntTextBox(1);
 
     // New buttons
     itemAmountMinusButton = new Button("-");
     itemAmountPlusButton = new Button("+");
     itemAmountOkButton = new Button("Okay");
     itemAmountCancelButton = new Button("Cancel");
+
+    itemAmountTextBox->setRange(1, inventoryWindow->items->getQuantity());
 
     // Set button events Id
     itemAmountMinusButton->setEventId("Minus");
@@ -45,14 +47,15 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     itemAmountCancelButton->setEventId("Cancel");
 
     // Set position
-    itemAmountLabel->setPosition(35, 10);
+    itemAmountTextBox->setPosition(35, 10);
+    itemAmountTextBox->setSize(24, 16);
     itemAmountPlusButton->setPosition(60, 5);
     itemAmountMinusButton->setPosition(10, 5);
     itemAmountOkButton->setPosition(10, 40);
     itemAmountCancelButton->setPosition(60, 40);
 
     // Assemble
-    add(itemAmountLabel);
+    add(itemAmountTextBox);
     add(itemAmountPlusButton);
     add(itemAmountMinusButton);
     add(itemAmountOkButton);
@@ -84,7 +87,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
 
 ItemAmountWindow::~ItemAmountWindow()
 {
-    delete itemAmountLabel;
+    delete itemAmountTextBox;
     delete itemAmountPlusButton;
     delete itemAmountMinusButton;
     delete itemAmountOkButton;
@@ -93,46 +96,33 @@ ItemAmountWindow::~ItemAmountWindow()
 
 void ItemAmountWindow::resetAmount()
 {
-    amount = 1;
-    itemAmountLabel->setCaption("1");
+    itemAmountTextBox->setInt(1);
 }
 
 void ItemAmountWindow::action(const std::string& eventId)
 {
+
     if (eventId == "Cancel")
     {
         scheduleDelete();
     }
     else if (eventId == "Drop")
     {
-        inventoryWindow->dropItem(inventoryWindow->items->getIndex(), amount);
+        inventoryWindow->dropItem(inventoryWindow->items->getIndex(), itemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "AddTrade")
     {
-        tradeWindow->tradeItem(inventoryWindow->items->getIndex(), amount);
+        tradeWindow->tradeItem(inventoryWindow->items->getIndex(), itemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "Plus")
     {
-        if (amount < inventoryWindow->items->getQuantity())
-        {
-            char tmpplus[128];
-            amount++;
-            sprintf(tmpplus, "%i", amount);
-            itemAmountLabel->setCaption(tmpplus);
-            itemAmountLabel->adjustSize();
-        }
+        itemAmountTextBox->setInt(itemAmountTextBox->getInt() + 1);
     }
     else if (eventId == "Minus")
     {
-        if (amount > 1)
-        {
-            char tmpminus[128];
-            amount--;
-            sprintf(tmpminus, "%i", amount);
-            itemAmountLabel->setCaption(tmpminus);
-            itemAmountLabel->adjustSize();
-        }
+        itemAmountTextBox->setInt(itemAmountTextBox->getInt() + 1);
     }
 }
+
