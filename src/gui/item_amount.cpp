@@ -122,7 +122,7 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Minus")
     {
-        itemAmountTextBox->setInt(itemAmountTextBox->getInt() + 1);
+        itemAmountTextBox->setInt(itemAmountTextBox->getInt() - 1);
     }
 }
 
