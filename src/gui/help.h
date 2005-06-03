@@ -24,7 +24,6 @@
 #ifndef _TMW_HELP_H
 #define _TMW_HELP_H
 
-#include <guichan.hpp>
 #include "window.h"
 #include "scrollarea.h"
 #include "button.h"
@@ -64,13 +63,13 @@ class HelpWindow : public Window, public gcn::ActionListener
         /**
          * Load help in the dialog.
          */
-        void loadHelp(std::string& helpFile);
+        void loadHelp(std::string helpFile);
 
     private:
         std::vector<HELP_LINK> links;        
         gcn::Button *okButton;
         gcn::TextBox *textBox;
-        gcn::ScrollArea *scrollArea;
+        ScrollArea *scrollArea;
 };
 
 #endif

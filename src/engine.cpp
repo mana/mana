@@ -30,6 +30,7 @@
 #include "gui/itemcontainer.h"
 #include "gui/trade.h"
 #include "gui/buddywindow.h"
+#include "gui/help.h"
 #include "main.h"
 #include "being.h"
 #include "floor_item.h"
@@ -63,6 +64,7 @@ ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 BuddyWindow *buddyWindow;
 Menu *menu;
+HelpWindow *helpWindow;
 std::map<int, Spriteset*> monsterset;
 
 char hairtable[16][4][2] = {
@@ -160,6 +162,7 @@ Engine::Engine()
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
+    helpWindow = new HelpWindow();
 
     /* Menu items */
     std::vector<MenuItem*> items;
@@ -204,6 +207,7 @@ Engine::Engine()
     tradeWindow->setVisible(false);
     buddyWindow->setVisible(false);
     menu->setVisible(false);
+    helpWindow->setVisible(false);
 
     // Do not focus any text field
     gui->focusNone();
@@ -238,6 +242,7 @@ Engine::~Engine()
     delete buyDialog;
     delete sellDialog;
     delete buySellDialog;
+    delete inventoryWindow;
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
@@ -245,9 +250,12 @@ Engine::~Engine()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
+    delete chargeDialog;
     delete newSkillWindow;
     delete tradeWindow;
     delete buddyWindow;
+    delete menu;
+    delete helpWindow;
 
     // Delete sprite sets
     //delete monsterset;

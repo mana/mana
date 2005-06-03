@@ -43,6 +43,7 @@
 #include "gui/chargedialog.h"
 #include "gui/menu.h"
 #include "gui/trade.h"
+#include "gui/help.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -72,6 +73,7 @@ extern ChargeDialog* chargeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
 extern Menu *menu;
+extern HelpWindow *helpWindow;
 extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);

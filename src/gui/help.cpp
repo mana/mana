@@ -29,7 +29,6 @@ HelpWindow::HelpWindow():
     Window("Help")
 {
     setContentSize(455, 350);
-    setResizeable(true);
     
     textBox = new TextBox();
     textBox->setEditable(false);
@@ -48,11 +47,8 @@ HelpWindow::HelpWindow():
     add(scrollArea);
     add(okButton);
 
-    //setLocationRelativeTo(getParent());
+    setLocationRelativeTo(getParent());
     textBox->requestFocus();
-
-    std::string defHelp = "index";
-    loadHelp(defHelp);
 }
 
 HelpWindow::~HelpWindow()
@@ -66,16 +62,20 @@ HelpWindow::~HelpWindow()
 
 void HelpWindow::action(const std::string& eventId)
 {
-    scheduleDelete();
+    setVisible(false);
 }
 
 void HelpWindow::mousePress(int mx, int my, int button)
 {
-    int x1 = scrollArea->getX() + 10;
-    int y1 = scrollArea->getY() + 15;
-    int x2 = x1 + scrollArea->getWidth() - 25;
-    int y2 = y1 + scrollArea->getHeight();
+    getParent()->moveToTop(this);
+
     if (button == gcn::MouseInput::LEFT) {
+        
+        int x1 = scrollArea->getX() + 10;
+        int y1 = scrollArea->getY() + 15;
+        int x2 = x1 + scrollArea->getWidth() - 25;
+        int y2 = y1 + scrollArea->getHeight();
+        
         if ((mx >= x1) && (my >= y1) && (mx <= x2) && (my <= y2))
         {
             for (unsigned int i = 0; i < links.size(); i++)
@@ -85,14 +85,20 @@ void HelpWindow::mousePress(int mx, int my, int button)
                 int y2 = y1 + textBox->getFont()->getHeight();
                 if ((my > y1) && (my < y2)) {
                     std::string tmp = links[i].file;
-                    loadHelp(tmp);
+                    loadHelp(links[i].file);
                 }
             }
         }
-    }
+        else if (hasMouse() && my < (int)(getTitleBarHeight() + getPadding()))
+        {
+            mMouseDrag = true;
+            mMouseXOffset = mx;
+            mMouseYOffset = my;
+        }
+    }    
 }
 
-void HelpWindow::loadHelp(std::string& helpFile) {
+void HelpWindow::loadHelp(std::string helpFile) {
     helpFile = TMW_DATADIR "data/help/" + helpFile + ".txt";
     
     std::ifstream fin;
@@ -126,6 +132,7 @@ void HelpWindow::loadHelp(std::string& helpFile) {
         textBox->addRow(line);
     }
     scrollArea->setVerticalScrollAmount(0);
+    setVisible(true);
 
     fin.close();    
 }

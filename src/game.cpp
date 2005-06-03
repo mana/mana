@@ -231,7 +231,15 @@ void do_input()
             
             if (keysym.sym == SDLK_F1)
             {
-                new HelpWindow();
+                if (helpWindow->isVisible())
+                {
+                    helpWindow->setVisible(false);
+                }
+                else
+                {
+                    helpWindow->loadHelp("index");
+                }
+                used = true;
             }
             
             if (keysym.sym == SDLK_RETURN)
