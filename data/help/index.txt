@@ -8,10 +8,13 @@
 
                              === INDEX ===
 
-@team-> Development team
+@about-> About The Mana World
+@team-> Development Team
 @changes-> Recent Changes
+
 @commands-> Commands
 @skills-> Skills
+
 @support-> Support
 
 

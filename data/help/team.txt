@@ -13,43 +13,124 @@
 
  Project Leader:
 
-     ElvenProgrammer aka Eugenio Favalli (elvenprogrammer@gmail.com)
+     Eugenio Favalli (aka ElvenProgrammer)
+         umperio@users.sourceforge.net
  
 
  Programmers:
 
-     Bertram             (SDL input, progress bar drawing, Debian
-                          package)
-     Bjorn lindeijer     (various parts, GUI, graphics, A* and map
-                          rewrites)
-     Javila              (various parts, GUI)
-     nym                 (several GUI parts)
-     Shura               (configuration, sound, misc. ports)
-     zenogais            (resource manager)
-     Usiu                (several GUI parts)
-     Mra                 (some GUI parts)
+     Bertram
+         bertram25@users.sourceforge.net
+             (SDL input, progress bar drawing, Debian package)
+
+     Bjorn Lindeijer (aka Hammerbear)
+         b_lindeijer@users.sourceforge.net
+             (various parts, GUI, graphics, A* and map rewrites)
+
+     Eric Scrivner (aka zenogais)
+         bitshift2002@users.sourceforge.net
+             (resource manager)
+
+     J. Avila (aka Javila)
+         javila@users.sourceforge.net
+             (various parts, GUI)
+
+     Jan-Fabian Humann (aka Mra)
+         malastare@users.sourceforge.net
+             (some GUI parts)
+
+     Kiyoshi Kyokai (aka Kiokay)
+         kyokai@users.sourceforge.net
+             (game systems designer)
+
+     Mateusz Kaduk (aka Usiu)
+         usiu@users.sourceforge.net
+             (several GUI parts)
+
+     nym
+         nymacro@users.sourceforge.net
+             (several GUI parts)
+
+     Shura
+         kth5@users.sourceforge.net
+             (configuration, sound, misc. ports)
 
 
  Artists:
 
-     Clef                (tiles, concepts)
-     Gnulia              (conceptual art)
-     Magick              (music and sound effects)
-     Neko-mon            (player sprites, various things)
-     Neorice             (monster sprites, tiles)
-     Rotonen             (backstory, art director, music, sound)
-     Talaroc             (sprites)
-     Ti Sing Hao         (music)
+     Clef
+             (tiles, concepts)
+
+     Frode Lindeijer (aka Modanung)
+         f.lindeijer@xs4all.nl
+             (arts)
+
+     Gnulia 
+             (conceptual art)
+
+     Magick
+             (music and sound effects)
+
+     Neko-mon
+             (player sprites, various things)
+    
+     Neorice
+             (monster sprites, tiles)
+
+     Pajarico
+         pajarico@users.sourceforge.net
+             (conceptual arts)
+
+     Romulo Fernandes
+         razor85@users.sourceforge.net
+             (arts)
+
+     Rotonen
+         rotonen@users.sourceforge.net
+             (backstory, art director, music, sound)
+
+     Talaroc
+         talaroc@users.sourceforge.net
+             (sprites)
+
+     Ti Sing Hao
+             (music)
 
 
  Misc. thanks:
 
-     Ultramichy          (hosting test server)
+     David Smith (aka catfish_man)
+         catfish_man@users.sourceforge.net
+             (Mac package)
+
+     Igor Morgado (aka imorgado)
+         imorgado@users.sourceforge.net
+             (tester)
+
+     maci
+         maci321@users.sourceforge.net
+             (technical support)
+
+     Rodney Dawes (aka dobey)
+         dobey@users.sourceforge.net
+             (Mac package)
+
+     Ultramichy
+             (hosting test server)
 
 
  Inactive/retired:
 
-     Chetic              (maps)
-     SimEdw              (network code)
-     Sull                (hosting CVS and related services)
-     Vlady               (several items)
+     Chetic
+         chetic@users.sourceforge.net
+             (maps)
+
+     Simon Edwardsson (aka SimEdw)
+         simonedw@users.sourceforge.net
+             (network code, Mac package)
+
+     Sull 
+             (hosting CVS and related services)
+
+     Vlady
+             (several items)
