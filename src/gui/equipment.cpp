@@ -32,13 +32,13 @@
 EquipmentWindow::EquipmentWindow():
     Window("Equipment"), arrows(0)
 {
-    setContentSize(134, 60);
+    setContentSize(200, 90);
     setPosition(40, 40);
 
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
     if (!itemImg) logger->error("Unable to load items.png");
-    itemset = new Spriteset(itemImg, 20, 20);
+    itemset = new Spriteset(itemImg, 32, 32);
 
     for (int i = 0; i < 10; i++ ) {
         equipments[i].id = 0;
@@ -62,20 +62,20 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         if (equipments[i].id > 0) {
             itemset->spriteset[itemDb->getItemInfo(
                     equipments[i].id)->getImage() - 1]->draw(
-                    screen, x + 24 * (i % 4) + 10, y + 24 * (i / 4) + 25);
+                    screen, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
-        graphics->drawRectangle(gcn::Rectangle(10 + 24 * (i % 4),
-                24 * (i / 4) + 25, 20, 20));
+        graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
+                36 * (i / 4) + 25, 32, 32));
     }
     graphics->setColor(gcn::Color(0, 0, 0));
-    graphics->drawRectangle(gcn::Rectangle(110, 25, 20, 20));
+    graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
     if (arrows) {
         itemset->spriteset[itemDb->getItemInfo(arrows)->getImage() - 1]->draw(
-                screen, x + 110, y + 25);
+                screen, x + 160, y + 25);
         std::stringstream n;
         n << arrowsNumber;
-        graphics->drawText(n.str(), 120, 50,
+        graphics->drawText(n.str(), 170, 62,
                     gcn::Graphics::CENTER);
     }
 }
