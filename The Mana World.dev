@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=139
+UnitCount=141
 Type=0
 Ver=1
 ObjFiles=
@@ -1439,6 +1439,26 @@ BuildCmd=
 
 [Unit139]
 FileName=src\gui\inttextbox.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit140]
+FileName=src\gui\focushandler.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit141]
+FileName=src\gui\focushandler.cpp
 CompileCpp=1
 Folder=gui
 Compile=1
