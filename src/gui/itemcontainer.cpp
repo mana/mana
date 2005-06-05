@@ -31,7 +31,7 @@ ItemContainer::ItemContainer()
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
     if (!itemImg) logger->error("Unable to load items.png");
-    itemset = new Spriteset(itemImg, 20, 20);
+    itemset = new Spriteset(itemImg, 32, 32);
     itemImg->decRef();
 
     selImg = resman->getImage("graphics/gui/selection.png", IMG_ALPHA);
@@ -57,45 +57,58 @@ ItemContainer::~ItemContainer()
 
 void ItemContainer::draw(gcn::Graphics* graphics)
 {
-    int x, y, w, h;
+    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
+    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int w = getWidth();
+    int columns = w / gridWidth;
+    int x, y;
     getAbsolutePosition(x, y);
-    w = getWidth();
-    h = getHeight();
 
-    int itemWidth = getWidth() / 24;
-
-    if (items[selectedItem].quantity <= 0) {
+    // Reset selected item when quantity not above 0 (should probably be made
+    // sure somewhere else)
+    if (items[selectedItem].quantity <= 0)
+    {
         selectedItem = -1;
     }
 
-    if (selectedItem >= 0) {
-        int itemX = ((selectedItem - 2) % itemWidth) * 24;
-        int itemY = ((selectedItem - 2) / itemWidth) * 24;
+    /*
+     * eAthena seems to start inventory from the 3rd slot. Still a mystery to
+     * us why, make sure not to copy this oddity to our own server.
+     */
+    for (int i = 2; i < INVENTORY_SIZE; i++)
+    {
+        if (items[i].quantity > 0)
+        {
+            int itemX = ((i - 2) % columns) * gridWidth;
+            int itemY = ((i - 2) / columns) * gridHeight;
 
-        itemX -= itemX % 24;
-        selImg->draw(screen, x + itemX, y+itemY);
-    }
+            // Draw selection image below selected item
+            if (selectedItem == i)
+            {
+                selImg->draw(screen, x + itemX, y + itemY);
+            }
 
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        int itemX = ((i - 2) % itemWidth) * 24;
-        int itemY = ((i - 2) / itemWidth) * 24;
-
-        itemX -= itemX % 24;
-        if (items[i].quantity > 0) {
-            if (itemDb->getItemInfo(items[i].id)->getImage() > 0) {
+            // Draw item icon
+            if (itemDb->getItemInfo(items[i].id)->getImage() > 0)
+            {
                 itemset->spriteset[itemDb->getItemInfo(
                         items[i].id)->getImage() - 1]->draw(
                         screen, x + itemX, y + itemY);
             }
 
+            // Draw item caption
             std::stringstream ss;
-            if(!items[i].equipped)
+
+            if (!items[i].equipped) {
                 ss << items[i].quantity;
-            else
+            }
+            else {
                 ss << "Eq.";
+            }
+
             graphics->drawText(ss.str(),
-                    itemX + 12,
-                    itemY + 16,
+                    itemX + gridWidth / 2,
+                    itemY + gridHeight - 11,
                     gcn::Graphics::CENTER);
         }
     }
@@ -199,10 +212,18 @@ void ItemContainer::increaseQuantity(int index, int quantity)
 
 void ItemContainer::mousePress(int mx, int my, int button)
 {
-    if (button == gcn::MouseInput::LEFT) {
-        selectedItem = ((mx + 48) / 24) + ((my / 24) * (getWidth() / 24));
+    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
+    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int w = getWidth();
+    int columns = w / gridWidth;
+
+    if (button == gcn::MouseInput::LEFT)
+    {
+        selectedItem = mx / gridWidth + ((my / gridHeight) * columns) + 2;
     }
-    if (selectedItem > INVENTORY_SIZE) {
+
+    if (selectedItem > INVENTORY_SIZE)
+    {
         selectedItem = INVENTORY_SIZE;
     }
 }

@@ -30,7 +30,6 @@
 #include "itemcontainer.h"
 #include "gui.h"
 #include "window.h"
-#include "scrollarea.h"
 
 /**
  * Inventory dialog.
@@ -99,13 +98,12 @@ class InventoryWindow : public Window, gcn::ActionListener
         ItemContainer *items;
 
     private:
-        gcn::Button *useButton, *dropButton;
-        ScrollArea *invenScroll;
-
         int useItem(int index, int id);
         void updateWidgets();    /** Updates widgets size/position */
         void updateButtons();    /** Updates button states */
 
+        gcn::Button *useButton, *dropButton;
+        gcn::ScrollArea *invenScroll;
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
         gcn::Label *weightLabel;
