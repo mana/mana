@@ -231,7 +231,7 @@ Engine::Engine()
     npcset = new Spriteset(npcbmp, 50, 80);
     emotionset = new Spriteset(emotionbmp, 19, 19);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
-    itemset = new Spriteset(itembitmap, 20, 20);
+    itemset = new Spriteset(itembitmap, 32, 32);
 }
 
 Engine::~Engine()
