@@ -44,6 +44,11 @@ class TextBox : public gcn::TextBox {
          * Constructor.
          */
         TextBox(const std::string& text);
+
+        /**
+         * Sets the text after wrapping it to the current width of the widget.
+         */
+        void setText(const std::string &text);
 };
 
 #endif

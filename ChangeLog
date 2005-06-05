@@ -9,6 +9,7 @@
 - Added in-game help window
 - Upgraded to Guichan 0.4.0
 - Dialogs are now modal when appropriate
+- Maximum item icon size changed to 32x32
 - Fixed a crash in OpenGL mode
 - Fixed rendering of minimap, progress bars and player sprite in OpenGL mode
 - Fixed 100% CPU usage when minimized

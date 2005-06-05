@@ -196,17 +196,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
 
-        /**
-         * Cuts a string into two on a per word basis.
-         *
-         * @param value         The string to be cut, it may be modified
-         *                      in the function.
-         * @param maximumLength The length after which the string
-         *                      should be cut.
-         * @return The cut off section of the string
-         */
-        std::string cutString(std::string& value, unsigned int maximumLength);
-
         gcn::TextField *chatInput; /**< Input box for typing chat messages */
         gcn::TextBox *textOutput;  /**< Text box for displaying chat history */
         ScrollArea *scrollArea;    /**< Scroll area around text output */

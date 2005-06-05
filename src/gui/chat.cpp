@@ -41,6 +41,8 @@ ChatWindow::ChatWindow(const std::string &logfile):
     chatInput = new ChatInput();
     textOutput->setEditable(false);
     scrollArea = new ScrollArea(textOutput);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setDimension(gcn::Rectangle(
                 2, 0, 596, 98 - chatInput->getHeight() - 5));
     scrollArea->setOpaque(false);
@@ -101,42 +103,10 @@ void ChatWindow::chat_log(std::string line, int own)
 
     line = tmp.nick + line;
 
-    // A try to get text sentences no too long...
-    bool finished = false;
-    unsigned int maxLength = 97;
-
-    while (!finished)
-    {
-        std::string tempText = line;
-
-        if (line.length() > maxLength)
-        {
-            if (line.length() > maxLength) {
-                line = cutString(tempText, maxLength);
-            }
-
-            //tmp.text = tempText;
-
-            //chatlog_file << tmp.nick << tmp.text << "\n";
-            //chatlog_file.flush();
-
-            //chatlog.push_front(tmp);
-        }
-        else // Normal message
-        {
-            //tmp.text = line;
-            //chatlog_file << tmp.nick << tmp.text << "\n";
-            //chatlog_file.flush();
-
-            //chatlog.push_front(tmp);
-            finished = true;
-        }
-
-        textOutput->setText(
-                textOutput->getText() + std::string("\n") + tempText);
-        scrollArea->setVerticalScrollAmount(
-                scrollArea->getVerticalMaxScroll());
-    }
+    textOutput->setText(
+            textOutput->getText() + std::string("\n") + line);
+    scrollArea->setVerticalScrollAmount(
+            scrollArea->getVerticalMaxScroll());
 }
 
 void ChatWindow::chat_log(CHATSKILL action)
@@ -354,38 +324,6 @@ std::string ChatWindow::const_msg(CHATSKILL action)
     }
 
     return msg;
-}
-
-std::string ChatWindow::cutString(std::string& value, unsigned int maximumLength)
-{
-    // If the string exceeds the maximum length
-    if (value.length() > maximumLength)
-    {
-        unsigned int index = 0;
-        unsigned int lastSpace = 0;
-        std::string  cutOff = "";
-
-        for (index = 0; index < maximumLength; index++) {
-            if (value.at(index) == ' ') {
-                lastSpace = index;
-            }
-        }
-
-        // If the last space is at the beginning of the string
-        if (lastSpace == 0) {
-            // Just cut it right off from the end
-            cutOff = value.substr(maximumLength);
-            value  = value.substr(0, maximumLength);
-        } else {
-            // Cut it off from the last space forward
-            cutOff = value.substr(lastSpace + 1);
-            value  = value.substr(0, lastSpace);
-        }
-
-        return cutOff;
-    }
-
-    return std::string("");
 }
 
 void ChatWindow::keyPress(const gcn::Key &key)

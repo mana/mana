@@ -1089,6 +1089,7 @@ void do_parse()
                         deathNotice = new OkDialog("Message",
                                 "You're now dead, press ok to restart",
                                 &deathNoticeListener);
+                        deathNotice->releaseModalFocus();
                         player_node->action = DEAD;
                     }
                     break;

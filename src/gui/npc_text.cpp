@@ -37,6 +37,8 @@ NpcTextDialog::NpcTextDialog():
     okButton = new Button("OK");
 
     setContentSize(260, 175);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 250, 160 - okButton->getHeight()));
     okButton->setPosition(
@@ -61,32 +63,13 @@ NpcTextDialog::~NpcTextDialog()
 
 void NpcTextDialog::setText(const char *text)
 {
-    std::string tmp = "";
-    int lineWidth = 0;
-    int w = scrollArea->getWidth();
-    for (unsigned int i = 0; i < strlen(text); i++)
-    {
-        if (text[i] != '\n')
-        {
-            std::string tmpChar = ""; tmpChar += text[i];
-            lineWidth += getFont()->getWidth(tmpChar);
-            if (lineWidth > w) {
-                tmp += '\n';
-                lineWidth = 0;
-            }
-        } else
-        {
-            lineWidth = 0;
-        }
-        tmp += text[i];
-    }
-    textBox->setText(tmp);
+    textBox->setText(text);
 }
 
 void NpcTextDialog::addText(const char *text)
 {
-    std::string tmp = textBox->getText() + std::string(text) + std::string("\n");
-    setText(tmp.c_str());
+    textBox->setText(
+            textBox->getText() + std::string(text) + std::string("\n"));
 }
 
 void NpcTextDialog::action(const std::string& eventId)
@@ -96,5 +79,5 @@ void NpcTextDialog::action(const std::string& eventId)
     WFIFOSET(6);
     setText("");
     setVisible(false);
-    current_npc = 0;                               
+    current_npc = 0;
 }

@@ -22,6 +22,7 @@
  */
 
 #include "textbox.h"
+#include <sstream>
 
 TextBox::TextBox():
     gcn::TextBox()
@@ -35,4 +36,76 @@ TextBox::TextBox(const std::string& text):
 {
     setOpaque(false);
     setBorderSize(0);
+}
+
+void TextBox::setText(const std::string &text)
+{
+    // Make sure parent scroll area sets width of this widget
+    if (getParent())
+    {
+        getParent()->logic();
+    }
+
+    std::stringstream wrappedStream;
+    std::string::size_type newlinePos, lastNewlinePos = 0;
+
+    do
+    {
+        // Determine next piece of string to wrap
+        newlinePos = text.find("\n", lastNewlinePos);
+
+        if (newlinePos == std::string::npos)
+        {
+            newlinePos = text.size();
+        }
+
+        std::string line =
+            text.substr(lastNewlinePos, newlinePos - lastNewlinePos);
+        std::string::size_type spacePos, lastSpacePos = 0;
+        int xpos = 0;
+
+        do
+        {
+            spacePos = line.find(" ", lastSpacePos);
+
+            if (spacePos == std::string::npos)
+            {
+                spacePos = line.size();
+            }
+
+            std::string word =
+                line.substr(lastSpacePos, spacePos - lastSpacePos);
+
+            int width = getFont()->getWidth(word);
+
+            if (xpos != 0 && xpos + width < getWidth())
+            {
+                xpos += width + getFont()->getWidth(" ");
+                wrappedStream << " " << word;
+            }
+            else if (lastSpacePos == 0)
+            {
+                xpos += width;
+                wrappedStream << word;
+            }
+            else
+            {
+                xpos = width;
+                wrappedStream << "\n" << word;
+            }
+
+            lastSpacePos = spacePos + 1;
+        }
+        while (spacePos != line.size());
+
+        if (text.find("\n", lastNewlinePos) != std::string::npos)
+        {
+            wrappedStream << "\n";
+        }
+
+        lastNewlinePos = newlinePos + 1;
+    }
+    while (newlinePos != text.size());
+
+    gcn::TextBox::setText(wrappedStream.str());
 }
