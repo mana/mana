@@ -84,7 +84,10 @@ ItemManager *itemDb;          /**< Item database object */
  */
 Uint32 nextFrame(Uint32 interval, void *param)
 {
-    framesToDraw++;
+    if (framesToDraw < 10)
+    {
+        framesToDraw++;
+    }
     return interval;
 }
 

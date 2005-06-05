@@ -7,6 +7,7 @@
 - Added framerate limiter to config options
 - Added ability to auto attack
 - Added in-game help window
+- Added new hair style (mohawk)
 - Upgraded to Guichan 0.4.0
 - Dialogs are now modal when appropriate
 - Maximum item icon size changed to 32x32
