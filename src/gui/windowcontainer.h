@@ -53,6 +53,9 @@ class WindowContainer : public gcn::Container {
         void scheduleDelete(gcn::Widget *widget);
 
     protected:
+        /**
+         * List of widgets that are scheduled to be deleted.
+         */
         std::list<gcn::Widget*> deathList;
 };
 

@@ -23,13 +23,13 @@
 
 #include "inttextbox.h"
 
-IntTextBox::IntTextBox()
-    : value(0)
+IntTextBox::IntTextBox():
+    value(0)
 {
 }
 
-IntTextBox::IntTextBox(int i)
-    : value(i)
+IntTextBox::IntTextBox(int i):
+    value(i)
 {
 }
 
@@ -72,5 +72,3 @@ void IntTextBox::setInt(int i)
     setText(s.str());
     setCaretPosition(s.str().length() + 1);
 }
-
-

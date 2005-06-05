@@ -32,7 +32,6 @@ ImageRect Window::border;
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
-    prevModal(NULL),
     parent(parent),
     snapSize(8),
     modal(modal),
@@ -85,9 +84,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     if (modal)
     {
-        gcn::FocusHandler *focusHandler = _getFocusHandler();
-        prevModal = focusHandler->getModalFocused();
-        focusHandler->releaseModalFocus(prevModal);
         requestModalFocus();
     }
 }
@@ -114,16 +110,6 @@ Window::~Window()
 
     config.removeListener("guialpha", this);
     delete chrome;
-
-    if (hasModalFocus())
-    {
-        releaseModalFocus();
-    }
-
-    if (prevModal)
-    {
-        prevModal->requestModalFocus();
-    }
 }
 
 void Window::setWindowContainer(WindowContainer *wc)

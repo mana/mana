@@ -153,7 +153,6 @@ class Window : public gcn::Window, public ConfigListener
 
     protected:
         gcn::Container *chrome;    /**< Contained container */
-        gcn::Widget *prevModal;    /**< Previous modal widget */
         Window *parent;            /**< The parent window */
         int snapSize;              /**< Snap distance to window edge */
         bool modal;                /**< Window is modal */

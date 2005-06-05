@@ -30,27 +30,45 @@
 #include "textbox.h"
 
 /**
- * IntTextBox
- * TextBox which only accepts numbers as input
+ * TextBox which only accepts numbers as input.
  */
 class IntTextBox : public TextBox
 {
-    int min;            //min value
-    int max;            //max value
-    
-    int value;          //current value
-
-    IntTextBox(const std::string&) { }
-
     public:
+        /**
+         * Constructor.
+         */
         IntTextBox();
-        IntTextBox(int);
 
-        void keyPress(const gcn::Key &);
+        /**
+         * Constructor, sets initial value.
+         */
+        IntTextBox(int value);
 
-        void setRange(int, int);
+        /**
+         * Sets the minimum and maximum values of the text box.
+         */
+        void setRange(int minimum, int maximum);
+
+        /**
+         * Returns the value in the text box.
+         */
         int getInt();
-        void setInt(int);
+
+        /**
+         * Set the value of the text box to the specified value.
+         */
+        void setInt(int value);
+
+        /**
+         * Responds to key presses.
+         */
+        void keyPress(const gcn::Key &key);
+
+    private:
+        int min;            /**< Minimum value */
+        int max;            /**< Maximum value */
+        int value;          /**< Current value */
 };
 
 #endif

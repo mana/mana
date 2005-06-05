@@ -24,6 +24,7 @@
 #include "gui.h"
 #include "window.h"
 #include "windowcontainer.h"
+#include "focushandler.h"
 #include "../engine.h"
 #include "../net/protocol.h"
 #include "../main.h"
@@ -59,6 +60,10 @@ Gui::Gui(Graphics *graphics)
 #endif
 
     gcn::Image::setImageLoader(imageLoader);
+
+    // Set focus handler
+    delete mFocusHandler;
+    mFocusHandler = new FocusHandler();
 
     // Initialize top GUI widget
     guiTop = new WindowContainer();

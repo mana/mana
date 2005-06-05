@@ -25,6 +25,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/confirm_dialog.h \
 	      gui/equipment.cpp \
 	      gui/equipment.h \
+	      gui/focushandler.cpp \
+	      gui/focushandler.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
 	      gui/help.cpp \
@@ -142,7 +144,7 @@ INCLUDES =					\
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
 
 # the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) -lguichan_sdl -lguichan `pkg-config --libs libxml-2.0`
+tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
 tmw_CXXFLAGS = -Wall $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0`
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan $(OPENGL_LIBS) -lphysfs
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl -lguichan $(OPENGL_LIBS) -lphysfs
 tmw_TARGET = tmw

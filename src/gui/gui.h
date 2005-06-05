@@ -77,6 +77,7 @@ class Gui : public gcn::Gui, public gcn::MouseListener
 #endif
         gcn::ImageLoader *imageLoader;        /**< For loading images */
         gcn::ImageFont *guiFont;              /**< The global GUI font */
+        gcn::FocusHandler *focusHandler;      /**< The focus handler */
 };
 
 extern Gui *gui;                              /**< The GUI system */
