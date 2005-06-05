@@ -1410,6 +1410,7 @@ void do_parse()
                             switch (inventoryWindow->items->getId(RFIFOW(2))) {
                                 case 521:
                                 case 522:
+                                case 536:
                                 case 1201:
                                     player_node->weapon = 1;
                                     break;
@@ -1448,6 +1449,7 @@ void do_parse()
                                 case 521:
                                 case 522:
                                 case 530:
+                                case 536:
                                 case 1200:
                                 case 1201:
                                     player_node->weapon = 0;

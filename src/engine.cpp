@@ -351,7 +351,7 @@ void Engine::draw()
         guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
 #endif
 
-        if ((being->job >= 100) && (being->job < 110)) { // Draw a NPC
+        if (being->isNpc()) { // Draw a NPC
             npcset->spriteset[being->job - 100]->draw(screen,
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);

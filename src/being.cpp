@@ -87,8 +87,7 @@ unsigned int findNpc(unsigned short x, unsigned short y)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Check if is a NPC (only low job ids)
-        if (being->job >= 46 && being->job <= 125 &&
-                being->x == x && being->y == y)
+        if (being->isNpc() && being->x == x && being->y == y)
         {
             return being->id;
         }
