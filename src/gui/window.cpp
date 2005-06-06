@@ -221,6 +221,40 @@ void Window::add(gcn::Widget *w, int x, int y)
     chrome->add(w, x, y);
 }
 
+void Window::mousePress(int x, int y, int button)
+{
+    if (getParent() != NULL)
+    {
+        getParent()->moveToTop(this);
+    }
+
+    if (hasMouse() && button == 1)
+    {
+        mMouseXOffset = x;
+        mMouseYOffset = y;
+    
+        if (isMovable() && y < (int)(getTitleBarHeight() + getPadding()))
+        {
+            mMouseDrag = true;
+        }
+
+        if (getResizeable())
+        {
+           if (x > (getWidth() - 2 * getPadding()))
+           {
+                winXResizing = true;
+                mMouseDrag = true;
+           }
+           
+           if (y > (getHeight() - 2 * getPadding()))
+           {
+                winYResizing = true;
+                mMouseDrag = true;
+           }
+        }
+    }
+}
+
 void Window::mouseMotion(int mx, int my)
 {
     if (mMouseDrag && isMovable())
@@ -239,24 +273,55 @@ void Window::mouseMotion(int mx, int my)
         //if (y < snapSize) y = 0;
         //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
+    
+        if (getResizeable() &&
+                ((mx > (getWidth() - 16)) || (my > (getHeight() - 16))))
+        {
+            // Resize in X direction
+            if (winXResizing)
+            {
+                if (mx < minWinWidth)
+                {
+                    mx = minWinWidth;
+                }
+                else if (mx >= maxWinWidth)
+                {
+                    mx = maxWinWidth - 1;
+                }
 
-        if (resizeable && mx > getWidth() - 16) {
-            // Resize
-            if (mx < minWinWidth)
-                mx = minWinWidth;
-            if (my < minWinHeight)
-                my = minWinHeight;
-            if (mx >= maxWinWidth)
-                mx = maxWinWidth - 1;
-            if (my >= maxWinHeight)
-                my = maxWinHeight - 1;
+                setWidth(mx);
+            }
+    
+            // Resize in Y direction
+            if (winYResizing)
+            {
+                if (my < minWinHeight)
+                {
+                    my = minWinHeight;
+                }
+                else if (my >= maxWinHeight)
+                {
+                    my = maxWinHeight - 1;
+                }
 
-            setWidth(mx);
-            setHeight(my);
-        } else {
+                setHeight(my);
+            }
+        }
+        else
+        {
             // Move
             setPosition(x, y);
         }
+    }
+}
+
+void Window::mouseRelease(int x, int y, int button)
+{
+    if (button == 1)
+    {
+        mMouseDrag = false;
+        winXResizing = false;
+        winYResizing = false;
     }
 }
 

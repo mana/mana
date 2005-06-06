@@ -141,10 +141,12 @@ class Window : public gcn::Window, public ConfigListener
         void scheduleDelete();
 
         /**
-         * Window dragging. This method also makes sure the window is not
-         * dragged outside of the screen.
+         * Window dragging and resizing. These methods also makes sure the
+         * window is not dragged/resized outside of the screen.
          */
+        void mousePress(int x, int y, int button);
         void mouseMotion(int mx, int my);
+        void mouseRelease(int x, int y, int button);
 
         /**
          * Called when an config option changes.
@@ -157,6 +159,8 @@ class Window : public gcn::Window, public ConfigListener
         int snapSize;              /**< Snap distance to window edge */
         bool modal;                /**< Window is modal */
         bool resizeable;           /**< Window can be resized */
+        bool winXResizing;         /**< Window being resized in X direction */
+        bool winYResizing;         /**< Window being resized in Y direction */
         int minWinWidth;           /**< Minimum window width */
         int minWinHeight;          /**< Minimum window height */
         int maxWinWidth;           /**< Maximum window width */
