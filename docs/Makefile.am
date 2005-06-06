@@ -6,8 +6,4 @@ EXTRA_DIST = packages.txt \
 	     items.txt \
 	     progression.txt \
 	     INSTALL/debian.txt \
-	     INSTALL/win32.txt \
-	     meetings/dev-20050204.txt \
-	     meetings/dev-20050211.txt \
-	     meetings/dev-20050218.txt \
-	     meetings/dev-20050225.txt
+	     INSTALL/win32.txt
