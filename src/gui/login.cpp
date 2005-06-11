@@ -51,23 +51,25 @@ LoginDialog::LoginDialog():
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());
+    serverLabel->setPosition(
+            5, 23 + userLabel->getHeight() + passLabel->getHeight());
     userField->setPosition(65, 5);
     passField->setPosition(65, 14 + userLabel->getHeight());
+    serverField->setPosition(
+            65, 23 + userLabel->getHeight() + passLabel->getHeight());
     userField->setWidth(130);
     passField->setWidth(130);
     serverField->setWidth(130);
-    serverLabel->setPosition(5,19 + userLabel->getHeight() + passField->getHeight());
-    serverField->setPosition(65,19 + userField->getHeight() + passField->getHeight());
-    keepCheck->setPosition(4, 74);
+    keepCheck->setPosition(4, 77);
     keepCheck->setMarked(config.getValue("remember", 0));
     cancelButton->setPosition(
             200 - cancelButton->getWidth() - 5,
-            97 - cancelButton->getHeight() - 5);
+            100 - cancelButton->getHeight() - 5);
     okButton->setPosition(
             cancelButton->getX() - okButton->getWidth() - 5,
-            97 - okButton->getHeight() - 5);
+            100 - okButton->getHeight() - 5);
     registerButton->setPosition(keepCheck->getX() + keepCheck->getWidth() + 10,
-            97 - registerButton->getHeight() - 5);
+            100 - registerButton->getHeight() - 5);
 
     userField->setEventId("ok");
     passField->setEventId("ok");
@@ -78,6 +80,7 @@ LoginDialog::LoginDialog():
 
     userField->addActionListener(this);
     passField->addActionListener(this);
+    serverField->addActionListener(this);
     keepCheck->addActionListener(this);
     okButton->addActionListener(this);
     cancelButton->addActionListener(this);
