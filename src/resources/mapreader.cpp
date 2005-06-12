@@ -135,7 +135,7 @@ void MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
     int w = map->getWidth();
     int x = 0;
     int y = 0;
-    
+
     // Load the tile data. Layers are assumed to be map size, with (0,0) as
     // origin.
     while (node != NULL)
@@ -250,7 +250,7 @@ Tileset* MapReader::readTileset(
                 sourceStr.erase(0, 3);  // Remove "../"
 
                 ResourceManager *resman = ResourceManager::getInstance();
-                Image* tilebmp = resman->getImage(sourceStr);
+                Image* tilebmp = resman->getImage(sourceStr, IMG_ALPHA);
 
                 if (tilebmp)
                 {
