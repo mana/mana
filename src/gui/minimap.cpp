@@ -53,7 +53,11 @@ void Minimap::setMap(Map *map)
     {
         ResourceManager *resman = ResourceManager::getInstance();
         mMapImage = resman->getImage(map->getProperty("minimap"), IMG_ALPHA);
-        mMapImage->setAlpha(0.7);
+
+        if (mMapImage != NULL)
+        {
+            mMapImage->setAlpha(0.7);
+        }
     }
     else
     {
