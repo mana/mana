@@ -159,11 +159,30 @@ class Map
         std::list<PATH_NODE> findPath(
                 int startX, int startY, int destX, int destY);
 
+        /**
+         * Get a map property.
+         *
+         * @return the value of the given property or an empty string when it
+         *         doesn't exist.
+         */
+        std::string getProperty(const std::string &name);
+
+        /**
+         * Returns whether a certain property is available.
+         */
+        bool hasProperty(const std::string &name);
+
+        /**
+         * Set a map property.
+         */
+        void setProperty(const std::string &name, const std::string &value);
+
     private:
         int width, height;
         int tileWidth, tileHeight;
         MetaTile *metaTiles;
         Image **tiles;
+        std::map<std::string,std::string> properties;
 
         // Pathfinding members
         int onClosedList, onOpenList;

@@ -106,7 +106,22 @@ Map* MapReader::readMap(xmlNodePtr node, const std::string &path)
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "tileset"))
+        if (xmlStrEqual(node->name, BAD_CAST "property"))
+        {
+            // Example: <property name="name" value="value"/>
+
+            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
+            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+
+            if (name && value)
+            {
+                map->setProperty((const char*)name, (const char*)value);
+            }
+
+            if (name) xmlFree(name);
+            if (value) xmlFree(value);
+        }
+        else if (xmlStrEqual(node->name, BAD_CAST "tileset"))
         {
             Tileset *tileset = readTileset(node, pathDir, map);
             if (tileset) {

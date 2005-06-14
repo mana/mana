@@ -1,3 +1,6 @@
+0.0.14  (3 July 2005)
+- Added support for map properties (to be used for music and minimap settings)
+
 0.0.13  (5 June 2005)
 - Added ability to trade items and money
 - Added server field to login dialog

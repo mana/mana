@@ -492,6 +492,8 @@ void Engine::draw()
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
+    debugStream << " [music: " << tiledMap->getProperty("music") << "]";
+    debugStream << " [minimap: " << tiledMap->getProperty("minimap") << "]";
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }
