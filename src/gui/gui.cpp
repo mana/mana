@@ -28,6 +28,7 @@
 #include "../engine.h"
 #include "../net/protocol.h"
 #include "../main.h"
+#include "../game.h"
 
 // Guichan stuff
 Gui *gui;
@@ -126,6 +127,7 @@ void Gui::mousePress(int mx, int my, int button)
     if (player_node && player_node->action != DEAD && current_npc == 0 &&
             button == gcn::MouseInput::LEFT)
     {
+        Map *tiledMap = engine->getCurrentMap();
         int tilex = mx / 32 + camera_x;
         int tiley = my / 32 + camera_y;
 
@@ -133,7 +135,7 @@ void Gui::mousePress(int mx, int my, int button)
             walk(tilex, tiley, 0);
             player_node->setDestination(tilex, tiley);
         }
-        
-        autoTarget = 0;
+
+        autoTarget = NULL;
     }
 }

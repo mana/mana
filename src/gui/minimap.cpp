@@ -23,29 +23,85 @@
 
 #include "minimap.h"
 #include "../being.h"
+#include "../resources/resourcemanager.h"
+#include "../graphics.h"
 
-Minimap::Minimap()
+Minimap::Minimap():
+    Window("Map"),
+    mMapImage(NULL)
 {
     setContentSize(100, 100);
     setPosition(20, 20);
 }
 
+Minimap::~Minimap()
+{
+    if (mMapImage)
+    {
+        mMapImage->decRef();
+    }
+}
+
+void Minimap::setMap(Map *map)
+{
+    if (mMapImage)
+    {
+        mMapImage->decRef();
+    }
+
+    if (map->hasProperty("minimap"))
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        mMapImage = resman->getImage(map->getProperty("minimap"), IMG_ALPHA);
+        mMapImage->setAlpha(0.7);
+    }
+    else
+    {
+        mMapImage = NULL;
+    }
+}
+
 void Minimap::draw(gcn::Graphics *graphics)
 {
-    int x, y;
+    Window::draw(graphics);
 
+    int x, y;
     getAbsolutePosition(x, y);
 
-    // Transparent background
-    graphics->setColor(gcn::Color(52, 149, 210, 120));
-    graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    if (mMapImage != NULL)
+    {
+        mMapImage->draw(screen, x + getPadding(), y + getTitleBarHeight());
+    }
 
-    // Black border
-    graphics->setColor(gcn::Color(0, 0, 0));
-    graphics->drawRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+    std::list<Being*>::iterator bi;
 
-    // Player dot
-    graphics->setColor(gcn::Color(209, 52, 61));
-    graphics->fillRectangle(gcn::Rectangle(player_node->x / 2,
-            player_node->y / 2, 3, 3));
+    for (bi = beings.begin(); bi != beings.end(); bi++)
+    {
+        Being *being = (*bi);
+
+        if (being == player_node)
+        {
+            // Player dot
+            graphics->setColor(gcn::Color(209, 52, 61));
+            graphics->fillRectangle(gcn::Rectangle(
+                        being->x / 2 + getPadding() - 1,
+                        being->y / 2 + getTitleBarHeight() - 1, 3, 3));
+        }
+        else if (being->isPlayer())
+        {
+            // Other player dot
+            graphics->setColor(gcn::Color(61, 52, 209));
+            graphics->fillRectangle(gcn::Rectangle(
+                        being->x / 2 + getPadding(),
+                        being->y / 2 + getTitleBarHeight(), 1, 1));
+        }
+        else if (being->isMonster())
+        {
+            // Enemy dot
+            graphics->setColor(gcn::Color(209, 52, 61));
+            graphics->fillRectangle(gcn::Rectangle(
+                        being->x / 2 + getPadding(),
+                        being->y / 2 + getTitleBarHeight(), 1, 1));
+        }
+    }
 }

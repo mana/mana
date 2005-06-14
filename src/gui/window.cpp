@@ -64,6 +64,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     setBorderSize(0);
     setPadding(3);
+    setTitleBarHeight(20);
 
     // Add chrome
     chrome = new gcn::Container();

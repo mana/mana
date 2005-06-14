@@ -26,6 +26,7 @@
 
 #include "main.h"
 #include "being.h"
+#include "engine.h"
 #include "./gui/gui.h"
 #include "./gui/skill.h"
 #include <stdio.h>
@@ -64,6 +65,7 @@ extern int server_tick;
 extern bool displayPathToMouse;
 extern int startX, startY;
 extern Being* autoTarget;
+extern Engine *engine;
 
 /**
  * Main game loop

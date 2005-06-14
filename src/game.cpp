@@ -55,7 +55,8 @@ int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 int startX = 0, startY = 0;
 int gameTime = 0;
-Being* autoTarget = NULL;
+Being *autoTarget = NULL;
+Engine *engine = NULL;
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
@@ -122,8 +123,8 @@ int get_elapsed_time(int start_time)
 
 void game()
 {
+    engine = new Engine();
     do_init();
-    Engine *engine = new Engine();
 
     gameTime = tick_time;
 
@@ -165,20 +166,17 @@ void do_init()
     std::string path(map_path);
     std::string pathDir = path.substr(0, path.rfind("."));
 
-    // Try .tmx map file
-    pathDir.insert(pathDir.size(), ".tmx");
-    tiledMap = MapReader::readMap(pathDir);
+    // Try .tmx.gz map file
+    pathDir.insert(pathDir.size(), ".tmx.gz");
+    Map *tiledMap = MapReader::readMap(pathDir);
 
     if (!tiledMap)
     {
-        // Try .tmx.gz map file
-        pathDir.insert(pathDir.size(), ".gz");
-        tiledMap = MapReader::readMap(pathDir);
-
-        if (!tiledMap)
-        {
-            logger->error("Could not find map file!");
-        }
+        logger->error("Could not find map file!");
+    }
+    else
+    {
+        engine->setCurrentMap(tiledMap);
     }
 
     // Start playing background music
@@ -529,6 +527,8 @@ void do_input()
                 Direction = SW;
             }
 
+            Map *tiledMap = engine->getCurrentMap();
+
             // Prevent skipping corners over colliding tiles
             if (xDirection != 0 && tiledMap->tileCollides(x + xDirection, y)) {
                 xDirection = 0;
@@ -587,6 +587,7 @@ void do_parse()
     Being *being = NULL;
     FloorItem *floorItem = NULL;
     int len, n_items;
+    Map *tiledMap = engine->getCurrentMap();
 
     // We need at least 2 bytes to identify a packet
     if (in_size >= 2) {
@@ -1011,6 +1012,7 @@ void do_parse()
                         WFIFOW(0) = net_w_value(0x007d);
                         WFIFOSET(2);
                         while (out_size > 0) flush();
+                        engine->setCurrentMap(tiledMap);
                     }
                     else {
                         logger->error("Could not find map file");

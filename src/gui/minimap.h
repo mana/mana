@@ -24,6 +24,7 @@
 #ifndef _TMW_MINIMAP_H
 #define _TMW_MINIMAP_H 
 
+#include "../map.h"
 #include "gui.h"
 #include "window.h"
 
@@ -32,7 +33,8 @@
  *
  * \ingroup Interface
  */
-class Minimap : public Window {
+class Minimap : public Window
+{
     public:
         /**
          * Constructor.
@@ -40,9 +42,22 @@ class Minimap : public Window {
         Minimap();
 
         /**
+         * Destructor.
+         */
+        ~Minimap();
+
+        /**
+         * Sets the map that should be displayed.
+         */
+        void setMap(Map *map);
+
+        /**
          * Draws the minimap.
          */
         void draw(gcn::Graphics *graphics);
+
+    private:
+        Image *mMapImage;
 };
 
 #endif

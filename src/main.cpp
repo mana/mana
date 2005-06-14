@@ -58,7 +58,6 @@ PLAYER_INFO *char_info = new PLAYER_INFO;
 Spriteset *hairset = NULL, *playerset = NULL;
 Image *login_wallpaper = NULL;
 Graphics *graphics;
-Map *tiledMap;
 
 char username[LEN_USERNAME];
 char password[LEN_PASSWORD];

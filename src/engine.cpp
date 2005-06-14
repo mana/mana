@@ -137,7 +137,8 @@ int get_y_offset(Being *being)
     return offset;
 }
 
-Engine::Engine()
+Engine::Engine():
+    mCurrentMap(NULL)
 {
     // Initializes GUI
     debugInfo = new gcn::Label();
@@ -265,6 +266,17 @@ Engine::~Engine()
     delete itemset;
 }
 
+Map *Engine::getCurrentMap()
+{
+    return mCurrentMap;
+}
+
+void Engine::setCurrentMap(Map *newMap)
+{
+    mCurrentMap = newMap;
+    minimap->setMap(mCurrentMap);
+}
+
 void Engine::logic()
 {
     // Update beings
@@ -309,9 +321,10 @@ void Engine::draw()
     frame++;
 
     // Draw tiles below nodes
-    if (tiledMap) {
-        tiledMap->draw(guiGraphics, map_x, map_y, 0);
-        tiledMap->draw(guiGraphics, map_x, map_y, 1);
+    if (mCurrentMap != NULL)
+    {
+        mCurrentMap->draw(guiGraphics, map_x, map_y, 0);
+        mCurrentMap->draw(guiGraphics, map_x, map_y, 1);
     }
 
     // Draw items
@@ -439,15 +452,16 @@ void Engine::draw()
     }
 
     // Draw tiles below nodes
-    if (tiledMap) {
-        tiledMap->draw(guiGraphics, map_x, map_y, 2);
+    if (mCurrentMap != NULL)
+    {
+        mCurrentMap->draw(guiGraphics, map_x, map_y, 2);
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug
     // purposes.
-    if (displayPathToMouse)
+    if (displayPathToMouse && mCurrentMap != NULL)
     {
-        std::list<PATH_NODE> debugPath = tiledMap->findPath(
+        std::list<PATH_NODE> debugPath = mCurrentMap->findPath(
                 player_node->x, player_node->y,
                 mouseX / 32 + camera_x, mouseY / 32 + camera_y);
 
@@ -461,7 +475,7 @@ void Engine::draw()
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
-            MetaTile *tile = tiledMap->getMetaTile(node.x, node.y);
+            MetaTile *tile = mCurrentMap->getMetaTile(node.x, node.y);
 
             std::stringstream cost;
             cost << tile->Gcost;
@@ -492,8 +506,14 @@ void Engine::draw()
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " <<
         (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
-    debugStream << " [music: " << tiledMap->getProperty("music") << "]";
-    debugStream << " [minimap: " << tiledMap->getProperty("minimap") << "]";
+
+    if (mCurrentMap != NULL)
+    {
+        debugStream
+            << " [music: " << mCurrentMap->getProperty("music") << "]"
+            << " [minimap: " << mCurrentMap->getProperty("minimap") << "]";
+    }
+
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
 }

@@ -81,16 +81,42 @@ char get_y_offset(char, char);
 /**
  * Game engine that does the main drawing.
  */
-class Engine {
-    private:
-        Spriteset *emotionset, *npcset, *weaponset, *itemset;
-
+class Engine
+{
     public:
+        /**
+         * Constructor.
+         */
         Engine();
+
+        /**
+         * Destructor.
+         */
         ~Engine();
 
+        /**
+         * Returns the currently active map.
+         */
+        Map *getCurrentMap();
+
+        /**
+         * Sets the currently active map.
+         */
+        void setCurrentMap(Map *newMap);
+
+        /**
+         * Performs engine logic.
+         */
         void logic();
+
+        /**
+         * Draws everything on the screen.
+         */
         void draw();
+
+    private:
+        Spriteset *emotionset, *npcset, *weaponset, *itemset;
+        Map *mCurrentMap;
 };
 
 #endif

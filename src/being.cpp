@@ -203,7 +203,13 @@ void Being::setDestination(int destX, int destY)
 {
     this->destX = destX;
     this->destY = destY;
-    setPath(tiledMap->findPath(x, y, destX, destY));
+
+    Map *map = engine->getCurrentMap();
+
+    if (map != NULL)
+    {
+        setPath(map->findPath(x, y, destX, destY));
+    }
 }
 
 void Being::setHairColor(int color)
