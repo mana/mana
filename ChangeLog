@@ -1,4 +1,5 @@
 0.0.14  (3 July 2005)
+- Added action menu (moved trading to action menu)
 - Added support for map properties (to be used for music and minimap settings)
 - Added background image to minimap
 - Fixed window resizing (applies to inventory window)

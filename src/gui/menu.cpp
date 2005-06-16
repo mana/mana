@@ -23,8 +23,8 @@
 
 #include "menu.h"
 
-Menu::Menu(const std::string& menulabel, std::vector<MenuItem *> items):
-    Window(menulabel)
+Menu::Menu(std::vector<MenuItem *> items):
+	Window("")
 {
     setContentSize(52,60);
     fill(items);
@@ -50,5 +50,15 @@ void Menu::fill(std::vector<MenuItem *> items)
     }
     
     resizeToContent();
+}
+
+void Menu::setBeing(Being *target)
+{
+	where = target;
+}
+
+Being * Menu::getBeing()
+{
+	return where;
 }
 

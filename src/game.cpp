@@ -61,6 +61,8 @@ Engine *engine = NULL;
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
 
+Being *target = NULL;
+
 #define EMOTION_TIME 150
 #define MAX_TIME 10000
 
@@ -322,10 +324,6 @@ void do_input()
                 //    buddyWindow->setVisible(!buddyWindow->isVisible());
                 //    used = true;
                 //}
-                //else if (keysym.sym == SDLK_m) {
-                //    menu->setVisible(!menu->isVisible());
-                //    used = true;
-                //}
             }
 
             if (event.key.keysym.sym == SDLK_ESCAPE)
@@ -416,10 +414,10 @@ void do_input()
                         attack(target);
                     }
                     else if (target->isPlayer()) {
-                        // Begin a trade
-                        WFIFOW(0) = net_w_value(0x00e4);
-                        WFIFOL(2) = net_l_value(target->id);
-                        WFIFOSET(6);
+			// Show menu
+			menu->setVisible(!menu->isVisible());
+			// Pass target to menu
+			menu->setBeing(target);
                     }
                 }
             }

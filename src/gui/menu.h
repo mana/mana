@@ -25,15 +25,16 @@
 #define _TMW_MENU_H
 
 #include <guichan.hpp>
-#include "menuitem.h"
 #include "window.h"
+#include "menuitem.h"
+#include "../being.h"
 
 class Menu : public Window {
     public:
         /**
          * Constructor.
          */
-        Menu(const std::string& menulabel, std::vector<MenuItem *> items);
+        Menu(std::vector<MenuItem *> items);
 
         /**
          * Destructor.
@@ -45,6 +46,14 @@ class Menu : public Window {
          */
         void fill(std::vector<MenuItem *> items);
 
+	/**
+	 * Set/get begin
+	 */
+	void setBeing(Being *target);
+	Being * getBeing(void);
+	
+    private:
+	Being *where; // Where to display
 };
 
 #endif /* _TMW_MENU_H */

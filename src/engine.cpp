@@ -87,6 +87,37 @@ char hairtable[16][4][2] = {
     { { 0, 16}, {-1, 6}, {-1, 6}, { 0, 6} }  // DEAD
 };
 
+/**
+ * Listener used for trading request
+ */
+class tradeItemListener : public gcn::MouseListener
+{
+    void mouseClick(int x, int y, int button, int count)
+    {
+	Being *target = menu->getBeing();
+
+	// Begin a trade
+	WFIFOW(0) = net_w_value(0x00e4);
+	WFIFOL(2) = net_l_value(target->id);
+	WFIFOSET(6);							
+	std::cout << "Clicked trade" << std::endl;
+	menu->setVisible(!menu->isVisible());
+    }
+};
+
+/**
+ * Listener used for buddy request
+ */
+class buddyItemListener : public gcn::MouseListener
+{
+    void mouseClick(int x, int y, int button, int count)
+    {						
+	std::cout << "Clicked buddy" << std::endl;
+	//buddyWindow->setVisible(!buddyWindow->isVisible());
+	menu->setVisible(!menu->isVisible());
+    }
+};
+
 int get_x_offset(Being *being)
 {
     int offset = 0;
@@ -165,11 +196,20 @@ Engine::Engine():
     buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
 
-    /* Menu items */
+    /**
+     * Menu items 
+     */
     std::vector<MenuItem*> items;
-    items.push_back(new MenuItem("First"));
-    items.push_back(new MenuItem("Second"));
-    menu = new Menu("Menu", items);
+    
+    MenuItem *tradeItem = new MenuItem("Trade");
+    tradeItem->addMouseListener(new tradeItemListener());
+    items.push_back(tradeItem);
+    
+    MenuItem *buddyItem = new MenuItem("Buddy");
+    buddyItem->addMouseListener(new buddyItemListener()); 
+    items.push_back(buddyItem);
+
+    menu = new Menu(items);
 
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
