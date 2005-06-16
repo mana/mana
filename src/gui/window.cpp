@@ -35,11 +35,12 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     parent(parent),
     snapSize(8),
     modal(modal),
-    resizeable(false),
-    minWinWidth(256),
-    minWinHeight(128),
-    maxWinWidth(512),
-    maxWinHeight(512)
+    resizable(false),
+    mMouseResize(false),
+    minWinWidth(6),
+    minWinHeight(23),
+    maxWinWidth(INT_MAX),
+    maxWinHeight(INT_MAX)
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -192,14 +193,14 @@ void Window::setMaxHeight(unsigned int height)
     maxWinHeight = height;
 }
 
-void Window::setResizeable(bool r)
+void Window::setResizable(bool r)
 {
-    resizeable = r;
+    resizable = r;
 }
 
-bool Window::getResizeable()
+bool Window::getResizable()
 {
-    return resizeable;
+    return resizable;
 }
 
 Window *Window::getParentWindow()
@@ -224,94 +225,158 @@ void Window::add(gcn::Widget *w, int x, int y)
 
 void Window::mousePress(int x, int y, int button)
 {
-    if (getParent() != NULL)
-    {
-        getParent()->moveToTop(this);
-    }
+    // Let Guichan move window to top and figure out title bar drag
+    gcn::Window::mousePress(x, y, button);
 
-    if (hasMouse() && button == 1)
+    // If the mouse is not inside the content, the press must have been on the
+    // border, and is a candidate for a resize.
+    if (getResizable() && button == 1 &&
+            !getContentDimension().isPointInRect(x, y) &&
+            !(mMouseDrag && y > (int)getPadding()))
     {
+        mMouseResize = true;
         mMouseXOffset = x;
         mMouseYOffset = y;
-    
-        if (isMovable() && y < (int)(getTitleBarHeight() + getPadding()))
-        {
-            mMouseDrag = true;
-        }
 
-        if (getResizeable())
-        {
-           if (x > (getWidth() - 2 * getPadding()))
-           {
-                winXResizing = true;
-                mMouseDrag = true;
-           }
-           
-           if (y > (getHeight() - 2 * getPadding()))
-           {
-                winYResizing = true;
-                mMouseDrag = true;
-           }
-        }
+        // Determine which borders are being dragged
+        mLeftBorderDrag = (x < 10);
+        mTopBorderDrag = (y < 10);
+        mRightBorderDrag = (x >= getWidth() - 10);
+        mBottomBorderDrag = (y >= getHeight() - 10);
     }
 }
 
-void Window::mouseMotion(int mx, int my)
+void Window::mouseMotion(int x, int y)
 {
-    if (mMouseDrag && isMovable())
+    if (mMouseDrag || mMouseResize)
     {
-        int x = mx - mMouseXOffset + getX();
-        int y = my - mMouseYOffset + getY();
+        int dx = x - mMouseXOffset;
+        int dy = y - mMouseYOffset;
+        gcn::Rectangle newDim = getDimension();
 
-        // Keep guichan window inside window
-        if (x < 0) x = 0;
-        if (y < 0) y = 0;
-        if (x + getWidth() > screen->w) x = screen->w - getWidth();
-        if (y + getHeight() > screen->h) y = screen->h - getHeight();
+        // Change the dimension according to dragging and moving
+        if (mMouseResize && getResizable())
+        {
+            if (mLeftBorderDrag)
+            {
+                newDim.x += dx;
+                newDim.width -= dx;
+            }
+
+            if (mTopBorderDrag)
+            {
+                newDim.y += dy;
+                newDim.height -= dy;
+            }
+
+            if (mBottomBorderDrag)
+            {
+                newDim.height += dy;
+            }
+
+            if (mRightBorderDrag)
+            {
+                newDim.width += dx;
+            }
+        }
+        else if (mMouseDrag && isMovable())
+        {
+            newDim.x += dx;
+            newDim.y += dy;
+        }
+
+        // Keep guichan window inside screen
+        if (newDim.x < 0)
+        {
+            if (mMouseResize)
+            {
+                newDim.width += newDim.x;
+            }
+
+            newDim.x = 0;
+        }
+        if (newDim.y < 0)
+        {
+            if (mMouseResize)
+            {
+                newDim.height += newDim.y;
+            }
+
+            newDim.y = 0;
+        }
+        if (newDim.x + newDim.width > screen->w)
+        {
+            if (mMouseResize)
+            {
+                newDim.width = screen->w - newDim.x;
+            }
+            else
+            {
+                newDim.x = screen->w - newDim.width;
+            }
+        }
+        if (newDim.y + newDim.height > screen->h)
+        {
+            if (mMouseResize)
+            {
+                newDim.height = screen->h - newDim.y;
+            }
+            else
+            {
+                newDim.y = screen->h - newDim.height;
+            }
+        }
+
+        // Keep the window at least its minimum size
+        int Xcorrection = 0;
+        int Ycorrection = 0;
+
+        if (newDim.width < minWinWidth)
+        {
+            Xcorrection = minWinWidth - newDim.width;
+        }
+        else if (newDim.width > maxWinWidth)
+        {
+            Xcorrection = maxWinWidth - newDim.width;
+        }
+
+        if (newDim.height < minWinHeight)
+        {
+            Ycorrection = minWinHeight - newDim.height;
+        }
+        else if (newDim.height > maxWinHeight)
+        {
+            Ycorrection = maxWinHeight - newDim.height;
+        }
+
+        if (mLeftBorderDrag) newDim.x -= Xcorrection;
+        newDim.width += Xcorrection;
+
+        if (mTopBorderDrag) newDim.y -= Ycorrection;
+        newDim.height += Ycorrection;
 
         // Snap window to edges
         //if (x < snapSize) x = 0;
         //if (y < snapSize) y = 0;
         //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
-    
-        if (getResizeable() &&
-                ((mx > (getWidth() - 16)) || (my > (getHeight() - 16))))
+
+        // Update mouse offset when dragging bottom or right border
+        if (mBottomBorderDrag)
         {
-            // Resize in X direction
-            if (winXResizing)
-            {
-                if (mx < minWinWidth)
-                {
-                    mx = minWinWidth;
-                }
-                else if (mx >= maxWinWidth)
-                {
-                    mx = maxWinWidth - 1;
-                }
-
-                setWidth(mx);
-            }
-    
-            // Resize in Y direction
-            if (winYResizing)
-            {
-                if (my < minWinHeight)
-                {
-                    my = minWinHeight;
-                }
-                else if (my >= maxWinHeight)
-                {
-                    my = maxWinHeight - 1;
-                }
-
-                setHeight(my);
-            }
+            mMouseYOffset += newDim.height - getHeight();
         }
-        else
+        if (mRightBorderDrag)
         {
-            // Move
-            setPosition(x, y);
+            mMouseXOffset += newDim.width - getWidth();
+        }
+
+        // Set the new window and content dimensions
+        setDimension(newDim);
+
+        if (mContent != NULL && mMouseResize)
+        {
+            mContent->setDimension(getContentDimension());
         }
     }
 }
@@ -320,9 +385,8 @@ void Window::mouseRelease(int x, int y, int button)
 {
     if (button == 1)
     {
+        mMouseResize = false;
         mMouseDrag = false;
-        winXResizing = false;
-        winYResizing = false;
     }
 }
 

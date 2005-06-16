@@ -64,6 +64,12 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
+    // Have at least 1 column
+    if (columns < 1)
+    {
+        columns = 1;
+    }
+
     // Reset selected item when quantity not above 0 (should probably be made
     // sure somewhere else)
     if (items[selectedItem].quantity <= 0)

@@ -63,7 +63,7 @@ InventoryWindow::InventoryWindow():
     add(itemDescriptionLabel);
     add(weightLabel);
 
-    setResizeable(true);
+    setResizable(true);
     setMinWidth(240);
     setMinHeight(150);
 
@@ -215,18 +215,26 @@ void InventoryWindow::mouseMotion(int mx, int my)
 
 void InventoryWindow::updateWidgets()
 {
-    // Resize widgets
-    useButton->setPosition(8, getHeight() - 24);
-    dropButton->setPosition(48 + 16, getHeight() - 24);
-    items->setSize(getWidth() - 24 - 12 - 1,
-            (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    invenScroll->setSize(getWidth() - 16, getHeight() - 90);
+    int width = getContent()->getWidth();
+    int height = getContent()->getHeight();
+    int columns = width / 24;
 
-    itemNameLabel->setPosition(8, invenScroll->getY() + invenScroll->getHeight() + 4);
+    if (columns < 1)
+    {
+        columns = 1;
+    }
+
+    // Resize widgets
+    useButton->setPosition(8, height - 24);
+    dropButton->setPosition(48 + 16, height - 24);
+    items->setSize(width - 24 - 12 - 1,
+            (INVENTORY_SIZE * 24) / columns - 1);
+    invenScroll->setSize(width - 16, height - 90);
+
+    itemNameLabel->setPosition(8,
+            invenScroll->getY() + invenScroll->getHeight() + 4);
     itemDescriptionLabel->setPosition(8,
             itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
-
-    setContentSize(getWidth(), getHeight());
 }
 
 void InventoryWindow::updateButtons()

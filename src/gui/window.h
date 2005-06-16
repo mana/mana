@@ -100,12 +100,12 @@ class Window : public gcn::Window, public ConfigListener
         /**
          * Sets whether of not the window can be resized.
          */
-        void setResizeable(bool resize);
+        void setResizable(bool resize);
 
         /**
          * Returns whether the window can be resized.
          */
-        bool getResizeable();
+        bool getResizable();
 
         /**
          * Sets the minimum width of the window.
@@ -158,9 +158,14 @@ class Window : public gcn::Window, public ConfigListener
         Window *parent;            /**< The parent window */
         int snapSize;              /**< Snap distance to window edge */
         bool modal;                /**< Window is modal */
-        bool resizeable;           /**< Window can be resized */
-        bool winXResizing;         /**< Window being resized in X direction */
-        bool winYResizing;         /**< Window being resized in Y direction */
+        bool resizable;            /**< Window can be resized */
+
+        bool mMouseResize;         /**< Window is being resized */
+        bool mTopBorderDrag;       /**< Top border is being dragged */
+        bool mLeftBorderDrag;      /**< Left border is being dragged */
+        bool mRightBorderDrag;     /**< Right border is being dragged */
+        bool mBottomBorderDrag;    /**< Bottom border is being dragged */
+
         int minWinWidth;           /**< Minimum window width */
         int minWinHeight;          /**< Minimum window height */
         int maxWinWidth;           /**< Maximum window width */
