@@ -39,7 +39,8 @@ ItemContainer::ItemContainer()
 
     selectedItem = -1; // No item selected
 
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+    {
         items[i].id = -1;
         items[i].quantity = 0;
         items[i].equipment = false;
@@ -118,6 +119,23 @@ void ItemContainer::draw(gcn::Graphics* graphics)
                     gcn::Graphics::CENTER);
         }
     }
+}
+
+void ItemContainer::setWidth(int width)
+{
+    gcn::Widget::setWidth(width);
+
+    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
+    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int columns = getWidth() / gridWidth;
+
+    if (columns < 1)
+    {
+        columns = 1;
+    }
+
+    setHeight(((INVENTORY_SIZE / columns) +
+            (INVENTORY_SIZE % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
 int ItemContainer::getIndex()

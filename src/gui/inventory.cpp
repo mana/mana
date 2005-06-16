@@ -43,6 +43,7 @@ InventoryWindow::InventoryWindow():
     items = new ItemContainer();
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
+    invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     useButton->setEventId("use");
     dropButton->setEventId("drop");
@@ -227,8 +228,6 @@ void InventoryWindow::updateWidgets()
     // Resize widgets
     useButton->setPosition(8, height - 24);
     dropButton->setPosition(48 + 16, height - 24);
-    items->setSize(width - 24 - 12 - 1,
-            (INVENTORY_SIZE * 24) / columns - 1);
     invenScroll->setSize(width - 16, height - 90);
 
     itemNameLabel->setPosition(8,

@@ -3,6 +3,7 @@
 - Added support for map properties (to be used for music and minimap settings)
 - Added background image to minimap
 - Fixed window resizing (applies to inventory window)
+- Fixed inventory item display not to be cut off
 
 0.0.13  (5 June 2005)
 - Added ability to trade items and money

@@ -74,6 +74,12 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void draw(gcn::Graphics *graphics);
 
         /**
+         * Sets the width of the container. This is used to determine the new
+         * height of the container.
+         */
+        void setWidth(int width);
+
+        /**
          * Handles mouse click.
          */
         void mousePress(int mx, int my, int button);
