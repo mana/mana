@@ -1,26 +1,18 @@
-               T  H  E      M  A  N  A      W  O  R  L  D
-               ==========================================
+##3                             === INDEX ===
 
-           Version: 0.0.13                  Date: 5 June 2005
+ -> @@about|About The Mana World@@
+ -> @@team|Development Team@@
+ -> @@changes|Recent Changes@@
 
-                    Website: http://themanaworld.org
+ -> @@commands|Commands@@
+ -> @@skills|Skills@@
 
-
-                             === INDEX ===
-
-@about-> About The Mana World
-@team-> Development Team
-@changes-> Recent Changes
-
-@commands-> Commands
-@skills-> Skills
-
-@support-> Support
+ -> @@support|Support@@
 
 
-                           === Powered By ===
+##3                           === Powered By ===
 
-               SDL, SDL_image, SDL_mixer (Media framework)
-                      Guichan (GUI framework)
-                 libxml2 (XML parsing and writing)
-                        PhysFS (Data files)
+##2               SDL, SDL_image, SDL_mixer (Media framework)
+##2                      Guichan (GUI framework)
+##2                 libxml2 (XML parsing and writing)
+##2                        PhysFS (Data files)

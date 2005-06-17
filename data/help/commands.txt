@@ -1,15 +1,7 @@
-               T  H  E      M  A  N  A      W  O  R  L  D
-               ==========================================
-
-           Version: 0.0.13                  Date: 5 June 2005
-
-                    Website: http://themanaworld.org
+ <- @@index|Back to Index@@
 
 
-@index-> Back to Index
-
-
-                            === COMMANDS ===
+##3                            === COMMANDS ===
 
  Use arrow keys (or left mouse button) to move around and the right
  mouse button over NPC's feet to talk to them or over a monster to
@@ -17,18 +9,18 @@
 
  Other keys:
 
-     Left Ctrl           attack
-     Alt + 0-9           show emotions
-     F1                  show the online help
-     F5                  sit down / stand up
-     F6                  toggle debug pathfinding feature
-     F7                  play test sound
-     G or Z              pick up item
-     Enter               focus chat window / send message
-     Alt + K             show skills
-     Alt + S             show stats
-     Alt + I             show inventory
-     Alt + E             show equipment
-     Alt + C             show setup window
-     Left Shift          hold it when attacking to lock target for auto
+     ##2Left Ctrl##P           attack
+     ##2Alt + 0-9##P           show emotions
+     ##2F1##P                  show the in-game help
+     ##2F5##P                  sit down / stand up
+     ##2F6##P                  toggle debug pathfinding feature
+     ##2F7##P                  play test sound
+     ##2G or Z##P              pick up item
+     ##2Enter##P               focus chat window / send message
+     ##2Alt + K##P             show skills
+     ##2Alt + S##P             show stats
+     ##2Alt + I##P             show inventory
+     ##2Alt + E##P             show equipment
+     ##2Alt + C##P             show setup window
+     ##2Left Shift##P          hold it when attacking to lock target for auto
                          attack

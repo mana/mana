@@ -1,15 +1,7 @@
-               T  H  E      M  A  N  A      W  O  R  L  D
-               ==========================================
-
-           Version: 0.0.13                  Date: 5 June 2005
-
-                    Website: http://themanaworld.org
+ <- @@index|Back to Index@@
 
 
-@index-> Back to Index
-
-
-                         === RECENT CHANGES ===
+##3                         === RECENT CHANGES ===
 
  - Added ability to trade items and money
  - Added server field to login dialog

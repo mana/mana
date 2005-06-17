@@ -1,25 +1,17 @@
-               T  H  E      M  A  N  A      W  O  R  L  D
-               ==========================================
-
-           Version: 0.0.13                  Date: 5 June 2005
-
-                    Website: http://themanaworld.org
+ <- @@index|Back to Index@@
 
 
-@index-> Back to Index
-
-
-                            === SUPPORT ===
+##3                            === SUPPORT ===
 
  If you're having troubles, plase first of all read the FAQ. If you
  can't find a solution to your problem, feel free to check our
  Bugs/Support section of the forum:
 
-     http://themanaworld.org/phpBB2/viewforum.php?f=3
+##2     http://themanaworld.org/phpBB2/viewforum.php?f=3
 
  or come visit us on our IRC channel:
     
-     #manaworld @ irc.freenode.net
+##2     #manaworld ##P@##2 irc.freenode.net
 
- Otherwise check the 'Development Team' section to have a list of
+ Otherwise see the @@team|Development Team@@ section to have a list of
  developers and how to contact them.
