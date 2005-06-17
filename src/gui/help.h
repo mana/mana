@@ -26,16 +26,14 @@
 
 #include <guichan.hpp>
 #include "window.h"
-
-struct HELP_LINK {
-    int yPos;
-    std::string file;
-};
+#include "linkhandler.h"
+#include "browserbox.h"
 
 /**
  * The help dialog.
  */
-class HelpWindow : public Window, public gcn::ActionListener
+class HelpWindow : public Window, public LinkHandler,
+                   public gcn::ActionListener
 {
     public:
         /**
@@ -54,19 +52,20 @@ class HelpWindow : public Window, public gcn::ActionListener
         void action(const std::string& eventId);
 
         /**
-         * Handles mouse click.
+         * Handles link action.
          */
-        void mousePress(int mx, int my, int button);
+        void handleLink(const std::string& link);
 
         /**
-         * Load help in the dialog.
+         * Loads help in the dialog.
          */
         void loadHelp(const std::string &helpFile);
 
     private:
-        std::vector<HELP_LINK> links;
+        void loadFile(const std::string &file);
+        
+        BrowserBox* browserBox;
         gcn::Button *okButton;
-        gcn::TextBox *textBox;
         gcn::ScrollArea *scrollArea;
 };
 

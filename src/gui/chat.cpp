@@ -25,6 +25,7 @@
 #include "textfield.h"
 #include "textbox.h"
 #include "chatinput.h"
+#include "gui.h"
 #include "../graphics.h"
 #include "../main.h"
 #include <iostream>
@@ -37,21 +38,20 @@ ChatWindow::ChatWindow(const std::string &logfile):
     items_keep = 20;
 
     setContentSize(600, 100);
-    textOutput = new TextBox();
+    setResizable(true);
+    
     chatInput = new ChatInput();
-    textOutput->setEditable(false);
-    scrollArea = new ScrollArea(textOutput);
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_ALWAYS);
-    scrollArea->setDimension(gcn::Rectangle(
-                2, 0, 596, 98 - chatInput->getHeight() - 5));
-    scrollArea->setOpaque(false);
-    chatInput->setPosition(
-            chatInput->getBorderSize(),
-            100 - chatInput->getHeight() - chatInput->getBorderSize());
-    chatInput->setWidth(600 - 2 * chatInput->getBorderSize());
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(this);
+    
+    textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    textOutput->setOpaque(false);
+    scrollArea = new ScrollArea(textOutput);
+    scrollArea->setPosition(
+            scrollArea->getBorderSize(), scrollArea->getBorderSize());
+    scrollArea->setScrollPolicy(
+            gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
+    //scrollArea->setOpaque(false);
 
     add(scrollArea);
     add(chatInput);
@@ -69,44 +69,79 @@ ChatWindow::~ChatWindow()
     chatlog_file.close();
 }
 
+void ChatWindow::logic()
+{
+    chatInput->setPosition(
+            chatInput->getBorderSize(),
+            getContent()->getHeight() - chatInput->getHeight() -
+                chatInput->getBorderSize());
+    chatInput->setWidth(
+            getContent()->getWidth() - 2 * chatInput->getBorderSize());
+
+    scrollArea->setWidth(
+            getContent()->getWidth() - 2 * scrollArea->getBorderSize());
+    scrollArea->setHeight(
+            getContent()->getHeight() - 2 * scrollArea->getBorderSize() -
+                chatInput->getHeight() - 5);
+    scrollArea->logic();
+}
+
 void ChatWindow::chat_log(std::string line, int own)
 {
-    int pos;
-    CHATLOG tmp;
-
     // Delete overhead from the end of the list
     while ((int)chatlog.size() > items_keep) {
         chatlog.pop_back();
     }
 
-    pos = 0;
-    pos = (int)line.find(" : ", 0);
+    CHATLOG tmp;
+    tmp.own  = own;
+    tmp.nick = "";
+
+    // Fix the owner of welcome message.
+    if (line.substr(0, 7) == "Welcome")
+    {
+        own = BY_SERVER;
+    }
+    
+    int pos = line.find(" : ");
     if (pos > 0) {
         tmp.nick = line.substr(0, pos);
-        switch (own) {
-            case ACT_IS:
-                tmp.nick += CAT_IS;
-                break;
-            case ACT_WHISPER:
-                tmp.nick += CAT_WHISPER;
-                break;
-            case BY_GM:
-                tmp.nick += std::string("Global announcement: ");
-            default:
-                tmp.nick += CAT_NORMAL;
-        }
         line.erase(0, pos + 3);
-    } else {
-        tmp.nick = "";
     }
-    tmp.own  = own;
+        
+    std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
+    switch (own) {
+        case BY_GM:
+            tmp.nick += std::string("Global announcement: ");
+            lineColor = "##1"; // Equiv. to BrowserBox::RED
+            break;
+        case BY_PLAYER:
+            tmp.nick += CAT_NORMAL;
+            lineColor = "##2"; // Equiv. to BrowserBox::GREEN
+            break;
+        case BY_OTHER:
+            tmp.nick += CAT_NORMAL;
+            lineColor = "##4"; // Equiv. to BrowserBox::ORANGE
+            break;
+        case BY_SERVER:
+            tmp.nick += std::string("Server: ");
+            lineColor = "##7"; // Equiv. to BrowserBox::PINK
+            break;
+        case ACT_WHISPER:
+            tmp.nick += CAT_WHISPER;
+            lineColor = "##3"; // Equiv. to BrowserBox::BLUE
+            break;
+        case ACT_IS:
+            tmp.nick += CAT_IS;
+            lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
+            break;
+    }
+    
+    line = lineColor + tmp.nick + line;
 
-    line = tmp.nick + line;
-
-    textOutput->setText(
-            textOutput->getText() + std::string("\n") + line);
-    scrollArea->setVerticalScrollAmount(
-            scrollArea->getVerticalMaxScroll());
+    textOutput->addRow(line);
+    textOutput->draw(gui->getGraphics());
+    scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
 }
 
 void ChatWindow::chat_log(CHATSKILL action)
@@ -114,67 +149,10 @@ void ChatWindow::chat_log(CHATSKILL action)
     chat_log(const_msg(action), BY_SERVER);
 }
 
-
 void ChatWindow::draw(gcn::Graphics *graphics)
 {
     // Draw the window border/background and children
-    Window::draw(graphics);
-
-    // Draw the chat log
-    /*
-    int x, y;
-    int n = 8;
-    int texty = getHeight() - 5 - chatInput->getHeight() -
-        2 * chatInput->getBorderSize();
-    int i = 0;
-    CHATLOG line;
-    n -= 1;
-
-    graphics->setColor(gcn::Color(203, 203, 203));
-    graphics->drawLine(95, 5, 95, texty);
-
-    getAbsolutePosition(x, y);
-
-    for (iter = chatlog.begin(); iter != chatlog.end(); iter++)
-    {
-        line = *iter;
-
-        texty -= getFont()->getHeight() - 2;
-
-        switch (line.own) {
-            case BY_GM:
-                graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                //graphics->drawText("Global announcement: ", 5, texty);
-                addOutput(std::string("Global announcement: "));
-                break;
-            case BY_PLAYER:
-                graphics->setColor(gcn::Color(255, 246, 98)); // Yellow
-                break;
-            case BY_OTHER:
-                graphics->setColor(gcn::Color(97, 156, 236)); // GM Bue
-                break;
-        }
-
-        switch (line.own) {
-            case BY_GM:
-                graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                break;
-            case BY_PLAYER:
-                graphics->setColor(gcn::Color(255, 255, 255)); // White
-                break;
-            case BY_OTHER:
-                graphics->setColor(gcn::Color(39, 197, 39)); // Green
-                break;
-            default:
-                graphics->setColor(gcn::Color(83, 233, 246)); // Light blue
-        }
-
-        if (i >= n) {
-            return;
-        }
-        i++;
-    }
-    */
+    Window::draw(graphics);    
 }
 
 void ChatWindow::action(const std::string& eventId)

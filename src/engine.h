@@ -44,6 +44,7 @@
 #include "gui/menu.h"
 #include "gui/trade.h"
 #include "gui/help.h"
+#include "gui/popupmenu.h"
 #include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
@@ -74,6 +75,7 @@ extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
 extern Menu *menu;
 extern HelpWindow *helpWindow;
+extern PopupMenu *popupMenu;
 extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);

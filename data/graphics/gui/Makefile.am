@@ -3,6 +3,7 @@ guidir = $(pkgdatadir)/data/graphics/gui
 
 gui_DATA =				\
 	bg_quad_dis.png			\
+	browserfont.png			\
 	button.png			\
 	button_disabled.png		\
 	buttonhi.png			\

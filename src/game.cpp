@@ -38,6 +38,7 @@
 #include "gui/confirm_dialog.h"
 #include "gui/requesttrade.h"
 #include "gui/help.h"
+#include "gui/browserbox.h"
 #include "net/protocol.h"
 #include "resources/mapreader.h"
 
@@ -390,6 +391,21 @@ void do_input()
             int mx = event.button.x / 32 + camera_x;
             int my = event.button.y / 32 + camera_y;
 
+//================================ By Javila ===============================//
+            /**
+             * NOTES: 
+             *  - added here just for testing purposes. I think it's better
+             *    add to right mouse button, and put the actual right mouse
+             *    button function as "default" actions in left mouse button.
+             *  - the popup menu can't handle keyboard action/navigation. For
+             *    keyboard input I think we can add slash (/) commands.
+             */
+            if (event.button.button == 2)
+            {
+                popupMenu->showPopup(mx, my);
+            }
+//==========================================================================//
+            
             if (event.button.button == 3)
             {
                 Being *target = findNode(mx, my);
@@ -971,7 +987,7 @@ void do_parse()
                     // Can I use the item?
                 case 0x00a8:
                     if (RFIFOB(6) == 0) {
-                        chatWindow->chat_log("Failed to use item", BY_OTHER);
+                        chatWindow->chat_log("Failed to use item", BY_SERVER);
                     } else {
                         inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(4));
                     }

@@ -30,6 +30,7 @@
 #include "../net/network.h"
 #include "window.h"
 #include "scrollarea.h"
+#include "browserbox.h"
 #include <SDL.h>
 #include <list>
 #include <string>
@@ -116,6 +117,11 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         ~ChatWindow();
 
+        /**
+         * Logic (updates components' size)
+         */
+        void logic();
+
         /*
          * Adds a line of text to our message list. Parameters:
          *
@@ -197,7 +203,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         std::string const_msg(CHATSKILL);
 
         gcn::TextField *chatInput; /**< Input box for typing chat messages */
-        gcn::TextBox *textOutput;  /**< Text box for displaying chat history */
+        BrowserBox *textOutput;    /**< Text box for displaying chat history */
         ScrollArea *scrollArea;    /**< Scroll area around text output */
 
         std::list<std::string> history;           /**< Command history */

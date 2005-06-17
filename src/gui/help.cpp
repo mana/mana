@@ -33,9 +33,9 @@ HelpWindow::HelpWindow():
 {
     setContentSize(455, 350);
 
-    textBox = new TextBox();
-    textBox->setEditable(false);
-    scrollArea = new ScrollArea(textBox);
+    browserBox = new BrowserBox();
+    browserBox->setOpaque(false);
+    scrollArea = new ScrollArea(browserBox);
     okButton = new Button("Close");
 
     scrollArea->setDimension(gcn::Rectangle(
@@ -46,20 +46,20 @@ HelpWindow::HelpWindow():
 
     okButton->setEventId("close");
     okButton->addActionListener(this);
+    
+    browserBox->setLinkHandler(this);
 
     add(scrollArea);
     add(okButton);
 
     setLocationRelativeTo(getParent());
-    textBox->requestFocus();
 }
 
 HelpWindow::~HelpWindow()
 {
+    delete browserBox;
     delete okButton;
-    delete textBox;
     delete scrollArea;
-    links.clear();
 }
 
 void HelpWindow::action(const std::string& eventId)
@@ -67,77 +67,42 @@ void HelpWindow::action(const std::string& eventId)
     setVisible(false);
 }
 
-void HelpWindow::mousePress(int mx, int my, int button)
+void HelpWindow::handleLink(const std::string& link)
 {
-    getParent()->moveToTop(this);
-
-    if (button == gcn::MouseInput::LEFT)
-    {
-        int x1 = scrollArea->getX() + 10;
-        int y1 = scrollArea->getY() + 15;
-        int x2 = x1 + scrollArea->getWidth() - 25;
-        int y2 = y1 + scrollArea->getHeight();
-
-        if ((mx >= x1) && (my >= y1) && (mx <= x2) && (my <= y2))
-        {
-            for (unsigned int i = 0; i < links.size(); i++)
-            {
-                int y1 = links[i].yPos * textBox->getFont()->getHeight() + 5 -
-                    scrollArea->getVerticalScrollAmount();
-                int y2 = y1 + textBox->getFont()->getHeight();
-
-                if ((my > y1) && (my < y2))
-                {
-                    loadHelp(links[i].file);
-                }
-            }
-        }
-        else if (hasMouse() && my < (int)(getTitleBarHeight() + getPadding()))
-        {
-            mMouseDrag = true;
-            mMouseXOffset = mx;
-            mMouseYOffset = my;
-        }
-    }
+    std::string helpFile = link;
+    loadHelp(helpFile);
 }
 
 void HelpWindow::loadHelp(const std::string &helpFile)
 {
-    std::string helpPath = TMW_DATADIR "data/help/" + helpFile + ".txt";
+    browserBox->clearRows();
+    
+    loadFile("header");
+    loadFile(helpFile);
+
+    scrollArea->setVerticalScrollAmount(0);
+    setVisible(true);
+}
+
+void HelpWindow::loadFile(const std::string &file)
+{
+    std::string filePath = TMW_DATADIR "data/help/" + file + ".txt";
 
     std::ifstream fin;
-    fin.open(helpPath.c_str());
+    fin.open(filePath.c_str());
+    
     if (fin.fail())
     {
-        logger->log("Couldn't load help file: %s", helpPath.c_str());
+        logger->log("Couldn't load help file: %s", filePath.c_str());
         return;
     }
-
-    links.clear();
-    textBox->setText("");
 
     while (!fin.eof())
     {
         std::string line = "";
         getline(fin, line);
-
-        // Check for links
-        if (line.substr(0, 1) == "@")
-        {
-            int idx = line.find("->");
-            HELP_LINK hlink;
-            hlink.yPos = textBox->getNumberOfRows() + 1;
-            hlink.file = line.substr(1, idx - 1);
-            links.push_back(hlink);
-
-            line = "    " + line.erase(0, idx);
-        }
-
-        textBox->addRow(line);
+        browserBox->addRow(line);
     }
-
-    scrollArea->setVerticalScrollAmount(0);
-    setVisible(true);
 
     fin.close();
 }

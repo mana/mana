@@ -1,6 +1,8 @@
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/spriteset.cpp \
 	      graphic/spriteset.h \
+		  gui/browserbox.cpp \
+		  gui/browserbox.h \
 	      gui/buddywindow.cpp \
 	      gui/buddywindow.h \
 	      gui/button.cpp \
@@ -37,6 +39,7 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/itemcontainer.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
+		  gui/linkhandler.h \
 	      gui/listbox.cpp \
 	      gui/listbox.h \
 	      gui/login.cpp \
@@ -59,6 +62,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \
 	      gui/playerbox.h \
+		  gui/popupmenu.cpp \
+		  gui/popupmenu.h \
 	      gui/progressbar.cpp \
 	      gui/progressbar.h \
 	      gui/radiobutton.cpp \

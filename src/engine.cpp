@@ -65,6 +65,7 @@ TradeWindow *tradeWindow;
 BuddyWindow *buddyWindow;
 Menu *menu;
 HelpWindow *helpWindow;
+PopupMenu *popupMenu;
 std::map<int, Spriteset*> monsterset;
 
 char hairtable[16][4][2] = {
@@ -195,6 +196,7 @@ Engine::Engine():
     tradeWindow = new TradeWindow();
     buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
+    popupMenu = new PopupMenu();
 
     /**
      * Menu items 
@@ -249,6 +251,7 @@ Engine::Engine():
     buddyWindow->setVisible(false);
     menu->setVisible(false);
     helpWindow->setVisible(false);
+    popupMenu->setVisible(false);
 
     // Do not focus any text field
     gui->focusNone();
@@ -297,6 +300,7 @@ Engine::~Engine()
     delete buddyWindow;
     delete menu;
     delete helpWindow;
+    delete popupMenu;
 
     // Delete sprite sets
     //delete monsterset;
@@ -409,7 +413,7 @@ void Engine::draw()
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
-        else if (being->job < 10) { // Draw a player
+        else if ((being->job < 10) && (being->name != "")) { // Draw a player
             being->text_x = sx * 32 + get_x_offset(being) - offset_x;
             being->text_y = sy * 32 + get_y_offset(being) - offset_y;
 
