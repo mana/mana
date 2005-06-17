@@ -139,3 +139,10 @@ void Gui::mousePress(int mx, int my, int button)
         autoTarget = NULL;
     }
 }
+
+
+gcn::ImageFont *Gui::getFont()
+{
+    return guiFont;
+}
+

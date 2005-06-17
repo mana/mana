@@ -71,6 +71,11 @@ class Gui : public gcn::Gui, public gcn::MouseListener
          */
         void mousePress(int mx, int my, int button);
 
+        /**
+         * Return game font
+         */
+        gcn::ImageFont *getFont();
+
     private:
 #ifdef USE_OPENGL
         gcn::ImageLoader *hostImageLoader;    /**< For loading images in GL */

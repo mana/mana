@@ -22,6 +22,7 @@
  */
 
 #include "browserbox.h"
+#include "gui.h"
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
@@ -38,10 +39,14 @@ BrowserBox::BrowserBox(unsigned int mode):
     
     if (instances == 0)
     {
+#ifdef OPENGL_SUPPORT
         browserFont = new gcn::ImageFont(
                 TMW_DATADIR "data/graphics/gui/browserfont.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                 "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
+#else
+        browserFont = gui->getFont();
+#endif
     }
     instances++;
 }
