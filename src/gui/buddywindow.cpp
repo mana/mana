@@ -24,7 +24,7 @@
 #include "buddywindow.h"
 
 BuddyWindow::BuddyWindow():
-    Window("Buddys")
+    Window("Buddy")
 {
     setContentSize(120, 200);
 
@@ -71,17 +71,17 @@ void BuddyWindow::draw(gcn::Graphics *graphics)
 
 void BuddyWindow::action(const std::string& eventId)
 {
-	if(eventId.compare("Cancel")) {
-		setVisible(false);
+	if(eventId == "Talk") {
+		// TODO
 	} 
-	/*
-	else if(eventId.compare("Remove")) {
+	else if(eventId == "Remove") {
 		int selected = listbox->getSelected();
-		std::string who	 = this->getElementAt(selected);
+		std::string who	 = getElementAt(selected);
 		removeBuddy(who);
-	} else if(eventId.compare("Talk")) {
-               // TODO
+	} 
+	else if(eventId == "Cancel") {
+               setVisible(false);
 	}
-	*/
+	
 }
 
