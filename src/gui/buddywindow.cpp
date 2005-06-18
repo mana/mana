@@ -22,28 +22,45 @@
  */
 
 #include "buddywindow.h"
-#include "menu.h"
 
 BuddyWindow::BuddyWindow():
     Window("Buddys")
 {
-    setContentSize(80, 200);
+    setContentSize(120, 200);
 
     listbox = new gcn::ListBox();
     listbox->setListModel(dynamic_cast<ListModel*>(this));
 
     scrollArea = new ScrollArea(listbox);
     scrollArea->setDimension(gcn::Rectangle(
-                2, 0, 76, 180));
+                2, 0, 116, 180));
     add(scrollArea);
 
-    addBuddy("Usiu"); // for testing
+    talk = new Button("Talk");
+    talk->setPosition(1,180);
+    talk->addActionListener(this);
+    talk->setEventId("Talk");
+    remove = new Button("Remove");
+    remove->addActionListener(this);
+    remove->setEventId("Remove");
+    remove->setPosition(talk->getWidth()+2,180);
+    cancel = new Button("Cancel");
+    cancel->addActionListener(this);
+    cancel->setEventId("Cancel");
+    cancel->setPosition(talk->getWidth()+remove->getWidth()+2,180);
+
+    add(talk);
+    add(remove);
+    add(cancel);
 }
 
 BuddyWindow::~BuddyWindow()
 {
     delete listbox;
     delete scrollArea;
+    delete talk;
+    delete remove;
+    delete cancel;
 }
 
 void BuddyWindow::draw(gcn::Graphics *graphics)
@@ -54,5 +71,17 @@ void BuddyWindow::draw(gcn::Graphics *graphics)
 
 void BuddyWindow::action(const std::string& eventId)
 {
+	if(eventId.compare("Cancel")) {
+		setVisible(false);
+	} 
+	/*
+	else if(eventId.compare("Remove")) {
+		int selected = listbox->getSelected();
+		std::string who	 = this->getElementAt(selected);
+		removeBuddy(who);
+	} else if(eventId.compare("Talk")) {
+               // TODO
+	}
+	*/
 }
 

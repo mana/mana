@@ -27,6 +27,7 @@
 #include <guichan.hpp>
 #include "window.h"
 #include "scrollarea.h"
+#include "button.h"
 #include "../resources/buddylist.h"
 
 /**
@@ -61,6 +62,9 @@ class BuddyWindow : public Window, public BuddyList,
     private:
         gcn::ListBox *listbox;
         ScrollArea *scrollArea;
+	Button *talk;
+	Button *remove;
+	Button *cancel;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */
