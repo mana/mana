@@ -176,10 +176,10 @@ void PopupMenu::handleLink(const std::string& link)
     // Add Buddy action
     else if ((link == "buddy") && being && being->isPlayer())
     {
-	if(!buddyWindow->isVisible())
-		buddyWindow->setVisible(true);
+	    if(!buddyWindow->isVisible())
+            buddyWindow->setVisible(true);
 	
-  	buddyWindow->addBuddy(being->name);
+  	    buddyWindow->addBuddy(being->name);
     }
 
     // Pick Up Floor Item action
