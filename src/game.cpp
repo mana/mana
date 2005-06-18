@@ -43,6 +43,7 @@
 #include "resources/mapreader.h"
 
 #include <SDL.h>
+#include <math.h>
 #include <sstream>
 
 char map_path[480];
