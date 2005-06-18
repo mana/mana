@@ -41,7 +41,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     {
 #ifdef USE_OPENGL
         browserFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/browserfont.png",
+                "data/graphics/gui/browserfont.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                 "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
 #else
