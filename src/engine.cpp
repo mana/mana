@@ -63,7 +63,6 @@ EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 BuddyWindow *buddyWindow;
-Menu *menu;
 HelpWindow *helpWindow;
 PopupMenu *popupMenu;
 std::map<int, Spriteset*> monsterset;
@@ -88,36 +87,6 @@ char hairtable[16][4][2] = {
     { { 0, 16}, {-1, 6}, {-1, 6}, { 0, 6} }  // DEAD
 };
 
-/**
- * Listener used for trading request
- */
-class tradeItemListener : public gcn::MouseListener
-{
-    void mouseClick(int x, int y, int button, int count)
-    {
-	Being *target = menu->getBeing();
-
-	// Begin a trade
-	WFIFOW(0) = net_w_value(0x00e4);
-	WFIFOL(2) = net_l_value(target->id);
-	WFIFOSET(6);							
-	std::cout << "Clicked trade" << std::endl;
-	menu->setVisible(!menu->isVisible());
-    }
-};
-
-/**
- * Listener used for buddy request
- */
-class buddyItemListener : public gcn::MouseListener
-{
-    void mouseClick(int x, int y, int button, int count)
-    {						
-	std::cout << "Clicked buddy" << std::endl;
-	//buddyWindow->setVisible(!buddyWindow->isVisible());
-	menu->setVisible(!menu->isVisible());
-    }
-};
 
 int get_x_offset(Being *being)
 {
@@ -198,21 +167,6 @@ Engine::Engine():
     helpWindow = new HelpWindow();
     popupMenu = new PopupMenu();
 
-    /**
-     * Menu items 
-     */
-    std::vector<MenuItem*> items;
-    
-    MenuItem *tradeItem = new MenuItem("Trade");
-    tradeItem->addMouseListener(new tradeItemListener());
-    items.push_back(tradeItem);
-    
-    MenuItem *buddyItem = new MenuItem("Buddy");
-    buddyItem->addMouseListener(new buddyItemListener()); 
-    items.push_back(buddyItem);
-
-    menu = new Menu(items);
-
     // Initialize window posisitons
     chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
     statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
@@ -230,8 +184,7 @@ Engine::Engine():
     buddyWindow->setPosition(10,
             minimap->getHeight() + 30);
     equipmentWindow->setPosition(5,140);
-    menu->setPosition(5,140);
-
+    
     // Set initial window visibility
     chatWindow->setVisible(true);
     statusWindow->setVisible(true);
@@ -249,7 +202,6 @@ Engine::Engine():
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
     buddyWindow->setVisible(false);
-    menu->setVisible(false);
     helpWindow->setVisible(false);
     popupMenu->setVisible(false);
 
@@ -298,7 +250,6 @@ Engine::~Engine()
     delete newSkillWindow;
     delete tradeWindow;
     delete buddyWindow;
-    delete menu;
     delete helpWindow;
     delete popupMenu;
 

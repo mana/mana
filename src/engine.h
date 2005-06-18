@@ -41,7 +41,6 @@
 #include "gui/setup.h"
 #include "gui/equipment.h"
 #include "gui/chargedialog.h"
-#include "gui/menu.h"
 #include "gui/trade.h"
 #include "gui/help.h"
 #include "gui/popupmenu.h"
@@ -73,7 +72,6 @@ extern EquipmentWindow *equipmentWindow;
 extern ChargeDialog* chargeDialog;
 extern TradeWindow *tradeWindow;
 extern BuddyWindow *buddyWindow;
-extern Menu *menu;
 extern HelpWindow *helpWindow;
 extern PopupMenu *popupMenu;
 extern std::map<int, Spriteset*> monsterset;
