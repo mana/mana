@@ -225,11 +225,13 @@ void do_input()
     while (SDL_PollEvent(&event))
     {
         bool used = false;
-        // For discontinuous keys
+        
+        // Keyboard events (for discontinuous keys)
         if (event.type == SDL_KEYDOWN)
         {
             SDL_keysym keysym = event.key.keysym;
             
+            // In-game Help
             if (keysym.sym == SDLK_F1)
             {
                 if (helpWindow->isVisible())
@@ -243,16 +245,8 @@ void do_input()
                 used = true;
             }
             
-            if (keysym.sym == SDLK_RETURN)
-            {
-                if (!chatWindow->isFocused())
-                {
-                    chatWindow->requestChatFocus();
-                    used = true;
-                }
-            }
-
-            if ((keysym.sym == SDLK_F5) && action_time)
+            // Player sit action
+            else if ((keysym.sym == SDLK_F5) && action_time)
             {
                 if (player_node->action == STAND)
                     action(2, 0);
@@ -260,19 +254,74 @@ void do_input()
                     action(3, 0);
                 action_time = false;
             }
+            
+            // Display path to mouse (debug purpose)
             else if ((keysym.sym == SDLK_F6))
             {
                 displayPathToMouse = !displayPathToMouse;
             }
+            
+            // Play sound (debug purpose)
             else if ((keysym.sym == SDLK_F7))
             {
                 sound.playSfx("sfx/fist-swish.ogg");
             }
-
-            // Emotions, Skill dialog
-            if (keysym.mod & KMOD_ALT && action_time)
+            
+            // Input chat window
+            else if ((keysym.sym == SDLK_RETURN) && !chatWindow->isFocused())
             {
-                if (player_node->emotion == 0)
+                chatWindow->requestChatFocus();
+                used = true;
+            }
+            
+            // Emotions and some internal gui windows
+            else if (keysym.mod & KMOD_ALT)
+            {            
+                // Inventory window
+                if (keysym.sym == SDLK_i)
+                {
+                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
+                    used = true;
+                }
+                // Statistics window
+                else if (keysym.sym == SDLK_s)
+                {
+                    statsWindow->setVisible(!statsWindow->isVisible());
+                    used = true;
+                }
+                // New skills window
+                else if (keysym.sym == SDLK_n)
+                {
+                    newSkillWindow->setVisible(!newSkillWindow->isVisible());
+                    used = true;
+                }
+                // Skill window
+                else if (keysym.sym == SDLK_k)
+                {
+                    skillDialog->setVisible(!skillDialog->isVisible());
+                    used = true;
+                }                    
+                // Setup window
+                else if (keysym.sym == SDLK_c)
+                {
+                    setupWindow->setVisible(true);
+                    used = true;
+                }                    
+                // Equipment window
+                else if (keysym.sym == SDLK_e)
+                {
+                    equipmentWindow->setVisible(!equipmentWindow->isVisible());
+                    used = true;
+                }
+                // Buddy window
+                else if (keysym.sym == SDLK_b) 
+                {
+                    buddyWindow->setVisible(!buddyWindow->isVisible());
+                    used = true;
+                }
+                
+                // Emotions
+                else if (action_time && (player_node->emotion == 0))
                 {
                     unsigned char emotion = 0;
                     if (keysym.sym == SDLK_1) emotion = 1;
@@ -285,117 +334,165 @@ void do_input()
                     else if (keysym.sym == SDLK_8) emotion = 8;
                     else if (keysym.sym == SDLK_9) emotion = 9;
                     else if (keysym.sym == SDLK_0) emotion = 10;
-                    if (emotion != 0) {
+                    if (emotion != 0) 
+                    {
                         WFIFOW(0) = net_w_value(0x00bf);
                         WFIFOB(2) = emotion;
                         WFIFOSET(3);
                         action_time = false;
                         used = true;
                     }
-                }
-
+                }                
             }
 
-            if (keysym.mod & KMOD_ALT) {
-                if (keysym.sym == SDLK_i) {
-                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_s) {
-                    statsWindow->setVisible(!statsWindow->isVisible());
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_n) {
-                    newSkillWindow->setVisible(!newSkillWindow->isVisible());
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_k) {
-                    skillDialog->setVisible(!skillDialog->isVisible());
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_c) {
-                    setupWindow->setVisible(true);
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_e) {
-                    equipmentWindow->setVisible(!equipmentWindow->isVisible());
-                    used = true;
-                }
-                else if (keysym.sym == SDLK_b) {
-                    buddyWindow->setVisible(!buddyWindow->isVisible());
-                    used = true;
-                }
-            }
-
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-            {
-                // Spawn confirm dialog for quitting
-                if (!exitConfirm)
-                {
-                    exitConfirm = new ConfirmDialog(
-                            "Quit", "Are you sure you want to quit?",
-                            (gcn::ActionListener*)&exitListener);
-                }
-            }
-
-            if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
+            // Picking up items on the floor
+            else if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
                     !chatWindow->isFocused())
             {
-                // Get the item code
-                used = true;
-                int id = 0;
-                id = find_floor_item_by_cor(player_node->x, player_node->y);
+                unsigned short x = player_node->x;
+                unsigned short y = player_node->y;
+                int id = find_floor_item_by_cor(x, y);
+                
                 if (id != 0)
                 {
                     WFIFOW(0) = net_w_value(0x009f);
                     WFIFOL(2) = net_l_value(id);
                     WFIFOSET(6);
                 }
-                else {
-                    switch (player_node->direction) {
+                else
+                {
+                    switch (player_node->direction)
+                    {
                         case NORTH:
-                            id = find_floor_item_by_cor(player_node->x, player_node->y-1);
+                            y--;
                             break;
                         case SOUTH:
-                            id = find_floor_item_by_cor(player_node->x, player_node->y+1);
+                            y++;
                             break;
                         case WEST:
-                            id = find_floor_item_by_cor(player_node->x-1, player_node->y);
+                            x--;
                             break;
                         case EAST:
-                            id = find_floor_item_by_cor(player_node->x+1, player_node->y);
+                            x++;
                             break;
                         case NW:
-                            id = find_floor_item_by_cor(player_node->x-1, player_node->y-1);
+                            x--;
+                            y--;
                             break;
                         case NE:
-                            id = find_floor_item_by_cor(player_node->x+1, player_node->y-1);
+                            x++;
+                            y--;
                             break;
                         case SW:
-                            id = find_floor_item_by_cor(player_node->x-1, player_node->y+1);
+                            x--;
+                            y++;
                             break;
                         case SE:
-                            id = find_floor_item_by_cor(player_node->x+1, player_node->y+1);
-                            break;
-                        default:
+                            x++;
+                            y++;
                             break;
                     }
+                    id = find_floor_item_by_cor(x, y);
                     WFIFOW(0) = net_w_value(0x009f);
                     WFIFOL(2) = net_l_value(id);
                     WFIFOSET(6);
                 }
+                used = true;
             }
-        } // End key down
+            
+            // Quitting confirmation dialog
+            else if ((keysym.sym == SDLK_ESCAPE) && (!exitConfirm))
+            {
+                exitConfirm = new ConfirmDialog(
+                        "Quit", "Are you sure you want to quit?",
+                        (gcn::ActionListener*)&exitListener);
+            }
+        }
+        
+        // Mouse events
         else if (event.type == SDL_MOUSEBUTTONDOWN)
         {
             int mx = event.button.x / 32 + camera_x;
             int my = event.button.y / 32 + camera_y;
 
-            if (event.button.button == 3)
+            // Mouse button left
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                // Check for default actions for NPC/Monster/Players
+                Being *target = findNode(mx, my);
+                unsigned int floorItemId = find_floor_item_by_cor(mx, my);
+                
+                if (target)
+                {
+                    // NPC default: talk
+                    if ((target->isNpc()) && (current_npc == 0))
+                    {
+                        WFIFOW(0) = net_w_value(0x0090);
+                        WFIFOL(2) = net_l_value(target->id);
+                        WFIFOB(6) = 0;
+                        WFIFOSET(7);
+                        current_npc = target->id;
+                    }
+                    // Monster default: attack
+                    else if (target->isMonster())
+                    {
+                        /**
+                        * TODO: Move player to mouse click position before
+                        * attack the monster (maybe using follow mode).
+                        */
+                        if ((keys[SDLK_LSHIFT]) &&
+                                (target->action != MONSTER_DEAD))
+                            autoTarget = target;
+                        attack(target);
+                    }
+                    // Player default: trade
+                    else if (target->isPlayer())
+                    {
+                        WFIFOW(0) = net_w_value(0x00e4);
+                        WFIFOL(2) = net_l_value(target->id);
+                        WFIFOSET(6);                        
+                    }
+                }
+                // Check for default action to items on the floor
+                else if (floorItemId != 0)
+                {
+                    /**
+                     * TODO: Move player to mouse click position before
+                     * pick up the items on the floor.
+                     *
+                     * Provisory: pick up only items near of player.
+                     */
+                    int dx = mx - player_node->x;
+                    int dy = my - player_node->y;
+                    if (sqrt(dx*dx + dy*dy) < 2)
+                    {
+                        WFIFOW(0) = net_w_value(0x009f);
+                        WFIFOL(2) = net_l_value(floorItemId);
+                        WFIFOSET(6);
+                    }
+                }
+
+                // Just cancel the popup menu if shown
+                //popupMenu->setVisible(false);
+            }
+            
+            // Mouse button middle
+            else if (event.button.button == SDL_BUTTON_MIDDLE)
+            {
+                /**
+                 * Some people haven't a mouse with three buttons,
+                 * right Usiu??? ;-)
+                 */
+            }
+            
+            // Mouse button right
+            else if (event.button.button == SDL_BUTTON_RIGHT)
             {
                 popupMenu->showPopup(mx, my);
             }
         }
+
+        // Quit event
         else if (event.type == SDL_QUIT)
         {
             state = EXIT;
@@ -408,115 +505,91 @@ void do_input()
 
     } // End while
 
-    int xDirection = 0;
-    int yDirection = 0;
-    int Direction = DIR_NONE;
-
-    if (player_node->action != DEAD && current_npc == 0 &&
+    // Moving player around
+    if ((player_node->action != DEAD) && (current_npc == 0) &&
             !chatWindow->isFocused())
     {
         int x = player_node->x;
         int y = player_node->y;
+        int xDirection = 0;
+        int yDirection = 0;
+        int Direction = DIR_NONE;
 
-        // Translate pressed keys to movement
+        // Translate pressed keys to movement and direction
         if (keys[SDLK_UP] || keys[SDLK_KP8])
         {
             yDirection = -1;
+            if (player_node->action != WALK)
+                Direction = NORTH;
         }
         if (keys[SDLK_DOWN] || keys[SDLK_KP2])
         {
             yDirection = 1;
+            if (player_node->action != WALK)
+                Direction = SOUTH;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4])
         {
             xDirection = -1;
+            if (player_node->action != WALK)
+                Direction = WEST;
         }
         if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
         {
             xDirection = 1;
+            if (player_node->action != WALK)
+                Direction = EAST;
         }
         if (keys[SDLK_KP1]) // Bottom Left
         {
             xDirection = -1;
             yDirection = 1;
+            if (player_node->action != WALK)
+                Direction = SW;
         }
         if (keys[SDLK_KP3]) // Bottom Right
         {
             xDirection = 1;
             yDirection = 1;
+            if (player_node->action != WALK)
+                Direction = SE;
         }
         if (keys[SDLK_KP7]) // Top Left
         {
             xDirection = -1;
             yDirection = -1;
+            if (player_node->action != WALK)
+                Direction = NW;
         }
         if (keys[SDLK_KP9]) // Top Right
         {
             xDirection = 1;
             yDirection = -1;
+            if (player_node->action != WALK)
+                Direction = NE;
         }
 
         // Allow keyboard control to interrupt an existing path
-        if ((xDirection != 0 || yDirection != 0) &&
-                player_node->action == WALK)
-        {
-            player_node->setDestination(player_node->x, player_node->y);
-        }
+        if ((xDirection != 0 || yDirection != 0) && player_node->action == WALK)
+            player_node->setDestination(x, y);
+
+        Map *tiledMap = engine->getCurrentMap();
 
         if (player_node->action != WALK)
         {
-            // Translate movement to direction
-            if (xDirection == 1 && yDirection == 0) // Right
-            {
-                Direction = EAST;
-            }
-            if (xDirection == -1 && yDirection == 0) // Left
-            {
-                Direction = WEST;
-            }
-            if (xDirection == 0 && yDirection == -1) // Up
-            {
-                Direction = NORTH;
-            }
-            if (xDirection == 0 && yDirection == 1) // Down
-            {
-                Direction = SOUTH;
-            }
-            if (xDirection == 1 && yDirection == 1) // Bottom-Right
-            {
-                Direction = SE;
-            }
-            if (xDirection == -1 && yDirection == -1) // Top-left
-            {
-                Direction = NW;
-            }
-            if (xDirection == 1 && yDirection == -1) // Top-Right
-            {
-                Direction = NE;
-            }
-            if (xDirection == -1 && yDirection == 1) // Bottom-Left
-            {
-                Direction = SW;
-            }
-
-            Map *tiledMap = engine->getCurrentMap();
-
             // Prevent skipping corners over colliding tiles
-            if (xDirection != 0 && tiledMap->tileCollides(x + xDirection, y)) {
+            if ((xDirection != 0) && tiledMap->tileCollides(x + xDirection, y))
                 xDirection = 0;
-            }
-            if (yDirection != 0 && tiledMap->tileCollides(x, y + yDirection)) {
+            if ((yDirection != 0) && tiledMap->tileCollides(x, y + yDirection))
                 yDirection = 0;
-            }
 
             // Choose a straight direction when diagonal target is blocked
-            if (yDirection != 0 && xDirection != 0 &&
-                    !tiledMap->getWalk(x + xDirection, y + yDirection)) {
+            if ((yDirection != 0) && (xDirection != 0) && 
+                    !tiledMap->getWalk(x + xDirection, y + yDirection))
                 xDirection = 0;
-            }
 
             // Walk to where the player can actually go
-            if ((xDirection != 0 || yDirection != 0) &&
+            if (((xDirection != 0) || (yDirection != 0)) &&
                     tiledMap->getWalk(x + xDirection, y + yDirection))
             {
                 walk(x + xDirection, y + yDirection, Direction);
@@ -529,14 +602,14 @@ void do_input()
                 player_node->direction = Direction;
             }
         }
-
+    
+        // Attacking monsters
         if (player_node->action == STAND)
         {
             if (keys[SDLK_LCTRL])
             {
                 player_node->action = ATTACK;
-                Being *monster = attack(player_node->x,
-                        player_node->y, player_node->direction);
+                Being *monster = attack(x, y, player_node->direction);
                 if (keys[SDLK_LSHIFT]) {
                     autoTarget = monster;
                 }
