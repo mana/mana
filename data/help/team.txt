@@ -35,7 +35,7 @@
          usiu@users.sourceforge.net
              (several GUI parts)
 
-     ##9nym
+     ##9Aaron Marks (aka nym)
          nymacro@users.sourceforge.net
              (several GUI parts)
 
