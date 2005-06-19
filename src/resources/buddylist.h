@@ -27,6 +27,8 @@
 #include <guichan.hpp>
 #include <list>
 #include <string>
+#include <libxml/encoding.h>
+#include <libxml/xmlwriter.h>
 
 class BuddyList : public gcn::ListModel {
     public:
@@ -61,8 +63,15 @@ class BuddyList : public gcn::ListModel {
         std::string getElementAt(int number);
 
     private:
+
+	/**
+	 * Create a new XmlWriter for uri
+	 */
+	void buddyXmlwriterFilename(const char *uri);
+
         std::list<std::string> buddylist;               /**< Buddy list */
         std::list<std::string>::iterator buddyit;       /**< Iterator */
+	xmlTextWriterPtr writer;
 };
 
 #endif /* _TMW_BUDDYLIST_H */

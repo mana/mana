@@ -26,14 +26,56 @@
 
 BuddyList::BuddyList()
 {
+    // Open buddy file
+    buddyXmlwriterFilename("buddy.xml");
+
+    // Load buddy from file
+    // TODO
 }
 
 BuddyList::~BuddyList()
 {
+    int rc;
+
+    /* Close last element. */
+    rc = xmlTextWriterEndElement(writer);
+    if (rc < 0) {
+         std::cerr << "buddyXmlwriterFilename: Error at xmlTextWriterEndElement" << std::endl;
+        return;
+    }
+
+    xmlFreeTextWriter(writer);
+}
+void BuddyList::buddyXmlwriterFilename(const char *uri)
+{
+    int rc;
+
+    // Create a new XmlWriter for uri, with no compression
+    writer = xmlNewTextWriterFilename(uri, 0);
+    if (writer == NULL) {
+         std::cerr << "buddyXmlwriterFilename: Error creating the xml writer" << std::endl;
+        return;
+    }
+
+    // Start with the xml default version and UTF-8 encoding
+    rc = xmlTextWriterStartDocument(writer, NULL, "UTF-8", NULL);
+    if (rc < 0) {
+         std::cerr << "buddyXmlwriterFilename: Error at xmlTextWriterStartDocument" << std::endl;
+        return;
+    }
+
+    // Start with the root named "LIST"
+    rc = xmlTextWriterStartElement(writer, BAD_CAST "LIST");
+    if (rc < 0) {
+             std::cerr << "buddyXmlwriterFilename: Error at xmlTextWriterStartElement" << std::endl;
+        return;
+    }
 }
 
 bool BuddyList::addBuddy(const std::string buddy)
 {
+    int rc;
+
     for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
     {
         // Buddy already exist
@@ -42,6 +84,13 @@ bool BuddyList::addBuddy(const std::string buddy)
 
     // Buddy doesnt exist, add it
     buddylist.push_back(buddy);
+
+    // Store buddy as a child of "PEOPLE"
+    rc = xmlTextWriterWriteElement(writer, BAD_CAST "PEOPLE", (xmlChar *) buddy.c_str());
+    if (rc < 0) {
+        std::cerr << "buddyXmlwriterFilename: Error at xmlTextWriterWriteElement" << std::endl;
+        return false;
+    }
 
     return true;
 }
@@ -70,7 +119,7 @@ int  BuddyList::getNumberOfElements(void)
 
 std::string BuddyList::getElementAt(int number)
 {
-    if (number <= buddylist.size() - 1)
+    if (number <= (int) buddylist.size() - 1)
     {
         buddyit = buddylist.begin();
         std::advance(buddyit, number);
