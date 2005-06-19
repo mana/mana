@@ -65,17 +65,17 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
          * Sets the Highlight mode for links.
          */
         void setHighlightMode(unsigned int highMode);
-        
+
         /**
          * Adds a text row to the browser.
          */
         void addRow(const std::string& row);
-            
+
         /**
          * Remove all rows.
          */
         void clearRows();
-        
+
         /**
          * Handles mouse actions.
          */
@@ -131,7 +131,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
             BOTH
         };
 
-    private:        
+    private:
         std::vector<std::string> mTextRows;
         std::vector<BROWSER_LINK> mLinks;
         LinkHandler *mLinkHandler;
@@ -139,7 +139,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         unsigned int mHighMode;
         bool mOpaque;
         int mSelectedLink;
-        
+
         static int instances;      /**< Number of Window instances */
         static gcn::ImageFont* browserFont;
 };

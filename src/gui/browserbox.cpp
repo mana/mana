@@ -36,7 +36,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     mSelectedLink = -1;
     setFocusable(true);
     addMouseListener(this);
-    
+
     if (instances == 0)
     {
 #ifdef USE_OPENGL
@@ -48,16 +48,20 @@ BrowserBox::BrowserBox(unsigned int mode):
         browserFont = gui->getFont();
 #endif
     }
+
     instances++;
 }
 
 BrowserBox::~BrowserBox()
 {
     instances--;
+
     if (instances == 0)
     {
+#ifdef USE_OPENGL
         // Clean up static resource font
         delete browserFont;
+#endif
     }
 }
 
@@ -93,34 +97,34 @@ void BrowserBox::addRow(const std::string& row)
         bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
         bLink.y1 = mTextRows.size() * browserFont->getHeight();
         bLink.y2 = bLink.y1 + browserFont->getHeight();
-        
+
         newRow += tmp.substr(0, idx1);
 
         std::string tmp2 = newRow;
         idx1 = tmp2.find("##");
         while (idx1 >= 0)
         {
-            tmp2.erase(idx1, 3);                    
+            tmp2.erase(idx1, 3);
             idx1 = tmp2.find("##");
         }
         bLink.x1 = browserFont->getWidth(tmp2) - 1;
         bLink.x2 = bLink.x1 + browserFont->getWidth(bLink.caption) + 1;
-        
+
         mLinks.push_back(bLink);
-        
+
         newRow += "##L" + bLink.caption;
 
         tmp.erase(0, idx3 + 2);
         if(tmp != "")
         {
             newRow += "##P";
-        }        
+        }
         idx1 = tmp.find("@@");
     }
 
     newRow += tmp;
     mTextRows.push_back(newRow);
-    
+
     // Auto size mode
     if (mMode == AUTO_SIZE)
     {
@@ -147,7 +151,7 @@ void BrowserBox::clearRows()
 void BrowserBox::mousePress(int mx, int my, int button)
 {
     if ((button == gcn::MouseInput::LEFT) && mLinkHandler)
-    {        
+    {
         for (unsigned int i = 0; i < mLinks.size(); i++)
         {
             if ((mx >= mLinks[i].x1) && (mx < mLinks[i].x2) &&
@@ -184,7 +188,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
         graphics->setColor(gcn::Color(BGCOLOR));    
         graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
-    
+
     if (mSelectedLink >= 0)
     {
         if ((mHighMode == BACKGROUND) || (mHighMode == BOTH))
@@ -199,7 +203,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
 
         if ((mHighMode == UNDERLINE) || (mHighMode == BOTH))
         {
-            graphics->setColor(gcn::Color(LINK));    
+            graphics->setColor(gcn::Color(LINK));
             graphics->drawLine(
                         mLinks[mSelectedLink].x1,
                         mLinks[mSelectedLink].y2,
