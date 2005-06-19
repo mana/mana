@@ -22,6 +22,8 @@
  */
 
 #include "buddywindow.h"
+#include "scrollarea.h"
+#include "button.h"
 
 BuddyWindow::BuddyWindow():
     Window("Buddy")
@@ -63,25 +65,17 @@ BuddyWindow::~BuddyWindow()
     delete cancel;
 }
 
-void BuddyWindow::draw(gcn::Graphics *graphics)
-{
-    // Draw the children
-    Window::draw(graphics);
-}
-
 void BuddyWindow::action(const std::string& eventId)
 {
-	if(eventId == "Talk") {
-		// TODO
-	} 
-	else if(eventId == "Remove") {
-		int selected = listbox->getSelected();
-		std::string who	 = getElementAt(selected);
-		removeBuddy(who);
-	} 
-	else if(eventId == "Cancel") {
-               setVisible(false);
-	}
-	
+    if (eventId == "Talk") {
+        // TODO
+    }
+    else if (eventId == "Remove") {
+        int selected = listbox->getSelected();
+        std::string who = getElementAt(selected);
+        removeBuddy(who);
+    }
+    else if (eventId == "Cancel") {
+        setVisible(false);
+    }
 }
-

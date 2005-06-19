@@ -26,8 +26,6 @@
 
 #include <guichan.hpp>
 #include "window.h"
-#include "scrollarea.h"
-#include "button.h"
 #include "../resources/buddylist.h"
 
 /**
@@ -50,21 +48,16 @@ class BuddyWindow : public Window, public BuddyList,
         ~BuddyWindow();
 
         /**
-         * Draws updated list
-         */
-        void draw(gcn::Graphics *graphics);
-
-        /**
          * Performs action.
          */
         void action(const std::string &actionId);
 
     private:
         gcn::ListBox *listbox;
-        ScrollArea *scrollArea;
-	Button *talk;
-	Button *remove;
-	Button *cancel;
+        gcn::ScrollArea *scrollArea;
+        gcn::Button *talk;
+        gcn::Button *remove;
+        gcn::Button *cancel;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */

@@ -32,7 +32,7 @@ PopupMenu::PopupMenu():
 {
     setResizable(false);
     setTitleBarHeight(0);
-    
+
     browserBox = new BrowserBox();
     browserBox->setPosition(4, 4);
     browserBox->setHighlightMode(BrowserBox::BACKGROUND);
@@ -52,7 +52,7 @@ PopupMenu::~PopupMenu()
     delete being;
     delete floorItem;
 }
-        
+
 void PopupMenu::setVisible(bool visible)
 {
     if (visible == false)
@@ -63,10 +63,10 @@ void PopupMenu::setVisible(bool visible)
         }
         setPosition(screen->w, screen->h);
     }
-    
+
     mVisible = visible;
 }
-        
+
 void PopupMenu::showPopup(int mx, int my)
 {
     being = findNode(mx, my);
@@ -74,7 +74,7 @@ void PopupMenu::showPopup(int mx, int my)
     mX = mx;
     mY = mY;
     browserBox->clearRows();
-    
+
     if (being)
     {
         if (being->isMonster())
@@ -106,7 +106,7 @@ void PopupMenu::showPopup(int mx, int my)
     //browserBox->addRow("@@look|Look To@@");
     browserBox->addRow("##3---");
     browserBox->addRow("@@cancel|Cancel@@");
-    
+
     setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
     mx = (mx - camera_x) * 32 + 25;
     my = (my - camera_y) * 32 + 25;
@@ -148,7 +148,7 @@ void PopupMenu::handleLink(const std::string& link)
             attack(being);
         }
     }
-    
+
     // Talk To action
     else if ((link == "talk") && being && being->isNpc() &&
             (current_npc == 0))
@@ -176,10 +176,10 @@ void PopupMenu::handleLink(const std::string& link)
     // Add Buddy action
     else if ((link == "buddy") && being && being->isPlayer())
     {
-	    if(!buddyWindow->isVisible())
+        if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
-	
-  	    buddyWindow->addBuddy(being->name);
+
+        buddyWindow->addBuddy(being->name);
     }
 
     // Pick Up Floor Item action
