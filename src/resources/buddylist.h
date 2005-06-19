@@ -29,6 +29,7 @@
 #include <string>
 #include <libxml/encoding.h>
 #include <libxml/xmlwriter.h>
+#include <libxml/xmlreader.h>
 
 class BuddyList : public gcn::ListModel {
     public:
@@ -63,15 +64,32 @@ class BuddyList : public gcn::ListModel {
         std::string getElementAt(int number);
 
     private:
+       /**
+        * Create a new XmlWriter for memory
+        */
+        void buddyXmlwriterMemory(void);
 
-	/**
-	 * Create a new XmlWriter for uri
-	 */
-	void buddyXmlwriterFilename(const char *uri);
+        /**
+         * Process node and load buddy
+         */
+        void processNode(void);
+
+        /**
+         * Parse a buddy XML file
+         */
+        void streamFile(void);
+
+        /**
+         * Find home dir for writing
+         */
+        void findHomeDir(void);
 
         std::list<std::string> buddylist;               /**< Buddy list */
         std::list<std::string>::iterator buddyit;       /**< Iterator */
-	xmlTextWriterPtr writer;
+        xmlTextWriterPtr writer;
+        xmlTextReaderPtr reader;
+        xmlBufferPtr buf;
+        std::string *filename;                           /* File to work with */
 };
 
 #endif /* _TMW_BUDDYLIST_H */

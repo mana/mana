@@ -23,19 +23,29 @@
 
 #include "buddylist.h"
 #include <iostream>
+#include <fstream>
 
 BuddyList::BuddyList()
 {
-    // Open buddy file
-    buddyXmlwriterFilename("buddy.xml");
+    // Find home dir
+    findHomeDir();
+
+    // Create buddy file
+    buddyXmlwriterMemory();
 
     // Load buddy from file
-    // TODO
+    streamFile();
 }
 
 BuddyList::~BuddyList()
 {
     int rc;
+
+    std::ofstream outputStream(filename->c_str(), std::ios::trunc);
+    if( !outputStream ) {
+        std::cerr << "Error opening output stream" << std::endl;
+        return;
+    }
 
     /* Close last element. */
     rc = xmlTextWriterEndElement(writer);
@@ -45,15 +55,69 @@ BuddyList::~BuddyList()
     }
 
     xmlFreeTextWriter(writer);
+    xmlCleanupParser();
+
+    /* Write and close file */
+    outputStream << (const char*)buf->content;
+    outputStream.close();
+    xmlBufferFree(buf);
+
+    delete filename;
 }
-void BuddyList::buddyXmlwriterFilename(const char *uri)
+
+void BuddyList::findHomeDir(void) {
+    //TODO: Find homeDir
+    filename = new std::string("buddy.xml");
+}
+
+void BuddyList::streamFile(void) {
+    int ret;
+
+    reader = xmlReaderForFile(filename->c_str(), NULL, 0);
+    if (reader != NULL) {
+        ret = xmlTextReaderRead(reader);
+        while (ret == 1) {
+            processNode();
+            ret = xmlTextReaderRead(reader);
+        }
+        xmlFreeTextReader(reader);
+        if (ret != 0) {
+            std::cerr << filename << " : failed to parse" << std::endl;
+        }
+    } else {
+         std::cerr << "Unable to open " << filename << std::endl;
+    }
+}
+
+void BuddyList::processNode(void) {
+    const xmlChar *name, *value;
+
+    name = xmlTextReaderConstName(reader);
+    if (name == NULL)
+        name = BAD_CAST "--";
+
+    value = xmlTextReaderConstValue(reader);
+
+   if(!xmlTextReaderIsEmptyElement(reader) && xmlTextReaderHasValue(reader))
+      addBuddy((char *)value);
+
+}
+void BuddyList::buddyXmlwriterMemory(void)
 {
     int rc;
 
+    /* Create a new XML buffer, to which the XML document will be
+     * written */
+    buf = xmlBufferCreate();
+    if (buf == NULL) {
+        std::cerr << "buddyXmlwriterMemory: Error creating the xml buffer" << std::endl;
+        return;
+    }
+
     // Create a new XmlWriter for uri, with no compression
-    writer = xmlNewTextWriterFilename(uri, 0);
+    writer = xmlNewTextWriterMemory(buf, 0);
     if (writer == NULL) {
-         std::cerr << "buddyXmlwriterFilename: Error creating the xml writer" << std::endl;
+        std::cerr << "buddyXmlwriterMemory: Error creating the xml writer" << std::endl;
         return;
     }
 
@@ -85,7 +149,7 @@ bool BuddyList::addBuddy(const std::string buddy)
     // Buddy doesnt exist, add it
     buddylist.push_back(buddy);
 
-    // Store buddy as a child of "PEOPLE"
+    // Store buddy in "PEOPLE"
     rc = xmlTextWriterWriteElement(writer, BAD_CAST "PEOPLE", (xmlChar *) buddy.c_str());
     if (rc < 0) {
         std::cerr << "buddyXmlwriterFilename: Error at xmlTextWriterWriteElement" << std::endl;
@@ -107,6 +171,7 @@ bool BuddyList::removeBuddy(const std::string buddy)
             }
         }
     }
+    // TODO: Remove from buddy.xml
 
     // Buddy doesnt exist
     return false;
