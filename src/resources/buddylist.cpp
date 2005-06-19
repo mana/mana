@@ -22,7 +22,7 @@
  */
 
 #include "buddylist.h"
-#include "main.h"
+#include "../main.h"
 #include <iostream>
 #include <fstream>
 

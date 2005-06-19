@@ -23,7 +23,7 @@
 
 #include "browserbox.h"
 #include "gui.h"
-#include "main.h"
+#include "../main.h"
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
