@@ -79,11 +79,6 @@ class BuddyList : public gcn::ListModel {
          */
         void streamFile(void);
 
-        /**
-         * Find home dir for writing
-         */
-        void findHomeDir(void);
-
         std::list<std::string> buddylist;               /**< Buddy list */
         std::list<std::string>::iterator buddyit;       /**< Iterator */
         xmlTextWriterPtr writer;

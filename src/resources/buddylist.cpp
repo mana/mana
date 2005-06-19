@@ -22,13 +22,14 @@
  */
 
 #include "buddylist.h"
+#include "main.h"
 #include <iostream>
 #include <fstream>
 
 BuddyList::BuddyList()
 {
-    // Find home dir
-    findHomeDir();
+    // Find saved buddy list file
+    filename = new std::string(std::string(homeDir) + "buddy.xml");
 
     // Create buddy file
     buddyXmlwriterMemory();
@@ -63,11 +64,6 @@ BuddyList::~BuddyList()
     xmlBufferFree(buf);
 
     delete filename;
-}
-
-void BuddyList::findHomeDir(void) {
-    //TODO: Find homeDir
-    filename = new std::string("buddy.xml");
 }
 
 void BuddyList::streamFile(void) {
