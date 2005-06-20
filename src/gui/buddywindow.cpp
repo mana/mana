@@ -72,8 +72,11 @@ void BuddyWindow::action(const std::string& eventId)
     }
     else if (eventId == "Remove") {
         int selected = listbox->getSelected();
-        std::string who = getElementAt(selected);
-        removeBuddy(who);
+        if ( selected > -1 )
+        {
+            std::string who = getElementAt(selected);
+            removeBuddy(who);
+        }
     }
     else if (eventId == "Cancel") {
         setVisible(false);
