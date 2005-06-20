@@ -268,8 +268,16 @@ void do_input()
             // Input chat window
             else if ((keysym.sym == SDLK_RETURN) && !chatWindow->isFocused())
             {
-                chatWindow->requestChatFocus();
-                used = true;
+                // Quit by pressing Enter if the exit confirm is there
+                if ( exitConfirm )
+                {
+                    state = EXIT;
+                }
+                else // Else, open the chat edit box
+                {
+                    chatWindow->requestChatFocus();
+                    used = true;
+                }
             }
             
             // Emotions and some internal gui windows
