@@ -270,6 +270,12 @@ void Engine::setCurrentMap(Map *newMap)
 {
     mCurrentMap = newMap;
     minimap->setMap(mCurrentMap);
+    std::string musicFile = newMap->getProperty("music");
+    
+    if(musicFile!="") {
+        musicFile = std::string(TMW_DATADIR) + "data/music/" + musicFile;
+        sound.playMusic(musicFile.c_str(), -1);
+    }
 }
 
 void Engine::logic()

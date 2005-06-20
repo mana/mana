@@ -181,13 +181,6 @@ void do_init()
     else
     {
         engine->setCurrentMap(tiledMap);
-        // Start playing background music
-        std::string musicFile = tiledMap->getProperty("music");
-        
-        if(musicFile!="") {
-            musicFile = std::string(TMW_DATADIR) + "data/music/" + musicFile;
-            sound.playMusic(musicFile.c_str(), -1);
-        }
     }
 
     // Initialize timers
@@ -1064,14 +1057,6 @@ void do_parse()
                         WFIFOSET(2);
                         while (out_size > 0) flush();
                         engine->setCurrentMap(tiledMap);
-                        
-                        std::string musicFile = tiledMap->getProperty("music");
-                        
-                        if(musicFile!="") {
-                            musicFile = std::string(TMW_DATADIR) + "data/music/"
-                                                    + musicFile;
-                            sound.playMusic(musicFile.c_str(), -1);
-                        }
                     }
                     else {
                         logger->error("Could not find map file");
