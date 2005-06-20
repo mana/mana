@@ -176,6 +176,10 @@ class Map
          * Set a map property.
          */
         void setProperty(const std::string &name, const std::string &value);
+        
+        /**
+         *
+         */
 
     private:
         int width, height;

@@ -173,7 +173,7 @@ void do_init()
     // Try .tmx.gz map file
     pathDir.insert(pathDir.size(), ".tmx.gz");
     Map *tiledMap = MapReader::readMap(pathDir);
-
+    
     if (!tiledMap)
     {
         logger->error("Could not find map file!");
@@ -181,10 +181,14 @@ void do_init()
     else
     {
         engine->setCurrentMap(tiledMap);
+        // Start playing background music
+        std::string musicFile = tiledMap->getProperty("music");
+        
+        if(musicFile!="") {
+            musicFile = std::string(TMW_DATADIR) + "data/music/" + musicFile;
+            sound.playMusic(musicFile.c_str(), -1);
+        }
     }
-
-    // Start playing background music
-    //sound.startBgm("./data/sound/Mods/somemp.xm", -1);
 
     // Initialize timers
     tick_time = 0;
@@ -1031,6 +1035,7 @@ void do_parse()
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     logger->log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));
+                    sound.stopMusic();
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
 
                     if (tiledMap) delete tiledMap;
@@ -1059,6 +1064,14 @@ void do_parse()
                         WFIFOSET(2);
                         while (out_size > 0) flush();
                         engine->setCurrentMap(tiledMap);
+                        
+                        std::string musicFile = tiledMap->getProperty("music");
+                        
+                        if(musicFile!="") {
+                            musicFile = std::string(TMW_DATADIR) + "data/music/"
+                                                    + musicFile;
+                            sound.playMusic(musicFile.c_str(), -1);
+                        }
                     }
                     else {
                         logger->error("Could not find map file");
