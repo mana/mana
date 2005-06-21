@@ -78,20 +78,18 @@ class ResourceManager
          *
          * @param type   The type of resource to load.
          * @param idPath The resource identifier path.
-         * @param flags  Flags to control the loading of certain resources.
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
         Resource *get(
                 const E_RESOURCE_TYPE &type,
-                const std::string &idPath,
-                int flags = 0);
+                const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create for loading
          * images.
          */
-        Image *getImage(const std::string &idPath, int flags = 0);
+        Image *getImage(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create for loading

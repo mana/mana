@@ -29,12 +29,12 @@
 ItemContainer::ItemContainer()
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("graphics/sprites/items.png", IMG_ALPHA);
+    Image *itemImg = resman->getImage("graphics/sprites/items.png");
     if (!itemImg) logger->error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 32, 32);
     itemImg->decRef();
 
-    selImg = resman->getImage("graphics/gui/selection.png", IMG_ALPHA);
+    selImg = resman->getImage("graphics/gui/selection.png");
     if (!selImg) logger->error("Unable to load selection.png");
 
     selectedItem = -1; // No item selected

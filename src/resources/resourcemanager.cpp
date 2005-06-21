@@ -73,7 +73,7 @@ ResourceManager::~ResourceManager()
 }
 
 Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
-        const std::string &idPath, int flags)
+        const std::string &idPath)
 {
     // Check if the id exists, and return the value if it does.
     std::map<std::string, ResourceEntry>::iterator resIter =
@@ -122,7 +122,7 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
                 if (buffer != NULL)
                 {
                     // Let the image class load it
-                    resource = Image::load(buffer, fileSize, flags);
+                    resource = Image::load(buffer, fileSize);
 
                     // Cleanup
                     free(buffer);
@@ -177,19 +177,19 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
     return resource;
 }
 
-Image *ResourceManager::getImage(const std::string &idPath, int flags)
+Image *ResourceManager::getImage(const std::string &idPath)
 {
-    return (Image*)get(IMAGE, idPath, flags);
+    return (Image*)get(IMAGE, idPath);
 }
 
 Music *ResourceManager::getMusic(const std::string &idPath)
 {
-      return (Music*)get(MUSIC, idPath, 0);
+      return (Music*)get(MUSIC, idPath);
 }
 
 SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
 {
-      return (SoundEffect*)get(SOUND_EFFECT, idPath, 0);
+      return (SoundEffect*)get(SOUND_EFFECT, idPath);
 }
 
 ResourceManager* ResourceManager::getInstance()

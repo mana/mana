@@ -31,10 +31,6 @@
 #endif
 #include <string>
 
-// This flag causes image alpha channel to be preserved, otherwise masking is
-// used.
-#define IMG_ALPHA  1
-
 
 // Forward declarations
 class SubImage;
@@ -56,14 +52,11 @@ class Image : public Resource
          *
          * @param buffer     The memory buffer containing the image data.
          * @param bufferSize The size of the memory buffer in bytes.
-         * @param flags    These flags allow controlling the way the image is
-         *                 loaded. Currently only IMG_ALPHA is supported, which
-         *                 causes alpha layer to be preserved.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Image *load(void* buffer, unsigned int bufferSize, int flags);
+        static Image *load(void* buffer, unsigned int bufferSize);
 
         /**
          * Frees the resources created by SDL.

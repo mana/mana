@@ -265,7 +265,7 @@ Tileset* MapReader::readTileset(
                 sourceStr.erase(0, 3);  // Remove "../"
 
                 ResourceManager *resman = ResourceManager::getInstance();
-                Image* tilebmp = resman->getImage(sourceStr, IMG_ALPHA);
+                Image* tilebmp = resman->getImage(sourceStr);
 
                 if (tilebmp)
                 {
