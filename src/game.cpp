@@ -1025,7 +1025,8 @@ void do_parse()
 
                     // Get the equipments
                 case 0x00a4:
-                    for (int loop = 0; loop < (RFIFOW(2) - 4) / 20; loop++)
+
+                    for (int loop = 0; loop < ((RFIFOW(2) - 4) / 20); loop++)
                     {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
@@ -1040,7 +1041,8 @@ void do_parse()
                         {
                             int mask = 1;
                             int position = 0;
-                            while(!(RFIFOW(4+loop*20+8) & mask)) {
+                            while(!(RFIFOW(4+loop*20+8) & mask))
+                            {
                                 mask *= 2;
                                 position++;
                             }
@@ -1048,7 +1050,6 @@ void do_parse()
                               chatWindow->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
                                     RFIFOW(4+loop*20+2));
-                            std::cout << ": pos:" << position - 1 << "; id:" << RFIFOW(4+loop*20+2) << std::endl;
                             equipmentWindow->equipments[position - 1].inventoryIndex =
                                 RFIFOW(4+loop*20);
                             inventoryWindow->items->setEquipped(
@@ -1058,9 +1059,12 @@ void do_parse()
                     break;
                     // Can I use the item?
                 case 0x00a8:
-                    if (RFIFOB(6) == 0) {
+                    if (RFIFOB(6) == 0) 
+                    {
                         chatWindow->chat_log("Failed to use item", BY_SERVER);
-                    } else {
+                    }
+                    else
+                    {
                         inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(4));
                     }
                     break;
@@ -1077,11 +1081,14 @@ void do_parse()
                     if (tiledMap) delete tiledMap;
                     tiledMap = MapReader::readMap(map_path);
 
-                    if (tiledMap) {
+                    if (tiledMap)
+                    {
                         // Delete all beings except the local player
                         std::list<Being *>::iterator i;
-                        for (i = beings.begin(); i != beings.end(); i++) {
-                            if ((*i) != player_node) {
+                        for (i = beings.begin(); i != beings.end(); i++)
+                        {
+                            if ((*i) != player_node)
+                            {
                                 delete (*i);
                             }
                         }
@@ -1101,7 +1108,8 @@ void do_parse()
                         while (out_size > 0) flush();
                         engine->setCurrentMap(tiledMap);
                     }
-                    else {
+                    else
+                    {
                         logger->error("Could not find map file");
                     }
                     break;
