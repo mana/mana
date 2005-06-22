@@ -160,6 +160,15 @@ void InventoryWindow::unequipItem(int index)
     WFIFOW(2) = net_w_value(index);
     WFIFOSET(4);
     while ((out_size > 0)) flush();
+    
+    // Tidy equipment directly to avoid weapon still shown bug, by instance
+    for (int i = 0; i < 8; i++)
+    {
+        if ( equipmentWindow->getInventoryIndex(i) == index )
+        {
+            equipmentWindow->removeEquipment(i);
+        }
+    }
 }
 
 void InventoryWindow::action(const std::string &eventId)
