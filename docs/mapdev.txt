@@ -3,11 +3,8 @@ encounters, instead one can add it to this list and a mapper can include the
 fixes the next time he updates the map. Suggestions can be done here as well.
 
 Errors:
- * The new desert map:
-     - The blocked exit to the east is not well made. A character gets himself up on the hills while going right. Just a few sand tiles to add in the "over" layer.
-     - Some Walls have to be retested to the west against the left hill. The character has sometimes a strange behaviour while walking along that wall.
+ * The new desert map (1-1):
+     - Some Walls have to be retested to the west against the left hill. The character has sometimes a strange behaviour while walking along that wall, and that doesn't seem to be linked with the map. Or am I wrong?
 
 Suggestions:
 - The large empty area at 44,34 in new_3-1 is reserved for the city's "palace"
-- Place some more rock ridges in new_1-1
-
