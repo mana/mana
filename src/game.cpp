@@ -665,7 +665,8 @@ void do_parse()
             fclose(file);
 #endif
             // Parse packet based on their id
-            switch (id) {
+            switch (id) 
+            {
                 case SMSG_LOGIN_SUCCESS:
                     // Connected to game server succesfully, set spawn point
                     player_node->x = get_x(RFIFOP(6));
@@ -675,7 +676,8 @@ void do_parse()
                 // Received speech from being
                 case SMSG_BEING_CHAT:
                     being = findNode(RFIFOL(4));
-                    if (being != NULL) {
+                    if (being != NULL) 
+                    {
                         int length = RFIFOW(2) - 8;
                         temp = (char*)malloc(length + 1);
                         temp[length] = '\0';
@@ -692,7 +694,8 @@ void do_parse()
 
                 case SMSG_MY_BEING_CHAT:
                 case SMSG_GM_CHAT:
-                    if (RFIFOW(2) > 4) {
+                    if (RFIFOW(2) > 4) 
+                    {
                         int length = RFIFOW(2) - 4;
                         temp = (char*)malloc(length + 1);
                         temp[length] = '\0';
@@ -700,14 +703,17 @@ void do_parse()
                         std::string msg = std::string(temp);
                         unsigned int pos = msg.find(" : ", 0);
 
-                        if (id == 0x008e) {
-                            if (pos != std::string::npos) {
+                        if (id == 0x008e) 
+                        {
+                            if (pos != std::string::npos)
+                            {
                                 msg.erase(0, pos + 3);
                             }
                             player_node->setSpeech(msg, SPEECH_TIME);
                             chatWindow->chat_log(temp, BY_PLAYER);
                         }
-                        else {
+                        else 
+                        {
                             chatWindow->chat_log(temp, BY_GM);
                         }
 
@@ -724,28 +730,31 @@ void do_parse()
 
                     // Add new being / stop monster
                 case 0x0078:
-                    int id = RFIFOL(2);
-                    int job = RFIFOW(14);
+
+                    int beingId;
+                    beingId = RFIFOL(2);
+                    int beingJob;
+                    beingJob = RFIFOW(14);
 
                     // Being with id >= 110000000 and job 0 are better known
                     // as ghosts, so don't create those.
-                    if (job == 0 && id >= 110000000)
+                    if (beingJob == 0 && beingId >= 110000000)
                     {
                         break;
                     }
 
-                    being = findNode(id);
+                    being = findNode(beingId);
 
                     if (being == NULL)
                     {
                         being = new Being();
-                        being->id = id;
+                        being->id = beingId;
                         being->speed = RFIFOW(6);
                         if (being->speed == 0) {
                             // Else division by 0 when calculating frame
                             being->speed = 150;
                         }
-                        being->job = job;
+                        being->job = beingJob;
                         being->setHairStyle(RFIFOW(16));
                         being->setHairColor(RFIFOW(28));
                         being->x = get_x(RFIFOP(46));
@@ -768,14 +777,18 @@ void do_parse()
                 case SMSG_REMOVE_BEING:
                     // A being should be removed or has died
                     being = findNode(RFIFOL(2));
-                    if (being != NULL) {
-                        if (RFIFOB(6) == 1) { // Death
-                            if (being->job > 110) {
+                    if (being != NULL) 
+                    {
+                        if (RFIFOB(6) == 1) 
+                        { // Death
+                            if (being->job > 110) 
+                            {
                                 being->action = MONSTER_DEAD;
                                 being->frame = 0;
                                 being->walk_time = tick_time;
                             }
-                            else {
+                            else 
+                            {
                                 being->action = DEAD;
                             }
                             //remove_node(RFIFOL(2));
@@ -789,7 +802,8 @@ void do_parse()
                     // A message about a player, doesn't include movement.
                     being = findNode(RFIFOL(2));
 
-                    if (being == NULL) {
+                    if (being == NULL) 
+                    {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->job = RFIFOW(14);
@@ -806,7 +820,8 @@ void do_parse()
                     being->walk_time = tick_time;
                     being->frame = 0;
 
-                    if (RFIFOB(51) == 2) {
+                    if (RFIFOB(51) == 2)
+                    {
                         being->action = SIT;
                     }
                     break;
@@ -815,7 +830,8 @@ void do_parse()
                     // A being nearby is moving
                     being = findNode(RFIFOL(2));
 
-                    if (being == NULL) {
+                    if (being == NULL)
+                    {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->job = RFIFOW(14);
@@ -840,7 +856,8 @@ void do_parse()
                     // A nearby player being moves
                     being = findNode(RFIFOL(2));
 
-                    if (being == NULL) {
+                    if (being == NULL)
+                    {
                         being = new Being();
                         being->id = RFIFOL(2);
                         being->job = RFIFOW(14);
@@ -876,7 +893,8 @@ void do_parse()
 
                 // Trade: Response
                 case 0x00e7:
-                    switch (RFIFOB(2)) {
+                    switch (RFIFOB(2))
+                    {
                         case 0:
                             // too far away
                             chatWindow->chat_log("Trading isn't possible. Trade partner is too far away.", BY_SERVER);
@@ -912,7 +930,9 @@ void do_parse()
                     if (RFIFOW(6) == 0)
                     {
                         tradeWindow->addMoney(RFIFOL(2));
-                    } else {
+                    } 
+                    else 
+                    {
                         tradeWindow->addItem(
                             tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
                             false, RFIFOL(2), false);
@@ -920,7 +940,8 @@ void do_parse()
                     break;
                 // Trade: New Item add response
                 case 0x01b1:
-                    switch (RFIFOB(6)) {
+                    switch (RFIFOB(6)) 
+                    {
                         case 0:
                             // Successfully added item
                             if (inventoryWindow->items->isEquipment(RFIFOW(2))
@@ -951,7 +972,8 @@ void do_parse()
                     break;
                 // Trade received Ok message
                 case 0x00ec:
-                    switch (RFIFOB(2)) {
+                    switch (RFIFOB(2)) 
+                    {
                         // Received ok from myself
                         case 0:
                             tradeWindow->receivedOk(true);
@@ -1026,6 +1048,7 @@ void do_parse()
                               chatWindow->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
                                     RFIFOW(4+loop*20+2));
+                            std::cout << ": pos:" << position - 1 << "; id:" << RFIFOW(4+loop*20+2) << std::endl;
                             equipmentWindow->equipments[position - 1].inventoryIndex =
                                 RFIFOW(4+loop*20);
                             inventoryWindow->items->setEquipped(
