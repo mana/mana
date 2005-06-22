@@ -724,17 +724,28 @@ void do_parse()
 
                     // Add new being / stop monster
                 case 0x0078:
-                    being = findNode(RFIFOL(2));
+                    int id = RFIFOL(2);
+                    int job = RFIFOW(14);
 
-                    if (being == NULL) {
+                    // Being with id >= 110000000 and job 0 are better known
+                    // as ghosts, so don't create those.
+                    if (job == 0 && id >= 110000000)
+                    {
+                        break;
+                    }
+
+                    being = findNode(id);
+
+                    if (being == NULL)
+                    {
                         being = new Being();
-                        being->id = RFIFOL(2);
+                        being->id = id;
                         being->speed = RFIFOW(6);
                         if (being->speed == 0) {
                             // Else division by 0 when calculating frame
                             being->speed = 150;
                         }
-                        being->job = RFIFOW(14);
+                        being->job = job;
                         being->setHairStyle(RFIFOW(16));
                         being->setHairColor(RFIFOW(28));
                         being->x = get_x(RFIFOP(46));
@@ -742,7 +753,8 @@ void do_parse()
                         being->direction = get_direction(RFIFOP(46));
                         add_node(being);
                     }
-                    else {
+                    else
+                    {
                         being->clearPath();
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));

@@ -162,7 +162,7 @@ void sort() {
 Being::Being():
     id(0), job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
-    type(0), action(0), frame(0),
+    action(0), frame(0),
     speech_color(0),
     walk_time(0),
     speed(150),

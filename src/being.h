@@ -43,23 +43,22 @@ struct PATH_NODE {
 class Being
 {
     public:
-        unsigned int id;
-        unsigned short job;
-        unsigned short x, y;
-        unsigned short destX, destY;
-        unsigned char direction;
-        unsigned char type;
+        unsigned int id;              /**< Unique id */
+        unsigned short job;           /**< Job (player job, npc, monster, ) */
+        unsigned short x, y;          /**< Tile coordinates */
+        unsigned short destX, destY;  /**< Destination tile coordinates */
+        unsigned char direction;      /**< Facing direction */
         unsigned char action;
         unsigned char frame;
         int speech_color;
         unsigned short walk_time;
         unsigned short speed;
-        unsigned char emotion;
-        unsigned char emotion_time;
+        unsigned char emotion;        /**< Currently showing emotion */
+        unsigned char emotion_time;   /**< Time until emotion disappears */
         unsigned int text_x, text_y;  // temp solution to fix speech position
 
         unsigned short weapon;
-        char name[24];
+        char name[24];                /**< Name of character */
         unsigned short aspd;          /**< Attack speed */
 
         /**
