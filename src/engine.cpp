@@ -365,12 +365,39 @@ void Engine::draw()
         guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
 #endif
 
-        if (being->isNpc()) { // Draw a NPC
+        // Draw a NPC
+        if (being->isNpc())
+        {
             npcset->spriteset[being->job - 100]->draw(screen,
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
-        else if ((being->job < 10) && (being->name != "")) { // Draw a player
+        
+        // Draw a player
+        /**
+         * NOTES (by Javila):
+         *  - I'm not sure if comparing if being->id is less then 110000000
+         *    will create colateral effects (missing some player), but I think
+         *    this will avoid drawing ghosts too, since they have IDs greater
+         *    then value above.
+         *  - Also this high ID values are used for monsters and not for
+         *    players!!! Maybe can there be some monsters in server using
+         *    invalid monsterset's ID... This way server send the unknown
+         *    monster to client and tmw is guessing that this is a player...
+         *    Errors like this are (or at least were) found in mob_db when
+         *    monsters dropped unknown items (invalid items IDs)... Ok, I
+         *    did check on server scripts files (CVS) and haven't found these
+         *    errors... Do anybody have an idea about this??? 
+         */
+        else if (being->job < 10)
+        {
+            // Don't draw ghosts!!!
+            if ((std::string(being->name).empty()) && (being != player_node))
+            {
+                beingIterator++;
+                continue;
+            }
+            
             being->text_x = sx * 32 + get_x_offset(being) - offset_x;
             being->text_y = sy * 32 + get_y_offset(being) - offset_y;
 
@@ -412,9 +439,13 @@ void Engine::draw()
                 being->text_x + 15, being->text_y + 30,
                 gcn::Graphics::CENTER);
         }
-        else if (being->job == 45) { // Draw a warp
+
+        // Draw a warp
+        else if (being->job == 45) {
         }
-        else { // Draw a monster
+
+        // Draw a monster
+        else {
             if (being->frame >= 4)
                 being->frame = 3;
 
