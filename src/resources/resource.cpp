@@ -22,49 +22,45 @@
  */
 
 #include "resource.h"
+#include "resourcemanager.h"
 
 Resource::Resource():
-    referenceCount(0)
+    mRefCount(0)
 {
 }
 
 Resource::~Resource()
 {
-    // TODO: Notify resource manager about this resource being deleted
 }
 
-bool Resource::isLoaded() const
+void
+Resource::setIdPath(const std::string &idPath)
 {
-    return loaded;
+    mIdPath = idPath;
 }
 
-void Resource::incRef()
+void
+Resource::incRef()
 {
-    referenceCount++;
+    mRefCount++;
 }
 
-bool Resource::decRef()
+bool
+Resource::decRef()
 {
-    /* Warning: There is still a serious problem with the object deleting
-     * itself and that is that the resource manager doesn't know about it
-     * currently, causing it to crash while trying to clean up. Don't use
-     * this function until that is solved. Probably we'll have to make it
-     * so that decrementing count goes through resource manager too.
-     */
-    if (referenceCount > 0)
-    {
-        referenceCount--;
+    // Reference may not already have reached zero
+    assert(mRefCount != 0);
 
-        if (referenceCount == 0) {
-            //delete this;
-            return true;
-        }
-        else {
-            return false;
-        }
+    mRefCount--;
+
+    if (mRefCount == 0) {
+        // Make sure resource manager won't refer to deleted resource
+        ResourceManager *resman = ResourceManager::getInstance();
+        resman->release(mIdPath);
+        delete this;
+        return true;
     }
     else {
-        // Warning: Shouldn't get here!
-        return true;
+        return false;
     }
 }

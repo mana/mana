@@ -24,6 +24,8 @@
 #ifndef _TMW_RESOURCE_H
 #define _TMW_RESOURCE_H
 
+#include <string>
+
 /**
  * A generic reference counted resource object.
  */
@@ -36,40 +38,38 @@ class Resource
         Resource();
 
         /**
-         * Destructor.
+         * Sets the id path of this resource. This path is used to notify the
+         * resource manager when this resource is deleted.
          */
-        virtual ~Resource();
-
-        /**
-         * Frees this objects internal resources.
-         */
-        virtual void unload() = 0;
-
-        /**
-         * Indicates whether or not a resource is loaded.
-         * @return <code>true</code> if resource is loaded 
-         * <code>false</code> otherwise.
-         */
-        virtual bool isLoaded() const;
+        void
+        setIdPath(const std::string &idPath);
 
         /**
          * Increments the internal reference count.
          */
-        void incRef();
+        void
+        incRef();
 
         /**
          * Decrements the reference count and deletes the object
          * if no references are left.
+         *
          * @return <code>true</code> if the object was deleted
-         * <code>false</code> otherwise.
+         *         <code>false</code> otherwise.
          */
-        bool decRef();
+        bool
+        decRef();
 
     protected:
-        bool loaded;
+        /**
+         * Destructor.
+         */
+        virtual
+        ~Resource();
 
     private:
-        unsigned int referenceCount;
+        unsigned int mRefCount;    /**< Reference count */
+        std::string mIdPath;       /**< Path identifying this resource */
 };
 
 #endif

@@ -155,8 +155,6 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
         return NULL;
     }
 
-    logger->log("Alpha: %d, Magic pink: %d", hasAlpha, hasPink);
-
     return new Image(image);
 
 #else
@@ -416,8 +414,7 @@ SubImage::~SubImage()
 #ifndef USE_OPENGL
     image = NULL;
 #endif
-    // TODO: Enable when no longer a problem
-    //parent->decRef();
+    parent->decRef();
 }
 
 int SubImage::getWidth() const

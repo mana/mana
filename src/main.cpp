@@ -386,7 +386,10 @@ int main(int argc, char *argv[])
                 break;
             case GAME:
                 sound.fadeOutMusic(1000);
-                //bgm->stop();
+
+                login_wallpaper->decRef();
+                login_wallpaper = NULL;
+
                 logger->log("State: GAME");
                 try {
                     map_start();

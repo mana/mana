@@ -51,11 +51,6 @@ class Music : public Resource
         static Music *load(void* buffer, unsigned int bufferSize);
 
         /**
-         * Frees the resources created by SDL.
-         */
-        virtual void unload();
-
-        /**
          * Plays the music.
          *
          * @param loops     Number of times to repeat the playback.

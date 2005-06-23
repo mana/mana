@@ -31,7 +31,8 @@ SoundEffect::SoundEffect(Mix_Chunk *soundEffect):
 
 SoundEffect::~SoundEffect()
 {
-    unload();
+    Mix_FreeChunk(soundEffect);
+    soundEffect = NULL;
 }
 
 SoundEffect* SoundEffect::load(void* buffer, unsigned int bufferSize)
@@ -46,13 +47,6 @@ SoundEffect* SoundEffect::load(void* buffer, unsigned int bufferSize)
     SDL_FreeRW(rw);
 
     return new SoundEffect(tmpSoundEffect);
-}
-
-void SoundEffect::unload()
-{
-    Mix_FreeChunk(soundEffect);
-    soundEffect = NULL;
-    loaded = false;
 }
 
 bool SoundEffect::play(int loops, int volume)

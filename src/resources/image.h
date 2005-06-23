@@ -32,10 +32,6 @@
 #include <string>
 
 
-// Forward declarations
-class SubImage;
-class ScaledImage;
-
 /**
  * Defines a class for loading and storing images.
  */
@@ -45,7 +41,8 @@ class Image : public Resource
         /**
          * Destructor.
          */
-        virtual ~Image();
+        virtual
+        ~Image();
 
         /**
          * Loads an image from a buffer in memory.
@@ -56,22 +53,26 @@ class Image : public Resource
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Image *load(void* buffer, unsigned int bufferSize);
+        static Image*
+        load(void* buffer, unsigned int bufferSize);
 
         /**
          * Frees the resources created by SDL.
          */
-        virtual void unload();
+        virtual void
+        unload();
 
         /**
          * Returns the width of the image.
          */
-        virtual int getWidth() const;
+        virtual int
+        getWidth() const;
 
         /**
          * Returns the height of the image.
          */
-        virtual int getHeight() const;
+        virtual int
+        getHeight() const;
 
         /**
          * Creates a new image with the desired clipping rectangle.
@@ -79,7 +80,8 @@ class Image : public Resource
          * @return <code>NULL</code> if creation failed and a valid
          *         object otherwise.
          */
-        virtual Image* getSubImage(int x, int y, int width, int height);
+        virtual Image*
+        getSubImage(int x, int y, int width, int height);
 
         /**
          * Blits the image onto the screen.
@@ -87,10 +89,11 @@ class Image : public Resource
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool draw(SDL_Surface *screen,
-                int srcX, int srcY,
-                int dstX, int dstY,
-                int width, int height);
+        virtual bool
+        draw(SDL_Surface *screen,
+             int srcX, int srcY,
+             int dstX, int dstY,
+             int width, int height);
 
         /**
          * Blits the image onto the screen.
@@ -98,23 +101,26 @@ class Image : public Resource
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        virtual bool draw(SDL_Surface *screen, int x, int y);
+        virtual bool
+        draw(SDL_Surface *screen, int x, int y);
 
         /**
          * Does a pattern fill on the given area.
          */
-        virtual void drawPattern(
-                SDL_Surface *screen, int x, int y, int w, int h);
+        virtual void
+        drawPattern(SDL_Surface *screen, int x, int y, int w, int h);
 
         /**
          * Sets the alpha value of this image.
          */
-        void setAlpha(float alpha);
+        void
+        setAlpha(float alpha);
 
         /**
          * Returns the alpha value of this image.
          */
-        float getAlpha();
+        float
+        getAlpha();
 
 
     protected:
@@ -123,11 +129,13 @@ class Image : public Resource
          */
 #ifdef USE_OPENGL
         Image(GLuint image,
-                int width, int height,
-                int texWidth, int texHeight);
+              int width, int height,
+              int texWidth, int texHeight);
 #else
         Image(SDL_Surface *image);
 #endif
+
+        bool loaded;
 
 #ifdef USE_OPENGL
         GLuint image;
@@ -150,10 +158,10 @@ class SubImage : public Image
          */
 #ifndef USE_OPENGL
         SubImage(Image *parent, SDL_Surface *image,
-                int x, int y, int width, int height);
+                 int x, int y, int width, int height);
 #else
         SubImage(Image *parent, GLuint image, int x, int y,
-                int width, int height, int texWidth, int textHeight);
+                 int width, int height, int texWidth, int textHeight);
 #endif
 
         /**
@@ -164,32 +172,41 @@ class SubImage : public Image
         /**
          * Returns the width of the image.
          */
-        int getWidth() const;
+        int
+        getWidth() const;
 
         /**
          * Returns the height of the image.
          */
-        int getHeight() const;
+        int
+        getHeight() const;
 
         /**
          * Creates a new image with the desired clipping rectangle.
+         *
          * @return <code>NULL</code> if creation failed and a valid
-         * object otherwise.
+         *         image otherwise.
          */
-        Image* getSubImage(int x, int y, int width, int height);
+        Image*
+        getSubImage(int x, int y, int width, int height);
 
         /**
          * Draws this image.
          */
-        bool draw(SDL_Surface *screen, int srcX, int srcY,
-                int dstX, int dstY, int width, int height);
+        bool
+        draw(SDL_Surface *screen,
+             int srcX, int srcY,
+             int dstX, int dstY,
+             int width, int height);
 
         /**
          * Draws the clipped image onto the screen.
+         *
          * @return <code>true</code> if drawing was succesful
-         * <code>false</code> otherwise.
+         *         <code>false</code> otherwise.
          */
-        bool draw(SDL_Surface *screen, int x, int y);
+        bool
+        draw(SDL_Surface *screen, int x, int y);
 
     private:
         Image *parent;

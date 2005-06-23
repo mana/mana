@@ -36,11 +36,6 @@
 #include <dirent.h>
 #endif
 
-ResourceEntry::ResourceEntry():
-    resource(NULL)
-{
-}
-
 ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
@@ -52,36 +47,36 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
     // Create our resource iterator.
-    std::map<std::string, ResourceEntry>::iterator iter = resources.begin();
+    std::map<std::string, Resource*>::iterator iter = resources.begin();
     int danglingResources = 0;
     int danglingReferences = 0;
 
     // Iterate through and release references until objects are deleted.
-    while (iter != resources.end()) {
-        Resource *res = iter->second.resource;
+    while (!resources.empty())
+    {
+        Resource *res = resources.begin()->second;
         danglingResources++;
-        danglingReferences++;
-        while (!res->decRef()) {
+
+        do {
             danglingReferences++;
         }
-        iter++;
+        while (!res->decRef());
     }
-    resources.clear();
 
     logger->log("ResourceManager::~ResourceManager() cleaned up %d references "
             "to %d resources", danglingReferences, danglingResources);
 }
 
-Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
-        const std::string &idPath)
+Resource*
+ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 {
     // Check if the id exists, and return the value if it does.
-    std::map<std::string, ResourceEntry>::iterator resIter =
+    std::map<std::string, Resource*>::iterator resIter =
         resources.find(idPath);
 
-    if (resIter != resources.end() && resIter->second.resource) {
-        resIter->second.resource->incRef();
-        return resIter->second.resource;
+    if (resIter != resources.end() && resIter->second) {
+        resIter->second->incRef();
+        return resIter->second;
     }
 
     logger->log("ResourceManager::get(%s)", idPath.c_str());
@@ -164,42 +159,57 @@ Resource* ResourceManager::get(const E_RESOURCE_TYPE &type,
 
     if (resource) {
         resource->incRef();
+        resource->setIdPath(idPath);
 
-        // Create the resource entry for this object.
-        ResourceEntry entry;
-        entry.filePath = idPath;
-        entry.resource = resource;
-
-        resources[idPath] = entry;
+        resources[idPath] = resource;
     }
 
     // Return NULL if the object could not be created.
     return resource;
 }
 
-Image *ResourceManager::getImage(const std::string &idPath)
+Image*
+ResourceManager::getImage(const std::string &idPath)
 {
     return (Image*)get(IMAGE, idPath);
 }
 
-Music *ResourceManager::getMusic(const std::string &idPath)
+Music*
+ResourceManager::getMusic(const std::string &idPath)
 {
-      return (Music*)get(MUSIC, idPath);
+    return (Music*)get(MUSIC, idPath);
 }
 
-SoundEffect *ResourceManager::getSoundEffect(const std::string &idPath)
+SoundEffect*
+ResourceManager::getSoundEffect(const std::string &idPath)
 {
-      return (SoundEffect*)get(SOUND_EFFECT, idPath);
+    return (SoundEffect*)get(SOUND_EFFECT, idPath);
 }
 
-ResourceManager* ResourceManager::getInstance()
+void
+ResourceManager::release(const std::string &idPath)
+{
+    logger->log("ResourceManager::release(%s)", idPath.c_str());
+
+    std::map<std::string, Resource*>::iterator resIter =
+        resources.find(idPath);
+
+    // The resource has to exist
+    assert(resIter != resources.end() && resIter->second);
+
+    resources.erase(idPath);
+}
+
+ResourceManager*
+ResourceManager::getInstance()
 {
     // Create a new instance if necessary.
     if (instance == NULL) instance = new ResourceManager();
     return instance;
 }
 
-void ResourceManager::deleteInstance()
+void
+ResourceManager::deleteInstance()
 {
     if (instance != NULL) {
         delete instance;
@@ -207,7 +217,8 @@ void ResourceManager::deleteInstance()
     }
 }
 
-void ResourceManager::searchAndAddZipFiles()
+void
+ResourceManager::searchAndAddZipFiles()
 {
     // Add the main data directory to our PhysicsFS search path
     PHYSFS_addToSearchPath("data", 1);
@@ -275,7 +286,8 @@ void ResourceManager::searchAndAddZipFiles()
 #endif
 }
 
-void *ResourceManager::loadFile(const std::string &fileName, int &fileSize)
+void*
+ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
     // If the file doesn't exist indicate failure
     if (!PHYSFS_exists(fileName.c_str())) {

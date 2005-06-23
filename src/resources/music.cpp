@@ -32,7 +32,9 @@ Music::Music(Mix_Chunk *music):
 
 Music::~Music()
 {
-    unload();
+    //Mix_FreeMusic(music);
+    Mix_FreeChunk(music);
+    music = NULL;
 }
 
 Music* Music::load(void* buffer, unsigned int bufferSize)
@@ -48,14 +50,6 @@ Music* Music::load(void* buffer, unsigned int bufferSize)
     SDL_FreeRW(rw);
 
     return new Music(tmpMusic);
-}
-
-void Music::unload()
-{
-    //Mix_FreeMusic(music);
-    Mix_FreeChunk(music);
-    music = NULL;
-    loaded = false;
 }
 
 bool Music::play(int loops)

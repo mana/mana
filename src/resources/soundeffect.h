@@ -51,11 +51,6 @@ class SoundEffect : public Resource
         static SoundEffect *load(void* buffer, unsigned int bufferSize);
 
         /**
-         * Frees the resources created by SDL.
-         */
-        virtual void unload();
-
-        /**
          * Plays the sample.
          *
          * @param loops     Number of times to repeat the playback.

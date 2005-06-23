@@ -32,17 +32,6 @@
 #include "soundeffect.h"
 
 /**
- * A resource entry descriptor.
- */
-struct ResourceEntry
-{
-    ResourceEntry();
-
-    Resource *resource;
-    std::string filePath;
-};
-
-/**
  * A class for loading and managing resources.
  */
 class ResourceManager
@@ -81,27 +70,35 @@ class ResourceManager
          * @return A valid resource or <code>NULL</code> if the resource could
          *         not be loaded.
          */
-        Resource *get(
-                const E_RESOURCE_TYPE &type,
-                const std::string &idPath);
+        Resource*
+        get(const E_RESOURCE_TYPE &type, const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create for loading
          * images.
          */
-        Image *getImage(const std::string &idPath);
+        Image*
+        getImage(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create for loading
          * songs.
          */
-        Music *getMusic(const std::string &idPath);
+        Music*
+        getMusic(const std::string &idPath);
 
         /**
          * Convenience wrapper around ResourceManager::create for loading
          * samples.
          */
-        SoundEffect *getSoundEffect(const std::string &idPath);
+        SoundEffect*
+        getSoundEffect(const std::string &idPath);
+
+        /**
+         * Releases a resource, removing it from the set of loaded resources.
+         */
+        void
+        release(const std::string &idPath);
 
         /**
          * Allocates data into a buffer pointer for raw data loading. The
@@ -113,28 +110,32 @@ class ResourceManager
          * @return An allocated byte array containing the data that was loaded,
          *         or <code>NULL</code> on fail.
          */
-        void *loadFile(const std::string &fileName, int &fileSize);
+        void*
+        loadFile(const std::string &fileName, int &fileSize);
 
         /**
          * Returns an instance of the class, creating one if it does not
          * already exist.
          */
-        static ResourceManager *getInstance();
+        static ResourceManager*
+        getInstance();
 
         /**
          * Deletes the class instance if it exists.
          */
-        static void deleteInstance();
+        static void
+        deleteInstance();
 
     private:
         /**
          * Searches for zip files and adds them to the PhysicsFS search path.
          */
-        void searchAndAddZipFiles();
+        void
+        searchAndAddZipFiles();
 
 
         static ResourceManager *instance;
-        std::map<std::string, ResourceEntry> resources;
+        std::map<std::string, Resource*> resources;
 };
 
 #endif

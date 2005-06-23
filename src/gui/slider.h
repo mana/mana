@@ -45,6 +45,11 @@ class Slider : public gcn::Slider {
         Slider(double scaleStart, double scaleEnd);
 
         /**
+         * Destructor.
+         */
+        ~Slider();
+
+        /**
          * Draws the slider.
          */
         void draw(gcn::Graphics *graphics);
@@ -60,8 +65,9 @@ class Slider : public gcn::Slider {
          */
         void init();
 
-        Image *hStart, *hMid, *hEnd, *hGrip;
-        Image *vStart, *vMid, *vEnd, *vGrip;
+        static Image *hStart, *hMid, *hEnd, *hGrip;
+        static Image *vStart, *vMid, *vEnd, *vGrip;
+        static int mInstances;
 };
 
 #endif

@@ -68,6 +68,8 @@ Graphics::~Graphics()
 {
     // Deinitialize for drawing
     _endDraw();
+
+    mouseCursor->decRef();
 }
 
 int Graphics::getWidth()

@@ -25,6 +25,10 @@
 #include "../resources/resourcemanager.h"
 #include "../graphics.h"
 
+Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
+Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;
+int Slider::mInstances = 0;
+
 Slider::Slider(double scaleEnd):
     gcn::Slider(scaleEnd)
 {
@@ -37,36 +41,60 @@ Slider::Slider(double scaleStart, double scaleEnd):
     init();
 }
 
+Slider::~Slider()
+{
+    mInstances--;
+
+    if (mInstances == 0)
+    {
+        delete hStart;
+        delete hMid;
+        delete hEnd;
+        delete hGrip;
+        delete vStart;
+        delete vMid;
+        delete vEnd;
+        delete vGrip;
+    }
+}
+
 void Slider::init()
 {
     int x, y, w, h,o1,o2;
     setBorderSize(0);
 
     // Load resources
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *slider = resman->getImage("graphics/gui/slider.png");
+    if (mInstances == 0)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *slider = resman->getImage("graphics/gui/slider.png");
 
-    x = 0; y = 0;
-    w = 15; h = 6;
-    o1 = 4; o2 = 11;
-    hStart = slider->getSubImage(x, y, o1 - x, h);
-    hMid = slider->getSubImage(o1, y, o2 - o1, h);
-    hEnd = slider->getSubImage(o2, y, w - o2 + x, h);
+        x = 0; y = 0;
+        w = 15; h = 6;
+        o1 = 4; o2 = 11;
+        hStart = slider->getSubImage(x, y, o1 - x, h);
+        hMid = slider->getSubImage(o1, y, o2 - o1, h);
+        hEnd = slider->getSubImage(o2, y, w - o2 + x, h);
 
-    x = 0; y = 6;
-    w = 6; h = 21;
-    o1 = 10; o2 = 18;
-    vStart = slider->getSubImage(x, y, w, o1 - y);
-    vMid = slider->getSubImage(x, o1, w, o2 - o1);
-    vEnd = slider->getSubImage(x, o2, w, h - o2 + y);
+        x = 6; y = 8;
+        w = 9; h = 10;
+        hGrip = slider->getSubImage(x, y, w, h);
 
-    x = 6; y = 8;
-    w = 9; h = 10;
-    vGrip = slider->getSubImage(x, y, w, h);
+        x = 0; y = 6;
+        w = 6; h = 21;
+        o1 = 10; o2 = 18;
+        vStart = slider->getSubImage(x, y, w, o1 - y);
+        vMid = slider->getSubImage(x, o1, w, o2 - o1);
+        vEnd = slider->getSubImage(x, o2, w, h - o2 + y);
 
-    x = 6; y = 8;
-    w = 9; h = 10;
-    hGrip = slider->getSubImage(x, y, w, h);
+        x = 6; y = 8;
+        w = 9; h = 10;
+        vGrip = slider->getSubImage(x, y, w, h);
+
+        slider->decRef();
+    }
+
+    mInstances++;
 
     setMarkerLength(hGrip->getWidth());
 }
