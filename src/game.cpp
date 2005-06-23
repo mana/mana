@@ -65,8 +65,8 @@ ConfirmDialog *exitConfirm = NULL;
 
 Being *target = NULL;
 
-#define EMOTION_TIME 150
-#define MAX_TIME 10000
+const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
+const int MAX_TIME = 10000;
 
 /**
  * Listener used for handling death message.
@@ -369,34 +369,14 @@ void do_input()
                 {
                     switch (player_node->direction)
                     {
-                        case NORTH:
-                            y--;
-                            break;
-                        case SOUTH:
-                            y++;
-                            break;
-                        case WEST:
-                            x--;
-                            break;
-                        case EAST:
-                            x++;
-                            break;
-                        case NW:
-                            x--;
-                            y--;
-                            break;
-                        case NE:
-                            x++;
-                            y--;
-                            break;
-                        case SW:
-                            x--;
-                            y++;
-                            break;
-                        case SE:
-                            x++;
-                            y++;
-                            break;
+                        case NORTH: y--; break;
+                        case SOUTH: y++; break;
+                        case WEST:  x--; break;
+                        case EAST:  x++; break;
+                        case NW:    x--; y--; break;
+                        case NE:    x++; y--; break;
+                        case SW:    x--; y++; break;
+                        case SE:    x++; y++; break;
                     }
                     id = find_floor_item_by_cor(x, y);
                     WFIFOW(0) = net_w_value(0x009f);
@@ -1071,7 +1051,7 @@ void do_parse()
                     // Warp
                 case 0x0091:
                     memset(map_path, '\0', 480);
-                    strcat(map_path, TMW_DATADIR "data/maps/");
+                    strcat(map_path, "maps/");
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     logger->log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));

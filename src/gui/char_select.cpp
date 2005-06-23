@@ -225,7 +225,7 @@ void CharSelectDialog::serverCharSelect()
         }
         char_ID = RFIFOL(2);
         memset(map_path, '\0', 480);
-        strcat(map_path, TMW_DATADIR "data/maps/");
+        strcat(map_path, "maps/");
         strncat(map_path, RFIFOP(6), 479 - strlen(map_path));
         map_address = RFIFOL(22);
         map_port = RFIFOW(26);

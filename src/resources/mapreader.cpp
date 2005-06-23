@@ -28,10 +28,11 @@
 #include "../graphic/spriteset.h"
 #include "../base64.h"
 
+#include <zlib.h>
 #include <iostream>
 
-#define DEFAULT_TILE_WIDTH  32
-#define DEFAULT_TILE_HEIGHT 32
+const unsigned int DEFAULT_TILE_WIDTH = 32;
+const unsigned int DEFAULT_TILE_HEIGHT = 32;
 
 // MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
 // function at link time.
@@ -39,6 +40,77 @@
 #undef xmlFree
 #define xmlFree(x) ;
 #endif
+
+/**
+ * Inflates either zlib or gzip deflated memory. The inflated memory is
+ * expected to be freed by the caller.
+ */
+int
+inflateMemory(
+        unsigned char *in, unsigned int inLength,
+        unsigned char *&out, unsigned int &outLength)
+{
+    int bufferSize = 256 * 1024;
+    int ret;
+    z_stream strm;
+
+    out = (unsigned char*)malloc(bufferSize);
+
+    strm.zalloc = Z_NULL;
+    strm.zfree = Z_NULL;
+    strm.opaque = Z_NULL;
+    strm.next_in = in;
+    strm.avail_in = inLength;
+    strm.next_out = out;
+    strm.avail_out = bufferSize;
+
+    ret = inflateInit2(&strm, 15 + 32);
+
+    if (ret != Z_OK)
+        return ret;
+
+    do
+    {
+        if (strm.next_out == NULL)
+        {
+            inflateEnd(&strm);
+            return Z_MEM_ERROR;
+        }
+
+        ret = inflate(&strm, Z_NO_FLUSH);
+        assert(ret != Z_STREAM_ERROR);
+
+        switch (ret) {
+            case Z_NEED_DICT:
+                ret = Z_DATA_ERROR;
+            case Z_DATA_ERROR:
+            case Z_MEM_ERROR:
+                (void)inflateEnd(&strm);
+                return ret;
+        }
+
+        if (ret != Z_STREAM_END)
+        {
+            out = (unsigned char*)realloc(out, bufferSize * 2);
+
+            if (out == NULL)
+            {
+                inflateEnd(&strm);
+                return Z_MEM_ERROR;
+            }
+
+            strm.next_out = out + bufferSize;
+            strm.avail_out = bufferSize;
+            bufferSize *= 2;
+        }
+    }
+    while (ret != Z_STREAM_END);
+    assert(strm.avail_in == 0);
+
+    outLength = bufferSize - strm.avail_out;
+    (void)inflateEnd(&strm);
+    return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
+}
 
 std::vector<Tileset*> MapReader::tilesets;
 
@@ -56,24 +128,54 @@ int Tileset::getFirstGid()
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    std::string name = /*std::string("data/") +*/ filename;
+    // Load the file through resource manager
+    ResourceManager *resman = ResourceManager::getInstance();
+    int fileSize;
+    void *buffer = resman->loadFile(filename, fileSize);
 
-    // Check that file exists before trying to parse it
-    std::fstream fin;
-    fin.open(name.c_str(), std::ios::in);
-    if (!fin.is_open()) {
-        logger->log("No such file!");
+    if (buffer == NULL)
+    {
+        logger->log("Map file not found (%s)\n", filename.c_str());
         return NULL;
     }
-    fin.close();
 
-    xmlDocPtr doc = xmlParseFile(name.c_str());
+    // Inflate the gzipped map data
+    unsigned char *inflated;
+    unsigned int inflatedSize = 0;
+    int ret = inflateMemory(
+            (unsigned char*)buffer, fileSize, inflated, inflatedSize);
+    free(buffer);
 
+    if (ret == Z_MEM_ERROR)
+    {
+        logger->log("Error: Out of memory while decompressing map data!");
+        return NULL;
+    }
+    else if (ret == Z_VERSION_ERROR)
+    {
+        logger->log("Error: Incompatible zlib version!");
+        return NULL;
+    }
+    else if (ret == Z_DATA_ERROR)
+    {
+        logger->log("Error: Incorrect zlib compressed data!");
+        return NULL;
+    }
+    else if (ret != Z_OK || inflated == NULL)
+    {
+        logger->log("Error: Unknown error while decompressing map data!");
+        return NULL;
+    }
+
+    xmlDocPtr doc = xmlParseMemory((char*)inflated, inflatedSize);
+    free(inflated);
+
+    // Parse the inflated map data
     if (doc) {
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
-            logger->log("Warning: Not a map file (%s)!", filename.c_str());
+            logger->log("Error: Not a map file (%s)!", filename.c_str());
             return NULL;
         }
 
