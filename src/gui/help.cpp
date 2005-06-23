@@ -26,7 +26,7 @@
 #include "button.h"
 #include "textbox.h"
 #include "../main.h"
-#include <fstream>
+#include "../resources/resourcemanager.h"
 
 HelpWindow::HelpWindow():
     Window("Help")
@@ -86,23 +86,28 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 
 void HelpWindow::loadFile(const std::string &file)
 {
-    std::string filePath = TMW_DATADIR "data/help/" + file + ".txt";
+    ResourceManager *resman = ResourceManager::getInstance();
+    const std::string filePath = "help/" + file + ".txt";
+    int contentsLength;
+    char *fileContents = (char*)resman->loadFile(filePath, contentsLength);
 
-    std::ifstream fin;
-    fin.open(filePath.c_str());
-    
-    if (fin.fail())
+    if (!fileContents)
     {
         logger->log("Couldn't load help file: %s", filePath.c_str());
         return;
     }
 
-    while (!fin.eof())
+    // Reallocate and include terminating 0 character
+    fileContents = (char*)realloc(fileContents, contentsLength + 1);
+    fileContents[contentsLength] = '\0';
+
+    // Tokenize and add each line separately
+    char *line = strtok(fileContents, "\n");
+    while (line != NULL)
     {
-        std::string line = "";
-        getline(fin, line);
         browserBox->addRow(line);
+        line = strtok(NULL, "\n");
     }
 
-    fin.close();
+    free(fileContents);
 }
