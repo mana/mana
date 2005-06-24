@@ -28,6 +28,8 @@
 #include <sstream>
 #include <physfs.h>
 
+#include <cassert>
+
 #ifdef WIN32
 #include <io.h>
 #include <direct.h>

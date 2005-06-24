@@ -28,6 +28,8 @@
 #include "../graphic/spriteset.h"
 #include "../base64.h"
 
+#include <cassert>
+
 #include <zlib.h>
 #include <iostream>
 

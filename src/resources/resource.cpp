@@ -24,6 +24,8 @@
 #include "resource.h"
 #include "resourcemanager.h"
 
+#include <cassert>
+
 Resource::Resource():
     mRefCount(0)
 {
