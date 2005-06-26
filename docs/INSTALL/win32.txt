@@ -53,7 +53,7 @@ CVS (I'll try to update it as much as I can).
 You can find it at:
 
   http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak (by ElvenProgrammer)
-  http://pandamachine.top.tc/devpaks/ (by Rotonen)
+  http://riekale.com/~rotonen/ (by Rotonen)
 
 
 Elven's devpak is usually more recommended than Rotonen's, but Rotonen's might
