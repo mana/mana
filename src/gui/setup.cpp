@@ -201,23 +201,35 @@ void Setup::action(const std::string &eventId)
     else if (eventId == "apply")
     {
         setVisible(false);
+        bool changed = false;
 
-        if (fsCheckBox->isMarked()) { // Fullscreen
+        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0) {
+            // Fullscreen
             config.setValue("screen", 1);
             displayFlags |= SDL_FULLSCREEN;
+            changed = true;
         }
-        else { // Windowed
+        else if(!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1) {
+            // Windowed
             config.setValue("screen", 0);
             displayFlags &= ~SDL_FULLSCREEN;
+            changed = true;
         }
-
-        displayFlags |= SDL_DOUBLEBUF;
-
-        screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
-        if (screen == NULL) {
-            std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
-                bitDepth << " video mode: " << SDL_GetError() << std::endl;
+        
+        if(changed) {
+            displayFlags |= SDL_DOUBLEBUF;
+            if (useOpenGL) {
+                displayFlags |= SDL_OPENGL;
+                SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+            }
+            
+            screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+            if (screen == NULL) {
+                std::cerr << "Couldn't set " << screenW << "x" <<
+                    screenH << "x" << bitDepth << " video mode: " <<
+                    SDL_GetError() << std::endl;
             exit(1);
+            }
         }
 
         // Sound settings
