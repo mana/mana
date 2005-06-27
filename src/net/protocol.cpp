@@ -226,7 +226,7 @@ void action(char type, int id)
 
 Being* attack(unsigned short x, unsigned short y, unsigned char direction)
 {
-    Being *target;
+    Being *target = NULL;
 
     if (direction == SOUTH) {
         target = findNode(x, y + 1);
@@ -234,7 +234,7 @@ Being* attack(unsigned short x, unsigned short y, unsigned char direction)
         target = findNode(x - 1, y);
     } else if(direction == NORTH) {
         target = findNode(x, y - 1);
-    } else if(direction==EAST) {
+    } else if(direction == EAST) {
         target = findNode(x + 1, y);
     }
 

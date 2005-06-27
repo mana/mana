@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([The Mana World], [0.0.13], [umperio@users.sourceforge.net], [tmw])
+AC_INIT([The Mana World], [0.0.14], [umperio@users.sourceforge.net], [tmw])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
@@ -71,7 +71,7 @@ fi
 
 # FIND_PATH(programm-name, variable-name, list of directories,
 #     if-not-found, test-parameter)
-AC_DEFUN(FIND_PATH,
+AC_DEFUN([FIND_PATH],
 [
    AC_MSG_CHECKING([for $1])
    if test -n "$$2"; then
