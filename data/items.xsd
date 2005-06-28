@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!-- IMAGE TYPE -->
+
+  <xsd:simpleType name="mw_ItemArtType">
+    <xsd:restriction base="xsd:integer">
+      <xsd:minInclusive value="0" />
+      <xsd:maxInclusive value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <!-- ITEMS LIST FILE SCHEMA -->
+
+  <xsd:element name="items">
+    <xsd:complexType>
+      <xsd:sequence>
+        
+        <xsd:element name="item" minOccurs="0" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:simpleContent>
+              <xsd:extension base="xsd:string">
+                <xsd:attribute name="name" type="xsd:string" />
+                <xsd:attribute name="description" type="xsd:string" />
+                <xsd:attribute name="id" type="xsd:positiveInteger" />
+                <xsd:attribute name="image" type="xsd:positiveInteger" />
+                <xsd:attribute name="art" type="mw_ItemArtType" />
+                <xsd:attribute name="type" type="xsd:integer" />
+                <xsd:attribute name="slot" type="xsd:integer" />
+                <xsd:attribute name="weight" type="xsd:positiveInteger" />
+              </xsd:extension>
+            </xsd:simpleContent>
+          </xsd:complexType>
+        </xsd:element>
+
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>
