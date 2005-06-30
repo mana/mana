@@ -458,9 +458,27 @@ void do_input()
                     }
                 }
 
-                // Just cancel the popup menu if shown
-                //popupMenu->setVisible(false);
-            }
+                // Just cancel the popup menu if shown, and don't make the character walk
+                if (popupMenu->isVisible() == true)
+                {
+                    // We get the x, y coord of the click
+                    int clickX = (mx - camera_x) * 32 + 25;
+                    int clickY = (my - camera_y) * 32 + 25;
+
+                    // If we click elsewhere than in the window, do not use the event
+                    // The user wanted to close the popup.
+                    // Still buggy : Wonder if the x, y, width, and height aren't reported partially
+                    // with these functions.
+                    if ( clickX > (popupMenu->getX() + popupMenu->getWidth()) || clickX < popupMenu->getX()
+                        || clickY > (popupMenu->getY() + popupMenu->getHeight()) || clickY < popupMenu->getY() )
+                    {
+                            used = true;
+                            popupMenu->setVisible(false);
+                            std::cout << "out" << std::endl;
+                    }
+                }
+
+            } // End Mouse left button
             
             // Mouse button middle
             else if (event.button.button == SDL_BUTTON_MIDDLE)
