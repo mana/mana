@@ -167,6 +167,8 @@ void LoginDialog::action(const std::string& eventId)
             new OkDialog("Error", "Enter a username first");
         } else if (user.length() < 4) {
             new OkDialog("Error", "The username needs to be at least 4 characters");
+        } else if (user.length() > LEN_USERNAME -1 ) {
+            new OkDialog("Error", "The username needs to be less than 25 characters long.");
         } else {
             server_login(user + "_M", passField->getText());
             close_session();
