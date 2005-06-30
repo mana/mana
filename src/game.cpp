@@ -1203,11 +1203,15 @@ void do_parse()
                                 if (RFIFOL(2) != player_node->id) { // buggy
                                     being = findNode(RFIFOL(2));
                                     if (being != NULL) {
-                                        if (being->job<10) {
+                                        if (being->isPlayer()) {
                                             being->action = ATTACK;
+                                            being->frame = 0;
+                                            being->walk_time = tick_time;
                                         }
                                         else {
                                             being->action = MONSTER_ATTACK;
+                                            being->frame = 0;
+                                            being->walk_time = tick_time;
                                         }
                                         being->frame = 0;
                                     }
