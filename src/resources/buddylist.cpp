@@ -42,7 +42,7 @@ BuddyList::~BuddyList()
 
 void BuddyList::loadFile(void)
 {
-    char buddy[LEN_USERNAME];
+    char *buddy;
 
     // Open file
     std::ifstream inputStream(filename->c_str(), std::ios::in);
@@ -52,8 +52,11 @@ void BuddyList::loadFile(void)
     }
 
     do {
+        buddy = (char *) calloc(LEN_USERNAME, sizeof(char));
         inputStream.getline(buddy, LEN_USERNAME);
-        buddylist.push_back(buddy);
+        // Ugly ?
+        if(strcmp(buddy,"") != 0) buddylist.push_back(buddy);
+        free(buddy);
     } while(!inputStream.eof());
 
     // Read buddy and close file

@@ -184,6 +184,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);
 
+        /** Called to set current text */
+        void setInputText(std::string input_str);
+
     private:
         std::ofstream chatlog_file;
 

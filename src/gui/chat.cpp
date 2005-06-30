@@ -327,3 +327,9 @@ void ChatWindow::keyPress(const gcn::Key &key)
         chatInput->setCaretPosition(chatInput->getText().length());
     }
 }
+
+void ChatWindow::setInputText(std::string input_str)
+{
+     chatInput->setText(input_str + " ");
+     requestChatFocus();
+}

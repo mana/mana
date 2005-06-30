@@ -24,6 +24,9 @@
 #include "buddywindow.h"
 #include "scrollarea.h"
 #include "button.h"
+#include "chat.h"
+
+extern ChatWindow *chatWindow;
 
 BuddyWindow::BuddyWindow():
     Window("Buddy")
@@ -35,7 +38,7 @@ BuddyWindow::BuddyWindow():
 
     scrollArea = new ScrollArea(listbox);
     scrollArea->setDimension(gcn::Rectangle(
-                2, 0, 116, 180));
+                2, 0, 114, 176));
     add(scrollArea);
 
     talk = new Button("Talk");
@@ -68,7 +71,12 @@ BuddyWindow::~BuddyWindow()
 void BuddyWindow::action(const std::string& eventId)
 {
     if (eventId == "Talk") {
-        // TODO
+        int selected = listbox->getSelected();
+        if ( selected > -1 )
+        {
+            std::string who = getElementAt(selected);
+            chatWindow->setInputText(who +": ");
+        }
     }
     else if (eventId == "Remove") {
         int selected = listbox->getSelected();
