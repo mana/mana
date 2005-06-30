@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.13    Date: 5/6/2005
+ Version: 0.0.14    Date: 3/7/2005
 
 
  Development team:
@@ -26,9 +26,9 @@ THE MANA WORLD
 1. Account
 ----------
 
-To create an account, add "_M" after your username when you login for the first
-time and enter a password of your choice. Remember that the server is only for
-demo and development purposes.
+To create an account, when you login for the first time enter the desired
+username and a password of your choice then press the "Register button".
+Remember that the server is only for demo and development purposes.
 
 2. Commands
 -----------

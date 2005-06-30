@@ -4,6 +4,9 @@
 - Added background image to minimap
 - Fixed window resizing (applies to inventory window)
 - Fixed inventory item display not to be cut off
+- Fixed ghosts bug
+- Fixed fullscreen switch bug (Opengl, win32)
+- Added BGM to maps
 
 0.0.13  (5 June 2005)
 - Added ability to trade items and money
