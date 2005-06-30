@@ -72,7 +72,7 @@ void PopupMenu::showPopup(int mx, int my)
     being = findNode(mx, my);
     floorItem = find_floor_item_by_id(find_floor_item_by_cor(mx, my));
     mX = mx;
-    mY = mY;
+    mY = my;
     browserBox->clearRows();
 
     if (being)
@@ -193,8 +193,8 @@ void PopupMenu::handleLink(const std::string& link)
     // Walk To action
     else if ((link == "walk") && (mX != -1) && (mY != -1))
     {
-        //walk(mX, mY, 0);
-        //player_node->setDestination(mX, mY);
+        walk(mX, mY, 0);
+        player_node->setDestination(mX, mY);
     }
 
     // Look To action
