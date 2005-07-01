@@ -31,18 +31,18 @@ extern ChatWindow *chatWindow;
 BuddyWindow::BuddyWindow():
     Window("Buddy")
 {
-    setContentSize(120, 200);
+    setContentSize(124, 202);
 
     listbox = new gcn::ListBox();
     listbox->setListModel(dynamic_cast<ListModel*>(this));
 
     scrollArea = new ScrollArea(listbox);
     scrollArea->setDimension(gcn::Rectangle(
-                2, 0, 114, 176));
+                7, 5, 110, 170));
     add(scrollArea);
 
     talk = new Button("Talk");
-    talk->setPosition(1,180);
+    talk->setPosition(2,180);
     talk->addActionListener(this);
     talk->setEventId("Talk");
     remove = new Button("Remove");
