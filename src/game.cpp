@@ -273,6 +273,14 @@ void do_input()
                 {
                     state = EXIT;
                 }
+                else if ( helpWindow->isVisible() ) // Close the Browser if opened
+                {
+                    helpWindow->setVisible(false);
+                }
+                else if ( setupWindow->isVisible() ) // Close the config window, applying changes if opened
+                {
+                    setupWindow->action("apply");
+                }
                 else // Else, open the chat edit box
                 {
                     chatWindow->requestChatFocus();
