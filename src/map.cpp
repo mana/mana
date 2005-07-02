@@ -72,7 +72,8 @@ Map::~Map()
     delete[] tiles;
 }
 
-void Map::setSize(int width, int height)
+void
+Map::setSize(int width, int height)
 {
     this->width = width;
     this->height = height;
@@ -82,7 +83,8 @@ void Map::setSize(int width, int height)
     tiles = new Image*[width * height * 3];
 }
 
-void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
+void
+Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 {
     int startX = scrollX / 32;
     int startY = scrollY / 32;
@@ -106,12 +108,14 @@ void Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     }
 }
 
-void Map::setWalk(int x, int y, bool walkable)
+void
+Map::setWalk(int x, int y, bool walkable)
 {
     metaTiles[x + y * width].walkable = walkable;
 }
 
-bool Map::getWalk(int x, int y)
+bool
+Map::getWalk(int x, int y)
 {
     // If walkable, check for colliding into a being
     if (!tileCollides(x, y)) {
@@ -131,7 +135,8 @@ bool Map::getWalk(int x, int y)
     }
 }
 
-bool Map::tileCollides(int x, int y)
+bool
+Map::tileCollides(int x, int y)
 {
     // You can't walk outside of the map
     if (x < 0 || y < 0 || x >= width || y >= height) {
@@ -142,42 +147,50 @@ bool Map::tileCollides(int x, int y)
     return !metaTiles[x + y * width].walkable;
 }
 
-void Map::setTile(int x, int y, int layer, Image *img)
+void
+Map::setTile(int x, int y, int layer, Image *img)
 {
     tiles[x + y * width + layer * (width * height)] = img;
 }
 
-Image *Map::getTile(int x, int y, int layer)
+Image*
+Map::getTile(int x, int y, int layer)
 {
     return tiles[x + y * width + layer * (width * height)];
 }
 
-MetaTile *Map::getMetaTile(int x, int y)
+MetaTile*
+Map::getMetaTile(int x, int y)
 {
     return &metaTiles[x + y * width];
 }
 
-int Map::getWidth()
+int
+Map::getWidth()
 {
     return width;
 }
 
-int Map::getHeight()
+int
+Map::getHeight()
 {
     return height;
 }
 
-int Map::getTileWidth()
+int
+Map::getTileWidth()
 {
     return tileWidth;
 }
 
-int Map::getTileHeight()
+int
+Map::getTileHeight()
 {
     return tileHeight;
 }
 
-std::string Map::getProperty(const std::string &name)
+std::string
+Map::getProperty(const std::string &name)
 {
     std::map<std::string,std::string>::iterator i = properties.find(name);
 
@@ -189,18 +202,20 @@ std::string Map::getProperty(const std::string &name)
     return "";
 }
 
-bool Map::hasProperty(const std::string &name)
+bool
+Map::hasProperty(const std::string &name)
 {
     return (properties.find(name) != properties.end());
 }
 
-void Map::setProperty(const std::string &name, const std::string &value)
+void
+Map::setProperty(const std::string &name, const std::string &value)
 {
     properties[name] = value;
 }
 
-std::list<PATH_NODE> Map::findPath(
-        int startX, int startY, int destX, int destY)
+std::list<PATH_NODE>
+Map::findPath(int startX, int startY, int destX, int destY)
 {
     // Path to be built up (empty by default)
     std::list<PATH_NODE> path;

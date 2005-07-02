@@ -28,13 +28,13 @@
  */
 /* $Id$ */
 
-#ifndef _BASE64_h
-#define _BASE64_h
+#ifndef _TMW_BASE64_H
+#define _TMW_BASE64_H
 
 extern unsigned char *php_base64_encode(const unsigned char *, int, int *);
 extern unsigned char *php_base64_decode(const unsigned char *, int, int *);
 
-#endif /* _BASE64_h */
+#endif /* _TMW_BASE64_H */
 
 /*
  * Local variables:

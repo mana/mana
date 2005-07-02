@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef __INIREAD_H
-#define __INIREAD_H
+#ifndef _TMW_CONFIGURATION_H
+#define _TMW_CONFIGURATION_H
 
 #include <map>
 #include <list>
