@@ -268,14 +268,21 @@ Map *Engine::getCurrentMap()
 
 void Engine::setCurrentMap(Map *newMap)
 {
+    std::string oldMusic = "";
+    if (mCurrentMap) {
+        oldMusic = mCurrentMap->getProperty("music");
+        logger->log("old: %s",oldMusic.c_str());
+    }
+    std::string newMusic = newMap->getProperty("music");
+    logger->log("new: %s",newMusic.c_str());
+    if(newMusic!=oldMusic) {
+        logger->log("new: %s",newMusic.c_str());
+        newMusic = std::string(TMW_DATADIR) + "data/music/" + newMusic;
+        sound.playMusic(newMusic.c_str(), -1);
+    }
+
     mCurrentMap = newMap;
     minimap->setMap(mCurrentMap);
-    std::string musicFile = newMap->getProperty("music");
-    
-    if(musicFile!="") {
-        musicFile = std::string(TMW_DATADIR) + "data/music/" + musicFile;
-        sound.playMusic(musicFile.c_str(), -1);
-    }
 }
 
 void Engine::logic()

@@ -1073,10 +1073,10 @@ void do_parse()
                     strncat(map_path, RFIFOP(2), 497 - strlen(map_path));
                     logger->log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));
-                    sound.stopMusic();
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
-
-                    if (tiledMap) delete tiledMap;
+                    
+                    Map *oldMap;
+                    oldMap = tiledMap;
                     tiledMap = MapReader::readMap(map_path);
 
                     if (tiledMap)
@@ -1110,6 +1110,7 @@ void do_parse()
                     {
                         logger->error("Could not find map file");
                     }
+                    if (oldMap) delete oldMap;
                     break;
                     // Skill ...
                 case 0x011a:
