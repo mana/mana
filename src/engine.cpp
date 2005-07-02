@@ -271,12 +271,9 @@ void Engine::setCurrentMap(Map *newMap)
     std::string oldMusic = "";
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");
-        logger->log("old: %s",oldMusic.c_str());
     }
     std::string newMusic = newMap->getProperty("music");
-    logger->log("new: %s",newMusic.c_str());
     if(newMusic!=oldMusic) {
-        logger->log("new: %s",newMusic.c_str());
         newMusic = std::string(TMW_DATADIR) + "data/music/" + newMusic;
         sound.playMusic(newMusic.c_str(), -1);
     }
