@@ -27,6 +27,7 @@
 #include "net/protocol.h"
 #include "net/network.h"
 #include "resources/resourcemanager.h"
+#include "gui/gui.h"
 
 Being *player_node = NULL;
 
@@ -71,8 +72,13 @@ void remove_node(unsigned int id)
     {
         if ((*i)->id == id)
         {
-            if (autoTarget == (*i)) {
+            if (autoTarget == (*i))
+            {
                 autoTarget = NULL;
+            }
+            if (followBeing == (*i))
+            {
+                followBeing = NULL;
             }
             delete (*i);
             beings.erase(i);
@@ -344,10 +350,27 @@ void Being::drawSpeech(Graphics *graphics)
                 gcn::Graphics::CENTER);
     }
     if (showDamage) {
+        // Selecting the right color
+        if (damage == "miss")
+        {
+            graphics->setFont(hitYellowFont);
+        }
+        else if (isMonster())
+        {
+            graphics->setFont(hitBlueFont);
+        }
+        else
+        {
+            graphics->setFont(hitRedFont);
+        }            
+        
         graphics->drawText(damage,
                 text_x + 60,
                 text_y - 60 - get_elapsed_time(damage_time) / 100,
                 gcn::Graphics::CENTER);
+
+        // Backing to default font
+        graphics->setFont(gui->getFont());
     }
     if (this == autoTarget) {
         graphics->drawText("[TARGET]",
