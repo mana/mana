@@ -395,10 +395,10 @@ bool Being::isPlayer()
 
 bool Being::isNpc()
 {
-    return job > 45 && job < 126;
+    return job >= 100 && job < 200;
 }
 
 bool Being::isMonster()
 {
-    return job > 200;
+    return job >= 1000 && job < 1200;
 }

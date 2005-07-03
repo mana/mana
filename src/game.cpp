@@ -788,7 +788,7 @@ void do_parse()
                     {
                         if (RFIFOB(6) == 1) 
                         { // Death
-                            if (being->job > 110) 
+                            if (being->isMonster())
                             {
                                 being->action = MONSTER_DEAD;
                                 being->frame = 0;
@@ -1459,14 +1459,10 @@ void do_parse()
                          remove_floor_item(net_l_value(RFIFOL(2)));
                      }
                      break;
-                    // Next button in NPC dialog
+                    // Next/Close button in NPC dialog
                 case 0x00b5:
-                    strcpy(npc_button, "Next");
-                    current_npc = RFIFOL(2);
-                    break;
-                    // Close button in NPC dialog
                 case 0x00b6:
-                    strcpy(npc_button, "Close");
+                    // Unused
                     break;
                     // List in NPC dialog
                 case 0x00b7:

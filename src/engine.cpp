@@ -37,7 +37,7 @@
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
-char npc_button[10] = "Close";
+//char npc_button[10] = "Close";
 
 gcn::Label *debugInfo;
 
