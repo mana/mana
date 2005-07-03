@@ -89,4 +89,11 @@ extern WindowContainer *guiTop;               /**< The top container */
 extern Graphics *guiGraphics;                 /**< Graphics driver */
 extern gcn::SDLInput *guiInput;               /**< GUI input */
 
+/**
+ * Fonts used in showing hits
+ */
+extern gcn::ImageFont *hitRedFont;
+extern gcn::ImageFont *hitBlueFont;
+extern gcn::ImageFont *hitYellowFont;
+
 #endif

@@ -36,6 +36,11 @@ Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
+// Fonts used in showing hits
+gcn::ImageFont *hitRedFont;
+gcn::ImageFont *hitBlueFont;
+gcn::ImageFont *hitYellowFont;
+
 Gui::Gui(Graphics *graphics)
 {
     // Set graphics
@@ -87,11 +92,33 @@ Gui::Gui(Graphics *graphics)
         logger->error("Unable to load fixedfont.png!");
     }
 
+    // Set hits' colourful fonts
+    try {
+        hitRedFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/hits_red.png",
+                "0123456789");
+        hitBlueFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/hits_blue.png",
+                "0123456789");
+        hitYellowFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/hits_yellow.png",
+                "mis");
+    }
+    catch (gcn::Exception e)
+    {
+        logger->error("Unable to load colored hits' fonts!");
+    }
+
     gcn::Widget::setGlobalFont(guiFont);
 }
 
 Gui::~Gui()
 {
+    // Fonts used in showing hits
+    delete hitRedFont;
+    delete hitBlueFont;
+    delete hitYellowFont;
+    
     delete guiFont;
     delete guiTop;
     delete imageLoader;
