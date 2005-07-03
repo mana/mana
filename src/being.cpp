@@ -358,11 +358,22 @@ void Being::drawSpeech(Graphics *graphics)
         else
         {
             graphics->setFont(hitRedFont);
-        }            
+        }
+
+        int textX = 0;
+        int textY = 0;
+        if (this->isPlayer()) {
+            textX = 16;
+            textY = 70;
+        }
+        else {
+            textX = 60;
+            textY = 0;
+        }
         
         graphics->drawText(damage,
-                text_x + 60,
-                text_y - 60 - get_elapsed_time(damage_time) / 100,
+                text_x + textX,
+                text_y - textY - get_elapsed_time(damage_time) / 100,
                 gcn::Graphics::CENTER);
 
         // Backing to default font
