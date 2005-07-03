@@ -75,25 +75,33 @@ void PopupMenu::showPopup(int mx, int my)
     mY = my;
     browserBox->clearRows();
 
-    if (being)
+    if (being && being->isNpc())
     {
-        if (being->isNpc())
-        {
-            browserBox->addRow("@@talk|Talk To NPC@@");
-        }
-        else if (being->isPlayer())
-        {
-            std::string name = being->name;
-            //browserBox->addRow("@@attack|Attack " + name + "@@");
-            browserBox->addRow("@@trade|Trade With " + name + "@@");
-            //browserBox->addRow("@@follow|Follow " + name + "@@");
-            //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
-        }
+        // NPCs can be talked to (single option, candidate for removal unless
+        // more options would be added)
+        browserBox->addRow("@@talk|Talk To NPC@@");
+    }
+    else if (being && being->isPlayer())
+    {
+        // Players can be traded with. Later also attack, follow and add as
+        // buddy will be options in this menu.
+
+        std::string name = being->name;
+        //browserBox->addRow("@@attack|Attack " + name + "@@");
+        browserBox->addRow("@@trade|Trade With " + name + "@@");
+        //browserBox->addRow("@@follow|Follow " + name + "@@");
+        //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
     }
     else if (floorItem)
     {
+        // Floor item can be picked up (single option, candidate for removal)
         std::string name = itemDb->getItemInfo(floorItem->id)->getName();
         browserBox->addRow("@@pickup|Pick Up " + name + "@@");
+    }
+    else
+    {
+        // If there is nothing of interest, don't display menu.
+        return;
     }
    
     //browserBox->addRow("@@look|Look To@@");

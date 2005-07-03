@@ -14,7 +14,6 @@
      ##2F1##P                  show the in-game help
      ##2F5##P                  sit down / stand up
      ##2F6##P                  toggle debug pathfinding feature
-     ##2F7##P                  play test sound
      ##2G or Z##P              pick up item
      ##2Enter##P               focus chat window / send message
      ##2Alt + K##P             show skills

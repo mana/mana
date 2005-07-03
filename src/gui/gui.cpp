@@ -84,8 +84,15 @@ Gui::Gui(Graphics *graphics)
         guiFont = new gcn::ImageFont(
                 TMW_DATADIR "data/graphics/gui/fixedfont.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
+                "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`ше"
                 );
+        /*
+        guiFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/rpgfont.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
+                "89_,!?-+/():;%&`'*#=[]\""
+                );
+        */
     }
     catch (gcn::Exception e)
     {
@@ -161,9 +168,9 @@ void Gui::mousePress(int mx, int my, int button)
         if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
             walk(tilex, tiley, 0);
             player_node->setDestination(tilex, tiley);
-        }
 
-        autoTarget = NULL;
+            autoTarget = NULL;
+        }
     }
 }
 

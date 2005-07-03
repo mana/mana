@@ -433,12 +433,12 @@ void do_input()
                         if (target->action != MONSTER_DEAD &&
                                 player_node->action==STAND)
                         {
-                            if (keys[SDLK_LSHIFT])
-                            {
-                                autoTarget = target;
-                            }
                             attack(target);
-                            
+                            // Autotarget by default with mouse
+                            //if (keys[SDLK_LSHIFT])
+                            //{
+                                autoTarget = target;
+                            //}
                         }
                     }
                     // Player default: trade

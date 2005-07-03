@@ -243,9 +243,6 @@ Being* attack(unsigned short x, unsigned short y, unsigned char direction)
         return target;
     }
 
-    // Implement charging attacks here
-    char_info->lastAttackTime = 0;
-
     return NULL;
 }
 
@@ -268,6 +265,9 @@ void attack(Being *target)
         else
             player_node->direction = WEST;
     }
+
+    // Implement charging attacks here
+    char_info->lastAttackTime = 0;
 
     player_node->action = ATTACK;
     action(0, target->id);
