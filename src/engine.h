@@ -48,6 +48,9 @@
 #include "map.h"
 #include "graphic/spriteset.h"
 
+extern int map_x, map_y, camera_x, camera_y;
+extern char npc_button[10];
+
 extern ChatWindow *chatWindow;
 extern StatusWindow *statusWindow;
 extern BuyDialog *buyDialog;

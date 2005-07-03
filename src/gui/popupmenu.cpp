@@ -77,11 +77,7 @@ void PopupMenu::showPopup(int mx, int my)
 
     if (being)
     {
-        if (being->isMonster())
-        {
-            browserBox->addRow("@@attack|Attack Monster@@");
-        }
-        else if (being->isNpc())
+        if (being->isNpc())
         {
             browserBox->addRow("@@talk|Talk To NPC@@");
         }
@@ -90,7 +86,7 @@ void PopupMenu::showPopup(int mx, int my)
             std::string name = being->name;
             //browserBox->addRow("@@attack|Attack " + name + "@@");
             browserBox->addRow("@@trade|Trade With " + name + "@@");
-            browserBox->addRow("@@follow|Follow " + name + "@@");
+            //browserBox->addRow("@@follow|Follow " + name + "@@");
             //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
         }
     }
@@ -99,10 +95,7 @@ void PopupMenu::showPopup(int mx, int my)
         std::string name = itemDb->getItemInfo(floorItem->id)->getName();
         browserBox->addRow("@@pickup|Pick Up " + name + "@@");
     }
-    else
-    {
-        browserBox->addRow("@@walk|Walk To@@");
-    }
+   
     //browserBox->addRow("@@look|Look To@@");
     browserBox->addRow("##3---");
     browserBox->addRow("@@cancel|Cancel@@");
@@ -139,18 +132,8 @@ void PopupMenu::draw(gcn::Graphics* graphics)
 
 void PopupMenu::handleLink(const std::string& link)
 {
-    // Attack action
-    if ((link == "attack") && being)
-    {
-        if (being->isMonster() && (being->action != MONSTER_DEAD))
-        {
-            autoTarget = being;
-            attack(being);
-        }
-    }
-
     // Talk To action
-    else if ((link == "talk") && being && being->isNpc() &&
+    if ((link == "talk") && being && being->isNpc() &&
             (current_npc == 0))
     {
         WFIFOW(0) = net_w_value(0x0090);
@@ -167,11 +150,11 @@ void PopupMenu::handleLink(const std::string& link)
         WFIFOL(2) = net_l_value(being->id);
         WFIFOSET(6);
     }
-
+    /*
     // Follow Player action
     else if (link == "follow")
     {
-    }
+    }*/
     
     /*
     // Add Buddy action
@@ -189,13 +172,6 @@ void PopupMenu::handleLink(const std::string& link)
         WFIFOW(0) = net_w_value(0x009f);
         WFIFOL(2) = net_l_value(floorItem->int_id);
         WFIFOSET(6);
-    }
-
-    // Walk To action
-    else if ((link == "walk") && (mX != -1) && (mY != -1))
-    {
-        walk(mX, mY, 0);
-        player_node->setDestination(mX, mY);
     }
 
     // Look To action

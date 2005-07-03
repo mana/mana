@@ -259,12 +259,6 @@ void do_input()
                 displayPathToMouse = !displayPathToMouse;
             }
             
-            // Play sound (debug purpose)
-            else if ((keysym.sym == SDLK_F7))
-            {
-                sound.playSfx("sfx/fist-swish.ogg");
-            }
-            
             // Input chat window
             else if ((keysym.sym == SDLK_RETURN) && !chatWindow->isFocused())
             {
@@ -436,10 +430,16 @@ void do_input()
                         * TODO: Move player to mouse click position before
                         * attack the monster (maybe using follow mode).
                         */
-                        if ((keys[SDLK_LSHIFT]) &&
-                                (target->action != MONSTER_DEAD))
-                            autoTarget = target;
-                        attack(target);
+                        if (target->action != MONSTER_DEAD &&
+                                player_node->action==STAND)
+                        {
+                            if (keys[SDLK_LSHIFT])
+                            {
+                                autoTarget = target;
+                            }
+                            attack(target);
+                            
+                        }
                     }
                     // Player default: trade
                     else if (target->isPlayer())
@@ -622,7 +622,6 @@ void do_input()
         {
             if (keys[SDLK_LCTRL])
             {
-                player_node->action = ATTACK;
                 Being *monster = attack(x, y, player_node->direction);
                 if (keys[SDLK_LSHIFT]) {
                     autoTarget = monster;
