@@ -204,14 +204,10 @@ Engine::Engine():
 
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *npcbmp = resman->getImage(
-            "graphics/sprites/npcs.png");
-    Image *emotionbmp = resman->getImage(
-            "graphics/sprites/emotions.png");
-    Image *weaponbitmap = resman->getImage(
-            "graphics/sprites/weapons.png");
-    Image *itembitmap = resman->getImage(
-            "graphics/sprites/items.png");
+    Image *npcbmp = resman->getImage("graphics/sprites/npcs.png");
+    Image *emotionbmp = resman->getImage("graphics/sprites/emotions.png");
+    Image *weaponbitmap = resman->getImage("graphics/sprites/weapons.png");
+    Image *itembitmap = resman->getImage("graphics/sprites/items.png");
 
     if (!npcbmp) logger->error("Unable to load npcs.png");
     if (!emotionbmp) logger->error("Unable to load emotions.png");
@@ -222,6 +218,9 @@ Engine::Engine():
     emotionset = new Spriteset(emotionbmp, 19, 19);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
     itemset = new Spriteset(itembitmap, 32, 32);
+
+    attackTarget = resman->getImage("graphics/gui/attack_target.png");
+    if (!attackTarget) logger->error("Unable to load attack_target.png");
 }
 
 Engine::~Engine()
@@ -253,6 +252,8 @@ Engine::~Engine()
     delete emotionset;
     delete weaponset;
     delete itemset;
+
+    attackTarget->decRef();
 }
 
 Map *Engine::getCurrentMap()
@@ -311,6 +312,8 @@ void Engine::draw()
 
     camera_x = map_x / 32;
     camera_y = map_y / 32;
+    int mouseTileX = mouseX / 32 + camera_x;
+    int mouseTileY = mouseY / 32 + camera_y;
 
     int offset_x = map_x & 31;
     int offset_y = map_y & 31;
@@ -417,13 +420,17 @@ void Engine::draw()
         }
 
         // Draw a warp
-        else if (being->job == 45) {
+        else if (being->job == 45)
+        {
         }
 
         // Draw a monster
-        else {
+        else
+        {
             if (being->frame >= 4)
+            {
                 being->frame = 3;
+            }
 
             being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
             being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
@@ -441,6 +448,12 @@ void Engine::draw()
             else {
                 monsterset[being->job-1002]->spriteset[dir + 4 * mf]->draw(
                         screen, being->text_x + 30, being->text_y + 40);
+
+                if (being->x == mouseTileX && being->y == mouseTileY)
+                {
+                    attackTarget->draw(screen,
+                        being->text_x + 30 + 16, being->text_y + 32);
+                }
             }
 
             if (being->action != STAND) {
@@ -512,8 +525,7 @@ void Engine::draw()
     gui->draw();
 
     std::stringstream debugStream;
-    debugStream << "[" << fps << " fps] " <<
-        (mouseX / 32 + camera_x) << ", " << (mouseY / 32 + camera_y);
+    debugStream << "[" << fps << " fps] " << mouseTileX << ", " << mouseTileY;
 
     if (mCurrentMap != NULL)
     {

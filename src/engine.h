@@ -111,6 +111,7 @@ class Engine
     private:
         Spriteset *emotionset, *npcset, *weaponset, *itemset;
         Map *mCurrentMap;
+        Image *attackTarget;
 };
 
 #endif
