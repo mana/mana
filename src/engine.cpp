@@ -37,11 +37,6 @@
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;
-char npc_text[1000] = "";
-char statsString2[255] = "n/a";
-char skill_points[10] = "";
-bool show_skill_dialog = false;
-bool show_skill_list_dialog = false;
 char npc_button[10] = "Close";
 
 gcn::Label *debugInfo;
