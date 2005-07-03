@@ -1,14 +1,14 @@
  <- @@index|Back to Index@@
-
-
+ 
+ 
 ##3                            === COMMANDS ===
-
+ 
  Use arrow keys (or left mouse button) to move around and the right
  mouse button over NPC's feet to talk to them or over a monster to
  attack it.
-
+ 
  Other keys:
-
+ 
      ##2Left Ctrl##P           attack
      ##2Alt + 0-9##P           show emotions
      ##2F1##P                  show the in-game help

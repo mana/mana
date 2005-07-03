@@ -1,20 +1,14 @@
  <- @@index|Back to Index@@
-
-
+ 
+ 
 ##3                         === RECENT CHANGES ===
-
- - Added ability to trade items and money
- - Added server field to login dialog
- - Added item descriptions to inventory and buy/sell dialogs
- - Added confirmation dialog before quitting
- - Added button to show/hide equipment window
- - Added framerate limiter to config options
- - Added ability to auto attack
- - Upgraded to Guichan 0.4.0
- - Dialogs are now modal when appropriate
- - Fixed a crash in OpenGL mode
- - Fixed rendering of minimap, progress bars and player sprite in
-   OpenGL mode
- - Fixed 100% CPU usage when minimized
- - Fixed players not always appearing to sit when they are in fact
-   sitting
+ 
+ - Added action menu (moved trading to action menu)
+ - Added support for map properties (to be used for music and minimap
+   settings)
+ - Added background image to minimap
+ - Fixed window resizing (applies to inventory window)
+ - Fixed inventory item display not to be cut off
+ - Fixed ghosts bug
+ - Fixed fullscreen switch bug (Opengl, win32)
+ - Added BGM to maps
