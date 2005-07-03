@@ -303,12 +303,13 @@ void do_input()
                     statsWindow->setVisible(!statsWindow->isVisible());
                     used = true;
                 }
+                /*
                 // New skills window
                 else if (keysym.sym == SDLK_n)
                 {
                     newSkillWindow->setVisible(!newSkillWindow->isVisible());
                     used = true;
-                }
+                }*/
                 // Skill window
                 else if (keysym.sym == SDLK_k)
                 {
@@ -327,12 +328,13 @@ void do_input()
                     equipmentWindow->setVisible(!equipmentWindow->isVisible());
                     used = true;
                 }
+                /*
                 // Buddy window
                 else if (keysym.sym == SDLK_b) 
                 {
                     buddyWindow->setVisible(!buddyWindow->isVisible());
                     used = true;
-                }
+                }*/
                 
                 // Emotions
                 else if (action_time && (player_node->emotion == 0))

@@ -346,6 +346,7 @@ void Being::drawSpeech(Graphics *graphics)
                 gcn::Graphics::CENTER);
     }
     if (showDamage) {
+#ifdef USE_OPENGL
         // Selecting the right color
         if (damage == "miss")
         {
@@ -359,6 +360,7 @@ void Being::drawSpeech(Graphics *graphics)
         {
             graphics->setFont(hitRedFont);
         }
+#endif
 
         int textX = 0;
         int textY = 0;
@@ -370,7 +372,7 @@ void Being::drawSpeech(Graphics *graphics)
             textX = 60;
             textY = 0;
         }
-        
+
         graphics->drawText(damage,
                 text_x + textX,
                 text_y - textY - get_elapsed_time(damage_time) / 100,

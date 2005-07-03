@@ -91,8 +91,10 @@ Gui::Gui(Graphics *graphics)
     {
         logger->error("Unable to load fixedfont.png!");
     }
+    
+    gcn::Widget::setGlobalFont(guiFont);
 
-    // Set hits' colourful fonts
+    // Load hits' colourful fonts
     try {
         hitRedFont = new gcn::ImageFont(
                 TMW_DATADIR "data/graphics/gui/hits_red.png",
@@ -108,8 +110,6 @@ Gui::Gui(Graphics *graphics)
     {
         logger->error("Unable to load colored hits' fonts!");
     }
-
-    gcn::Widget::setGlobalFont(guiFont);
 }
 
 Gui::~Gui()

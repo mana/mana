@@ -91,7 +91,7 @@ void PopupMenu::showPopup(int mx, int my)
             //browserBox->addRow("@@attack|Attack " + name + "@@");
             browserBox->addRow("@@trade|Trade With " + name + "@@");
             browserBox->addRow("@@follow|Follow " + name + "@@");
-            browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+            //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
         }
     }
     else if (floorItem)
@@ -172,7 +172,8 @@ void PopupMenu::handleLink(const std::string& link)
     else if (link == "follow")
     {
     }
-
+    
+    /*
     // Add Buddy action
     else if ((link == "buddy") && being && being->isPlayer())
     {
@@ -180,7 +181,7 @@ void PopupMenu::handleLink(const std::string& link)
             buddyWindow->setVisible(true);
 
         buddyWindow->addBuddy(being->name);
-    }
+    }*/
 
     // Pick Up Floor Item action
     else if ((link == "pickup") && floorItem)

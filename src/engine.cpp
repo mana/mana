@@ -29,7 +29,7 @@
 #include "gui/chargedialog.h"
 #include "gui/itemcontainer.h"
 #include "gui/trade.h"
-#include "gui/buddywindow.h"
+//#include "gui/buddywindow.h"
 #include "gui/help.h"
 #include "main.h"
 #include "being.h"
@@ -55,14 +55,14 @@ InventoryWindow *inventoryWindow;
 NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
-NewSkillDialog *newSkillWindow;
+//NewSkillDialog *newSkillWindow;
 StatsWindow *statsWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
 ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
-BuddyWindow *buddyWindow;
+//BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
 PopupMenu *popupMenu;
 std::map<int, Spriteset*> monsterset;
@@ -156,14 +156,14 @@ Engine::Engine():
     npcTextDialog = new NpcTextDialog();
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
-    newSkillWindow = new NewSkillDialog();
+    //newSkillWindow = new NewSkillDialog();
     statsWindow = new StatsWindow();
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow();
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow();
-    buddyWindow = new BuddyWindow();
+    //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     popupMenu = new PopupMenu();
 
@@ -181,8 +181,8 @@ Engine::Engine():
     tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
             inventoryWindow->getY() + inventoryWindow->getHeight());
-    buddyWindow->setPosition(10,
-            minimap->getHeight() + 30);
+    /*buddyWindow->setPosition(10,
+            minimap->getHeight() + 30);*/
     equipmentWindow->setPosition(5,140);
     
     // Set initial window visibility
@@ -195,13 +195,13 @@ Engine::Engine():
     npcTextDialog->setVisible(false);
     npcListDialog->setVisible(false);
     skillDialog->setVisible(false);
-    newSkillWindow->setVisible(false);
+    //newSkillWindow->setVisible(false);
     statsWindow->setVisible(false);
     setupWindow->setVisible(false);
     equipmentWindow->setVisible(false);
     chargeDialog->setVisible(false);
     tradeWindow->setVisible(false);
-    buddyWindow->setVisible(false);
+    //buddyWindow->setVisible(false);
     helpWindow->setVisible(false);
     popupMenu->setVisible(false);
 
@@ -247,9 +247,9 @@ Engine::~Engine()
     delete minimap;
     delete equipmentWindow;
     delete chargeDialog;
-    delete newSkillWindow;
+    //delete newSkillWindow;
     delete tradeWindow;
-    delete buddyWindow;
+    //delete buddyWindow;
     delete helpWindow;
     delete popupMenu;
 
