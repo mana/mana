@@ -328,14 +328,36 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                 // Auto wrap mode
                 if (mMode == AUTO_WRAP)
                 {
-                    /** NOTE (by Javila): this is just a simple example and
-                     *  will force text wrap at widget width!!!
-                     *  Maybe it can need improvements.
-                     */
-                    if ((x + 2 * browserFont->getWidth('~')) > getWidth())
+                    unsigned int nextChar = j + 1;
+                    char hyphen = '~';
+                    int hyphenWidth =  browserFont->getWidth(hyphen);
+
+                    // Wraping between words (at blank spaces)
+                    if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
                     {
-                        browserFont->drawGlyph(graphics, '~', 
-                                getWidth() - browserFont->getWidth('~'), y);
+                        int nextSpacePos = row.find(" ", (nextChar + 1));
+                        if (nextSpacePos <= 0)
+                        {
+                            nextSpacePos = row.size() - 1;
+                        }                        
+                        int nextWordWidth = browserFont->getWidth(
+                                row.substr(nextChar,
+                                    (nextSpacePos - nextChar)));
+
+                        if ((x + nextWordWidth + 10) > getWidth())
+                        {
+                            x = 15; // Ident in new line
+                            y += browserFont->getHeight();
+                            wrappedLines++;
+                            j++;
+                        }
+                    }
+                    
+                    // Wrapping looong lines (brutal force)
+                    else if ((x + 2 * hyphenWidth) > getWidth())
+                    {
+                        browserFont->drawGlyph(graphics, hyphen,
+                                getWidth() - hyphenWidth, y);
                         x = 15; // Ident in new line
                         y += browserFont->getHeight();
                         wrappedLines++;
