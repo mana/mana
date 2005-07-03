@@ -194,7 +194,7 @@ void Being::setPath(std::list<PATH_NODE> path)
 {
     this->path = path;
 
-    if (action != WALK)
+    if (action != WALK && action != DEAD)
     {
         nextStep();
         walk_time = tick_time;
