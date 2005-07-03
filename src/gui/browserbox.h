@@ -67,6 +67,11 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         void setHighlightMode(unsigned int highMode);
 
         /**
+         * Disable links & user defined colors to be used in chat input.
+         */
+        void disableLinksAndUserColors();
+
+        /**
          * Adds a text row to the browser.
          */
         void addRow(const std::string& row);
@@ -138,6 +143,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         unsigned int mMode;
         unsigned int mHighMode;
         bool mOpaque;
+        bool mUseLinksAndUserColors;
         int mSelectedLink;
 
         static int instances;      /**< Number of Window instances */

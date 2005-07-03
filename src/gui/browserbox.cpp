@@ -34,6 +34,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     mMode = mode;
     setOpaque(true);
     setHighlightMode(BOTH);
+    mUseLinksAndUserColors = true;
     mSelectedLink = -1;
     setFocusable(true);
     addMouseListener(this);
@@ -80,6 +81,11 @@ void BrowserBox::setHighlightMode(unsigned int highMode)
 {
     mHighMode = highMode;
 }
+        
+void BrowserBox::disableLinksAndUserColors()
+{
+    mUseLinksAndUserColors = false;
+}
 
 void BrowserBox::addRow(const std::string& row)
 {
@@ -87,43 +93,55 @@ void BrowserBox::addRow(const std::string& row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-
-    // Check for links in format "@@link|Caption@@"
-    idx1 = tmp.find("@@");
-    while (idx1 >= 0)
-    {
-        idx2 = tmp.find("|", idx1);
-        idx3 = tmp.find("@@", idx2);
-        bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
-        bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
-        bLink.y1 = mTextRows.size() * browserFont->getHeight();
-        bLink.y2 = bLink.y1 + browserFont->getHeight();
-
-        newRow += tmp.substr(0, idx1);
-
-        std::string tmp2 = newRow;
-        idx1 = tmp2.find("##");
+    
+    // Use links and user defined colors
+    if (mUseLinksAndUserColors)
+    {        
+        // Check for links in format "@@link|Caption@@"
+        idx1 = tmp.find("@@");
         while (idx1 >= 0)
         {
-            tmp2.erase(idx1, 3);
+            idx2 = tmp.find("|", idx1);
+            idx3 = tmp.find("@@", idx2);
+            bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
+            bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
+            bLink.y1 = mTextRows.size() * browserFont->getHeight();
+            bLink.y2 = bLink.y1 + browserFont->getHeight();
+
+            newRow += tmp.substr(0, idx1);
+
+            std::string tmp2 = newRow;
             idx1 = tmp2.find("##");
+            while (idx1 >= 0)
+            {
+                tmp2.erase(idx1, 3);
+                idx1 = tmp2.find("##");
+            }
+            bLink.x1 = browserFont->getWidth(tmp2) - 1;
+            bLink.x2 = bLink.x1 + browserFont->getWidth(bLink.caption) + 1;
+
+            mLinks.push_back(bLink);
+
+            newRow += "##L" + bLink.caption;
+
+            tmp.erase(0, idx3 + 2);
+            if(tmp != "")
+            {
+                newRow += "##P";
+            }
+            idx1 = tmp.find("@@");
         }
-        bLink.x1 = browserFont->getWidth(tmp2) - 1;
-        bLink.x2 = bLink.x1 + browserFont->getWidth(bLink.caption) + 1;
 
-        mLinks.push_back(bLink);
-
-        newRow += "##L" + bLink.caption;
-
-        tmp.erase(0, idx3 + 2);
-        if(tmp != "")
-        {
-            newRow += "##P";
-        }
-        idx1 = tmp.find("@@");
+        newRow += tmp;
+    }
+    
+    // Don't use links and user defined colors
+    else
+    {
+        newRow = row;
     }
 
-    newRow += tmp;
+    newRow == (newRow == "" ? " " : newRow);
     mTextRows.push_back(newRow);
 
     // Auto size mode
@@ -132,7 +150,7 @@ void BrowserBox::addRow(const std::string& row)
         std::string plain = newRow;
         for (idx1 = plain.find("##"); idx1 >= 0; idx1 = plain.find("##"))
             plain.erase(idx1, 3);
-
+                
         // Adjust the BrowserBox size
         int w = browserFont->getWidth(plain);
         if (w > getWidth())
@@ -225,67 +243,70 @@ void BrowserBox::draw(gcn::Graphics* graphics)
 
         for (j = 0; j < row.size(); j++)
         {
-            // Check for color change in format "##x", x = [L,P,0..9]
-            if ((row.at(j) == '#') && (row.at(j + 1) == '#'))
+            if (mUseLinksAndUserColors || (!mUseLinksAndUserColors && (j == 0)))
             {
-                switch (row.at(j + 2))
+                // Check for color change in format "##x", x = [L,P,0..9]
+                if ((row.at(j) == '#') && (row.at(j + 1) == '#'))
                 {
-                    case 'L': // Link color
-                        prevColor = selColor;
-                        selColor = LINK;
-                        break;
-                    case 'P': // Previous color
-                        selColor = prevColor;
-                        break;
-                    case '1':
-                        prevColor = selColor;
-                        selColor = RED;
-                        break;
-                    case '2':
-                        prevColor = selColor;
-                        selColor = GREEN;
-                        break;
-                    case '3':
-                        prevColor = selColor;
-                        selColor = BLUE;
-                        break;
-                    case '4':
-                        prevColor = selColor;
-                        selColor = ORANGE;
-                        break;
-                    case '5':
-                        prevColor = selColor;
-                        selColor = YELLOW;
-                        break;
-                    case '6':
-                        prevColor = selColor;
-                        selColor = PINK;
-                        break;
-                    case '7':
-                        prevColor = selColor;
-                        selColor = PURPLE;
-                        break;
-                    case '8':
-                        prevColor = selColor;
-                        selColor = GRAY;
-                        break;
-                    case '9':
-                        prevColor = selColor;
-                        selColor = BROWN;
-                        break;
-                    case '0':
-                    default:
-                        prevColor = selColor;
-                        selColor = BLACK;
-                }
-                j += 3;
+                    switch (row.at(j + 2))
+                    {
+                        case 'L': // Link color
+                            prevColor = selColor;
+                            selColor = LINK;
+                            break;
+                        case 'P': // Previous color
+                            selColor = prevColor;
+                            break;
+                        case '1':
+                            prevColor = selColor;
+                            selColor = RED;
+                            break;
+                        case '2':
+                            prevColor = selColor;
+                            selColor = GREEN;
+                            break;
+                        case '3':
+                            prevColor = selColor;
+                            selColor = BLUE;
+                            break;
+                        case '4':
+                            prevColor = selColor;
+                            selColor = ORANGE;
+                            break;
+                        case '5':
+                            prevColor = selColor;
+                            selColor = YELLOW;
+                            break;
+                        case '6':
+                            prevColor = selColor;
+                            selColor = PINK;
+                            break;
+                        case '7':
+                            prevColor = selColor;
+                            selColor = PURPLE;
+                            break;
+                        case '8':
+                            prevColor = selColor;
+                            selColor = GRAY;
+                            break;
+                        case '9':
+                            prevColor = selColor;
+                            selColor = BROWN;
+                            break;
+                        case '0':
+                        default:
+                            prevColor = selColor;
+                            selColor = BLACK;
+                    }
+                    j += 3;
 
-                if (j == row.size())
-                {
-                    break;
+                    if (j == row.size())
+                    {
+                        break;
+                    }
                 }
+                graphics->setColor(gcn::Color(selColor));
             }
-            graphics->setColor(gcn::Color(selColor));
 
             // Check for line separators in format "---"
             if ((j <= 3) && (row.at(j) == '-') && (row.at(j + 1) == '-') &&

@@ -46,6 +46,7 @@ ChatWindow::ChatWindow(const std::string &logfile):
     
     textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
+    textOutput->disableLinksAndUserColors();
     scrollArea = new ScrollArea(textOutput);
     scrollArea->setPosition(
             scrollArea->getBorderSize(), scrollArea->getBorderSize());
