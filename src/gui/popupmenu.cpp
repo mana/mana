@@ -49,7 +49,6 @@ PopupMenu::PopupMenu():
 PopupMenu::~PopupMenu()
 {
     delete browserBox;
-    delete being;
     delete floorItem;
 }
 
