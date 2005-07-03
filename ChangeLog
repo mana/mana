@@ -1,12 +1,17 @@
 0.0.14  (3 July 2005)
 - Added action menu (moved trading to action menu)
-- Added support for map properties (to be used for music and minimap settings)
+- Added support for map properties
 - Added background image to minimap
-- Fixed window resizing (applies to inventory window)
+- Added background music to maps
+- Attempt to improve mouse control by left click auto-targetting
+- Fixed window resizing and also made chat window resizable
 - Fixed inventory item display not to be cut off
 - Fixed ghosts bug
 - Fixed fullscreen switch bug (Opengl, win32)
-- Added BGM to maps
+- Fixed unequip of weapon
+- Fixed equipping of picked up items
+- Fixed players to be able to see eachother attacking
+- Fixed maps to be loaded through resource manager
 
 0.0.13  (5 June 2005)
 - Added ability to trade items and money
