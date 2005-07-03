@@ -76,10 +76,6 @@ void remove_node(unsigned int id)
             {
                 autoTarget = NULL;
             }
-            if (followBeing == (*i))
-            {
-                followBeing = NULL;
-            }
             delete (*i);
             beings.erase(i);
             return;
