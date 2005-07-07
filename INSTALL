@@ -22,6 +22,7 @@ and some libraries. The required libraries are:
 4) Guichan 0.4.0     http://guichan.sourceforge.net/
 5) libxml2           http://www.xmlsoft.org/
 6) physfs 1.0.0      http://icculus.org/physfs/
+7) zlib 1.2.x        http://www.gzip.org/zlib
 
 If you checked TMW out from CVS you will also need these tools to compile:
 
