@@ -21,25 +21,51 @@
  *  $Id$
  */
 
-#include "box.h"
+#include "updatewindow.h"
+#include <sstream>
 
-Box::Box()
-    : padding(0),
-      gcn::Container()
+UpdateWindow::UpdateWindow()
+    : Window("Updating")
 {
-    setOpaque(false);
+    setContentSize(320, 96);
+
+    vbox = new VBox();
+    label = new gcn::Label("Default text");
+    progressBar = new ProgressBar(0.0, 0, 0, 0, 0, 0, 191, 63);
+
+    vbox->setPosition(4, 0);
+    vbox->setSize(getWidth() - 12, getHeight() - 24);
+
+    vbox->add(label);
+    vbox->add(progressBar);
+
+    add(vbox);
 }
 
-Box::~Box()
+UpdateWindow::~UpdateWindow()
 {
+    delete label;
+    delete progressBar;
+    delete vbox;
 }
 
-unsigned int Box::getPadding()
+void UpdateWindow::setProgress(double p)
 {
-    return padding;
+    progress = p;
 }
 
-void Box::setPadding(unsigned int p)
+void UpdateWindow::setLabel(const std::string &str)
 {
-    padding = p;
+    labelText = str;
+}
+
+void UpdateWindow::draw(gcn::Graphics *graphics)
+{
+    std::stringstream ss;
+    ss << labelText << " (" << progress * 100 << "%)";
+
+    label->setCaption(ss.str());
+    progressBar->setProgress(progress);
+
+    Window::draw(graphics);
 }

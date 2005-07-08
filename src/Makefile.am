@@ -99,6 +99,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/vbox.cpp \
 	      gui/hbox.h \
 	      gui/hbox.cpp \
+	      gui/updatewindow.h \
+	      gui/updatewindow.cpp \
 	      net/network.cpp \
 	      net/network.h \
 	      net/protocol.cpp \
@@ -152,6 +154,6 @@ INCLUDES =					\
 
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0`
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl -lguichan $(OPENGL_LIBS) -lphysfs
+tmw_CXXFLAGS = -Wall $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl -lguichan $(OPENGL_LIBS) -lphysfs $(CURL_LIBS)
 tmw_TARGET = tmw

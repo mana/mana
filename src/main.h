@@ -46,14 +46,17 @@
 #undef ERROR
 #endif
 
-#define EXIT        0
-#define LOGIN       1
-#define CHAR_SERVER 2
-#define CHAR_SELECT 3
-#define CHAR_NEW    4
-#define CHAR_DEL    5
-#define GAME        6
-#define ERROR       7
+enum {
+    EXIT,
+    LOGIN,
+    CHAR_SERVER,
+    CHAR_SELECT,
+    CHAR_NEW,
+    CHAR_DEL,
+    GAME,
+    ERROR,
+    UPDATE
+};
 
 /* length definitions for several char[]s in order
  * to be able to use strncpy instead of strcpy for

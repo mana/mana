@@ -21,25 +21,51 @@
  *  $Id$
  */
 
-#include "box.h"
+#ifndef _UPDATEWINDOW_H
+#define _UPDATEWINDOW_H
 
-Box::Box()
-    : padding(0),
-      gcn::Container()
-{
-    setOpaque(false);
-}
+#include "gui.h"
+#include "window.h"
+#include "vbox.h"
+#include "progressbar.h"
 
-Box::~Box()
+/**
+ * Update progress window GUI
+ *
+ * \ingroup GUI
+ */
+class UpdateWindow : public Window
 {
-}
+ protected:
+    std::string labelText; /*< Text for caption label */
+    double progress; /*< Progress */
 
-unsigned int Box::getPadding()
-{
-    return padding;
-}
+    VBox *vbox;
+    gcn::Label *label; /*< Progress bar caption */
+    ProgressBar *progressBar; /*< Update progress bar */
 
-void Box::setPadding(unsigned int p)
-{
-    padding = p;
-}
+ public:
+    /**
+     * Constructor
+     */
+    UpdateWindow();
+
+    /**
+     * Destructor
+     */
+    ~UpdateWindow();
+
+    /**
+     * Set's progress bar status
+     */
+    void setProgress(double);
+
+    /**
+     * Set's label above progress
+     */
+    void setLabel(const std::string &);
+
+    void draw(gcn::Graphics *);
+};
+
+#endif

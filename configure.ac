@@ -22,6 +22,13 @@ AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.sf.net)]))
 AC_CHECK_LIB([physfs], [PHYSFS_init], ,
 AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))
 
+AC_CHECK_LIB([curl], [curl_global_init], ,
+AC_MSG_ERROR([ *** Unable to find CURL library (http://curl.haxx.se/)]))
+CURL_LIBS=" `curl-config --libs`"
+CURL_CFLAGS=" `curl-config --cflags` "
+AC_SUBST(CURL_LIBS)
+AC_SUBST(CURL_CFLAGS)
+
 AC_CHECK_LIB([xml2], [xmlInitParser], ,
 AC_MSG_ERROR([ *** Unable to find libxml2 library (xmlsoft.org)]))
 
@@ -129,7 +136,7 @@ FIND_PATH(sdl-config, LIBSDL_CONFIG, [${prefix}/bin ${exec_prefix}/bin /usr/loca
 ])
 
 if test -n "$LIBSDL_CONFIG"; then
-  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer"
+  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer -lpthread "
   LIBSDL_CFLAGS="`$LIBSDL_CONFIG --cflags`"
 
   AC_DEFINE_UNQUOTED(HAVE_LIBSDL, 1, [Defines if your system has the LIBSDL library])

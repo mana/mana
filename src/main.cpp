@@ -26,17 +26,21 @@
 #include "gui/char_select.h"
 #include "gui/inventory.h"
 #include "gui/ok_dialog.h"
+#include "gui/updatewindow.h"
 #include "sound.h"
 #include "graphics.h"
 #include "resources/resourcemanager.h"
 #include "net/protocol.h"
 
 #include <iostream>
+#include <cstdio>
 #include <guichan.hpp>
 #include <physfs.h>
 #include <libxml/xmlversion.h>
 #include <libxml/parser.h>
+#include <curl/curl.h>
 #include <SDL.h>
+#include <SDL_thread.h>
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>
 #endif
@@ -77,6 +81,8 @@ Music *bgm;
 Configuration config;        /**< Xml file configuration reader */
 Logger *logger;              /**< Log object */
 ItemManager *itemDb;          /**< Item database object */
+
+UpdateWindow *updateWindow;  /**< Update window */
 
 /**
  * Allows the next frame to be drawn (part of framerate limiting)
@@ -174,6 +180,7 @@ void init_engine()
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 0);
+    config.setValue("updatehost", "http://themanaworld.org/");
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
@@ -296,7 +303,7 @@ void init_engine()
     hairset = new Spriteset(hairImg, 40, 40);
 
     gui = new Gui(graphics);
-    state = LOGIN;
+    state = UPDATE; /**< Initial game state */
 
     // Initialize sound engine
     try {
@@ -338,6 +345,153 @@ void exit_engine()
     delete logger;
 }
 
+/** Update progress callback */
+int progressCallback(void *clientp, double dltotal, double dlnow,
+		      double utotal, double ulnow)
+{
+    // update progress bar..
+    updateWindow->setProgress(dlnow / dltotal);
+
+    // draw
+    gui->logic();
+    gui->draw();
+    graphics->updateScreen();
+    return CURLE_OK;
+}
+
+/** Get filename from URL */
+const char *urlFilename(const char *url)
+{
+    for (int i = strlen(url); i > 0; i--)
+	if (url[i] == '/')
+	    return &url[i+1];
+    return NULL;
+}
+
+/** Download file from location */
+int download(const char *location)
+{
+    if (location == NULL)
+	return false;
+    // find local file location
+    const char *name = urlFilename(location);
+    if (!name)
+	return true;
+
+    std::string dest = homeDir;
+    dest += "/";
+    dest += name;
+
+    FILE *fp = NULL;
+    fp = fopen(dest.c_str(), "w");
+    if (!fp)
+	return false;
+
+    std::cout << "Downloading '" << location << "'";
+
+    // init curl
+    curl_global_init(CURL_GLOBAL_ALL);
+
+    // download file
+    CURL *curl = curl_easy_init();
+    curl_easy_setopt(curl, CURLOPT_URL, location);
+    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
+    curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
+    curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
+    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+    int ret = curl_easy_perform(curl);
+    curl_easy_cleanup(curl);
+
+    // cleanup curl
+    curl_global_cleanup();
+
+    fclose(fp);
+
+    if (ret != 0)
+	std::cout << " failed";
+    std::cout << " (" << ret << ")" << std::endl;
+
+    return (ret == CURLE_OK) ? true : false;
+}
+
+/** Check to see if a file exists */
+int exists(const std::string &file)
+{
+    FILE *fp = NULL;
+    fp = fopen(file.c_str(), "r");
+    if (!fp) {
+	return false;
+    } else {
+	fclose(fp);
+	return true;
+    }
+}
+
+/** Update the game data */
+void update()
+{
+    updateWindow = new UpdateWindow();
+    //guiTop->add(updateWindow);
+
+    std::string host = config.getValue("updatehost", "http://themanaworld.org");
+
+    std::string fullLocation = host;
+    fullLocation += "/";
+    fullLocation += "resources.txt";
+
+    std::string fullName = homeDir;
+    fullName += "/";
+    fullName += "resources.txt";
+
+    updateWindow->setLabel(fullLocation);
+
+    // get resources file
+    if (!download(fullLocation.c_str())) {
+	std::cout << "Error downloading" << std::endl;
+	guiTop->remove(updateWindow);
+	delete updateWindow;
+	return;
+    }
+
+    std::cout << "Opening " << fullName << std::endl;
+
+    std::ifstream in(fullName.c_str());
+    if (!in.is_open()) {
+	std::cout << "Error opening" << std::endl;
+	guiTop->remove(updateWindow);
+	delete updateWindow;
+	return;
+    }
+
+    char line[1024] = "";
+    while (!in.eof()) {
+	in.getline(line, 1024);
+
+	fullName = homeDir;
+	fullName += "/";
+	fullName += line;
+
+	fullLocation = host;
+	fullLocation += "/";
+	fullLocation += line;
+
+	updateWindow->setLabel(fullLocation);
+
+	if (!exists(fullName)) {
+	    if (!download(fullLocation.c_str())) {
+		std::cout << "Failed to download " << line << std::endl;
+	    }
+	}
+	if (exists(fullName))
+	    PHYSFS_addToSearchPath(fullName.c_str(), 1);
+    }
+
+    in.close();
+
+    guiTop->remove(updateWindow);
+    delete updateWindow;
+}
+
 /** Main */
 int main(int argc, char *argv[])
 {
@@ -354,6 +508,8 @@ int main(int argc, char *argv[])
     PHYSFS_init(argv[0]);
 
     init_engine();
+
+
 
     SDL_Event event;
 
@@ -407,6 +563,10 @@ int main(int argc, char *argv[])
                 gui->draw();
                 graphics->updateScreen();
                 break;
+	    case UPDATE:
+		update();
+		state = LOGIN;
+		break;
             default:
                 state = EXIT;
                 break;
