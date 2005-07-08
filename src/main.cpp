@@ -140,17 +140,9 @@ void init_engine()
     strcpy(homeDir, "");
 #else
     // In UNIX we store data in ~/.tmw/
-    char *name = getlogin();
-    passwd *pass;
+    passwd *pass = getpwuid(geteuid());
 
-    if (name != NULL) {
-        pass = getpwnam(name);
-    }
-    else {
-        pass = getpwuid(geteuid());
-    }
-
-    if (pass == NULL) {
+    if (pass == NULL || pass->pw_dir == NULL) {
         printf("Couldn't determine the user home directory. Exitting.\n");
         exit(1);
     }
@@ -346,8 +338,9 @@ void exit_engine()
 }
 
 /** Update progress callback */
-int progressCallback(void *clientp, double dltotal, double dlnow,
-		      double utotal, double ulnow)
+int
+progressCallback(void *clientp, double dltotal, double dlnow,
+                 double utotal, double ulnow)
 {
     // update progress bar..
     updateWindow->setProgress(dlnow / dltotal);
@@ -363,20 +356,25 @@ int progressCallback(void *clientp, double dltotal, double dlnow,
 const char *urlFilename(const char *url)
 {
     for (int i = strlen(url); i > 0; i--)
-	if (url[i] == '/')
-	    return &url[i+1];
+    {
+        if (url[i] == '/') {
+            return &url[i+1];
+        }
+    }
     return NULL;
 }
 
 /** Download file from location */
 int download(const char *location)
 {
-    if (location == NULL)
-	return false;
+    if (location == NULL) {
+        return false;
+    }
     // find local file location
     const char *name = urlFilename(location);
-    if (!name)
-	return true;
+    if (!name) {
+        return true;
+    }
 
     std::string dest = homeDir;
     dest += "/";
@@ -384,8 +382,9 @@ int download(const char *location)
 
     FILE *fp = NULL;
     fp = fopen(dest.c_str(), "w");
-    if (!fp)
-	return false;
+    if (!fp) {
+        return false;
+    }
 
     std::cout << "Downloading '" << location << "'";
 
@@ -407,8 +406,9 @@ int download(const char *location)
 
     fclose(fp);
 
-    if (ret != 0)
-	std::cout << " failed";
+    if (ret != 0) {
+        std::cout << " failed";
+    }
     std::cout << " (" << ret << ")" << std::endl;
 
     return (ret == CURLE_OK) ? true : false;
@@ -420,10 +420,10 @@ int exists(const std::string &file)
     FILE *fp = NULL;
     fp = fopen(file.c_str(), "r");
     if (!fp) {
-	return false;
+        return false;
     } else {
-	fclose(fp);
-	return true;
+        fclose(fp);
+        return true;
     }
 }
 
@@ -431,12 +431,17 @@ int exists(const std::string &file)
 void update()
 {
     updateWindow = new UpdateWindow();
-    //guiTop->add(updateWindow);
 
-    std::string host = config.getValue("updatehost", "http://themanaworld.org");
+    std::string host =
+        config.getValue("updatehost", "http://themanaworld.org/");
+
+    // Add / to host if it's not there yet.
+    if (host.at(host.length() - 1) != '/')
+    {
+        host += "/";
+    }
 
     std::string fullLocation = host;
-    fullLocation += "/";
     fullLocation += "resources.txt";
 
     std::string fullName = homeDir;
@@ -447,43 +452,43 @@ void update()
 
     // get resources file
     if (!download(fullLocation.c_str())) {
-	std::cout << "Error downloading" << std::endl;
-	guiTop->remove(updateWindow);
-	delete updateWindow;
-	return;
+        std::cout << "Error downloading" << std::endl;
+        delete updateWindow;
+        return;
     }
 
     std::cout << "Opening " << fullName << std::endl;
 
     std::ifstream in(fullName.c_str());
     if (!in.is_open()) {
-	std::cout << "Error opening" << std::endl;
-	guiTop->remove(updateWindow);
-	delete updateWindow;
-	return;
+        std::cout << "Error opening" << std::endl;
+        delete updateWindow;
+        return;
     }
 
-    char line[1024] = "";
-    while (!in.eof()) {
-	in.getline(line, 1024);
+    std::string line;
 
-	fullName = homeDir;
-	fullName += "/";
-	fullName += line;
+    while (!in.eof())
+    {
+        getline(in, line);
 
-	fullLocation = host;
-	fullLocation += "/";
-	fullLocation += line;
+        fullName = homeDir;
+        fullName += "/";
+        fullName += line;
 
-	updateWindow->setLabel(fullLocation);
+        fullLocation = host;
+        fullLocation += line;
 
-	if (!exists(fullName)) {
-	    if (!download(fullLocation.c_str())) {
-		std::cout << "Failed to download " << line << std::endl;
-	    }
-	}
-	if (exists(fullName))
-	    PHYSFS_addToSearchPath(fullName.c_str(), 1);
+        updateWindow->setLabel(fullLocation);
+
+        if (!exists(fullName)) {
+            if (!download(fullLocation.c_str())) {
+                std::cout << "Failed to download " << line << std::endl;
+            }
+        }
+        if (exists(fullName)) {
+            PHYSFS_addToSearchPath(fullName.c_str(), 1);
+        }
     }
 
     in.close();
@@ -508,7 +513,6 @@ int main(int argc, char *argv[])
     PHYSFS_init(argv[0]);
 
     init_engine();
-
 
 
     SDL_Event event;
@@ -563,10 +567,10 @@ int main(int argc, char *argv[])
                 gui->draw();
                 graphics->updateScreen();
                 break;
-	    case UPDATE:
-		update();
-		state = LOGIN;
-		break;
+            case UPDATE:
+                update();
+                state = LOGIN;
+                break;
             default:
                 state = EXIT;
                 break;
@@ -577,36 +581,3 @@ int main(int argc, char *argv[])
     PHYSFS_deinit();
     return 0;
 }
-
-// GetSkill Function
-// Retrieves the level of the skill for the ID value given.
-// This function also increases the XP of the skill by the given parameter.
-// Call n_base to return the actual value, regardless of equipment modifiers.
-// ---by Kyokai
-/*
-int PLAYER_INFO::GetSkill(int n_ID, int n_XP, int n_base)
-{
-    if (n_ID > N_SKILLS || n_ID < 0) // out of cheese error, abort function
-        return 0;
-    // 1. raise the exp value
-    m_Skill[n_ID].exp += (short)(n_XP * m_Skill[n_ID].mod);
-
-    // 2. Check for level up
-    if (m_Skill[n_ID].exp >= 20 * ((m_Skill[n_ID].level)^(6/5)))
-    {
-        m_Skill[n_ID].level += 1;
-        m_Skill[n_ID].exp = 0;
-        // TO DO: send the user a message that tells him his
-        // skill just leveled up!
-    }
-
-    // 3. getting the return value
-    int r = m_Skill[n_ID].level;
-    if (n_base)
-    {
-        // TO DO: alter values based on equipment bonuses
-    }
-
-    return r; // return the value
-}
-*/

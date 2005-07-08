@@ -37,12 +37,12 @@
 class UpdateWindow : public Window
 {
  protected:
-    std::string labelText; /*< Text for caption label */
-    double progress; /*< Progress */
+    std::string labelText;       /**< Text for caption label */
+    double progress;             /**< Progress */
 
     VBox *vbox;
-    gcn::Label *label; /*< Progress bar caption */
-    ProgressBar *progressBar; /*< Update progress bar */
+    gcn::Label *label;           /**< Progress bar caption */
+    ProgressBar *progressBar;    /**< Update progress bar */
 
  public:
     /**
