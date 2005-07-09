@@ -1,9 +1,9 @@
-tmw (0.0.14-2) unstable; urgency=low
+tmw (0.0.14.1-1) unstable; urgency=low
 
   * Bug Fix Release
   * Adding the two missing maps
   * Fixed a potential crash
-  * Now compiled against gcc-4.0.1
+  * Now compiled against gcc-4.0.0-1
 
  -- FERREIRA Yohann <bertram@cegetel.net>  Thu, 7 Jul 2005 20:08:20 +0200
 
