@@ -89,7 +89,17 @@ Gui::Gui(Graphics *graphics)
     }
     catch (gcn::Exception e)
     {
+      try {
+	guiFont = new gcn::ImageFont(
+	        "data/graphics/gui/fixedfont.png",
+		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
+		"89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`ше"
+		);
+      }
+      catch (gcn::Exception e)
+      {
         logger->error("Unable to load fixedfont.png!");
+      }
     }
     
     gcn::Widget::setGlobalFont(guiFont);
@@ -108,7 +118,21 @@ Gui::Gui(Graphics *graphics)
     }
     catch (gcn::Exception e)
     {
+      try {
+        hitRedFont = new gcn::ImageFont(
+                "data/graphics/gui/hits_red.png",
+                "0123456789");
+        hitBlueFont = new gcn::ImageFont(
+                "data/graphics/gui/hits_blue.png",
+                "0123456789");
+        hitYellowFont = new gcn::ImageFont(
+                "data/graphics/gui/hits_yellow.png",
+                "mis");
+      }
+      catch (gcn::Exception e)
+      {
         logger->error("Unable to load colored hits' fonts!");
+      }
     }
 }
 
