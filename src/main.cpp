@@ -471,6 +471,12 @@ void update()
     while (!in.eof())
     {
         getline(in, line);
+	
+	// check for XML tag (if it is XML tag it is error)
+	if (line[0] == '<') {
+	    std::cout << "Error: resources.txt download error (404)" << std::endl;
+	    break;
+	}
 
         fullName = homeDir;
         fullName += "/";
