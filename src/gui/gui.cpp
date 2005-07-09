@@ -82,17 +82,10 @@ Gui::Gui(Graphics *graphics)
     // Set global font
     try {
         guiFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/fixedfont.png",
+                "data/graphics/gui/fixedfont.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                 "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`ше"
                 );
-        /*
-        guiFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/rpgfont.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                "89_,!?-+/():;%&`'*#=[]\""
-                );
-        */
     }
     catch (gcn::Exception e)
     {

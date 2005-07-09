@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=141
+UnitCount=147
 Type=0
 Ver=1
 ObjFiles=
@@ -12,7 +12,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=-Dmain=SDL_main_@@_
 CppCompiler=-funroll-loops_@@_-ffast-math_@@_-fomit-frame-pointer_@@_-pipe_@@_-DUSE_OPENGL_@@_
-Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurldll_@@_
 IsCpp=1
 Icon=The Mana World.ico
 ExeOutput=
@@ -32,19 +32,19 @@ CompilerSettings=0010001001001001001101
 [VersionInfo]
 Major=0
 Minor=0
-Release=12
+Release=14
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.12
+FileVersion=0.0.14
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2005 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.12
+ProductVersion=0.0.14
 AutoIncBuildNr=0
 
 [Unit8]
@@ -1459,6 +1459,66 @@ BuildCmd=
 
 [Unit141]
 FileName=src\gui\browserbox.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit142]
+FileName=src\gui\updatewindow.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit143]
+FileName=src\gui\updatewindow.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit144]
+FileName=src\gui\vbox.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit145]
+FileName=src\gui\vbox.h
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit146]
+FileName=src\gui\box.cpp
+CompileCpp=1
+Folder=gui
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit147]
+FileName=src\gui\box.h
 CompileCpp=1
 Folder=gui
 Compile=1

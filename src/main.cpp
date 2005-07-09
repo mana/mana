@@ -24,7 +24,6 @@
 #include "main.h"
 #include "gui/char_server.h"
 #include "gui/char_select.h"
-#include "gui/inventory.h"
 #include "gui/ok_dialog.h"
 #include "gui/updatewindow.h"
 #include "sound.h"
@@ -82,7 +81,7 @@ Configuration config;        /**< Xml file configuration reader */
 Logger *logger;              /**< Log object */
 ItemManager *itemDb;          /**< Item database object */
 
-UpdateWindow *updateWindow;  /**< Update window */
+UpdaterWindow *updaterWindow;  /**< Update window */
 
 /**
  * Allows the next frame to be drawn (part of framerate limiting)
@@ -343,7 +342,7 @@ progressCallback(void *clientp, double dltotal, double dlnow,
                  double utotal, double ulnow)
 {
     // update progress bar..
-    updateWindow->setProgress(dlnow / dltotal);
+    updaterWindow->setProgress(dlnow / dltotal);
 
     // draw
     gui->logic();
@@ -386,32 +385,36 @@ int download(const char *location)
         return false;
     }
 
-    std::cout << "Downloading '" << location << "'";
+    std::cout << "Downloading '" << location << "'" << std::endl;
 
     // init curl
     curl_global_init(CURL_GLOBAL_ALL);
-
     // download file
     CURL *curl = curl_easy_init();
+
     curl_easy_setopt(curl, CURLOPT_URL, location);
-    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
-    curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
-    curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-    int ret = curl_easy_perform(curl);
+    //curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
+    //curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
+    //curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
+
+    //curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        
+    //int ret = curl_easy_perform(curl);
+
     curl_easy_cleanup(curl);
+
 
     // cleanup curl
     curl_global_cleanup();
 
     fclose(fp);
 
-    if (ret != 0) {
-        std::cout << " failed";
-    }
-    std::cout << " (" << ret << ")" << std::endl;
+    //if (ret != 0)
+        std::cout << "Failed!" << std::endl;
+    //std::cout << " (" << ret << ")" << std::endl;
 
-    return (ret == CURLE_OK) ? true : false;
+    //return (ret == CURLE_OK) ? true : false;
+    return true;
 }
 
 /** Check to see if a file exists */
@@ -419,9 +422,11 @@ int exists(const std::string &file)
 {
     FILE *fp = NULL;
     fp = fopen(file.c_str(), "r");
-    if (!fp) {
+    if (!fp)
+    {
         return false;
-    } else {
+    }
+    else {
         fclose(fp);
         return true;
     }
@@ -430,7 +435,7 @@ int exists(const std::string &file)
 /** Update the game data */
 void update()
 {
-    updateWindow = new UpdateWindow();
+    updaterWindow = new UpdaterWindow();
 
     std::string host =
         config.getValue("updatehost", "http://themanaworld.org/");
@@ -445,32 +450,36 @@ void update()
     fullLocation += "resources.txt";
 
     std::string fullName = homeDir;
-    fullName += "/";
+    //fullName += "/";
     fullName += "resources.txt";
 
-    updateWindow->setLabel(fullLocation);
+    updaterWindow->setLabel(fullLocation);
 
-    // get resources file
-    if (!download(fullLocation.c_str())) {
-        std::cout << "Error downloading" << std::endl;
-        delete updateWindow;
+    // Get resources file
+    if (!download(fullLocation.c_str()))
+    {
+        std::cout << "Error downloading resources.txt" << std::endl;
+        delete updaterWindow;
         return;
     }
 
     std::cout << "Opening " << fullName << std::endl;
-
-    std::ifstream in(fullName.c_str());
-    if (!in.is_open()) {
+    
+    std::ifstream *in;
+    
+    in = new std::ifstream(fullName.c_str());
+    if (in!=NULL && !in->is_open())
+    {
         std::cout << "Error opening" << std::endl;
-        delete updateWindow;
+        delete updaterWindow;
         return;
     }
 
     std::string line;
 
-    while (!in.eof())
+    while (!in->eof())
     {
-        getline(in, line);
+        getline(*in, line);
 	
 	// check for XML tag (if it is XML tag it is error)
 	if (line[0] == '<') {
@@ -481,26 +490,24 @@ void update()
         fullName = homeDir;
         fullName += "/";
         fullName += line;
-
+        
         fullLocation = host;
-        fullLocation += line;
-
-        updateWindow->setLabel(fullLocation);
-
+       	fullLocation += line;
+       	
+        updaterWindow->setLabel(fullLocation);
+        
         if (!exists(fullName)) {
             if (!download(fullLocation.c_str())) {
                 std::cout << "Failed to download " << line << std::endl;
             }
         }
-        if (exists(fullName)) {
+        else {
             PHYSFS_addToSearchPath(fullName.c_str(), 1);
         }
     }
-
-    in.close();
-
-    guiTop->remove(updateWindow);
-    delete updateWindow;
+    in->close();
+    guiTop->remove(updaterWindow);
+    delete updaterWindow;
 }
 
 /** Main */

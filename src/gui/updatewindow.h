@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _UPDATEWINDOW_H
-#define _UPDATEWINDOW_H
+#ifndef _UPDATERWINDOW_H
+#define _UPDATERWINDOW_H
 
 #include "gui.h"
 #include "window.h"
@@ -34,7 +34,7 @@
  *
  * \ingroup GUI
  */
-class UpdateWindow : public Window
+class UpdaterWindow : public Window
 {
  protected:
     std::string labelText;       /**< Text for caption label */
@@ -48,12 +48,12 @@ class UpdateWindow : public Window
     /**
      * Constructor
      */
-    UpdateWindow();
+    UpdaterWindow();
 
     /**
      * Destructor
      */
-    ~UpdateWindow();
+    ~UpdaterWindow();
 
     /**
      * Set's progress bar status

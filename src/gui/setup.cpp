@@ -215,12 +215,12 @@ void Setup::action(const std::string &eventId)
             displayFlags &= ~SDL_FULLSCREEN;
             changed = true;
         }
-        
+
         if(changed) {
             displayFlags |= SDL_DOUBLEBUF;
             if (useOpenGL) {
-                displayFlags |= SDL_OPENGL;
-                SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+                //displayFlags |= SDL_OPENGL;
+                //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
             }
             
             screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
@@ -228,7 +228,7 @@ void Setup::action(const std::string &eventId)
                 std::cerr << "Couldn't set " << screenW << "x" <<
                     screenH << "x" << bitDepth << " video mode: " <<
                     SDL_GetError() << std::endl;
-            exit(1);
+                exit(1);
             }
         }
 

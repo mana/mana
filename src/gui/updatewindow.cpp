@@ -24,7 +24,7 @@
 #include "updatewindow.h"
 #include <sstream>
 
-UpdateWindow::UpdateWindow()
+UpdaterWindow::UpdaterWindow()
     : Window("Updating")
 {
     setContentSize(320, 96);
@@ -42,24 +42,24 @@ UpdateWindow::UpdateWindow()
     add(vbox);
 }
 
-UpdateWindow::~UpdateWindow()
+UpdaterWindow::~UpdaterWindow()
 {
     delete label;
     delete progressBar;
     delete vbox;
 }
 
-void UpdateWindow::setProgress(double p)
+void UpdaterWindow::setProgress(double p)
 {
     progress = p;
 }
 
-void UpdateWindow::setLabel(const std::string &str)
+void UpdaterWindow::setLabel(const std::string &str)
 {
     labelText = str;
 }
 
-void UpdateWindow::draw(gcn::Graphics *graphics)
+void UpdaterWindow::draw(gcn::Graphics *graphics)
 {
     std::stringstream ss;
     ss << labelText << " (" << progress * 100 << "%)";
