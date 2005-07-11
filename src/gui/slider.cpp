@@ -22,8 +22,8 @@
  */
 
 #include "slider.h"
-#include "../resources/resourcemanager.h"
 #include "../graphics.h"
+#include "../resources/resourcemanager.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;
 Image *Slider::vStart, *Slider::vMid, *Slider::vEnd, *Slider::vGrip;

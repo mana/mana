@@ -22,14 +22,14 @@
  */
 
 #include "sell.h"
+#include "inventory.h"
 #include "button.h"
 #include "slider.h"
 #include "scrollarea.h"
 #include "listbox.h"
-#include "../graphics.h"
 #include "../game.h"
-#include "../engine.h"
 #include "../net/network.h"
+#include "../resources/itemmanager.h"
 
 #include <sstream>
 

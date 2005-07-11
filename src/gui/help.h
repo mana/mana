@@ -69,4 +69,6 @@ class HelpWindow : public Window, public LinkHandler,
         gcn::ScrollArea *scrollArea;
 };
 
+extern HelpWindow *helpWindow;
+
 #endif

@@ -24,7 +24,6 @@
 #ifndef _OK_DIALOG_H
 #define _OK_DIALOG_H
 
-#include "gui.h"
 #include "window.h"
 
 /**

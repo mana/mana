@@ -24,7 +24,7 @@
 #ifndef _TMW_RADIOBUTTON_H
 #define _TMW_RADIOBUTTON_H
 
-#include "gui.h"
+#include <guichan.hpp>
 #include "../resources/image.h"
 
 /*

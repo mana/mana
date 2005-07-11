@@ -23,7 +23,7 @@
 
 #include "sound.h"
 #include "log.h"
-#include "main.h"
+#include "resources/resourcemanager.h"
 
 Sound::Sound():
     installed(false),

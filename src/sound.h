@@ -28,8 +28,6 @@
 #include <SDL.h>
 #include <SDL_mixer.h>
 
-#include "resources/resourcemanager.h"
-
 /** Sound engine
  *
  * \ingroup CORE

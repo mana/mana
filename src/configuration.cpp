@@ -24,7 +24,6 @@
 
 #include "configuration.h"
 #include "log.h"
-#include "main.h"
 
 #include <math.h>
 #include <iostream>

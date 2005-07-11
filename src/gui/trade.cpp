@@ -21,17 +21,16 @@
  *  $Id $
  */
 
-#include "../main.h"
-#include "../graphics.h"
 #include "trade.h"
+#include "equipment.h"
+#include "inventory.h"
+#include "chat.h"
 #include "item_amount.h"
-#include "../resources/resourcemanager.h"
-#include "../resources/image.h"
 #include "button.h"
 #include "scrollarea.h"
 #include "textfield.h"
-#include "../being.h"
-#include "../engine.h"
+#include "../net/network.h"
+#include "../resources/itemmanager.h"
 #include <sstream>
 
 TradeWindow::TradeWindow():

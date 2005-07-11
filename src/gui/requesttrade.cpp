@@ -23,7 +23,6 @@
 
 #include "requesttrade.h"
 #include "button.h"
-#include "../game.h"
 #include "../net/network.h"
 
 RequestTradeDialog::RequestTradeDialog(const char *name):

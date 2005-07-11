@@ -72,4 +72,6 @@ class StatsWindow : public Window, public gcn::ActionListener {
         gcn::Button *statsButton[6];
 };
 
+extern StatsWindow *statsWindow;
+
 #endif /* _TMW_STATS_WINDOW_H */

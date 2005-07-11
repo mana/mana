@@ -22,7 +22,6 @@
  */
 
 #include "soundeffect.h"
-#include "resourcemanager.h"
 
 SoundEffect::SoundEffect(Mix_Chunk *soundEffect):
     soundEffect(soundEffect)

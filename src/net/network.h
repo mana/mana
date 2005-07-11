@@ -31,7 +31,6 @@
 #endif
 
 #include <stdio.h>
-#include "../log.h"
 
 #ifdef MACOSX
 #include "win2mac.h"

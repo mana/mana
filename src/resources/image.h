@@ -29,7 +29,6 @@
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>
 #endif
-#include <string>
 
 
 /**

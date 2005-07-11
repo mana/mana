@@ -25,7 +25,7 @@
 #include "scrollarea.h"
 #include "button.h"
 #include "textbox.h"
-#include "../main.h"
+#include "../log.h"
 #include "../resources/resourcemanager.h"
 
 HelpWindow::HelpWindow():

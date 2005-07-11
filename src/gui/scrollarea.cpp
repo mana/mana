@@ -22,9 +22,7 @@
  */
 
 #include "scrollarea.h"
-#include "gui.h"
 #include "../resources/resourcemanager.h"
-#include "../main.h"
 
 int ScrollArea::instances = 0;
 ImageRect ScrollArea::background;

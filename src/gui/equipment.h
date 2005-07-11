@@ -25,7 +25,6 @@
 #define _TMW_EQUIPMENT_H 
 
 #include "../graphic/spriteset.h"
-#include "gui.h"
 #include "window.h"
 
 typedef struct {
@@ -81,5 +80,7 @@ class EquipmentWindow : public Window, gcn::ActionListener {
         Spriteset *itemset;
 
 };
+
+extern EquipmentWindow *equipmentWindow;
 
 #endif

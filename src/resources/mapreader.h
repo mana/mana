@@ -26,7 +26,6 @@
 
 #include "../map.h"
 #include "../graphic/spriteset.h"
-#include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <vector>
 

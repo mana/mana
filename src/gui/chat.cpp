@@ -26,9 +26,10 @@
 #include "textbox.h"
 #include "chatinput.h"
 #include "gui.h"
-#include "../graphics.h"
-#include "../main.h"
+#include "../playerinfo.h"
+#include "../net/network.h"
 #include <iostream>
+#include <guichan.hpp>
 
 ChatWindow::ChatWindow(const std::string &logfile):
     Window("")

@@ -23,13 +23,11 @@
  
 #include <guichan.hpp>
  
-#include <libxml/parser.h>
 #include <libxml/tree.h>
 #include <iostream>
 
 #include "itemmanager.h"
 #include "resourcemanager.h"
-#include "../main.h"
 #include "../log.h"
 
 // MSVC libxml2 at the moment doesn't work right when using MinGW, missing this

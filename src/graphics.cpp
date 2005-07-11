@@ -22,9 +22,11 @@
  */
 
 #include "graphics.h"
-#include "log.h"
 #include "resources/resourcemanager.h"
 #include "main.h"
+#include "log.h"
+
+extern volatile int framesToDraw;
 
 SDL_Surface *screen;
 

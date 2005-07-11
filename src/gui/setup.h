@@ -25,7 +25,6 @@
 #define _TMW_SETUP_H
 
 #include "window.h"
-#include "../sound.h"
 
 /**
  * The list model for mode list.
@@ -98,5 +97,7 @@ class Setup : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
 };
+
+extern Setup *setupWindow;
 
 #endif

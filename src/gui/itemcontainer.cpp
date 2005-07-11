@@ -21,9 +21,12 @@
  *  $Id$
  */
 
-#include "../main.h"
 #include "itemcontainer.h"
+#include "../main.h"
+#include "../log.h"
+#include "../graphics.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/itemmanager.h"
 #include <sstream>
 
 ItemContainer::ItemContainer()

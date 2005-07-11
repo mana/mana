@@ -25,7 +25,7 @@
 #include "listbox.h"
 #include "scrollarea.h"
 #include "button.h"
-#include "../main.h"
+#include "../playerinfo.h"
 #include "../net/network.h"
 
 char *skill_db[] = {

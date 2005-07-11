@@ -24,10 +24,7 @@
 #ifndef _TMW_SPRITESET_H
 #define _TMW_SPRITESET_H
 
-#include <string>
 #include <vector>
-#include <iostream>
-#include "../log.h"
 #include "../resources/image.h"
 
 /**

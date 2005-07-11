@@ -21,15 +21,16 @@
  *  $Id$
  */
 
-#include "chatinput.h"
-#include "../graphics.h"
+#ifndef _TMW_SERVERINFO_H
+#define _TMW_SERVERINFO_H
 
-ChatInput::ChatInput()
-{
-    setVisible(false);
-}
+typedef struct {
+    int address;
+    short port;
+    char name[20];
+    short online_users;
+} SERVER_INFO;
 
-void ChatInput::lostFocus()
-{
-    setVisible(false);
-}
+extern SERVER_INFO *server_info;
+
+#endif

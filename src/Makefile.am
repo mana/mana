@@ -144,6 +144,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      main.h \
 	      map.cpp\
 	      map.h \
+	      playerinfo.h \
+	      serverinfo.h \
 	      sound.cpp \
 	      sound.h
 

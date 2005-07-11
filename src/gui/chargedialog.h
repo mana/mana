@@ -54,4 +54,6 @@ class ChargeDialog : public Window, public gcn::ActionListener
         void draw(gcn::Graphics *graphics);
 };
 
+extern ChargeDialog* chargeDialog;
+
 #endif

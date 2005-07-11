@@ -101,4 +101,6 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int money;
 };
 
+extern BuyDialog *buyDialog;
+
 #endif

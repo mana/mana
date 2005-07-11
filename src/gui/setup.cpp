@@ -26,9 +26,9 @@
 #include "checkbox.h"
 #include "scrollarea.h"
 #include "listbox.h"
-#include "radiobutton.h"
 #include "slider.h"
 #include "ok_dialog.h"
+#include "../log.h"
 #include "../main.h"
 #include <sstream>
 

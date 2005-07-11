@@ -75,4 +75,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         gcn::ScrollArea *scrollArea;
 };
 
+extern NpcTextDialog *npcTextDialog;
+
 #endif

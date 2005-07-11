@@ -22,9 +22,9 @@
  */
 
 #include "item_amount.h"
+#include "inventory.h"
+#include "trade.h"
 #include "button.h"
-#include "../engine.h"
-#include "../main.h"
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     Window("Select amount of items to drop.", true, parent)

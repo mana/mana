@@ -21,15 +21,14 @@
  *  $Id$
  */
 
-#include "../main.h"
 #include "char_select.h"
 #include "textfield.h"
 #include "button.h"
 #include "ok_dialog.h"
-#include "../being.h"
-#include "../graphics.h"
+#include "../main.h"
+#include "../game.h"
+#include "../log.h"
 #include "../net/protocol.h"
-#include "../resources/resourcemanager.h"
 #include <sstream>
 
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):

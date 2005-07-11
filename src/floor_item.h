@@ -24,7 +24,6 @@
 #ifndef _TMW_FLOORITEM_H
 #define _TMW_FLOORITEM_H
 
-#include "net/protocol.h"
 #include <list>
 
 class FloorItem {

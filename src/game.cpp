@@ -21,30 +21,42 @@
  *  $Id$
  */
 
-#include "engine.h"
+#include "game.h"
+#include "playerinfo.h"
 #include "floor_item.h"
-#include "graphics.h"
-#include "log.h"
 #include "main.h"
+#include "engine.h"
+#include "log.h"
 #include "map.h"
-#include "sound.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/inventory.h"
 #include "gui/shop.h"
 #include "gui/npc.h"
 #include "gui/stats.h"
+#include "gui/setup.h"
+#include "gui/equipment.h"
+#include "gui/popupmenu.h"
+#include "gui/npc_text.h"
+#include "gui/trade.h"
+#include "gui/status.h"
+#include "gui/buy.h"
+#include "gui/sell.h"
+#include "gui/buysell.h"
 #include "gui/ok_dialog.h"
 #include "gui/confirm_dialog.h"
 #include "gui/requesttrade.h"
 #include "gui/help.h"
 #include "gui/browserbox.h"
 #include "net/protocol.h"
+#include "net/network.h"
 #include "resources/mapreader.h"
 
 #include <SDL.h>
 #include <math.h>
 #include <sstream>
+
+extern Graphics *graphics;
 
 char map_path[480];
 
@@ -124,6 +136,8 @@ int get_elapsed_time(int start_time)
         return (tick_time + (MAX_TIME - start_time)) * 10;
     }
 }
+
+void do_init();
 
 void game()
 {

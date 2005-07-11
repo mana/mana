@@ -25,6 +25,7 @@
 #define __TMW_TEXTFIELD_H__
 
 #include <guichan.hpp>
+
 #include "../graphics.h"
 
 /**

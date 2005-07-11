@@ -89,4 +89,6 @@ class SellDialog : public Window, public gcn::ActionListener,
         int maxItems;
 };
 
+extern SellDialog *sellDialog;
+
 #endif

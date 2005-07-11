@@ -24,13 +24,6 @@
 #ifndef _TMW_GAME_H
 #define _TMW_GAME_H
 
-#include "main.h"
-#include "being.h"
-#include "engine.h"
-#include "./gui/gui.h"
-#include "./gui/skill.h"
-#include <stdio.h>
-
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
 
@@ -64,18 +57,11 @@ extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;
 extern int startX, startY;
-extern Being* autoTarget;
-extern Engine *engine;
 
 /**
  * Main game loop
  */
 void game();
-
-/**
- * Initialize game engine
- */
-void do_init();
 
 /**
  * Check user input

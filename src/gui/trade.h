@@ -24,11 +24,7 @@
 #ifndef _TMW_TRADE_H
 #define _TMW_TRADE_H
 
-#include "../log.h"
-#include "../net/network.h"
-#include "../graphic/spriteset.h"
 #include "itemcontainer.h"
-#include "gui.h"
 #include "window.h"
 #include "scrollarea.h"
 
@@ -117,5 +113,7 @@ class TradeWindow : public Window, gcn::ActionListener
         gcn::TextField *moneyField;
         bool ok_other, ok_me;
 };
+
+extern TradeWindow *tradeWindow;
 
 #endif

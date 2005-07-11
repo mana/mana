@@ -22,9 +22,8 @@
  */
 
 #include "playerbox.h"
-#include "gui.h"
-#include "../being.h"
 #include "../main.h"
+#include "../being.h"
 #include "../resources/resourcemanager.h"
 
 int PlayerBox::instances = 0;

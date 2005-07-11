@@ -25,11 +25,7 @@
   */
 
 #include "chargedialog.h"
-#include "listbox.h"
-#include "scrollarea.h"
-#include "button.h"
-#include "../main.h"
-#include <time.h>
+#include "../playerinfo.h"
 
 ChargeDialog::ChargeDialog():
     Window("")

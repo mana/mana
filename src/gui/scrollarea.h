@@ -26,7 +26,6 @@
 
 #include <guichan.hpp>
 #include "../graphics.h"
-#include "../configuration.h"
 
 /**
  * A scroll area.

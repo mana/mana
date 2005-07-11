@@ -26,8 +26,6 @@
 
 #include <guichan.hpp>
 #include <guichan/key.hpp>
-#include "../resources/image.h"
-#include "../net/network.h"
 #include "window.h"
 #include "scrollarea.h"
 #include "browserbox.h"
@@ -212,6 +210,8 @@ class ChatWindow : public Window, public gcn::ActionListener,
         std::list<std::string> history;           /**< Command history */
         std::list<std::string>::iterator curHist; /**< History iterator */
 };
+
+extern ChatWindow *chatWindow;
 
 #endif
 

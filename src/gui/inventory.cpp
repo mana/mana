@@ -21,16 +21,14 @@
  *  $Id$
  */
 
-#include "../main.h"
-#include "../graphics.h"
+#include "../playerinfo.h"
 #include "inventory.h"
-#include "../resources/resourcemanager.h"
-#include "../resources/image.h"
+#include "equipment.h"
 #include "button.h"
 #include "scrollarea.h"
-#include "../being.h"
-#include "../engine.h"
+#include "../net/network.h"
 #include "item_amount.h"
+#include "../resources/itemmanager.h"
 #include <string>
 
 InventoryWindow::InventoryWindow():

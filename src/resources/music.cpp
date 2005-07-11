@@ -22,7 +22,6 @@
  */
 
 #include "music.h"
-#include "resourcemanager.h"
 
 Music::Music(Mix_Chunk *music):
     music(music)

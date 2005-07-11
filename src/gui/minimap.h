@@ -24,9 +24,9 @@
 #ifndef _TMW_MINIMAP_H
 #define _TMW_MINIMAP_H 
 
-#include "../map.h"
-#include "gui.h"
 #include "window.h"
+#include "../map.h"
+#include "../resources/image.h"
 
 /**
  * Minimap dialog.

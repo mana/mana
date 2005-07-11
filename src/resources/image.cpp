@@ -21,13 +21,10 @@
  *  $Id$
  */
 
-#include "../main.h"
-#include "../graphics.h"
-#include "image.h"
 #include "../log.h"
+#include "image.h"
 #include <iostream>
 #include <SDL_image.h>
-#include "resourcemanager.h"
 
 #ifndef USE_OPENGL
 Image::Image(SDL_Surface *image):

@@ -22,7 +22,7 @@
  */
 
 #include "progressbar.h"
-#include "gui.h"
+#include "../graphics.h"
 #include "../resources/resourcemanager.h"
 
 ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,

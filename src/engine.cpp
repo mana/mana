@@ -21,19 +21,36 @@
  *  $Id$
  */
 
-#include "engine.h"
-#include "graphics.h"
-#include "gui/gui.h"
-#include "gui/textfield.h"
-#include "gui/minimap.h"
-#include "gui/chargedialog.h"
-#include "gui/itemcontainer.h"
-#include "gui/trade.h"
-//#include "gui/buddywindow.h"
-#include "gui/help.h"
+#include "game.h"
 #include "main.h"
+#include "playerinfo.h"
+#include "engine.h"
+#include "log.h"
 #include "being.h"
 #include "floor_item.h"
+#include "gui/gui.h"
+#include "gui/minimap.h"
+#include "gui/chargedialog.h"
+#include "gui/trade.h"
+#include "gui/chat.h"
+#include "gui/status.h"
+#include "gui/buy.h"
+#include "gui/sell.h"
+#include "gui/buysell.h"
+#include "gui/inventory.h"
+#include "gui/npc_text.h"
+#include "gui/npc.h"
+#include "gui/stats.h"
+#include "gui/setup.h"
+#include "gui/equipment.h"
+#include "gui/popupmenu.h"
+//#include "gui/buddywindow.h"
+#include "gui/help.h"
+#include "resources/resourcemanager.h"
+#include "resources/itemmanager.h"
+
+extern Being* autoTarget;
+extern Graphics* graphics;
 
 char itemCurrenyQ[10] = "0";
 int map_x, map_y, camera_x, camera_y;

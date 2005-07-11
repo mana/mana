@@ -25,7 +25,6 @@
 #define __TMW_BROWSERBOX_H__
 
 #include <guichan.hpp>
-#include "window.h"
 #include "linkhandler.h"
 
 struct BROWSER_LINK {

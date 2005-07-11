@@ -26,6 +26,7 @@
 #include "slider.h"
 #include "scrollarea.h"
 #include "listbox.h"
+#include "../resources/itemmanager.h"
 #include "../game.h"
 #include "../net/network.h"
 

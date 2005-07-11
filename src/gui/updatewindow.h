@@ -24,7 +24,6 @@
 #ifndef _UPDATERWINDOW_H
 #define _UPDATERWINDOW_H
 
-#include "gui.h"
 #include "window.h"
 #include "vbox.h"
 #include "progressbar.h"

@@ -24,50 +24,11 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
-#include "gui/npc.h"
-#include "gui/npc_text.h"
-#include "gui/buy.h"
-#include "gui/sell.h"
-#include "gui/buysell.h"
-//#include "gui/buddywindow.h"
-#include "gui/chat.h"
-#include "gui/inventory.h"
-#include "gui/shop.h"
-#include "gui/inventory.h"
-#include "gui/status.h"
-#include "gui/stats.h"
-#include "gui/skill.h"
-#include "gui/newskill.h"
-#include "gui/setup.h"
-#include "gui/equipment.h"
-#include "gui/chargedialog.h"
-#include "gui/trade.h"
-#include "gui/help.h"
-#include "gui/popupmenu.h"
-#include "resources/resourcemanager.h"
 #include "map.h"
 #include "graphic/spriteset.h"
 
 extern int map_x, map_y, camera_x, camera_y;
 
-extern ChatWindow *chatWindow;
-extern StatusWindow *statusWindow;
-extern BuyDialog *buyDialog;
-extern SellDialog *sellDialog;
-extern BuySellDialog *buySellDialog;
-extern InventoryWindow *inventoryWindow;
-extern NpcListDialog *npcListDialog;
-extern NpcTextDialog *npcTextDialog;
-extern SkillDialog *skillDialog;
-//extern NewSkillDialog *newSkillWindow;
-extern StatsWindow *statsWindow;
-extern Setup *setupWindow;
-extern EquipmentWindow *equipmentWindow;
-extern ChargeDialog* chargeDialog;
-extern TradeWindow *tradeWindow;
-//extern BuddyWindow *buddyWindow;
-extern HelpWindow *helpWindow;
-extern PopupMenu *popupMenu;
 extern std::map<int, Spriteset*> monsterset;
 char get_x_offset(char, char);
 char get_y_offset(char, char);
@@ -113,5 +74,7 @@ class Engine
         Map *mCurrentMap;
         Image *attackTarget;
 };
+
+extern Engine *engine;
 
 #endif

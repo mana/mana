@@ -21,13 +21,7 @@
  *  $Id$
  */
 
-#include "main.h"
 #include "map.h"
-#include "log.h"
-#include "resources/resourcemanager.h"
-#include "resources/mapreader.h"
-#include "graphic/spriteset.h"
-#include "net/network.h"
 
 #include <queue>
 

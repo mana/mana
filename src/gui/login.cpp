@@ -22,14 +22,15 @@
  */
 
 #include "login.h"
-#include "gui.h"
 #include "button.h"
 #include "checkbox.h"
 #include "textfield.h"
 #include "passwordfield.h"
 #include "ok_dialog.h"
-#include "../graphics.h"
+#include "gui.h"
 #include "../main.h"
+#include "../serverinfo.h"
+#include "../log.h"
 #include "../net/network.h"
 #include <string>
 

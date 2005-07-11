@@ -22,7 +22,6 @@
  */
 
 #include "passwordfield.h"
-#include "gui.h"
 
 
 PasswordField::PasswordField(const std::string& text):

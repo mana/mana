@@ -26,7 +26,6 @@
 
 #include <iostream>
 #include <guichan.hpp>
-#include "../graphics.h"
 #include "../resources/image.h"
 #include "../graphic/spriteset.h"
 

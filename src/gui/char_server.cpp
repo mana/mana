@@ -22,12 +22,16 @@
  */
 
 #include "char_server.h"
-#include "../graphics.h"
 #include "button.h"
-#include "window.h"
 #include "scrollarea.h"
 #include "listbox.h"
 #include "ok_dialog.h"
+#include "../log.h"
+#include "../main.h"
+#include "../playerinfo.h"
+#include "../serverinfo.h"
+#include "../net/network.h"
+#include "gui.h"
 
 char server[30];
 int showServerList = 1;

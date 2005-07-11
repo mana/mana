@@ -24,7 +24,7 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
-#include "../main.h"
+#include "../playerinfo.h"
 #include "../net/network.h"
 #include "gui.h"
 #include "confirm_dialog.h"

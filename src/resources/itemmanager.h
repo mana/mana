@@ -53,4 +53,6 @@ class ItemManager
         ItemInfo *unknown;
 };
 
+extern ItemManager *itemDb;
+
 #endif

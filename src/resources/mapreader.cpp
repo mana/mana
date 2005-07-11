@@ -21,9 +21,8 @@
  *  $Id$
  */
 
-#include "../main.h"
-#include "mapreader.h"
 #include "../log.h"
+#include "mapreader.h"
 #include "resourcemanager.h"
 #include "../graphic/spriteset.h"
 #include "../base64.h"

@@ -75,4 +75,6 @@ class PopupMenu : public Window, public LinkHandler
         FloorItem* floorItem;
 };
 
+extern PopupMenu *popupMenu;
+
 #endif

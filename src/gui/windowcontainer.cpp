@@ -23,7 +23,6 @@
 
 #include <iostream>
 #include "windowcontainer.h"
-#include "window.h"
 
 WindowContainer::WindowContainer()
 {

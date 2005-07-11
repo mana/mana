@@ -22,7 +22,6 @@
  */
 
 #include "floor_item.h"
-#include "game.h"
 
 std::list<FloorItem*> floorItems;
 

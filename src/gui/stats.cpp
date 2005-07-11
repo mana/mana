@@ -23,7 +23,7 @@
 
 #include "stats.h"
 #include "button.h"
-#include "../main.h"
+#include "../playerinfo.h"
 #include "../net/network.h"
 
 StatsWindow::StatsWindow():

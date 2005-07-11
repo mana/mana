@@ -24,7 +24,6 @@
 #include "minimap.h"
 #include "../being.h"
 #include "../resources/resourcemanager.h"
-#include "../graphics.h"
 
 Minimap::Minimap():
     Window("Map"),

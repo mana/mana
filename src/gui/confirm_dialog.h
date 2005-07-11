@@ -24,7 +24,6 @@
 #ifndef _TMW_OPTION_DIALOG_H
 #define _TMW_OPTION_DIALOG_H
 
-#include "gui.h"
 #include "window.h"
 
 /**

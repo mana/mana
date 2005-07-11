@@ -24,10 +24,8 @@
 #ifndef _TMW_WINDOW_H__
 #define _TMW_WINDOW_H__
 
-#include <iostream>
 #include <guichan.hpp>
 #include "windowcontainer.h"
-#include "../resources/image.h"
 #include "../graphics.h"
 #include "../configuration.h"
 

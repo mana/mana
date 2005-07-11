@@ -21,15 +21,29 @@
  *  $Id$
  */
 
-#include "chatinput.h"
-#include "../graphics.h"
+#ifndef _TMW_PLAYERINFO_H
+#define _TMW_PLAYERINFO_H
 
-ChatInput::ChatInput()
-{
-    setVisible(false);
-}
+#include "gui/skill.h"
 
-void ChatInput::lostFocus()
-{
-    setVisible(false);
-}
+typedef struct {
+    int id;
+    float lastAttackTime; // used to synchronize the charge dialog
+    char name[24];
+    short hp, max_hp, sp, max_sp, lv;
+    short statsPointsToAttribute;
+    int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
+    short statp, skill_point, hair_color, hair_style;
+    char STR, AGI, VIT, INT, DEX, LUK;
+    char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
+    int totalWeight, maxWeight;
+    short weapon;
+    // skill list declaration
+    std::vector<SKILL> m_Skill; // array of N_SKILLS skills
+    // gets the requested skills level from char_info
+    int GetSkill(int n_ID, int n_XP=2, int n_base = false); // implemented in the body (main.cpp)
+} PLAYER_INFO;
+
+extern PLAYER_INFO *char_info;
+
+#endif

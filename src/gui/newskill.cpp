@@ -26,10 +26,7 @@
   */
 
 #include "newskill.h"
-#include "listbox.h"
-#include "scrollarea.h"
 #include "button.h"
-#include "../main.h"
 
 char *skill_name[] = {
     // 0-99

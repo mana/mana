@@ -24,9 +24,6 @@
 #ifndef _CHAR_SEL_SERVER_H
 #define _CHAR_SEL_SERVER_H
 
-#include "../main.h"
-#include "../net/network.h"
-#include "gui.h"
 #include "window.h"
 
 

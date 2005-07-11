@@ -25,10 +25,13 @@
 #include "window.h"
 #include "windowcontainer.h"
 #include "focushandler.h"
-#include "../engine.h"
 #include "../net/protocol.h"
 #include "../main.h"
+#include "../engine.h"
 #include "../game.h"
+#include "../log.h"
+
+extern Being* autoTarget;
 
 // Guichan stuff
 Gui *gui;

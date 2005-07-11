@@ -65,4 +65,6 @@ class StatusWindow : public Window, public gcn::ActionListener {
 	gcn::Button *statsButton, *skillsButton, *inventoryButton, *setupButton, *equipmentButton;
 };
 
+extern StatusWindow *statusWindow;
+
 #endif

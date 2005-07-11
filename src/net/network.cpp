@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "../main.h"
+#include "../log.h"
 #include "network.h"
 #ifndef WIN32
 #include <unistd.h>

@@ -22,6 +22,10 @@
  */
 
 #include "main.h"
+#include "game.h"
+#include "log.h"
+#include "serverinfo.h"
+#include "gui/login.h"
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/ok_dialog.h"
@@ -29,6 +33,7 @@
 #include "sound.h"
 #include "graphics.h"
 #include "resources/resourcemanager.h"
+#include "resources/itemmanager.h"
 #include "net/protocol.h"
 
 #include <iostream>

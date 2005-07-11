@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include "../main.h"
 #include "resourcemanager.h"
 #include "../log.h"
 #include <iostream>

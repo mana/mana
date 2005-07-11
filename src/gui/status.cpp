@@ -22,9 +22,12 @@
  */
 
 #include "status.h"
-#include "../main.h"
+#include "stats.h"
+#include "inventory.h"
+#include "setup.h"
+#include "equipment.h"
 #include "button.h"
-#include "../engine.h"
+#include "../playerinfo.h"
 
 #define WIN_BORDER 5
 #define CONTROLS_SEPARATOR 4

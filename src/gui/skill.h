@@ -73,4 +73,6 @@ class SkillDialog : public Window, public gcn::ActionListener,
         void setSkill(int id, int lv, int sp);
 };
 
+extern SkillDialog *skillDialog;
+
 #endif

@@ -22,8 +22,9 @@
  */
 
 #include "browserbox.h"
+#ifndef USE_OPENGL
 #include "gui.h"
-#include "../main.h"
+#endif
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;

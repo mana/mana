@@ -23,8 +23,10 @@
 
 #include "popupmenu.h"
 #include "../graphics.h"
-#include "../engine.h"
 #include "../game.h"
+#include "../engine.h"
+#include "../net/network.h"
+#include "../resources/itemmanager.h"
 #include <iostream>
 
 PopupMenu::PopupMenu():

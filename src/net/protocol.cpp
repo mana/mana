@@ -22,8 +22,9 @@
  */
 
 #include "../main.h"
-#include "../being.h"
 #include "../game.h"
+#include "../playerinfo.h"
+#include "../log.h"
 #include "protocol.h"
 #include "network.h"
 
