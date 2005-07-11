@@ -36,12 +36,12 @@ Besides a C++ compiler, TMW depends on the following libraries:
 2. Installing Dev-C++
 =====================
 
-I recommend that you get the latest beta version, which is 4.9.9.2 at the time
-of writing. Though this tutorial is written for and tested with that, it may
-also apply to the latest stable version. Get Dev-C++ here:
+This tutorial is written and tested with the latest beta version, which is
+4.9.9.2 at the time of writing. You'll probably run into problems when you try
+the old stable version, so don't do that. Get Dev-C++ here:
 
   http://www.bloodshed.net/
-  
+ 
 After you fetched it simply run and install.
 
 

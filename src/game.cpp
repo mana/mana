@@ -623,7 +623,12 @@ void do_input()
             if (keys[SDLK_LCTRL])
             {
                 Being *monster = attack(x, y, player_node->direction);
-                if (keys[SDLK_LSHIFT]) {
+                if (monster == NULL && autoTarget != NULL)
+                {
+                    attack(autoTarget);
+                }
+                else if (keys[SDLK_LSHIFT])
+                {
                     autoTarget = monster;
                 }
             }

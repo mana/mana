@@ -34,7 +34,7 @@ BuddyWindow::BuddyWindow():
     setContentSize(124, 202);
 
     listbox = new gcn::ListBox();
-    listbox->setListModel(dynamic_cast<ListModel*>(this));
+    listbox->setListModel(this);
 
     scrollArea = new ScrollArea(listbox);
     scrollArea->setDimension(gcn::Rectangle(
