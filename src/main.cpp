@@ -227,11 +227,10 @@ void init_engine()
 
     screenW = (int)config.getValue("screenwidth", 800);
     screenH = (int)config.getValue("screenheight", 600);
-    bitDepth = (int)config.getValue("colordepth", 16);
 
     SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
-    screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+    screen = SDL_SetVideoMode(screenW, screenH, 0, displayFlags);
     if (screen == NULL) {
         std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
             bitDepth << " video mode: " << SDL_GetError() << std::endl;

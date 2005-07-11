@@ -36,7 +36,7 @@ Graphics::Graphics():
     if (useOpenGL) {
         // Setup OpenGL
         glViewport(0, 0, 800, 600);
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
         int gotDoubleBuffer;
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
         logger->log("Using OpenGL %s double buffering.",

@@ -82,26 +82,26 @@ Gui::Gui(Graphics *graphics)
     // Set global font
     try {
         guiFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/fixedfont.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`ше"
+                TMW_DATADIR "data/graphics/gui/sansserif8.png",
+                " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
+                "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
                 );
     }
     catch (gcn::Exception e)
     {
-      try {
-	guiFont = new gcn::ImageFont(
-	        "data/graphics/gui/fixedfont.png",
-		" abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-		"89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`ше"
-		);
-      }
-      catch (gcn::Exception e)
-      {
-        logger->error("Unable to load fixedfont.png!");
-      }
+        try {
+            guiFont = new gcn::ImageFont(
+                    "data/graphics/gui/sansserif8.png",
+                    " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVW"
+                    "XYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
+                    );
+        }
+        catch (gcn::Exception e)
+        {
+            logger->error("Unable to load sansserif8.png!");
+        }
     }
-    
+
     gcn::Widget::setGlobalFont(guiFont);
 
     // Load hits' colourful fonts

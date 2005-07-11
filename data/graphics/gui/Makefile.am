@@ -28,6 +28,7 @@ gui_DATA =				\
 	radioin.png			\
 	radioout.png			\
 	selection.png			\
+	sansserif8.png			\
 	slider.png			\
 	deepbox.png			\
 	thickborder.png			\
