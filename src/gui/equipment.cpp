@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include <guichan.hpp>
 #include "equipment.h"
 #include "../log.h"
 #include "../resources/resourcemanager.h"

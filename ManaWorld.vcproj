@@ -1,151 +1,248 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.10"
-	Name="TheManaWorld"
+	Version="8,00"
+	Name="ManaWorld"
 	ProjectGUID="{DE31E83E-62BD-460E-8E6A-648CF98CC5A4}"
 	RootNamespace="ManaWorld"
-	Keyword="Win32Proj">
+	Keyword="Win32Proj"
+	SignManifests="true"
+	>
 	<Platforms>
 		<Platform
-			Name="Win32"/>
+			Name="Win32"
+		/>
 	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
-			CharacterSet="2">
+			InheritedPropertySheets="UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories=""
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
-				MinimalRebuild="TRUE"
+				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="4"/>
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="4"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="physfs.lib sdl.lib sdlmain.lib sdl_image.lib sdl_mixer.lib guichan.lib guichan_sdl.lib ws2_32.lib libxml2.lib iconv.lib"
+				AdditionalDependencies="physfs.lib sdl.lib sdlmain.lib sdl_image.lib sdl_mixer.lib guichan.lib guichan_sdl.lib ws2_32.lib libxml2.lib iconv.lib zlib.lib libcurl.lib"
 				OutputFile="$(OutDir)/ManaWorld.exe"
 				LinkIncremental="2"
-				GenerateDebugInformation="TRUE"
+				IgnoreDefaultLibraryNames="libc.lib"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/ManaWorld.pdb"
 				SubSystem="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
-			CharacterSet="2">
+			InheritedPropertySheets="UpgradeFromVC71.vsprops"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;D:\Programming\Libraries\LibXml\libxml2-2.6.17.win32\lib&quot;;&quot;D:\Programming\Libraries\LibXml\libxml2-2.6.17.win32\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
 				RuntimeLibrary="2"
-				RuntimeTypeInfo="TRUE"
+				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"/>
+				Detect64BitPortabilityProblems="true"
+				DebugInformationFormat="3"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="physfs.lib alleg.lib guichan.lib guichan_sdl.lib sdl.lib sdlmain.lib sdl_mixer.lib sdl_image.lib ws2_32.lib libxml2.lib iconv.lib"
+				AdditionalDependencies="physfs.lib alleg.lib guichan.lib guichan_sdl.lib sdl.lib sdlmain.lib sdl_mixer.lib sdl_image.lib ws2_32.lib libxml2.lib iconv.lib zlib.lib libcurl.lib"
 				OutputFile="tmw.exe"
 				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
+				IgnoreDefaultLibraryNames="LIBC.lib"
+				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				TargetMachine="1"/>
+				TargetMachine="1"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 		<Configuration
 			Name="Profile|Win32"
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
-			ConfigurationType="1">
+			ConfigurationType="1"
+			InheritedPropertySheets="UpgradeFromVC71.vsprops"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				RuntimeLibrary="2"/>
+				RuntimeLibrary="2"
+			/>
 			<Tool
-				Name="VCCustomBuildTool"/>
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="SDL.lib"
-				AdditionalDependencies="allp.lib"/>
+				AdditionalDependencies="allp.lib"
+			/>
 			<Tool
-				Name="VCMIDLTool"/>
+				Name="VCALinkTool"
+			/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCManifestTool"
+			/>
 			<Tool
-				Name="VCPreBuildEventTool"/>
+				Name="VCXDCMakeTool"
+			/>
 			<Tool
-				Name="VCPreLinkEventTool"/>
+				Name="VCBscMakeTool"
+			/>
 			<Tool
-				Name="VCResourceCompilerTool"/>
+				Name="VCFxCopTool"
+			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"/>
+				Name="VCAppVerifierTool"
+			/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"/>
+				Name="VCWebDeploymentTool"
+			/>
 			<Tool
-				Name="VCWebDeploymentTool"/>
-			<Tool
-				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
-				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+				Name="VCPostBuildEventTool"
+			/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -154,384 +251,622 @@
 		<Filter
 			Name="Source Files"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
 			<File
-				RelativePath=".\src\base64.cpp">
+				RelativePath=".\src\base64.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\base64.h">
+				RelativePath=".\src\base64.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\being.cpp">
+				RelativePath=".\src\being.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\being.h">
+				RelativePath=".\src\being.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\configuration.cpp">
+				RelativePath=".\src\configuration.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\configuration.h">
+				RelativePath=".\src\configuration.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\engine.cpp">
+				RelativePath=".\src\engine.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\engine.h">
+				RelativePath=".\src\engine.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\floor_item.cpp">
+				RelativePath=".\src\floor_item.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\floor_item.h">
+				RelativePath=".\src\floor_item.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\game.cpp">
+				RelativePath=".\src\game.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\game.h">
+				RelativePath=".\src\game.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\graphics.cpp">
+				RelativePath=".\src\graphics.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\graphics.h">
+				RelativePath=".\src\graphics.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\log.cpp">
+				RelativePath=".\src\log.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\log.h">
+				RelativePath=".\src\log.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\main.cpp">
+				RelativePath=".\src\main.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\main.h">
+				RelativePath=".\src\main.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\map.cpp">
+				RelativePath=".\src\map.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\map.h">
+				RelativePath=".\src\map.h"
+				>
 			</File>
 			<File
-				RelativePath=".\src\sound.cpp">
+				RelativePath=".\src\sound.cpp"
+				>
 			</File>
 			<File
-				RelativePath=".\src\sound.h">
+				RelativePath=".\src\sound.h"
+				>
 			</File>
 			<Filter
 				Name="graphic"
-				Filter="">
+				>
 				<File
-					RelativePath=".\src\graphic\spriteset.cpp">
+					RelativePath=".\src\graphic\spriteset.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\graphic\spriteset.h">
+					RelativePath=".\src\graphic\spriteset.h"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="net"
-				Filter="">
+				>
 				<File
-					RelativePath=".\src\net\network.cpp">
+					RelativePath=".\src\net\network.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\network.h">
+					RelativePath=".\src\net\network.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\protocol.cpp">
+					RelativePath=".\src\net\protocol.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\protocol.h">
+					RelativePath=".\src\net\protocol.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2linux.h">
+					RelativePath=".\src\net\win2linux.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2mac.cpp">
+					RelativePath=".\src\net\win2mac.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\net\win2mac.h">
+					RelativePath=".\src\net\win2mac.h"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="gui"
-				Filter="">
+				>
 				<File
-					RelativePath=".\src\gui\button.cpp">
+					RelativePath=".\src\gui\box.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\button.h">
+					RelativePath=".\src\gui\box.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\buy.cpp">
+					RelativePath=".\src\gui\browserbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\buy.h">
+					RelativePath=".\src\gui\browserbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\buysell.cpp">
+					RelativePath=".\src\gui\buddywindow.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\buysell.h">
+					RelativePath=".\src\gui\buddywindow.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\char_select.cpp">
+					RelativePath=".\src\gui\button.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\char_select.h">
+					RelativePath=".\src\gui\button.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\char_server.cpp">
+					RelativePath=".\src\gui\buy.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\char_server.h">
+					RelativePath=".\src\gui\buy.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\chargedialog.cpp">
+					RelativePath=".\src\gui\buysell.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\chargedialog.h">
+					RelativePath=".\src\gui\buysell.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\chat.cpp">
+					RelativePath=".\src\gui\char_select.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\chat.h">
+					RelativePath=".\src\gui\char_select.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\checkbox.cpp">
+					RelativePath=".\src\gui\char_server.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\checkbox.h">
+					RelativePath=".\src\gui\char_server.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\confirm_dialog.cpp">
+					RelativePath=".\src\gui\chargedialog.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\confirm_dialog.h">
+					RelativePath=".\src\gui\chargedialog.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\equipment.cpp">
+					RelativePath=".\src\gui\chat.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\equipment.h">
+					RelativePath=".\src\gui\chat.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\gui.cpp">
+					RelativePath=".\src\gui\chatinput.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\gui.h">
+					RelativePath=".\src\gui\chatinput.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\inventory.cpp">
+					RelativePath=".\src\gui\checkbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\inventory.h">
+					RelativePath=".\src\gui\checkbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\item_amount.cpp">
+					RelativePath=".\src\gui\confirm_dialog.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\item_amount.h">
+					RelativePath=".\src\gui\confirm_dialog.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\itemcontainer.cpp">
+					RelativePath=".\src\gui\equipment.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\itemcontainer.h">
+					RelativePath=".\src\gui\equipment.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\listbox.cpp">
+					RelativePath=".\src\gui\focushandler.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\listbox.h">
+					RelativePath=".\src\gui\focushandler.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\login.cpp">
+					RelativePath=".\src\gui\gui.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\login.h">
+					RelativePath=".\src\gui\gui.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\minimap.cpp">
+					RelativePath=".\src\gui\hbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\minimap.h">
+					RelativePath=".\src\gui\hbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\newskill.cpp">
+					RelativePath=".\src\gui\help.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\newskill.h">
+					RelativePath=".\src\gui\help.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc.cpp">
+					RelativePath=".\src\gui\inttextbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc.h">
+					RelativePath=".\src\gui\inttextbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc_text.cpp">
+					RelativePath=".\src\gui\inventory.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\npc_text.h">
+					RelativePath=".\src\gui\inventory.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\ok_dialog.cpp">
+					RelativePath=".\src\gui\item_amount.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\ok_dialog.h">
+					RelativePath=".\src\gui\item_amount.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\passwordfield.cpp">
+					RelativePath=".\src\gui\itemcontainer.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\passwordfield.h">
+					RelativePath=".\src\gui\itemcontainer.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\playerbox.cpp">
+					RelativePath=".\src\gui\linkhandler.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\playerbox.h">
+					RelativePath=".\src\gui\listbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\progressbar.cpp">
+					RelativePath=".\src\gui\listbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\progressbar.h">
+					RelativePath=".\src\gui\login.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\radiobutton.cpp">
+					RelativePath=".\src\gui\login.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\radiobutton.h">
+					RelativePath=".\src\gui\minimap.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\requesttrade.cpp">
+					RelativePath=".\src\gui\minimap.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\requesttrade.h">
+					RelativePath=".\src\gui\newskill.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\scrollarea.cpp">
+					RelativePath=".\src\gui\newskill.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\scrollarea.h">
+					RelativePath=".\src\gui\npc.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\sell.cpp">
+					RelativePath=".\src\gui\npc.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\sell.h">
+					RelativePath=".\src\gui\npc_text.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\setup.cpp">
+					RelativePath=".\src\gui\npc_text.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\setup.h">
+					RelativePath=".\src\gui\ok_dialog.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\shop.cpp">
+					RelativePath=".\src\gui\ok_dialog.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\shop.h">
+					RelativePath=".\src\gui\passwordfield.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\skill.cpp">
+					RelativePath=".\src\gui\passwordfield.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\skill.h">
+					RelativePath=".\src\gui\playerbox.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\slider.cpp">
+					RelativePath=".\src\gui\playerbox.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\slider.h">
+					RelativePath=".\src\gui\popupmenu.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\stats.cpp">
+					RelativePath=".\src\gui\popupmenu.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\stats.h">
+					RelativePath=".\src\gui\progressbar.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\status.cpp">
+					RelativePath=".\src\gui\progressbar.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\status.h">
+					RelativePath=".\src\gui\radiobutton.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\textbox.cpp">
+					RelativePath=".\src\gui\radiobutton.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\textbox.h">
+					RelativePath=".\src\gui\requesttrade.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\textfield.cpp">
+					RelativePath=".\src\gui\requesttrade.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\textfield.h">
+					RelativePath=".\src\gui\scrollarea.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\trade.cpp">
+					RelativePath=".\src\gui\scrollarea.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\trade.h">
+					RelativePath=".\src\gui\sell.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\window.cpp">
+					RelativePath=".\src\gui\sell.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\window.h">
+					RelativePath=".\src\gui\setup.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\windowcontainer.cpp">
+					RelativePath=".\src\gui\setup.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\gui\windowcontainer.h">
+					RelativePath=".\src\gui\shop.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\shop.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\skill.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\skill.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\slider.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\slider.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\stats.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\stats.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\status.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\status.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\textbox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\textbox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\textfield.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\textfield.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\trade.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\trade.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\updatewindow.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\updatewindow.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\vbox.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\vbox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\window.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\window.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\windowcontainer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\gui\windowcontainer.h"
+					>
 				</File>
 			</Filter>
 			<Filter
 				Name="resources"
-				Filter="">
+				>
 				<File
-					RelativePath=".\src\resources\image.cpp">
+					RelativePath=".\src\resources\buddylist.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\image.h">
+					RelativePath=".\src\resources\buddylist.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\mapreader.cpp">
+					RelativePath=".\src\resources\image.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\mapreader.h">
+					RelativePath=".\src\resources\image.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\music.cpp">
+					RelativePath=".\src\resources\iteminfo.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\music.h">
+					RelativePath=".\src\resources\iteminfo.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\resource.cpp">
+					RelativePath=".\src\resources\itemmanager.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\resource.h">
+					RelativePath=".\src\resources\itemmanager.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\resourcemanager.cpp">
+					RelativePath=".\src\resources\mapreader.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\resourcemanager.h">
+					RelativePath=".\src\resources\mapreader.h"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\soundeffect.cpp">
+					RelativePath=".\src\resources\music.cpp"
+					>
 				</File>
 				<File
-					RelativePath=".\src\resources\soundeffect.h">
+					RelativePath=".\src\resources\music.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\resource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\resource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\resourcemanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\resourcemanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\soundeffect.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\resources\soundeffect.h"
+					>
 				</File>
 			</Filter>
 		</Filter>

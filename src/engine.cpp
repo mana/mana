@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include <guichan.hpp>
 #include "game.h"
 #include "main.h"
 #include "playerinfo.h"

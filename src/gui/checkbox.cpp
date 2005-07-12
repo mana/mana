@@ -22,7 +22,7 @@
  */
 
 #include "checkbox.h"
-#include "graphics.h"
+#include "../graphics.h"
 #include "../resources/resourcemanager.h"
 #include <guichan.hpp>
 

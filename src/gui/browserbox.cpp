@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <guichan.hpp>
+#include "../main.h"
 #include "browserbox.h"
 #ifndef USE_OPENGL
 #include "gui.h"
