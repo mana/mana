@@ -93,6 +93,7 @@ class ProgressBar : public gcn::Widget {
     private:
         float progress;
         int red, green, blue;
+        int redToGo, greenToGo, blueToGo;
 
         // Bar Images
         Image *dBackground;

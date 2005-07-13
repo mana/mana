@@ -35,6 +35,9 @@ ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
     setY(y);
     setWidth(width);
     setHeight(height);
+    redToGo = red;
+    greenToGo = green;
+    blueToGo = blue;
 
     // Load dialog title bar image
     ResourceManager *resman = ResourceManager::getInstance();
@@ -82,7 +85,16 @@ void ProgressBar::draw(gcn::Graphics *graphics)
             4, getHeight() - 8);
 
     // The bar
-    if (progress > 0) {
+    if (progress > 0)
+    {
+        // Smoothly changing the color for a nicer effect.
+        if (redToGo > red ) red++;
+        if (redToGo < red ) red--;
+        if (greenToGo > green ) green++;
+        if (greenToGo < green ) green--;
+        if (blueToGo > blue ) blue++;
+        if (blueToGo < blue ) blue--;
+
         graphics->setColor(gcn::Color(red, green, blue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                     (int)(progress * (getWidth() - 8)), getHeight() - 8));
@@ -103,7 +115,7 @@ float ProgressBar::getProgress()
 
 void ProgressBar::setColor(int red, int green, int blue)
 {
-    this->red = red;
-    this->green = green;
-    this->blue = blue;
+    this->redToGo = red;
+    this->greenToGo = green;
+    this->blueToGo = blue;
 }
