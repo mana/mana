@@ -35,6 +35,7 @@ Graphics::Graphics():
     mouseCursor(NULL)
 {
     if (useOpenGL) {
+        #ifdef USE_OPENGL
         // Setup OpenGL
         glViewport(0, 0, 800, 600);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -42,7 +43,7 @@ Graphics::Graphics():
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
         logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
-        #ifdef USE_OPENGL
+        
         setTargetPlane(800, 600);
         #endif
     }
@@ -151,9 +152,11 @@ void Graphics::updateScreen()
     }
 
     if (useOpenGL) {
+#ifdef USE_OPENGL
         glFlush();
         glFinish();
         SDL_GL_SwapBuffers();
+#endif
     }
     else {
         SDL_Flip(screen);
