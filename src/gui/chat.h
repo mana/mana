@@ -133,11 +133,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         void chat_log(CHATSKILL);
 
-        /*
-         * Draws the chat box.
-         */
-        void draw(gcn::Graphics *graphics);
-
         /**
          * Performs action.
          */

@@ -35,7 +35,7 @@ Graphics::Graphics():
     mouseCursor(NULL)
 {
     if (useOpenGL) {
-        #ifdef USE_OPENGL
+#ifdef USE_OPENGL
         // Setup OpenGL
         glViewport(0, 0, 800, 600);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
@@ -43,17 +43,17 @@ Graphics::Graphics():
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
         logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
-        
+
         setTargetPlane(800, 600);
-        #endif
+#endif
     }
     else {
-        #ifndef USE_OPENGL
+#ifndef USE_OPENGL
         setTarget(SDL_GetVideoSurface());
-        #endif
+#endif
     }
 
-    if (config.getValue("cursor", 1)==1)
+    if (config.getValue("cursor", 1) == 1)
     {
         // Hide the system mouse cursor
         SDL_ShowCursor(SDL_DISABLE);

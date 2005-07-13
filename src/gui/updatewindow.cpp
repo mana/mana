@@ -117,14 +117,17 @@ int updateProgress(void *ptr,
     labelString << (char *)ptr << " (" << (int)(progress*100) << "%)";
     updaterWindow->setLabel(labelString.str());
     updaterWindow->setProgress(progress);
-    if(state!=UPDATE) {
+
+    if (state != UPDATE) {
         // If the action was canceled return an error code to stop the thread
         return -1;
     }
+
     return 0;
 }
 
-int downloadThread(void *ptr) {
+int downloadThread(void *ptr)
+{
     CURL *curl;
     CURLcode res;
     FILE *outfile;
@@ -134,7 +137,7 @@ int downloadThread(void *ptr) {
     logger->log("Downloading: %s", url.c_str());
 
     curl = curl_easy_init();
-    if(curl)
+    if (curl)
     {
         downloadComplete = false;
         progress = 0.0f;
@@ -142,7 +145,7 @@ int downloadThread(void *ptr) {
         outfile = fopen(fileName.c_str(), "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
-        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, FALSE);
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, updateProgress);
         curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
 
@@ -152,17 +155,23 @@ int downloadThread(void *ptr) {
         curl_easy_cleanup(curl);
         downloadComplete = true;
     }
+
+    return 0;
 }
 
-int download(std::string url) {
+int download(std::string url)
+{
     thread = SDL_CreateThread(downloadThread, (void *)url.c_str());
-    if ( thread == NULL ) {
+
+    if (thread == NULL) {
         logger->log("Unable to create thread");
-        return 0;
     }
+
+    return 0;
 }
 
-void updateData() {
+void updateData()
+{
     updaterWindow = new UpdaterWindow();
     state = UPDATE;
     

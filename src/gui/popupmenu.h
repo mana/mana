@@ -58,11 +58,6 @@ class PopupMenu : public Window, public LinkHandler
         void showPopup(int mx, int my);
 
         /**
-         * Draws updated popup menu
-         */
-        void draw(gcn::Graphics* graphics);
-
-        /**
          * Handles link action.
          */
         void handleLink(const std::string& link);

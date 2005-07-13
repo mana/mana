@@ -34,6 +34,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     parent(parent),
     snapSize(8),
+    title(true),
     modal(modal),
     resizable(false),
     mMouseResize(false),
@@ -128,18 +129,12 @@ void Window::draw(gcn::Graphics* graphics)
                                          border);
 
     // Draw title
-    graphics->setFont(getFont());
-    graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
-
-    if (mContent != NULL)
-    {
-        graphics->pushClipArea(getContentDimension());
-        graphics->pushClipArea(gcn::Rectangle(
-                    0, 0, mContent->getWidth(), mContent->getHeight()));
-        mContent->draw(graphics);
-        graphics->popClipArea();
-        graphics->popClipArea();
+    if (title) {
+        graphics->setFont(getFont());
+        graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
+
+    drawContent(graphics);
 }
 
 void Window::setContentWidth(int width)

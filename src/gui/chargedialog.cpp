@@ -46,7 +46,7 @@ void ChargeDialog::action(const std::string& eventId)
 }
 
 // update the dialog
-void ChargeDialog::draw(gcn::Graphics *graphics)
+void ChargeDialog::logic()
 {
     // calculate time since the last attack was made
     char_info->lastAttackTime += .01; // this a hack until someone explains
@@ -54,6 +54,7 @@ void ChargeDialog::draw(gcn::Graphics *graphics)
     if(char_info->lastAttackTime > 1){char_info->lastAttackTime=1;}
     
     // reset the progress bar to display accurate time since attack
-    progBar->setProgress(char_info->lastAttackTime); 
-    Window::draw(graphics);
+    progBar->setProgress(char_info->lastAttackTime);
+
+    Window::logic();
 }

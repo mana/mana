@@ -51,7 +51,7 @@ class ChargeDialog : public Window, public gcn::ActionListener
         
         // action listener
         void action(const std::string&); 
-        void draw(gcn::Graphics *graphics);
+        void logic();
 };
 
 extern ChargeDialog* chargeDialog;

@@ -53,7 +53,7 @@ ChatWindow::ChatWindow(const std::string &logfile):
             scrollArea->getBorderSize(), scrollArea->getBorderSize());
     scrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
-    //scrollArea->setOpaque(false);
+    scrollArea->setOpaque(false);
 
     add(scrollArea);
     add(chatInput);
@@ -149,12 +149,6 @@ void ChatWindow::chat_log(std::string line, int own)
 void ChatWindow::chat_log(CHATSKILL action)
 {
     chat_log(const_msg(action), BY_SERVER);
-}
-
-void ChatWindow::draw(gcn::Graphics *graphics)
-{
-    // Draw the window border/background and children
-    Window::draw(graphics);    
 }
 
 void ChatWindow::action(const std::string& eventId)

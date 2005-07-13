@@ -34,6 +34,7 @@ PopupMenu::PopupMenu():
 {
     setResizable(false);
     setTitleBarHeight(0);
+    title = false;
 
     browserBox = new BrowserBox();
     browserBox->setPosition(4, 4);
@@ -118,25 +119,6 @@ void PopupMenu::showPopup(int mx, int my)
         my -= (getHeight() + 50);
     setPosition(mx, my);
     setVisible(true);
-}
-
-void PopupMenu::draw(gcn::Graphics* graphics)
-{
-    int x, y;
-    getAbsolutePosition(x, y);
-
-    ((Graphics*) graphics)->drawImageRect(x, y, getWidth(), getHeight(),
-                                          border);
-
-    if (mContent != NULL)
-    {
-        graphics->pushClipArea(getContentDimension());
-        graphics->pushClipArea(gcn::Rectangle(
-                    0, 0, mContent->getWidth(), mContent->getHeight()));
-        mContent->draw(graphics);
-        graphics->popClipArea();
-        graphics->popClipArea();
-    }
 }
 
 void PopupMenu::handleLink(const std::string& link)

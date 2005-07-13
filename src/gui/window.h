@@ -155,6 +155,7 @@ class Window : public gcn::Window, public ConfigListener
         gcn::Container *chrome;    /**< Contained container */
         Window *parent;            /**< The parent window */
         int snapSize;              /**< Snap distance to window edge */
+        bool title;                /**< Window has a title bar */
         bool modal;                /**< Window is modal */
         bool resizable;            /**< Window can be resized */
 
