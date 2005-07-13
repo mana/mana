@@ -27,20 +27,21 @@
 #include "window.h"
 #include "vbox.h"
 #include "progressbar.h"
+#include "button.h"
 
 /**
  * Update progress window GUI
  *
  * \ingroup GUI
  */
-class UpdaterWindow : public Window
+class UpdaterWindow : public Window, public gcn::ActionListener
 {
  protected:
     std::string labelText;       /**< Text for caption label */
-    double progress;             /**< Progress */
 
-    VBox *vbox;
     gcn::Label *label;           /**< Progress bar caption */
+    Button *cancelButton;        /**< Button to stop the update process */
+    Button *playButton;          /**< Button to start playing */
     ProgressBar *progressBar;    /**< Update progress bar */
 
  public:
@@ -57,14 +58,24 @@ class UpdaterWindow : public Window
     /**
      * Set's progress bar status
      */
-    void setProgress(double);
+    void setProgress(float p);
 
     /**
      * Set's label above progress
      */
     void setLabel(const std::string &);
+    
+    /**
+     * Enables play button
+     */
+    void enable();
+    
+    void action(const std::string& eventId);
 
     void draw(gcn::Graphics *);
+    
+    int updateState;
 };
 
+void updateData();
 #endif

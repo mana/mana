@@ -87,8 +87,6 @@ Configuration config;        /**< Xml file configuration reader */
 Logger *logger;              /**< Log object */
 ItemManager *itemDb;          /**< Item database object */
 
-UpdaterWindow *updaterWindow;  /**< Update window */
-
 /**
  * Allows the next frame to be drawn (part of framerate limiting)
  */
@@ -341,91 +339,6 @@ void exit_engine()
     delete logger;
 }
 
-/** Update progress callback */
-int
-progressCallback(void *clientp, double dltotal, double dlnow,
-                 double utotal, double ulnow)
-{
-    // update progress bar..
-    updaterWindow->setProgress(dlnow / dltotal);
-
-    // draw
-    gui->logic();
-    gui->draw();
-    graphics->updateScreen();
-    return CURLE_OK;
-}
-
-/** Get filename from URL */
-const char *urlFilename(const char *url)
-{
-    for (int i = strlen(url); i > 0; i--)
-    {
-        if (url[i] == '/') {
-            return &url[i+1];
-        }
-    }
-    return NULL;
-}
-
-/** Download file from location */
-int download(const char *location)
-{
-    if (location == NULL) {
-        return false;
-    }
-    // find local file location
-    const char *name = urlFilename(location);
-    if (!name) {
-        return true;
-    }
-
-    std::string dest = homeDir;
-    dest += "/";
-    dest += name;
-
-    FILE *fp = NULL;
-    fp = fopen(dest.c_str(), "w");
-    if (!fp) {
-        return false;
-    }
-
-    std::cout << "Downloading '" << location << "'" << std::endl;
-
-    // init curl
-    curl_global_init(CURL_GLOBAL_WIN32);
-    // download file
-    CURL *curl = curl_easy_init();
-    int ret = 0;
-    if (curl)
-    {
-        curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");
-        std::cout << "Debug: setopt" << std::endl;
-        /*curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);*/
-        
-        //ret = curl_easy_perform(curl);
-        std::cout << "Debug: perform" << std::endl;
-        curl_easy_cleanup(curl);
-        std::cout << "Debug: cleanup" << std::endl;
-    }
-    else {
-        ret = 1;
-    }
-    
-    // cleanup curl
-    curl_global_cleanup();
-    fclose(fp);
-    
-    if (ret != 0)
-        std::cout << "Failed!" << std::endl;
-    std::cout << " (" << ret << ")" << std::endl;
-
-    return (ret == CURLE_OK) ? true : false;
-}
-
 /** Check to see if a file exists */
 int exists(const std::string &file)
 {
@@ -439,82 +352,6 @@ int exists(const std::string &file)
         fclose(fp);
         return true;
     }
-}
-
-/** Update the game data */
-void update()
-{
-    updaterWindow = new UpdaterWindow();
-
-    std::string host =
-        config.getValue("updatehost", "http://themanaworld.org/");
-
-    // Add / to host if it's not there yet.
-    if (host.at(host.length() - 1) != '/')
-    {
-        host += "/";
-    }
-
-    std::string fullLocation = host;
-    fullLocation += "resources.txt";
-
-    std::string fullName = homeDir;
-    //fullName += "/";
-    fullName += "resources.txt";
-
-    updaterWindow->setLabel(fullLocation);
-
-    // Get resources file
-    if (!download(fullLocation.c_str()))
-    {
-        std::cout << "Error downloading resources.txt" << std::endl;
-        delete updaterWindow;
-        return;
-    }
-
-    std::cout << "Opening " << fullName << std::endl;
-    
-    std::ifstream in(fullName.c_str());
-    if (!in.is_open())
-    {
-        std::cout << "Error opening" << std::endl;
-        delete updaterWindow;
-        return;
-    }
-
-    std::string line;
-
-    while (!in.eof())
-    {
-        getline(in, line);
-	
-	// check for XML tag (if it is XML tag it is error)
-	if (line[0] == '<') {
-	    std::cout << "Error: resources.txt download error (404)" << std::endl;
-	    break;
-	}
-
-        fullName = homeDir;
-        fullName += "/";
-        fullName += line;
-        
-        fullLocation = host;
-       	fullLocation += line;
-       	
-        updaterWindow->setLabel(fullLocation);
-        
-        if (!exists(fullName)) {
-            if (!download(fullLocation.c_str())) {
-                std::cout << "Failed to download " << line << std::endl;
-            }
-        }
-        else {
-            PHYSFS_addToSearchPath(fullName.c_str(), 1);
-        }
-    }
-    in.close();
-    guiTop->remove(updaterWindow);
-    delete updaterWindow;
 }
 
 /** Main */
@@ -588,8 +425,7 @@ int main(int argc, char *argv[])
                 graphics->updateScreen();
                 break;
             case UPDATE:
-                update();
-                state = LOGIN;
+                updateData();
                 break;
             default:
                 state = EXIT;
