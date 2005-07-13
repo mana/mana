@@ -26,10 +26,8 @@
 
 #include <guichan/sdl.hpp>
 #include <SDL.h>
-#ifdef USE_OPENGL
 #include <guichan/opengl.hpp>
 #include <SDL_opengl.h>
-#endif
 #include "resources/image.h"
 
 extern SDL_Surface *screen;

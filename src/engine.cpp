@@ -431,10 +431,12 @@ void Engine::draw()
                         sx * 32 + 5 + get_x_offset(being) - offset_x,
                         sy * 32 - 65 + get_y_offset(being) - offset_y);
             }
-
+            
+            graphics->setFont(speechFont);
             graphics->drawText(being->name,
                 being->text_x + 15, being->text_y + 30,
                 gcn::Graphics::CENTER);
+            graphics->setFont(gui->getFont());
         }
 
         // Draw a warp

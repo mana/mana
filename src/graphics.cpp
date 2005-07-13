@@ -34,7 +34,6 @@ SDL_Surface *screen;
 Graphics::Graphics():
     mouseCursor(NULL)
 {
-#ifdef USE_OPENGL
     if (useOpenGL) {
         // Setup OpenGL
         glViewport(0, 0, 800, 600);
@@ -43,23 +42,27 @@ Graphics::Graphics():
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
         logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
+        #ifdef USE_OPENGL
+        setTargetPlane(800, 600);
+        #endif
     }
-#endif
+    else {
+        #ifndef USE_OPENGL
+        setTarget(SDL_GetVideoSurface());
+        #endif
+    }
 
-#ifdef USE_OPENGL
-    setTargetPlane(800, 600);
-#else
-    setTarget(SDL_GetVideoSurface());
-#endif
-
-    // Hide the system mouse cursor
-    SDL_ShowCursor(SDL_DISABLE);
-
-    // Load the mouse cursor
-    ResourceManager *resman = ResourceManager::getInstance();
-    mouseCursor = resman->getImage("graphics/gui/mouse.png");
-    if (!mouseCursor) {
-        logger->error("Unable to load mouse cursor.");
+    if (config.getValue("cursor", 1)==1)
+    {
+        // Hide the system mouse cursor
+        SDL_ShowCursor(SDL_DISABLE);
+        
+        // Load the mouse cursor
+        ResourceManager *resman = ResourceManager::getInstance();
+        mouseCursor = resman->getImage("graphics/gui/mouse.png");
+        if (!mouseCursor) {
+            logger->error("Unable to load mouse cursor.");
+        }
     }
 
     // Initialize for drawing
@@ -142,10 +145,11 @@ void Graphics::updateScreen()
     if (SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
     {
         // Draw mouse before flipping
-        mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+        if (mouseCursor != NULL) {
+            mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+        }
     }
 
-#ifdef USE_OPENGL
     if (useOpenGL) {
         glFlush();
         glFinish();
@@ -154,9 +158,6 @@ void Graphics::updateScreen()
     else {
         SDL_Flip(screen);
     }
-#else
-    SDL_Flip(screen);
-#endif
 
     // Decrement frame counter when using framerate limiting
     if (framesToDraw > 1) framesToDraw--;

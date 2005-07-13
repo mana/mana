@@ -95,5 +95,9 @@ extern gcn::SDLInput *guiInput;               /**< GUI input */
 extern gcn::ImageFont *hitRedFont;
 extern gcn::ImageFont *hitBlueFont;
 extern gcn::ImageFont *hitYellowFont;
+/**
+ * Font used to display speech and player names
+ */
+extern gcn::ImageFont *speechFont;
 
 #endif

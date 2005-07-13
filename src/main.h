@@ -26,6 +26,7 @@
 
 #include "graphic/spriteset.h"
 #include "resources/image.h"
+#include "configuration.h"
 #include "sound.h"
 #include <stdio.h>
 #include <memory>
@@ -57,10 +58,6 @@ enum {
 #define LEN_USERNAME 25
 #define LEN_PASSWORD 25
 
-#define N_SKILLS 100 // skill count constant value
-#define XP_CONSTANT 1.2 // the exponent which determines skill exp curve
-
-
 extern Image *login_wallpaper;
 extern Spriteset *hairset, *playerset;
 extern char username[25];
@@ -75,5 +72,6 @@ extern Sound sound;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
 extern char *homeDir;
+extern Configuration config;
 
 #endif

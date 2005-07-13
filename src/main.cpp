@@ -393,33 +393,37 @@ int download(const char *location)
     std::cout << "Downloading '" << location << "'" << std::endl;
 
     // init curl
-    curl_global_init(CURL_GLOBAL_ALL);
+    curl_global_init(CURL_GLOBAL_WIN32);
     // download file
     CURL *curl = curl_easy_init();
-
-    curl_easy_setopt(curl, CURLOPT_URL, location);
-    //curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
-    //curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
-    //curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
-
-    //curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+    int ret = 0;
+    if (curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, "curl.haxx.se");
+        std::cout << "Debug: setopt" << std::endl;
+        /*curl_easy_setopt(curl, CURLOPT_NOPROGRESS, false);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, progressCallback);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);*/
         
-    //int ret = curl_easy_perform(curl);
-
-    curl_easy_cleanup(curl);
-
-
+        //ret = curl_easy_perform(curl);
+        std::cout << "Debug: perform" << std::endl;
+        curl_easy_cleanup(curl);
+        std::cout << "Debug: cleanup" << std::endl;
+    }
+    else {
+        ret = 1;
+    }
+    
     // cleanup curl
     curl_global_cleanup();
-
     fclose(fp);
-
-    //if (ret != 0)
+    
+    if (ret != 0)
         std::cout << "Failed!" << std::endl;
-    //std::cout << " (" << ret << ")" << std::endl;
+    std::cout << " (" << ret << ")" << std::endl;
 
-    //return (ret == CURLE_OK) ? true : false;
-    return true;
+    return (ret == CURLE_OK) ? true : false;
 }
 
 /** Check to see if a file exists */
@@ -470,10 +474,8 @@ void update()
 
     std::cout << "Opening " << fullName << std::endl;
     
-    std::ifstream *in;
-    
-    in = new std::ifstream(fullName.c_str());
-    if (in!=NULL && !in->is_open())
+    std::ifstream in(fullName.c_str());
+    if (!in.is_open())
     {
         std::cout << "Error opening" << std::endl;
         delete updaterWindow;
@@ -482,9 +484,9 @@ void update()
 
     std::string line;
 
-    while (!in->eof())
+    while (!in.eof())
     {
-        getline(*in, line);
+        getline(in, line);
 	
 	// check for XML tag (if it is XML tag it is error)
 	if (line[0] == '<') {
@@ -510,7 +512,7 @@ void update()
             PHYSFS_addToSearchPath(fullName.c_str(), 1);
         }
     }
-    in->close();
+    in.close();
     guiTop->remove(updaterWindow);
     delete updaterWindow;
 }

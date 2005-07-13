@@ -43,6 +43,8 @@ WindowContainer *guiTop;               // The top container
 gcn::ImageFont *hitRedFont;
 gcn::ImageFont *hitBlueFont;
 gcn::ImageFont *hitYellowFont;
+// Font used to display speech and player names
+gcn::ImageFont *speechFont;
 
 Gui::Gui(Graphics *graphics)
 {
@@ -102,6 +104,29 @@ Gui::Gui(Graphics *graphics)
         catch (gcn::Exception e)
         {
             logger->error("Unable to load sansserif8.png!");
+        }
+    }
+    
+    // Set speech font
+    try {
+        speechFont = new gcn::ImageFont(
+                TMW_DATADIR "data/graphics/gui/rpgfont_wider.png",
+                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@&\\"
+                );
+    }
+    catch (gcn::Exception e)
+    {
+        try {
+            guiFont = new gcn::ImageFont(
+                    "data/graphics/gui/rpgfont_wider.png",
+                    " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@&\\"
+                    );
+        }
+        catch (gcn::Exception e)
+        {
+            logger->error("Unable to load rpgfont_wider.png!");
         }
     }
 

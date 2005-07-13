@@ -346,6 +346,7 @@ void Being::drawSpeech(Graphics *graphics)
 {
     // Draw speech above this being
     if (showSpeech) {
+        graphics->setFont(speechFont);
         graphics->drawText(speech,
                 text_x + 20, text_y - 60,
                 gcn::Graphics::CENTER);
