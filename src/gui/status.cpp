@@ -151,6 +151,7 @@ void StatusWindow::update()
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
+    // HP Bar coloration
     if (char_info->hp < int(char_info->max_hp / 3))
     {
         healthBar->setColor(255, 0, 0); // Red
@@ -167,6 +168,10 @@ void StatusWindow::update()
         }
     }
 
+    // XP Bar dark blue to light blue Smooth fading
+    unsigned char redXP = unsigned(char(((float)char_info->xp / (float)char_info->xpForNextLevel) * 12));
+    unsigned char greenXP = unsigned(char(((float)char_info->xp / (float)char_info->xpForNextLevel) * 94));
+    xpBar->setColor(redXP, 100 + greenXP, 255);
 
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
 
