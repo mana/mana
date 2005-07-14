@@ -29,6 +29,13 @@
 #include "progressbar.h"
 #include "button.h"
 
+enum {
+    UPDATE_ERROR,
+    UPDATE_IDLE,
+    UPDATE_RUN,
+    UPDATE_COMPLETE
+};
+
 /**
  * Update progress window GUI
  *

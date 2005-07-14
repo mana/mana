@@ -22,6 +22,7 @@
  */
 
 #include "updatewindow.h"
+#include "ok_dialog.h"
 #include "gui.h"
 #include "../main.h"
 #include "../log.h"
@@ -35,6 +36,7 @@ UpdaterWindow *updaterWindow;
 SDL_Thread *thread;
 std::string updateHost = "themanaworld.org/files";
 bool downloadComplete = true;
+int downloadStatus = UPDATE_RUN;
 
 UpdaterWindow::UpdaterWindow()
     : Window("Updating...")
@@ -99,9 +101,19 @@ void UpdaterWindow::draw(gcn::Graphics *graphics)
 void UpdaterWindow::action(const std::string& eventId)
 {
     if (eventId == "cancel") {
-        state = EXIT;
+        // Skip the updating process
+        if (downloadStatus == UPDATE_COMPLETE)
+        {
+            state = EXIT;
+        }
+        else {
+            downloadStatus = UPDATE_ERROR;
+        }
     }
     else if (eventId == "play") {
+        state = LOGIN;
+    }
+    else if (eventId == "ok") {
         state = LOGIN;
     }
 }
@@ -120,8 +132,9 @@ int updateProgress(void *ptr,
     updaterWindow->setLabel(labelString.c_str());
     updaterWindow->setProgress(progress);
 
-    if (state != UPDATE) {
+    if (state != UPDATE && downloadStatus != UPDATE_ERROR) {
         // If the action was canceled return an error code to stop the thread
+        downloadStatus = UPDATE_ERROR;
         return -1;
     }
 
@@ -137,6 +150,7 @@ int downloadThread(void *ptr)
     std::string url(updateHost);
     url += "/" + fileName;
     logger->log("Downloading: %s", url.c_str());
+    logger->log(fileName.c_str());
 
     curl = curl_easy_init();
     if (curl)
@@ -147,13 +161,16 @@ int downloadThread(void *ptr)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, updateProgress);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, fileName.c_str());
 
         res = curl_easy_perform(curl);
 
         fclose(outfile);
         curl_easy_cleanup(curl);
         downloadComplete = true;
+        if (res != 0) {
+            downloadStatus = UPDATE_ERROR;
+        }
     }
 
     return 0;
@@ -166,9 +183,28 @@ int download(std::string url)
 
     if (thread == NULL) {
         logger->log("Unable to create thread");
+        downloadStatus = UPDATE_ERROR;
     }
 
     return 0;
+}
+
+void checkFile(std::ifstream &in) {
+    // Check for XML tag (if it is XML tag it is error)
+    // WARNING: this way we can't use an XML file for resources listing
+    if (!in.eof())
+    {
+        std::string line;
+        getline(in, line);
+        if (line[0] == '<') {
+            logger->log("Error: resources.txt download error (404)");
+            downloadStatus = UPDATE_ERROR;
+        }
+        else {
+            // Return the pointer to the beginning of the file
+            in.seekg (0, std::ios::beg);
+        }
+    }
 }
 
 void updateData()
@@ -203,32 +239,49 @@ void updateData()
             guiInput->pushInput(event);
         }
         
-        // If not alredy downloading another file
-        if (downloadComplete) {
-            // Try to open resources.txt
-            if (!in.is_open())
-            {
-                in.open("resources.txt");
-                if (!in.is_open())
-                {
-                    logger->error("Unable to open resources.txt");
+        switch (downloadStatus) {
+            case UPDATE_ERROR:
+                new OkDialog(
+                    "Error", ("The update process is incomplete. ",
+                    "It is strongly recommended that you try again later"),
+                    updaterWindow);
+                downloadStatus = UPDATE_IDLE;
+                break;
+            case UPDATE_RUN:
+                // If not alredy downloading another file
+                if (downloadComplete) {
+                    // Try to open resources.txt
+                    if (!in.is_open())
+                    {
+                        in.open("resources.txt");
+                        if (!in.is_open())
+                        {
+                            logger->log("Unable to open resources.txt");
+                            downloadStatus = UPDATE_ERROR;
+                        }
+                        else {
+                            checkFile(in);
+                        }
+                    }
+                    else {
+                        if (!in.eof())
+                        {
+                            // Download each update
+                            std::string line;
+                            getline(in, line);
+                            download(line);
+                        }
+                        else {
+                            // Download of updates completed
+                            downloadStatus = UPDATE_COMPLETE;
+                            updaterWindow->enable();
+                            updaterWindow->setLabel("Completed");
+                        }
+                    }
                 }
-                // TODO: check for error 404
-            }
-            else {
-                if (!in.eof())
-                {
-                    // Download each update
-                    std::string line;
-                    getline(in, line);
-                    download(line);
-                }
-                else {
-                    // All updates downloaded
-                    updaterWindow->enable();
-                    updaterWindow->setLabel("Completed");
-                }
-            }
+                break;
+            case UPDATE_IDLE:
+                break;
         }
         
         gui->logic();
