@@ -32,10 +32,9 @@
 #include "SDL_thread.h"
 
 UpdaterWindow *updaterWindow;
-float progress = 0.0f;
 SDL_Thread *thread;
 std::string updateHost = "themanaworld.org/files";
-bool downloadComplete = false;
+bool downloadComplete = true;
 
 UpdaterWindow::UpdaterWindow()
     : Window("Updating...")
@@ -89,6 +88,7 @@ void UpdaterWindow::setLabel(const std::string &str)
 void UpdaterWindow::enable()
 {
     playButton->setEnabled(true);
+    playButton->requestFocus();
 }
 
 void UpdaterWindow::draw(gcn::Graphics *graphics)
@@ -112,10 +112,12 @@ int updateProgress(void *ptr,
                       double ultotal,
                       double ulnow)
 {
-    std::stringstream labelString;
-    progress = d/t;
-    labelString << (char *)ptr << " (" << (int)(progress*100) << "%)";
-    updaterWindow->setLabel(labelString.str());
+    std::string labelString((char *)ptr);
+    float progress = d/t;
+    std::stringstream progressString;
+    progressString << ((int)(progress*100));
+    labelString += " (" + progressString.str() + "%)";
+    updaterWindow->setLabel(labelString.c_str());
     updaterWindow->setProgress(progress);
 
     if (state != UPDATE) {
@@ -139,8 +141,6 @@ int downloadThread(void *ptr)
     curl = curl_easy_init();
     if (curl)
     {
-        downloadComplete = false;
-        progress = 0.0f;
         // TODO: download in the proper folder (data?)
         outfile = fopen(fileName.c_str(), "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -161,6 +161,7 @@ int downloadThread(void *ptr)
 
 int download(std::string url)
 {
+    downloadComplete = false;
     thread = SDL_CreateThread(downloadThread, (void *)url.c_str());
 
     if (thread == NULL) {
