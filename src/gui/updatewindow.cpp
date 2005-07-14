@@ -26,28 +26,34 @@
 #include "gui.h"
 #include "../main.h"
 #include "../log.h"
+#include "../resources/resourcemanager.h"
 #include <curl/curl.h>
 #include <sstream>
 #include <iostream>
 #include <cstdio>
-#include "SDL_thread.h"
+#include <SDL_thread.h>
 
 UpdaterWindow *updaterWindow;
 SDL_Thread *thread;
 std::string updateHost = "themanaworld.org/files";
+std::string currentFile = "news.txt";
 bool downloadComplete = true;
-int downloadStatus = UPDATE_RUN;
+int downloadStatus = UPDATE_NEWS;
 
 UpdaterWindow::UpdaterWindow()
     : Window("Updating...")
 {
-    int h = 100;
+    int h = 300;
     int w = 320;
     setContentSize(w, h);
-
+    
+    browserBox = new BrowserBox();
+    browserBox->setOpaque(false);
+    scrollArea = new ScrollArea(browserBox);
+    scrollArea->setDimension(gcn::Rectangle(5, 5, 310, 190));
     label = new gcn::Label("Connecting...");
-    label->setPosition(5,5);
-    progressBar = new ProgressBar(0.0, 5, 25, w - 10, 40, 37, 70, 23);
+    label->setPosition(5,205);
+    progressBar = new ProgressBar(0.0, 5, 225, w - 10, 40, 37, 70, 23);
     cancelButton = new Button("Cancel");
     cancelButton->setPosition(5, h - 5 - cancelButton->getHeight());
     cancelButton->setEventId("cancel");
@@ -58,7 +64,8 @@ UpdaterWindow::UpdaterWindow()
     playButton->setEventId("play");
     playButton->setEnabled(false);
     playButton->addActionListener(this);
-
+    
+    add(scrollArea);
     add(label);
     add(progressBar);
     add(cancelButton);
@@ -118,15 +125,40 @@ void UpdaterWindow::action(const std::string& eventId)
     }
 }
 
+void UpdaterWindow::loadNews()
+{
+    browserBox->clearRows();
+    ResourceManager *resman = ResourceManager::getInstance();
+    int contentsLength;
+    std::ifstream newsFile("news.txt");
+    if (!newsFile.is_open())
+    {
+        logger->log("Couldn't load news.txt");
+        browserBox->addRow("Error");
+        return;
+    }
+
+    // Tokenize and add each line separately
+    std::string line("");
+    while (!newsFile.eof())
+    {
+        getline(newsFile, line);
+        browserBox->addRow(line);
+    }
+    newsFile.close();
+    scrollArea->setVerticalScrollAmount(0);
+    setVisible(true);
+}
+
 int updateProgress(void *ptr,
                       double t, /* dltotal */
                       double d, /* dlnow */
                       double ultotal,
                       double ulnow)
 {
-    std::string labelString((char *)ptr);
+    std::string labelString(currentFile);
     float progress = d/t;
-    std::stringstream progressString;
+    std::stringstream progressString("");
     progressString << ((int)(progress*100));
     labelString += " (" + progressString.str() + "%)";
     updaterWindow->setLabel(labelString.c_str());
@@ -146,11 +178,9 @@ int downloadThread(void *ptr)
     CURL *curl;
     CURLcode res;
     FILE *outfile;
-    std::string fileName((char *)ptr);
+    std::string fileName(currentFile);
     std::string url(updateHost);
     url += "/" + fileName;
-    logger->log("Downloading: %s", url.c_str());
-    logger->log(fileName.c_str());
 
     curl = curl_easy_init();
     if (curl)
@@ -176,10 +206,10 @@ int downloadThread(void *ptr)
     return 0;
 }
 
-int download(std::string url)
+int download()
 {
     downloadComplete = false;
-    thread = SDL_CreateThread(downloadThread, (void *)url.c_str());
+    thread = SDL_CreateThread(downloadThread, NULL);
 
     if (thread == NULL) {
         logger->log("Unable to create thread");
@@ -194,14 +224,14 @@ void checkFile(std::ifstream &in) {
     // WARNING: this way we can't use an XML file for resources listing
     if (!in.eof())
     {
-        std::string line;
+        std::string line("");
         getline(in, line);
         if (line[0] == '<') {
             logger->log("Error: resources.txt download error (404)");
             downloadStatus = UPDATE_ERROR;
         }
         else {
-            // Return the pointer to the beginning of the file
+            // Move the pointer to the beginning of the file
             in.seekg (0, std::ios::beg);
         }
     }
@@ -215,7 +245,7 @@ void updateData()
     std::string updateHost =
             config.getValue("updatehost", "themanaworld.org/files");
     // Try to download the updates list
-    download("resources.txt");
+    download();
     std::ifstream in;
 
     while (state == UPDATE)
@@ -247,12 +277,25 @@ void updateData()
                     updaterWindow);
                 downloadStatus = UPDATE_IDLE;
                 break;
-            case UPDATE_RUN:
-                // If not alredy downloading another file
+            case UPDATE_NEWS:
+                // If not already downloading another file
                 if (downloadComplete) {
-                    // Try to open resources.txt
+                    // Try to open news.txt
+                    updaterWindow->loadNews();
+                    // Doesn't matter if it couldn't find news.txt,
+                    // go to the next step
+                    currentFile = "resources.txt";
+                    download();
+                    downloadStatus = UPDATE_RESOURCES;
+                }
+                break;
+            case UPDATE_RESOURCES:
+                // If not already downloading another file
+                if (downloadComplete) {
+                    // Check if the list was already accessed
                     if (!in.is_open())
                     {
+                        // Try to open resources.txt
                         in.open("resources.txt");
                         if (!in.is_open())
                         {
@@ -267,9 +310,11 @@ void updateData()
                         if (!in.eof())
                         {
                             // Download each update
-                            std::string line;
+                            std::string line("");
                             getline(in, line);
-                            download(line);
+                            // TODO: it should check if file already exists
+                            currentFile = line;
+                            download();
                         }
                         else {
                             // Download of updates completed

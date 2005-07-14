@@ -28,12 +28,16 @@
 #include "vbox.h"
 #include "progressbar.h"
 #include "button.h"
+#include "browserbox.h"
+#include "scrollarea.h"
 
 enum {
     UPDATE_ERROR,
     UPDATE_IDLE,
     UPDATE_RUN,
-    UPDATE_COMPLETE
+    UPDATE_COMPLETE,
+    UPDATE_NEWS,
+    UPDATE_RESOURCES
 };
 
 /**
@@ -50,6 +54,8 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     Button *cancelButton;        /**< Button to stop the update process */
     Button *playButton;          /**< Button to start playing */
     ProgressBar *progressBar;    /**< Update progress bar */
+    BrowserBox* browserBox;      /**< Box to display news */
+    ScrollArea *scrollArea;      /**< Used to scroll news box */
 
  public:
     /**
@@ -76,6 +82,11 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      * Enables play button
      */
     void enable();
+    
+    /**
+     * Loads and display news
+     */
+    void loadNews();
     
     void action(const std::string& eventId);
 
