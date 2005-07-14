@@ -72,6 +72,5 @@ extern Sound sound;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
 extern char *homeDir;
-extern Configuration config;
 
 #endif

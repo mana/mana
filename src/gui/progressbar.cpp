@@ -59,6 +59,17 @@ ProgressBar::~ProgressBar()
 {
 }
 
+void ProgressBar::logic()
+{
+    // Smoothly changing the color for a nicer effect.
+    if (redToGo > red) red++;
+    if (redToGo < red) red--;
+    if (greenToGo > green) green++;
+    if (greenToGo < green) green--;
+    if (blueToGo > blue) blue++;
+    if (blueToGo < blue) blue--;
+}
+
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
     int absx, absy;
@@ -87,14 +98,6 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     // The bar
     if (progress > 0)
     {
-        // Smoothly changing the color for a nicer effect.
-        if (redToGo > red ) red++;
-        if (redToGo < red ) red--;
-        if (greenToGo > green ) green++;
-        if (greenToGo < green ) green--;
-        if (blueToGo > blue ) blue++;
-        if (blueToGo < blue ) blue--;
-
         graphics->setColor(gcn::Color(red, green, blue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
                     (int)(progress * (getWidth() - 8)), getHeight() - 8));

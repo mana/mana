@@ -47,6 +47,11 @@ class ProgressBar : public gcn::Widget {
         ~ProgressBar();
 
         /**
+         * Performs progress bar logic (fading colors)
+         */
+        void logic();
+
+        /**
          * Draws the progress bar.
          */
         void draw(gcn::Graphics *graphics);
