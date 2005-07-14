@@ -39,8 +39,8 @@ class ProgressBar : public gcn::Widget {
          * Constructor, initializes the progress with the given value.
          */
         ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
-                int width = 40, int height = 7,
-                int red = 150, int green = 150, int blue = 150);
+                unsigned int width = 40, unsigned int height = 7,
+                unsigned char red = 150, unsigned char green = 150, unsigned char blue = 150);
 
         /**
          * Destructor.
@@ -70,7 +70,7 @@ class ProgressBar : public gcn::Widget {
         /**
          * Change the filling of the progress bar.
          */
-        void setColor(int red, int green, int blue);
+        void setColor(unsigned char red, unsigned char green, unsigned char blue);
 
         /**
          * Get The red value of color
@@ -89,8 +89,8 @@ class ProgressBar : public gcn::Widget {
 
     private:
         float progress;
-        int red, green, blue;
-        int redToGo, greenToGo, blueToGo;
+        unsigned char red, green, blue;
+        unsigned char redToGo, greenToGo, blueToGo;
 
         static ImageRect mBorder;
         static int mInstances;
