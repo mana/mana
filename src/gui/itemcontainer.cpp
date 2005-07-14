@@ -209,6 +209,7 @@ void ItemContainer::resetItems()
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].id = -1;
         items[i].quantity = 0;
+        items[i].equipped = false;
     }
 }
 
