@@ -422,10 +422,18 @@ void do_input()
             // Mouse button left
             if (event.button.button == SDL_BUTTON_LEFT)
             {
+                // Don't move when shift is pressed
+                // XXX Is this too hackish? I'm not sure if making the Gui
+                // class a KeyListener is a good idea and works as expected
+                // at all...
+                if (keys[SDLK_LSHIFT]) {
+                    used = true;
+                }
+
                 // Check for default actions for NPC/Monster/Players
                 Being *target = findNode(mx, my);
                 unsigned int floorItemId = find_floor_item_by_cor(mx, my);
-                
+
                 if (target)
                 {
                     // NPC default: talk
