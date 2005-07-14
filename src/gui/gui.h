@@ -28,6 +28,7 @@
 #include <guichan/sdl.hpp>
 #include "windowcontainer.h"
 #include "../graphics.h"
+#include "../configuration.h"
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)
@@ -42,7 +43,7 @@
  *
  * \ingroup GUI
  */
-class Gui : public gcn::Gui, public gcn::MouseListener
+class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
 {
     public:
         /**
@@ -58,30 +59,46 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         /**
          * Works around Guichan bug
          */
-        void logic();
+        void
+        logic();
 
         /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */
-        void draw();
+        void
+        draw();
 
         /**
          * Handles mouse press on map.
          */
-        void mousePress(int mx, int my, int button);
+        void
+        mousePress(int mx, int my, int button);
 
         /**
          * Return game font
          */
-        gcn::ImageFont *getFont();
+        gcn::ImageFont*
+        getFont();
+
+        /**
+         * Sets whether a custom cursor should be rendered.
+         */
+        void
+        setUseCustomCursor(bool customCursor);
+
+        /**
+         * ConfigListener method.
+         */
+        void
+        optionChanged(const std::string &name);
 
     private:
-#ifdef USE_OPENGL
-        gcn::ImageLoader *hostImageLoader;    /**< For loading images in GL */
-#endif
-        gcn::ImageLoader *imageLoader;        /**< For loading images */
-        gcn::ImageFont *guiFont;              /**< The global GUI font */
+        gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
+        gcn::ImageLoader *mImageLoader;       /**< For loading images */
+        gcn::ImageFont *mGuiFont;             /**< The global GUI font */
+        Image *mMouseCursor;                  /**< Mouse cursor image */
+        bool mCustomCursor;                   /**< Show custom cursor */
 };
 
 extern Gui *gui;                              /**< The GUI system */

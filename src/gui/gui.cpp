@@ -30,6 +30,7 @@
 #include "../engine.h"
 #include "../game.h"
 #include "../log.h"
+#include "../resources/resourcemanager.h"
 
 extern Being* autoTarget;
 
@@ -46,7 +47,10 @@ gcn::ImageFont *hitYellowFont;
 // Font used to display speech and player names
 gcn::ImageFont *speechFont;
 
-Gui::Gui(Graphics *graphics)
+Gui::Gui(Graphics *graphics):
+    mHostImageLoader(NULL),
+    mMouseCursor(NULL),
+    mCustomCursor(false)
 {
     // Set graphics
     guiGraphics = graphics;
@@ -59,18 +63,17 @@ Gui::Gui(Graphics *graphics)
     // Set image loader
 #ifdef USE_OPENGL
     if (useOpenGL) {
-        hostImageLoader = new gcn::SDLImageLoader();
-        imageLoader = new gcn::OpenGLImageLoader(hostImageLoader);
+        mHostImageLoader = new gcn::SDLImageLoader();
+        mImageLoader = new gcn::OpenGLImageLoader(mHostImageLoader);
     }
     else {
-        hostImageLoader = NULL;
-        imageLoader = new gcn::SDLImageLoader();
+        mImageLoader = new gcn::SDLImageLoader();
     }
 #else
-    imageLoader = new gcn::SDLImageLoader();
+    mImageLoader = new gcn::SDLImageLoader();
 #endif
 
-    gcn::Image::setImageLoader(imageLoader);
+    gcn::Image::setImageLoader(mImageLoader);
 
     // Set focus handler
     delete mFocusHandler;
@@ -86,7 +89,7 @@ Gui::Gui(Graphics *graphics)
 
     // Set global font
     try {
-        guiFont = new gcn::ImageFont(
+        mGuiFont = new gcn::ImageFont(
                 TMW_DATADIR "data/graphics/gui/sansserif8.png",
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
                 "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
@@ -95,7 +98,7 @@ Gui::Gui(Graphics *graphics)
     catch (gcn::Exception e)
     {
         try {
-            guiFont = new gcn::ImageFont(
+            mGuiFont = new gcn::ImageFont(
                     "data/graphics/gui/sansserif8.png",
                     " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVW"
                     "XYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
@@ -130,7 +133,7 @@ Gui::Gui(Graphics *graphics)
         }
     }
 
-    gcn::Widget::setGlobalFont(guiFont);
+    gcn::Widget::setGlobalFont(mGuiFont);
 
     // Load hits' colourful fonts
     try {
@@ -146,22 +149,26 @@ Gui::Gui(Graphics *graphics)
     }
     catch (gcn::Exception e)
     {
-      try {
-        hitRedFont = new gcn::ImageFont(
-                "data/graphics/gui/hits_red.png",
-                "0123456789");
-        hitBlueFont = new gcn::ImageFont(
-                "data/graphics/gui/hits_blue.png",
-                "0123456789");
-        hitYellowFont = new gcn::ImageFont(
-                "data/graphics/gui/hits_yellow.png",
-                "mis");
-      }
-      catch (gcn::Exception e)
-      {
-        logger->error("Unable to load colored hits' fonts!");
-      }
+        try {
+            hitRedFont = new gcn::ImageFont(
+                    "data/graphics/gui/hits_red.png",
+                    "0123456789");
+            hitBlueFont = new gcn::ImageFont(
+                    "data/graphics/gui/hits_blue.png",
+                    "0123456789");
+            hitYellowFont = new gcn::ImageFont(
+                    "data/graphics/gui/hits_yellow.png",
+                    "mis");
+        }
+        catch (gcn::Exception e)
+        {
+            logger->error("Unable to load colored hits' fonts!");
+        }
     }
+
+    // Initialize mouse cursor and listen for changes to the option
+    setUseCustomCursor(config.getValue("customcursor", 1) == 1);
+    config.addListener("customcursor", this);
 }
 
 Gui::~Gui()
@@ -171,14 +178,18 @@ Gui::~Gui()
     delete hitBlueFont;
     delete hitYellowFont;
     
-    delete guiFont;
-    delete guiTop;
-    delete imageLoader;
-#ifdef USE_OPENGL
-    if (hostImageLoader) {
-        delete hostImageLoader;
+    if (mMouseCursor) {
+        mMouseCursor->decRef();
     }
-#endif
+
+    delete mGuiFont;
+    delete guiTop;
+    delete mImageLoader;
+
+    if (mHostImageLoader) {
+        delete mHostImageLoader;
+    }
+
     delete guiInput;
 }
 
@@ -194,7 +205,18 @@ void Gui::logic()
 void Gui::draw()
 {
     guiGraphics->pushClipArea(guiTop->getDimension());
+
     guiTop->draw(guiGraphics);
+
+    int mouseX, mouseY;
+    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+
+    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
+            && mCustomCursor)
+    {
+        mMouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+    }
+
     guiGraphics->popClipArea();
 }
 
@@ -219,9 +241,48 @@ void Gui::mousePress(int mx, int my, int button)
     }
 }
 
-
 gcn::ImageFont *Gui::getFont()
 {
-    return guiFont;
+    return mGuiFont;
 }
 
+void
+Gui::setUseCustomCursor(bool customCursor)
+{
+    if (customCursor != mCustomCursor)
+    {
+        mCustomCursor = customCursor;
+
+        if (mCustomCursor)
+        {
+            // Hide the SDL mouse cursor
+            SDL_ShowCursor(SDL_DISABLE);
+
+            // Load the mouse cursor
+            ResourceManager *resman = ResourceManager::getInstance();
+            mMouseCursor = resman->getImage("graphics/gui/mouse.png");
+            if (!mMouseCursor) {
+                logger->error("Unable to load mouse cursor.");
+            }
+        }
+        else
+        {
+            // Show the SDL mouse cursor
+            SDL_ShowCursor(SDL_ENABLE);
+
+            // Unload the mouse cursor
+            if (mMouseCursor) {
+                mMouseCursor->decRef();
+                mMouseCursor = NULL;
+            }
+        }
+    }
+}
+
+void
+Gui::optionChanged(const std::string &name)
+{
+    if (name == "customcursor") {
+        setUseCustomCursor(config.getValue("customcursor", 1) == 1);
+    }
+}

@@ -31,7 +31,8 @@
  *
  * \ingroup Interface
  */
-class ModeListModel : public gcn::ListModel {
+class ModeListModel : public gcn::ListModel
+{
     public:
         /**
          * Constructor.
@@ -62,25 +63,27 @@ class ModeListModel : public gcn::ListModel {
  *
  * \ingroup GUI
  */
-class Setup : public Window, public gcn::ActionListener {
+class Setup : public Window, public gcn::ActionListener
+{
     private:
-        // Dialog widgets
-        gcn::Label *videoLabel, *audioLabel;
-        gcn::ListBox *modeList;
         ModeListModel *modeListModel;
+
+        // Dialog widgets
+        gcn::ListBox *modeList;
         gcn::ScrollArea *scrollArea;
+        gcn::Label *videoLabel, *audioLabel;
+        gcn::Label *alphaLabel;
+        gcn::Label *sfxLabel, *musicLabel;
         gcn::CheckBox *fsCheckBox;
         gcn::CheckBox *openGlCheckBox;
-        gcn::Slider *alphaSlider;
-        gcn::Label *alphaLabel;
         gcn::CheckBox *soundCheckBox;
+        gcn::CheckBox *customCursorCheckBox;
+        gcn::Slider *alphaSlider;
         gcn::Slider *sfxSlider, *musicSlider;
-        gcn::Label *sfxLabel, *musicLabel;
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
 
-    public:
-    
+    public:    
         /**
          * Constructor.
          */
@@ -94,7 +97,8 @@ class Setup : public Window, public gcn::ActionListener {
         /**
          * Event handling method.
          */
-        void action(const std::string& eventId);
+        void
+        action(const std::string& eventId);
 
 };
 

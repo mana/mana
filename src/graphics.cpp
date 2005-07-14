@@ -31,8 +31,7 @@ extern volatile int framesToDraw;
 SDL_Surface *screen;
 
 
-Graphics::Graphics():
-    mouseCursor(NULL)
+Graphics::Graphics()
 {
     if (useOpenGL) {
 #ifdef USE_OPENGL
@@ -53,19 +52,6 @@ Graphics::Graphics():
 #endif
     }
 
-    if (config.getValue("cursor", 1) == 1)
-    {
-        // Hide the system mouse cursor
-        SDL_ShowCursor(SDL_DISABLE);
-        
-        // Load the mouse cursor
-        ResourceManager *resman = ResourceManager::getInstance();
-        mouseCursor = resman->getImage("graphics/gui/mouse.png");
-        if (!mouseCursor) {
-            logger->error("Unable to load mouse cursor.");
-        }
-    }
-
     // Initialize for drawing
     _beginDraw();
 }
@@ -74,8 +60,6 @@ Graphics::~Graphics()
 {
     // Deinitialize for drawing
     _endDraw();
-
-    mouseCursor->decRef();
 }
 
 int Graphics::getWidth()
@@ -140,17 +124,6 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
-    int mouseX, mouseY;
-    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
-
-    if (SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
-    {
-        // Draw mouse before flipping
-        if (mouseCursor != NULL) {
-            mouseCursor->draw(screen, mouseX - 5, mouseY - 2);
-        }
-    }
-
     if (useOpenGL) {
 #ifdef USE_OPENGL
         glFlush();

@@ -42,11 +42,11 @@ class ResourceManager
          */
         enum E_RESOURCE_TYPE
         {
-            MAP,
+            //MAP,
             MUSIC,
             IMAGE,
-            SCRIPT,
-            TILESET,
+            //SCRIPT,
+            //TILESET,
             SOUND_EFFECT
         };
 

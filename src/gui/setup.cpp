@@ -88,6 +88,7 @@ Setup::Setup():
     fsCheckBox = new CheckBox("Full screen", false);
     openGlCheckBox = new CheckBox("OpenGL", false);
     openGlCheckBox->setEnabled(false);
+    customCursorCheckBox = new CheckBox("Custom cursor");
     alphaLabel = new gcn::Label("Gui opacity");
     alphaSlider = new Slider(0.2, 1.0);
     audioLabel = new gcn::Label("Audio settings");
@@ -105,28 +106,32 @@ Setup::Setup():
     alphaSlider->setEventId("guialpha");
     sfxSlider->setEventId("sfx");
     musicSlider->setEventId("music");
+    customCursorCheckBox->setEventId("customcursor");
 
     // Set dimensions/positions
-    setContentSize(SETUP_WIDTH, 216);
+    setContentSize(SETUP_WIDTH, 226);
+
     videoLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 10);
     scrollArea->setDimension(gcn::Rectangle(10, 30, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
     fsCheckBox->setPosition(110, 30);
     openGlCheckBox->setPosition(110, 50);
-    alphaSlider->setDimension(gcn::Rectangle(10, 90, 100, 10));
-    alphaLabel->setPosition(20 + alphaSlider->getWidth(), 87);
-    audioLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 110);
-    soundCheckBox->setPosition(10, 130);
-    sfxSlider->setDimension(gcn::Rectangle(10, 150, 100, 10));
-    musicSlider->setDimension(gcn::Rectangle(10, 170, 100, 10));
-    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 147);
-    musicLabel->setPosition(20 + musicSlider->getWidth(), 167);
+    customCursorCheckBox->setPosition(110, 70);
+    alphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
+    alphaLabel->setPosition(20 + alphaSlider->getWidth(), 97);
+
+    audioLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 120);
+    soundCheckBox->setPosition(10, 140);
+    sfxSlider->setDimension(gcn::Rectangle(10, 160, 100, 10));
+    musicSlider->setDimension(gcn::Rectangle(10, 180, 100, 10));
+    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 157);
+    musicLabel->setPosition(20 + musicSlider->getWidth(), 177);
     cancelButton->setPosition(
             SETUP_WIDTH - 5 - cancelButton->getWidth(),
-            216 - 5 - cancelButton->getHeight());
+            226 - 5 - cancelButton->getHeight());
     applyButton->setPosition(
             cancelButton->getX() - 5 - applyButton->getWidth(),
-            216 - 5 - applyButton->getHeight());
+            226 - 5 - applyButton->getHeight());
 
     // Listen for actions
     applyButton->addActionListener(this);
@@ -134,31 +139,33 @@ Setup::Setup():
     alphaSlider->addActionListener(this);
     sfxSlider->addActionListener(this);
     musicSlider->addActionListener(this);
+    customCursorCheckBox->addActionListener(this);
 
     // Assemble dialog
     add(videoLabel);
     add(scrollArea);
     add(fsCheckBox);
     add(openGlCheckBox);
+    add(customCursorCheckBox);
     add(audioLabel);
     add(soundCheckBox);
-    add(applyButton);
-    add(cancelButton);
     add(alphaSlider);
     add(alphaLabel);
     add(sfxSlider);
     add(musicSlider);
     add(sfxLabel);
     add(musicLabel);
+    add(applyButton);
+    add(cancelButton);
 
     setLocationRelativeTo(getParent());
 
     // Load default settings
     modeList->setSelected(-1);
-    if (config.getValue("screen", 0) == 1) {
-        fsCheckBox->setMarked(true);
-    }
+
+    fsCheckBox->setMarked(config.getValue("screen", 0));
     soundCheckBox->setMarked(config.getValue("sound", 0));
+    customCursorCheckBox->setMarked(config.getValue("customcursor", 1));
     alphaSlider->setValue(config.getValue("guialpha", 0.8));
     sfxSlider->setValue(config.getValue("sfxVolume", 100));
     musicSlider->setValue(config.getValue("musicVolume", 60));
@@ -197,6 +204,11 @@ void Setup::action(const std::string &eventId)
     else if (eventId == "guialpha")
     {
         config.setValue("guialpha", alphaSlider->getValue());
+    }
+    else if (eventId == "customcursor")
+    {
+        config.setValue("customcursor",
+                customCursorCheckBox->isMarked() ? 1 : 0);
     }
     else if (eventId == "apply")
     {

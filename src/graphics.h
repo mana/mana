@@ -109,9 +109,6 @@ class Graphics : public gcn::SDLGraphics {
          * Returns the height of the screen.
          */
         int getHeight();
-
-    private:
-        Image *mouseCursor;
 };
 
 #endif

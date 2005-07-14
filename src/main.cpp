@@ -176,6 +176,7 @@ void init_engine()
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://themanaworld.org/");
+    config.setValue("customcursor", 1);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !

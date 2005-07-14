@@ -84,81 +84,43 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 
     logger->log("ResourceManager::get(%s)", idPath.c_str());
 
+    int fileSize;
+    void *buffer = loadFile(idPath, fileSize);
+
+    if (!buffer) {
+        logger->log("Warning: resource doesn't exist!");
+        return NULL;
+    }
+
     Resource *resource = NULL;
 
     // Create an object of the specified type.
     switch (type)
     {
-        case MAP:
-            logger->log("Warning: Map resource not supported.");
-            break;
         case MUSIC:
             {
-                // Load the music resource file
-                int fileSize;
-                void *buffer = loadFile(idPath, fileSize);
-
-                if (buffer != NULL)
-                {
-                    // Let the music class load it
-                    resource = Music::load(buffer, fileSize);
-
-                    // Cleanup
-                    free(buffer);
-                }
-                else {
-                    logger->log("Warning: resource doesn't exist!");
-                }
+                // Let the music class load it
+                resource = Music::load(buffer, fileSize);
             }
             break;
         case IMAGE:
             {
-                // Load the image resource file
-                int fileSize;
-                void *buffer = loadFile(idPath, fileSize);
-
-                if (buffer != NULL)
-                {
-                    // Let the image class load it
-                    resource = Image::load(buffer, fileSize);
-
-                    // Cleanup
-                    free(buffer);
-                }
-                else {
-                    logger->log("Warning: resource doesn't exist!");
-                }
+                // Let the image class load it
+                resource = Image::load(buffer, fileSize);
             }
-            break;
-        case SCRIPT:
-            logger->log("Warning: Script resource not supported.");
-            break;
-        case TILESET:
-            logger->log("Warning: Tileset resource not supported.");
             break;
         case SOUND_EFFECT:
             {
-                // Load the sample resource file
-                int fileSize;
-                void *buffer = loadFile(idPath, fileSize);
-
-                if (buffer != NULL)
-                {
-                    // Let the sound effect class load it
-                    resource = SoundEffect::load(buffer, fileSize);
-
-                    // Cleanup
-                    free(buffer);
-                }
-                else {
-                    logger->log("Warning: resource doesn't exist!");
-                }
+                // Let the sound effect class load it
+                resource = SoundEffect::load(buffer, fileSize);
             }
             break;
-        default: 
-            logger->log("Warning: Unknown resource type");
+        default:
+            /* Nothing to do here, just avoid compiler warnings... */
             break;
     }
+
+    free(buffer);
 
     if (resource) {
         resource->incRef();

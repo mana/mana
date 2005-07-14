@@ -282,11 +282,14 @@ Map *Engine::getCurrentMap()
 void Engine::setCurrentMap(Map *newMap)
 {
     std::string oldMusic = "";
+
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");
     }
+
     std::string newMusic = newMap->getProperty("music");
-    if(newMusic!=oldMusic) {
+
+    if (newMusic != oldMusic) {
         newMusic = std::string(TMW_DATADIR) + "data/music/" + newMusic;
         sound.playMusic(newMusic.c_str(), -1);
     }
@@ -542,8 +545,6 @@ void Engine::draw()
         statusWindow->update();
     }
 
-    gui->draw();
-
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " << mouseTileX << ", " << mouseTileY;
 
@@ -556,4 +557,6 @@ void Engine::draw()
 
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
+
+    gui->draw();
 }
