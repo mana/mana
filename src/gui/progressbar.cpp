@@ -25,38 +25,56 @@
 #include "../graphics.h"
 #include "../resources/resourcemanager.h"
 
+ImageRect ProgressBar::mBorder;
+int ProgressBar::mInstances = 0;
+
 ProgressBar::ProgressBar(float progress, int x, int y, int width, int height,
         int red, int green, int blue):
     gcn::Widget(),
-    red(red), green(green), blue(blue)
+    red(red), green(green), blue(blue),
+    redToGo(red), greenToGo(green), blueToGo(blue)
 {
     setProgress(progress);
     setX(x);
     setY(y);
     setWidth(width);
     setHeight(height);
-    redToGo = red;
-    greenToGo = green;
-    blueToGo = blue;
 
-    // Load dialog title bar image
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
-    dBackground = resman->getImage("graphics/gui/bg_quad_dis.png");
+    if (mInstances == 0)
+    {
+        ResourceManager *resman = ResourceManager::getInstance();
+        Image *dBorders = resman->getImage("graphics/gui/vscroll_grey.png");
+        mBorder.grid[0] = dBorders->getSubImage(0, 0, 4, 4);
+        mBorder.grid[1] = dBorders->getSubImage(4, 0, 3, 4);
+        mBorder.grid[2] = dBorders->getSubImage(7, 0, 4, 4);
+        mBorder.grid[3] = dBorders->getSubImage(0, 4, 4, 10);
+        mBorder.grid[4] = resman->getImage("graphics/gui/bg_quad_dis.png");
+        mBorder.grid[5] = dBorders->getSubImage(7, 4, 4, 10);
+        mBorder.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
+        mBorder.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
+        mBorder.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+        dBorders->decRef();
+    }
 
-    dTopBorder = dBorders->getSubImage(4, 0, 3, 4);
-    dLeftBorder = dBorders->getSubImage(0, 4, 4, 10);
-    dRightBorder = dBorders->getSubImage(7, 4, 4, 10);
-    dBottomBorder = dBorders->getSubImage(4, 15, 3, 4);
-
-    dTopLeftBorder = dBorders->getSubImage(0, 0, 4, 4);
-    dTopRightBorder = dBorders->getSubImage(7, 0, 4, 4);
-    dBottomRightBorder = dBorders->getSubImage(7, 15, 4, 4);
-    dBottomLeftBorder = dBorders->getSubImage(0, 15, 4, 4);
+    mInstances++;
 }
 
 ProgressBar::~ProgressBar()
 {
+    mInstances--;
+
+    if (mInstances == 0)
+    {
+        delete mBorder.grid[0];
+        delete mBorder.grid[1];
+        delete mBorder.grid[2];
+        delete mBorder.grid[3];
+        mBorder.grid[4]->decRef();
+        delete mBorder.grid[5];
+        delete mBorder.grid[6];
+        delete mBorder.grid[7];
+        delete mBorder.grid[8];
+    }
 }
 
 void ProgressBar::logic()
@@ -72,28 +90,11 @@ void ProgressBar::logic()
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
-    int absx, absy;
-    getAbsolutePosition(absx, absy);
+    int x, y;
+    getAbsolutePosition(x, y);
 
-    // Background
-    dBackground->drawPattern(screen,
-            absx + 4, absy + 4,
-            getWidth() - 8, getHeight() - 8);
-
-    // The corners
-    dTopLeftBorder->draw(screen, absx, absy);
-    dTopRightBorder->draw(screen, absx + getWidth() - 4, absy);
-    dBottomLeftBorder->draw(screen, absx, absy + getHeight() - 4);
-    dBottomRightBorder->draw(screen,
-            absx+getWidth() - 4, absy+getHeight() - 4);
-
-    // The borders
-    dTopBorder->drawPattern(screen, absx + 4, absy, getWidth() - 8, 4);
-    dBottomBorder->drawPattern(screen, absx + 4, absy + getHeight() - 4,
-            getWidth() - 8, 4);
-    dLeftBorder->drawPattern(screen, absx, absy + 4, 4, getHeight() - 8);
-    dRightBorder->drawPattern(screen, absx + getWidth() - 4, absy + 4,
-            4, getHeight() - 8);
+    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+                                         mBorder);
 
     // The bar
     if (progress > 0)
@@ -121,4 +122,19 @@ void ProgressBar::setColor(int red, int green, int blue)
     this->redToGo = red;
     this->greenToGo = green;
     this->blueToGo = blue;
+}
+
+unsigned char ProgressBar::getRed()
+{
+    return red;
+}
+
+unsigned char ProgressBar::getGreen()
+{
+    return green;
+}
+
+unsigned char ProgressBar::getBlue()
+{
+    return blue;
 }

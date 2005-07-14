@@ -25,6 +25,7 @@
 #define _TMW_PROGRESSBAR_H
 
 #include <guichan.hpp>
+#include "../graphics.h"
 #include "../resources/image.h"
 
 /**
@@ -74,37 +75,25 @@ class ProgressBar : public gcn::Widget {
         /**
          * Get The red value of color
          */
-        unsigned char getRed()
-        {
-            return red;
-        }
+        unsigned char getRed();
 
          /**
          * Get The red value of color
          */
-        unsigned char getGreen()
-        {
-            return green;
-        }
+        unsigned char getGreen();
 
          /**
          * Get The red value of color
          */
-        unsigned char getBlue()
-        {
-            return blue;
-        }
+        unsigned char getBlue();
 
     private:
         float progress;
         int red, green, blue;
         int redToGo, greenToGo, blueToGo;
 
-        // Bar Images
-        Image *dBackground;
-        Image *dTopLeftBorder, *dTopRightBorder, *dBottomLeftBorder;
-        Image *dBottomRightBorder;
-        Image *dLeftBorder, *dRightBorder, *dTopBorder, *dBottomBorder;
+        static ImageRect mBorder;
+        static int mInstances;
 };
 
 #endif
