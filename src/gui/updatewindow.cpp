@@ -156,21 +156,18 @@ int updateProgress(void *ptr,
                       double ultotal,
                       double ulnow)
 {
-    std::string labelString(currentFile);
     float progress = d/t;
-    if (d < 0)
+    if (progress < 0)
     {
-        d = 0.0f;
+        progress = 0.0f;
     }
-    std::stringstream progressString("");
-    progressString << ((int)(progress*100));
-    labelString += " (" + progressString.str() + "%)";
-    updaterWindow->setLabel(labelString.c_str());
+    std::stringstream progressString;
+    progressString << currentFile << " (" << ((int)(progress*100)) << "%)";
+    updaterWindow->setLabel(progressString.str().c_str());
     updaterWindow->setProgress(progress);
 
-    if (state != UPDATE && downloadStatus != UPDATE_ERROR) {
+    if (state != UPDATE || downloadStatus == UPDATE_ERROR) {
         // If the action was canceled return an error code to stop the thread
-        downloadStatus = UPDATE_ERROR;
         return -1;
     }
 
@@ -182,20 +179,20 @@ int downloadThread(void *ptr)
     CURL *curl;
     CURLcode res;
     FILE *outfile;
-    std::string fileName(currentFile);
-    std::string url(updateHost);
-    url += "/" + fileName;
+    std::string url(updateHost + "/" + currentFile);
 
     curl = curl_easy_init();
     if (curl)
     {
+        // Download current file as a temp file
+        logger->log("Downloading: %s", url.c_str());
         // TODO: download in the proper folder (data?)
-        outfile = fopen(fileName.c_str(), "wb");
+        outfile = fopen("download.temp", "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, updateProgress);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, fileName.c_str());
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
 
         res = curl_easy_perform(curl);
 
@@ -205,12 +202,17 @@ int downloadThread(void *ptr)
         if (res != 0) {
             downloadStatus = UPDATE_ERROR;
         }
+        else {
+            // If the download was successful give the file the proper name
+            // else it will be deleted later
+            rename("download.temp", currentFile.c_str());
+        }
     }
 
     return 0;
 }
 
-int download()
+void download()
 {
     downloadComplete = false;
     thread = SDL_CreateThread(downloadThread, NULL);
@@ -219,8 +221,9 @@ int download()
         logger->log("Unable to create thread");
         downloadStatus = UPDATE_ERROR;
     }
-
-    return 0;
+    else {
+        logger->log("Starting download of %s", currentFile.c_str());
+    }
 }
 
 void checkFile(std::ifstream &in) {
@@ -275,10 +278,12 @@ void updateData()
         
         switch (downloadStatus) {
             case UPDATE_ERROR:
+                SDL_WaitThread(thread, NULL);
                 new OkDialog(
                     "Error", ("The update process is incomplete. ",
                     "It is strongly recommended that you try again later"),
                     updaterWindow);
+                logger->log("Error during the update process");
                 downloadStatus = UPDATE_IDLE;
                 break;
             case UPDATE_NEWS:
@@ -311,6 +316,7 @@ void updateData()
                         }
                     }
                     else {
+                        SDL_WaitThread(thread, NULL);
                         if (!in.eof())
                         {
                             // Download each update
@@ -323,16 +329,18 @@ void updateData()
                         else {
                             // Download of updates completed
                             downloadStatus = UPDATE_COMPLETE;
-                            updaterWindow->enable();
-                            updaterWindow->setLabel("Completed");
                         }
                     }
                 }
                 break;
+            case UPDATE_COMPLETE:
+                updaterWindow->enable();
+                updaterWindow->setLabel("Completed");
+                break;
             case UPDATE_IDLE:
                 break;
         }
-        
+
         gui->logic();
 
         login_wallpaper->draw(screen, 0, 0);
@@ -341,8 +349,10 @@ void updateData()
     }
     
     in.close();
-    
-    SDL_WaitThread(thread, NULL);
+    // Remove downloaded files
+    remove("news.txt");
+    remove("resources.txt");
+    remove("download.temp");
 
     delete updaterWindow;
 }
