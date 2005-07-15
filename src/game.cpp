@@ -268,19 +268,23 @@ void do_input()
     }
     if (joypad != NULL)
     {
-        if (SDL_JoystickGetAxis(joypad, 0) > 100)
+        // TODO: one different value of tolerance is needed for each direction
+        // This probably means the need for a tuning utility/window
+        int tolerance = config.getValue("joytolerance", 10);
+        SDL_JoystickUpdate();
+        if (SDL_JoystickGetAxis(joypad, 0) > tolerance)
         {
             joy[JOY_RIGHT] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 0) < -100)
+        if (SDL_JoystickGetAxis(joypad, 0) < -tolerance)
         {
             joy[JOY_LEFT] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 1) < -100)
+        if (SDL_JoystickGetAxis(joypad, 1) < -tolerance)
         {
             joy[JOY_UP] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 1) > 100)
+        if (SDL_JoystickGetAxis(joypad, 1) > tolerance)
         {
             joy[JOY_DOWN] = true;
         }
@@ -875,6 +879,7 @@ void do_parse()
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
+                        being->weapon = RFIFOW(18);
                         add_node(being);
                     }
                     else
@@ -961,7 +966,6 @@ void do_parse()
                     being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
                     being->weapon = RFIFOW(18);
-
                     being->setDestination(
                             get_dest_x(RFIFOP(50)),
                             get_dest_y(RFIFOP(50)));
@@ -1040,8 +1044,7 @@ void do_parse()
                     break;
                 // Trade: Item added on trade partner's side
                 case 0x00e9:
-                    // TODO:
-                    // Maybe also handle identified, etc
+                    // TODO: handle also identified, etc
                     if (RFIFOW(6) == 0)
                     {
                         tradeWindow->addMoney(RFIFOL(2));
@@ -1113,7 +1116,6 @@ void do_parse()
                     tradeWindow->setVisible(false);
                     tradeWindow->reset();
                     break;
-
                     // Get the items
                     // Only called on map load / warp
                 case 0x01ee:
@@ -1132,9 +1134,6 @@ void do_parse()
                             inventoryWindow->items->setEquipment(
                                 RFIFOW(4 + loop * 18), true);
                         }
-                        /*char info[40];
-                        sprintf(info, "1ee %i", RFIFOW(4+loop*18+2));
-                        chatWindow->chat_log(info, BY_SERVER);*/
                     }
                     break;
 
@@ -1145,13 +1144,6 @@ void do_parse()
                     {
                         inventoryWindow->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
-                        /*char info[40];
-                        sprintf(info, "a4 %i %i %i %i %i %i %i %i",
-                            RFIFOW(4+loop*20), RFIFOW(4+loop*20+2),
-                            RFIFOB(4+loop*20+4), RFIFOB(4+loop*20+5),
-                            RFIFOW(4+loop*20+6), RFIFOW(4+loop*20+8),
-                            RFIFOB(4+loop*20+10), RFIFOB(4+loop*20+11));
-                            chatWindow->chat_log(info, BY_SERVER);*/
                         if (RFIFOW(4 + loop * 20 + 8))
                         {
                             int mask = 1;
@@ -1161,8 +1153,6 @@ void do_parse()
                                 mask *= 2;
                                 position++;
                             }
-                            /*sprintf(info, "%i %i", mask, position);
-                              chatWindow->chat_log(info, BY_SERVER);*/
                             equipmentWindow->addEquipment(position - 1,
                                     RFIFOW(4+loop*20+2));
                             equipmentWindow->equipments[position - 1].inventoryIndex =
@@ -1284,17 +1274,9 @@ void do_parse()
                             break;
                         case 0x0009:
                             char_info->statsPointsToAttribute = RFIFOW(4);
-                            /*char points[20];
-                            sprintf(points, "b0 0x0009 %i", RFIFOL(4));
-                            chatWindow->chat_log(points, BY_SERVER);*/
                             break;
                         case 0x0035:
                             player_node->aspd = RFIFOW(4);
-                            break;
-                        default:
-                            /*char unknown[20];
-                            sprintf(unknown, "b0 %x %i", RFIFOW(2),RFIFOL(4));
-                            chatWindow->chat_log(unknown, BY_SERVER);*/
                             break;
                     }
                     statusWindow->update();
@@ -1426,9 +1408,6 @@ void do_parse()
                             char_info->LUK = RFIFOL(6) + RFIFOL(10);
                             break;
                     }
-                    /*char unknown2[20];
-                    sprintf(unknown2, "141 %i %i %i", RFIFOL(2),RFIFOL(6),RFIFOL(10));
-                    chatWindow->chat_log(unknown2, BY_SERVER);*/
                     break;
                     // Buy/Sell dialog
                 case 0x00c4:
@@ -1498,7 +1477,6 @@ void do_parse()
                     break;
                     // Decrease quantity of an item in inventory
                 case 0x00af:
-                    printf("sell %i\n", -RFIFOW(4));
                     inventoryWindow->increaseQuantity(RFIFOW(2), -RFIFOW(4));
                     // If the item is arrow decrease number from equipment
                     // window when equipped
@@ -1510,9 +1488,6 @@ void do_parse()
                     // Use an item
                 case 0x01c8:
                     inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(10));
-                    break;
-                    // ??
-                case 0x0119:
                     break;
                     // Skill list TAG
                 case 0x010f:
@@ -1538,10 +1513,6 @@ void do_parse()
                         }
                     }
                 }
-                    break;
-
-                    // MVP experience
-                case 0x010b:
                     break;
                     // Display MVP player
                 case 0x010c:
@@ -1585,10 +1556,16 @@ void do_parse()
                 case SMSG_CHANGE_BEING_LOOKS:
                     being = findNode(RFIFOL(2));
                     if (being) {
-                        if (RFIFOB(6) == 6) {
-                            being->setHairColor(RFIFOB(7));
-                        } else if (RFIFOB(6) == 1) {
-                            being->setHairStyle(RFIFOB(7));
+                        switch (RFIFOB(6)) {
+                            case 1:
+                                being->setHairStyle(RFIFOB(7));
+                                break;
+                            case 2:
+                                being->weapon = RFIFOB(7);
+                                break;
+                            case 6:
+                                being->setHairColor(RFIFOB(7));
+                                break;
                         }
                     }
                     break;
@@ -1633,7 +1610,6 @@ void do_parse()
                                     player_node->weapon = 2;
                                     break;
                             }
-                            //player_node->weapon = 0;
                         }
                     }
                     break;

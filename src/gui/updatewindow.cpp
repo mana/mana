@@ -130,7 +130,7 @@ void UpdaterWindow::loadNews()
     browserBox->clearRows();
     ResourceManager *resman = ResourceManager::getInstance();
     int contentsLength;
-    std::ifstream newsFile("news.txt");
+    std::ifstream newsFile(TMW_DATADIR "data/news.txt");
     if (!newsFile.is_open())
     {
         logger->log("Couldn't load news.txt");
@@ -187,7 +187,7 @@ int downloadThread(void *ptr)
         // Download current file as a temp file
         logger->log("Downloading: %s", url.c_str());
         // TODO: download in the proper folder (data?)
-        outfile = fopen("download.temp", "wb");
+        outfile = fopen(TMW_DATADIR "data/download.temp", "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
@@ -205,7 +205,9 @@ int downloadThread(void *ptr)
         else {
             // If the download was successful give the file the proper name
             // else it will be deleted later
-            rename("download.temp", currentFile.c_str());
+            std::string newName(TMW_DATADIR "data/");
+            newName += currentFile.c_str();
+            rename(TMW_DATADIR "data/download.temp", newName.c_str());
         }
     }
 
@@ -305,7 +307,7 @@ void updateData()
                     if (!in.is_open())
                     {
                         // Try to open resources.txt
-                        in.open("resources.txt");
+                        in.open(TMW_DATADIR "data/resources.txt");
                         if (!in.is_open())
                         {
                             logger->log("Unable to open resources.txt");
@@ -350,9 +352,9 @@ void updateData()
     
     in.close();
     // Remove downloaded files
-    remove("news.txt");
-    remove("resources.txt");
-    remove("download.temp");
+    remove(TMW_DATADIR "data/news.txt");
+    remove(TMW_DATADIR "data/resources.txt");
+    remove(TMW_DATADIR "data/download.temp");
 
     delete updaterWindow;
 }
