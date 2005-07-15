@@ -270,7 +270,7 @@ void do_input()
     {
         // TODO: one different value of tolerance is needed for each direction
         // This probably means the need for a tuning utility/window
-        int tolerance = config.getValue("joytolerance", 10);
+        int tolerance = (int)config.getValue("joytolerance", 10);
         SDL_JoystickUpdate();
         if (SDL_JoystickGetAxis(joypad, 0) > tolerance)
         {

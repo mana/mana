@@ -281,3 +281,32 @@ ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 
     return buffer;
 }
+
+std::vector<std::string>
+ResourceManager::loadTextFile(const std::string &fileName)
+{
+    int contentsLength;
+    char *fileContents = (char*)loadFile(fileName, contentsLength);
+    std::vector<std::string> lines;
+
+    if (!fileContents)
+    {
+        logger->log("Couldn't load text file: %s", fileName.c_str());
+        return lines;
+    }
+
+    // Reallocate and include terminating 0 character
+    fileContents = (char*)realloc(fileContents, contentsLength + 1);
+    fileContents[contentsLength] = '\0';
+
+    // Tokenize and add each line separately
+    char *line = strtok(fileContents, "\n");
+    while (line != NULL)
+    {
+        lines.push_back(line);
+        line = strtok(NULL, "\n");
+    }
+
+    free(fileContents);
+    return lines;
+}

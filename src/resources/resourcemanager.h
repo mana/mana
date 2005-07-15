@@ -26,6 +26,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 #include "resource.h"
 #include "image.h"
 #include "music.h"
@@ -112,6 +113,12 @@ class ResourceManager
          */
         void*
         loadFile(const std::string &fileName, int &fileSize);
+
+        /**
+         * Retrieves the contents of a text file.
+         */
+        std::vector<std::string>
+        loadTextFile(const std::string &fileName);
 
         /**
          * Returns an instance of the class, creating one if it does not

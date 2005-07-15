@@ -87,27 +87,11 @@ void HelpWindow::loadHelp(const std::string &helpFile)
 void HelpWindow::loadFile(const std::string &file)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    const std::string filePath = "help/" + file + ".txt";
-    int contentsLength;
-    char *fileContents = (char*)resman->loadFile(filePath, contentsLength);
+    std::vector<std::string> lines =
+        resman->loadTextFile("help/" + file + ".txt");
 
-    if (!fileContents)
+    for (unsigned int i = 0; i < lines.size(); ++i)
     {
-        logger->log("Couldn't load help file: %s", filePath.c_str());
-        return;
+        browserBox->addRow(lines[i]);
     }
-
-    // Reallocate and include terminating 0 character
-    fileContents = (char*)realloc(fileContents, contentsLength + 1);
-    fileContents[contentsLength] = '\0';
-
-    // Tokenize and add each line separately
-    char *line = strtok(fileContents, "\n");
-    while (line != NULL)
-    {
-        browserBox->addRow(line);
-        line = strtok(NULL, "\n");
-    }
-
-    free(fileContents);
 }

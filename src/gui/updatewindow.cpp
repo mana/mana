@@ -127,25 +127,16 @@ void UpdaterWindow::action(const std::string& eventId)
 
 void UpdaterWindow::loadNews()
 {
-    browserBox->clearRows();
     ResourceManager *resman = ResourceManager::getInstance();
-    int contentsLength;
-    std::ifstream newsFile(TMW_DATADIR "data/news.txt");
-    if (!newsFile.is_open())
+    std::vector<std::string> lines = resman->loadTextFile("news.txt");
+
+    browserBox->clearRows();
+
+    for (unsigned int i = 0; i < lines.size(); ++i)
     {
-        logger->log("Couldn't load news.txt");
-        browserBox->addRow("Error");
-        return;
+        browserBox->addRow(lines[i]);
     }
 
-    // Tokenize and add each line separately
-    std::string line("");
-    while (!newsFile.eof())
-    {
-        getline(newsFile, line);
-        browserBox->addRow(line);
-    }
-    newsFile.close();
     scrollArea->setVerticalScrollAmount(0);
     setVisible(true);
 }
