@@ -58,6 +58,25 @@ extern int server_tick;
 extern bool displayPathToMouse;
 extern int startX, startY;
 
+enum {
+    JOY_UP,
+    JOY_DOWN,
+    JOY_LEFT,
+    JOY_RIGHT,
+    JOY_BTN0,
+    JOY_BTN1,
+    JOY_BTN2,
+    JOY_BTN3,
+    JOY_BTN4,
+    JOY_BTN5,
+    JOY_BTN6,
+    JOY_BTN7,
+    JOY_BTN8,
+    JOY_BTN9,
+    JOY_BTN10,
+    JOY_BTN11
+};
+
 /**
  * Main game loop
  */

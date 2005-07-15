@@ -158,6 +158,10 @@ int updateProgress(void *ptr,
 {
     std::string labelString(currentFile);
     float progress = d/t;
+    if (d < 0)
+    {
+        d = 0.0f;
+    }
     std::stringstream progressString("");
     progressString << ((int)(progress*100));
     labelString += " (" + progressString.str() + "%)";

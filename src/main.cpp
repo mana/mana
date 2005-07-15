@@ -83,8 +83,8 @@ volatile int framesToDraw = 0;
 Sound sound;
 Music *bgm;
 
-Configuration config;        /**< Xml file configuration reader */
-Logger *logger;              /**< Log object */
+Configuration config;         /**< Xml file configuration reader */
+Logger *logger;               /**< Log object */
 ItemManager *itemDb;          /**< Item database object */
 
 /**
@@ -313,7 +313,7 @@ void init_engine()
         new OkDialog("Sound Engine", err, &initWarningListener);
         logger->log("Warning: %s", err);
     }
-
+    
     // Set frame counter when using fps limit
     int fpsLimit = (int)config.getValue("fpslimit", 0);
     if (fpsLimit)

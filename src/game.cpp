@@ -71,6 +71,7 @@ int startX = 0, startY = 0;
 int gameTime = 0;
 Being *autoTarget = NULL;
 Engine *engine = NULL;
+SDL_Joystick *joypad;       /**< Joypad object */
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
@@ -137,7 +138,72 @@ int get_elapsed_time(int start_time)
     }
 }
 
-void do_init();
+void do_init()
+{
+    std::string path(map_path);
+    std::string pathDir = path.substr(0, path.rfind("."));
+
+    // Try .tmx.gz map file
+    pathDir.insert(pathDir.size(), ".tmx.gz");
+    Map *tiledMap = MapReader::readMap(pathDir);
+
+    if (!tiledMap)
+    {
+        logger->error("Could not find map file!");
+    }
+    else
+    {
+        engine->setCurrentMap(tiledMap);
+    }
+
+    // Initialize timers
+    tick_time = 0;
+    SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
+    SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
+
+    // Initialize beings
+    player_node = new Being();
+    player_node->id = account_ID;
+    player_node->x = startX;
+    player_node->y = startY;
+    player_node->speed = 150;
+    player_node->setHairColor(char_info->hair_color);
+    player_node->setHairStyle(char_info->hair_style);
+
+    if (char_info->weapon == 11) {
+        char_info->weapon = 2;
+    }
+
+    player_node->weapon = char_info->weapon;
+
+    add_node(player_node);
+
+    remove("packet.list");
+
+    // Initialize joypad
+    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+    //SDL_JoystickEventState(SDL_ENABLE);
+    int num_joy = SDL_NumJoysticks();
+    logger->log("%i joysticks/gamepads found", num_joy);
+    for (int i = 0; i < num_joy; i++)
+        logger->log("- %s", SDL_JoystickName(i));
+    // TODO: The user should be able to choose which one to use
+    // Open the first device
+    if (num_joy > 0)
+    {
+        joypad = SDL_JoystickOpen(0);
+        if (joypad == NULL)
+        {
+            logger->log("Couldn't open joystick: %s", SDL_GetError());
+        }
+        else {
+            logger->log("Axes: %i ", SDL_JoystickNumAxes(joypad));
+            logger->log("Balls: %i", SDL_JoystickNumBalls(joypad));
+            logger->log("Hats: %i", SDL_JoystickNumHats(joypad));
+            logger->log("Buttons: %i", SDL_JoystickNumButtons(joypad));
+        }
+    }
+}
 
 void game()
 {
@@ -179,51 +245,12 @@ void game()
     close_session();
 }
 
-void do_init()
-{
-    std::string path(map_path);
-    std::string pathDir = path.substr(0, path.rfind("."));
-
-    // Try .tmx.gz map file
-    pathDir.insert(pathDir.size(), ".tmx.gz");
-    Map *tiledMap = MapReader::readMap(pathDir);
-    
-    if (!tiledMap)
-    {
-        logger->error("Could not find map file!");
-    }
-    else
-    {
-        engine->setCurrentMap(tiledMap);
-    }
-
-    // Initialize timers
-    tick_time = 0;
-    SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
-    SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
-
-    // Initialize beings
-    player_node = new Being();
-    player_node->id = account_ID;
-    player_node->x = startX;
-    player_node->y = startY;
-    player_node->speed = 150;
-    player_node->setHairColor(char_info->hair_color);
-    player_node->setHairStyle(char_info->hair_style);
-
-    if (char_info->weapon == 11) {
-        char_info->weapon = 2;
-    }
-
-    player_node->weapon = char_info->weapon;
-
-    add_node(player_node);
-
-    remove("packet.list");
-}
-
 void do_exit()
 {
+    if (joypad != NULL)
+    {
+        SDL_JoystickClose(joypad);
+    }
 }
 
 void do_input()
@@ -231,6 +258,40 @@ void do_input()
     // Get the state of the keyboard keys
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
+    
+    // Get the state of the joypad buttons
+    // TODO: Only 6- buttons joypads are allowed
+    bool joy[10];
+    for (int i=0; i<10; i++)
+    {
+        joy[i] = false;
+    }
+    if (joypad != NULL)
+    {
+        if (SDL_JoystickGetAxis(joypad, 0) > 100)
+        {
+            joy[JOY_RIGHT] = true;
+        }
+        if (SDL_JoystickGetAxis(joypad, 0) < -100)
+        {
+            joy[JOY_LEFT] = true;
+        }
+        if (SDL_JoystickGetAxis(joypad, 1) < -100)
+        {
+            joy[JOY_UP] = true;
+        }
+        if (SDL_JoystickGetAxis(joypad, 1) > 100)
+        {
+            joy[JOY_DOWN] = true;
+        }
+        for (int i=0; i<6; i++)
+        {
+            if (SDL_JoystickGetButton(joypad, i) == 1)
+            {
+                joy[JOY_BTN0 + i] = true;
+            }
+        }
+    }
 
     // Events
     SDL_Event event;
@@ -371,7 +432,7 @@ void do_input()
 
             // Picking up items on the floor
             else if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
-                    !chatWindow->isFocused())
+                        !chatWindow->isFocused())
             {
                 unsigned short x = player_node->x;
                 unsigned short y = player_node->y;
@@ -527,7 +588,38 @@ void do_input()
                 popupMenu->showPopup(mx, my);
             }
         }
-
+        /*
+        // Joystick events
+        else if (event.type == SDL_JOYBUTTONDOWN)
+        {
+            // Attacking monsters
+            if (player_node->action == STAND)
+            {
+                if (event.jbutton.which == 0 && event.jbutton.button == 1)
+                {
+                    Being *monster = attack(player_node->x,
+                                            player_node->y,
+                                            player_node->direction);
+                }
+            }
+            logger->log("Joystick button %d", event.jbutton.which);
+        }
+		else if (event.type == SDL_JOYAXISMOTION)
+		{
+            if (event.jaxis.axis == 0) {
+                if (event.jaxis.value > 100)
+                {
+                    walk(player_node->x + 1, 0, EAST);
+                    player_node->setDestination(player_node->x + 1, player_node->y);
+                }
+                else if (event.jaxis.value < -100){
+                    walk(player_node->x - 1, 0, WEST);
+                    player_node->setDestination(player_node->x - 1, player_node->y);
+                }
+            }
+            logger->log("Axis %d moved of %d", event.jaxis.axis, event.jaxis.value);
+        }*/
+        
         // Quit event
         else if (event.type == SDL_QUIT)
         {
@@ -540,7 +632,7 @@ void do_input()
         }
 
     } // End while
-
+    
     // Moving player around
     if ((player_node->action != DEAD) && (current_npc == 0) &&
             !chatWindow->isFocused())
@@ -552,25 +644,25 @@ void do_input()
         int Direction = DIR_NONE;
 
         // Translate pressed keys to movement and direction
-        if (keys[SDLK_UP] || keys[SDLK_KP8])
+        if (keys[SDLK_UP] || keys[SDLK_KP8] || joy[JOY_UP])
         {
             yDirection = -1;
             if (player_node->action != WALK)
                 Direction = NORTH;
         }
-        if (keys[SDLK_DOWN] || keys[SDLK_KP2])
+        if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joy[JOY_DOWN])
         {
             yDirection = 1;
             if (player_node->action != WALK)
                 Direction = SOUTH;
         }
-        if (keys[SDLK_LEFT] || keys[SDLK_KP4])
+        if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joy[JOY_LEFT])
         {
             xDirection = -1;
             if (player_node->action != WALK)
                 Direction = WEST;
         }
-        if (keys[SDLK_RIGHT] || keys[SDLK_KP6])
+        if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joy[JOY_RIGHT])
         {
             xDirection = 1;
             if (player_node->action != WALK)
@@ -642,7 +734,7 @@ void do_input()
         // Attacking monsters
         if (player_node->action == STAND)
         {
-            if (keys[SDLK_LCTRL])
+            if (keys[SDLK_LCTRL] || joy[JOY_BTN0])
             {
                 Being *monster = attack(x, y, player_node->direction);
                 if (monster == NULL && autoTarget != NULL)
