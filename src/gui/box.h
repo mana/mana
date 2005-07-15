@@ -29,27 +29,27 @@
 
 class Box : public gcn::Container
 {
- protected:
-    Box();
-    virtual ~Box();
+    protected:
+        Box();
+        virtual ~Box();
 
-    /*
-     * Spacing between client widgets
-     */
-    unsigned int padding;
+        /*
+         * Spacing between client widgets
+         */
+        unsigned int padding;
 
-    virtual void draw(gcn::Graphics *) = 0;
+        virtual void draw(gcn::Graphics *) = 0;
 
- public:
-    /*
-     * Returns padding
-     */
-    unsigned int getPadding();
+    public:
+        /*
+         * Returns padding
+         */
+        unsigned int getPadding();
 
-    /*
-     * Sets padding between widgets
-     */
-    void setPadding(unsigned int);
+        /*
+         * Sets padding between widgets
+         */
+        void setPadding(unsigned int);
 };
 
 #endif

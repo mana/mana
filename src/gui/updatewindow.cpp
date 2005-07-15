@@ -282,8 +282,9 @@ void updateData()
             case UPDATE_ERROR:
                 SDL_WaitThread(thread, NULL);
                 new OkDialog(
-                    "Error", ("The update process is incomplete. ",
-                    "It is strongly recommended that you try again later"),
+                    "Error",
+                    "The update process is incomplete.\n"
+                    "It is strongly recommended that you try again later",
                     updaterWindow);
                 logger->log("Error during the update process");
                 downloadStatus = UPDATE_IDLE;

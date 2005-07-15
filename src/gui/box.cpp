@@ -23,9 +23,8 @@
 
 #include "box.h"
 
-Box::Box()
-    : padding(0),
-      gcn::Container()
+Box::Box():
+    padding(0)
 {
     setOpaque(false);
 }

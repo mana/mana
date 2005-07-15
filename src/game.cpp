@@ -71,7 +71,7 @@ int startX = 0, startY = 0;
 int gameTime = 0;
 Being *autoTarget = NULL;
 Engine *engine = NULL;
-SDL_Joystick *joypad;       /**< Joypad object */
+SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
@@ -491,7 +491,7 @@ void do_input()
                 // XXX Is this too hackish? I'm not sure if making the Gui
                 // class a KeyListener is a good idea and works as expected
                 // at all...
-                if (keys[SDLK_LSHIFT]) {
+                if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) {
                     used = true;
                 }
 
@@ -707,7 +707,7 @@ void do_input()
         // Attacking monsters
         if (player_node->action == STAND)
         {
-            if (keys[SDLK_LCTRL] || joy[JOY_BTN0])
+            if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
             {
                 Being *monster = attack(x, y, player_node->direction);
                 if (monster == NULL && autoTarget != NULL)

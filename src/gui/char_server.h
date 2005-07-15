@@ -32,6 +32,8 @@
  */
 class ServerListModel : public gcn::ListModel {
     public:
+        virtual ~ServerListModel() {};
+
         int getNumberOfElements();
         std::string getElementAt(int i);
 };
