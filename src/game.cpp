@@ -588,38 +588,7 @@ void do_input()
                 popupMenu->showPopup(mx, my);
             }
         }
-        /*
-        // Joystick events
-        else if (event.type == SDL_JOYBUTTONDOWN)
-        {
-            // Attacking monsters
-            if (player_node->action == STAND)
-            {
-                if (event.jbutton.which == 0 && event.jbutton.button == 1)
-                {
-                    Being *monster = attack(player_node->x,
-                                            player_node->y,
-                                            player_node->direction);
-                }
-            }
-            logger->log("Joystick button %d", event.jbutton.which);
-        }
-		else if (event.type == SDL_JOYAXISMOTION)
-		{
-            if (event.jaxis.axis == 0) {
-                if (event.jaxis.value > 100)
-                {
-                    walk(player_node->x + 1, 0, EAST);
-                    player_node->setDestination(player_node->x + 1, player_node->y);
-                }
-                else if (event.jaxis.value < -100){
-                    walk(player_node->x - 1, 0, WEST);
-                    player_node->setDestination(player_node->x - 1, player_node->y);
-                }
-            }
-            logger->log("Axis %d moved of %d", event.jaxis.axis, event.jaxis.value);
-        }*/
-        
+
         // Quit event
         else if (event.type == SDL_QUIT)
         {
@@ -746,6 +715,26 @@ void do_input()
                     autoTarget = monster;
                 }
             }
+        }
+        
+        if (joy[JOY_BTN1]) {
+            unsigned short x = player_node->x;
+            unsigned short y = player_node->y;
+            int id = find_floor_item_by_cor(x, y);
+            
+            if (id != 0)
+            {
+                WFIFOW(0) = net_w_value(0x009f);
+                WFIFOL(2) = net_l_value(id);
+                WFIFOSET(6);
+            }
+        }
+        else if (joy[JOY_BTN2] && action_time) {
+            if (player_node->action == STAND)
+                action(2, 0);
+            else if (player_node->action == SIT)
+                action(3, 0);
+            action_time = false;
         }
     }
 }
