@@ -39,6 +39,7 @@ std::string updateHost = "themanaworld.org/files";
 std::string currentFile = "news.txt";
 bool downloadComplete = true;
 int downloadStatus = UPDATE_NEWS;
+std::string basePath = "";
 
 UpdaterWindow::UpdaterWindow()
     : Window("Updating...")
@@ -120,9 +121,6 @@ void UpdaterWindow::action(const std::string& eventId)
     else if (eventId == "play") {
         state = LOGIN;
     }
-    else if (eventId == "ok") {
-        state = LOGIN;
-    }
 }
 
 void UpdaterWindow::loadNews()
@@ -139,6 +137,12 @@ void UpdaterWindow::loadNews()
 
     scrollArea->setVerticalScrollAmount(0);
     setVisible(true);
+}
+
+void UpdaterWindow::setText(std::string row) {
+    browserBox->addRow(row);
+    scrollArea->setVerticalScrollAmount(
+        scrollArea->getVerticalMaxScroll());
 }
 
 int updateProgress(void *ptr,
@@ -177,8 +181,9 @@ int downloadThread(void *ptr)
     {
         // Download current file as a temp file
         logger->log("Downloading: %s", url.c_str());
-        // Download in the proper folder : ./data under win, /home/user/.tmw/data for unices
-        std::string outFilename = config.getValue("homeDir", "") + "/data/download.temp";
+        // Download in the proper folder : ./data under win,
+        // /home/user/.tmw/data for unices
+        std::string outFilename =  basePath + "/data/download.temp";
         outfile = fopen(outFilename.c_str(), "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
@@ -197,8 +202,8 @@ int downloadThread(void *ptr)
         else {
             // If the download was successful give the file the proper name
             // else it will be deleted later
-            std::string newName(config.getValue("homeDir", "") + "/data/");
-            newName += currentFile.c_str();
+            std::string newName(basePath + "/data/" + currentFile.c_str());
+            logger->log("Renaming: %s -> %s", outFilename.c_str(), newName.c_str());
             rename(outFilename.c_str(), newName.c_str());
         }
     }
@@ -214,9 +219,6 @@ void download()
     if (thread == NULL) {
         logger->log("Unable to create thread");
         downloadStatus = UPDATE_ERROR;
-    }
-    else {
-        logger->log("Starting download of %s", currentFile.c_str());
     }
 }
 
@@ -240,15 +242,16 @@ void checkFile(std::ifstream &in) {
 
 void updateData()
 {
+
     updaterWindow = new UpdaterWindow();
     state = UPDATE;
     
-    std::string updateHost =
-            config.getValue("updatehost", "themanaworld.org/files");
+    updateHost = config.getValue("updatehost", "themanaworld.org/files");
+    basePath = config.getValue("homeDir", ".");
     // Try to download the updates list
     download();
     std::ifstream in;
-
+    
     while (state == UPDATE)
     {
         // Handle SDL events
@@ -273,13 +276,12 @@ void updateData()
         switch (downloadStatus) {
             case UPDATE_ERROR:
                 SDL_WaitThread(thread, NULL);
-                new OkDialog(
-                    "Error",
-                    "The update process is incomplete.\n"
-                    "It is strongly recommended that you try again later",
-                    updaterWindow);
-                logger->log("Error during the update process");
-                downloadStatus = UPDATE_IDLE;
+                //cancellare tutto, rimettere browser box protected, creare metodi per aggiungere linee e cancellare tutto
+                updaterWindow->setText("");
+                updaterWindow->setText("##1  The update process is incomplete.");
+                updaterWindow->setText("##1  It is strongly recommended that");
+                updaterWindow->setText("##1  you try again later");
+                downloadStatus = UPDATE_COMPLETE;
                 break;
             case UPDATE_NEWS:
                 // If not already downloading another file
@@ -300,7 +302,7 @@ void updateData()
                     if (!in.is_open())
                     {
                         // Try to open resources.txt
-                        in.open(TMW_DATADIR "data/resources.txt");
+                        in.open((basePath + "/data/resources.txt").c_str(), std::ifstream::in);
                         if (!in.is_open())
                         {
                             logger->log("Unable to open resources.txt");
@@ -312,14 +314,20 @@ void updateData()
                     }
                     else {
                         SDL_WaitThread(thread, NULL);
-                        if (!in.eof())
+                        if (in.is_open() && !in.eof())
                         {
                             // Download each update
                             std::string line("");
                             getline(in, line);
-                            // TODO: it should check if file already exists
                             currentFile = line;
-                            download();
+                            std::ifstream temp((basePath + "/data" + line).c_str(), std::ifstream::in);
+                            if (temp.is_open()) {
+                                temp.close();
+                                download();
+                            }
+                            else {
+                                logger->log("%s is already here", line.c_str());
+                            }
                         }
                         else {
                             // Download of updates completed
@@ -345,9 +353,9 @@ void updateData()
     
     in.close();
     // Remove downloaded files
-    remove(TMW_DATADIR "data/news.txt");
-    remove(TMW_DATADIR "data/resources.txt");
-    remove(TMW_DATADIR "data/download.temp");
+    remove((basePath + "/data/news.txt").c_str());
+    remove((basePath + "/data/resources.txt").c_str());
+    remove((basePath + "/data/download.temp").c_str());
 
     delete updaterWindow;
 }

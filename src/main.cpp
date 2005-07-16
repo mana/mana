@@ -139,7 +139,7 @@ void init_engine()
     std::string homeDir = "";
 #ifndef __USE_UNIX98
     // In Windows and other systems we currently store data next to executable.
-    homeDir = TMW_DATADIR;
+    homeDir = ".";
 #else
     // But, in UNIX we store data in ~/.tmw/
     passwd *pass = getpwuid(geteuid());
@@ -191,6 +191,7 @@ void init_engine()
     config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
     config.setValue("homeDir", homeDir);
+    config.setValue("joytolerance", 10);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !

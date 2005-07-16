@@ -752,6 +752,13 @@ int get_packet_length(short id)
 
 void do_parse()
 {
+
+
+/*switch 0079, actor connected
+ 	[10:44]	Joseph_: 0078, actor_exists
+ 	[10:44]	Munak: Heck, if Bill Clinton can do it surely *I* can!
+ 	[10:45]	Joseph_: 007B, 01D8,  01D9, 01DA are the others*/
+
     unsigned short id;
     char *temp;
     Being *being = NULL;
@@ -880,6 +887,8 @@ void do_parse()
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
                         being->weapon = RFIFOW(18);
+                        if (being->isPlayer())
+                            std::cout << RFIFOW(18) << std::endl;
                         add_node(being);
                     }
                     else

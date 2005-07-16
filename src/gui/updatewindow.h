@@ -92,6 +92,8 @@ class UpdaterWindow : public Window, public gcn::ActionListener
 
     void draw(gcn::Graphics *);
     
+    void setText(std:: string row);
+    
     int updateState;
 };
 
