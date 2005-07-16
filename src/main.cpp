@@ -150,18 +150,31 @@ void init_engine()
         exit(1);
     }
 
-    // Checking if homeuser/.tmw folder exists.
-    sprintf(homeDir, "%s/.tmw/", pass->pw_dir);
+    // Checking if /home/user/.tmw folder exists.
+    sprintf(homeDir, "%s/.tmw", pass->pw_dir);
     if ((mkdir(homeDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
         printf("%s can't be made, but it doesn't exist! Exitting.\n", homeDir);
         exit(1);
     }
+
+    // Creating and checking the ~/.tmw/data folder existence and rights.
+    char *dataUpdateDir = new char [256];
+    sprintf(dataUpdateDir, "%s/data", homeDir);
+    if ((mkdir(dataUpdateDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+            (errno != EEXIST))
+    {
+        printf("%s can't be made, but it doesn't exist! Exitting.\n", dataUpdateDir);
+        delete dataUpdateDir;
+        exit(1);
+    }
+    delete dataUpdateDir;
+
 #endif
 
     // Initialize logger
-    logger = new Logger(std::string(homeDir) + std::string("tmw.log"));
+    logger = new Logger(std::string(homeDir) + std::string("/tmw.log"));
 
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
@@ -175,14 +188,19 @@ void init_engine()
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 0);
-    config.setValue("updatehost", "http://themanaworld.org/");
+    config.setValue("updatehost", "themanaworld.org/files");
     config.setValue("customcursor", 1);
+    #ifdef __USE_UNIX98
+        config.setValue("homeDir", homeDir);
+    #else
+        config.setValue("homeDir", TMW_DATADIR);
+    #endif
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
     FILE *tmwFile = 0;
     char configPath[256];
-    sprintf(configPath, "%sconfig.xml", homeDir);
+    sprintf(configPath, "%s/config.xml", homeDir);
     tmwFile = fopen(configPath, "r");
 
     // If we can't read it, it doesn't exist !
