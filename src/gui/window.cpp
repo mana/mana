@@ -22,12 +22,10 @@
  */
 
 #include "window.h"
+#include "gui.h"
 #include "../resources/resourcemanager.h"
 #include "../log.h"
 #include "../main.h"
-
-// TODO Check if we can get rid of this
-extern SDL_Surface *screen;
 
 WindowContainer *Window::windowContainer = NULL;
 int Window::instances = 0;
@@ -302,26 +300,26 @@ void Window::mouseMotion(int x, int y)
 
             newDim.y = 0;
         }
-        if (newDim.x + newDim.width > screen->w)
+        if (newDim.x + newDim.width > guiGraphics->getWidth())
         {
             if (mMouseResize)
             {
-                newDim.width = screen->w - newDim.x;
+                newDim.width = guiGraphics->getWidth() - newDim.x;
             }
             else
             {
-                newDim.x = screen->w - newDim.width;
+                newDim.x = guiGraphics->getWidth() - newDim.width;
             }
         }
-        if (newDim.y + newDim.height > screen->h)
+        if (newDim.y + newDim.height > guiGraphics->getHeight())
         {
             if (mMouseResize)
             {
-                newDim.height = screen->h - newDim.y;
+                newDim.height = guiGraphics->getHeight() - newDim.y;
             }
             else
             {
-                newDim.y = screen->h - newDim.height;
+                newDim.y = guiGraphics->getHeight() - newDim.height;
             }
         }
 

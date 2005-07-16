@@ -71,6 +71,5 @@ extern unsigned char state;
 extern Sound sound;
 extern int screenW, screenH, bitDepth, displayFlags;
 extern bool useOpenGL;
-extern Configuration config;
 
 #endif

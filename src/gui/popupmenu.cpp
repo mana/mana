@@ -22,15 +22,13 @@
  */
 
 #include "popupmenu.h"
+#include "gui.h"
 #include "../graphics.h"
 #include "../game.h"
 #include "../engine.h"
 #include "../net/network.h"
 #include "../resources/itemmanager.h"
 #include <iostream>
-
-// TODO Remove this once setVisible doesn't need it anymore
-extern SDL_Surface *screen;
 
 PopupMenu::PopupMenu():
     Window()
@@ -56,20 +54,6 @@ PopupMenu::~PopupMenu()
 {
     delete browserBox;
     delete floorItem;
-}
-
-void PopupMenu::setVisible(bool visible)
-{
-    if (visible == false)
-    {
-        if (hasFocus())
-        {
-            mFocusHandler->focusNone();
-        }
-        setPosition(screen->w, screen->h);
-    }
-
-    mVisible = visible;
 }
 
 void PopupMenu::showPopup(int mx, int my)
@@ -108,7 +92,7 @@ void PopupMenu::showPopup(int mx, int my)
         // If there is nothing of interest, don't display menu.
         return;
     }
-   
+
     //browserBox->addRow("@@look|Look To@@");
     browserBox->addRow("##3---");
     browserBox->addRow("@@cancel|Cancel@@");
@@ -116,9 +100,9 @@ void PopupMenu::showPopup(int mx, int my)
     setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
     mx = (mx - camera_x) * 32 + 25;
     my = (my - camera_y) * 32 + 25;
-    if (screen->w < (mx + getWidth() + 5))
+    if (guiGraphics->getWidth() < (mx + getWidth() + 5))
         mx -= (getWidth() + 50);
-    if (screen->h < (my + getHeight() + 5))
+    if (guiGraphics->getHeight() < (my + getHeight() + 5))
         my -= (getHeight() + 50);
     setPosition(mx, my);
     setVisible(true);
@@ -149,7 +133,7 @@ void PopupMenu::handleLink(const std::string& link)
     else if (link == "follow")
     {
     }*/
-    
+
     /*
     // Add Buddy action
     else if ((link == "buddy") && being && being->isPlayer())

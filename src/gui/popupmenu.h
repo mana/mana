@@ -48,11 +48,6 @@ class PopupMenu : public Window, public LinkHandler
         ~PopupMenu();
 
         /**
-         * Sets the visibility of popup
-         */
-        void setVisible(bool visible);
-
-        /**
          * Shows the related popup menu specifies by the mouse click coords.
          */
         void showPopup(int mx, int my);
@@ -61,11 +56,11 @@ class PopupMenu : public Window, public LinkHandler
          * Handles link action.
          */
         void handleLink(const std::string& link);
-        
+
     private:
         BrowserBox* browserBox;
         int mX, mY;
-        
+
         Being* being;
         FloorItem* floorItem;
 };

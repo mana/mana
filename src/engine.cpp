@@ -50,9 +50,6 @@
 #include "resources/resourcemanager.h"
 #include "resources/itemmanager.h"
 
-// TODO Check if we can get rid of this
-extern SDL_Surface *screen;
-
 extern Being* autoTarget;
 extern Graphics* graphics;
 
@@ -183,23 +180,26 @@ Engine::Engine():
     popupMenu = new PopupMenu();
 
     // Initialize window posisitons
-    chatWindow->setPosition(0, screen->h - chatWindow->getHeight());
-    statusWindow->setPosition(screen->w - statusWindow->getWidth() - 5, 5);
-    inventoryWindow->setPosition(screen->w - statusWindow->getWidth() -
+    int screenW = guiGraphics->getWidth();
+    int screenH = guiGraphics->getHeight();
+
+    chatWindow->setPosition(0, screenH - chatWindow->getHeight());
+    statusWindow->setPosition(screenW - statusWindow->getWidth() - 5, 5);
+    inventoryWindow->setPosition(screenW - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
     statsWindow->setPosition(
-            screen->w - 5 - statsWindow->getWidth(),
+            screenW - 5 - statsWindow->getWidth(),
             statusWindow->getHeight() + 20);
     chargeDialog->setPosition(
-            screen->w - 5 - chargeDialog->getWidth(),
-            screen->h - chargeDialog->getHeight() - 15);
-    tradeWindow->setPosition(screen->w - statusWindow->getWidth() -
+            screenW - 5 - chargeDialog->getWidth(),
+            screenH - chargeDialog->getHeight() - 15);
+    tradeWindow->setPosition(screenW - statusWindow->getWidth() -
             tradeWindow->getWidth() - 10,
             inventoryWindow->getY() + inventoryWindow->getHeight());
     /*buddyWindow->setPosition(10,
             minimap->getHeight() + 30);*/
     equipmentWindow->setPosition(5,140);
-    
+
     // Set initial window visibility
     chatWindow->setVisible(true);
     statusWindow->setVisible(true);
@@ -398,7 +398,7 @@ void Engine::draw()
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
-        
+
         // Draw a player
         else if (being->isPlayer())
         {
@@ -442,7 +442,7 @@ void Engine::draw()
                         sx * 32 + 5 + get_x_offset(being) - offset_x,
                         sy * 32 - 65 + get_y_offset(being) - offset_y);
             }
-            
+
             graphics->setFont(speechFont);
             graphics->drawText(being->name,
                 being->text_x + 15, being->text_y + 30,

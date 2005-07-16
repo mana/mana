@@ -22,6 +22,7 @@
  */
 
 #include "setup.h"
+#include "gui.h"
 #include "button.h"
 #include "checkbox.h"
 #include "scrollarea.h"
@@ -33,8 +34,6 @@
 #include <sstream>
 
 #define SETUP_WIDTH 240
-
-extern SDL_Surface *screen;
 
 ModeListModel::ModeListModel()
 {
@@ -236,14 +235,18 @@ void Setup::action(const std::string &eventId)
                 //displayFlags |= SDL_OPENGL;
                 //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
             }
-            
-            screen = SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+
+            SDL_Surface *screen =
+                SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
+
             if (screen == NULL) {
                 std::cerr << "Couldn't set " << screenW << "x" <<
                     screenH << "x" << bitDepth << " video mode: " <<
                     SDL_GetError() << std::endl;
                 exit(1);
             }
+
+            guiGraphics->setScreen(screen);
         }
 
         // Sound settings

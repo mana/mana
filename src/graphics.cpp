@@ -28,10 +28,9 @@
 
 extern volatile int framesToDraw;
 
-SDL_Surface *screen;
 
-
-Graphics::Graphics()
+Graphics::Graphics(SDL_Surface *screen):
+    mScreen(screen)
 {
     if (useOpenGL) {
 #ifdef USE_OPENGL
@@ -48,7 +47,7 @@ Graphics::Graphics()
     }
     else {
 #ifndef USE_OPENGL
-        setTarget(SDL_GetVideoSurface());
+        setTarget(mScreen);
 #endif
     }
 
@@ -64,17 +63,17 @@ Graphics::~Graphics()
 
 int Graphics::getWidth()
 {
-    return screen->w;
+    return mScreen->w;
 }
 
 int Graphics::getHeight()
 {
-    return screen->h;
+    return mScreen->h;
 }
 
 void Graphics::drawImage(Image *image, int x, int y)
 {
-    image->draw_deprecated(screen, x, y);
+    image->draw_deprecated(mScreen, x, y);
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
@@ -90,7 +89,7 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
         while (px < w) {
             int dw = (px + iw >= w) ? w - px : iw;
             int dh = (py + ih >= h) ? h - py : ih;
-            image->draw_deprecated(screen, 0, 0, x + px, y + py, dw, dh);
+            image->draw_deprecated(mScreen, 0, 0, x + px, y + py, dw, dh);
             px += iw;
         }
         py += ih;
@@ -159,7 +158,7 @@ void Graphics::updateScreen()
 #endif
     }
     else {
-        SDL_Flip(screen);
+        SDL_Flip(mScreen);
     }
 
     // Decrement frame counter when using framerate limiting
@@ -170,4 +169,9 @@ void Graphics::updateScreen()
     {
         SDL_Delay(10);
     }
+}
+
+void Graphics::setScreen(SDL_Surface *screen)
+{
+    mScreen = screen;
 }

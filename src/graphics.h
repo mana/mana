@@ -65,7 +65,7 @@ class Graphics : public gcn::SDLGraphics {
         /**
          * Constructor.
          */
-        Graphics();
+        Graphics(SDL_Surface *screen);
 
         /**
          * Destructor.
@@ -110,6 +110,16 @@ class Graphics : public gcn::SDLGraphics {
          * Returns the height of the screen.
          */
         int getHeight();
+
+        /**
+         * Sets a new screen pointer. This is necessary after switching screen
+         * modes, which probably should happen by this class instead of in the
+         * setup window.
+         */
+        void setScreen(SDL_Surface *screen);
+
+    private:
+        SDL_Surface *mScreen;
 };
 
 #endif

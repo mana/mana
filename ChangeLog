@@ -1,3 +1,11 @@
+0.0.15 (31 July 2005)
+- Added dynamic updating of client data
+- Added much better font for chat and names
+- Added option not to use the custom mouse cursor
+- Added joystick support
+- Improved mouse attack by not walking while pressing shift
+- Fixed items being shown as equipped in inventory although they are not
+
 0.0.14.1 (7 July 2005)
 - Fixed two map files not included in the source release
 

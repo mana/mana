@@ -58,9 +58,6 @@
 #include <errno.h>
 #endif
 
-// TODO Check if we can get rid of this
-extern SDL_Surface *screen;
-
 // Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
@@ -252,7 +249,7 @@ void init_engine()
 
     SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
-    screen = SDL_SetVideoMode(screenW, screenH, 0, displayFlags);
+    SDL_Surface *screen = SDL_SetVideoMode(screenW, screenH, 0, displayFlags);
     if (screen == NULL) {
         std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
             bitDepth << " video mode: " << SDL_GetError() << std::endl;
@@ -296,7 +293,7 @@ void init_engine()
     itemDb = new ItemManager();
 
     // Create the graphics context
-    graphics = new Graphics();
+    graphics = new Graphics(screen);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -330,7 +327,7 @@ void init_engine()
         new OkDialog("Sound Engine", err, &initWarningListener);
         logger->log("Warning: %s", err);
     }
-    
+
     // Set frame counter when using fps limit
     int fpsLimit = (int)config.getValue("fpslimit", 0);
     if (fpsLimit)

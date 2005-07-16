@@ -77,25 +77,27 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      * Set's label above progress
      */
     void setLabel(const std::string &);
-    
+
     /**
      * Enables play button
      */
     void enable();
-    
+
     /**
      * Loads and display news
      */
     void loadNews();
-    
+
     void action(const std::string& eventId);
 
-    void draw(gcn::Graphics *);
-    
-    void setText(std:: string row);
-    
+    /**
+     * Add a row to the message field.
+     */
+    void addRow(const std::string &row);
+
     int updateState;
 };
 
 void updateData();
+
 #endif

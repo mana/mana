@@ -43,15 +43,15 @@ std::string basePath = "";
 bool memoryTransfer = true;
 int downloadedBytes = 0;
 char *memoryBuffer = NULL;
-int fileIndex = 0;
+unsigned int fileIndex = 0;
 
-UpdaterWindow::UpdaterWindow()
-    : Window("Updating...")
+UpdaterWindow::UpdaterWindow():
+    Window("Updating...")
 {
     int h = 300;
     int w = 320;
     setContentSize(w, h);
-    
+
     browserBox = new BrowserBox();
     browserBox->setOpaque(false);
     scrollArea = new ScrollArea(browserBox);
@@ -69,13 +69,13 @@ UpdaterWindow::UpdaterWindow()
     playButton->setEventId("play");
     playButton->setEnabled(false);
     playButton->addActionListener(this);
-    
+
     add(scrollArea);
     add(label);
     add(progressBar);
     add(cancelButton);
     add(playButton);
-    
+
     cancelButton->requestFocus();
     setLocationRelativeTo(getParent());
 }
@@ -103,11 +103,6 @@ void UpdaterWindow::enable()
 {
     playButton->setEnabled(true);
     playButton->requestFocus();
-}
-
-void UpdaterWindow::draw(gcn::Graphics *graphics)
-{
-    Window::draw(graphics);
 }
 
 void UpdaterWindow::action(const std::string& eventId)
@@ -141,7 +136,7 @@ void UpdaterWindow::loadNews()
     // Reallocate and include terminating 0 character
     fileContents = (char*)realloc(fileContents, contentsLength + 1);
     fileContents[contentsLength] = '\0';
-    
+
     browserBox->clearRows();
 
     // Tokenize and add each line separately
@@ -152,16 +147,16 @@ void UpdaterWindow::loadNews()
         line = strtok(NULL, "\n");
     }
 
-    free(fileContents);
+    //free(fileContents);
 
     scrollArea->setVerticalScrollAmount(0);
     setVisible(true);
 }
 
-void UpdaterWindow::setText(std::string row) {
+void UpdaterWindow::addRow(const std::string &row)
+{
     browserBox->addRow(row);
-    scrollArea->setVerticalScrollAmount(
-        scrollArea->getVerticalMaxScroll());
+    scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
 }
 
 int updateProgress(void *ptr, double dt, double dn, double ut, double un)
@@ -259,7 +254,8 @@ void download()
     }
 }
 
-void checkFile(std::ifstream &in) {
+void checkFile(std::ifstream &in)
+{
     // Check for XML tag (if it is XML tag it is error)
     // WARNING: this way we can't use an XML file for resources listing
     if (!in.eof())
@@ -284,13 +280,13 @@ void updateData()
 
     updaterWindow = new UpdaterWindow();
     state = UPDATE;
-    
+
     updateHost = config.getValue("updatehost", "themanaworld.org/files");
     basePath = config.getValue("homeDir", ".");
-    
+
     // Try to download the updates list
     download();
-    
+
     while (state == UPDATE)
     {
         // Handle SDL events
@@ -308,17 +304,17 @@ void updateData()
                     }
                     break;
             }
-            
+
             guiInput->pushInput(event);
         }
-        
+
         switch (downloadStatus) {
             case UPDATE_ERROR:
                 SDL_WaitThread(thread, NULL);
-                updaterWindow->setText("");
-                updaterWindow->setText("##1  The update process is incomplete.");
-                updaterWindow->setText("##1  It is strongly recommended that");
-                updaterWindow->setText("##1  you try again later");
+                updaterWindow->addRow("");
+                updaterWindow->addRow("##1  The update process is incomplete.");
+                updaterWindow->addRow("##1  It is strongly recommended that");
+                updaterWindow->addRow("##1  you try again later");
                 downloadStatus = UPDATE_COMPLETE;
                 break;
             case UPDATE_NEWS:
@@ -395,7 +391,7 @@ void updateData()
         gui->draw();
         guiGraphics->updateScreen();
     }
-    
+
     free(memoryBuffer);
     in.close();
     // Remove downloaded files
