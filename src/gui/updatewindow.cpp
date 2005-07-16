@@ -177,8 +177,9 @@ int downloadThread(void *ptr)
     {
         // Download current file as a temp file
         logger->log("Downloading: %s", url.c_str());
-        // TODO: download in the proper folder (data?)
-        outfile = fopen(TMW_DATADIR "data/download.temp", "wb");
+        // Download in the proper folder : ./data under win, /home/user/.tmw/data for unices
+        std::string outFilename = config.getValue("homeDir", "") + "/data/download.temp";
+        outfile = fopen(outFilename.c_str(), "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
@@ -196,9 +197,9 @@ int downloadThread(void *ptr)
         else {
             // If the download was successful give the file the proper name
             // else it will be deleted later
-            std::string newName(TMW_DATADIR "data/");
+            std::string newName(config.getValue("homeDir", "") + "/data/");
             newName += currentFile.c_str();
-            rename(TMW_DATADIR "data/download.temp", newName.c_str());
+            rename(outFilename.c_str(), newName.c_str());
         }
     }
 
