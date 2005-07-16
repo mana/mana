@@ -29,7 +29,7 @@
 BuddyList::BuddyList()
 {
     // Find saved buddy list file
-    filename = new std::string(std::string(config.getValue("homeDir", "") + "buddy.txt"));
+    filename = new std::string(std::string(config.getValue("homeDir", "") + "/buddy.txt"));
 
     // Load buddy from file
     loadFile();
