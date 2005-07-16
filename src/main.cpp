@@ -75,7 +75,6 @@ short map_port;
 char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
-char *homeDir = NULL;
 int displayFlags, screenW, screenH, bitDepth;
 bool useOpenGL = false;
 volatile int framesToDraw = 0;
@@ -137,44 +136,45 @@ void init_engine()
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    homeDir = new char[256];
-#ifndef __USE_UNIX98
+    std::string homeDir = "";
+
+#ifdef __USE_UNIX98
     // In Windows and other systems we currently store data next to executable.
-    strcpy(homeDir, "");
-#else
-    // In UNIX we store data in ~/.tmw/
+    // So homeDir keeps being ""
+    // But, in UNIX we store data in ~/.tmw/
     passwd *pass = getpwuid(geteuid());
 
     if (pass == NULL || pass->pw_dir == NULL) {
-        printf("Couldn't determine the user home directory. Exitting.\n");
+        std::cout << "Couldn't determine the user home directory. Exitting." << std::endl;
         exit(1);
     }
 
     // Checking if /home/user/.tmw folder exists.
-    sprintf(homeDir, "%s/.tmw", pass->pw_dir);
-    if ((mkdir(homeDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+    
+    homeDir = pass->pw_dir;
+    homeDir += "/.tmw";
+    //sprintf(homeDir, "%s/.tmw", pass->pw_dir);
+    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
-        printf("%s can't be made, but it doesn't exist! Exitting.\n", homeDir);
+        std::cout << homeDir << " can't be made, but it doesn't exist! Exitting." << std::endl;
         exit(1);
     }
 
     // Creating and checking the ~/.tmw/data folder existence and rights.
-    char *dataUpdateDir = new char [256];
-    sprintf(dataUpdateDir, "%s/data", homeDir);
-    if ((mkdir(dataUpdateDir, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+    std::string dataUpdateDir = homeDir + "/data";
+    //sprintf(dataUpdateDir, "%s/data", homeDir);
+    if ((mkdir(dataUpdateDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
-        printf("%s can't be made, but it doesn't exist! Exitting.\n", dataUpdateDir);
-        delete dataUpdateDir;
+        std::cout << dataUpdateDir << " can't be made, but it doesn't exist! Exitting." << std::endl;
         exit(1);
     }
-    delete dataUpdateDir;
 
 #endif
 
     // Initialize logger
-    logger = new Logger(std::string(homeDir) + std::string("/tmw.log"));
+    logger = new Logger(homeDir + std::string("/tmw.log"));
 
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
@@ -188,7 +188,7 @@ void init_engine()
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
     config.setValue("fpslimit", 0);
-    config.setValue("updatehost", "themanaworld.org/files");
+    config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
     #ifdef __USE_UNIX98
         config.setValue("homeDir", homeDir);
@@ -199,16 +199,15 @@ void init_engine()
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
     FILE *tmwFile = 0;
-    char configPath[256];
-    sprintf(configPath, "%s/config.xml", homeDir);
-    tmwFile = fopen(configPath, "r");
+    std::string configPath = homeDir + "/config.xml";
+    tmwFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
     if (tmwFile == NULL) {
         // We reopen the file in write mode and we create it
-        tmwFile = fopen(configPath, "wt");
+        tmwFile = fopen(configPath.c_str(), "wt");
         if (tmwFile == NULL) {
-            printf("Can't create %s. Using Defaults.\n", configPath);
+            std::cout << "Can't create " << configPath << ". Using Defaults." << std::endl;
         }
         else {
             fclose(tmwFile);
@@ -346,7 +345,6 @@ void init_engine()
 void exit_engine()
 {
     config.write();
-    delete[] homeDir;
     delete gui;
     delete graphics;
     delete itemDb;
