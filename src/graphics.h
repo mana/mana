@@ -32,8 +32,6 @@
 #endif
 #include "resources/image.h"
 
-extern SDL_Surface *screen;
-
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
  * topology is as follows:
@@ -73,6 +71,9 @@ class Graphics : public gcn::SDLGraphics {
          * Destructor.
          */
         ~Graphics();
+
+        void drawImage(Image *image, int x, int y);
+        void drawImagePattern(Image *image, int x, int y, int w, int h);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1

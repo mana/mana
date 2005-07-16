@@ -85,6 +85,6 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
     x += 2;
     y += 2;    
     if (box != NULL) {
-        box->draw(screen, x, y);
+        dynamic_cast<Graphics*>(graphics)->drawImage(box, x, y);
     }
 }

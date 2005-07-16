@@ -72,6 +72,32 @@ int Graphics::getHeight()
     return screen->h;
 }
 
+void Graphics::drawImage(Image *image, int x, int y)
+{
+    image->draw_deprecated(screen, x, y);
+}
+
+void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
+{
+    int iw = image->getWidth();
+    int ih = image->getHeight();
+    if (iw == 0 || ih == 0) return;
+
+    int px = 0;                       // X position on pattern plane
+    int py = 0;                       // Y position on pattern plane
+
+    while (py < h) {
+        while (px < w) {
+            int dw = (px + iw >= w) ? w - px : iw;
+            int dh = (py + ih >= h) ? h - py : ih;
+            image->draw_deprecated(screen, 0, 0, x + px, y + py, dw, dh);
+            px += iw;
+        }
+        py += ih;
+        px = 0;
+    }
+}
+
 void Graphics::drawImageRect(
         int x, int y, int w, int h,
         Image *topLeft, Image *topRight,
@@ -81,33 +107,34 @@ void Graphics::drawImageRect(
         Image *center)
 {
     // Draw the center area
-    center->drawPattern(screen,
+    drawImagePattern(center,
             x + topLeft->getWidth(), y + topLeft->getHeight(),
             w - topLeft->getWidth() - topRight->getWidth(),
             h - topLeft->getHeight() - bottomLeft->getHeight());
 
     // Draw the sides
-    top->drawPattern(screen,
+    drawImagePattern(top,
             x + topLeft->getWidth(), y,
             w - topLeft->getWidth() - topRight->getWidth(), top->getHeight());
-    bottom->drawPattern(screen,
+    drawImagePattern(bottom,
             x + bottomLeft->getWidth(), y + h - bottom->getHeight(),
             w - bottomLeft->getWidth() - bottomRight->getWidth(),
             bottom->getHeight());
-    left->drawPattern(screen,
+    drawImagePattern(left,
             x, y + topLeft->getHeight(),
             left->getWidth(),
             h - topLeft->getHeight() - bottomLeft->getHeight());
-    right->drawPattern(screen,
+    drawImagePattern(right,
             x + w - right->getWidth(), y + topRight->getHeight(),
             right->getWidth(),
             h - topRight->getHeight() - bottomRight->getHeight());
 
     // Draw the corners
-    topLeft->draw(screen, x, y);
-    topRight->draw(screen, x + w - topRight->getWidth(), y);
-    bottomLeft->draw(screen, x, y + h - bottomLeft->getHeight());
-    bottomRight->draw(screen,
+    drawImage(topLeft, x, y);
+    drawImage(topLeft, x, y);
+    drawImage(topRight, x + w - topRight->getWidth(), y);
+    drawImage(bottomLeft, x, y + h - bottomLeft->getHeight());
+    drawImage(bottomRight,
             x + w - bottomRight->getWidth(),
             y + h - bottomRight->getHeight());
 }

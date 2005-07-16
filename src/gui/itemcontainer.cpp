@@ -95,15 +95,17 @@ void ItemContainer::draw(gcn::Graphics* graphics)
             // Draw selection image below selected item
             if (selectedItem == i)
             {
-                selImg->draw(screen, x + itemX, y + itemY);
+                dynamic_cast<Graphics*>(graphics)->drawImage(
+                        selImg, x + itemX, y + itemY);
             }
 
             // Draw item icon
             if (itemDb->getItemInfo(items[i].id)->getImage() > 0)
             {
-                itemset->spriteset[itemDb->getItemInfo(
-                        items[i].id)->getImage() - 1]->draw(
-                        screen, x + itemX, y + itemY);
+                Image *image = itemset->spriteset[itemDb->getItemInfo(
+                        items[i].id)->getImage() - 1];
+                dynamic_cast<Graphics*>(graphics)->drawImage(
+                        image, x + itemX, y + itemY);
             }
 
             // Draw item caption

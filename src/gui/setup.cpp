@@ -34,6 +34,8 @@
 
 #define SETUP_WIDTH 240
 
+extern SDL_Surface *screen;
+
 ModeListModel::ModeListModel()
 {
     SDL_Rect **modes;

@@ -96,7 +96,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
         {
             Image *img = getTile(x, y, layer);
             if (img) {
-                img->draw(screen, x * 32 - scrollX, y * 32 - scrollY);
+                graphics->drawImage(img, x * 32 - scrollX, y * 32 - scrollY);
             }
         }
     }

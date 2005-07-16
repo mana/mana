@@ -50,6 +50,9 @@
 #include "resources/resourcemanager.h"
 #include "resources/itemmanager.h"
 
+// TODO Check if we can get rid of this
+extern SDL_Surface *screen;
+
 extern Being* autoTarget;
 extern Graphics* graphics;
 
@@ -362,9 +365,10 @@ void Engine::draw()
         int absx = sx * 32 - offset_x;
         int absy = sy * 32 - offset_y;
         if (itemDb->getItemInfo(floorItem->id)->getImage() > 0) {
-            itemset->spriteset[itemDb->getItemInfo(
-                    floorItem->id)->getImage() - 1]->draw(screen,
-                    absx, absy);
+            Image *image = itemset->spriteset[itemDb->getItemInfo(
+                    floorItem->id)->getImage() - 1];
+
+            guiGraphics->drawImage(image, absx, absy);
         }
 
         floorItemIterator++;
@@ -390,7 +394,7 @@ void Engine::draw()
         // Draw a NPC
         if (being->isNpc())
         {
-            npcset->spriteset[being->job - 100]->draw(screen,
+            guiGraphics->drawImage(npcset->spriteset[being->job - 100],
                     sx * 32 - 8 - offset_x,
                     sy * 32 - 52 - offset_y);
         }
@@ -412,12 +416,14 @@ void Engine::draw()
                     pf += 4 * (being->weapon - 1);
             }
 
-            playerset->spriteset[pf + 16 * dir]->draw(screen,
+            guiGraphics->drawImage(playerset->spriteset[pf + 16 * dir],
                     being->text_x - 16, being->text_y - 32);
 
             if (being->weapon != 0 && being->action == ATTACK) {
-                weaponset->spriteset[16 * (being->weapon - 1) + 4 *
-                        being->frame + dir]->draw(screen,
+                Image *image = weaponset->spriteset[
+                    16 * (being->weapon - 1) + 4 * being->frame + dir];
+
+                guiGraphics->drawImage(image,
                         being->text_x - 64, being->text_y - 80);
             }
 
@@ -425,13 +431,14 @@ void Engine::draw()
                 int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
                         (being->getHairStyle() - 1));
 
-                hairset->spriteset[hf]->draw(screen,
+                guiGraphics->drawImage(hairset->spriteset[hf],
                         being->text_x - 2 + 2 * hairtable[pf][dir][0],
                         being->text_y - 50 + 2 * hairtable[pf][dir][1]);
             }
 
             if (being->emotion != 0) {
-                emotionset->spriteset[being->emotion - 1]->draw(screen,
+                guiGraphics->drawImage(
+                        emotionset->spriteset[being->emotion - 1],
                         sx * 32 + 5 + get_x_offset(being) - offset_x,
                         sy * 32 - 65 + get_y_offset(being) - offset_y);
             }
@@ -462,7 +469,8 @@ void Engine::draw()
             int mf = being->frame + being->action;
 
             if (being->action == MONSTER_DEAD) {
-                monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD]->draw(screen,
+                guiGraphics->drawImage(
+                        monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
                         being->text_x + 30, being->text_y + 40);
 
                 if (autoTarget == being) {
@@ -470,12 +478,13 @@ void Engine::draw()
                 }
             }
             else {
-                monsterset[being->job-1002]->spriteset[dir + 4 * mf]->draw(
-                        screen, being->text_x + 30, being->text_y + 40);
+                guiGraphics->drawImage(
+                        monsterset[being->job-1002]->spriteset[dir + 4 * mf],
+                        being->text_x + 30, being->text_y + 40);
 
                 if (being->x == mouseTileX && being->y == mouseTileY)
                 {
-                    attackTarget->draw(screen,
+                    guiGraphics->drawImage(attackTarget,
                         being->text_x + 30 + 16, being->text_y + 32);
                 }
             }

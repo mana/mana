@@ -26,6 +26,9 @@
 #include "../log.h"
 #include "../main.h"
 
+// TODO Check if we can get rid of this
+extern SDL_Surface *screen;
+
 WindowContainer *Window::windowContainer = NULL;
 int Window::instances = 0;
 ImageRect Window::border;

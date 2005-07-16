@@ -205,7 +205,7 @@ void login()
 
         gui->logic();
 
-        login_wallpaper->draw(screen, 0, 0);
+        guiGraphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
         guiGraphics->updateScreen();
     }

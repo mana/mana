@@ -73,7 +73,8 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     if (mMapImage != NULL)
     {
-        mMapImage->draw(screen, x + getPadding(), y + getTitleBarHeight());
+        dynamic_cast<Graphics*>(graphics)->drawImage(
+                mMapImage, x + getPadding(), y + getTitleBarHeight());
     }
 
     std::list<Being*>::iterator bi;

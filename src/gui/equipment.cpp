@@ -55,15 +55,16 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
     int x, y;
     getAbsolutePosition(x, y);
-    
+
     // Draw window graphics
     Window::draw(graphics);
-    
+
     for (int i = 0; i < 8; i++) {
         if (equipments[i].id > 0) {
-            itemset->spriteset[itemDb->getItemInfo(
-                    equipments[i].id)->getImage() - 1]->draw(
-                    screen, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
+            Image *image = itemset->spriteset[itemDb->getItemInfo(
+                    equipments[i].id)->getImage() - 1];
+            dynamic_cast<Graphics*>(graphics)->drawImage(
+                    image, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
         }
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
@@ -72,8 +73,11 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
     if (arrows) {
-        itemset->spriteset[itemDb->getItemInfo(arrows)->getImage() - 1]->draw(
-                screen, x + 160, y + 25);
+        Image *image = itemset->spriteset[
+            itemDb->getItemInfo(arrows)->getImage() - 1];
+
+        dynamic_cast<Graphics*>(graphics)->drawImage(
+                image, x + 160, y + 25);
         std::stringstream n;
         n << arrowsNumber;
         graphics->drawText(n.str(), 170, 62,

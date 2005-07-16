@@ -58,6 +58,9 @@
 #include <errno.h>
 #endif
 
+// TODO Check if we can get rid of this
+extern SDL_Surface *screen;
+
 // Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
@@ -433,7 +436,7 @@ int main(int argc, char *argv[])
                 break;
             case ERROR:
                 // Redraw GUI
-                login_wallpaper->draw(screen, 0, 0);
+                graphics->drawImage(login_wallpaper, 0 ,0);
                 gui->logic();
                 gui->draw();
                 graphics->updateScreen();

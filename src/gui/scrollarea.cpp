@@ -266,7 +266,8 @@ void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
             break;
     }
 
-    buttons[dir][state]->draw(screen, x + dim.x, y + dim.y);
+    dynamic_cast<Graphics*>(graphics)->drawImage(
+            buttons[dir][state], x + dim.x, y + dim.y);
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)

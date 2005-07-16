@@ -81,7 +81,8 @@ Gui::Gui(Graphics *graphics):
 
     // Initialize top GUI widget
     guiTop = new WindowContainer();
-    guiTop->setDimension(gcn::Rectangle(0, 0, screen->w, screen->h));
+    guiTop->setDimension(gcn::Rectangle(0, 0,
+                graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
     guiTop->addMouseListener(this);
     Window::setWindowContainer(guiTop);
@@ -214,7 +215,7 @@ void Gui::draw()
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
             && mCustomCursor)
     {
-        mMouseCursor->draw(screen, mouseX - 5, mouseY - 2);
+        guiGraphics->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
     }
 
     guiGraphics->popClipArea();

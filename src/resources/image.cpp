@@ -287,7 +287,7 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 #endif
 }
 
-bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
+bool Image::draw_deprecated(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
         int width, int height)
 {
 #ifndef USE_OPENGL
@@ -341,30 +341,9 @@ bool Image::draw(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
     return true;
 }
 
-bool Image::draw(SDL_Surface *screen, int x, int y)
+bool Image::draw_deprecated(SDL_Surface *screen, int x, int y)
 {
-    return draw(screen, 0, 0, x, y, getWidth(), getHeight());
-}
-
-void Image::drawPattern(SDL_Surface *screen, int x, int y, int w, int h)
-{
-    int iw = getWidth();              // Width of image
-    int ih = getHeight();             // Height of image
-    if (iw == 0 || ih == 0) return;
-
-    int px = 0;                       // X position on pattern plane
-    int py = 0;                       // Y position on pattern plane
-
-    while (py < h) {
-        while (px < w) {
-            int dw = (px + iw >= w) ? w - px : iw;
-            int dh = (py + ih >= h) ? h - py : ih;
-            draw(screen, 0, 0, x + px, y + py, dw, dh);
-            px += iw;
-        }
-        py += ih;
-        px = 0;
-    }
+    return draw_deprecated(screen, 0, 0, x, y, getWidth(), getHeight());
 }
 
 void Image::setAlpha(float a)
@@ -429,62 +408,9 @@ Image *SubImage::getSubImage(int x, int y, int w, int h)
     return NULL;
 }
 
-bool SubImage::draw(SDL_Surface *screen, int srcX, int srcY,
+bool SubImage::draw_deprecated(SDL_Surface *screen, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
-#ifndef USE_OPENGL
-    // Check that preconditions for blitting are met.
-    if (screen == NULL || image == NULL) return false;
-
-    SDL_Rect dstRect;
-    SDL_Rect srcRect;
-    dstRect.x = dstX; dstRect.y = dstY;
-    srcRect.x = rect.x + srcX;
-    srcRect.y = rect.y + srcY;
-    srcRect.w = width;
-    srcRect.h = height;
-
-    if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
-        return false;
-    }
-
-#else
-
-    // Find OpenGL texture coordinates
-    float texX1 = (rect.x + srcX) / (float)texWidth;
-    float texY1 = (rect.y + srcY) / (float)texHeight;
-    float texX2 = (rect.x + srcX + width) / (float)texWidth;
-    float texY2 = (rect.y + srcY + height) / (float)texHeight;
-
-    glColor4f(1.0f, 1.0f, 1.0f, alpha);
-    glBindTexture(GL_TEXTURE_2D, image);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(dstX, dstY, 0);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(dstX + width, dstY, 0);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(dstX + width, dstY + height, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(dstX, dstY + height, 0);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-#endif
-    return true;
-}
-
-bool SubImage::draw(SDL_Surface *screen, int x, int y)
-{
-    return draw(screen, 0, 0, x, y, getWidth(), getHeight());
+    return Image::draw_deprecated(screen, rect.x + srcX, rect.y + srcY,
+            dstX, dstY, width, height);
 }

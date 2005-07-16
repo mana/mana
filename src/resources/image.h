@@ -89,7 +89,7 @@ class Image : public Resource
          *         <code>false</code> otherwise.
          */
         virtual bool
-        draw(SDL_Surface *screen,
+        draw_deprecated(SDL_Surface *screen,
              int srcX, int srcY,
              int dstX, int dstY,
              int width, int height);
@@ -101,13 +101,7 @@ class Image : public Resource
          *         <code>false</code> otherwise.
          */
         virtual bool
-        draw(SDL_Surface *screen, int x, int y);
-
-        /**
-         * Does a pattern fill on the given area.
-         */
-        virtual void
-        drawPattern(SDL_Surface *screen, int x, int y, int w, int h);
+        draw_deprecated(SDL_Surface *screen, int x, int y);
 
         /**
          * Sets the alpha value of this image.
@@ -193,19 +187,10 @@ class SubImage : public Image
          * Draws this image.
          */
         bool
-        draw(SDL_Surface *screen,
+        draw_deprecated(SDL_Surface *screen,
              int srcX, int srcY,
              int dstX, int dstY,
              int width, int height);
-
-        /**
-         * Draws the clipped image onto the screen.
-         *
-         * @return <code>true</code> if drawing was succesful
-         *         <code>false</code> otherwise.
-         */
-        bool
-        draw(SDL_Surface *screen, int x, int y);
 
     private:
         Image *parent;

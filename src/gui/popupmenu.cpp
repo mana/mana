@@ -29,6 +29,9 @@
 #include "../resources/itemmanager.h"
 #include <iostream>
 
+// TODO Remove this once setVisible doesn't need it anymore
+extern SDL_Surface *screen;
+
 PopupMenu::PopupMenu():
     Window()
 {
