@@ -159,7 +159,7 @@ Engine::Engine():
 
     // Create dialogs
     chatWindow = new ChatWindow(
-            std::string(homeDir) + std::string("chatlog.txt"));
+            config.getValue("homeDir", "") + std::string("chatlog.txt"));
     statusWindow = new StatusWindow();
     buyDialog = new BuyDialog();
     sellDialog = new SellDialog();
