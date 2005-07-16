@@ -76,11 +76,19 @@ class ScrollArea : public gcn::ScrollArea {
         bool isOpaque();
 
     protected:
+        enum BUTTON_DIR {
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT,
+        };
+
         /**
          * Initializes the scroll area.
          */
         void init();
 
+        void drawButton(gcn::Graphics *graphics, BUTTON_DIR dir);
         void drawUpButton(gcn::Graphics *graphics);
         void drawDownButton(gcn::Graphics *graphics);
         void drawLeftButton(gcn::Graphics *graphics);
@@ -93,10 +101,7 @@ class ScrollArea : public gcn::ScrollArea {
         static int instances;
         static ImageRect background;
         static ImageRect vMarker;
-        static Image *hscroll_left_default, *hscroll_right_default;
-        static Image *vscroll_down_default, *vscroll_up_default;
-        static Image *hscroll_left_pressed, *hscroll_right_pressed;
-        static Image *vscroll_down_pressed, *vscroll_up_pressed;
+        static Image *buttons[4][2];
 
         bool opaque;
 };

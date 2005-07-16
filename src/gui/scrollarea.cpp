@@ -27,14 +27,7 @@
 int ScrollArea::instances = 0;
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
-Image *ScrollArea::hscroll_left_default;
-Image *ScrollArea::hscroll_right_default;
-Image *ScrollArea::vscroll_down_default;
-Image *ScrollArea::vscroll_up_default;
-Image *ScrollArea::hscroll_left_pressed;
-Image *ScrollArea::hscroll_right_pressed;
-Image *ScrollArea::vscroll_down_pressed;
-Image *ScrollArea::vscroll_up_pressed;
+Image *ScrollArea::buttons[4][2];
 
 ScrollArea::ScrollArea():
     gcn::ScrollArea()
@@ -59,14 +52,14 @@ ScrollArea::~ScrollArea()
             delete vMarker.grid[a];
         }
 
-        hscroll_left_default->decRef();
-        hscroll_right_default->decRef();
-        vscroll_down_default->decRef();
-        vscroll_up_default->decRef();
-        hscroll_left_pressed->decRef();
-        hscroll_right_pressed->decRef();
-        vscroll_down_pressed->decRef();
-        vscroll_up_pressed->decRef();
+        buttons[UP][0]->decRef();
+        buttons[UP][1]->decRef();
+        buttons[DOWN][0]->decRef();
+        buttons[DOWN][1]->decRef();
+        buttons[LEFT][0]->decRef();
+        buttons[LEFT][1]->decRef();
+        buttons[RIGHT][0]->decRef();
+        buttons[RIGHT][1]->decRef();
     }
 }
 
@@ -114,22 +107,22 @@ void ScrollArea::init()
 
         vscroll->decRef();
 
-        hscroll_left_default =
-            resman->getImage("graphics/gui/hscroll_left_default.png");
-        hscroll_right_default =
-            resman->getImage("graphics/gui/hscroll_right_default.png");
-        vscroll_down_default =
-            resman->getImage("graphics/gui/vscroll_down_default.png");
-        vscroll_up_default =
+        buttons[UP][0] =
             resman->getImage("graphics/gui/vscroll_up_default.png");
-        hscroll_left_pressed =
-            resman->getImage("graphics/gui/hscroll_left_pressed.png");
-        hscroll_right_pressed =
-            resman->getImage("graphics/gui/hscroll_right_pressed.png");
-        vscroll_down_pressed =
-            resman->getImage("graphics/gui/vscroll_down_pressed.png");
-        vscroll_up_pressed =
+        buttons[DOWN][0] =
+            resman->getImage("graphics/gui/vscroll_down_default.png");
+        buttons[LEFT][0] =
+            resman->getImage("graphics/gui/hscroll_left_default.png");
+        buttons[RIGHT][0] =
+            resman->getImage("graphics/gui/hscroll_right_default.png");
+        buttons[UP][1] =
             resman->getImage("graphics/gui/vscroll_up_pressed.png");
+        buttons[DOWN][1] =
+            resman->getImage("graphics/gui/vscroll_down_pressed.png");
+        buttons[LEFT][1] =
+            resman->getImage("graphics/gui/hscroll_left_pressed.png");
+        buttons[RIGHT][1] =
+            resman->getImage("graphics/gui/hscroll_right_pressed.png");
     }
 
     instances++;
@@ -247,51 +240,53 @@ bool ScrollArea::isOpaque()
     return opaque;
 }
 
+void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
+{
+    int x, y, state = 0;
+    gcn::Rectangle dim;
+
+    getAbsolutePosition(x,y);
+
+    switch(dir) {
+        case UP:
+            state = mUpButtonPressed ? 1 : 0;
+            dim = getUpButtonDimension();
+            break;
+        case DOWN:
+            state = mDownButtonPressed ? 1 : 0;
+            dim = getDownButtonDimension();
+            break;
+        case LEFT:
+            state = mLeftButtonPressed ? 1 : 0;
+            dim = getLeftButtonDimension();
+            break;
+        case RIGHT:
+            state = mRightButtonPressed ? 1 : 0;
+            dim = getRightButtonDimension();
+            break;
+    }
+
+    buttons[dir][state]->draw(screen, x + dim.x, y + dim.y);
+}
+
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getUpButtonDimension();
-    int x, y;
-    getAbsolutePosition(x, y);
-    if (mUpButtonPressed)
-        vscroll_up_pressed->draw(screen, x + dim.x, y + dim.y);
-    else
-        vscroll_up_default->draw(screen, x + dim.x, y + dim.y);
+    drawButton(graphics, UP);
 }
 
 void ScrollArea::drawDownButton(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getDownButtonDimension();
-    int x, y;
-    getAbsolutePosition(x, y);
-    if (mDownButtonPressed)
-        vscroll_down_pressed->draw(screen, x + dim.x, y + dim.y);
-    else
-        vscroll_down_default->draw(screen, x + dim.x, y + dim.y);
-
+    drawButton(graphics, DOWN);
 }
 
 void ScrollArea::drawLeftButton(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getLeftButtonDimension();
-    int x, y;
-    getAbsolutePosition(x, y);
-    if (mLeftButtonPressed)
-        hscroll_left_pressed->draw(screen, x + dim.x, y + dim.y);
-    else
-        hscroll_left_default->draw(screen, x + dim.x, y + dim.y);
-
+    drawButton(graphics, LEFT);
 }
 
 void ScrollArea::drawRightButton(gcn::Graphics *graphics)
 {
-    gcn::Rectangle dim = getRightButtonDimension();
-    int x, y;
-    getAbsolutePosition(x, y);
-    if (mRightButtonPressed)
-        hscroll_right_pressed->draw(screen, x + dim.x, y + dim.y);
-    else
-        hscroll_right_default->draw(screen, x + dim.x, y + dim.y);
-
+    drawButton(graphics, RIGHT);
 }
 
 void ScrollArea::drawVBar(gcn::Graphics *graphics)
