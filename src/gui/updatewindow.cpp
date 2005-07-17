@@ -211,7 +211,7 @@ int downloadThread(void *ptr)
         if (memoryTransfer)
         {
             downloadedBytes = 0;
-            curl_easy_setopt(curl, CURLOPT_FAILONERROR, TRUE);
+            curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, memoryWrite);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
         }

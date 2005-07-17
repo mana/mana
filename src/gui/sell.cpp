@@ -29,7 +29,6 @@
 #include "listbox.h"
 #include "../game.h"
 #include "../net/network.h"
-#include "../resources/itemmanager.h"
 
 #include <sstream>
 
@@ -91,15 +90,19 @@ void SellDialog::reset()
 
 void SellDialog::addItem(short index, int price)
 {
-    int id = inventoryWindow->items->getId(index);
+    Item *item = inventoryWindow->items->getItem(index);
+
+    if (!item)
+        return;
+
     ITEM_SHOP item_shop;
 
     sprintf(item_shop.name, "%s %i gp",
-            itemDb->getItemInfo(id)->getName().c_str(), price);
+            item->getInfo()->getName().c_str(), price);
     item_shop.price = price;
     item_shop.index = index;
-    item_shop.id = id;
-    item_shop.quantity = inventoryWindow->items->getQuantity(index);
+    item_shop.id = item->getId();;
+    item_shop.quantity = item->getQuantity();
 
     shopInventory.push_back(item_shop);
     itemList->adjustSize();

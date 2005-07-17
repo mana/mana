@@ -38,7 +38,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     itemAmountOkButton = new Button("Okay");
     itemAmountCancelButton = new Button("Cancel");
 
-    itemAmountTextBox->setRange(1, inventoryWindow->items->getQuantity());
+    itemAmountTextBox->setRange(1, inventoryWindow->items->getItem()->getQuantity());
 
     // Set button events Id
     itemAmountMinusButton->setEventId("Minus");
@@ -108,12 +108,12 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Drop")
     {
-        inventoryWindow->dropItem(inventoryWindow->items->getIndex(), itemAmountTextBox->getInt());
+        inventoryWindow->dropItem(inventoryWindow->items->getItem(), itemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "AddTrade")
     {
-        tradeWindow->tradeItem(inventoryWindow->items->getIndex(), itemAmountTextBox->getInt());
+        tradeWindow->tradeItem(inventoryWindow->items->getItem(), itemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "Plus")

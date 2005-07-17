@@ -26,21 +26,14 @@
 
 #include <iostream>
 #include <guichan.hpp>
+
+#include "../item.h"
+
+#include "../item.h"
 #include "../resources/image.h"
 #include "../graphic/spriteset.h"
 
 #define INVENTORY_SIZE 100
-
-/**
- * The holder of a item.
- */
-struct ITEM_HOLDER
-{
-    int id;          /**< The id of the item */
-    int quantity;    /**< The number of items */
-    bool equipment;  /**< Whether this item is equipment */
-    bool equipped;   /**< Whether this item is equipped */
-};
 
 /**
  * An item container. Used to show items in inventory and trade dialog.
@@ -49,13 +42,6 @@ struct ITEM_HOLDER
  */
 class ItemContainer : public gcn::Widget, public gcn::MouseListener
 {
-    private:
-        Spriteset *itemset;
-        Image *selImg;
-        int selectedItem;
-        int itemNumber;
-        ITEM_HOLDER items[INVENTORY_SIZE];  /**< The holder of items */
-
     public:
         /**
          * Constructor. Initializes the graphic.
@@ -84,34 +70,19 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void mousePress(int mx, int my, int button);
 
         /**
-         * Returns index of the selected item.
-         */
-        int getIndex();
-
-        /**
          * Finds the index of an item.
          */
         int getIndex(int id);
 
         /**
-         * Returns the id of the selected item.
+         * Returns the selected item.
          */
-        int getId();
+        Item* getItem();
 
         /**
-         * Returns the id of an item.
+         * Returns the item at the specified index.
          */
-        int getId(int index);
-
-        /**
-         * Returns the quantity of the selected item.
-         */
-        int getQuantity();
-
-        /**
-         * Returns the quantity of an item.
-         */
-        int getQuantity(int index);
+        Item* getItem(int index);
 
         /**
          * Returns id of next free slot or -1 if all occupied.
@@ -139,39 +110,17 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void removeItem(int id);
 
         /**
-         * Change quantity of an item.
-         */
-        void changeQuantity(int index, int quantity);
-
-        /**
-         * Increase quantity of an item.
-         */
-        void increaseQuantity(int index, int quantity);
-
-        /**
-         * Returns whether the item at the specified index is equipment.
-         */
-        bool isEquipment(int index);
-
-        /**
-         * Returns whether the item at the specified index is equipped.
-         */
-        bool isEquipped(int index);
-
-        /**
-         * Sets whether the item at the specified index is equipped.
-         */
-        void setEquipped(int index, bool equipped);
-
-        /**
-         * Sets whether the item at the specified index is equipment.
-         */
-        void setEquipment(int index, bool equipment);
-
-        /**
          * Get the number of slots filled with an item
          */
         int getNumberOfSlotsUsed();
+
+    private:
+        Spriteset *itemset;
+        Image *selImg;
+        Item *selectedItem;
+        int itemNumber;
+        Item items[INVENTORY_SIZE];  /**< The holder of items */
+
 };
 
 #endif

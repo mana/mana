@@ -21,44 +21,17 @@
  *  $Id$
  */
 
-#ifndef _TMW_EQUIPMENT_H
-#define _TMW_EQUIPMENT_H 
+#include "equipment.h"
 
-#include "../graphic/spriteset.h"
-#include "window.h"
+Equipment *Equipment::instance = 0;
 
-/**
- * Equipment dialog.
- *
- * \ingroup Interface
- */
-class EquipmentWindow : public Window, gcn::ActionListener {
-    public:
-        /**
-         * Constructor.
-         */
-        EquipmentWindow();
+Equipment::Equipment()
+{
+    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
+        equipment[i] = 0;
+    }
+}
 
-        /**
-         * Destructor.
-         */
-        ~EquipmentWindow();
-
-        /**
-         * Draws the equipment window.
-         */
-        void draw(gcn::Graphics *graphics);
-        
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
-
-    private:
-        Spriteset *itemset;
-
-};
-
-extern EquipmentWindow *equipmentWindow;
-
-#endif
+Equipment::~Equipment()
+{
+}

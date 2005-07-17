@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/spriteset.cpp \
 	      graphic/spriteset.h \
@@ -132,12 +134,16 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      configuration.h \
 	      engine.cpp \
 	      engine.h \
+	      equipment.cpp \
+	      equipment.h \
 	      floor_item.cpp \
 	      floor_item.h \
 	      game.cpp \
 	      game.h \
 	      graphics.cpp \
 	      graphics.h \
+	      item.cpp \
+	      item.h \
 	      log.cpp \
 	      log.h \
 	      main.cpp \

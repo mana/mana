@@ -28,6 +28,7 @@
 #include "engine.h"
 #include "log.h"
 #include "map.h"
+#include "equipment.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
 #include "gui/inventory.h"
@@ -765,6 +766,7 @@ void do_parse()
     FloorItem *floorItem = NULL;
     int len, n_items;
     Map *tiledMap = engine->getCurrentMap();
+    Equipment *equipment = Equipment::getInstance();
 
     // We need at least 2 bytes to identify a packet
     if (in_size >= 2) {
@@ -1067,34 +1069,31 @@ void do_parse()
                     break;
                 // Trade: New Item add response
                 case 0x01b1:
-                    switch (RFIFOB(6)) 
                     {
-                        case 0:
-                            // Successfully added item
-                            if (inventoryWindow->items->isEquipment(RFIFOW(2))
-                                    && inventoryWindow->items->isEquipped(
-                                        RFIFOW(2)))
-                            {
-                                inventoryWindow->unequipItem(RFIFOW(2));
-                            }
-                            tradeWindow->addItem(
-                                    tradeWindow->myItems->getFreeSlot(),
-                                    inventoryWindow->items->getId(RFIFOW(2)),
-                                    true, RFIFOW(4),
-                                    inventoryWindow->items->isEquipment(
-                                    RFIFOW(2)));
-                            inventoryWindow->changeQuantity(RFIFOW(2),
-                                (inventoryWindow->items->getQuantity(RFIFOW(2))
-                                - RFIFOW(4)));
-                            break;
-                        case 1:
-                            // Add item failed - player overweighted
-                            chatWindow->chat_log("Failed adding item. Trade "
-                                    "partner is over weighted.", BY_SERVER);
-                            break;
-                        default:
-                            //printf("Unhandled 0x00ea byte!\n");
-                            break;
+                        Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                        switch (RFIFOB(6))
+                        {
+                            case 0:
+                                // Successfully added item
+                                if (item->isEquipment() && item->isEquipped())
+                                {
+                                    inventoryWindow->unequipItem(item);
+                                }
+                                tradeWindow->addItem(
+                                        tradeWindow->myItems->getFreeSlot(),
+                                        item->getId(), true, RFIFOW(4),
+                                        item->isEquipment());
+                                item->increaseQuantity(-RFIFOW(4));
+                                break;
+                            case 1:
+                                // Add item failed - player overweighted
+                                chatWindow->chat_log("Failed adding item. Trade "
+                                        "partner is over weighted.", BY_SERVER);
+                                break;
+                            default:
+                                //printf("Unhandled 0x00ea byte!\n");
+                                break;
+                        }
                     }
                     break;
                 // Trade received Ok message
@@ -1133,15 +1132,15 @@ void do_parse()
 
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++)
                     {
-                        inventoryWindow->addItem(RFIFOW(4 + loop * 18),
+                        inventoryWindow->items->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
                         // Trick because arrows are not considered equipment
                         if (RFIFOW(4 + loop * 18 + 2) == 1199 ||
                             RFIFOW(4 + loop * 18 + 2) == 529)
                         {
-                            inventoryWindow->items->setEquipment(
-                                RFIFOW(4 + loop * 18), true);
+                            inventoryWindow->items->getItem(
+                                    RFIFOW(4 + loop * 18))->setEquipment(true);
                         }
                     }
                     break;
@@ -1151,7 +1150,7 @@ void do_parse()
 
                     for (int loop = 0; loop < ((RFIFOW(2) - 4) / 20); loop++)
                     {
-                        inventoryWindow->addItem(RFIFOW(4 + loop * 20),
+                        inventoryWindow->items->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
                         if (RFIFOW(4 + loop * 20 + 8))
                         {
@@ -1162,12 +1161,9 @@ void do_parse()
                                 mask *= 2;
                                 position++;
                             }
-                            equipmentWindow->addEquipment(position - 1,
-                                    RFIFOW(4+loop*20+2));
-                            equipmentWindow->equipments[position - 1].inventoryIndex =
-                                RFIFOW(4+loop*20);
-                            inventoryWindow->items->setEquipped(
-                                    RFIFOW(4+loop*20), true);
+                            Item *item = inventoryWindow->items->getItem(RFIFOW(4+loop*20));
+                            item->setEquipped(true);
+                            equipment->setEquipment(position - 1, item);
                         }
                     }
                     break;
@@ -1179,7 +1175,7 @@ void do_parse()
                     }
                     else
                     {
-                        inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(4));
+                        inventoryWindow->items->getItem(RFIFOW(2))->setQuantity(RFIFOW(4));
                     }
                     break;
                     // Warp
@@ -1470,33 +1466,17 @@ void do_parse()
                     if (RFIFOB(22) > 0)
                         chatWindow->chat_log("Unable to pick up item", BY_SERVER);
                     else {
-                        if(RFIFOW(19)) {
-                            inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
-                                RFIFOW(4), true);
-                        }
-                        else {
-                            inventoryWindow->addItem(RFIFOW(2), RFIFOW(6),
-                                RFIFOW(4), false);
-                        }
-                        if (equipmentWindow->getArrows() == RFIFOW(6))
-                        {
-                            equipmentWindow->arrowsNumber += RFIFOW(4);
-                        }
+                        inventoryWindow->items->addItem(RFIFOW(2), RFIFOW(6),
+                                RFIFOW(4), RFIFOW(19) != 0);
                     }
                     break;
                     // Decrease quantity of an item in inventory
                 case 0x00af:
-                    inventoryWindow->increaseQuantity(RFIFOW(2), -RFIFOW(4));
-                    // If the item is arrow decrease number from equipment
-                    // window when equipped
-                    if (inventoryWindow->items->isEquipped(RFIFOW(2)) && (
-                        inventoryWindow->items->getId(RFIFOW(2)) == 529 ||
-                        inventoryWindow->items->getId(RFIFOW(2)) == 1199 ) )
-                            equipmentWindow->arrowsNumber -= RFIFOW(4);
+                    inventoryWindow->items->getItem(RFIFOW(2))->increaseQuantity(-RFIFOW(4));
                     break;
                     // Use an item
                 case 0x01c8:
-                    inventoryWindow->changeQuantity(RFIFOW(2), RFIFOW(10));
+                    inventoryWindow->items->getItem(RFIFOW(2))->setQuantity( RFIFOW(10));
                     break;
                     // Skill list TAG
                 case 0x010f:
@@ -1593,21 +1573,17 @@ void do_parse()
                                 position++;
                             }
                             logger->log("Position %i", position-1);
-                            int equippedId = equipmentWindow->equipments[position - 1].id;
-                            if (equippedId > 0)
-                                inventoryWindow->items->setEquipped(
-                                    equipmentWindow->equipments[position - 1].inventoryIndex,
-                                    false);
+                            Item *item = equipment->getEquipment(position - 1);
+                            if (item)
+                                item->setEquipped(false);
 
-                            inventoryWindow->items->setEquipped(RFIFOW(2),
-                                true);
-                            equipmentWindow->addEquipment(position - 1,
-                                inventoryWindow->items->getId(RFIFOW(2)));
-                            equipmentWindow->equipments[position - 1].inventoryIndex = RFIFOW(2);
+                            item = inventoryWindow->items->getItem(RFIFOW(2));
+                            item->setEquipped(true);
+                            equipment->setEquipment(position - 1, item);
 
                             // Trick to use the proper graphic until I find
                             // the right packet
-                            switch (inventoryWindow->items->getId(RFIFOW(2))) {
+                            switch (item->getId()) {
                                 case 521:
                                 case 522:
                                 case 536:
@@ -1638,12 +1614,13 @@ void do_parse()
                                 mask *= 2;
                                 position++;
                             }
-                            inventoryWindow->items->setEquipped(RFIFOW(2), false);
-                            switch (inventoryWindow->items->getId(RFIFOW(2))) {
+
+                            Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                            item->setEquipped(false);
+                            switch (item->getId()) {
                                 case 529:
                                 case 1199:
-                                    equipmentWindow->setArrows(0);
-                                    equipmentWindow->arrowsNumber = 0;
+                                    equipment->setArrows(NULL);
                                     break;
                                 case 521:
                                 case 522:
@@ -1654,7 +1631,7 @@ void do_parse()
                                     player_node->weapon = 0;
                                     break;
                                 default:
-                                    equipmentWindow->removeEquipment(position - 1);
+                                    equipment->removeEquipment(position - 1);
                                     break;
                             }
                             logger->log("Unequipping: %i %i(%i) %i", RFIFOW(2),RFIFOW(4),RFIFOB(6), position -1);
@@ -1664,12 +1641,10 @@ void do_parse()
                     // Arrows equipped
                 case 0x013c:
                     if (RFIFOW(2) > 1) {
-                        inventoryWindow->items->setEquipped(RFIFOW(2), true);
-                        equipmentWindow->setArrows(
-                            inventoryWindow->items->getId(RFIFOW(2)));
-                        equipmentWindow->arrowsNumber =
-                            inventoryWindow->items->getQuantity(RFIFOW(2));
-                            logger->log("Arrows equipped: %i", RFIFOW(2));
+                        Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                        item->setEquipped(true);
+                        equipment->setArrows(item);
+                        logger->log("Arrows equipped: %i", RFIFOW(2));
                     }
                     break;
                     // Various messages

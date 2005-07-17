@@ -51,41 +51,21 @@ class InventoryWindow : public Window, gcn::ActionListener
         void logic();
 
         /**
-         * Add an item the inventory.
-         */
-        int addItem(int index, int id, int quantity, bool equipment);
-
-        /**
-         * Remove a item from the inventory.
-         */
-        int removeItem(int id);
-
-        /**
          * Equips an item.
          */
-        void equipItem(int index);
+        void equipItem(Item *item);
 
         /**
          * Unequips an item.
          */
-        void unequipItem(int index);
-
-        /**
-         * Change quantity of an item.
-         */
-        int changeQuantity(int index, int quantity);
-
-        /**
-         * Increase quantity of an item.
-         */
-        int increaseQuantity(int index, int quantity);
+        void unequipItem(Item *item);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
 
-        int dropItem(int index, int quantity);
+        int dropItem(Item *item, int quantity);
 
         void mouseClick(int x, int y, int button, int count);
 
@@ -94,7 +74,7 @@ class InventoryWindow : public Window, gcn::ActionListener
         ItemContainer *items;
 
     private:
-        int useItem(int index, int id);
+        int useItem(Item *item);
         void updateWidgets();    /** Updates widgets size/position */
         void updateButtons();    /** Updates button states */
 

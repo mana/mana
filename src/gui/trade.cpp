@@ -30,7 +30,6 @@
 #include "scrollarea.h"
 #include "textfield.h"
 #include "../net/network.h"
-#include "../resources/itemmanager.h"
 #include <sstream>
 
 TradeWindow::TradeWindow():
@@ -164,18 +163,18 @@ void TradeWindow::removeItem(int id, bool own)
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myItems->changeQuantity(index, quantity);
+        myItems->getItem(index)->setQuantity(quantity);
     } else {
-        partnerItems->changeQuantity(index, quantity);
+        partnerItems->getItem(index)->setQuantity(quantity);
     }
 }
 
 void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myItems->increaseQuantity(index, quantity);
+        myItems->getItem(index)->increaseQuantity(quantity);
     } else {
-        partnerItems->increaseQuantity(index, quantity);
+        partnerItems->getItem(index)->increaseQuantity(quantity);
     }
 }
 
@@ -220,10 +219,10 @@ void TradeWindow::receivedOk(bool own)
     }
 }
 
-void TradeWindow::tradeItem(int index, int quantity)
+void TradeWindow::tradeItem(Item *item, int quantity)
 {
     WFIFOW(0) = net_w_value(0x00e8);
-    WFIFOW(2) = net_w_value(index);
+    WFIFOW(2) = net_w_value(item->getInvIndex());
     WFIFOL(4) = net_l_value(quantity);
     WFIFOSET(8);
     while ((out_size > 0)) flush();
@@ -231,75 +230,66 @@ void TradeWindow::tradeItem(int index, int quantity)
 
 void TradeWindow::mouseClick(int x, int y, int button, int count)
 {
-
     Window::mouseClick(x, y, button, count);
+
+    Item *item;
 
     // myItems selected
     if (x >= myScroll->getX() + 3
         && x <= myScroll->getX() + myScroll->getWidth() - 10
         && y >= myScroll->getY() + 16
-        && y <= myScroll->getY() + myScroll->getHeight() + 15)
+        && y <= myScroll->getY() + myScroll->getHeight() + 15
+        && (item = myItems->getItem()))
     {
-        if (myItems->getIndex() != -1)
-        {
             partnerItems->selectNone();
-
-            // Show Name and Description
-            std::string SomeText;
-            SomeText = "Name: " +
-                itemDb->getItemInfo(myItems->getId())->getName();
-            itemNameLabel->setCaption(SomeText);
-            itemNameLabel->adjustSize();
-            SomeText = "Description: " +
-                itemDb->getItemInfo(myItems->getId())->getDescription();
-            itemDescriptionLabel->setCaption(SomeText);
-            itemDescriptionLabel->adjustSize();
-        }
     // partnerItems selected
     }
     else if (x >= partnerScroll->getX() + 3
         && x <= partnerScroll->getX() + partnerScroll->getWidth() - 20
         && y >= partnerScroll->getY() + 16
-        && y <= partnerScroll->getY() + partnerScroll->getHeight() + 15)
+        && y <= partnerScroll->getY() + partnerScroll->getHeight() + 15
+        && (item = partnerItems->getItem()))
     {
-        if (partnerItems->getIndex() != -1)
-        {
             myItems->selectNone();
-
-            // Show Name and Description
-            std::string SomeText;
-            SomeText = "Name: " +
-                itemDb->getItemInfo(partnerItems->getId())->getName();
-            itemNameLabel->setCaption(SomeText);
-            itemNameLabel->adjustSize();
-            SomeText = "Description: " +
-                itemDb->getItemInfo(partnerItems->getId())->getDescription();
-            itemDescriptionLabel->setCaption(SomeText);
-            itemDescriptionLabel->adjustSize();
-        }
+    } else {
+        return;
     }
+
+    // Show Name and Description
+    std::string SomeText;
+    SomeText = "Name: " + item->getInfo()->getName();
+    itemNameLabel->setCaption(SomeText);
+    itemNameLabel->adjustSize();
+    SomeText = "Description: " + item->getInfo()->getDescription();
+    itemDescriptionLabel->setCaption(SomeText);
+    itemDescriptionLabel->adjustSize();
 }
 
 void TradeWindow::action(const std::string &eventId)
 {
+    Item *item = inventoryWindow->items->getItem();
+
     if (eventId == "add") {
-        if (inventoryWindow->items->getIndex() >= 0 &&
-                inventoryWindow->items->getIndex() <= INVENTORY_SIZE) {
-            if (tradeWindow->myItems->getFreeSlot() >= 0) {
-                if (tradeWindow->myItems->getIndex(
-                    inventoryWindow->items->getId()) == -1) {
-                    if (inventoryWindow->items->getQuantity() == 1) {
-                        tradeItem(inventoryWindow->items->getIndex(), 1);
-                    }
-                    else {
-                        // Choose amount of items to trade
-                        new ItemAmountWindow(AMOUNT_TRADE_ADD, this);
-                    }
-                } else {
-                    chatWindow->chat_log("Failed adding item. You can not "
-                        "overlap one kind of item on the window.", BY_SERVER);
-                }
-            }
+        if (!item) {
+            return;
+        }
+
+        if (tradeWindow->myItems->getFreeSlot() < 1) {
+            return;
+        }
+
+        if (myItems->getIndex(item->getId()) != -1) {
+            chatWindow->chat_log("Failed adding item. You can not "
+                    "overlap one kind of item on the window.", BY_SERVER);
+            return;
+        }
+
+        if (item->getQuantity() == 1) {
+            tradeItem(item, 1);
+        }
+        else {
+            // Choose amount of items to trade
+            new ItemAmountWindow(AMOUNT_TRADE_ADD, this);
         }
     }
     else if (eventId == "cancel")

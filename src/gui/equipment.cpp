@@ -22,16 +22,16 @@
  */
 
 #include <guichan.hpp>
-#include "equipment.h"
+#include "gui/equipment.h"
+#include "../equipment.h"
 #include "../log.h"
 #include "../resources/resourcemanager.h"
-#include "../resources/itemmanager.h"
 #include "../resources/image.h"
 
 #include <sstream>
 
 EquipmentWindow::EquipmentWindow():
-    Window("Equipment"), arrows(0)
+    Window("Equipment")
 {
     setContentSize(200, 90);
     setPosition(40, 40);
@@ -40,11 +40,6 @@ EquipmentWindow::EquipmentWindow():
     Image *itemImg = resman->getImage("graphics/sprites/items.png");
     if (!itemImg) logger->error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 32, 32);
-
-    for (int i = 0; i < 10; i++ ) {
-        equipments[i].id = 0;
-        equipments[i].inventoryIndex = -1;
-    }
 }
 
 EquipmentWindow::~EquipmentWindow()
@@ -59,62 +54,41 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
+    Equipment *equipment = Equipment::getInstance();
+    Item *item;
+    Image *image;
+
     for (int i = 0; i < 8; i++) {
-        if (equipments[i].id > 0) {
-            Image *image = itemset->spriteset[itemDb->getItemInfo(
-                    equipments[i].id)->getImage() - 1];
-            dynamic_cast<Graphics*>(graphics)->drawImage(
-                    image, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
-        }
         graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
+
+        if (!(item = equipment->getEquipment(i))) {
+            continue;
+        }
+
+        image = itemset->spriteset[item->getInfo()->getImage() - 1];
+        dynamic_cast<Graphics*>(graphics)->drawImage(
+                image, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
     }
+
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
-    if (arrows) {
-        Image *image = itemset->spriteset[
-            itemDb->getItemInfo(arrows)->getImage() - 1];
 
-        dynamic_cast<Graphics*>(graphics)->drawImage(
-                image, x + 160, y + 25);
-        std::stringstream n;
-        n << arrowsNumber;
-        graphics->drawText(n.str(), 170, 62,
-                    gcn::Graphics::CENTER);
+    if (!(item = equipment->getArrows())) {
+        return;
     }
+
+    image = itemset->spriteset[item->getInfo()->getImage() - 1];
+
+    dynamic_cast<Graphics*>(graphics)->drawImage(
+            image, x + 160, y + 25);
+    std::stringstream n;
+    n << item->getQuantity();
+    graphics->drawText(n.str(), 170, 62,
+            gcn::Graphics::CENTER);
 }
 
 void EquipmentWindow::action(const std::string &eventId)
 {
-}
-
-void EquipmentWindow::addEquipment(int index, int id)
-{
-    equipments[index].id = id;
-}
-
-void EquipmentWindow::removeEquipment(int index)
-{
-    equipments[index].id = 0;
-}
-
-void EquipmentWindow::setInventoryIndex(int index, int inventoryIndex)
-{
-    equipments[index].inventoryIndex = inventoryIndex;
-}
-
-int EquipmentWindow::getInventoryIndex(int index)
-{
-    return equipments[index].inventoryIndex;
-}
-
-void EquipmentWindow::setArrows(int id)
-{
-    arrows = id;
-}
-
-int EquipmentWindow::getArrows()
-{
-    return arrows;
 }

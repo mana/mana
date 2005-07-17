@@ -23,12 +23,11 @@
 
 #include "../playerinfo.h"
 #include "inventory.h"
-#include "equipment.h"
+#include "../equipment.h"
 #include "button.h"
 #include "scrollarea.h"
 #include "../net/network.h"
 #include "item_amount.h"
-#include "../resources/itemmanager.h"
 #include <string>
 
 InventoryWindow::InventoryWindow():
@@ -97,101 +96,73 @@ void InventoryWindow::logic()
     weightLabel->adjustSize();
 }
 
-int InventoryWindow::addItem(int index, int id, int quantity, bool equipment)
-{
-    items->addItem(index, id, quantity, equipment);
-    return 0;
-}
-
-int InventoryWindow::removeItem(int id)
-{
-    items->removeItem(id);
-    return 0;
-}
-
-int InventoryWindow::changeQuantity(int index, int quantity)
-{
-    items->changeQuantity(index, quantity);
-    return 0;
-}
-
-int InventoryWindow::increaseQuantity(int index, int quantity)
-{
-    items->increaseQuantity(index, quantity);
-    return 0;
-}
-
-int InventoryWindow::useItem(int index, int id)
+int InventoryWindow::useItem(Item *item)
 {
     WFIFOW(0) = net_w_value(0x00a7);
-    WFIFOW(2) = net_w_value(index);
-    WFIFOL(4) = net_l_value(id);
+    WFIFOW(2) = net_w_value(item->getInvIndex());
+    WFIFOL(4) = net_l_value(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
     WFIFOSET(8);
     while ((out_size > 0)) flush();
     return 0;
 }
 
-int InventoryWindow::dropItem(int index, int quantity)
+int InventoryWindow::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
     WFIFOW(0) = net_w_value(0x00a2);
-    WFIFOW(2) = net_w_value(index);
+    WFIFOW(2) = net_w_value(item->getInvIndex());
     WFIFOW(4) = net_w_value(quantity);
     WFIFOSET(6);
     while ((out_size > 0)) flush();
     return 0;
 }
 
-void InventoryWindow::equipItem(int index)
+void InventoryWindow::equipItem(Item *item)
 {
     WFIFOW(0) = net_w_value(0x00a9);
-    WFIFOW(2) = net_w_value(index);
+    WFIFOW(2) = net_w_value(item->getInvIndex());
     WFIFOW(4) = net_w_value(0);
     WFIFOSET(6);
     while ((out_size > 0)) flush();
 }
 
-void InventoryWindow::unequipItem(int index)
+void InventoryWindow::unequipItem(Item *item)
 {
     WFIFOW(0) = net_w_value(0x00ab);
-    WFIFOW(2) = net_w_value(index);
+    WFIFOW(2) = net_w_value(item->getInvIndex());
     WFIFOSET(4);
     while ((out_size > 0)) flush();
-    
+
     // Tidy equipment directly to avoid weapon still shown bug, by instance
-    for (int i = 0; i < 8; i++)
-    {
-        if ( equipmentWindow->getInventoryIndex(i) == index )
-        {
-            equipmentWindow->removeEquipment(i);
-        }
-    }
+    Equipment::getInstance()->removeEquipment(item);
 }
 
 void InventoryWindow::action(const std::string &eventId)
 {
-    int selectedItem = items->getIndex();
+    Item *item = items->getItem();
 
-    if (selectedItem != -1) {
-        if (eventId == "use") {
-            if (items->isEquipment(selectedItem)) {
-                if (items->isEquipped(selectedItem)) {
-                    unequipItem(selectedItem);
-                }
-                else {
-                    equipItem(selectedItem);
-                }
+    if (!item) {
+        return;
+    }
+
+    if (eventId == "use") {
+        if (item->isEquipment()) {
+            if (item->isEquipped()) {
+                unequipItem(item);
             }
             else {
-                useItem(selectedItem, items->getId());
+                equipItem(item);
             }
         }
-        else if (eventId == "drop")
-        {
-            // Choose amount of items to drop
-            new ItemAmountWindow(AMOUNT_ITEM_DROP, this);
+        else {
+            useItem(item);
         }
+    }
+    else if (eventId == "drop")
+    {
+        // Choose amount of items to drop
+        new ItemAmountWindow(AMOUNT_ITEM_DROP, this);
     }
 }
 
@@ -199,17 +170,20 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-    if (items->getIndex() != -1)
-    {
-        // Show Name and Description
-        std::string SomeText;
-        SomeText = "Name: " + itemDb->getItemInfo(items->getId())->getName();
-        itemNameLabel->setCaption(SomeText);
-        itemNameLabel->adjustSize();
-        SomeText = "Description: " + itemDb->getItemInfo(items->getId())->getDescription();
-        itemDescriptionLabel->setCaption(SomeText);
-        itemDescriptionLabel->adjustSize();
+    Item *item = items->getItem();
+
+    if (!item) {
+        return;
     }
+
+    // Show Name and Description
+    std::string SomeText;
+    SomeText = "Name: " + item->getInfo()->getName();
+    itemNameLabel->setCaption(SomeText);
+    itemNameLabel->adjustSize();
+    SomeText = "Description: " + item->getInfo()->getDescription();
+    itemDescriptionLabel->setCaption(SomeText);
+    itemDescriptionLabel->adjustSize();
 }
 
 void InventoryWindow::mouseMotion(int mx, int my)
@@ -245,9 +219,11 @@ void InventoryWindow::updateWidgets()
 
 void InventoryWindow::updateButtons()
 {
-    if (items->getIndex() != -1 && items->isEquipment(items->getIndex()))
+    Item *item;
+
+    if ((item = items->getItem()) && item->isEquipment())
     {
-        if (items->isEquipped(items->getIndex())) {
+        if (item->isEquipped()) {
             useButton->setCaption("Unequip");
         }
         else {
@@ -258,6 +234,6 @@ void InventoryWindow::updateButtons()
         useButton ->setCaption("Use");
     }
 
-    useButton->setEnabled(items->getIndex() != -1);
-    dropButton->setEnabled(items->getIndex() != -1);
+    useButton->setEnabled(!!item);
+    dropButton->setEnabled(!!item);
 }
