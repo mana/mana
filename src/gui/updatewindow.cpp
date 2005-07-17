@@ -211,6 +211,7 @@ int downloadThread(void *ptr)
         if (memoryTransfer)
         {
             downloadedBytes = 0;
+            curl_easy_setopt(curl, CURLOPT_FAILONERROR, TRUE);
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, memoryWrite);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
         }
@@ -251,25 +252,6 @@ void download()
     if (thread == NULL) {
         logger->log("Unable to create thread");
         downloadStatus = UPDATE_ERROR;
-    }
-}
-
-void checkFile(std::ifstream &in)
-{
-    // Check for XML tag (if it is XML tag it is error)
-    // WARNING: this way we can't use an XML file for resources listing
-    if (!in.eof())
-    {
-        std::string line("");
-        getline(in, line);
-        if (line[0] == '<') {
-            logger->log("Error: resources.txt download error (404)");
-            downloadStatus = UPDATE_ERROR;
-        }
-        else {
-            // Move the pointer to the beginning of the file
-            in.seekg (0, std::ios::beg);
-        }
     }
 }
 
@@ -335,14 +317,13 @@ void updateData()
                 break;
             case UPDATE_LIST:
                 if (downloadComplete) {
-                    if (memoryBuffer != NULL && memoryBuffer[0] != '<')
+                    if (memoryBuffer != NULL)
                     {
                         // Tokenize and add each line separately
                         char *line = strtok(memoryBuffer, "\n");
                         while (line != NULL)
                         {
                             files.push_back(line);
-                            std::cout << line << std::endl;
                             line = strtok(NULL, "\n");
                         }
                         memoryTransfer = false;
