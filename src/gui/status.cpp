@@ -25,7 +25,7 @@
 #include "stats.h"
 #include "inventory.h"
 #include "setup.h"
-#include "equipment.h"
+#include "equipmentwindow.h"
 #include "button.h"
 #include "../playerinfo.h"
 

@@ -1,5 +1,3 @@
-AUTOMAKE_OPTIONS = subdir-objects
-
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/spriteset.cpp \
 	      graphic/spriteset.h \
@@ -27,8 +25,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/checkbox.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
-	      gui/equipment.cpp \
-	      gui/equipment.h \
+	      gui/equipmentwindow.cpp \
+	      gui/equipmentwindow.h \
 	      gui/focushandler.cpp \
 	      gui/focushandler.h \
 	      gui/gui.cpp \
