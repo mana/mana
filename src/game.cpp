@@ -36,7 +36,7 @@
 #include "gui/npc.h"
 #include "gui/stats.h"
 #include "gui/setup.h"
-#include "gui/equipment.h"
+#include "gui/equipmentwindow.h"
 #include "gui/popupmenu.h"
 #include "gui/npc_text.h"
 #include "gui/trade.h"
@@ -950,6 +950,8 @@ void do_parse()
                     being->direction = get_direction(RFIFOP(46));
                     being->walk_time = tick_time;
                     being->frame = 0;
+                    
+                    logger->log("0x01d8% i %i", RFIFOW(18), RFIFOW(20));
 
                     if (RFIFOB(51) == 2)
                     {
@@ -1600,6 +1602,21 @@ void do_parse()
                     break;
                     // Equipment related
                 case 0x01d7:
+                    being = findNode(RFIFOL(2));
+                    if (being != NULL) {
+                        case 529:
+                        case 1199:
+                            break;
+                        case 521:
+                        case 522:
+                        case 530:
+                        case 536:
+                        case 1200:
+                        case 1201:
+                            being->weapon = 0;
+                            break;
+                    }
+
                     logger->log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     break;
                     // Answer to unequip item
@@ -1733,6 +1750,9 @@ void do_parse()
                     if (being)
                         strcpy(being->name, RFIFOP(6));
                     break;
+                // Change in players look
+                case 0x0119:
+                    std::cout << RFIFOL(2) << " " << RFIFOW(6) << " " << RFIFOW(8) << " " << RFIFOW(10) << " " << RFIFOB(12) << std::endl;
                     // Manage non implemented packets
                 default:
                     logger->log("Unhandled packet: %x", id);

@@ -22,7 +22,7 @@
  */
 
 #include <guichan.hpp>
-#include "gui/equipment.h"
+#include "equipmentwindow.h"
 #include "../equipment.h"
 #include "../log.h"
 #include "../resources/resourcemanager.h"

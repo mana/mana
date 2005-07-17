@@ -43,7 +43,7 @@
 #include "gui/npc.h"
 #include "gui/stats.h"
 #include "gui/setup.h"
-#include "gui/equipment.h"
+#include "gui/equipmentwindow.h"
 #include "gui/popupmenu.h"
 //#include "gui/buddywindow.h"
 #include "gui/help.h"
