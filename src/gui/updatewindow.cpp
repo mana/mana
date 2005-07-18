@@ -32,9 +32,10 @@
 #include <iostream>
 #include <cstdio>
 #include <SDL_thread.h>
+#include <SDL_mutex.h>
 
 UpdaterWindow *updaterWindow;
-SDL_Thread *thread;
+SDL_Thread *thread = NULL;
 std::string updateHost = "themanaworld.org/files";
 std::string currentFile = "news.txt";
 bool downloadComplete = true;
@@ -337,7 +338,11 @@ void updateData()
                 break;
             case UPDATE_RESOURCES:
                 if (downloadComplete) {
-                    SDL_WaitThread(thread, NULL);
+                    if (thread)
+                    {
+                        SDL_WaitThread(thread, NULL);
+                        thread = NULL;
+                    }
                     if (fileIndex < files.size())
                     {
                         currentFile = files[fileIndex];
