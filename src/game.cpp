@@ -31,7 +31,7 @@
 #include "equipment.h"
 #include "gui/chat.h"
 #include "gui/gui.h"
-#include "gui/inventory.h"
+#include "gui/inventorywindow.h"
 #include "gui/shop.h"
 #include "gui/npc.h"
 #include "gui/stats.h"
@@ -78,6 +78,7 @@ OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
 
 Being *target = NULL;
+Inventory *inventory = NULL;
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;
@@ -208,6 +209,9 @@ void do_init()
 
 void game()
 {
+    // Needs to be initialised _before_ the engine is created...
+    inventory = new Inventory();
+
     engine = new Engine();
     do_init();
 
@@ -1064,25 +1068,22 @@ void do_parse()
                     } 
                     else 
                     {
-                        tradeWindow->addItem(
-                            tradeWindow->partnerItems->getFreeSlot(), RFIFOW(6),
-                            false, RFIFOL(2), false);
+                        tradeWindow->addItem(RFIFOW(6), false, RFIFOL(2), false);
                     }
                     break;
                 // Trade: New Item add response
                 case 0x01b1:
                     {
-                        Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                        Item *item = inventory->getItem(RFIFOW(2));
                         switch (RFIFOB(6))
                         {
                             case 0:
                                 // Successfully added item
                                 if (item->isEquipment() && item->isEquipped())
                                 {
-                                    inventoryWindow->unequipItem(item);
+                                    inventory->unequipItem(item);
                                 }
                                 tradeWindow->addItem(
-                                        tradeWindow->myItems->getFreeSlot(),
                                         item->getId(), true, RFIFOW(4),
                                         item->isEquipment());
                                 item->increaseQuantity(-RFIFOW(4));
@@ -1130,18 +1131,18 @@ void do_parse()
                     // Only called on map load / warp
                 case 0x01ee:
                     // Reset all items to not load them twice on map change
-                    inventoryWindow->items->resetItems();
+                    inventory->resetItems();
 
                     for (int loop = 0; loop < (RFIFOW(2) - 4) / 18; loop++)
                     {
-                        inventoryWindow->items->addItem(RFIFOW(4 + loop * 18),
+                        inventory->addItem(RFIFOW(4 + loop * 18),
                                 RFIFOW(4 + loop * 18 + 2),
                                 RFIFOW(4 + loop * 18 + 6), false);
                         // Trick because arrows are not considered equipment
                         if (RFIFOW(4 + loop * 18 + 2) == 1199 ||
                             RFIFOW(4 + loop * 18 + 2) == 529)
                         {
-                            inventoryWindow->items->getItem(
+                            inventory->getItem(
                                     RFIFOW(4 + loop * 18))->setEquipment(true);
                         }
                     }
@@ -1152,7 +1153,7 @@ void do_parse()
 
                     for (int loop = 0; loop < ((RFIFOW(2) - 4) / 20); loop++)
                     {
-                        inventoryWindow->items->addItem(RFIFOW(4 + loop * 20),
+                        inventory->addItem(RFIFOW(4 + loop * 20),
                                 RFIFOW(4 + loop * 20 + 2), 1, true);
                         if (RFIFOW(4 + loop * 20 + 8))
                         {
@@ -1163,7 +1164,7 @@ void do_parse()
                                 mask *= 2;
                                 position++;
                             }
-                            Item *item = inventoryWindow->items->getItem(RFIFOW(4+loop*20));
+                            Item *item = inventory->getItem(RFIFOW(4+loop*20));
                             item->setEquipped(true);
                             equipment->setEquipment(position - 1, item);
                         }
@@ -1177,7 +1178,7 @@ void do_parse()
                     }
                     else
                     {
-                        inventoryWindow->items->getItem(RFIFOW(2))->setQuantity(RFIFOW(4));
+                        inventory->getItem(RFIFOW(2))->setQuantity(RFIFOW(4));
                     }
                     break;
                     // Warp
@@ -1468,17 +1469,17 @@ void do_parse()
                     if (RFIFOB(22) > 0)
                         chatWindow->chat_log("Unable to pick up item", BY_SERVER);
                     else {
-                        inventoryWindow->items->addItem(RFIFOW(2), RFIFOW(6),
+                        inventory->addItem(RFIFOW(2), RFIFOW(6),
                                 RFIFOW(4), RFIFOW(19) != 0);
                     }
                     break;
                     // Decrease quantity of an item in inventory
                 case 0x00af:
-                    inventoryWindow->items->getItem(RFIFOW(2))->increaseQuantity(-RFIFOW(4));
+                    inventory->getItem(RFIFOW(2))->increaseQuantity(-RFIFOW(4));
                     break;
                     // Use an item
                 case 0x01c8:
-                    inventoryWindow->items->getItem(RFIFOW(2))->setQuantity( RFIFOW(10));
+                    inventory->getItem(RFIFOW(2))->setQuantity( RFIFOW(10));
                     break;
                     // Skill list TAG
                 case 0x010f:
@@ -1579,7 +1580,7 @@ void do_parse()
                             if (item)
                                 item->setEquipped(false);
 
-                            item = inventoryWindow->items->getItem(RFIFOW(2));
+                            item = inventory->getItem(RFIFOW(2));
                             item->setEquipped(true);
                             equipment->setEquipment(position - 1, item);
 
@@ -1632,7 +1633,7 @@ void do_parse()
                                 position++;
                             }
 
-                            Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                            Item *item = inventory->getItem(RFIFOW(2));
                             item->setEquipped(false);
                             switch (item->getId()) {
                                 case 529:
@@ -1658,7 +1659,7 @@ void do_parse()
                     // Arrows equipped
                 case 0x013c:
                     if (RFIFOW(2) > 1) {
-                        Item *item = inventoryWindow->items->getItem(RFIFOW(2));
+                        Item *item = inventory->getItem(RFIFOW(2));
                         item->setEquipped(true);
                         equipment->setArrows(item);
                         logger->log("Arrows equipped: %i", RFIFOW(2));

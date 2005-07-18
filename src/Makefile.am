@@ -33,8 +33,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/gui.h \
 	      gui/help.cpp \
 	      gui/help.h \
-	      gui/inventory.cpp \
-	      gui/inventory.h \
+	      gui/inventorywindow.cpp \
+	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
 	      gui/item_amount.cpp \
@@ -140,6 +140,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      game.h \
 	      graphics.cpp \
 	      graphics.h \
+	      inventory.cpp \
+	      inventory.h \
 	      item.cpp \
 	      item.h \
 	      log.cpp \

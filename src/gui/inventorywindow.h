@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_INVENTORY_H
-#define _TMW_INVENTORY_H 
+#ifndef _TMW_INVENTORYWINDOW_H
+#define _TMW_INVENTORYWINDOW_H 
 
 #include "itemcontainer.h"
 #include "window.h"
@@ -51,32 +51,21 @@ class InventoryWindow : public Window, gcn::ActionListener
         void logic();
 
         /**
-         * Equips an item.
-         */
-        void equipItem(Item *item);
-
-        /**
-         * Unequips an item.
-         */
-        void unequipItem(Item *item);
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-
-        int dropItem(Item *item, int quantity);
 
         void mouseClick(int x, int y, int button, int count);
 
         void mouseMotion(int mx, int my);
 
-        ItemContainer *items;
+        Item* getItem();
 
     private:
-        int useItem(Item *item);
         void updateWidgets();    /** Updates widgets size/position */
         void updateButtons();    /** Updates button states */
+
+        ItemContainer *items;
 
         gcn::Button *useButton, *dropButton;
         gcn::ScrollArea *invenScroll;

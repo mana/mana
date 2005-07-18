@@ -21,12 +21,11 @@
  *  $Id$
  */
 
+#include "inventorywindow.h"
 #include "../playerinfo.h"
-#include "inventory.h"
-#include "../equipment.h"
+#include "../inventory.h"
 #include "button.h"
 #include "scrollarea.h"
-#include "../net/network.h"
 #include "item_amount.h"
 #include <string>
 
@@ -37,7 +36,7 @@ InventoryWindow::InventoryWindow():
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
-    items = new ItemContainer();
+    items = new ItemContainer(inventory);
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -96,48 +95,6 @@ void InventoryWindow::logic()
     weightLabel->adjustSize();
 }
 
-int InventoryWindow::useItem(Item *item)
-{
-    WFIFOW(0) = net_w_value(0x00a7);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOL(4) = net_l_value(item->getId());
-    // Note: id is dest of item, usually player_node->account_ID ??
-    WFIFOSET(8);
-    while ((out_size > 0)) flush();
-    return 0;
-}
-
-int InventoryWindow::dropItem(Item *item, int quantity)
-{
-    // TODO: Fix wrong coordinates of drops, serverside?
-    WFIFOW(0) = net_w_value(0x00a2);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOW(4) = net_w_value(quantity);
-    WFIFOSET(6);
-    while ((out_size > 0)) flush();
-    return 0;
-}
-
-void InventoryWindow::equipItem(Item *item)
-{
-    WFIFOW(0) = net_w_value(0x00a9);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOW(4) = net_w_value(0);
-    WFIFOSET(6);
-    while ((out_size > 0)) flush();
-}
-
-void InventoryWindow::unequipItem(Item *item)
-{
-    WFIFOW(0) = net_w_value(0x00ab);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOSET(4);
-    while ((out_size > 0)) flush();
-
-    // Tidy equipment directly to avoid weapon still shown bug, by instance
-    Equipment::getInstance()->removeEquipment(item);
-}
-
 void InventoryWindow::action(const std::string &eventId)
 {
     Item *item = items->getItem();
@@ -149,14 +106,14 @@ void InventoryWindow::action(const std::string &eventId)
     if (eventId == "use") {
         if (item->isEquipment()) {
             if (item->isEquipped()) {
-                unequipItem(item);
+                inventory->unequipItem(item);
             }
             else {
-                equipItem(item);
+                inventory->equipItem(item);
             }
         }
         else {
-            useItem(item);
+            inventory->useItem(item);
         }
     }
     else if (eventId == "drop")
@@ -236,4 +193,9 @@ void InventoryWindow::updateButtons()
 
     useButton->setEnabled(!!item);
     dropButton->setEnabled(!!item);
+}
+
+Item* InventoryWindow::getItem()
+{
+    return items->getItem();
 }

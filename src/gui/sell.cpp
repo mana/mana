@@ -22,12 +22,12 @@
  */
 
 #include "sell.h"
-#include "inventory.h"
 #include "button.h"
 #include "slider.h"
 #include "scrollarea.h"
 #include "listbox.h"
 #include "../game.h"
+#include "../inventory.h"
 #include "../net/network.h"
 
 #include <sstream>
@@ -90,7 +90,7 @@ void SellDialog::reset()
 
 void SellDialog::addItem(short index, int price)
 {
-    Item *item = inventoryWindow->items->getItem(index);
+    Item *item = inventory->getItem(index);
 
     if (!item)
         return;

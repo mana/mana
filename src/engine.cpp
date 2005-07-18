@@ -38,7 +38,7 @@
 #include "gui/buy.h"
 #include "gui/sell.h"
 #include "gui/buysell.h"
-#include "gui/inventory.h"
+#include "gui/inventorywindow.h"
 #include "gui/npc_text.h"
 #include "gui/npc.h"
 #include "gui/stats.h"

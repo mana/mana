@@ -28,12 +28,9 @@
 #include <guichan.hpp>
 
 #include "../item.h"
-
-#include "../item.h"
+#include "../inventory.h"
 #include "../resources/image.h"
 #include "../graphic/spriteset.h"
-
-#define INVENTORY_SIZE 100
 
 /**
  * An item container. Used to show items in inventory and trade dialog.
@@ -46,7 +43,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         /**
          * Constructor. Initializes the graphic.
          */
-        ItemContainer();
+        ItemContainer(Inventory *inventory);
 
         /**
          * Destructor.
@@ -70,57 +67,20 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void mousePress(int mx, int my, int button);
 
         /**
-         * Finds the index of an item.
-         */
-        int getIndex(int id);
-
-        /**
          * Returns the selected item.
          */
         Item* getItem();
-
-        /**
-         * Returns the item at the specified index.
-         */
-        Item* getItem(int index);
-
-        /**
-         * Returns id of next free slot or -1 if all occupied.
-         */
-        int getFreeSlot();
-
-        /**
-         * Adds a new item.
-         */
-        void addItem(int index, int id, int quantity, bool equipment);
 
         /**
          * Set selected item to -1.
          */
         void selectNone();
 
-        /**
-         * Reset all item slots.
-         */
-        void resetItems();
-
-        /**
-         * Remove a item from the inventory.
-         */
-        void removeItem(int id);
-
-        /**
-         * Get the number of slots filled with an item
-         */
-        int getNumberOfSlotsUsed();
-
     private:
+        Inventory *inventory;
         Spriteset *itemset;
         Image *selImg;
         Item *selectedItem;
-        int itemNumber;
-        Item items[INVENTORY_SIZE];  /**< The holder of items */
-
 };
 
 #endif

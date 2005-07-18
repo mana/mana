@@ -28,7 +28,8 @@
 #include "../resources/resourcemanager.h"
 #include <sstream>
 
-ItemContainer::ItemContainer()
+ItemContainer::ItemContainer(Inventory *inventory):
+    inventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png");
@@ -40,10 +41,6 @@ ItemContainer::ItemContainer()
     if (!selImg) logger->error("Unable to load selection.png");
 
     selectedItem = 0; // No item selected
-
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].setInvIndex(i);
-    }
 
     addMouseListener(this);
 }
@@ -82,41 +79,44 @@ void ItemContainer::draw(gcn::Graphics* graphics)
      */
     for (int i = 2; i < INVENTORY_SIZE; i++)
     {
-        if (items[i].getQuantity() > 0)
-        {
-            int itemX = ((i - 2) % columns) * gridWidth;
-            int itemY = ((i - 2) / columns) * gridHeight;
+        Item *item = inventory->getItem(i);
 
-            // Draw selection image below selected item
-            if (selectedItem == &items[i])
-            {
-                dynamic_cast<Graphics*>(graphics)->drawImage(
-                        selImg, x + itemX, y + itemY);
-            }
-
-            // Draw item icon
-            int idx;
-            if ((idx = items[i].getInfo()->getImage()) > 0)
-            {
-                dynamic_cast<Graphics*>(graphics)->drawImage(
-                        itemset->spriteset[idx - 1], x + itemX, y + itemY);
-            }
-
-            // Draw item caption
-            std::stringstream ss;
-
-            if (!items[i].isEquipped()) {
-                ss << items[i].getQuantity();
-            }
-            else {
-                ss << "Eq.";
-            }
-
-            graphics->drawText(ss.str(),
-                    itemX + gridWidth / 2,
-                    itemY + gridHeight - 11,
-                    gcn::Graphics::CENTER);
+        if (item->getQuantity() <= 0) {
+            continue;
         }
+
+        int itemX = ((i - 2) % columns) * gridWidth;
+        int itemY = ((i - 2) / columns) * gridHeight;
+
+        // Draw selection image below selected item
+        if (selectedItem == item)
+        {
+            dynamic_cast<Graphics*>(graphics)->drawImage(
+                    selImg, x + itemX, y + itemY);
+        }
+
+        // Draw item icon
+        int idx;
+        if ((idx = item->getInfo()->getImage()) > 0)
+        {
+            dynamic_cast<Graphics*>(graphics)->drawImage(
+                    itemset->spriteset[idx - 1], x + itemX, y + itemY);
+        }
+
+        // Draw item caption
+        std::stringstream ss;
+
+        if (!item->isEquipped()) {
+            ss << item->getQuantity();
+        }
+        else {
+            ss << "Eq.";
+        }
+
+        graphics->drawText(ss.str(),
+                itemX + gridWidth / 2,
+                itemY + gridHeight - 11,
+                gcn::Graphics::CENTER);
     }
 }
 
@@ -137,65 +137,14 @@ void ItemContainer::setWidth(int width)
             (INVENTORY_SIZE % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
-int ItemContainer::getIndex(int id)
-{
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == id) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 Item* ItemContainer::getItem()
 {
     return selectedItem;
 }
 
-Item* ItemContainer::getItem(int index)
-{
-    return &items[index];
-}
-
-void ItemContainer::addItem(int index, int id, int quantity, bool equipment)
-{
-    items[index].setId(id);
-    items[index].increaseQuantity(quantity);
-    items[index].setEquipment(equipment);
-}
-
-int ItemContainer::getFreeSlot()
-{
-    for (int i = 2; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == -1) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void ItemContainer::resetItems()
-{
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].setId(-1);
-        items[i].setQuantity(0);
-        items[i].setEquipped(false);
-    }
-}
-
 void ItemContainer::selectNone()
 {
     selectedItem = 0;
-}
-
-void ItemContainer::removeItem(int id)
-{
-    for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == id) {
-            items[i].setId(-1);
-            items[i].setQuantity(0);
-        }
-    }
 }
 
 void ItemContainer::mousePress(int mx, int my, int button)
@@ -212,20 +161,6 @@ void ItemContainer::mousePress(int mx, int my, int button)
         if (index > INVENTORY_SIZE) {
             index = INVENTORY_SIZE - 1;
         }
-        selectedItem = &items[index];
+        selectedItem = inventory->getItem(index);
     }
-}
-
-int ItemContainer::getNumberOfSlotsUsed()
-{
-    int NumberOfFilledSlot = 0;
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-    {
-        if (items[i].getId() > -1 || items[i].getQuantity() > 0) 
-        {
-            NumberOfFilledSlot++;
-        }
-    }
-
-    return NumberOfFilledSlot;
 }

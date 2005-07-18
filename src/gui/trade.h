@@ -54,7 +54,7 @@ class TradeWindow : public Window, gcn::ActionListener
         /**
          * Add an item to the trade window.
          */
-        void addItem(int index, int id, bool own, int quantity, bool equipment);
+        void addItem(int id, bool own, int quantity, bool equipment);
 
         /**
          * Remove a item from the trade window.
@@ -101,8 +101,10 @@ class TradeWindow : public Window, gcn::ActionListener
          */
         void action(const std::string& eventId);
 
-        ItemContainer *myItems;
-        ItemContainer *partnerItems;
+        Inventory myInventory;
+        Inventory partnerInventory;
+        ItemContainer *myItemContainer;
+        ItemContainer *partnerItemContainer;
 
     private:
         gcn::Label *itemNameLabel;

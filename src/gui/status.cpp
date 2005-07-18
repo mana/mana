@@ -23,7 +23,7 @@
 
 #include "status.h"
 #include "stats.h"
-#include "inventory.h"
+#include "inventorywindow.h"
 #include "setup.h"
 #include "equipmentwindow.h"
 #include "button.h"

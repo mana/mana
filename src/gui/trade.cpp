@@ -22,14 +22,14 @@
  */
 
 #include "trade.h"
-#include "equipment.h"
-#include "inventory.h"
 #include "chat.h"
+#include "inventorywindow.h"
 #include "item_amount.h"
 #include "button.h"
 #include "scrollarea.h"
 #include "textfield.h"
 #include "../net/network.h"
+#include "../equipment.h"
 #include <sstream>
 
 TradeWindow::TradeWindow():
@@ -42,16 +42,16 @@ TradeWindow::TradeWindow():
     cancelButton = new Button("Cancel");
     tradeButton = new Button("Trade");
 
-    myItems = new ItemContainer();
-    myItems->setPosition(2, 2);
+    myItemContainer = new ItemContainer(&myInventory);
+    myItemContainer->setPosition(2, 2);
 
-    myScroll = new ScrollArea(myItems);
+    myScroll = new ScrollArea(myItemContainer);
     myScroll->setPosition(8, 8);
 
-    partnerItems = new ItemContainer();
-    partnerItems->setPosition(2, 58);
+    partnerItemContainer = new ItemContainer(&partnerInventory);
+    partnerItemContainer->setPosition(2, 58);
 
-    partnerScroll = new ScrollArea(partnerItems);
+    partnerScroll = new ScrollArea(partnerItemContainer);
     partnerScroll->setPosition(8, 64);
     
     moneyLabel = new gcn::Label("You get: 0z");
@@ -101,11 +101,11 @@ TradeWindow::TradeWindow():
     addButton->setPosition(okButton->getX() - 32,
         getHeight() - 24);
 
-    myItems->setSize(getWidth() - 24 - 12 - 1,
+    myItemContainer->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     myScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
 
-    partnerItems->setSize(getWidth() - 24 - 12 - 1,
+    partnerItemContainer->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
     partnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
 
@@ -123,9 +123,9 @@ TradeWindow::~TradeWindow()
     delete okButton;
     delete cancelButton;
     delete tradeButton;
-    delete myItems;
+    delete myItemContainer;
     delete myScroll;
-    delete partnerItems;
+    delete partnerItemContainer;
     delete partnerScroll;
     delete itemNameLabel;
     delete itemDescriptionLabel;
@@ -141,47 +141,47 @@ void TradeWindow::addMoney(int amount)
     moneyLabel->adjustSize();
 }
 
-void TradeWindow::addItem(int index, int id, bool own, int quantity,
+void TradeWindow::addItem(int id, bool own, int quantity,
         bool equipment)
 {
     if (own) {
-        myItems->addItem(index, id, quantity, equipment);
+        myInventory.addItem(id, quantity, equipment);
     } else {
-        partnerItems->addItem(index, id, quantity, equipment);
+        partnerInventory.addItem(id, quantity, equipment);
     }
 }
 
 void TradeWindow::removeItem(int id, bool own)
 {
     if (own) {
-        myItems->removeItem(id);
+        myInventory.removeItem(id);
     } else {
-        partnerItems->removeItem(id);
+        partnerInventory.removeItem(id);
     }
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myItems->getItem(index)->setQuantity(quantity);
+        myInventory.getItem(index)->setQuantity(quantity);
     } else {
-        partnerItems->getItem(index)->setQuantity(quantity);
+        partnerInventory.getItem(index)->setQuantity(quantity);
     }
 }
 
 void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myItems->getItem(index)->increaseQuantity(quantity);
+        myInventory.getItem(index)->increaseQuantity(quantity);
     } else {
-        partnerItems->getItem(index)->increaseQuantity(quantity);
+        partnerInventory.getItem(index)->increaseQuantity(quantity);
     }
 }
 
 void TradeWindow::reset()
 {
-    myItems->resetItems();
-    partnerItems->resetItems();
+    myInventory.resetItems();
+    partnerInventory.resetItems();
     tradeButton->setEnabled(false);
     okButton->setEnabled(true);
     ok_other = false;
@@ -239,18 +239,18 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
         && x <= myScroll->getX() + myScroll->getWidth() - 10
         && y >= myScroll->getY() + 16
         && y <= myScroll->getY() + myScroll->getHeight() + 15
-        && (item = myItems->getItem()))
+        && (item = myItemContainer->getItem()))
     {
-            partnerItems->selectNone();
+            partnerItemContainer->selectNone();
     // partnerItems selected
     }
     else if (x >= partnerScroll->getX() + 3
         && x <= partnerScroll->getX() + partnerScroll->getWidth() - 20
         && y >= partnerScroll->getY() + 16
         && y <= partnerScroll->getY() + partnerScroll->getHeight() + 15
-        && (item = partnerItems->getItem()))
+        && (item = partnerItemContainer->getItem()))
     {
-            myItems->selectNone();
+            myItemContainer->selectNone();
     } else {
         return;
     }
@@ -267,18 +267,18 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
 
 void TradeWindow::action(const std::string &eventId)
 {
-    Item *item = inventoryWindow->items->getItem();
+    Item *item = inventoryWindow->getItem();
 
     if (eventId == "add") {
         if (!item) {
             return;
         }
 
-        if (tradeWindow->myItems->getFreeSlot() < 1) {
+        if (myInventory.getFreeSlot() < 1) {
             return;
         }
 
-        if (myItems->getIndex(item->getId()) != -1) {
+        if (myInventory.contains(item)) {
             chatWindow->chat_log("Failed adding item. You can not "
                     "overlap one kind of item on the window.", BY_SERVER);
             return;
