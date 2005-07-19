@@ -20,3 +20,6 @@ missing
 install-sh
 depcomp
 chatlog.txt
+confix.xml
+stdout.txt
+stderr.txt
