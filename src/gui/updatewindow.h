@@ -31,15 +31,6 @@
 #include "browserbox.h"
 #include "scrollarea.h"
 
-enum {
-    UPDATE_ERROR,
-    UPDATE_IDLE,
-    UPDATE_LIST,
-    UPDATE_COMPLETE,
-    UPDATE_NEWS,
-    UPDATE_RESOURCES
-};
-
 /**
  * Update progress window GUI
  *
@@ -47,21 +38,11 @@ enum {
  */
 class UpdaterWindow : public Window, public gcn::ActionListener
 {
- protected:
-    std::string labelText;       /**< Text for caption label */
-
-    gcn::Label *label;           /**< Progress bar caption */
-    Button *cancelButton;        /**< Button to stop the update process */
-    Button *playButton;          /**< Button to start playing */
-    ProgressBar *progressBar;    /**< Update progress bar */
-    BrowserBox* browserBox;      /**< Box to display news */
-    ScrollArea *scrollArea;      /**< Used to scroll news box */
-
  public:
     /**
      * Constructor
      */
-    UpdaterWindow();
+    UpdaterWindow(const std::string& updateHost = "themanaworld.org/files");
 
     /**
      * Destructor
@@ -95,7 +76,101 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      */
     void addRow(const std::string &row);
 
+    void updateData();
+
     int updateState;
+
+ protected:
+    
+    void download();
+
+    /*
+     * The tread function that download the files
+     */
+    static int downloadThread(void *ptr);
+
+    /*
+     * A libcurl callback
+     */
+    static int updateProgress(void *ptr, double dt, double dn, double ut, double un);
+
+    /*
+     * A libcurl callback
+     */
+    static size_t memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream);
+
+    enum DownloadStatus
+    {
+        UPDATE_ERROR,
+        UPDATE_IDLE,
+        UPDATE_LIST,
+        UPDATE_COMPLETE,
+        UPDATE_NEWS,
+        UPDATE_RESOURCES
+    };
+
+    /*
+     * A thread that use libcurl to download updates
+     */
+    class SDL_Thread *m_thread;
+
+    /*
+     * A mutex to protect shared data betwed the threads
+     */
+    class SDL_mutex *m_mutex;
+
+
+    /*
+     * Status of the current download
+     */
+    DownloadStatus m_downloadStatus;
+
+    /*
+     * host where we get the updated files
+     */
+    std::string m_updateHost;
+
+    /*
+     * the file currently downloading
+     */
+    std::string m_currentFile;
+
+    /*
+     * Absolute path to locally save downloaded files
+     */
+    std::string m_basePath;
+
+    /*
+     * A flag to know if we must write the downloaded file
+     * in m_memoryBuffer instead of a regular file
+     */
+    bool m_storeInMemory;
+
+    /*
+     * flag that show if current download is complete
+     */
+    bool m_downloadComplete;
+
+    /*
+     * byte count currently downloaded in m_memoryBuffer
+     */
+    int m_downloadedBytes;
+
+    /*
+     * buffer where to put downloaded file which are
+     * not stored in file system
+     */
+    char *m_memoryBuffer;
+
+    std::string labelText;       /**< Text for caption label */
+
+    gcn::Label *label;           /**< Progress bar caption */
+    Button *cancelButton;        /**< Button to stop the update process */
+    Button *playButton;          /**< Button to start playing */
+    ProgressBar *progressBar;    /**< Update progress bar */
+    BrowserBox* browserBox;      /**< Box to display news */
+    ScrollArea *scrollArea;      /**< Used to scroll news box */
+
 };
 
 void updateData();

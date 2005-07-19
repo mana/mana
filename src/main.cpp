@@ -439,7 +439,9 @@ int main(int argc, char *argv[])
                 graphics->updateScreen();
                 break;
             case UPDATE:
-                updateData();
+                UpdaterWindow *uw = new UpdaterWindow();
+                uw->updateData();
+                delete uw;
                 break;
             default:
                 state = EXIT;

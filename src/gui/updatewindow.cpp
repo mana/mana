@@ -34,21 +34,21 @@
 #include <SDL_thread.h>
 #include <SDL_mutex.h>
 
-UpdaterWindow *updaterWindow;
-SDL_Thread *thread = NULL;
-std::string updateHost = "themanaworld.org/files";
-std::string currentFile = "news.txt";
-bool downloadComplete = true;
-int downloadStatus = UPDATE_NEWS;
-std::string basePath = "";
-bool memoryTransfer = true;
-int downloadedBytes = 0;
-char *memoryBuffer = NULL;
-unsigned int fileIndex = 0;
 
-UpdaterWindow::UpdaterWindow():
+UpdaterWindow::UpdaterWindow(const std::string& updateHost):
     Window("Updating...")
 {
+    m_thread = NULL;
+    m_mutex = NULL;
+    m_downloadStatus = UPDATE_NEWS;
+    m_updateHost = updateHost;
+    m_currentFile = "news.txt";
+    m_downloadComplete = true;
+    m_basePath = "";
+    m_storeInMemory = true;
+    m_downloadedBytes = 0;
+    m_memoryBuffer = NULL;
+
     int h = 300;
     int w = 320;
     setContentSize(w, h);
@@ -110,12 +110,12 @@ void UpdaterWindow::action(const std::string& eventId)
 {
     if (eventId == "cancel") {
         // Skip the updating process
-        if (downloadStatus == UPDATE_COMPLETE)
+        if (m_downloadStatus == UPDATE_COMPLETE)
         {
             state = EXIT;
         }
         else {
-            downloadStatus = UPDATE_ERROR;
+            m_downloadStatus = UPDATE_ERROR;
         }
     }
     else if (eventId == "play") {
@@ -125,8 +125,8 @@ void UpdaterWindow::action(const std::string& eventId)
 
 void UpdaterWindow::loadNews()
 {
-    int contentsLength = downloadedBytes;
-    char *fileContents = memoryBuffer;
+    int contentsLength = m_downloadedBytes;
+    char *fileContents = m_memoryBuffer;
 
     if (!fileContents)
     {
@@ -160,47 +160,49 @@ void UpdaterWindow::addRow(const std::string &row)
     scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
 }
 
-int updateProgress(void *ptr, double dt, double dn, double ut, double un)
+int UpdaterWindow::updateProgress(void *ptr, double dt, double dn, double ut, double un)
 {
     float progress = dn/dt;
+    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
+
     if (progress < 0)
     {
         progress = 0.0f;
     }
     std::stringstream progressString;
-    progressString << currentFile << " (" << ((int)(progress*100)) << "%)";
-    updaterWindow->setLabel(progressString.str().c_str());
-    updaterWindow->setProgress(progress);
+    progressString << uw->m_currentFile << " (" << ((int)(progress*100)) << "%)";
+    uw->setLabel(progressString.str().c_str());
+    uw->setProgress(progress);
 
-    if (state != UPDATE || downloadStatus == UPDATE_ERROR) {
-        // If the action was canceled return an error code to stop the thread
+    if (state != UPDATE || uw->m_downloadStatus == UPDATE_ERROR) {
+        // If the action was canceled return an error code to stop the m_thread
         return -1;
     }
 
     return 0;
 }
 
-size_t memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
-    if (memoryTransfer) {
-        memoryBuffer = (char *)realloc(memoryBuffer, downloadedBytes + nmemb + 1);
-        if (memoryBuffer) {
-            memcpy(&(memoryBuffer[downloadedBytes]), ptr, nmemb);
-            downloadedBytes += nmemb;
-            memoryBuffer[downloadedBytes] = 0;
-        }
-        return nmemb;
+    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
+    uw->m_memoryBuffer = (char *)realloc(uw->m_memoryBuffer, uw->m_downloadedBytes + nmemb * size + 1);
+    if (uw->m_memoryBuffer)
+    {
+        memcpy(&(uw->m_memoryBuffer[uw->m_downloadedBytes]), ptr, nmemb * size);
+        uw->m_downloadedBytes += nmemb;
+        uw->m_memoryBuffer[uw->m_downloadedBytes] = 0;
     }
-    return fwrite(ptr, size, nmemb, stream);
+    return nmemb;
 }
 
-int downloadThread(void *ptr)
+int UpdaterWindow::downloadThread(void *ptr)
 {
     CURL *curl;
     CURLcode res;
-    FILE *outfile;
+    FILE *outfile = NULL;
+    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     std::string outFilename;
-    std::string url(updateHost + "/" + currentFile);
+    std::string url(uw->m_updateHost + "/" + uw->m_currentFile);
 
     curl = curl_easy_init();
     if (curl)
@@ -209,35 +211,35 @@ int downloadThread(void *ptr)
         logger->log("Downloading: %s", url.c_str());
         // Download in the proper folder : ./data under win,
         // /home/user/.tmw/data for unices
-        if (memoryTransfer)
+        if (uw->m_storeInMemory)
         {
-            downloadedBytes = 0;
+            uw->m_downloadedBytes = 0;
             curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, memoryWrite);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, NULL);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, UpdaterWindow::memoryWrite);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
         }
         else {
-            outFilename =  basePath + "/data/download.temp";
+            outFilename =  uw->m_basePath + "/data/download.temp";
             outfile = fopen(outFilename.c_str(), "wb");
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         }
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, updateProgress);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, NULL);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, UpdaterWindow::updateProgress);
+        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
 
         res = curl_easy_perform(curl);
 
         curl_easy_cleanup(curl);
-        downloadComplete = true;
+        uw->m_downloadComplete = true;
         if (res != 0) {
-            downloadStatus = UPDATE_ERROR;
+            uw->m_downloadStatus = UPDATE_ERROR;
         }
-        else if (!memoryTransfer) {
+        else if (!uw->m_storeInMemory) {
             fclose(outfile);
             // If the download was successful give the file the proper name
             // else it will be deleted later
-            std::string newName(basePath + "/data/" + currentFile.c_str());
+            std::string newName(uw->m_basePath + "/data/" + uw->m_currentFile.c_str());
             rename(outFilename.c_str(), newName.c_str());
         }
     }
@@ -245,27 +247,27 @@ int downloadThread(void *ptr)
     return 0;
 }
 
-void download()
+void UpdaterWindow::download()
 {
-    downloadComplete = false;
-    thread = SDL_CreateThread(downloadThread, NULL);
+    m_downloadComplete = false;
+    m_thread = SDL_CreateThread(UpdaterWindow::downloadThread, this);
 
-    if (thread == NULL) {
-        logger->log("Unable to create thread");
-        downloadStatus = UPDATE_ERROR;
+    if (m_thread == NULL) {
+        logger->log("Unable to create m_thread");
+        m_downloadStatus = UPDATE_ERROR;
     }
 }
 
-void updateData()
+void UpdaterWindow::updateData()
 {
     std::ifstream in;
     std::vector<std::string> files;
 
-    updaterWindow = new UpdaterWindow();
     state = UPDATE;
+    unsigned int fileIndex = 0;
 
-    updateHost = config.getValue("updatehost", "themanaworld.org/files");
-    basePath = config.getValue("homeDir", ".");
+    m_updateHost = config.getValue("updatehost", "themanaworld.org/files");
+    m_basePath = config.getValue("homeDir", ".");
 
     // Try to download the updates list
     download();
@@ -291,81 +293,86 @@ void updateData()
             guiInput->pushInput(event);
         }
 
-        switch (downloadStatus) {
+        switch (m_downloadStatus) {
             case UPDATE_ERROR:
-                SDL_WaitThread(thread, NULL);
-                updaterWindow->addRow("");
-                updaterWindow->addRow("##1  The update process is incomplete.");
-                updaterWindow->addRow("##1  It is strongly recommended that");
-                updaterWindow->addRow("##1  you try again later");
-                downloadStatus = UPDATE_COMPLETE;
+                if (m_thread)
+                {
+                    SDL_WaitThread(m_thread, NULL);
+                    m_thread = NULL;
+                }
+                addRow("");
+                addRow("##1  The update process is incomplete.");
+                addRow("##1  It is strongly recommended that");
+                addRow("##1  you try again later");
+                m_downloadStatus = UPDATE_COMPLETE;
                 break;
             case UPDATE_NEWS:
-                if (downloadComplete) {
+                if (m_downloadComplete) {
                     // Try to open news.txt
-                    updaterWindow->loadNews();
+                    loadNews();
                     // Doesn't matter if it couldn't find news.txt,
                     // go to the next step
-                    currentFile = "resources.txt";
-                    if (memoryBuffer != NULL)
+                    m_currentFile = "resources.txt";
+                    if (m_memoryBuffer != NULL)
                     {
-                        free(memoryBuffer);
-                        memoryBuffer = NULL;
+                        free(m_memoryBuffer);
+                        m_memoryBuffer = NULL;
                     }
                     download();
-                    downloadStatus = UPDATE_LIST;
+                    m_downloadStatus = UPDATE_LIST;
                 }
                 break;
             case UPDATE_LIST:
-                if (downloadComplete) {
-                    if (memoryBuffer != NULL)
+                if (m_downloadComplete) {
+                    if (m_memoryBuffer != NULL)
                     {
                         // Tokenize and add each line separately
-                        char *line = strtok(memoryBuffer, "\n");
+                        char *line = strtok(m_memoryBuffer, "\n");
                         while (line != NULL)
                         {
                             files.push_back(line);
                             line = strtok(NULL, "\n");
                         }
-                        memoryTransfer = false;
-                        downloadStatus = UPDATE_RESOURCES;
+                        m_storeInMemory = false;
+                        m_downloadStatus = UPDATE_RESOURCES;
                     }
                     else {
                         logger->log("Unable to download resources.txt");
-                        downloadStatus = UPDATE_ERROR;
+                        m_downloadStatus = UPDATE_ERROR;
                     }
                 }
                 break;
             case UPDATE_RESOURCES:
-                if (downloadComplete) {
-                    if (thread)
+                if (m_downloadComplete) {
+                    if (m_thread)
                     {
-                        SDL_WaitThread(thread, NULL);
-                        thread = NULL;
+                        SDL_WaitThread(m_thread, NULL);
+                        m_thread = NULL;
                     }
+
                     if (fileIndex < files.size())
                     {
-                        currentFile = files[fileIndex];
+                        m_currentFile = files[fileIndex];
                         std::ifstream temp(
-                                (basePath + "/data/" + currentFile).c_str());
+                                (m_basePath + "/data/" + m_currentFile).c_str());
                         if (!temp.is_open()) {
                             temp.close();
                             download();
                         }
                         else {
-                            logger->log("%s already here", currentFile.c_str());
+                            logger->log("%s already here", m_currentFile.c_str());
                         }
                         fileIndex++;
                     }
                     else {
                         // Download of updates completed
-                        downloadStatus = UPDATE_COMPLETE;
+                        m_downloadStatus = UPDATE_COMPLETE;
                     }
                 }
                 break;
             case UPDATE_COMPLETE:
-                updaterWindow->enable();
-                updaterWindow->setLabel("Completed");
+                enable();
+                setLabel("Completed");
                 break;
             case UPDATE_IDLE:
                 break;
@@ -378,12 +385,16 @@ void updateData()
         guiGraphics->updateScreen();
     }
 
-    free(memoryBuffer);
+    if (m_thread)
+    {
+         SDL_WaitThread(m_thread, NULL);
+         m_thread = NULL;
+    }
+
+    free(m_memoryBuffer);
     in.close();
     // Remove downloaded files
-    remove((basePath + "/data/news.txt").c_str());
-    remove((basePath + "/data/resources.txt").c_str());
-    remove((basePath + "/data/download.temp").c_str());
-
-    delete updaterWindow;
+    remove((m_basePath + "/data/news.txt").c_str());
+    remove((m_basePath + "/data/resources.txt").c_str());
+    remove((m_basePath + "/data/download.temp").c_str());
 }
