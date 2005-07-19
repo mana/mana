@@ -30,6 +30,7 @@ Equipment::Equipment()
     for (int i = 0; i < EQUIPMENT_SIZE; i++) {
         equipment[i] = 0;
     }
+    arrows = NULL;
 }
 
 Equipment::~Equipment()
