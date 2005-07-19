@@ -371,6 +371,8 @@ int exists(const std::string &file)
 /** Main */
 int main(int argc, char *argv[])
 {
+    UpdaterWindow *uw;
+
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     xmlInitParser();
@@ -439,7 +441,7 @@ int main(int argc, char *argv[])
                 graphics->updateScreen();
                 break;
             case UPDATE:
-                UpdaterWindow *uw = new UpdaterWindow();
+                uw = new UpdaterWindow();
                 uw->updateData();
                 delete uw;
                 break;
