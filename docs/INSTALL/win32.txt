@@ -29,8 +29,11 @@ Besides a C++ compiler, TMW depends on the following libraries:
 2) SDL_mixer
 3) SDL_image
 4) Guichan 0.4.0
+5) libiconv
 5) libxml2
 6) PhysFS
+7) zlib
+8) libcurl
 
 
 2. Installing Dev-C++
@@ -76,28 +79,33 @@ any complex actions on your side.
 
 Get the following DevPaks and archives:
 
-- SDL           (http://devpaks.org/show.php?devpak=57)
-- SDL_mixer     (http://devpaks.org/show.php?devpak=26)
-- SDL_image     (http://devpaks.org/show.php?devpak=25)
-- Guichan       (http://guichan.sourceforge.net/downloads.shtml)
-- libxml2 **    (ftp://ftp.zlatkovic.com/pub/libxml/)
-- PhysFS ***    (http://icculus.org/physfs/downloads/unsupported/)
+- SDL            (http://devpaks.org/details.php?devpak=12)
+- SDL_mixer      (http://old.devpaks.org/show.php?devpak=8)
+- SDL_image      (http://old.devpaks.org/show.php?devpak=142)
+- Guichan        (http://guichan.sourceforge.net/downloads.shtml)
+- libxml2    *   (ftp://ftp.zlatkovic.com/pub/libxml/)
+- PhysFS    **   (http://icculus.org/physfs/downloads/unsupported/)
+- zlib     ***   (http://gnuwin32.sourceforge.net/packages/zlib.htm)
+- libcurl ****   (http://curl.haxx.se/download.html)
 
-Install them all through the Dev-C++ package manager. For SDL_image you may
-still need to manually get the SDL_image.lib file from the SDL_image homepage
-(devel VC6 zip file) and copy it to your Dev-Cpp/lib directory.
+Install them all through the Dev-C++ package manager.
 
- **) For libxml2, download the following files (these or newer versions):
+*) For libxml2, download the following files (these or newer versions):
 
-        libxml2-2.6.17.win32.zip
+        libxml2-2.6.19+.win32.zip
         iconv-1.9.1.win32.zip
-        zlib-1.2.1.win32.zip
 
      From each file, copy the headers to your include directory, the libs to
      the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
 
-***) For PhysFS copy the headers to your include directory, the libs to
-     the lib direcotry and the dlls (in bin direcotry) to your tmw directory.
+**) For PhysFS copy the headers to your include directory, the libs to
+    the lib directory and the dlls (in bin direcotry) to your tmw directory.
+	 
+***) Download developer files and put headers and libs in to include and lib
+     directories of Dev-Cpp. Download binaries and place the dll inside tmw
+	 folder.
+	 
+****) Get latest win32 - mingw package and install as usual.
 
 You should now be fully equipped for compiling the latest TMW CVS code!
 
@@ -123,16 +131,17 @@ alternatively into your c:\windows\system\):
  SDL_image.dll
  SDL_mixer.dll
  guichan.dll
+ guichan_opengl.dll
  guichan_sdl.dll
- jpeg.dll
- libpng1.dll
- zlib1.dll
-
+ 
 And also make sure you have:
 
  libxml2.dll
- iconv.dll
-
+ libcurl-3.dll
+ libiconv-2.dll
+ physfs.dll
+ zlib1.dll
+ 
 Additionally don't forget to copy any updated .dll (when libs are updated,
 the dll are usually updated too) to the folder containing tmw.exe (or to the
 c:\windows\system\).
