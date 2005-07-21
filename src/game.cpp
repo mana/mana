@@ -328,7 +328,7 @@ void do_input()
             }
             
             // Player sit action
-            else if (((keysym.sym == SDLK_F5) || joy[JOY_BTN2]) && action_time)
+            else if ((keysym.sym == SDLK_F5) && action_time)
             {
                 if (player_node->action == STAND)
                     action(2, 0);
@@ -440,8 +440,8 @@ void do_input()
             }
 
             // Picking up items on the floor
-            else if (((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
-                        !chatWindow->isFocused()) || joy[JOY_BTN1])
+            else if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
+                        !chatWindow->isFocused())
             {
                 unsigned short x = player_node->x;
                 unsigned short y = player_node->y;
@@ -724,6 +724,26 @@ void do_input()
                     autoTarget = monster;
                 }
             }
+        }
+        
+        if (joy[JOY_BTN1]) {
+            unsigned short x = player_node->x;
+            unsigned short y = player_node->y;
+            int id = find_floor_item_by_cor(x, y);
+            
+            if (id != 0)
+            {
+                WFIFOW(0) = net_w_value(0x009f);
+                WFIFOL(2) = net_l_value(id);
+                WFIFOSET(6);
+            }
+        }
+        else if (joy[JOY_BTN2] && action_time) {
+            if (player_node->action == STAND)
+                action(2, 0);
+            else if (player_node->action == SIT)
+                action(3, 0);
+            action_time = false;
         }
     }
 }
