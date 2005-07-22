@@ -165,7 +165,7 @@ void do_init()
 
     // Initialize beings
     player_node = new Being();
-    player_node->id = account_ID;
+    player_node->setId(account_ID);
     player_node->x = startX;
     player_node->y = startY;
     player_node->speed = 150;
@@ -176,7 +176,7 @@ void do_init()
         char_info->weapon = 2;
     }
 
-    player_node->weapon = char_info->weapon;
+    player_node->setWeapon(char_info->weapon);
 
     add_node(player_node);
 
@@ -510,10 +510,10 @@ void do_input()
                     if ((target->isNpc()) && (current_npc == 0))
                     {
                         WFIFOW(0) = net_w_value(0x0090);
-                        WFIFOL(2) = net_l_value(target->id);
+                        WFIFOL(2) = net_l_value(target->getId());
                         WFIFOB(6) = 0;
                         WFIFOSET(7);
-                        current_npc = target->id;
+                        current_npc = target->getId();
                     }
                     // Monster default: attack
                     else if (target->isMonster())
@@ -537,7 +537,7 @@ void do_input()
                     else if (target->isPlayer())
                     {
                         WFIFOW(0) = net_w_value(0x00e4);
-                        WFIFOL(2) = net_l_value(target->id);
+                        WFIFOL(2) = net_l_value(target->getId());
                         WFIFOSET(6);                        
                     }
                 }
@@ -797,6 +797,7 @@ void do_parse()
             fclose(file);
 #endif
             // Parse packet based on their id
+            // std::cout << "packet " << id << std::endl;
             switch (id) 
             {
                 case SMSG_LOGIN_SUCCESS:
@@ -880,7 +881,7 @@ void do_parse()
                     if (being == NULL)
                     {
                         being = new Being();
-                        being->id = beingId;
+                        being->setId(beingId);
                         being->speed = RFIFOW(6);
                         if (being->speed == 0) {
                             // Else division by 0 when calculating frame
@@ -892,9 +893,7 @@ void do_parse()
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
-                        being->weapon = RFIFOW(18);
-                        if (being->isPlayer())
-                            std::cout << RFIFOW(18) << std::endl;
+                        being->setWeapon(RFIFOW(18));
                         add_node(being);
                     }
                     else
@@ -903,6 +902,7 @@ void do_parse()
                         being->x = get_x(RFIFOP(46));
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
+                        //being->setWeapon(RFIFOW(18));
                         being->frame = 0;
                         being->walk_time = tick_time;
                         being->action = STAND;
@@ -940,7 +940,7 @@ void do_parse()
                     if (being == NULL) 
                     {
                         being = new Being();
-                        being->id = RFIFOL(2);
+                        being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
@@ -954,8 +954,8 @@ void do_parse()
                     being->direction = get_direction(RFIFOP(46));
                     being->walk_time = tick_time;
                     being->frame = 0;
-                    
-                    logger->log("0x01d8% i %i", RFIFOW(18), RFIFOW(20));
+                    being->setWeaponById(RFIFOW(18));
+                    //logger->log("0x01d8% i %i", RFIFOW(18), RFIFOW(20));
 
                     if (RFIFOB(51) == 2)
                     {
@@ -970,7 +970,7 @@ void do_parse()
                     if (being == NULL)
                     {
                         being = new Being();
-                        being->id = RFIFOL(2);
+                        being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
@@ -982,8 +982,8 @@ void do_parse()
                     being->destY = get_dest_y(RFIFOP(50));
                     being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
-                    being->weapon = RFIFOW(18);
-                    being->setDestination(
+                    //being->setWeapon(RFIFOW(18));
+                   being->setDestination(
                             get_dest_x(RFIFOP(50)),
                             get_dest_y(RFIFOP(50)));
                     break;
@@ -995,7 +995,7 @@ void do_parse()
                     if (being == NULL)
                     {
                         being = new Being();
-                        being->id = RFIFOL(2);
+                        being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
                         add_node(being);
                     }
@@ -1007,6 +1007,7 @@ void do_parse()
                     being->destX = get_dest_x(RFIFOP(50));
                     being->destY = get_dest_y(RFIFOP(50));
                     being->setHairStyle(RFIFOW(16));
+                    being->setWeaponById(RFIFOW(18));
                     being->setHairColor(RFIFOW(32));
 
                     being->setDestination(
@@ -1299,7 +1300,7 @@ void do_parse()
                     // Stop walking
                 case 0x0088:  // Disabled because giving some problems
                     //if (being = findNode(RFIFOL(2))) {
-                    //    if (being->id!=player_node->id) {
+                    //    if (being->getId()!=player_node->getId()) {
                     //        char ids[20];
                     //        sprintf(ids,"%i",RFIFOL(2));
                     //        alert(ids,"","","","",0,0);
@@ -1326,7 +1327,7 @@ void do_parse()
                                     being->setDamage(ss.str(), SPEECH_TIME);
                                 }
 
-                                if (RFIFOL(2) != player_node->id) { // buggy
+                                if (RFIFOL(2) != player_node->getId()) { // buggy
                                     being = findNode(RFIFOL(2));
                                     if (being != NULL) {
                                         if (being->isPlayer()) {
@@ -1382,7 +1383,7 @@ void do_parse()
                     // Level up
                 case 0x019b:
                     logger->log("Level up");
-                    if (RFIFOL(2) == player_node->id) {
+                    if (RFIFOL(2) == player_node->getId()) {
                         sound.playSfx("sfx/levelup.ogg");
                     }
                     break;
@@ -1553,8 +1554,8 @@ void do_parse()
                                 being->setHairStyle(RFIFOB(7));
                                 break;
                             case 2:
-                                being->weapon = RFIFOB(7);
-                                break;
+                                being->setWeapon(RFIFOB(7));
+                             break;
                             case 6:
                                 being->setHairColor(RFIFOB(7));
                                 break;
@@ -1583,44 +1584,21 @@ void do_parse()
                             item = inventory->getItem(RFIFOW(2));
                             item->setEquipped(true);
                             equipment->setEquipment(position - 1, item);
-
-                            // Trick to use the proper graphic until I find
-                            // the right packet
-                            switch (item->getId()) {
-                                case 521:
-                                case 522:
-                                case 536:
-                                case 1201:
-                                    player_node->weapon = 1;
-                                    break;
-                                case 530:
-                                case 1200:
-                                    player_node->weapon = 2;
-                                    break;
-                            }
+                            player_node->setWeaponById(item->getId());
                         }
                     }
                     break;
                     // Equipment related
                 case 0x01d7:
                     being = findNode(RFIFOL(2));
-                    if (being != NULL) {
-                        case 529:
-                        case 1199:
-                            break;
-                        case 521:
-                        case 522:
-                        case 530:
-                        case 536:
-                        case 1200:
-                        case 1201:
-                            being->weapon = 0;
-                            break;
+                    if (being != NULL)
+                    {
+                        being->setWeaponById(RFIFOW(7));
                     }
-
-                    logger->log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
+                    //logger->log("1d7 %i %i %i %i", RFIFOL(2), RFIFOB(6), RFIFOW(7), RFIFOW(9));
                     break;
-                    // Answer to unequip item
+
+                // Answer to unequip item
                 case 0x00ac:
                     if (RFIFOB(6) == 0)
                         chatWindow->chat_log("Unable to unequip.", BY_SERVER);
@@ -1646,8 +1624,8 @@ void do_parse()
                                 case 536:
                                 case 1200:
                                 case 1201:
-                                    player_node->weapon = 0;
-                                    break;
+                                    player_node->setWeapon(0);
+                                    break; // TODO : why this break ? shouldn't a weapon by unequiped in inventory too ?
                                 default:
                                     equipment->removeEquipment(position - 1);
                                     break;
@@ -1749,11 +1727,16 @@ void do_parse()
                 case 0x0095:
                     being = findNode(RFIFOL(2));
                     if (being)
+                    {
+                        //std::cout << RFIFOL(2) << " is " << RFIFOP(6) << std::endl;
                         strcpy(being->name, RFIFOP(6));
+                    }
                     break;
+
                 // Change in players look
                 case 0x0119:
-                    std::cout << RFIFOL(2) << " " << RFIFOW(6) << " " << RFIFOW(8) << " " << RFIFOW(10) << " " << RFIFOB(12) << std::endl;
+                    //std::cout << RFIFOL(2) << " " << RFIFOW(6) << " " << RFIFOW(8) << " " << RFIFOW(10) << " " << RFIFOW(12)
+                    //<< " " << RFIFOW(14) << " " << RFIFOW(16) << " " << RFIFOW(18) << " " << RFIFOW(20) << " end" << std::endl;
                     // Manage non implemented packets
                 default:
                     logger->log("Unhandled packet: %x", id);

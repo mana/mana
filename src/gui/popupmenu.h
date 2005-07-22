@@ -53,6 +53,11 @@ class PopupMenu : public Window, public LinkHandler
         void showPopup(int mx, int my);
 
         /**
+         * Shows the related popup menu when right click on the inventory
+         */
+        void showPopup(int mx, int my, class Item *item);
+
+        /**
          * Handles link action.
          */
         void handleLink(const std::string& link);
@@ -63,6 +68,8 @@ class PopupMenu : public Window, public LinkHandler
 
         Being* being;
         FloorItem* floorItem;
+
+        class Item *m_item;
 };
 
 extern PopupMenu *popupMenu;

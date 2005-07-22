@@ -23,12 +23,16 @@
 
 #include "popupmenu.h"
 #include "gui.h"
+#include "inventorywindow.h"
+#include "item_amount.h"
 #include "../graphics.h"
 #include "../game.h"
 #include "../engine.h"
 #include "../net/network.h"
 #include "../resources/itemmanager.h"
-#include <iostream>
+#include "../item.h"
+#include "../inventory.h"
+
 
 PopupMenu::PopupMenu():
     Window()
@@ -106,6 +110,7 @@ void PopupMenu::showPopup(int mx, int my)
         my -= (getHeight() + 50);
     setPosition(mx, my);
     setVisible(true);
+    requestMoveToTop();
 }
 
 void PopupMenu::handleLink(const std::string& link)
@@ -115,17 +120,17 @@ void PopupMenu::handleLink(const std::string& link)
             (current_npc == 0))
     {
         WFIFOW(0) = net_w_value(0x0090);
-        WFIFOL(2) = net_l_value(being->id);
+        WFIFOL(2) = net_l_value(being->getId());
         WFIFOB(6) = 0;
         WFIFOSET(7);
-        current_npc = being->id;
+        current_npc = being->getId();
     }
 
     // Trade action
     else if ((link == "trade") && being && being->isPlayer())
     {
         WFIFOW(0) = net_w_value(0x00e4);
-        WFIFOL(2) = net_l_value(being->id);
+        WFIFOL(2) = net_l_value(being->getId());
         WFIFOSET(6);
     }
     /*
@@ -157,6 +162,38 @@ void PopupMenu::handleLink(const std::string& link)
     {
     }
 
+    else if (link == "use")
+    {
+        assert(m_item);
+        if (m_item->isEquipment())
+        {
+            if (m_item->isEquipped())
+            {
+                inventory->unequipItem(m_item);
+            }
+            else
+            {
+                inventory->equipItem(m_item);
+            }
+        }
+        else
+        {
+            inventory->useItem(m_item);
+        }
+    }
+
+    else if (link == "drop")
+    {
+                new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow);
+    }
+
+    else if (link == "description")
+    {
+        // do nothing for now, I need to write
+        // a window for the description first
+        ;
+    }
+
     // Unknown actions
     else
     {
@@ -165,8 +202,49 @@ void PopupMenu::handleLink(const std::string& link)
 
     setVisible(false);
 
+    /*
+     * This is need cause of a bug in guichan that leave
+     * the focus on the popup menu even if is not visible.
+     */
+    _getFocusHandler()->focusNone();
+
     being = NULL;
     floorItem = NULL;
+    m_item = NULL;
     mX = -1;
     mY = -1;
 }
+
+void PopupMenu::showPopup(int mx, int my, Item *item)
+{
+    assert(item);
+    m_item = item;
+    browserBox->clearRows();
+
+    if (item->isEquipment())
+    {
+        if (item->isEquipped())
+            browserBox->addRow("@@use|Unequip@@");
+        else
+            browserBox->addRow("@@use|Equip@@");
+    }
+    else
+        browserBox->addRow("@@use|Use@@");
+
+    browserBox->addRow("@@drop|Drop@@");
+    browserBox->addRow("@@description|Description@@");
+    browserBox->addRow("##3---");
+    browserBox->addRow("@@cancel|Cancel@@");
+
+    setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
+    mx = (mx - camera_x) * 32 + 25;
+    my = (my - camera_y) * 32 + 25;
+    if (guiGraphics->getWidth() < (mx + getWidth() + 5))
+        mx -= (getWidth() + 50);
+    if (guiGraphics->getHeight() < (my + getHeight() + 5))
+        my -= (getHeight() + 50);
+    setPosition(mx, my);
+    setVisible(true);
+    requestMoveToTop();
+}
+

@@ -154,7 +154,7 @@ void ItemContainer::mousePress(int mx, int my, int button)
     int w = getWidth();
     int columns = w / gridWidth;
 
-    if (button == gcn::MouseInput::LEFT)
+    if (button == gcn::MouseInput::LEFT || gcn::MouseInput::RIGHT)
     {
         int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
 

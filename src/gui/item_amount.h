@@ -68,6 +68,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
          */
         gcn::Button *itemAmountPlusButton;
         gcn::Button *itemAmountMinusButton;
+        gcn::Slider *itemAmountSlide;
         gcn::Button *itemAmountOkButton;
         gcn::Button *itemAmountCancelButton;
 };

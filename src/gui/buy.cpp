@@ -34,16 +34,17 @@
 
 BuyDialog::BuyDialog():
     Window("Buy"),
-    money(0)
+    m_money(0)
 {
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
-    moneyLabel = new gcn::Label("350 G");
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
-    okButton->setEnabled(false);
+    moneyLabel = new gcn::Label("price : 0 G");
+    increaseButton = new Button("+");
+    decreaseButton = new Button("-");
+    buyButton = new Button("Buy");
+    quitButton = new Button("Quit");
     itemNameLabel = new gcn::Label("Name:");
     itemDescLabel = new gcn::Label("Description:");
 
@@ -51,42 +52,68 @@ BuyDialog::BuyDialog():
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
+
     slider->setDimension(gcn::Rectangle(5, 120, 200, 10));
+    slider->setEnabled(false);
+
     quantityLabel->setPosition(215, 120);
     moneyLabel->setPosition(5, 133);
-    okButton->setPosition(180, 174);
-    cancelButton->setPosition(208, 174);
+
+    increaseButton->setPosition(40, 174);
+    increaseButton->setSize(20, 20);
+    increaseButton->setEnabled(false);
+
+    decreaseButton->setPosition(10, 174);
+    decreaseButton->setSize(20, 20);
+    decreaseButton->setEnabled(false);
+
+    buyButton->setPosition(180, 174);
+    buyButton->setEnabled(false);
+
+    quitButton->setPosition(212, 174);
 
     itemNameLabel->setDimension(gcn::Rectangle(5, 145, 240, 14));
     itemDescLabel->setDimension(gcn::Rectangle(5, 157, 240, 14));
 
     itemList->setEventId("item");
     slider->setEventId("slider");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
+    increaseButton->setEventId("+");
+    decreaseButton->setEventId("-");
+    buyButton->setEventId("buy");
+    quitButton->setEventId("quit");
 
     itemList->addActionListener(this);
     slider->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
+    increaseButton->addActionListener(this);
+    decreaseButton->addActionListener(this);
+    buyButton->addActionListener(this);
+    quitButton->addActionListener(this);
 
 
     add(scrollArea);
     add(slider);
     add(quantityLabel);
     add(moneyLabel);
-    add(okButton);
-    add(cancelButton);
+    add(buyButton);
+    add(quitButton);
+    add(increaseButton);
+    add(decreaseButton);
     add(itemNameLabel);
     add(itemDescLabel);
 
     setLocationRelativeTo(getParent());
+
+    m_amountItems = 0;
+    m_maxItems = 0;
+    m_money = 0;
 }
 
 BuyDialog::~BuyDialog()
 {
-    delete cancelButton;
-    delete okButton;
+    delete increaseButton;
+    delete decreaseButton;
+    delete quitButton;
+    delete buyButton;
     delete moneyLabel;
     delete slider;
     delete itemList;
@@ -97,17 +124,17 @@ BuyDialog::~BuyDialog()
 
 void BuyDialog::setMoney(int amount)
 {
-    money = amount;
-    std::stringstream ss;
-    ss << money << " G";
-    moneyLabel->setCaption(ss.str());
-    moneyLabel->adjustSize();
+    m_money = amount;
+    //std::stringstream ss;
+    //ss << m_money << " G";
+    //moneyLabel->setCaption(ss.str());
+    //moneyLabel->adjustSize();
 }
 
 void BuyDialog::reset()
 {
     shopInventory.clear();
-    money = 0;
+    m_money = 0;
 }
 
 void BuyDialog::addItem(short id, int price)
@@ -127,40 +154,145 @@ void BuyDialog::action(const std::string& eventId)
 {
     int selectedItem = itemList->getSelected();
 
-    if (eventId == "slider" || eventId == "item") {
-        if (selectedItem > -1) {
-            int maxItems = money / shopInventory[selectedItem].price;
-            int numItems = (int)(slider->getValue() * maxItems);
-            std::stringstream ss;
+    std::stringstream oss;
 
-            ss << numItems;
-            quantityLabel->setCaption(ss.str());
-            quantityLabel->adjustSize();
-
-            okButton->setEnabled(numItems > 0);
+    if (eventId == "item")
+    {
+        if (selectedItem > -1)
+        {
+            slider->setEnabled(true);
+            increaseButton->setEnabled(true);
+            m_amountItems = 0;
+            m_maxItems = m_money / shopInventory[selectedItem].price;
         }
-        else {
-            okButton->setEnabled(false);
+        else
+        {
+            slider->setValue(0);
+            slider->setEnabled(false);
+            increaseButton->setEnabled(false);
+            decreaseButton->setEnabled(false);
+            buyButton->setEnabled(false);
+            m_amountItems = 0;
+            m_maxItems = 0;
+      }
+    }
+    else if (eventId == "slider" && selectedItem > -1)
+    {
+        m_amountItems = (int)(slider->getValue() * m_maxItems);
+
+        oss << m_amountItems;
+        quantityLabel->setCaption(oss.str());
+        quantityLabel->adjustSize();
+
+        oss.str("");
+        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
+        moneyLabel->setCaption(oss.str());
+        moneyLabel->adjustSize();
+
+        if (m_amountItems > 0)
+        {
+            buyButton->setEnabled(true);
+            decreaseButton->setEnabled(true);
+        }
+        else
+        {
+            buyButton->setEnabled(false);
+            decreaseButton->setEnabled(false);
+        }
+
+        if (m_amountItems == m_maxItems)
+        {
+            increaseButton->setEnabled(false);
+        }
+        else
+        {
+             increaseButton->setEnabled(true);
         }
     }
-    else if (eventId == "ok") {
-        if (selectedItem > -1) {
+    else if (eventId == "+" && selectedItem > -1)
+    {
+        assert(m_amountItems < m_maxItems);
+        m_amountItems++;
+        slider->setValue(double(m_amountItems)/double(m_maxItems));
+
+        decreaseButton->setEnabled(true);
+        buyButton->setEnabled(true);
+        if (m_amountItems == m_maxItems)
+        {
+            increaseButton->setEnabled(false);
+        }
+
+        oss << m_amountItems;
+        quantityLabel->setCaption(oss.str());
+        quantityLabel->adjustSize();
+
+        oss.str("");
+        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
+        moneyLabel->setCaption(oss.str());
+        moneyLabel->adjustSize();
+    }
+    else if (eventId == "-" && selectedItem > -1)
+    {
+        assert(m_amountItems > 0);
+        m_amountItems--;
+
+        slider->setValue(double(m_amountItems)/double(m_maxItems));
+
+        increaseButton->setEnabled(true);
+        if (m_amountItems == 0)
+        {
+            decreaseButton->setEnabled(false);
+            buyButton->setEnabled(false);
+        }
+
+        oss << m_amountItems;
+        quantityLabel->setCaption(oss.str());
+        quantityLabel->adjustSize();
+
+        oss.str("");
+        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
+        moneyLabel->setCaption(oss.str());
+        moneyLabel->adjustSize();
+    }
+    else if (eventId == "buy" && selectedItem > -1)
+    {
             // Attempt purchase
-            int maxItems = money / shopInventory[selectedItem].price;
-            int amount = (int)(slider->getValue() * maxItems);
+        assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
+        assert(selectedItem >= 0 && selectedItem < int(shopInventory.size()));
 
-            if (amount > 0) {
-                WFIFOW(0) = net_w_value(0x00c8);
-                WFIFOW(2) = net_w_value(8);
-                WFIFOW(4) = net_w_value(amount);
-                WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
-                WFIFOSET(8);
-            }
+        WFIFOW(0) = net_w_value(0x00c8);
+        WFIFOW(2) = net_w_value(8);
+        WFIFOW(4) = net_w_value(m_amountItems);
+        WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
+        WFIFOSET(8);
+
+        // update money !
+        m_money -= m_amountItems * shopInventory[selectedItem].price;
+
+        if (m_amountItems == m_maxItems)
+        {
+            m_maxItems = 0;
+            slider->setEnabled(false);
+            increaseButton->setEnabled(false);
         }
-        setVisible(false);
-        current_npc = 0;
+        else
+        {
+            m_maxItems = m_money / shopInventory[selectedItem].price;
+        }
+
+        decreaseButton->setEnabled(false);
+        buyButton->setEnabled(false);
+
+        m_amountItems = 0;
+        slider->setValue(0);
+        quantityLabel->setCaption("O");
+        quantityLabel->adjustSize();
+
+        moneyLabel->setCaption("price : 0 G");
+        moneyLabel->adjustSize();
     }
-    else if (eventId == "cancel") {
+    else if (eventId == "quit")
+    {
         setVisible(false);
         current_npc = 0;
     }
@@ -189,4 +321,11 @@ int BuyDialog::getNumberOfElements()
 std::string BuyDialog::getElementAt(int i)
 {
     return shopInventory[i].name;
+}
+
+namespace gcn
+{
+    ListModel::~ListModel()
+    {
+    }
 }

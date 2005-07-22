@@ -42,7 +42,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     /**
      * Constructor
      */
-    UpdaterWindow(const std::string& updateHost = "themanaworld.org/files");
+    UpdaterWindow();
 
     /**
      * Destructor
@@ -161,6 +161,11 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      * not stored in file system
      */
     char *m_memoryBuffer;
+
+    /*
+     * buffer to handler human readable error provided by curl
+     */
+    char *m_curlError;
 
     std::string labelText;       /**< Text for caption label */
 

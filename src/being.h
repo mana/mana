@@ -43,7 +43,6 @@ struct PATH_NODE {
 class Being
 {
     public:
-        unsigned int id;              /**< Unique id */
         unsigned short job;           /**< Job (player job, npc, monster, ) */
         unsigned short x, y;          /**< Tile coordinates */
         unsigned short destX, destY;  /**< Destination tile coordinates */
@@ -57,7 +56,6 @@ class Being
         unsigned char emotion_time;   /**< Time until emotion disappears */
         unsigned int text_x, text_y;  // temp solution to fix speech position
 
-        unsigned short weapon;
         char name[24];                /**< Name of character */
         unsigned short aspd;          /**< Attack speed */
 
@@ -156,11 +154,47 @@ class Being
          */
         bool isMonster();
 
+        // ACCES METHODS
+
+        /**
+         * get the weapon picture id.
+         */
+        unsigned short getWeapon() {return m_weapon;}
+
+        /**
+         * get the sprite id.
+         */
+        unsigned int getId() {return m_id;}
+
+        // MODIFICATION METHODS
+
+        /**
+         * set the weapon picture id.
+         *
+         * @param weapon : the picture id
+         */
+        void setWeapon(unsigned short weapon);
+
+        /**
+         * set the weapon picture id with the weapon id.
+         *
+         * @param weapon : the weapon id
+         */
+        void setWeaponById(unsigned short weapon);
+
+        /**
+         * set the sprite id.
+         */
+        void setId(unsigned int id);
+
     private:
         /**
          * Sets the new path for this being.
          */
         void setPath(std::list<PATH_NODE> path);
+
+        unsigned short m_weapon;
+        unsigned int m_id;              /**< Unique id */
 
         std::list<PATH_NODE> path;
         std::string speech;

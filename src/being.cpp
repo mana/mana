@@ -22,6 +22,7 @@
  */
 
 #include <sstream>
+#include <iostream>
 
 #include "being.h"
 #include "log.h"
@@ -75,7 +76,7 @@ void remove_node(unsigned int id)
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++)
     {
-        if ((*i)->id == id)
+        if ((*i)->getId() == id)
         {
             if (autoTarget == (*i))
             {
@@ -96,7 +97,7 @@ unsigned int findNpc(unsigned short x, unsigned short y)
         // Check if is a NPC (only low job ids)
         if (being->isNpc() && being->x == x && being->y == y)
         {
-            return being->id;
+            return being->getId();
         }
     }
     return 0;
@@ -109,7 +110,7 @@ unsigned int findPlayer(unsigned short x, unsigned short y)
         Being *being = (*i);
         // Check if is a player
         if (being->isPlayer() && being->x == x && being->y == y) {
-            return being->id;
+            return being->getId();
         }
     }
     return 0;
@@ -124,7 +125,7 @@ unsigned int findMonster(unsigned short x, unsigned short y)
         if (being->isMonster() && being->x == x && being->y == y &&
                 being->action != MONSTER_DEAD)
         {
-            return being->id;
+            return being->getId();
         }
     }
     return 0;
@@ -133,9 +134,9 @@ unsigned int findMonster(unsigned short x, unsigned short y)
 Being *findNode(unsigned int id)
 {
     std::list<Being*>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
+   for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
-        if (being->id == id) {
+        if (being->getId() == id) {
             return being;
         }
     }
@@ -167,7 +168,7 @@ void sort() {
 }
 
 Being::Being():
-    id(0), job(0),
+    job(0),
     x(0), y(0), destX(0), destY(0), direction(0),
     action(0), frame(0),
     speech_color(0),
@@ -175,8 +176,9 @@ Being::Being():
     speed(150),
     emotion(0), emotion_time(0),
     text_x(0), text_y(0),
-    weapon(0),
     aspd(350),
+    m_weapon(0),
+    m_id(0),
     hairStyle(1), hairColor(1),
     speech_time(0),
     damage_time(0),
@@ -405,4 +407,44 @@ bool Being::isNpc()
 bool Being::isMonster()
 {
     return job >= 1000 && job < 1200;
+}
+
+void Being::setWeapon(unsigned short weapon)
+{
+    m_weapon = weapon;
+}
+
+void Being::setWeaponById(unsigned short weapon)
+{
+    switch (weapon)
+    {
+    case 529: // iron arrows
+    case 1199: // arrows
+        break;
+
+    case 1200: // bow
+    case 530: // short bow
+    case 545: // forest bow
+        setWeapon(2);
+        break;
+
+    case 521: // sharp knife
+    case 522: // dagger
+    case 536: // short sword
+    case 1201: // knife
+        setWeapon(1);
+        break;
+
+    case 0: // unequip
+        setWeapon(0);
+        break;
+
+    default:
+        logger->log("unknown item equiped : %d", weapon);
+    }
+}
+
+void Being::setId(unsigned int id)
+{
+    m_id = id;
 }

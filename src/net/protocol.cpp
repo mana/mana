@@ -272,9 +272,9 @@ void attack(Being *target)
     char_info->lastAttackTime = 0;
 
     player_node->action = ATTACK;
-    action(0, target->id);
+    action(0, target->getId());
     player_node->walk_time = tick_time;
-    if (player_node->weapon == 2)
+    if (player_node->getWeapon() == 2)
         sound.playSfx("sfx/bow_shoot_1.ogg");
     else
         sound.playSfx("sfx/fist-swish.ogg");

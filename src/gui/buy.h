@@ -86,8 +86,10 @@ class BuyDialog : public Window, public gcn::ActionListener,
         std::string getElementAt(int i);
 
     private:
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
+        gcn::Button *buyButton;
+        gcn::Button *quitButton;
+        gcn::Button *increaseButton;
+        gcn::Button *decreaseButton;
         gcn::ListBox *itemList;
         gcn::ScrollArea *scrollArea;
         gcn::Label *itemNameLabel;
@@ -98,7 +100,9 @@ class BuyDialog : public Window, public gcn::ActionListener,
 
         std::vector<ITEM_SHOP> shopInventory;
 
-        int money;
+        int m_money;
+        int m_amountItems;
+        int m_maxItems;
 };
 
 extern BuyDialog *buyDialog;

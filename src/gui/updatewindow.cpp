@@ -35,19 +35,21 @@
 #include <SDL_mutex.h>
 
 
-UpdaterWindow::UpdaterWindow(const std::string& updateHost):
+UpdaterWindow::UpdaterWindow():
     Window("Updating...")
 {
     m_thread = NULL;
     m_mutex = NULL;
     m_downloadStatus = UPDATE_NEWS;
-    m_updateHost = updateHost;
+    m_updateHost = "";
     m_currentFile = "news.txt";
     m_downloadComplete = true;
     m_basePath = "";
     m_storeInMemory = true;
     m_downloadedBytes = 0;
     m_memoryBuffer = NULL;
+    m_curlError = new char[CURL_ERROR_SIZE];
+    m_curlError[0] = 0;
 
     int h = 300;
     int w = 320;
@@ -83,6 +85,7 @@ UpdaterWindow::UpdaterWindow(const std::string& updateHost):
 
 UpdaterWindow::~UpdaterWindow()
 {
+    delete m_curlError;
     delete label;
     delete progressBar;
     delete cancelButton;
@@ -218,24 +221,29 @@ int UpdaterWindow::downloadThread(void *ptr)
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, UpdaterWindow::memoryWrite);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
         }
-        else {
+        else
+        {
             outFilename =  uw->m_basePath + "/data/download.temp";
             outfile = fopen(outFilename.c_str(), "wb");
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         }
+        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, uw->m_curlError);
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
         curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, UpdaterWindow::updateProgress);
         curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
 
-        res = curl_easy_perform(curl);
+        if ((res = curl_easy_perform(curl)) != 0)
+        {
+            uw->m_downloadStatus = UPDATE_ERROR;
+            std::cerr << "curl error " << res << " : " << uw->m_curlError << std::endl;
+        }
 
         curl_easy_cleanup(curl);
         uw->m_downloadComplete = true;
-        if (res != 0) {
-            uw->m_downloadStatus = UPDATE_ERROR;
-        }
-        else if (!uw->m_storeInMemory) {
+
+        if (!uw->m_storeInMemory)
+        {
             fclose(outfile);
             // If the download was successful give the file the proper name
             // else it will be deleted later
@@ -304,6 +312,7 @@ void UpdaterWindow::updateData()
                 addRow("##1  The update process is incomplete.");
                 addRow("##1  It is strongly recommended that");
                 addRow("##1  you try again later");
+                addRow(m_curlError);
                 m_downloadStatus = UPDATE_COMPLETE;
                 break;
             case UPDATE_NEWS:

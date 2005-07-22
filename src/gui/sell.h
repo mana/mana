@@ -76,8 +76,10 @@ class SellDialog : public Window, public gcn::ActionListener,
         std::string getElementAt(int i);
 
     private:
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
+        gcn::Button *sellButton;
+        gcn::Button *quitButton;
+        gcn::Button *increaseButton;
+        gcn::Button *decreaseButton;
         gcn::ListBox *itemList;
         gcn::ScrollArea *scrollArea;
         gcn::Label *moneyLabel;
@@ -86,7 +88,8 @@ class SellDialog : public Window, public gcn::ActionListener,
 
         std::vector<ITEM_SHOP> shopInventory;
 
-        int maxItems;
+        int m_maxItems;
+        int m_amountItems;
 };
 
 extern SellDialog *sellDialog;

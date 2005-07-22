@@ -412,16 +412,20 @@ void Engine::draw()
             int pf = being->frame + being->action;
 
             if (being->action == ATTACK) {
-                if (being->weapon > 0)
-                    pf += 4 * (being->weapon - 1);
+                if (being->getWeapon() > 0)
+                    pf += 4 * (being->getWeapon() - 1);
             }
 
             guiGraphics->drawImage(playerset->spriteset[pf + 16 * dir],
                     being->text_x - 16, being->text_y - 32);
 
-            if (being->weapon != 0 && being->action == ATTACK) {
+            //if (being->action == ATTACK)
+            //{
+            //    std::cout << being->name << " " << being->getWeapon() << std::endl;
+            //}
+            if (being->getWeapon() != 0 && being->action == ATTACK) {
                 Image *image = weaponset->spriteset[
-                    16 * (being->weapon - 1) + 4 * being->frame + dir];
+                    16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
 
                 guiGraphics->drawImage(image,
                         being->text_x - 64, being->text_y - 80);

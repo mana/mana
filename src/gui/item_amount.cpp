@@ -25,6 +25,7 @@
 #include "inventorywindow.h"
 #include "trade.h"
 #include "button.h"
+#include "slider.h"
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     Window("Select amount of items to drop.", true, parent)
@@ -35,14 +36,17 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     // New buttons
     itemAmountMinusButton = new Button("-");
     itemAmountPlusButton = new Button("+");
+    itemAmountSlide = new Slider(1.0);
     itemAmountOkButton = new Button("Okay");
     itemAmountCancelButton = new Button("Cancel");
 
     itemAmountTextBox->setRange(1, inventoryWindow->getItem()->getQuantity());
+    itemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
     itemAmountMinusButton->setEventId("Minus");
     itemAmountPlusButton->setEventId("Plus");
+    itemAmountSlide->setEventId("Slide");
     itemAmountOkButton->setEventId("Drop");
     itemAmountCancelButton->setEventId("Cancel");
 
@@ -51,18 +55,21 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
     itemAmountTextBox->setSize(24, 16);
     itemAmountPlusButton->setPosition(60, 5);
     itemAmountMinusButton->setPosition(10, 5);
-    itemAmountOkButton->setPosition(10, 40);
-    itemAmountCancelButton->setPosition(60, 40);
+    itemAmountSlide->setPosition(10, 35);
+    itemAmountOkButton->setPosition(10, 50);
+    itemAmountCancelButton->setPosition(60, 50);
 
     // Assemble
     add(itemAmountTextBox);
     add(itemAmountPlusButton);
     add(itemAmountMinusButton);
+    add(itemAmountSlide);
     add(itemAmountOkButton);
     add(itemAmountCancelButton);
 
     itemAmountPlusButton->addActionListener(this);
     itemAmountMinusButton->addActionListener(this);
+    itemAmountSlide->addActionListener(this);
     itemAmountOkButton->addActionListener(this);
     itemAmountCancelButton->addActionListener(this);
 
@@ -90,6 +97,7 @@ ItemAmountWindow::~ItemAmountWindow()
     delete itemAmountTextBox;
     delete itemAmountPlusButton;
     delete itemAmountMinusButton;
+    delete itemAmountSlide;
     delete itemAmountOkButton;
     delete itemAmountCancelButton;
 }
@@ -123,6 +131,10 @@ void ItemAmountWindow::action(const std::string& eventId)
     else if (eventId == "Minus")
     {
         itemAmountTextBox->setInt(itemAmountTextBox->getInt() - 1);
+    }
+    else if (eventId == "Slide")
+    {
+        itemAmountTextBox->setInt(itemAmountSlide->getValue()*inventoryWindow->getItem()->getQuantity());
     }
 }
 

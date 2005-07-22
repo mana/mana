@@ -22,8 +22,10 @@
  */
 
 #include "inventorywindow.h"
+#include "popupmenu.h"
 #include "../playerinfo.h"
 #include "../inventory.h"
+#include "../engine.h"
 #include "button.h"
 #include "scrollarea.h"
 #include "item_amount.h"
@@ -141,6 +143,17 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
     SomeText = "Description: " + item->getInfo()->getDescription();
     itemDescriptionLabel->setCaption(SomeText);
     itemDescriptionLabel->adjustSize();
+
+    if (button == gcn::MouseInput::RIGHT)
+    {
+        /*
+         * convert relative to the window coordinates to
+         * absolute tile coordinates
+         */
+        int mx = (x + getX()) / 32 + camera_x;
+        int my = (y + getY()) / 32 + camera_y;
+        popupMenu->showPopup(mx, my, item);
+    }
 }
 
 void InventoryWindow::mouseMotion(int mx, int my)
