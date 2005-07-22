@@ -134,7 +134,7 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Slide")
     {
-        itemAmountTextBox->setInt(itemAmountSlide->getValue()*inventoryWindow->getItem()->getQuantity());
+        itemAmountTextBox->setInt((int)(itemAmountSlide->getValue()*inventoryWindow->getItem()->getQuantity()));
     }
 }
 

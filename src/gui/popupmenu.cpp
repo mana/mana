@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <assert.h>
+
 #include "popupmenu.h"
 #include "gui.h"
 #include "inventorywindow.h"

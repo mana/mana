@@ -31,6 +31,7 @@
 #include "../net/network.h"
 
 #include <sstream>
+#include <assert.h>
 
 SellDialog::SellDialog():
     Window("Sell")
