@@ -322,10 +322,3 @@ std::string BuyDialog::getElementAt(int i)
 {
     return shopInventory[i].name;
 }
-
-namespace gcn
-{
-    ListModel::~ListModel()
-    {
-    }
-}
