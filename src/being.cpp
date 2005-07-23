@@ -179,6 +179,7 @@ Being::Being():
     aspd(350),
     m_weapon(0),
     m_id(0),
+    map(0),
     hairStyle(1), hairColor(1),
     speech_time(0),
     damage_time(0),
@@ -190,6 +191,14 @@ Being::Being():
 Being::~Being()
 {
     clearPath();
+}
+
+void Being::setDestination(int destX, int destY)
+{
+    if (!map)
+        return;
+
+    setPath(map->findPath(x, y, destX, destY));
 }
 
 void Being::clearPath()
@@ -248,6 +257,11 @@ void Being::setDamage(const std::string &text, int time)
     damage = text;
     damage_time = tick_time;
     showDamage = true;
+}
+
+void Being::setMap(Map *map)
+{
+    this->map = map;
 }
 
 void Being::setName(char *text)

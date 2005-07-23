@@ -171,6 +171,7 @@ void do_init()
     player_node->speed = 150;
     player_node->setHairColor(char_info->hair_color);
     player_node->setHairStyle(char_info->hair_style);
+    player_node->setMap(tiledMap);
 
     if (char_info->weapon == 11) {
         char_info->weapon = 2;
@@ -679,9 +680,7 @@ void do_input()
 
         // Allow keyboard control to interrupt an existing path
         if ((xDirection != 0 || yDirection != 0) && player_node->action == WALK)
-            player_node->setPath(tiledMap->findPath(
-                        player_node->x, player_node->y,
-                        x, y));
+            player_node->setDestination(x, y);
 
         if (player_node->action != WALK)
         {
@@ -701,9 +700,7 @@ void do_input()
                     tiledMap->getWalk(x + xDirection, y + yDirection))
             {
                 walk(x + xDirection, y + yDirection, Direction);
-                player_node->setPath(tiledMap->findPath(
-                            player_node->x, player_node->y,
-                            x + xDirection, y + yDirection));
+                player_node->setDestination(x + xDirection, y + yDirection);
             }
             else if (Direction != DIR_NONE)
             {
@@ -898,6 +895,7 @@ void do_parse()
                         being->y = get_y(RFIFOP(46));
                         being->direction = get_direction(RFIFOP(46));
                         being->setWeapon(RFIFOW(18));
+                        being->setMap(tiledMap);
                         add_node(being);
                     }
                     else
@@ -946,6 +944,7 @@ void do_parse()
                         being = new Being();
                         being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
+                        being->setMap(tiledMap);
                         add_node(being);
                     }
 
@@ -976,6 +975,7 @@ void do_parse()
                         being = new Being();
                         being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
+                        being->setMap(tiledMap);
                         add_node(being);
                     }
 
@@ -984,10 +984,9 @@ void do_parse()
                     being->y = get_src_y(RFIFOP(50));
                     being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
-                    being->setPath(tiledMap->findPath(
-                                being->x, being->y,
+                    being->setDestination(
                                 get_dest_x(RFIFOP(50)),
-                                get_dest_y(RFIFOP(50))));
+                                get_dest_y(RFIFOP(50)));
                     break;
 
                 case SMSG_MOVE_PLAYER_BEING:
@@ -999,6 +998,7 @@ void do_parse()
                         being = new Being();
                         being->setId(RFIFOL(2));
                         being->job = RFIFOW(14);
+                        being->setMap(tiledMap);
                         add_node(being);
                     }
 
@@ -1010,10 +1010,9 @@ void do_parse()
                     being->setWeaponById(RFIFOW(18));
                     being->setHairColor(RFIFOW(32));
 
-                    being->setPath(tiledMap->findPath(
-                                being->x, being->y,
+                    being->setDestination(
                                 get_dest_x(RFIFOP(50)),
-                                get_dest_y(RFIFOP(50))));
+                                get_dest_y(RFIFOP(50)));
                     break;
 
                     // NPC dialog
@@ -1216,6 +1215,7 @@ void do_parse()
                         player_node->frame = 0;
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
+                        player_node->setMap(tiledMap);
                         current_npc = 0;
                         // Send "map loaded"
                         WFIFOW(0) = net_w_value(0x007d);

@@ -26,10 +26,13 @@
 
 #include <list>
 #include <string>
+
 #include "graphics.h"
 
 #define NR_HAIR_STYLES 5
 #define NR_HAIR_COLORS 10
+
+class Map;
 
 struct PATH_NODE {
     /**
@@ -74,9 +77,9 @@ class Being
         void clearPath();
 
         /**
-         * Sets the new path for this being.
+         * Sets a new destination for this being to walk to.
          */
-        void setPath(std::list<PATH_NODE> path);
+        void setDestination(int destX, int destY);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -186,9 +189,15 @@ class Being
          */
         void setId(unsigned int id);
 
+        /**
+         * Set the map the being is on
+         */
+        void setMap(Map *map);
+
     private:
         unsigned short m_weapon;
         unsigned int m_id;              /**< Unique id */
+        Map *map;
 
         std::list<PATH_NODE> path;
         std::string speech;
@@ -197,6 +206,11 @@ class Being
         unsigned int speech_time;
         unsigned int damage_time;
         bool showSpeech, showDamage;
+
+        /**
+         * Sets the new path for this being.
+         */
+        void setPath(std::list<PATH_NODE> path);
 };
 
 /** Add a Being to the list */

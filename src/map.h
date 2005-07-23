@@ -29,6 +29,8 @@
 #include "resources/image.h"
 #include <list>
 
+struct PATH_NODE;
+
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
