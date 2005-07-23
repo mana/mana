@@ -43,7 +43,14 @@ class Equipment
         void setArrows(Item *arrows);
 
     protected:
+        /**
+         * Constructor.
+         */
         Equipment();
+
+        /**
+         * Destructor.
+         */
         ~Equipment();
 
         Item *equipment[EQUIPMENT_SIZE];

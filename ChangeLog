@@ -2,3 +2,8 @@
 
 	* NEWS: Moved project news here.
 	* ChangeLog: Started standard ChangeLog file here.
+	* docs/HACKING.txt: Added info about member naming and ChangeLog
+	  format.
+	* src/gui/updatewindow.h, src/gui/updatewindow.cpp: Changed member
+	  names, set a 15 second timeout for connecting to update server and
+	  restore some doxygen comments.

@@ -25,12 +25,13 @@
 
 Equipment *Equipment::instance = 0;
 
-Equipment::Equipment()
+Equipment::Equipment():
+    arrows(NULL)
 {
-    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
+    for (int i = 0; i < EQUIPMENT_SIZE; i++)
+    {
         equipment[i] = 0;
     }
-    arrows = NULL;
 }
 
 Equipment::~Equipment()

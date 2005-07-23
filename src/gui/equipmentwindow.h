@@ -48,7 +48,7 @@ class EquipmentWindow : public Window, gcn::ActionListener {
          * Draws the equipment window.
          */
         void draw(gcn::Graphics *graphics);
-        
+
         /**
          * Called when receiving actions from the widgets.
          */

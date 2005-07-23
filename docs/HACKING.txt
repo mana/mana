@@ -105,11 +105,19 @@ necessary.
   generally accepted way Java code is written.
 
   Class:            CapitalizedWords
-  Method/member:    camelCase
-  Constant:         UPPERCASE_UNDERSCORES
+  Method:           camelCase
+  Member:           mCamelCase
+  Constant/enum:    UPPERCASE_UNDERSCORES
 
   To denote global variables and functions the lowercase_underscores style may
   be used. Hungarian style should be avoided.
 
 * Whenever you add a new source file somewhere in ./src do not forget to add
   them in ./src/Makefile.am as well!
+
+* ChangeLog file format:
+
+  YYYY-MM-DD[space][space]Firstname[space]Lastname[space][space]<email@address>
+  [newline]
+  [tab]*[space]filename:[space]Comment
+  [newline]

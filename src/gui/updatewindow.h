@@ -81,23 +81,24 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     int updateState;
 
  protected:
-    
     void download();
 
-    /*
-     * The tread function that download the files
+    /**
+     * The tread function that download the files.
      */
     static int downloadThread(void *ptr);
 
-    /*
-     * A libcurl callback
+    /**
+     * A libcurl callback for progress updates.
      */
-    static int updateProgress(void *ptr, double dt, double dn, double ut, double un);
+    static int updateProgress(void *ptr,
+                              double dt, double dn, double ut, double un);
 
-    /*
-     * A libcurl callback
+    /**
+     * A libcurl callback for writing to memory.
      */
-    static size_t memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream);
+    static size_t memoryWrite(void *ptr, size_t size, size_t nmemb,
+                              FILE *stream);
 
     enum DownloadStatus
     {
@@ -109,73 +110,68 @@ class UpdaterWindow : public Window, public gcn::ActionListener
         UPDATE_RESOURCES
     };
 
-    /*
-     * A thread that use libcurl to download updates
+    /**
+     * A thread that use libcurl to download updates.
      */
-    class SDL_Thread *m_thread;
+    class SDL_Thread *mThread;
 
-    /*
-     * A mutex to protect shared data betwed the threads
+    /**
+     * A mutex to protect shared data between the threads.
      */
-    class SDL_mutex *m_mutex;
+    class SDL_mutex *mMutex;
 
-
-    /*
-     * Status of the current download
+    /**
+     * Status of the current download.
      */
-    DownloadStatus m_downloadStatus;
+    DownloadStatus mDownloadStatus;
 
-    /*
-     * host where we get the updated files
+    /**
+     * Host where we get the updated files.
      */
-    std::string m_updateHost;
+    std::string mUpdateHost;
 
-    /*
-     * the file currently downloading
+    /**
+     * The file currently downloading.
      */
-    std::string m_currentFile;
+    std::string mCurrentFile;
 
-    /*
-     * Absolute path to locally save downloaded files
+    /**
+     * Absolute path to locally save downloaded files.
      */
-    std::string m_basePath;
+    std::string mBasePath;
 
-    /*
-     * A flag to know if we must write the downloaded file
-     * in m_memoryBuffer instead of a regular file
+    /**
+     * A flag to know if we must write the downloaded file to a memory buffer
+     * instead of a regular file.
      */
-    bool m_storeInMemory;
+    bool mStoreInMemory;
 
-    /*
-     * flag that show if current download is complete
+    /**
+     * Flag that show if current download is complete.
      */
-    bool m_downloadComplete;
+    bool mDownloadComplete;
 
-    /*
-     * byte count currently downloaded in m_memoryBuffer
+    /**
+     * Byte count currently downloaded in mMemoryBuffer.
      */
-    int m_downloadedBytes;
+    int mDownloadedBytes;
 
-    /*
-     * buffer where to put downloaded file which are
-     * not stored in file system
+    /**
+     * Buffer where to put downloaded file which are not stored in file system.
      */
-    char *m_memoryBuffer;
+    char *mMemoryBuffer;
 
-    /*
-     * buffer to handler human readable error provided by curl
+    /**
+     * Buffer to handler human readable error provided by curl.
      */
-    char *m_curlError;
+    char *mCurlError;
 
-    std::string labelText;       /**< Text for caption label */
-
-    gcn::Label *label;           /**< Progress bar caption */
-    Button *cancelButton;        /**< Button to stop the update process */
-    Button *playButton;          /**< Button to start playing */
-    ProgressBar *progressBar;    /**< Update progress bar */
-    BrowserBox* browserBox;      /**< Box to display news */
-    ScrollArea *scrollArea;      /**< Used to scroll news box */
-
+    gcn::Label *mLabel;           /**< Progress bar caption. */
+    Button *mCancelButton;        /**< Button to stop the update process. */
+    Button *mPlayButton;          /**< Button to start playing. */
+    ProgressBar *mProgressBar;    /**< Update progress bar. */
+    BrowserBox* mBrowserBox;      /**< Box to display news. */
+    ScrollArea *mScrollArea;      /**< Used to scroll news box. */
 };
 
 void updateData();
