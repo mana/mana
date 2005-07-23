@@ -308,128 +308,200 @@ void do_input()
     while (SDL_PollEvent(&event))
     {
         bool used = false;
-        
+
         // Keyboard events (for discontinuous keys)
         if (event.type == SDL_KEYDOWN)
         {
-            SDL_keysym keysym = event.key.keysym;
-            
-            // In-game Help
-            if (keysym.sym == SDLK_F1)
+            switch (event.key.keysym.sym)
             {
-                if (helpWindow->isVisible())
-                {
-                    helpWindow->setVisible(false);
-                }
-                else
-                {
-                    helpWindow->loadHelp("index");
-                }
-                used = true;
-            }
-            
-            // Player sit action
-            else if ((keysym.sym == SDLK_F5) && action_time)
-            {
-                if (player_node->action == STAND)
-                    action(2, 0);
-                else if (player_node->action == SIT)
-                    action(3, 0);
-                action_time = false;
-            }
-            
-            // Display path to mouse (debug purpose)
-            else if ((keysym.sym == SDLK_F6))
-            {
-                displayPathToMouse = !displayPathToMouse;
-            }
-            
-            // Input chat window
-            else if ((keysym.sym == SDLK_RETURN) && !chatWindow->isFocused())
-            {
-                // Quit by pressing Enter if the exit confirm is there
-                if ( exitConfirm )
-                {
-                    state = EXIT;
-                }
-                else if ( helpWindow->isVisible() ) // Close the Browser if opened
-                {
-                    helpWindow->setVisible(false);
-                }
-                else if ( setupWindow->isVisible() ) // Close the config window, applying changes if opened
-                {
-                    setupWindow->action("apply");
-                }
-                else // Else, open the chat edit box
-                {
-                    chatWindow->requestChatFocus();
+                    // In-game Help
+                case SDLK_F1:
+                    if (helpWindow->isVisible()) {
+                        helpWindow->setVisible(false);
+                    } else {
+                        helpWindow->loadHelp("index");
+                    }
                     used = true;
-                }
+                    break;
+
+                    // Player sit action
+                case SDLK_F5:
+                    if (!action_time) {
+                        break;
+                    }
+
+                    switch (player_node->action)
+                    {
+                        case STAND:
+                            action(2, 0);
+                            break;
+                        case SIT:
+                            action(3, 0);
+                            break;
+                    }
+                    break;
+
+                    // Display path to mouse (debug purpose)
+                case SDLK_F6:
+                    displayPathToMouse = !displayPathToMouse;
+                    break;
+
+                    // Input chat window
+                case SDLK_RETURN:
+                    if (chatWindow->isFocused()) {
+                        break;
+                    }
+
+                    // Quit by pressing Enter if the exit confirm is there
+                    if (exitConfirm)
+                    {
+                        state = EXIT;
+                    }
+                    // Close the Browser if opened
+                    else if (helpWindow->isVisible())
+                    {
+                        helpWindow->setVisible(false);
+                    }
+                    // Close the config window, applying changes if opened
+                    else if (setupWindow->isVisible())
+                    {
+                        setupWindow->action("apply");
+                    }
+                    // Else, open the chat edit box
+                    else
+                    {
+                        chatWindow->requestChatFocus();
+                        used = true;
+                    }
+                    break;
+
+                    // Picking up items on the floor
+                case SDLK_g:
+                case SDLK_z:
+                    if (!chatWindow->isFocused()) {
+                        unsigned short x = player_node->x;
+                        unsigned short y = player_node->y;
+                        int id = find_floor_item_by_cor(x, y);
+
+                        if (id)
+                        {
+                            WFIFOW(0) = net_w_value(0x009f);
+                            WFIFOL(2) = net_l_value(id);
+                            WFIFOSET(6);
+                        }
+                        else
+                        {
+                            switch (player_node->direction)
+                            {
+                                case NORTH: y--; break;
+                                case SOUTH: y++; break;
+                                case WEST:  x--; break;
+                                case EAST:  x++; break;
+                                case NW:    x--; y--; break;
+                                case NE:    x++; y--; break;
+                                case SW:    x--; y++; break;
+                                case SE:    x++; y++; break;
+                            }
+                            id = find_floor_item_by_cor(x, y);
+                            WFIFOW(0) = net_w_value(0x009f);
+                            WFIFOL(2) = net_l_value(id);
+                            WFIFOSET(6);
+                        }
+                        used = true;
+                    }
+                    break;
+
+                    // Quitting confirmation dialog
+                case SDLK_ESCAPE:
+                    if (!exitConfirm) {
+                        exitConfirm = new ConfirmDialog(
+                                "Quit", "Are you sure you want to quit?",
+                                (gcn::ActionListener*)&exitListener);
+                    }
+                    break;
+
+                default:
+                    break;
             }
-            
+
+            // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
-            else if (keysym.mod & KMOD_ALT)
-            {            
-                // Inventory window
-                if (keysym.sym == SDLK_i)
+            if (event.key.keysym.mod & KMOD_ALT)
+            {
+                switch (event.key.keysym.sym)
                 {
-                    inventoryWindow->setVisible(!inventoryWindow->isVisible());
-                    used = true;
+                        // Inventory window
+                    case SDLK_i:
+                        inventoryWindow->setVisible(
+                                !inventoryWindow->isVisible());
+                        used = true;
+                        break;
+
+                        // Statistics window
+                    case SDLK_s:
+                        statsWindow->setVisible(!statsWindow->isVisible());
+                        used = true;
+                        break;
+
+                    /*
+                        // New skills window
+                    case SDLK_n:
+                        newSkillWindow->setVisible(!newSkillWindow->isVisible());
+                        used = true;
+                        break;
+                    */
+
+                        // Skill window
+                    case SDLK_k:
+                        skillDialog->setVisible(!skillDialog->isVisible());
+                        used = true;
+                        break;
+
+                        // Setup window
+                    case SDLK_c:
+                        setupWindow->setVisible(true);
+                        used = true;
+                        break;
+
+                        // Equipment window
+                    case SDLK_e:
+                        equipmentWindow->setVisible(
+                                !equipmentWindow->isVisible());
+                        used = true;
+                        break;
+
+                    /*
+                        // Buddy window
+                    case SDLK_b:
+                        buddyWindow->setVisible(!buddyWindow->isVisible());
+                        used = true;
+                        break;
+                    */
+
+                    default:
+                        break;
                 }
-                // Statistics window
-                else if (keysym.sym == SDLK_s)
-                {
-                    statsWindow->setVisible(!statsWindow->isVisible());
-                    used = true;
-                }
-                /*
-                // New skills window
-                else if (keysym.sym == SDLK_n)
-                {
-                    newSkillWindow->setVisible(!newSkillWindow->isVisible());
-                    used = true;
-                }*/
-                // Skill window
-                else if (keysym.sym == SDLK_k)
-                {
-                    skillDialog->setVisible(!skillDialog->isVisible());
-                    used = true;
-                }                    
-                // Setup window
-                else if (keysym.sym == SDLK_c)
-                {
-                    setupWindow->setVisible(true);
-                    used = true;
-                }                    
-                // Equipment window
-                else if (keysym.sym == SDLK_e)
-                {
-                    equipmentWindow->setVisible(!equipmentWindow->isVisible());
-                    used = true;
-                }
-                /*
-                // Buddy window
-                else if (keysym.sym == SDLK_b) 
-                {
-                    buddyWindow->setVisible(!buddyWindow->isVisible());
-                    used = true;
-                }*/
-                
+
                 // Emotions
-                else if (action_time && (player_node->emotion == 0))
+                if (action_time && !player_node->emotion)
                 {
                     unsigned char emotion = 0;
-                    if (keysym.sym == SDLK_1) emotion = 1;
-                    else if (keysym.sym == SDLK_2) emotion = 2;
-                    else if (keysym.sym == SDLK_3) emotion = 3;
-                    else if (keysym.sym == SDLK_4) emotion = 4;
-                    else if (keysym.sym == SDLK_5) emotion = 5;
-                    else if (keysym.sym == SDLK_6) emotion = 6;
-                    else if (keysym.sym == SDLK_7) emotion = 7;
-                    else if (keysym.sym == SDLK_8) emotion = 8;
-                    else if (keysym.sym == SDLK_9) emotion = 9;
-                    else if (keysym.sym == SDLK_0) emotion = 10;
-                    if (emotion != 0) 
+                    switch (event.key.keysym.sym)
+                    {
+                        case SDLK_1: emotion = 1; break;
+                        case SDLK_2: emotion = 2; break;
+                        case SDLK_3: emotion = 3; break;
+                        case SDLK_4: emotion = 4; break;
+                        case SDLK_5: emotion = 5; break;
+                        case SDLK_6: emotion = 6; break;
+                        case SDLK_7: emotion = 7; break;
+                        case SDLK_8: emotion = 8; break;
+                        case SDLK_9: emotion = 9; break;
+                        case SDLK_0: emotion = 10; break;
+                        default: break;
+                    }
+
+                    if (emotion)
                     {
                         WFIFOW(0) = net_w_value(0x00bf);
                         WFIFOB(2) = emotion;
@@ -437,53 +509,10 @@ void do_input()
                         action_time = false;
                         used = true;
                     }
-                }                
-            }
-
-            // Picking up items on the floor
-            else if ((keysym.sym == SDLK_g || keysym.sym == SDLK_z) &&
-                        !chatWindow->isFocused())
-            {
-                unsigned short x = player_node->x;
-                unsigned short y = player_node->y;
-                int id = find_floor_item_by_cor(x, y);
-                
-                if (id != 0)
-                {
-                    WFIFOW(0) = net_w_value(0x009f);
-                    WFIFOL(2) = net_l_value(id);
-                    WFIFOSET(6);
                 }
-                else
-                {
-                    switch (player_node->direction)
-                    {
-                        case NORTH: y--; break;
-                        case SOUTH: y++; break;
-                        case WEST:  x--; break;
-                        case EAST:  x++; break;
-                        case NW:    x--; y--; break;
-                        case NE:    x++; y--; break;
-                        case SW:    x--; y++; break;
-                        case SE:    x++; y++; break;
-                    }
-                    id = find_floor_item_by_cor(x, y);
-                    WFIFOW(0) = net_w_value(0x009f);
-                    WFIFOL(2) = net_l_value(id);
-                    WFIFOSET(6);
-                }
-                used = true;
-            }
-            
-            // Quitting confirmation dialog
-            else if ((keysym.sym == SDLK_ESCAPE) && (!exitConfirm))
-            {
-                exitConfirm = new ConfirmDialog(
-                        "Quit", "Are you sure you want to quit?",
-                        (gcn::ActionListener*)&exitListener);
             }
         }
-        
+
         // Mouse events
         else if (event.type == SDL_MOUSEBUTTONDOWN)
         {
