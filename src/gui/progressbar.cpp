@@ -28,8 +28,11 @@
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
 
-ProgressBar::ProgressBar(float progress, int x, int y, unsigned int width, unsigned int height,
-        unsigned char red, unsigned char green, unsigned char blue):
+ProgressBar::ProgressBar(float progress, int x, int y,
+                         unsigned int width, unsigned int height,
+                         unsigned char red,
+                         unsigned char green,
+                         unsigned char blue):
     gcn::Widget(),
     red(red), green(green), blue(blue),
     redToGo(red), greenToGo(green), blueToGo(blue)

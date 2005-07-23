@@ -50,17 +50,12 @@ UpdaterWindow::UpdaterWindow():
     mCurlError = new char[CURL_ERROR_SIZE];
     mCurlError[0] = 0;
 
-    int h = 300;
+    int h = 240;
     int w = 320;
     setContentSize(w, h);
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
-    mScrollArea = new ScrollArea(mBrowserBox);
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310, 190));
-    mLabel = new gcn::Label("Connecting...");
-    mLabel->setPosition(5,205);
-    mProgressBar = new ProgressBar(0.0, 5, 225, w - 10, 40, 37, 70, 23);
     mCancelButton = new Button("Cancel");
     mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
     mCancelButton->setEventId("cancel");
@@ -72,6 +67,13 @@ UpdaterWindow::UpdaterWindow():
     mPlayButton->setEventId("play");
     mPlayButton->setEnabled(false);
     mPlayButton->addActionListener(this);
+    mProgressBar = new ProgressBar(0.0, 5, mCancelButton->getY() - 20 - 5,
+                                   w - 10, 20, 37, 70, 23);
+    mLabel = new gcn::Label("Connecting...");
+    mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
+    mScrollArea = new ScrollArea(mBrowserBox);
+    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310,
+                                             mLabel->getY() - 12));
 
     add(mScrollArea);
     add(mLabel);

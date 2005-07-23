@@ -19,4 +19,7 @@
 	  format.
 	* src/gui/updatewindow.h, src/gui/updatewindow.cpp: Changed member
 	  names, set a 15 second timeout for connecting to update server and
-	  restore some doxygen comments.
+	  restore some doxygen comments, improved size adaption and made the
+	  window a shorter.
+	* data/graphics/images/login_wallpaper.png: New login wallpaper by
+	  Momotaro.
