@@ -2,6 +2,9 @@
 
 	* src/game.cpp: Made the key-event handler use switches instead of
 	if-else.
+	* src/gui/gui.cpp:
+	* src/gui/gui.h:
+	Allow continous movement when holding down the left mouse button.
 
 2005-07-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

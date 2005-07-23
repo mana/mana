@@ -50,7 +50,9 @@ gcn::ImageFont *speechFont;
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
     mMouseCursor(NULL),
-    mCustomCursor(false)
+    mCustomCursor(false),
+    mMouseWalk(false),
+    mMouseX(0), mMouseY(0)
 {
     // Set graphics
     guiGraphics = graphics;
@@ -201,6 +203,19 @@ void Gui::logic()
     // Work around Guichan bug of only applying focus on mouse or keyboard
     // events.
     mFocusHandler->applyChanges();
+
+    if (mMouseWalk) {
+        Map *tiledMap = engine->getCurrentMap();
+        int tilex = mMouseX / 32 + camera_x;
+        int tiley = mMouseY / 32 + camera_y;
+
+        if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
+            walk(tilex, tiley, 0);
+            player_node->setDestination(tilex, tiley);
+
+            autoTarget = NULL;
+        }
+    }
 }
 
 void Gui::draw()
@@ -225,21 +240,24 @@ void Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
 
-    // When conditions for walking are met, set new player destination
+    // When conditions for walking are met, start moving by mouse
     if (player_node && player_node->action != DEAD && current_npc == 0 &&
             button == gcn::MouseInput::LEFT)
     {
-        Map *tiledMap = engine->getCurrentMap();
-        int tilex = mx / 32 + camera_x;
-        int tiley = my / 32 + camera_y;
-
-        if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
-            walk(tilex, tiley, 0);
-            player_node->setDestination(tilex, tiley);
-
-            autoTarget = NULL;
-        }
+        mMouseWalk = true;
     }
+}
+
+void Gui::mouseRelease(int x, int y, int button)
+{
+    gcn::MouseListener::mouseRelease(x, y, button);
+    mMouseWalk = false;
+}
+
+void Gui::mouseMotion(int mx, int my)
+{
+    mMouseX = mx;
+    mMouseY = my;
 }
 
 gcn::ImageFont *Gui::getFont()

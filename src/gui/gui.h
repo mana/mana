@@ -76,6 +76,18 @@ class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
         mousePress(int mx, int my, int button);
 
         /**
+         * Handles mouse releases on map.
+         */
+        void
+        mouseRelease(int mx, int my, int button);
+
+        /**
+         * Handles mouse motion on map.
+         */
+        void
+        mouseMotion(int mx, int my);
+
+        /**
          * Return game font
          */
         gcn::ImageFont*
@@ -99,6 +111,8 @@ class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
         gcn::ImageFont *mGuiFont;             /**< The global GUI font */
         Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
+        bool mMouseWalk;                      /**< Move to the mouse cursor */
+        int mMouseX, mMouseY;                 /**< Mouse coordinates */
 };
 
 extern Gui *gui;                              /**< The GUI system */
