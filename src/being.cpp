@@ -169,7 +169,7 @@ void sort() {
 
 Being::Being():
     job(0),
-    x(0), y(0), destX(0), destY(0), direction(0),
+    x(0), y(0), direction(0),
     action(0), frame(0),
     speech_color(0),
     walk_time(0),
@@ -205,19 +205,6 @@ void Being::setPath(std::list<PATH_NODE> path)
     {
         nextStep();
         walk_time = tick_time;
-    }
-}
-
-void Being::setDestination(int destX, int destY)
-{
-    this->destX = destX;
-    this->destY = destY;
-
-    Map *map = engine->getCurrentMap();
-
-    if (map != NULL)
-    {
-        setPath(map->findPath(x, y, destX, destY));
     }
 }
 

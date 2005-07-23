@@ -675,11 +675,13 @@ void do_input()
                 Direction = NE;
         }
 
+        Map *tiledMap = engine->getCurrentMap();
+
         // Allow keyboard control to interrupt an existing path
         if ((xDirection != 0 || yDirection != 0) && player_node->action == WALK)
-            player_node->setDestination(x, y);
-
-        Map *tiledMap = engine->getCurrentMap();
+            player_node->setPath(tiledMap->findPath(
+                        player_node->x, player_node->y,
+                        x, y));
 
         if (player_node->action != WALK)
         {
@@ -699,7 +701,9 @@ void do_input()
                     tiledMap->getWalk(x + xDirection, y + yDirection))
             {
                 walk(x + xDirection, y + yDirection, Direction);
-                player_node->setDestination(x + xDirection, y + yDirection);
+                player_node->setPath(tiledMap->findPath(
+                            player_node->x, player_node->y,
+                            x + xDirection, y + yDirection));
             }
             else if (Direction != DIR_NONE)
             {
@@ -978,14 +982,12 @@ void do_parse()
                     being->action = STAND;
                     being->x = get_src_x(RFIFOP(50));
                     being->y = get_src_y(RFIFOP(50));
-                    being->destX = get_dest_x(RFIFOP(50));
-                    being->destY = get_dest_y(RFIFOP(50));
                     being->speed = RFIFOW(6);
                     being->job = RFIFOW(14);
-                    //being->setWeapon(RFIFOW(18));
-                   being->setDestination(
-                            get_dest_x(RFIFOP(50)),
-                            get_dest_y(RFIFOP(50)));
+                    being->setPath(tiledMap->findPath(
+                                being->x, being->y,
+                                get_dest_x(RFIFOP(50)),
+                                get_dest_y(RFIFOP(50))));
                     break;
 
                 case SMSG_MOVE_PLAYER_BEING:
@@ -1004,15 +1006,14 @@ void do_parse()
                     being->job = RFIFOW(14);
                     being->x = get_src_x(RFIFOP(50));
                     being->y = get_src_y(RFIFOP(50));
-                    being->destX = get_dest_x(RFIFOP(50));
-                    being->destY = get_dest_y(RFIFOP(50));
                     being->setHairStyle(RFIFOW(16));
                     being->setWeaponById(RFIFOW(18));
                     being->setHairColor(RFIFOW(32));
 
-                    being->setDestination(
-                            get_dest_x(RFIFOP(50)),
-                            get_dest_y(RFIFOP(50)));
+                    being->setPath(tiledMap->findPath(
+                                being->x, being->y,
+                                get_dest_x(RFIFOP(50)),
+                                get_dest_y(RFIFOP(50))));
                     break;
 
                     // NPC dialog

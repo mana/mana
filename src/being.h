@@ -45,7 +45,6 @@ class Being
     public:
         unsigned short job;           /**< Job (player job, npc, monster, ) */
         unsigned short x, y;          /**< Tile coordinates */
-        unsigned short destX, destY;  /**< Destination tile coordinates */
         unsigned char direction;      /**< Facing direction */
         unsigned char action;
         unsigned char frame;
@@ -75,9 +74,9 @@ class Being
         void clearPath();
 
         /**
-         * Sets a new destination for this being to walk to.
+         * Sets the new path for this being.
          */
-        void setDestination(int x, int y);
+        void setPath(std::list<PATH_NODE> path);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -188,11 +187,6 @@ class Being
         void setId(unsigned int id);
 
     private:
-        /**
-         * Sets the new path for this being.
-         */
-        void setPath(std::list<PATH_NODE> path);
-
         unsigned short m_weapon;
         unsigned int m_id;              /**< Unique id */
 

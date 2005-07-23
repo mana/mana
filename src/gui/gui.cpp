@@ -235,7 +235,9 @@ void Gui::mousePress(int mx, int my, int button)
 
         if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
             walk(tilex, tiley, 0);
-            player_node->setDestination(tilex, tiley);
+            player_node->setPath(tiledMap->findPath(
+                        player_node->x, player_node->y,
+                        tilex, tiley));
 
             autoTarget = NULL;
         }
