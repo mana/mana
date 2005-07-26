@@ -390,117 +390,122 @@ void Engine::draw()
         guiGraphics->setColor(gcn::Color(0, 0, 255));
         guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
 #endif
-
-        // Draw a NPC
-        if (being->isNpc())
+        int frame;
+        switch (being->getType())
         {
-            guiGraphics->drawImage(npcset->spriteset[being->job - 100],
-                    sx * 32 - 8 - offset_x,
-                    sy * 32 - 52 - offset_y);
-        }
+            // Draw a player
+            case Being::PLAYER:
+                being->text_x = sx * 32 + get_x_offset(being) - offset_x;
+                being->text_y = sy * 32 + get_y_offset(being) - offset_y;
 
-        // Draw a player
-        else if (being->isPlayer())
-        {
-            being->text_x = sx * 32 + get_x_offset(being) - offset_x;
-            being->text_y = sy * 32 + get_y_offset(being) - offset_y;
-
-            if (being->action == SIT || being->action == DEAD) {
-                being->frame = 0;
-            }
-
-            int pf = being->frame + being->action;
-
-            if (being->action == ATTACK) {
-                if (being->getWeapon() > 0)
-                    pf += 4 * (being->getWeapon() - 1);
-            }
-
-            guiGraphics->drawImage(playerset->spriteset[pf + 16 * dir],
-                    being->text_x - 16, being->text_y - 32);
-
-            //if (being->action == ATTACK)
-            //{
-            //    std::cout << being->name << " " << being->getWeapon() << std::endl;
-            //}
-            if (being->getWeapon() != 0 && being->action == ATTACK) {
-                Image *image = weaponset->spriteset[
-                    16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
-
-                guiGraphics->drawImage(image,
-                        being->text_x - 64, being->text_y - 80);
-            }
-
-            if (being->getHairColor() <= NR_HAIR_COLORS) {
-                int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
-                        (being->getHairStyle() - 1));
-
-                guiGraphics->drawImage(hairset->spriteset[hf],
-                        being->text_x - 2 + 2 * hairtable[pf][dir][0],
-                        being->text_y - 50 + 2 * hairtable[pf][dir][1]);
-            }
-
-            if (being->emotion != 0) {
-                guiGraphics->drawImage(
-                        emotionset->spriteset[being->emotion - 1],
-                        sx * 32 + 3 + get_x_offset(being) - offset_x,
-                        sy * 32 - 90 + get_y_offset(being) - offset_y);
-            }
-
-            graphics->setFont(speechFont);
-            graphics->drawText(being->name,
-                being->text_x + 15, being->text_y + 30,
-                gcn::Graphics::CENTER);
-            graphics->setFont(gui->getFont());
-        }
-
-        // Draw a warp
-        else if (being->job == 45)
-        {
-        }
-
-        // Draw a monster
-        else
-        {
-            if (being->frame >= 4)
-            {
-                being->frame = 3;
-            }
-
-            being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
-            being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
-
-            int mf = being->frame + being->action;
-
-            if (being->action == MONSTER_DEAD) {
-                guiGraphics->drawImage(
-                        monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
-                        being->text_x + 30, being->text_y + 40);
-
-                if (autoTarget == being) {
-                    autoTarget = NULL;
+                if (being->action == SIT || being->action == DEAD) {
+                    being->frame = 0;
                 }
-            }
-            else {
-                guiGraphics->drawImage(
-                        monsterset[being->job-1002]->spriteset[dir + 4 * mf],
-                        being->text_x + 30, being->text_y + 40);
 
-                if (being->x == mouseTileX && being->y == mouseTileY)
+                frame = being->frame + being->action;
+
+                if (being->action == ATTACK) {
+                    if (being->getWeapon() > 0)
+                        frame += 4 * (being->getWeapon() - 1);
+                }
+
+                guiGraphics->drawImage(playerset->spriteset[frame + 16 * dir],
+                        being->text_x - 16, being->text_y - 32);
+
+                //if (being->action == ATTACK)
+                //{
+                //    std::cout << being->name << " " << being->getWeapon() << std::endl;
+                //}
+                if (being->getWeapon() != 0 && being->action == ATTACK) {
+                    Image *image = weaponset->spriteset[
+                        16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
+
+                    guiGraphics->drawImage(image,
+                            being->text_x - 64, being->text_y - 80);
+                }
+
+                if (being->getHairColor() <= NR_HAIR_COLORS) {
+                    int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
+                            (being->getHairStyle() - 1));
+
+                    guiGraphics->drawImage(hairset->spriteset[hf],
+                            being->text_x - 2 + 2 * hairtable[frame][dir][0],
+                            being->text_y - 50 + 2 * hairtable[frame][dir][1]);
+                }
+
+                if (being->emotion != 0) {
+                    guiGraphics->drawImage(
+                            emotionset->spriteset[being->emotion - 1],
+                            sx * 32 + 3 + get_x_offset(being) - offset_x,
+                            sy * 32 - 90 + get_y_offset(being) - offset_y);
+                }
+
+                graphics->setFont(speechFont);
+                graphics->drawText(being->name,
+                        being->text_x + 15, being->text_y + 30,
+                        gcn::Graphics::CENTER);
+                graphics->setFont(gui->getFont());
+                break;
+
+                // Draw a NPC
+            case Being::NPC:
+                guiGraphics->drawImage(npcset->spriteset[being->job - 100],
+                        sx * 32 - 8 - offset_x,
+                        sy * 32 - 52 - offset_y);
+                break;
+
+                // Draw a monster
+            case Being::MONSTER:
+                if (being->frame >= 4)
                 {
-                    guiGraphics->drawImage(attackTarget,
-                        being->text_x + 30 + 16, being->text_y + 32);
+                    being->frame = 3;
                 }
-            }
 
-            if (being->action != STAND) {
-                being->frame =
-                    (get_elapsed_time(being->walk_time) * 4) / (being->speed);
+                being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
+                being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
 
-                if (being->frame >= 4 && being->action != MONSTER_DEAD) {
-                    being->nextStep();
+                frame = being->frame + being->action;
+
+                if (being->action == MONSTER_DEAD) {
+                    guiGraphics->drawImage(
+                            monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
+                            being->text_x + 30, being->text_y + 40);
+
+                    if (autoTarget == being) {
+                        autoTarget = NULL;
+                    }
                 }
-            }
+                else {
+                    guiGraphics->drawImage(
+                            monsterset[being->job-1002]->spriteset[dir + 4 * frame],
+                            being->text_x + 30, being->text_y + 40);
+
+                    if (being->x == mouseTileX && being->y == mouseTileY)
+                    {
+                        guiGraphics->drawImage(attackTarget,
+                                being->text_x + 30 + 16, being->text_y + 32);
+                    }
+                }
+
+                if (being->action != STAND) {
+                    being->frame =
+                        (get_elapsed_time(being->walk_time) * 4) / (being->speed);
+
+                    if (being->frame >= 4 && being->action != MONSTER_DEAD) {
+                        being->nextStep();
+                    }
+                }
+                break;
+
+                /*
+                // Draw a warp (job == 45)
+            case Being::WARP:
+                break;
+                */
+
+                // No idea how to draw this ;)
+            default:
+                break;
         }
 
         beingIterator++;
@@ -550,6 +555,13 @@ void Engine::draw()
         being->drawSpeech(guiGraphics);
 
         beingIterator++;
+    }
+
+    if (autoTarget) {
+        graphics->drawText("[TARGET]",
+                autoTarget->text_x + 60,
+                autoTarget->text_y,
+                gcn::Graphics::CENTER);
     }
 
     if (statsWindow->isVisible()) {

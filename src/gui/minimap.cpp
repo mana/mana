@@ -91,18 +91,21 @@ void Minimap::draw(gcn::Graphics *graphics)
                         being->x / 2 + getPadding() - 1,
                         being->y / 2 + getTitleBarHeight() - 1, 3, 3));
         }
-        else if (being->isPlayer())
+        else
         {
-            // Other player dot
-            graphics->setColor(gcn::Color(61, 52, 209));
-            graphics->fillRectangle(gcn::Rectangle(
-                        being->x / 2 + getPadding(),
-                        being->y / 2 + getTitleBarHeight(), 1, 1));
-        }
-        else if (being->isMonster())
-        {
-            // Enemy dot
-            graphics->setColor(gcn::Color(209, 52, 61));
+            switch (being->getType()) {
+                case Being::PLAYER:
+                    graphics->setColor(gcn::Color(61, 52, 209));
+                    break;
+
+                case Being::MONSTER:
+                    graphics->setColor(gcn::Color(209, 52, 61));
+                    break;
+
+                default:
+                    break;
+            }
+
             graphics->fillRectangle(gcn::Rectangle(
                         being->x / 2 + getPadding(),
                         being->y / 2 + getTitleBarHeight(), 1, 1));

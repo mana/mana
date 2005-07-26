@@ -536,39 +536,47 @@ void do_input()
 
                 if (target)
                 {
-                    // NPC default: talk
-                    if ((target->isNpc()) && (current_npc == 0))
+                    switch (target->getType())
                     {
-                        WFIFOW(0) = net_w_value(0x0090);
-                        WFIFOL(2) = net_l_value(target->getId());
-                        WFIFOB(6) = 0;
-                        WFIFOSET(7);
-                        current_npc = target->getId();
-                    }
-                    // Monster default: attack
-                    else if (target->isMonster())
-                    {
-                        /**
-                        * TODO: Move player to mouse click position before
-                        * attack the monster (maybe using follow mode).
-                        */
-                        if (target->action != MONSTER_DEAD &&
-                                player_node->action==STAND)
-                        {
-                            attack(target);
-                            // Autotarget by default with mouse
-                            //if (keys[SDLK_LSHIFT])
-                            //{
+                        // Player default: trade
+                        case Being::PLAYER:
+                            WFIFOW(0) = net_w_value(0x00e4);
+                            WFIFOL(2) = net_l_value(target->getId());
+                            WFIFOSET(6);
+                            break;
+
+                            // NPC default: talk
+                        case Being::NPC:
+                            if (!current_npc)
+                            {
+                                WFIFOW(0) = net_w_value(0x0090);
+                                WFIFOL(2) = net_l_value(target->getId());
+                                WFIFOB(6) = 0;
+                                WFIFOSET(7);
+                                current_npc = target->getId();
+                            }
+                            break;
+
+                            // Monster default: attack
+                        case Being::MONSTER:
+                            /**
+                             * TODO: Move player to mouse click position before
+                             * attack the monster (maybe using follow mode).
+                             */
+                            if (target->action != MONSTER_DEAD &&
+                                    player_node->action==STAND)
+                            {
+                                attack(target);
+                                // Autotarget by default with mouse
+                                //if (keys[SDLK_LSHIFT])
+                                //{
                                 autoTarget = target;
-                            //}
-                        }
-                    }
-                    // Player default: trade
-                    else if (target->isPlayer())
-                    {
-                        WFIFOW(0) = net_w_value(0x00e4);
-                        WFIFOL(2) = net_l_value(target->getId());
-                        WFIFOSET(6);                        
+                                //}
+                            }
+                            break;
+
+                        default:
+                            break;
                     }
                 }
                 // Check for default action to items on the floor
@@ -947,19 +955,26 @@ void do_parse()
                     {
                         if (RFIFOB(6) == 1) 
                         { // Death
-                            if (being->isMonster())
+                            switch (being->getType())
                             {
-                                being->action = MONSTER_DEAD;
-                                being->frame = 0;
-                                being->walk_time = tick_time;
-                            }
-                            else 
-                            {
-                                being->action = DEAD;
+                                case Being::MONSTER:
+                                    being->action = MONSTER_DEAD;
+                                    being->frame = 0;
+                                    being->walk_time = tick_time;
+                                    break;
+
+                                default:
+                                    being->action = DEAD;
+                                break;
                             }
                             //remove_node(RFIFOL(2));
                         }
-                        else remove_node(RFIFOL(2));
+                        else {
+                            remove_node(RFIFOL(2));
+                            if (being == autoTarget) {
+                                autoTarget = NULL;
+                            }
+                        }
                     }
                     break;
 
@@ -1354,16 +1369,20 @@ void do_parse()
 
                                 if (RFIFOL(2) != player_node->getId()) { // buggy
                                     being = findNode(RFIFOL(2));
-                                    if (being != NULL) {
-                                        if (being->isPlayer()) {
-                                            being->action = ATTACK;
-                                            being->frame = 0;
-                                            being->walk_time = tick_time;
-                                        }
-                                        else {
-                                            being->action = MONSTER_ATTACK;
-                                            being->frame = 0;
-                                            being->walk_time = tick_time;
+                                    if (being) {
+                                        switch (being->getType())
+                                        {
+                                            case Being::PLAYER:
+                                                being->action = ATTACK;
+                                                being->frame = 0;
+                                                being->walk_time = tick_time;
+                                                break;
+
+                                            default:
+                                                being->action = MONSTER_ATTACK;
+                                                being->frame = 0;
+                                                being->walk_time = tick_time;
+                                                break;
                                         }
                                         being->frame = 0;
                                     }

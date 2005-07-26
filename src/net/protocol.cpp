@@ -230,22 +230,30 @@ Being* attack(unsigned short x, unsigned short y, unsigned char direction)
 {
     Being *target = NULL;
 
-    if (direction == SOUTH) {
-        target = findNode(x, y + 1);
-    } else if(direction == WEST) {
-        target = findNode(x - 1, y);
-    } else if(direction == NORTH) {
-        target = findNode(x, y - 1);
-    } else if(direction == EAST) {
-        target = findNode(x + 1, y);
+    switch (direction)
+    {
+        case SOUTH:
+            target = findNode(x, y + 1, Being::MONSTER);
+            break;
+
+        case WEST:
+            target = findNode(x - 1, y, Being::MONSTER);
+            break;
+
+        case NORTH:
+            target = findNode(x, y - 1, Being::MONSTER);
+            break;
+
+        case EAST:
+            target = findNode(x + 1, y, Being::MONSTER);
+            break;
     }
 
-    if (target && target->isMonster()) {
+    if (target) {
         attack(target);
-        return target;
     }
 
-    return NULL;
+    return target;
 }
 
 void attack(Being *target)

@@ -46,6 +46,13 @@ struct PATH_NODE {
 class Being
 {
     public:
+        enum Type {
+            UNKNOWN,
+            PLAYER,
+            NPC,
+            MONSTER
+        };
+
         unsigned short job;           /**< Job (player job, npc, monster, ) */
         unsigned short x, y;          /**< Tile coordinates */
         unsigned char direction;      /**< Facing direction */
@@ -142,19 +149,9 @@ class Being
         void drawSpeech(Graphics *graphics);
 
         /**
-         * Checks if the being is a player.
+         * Returns the type of the being.
          */
-        bool isPlayer();
-
-        /**
-         * Checks if the being is a npc.
-         */
-        bool isNpc();
-
-        /**
-         * Checks if the being is a monster.
-         */
-        bool isMonster();
+        Type getType();
 
         // ACCES METHODS
 
@@ -221,6 +218,9 @@ Being *findNode(unsigned int id);
 
 /** Return a being at specific coordinates */
 Being *findNode(unsigned short x, unsigned short y);
+
+/** Return a being at specific coordinates with specific type*/
+Being *findNode(unsigned short x, unsigned short y, Being::Type type);
 
 /** Remove a Being */
 void remove_node(unsigned int id);

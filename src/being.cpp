@@ -49,7 +49,7 @@ void add_node(Being *being)
     beings.push_back(being);
 
     // If the being is a player, request the name
-    if (being->isPlayer()) {
+    if (being->getType() == Being::PLAYER) {
         WFIFOW(0) = net_w_value(0x0094);
         WFIFOL(2) = net_l_value(RFIFOL(2));
         WFIFOSET(6);
@@ -78,57 +78,11 @@ void remove_node(unsigned int id)
     {
         if ((*i)->getId() == id)
         {
-            if (autoTarget == (*i))
-            {
-                autoTarget = NULL;
-            }
             delete (*i);
             beings.erase(i);
             return;
         }
     }
-}
-
-unsigned int findNpc(unsigned short x, unsigned short y)
-{
-    std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
-        Being *being = (*i);
-        // Check if is a NPC (only low job ids)
-        if (being->isNpc() && being->x == x && being->y == y)
-        {
-            return being->getId();
-        }
-    }
-    return 0;
-}
-
-unsigned int findPlayer(unsigned short x, unsigned short y)
-{
-    std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
-        Being *being = (*i);
-        // Check if is a player
-        if (being->isPlayer() && being->x == x && being->y == y) {
-            return being->getId();
-        }
-    }
-    return 0;
-}
-
-unsigned int findMonster(unsigned short x, unsigned short y)
-{
-    std::list<Being*>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
-        Being *being = (*i);
-        // Check if is a MONSTER that is alive
-        if (being->isMonster() && being->x == x && being->y == y &&
-                being->action != MONSTER_DEAD)
-        {
-            return being->getId();
-        }
-    }
-    return 0;
 }
 
 Being *findNode(unsigned int id)
@@ -150,6 +104,21 @@ Being *findNode(unsigned short x, unsigned short y)
         Being *being = (*i);
         // Return being if found and it is not a dead monster
         if (being->x == x && being->y == y && being->action != MONSTER_DEAD) {
+            return being;
+        }
+    }
+    return NULL;
+}
+
+Being* findNode(unsigned short x, unsigned short y, Being::Type type)
+{
+    std::list<Being *>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++) {
+        Being *being = (*i);
+        // Check if is a NPC (only low job ids)
+        if (being->x == x && being->y == y &&
+                being->getType() == type && being->action != MONSTER_DEAD)
+        {
             return being;
         }
     }
@@ -309,7 +278,7 @@ void Being::nextStep()
 
 void Being::logic()
 {
-    if (isPlayer())
+    if (getType() == PLAYER)
     {
         switch (action) {
             case WALK:
@@ -353,6 +322,9 @@ void Being::drawSpeech(Graphics *graphics)
         graphics->drawText(speech,
                 text_x + 18, text_y - 60,
                 gcn::Graphics::CENTER);
+
+        // Backing to default font
+        graphics->setFont(gui->getFont());
     }
     if (showDamage) {
         // Selecting the right color
@@ -360,7 +332,7 @@ void Being::drawSpeech(Graphics *graphics)
         {
             graphics->setFont(hitYellowFont);
         }
-        else if (isMonster())
+        else if (getType() == MONSTER)
         {
             graphics->setFont(hitBlueFont);
         }
@@ -371,7 +343,7 @@ void Being::drawSpeech(Graphics *graphics)
 
         int textX = 0;
         int textY = 0;
-        if (this->isPlayer()) {
+        if (getType() == PLAYER) {
             textX = 16;
             textY = 70;
         }
@@ -388,26 +360,19 @@ void Being::drawSpeech(Graphics *graphics)
         // Backing to default font
         graphics->setFont(gui->getFont());
     }
-    if (this == autoTarget) {
-        graphics->drawText("[TARGET]",
-                text_x + 60, text_y,
-                gcn::Graphics::CENTER);
+}
+
+Being::Type Being::getType()
+{
+    if (job < 10) {
+        return PLAYER;
+    } else if (job >= 100 & job < 200) {
+        return NPC;
+    } else if (job >= 1000 && job < 1200) {
+        return MONSTER;
+    } else {
+        return UNKNOWN;
     }
-}
-
-bool Being::isPlayer()
-{
-    return job < 10;
-}
-
-bool Being::isNpc()
-{
-    return job >= 100 && job < 200;
-}
-
-bool Being::isMonster()
-{
-    return job >= 1000 && job < 1200;
 }
 
 void Being::setWeapon(unsigned short weapon)

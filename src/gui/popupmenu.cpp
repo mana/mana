@@ -70,22 +70,31 @@ void PopupMenu::showPopup(int mx, int my)
     mY = my;
     browserBox->clearRows();
 
-    if (being && being->isNpc())
-    {
-        // NPCs can be talked to (single option, candidate for removal unless
-        // more options would be added)
-        browserBox->addRow("@@talk|Talk To NPC@@");
-    }
-    else if (being && being->isPlayer())
-    {
-        // Players can be traded with. Later also attack, follow and add as
-        // buddy will be options in this menu.
+    if (being) {
+        std::string name;
+        switch (being->getType())
+        {
+            case Being::PLAYER:
+                // Players can be traded with. Later also attack, follow and
+                // add as buddy will be options in this menu.
 
-        std::string name = being->name;
-        //browserBox->addRow("@@attack|Attack " + name + "@@");
-        browserBox->addRow("@@trade|Trade With " + name + "@@");
-        //browserBox->addRow("@@follow|Follow " + name + "@@");
-        //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+                name = being->name;
+                //browserBox->addRow("@@attack|Attack " + name + "@@");
+                browserBox->addRow("@@trade|Trade With " + name + "@@");
+                //browserBox->addRow("@@follow|Follow " + name + "@@");
+                //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+                break;
+
+            case Being::NPC:
+                // NPCs can be talked to (single option, candidate for removal
+                // unless more options would be added)
+                browserBox->addRow("@@talk|Talk To NPC@@");
+                break;
+
+            default:
+                /* Other beings aren't interesting... */
+                break;
+        }
     }
     else if (floorItem)
     {
@@ -118,7 +127,7 @@ void PopupMenu::showPopup(int mx, int my)
 void PopupMenu::handleLink(const std::string& link)
 {
     // Talk To action
-    if ((link == "talk") && being && being->isNpc() &&
+    if ((link == "talk") && being && being->getType() == Being::NPC &&
             (current_npc == 0))
     {
         WFIFOW(0) = net_w_value(0x0090);
@@ -129,7 +138,7 @@ void PopupMenu::handleLink(const std::string& link)
     }
 
     // Trade action
-    else if ((link == "trade") && being && being->isPlayer())
+    else if ((link == "trade") && being && being->getType() == Being::PLAYER)
     {
         WFIFOW(0) = net_w_value(0x00e4);
         WFIFOL(2) = net_l_value(being->getId());
