@@ -11,7 +11,7 @@ PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=_@@_
+CppCompiler=-DUSE_OPENGL_@@_
 Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurl_@@_
 IsCpp=1
 Icon=The Mana World.ico
@@ -32,19 +32,19 @@ CompilerSettings=0010001001001000001101
 [VersionInfo]
 Major=0
 Minor=0
-Release=14
+Release=15
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.14
+FileVersion=0.0.15
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2005 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.14
+ProductVersion=0.0.15
 AutoIncBuildNr=0
 
 [Unit8]

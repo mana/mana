@@ -406,7 +406,6 @@ int main(int argc, char *argv[])
         switch (state) {
             case LOGIN:
                 logger->log("State: LOGIN");
-                sound.playMusic(TMW_DATADIR "data/music/Ivano(de)Jeanette.ogg");
                 login();
                 break;
             case CHAR_SERVER:
@@ -441,6 +440,7 @@ int main(int argc, char *argv[])
                 graphics->updateScreen();
                 break;
             case UPDATE:
+                sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
                 uw = new UpdaterWindow();
                 uw->updateData();
                 delete uw;

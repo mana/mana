@@ -1258,11 +1258,6 @@ void do_parse()
                     }
                     if (oldMap) delete oldMap;
                     break;
-                    // Skill ...
-                case 0x011a:
-                    break;
-                case 0x01a4:
-                    break;
                     // Action failed (ex. sit because you have not reached the right level)
                 case 0x0110:
                     CHATSKILL action;

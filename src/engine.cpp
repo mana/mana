@@ -236,7 +236,7 @@ Engine::Engine():
     if (!itembitmap) logger->error("Unable to load items.png");
 
     npcset = new Spriteset(npcbmp, 50, 80);
-    emotionset = new Spriteset(emotionbmp, 19, 19);
+    emotionset = new Spriteset(emotionbmp, 30, 32);
     weaponset = new Spriteset(weaponbitmap, 160, 120);
     itemset = new Spriteset(itembitmap, 32, 32);
 
@@ -443,8 +443,8 @@ void Engine::draw()
             if (being->emotion != 0) {
                 guiGraphics->drawImage(
                         emotionset->spriteset[being->emotion - 1],
-                        sx * 32 + 5 + get_x_offset(being) - offset_x,
-                        sy * 32 - 65 + get_y_offset(being) - offset_y);
+                        sx * 32 + 3 + get_x_offset(being) - offset_x,
+                        sy * 32 - 90 + get_y_offset(being) - offset_y);
             }
 
             graphics->setFont(speechFont);

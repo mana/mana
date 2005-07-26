@@ -351,7 +351,7 @@ void Being::drawSpeech(Graphics *graphics)
     if (showSpeech) {
         graphics->setFont(speechFont);
         graphics->drawText(speech,
-                text_x + 20, text_y - 60,
+                text_x + 18, text_y - 60,
                 gcn::Graphics::CENTER);
     }
     if (showDamage) {
