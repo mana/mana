@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.14.1    Date: 7/7/2005
+ Version: 0.0.15    Date: 27/7/2005
 
 
  Development team:
@@ -13,6 +13,8 @@ THE MANA WORLD
   - Guichan (GUI framework)
   - libxml2 (XML parsing and writing)
   - PhysFS (Data files)
+  - libcurl (HTTP downloads)
+  - zlib (Archives)
 
 
 0. Index
@@ -33,8 +35,9 @@ Remember that the server is only for demo and development purposes.
 2. Commands
 -----------
 
-Use arrow keys (or left mouse button) to move around and the right mouse button
-over NPC's feet to talk to them or over a monster to attack it. Other keys:
+KEYBOARD:
+
+Use arrow keys to move around. Other keys:
 
 - Left Ctrl          attack
 - Alt + 0-9          show emotions
@@ -49,6 +52,12 @@ over NPC's feet to talk to them or over a monster to attack it. Other keys:
 - Alt + E            show equipment
 - Alt + C            show setup window
 - Left Shift         hold it when attacking to lock target for auto attack
+
+MOUSE:
+
+Left click to execute default action: walk, pick up an item, attack a monster
+and talk to NPCs (be sure to click on their feet). Right click to show up a
+context menu. Holding [Left Shift] prevents from walking when attacking.
 
 3. Skills
 ---------

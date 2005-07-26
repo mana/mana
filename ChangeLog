@@ -1,3 +1,12 @@
+2005-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev: Updated release infos.
+	* data/graphics/sprites/emotions.png: Added Modanung's smilies.
+	* src/being.cpp, src/engine.cpp: Fixed text and smilies position.
+	* src/game.cpp: Cleanups.
+	* src/gui/skill.cpp: Added new skill names.
+	* src/main.cpp: Moved sound playback to update screen and changed song.	
+
 2005-07-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Made the key-event handler use switches instead of
