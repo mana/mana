@@ -150,7 +150,7 @@ void init_engine()
     }
 
     // Checking if /home/user/.tmw folder exists.
-    
+
     homeDir = pass->pw_dir;
     homeDir += "/.tmw";
     //sprintf(homeDir, "%s/.tmw", pass->pw_dir);
@@ -219,7 +219,7 @@ void init_engine()
     SDL_WM_SetCaption("The Mana World", NULL);
 
 #ifdef USE_OPENGL
-    useOpenGL = true;
+    useOpenGL = (config.getValue("opengl", 0) == 1);
 #else
     useOpenGL = false;
 #endif

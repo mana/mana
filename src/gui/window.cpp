@@ -126,7 +126,7 @@ void Window::draw(gcn::Graphics* graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          border);
 
     // Draw title

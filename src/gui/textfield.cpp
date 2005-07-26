@@ -100,5 +100,5 @@ void TextField::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    ((Graphics*)graphics)->drawImageRect(x, y, w, h, skin);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, skin);
 }

@@ -56,7 +56,13 @@ Gui::Gui(Graphics *graphics):
 {
     // Set graphics
     guiGraphics = graphics;
-    setGraphics(graphics);
+    //setGraphics(graphics);
+    if (useOpenGL) {
+        setGraphics((gcn::OpenGLGraphics*)graphics);
+    }
+    else {
+        setGraphics((gcn::SDLGraphics*)graphics);
+    }
 
     // Set input
     guiInput = new gcn::SDLInput();
@@ -112,7 +118,7 @@ Gui::Gui(Graphics *graphics):
             logger->error("Unable to load sansserif8.png!");
         }
     }
-    
+
     // Set speech font
     try {
         speechFont = new gcn::ImageFont(
@@ -180,7 +186,7 @@ Gui::~Gui()
     delete hitRedFont;
     delete hitBlueFont;
     delete hitYellowFont;
-    
+
     if (mMouseCursor) {
         mMouseCursor->decRef();
     }
@@ -220,9 +226,14 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    guiGraphics->pushClipArea(guiTop->getDimension());
-
-    guiTop->draw(guiGraphics);
+    if (useOpenGL) {
+        dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
+        guiTop->draw((gcn::OpenGLGraphics*)guiGraphics);
+    }
+    else {
+        dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
+        guiTop->draw((gcn::SDLGraphics*)guiGraphics);
+    }
 
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
@@ -233,7 +244,12 @@ void Gui::draw()
         guiGraphics->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
     }
 
-    guiGraphics->popClipArea();
+    if (useOpenGL) {
+        dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->popClipArea();
+    }
+    else {
+        dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->popClipArea();
+    }
 }
 
 void Gui::mousePress(int mx, int my, int button)

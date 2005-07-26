@@ -264,7 +264,7 @@ void do_input()
     // Get the state of the keyboard keys
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
-    
+
     // Get the state of the joypad buttons
     // TODO: Only 6- buttons joypads are allowed
     bool joy[10];
@@ -619,7 +619,7 @@ void do_input()
                 }
 
             } // End Mouse left button
-            
+
             // Mouse button middle
             else if (event.button.button == SDL_BUTTON_MIDDLE)
             {
@@ -628,7 +628,7 @@ void do_input()
                  * right Usiu??? ;-)
                  */
             }
-            
+
             // Mouse button right
             else if (event.button.button == SDL_BUTTON_RIGHT)
             {
@@ -746,7 +746,7 @@ void do_input()
                 player_node->direction = Direction;
             }
         }
-    
+
         // Attacking monsters
         if (player_node->action == STAND)
         {
@@ -763,12 +763,12 @@ void do_input()
                 }
             }
         }
-        
+
         if (joy[JOY_BTN1]) {
             unsigned short x = player_node->x;
             unsigned short y = player_node->y;
             int id = find_floor_item_by_cor(x, y);
-            
+
             if (id != 0)
             {
                 WFIFOW(0) = net_w_value(0x009f);
@@ -1234,7 +1234,7 @@ void do_parse()
                     logger->log("Warping to %s (%d, %d)",
                             map_path, RFIFOW(18), RFIFOW(20));
                     strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
-                    
+
                     Map *oldMap;
                     oldMap = tiledMap;
                     tiledMap = MapReader::readMap(map_path);
@@ -1718,7 +1718,7 @@ void do_parse()
                                 break;
                             case 0x0012:
                                 char_info->LUK = RFIFOB(5);
-                                break;                                
+                                break;
                         }
                     }
                     break;

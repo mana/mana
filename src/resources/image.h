@@ -26,9 +26,7 @@
 
 #include "resource.h"
 #include <SDL.h>
-#ifdef USE_OPENGL
 #include <SDL_opengl.h>
-#endif
 
 
 /**
@@ -120,23 +118,21 @@ class Image : public Resource
         /**
          * Constructor.
          */
-#ifdef USE_OPENGL
-        Image(GLuint image,
-              int width, int height,
-              int texWidth, int texHeight);
-#else
+//#ifdef USE_OPENGL
+        Image(GLuint glimage, int width, int height, int texWidth, int texHeight);
+//#else
         Image(SDL_Surface *image);
-#endif
+//#endif
 
         bool loaded;
 
-#ifdef USE_OPENGL
-        GLuint image;
+//#ifdef USE_OPENGL
+        GLuint glimage;
         int width, height;
         int texWidth, texHeight;
-#else
+//#else
         SDL_Surface *image;
-#endif
+//#endif
         float alpha;
 };
 
@@ -149,13 +145,13 @@ class SubImage : public Image
         /**
          * Constructor.
          */
-#ifndef USE_OPENGL
+//#ifndef USE_OPENGL
         SubImage(Image *parent, SDL_Surface *image,
                  int x, int y, int width, int height);
-#else
+//#else
         SubImage(Image *parent, GLuint image, int x, int y,
                  int width, int height, int texWidth, int textHeight);
-#endif
+//#endif
 
         /**
          * Destructor.

@@ -23,6 +23,7 @@
 
 #include "minimap.h"
 #include "../being.h"
+#include "../main.h"
 #include "../resources/resourcemanager.h"
 
 Minimap::Minimap():
@@ -87,9 +88,16 @@ void Minimap::draw(gcn::Graphics *graphics)
         {
             // Player dot
             graphics->setColor(gcn::Color(209, 52, 61));
-            graphics->fillRectangle(gcn::Rectangle(
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(
                         being->x / 2 + getPadding() - 1,
                         being->y / 2 + getTitleBarHeight() - 1, 3, 3));
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(
+                        being->x / 2 + getPadding() - 1,
+                        being->y / 2 + getTitleBarHeight() - 1, 3, 3));
+            }
         }
         else
         {

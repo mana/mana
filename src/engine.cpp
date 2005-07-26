@@ -29,6 +29,7 @@
 #include "log.h"
 #include "being.h"
 #include "floor_item.h"
+#include "graphics.h"
 #include "gui/gui.h"
 #include "gui/minimap.h"
 #include "gui/chargedialog.h"
@@ -536,7 +537,12 @@ void Engine::draw()
             int squareX = (node.x - camera_x) * 32 - offset_x + 12;
             int squareY = (node.y - camera_y) * 32 - offset_y + 12;
             guiGraphics->setColor(gcn::Color(255, 0, 0));
-            guiGraphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+            }
 
             MetaTile *tile = mCurrentMap->getMetaTile(node.x, node.y);
 

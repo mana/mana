@@ -105,7 +105,7 @@ void Button::draw(gcn::Graphics* graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          button[mode]);
 
     graphics->setColor(getForegroundColor());
@@ -127,7 +127,7 @@ void Button::draw(gcn::Graphics* graphics)
             throw GCN_EXCEPTION("Button::draw. Uknown alignment.");
     }
 
-    graphics->setFont(getFont());
+    graphics->setFont((gcn::ImageFont*)getFont());
 
     if (isPressed()) {
         graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());

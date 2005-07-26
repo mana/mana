@@ -21,22 +21,25 @@
  *  $Id$
  */
 
+#include "../main.h"
 #include "../log.h"
 #include "image.h"
 #include <iostream>
 #include <SDL_image.h>
 
-#ifndef USE_OPENGL
 Image::Image(SDL_Surface *image):
     image(image)
-#else
-Image::Image(GLuint image, int width, int height, int texWidth, int texHeight):
-    image(image),
+{
+    // Default to opaque
+    alpha = 1.0f;
+}
+
+Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
+    glimage(glimage),
     width(width),
     height(height),
     texWidth(texWidth),
     texHeight(texHeight)
-#endif
 {
     // Default to opaque
     alpha = 1.0f;
@@ -134,209 +137,214 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
         SDL_SetAlpha(tmpImage, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
     }
 
-#ifndef USE_OPENGL
-
-    // Set color key and alpha blending optins, and convert the surface to the
-    // current display format
-    SDL_Surface *prevImage = tmpImage;
-    if (hasAlpha) {
-        image = SDL_DisplayFormatAlpha(tmpImage);
-    }
-    else {
-        image = SDL_DisplayFormat(tmpImage);
-    }
-    SDL_FreeSurface(prevImage);
-
-    if (image == NULL) {
-        logger->log("Error: Image convert failed.");
-        return NULL;
-    }
-
-    return new Image(image);
-
-#else
-
-    int width = tmpImage->w;
-    int height = tmpImage->h;
-    int realWidth = 1, realHeight = 1;
-
-    while (realWidth < width && realWidth < 1024) {
-        realWidth *= 2;
-    }
-
-    while (realHeight < height && realHeight < 1024) {
-        realHeight *= 2;
-    }
-
-    SDL_SetAlpha(tmpImage, 0, SDL_ALPHA_OPAQUE);
-    SDL_Surface *oldImage = tmpImage;
-    tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight, 32,
-            rmask, gmask, bmask, amask);
-
-    if (tmpImage == NULL) {
-        logger->log("Error, image convert failed: out of memory");
-        return NULL;
-    }
-
-    SDL_BlitSurface(oldImage, NULL, tmpImage, NULL);
-    SDL_FreeSurface(oldImage);
-
-    GLuint texture;
-    glGenTextures(1, &texture);
-    logger->log("Binding texture %d (%dx%d)",
-            texture, tmpImage->w, tmpImage->h);
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    if (SDL_MUSTLOCK(tmpImage)) {
-        SDL_LockSurface(tmpImage);
-    }
-
-    glTexImage2D(
-            GL_TEXTURE_2D, 0, 4,
-            tmpImage->w, tmpImage->h,
-            0, GL_RGBA, GL_UNSIGNED_BYTE,
-            tmpImage->pixels);
-
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    if (SDL_MUSTLOCK(tmpImage)) {
-        SDL_UnlockSurface(tmpImage);
-    }
-
-    SDL_FreeSurface(tmpImage);
-
-    GLenum error = glGetError();
-    if (error)
-    {
-        std::string errmsg = "Unkown error";
-        switch (error)
-        {
-            case GL_INVALID_ENUM:
-                errmsg = "GL_INVALID_ENUM";
-                break;
-            case GL_INVALID_VALUE:
-                errmsg = "GL_INVALID_VALUE";
-                break;
-            case GL_INVALID_OPERATION:
-                errmsg = "GL_INVALID_OPERATION";
-                break;
-            case GL_STACK_OVERFLOW:
-                errmsg = "GL_STACK_OVERFLOW";
-                break;
-            case GL_STACK_UNDERFLOW:
-                errmsg = "GL_STACK_UNDERFLOW";
-                break;
-            case GL_OUT_OF_MEMORY:
-                errmsg = "GL_OUT_OF_MEMORY";
-                break;
+    if (!useOpenGL) {
+        // Set color key and alpha blending optins, and convert the surface to the
+        // current display format
+        SDL_Surface *prevImage = tmpImage;
+        if (hasAlpha) {
+            image = SDL_DisplayFormatAlpha(tmpImage);
         }
-        logger->log("Error: Image GL import failed: %s", errmsg.c_str());
-        return NULL;
-    }
+        else {
+            image = SDL_DisplayFormat(tmpImage);
+        }
+        SDL_FreeSurface(prevImage);
 
-    return new Image(texture, width, height, realWidth, realHeight);
+        if (image == NULL) {
+            logger->log("Error: Image convert failed.");
+            return NULL;
+        }
+
+        return new Image(image);
+    }
+#ifdef USE_OPENGL
+    else {
+        int width = tmpImage->w;
+        int height = tmpImage->h;
+        int realWidth = 1, realHeight = 1;
+
+        while (realWidth < width && realWidth < 1024) {
+            realWidth *= 2;
+        }
+
+        while (realHeight < height && realHeight < 1024) {
+            realHeight *= 2;
+        }
+
+        SDL_SetAlpha(tmpImage, 0, SDL_ALPHA_OPAQUE);
+        SDL_Surface *oldImage = tmpImage;
+        tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight, 32,
+                rmask, gmask, bmask, amask);
+
+        if (tmpImage == NULL) {
+            logger->log("Error, image convert failed: out of memory");
+            return NULL;
+        }
+
+        SDL_BlitSurface(oldImage, NULL, tmpImage, NULL);
+        SDL_FreeSurface(oldImage);
+
+        GLuint texture;
+        glGenTextures(1, &texture);
+        logger->log("Binding texture %d (%dx%d)",
+                texture, tmpImage->w, tmpImage->h);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        if (SDL_MUSTLOCK(tmpImage)) {
+            SDL_LockSurface(tmpImage);
+        }
+
+        glTexImage2D(
+                GL_TEXTURE_2D, 0, 4,
+                tmpImage->w, tmpImage->h,
+                0, GL_RGBA, GL_UNSIGNED_BYTE,
+                tmpImage->pixels);
+
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        if (SDL_MUSTLOCK(tmpImage)) {
+            SDL_UnlockSurface(tmpImage);
+        }
+
+        SDL_FreeSurface(tmpImage);
+
+        GLenum error = glGetError();
+        if (error)
+        {
+            std::string errmsg = "Unkown error";
+            switch (error)
+            {
+                case GL_INVALID_ENUM:
+                    errmsg = "GL_INVALID_ENUM";
+                    break;
+                case GL_INVALID_VALUE:
+                    errmsg = "GL_INVALID_VALUE";
+                    break;
+                case GL_INVALID_OPERATION:
+                    errmsg = "GL_INVALID_OPERATION";
+                    break;
+                case GL_STACK_OVERFLOW:
+                    errmsg = "GL_STACK_OVERFLOW";
+                    break;
+                case GL_STACK_UNDERFLOW:
+                    errmsg = "GL_STACK_UNDERFLOW";
+                    break;
+                case GL_OUT_OF_MEMORY:
+                    errmsg = "GL_OUT_OF_MEMORY";
+                    break;
+            }
+            logger->log("Error: Image GL import failed: %s", errmsg.c_str());
+            return NULL;
+        }
+
+        return new Image(texture, width, height, realWidth, realHeight);
+    }
 #endif
+
+    return NULL;
 }
 
 void Image::unload()
 {
     // Free the image surface.
-#ifndef USE_OPENGL
-    if (image != NULL) {
-        SDL_FreeSurface(image);
-        image = NULL;
-        loaded = false;
+    if (!useOpenGL) {
+        if (image != NULL) {
+            SDL_FreeSurface(image);
+            image = NULL;
+            loaded = false;
+        }
     }
-#endif
     loaded = false;
 }
 
 int Image::getWidth() const
 {
-#ifndef USE_OPENGL
-    if (image != NULL) {
-        return image->w;
+    if (!useOpenGL) {
+        if (image != NULL) {
+            return image->w;
+        }
     }
-#else
-    return width;
-#endif
+    else {
+        return width;
+    }
     return 0;
 }
 
 int Image::getHeight() const
 {
-#ifndef USE_OPENGL
-    if (image != NULL) {
-        return image->h;
+    if (!useOpenGL) {
+        if (image != NULL) {
+            return image->h;
+        }
     }
-#else
-    return height;
-#endif
+    else {
+        return height;
+    }
     return 0;
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
-#ifdef USE_OPENGL
-    return new SubImage(this, image, x, y, width, height, texWidth, texHeight);
-#else
-    return new SubImage(this, image, x, y, width, height);
-#endif
+    if (useOpenGL) {
+        return new SubImage(this, glimage, x, y, width, height, texWidth, texHeight);
+    }
+    else {
+        return new SubImage(this, image, x, y, width, height);
+    }
 }
 
 bool Image::draw_deprecated(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
         int width, int height)
 {
-#ifndef USE_OPENGL
-    // Check that preconditions for blitting are met.
-    if (screen == NULL || image == NULL) return false;
+    if (!useOpenGL) {
+        // Check that preconditions for blitting are met.
+        if (screen == NULL || image == NULL) return false;
 
-    SDL_Rect dstRect;
-    SDL_Rect srcRect;
-    dstRect.x = dstX; dstRect.y = dstY;
-    srcRect.x = srcX; srcRect.y = srcY;
-    srcRect.w = width;
-    srcRect.h = height;
+        SDL_Rect dstRect;
+        SDL_Rect srcRect;
+        dstRect.x = dstX; dstRect.y = dstY;
+        srcRect.x = srcX; srcRect.y = srcY;
+        srcRect.w = width;
+        srcRect.h = height;
 
-    if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
-        return false;
+        if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
+            return false;
+        }
     }
+#ifdef USE_OPENGL
+    else {
+        // Find OpenGL texture coordinates
+        float texX1 = srcX / (float)texWidth;
+        float texY1 = srcY / (float)texHeight;
+        float texX2 = (srcX + width) / (float)texWidth;
+        float texY2 = (srcY + height) / (float)texHeight;
 
-#else
+        glColor4f(1.0f, 1.0f, 1.0f, alpha);
+        glBindTexture(GL_TEXTURE_2D, glimage);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
 
-    // Find OpenGL texture coordinates
-    float texX1 = srcX / (float)texWidth;
-    float texY1 = srcY / (float)texHeight;
-    float texX2 = (srcX + width) / (float)texWidth;
-    float texY2 = (srcY + height) / (float)texHeight;
+        // Draw a textured quad -- the image
+        glBegin(GL_QUADS);
+        glTexCoord2f(texX1, texY1);
+        glVertex3i(dstX, dstY, 0);
 
-    glColor4f(1.0f, 1.0f, 1.0f, alpha);
-    glBindTexture(GL_TEXTURE_2D, image);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
+        glTexCoord2f(texX2, texY1);
+        glVertex3i(dstX + width, dstY, 0);
 
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(dstX, dstY, 0);
+        glTexCoord2f(texX2, texY2);
+        glVertex3i(dstX + width, dstY + height, 0);
 
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(dstX + width, dstY, 0);
+        glTexCoord2f(texX1, texY2);
+        glVertex3i(dstX, dstY + height, 0);
+        glEnd();
 
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(dstX + width, dstY + height, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(dstX, dstY + height, 0);
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_BLEND);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
 #endif
     return true;
 }
@@ -350,10 +358,10 @@ void Image::setAlpha(float a)
 {
     alpha = a;
 
-#ifndef USE_OPENGL
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
-#endif
+    if (!useOpenGL) {
+        // Set the alpha value this image is drawn at
+        SDL_SetAlpha(image, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
+    }
 }
 
 float Image::getAlpha()
@@ -365,16 +373,23 @@ float Image::getAlpha()
 // SubImage Class
 //============================================================================
 
-#ifndef USE_OPENGL
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image(image),
-#else
+    Image(image), parent(parent)
+{
+    parent->incRef();
+
+    // Set up the rectangle.
+    rect.x = x;
+    rect.y = y;
+    rect.w = width;
+    rect.h = height;
+}
+
+//SubImage::SubImage((GLuint*)Image *parent, GLuint glimage,
 SubImage::SubImage(Image *parent, GLuint image,
         int x, int y, int width, int height, int texWidth, int texHeight):
-    Image(image, width, height, texWidth, texHeight),
-#endif
-    parent(parent)
+    Image(image, width, height, texWidth, texHeight), parent(parent)
 {
     parent->incRef();
 
@@ -387,9 +402,9 @@ SubImage::SubImage(Image *parent, GLuint image,
 
 SubImage::~SubImage()
 {
-#ifndef USE_OPENGL
-    image = NULL;
-#endif
+    if (!useOpenGL) {
+        image = NULL;
+    }
     parent->decRef();
 }
 

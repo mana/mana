@@ -22,6 +22,8 @@
  */
 
 #include "listbox.h"
+#include "../graphics.h"
+#include "../main.h"
 
 ListBox::ListBox():
     gcn::ListBox()
@@ -49,10 +51,16 @@ void ListBox::draw(gcn::Graphics *graphics)
     for (i = 0; i < mListModel->getNumberOfElements(); ++i)
     {
         if (i == mSelected) {
-            graphics->fillRectangle(
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
                     gcn::Rectangle(0, y, getWidth(), fontHeight));
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
+                    gcn::Rectangle(0, y, getWidth(), fontHeight));
+            }
         }
-        
+
         graphics->drawText(mListModel->getElementAt(i), 1, y);
 
         y += fontHeight;

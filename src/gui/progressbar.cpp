@@ -23,6 +23,7 @@
 
 #include "progressbar.h"
 #include "../graphics.h"
+#include "../main.h"
 #include "../resources/resourcemanager.h"
 
 ImageRect ProgressBar::mBorder;
@@ -96,15 +97,21 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     int x, y;
     getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          mBorder);
 
     // The bar
     if (progress > 0)
     {
         graphics->setColor(gcn::Color(red, green, blue, 200));
-        graphics->fillRectangle(gcn::Rectangle(4, 4,
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(4, 4,
                     (int)(progress * (getWidth() - 8)), getHeight() - 8));
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(4, 4,
+                    (int)(progress * (getWidth() - 8)), getHeight() - 8));
+        }
     }
 }
 

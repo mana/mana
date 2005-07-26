@@ -107,5 +107,5 @@ void PlayerBox::drawBorder(gcn::Graphics *graphics)
     x -= bs;
     y -= bs;
 
-    ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, background);
 }

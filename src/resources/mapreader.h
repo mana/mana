@@ -57,48 +57,54 @@ class MapReader
         /**
          * Read an XML map from a file.
          */
-        static Map *readMap(const std::string &filename);
+        static Map*
+        readMap(const std::string &filename);
 
         /**
          * Read an XML map from a parsed XML tree. The path is used to find the
          * location of referenced tileset images.
          */
-        static Map *readMap(xmlNodePtr node, const std::string &path);
+        static Map*
+        readMap(xmlNodePtr node, const std::string &path);
 
     private:
         /**
          * Reads a map layer.
          */
-        static void readLayer(xmlNodePtr node, Map *map, int layer);
+        static void
+        readLayer(xmlNodePtr node, Map *map, int layer);
 
         /**
          * Reads a tile set.
          */
-        static Tileset *readTileset(xmlNodePtr node, const std::string &path,
-                Map *map);
+        static Tileset*
+        readTileset(xmlNodePtr node, const std::string &path, Map *map);
 
         /**
          * Gets an integer property from an xmlNodePtr.
          */
-        static int getProperty(xmlNodePtr node, const char* name, int def);
+        static int
+        getProperty(xmlNodePtr node, const char* name, int def);
 
         /**
          * Converts a global tile id to the Image* pointing to the associated
          * tile image.
          */
-        static Image *getTileWithGid(int gid);
+        static Image*
+        getTileWithGid(int gid);
 
         /**
          * Finds the tile set that a tile with the given global id is part of.
          */
-        static Tileset *MapReader::getTilesetWithGid(int gid);
+        static Tileset*
+        getTilesetWithGid(int gid);
 
         /**
          * Sets a tile using a global tile id. Used by the layer loading
          * routine.
          */
-        static void MapReader::setTileWithGid(
-                Map *map, int x, int y, int layer, int gid);
+        static void
+        setTileWithGid(Map *map, int x, int y, int layer, int gid);
 
         static std::vector<Tileset*> tilesets;
 };

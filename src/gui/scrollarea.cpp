@@ -22,6 +22,7 @@
  */
 
 #include "scrollarea.h"
+#include "../main.h"
 #include "../resources/resourcemanager.h"
 
 int ScrollArea::instances = 0;
@@ -178,16 +179,29 @@ void ScrollArea::draw(gcn::Graphics *graphics)
     if (mHBarVisible && mVBarVisible)
     {
         graphics->setColor(getBaseColor());
-        graphics->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
                     getHeight() - mScrollbarWidth,
                     mScrollbarWidth,
                     mScrollbarWidth));
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
+                    getHeight() - mScrollbarWidth,
+                    mScrollbarWidth,
+                    mScrollbarWidth));
+        }
     }
 
     if (mContent)
     {
         gcn::Rectangle contdim = mContent->getDimension();
-        graphics->pushClipArea(getContentDimension());
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(getContentDimension());
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(getContentDimension());
+        }
 
         if (mContent->getBorderSize() > 0)
         {
@@ -196,15 +210,36 @@ void ScrollArea::draw(gcn::Graphics *graphics)
             rec.y -= mContent->getBorderSize();
             rec.width += 2 * mContent->getBorderSize();
             rec.height += 2 * mContent->getBorderSize();
-            graphics->pushClipArea(rec);
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(rec);
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(rec);
+            }
             mContent->drawBorder(graphics);
-            graphics->popClipArea();
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->popClipArea();
+            }
         }
 
-        graphics->pushClipArea(contdim);
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(contdim);
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(contdim);
+        }
         mContent->draw(graphics);
-        graphics->popClipArea();
-        graphics->popClipArea();
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->popClipArea();
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->popClipArea();
+        }
     }
 }
 
@@ -219,7 +254,7 @@ void ScrollArea::drawBorder(gcn::Graphics *graphics)
     y -= bs;
 
     if (isOpaque()) {
-        ((Graphics*)graphics)->drawImageRect(x, y, w, h, background);
+        dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, background);
     }
 }
 
@@ -294,7 +329,12 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
 {
     gcn::Rectangle dim = getVerticalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(dim);
+    if (useOpenGL) {
+        dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(dim);
+    }
+    else {
+        dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(dim);
+    }
     graphics->setColor(gcn::Color(255, 255, 255));
 }
 
@@ -302,7 +342,12 @@ void ScrollArea::drawHBar(gcn::Graphics *graphics)
 {
     gcn::Rectangle dim = getHorizontalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
-    graphics->fillRectangle(dim);
+    if (useOpenGL) {
+        dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(dim);
+    }
+    else {
+        dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(dim);
+    }
     graphics->setColor(gcn::Color(255, 255, 255));
 }
 
@@ -312,7 +357,7 @@ void ScrollArea::drawVMarker(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalMarkerDimension();
     getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(
             x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
 }
 
@@ -322,6 +367,6 @@ void ScrollArea::drawHMarker(gcn::Graphics *graphics)
     gcn::Rectangle dim = getHorizontalMarkerDimension();
     getAbsolutePosition(x, y);
 
-    ((Graphics*)graphics)->drawImageRect(
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(
             x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
 }

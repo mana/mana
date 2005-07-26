@@ -22,11 +22,10 @@
  */
 
 #include <guichan.hpp>
+#include "../graphics.h"
 #include "../main.h"
 #include "browserbox.h"
-#ifndef USE_OPENGL
 #include "gui.h"
-#endif
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
@@ -44,14 +43,16 @@ BrowserBox::BrowserBox(unsigned int mode):
 
     if (instances == 0)
     {
-#ifdef USE_OPENGL
-        browserFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/browserfont.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
-#else
-        browserFont = gui->getFont();
-#endif
+        if (useOpenGL) {
+            browserFont = new gcn::ImageFont(
+                    TMW_DATADIR "data/graphics/gui/browserfont.png",
+                    " abcdefghijklmnopqrstuvwxyz"
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
+                    "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
+        }
+        else {
+            browserFont = gui->getFont();
+        }
     }
 
     instances++;
@@ -84,7 +85,7 @@ void BrowserBox::setHighlightMode(unsigned int highMode)
 {
     mHighMode = highMode;
 }
-        
+
 void BrowserBox::disableLinksAndUserColors()
 {
     mUseLinksAndUserColors = false;
@@ -96,10 +97,10 @@ void BrowserBox::addRow(const std::string& row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-    
+
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
-    {        
+    {
         // Check for links in format "@@link|Caption@@"
         idx1 = tmp.find("@@");
         while (idx1 >= 0)
@@ -137,7 +138,7 @@ void BrowserBox::addRow(const std::string& row)
 
         newRow += tmp;
     }
-    
+
     // Don't use links and user defined colors
     else
     {
@@ -153,7 +154,7 @@ void BrowserBox::addRow(const std::string& row)
         std::string plain = newRow;
         for (idx1 = plain.find("##"); idx1 >= 0; idx1 = plain.find("##"))
             plain.erase(idx1, 3);
-                
+
         // Adjust the BrowserBox size
         int w = browserFont->getWidth(plain);
         if (w > getWidth())
@@ -207,20 +208,38 @@ void BrowserBox::draw(gcn::Graphics* graphics)
 {
     if (mOpaque)
     {
-        graphics->setColor(gcn::Color(BGCOLOR));    
-        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+        graphics->setColor(gcn::Color(BGCOLOR));
+        if (useOpenGL) {
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+        }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
+        }
     }
 
     if (mSelectedLink >= 0)
     {
         if ((mHighMode == BACKGROUND) || (mHighMode == BOTH))
         {
-            graphics->setColor(gcn::Color(HIGHLIGHT));    
-            graphics->fillRectangle(gcn::Rectangle(
-                        mLinks[mSelectedLink].x1,
-                        mLinks[mSelectedLink].y1,
-                        mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
-                        mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1));
+            graphics->setColor(gcn::Color(HIGHLIGHT));
+            if (useOpenGL) {
+                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
+                        gcn::Rectangle(
+                            mLinks[mSelectedLink].x1,
+                            mLinks[mSelectedLink].y1,
+                            mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
+                            mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
+                            ));
+            }
+            else {
+                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
+                        gcn::Rectangle(
+                            mLinks[mSelectedLink].x1,
+                            mLinks[mSelectedLink].y1,
+                            mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
+                            mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
+                            ));
+            }
         }
 
         if ((mHighMode == UNDERLINE) || (mHighMode == BOTH))
@@ -342,7 +361,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                         if (nextSpacePos <= 0)
                         {
                             nextSpacePos = row.size() - 1;
-                        }                        
+                        }
                         int nextWordWidth = browserFont->getWidth(
                                 row.substr(nextChar,
                                     (nextSpacePos - nextChar)));
@@ -355,7 +374,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                             j++;
                         }
                     }
-                    
+
                     // Wrapping looong lines (brutal force)
                     else if ((x + 2 * hyphenWidth) > getWidth())
                     {

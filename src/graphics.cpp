@@ -46,19 +46,62 @@ Graphics::Graphics(SDL_Surface *screen):
 #endif
     }
     else {
-#ifndef USE_OPENGL
         setTarget(mScreen);
-#endif
     }
 
     // Initialize for drawing
-    _beginDraw();
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_beginDraw() ;
+    }
+    else {
+        gcn::SDLGraphics::_beginDraw();
+    }
+    //_beginDraw();
 }
 
 Graphics::~Graphics()
 {
     // Deinitialize for drawing
-    _endDraw();
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_endDraw() ;
+    }
+    else {
+        gcn::SDLGraphics::_endDraw();
+    }
+    //_endDraw();
+}
+
+void Graphics::setFont(gcn::ImageFont *font)
+{
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::setFont(font);
+    }
+    else {
+        gcn::SDLGraphics::setFont(font);
+    }
+}
+
+void Graphics::drawText(const std::string &text,
+		    int x,
+		    int y,
+		    unsigned int alignment)
+{
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
+    }
+    else {
+        gcn::SDLGraphics::drawText(text, x, y, alignment);
+    }
+}
+
+void Graphics::setColor(gcn::Color color)
+{
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::setColor(color);
+    }
+    else {
+        gcn::SDLGraphics::setColor(color);
+    }
 }
 
 int Graphics::getWidth()

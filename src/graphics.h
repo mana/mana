@@ -26,10 +26,10 @@
 
 #include <guichan/sdl.hpp>
 #include <SDL.h>
-#ifdef USE_OPENGL
 #include <guichan/opengl.hpp>
 #include <SDL_opengl.h>
-#endif
+#include <guichan/imagefont.hpp>
+#include <guichan/rectangle.hpp>
 #include "resources/image.h"
 
 /**
@@ -56,11 +56,7 @@ struct ImageRect {
 /**
  * A central point of control for graphics.
  */
-#ifdef USE_OPENGL
-class Graphics : public gcn::OpenGLGraphics {
-#else
-class Graphics : public gcn::SDLGraphics {
-#endif
+class Graphics : public gcn::SDLGraphics, public gcn::OpenGLGraphics {
     public:
         /**
          * Constructor.
@@ -104,7 +100,7 @@ class Graphics : public gcn::SDLGraphics {
         /**
          * Returns the width of the screen.
          */
-        int getWidth();
+        virtual int getWidth();
 
         /**
          * Returns the height of the screen.
@@ -117,6 +113,15 @@ class Graphics : public gcn::SDLGraphics {
          * setup window.
          */
         void setScreen(SDL_Surface *screen);
+
+        void setFont(gcn::ImageFont *font);
+
+        void drawText(const std::string &text,
+                int x,
+                int y,
+                unsigned int alignment);
+
+        void setColor(gcn::Color color);
 
     private:
         SDL_Surface *mScreen;
