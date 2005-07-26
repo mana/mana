@@ -1,3 +1,8 @@
+2005-07-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/gui.cpp, src/gui/gui.h: Removed continous mouse
+	movement, that implementation wasn't suitable for a release.
+
 2005-07-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp,
