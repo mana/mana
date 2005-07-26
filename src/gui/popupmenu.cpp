@@ -105,6 +105,8 @@ void PopupMenu::showPopup(int mx, int my)
     else
     {
         // If there is nothing of interest, don't display menu.
+        // Hide it, because it may have been visible.
+        setVisible(false);
         return;
     }
 

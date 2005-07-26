@@ -6,6 +6,8 @@
 	function.
 	* src/being.cpp: Set font back to gui font after drawing speech.
 	Draw auto-target marker in engine instead of being.
+	* src/gui/popupmenu.cpp: Fixed empty popup window being shown when user
+	right clicks on an empty tile while the popup is visible.
 
 2005-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
