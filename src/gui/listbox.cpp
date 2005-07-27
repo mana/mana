@@ -52,8 +52,10 @@ void ListBox::draw(gcn::Graphics *graphics)
     {
         if (i == mSelected) {
             if (useOpenGL) {
+#ifdef USE_OPENGL
                 dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
                     gcn::Rectangle(0, y, getWidth(), fontHeight));
+#endif
             }
             else {
                 dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(

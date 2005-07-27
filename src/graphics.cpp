@@ -50,35 +50,41 @@ Graphics::Graphics(SDL_Surface *screen):
     }
 
     // Initialize for drawing
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_beginDraw() ;
-    }
-    else {
+    if (!useOpenGL) {
         gcn::SDLGraphics::_beginDraw();
     }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::_beginDraw();
+    }
+#endif
     //_beginDraw();
 }
 
 Graphics::~Graphics()
 {
     // Deinitialize for drawing
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_endDraw() ;
-    }
-    else {
+    if (!useOpenGL) {
         gcn::SDLGraphics::_endDraw();
     }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::_endDraw();
+    }
+#endif
     //_endDraw();
 }
 
 void Graphics::setFont(gcn::ImageFont *font)
 {
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::setFont(font);
-    }
-    else {
+    if (!useOpenGL) {
         gcn::SDLGraphics::setFont(font);
     }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::setFont(font);
+    }
+#endif
 }
 
 void Graphics::drawText(const std::string &text,
@@ -86,22 +92,26 @@ void Graphics::drawText(const std::string &text,
 		    int y,
 		    unsigned int alignment)
 {
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
-    }
-    else {
+    if (!useOpenGL) {
         gcn::SDLGraphics::drawText(text, x, y, alignment);
     }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
+    }
+#endif
 }
 
 void Graphics::setColor(gcn::Color color)
 {
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::setColor(color);
-    }
-    else {
+    if (!useOpenGL) {
         gcn::SDLGraphics::setColor(color);
     }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::setColor(color);
+    }
+#endif
 }
 
 int Graphics::getWidth()

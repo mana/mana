@@ -89,9 +89,11 @@ void Minimap::draw(gcn::Graphics *graphics)
             // Player dot
             graphics->setColor(gcn::Color(209, 52, 61));
             if (useOpenGL) {
+#ifdef USE_OPENGL
                 dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(
                         being->x / 2 + getPadding() - 1,
                         being->y / 2 + getTitleBarHeight() - 1, 3, 3));
+#endif
             }
             else {
                 dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(

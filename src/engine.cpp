@@ -538,7 +538,9 @@ void Engine::draw()
             int squareY = (node.y - camera_y) * 32 - offset_y + 12;
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             if (useOpenGL) {
+#ifdef USE_OPENGL
                 dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+#endif
             }
             else {
                 dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));

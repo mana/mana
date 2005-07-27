@@ -56,7 +56,9 @@ Gui::Gui(Graphics *graphics):
     guiGraphics = graphics;
     //setGraphics(graphics);
     if (useOpenGL) {
+#ifdef USE_OPENGL
         setGraphics((gcn::OpenGLGraphics*)graphics);
+#endif
     }
     else {
         setGraphics((gcn::SDLGraphics*)graphics);
@@ -212,8 +214,10 @@ void Gui::logic()
 void Gui::draw()
 {
     if (useOpenGL) {
+#ifdef USE_OPENGL
         dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
         guiTop->draw((gcn::OpenGLGraphics*)guiGraphics);
+#endif
     }
     else {
         dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
@@ -230,7 +234,9 @@ void Gui::draw()
     }
 
     if (useOpenGL) {
+#ifdef USE_OPENGL
         dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->popClipArea();
+#endif
     }
     else {
         dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->popClipArea();

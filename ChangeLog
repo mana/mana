@@ -1,3 +1,14 @@
+2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.cpp, src/game.cpp, src/graphics.cpp, src/graphics.h,
+	src/main.cpp, src/gui/browserbox.cpp, src/gui/button.cpp,
+	src/gui/gui.cpp, src/gui/listbox.cpp, src/gui/minimap.cpp,
+	src/gui/playerbox.cpp, src/gui/progressbar.cpp,
+	src/gui/scrollarea.cpp, src/gui/textfield.cpp, src/gui/window.cpp,
+	src/resources/image.cpp, src/resources/image.h,
+	src/resources/mapreader.h: Merged OpenGL/SDL merge patch by Andrej
+	Sinicyn, and his followup patch for fixing SDL-only build.
+
 2005-07-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/gui.cpp, src/gui/gui.h: Removed continous mouse
@@ -21,38 +32,32 @@
 	* src/being.cpp, src/engine.cpp: Fixed text and smilies position.
 	* src/game.cpp: Cleanups.
 	* src/gui/skill.cpp: Added new skill names.
-	* src/main.cpp: Moved sound playback to update screen and changed song.	
+	* src/main.cpp: Moved sound playback to update screen and changed song.
 
 2005-07-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Made the key-event handler use switches instead of
 	if-else.
-	* src/gui/gui.cpp:
-	* src/gui/gui.h:
-	Allow continous movement when holding down the left mouse button.
+	* src/gui/gui.cpp, src/gui/gui.h: Allow continous movement when holding
+	down the left mouse button.
 
 2005-07-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/being.h:
-	* src/being.cpp:
-	Added a member to keep the current map, restored setDestination.
-
-	* src/game.cpp:
-	* src/gui/gui.cpp:
-	Change calls to Being::setPath() to Being::setDestination().
-
-	* src/map.h:
-	Add a forward declaration for struct PATH_NODE.
+	* src/being.h, src/being.cpp: Added a member to keep the current map,
+	restored setDestination.
+	* src/game.cpp, src/gui/gui.cpp: Change calls to Being::setPath() to
+	Being::setDestination().
+	* src/map.h: Add a forward declaration for struct PATH_NODE.
 
 2005-07-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* NEWS: Moved project news here.
 	* ChangeLog: Started standard ChangeLog file here.
 	* docs/HACKING.txt: Added info about member naming and ChangeLog
-	  format.
+	format.
 	* src/gui/updatewindow.h, src/gui/updatewindow.cpp: Changed member
-	  names, set a 15 second timeout for connecting to update server and
-	  restore some doxygen comments, improved size adaption and made the
-	  window a shorter.
+	names, set a 15 second timeout for connecting to update server and
+	restore some doxygen comments, improved size adaption and made the
+	window a shorter.
 	* data/graphics/images/login_wallpaper.png: New login wallpaper by
-	  Momotaro.
+	Momotaro.

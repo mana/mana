@@ -180,10 +180,12 @@ void ScrollArea::draw(gcn::Graphics *graphics)
     {
         graphics->setColor(getBaseColor());
         if (useOpenGL) {
+#ifdef USE_OPENGL
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
                     getHeight() - mScrollbarWidth,
                     mScrollbarWidth,
                     mScrollbarWidth));
+#endif
         }
         else {
             dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(getWidth() - mScrollbarWidth,
@@ -197,7 +199,9 @@ void ScrollArea::draw(gcn::Graphics *graphics)
     {
         gcn::Rectangle contdim = mContent->getDimension();
         if (useOpenGL) {
+#ifdef USE_OPENGL
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(getContentDimension());
+#endif
         }
         else {
             dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(getContentDimension());
@@ -211,14 +215,18 @@ void ScrollArea::draw(gcn::Graphics *graphics)
             rec.width += 2 * mContent->getBorderSize();
             rec.height += 2 * mContent->getBorderSize();
             if (useOpenGL) {
+#ifdef USE_OPENGL
                 dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(rec);
+#endif
             }
             else {
                 dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(rec);
             }
             mContent->drawBorder(graphics);
             if (useOpenGL) {
+#ifdef USE_OPENGL
                 dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
+#endif
             }
             else {
                 dynamic_cast<gcn::SDLGraphics*>(graphics)->popClipArea();
@@ -226,15 +234,19 @@ void ScrollArea::draw(gcn::Graphics *graphics)
         }
 
         if (useOpenGL) {
+#ifdef USE_OPENGL
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->pushClipArea(contdim);
+#endif
         }
         else {
             dynamic_cast<gcn::SDLGraphics*>(graphics)->pushClipArea(contdim);
         }
         mContent->draw(graphics);
         if (useOpenGL) {
+#ifdef USE_OPENGL
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->popClipArea();
+#endif
         }
         else {
             dynamic_cast<gcn::SDLGraphics*>(graphics)->popClipArea();
@@ -330,7 +342,9 @@ void ScrollArea::drawVBar(gcn::Graphics *graphics)
     gcn::Rectangle dim = getVerticalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     if (useOpenGL) {
+#ifdef USE_OPENGL
         dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(dim);
+#endif
     }
     else {
         dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(dim);
@@ -343,7 +357,9 @@ void ScrollArea::drawHBar(gcn::Graphics *graphics)
     gcn::Rectangle dim = getHorizontalBarDimension();
     graphics->setColor(gcn::Color(0, 0, 0, 32));
     if (useOpenGL) {
+#ifdef USE_OPENGL
         dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(dim);
+#endif
     }
     else {
         dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(dim);

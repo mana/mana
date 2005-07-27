@@ -34,6 +34,7 @@ Image::Image(SDL_Surface *image):
     alpha = 1.0f;
 }
 
+#ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     glimage(glimage),
     width(width),
@@ -44,6 +45,7 @@ Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight)
     // Default to opaque
     alpha = 1.0f;
 }
+#endif
 
 Image::~Image()
 {
@@ -240,9 +242,9 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
 
         return new Image(texture, width, height, realWidth, realHeight);
     }
-#endif
-
+#else
     return NULL;
+#endif
 }
 
 void Image::unload()
@@ -265,9 +267,11 @@ int Image::getWidth() const
             return image->w;
         }
     }
+#ifdef USE_OPENGL
     else {
         return width;
     }
+#endif
     return 0;
 }
 
@@ -278,21 +282,27 @@ int Image::getHeight() const
             return image->h;
         }
     }
+#ifdef USE_OPENGL
     else {
         return height;
     }
+#endif
     return 0;
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
-    if (useOpenGL) {
-        return new SubImage(this, glimage, x, y, width, height, texWidth, texHeight);
-    }
-    else {
+    if (!useOpenGL) {
         return new SubImage(this, image, x, y, width, height);
     }
+#ifdef USE_OPENGL
+    else {
+        return new SubImage(this, glimage, x, y, width, height, texWidth, texHeight);
+    }
+#else
+    return NULL;
+#endif
 }
 
 bool Image::draw_deprecated(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
@@ -386,7 +396,7 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
     rect.h = height;
 }
 
-//SubImage::SubImage((GLuint*)Image *parent, GLuint glimage,
+#ifdef USE_OPENGL
 SubImage::SubImage(Image *parent, GLuint image,
         int x, int y, int width, int height, int texWidth, int texHeight):
     Image(image, width, height, texWidth, texHeight), parent(parent)
@@ -399,6 +409,7 @@ SubImage::SubImage(Image *parent, GLuint image,
     rect.w = width;
     rect.h = height;
 }
+#endif
 
 SubImage::~SubImage()
 {

@@ -26,8 +26,9 @@
 
 #include "resource.h"
 #include <SDL.h>
+#ifdef USE_OPENGL
 #include <SDL_opengl.h>
-
+#endif
 
 /**
  * Defines a class for loading and storing images.
@@ -118,21 +119,19 @@ class Image : public Resource
         /**
          * Constructor.
          */
-//#ifdef USE_OPENGL
+#ifdef USE_OPENGL
         Image(GLuint glimage, int width, int height, int texWidth, int texHeight);
-//#else
+#endif
         Image(SDL_Surface *image);
-//#endif
 
         bool loaded;
 
-//#ifdef USE_OPENGL
+#ifdef USE_OPENGL
         GLuint glimage;
         int width, height;
         int texWidth, texHeight;
-//#else
+#endif
         SDL_Surface *image;
-//#endif
         float alpha;
 };
 
@@ -145,13 +144,12 @@ class SubImage : public Image
         /**
          * Constructor.
          */
-//#ifndef USE_OPENGL
         SubImage(Image *parent, SDL_Surface *image,
                  int x, int y, int width, int height);
-//#else
+#ifdef USE_OPENGL
         SubImage(Image *parent, GLuint image, int x, int y,
                  int width, int height, int texWidth, int textHeight);
-//#endif
+#endif
 
         /**
          * Destructor.

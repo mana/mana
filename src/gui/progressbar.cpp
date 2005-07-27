@@ -105,8 +105,10 @@ void ProgressBar::draw(gcn::Graphics *graphics)
     {
         graphics->setColor(gcn::Color(red, green, blue, 200));
         if (useOpenGL) {
+#ifdef USE_OPENGL
             dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(4, 4,
                     (int)(progress * (getWidth() - 8)), getHeight() - 8));
+#endif
         }
         else {
             dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(4, 4,

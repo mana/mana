@@ -26,8 +26,10 @@
 
 #include <guichan/sdl.hpp>
 #include <SDL.h>
+#ifdef USE_OPENGL
 #include <guichan/opengl.hpp>
 #include <SDL_opengl.h>
+#endif
 #include <guichan/imagefont.hpp>
 #include <guichan/rectangle.hpp>
 #include "resources/image.h"
@@ -56,7 +58,11 @@ struct ImageRect {
 /**
  * A central point of control for graphics.
  */
-class Graphics : public gcn::SDLGraphics, public gcn::OpenGLGraphics {
+class Graphics :
+#ifdef USE_OPENGL
+public gcn::OpenGLGraphics,
+#endif
+public gcn::SDLGraphics {
     public:
         /**
          * Constructor.
@@ -100,7 +106,7 @@ class Graphics : public gcn::SDLGraphics, public gcn::OpenGLGraphics {
         /**
          * Returns the width of the screen.
          */
-        virtual int getWidth();
+        int getWidth();
 
         /**
          * Returns the height of the screen.
