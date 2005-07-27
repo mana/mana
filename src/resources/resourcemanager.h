@@ -62,6 +62,12 @@ class ResourceManager
         ~ResourceManager();
 
         /**
+         * Searches for zip files and adds them to the PhysicsFS search path.
+         */
+        void ResourceManager::searchAndAddArchives(
+                const std::string &path, const std::string &ext, int append);
+
+        /**
          * Creates a resource and adds it to the resource map. The idPath is
          * converted into the appropriate path for the current operating system
          * and the resource is loaded.
@@ -134,13 +140,6 @@ class ResourceManager
         deleteInstance();
 
     private:
-        /**
-         * Searches for zip files and adds them to the PhysicsFS search path.
-         */
-        void
-        searchAndAddZipFiles();
-
-
         static ResourceManager *instance;
         std::map<std::string, Resource*> resources;
 };

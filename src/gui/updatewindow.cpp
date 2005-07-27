@@ -225,9 +225,9 @@ int UpdaterWindow::downloadThread(void *ptr)
         }
         else
         {
-            // Download in the proper folder : ./data under win,
-            // /home/user/.tmw/data for unices
-            outFilename =  uw->mBasePath + "/data/download.temp";
+            // Download in the proper folder : ./updates under win,
+            // /home/user/.tmw/updates for unices
+            outFilename =  uw->mBasePath + "/updates/download.temp";
             outfile = fopen(outFilename.c_str(), "wb");
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
         }
@@ -256,7 +256,7 @@ int UpdaterWindow::downloadThread(void *ptr)
             fclose(outfile);
             // If the download was successful give the file the proper name
             // else it will be deleted later
-            std::string newName(uw->mBasePath + "/data/" +
+            std::string newName(uw->mBasePath + "/updates/" +
                                 uw->mCurrentFile.c_str());
             rename(outFilename.c_str(), newName.c_str());
         }
@@ -374,7 +374,7 @@ void UpdaterWindow::updateData()
                     {
                         mCurrentFile = files[fileIndex];
                         std::ifstream temp(
-                                (mBasePath + "/data/" + mCurrentFile).c_str());
+                                (mBasePath + "/updates/" + mCurrentFile).c_str());
                         if (!temp.is_open()) {
                             temp.close();
                             download();
@@ -414,7 +414,7 @@ void UpdaterWindow::updateData()
     free(mMemoryBuffer);
     in.close();
     // Remove downloaded files
-    remove((mBasePath + "/data/news.txt").c_str());
-    remove((mBasePath + "/data/resources.txt").c_str());
-    remove((mBasePath + "/data/download.temp").c_str());
+    remove((mBasePath + "/updates/news.txt").c_str());
+    remove((mBasePath + "/updates/resources.txt").c_str());
+    remove((mBasePath + "/updates/download.temp").c_str());
 }

@@ -161,9 +161,9 @@ void init_engine()
         exit(1);
     }
 
-    // Creating and checking the ~/.tmw/data folder existence and rights.
-    std::string dataUpdateDir = homeDir + "/data";
-    //sprintf(dataUpdateDir, "%s/data", homeDir);
+    // Creating and checking the ~/.tmw/updates folder existence and rights.
+    std::string dataUpdateDir = homeDir + "/updates";
+    //sprintf(dataUpdateDir, "%s/updates", homeDir);
     if ((mkdir(dataUpdateDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
@@ -444,6 +444,8 @@ int main(int argc, char *argv[])
                 uw = new UpdaterWindow();
                 uw->updateData();
                 delete uw;
+                ResourceManager::getInstance()->
+                    searchAndAddArchives("/updates", ".zip", 0);
                 break;
             default:
                 state = EXIT;

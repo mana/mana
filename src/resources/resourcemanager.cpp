@@ -25,6 +25,7 @@
 #include "../main.h"
 #include "resourcemanager.h"
 #include "../log.h"
+#include "../configuration.h"
 #include <iostream>
 #include <sstream>
 #include <physfs.h>
@@ -43,8 +44,17 @@ ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
 {
+    // Add the main data directory to our PhysicsFS search path
+    PHYSFS_addToSearchPath("data", 1);
+    PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
+
+    // Add the user's homedir to PhysicsFS search path
+    PHYSFS_addToSearchPath(config.getValue("homeDir", "").c_str(), 0);
+
     // Add zip files to PhysicsFS
-    searchAndAddZipFiles();
+    searchAndAddArchives("/", ".zip", 1);
+    // Updates, these override other files
+    searchAndAddArchives("/updates", ".zip", 0);
 }
 
 ResourceManager::~ResourceManager()
@@ -183,72 +193,28 @@ ResourceManager::deleteInstance()
 }
 
 void
-ResourceManager::searchAndAddZipFiles()
+ResourceManager::searchAndAddArchives(
+        const std::string &path, const std::string &ext, int append)
 {
-    // Add the main data directory to our PhysicsFS search path
-    PHYSFS_addToSearchPath("data", 1);
-    PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
+    const char *dirSep = PHYSFS_getDirSeparator();
+    char **list = PHYSFS_enumerateFiles(path.c_str());
 
-#ifdef _WIN32
-    // Define the path in which to search
-    std::string searchString = std::string("data/*.zip");
+    for (char **i = list; *i != NULL; i++) {
+        size_t len = strlen(*i);
 
-    // Create our find file data structure
-    struct _finddata_t findFileInfo;
+        if (len > ext.length() && !ext.compare((*i)+(len - ext.length()))) {
+            std::string file, realPath, archive;
 
-    // Find the first zipped file
-    long handle =
-        static_cast<long>(::_findfirst(searchString.c_str(), &findFileInfo));
-    long file = handle;
+            file = path + dirSep + (*i);
+            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
+            archive = realPath + path + dirSep + (*i);
 
-    // Loop until all files we're searching for are found
-    while (file >= 0) {
-        // Define the file path string
-        std::string filePath = std::string("data/") +
-            std::string(findFileInfo.name);
-
-        logger->log("Adding to PhysicsFS: %s", findFileInfo.name);
-
-        // Add the zip file to our PhysicsFS search path
-        PHYSFS_addToSearchPath(filePath.c_str(), 1);
-
-        // Find the next file
-        file = ::_findnext(handle, &findFileInfo);
-    }
-
-    // Shutdown findfile stuff
-    ::_findclose(handle);
-#else
-    // Retrieve the current path
-    char programPath[256];
-    getcwd(programPath, 256);
-    strncat(programPath, "/data", 256 - strlen(programPath) - 1);
-
-    // Create our directory structure
-    DIR *dir = opendir(programPath);
-
-    // Return if the directory is invalid
-    if (dir == NULL) {
-        return;
-    }
-
-    struct dirent *direntry;
-    while ((direntry = readdir(dir)) != NULL) {
-        char *ext = strstr(direntry->d_name, ".zip");
-        if (ext != NULL && strcmp(ext, ".zip") == 0) {
-            // Define the file path string
-            std::string filePath = std::string(programPath) +
-                std::string("/") + std::string(direntry->d_name);
-
-            logger->log("Adding to PhysicsFS: %s", filePath.c_str());
-
-            // Add the zip file to our PhysicsFS search path
-            PHYSFS_addToSearchPath(filePath.c_str(), 1);
+            logger->log("Adding to PhysicsFS: %s", archive.c_str());
+            PHYSFS_addToSearchPath(archive.c_str(), append);
         }
     }
 
-    closedir(dir);
-#endif
+    PHYSFS_freeList(list);
 }
 
 void*

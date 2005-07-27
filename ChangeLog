@@ -1,3 +1,10 @@
+2005-07-28  Björn Steinbrink <B.Steinbrink@gmx.de>
+
+	* src/main.cpp, src/gui/update.cpp, src/resources/resourcemanager.cpp,
+	src/resources/resourcemanager.h: Added support for files downloaded
+	through the update manager to the resource manager. Changed directory name
+	for updates from "data" to "updates".
+
 2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/game.cpp, src/graphics.cpp, src/graphics.h,
