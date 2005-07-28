@@ -279,7 +279,7 @@ void attack(Being *target)
     // Implement charging attacks here
     char_info->lastAttackTime = 0;
 
-    player_node->action = ATTACK;
+    player_node->action = Being::ATTACK;
     action(0, target->getId());
     player_node->walk_time = tick_time;
     if (player_node->getWeapon() == 2)
