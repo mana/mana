@@ -13,6 +13,8 @@
 	Being class and removed the old #define's.
 	* src/resources/resourcemanager.cpp: Fixed a location where a wrong
 	dir-separator was used.
+	* src/main.cpp: Fixed updates directory not being created on non-unix
+	systems. Started using PhysFS write support.
 
 2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -160,18 +160,20 @@ void init_engine()
         std::cout << homeDir << " can't be made, but it doesn't exist! Exitting." << std::endl;
         exit(1);
     }
+#endif
 
-    // Creating and checking the ~/.tmw/updates folder existence and rights.
-    std::string dataUpdateDir = homeDir + "/updates";
-    //sprintf(dataUpdateDir, "%s/updates", homeDir);
-    if ((mkdir(dataUpdateDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
-    {
-        std::cout << dataUpdateDir << " can't be made, but it doesn't exist! Exitting." << std::endl;
+    if (!PHYSFS_setWriteDir(homeDir.c_str())) {
+        std::cout << homeDir << " couldn't be set as home directory! Exitting." << std::endl;
         exit(1);
     }
 
-#endif
+    // Creating and checking the updates folder existence and rights.
+    if (!PHYSFS_exists("/updates")) {
+        if (!PHYSFS_mkdir("/updates")) {
+        std::cout << homeDir << "/updates can't be made, but it doesn't exist! Exitting." << std::endl;
+        exit(1);
+        }
+    }
 
     // Initialize logger
     logger = new Logger(homeDir + std::string("/tmw.log"));
