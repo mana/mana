@@ -601,20 +601,17 @@ void do_input()
                 // Just cancel the popup menu if shown, and don't make the character walk
                 if (popupMenu->isVisible() == true)
                 {
-                    // We get the x, y coord of the click
-                    int clickX = (mx - camera_x) * 32 + 25;
-                    int clickY = (my - camera_y) * 32 + 25;
-
                     // If we click elsewhere than in the window, do not use the event
                     // The user wanted to close the popup.
                     // Still buggy : Wonder if the x, y, width, and height aren't reported partially
                     // with these functions.
-                    if ( clickX > (popupMenu->getX() + popupMenu->getWidth()) || clickX < popupMenu->getX()
-                        || clickY > (popupMenu->getY() + popupMenu->getHeight()) || clickY < popupMenu->getY() )
+                    if (event.button.x >= (popupMenu->getX() + popupMenu->getWidth()) ||
+                            event.button.x < popupMenu->getX() ||
+                            event.button.y >= (popupMenu->getY() + popupMenu->getHeight()) ||
+                            event.button.y < popupMenu->getY())
                     {
                             used = true;
                             popupMenu->setVisible(false);
-                            std::cout << "out" << std::endl;
                     }
                 }
 

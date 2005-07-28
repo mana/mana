@@ -1,3 +1,8 @@
+2005-07-29  Björn Steinbrink <B.Steinbrink@gmx.de>
+
+	* src/game.cpp: Fixed popup window not always being correctly hidden when
+	the player clicks somewhere else.
+
 2005-07-28  Björn Steinbrink <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/gui/update.cpp, src/resources/resourcemanager.cpp,
