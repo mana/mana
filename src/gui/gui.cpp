@@ -248,7 +248,7 @@ void Gui::mousePress(int mx, int my, int button)
     // Mouse pressed on window container (basically, the map)
 
     // When conditions for walking are met, set new player destination
-    if (player_node && player_node->action != DEAD && current_npc == 0 &&
+    if (player_node && player_node->action != Being::DEAD && current_npc == 0 &&
             button == gcn::MouseInput::LEFT)
     {
         Map *tiledMap = engine->getCurrentMap();

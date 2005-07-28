@@ -27,17 +27,6 @@
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
 
-// Action defines
-#define STAND       0
-#define WALK        1
-#define ATTACK      5
-#define BOW_ATTACK  9
-#define SIT        13
-#define HIT        14
-#define DEAD       15
-#define MONSTER_ATTACK 5
-#define MONSTER_DEAD 9
-
 #define LOCK 254
 #define IDLE 255
 

@@ -332,10 +332,10 @@ void do_input()
 
                     switch (player_node->action)
                     {
-                        case STAND:
+                        case Being::STAND:
                             action(2, 0);
                             break;
-                        case SIT:
+                        case Being::SIT:
                             action(3, 0);
                             break;
                     }
@@ -563,8 +563,8 @@ void do_input()
                              * TODO: Move player to mouse click position before
                              * attack the monster (maybe using follow mode).
                              */
-                            if (target->action != MONSTER_DEAD &&
-                                    player_node->action==STAND)
+                            if (target->action != Being::MONSTER_DEAD &&
+                                    player_node->action == Being::STAND)
                             {
                                 attack(target);
                                 // Autotarget by default with mouse
@@ -662,7 +662,7 @@ void do_input()
     } // End while
     
     // Moving player around
-    if ((player_node->action != DEAD) && (current_npc == 0) &&
+    if ((player_node->action != Being::DEAD) && (current_npc == 0) &&
             !chatWindow->isFocused())
     {
         int x = player_node->x;
@@ -675,63 +675,63 @@ void do_input()
         if (keys[SDLK_UP] || keys[SDLK_KP8] || joy[JOY_UP])
         {
             yDirection = -1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = NORTH;
         }
         if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joy[JOY_DOWN])
         {
             yDirection = 1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = SOUTH;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joy[JOY_LEFT])
         {
             xDirection = -1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = WEST;
         }
         if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joy[JOY_RIGHT])
         {
             xDirection = 1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = EAST;
         }
         if (keys[SDLK_KP1]) // Bottom Left
         {
             xDirection = -1;
             yDirection = 1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = SW;
         }
         if (keys[SDLK_KP3]) // Bottom Right
         {
             xDirection = 1;
             yDirection = 1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = SE;
         }
         if (keys[SDLK_KP7]) // Top Left
         {
             xDirection = -1;
             yDirection = -1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = NW;
         }
         if (keys[SDLK_KP9]) // Top Right
         {
             xDirection = 1;
             yDirection = -1;
-            if (player_node->action != WALK)
+            if (player_node->action != Being::WALK)
                 Direction = NE;
         }
 
         Map *tiledMap = engine->getCurrentMap();
 
         // Allow keyboard control to interrupt an existing path
-        if ((xDirection != 0 || yDirection != 0) && player_node->action == WALK)
+        if ((xDirection != 0 || yDirection != 0) && player_node->action == Being::WALK)
             player_node->setDestination(x, y);
 
-        if (player_node->action != WALK)
+        if (player_node->action != Being::WALK)
         {
             // Prevent skipping corners over colliding tiles
             if ((xDirection != 0) && tiledMap->tileCollides(x + xDirection, y))
@@ -760,7 +760,7 @@ void do_input()
         }
 
         // Attacking monsters
-        if (player_node->action == STAND)
+        if (player_node->action == Being::STAND)
         {
             if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
             {
@@ -789,9 +789,9 @@ void do_input()
             }
         }
         else if (joy[JOY_BTN2] && action_time) {
-            if (player_node->action == STAND)
+            if (player_node->action == Being::STAND)
                 action(2, 0);
-            else if (player_node->action == SIT)
+            else if (player_node->action == Being::SIT)
                 action(3, 0);
             action_time = false;
         }
@@ -956,7 +956,7 @@ void do_parse()
                         //being->setWeapon(RFIFOW(18));
                         being->frame = 0;
                         being->walk_time = tick_time;
-                        being->action = STAND;
+                        being->action = Being::STAND;
                     }
                     break;
 
@@ -970,13 +970,13 @@ void do_parse()
                             switch (being->getType())
                             {
                                 case Being::MONSTER:
-                                    being->action = MONSTER_DEAD;
+                                    being->action = Being::MONSTER_DEAD;
                                     being->frame = 0;
                                     being->walk_time = tick_time;
                                     break;
 
                                 default:
-                                    being->action = DEAD;
+                                    being->action = Being::DEAD;
                                 break;
                             }
                             //remove_node(RFIFOL(2));
@@ -1018,7 +1018,7 @@ void do_parse()
 
                     if (RFIFOB(51) == 2)
                     {
-                        being->action = SIT;
+                        being->action = Being::SIT;
                     }
                     break;
 
@@ -1035,7 +1035,7 @@ void do_parse()
                         add_node(being);
                     }
 
-                    being->action = STAND;
+                    being->action = Being::STAND;
                     being->x = get_src_x(RFIFOP(50));
                     being->y = get_src_y(RFIFOP(50));
                     being->speed = RFIFOW(6);
@@ -1267,7 +1267,7 @@ void do_parse()
                         // Re-add the local player node
                         add_node(player_node);
 
-                        player_node->action = STAND;
+                        player_node->action = Being::STAND;
                         player_node->frame = 0;
                         player_node->x = RFIFOW(18);
                         player_node->y = RFIFOW(20);
@@ -1346,7 +1346,7 @@ void do_parse()
                                 "You're now dead, press ok to restart",
                                 &deathNoticeListener);
                         deathNotice->releaseModalFocus();
-                        player_node->action = DEAD;
+                        player_node->action = Being::DEAD;
                     }
                     break;
                     // Stop walking
@@ -1382,20 +1382,9 @@ void do_parse()
                                 if (RFIFOL(2) != player_node->getId()) { // buggy
                                     being = findNode(RFIFOL(2));
                                     if (being) {
-                                        switch (being->getType())
-                                        {
-                                            case Being::PLAYER:
-                                                being->action = ATTACK;
-                                                being->frame = 0;
-                                                being->walk_time = tick_time;
-                                                break;
-
-                                            default:
-                                                being->action = MONSTER_ATTACK;
-                                                being->frame = 0;
-                                                being->walk_time = tick_time;
-                                                break;
-                                        }
+                                        being->action = Being::ATTACK;
+                                        being->frame = 0;
+                                        being->walk_time = tick_time;
                                         being->frame = 0;
                                     }
                                 }
@@ -1407,10 +1396,10 @@ void do_parse()
                             if (being != NULL) {
                                 being->frame = 0;
                                 if (RFIFOB(26) == 2) {
-                                    being->action = SIT;
+                                    being->action = Being::SIT;
                                 }
                                 else if (RFIFOB(26) == 3) {
-                                    being->action = STAND;
+                                    being->action = Being::STAND;
                                 }
                             }
                             break;

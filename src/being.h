@@ -53,6 +53,17 @@ class Being
             MONSTER
         };
 
+        enum Action {
+            STAND        =  0,
+            WALK         =  1,
+            ATTACK       =  5,
+            BOW_ATTACK   =  9,
+            MONSTER_DEAD =  9,
+            SIT          = 13,
+            HIT          = 14,
+            DEAD         = 15,
+        };
+
         unsigned short job;           /**< Job (player job, npc, monster, ) */
         unsigned short x, y;          /**< Tile coordinates */
         unsigned char direction;      /**< Facing direction */

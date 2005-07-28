@@ -8,6 +8,9 @@
 	src/gui/popupmenu.h: Cleaned up the showPopup() code, moved "map"-related
 	code into game.cpp, made the popup show up at mouse coordinates instead of
 	being aligned to tiles.
+	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp, src/game.h,
+	src/gui/gui.cpp, src/net/protocol.cpp: Added an action enumeration to the
+	Being class and removed the old #define's.
 
 2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

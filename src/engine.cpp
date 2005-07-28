@@ -106,7 +106,7 @@ int get_x_offset(Being *being)
     int offset = 0;
     char direction = being->direction;
 
-    if (being->action == WALK)
+    if (being->action == Being::WALK)
     {
         if (direction != NORTH && direction != SOUTH)
         {
@@ -131,7 +131,7 @@ int get_y_offset(Being *being)
     int offset = 0;
     char direction = being->direction;
 
-    if (being->action == WALK)
+    if (being->action == Being::WALK)
     {
         if (direction != EAST && direction != WEST)
         {
@@ -312,7 +312,7 @@ void Engine::logic()
 
         being->logic();
 
-        if (being->action == MONSTER_DEAD && being->frame >= 20)
+        if (being->action == Being::MONSTER_DEAD && being->frame >= 20)
         {
             if (autoTarget == being) {
                 autoTarget = NULL;
@@ -399,13 +399,13 @@ void Engine::draw()
                 being->text_x = sx * 32 + get_x_offset(being) - offset_x;
                 being->text_y = sy * 32 + get_y_offset(being) - offset_y;
 
-                if (being->action == SIT || being->action == DEAD) {
+                if (being->action == Being::SIT || being->action == Being::DEAD) {
                     being->frame = 0;
                 }
 
                 frame = being->frame + being->action;
 
-                if (being->action == ATTACK) {
+                if (being->action == Being::ATTACK) {
                     if (being->getWeapon() > 0)
                         frame += 4 * (being->getWeapon() - 1);
                 }
@@ -417,7 +417,7 @@ void Engine::draw()
                 //{
                 //    std::cout << being->name << " " << being->getWeapon() << std::endl;
                 //}
-                if (being->getWeapon() != 0 && being->action == ATTACK) {
+                if (being->getWeapon() != 0 && being->action == Being::ATTACK) {
                     Image *image = weaponset->spriteset[
                         16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
 
@@ -467,9 +467,9 @@ void Engine::draw()
 
                 frame = being->frame + being->action;
 
-                if (being->action == MONSTER_DEAD) {
+                if (being->action == Being::MONSTER_DEAD) {
                     guiGraphics->drawImage(
-                            monsterset[being->job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
+                            monsterset[being->job - 1002]->spriteset[dir + 4 * Being::MONSTER_DEAD],
                             being->text_x + 30, being->text_y + 40);
 
                     if (autoTarget == being) {
@@ -488,11 +488,11 @@ void Engine::draw()
                     }
                 }
 
-                if (being->action != STAND) {
+                if (being->action != Being::STAND) {
                     being->frame =
                         (get_elapsed_time(being->walk_time) * 4) / (being->speed);
 
-                    if (being->frame >= 4 && being->action != MONSTER_DEAD) {
+                    if (being->frame >= 4 && being->action != Being::MONSTER_DEAD) {
                         being->nextStep();
                     }
                 }

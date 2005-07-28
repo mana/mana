@@ -103,7 +103,7 @@ Being *findNode(unsigned short x, unsigned short y)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Return being if found and it is not a dead monster
-        if (being->x == x && being->y == y && being->action != MONSTER_DEAD) {
+        if (being->x == x && being->y == y && being->action != Being::MONSTER_DEAD) {
             return being;
         }
     }
@@ -117,7 +117,7 @@ Being* findNode(unsigned short x, unsigned short y, Being::Type type)
         Being *being = (*i);
         // Check if is a NPC (only low job ids)
         if (being->x == x && being->y == y &&
-                being->getType() == type && being->action != MONSTER_DEAD)
+                being->getType() == type && being->action != Being::MONSTER_DEAD)
         {
             return being;
         }
