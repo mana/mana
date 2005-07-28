@@ -4,6 +4,10 @@
 	src/resources/resourcemanager.h: Added support for files downloaded
 	through the update manager to the resource manager. Changed directory name
 	for updates from "data" to "updates".
+	* src/game.cpp, src/gui/inventorywindow.cpp, src/gui/popupmenu.cpp,
+	src/gui/popupmenu.h: Cleaned up the showPopup() code, moved "map"-related
+	code into game.cpp, made the popup show up at mouse coordinates instead of
+	being aligned to tiles.
 
 2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

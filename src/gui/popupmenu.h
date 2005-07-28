@@ -29,6 +29,7 @@
 #include "linkhandler.h"
 #include "browserbox.h"
 #include "../being.h"
+#include "../item.h"
 #include "../floor_item.h"
 
 /**
@@ -48,14 +49,21 @@ class PopupMenu : public Window, public LinkHandler
         ~PopupMenu();
 
         /**
-         * Shows the related popup menu specifies by the mouse click coords.
+         * Shows the being related popup menu at the specified mouse coords.
          */
-        void showPopup(int mx, int my);
+        void showPopup(int x, int y, Being *being);
+
+        /**
+         * Shows the floor item related popup menu at the specified
+         * mouse coords.
+         */
+        void showPopup(int x, int y, FloorItem *floorItem);
 
         /**
          * Shows the related popup menu when right click on the inventory
+         * at the specified mouse coordinates.
          */
-        void showPopup(int mx, int my, class Item *item);
+        void showPopup(int x, int y, Item *item);
 
         /**
          * Handles link action.
@@ -64,12 +72,16 @@ class PopupMenu : public Window, public LinkHandler
 
     private:
         BrowserBox* browserBox;
-        int mX, mY;
 
         Being* being;
         FloorItem* floorItem;
 
-        class Item *m_item;
+        Item *m_item;
+
+        /**
+         * Shared code for the various showPopup functions.
+         */
+        void showPopup(int x, int y);
 };
 
 extern PopupMenu *popupMenu;

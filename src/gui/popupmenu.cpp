@@ -29,7 +29,6 @@
 #include "item_amount.h"
 #include "../graphics.h"
 #include "../game.h"
-#include "../engine.h"
 #include "../net/network.h"
 #include "../resources/itemmanager.h"
 #include "../item.h"
@@ -52,8 +51,6 @@ PopupMenu::PopupMenu():
 
     being = NULL;
     floorItem = NULL;
-    mX = -1;
-    mY = -1;
 }
 
 PopupMenu::~PopupMenu()
@@ -62,68 +59,58 @@ PopupMenu::~PopupMenu()
     delete floorItem;
 }
 
-void PopupMenu::showPopup(int mx, int my)
+void PopupMenu::showPopup(int x, int y, Being *being)
 {
-    being = findNode(mx, my);
-    floorItem = find_floor_item_by_id(find_floor_item_by_cor(mx, my));
-    mX = mx;
-    mY = my;
+    std::string name;
+
+    this->being = being;
     browserBox->clearRows();
 
-    if (being) {
-        std::string name;
-        switch (being->getType())
-        {
-            case Being::PLAYER:
-                // Players can be traded with. Later also attack, follow and
-                // add as buddy will be options in this menu.
-
-                name = being->name;
-                //browserBox->addRow("@@attack|Attack " + name + "@@");
-                browserBox->addRow("@@trade|Trade With " + name + "@@");
-                //browserBox->addRow("@@follow|Follow " + name + "@@");
-                //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
-                break;
-
-            case Being::NPC:
-                // NPCs can be talked to (single option, candidate for removal
-                // unless more options would be added)
-                browserBox->addRow("@@talk|Talk To NPC@@");
-                break;
-
-            default:
-                /* Other beings aren't interesting... */
-                break;
-        }
-    }
-    else if (floorItem)
+    switch (being->getType())
     {
-        // Floor item can be picked up (single option, candidate for removal)
-        std::string name = itemDb->getItemInfo(floorItem->id)->getName();
-        browserBox->addRow("@@pickup|Pick Up " + name + "@@");
-    }
-    else
-    {
-        // If there is nothing of interest, don't display menu.
-        // Hide it, because it may have been visible.
-        setVisible(false);
-        return;
+        case Being::PLAYER:
+            // Players can be traded with. Later also attack, follow and
+            // add as buddy will be options in this menu.
+
+            name = being->name;
+            //browserBox->addRow("@@attack|Attack " + name + "@@");
+            browserBox->addRow("@@trade|Trade With " + name + "@@");
+            //browserBox->addRow("@@follow|Follow " + name + "@@");
+            //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+            break;
+
+        case Being::NPC:
+            // NPCs can be talked to (single option, candidate for removal
+            // unless more options would be added)
+            browserBox->addRow("@@talk|Talk To NPC@@");
+            break;
+
+        default:
+            /* Other beings aren't interesting... */
+            break;
     }
 
     //browserBox->addRow("@@look|Look To@@");
     browserBox->addRow("##3---");
     browserBox->addRow("@@cancel|Cancel@@");
 
-    setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
-    mx = (mx - camera_x) * 32 + 25;
-    my = (my - camera_y) * 32 + 25;
-    if (guiGraphics->getWidth() < (mx + getWidth() + 5))
-        mx -= (getWidth() + 50);
-    if (guiGraphics->getHeight() < (my + getHeight() + 5))
-        my -= (getHeight() + 50);
-    setPosition(mx, my);
-    setVisible(true);
-    requestMoveToTop();
+    showPopup(x, y);
+}
+
+void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
+{
+    this->floorItem = floorItem;
+    browserBox->clearRows();
+
+    // Floor item can be picked up (single option, candidate for removal)
+    std::string name = itemDb->getItemInfo(floorItem->id)->getName();
+    browserBox->addRow("@@pickup|Pick Up " + name + "@@");
+
+    //browserBox->addRow("@@look|Look To@@");
+    browserBox->addRow("##3---");
+    browserBox->addRow("@@cancel|Cancel@@");
+
+    showPopup(x, y);
 }
 
 void PopupMenu::handleLink(const std::string& link)
@@ -224,11 +211,9 @@ void PopupMenu::handleLink(const std::string& link)
     being = NULL;
     floorItem = NULL;
     m_item = NULL;
-    mX = -1;
-    mY = -1;
 }
 
-void PopupMenu::showPopup(int mx, int my, Item *item)
+void PopupMenu::showPopup(int x, int y, Item *item)
 {
     assert(item);
     m_item = item;
@@ -249,15 +234,17 @@ void PopupMenu::showPopup(int mx, int my, Item *item)
     browserBox->addRow("##3---");
     browserBox->addRow("@@cancel|Cancel@@");
 
+    showPopup(x, y);
+}
+
+void PopupMenu::showPopup(int x, int y)
+{
     setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
-    mx = (mx - camera_x) * 32 + 25;
-    my = (my - camera_y) * 32 + 25;
-    if (guiGraphics->getWidth() < (mx + getWidth() + 5))
-        mx -= (getWidth() + 50);
-    if (guiGraphics->getHeight() < (my + getHeight() + 5))
-        my -= (getHeight() + 50);
-    setPosition(mx, my);
+    if (guiGraphics->getWidth() < (x + getWidth() + 5))
+        x -= (getWidth() + 50);
+    if (guiGraphics->getHeight() < (y + getHeight() + 5))
+        y -= (getHeight() + 50);
+    setPosition(x, y);
     setVisible(true);
     requestMoveToTop();
 }
-

@@ -632,7 +632,19 @@ void do_input()
             // Mouse button right
             else if (event.button.button == SDL_BUTTON_RIGHT)
             {
-                popupMenu->showPopup(mx, my);
+                Being *being;
+                FloorItem *floorItem;
+
+                if ((being = findNode(mx, my))) {
+                    popupMenu->showPopup(event.button.x, event.button.y,
+                            being);
+                } else if ((floorItem = find_floor_item_by_id(
+                            find_floor_item_by_cor(mx, my)))) {
+                    popupMenu->showPopup(event.button.x, event.button.y,
+                            floorItem);
+                } else {
+                    popupMenu->setVisible(false);
+                }
             }
         }
 

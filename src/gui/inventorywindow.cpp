@@ -25,7 +25,6 @@
 #include "popupmenu.h"
 #include "../playerinfo.h"
 #include "../inventory.h"
-#include "../engine.h"
 #include "button.h"
 #include "scrollarea.h"
 #include "item_amount.h"
@@ -148,10 +147,10 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
     {
         /*
          * convert relative to the window coordinates to
-         * absolute tile coordinates
+         * absolute screen coordinates
          */
-        int mx = (x + getX()) / 32 + camera_x;
-        int my = (y + getY()) / 32 + camera_y;
+        int mx = x + getX();
+        int my = y + getY();
         popupMenu->showPopup(mx, my, item);
     }
 }
