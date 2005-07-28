@@ -205,7 +205,7 @@ ResourceManager::searchAndAddArchives(
         if (len > ext.length() && !ext.compare((*i)+(len - ext.length()))) {
             std::string file, realPath, archive;
 
-            file = path + dirSep + (*i);
+            file = path + "/" + (*i);
             realPath = std::string(PHYSFS_getRealDir(file.c_str()));
             archive = realPath + path + dirSep + (*i);
 

@@ -11,6 +11,8 @@
 	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp, src/game.h,
 	src/gui/gui.cpp, src/net/protocol.cpp: Added an action enumeration to the
 	Being class and removed the old #define's.
+	* src/resources/resourcemanager.cpp: Fixed a location where a wrong
+	dir-separator was used.
 
 2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
