@@ -44,17 +44,6 @@ ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
 {
-    // Add the main data directory to our PhysicsFS search path
-    PHYSFS_addToSearchPath("data", 1);
-    PHYSFS_addToSearchPath(TMW_DATADIR "data", 1);
-
-    // Add the user's homedir to PhysicsFS search path
-    PHYSFS_addToSearchPath(config.getValue("homeDir", "").c_str(), 0);
-
-    // Add zip files to PhysicsFS
-    searchAndAddArchives("/", ".zip", 1);
-    // Updates, these override other files
-    searchAndAddArchives("/updates", ".zip", 0);
 }
 
 ResourceManager::~ResourceManager()
@@ -78,6 +67,55 @@ ResourceManager::~ResourceManager()
 
     logger->log("ResourceManager::~ResourceManager() cleaned up %d references "
             "to %d resources", danglingReferences, danglingResources);
+}
+
+bool ResourceManager::setWriteDir(const std::string &path)
+{
+    return (bool)PHYSFS_setWriteDir(path.c_str());
+}
+
+void ResourceManager::addToSearchPath(const std::string &path, bool append)
+{
+    PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0);
+}
+
+void ResourceManager::searchAndAddArchives(
+        const std::string &path, const std::string &ext, bool append)
+{
+    const char *dirSep = PHYSFS_getDirSeparator();
+    char **list = PHYSFS_enumerateFiles(path.c_str());
+
+    for (char **i = list; *i != NULL; i++) {
+        size_t len = strlen(*i);
+
+        if (len > ext.length() && !ext.compare((*i)+(len - ext.length()))) {
+            std::string file, realPath, archive;
+
+            file = path + "/" + (*i);
+            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
+            archive = realPath + path + dirSep + (*i);
+
+            logger->log("Adding to PhysicsFS: %s", archive.c_str());
+            addToSearchPath(archive, append);
+        }
+    }
+
+    PHYSFS_freeList(list);
+}
+
+bool ResourceManager::mkdir(const std::string &path)
+{
+    return (bool)PHYSFS_mkdir(path.c_str());
+}
+
+bool ResourceManager::exists(const std::string &path)
+{
+    return PHYSFS_exists(path.c_str());
+}
+
+bool ResourceManager::isDirectory(const std::string &path)
+{
+    return PHYSFS_isDirectory(path.c_str());
 }
 
 Resource*
@@ -190,31 +228,6 @@ ResourceManager::deleteInstance()
         delete instance;
         instance = NULL;
     }
-}
-
-void
-ResourceManager::searchAndAddArchives(
-        const std::string &path, const std::string &ext, int append)
-{
-    const char *dirSep = PHYSFS_getDirSeparator();
-    char **list = PHYSFS_enumerateFiles(path.c_str());
-
-    for (char **i = list; *i != NULL; i++) {
-        size_t len = strlen(*i);
-
-        if (len > ext.length() && !ext.compare((*i)+(len - ext.length()))) {
-            std::string file, realPath, archive;
-
-            file = path + "/" + (*i);
-            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
-            archive = realPath + path + dirSep + (*i);
-
-            logger->log("Adding to PhysicsFS: %s", archive.c_str());
-            PHYSFS_addToSearchPath(archive.c_str(), append);
-        }
-    }
-
-    PHYSFS_freeList(list);
 }
 
 void*

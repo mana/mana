@@ -162,21 +162,33 @@ void init_engine()
     }
 #endif
 
-    if (!PHYSFS_setWriteDir(homeDir.c_str())) {
+    // Initialize logger
+    logger = new Logger(homeDir + std::string("/tmw.log"));
+
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir << " couldn't be set as home directory! Exitting." << std::endl;
         exit(1);
     }
 
+    // Add the user's homedir to PhysicsFS search path
+    resman->addToSearchPath(homeDir, false);
     // Creating and checking the updates folder existence and rights.
-    if (!PHYSFS_exists("/updates")) {
-        if (!PHYSFS_mkdir("/updates")) {
+    if (!resman->isDirectory("/updates")) {
+        if (!resman->mkdir("/updates")) {
         std::cout << homeDir << "/updates can't be made, but it doesn't exist! Exitting." << std::endl;
         exit(1);
         }
     }
 
-    // Initialize logger
-    logger = new Logger(homeDir + std::string("/tmw.log"));
+    // Add the main data directory to our PhysicsFS search path
+    resman->addToSearchPath("data", true);
+    resman->addToSearchPath(TMW_DATADIR "data", 1);
+    // Add zip files to PhysicsFS
+    resman->searchAndAddArchives("/", ".zip", true);
+    // Updates, these override other files
+    resman->searchAndAddArchives("/updates", ".zip", false);
 
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
@@ -297,8 +309,6 @@ void init_engine()
     // Create the graphics context
     graphics = new Graphics(screen);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
     login_wallpaper = resman->getImage(
             "graphics/images/login_wallpaper.png");
     Image *playerImg = resman->getImage(
@@ -388,7 +398,6 @@ int main(int argc, char *argv[])
     PHYSFS_init(argv[0]);
 
     init_engine();
-
 
     SDL_Event event;
 
