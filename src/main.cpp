@@ -234,8 +234,6 @@ void init_engine()
 
 #ifdef USE_OPENGL
     useOpenGL = (config.getValue("opengl", 0) == 1);
-#else
-    useOpenGL = false;
 #endif
 
     displayFlags = SDL_ANYFORMAT;

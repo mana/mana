@@ -1,3 +1,7 @@
+2005-07-30  Andrej Sinicyn  <andrej4000@gmail.com>
+
+	* src/main.cpp: Removed unnecessary value assignment to a variable.
+
 2005-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/resources/resourcemanager.h,
