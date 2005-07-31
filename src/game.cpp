@@ -1078,6 +1078,18 @@ void do_parse()
 
                 // Trade: Receiving a request to trade
                 case 0x00e5:
+                    // If a trade window is already open, send a trade cancel
+                    // to any other trade request.
+                    // It would still be nice to implement an independent message
+                    // that the person you want to trade with can't do that now.
+                    if (tradeWindow->isVisible() == true)
+                    {
+                        // 0xff packet means cancel
+                        WFIFOW(0) = net_w_value(0x00e6);
+                        WFIFOB(2) = net_b_value(4);
+                        WFIFOSET(3);
+                        break;
+                    }
                     new RequestTradeDialog(RFIFOP(2));
                     break;
 
@@ -1105,6 +1117,7 @@ void do_parse()
                         case 4:
                             // Trade cancelled
                             chatWindow->chat_log("Trade cancelled.", BY_SERVER);
+                            tradeWindow->setVisible(false);
                             break;
                         default:
                             // Shouldn't happen as well, but to be sure
