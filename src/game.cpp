@@ -79,6 +79,7 @@ ConfirmDialog *exitConfirm = NULL;
 
 Being *target = NULL;
 Inventory *inventory = NULL;
+RequestTradeDialog *requestTradeDialog = NULL;
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;
@@ -1090,7 +1091,10 @@ void do_parse()
                         WFIFOSET(3);
                         break;
                     }
-                    new RequestTradeDialog(RFIFOP(2));
+                    if (requestTradeDialog == NULL)
+                    {
+                        requestTradeDialog = new RequestTradeDialog(RFIFOP(2));
+                    }
                     break;
 
                 // Trade: Response

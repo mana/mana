@@ -1,8 +1,7 @@
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
 
-	* src/game.cpp: Don't allow more than one trade dialog at once; if a
-                        trade is canceled on the other side, close the trade
-                        window.
+	* src/game.cpp: Don't allow more than one trade dialog or requesting it at
+        once; if a trade is canceled on the other side, close the trade window.
 
 2005-07-30  Andrej Sinicyn  <andrej4000@gmail.com>
 
