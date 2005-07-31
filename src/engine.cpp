@@ -335,6 +335,22 @@ void Engine::draw()
     map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
     map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
 
+    if (map_x < 0) {
+        map_x = 0;
+    }
+    if (map_y < 0) {
+        map_y = 0;
+    }
+
+    if (mCurrentMap) {
+        if (map_x > (mCurrentMap->getWidth() - 13) * 32) {
+            map_x = (mCurrentMap->getWidth() - 13) * 32;
+        }
+        if (map_y > (mCurrentMap->getHeight() - 9) * 32) {
+            map_y = (mCurrentMap->getHeight() - 9) * 32;
+        }
+    }
+
     camera_x = map_x / 32;
     camera_y = map_y / 32;
     int mouseTileX = mouseX / 32 + camera_x;

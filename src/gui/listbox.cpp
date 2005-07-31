@@ -44,27 +44,25 @@ void ListBox::draw(gcn::Graphics *graphics)
     graphics->setColor(gcn::Color(110, 160, 255));
     graphics->setFont(getFont());
 
-    int i;
     int fontHeight = getFont()->getHeight();
-    int y = 0;
 
-    for (i = 0; i < mListModel->getNumberOfElements(); ++i)
-    {
-        if (i == mSelected) {
-            if (useOpenGL) {
+    // Draw rectangle below the selected list element
+    if (mSelected >= 0) {
+        if (useOpenGL) {
 #ifdef USE_OPENGL
-                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
-                    gcn::Rectangle(0, y, getWidth(), fontHeight));
+            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
+                    gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
 #endif
-            }
-            else {
-                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
-                    gcn::Rectangle(0, y, getWidth(), fontHeight));
-            }
         }
+        else {
+            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
+                    gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
+        }
+    }
 
+    // Draw the list elements
+    for (int i = 0, y = 0; i < mListModel->getNumberOfElements(); ++i, y += fontHeight)
+    {
         graphics->drawText(mListModel->getElementAt(i), 1, y);
-
-        y += fontHeight;
     }
 }
