@@ -132,6 +132,9 @@ void PopupMenu::handleLink(const std::string& link)
         WFIFOW(0) = net_w_value(0x00e4);
         WFIFOL(2) = net_l_value(being->getId());
         WFIFOSET(6);
+        //tradePartner.flush();
+        //tradePartner << "Trade: You and " << being->name<< "";
+        strcpy(tradePartnerName, being->name);
     }
     /*
     // Follow Player action

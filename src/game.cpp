@@ -60,6 +60,7 @@
 extern Graphics *graphics;
 
 char map_path[480];
+char tradePartnerName[24];
 
 bool refresh_beings = false;
 unsigned char keyb_state;
@@ -544,6 +545,7 @@ void do_input()
                             WFIFOW(0) = net_w_value(0x00e4);
                             WFIFOL(2) = net_l_value(target->getId());
                             WFIFOSET(6);
+                            strcpy(tradePartnerName, target->name);
                             break;
 
                             // NPC default: talk
@@ -1093,6 +1095,7 @@ void do_parse()
                     }
                     if (requestTradeDialog == NULL)
                     {
+                        strcpy(tradePartnerName, RFIFOP(2));
                         requestTradeDialog = new RequestTradeDialog(RFIFOP(2));
                     }
                     break;
@@ -1116,6 +1119,7 @@ void do_parse()
                         case 3:
                             // Trade accepted
                             tradeWindow->reset();
+                            tradeWindow->setCaption((std::string)"Trade: You and " + (std::string)tradePartnerName);
                             tradeWindow->setVisible(true);
                             break;
                         case 4:

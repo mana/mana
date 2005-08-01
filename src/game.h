@@ -41,6 +41,7 @@
 #define SE    7
 
 extern char map_path[480];
+extern char tradePartnerName[24];
 extern int fps, frame, current_npc;
 extern volatile int tick_time;
 extern int server_tick;
