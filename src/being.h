@@ -28,6 +28,7 @@
 #include <string>
 
 #include "graphics.h"
+#include "map.h"
 
 #define NR_HAIR_STYLES 5
 #define NR_HAIR_COLORS 10

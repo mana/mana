@@ -27,11 +27,7 @@
 #include "map.h"
 #include "graphic/spriteset.h"
 
-extern int map_x, map_y, camera_x, camera_y;
-
-extern std::map<int, Spriteset*> monsterset;
-char get_x_offset(char, char);
-char get_y_offset(char, char);
+extern int camera_x, camera_y;
 
 /**
  * Game engine that does the main drawing.

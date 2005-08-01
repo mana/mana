@@ -27,13 +27,14 @@
 #include "being.h"
 #include "log.h"
 #include "game.h"
-#include "engine.h"
 #include "net/protocol.h"
 #include "net/network.h"
 #include "resources/resourcemanager.h"
+#include "graphic/spriteset.h"
 #include "gui/gui.h"
 
 extern Being* autoTarget;
+extern std::map<int, Spriteset*> monsterset;
 
 Being *player_node = NULL;
 

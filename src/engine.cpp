@@ -314,9 +314,6 @@ void Engine::logic()
 
         if (being->action == Being::MONSTER_DEAD && being->frame >= 20)
         {
-            if (autoTarget == being) {
-                autoTarget = NULL;
-            }
             delete being;
             beingIterator = beings.erase(beingIterator);
         }
@@ -356,9 +353,6 @@ void Engine::draw()
     int mouseTileX = mouseX / 32 + camera_x;
     int mouseTileY = mouseY / 32 + camera_y;
 
-    int offset_x = map_x & 31;
-    int offset_y = map_y & 31;
-
     sort();
 
     frame++;
@@ -371,49 +365,38 @@ void Engine::draw()
     }
 
     // Draw items
-    std::list<FloorItem*>::iterator floorItemIterator = floorItems.begin();
-    while (floorItemIterator != floorItems.end())
+    for (std::list<FloorItem*>::iterator i = floorItems.begin(); i != floorItems.end(); i++)
     {
-        FloorItem *floorItem = (*floorItemIterator);
-        unsigned short x = floorItem->x;
-        unsigned short y = floorItem->y;
-        int sx = x - camera_x;
-        int sy = y - camera_y;
-        int absx = sx * 32 - offset_x;
-        int absy = sy * 32 - offset_y;
+        FloorItem *floorItem = (*i);
         if (itemDb->getItemInfo(floorItem->id)->getImage() > 0) {
             Image *image = itemset->spriteset[itemDb->getItemInfo(
                     floorItem->id)->getImage() - 1];
 
-            guiGraphics->drawImage(image, absx, absy);
+            guiGraphics->drawImage(image,
+                    floorItem->x * 32 - map_x, floorItem->y * 32 - map_y);
         }
-
-        floorItemIterator++;
     }
 
     // Draw nodes
-    std::list<Being*>::iterator beingIterator = beings.begin();
-    while (beingIterator != beings.end())
+    for (std::list<Being*>::iterator i = beings.begin(); i != beings.end(); i++)
     {
-        Being *being = (*beingIterator);
+        Being *being = (*i);
 
-        unsigned short x = being->x;
-        unsigned short y = being->y;
         unsigned char dir = being->direction / 2;
-        int sx = x - camera_x;
-        int sy = y - camera_y;
+        int x = being->x * 32 - map_x;
+        int y = being->y * 32 - map_y;
 
 #ifdef DEBUG
         guiGraphics->setColor(gcn::Color(0, 0, 255));
-        guiGraphics->drawRectangle(gcn::Rectangle(sx * 32, sy * 32, 32, 32));
+        guiGraphics->drawRectangle(gcn::Rectangle(x & ~31, y & ~31, 32, 32));
 #endif
         int frame;
         switch (being->getType())
         {
             // Draw a player
             case Being::PLAYER:
-                being->text_x = sx * 32 + get_x_offset(being) - offset_x;
-                being->text_y = sy * 32 + get_y_offset(being) - offset_y;
+                being->text_x = x + get_x_offset(being);
+                being->text_y = y + get_y_offset(being);
 
                 if (being->action == Being::SIT || being->action == Being::DEAD) {
                     being->frame = 0;
@@ -453,8 +436,7 @@ void Engine::draw()
                 if (being->emotion != 0) {
                     guiGraphics->drawImage(
                             emotionset->spriteset[being->emotion - 1],
-                            sx * 32 + 3 + get_x_offset(being) - offset_x,
-                            sy * 32 - 90 + get_y_offset(being) - offset_y);
+                            being->text_x + 3, being->text_y - 90);
                 }
 
                 graphics->setFont(speechFont);
@@ -467,8 +449,7 @@ void Engine::draw()
                 // Draw a NPC
             case Being::NPC:
                 guiGraphics->drawImage(npcset->spriteset[being->job - 100],
-                        sx * 32 - 8 - offset_x,
-                        sy * 32 - 52 - offset_y);
+                        x - 8, y - 52);
                 break;
 
                 // Draw a monster
@@ -478,8 +459,8 @@ void Engine::draw()
                     being->frame = 3;
                 }
 
-                being->text_x = sx * 32 - 42 + get_x_offset(being) - offset_x;
-                being->text_y = sy * 32 - 65 + get_y_offset(being) - offset_y;
+                being->text_x = x - 42 + get_x_offset(being);
+                being->text_y = y - 65 + get_y_offset(being);
 
                 frame = being->frame + being->action;
 
@@ -487,10 +468,6 @@ void Engine::draw()
                     guiGraphics->drawImage(
                             monsterset[being->job - 1002]->spriteset[dir + 4 * Being::MONSTER_DEAD],
                             being->text_x + 30, being->text_y + 40);
-
-                    if (autoTarget == being) {
-                        autoTarget = NULL;
-                    }
                 }
                 else {
                     guiGraphics->drawImage(
@@ -525,8 +502,6 @@ void Engine::draw()
                 break;
         }
 
-        beingIterator++;
-
         // nodes are ordered so if the next being y is > then the
         // last drawed for fringe layer, draw the missing lines
     }
@@ -543,15 +518,15 @@ void Engine::draw()
     {
         std::list<PATH_NODE> debugPath = mCurrentMap->findPath(
                 player_node->x, player_node->y,
-                mouseX / 32 + camera_x, mouseY / 32 + camera_y);
+                mouseTileX, mouseTileY);
 
         while (!debugPath.empty())
         {
             PATH_NODE node = debugPath.front();
             debugPath.pop_front();
 
-            int squareX = (node.x - camera_x) * 32 - offset_x + 12;
-            int squareY = (node.y - camera_y) * 32 - offset_y + 12;
+            int squareX = node.x * 32 - map_x + 12;
+            int squareY = node.y * 32 - map_y + 12;
             guiGraphics->setColor(gcn::Color(255, 0, 0));
             if (useOpenGL) {
 #ifdef USE_OPENGL
@@ -572,13 +547,11 @@ void Engine::draw()
     }
 
     // Draw player speech
-    beingIterator = beings.begin();
-    while (beingIterator != beings.end()) {
-        Being *being = (*beingIterator);
+    for (std::list<Being*>::iterator i = beings.begin(); i != beings.end(); i++)
+    {
+        Being *being = (*i);
 
         being->drawSpeech(guiGraphics);
-
-        beingIterator++;
     }
 
     if (autoTarget) {

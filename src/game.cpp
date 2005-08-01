@@ -963,9 +963,9 @@ void do_parse()
                 case SMSG_REMOVE_BEING:
                     // A being should be removed or has died
                     being = findNode(RFIFOL(2));
-                    if (being != NULL) 
+                    if (being != NULL)
                     {
-                        if (RFIFOB(6) == 1) 
+                        if (RFIFOB(6) == 1)
                         { // Death
                             switch (being->getType())
                             {
@@ -977,15 +977,16 @@ void do_parse()
 
                                 default:
                                     being->action = Being::DEAD;
-                                break;
+                                    break;
                             }
                             //remove_node(RFIFOL(2));
                         }
                         else {
                             remove_node(RFIFOL(2));
-                            if (being == autoTarget) {
-                                autoTarget = NULL;
-                            }
+                        }
+
+                        if (being == autoTarget) {
+                            autoTarget = NULL;
                         }
                     }
                     break;

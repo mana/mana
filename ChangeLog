@@ -1,3 +1,10 @@
+2005-08-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/engine.cpp: Cleanups in the drawing code.
+	* src/engine.cpp, src/game.cpp: Made autoTarget checks being handled at a
+	single location.
+	* src/being.cpp, src/being.h, src/engine.h: Small header cleanups.
+
 2005-08-02  Marcel W. Wysocki  <maci@satgnu.org> 
 
 	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking 
