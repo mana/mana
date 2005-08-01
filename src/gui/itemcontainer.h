@@ -51,6 +51,11 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         virtual ~ItemContainer();
 
         /**
+         * Handles the logic of the ItemContainer
+         */
+        void logic();
+
+        /**
          * Draws the items.
          */
         void draw(gcn::Graphics *graphics);
@@ -81,6 +86,8 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         Spriteset *itemset;
         Image *selImg;
         Item *selectedItem;
+
+        int maxItems;
 };
 
 #endif

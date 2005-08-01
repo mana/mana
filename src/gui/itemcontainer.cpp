@@ -41,6 +41,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     if (!selImg) logger->error("Unable to load selection.png");
 
     selectedItem = 0; // No item selected
+    maxItems = inventory->getLastUsedSlot();
 
     addMouseListener(this);
 }
@@ -49,6 +50,18 @@ ItemContainer::~ItemContainer()
 {
     delete itemset;
     selImg->decRef();
+}
+
+void ItemContainer::logic()
+{
+    gcn::Widget::logic();
+
+    int i = inventory->getLastUsedSlot();
+
+    if (i != maxItems) {
+        maxItems = i;
+        setWidth(getWidth());
+    }
 }
 
 void ItemContainer::draw(gcn::Graphics* graphics)
@@ -125,7 +138,7 @@ void ItemContainer::setWidth(int width)
     gcn::Widget::setWidth(width);
 
     int gridWidth = itemset->spriteset[0]->getWidth() + 4;
-    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int gridHeight = itemset->spriteset[0]->getHeight() + 14;
     int columns = getWidth() / gridWidth;
 
     if (columns < 1)
@@ -133,8 +146,8 @@ void ItemContainer::setWidth(int width)
         columns = 1;
     }
 
-    setHeight(((INVENTORY_SIZE / columns) +
-            (INVENTORY_SIZE % columns > 0 ? 1 : 0)) * gridHeight);
+    setHeight(((maxItems / columns) +
+            (maxItems % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
 Item* ItemContainer::getItem()

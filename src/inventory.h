@@ -88,6 +88,11 @@ class Inventory
          */
         int getNumberOfSlotsUsed();
 
+        /**
+         * Returns the index of the last occupied slot or 0 if none occupied.
+         */
+        int getLastUsedSlot();
+
     protected:
         Item items[INVENTORY_SIZE];  /**< The holder of items */
 };

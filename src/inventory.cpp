@@ -132,3 +132,16 @@ int Inventory::getNumberOfSlotsUsed()
 
     return NumberOfFilledSlot;
 }
+
+int Inventory::getLastUsedSlot()
+{
+    int i;
+
+    for (i = INVENTORY_SIZE - 1; i >= 0; i--) {
+        if ((items[i].getId() != -1) && (items[i].getQuantity() > 0)) {
+            break;
+        }
+    }
+
+    return --i;
+}
