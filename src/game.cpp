@@ -1281,6 +1281,7 @@ void do_parse()
                             }
                         }
                         beings.clear();
+                        autoTarget = NULL;
 
                         // Re-add the local player node
                         add_node(player_node);

@@ -3,6 +3,7 @@
 	* src/inventory.cpp, src/inventory.h,
 	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Added a logic function
 	to dynamically adjust the size of the itemcontainer.
+	* src/game.cpp: Fixed autoTarget not being set to NULL on map change.
 
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
 
