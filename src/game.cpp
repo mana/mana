@@ -1099,6 +1099,7 @@ void do_parse()
                         strcpy(tradePartnerName, RFIFOP(2));
                         requestTradeDialog = new RequestTradeDialog(RFIFOP(2));
                     }
+                    requestTradeDialog = NULL;
                     break;
 
                 // Trade: Response
