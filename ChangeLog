@@ -1,3 +1,8 @@
+2005-08-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/main.cpp: Use PhysFS to determine user's home directory on unix
+	system. Removed an now unused header.
+
 2005-08-02  Andrej Sinicyn  <andrej4000@gmail.com>
 
 	* src/game.cpp: Fixed "Trade canceled" happening often.

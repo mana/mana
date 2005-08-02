@@ -46,9 +46,6 @@
 #include <curl/curl.h>
 #include <SDL.h>
 #include <SDL_thread.h>
-#ifdef USE_OPENGL
-#include <SDL_opengl.h>
-#endif
 #include <SDL_image.h>
 
 #ifdef __USE_UNIX98
@@ -140,19 +137,9 @@ void init_engine()
     // In Windows and other systems we currently store data next to executable.
     homeDir = ".";
 #else
-    // But, in UNIX we store data in ~/.tmw/
-    passwd *pass = getpwuid(geteuid());
-
-    if (pass == NULL || pass->pw_dir == NULL) {
-        std::cout << "Couldn't determine the user home directory. Exitting." << std::endl;
-        exit(1);
-    }
+    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
 
     // Checking if /home/user/.tmw folder exists.
-
-    homeDir = pass->pw_dir;
-    homeDir += "/.tmw";
-    //sprintf(homeDir, "%s/.tmw", pass->pw_dir);
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
