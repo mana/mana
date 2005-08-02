@@ -47,6 +47,7 @@ extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;
 extern int startX, startY;
+extern bool requestTradeDialogOpen;
 
 enum {
     JOY_UP,

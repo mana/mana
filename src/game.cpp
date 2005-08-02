@@ -80,7 +80,7 @@ ConfirmDialog *exitConfirm = NULL;
 
 Being *target = NULL;
 Inventory *inventory = NULL;
-RequestTradeDialog *requestTradeDialog = NULL;
+bool requestTradeDialogOpen = false;
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;
@@ -1094,12 +1094,12 @@ void do_parse()
                         WFIFOSET(3);
                         break;
                     }
-                    if (requestTradeDialog == NULL)
+                    if (!requestTradeDialogOpen)
                     {
+                        requestTradeDialogOpen = true;
                         strcpy(tradePartnerName, RFIFOP(2));
-                        requestTradeDialog = new RequestTradeDialog(RFIFOP(2));
+                        new RequestTradeDialog(RFIFOP(2));
                     }
-                    requestTradeDialog = NULL;
                     break;
 
                 // Trade: Response
@@ -1123,6 +1123,7 @@ void do_parse()
                             tradeWindow->reset();
                             tradeWindow->setCaption((std::string)"Trade: You and " + (std::string)tradePartnerName);
                             tradeWindow->setVisible(true);
+                            requestTradeDialogOpen = false;
                             break;
                         case 4:
                             // Trade cancelled

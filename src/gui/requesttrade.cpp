@@ -23,6 +23,7 @@
 
 #include "requesttrade.h"
 #include "button.h"
+#include "../game.h"
 #include "../net/network.h"
 
 RequestTradeDialog::RequestTradeDialog(const char *name):
@@ -90,6 +91,7 @@ void RequestTradeDialog::action(const std::string& eventId)
         WFIFOW(0) = net_w_value(0x00e6);
         WFIFOB(2) = net_b_value(4);
         WFIFOSET(3);
+        requestTradeDialogOpen = false;
         scheduleDelete();
     }
 }
