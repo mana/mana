@@ -8,6 +8,8 @@
 	* src/engine.cpp, src/game.cpp: Made autoTarget checks being handled at a
 	single location.
 	* src/being.cpp, src/being.h, src/engine.h: Small header cleanups.
+	* src/graphics.cpp, src/graphics.h, src/main.cpp, src/main.h,
+	src/gui/setup.cpp: Moved graphics setup code into the graphics class.
 
 2005-08-02  Marcel W. Wysocki  <maci@satgnu.org> 
 

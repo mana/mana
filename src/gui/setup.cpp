@@ -214,39 +214,20 @@ void Setup::action(const std::string &eventId)
     else if (eventId == "apply")
     {
         setVisible(false);
-        bool changed = false;
+        bool fullscreen = fsCheckBox->isMarked();
 
-        if (fsCheckBox->isMarked() && config.getValue("screen", 0) == 0) {
-            // Fullscreen
-            config.setValue("screen", 1);
-            displayFlags |= SDL_FULLSCREEN;
-            changed = true;
-        }
-        else if(!fsCheckBox->isMarked() && config.getValue("screen", 0) == 1) {
-            // Windowed
-            config.setValue("screen", 0);
-            displayFlags &= ~SDL_FULLSCREEN;
-            changed = true;
-        }
-
-        if(changed) {
-            displayFlags |= SDL_DOUBLEBUF;
-            if (useOpenGL) {
-                //displayFlags |= SDL_OPENGL;
-                //SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        if (fullscreen != (config.getValue("screen", 0) == 1)) {
+            if (!guiGraphics->setFullscreen(fullscreen)) {
+                fullscreen = !fullscreen;
+                if (!guiGraphics->setFullscreen(fullscreen)) {
+                    std::cerr << "Failed to switch to " <<
+                        (fullscreen ? "windowed" : "fullscreen") <<
+                        "mode and restoration of old mode also failed!" <<
+                        std::endl;
+                    exit(1);
+                }
             }
-
-            SDL_Surface *screen =
-                SDL_SetVideoMode(screenW, screenH, bitDepth, displayFlags);
-
-            if (screen == NULL) {
-                std::cerr << "Couldn't set " << screenW << "x" <<
-                    screenH << "x" << bitDepth << " video mode: " <<
-                    SDL_GetError() << std::endl;
-                exit(1);
-            }
-
-            guiGraphics->setScreen(screen);
+            config.setValue("screen", fullscreen ? 1 : 0);
         }
 
         // Sound settings

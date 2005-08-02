@@ -67,12 +67,25 @@ public gcn::SDLGraphics {
         /**
          * Constructor.
          */
-        Graphics(SDL_Surface *screen);
+        Graphics();
 
         /**
          * Destructor.
          */
         ~Graphics();
+
+        /**
+         * Try to create a window with the given settings.
+         */
+        bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
+
+        /**
+         * Set fullscreen mode.
+         */
+        bool setFullscreen(bool fs);
+
+        void _beginDraw();
+        void _endDraw();
 
         void drawImage(Image *image, int x, int y);
         void drawImagePattern(Image *image, int x, int y, int w, int h);
@@ -113,13 +126,6 @@ public gcn::SDLGraphics {
          */
         int getHeight();
 
-        /**
-         * Sets a new screen pointer. This is necessary after switching screen
-         * modes, which probably should happen by this class instead of in the
-         * setup window.
-         */
-        void setScreen(SDL_Surface *screen);
-
         void setFont(gcn::ImageFont *font);
 
         void drawText(const std::string &text,
@@ -131,6 +137,7 @@ public gcn::SDLGraphics {
 
     private:
         SDL_Surface *mScreen;
+        bool mFullscreen, mHWAccel;
 };
 
 #endif

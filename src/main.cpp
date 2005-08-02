@@ -75,7 +75,6 @@ short map_port;
 char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
-int displayFlags, screenW, screenH, bitDepth;
 bool useOpenGL = false;
 volatile int framesToDraw = 0;
 
@@ -231,81 +230,36 @@ void init_engine()
     }
 
     SDL_WM_SetCaption("The Mana World", NULL);
+    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
 #ifdef USE_OPENGL
     useOpenGL = (config.getValue("opengl", 0) == 1);
 #endif
 
-    displayFlags = SDL_ANYFORMAT;
+    int width, height, bpp;
+    bool fullscreen, hwaccel;
 
-    if ((int)config.getValue("screen", 0) == 1) {
-        displayFlags |= SDL_FULLSCREEN;
-    }
+    width = (int)config.getValue("screenwidth", 800);
+    height = (int)config.getValue("screenheight", 600);
+    bpp = 0;
+    fullscreen = ((int)config.getValue("screen", 0) == 1);
+    hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
 
-    if (useOpenGL) {
-        displayFlags |= SDL_OPENGL;
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    }
-    else {
-        if ((int)config.getValue("hwaccel", 0)) {
-            logger->log("Attempting to use hardware acceleration.");
-            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-        }
-        else {
-            displayFlags |= SDL_SWSURFACE;
-        }
-    }
+    // Create the graphics context
+    graphics = new Graphics();
 
-    screenW = (int)config.getValue("screenwidth", 800);
-    screenH = (int)config.getValue("screenheight", 600);
-
-    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
-
-    SDL_Surface *screen = SDL_SetVideoMode(screenW, screenH, 0, displayFlags);
-    if (screen == NULL) {
-        std::cerr << "Couldn't set " << screenW << "x" << screenH << "x" <<
-            bitDepth << " video mode: " << SDL_GetError() << std::endl;
+    // Try to set the desired video mode
+    if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel)) {
+        std::cerr << "Couldn't set " << width << "x" << height << "x" <<
+            bpp << " video mode: " << SDL_GetError() << std::endl;
         exit(1);
     }
 
-    char videoDriverName[64];
-
-    if (SDL_VideoDriverName(videoDriverName, 64)) {
-        logger->log("Using video driver: %s", videoDriverName);
-    }
-    else {
-        logger->log("Using video driver: unkown");
-    }
-
-    const SDL_VideoInfo *vi = SDL_GetVideoInfo();
-
-    logger->log("Possible to create hardware surfaces: %s",
-            ((vi->hw_available) ? "yes" : "no"));
-    logger->log("Window manager available: %s",
-            ((vi->wm_available) ? "yes" : "no"));
-    logger->log("Accelerated hardware to hardware blits: %s",
-            ((vi->blit_hw) ? "yes" : "no"));
-    logger->log("Accelerated hardware to hardware colorkey blits: %s",
-            ((vi->blit_hw_CC) ? "yes" : "no"));
-    logger->log("Accelerated hardware to hardware alpha blits: %s",
-            ((vi->blit_hw_A) ? "yes" : "no"));
-    logger->log("Accelerated software to hardware blits: %s",
-            ((vi->blit_sw) ? "yes" : "no"));
-    logger->log("Accelerated software to hardware colorkey blits: %s",
-            ((vi->blit_sw_CC) ? "yes" : "no"));
-    logger->log("Accelerated software to hardware alpha blits: %s",
-            ((vi->blit_sw_A) ? "yes" : "no"));
-    logger->log("Accelerated color fills: %s",
-            ((vi->blit_fill) ? "yes" : "no"));
-    logger->log("Available video memory: %d", vi->video_mem);
-
-    //vfmt Pixel format of the video device
+    // Initialize for drawing
+    graphics->_beginDraw();
 
     // Initialize item manager
     itemDb = new ItemManager();
-
-    // Create the graphics context
-    graphics = new Graphics(screen);
 
     login_wallpaper = resman->getImage(
             "graphics/images/login_wallpaper.png");

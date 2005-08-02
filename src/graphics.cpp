@@ -29,50 +29,130 @@
 extern volatile int framesToDraw;
 
 
-Graphics::Graphics(SDL_Surface *screen):
-    mScreen(screen)
+Graphics::Graphics():
+    mScreen(0)
 {
-    if (useOpenGL) {
+}
+
+Graphics::~Graphics()
+{
+    _endDraw();
+}
+
+bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
+{
+    int displayFlags = SDL_ANYFORMAT;
+
+    mFullscreen = fs;
+    mHWAccel = hwaccel;
+
+    if (fs) {
+        displayFlags |= SDL_FULLSCREEN;
+    }
+
 #ifdef USE_OPENGL
+    if (useOpenGL) {
+        displayFlags |= SDL_OPENGL;
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    } else
+#endif
+    {
+        if (hwaccel) {
+            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+        } else {
+            displayFlags |= SDL_SWSURFACE;
+        }
+    }
+
+    mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags);
+
+    if (!mScreen) {
+        return false;
+    }
+
+    char videoDriverName[64];
+
+    if (SDL_VideoDriverName(videoDriverName, 64)) {
+        logger->log("Using video driver: %s", videoDriverName);
+    }
+    else {
+        logger->log("Using video driver: unkown");
+    }
+
+    const SDL_VideoInfo *vi = SDL_GetVideoInfo();
+
+    logger->log("Possible to create hardware surfaces: %s",
+            ((vi->hw_available) ? "yes" : "no"));
+    logger->log("Window manager available: %s",
+            ((vi->wm_available) ? "yes" : "no"));
+    logger->log("Accelerated hardware to hardware blits: %s",
+            ((vi->blit_hw) ? "yes" : "no"));
+    logger->log("Accelerated hardware to hardware colorkey blits: %s",
+            ((vi->blit_hw_CC) ? "yes" : "no"));
+    logger->log("Accelerated hardware to hardware alpha blits: %s",
+            ((vi->blit_hw_A) ? "yes" : "no"));
+    logger->log("Accelerated software to hardware blits: %s",
+            ((vi->blit_sw) ? "yes" : "no"));
+    logger->log("Accelerated software to hardware colorkey blits: %s",
+            ((vi->blit_sw_CC) ? "yes" : "no"));
+    logger->log("Accelerated software to hardware alpha blits: %s",
+            ((vi->blit_sw_A) ? "yes" : "no"));
+    logger->log("Accelerated color fills: %s",
+            ((vi->blit_fill) ? "yes" : "no"));
+    logger->log("Available video memory: %d", vi->video_mem);
+
+#ifdef USE_OPENGL
+    if (useOpenGL) {
         // Setup OpenGL
-        glViewport(0, 0, 800, 600);
+        glViewport(0, 0, w, h);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
         int gotDoubleBuffer;
         SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
         logger->log("Using OpenGL %s double buffering.",
                 (gotDoubleBuffer ? "with" : "without"));
 
-        setTargetPlane(800, 600);
+        setTargetPlane(w, h);
+    } else
 #endif
-    }
-    else {
+    {
         setTarget(mScreen);
     }
 
-    // Initialize for drawing
-    if (!useOpenGL) {
-        gcn::SDLGraphics::_beginDraw();
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::_beginDraw();
-    }
-#endif
-    //_beginDraw();
+    return true;
 }
 
-Graphics::~Graphics()
+bool Graphics::setFullscreen(bool fs)
 {
-    // Deinitialize for drawing
-    if (!useOpenGL) {
+    if (mFullscreen == fs) {
+        return true;
+    }
+
+    return setVideoMode(mScreen->w, mScreen->h,
+            mScreen->format->BitsPerPixel, fs, mHWAccel);
+}
+
+void Graphics::_beginDraw()
+{
+#ifdef USE_OPENGL
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_beginDraw();
+    } else
+#endif
+    {
+        gcn::SDLGraphics::_beginDraw();
+    }
+}
+
+void Graphics::_endDraw()
+{
+#ifdef USE_OPENGL
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_endDraw();
+    } else
+#endif
+    {
         gcn::SDLGraphics::_endDraw();
     }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::_endDraw();
-    }
-#endif
-    //_endDraw();
 }
 
 void Graphics::setFont(gcn::ImageFont *font)
@@ -88,9 +168,7 @@ void Graphics::setFont(gcn::ImageFont *font)
 }
 
 void Graphics::drawText(const std::string &text,
-		    int x,
-		    int y,
-		    unsigned int alignment)
+        int x, int y, unsigned int alignment)
 {
     if (!useOpenGL) {
         gcn::SDLGraphics::drawText(text, x, y, alignment);
@@ -222,9 +300,4 @@ void Graphics::updateScreen()
     {
         SDL_Delay(10);
     }
-}
-
-void Graphics::setScreen(SDL_Surface *screen)
-{
-    mScreen = screen;
 }
