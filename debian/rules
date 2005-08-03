@@ -27,7 +27,7 @@ endif
 config.status: configure
 	dh_testdir
 	./autogen.sh
-	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man6/man --infodir=/usr/share/doc/tmw --datadir=/usr/share/games --bindir=/usr/games
+	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man6/man --infodir=/usr/share/doc/tmw --datadir=/usr/share/games --bindir=/usr/games --with-opengl
 
 
 build: build-stamp
@@ -64,9 +64,9 @@ install: build
 
 # Build architecture-independent files here.
 binary-indep: build install
-	DESTDIR=$(CURDIR)/debian/tmp/ \
-		$(MAKE) install datadir=/usr/share/games  bindir=/usr/games \
-		desktopdir=/usr/share/applications
+	#DESTDIR=$(CURDIR)/debian/tmp/ \
+	#	$(MAKE) install datadir=/usr/share/games  bindir=/usr/games \
+	#	desktopdir=/usr/share/applications
 
 	cp data/icons/tmw-icon.xpm debian/tmp/usr/share/pixmaps/tmw.xpm
 	cp data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
@@ -79,7 +79,7 @@ binary-arch: build install
 	dh_installchangelogs ChangeLog
 	dh_installdocs
 	dh_installexamples
-#	dh_install
+	dh_install
 	dh_installmenu
 	dh_desktop
 #	dh_installdebconf	
