@@ -30,6 +30,8 @@
 #include <sstream>
 #include "window.h"
 
+extern bool requestTradeDialogOpen;
+
 /**
  * The request trade dialog.
  *

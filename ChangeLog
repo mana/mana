@@ -1,5 +1,7 @@
 2005-08-03  Andrej Sinicyn  <andrej4000@gmail.com>
 
+        * src/game.cpp, src/game.h, src/gui/requesttrade.cpp,src/gui/requesttrade.h:
+        Moved my invented variable, since it makes more sense.
 	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp: Fix my previous fix
         because it broke my own code.
 

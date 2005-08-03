@@ -80,7 +80,6 @@ ConfirmDialog *exitConfirm = NULL;
 
 Being *target = NULL;
 Inventory *inventory = NULL;
-bool requestTradeDialogOpen = false;
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;

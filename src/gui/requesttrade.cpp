@@ -23,8 +23,9 @@
 
 #include "requesttrade.h"
 #include "button.h"
-#include "../game.h"
 #include "../net/network.h"
+
+bool requestTradeDialogOpen = false;
 
 RequestTradeDialog::RequestTradeDialog(const char *name):
     Window("Request for Trade", true)
