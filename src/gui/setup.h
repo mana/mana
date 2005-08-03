@@ -83,6 +83,11 @@ class Setup : public Window, public gcn::ActionListener
         gcn::Button *applyButton;
         gcn::Button *cancelButton;
 
+        // Variables that keeps old settings until the user "apply" them...
+        int musicVolume, sfxVolume;
+        double opacity;
+        bool fullScreenEnabled, openGlEnabled, customCursorEnabled, soundEnabled;
+
     public:    
         /**
          * Constructor.

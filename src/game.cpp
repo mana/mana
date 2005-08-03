@@ -363,10 +363,10 @@ void do_input()
                     {
                         helpWindow->setVisible(false);
                     }
-                    // Close the config window, applying changes if opened
+                    // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible())
                     {
-                        setupWindow->action("apply");
+                        setupWindow->action("cancel");
                     }
                     // Else, open the chat edit box
                     else
