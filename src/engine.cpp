@@ -55,7 +55,7 @@ extern Being* autoTarget;
 extern Graphics* graphics;
 
 char itemCurrenyQ[10] = "0";
-int map_x, map_y, camera_x, camera_y;
+int camera_x, camera_y;
 
 gcn::Label *debugInfo;
 
@@ -329,8 +329,8 @@ void Engine::draw()
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
-    map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
-    map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
+    int map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
+    int map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
 
     if (map_x < 0) {
         map_x = 0;
