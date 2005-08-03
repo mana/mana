@@ -1371,7 +1371,7 @@ void do_parse()
                     }
                     break;
                     // Stop walking
-                case 0x0088:  // Disabled because giving some problems
+                // case 0x0088:  // Disabled because giving some problems
                     //if (being = findNode(RFIFOL(2))) {
                     //    if (being->getId()!=player_node->getId()) {
                     //        char ids[20];
