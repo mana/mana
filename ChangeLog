@@ -11,6 +11,8 @@
 	system. Removed an now unused header.
 	* src/game.cpp: Commented a switch case label that was left uncommented
 	though the rest was commented.
+	* src/resources/buddylist.cpp, src/main.h: Removed unneeded header from
+	main.h, added it to buddylist.cpp.
 
 2005-08-02  Andrej Sinicyn  <andrej4000@gmail.com>
 

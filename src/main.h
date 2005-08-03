@@ -26,7 +26,6 @@
 
 #include "graphic/spriteset.h"
 #include "resources/image.h"
-#include "configuration.h"
 #include "sound.h"
 #include <stdio.h>
 #include <memory>

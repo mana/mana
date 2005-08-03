@@ -23,6 +23,7 @@
 
 #include "buddylist.h"
 #include "../main.h"
+#include "../configuration.h"
 #include <iostream>
 #include <fstream>
 
