@@ -96,50 +96,32 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
+    ResourceManager *resman = ResourceManager::getInstance();
+
     // Set global font
     try {
         mGuiFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/sansserif8.png",
+                resman->getRealPath("graphics/gui/sansserif8.png"),
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
                 "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
                 );
     }
     catch (gcn::Exception e)
     {
-        try {
-            mGuiFont = new gcn::ImageFont(
-                    "data/graphics/gui/sansserif8.png",
-                    " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVW"
-                    "XYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
-                    );
-        }
-        catch (gcn::Exception e)
-        {
-            logger->error("Unable to load sansserif8.png!");
-        }
+        logger->error("Unable to load sansserif8.png!");
     }
 
     // Set speech font
     try {
         speechFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/rpgfont_wider.png",
+                resman->getRealPath("graphics/gui/rpgfont_wider.png"),
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@&\\"
                 );
     }
     catch (gcn::Exception e)
     {
-        try {
-            speechFont = new gcn::ImageFont(
-                    "data/graphics/gui/rpgfont_wider.png",
-                    " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@&\\"
-                    );
-        }
-        catch (gcn::Exception e)
-        {
-            logger->error("Unable to load rpgfont_wider.png!");
-        }
+        logger->error("Unable to load rpgfont_wider.png!");
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
@@ -147,32 +129,18 @@ Gui::Gui(Graphics *graphics):
     // Load hits' colourful fonts
     try {
         hitRedFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/hits_red.png",
+                resman->getRealPath("graphics/gui/hits_red.png"),
                 "0123456789");
         hitBlueFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/hits_blue.png",
+                resman->getRealPath("graphics/gui/hits_blue.png"),
                 "0123456789");
         hitYellowFont = new gcn::ImageFont(
-                TMW_DATADIR "data/graphics/gui/hits_yellow.png",
+                resman->getRealPath("graphics/gui/hits_yellow.png"),
                 "mis");
     }
     catch (gcn::Exception e)
     {
-        try {
-            hitRedFont = new gcn::ImageFont(
-                    "data/graphics/gui/hits_red.png",
-                    "0123456789");
-            hitBlueFont = new gcn::ImageFont(
-                    "data/graphics/gui/hits_blue.png",
-                    "0123456789");
-            hitYellowFont = new gcn::ImageFont(
-                    "data/graphics/gui/hits_yellow.png",
-                    "mis");
-        }
-        catch (gcn::Exception e)
-        {
-            logger->error("Unable to load colored hits' fonts!");
-        }
+        logger->error("Unable to load colored hits' fonts!");
     }
 
     // Initialize mouse cursor and listen for changes to the option
