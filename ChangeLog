@@ -1,3 +1,12 @@
+2005-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/main.cpp: Use "true" instead of "1" as bool argument.
+	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
+	Added a method to determine the real path of a file in the PhysFS search
+	path.
+	* src/gui/browserbox.cpp: Make use of then new resource manager method to
+	determine the real path of a file.
+
 2005-08-03  Andrej Sinicyn  <andrej4000@gmail.com>
 
         * src/game.cpp, src/game.h, src/gui/requesttrade.cpp,src/gui/requesttrade.h:

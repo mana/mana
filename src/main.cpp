@@ -170,7 +170,7 @@ void init_engine()
 
     // Add the main data directory to our PhysicsFS search path
     resman->addToSearchPath("data", true);
-    resman->addToSearchPath(TMW_DATADIR "data", 1);
+    resman->addToSearchPath(TMW_DATADIR "data", true);
     // Add zip files to PhysicsFS
     resman->searchAndAddArchives("/", ".zip", true);
     // Updates, these override other files

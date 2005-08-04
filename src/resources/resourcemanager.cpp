@@ -118,6 +118,13 @@ bool ResourceManager::isDirectory(const std::string &path)
     return PHYSFS_isDirectory(path.c_str());
 }
 
+std::string ResourceManager::getRealPath(const std::string &path)
+{
+    const char *dirSep = PHYSFS_getDirSeparator();
+
+    return std::string(PHYSFS_getRealDir(path.c_str())) + dirSep + path;
+}
+
 Resource*
 ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 {

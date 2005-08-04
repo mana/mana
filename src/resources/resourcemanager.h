@@ -96,6 +96,11 @@ class ResourceManager
         bool isDirectory(const std::string &path);
 
         /**
+         * Returns the real path to the given path in the PhysFS search path
+         */
+        std::string getRealPath(const std::string &path);
+
+        /**
          * Creates a resource and adds it to the resource map. The idPath is
          * converted into the appropriate path for the current operating system
          * and the resource is loaded.

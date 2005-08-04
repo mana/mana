@@ -24,6 +24,7 @@
 #include <guichan.hpp>
 #include "../graphics.h"
 #include "../main.h"
+#include "../resources/resourcemanager.h"
 #include "browserbox.h"
 #include "gui.h"
 
@@ -45,7 +46,8 @@ BrowserBox::BrowserBox(unsigned int mode):
     {
         if (useOpenGL) {
             browserFont = new gcn::ImageFont(
-                    TMW_DATADIR "data/graphics/gui/browserfont.png",
+                    ResourceManager::getInstance()->getRealPath(
+                        "graphics/gui/browserfont.png"),
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
