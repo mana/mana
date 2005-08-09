@@ -1,3 +1,8 @@
+2005-08-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/engine.cpp: Adjust drawing offset to have the player centered in
+	higher resolutions as well.
+
 2005-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp: Use "true" instead of "1" as bool argument.

@@ -329,8 +329,11 @@ void Engine::draw()
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
-    int map_x = (player_node->x - 13) * 32 + get_x_offset(player_node);
-    int map_y = (player_node->y -  9) * 32 + get_y_offset(player_node);
+    int midTileX = guiGraphics->getWidth() / 32 / 2;
+    int midTileY = guiGraphics->getHeight() / 32 / 2;
+
+    int map_x = (player_node->x - midTileX) * 32 + get_x_offset(player_node);
+    int map_y = (player_node->y -  midTileY) * 32 + get_y_offset(player_node);
 
     if (map_x < 0) {
         map_x = 0;
@@ -340,11 +343,11 @@ void Engine::draw()
     }
 
     if (mCurrentMap) {
-        if (map_x > (mCurrentMap->getWidth() - 13) * 32) {
-            map_x = (mCurrentMap->getWidth() - 13) * 32;
+        if (map_x > (mCurrentMap->getWidth() - midTileX) * 32) {
+            map_x = (mCurrentMap->getWidth() - midTileX) * 32;
         }
-        if (map_y > (mCurrentMap->getHeight() - 9) * 32) {
-            map_y = (mCurrentMap->getHeight() - 9) * 32;
+        if (map_y > (mCurrentMap->getHeight() - midTileY) * 32) {
+            map_y = (mCurrentMap->getHeight() - midTileY) * 32;
         }
     }
 
