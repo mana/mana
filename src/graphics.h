@@ -135,6 +135,11 @@ public gcn::SDLGraphics {
 
         void setColor(gcn::Color color);
 
+        void popClipArea();
+        bool pushClipArea(gcn::Rectangle area);
+
+        void fillRectangle(const gcn::Rectangle &rectangle);
+
     private:
         SDL_Surface *mScreen;
         bool mFullscreen, mHWAccel;

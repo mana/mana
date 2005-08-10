@@ -48,16 +48,8 @@ void ListBox::draw(gcn::Graphics *graphics)
 
     // Draw rectangle below the selected list element
     if (mSelected >= 0) {
-        if (useOpenGL) {
-#ifdef USE_OPENGL
-            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
-                    gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
-#endif
-        }
-        else {
-            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
-                    gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
-        }
+        graphics->fillRectangle(
+                gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
     }
 
     // Draw the list elements

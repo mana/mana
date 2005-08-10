@@ -211,14 +211,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
     if (mOpaque)
     {
         graphics->setColor(gcn::Color(BGCOLOR));
-        if (useOpenGL) {
-#ifdef USE_OPENGL
-            dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-#endif
-        }
-        else {
-            dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
-        }
+        graphics->fillRectangle(gcn::Rectangle(0, 0, getWidth(), getHeight()));
     }
 
     if (mSelectedLink >= 0)
@@ -226,26 +219,12 @@ void BrowserBox::draw(gcn::Graphics* graphics)
         if ((mHighMode == BACKGROUND) || (mHighMode == BOTH))
         {
             graphics->setColor(gcn::Color(HIGHLIGHT));
-            if (useOpenGL) {
-#ifdef USE_OPENGL
-                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(
-                        gcn::Rectangle(
-                            mLinks[mSelectedLink].x1,
-                            mLinks[mSelectedLink].y1,
-                            mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
-                            mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
-                            ));
-#endif
-            }
-            else {
-                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(
-                        gcn::Rectangle(
-                            mLinks[mSelectedLink].x1,
-                            mLinks[mSelectedLink].y1,
-                            mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
-                            mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
-                            ));
-            }
+            graphics->fillRectangle(gcn::Rectangle(
+                        mLinks[mSelectedLink].x1,
+                        mLinks[mSelectedLink].y1,
+                        mLinks[mSelectedLink].x2 - mLinks[mSelectedLink].x1,
+                        mLinks[mSelectedLink].y2 - mLinks[mSelectedLink].y1
+                        ));
         }
 
         if ((mHighMode == UNDERLINE) || (mHighMode == BOTH))

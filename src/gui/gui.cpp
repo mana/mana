@@ -181,16 +181,8 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    if (useOpenGL) {
-#ifdef USE_OPENGL
-        dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
-        guiTop->draw((gcn::OpenGLGraphics*)guiGraphics);
-#endif
-    }
-    else {
-        dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->pushClipArea(guiTop->getDimension());
-        guiTop->draw((gcn::SDLGraphics*)guiGraphics);
-    }
+    guiGraphics->pushClipArea(guiTop->getDimension());
+    guiTop->draw(mGraphics);
 
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
@@ -201,14 +193,7 @@ void Gui::draw()
         guiGraphics->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
     }
 
-    if (useOpenGL) {
-#ifdef USE_OPENGL
-        dynamic_cast<gcn::OpenGLGraphics*>(guiGraphics)->popClipArea();
-#endif
-    }
-    else {
-        dynamic_cast<gcn::SDLGraphics*>(guiGraphics)->popClipArea();
-    }
+    guiGraphics->popClipArea();
 }
 
 void Gui::mousePress(int mx, int my, int button)

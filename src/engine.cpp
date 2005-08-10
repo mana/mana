@@ -531,14 +531,7 @@ void Engine::draw()
             int squareX = node.x * 32 - map_x + 12;
             int squareY = node.y * 32 - map_y + 12;
             guiGraphics->setColor(gcn::Color(255, 0, 0));
-            if (useOpenGL) {
-#ifdef USE_OPENGL
-                dynamic_cast<gcn::OpenGLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-#endif
-            }
-            else {
-                dynamic_cast<gcn::SDLGraphics*>(graphics)->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            }
+            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
             MetaTile *tile = mCurrentMap->getMetaTile(node.x, node.y);
 

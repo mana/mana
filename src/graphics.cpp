@@ -192,6 +192,42 @@ void Graphics::setColor(gcn::Color color)
 #endif
 }
 
+void Graphics::popClipArea()
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::popClipArea();
+    }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::popClipArea();
+    }
+#endif
+}
+
+bool Graphics::pushClipArea(gcn::Rectangle area)
+{
+    if (!useOpenGL) {
+        return gcn::SDLGraphics::pushClipArea(area);
+    }
+#ifdef USE_OPENGL
+    else {
+        return gcn::OpenGLGraphics::pushClipArea(area);
+    }
+#endif
+}
+
+void Graphics::fillRectangle(const gcn::Rectangle &rectangle)
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::fillRectangle(rectangle);
+    }
+#ifdef USE_OPENGL
+    else {
+        gcn::OpenGLGraphics::fillRectangle(rectangle);
+    }
+#endif
+}
+
 int Graphics::getWidth()
 {
     return mScreen->w;

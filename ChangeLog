@@ -1,3 +1,13 @@
+2005-08-10  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/engine.cpp, src/graphics.cpp, src/graphics.h,
+	src/gui/browserbox.cpp, src/gui/gui.cpp, src/gui/listbox.cpp,
+	src/gui/minimap.cpp, src/gui/progressbar.cpp, src/gui/scrollarea.cpp:
+	Moved knowledge about whether we use OpenGL into the Graphics class (as
+	much as possible)
+	* src/game.cpp: Added helper function for being creation to reduce code
+	duplication. Some code simplifications.
+
 2005-08-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Adjust drawing offset to have the player centered in

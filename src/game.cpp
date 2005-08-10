@@ -141,6 +141,17 @@ int get_elapsed_time(int start_time)
     }
 }
 
+Being* createBeing(unsigned int id, unsigned short job, Map *map)
+{
+    Being *being = new Being;
+
+    being->setId(id);
+    being->job = job;
+    being->setMap(map);
+
+    return being;
+}
+
 void do_init()
 {
     std::string path(map_path);
@@ -165,14 +176,12 @@ void do_init()
     SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
     // Initialize beings
-    player_node = new Being();
-    player_node->setId(account_ID);
+    player_node = createBeing(account_ID, 0, tiledMap);
     player_node->x = startX;
     player_node->y = startY;
     player_node->speed = 150;
     player_node->setHairColor(char_info->hair_color);
     player_node->setHairStyle(char_info->hair_style);
-    player_node->setMap(tiledMap);
 
     if (char_info->weapon == 11) {
         char_info->weapon = 2;
@@ -384,14 +393,8 @@ void do_input()
                         unsigned short y = player_node->y;
                         int id = find_floor_item_by_cor(x, y);
 
-                        if (id)
-                        {
-                            WFIFOW(0) = net_w_value(0x009f);
-                            WFIFOL(2) = net_l_value(id);
-                            WFIFOSET(6);
-                        }
-                        else
-                        {
+                        // If none below the player, try the tile in front of the player
+                        if (!id) {
                             switch (player_node->direction)
                             {
                                 case NORTH: y--; break;
@@ -404,6 +407,10 @@ void do_input()
                                 case SE:    x++; y++; break;
                             }
                             id = find_floor_item_by_cor(x, y);
+                        }
+
+                        if (id)
+                        {
                             WFIFOW(0) = net_w_value(0x009f);
                             WFIFOL(2) = net_l_value(id);
                             WFIFOSET(6);
@@ -929,19 +936,14 @@ void do_parse()
 
                     if (being == NULL)
                     {
-                        being = new Being();
-                        being->setId(beingId);
+                        being = createBeing(beingId, beingJob, tiledMap);
                         being->speed = RFIFOW(6);
                         if (being->speed == 0) {
                             // Else division by 0 when calculating frame
                             being->speed = 150;
                         }
-                        being->job = beingJob;
                         being->setHairStyle(RFIFOW(16));
                         being->setHairColor(RFIFOW(28));
-                        being->x = get_x(RFIFOP(46));
-                        being->y = get_y(RFIFOP(46));
-                        being->direction = get_direction(RFIFOP(46));
                         being->setWeapon(RFIFOW(18));
                         being->setMap(tiledMap);
                         add_node(being);
@@ -949,14 +951,14 @@ void do_parse()
                     else
                     {
                         being->clearPath();
-                        being->x = get_x(RFIFOP(46));
-                        being->y = get_y(RFIFOP(46));
-                        being->direction = get_direction(RFIFOP(46));
                         //being->setWeapon(RFIFOW(18));
                         being->frame = 0;
                         being->walk_time = tick_time;
                         being->action = Being::STAND;
                     }
+                    being->x = get_x(RFIFOP(46));
+                    being->y = get_y(RFIFOP(46));
+                    being->direction = get_direction(RFIFOP(46));
                     break;
 
                 case SMSG_REMOVE_BEING:
@@ -997,10 +999,7 @@ void do_parse()
 
                     if (being == NULL) 
                     {
-                        being = new Being();
-                        being->setId(RFIFOL(2));
-                        being->job = RFIFOW(14);
-                        being->setMap(tiledMap);
+                        being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
                         add_node(being);
                     }
 
@@ -1028,10 +1027,7 @@ void do_parse()
 
                     if (being == NULL)
                     {
-                        being = new Being();
-                        being->setId(RFIFOL(2));
-                        being->job = RFIFOW(14);
-                        being->setMap(tiledMap);
+                        being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
                         add_node(being);
                     }
 
@@ -1051,10 +1047,7 @@ void do_parse()
 
                     if (being == NULL)
                     {
-                        being = new Being();
-                        being->setId(RFIFOL(2));
-                        being->job = RFIFOW(14);
-                        being->setMap(tiledMap);
+                        being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
                         add_node(being);
                     }
 
@@ -1178,17 +1171,8 @@ void do_parse()
                     break;
                 // Trade received Ok message
                 case 0x00ec:
-                    switch (RFIFOB(2)) 
-                    {
-                        // Received ok from myself
-                        case 0:
-                            tradeWindow->receivedOk(true);
-                            break;
-                        // Received ok from the other
-                        case 1:
-                            tradeWindow->receivedOk(false);
-                            break;
-                    }
+                    // 0 means ok from myself, 1 means ok from other;
+                    tradeWindow->receivedOk((RFIFOB(2) == 0));
                     break;
 
                 // Trade cancelled
@@ -1589,14 +1573,8 @@ void do_parse()
                     break;
                     // Item disappearing
                 case 0x00a1:
-                     floorItem = find_floor_item_by_id(net_l_value(RFIFOL(2)));
-                     if (floorItem != NULL) {
-                         remove_floor_item(net_l_value(RFIFOL(2)));
-                     }
-                     else {
-                         remove_floor_item(net_l_value(RFIFOL(2)));
-                     }
-                     break;
+                    remove_floor_item(net_l_value(RFIFOL(2)));
+                    break;
                     // Next/Close button in NPC dialog
                 case 0x00b5:
                 case 0x00b6:
