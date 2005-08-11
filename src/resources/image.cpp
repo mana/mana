@@ -250,12 +250,9 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
 void Image::unload()
 {
     // Free the image surface.
-    if (!useOpenGL) {
-        if (image != NULL) {
+    if (!useOpenGL && (image != NULL)) {
             SDL_FreeSurface(image);
             image = NULL;
-            loaded = false;
-        }
     }
     loaded = false;
 }

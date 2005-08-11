@@ -1,3 +1,7 @@
+2005-08-11  Andrej Sinicyn  <andrej4000@gmail.com>
+
+	* src/resources/image.cpp: Little cleanup and simplification.
+
 2005-08-10  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/graphics.cpp, src/graphics.h,
