@@ -148,9 +148,14 @@ void SellDialog::action(const std::string& eventId)
         {
             slider->setEnabled(true);
             increaseButton->setEnabled(true);
+            decreaseButton->setEnabled(false);
 
             m_maxItems = shopInventory[selectedItem].quantity;
             m_amountItems = 0;
+            slider->setValue(0);
+            oss << m_amountItems;
+            quantityLabel->setCaption(oss.str());
+            quantityLabel->adjustSize();
         }
         else
         {

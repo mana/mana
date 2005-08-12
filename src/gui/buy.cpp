@@ -164,6 +164,14 @@ void BuyDialog::action(const std::string& eventId)
             slider->setEnabled(true);
             increaseButton->setEnabled(true);
             m_amountItems = 0;
+            slider->setValue(0);
+            oss << m_amountItems;
+            quantityLabel->setCaption(oss.str());
+            quantityLabel->adjustSize();
+            oss.str("price : 0 GP");
+            moneyLabel->setCaption(oss.str());
+            moneyLabel->adjustSize();
+            decreaseButton->setEnabled(false);
             m_maxItems = m_money / shopInventory[selectedItem].price;
         }
         else
