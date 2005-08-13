@@ -33,13 +33,12 @@
 #define CONTROLS_SEPARATOR 4
 
 StatusWindow::StatusWindow():
-    Window("%s Lvl: % 2i Job: % 2i")
+    Window("%s Lvl: % 2i Job: % 2i GP: % 2i")
 {
     hp = new gcn::Label("HP");
     sp = new gcn::Label("SP");
     hpValue = new gcn::Label();
     spValue = new gcn::Label();
-    gp = new gcn::Label("GP");
     expLabel = new gcn::Label("Exp");
     jobExpLabel = new gcn::Label("Job");
 
@@ -64,26 +63,51 @@ StatusWindow::StatusWindow():
     equipmentButton->addActionListener(this);
 
     hp->setPosition(WIN_BORDER, WIN_BORDER);
-    sp->setPosition(WIN_BORDER, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
-    healthBar = new ProgressBar(1.0f, WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER, 80, 15, 0, 255, 0);
-    hpValue->setPosition(healthBar->getX() + healthBar->getWidth() + 2*CONTROLS_SEPARATOR, WIN_BORDER);
-    manaBar = new ProgressBar(1.0f, WIN_BORDER + sp->getWidth() + CONTROLS_SEPARATOR,
-        hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR, 80, 15, 0, 0, 255);
-    spValue->setPosition(manaBar->getX() + manaBar->getWidth() + 2*CONTROLS_SEPARATOR, hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
-    gp->setPosition(170, WIN_BORDER);
-    expLabel->setPosition(WIN_BORDER, sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
-    jobExpLabel->setPosition(spValue->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR);
+    sp->setPosition(WIN_BORDER,
+            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
+    healthBar = new ProgressBar(1.0f,
+            WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER, 80,
+            15, 0, 171, 34);
+    hpValue->setPosition(
+            healthBar->getX() + healthBar->getWidth() + 2 * CONTROLS_SEPARATOR,
+            WIN_BORDER);
+    manaBar = new ProgressBar(1.0f,
+            WIN_BORDER + sp->getWidth() + CONTROLS_SEPARATOR,
+            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR, 80, 15, 26, 102,
+            230);
+    spValue->setPosition(
+            manaBar->getX() + manaBar->getWidth() + 2 * CONTROLS_SEPARATOR,
+            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
+    xpBar = new ProgressBar(1.0f,
+            manaBar->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR,
+            70, 15, 143, 192, 211);
+    expLabel->setPosition(
+            xpBar->getX() + xpBar->getWidth() + CONTROLS_SEPARATOR,
+            xpBar->getY());
+    jobXpBar = new ProgressBar(1.0f, healthBar->getX(),
+            xpBar->getY() + xpBar->getHeight() + CONTROLS_SEPARATOR, 70, 15,
+            220, 135, 203);
+    jobExpLabel->setPosition(
+            jobXpBar->getX() + jobXpBar->getWidth() + CONTROLS_SEPARATOR,
+            jobXpBar->getY());
+    statsButton->setPosition(WIN_BORDER,
+            jobXpBar->getY() + jobXpBar->getHeight() + 2 * CONTROLS_SEPARATOR);
+    skillsButton->setPosition(
+            statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR,
+            statsButton->getY());
+    inventoryButton->setPosition(
+            skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR,
+            statsButton->getY());
+    setupButton->setPosition(
+            inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR,
+            statsButton->getY());
+    equipmentButton->setPosition(
+            setupButton->getX() + setupButton->getWidth() + CONTROLS_SEPARATOR,
+            statsButton->getY());
 
-    xpBar = new ProgressBar(1.0f, WIN_BORDER, expLabel->getY() + expLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 12, 194, 255);
-    jobXpBar = new ProgressBar(1.0f, spValue->getX(), jobExpLabel->getY() + jobExpLabel->getHeight() + CONTROLS_SEPARATOR, 70, 15, 200, 0, 0);
-
-    statsButton->setPosition(WIN_BORDER, xpBar->getY() + xpBar->getHeight() + 2*CONTROLS_SEPARATOR);
-    skillsButton->setPosition(statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
-    inventoryButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
-    setupButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
-    equipmentButton->setPosition(setupButton->getX() + setupButton->getWidth() + CONTROLS_SEPARATOR, statsButton->getY());
-
-    setContentSize(250, statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
+    setContentSize(
+            equipmentButton->getX() + equipmentButton->getWidth() + WIN_BORDER,
+            statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
 
     add(hp);
     add(sp);
@@ -91,7 +115,6 @@ StatusWindow::StatusWindow():
     add(manaBar);
     add(hpValue);
     add(spValue);
-    add(gp);
     add(expLabel);
     add(jobExpLabel);
     add(xpBar);
@@ -107,7 +130,6 @@ StatusWindow::~StatusWindow()
 {
     delete hp;
     delete sp;
-    delete gp;
     delete expLabel;
     delete jobExpLabel;
     delete healthBar;
@@ -125,28 +147,25 @@ void StatusWindow::update()
 {
     char *tempstr = new char[64];
 
-    sprintf(tempstr, "%s Lvl: % 2i Job: % 2i",
-            char_info->name, char_info->lv, char_info->job_lv);
+    sprintf(tempstr, "%s Lvl: % 2i Job: % 2i GP: % 2i",
+            char_info->name, char_info->lv, char_info->job_lv,
+            char_info->gp);
     setCaption(tempstr);
 
-    sprintf(tempstr, "%d / %d", char_info->hp, char_info->max_hp);
+    sprintf(tempstr, "%d/%d", char_info->hp, char_info->max_hp);
     hpValue->setCaption(tempstr);
     hpValue->adjustSize();
 
-    sprintf(tempstr, "GP %6i", char_info->gp);
-    gp->setCaption(tempstr);
-    gp->adjustSize();
-
-    sprintf(tempstr, "%d / %d", char_info->sp, char_info->max_sp);
+    sprintf(tempstr, "%d/%d", char_info->sp, char_info->max_sp);
     spValue->setCaption(tempstr);
     spValue->adjustSize();
 
-    sprintf(tempstr, "Exp: %d / %d",
+    sprintf(tempstr, "Exp: %d/%d",
             (int)char_info->xp, (int)char_info->xpForNextLevel);
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
 
-    sprintf(tempstr, "Job Exp: %d / %d",
+    sprintf(tempstr, "Job: %d/%d",
             (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
@@ -154,28 +173,30 @@ void StatusWindow::update()
     // HP Bar coloration
     if (char_info->hp < int(char_info->max_hp / 3))
     {
-        healthBar->setColor(255, 0, 0); // Red
+        healthBar->setColor(223, 32, 32); // Red
     }
     else
     {
         if (char_info->hp < int((char_info->max_hp / 3) * 2))
         {
-            healthBar->setColor(255, 181, 9); // orange
+            healthBar->setColor(230, 171, 34); // Orange
         }
         else
         {
-            healthBar->setColor(0, 255, 0); // Green
+            healthBar->setColor(0, 171, 34); // Green
         }
     }
 
     // XP Bar dark blue to light blue Smooth fading
-    unsigned char redXP = unsigned(char(((float)char_info->xp / (float)char_info->xpForNextLevel) * 12));
-    unsigned char greenXP = unsigned(char(((float)char_info->xp / (float)char_info->xpForNextLevel) * 94));
-    xpBar->setColor(redXP, 100 + greenXP, 255);
+    float redXP = (char_info->xp / char_info->xpForNextLevel) * 143;
+    float greenXP = (char_info->xp / char_info->xpForNextLevel) * 192;
+    xpBar->setColor((unsigned char)redXP,
+                    (unsigned char)greenXP, 211);
 
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
 
-    xpBar->setProgress((float)char_info->xp / (float)char_info->xpForNextLevel);
+    xpBar->setProgress(
+            (float)char_info->xp / (float)char_info->xpForNextLevel);
     jobXpBar->setProgress(
             (float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
 

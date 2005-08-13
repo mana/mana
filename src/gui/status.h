@@ -57,7 +57,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         void update();
 
     private:
-        gcn::Label *hp, *sp, *gp;
+        gcn::Label *hp, *sp;
         gcn::Label *hpValue, *spValue;
         gcn::Label *expLabel, *jobExpLabel;
         ProgressBar *healthBar, *manaBar;

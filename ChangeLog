@@ -1,3 +1,8 @@
+2005-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/status.h, src/gui/status.cpp: Reformatted status window layout to
+	avoid overlapping and lowered saturation of bars' colors.
+
 2005-08-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/buy.cpp, src/sell.cpp: Resetting quantity to 0 after selecting other
