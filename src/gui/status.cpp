@@ -84,7 +84,7 @@ StatusWindow::StatusWindow():
     expLabel->setPosition(
             xpBar->getX() + xpBar->getWidth() + CONTROLS_SEPARATOR,
             xpBar->getY());
-    jobXpBar = new ProgressBar(1.0f, healthBar->getX(),
+    jobXpBar = new ProgressBar(1.0f, manaBar->getX(),
             xpBar->getY() + xpBar->getHeight() + CONTROLS_SEPARATOR, 70, 15,
             220, 135, 203);
     jobExpLabel->setPosition(
@@ -186,12 +186,6 @@ void StatusWindow::update()
             healthBar->setColor(0, 171, 34); // Green
         }
     }
-
-    // XP Bar dark blue to light blue Smooth fading
-    float redXP = (char_info->xp / char_info->xpForNextLevel) * 143;
-    float greenXP = (char_info->xp / char_info->xpForNextLevel) * 192;
-    xpBar->setColor((unsigned char)redXP,
-                    (unsigned char)greenXP, 211);
 
     healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
 
