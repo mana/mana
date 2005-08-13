@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <guichan/widgets/label.hpp>
+
 #include "being.h"
 #include "configuration.h"
 #include "floor_item.h"

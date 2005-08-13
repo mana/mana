@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 
 #include "../playerinfo.h"

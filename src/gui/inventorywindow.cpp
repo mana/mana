@@ -25,6 +25,8 @@
 
 #include <string>
 
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 #include "item_amount.h"
 #include "itemcontainer.h"

@@ -22,10 +22,15 @@
  */
 
 #include "skill.h"
+
+#include <guichan/widgets/label.hpp>
+
+#include "button.h"
 #include "listbox.h"
 #include "scrollarea.h"
-#include "button.h"
+
 #include "../playerinfo.h"
+
 #include "../net/network.h"
 
 char *skill_db[] = {

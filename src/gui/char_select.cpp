@@ -27,6 +27,8 @@
 
 #include <guichan/sdl/sdlinput.hpp>
 
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 #include "gui.h"
 #include "ok_dialog.h"

@@ -23,6 +23,8 @@
 
 #include "status.h"
 
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 #include "equipmentwindow.h"
 #include "inventorywindow.h"

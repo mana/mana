@@ -43,6 +43,10 @@
 	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h,
 	src/resources/soundeffect.h: Huge header cleanup, removing nearly all
 	#include's from headers to reduce dependencies and compile time.
+	* src/engine.cpp, src/gui/char_select.cpp, src/gui/inventorywindow.cpp,
+	src/gui/skill.cpp, src/gui/skill.h, src/gui/stats.cpp, src/gui/status.cpp:
+	Another small header cleanup, should also solve compilation problems on
+	windows.
 
 2005-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

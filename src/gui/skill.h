@@ -26,12 +26,12 @@
 
 #include <vector>
 
-#include <guichan/widgets/button.hpp>
-#include <guichan/widgets/label.hpp>
-#include <guichan/widgets/listbox.hpp>
-#include <guichan/widgets/scrollarea.hpp>
+#include <guichan/listmodel.hpp>
+#include <guichan/actionlistener.hpp>
 
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 struct SKILL {
     short id;      /**< Index into "skill_db" array */
