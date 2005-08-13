@@ -24,10 +24,17 @@
 #ifndef _TMW_SELL_H
 #define _TMW_SELL_H
 
-#include "window.h"
-#include "shop.h"
-
 #include <vector>
+
+#include <guichan/actionlistener.hpp>
+#include <guichan/listmodel.hpp>
+
+#include "window.h"
+
+#include "../guichanfwd.h"
+
+struct ITEM_SHOP;
+
 
 /**
  * The sell dialog.

@@ -25,7 +25,9 @@
 #define _TMW_SPRITESET_H
 
 #include <vector>
-#include "../resources/image.h"
+
+class Image;
+
 
 /**
  * Stores a complete set of sprites.

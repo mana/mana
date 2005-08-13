@@ -26,7 +26,13 @@
   */
 
 #include "newskill.h"
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
+#include "progressbar.h"
+
+#include "../graphics.h"
 
 char *skill_name[] = {
     // 0-99

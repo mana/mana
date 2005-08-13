@@ -1,5 +1,6 @@
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/spriteset.cpp \
+	      graphic/imagerect.h \
 	      graphic/spriteset.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
@@ -128,6 +129,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      base64.h \
 	      being.cpp \
 	      being.h \
+	      configlistener.cpp \
+	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
 	      engine.cpp \

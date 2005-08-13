@@ -22,11 +22,19 @@
  */
 
 #include "itemcontainer.h"
-#include "../main.h"
-#include "../log.h"
-#include "../graphics.h"
-#include "../resources/resourcemanager.h"
+
 #include <sstream>
+
+#include "../graphics.h"
+#include "../inventory.h"
+#include "../item.h"
+#include "../log.h"
+
+#include "../graphic/spriteset.h"
+
+#include "../resources/image.h"
+#include "../resources/iteminfo.h"
+#include "../resources/resourcemanager.h"
 
 ItemContainer::ItemContainer(Inventory *inventory):
     inventory(inventory)

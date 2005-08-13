@@ -21,39 +21,43 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
 #include "main.h"
-#include "game.h"
-#include "log.h"
-#include "serverinfo.h"
-#include "gui/login.h"
-#include "gui/char_server.h"
-#include "gui/char_select.h"
-#include "gui/ok_dialog.h"
-#include "gui/updatewindow.h"
-#include "sound.h"
-#include "graphics.h"
-#include "resources/resourcemanager.h"
-#include "resources/itemmanager.h"
-#include "net/protocol.h"
 
 #include <iostream>
-#include <cstdio>
-#include <guichan.hpp>
 #include <physfs.h>
-#include <libxml/xmlversion.h>
-#include <libxml/parser.h>
-#include <curl/curl.h>
-#include <SDL.h>
-#include <SDL_thread.h>
 #include <SDL_image.h>
 
+#include <guichan/sdl/sdlinput.hpp>
+
+#include <libxml/parser.h>
+
 #ifdef __USE_UNIX98
-#include <sys/stat.h>
-#include <pwd.h>
-#include <unistd.h>
 #include <errno.h>
+#include <sys/stat.h>
 #endif
+
+#include "configuration.h"
+#include "game.h"
+#include "graphics.h"
+#include "log.h"
+#include "playerinfo.h"
+#include "sound.h"
+
+#include "graphic/spriteset.h"
+
+#include "gui/char_server.h"
+#include "gui/char_select.h"
+#include "gui/gui.h"
+#include "gui/login.h"
+#include "gui/ok_dialog.h"
+#include "gui/updatewindow.h"
+
+#include "net/protocol.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+
+struct SERVER_INFO;
 
 // Account infos
 int account_ID, session_ID1, session_ID2;
@@ -80,7 +84,6 @@ Music *bgm;
 
 Configuration config;         /**< Xml file configuration reader */
 Logger *logger;               /**< Log object */
-ItemManager *itemDb;          /**< Item database object */
 
 /**
  * Allows the next frame to be drawn (part of framerate limiting)
@@ -245,9 +248,6 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    // Initialize item manager
-    itemDb = new ItemManager();
-
     login_wallpaper = resman->getImage(
             "graphics/images/login_wallpaper.png");
     Image *playerImg = resman->getImage(
@@ -295,7 +295,6 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
-    delete itemDb;
 
     // Shutdown libxml
     xmlCleanupParser();

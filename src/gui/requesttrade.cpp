@@ -22,7 +22,13 @@
  */
 
 #include "requesttrade.h"
+
+#include <sstream>
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
+
 #include "../net/network.h"
 
 bool requestTradeDialogOpen = false;

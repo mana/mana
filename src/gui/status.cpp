@@ -22,12 +22,17 @@
  */
 
 #include "status.h"
-#include "stats.h"
-#include "inventorywindow.h"
-#include "setup.h"
-#include "equipmentwindow.h"
+
 #include "button.h"
+#include "equipmentwindow.h"
+#include "inventorywindow.h"
+#include "progressbar.h"
+#include "skill.h"
+#include "stats.h"
+
 #include "../playerinfo.h"
+
+extern Window *setupWindow;
 
 #define WIN_BORDER 5
 #define CONTROLS_SEPARATOR 4

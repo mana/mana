@@ -22,14 +22,33 @@
  */
 
 #include "gui.h"
+
+#include <guichan/exception.hpp>
+#include <guichan/imagefont.hpp>
+
+#ifdef USE_OPENGL
+#include <guichan/opengl/openglimageloader.hpp>
+#endif
+
+#include <guichan/sdl/sdlimageloader.hpp>
+#include <guichan/sdl/sdlinput.hpp>
+
+#include "focushandler.h"
 #include "window.h"
 #include "windowcontainer.h"
-#include "focushandler.h"
-#include "../net/protocol.h"
-#include "../main.h"
+
+#include "../being.h"
+#include "../configuration.h"
 #include "../engine.h"
 #include "../game.h"
+#include "../graphics.h"
 #include "../log.h"
+#include "../main.h"
+#include "../map.h"
+
+#include "../net/protocol.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 extern Being* autoTarget;
@@ -52,34 +71,29 @@ Gui::Gui(Graphics *graphics):
     mMouseCursor(NULL),
     mCustomCursor(false)
 {
-    // Set graphics
     guiGraphics = graphics;
     //setGraphics(graphics);
-    if (useOpenGL) {
 #ifdef USE_OPENGL
+    if (useOpenGL) {
+        // Set graphics
         setGraphics((gcn::OpenGLGraphics*)graphics);
+
+        // Set image loader
+        mHostImageLoader = new gcn::SDLImageLoader();
+        mImageLoader = new gcn::OpenGLImageLoader(mHostImageLoader);
+    } else
 #endif
-    }
-    else {
+    {
+        // Set graphics
         setGraphics((gcn::SDLGraphics*)graphics);
+
+        // Set image loader
+        mImageLoader = new gcn::SDLImageLoader();
     }
 
     // Set input
     guiInput = new gcn::SDLInput();
     setInput(guiInput);
-
-    // Set image loader
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        mHostImageLoader = new gcn::SDLImageLoader();
-        mImageLoader = new gcn::OpenGLImageLoader(mHostImageLoader);
-    }
-    else {
-        mImageLoader = new gcn::SDLImageLoader();
-    }
-#else
-    mImageLoader = new gcn::SDLImageLoader();
-#endif
 
     gcn::Image::setImageLoader(mImageLoader);
 

@@ -24,8 +24,9 @@
 #ifndef _TMW_EQUIPMENT_H
 #define _TMW_EQUIPMENT_H 
 
-#include "../graphic/spriteset.h"
 #include "window.h"
+
+class Spriteset;
 
 /**
  * Equipment dialog.

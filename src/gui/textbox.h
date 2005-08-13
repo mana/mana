@@ -24,7 +24,7 @@
 #ifndef __TMW_TEXTBOX_H__
 #define __TMW_TEXTBOX_H__
 
-#include <guichan.hpp>
+#include <guichan/widgets/textbox.hpp>
 
 /**
  * A text box, meant to be used inside a scroll area. Same as the Guichan text

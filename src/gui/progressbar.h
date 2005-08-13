@@ -24,9 +24,10 @@
 #ifndef _TMW_PROGRESSBAR_H
 #define _TMW_PROGRESSBAR_H
 
-#include <guichan.hpp>
-#include "../graphics.h"
-#include "../resources/image.h"
+#include <guichan/widget.hpp>
+
+class ImageRect;
+
 
 /**
  * A progress bar.

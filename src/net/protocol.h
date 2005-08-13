@@ -24,7 +24,7 @@
 #ifndef _TMW_PROTOCOL_H
 #define _TMW_PROTOCOL_H
 
-#include "../being.h"
+class Being;
 
 // Packets from server to client
 #define SMSG_LOGIN_SUCCESS        0x0073 /**< Logged in, starting location */

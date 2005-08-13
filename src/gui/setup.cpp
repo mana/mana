@@ -22,16 +22,25 @@
  */
 
 #include "setup.h"
-#include "gui.h"
+
+#include <iostream>
+#include <sstream>
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 #include "checkbox.h"
-#include "scrollarea.h"
+#include "gui.h"
 #include "listbox.h"
-#include "slider.h"
 #include "ok_dialog.h"
+#include "scrollarea.h"
+#include "slider.h"
+
+#include "../configuration.h"
+#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
-#include <sstream>
+#include "../sound.h"
 
 #define SETUP_WIDTH 240
 

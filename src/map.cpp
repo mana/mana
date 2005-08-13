@@ -23,6 +23,9 @@
 
 #include "map.h"
 
+#include "being.h"
+#include "graphics.h"
+
 #include <queue>
 
 MetaTile::MetaTile():

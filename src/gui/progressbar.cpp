@@ -22,8 +22,12 @@
  */
 
 #include "progressbar.h"
+
 #include "../graphics.h"
-#include "../main.h"
+
+#include "../graphic/imagerect.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 ImageRect ProgressBar::mBorder;

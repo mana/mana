@@ -24,9 +24,10 @@
 #ifndef _TMW_PLAYERINFO_H
 #define _TMW_PLAYERINFO_H
 
+#include <vector>
 #include "gui/skill.h"
 
-typedef struct {
+struct PLAYER_INFO {
     int id;
     float lastAttackTime; // used to synchronize the charge dialog
     char name[24];
@@ -42,7 +43,7 @@ typedef struct {
     std::vector<SKILL> m_Skill; // array of N_SKILLS skills
     // gets the requested skills level from char_info
     int GetSkill(int n_ID, int n_XP=2, int n_base = false); // implemented in the body (main.cpp)
-} PLAYER_INFO;
+};
 
 extern PLAYER_INFO *char_info;
 

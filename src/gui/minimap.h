@@ -25,8 +25,9 @@
 #define _TMW_MINIMAP_H 
 
 #include "window.h"
-#include "../map.h"
-#include "../resources/image.h"
+
+class Map;
+class Image;
 
 /**
  * Minimap dialog.

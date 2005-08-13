@@ -24,9 +24,13 @@
 #ifndef _TMW_LOGIN_H
 #define _TMW_LOGIN_H
 
-#include <guichan.hpp>
-#include <string>
+#include <iosfwd>
+
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * The login dialog.

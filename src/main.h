@@ -24,11 +24,8 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
-#include "graphic/spriteset.h"
-#include "resources/image.h"
-#include "sound.h"
-#include <stdio.h>
-#include <memory>
+class Image;
+class Sound;
 
 #ifndef TMW_DATADIR
 #define TMW_DATADIR ""
@@ -58,7 +55,6 @@ enum {
 #define LEN_PASSWORD 25
 
 extern Image *login_wallpaper;
-extern Spriteset *hairset, *playerset;
 extern char username[25];
 extern char password[25];
 extern int map_address, char_ID;

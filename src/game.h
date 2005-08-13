@@ -30,16 +30,6 @@
 #define LOCK 254
 #define IDLE 255
 
-#define DIR_NONE -1
-#define SOUTH 0
-#define SW    1
-#define WEST  2
-#define NW    3
-#define NORTH 4
-#define NE    5
-#define EAST  6
-#define SE    7
-
 extern char map_path[480];
 extern char tradePartnerName[24];
 extern int fps, frame, current_npc;

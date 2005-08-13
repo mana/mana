@@ -22,9 +22,11 @@
  */
 
 #include "checkbox.h"
+
 #include "../graphics.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
-#include <guichan.hpp>
 
 int CheckBox::instances = 0;
 Image *CheckBox::checkBoxNormal;

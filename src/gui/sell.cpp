@@ -22,16 +22,26 @@
  */
 
 #include "sell.h"
+
+#include <assert.h>
+#include <sstream>
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
-#include "slider.h"
-#include "scrollarea.h"
 #include "listbox.h"
+#include "scrollarea.h"
+#include "shop.h"
+#include "slider.h"
+
 #include "../game.h"
 #include "../inventory.h"
+#include "../item.h"
+
+#include "../resources/iteminfo.h"
+
 #include "../net/network.h"
 
-#include <sstream>
-#include <assert.h>
 
 SellDialog::SellDialog():
     Window("Sell")

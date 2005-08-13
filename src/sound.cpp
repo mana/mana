@@ -22,8 +22,12 @@
  */
 
 #include "sound.h"
+
+#include <SDL.h>
+
 #include "log.h"
 #include "resources/resourcemanager.h"
+#include "resources/soundeffect.h"
 
 Sound::Sound():
     installed(false),

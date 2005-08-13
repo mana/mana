@@ -22,13 +22,20 @@
  */
 
 #include "inventorywindow.h"
-#include "popupmenu.h"
-#include "../playerinfo.h"
-#include "../inventory.h"
-#include "button.h"
-#include "scrollarea.h"
-#include "item_amount.h"
+
 #include <string>
+
+#include "button.h"
+#include "item_amount.h"
+#include "itemcontainer.h"
+#include "popupmenu.h"
+#include "scrollarea.h"
+
+#include "../inventory.h"
+#include "../item.h"
+#include "../playerinfo.h"
+
+#include "resources/iteminfo.h"
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")

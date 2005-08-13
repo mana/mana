@@ -24,8 +24,15 @@
 #ifndef __TMW_BROWSERBOX_H__
 #define __TMW_BROWSERBOX_H__
 
-#include <guichan.hpp>
-#include "linkhandler.h"
+#include <iosfwd>
+#include <vector>
+
+#include <guichan/widget.hpp>
+#include <guichan/mouselistener.hpp>
+
+#include "../guichanfwd.h"
+
+class LinkHandler;
 
 struct BROWSER_LINK {
     int x1, x2, y1, y2;     /**< Where link is placed */

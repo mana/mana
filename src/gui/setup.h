@@ -24,7 +24,13 @@
 #ifndef _TMW_SETUP_H
 #define _TMW_SETUP_H
 
+#include <vector>
+
+#include <guichan/listmodel.hpp>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * The list model for mode list.
@@ -104,7 +110,6 @@ class Setup : public Window, public gcn::ActionListener
          */
         void
         action(const std::string& eventId);
-
 };
 
 extern Setup *setupWindow;

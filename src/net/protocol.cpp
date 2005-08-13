@@ -21,19 +21,22 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
-#include "../main.h"
-#include "../game.h"
-#include "../playerinfo.h"
-#include "../log.h"
 #include "protocol.h"
-#include "network.h"
 
 #ifdef WIN32
 #include <windows.h>
 #else
 #include "win2linux.h"
 #endif
+
+#include "network.h"
+
+#include "../being.h"
+#include "../game.h"
+#include "../log.h"
+#include "../main.h"
+#include "../playerinfo.h"
+#include "../sound.h"
 
 
 short packet_lengths[] = {
@@ -232,19 +235,19 @@ Being* attack(unsigned short x, unsigned short y, unsigned char direction)
 
     switch (direction)
     {
-        case SOUTH:
+        case Being::SOUTH:
             target = findNode(x, y + 1, Being::MONSTER);
             break;
 
-        case WEST:
+        case Being::WEST:
             target = findNode(x - 1, y, Being::MONSTER);
             break;
 
-        case NORTH:
+        case Being::NORTH:
             target = findNode(x, y - 1, Being::MONSTER);
             break;
 
-        case EAST:
+        case Being::EAST:
             target = findNode(x + 1, y, Being::MONSTER);
             break;
     }
@@ -264,16 +267,16 @@ void attack(Being *target)
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
-            player_node->direction = SOUTH;
+            player_node->direction = Being::SOUTH;
         else
-            player_node->direction = NORTH;
+            player_node->direction = Being::NORTH;
     }
     else
     {
         if (dist_x > 0)
-            player_node->direction = EAST;
+            player_node->direction = Being::EAST;
         else
-            player_node->direction = WEST;
+            player_node->direction = Being::WEST;
     }
 
     // Implement charging attacks here

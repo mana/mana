@@ -21,27 +21,30 @@
  *  $Id$
  */
 
-#ifndef __PASSWORDFIELD_H__
-#define __PASSWORDFIELD_H__
+#ifndef _TMW_IMAGERECT_H
+#define _TMW_IMAGERECT_H
 
-#include "textfield.h"
+class Image;
 
 /**
- * A password field.
+ * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The
+ * topology is as follows:
  *
- * \ingroup GUI
+ * <pre>
+ *  !-----!-----------------!-----!
+ *  !  0  !        1        !  2  !
+ *  !-----!-----------------!-----!
+ *  !  3  !        4        !  5  !
+ *  !-----!-----------------!-----!
+ *  !  6  !        7        !  8  !
+ *  !-----!-----------------!-----!
+ * </pre>
+ *
+ * Sections 0, 2, 6 and 8 will remain as is. 1, 3, 4, 5 and 7 will be
+ * repeated to fit the size of the widget.
  */
-class PasswordField : public TextField {
-    public:
-        /**
-         * Constructor, initializes the password field with the given string.
-         */
-        PasswordField(const std::string& text = "");
-
-        /**
-         * Draws the password field.
-         */
-        void draw(gcn::Graphics *graphics);
+struct ImageRect {
+    Image *grid[9];
 };
 
 #endif

@@ -21,16 +21,19 @@
  *  $Id$
  */
 
-#include "../log.h"
 #include "mapreader.h"
-#include "resourcemanager.h"
-#include "../graphic/spriteset.h"
-#include "../base64.h"
 
 #include <cassert>
-
 #include <zlib.h>
-#include <iostream>
+
+#include "resourcemanager.h"
+
+#include "../base64.h"
+#include "../log.h"
+#include "../map.h"
+
+#include "../graphic/spriteset.h"
+
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;
 const unsigned int DEFAULT_TILE_HEIGHT = 32;

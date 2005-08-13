@@ -22,40 +22,49 @@
  */
 
 #include "game.h"
-#include "playerinfo.h"
-#include "floor_item.h"
-#include "main.h"
+
+#include <sstream>
+
+#include <guichan/sdl/sdlinput.hpp>
+
+#include "being.h"
+#include "configuration.h"
 #include "engine.h"
-#include "log.h"
-#include "map.h"
 #include "equipment.h"
-#include "gui/chat.h"
-#include "gui/gui.h"
-#include "gui/inventorywindow.h"
-#include "gui/shop.h"
-#include "gui/npc.h"
-#include "gui/stats.h"
-#include "gui/setup.h"
-#include "gui/equipmentwindow.h"
-#include "gui/popupmenu.h"
-#include "gui/npc_text.h"
-#include "gui/trade.h"
-#include "gui/status.h"
+#include "floor_item.h"
+#include "graphics.h"
+#include "inventory.h"
+#include "item.h"
+#include "log.h"
+#include "main.h"
+#include "map.h"
+#include "playerinfo.h"
+#include "sound.h"
+
 #include "gui/buy.h"
-#include "gui/sell.h"
 #include "gui/buysell.h"
-#include "gui/ok_dialog.h"
+#include "gui/chat.h"
 #include "gui/confirm_dialog.h"
-#include "gui/requesttrade.h"
+#include "gui/equipmentwindow.h"
+#include "gui/gui.h"
 #include "gui/help.h"
-#include "gui/browserbox.h"
-#include "net/protocol.h"
+#include "gui/inventorywindow.h"
+#include "gui/npc.h"
+#include "gui/npc_text.h"
+#include "gui/ok_dialog.h"
+#include "gui/popupmenu.h"
+#include "gui/requesttrade.h"
+#include "gui/sell.h"
+#include "gui/setup.h"
+#include "gui/stats.h"
+#include "gui/status.h"
+#include "gui/trade.h"
+
 #include "net/network.h"
+#include "net/protocol.h"
+
 #include "resources/mapreader.h"
 
-#include <SDL.h>
-#include <math.h>
-#include <sstream>
 
 extern Graphics *graphics;
 
@@ -78,7 +87,6 @@ SDL_Joystick *joypad = NULL;       /**< Joypad object */
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
 
-Being *target = NULL;
 Inventory *inventory = NULL;
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
@@ -397,14 +405,15 @@ void do_input()
                         if (!id) {
                             switch (player_node->direction)
                             {
-                                case NORTH: y--; break;
-                                case SOUTH: y++; break;
-                                case WEST:  x--; break;
-                                case EAST:  x++; break;
-                                case NW:    x--; y--; break;
-                                case NE:    x++; y--; break;
-                                case SW:    x--; y++; break;
-                                case SE:    x++; y++; break;
+                                case Being::NORTH: y--; break;
+                                case Being::SOUTH: y++; break;
+                                case Being::WEST:  x--; break;
+                                case Being::EAST:  x++; break;
+                                case Being::NW:    x--; y--; break;
+                                case Being::NE:    x++; y--; break;
+                                case Being::SW:    x--; y++; break;
+                                case Being::SE:    x++; y++; break;
+                                default: break;
                             }
                             id = find_floor_item_by_cor(x, y);
                         }
@@ -599,7 +608,8 @@ void do_input()
                      */
                     int dx = mx - player_node->x;
                     int dy = my - player_node->y;
-                    if (sqrt(dx*dx + dy*dy) < 2)
+                    // "sqrt(dx*dx + dy*dy) < 2" is equal to "dx*dx + dy*dy < 4"
+                    if ((dx*dx + dy*dy) < 4)
                     {
                         WFIFOW(0) = net_w_value(0x009f);
                         WFIFOL(2) = net_l_value(floorItemId);
@@ -675,60 +685,60 @@ void do_input()
         int y = player_node->y;
         int xDirection = 0;
         int yDirection = 0;
-        int Direction = DIR_NONE;
+        Being::Direction Direction = Being::DIR_NONE;
 
         // Translate pressed keys to movement and direction
         if (keys[SDLK_UP] || keys[SDLK_KP8] || joy[JOY_UP])
         {
             yDirection = -1;
             if (player_node->action != Being::WALK)
-                Direction = NORTH;
+                Direction = Being::NORTH;
         }
         if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joy[JOY_DOWN])
         {
             yDirection = 1;
             if (player_node->action != Being::WALK)
-                Direction = SOUTH;
+                Direction = Being::SOUTH;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joy[JOY_LEFT])
         {
             xDirection = -1;
             if (player_node->action != Being::WALK)
-                Direction = WEST;
+                Direction = Being::WEST;
         }
         if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joy[JOY_RIGHT])
         {
             xDirection = 1;
             if (player_node->action != Being::WALK)
-                Direction = EAST;
+                Direction = Being::EAST;
         }
         if (keys[SDLK_KP1]) // Bottom Left
         {
             xDirection = -1;
             yDirection = 1;
             if (player_node->action != Being::WALK)
-                Direction = SW;
+                Direction = Being::SW;
         }
         if (keys[SDLK_KP3]) // Bottom Right
         {
             xDirection = 1;
             yDirection = 1;
             if (player_node->action != Being::WALK)
-                Direction = SE;
+                Direction = Being::SE;
         }
         if (keys[SDLK_KP7]) // Top Left
         {
             xDirection = -1;
             yDirection = -1;
             if (player_node->action != Being::WALK)
-                Direction = NW;
+                Direction = Being::NW;
         }
         if (keys[SDLK_KP9]) // Top Right
         {
             xDirection = 1;
             yDirection = -1;
             if (player_node->action != Being::WALK)
-                Direction = NE;
+                Direction = Being::NE;
         }
 
         Map *tiledMap = engine->getCurrentMap();
@@ -757,7 +767,7 @@ void do_input()
                 walk(x + xDirection, y + yDirection, Direction);
                 player_node->setDestination(x + xDirection, y + yDirection);
             }
-            else if (Direction != DIR_NONE)
+            else if (Direction != Being::DIR_NONE)
             {
                 // Update the player direction to where he wants to walk
                 // Warning: Not communicated to the server yet

@@ -24,10 +24,12 @@
 #ifndef _TMW_NSKILL_H
 #define _TMW_NSKILL_H
 
-#include <guichan.hpp>
 #include "window.h"
-#include "progressbar.h"
- 
+
+#include "../guichanfwd.h"
+
+class ProgressBar;
+
 #define N_SKILL 100 // skill count constant
 #define N_SKILL_CAT 9 // skill category count
 #define N_SKILL_CAT_SIZE 10 // skill category maximum size

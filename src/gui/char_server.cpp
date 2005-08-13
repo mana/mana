@@ -22,16 +22,23 @@
  */
 
 #include "char_server.h"
+
+#include <guichan/sdl/sdlinput.hpp>
+
 #include "button.h"
-#include "scrollarea.h"
+#include "gui.h"
 #include "listbox.h"
 #include "ok_dialog.h"
+#include "scrollarea.h"
+
+#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
 #include "../serverinfo.h"
+
 #include "../net/network.h"
-#include "gui.h"
+
 
 char server[30];
 int showServerList = 1;

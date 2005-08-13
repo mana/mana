@@ -22,11 +22,12 @@
  */
 
 #include "equipment.h"
+#include "item.h"
 
 Equipment *Equipment::instance = 0;
 
 Equipment::Equipment():
-    arrows(NULL)
+    arrows(0)
 {
     for (int i = 0; i < EQUIPMENT_SIZE; i++)
     {

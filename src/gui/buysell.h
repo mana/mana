@@ -24,6 +24,8 @@
 #ifndef _TMW_BUYSELL_H
 #define _TMW_BUYSELL_H
 
+#include <guichan/widgets/button.hpp>
+
 #include "window.h"
 
 /**

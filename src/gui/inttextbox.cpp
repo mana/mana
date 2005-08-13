@@ -23,6 +23,8 @@
 
 #include "inttextbox.h"
 
+#include <sstream>
+
 IntTextBox::IntTextBox():
     value(0)
 {

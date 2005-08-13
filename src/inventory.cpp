@@ -24,10 +24,12 @@
 #include "inventory.h"
 
 #include "equipment.h"
+#include "item.h"
 #include "net/network.h"
 
 Inventory::Inventory()
 {
+    items = new Item[INVENTORY_SIZE];
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].setInvIndex(i);
     }
@@ -35,7 +37,26 @@ Inventory::Inventory()
 
 Inventory::~Inventory()
 {
+    delete [] items;
 }
+
+Item* Inventory::getItem(int index)
+{
+    return &items[index];
+}
+
+void Inventory::addItem(int id, int quantity, bool equipment)
+{
+    addItem(getFreeSlot(), id, quantity, equipment);
+}
+
+void Inventory::addItem(int index, int id, int quantity, bool equipment)
+{
+    items[index].setId(id);
+    items[index].increaseQuantity(quantity);
+    items[index].setEquipment(equipment);
+}
+
 
 void Inventory::resetItems()
 {

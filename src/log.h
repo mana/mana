@@ -22,11 +22,7 @@
 #ifndef _LOG_H
 #define _LOG_H
 
-#include <stdlib.h>
-#include <stdarg.h>
-#include <time.h>
-#include <string>
-#include <iostream>
+#include <iosfwd>
 #include <fstream>
 
 /**

@@ -22,7 +22,6 @@
  */
 
 #include "chatinput.h"
-#include "../graphics.h"
 
 ChatInput::ChatInput()
 {

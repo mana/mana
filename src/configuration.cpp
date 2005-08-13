@@ -23,15 +23,17 @@
 
 
 #include "configuration.h"
-#include "log.h"
 
 #include <math.h>
-#include <iostream>
-#include <fstream>
 #include <sstream>
-#include <libxml/parser.h>
-#include <libxml/tree.h>
 #include <libxml/xmlwriter.h>
+
+#ifdef __DEBUG
+#include <iostream>
+#endif
+
+#include "configlistener.h"
+#include "log.h"
 
 // MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
 // function at link time.
@@ -39,10 +41,6 @@
 #undef xmlFree
 #define xmlFree(x) ;
 #endif
-
-ConfigListener::~ConfigListener()
-{
-}
 
 void Configuration::init(const std::string &filename)
 {

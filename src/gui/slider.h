@@ -24,8 +24,10 @@
 #ifndef _TMW_SLIDER_H
 #define _TMW_SLIDER_H
 
-#include <guichan.hpp>
-#include "../resources/image.h"
+#include <guichan/widgets/slider.hpp>
+
+class Image;
+
 
 /**
  * Slider widget. Same as the Guichan slider but with custom look.

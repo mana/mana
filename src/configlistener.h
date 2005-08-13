@@ -21,49 +21,31 @@
  *  $Id$
  */
 
-#ifndef __TMW_PLAYERBOX_H__
-#define __TMW_PLAYERBOX_H__
+#ifndef _TMW_CONFIGLISTENER_H
+#define _TMW_CONFIGLISTENER_H
 
-#include <guichan/widgets/scrollarea.hpp>
+#include <iosfwd>
 
-class ImageRect;
 
 /**
- * A box showing a player. Draws the various hair styles a player can have
- * currently.
+ * The listener interface for receiving notifications about changes to
+ * configuration options.
  *
- * \ingroup GUI
+ * \ingroup CORE
  */
-class PlayerBox : public gcn::ScrollArea
+class ConfigListener
 {
     public:
         /**
-         * Constructor.
-         */
-        PlayerBox();
-
-        /**
          * Destructor.
          */
-        ~PlayerBox();
+        virtual ~ConfigListener();
 
         /**
-         * Draws the scroll area.
+         * Called when an option changed. The config listener will have to be
+         * registered to the option name first.
          */
-        void draw(gcn::Graphics *graphics);
-
-        /**
-         * Draws the background and border of the scroll area.
-         */
-        void drawBorder(gcn::Graphics *graphics);
-
-        int hairColor;         /**< The hair color index */
-        int hairStyle;         /**< The hair style index */
-        bool showPlayer;       /**< Wether to show the player or not */
-
-    private:
-        static int instances;
-        static ImageRect background;
+        virtual void optionChanged(const std::string &name) = 0;
 };
 
 #endif

@@ -27,13 +27,11 @@
 #include <list>
 #include <string>
 
-#include "graphics.h"
-#include "map.h"
-
 #define NR_HAIR_STYLES 5
 #define NR_HAIR_COLORS 10
 
 class Map;
+class Graphics;
 
 struct PATH_NODE {
     /**
@@ -63,6 +61,18 @@ class Being
             SIT          = 13,
             HIT          = 14,
             DEAD         = 15,
+        };
+
+        enum Direction {
+            DIR_NONE  = -1,
+            SOUTH     =  0,
+            SW        =  1,
+            WEST      =  2,
+            NW        =  3,
+            NORTH     =  4,
+            NE        =  5,
+            EAST      =  6,
+            SE        =  7,
         };
 
         unsigned short job;           /**< Job (player job, npc, monster, ) */

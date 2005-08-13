@@ -21,11 +21,14 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
-#include "../graphics.h"
+#include <guichan/imagefont.hpp>
+
 #include "../main.h"
+#ifdef USE_OPENGL
 #include "../resources/resourcemanager.h"
+#endif
 #include "browserbox.h"
+#include "linkhandler.h"
 #include "gui.h"
 
 int BrowserBox::instances = 0;
@@ -44,6 +47,7 @@ BrowserBox::BrowserBox(unsigned int mode):
 
     if (instances == 0)
     {
+#ifdef USE_OPENGL
         if (useOpenGL) {
             browserFont = new gcn::ImageFont(
                     ResourceManager::getInstance()->getRealPath(
@@ -51,8 +55,9 @@ BrowserBox::BrowserBox(unsigned int mode):
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
-        }
-        else {
+        } else
+#endif
+        {
             browserFont = gui->getFont();
         }
     }

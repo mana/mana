@@ -22,8 +22,13 @@
  */
 
 #include "stats.h"
+
+#include <sstream>
+
 #include "button.h"
+
 #include "../playerinfo.h"
+
 #include "../net/network.h"
 
 StatsWindow::StatsWindow():

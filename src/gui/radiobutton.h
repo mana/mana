@@ -24,8 +24,10 @@
 #ifndef _TMW_RADIOBUTTON_H
 #define _TMW_RADIOBUTTON_H
 
-#include <guichan.hpp>
-#include "../resources/image.h"
+#include <guichan/widgets/radiobutton.hpp>
+
+class Image;
+
 
 /*
  * Guichan based RadioButton with custom look

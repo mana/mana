@@ -24,15 +24,16 @@
 #ifndef _TMW_CHAT_H
 #define _TMW_CHAT_H
 
-#include <guichan.hpp>
-#include <guichan/key.hpp>
-#include "window.h"
-#include "scrollarea.h"
-#include "browserbox.h"
-#include <SDL.h>
+#include <fstream>
 #include <list>
 #include <string>
-#include <fstream>
+
+#include "window.h"
+
+#include "../guichanfwd.h"
+
+class BrowserBox;
+class ScrollArea;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1

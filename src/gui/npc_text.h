@@ -24,10 +24,11 @@
 #ifndef _TMW_NPC_TEXT_H
 #define _TMW_NPC_TEXT_H
 
-#include <guichan.hpp>
-#include <vector>
-#include <string>
+#include <iosfwd>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * The npc text dialog.

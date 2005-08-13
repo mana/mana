@@ -24,10 +24,15 @@
 #ifndef _TMW_NPC_H
 #define _TMW_NPC_H
 
-#include <guichan.hpp>
+#include <iosfwd>
 #include <vector>
-#include <string>
+
+#include <guichan/actionlistener.hpp>
+#include <guichan/listmodel.hpp>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * The npc list dialog.

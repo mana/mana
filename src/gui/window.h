@@ -24,10 +24,14 @@
 #ifndef _TMW_WINDOW_H__
 #define _TMW_WINDOW_H__
 
-#include <guichan.hpp>
-#include "windowcontainer.h"
-#include "../graphics.h"
-#include "../configuration.h"
+#include <guichan/widgets/window.hpp>
+
+#include "../configlistener.h"
+#include "../guichanfwd.h"
+
+class ImageRect;
+class WindowContainer;
+
 
 /**
  * A window. This window can be dragged around and has a title bar.

@@ -22,9 +22,11 @@
  */
 
 #include "resource.h"
-#include "resourcemanager.h"
 
 #include <cassert>
+
+#include "resourcemanager.h"
+
 
 Resource::Resource():
     mRefCount(0)

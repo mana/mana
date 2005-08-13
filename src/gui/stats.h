@@ -24,9 +24,11 @@
 #ifndef _TMW_STATS_WINDOW_H
 #define _TMW_STATS_WINDOW_H
 
+#include <iosfwd>
+
 #include "window.h"
-#include <string>
-#include <sstream>
+
+#include "../guichanfwd.h"
 
 /**
  * Window showing player stats.

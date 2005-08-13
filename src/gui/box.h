@@ -25,7 +25,9 @@
 #ifndef BOX_H
 #define BOX_H
 
-#include <guichan.hpp>
+#include <guichan/widgets/container.hpp>
+
+#include "../guichanfwd.h"
 
 class Box : public gcn::Container
 {

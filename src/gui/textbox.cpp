@@ -22,7 +22,10 @@
  */
 
 #include "textbox.h"
+
 #include <sstream>
+
+#include <guichan/basiccontainer.hpp>
 
 TextBox::TextBox():
     gcn::TextBox()

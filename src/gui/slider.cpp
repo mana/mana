@@ -22,7 +22,10 @@
  */
 
 #include "slider.h"
+
 #include "../graphics.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 Image *Slider::hStart, *Slider::hMid, *Slider::hEnd, *Slider::hGrip;

@@ -21,38 +21,51 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
-#include "game.h"
-#include "main.h"
-#include "playerinfo.h"
 #include "engine.h"
-#include "log.h"
+
+#include <sstream>
+
 #include "being.h"
+#include "configuration.h"
 #include "floor_item.h"
+#include "game.h"
 #include "graphics.h"
-#include "gui/gui.h"
-#include "gui/minimap.h"
-#include "gui/chargedialog.h"
-#include "gui/trade.h"
-#include "gui/chat.h"
-#include "gui/status.h"
-#include "gui/buy.h"
-#include "gui/sell.h"
-#include "gui/buysell.h"
-#include "gui/inventorywindow.h"
-#include "gui/npc_text.h"
-#include "gui/npc.h"
-#include "gui/stats.h"
-#include "gui/setup.h"
-#include "gui/equipmentwindow.h"
-#include "gui/popupmenu.h"
+#include "log.h"
+#include "main.h"
+#include "map.h"
+#include "sound.h"
+
+#include "graphic/spriteset.h"
+
 //#include "gui/buddywindow.h"
+#include "gui/buy.h"
+#include "gui/buysell.h"
+#include "gui/chargedialog.h"
+#include "gui/chat.h"
+#include "gui/equipmentwindow.h"
+#include "gui/gui.h"
 #include "gui/help.h"
-#include "resources/resourcemanager.h"
+#include "gui/inventorywindow.h"
+#include "gui/minimap.h"
+#include "gui/npc.h"
+#include "gui/npc_text.h"
+#include "gui/popupmenu.h"
+#include "gui/sell.h"
+#include "gui/setup.h"
+#include "gui/skill.h"
+#include "gui/stats.h"
+#include "gui/status.h"
+#include "gui/trade.h"
+#include "gui/windowcontainer.h"
+
+#include "resources/image.h"
+#include "resources/iteminfo.h"
 #include "resources/itemmanager.h"
+#include "resources/resourcemanager.h"
 
 extern Being* autoTarget;
 extern Graphics* graphics;
+extern Spriteset *hairset, *playerset;
 
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
@@ -79,6 +92,8 @@ TradeWindow *tradeWindow;
 HelpWindow *helpWindow;
 PopupMenu *popupMenu;
 std::map<int, Spriteset*> monsterset;
+
+ItemManager *itemDb;          /**< Item database object */
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -108,12 +123,13 @@ int get_x_offset(Being *being)
 
     if (being->action == Being::WALK)
     {
-        if (direction != NORTH && direction != SOUTH)
+        if (direction != Being::NORTH && direction != Being::SOUTH)
         {
             offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
             if (offset > 32) offset = 32;
 
-            if (direction == WEST || direction == NW || direction == SW) {
+            if (direction == Being::WEST || direction == Being::NW ||
+                    direction == Being::SW) {
                 offset = -offset;
                 offset += 32;
             }
@@ -133,12 +149,13 @@ int get_y_offset(Being *being)
 
     if (being->action == Being::WALK)
     {
-        if (direction != EAST && direction != WEST)
+        if (direction != Being::EAST && direction != Being::WEST)
         {
             offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
             if (offset > 32) offset = 32;
 
-            if (direction == NORTH || direction == NW || direction == NE) {
+            if (direction == Being::NORTH || direction == Being::NW ||
+                    direction == Being::NE) {
                 offset = -offset;
                 offset += 32;
             }
@@ -243,6 +260,10 @@ Engine::Engine():
 
     attackTarget = resman->getImage("graphics/gui/attack_target.png");
     if (!attackTarget) logger->error("Unable to load attack_target.png");
+
+    // Initialize item manager
+    itemDb = new ItemManager();
+
 }
 
 Engine::~Engine()
@@ -276,6 +297,8 @@ Engine::~Engine()
     delete itemset;
 
     attackTarget->decRef();
+
+    delete itemDb;
 }
 
 Map *Engine::getCurrentMap()

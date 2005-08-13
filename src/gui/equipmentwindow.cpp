@@ -21,12 +21,18 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
 #include "equipmentwindow.h"
+
 #include "../equipment.h"
+#include "../graphics.h"
+#include "../item.h"
 #include "../log.h"
-#include "../resources/resourcemanager.h"
+
+#include "../graphic/spriteset.h"
+
 #include "../resources/image.h"
+#include "../resources/iteminfo.h"
+#include "../resources/resourcemanager.h"
 
 #include <sstream>
 

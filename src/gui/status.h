@@ -24,10 +24,14 @@
 #ifndef _TMW_STATS_H
 #define _TMW_STATS_H
 
-#include <string>
+#include <iosfwd>
 
 #include "window.h"
-#include "progressbar.h"
+
+#include "../guichanfwd.h"
+
+class ProgressBar;
+
 
 /**
  * The player status dialog.
@@ -62,7 +66,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *expLabel, *jobExpLabel;
         ProgressBar *healthBar, *manaBar;
         ProgressBar *xpBar, *jobXpBar;
-	gcn::Button *statsButton, *skillsButton, *inventoryButton, *setupButton, *equipmentButton;
+        gcn::Button *statsButton, *skillsButton, *inventoryButton, *setupButton, *equipmentButton;
 };
 
 extern StatusWindow *statusWindow;

@@ -21,17 +21,24 @@
  *  $Id$
  */
 
-#include <sstream>
-#include <iostream>
-
 #include "being.h"
-#include "log.h"
+
+#include <iostream>
+#include <sstream>
+
 #include "game.h"
-#include "net/protocol.h"
-#include "net/network.h"
-#include "resources/resourcemanager.h"
+#include "graphics.h"
+#include "log.h"
+#include "map.h"
+
 #include "graphic/spriteset.h"
+
 #include "gui/gui.h"
+
+#include "net/network.h"
+#include "net/protocol.h"
+
+#include "resources/resourcemanager.h"
 
 extern Being* autoTarget;
 extern std::map<int, Spriteset*> monsterset;
@@ -139,7 +146,7 @@ void sort() {
 
 Being::Being():
     job(0),
-    x(0), y(0), direction(0),
+    x(0), y(0), direction(SOUTH),
     action(0), frame(0),
     speech_color(0),
     walk_time(0),
@@ -250,7 +257,6 @@ void Being::nextStep()
         int oldY = y;
         int newX = node.x;
         int newY = node.y;
-        direction = 0;
 
         if (newX > oldX) {
             if (newY > oldY)      direction = SE;

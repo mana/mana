@@ -22,14 +22,27 @@
  */
 
 #include "char_select.h"
-#include "textfield.h"
-#include "button.h"
-#include "ok_dialog.h"
-#include "../main.h"
-#include "../game.h"
-#include "../log.h"
-#include "../net/protocol.h"
+
 #include <sstream>
+
+#include <guichan/sdl/sdlinput.hpp>
+
+#include "button.h"
+#include "gui.h"
+#include "ok_dialog.h"
+#include "playerbox.h"
+#include "textfield.h"
+#include "windowcontainer.h"
+
+#include "../being.h"
+#include "../game.h"
+#include "../graphics.h"
+#include "../log.h"
+#include "../main.h"
+#include "../playerinfo.h"
+
+#include "../net/network.h"
+#include "../net/protocol.h"
 
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,

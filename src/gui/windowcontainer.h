@@ -24,7 +24,7 @@
 #ifndef _TMW_WINDOWCONTAINER_H_
 #define _TMW_WINDOWCONTAINER_H_
 
-#include <guichan.hpp>
+#include <guichan/widgets/container.hpp>
 
 class Window;
 

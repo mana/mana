@@ -20,15 +20,16 @@
  *
  *  $Id$
  */
- 
-#include <guichan.hpp>
- 
-#include <libxml/tree.h>
-#include <iostream>
 
 #include "itemmanager.h"
+
+#include <libxml/tree.h>
+
 #include "resourcemanager.h"
+
 #include "../log.h"
+
+#include "resources/iteminfo.h"
 
 // MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
 // function at link time.
@@ -36,6 +37,7 @@
 #undef xmlFree
 #define xmlFree(x) ;
 #endif
+
 
 ItemManager::ItemManager()
 {

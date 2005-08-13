@@ -24,8 +24,10 @@
 #ifndef __TMW_SCROLLAREA_H__
 #define __TMW_SCROLLAREA_H__
 
-#include <guichan.hpp>
-#include "../graphics.h"
+#include <guichan/widgets/scrollarea.hpp>
+
+class Image;
+class ImageRect;
 
 /**
  * A scroll area.

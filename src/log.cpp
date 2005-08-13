@@ -24,6 +24,8 @@
 #include <windows.h>
 #endif
 
+#include <stdarg.h>
+#include <iostream>
 #include <sstream>
 
 

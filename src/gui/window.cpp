@@ -22,10 +22,20 @@
  */
 
 #include "window.h"
+
+#include <guichan/exception.hpp>
+
 #include "gui.h"
-#include "../resources/resourcemanager.h"
+#include "windowcontainer.h"
+
+#include "../configuration.h"
+#include "../graphics.h"
 #include "../log.h"
-#include "../main.h"
+
+#include "../graphic/imagerect.h"
+
+#include "../resources/image.h"
+#include "../resources/resourcemanager.h"
 
 WindowContainer *Window::windowContainer = NULL;
 int Window::instances = 0;

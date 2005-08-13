@@ -22,7 +22,10 @@
  */
 
 #include "radiobutton.h"
+
 #include "../graphics.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 int RadioButton::instances = 0;

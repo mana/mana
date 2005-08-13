@@ -24,7 +24,6 @@
 #ifndef _TMW_SOUND_H
 #define _TMW_SOUND_H
 
-#include <SDL.h>
 #include <SDL_mixer.h>
 
 /** Sound engine

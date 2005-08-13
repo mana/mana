@@ -24,9 +24,9 @@
 #ifndef _TMW_SOUND_EFFECT_H
 #define _TMW_SOUND_EFFECT_H
 
-#include "resource.h"
-#include <SDL.h>
 #include <SDL_mixer.h>
+
+#include "resource.h"
 
 /**
  * Defines a class for loading and storing sound effects.

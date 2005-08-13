@@ -21,24 +21,22 @@
  *  $Id$
  */
 
-#include <guichan.hpp>
-#include "../main.h"
 #include "resourcemanager.h"
-#include "../log.h"
-#include "../configuration.h"
-#include <iostream>
-#include <sstream>
-#include <physfs.h>
 
 #include <cassert>
+#include <physfs.h>
 
 #ifdef WIN32
 #include <io.h>
 #include <direct.h>
-#else
-#include <unistd.h>
-#include <dirent.h>
 #endif
+
+#include "image.h"
+#include "music.h"
+#include "soundeffect.h"
+
+#include "../log.h"
+
 
 ResourceManager *ResourceManager::instance = NULL;
 

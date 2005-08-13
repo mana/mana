@@ -24,7 +24,7 @@
 #ifndef _TMW_FOCUSHANDLER_H
 #define _TMW_FOCUSHANDLER_H
 
-#include <guichan.hpp>
+#include <guichan/focushandler.hpp>
 
 /**
  * The focus handler. This focus handler does exactly the same as the Guichan

@@ -24,10 +24,12 @@
 #ifndef _TMW_MAP_H
 #define _TMW_MAP_H
 
-#include "being.h"
-#include "graphics.h"
-#include "resources/image.h"
 #include <list>
+#include <map>
+
+class Being;
+class Graphics;
+class Image;
 
 struct PATH_NODE;
 

@@ -22,16 +22,25 @@
  */
 
 #include "buy.h"
+
+#include <assert.h>
+#include <sstream>
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
-#include "slider.h"
-#include "scrollarea.h"
 #include "listbox.h"
-#include "../resources/itemmanager.h"
+#include "scrollarea.h"
+#include "shop.h"
+#include "slider.h"
+
 #include "../game.h"
+
+#include "../resources/iteminfo.h"
+#include "../resources/itemmanager.h"
+
 #include "../net/network.h"
 
-#include <sstream>
-#include <assert.h>
 
 BuyDialog::BuyDialog():
     Window("Buy"),

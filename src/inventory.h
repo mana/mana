@@ -24,7 +24,7 @@
 #ifndef _INVENTORY_H
 #define _INVENTORY_H
 
-#include "item.h"
+class Item;
 
 #define INVENTORY_SIZE 100
 
@@ -94,25 +94,8 @@ class Inventory
         int getLastUsedSlot();
 
     protected:
-        Item items[INVENTORY_SIZE];  /**< The holder of items */
+        Item *items;  /**< The holder of items */
 };
-
-inline Item* Inventory::getItem(int index)
-{
-    return &items[index];
-}
-
-inline void Inventory::addItem(int id, int quantity, bool equipment)
-{
-    addItem(getFreeSlot(), id, quantity, equipment);
-}
-
-inline void Inventory::addItem(int index, int id, int quantity, bool equipment)
-{
-    items[index].setId(id);
-    items[index].increaseQuantity(quantity);
-    items[index].setEquipment(equipment);
-}
 
 extern Inventory *inventory;
 

@@ -22,7 +22,12 @@
  */
 
 #include "scrollarea.h"
-#include "../main.h"
+
+#include "../graphics.h"
+
+#include "../graphic/imagerect.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 int ScrollArea::instances = 0;

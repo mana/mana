@@ -21,11 +21,13 @@
  *  $Id$
  */
 
-#include "../main.h"
-#include "../log.h"
 #include "image.h"
-#include <iostream>
+
 #include <SDL_image.h>
+
+#include "../log.h"
+#include "../main.h"
+
 
 Image::Image(SDL_Surface *image):
     image(image)

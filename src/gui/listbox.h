@@ -24,7 +24,7 @@
 #ifndef __TMW_LISTBOX_H__
 #define __TMW_LISTBOX_H__
 
-#include <guichan.hpp>
+#include <guichan/widgets/listbox.hpp>
 
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list

@@ -22,7 +22,11 @@
  */
 
 #include "ok_dialog.h"
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
+#include "windowcontainer.h"
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         gcn::ActionListener *listener):

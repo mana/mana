@@ -24,7 +24,7 @@
 #ifndef _ITEM_H
 #define _ITEM_H
 
-#include "resources/iteminfo.h"
+class ItemInfo;
 
 class Item
 {

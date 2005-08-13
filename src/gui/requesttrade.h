@@ -24,11 +24,11 @@
 #ifndef _TMW_REQUESTTRADE_H
 #define _TMW_REQUESTTRADE_H
 
-#include <guichan.hpp>
-#include <vector>
-#include <string>
-#include <sstream>
+#include <iosfwd>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 extern bool requestTradeDialogOpen;
 

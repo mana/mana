@@ -23,6 +23,8 @@
 
 #include "spriteset.h"
 
+#include "../resources/image.h"
+
 Spriteset::Spriteset(Image *img, int width, int height)
 {
     int x, y;

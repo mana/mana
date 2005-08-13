@@ -22,17 +22,27 @@
  */
 
 #include "login.h"
+
+#include <string>
+
+#include <guichan/sdl/sdlinput.hpp>
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
 #include "checkbox.h"
-#include "textfield.h"
-#include "passwordfield.h"
-#include "ok_dialog.h"
 #include "gui.h"
+#include "ok_dialog.h"
+#include "passwordfield.h"
+#include "textfield.h"
+
+#include "../configuration.h"
+#include "../graphics.h"
+#include "../log.h"
 #include "../main.h"
 #include "../serverinfo.h"
-#include "../log.h"
+
 #include "../net/network.h"
-#include <string>
 
 LoginDialog::LoginDialog():
     Window("Login")

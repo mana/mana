@@ -24,10 +24,9 @@
 #ifndef _TMW_ITEM_MANAGER_H
 #define _TMW_ITEM_MANAGER_H
 
-#include <string>
 #include <map>
 
-#include "iteminfo.h"
+class ItemInfo;
 
 /**
  * Defines a class to load items database.

@@ -22,16 +22,31 @@
  */
 
 #include "updatewindow.h"
-#include "ok_dialog.h"
-#include "gui.h"
-#include "../main.h"
-#include "../log.h"
-#include "../resources/resourcemanager.h"
-#include <curl/curl.h>
-#include <sstream>
-#include <iostream>
+
 #include <cstdio>
+#include <iostream>
+#include <sstream>
 #include <SDL_thread.h>
+
+#include <curl/curl.h>
+
+#include <guichan/sdl/sdlinput.hpp>
+
+#include <guichan/widgets/label.hpp>
+
+#include "browserbox.h"
+#include "button.h"
+#include "gui.h"
+#include "ok_dialog.h"
+#include "progressbar.h"
+#include "scrollarea.h"
+
+#include "../configuration.h"
+#include "../graphics.h"
+#include "../log.h"
+#include "../main.h"
+
+#include "../resources/resourcemanager.h"
 
 
 UpdaterWindow::UpdaterWindow():

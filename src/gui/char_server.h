@@ -24,7 +24,11 @@
 #ifndef _CHAR_SEL_SERVER_H
 #define _CHAR_SEL_SERVER_H
 
+#include <guichan/listmodel.hpp>
+
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 
 /**

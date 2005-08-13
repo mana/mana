@@ -24,10 +24,11 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
-#include "map.h"
-#include "graphic/spriteset.h"
-
 extern int camera_x, camera_y;
+
+class Image;
+class Map;
+class Spriteset;
 
 /**
  * Game engine that does the main drawing.

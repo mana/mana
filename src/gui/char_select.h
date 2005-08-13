@@ -24,11 +24,13 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
-#include "../playerinfo.h"
-#include "../net/network.h"
-#include "gui.h"
 #include "confirm_dialog.h"
-#include "playerbox.h"
+#include "window.h"
+
+#include "../guichanfwd.h"
+
+class PlayerBox;
+struct PLAYER_INFO;
 
 /**
  * Character selection dialog.

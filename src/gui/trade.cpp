@@ -22,15 +22,25 @@
  */
 
 #include "trade.h"
+
+#include <sstream>
+
+#include <guichan/widgets/label.hpp>
+
+#include "button.h"
 #include "chat.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
-#include "button.h"
+#include "itemcontainer.h"
 #include "scrollarea.h"
 #include "textfield.h"
+
+#include "../inventory.h"
+#include "../item.h"
+
 #include "../net/network.h"
-#include "../equipment.h"
-#include <sstream>
+
+#include "../resources/iteminfo.h"
 
 TradeWindow::TradeWindow():
     Window("Trade: You")
@@ -42,21 +52,24 @@ TradeWindow::TradeWindow():
     cancelButton = new Button("Cancel");
     tradeButton = new Button("Trade");
 
-    myItemContainer = new ItemContainer(&myInventory);
+    myInventory = new Inventory();
+    partnerInventory = new Inventory();
+
+    myItemContainer = new ItemContainer(myInventory);
     myItemContainer->setPosition(2, 2);
 
     myScroll = new ScrollArea(myItemContainer);
     myScroll->setPosition(8, 8);
 
-    partnerItemContainer = new ItemContainer(&partnerInventory);
+    partnerItemContainer = new ItemContainer(partnerInventory);
     partnerItemContainer->setPosition(2, 58);
 
     partnerScroll = new ScrollArea(partnerItemContainer);
     partnerScroll->setPosition(8, 64);
-    
+
     moneyLabel = new gcn::Label("You get: 0z");
     moneyField = new TextField();
-    
+
     addButton->setEventId("add");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
@@ -131,6 +144,9 @@ TradeWindow::~TradeWindow()
     delete itemDescriptionLabel;
     delete moneyField;
     delete moneyLabel;
+
+    delete myInventory;
+    delete partnerInventory;
 }
 
 void TradeWindow::addMoney(int amount)
@@ -145,43 +161,43 @@ void TradeWindow::addItem(int id, bool own, int quantity,
         bool equipment)
 {
     if (own) {
-        myInventory.addItem(id, quantity, equipment);
+        myInventory->addItem(id, quantity, equipment);
     } else {
-        partnerInventory.addItem(id, quantity, equipment);
+        partnerInventory->addItem(id, quantity, equipment);
     }
 }
 
 void TradeWindow::removeItem(int id, bool own)
 {
     if (own) {
-        myInventory.removeItem(id);
+        myInventory->removeItem(id);
     } else {
-        partnerInventory.removeItem(id);
+        partnerInventory->removeItem(id);
     }
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myInventory.getItem(index)->setQuantity(quantity);
+        myInventory->getItem(index)->setQuantity(quantity);
     } else {
-        partnerInventory.getItem(index)->setQuantity(quantity);
+        partnerInventory->getItem(index)->setQuantity(quantity);
     }
 }
 
 void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myInventory.getItem(index)->increaseQuantity(quantity);
+        myInventory->getItem(index)->increaseQuantity(quantity);
     } else {
-        partnerInventory.getItem(index)->increaseQuantity(quantity);
+        partnerInventory->getItem(index)->increaseQuantity(quantity);
     }
 }
 
 void TradeWindow::reset()
 {
-    myInventory.resetItems();
-    partnerInventory.resetItems();
+    myInventory->resetItems();
+    partnerInventory->resetItems();
     tradeButton->setEnabled(false);
     okButton->setEnabled(true);
     ok_other = false;
@@ -274,11 +290,11 @@ void TradeWindow::action(const std::string &eventId)
             return;
         }
 
-        if (myInventory.getFreeSlot() < 1) {
+        if (myInventory->getFreeSlot() < 1) {
             return;
         }
 
-        if (myInventory.contains(item)) {
+        if (myInventory->contains(item)) {
             chatWindow->chat_log("Failed adding item. You can not "
                     "overlap one kind of item on the window.", BY_SERVER);
             return;

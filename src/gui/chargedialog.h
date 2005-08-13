@@ -23,10 +23,10 @@
 #ifndef _TMW_CHARGE_H
 #define _TMW_CHARGE_H
 
-#include <guichan.hpp>
 #include "window.h"
-#include "progressbar.h"
- 
+
+class ProgressBar;
+
 #define CHARGE_TIME 1000 // time in milliseconds it takes to charge up an attack
 
 /**

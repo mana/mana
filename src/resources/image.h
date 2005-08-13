@@ -24,11 +24,12 @@
 #ifndef _TMW_IMAGE_H
 #define _TMW_IMAGE_H
 
-#include "resource.h"
 #include <SDL.h>
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>
 #endif
+
+#include "resource.h"
 
 /**
  * Defines a class for loading and storing images.

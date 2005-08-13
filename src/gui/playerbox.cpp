@@ -22,9 +22,17 @@
  */
 
 #include "playerbox.h"
-#include "../main.h"
+
 #include "../being.h"
+#include "../graphics.h"
+
+#include "../graphic/imagerect.h"
+#include "../graphic/spriteset.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
+
+extern Spriteset *hairset, *playerset;
 
 int PlayerBox::instances = 0;
 ImageRect PlayerBox::background;

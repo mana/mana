@@ -24,7 +24,13 @@
 #ifndef _TMW_SKILL_H
 #define _TMW_SKILL_H
 
-#include <guichan.hpp>
+#include <vector>
+
+#include <guichan/widgets/button.hpp>
+#include <guichan/widgets/label.hpp>
+#include <guichan/widgets/listbox.hpp>
+#include <guichan/widgets/scrollarea.hpp>
+
 #include "window.h"
 
 struct SKILL {

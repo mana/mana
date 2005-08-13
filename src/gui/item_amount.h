@@ -24,10 +24,13 @@
 #ifndef _TMW_ITEM_AMOUNT_WINDOW_H
 #define _TMW_ITEM_AMOUNT_WINDOW_H
 
+#include <iosfwd>
+
 #include "window.h"
-#include "inttextbox.h"
-#include <string>
-#include <sstream>
+
+#include "../guichanfwd.h"
+
+class IntTextBox;
 
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2

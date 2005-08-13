@@ -22,9 +22,15 @@
  */
 
 #include "graphics.h"
-#include "resources/resourcemanager.h"
-#include "main.h"
+
+#include <guichan/imagefont.hpp>
+
 #include "log.h"
+#include "main.h"
+
+#include "graphic/imagerect.h"
+
+#include "resources/image.h"
 
 extern volatile int framesToDraw;
 

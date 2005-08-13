@@ -22,8 +22,12 @@
  */
 
 #include "minimap.h"
+
 #include "../being.h"
-#include "../main.h"
+#include "../graphics.h"
+#include "../map.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 Minimap::Minimap():

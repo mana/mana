@@ -22,14 +22,15 @@
  */
 
 #include "chat.h"
-#include "textfield.h"
-#include "textbox.h"
+
+#include "browserbox.h"
 #include "chatinput.h"
 #include "gui.h"
+#include "scrollarea.h"
+
 #include "../playerinfo.h"
+
 #include "../net/network.h"
-#include <iostream>
-#include <guichan.hpp>
 
 ChatWindow::ChatWindow(const std::string &logfile):
     Window("")

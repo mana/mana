@@ -24,9 +24,6 @@
 #ifndef INTTEXTBOX_H
 #define INTTEXTBOX_H
 
-#include <iostream>
-#include <sstream>
-#include <guichan.hpp>
 #include "textbox.h"
 
 /**

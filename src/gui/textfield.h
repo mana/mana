@@ -24,9 +24,10 @@
 #ifndef __TMW_TEXTFIELD_H__
 #define __TMW_TEXTFIELD_H__
 
-#include <guichan.hpp>
+#include <guichan/widgets/textfield.hpp>
 
-#include "../graphics.h"
+class ImageRect;
+
 
 /**
  * A text field.

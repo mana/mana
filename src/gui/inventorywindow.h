@@ -24,8 +24,12 @@
 #ifndef _TMW_INVENTORYWINDOW_H
 #define _TMW_INVENTORYWINDOW_H 
 
-#include "itemcontainer.h"
 #include "window.h"
+
+#include "../guichanfwd.h"
+
+class Item;
+class ItemContainer;
 
 /**
  * Inventory dialog.

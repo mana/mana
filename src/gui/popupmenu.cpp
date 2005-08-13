@@ -21,18 +21,29 @@
  *  $Id$
  */
 
-#include <assert.h>
-
 #include "popupmenu.h"
+
+#include <assert.h>
+#include <iostream>
+
+#include <guichan/focushandler.hpp>
+
+#include "browserbox.h"
 #include "gui.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
-#include "../graphics.h"
+
+#include "../being.h"
+#include "../floor_item.h"
 #include "../game.h"
-#include "../net/network.h"
-#include "../resources/itemmanager.h"
-#include "../item.h"
+#include "../graphics.h"
 #include "../inventory.h"
+#include "../item.h"
+
+#include "../net/network.h"
+
+#include "../resources/iteminfo.h"
+#include "../resources/itemmanager.h"
 
 
 PopupMenu::PopupMenu():

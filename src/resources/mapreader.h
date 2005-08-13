@@ -24,10 +24,13 @@
 #ifndef _INCLUDED_MAPREADER_H
 #define _INCLUDED_MAPREADER_H
 
-#include "../map.h"
-#include "../graphic/spriteset.h"
-#include <libxml/tree.h>
 #include <vector>
+
+#include <libxml/tree.h>
+
+#include "../graphic/spriteset.h"
+
+class Map;
 
 /**
  * A tileset, which is basically just a spriteset but it stores a firstgid.

@@ -22,8 +22,6 @@
  */
 
 #include "listbox.h"
-#include "../graphics.h"
-#include "../main.h"
 
 ListBox::ListBox():
     gcn::ListBox()

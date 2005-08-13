@@ -25,11 +25,14 @@
 #define _UPDATERWINDOW_H
 
 #include "window.h"
-#include "vbox.h"
-#include "progressbar.h"
-#include "button.h"
-#include "browserbox.h"
-#include "scrollarea.h"
+
+#include "../guichanfwd.h"
+
+class BrowserBox;
+class Button;
+class ProgressBar;
+class ScrollArea;
+class VBox;
 
 /**
  * Update progress window GUI

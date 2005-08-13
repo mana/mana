@@ -21,27 +21,8 @@
  *  $Id$
  */
 
-#ifndef __PASSWORDFIELD_H__
-#define __PASSWORDFIELD_H__
+#include "configlistener.h"
 
-#include "textfield.h"
-
-/**
- * A password field.
- *
- * \ingroup GUI
- */
-class PasswordField : public TextField {
-    public:
-        /**
-         * Constructor, initializes the password field with the given string.
-         */
-        PasswordField(const std::string& text = "");
-
-        /**
-         * Draws the password field.
-         */
-        void draw(gcn::Graphics *graphics);
-};
-
-#endif
+ConfigListener::~ConfigListener()
+{
+}

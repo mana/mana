@@ -24,13 +24,13 @@
 #ifndef _TMW_ITEMCONTAINER_H__
 #define _TMW_ITEMCONTAINER_H__
 
-#include <iostream>
-#include <guichan.hpp>
+#include <guichan/mouselistener.hpp>
+#include <guichan/widget.hpp>
 
-#include "../item.h"
-#include "../inventory.h"
-#include "../resources/image.h"
-#include "../graphic/spriteset.h"
+class Image;
+class Inventory;
+class Item;
+class Spriteset;
 
 /**
  * An item container. Used to show items in inventory and trade dialog.

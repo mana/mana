@@ -22,7 +22,12 @@
  */
 
 #include "confirm_dialog.h"
+
+#include <guichan/widgets/label.hpp>
+
 #include "button.h"
+#include "windowcontainer.h"
+
 
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         gcn::ActionListener *listener):

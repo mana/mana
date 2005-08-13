@@ -26,6 +26,9 @@
 
 #include "window.h"
 
+#include "../guichanfwd.h"
+
+
 /**
  * An option dialog.
  *

@@ -24,9 +24,14 @@
 #ifndef _TMW_TRADE_H
 #define _TMW_TRADE_H
 
-#include "itemcontainer.h"
 #include "window.h"
-#include "scrollarea.h"
+
+#include "../guichanfwd.h"
+
+class Inventory;
+class Item;
+class ItemContainer;
+class ScrollArea;
 
 /**
  * Trade dialog.
@@ -101,8 +106,8 @@ class TradeWindow : public Window, gcn::ActionListener
          */
         void action(const std::string& eventId);
 
-        Inventory myInventory;
-        Inventory partnerInventory;
+        Inventory *myInventory;
+        Inventory *partnerInventory;
         ItemContainer *myItemContainer;
         ItemContainer *partnerItemContainer;
 

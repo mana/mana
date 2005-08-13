@@ -24,13 +24,14 @@
 #ifndef _TMW_RESOURCE_MANAGER_H
 #define _TMW_RESOURCE_MANAGER_H
 
+#include <iosfwd>
 #include <map>
-#include <string>
 #include <vector>
-#include "resource.h"
-#include "image.h"
-#include "music.h"
-#include "soundeffect.h"
+
+class Resource;
+class Image;
+class Music;
+class SoundEffect;
 
 /**
  * A class for loading and managing resources.

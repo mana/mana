@@ -22,6 +22,16 @@
  */
 
 #include "button.h"
+
+#include <guichan/exception.hpp>
+#include <guichan/graphics.hpp>
+#include <guichan/imagefont.hpp>
+
+#include "../graphics.h"
+
+#include "../graphic/imagerect.h"
+
+#include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
 ImageRect Button::button[4];

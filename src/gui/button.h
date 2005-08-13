@@ -24,9 +24,11 @@
 #ifndef _TMW_BUTTON_H
 #define _TMW_BUTTON_H
 
-#include <guichan.hpp>
-#include <string>
-#include "../graphics.h"
+#include <iosfwd>
+
+#include <guichan/widgets/button.hpp>
+
+class ImageRect;
 
 /**
  * Button widget. Same as the Guichan button but with custom look.

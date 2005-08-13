@@ -24,11 +24,14 @@
 #ifndef _TMW_GUI
 #define _TMW_GUI
 
-#include <guichan.hpp>
-#include <guichan/sdl.hpp>
-#include "windowcontainer.h"
-#include "../graphics.h"
-#include "../configuration.h"
+#include <guichan/gui.hpp>
+
+#include "../configlistener.h"
+#include "../guichanfwd.h"
+
+class Graphics;
+class Image;
+class WindowContainer;
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)

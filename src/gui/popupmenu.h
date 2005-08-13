@@ -24,13 +24,14 @@
 #ifndef _TMW_POPUP_MENU_H
 #define _TMW_POPUP_MENU_H
 
-#include <guichan.hpp>
 #include "window.h"
 #include "linkhandler.h"
-#include "browserbox.h"
-#include "../being.h"
-#include "../item.h"
-#include "../floor_item.h"
+
+class Being;
+class BrowserBox;
+class FloorItem;
+class Item;
+
 
 /**
  * Window showing popup menu.

@@ -24,9 +24,10 @@
 #ifndef _TMW_BUDDYLIST_H
 #define _TMW_BUDDYLIST_H
 
-#include <guichan.hpp>
+#include <iosfwd>
 #include <list>
-#include <string>
+
+#include <guichan/listmodel.hpp>
 
 class BuddyList : public gcn::ListModel {
     public:

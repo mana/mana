@@ -24,10 +24,12 @@
 #ifndef _TMW_HELP_H
 #define _TMW_HELP_H
 
-#include <guichan.hpp>
 #include "window.h"
 #include "linkhandler.h"
-#include "browserbox.h"
+
+#include "../guichanfwd.h"
+
+class BrowserBox;
 
 /**
  * The help dialog.

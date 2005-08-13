@@ -28,27 +28,7 @@
 #include <list>
 #include <string>
 
-
-/**
- * The listener interface for receiving notifications about changes to
- * configuration options.
- *
- * \ingroup CORE
- */
-class ConfigListener
-{
-    public:
-        /**
-         * Destructor.
-         */
-        virtual ~ConfigListener();
-
-        /**
-         * Called when an option changed. The config listener will have to be
-         * registered to the option name first.
-         */
-        virtual void optionChanged(const std::string &name) = 0;
-};
+class ConfigListener;
 
 /**
  * INI configuration handler for reading (and writing).

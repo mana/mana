@@ -24,7 +24,7 @@
 #ifndef _EQUIPMENT_H
 #define _EQUIPMENT_H
 
-#include "item.h"
+class Item;
 
 #define EQUIPMENT_SIZE 10
 
