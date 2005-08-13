@@ -47,6 +47,8 @@
 	src/gui/skill.cpp, src/gui/skill.h, src/gui/stats.cpp, src/gui/status.cpp:
 	Another small header cleanup, should also solve compilation problems on
 	windows.
+	* src/gui/sell.cpp: Reset selection in the sell dialog if all items at the
+	selected slot are sold.
 
 2005-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

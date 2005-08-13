@@ -256,6 +256,7 @@ void SellDialog::action(const std::string& eventId)
         {
             slider->setEnabled(false);
             increaseButton->setEnabled(false);
+            itemList->setSelected(-1);
             shopInventory.erase(shopInventory.begin() += selectedItem);
         }
         else
