@@ -20,16 +20,14 @@
  *
  *  $Id$
  */
-
-#include "itemmanager.h"
-
+ 
 #include <libxml/tree.h>
 
+#include "iteminfo.h"
+#include "itemmanager.h"
 #include "resourcemanager.h"
 
 #include "../log.h"
-
-#include "resources/iteminfo.h"
 
 // MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
 // function at link time.

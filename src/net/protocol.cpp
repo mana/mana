@@ -23,9 +23,7 @@
 
 #include "protocol.h"
 
-#ifdef WIN32
-#include <windows.h>
-#else
+#ifndef WIN32
 #include "win2linux.h"
 #endif
 

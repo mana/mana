@@ -52,6 +52,9 @@
 
 	* src/gui/status.h, src/gui/status.cpp: Reformatted status window layout to
 	avoid overlapping and lowered saturation of bars' colors.
+	* The Mana World.dev, src/game.cpp, src/playerinfo.h, src/net/protocol.cpp,
+	src/resources/itemmanager.cpp, src/gui/inventorywindow.cpp: Updated dev-cpp
+	project file, removed unnecessary header, fixed some include paths.
 
 2005-08-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

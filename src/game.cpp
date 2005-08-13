@@ -56,6 +56,7 @@
 #include "gui/requesttrade.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
+#include "gui/skill.h"
 #include "gui/stats.h"
 #include "gui/status.h"
 #include "gui/trade.h"

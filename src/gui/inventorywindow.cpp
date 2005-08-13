@@ -37,7 +37,7 @@
 #include "../item.h"
 #include "../playerinfo.h"
 
-#include "resources/iteminfo.h"
+#include "../resources/iteminfo.h"
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")

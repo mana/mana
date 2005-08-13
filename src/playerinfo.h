@@ -25,7 +25,6 @@
 #define _TMW_PLAYERINFO_H
 
 #include <vector>
-#include "gui/skill.h"
 
 struct PLAYER_INFO {
     int id;
@@ -39,10 +38,6 @@ struct PLAYER_INFO {
     char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
     int totalWeight, maxWeight;
     short weapon;
-    // skill list declaration
-    std::vector<SKILL> m_Skill; // array of N_SKILLS skills
-    // gets the requested skills level from char_info
-    int GetSkill(int n_ID, int n_XP=2, int n_base = false); // implemented in the body (main.cpp)
 };
 
 extern PLAYER_INFO *char_info;
