@@ -3,7 +3,6 @@
 	* M src/graphics.cpp, src/graphics.h, src/main.cpp, src/main.h,
 	src/gui/browserbox.cpp, src/gui/gui.cpp, src/resources/image.cpp: Started
 	to fade out the useOpenGL global variable.
-
 	* M src/engine.cpp, src/gui/char_select.cpp, src/gui/char_server.cpp,
 	src/gui/chat.cpp, src/gui/gui.cpp, src/gui/gui.h, src/gui/login.cpp,
 	src/gui/popupmenu.cpp, src/gui/setup.cpp, src/gui/updatewindow.cpp,
@@ -16,7 +15,6 @@
 	* src/graphics.cpp, src/graphics.h, src/resources/image.cpp,
 	src/resources/image.h: Moved the image drawing code into the graphics
 	class.
-
 	* src/being.cpp, src/engine.cpp, src/graphics.cpp, src/graphics.h: Made
 	the wrapper functions in the Graphics class conditional on whether we
 	compile with OpenGL support.
