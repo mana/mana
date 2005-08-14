@@ -52,7 +52,6 @@
 #include "../resources/resourcemanager.h"
 
 extern Being* autoTarget;
-extern bool useOpenGL;
 
 // Guichan stuff
 Gui *gui;
@@ -72,7 +71,7 @@ Gui::Gui(Graphics *graphics):
     mCustomCursor(false)
 {
 #ifdef USE_OPENGL
-    if (useOpenGL) {
+    if (config.getValue("opengl", 0)) {
         // Set graphics
         setGraphics((gcn::OpenGLGraphics*)graphics);
 

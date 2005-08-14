@@ -21,16 +21,17 @@
  *  $Id$
  */
 
+#include "browserbox.h"
+
 #include <guichan/imagefont.hpp>
 
-#ifdef USE_OPENGL
-#include "../resources/resourcemanager.h"
-#endif
-#include "browserbox.h"
 #include "linkhandler.h"
 #include "gui.h"
 
-extern bool useOpenGL;
+#ifdef USE_OPENGL
+#include "../configuration.h"
+#include "../resources/resourcemanager.h"
+#endif
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
@@ -49,7 +50,7 @@ BrowserBox::BrowserBox(unsigned int mode):
     if (instances == 0)
     {
 #ifdef USE_OPENGL
-        if (useOpenGL) {
+        if (config.getValue("opengl", 0)) {
             browserFont = new gcn::ImageFont(
                     ResourceManager::getInstance()->getRealPath(
                         "graphics/gui/browserfont.png"),

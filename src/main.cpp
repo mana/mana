@@ -76,7 +76,6 @@ short map_port;
 char map_name[16];
 unsigned char state;
 unsigned char screen_mode;
-bool useOpenGL = false;
 volatile int framesToDraw = 0;
 
 Sound sound;
@@ -222,10 +221,6 @@ void init_engine()
     SDL_WM_SetCaption("The Mana World", NULL);
     SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
-#ifdef USE_OPENGL
-    useOpenGL = (config.getValue("opengl", 0) == 1);
-#endif
-
     int width, height, bpp;
     bool fullscreen, hwaccel;
 
@@ -234,6 +229,13 @@ void init_engine()
     bpp = 0;
     fullscreen = ((int)config.getValue("screen", 0) == 1);
     hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
+
+    bool useOpenGL = (config.getValue("opengl", 0) == 1);
+
+#ifdef USE_OPENGL
+    // Setup image loading for the right image format
+    Image::setLoadAsOpenGL(useOpenGL);
+#endif
 
     // Create the graphics context
     graphics = new Graphics(useOpenGL);

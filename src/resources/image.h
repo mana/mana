@@ -96,6 +96,14 @@ class Image : public Resource
         float
         getAlpha();
 
+#ifdef USE_OPENGL
+        /**
+         * Sets the target image format. Use <code>false</code> for SDL and
+         * <code>true</code> for OpenGL.
+         */
+        static void setLoadAsOpenGL(bool useOpenGL);
+#endif
+
 
     protected:
         /**
@@ -112,6 +120,8 @@ class Image : public Resource
 #ifdef USE_OPENGL
         GLuint glimage;
         int texWidth, texHeight;
+
+        static bool useOpenGL;
 #endif
         SDL_Surface *image;
         float alpha;
