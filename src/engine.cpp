@@ -202,8 +202,8 @@ Engine::Engine():
     popupMenu = new PopupMenu();
 
     // Initialize window posisitons
-    int screenW = guiGraphics->getWidth();
-    int screenH = guiGraphics->getHeight();
+    int screenW = graphics->getWidth();
+    int screenH = graphics->getHeight();
 
     chatWindow->setPosition(0, screenH - chatWindow->getHeight());
     statusWindow->setPosition(screenW - statusWindow->getWidth() - 5, 5);
@@ -356,8 +356,8 @@ void Engine::draw()
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
-    int midTileX = guiGraphics->getWidth() / 32 / 2;
-    int midTileY = guiGraphics->getHeight() / 32 / 2;
+    int midTileX = graphics->getWidth() / 32 / 2;
+    int midTileY = graphics->getHeight() / 32 / 2;
 
     int map_x = (player_node->x - midTileX) * 32 + get_x_offset(player_node);
     int map_y = (player_node->y -  midTileY) * 32 + get_y_offset(player_node);
@@ -390,8 +390,8 @@ void Engine::draw()
     // Draw tiles below nodes
     if (mCurrentMap != NULL)
     {
-        mCurrentMap->draw(guiGraphics, map_x, map_y, 0);
-        mCurrentMap->draw(guiGraphics, map_x, map_y, 1);
+        mCurrentMap->draw(graphics, map_x, map_y, 0);
+        mCurrentMap->draw(graphics, map_x, map_y, 1);
     }
 
     // Draw items
@@ -402,7 +402,7 @@ void Engine::draw()
             Image *image = itemset->spriteset[itemDb->getItemInfo(
                     floorItem->id)->getImage() - 1];
 
-            guiGraphics->drawImage(image,
+            graphics->drawImage(image,
                     floorItem->x * 32 - map_x, floorItem->y * 32 - map_y);
         }
     }
@@ -417,8 +417,8 @@ void Engine::draw()
         int y = being->y * 32 - map_y;
 
 #ifdef DEBUG
-        guiGraphics->setColor(gcn::Color(0, 0, 255));
-        guiGraphics->drawRectangle(gcn::Rectangle(x & ~31, y & ~31, 32, 32));
+        graphics->setColor(gcn::Color(0, 0, 255));
+        graphics->drawRectangle(gcn::Rectangle(x & ~31, y & ~31, 32, 32));
 #endif
         int frame;
         switch (being->getType())
@@ -439,7 +439,7 @@ void Engine::draw()
                         frame += 4 * (being->getWeapon() - 1);
                 }
 
-                guiGraphics->drawImage(playerset->spriteset[frame + 16 * dir],
+                graphics->drawImage(playerset->spriteset[frame + 16 * dir],
                         being->text_x - 16, being->text_y - 32);
 
                 //if (being->action == ATTACK)
@@ -450,7 +450,7 @@ void Engine::draw()
                     Image *image = weaponset->spriteset[
                         16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
 
-                    guiGraphics->drawImage(image,
+                    graphics->drawImage(image,
                             being->text_x - 64, being->text_y - 80);
                 }
 
@@ -458,13 +458,13 @@ void Engine::draw()
                     int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
                             (being->getHairStyle() - 1));
 
-                    guiGraphics->drawImage(hairset->spriteset[hf],
+                    graphics->drawImage(hairset->spriteset[hf],
                             being->text_x - 2 + 2 * hairtable[frame][dir][0],
                             being->text_y - 50 + 2 * hairtable[frame][dir][1]);
                 }
 
                 if (being->emotion != 0) {
-                    guiGraphics->drawImage(
+                    graphics->drawImage(
                             emotionset->spriteset[being->emotion - 1],
                             being->text_x + 3, being->text_y - 90);
                 }
@@ -478,7 +478,7 @@ void Engine::draw()
 
                 // Draw a NPC
             case Being::NPC:
-                guiGraphics->drawImage(npcset->spriteset[being->job - 100],
+                graphics->drawImage(npcset->spriteset[being->job - 100],
                         x - 8, y - 52);
                 break;
 
@@ -495,18 +495,18 @@ void Engine::draw()
                 frame = being->frame + being->action;
 
                 if (being->action == Being::MONSTER_DEAD) {
-                    guiGraphics->drawImage(
+                    graphics->drawImage(
                             monsterset[being->job - 1002]->spriteset[dir + 4 * Being::MONSTER_DEAD],
                             being->text_x + 30, being->text_y + 40);
                 }
                 else {
-                    guiGraphics->drawImage(
+                    graphics->drawImage(
                             monsterset[being->job-1002]->spriteset[dir + 4 * frame],
                             being->text_x + 30, being->text_y + 40);
 
                     if (being->x == mouseTileX && being->y == mouseTileY)
                     {
-                        guiGraphics->drawImage(attackTarget,
+                        graphics->drawImage(attackTarget,
                                 being->text_x + 30 + 16, being->text_y + 32);
                     }
                 }
@@ -539,7 +539,7 @@ void Engine::draw()
     // Draw tiles below nodes
     if (mCurrentMap != NULL)
     {
-        mCurrentMap->draw(guiGraphics, map_x, map_y, 2);
+        mCurrentMap->draw(graphics, map_x, map_y, 2);
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug
@@ -557,14 +557,14 @@ void Engine::draw()
 
             int squareX = node.x * 32 - map_x + 12;
             int squareY = node.y * 32 - map_y + 12;
-            guiGraphics->setColor(gcn::Color(255, 0, 0));
+            graphics->setColor(gcn::Color(255, 0, 0));
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
             MetaTile *tile = mCurrentMap->getMetaTile(node.x, node.y);
 
             std::stringstream cost;
             cost << tile->Gcost;
-            guiGraphics->drawText(cost.str(), squareX + 4, squareY + 12,
+            graphics->drawText(cost.str(), squareX + 4, squareY + 12,
                     gcn::Graphics::CENTER);
         }
     }
@@ -574,7 +574,7 @@ void Engine::draw()
     {
         Being *being = (*i);
 
-        being->drawSpeech(guiGraphics);
+        being->drawSpeech(graphics);
     }
 
     if (autoTarget) {

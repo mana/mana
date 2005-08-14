@@ -106,7 +106,6 @@ class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
 
 extern Gui *gui;                              /**< The GUI system */
 extern WindowContainer *guiTop;               /**< The top container */
-extern Graphics *guiGraphics;                 /**< Graphics driver */
 extern gcn::SDLInput *guiInput;               /**< GUI input */
 
 /**

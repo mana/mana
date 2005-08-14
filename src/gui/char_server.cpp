@@ -39,6 +39,7 @@
 
 #include "../net/network.h"
 
+extern Graphics *graphics;
 
 char server[30];
 int showServerList = 1;
@@ -153,9 +154,9 @@ void char_server() {
 
         gui->logic();
 
-        guiGraphics->drawImage(login_wallpaper, 0, 0);
+        graphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
-        guiGraphics->updateScreen();
+        graphics->updateScreen();
     }
 
     delete dialog;

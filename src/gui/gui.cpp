@@ -55,7 +55,6 @@ extern Being* autoTarget;
 
 // Guichan stuff
 Gui *gui;
-Graphics *guiGraphics;                 // Graphics driver
 gcn::SDLInput *guiInput;               // GUI input
 WindowContainer *guiTop;               // The top container
 
@@ -71,8 +70,6 @@ Gui::Gui(Graphics *graphics):
     mMouseCursor(NULL),
     mCustomCursor(false)
 {
-    guiGraphics = graphics;
-    //setGraphics(graphics);
 #ifdef USE_OPENGL
     if (useOpenGL) {
         // Set graphics
@@ -195,7 +192,7 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    guiGraphics->pushClipArea(guiTop->getDimension());
+    mGraphics->pushClipArea(guiTop->getDimension());
     guiTop->draw(mGraphics);
 
     int mouseX, mouseY;
@@ -204,10 +201,10 @@ void Gui::draw()
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
             && mCustomCursor)
     {
-        guiGraphics->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
+        dynamic_cast<Graphics*>(mGraphics)->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
     }
 
-    guiGraphics->popClipArea();
+    mGraphics->popClipArea();
 }
 
 void Gui::mousePress(int mx, int my, int button)

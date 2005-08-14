@@ -23,9 +23,10 @@
 
 #include "chat.h"
 
+#include <guichan/focushandler.hpp>
+
 #include "browserbox.h"
 #include "chatinput.h"
-#include "gui.h"
 #include "scrollarea.h"
 
 #include "../playerinfo.h"
@@ -143,7 +144,6 @@ void ChatWindow::chat_log(std::string line, int own)
     line = lineColor + tmp.nick + line;
 
     textOutput->addRow(line);
-    textOutput->draw(gui->getGraphics());
     scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
 }
 
@@ -175,7 +175,7 @@ void ChatWindow::action(const std::string& eventId)
         }
 
         // Remove focus and hide input
-        gui->focusNone();
+        mFocusHandler->focusNone();
     }
 }
 

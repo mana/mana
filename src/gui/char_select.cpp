@@ -46,6 +46,8 @@
 #include "../net/network.h"
 #include "../net/protocol.h"
 
+extern Graphics *graphics;
+
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
             "Confirm", "Are you sure you want to delete this character?"),
@@ -479,9 +481,9 @@ void charSelect()
 
         gui->logic();
 
-        guiGraphics->drawImage(login_wallpaper, 0, 0);
+        graphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
-        guiGraphics->updateScreen();
+        graphics->updateScreen();
     }
 
     delete sel;

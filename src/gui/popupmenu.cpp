@@ -29,9 +29,9 @@
 #include <guichan/focushandler.hpp>
 
 #include "browserbox.h"
-#include "gui.h"
 #include "inventorywindow.h"
 #include "item_amount.h"
+#include "windowcontainer.h"
 
 #include "../being.h"
 #include "../floor_item.h"
@@ -254,9 +254,9 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 void PopupMenu::showPopup(int x, int y)
 {
     setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
-    if (guiGraphics->getWidth() < (x + getWidth() + 5))
+    if (windowContainer->getWidth() < (x + getWidth() + 5))
         x -= (getWidth() + 50);
-    if (guiGraphics->getHeight() < (y + getHeight() + 5))
+    if (windowContainer->getHeight() < (y + getHeight() + 5))
         y -= (getHeight() + 50);
     setPosition(x, y);
     setVisible(true);

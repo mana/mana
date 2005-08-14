@@ -44,6 +44,8 @@
 
 #include "../net/network.h"
 
+extern Graphics *graphics;
+
 LoginDialog::LoginDialog():
     Window("Login")
 {
@@ -215,9 +217,9 @@ void login()
 
         gui->logic();
 
-        guiGraphics->drawImage(login_wallpaper, 0, 0);
+        graphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
-        guiGraphics->updateScreen();
+        graphics->updateScreen();
     }
 
     delete dialog;

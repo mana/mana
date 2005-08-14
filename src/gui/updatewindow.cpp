@@ -48,6 +48,7 @@
 
 #include "../resources/resourcemanager.h"
 
+extern Graphics *graphics;
 
 UpdaterWindow::UpdaterWindow():
     Window("Updating...")
@@ -415,9 +416,9 @@ void UpdaterWindow::updateData()
 
         gui->logic();
 
-        guiGraphics->drawImage(login_wallpaper, 0, 0);
+        graphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
-        guiGraphics->updateScreen();
+        graphics->updateScreen();
     }
 
     if (mThread)

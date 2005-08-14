@@ -30,7 +30,6 @@
 
 #include "button.h"
 #include "checkbox.h"
-#include "gui.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
@@ -43,6 +42,8 @@
 #include "../sound.h"
 
 #define SETUP_WIDTH 240
+
+extern Graphics *graphics;
 
 ModeListModel::ModeListModel()
 {
@@ -247,10 +248,10 @@ void Setup::action(const std::string &eventId)
         bool fullscreen = fsCheckBox->isMarked();
         if (fullscreen != (config.getValue("screen", 0) == 1)) 
         {
-            if (!guiGraphics->setFullscreen(fullscreen))
+            if (!graphics->setFullscreen(fullscreen))
             {
                 fullscreen = !fullscreen;
-                if (!guiGraphics->setFullscreen(fullscreen))
+                if (!graphics->setFullscreen(fullscreen))
                 {
                     std::cerr << "Failed to switch to " <<
                         (fullscreen ? "windowed" : "fullscreen") <<

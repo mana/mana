@@ -25,7 +25,6 @@
 
 #include <guichan/exception.hpp>
 
-#include "gui.h"
 #include "windowcontainer.h"
 
 #include "../configuration.h"
@@ -310,26 +309,26 @@ void Window::mouseMotion(int x, int y)
 
             newDim.y = 0;
         }
-        if (newDim.x + newDim.width > guiGraphics->getWidth())
+        if (newDim.x + newDim.width > windowContainer->getWidth())
         {
             if (mMouseResize)
             {
-                newDim.width = guiGraphics->getWidth() - newDim.x;
+                newDim.width = windowContainer->getWidth() - newDim.x;
             }
             else
             {
-                newDim.x = guiGraphics->getWidth() - newDim.width;
+                newDim.x = windowContainer->getWidth() - newDim.width;
             }
         }
-        if (newDim.y + newDim.height > guiGraphics->getHeight())
+        if (newDim.y + newDim.height > windowContainer->getHeight())
         {
             if (mMouseResize)
             {
-                newDim.height = guiGraphics->getHeight() - newDim.y;
+                newDim.height = windowContainer->getHeight() - newDim.y;
             }
             else
             {
-                newDim.y = guiGraphics->getHeight() - newDim.height;
+                newDim.y = windowContainer->getHeight() - newDim.height;
             }
         }
 
