@@ -28,7 +28,6 @@
 #endif
 
 #include "log.h"
-#include "main.h"
 
 #include "graphic/imagerect.h"
 
@@ -37,8 +36,8 @@
 extern volatile int framesToDraw;
 
 
-Graphics::Graphics():
-    mScreen(0)
+Graphics::Graphics(bool useOpenGL):
+    mScreen(0), useOpenGL(useOpenGL)
 {
 }
 

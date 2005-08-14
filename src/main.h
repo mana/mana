@@ -64,6 +64,5 @@ extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern unsigned char state;
 extern Sound sound;
-extern bool useOpenGL;
 
 #endif

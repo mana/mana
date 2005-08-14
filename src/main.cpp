@@ -236,7 +236,7 @@ void init_engine()
     hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
 
     // Create the graphics context
-    graphics = new Graphics();
+    graphics = new Graphics(useOpenGL);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel)) {

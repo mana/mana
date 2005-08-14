@@ -26,8 +26,8 @@
 #include <SDL_image.h>
 
 #include "../log.h"
-#include "../main.h"
 
+extern bool useOpenGL;
 
 Image::Image(SDL_Surface *image):
     image(image)

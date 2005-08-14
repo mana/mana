@@ -52,6 +52,7 @@
 #include "../resources/resourcemanager.h"
 
 extern Being* autoTarget;
+extern bool useOpenGL;
 
 // Guichan stuff
 Gui *gui;

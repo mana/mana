@@ -23,13 +23,14 @@
 
 #include <guichan/imagefont.hpp>
 
-#include "../main.h"
 #ifdef USE_OPENGL
 #include "../resources/resourcemanager.h"
 #endif
 #include "browserbox.h"
 #include "linkhandler.h"
 #include "gui.h"
+
+extern bool useOpenGL;
 
 int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
