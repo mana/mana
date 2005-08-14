@@ -149,9 +149,66 @@ int Graphics::getHeight()
     return mScreen->h;
 }
 
-void Graphics::drawImage(Image *image, int x, int y)
+bool Graphics::drawImage(Image *image, int x, int y)
 {
-    image->draw_deprecated(mScreen, x, y);
+    return drawImage(image, 0, 0, x, y, image->bounds.w, image->bounds.h);
+}
+
+bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
+        int width, int height)
+{
+    srcX += image->bounds.x;
+    srcY += image->bounds.y;
+
+    if (!useOpenGL) {
+        // Check that preconditions for blitting are met.
+        if (!mScreen || !image->image) return false;
+
+        SDL_Rect dstRect;
+        SDL_Rect srcRect;
+        dstRect.x = dstX; dstRect.y = dstY;
+        srcRect.x = srcX; srcRect.y = srcY;
+        srcRect.w = width;
+        srcRect.h = height;
+
+        if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
+            return false;
+        }
+    }
+#ifdef USE_OPENGL
+    else {
+        // Find OpenGL texture coordinates
+        float texX1 = srcX / (float)image->texWidth;
+        float texY1 = srcY / (float)image->texHeight;
+        float texX2 = (srcX + width) / (float)image->texWidth;
+        float texY2 = (srcY + height) / (float)image->texHeight;
+
+        glColor4f(1.0f, 1.0f, 1.0f, image->alpha);
+        glBindTexture(GL_TEXTURE_2D, image->glimage);
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+
+        // Draw a textured quad -- the image
+        glBegin(GL_QUADS);
+        glTexCoord2f(texX1, texY1);
+        glVertex3i(dstX, dstY, 0);
+
+        glTexCoord2f(texX2, texY1);
+        glVertex3i(dstX + width, dstY, 0);
+
+        glTexCoord2f(texX2, texY2);
+        glVertex3i(dstX + width, dstY + height, 0);
+
+        glTexCoord2f(texX1, texY2);
+        glVertex3i(dstX, dstY + height, 0);
+        glEnd();
+
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+#endif
+    return true;
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
@@ -167,7 +224,7 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
         while (px < w) {
             int dw = (px + iw >= w) ? w - px : iw;
             int dh = (py + ih >= h) ? h - py : ih;
-            image->draw_deprecated(mScreen, 0, 0, x + px, y + py, dw, dh);
+            drawImage(image, 0, 0, x + px, y + py, dw, dh);
             px += iw;
         }
         py += ih;

@@ -36,6 +36,8 @@
  */
 class Image : public Resource
 {
+    friend class Graphics;
+
     public:
         /**
          * Destructor.
@@ -83,27 +85,6 @@ class Image : public Resource
         getSubImage(int x, int y, int width, int height);
 
         /**
-         * Blits the image onto the screen.
-         *
-         * @return <code>true</code> if the image was blitted properly
-         *         <code>false</code> otherwise.
-         */
-        virtual bool
-        draw_deprecated(SDL_Surface *screen,
-             int srcX, int srcY,
-             int dstX, int dstY,
-             int width, int height);
-
-        /**
-         * Blits the image onto the screen.
-         *
-         * @return <code>true</code> if the image was blitted properly
-         *         <code>false</code> otherwise.
-         */
-        virtual bool
-        draw_deprecated(SDL_Surface *screen, int x, int y);
-
-        /**
          * Sets the alpha value of this image.
          */
         void
@@ -125,11 +106,11 @@ class Image : public Resource
 #endif
         Image(SDL_Surface *image);
 
+        SDL_Rect bounds;
         bool loaded;
 
 #ifdef USE_OPENGL
         GLuint glimage;
-        int width, height;
         int texWidth, texHeight;
 #endif
         SDL_Surface *image;
@@ -158,18 +139,6 @@ class SubImage : public Image
         ~SubImage();
 
         /**
-         * Returns the width of the image.
-         */
-        int
-        getWidth() const;
-
-        /**
-         * Returns the height of the image.
-         */
-        int
-        getHeight() const;
-
-        /**
          * Creates a new image with the desired clipping rectangle.
          *
          * @return <code>NULL</code> if creation failed and a valid
@@ -178,18 +147,8 @@ class SubImage : public Image
         Image*
         getSubImage(int x, int y, int width, int height);
 
-        /**
-         * Draws this image.
-         */
-        bool
-        draw_deprecated(SDL_Surface *screen,
-             int srcX, int srcY,
-             int dstX, int dstY,
-             int width, int height);
-
     private:
         Image *parent;
-        SDL_Rect rect;
 };
 
 #endif

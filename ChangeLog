@@ -1,5 +1,9 @@
 2005-08-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/graphics.cpp, src/graphics.h, src/resources/image.cpp,
+	src/resources/image.h: Moved the image drawing code into the graphics
+	class.
+
 	* src/being.cpp, src/engine.cpp, src/graphics.cpp, src/graphics.h: Made
 	the wrapper functions in the Graphics class conditional on whether we
 	compile with OpenGL support.

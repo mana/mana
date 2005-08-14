@@ -34,18 +34,26 @@ Image::Image(SDL_Surface *image):
 {
     // Default to opaque
     alpha = 1.0f;
+
+    bounds.x = 0;
+    bounds.y = 0;
+    bounds.w = image->w;
+    bounds.h = image->h;
 }
 
 #ifdef USE_OPENGL
 Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
     glimage(glimage),
-    width(width),
-    height(height),
     texWidth(texWidth),
     texHeight(texHeight)
 {
     // Default to opaque
     alpha = 1.0f;
+
+    bounds.x = 0;
+    bounds.y = 0;
+    bounds.w = width;
+    bounds.h = height;
 }
 #endif
 
@@ -261,32 +269,12 @@ void Image::unload()
 
 int Image::getWidth() const
 {
-    if (!useOpenGL) {
-        if (image != NULL) {
-            return image->w;
-        }
-    }
-#ifdef USE_OPENGL
-    else {
-        return width;
-    }
-#endif
-    return 0;
+    return bounds.w;
 }
 
 int Image::getHeight() const
 {
-    if (!useOpenGL) {
-        if (image != NULL) {
-            return image->h;
-        }
-    }
-#ifdef USE_OPENGL
-    else {
-        return height;
-    }
-#endif
-    return 0;
+    return bounds.h;
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
@@ -302,65 +290,6 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 #else
     return NULL;
 #endif
-}
-
-bool Image::draw_deprecated(SDL_Surface *screen, int srcX, int srcY, int dstX, int dstY,
-        int width, int height)
-{
-    if (!useOpenGL) {
-        // Check that preconditions for blitting are met.
-        if (screen == NULL || image == NULL) return false;
-
-        SDL_Rect dstRect;
-        SDL_Rect srcRect;
-        dstRect.x = dstX; dstRect.y = dstY;
-        srcRect.x = srcX; srcRect.y = srcY;
-        srcRect.w = width;
-        srcRect.h = height;
-
-        if (SDL_BlitSurface(image, &srcRect, screen, &dstRect) < 0) {
-            return false;
-        }
-    }
-#ifdef USE_OPENGL
-    else {
-        // Find OpenGL texture coordinates
-        float texX1 = srcX / (float)texWidth;
-        float texY1 = srcY / (float)texHeight;
-        float texX2 = (srcX + width) / (float)texWidth;
-        float texY2 = (srcY + height) / (float)texHeight;
-
-        glColor4f(1.0f, 1.0f, 1.0f, alpha);
-        glBindTexture(GL_TEXTURE_2D, glimage);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
-
-        // Draw a textured quad -- the image
-        glBegin(GL_QUADS);
-        glTexCoord2f(texX1, texY1);
-        glVertex3i(dstX, dstY, 0);
-
-        glTexCoord2f(texX2, texY1);
-        glVertex3i(dstX + width, dstY, 0);
-
-        glTexCoord2f(texX2, texY2);
-        glVertex3i(dstX + width, dstY + height, 0);
-
-        glTexCoord2f(texX1, texY2);
-        glVertex3i(dstX, dstY + height, 0);
-        glEnd();
-
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    }
-#endif
-    return true;
-}
-
-bool Image::draw_deprecated(SDL_Surface *screen, int x, int y)
-{
-    return draw_deprecated(screen, 0, 0, x, y, getWidth(), getHeight());
 }
 
 void Image::setAlpha(float a)
@@ -389,10 +318,10 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
     parent->incRef();
 
     // Set up the rectangle.
-    rect.x = x;
-    rect.y = y;
-    rect.w = width;
-    rect.h = height;
+    bounds.x = x;
+    bounds.y = y;
+    bounds.w = width;
+    bounds.h = height;
 }
 
 #ifdef USE_OPENGL
@@ -403,10 +332,10 @@ SubImage::SubImage(Image *parent, GLuint image,
     parent->incRef();
 
     // Set up the rectangle.
-    rect.x = x;
-    rect.y = y;
-    rect.w = width;
-    rect.h = height;
+    bounds.x = x;
+    bounds.y = y;
+    bounds.w = width;
+    bounds.h = height;
 }
 #endif
 
@@ -418,24 +347,7 @@ SubImage::~SubImage()
     parent->decRef();
 }
 
-int SubImage::getWidth() const
-{
-    return rect.w;
-}
-
-int SubImage::getHeight() const
-{
-    return rect.h;
-}
-
 Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
     return NULL;
-}
-
-bool SubImage::draw_deprecated(SDL_Surface *screen, int srcX, int srcY,
-        int dstX, int dstY, int width, int height)
-{
-    return Image::draw_deprecated(screen, rect.x + srcX, rect.y + srcY,
-            dstX, dstY, width, height);
 }

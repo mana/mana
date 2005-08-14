@@ -65,7 +65,22 @@ public gcn::SDLGraphics {
          */
         bool setFullscreen(bool fs);
 
-        void drawImage(Image *image, int x, int y);
+        /**
+         * Blits an image onto the screen.
+         *
+         * @return <code>true</code> if the image was blitted properly
+         *         <code>false</code> otherwise.
+         */
+        bool drawImage(Image *image, int x, int y);
+
+        /**
+         * Blits an image onto the screen.
+         *
+         * @return <code>true</code> if the image was blitted properly
+         *         <code>false</code> otherwise.
+         */
+        bool drawImage(Image *image, int srcX, int srcY, int dstX, int dstY, int width, int height);
+
         void drawImagePattern(Image *image, int x, int y, int w, int h);
 
         /**
