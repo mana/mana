@@ -1,3 +1,9 @@
+2005-08-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp, src/engine.cpp, src/graphics.cpp, src/graphics.h: Made
+	the wrapper functions in the Graphics class conditional on whether we
+	compile with OpenGL support.
+
 2005-08-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/being.cpp, src/being.h, src/configlistener.cpp,

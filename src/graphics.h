@@ -65,9 +65,6 @@ public gcn::SDLGraphics {
          */
         bool setFullscreen(bool fs);
 
-        void _beginDraw();
-        void _endDraw();
-
         void drawImage(Image *image, int x, int y);
         void drawImagePattern(Image *image, int x, int y, int w, int h);
 
@@ -107,6 +104,15 @@ public gcn::SDLGraphics {
          */
         int getHeight();
 
+        /*
+         * Wrapper functions to delegate calls to the right base-class when we
+         * compile with OpenGL support and thus have two gcn::Graphics
+         * base-classes.
+         */
+#ifdef USE_OPENGL
+        void _beginDraw();
+        void _endDraw();
+
         void setFont(gcn::ImageFont *font);
 
         void drawText(const std::string &text,
@@ -120,6 +126,7 @@ public gcn::SDLGraphics {
         bool pushClipArea(gcn::Rectangle area);
 
         void fillRectangle(const gcn::Rectangle &rectangle);
+#endif
 
     private:
         SDL_Surface *mScreen;

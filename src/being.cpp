@@ -23,8 +23,9 @@
 
 #include "being.h"
 
-#include <iostream>
 #include <sstream>
+
+#include <guichan/imagefont.hpp>
 
 #include "game.h"
 #include "graphics.h"

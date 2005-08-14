@@ -23,7 +23,9 @@
 
 #include "graphics.h"
 
+#ifdef USE_OPENGL
 #include <guichan/imagefont.hpp>
+#endif
 
 #include "log.h"
 #include "main.h"
@@ -137,103 +139,6 @@ bool Graphics::setFullscreen(bool fs)
             mScreen->format->BitsPerPixel, fs, mHWAccel);
 }
 
-void Graphics::_beginDraw()
-{
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_beginDraw();
-    } else
-#endif
-    {
-        gcn::SDLGraphics::_beginDraw();
-    }
-}
-
-void Graphics::_endDraw()
-{
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_endDraw();
-    } else
-#endif
-    {
-        gcn::SDLGraphics::_endDraw();
-    }
-}
-
-void Graphics::setFont(gcn::ImageFont *font)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::setFont(font);
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::setFont(font);
-    }
-#endif
-}
-
-void Graphics::drawText(const std::string &text,
-        int x, int y, unsigned int alignment)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::drawText(text, x, y, alignment);
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
-    }
-#endif
-}
-
-void Graphics::setColor(gcn::Color color)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::setColor(color);
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::setColor(color);
-    }
-#endif
-}
-
-void Graphics::popClipArea()
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::popClipArea();
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::popClipArea();
-    }
-#endif
-}
-
-bool Graphics::pushClipArea(gcn::Rectangle area)
-{
-    if (!useOpenGL) {
-        return gcn::SDLGraphics::pushClipArea(area);
-    }
-#ifdef USE_OPENGL
-    else {
-        return gcn::OpenGLGraphics::pushClipArea(area);
-    }
-#endif
-}
-
-void Graphics::fillRectangle(const gcn::Rectangle &rectangle)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::fillRectangle(rectangle);
-    }
-#ifdef USE_OPENGL
-    else {
-        gcn::OpenGLGraphics::fillRectangle(rectangle);
-    }
-#endif
-}
-
 int Graphics::getWidth()
 {
     return mScreen->w;
@@ -343,3 +248,78 @@ void Graphics::updateScreen()
         SDL_Delay(10);
     }
 }
+
+#ifdef USE_OPENGL
+void Graphics::_beginDraw()
+{
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_beginDraw();
+    } else {
+        gcn::SDLGraphics::_beginDraw();
+    }
+}
+
+void Graphics::_endDraw()
+{
+    if (useOpenGL) {
+        gcn::OpenGLGraphics::_endDraw();
+    } else {
+        gcn::SDLGraphics::_endDraw();
+    }
+}
+
+void Graphics::setFont(gcn::ImageFont *font)
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::setFont(font);
+    } else {
+        gcn::OpenGLGraphics::setFont(font);
+    }
+}
+
+void Graphics::drawText(const std::string &text,
+        int x, int y, unsigned int alignment)
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::drawText(text, x, y, alignment);
+    } else {
+        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
+    }
+}
+
+void Graphics::setColor(gcn::Color color)
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::setColor(color);
+    } else {
+        gcn::OpenGLGraphics::setColor(color);
+    }
+}
+
+void Graphics::popClipArea()
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::popClipArea();
+    } else {
+        gcn::OpenGLGraphics::popClipArea();
+    }
+}
+
+bool Graphics::pushClipArea(gcn::Rectangle area)
+{
+    if (!useOpenGL) {
+        return gcn::SDLGraphics::pushClipArea(area);
+    } else {
+        return gcn::OpenGLGraphics::pushClipArea(area);
+    }
+}
+
+void Graphics::fillRectangle(const gcn::Rectangle &rectangle)
+{
+    if (!useOpenGL) {
+        gcn::SDLGraphics::fillRectangle(rectangle);
+    } else {
+        gcn::OpenGLGraphics::fillRectangle(rectangle);
+    }
+}
+#endif

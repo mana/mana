@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <guichan/imagefont.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "being.h"
