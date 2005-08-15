@@ -56,7 +56,6 @@ extern Being* autoTarget;
 // Guichan stuff
 Gui *gui;
 gcn::SDLInput *guiInput;               // GUI input
-WindowContainer *guiTop;               // The top container
 
 // Fonts used in showing hits
 gcn::ImageFont *hitRedFont;
@@ -99,7 +98,7 @@ Gui::Gui(Graphics *graphics):
     mFocusHandler = new FocusHandler();
 
     // Initialize top GUI widget
-    guiTop = new WindowContainer();
+    WindowContainer *guiTop = new WindowContainer();
     guiTop->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
@@ -171,7 +170,7 @@ Gui::~Gui()
     }
 
     delete mGuiFont;
-    delete guiTop;
+    delete mTop;
     delete mImageLoader;
 
     if (mHostImageLoader) {
@@ -192,8 +191,8 @@ void Gui::logic()
 
 void Gui::draw()
 {
-    mGraphics->pushClipArea(guiTop->getDimension());
-    guiTop->draw(mGraphics);
+    mGraphics->pushClipArea(mTop->getDimension());
+    mTop->draw(mGraphics);
 
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);

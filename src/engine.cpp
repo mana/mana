@@ -177,7 +177,9 @@ Engine::Engine():
 {
     // Initializes GUI
     debugInfo = new gcn::Label();
-    guiTop->add(debugInfo);
+    // Oh, come on guichan folks, how useful is it to have a single widget gui?
+    // (Well, the BasicContainer interface isn't that much more useful... ;)
+    dynamic_cast<WindowContainer*>(gui->getTop())->add(debugInfo);
 
     // Create dialogs
     chatWindow = new ChatWindow(

@@ -1,5 +1,7 @@
 2005-08-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/engine.cpp, src/gui/gui.cpp, src/gui/gui.h: Removed guiTop global
+	variable.
 	* src/graphics.cpp, src/graphics.h, src/main.cpp: Made the OpenGL related
 	code fully #ifdef'ed.
 	* src/main.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
