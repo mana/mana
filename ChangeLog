@@ -1,5 +1,7 @@
 2005-08-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/graphics.cpp, src/graphics.h, src/main.cpp: Made the OpenGL related
+	code fully #ifdef'ed.
 	* src/main.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
 	src/resources/image.cpp, src/resources/image.h: Fully faded out the
 	useOpenGL global. Image and Graphics keep track of the mode on their own

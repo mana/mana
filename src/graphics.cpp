@@ -35,11 +35,17 @@
 
 extern volatile int framesToDraw;
 
-
+#ifdef USE_OPENGL
 Graphics::Graphics(bool useOpenGL):
     mScreen(0), useOpenGL(useOpenGL)
 {
 }
+#else
+Graphics::Graphics():
+    mScreen(0)
+{
+}
+#endif
 
 Graphics::~Graphics()
 {
@@ -159,23 +165,8 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcX += image->bounds.x;
     srcY += image->bounds.y;
 
-    if (!useOpenGL) {
-        // Check that preconditions for blitting are met.
-        if (!mScreen || !image->image) return false;
-
-        SDL_Rect dstRect;
-        SDL_Rect srcRect;
-        dstRect.x = dstX; dstRect.y = dstY;
-        srcRect.x = srcX; srcRect.y = srcY;
-        srcRect.w = width;
-        srcRect.h = height;
-
-        if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
-            return false;
-        }
-    }
 #ifdef USE_OPENGL
-    else {
+    if (useOpenGL) {
         // Find OpenGL texture coordinates
         float texX1 = srcX / (float)image->texWidth;
         float texY1 = srcY / (float)image->texHeight;
@@ -205,8 +196,24 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    }
+    } else
 #endif
+    {
+        // Check that preconditions for blitting are met.
+        if (!mScreen || !image->image) return false;
+
+        SDL_Rect dstRect;
+        SDL_Rect srcRect;
+        dstRect.x = dstX; dstRect.y = dstY;
+        srcRect.x = srcX; srcRect.y = srcY;
+        srcRect.w = width;
+        srcRect.h = height;
+
+        if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -284,14 +291,14 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
-    if (useOpenGL) {
 #ifdef USE_OPENGL
+    if (useOpenGL) {
         glFlush();
         glFinish();
         SDL_GL_SwapBuffers();
+    } else
 #endif
-    }
-    else {
+    {
         SDL_Flip(mScreen);
     }
 

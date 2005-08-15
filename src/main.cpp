@@ -230,15 +230,19 @@ void init_engine()
     fullscreen = ((int)config.getValue("screen", 0) == 1);
     hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
 
+#ifdef USE_OPENGL
     bool useOpenGL = (config.getValue("opengl", 0) == 1);
 
-#ifdef USE_OPENGL
     // Setup image loading for the right image format
     Image::setLoadAsOpenGL(useOpenGL);
-#endif
 
     // Create the graphics context
     graphics = new Graphics(useOpenGL);
+#else
+    // Create the graphics context
+    graphics = new Graphics();
+#endif
+
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel)) {

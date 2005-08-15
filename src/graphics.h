@@ -48,7 +48,11 @@ public gcn::SDLGraphics {
         /**
          * Constructor.
          */
+#ifdef USE_OPENGL
         Graphics(bool useOpenGL);
+#else
+        Graphics();
+#endif
 
         /**
          * Destructor.
@@ -145,7 +149,10 @@ public gcn::SDLGraphics {
 
     private:
         SDL_Surface *mScreen;
-        bool mFullscreen, mHWAccel, useOpenGL;
+        bool mFullscreen, mHWAccel;
+#ifdef USE_OPENGL
+        bool useOpenGL;
+#endif
 };
 
 #endif
