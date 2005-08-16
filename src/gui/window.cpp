@@ -120,6 +120,7 @@ Window::~Window()
         delete border.grid[6];
         delete border.grid[7];
         delete border.grid[8];
+        resizeGrip->decRef();
     }
 
     config.removeListener("guialpha", this);
@@ -143,12 +144,9 @@ void Window::draw(gcn::Graphics* graphics)
     if (resizable)
     {
         dynamic_cast<Graphics*>(graphics)->drawImage(Window::resizeGrip,
-                                                     x + getWidth() - 18,
-                                                     y + getHeight() - 15);
+                                                     x + getWidth() - resizeGrip->getWidth(),
+                                                     y + getHeight() - resizeGrip->getHeight());
     }
-
-
-
 
     // Draw title
     if (title) {
@@ -249,17 +247,13 @@ void Window::mousePress(int x, int y, int button)
     // border, and is a candidate for a resize.
     if (getResizable() && button == 1 &&
             getGripDimension().isPointInRect(x, y) &&
+            hasMouse() &&
             !(mMouseDrag && y > (int)getPadding()))
     {
         mMouseResize = true;
         mMouseXOffset = x;
         mMouseYOffset = y;
 
-        // Determine which borders are being dragged
-        mLeftBorderDrag = false;//(x < 10);
-        mTopBorderDrag = false;//(y < 10);*/
-        mRightBorderDrag = true;//(x >= getWidth() - 10);
-        mBottomBorderDrag = true;//(y >= getHeight() - 10);
     }
 }
 
@@ -274,27 +268,9 @@ void Window::mouseMotion(int x, int y)
         // Change the dimension according to dragging and moving
         if (mMouseResize && getResizable())
         {
-            if (mLeftBorderDrag)
-            {
-                newDim.x += dx;
-                newDim.width -= dx;
-            }
-
-            if (mTopBorderDrag)
-            {
-                newDim.y += dy;
-                newDim.height -= dy;
-            }
-
-            if (mBottomBorderDrag)
-            {
-                newDim.height += dy;
-            }
-
-            if (mRightBorderDrag)
-            {
-                newDim.width += dx;
-            }
+            // We're dragging bottom right
+            newDim.height += dy;
+            newDim.width += dx;
         }
         else if (mMouseDrag && isMovable())
         {
@@ -366,12 +342,6 @@ void Window::mouseMotion(int x, int y)
             Ycorrection = maxWinHeight - newDim.height;
         }
 
-        if (mLeftBorderDrag) newDim.x -= Xcorrection;
-        newDim.width += Xcorrection;
-
-        if (mTopBorderDrag) newDim.y -= Ycorrection;
-        newDim.height += Ycorrection;
-
         // Snap window to edges
         //if (x < snapSize) x = 0;
         //if (y < snapSize) y = 0;
@@ -379,12 +349,9 @@ void Window::mouseMotion(int x, int y)
         //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
 
         // Update mouse offset when dragging bottom or right border
-        if (mBottomBorderDrag)
+        if (mMouseResize)
         {
             mMouseYOffset += newDim.height - getHeight();
-        }
-        if (mRightBorderDrag)
-        {
             mMouseXOffset += newDim.width - getWidth();
         }
 
@@ -423,9 +390,10 @@ void Window::optionChanged(const std::string &name)
     }
 }
 
-gcn::Rectangle Window::getGripDimension () {
+gcn::Rectangle Window::getGripDimension ()
+{
     int x, y;
     getAbsolutePosition(x, y);
-    return gcn::Rectangle(getWidth() - 18, getHeight() - 15, getWidth(),
+    return gcn::Rectangle(getWidth() - resizeGrip->getWidth(), getHeight() - resizeGrip->getHeight(), getWidth(),
                           getHeight());
 }

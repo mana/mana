@@ -172,10 +172,6 @@ class Window : public gcn::Window, public ConfigListener
         bool resizable;            /**< Window can be resized */
 
         bool mMouseResize;         /**< Window is being resized */
-        bool mTopBorderDrag;       /**< Top border is being dragged */
-        bool mLeftBorderDrag;      /**< Left border is being dragged */
-        bool mRightBorderDrag;     /**< Right border is being dragged */
-        bool mBottomBorderDrag;    /**< Bottom border is being dragged */
 
         int minWinWidth;           /**< Minimum window width */
         int minWinHeight;          /**< Minimum window height */
