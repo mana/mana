@@ -1,3 +1,14 @@
+2005-08-16  FERREIRA Yohann  <bertram@cegetel.net>
+
+    * src/gui/window.h, src/gui/window.cpp:
+    Bugfixing and simplifying resize code.
+    * debian/*:
+    Updates to the debian packaging files. (The actual update was from a few days ago.)
+    Now we have the tmw, tmw-data and tmw-music packages.
+    * src/gui/setup.h, src/gui/setup.cpp: 
+    Now the setup (Config) windows works as it should be.
+    (The actual update was from a few days ago.) 
+
 2005-08-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/gui/status.cpp, src/gui/window.cpp,
