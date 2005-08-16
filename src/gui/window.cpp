@@ -21,10 +21,9 @@
  *  $Id$
  */
 
-#include "window.h"
-
 #include <guichan/exception.hpp>
 
+#include "window.h"
 #include "windowcontainer.h"
 
 #include "../configuration.h"
@@ -39,6 +38,7 @@
 WindowContainer *Window::windowContainer = NULL;
 int Window::instances = 0;
 ImageRect Window::border;
+Image *Window::resizeGrip;
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
@@ -69,6 +69,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
         border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
         border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
+        resizeGrip = resman->getImage("graphics/gui/resize.png");
         dBorders->decRef();
     }
 
@@ -137,6 +138,17 @@ void Window::draw(gcn::Graphics* graphics)
 
     dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
                                          border);
+
+    // Draw grip
+    if (resizable)
+    {
+        dynamic_cast<Graphics*>(graphics)->drawImage(Window::resizeGrip,
+                                                     x + getWidth() - 18,
+                                                     y + getHeight() - 15);
+    }
+
+
+
 
     // Draw title
     if (title) {
@@ -236,7 +248,7 @@ void Window::mousePress(int x, int y, int button)
     // If the mouse is not inside the content, the press must have been on the
     // border, and is a candidate for a resize.
     if (getResizable() && button == 1 &&
-            !getContentDimension().isPointInRect(x, y) &&
+            getGripDimension().isPointInRect(x, y) &&
             !(mMouseDrag && y > (int)getPadding()))
     {
         mMouseResize = true;
@@ -244,10 +256,10 @@ void Window::mousePress(int x, int y, int button)
         mMouseYOffset = y;
 
         // Determine which borders are being dragged
-        mLeftBorderDrag = (x < 10);
-        mTopBorderDrag = (y < 10);
-        mRightBorderDrag = (x >= getWidth() - 10);
-        mBottomBorderDrag = (y >= getHeight() - 10);
+        mLeftBorderDrag = false;//(x < 10);
+        mTopBorderDrag = false;//(y < 10);*/
+        mRightBorderDrag = true;//(x >= getWidth() - 10);
+        mBottomBorderDrag = true;//(y >= getHeight() - 10);
     }
 }
 
@@ -409,4 +421,11 @@ void Window::optionChanged(const std::string &name)
             }
         }
     }
+}
+
+gcn::Rectangle Window::getGripDimension () {
+    int x, y;
+    getAbsolutePosition(x, y);
+    return gcn::Rectangle(getWidth() - 18, getHeight() - 15, getWidth(),
+                          getHeight());
 }

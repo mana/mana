@@ -26,8 +26,6 @@
 
 #include <guichan/widgets/container.hpp>
 
-class Window;
-
 /**
  * A window container. This container makes draggable windows possible.
  *

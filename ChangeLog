@@ -1,3 +1,9 @@
+2005-08-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, src/gui/status.cpp, src/gui/window.cpp,
+	src/gui/window.h, src/gui/windowcontainer.h, data/graphics/gui/resize.png:
+	Added a resize grip to resizable window, fixed some compiling errors.
+
 2005-08-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/gui/gui.cpp, src/gui/gui.h: Removed guiTop global

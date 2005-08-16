@@ -25,9 +25,12 @@
 #define _TMW_WINDOW_H__
 
 #include <guichan/widgets/window.hpp>
+#include <guichan/rectangle.hpp>
 
 #include "../configlistener.h"
 #include "../guichanfwd.h"
+
+#include "../resources/image.h"
 
 class ImageRect;
 class WindowContainer;
@@ -154,6 +157,11 @@ class Window : public gcn::Window, public ConfigListener
          * Called when an config option changes.
          */
         void optionChanged(const std::string &name);
+        
+        /**
+         * The position of the resize grip
+         */
+        gcn::Rectangle getGripDimension();
 
     protected:
         gcn::Container *chrome;    /**< Contained container */
@@ -179,6 +187,7 @@ class Window : public gcn::Window, public ConfigListener
 
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */
+        static Image *resizeGrip;   /**< The grip to resize window */
 };
 
 #endif

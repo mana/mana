@@ -131,6 +131,8 @@ StatusWindow::StatusWindow():
     add(inventoryButton);
     add(setupButton);
     add(equipmentButton);
+    
+    setResizable(true);
 }
 
 StatusWindow::~StatusWindow()
