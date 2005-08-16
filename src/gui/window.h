@@ -110,7 +110,7 @@ class Window : public gcn::Window, public ConfigListener
         /**
          * Returns whether the window can be resized.
          */
-        bool getResizable();
+        bool isResizable();
 
         /**
          * Sets the minimum width of the window.
@@ -146,12 +146,13 @@ class Window : public gcn::Window, public ConfigListener
         void scheduleDelete();
 
         /**
-         * Window dragging and resizing. These methods also makes sure the
+         * Window dragging and resizing mouse related. These methods also makes sure the
          * window is not dragged/resized outside of the screen.
          */
         void mousePress(int x, int y, int button);
         void mouseMotion(int mx, int my);
         void mouseRelease(int x, int y, int button);
+        void mouseOut();
 
         /**
          * Called when an config option changes.

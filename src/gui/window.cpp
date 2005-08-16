@@ -213,7 +213,7 @@ void Window::setResizable(bool r)
     resizable = r;
 }
 
-bool Window::getResizable()
+bool Window::isResizable()
 {
     return resizable;
 }
@@ -245,7 +245,7 @@ void Window::mousePress(int x, int y, int button)
 
     // If the mouse is not inside the content, the press must have been on the
     // border, and is a candidate for a resize.
-    if (getResizable() && button == 1 &&
+    if (isResizable() && button == 1 &&
             getGripDimension().isPointInRect(x, y) &&
             hasMouse() &&
             !(mMouseDrag && y > (int)getPadding()))
@@ -257,6 +257,39 @@ void Window::mousePress(int x, int y, int button)
     }
 }
 
+void Window::mouseOut()
+{
+
+/* Doesn't seem to help, maybe somebody will have an idea based on this...
+
+    // If the mouse is a little bit too quick,
+    // Throw it back to the window area when resizing.
+    // Or else the resizing will stop.
+    if ( mMouseResize && isResizable() )
+    {
+        // Get the Win old dimension
+        gcn::Rectangle newDim = getDimension();
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+        // And update it to put the mouse in the middle of the grip image
+        newDim.width = mouseX - newDim.x + (resizeGrip->getWidth() / 2);
+        newDim.height = mouseY - newDim.y + (resizeGrip->getHeight() / 2);
+
+        // Set the new window and content dimensions
+        mMouseYOffset += newDim.height - getHeight();
+        mMouseXOffset += newDim.width - getWidth();
+        setDimension(newDim);
+
+        if (mContent != NULL)
+        {
+            mContent->setDimension(getContentDimension());
+        }
+
+    }
+
+*/
+}
+
 void Window::mouseMotion(int x, int y)
 {
     if (mMouseDrag || mMouseResize)
@@ -266,7 +299,7 @@ void Window::mouseMotion(int x, int y)
         gcn::Rectangle newDim = getDimension();
 
         // Change the dimension according to dragging and moving
-        if (mMouseResize && getResizable())
+        if (mMouseResize && isResizable())
         {
             // We're dragging bottom right
             newDim.height += dy;
