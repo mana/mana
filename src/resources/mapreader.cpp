@@ -38,13 +38,6 @@
 const unsigned int DEFAULT_TILE_WIDTH = 32;
 const unsigned int DEFAULT_TILE_HEIGHT = 32;
 
-// MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
-// function at link time.
-#ifdef WIN32
-#undef xmlFree
-#define xmlFree(x) ;
-#endif
-
 /**
  * Inflates either zlib or gzip deflated memory. The inflated memory is
  * expected to be freed by the caller.

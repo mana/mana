@@ -35,13 +35,6 @@
 #include "configlistener.h"
 #include "log.h"
 
-// MSVC libxml2 at the moment doesn't work right when using MinGW, missing this
-// function at link time.
-#ifdef WIN32
-#undef xmlFree
-#define xmlFree(x) ;
-#endif
-
 void Configuration::init(const std::string &filename)
 {
     configPath = filename;
