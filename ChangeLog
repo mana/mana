@@ -1,3 +1,12 @@
+2005-08-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am, src/graphics.cpp, src/graphics.h, src/main.cpp,
+	src/openglgraphics.cpp src/openglgraphics.h, src/gui/gui.cpp,
+	src/resources/image.h: Semi-separated OpenGL and SDL graphics classes,
+	improves OpenGL performance quite a bit, while rewriting a good bunch of
+	code provided by guichan (but maybe we'll diverge so much that we'd need
+	that anyways...)
+
 2005-08-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/configuration.cpp, src/resources/itemmanager.cpp,

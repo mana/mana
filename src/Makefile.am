@@ -153,6 +153,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      main.h \
 	      map.cpp\
 	      map.h \
+	      openglgraphics.cpp\
+	      openglgraphics.h \
 	      playerinfo.h \
 	      serverinfo.h \
 	      sound.cpp \

@@ -25,9 +25,6 @@
 #define _GRAPHICS_H
 
 #include <guichan/sdl/sdlgraphics.hpp>
-#ifdef USE_OPENGL
-#include <guichan/opengl/openglgraphics.hpp>
-#endif
 
 #include "guichanfwd.h"
 
@@ -39,30 +36,22 @@ class SDL_Surface;
 /**
  * A central point of control for graphics.
  */
-class Graphics :
-#ifdef USE_OPENGL
-public gcn::OpenGLGraphics,
-#endif
-public gcn::SDLGraphics {
+class Graphics : public gcn::SDLGraphics {
     public:
         /**
          * Constructor.
          */
-#ifdef USE_OPENGL
-        Graphics(bool useOpenGL);
-#else
         Graphics();
-#endif
 
         /**
          * Destructor.
          */
-        ~Graphics();
+        virtual ~Graphics();
 
         /**
          * Try to create a window with the given settings.
          */
-        bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
+        virtual bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
 
         /**
          * Set fullscreen mode.
@@ -83,9 +72,9 @@ public gcn::SDLGraphics {
          * @return <code>true</code> if the image was blitted properly
          *         <code>false</code> otherwise.
          */
-        bool drawImage(Image *image, int srcX, int srcY, int dstX, int dstY, int width, int height);
+        virtual bool drawImage(Image *image, int srcX, int srcY, int dstX, int dstY, int width, int height);
 
-        void drawImagePattern(Image *image, int x, int y, int w, int h);
+        virtual void drawImagePattern(Image *image, int x, int y, int w, int h);
 
         /**
          * Draws a rectangle using images. 4 corner images, 4 side images and 1
@@ -111,7 +100,7 @@ public gcn::SDLGraphics {
          * Updates the screen. This is done by either copying the buffer to the
          * screen or swapping pages.
          */
-        void updateScreen();
+        virtual void updateScreen();
 
         /**
          * Returns the width of the screen.
@@ -123,36 +112,9 @@ public gcn::SDLGraphics {
          */
         int getHeight();
 
-        /*
-         * Wrapper functions to delegate calls to the right base-class when we
-         * compile with OpenGL support and thus have two gcn::Graphics
-         * base-classes.
-         */
-#ifdef USE_OPENGL
-        void _beginDraw();
-        void _endDraw();
-
-        void setFont(gcn::ImageFont *font);
-
-        void drawText(const std::string &text,
-                int x,
-                int y,
-                unsigned int alignment);
-
-        void setColor(gcn::Color color);
-
-        void popClipArea();
-        bool pushClipArea(gcn::Rectangle area);
-
-        void fillRectangle(const gcn::Rectangle &rectangle);
-#endif
-
-    private:
+    protected:
         SDL_Surface *mScreen;
         bool mFullscreen, mHWAccel;
-#ifdef USE_OPENGL
-        bool useOpenGL;
-#endif
 };
 
 #endif

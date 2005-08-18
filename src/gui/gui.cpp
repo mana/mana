@@ -69,10 +69,10 @@ Gui::Gui(Graphics *graphics):
     mMouseCursor(NULL),
     mCustomCursor(false)
 {
+    // Set graphics
+    setGraphics(graphics);
 #ifdef USE_OPENGL
     if (config.getValue("opengl", 0)) {
-        // Set graphics
-        setGraphics((gcn::OpenGLGraphics*)graphics);
 
         // Set image loader
         mHostImageLoader = new gcn::SDLImageLoader();
@@ -80,9 +80,6 @@ Gui::Gui(Graphics *graphics):
     } else
 #endif
     {
-        // Set graphics
-        setGraphics((gcn::SDLGraphics*)graphics);
-
         // Set image loader
         mImageLoader = new gcn::SDLImageLoader();
     }

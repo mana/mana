@@ -40,6 +40,9 @@
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
+#ifdef USE_OPENGL
+#include "openglgraphics.h"
+#endif
 #include "playerinfo.h"
 #include "sound.h"
 
@@ -237,7 +240,11 @@ void init_engine()
     Image::setLoadAsOpenGL(useOpenGL);
 
     // Create the graphics context
-    graphics = new Graphics(useOpenGL);
+    if (useOpenGL) {
+        graphics = new OpenGLGraphics();
+    } else {
+        graphics = new Graphics();
+    }
 #else
     // Create the graphics context
     graphics = new Graphics();

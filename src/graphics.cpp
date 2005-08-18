@@ -35,17 +35,10 @@
 
 extern volatile int framesToDraw;
 
-#ifdef USE_OPENGL
-Graphics::Graphics(bool useOpenGL):
-    mScreen(0), useOpenGL(useOpenGL)
-{
-}
-#else
 Graphics::Graphics():
     mScreen(0)
 {
 }
-#endif
 
 Graphics::~Graphics()
 {
@@ -63,18 +56,10 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
         displayFlags |= SDL_FULLSCREEN;
     }
 
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        displayFlags |= SDL_OPENGL;
-        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    } else
-#endif
-    {
-        if (hwaccel) {
-            displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
-        } else {
-            displayFlags |= SDL_SWSURFACE;
-        }
+    if (hwaccel) {
+        displayFlags |= SDL_HWSURFACE | SDL_DOUBLEBUF;
+    } else {
+        displayFlags |= SDL_SWSURFACE;
     }
 
     mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags);
@@ -114,22 +99,7 @@ bool Graphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
             ((vi->blit_fill) ? "yes" : "no"));
     logger->log("Available video memory: %d", vi->video_mem);
 
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        // Setup OpenGL
-        glViewport(0, 0, w, h);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-        int gotDoubleBuffer;
-        SDL_GL_GetAttribute(SDL_GL_DOUBLEBUFFER, &gotDoubleBuffer);
-        logger->log("Using OpenGL %s double buffering.",
-                (gotDoubleBuffer ? "with" : "without"));
-
-        setTargetPlane(w, h);
-    } else
-#endif
-    {
-        setTarget(mScreen);
-    }
+    setTarget(mScreen);
 
     return true;
 }
@@ -165,53 +135,18 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcX += image->bounds.x;
     srcY += image->bounds.y;
 
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        // Find OpenGL texture coordinates
-        float texX1 = srcX / (float)image->texWidth;
-        float texY1 = srcY / (float)image->texHeight;
-        float texX2 = (srcX + width) / (float)image->texWidth;
-        float texY2 = (srcY + height) / (float)image->texHeight;
+    // Check that preconditions for blitting are met.
+    if (!mScreen || !image->image) return false;
 
-        glColor4f(1.0f, 1.0f, 1.0f, image->alpha);
-        glBindTexture(GL_TEXTURE_2D, image->glimage);
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
+    SDL_Rect dstRect;
+    SDL_Rect srcRect;
+    dstRect.x = dstX; dstRect.y = dstY;
+    srcRect.x = srcX; srcRect.y = srcY;
+    srcRect.w = width;
+    srcRect.h = height;
 
-        // Draw a textured quad -- the image
-        glBegin(GL_QUADS);
-        glTexCoord2f(texX1, texY1);
-        glVertex3i(dstX, dstY, 0);
-
-        glTexCoord2f(texX2, texY1);
-        glVertex3i(dstX + width, dstY, 0);
-
-        glTexCoord2f(texX2, texY2);
-        glVertex3i(dstX + width, dstY + height, 0);
-
-        glTexCoord2f(texX1, texY2);
-        glVertex3i(dstX, dstY + height, 0);
-        glEnd();
-
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-    } else
-#endif
-    {
-        // Check that preconditions for blitting are met.
-        if (!mScreen || !image->image) return false;
-
-        SDL_Rect dstRect;
-        SDL_Rect srcRect;
-        dstRect.x = dstX; dstRect.y = dstY;
-        srcRect.x = srcX; srcRect.y = srcY;
-        srcRect.w = width;
-        srcRect.h = height;
-
-        if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
-            return false;
-        }
+    if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
+        return false;
     }
 
     return true;
@@ -291,16 +226,7 @@ void Graphics::drawImageRect(
 
 void Graphics::updateScreen()
 {
-#ifdef USE_OPENGL
-    if (useOpenGL) {
-        glFlush();
-        glFinish();
-        SDL_GL_SwapBuffers();
-    } else
-#endif
-    {
-        SDL_Flip(mScreen);
-    }
+    SDL_Flip(mScreen);
 
     // Decrement frame counter when using framerate limiting
     if (framesToDraw > 1) framesToDraw--;
@@ -311,78 +237,3 @@ void Graphics::updateScreen()
         SDL_Delay(10);
     }
 }
-
-#ifdef USE_OPENGL
-void Graphics::_beginDraw()
-{
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_beginDraw();
-    } else {
-        gcn::SDLGraphics::_beginDraw();
-    }
-}
-
-void Graphics::_endDraw()
-{
-    if (useOpenGL) {
-        gcn::OpenGLGraphics::_endDraw();
-    } else {
-        gcn::SDLGraphics::_endDraw();
-    }
-}
-
-void Graphics::setFont(gcn::ImageFont *font)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::setFont(font);
-    } else {
-        gcn::OpenGLGraphics::setFont(font);
-    }
-}
-
-void Graphics::drawText(const std::string &text,
-        int x, int y, unsigned int alignment)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::drawText(text, x, y, alignment);
-    } else {
-        gcn::OpenGLGraphics::drawText(text, x, y, alignment);
-    }
-}
-
-void Graphics::setColor(gcn::Color color)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::setColor(color);
-    } else {
-        gcn::OpenGLGraphics::setColor(color);
-    }
-}
-
-void Graphics::popClipArea()
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::popClipArea();
-    } else {
-        gcn::OpenGLGraphics::popClipArea();
-    }
-}
-
-bool Graphics::pushClipArea(gcn::Rectangle area)
-{
-    if (!useOpenGL) {
-        return gcn::SDLGraphics::pushClipArea(area);
-    } else {
-        return gcn::OpenGLGraphics::pushClipArea(area);
-    }
-}
-
-void Graphics::fillRectangle(const gcn::Rectangle &rectangle)
-{
-    if (!useOpenGL) {
-        gcn::SDLGraphics::fillRectangle(rectangle);
-    } else {
-        gcn::OpenGLGraphics::fillRectangle(rectangle);
-    }
-}
-#endif

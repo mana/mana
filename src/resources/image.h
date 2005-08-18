@@ -37,6 +37,9 @@
 class Image : public Resource
 {
     friend class Graphics;
+#ifdef USE_OPENGL
+    friend class OpenGLGraphics;
+#endif
 
     public:
         /**
