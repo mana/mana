@@ -152,7 +152,6 @@ class Window : public gcn::Window, public ConfigListener
         void mousePress(int x, int y, int button);
         void mouseMotion(int mx, int my);
         void mouseRelease(int x, int y, int button);
-        void mouseOut();
 
         /**
          * Called when an config option changes.

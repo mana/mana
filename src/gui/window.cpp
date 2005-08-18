@@ -247,6 +247,7 @@ void Window::mousePress(int x, int y, int button)
     // border, and is a candidate for a resize.
     if (isResizable() && button == 1 &&
             getGripDimension().isPointInRect(x, y) &&
+            !getContentDimension().isPointInRect(x, y) &&
             hasMouse() &&
             !(mMouseDrag && y > (int)getPadding()))
     {
@@ -255,39 +256,6 @@ void Window::mousePress(int x, int y, int button)
         mMouseYOffset = y;
 
     }
-}
-
-void Window::mouseOut()
-{
-
-/* Doesn't seem to help, maybe somebody will have an idea based on this...
-
-    // If the mouse is a little bit too quick,
-    // Throw it back to the window area when resizing.
-    // Or else the resizing will stop.
-    if ( mMouseResize && isResizable() )
-    {
-        // Get the Win old dimension
-        gcn::Rectangle newDim = getDimension();
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-        // And update it to put the mouse in the middle of the grip image
-        newDim.width = mouseX - newDim.x + (resizeGrip->getWidth() / 2);
-        newDim.height = mouseY - newDim.y + (resizeGrip->getHeight() / 2);
-
-        // Set the new window and content dimensions
-        mMouseYOffset += newDim.height - getHeight();
-        mMouseXOffset += newDim.width - getWidth();
-        setDimension(newDim);
-
-        if (mContent != NULL)
-        {
-            mContent->setDimension(getContentDimension());
-        }
-
-    }
-
-*/
 }
 
 void Window::mouseMotion(int x, int y)
