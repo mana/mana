@@ -1,3 +1,9 @@
+2005-08-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, src/game.cpp, src/gui/skill.h, src/gui/skill.cpp:
+	Updated reference to latest libxml, fixed a bug in updating skills, updated
+	skill names database.
+
 2005-08-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/graphics.cpp, src/graphics.h, src/main.cpp,

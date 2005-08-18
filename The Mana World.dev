@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=159
+UnitCount=158
 Type=0
 Ver=1
 ObjFiles=
@@ -12,7 +12,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=-DUSE_OPENGL_@@_
-Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-llibxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurl_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-lxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurl_@@_
 IsCpp=1
 Icon=The Mana World.ico
 ExeOutput=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001001000001101
+CompilerSettings=0010001001001001001001
 
 [VersionInfo]
 Major=0
@@ -627,20 +627,10 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit105]
-FileName=src\net\win2mac.h
+[Unit106]
+FileName=src\net\network.h
 CompileCpp=1
 Folder=net/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit106]
-FileName=src\net\network.cpp
-CompileCpp=1
-Folder=net/source
 Compile=1
 Link=1
 Priority=1000
@@ -648,9 +638,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit109]
-FileName=src\net\protocol.h
+FileName=src\resources\soundeffect.h
 CompileCpp=1
-Folder=net/header
+Folder=resources
 Compile=1
 Link=1
 Priority=1000
@@ -667,47 +657,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit110]
-FileName=src\net\win2linux.h
-CompileCpp=1
-Folder=net/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit111]
-FileName=src\net\win2mac.cpp
-CompileCpp=1
-Folder=net/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit112]
-FileName=src\resources\soundeffect.h
-CompileCpp=1
-Folder=resources
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit113]
-FileName=src\resources\buddylist.cpp
-CompileCpp=1
-Folder=resources
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-Compile=1
-
-[Unit114]
 FileName=src\resources\buddylist.h
 CompileCpp=1
 Folder=resources
@@ -717,7 +667,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit115]
+[Unit112]
 FileName=src\resources\image.cpp
 CompileCpp=1
 Folder=resources
@@ -727,17 +677,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit116]
+[Unit113]
 FileName=src\resources\image.h
 CompileCpp=1
 Folder=resources
-Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
+Compile=1
 
-[Unit117]
+[Unit114]
 FileName=src\resources\iteminfo.cpp
 CompileCpp=1
 Folder=resources
@@ -747,7 +697,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit118]
+[Unit115]
 FileName=src\resources\iteminfo.h
 CompileCpp=1
 Folder=resources
@@ -757,7 +707,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit119]
+[Unit116]
 FileName=src\resources\itemmanager.cpp
 CompileCpp=1
 Folder=resources
@@ -767,7 +717,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit120]
+[Unit117]
 FileName=src\resources\itemmanager.h
 CompileCpp=1
 Folder=resources
@@ -777,7 +727,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit121]
+[Unit118]
 FileName=src\resources\mapreader.cpp
 CompileCpp=1
 Folder=resources
@@ -787,7 +737,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit122]
+[Unit119]
 FileName=src\resources\mapreader.h
 CompileCpp=1
 Folder=resources
@@ -797,7 +747,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit124]
+[Unit120]
+FileName=src\resources\music.cpp
+CompileCpp=1
+Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit121]
 FileName=src\resources\music.h
 CompileCpp=1
 Folder=resources
@@ -807,7 +767,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit125]
+[Unit122]
 FileName=src\resources\resource.cpp
 CompileCpp=1
 Folder=resources
@@ -817,17 +777,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit126]
-FileName=src\resources\resource.h
-CompileCpp=1
-Folder=resources
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit127]
+[Unit124]
 FileName=src\resources\resourcemanager.cpp
 CompileCpp=1
 Folder=resources
@@ -837,10 +787,40 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit128]
+[Unit125]
 FileName=src\resources\resourcemanager.h
 CompileCpp=1
 Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit126]
+FileName=src\resources\soundeffect.cpp
+CompileCpp=1
+Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit127]
+FileName=src\gui\help.h
+CompileCpp=1
+Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit128]
+FileName=src\gui\help.cpp
+CompileCpp=1
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
@@ -1298,16 +1278,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit107]
-FileName=src\net\network.h
-CompileCpp=1
-Folder=net/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit108]
 FileName=src\net\protocol.cpp
 CompileCpp=1
 Folder=net/source
@@ -1317,8 +1287,18 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit108]
+FileName=src\net\protocol.h
+CompileCpp=1
+Folder=net/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit123]
-FileName=src\resources\music.cpp
+FileName=src\resources\resource.h
 CompileCpp=1
 Folder=resources
 Compile=1
@@ -1328,36 +1308,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit129]
-FileName=src\resources\soundeffect.cpp
-CompileCpp=1
-Folder=resources
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit130]
-FileName=src\gui\help.h
-CompileCpp=1
-Folder=gui/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit131]
-FileName=src\gui\help.cpp
-CompileCpp=1
-Folder=gui/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit132]
 FileName=src\gui\inttextbox.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1367,7 +1317,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit133]
+[Unit130]
 FileName=src\gui\inttextbox.h
 CompileCpp=1
 Folder=gui/header
@@ -1377,7 +1327,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit134]
+[Unit131]
 FileName=src\gui\focushandler.h
 CompileCpp=1
 Folder=gui/header
@@ -1387,7 +1337,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit135]
+[Unit132]
 FileName=src\gui\focushandler.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1397,7 +1347,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit136]
+[Unit133]
 FileName=src\gui\popupmenu.h
 CompileCpp=1
 Folder=gui/header
@@ -1407,7 +1357,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit137]
+[Unit134]
 FileName=src\gui\popupmenu.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1417,7 +1367,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit138]
+[Unit135]
 FileName=src\gui\browserbox.h
 CompileCpp=1
 Folder=gui/header
@@ -1427,7 +1377,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit139]
+[Unit136]
 FileName=src\gui\browserbox.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1437,7 +1387,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit140]
+[Unit137]
 FileName=src\gui\updatewindow.h
 CompileCpp=1
 Folder=gui/header
@@ -1447,7 +1397,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit141]
+[Unit138]
 FileName=src\gui\updatewindow.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1457,7 +1407,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit142]
+[Unit139]
 FileName=src\gui\vbox.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1467,7 +1417,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit143]
+[Unit140]
 FileName=src\gui\vbox.h
 CompileCpp=1
 Folder=gui/header
@@ -1477,7 +1427,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit144]
+[Unit141]
 FileName=src\gui\box.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1487,7 +1437,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit145]
+[Unit142]
 FileName=src\gui\box.h
 CompileCpp=1
 Folder=gui/header
@@ -1497,7 +1447,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit146]
+[Unit143]
 FileName=src\item.h
 CompileCpp=1
 Folder=header
@@ -1507,7 +1457,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit147]
+[Unit144]
 FileName=src\equipment.cpp
 CompileCpp=1
 Folder=
@@ -1517,7 +1467,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit148]
+[Unit145]
 FileName=src\equipment.h
 CompileCpp=1
 Folder=header
@@ -1527,10 +1477,40 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit149]
+[Unit146]
 FileName=src\item.cpp
 CompileCpp=1
 Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit147]
+FileName=src\gui\inventorywindow.h
+CompileCpp=1
+Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit148]
+FileName=src\gui\inventorywindow.cpp
+CompileCpp=1
+Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit149]
+FileName=src\inventory.h
+CompileCpp=1
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -1548,36 +1528,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit150]
-FileName=src\gui\inventorywindow.h
-CompileCpp=1
-Folder=gui/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit151]
-FileName=src\gui\inventorywindow.cpp
-CompileCpp=1
-Folder=gui/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit152]
-FileName=src\inventory.h
-CompileCpp=1
-Folder=header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit153]
 FileName=src\inventory.cpp
 CompileCpp=1
 Folder=
@@ -1587,7 +1537,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit154]
+[Unit151]
 FileName=src\configlistener.cpp
 CompileCpp=1
 Folder=
@@ -1597,7 +1547,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit155]
+[Unit152]
 FileName=src\configlistener.h
 CompileCpp=1
 Folder=header
@@ -1607,7 +1557,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit156]
+[Unit153]
 FileName=src\graphic\imagerect.h
 CompileCpp=1
 Folder=graphic/header
@@ -1617,7 +1567,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit157]
+[Unit154]
 FileName=src\guichanfwd.h
 CompileCpp=1
 Folder=header
@@ -1627,7 +1577,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit158]
+[Unit155]
 FileName=src\playerinfo.h
 CompileCpp=1
 Folder=header
@@ -1637,10 +1587,70 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit159]
+[Unit156]
 FileName=src\serverinfo.h
 CompileCpp=1
 Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit157]
+FileName=src\openglgraphics.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit158]
+FileName=src\openglgraphics.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit160]
+FileName=src\openglgraphics.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit161]
+FileName=src\openglgraphics.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit105]
+FileName=src\net\network.cpp
+CompileCpp=1
+Folder=net/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit110]
+FileName=src\resources\buddylist.cpp
+CompileCpp=1
+Folder=resources
 Compile=1
 Link=1
 Priority=1000

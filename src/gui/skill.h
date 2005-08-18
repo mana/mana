@@ -51,6 +51,7 @@ class SkillDialog : public Window, public gcn::ActionListener,
         gcn::ScrollArea *skillScrollArea;
         gcn::Label *pointsLabel;
         gcn::Button *incButton;
+        gcn::Button *useButton;
         gcn::Button *closeButton;
 
         std::vector<SKILL*> skillList;

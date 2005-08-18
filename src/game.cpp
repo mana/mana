@@ -843,29 +843,10 @@ void do_parse()
     if (in_size >= 2) {
         // Check if the received packet is complete
         while (in_size >= (len = get_packet_length(id = RFIFOW(0)))) {
-            // Add infos to log file and dump the latest received packet
-            char pkt_nfo[60];
-            sprintf(pkt_nfo,"In-buffer size: %i Packet id: %x Packet length: %i", in_size, RFIFOW(0), len);
-            /*
-            log_hex("Packet", "Packet_ID", RFIFOW(0));
-            log_int("Packet", "Packet_length", get_length(RFIFOW(0)));
-            log_int("Packet", "Packet_in_size", RFIFOW(2));
-            log_int("Packet", "In_size", in_size);
-            FILE *file = fopen("packet.dump", "wb");
-            for(int i=0;i<len;i++) {
-                fprintf(file, "%x|%i|%c ", RFIFOB(i), RFIFOB(i), RFIFOB(i));
-                if((i+1)%10==0)fprintf(file, "\n");
-            }
-            fclose(file);
-            */
-#ifdef __DEBUG
-            FILE *file = fopen("packet.list", "a");
-            fprintf(file, "%x\n", RFIFOW(0));
-            fclose(file);
-#endif
+            printf("Packet_ID: %x\n", RFIFOW(0));
+
             // Parse packet based on their id
-            // std::cout << "packet " << id << std::endl;
-            switch (id) 
+            switch (id)
             {
                 case SMSG_LOGIN_SUCCESS:
                     // Connected to game server succesfully, set spawn point
@@ -1054,7 +1035,7 @@ void do_parse()
 
                 case SMSG_MOVE_PLAYER_BEING:
                     // A nearby player being moves
-                    being = findNode(RFIFOL(2));
+                    /*being = findNode(RFIFOL(2));
 
                     if (being == NULL)
                     {
@@ -1072,7 +1053,7 @@ void do_parse()
 
                     being->setDestination(
                                 get_dest_x(RFIFOP(50)),
-                                get_dest_y(RFIFOP(50)));
+                                get_dest_y(RFIFOP(50)));*/
                     break;
 
                     // NPC dialog
@@ -1556,7 +1537,7 @@ void do_parse()
                             if (skillDialog->hasSkill(skillId)) {
                                 skillDialog->setSkill(skillId,
                                         RFIFOW(4 + k * 37 + 6),
-                                        RFIFOW(4 + k * 37 + 36));
+                                        RFIFOB(4 + k * 37 + 36));
                             }
                             else {
                                 skillDialog->addSkill(

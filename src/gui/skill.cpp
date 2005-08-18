@@ -35,7 +35,7 @@
 
 char *skill_db[] = {
     // 0-99
-    "", "Basic", "Sword", "", "HP regeneration", "", "", "", "", "MP regeneration",
+    "", "Basic", "Sword", "Two hand", "HP regeneration", "Bash", "Provoke", "Magnum", "Endure", "MP regeneration",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "MAX weight", "Discount", "Overcharge", "",
@@ -50,7 +50,7 @@ char *skill_db[] = {
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
-    "", "", "First aid", "Play as dead", "", "", "", "", "", "",
+    "", "", "First aid", "Play as dead", "Moving recovery", "Fatal blow", "Auto berserk", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "",
@@ -66,26 +66,35 @@ SkillDialog::SkillDialog():
     skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");
-    incButton = new Button(" Up ");
+    incButton = new Button("Up");
+    useButton = new Button("Use");
     closeButton = new Button("Close");
 
     skillListBox->setEventId("skill");
     incButton->setEventId("inc");
+    useButton->setEventId("use");
     closeButton->setEventId("close");
 
     setContentSize(240, 240);
-    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 229, 180));
+    skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
     pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
-    incButton->setPosition(64, 210);
-    closeButton->setPosition(160, 210);
+    incButton->setPosition(skillScrollArea->getX(), 210);
+    useButton->setPosition(incButton->getX() + incButton->getWidth() + 10,
+        210);
+    closeButton->setPosition(
+        skillScrollArea->getX() + skillScrollArea->getWidth() - closeButton->getWidth(),
+        210);
 
     add(skillScrollArea);
     add(pointsLabel);
     add(incButton);
+    add(useButton);
     add(closeButton);
 
     skillListBox->addActionListener(this);
     incButton->addActionListener(this);
+    useButton->addActionListener(this);
     closeButton->addActionListener(this);
 
     setLocationRelativeTo(getParent());
@@ -176,6 +185,7 @@ bool SkillDialog::hasSkill(int id)
 
 void SkillDialog::addSkill(int id, int lv, int sp)
 {
+    printf("%i\n", id);
     SKILL *tmp = new SKILL();
     tmp->id = id;
     tmp->lv = lv;
