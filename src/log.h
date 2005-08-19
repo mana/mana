@@ -32,14 +32,14 @@ class Logger
 {
     public:
         /**
-         * Constructor, opens log file for writing.
-         */
-        Logger(const std::string &logFilename);
-
-        /**
          * Destructor, closes log file.
          */
         ~Logger();
+
+        /**
+         * Sets the file to log to and opens it
+         */
+        void setLogFile(const std::string &logFilename);
 
         /**
          * Enters a message in the log. The message will be timestamped.

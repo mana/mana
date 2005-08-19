@@ -1,3 +1,9 @@
+2005-08-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/log.cpp, src/log.h, src/main.cpp: Added support for parsing command
+	line options. Added option to skip the update process. Made logger being
+	created immediately after startup, because some destructors use it.
+
 2005-08-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/game.cpp, src/gui/skill.h, src/gui/skill.cpp:

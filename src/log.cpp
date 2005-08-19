@@ -29,7 +29,15 @@
 #include <sstream>
 
 
-Logger::Logger(const std::string &logFilename)
+Logger::~Logger()
+{
+    if (logFile.is_open())
+    {
+        logFile.close();
+    }
+}
+
+void Logger::setLogFile(const std::string &logFilename)
 {
     logFile.open(logFilename.c_str(), std::ios_base::trunc);
 
@@ -37,14 +45,6 @@ Logger::Logger(const std::string &logFilename)
     {
         std::cout << "Warning: error while opening " << logFilename <<
             " for writing.\n";
-    }
-}
-
-Logger::~Logger()
-{
-    if (logFile.is_open())
-    {
-        logFile.close();
     }
 }
 

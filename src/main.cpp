@@ -23,8 +23,10 @@
 
 #include "main.h"
 
+#include <getopt.h>
 #include <iostream>
 #include <physfs.h>
+#include <unistd.h>
 #include <SDL_image.h>
 
 #include <guichan/sdl/sdlinput.hpp>
@@ -153,8 +155,8 @@ void init_engine()
     }
 #endif
 
-    // Initialize logger
-    logger = new Logger(homeDir + std::string("/tmw.log"));
+    // Set log file
+    logger->setLogFile(homeDir + std::string("/tmw.log"));
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -331,9 +333,65 @@ int exists(const std::string &file)
     }
 }
 
+struct Options
+{
+    Options():printHelp(false),skipUpdate(false) {};
+
+    bool printHelp;
+    bool skipUpdate;
+};
+
+void printHelp()
+{
+    std::cout << "tmw" << std::endl << std::endl;
+    std::cout << "Options: " << std::endl;
+    std::cout << "  -h --help       : Display this help" << std::endl;
+    std::cout << "     --skipupdate : Skip the update process" << std::endl;
+}
+
+void parseOptions(int argc, char *argv[], Options &options)
+{
+    const char *optstring = "h";
+
+    const struct option long_options[] = {
+        { "help",       no_argument, 0, 'h' },
+        { "skipupdate", no_argument, 0, 'u' },
+        0
+    };
+
+    while (optind < argc) {
+        int result = getopt_long(argc, argv, optstring, long_options, NULL);
+
+        if (result == -1) {
+            break;
+        }
+
+        switch (result) {
+            default: // Unknown option
+            case 'h':
+                options.printHelp = true;
+                break;
+            case 'u':
+                options.skipUpdate = true;
+                break;
+        }
+    }
+}
+
 /** Main */
 int main(int argc, char *argv[])
 {
+    logger = new Logger();
+
+    Options options;
+
+    parseOptions(argc, argv, options);
+
+    if (options.printHelp) {
+        printHelp();
+        return 0;
+    }
+
     UpdaterWindow *uw;
 
     // Initialize libxml2 and check for potential ABI mismatches between
@@ -351,6 +409,10 @@ int main(int argc, char *argv[])
     init_engine();
 
     SDL_Event event;
+
+    if (options.skipUpdate && state != ERROR) {
+        state = LOGIN;
+    }
 
     while (state != EXIT)
     {
