@@ -43,12 +43,14 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
+#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/equipmentwindow.h"
 #include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
+#include "gui/minimap.h"
 #include "gui/npc.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
@@ -87,6 +89,26 @@ SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
+
+ChatWindow *chatWindow;
+StatusWindow *statusWindow;
+BuyDialog *buyDialog;
+SellDialog *sellDialog;
+BuySellDialog *buySellDialog;
+InventoryWindow *inventoryWindow;
+NpcListDialog *npcListDialog;
+NpcTextDialog *npcTextDialog;
+SkillDialog *skillDialog;
+//NewSkillDialog *newSkillWindow;
+StatsWindow *statsWindow;
+Setup* setupWindow;
+Minimap *minimap;
+EquipmentWindow *equipmentWindow;
+ChargeDialog *chargeDialog;
+TradeWindow *tradeWindow;
+//BuddyWindow *buddyWindow;
+HelpWindow *helpWindow;
+PopupMenu *popupMenu;
 
 Inventory *inventory = NULL;
 
@@ -161,6 +183,104 @@ Being* createBeing(unsigned int id, unsigned short job, Map *map)
     return being;
 }
 
+/**
+ * Create all the various globally accessible gui windows
+ */
+void createGuiWindows()
+{
+    // Create dialogs
+    chatWindow = new ChatWindow(
+            config.getValue("homeDir", "") + std::string("/chatlog.txt"));
+    statusWindow = new StatusWindow();
+    buyDialog = new BuyDialog();
+    sellDialog = new SellDialog();
+    buySellDialog = new BuySellDialog();
+    inventoryWindow = new InventoryWindow();
+    npcTextDialog = new NpcTextDialog();
+    npcListDialog = new NpcListDialog();
+    skillDialog = new SkillDialog();
+    //newSkillWindow = new NewSkillDialog();
+    statsWindow = new StatsWindow();
+    setupWindow = new Setup();
+    minimap = new Minimap();
+    equipmentWindow = new EquipmentWindow();
+    chargeDialog = new ChargeDialog();
+    tradeWindow = new TradeWindow();
+    //buddyWindow = new BuddyWindow();
+    helpWindow = new HelpWindow();
+    popupMenu = new PopupMenu();
+
+    // Initialize window posisitons
+    int screenW = graphics->getWidth();
+    int screenH = graphics->getHeight();
+
+    chatWindow->setPosition(0, screenH - chatWindow->getHeight());
+    statusWindow->setPosition(screenW - statusWindow->getWidth() - 5, 5);
+    inventoryWindow->setPosition(screenW - statusWindow->getWidth() -
+            inventoryWindow->getWidth() - 10, 5);
+    statsWindow->setPosition(
+            screenW - 5 - statsWindow->getWidth(),
+            statusWindow->getHeight() + 20);
+    chargeDialog->setPosition(
+            screenW - 5 - chargeDialog->getWidth(),
+            screenH - chargeDialog->getHeight() - 15);
+    tradeWindow->setPosition(screenW - statusWindow->getWidth() -
+            tradeWindow->getWidth() - 10,
+            inventoryWindow->getY() + inventoryWindow->getHeight());
+    /*buddyWindow->setPosition(10,
+      minimap->getHeight() + 30);*/
+    equipmentWindow->setPosition(5,140);
+
+    // Set initial window visibility
+    chatWindow->setVisible(true);
+    statusWindow->setVisible(true);
+    buyDialog->setVisible(false);
+    sellDialog->setVisible(false);
+    buySellDialog->setVisible(false);
+    inventoryWindow->setVisible(false);
+    npcTextDialog->setVisible(false);
+    npcListDialog->setVisible(false);
+    skillDialog->setVisible(false);
+    //newSkillWindow->setVisible(false);
+    statsWindow->setVisible(false);
+    setupWindow->setVisible(false);
+    equipmentWindow->setVisible(false);
+    chargeDialog->setVisible(false);
+    tradeWindow->setVisible(false);
+    //buddyWindow->setVisible(false);
+    helpWindow->setVisible(false);
+    popupMenu->setVisible(false);
+
+    // Do not focus any text field
+    gui->focusNone();
+}
+
+/**
+ * Destroy all the globally accessible gui windows
+ */
+void destroyGuiWindows()
+{
+    delete chatWindow;
+    delete statusWindow;
+    delete buyDialog;
+    delete sellDialog;
+    delete buySellDialog;
+    delete inventoryWindow;
+    delete npcListDialog;
+    delete npcTextDialog;
+    delete skillDialog;
+    delete statsWindow;
+    delete setupWindow;
+    delete minimap;
+    delete equipmentWindow;
+    delete chargeDialog;
+    //delete newSkillWindow;
+    delete tradeWindow;
+    //delete buddyWindow;
+    delete helpWindow;
+    delete popupMenu;
+}
+
 void do_init()
 {
     std::string path(map_path);
@@ -232,6 +352,7 @@ void game()
     // Needs to be initialised _before_ the engine is created...
     inventory = new Inventory();
 
+    createGuiWindows();
     engine = new Engine();
     do_init();
 
@@ -267,6 +388,7 @@ void game()
     }
 
     delete engine;
+    destroyGuiWindows();
     close_session();
 }
 
