@@ -25,69 +25,69 @@
 
 #include "button.h"
 #include "inttextbox.h"
-#include "inventorywindow.h"
 #include "slider.h"
 #include "trade.h"
 
 #include "../inventory.h"
 #include "../item.h"
 
-ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
-    Window("Select amount of items to drop.", true, parent)
+ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
+    Window("Select amount of items to drop.", true, parent),
+    mItem(item)
 {
     // New labels
-    itemAmountTextBox = new IntTextBox(1);
+    mItemAmountTextBox = new IntTextBox(1);
 
     // New buttons
-    itemAmountMinusButton = new Button("-");
-    itemAmountPlusButton = new Button("+");
-    itemAmountSlide = new Slider(1.0);
-    itemAmountOkButton = new Button("Okay");
-    itemAmountCancelButton = new Button("Cancel");
+    mItemAmountMinusButton = new Button("-");
+    mItemAmountPlusButton = new Button("+");
+    mItemAmountSlide = new Slider(1.0);
+    mItemAmountOkButton = new Button("Okay");
+    mItemAmountCancelButton = new Button("Cancel");
 
-    itemAmountTextBox->setRange(1, inventoryWindow->getItem()->getQuantity());
-    itemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
+    mItemAmountTextBox->setRange(1, mItem->getQuantity());
+    mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
-    itemAmountMinusButton->setEventId("Minus");
-    itemAmountPlusButton->setEventId("Plus");
-    itemAmountSlide->setEventId("Slide");
-    itemAmountOkButton->setEventId("Drop");
-    itemAmountCancelButton->setEventId("Cancel");
+    mItemAmountMinusButton->setEventId("Minus");
+    mItemAmountPlusButton->setEventId("Plus");
+    mItemAmountSlide->setEventId("Slide");
+    mItemAmountOkButton->setEventId("Drop");
+    mItemAmountCancelButton->setEventId("Cancel");
 
     // Set position
-    itemAmountTextBox->setPosition(35, 10);
-    itemAmountTextBox->setSize(24, 16);
-    itemAmountPlusButton->setPosition(60, 5);
-    itemAmountMinusButton->setPosition(10, 5);
-    itemAmountSlide->setPosition(10, 35);
-    itemAmountOkButton->setPosition(10, 50);
-    itemAmountCancelButton->setPosition(60, 50);
+    mItemAmountTextBox->setPosition(35, 10);
+    mItemAmountTextBox->setSize(24, 16);
+    mItemAmountPlusButton->setPosition(60, 5);
+    mItemAmountMinusButton->setPosition(10, 5);
+    mItemAmountSlide->setPosition(10, 35);
+    mItemAmountOkButton->setPosition(10, 50);
+    mItemAmountCancelButton->setPosition(60, 50);
 
     // Assemble
-    add(itemAmountTextBox);
-    add(itemAmountPlusButton);
-    add(itemAmountMinusButton);
-    add(itemAmountSlide);
-    add(itemAmountOkButton);
-    add(itemAmountCancelButton);
+    add(mItemAmountTextBox);
+    add(mItemAmountPlusButton);
+    add(mItemAmountMinusButton);
+    add(mItemAmountSlide);
+    add(mItemAmountOkButton);
+    add(mItemAmountCancelButton);
 
-    itemAmountPlusButton->addActionListener(this);
-    itemAmountMinusButton->addActionListener(this);
-    itemAmountSlide->addActionListener(this);
-    itemAmountOkButton->addActionListener(this);
-    itemAmountCancelButton->addActionListener(this);
+    mItemAmountPlusButton->addActionListener(this);
+    mItemAmountMinusButton->addActionListener(this);
+    mItemAmountSlide->addActionListener(this);
+    mItemAmountOkButton->addActionListener(this);
+    mItemAmountCancelButton->addActionListener(this);
 
     resetAmount();
 
     switch (usage) {
         case AMOUNT_TRADE_ADD:
             setCaption("Select amount of items to trade.");
-            itemAmountOkButton->setEventId("AddTrade");
+            mItemAmountOkButton->setEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
             setCaption("Select amount of items to drop.");
-            itemAmountOkButton->setEventId("Drop");
+            mItemAmountOkButton->setEventId("Drop");
             break;
         default:
             break;
@@ -99,17 +99,17 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent):
 
 ItemAmountWindow::~ItemAmountWindow()
 {
-    delete itemAmountTextBox;
-    delete itemAmountPlusButton;
-    delete itemAmountMinusButton;
-    delete itemAmountSlide;
-    delete itemAmountOkButton;
-    delete itemAmountCancelButton;
+    delete mItemAmountTextBox;
+    delete mItemAmountPlusButton;
+    delete mItemAmountMinusButton;
+    delete mItemAmountSlide;
+    delete mItemAmountOkButton;
+    delete mItemAmountCancelButton;
 }
 
 void ItemAmountWindow::resetAmount()
 {
-    itemAmountTextBox->setInt(1);
+    mItemAmountTextBox->setInt(1);
 }
 
 void ItemAmountWindow::action(const std::string& eventId)
@@ -121,25 +121,25 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Drop")
     {
-        inventory->dropItem(inventoryWindow->getItem(), itemAmountTextBox->getInt());
+        inventory->dropItem(mItem, mItemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "AddTrade")
     {
-        tradeWindow->tradeItem(inventoryWindow->getItem(), itemAmountTextBox->getInt());
+        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "Plus")
     {
-        itemAmountTextBox->setInt(itemAmountTextBox->getInt() + 1);
+        mItemAmountTextBox->setInt(mItemAmountTextBox->getInt() + 1);
     }
     else if (eventId == "Minus")
     {
-        itemAmountTextBox->setInt(itemAmountTextBox->getInt() - 1);
+        mItemAmountTextBox->setInt(mItemAmountTextBox->getInt() - 1);
     }
     else if (eventId == "Slide")
     {
-        itemAmountTextBox->setInt((int)(itemAmountSlide->getValue()*inventoryWindow->getItem()->getQuantity()));
+        mItemAmountTextBox->setInt((int)(mItemAmountSlide->getValue()*mItem->getQuantity()));
     }
 }
 

@@ -31,6 +31,7 @@
 #include "../guichanfwd.h"
 
 class IntTextBox;
+class Item;
 
 #define AMOUNT_TRADE_ADD 1
 #define AMOUNT_ITEM_DROP 2
@@ -46,7 +47,7 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        ItemAmountWindow(int usage, Window *parent);
+        ItemAmountWindow(int usage, Window *parent, Item *item);
 
         /**
          * Destructor.
@@ -64,16 +65,17 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         void resetAmount();
 
     private:
-        IntTextBox *itemAmountTextBox;   /**< Item amount caption. */
+        IntTextBox *mItemAmountTextBox;   /**< Item amount caption. */
+        Item *mItem;
 
         /**
          * Item Amount buttons.
          */
-        gcn::Button *itemAmountPlusButton;
-        gcn::Button *itemAmountMinusButton;
-        gcn::Slider *itemAmountSlide;
-        gcn::Button *itemAmountOkButton;
-        gcn::Button *itemAmountCancelButton;
+        gcn::Button *mItemAmountPlusButton;
+        gcn::Button *mItemAmountMinusButton;
+        gcn::Slider *mItemAmountSlide;
+        gcn::Button *mItemAmountOkButton;
+        gcn::Button *mItemAmountCancelButton;
 };
 
 #endif /* _TMW_ITEM_AMOUNT_WINDOW_H */

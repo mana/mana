@@ -305,7 +305,7 @@ void TradeWindow::action(const std::string &eventId)
         }
         else {
             // Choose amount of items to trade
-            new ItemAmountWindow(AMOUNT_TRADE_ADD, this);
+            new ItemAmountWindow(AMOUNT_TRADE_ADD, this, item);
         }
     }
     else if (eventId == "cancel")

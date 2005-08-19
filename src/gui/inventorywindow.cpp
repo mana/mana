@@ -129,7 +129,7 @@ void InventoryWindow::action(const std::string &eventId)
     else if (eventId == "drop")
     {
         // Choose amount of items to drop
-        new ItemAmountWindow(AMOUNT_ITEM_DROP, this);
+        new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
     }
 }
 

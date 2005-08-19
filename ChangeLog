@@ -1,3 +1,10 @@
+2005-08-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/inventorywindow.cpp, src/gui/item_amount.cpp,
+	src/gui/item_amount.h, src/gui/popupmenu.cpp, src/gui/trade.cpp: Made the
+	item amount dialog work on a provided item, instead of having it ask the
+	inventory window itself.
+
 2005-08-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/game.cpp: The engine isn't connected to all the gui

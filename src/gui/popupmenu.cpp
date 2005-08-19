@@ -198,7 +198,7 @@ void PopupMenu::handleLink(const std::string& link)
 
     else if (link == "drop")
     {
-                new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow);
+                new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, m_item);
     }
 
     else if (link == "description")
