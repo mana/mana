@@ -303,10 +303,15 @@ void OpenGLGraphics::drawPoint(int x, int y)
     if (mAlpha && !mColorAlpha) {
         glDisable(GL_BLEND);
         mAlpha = false;
+    } else if (!mAlpha && mColorAlpha) {
+        glEnable(GL_BLEND);
+        mAlpha = true;
     }
 
-    glDisable(GL_TEXTURE_2D);
-    mTexture = false;
+    if (mTexture) {
+        glDisable(GL_TEXTURE_2D);
+        mTexture = false;
+    }
 
     glBegin(GL_POINTS);
     glVertex3i(x, y, 0);
@@ -323,10 +328,15 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     if (mAlpha && !mColorAlpha) {
         glDisable(GL_BLEND);
         mAlpha = false;
+    } else if (!mAlpha && mColorAlpha) {
+        glEnable(GL_BLEND);
+        mAlpha = true;
     }
 
-    glDisable(GL_TEXTURE_2D);
-    mTexture = false;
+    if (mTexture) {
+        glDisable(GL_TEXTURE_2D);
+        mTexture = false;
+    }
 
     glBegin(GL_LINES);
     glVertex3f(x1+0.5f, y1+0.5f, 0);
@@ -343,10 +353,15 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rectangle)
     if (mAlpha && !mColorAlpha) {
         glDisable(GL_BLEND);
         mAlpha = false;
+    } else if (!mAlpha && mColorAlpha) {
+        glEnable(GL_BLEND);
+        mAlpha = true;
     }
 
-    glDisable(GL_TEXTURE_2D);
-    mTexture = false;
+    if (mTexture) {
+        glDisable(GL_TEXTURE_2D);
+        mTexture = false;
+    }
 
     glBegin(GL_LINE_LOOP);
     glVertex3f(rectangle.x + mClipStack.top().xOffset + 0.5f,
@@ -365,10 +380,15 @@ void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rectangle)
     if (mAlpha && !mColorAlpha) {
         glDisable(GL_BLEND);
         mAlpha = false;
+    } else if (!mAlpha && mColorAlpha) {
+        glEnable(GL_BLEND);
+        mAlpha = true;
     }
 
-    glDisable(GL_TEXTURE_2D);
-    mTexture = false;
+    if (mTexture) {
+        glDisable(GL_TEXTURE_2D);
+        mTexture = false;
+    }
 
     glBegin(GL_QUADS);
     glVertex3i(rectangle.x + mClipStack.top().xOffset,
