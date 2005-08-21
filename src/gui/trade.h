@@ -115,6 +115,7 @@ class TradeWindow : public Window, gcn::ActionListener
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
         gcn::Label *moneyLabel;
+        gcn::Label *moneyLabel2;
         gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
         ScrollArea *myScroll, *partnerScroll;
         gcn::TextField *moneyField;

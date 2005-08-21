@@ -68,6 +68,7 @@ TradeWindow::TradeWindow():
     partnerScroll->setPosition(8, 64);
 
     moneyLabel = new gcn::Label("You get: 0z");
+    moneyLabel2 = new gcn::Label("You give:");
     moneyField = new TextField();
 
     addButton->setEventId("add");
@@ -98,21 +99,23 @@ TradeWindow::TradeWindow():
     add(tradeButton);
     add(itemNameLabel);
     add(itemDescriptionLabel);
+    add(moneyLabel2);
     add(moneyField);
     add(moneyLabel);
 
-    moneyField->setPosition(8, getHeight() - 20);
+    moneyField->setPosition(8 + 60, getHeight() - 20);
     moneyField->setWidth(50);
     
-    moneyLabel->setPosition(8+ 50 + 6, getHeight() - 20);
+    moneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
+    moneyLabel2->setPosition(8, getHeight() - 20);
     
-    cancelButton->setPosition(getWidth() - 48, getHeight() - 24);
+    cancelButton->setPosition(getWidth() - 48, getHeight() - 49);
     tradeButton->setPosition(cancelButton->getX() - 40
-        , getHeight() - 24);
+        , getHeight() - 49);
     okButton->setPosition(tradeButton->getX() - 24,
-        getHeight() - 24);
+        getHeight() - 49);
     addButton->setPosition(okButton->getX() - 32,
-        getHeight() - 24);
+        getHeight() - 49);
 
     myItemContainer->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
@@ -144,6 +147,7 @@ TradeWindow::~TradeWindow()
     delete itemDescriptionLabel;
     delete moneyField;
     delete moneyLabel;
+    delete moneyLabel2;
 
     delete myInventory;
     delete partnerInventory;
