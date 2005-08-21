@@ -32,19 +32,19 @@ CompilerSettings=0010001001001001001001
 [VersionInfo]
 Major=0
 Minor=0
-Release=15
+Release=16
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.15
+FileVersion=0.0.16
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2005 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.15
+ProductVersion=0.0.16
 AutoIncBuildNr=0
 
 [Unit8]

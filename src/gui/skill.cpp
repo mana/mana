@@ -80,7 +80,7 @@ SkillDialog::SkillDialog():
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
     pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
     incButton->setPosition(skillScrollArea->getX(), 210);
-    useButton->setPosition(incButton->getX() + incButton->getWidth() + 10,
+    useButton->setPosition(incButton->getX() + incButton->getWidth() + 5,
         210);
     closeButton->setPosition(
         skillScrollArea->getX() + skillScrollArea->getWidth() - closeButton->getWidth(),
@@ -127,6 +127,18 @@ void SkillDialog::action(const std::string& eventId)
             WFIFOW(2) = net_w_value(
                     skillList[selectedSkill]->id);
             WFIFOSET(4);
+        }
+    }
+    else if (eventId == "use")
+    {
+        // Use skill
+        int selectedSkill = skillListBox->getSelected();
+        if (selectedSkill >= 0)
+        {
+            WFIFOW(0) = net_w_value(0x0113);
+            WFIFOW(2) = 0;
+            WFIFOW(4) = net_w_value(skillList[selectedSkill]->id);
+            WFIFOL(6) = net_l_value(0);
         }
     }
     else if (eventId == "skill")
@@ -200,5 +212,14 @@ void SkillDialog::setSkill(int id, int lv, int sp)
             skillList[i]->lv = lv;
             skillList[i]->sp = sp;
         }
+    }
+}
+
+void SkillDialog::cleanList()
+{
+    for (int i = skillList.size() - 1; i >= 0; i--)
+    {
+        delete skillList[i];
+        skillList.pop_back();
     }
 }

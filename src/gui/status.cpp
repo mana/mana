@@ -43,7 +43,7 @@ StatusWindow::StatusWindow():
     Window("%s Lvl: % 2i Job: % 2i GP: % 2i")
 {
     hp = new gcn::Label("HP");
-    sp = new gcn::Label("SP");
+    sp = new gcn::Label("MP");
     hpValue = new gcn::Label();
     spValue = new gcn::Label();
     expLabel = new gcn::Label("Exp");

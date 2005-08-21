@@ -78,6 +78,7 @@ class SkillDialog : public Window, public gcn::ActionListener,
         bool hasSkill(int id);
         void addSkill(int id, int lv, int sp);
         void setSkill(int id, int lv, int sp);
+        void cleanList();
 };
 
 extern SkillDialog *skillDialog;
