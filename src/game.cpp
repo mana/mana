@@ -946,13 +946,6 @@ int get_packet_length(short id)
 
 void do_parse()
 {
-
-
-/*switch 0079, actor connected
- 	[10:44]	Joseph_: 0078, actor_exists
- 	[10:44]	Munak: Heck, if Bill Clinton can do it surely *I* can!
- 	[10:45]	Joseph_: 007B, 01D8,  01D9, 01DA are the others*/
-
     unsigned short id;
     char *temp;
     Being *being = NULL;
@@ -1127,7 +1120,6 @@ void do_parse()
                     being->walk_time = tick_time;
                     being->frame = 0;
                     being->setWeaponById(RFIFOW(18));
-                    //logger->log("0x01d8% i %i", RFIFOW(18), RFIFOW(20));
 
                     if (RFIFOB(51) == 2)
                     {
@@ -1157,7 +1149,7 @@ void do_parse()
 
                 case SMSG_MOVE_PLAYER_BEING:
                     // A nearby player being moves
-                    /*being = findNode(RFIFOL(2));
+                    being = findNode(RFIFOL(2));
 
                     if (being == NULL)
                     {
@@ -1175,7 +1167,7 @@ void do_parse()
 
                     being->setDestination(
                                 get_dest_x(RFIFOP(50)),
-                                get_dest_y(RFIFOP(50)));*/
+                                get_dest_y(RFIFOP(50)));
                     break;
 
                     // NPC dialog
@@ -1472,9 +1464,6 @@ void do_parse()
                 // case 0x0088:  // Disabled because giving some problems
                     //if (being = findNode(RFIFOL(2))) {
                     //    if (being->getId()!=player_node->getId()) {
-                    //        char ids[20];
-                    //        sprintf(ids,"%i",RFIFOL(2));
-                    //        alert(ids,"","","","",0,0);
                     //        being->action = STAND;
                     //        being->frame = 0;
                     //        set_coordinates(being->coordinates, RFIFOW(6), RFIFOW(8), get_direction(being->coordinates));
@@ -1648,9 +1637,9 @@ void do_parse()
                     break;
                     // Skill list TAG
                 case 0x010f:
-                {
-                    int n_skills = (len - 4) / 37;
-                    for (int k = 0; k < n_skills; k++)
+                    n_items = (len - 4) / 37;
+                    skillDialog->cleanList();
+                    for (int k = 0; k < n_items; k++)
                     {
                         if (RFIFOW(4 + k * 37 + 6) != 0 ||
                                 RFIFOB(4 + k * 37 + 36)!=0)
@@ -1669,7 +1658,6 @@ void do_parse()
                             }
                         }
                     }
-                }
                     break;
                     // Display MVP player
                 case 0x010c:
@@ -1698,7 +1686,7 @@ void do_parse()
                 case 0x00b7:
                     current_npc = RFIFOL(4);
                     // Hammerbear: Second argument here shouldn't be neccesary,
-                    //  instead make sure the string is \0 terminated.
+                    // instead make sure the string is \0 terminated.
                     //parse_items(RFIFOP(8), RFIFOW(2));
                     npcListDialog->parseItems(RFIFOP(8));
                     npcListDialog->setVisible(true);
@@ -1783,7 +1771,7 @@ void do_parse()
                                 case 1200:
                                 case 1201:
                                     player_node->setWeapon(0);
-                                    break; // TODO : why this break ? shouldn't a weapon by unequiped in inventory too ?
+                                    break; // TODO : why this break ? shouldn't a weapon be unequipped in inventory too ?
                                 default:
                                     equipment->removeEquipment(position - 1);
                                     break;
@@ -1810,9 +1798,6 @@ void do_parse()
                     break;
                     // Updates a stat value
                 case 0x00bc:
-                    /*char stat[20];
-                    sprintf(stat, "bc %x %i %i", RFIFOW(2),RFIFOB(4),RFIFOB(5));
-                    chatWindow->chat_log(stat, BY_SERVER);*/
                     if(RFIFOB(4)) {
                         switch(RFIFOW(2)) {
                             case 0x000d:
@@ -1851,11 +1836,6 @@ void do_parse()
                     char_info->DEXUp = RFIFOB(13);
                     char_info->LUK = RFIFOB(14);
                     char_info->LUKUp = RFIFOB(15);
-                    /*char stats[100];
-                    sprintf(stats, "%i %i %i %i %i %i %i %i %i %i %i %i",
-                    RFIFOB(4),RFIFOB(5),RFIFOB(6),RFIFOB(7),RFIFOB(8),RFIFOB(9),
-                    RFIFOB(10),RFIFOB(11),RFIFOB(12),RFIFOB(13),RFIFOB(14),RFIFOB(15));
-                    chatWindow->chat_log(stats,BY_SERVER);*/
                     statusWindow->update();
                     break;
                     // Updates status point
@@ -1890,11 +1870,9 @@ void do_parse()
                         strcpy(being->name, RFIFOP(6));
                     }
                     break;
-
                 // Change in players look
                 case 0x0119:
-                    //std::cout << RFIFOL(2) << " " << RFIFOW(6) << " " << RFIFOW(8) << " " << RFIFOW(10) << " " << RFIFOW(12)
-                    //<< " " << RFIFOW(14) << " " << RFIFOW(16) << " " << RFIFOW(18) << " " << RFIFOW(20) << " end" << std::endl;
+                    break;
                     // Manage non implemented packets
                 default:
                     logger->log("Unhandled packet: %x", id);
