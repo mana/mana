@@ -498,6 +498,15 @@ void do_input()
                     {
                         state = EXIT;
                     }
+                    // Accept the Death Notice...
+                    else if (deathNotice)
+                    {
+                        deathNotice->action("ok");
+                        WFIFOW(0) = net_w_value(0x00b2);
+                        WFIFOB(2) = 0;
+                        WFIFOSET(3);
+                        deathNotice = NULL;
+                    }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
                     {
