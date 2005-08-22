@@ -125,6 +125,11 @@ void SellDialog::reset()
     m_amountItems = 0;
     quantityLabel->setCaption("0");
     quantityLabel->adjustSize();
+
+    // Reset Previous Selected Items to prevent failing asserts
+    itemList->setSelected(-1);
+    increaseButton->setEnabled(false);
+    decreaseButton->setEnabled(false);
 }
 
 void SellDialog::addItem(short index, int price)

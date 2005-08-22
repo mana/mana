@@ -145,6 +145,11 @@ void BuyDialog::reset()
 {
     shopInventory.clear();
     m_money = 0;
+
+    // Reset Previous Selected Items to prevent failing asserts
+    itemList->setSelected(-1);
+    increaseButton->setEnabled(false);
+    decreaseButton->setEnabled(false);
 }
 
 void BuyDialog::addItem(short id, int price)
@@ -181,7 +186,13 @@ void BuyDialog::action(const std::string& eventId)
             moneyLabel->setCaption(oss.str());
             moneyLabel->adjustSize();
             decreaseButton->setEnabled(false);
+
             m_maxItems = m_money / shopInventory[selectedItem].price;
+            if (m_maxItems == 0) // The player cannot afford such an item
+            {
+                increaseButton->setEnabled(false);
+                buyButton->setEnabled(false);
+            }
         }
         else
         {
@@ -229,8 +240,15 @@ void BuyDialog::action(const std::string& eventId)
     }
     else if (eventId == "+" && selectedItem > -1)
     {
-        assert(m_amountItems < m_maxItems);
-        m_amountItems++;
+        if (m_amountItems < m_maxItems)
+        {
+            m_amountItems++;
+        }
+        else
+        {
+            m_amountItems = m_maxItems;
+        }
+
         slider->setValue(double(m_amountItems)/double(m_maxItems));
 
         decreaseButton->setEnabled(true);
@@ -238,6 +256,11 @@ void BuyDialog::action(const std::string& eventId)
         if (m_amountItems == m_maxItems)
         {
             increaseButton->setEnabled(false);
+        }
+        if (m_maxItems == 0) // The player cannot afford such an item
+        {
+            decreaseButton->setEnabled(false);
+            buyButton->setEnabled(false);
         }
 
         oss << m_amountItems;
@@ -251,8 +274,14 @@ void BuyDialog::action(const std::string& eventId)
     }
     else if (eventId == "-" && selectedItem > -1)
     {
-        assert(m_amountItems > 0);
-        m_amountItems--;
+        if (m_amountItems > 0)
+        {
+            m_amountItems--;
+        }
+        else
+        {
+            m_amountItems = 0;
+        }
 
         slider->setValue(double(m_amountItems)/double(m_maxItems));
 
@@ -274,40 +303,45 @@ void BuyDialog::action(const std::string& eventId)
     }
     else if (eventId == "buy" && selectedItem > -1)
     {
-            // Attempt purchase
-        assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
-        assert(selectedItem >= 0 && selectedItem < int(shopInventory.size()));
-
-        WFIFOW(0) = net_w_value(0x00c8);
-        WFIFOW(2) = net_w_value(8);
-        WFIFOW(4) = net_w_value(m_amountItems);
-        WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
-        WFIFOSET(8);
-
-        // update money !
-        m_money -= m_amountItems * shopInventory[selectedItem].price;
-
-        if (m_amountItems == m_maxItems)
+            // if purchase acceptable
+        if (m_amountItems > 0 &&  // Number of Items asked > 0
+            m_amountItems <= m_maxItems && // Max of Items not overset
+            selectedItem >= 0 && // There is a selection > 0
+            selectedItem < int(shopInventory.size()) ) // There a selection not too far in the list.
         {
-            m_maxItems = 0;
-            slider->setEnabled(false);
-            increaseButton->setEnabled(false);
-        }
-        else
-        {
-            m_maxItems = m_money / shopInventory[selectedItem].price;
-        }
 
-        decreaseButton->setEnabled(false);
-        buyButton->setEnabled(false);
+            WFIFOW(0) = net_w_value(0x00c8);
+            WFIFOW(2) = net_w_value(8);
+            WFIFOW(4) = net_w_value(m_amountItems);
+            WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
+            WFIFOSET(8);
+    
+            // update money !
+            m_money -= m_amountItems * shopInventory[selectedItem].price;
+    
+            if (m_amountItems == m_maxItems)
+            {
+                m_maxItems = 0;
+                slider->setEnabled(false);
+                increaseButton->setEnabled(false);
+            }
+            else
+            {
+                m_maxItems = m_money / shopInventory[selectedItem].price;
+            }
+    
+            decreaseButton->setEnabled(false);
+            buyButton->setEnabled(false);
+    
+            m_amountItems = 0;
+            slider->setValue(0);
+            quantityLabel->setCaption("O");
+            quantityLabel->adjustSize();
+    
+            moneyLabel->setCaption("price : 0 G");
+            moneyLabel->adjustSize();
 
-        m_amountItems = 0;
-        slider->setValue(0);
-        quantityLabel->setCaption("O");
-        quantityLabel->adjustSize();
-
-        moneyLabel->setCaption("price : 0 G");
-        moneyLabel->adjustSize();
+        } // End if purchase acceptable
     }
     else if (eventId == "quit")
     {

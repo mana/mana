@@ -1574,7 +1574,9 @@ void do_parse()
                     // Buy/Sell dialog
                 case 0x00c4:
                     buyDialog->setVisible(false);
+                    buyDialog->reset();
                     sellDialog->setVisible(false);
+                    sellDialog->reset();
                     buySellDialog->setVisible(true);
                     current_npc = RFIFOL(2);
                     break;
