@@ -123,8 +123,6 @@ LoginDialog::LoginDialog():
 
     serverField->setText(config.getValue("host", ""));
 
-    loginError = NULL;
-
 }
 
 LoginDialog::~LoginDialog()
