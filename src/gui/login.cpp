@@ -123,6 +123,8 @@ LoginDialog::LoginDialog():
 
     serverField->setText(config.getValue("host", ""));
 
+    loginError = NULL;
+
 }
 
 LoginDialog::~LoginDialog()
@@ -157,8 +159,20 @@ void LoginDialog::action(const std::string& eventId)
         // Check login
         if (user.length() == 0) {
             new OkDialog("Error", "Enter your username first");
+            userField->setCaretPosition(0);
         } else {
-            server_login(user, passField->getText());
+            switch (server_login(user, passField->getText()) )
+            {
+                case LOGIN_UNKNOWN_ERROR:
+                default:
+                break;
+
+                case LOGIN_WRONG_PASSWORD:
+                    passField->setText("");
+                    passField->setCaretPosition(0);
+                break;
+
+            }
             close_session();
         }
     } else if (eventId == "cancel") {
@@ -178,10 +192,13 @@ void LoginDialog::action(const std::string& eventId)
         // Check login
         if (user.length() == 0) {
             new OkDialog("Error", "Enter a username first");
+            userField->setCaretPosition(0);
         } else if (user.length() < 4) {
             new OkDialog("Error", "The username needs to be at least 4 characters");
+            userField->setCaretPosition(4);
         } else if (user.length() > LEN_USERNAME -1 ) {
             new OkDialog("Error", "The username needs to be less than 25 characters long.");
+            userField->setCaretPosition(LEN_USERNAME - 1);
         } else {
             server_login(user + "_M", passField->getText());
             close_session();
@@ -226,7 +243,7 @@ void login()
 }
 
 
-void server_login(const std::string& user, const std::string& pass) {
+int server_login(const std::string& user, const std::string& pass) {
     strncpy(username, user.c_str(), LEN_USERNAME);
     strncpy(password, pass.c_str(), LEN_PASSWORD);
     int ret;
@@ -239,7 +256,7 @@ void server_login(const std::string& user, const std::string& pass) {
     if (ret == SOCKET_ERROR) {
         state = LOGIN;
         new OkDialog("Error", "Unable to connect to login server");
-        return;
+        return LOGIN_NO_CONNECTION;
     }
 
     // Send login infos
@@ -256,6 +273,7 @@ void server_login(const std::string& user, const std::string& pass) {
         flush();
     }
 
+    // Login ok
     if (RFIFOW(0) == 0x0069) {
         while (in_size < RFIFOW(2)) {
             flush();
@@ -277,34 +295,45 @@ void server_login(const std::string& user, const std::string& pass) {
                 iptostring(server_info[0].address),
                 server_info[0].port);
         RFIFOSKIP(RFIFOW(2));
+        return LOGIN_OK;
     }
     else if (RFIFOW(0) == 0x006a) {
         logger->log("Login::error code: %i", RFIFOB(2));
+        ret = 0;
         switch (RFIFOB(2)) {
             case 0:
                 new OkDialog("Error", "Unregistered ID");
+                ret = LOGIN_UNREGISTERED_ID;
                 break;
             case 1:
                 new OkDialog("Error", "Wrong password");
+                ret = LOGIN_WRONG_PASSWORD;
                 break;
             case 2:
                 new OkDialog("Error", "This ID is expired");
+                ret = LOGIN_EXPIRED;
                 break;
             case 3:
                 new OkDialog("Error", "Rejected from server");
+                ret = LOGIN_REJECTED;
                 break;
             case 4:
                 new OkDialog("Error", "You have been blocked by the GM Team");
+                ret = LOGIN_BLOCKED;
                 break;
             case 9:
                 new OkDialog("Error", "The username does already exist.");
+                ret = LOGIN_USERNAME_TWICE;
                 break;
         }
         state = LOGIN;
         RFIFOSKIP(23);
+        return ret;
     }
     else {
         new OkDialog("Error", "Unknown error");
+        state = LOGIN;
+        return LOGIN_UNKNOWN_ERROR;
     }
     // Todo: add other packets, also encrypted
 }

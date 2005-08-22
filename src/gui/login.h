@@ -76,7 +76,31 @@ void login();
 
 /**
  * Attempt to login to login server
+ * Return an error code if any, and then stay at LOGIN state.
+ * 0 means ok.
+ * 1 means Wrong Password
+ * 2 means unregistered ID
+ * 3 means rejected from server
+ * 4 means blocked by GM Team
+ * 5 means expired ID
+ * 6 means unable to connect to server
+ * 9 means username already existing
+ * -1 means unknown error
  */
-void server_login(const std::string& user, const std::string& pass);
+enum
+{
+    LOGIN_OK = 0,
+    LOGIN_WRONG_PASSWORD,
+    LOGIN_UNREGISTERED_ID,
+    LOGIN_REJECTED,
+    LOGIN_BLOCKED,
+    LOGIN_EXPIRED,
+    LOGIN_NO_CONNECTION,
+    LOGIN_USERNAME_TWICE = 9,
+    LOGIN_UNKNOWN_ERROR = -1
+
+};
+
+int server_login(const std::string& user, const std::string& pass);
 
 #endif
