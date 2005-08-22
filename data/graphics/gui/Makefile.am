@@ -41,7 +41,8 @@ gui_DATA =				\
 	vscroll_up_default.png		\
 	vscroll_up_highlight.png	\
 	vscroll_up_pressed.png		\
-	rpgfont_wider.png
+	rpgfont_wider.png		\
+	resize.png
 
 EXTRA_DIST =				\
 	$(gui_DATA)
