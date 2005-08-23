@@ -140,9 +140,11 @@ void SellDialog::addItem(short index, int price)
         return;
 
     ITEM_SHOP item_shop;
+    std::stringstream ss;
 
-    sprintf(item_shop.name, "%s %i gp",
-            item->getInfo()->getName().c_str(), price);
+    ss << item->getInfo()->getName() << " " << price << " GP";
+
+    item_shop.name = ss.str();
     item_shop.price = price;
     item_shop.index = index;
     item_shop.id = item->getId();;

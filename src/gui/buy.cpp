@@ -23,7 +23,6 @@
 
 #include "buy.h"
 
-#include <assert.h>
 #include <sstream>
 
 #include <guichan/widgets/label.hpp>
@@ -44,7 +43,7 @@
 
 BuyDialog::BuyDialog():
     Window("Buy"),
-    m_money(0)
+    m_money(0), m_amountItems(0), m_maxItems(0)
 {
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
@@ -112,10 +111,6 @@ BuyDialog::BuyDialog():
     add(itemDescLabel);
 
     setLocationRelativeTo(getParent());
-
-    m_amountItems = 0;
-    m_maxItems = 0;
-    m_money = 0;
 }
 
 BuyDialog::~BuyDialog()
@@ -155,9 +150,10 @@ void BuyDialog::reset()
 void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
+    std::stringstream ss;
 
-    sprintf(item_shop.name, "%s %i gp",
-            itemDb->getItemInfo(id)->getName().c_str(), price);
+    ss << itemDb->getItemInfo(id)->getName() << " " << price << " GP";
+    item_shop.name = ss.str();
     item_shop.price = price;
     item_shop.id = id;
 
@@ -169,129 +165,102 @@ void BuyDialog::action(const std::string& eventId)
 {
     int selectedItem = itemList->getSelected();
 
-    std::stringstream oss;
-
-    if (eventId == "item")
-    {
-        if (selectedItem > -1)
-        {
-            slider->setEnabled(true);
-            increaseButton->setEnabled(true);
-            m_amountItems = 0;
-            slider->setValue(0);
-            oss << m_amountItems;
-            quantityLabel->setCaption(oss.str());
-            quantityLabel->adjustSize();
-            oss.str("price : 0 GP");
-            moneyLabel->setCaption(oss.str());
-            moneyLabel->adjustSize();
-            decreaseButton->setEnabled(false);
-
-            m_maxItems = m_money / shopInventory[selectedItem].price;
-            if (m_maxItems == 0) // The player cannot afford such an item
-            {
-                increaseButton->setEnabled(false);
-                buyButton->setEnabled(false);
-            }
-        }
-        else
-        {
-            slider->setValue(0);
-            slider->setEnabled(false);
-            increaseButton->setEnabled(false);
-            decreaseButton->setEnabled(false);
-            buyButton->setEnabled(false);
-            m_amountItems = 0;
-            m_maxItems = 0;
-      }
-    }
-    else if (eventId == "slider" && selectedItem > -1)
-    {
-        m_amountItems = (int)(slider->getValue() * m_maxItems);
-
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
+    if (eventId == "item") {
+        // Reset amount of items and update labels
+        m_amountItems = 0;
+        slider->setValue(0);
+        quantityLabel->setCaption("0");
         quantityLabel->adjustSize();
-
-        oss.str("");
-        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
-        moneyLabel->setCaption(oss.str());
+        moneyLabel->setCaption("price : 0 GP");
         moneyLabel->adjustSize();
 
-        if (m_amountItems > 0)
-        {
-            buyButton->setEnabled(true);
-            decreaseButton->setEnabled(true);
-        }
-        else
-        {
-            buyButton->setEnabled(false);
-            decreaseButton->setEnabled(false);
-        }
+        // Disable buttons for buying and decreasing
+        buyButton->setEnabled(false);
+        decreaseButton->setEnabled(false);
 
-        if (m_amountItems == m_maxItems)
-        {
-            increaseButton->setEnabled(false);
-        }
-        else
-        {
-             increaseButton->setEnabled(true);
-        }
+        // If no item was selected, none can be bought, otherwise
+        // calculate how many the player can afford
+        m_maxItems = (itemList->getSelected() == -1) ? 0 :
+            m_money / shopInventory[selectedItem].price;
+
+        // When at least one item can be bought, enable the slider and the
+        // increase button
+        increaseButton->setEnabled(m_maxItems > 0);
+        slider->setEnabled(m_maxItems > 0);
     }
-    else if (eventId == "+" && selectedItem > -1)
-    {
-        if (m_amountItems < m_maxItems)
-        {
+    else if (eventId == "quit") {
+        setVisible(false);
+        current_npc = 0;
+    }
+
+    // The following actions require a valid selection
+    if (selectedItem < 0 || selectedItem >= int(shopInventory.size())) {
+        return;
+    }
+
+    bool updateButtonsAndLabels = false;
+
+    if (eventId == "slider") {
+        m_amountItems = (int)(slider->getValue() * m_maxItems);
+        updateButtonsAndLabels = true;
+    }
+    else if (eventId == "+") {
+        if (m_amountItems < m_maxItems) {
             m_amountItems++;
-        }
-        else
-        {
+        } else {
             m_amountItems = m_maxItems;
         }
 
         slider->setValue(double(m_amountItems)/double(m_maxItems));
-
-        decreaseButton->setEnabled(true);
-        buyButton->setEnabled(true);
-        if (m_amountItems == m_maxItems)
-        {
-            increaseButton->setEnabled(false);
-        }
-        if (m_maxItems == 0) // The player cannot afford such an item
-        {
-            decreaseButton->setEnabled(false);
-            buyButton->setEnabled(false);
-        }
-
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
-        quantityLabel->adjustSize();
-
-        oss.str("");
-        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
-        moneyLabel->setCaption(oss.str());
-        moneyLabel->adjustSize();
+        updateButtonsAndLabels = true;
     }
-    else if (eventId == "-" && selectedItem > -1)
-    {
-        if (m_amountItems > 0)
-        {
+    else if (eventId == "-") {
+        if (m_amountItems > 0) {
             m_amountItems--;
-        }
-        else
-        {
+        } else {
             m_amountItems = 0;
         }
 
         slider->setValue(double(m_amountItems)/double(m_maxItems));
+        updateButtonsAndLabels = true;
+    }
+    // TODO Actually we'd have a bug elsewhere if this check for the number
+    // of items to be bought ever fails, Bertram removed the assertions, is
+    // there a better way to ensure this fails in an _obivous_ way in C++?
+    else if (eventId == "buy" && (m_amountItems > 0 &&
+                m_amountItems <= m_maxItems)) {
+        WFIFOW(0) = net_w_value(0x00c8);
+        WFIFOW(2) = net_w_value(8);
+        WFIFOW(4) = net_w_value(m_amountItems);
+        WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
+        WFIFOSET(8);
 
-        increaseButton->setEnabled(true);
-        if (m_amountItems == 0)
-        {
-            decreaseButton->setEnabled(false);
-            buyButton->setEnabled(false);
+        // update money !
+        m_money -= m_amountItems * shopInventory[selectedItem].price;
+        // Update number of items that can be bought at max
+        m_maxItems -= m_amountItems;
+
+        if (!m_maxItems) {
+            slider->setEnabled(false);
         }
 
+        // Reset selection
+        m_amountItems = 0;
+        slider->setValue(0);
+
+        updateButtonsAndLabels = true;
+    }
+
+    // If anything has changed, we have to update the buttons and labels
+    if (updateButtonsAndLabels) {
+        std::stringstream oss;
+
+        // Update buttons
+        increaseButton->setEnabled(m_amountItems < m_maxItems);
+        decreaseButton->setEnabled(m_amountItems > 0);
+        buyButton->setEnabled(m_amountItems > 0);
+
+        // Update labels
         oss << m_amountItems;
         quantityLabel->setCaption(oss.str());
         quantityLabel->adjustSize();
@@ -300,53 +269,6 @@ void BuyDialog::action(const std::string& eventId)
         oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
         moneyLabel->setCaption(oss.str());
         moneyLabel->adjustSize();
-    }
-    else if (eventId == "buy" && selectedItem > -1)
-    {
-            // if purchase acceptable
-        if (m_amountItems > 0 &&  // Number of Items asked > 0
-            m_amountItems <= m_maxItems && // Max of Items not overset
-            selectedItem >= 0 && // There is a selection > 0
-            selectedItem < int(shopInventory.size()) ) // There a selection not too far in the list.
-        {
-
-            WFIFOW(0) = net_w_value(0x00c8);
-            WFIFOW(2) = net_w_value(8);
-            WFIFOW(4) = net_w_value(m_amountItems);
-            WFIFOW(6) = net_w_value(shopInventory[selectedItem].id);
-            WFIFOSET(8);
-    
-            // update money !
-            m_money -= m_amountItems * shopInventory[selectedItem].price;
-    
-            if (m_amountItems == m_maxItems)
-            {
-                m_maxItems = 0;
-                slider->setEnabled(false);
-                increaseButton->setEnabled(false);
-            }
-            else
-            {
-                m_maxItems = m_money / shopInventory[selectedItem].price;
-            }
-    
-            decreaseButton->setEnabled(false);
-            buyButton->setEnabled(false);
-    
-            m_amountItems = 0;
-            slider->setValue(0);
-            quantityLabel->setCaption("O");
-            quantityLabel->adjustSize();
-    
-            moneyLabel->setCaption("price : 0 G");
-            moneyLabel->adjustSize();
-
-        } // End if purchase acceptable
-    }
-    else if (eventId == "quit")
-    {
-        setVisible(false);
-        current_npc = 0;
     }
 }
 

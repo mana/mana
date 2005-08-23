@@ -24,8 +24,10 @@
 #ifndef _SHOP_H
 #define _SHOP_H
 
+#include <iosfwd>
+
 struct ITEM_SHOP {
-    char name[30];
+    std::string name;
     int price;
     short id;
     int index;
