@@ -5,6 +5,13 @@
 	* src/gui/buy.cpp: Some code cleanups, simplifications and removal of
 	duplicate code.
 
+2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
+
+	* src/gui/buy.cpp, src/gui/sell.cpp, src/game.cpp: Removed asserts as they were
+	not suitable for a stable implementation of buy/sell dialogs and made some improvements
+	on them. Still has to clean up code.
+	* src/gui/login.h, src/login.cpp: Code cleanups, little improvements of the login function.
+
 2005-08-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/skill.cpp: Disabled use button in skill dialog since is still not
