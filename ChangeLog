@@ -1,5 +1,7 @@
 2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/shop.h: Fixed using a forward declaration for std::string, where
+	it was a class member.
 	* src/game.cpp, src/gui/sell.cpp, src/gui/sell.h: Made the sell dialog
 	accepts Items instead of looking them up in the inventory.
 	* src/gui/sell.cpp: Some code cleanups, simplifications and removal of
