@@ -35,7 +35,6 @@
 #include "slider.h"
 
 #include "../game.h"
-#include "../inventory.h"
 #include "../item.h"
 
 #include "../resources/iteminfo.h"
@@ -44,7 +43,8 @@
 
 
 SellDialog::SellDialog():
-    Window("Sell")
+    Window("Sell"),
+    m_maxItems(0), m_amountItems(0)
 {
     itemList = new ListBox(this);
     scrollArea = new ScrollArea(itemList);
@@ -102,9 +102,6 @@ SellDialog::SellDialog():
     add(quitButton);
 
     setLocationRelativeTo(getParent());
-
-    m_maxItems = 0;
-    m_amountItems = 0;
 }
 
 SellDialog::~SellDialog()
@@ -132,10 +129,8 @@ void SellDialog::reset()
     decreaseButton->setEnabled(false);
 }
 
-void SellDialog::addItem(short index, int price)
+void SellDialog::addItem(Item *item, int price)
 {
-    Item *item = inventory->getItem(index);
-
     if (!item)
         return;
 
@@ -146,7 +141,7 @@ void SellDialog::addItem(short index, int price)
 
     item_shop.name = ss.str();
     item_shop.price = price;
-    item_shop.index = index;
+    item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();;
     item_shop.quantity = item->getQuantity();
 
@@ -157,101 +152,61 @@ void SellDialog::addItem(short index, int price)
 void SellDialog::action(const std::string& eventId)
 {
     int selectedItem = itemList->getSelected();
-    std::stringstream oss;
 
-    if (eventId == "item")
-    {
-        if (selectedItem > -1)
-        {
-            slider->setEnabled(true);
-            increaseButton->setEnabled(true);
-            decreaseButton->setEnabled(false);
+    if (eventId == "item") {
+        m_amountItems = 0;
+        slider->setValue(0);
+        decreaseButton->setEnabled(false);
+        sellButton->setEnabled(false);
 
-            m_maxItems = shopInventory[selectedItem].quantity;
-            m_amountItems = 0;
-            slider->setValue(0);
-            oss << m_amountItems;
-            quantityLabel->setCaption(oss.str());
-            quantityLabel->adjustSize();
-        }
-        else
-        {
-            slider->setValue(0);
-            slider->setEnabled(false);
-            increaseButton->setEnabled(false);
-            decreaseButton->setEnabled(false);
-            sellButton->setEnabled(false);
-            m_amountItems = 0;
-      }
-    }
-    else if (eventId == "slider" && selectedItem > -1)
-    {
-        m_amountItems = (int)(slider->getValue() * m_maxItems);
-
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
+        quantityLabel->setCaption("0");
         quantityLabel->adjustSize();
 
-        if (m_amountItems > 0)
-        {
-            sellButton->setEnabled(true);
-            decreaseButton->setEnabled(true);
-        }
-        else
-        {
-            sellButton->setEnabled(false);
-            decreaseButton->setEnabled(false);
-        }
-
-        if (m_amountItems == m_maxItems)
-        {
+        if (selectedItem > -1) {
+            slider->setEnabled(true);
+            increaseButton->setEnabled(true);
+            m_maxItems = shopInventory[selectedItem].quantity;
+        } else {
+            slider->setEnabled(false);
             increaseButton->setEnabled(false);
         }
-        else
-        {
-             increaseButton->setEnabled(true);
-        }
     }
-    else if (eventId == "+" && selectedItem > -1)
+    else if (eventId == "quit")
     {
+        setVisible(false);
+        current_npc = 0;
+    }
+
+    // The following actions require a valid item selection
+    if (selectedItem == -1 || selectedItem >= int(shopInventory.size())) {
+        return;
+    }
+
+    bool updateButtonsAndLabels = false;
+
+    if (eventId == "slider") {
+        m_amountItems = (int)(slider->getValue() * m_maxItems);
+
+        updateButtonsAndLabels = true;
+    }
+    else if (eventId == "+") {
         assert(m_amountItems < m_maxItems);
         m_amountItems++;
         slider->setValue(double(m_amountItems)/double(m_maxItems));
 
-        decreaseButton->setEnabled(true);
-        sellButton->setEnabled(true);
-        if (m_amountItems == m_maxItems)
-        {
-            increaseButton->setEnabled(false);
-        }
-
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
-        quantityLabel->adjustSize();
+        updateButtonsAndLabels = true;
     }
-    else if (eventId == "-" && selectedItem > -1)
-    {
+    else if (eventId == "-") {
         assert(m_amountItems > 0);
         m_amountItems--;
 
         slider->setValue(double(m_amountItems)/double(m_maxItems));
 
-        increaseButton->setEnabled(true);
-        if (m_amountItems == 0)
-        {
-            decreaseButton->setEnabled(false);
-            sellButton->setEnabled(false);
-        }
-
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
-        quantityLabel->adjustSize();
+        updateButtonsAndLabels = true;
     }
-    else if (eventId == "sell" && selectedItem > -1)
-    {
+    else if (eventId == "sell") {
         // Attempt sell
         assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
-        assert(selectedItem >= 0 && selectedItem < int(shopInventory.size()));
 
         WFIFOW(0) = net_w_value(0x00c9);
         WFIFOW(2) = net_w_value(8);
@@ -259,30 +214,33 @@ void SellDialog::action(const std::string& eventId)
         WFIFOW(6) = net_w_value(m_amountItems);
         WFIFOSET(8);
 
-        if (m_amountItems == m_maxItems)
-        {
-            slider->setEnabled(false);
-            increaseButton->setEnabled(false);
-            itemList->setSelected(-1);
-            shopInventory.erase(shopInventory.begin() += selectedItem);
-        }
-        else
-        {
-            m_maxItems = shopInventory[selectedItem].quantity - m_amountItems;
-        }
-
-        decreaseButton->setEnabled(false);
-        sellButton->setEnabled(false);
-
+        m_maxItems -= m_amountItems;
         m_amountItems = 0;
         slider->setValue(0);
-        quantityLabel->setCaption("O");
-        quantityLabel->adjustSize();
+        slider->setEnabled(m_maxItems != 0);
+
+        // All were sold
+        if (!m_maxItems) {
+            itemList->setSelected(-1);
+            shopInventory.erase(shopInventory.begin() + selectedItem);
+        }
+
+        updateButtonsAndLabels = true;
     }
-    else if (eventId == "quit")
-    {
-        setVisible(false);
-        current_npc = 0;
+
+    // If anything changed, we need to update the buttons and labels
+    if (updateButtonsAndLabels) {
+        std::stringstream oss;
+
+        // Update labels
+        oss << m_amountItems;
+        quantityLabel->setCaption(oss.str());
+        quantityLabel->adjustSize();
+
+        // Update Buttons
+        sellButton->setEnabled(m_amountItems > 0);
+        decreaseButton->setEnabled(m_amountItems > 0);
+        increaseButton->setEnabled(m_amountItems < m_maxItems);
     }
 }
 

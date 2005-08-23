@@ -1,5 +1,9 @@
 2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/gui/sell.cpp, src/gui/sell.h: Made the sell dialog
+	accepts Items instead of looking them up in the inventory.
+	* src/gui/sell.cpp: Some code cleanups, simplifications and removal of
+	duplicate code.
 	* src/gui/buy.cpp, src/gui/sell.cpp, src/gui/shop.h: Avoid possible buffer
 	overflows by using a std::string instead of char[30].
 	* src/gui/buy.cpp: Some code cleanups, simplifications and removal of

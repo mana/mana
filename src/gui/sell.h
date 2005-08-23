@@ -33,8 +33,9 @@
 
 #include "../guichanfwd.h"
 
-struct ITEM_SHOP;
+class Item;
 
+struct ITEM_SHOP;
 
 /**
  * The sell dialog.
@@ -65,7 +66,7 @@ class SellDialog : public Window, public gcn::ActionListener,
         /**
          * Adds an item to the inventory.
          */
-        void addItem(short id, int price);
+        void addItem(Item *item, int price);
 
         /**
          * Called when receiving actions from the widgets.
