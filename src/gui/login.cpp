@@ -29,22 +29,46 @@
 
 #include <guichan/widgets/label.hpp>
 
+#include "../main.h"
+
 #include "button.h"
 #include "checkbox.h"
 #include "gui.h"
-#include "ok_dialog.h"
 #include "passwordfield.h"
 #include "textfield.h"
+#include "ok_dialog.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
-#include "../main.h"
 #include "../serverinfo.h"
 
 #include "../net/network.h"
 
 extern Graphics *graphics;
+
+OkDialog *wrongLoginNotice = NULL;
+LoginDialog *loginDialog = NULL;
+
+WrongUsernameNoticeListener wrongUsernameNoticeListener;
+WrongPasswordNoticeListener wrongPasswordNoticeListener;
+
+void WrongPasswordNoticeListener::action(const std::string &eventId)
+{
+        // Reset the password and put the caret ready to retype it.
+        loginDialog->passField->setText("");
+        loginDialog->passField->setCaretPosition(0);
+        loginDialog->passField->requestFocus();
+        wrongLoginNotice = NULL;
+}
+
+void WrongUsernameNoticeListener::action(const std::string &eventId)
+{
+    // Set the focus on the username Field
+    loginDialog->userField->setCaretPosition(LEN_USERNAME - 1);
+    loginDialog->userField->requestFocus();
+    wrongLoginNotice = NULL;
+}
 
 LoginDialog::LoginDialog():
     Window("Login")
@@ -156,19 +180,39 @@ void LoginDialog::action(const std::string& eventId)
 
         // Check login
         if (user.length() == 0) {
-            new OkDialog("Error", "Enter your username first");
-            userField->setCaretPosition(0);
+            wrongLoginNotice = new OkDialog("Error", "Enter your username first", &wrongUsernameNoticeListener);
         } else {
-            switch (server_login(user, passField->getText()) )
+            switch (attemptLogin(user, passField->getText()) )
             {
                 case LOGIN_UNKNOWN_ERROR:
+                    wrongLoginNotice = new OkDialog("Error", "Unknown Error.");
                 default:
                 break;
 
                 case LOGIN_WRONG_PASSWORD:
-                    passField->setText("");
-                    passField->setCaretPosition(0);
+                    wrongLoginNotice = new OkDialog("Error", "Wrong Password", &wrongPasswordNoticeListener);
                 break;
+
+                case LOGIN_UNREGISTERED_ID:
+                    wrongLoginNotice = new OkDialog("Error", "Unregistered ID.");
+                break;
+
+                case LOGIN_EXPIRED:
+                    wrongLoginNotice = new OkDialog("Error", "This ID is expired");
+                break;
+
+                case LOGIN_REJECTED:
+                    wrongLoginNotice = new OkDialog("Error", "Rejected from server");
+                break;
+
+                case LOGIN_BLOCKED:
+                    wrongLoginNotice = new OkDialog("Error", "You have been blocked by the GM Team");
+                break;
+
+                case LOGIN_USERNAME_TWICE:
+                    wrongLoginNotice = new OkDialog("Error", "The username does already exist.");
+                break;
+
 
             }
             close_session();
@@ -189,16 +233,13 @@ void LoginDialog::action(const std::string& eventId)
 
         // Check login
         if (user.length() == 0) {
-            new OkDialog("Error", "Enter a username first");
-            userField->setCaretPosition(0);
+            wrongLoginNotice = new OkDialog("Error", "Enter your username first.", &wrongUsernameNoticeListener);
         } else if (user.length() < 4) {
-            new OkDialog("Error", "The username needs to be at least 4 characters");
-            userField->setCaretPosition(4);
+            wrongLoginNotice = new OkDialog("Error", "The username needs to be at least 4 characters.", &wrongUsernameNoticeListener);
         } else if (user.length() > LEN_USERNAME -1 ) {
-            new OkDialog("Error", "The username needs to be less than 25 characters long.");
-            userField->setCaretPosition(LEN_USERNAME - 1);
+            wrongLoginNotice = new OkDialog("Error", "The username needs to be less than 25 characters long.", &wrongUsernameNoticeListener);
         } else {
-            server_login(user + "_M", passField->getText());
+            attemptLogin(user + "_M", passField->getText());
             close_session();
         }
     }
@@ -207,7 +248,7 @@ void LoginDialog::action(const std::string& eventId)
 
 void login()
 {
-    LoginDialog *dialog = new LoginDialog();
+    loginDialog = new LoginDialog();
 
     while (state == LOGIN)
     {
@@ -237,11 +278,11 @@ void login()
         graphics->updateScreen();
     }
 
-    delete dialog;
+    delete loginDialog;
 }
 
 
-int server_login(const std::string& user, const std::string& pass) {
+int attemptLogin(const std::string& user, const std::string& pass) {
     strncpy(username, user.c_str(), LEN_USERNAME);
     strncpy(password, pass.c_str(), LEN_PASSWORD);
     int ret;
@@ -253,7 +294,7 @@ int server_login(const std::string& user, const std::string& pass) {
 
     if (ret == SOCKET_ERROR) {
         state = LOGIN;
-        new OkDialog("Error", "Unable to connect to login server");
+        wrongLoginNotice = new OkDialog("Error", "Unable to connect to login server");
         return LOGIN_NO_CONNECTION;
     }
 
@@ -300,27 +341,21 @@ int server_login(const std::string& user, const std::string& pass) {
         ret = 0;
         switch (RFIFOB(2)) {
             case 0:
-                new OkDialog("Error", "Unregistered ID");
                 ret = LOGIN_UNREGISTERED_ID;
                 break;
             case 1:
-                new OkDialog("Error", "Wrong password");
                 ret = LOGIN_WRONG_PASSWORD;
                 break;
             case 2:
-                new OkDialog("Error", "This ID is expired");
                 ret = LOGIN_EXPIRED;
                 break;
             case 3:
-                new OkDialog("Error", "Rejected from server");
                 ret = LOGIN_REJECTED;
                 break;
             case 4:
-                new OkDialog("Error", "You have been blocked by the GM Team");
                 ret = LOGIN_BLOCKED;
                 break;
             case 9:
-                new OkDialog("Error", "The username does already exist.");
                 ret = LOGIN_USERNAME_TWICE;
                 break;
         }
@@ -329,7 +364,6 @@ int server_login(const std::string& user, const std::string& pass) {
         return ret;
     }
     else {
-        new OkDialog("Error", "Unknown error");
         state = LOGIN;
         return LOGIN_UNKNOWN_ERROR;
     }

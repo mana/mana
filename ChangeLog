@@ -1,3 +1,10 @@
+2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
+
+    * src/game.cpp: Simply don't show
+    equipped items in sell dialog as it's annoying.
+    * src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements
+    to the login sequence.
+
 2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/shop.h: Fixed using a forward declaration for std::string, where

@@ -25,11 +25,9 @@
 #define _TMW_LOGIN_H
 
 #include <iosfwd>
-
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-
 #include "../guichanfwd.h"
 
 /**
@@ -56,18 +54,38 @@ class LoginDialog : public Window, public gcn::ActionListener {
          */
         void action(const std::string& eventId);
 
+        // Made them public to have the possibility to request focus
+        // from external functions.
+        gcn::TextField *userField;
+        gcn::TextField *passField;
+
     private:
         gcn::Label *userLabel;
         gcn::Label *passLabel;
         gcn::Label *serverLabel;
-        gcn::TextField *userField;
-        gcn::TextField *passField;
         gcn::TextField *serverField;
         gcn::CheckBox *keepCheck;
         gcn::Button *okButton;
         gcn::Button *cancelButton;
         gcn::Button *registerButton;
 };
+
+/**
+ * Listener used for handling wrong password.
+ */
+class WrongPasswordNoticeListener : public gcn::ActionListener {
+    public:
+        void action(const std::string &eventId);
+};
+
+/**
+ * Listener used for handling wrong username.
+ */
+class WrongUsernameNoticeListener : public gcn::ActionListener {
+    public:
+        void action(const std::string &eventId);
+};
+
 
 /**
  * Display login dialog
@@ -87,6 +105,8 @@ void login();
  * 9 means username already existing
  * -1 means unknown error
  */
+int attemptLogin(const std::string& user, const std::string& pass);
+
 enum
 {
     LOGIN_OK = 0,
@@ -100,7 +120,5 @@ enum
     LOGIN_UNKNOWN_ERROR = -1
 
 };
-
-int server_login(const std::string& user, const std::string& pass);
 
 #endif

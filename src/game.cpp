@@ -1607,7 +1607,7 @@ void do_parse()
                         sellDialog->setVisible(true);
                         for (int k = 0; k < n_items; k++) {
                             Item *item = inventory->getItem(RFIFOW(4 + 10 * k));
-                            if (item) {
+                            if (item && !(item->isEquipped())) {
                                 sellDialog->addItem(item, RFIFOL(4 + 10 * k + 2));
                             }
                         }
