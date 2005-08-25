@@ -38,7 +38,7 @@ class ItemManager
          * Constructor.
          */
         ItemManager();
-        
+
         /**
          * Destructor.
          */
@@ -46,8 +46,6 @@ class ItemManager
 
         ItemInfo *getItemInfo(int id);
 
-        ItemInfo *getItemEffect(int id);
-        
     protected:
         // Items database
         std::map <int, ItemInfo *> db;
