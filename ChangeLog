@@ -8,6 +8,15 @@
 
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/configuration.cpp: Fix compilation errors.
+	* src/graphics.cpp, src/openglgraphics.cpp, src/gui/button.cpp,
+	src/gui/checkbox.cpp, src/gui/equipmentwindow.cpp,
+	src/gui/itemcontainer.cpp, src/gui/minimap.cpp,
+	src/gui/passwordfield.cpp, src/gui/playerbox.cpp,
+	stc/gui/progressbar.cpp, src/gui/radiobutton.cpp,
+	src/gui/scrollarea.cpp, src/gui/slider.cpp, src/gui/textfield.cpp,
+	src/gui/window.cpp: Made our Graphics::drawImage() method respect the
+	clip area from the guichan part. Removed some obsolete code.
 	* src/gui/tabbedcontainer.h: Fix include path for guichanfwd.h.
 	* src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h: Added a new
 	container type, that allows switching between the contents through a

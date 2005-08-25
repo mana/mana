@@ -24,15 +24,17 @@
 
 #include "configuration.h"
 
+#include <math.h>
 #include <sstream>
 #include <libxml/xmlwriter.h>
 
 #include "configlistener.h"
 #include "log.h"
 
-void Configuration::init(const std::string &filename):
-    mConfigPath(filename)
+void Configuration::init(const std::string &filename)
 {
+    mConfigPath = filename;
+
     // Do not attempt to read config from non-existant file
     FILE *testFile = fopen(filename.c_str(), "r");
     if (!testFile) {

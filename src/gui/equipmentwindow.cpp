@@ -54,9 +54,6 @@ EquipmentWindow::~EquipmentWindow()
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
 {
-    int x, y;
-    getAbsolutePosition(x, y);
-
     // Draw window graphics
     Window::draw(graphics);
 
@@ -75,7 +72,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
         image = itemset->spriteset[item->getInfo()->getImage() - 1];
         dynamic_cast<Graphics*>(graphics)->drawImage(
-                image, x + 36 * (i % 4) + 10, y + 36 * (i / 4) + 25);
+                image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
 
     graphics->setColor(gcn::Color(0, 0, 0));
@@ -87,8 +84,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     image = itemset->spriteset[item->getInfo()->getImage() - 1];
 
-    dynamic_cast<Graphics*>(graphics)->drawImage(
-            image, x + 160, y + 25);
+    dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     std::stringstream n;
     n << item->getQuantity();
     graphics->drawText(n.str(), 170, 62,

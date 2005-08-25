@@ -132,6 +132,9 @@ bool Graphics::drawImage(Image *image, int x, int y)
 bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
         int width, int height)
 {
+    dstX += mClipStack.top().xOffset;
+    dstY += mClipStack.top().yOffset;
+
     srcX += image->bounds.x;
     srcY += image->bounds.y;
 

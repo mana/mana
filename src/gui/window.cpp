@@ -134,18 +134,15 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics* graphics)
 {
-    int x, y;
-    getAbsolutePosition(x, y);
-
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, getWidth(), getHeight(),
                                          border);
 
     // Draw grip
     if (resizable)
     {
         dynamic_cast<Graphics*>(graphics)->drawImage(Window::resizeGrip,
-                                                     x + getWidth() - resizeGrip->getWidth(),
-                                                     y + getHeight() - resizeGrip->getHeight());
+                                                     getWidth() - resizeGrip->getWidth(),
+                                                     getHeight() - resizeGrip->getHeight());
     }
 
     // Draw title
@@ -393,8 +390,6 @@ void Window::optionChanged(const std::string &name)
 
 gcn::Rectangle Window::getGripDimension ()
 {
-    int x, y;
-    getAbsolutePosition(x, y);
     return gcn::Rectangle(getWidth() - resizeGrip->getWidth(), getHeight() - resizeGrip->getHeight(), getWidth(),
                           getHeight());
 }

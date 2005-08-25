@@ -98,10 +98,7 @@ void ProgressBar::logic()
 
 void ProgressBar::draw(gcn::Graphics *graphics)
 {
-    int x, y;
-    getAbsolutePosition(x, y);
-
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, getWidth(), getHeight(),
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, getWidth(), getHeight(),
                                          mBorder);
 
     // The bar

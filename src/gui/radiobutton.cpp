@@ -66,9 +66,6 @@ RadioButton::~RadioButton()
 void RadioButton::drawBox(gcn::Graphics* graphics)
 {
     Image *box = NULL;
-    int x, y;
-
-    getAbsolutePosition(x, y);
 
     if (mMarked) {
         if (isEnabled()) {
@@ -82,9 +79,7 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
         box = radioDisabled;
     }
 
-    x += 2;
-    y += 2;
     if (box != NULL) {
-        dynamic_cast<Graphics*>(graphics)->drawImage(box, x, y);
+        dynamic_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
     }
 }

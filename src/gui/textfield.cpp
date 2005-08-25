@@ -80,11 +80,6 @@ TextField::~TextField()
 
 void TextField::draw(gcn::Graphics *graphics)
 {
-    int x, y, w, h;
-    getAbsolutePosition(x, y);
-    w = getWidth();
-    h = getHeight();
-
     if (hasFocus()) {
         drawCaret(graphics,
                 getFont()->getWidth(mText.substr(0, mCaretPosition)) -
@@ -98,13 +93,10 @@ void TextField::draw(gcn::Graphics *graphics)
 
 void TextField::drawBorder(gcn::Graphics *graphics)
 {
-    int x, y, w, h, bs;
-    getAbsolutePosition(x, y);
+    int w, h, bs;
     bs = getBorderSize();
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
-    x -= bs;
-    y -= bs;
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, skin);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
 }

@@ -216,16 +216,13 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
 void ScrollArea::drawBorder(gcn::Graphics *graphics)
 {
-    int x, y, w, h, bs;
-    getAbsolutePosition(x, y);
+    int w, h, bs;
     bs = getBorderSize();
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
-    x -= bs;
-    y -= bs;
 
     if (isOpaque()) {
-        dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, background);
+        dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
     }
 }
 
@@ -248,10 +245,8 @@ bool ScrollArea::isOpaque()
 
 void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
 {
-    int x, y, state = 0;
+    int state = 0;
     gcn::Rectangle dim;
-
-    getAbsolutePosition(x,y);
 
     switch(dir) {
         case UP:
@@ -273,7 +268,7 @@ void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)
     }
 
     dynamic_cast<Graphics*>(graphics)->drawImage(
-            buttons[dir][state], x + dim.x, y + dim.y);
+            buttons[dir][state], dim.x, dim.y);
 }
 
 void ScrollArea::drawUpButton(gcn::Graphics *graphics)
@@ -314,20 +309,16 @@ void ScrollArea::drawHBar(gcn::Graphics *graphics)
 
 void ScrollArea::drawVMarker(gcn::Graphics *graphics)
 {
-    int x, y;
     gcn::Rectangle dim = getVerticalMarkerDimension();
-    getAbsolutePosition(x, y);
 
     dynamic_cast<Graphics*>(graphics)->drawImageRect(
-            x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
+            dim.x, dim.y, dim.width, dim.height, vMarker);
 }
 
 void ScrollArea::drawHMarker(gcn::Graphics *graphics)
 {
-    int x, y;
     gcn::Rectangle dim = getHorizontalMarkerDimension();
-    getAbsolutePosition(x, y);
 
     dynamic_cast<Graphics*>(graphics)->drawImageRect(
-            x + dim.x, y + dim.y, dim.width, dim.height, vMarker);
+            dim.x, dim.y, dim.width, dim.height, vMarker);
 }

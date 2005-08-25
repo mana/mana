@@ -74,6 +74,9 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
+    dstX += mClipStack.top().xOffset;
+    dstY += mClipStack.top().yOffset;
+
     srcX += image->bounds.x;
     srcY += image->bounds.y;
 

@@ -31,14 +31,10 @@ PasswordField::PasswordField(const std::string& text):
 
 void PasswordField::draw(gcn::Graphics *graphics)
 {
-    int x, y, w, h;
-    getAbsolutePosition(x, y);
-    w = getWidth();
-    h = getHeight();
     std::string stars;
     stars.assign(mText.length(), '*');
 
-    if (hasFocus()) {      
+    if (hasFocus()) {
         drawCaret(graphics,
                 getFont()->getWidth(stars.substr(0, mCaretPosition)) -
                 mXScroll);
@@ -46,5 +42,5 @@ void PasswordField::draw(gcn::Graphics *graphics)
 
     graphics->setColor(getForegroundColor());
     graphics->setFont(getFont());
-    graphics->drawText(stars, 1 - mXScroll, 1);  
+    graphics->drawText(stars, 1 - mXScroll, 1);
 }

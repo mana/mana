@@ -83,37 +83,32 @@ PlayerBox::~PlayerBox()
 
 void PlayerBox::draw(gcn::Graphics *graphics)
 {
-    if (showPlayer)
+    if (!showPlayer) {
+        return;
+    }
+
+    // Draw character
+    dynamic_cast<Graphics*>(graphics)->drawImage(
+            playerset->spriteset[0], 23, 23);
+
+    // Draw his hair
+    if (hairColor >= 0 && hairStyle >= 0 &&
+            hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
     {
-        int x, y;
-        getAbsolutePosition(x, y);
-
-        // Draw character
-        dynamic_cast<Graphics*>(graphics)->drawImage(
-                playerset->spriteset[0], x + 23, y + 23);
-
-        // Draw his hair
-        if (hairColor >= 0 && hairStyle >= 0 &&
-                hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
-        {
-            int hf = hairColor + 40 * (hairStyle);
-            if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
-                dynamic_cast<Graphics*>(graphics)->drawImage(
-                        hairset->spriteset[hf], x + 37, y + 5);
-            }
+        int hf = hairColor + 40 * (hairStyle);
+        if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
+            dynamic_cast<Graphics*>(graphics)->drawImage(
+                    hairset->spriteset[hf], 37, 5);
         }
     }
 }
 
 void PlayerBox::drawBorder(gcn::Graphics *graphics)
 {
-    int x, y, w, h, bs;
-    getAbsolutePosition(x, y);
+    int w, h, bs;
     bs = getBorderSize();
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
-    x -= bs;
-    y -= bs;
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(x, y, w, h, background);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
 }

@@ -78,8 +78,6 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     int gridHeight = itemset->spriteset[0]->getHeight() + 10;
     int w = getWidth();
     int columns = w / gridWidth;
-    int x, y;
-    getAbsolutePosition(x, y);
 
     // Have at least 1 column
     if (columns < 1)
@@ -113,7 +111,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         if (selectedItem == item)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    selImg, x + itemX, y + itemY);
+                    selImg, itemX, itemY);
         }
 
         // Draw item icon
@@ -121,7 +119,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         if ((idx = item->getInfo()->getImage()) > 0)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    itemset->spriteset[idx - 1], x + itemX, y + itemY);
+                    itemset->spriteset[idx - 1], itemX, itemY);
         }
 
         // Draw item caption
