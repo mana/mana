@@ -1,5 +1,8 @@
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h: Added a new
+	container type, that allows switching between the contents through a tab
+	bar at the top of the container.
 	* ChangeLog: Fixed intendation and line length.
 	* docs/HACKING.txt: Added a notice about line length in ChangeLog and an
 	example for the ChangeLog format.

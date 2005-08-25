@@ -82,6 +82,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/status.h \
 	      gui/stats.cpp \
 	      gui/stats.h \
+	      gui/tabbedcontainer.cpp \
+	      gui/tabbedcontainer.h \
 	      gui/textbox.cpp \
 	      gui/textbox.h \
 	      gui/textfield.cpp \
