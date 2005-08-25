@@ -54,9 +54,11 @@ class OpenGLGraphics : public Graphics
 
         void drawLine(int x1, int y1, int x2, int y2);
 
-        void drawRectangle(const gcn::Rectangle& rectangle);
+        void _drawRectangle(const gcn::Rectangle &rect, bool filled);
 
-        void fillRectangle(const gcn::Rectangle &rectangle);
+        void drawRectangle(const gcn::Rectangle &rect);
+
+        void fillRectangle(const gcn::Rectangle &rect);
 
         void setTargetPlane(int width, int height);
 

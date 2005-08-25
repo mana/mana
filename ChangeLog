@@ -8,6 +8,7 @@
 
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/openglgraphics.cpp, src/openglgraphics.h: Reduce code duplication.
 	* src/configuration.cpp: Fix compilation errors.
 	* src/graphics.cpp, src/openglgraphics.cpp, src/gui/button.cpp,
 	src/gui/checkbox.cpp, src/gui/equipmentwindow.cpp,

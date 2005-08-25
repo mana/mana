@@ -25,7 +25,6 @@
 
 #include "openglgraphics.h"
 
-#include <iostream>
 #include <SDL.h>
 
 #include "log.h"
@@ -351,7 +350,7 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     glEnd();
 }
 
-void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rectangle)
+void OpenGLGraphics::_drawRectangle(const gcn::Rectangle& rect, bool filled)
 {
     if (mAlpha && !mColorAlpha) {
         glDisable(GL_BLEND);
@@ -366,43 +365,28 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rectangle)
         mTexture = false;
     }
 
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(rectangle.x + mClipStack.top().xOffset + 0.5f,
-            rectangle.y + mClipStack.top().yOffset + 0.5f, 0);
-    glVertex3f(rectangle.x + rectangle.width - 0.5f + mClipStack.top().xOffset,
-            rectangle.y + mClipStack.top().yOffset + 0.5f, 0);
-    glVertex3f(rectangle.x + rectangle.width - 0.5f + mClipStack.top().xOffset,
-            rectangle.y + rectangle.height + mClipStack.top().yOffset - 0.5f, 0);
-    glVertex3f(rectangle.x + mClipStack.top().xOffset + 0.5f,
-            rectangle.y + rectangle.height + mClipStack.top().yOffset - 0.5f, 0);
+    float offset = filled ? 0 : 0.5f;
+
+    glBegin(filled ? GL_QUADS : GL_LINE_LOOP);
+    glVertex3f(rect.x + mClipStack.top().xOffset + offset,
+            rect.y + mClipStack.top().yOffset + offset, 0);
+    glVertex3f(rect.x + rect.width + mClipStack.top().xOffset - offset,
+            rect.y + mClipStack.top().yOffset + offset, 0);
+    glVertex3f(rect.x + rect.width + mClipStack.top().xOffset - offset,
+            rect.y + rect.height + mClipStack.top().yOffset - offset, 0);
+    glVertex3f(rect.x + mClipStack.top().xOffset + offset,
+            rect.y + rect.height + mClipStack.top().yOffset - offset, 0);
     glEnd();
 }
 
-void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rectangle)
+void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect)
 {
-    if (mAlpha && !mColorAlpha) {
-        glDisable(GL_BLEND);
-        mAlpha = false;
-    } else if (!mAlpha && mColorAlpha) {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
+    _drawRectangle(rect, false);
+}
 
-    if (mTexture) {
-        glDisable(GL_TEXTURE_2D);
-        mTexture = false;
-    }
-
-    glBegin(GL_QUADS);
-    glVertex3i(rectangle.x + mClipStack.top().xOffset,
-            rectangle.y + mClipStack.top().yOffset, 0);
-    glVertex3i(rectangle.x + rectangle.width + mClipStack.top().xOffset,
-            rectangle.y + mClipStack.top().yOffset, 0);
-    glVertex3i(rectangle.x + rectangle.width + mClipStack.top().xOffset,
-            rectangle.y + rectangle.height + mClipStack.top().yOffset, 0);
-    glVertex3i(rectangle.x + mClipStack.top().xOffset,
-            rectangle.y + rectangle.height + mClipStack.top().yOffset, 0);
-    glEnd();
+void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rect)
+{
+    _drawRectangle(rect, true);
 }
 
 void OpenGLGraphics::setTargetPlane(int width, int height)
