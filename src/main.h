@@ -51,15 +51,18 @@ enum {
  * to be able to use strncpy instead of strcpy for
  * security and stability reasons
  */
-#define LEN_USERNAME 25
-#define LEN_PASSWORD 25
+#define LEN_MAX_USERNAME    25
+#define LEN_MIN_USERNAME    4
+#define LEN_MAX_PASSWORD    25
+#define LEN_MIN_PASSWORD    4
 
+#include <string>
 extern Image *login_wallpaper;
-extern char username[25];
-extern char password[25];
+extern std::string username;
+extern std::string password;
 extern int map_address, char_ID;
 extern short map_port;
-extern char map_name[16];
+extern std::string map_name;
 extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern unsigned char state;

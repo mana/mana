@@ -53,8 +53,8 @@ void BuddyList::loadFile(void)
     }
 
     do {
-        buddy = (char *) calloc(LEN_USERNAME, sizeof(char));
-        inputStream.getline(buddy, LEN_USERNAME);
+        buddy = (char *) calloc(LEN_MAX_USERNAME, sizeof(char));
+        inputStream.getline(buddy, LEN_MAX_USERNAME);
         // Ugly ?
         if(strcmp(buddy,"") != 0) buddylist.push_back(buddy);
         free(buddy);

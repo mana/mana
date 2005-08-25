@@ -24,6 +24,7 @@
 #include "login.h"
 
 #include <string>
+#include <sstream>
 
 #include <guichan/sdl/sdlinput.hpp>
 
@@ -65,7 +66,7 @@ void WrongPasswordNoticeListener::action(const std::string &eventId)
 void WrongUsernameNoticeListener::action(const std::string &eventId)
 {
     // Set the focus on the username Field
-    loginDialog->userField->setCaretPosition(LEN_USERNAME - 1);
+    loginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
     loginDialog->userField->requestFocus();
     wrongLoginNotice = NULL;
 }
@@ -232,13 +233,44 @@ void LoginDialog::action(const std::string& eventId)
         }
 
         // Check login
-        if (user.length() == 0) {
+        if (user.length() == 0) // No username
+        {
             wrongLoginNotice = new OkDialog("Error", "Enter your username first.", &wrongUsernameNoticeListener);
-        } else if (user.length() < 4) {
-            wrongLoginNotice = new OkDialog("Error", "The username needs to be at least 4 characters.", &wrongUsernameNoticeListener);
-        } else if (user.length() > LEN_USERNAME -1 ) {
-            wrongLoginNotice = new OkDialog("Error", "The username needs to be less than 25 characters long.", &wrongUsernameNoticeListener);
-        } else {
+        }
+        else if (user.length() < LEN_MIN_USERNAME) // Name too short
+        {
+            std::stringstream errorMessage;
+            errorMessage << "The username needs to be at least ";
+            errorMessage << LEN_MIN_USERNAME;
+            errorMessage << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongUsernameNoticeListener);
+        }
+        else if (user.length() > LEN_MAX_USERNAME - 1 ) // Name too long
+        {
+            std::stringstream errorMessage;
+            errorMessage << "The username needs to be less than ";
+            errorMessage << LEN_MAX_USERNAME;
+            errorMessage << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongUsernameNoticeListener);
+        }
+        else if (passField->getText().length() < LEN_MIN_PASSWORD) // Pass too short
+        {
+            std::stringstream errorMessage;
+            errorMessage << "The password needs to be at least ";
+            errorMessage << LEN_MIN_PASSWORD;
+            errorMessage << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongPasswordNoticeListener);
+        }
+        else if (passField->getText().length() > LEN_MAX_PASSWORD - 1 ) // Pass too long
+        {
+            std::stringstream errorMessage;
+            errorMessage << "The password needs to be less than ";
+            errorMessage << LEN_MAX_PASSWORD;
+            errorMessage << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongPasswordNoticeListener);
+        }
+        else // If no errors, register the new user.
+        {
             attemptLogin(user + "_M", passField->getText());
             close_session();
         }
@@ -283,8 +315,8 @@ void login()
 
 
 int attemptLogin(const std::string& user, const std::string& pass) {
-    strncpy(username, user.c_str(), LEN_USERNAME);
-    strncpy(password, pass.c_str(), LEN_PASSWORD);
+    username = user;
+    password = pass;
     int ret;
 
     // Connect to login server
@@ -303,8 +335,9 @@ int attemptLogin(const std::string& user, const std::string& pass) {
     WFIFOW(0) = net_w_value(0x0064);
 
     WFIFOL(2) = 0;
-    memcpy(WFIFOP(6), username, 24);
-    memcpy(WFIFOP(30), password, 24);
+
+    memcpy(WFIFOP(6), username.c_str(), LEN_MAX_USERNAME - 1);
+    memcpy(WFIFOP(30), password.c_str(), LEN_MAX_PASSWORD - 1);
     WFIFOB(54) = 0;
     WFIFOSET(55);
 

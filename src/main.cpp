@@ -74,11 +74,11 @@ Spriteset *hairset = NULL, *playerset = NULL;
 Image *login_wallpaper = NULL;
 Graphics *graphics;
 
-char username[LEN_USERNAME];
-char password[LEN_PASSWORD];
+std::string username;
+std::string password;
 int map_address, char_ID;
 short map_port;
-char map_name[16];
+std::string map_name;
 unsigned char state;
 unsigned char screen_mode;
 volatile int framesToDraw = 0;

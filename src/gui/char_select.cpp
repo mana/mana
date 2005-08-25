@@ -247,7 +247,7 @@ void CharSelectDialog::serverCharSelect()
         map_port = RFIFOW(26);
         state = GAME;
 
-        logger->log("CharSelect: Map: %s", map_name);
+        logger->log("CharSelect: Map: %s", map_name.c_str());
         logger->log("CharSelect: Server: %s:%d", iptostring(map_address), map_port);
         RFIFOSKIP(28);
         close_session();
