@@ -1,9 +1,15 @@
+2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* ChangeLog: Fixed intendation and line length.
+	* docs/HACKING.txt: Added a notice about line length in ChangeLog and an
+	example for the ChangeLog format.
+
 2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
 
-    * src/game.cpp: Simply don't show
-    equipped items in sell dialog as it's annoying.
-    * src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements
-    to the login sequence.
+	* src/game.cpp: Simply don't show equipped items in sell dialog as it's
+	annoying.
+	* src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements to
+	the login sequence.
 
 2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -20,15 +26,16 @@
 
 2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp, src/game.cpp: Removed asserts as they were
-	not suitable for a stable implementation of buy/sell dialogs and made some improvements
-	on them. Still has to clean up code.
-	* src/gui/login.h, src/login.cpp: Code cleanups, little improvements of the login function.
+	* src/gui/buy.cpp, src/gui/sell.cpp, src/game.cpp: Removed asserts as they
+	were not suitable for a stable implementation of buy/sell dialogs and made
+	some improvements on them. Still has to clean up code.
+	* src/gui/login.h, src/login.cpp: Code cleanups, little improvements of the
+	login function.
 
 2005-08-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/gui/skill.cpp: Disabled use button in skill dialog since is still not
-	being used.
+	* src/gui/skill.cpp: Disabled use button in skill dialog since is still
+	not being used.
 
 2005-08-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -50,8 +57,8 @@
 2005-08-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/game.cpp, src/gui/skill.h, src/gui/skill.cpp:
-	Updated reference to latest libxml, fixed a bug in updating skills, updated
-	skill names database.
+	Updated reference to latest libxml, fixed a bug in updating skills,
+	updated skill names database.
 
 2005-08-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -70,14 +77,13 @@
 
 2005-08-16  FERREIRA Yohann  <bertram@cegetel.net>
 
-    * src/gui/window.h, src/gui/window.cpp:
-    Bugfixing and simplifying resize code.
-    * debian/*:
-    Updates to the debian packaging files. (The actual update was from a few days ago.)
-    Now we have the tmw, tmw-data and tmw-music packages.
-    * src/gui/setup.h, src/gui/setup.cpp: 
-    Now the setup (Config) windows works as it should be.
-    (The actual update was from a few days ago.) 
+	* src/gui/window.h, src/gui/window.cpp: Bugfixing and simplifying resize
+	code.
+	* debian/*: Updates to the debian packaging files. (The actual update was
+	from a few days ago.) Now we have the tmw, tmw-data and tmw-music
+	packages.
+	* src/gui/setup.h, src/gui/setup.cpp: Now the setup (Config) windows works
+	as it should be. (The actual update was from a few days ago.)
 
 2005-08-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -213,10 +219,11 @@
 
 2005-08-03  Andrej Sinicyn  <andrej4000@gmail.com>
 
-        * src/game.cpp, src/game.h, src/gui/requesttrade.cpp,src/gui/requesttrade.h:
-        Moved my invented variable, since it makes more sense.
+	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp,
+	src/gui/requesttrade.h: Moved my invented variable, since it makes more
+	sense.
 	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp: Fix my previous fix
-        because it broke my own code.
+	because it broke my own code.
 
 2005-08-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -243,8 +250,8 @@
 
 2005-08-02  Marcel W. Wysocki  <maci@satgnu.org> 
 
-	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking 
-	on setup button while dialog is opened
+	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking on
+	setup button while dialog is opened
 
 2005-08-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -256,7 +263,7 @@
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
 
 	* src/game.cpp, src/game.h, src/gui/popupmenu.cpp: Show the name of the
-        trade partner in the trade dialog.
+	trade partner in the trade dialog.
 
 2005-07-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -267,7 +274,7 @@
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
 
 	* src/game.cpp: Don't allow more than one trade dialog or requesting it at
-        once; if a trade is canceled on the other side, close the trade window.
+	once; if a trade is canceled on the other side, close the trade window.
 
 2005-07-30  Andrej Sinicyn  <andrej4000@gmail.com>
 

@@ -121,3 +121,14 @@ necessary.
   [newline]
   [tab]*[space]filename:[space]Comment
   [newline]
+
+  The last character on each line is at max at column 79.
+
+  Example:
+
+1234-12-24  Some Body  <mymail@mailserver.tld>
+
+	* some/file: My comment.
+	* some/file, anotherfile: This is a pretty long comment and needs a line
+	break, to avoid characters at colums > 79.
+
