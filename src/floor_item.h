@@ -24,8 +24,6 @@
 #ifndef _TMW_FLOORITEM_H
 #define _TMW_FLOORITEM_H
 
-#include <list>
-
 class FloorItem {
     private:
     public:
@@ -58,7 +56,5 @@ void remove_floor_item(unsigned int int_id);
 
 /** Find a Item id based on its coordinates */
 unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y);
-
-extern std::list<FloorItem*> floorItems;
 
 #endif

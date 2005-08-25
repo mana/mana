@@ -23,9 +23,12 @@
 
 #include "floor_item.h"
 
+#include <list>
+
 std::list<FloorItem*> floorItems;
 
-void empty_floor_items() {
+void empty_floor_items()
+{
     std::list<FloorItem *>::iterator i;
     for (i = floorItems.begin(); i != floorItems.end(); i++) {
         delete (*i);
@@ -33,11 +36,13 @@ void empty_floor_items() {
     floorItems.clear();
 }
 
-void add_floor_item(FloorItem *floorItem) {
+void add_floor_item(FloorItem *floorItem)
+{
     floorItems.push_back(floorItem);
 }
 
-void remove_floor_item(unsigned int int_id) {
+void remove_floor_item(unsigned int int_id)
+{
     std::list<FloorItem *>::iterator i;
     for (i = floorItems.begin(); i != floorItems.end(); i++) {
         if ((*i)->int_id == int_id) {
@@ -48,7 +53,8 @@ void remove_floor_item(unsigned int int_id) {
     }
 }
 
-unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y) {
+unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y)
+{
     std::list<FloorItem *>::iterator i;
     for (i = floorItems.begin(); i != floorItems.end(); i++) {
         FloorItem *floorItem = (*i);
@@ -60,7 +66,8 @@ unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y) {
     return 0;
 }
 
-FloorItem *find_floor_item_by_id(unsigned int int_id) {
+FloorItem *find_floor_item_by_id(unsigned int int_id)
+{
     std::list<FloorItem*>::iterator i;
     for (i = floorItems.begin(); i != floorItems.end(); i++) {
         FloorItem *floorItem = (*i);
@@ -71,10 +78,11 @@ FloorItem *find_floor_item_by_id(unsigned int int_id) {
     return NULL;
 }
 
-FloorItem::FloorItem() {
-    id = 0; int_id = 0;
-    x = 0; y = 0;
+FloorItem::FloorItem():
+    id(0), int_id(0), x(0), y(0)
+{
 }
 
-FloorItem::~FloorItem() { 
+FloorItem::~FloorItem()
+{
 }

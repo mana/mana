@@ -23,6 +23,7 @@
 
 #include "engine.h"
 
+#include <list>
 #include <sstream>
 
 #include <guichan/imagefont.hpp>
@@ -55,6 +56,7 @@ extern Being *autoTarget;
 extern Graphics *graphics;
 extern Minimap *minimap;
 extern Spriteset *hairset, *playerset;
+extern std::list<FloorItem*> floorItems;
 
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;

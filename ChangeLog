@@ -8,7 +8,12 @@
 
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/openglgraphics.cpp, src/openglgraphics.h: Reduce code duplication.
+	* src/engine.cpp, src/floor_item.cpp, src/floor_item.h: Move the
+	extern declaration for the floor item list into engine.cpp as it's
+	only used there.
+	* src/log.cpp: Lower indentation level.
+	* src/openglgraphics.cpp, src/openglgraphics.h: Reduce code
+	duplication.
 	* src/configuration.cpp: Fix compilation errors.
 	* src/graphics.cpp, src/openglgraphics.cpp, src/gui/button.cpp,
 	src/gui/checkbox.cpp, src/gui/equipmentwindow.cpp,
