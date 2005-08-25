@@ -8,6 +8,10 @@
 
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/openglgraphics.cpp: Use the translation capabilities of OpenGL
+	instead of doing it ourselves all the time.
+	* src/graphics.cpp: Simplify the image rect drawing code a bit and
+	remove an obsolete included header.
 	* src/openglgraphics.cpp, src/openglgraphics.h: Reduce the code
 	duplication even further.
 	* src/engine.cpp, src/floor_item.cpp, src/floor_item.h: Move the

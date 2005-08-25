@@ -23,10 +23,6 @@
 
 #include "graphics.h"
 
-#ifdef USE_OPENGL
-#include <guichan/imagefont.hpp>
-#endif
-
 #include "log.h"
 
 #include "graphic/imagerect.h"
@@ -184,37 +180,40 @@ void Graphics::drawImageRect(
         Image *bottom, Image *left,
         Image *center)
 {
+    pushClipArea(gcn::Rectangle(x, y, w, h));
+
     // Draw the center area
     drawImagePattern(center,
-            x + topLeft->getWidth(), y + topLeft->getHeight(),
+            topLeft->getWidth(), topLeft->getHeight(),
             w - topLeft->getWidth() - topRight->getWidth(),
             h - topLeft->getHeight() - bottomLeft->getHeight());
 
     // Draw the sides
     drawImagePattern(top,
-            x + topLeft->getWidth(), y,
-            w - topLeft->getWidth() - topRight->getWidth(), top->getHeight());
+            left->getWidth(), 0,
+            w - left->getWidth() - right->getWidth(), top->getHeight());
     drawImagePattern(bottom,
-            x + bottomLeft->getWidth(), y + h - bottom->getHeight(),
-            w - bottomLeft->getWidth() - bottomRight->getWidth(),
+            left->getWidth(), h - bottom->getHeight(),
+            w - left->getWidth() - right->getWidth(),
             bottom->getHeight());
     drawImagePattern(left,
-            x, y + topLeft->getHeight(),
+            0, top->getHeight(),
             left->getWidth(),
-            h - topLeft->getHeight() - bottomLeft->getHeight());
+            h - top->getHeight() - bottom->getHeight());
     drawImagePattern(right,
-            x + w - right->getWidth(), y + topRight->getHeight(),
+            w - right->getWidth(), top->getHeight(),
             right->getWidth(),
-            h - topRight->getHeight() - bottomRight->getHeight());
+            h - top->getHeight() - bottom->getHeight());
 
     // Draw the corners
-    drawImage(topLeft, x, y);
-    drawImage(topLeft, x, y);
-    drawImage(topRight, x + w - topRight->getWidth(), y);
-    drawImage(bottomLeft, x, y + h - bottomLeft->getHeight());
+    drawImage(topLeft, 0, 0);
+    drawImage(topRight, w - topRight->getWidth(), 0);
+    drawImage(bottomLeft, 0, h - bottomLeft->getHeight());
     drawImage(bottomRight,
-            x + w - bottomRight->getWidth(),
-            y + h - bottomRight->getHeight());
+            w - bottomRight->getWidth(),
+            h - bottomRight->getHeight());
+
+    popClipArea();
 }
 
 void Graphics::drawImageRect(

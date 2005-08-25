@@ -73,9 +73,6 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
-    dstX += mClipStack.top().xOffset;
-    dstY += mClipStack.top().yOffset;
-
     srcX += image->bounds.x;
     srcY += image->bounds.y;
 
@@ -179,8 +176,20 @@ void OpenGLGraphics::_endDraw()
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 {
+    int transX = 0;
+    int transY = 0;
+
+    if (!mClipStack.empty()) {
+        transX = -mClipStack.top().x;
+        transY = -mClipStack.top().y;
+    }
+
     bool result = gcn::Graphics::pushClipArea(area);
 
+    transX += mClipStack.top().x;
+    transY += mClipStack.top().y;
+
+    glTranslated(transX, transY, 0);
     glScissor(mClipStack.top().x,
             mScreen->h - mClipStack.top().y - mClipStack.top().height,
             mClipStack.top().width,
@@ -191,6 +200,9 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
 void OpenGLGraphics::popClipArea()
 {
+    int transX = -mClipStack.top().x;
+    int transY = -mClipStack.top().y;
+
     gcn::Graphics::popClipArea();
 
     if (mClipStack.empty())
@@ -198,6 +210,10 @@ void OpenGLGraphics::popClipArea()
         return;
     }
 
+    transX += mClipStack.top().x;
+    transY += mClipStack.top().y;
+
+    glTranslated(transX, transY, 0);
     glScissor(mClipStack.top().x,
             mScreen->h - mClipStack.top().y - mClipStack.top().height,
             mClipStack.top().width,
@@ -218,9 +234,6 @@ void OpenGLGraphics::setColor(const gcn::Color& color)
 void OpenGLGraphics::drawImage(const gcn::Image* image, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
-    dstX += mClipStack.top().xOffset;
-    dstY += mClipStack.top().yOffset;
-
     // The following code finds the real width and height of the texture.
     // OpenGL only supports texture sizes that are powers of two
     int realImageWidth = 1;
@@ -249,9 +262,6 @@ void OpenGLGraphics::drawImage(const gcn::Image* image, int srcX, int srcY,
 
 void OpenGLGraphics::drawPoint(int x, int y)
 {
-    x += mClipStack.top().xOffset;
-    y += mClipStack.top().yOffset;
-
     setTexturingAndBlending(false);
 
     glBegin(GL_POINTS);
@@ -261,11 +271,6 @@ void OpenGLGraphics::drawPoint(int x, int y)
 
 void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
 {
-    x1 += mClipStack.top().xOffset;
-    y1 += mClipStack.top().yOffset;
-    x2 += mClipStack.top().xOffset;
-    y2 += mClipStack.top().yOffset;
-
     setTexturingAndBlending(false);
 
     glBegin(GL_LINES);
@@ -328,14 +333,10 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
     setTexturingAndBlending(false);
 
     glBegin(filled ? GL_QUADS : GL_LINE_LOOP);
-    glVertex3f(rect.x + mClipStack.top().xOffset + offset,
-            rect.y + mClipStack.top().yOffset + offset, 0);
-    glVertex3f(rect.x + rect.width + mClipStack.top().xOffset - offset,
-            rect.y + mClipStack.top().yOffset + offset, 0);
-    glVertex3f(rect.x + rect.width + mClipStack.top().xOffset - offset,
-            rect.y + rect.height + mClipStack.top().yOffset - offset, 0);
-    glVertex3f(rect.x + mClipStack.top().xOffset + offset,
-            rect.y + rect.height + mClipStack.top().yOffset - offset, 0);
+    glVertex3f(rect.x + offset, rect.y + offset, 0);
+    glVertex3f(rect.x + rect.width - offset, rect.y + offset, 0);
+    glVertex3f(rect.x + rect.width - offset, rect.y + rect.height - offset, 0);
+    glVertex3f(rect.x + offset, rect.y + rect.height - offset, 0);
     glEnd();
 }
 
