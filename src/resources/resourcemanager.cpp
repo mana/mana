@@ -26,11 +26,6 @@
 #include <cassert>
 #include <physfs.h>
 
-#ifdef WIN32
-#include <io.h>
-#include <direct.h>
-#endif
-
 #include "image.h"
 #include "music.h"
 #include "soundeffect.h"
@@ -83,10 +78,12 @@ void ResourceManager::searchAndAddArchives(
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
 
-    for (char **i = list; *i != NULL; i++) {
+    for (char **i = list; *i != NULL; i++)
+    {
         size_t len = strlen(*i);
 
-        if (len > ext.length() && !ext.compare((*i)+(len - ext.length()))) {
+        if (len > ext.length() && !ext.compare((*i)+(len - ext.length())))
+        {
             std::string file, realPath, archive;
 
             file = path + "/" + (*i);
@@ -245,7 +242,7 @@ ResourceManager::loadFile(const std::string &fileName, int &fileSize)
     }
 
     // Attempt to open the specified file using PhysicsFS
-    PHYSFS_file* file = PHYSFS_openRead(fileName.c_str());
+    PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
     if (file == NULL) {

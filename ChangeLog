@@ -1,40 +1,48 @@
+2005-08-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* ChangeLog: Fixed line length using tab size of 8.
+	* src/configuration.h, src/configuration.cpp: Removed some debug code
+	and updated documentation a bit.
+	* src/resources/resourcemanager.cpp: Removed unused (I think) headers
+	for Windows.
+
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/tabbedcontainer.h: Fix include path for guichanfwd.h.
 	* src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h: Added a new
-	container type, that allows switching between the contents through a tab
-	bar at the top of the container.
+	container type, that allows switching between the contents through a
+	tab bar at the top of the container.
 	* ChangeLog: Fixed intendation and line length.
-	* docs/HACKING.txt: Added a notice about line length in ChangeLog and an
-	example for the ChangeLog format.
+	* docs/HACKING.txt: Added a notice about line length in ChangeLog and
+	an example for the ChangeLog format.
 
 2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
 
 	* src/game.cpp: Simply don't show equipped items in sell dialog as it's
 	annoying.
-	* src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements to
-	the login sequence.
+	* src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements
+	to the login sequence.
 
 2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/gui/shop.h: Fixed using a forward declaration for std::string, where
-	it was a class member.
+	* src/gui/shop.h: Fixed using a forward declaration for std::string,
+	where it was a class member.
 	* src/game.cpp, src/gui/sell.cpp, src/gui/sell.h: Made the sell dialog
 	accepts Items instead of looking them up in the inventory.
 	* src/gui/sell.cpp: Some code cleanups, simplifications and removal of
 	duplicate code.
-	* src/gui/buy.cpp, src/gui/sell.cpp, src/gui/shop.h: Avoid possible buffer
-	overflows by using a std::string instead of char[30].
+	* src/gui/buy.cpp, src/gui/sell.cpp, src/gui/shop.h: Avoid possible
+	buffer overflows by using a std::string instead of char[30].
 	* src/gui/buy.cpp: Some code cleanups, simplifications and removal of
 	duplicate code.
 
 2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp, src/game.cpp: Removed asserts as they
-	were not suitable for a stable implementation of buy/sell dialogs and made
-	some improvements on them. Still has to clean up code.
-	* src/gui/login.h, src/login.cpp: Code cleanups, little improvements of the
-	login function.
+	* src/gui/buy.cpp, src/gui/sell.cpp, src/game.cpp: Removed asserts as
+	they were not suitable for a stable implementation of buy/sell dialogs
+	and made some improvements on them. Still has to clean up code.
+	* src/gui/login.h, src/login.cpp: Code cleanups, little improvements of
+	the login function.
 
 2005-08-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -45,18 +53,19 @@
 
 	* src/openglgraphics.cpp: Added some missing state changes and checks.
 	* src/gui/inventorywindow.cpp, src/gui/item_amount.cpp,
-	src/gui/item_amount.h, src/gui/popupmenu.cpp, src/gui/trade.cpp: Made the
-	item amount dialog work on a provided item, instead of having it ask the
-	inventory window itself.
+	src/gui/item_amount.h, src/gui/popupmenu.cpp, src/gui/trade.cpp: Made
+	the item amount dialog work on a provided item, instead of having it
+	ask the inventory window itself.
 
 2005-08-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/engine.cpp, src/game.cpp: The engine isn't connected to all the gui
-	windows, so move creation from its constructor into the game.cpp where
-	most of them are actually used.
-	* src/log.cpp, src/log.h, src/main.cpp: Added support for parsing command
-	line options. Added option to skip the update process. Made logger being
-	created immediately after startup, because some destructors use it.
+	* src/engine.cpp, src/game.cpp: The engine isn't connected to all the
+	gui windows, so move creation from its constructor into the game.cpp
+	where most of them are actually used.
+	* src/log.cpp, src/log.h, src/main.cpp: Added support for parsing
+	command line options. Added option to skip the update process. Made
+	logger being created immediately after startup, because some
+	destructors use it.
 
 2005-08-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -69,45 +78,46 @@
 	* src/Makefile.am, src/graphics.cpp, src/graphics.h, src/main.cpp,
 	src/openglgraphics.cpp src/openglgraphics.h, src/gui/gui.cpp,
 	src/resources/image.h: Semi-separated OpenGL and SDL graphics classes,
-	improves OpenGL performance quite a bit, while rewriting a good bunch of
-	code provided by guichan (but maybe we'll diverge so much that we'd need
-	that anyways...)
+	improves OpenGL performance quite a bit, while rewriting a good bunch
+	of code provided by guichan (but maybe we'll diverge so much that we'd
+	need that anyways...)
 
 2005-08-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/configuration.cpp, src/resources/itemmanager.cpp,
-	src/resources/mapreader.cpp: Removed special #ifdefs for libxml2 linking
-	issues in Win32.
+	src/resources/mapreader.cpp: Removed special #ifdefs for libxml2
+	linking issues in Win32.
 
-2005-08-16  FERREIRA Yohann  <bertram@cegetel.net>
+2005-08-16  Ferreira Yohann  <bertram@cegetel.net>
 
-	* src/gui/window.h, src/gui/window.cpp: Bugfixing and simplifying resize
-	code.
-	* debian/*: Updates to the debian packaging files. (The actual update was
-	from a few days ago.) Now we have the tmw, tmw-data and tmw-music
+	* src/gui/window.h, src/gui/window.cpp: Bugfixing and simplifying
+	resize code.
+	* debian/*: Updates to the debian packaging files. (The actual update
+	was from a few days ago.) Now we have the tmw, tmw-data and tmw-music
 	packages.
-	* src/gui/setup.h, src/gui/setup.cpp: Now the setup (Config) windows works
-	as it should be. (The actual update was from a few days ago.)
+	* src/gui/setup.h, src/gui/setup.cpp: Now the setup (Config) windows
+	works as it should be. (The actual update was from a few days ago.)
 
 2005-08-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/gui/status.cpp, src/gui/window.cpp,
-	src/gui/window.h, src/gui/windowcontainer.h, data/graphics/gui/resize.png:
-	Added a resize grip to resizable window, fixed some compiling errors.
+	src/gui/window.h, src/gui/windowcontainer.h,
+	data/graphics/gui/resize.png: Added a resize grip to resizable window,
+	fixed some compiling errors.
 
 2005-08-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/gui/gui.cpp, src/gui/gui.h: Removed guiTop global
 	variable.
-	* src/graphics.cpp, src/graphics.h, src/main.cpp: Made the OpenGL related
-	code fully #ifdef'ed.
+	* src/graphics.cpp, src/graphics.h, src/main.cpp: Made the OpenGL
+	related code fully #ifdef'ed.
 	* src/main.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
 	src/resources/image.cpp, src/resources/image.h: Fully faded out the
-	useOpenGL global. Image and Graphics keep track of the mode on their own
-	now (the latter will go away once we have separate classes...)
+	useOpenGL global. Image and Graphics keep track of the mode on their
+	own now (the latter will go away once we have separate classes...)
 	* src/graphics.cpp, src/graphics.h, src/main.cpp, src/main.h,
-	src/gui/browserbox.cpp, src/gui/gui.cpp, src/resources/image.cpp: Started
-	to fade out the useOpenGL global variable.
+	src/gui/browserbox.cpp, src/gui/gui.cpp, src/resources/image.cpp:
+	Started to fade out the useOpenGL global variable.
 	* src/engine.cpp, src/gui/char_select.cpp, src/gui/char_server.cpp,
 	src/gui/chat.cpp, src/gui/gui.cpp, src/gui/gui.h, src/gui/login.cpp,
 	src/gui/popupmenu.cpp, src/gui/setup.cpp, src/gui/updatewindow.cpp,
@@ -131,38 +141,42 @@
 	src/engine.cpp, src/engine.h, src/equipment.cpp, src/equipment.h,
 	src/game.cpp, src/game.h, src/graphics.cpp, src/graphics.h,
 	src/guichanfwd.h, src/inventory.cpp, src/inventory.h, src/item.h,
-	src/log.cpp, src/log.h, src/main.cpp, src/main.h, src/map.cpp, src/map.h,
-	src/playerinfo.h, src/sound.cpp, src/sound.h, src/graphic/imagerect.h,
-	src/graphic/spriteset.cpp, src/graphic/spriteset.h, src/gui/box.h,
-	src/gui/browserbox.cpp, src/gui/browserbox.h, src/gui/buddywindow.h,
-	src/gui/button.cpp, src/gui/button.h, src/gui/buy.cpp, src/gui/buy.h,
-	src/gui/buysell.h, src/gui/char_select.cpp, src/gui/char_select.h,
-	src/gui/char_server.cpp, src/gui/char_server.h, src/gui/chargedialog.cpp,
-	src/gui/chargedialog.h, src/gui/chat.cpp, src/gui/chat.h,
-	src/gui/chatinput.cpp, src/gui/checkbox.cpp, src/gui/checkbox.h,
-	src/gui/confirm_dialog.cpp, src/gui/confirm_dialog.h,
-	src/gui/equipmentwindow.cpp, src/gui/equipmentwindow.h,
-	src/gui/focushandler.h, src/gui/gui.cpp, src/gui/gui.h, src/gui/help.cpp,
-	src/gui/help.h, src/gui/inttextbox.cpp, src/gui/inttextbox.h,
+	src/log.cpp, src/log.h, src/main.cpp, src/main.h, src/map.cpp,
+	src/map.h, src/playerinfo.h, src/sound.cpp, src/sound.h,
+	src/graphic/imagerect.h, src/graphic/spriteset.cpp,
+	src/graphic/spriteset.h, src/gui/box.h, src/gui/browserbox.cpp,
+	src/gui/browserbox.h, src/gui/buddywindow.h, src/gui/button.cpp,
+	src/gui/button.h, src/gui/buy.cpp, src/gui/buy.h, src/gui/buysell.h,
+	src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/char_server.h,
+	src/gui/chargedialog.cpp, src/gui/chargedialog.h, src/gui/chat.cpp,
+	src/gui/chat.h, src/gui/chatinput.cpp, src/gui/checkbox.cpp,
+	src/gui/checkbox.h, src/gui/confirm_dialog.cpp,
+	src/gui/confirm_dialog.h, src/gui/equipmentwindow.cpp,
+	src/gui/equipmentwindow.h, src/gui/focushandler.h, src/gui/gui.cpp,
+	src/gui/gui.h, src/gui/help.cpp, src/gui/help.h,
+	src/gui/inttextbox.cpp, src/gui/inttextbox.h,
 	src/gui/inventorywindow.cpp, src/gui/inventorywindow.h,
-	src/gui/item_amount.cpp, src/gui/item_amount.h, src/gui/itemcontainer.cpp,
-	src/gui/itemcontainer.h, src/gui/listbox.cpp, src/gui/listbox.h,
-	src/gui/login.cpp, src/gui/login.h, src/gui/minimap.cpp,
-	src/gui/minimap.h, src/gui/newskill.cpp, src/gui/newskill.h,
-	src/gui/npc.h, src/gui/npc_text.h, src/gui/ok_dialog.cpp,
-	src/gui/ok_dialog.h, src/gui/passwordfield.h, src/gui/playerbox.cpp,
-	src/gui/playerbox.h, src/gui/popupmenu.cpp, src/gui/popupmenu.h,
-	src/gui/progressbar.cpp, src/gui/progressbar.h, src/gui/radiobutton.cpp,
-	src/gui/radiobutton.h, src/gui/requesttrade.cpp, src/gui/requesttrade.h,
+	src/gui/item_amount.cpp, src/gui/item_amount.h,
+	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h,
+	src/gui/listbox.cpp, src/gui/listbox.h, src/gui/login.cpp,
+	src/gui/login.h, src/gui/minimap.cpp, src/gui/minimap.h,
+	src/gui/newskill.cpp, src/gui/newskill.h, src/gui/npc.h,
+	src/gui/npc_text.h, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
+	src/gui/passwordfield.h, src/gui/playerbox.cpp, src/gui/playerbox.h,
+	src/gui/popupmenu.cpp, src/gui/popupmenu.h, src/gui/progressbar.cpp,
+	src/gui/progressbar.h, src/gui/radiobutton.cpp, src/gui/radiobutton.h,
+	src/gui/requesttrade.cpp, src/gui/requesttrade.h,
 	src/gui/scrollarea.cpp, src/gui/scrollarea.h, src/gui/sell.cpp,
 	src/gui/sell.h, src/gui/setup.cpp, src/gui/setup.h, src/gui/skill.h,
-	src/gui/slider.cpp, src/gui/slider.h, src/gui/stats.cpp, src/gui/stats.h,
-	src/gui/status.cpp, src/gui/status.h, src/gui/textbox.cpp,
-	src/gui/textbox.h, src/gui/textfield.cpp, src/gui/textfield.h,
-	src/gui/trade.cpp, src/gui/trade.h, src/gui/updatewindow.cpp,
-	src/gui/updatewindow.h, src/gui/window.cpp, src/gui/window.h,
-	src/gui/windowcontainer.h, src/net/protocol.cpp, src/net/protocol.h,
-	src/resources/buddylist.hm src/resources/image.cpp, src/resources/image.h,
+	src/gui/slider.cpp, src/gui/slider.h, src/gui/stats.cpp,
+	src/gui/stats.h, src/gui/status.cpp, src/gui/status.h,
+	src/gui/textbox.cpp, src/gui/textbox.h, src/gui/textfield.cpp,
+	src/gui/textfield.h, src/gui/trade.cpp, src/gui/trade.h,
+	src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/gui/window.cpp,
+	src/gui/window.h, src/gui/windowcontainer.h, src/net/protocol.cpp,
+	src/net/protocol.h, src/resources/buddylist.hm
+	src/resources/image.cpp, src/resources/image.h,
 	src/resources/itemmanager.cpp, src/resources/itemmanager.h,
 	src/resources/mapreader.cpp, src/resources/mapreader.h,
 	src/resources/music.h, src/resources/resource.cpp,
@@ -170,26 +184,27 @@
 	src/resources/soundeffect.h: Huge header cleanup, removing nearly all
 	#include's from headers to reduce dependencies and compile time.
 	* src/engine.cpp, src/gui/char_select.cpp, src/gui/inventorywindow.cpp,
-	src/gui/skill.cpp, src/gui/skill.h, src/gui/stats.cpp, src/gui/status.cpp:
-	Another small header cleanup, should also solve compilation problems on
-	windows.
-	* src/gui/sell.cpp: Reset selection in the sell dialog if all items at the
-	selected slot are sold.
+	src/gui/skill.cpp, src/gui/skill.h, src/gui/stats.cpp,
+	src/gui/status.cpp: Another small header cleanup, should also solve
+	compilation problems on windows.
+	* src/gui/sell.cpp: Reset selection in the sell dialog if all items at
+	the selected slot are sold.
 
 2005-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/gui/status.h, src/gui/status.cpp: Reformatted status window layout to
-	avoid overlapping and lowered saturation of bars' colors.
-	* src/gui/status.cpp: Removed smooth color changing from xp bar which was
-	causing problems and doesn't act as the job xp bar.
-	* The Mana World.dev, src/game.cpp, src/playerinfo.h, src/net/protocol.cpp,
-	src/resources/itemmanager.cpp, src/gui/inventorywindow.cpp: Updated dev-cpp
-	project file, removed unnecessary header, fixed some include paths.
+	* src/gui/status.h, src/gui/status.cpp: Reformatted status window
+	layout to avoid overlapping and lowered saturation of bars' colors.
+	* src/gui/status.cpp: Removed smooth color changing from xp bar which
+	was causing problems and doesn't act as the job xp bar.
+	* The Mana World.dev, src/game.cpp, src/playerinfo.h,
+	src/net/protocol.cpp, src/resources/itemmanager.cpp,
+	src/gui/inventorywindow.cpp: Updated dev-cpp project file, removed
+	unnecessary header, fixed some include paths.
 
 2005-08-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/buy.cpp, src/sell.cpp: Resetting quantity to 0 after selecting other
-	items in buy/sell dialogs.
+	* src/buy.cpp, src/sell.cpp: Resetting quantity to 0 after selecting
+	other items in buy/sell dialogs.
 
 2005-08-11  Andrej Sinicyn  <andrej4000@gmail.com>
 
@@ -214,20 +229,20 @@
 
 	* src/main.cpp: Use "true" instead of "1" as bool argument.
 	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
-	Added a method to determine the real path of a file in the PhysFS search
-	path.
-	* src/gui/browserbox.cpp: Make use of then new resource manager method to
-	determine the real path of a file.
-	* src/gui/gui.cpp: Dynamically determine the path to graphic files instead
-	of using the try-catch fallback method.
+	Added a method to determine the real path of a file in the PhysFS
+	search path.
+	* src/gui/browserbox.cpp: Make use of then new resource manager method
+	to determine the real path of a file.
+	* src/gui/gui.cpp: Dynamically determine the path to graphic files
+	instead of using the try-catch fallback method.
 
 2005-08-03  Andrej Sinicyn  <andrej4000@gmail.com>
 
 	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp,
 	src/gui/requesttrade.h: Moved my invented variable, since it makes more
 	sense.
-	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp: Fix my previous fix
-	because it broke my own code.
+	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp: Fix my previous
+	fix because it broke my own code.
 
 2005-08-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -237,7 +252,8 @@
 	though the rest was commented.
 	* src/resources/buddylist.cpp, src/main.h: Removed unneeded header from
 	main.h, added it to buddylist.cpp.
-	* src/engine.cpp: Converted two global variables to function-local ones.
+	* src/engine.cpp: Converted two global variables to function-local
+	ones.
 
 2005-08-02  Andrej Sinicyn  <andrej4000@gmail.com>
 
@@ -246,22 +262,22 @@
 2005-08-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Cleanups in the drawing code.
-	* src/engine.cpp, src/game.cpp: Made autoTarget checks being handled at a
-	single location.
+	* src/engine.cpp, src/game.cpp: Made autoTarget checks being handled at
+	a single location.
 	* src/being.cpp, src/being.h, src/engine.h: Small header cleanups.
 	* src/graphics.cpp, src/graphics.h, src/main.cpp, src/main.h,
 	src/gui/setup.cpp: Moved graphics setup code into the graphics class.
 
 2005-08-02  Marcel W. Wysocki  <maci@satgnu.org> 
 
-	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking on
-	setup button while dialog is opened
+	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking 
+	on setup button while dialog is opened
 
 2005-08-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/inventory.cpp, src/inventory.h,
-	src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Added a logic function
-	to dynamically adjust the size of the itemcontainer.
+	* src/inventory.cpp, src/inventory.h, src/gui/itemcontainer.cpp,
+	src/gui/itemcontainer.h: Added a logic function to dynamically adjust
+	the size of the itemcontainer.
 	* src/game.cpp: Fixed autoTarget not being set to NULL on map change.
 
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
@@ -277,8 +293,9 @@
 
 2005-07-31  Andrej Sinicyn  <andrej4000@gmail.com>
 
-	* src/game.cpp: Don't allow more than one trade dialog or requesting it at
-	once; if a trade is canceled on the other side, close the trade window.
+	* src/game.cpp: Don't allow more than one trade dialog or requesting it
+	at once; if a trade is canceled on the other side, close the trade
+	window.
 
 2005-07-30  Andrej Sinicyn  <andrej4000@gmail.com>
 
@@ -287,29 +304,29 @@
 2005-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/resources/resourcemanager.h,
-	src/resources/resourcemanager.cpp: Fixed buggy check for the existence of
-	the updates directory. Extended the resource manager with some physfs
-	functions and moved the actual setup process from the resource manager
-	constructor into the main initialization.
+	src/resources/resourcemanager.cpp: Fixed buggy check for the existence
+	of the updates directory. Extended the resource manager with some
+	physfs functions and moved the actual setup process from the resource
+	manager constructor into the main initialization.
 
 2005-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/game.cpp: Fixed popup window not always being correctly hidden when
-	the player clicks somewhere else.
+	* src/game.cpp: Fixed popup window not always being correctly hidden
+	when the player clicks somewhere else.
 
 2005-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/gui/update.cpp, src/resources/resourcemanager.cpp,
 	src/resources/resourcemanager.h: Added support for files downloaded
-	through the update manager to the resource manager. Changed directory name
-	for updates from "data" to "updates".
+	through the update manager to the resource manager. Changed directory
+	name for updates from "data" to "updates".
 	* src/game.cpp, src/gui/inventorywindow.cpp, src/gui/popupmenu.cpp,
-	src/gui/popupmenu.h: Cleaned up the showPopup() code, moved "map"-related
-	code into game.cpp, made the popup show up at mouse coordinates instead of
-	being aligned to tiles.
+	src/gui/popupmenu.h: Cleaned up the showPopup() code, moved
+	map"-related code into game.cpp, made the popup show up at mouse
+	coordinates instead of being aligned to tiles.
 	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp, src/game.h,
-	src/gui/gui.cpp, src/net/protocol.cpp: Added an action enumeration to the
-	Being class and removed the old #define's.
+	src/gui/gui.cpp, src/net/protocol.cpp: Added an action enumeration to
+	the Being class and removed the old #define's.
 	* src/resources/resourcemanager.cpp: Fixed a location where a wrong
 	dir-separator was used.
 	* src/main.cpp: Fixed updates directory not being created on non-unix

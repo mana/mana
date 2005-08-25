@@ -24,23 +24,17 @@
 
 #include "configuration.h"
 
-#include <math.h>
 #include <sstream>
 #include <libxml/xmlwriter.h>
-
-#ifdef __DEBUG
-#include <iostream>
-#endif
 
 #include "configlistener.h"
 #include "log.h"
 
-void Configuration::init(const std::string &filename)
+void Configuration::init(const std::string &filename):
+    mConfigPath(filename)
 {
-    configPath = filename;
-
     // Do not attempt to read config from non-existant file
-    FILE *testFile = fopen(configPath.c_str(), "r");
+    FILE *testFile = fopen(filename.c_str(), "r");
     if (!testFile) {
         return;
     }
@@ -82,7 +76,7 @@ void Configuration::init(const std::string &filename)
 void Configuration::write()
 {
     // Do not attempt to write to file that cannot be opened for writing
-    FILE *testFile = fopen(configPath.c_str(), "w");
+    FILE *testFile = fopen(mConfigPath.c_str(), "w");
     if (!testFile) {
         return;
     }
@@ -90,7 +84,7 @@ void Configuration::write()
         fclose(testFile);
     }
 
-    xmlTextWriterPtr writer = xmlNewTextWriterFilename(configPath.c_str(), 0);
+    xmlTextWriterPtr writer = xmlNewTextWriterFilename(mConfigPath.c_str(), 0);
 
     if (writer)
     {
@@ -120,9 +114,6 @@ void Configuration::write()
 
 void Configuration::setValue(const std::string &key, std::string value)
 {
-#ifdef __DEBUG
-    std::cout << "Configuration::setValue(" << key << ", " << value << ")\n";
-#endif
     options[key] = value;
 
     // Notify listeners

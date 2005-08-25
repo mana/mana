@@ -70,7 +70,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
     // Use SDL_Image to load the raw image data and have it free the data
-    SDL_Surface* tmpImage = IMG_Load_RW(rw, 1);
+    SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 
     if (tmpImage == NULL) {
         logger->log("Error, image load failed");

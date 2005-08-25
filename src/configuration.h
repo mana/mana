@@ -31,7 +31,7 @@
 class ConfigListener;
 
 /**
- * INI configuration handler for reading (and writing).
+ * Configuration handler for reading (and writing).
  *
  * \ingroup CORE
  */
@@ -39,40 +39,44 @@ class Configuration
 {
     public:
         /**
-         * \brief Reads INI file and parse all options into memory.
-         * \param filename Full path to INI file (~/.manaworld/tmw.ini)
+         * Reads config file and parse all options into memory.
+         *
+         * \param filename path to config file
          */
         void init(const std::string &filename);
 
         /**
-         * \brief Writes the current settings back to an ini-file.
-         * \param filename Full path to INI file (~/.manaworld/tmw.ini)
+         * Writes the current settings back to the config file.
          */
         void write();
 
         /**
-         * \brief Sets an option using a string value.
+         * Sets an option using a string value.
+         *
          * \param key Option identifier.
          * \param value Value.
          */
         void setValue(const std::string &key, std::string value);
 
         /**
-         * \brief Sets an option using a numeric value.
+         * Sets an option using a numeric value.
+         *
          * \param key Option identifier.
          * \param value Value.
          */
         void setValue(const std::string &key, float value);
 
         /**
-         * \brief Gets a value as string.
+         * Gets a value as string.
+         *
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
         std::string getValue(const std::string &key, std::string deflt);
 
         /**
-         * \brief Gets a value as numeric (float).
+         * Gets a value as numeric (float).
+         *
          * \param key Option identifier.
          * \param deflt Default option if not there or error.
          */
@@ -93,7 +97,7 @@ class Configuration
         std::map<std::string, std::string> options;
         std::map<std::string, std::list<ConfigListener*> > listeners;
 
-        std::string configPath;          /**< Location of config file */
+        std::string mConfigPath;         /**< Location of config file */
 };
 
 extern Configuration config;
