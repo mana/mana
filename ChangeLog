@@ -1,5 +1,6 @@
 2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/tabbedcontainer.h: Fix include path for guichanfwd.h.
 	* src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h: Added a new
 	container type, that allows switching between the contents through a tab
 	bar at the top of the container.

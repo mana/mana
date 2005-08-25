@@ -31,7 +31,7 @@
 
 #include <guichan/widgets/container.hpp>
 
-#include "guichanfwd.h"
+#include "../guichanfwd.h"
 
 class TabbedContainer : public gcn::Container, public gcn::ActionListener
 {
