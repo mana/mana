@@ -88,32 +88,7 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     glColor4f(1.0f, 1.0f, 1.0f, image->alpha);
     glBindTexture(GL_TEXTURE_2D, image->glimage);
 
-    if (!mTexture) {
-        glEnable(GL_TEXTURE_2D);
-        mTexture = true;
-    };
-
-    // Check if blending already is enabled
-    if (!mAlpha)
-    {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
-
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(dstX, dstY, 0);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(dstX + width, dstY, 0);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(dstX + width, dstY + height, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(dstX, dstY + height, 0);
-    glEnd();
+    drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
 
     glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -269,32 +244,7 @@ void OpenGLGraphics::drawImage(const gcn::Image* image, int srcX, int srcY,
     // It uses the image data as a pointer to a GLuint
     glBindTexture(GL_TEXTURE_2D, *((GLuint *)(image->_getData())));
 
-    if (!mTexture) {
-        glEnable(GL_TEXTURE_2D);
-        mTexture = true;
-    };
-
-    // Check if blending already is enabled
-    if (!mAlpha)
-    {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
-
-    // Draw a textured quad -- the image
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex3i(dstX, dstY, 0);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex3i(dstX, dstY + height, 0);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex3i(dstX + width, dstY + height, 0);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex3i(dstX + width, dstY, 0);
-    glEnd();
+    drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
 }
 
 void OpenGLGraphics::drawPoint(int x, int y)
@@ -302,18 +252,7 @@ void OpenGLGraphics::drawPoint(int x, int y)
     x += mClipStack.top().xOffset;
     y += mClipStack.top().yOffset;
 
-    if (mAlpha && !mColorAlpha) {
-        glDisable(GL_BLEND);
-        mAlpha = false;
-    } else if (!mAlpha && mColorAlpha) {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
-
-    if (mTexture) {
-        glDisable(GL_TEXTURE_2D);
-        mTexture = false;
-    }
+    setTexturingAndBlending(false);
 
     glBegin(GL_POINTS);
     glVertex3i(x, y, 0);
@@ -327,18 +266,7 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     x2 += mClipStack.top().xOffset;
     y2 += mClipStack.top().yOffset;
 
-    if (mAlpha && !mColorAlpha) {
-        glDisable(GL_BLEND);
-        mAlpha = false;
-    } else if (!mAlpha && mColorAlpha) {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
-
-    if (mTexture) {
-        glDisable(GL_TEXTURE_2D);
-        mTexture = false;
-    }
+    setTexturingAndBlending(false);
 
     glBegin(GL_LINES);
     glVertex3f(x1+0.5f, y1+0.5f, 0);
@@ -350,22 +278,54 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     glEnd();
 }
 
-void OpenGLGraphics::_drawRectangle(const gcn::Rectangle& rect, bool filled)
+void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect)
 {
-    if (mAlpha && !mColorAlpha) {
-        glDisable(GL_BLEND);
-        mAlpha = false;
-    } else if (!mAlpha && mColorAlpha) {
-        glEnable(GL_BLEND);
-        mAlpha = true;
-    }
+    drawRectangle(rect, false);
+}
 
-    if (mTexture) {
-        glDisable(GL_TEXTURE_2D);
-        mTexture = false;
-    }
+void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rect)
+{
+    drawRectangle(rect, true);
+}
 
+void OpenGLGraphics::setTargetPlane(int width, int height)
+{
+}
+
+void OpenGLGraphics::setTexturingAndBlending(bool enable)
+{
+    if (enable) {
+        if (!mTexture) {
+            glEnable(GL_TEXTURE_2D);
+            mTexture = true;
+        };
+
+        if (!mAlpha)
+        {
+            glEnable(GL_BLEND);
+            mAlpha = true;
+        }
+    } else {
+        if (mAlpha && !mColorAlpha) {
+            glDisable(GL_BLEND);
+            mAlpha = false;
+        } else if (!mAlpha && mColorAlpha) {
+            glEnable(GL_BLEND);
+            mAlpha = true;
+        }
+
+        if (mTexture) {
+            glDisable(GL_TEXTURE_2D);
+            mTexture = false;
+        }
+    }
+}
+
+void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
+{
     float offset = filled ? 0 : 0.5f;
+
+    setTexturingAndBlending(false);
 
     glBegin(filled ? GL_QUADS : GL_LINE_LOOP);
     glVertex3f(rect.x + mClipStack.top().xOffset + offset,
@@ -379,18 +339,25 @@ void OpenGLGraphics::_drawRectangle(const gcn::Rectangle& rect, bool filled)
     glEnd();
 }
 
-void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect)
+void OpenGLGraphics::drawTexedQuad(int x, int y, int w, int h,
+        float texX1, float texY1, float texX2, float texY2)
 {
-    _drawRectangle(rect, false);
-}
+    setTexturingAndBlending(true);
 
-void OpenGLGraphics::fillRectangle(const gcn::Rectangle& rect)
-{
-    _drawRectangle(rect, true);
-}
+    // Draw a textured quad
+    glBegin(GL_QUADS);
+    glTexCoord2f(texX1, texY1);
+    glVertex3i(x, y, 0);
 
-void OpenGLGraphics::setTargetPlane(int width, int height)
-{
+    glTexCoord2f(texX2, texY1);
+    glVertex3i(x + w, y, 0);
+
+    glTexCoord2f(texX2, texY2);
+    glVertex3i(x + w, y + h, 0);
+
+    glTexCoord2f(texX1, texY2);
+    glVertex3i(x, y + h, 0);
+    glEnd();
 }
 
 #endif // USE_OPENGL

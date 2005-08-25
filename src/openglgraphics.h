@@ -54,13 +54,18 @@ class OpenGLGraphics : public Graphics
 
         void drawLine(int x1, int y1, int x2, int y2);
 
-        void _drawRectangle(const gcn::Rectangle &rect, bool filled);
+        void drawRectangle(const gcn::Rectangle &rect, bool filled);
 
         void drawRectangle(const gcn::Rectangle &rect);
 
         void fillRectangle(const gcn::Rectangle &rect);
 
         void setTargetPlane(int width, int height);
+
+    protected:
+        void setTexturingAndBlending(bool enable);
+        void drawTexedQuad(int x, int y, int w, int h,
+                float texX1, float texY1, float texX2, float texY2);
 
     private:
         bool mAlpha, mTexture;
