@@ -68,6 +68,9 @@ ItemManager::ItemManager()
                     prop = xmlGetProp(node, BAD_CAST "description");
                     std::string description((const char*)prop);
                     xmlFree(prop);
+                    prop = xmlGetProp(node, BAD_CAST "effect");
+                    std::string effect((const char*)prop);
+                    xmlFree(prop);
                     prop = xmlGetProp(node, BAD_CAST "type");
                     int type = atoi((const char*)prop);
                     xmlFree(prop);
@@ -83,6 +86,7 @@ ItemManager::ItemManager()
                     itemInfo->setArt(art);
                     itemInfo->setName(name);
                     itemInfo->setDescription(description);
+                    itemInfo->setEffect(effect);
                     itemInfo->setType(type);
                     itemInfo->setWeight(weight);
                     itemInfo->setSlot(slot);

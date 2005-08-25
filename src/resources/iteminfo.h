@@ -53,7 +53,11 @@ class ItemInfo
         void setDescription(const std::string &description);
 
         std::string getDescription();
-        
+
+        void setEffect(const std::string &effect);
+
+        std::string getEffect();
+
         void setType(short type);
 
         short getType();
@@ -76,6 +80,7 @@ class ItemInfo
         short image, art;
         std::string name;
         std::string description;
+        std::string effect;
         short type, weight;
         char slot;
         

@@ -22,6 +22,7 @@
               <xsd:extension base="xsd:string">
                 <xsd:attribute name="name" type="xsd:string" />
                 <xsd:attribute name="description" type="xsd:string" />
+		<xsd:attribute name="effect" type="xsd:string" />
                 <xsd:attribute name="id" type="xsd:positiveInteger" />
                 <xsd:attribute name="image" type="xsd:positiveInteger" />
                 <xsd:attribute name="art" type="mw_ItemArtType" />

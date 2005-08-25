@@ -45,6 +45,8 @@ class ItemManager
         ~ItemManager();
 
         ItemInfo *getItemInfo(int id);
+
+        ItemInfo *getItemEffect(int id);
         
     protected:
         // Items database

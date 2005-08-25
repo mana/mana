@@ -70,6 +70,16 @@ std::string ItemInfo::getDescription()
     return description;
 }
 
+void ItemInfo::setEffect(const std::string &effect)
+{
+    this->effect = effect;
+}
+
+std::string ItemInfo::getEffect()
+{
+    return effect;
+}
+
 void ItemInfo::setType(short type)
 {
     this->type = type;
