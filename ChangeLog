@@ -4,6 +4,7 @@
     src/gui/inventorywindow.h, src/gui/inventorywindow.cpp: Added 
     effect description to those each windows, and also made some 
     improvements and bugfixes as I was on it.
+    * data/maps/new_7-1.tmx.gz: Added eyecandy to the map 7-1.
 
 2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
