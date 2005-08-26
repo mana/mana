@@ -110,46 +110,21 @@ void OpenGLGraphics::updateScreen()
 
 void OpenGLGraphics::_beginDraw()
 {
-    glPushAttrib(
-            GL_COLOR_BUFFER_BIT |
-            GL_CURRENT_BIT |
-            GL_DEPTH_BUFFER_BIT |
-            GL_ENABLE_BIT |
-            GL_FOG_BIT |
-            GL_LIGHTING_BIT |
-            GL_LINE_BIT |
-            GL_POINT_BIT |
-            GL_POLYGON_BIT |
-            GL_SCISSOR_BIT |
-            GL_STENCIL_BUFFER_BIT    |
-            GL_TEXTURE_BIT |
-            GL_TRANSFORM_BIT
-            );
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-
     glMatrixMode(GL_TEXTURE);
-    glPushMatrix();
     glLoadIdentity();
 
     glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
     glLoadIdentity();
 
     glOrtho(0.0, (double)mScreen->w, (double)mScreen->h, 0.0, -1.0, 1.0);
 
-    glDisable(GL_LIGHTING);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     glEnable(GL_SCISSOR_TEST);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
@@ -160,18 +135,6 @@ void OpenGLGraphics::_beginDraw()
 
 void OpenGLGraphics::_endDraw()
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPopMatrix();
-
-    glMatrixMode(GL_TEXTURE);
-    glPopMatrix();
-
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-
-    glPopAttrib();
-
-    popClipArea();
 }
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
@@ -189,7 +152,7 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     transX += mClipStack.top().x;
     transY += mClipStack.top().y;
 
-    glTranslated(transX, transY, 0);
+    glTranslatef(transX, transY, 0);
     glScissor(mClipStack.top().x,
             mScreen->h - mClipStack.top().y - mClipStack.top().height,
             mClipStack.top().width,
@@ -213,7 +176,7 @@ void OpenGLGraphics::popClipArea()
     transX += mClipStack.top().x;
     transY += mClipStack.top().y;
 
-    glTranslated(transX, transY, 0);
+    glTranslatef(transX, transY, 0);
     glScissor(mClipStack.top().x,
             mScreen->h - mClipStack.top().y - mClipStack.top().height,
             mClipStack.top().width,

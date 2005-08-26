@@ -1,3 +1,8 @@
+2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/openglgraphics.cpp: Use glTranslatef instead of glTranslated.
+	Remove some useless code.
+
 2005-08-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Fixed line length using tab size of 8.
