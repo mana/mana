@@ -49,15 +49,15 @@ BuyDialog::BuyDialog():
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
-    moneyLabel = new gcn::Label("price : 0 G");
+    moneyLabel = new gcn::Label("Price: 0 GP");
     increaseButton = new Button("+");
     decreaseButton = new Button("-");
     buyButton = new Button("Buy");
     quitButton = new Button("Quit");
-    itemNameLabel = new gcn::Label("Name:");
     itemDescLabel = new gcn::Label("Description:");
+    itemEffectLabel = new gcn::Label("Effect:");
 
-    setContentSize(260, 198);
+    setContentSize(260, 210);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
@@ -66,23 +66,23 @@ BuyDialog::BuyDialog():
     slider->setEnabled(false);
 
     quantityLabel->setPosition(215, 120);
-    moneyLabel->setPosition(5, 133);
+    moneyLabel->setPosition(5, 130);
 
-    increaseButton->setPosition(40, 174);
+    increaseButton->setPosition(40, 186);
     increaseButton->setSize(20, 20);
     increaseButton->setEnabled(false);
 
-    decreaseButton->setPosition(10, 174);
+    decreaseButton->setPosition(10, 186);
     decreaseButton->setSize(20, 20);
     decreaseButton->setEnabled(false);
 
-    buyButton->setPosition(180, 174);
+    buyButton->setPosition(180, 186);
     buyButton->setEnabled(false);
 
-    quitButton->setPosition(212, 174);
+    quitButton->setPosition(212, 186);
 
-    itemNameLabel->setDimension(gcn::Rectangle(5, 145, 240, 14));
-    itemDescLabel->setDimension(gcn::Rectangle(5, 157, 240, 14));
+    itemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
+    itemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
 
     itemList->setEventId("item");
     slider->setEventId("slider");
@@ -102,13 +102,13 @@ BuyDialog::BuyDialog():
     add(scrollArea);
     add(slider);
     add(quantityLabel);
-    add(moneyLabel);
     add(buyButton);
     add(quitButton);
     add(increaseButton);
     add(decreaseButton);
-    add(itemNameLabel);
+    add(moneyLabel);
     add(itemDescLabel);
+    add(itemEffectLabel);
 
     setLocationRelativeTo(getParent());
 }
@@ -119,32 +119,38 @@ BuyDialog::~BuyDialog()
     delete decreaseButton;
     delete quitButton;
     delete buyButton;
-    delete moneyLabel;
     delete slider;
     delete itemList;
     delete scrollArea;
-    delete itemNameLabel;
+    delete moneyLabel;
+    delete quantityLabel;
     delete itemDescLabel;
+    delete itemEffectLabel;
 }
 
 void BuyDialog::setMoney(int amount)
 {
     m_money = amount;
-    //std::stringstream ss;
-    //ss << m_money << " G";
-    //moneyLabel->setCaption(ss.str());
-    //moneyLabel->adjustSize();
 }
 
 void BuyDialog::reset()
 {
     shopInventory.clear();
     m_money = 0;
+    slider->setValue(0.0);
+    m_amountItems = 0;
 
     // Reset Previous Selected Items to prevent failing asserts
     itemList->setSelected(-1);
     increaseButton->setEnabled(false);
     decreaseButton->setEnabled(false);
+    quantityLabel->setCaption("0");
+    quantityLabel->adjustSize();
+    moneyLabel->setCaption("Price: 0");
+    moneyLabel->adjustSize();
+    itemDescLabel->setCaption("");
+    itemEffectLabel->setCaption("");
+
 }
 
 void BuyDialog::addItem(short id, int price)
@@ -171,7 +177,7 @@ void BuyDialog::action(const std::string& eventId)
         slider->setValue(0);
         quantityLabel->setCaption("0");
         quantityLabel->adjustSize();
-        moneyLabel->setCaption("price : 0 GP");
+        moneyLabel->setCaption("Price : 0 GP");
         moneyLabel->adjustSize();
 
         // Disable buttons for buying and decreasing
@@ -266,7 +272,7 @@ void BuyDialog::action(const std::string& eventId)
         quantityLabel->adjustSize();
 
         oss.str("");
-        oss << "price : " << m_amountItems * shopInventory[selectedItem].price << " G";
+        oss << "Price : " << m_amountItems * shopInventory[selectedItem].price << " GP";
         moneyLabel->setCaption(oss.str());
         moneyLabel->adjustSize();
     }
@@ -280,10 +286,10 @@ void BuyDialog::mouseClick(int x, int y, int button, int count)
     int selectedItem = itemList->getSelected();
     if (selectedItem > -1)
     {
-        itemNameLabel->setCaption("Name: " +
-                itemDb->getItemInfo(shopInventory[selectedItem].id)->getName());
         itemDescLabel->setCaption("Description: " +
                 itemDb->getItemInfo(shopInventory[selectedItem].id)->getDescription());
+        itemEffectLabel->setCaption("Effect: " +
+                itemDb->getItemInfo(shopInventory[selectedItem].id)->getEffect());
     }
 }
 

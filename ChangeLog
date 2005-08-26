@@ -1,3 +1,10 @@
+2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
+
+    * src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/sell.cpp,
+    src/gui/inventorywindow.h, src/gui/inventorywindow.cpp: Added 
+    effect description to those each windows, and also made some 
+    improvements and bugfixes as I was on it.
+
 2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/configuration.cpp: Remove dependency on math.h.

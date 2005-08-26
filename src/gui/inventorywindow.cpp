@@ -24,6 +24,7 @@
 #include "inventorywindow.h"
 
 #include <string>
+#include <sstream>
 
 #include <guichan/widgets/label.hpp>
 
@@ -42,7 +43,7 @@
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setContentSize(322, 160);
+    setContentSize(322, 172);
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
@@ -58,6 +59,7 @@ InventoryWindow::InventoryWindow():
 
     itemNameLabel = new gcn::Label("Name:");
     itemDescriptionLabel = new gcn::Label("Description:");
+    itemEffectLabel = new gcn::Label("Effect:");
     weightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
     weightLabel->setPosition(8, 8);
     invenScroll->setPosition(8,
@@ -68,11 +70,12 @@ InventoryWindow::InventoryWindow():
     add(invenScroll);
     add(itemNameLabel);
     add(itemDescriptionLabel);
+    add(itemEffectLabel);
     add(weightLabel);
 
     setResizable(true);
     setMinWidth(240);
-    setMinHeight(150);
+    setMinHeight(172);
 
     updateWidgets();
     useButton->setSize(48, useButton->getHeight());
@@ -86,6 +89,7 @@ InventoryWindow::~InventoryWindow()
     delete items;
     delete itemNameLabel;
     delete itemDescriptionLabel;
+    delete itemEffectLabel;
     delete weightLabel;
 }
 
@@ -98,10 +102,9 @@ void InventoryWindow::logic()
     updateButtons();
 
     // Update weight information
-    char tempstr[128];
-    sprintf(tempstr, "Total Weight: %2i - Maximum Weight: %2i",
-            char_info->totalWeight, char_info->maxWeight);
-    weightLabel->setCaption(tempstr);
+    std::stringstream tempstr;
+    tempstr << "Total Weight: " << char_info->totalWeight << " - Maximum Weight: " << char_info->maxWeight;
+    weightLabel->setCaption(tempstr.str());
     weightLabel->adjustSize();
 }
 
@@ -148,6 +151,9 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
     SomeText = "Name: " + item->getInfo()->getName();
     itemNameLabel->setCaption(SomeText);
     itemNameLabel->adjustSize();
+    SomeText = "Effect: " + item->getInfo()->getEffect();
+    itemEffectLabel->setCaption(SomeText);
+    itemEffectLabel->adjustSize();
     SomeText = "Description: " + item->getInfo()->getDescription();
     itemDescriptionLabel->setCaption(SomeText);
     itemDescriptionLabel->adjustSize();
@@ -187,12 +193,14 @@ void InventoryWindow::updateWidgets()
     // Resize widgets
     useButton->setPosition(8, height - 24);
     dropButton->setPosition(48 + 16, height - 24);
-    invenScroll->setSize(width - 16, height - 90);
+    invenScroll->setSize(width - 16, height - 110);
 
     itemNameLabel->setPosition(8,
             invenScroll->getY() + invenScroll->getHeight() + 4);
-    itemDescriptionLabel->setPosition(8,
+    itemEffectLabel->setPosition(8,
             itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
+    itemDescriptionLabel->setPosition(8,
+            itemEffectLabel->getY() + itemEffectLabel->getHeight() + 4);
 }
 
 void InventoryWindow::updateButtons()

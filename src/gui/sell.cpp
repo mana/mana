@@ -38,6 +38,7 @@
 #include "../item.h"
 
 #include "../resources/iteminfo.h"
+#include "../resources/itemmanager.h"
 
 #include "../net/network.h"
 
@@ -50,13 +51,16 @@ SellDialog::SellDialog():
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
+    moneyLabel = new gcn::Label("Price: 0");
+    itemDescLabel = new gcn::Label("Description:");
+    itemEffectLabel = new gcn::Label("Effect:");
     increaseButton = new Button("+");
     decreaseButton = new Button("-");
     sellButton = new Button("Sell");
     quitButton = new Button("Quit");
     sellButton->setEnabled(false);
 
-    setContentSize(260, 175);
+    setContentSize(260, 210);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
     itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
@@ -66,18 +70,22 @@ SellDialog::SellDialog():
 
     quantityLabel->setPosition(215, 120);
 
-    increaseButton->setPosition(40, 145);
+    increaseButton->setPosition(40, 186);
     increaseButton->setSize(20, 20);
     increaseButton->setEnabled(false);
 
-    decreaseButton->setPosition(10, 145);
+    decreaseButton->setPosition(10, 186);
     decreaseButton->setSize(20, 20);
     decreaseButton->setEnabled(false);
 
-    sellButton->setPosition(175, 145);
+    moneyLabel->setPosition(5, 130);
+    itemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
+    itemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
+
+    sellButton->setPosition(175, 186);
     sellButton->setEnabled(false);
 
-    quitButton->setPosition(208, 145);
+    quitButton->setPosition(208, 186);
 
     itemList->setEventId("item");
     slider->setEventId("slider");
@@ -96,6 +104,9 @@ SellDialog::SellDialog():
     add(scrollArea);
     add(slider);
     add(quantityLabel);
+    add(moneyLabel);
+    add(itemEffectLabel);
+    add(itemDescLabel);
     add(increaseButton);
     add(decreaseButton);
     add(sellButton);
@@ -113,6 +124,10 @@ SellDialog::~SellDialog()
     delete slider;
     delete itemList;
     delete scrollArea;
+    delete quantityLabel;
+    delete moneyLabel;
+    delete itemDescLabel;
+    delete itemEffectLabel;
 }
 
 void SellDialog::reset()
@@ -120,8 +135,13 @@ void SellDialog::reset()
     shopInventory.clear();
     slider->setValue(0.0);
     m_amountItems = 0;
+
     quantityLabel->setCaption("0");
     quantityLabel->adjustSize();
+    moneyLabel->setCaption("Price: 0");
+    moneyLabel->adjustSize();
+    itemDescLabel->setCaption("");
+    itemEffectLabel->setCaption("");
 
     // Reset Previous Selected Items to prevent failing asserts
     itemList->setSelected(-1);
@@ -161,6 +181,8 @@ void SellDialog::action(const std::string& eventId)
 
         quantityLabel->setCaption("0");
         quantityLabel->adjustSize();
+        moneyLabel->setCaption("Price: 0");
+        moneyLabel->adjustSize();
 
         if (selectedItem > -1) {
             slider->setEnabled(true);
@@ -236,11 +258,30 @@ void SellDialog::action(const std::string& eventId)
         oss << m_amountItems;
         quantityLabel->setCaption(oss.str());
         quantityLabel->adjustSize();
+        oss.str("");
+        oss << "Price: " << m_amountItems * shopInventory[selectedItem].price;
+        moneyLabel->setCaption(oss.str());
+        moneyLabel->adjustSize();
 
         // Update Buttons
         sellButton->setEnabled(m_amountItems > 0);
         decreaseButton->setEnabled(m_amountItems > 0);
         increaseButton->setEnabled(m_amountItems < m_maxItems);
+    }
+}
+
+void SellDialog::mouseClick(int x, int y, int button, int count)
+{
+    Window::mouseClick(x, y, button, count);
+
+//    shopInventory[selectedItem];
+    int selectedItem = itemList->getSelected();
+    if (selectedItem > -1)
+    {
+        itemDescLabel->setCaption("Description: " +
+                itemDb->getItemInfo(shopInventory[selectedItem].id)->getDescription());
+        itemEffectLabel->setCaption("Effect: " +
+                itemDb->getItemInfo(shopInventory[selectedItem].id)->getEffect());
     }
 }
 

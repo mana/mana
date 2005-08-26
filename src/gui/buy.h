@@ -98,8 +98,8 @@ class BuyDialog : public Window, public gcn::ActionListener,
         gcn::Button *decreaseButton;
         gcn::ListBox *itemList;
         gcn::ScrollArea *scrollArea;
-        gcn::Label *itemNameLabel;
         gcn::Label *itemDescLabel;
+        gcn::Label *itemEffectLabel;
         gcn::Label *moneyLabel;
         gcn::Label *quantityLabel;
         gcn::Slider *slider;

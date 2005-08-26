@@ -75,6 +75,7 @@ class InventoryWindow : public Window, gcn::ActionListener
         gcn::ScrollArea *invenScroll;
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
+        gcn::Label *itemEffectLabel;
         gcn::Label *weightLabel;
 };
 
