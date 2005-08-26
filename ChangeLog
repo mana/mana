@@ -5,6 +5,18 @@
 	* src/openglgraphics.cpp: Use glTranslatef instead of glTranslated.
 	Remove some useless code.
 
+2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
+
+    * src/main.h, src/main.cpp, src/gui/login.cpp,
+    src/resources/buddylist.cpp, gui/char_select.cpp: Adding min and max
+    length check for password, more code cleanups in login and removing 
+    possible buffer overflows by replacing some 
+    global char[] by std::strings.
+    * src/items.h, src/items.cpp, src/resources/itemmanager.h,
+    src/resources/itemmanager.cpp, src/resources/iteminfo.h,
+    src/resources/iteminfo.cpp, data/items.xml,
+    data/items.xsd: Added Effects description to items.
+
 2005-08-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Fixed line length using tab size of 8.
@@ -44,7 +56,7 @@
 	* docs/HACKING.txt: Added a notice about line length in ChangeLog and
 	an example for the ChangeLog format.
 
-2005-08-22  Ferreira Yohann  <bertram@cegetel.net>
+2005-08-24  Ferreira Yohann  <bertram@cegetel.net>
 
 	* src/game.cpp: Simply don't show equipped items in sell dialog as it's
 	annoying.
