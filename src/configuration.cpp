@@ -24,7 +24,6 @@
 
 #include "configuration.h"
 
-#include <math.h>
 #include <sstream>
 #include <libxml/xmlwriter.h>
 
@@ -136,30 +135,20 @@ void Configuration::setValue(const std::string &key, std::string value)
 void Configuration::setValue(const std::string &key, float value)
 {
     std::stringstream ss;
-    if (value == floor(value)) {
-        ss << (int)value;
-    } else {
-        ss << value;
-    }
+    ss << ((value == (int)value) ? (int)value : value);
     setValue(key, ss.str());
 }
 
 std::string Configuration::getValue(const std::string &key, std::string deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
-    if (iter != options.end()) {
-        return (*iter).second;
-    }
-    return deflt;
+    return ((iter != options.end()) ? (*iter).second : deflt);
 }
 
 float Configuration::getValue(const std::string &key, float deflt)
 {
     std::map<std::string, std::string>::iterator iter = options.find(key);
-    if (iter != options.end()) {
-        return atof((*iter).second.c_str());
-    }
-    return deflt;
+    return (iter != options.end()) ? atof((*iter).second.c_str()) : deflt;
 }
 
 void Configuration::addListener(
