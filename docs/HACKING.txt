@@ -129,6 +129,6 @@ necessary.
 1234-12-24  Some Body  <mymail@mailserver.tld>
 
 	* some/file: My comment.
-	* some/file, anotherfile: This is a pretty long comment and needs a line
-	break, to avoid characters at colums > 79.
+	* some/file, anotherfile: This is a pretty long comment and needs a
+	line break, to avoid characters at colums > 79.
 

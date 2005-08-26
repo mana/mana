@@ -1,13 +1,15 @@
 2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
 
-    * src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/sell.cpp,
-    src/gui/inventorywindow.h, src/gui/inventorywindow.cpp: Added 
-    effect description to those each windows, and also made some 
-    improvements and bugfixes as I was on it.
-    * data/maps/new_7-1.tmx.gz: Added eyecandy to the map 7-1.
+	* src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/sell.cpp,
+	src/gui/inventorywindow.h, src/gui/inventorywindow.cpp: Added effect
+	description to those each windows, and also made some improvements and
+	bugfixes as I was on it.
+	* data/maps/new_7-1.tmx.gz: Added eyecandy to the map 7-1.
 
 2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* ChangeLog: Fix indentation and line length.
+	* docs/HACKING.txt: Fix the example (OOPS!).
 	* src/configuration.cpp: Remove dependency on math.h.
 	* src/openglgraphics.cpp: Remove useless code.
 	* src/openglgraphics.cpp: Use glTranslatef instead of glTranslated.
@@ -15,15 +17,15 @@
 
 2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
 
-    * src/main.h, src/main.cpp, src/gui/login.cpp,
-    src/resources/buddylist.cpp, gui/char_select.cpp: Adding min and max
-    length check for password, more code cleanups in login and removing 
-    possible buffer overflows by replacing some 
-    global char[] by std::strings.
-    * src/items.h, src/items.cpp, src/resources/itemmanager.h,
-    src/resources/itemmanager.cpp, src/resources/iteminfo.h,
-    src/resources/iteminfo.cpp, data/items.xml,
-    data/items.xsd: Added Effects description to items.
+	* src/main.h, src/main.cpp, src/gui/login.cpp,
+	src/resources/buddylist.cpp, gui/char_select.cpp: Adding min and max
+	length check for password, more code cleanups in login and removing
+	possible buffer overflows by replacing some global char[] by
+	std::strings.
+	* src/items.h, src/items.cpp, src/resources/itemmanager.h,
+	src/resources/itemmanager.cpp, src/resources/iteminfo.h,
+	src/resources/iteminfo.cpp, data/items.xml, data/items.xsd: Added
+	Effects description to items.
 
 2005-08-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
