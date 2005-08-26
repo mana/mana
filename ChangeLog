@@ -1,5 +1,6 @@
 2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/openglgraphics.cpp: Remove useless code.
 	* src/openglgraphics.cpp: Use glTranslatef instead of glTranslated.
 	Remove some useless code.
 
