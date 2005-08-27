@@ -55,6 +55,10 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
+    if (!windowContainer) {
+        throw GCN_EXCEPTION("Window::Window. no windowContainer set");
+    }
+
     if (instances == 0)
     {
         // Load static resources
@@ -85,12 +89,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     setContent(chrome);
 
     // Add this window to the window container
-    if (windowContainer) {
-        windowContainer->add(this);
-    }
-    else {
-        throw GCN_EXCEPTION("Window::Window. no windowContainer set");
-    }
+    windowContainer->add(this);
 
     // Send GUI alpha changed for initialization
     optionChanged("guialpha");

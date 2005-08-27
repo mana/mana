@@ -1,9 +1,10 @@
 2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	 * src/engine.cpp, src/game.cpp, src/gui/stats.cpp, src/gui/stats.h,
-	 src/gui/status.cpp, src/gui/status.h: Update the stats and status
-	 window contents only at a single location and let them do it
-	 automagically.
+	* src/gui/window.cpp: Bail out early if there's no window container.
+	* src/engine.cpp, src/game.cpp, src/gui/stats.cpp, src/gui/stats.h,
+	src/gui/status.cpp, src/gui/status.h: Update the stats and status
+	window contents only at a single location and let them do it
+	automagically.
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Small cleanups.
 
 2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
