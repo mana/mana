@@ -87,9 +87,7 @@ void NpcListDialog::parseItems(const char *string, unsigned short len) {
 
     char *token = strtok(copy, ":");
     while (token) {
-        char *temp = (char*)malloc(strlen(token) + 1);
-        strcpy(temp, token);
-        items.push_back(std::string(temp));
+        items.push_back(token);
         token = strtok(NULL, ":");
     }
 
