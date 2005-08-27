@@ -37,7 +37,6 @@
 #include "browserbox.h"
 #include "button.h"
 #include "gui.h"
-#include "ok_dialog.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 
@@ -45,8 +44,6 @@
 #include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
-
-#include "../resources/resourcemanager.h"
 
 extern Graphics *graphics;
 

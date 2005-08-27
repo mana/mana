@@ -32,7 +32,8 @@ class BrowserBox;
 class Button;
 class ProgressBar;
 class ScrollArea;
-class VBox;
+class SDL_Thread;
+class SDL_mutex;
 
 /**
  * Update progress window GUI
@@ -116,12 +117,12 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     /**
      * A thread that use libcurl to download updates.
      */
-    class SDL_Thread *mThread;
+    SDL_Thread *mThread;
 
     /**
      * A mutex to protect shared data between the threads.
      */
-    class SDL_mutex *mMutex;
+    SDL_mutex *mMutex;
 
     /**
      * Status of the current download.

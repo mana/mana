@@ -1,3 +1,7 @@
+2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Small cleanups.
+
 2005-08-25  Ferreira Yohann  <bertram@cegetel.net>
 
 	* src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/sell.cpp,
