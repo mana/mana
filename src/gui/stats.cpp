@@ -142,6 +142,13 @@ StatsWindow::~StatsWindow() {
     delete remainingStatsPointsLabel;
 }
 
+void StatsWindow::draw(gcn::Graphics *graphics)
+{
+    update();
+
+    Window::draw(graphics);
+}
+
 void StatsWindow::action(const std::string& eventId) {
     WFIFOW(0) = net_w_value(0x00bb);
 

@@ -56,11 +56,16 @@ class StatusWindow : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
         /**
+         * Draw this window
+         */
+        void draw(gcn::Graphics *graphics);
+
+    private:
+        /**
          * Updates this dialog with values from PLAYER_INFO *char_info
          */
         void update();
 
-    private:
         gcn::Label *hp, *sp;
         gcn::Label *hpValue, *spValue;
         gcn::Label *expLabel, *jobExpLabel;

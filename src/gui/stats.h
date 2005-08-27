@@ -53,11 +53,16 @@ class StatsWindow : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
         /**
+         * Draw this window
+         */
+        void draw(gcn::Graphics *graphics);
+
+    private:
+        /**
          * Updates stats in window.
          */
         void update();
 
-    private:
         int i;
 
         /** 

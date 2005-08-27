@@ -1460,7 +1460,6 @@ void do_parse()
                             player_node->aspd = RFIFOW(4);
                             break;
                     }
-                    statusWindow->update();
                     if (char_info->hp == 0 && deathNotice == NULL) {
                         deathNotice = new OkDialog("Message",
                                 "You're now dead, press ok to restart",
@@ -1849,7 +1848,6 @@ void do_parse()
                     char_info->DEXUp = RFIFOB(13);
                     char_info->LUK = RFIFOB(14);
                     char_info->LUKUp = RFIFOB(15);
-                    statusWindow->update();
                     break;
                     // Updates status point
                 case 0x00be:

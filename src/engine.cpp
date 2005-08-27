@@ -43,8 +43,6 @@
 
 #include "gui/gui.h"
 #include "gui/minimap.h"
-#include "gui/stats.h"
-#include "gui/status.h"
 #include "gui/windowcontainer.h"
 
 #include "resources/image.h"
@@ -465,13 +463,6 @@ void Engine::draw()
                 autoTarget->text_x + 60,
                 autoTarget->text_y,
                 gcn::Graphics::CENTER);
-    }
-
-    if (statsWindow->isVisible()) {
-        statsWindow->update();
-    }
-    if (statusWindow->isVisible()) {
-        statusWindow->update();
     }
 
     std::stringstream debugStream;

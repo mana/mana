@@ -206,6 +206,13 @@ void StatusWindow::update()
     delete[] tempstr;
 }
 
+void StatusWindow::draw(gcn::Graphics *graphics)
+{
+    update();
+
+    Window::draw(graphics);
+}
+
 void StatusWindow::action(const std::string& eventId)
 {
     if (eventId == "Stats") {
