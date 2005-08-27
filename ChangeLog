@@ -1,5 +1,10 @@
 2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
+	* src/game.cpp, src/gui/npc.cpp, src/gui/npc.h: Fix the bug when
+	sometimes the last entry in npc list windows is missing. The network
+	buffer isn't reset to all zeros, thus we can't rely on the received
+	string to be nul-terminated, instead we have to use the length
+	parameter we receive from eAthena (and this way we're also safe
+	against buffer overflows, because we can use strncpy()).
 	* src/gui/window.cpp: Bail out early if there's no window container.
 	* src/engine.cpp, src/game.cpp, src/gui/stats.cpp, src/gui/stats.h,
 	src/gui/status.cpp, src/gui/status.h: Update the stats and status

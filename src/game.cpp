@@ -1697,10 +1697,8 @@ void do_parse()
                     // List in NPC dialog
                 case 0x00b7:
                     current_npc = RFIFOL(4);
-                    // Hammerbear: Second argument here shouldn't be neccesary,
-                    // instead make sure the string is \0 terminated.
-                    //parse_items(RFIFOP(8), RFIFOW(2));
-                    npcListDialog->parseItems(RFIFOP(8));
+                    // RFIFOW(2) seems to be the full packet length, thus -8
+                    npcListDialog->parseItems(RFIFOP(8), RFIFOW(2)-8);
                     npcListDialog->setVisible(true);
                     break;
 

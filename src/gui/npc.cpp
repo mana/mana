@@ -80,23 +80,21 @@ std::string NpcListDialog::getElementAt(int i)
     return items[i];
 }
 
-void NpcListDialog::parseItems(const char *string) {
-    char *copy = new char[strlen(string) + 1];
-    strcpy(copy, string);
+void NpcListDialog::parseItems(const char *string, unsigned short len) {
+    char *copy = new char[len + 1];
+    strncpy(copy, string, len);
+    copy[len] = 0;
 
     char *token = strtok(copy, ":");
-    while (token != NULL) {
+    while (token) {
         char *temp = (char*)malloc(strlen(token) + 1);
         strcpy(temp, token);
         items.push_back(std::string(temp));
         token = strtok(NULL, ":");
     }
-    
-    // TEMP: remove the last item insrted (fixes an athena bug probably)
-    items.pop_back();
-    
+
     delete[] copy;
-} 
+}
 
 void NpcListDialog::reset() {
     items.clear();

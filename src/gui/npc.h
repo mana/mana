@@ -75,7 +75,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          *
          * @param string A string with the options separated with colons.
          */
-        void parseItems(const char *string);
+        void parseItems(const char *string, unsigned short len);
 
         /**
          * Resets the list by removing all items.
