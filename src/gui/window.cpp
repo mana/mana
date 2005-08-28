@@ -26,6 +26,7 @@
 #include "window.h"
 #include "windowcontainer.h"
 
+#include "../configlistener.h"
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
@@ -35,10 +36,34 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+ConfigListener *Window::windowConfigListener = NULL;
 WindowContainer *Window::windowContainer = NULL;
 int Window::instances = 0;
 ImageRect Window::border;
 Image *Window::resizeGrip;
+
+class WindowConfigListener : public ConfigListener
+{
+    public:
+        /**
+         * Called when an config option changes.
+         */
+        void optionChanged(const std::string &name)
+        {
+            if (name == "guialpha")
+            {
+                float guiAlpha = config.getValue("guialpha", 0.8);
+
+                for (int i = 0; i < 9; i++)
+                {
+                    if (Window::border.grid[i]->getAlpha() != guiAlpha)
+                    {
+                        Window::border.grid[i]->setAlpha(guiAlpha);
+                    }
+                }
+            }
+        }
+};
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
@@ -75,6 +100,10 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
         border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
         resizeGrip = resman->getImage("graphics/gui/resize.png");
         dBorders->decRef();
+        windowConfigListener = new WindowConfigListener();
+        // Send GUI alpha changed for initialization
+        windowConfigListener->optionChanged("guialpha");
+        config.addListener("guialpha", windowConfigListener);
     }
 
     instances++;
@@ -91,10 +120,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     // Add this window to the window container
     windowContainer->add(this);
 
-    // Send GUI alpha changed for initialization
-    optionChanged("guialpha");
-    config.addListener("guialpha", this);
-
     if (modal)
     {
         requestModalFocus();
@@ -109,6 +134,10 @@ Window::~Window()
 
     if (instances == 0)
     {
+        config.removeListener("guialpha", windowConfigListener);
+        delete windowConfigListener;
+        windowConfigListener = NULL;
+
         // Clean up static resources
         delete border.grid[0];
         delete border.grid[1];
@@ -122,7 +151,6 @@ Window::~Window()
         resizeGrip->decRef();
     }
 
-    config.removeListener("guialpha", this);
     delete chrome;
 }
 
@@ -368,22 +396,6 @@ void Window::mouseRelease(int x, int y, int button)
     {
         mMouseResize = false;
         mMouseDrag = false;
-    }
-}
-
-void Window::optionChanged(const std::string &name)
-{
-    if (name == "guialpha")
-    {
-        float guiAlpha = config.getValue("guialpha", 0.8);
-
-        for (int i = 0; i < 9; i++)
-        {
-            if (border.grid[i]->getAlpha() != guiAlpha)
-            {
-                border.grid[i]->setAlpha(guiAlpha);
-            }
-        }
     }
 }
 

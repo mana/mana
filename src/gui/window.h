@@ -27,11 +27,11 @@
 #include <guichan/widgets/window.hpp>
 #include <guichan/rectangle.hpp>
 
-#include "../configlistener.h"
 #include "../guichanfwd.h"
 
 #include "../resources/image.h"
 
+class ConfigListener;
 class ImageRect;
 class WindowContainer;
 
@@ -41,9 +41,11 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Window : public gcn::Window, public ConfigListener
+class Window : public gcn::Window
 {
     public:
+        friend class WindowConfigListener;
+
         /**
          * Constructor. Initializes the title to the given text and hooks
          * itself into the window container.
@@ -154,11 +156,6 @@ class Window : public gcn::Window, public ConfigListener
         void mouseRelease(int x, int y, int button);
 
         /**
-         * Called when an config option changes.
-         */
-        void optionChanged(const std::string &name);
-        
-        /**
          * The position of the resize grip
          */
         gcn::Rectangle getGripDimension();
@@ -180,6 +177,12 @@ class Window : public gcn::Window, public ConfigListener
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
+
+        /**
+         * The config listener that listens to changes relevant to all
+         * windows
+         */
+        static ConfigListener *windowConfigListener;
 
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */

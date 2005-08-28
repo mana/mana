@@ -1,4 +1,8 @@
 2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/window.cpp, src/gui/window.h: Create a static ConfigListener
+	for the Window class. (Fixes each Window listening to config changes,
+	although they only affect a static class member.)
 	* src/gui/npc.cpp: Fix a memory leak.
 	* src/game.cpp, src/gui/npc.cpp, src/gui/npc.h: Fix the bug when
 	sometimes the last entry in npc list windows is missing. The network
