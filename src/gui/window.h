@@ -29,9 +29,8 @@
 
 #include "../guichanfwd.h"
 
-#include "../resources/image.h"
-
 class ConfigListener;
+class Image;
 class ImageRect;
 class WindowContainer;
 

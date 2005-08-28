@@ -1,5 +1,6 @@
 2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/window.h: Small cleanup.
 	* src/gui/window.cpp, src/gui/window.h: Create a static ConfigListener
 	for the Window class. (Fixes each Window listening to config changes,
 	although they only affect a static class member.)
