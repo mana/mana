@@ -38,6 +38,7 @@
 #include "windowcontainer.h"
 
 #include "../being.h"
+#include "../configlistener.h"
 #include "../configuration.h"
 #include "../engine.h"
 #include "../game.h"
@@ -63,6 +64,21 @@ gcn::ImageFont *hitBlueFont;
 gcn::ImageFont *hitYellowFont;
 // Font used to display speech and player names
 gcn::ImageFont *speechFont;
+
+class GuiConfigListener : public ConfigListener
+{
+    public:
+        GuiConfigListener(Gui *gui):mGui(gui) {}
+
+        void optionChanged(const std::string &name)
+        {
+            if (name == "customcursor") {
+                mGui->setUseCustomCursor(config.getValue("customcursor", 1) == 1);
+            }
+        }
+    private:
+        Gui *mGui;
+};
 
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
@@ -152,11 +168,15 @@ Gui::Gui(Graphics *graphics):
 
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);
-    config.addListener("customcursor", this);
+    mConfigListener = new GuiConfigListener(this);
+    config.addListener("customcursor", mConfigListener);
 }
 
 Gui::~Gui()
 {
+    config.removeListener("customcursor", mConfigListener);
+    delete mConfigListener;
+
     // Fonts used in showing hits
     delete hitRedFont;
     delete hitBlueFont;
@@ -259,13 +279,5 @@ Gui::setUseCustomCursor(bool customCursor)
                 mMouseCursor = NULL;
             }
         }
-    }
-}
-
-void
-Gui::optionChanged(const std::string &name)
-{
-    if (name == "customcursor") {
-        setUseCustomCursor(config.getValue("customcursor", 1) == 1);
     }
 }

@@ -26,9 +26,9 @@
 
 #include <guichan/gui.hpp>
 
-#include "../configlistener.h"
 #include "../guichanfwd.h"
 
+class GuiConfigListener;
 class Graphics;
 class Image;
 class WindowContainer;
@@ -46,7 +46,7 @@ class WindowContainer;
  *
  * \ingroup GUI
  */
-class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
+class Gui : public gcn::Gui, public gcn::MouseListener
 {
     public:
         /**
@@ -97,6 +97,7 @@ class Gui : public gcn::Gui, public gcn::MouseListener, ConfigListener
         optionChanged(const std::string &name);
 
     private:
+        GuiConfigListener *mConfigListener;
         gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
         gcn::ImageLoader *mImageLoader;       /**< For loading images */
         gcn::ImageFont *mGuiFont;             /**< The global GUI font */
