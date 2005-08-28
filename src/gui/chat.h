@@ -28,6 +28,9 @@
 #include <list>
 #include <string>
 
+#include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"

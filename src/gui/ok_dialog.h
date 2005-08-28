@@ -24,6 +24,8 @@
 #ifndef _OK_DIALOG_H
 #define _OK_DIALOG_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"

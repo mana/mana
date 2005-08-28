@@ -26,6 +26,7 @@
 #include <sstream>
 
 #include <guichan/basiccontainer.hpp>
+#include <guichan/font.hpp>
 
 TextBox::TextBox():
     gcn::TextBox()

@@ -26,6 +26,7 @@
 
 #include <vector>
 
+#include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
 #include "window.h"

@@ -23,6 +23,8 @@
 #ifndef _TMW_CHARGE_H
 #define _TMW_CHARGE_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 class ProgressBar;

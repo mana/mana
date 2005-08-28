@@ -24,6 +24,8 @@
 #ifndef _TMW_HELP_H
 #define _TMW_HELP_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 #include "linkhandler.h"
 

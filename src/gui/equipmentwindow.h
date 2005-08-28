@@ -24,6 +24,8 @@
 #ifndef _TMW_EQUIPMENT_H
 #define _TMW_EQUIPMENT_H 
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 class Spriteset;

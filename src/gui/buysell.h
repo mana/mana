@@ -24,9 +24,11 @@
 #ifndef _TMW_BUYSELL_H
 #define _TMW_BUYSELL_H
 
-#include <guichan/widgets/button.hpp>
+#include <guichan/actionlistener.hpp>
 
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 /**
  * A dialog to choose between buying or selling at a shop.

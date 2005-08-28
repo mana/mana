@@ -25,6 +25,7 @@
 #define _TMW_GUI
 
 #include <guichan/gui.hpp>
+#include <guichan/mouselistener.hpp>
 
 #include "../guichanfwd.h"
 

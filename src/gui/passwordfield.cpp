@@ -23,6 +23,9 @@
 
 #include "passwordfield.h"
 
+#include <guichan/font.hpp>
+#include <guichan/graphics.hpp>
+
 
 PasswordField::PasswordField(const std::string& text):
     TextField(text)

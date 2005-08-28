@@ -24,11 +24,11 @@
 #ifndef _TMW_BUDDYWINDOW_H
 #define _TMW_BUDDYWINDOW_H
 
-#include <guichan/widgets/button.hpp>
-#include <guichan/widgets/listbox.hpp>
-#include <guichan/widgets/scrollarea.hpp>
+#include <guichan/actionlistener.hpp>
 
 #include "window.h"
+
+#include "../guichanfwd.h"
 
 #include "../resources/buddylist.h"
 

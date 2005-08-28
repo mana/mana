@@ -24,6 +24,8 @@
 #ifndef _TMW_TRADE_H
 #define _TMW_TRADE_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"

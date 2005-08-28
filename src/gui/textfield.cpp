@@ -23,6 +23,8 @@
 
 #include "textfield.h"
 
+#include <guichan/font.hpp>
+
 #include "../graphics.h"
 
 #include "../graphic/imagerect.h"

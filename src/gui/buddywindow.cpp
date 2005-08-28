@@ -22,9 +22,12 @@
  */
 
 #include "buddywindow.h"
-#include "scrollarea.h"
+
+#include <guichan/widgets/listbox.hpp>
+
 #include "button.h"
 #include "chat.h"
+#include "scrollarea.h"
 
 extern ChatWindow *chatWindow;
 

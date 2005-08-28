@@ -24,6 +24,7 @@
 #include "chat.h"
 
 #include <guichan/focushandler.hpp>
+#include <guichan/key.hpp>
 
 #include "browserbox.h"
 #include "chatinput.h"

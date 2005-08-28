@@ -27,6 +27,8 @@
 
 #include <SDL.h>
 
+#include <guichan/image.hpp>
+
 #include "log.h"
 
 #include "resources/image.h"

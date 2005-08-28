@@ -24,6 +24,8 @@
 #ifndef _UPDATERWINDOW_H
 #define _UPDATERWINDOW_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"

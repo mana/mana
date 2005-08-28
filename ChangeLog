@@ -1,10 +1,27 @@
-2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/openglgraphics.cpp, src/gui/browserbox.cpp,
+	src/gui/buddywindow.cpp, src/gui/buddywindow.h, src/gui/buysell.h,
+	src/gui/char_server.h, src/gui/chargedialog.h, src/gui/chat.cpp,
+	src/gui/chat.h, src/gui/confirm_dialog.h, src/gui/equipmentwindow.h,
+	src/gui/focushandler.h, src/gui/gui.cpp, src/gui/gui.h,
+	src/gui/help.h, src/gui/inttextbox.cpp, src/gui/inventorywindow.cpp,
+	src/gui/inventorywindow.h, src/gui/item_amount.h,
+	src/gui/itemcontainer.cpp, src/gui/listbox.cpp, src/gui/newskill.h,
+	src/gui/npc_text.h, src/gui/ok_dialog.h, src/gui/passwordfield.cpp,
+	src/gui/requesttrade.h, src/gui/setup.h, src/gui/stats.h,
+	src/gui/status.h, src/gui/textbox.cpp, src/gui/textfield.cpp,
+	src/gui/trade.h, src/gui/updatewindow.h: Add #include's that just
+	weren't necessary because the guichan folks don't provide clean
+	headers. This is preparatory for the case that they ever do. ;)
 	* src/gui/gui.cpp, src/gui/gui.h: Create a GuiConfigListener class.
 	* src/gui/window.h: Small cleanup.
 	* src/gui/window.cpp, src/gui/window.h: Create a static ConfigListener
 	for the Window class. (Fixes each Window listening to config changes,
 	although they only affect a static class member.)
+
+2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
 	* src/gui/npc.cpp: Fix a memory leak.
 	* src/game.cpp, src/gui/npc.cpp, src/gui/npc.h: Fix the bug when
 	sometimes the last entry in npc list windows is missing. The network

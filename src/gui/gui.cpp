@@ -24,6 +24,7 @@
 #include "gui.h"
 
 #include <guichan/exception.hpp>
+#include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
 #ifdef USE_OPENGL

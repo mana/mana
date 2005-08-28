@@ -26,6 +26,8 @@
 #include <string>
 #include <sstream>
 
+#include <guichan/mouseinput.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"

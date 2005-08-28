@@ -24,6 +24,8 @@
 #ifndef _TMW_NSKILL_H
 #define _TMW_NSKILL_H
 
+#include <guichan/actionlistener.hpp>
+
 #include "window.h"
 
 #include "../guichanfwd.h"

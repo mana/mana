@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <guichan/mouseinput.hpp>
+
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"

@@ -23,7 +23,9 @@
 
 #include "browserbox.h"
 
+#include <guichan/graphics.hpp>
 #include <guichan/imagefont.hpp>
+#include <guichan/mouseinput.hpp>
 
 #include "linkhandler.h"
 #include "gui.h"

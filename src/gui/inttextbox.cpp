@@ -25,6 +25,8 @@
 
 #include <sstream>
 
+#include <guichan/key.hpp>
+
 IntTextBox::IntTextBox():
     value(0)
 {
