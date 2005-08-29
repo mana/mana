@@ -1,3 +1,7 @@
+2005-08-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_8-1.tmx.gz: Some layer and walkability fixes.
+	
 2005-08-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp, src/gui/browserbox.cpp,
