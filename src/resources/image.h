@@ -58,7 +58,7 @@ class Image : public Resource
          *         otherwise.
          */
         static Image*
-        load(void* buffer, unsigned int bufferSize);
+        load(void* buffer, unsigned int bufferSize, const std::string &idPath);
 
         /**
          * Frees the resources created by SDL.
@@ -113,9 +113,10 @@ class Image : public Resource
          * Constructor.
          */
 #ifdef USE_OPENGL
-        Image(GLuint glimage, int width, int height, int texWidth, int texHeight);
+        Image(const std::string &idPath, GLuint glimage, int width, int height,
+                int texWidth, int texHeight);
 #endif
-        Image(SDL_Surface *image);
+        Image(const std::string &idPath, SDL_Surface *image);
 
         SDL_Rect bounds;
         bool loaded;

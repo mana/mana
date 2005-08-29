@@ -28,19 +28,13 @@
 #include "resourcemanager.h"
 
 
-Resource::Resource():
-    mRefCount(0)
+Resource::Resource(const std::string &idPath):
+    mRefCount(0), mIdPath(idPath)
 {
 }
 
 Resource::~Resource()
 {
-}
-
-void
-Resource::setIdPath(const std::string &idPath)
-{
-    mIdPath = idPath;
 }
 
 void

@@ -35,14 +35,7 @@ class Resource
         /**
          * Constructor
          */
-        Resource();
-
-        /**
-         * Sets the id path of this resource. This path is used to notify the
-         * resource manager when this resource is deleted.
-         */
-        void
-        setIdPath(const std::string &idPath);
+        Resource(const std::string &idPath);
 
         /**
          * Increments the internal reference count.

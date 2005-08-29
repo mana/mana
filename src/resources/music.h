@@ -48,7 +48,7 @@ class Music : public Resource
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static Music *load(void* buffer, unsigned int bufferSize);
+        static Music *load(void* buffer, unsigned int bufferSize, const std::string &idPath);
 
         /**
          * Plays the music.
@@ -72,7 +72,7 @@ class Music : public Resource
         /**
          * Constructor.
          */
-        Music(Mix_Chunk *music);
+        Music(const std::string &idPath, Mix_Chunk *music);
 
         //Mix_Music *music;
         Mix_Chunk *music;

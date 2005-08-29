@@ -31,8 +31,8 @@
 bool Image::useOpenGL = false;
 #endif
 
-Image::Image(SDL_Surface *image):
-    image(image)
+Image::Image(const std::string &idPath, SDL_Surface *image):
+    Resource(idPath), image(image)
 {
     // Default to opaque
     alpha = 1.0f;
@@ -44,7 +44,9 @@ Image::Image(SDL_Surface *image):
 }
 
 #ifdef USE_OPENGL
-Image::Image(GLuint glimage, int width, int height, int texWidth, int texHeight):
+Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
+        int texWidth, int texHeight):
+    Resource(idPath),
     glimage(glimage),
     texWidth(texWidth),
     texHeight(texHeight)
@@ -64,7 +66,7 @@ Image::~Image()
     unload();
 }
 
-Image* Image::load(void* buffer, unsigned int bufferSize)
+Image* Image::load(void* buffer, unsigned int bufferSize, const std::string &idPath)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
@@ -234,7 +236,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
             return NULL;
         }
 
-        return new Image(texture, width, height, realWidth, realHeight);
+        return new Image(idPath, texture, width, height, realWidth, realHeight);
     }
 #endif
 
@@ -254,7 +256,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize)
         return NULL;
     }
 
-    return new Image(image);
+    return new Image(idPath, image);
 }
 
 void Image::unload()
@@ -330,7 +332,7 @@ void Image::setLoadAsOpenGL(bool useOpenGL)
 
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image(image), parent(parent)
+    Image("", image), parent(parent)
 {
     parent->incRef();
 
@@ -344,7 +346,7 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 #ifdef USE_OPENGL
 SubImage::SubImage(Image *parent, GLuint image,
         int x, int y, int width, int height, int texWidth, int texHeight):
-    Image(image, width, height, texWidth, texHeight), parent(parent)
+    Image("", image, width, height, texWidth, texHeight), parent(parent)
 {
     parent->incRef();
 

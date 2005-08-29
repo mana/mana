@@ -23,8 +23,8 @@
 
 #include "music.h"
 
-Music::Music(Mix_Chunk *music):
-    music(music)
+Music::Music(const std::string &idPath, Mix_Chunk *music):
+    Resource(idPath), music(music)
 {
     channel = -1;
 }
@@ -36,7 +36,7 @@ Music::~Music()
     music = NULL;
 }
 
-Music* Music::load(void* buffer, unsigned int bufferSize)
+Music* Music::load(void* buffer, unsigned int bufferSize, const std::string &idPath)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
@@ -48,7 +48,7 @@ Music* Music::load(void* buffer, unsigned int bufferSize)
     // Now free the SDL_RWops data
     SDL_FreeRW(rw);
 
-    return new Music(tmpMusic);
+    return new Music(idPath, tmpMusic);
 }
 
 bool Music::play(int loops)

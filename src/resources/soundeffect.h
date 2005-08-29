@@ -48,7 +48,8 @@ class SoundEffect : public Resource
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static SoundEffect *load(void* buffer, unsigned int bufferSize);
+        static SoundEffect *load(void* buffer, unsigned int bufferSize,
+                const std::string &idPath);
 
         /**
          * Plays the sample.
@@ -65,7 +66,7 @@ class SoundEffect : public Resource
         /**
          * Constructor.
          */
-        SoundEffect(Mix_Chunk *soundEffect);
+        SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect);
 
         Mix_Chunk *soundEffect;
 };

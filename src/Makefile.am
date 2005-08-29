@@ -131,7 +131,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      base64.h \
 	      being.cpp \
 	      being.h \
-	      configlistener.cpp \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \

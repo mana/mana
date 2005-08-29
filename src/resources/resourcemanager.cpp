@@ -150,19 +150,19 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
         case MUSIC:
             {
                 // Let the music class load it
-                resource = Music::load(buffer, fileSize);
+                resource = Music::load(buffer, fileSize, idPath);
             }
             break;
         case IMAGE:
             {
                 // Let the image class load it
-                resource = Image::load(buffer, fileSize);
+                resource = Image::load(buffer, fileSize, idPath);
             }
             break;
         case SOUND_EFFECT:
             {
                 // Let the sound effect class load it
-                resource = SoundEffect::load(buffer, fileSize);
+                resource = SoundEffect::load(buffer, fileSize, idPath);
             }
             break;
         default:
@@ -174,7 +174,6 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 
     if (resource) {
         resource->incRef();
-        resource->setIdPath(idPath);
 
         resources[idPath] = resource;
     }

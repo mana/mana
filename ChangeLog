@@ -1,7 +1,20 @@
+2005-08-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am, src/configlistener.cpp, src/configlistener.h: Made
+	the destructor inline, as it is an interface, we don't need a .cpp
+	file, thus it was removed.
+	* src/resources/image.cpp, src/resources/image.h,
+	src/resources/music.cpp, src/resources/music.h,
+	src/resources/resource.cpp, src/resources/resource.h,
+	src/resources/resourcemanager.cpp, src/resources/soundeffect.cpp,
+	src/resources/soundeffect.h: Removed the setIdPath() method from the
+	Resource class and added the idPath as a Constructor parameter, as
+	that value is not meant to be changed.
+
 2005-08-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_8-1.tmx.gz: Some layer and walkability fixes.
-	
+
 2005-08-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp, src/gui/browserbox.cpp,
