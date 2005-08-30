@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=158
+UnitCount=160
 Type=0
 Ver=1
 ObjFiles=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001001001001001
+CompilerSettings=0010001001001001001101
 
 [VersionInfo]
 Major=0
@@ -1618,9 +1618,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit160]
-FileName=src\openglgraphics.h
+FileName=src\gui\tabbedcontainer.cpp
 CompileCpp=1
-Folder=header
+Folder=gui
 Compile=1
 Link=1
 Priority=1000
@@ -1651,6 +1651,16 @@ BuildCmd=
 FileName=src\resources\buddylist.cpp
 CompileCpp=1
 Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit159]
+FileName=src\gui\tabbedcontainer.h
+CompileCpp=1
+Folder=gui
 Compile=1
 Link=1
 Priority=1000

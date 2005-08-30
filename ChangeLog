@@ -1,3 +1,7 @@
+2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev: Updated project file.
+
 2005-08-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/configlistener.cpp, src/configlistener.h: Made
