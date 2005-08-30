@@ -162,7 +162,7 @@ void SellDialog::addItem(Item *item, int price)
     item_shop.name = ss.str();
     item_shop.price = price;
     item_shop.index = item->getInvIndex();
-    item_shop.id = item->getId();;
+    item_shop.id = item->getId();
     item_shop.quantity = item->getQuantity();
 
     shopInventory.push_back(item_shop);

@@ -1,6 +1,8 @@
 2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated project file.
+	* data/graphics/sprites/npcs.png, src/gui/sell.cpp: Added empty sprite and
+	reorganized spriteset, fixed a typo.
 
 2005-08-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
