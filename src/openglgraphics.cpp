@@ -140,14 +140,14 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
     int transY = 0;
 
     if (!mClipStack.empty()) {
-        transX = -mClipStack.top().x;
-        transY = -mClipStack.top().y;
+        transX = -mClipStack.top().xOffset;
+        transY = -mClipStack.top().yOffset;
     }
 
     bool result = gcn::Graphics::pushClipArea(area);
 
-    transX += mClipStack.top().x;
-    transY += mClipStack.top().y;
+    transX += mClipStack.top().xOffset;
+    transY += mClipStack.top().yOffset;
 
     glTranslatef(transX, transY, 0);
     glScissor(mClipStack.top().x,
@@ -160,8 +160,8 @@ bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
 
 void OpenGLGraphics::popClipArea()
 {
-    int transX = -mClipStack.top().x;
-    int transY = -mClipStack.top().y;
+    int transX = -mClipStack.top().xOffset;
+    int transY = -mClipStack.top().yOffset;
 
     gcn::Graphics::popClipArea();
 
@@ -170,8 +170,8 @@ void OpenGLGraphics::popClipArea()
         return;
     }
 
-    transX += mClipStack.top().x;
-    transY += mClipStack.top().y;
+    transX += mClipStack.top().xOffset;
+    transY += mClipStack.top().yOffset;
 
     glTranslatef(transX, transY, 0);
     glScissor(mClipStack.top().x,

@@ -1,3 +1,9 @@
+2005-08-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/openglgraphics.cpp: Fix push/pop of clip area, we need to
+	translate using the x/y offset, not the x/y coordinates of the clip
+	area. This fixes the broken scrollareas.
+
 2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated project file.
