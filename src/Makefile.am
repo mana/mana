@@ -144,6 +144,7 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      game.h \
 	      graphics.cpp \
 	      graphics.h \
+	      guichanfwd.h \
 	      inventory.cpp \
 	      inventory.h \
 	      item.cpp \
