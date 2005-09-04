@@ -63,13 +63,28 @@ context menu. Holding [Left Shift] prevents from walking when attacking.
 ---------
 
 You can improve your skills by increasing job level. Each job level gives you 1
-point to spend on basic skills.
+point to spend on skills.
+
+BASIC SKILLS:
 
 Level 1: enables the ability to trade with others
 Level 2: enables the ability to express emotions
 Level 3: enables character to sit
+...
+Level 9: enables soul-less skills (after changing job to soul-less)
 
 Other levels are still not implemented.
+
+SOUL-LESS SKILLS:
+
+Sword: increase	sword damage add skill
+HP Recovery: increases HP regeneration
+SP Recovery: increases SP regeneration (requires HP recovery level 10)
+Max weight: increase max weight you can carry
+Discount: get cheaper prices from NPCs
+Overcharge: sell stuff for better price to NPCs
+Double: a chance for double hits (requires Sword level 5)
+Miss: increased chance of dodging (requires Sword level 10)
 
 4. Support
 ----------

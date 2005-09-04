@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=160
+UnitCount=159
 Type=0
 Ver=1
 ObjFiles=
@@ -1538,16 +1538,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit151]
-FileName=src\configlistener.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit152]
 FileName=src\configlistener.h
 CompileCpp=1
 Folder=header
@@ -1557,7 +1547,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit153]
+[Unit152]
 FileName=src\graphic\imagerect.h
 CompileCpp=1
 Folder=graphic/header
@@ -1567,7 +1557,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit154]
+[Unit153]
 FileName=src\guichanfwd.h
 CompileCpp=1
 Folder=header
@@ -1577,7 +1567,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit155]
+[Unit154]
 FileName=src\playerinfo.h
 CompileCpp=1
 Folder=header
@@ -1587,7 +1577,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit156]
+[Unit155]
 FileName=src\serverinfo.h
 CompileCpp=1
 Folder=header
@@ -1597,7 +1587,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit157]
+[Unit156]
 FileName=src\openglgraphics.h
 CompileCpp=1
 Folder=header
@@ -1607,10 +1597,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit158]
+[Unit157]
 FileName=src\openglgraphics.cpp
 CompileCpp=1
 Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit158]
+FileName=src\gui\tabbedcontainer.h
+CompileCpp=1
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000
@@ -1658,9 +1658,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit159]
-FileName=src\gui\tabbedcontainer.h
+FileName=src\gui\tabbedcontainer.cpp
 CompileCpp=1
-Folder=gui
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
