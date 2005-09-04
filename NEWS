@@ -1,3 +1,10 @@
+0.0.16 (04 September 2005)
+- Added inn and casino
+- Improved status window
+- Improved OpenGL support
+- Removed lot of bugs
+- Code cleanups
+
 0.0.15 (31 July 2005)
 - Added dynamic updating of client data
 - Added much better font for chat and names
