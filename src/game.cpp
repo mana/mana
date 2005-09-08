@@ -1372,6 +1372,8 @@ void do_parse()
 
                     if (tiledMap)
                     {
+                        empty_floor_items();
+
                         // Delete all beings except the local player
                         std::list<Being *>::iterator i;
                         for (i = beings.begin(); i != beings.end(); i++)

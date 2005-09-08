@@ -1,3 +1,7 @@
+2005-09-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp: Clean the floor items when the map changes.
+
 2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* README, The Mana World.dev, data/graphics/sprites/items.png,
