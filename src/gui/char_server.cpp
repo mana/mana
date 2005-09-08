@@ -162,14 +162,17 @@ void char_server() {
     delete dialog;
 }
 
-void server_char_server(int serverIndex) {
+void server_char_server(int serverIndex)
+{
     int ret;
     state = LOGIN;
     const char *ipstring = iptostring(server_info[serverIndex].address);
 
     // Connect to char server
     ret = open_session(ipstring, server_info[serverIndex].port);
-    if (ret == SOCKET_ERROR) {
+
+    if (ret == SOCKET_ERROR)
+    {
         std::string str = std::string("Unable to connect to char server ") +
             std::string(ipstring);
         new OkDialog("Error", str);
@@ -185,16 +188,20 @@ void server_char_server(int serverIndex) {
     WFIFOB(16) = net_b_value(sex);
     WFIFOSET(17);
 
-    while ((in_size < 4) || (out_size > 0))flush();
+    while ((in_size < 4) || (out_size > 0)) flush();
     RFIFOSKIP(4);
 
     while (in_size < 3) flush();
 
-    if (RFIFOW(0) == 0x006b) {
-        while(in_size < RFIFOW(2))flush();
+    if (RFIFOW(0) == 0x006b)
+    {
+        while (in_size < RFIFOW(2)) flush();
+
         n_character = (RFIFOW(2) - 24) / 106;
-        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO) * n_character);
-        for (int i = 0; i < n_character; i++) {
+        char_info = (PLAYER_INFO*)malloc(sizeof(PLAYER_INFO) * n_character);
+
+        for (int i = 0; i < n_character; i++)
+        {
             int n = 24 + 106 * i;
             char_info[i].id = RFIFOL(n);
             strcpy(char_info[i].name, RFIFOP(n + 74));
@@ -217,6 +224,7 @@ void server_char_server(int serverIndex) {
             char_info[i].hair_color = RFIFOW(n + 70);
             char_info[i].weapon = RFIFOW(n + 56);
         }
+
         state = CHAR_SELECT;
 
         logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
@@ -225,7 +233,8 @@ void server_char_server(int serverIndex) {
 
         RFIFOSKIP(RFIFOW(2));
     }
-    else if (RFIFOW(0) == 0x006c) {
+    else if (RFIFOW(0) == 0x006c)
+    {
         std::string errorStr;
         switch (RFIFOB(2)) {
             case 0: errorStr = "Access denied"; break;
@@ -235,7 +244,9 @@ void server_char_server(int serverIndex) {
         new OkDialog("Error", errorStr);
         RFIFOSKIP(3);
         close_session();
-    } else {
+    }
+    else
+    {
         new OkDialog("Error", "Unknown error");
     }
     // Todo: add other packets

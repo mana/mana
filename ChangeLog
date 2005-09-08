@@ -1,3 +1,8 @@
+2005-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/win2linux.h: Removed inclusion of malloc.h header as it
+	doens't seem necessary and was problematic on FreeBSD.
+
 2005-09-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Clean the floor items when the map changes.
@@ -5,10 +10,10 @@
 2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* README, The Mana World.dev, data/graphics/sprites/items.png,
-	data/graphics/sprites/npcs.png, data/help/header.txt, data/help/skills.txt,
-	data/items.xml, data/maps/new_8-1.tmx.gz: Updated docs for release, fixed
-	Dev-Cpp project file, added more items and npcs, fixed the new map and
-	added it to the makefile.
+	data/graphics/sprites/npcs.png, data/help/header.txt,
+	data/help/skills.txt, data/items.xml, data/maps/new_8-1.tmx.gz:
+	Updated docs for release, fixed Dev-Cpp project file, added more items
+	and npcs, fixed the new map and added it to the makefile.
 
 2005-08-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -19,8 +24,8 @@
 2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated project file.
-	* data/graphics/sprites/npcs.png, src/gui/sell.cpp: Added empty sprite and
-	reorganized spriteset, fixed a typo.
+	* data/graphics/sprites/npcs.png, src/gui/sell.cpp: Added empty sprite
+	and reorganized spriteset, fixed a typo.
 
 2005-08-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

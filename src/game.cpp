@@ -924,7 +924,8 @@ void do_input()
             }
         }
 
-        if (joy[JOY_BTN1]) {
+        if (joy[JOY_BTN1])
+        {
             unsigned short x = player_node->x;
             unsigned short y = player_node->y;
             int id = find_floor_item_by_cor(x, y);
@@ -936,7 +937,8 @@ void do_input()
                 WFIFOSET(6);
             }
         }
-        else if (joy[JOY_BTN2] && action_time) {
+        else if (joy[JOY_BTN2] && action_time)
+        {
             if (player_node->action == Being::STAND)
                 action(2, 0);
             else if (player_node->action == Being::SIT)

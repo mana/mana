@@ -254,7 +254,8 @@ void init_engine()
 
 
     // Try to set the desired video mode
-    if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel)) {
+    if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
+    {
         std::cerr << "Couldn't set " << width << "x" << height << "x" <<
             bpp << " video mode: " << SDL_GetError() << std::endl;
         exit(1);
