@@ -1,3 +1,7 @@
+2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp: Fixes to dropped items network code
+	
 2005-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/win2linux.h: Removed inclusion of malloc.h header as it

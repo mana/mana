@@ -969,7 +969,9 @@ void do_parse()
     if (in_size >= 2) {
         // Check if the received packet is complete
         while (in_size >= (len = get_packet_length(id = RFIFOW(0)))) {
+#ifdef DEBUG
             printf("Packet_ID: %x\n", RFIFOW(0));
+#endif
 
             // Parse packet based on their id
             switch (id)
@@ -1683,15 +1685,15 @@ void do_parse()
                 case 0x009d:
                 case 0x009e:
                     floorItem = new FloorItem();
-                    floorItem->id = net_w_value(RFIFOW(6));
-                    floorItem->x = net_w_value(RFIFOW(9));
-                    floorItem->y = net_w_value(RFIFOW(11));
-                    floorItem->int_id = net_l_value(RFIFOL(2));
+                    floorItem->id = RFIFOW(6);
+                    floorItem->x = RFIFOW(9);
+                    floorItem->y = RFIFOW(11);
+                    floorItem->int_id = RFIFOL(2);
                     add_floor_item(floorItem);
                     break;
                     // Item disappearing
                 case 0x00a1:
-                    remove_floor_item(net_l_value(RFIFOL(2)));
+                    remove_floor_item(RFIFOL(2));
                     break;
                     // Next/Close button in NPC dialog
                 case 0x00b5:
