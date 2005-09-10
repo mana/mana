@@ -11,7 +11,10 @@
 - Added option not to use the custom mouse cursor
 - Added joystick support
 - Improved mouse attack by not walking while pressing shift
+- Now one executable that has both SDL and OpenGL support
 - Fixed items being shown as equipped in inventory although they are not
+- Fixed position of right click menu
+- Fixed empty right click menu appearing sometimes
 
 0.0.14.1 (7 July 2005)
 - Fixed two map files not included in the source release
