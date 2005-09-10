@@ -23,6 +23,9 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+#ifdef __APPLE__
+#include <Carbon/Carbon.h>
+#endif
 
 #include <stdarg.h>
 #include <iostream>
@@ -90,6 +93,11 @@ void Logger::error(const std::string &error_text)
     log("Error: %s", error_text.c_str());
 #ifdef WIN32
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
+#elif defined __APPLE__
+    Str255 msg;
+    c2pstrcpy(msg, error_text.c_str());
+    StandardAlert(kAlertStopAlert, "\pError",
+                  (ConstStr255Param)msg, NULL, NULL);
 #else
     std::cerr << "Error: " << error_text << std::endl;
 #endif

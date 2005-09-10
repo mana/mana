@@ -1,4 +1,9 @@
-2005-08-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2005-09-10  Bjorn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/log.cpp: Committed patch by Nayr for displaying a messagebox
+	when an error occurs on MacOS.
+
+2005-09-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixes to dropped items network code
 	
@@ -460,7 +465,7 @@
 	name for updates from "data" to "updates".
 	* src/game.cpp, src/gui/inventorywindow.cpp, src/gui/popupmenu.cpp,
 	src/gui/popupmenu.h: Cleaned up the showPopup() code, moved
-	map"-related code into game.cpp, made the popup show up at mouse
+	"map"-related code into game.cpp, made the popup show up at mouse
 	coordinates instead of being aligned to tiles.
 	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp, src/game.h,
 	src/gui/gui.cpp, src/net/protocol.cpp: Added an action enumeration to
@@ -483,8 +488,8 @@
 
 2005-07-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/gui/gui.cpp, src/gui/gui.h: Removed continous mouse
-	movement, that implementation wasn't suitable for a release.
+	* src/gui/gui.cpp, src/gui/gui.h: Removed continous mouse movement,
+	that implementation wasn't suitable for a release.
 
 2005-07-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
