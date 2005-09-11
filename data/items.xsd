@@ -15,14 +15,14 @@
   <xsd:element name="items">
     <xsd:complexType>
       <xsd:sequence>
-        
+
         <xsd:element name="item" minOccurs="0" maxOccurs="unbounded">
           <xsd:complexType>
             <xsd:simpleContent>
               <xsd:extension base="xsd:string">
                 <xsd:attribute name="name" type="xsd:string" />
                 <xsd:attribute name="description" type="xsd:string" />
-		<xsd:attribute name="effect" type="xsd:string" />
+                <xsd:attribute name="effect" type="xsd:string" />
                 <xsd:attribute name="id" type="xsd:positiveInteger" />
                 <xsd:attribute name="image" type="xsd:positiveInteger" />
                 <xsd:attribute name="art" type="mw_ItemArtType" />
