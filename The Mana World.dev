@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=159
+UnitCount=165
 Type=0
 Ver=1
 ObjFiles=
@@ -11,8 +11,8 @@ PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=-DUSE_OPENGL_@@_
-Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-lxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurl_@@_
+CppCompiler=-DUSE_OPENGL_@@_-DDEBUG_@@__@@_
+Linker=-lopengl32_@@_-lwsock32_@@_-lmingw32_@@_-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lSDLmain_@@_-lSDL_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lSDL_net_@@_-lcurl_@@_-lphysfs_@@_-lxml2_@@_-lz_@@_
 IsCpp=1
 Icon=The Mana World.ico
 ExeOutput=
@@ -21,7 +21,7 @@ OverrideOutput=1
 OverrideOutputName=tmw.exe
 HostApplication=
 Folders=graphic,graphic/header,graphic/source,gui,gui/header,gui/source,header,net,net/header,net/source,resources
-CommandLine=
+CommandLine=--skipupdate
 UseCustomMakefile=0
 CustomMakefile=
 IncludeVersionInfo=1
@@ -1618,9 +1618,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit160]
-FileName=src\gui\tabbedcontainer.cpp
+FileName=src\net\packet.h
 CompileCpp=1
-Folder=gui
+Folder=net/header
 Compile=1
 Link=1
 Priority=1000
@@ -1628,9 +1628,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit161]
-FileName=src\openglgraphics.cpp
+FileName=src\net\messagein.h
 CompileCpp=1
-Folder=
+Folder=net/header
 Compile=1
 Link=1
 Priority=1000
@@ -1661,6 +1661,46 @@ BuildCmd=
 FileName=src\gui\tabbedcontainer.cpp
 CompileCpp=1
 Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit162]
+FileName=src\net\messageout.h
+CompileCpp=1
+Folder=net/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit163]
+FileName=src\net\messagein.cpp
+CompileCpp=1
+Folder=net/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit164]
+FileName=src\net\messageout.cpp
+CompileCpp=1
+Folder=net/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit165]
+FileName=src\net\packet.cpp
+CompileCpp=1
+Folder=net/source
 Compile=1
 Link=1
 Priority=1000
