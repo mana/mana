@@ -178,17 +178,20 @@ void UpdaterWindow::addRow(const std::string &row)
     mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
 }
 
-int UpdaterWindow::updateProgress(void *ptr, double dt, double dn, double ut, double un)
+int UpdaterWindow::updateProgress(void *ptr,
+                                  double dt, double dn, double ut, double un)
 {
-    float progress = dn/dt;
+    float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
     if (progress < 0)
     {
         progress = 0.0f;
     }
+
     std::stringstream progressString;
-    progressString << uw->mCurrentFile << " (" << ((int)(progress*100)) << "%)";
+    progressString << uw->mCurrentFile
+                   << " (" << ((int)(progress * 100)) << "%)";
     uw->setLabel(progressString.str().c_str());
     uw->setProgress(progress);
 
@@ -200,17 +203,25 @@ int UpdaterWindow::updateProgress(void *ptr, double dt, double dn, double ut, do
     return 0;
 }
 
-size_t UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t UpdaterWindow::memoryWrite(void *ptr,
+                                  size_t size, size_t nmemb, FILE *stream)
 {
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
-    uw->mMemoryBuffer = (char *)realloc(uw->mMemoryBuffer, uw->mDownloadedBytes + nmemb * size + 1);
+    size_t totalMem = size * nmemb;
+    uw->mMemoryBuffer = (char*)realloc(uw->mMemoryBuffer,
+                                       uw->mDownloadedBytes + totalMem + 1);
     if (uw->mMemoryBuffer)
     {
-        memcpy(&(uw->mMemoryBuffer[uw->mDownloadedBytes]), ptr, nmemb * size);
-        uw->mDownloadedBytes += nmemb;
+        memcpy(&(uw->mMemoryBuffer[uw->mDownloadedBytes]), ptr, totalMem);
+        uw->mDownloadedBytes += totalMem;
+
+        // Make sure the memory buffer is NULL terminated, because this
+        // function is used to download text files that are later parsed as a
+        // string.
         uw->mMemoryBuffer[uw->mDownloadedBytes] = 0;
     }
-    return nmemb;
+
+    return totalMem;
 }
 
 int UpdaterWindow::downloadThread(void *ptr)
@@ -221,6 +232,7 @@ int UpdaterWindow::downloadThread(void *ptr)
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     std::string outFilename;
     std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
+    uw->setLabel(uw->mCurrentFile + " (0%)");
 
     curl = curl_easy_init();
 

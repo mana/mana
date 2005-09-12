@@ -82,7 +82,7 @@ class Setup : public Window, public gcn::ActionListener
         gcn::Label *alphaLabel;
         gcn::Label *sfxLabel, *musicLabel;
         gcn::CheckBox *fsCheckBox;
-        gcn::CheckBox *openGlCheckBox;
+        gcn::CheckBox *openGLCheckBox;
         gcn::CheckBox *soundCheckBox;
         gcn::CheckBox *customCursorCheckBox;
         gcn::Slider *alphaSlider;
@@ -93,9 +93,12 @@ class Setup : public Window, public gcn::ActionListener
         // Variables that keeps old settings until the user "apply" them...
         int musicVolume, sfxVolume;
         double opacity;
-        bool fullScreenEnabled, openGlEnabled, customCursorEnabled, soundEnabled;
+        bool fullScreenEnabled;
+        bool openGLEnabled;
+        bool customCursorEnabled;
+        bool soundEnabled;
 
-    public:    
+    public:
         /**
          * Constructor.
          */
@@ -105,7 +108,7 @@ class Setup : public Window, public gcn::ActionListener
          * Destructor.
          */
         ~Setup();
-    
+
         /**
          * Event handling method.
          */

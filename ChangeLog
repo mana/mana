@@ -1,3 +1,11 @@
+2005-09-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/setup.cpp, src/gui/setup.h: Enabled OpenGL checkbox and
+	added messagebox informing the user that apply this change requires
+	restarting the client.
+	* src/gui/updatewindow.cpp: Start displaying file progress at 0% and
+	some small fixes.
+
 2005-09-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* M src/Makefile.am, src/gui/browserbox.cpp, src/gui/gui.cpp,

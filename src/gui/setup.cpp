@@ -97,8 +97,7 @@ Setup::Setup():
     modeList->setEnabled(false);
     scrollArea = new ScrollArea(modeList);
     fsCheckBox = new CheckBox("Full screen", false);
-    openGlCheckBox = new CheckBox("OpenGL", false);
-    openGlCheckBox->setEnabled(false);
+    openGLCheckBox = new CheckBox("OpenGL", false);
     customCursorCheckBox = new CheckBox("Custom cursor");
     alphaLabel = new gcn::Label("Gui opacity");
     alphaSlider = new Slider(0.2, 1.0);
@@ -126,7 +125,7 @@ Setup::Setup():
     scrollArea->setDimension(gcn::Rectangle(10, 30, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
     fsCheckBox->setPosition(110, 30);
-    openGlCheckBox->setPosition(110, 50);
+    openGLCheckBox->setPosition(110, 50);
     customCursorCheckBox->setPosition(110, 70);
     alphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
     alphaLabel->setPosition(20 + alphaSlider->getWidth(), 97);
@@ -156,7 +155,7 @@ Setup::Setup():
     add(videoLabel);
     add(scrollArea);
     add(fsCheckBox);
-    add(openGlCheckBox);
+    add(openGLCheckBox);
     add(customCursorCheckBox);
     add(audioLabel);
     add(soundCheckBox);
@@ -173,31 +172,30 @@ Setup::Setup():
 
     // Load default settings
     modeList->setSelected(-1);
-    
+
     // Full Screen
     fullScreenEnabled = config.getValue("screen", 0);
     fsCheckBox->setMarked(fullScreenEnabled);
-    
+
     // Sound
     soundEnabled = config.getValue("sound", 0);
     soundCheckBox->setMarked(soundEnabled);
-    
+
     sfxVolume = (int)config.getValue("sfxVolume", 100);
     sfxSlider->setValue(sfxVolume);
-    
+
     musicVolume = (int)config.getValue("musicVolume", 60);
     musicSlider->setValue(musicVolume);
 
     // Graphics
     customCursorEnabled = config.getValue("customcursor", 1);
     customCursorCheckBox->setMarked(customCursorEnabled);
-    
+
     opacity = config.getValue("guialpha", 0.8);
     alphaSlider->setValue(opacity);
 
-    openGlEnabled = config.getValue("openGL", 0);
-    openGlCheckBox->setMarked(openGlEnabled);
-
+    openGLEnabled = config.getValue("opengl", 0);
+    openGLCheckBox->setMarked(openGLEnabled);
 }
 
 Setup::~Setup()
@@ -206,7 +204,7 @@ Setup::~Setup()
     delete modeList;
     delete scrollArea;
     delete fsCheckBox;
-    delete openGlCheckBox;
+    delete openGLCheckBox;
     delete soundCheckBox;
     delete audioLabel;
     delete applyButton;
@@ -270,25 +268,32 @@ void Setup::action(const std::string &eventId)
             try {
                 sound.init();
             }
-            catch (const char *err) 
+            catch (const char *err)
             {
                 new OkDialog(this, "Sound Engine", err);
                 logger->log("Warning: %s", err);
             }
-        } 
+        }
         else
         {
             config.setValue("sound", 0);
             sound.close();
         }
 
-        //TODO: OpenGL changes at apply time
+        // OpenGL change
+        if (openGLCheckBox->isMarked() != openGLEnabled)
+        {
+            config.setValue("opengl", openGLCheckBox->isMarked() ? 1 : 0);
 
+            // OpenGL can currently only be changed by restarting, notify user.
+            new OkDialog(this, "Changing OpenGL",
+                               "Applying change to OpenGL requires restart.");
+        }
 
         // We sync old and new values at apply time
         // Screen
         fullScreenEnabled = config.getValue("screen", 0);
-    
+
         // Sound
         soundEnabled = config.getValue("sound", 0);
         sfxVolume = (int)config.getValue("sfxVolume", 100);
@@ -297,9 +302,8 @@ void Setup::action(const std::string &eventId)
         // Graphics
         customCursorEnabled = config.getValue("customcursor", 1);
         opacity = config.getValue("guialpha", 0.8);
-        openGlEnabled = config.getValue("openGL", 0);
-
-    } 
+        openGLEnabled = config.getValue("opengl", 0);
+    }
     else if (eventId == "cancel")
     {
         setVisible(false);
@@ -308,15 +312,15 @@ void Setup::action(const std::string &eventId)
         // Screen
         config.setValue("screen", fullScreenEnabled ? 1 : 0);
         fsCheckBox->setMarked(fullScreenEnabled);
-    
+
         // Sound
         config.getValue("sound", soundEnabled ? 1 : 0);
         soundCheckBox->setMarked(soundEnabled);
-        
+
         config.getValue("sfxVolume", sfxVolume ? 1 : 0);
         sound.setSfxVolume(sfxVolume);
         sfxSlider->setValue(sfxVolume);
-        
+
         config.setValue("musicVolume", musicVolume);
         sound.setMusicVolume(musicVolume);
         musicSlider->setValue(musicVolume);
@@ -324,11 +328,11 @@ void Setup::action(const std::string &eventId)
         // Graphics
         config.setValue("customcursor", customCursorEnabled ? 1 : 0);
         customCursorCheckBox->setMarked(customCursorEnabled);
-        
+
         config.setValue("guialpha", opacity);
         alphaSlider->setValue(opacity);
-        
-        config.setValue("openGL", openGlEnabled ? 1 : 0);
-        openGlCheckBox->setMarked(openGlEnabled);
+
+        config.setValue("opengl", openGLEnabled ? 1 : 0);
+        openGLCheckBox->setMarked(openGLEnabled);
     }
 }
