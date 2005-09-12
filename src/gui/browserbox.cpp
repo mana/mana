@@ -54,8 +54,7 @@ BrowserBox::BrowserBox(unsigned int mode):
 #ifdef USE_OPENGL
         if (config.getValue("opengl", 0)) {
             browserFont = new gcn::ImageFont(
-                    ResourceManager::getInstance()->getRealPath(
-                        "graphics/gui/browserfont.png"),
+                    "graphics/gui/browserfont.png",
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");

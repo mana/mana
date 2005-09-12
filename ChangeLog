@@ -1,3 +1,11 @@
+2005-09-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* M src/Makefile.am, src/gui/browserbox.cpp, src/gui/gui.cpp,
+	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h,
+	src/resources/sdlimageloader.cpp, src/resources/sdlimageloader.h:
+	Added SDLImageLoader to make guichan support physfs. Removed
+	ResourceManager::getRealPath() because it's no longer needed.
+
 2005-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/hits_blue.png, data/graphics/gui/hits_red.png,

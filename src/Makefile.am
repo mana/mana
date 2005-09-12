@@ -123,6 +123,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
 	      resources/resourcemanager.h \
+	      resources/sdlimageloader.h \
+	      resources/sdlimageloader.cpp \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
 	      resources/buddylist.h \

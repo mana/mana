@@ -31,7 +31,6 @@
 #include <guichan/opengl/openglimageloader.hpp>
 #endif
 
-#include <guichan/sdl/sdlimageloader.hpp>
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
@@ -52,6 +51,7 @@
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/sdlimageloader.h"
 
 extern Being* autoTarget;
 
@@ -92,13 +92,13 @@ Gui::Gui(Graphics *graphics):
     if (config.getValue("opengl", 0)) {
 
         // Set image loader
-        mHostImageLoader = new gcn::SDLImageLoader();
+        mHostImageLoader = new SDLImageLoader();
         mImageLoader = new gcn::OpenGLImageLoader(mHostImageLoader);
     } else
 #endif
     {
         // Set image loader
-        mImageLoader = new gcn::SDLImageLoader();
+        mImageLoader = new SDLImageLoader();
     }
 
     // Set input
@@ -120,12 +120,9 @@ Gui::Gui(Graphics *graphics):
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    ResourceManager *resman = ResourceManager::getInstance();
-
     // Set global font
     try {
-        mGuiFont = new gcn::ImageFont(
-                resman->getRealPath("graphics/gui/sansserif8.png"),
+        mGuiFont = new gcn::ImageFont("graphics/gui/sansserif8.png",
                 " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ["
                 "\\]^_`abcdefghijklmnopqrstuvwxyz{|}~|"
                 );
@@ -137,8 +134,7 @@ Gui::Gui(Graphics *graphics):
 
     // Set speech font
     try {
-        speechFont = new gcn::ImageFont(
-                resman->getRealPath("graphics/gui/rpgfont_wider.png"),
+        speechFont = new gcn::ImageFont("graphics/gui/rpgfont_wider.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@&\\"
                 );
@@ -152,14 +148,11 @@ Gui::Gui(Graphics *graphics):
 
     // Load hits' colourful fonts
     try {
-        hitRedFont = new gcn::ImageFont(
-                resman->getRealPath("graphics/gui/hits_red.png"),
+        hitRedFont = new gcn::ImageFont("graphics/gui/hits_red.png",
                 "0123456789");
-        hitBlueFont = new gcn::ImageFont(
-                resman->getRealPath("graphics/gui/hits_blue.png"),
+        hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
                 "0123456789");
-        hitYellowFont = new gcn::ImageFont(
-                resman->getRealPath("graphics/gui/hits_yellow.png"),
+        hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
                 "mis");
     }
     catch (gcn::Exception e)
