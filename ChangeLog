@@ -1,4 +1,12 @@
-2005-09-10  Bjorn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/hits_blue.png, data/graphics/gui/hits_red.png,
+	data/graphics/gui/hits_yellow.png: Made shadow translucent.
+	* data/graphics/images/minimap_new_7-1.png: Added this minimap.
+	* data/help/changes.txt, data/help/commands.txt: Added 0.0.16 changes.
+	* data/maps/new_7-1.tmx.gz: Fixed well being in the wrong layer.
+
+2005-09-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/log.cpp: Committed patch by Nayr for displaying a messagebox
 	when an error occurs on MacOS.

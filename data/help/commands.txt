@@ -5,7 +5,7 @@
  
 ##2KEYBOARD:
 
-Use arrow keys to move around. Other keys:
+ Use arrow keys to move around. Other keys:
  
  Other keys:
  
@@ -26,6 +26,6 @@ Use arrow keys to move around. Other keys:
 
 ##2MOUSE:
 
-Left click to execute default action: walk, pick up an item, attack a monster
-and talk to NPCs (be sure to click on their feet). Right click to show up a
-context menu. Holding [Left Shift] prevents from walking when attacking.
+ Left click to execute default action: walk, pick up an item, attack a monster
+ and talk to NPCs (be sure to click on their feet). Right click to show up a
+ context menu. Holding [Left Shift] prevents from walking when attacking.
