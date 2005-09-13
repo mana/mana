@@ -279,12 +279,13 @@ void Engine::draw()
     for (std::list<FloorItem*>::iterator i = floorItems.begin(); i != floorItems.end(); i++)
     {
         FloorItem *floorItem = (*i);
-        if (itemDb->getItemInfo(floorItem->id)->getImage() > 0) {
+        if (itemDb->getItemInfo(floorItem->getItemId())->getImage() > 0) {
             Image *image = itemset->spriteset[itemDb->getItemInfo(
-                    floorItem->id)->getImage() - 1];
+                    floorItem->getItemId())->getImage() - 1];
 
             graphics->drawImage(image,
-                    floorItem->x * 32 - map_x, floorItem->y * 32 - map_y);
+                                floorItem->getX() * 32 - map_x,
+                                floorItem->getY() * 32 - map_y);
         }
     }
 
@@ -297,10 +298,6 @@ void Engine::draw()
         int x = being->x * 32 - map_x;
         int y = being->y * 32 - map_y;
 
-#ifdef DEBUG
-        graphics->setColor(gcn::Color(0, 0, 255));
-        graphics->drawRectangle(gcn::Rectangle(x & ~31, y & ~31, 32, 32));
-#endif
         int frame;
         switch (being->getType())
         {
@@ -323,10 +320,6 @@ void Engine::draw()
                 graphics->drawImage(playerset->spriteset[frame + 16 * dir],
                         being->text_x - 16, being->text_y - 32);
 
-                //if (being->action == ATTACK)
-                //{
-                //    std::cout << being->name << " " << being->getWeapon() << std::endl;
-                //}
                 if (being->getWeapon() != 0 && being->action == Being::ATTACK) {
                     Image *image = weaponset->spriteset[
                         16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
@@ -351,9 +344,9 @@ void Engine::draw()
                 }
 
                 graphics->setFont(speechFont);
-                graphics->drawText(being->name,
-                        being->text_x + 15, being->text_y + 30,
-                        gcn::Graphics::CENTER);
+                graphics->drawText(being->getName(),
+                                   being->text_x + 15, being->text_y + 30,
+                                   gcn::Graphics::CENTER);
                 graphics->setFont(gui->getFont());
                 break;
 
@@ -465,6 +458,7 @@ void Engine::draw()
                 gcn::Graphics::CENTER);
     }
 
+#ifdef DEBUG
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " << mouseTileX << ", " << mouseTileY;
 
@@ -477,6 +471,7 @@ void Engine::draw()
 
     debugInfo->setCaption(debugStream.str());
     debugInfo->adjustSize();
+#endif
 
     gui->draw();
 }

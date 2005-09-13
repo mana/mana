@@ -90,41 +90,41 @@ bool Inventory::contains(Item *item)
 
 int Inventory::useItem(Item *item)
 {
-    WFIFOW(0) = net_w_value(0x00a7);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOL(4) = net_l_value(item->getId());
+    writeWord(0, 0x00a7);
+    writeWord(2, item->getInvIndex());
+    writeLong(4, item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
-    WFIFOSET(8);
-    while ((out_size > 0)) flush();
+    writeSet(8);
+    flush();
     return 0;
 }
 
 int Inventory::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
-    WFIFOW(0) = net_w_value(0x00a2);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOW(4) = net_w_value(quantity);
-    WFIFOSET(6);
-    while ((out_size > 0)) flush();
+    writeWord(0, 0x00a2);
+    writeWord(2, item->getInvIndex());
+    writeWord(4, quantity);
+    writeSet(6);
+    flush();
     return 0;
 }
 
 void Inventory::equipItem(Item *item)
 {
-    WFIFOW(0) = net_w_value(0x00a9);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOW(4) = net_w_value(0);
-    WFIFOSET(6);
-    while ((out_size > 0)) flush();
+    writeWord(0, 0x00a9);
+    writeWord(2, item->getInvIndex());
+    writeWord(4, 0);
+    writeSet(6);
+    flush();
 }
 
 void Inventory::unequipItem(Item *item)
 {
-    WFIFOW(0) = net_w_value(0x00ab);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOSET(4);
-    while ((out_size > 0)) flush();
+    writeWord(0, 0x00ab);
+    writeWord(2, item->getInvIndex());
+    writeSet(4);
+    flush();
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     Equipment::getInstance()->removeEquipment(item);

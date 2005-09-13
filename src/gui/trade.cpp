@@ -161,8 +161,7 @@ void TradeWindow::addMoney(int amount)
     moneyLabel->adjustSize();
 }
 
-void TradeWindow::addItem(int id, bool own, int quantity,
-        bool equipment)
+void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
     if (own) {
         myInventory->addItem(id, quantity, equipment);
@@ -241,11 +240,11 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    WFIFOW(0) = net_w_value(0x00e8);
-    WFIFOW(2) = net_w_value(item->getInvIndex());
-    WFIFOL(4) = net_l_value(quantity);
-    WFIFOSET(8);
-    while ((out_size > 0)) flush();
+    writeWord(0, 0x00e8);
+    writeWord(2, item->getInvIndex());
+    writeLong(4, quantity);
+    writeSet(8);
+    flush();
 }
 
 void TradeWindow::mouseClick(int x, int y, int button, int count)
@@ -314,9 +313,9 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "cancel")
     {
-        WFIFOW(0) = net_w_value(0x00ed);
-        WFIFOSET(2);
-        while ((out_size > 0)) flush();
+        writeWord(0, 0x00ed);
+        writeSet(2);
+        flush();
     }
     else if (eventId == "ok")
     {
@@ -328,23 +327,23 @@ void TradeWindow::action(const std::string &eventId)
             tempMoney[1] << tempInt;
             moneyField->setText(tempMoney[1].str());
 
-            WFIFOW(0) = net_w_value(0x00e8);
-            WFIFOW(2) = net_w_value(0);
-            WFIFOL(4) = net_l_value(tempInt);
-            WFIFOSET(8);
-            while ((out_size > 0)) flush();
+            writeWord(0, 0x00e8);
+            writeWord(2, 0);
+            writeLong(4, tempInt);
+            writeSet(8);
+            flush();
         } else {
             moneyField->setText("");
         }
         moneyField->setEnabled(false);
-        WFIFOW(0) = net_w_value(0x00eb);
-        WFIFOSET(2);
-        while ((out_size > 0)) flush();
+        writeWord(0, 0x00eb);
+        writeSet(2);
+        flush();
     }
     else if (eventId == "trade")
     {
-        WFIFOW(0) = net_w_value(0x00ef);
-        WFIFOSET(2);
-        while ((out_size > 0)) flush();
+        writeWord(0, 0x00ef);
+        writeSet(2);
+        flush();
     }
 }

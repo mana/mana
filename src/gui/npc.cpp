@@ -70,20 +70,23 @@ NpcListDialog::~NpcListDialog()
     delete scrollArea;
 }
 
-int NpcListDialog::getNumberOfElements()
+int
+NpcListDialog::getNumberOfElements()
 {
     return items.size();
 }
 
-std::string NpcListDialog::getElementAt(int i)
+std::string
+NpcListDialog::getElementAt(int i)
 {
     return items[i];
 }
 
-void NpcListDialog::parseItems(const char *string, unsigned short len) {
-    char *copy = new char[len + 1];
-    strncpy(copy, string, len);
-    copy[len] = 0;
+void
+NpcListDialog::parseItems(const std::string &itemString)
+{
+    char *copy = new char[itemString.length() + 1];
+    strcpy(copy, itemString.c_str());
 
     char *token = strtok(copy, ":");
     while (token) {
@@ -94,20 +97,23 @@ void NpcListDialog::parseItems(const char *string, unsigned short len) {
     delete[] copy;
 }
 
-void NpcListDialog::reset() {
+void
+NpcListDialog::reset()
+{
     items.clear();
 }
 
-void NpcListDialog::action(const std::string& eventId)
+void
+NpcListDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         // Send the selected index back to the server
         int selectedIndex = itemList->getSelected();
         if (selectedIndex > -1) {
-            WFIFOW(0) = net_w_value(0x00b8);
-            WFIFOL(2) = net_l_value(current_npc);
-            WFIFOB(6) = net_b_value(selectedIndex + 1);
-            WFIFOSET(7);
+            writeWord(0, 0x00b8);
+            writeLong(2, current_npc);
+            writeByte(6, selectedIndex + 1);
+            writeSet(7);
             setVisible(false);
             current_npc = 0;
             reset();
@@ -115,10 +121,10 @@ void NpcListDialog::action(const std::string& eventId)
     }
     else if (eventId == "cancel") {
         // 0xff packet means cancel
-        WFIFOW(0) = net_w_value(0x00b8);
-        WFIFOL(2) = net_l_value(current_npc);
-        WFIFOB(6) = net_b_value(0xff);
-        WFIFOSET(7);
+        writeWord(0, 0x00b8);
+        writeLong(2, current_npc);
+        writeByte(6, 0xff);
+        writeSet(7);
         setVisible(false);
         reset();
         current_npc = 0;

@@ -23,6 +23,7 @@
 
 #include "char_server.h"
 
+#include <sstream>
 #include <SDL.h>
 
 #include "button.h"
@@ -36,6 +37,8 @@
 #include "../serverinfo.h"
 
 #include "../net/network.h"
+
+extern SERVER_INFO **server_info;
 
 char server[30];
 
@@ -107,15 +110,16 @@ void ServerSelectDialog::action(const std::string& eventId)
 }
 
 
-int ServerListModel::getNumberOfElements() {
+int ServerListModel::getNumberOfElements()
+{
     return n_server;
 }
 
-std::string ServerListModel::getElementAt(int i) {
-    static char buffer[30];
-    sprintf(buffer, "%s (%i)", server_info[i].name,
-            server_info[i].online_users);
-    return buffer;
+std::string ServerListModel::getElementAt(int i)
+{
+    std::stringstream s;
+    s << server_info[i]->name << " (" << server_info[i]->online_users << ")";
+    return s.str();
 }
 
 void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
@@ -130,12 +134,12 @@ void server_char_server(int serverIndex)
 {
     int ret;
     state = LOGIN;
-    const char *ipstring = iptostring(server_info[serverIndex].address);
+    const char *ipstring = iptostring(server_info[serverIndex]->address);
 
     // Connect to char server
-    ret = open_session(ipstring, server_info[serverIndex].port);
+    ret = open_session(ipstring, server_info[serverIndex]->port);
 
-    if (ret == SOCKET_ERROR)
+    if (ret == -1)
     {
         std::string str = std::string("Unable to connect to char server ") +
             std::string(ipstring);
@@ -144,74 +148,93 @@ void server_char_server(int serverIndex)
     }
 
     // Send login infos
-    WFIFOW(0) = net_w_value(0x0065);
-    WFIFOL(2) = net_l_value(account_ID);
-    WFIFOL(6) = net_l_value(session_ID1);
-    WFIFOL(10) = net_l_value(session_ID2);
-    WFIFOW(14) = 0;
-    WFIFOB(16) = net_b_value(sex);
-    WFIFOSET(17);
+    writeWord(0, 0x0065);
+    writeLong(2, account_ID);
+    writeLong(6, session_ID1);
+    writeLong(10, session_ID2);
+    writeWord(14, 0);
+    writeByte(16, sex);
+    writeSet(17);
 
+    // Skipping a mysterious 4 bytes
     while ((in_size < 4) || (out_size > 0)) flush();
-    RFIFOSKIP(4);
+    skip(4);
 
-    while (in_size < 3) flush();
+    MessageIn msg = get_next_message();
 
-    if (RFIFOW(0) == 0x006b)
+    if (msg.getId() == 0x006b)
     {
-        while (in_size < RFIFOW(2)) flush();
+        // Skip length word and an additional mysterious 20 bytes
+        msg.skip(2 + 20);
 
-        n_character = (RFIFOW(2) - 24) / 106;
-        char_info = (PLAYER_INFO*)malloc(sizeof(PLAYER_INFO) * n_character);
+        // Derive number of characters from message length
+        n_character = (msg.getLength() - 24) / 106;
+        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*) * n_character);
 
         for (int i = 0; i < n_character; i++)
         {
-            int n = 24 + 106 * i;
-            char_info[i].id = RFIFOL(n);
-            strcpy(char_info[i].name, RFIFOP(n + 74));
-            char_info[i].hp = RFIFOW( n+ 42);
-            char_info[i].max_hp = RFIFOW(n + 44);
-            char_info[i].xp = RFIFOL(n + 4);
-            char_info[i].gp = RFIFOL(n + 8);
-            char_info[i].job_xp = RFIFOL(n + 12);
-            char_info[i].job_lv = RFIFOL(n + 16);
-            char_info[i].sp = RFIFOW(n + 46);
-            char_info[i].max_sp = RFIFOW(n + 48);
-            char_info[i].lv = RFIFOW(n + 58);
-            char_info[i].STR = RFIFOB(n + 98);
-            char_info[i].AGI = RFIFOB(n + 99);
-            char_info[i].VIT = RFIFOB(n + 100);
-            char_info[i].INT = RFIFOB(n + 101);
-            char_info[i].DEX = RFIFOB(n + 102);
-            char_info[i].LUK = RFIFOB(n + 103);
-            char_info[i].hair_style = RFIFOW(n + 54);
-            char_info[i].hair_color = RFIFOW(n + 70);
-            char_info[i].weapon = RFIFOW(n + 56);
+            char_info[i] = new PLAYER_INFO;
+
+            char_info[i]->id = msg.readLong();
+            char_info[i]->xp = msg.readLong();
+            char_info[i]->gp = msg.readLong();
+            char_info[i]->job_xp = msg.readLong();
+            char_info[i]->job_lv = msg.readLong();
+            msg.skip(8);                          // unknown
+            msg.readLong();                       // option
+            msg.readLong();                       // karma
+            msg.readLong();                       // manner
+            msg.skip(2);                          // unknown
+            char_info[i]->hp = msg.readShort();
+            char_info[i]->max_hp = msg.readShort();
+            char_info[i]->sp = msg.readShort();
+            char_info[i]->max_sp = msg.readShort();
+            msg.readShort();                       // speed
+            msg.readShort();                       // class
+            char_info[i]->hair_style = msg.readShort();
+            char_info[i]->weapon = msg.readShort();
+            char_info[i]->lv = msg.readShort();
+            msg.readShort();                       // skill point
+            msg.readShort();                       // head bottom
+            msg.readShort();                       // shield
+            msg.readShort();                       // head option top
+            msg.readShort();                       // head option mid
+            char_info[i]->hair_color = msg.readShort();
+            msg.readShort();                       // unknown
+            char_info[i]->name = msg.readString(24);
+            char_info[i]->STR = msg.readByte();
+            char_info[i]->AGI = msg.readByte();
+            char_info[i]->VIT = msg.readByte();
+            char_info[i]->INT = msg.readByte();
+            char_info[i]->DEX = msg.readByte();
+            char_info[i]->LUK = msg.readByte();
+            msg.readByte();                        // character number
+            msg.readByte();                        // unknown
         }
 
         state = CHAR_SELECT;
 
         logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
-                char_info->name, RFIFOW(0), RFIFOW(2));
+                    char_info[0]->name.c_str(), msg.getId(), msg.getLength());
 
-
-        RFIFOSKIP(RFIFOW(2));
+        skip(msg.getLength());
     }
-    else if (RFIFOW(0) == 0x006c)
+    else if (msg.getId() == 0x006c)
     {
         std::string errorStr;
-        switch (RFIFOB(2)) {
+        switch (msg.readByte()) {
             case 0: errorStr = "Access denied"; break;
             case 1: errorStr = "Cannot use this ID"; break;
             default: errorStr = "Rejected from server"; break;
         }
         new OkDialog("Error", errorStr);
-        RFIFOSKIP(3);
+        skip(msg.getLength());
         close_session();
     }
     else
     {
         new OkDialog("Error", "Unknown error");
+        skip(msg.getLength());
     }
     // Todo: add other packets
 }

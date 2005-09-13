@@ -169,7 +169,7 @@ void ChatWindow::action(const std::string& eventId)
             curHist = history.end();
 
             // Send the message to the server
-            chat_send(char_info[0].name, message.c_str());
+            chat_send(player_info->name.c_str(), message.c_str());
 
             // Clear the text from the chat input
             chatInput->setText("");
@@ -217,10 +217,10 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
     msg += "\0";
 
     // send processed message
-    WFIFOW(0) = net_w_value(packid);
-    WFIFOW(2) = net_w_value((unsigned short)(msg.length()+4));
-    memcpy(WFIFOP(4), msg.c_str(), msg.length());
-    WFIFOSET((int)msg.length()+4);
+    writeWord(0, packid);
+    writeWord(2, (unsigned short)(msg.length() + 4));
+    memcpy(writePointer(4), msg.c_str(), msg.length());
+    writeSet((int)msg.length()+4);
     nick = msg = "";
     return "";
 }

@@ -77,10 +77,10 @@ void BuySellDialog::action(const std::string& eventId)
         current_npc = 0;
     }
     if (actionId > -1) {
-        WFIFOW(0) = net_w_value(0x00c5);
-        WFIFOL(2) = net_l_value(current_npc);
-        WFIFOB(6) = net_b_value(actionId);
-        WFIFOSET(7);
+        writeWord(0, 0x00c5);
+        writeLong(2, current_npc);
+        writeByte(6, actionId);
+        writeSet(7);
     }
 
     setVisible(false);

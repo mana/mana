@@ -21,8 +21,10 @@
  *  $Id$
  */
 
-#ifndef _TMW_GAME_H
-#define _TMW_GAME_H
+#ifndef _TMW_GAME_
+#define _TMW_GAME_
+
+#include <string>
 
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
@@ -31,12 +33,12 @@
 #define IDLE 255
 
 extern char map_path[480];
-extern char tradePartnerName[24];
+extern std::string tradePartnerName;
 extern int fps, frame, current_npc;
 extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;
-extern int startX, startY;
+extern unsigned short startX, startY;
 
 enum {
     JOY_UP,
@@ -76,11 +78,6 @@ void do_parse();
  * Clean the engine
  */
 void do_exit();
-
-/**
- * Calculate packet length
- */
-int get_packet_length(short);
 
 /**
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay

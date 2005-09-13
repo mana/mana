@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=161
+UnitCount=167
 Type=0
 Ver=1
 ObjFiles=
@@ -11,8 +11,8 @@ PrivateResource=The_Mana_World_private.rc
 ResourceIncludes=
 MakeIncludes=
 Compiler=
-CppCompiler=-DUSE_OPENGL_@@_-DDEBUG_@@__@@_
-Linker=-lopengl32_@@_-lwsock32_@@_-lmingw32_@@_-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lSDLmain_@@_-lSDL_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lcurl_@@_-lphysfs_@@_-lxml2_@@_-lz_@@_
+CppCompiler=-DUSE_OPENGL_@@_
+Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image_@@_-lSDL_mixer_@@_-lSDL_net_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL_@@_-lxml2_@@_-lopengl32_@@_-lz_@@_-lphysfs_@@_-lcurl_@@_
 IsCpp=1
 Icon=The Mana World.ico
 ExeOutput=
@@ -1617,6 +1617,26 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit166]
+FileName=src\net\messagein.cpp
+CompileCpp=1
+Folder=net/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit167]
+FileName=src\net\messagein.h
+CompileCpp=1
+Folder=net/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
 [Unit160]
 FileName=src\resources\sdlimageloader.cpp
 CompileCpp=1
@@ -1668,26 +1688,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit162]
-FileName=src\net\messageout.h
-CompileCpp=1
-Folder=net/header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit163]
-FileName=src\net\messagein.cpp
-CompileCpp=1
-Folder=net/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit164]
 FileName=src\net\messageout.cpp
 CompileCpp=1
 Folder=net/source
@@ -1697,7 +1697,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit165]
+[Unit163]
+FileName=src\net\messageout.h
+CompileCpp=1
+Folder=net/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit164]
 FileName=src\net\packet.cpp
 CompileCpp=1
 Folder=net/source
@@ -1707,3 +1717,12 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit165]
+FileName=src\net\packet.h
+CompileCpp=1
+Folder=net/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=

@@ -30,6 +30,10 @@
 #include <guichan/widgets/label.hpp>
 
 #include "../main.h"
+#include "../configuration.h"
+#include "../graphics.h"
+#include "../log.h"
+#include "../serverinfo.h"
 
 #include "button.h"
 #include "checkbox.h"
@@ -37,13 +41,10 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
-#include "../configuration.h"
-#include "../log.h"
-#include "../serverinfo.h"
-
 #include "../net/network.h"
 
 OkDialog *wrongLoginNotice = NULL;
+SERVER_INFO **server_info;
 
 WrongUsernameNoticeListener wrongUsernameNoticeListener;
 WrongPasswordNoticeListener wrongPasswordNoticeListener;
@@ -56,11 +57,11 @@ void WrongPasswordNoticeListener::setLoginDialog(
 
 void WrongPasswordNoticeListener::action(const std::string &eventId)
 {
-        // Reset the password and put the caret ready to retype it.
-        mLoginDialog->passField->setText("");
-        mLoginDialog->passField->setCaretPosition(0);
-        mLoginDialog->passField->requestFocus();
-        wrongLoginNotice = NULL;
+    // Reset the password and put the caret ready to retype it.
+    mLoginDialog->passField->setText("");
+    mLoginDialog->passField->setCaretPosition(0);
+    mLoginDialog->passField->requestFocus();
+    wrongLoginNotice = NULL;
 }
 
 void WrongUsernameNoticeListener::setLoginDialog(
@@ -174,61 +175,73 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::action(const std::string& eventId)
 {
-    if (eventId == "ok") {
+    if (eventId == "ok")
+    {
         const std::string user = userField->getText();
         logger->log("Network: Username is %s", user.c_str());
 
         // Store config settings
         config.setValue("remember", keepCheck->isMarked());
-        if (keepCheck->isMarked()) {
+
+        if (keepCheck->isMarked())
+        {
             config.setValue("username", user);
             config.setValue("host", serverField->getText());
-        } else {
+        }
+        else
+        {
             config.setValue("username", "");
         }
 
         // Check login
-        if (user.length() == 0) {
-            wrongLoginNotice = new OkDialog("Error", "Enter your username first", &wrongUsernameNoticeListener);
-        } else {
-            switch (attemptLogin(user, passField->getText()) )
-            {
-                case LOGIN_UNKNOWN_ERROR:
-                    wrongLoginNotice = new OkDialog("Error", "Unknown Error.");
-                default:
-                break;
-
-                case LOGIN_WRONG_PASSWORD:
-                    wrongLoginNotice = new OkDialog("Error", "Wrong Password", &wrongPasswordNoticeListener);
-                break;
-
-                case LOGIN_UNREGISTERED_ID:
-                    wrongLoginNotice = new OkDialog("Error", "Unregistered ID.");
-                break;
-
-                case LOGIN_EXPIRED:
-                    wrongLoginNotice = new OkDialog("Error", "This ID is expired");
-                break;
-
-                case LOGIN_REJECTED:
-                    wrongLoginNotice = new OkDialog("Error", "Rejected from server");
-                break;
-
-                case LOGIN_BLOCKED:
-                    wrongLoginNotice = new OkDialog("Error", "You have been blocked by the GM Team");
-                break;
-
-                case LOGIN_USERNAME_TWICE:
-                    wrongLoginNotice = new OkDialog("Error", "The username does already exist.");
-                break;
-
-
-            }
-            close_session();
+        if (user.length() == 0)
+        {
+            wrongLoginNotice = new OkDialog("Error",
+                                            "Enter your username first",
+                                            &wrongUsernameNoticeListener);
         }
-    } else if (eventId == "cancel") {
+        else
+        {
+            int ret = attemptLogin(user, passField->getText());
+
+            if (ret == LOGIN_WRONG_PASSWORD)
+            {
+                wrongLoginNotice = new OkDialog("Error", "Wrong Password",
+                                                &wrongPasswordNoticeListener);
+            }
+            else if (ret != LOGIN_OK)
+            {
+                std::string errorMsg = "Unknown error.";
+
+                switch (ret)
+                {
+                    case LOGIN_UNREGISTERED_ID:
+                        errorMsg = "Unregistered ID.";
+                        break;
+                    case LOGIN_EXPIRED:
+                        errorMsg = "This ID is expired";
+                        break;
+                    case LOGIN_REJECTED:
+                        errorMsg = "Rejected from server";
+                        break;
+                    case LOGIN_BLOCKED:
+                        errorMsg = "You have been blocked by the GM Team";
+                        break;
+                    case LOGIN_USERNAME_TWICE:
+                        errorMsg = "The username does already exist.";
+                        break;
+                }
+
+                wrongLoginNotice = new OkDialog("Error", errorMsg);
+            }
+        }
+    }
+    else if (eventId == "cancel")
+    {
         state = EXIT;
-    } else if (eventId == "register") {
+    }
+    else if (eventId == "register")
+    {
         const std::string user = userField->getText();
         logger->log("LoginDialog::register Username is %s", user.c_str());
 
@@ -241,46 +254,57 @@ void LoginDialog::action(const std::string& eventId)
         }
 
         // Check login
-        if (user.length() == 0) // No username
+        if (user.length() == 0)
         {
-            wrongLoginNotice = new OkDialog("Error", "Enter your username first.", &wrongUsernameNoticeListener);
+            // No username
+            wrongLoginNotice = new OkDialog("Error",
+                                            "Enter your username first.",
+                                            &wrongUsernameNoticeListener);
         }
-        else if (user.length() < LEN_MIN_USERNAME) // Name too short
+        else if (user.length() < LEN_MIN_USERNAME)
         {
+            // Name too short
             std::stringstream errorMessage;
             errorMessage << "The username needs to be at least ";
             errorMessage << LEN_MIN_USERNAME;
             errorMessage << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongUsernameNoticeListener);
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+                                            &wrongUsernameNoticeListener);
         }
-        else if (user.length() > LEN_MAX_USERNAME - 1 ) // Name too long
+        else if (user.length() > LEN_MAX_USERNAME - 1 )
         {
+            // Name too long
             std::stringstream errorMessage;
             errorMessage << "The username needs to be less than ";
             errorMessage << LEN_MAX_USERNAME;
             errorMessage << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongUsernameNoticeListener);
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+                                            &wrongUsernameNoticeListener);
         }
-        else if (passField->getText().length() < LEN_MIN_PASSWORD) // Pass too short
+        else if (passField->getText().length() < LEN_MIN_PASSWORD)
         {
+            // Pass too short
             std::stringstream errorMessage;
             errorMessage << "The password needs to be at least ";
             errorMessage << LEN_MIN_PASSWORD;
             errorMessage << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongPasswordNoticeListener);
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+                                            &wrongPasswordNoticeListener);
         }
-        else if (passField->getText().length() > LEN_MAX_PASSWORD - 1 ) // Pass too long
+        else if (passField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
+            // Pass too long
             std::stringstream errorMessage;
             errorMessage << "The password needs to be less than ";
             errorMessage << LEN_MAX_PASSWORD;
             errorMessage << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(), &wrongPasswordNoticeListener);
+            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+                                            &wrongPasswordNoticeListener);
         }
-        else // If no errors, register the new user.
+        else
         {
+            // No errors detected, register the new user.
             attemptLogin(user + "_M", passField->getText());
-            close_session();
         }
     }
 }
@@ -293,7 +317,8 @@ void loginInputHandler(SDL_KeyboardEvent *keyEvent)
     }
 }
 
-int attemptLogin(const std::string& user, const std::string& pass) {
+int attemptLogin(const std::string& user, const std::string& pass)
+{
     int ret;
 
     // Connect to login server
@@ -301,55 +326,69 @@ int attemptLogin(const std::string& user, const std::string& pass) {
             config.getValue("host", "animesites.de").c_str(),
             (short)config.getValue("port", 0));
 
-    if (ret == SOCKET_ERROR) {
+    if (ret == -1) {
         state = LOGIN;
-        wrongLoginNotice = new OkDialog("Error", "Unable to connect to login server");
+        wrongLoginNotice = new OkDialog("Error",
+                                        "Unable to connect to login server");
         return LOGIN_NO_CONNECTION;
     }
 
+
     // Send login infos
+    MessageOut outMsg;
+    outMsg.writeShort(0x0064);
+    outMsg.writeLong(0); // client version
+    outMsg.writeString(user, 24);
+    outMsg.writeString(pass, 24);
+    outMsg.writeByte(0); // unknown
+    // TODO: still have to use writeSet as skip for reading
+    writeSet(55);
 
-    WFIFOW(0) = net_w_value(0x0064);
-
-    WFIFOL(2) = 0;
-
-    memcpy(WFIFOP(6), user.c_str(), LEN_MAX_USERNAME - 1);
-    memcpy(WFIFOP(30), pass.c_str(), LEN_MAX_PASSWORD - 1);
-    WFIFOB(54) = 0;
-    WFIFOSET(55);
-
-    while ((in_size < 23) || (out_size > 0)) {
-        flush();
-    }
+    // Receive reply
+    MessageIn msg = get_next_message();
 
     // Login ok
-    if (RFIFOW(0) == 0x0069) {
-        while (in_size < RFIFOW(2)) {
-            flush();
+    if (msg.getId() == 0x0069)
+    {
+        // Skip the length word
+        msg.skip(2);
+
+        n_server = (msg.getLength() - 47) / 32;
+        server_info = (SERVER_INFO**)malloc(sizeof(SERVER_INFO*) * n_server);
+
+        session_ID1 = msg.readLong();
+        account_ID = msg.readLong();
+        session_ID2 = msg.readLong();
+        msg.skip(30);                           // unknown
+        sex = msg.readByte();
+
+        for (int i = 0; i < n_server; i++)
+        {
+            server_info[i] = new SERVER_INFO;
+
+            server_info[i]->address = msg.readLong();
+            server_info[i]->port = msg.readShort();
+            server_info[i]->name = msg.readString(20);
+            server_info[i]->online_users = msg.readLong();
+            msg.skip(2);                        // unknown
+
+            logger->log("Network: Server: %s (%s:%d)",
+                        server_info[i]->name.c_str(),
+                        iptostring(server_info[i]->address),
+                        server_info[i]->port);
         }
-        n_server = (RFIFOW(2) - 47) / 32;
-        server_info = (SERVER_INFO*)malloc(sizeof(SERVER_INFO) * n_server);
-        account_ID = RFIFOL(8);
-        session_ID1 = RFIFOL(4);
-        session_ID2 = RFIFOL(12);
-        sex = RFIFOB(46);
-        for (int i = 0; i < n_server; i++) {
-            server_info[i].address = RFIFOL(47 + 32 * i);
-            memcpy(server_info[i].name, RFIFOP(47 + 32 * i + 6), 20);
-            server_info[i].online_users = RFIFOW(47 + 32 * i + 26);
-            server_info[i].port = RFIFOW(47 + 32 * i + 4);
-            state = CHAR_SERVER;
-        }
-        logger->log("Network: Server: %s (%s:%d)", server_info[0].name,
-                iptostring(server_info[0].address),
-                server_info[0].port);
-        RFIFOSKIP(RFIFOW(2));
-        return LOGIN_OK;
+
+        state = CHAR_SERVER;
+
+        skip(msg.getLength());
+        ret = LOGIN_OK;
     }
-    else if (RFIFOW(0) == 0x006a) {
-        logger->log("Login::error code: %i", RFIFOB(2));
+    else if (msg.getId() == 0x006a)
+    {
+        int loginError = msg.readByte();
+        logger->log("Login::error code: %i", loginError);
         ret = 0;
-        switch (RFIFOB(2)) {
+        switch (loginError) {
             case 0:
                 ret = LOGIN_UNREGISTERED_ID;
                 break;
@@ -369,13 +408,16 @@ int attemptLogin(const std::string& user, const std::string& pass) {
                 ret = LOGIN_USERNAME_TWICE;
                 break;
         }
+        skip(msg.getLength());
         state = LOGIN;
-        RFIFOSKIP(23);
-        return ret;
     }
     else {
+        skip(msg.getLength());
         state = LOGIN;
-        return LOGIN_UNKNOWN_ERROR;
+        ret = LOGIN_UNKNOWN_ERROR;
     }
     // Todo: add other packets, also encrypted
+
+    close_session();
+    return ret;
 }

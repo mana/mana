@@ -89,36 +89,36 @@ void StatsWindow::update(){
     std::stringstream remainingStatsPointsStr;
 
     statsStr[0] << "Strength:";
-    figureStr[0] << (int)char_info->STR;
+    figureStr[0] << (int)player_info->STR;
     statsStr[1] << "Agility:";
-    figureStr[1] << (int)char_info->AGI;
+    figureStr[1] << (int)player_info->AGI;
     statsStr[2] << "Vitality:";
-    figureStr[2] << (int)char_info->VIT;
+    figureStr[2] << (int)player_info->VIT;
     statsStr[3] << "Intelligence:";
-    figureStr[3] << (int)char_info->INT;
+    figureStr[3] << (int)player_info->INT;
     statsStr[4] << "Dexterity:";
-    figureStr[4] << (int)char_info->DEX;
+    figureStr[4] << (int)player_info->DEX;
     statsStr[5] << "Luck:";
-    figureStr[5] << (int)char_info->LUK;
+    figureStr[5] << (int)player_info->LUK;
 
-    int statusPoints = char_info->statsPointsToAttribute;
+    int statusPoints = player_info->statsPointsToAttribute;
 
     remainingStatsPointsStr << "Remaining Status Points: " << statusPoints;
-    
-    pointsStr[0] << (int)char_info->STRUp;
-    pointsStr[1] << (int)char_info->AGIUp;
-    pointsStr[2] << (int)char_info->VITUp;
-    pointsStr[3] << (int)char_info->INTUp;
-    pointsStr[4] << (int)char_info->DEXUp;
-    pointsStr[5] << (int)char_info->LUKUp;
+
+    pointsStr[0] << (int)player_info->STRUp;
+    pointsStr[1] << (int)player_info->AGIUp;
+    pointsStr[2] << (int)player_info->VITUp;
+    pointsStr[3] << (int)player_info->INTUp;
+    pointsStr[4] << (int)player_info->DEXUp;
+    pointsStr[5] << (int)player_info->LUKUp;
 
     // Enable buttons for which there are enough status points
-    statsButton[0]->setEnabled(char_info->STRUp <= statusPoints);
-    statsButton[1]->setEnabled(char_info->AGIUp <= statusPoints);
-    statsButton[2]->setEnabled(char_info->VITUp <= statusPoints);
-    statsButton[3]->setEnabled(char_info->INTUp <= statusPoints);
-    statsButton[4]->setEnabled(char_info->DEXUp <= statusPoints);
-    statsButton[5]->setEnabled(char_info->LUKUp <= statusPoints);
+    statsButton[0]->setEnabled(player_info->STRUp <= statusPoints);
+    statsButton[1]->setEnabled(player_info->AGIUp <= statusPoints);
+    statsButton[2]->setEnabled(player_info->VITUp <= statusPoints);
+    statsButton[3]->setEnabled(player_info->INTUp <= statusPoints);
+    statsButton[4]->setEnabled(player_info->DEXUp <= statusPoints);
+    statsButton[5]->setEnabled(player_info->LUKUp <= statusPoints);
 
     // Update labels
     for (i = 0; i < 6; i++) {
@@ -150,28 +150,28 @@ void StatsWindow::draw(gcn::Graphics *graphics)
 }
 
 void StatsWindow::action(const std::string& eventId) {
-    WFIFOW(0) = net_w_value(0x00bb);
+    writeWord(0, 0x00bb);
 
     if (eventId == "STR") {
-        WFIFOW(2) = net_w_value(0x000d);
+        writeWord(2, 0x000d);
     }
     if (eventId == "AGI") {
-        WFIFOW(2) = net_w_value(0x000e);
+        writeWord(2, 0x000e);
     }
     if (eventId == "VIT") {
-        WFIFOW(2) = net_w_value(0x000f);
+        writeWord(2, 0x000f);
     }
     if (eventId == "INT") {
-        WFIFOW(2) = net_w_value(0x0010);
+        writeWord(2, 0x0010);
     }
     if (eventId == "DEX") {
-        WFIFOW(2) = net_w_value(0x0011);
+        writeWord(2, 0x0011);
     }
     if (eventId == "LUK") {
-        WFIFOW(2) = net_w_value(0x0012);
+        writeWord(2, 0x0012);
     }
 
     flush();
-    WFIFOW(4) = net_b_value(1);
-    WFIFOSET(5);
+    writeByte(4, 1);
+    writeSet(5);
 }

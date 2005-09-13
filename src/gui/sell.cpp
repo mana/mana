@@ -230,11 +230,11 @@ void SellDialog::action(const std::string& eventId)
         // Attempt sell
         assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
 
-        WFIFOW(0) = net_w_value(0x00c9);
-        WFIFOW(2) = net_w_value(8);
-        WFIFOW(4) = net_w_value(shopInventory[selectedItem].index);
-        WFIFOW(6) = net_w_value(m_amountItems);
-        WFIFOSET(8);
+        writeWord(0, 0x00c9);
+        writeWord(2, 8);
+        writeWord(4, shopInventory[selectedItem].index);
+        writeWord(6, m_amountItems);
+        writeSet(8);
 
         m_maxItems -= m_amountItems;
         m_amountItems = 0;

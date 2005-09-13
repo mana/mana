@@ -24,16 +24,14 @@
 #include "requesttrade.h"
 
 #include <sstream>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-
 #include "../net/network.h"
 
 bool requestTradeDialogOpen = false;
 
-RequestTradeDialog::RequestTradeDialog(const char *name):
+RequestTradeDialog::RequestTradeDialog(const std::string &name):
     Window("Request for Trade", true)
 {
     nameLabel[0] = new gcn::Label("");
@@ -88,16 +86,16 @@ void RequestTradeDialog::action(const std::string& eventId)
 {
     if (eventId == "accept") {
         // Send the selected index back to the server
-        WFIFOW(0) = net_w_value(0x00e6);
-        WFIFOB(2) = net_b_value(3);
-        WFIFOSET(3);
+        writeWord(0, 0x00e6);
+        writeByte(2, 3);
+        writeSet(3);
         scheduleDelete();
     }
     else if (eventId == "cancel") {
         // 0xff packet means cancel
-        WFIFOW(0) = net_w_value(0x00e6);
-        WFIFOB(2) = net_b_value(4);
-        WFIFOSET(3);
+        writeWord(0, 0x00e6);
+        writeByte(2, 4);
+        writeSet(3);
         requestTradeDialogOpen = false;
         scheduleDelete();
     }

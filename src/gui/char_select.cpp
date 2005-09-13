@@ -33,13 +33,11 @@
 #include "playerbox.h"
 #include "textfield.h"
 #include "windowcontainer.h"
-
 #include "../being.h"
 #include "../game.h"
 #include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
-
 #include "../net/network.h"
 #include "../net/protocol.h"
 
@@ -134,7 +132,6 @@ void CharSelectDialog::action(const std::string& eventId)
     if (eventId == "ok" && n_character > 0) {
         // Start game
         serverCharSelect();
-        close_session();
     }
     else if (eventId == "cancel") {
         state = EXIT;
@@ -192,90 +189,99 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
 void CharSelectDialog::serverCharDelete()
 {
     // Request character deletion
-    WFIFOW(0) = net_w_value(0x0068);
-    WFIFOL(2) = net_l_value(char_info->id);
-    WFIFOSET(46);
+    writeWord(0, 0x0068);
+    writeLong(2, char_info[0]->id);
+    writeSet(46);
 
-    while ((in_size < 2) || (out_size > 0)) flush();
-    if (RFIFOW(0) == 0x006f) {
-        RFIFOSKIP(2);
+    MessageIn msg = get_next_message();
+
+    if (msg.getId() == 0x006f)
+    {
+        skip(msg.getLength());
+        delete char_info[0];
         free(char_info);
         n_character = 0;
         setPlayerInfo(NULL);
         new OkDialog(this, "Info", "Player deleted");
     }
-    else if (RFIFOW(0) == 0x0070) {
+    else if (msg.getId() == 0x0070)
+    {
         new OkDialog(this, "Error", "Failed to delete character.");
-        RFIFOSKIP(3);
+        skip(msg.getLength());
     }
     else {
         new OkDialog(this, "Error", "Unknown");
+        skip(msg.getLength());
     }
 }
 
 void CharSelectDialog::serverCharSelect()
 {
     // Request character selection
-    WFIFOW(0) = net_w_value(0x0066);
-    WFIFOB(2) = net_b_value(0);
-    WFIFOSET(3);
+    writeWord(0, 0x0066);
+    writeByte(2, 0);
+    writeSet(3);
 
-    while ((in_size < 3) || (out_size > 0)) {
-        flush();
-    }
+    MessageIn msg = get_next_message();
 
-    logger->log("CharSelect: Packet ID: %x, Length: %d, Packet_in_size %d",
-            RFIFOW(0),
-            get_length(RFIFOW(0)),
-            RFIFOW(2));
-    logger->log("CharSelect: In_size: %d", in_size);
+    logger->log("CharSelect: Packet ID: %x, Length: %d, in_size: %d",
+                msg.getId(), msg.getLength(), in_size);
 
-    if (RFIFOW(0) == 0x0071) {
-        while (in_size < 28) {
-            flush();
-        }
-        char_ID = RFIFOL(2);
-
-        char mapName[17];
-        mapName[17] = 0;
-        strncpy(mapName, RFIFOP(6), 16);
-
-        memset(map_path, '\0', 480);
-        strcat(map_path, "maps/");
-        strncat(map_path, mapName, 479 - strlen(map_path));
-        map_address = RFIFOL(22);
-        map_port = RFIFOW(26);
+    if (msg.getId() == 0x0071)
+    {
+        char_ID = msg.readLong();
+        std::string mapPath = "maps/" + msg.readString(16);
+        strcpy(map_path, mapPath.c_str());
+        map_address = msg.readLong();
+        map_port = msg.readShort();
+        player_info = char_info[0];
         state = GAME;
 
-        logger->log("CharSelect: Map: %s", mapName);
-        logger->log("CharSelect: Server: %s:%d", iptostring(map_address), map_port);
-        RFIFOSKIP(28);
+        logger->log("CharSelect: Map: %s", map_path);
+        logger->log("CharSelect: Server: %s:%d", iptostring(map_address),
+                    map_port);
         close_session();
     }
-    else if (RFIFOW(0) == 0x006c) {
-        switch (RFIFOB(2)) {
+    else if (msg.getId() == 0x006c)
+    {
+        switch (msg.readByte()) {
             case 0:
                 new OkDialog(this, "Error", "Access denied");
                 break;
             case 1:
                 new OkDialog(this, "Error", "Cannot use this ID");
                 break;
+            default:
+                new OkDialog(this, "Error",
+                             "Unknown failure to select character");
+                break;
         }
-        RFIFOSKIP(3);
+        skip(msg.getLength());
     }
-    else if (RFIFOW(0) == 0x0081) {
-        new OkDialog(this, "Error",
-                "Map server is down, please try again later");
+    else if (msg.getId() == 0x0081)
+    {
+        switch (msg.readByte()) {
+            case 3:
+                new OkDialog(this, "Error", "Speed hack detected");
+                break;
+            case 8:
+                new OkDialog(this, "Error", "Duplicated login");
+                break;
+            default:
+                new OkDialog(this, "Error", "Unkown error with 0x0081");
+                break;
+        }
         close_session();
         state = LOGIN;
     }
+
     // Todo: add other packets
 }
 
 void CharSelectDialog::logic()
 {
     if (n_character > 0) {
-        setPlayerInfo(char_info);
+        setPlayerInfo(char_info[0]);
     }
 }
 
@@ -391,62 +397,83 @@ void CharCreateDialog::action(const std::string& eventId)
     playerBox->hairStyle %= NR_HAIR_STYLES;
 }
 
-std::string CharCreateDialog::getName() {
+std::string CharCreateDialog::getName()
+{
     return nameField->getText();
 }
 
 void CharCreateDialog::serverCharCreate()
 {
-    n_character = 1;
+    writeWord(0, 0x0067);
+    strcpy(writePointer(2), getName().c_str());
+    writeByte(26, 5);
+    writeByte(27, 5);
+    writeByte(28, 5);
+    writeByte(29, 5);
+    writeByte(30, 5);
+    writeByte(31, 5);
+    writeByte(32, 0);
+    writeWord(33, playerBox->hairColor + 1);
+    writeWord(35, playerBox->hairStyle + 1);
+    writeSet(37);
 
-    WFIFOW(0) = net_w_value(0x0067);
-    strcpy(WFIFOP(2), getName().c_str());
-    WFIFOB(26) = net_b_value(5);
-    WFIFOB(27) = net_b_value(5);
-    WFIFOB(28) = net_b_value(5);
-    WFIFOB(29) = net_b_value(5);
-    WFIFOB(30) = net_b_value(5);
-    WFIFOB(31) = net_b_value(5);
-    WFIFOB(32) = net_b_value(0);
-    WFIFOW(33) = net_w_value(playerBox->hairColor + 1);
-    WFIFOW(35) = net_w_value(playerBox->hairStyle + 1);
-    WFIFOSET(37);
+    MessageIn msg = get_next_message();
 
-    while ((in_size < 3) || (out_size > 0)) flush();
-    if (RFIFOW(0) == 0x006d) {
-        while (in_size < 108) flush();
-        char_info = (PLAYER_INFO *)malloc(sizeof(PLAYER_INFO));
-        char_info->id = RFIFOL(2);//account_ID;
-        memset(char_info->name, '\0', 24);
-        strcpy(char_info[0].name, RFIFOP(2 + 74));
-        char_info->hp = RFIFOW(2 + 42);
-        char_info->max_hp = RFIFOW(2 + 44);
-        char_info->sp = RFIFOW(2 + 46);
-        char_info->max_sp = RFIFOW(2 + 48);
-        char_info->job_lv = RFIFOL(2 + 16);
-        char_info->job_xp = RFIFOL(2 + 12);
-        char_info->lv = RFIFOW(2 + 58);
-        char_info->xp = RFIFOL(2 + 4);
-        char_info->gp = RFIFOL(2 + 8);
-        char_info->STR = RFIFOB(2 + 98);
-        char_info->AGI = RFIFOB(2 + 99);
-        char_info->VIT = RFIFOB(2 + 100);
-        char_info->INT = RFIFOB(2 + 101);
-        char_info->DEX = RFIFOB(2 + 102);
-        char_info->LUK = RFIFOB(2 + 103);
-        char_info->hair_style = RFIFOW(2 + 54);
-        char_info->hair_color = RFIFOW(2 + 70);
-        char_info->weapon = RFIFOW(2 + 56);
-        RFIFOSKIP(108);
-        //n_character++;
-    } else if (RFIFOW(0) == 0x006e) {
+    if (msg.getId() == 0x006d)
+    {
+        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*));
+        char_info[0] = new PLAYER_INFO;
+
+        char_info[0]->id = msg.readLong();
+        char_info[0]->xp = msg.readLong();
+        char_info[0]->gp = msg.readLong();
+        char_info[0]->job_xp = msg.readLong();
+        char_info[0]->job_lv = msg.readLong();
+        msg.skip(8);                          // unknown
+        msg.readLong();                       // option
+        msg.readLong();                       // karma
+        msg.readLong();                       // manner
+        msg.skip(2);                          // unknown
+        char_info[0]->hp = msg.readShort();
+        char_info[0]->max_hp = msg.readShort();
+        char_info[0]->sp = msg.readShort();
+        char_info[0]->max_sp = msg.readShort();
+        msg.readShort();                       // speed
+        msg.readShort();                       // class
+        char_info[0]->hair_style = msg.readShort();
+        char_info[0]->weapon = msg.readShort();
+        char_info[0]->lv = msg.readShort();
+        msg.readShort();                       // skill point
+        msg.readShort();                       // head bottom
+        msg.readShort();                       // shield
+        msg.readShort();                       // head option top
+        msg.readShort();                       // head option mid
+        char_info[0]->hair_color = msg.readShort();
+        msg.readShort();                       // unknown
+        char_info[0]->name = msg.readString(24);
+        char_info[0]->STR = msg.readByte();
+        char_info[0]->AGI = msg.readByte();
+        char_info[0]->VIT = msg.readByte();
+        char_info[0]->INT = msg.readByte();
+        char_info[0]->DEX = msg.readByte();
+        char_info[0]->LUK = msg.readByte();
+        msg.readByte();                        // character number
+        msg.readByte();                        // unknown
+
+        n_character = 1;
+    }
+    else if (msg.getId() == 0x006e)
+    {
         new OkDialog(this, "Error", "Failed to create character");
-        RFIFOSKIP(3);
         n_character = 0;
-    } else {
+    }
+    else
+    {
         new OkDialog(this, "Error", "Unknown error");
         n_character = 0;
     }
+
+    skip(msg.getLength());
 
     // Remove window when succeeded
     if (n_character == 1) {

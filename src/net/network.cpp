@@ -23,162 +23,309 @@
 
 #include "../log.h"
 #include "network.h"
+#include "protocol.h"
+#ifdef MACOSX
+#include "win2mac.h"
+#endif
 #ifndef WIN32
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #endif
+#include <sstream>
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
 
-int buffer_size = 65536;
-char *in, *out;
-int in_size, out_size;
+short packet_lengths[] = {
+   10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+// #0x0040
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+    0,  0,  0,  0, 55, 17,  3, 37, 46, -1, 23, -1,  3,108,  3,  2,
+    3, 28, 19, 11,  3, -1,  9,  5, 54, 53, 58, 60, 41,  2,  6,  6,
+// #0x0080
+    7,  3,  2,  2,  2,  5, 16, 12, 10,  7, 29, 23, -1, -1, -1,  0,
+    7, 22, 28,  2,  6, 30, -1, -1,  3, -1, -1,  5,  9, 17, 17,  6,
+   23,  6,  6, -1, -1, -1, -1,  8,  7,  6,  7,  4,  7,  0, -1,  6,
+    8,  8,  3,  3, -1,  6,  6, -1,  7,  6,  2,  5,  6, 44,  5,  3,
+// #0x00C0
+    7,  2,  6,  8,  6,  7, -1, -1, -1, -1,  3,  3,  6,  6,  2, 27,
+    3,  4,  4,  2, -1, -1,  3, -1,  6, 14,  3, -1, 28, 29, -1, -1,
+   30, 30, 26,  2,  6, 26,  3,  3,  8, 19,  5,  2,  3,  2,  2,  2,
+    3,  2,  6,  8, 21,  8,  8,  2,  2, 26,  3, -1,  6, 27, 30, 10,
+// #0x0100
+    2,  6,  6, 30, 79, 31, 10, 10, -1, -1,  4,  6,  6,  2, 11, -1,
+   10, 39,  4, 10, 31, 35, 10, 18,  2, 13, 15, 20, 68,  2,  3, 16,
+    6, 14, -1, -1, 21,  8,  8,  8,  8,  8,  2,  2,  3,  4,  2, -1,
+    6, 86,  6, -1, -1,  7, -1,  6,  3, 16,  4,  4,  4,  6, 24, 26,
+// #0x0140
+   22, 14,  6, 10, 23, 19,  6, 39,  8,  9,  6, 27, -1,  2,  6,  6,
+  110,  6, -1, -1, -1, -1, -1,  6, -1, 54, 66, 54, 90, 42,  6, 42,
+   -1, -1, -1, -1, -1, 30, -1,  3, 14,  3, 30, 10, 43, 14,186,182,
+   14, 30, 10,  3, -1,  6,106, -1,  4,  5,  4, -1,  6,  7, -1, -1,
+// #0x0180
+    6,  3,106, 10, 10, 34,  0,  6,  8,  4,  4,  4, 29, -1, 10,  6,
+   90, 86, 24,  6, 30,102,  9,  4,  8,  4, 14, 10,  4,  6,  2,  6,
+    3,  3, 35,  5, 11, 26, -1,  4,  4,  6, 10, 12,  6, -1,  4,  4,
+   11,  7, -1, 67, 12, 18,114,  6,  3,  6, 26, 26, 26, 26,  2,  3,
+// #0x01C0
+    2, 14, 10, -1, 22, 22,  4,  2, 13, 97,  0,  9,  9, 29,  6, 28,
+    8, 14, 10, 35,  6,  8,  4, 11, 54, 53, 60,  2, -1, 47, 33,  6,
+   30,  8, 34, 14,  2,  6, 26,  2, 28, 81,  6, 10, 26,  2, -1, -1,
+   -1, -1, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56, -1,  4,  5, 10,
+// #0x200
+   26,  0,  0,  0, 18,  0,  0,  0,  0,  0,  0, 19,  0,  0,  0,  0,
+    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+};
 
-SOCKET sock;
-SOCKADDR_IN addr;
-// File descriptors attached to socket
-fd_set read_socket;
-fd_set write_socket;
+unsigned int buffer_size = 65536;
+char *in = NULL;
+char *out = NULL;
+unsigned int in_size = 0;
+unsigned int out_size = 0;
+bool connectionOpen = false;
 
-void WFIFOSET(int len)
-{
-    if (out_size + len >= buffer_size) {
-        logger->log("Warning: Output buffer full");
-    }
-    else {
-        out_size += len;
-    }
-}
+TCPsocket sock;
+SDLNet_SocketSet set;
 
 char *iptostring(int address)
 {
-    short temp1, temp2;
     static char asciiIP[16];
 
-    temp1 = LOWORD(address);
-    temp2 = HIWORD(address);
-    sprintf(asciiIP, "%i.%i.%i.%i", LOBYTE(temp1), HIBYTE(temp1), LOBYTE(temp2), HIBYTE(temp2));
+    sprintf(asciiIP, "%i.%i.%i.%i",
+            (unsigned char)(address),
+            (unsigned char)(address >> 8),
+            (unsigned char)(address >> 16),
+            (unsigned char)(address >> 24));
+
     return asciiIP;
 }
 
-SOCKET open_session(const char* address, short port)
+int open_session(const char* address, short port)
 {
-    #ifdef WIN32
-    WSADATA wsda;
-    #endif
-    struct hostent *server;
-    int ret;
+    assert(!connectionOpen);
 
-    // Init WinSock and connect the socket
-    #ifdef WIN32
-    WSAStartup(MAKEWORD(2,0), &wsda);
-    #endif
-
-    sock = socket(PF_INET, SOCK_STREAM, 0); // Create socket for current session
-    if(sock==SOCKET_ERROR)return SOCKET_ERROR;
-
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = inet_addr(address);
-    if(addr.sin_addr.s_addr == INADDR_NONE){
-        server = NULL;
-        server = gethostbyname(address);
-        if(server == NULL)return SOCKET_ERROR;
-            memcpy(&addr.sin_addr, server->h_addr_list[0], server->h_length);
+    // Initialize SDL_net
+    if (SDLNet_Init() == -1)
+    {
+        logger->log("Error in SDLNet_Init(): %s", SDLNet_GetError());
+        return -1;
     }
 
-    ret = connect(sock, (struct sockaddr *) &addr, sizeof(addr));
-    if(ret == SOCKET_ERROR)return SOCKET_ERROR;
+    IPaddress ip;
+
+    // Resolve host name
+    if (SDLNet_ResolveHost(&ip, address, port) == -1)
+    {
+        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
+        return -1;
+    }
+
+    // Create the socket for the current session
+    sock = SDLNet_TCP_Open(&ip);
+    if (!sock)
+    {
+        logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
+        return -1;
+    }
+
+    // Create a socket set to listen to socket
+    set = SDLNet_AllocSocketSet(1);
+    if (!set)
+    {
+        logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
+        return -1;
+    }
+
+    // Add the socket to the set
+    int ret = SDLNet_TCP_AddSocket(set, sock);
+    if (ret == -1)
+    {
+        logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
+        return -1;
+    }
 
     // Init buffers
-    in = (char *)malloc(buffer_size);
-    out = (char *)malloc(buffer_size);
+    in = (char*)malloc(buffer_size);
+    out = (char*)malloc(buffer_size);
     memset(in, '\0', buffer_size);
     memset(out, '\0', buffer_size);
     in_size = 0;
     out_size = 0;
-    FD_CLR(sock, &read_socket);
-    FD_CLR(sock, &write_socket);
 
-    return sock;
+    logger->log("Network::Started session with %s:%i", address, port);
+    connectionOpen = true;
+
+    return 0;
 }
 
 void close_session()
 {
-    FD_CLR(sock,&read_socket);
-    FD_CLR(sock,&write_socket);
-    closesocket(sock);
-    if(in!=NULL) {
+    assert(connectionOpen);
+
+    // Remove the socket from the socket set
+    int ret = SDLNet_TCP_DelSocket(set, sock);
+    if (ret == -1)
+    {
+        logger->log("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
+    }
+
+    // Close the TCP connection
+    SDLNet_TCP_Close(sock);
+
+    // Free the socket set
+    SDLNet_FreeSocketSet(set);
+    set = NULL;
+
+    // Clear buffers
+    if (in != NULL)
+    {
         free(in);
+        in = NULL;
     }
-    if(out!=NULL) {
+
+    if (out != NULL)
+    {
         free(out);
+        out = NULL;
     }
-    in = NULL;
-    out = NULL;
+
     in_size = 0;
     out_size = 0;
-    WSACleanup();
+
+    // Shutdown the network API
+    SDLNet_Quit();
+
+    logger->log("Network::Closed session");
+    connectionOpen = false;
 }
 
 void flush()
 {
-    int ret = 0;
-    void *buf = out;
-    timeval time_out;
-
-    // Init the time_out struct to 0s so it won't block
-    time_out.tv_sec=0;
-    time_out.tv_usec=0;
-
-    // Clear file descriptors and set them to socket
-    FD_ZERO(&read_socket);
-    FD_ZERO(&write_socket);
-    FD_SET(sock, &read_socket);
-    FD_SET(sock, &write_socket);
-
-    // Check if socket has available data by evaluating attached file descriptors
-    select(FD_SETSIZE, &read_socket, &write_socket, NULL, &time_out);
-
-    // Send data if available
-    if(FD_ISSET(sock, &write_socket)) {
-        // While there wasn't a error or sent the whole data: handles partial packet send
-        while((ret!=SOCKET_ERROR)&&(out_size>0)) {
-            ret = send(sock, (char *)buf, out_size, 0);
-
-            if(ret!=SOCKET_ERROR && ret>0) {
-                buf = (char*)buf+ret;
-                out_size -= ret;
-            }
+    int numReady = SDLNet_CheckSockets(set, 0);
+    if (numReady == -1)
+    {
+        logger->log("Error: SDLNet_CheckSockets");
+        return;
+    }
+    else if (numReady)
+    {
+        // Receive data from the socket
+        int ret = SDLNet_TCP_Recv(sock, in + in_size, buffer_size - in_size);
+        if (ret <= 0)
+        {
+            logger->log("Warning: unknown error when receiving data");
+            logger->log("SDLNet_GetError(): %s", SDLNet_GetError());
+            // The client disconnected, notify it somewhere
+            logger->error("Disconnected from server");
+            return;
         }
-        if (ret == SOCKET_ERROR) {
-            logger->error("Socket Error");
-#ifdef WIN32
-            logger->log("Error: Socket error: %i ", WSAGetLastError());
-            if (WSAGetLastError() == 10053)
-            logger->log("Error: Packet size error");
-            /** Probably the last packet you sent, was defined with
-             *  wrong size: WFIFOSET(size);
-             */
-#else
-            logger->log("Error: Undefined socket error");
-#endif
+        else {
+            in_size += ret;
         }
     }
 
-    // Read data, if available
-    if (FD_ISSET(sock, &read_socket)) {
-        /* There's no check for partial received packets because at this level
-           the app doesn't know packet length, but it will done when parsing received data */
-        ret = recv(sock, in+in_size, RFIFOSPACE, 0);
-        if (ret == SOCKET_ERROR) {
-#ifdef WIN32
-            logger->log("Error: Socket error: %i ", WSAGetLastError());
-#else
-            logger->log("Error: Undefined socket error");
-#endif
-        } else RFIFOSET(ret); // Set size of available data to read
+    // Send all available data, waits if not all data can be sent immediately
+    if (out_size > 0)
+    {
+        int ret = SDLNet_TCP_Send(sock, (char*)out, out_size);
+        if (ret < (int)out_size)
+        {
+            // It is likely that the server disconnected
+            std::stringstream ss;
+            ss << "Error in SDLNet_TCP_Send(): " << SDLNet_GetError();
+            logger->error(ss.str());
+            return;
+        }
+        out_size -= ret;
     }
+}
+
+unsigned short readWord(int pos)
+{
+#ifdef MACOSX
+    return DR_SwapTwoBytes((*(unsigned short*)(in+(pos))));
+#else
+    return (*(unsigned short *)(in+(pos)));
+#endif
+}
+
+MessageIn
+get_next_message()
+{
+    // At least 2 bytes should be received for the message ID
+    while (in_size < 2) flush();
+
+    int length = packet_lengths[readWord(0)];
+
+    if (length == -1)
+    {
+        // Another 2 bytes should be received for the length
+        while (in_size < 4) flush();
+        length = readWord(2);
+    }
+
+#ifdef DEBUG
+    printf("Received packet 0x%x of length %d\n", readWord(0), length);
+#endif
+
+    // Make sure the whole packet is received
+    while (in_size < (unsigned int)length) flush();
+
+    return MessageIn(in, length);
+}
+
+void writeByte(int pos, unsigned char value)//writeByte(unsigned char value)
+{
+    (*(unsigned char *)(out + pos + out_size)) = value;
+    //out_size++;
+}
+
+void writeWord(int pos, unsigned short value)//writeWord(unsigned short value)
+{
+#ifdef MACOSX
+    (*(unsigned short *)(out + pos + out_size)) = DR_SwapTwoBytes(value);
+#else
+    (*(unsigned short *)(out + pos + out_size)) = value;
+#endif
+    //SDLNet_Write16(value, (out + (pos + out_size)));
+    //out_size += 2;
+}
+
+void writeLong(int pos, unsigned int value)//writeLong(int value)
+{
+#ifdef MACOSX
+    (*(unsigned int *)(out + pos + out_size)) = DR_SwapFourBytes(value);
+#else
+    (*(unsigned int *)(out + pos + out_size)) = value;
+#endif
+    //SDLNet_Write32((Uint32)value, (out + (pos + out_size)));
+    //out_size += 4;
+}
+
+char *writePointer(int pos)//writeString(const std::string &string, int length)
+{
+    return (out+(pos+out_size));
+    //memcpy((out + out_size), string.c_str(), length);
+    //out_size += length;
+}
+
+void writeSet(unsigned int value)
+{
+    if (out_size + value >= buffer_size) {
+        logger->log("Warning: Output buffer full");
+    }
+    else {
+        out_size += value;
+    }
+}
+
+void skip(int len)
+{
+    memcpy(in, in + len, in_size - len);
+    in_size -= len;
 }

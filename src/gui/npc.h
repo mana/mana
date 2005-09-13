@@ -58,29 +58,34 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId);
+        void
+        action(const std::string& eventId);
 
         /**
          * Returns the number of items in the choices list.
          */
-        int getNumberOfElements();
+        int
+        getNumberOfElements();
 
         /**
          * Returns the name of item number i of the choices list.
          */
-        std::string getElementAt(int i);
+        std::string
+        getElementAt(int i);
 
         /**
          * Fills the options list for an NPC dialog.
          *
-         * @param string A string with the options separated with colons.
+         * @param itemString A string with the options separated with colons.
          */
-        void parseItems(const char *string, unsigned short len);
+        void
+        parseItems(const std::string &itemString);
 
         /**
          * Resets the list by removing all items.
          */
-        void reset();
+        void
+        reset();
 
     private:
         gcn::Button *okButton;

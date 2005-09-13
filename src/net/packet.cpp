@@ -21,46 +21,20 @@
  *  $Id$
  */
 
-#ifndef _TMW_REQUESTTRADE_
-#define _TMW_REQUESTTRADE_
+#include "packet.h"
+#include <string.h>
+#include <cstdlib>
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-#include "../guichanfwd.h"
-
-extern bool requestTradeDialogOpen;
-
-/**
- * The request trade dialog.
- *
- * \ingroup Interface
- */
-class RequestTradeDialog : public Window, public gcn::ActionListener
+Packet::Packet(const char *data, int length):
+    length(length)
 {
-    public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
-        RequestTradeDialog(const std::string &name);
+    // Create a copy of the data
+    this->data = new char[length];
+    memcpy(this->data, data, length);
+}
 
-        /**
-         * Destructor.
-         */
-        ~RequestTradeDialog();
-
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
-
-    private:
-        gcn::Button *acceptButton;
-        gcn::Button *cancelButton;
-        gcn::Label *nameLabel[2];
-};
-
-#endif
+Packet::~Packet()
+{
+    // Clean up the data
+    delete[] data;
+}

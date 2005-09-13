@@ -87,7 +87,6 @@ class Being
         unsigned char emotion_time;   /**< Time until emotion disappears */
         unsigned int text_x, text_y;  // temp solution to fix speech position
 
-        char name[24];                /**< Name of character */
         unsigned short aspd;          /**< Attack speed */
 
         /**
@@ -129,11 +128,18 @@ class Being
         void setDamage(const std::string &text, int time);
 
         /**
-         * Sets the name for the being
+         * Returns the name of the being.
+         */
+        const std::string&
+        getName() { return mName; }
+
+        /**
+         * Sets the name for the being.
          *
          * @param text The name that should appear.
          */
-        void setName(char *name);
+        void
+        setName(const std::string &name) { mName = name; }
 
         /**
          * Sets the hair color for this being.
@@ -225,6 +231,7 @@ class Being
         unsigned int speech_time;
         unsigned int damage_time;
         bool showSpeech, showDamage;
+        std::string mName;              /**< Name of character */
 
         /**
          * Sets the new path for this being.

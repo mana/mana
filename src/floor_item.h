@@ -24,22 +24,50 @@
 #ifndef _TMW_FLOORITEM_H
 #define _TMW_FLOORITEM_H
 
-class FloorItem {
-    private:
+/**
+ * An item lying on the floor.
+ */
+class FloorItem
+{
     public:
-        unsigned int id;
-        unsigned int int_id;
-        unsigned short x, y;
-        
         /**
          * Constructor.
          */
-        FloorItem();
+        FloorItem(unsigned int id,
+                  unsigned int itemId,
+                  unsigned short x,
+                  unsigned short y):
+            id(itemId),
+            int_id(id),
+            x(x),
+            y(y)
+        {
+        }
 
         /**
-         * Destructor.
+         * Returns instance id of this item.
          */
-        ~FloorItem();
+        unsigned int getId() { return int_id; }
+
+        /**
+         * Returns the item id.
+         */
+        unsigned int getItemId() { return id; }
+
+        /**
+         * Returns the x coordinate.
+         */
+        unsigned short getX() { return x; }
+
+        /**
+         * Returns the y coordinate.
+         */
+        unsigned short getY() { return y; }
+
+    private:
+        unsigned int id;
+        unsigned int int_id;
+        unsigned short x, y;
 };
 
 /** Removes all items from the list */

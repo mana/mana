@@ -61,22 +61,24 @@ NpcTextDialog::~NpcTextDialog()
     delete scrollArea;
 }
 
-void NpcTextDialog::setText(const char *text)
+void
+NpcTextDialog::setText(const char *text)
 {
     textBox->setText(text);
 }
 
-void NpcTextDialog::addText(const char *text)
+void
+NpcTextDialog::addText(const std::string &text)
 {
-    textBox->setText(
-            textBox->getText() + std::string(text) + std::string("\n"));
+    textBox->setText(textBox->getText() + text + "\n");
 }
 
-void NpcTextDialog::action(const std::string& eventId)
+void
+NpcTextDialog::action(const std::string& eventId)
 {
-    WFIFOW(0) = net_w_value(0x00b9);
-    WFIFOL(2) = net_l_value(current_npc);
-    WFIFOSET(6);
+    writeWord(0, 0x00b9);
+    writeLong(2, current_npc);
+    writeSet(6);
     setText("");
     setVisible(false);
     current_npc = 0;

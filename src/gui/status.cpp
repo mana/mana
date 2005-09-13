@@ -157,36 +157,36 @@ void StatusWindow::update()
     char *tempstr = new char[64];
 
     sprintf(tempstr, "%s Lvl: % 2i Job: % 2i GP: % 2i",
-            char_info->name, char_info->lv, char_info->job_lv,
-            char_info->gp);
+            player_info->name.c_str(), player_info->lv, player_info->job_lv,
+            player_info->gp);
     setCaption(tempstr);
 
-    sprintf(tempstr, "%d/%d", char_info->hp, char_info->max_hp);
+    sprintf(tempstr, "%d/%d", player_info->hp, player_info->max_hp);
     hpValue->setCaption(tempstr);
     hpValue->adjustSize();
 
-    sprintf(tempstr, "%d/%d", char_info->sp, char_info->max_sp);
+    sprintf(tempstr, "%d/%d", player_info->sp, player_info->max_sp);
     spValue->setCaption(tempstr);
     spValue->adjustSize();
 
     sprintf(tempstr, "Exp: %d/%d",
-            (int)char_info->xp, (int)char_info->xpForNextLevel);
+            (int)player_info->xp, (int)player_info->xpForNextLevel);
     expLabel->setCaption(tempstr);
     expLabel->adjustSize();
 
     sprintf(tempstr, "Job: %d/%d",
-            (int)char_info->job_xp, (int)char_info->jobXpForNextLevel);
+            (int)player_info->job_xp, (int)player_info->jobXpForNextLevel);
     jobExpLabel->setCaption(tempstr);
     jobExpLabel->adjustSize();
 
     // HP Bar coloration
-    if (char_info->hp < int(char_info->max_hp / 3))
+    if (player_info->hp < int(player_info->max_hp / 3))
     {
         healthBar->setColor(223, 32, 32); // Red
     }
     else
     {
-        if (char_info->hp < int((char_info->max_hp / 3) * 2))
+        if (player_info->hp < int((player_info->max_hp / 3) * 2))
         {
             healthBar->setColor(230, 171, 34); // Orange
         }
@@ -196,12 +196,14 @@ void StatusWindow::update()
         }
     }
 
-    healthBar->setProgress((float)char_info->hp / (float)char_info->max_hp);
+    healthBar->setProgress((float)player_info->hp /
+                           (float)player_info->max_hp);
 
-    xpBar->setProgress(
-            (float)char_info->xp / (float)char_info->xpForNextLevel);
-    jobXpBar->setProgress(
-            (float)char_info->job_xp / (float)char_info->jobXpForNextLevel);
+    xpBar->setProgress((float)player_info->xp /
+                       (float)player_info->xpForNextLevel);
+
+    jobXpBar->setProgress((float)player_info->job_xp /
+                          (float)player_info->jobXpForNextLevel);
 
     delete[] tempstr;
 }

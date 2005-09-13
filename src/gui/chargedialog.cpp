@@ -52,12 +52,15 @@ void ChargeDialog::action(const std::string& eventId)
 void ChargeDialog::logic()
 {
     // calculate time since the last attack was made
-    char_info->lastAttackTime += .01; // this a hack until someone explains
+    player_info->lastAttackTime += .01; // this a hack until someone explains
                                       // to me how to work the timer
-    if(char_info->lastAttackTime > 1){char_info->lastAttackTime=1;}
-    
+    if (player_info->lastAttackTime > 1)
+    {
+        player_info->lastAttackTime = 1;
+    }
+
     // reset the progress bar to display accurate time since attack
-    progBar->setProgress(char_info->lastAttackTime);
+    progBar->setProgress(player_info->lastAttackTime);
 
     Window::logic();
 }

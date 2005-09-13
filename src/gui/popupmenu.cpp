@@ -72,22 +72,22 @@ PopupMenu::~PopupMenu()
 
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
-    std::string name;
-
     this->being = being;
     browserBox->clearRows();
 
     switch (being->getType())
     {
         case Being::PLAYER:
-            // Players can be traded with. Later also attack, follow and
-            // add as buddy will be options in this menu.
+            {
+                // Players can be traded with. Later also attack, follow and
+                // add as buddy will be options in this menu.
+                const std::string &name = being->getName();
+                browserBox->addRow("@@trade|Trade With " + name + "@@");
 
-            name = being->name;
-            //browserBox->addRow("@@attack|Attack " + name + "@@");
-            browserBox->addRow("@@trade|Trade With " + name + "@@");
-            //browserBox->addRow("@@follow|Follow " + name + "@@");
-            //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+                //browserBox->addRow("@@attack|Attack " + name + "@@");
+                //browserBox->addRow("@@follow|Follow " + name + "@@");
+                //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+            }
             break;
 
         case Being::NPC:
@@ -114,7 +114,7 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
     browserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
-    std::string name = itemDb->getItemInfo(floorItem->id)->getName();
+    std::string name = itemDb->getItemInfo(floorItem->getItemId())->getName();
     browserBox->addRow("@@pickup|Pick Up " + name + "@@");
 
     //browserBox->addRow("@@look|Look To@@");
@@ -130,22 +130,22 @@ void PopupMenu::handleLink(const std::string& link)
     if ((link == "talk") && being && being->getType() == Being::NPC &&
             (current_npc == 0))
     {
-        WFIFOW(0) = net_w_value(0x0090);
-        WFIFOL(2) = net_l_value(being->getId());
-        WFIFOB(6) = 0;
-        WFIFOSET(7);
+        writeWord(0, 0x0090);
+        writeLong(2, being->getId());
+        writeByte(6, 0);
+        writeSet(7);
         current_npc = being->getId();
     }
 
     // Trade action
     else if ((link == "trade") && being && being->getType() == Being::PLAYER)
     {
-        WFIFOW(0) = net_w_value(0x00e4);
-        WFIFOL(2) = net_l_value(being->getId());
-        WFIFOSET(6);
+        writeWord(0, 0x00e4);
+        writeLong(2, being->getId());
+        writeSet(6);
         //tradePartner.flush();
         //tradePartner << "Trade: You and " << being->name<< "";
-        strcpy(tradePartnerName, being->name);
+        tradePartnerName = being->getName();
     }
     /*
     // Follow Player action
@@ -160,15 +160,15 @@ void PopupMenu::handleLink(const std::string& link)
         if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
 
-        buddyWindow->addBuddy(being->name);
+        buddyWindow->addBuddy(being->getName());
     }*/
 
     // Pick Up Floor Item action
     else if ((link == "pickup") && floorItem)
     {
-        WFIFOW(0) = net_w_value(0x009f);
-        WFIFOL(2) = net_l_value(floorItem->int_id);
-        WFIFOSET(6);
+        writeWord(0, 0x009f);
+        writeLong(2, floorItem->getId());
+        writeSet(6);
     }
 
     // Look To action

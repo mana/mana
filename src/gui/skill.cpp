@@ -122,12 +122,11 @@ void SkillDialog::action(const std::string& eventId)
     {
         // Increment skill
         int selectedSkill = skillListBox->getSelected();
-        if (char_info->skill_point > 0 && selectedSkill >= 0)
+        if (player_info->skill_point > 0 && selectedSkill >= 0)
         {
-            WFIFOW(0) = net_w_value(0x0112);
-            WFIFOW(2) = net_w_value(
-                    skillList[selectedSkill]->id);
-            WFIFOSET(4);
+            writeWord(0, 0x0112);
+            writeWord(2, skillList[selectedSkill]->id);
+            writeSet(4);
         }
     }
     else if (eventId == "skill")

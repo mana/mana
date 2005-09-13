@@ -62,13 +62,11 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
-struct SERVER_INFO;
-
 // Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
-SERVER_INFO *server_info;
-PLAYER_INFO *char_info = new PLAYER_INFO;
+PLAYER_INFO **char_info;
+PLAYER_INFO *player_info;
 
 Spriteset *hairset = NULL, *playerset = NULL;
 Graphics *graphics;

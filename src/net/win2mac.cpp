@@ -1,5 +1,7 @@
 #include "win2mac.h"
 
+#define SWAP( a,  b ) { char c; c=a; a=b; b=c; }
+
 UInt32 DR_SwapFourBytes(UInt32 dw)
 {
     UInt32 tmp;
@@ -21,15 +23,9 @@ UInt16 DR_SwapTwoBytes(UInt16 w)
 char* SwapChar(char charlist[])
 {
     for (int i = 0; i < 24 / 2; i++)
-        SWAP(charlist[i],charlist[24 - i]);
-    return charlist;
-}
+    {
+        SWAP(charlist[i], charlist[24 - i]);
+    }
 
-/*
-char* SwapChar(char charlist[])
-{
-    for (int i = 0; i < sizeof(charlist) * 4 / 2; i++)
-        SWAP(charlist[i],charlist[sizeof(charlist) * 4 - i]);
     return charlist;
 }
-*/

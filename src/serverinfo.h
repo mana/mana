@@ -21,16 +21,17 @@
  *  $Id$
  */
 
-#ifndef _TMW_SERVERINFO_H
-#define _TMW_SERVERINFO_H
+#ifndef _TMW_SERVERINFO_
+#define _TMW_SERVERINFO_
 
-typedef struct {
+#include <string>
+
+struct SERVER_INFO
+{
     int address;
     short port;
-    char name[20];
+    std::string name;
     short online_users;
-} SERVER_INFO;
-
-extern SERVER_INFO *server_info;
+};
 
 #endif

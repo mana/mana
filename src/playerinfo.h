@@ -21,15 +21,16 @@
  *  $Id$
  */
 
-#ifndef _TMW_PLAYERINFO_H
-#define _TMW_PLAYERINFO_H
+#ifndef _TMW_PLAYERINFO_
+#define _TMW_PLAYERINFO_
 
-#include <vector>
+#include <string>
 
-struct PLAYER_INFO {
+struct PLAYER_INFO
+{
     int id;
-    float lastAttackTime; // used to synchronize the charge dialog
-    char name[24];
+    float lastAttackTime;      /**< Used to synchronize the charge dialog */
+    std::string name;          /**< Player name */
     short hp, max_hp, sp, max_sp, lv;
     short statsPointsToAttribute;
     int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
@@ -40,6 +41,7 @@ struct PLAYER_INFO {
     short weapon;
 };
 
-extern PLAYER_INFO *char_info;
+extern PLAYER_INFO **char_info;
+extern PLAYER_INFO *player_info;
 
 #endif

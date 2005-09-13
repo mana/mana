@@ -40,6 +40,9 @@ AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, ,
 AC_MSG_ERROR([ *** Unable to find SDL_mixer library
 (http://www.libsdl.org/projects/SDL_mixer/)]))
 
+AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
+AC_MSG_ERROR([ *** Unable to find SDL_net library]))
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])

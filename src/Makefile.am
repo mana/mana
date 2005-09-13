@@ -104,8 +104,14 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/hbox.cpp \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
+	      net/messagein.cpp \
+	      net/messagein.h \
+	      net/messageout.cpp \
+	      net/messageout.h \
 	      net/network.cpp \
 	      net/network.h \
+	      net/packet.cpp \
+	      net/packet.h \
 	      net/protocol.cpp \
 	      net/protocol.h \
 	      net/win2linux.h \

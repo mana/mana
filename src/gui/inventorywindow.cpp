@@ -105,7 +105,8 @@ void InventoryWindow::logic()
 
     // Update weight information
     std::stringstream tempstr;
-    tempstr << "Total Weight: " << char_info->totalWeight << " - Maximum Weight: " << char_info->maxWeight;
+    tempstr << "Total Weight: " << player_info->totalWeight
+            << " - Maximum Weight: " << player_info->maxWeight;
     weightLabel->setCaption(tempstr.str());
     weightLabel->adjustSize();
 }

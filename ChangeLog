@@ -1,9 +1,30 @@
 2005-09-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated to last changes.
+	* The Mana World.dev: Added latest changes to the proper branch.
+	* src/gui/login.cpp, src/net/messageout.cpp, src/net/messageout.h,
+	src/net/network.cpp, src/net/network.h: Started to use MessageOut to
+	send login data.
 
 2005-09-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* ChangeLog, The Mana World.dev, configure.ac, src/Makefile.am,
+	src/being.cpp, src/being.h, src/engine.cpp, src/floor_item.cpp,
+	src/floor_item.h, src/game.cpp, src/game.h, src/inventory.cpp,
+	src/log.h, src/main.cpp, src/playerinfo.h, src/serverinfo.h,
+	src/gui/buy.cpp, src/gui/buysell.cpp, src/gui/char_select.cpp,
+	src/gui/char_server.cpp, src/gui/chargedialog.cpp, src/gui/chat.cpp,
+	src/gui/inventorywindow.cpp, src/gui/login.cpp, src/gui/npc.cpp,
+	src/gui/npc.h, src/gui/npc_text.cpp, src/gui/npc_text.h,
+	src/gui/popupmenu.cpp, src/gui/requesttrade.cpp,
+	src/gui/requesttrade.h, src/gui/sell.cpp, src/gui/skill.cpp,
+	src/gui/stats.cpp, src/gui/status.cpp, src/gui/status.h,
+	src/gui/trade.cpp, src/net/messagein.cpp, src/net/messagein.h,
+	src/net/messageout.cpp, src/net/messageout.h, src/net/network.cpp,
+	src/net/network.h, src/net/packet.cpp, src/net/packet.h,
+	src/net/protocol.cpp, src/net/protocol.h, src/net/win2linux.h,
+	src/net/win2mac.cpp, src/net/win2mac.h: Merged with SDL_NET_TEST
+	branch.
 	* src/being.cpp, src/being.h, src/game.cpp: Simplify remove_node.
 	* src/being.cpp, src/being.h, src/game.cpp: Merged createBeing and
 	add_node into createBeing.
@@ -14,9 +35,23 @@
 	src/gui/login.cpp, src/gui/login.h, src/gui/updatewindow.cpp,
 	src/gui/updatewindow.h: Unified the loops for the various dialogs that
 	are shown before the actual game starts.
+	* src/gui/login.cpp: Removed a close_session call i missed.
+	* src/gui/login.cpp: Close the session only when it was opened.
 
 2005-09-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/floor_item.cpp, src/floor_item.h, src/engine.cpp,
+	popupmenu.cpp: Made members private and provided more convenient
+	constructor.
+	* src/net/messageout.cpp: Fixed bug in destructor.
+	* src/net/network.cpp: Initialize buffers and enforce only a single
+	session at a time.
+	* src/game.cpp, src/net/protocol.h: Converted all incoming messages
+	handled in game.cpp to use the MessageIn class. This is a huge change
+	so please test if everything is still working correctly.
+	* src/gui/npc.cpp, src/gui/npc.h, src/gui/npc_text.cpp,
+	src/gui/npc_text.h: Changed argument from char* to std::string for
+	convenience.
 	* src/gui/setup.cpp, src/gui/setup.h: Enabled OpenGL checkbox and
 	added messagebox informing the user that apply this change requires
 	restarting the client.
@@ -39,15 +74,69 @@
 	* data/help/changes.txt, data/help/commands.txt: Added 0.0.16 changes.
 	* data/maps/new_7-1.tmx.gz: Fixed well being in the wrong layer.
 
+2005-09-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/network.cpp: Improved error reporting a bit and got rid of
+	loop for sending data, which shouldn't be necessary according to
+	SDL_net documentation.
+	* src/Makefile.am, src/being.cpp, src/being.h, src/engine.cpp,
+	src/game.cpp, src/main.cpp, src/playerinfo.h, src/gui/char_server.cpp,
+	src/gui/chargedialog.cpp, src/gui/chat.cpp,
+	src/gui/inventorywindow.cpp, src/gui/popupmenu.cpp, src/gui/skill.cpp,
+	src/gui/stats.cpp, src/gui/status.cpp, src/gui/status.h,
+	src/net/protocol.cpp: Changed char_info into the array it's used as
+	for character selection and introduced player_info as the pointer to
+	the player information. Should help towards support for multiple
+	characters on the same account. Also changed PLAYER_INFO name field to
+	a std::string.
+	* src/net/win2mac.cpp, src/net/win2mac.h: A bit of clean up.
+	* src/net/packet.h, src/net/packet.cpp, src/net/messagein.h,
+	src/net/messagein.cpp, src/net/messageout.h, src/net/messageout.cpp:
+	Added these packet reading/writing helpers, taken from the new server
+	in development.
+	* src/gui/char_select.cpp: Made new character message be parsed
+	using MessageIn. Many other incoming messages should be ready to be
+	ported similarly, simplifying the parsing of packets because of
+	automatic incrementation of the read position.
+	* src/game.cpp, src/game.h, src/gui/popupmenu.cpp,
+	src/gui/requesttrade.cpp, src/gui/requesttrade.h: Changed
+	tradePartnerName to std::string.
+	* src/net/win2linux.h: Removed because it became redundant with
+	the use of SDL_net.
+	* src/game.cpp, src/game.h, src/gui/char_select.cpp,
+	src/net/messagein.cpp, src/net/messagein.h, src/net/network.cpp,
+	src/net/network.h: Got rid of usage of Packet by MessageIn,
+	simplifying both its usage and implementation. Now also handling
+	response to character selection through MessageIn.
+	* src/main.cpp, src/serverinfo.h, src/gui/char_select.cpp,
+	src/gui/char_server.cpp, src/gui/login.cpp, src/net/network.cpp,
+	src/net/network.h, src/net/protocol.cpp, src/net/protocol.h:
+	Introduced get_next_message function to reduce duplication of that
+	process. Also now MessageIn is used for all incoming messages handled
+	during the login sequence.
+	* src/being.cpp, src/being.h, src/game.cpp, src/game.h,
+	src/inventory.cpp, src/serverinfo.h, src/gui/login.cpp,
+	src/gui/trade.cpp, src/net/messagein.cpp, src/net/messagein.h,
+	src/net/network.cpp, src/net/protocol.cpp, src/net/protocol.h: Added
+	readCoordinates and readCoordinatePair to MessageIn for reading the
+	specific ways eAthena sends sends those, and converted part of
+	game.cpp to use the MessageIn class. Also simplified cases where
+	flush() was still called in a loop for sending and added asserts to
+	MessageIn methods.
+
 2005-09-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/log.cpp: Committed patch by Nayr for displaying a messagebox
 	when an error occurs on MacOS.
 
+2005-09-10  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* configure.ac: Add check for SDL_net.
+
 2005-09-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixes to dropped items network code
-	
+
 2005-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/win2linux.h: Removed inclusion of malloc.h header as it

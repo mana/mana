@@ -25,11 +25,10 @@
 #define _TMW_NPC_TEXT_H
 
 #include <iosfwd>
-
+#include <string>
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-
 #include "../guichanfwd.h"
 
 /**
@@ -55,14 +54,16 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId);
+        void
+        action(const std::string &eventId);
 
         /**
          * Sets the text shows in the dialog.
          *
          * @param string The new text.
          */
-        void setText(const char *string);
+        void
+        setText(const char *string);
 
         /**
          * Adds the text to the text shows in the dialog. Also adds a newline
@@ -70,7 +71,8 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          *
          * @param string The text to add.
          */
-        void addText(const char *string);
+        void
+        addText(const std::string &string);
 
     private:
         gcn::Button *okButton;

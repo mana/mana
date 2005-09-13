@@ -64,7 +64,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
 
     private:
         /**
-         * Updates this dialog with values from PLAYER_INFO *char_info
+         * Updates this dialog with values from <code>player_info</code>
          */
         void update();
 
@@ -73,7 +73,11 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *expLabel, *jobExpLabel;
         ProgressBar *healthBar, *manaBar;
         ProgressBar *xpBar, *jobXpBar;
-        gcn::Button *statsButton, *skillsButton, *inventoryButton, *setupButton, *equipmentButton;
+        gcn::Button *statsButton;
+        gcn::Button *skillsButton;
+        gcn::Button *inventoryButton;
+        gcn::Button *setupButton;
+        gcn::Button *equipmentButton;
 };
 
 extern StatusWindow *statusWindow;

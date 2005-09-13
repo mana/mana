@@ -64,10 +64,11 @@ Being* createBeing(unsigned int id, unsigned short job, Map *map)
     beings.push_back(being);
 
     // If the being is a player, request the name
-    if (being->getType() == Being::PLAYER) {
-        WFIFOW(0) = net_w_value(0x0094);
-        WFIFOL(2) = net_l_value(RFIFOL(2));
-        WFIFOSET(6);
+    if (being->getType() == Being::PLAYER)
+    {
+        writeWord(0, 0x0094);
+        writeLong(2, being->getId());//readLong(2));
+        writeSet(6);
     }
     // If the being is a monster then load the monsterset
     else if (being->job >= 1002 &&
@@ -100,7 +101,7 @@ void remove_node(Being *being)
 Being *findNode(unsigned int id)
 {
     std::list<Being*>::iterator i;
-   for (i = beings.begin(); i != beings.end(); i++) {
+    for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         if (being->getId() == id) {
             return being;
@@ -166,7 +167,6 @@ Being::Being():
     damage_time(0),
     showSpeech(false), showDamage(false)
 {
-    strcpy(name, "");
 }
 
 Being::~Being()
@@ -243,11 +243,6 @@ void Being::setDamage(const std::string &text, int time)
 void Being::setMap(Map *map)
 {
     this->map = map;
-}
-
-void Being::setName(char *text)
-{
-    strcpy(name, text);
 }
 
 void Being::nextStep()
