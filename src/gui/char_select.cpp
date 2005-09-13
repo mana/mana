@@ -24,13 +24,11 @@
 #include "char_select.h"
 
 #include <sstream>
-
-#include <guichan/sdl/sdlinput.hpp>
+#include <SDL.h>
 
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "gui.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
 #include "textfield.h"
@@ -38,15 +36,12 @@
 
 #include "../being.h"
 #include "../game.h"
-#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
 
 #include "../net/network.h"
 #include "../net/protocol.h"
-
-extern Graphics *graphics;
 
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
@@ -272,6 +267,13 @@ void CharSelectDialog::serverCharSelect()
     // Todo: add other packets
 }
 
+void CharSelectDialog::logic()
+{
+    if (n_character > 0) {
+        setPlayerInfo(char_info);
+    }
+}
+
 CharCreateDialog::CharCreateDialog(Window *parent):
     Window("Create Character", true, parent)
 {
@@ -447,45 +449,10 @@ void CharCreateDialog::serverCharCreate()
     }
 }
 
-void charSelect()
+void charSelectInputHandler(SDL_KeyboardEvent *keyEvent)
 {
-    CharSelectDialog *sel;
-    sel = new CharSelectDialog();
-
-    state = CHAR_SELECT;
-
-    while (/*!key[KEY_ESC] && !key[KEY_ENTER] &&*/ state == CHAR_SELECT)
+    if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = EXIT;
-                    break;
-
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        state = EXIT;
-                    }
-                    break;
-            }
-
-            guiInput->pushInput(event);
-        }
-
-        if (n_character > 0) {
-            sel->setPlayerInfo(char_info);
-        }
-
-        gui->logic();
-
-        graphics->drawImage(login_wallpaper, 0, 0);
-        gui->draw();
-        graphics->updateScreen();
+        state = EXIT;
     }
-
-    delete sel;
 }
-

@@ -30,6 +30,8 @@
 #include "window.h"
 #include "../guichanfwd.h"
 
+struct SDL_KeyboardEvent;
+
 /**
  * The login dialog.
  *
@@ -75,7 +77,10 @@ class LoginDialog : public Window, public gcn::ActionListener {
  */
 class WrongPasswordNoticeListener : public gcn::ActionListener {
     public:
+        void setLoginDialog(LoginDialog *loginDialog);
         void action(const std::string &eventId);
+    private:
+        LoginDialog *mLoginDialog;
 };
 
 /**
@@ -83,14 +88,17 @@ class WrongPasswordNoticeListener : public gcn::ActionListener {
  */
 class WrongUsernameNoticeListener : public gcn::ActionListener {
     public:
+        void setLoginDialog(LoginDialog *loginDialog);
         void action(const std::string &eventId);
+    private:
+        LoginDialog *mLoginDialog;
 };
 
 
 /**
- * Display login dialog
+ * Handle input
  */
-void login();
+void loginInputHandler(SDL_KeyboardEvent *keyEvent);
 
 /**
  * Attempt to login to login server

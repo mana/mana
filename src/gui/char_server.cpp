@@ -23,15 +23,13 @@
 
 #include "char_server.h"
 
-#include <guichan/sdl/sdlinput.hpp>
+#include <SDL.h>
 
 #include "button.h"
-#include "gui.h"
 #include "listbox.h"
 #include "ok_dialog.h"
 #include "scrollarea.h"
 
-#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
@@ -39,10 +37,7 @@
 
 #include "../net/network.h"
 
-extern Graphics *graphics;
-
 char server[30];
-int showServerList = 1;
 
 
 ServerSelectDialog::ServerSelectDialog():
@@ -107,8 +102,8 @@ void ServerSelectDialog::action(const std::string& eventId)
         server_char_server(serverList->getSelected());
     }
     else if (eventId == "cancel") {
+        state = LOGIN;
     }
-    showServerList = 0;
 }
 
 
@@ -123,43 +118,12 @@ std::string ServerListModel::getElementAt(int i) {
     return buffer;
 }
 
-
-void char_server() {
-    ServerSelectDialog *dialog = new ServerSelectDialog();
-
-    state = LOGIN;
-
-    showServerList = 1;
-    while (showServerList)
+void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
+{
+    if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = EXIT;
-                    showServerList = false;
-                    break;
-
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        showServerList = false;
-                    }
-                    break;
-            }
-
-            guiInput->pushInput(event);
-        }
-
-        gui->logic();
-
-        graphics->drawImage(login_wallpaper, 0, 0);
-        gui->draw();
-        graphics->updateScreen();
+        state = LOGIN;
     }
-
-    delete dialog;
 }
 
 void server_char_server(int serverIndex)

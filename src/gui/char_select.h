@@ -31,6 +31,7 @@
 
 class PlayerBox;
 struct PLAYER_INFO;
+struct SDL_KeyboardEvent;
 
 /**
  * Character selection dialog.
@@ -87,6 +88,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
         void setPlayerInfo(PLAYER_INFO* pi);
+
+        void logic();
 };
 
 /**
@@ -131,6 +134,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
         std::string getName();
 };
 
-void charSelect();
+void charSelectInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

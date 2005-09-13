@@ -1,3 +1,11 @@
+2005-09-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* M src/main.cpp, src/main.h, src/gui/char_select.cpp,
+	src/gui/char_select.h, src/gui/char_server.cpp, src/gui/char_server.h,
+	src/gui/login.cpp, src/gui/login.h, src/gui/updatewindow.cpp,
+	src/gui/updatewindow.h: Unified the loops for the various dialogs that
+	are shown before the actual game starts.
+
 2005-09-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/setup.cpp, src/gui/setup.h: Enabled OpenGL checkbox and

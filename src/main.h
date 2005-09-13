@@ -57,7 +57,6 @@ enum {
 #define LEN_MIN_PASSWORD    4
 
 #include <string>
-extern Image *login_wallpaper;
 extern std::string username;
 extern std::string password;
 extern int map_address, char_ID;

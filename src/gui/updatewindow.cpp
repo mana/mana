@@ -23,44 +23,32 @@
 
 #include "updatewindow.h"
 
-#include <cstdio>
 #include <iostream>
 #include <sstream>
+#include <SDL.h>
 #include <SDL_thread.h>
 
 #include <curl/curl.h>
-
-#include <guichan/sdl/sdlinput.hpp>
 
 #include <guichan/widgets/label.hpp>
 
 #include "browserbox.h"
 #include "button.h"
-#include "gui.h"
 #include "progressbar.h"
 #include "scrollarea.h"
 
 #include "../configuration.h"
-#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
 
-extern Graphics *graphics;
-
 UpdaterWindow::UpdaterWindow():
-    Window("Updating...")
+    Window("Updating..."),
+    mThread(NULL), mMutex(NULL), mDownloadStatus(UPDATE_NEWS),
+    mUpdateHost(""), mCurrentFile("news.txt"), mBasePath(""),
+    mStoreInMemory(true), mDownloadComplete(true), mDownloadedBytes(0),
+    mMemoryBuffer(NULL), mCurlError(new char[CURL_ERROR_SIZE]),
+    mFileIndex(0)
 {
-    mThread = NULL;
-    mMutex = NULL;
-    mDownloadStatus = UPDATE_NEWS;
-    mUpdateHost = "";
-    mCurrentFile = "news.txt";
-    mDownloadComplete = true;
-    mBasePath = "";
-    mStoreInMemory = true;
-    mDownloadedBytes = 0;
-    mMemoryBuffer = NULL;
-    mCurlError = new char[CURL_ERROR_SIZE];
     mCurlError[0] = 0;
 
     int h = 240;
@@ -96,10 +84,28 @@ UpdaterWindow::UpdaterWindow():
 
     mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
+
+    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
+    mBasePath = config.getValue("homeDir", ".");
+
+    // Try to download the updates list
+    download();
 }
 
 UpdaterWindow::~UpdaterWindow()
 {
+    if (mThread)
+    {
+         SDL_WaitThread(mThread, NULL);
+         mThread = NULL;
+    }
+
+    free(mMemoryBuffer);
+    // Remove downloaded files
+    remove((mBasePath + "/updates/news.txt").c_str());
+    remove((mBasePath + "/updates/resources.txt").c_str());
+    remove((mBasePath + "/updates/download.temp").c_str());
+
     delete mCurlError;
     delete mLabel;
     delete mProgressBar;
@@ -301,145 +307,100 @@ void UpdaterWindow::download()
     }
 }
 
-void UpdaterWindow::updateData()
+void updateInputHandler(SDL_KeyboardEvent *keyEvent)
 {
-    std::ifstream in;
-    std::vector<std::string> files;
-
-    state = UPDATE;
-    unsigned int fileIndex = 0;
-
-    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
-    mBasePath = config.getValue("homeDir", ".");
-
-    // Try to download the updates list
-    download();
-
-    while (state == UPDATE)
+    if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = EXIT;
-                    break;
+        state = EXIT;
+    }
+}
 
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        state = EXIT;
-                    }
-                    break;
+void UpdaterWindow::logic()
+{
+    switch (mDownloadStatus) {
+        case UPDATE_ERROR:
+            if (mThread)
+            {
+                SDL_WaitThread(mThread, NULL);
+                mThread = NULL;
             }
-
-            guiInput->pushInput(event);
-        }
-
-        switch (mDownloadStatus) {
-            case UPDATE_ERROR:
+            addRow("");
+            addRow("##1  The update process is incomplete.");
+            addRow("##1  It is strongly recommended that");
+            addRow("##1  you try again later");
+            addRow(mCurlError);
+            mDownloadStatus = UPDATE_COMPLETE;
+            break;
+        case UPDATE_NEWS:
+            if (mDownloadComplete) {
+                // Try to open news.txt
+                loadNews();
+                // Doesn't matter if it couldn't find news.txt,
+                // go to the next step
+                mCurrentFile = "resources.txt";
+                if (mMemoryBuffer != NULL)
+                {
+                    free(mMemoryBuffer);
+                    mMemoryBuffer = NULL;
+                }
+                download();
+                mDownloadStatus = UPDATE_LIST;
+            }
+            break;
+        case UPDATE_LIST:
+            if (mDownloadComplete) {
+                if (mMemoryBuffer != NULL)
+                {
+                    // Tokenize and add each line separately
+                    char *line = strtok(mMemoryBuffer, "\n");
+                    while (line != NULL)
+                    {
+                        mFiles.push_back(line);
+                        line = strtok(NULL, "\n");
+                    }
+                    mStoreInMemory = false;
+                    mDownloadStatus = UPDATE_RESOURCES;
+                }
+                else {
+                    logger->log("Unable to download resources.txt");
+                    mDownloadStatus = UPDATE_ERROR;
+                }
+            }
+            break;
+        case UPDATE_RESOURCES:
+            if (mDownloadComplete)
+            {
                 if (mThread)
                 {
                     SDL_WaitThread(mThread, NULL);
                     mThread = NULL;
                 }
-                addRow("");
-                addRow("##1  The update process is incomplete.");
-                addRow("##1  It is strongly recommended that");
-                addRow("##1  you try again later");
-                addRow(mCurlError);
-                mDownloadStatus = UPDATE_COMPLETE;
-                break;
-            case UPDATE_NEWS:
-                if (mDownloadComplete) {
-                    // Try to open news.txt
-                    loadNews();
-                    // Doesn't matter if it couldn't find news.txt,
-                    // go to the next step
-                    mCurrentFile = "resources.txt";
-                    if (mMemoryBuffer != NULL)
-                    {
-                        free(mMemoryBuffer);
-                        mMemoryBuffer = NULL;
-                    }
-                    download();
-                    mDownloadStatus = UPDATE_LIST;
-                }
-                break;
-            case UPDATE_LIST:
-                if (mDownloadComplete) {
-                    if (mMemoryBuffer != NULL)
-                    {
-                        // Tokenize and add each line separately
-                        char *line = strtok(mMemoryBuffer, "\n");
-                        while (line != NULL)
-                        {
-                            files.push_back(line);
-                            line = strtok(NULL, "\n");
-                        }
-                        mStoreInMemory = false;
-                        mDownloadStatus = UPDATE_RESOURCES;
-                    }
-                    else {
-                        logger->log("Unable to download resources.txt");
-                        mDownloadStatus = UPDATE_ERROR;
-                    }
-                }
-                break;
-            case UPDATE_RESOURCES:
-                if (mDownloadComplete)
+
+                if (mFileIndex < mFiles.size())
                 {
-                    if (mThread)
-                    {
-                        SDL_WaitThread(mThread, NULL);
-                        mThread = NULL;
-                    }
-
-                    if (fileIndex < files.size())
-                    {
-                        mCurrentFile = files[fileIndex];
-                        std::ifstream temp(
-                                (mBasePath + "/updates/" + mCurrentFile).c_str());
-                        if (!temp.is_open()) {
-                            temp.close();
-                            download();
-                        }
-                        else {
-                            logger->log("%s already here", mCurrentFile.c_str());
-                        }
-                        fileIndex++;
+                    mCurrentFile = mFiles[mFileIndex];
+                    std::ifstream temp(
+                            (mBasePath + "/updates/" + mCurrentFile).c_str());
+                    if (!temp.is_open()) {
+                        temp.close();
+                        download();
                     }
                     else {
-                        // Download of updates completed
-                        mDownloadStatus = UPDATE_COMPLETE;
+                        logger->log("%s already here", mCurrentFile.c_str());
                     }
+                    mFileIndex++;
                 }
-                break;
-            case UPDATE_COMPLETE:
-                enable();
-                setLabel("Completed");
-                break;
-            case UPDATE_IDLE:
-                break;
-        }
-
-        gui->logic();
-
-        graphics->drawImage(login_wallpaper, 0, 0);
-        gui->draw();
-        graphics->updateScreen();
+                else {
+                    // Download of updates completed
+                    mDownloadStatus = UPDATE_COMPLETE;
+                }
+            }
+            break;
+        case UPDATE_COMPLETE:
+            enable();
+            setLabel("Completed");
+            break;
+        case UPDATE_IDLE:
+            break;
     }
-
-    if (mThread)
-    {
-         SDL_WaitThread(mThread, NULL);
-         mThread = NULL;
-    }
-
-    free(mMemoryBuffer);
-    in.close();
-    // Remove downloaded files
-    remove((mBasePath + "/updates/news.txt").c_str());
-    remove((mBasePath + "/updates/resources.txt").c_str());
-    remove((mBasePath + "/updates/download.temp").c_str());
 }

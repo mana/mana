@@ -71,7 +71,6 @@ SERVER_INFO *server_info;
 PLAYER_INFO *char_info = new PLAYER_INFO;
 
 Spriteset *hairset = NULL, *playerset = NULL;
-Image *login_wallpaper = NULL;
 Graphics *graphics;
 
 std::string username;
@@ -264,14 +263,11 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    login_wallpaper = resman->getImage(
-            "graphics/images/login_wallpaper.png");
     Image *playerImg = resman->getImage(
             "graphics/sprites/player_male_base.png");
     Image *hairImg = resman->getImage(
             "graphics/sprites/player_male_hair.png");
 
-    if (!login_wallpaper) logger->error("Couldn't load login_wallpaper.png");
     if (!playerImg) logger->error("Couldn't load player_male_base.png");
     if (!hairImg) logger->error("Couldn't load player_male_hair.png");
 
@@ -393,8 +389,6 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    UpdaterWindow *uw;
-
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     xmlInitParser();
@@ -415,6 +409,16 @@ int main(int argc, char *argv[])
         state = LOGIN;
     }
 
+    unsigned int oldstate = !state; // We start with a status change.
+    Window *currentDialog = NULL;
+    void (*inputHandler)(SDL_KeyboardEvent*) = NULL;
+
+    Image *login_wallpaper = ResourceManager::getInstance()->
+        getImage("graphics/images/login_wallpaper.png");
+    if (!login_wallpaper) {
+        logger->error("Couldn't load login_wallpaper.png");
+    }
+
     while (state != EXIT)
     {
         // Handle SDL events
@@ -423,60 +427,83 @@ int main(int argc, char *argv[])
                 case SDL_QUIT:
                     state = EXIT;
                     break;
+
+                case SDL_KEYDOWN:
+                    if (inputHandler) {
+                        inputHandler(&event.key);
+                    }
+                    break;
             }
 
             guiInput->pushInput(event);
         }
 
-        switch (state) {
-            case LOGIN:
-                logger->log("State: LOGIN");
-                login();
-                break;
-            case CHAR_SERVER:
-                logger->log("State: CHAR_SERVER");
-                char_server();
-                break;
-            case CHAR_SELECT:
-                logger->log("State: CHAR_SELECT");
-                charSelect();
-                break;
-            case GAME:
-                sound.fadeOutMusic(1000);
+        gui->logic();
 
-                login_wallpaper->decRef();
-                login_wallpaper = NULL;
+        graphics->drawImage(login_wallpaper, 0, 0);
+        gui->draw();
+        graphics->updateScreen();
 
-                logger->log("State: GAME");
-                try {
-                    map_start();
-                    game();
-                }
-                catch (const char* err) {
-                    state = ERROR;
-                    new OkDialog("Error", err, &mapStartErrorListener);
-                }
-                break;
-            case ERROR:
-                // Redraw GUI
-                graphics->drawImage(login_wallpaper, 0 ,0);
-                gui->logic();
-                gui->draw();
-                graphics->updateScreen();
-                break;
-            case UPDATE:
-                sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
-                uw = new UpdaterWindow();
-                uw->updateData();
-                delete uw;
+        if (state != oldstate) {
+            if (oldstate == UPDATE) {
                 ResourceManager::getInstance()->
                     searchAndAddArchives("/updates", ".zip", 0);
-                break;
-            default:
-                state = EXIT;
-                break;
+            }
+            oldstate = state;
+
+            if (currentDialog) {
+                delete currentDialog;
+            }
+
+            switch (state) {
+                case LOGIN:
+                    logger->log("State: LOGIN");
+                    currentDialog = new LoginDialog();
+                    inputHandler = loginInputHandler;
+                    break;
+                case CHAR_SERVER:
+                    logger->log("State: CHAR_SERVER");
+                    currentDialog = new ServerSelectDialog();
+                    inputHandler = charServerInputHandler;
+                    break;
+                case CHAR_SELECT:
+                    logger->log("State: CHAR_SELECT");
+                    currentDialog = new CharSelectDialog();
+                    inputHandler = charSelectInputHandler;
+                    break;
+                case GAME:
+                    sound.fadeOutMusic(1000);
+
+                    currentDialog = NULL;
+                    inputHandler = NULL;
+                    login_wallpaper->decRef();
+                    login_wallpaper = NULL;
+
+                    logger->log("State: GAME");
+                    try {
+                        map_start();
+                        game();
+                    }
+                    catch (const char* err) {
+                        state = ERROR;
+                        new OkDialog("Error", err, &mapStartErrorListener);
+                    }
+                    break;
+                case UPDATE:
+                    sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
+                    currentDialog = new UpdaterWindow();
+                    inputHandler = updateInputHandler;
+                    break;
+                case ERROR:
+                    // Hmm, does this look like an endless loop?
+                    break;
+                default:
+                    state = EXIT;
+                    break;
+            }
         }
     }
+
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();

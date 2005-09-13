@@ -31,6 +31,7 @@
 
 #include "../guichanfwd.h"
 
+struct SDL_KeyboardEvent;
 
 /**
  * The list model for the server list.
@@ -75,7 +76,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         gcn::ScrollArea *scrollArea;
 };
 
-void char_server();
+void charServerInputHandler(SDL_KeyboardEvent *keyEvent);
 void server_char_server(int serverIndex);
 char *server_list(int index, int *size);
 

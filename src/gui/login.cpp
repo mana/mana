@@ -25,8 +25,7 @@
 
 #include <string>
 #include <sstream>
-
-#include <guichan/sdl/sdlinput.hpp>
+#include <SDL.h>
 
 #include <guichan/widgets/label.hpp>
 
@@ -34,40 +33,47 @@
 
 #include "button.h"
 #include "checkbox.h"
-#include "gui.h"
 #include "passwordfield.h"
 #include "textfield.h"
 #include "ok_dialog.h"
 
 #include "../configuration.h"
-#include "../graphics.h"
 #include "../log.h"
 #include "../serverinfo.h"
 
 #include "../net/network.h"
 
-extern Graphics *graphics;
-
 OkDialog *wrongLoginNotice = NULL;
-LoginDialog *loginDialog = NULL;
 
 WrongUsernameNoticeListener wrongUsernameNoticeListener;
 WrongPasswordNoticeListener wrongPasswordNoticeListener;
 
+void WrongPasswordNoticeListener::setLoginDialog(
+        LoginDialog *loginDialog)
+{
+    mLoginDialog = loginDialog;
+}
+
 void WrongPasswordNoticeListener::action(const std::string &eventId)
 {
         // Reset the password and put the caret ready to retype it.
-        loginDialog->passField->setText("");
-        loginDialog->passField->setCaretPosition(0);
-        loginDialog->passField->requestFocus();
+        mLoginDialog->passField->setText("");
+        mLoginDialog->passField->setCaretPosition(0);
+        mLoginDialog->passField->requestFocus();
         wrongLoginNotice = NULL;
+}
+
+void WrongUsernameNoticeListener::setLoginDialog(
+        LoginDialog *loginDialog)
+{
+    mLoginDialog = loginDialog;
 }
 
 void WrongUsernameNoticeListener::action(const std::string &eventId)
 {
     // Set the focus on the username Field
-    loginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
-    loginDialog->userField->requestFocus();
+    mLoginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
+    mLoginDialog->userField->requestFocus();
     wrongLoginNotice = NULL;
 }
 
@@ -148,6 +154,8 @@ LoginDialog::LoginDialog():
 
     serverField->setText(config.getValue("host", ""));
 
+    wrongUsernameNoticeListener.setLoginDialog(this);
+    wrongPasswordNoticeListener.setLoginDialog(this);
 }
 
 LoginDialog::~LoginDialog()
@@ -277,42 +285,13 @@ void LoginDialog::action(const std::string& eventId)
     }
 }
 
-
-void login()
+void loginInputHandler(SDL_KeyboardEvent *keyEvent)
 {
-    loginDialog = new LoginDialog();
-
-    while (state == LOGIN)
+    if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = EXIT;
-                    break;
-
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                    {
-                        state = EXIT;
-                    }
-                    break;
-            }
-
-            guiInput->pushInput(event);
-        }
-
-        gui->logic();
-
-        graphics->drawImage(login_wallpaper, 0, 0);
-        gui->draw();
-        graphics->updateScreen();
+        state = EXIT;
     }
-
-    delete loginDialog;
 }
-
 
 int attemptLogin(const std::string& user, const std::string& pass) {
     username = user;

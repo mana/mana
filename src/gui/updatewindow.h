@@ -26,6 +26,9 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include <string>
+#include <vector>
+
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -34,8 +37,10 @@ class BrowserBox;
 class Button;
 class ProgressBar;
 class ScrollArea;
-class SDL_Thread;
-class SDL_mutex;
+
+struct SDL_mutex;
+struct SDL_KeyboardEvent;
+struct SDL_Thread;
 
 /**
  * Update progress window GUI
@@ -82,7 +87,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      */
     void addRow(const std::string &row);
 
-    void updateData();
+    void logic();
 
     int updateState;
 
@@ -172,6 +177,16 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      */
     char *mCurlError;
 
+    /**
+     * List of files to download
+     */
+    std::vector<std::string> mFiles;
+
+    /**
+     * Index of the file to be downloaded
+     */
+    unsigned int mFileIndex;
+
     gcn::Label *mLabel;           /**< Progress bar caption. */
     Button *mCancelButton;        /**< Button to stop the update process. */
     Button *mPlayButton;          /**< Button to start playing. */
@@ -180,6 +195,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     ScrollArea *mScrollArea;      /**< Used to scroll news box. */
 };
 
-void updateData();
+void updateInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif
