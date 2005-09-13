@@ -232,9 +232,6 @@ class Being
         void setPath(std::list<PATH_NODE> path);
 };
 
-/** Add a Being to the list */
-void add_node(Being *being);
-
 /** Return a specific id Being */
 Being *findNode(unsigned int id);
 
@@ -243,6 +240,9 @@ Being *findNode(unsigned short x, unsigned short y);
 
 /** Return a being at specific coordinates with specific type*/
 Being *findNode(unsigned short x, unsigned short y, Being::Type type);
+
+/** Create a being and add it to the list of beings */
+Being *createBeing(unsigned int id, unsigned short job, Map *map);
 
 /** Remove a Being */
 void remove_node(unsigned int id);

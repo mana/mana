@@ -53,8 +53,14 @@ PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
 {
 }
 
-void add_node(Being *being)
+Being* createBeing(unsigned int id, unsigned short job, Map *map)
 {
+    Being *being = new Being;
+
+    being->setId(id);
+    being->job = job;
+    being->setMap(map);
+
     beings.push_back(being);
 
     // If the being is a player, request the name
@@ -64,20 +70,25 @@ void add_node(Being *being)
         WFIFOSET(6);
     }
     // If the being is a monster then load the monsterset
-    else if (being->job >= 1002 && monsterset.find(
-            being->job - 1002) == monsterset.end()) {
+    else if (being->job >= 1002 &&
+            monsterset.find(being->job - 1002) == monsterset.end())
+    {
         std::stringstream filename;
+
         filename << "graphics/sprites/monster" << (being->job - 1002) << ".png";
         logger->log("%s",filename.str().c_str());
-        ResourceManager *resman = ResourceManager::getInstance();
-        Image *monsterbitmap = resman->getImage(filename.str());
+
+        Image *monsterbitmap =
+            ResourceManager::getInstance()->getImage(filename.str());
+
         if (!monsterbitmap) {
             logger->error("Unable to load monster.png");
-        }
-        else {
+        } else {
             monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);
         }
     }
+
+    return being;
 }
 
 void remove_node(unsigned int id)

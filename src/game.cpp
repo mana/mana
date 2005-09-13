@@ -172,17 +172,6 @@ int get_elapsed_time(int start_time)
     }
 }
 
-Being* createBeing(unsigned int id, unsigned short job, Map *map)
-{
-    Being *being = new Being;
-
-    being->setId(id);
-    being->job = job;
-    being->setMap(map);
-
-    return being;
-}
-
 /**
  * Create all the various globally accessible gui windows
  */
@@ -317,8 +306,6 @@ void do_init()
     }
 
     player_node->setWeapon(char_info->weapon);
-
-    add_node(player_node);
 
     remove("packet.list");
 
@@ -1066,7 +1053,6 @@ void do_parse()
                         being->setHairColor(RFIFOW(28));
                         being->setWeapon(RFIFOW(18));
                         being->setMap(tiledMap);
-                        add_node(being);
                     }
                     else
                     {
@@ -1120,7 +1106,6 @@ void do_parse()
                     if (being == NULL) 
                     {
                         being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
-                        add_node(being);
                     }
 
                     being->speed = RFIFOW(6);
@@ -1147,7 +1132,6 @@ void do_parse()
                     if (being == NULL)
                     {
                         being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
-                        add_node(being);
                     }
 
                     being->action = Being::STAND;
@@ -1167,7 +1151,6 @@ void do_parse()
                     if (being == NULL)
                     {
                         being = createBeing(RFIFOL(2), RFIFOW(14), tiledMap);
-                        add_node(being);
                     }
 
                     being->speed = RFIFOW(6);
@@ -1378,20 +1361,20 @@ void do_parse()
                     {
                         empty_floor_items();
 
+                        // Remove the player, so it is not deleted
+                        beings.remove(player_node);
+
                         // Delete all beings except the local player
                         std::list<Being *>::iterator i;
                         for (i = beings.begin(); i != beings.end(); i++)
                         {
-                            if ((*i) != player_node)
-                            {
-                                delete (*i);
-                            }
+                            delete (*i);
                         }
                         beings.clear();
                         autoTarget = NULL;
 
                         // Re-add the local player node
-                        add_node(player_node);
+                        beings.push_back(player_node);
 
                         player_node->action = Being::STAND;
                         player_node->frame = 0;
