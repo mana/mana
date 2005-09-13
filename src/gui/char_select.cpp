@@ -235,14 +235,19 @@ void CharSelectDialog::serverCharSelect()
             flush();
         }
         char_ID = RFIFOL(2);
+
+        char mapName[17];
+        mapName[17] = 0;
+        strncpy(mapName, RFIFOP(6), 16);
+
         memset(map_path, '\0', 480);
         strcat(map_path, "maps/");
-        strncat(map_path, RFIFOP(6), 479 - strlen(map_path));
+        strncat(map_path, mapName, 479 - strlen(map_path));
         map_address = RFIFOL(22);
         map_port = RFIFOW(26);
         state = GAME;
 
-        logger->log("CharSelect: Map: %s", map_name.c_str());
+        logger->log("CharSelect: Map: %s", mapName);
         logger->log("CharSelect: Server: %s:%d", iptostring(map_address), map_port);
         RFIFOSKIP(28);
         close_session();

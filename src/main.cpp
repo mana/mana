@@ -73,11 +73,8 @@ PLAYER_INFO *char_info = new PLAYER_INFO;
 Spriteset *hairset = NULL, *playerset = NULL;
 Graphics *graphics;
 
-std::string username;
-std::string password;
 int map_address, char_ID;
 short map_port;
-std::string map_name;
 unsigned char state;
 unsigned char screen_mode;
 volatile int framesToDraw = 0;

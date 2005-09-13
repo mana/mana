@@ -294,8 +294,6 @@ void loginInputHandler(SDL_KeyboardEvent *keyEvent)
 }
 
 int attemptLogin(const std::string& user, const std::string& pass) {
-    username = user;
-    password = pass;
     int ret;
 
     // Connect to login server
@@ -315,8 +313,8 @@ int attemptLogin(const std::string& user, const std::string& pass) {
 
     WFIFOL(2) = 0;
 
-    memcpy(WFIFOP(6), username.c_str(), LEN_MAX_USERNAME - 1);
-    memcpy(WFIFOP(30), password.c_str(), LEN_MAX_PASSWORD - 1);
+    memcpy(WFIFOP(6), user.c_str(), LEN_MAX_USERNAME - 1);
+    memcpy(WFIFOP(30), pass.c_str(), LEN_MAX_PASSWORD - 1);
     WFIFOB(54) = 0;
     WFIFOSET(55);
 

@@ -56,12 +56,8 @@ enum {
 #define LEN_MAX_PASSWORD    25
 #define LEN_MIN_PASSWORD    4
 
-#include <string>
-extern std::string username;
-extern std::string password;
 extern int map_address, char_ID;
 extern short map_port;
-extern std::string map_name;
 extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern unsigned char state;
