@@ -4,6 +4,7 @@
 
 2005-09-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/being.cpp, src/being.h, src/game.cpp: Simplify remove_node.
 	* src/being.cpp, src/being.h, src/game.cpp: Merged createBeing and
 	add_node into createBeing.
 	* src/main.cpp, src/main.h, src/gui/char_select.cpp,

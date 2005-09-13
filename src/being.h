@@ -245,7 +245,7 @@ Being *findNode(unsigned short x, unsigned short y, Being::Type type);
 Being *createBeing(unsigned int id, unsigned short job, Map *map);
 
 /** Remove a Being */
-void remove_node(unsigned int id);
+void remove_node(Being *being);
 
 /** Find a NPC id based on its coordinates */
 unsigned int findNpc(unsigned short x, unsigned short y);

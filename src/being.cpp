@@ -91,18 +91,10 @@ Being* createBeing(unsigned int id, unsigned short job, Map *map)
     return being;
 }
 
-void remove_node(unsigned int id)
+void remove_node(Being *being)
 {
-    std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++)
-    {
-        if ((*i)->getId() == id)
-        {
-            delete (*i);
-            beings.erase(i);
-            return;
-        }
-    }
+    delete being;
+    beings.remove(being);
 }
 
 Being *findNode(unsigned int id)

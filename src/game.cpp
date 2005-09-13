@@ -1089,7 +1089,7 @@ void do_parse()
                             //remove_node(RFIFOL(2));
                         }
                         else {
-                            remove_node(RFIFOL(2));
+                            remove_node(being);
                         }
 
                         if (being == autoTarget) {
