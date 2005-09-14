@@ -1851,7 +1851,7 @@ void do_parse()
                         // Unequip any existing equipped item in this position
                         int mask = 1;
                         int position = 0;
-                        while (!equipPoint & mask) {
+                        while (!(equipPoint & mask)) {
                             mask <<= 1;
                             position++;
                         }
@@ -1902,7 +1902,7 @@ void do_parse()
 
                     int mask = 1;
                     int position = 0;
-                    while (!equipPoint & mask) {
+                    while (!(equipPoint & mask)) {
                         mask <<= 1;
                         position++;
                     }
