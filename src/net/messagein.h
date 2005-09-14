@@ -31,6 +31,10 @@
  */
 class MessageIn
 {
+    friend char& operator<<(char &lhs, MessageIn &msg);
+    friend short& operator<<(short &lhs, MessageIn &msg);
+    friend long& operator<<(long &lhs, MessageIn &msg);
+
     public:
         /**
          * Constructor.

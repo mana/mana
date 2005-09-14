@@ -129,3 +129,21 @@ const Packet *MessageOut::getPacket()
 
     return mPacket;
 }
+
+MessageOut& operator<<(MessageOut &msg, const char &rhs)
+{
+    msg.writeByte(rhs);
+    return msg;
+}
+
+MessageOut& operator<<(MessageOut &msg, const short &rhs)
+{
+    msg.writeShort(rhs);
+    return msg;
+}
+
+MessageOut& operator<<(MessageOut &msg, const long &rhs)
+{
+    msg.writeLong(rhs);
+    return msg;
+}

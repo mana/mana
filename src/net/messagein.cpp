@@ -151,3 +151,21 @@ MessageIn::readString(int length)
 
     return readString;
 }
+
+char& operator<<(char &lhs, MessageIn &msg)
+{
+    lhs = msg.readByte();
+    return lhs;
+}
+
+short& operator<<(short &lhs, MessageIn &msg)
+{
+    lhs = msg.readShort();
+    return lhs;
+}
+
+long& operator<<(long &lhs, MessageIn &msg)
+{
+    lhs = msg.readLong();
+    return lhs;
+}

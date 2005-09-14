@@ -33,6 +33,10 @@ class Packet;
  */
 class MessageOut
 {
+    friend MessageOut& operator<<(MessageOut &msg, const char &rhs);
+    friend MessageOut& operator<<(MessageOut &msg, const short &rhs);
+    friend MessageOut& operator<<(MessageOut &msg, const long &rhs);
+
     public:
         /**
          * Constructor.
