@@ -125,7 +125,7 @@ class Being
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setDamage(const std::string &text, int time);
+        void setDamage(short amount, int time);
 
         /**
          * Returns the name of the being.

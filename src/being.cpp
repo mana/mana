@@ -233,9 +233,15 @@ void Being::setSpeech(const std::string &text, int time)
     showSpeech = true;
 }
 
-void Being::setDamage(const std::string &text, int time)
+void Being::setDamage(short amount, int time)
 {
-    damage = text;
+    if (!amount) {
+        damage = "miss";
+    } else {
+        std::stringstream damageString;
+        damageString << amount;
+        damage = damageString.str();
+    }
     damage_time = tick_time;
     showDamage = true;
 }

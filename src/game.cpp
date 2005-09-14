@@ -23,8 +23,6 @@
 
 #include "game.h"
 
-#include <sstream>
-
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "being.h"
@@ -1564,28 +1562,21 @@ void do_parse()
                 {
                     Being *srcBeing = findNode(msg.readLong());
                     Being *dstBeing = findNode(msg.readLong());
-                    msg.readLong();   // server tick
-                    msg.readLong();   // src speed
-                    msg.readLong();   // dst speed
+//                    msg.readLong();   // server tick
+//                    msg.readLong();   // src speed
+//                    msg.readLong();   // dst speed
+                    msg.skip(12);
                     short param1 = msg.readShort();
-                    msg.readShort();  // param 2
+                    msg.skip(2);  // param 2
                     char type = msg.readByte();
-                    msg.readShort();  // param 3
+                    msg.skip(2);  // param 3
 
                     switch (type)
                     {
                         case 0: // Damage
                             if (dstBeing == NULL) break;
 
-                            if (param1 == 0) {
-                                // Yellow
-                                dstBeing->setDamage("miss", SPEECH_TIME);
-                            } else {
-                                // Blue for monster, red for player
-                                std::stringstream ss;
-                                ss << param1;
-                                dstBeing->setDamage(ss.str(), SPEECH_TIME);
-                            }
+                            dstBeing->setDamage(param1, SPEECH_TIME);
 
                             if (srcBeing != NULL &&
                                 srcBeing != player_node)
@@ -1594,7 +1585,6 @@ void do_parse()
                                 srcBeing->action = Being::ATTACK;
                                 srcBeing->frame = 0;
                                 srcBeing->walk_time = tick_time;
-                                srcBeing->frame = 0;
                             }
                             break;
 
