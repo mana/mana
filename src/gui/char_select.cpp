@@ -39,6 +39,8 @@
 #include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
+
+#include "../net/messagein.h"
 #include "../net/network.h"
 #include "../net/protocol.h"
 

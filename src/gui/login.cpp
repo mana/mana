@@ -41,6 +41,8 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+#include "../net/messagein.h"
+#include "../net/messageout.h"
 #include "../net/network.h"
 
 OkDialog *wrongLoginNotice = NULL;

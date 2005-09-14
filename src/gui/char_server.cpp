@@ -36,6 +36,7 @@
 #include "../playerinfo.h"
 #include "../serverinfo.h"
 
+#include "../net/messagein.h"
 #include "../net/network.h"
 
 extern SERVER_INFO **server_info;

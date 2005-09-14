@@ -34,7 +34,7 @@
 #include <libxml/parser.h>
 
 #ifdef __USE_UNIX98
-#include <errno.h>
+#include <cerrno>
 #include <sys/stat.h>
 #endif
 

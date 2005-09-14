@@ -27,7 +27,7 @@
 #include <Carbon/Carbon.h>
 #endif
 
-#include <stdarg.h>
+#include <cstdarg>
 #include <iostream>
 #include <sstream>
 

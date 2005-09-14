@@ -24,11 +24,7 @@
 #ifndef _TMW_NETWORK_
 #define _TMW_NETWORK_
 
-#include <string>
-
-#include "SDL_net.h"
-#include "messagein.h"
-#include "messageout.h"
+class MessageIn;
 
 /** Convert an address from int format to string */
 char *iptostring(int address);

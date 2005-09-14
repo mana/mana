@@ -23,10 +23,11 @@
 
 #include "messageout.h"
 
-#include <iostream>
+#include <string>
 #include <SDL_net.h>
 
 #include "network.h"
+#include "packet.h"
 
 MessageOut::MessageOut():
     mPacket(0),

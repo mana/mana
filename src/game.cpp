@@ -61,6 +61,7 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 
+#include "net/messagein.h"
 #include "net/network.h"
 #include "net/protocol.h"
 

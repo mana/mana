@@ -21,18 +21,18 @@
  *  $Id$
  */
 
-#include "../log.h"
 #include "network.h"
-#include "protocol.h"
+
+#include <cassert>
+#include <sstream>
+#include <SDL_net.h>
+
+#include "messagein.h"
+
+#include "../log.h"
 #ifdef MACOSX
 #include "win2mac.h"
 #endif
-#ifndef WIN32
-#include <unistd.h>
-#include <fcntl.h>
-#include <errno.h>
-#endif
-#include <sstream>
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */

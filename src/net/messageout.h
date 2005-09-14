@@ -24,9 +24,9 @@
 #ifndef _TMW_MESSAGEOUT_
 #define _TMW_MESSAGEOUT_
 
-#include <string>
+#include <iosfwd>
 
-#include "packet.h"
+class Packet;
 
 /**
  * Used for building an outgoing message.

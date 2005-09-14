@@ -23,6 +23,7 @@
 
 #include "protocol.h"
 
+#include "messagein.h"
 #include "network.h"
 
 #include "../being.h"
