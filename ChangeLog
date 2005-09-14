@@ -1,5 +1,7 @@
 2005-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/engine.cpp, src/engine.h, src/game.cpp: Moved Map management
+	code completely into engine.cpp.
 	* src/net/messagein.cpp, src/net/messagein.h, src/net/messageout.cpp,
 	src/net/messageout.h: Added stream operators for char, short and long
 	reading and writing.

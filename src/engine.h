@@ -24,6 +24,8 @@
 #ifndef _ENGINE_H
 #define _ENGINE_H
 
+#include <iosfwd>
+
 extern int camera_x, camera_y;
 
 class Image;
@@ -54,7 +56,7 @@ class Engine
         /**
          * Sets the currently active map.
          */
-        void setCurrentMap(Map *newMap);
+        void changeMap(const std::string &mapName);
 
         /**
          * Performs engine logic.

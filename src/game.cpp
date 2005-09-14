@@ -65,8 +65,6 @@
 #include "net/network.h"
 #include "net/protocol.h"
 
-#include "resources/mapreader.h"
-
 
 extern Graphics *graphics;
 
@@ -81,7 +79,6 @@ int server_tick;
 int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 unsigned short startX = 0, startY = 0;
-int gameTime = 0;
 Being *autoTarget = NULL;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
@@ -271,16 +268,7 @@ void destroyGuiWindows()
 
 void do_init()
 {
-    Map *tiledMap = MapReader::readMap(map_path);
-
-    if (!tiledMap)
-    {
-        logger->error("Could not find map file!");
-    }
-    else
-    {
-        engine->setCurrentMap(tiledMap);
-    }
+    engine->changeMap(map_path);
 
     // Initialize timers
     tick_time = 0;
@@ -288,7 +276,7 @@ void do_init()
     SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
     // Initialize beings
-    player_node = createBeing(account_ID, 0, tiledMap);
+    player_node = createBeing(account_ID, 0, engine->getCurrentMap());
     player_node->x = startX;
     player_node->y = startY;
     player_node->speed = 150;
@@ -338,7 +326,7 @@ void game()
     engine = new Engine();
     do_init();
 
-    gameTime = tick_time;
+    int gameTime = tick_time;
 
     while (state != EXIT)
     {
@@ -1433,47 +1421,38 @@ void do_parse()
 
                     logger->log("Warping to %s (%d, %d)", map_path.c_str(), x, y);
 
-                    Map *oldMap = tiledMap;
-                    tiledMap = MapReader::readMap(map_path);
+                    engine->changeMap(map_path);
+                    tiledMap = engine->getCurrentMap();
 
-                    if (tiledMap)
+                    empty_floor_items();
+
+                    // Remove the player, so it is not deleted
+                    beings.remove(player_node);
+
+                    // Delete all beings except the local player
+                    std::list<Being *>::iterator i;
+                    for (i = beings.begin(); i != beings.end(); i++)
                     {
-                        empty_floor_items();
-
-                        // Remove the player, so it is not deleted
-                        beings.remove(player_node);
-
-                        // Delete all beings except the local player
-                        std::list<Being *>::iterator i;
-                        for (i = beings.begin(); i != beings.end(); i++)
-                        {
-                            delete (*i);
-                        }
-                        beings.clear();
-
-                        autoTarget = NULL;
-                        current_npc = 0;
-
-                        // Re-add the local player node
-                        beings.push_back(player_node);
-
-                        player_node->action = Being::STAND;
-                        player_node->frame = 0;
-                        player_node->x = x;
-                        player_node->y = y;
-                        player_node->setMap(tiledMap);
-
-                        // Send "map loaded"
-                        writeWord(0, 0x007d);
-                        writeSet(2);
-                        flush();
-                        engine->setCurrentMap(tiledMap);
+                        delete (*i);
                     }
-                    else
-                    {
-                        logger->error("Could not find map file");
-                    }
-                    if (oldMap) delete oldMap;
+                    beings.clear();
+
+                    autoTarget = NULL;
+                    current_npc = 0;
+
+                    // Re-add the local player node
+                    beings.push_back(player_node);
+
+                    player_node->action = Being::STAND;
+                    player_node->frame = 0;
+                    player_node->x = x;
+                    player_node->y = y;
+                    player_node->setMap(tiledMap);
+
+                    // Send "map loaded"
+                    writeWord(0, 0x007d);
+                    writeSet(2);
+                    flush();
                 }
                 break;
 

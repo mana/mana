@@ -48,6 +48,7 @@
 #include "resources/image.h"
 #include "resources/iteminfo.h"
 #include "resources/itemmanager.h"
+#include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 
 extern Being *autoTarget;
@@ -191,12 +192,19 @@ Map *Engine::getCurrentMap()
     return mCurrentMap;
 }
 
-void Engine::setCurrentMap(Map *newMap)
+void Engine::changeMap(const std::string &mapPath)
 {
+    Map *newMap = MapReader::readMap(mapPath);
+
+    if (!newMap) {
+        logger->error("Could not find map file");
+    }
+
     std::string oldMusic = "";
 
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");
+        delete mCurrentMap;
     }
 
     std::string newMusic = newMap->getProperty("music");
