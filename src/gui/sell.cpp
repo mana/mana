@@ -23,7 +23,7 @@
 
 #include "sell.h"
 
-#include <assert.h>
+#include <cassert>
 #include <sstream>
 
 #include <guichan/widgets/label.hpp>

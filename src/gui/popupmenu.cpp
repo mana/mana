@@ -23,7 +23,7 @@
 
 #include "popupmenu.h"
 
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 
 #include <guichan/focushandler.hpp>
