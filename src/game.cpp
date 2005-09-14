@@ -71,7 +71,7 @@
 
 extern Graphics *graphics;
 
-char map_path[480];
+std::string map_path;
 std::string tradePartnerName;
 
 bool refresh_beings = false;
@@ -272,12 +272,7 @@ void destroyGuiWindows()
 
 void do_init()
 {
-    std::string path(map_path);
-    std::string pathDir = path.substr(0, path.rfind("."));
-
-    // Try .tmx.gz map file
-    pathDir.insert(pathDir.size(), ".tmx.gz");
-    Map *tiledMap = MapReader::readMap(pathDir);
+    Map *tiledMap = MapReader::readMap(map_path);
 
     if (!tiledMap)
     {
@@ -1431,14 +1426,13 @@ void do_parse()
             case SMSG_PLAYER_WARP:
                 {
                     // Set new map path
-                    strcpy(map_path,
-                           std::string("maps/" + msg.readString(16)).c_str());
-                    strcpy(strrchr(map_path, '.') + 1, "tmx.gz");
+                    map_path = "maps/" + msg.readString(16);
+                    map_path= map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
 
                     int x = msg.readShort();
                     int y = msg.readShort();
 
-                    logger->log("Warping to %s (%d, %d)", map_path, x, y);
+                    logger->log("Warping to %s (%d, %d)", map_path.c_str(), x, y);
 
                     Map *oldMap = tiledMap;
                     tiledMap = MapReader::readMap(map_path);

@@ -24,6 +24,7 @@
 #include "char_select.h"
 
 #include <sstream>
+#include <string>
 #include <SDL.h>
 
 #include <guichan/widgets/label.hpp>
@@ -230,14 +231,14 @@ void CharSelectDialog::serverCharSelect()
     if (msg.getId() == 0x0071)
     {
         char_ID = msg.readLong();
-        std::string mapPath = "maps/" + msg.readString(16);
-        strcpy(map_path, mapPath.c_str());
+        map_path = "maps/" + msg.readString(16);
+        map_path= map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
         map_address = msg.readLong();
         map_port = msg.readShort();
         player_info = char_info[0];
         state = GAME;
 
-        logger->log("CharSelect: Map: %s", map_path);
+        logger->log("CharSelect: Map: %s", map_path.c_str());
         logger->log("CharSelect: Server: %s:%d", iptostring(map_address),
                     map_port);
         close_session();

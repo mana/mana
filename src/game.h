@@ -24,7 +24,7 @@
 #ifndef _TMW_GAME_
 #define _TMW_GAME_
 
-#include <string>
+#include <iosfwd>
 
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
@@ -32,7 +32,7 @@
 #define LOCK 254
 #define IDLE 255
 
-extern char map_path[480];
+extern std::string map_path;
 extern std::string tradePartnerName;
 extern int fps, frame, current_npc;
 extern volatile int tick_time;

@@ -1,3 +1,8 @@
+2005-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/game.h, src/gui/char_select.cpp: Converted
+	map_path from char array to std::string.
+
 2005-09-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated to last changes.
