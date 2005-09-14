@@ -22,6 +22,8 @@
  */
 
 #include "messagein.h"
+
+#include <cassert>
 #include <SDL_net.h>
 #ifdef MACOSX
 #include "win2mac.h"

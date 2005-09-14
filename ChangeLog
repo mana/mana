@@ -1,5 +1,6 @@
 2005-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/net/messagein.cpp: Add missing cassert header.
 	* src/being.cpp, src/being.h, src/game.cpp: Made Being::setDamage
 	accept a short instead of a string.
 	* src/game.cpp, src/game.h, src/gui/char_select.cpp: Converted
