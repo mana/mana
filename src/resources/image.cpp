@@ -75,7 +75,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, const std::string &idP
     SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
 
     if (tmpImage == NULL) {
-        logger->log("Error, image load failed");
+        logger->log("Error, image load failed: %s", IMG_GetError());
         return NULL;
     }
 

@@ -96,7 +96,7 @@ MessageIn::readCoordinates(unsigned short &x,
 
 void
 MessageIn::readCoordinatePair(unsigned short &srcX, unsigned short &srcY,
-                   unsigned short &dstX, unsigned short &dstY)
+                              unsigned short &dstX, unsigned short &dstY)
 {
     assert(mPos + 5 <= mLength);
 
