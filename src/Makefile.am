@@ -45,8 +45,12 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/listbox.h \
 	      gui/login.cpp \
 	      gui/login.h \
+	      gui/menuwindow.cpp \
+	      gui/menuwindow.h \
 	      gui/minimap.cpp \
 	      gui/minimap.h \
+	      gui/ministatus.cpp \
+	      gui/ministatus.h \
 	      gui/newskill.cpp \
 	      gui/newskill.h \
 	      gui/npc.cpp \
