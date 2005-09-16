@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_STATS_H
-#define _TMW_STATS_H
+#ifndef _TMW_STATUS_H
+#define _TMW_STATUS_H
 
 #include <iosfwd>
 
@@ -64,20 +64,46 @@ class StatusWindow : public Window, public gcn::ActionListener {
 
     private:
         /**
-         * Updates this dialog with values from <code>player_info</code>
+         * Updates this dialog with values from PLAYER_INFO *char_info
          */
         void update();
 
-        gcn::Label *hp, *sp;
-        gcn::Label *hpValue, *spValue;
-        gcn::Label *expLabel, *jobExpLabel;
-        ProgressBar *healthBar, *manaBar;
+        /**
+         * Status Part
+         */
+        gcn::Label *lvlLabel, *gpLabel, *hpLabel, *hpValueLabel, *mpLabel, *mpValueLabel;
+        gcn::Label *xpLabel, *xpValueLabel, *jobXpLabel, *jobValueLabel;
+        ProgressBar *hpBar, *mpBar;
         ProgressBar *xpBar, *jobXpBar;
-        gcn::Button *statsButton;
-        gcn::Button *skillsButton;
-        gcn::Button *inventoryButton;
-        gcn::Button *setupButton;
-        gcn::Button *equipmentButton;
+
+        /**
+         * Caracteristics Part
+         */
+        gcn::Label *statsTitleLabel, *statsTotalLabel, *statsCostLabel;
+
+        /**
+         * Derived Statistics captions
+         */
+        gcn::Label *statsAttackLabel, *statsDefenseLabel, *statsMagicAttackLabel;
+        gcn::Label *statsMagicDefenseLabel, *statsAccuracyLabel, *statsEvadeLabel;
+        gcn::Label *statsReflexLabel;
+
+        gcn::Label *statsAttackPoints, *statsDefensePoints, *statsMagicAttackPoints;
+        gcn::Label *statsMagicDefensePoints, *statsAccuracyPoints, *statsEvadePoints;
+        gcn::Label *statsReflexPoints;
+
+        /** 
+         * Stats captions.
+         */
+        gcn::Label *statsLabel[6];
+        gcn::Label *pointsLabel[6];
+        gcn::Label *statsDisplayLabel[6];
+        gcn::Label *remainingStatsPointsLabel;
+
+        /** 
+         * Stats buttons.
+         */
+        gcn::Button *statsButton[6];
 };
 
 extern StatusWindow *statusWindow;

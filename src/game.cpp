@@ -57,8 +57,9 @@
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
-#include "gui/stats.h"
+#include "gui/menuwindow.h"
 #include "gui/status.h"
+#include "gui/ministatus.h"
 #include "gui/trade.h"
 
 #include "net/messagein.h"
@@ -87,7 +88,9 @@ OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
 
 ChatWindow *chatWindow;
+MenuWindow *menuWindow;
 StatusWindow *statusWindow;
+MiniStatusWindow *miniStatusWindow;
 BuyDialog *buyDialog;
 SellDialog *sellDialog;
 BuySellDialog *buySellDialog;
@@ -96,7 +99,6 @@ NpcListDialog *npcListDialog;
 NpcTextDialog *npcTextDialog;
 SkillDialog *skillDialog;
 //NewSkillDialog *newSkillWindow;
-StatsWindow *statsWindow;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
@@ -176,7 +178,9 @@ void createGuiWindows()
     // Create dialogs
     chatWindow = new ChatWindow(
             config.getValue("homeDir", "") + std::string("/chatlog.txt"));
+    menuWindow = new MenuWindow();
     statusWindow = new StatusWindow();
+    miniStatusWindow = new MiniStatusWindow();
     buyDialog = new BuyDialog();
     sellDialog = new SellDialog();
     buySellDialog = new BuySellDialog();
@@ -185,7 +189,6 @@ void createGuiWindows()
     npcListDialog = new NpcListDialog();
     skillDialog = new SkillDialog();
     //newSkillWindow = new NewSkillDialog();
-    statsWindow = new StatsWindow();
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow();
@@ -195,17 +198,18 @@ void createGuiWindows()
     helpWindow = new HelpWindow();
     popupMenu = new PopupMenu();
 
-    // Initialize window posisitons
+    // Initialize window positions
     int screenW = graphics->getWidth();
     int screenH = graphics->getHeight();
 
+    statusWindow->setPosition((screenW - statusWindow->getWidth()) / 2,
+                            (screenH - statusWindow->getHeight()) / 2);
+    miniStatusWindow->setPosition(0, 0);
+    minimap->setPosition(3, 30);
     chatWindow->setPosition(0, screenH - chatWindow->getHeight());
-    statusWindow->setPosition(screenW - statusWindow->getWidth() - 5, 5);
+    menuWindow->setPosition(screenW - menuWindow->getWidth(), 0);
     inventoryWindow->setPosition(screenW - statusWindow->getWidth() -
             inventoryWindow->getWidth() - 10, 5);
-    statsWindow->setPosition(
-            screenW - 5 - statsWindow->getWidth(),
-            statusWindow->getHeight() + 20);
     chargeDialog->setPosition(
             screenW - 5 - chargeDialog->getWidth(),
             screenH - chargeDialog->getHeight() - 15);
@@ -218,7 +222,9 @@ void createGuiWindows()
 
     // Set initial window visibility
     chatWindow->setVisible(true);
-    statusWindow->setVisible(true);
+    miniStatusWindow->setVisible(true);
+    statusWindow->setVisible(false);
+    menuWindow->setVisible(true);
     buyDialog->setVisible(false);
     sellDialog->setVisible(false);
     buySellDialog->setVisible(false);
@@ -227,7 +233,6 @@ void createGuiWindows()
     npcListDialog->setVisible(false);
     skillDialog->setVisible(false);
     //newSkillWindow->setVisible(false);
-    statsWindow->setVisible(false);
     setupWindow->setVisible(false);
     equipmentWindow->setVisible(false);
     chargeDialog->setVisible(false);
@@ -247,6 +252,8 @@ void destroyGuiWindows()
 {
     delete chatWindow;
     delete statusWindow;
+    delete miniStatusWindow;
+    delete menuWindow;
     delete buyDialog;
     delete sellDialog;
     delete buySellDialog;
@@ -254,7 +261,6 @@ void destroyGuiWindows()
     delete npcListDialog;
     delete npcTextDialog;
     delete skillDialog;
-    delete statsWindow;
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
@@ -558,7 +564,7 @@ void do_input()
 
                         // Statistics window
                     case SDLK_s:
-                        statsWindow->setVisible(!statsWindow->isVisible());
+                        statusWindow->setVisible(!statusWindow->isVisible());
                         used = true;
                         break;
 

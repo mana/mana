@@ -1,3 +1,9 @@
+2005-09-17  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/game.cpp, src/gui/ministatus.cpp, src/gui/ministatus.h,
+	src/gui/menuwindow.h, src/gui/menuwindow.cpp, src/gui/status.cpp,
+        src/gui/status.h: Improving General Layout.
+
 2005-09-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/resources/image.cpp: Report which error occured when loading of

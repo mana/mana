@@ -24,188 +24,384 @@
 #include "status.h"
 
 #include <guichan/widgets/label.hpp>
+#include <sstream>
 
 #include "button.h"
-#include "equipmentwindow.h"
-#include "inventorywindow.h"
 #include "progressbar.h"
-#include "skill.h"
-#include "stats.h"
 
 #include "../playerinfo.h"
-
-extern Window *setupWindow;
-
-#define WIN_BORDER 5
-#define CONTROLS_SEPARATOR 4
+#include "../net/network.h"
 
 StatusWindow::StatusWindow():
-    Window("%s Lvl: % 2i Job: % 2i GP: % 2i")
+    Window(player_info->name)
 {
-    hp = new gcn::Label("HP");
-    sp = new gcn::Label("MP");
-    hpValue = new gcn::Label();
-    spValue = new gcn::Label();
-    expLabel = new gcn::Label("Exp");
-    jobExpLabel = new gcn::Label("Job");
+    setResizable(false);
+    setContentSize(335, 255);
 
-    statsButton = new Button("Stats");
-    statsButton->setEventId("Stats");
-    statsButton->addActionListener(this);
+    // ----------------------
+    // Status Part
+    // ----------------------
 
-    skillsButton = new Button("Skills");
-    skillsButton->setEventId("Skills");
-    skillsButton->addActionListener(this);
+    lvlLabel = new gcn::Label("Level:");
+    gpLabel = new gcn::Label("Money:");
+    hpLabel = new gcn::Label("HP:");
+    hpValueLabel = new gcn::Label("");
+    mpLabel = new gcn::Label("MP:");
+    mpValueLabel = new gcn::Label("");
+    xpLabel = new gcn::Label("Exp:");
+    xpValueLabel = new gcn::Label("");
+    jobXpLabel = new gcn::Label("Job:");
+    jobValueLabel = new gcn::Label("");
 
-    inventoryButton = new Button("Inventory");
-    inventoryButton->setEventId("Inventory");
-    inventoryButton->addActionListener(this);
-
-    setupButton = new Button("Setup");
-    setupButton->setEventId("Setup");
-    setupButton->addActionListener(this);
-
-    equipmentButton = new Button("Equip.");
-    equipmentButton->setEventId("Equipment");
-    equipmentButton->addActionListener(this);
-
-    hp->setPosition(WIN_BORDER, WIN_BORDER);
-    sp->setPosition(WIN_BORDER,
-            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
-    healthBar = new ProgressBar(1.0f,
-            WIN_BORDER + hp->getWidth() + CONTROLS_SEPARATOR, WIN_BORDER, 80,
+    lvlLabel->setPosition(5, 3);
+    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 40, 3);
+    hpLabel->setPosition(5, lvlLabel->getY() + lvlLabel->getHeight() + 5);
+    hpBar = new ProgressBar(1.0f,
+            hpLabel->getX() + hpLabel->getWidth() + 5, hpLabel->getY(), 80,
             15, 0, 171, 34);
-    hpValue->setPosition(
-            healthBar->getX() + healthBar->getWidth() + 2 * CONTROLS_SEPARATOR,
-            WIN_BORDER);
-    manaBar = new ProgressBar(1.0f,
-            WIN_BORDER + sp->getWidth() + CONTROLS_SEPARATOR,
-            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR, 80, 15, 26, 102,
-            230);
-    spValue->setPosition(
-            manaBar->getX() + manaBar->getWidth() + 2 * CONTROLS_SEPARATOR,
-            hp->getY() + hp->getHeight() + CONTROLS_SEPARATOR);
-    xpBar = new ProgressBar(1.0f,
-            manaBar->getX(), sp->getY() + sp->getHeight() + CONTROLS_SEPARATOR,
-            70, 15, 143, 192, 211);
-    expLabel->setPosition(
-            xpBar->getX() + xpBar->getWidth() + CONTROLS_SEPARATOR,
-            xpBar->getY());
-    jobXpBar = new ProgressBar(1.0f, manaBar->getX(),
-            xpBar->getY() + xpBar->getHeight() + CONTROLS_SEPARATOR, 70, 15,
-            220, 135, 203);
-    jobExpLabel->setPosition(
-            jobXpBar->getX() + jobXpBar->getWidth() + CONTROLS_SEPARATOR,
-            jobXpBar->getY());
-    statsButton->setPosition(WIN_BORDER,
-            jobXpBar->getY() + jobXpBar->getHeight() + 2 * CONTROLS_SEPARATOR);
-    skillsButton->setPosition(
-            statsButton->getX() + statsButton->getWidth() + CONTROLS_SEPARATOR,
-            statsButton->getY());
-    inventoryButton->setPosition(
-            skillsButton->getX() + skillsButton->getWidth() + CONTROLS_SEPARATOR,
-            statsButton->getY());
-    setupButton->setPosition(
-            inventoryButton->getX() + inventoryButton->getWidth() + CONTROLS_SEPARATOR,
-            statsButton->getY());
-    equipmentButton->setPosition(
-            setupButton->getX() + setupButton->getWidth() + CONTROLS_SEPARATOR,
-            statsButton->getY());
+    hpValueLabel->setPosition(hpBar->getX() + hpBar->getWidth() + 5, hpBar->getY());
+    mpLabel->setPosition(5,hpLabel->getY() + hpLabel->getHeight() + 5);
+    mpBar = new ProgressBar(1.0f, hpBar->getX(),
+            mpLabel->getY(), 80, 15, 26, 102, 230);
+    mpValueLabel->setPosition(hpValueLabel->getX(), mpBar->getY());
 
-    setContentSize(
-            equipmentButton->getX() + equipmentButton->getWidth() + WIN_BORDER,
-            statsButton->getY() + statsButton->getHeight() + WIN_BORDER);
+    xpLabel->setPosition(175, hpLabel->getY());
+    xpBar = new ProgressBar(1.0f, 205, xpLabel->getY(), 80, 15,
+                             143, 192, 211);
+    xpValueLabel->setPosition(290, xpBar->getY());
+    jobXpLabel->setPosition(175, mpLabel->getY());
+    jobXpBar = new ProgressBar(1.0f, 225, jobXpLabel->getY(), 60, 15,
+                             220, 135, 203);
+    jobValueLabel->setPosition(290, jobXpBar->getY());
 
-    add(hp);
-    add(sp);
-    add(healthBar);
-    add(manaBar);
-    add(hpValue);
-    add(spValue);
-    add(expLabel);
-    add(jobExpLabel);
+    add(lvlLabel);
+    add(gpLabel);
+    add(hpLabel);
+    add(hpValueLabel);
+    add(mpLabel);
+    add(mpValueLabel);
+    add(xpLabel);
+    add(xpValueLabel);
+    add(jobXpLabel);
+    add(jobValueLabel);
+    add(hpBar);
+    add(mpBar);
     add(xpBar);
     add(jobXpBar);
-    add(statsButton);
-    add(skillsButton);
-    add(inventoryButton);
-    add(setupButton);
-    add(equipmentButton);
-    
-    setResizable(true);
+
+    // ----------------------
+    // Stats Part
+    // ----------------------
+
+    // Static Labels
+    statsTitleLabel = new gcn::Label("Stats");
+    statsTotalLabel = new gcn::Label("Total");
+    statsCostLabel = new gcn::Label("Cost");
+
+    // Derived Stats
+    statsAttackLabel = new gcn::Label("Attack:");
+    statsDefenseLabel= new gcn::Label("Defense:");
+    statsMagicAttackLabel = new gcn::Label("M.Attack:");
+    statsMagicDefenseLabel = new gcn::Label("M.Defense:");
+    statsAccuracyLabel = new gcn::Label("% Accuracy:");
+    statsEvadeLabel = new gcn::Label("% Evade:");
+    statsReflexLabel = new gcn::Label("% Reflex:");
+
+    statsAttackPoints = new gcn::Label("");
+    statsDefensePoints = new gcn::Label("");
+    statsMagicAttackPoints = new gcn::Label("");
+    statsMagicDefensePoints = new gcn::Label("");
+    statsAccuracyPoints = new gcn::Label("% Accuracy:");
+    statsEvadePoints = new gcn::Label("% Evade:");
+    statsReflexPoints = new gcn::Label("% Reflex:");
+
+    // New labels
+    for (int i = 0; i < 6; i++) {
+        statsLabel[i] = new gcn::Label();
+        statsDisplayLabel[i] = new gcn::Label();
+        pointsLabel[i] = new gcn::Label("0");
+    }
+    remainingStatsPointsLabel = new gcn::Label();
+
+    // New buttons
+    for (int i = 0; i < 6; i++) {
+        statsButton[i] = new Button("+");
+    }
+
+    // Set button events Id
+    statsButton[0]->setEventId("STR");
+    statsButton[1]->setEventId("AGI");
+    statsButton[2]->setEventId("VIT");
+    statsButton[3]->setEventId("INT");
+    statsButton[4]->setEventId("DEX");
+    statsButton[5]->setEventId("LUK");
+
+    // Set position
+    statsTitleLabel->setPosition(mpLabel->getX(), mpLabel->getY() + 23 );
+    statsTotalLabel->setPosition(110, statsTitleLabel->getY() + 15);
+    statsCostLabel->setPosition(170, statsTotalLabel->getY());
+    for (int i = 0; i < 6; i++)
+    {
+        statsLabel[i]->setPosition(5, statsTotalLabel->getY() + (i * 23) + 15);
+        statsDisplayLabel[i]->setPosition(115, statsTotalLabel->getY() + (i * 23) + 15);
+        statsButton[i]->setPosition(145, statsTotalLabel->getY() + (i * 23) + 10);
+        pointsLabel[i]->setPosition(175, statsTotalLabel->getY() + (i * 23) + 15);
+    }
+    remainingStatsPointsLabel->setPosition(5, pointsLabel[5]->getY() + 25);
+
+    statsAttackLabel->setPosition(220, statsLabel[0]->getY());
+    statsDefenseLabel->setPosition(220, statsLabel[1]->getY());
+    statsMagicAttackLabel->setPosition(220, statsLabel[2]->getY());
+    statsMagicDefenseLabel->setPosition(220, statsLabel[3]->getY());
+    statsAccuracyLabel->setPosition(220, statsLabel[4]->getY());
+    statsEvadeLabel->setPosition(220, statsLabel[5]->getY());
+    statsReflexLabel->setPosition(220, remainingStatsPointsLabel->getY());
+
+    statsAttackPoints->setPosition(310, statsLabel[0]->getY());
+    statsDefensePoints->setPosition(310, statsLabel[1]->getY());
+    statsMagicAttackPoints->setPosition(310, statsLabel[2]->getY());
+    statsMagicDefensePoints->setPosition(310, statsLabel[3]->getY());
+    statsAccuracyPoints->setPosition(310, statsLabel[4]->getY());
+    statsEvadePoints->setPosition(310, statsLabel[5]->getY());
+    statsReflexPoints->setPosition(310, remainingStatsPointsLabel->getY());
+
+    // Assemble
+    add(statsTitleLabel);
+    add(statsTotalLabel);
+    add(statsCostLabel);
+    for(int i = 0; i < 6; i++)
+    {
+        add(statsLabel[i]);
+        add(statsDisplayLabel[i]);
+        add(statsButton[i]);
+        add(pointsLabel[i]);
+        statsButton[i]->addActionListener(this);
+    }
+    add(statsAttackLabel);
+    add(statsDefenseLabel);
+    add(statsMagicAttackLabel);
+    add(statsMagicDefenseLabel);
+    add(statsAccuracyLabel);
+    add(statsEvadeLabel);
+    add(statsReflexLabel);
+
+    add(statsAttackPoints);
+    add(statsDefensePoints);
+    add(statsMagicAttackPoints);
+    add(statsMagicDefensePoints);
+    add(statsAccuracyPoints);
+    add(statsEvadePoints);
+    add(statsReflexPoints);
+
+    add(remainingStatsPointsLabel);
 }
 
 StatusWindow::~StatusWindow()
 {
-    delete hp;
-    delete sp;
-    delete expLabel;
-    delete jobExpLabel;
-    delete healthBar;
-    delete manaBar;
+    // Status Part
+    delete lvlLabel;
+    delete gpLabel;
+    delete hpLabel;
+    delete hpValueLabel;
+    delete mpLabel;
+    delete mpValueLabel;
+    delete xpLabel;
+    delete xpValueLabel;
+    delete jobXpLabel;
+    delete jobValueLabel;
+    delete hpBar;
+    delete mpBar;
     delete xpBar;
     delete jobXpBar;
-    delete statsButton;
-    delete skillsButton;
-    delete inventoryButton;
-    delete setupButton;
-    delete equipmentButton;
+
+    // Stats Part
+    delete statsTitleLabel;
+    delete statsTotalLabel;
+    delete statsCostLabel;
+    for (int i = 0; i < 6; i++) {
+        delete statsLabel[i];
+        delete statsDisplayLabel[i];
+        delete statsButton[i];
+    }
+    delete statsAttackLabel;
+    delete statsDefenseLabel;
+    delete statsMagicAttackLabel;
+    delete statsMagicDefenseLabel;
+    delete statsAccuracyLabel;
+    delete statsEvadeLabel;
+    delete statsReflexLabel;
+
+    delete statsAttackPoints;
+    delete statsDefensePoints;
+    delete statsMagicAttackPoints;
+    delete statsMagicDefensePoints;
+    delete statsAccuracyPoints;
+    delete statsEvadePoints;
+    delete statsReflexPoints;
+
+    delete remainingStatsPointsLabel;
 }
 
 void StatusWindow::update()
 {
-    char *tempstr = new char[64];
+    std::stringstream updateText;
 
-    sprintf(tempstr, "%s Lvl: % 2i Job: % 2i GP: % 2i",
-            player_info->name.c_str(), player_info->lv, player_info->job_lv,
-            player_info->gp);
-    setCaption(tempstr);
+    // Status Part
+    // -----------
+    updateText.str("");
+    updateText << "Level: " << player_info->lv;
+    lvlLabel->setCaption(updateText.str());
+    lvlLabel->adjustSize();
 
-    sprintf(tempstr, "%d/%d", player_info->hp, player_info->max_hp);
-    hpValue->setCaption(tempstr);
-    hpValue->adjustSize();
+    updateText.str("");
+    updateText << "Money: " << player_info->gp << " GP";
+    gpLabel->setCaption(updateText.str());
+    gpLabel->adjustSize();
 
-    sprintf(tempstr, "%d/%d", player_info->sp, player_info->max_sp);
-    spValue->setCaption(tempstr);
-    spValue->adjustSize();
+    updateText.str("");
+    updateText << "Job: " << player_info->job_lv;
+    jobXpLabel->setCaption(updateText.str());
+    jobXpLabel->adjustSize();
 
-    sprintf(tempstr, "Exp: %d/%d",
-            (int)player_info->xp, (int)player_info->xpForNextLevel);
-    expLabel->setCaption(tempstr);
-    expLabel->adjustSize();
+    updateText.str("");
+    updateText << player_info->hp << "/" << player_info->max_hp;
+    hpValueLabel->setCaption(updateText.str());
+    hpValueLabel->adjustSize();
 
-    sprintf(tempstr, "Job: %d/%d",
-            (int)player_info->job_xp, (int)player_info->jobXpForNextLevel);
-    jobExpLabel->setCaption(tempstr);
-    jobExpLabel->adjustSize();
+    updateText.str("");
+    updateText << player_info->sp <<  "/" << player_info->max_sp;
+    mpValueLabel->setCaption(updateText.str());
+    mpValueLabel->adjustSize();
+
+    updateText.str("");
+    updateText << (int)player_info->xp << "/" << (int)player_info->xpForNextLevel;
+    xpValueLabel->setCaption(updateText.str());
+    xpValueLabel->adjustSize();
+
+    updateText.str("");
+    updateText << (int)player_info->job_xp << "/" << (int)player_info->jobXpForNextLevel;
+    jobValueLabel->setCaption(updateText.str());
+    jobValueLabel->adjustSize();
 
     // HP Bar coloration
     if (player_info->hp < int(player_info->max_hp / 3))
     {
-        healthBar->setColor(223, 32, 32); // Red
+        hpBar->setColor(223, 32, 32); // Red
     }
     else
     {
         if (player_info->hp < int((player_info->max_hp / 3) * 2))
         {
-            healthBar->setColor(230, 171, 34); // Orange
+            hpBar->setColor(230, 171, 34); // Orange
         }
         else
         {
-            healthBar->setColor(0, 171, 34); // Green
+            hpBar->setColor(0, 171, 34); // Green
         }
     }
 
-    healthBar->setProgress((float)player_info->hp /
-                           (float)player_info->max_hp);
+    hpBar->setProgress((float)player_info->hp / (float)player_info->max_hp);
 
-    xpBar->setProgress((float)player_info->xp /
-                       (float)player_info->xpForNextLevel);
+    xpBar->setProgress(
+            (float)player_info->xp / (float)player_info->xpForNextLevel);
+    jobXpBar->setProgress(
+            (float)player_info->job_xp / (float)player_info->jobXpForNextLevel);
 
-    jobXpBar->setProgress((float)player_info->job_xp /
-                          (float)player_info->jobXpForNextLevel);
+    // Stats Part
+    // ----------
+    std::stringstream statsStr[6];
+    std::stringstream figureStr[6];
+    std::stringstream pointsStr[6];
 
-    delete[] tempstr;
+    statsStr[0] << "Strength:";
+    figureStr[0] << (int)player_info->STR;
+    statsStr[1] << "Agility:";
+    figureStr[1] << (int)player_info->AGI;
+    statsStr[2] << "Vitality:";
+    figureStr[2] << (int)player_info->VIT;
+    statsStr[3] << "Intelligence:";
+    figureStr[3] << (int)player_info->INT;
+    statsStr[4] << "Dexterity:";
+    figureStr[4] << (int)player_info->DEX;
+    statsStr[5] << "Luck:";
+    figureStr[5] << (int)player_info->LUK;
+
+    int statusPoints = player_info->statsPointsToAttribute;
+
+    updateText.str("");
+    updateText << "Remaining Status Points: " << statusPoints;
+    
+    pointsStr[0] << (int)player_info->STRUp;
+    pointsStr[1] << (int)player_info->AGIUp;
+    pointsStr[2] << (int)player_info->VITUp;
+    pointsStr[3] << (int)player_info->INTUp;
+    pointsStr[4] << (int)player_info->DEXUp;
+    pointsStr[5] << (int)player_info->LUKUp;
+
+    // Enable buttons for which there are enough status points
+    statsButton[0]->setEnabled(player_info->STRUp <= statusPoints);
+    statsButton[1]->setEnabled(player_info->AGIUp <= statusPoints);
+    statsButton[2]->setEnabled(player_info->VITUp <= statusPoints);
+    statsButton[3]->setEnabled(player_info->INTUp <= statusPoints);
+    statsButton[4]->setEnabled(player_info->DEXUp <= statusPoints);
+    statsButton[5]->setEnabled(player_info->LUKUp <= statusPoints);
+
+    // Update labels
+    for (int i = 0; i < 6; i++) {
+        statsLabel[i]->setCaption(statsStr[i].str());
+        statsLabel[i]->adjustSize();
+        statsDisplayLabel[i]->setCaption(figureStr[i].str());
+        statsDisplayLabel[i]->adjustSize();
+        pointsLabel[i]->setCaption(pointsStr[i].str());
+        pointsLabel[i]->adjustSize();
+    }
+    remainingStatsPointsLabel->setCaption(updateText.str());
+    remainingStatsPointsLabel->adjustSize();
+
+    // Derived Stats Points
+
+    // Attack TODO: Count equipped Weapons and items attack bonuses
+    updateText.str("");
+    updateText << (10 + (int)player_info->STR);
+    statsAttackPoints->setCaption(updateText.str());
+    statsAttackPoints->adjustSize();
+
+    // Defense TODO: Count equipped Armors and items defense bonuses
+    updateText.str("");
+    updateText << (int)player_info->VIT;
+    statsDefensePoints->setCaption(updateText.str());
+    statsDefensePoints->adjustSize();
+
+    // Magic Attack TODO: Count equipped items M.Attack bonuses
+    updateText.str("");
+    updateText << (10 + (int)player_info->INT);
+    statsMagicAttackPoints->setCaption(updateText.str());
+    statsMagicAttackPoints->adjustSize();
+
+    // Magic Defense TODO: Count equipped items M.Defense bonuses
+    updateText.str("");
+    updateText << (int)player_info->AGI;
+    statsMagicDefensePoints->setCaption(updateText.str());
+    statsMagicDefensePoints->adjustSize();
+
+    // Accuracy %
+    updateText.str("");
+    updateText << (50 + (int)player_info->DEX + (int)player_info->AGI);
+    statsAccuracyPoints->setCaption(updateText.str());
+    statsAccuracyPoints->adjustSize();
+
+    // Evasion %
+    updateText.str("");
+    updateText << (((int)player_info->DEX / 2) + (int)player_info->AGI);
+    statsEvadePoints->setCaption(updateText.str());
+    statsEvadePoints->adjustSize();
+
+    // Reflex %
+    updateText.str("");
+    updateText << ((int)player_info->DEX / 4); // + counter
+    statsReflexPoints->setCaption(updateText.str());
+    statsReflexPoints->adjustSize();
+
 }
 
 void StatusWindow::draw(gcn::Graphics *graphics)
@@ -217,24 +413,32 @@ void StatusWindow::draw(gcn::Graphics *graphics)
 
 void StatusWindow::action(const std::string& eventId)
 {
-    if (eventId == "Stats") {
-        // Show / Hide the stats dialog
-        statsWindow->setVisible(!statsWindow->isVisible());
-    }
-    if (eventId == "Skills") {
-        // Show / Hide the skills dialog
-        skillDialog->setVisible(!skillDialog->isVisible());
-    }
-    if (eventId == "Inventory") {
-        // Show / Hide the inventory dialog
-        inventoryWindow->setVisible(!inventoryWindow->isVisible());
-    }
-    if (eventId == "Setup") {
-        // Show / Hide the inventory dialog
-        setupWindow->setVisible(!setupWindow->isVisible());
-    }
-    if (eventId == "Equipment") {
-        // Show / Hide the inventory dialog
-        equipmentWindow->setVisible(!equipmentWindow->isVisible());
+    // Stats Part
+    if ( eventId.length() == 3 )
+    {
+        writeWord(0, 0x00bb);
+
+        if (eventId == "STR") {
+            writeWord(2, 0x000d);
+        }
+        if (eventId == "AGI") {
+            writeWord(2, 0x000e);
+        }
+        if (eventId == "VIT") {
+            writeWord(2, 0x000f);
+        }
+        if (eventId == "INT") {
+            writeWord(2, 0x0010);
+        }
+        if (eventId == "DEX") {
+            writeWord(2, 0x0011);
+        }
+        if (eventId == "LUK") {
+            writeWord(2, 0x0012);
+        }
+
+        flush();
+        writeByte(4, 1);
+        writeSet(5);
     }
 }
