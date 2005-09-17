@@ -1516,6 +1516,24 @@ void do_parse()
                     case 0x0009:
                         player_info->statsPointsToAttribute = msg.readLong();
                         break;
+                    case 0x0029:
+                        player_info->ATK = msg.readLong();
+                        break;
+                    case 0x002b:
+                        player_info->MATK = msg.readLong();
+                        break;
+                    case 0x002d:
+                        player_info->DEF = msg.readLong();
+                        break;
+                    case 0x002f:
+                        player_info->MDEF = msg.readLong();
+                        break;
+                    case 0x0031:
+                        player_info->HIT = msg.readLong();
+                        break;
+                    case 0x0032:
+                        player_info->FLEE = msg.readLong();
+                        break;
                     case 0x0035:
                         player_node->aspd = msg.readLong();
                         break;

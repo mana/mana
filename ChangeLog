@@ -20,6 +20,8 @@
 	are got from the server, and then, are correct ones.
 	* src/gui/minimap.cpp : Only shows the Minimap Window if there's
 	actually a minimap to the current map.
+	* src/gui/status.cpp, src/game.cpp: The derived stats are now updated
+	correctly upon equipping/unequipping.
 
 2005-09-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
