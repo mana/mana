@@ -69,7 +69,7 @@ void MessageOut::writeByte(char value)
 void MessageOut::writeShort(short value)
 {
     expand(mPos + sizeof(short));
-#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
     (*(short *)(mData + mPos)) = DR_SwapTwoBytes(value);
 #else
     (*(short *)(mData + mPos)) = value;
@@ -81,7 +81,7 @@ void MessageOut::writeShort(short value)
 void MessageOut::writeLong(long value)
 {
     expand(mPos + sizeof(long));
-#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
     (*(long *)(mData + mPos)) = DR_SwapFourBytes(value);
 #else
     (*(long *)(mData + mPos)) = value;
