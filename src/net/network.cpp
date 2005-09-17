@@ -279,41 +279,6 @@ get_next_message()
     return MessageIn(in, length);
 }
 
-void writeByte(int pos, unsigned char value)//writeByte(unsigned char value)
-{
-    (*(unsigned char *)(out + pos + out_size)) = value;
-    //out_size++;
-}
-
-void writeWord(int pos, unsigned short value)//writeWord(unsigned short value)
-{
-#ifdef MACOSX
-    (*(unsigned short *)(out + pos + out_size)) = DR_SwapTwoBytes(value);
-#else
-    (*(unsigned short *)(out + pos + out_size)) = value;
-#endif
-    //SDLNet_Write16(value, (out + (pos + out_size)));
-    //out_size += 2;
-}
-
-void writeLong(int pos, unsigned int value)//writeLong(int value)
-{
-#ifdef MACOSX
-    (*(unsigned int *)(out + pos + out_size)) = DR_SwapFourBytes(value);
-#else
-    (*(unsigned int *)(out + pos + out_size)) = value;
-#endif
-    //SDLNet_Write32((Uint32)value, (out + (pos + out_size)));
-    //out_size += 4;
-}
-
-char *writePointer(int pos)//writeString(const std::string &string, int length)
-{
-    return (out+(pos+out_size));
-    //memcpy((out + out_size), string.c_str(), length);
-    //out_size += length;
-}
-
 void writeSet(unsigned int value)
 {
     if (out_size + value >= buffer_size) {

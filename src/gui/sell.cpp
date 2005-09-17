@@ -40,7 +40,9 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 
 SellDialog::SellDialog():
@@ -229,11 +231,12 @@ void SellDialog::action(const std::string& eventId)
     else if (eventId == "sell") {
         // Attempt sell
         assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
-
-        writeWord(0, 0x00c9);
-        writeWord(2, 8);
-        writeWord(4, shopInventory[selectedItem].index);
-        writeWord(6, m_amountItems);
+        
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_SELL_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(shopInventory[selectedItem].index);
+        outMsg.writeShort(m_amountItems);
         writeSet(8);
 
         m_maxItems -= m_amountItems;

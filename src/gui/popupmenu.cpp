@@ -40,7 +40,9 @@
 #include "../inventory.h"
 #include "../item.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
@@ -130,9 +132,10 @@ void PopupMenu::handleLink(const std::string& link)
     if ((link == "talk") && being && being->getType() == Being::NPC &&
             (current_npc == 0))
     {
-        writeWord(0, 0x0090);
-        writeLong(2, being->getId());
-        writeByte(6, 0);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_TALK);
+        outMsg.writeLong(being->getId());
+        outMsg.writeByte(0);
         writeSet(7);
         current_npc = being->getId();
     }
@@ -140,8 +143,9 @@ void PopupMenu::handleLink(const std::string& link)
     // Trade action
     else if ((link == "trade") && being && being->getType() == Being::PLAYER)
     {
-        writeWord(0, 0x00e4);
-        writeLong(2, being->getId());
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_TRADE_REQUEST);
+        outMsg.writeLong(being->getId());
         writeSet(6);
         //tradePartner.flush();
         //tradePartner << "Trade: You and " << being->name<< "";
@@ -166,8 +170,9 @@ void PopupMenu::handleLink(const std::string& link)
     // Pick Up Floor Item action
     else if ((link == "pickup") && floorItem)
     {
-        writeWord(0, 0x009f);
-        writeLong(2, floorItem->getId());
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_ITEM_PICKUP);
+        outMsg.writeLong(floorItem->getId());
         writeSet(6);
     }
 

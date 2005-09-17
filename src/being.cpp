@@ -36,6 +36,7 @@
 
 #include "gui/gui.h"
 
+#include "net/messageout.h"
 #include "net/network.h"
 #include "net/protocol.h"
 
@@ -66,8 +67,9 @@ Being* createBeing(unsigned int id, unsigned short job, Map *map)
     // If the being is a player, request the name
     if (being->getType() == Being::PLAYER)
     {
-        writeWord(0, 0x0094);
-        writeLong(2, being->getId());//readLong(2));
+        MessageOut outMsg;
+        outMsg.writeShort(0x0094);
+        outMsg.writeLong(being->getId());//readLong(2));
         writeSet(6);
     }
     // If the being is a monster then load the monsterset

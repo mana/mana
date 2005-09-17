@@ -37,6 +37,7 @@
 #include "../serverinfo.h"
 
 #include "../net/messagein.h"
+#include "../net/messageout.h"
 #include "../net/network.h"
 
 extern SERVER_INFO **server_info;
@@ -149,12 +150,13 @@ void server_char_server(int serverIndex)
     }
 
     // Send login infos
-    writeWord(0, 0x0065);
-    writeLong(2, account_ID);
-    writeLong(6, session_ID1);
-    writeLong(10, session_ID2);
-    writeWord(14, 0);
-    writeByte(16, sex);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0065);
+    outMsg.writeLong(account_ID);
+    outMsg.writeLong(session_ID1);
+    outMsg.writeLong(session_ID2);
+    outMsg.writeShort(0); // unknown
+    outMsg.writeByte(sex);
     writeSet(17);
 
     // Skipping a mysterious 4 bytes

@@ -63,6 +63,7 @@
 #include "gui/trade.h"
 
 #include "net/messagein.h"
+#include "net/messageout.h"
 #include "net/network.h"
 #include "net/protocol.h"
 
@@ -119,8 +120,9 @@ const int MAX_TIME = 10000;
 class DeatchNoticeListener : public gcn::ActionListener {
     public:
         void action(const std::string &eventId) {
-            writeWord(0, 0x00b2);
-            writeByte(2, 0);
+            MessageOut outMsg;
+            outMsg.writeShort(0x00b2);
+            outMsg.writeByte(0);
             writeSet(3);
             deathNotice = NULL;
         }
@@ -478,10 +480,6 @@ void do_input()
                     else if (deathNotice)
                     {
                         deathNotice->action("ok");
-                        writeWord(0, 0x00b2);
-                        writeByte(2, 0);
-                        writeSet(3);
-                        deathNotice = NULL;
                     }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
@@ -528,8 +526,10 @@ void do_input()
 
                         if (id)
                         {
-                            writeWord(0, 0x009f);
-                            writeLong(2, id);
+                            // TODO: remove duplicated code, probably add a pick up command
+                            MessageOut outMsg;
+                            outMsg.writeShort(0x009f);
+                            outMsg.writeLong(id);
                             writeSet(6);
                         }
                         used = true;
@@ -628,8 +628,9 @@ void do_input()
 
                     if (emotion)
                     {
-                        writeWord(0, 0x00bf);
-                        writeByte(2, emotion);
+                        MessageOut outMsg;
+                        outMsg.writeShort(0x00bf);
+                        outMsg.writeByte(emotion);
                         writeSet(3);
                         action_time = false;
                         used = true;
@@ -665,19 +666,23 @@ void do_input()
                     {
                         // Player default: trade
                         case Being::PLAYER:
-                            writeWord(0, 0x00e4);
-                            writeLong(2, target->getId());
+                        {
+                            MessageOut outMsg;
+                            outMsg.writeShort(0x00e4);
+                            outMsg.writeLong(target->getId());
                             writeSet(6);
                             tradePartnerName = target->getName();
+                        }
                             break;
 
                             // NPC default: talk
                         case Being::NPC:
                             if (!current_npc)
                             {
-                                writeWord(0, 0x0090);
-                                writeLong(2, target->getId());
-                                writeByte(6, 0);
+                                MessageOut outMsg;
+                                outMsg.writeShort(0x0090);
+                                outMsg.writeLong(target->getId());
+                                outMsg.writeByte(0);
                                 writeSet(7);
                                 current_npc = target->getId();
                             }
@@ -719,8 +724,9 @@ void do_input()
                     // "sqrt(dx*dx + dy*dy) < 2" is equal to "dx*dx + dy*dy < 4"
                     if ((dx*dx + dy*dy) < 4)
                     {
-                        writeWord(0, 0x009f);
-                        writeLong(2, floorItemId);
+                        MessageOut outMsg;
+                        outMsg.writeShort(0x009f);
+                        outMsg.writeLong(floorItemId);
                         writeSet(6);
                     }
                 }
@@ -912,8 +918,9 @@ void do_input()
 
             if (id != 0)
             {
-                writeWord(0, 0x009f);
-                writeLong(2, id);
+                MessageOut outMsg;
+                outMsg.writeShort(CMSG_ITEM_PICKUP);
+                outMsg.writeLong(id);
                 writeSet(6);
             }
         }
@@ -1225,8 +1232,9 @@ void do_parse()
 
                 if (tradeWindow->isVisible() == true || requestTradeDialogOpen)
                 {
-                    writeWord(0, CMSG_TRADE_RESPONSE);
-                    writeByte(2, 0x04);
+                    MessageOut outMsg;
+                    outMsg.writeShort(CMSG_TRADE_RESPONSE);
+                    outMsg.writeByte(4);
                     writeSet(3);
                     break;
                 }
@@ -1456,7 +1464,8 @@ void do_parse()
                     player_node->setMap(tiledMap);
 
                     // Send "map loaded"
-                    writeWord(0, 0x007d);
+                    MessageOut outMsg;
+                    outMsg.writeShort(CMSG_MAP_LOADED);
                     writeSet(2);
                     flush();
                 }

@@ -31,8 +31,11 @@
 #include "scrollarea.h"
 
 #include "../playerinfo.h"
+#include "../log.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 ChatWindow::ChatWindow(const std::string &logfile):
     Window("")
@@ -194,7 +197,7 @@ bool ChatWindow::isFocused()
 
 char *ChatWindow::chat_send(std::string nick, std::string msg)
 {
-    short packid = 0x008c;
+    short packetId = CMSG_CHAT_MESSAGE;
 
     // prepare command
     if (msg.substr(0, 1) == "/") {
@@ -211,17 +214,16 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
         nick += " : ";
         nick += msg;
         msg = nick;
-        packid = 0x008c;
+        //packetId = 0x008c;
     }
 
-    msg += "\0";
-
     // send processed message
-    writeWord(0, packid);
-    writeWord(2, (unsigned short)(msg.length() + 4));
-    memcpy(writePointer(4), msg.c_str(), msg.length());
-    writeSet((int)msg.length()+4);
-    nick = msg = "";
+    MessageOut outMsg;
+    outMsg.writeShort(packetId);
+    outMsg.writeShort(msg.length() + 4);
+    outMsg.writeString(msg, msg.length());
+    writeSet(msg.length() + 4);
+
     return "";
 }
 

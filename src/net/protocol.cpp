@@ -24,6 +24,7 @@
 #include "protocol.h"
 
 #include "messagein.h"
+#include "messageout.h"
 #include "network.h"
 
 #include "../being.h"
@@ -78,12 +79,13 @@ void map_start()
     }
 
     // Send login infos
-    writeWord(0, 0x0072);
-    writeLong(2, account_ID);
-    writeLong(6, char_ID);
-    writeLong(10, session_ID1);
-    writeLong(14, session_ID2);
-    writeByte(18, sex);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0072);
+    outMsg.writeLong(account_ID);
+    outMsg.writeLong(char_ID);
+    outMsg.writeLong(session_ID1);
+    outMsg.writeLong(session_ID2);
+    outMsg.writeByte(sex);
     writeSet(19);
 
     // Skip a mysterious 4 bytes
@@ -113,34 +115,28 @@ void map_start()
     skip(msg.getLength());
 
     // Send "map loaded"
-    writeWord(0, 0x007d);
+    // TODO: be able to reuse the same msg
+    MessageOut newMsg;
+    newMsg.writeShort(0x007d);
     writeSet(2);
-    flush();
 }
 
 void walk(unsigned short x, unsigned short y, unsigned char direction)
 {
     char temp[3];
+    MessageOut outMsg;
     set_coordinates(temp, x, y, direction);
-    writeWord(0, 0x0085);
-    memcpy(writePointer(2), temp, 3);
+    outMsg.writeShort(0x0085);
+    outMsg.writeString(temp, 3);
     writeSet(5);
-}
-
-void speak(char *speech)
-{
-    int len = (int)strlen(speech);
-    writeWord(0, 0x008c);
-    writeWord(2, len + 4);
-    memcpy(writePointer(4), speech, len);
-    writeSet(len + 4);
 }
 
 void action(char type, int id)
 {
-    writeWord(0, 0x0089);
-    writeLong(2, id);
-    writeByte(6, type);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0089);
+    outMsg.writeLong(id);
+    outMsg.writeByte(type);
     writeSet(7);
 }
 

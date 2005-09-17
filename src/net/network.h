@@ -44,11 +44,6 @@ void flush();
 MessageIn get_next_message();
 extern char *out;
 
-
-void writeByte(int pos, unsigned char value);//writeByte(char value);
-void writeWord(int pos, unsigned short value);//writeWord(short value);
-void writeLong(int pos, unsigned int value);//writeLong(int value);
-char *writePointer(int pos); //writeString(const std::string &string, int length);
 void writeSet(unsigned int value);
 void skip(int len);
 

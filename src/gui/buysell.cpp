@@ -22,9 +22,14 @@
  */
 
 #include "buysell.h"
+
 #include "button.h"
+
 #include "../game.h"
+
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 BuySellDialog::BuySellDialog():
     Window("Shop")
@@ -77,9 +82,10 @@ void BuySellDialog::action(const std::string& eventId)
         current_npc = 0;
     }
     if (actionId > -1) {
-        writeWord(0, 0x00c5);
-        writeLong(2, current_npc);
-        writeByte(6, actionId);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
+        outMsg.writeLong(current_npc);
+        outMsg.writeByte(actionId);
         writeSet(7);
     }
 

@@ -38,7 +38,9 @@
 #include "../inventory.h"
 #include "../item.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 #include "../resources/iteminfo.h"
 
@@ -240,9 +242,10 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    writeWord(0, 0x00e8);
-    writeWord(2, item->getInvIndex());
-    writeLong(4, quantity);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_TRADE_ITEM_ADD_REQUEST);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeLong(quantity);
     writeSet(8);
     flush();
 }
@@ -313,7 +316,8 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "cancel")
     {
-        writeWord(0, 0x00ed);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_TRADE_CANCEL_REQUEST);
         writeSet(2);
         flush();
     }
@@ -326,23 +330,26 @@ void TradeWindow::action(const std::string &eventId)
         {
             tempMoney[1] << tempInt;
             moneyField->setText(tempMoney[1].str());
-
-            writeWord(0, 0x00e8);
-            writeWord(2, 0);
-            writeLong(4, tempInt);
+            
+            MessageOut outMsg;
+            outMsg.writeShort(CMSG_TRADE_ITEM_ADD_REQUEST);
+            outMsg.writeShort(0);
+            outMsg.writeLong(tempInt);
             writeSet(8);
             flush();
         } else {
             moneyField->setText("");
         }
         moneyField->setEnabled(false);
-        writeWord(0, 0x00eb);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_TRADE_ADD_COMPLETE);
         writeSet(2);
         flush();
     }
     else if (eventId == "trade")
     {
-        writeWord(0, 0x00ef);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_TRADE_OK);
         writeSet(2);
         flush();
     }

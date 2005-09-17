@@ -25,7 +25,10 @@
 
 #include "equipment.h"
 #include "item.h"
+
+#include "net/messageout.h"
 #include "net/network.h"
+#include "net/protocol.h"
 
 Inventory::Inventory()
 {
@@ -90,9 +93,10 @@ bool Inventory::contains(Item *item)
 
 int Inventory::useItem(Item *item)
 {
-    writeWord(0, 0x00a7);
-    writeWord(2, item->getInvIndex());
-    writeLong(4, item->getId());
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_INVENTORY_USE);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
     writeSet(8);
     flush();
@@ -102,9 +106,10 @@ int Inventory::useItem(Item *item)
 int Inventory::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
-    writeWord(0, 0x00a2);
-    writeWord(2, item->getInvIndex());
-    writeWord(4, quantity);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_INVENTORY_DROP);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeShort(quantity);
     writeSet(6);
     flush();
     return 0;
@@ -112,17 +117,19 @@ int Inventory::dropItem(Item *item, int quantity)
 
 void Inventory::equipItem(Item *item)
 {
-    writeWord(0, 0x00a9);
-    writeWord(2, item->getInvIndex());
-    writeWord(4, 0);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_EQUIP);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeShort(0);
     writeSet(6);
     flush();
 }
 
 void Inventory::unequipItem(Item *item)
 {
-    writeWord(0, 0x00ab);
-    writeWord(2, item->getInvIndex());
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_UNEQUIP);
+    outMsg.writeShort(item->getInvIndex());
     writeSet(4);
     flush();
 

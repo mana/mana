@@ -22,11 +22,16 @@
  */
 
 #include "npc_text.h"
+
 #include "scrollarea.h"
 #include "button.h"
 #include "textbox.h"
+
 #include "../game.h"
+
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 NpcTextDialog::NpcTextDialog():
     Window("NPC")
@@ -76,8 +81,9 @@ NpcTextDialog::addText(const std::string &text)
 void
 NpcTextDialog::action(const std::string& eventId)
 {
-    writeWord(0, 0x00b9);
-    writeLong(2, current_npc);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeLong(current_npc);
     writeSet(6);
     setText("");
     setVisible(false);

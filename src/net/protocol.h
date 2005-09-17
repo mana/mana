@@ -84,6 +84,26 @@ class Being;
 
 // Packets from client to server
 #define CMSG_TRADE_RESPONSE          0x00e6
+#define CMSG_ITEM_PICKUP             0x009f
+#define CMSG_MAP_LOADED              0x007d
+#define CMSG_NPC_BUY_REQUEST         0x00c8
+#define CMSG_NPC_BUY_SELL_REQUEST    0x00c5
+#define CMSG_CHAT_MESSAGE            0x008c
+#define CMSG_NPC_LIST_CHOICE         0x00b8
+#define CMSG_NPC_NEXT_REQUEST        0x00b9
+#define CMSG_NPC_SELL_REQUEST        0x00c9
+#define CMSG_SKILL_LEVELUP_REQUEST   0x0112
+#define CMSG_STAT_UPDATE_REQUEST     0x00bb
+#define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8
+#define CMSG_TRADE_CANCEL_REQUEST    0x00ed
+#define CMSG_TRADE_ADD_COMPLETE      0x00eb
+#define CMSG_TRADE_OK                0x00ef
+#define CMSG_NPC_TALK                0x0090
+#define CMSG_TRADE_REQUEST           0x00e4
+#define CMSG_PLAYER_INVENTORY_USE    0x00a7
+#define CMSG_PLAYER_INVENTORY_DROP   0x00a2
+#define CMSG_PLAYER_EQUIP            0x00a9
+#define CMSG_PLAYER_UNEQUIP          0x00ab
 
 
 /** Decodes src direction */
@@ -100,9 +120,6 @@ void map_start();
 
 /** Requests to walk */
 void walk(unsigned short x, unsigned short y, unsigned char direction);
-
-/** Request to speak */
-void speak(char *speech);
 
 /** Request to attack */
 Being* attack(unsigned short x, unsigned short y, unsigned char direction);

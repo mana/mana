@@ -27,7 +27,10 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 bool requestTradeDialogOpen = false;
 
@@ -84,19 +87,18 @@ RequestTradeDialog::~RequestTradeDialog()
 
 void RequestTradeDialog::action(const std::string& eventId)
 {
+    int choice = 4; // 4 means trade canceled
+    
     if (eventId == "accept") {
-        // Send the selected index back to the server
-        writeWord(0, 0x00e6);
-        writeByte(2, 3);
-        writeSet(3);
-        scheduleDelete();
+        choice = 3; // ok to trade
     }
     else if (eventId == "cancel") {
-        // 0xff packet means cancel
-        writeWord(0, 0x00e6);
-        writeByte(2, 4);
-        writeSet(3);
         requestTradeDialogOpen = false;
-        scheduleDelete();
     }
+    
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_TRADE_RESPONSE);
+    outMsg.writeByte(choice);
+    writeSet(3);
+    scheduleDelete();
 }

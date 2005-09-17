@@ -30,7 +30,10 @@
 #include "progressbar.h"
 
 #include "../playerinfo.h"
+
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 StatusWindow::StatusWindow():
     Window(player_info->name)
@@ -415,31 +418,36 @@ void StatusWindow::draw(gcn::Graphics *graphics)
 void StatusWindow::action(const std::string& eventId)
 {
     // Stats Part
-    if ( eventId.length() == 3 )
+    if (eventId.length() == 3)
     {
-        writeWord(0, 0x00bb);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_STAT_UPDATE_REQUEST);
 
-        if (eventId == "STR") {
-            writeWord(2, 0x000d);
+        if (eventId == "STR")
+        {
+            outMsg.writeShort(0x000d);
         }
-        if (eventId == "AGI") {
-            writeWord(2, 0x000e);
+        if (eventId == "AGI")
+        {
+            outMsg.writeShort(0x000e);
         }
-        if (eventId == "VIT") {
-            writeWord(2, 0x000f);
+        if (eventId == "VIT")
+        {
+            outMsg.writeShort(0x000f);
         }
-        if (eventId == "INT") {
-            writeWord(2, 0x0010);
+        if (eventId == "INT")
+        {
+            outMsg.writeShort(0x0010);
         }
-        if (eventId == "DEX") {
-            writeWord(2, 0x0011);
+        if (eventId == "DEX")
+        {
+            outMsg.writeShort(0x0011);
         }
-        if (eventId == "LUK") {
-            writeWord(2, 0x0012);
+        if (eventId == "LUK")
+        {
+            outMsg.writeShort(0x0012);
         }
-
-        flush();
-        writeByte(4, 1);
+        outMsg.writeByte(1);
         writeSet(5);
     }
 }

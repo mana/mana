@@ -37,7 +37,7 @@ MessageOut::MessageOut():
 {
     // TODO: data not to be already allocated, keep it this way unitl full
     // conversion
-    mData = out;
+    mData = out + out_size;
 }
 
 MessageOut::~MessageOut()
@@ -54,8 +54,8 @@ MessageOut::~MessageOut()
 
 void MessageOut::expand(size_t bytes)
 {
-    mData = (char*)realloc(mData, bytes);
-    mDataSize = bytes;
+    /*mData = (char*)realloc(mData, bytes);
+    mDataSize = bytes;*/
 }
 
 void MessageOut::writeByte(char value)
@@ -97,8 +97,6 @@ void MessageOut::writeString(const std::string &string, int length)
     {
         // Write the length at the start if not fixed
         writeShort(string.length());
-        toWrite = string;
-
         expand(mPos + string.length());
     }
     else

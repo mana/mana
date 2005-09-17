@@ -31,7 +31,9 @@
 
 #include "../playerinfo.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 char *skill_db[] = {
     // 0-99
@@ -124,8 +126,9 @@ void SkillDialog::action(const std::string& eventId)
         int selectedSkill = skillListBox->getSelected();
         if (player_info->skillPoint > 0 && selectedSkill >= 0)
         {
-            writeWord(0, 0x0112);
-            writeWord(2, skillList[selectedSkill]->id);
+            MessageOut outMsg;
+            outMsg.writeShort(CMSG_SKILL_LEVELUP_REQUEST);
+            outMsg.writeShort(skillList[selectedSkill]->id);
             writeSet(4);
         }
     }

@@ -38,7 +38,9 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 
 BuyDialog::BuyDialog():
@@ -235,10 +237,11 @@ void BuyDialog::action(const std::string& eventId)
     // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (eventId == "buy" && (m_amountItems > 0 &&
                 m_amountItems <= m_maxItems)) {
-        writeWord(0, 0x00c8);
-        writeWord(2, 8);
-        writeWord(4, m_amountItems);
-        writeWord(6, shopInventory[selectedItem].id);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_BUY_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(m_amountItems);
+        outMsg.writeShort(shopInventory[selectedItem].id);
         writeSet(8);
 
         // update money !

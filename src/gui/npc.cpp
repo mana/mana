@@ -22,11 +22,16 @@
  */
 
 #include "npc.h"
+
 #include "button.h"
 #include "scrollarea.h"
 #include "listbox.h"
+
 #include "../game.h"
+
+#include "../net/messageout.h"
 #include "../net/network.h"
+#include "../net/protocol.h"
 
 NpcListDialog::NpcListDialog():
     Window("NPC")
@@ -106,27 +111,27 @@ NpcListDialog::reset()
 void
 NpcListDialog::action(const std::string& eventId)
 {
-    if (eventId == "ok") {
+    int choice = 0xff; // 0xff means cancel
+    
+    if (eventId == "ok")
+    {
         // Send the selected index back to the server
         int selectedIndex = itemList->getSelected();
-        if (selectedIndex > -1) {
-            writeWord(0, 0x00b8);
-            writeLong(2, current_npc);
-            writeByte(6, selectedIndex + 1);
-            writeSet(7);
-            setVisible(false);
-            current_npc = 0;
-            reset();
+        if (selectedIndex > -1)
+        {
+            choice = selectedIndex + 1;
         }
     }
-    else if (eventId == "cancel") {
-        // 0xff packet means cancel
-        writeWord(0, 0x00b8);
-        writeLong(2, current_npc);
-        writeByte(6, 0xff);
-        writeSet(7);
-        setVisible(false);
-        reset();
-        current_npc = 0;
+    else if (eventId == "cancel")
+    {   
     }
+    
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
+    outMsg.writeLong(current_npc);
+    outMsg.writeByte(choice);
+    writeSet(7);
+    setVisible(false);
+    reset();
+    current_npc = 0;
 }

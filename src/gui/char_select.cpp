@@ -41,8 +41,11 @@
 #include "../playerinfo.h"
 
 #include "../net/messagein.h"
+#include "../net/messageout.h"
 #include "../net/network.h"
 #include "../net/protocol.h"
+
+
 
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
@@ -192,8 +195,10 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
 void CharSelectDialog::serverCharDelete()
 {
     // Request character deletion
-    writeWord(0, 0x0068);
-    writeLong(2, char_info[0]->id);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0068);
+    outMsg.writeLong(char_info[0]->id);
+    outMsg.writeString("a@a.com", 40);
     writeSet(46);
 
     MessageIn msg = get_next_message();
@@ -221,8 +226,9 @@ void CharSelectDialog::serverCharDelete()
 void CharSelectDialog::serverCharSelect()
 {
     // Request character selection
-    writeWord(0, 0x0066);
-    writeByte(2, 0);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0066);
+    outMsg.writeByte(0);
     writeSet(3);
 
     MessageIn msg = get_next_message();
@@ -407,17 +413,19 @@ std::string CharCreateDialog::getName()
 
 void CharCreateDialog::serverCharCreate()
 {
-    writeWord(0, 0x0067);
-    strcpy(writePointer(2), getName().c_str());
-    writeByte(26, 5);
-    writeByte(27, 5);
-    writeByte(28, 5);
-    writeByte(29, 5);
-    writeByte(30, 5);
-    writeByte(31, 5);
-    writeByte(32, 0);
-    writeWord(33, playerBox->hairColor + 1);
-    writeWord(35, playerBox->hairStyle + 1);
+    // Send character infos
+    MessageOut outMsg;
+    outMsg.writeShort(0x0067);
+    outMsg.writeString(getName(), 24);
+    outMsg.writeByte(5);
+    outMsg.writeByte(5);
+    outMsg.writeByte(5);
+    outMsg.writeByte(5);
+    outMsg.writeByte(5);
+    outMsg.writeByte(5);
+    outMsg.writeByte(0);
+    outMsg.writeShort(playerBox->hairColor + 1);
+    outMsg.writeShort(playerBox->hairStyle + 1);
     writeSet(37);
 
     MessageIn msg = get_next_message();
