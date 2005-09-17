@@ -1,3 +1,12 @@
+2005-09-17  Matthias Hartmann  <hartmann.matthias@gmail.com>
+
+
+	* src/engine.cpp: [TARGET] text over player
+	* src/game.cpp: PVP
+	* src/game.h: PVP
+	* src/gui/popupmenu.cpp: Added "attack" option to the popupmenu
+	* src/net/protocol.cpp: findPlayer
+
 2005-09-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/game.cpp: Indent properly.

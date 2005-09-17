@@ -148,18 +148,22 @@ Being* attack(unsigned short x, unsigned short y, unsigned char direction)
     {
         case Being::SOUTH:
             target = findNode(x, y + 1, Being::MONSTER);
+            if (!target) target = findNode(x, y + 1, Being::PLAYER);
             break;
 
         case Being::WEST:
             target = findNode(x - 1, y, Being::MONSTER);
+            if (!target) target = findNode(x - 1, y, Being::PLAYER);
             break;
 
         case Being::NORTH:
             target = findNode(x, y - 1, Being::MONSTER);
+            if (!target) target = findNode(x, y - 1, Being::PLAYER);
             break;
 
         case Being::EAST:
             target = findNode(x + 1, y, Being::MONSTER);
+            if (!target) target = findNode(x + 1, y, Being::PLAYER);
             break;
     }
 

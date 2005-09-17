@@ -86,7 +86,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 const std::string &name = being->getName();
                 browserBox->addRow("@@trade|Trade With " + name + "@@");
 
-                //browserBox->addRow("@@attack|Attack " + name + "@@");
+                browserBox->addRow("@@attack|Attack " + name + "@@");
                 //browserBox->addRow("@@follow|Follow " + name + "@@");
                 //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
             }
@@ -151,6 +151,15 @@ void PopupMenu::handleLink(const std::string& link)
         //tradePartner << "Trade: You and " << being->name<< "";
         tradePartnerName = being->getName();
     }
+    
+    // Attack action
+    else if ((link == "attack") && being && being->getType() == Being::PLAYER)
+    {
+         
+        autoTarget = being;           
+        attack(being);
+    } 
+    
     /*
     // Follow Player action
     else if (link == "follow")

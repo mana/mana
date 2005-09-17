@@ -468,10 +468,20 @@ void Engine::draw()
     }
 
     if (autoTarget) {
-        graphics->drawText("[TARGET]",
-                autoTarget->text_x + 60,
-                autoTarget->text_y,
-                gcn::Graphics::CENTER);
+        if (autoTarget->getType() == Being::PLAYER)
+        {
+             graphics->drawText("[TARGET]",
+                   autoTarget->text_x+15,
+                   autoTarget->text_y-60,
+                   gcn::Graphics::CENTER);
+                                
+        } else {
+                
+             graphics->drawText("[TARGET]",
+                   autoTarget->text_x + 60,
+                   autoTarget->text_y,
+                   gcn::Graphics::CENTER);
+        }
     }
 
 #ifdef DEBUG

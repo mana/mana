@@ -664,16 +664,18 @@ void do_input()
                 {
                     switch (target->getType())
                     {
-                        // Player default: trade
+                        // Player default: attack
                         case Being::PLAYER:
                             {
                                 if (target != player_node)
                                 {
+                                 autoTarget = target;
+                                 attack(target);/*
                                     MessageOut outMsg;
                                     outMsg.writeShort(CMSG_TRADE_REQUEST);
                                     outMsg.writeLong(target->getId());
                                     writeSet(6);
-                                    tradePartnerName = target->getName();
+                                    tradePartnerName = target->getName();*/
                                 }
                             }
                             break;
@@ -772,7 +774,7 @@ void do_input()
                 Being *being;
                 FloorItem *floorItem;
 
-                if ((being = findNode(mx, my))) {
+                if ((being = findNode(mx, my)) && being != player_node) {
                     popupMenu->showPopup(event.button.x, event.button.y,
                             being);
                 } else if ((floorItem = find_floor_item_by_id(
@@ -902,11 +904,11 @@ void do_input()
             if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
             {
                 Being *monster = attack(x, y, player_node->direction);
-                if (monster == NULL && autoTarget != NULL)
+                if (monster == NULL && autoTarget != NULL && monster != player_node)
                 {
                     attack(autoTarget);
                 }
-                else if (keys[SDLK_LSHIFT])
+                else if (keys[SDLK_LSHIFT] && monster != player_node)
                 {
                     autoTarget = monster;
                 }
