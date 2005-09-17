@@ -286,8 +286,8 @@ void do_init()
     player_node->x = startX;
     player_node->y = startY;
     player_node->speed = 150;
-    player_node->setHairColor(player_info->hair_color);
-    player_node->setHairStyle(player_info->hair_style);
+    player_node->setHairColor(player_info->hairColor);
+    player_node->setHairStyle(player_info->hairStyle);
 
     if (player_info->weapon == 11)
     {
@@ -751,7 +751,7 @@ void do_input()
             // Mouse button middle
             else if (event.button.button == SDL_BUTTON_MIDDLE)
             {
-                /**
+                /*
                  * Some people haven't a mouse with three buttons,
                  * right Usiu??? ;-)
                  */
@@ -1489,20 +1489,20 @@ void do_parse()
                         player_info->hp = msg.readLong();
                         break;
                     case 0x0006:
-                        player_info->max_hp = msg.readLong();
+                        player_info->maxHp = msg.readLong();
                         break;
                     case 0x0007:
-                        player_info->sp = msg.readLong();
+                        player_info->mp = msg.readLong();
                         break;
                     case 0x0008:
-                        player_info->max_sp = msg.readLong();
+                        player_info->maxMp = msg.readLong();
                         break;
                     case 0x000b:
-                        player_info->lv = msg.readLong();
+                        player_info->lvl = msg.readLong();
                         break;
                     case 0x000c:
-                        player_info->skill_point = msg.readLong();
-                        skillDialog->setPoints(player_info->skill_point);
+                        player_info->skillPoint = msg.readLong();
+                        skillDialog->setPoints(player_info->skillPoint);
                         break;
                     case 0x0018:
                         player_info->totalWeight = msg.readLong();
@@ -1511,7 +1511,7 @@ void do_parse()
                         player_info->maxWeight = msg.readLong();
                         break;
                     case 0x0037:
-                        player_info->job_lv = msg.readLong();
+                        player_info->jobLvl = msg.readLong();
                         break;
                     case 0x0009:
                         player_info->statsPointsToAttribute = msg.readLong();
@@ -1595,7 +1595,7 @@ void do_parse()
                         player_info->xp = msg.readLong();
                         break;
                     case 0x0002:
-                        player_info->job_xp = msg.readLong();
+                        player_info->jobXp = msg.readLong();
                         break;
                     case 0x0014:
                         player_info->gp = msg.readLong();
@@ -2010,17 +2010,17 @@ void do_parse()
                 player_info->DEXUp = msg.readByte();
                 player_info->LUK   = msg.readByte();
                 player_info->LUKUp = msg.readByte();
-                msg.readShort();  // ATK
-                msg.readShort();  // ATK bonus
-                msg.readShort();  // MATK max
-                msg.readShort();  // MATK min
-                msg.readShort();  // DEF
-                msg.readShort();  // DEF bonus
-                msg.readShort();  // MDEF
-                msg.readShort();  // MDEF bonus
-                msg.readShort();  // HIT
-                msg.readShort();  // FLEE
-                msg.readShort();  // FLEE bonus
+                player_info->ATK       = msg.readShort();  // ATK
+                player_info->ATKBonus  = msg.readShort();  // ATK bonus
+                player_info->MATK      = msg.readShort();  // MATK max
+                player_info->MATKBonus = msg.readShort();  // MATK min
+                player_info->DEF       = msg.readShort();  // DEF
+                player_info->DEFBonus  = msg.readShort();  // DEF bonus
+                player_info->MDEF      = msg.readShort();  // MDEF
+                player_info->MDEFBonus = msg.readShort();  // MDEF bonus
+                player_info->HIT       = msg.readShort();  // HIT
+                player_info->FLEE      = msg.readShort();  // FLEE
+                player_info->FLEEBonus = msg.readShort();  // FLEE bonus
                 msg.readShort();  // critical
                 msg.readShort();  // unknown
                 break;

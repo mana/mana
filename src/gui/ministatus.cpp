@@ -61,13 +61,13 @@ MiniStatusWindow::~MiniStatusWindow()
 void MiniStatusWindow::update()
 {
     // HP Bar coloration
-    if (player_info->hp < int(player_info->max_hp / 3))
+    if (player_info->hp < int(player_info->maxHp / 3))
     {
         hpBar->setColor(223, 32, 32); // Red
     }
     else
     {
-        if (player_info->hp < int((player_info->max_hp / 3) * 2))
+        if (player_info->hp < int((player_info->maxHp / 3) * 2))
         {
             hpBar->setColor(230, 171, 34); // Orange
         }
@@ -77,8 +77,8 @@ void MiniStatusWindow::update()
         }
     }
 
-    hpBar->setProgress((float)player_info->hp / (float)player_info->max_hp);
-    // mpBar->setProgress((float)player_info->mp / (float)player_info->max_mp);
+    hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);
+    // mpBar->setProgress((float)player_info->mp / (float)player_info->maxMp);
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)

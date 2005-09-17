@@ -62,11 +62,12 @@ class StatusWindow : public Window, public gcn::ActionListener {
          */
         void draw(gcn::Graphics *graphics);
 
-    private:
         /**
          * Updates this dialog with values from PLAYER_INFO *char_info
          */
         void update();
+
+    private:
 
         /**
          * Status Part

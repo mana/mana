@@ -249,7 +249,7 @@ void StatusWindow::update()
     // Status Part
     // -----------
     updateText.str("");
-    updateText << "Level: " << player_info->lv;
+    updateText << "Level: " << player_info->lvl;
     lvlLabel->setCaption(updateText.str());
     lvlLabel->adjustSize();
 
@@ -259,17 +259,17 @@ void StatusWindow::update()
     gpLabel->adjustSize();
 
     updateText.str("");
-    updateText << "Job: " << player_info->job_lv;
+    updateText << "Job: " << player_info->jobLvl;
     jobXpLabel->setCaption(updateText.str());
     jobXpLabel->adjustSize();
 
     updateText.str("");
-    updateText << player_info->hp << "/" << player_info->max_hp;
+    updateText << player_info->hp << "/" << player_info->maxHp;
     hpValueLabel->setCaption(updateText.str());
     hpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << player_info->sp <<  "/" << player_info->max_sp;
+    updateText << player_info->mp <<  "/" << player_info->maxMp;
     mpValueLabel->setCaption(updateText.str());
     mpValueLabel->adjustSize();
 
@@ -279,18 +279,18 @@ void StatusWindow::update()
     xpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << (int)player_info->job_xp << "/" << (int)player_info->jobXpForNextLevel;
+    updateText << (int)player_info->jobXp << "/" << (int)player_info->jobXpForNextLevel;
     jobValueLabel->setCaption(updateText.str());
     jobValueLabel->adjustSize();
 
     // HP Bar coloration
-    if (player_info->hp < int(player_info->max_hp / 3))
+    if (player_info->hp < int(player_info->maxHp / 3))
     {
         hpBar->setColor(223, 32, 32); // Red
     }
     else
     {
-        if (player_info->hp < int((player_info->max_hp / 3) * 2))
+        if (player_info->hp < int((player_info->maxHp / 3) * 2))
         {
             hpBar->setColor(230, 171, 34); // Orange
         }
@@ -300,12 +300,13 @@ void StatusWindow::update()
         }
     }
 
-    hpBar->setProgress((float)player_info->hp / (float)player_info->max_hp);
+    hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);
+    // mpBar->setProgress((float)player_info->mp / (float)player_info->maxMp);
 
     xpBar->setProgress(
             (float)player_info->xp / (float)player_info->xpForNextLevel);
     jobXpBar->setProgress(
-            (float)player_info->job_xp / (float)player_info->jobXpForNextLevel);
+            (float)player_info->jobXp / (float)player_info->jobXpForNextLevel);
 
     // Stats Part
     // ----------
@@ -362,37 +363,37 @@ void StatusWindow::update()
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
     updateText.str("");
-    updateText << (10 + (int)player_info->STR);
+    updateText << int(player_info->ATK + player_info->ATKBonus);
     statsAttackPoints->setCaption(updateText.str());
     statsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
     updateText.str("");
-    updateText << (int)player_info->VIT;
+    updateText << int(player_info->DEF + player_info->DEFBonus);
     statsDefensePoints->setCaption(updateText.str());
     statsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
     updateText.str("");
-    updateText << (10 + (int)player_info->INT);
+    updateText << int(player_info->MATK + player_info->MATKBonus);
     statsMagicAttackPoints->setCaption(updateText.str());
     statsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
     updateText.str("");
-    updateText << (int)player_info->AGI;
+    updateText << int(player_info->MDEF + player_info->MDEFBonus);
     statsMagicDefensePoints->setCaption(updateText.str());
     statsMagicDefensePoints->adjustSize();
 
     // Accuracy %
     updateText.str("");
-    updateText << (50 + (int)player_info->DEX + (int)player_info->AGI);
+    updateText << (int)player_info->HIT;
     statsAccuracyPoints->setCaption(updateText.str());
     statsAccuracyPoints->adjustSize();
 
     // Evasion %
     updateText.str("");
-    updateText << (((int)player_info->DEX / 2) + (int)player_info->AGI);
+    updateText << (int)player_info->FLEE;
     statsEvadePoints->setCaption(updateText.str());
     statsEvadePoints->adjustSize();
 

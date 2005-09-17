@@ -179,28 +179,28 @@ void server_char_server(int serverIndex)
             char_info[i]->id = msg.readLong();
             char_info[i]->xp = msg.readLong();
             char_info[i]->gp = msg.readLong();
-            char_info[i]->job_xp = msg.readLong();
-            char_info[i]->job_lv = msg.readLong();
+            char_info[i]->jobXp = msg.readLong();
+            char_info[i]->jobLvl = msg.readLong();
             msg.skip(8);                          // unknown
             msg.readLong();                       // option
             msg.readLong();                       // karma
             msg.readLong();                       // manner
             msg.skip(2);                          // unknown
             char_info[i]->hp = msg.readShort();
-            char_info[i]->max_hp = msg.readShort();
-            char_info[i]->sp = msg.readShort();
-            char_info[i]->max_sp = msg.readShort();
+            char_info[i]->maxHp = msg.readShort();
+            char_info[i]->mp = msg.readShort();
+            char_info[i]->maxMp = msg.readShort();
             msg.readShort();                       // speed
             msg.readShort();                       // class
-            char_info[i]->hair_style = msg.readShort();
+            char_info[i]->hairStyle = msg.readShort();
             char_info[i]->weapon = msg.readShort();
-            char_info[i]->lv = msg.readShort();
+            char_info[i]->lvl = msg.readShort();
             msg.readShort();                       // skill point
             msg.readShort();                       // head bottom
             msg.readShort();                       // shield
             msg.readShort();                       // head option top
             msg.readShort();                       // head option mid
-            char_info[i]->hair_color = msg.readShort();
+            char_info[i]->hairColor = msg.readShort();
             msg.readShort();                       // unknown
             char_info[i]->name = msg.readString(24);
             char_info[i]->STR = msg.readByte();
@@ -209,7 +209,7 @@ void server_char_server(int serverIndex)
             char_info[i]->INT = msg.readByte();
             char_info[i]->DEX = msg.readByte();
             char_info[i]->LUK = msg.readByte();
-            msg.readByte();                        // character number
+            char_info[i]->characterNumber = msg.readByte();  // character number
             msg.readByte();                        // unknown
         }
 

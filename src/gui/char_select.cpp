@@ -158,8 +158,8 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
 
         nameCaption << pi->name;
-        levelCaption << "Lvl: " << pi->lv;
-        jobCaption << "Job Lvl: " << pi->job_lv;
+        levelCaption << "Lvl: " << pi->lvl;
+        jobCaption << "Job Lvl: " << pi->jobLvl;
         moneyCaption << "Gold: " << pi->gp;
 
         nameLabel->setCaption(nameCaption.str());
@@ -170,8 +170,8 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         delCharButton->setEnabled(true);
         selectButton->setEnabled(true);
 
-        playerBox->hairStyle = pi->hair_style - 1;
-        playerBox->hairColor = pi->hair_color - 1;
+        playerBox->hairStyle = pi->hairStyle - 1;
+        playerBox->hairColor = pi->hairColor - 1;
         playerBox->showPlayer = true;
     }
     else {
@@ -430,28 +430,28 @@ void CharCreateDialog::serverCharCreate()
         char_info[0]->id = msg.readLong();
         char_info[0]->xp = msg.readLong();
         char_info[0]->gp = msg.readLong();
-        char_info[0]->job_xp = msg.readLong();
-        char_info[0]->job_lv = msg.readLong();
+        char_info[0]->jobXp = msg.readLong();
+        char_info[0]->jobLvl = msg.readLong();
         msg.skip(8);                          // unknown
         msg.readLong();                       // option
         msg.readLong();                       // karma
         msg.readLong();                       // manner
         msg.skip(2);                          // unknown
         char_info[0]->hp = msg.readShort();
-        char_info[0]->max_hp = msg.readShort();
-        char_info[0]->sp = msg.readShort();
-        char_info[0]->max_sp = msg.readShort();
+        char_info[0]->maxHp = msg.readShort();
+        char_info[0]->mp = msg.readShort();
+        char_info[0]->maxMp = msg.readShort();
         msg.readShort();                       // speed
         msg.readShort();                       // class
-        char_info[0]->hair_style = msg.readShort();
+        char_info[0]->hairStyle = msg.readShort();
         char_info[0]->weapon = msg.readShort();
-        char_info[0]->lv = msg.readShort();
+        char_info[0]->lvl = msg.readShort();
         msg.readShort();                       // skill point
         msg.readShort();                       // head bottom
         msg.readShort();                       // shield
         msg.readShort();                       // head option top
         msg.readShort();                       // head option mid
-        char_info[0]->hair_color = msg.readShort();
+        char_info[0]->hairColor = msg.readShort();
         msg.readShort();                       // unknown
         char_info[0]->name = msg.readString(24);
         char_info[0]->STR = msg.readByte();
@@ -460,7 +460,7 @@ void CharCreateDialog::serverCharCreate()
         char_info[0]->INT = msg.readByte();
         char_info[0]->DEX = msg.readByte();
         char_info[0]->LUK = msg.readByte();
-        msg.readByte();                        // character number
+        char_info[0]->characterNumber = msg.readByte(); // character number
         msg.readByte();                        // unknown
 
         n_character = 1;

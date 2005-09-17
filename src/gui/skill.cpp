@@ -122,7 +122,7 @@ void SkillDialog::action(const std::string& eventId)
     {
         // Increment skill
         int selectedSkill = skillListBox->getSelected();
-        if (player_info->skill_point > 0 && selectedSkill >= 0)
+        if (player_info->skillPoint > 0 && selectedSkill >= 0)
         {
             writeWord(0, 0x0112);
             writeWord(2, skillList[selectedSkill]->id);
@@ -166,8 +166,8 @@ std::string SkillDialog::getElementAt(int i)
         char tmp[128];
         sprintf(tmp, "%s    Lv: %i    Sp: %i",
                 skill_db[skillList[i]->id],
-                skillList[i]->lv,
-                skillList[i]->sp);
+                skillList[i]->lvl,
+                skillList[i]->mp);
         return tmp;
     }
     return "";
@@ -183,22 +183,22 @@ bool SkillDialog::hasSkill(int id)
     return false;
 }
 
-void SkillDialog::addSkill(int id, int lv, int sp)
+void SkillDialog::addSkill(int id, int lvl, int mp)
 {
     printf("%i\n", id);
     SKILL *tmp = new SKILL();
     tmp->id = id;
-    tmp->lv = lv;
-    tmp->sp = sp;
+    tmp->lvl = lvl;
+    tmp->mp = mp;
     skillList.push_back(tmp);
 }
 
-void SkillDialog::setSkill(int id, int lv, int sp)
+void SkillDialog::setSkill(int id, int lvl, int mp)
 {
     for (unsigned int i = 0; i < skillList.size(); i++) {
         if (skillList[i]->id == id) {
-            skillList[i]->lv = lv;
-            skillList[i]->sp = sp;
+            skillList[i]->lvl = lvl;
+            skillList[i]->mp = mp;
         }
     }
 }

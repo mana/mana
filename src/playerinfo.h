@@ -31,12 +31,15 @@ struct PLAYER_INFO
     int id;
     float lastAttackTime;      /**< Used to synchronize the charge dialog */
     std::string name;          /**< Player name */
-    short hp, max_hp, sp, max_sp, lv;
+    short hp, maxHp, mp, maxMp, lvl;
     short statsPointsToAttribute;
-    int xp, xpForNextLevel, gp, job_xp, jobXpForNextLevel, job_lv;
-    short statp, skill_point, hair_color, hair_style;
+    int xp, xpForNextLevel, gp, jobXp, jobXpForNextLevel, jobLvl;
+    short statPoint, skillPoint, hairColor, hairStyle;
     char STR, AGI, VIT, INT, DEX, LUK;
     char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
+    char ATK, ATKBonus, MATK, MATKBonus, DEF, DEFBonus, MDEF;
+    char MDEFBonus, HIT, FLEE, FLEEBonus;
+    char characterNumber;
     int totalWeight, maxWeight;
     short weapon;
 };
