@@ -351,11 +351,13 @@ void Engine::draw()
                             being->text_x + 3, being->text_y - 90);
                 }
 
+                if (being != player_node) {
                 graphics->setFont(speechFont);
                 graphics->drawText(being->getName(),
                                    being->text_x + 15, being->text_y + 30,
                                    gcn::Graphics::CENTER);
                 graphics->setFont(gui->getFont());
+                }
                 break;
 
                 // Draw a NPC

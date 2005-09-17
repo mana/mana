@@ -667,11 +667,13 @@ void do_input()
                         // Player default: trade
                         case Being::PLAYER:
                         {
+                            if (target != player_node) {
                             MessageOut outMsg;
                             outMsg.writeShort(0x00e4);
                             outMsg.writeLong(target->getId());
                             writeSet(6);
                             tradePartnerName = target->getName();
+                            }
                         }
                             break;
 
