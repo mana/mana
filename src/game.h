@@ -25,7 +25,6 @@
 #define _TMW_GAME_
 
 #include <iosfwd>
-#include "being.h"
 
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
@@ -34,6 +33,7 @@
 #define IDLE 255
 
 class Being;
+
 extern std::string map_path;
 extern std::string tradePartnerName;
 extern int fps, frame, current_npc;
