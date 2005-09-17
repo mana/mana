@@ -25,7 +25,7 @@
 #define _TMW_GAME_
 
 #include <iosfwd>
-#include "Being.h"
+#include "being.h"
 
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
