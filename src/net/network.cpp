@@ -30,7 +30,7 @@
 #include "messagein.h"
 
 #include "../log.h"
-#ifdef MACOSX
+#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
 #include "win2mac.h"
 #endif
 
@@ -247,7 +247,7 @@ void flush()
 
 unsigned short readWord(int pos)
 {
-#ifdef MACOSX
+#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
     return DR_SwapTwoBytes((*(unsigned short*)(in+(pos))));
 #else
     return (*(unsigned short *)(in+(pos)));

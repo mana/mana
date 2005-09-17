@@ -25,7 +25,7 @@
 
 #include <cassert>
 #include <SDL_net.h>
-#ifdef MACOSX
+#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
 #include "win2mac.h"
 #endif
 
@@ -55,7 +55,7 @@ MessageIn::readShort()
 {
     assert(mPos + 2 <= mLength);
     mPos += 2;
-#ifdef MACOSX
+#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
     return DR_SwapTwoBytes(*(short*)(mData + (mPos - 2)));
 #else
     return (*(short*)(mData + (mPos - 2)));
@@ -67,7 +67,7 @@ MessageIn::readLong()
 {
     assert(mPos + 4 <= mLength);
     mPos += 4;
-#ifdef MACOSX
+#ifdef SDL_BYTEORDER == SDL_BIG_ENDIAN
     return DR_SwapFourBytes(*(long*)(mData + (mPos - 4)));
 #else
     return (*(long*)(mData + (mPos - 4)));

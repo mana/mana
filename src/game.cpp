@@ -575,7 +575,15 @@ void do_input()
                         used = true;
                         break;
                     */
-
+                    // screenshot (picture, hence the p)
+                    case SDLK_p:
+                        static int picCount = 1;
+                        if (!graphics->saveScreenshot("Screenshot%d.png", picCount))
+                        {
+                            logger->log("Error: could not save Screenshot%d.png", picCount);
+                            picCount++;
+                        }
+                    break;
                         // Skill window
                     case SDLK_k:
                         skillDialog->setVisible(!skillDialog->isVisible());

@@ -1,3 +1,12 @@
+2005-09-17 Duane Bailey <nayryeliab@gmail.com>
+	
+	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp: 
+	removed replaced MACOSX defines with big endian defines
+	* src/graphics.cpp, src/graphics.h: added screenshot method
+	* src/game.cpp: added code, so that when one presses 'alt-p' (for
+	picture), it takes a screenshot and saves it to a png
+	* src/Makefile.am, config.ac: added png library stuff
+	
 2005-09-17  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* src/engine.cpp: [TARGET] text over player

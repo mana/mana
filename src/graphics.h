@@ -119,6 +119,11 @@ class Graphics : public gcn::SDLGraphics {
          */
         int getHeight();
 
+        /**
+        * takes a screenshot, and saves it as a png
+        */
+        bool saveScreenshot(char *filename, ...);
+
     protected:
         SDL_Surface *mScreen;
         bool mFullscreen, mHWAccel;
