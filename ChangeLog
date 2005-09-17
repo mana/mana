@@ -1,12 +1,12 @@
 2005-09-17 Duane Bailey <nayryeliab@gmail.com>
-	
-	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp: 
+
+	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp:
 	removed replaced MACOSX defines with big endian defines
 	* src/graphics.cpp, src/graphics.h: added screenshot method
 	* src/game.cpp: added code, so that when one presses 'alt-p' (for
 	picture), it takes a screenshot and saves it to a png
 	* src/Makefile.am, config.ac: added png library stuff
-	
+
 2005-09-17  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* src/engine.cpp: [TARGET] text over player
@@ -21,6 +21,13 @@
 
 2005-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* configure.ac: Fix typo.
+	* src/Makefile.am: Remove useless (duplicate) -lpng.
+	* src/graphics.cpp: Add missing cstdarg header.
+	* src/net/messagein.cpp: Fix some funny looking preprocessor
+	statement.
+	* src/net/messageout.cpp: Readd SDLnet header, for changed
+	preprocessor stuff.
 	* src/game.h: Remove inclusion of being.h, there was a forward
 	declaration of class Being anyways...
 	* src/openglgraphics.cpp: Use gl{Push,Pop}Matrix instead of

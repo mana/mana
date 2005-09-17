@@ -44,7 +44,7 @@ AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
 AC_MSG_ERROR([ *** Unable to find SDL_net library]))
 
 AC_CHECK_LIB(png, png_write_info, ,
-ACMSG_ERROR([ ** Unable to find png library]))
+AC_MSG_ERROR([ *** Unable to find png library]))
 
 # Checks for header files.
 AC_HEADER_STDC

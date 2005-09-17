@@ -25,7 +25,7 @@
 
 #include <cassert>
 #include <SDL_net.h>
-#if SDL_BYTEORDER == SDL_if SDL_BYTEORDER == SDL_BIG_ENDIAN_ENDIAN
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #include "win2mac.h"
 #endif
 

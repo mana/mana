@@ -24,7 +24,7 @@
 #include "messageout.h"
 
 #include <string>
-//#include <SDL_net.h>
+#include <SDL_net.h>
 #include "win2mac.h"
 
 #include "network.h"
@@ -106,7 +106,7 @@ void MessageOut::writeString(const std::string &string, int length)
         toWrite = string.substr(0, length);
         expand(mPos + length);
     }
-    
+
     // Write the actual string
     memcpy(&mData[mPos], (void*)toWrite.c_str(), toWrite.length());
     mPos += toWrite.length();
