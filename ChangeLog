@@ -1,3 +1,7 @@
+2005-09-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.cpp, src/game.cpp: Indent properly.
+
 2005-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp: Use gl{Push,Pop}Matrix instead of
@@ -15,7 +19,7 @@
 	src/gui/status.cpp, src/gui/trade.cpp, src/inventory.cpp,
 	src/net/messageout.cpp, src/net/network.cpp, src/net/network.h,
 	src/net/protocol.cpp, src/net/protocol.h: Completed transition to use
-	MessageOut.	
+	MessageOut.
 	
 2005-09-17  Yohann Ferreira  <bertram@cegetel.net>
 

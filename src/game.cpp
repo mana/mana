@@ -666,15 +666,16 @@ void do_input()
                     {
                         // Player default: trade
                         case Being::PLAYER:
-                        {
-                            if (target != player_node) {
-                            MessageOut outMsg;
-                            outMsg.writeShort(0x00e4);
-                            outMsg.writeLong(target->getId());
-                            writeSet(6);
-                            tradePartnerName = target->getName();
+                            {
+                                if (target != player_node)
+                                {
+                                    MessageOut outMsg;
+                                    outMsg.writeShort(CMSG_TRADE_REQUEST);
+                                    outMsg.writeLong(target->getId());
+                                    writeSet(6);
+                                    tradePartnerName = target->getName();
+                                }
                             }
-                        }
                             break;
 
                             // NPC default: talk
@@ -682,7 +683,7 @@ void do_input()
                             if (!current_npc)
                             {
                                 MessageOut outMsg;
-                                outMsg.writeShort(0x0090);
+                                outMsg.writeShort(CMSG_NPC_TALK);
                                 outMsg.writeLong(target->getId());
                                 outMsg.writeByte(0);
                                 writeSet(7);

@@ -314,13 +314,15 @@ void Engine::draw()
                 being->text_x = x + get_x_offset(being);
                 being->text_y = y + get_y_offset(being);
 
-                if (being->action == Being::SIT || being->action == Being::DEAD) {
+                if (being->action == Being::SIT || being->action == Being::DEAD)
+                {
                     being->frame = 0;
                 }
 
                 frame = being->frame + being->action;
 
-                if (being->action == Being::ATTACK) {
+                if (being->action == Being::ATTACK)
+                {
                     if (being->getWeapon() > 0)
                         frame += 4 * (being->getWeapon() - 1);
                 }
@@ -328,7 +330,8 @@ void Engine::draw()
                 graphics->drawImage(playerset->spriteset[frame + 16 * dir],
                         being->text_x - 16, being->text_y - 32);
 
-                if (being->getWeapon() != 0 && being->action == Being::ATTACK) {
+                if (being->getWeapon() != 0 && being->action == Being::ATTACK)
+                {
                     Image *image = weaponset->spriteset[
                         16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
 
@@ -336,7 +339,8 @@ void Engine::draw()
                             being->text_x - 64, being->text_y - 80);
                 }
 
-                if (being->getHairColor() <= NR_HAIR_COLORS) {
+                if (being->getHairColor() <= NR_HAIR_COLORS)
+                {
                     int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
                             (being->getHairStyle() - 1));
 
@@ -345,25 +349,27 @@ void Engine::draw()
                             being->text_y - 50 + 2 * hairtable[frame][dir][1]);
                 }
 
-                if (being->emotion != 0) {
+                if (being->emotion != 0)
+                {
                     graphics->drawImage(
                             emotionset->spriteset[being->emotion - 1],
                             being->text_x + 3, being->text_y - 90);
                 }
 
-                if (being != player_node) {
-                graphics->setFont(speechFont);
-                graphics->drawText(being->getName(),
-                                   being->text_x + 15, being->text_y + 30,
-                                   gcn::Graphics::CENTER);
-                graphics->setFont(gui->getFont());
+                if (being != player_node)
+                {
+                    graphics->setFont(speechFont);
+                    graphics->drawText(being->getName(),
+                                       being->text_x + 15, being->text_y + 30,
+                                       gcn::Graphics::CENTER);
+                    graphics->setFont(gui->getFont());
                 }
                 break;
 
                 // Draw a NPC
             case Being::NPC:
                 graphics->drawImage(npcset->spriteset[being->job - 100],
-                        x - 8, y - 52);
+                                    x - 8, y - 52);
                 break;
 
                 // Draw a monster
