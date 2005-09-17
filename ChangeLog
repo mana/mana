@@ -1,3 +1,8 @@
+2005-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, src/gui/skill.cpp: Updated to last changes, and
+	wrong names fixes.
+	
 2005-09-17  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/game.cpp, src/gui/ministatus.cpp, src/gui/ministatus.h,
