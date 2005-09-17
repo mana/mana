@@ -1,3 +1,9 @@
+2005-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/openglgraphics.cpp: Use gl{Push,Pop}Matrix instead of
+	calculating offsets, cause the values are stored as float and aren't
+	accurate enough.
+
 2005-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/gui/skill.cpp: Updated to last changes, and
