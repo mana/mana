@@ -24,7 +24,8 @@
 #include "messageout.h"
 
 #include <string>
-#include <SDL_net.h>
+//#include <SDL_net.h>
+#include "win2mac.h"
 
 #include "network.h"
 #include "packet.h"
