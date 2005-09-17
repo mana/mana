@@ -60,11 +60,17 @@ void Minimap::setMap(Map *map)
 
         if (mMapImage != NULL)
         {
+            setVisible(true);
             mMapImage->setAlpha(0.7);
+        }
+        else
+        {
+            setVisible(false);
         }
     }
     else
     {
+        setVisible(false);
         mMapImage = NULL;
     }
 }

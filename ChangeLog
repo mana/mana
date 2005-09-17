@@ -7,6 +7,8 @@
 	src/gui/char_select.cpp, src/gui/ministatus.cpp, src/gui/skill.cpp,
 	src/gui/status.cpp, src/gui/status.h : Now the derived stats values
 	are got from the server, and then, are correct ones.
+	* src/gui/minimap.cpp : Only shows the Minimap Window if there's
+	actually a minimap to the current map.
 
 2005-09-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
