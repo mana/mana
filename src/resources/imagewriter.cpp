@@ -83,7 +83,7 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
 
     png_set_packing(png_ptr);
 
-    row_pointers = (png_bytep*) malloc(sizeof(png_bytep)*surface->h);
+    row_pointers = new png_bytep[surface->h];
     if (!row_pointers)
     {
         logger->log("Had trouble converting surface to row pointers");
@@ -91,19 +91,22 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
     }
 
     for (int i = 0; i < surface->h; i++)
+    {
         row_pointers[i] = (png_bytep)(Uint8 *)surface->pixels + i * surface->pitch;
+    }
 
     png_write_image(png_ptr, row_pointers);
     png_write_end(png_ptr, info_ptr);
-    fclose(fp);
-    if (row_pointers) free(row_pointers);
 
-    if (info_ptr->palette) free(info_ptr->palette);
+    fclose(fp);
+
+    delete [] row_pointers;
 
     png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
 
     if (SDL_MUSTLOCK(surface)) {
         SDL_UnlockSurface(surface);
     }
+
     return true;
 }
