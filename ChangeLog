@@ -2,6 +2,8 @@
 
 	* The Mana World.dev, src/gui/npc.cpp: Updated dev-cpp project file to
 	last changes, and fixed the bug with npc lists I introduced earlier.
+	* data/items.xml: Updated the defense value of fancy hat as pointed out
+	by xand.
 
 2005-09-18  Duane Bailey  <nayryeliab@gmail.com>
 
