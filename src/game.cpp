@@ -69,8 +69,6 @@
 #include "net/network.h"
 #include "net/protocol.h"
 
-#include "resources/imagewriter.h"
-
 extern Graphics *graphics;
 
 std::string map_path;
@@ -580,13 +578,10 @@ void do_input()
                     */
                     // screenshot (picture, hence the p)
                     case SDLK_p:
+                            //ImageWriter::writePNG(graphics->getScreenshot(), name.str());
+                        if (!graphics->saveScreenshot())
                         {
-                            // TODO Fix the counting to start at a sane value.
-                            static int picCount = 1;
-                            std::stringstream name;
-                            name << "Screenshot-" << picCount << ".png";
-                            ImageWriter::writePNG(graphics->getScreenshot(), name.str());
-                            picCount++;
+                            logger->log("Error: could not save Screenshot.");
                         }
                     break;
                         // Skill window

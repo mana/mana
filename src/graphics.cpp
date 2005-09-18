@@ -28,11 +28,17 @@
 #include "graphic/imagerect.h"
 
 #include "resources/image.h"
+#include <physfs.h>
+#include <sstream>
+#include <string>
+#include <fstream>
+#include "resources/imagewriter.h"
 
 extern volatile int framesToDraw;
 
 Graphics::Graphics():
-    mScreen(0)
+    mScreen(0),
+    screenshotsCount(1)
 {
 }
 
@@ -238,6 +244,128 @@ void Graphics::updateScreen()
     {
         SDL_Delay(10);
     }
+}
+
+bool Graphics::saveScreenshot()
+{
+    std::stringstream pictureFilename;
+    // Write it under user home dir on *nices.
+    #ifdef __USE_UNIX98
+    pictureFilename << PHYSFS_getUserDir();
+    pictureFilename << "/";
+    #endif
+    pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
+
+    // While these screenshots files already exists, increment the
+    // screenshots count.
+    std::fstream testExists;
+    testExists.open(std::string(pictureFilename.str()).c_str(), std::ios::in);
+    while ( testExists.is_open() )
+    {
+        testExists.close();
+        screenshotsCount++;
+        pictureFilename.str("");
+        #ifdef __USE_UNIX98
+        pictureFilename << PHYSFS_getUserDir();
+        pictureFilename << "/";
+        #endif
+        pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
+        testExists.open(std::string(pictureFilename.str()).c_str(), std::ios::in);
+    }
+    testExists.close();
+
+    ImageWriter::writePNG(getScreenshot(), pictureFilename.str());
+
+    /*FILE *fp = fopen(std::string(pictureFilename.str()).c_str(), "wb");
+    if (!fp)
+    {
+        logger->log("Could not open Screenshot's File %s in write mode.", std::string(pictureFilename.str()).c_str());
+        return false;
+    }
+
+    png_structp png_ptr;
+    png_infop info_ptr;
+    png_bytep *row_pointers;
+    int colortype;
+
+    #if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    int rmask = 0xff000000;
+    int gmask = 0x00ff0000;
+    int bmask = 0x0000ff00;
+    int amask = 0x000000ff;
+    #else
+    int rmask = 0x000000ff;
+    int gmask = 0x0000ff00;
+    int bmask = 0x00ff0000;
+    int amask = 0xff000000;
+    #endif
+
+    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w, 
+    mScreen->h, 32, rmask, gmask, bmask, amask);
+    //SDL_LockSurface(mScreen);
+    SDL_BlitSurface(mScreen, NULL, surface, NULL);
+    //SDL_UnlockSurface(mScreen);
+
+    SDL_LockSurface(surface);
+
+    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
+    if (!png_ptr)
+    {
+        logger->log("Had trouble creating png_structp");
+        return false;
+    }
+
+    info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr)
+    {
+        logger->log("Could not create png_info");
+        return false;
+    }
+
+
+    if (setjmp(png_ptr->jmpbuf))
+    {
+        logger->log("Problem writing to %s", std::string(pictureFilename.str()).c_str());
+        return false;
+    }
+
+    png_init_io(png_ptr, fp);
+
+    if (mScreen->format->BitsPerPixel == 24) colortype = PNG_COLOR_TYPE_RGB;
+    else colortype = PNG_COLOR_TYPE_RGB_ALPHA;
+
+    png_set_IHDR(png_ptr, info_ptr, surface->w, surface->h, 8,colortype,
+    PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
+    png_write_info(png_ptr, info_ptr);
+
+    png_set_packing(png_ptr);
+
+    row_pointers = (png_bytep*) malloc(sizeof(png_bytep)*surface->h);
+    if (!row_pointers)
+    {
+        logger->log("Had trouble converting surface to row pointers");
+        return false;
+    }
+
+    for (int i = 0; i < surface->h; i++)
+    row_pointers[i] = (png_bytep)(Uint8 *)surface->pixels + i * surface->pitch;
+
+    png_write_image(png_ptr, row_pointers);
+    png_write_end(png_ptr, info_ptr);
+    fclose(fp);
+    if (row_pointers) free(row_pointers);
+
+    if (info_ptr->palette) free(info_ptr->palette);
+
+    png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
+
+    SDL_UnlockSurface(surface);
+    SDL_FreeSurface(surface);
+*/
+    screenshotsCount++;
+
+    return true;
 }
 
 SDL_Surface* Graphics::getScreenshot()

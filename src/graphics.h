@@ -120,6 +120,11 @@ class Graphics : public gcn::SDLGraphics {
         int getHeight();
 
         /**
+        * takes a screenshot, and saves it as a png
+        */
+        bool saveScreenshot();
+
+        /**
         * takes a screenshot and returns it as SDL surface
         */
         virtual SDL_Surface* getScreenshot();
@@ -127,6 +132,8 @@ class Graphics : public gcn::SDLGraphics {
     protected:
         SDL_Surface *mScreen;
         bool mFullscreen, mHWAccel;
+    private:
+        int screenshotsCount;
 };
 
 #endif

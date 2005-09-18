@@ -1,3 +1,13 @@
+2005-09-18  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/game.cpp, src/graphics.cpp, src/graphics.h,
+	src/resources/imagewriter.cpp, src/resources/imagewriter.h:
+	Made the saveScreenShot makes its screenshots under user home dir in
+	*nices, made it more C++ way to avoid a leak, and made it check
+	for existence of a file with same name before writing; In that
+	case the screenshot's number is incremented until it finds
+	an adequate name.
+
 2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/game.cpp, src/graphics.cpp, src/graphics.h,

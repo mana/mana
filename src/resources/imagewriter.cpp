@@ -29,15 +29,15 @@
 
 #include "../log.h"
 
-void ImageWriter::writePNG(SDL_Surface *surface,
+bool ImageWriter::writePNG(SDL_Surface *surface,
         const std::string &filename)
 {
     // TODO Maybe someone can make this look nice?
     FILE *fp = fopen(filename.c_str(), "wb");
     if (!fp)
     {
-        logger->log("could not open file &s for writing", filename.c_str());
-        return;
+        logger->log("could not open file %s for writing", filename.c_str());
+        return false;
     }
 
     png_structp png_ptr;
@@ -53,7 +53,7 @@ void ImageWriter::writePNG(SDL_Surface *surface,
     if (!png_ptr)
     {
         logger->log("Had trouble creating png_structp");
-        return;
+        return false;
     }
 
     info_ptr = png_create_info_struct(png_ptr);
@@ -61,14 +61,14 @@ void ImageWriter::writePNG(SDL_Surface *surface,
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
         logger->log("Could not create png_info");
-        return;
+        return false;
     }
 
     if (setjmp(png_jmpbuf(png_ptr)))
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
         logger->log("problem writing to %s", filename.c_str());
-        return;
+        return false;
     }
 
     png_init_io(png_ptr, fp);
@@ -87,7 +87,7 @@ void ImageWriter::writePNG(SDL_Surface *surface,
     if (!row_pointers)
     {
         logger->log("Had trouble converting surface to row pointers");
-        return;
+        return false;
     }
 
     for (int i = 0; i < surface->h; i++)
@@ -105,4 +105,5 @@ void ImageWriter::writePNG(SDL_Surface *surface,
     if (SDL_MUSTLOCK(surface)) {
         SDL_UnlockSurface(surface);
     }
+    return true;
 }
