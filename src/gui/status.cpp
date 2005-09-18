@@ -38,8 +38,8 @@
 StatusWindow::StatusWindow():
     Window(player_info->name)
 {
-    setResizable(false);
-    setContentSize(335, 255);
+    setResizable(true);
+    setContentSize(365, 255);
 
     // ----------------------
     // Status Part

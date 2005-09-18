@@ -9,9 +9,11 @@
 	an adequate name.
 	* src/gui/updatewindow.cpp: Corrected a bug in the determination
 	of the update host I had.
-    * src/gui/updatewindow.cpp, src/playerinfo.h, debian/control,
-    debian/changelog: Corrected a range value bug for derived stats.
-    Fixed the percentage of the update win, updated debian information.
+	* src/gui/updatewindow.cpp, src/playerinfo.h, debian/control,
+	debian/changelog: Corrected a range value bug for derived stats.
+	Fixed the percentage of the update win, updated debian information.
+	* src/gui/status.cpp: As m[a]tt noticed, made the status win a
+	little more wide, and resizable.
 
 2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
