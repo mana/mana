@@ -7,6 +7,8 @@
 	* src/game.cpp, src/gui/gui.cpp, src/gui/updatewindow.cpp, src/main.cpp,
 	src&resources/mapreader.cpp: Applyed biggeruniverse's patch to fix memory
 	leaks.
+	* src/game.cpp, src/main.cpp: Increased joypad tolerance which is safer 
+	and simplifyed joypad state reset code.
 
 2005-09-18  Duane Bailey  <nayryeliab@gmail.com>
 

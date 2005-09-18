@@ -429,18 +429,16 @@ void do_input()
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
 
-    // Get the state of the joypad buttons
-    // TODO: Only 6- buttons joypads are allowed
+    // TODO: Only <= 6 buttons joypads are allowed
     bool joy[10];
-    for (int i=0; i<10; i++)
-    {
-        joy[i] = false;
-    }
+    memset(joy, 0, 10 * sizeof(bool));
+    
+    // Get the state of the joypad axis/buttons
     if (joypad != NULL)
     {
         // TODO: one different value of tolerance is needed for each direction
         // This probably means the need for a tuning utility/window
-        int tolerance = (int)config.getValue("joytolerance", 10);
+        int tolerance = (int)config.getValue("joytolerance", 100);
         SDL_JoystickUpdate();
         if (SDL_JoystickGetAxis(joypad, 0) > tolerance)
         {
