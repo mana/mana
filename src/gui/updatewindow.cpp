@@ -242,7 +242,6 @@ int UpdaterWindow::downloadThread(void *ptr)
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     std::string outFilename;
     std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
-    std::cout << url << std::endl;
     uw->setLabel(uw->mCurrentFile + " (0%)");
 
     curl = curl_easy_init();
