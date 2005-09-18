@@ -1,3 +1,8 @@
+2005-09-18  Duane Bailey  <nayryeliab@gmail.com>
+
+	* game.cpp: added weight notice; now notifies person when they
+	are carrying more then half their weight
+
 2005-09-18  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/game.cpp, src/graphics.cpp, src/graphics.h,
@@ -30,6 +35,7 @@
 	png.
 
 2005-09-17  Duane Bailey  <nayryeliab@gmail.com>
+>>>>>>> 1.203
 
 	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp:
 	removed replaced MACOSX defines with big endian defines

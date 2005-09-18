@@ -91,6 +91,7 @@ Being *autoTarget = NULL;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
+OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
 ConfirmDialog *exitConfirm = NULL;
 
@@ -120,10 +121,20 @@ Inventory *inventory = NULL;
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;
 
+class WeightNoticeListener : public gcn::ActionListener
+{
+public:
+    void action(const std::string &eventId)
+    {
+        weightNotice = NULL;
+    }
+} weightNoticeListener;
+
+
 /**
  * Listener used for handling death message.
  */
-class DeatchNoticeListener : public gcn::ActionListener {
+class DeathNoticeListener : public gcn::ActionListener {
     public:
         void action(const std::string &eventId) {
             MessageOut outMsg;
@@ -510,6 +521,10 @@ void do_input()
                     else if (deathNotice)
                     {
                         deathNotice->action("ok");
+                    }
+                    else if (weightNotice)
+                    {
+                        weightNotice->action("ok");
                     }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
@@ -1561,6 +1576,13 @@ void do_parse()
                         break;
                     case 0x0018:
                         player_info->totalWeight = msg.readLong();
+                        if (player_info->totalWeight >= player_info->maxWeight)
+                        {
+                            weightNotice = new OkDialog("Message",
+                            "You are carrying more then half your weight. You are unable to regain health.",
+                            &weightNoticeListener);
+                            weightNotice->releaseModalFocus();
+                        }
                         break;
                     case 0x0019:
                         player_info->maxWeight = msg.readLong();
