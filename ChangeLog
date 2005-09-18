@@ -1,4 +1,10 @@
-2005-09-17 Duane Bailey <nayryeliab@gmail.com>
+2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/imagewriter.cpp, src/resources/imagewriter.h: Added
+	ImageWriter class that provides a function to save a SDL surface as
+	png.
+
+2005-09-17  Duane Bailey  <nayryeliab@gmail.com>
 
 	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp:
 	removed replaced MACOSX defines with big endian defines
