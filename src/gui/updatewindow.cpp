@@ -85,7 +85,11 @@ UpdaterWindow::UpdaterWindow():
     mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
 
-    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
+    // That commented line causes problems if the client had a false value for an update host
+    // in its config file.
+    // The update host, unlike the home dir, isn't dynamically set at the start of the client.
+    //mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
+    mUpdateHost = "themanaworld.org/files";
     mBasePath = config.getValue("homeDir", ".");
 
     // Try to download the updates list
@@ -238,6 +242,7 @@ int UpdaterWindow::downloadThread(void *ptr)
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     std::string outFilename;
     std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
+    std::cout << url << std::endl;
     uw->setLabel(uw->mCurrentFile + " (0%)");
 
     curl = curl_easy_init();

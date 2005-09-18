@@ -7,6 +7,8 @@
 	for existence of a file with same name before writing; In that
 	case the screenshot's number is incremented until it finds
 	an adequate name.
+	* src/gui/updatewindow.cpp: Corrected a bug in the determination
+	of the update host I had.
 
 2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
