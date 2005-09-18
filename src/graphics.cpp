@@ -251,8 +251,7 @@ bool Graphics::saveScreenshot()
     std::stringstream pictureFilename;
     // Write it under user home dir on *nices.
     #ifdef __USE_UNIX98
-    pictureFilename << PHYSFS_getUserDir();
-    pictureFilename << "/";
+        pictureFilename << PHYSFS_getUserDir() << "/";
     #endif
     pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
 
@@ -266,8 +265,7 @@ bool Graphics::saveScreenshot()
         screenshotsCount++;
         pictureFilename.str("");
         #ifdef __USE_UNIX98
-        pictureFilename << PHYSFS_getUserDir();
-        pictureFilename << "/";
+            pictureFilename << PHYSFS_getUserDir() << "/";
         #endif
         pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
         testExists.open(std::string(pictureFilename.str()).c_str(), std::ios::in);
@@ -276,12 +274,12 @@ bool Graphics::saveScreenshot()
 
     if ( ImageWriter::writePNG(getScreenshot(), pictureFilename.str()) )
     {
-    screenshotsCount++;
-    return true;
+        screenshotsCount++;
+        return true;
     }
     else
     {
-    return false;
+        return false;
     }
 }
 
