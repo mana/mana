@@ -88,6 +88,7 @@ int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 unsigned short startX = 0, startY = 0;
 Being *autoTarget = NULL;
+Map *tiledMap = NULL;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
@@ -405,14 +406,17 @@ void game()
         do_parse();
         flush();
     }
-
-    delete engine;
-    destroyGuiWindows();
-    close_session();
+    
+    do_exit();
 }
 
 void do_exit()
 {
+    delete engine;
+    delete tiledMap;
+    destroyGuiWindows();
+    close_session();
+
     if (joypad != NULL)
     {
         SDL_JoystickClose(joypad);
@@ -920,7 +924,7 @@ void do_input()
                 Direction = Being::NE;
         }
 
-        Map *tiledMap = engine->getCurrentMap();
+        tiledMap = engine->getCurrentMap();
 
         // Allow keyboard control to interrupt an existing path
         if ((xDirection != 0 || yDirection != 0) && player_node->action == Being::WALK)

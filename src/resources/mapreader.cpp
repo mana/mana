@@ -129,6 +129,7 @@ Map *MapReader::readMap(const std::string &filename)
     ResourceManager *resman = ResourceManager::getInstance();
     int fileSize;
     void *buffer = resman->loadFile(filename, fileSize);
+    Map *map = NULL;
 
     if (buffer == NULL)
     {
@@ -175,14 +176,16 @@ Map *MapReader::readMap(const std::string &filename)
             logger->log("Error: Not a map file (%s)!", filename.c_str());
             return NULL;
         }
-
-        return readMap(node, filename);
+        else
+        {
+            map = readMap(node, filename);
+        }
         xmlFreeDoc(doc);
     } else {
         logger->log("Error while parsing map file (%s)!", filename.c_str());
     }
 
-    return NULL;
+    return map;
 }
 
 Map* MapReader::readMap(xmlNodePtr node, const std::string &path)

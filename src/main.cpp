@@ -302,6 +302,8 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
+    delete hairset;
+    delete playerset;
 
     // Shutdown libxml
     xmlCleanupParser();
