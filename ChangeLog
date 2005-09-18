@@ -1,5 +1,9 @@
 2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/Makefile.am, src/game.cpp, src/graphics.cpp, src/graphics.h,
+	src/openglgraphics.cpp, src/openglgraphics.h: Changed saveScreenshot
+	function in Graphics to getScreenshot. We now use the ImageWriter to
+	save that screenshot.
 	* src/resources/imagewriter.cpp, src/resources/imagewriter.h: Added
 	ImageWriter class that provides a function to save a SDL surface as
 	png.

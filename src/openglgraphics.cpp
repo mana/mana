@@ -25,6 +25,7 @@
 
 #include "openglgraphics.h"
 
+#include <iostream>
 #include <SDL.h>
 
 #include <guichan/image.hpp>
@@ -132,6 +133,60 @@ void OpenGLGraphics::_beginDraw()
 
 void OpenGLGraphics::_endDraw()
 {
+}
+
+SDL_Surface* OpenGLGraphics::getScreenshot()
+{
+    // TODO I expect this to be unneeded for OpenGL, someone with a PPC or
+    // sth. else that is big endian should check this.
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+    int rmask = 0xff000000;
+    int gmask = 0x00ff0000;
+    int bmask = 0x0000ff00;
+#else
+    int rmask = 0x000000ff;
+    int gmask = 0x0000ff00;
+    int bmask = 0x00ff0000;
+#endif
+    int amask = 0x00000000;
+
+    SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
+            mScreen->h, 24, rmask, gmask, bmask, amask);
+
+    if (SDL_MUSTLOCK(screenshot)) {
+        SDL_LockSurface(screenshot);
+    }
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, mScreen->w, mScreen->h, GL_RGB, GL_UNSIGNED_BYTE, screenshot->pixels);
+
+    unsigned char *data = (unsigned char*)screenshot->pixels;
+    for (int x = 0; x < mScreen->w; x++) {
+        for (int y=0; y < mScreen->h / 2; y++) {
+            int i1 = (y * mScreen->w + x) * 3;
+            int i2 = ((mScreen->h - y - 1) * mScreen->w + x) * 3;
+
+            unsigned char temp = data[i1];
+            data[i1] = data[i2];
+            data[i2] = temp;
+
+            i1++; i2++;
+            temp = data[i1];
+            data[i1] = data[i2];
+            data[i2] = temp;
+
+            i1++; i2++;
+            temp = data[i1];
+            data[i1] = data[i2];
+            data[i2] = temp;
+
+        }
+    }
+
+    if (SDL_MUSTLOCK(screenshot)) {
+        SDL_UnlockSurface(screenshot);
+    }
+
+    return screenshot;
 }
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)

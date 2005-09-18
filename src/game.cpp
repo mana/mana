@@ -23,6 +23,8 @@
 
 #include "game.h"
 
+#include <sstream>
+
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "being.h"
@@ -67,6 +69,7 @@
 #include "net/network.h"
 #include "net/protocol.h"
 
+#include "resources/imagewriter.h"
 
 extern Graphics *graphics;
 
@@ -577,10 +580,12 @@ void do_input()
                     */
                     // screenshot (picture, hence the p)
                     case SDLK_p:
-                        static int picCount = 1;
-                        if (!graphics->saveScreenshot("Screenshot%d.png", picCount))
                         {
-                            logger->log("Error: could not save Screenshot%d.png", picCount);
+                            // TODO Fix the counting to start at a sane value.
+                            static int picCount = 1;
+                            std::stringstream name;
+                            name << "Screenshot-" << picCount << ".png";
+                            ImageWriter::writePNG(graphics->getScreenshot(), name.str());
                             picCount++;
                         }
                     break;

@@ -119,6 +119,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      net/win2linux.h \
 	      resources/image.cpp \
 	      resources/image.h \
+	      resources/imagewriter.cpp \
+	      resources/imagewriter.h \
 	      resources/iteminfo.cpp \
 	      resources/iteminfo.h \
 	      resources/itemmanager.cpp \

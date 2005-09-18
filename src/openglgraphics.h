@@ -62,6 +62,11 @@ class OpenGLGraphics : public Graphics
 
         void setTargetPlane(int width, int height);
 
+        /**
+        * takes a screenshot and returns it as SDL surface
+        */
+        SDL_Surface* getScreenshot();
+
     protected:
         void setTexturingAndBlending(bool enable);
         void drawTexedQuad(int x, int y, int w, int h,
