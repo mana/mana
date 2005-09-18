@@ -578,7 +578,6 @@ void do_input()
                     */
                     // screenshot (picture, hence the p)
                     case SDLK_p:
-                            //ImageWriter::writePNG(graphics->getScreenshot(), name.str());
                         if (!graphics->saveScreenshot())
                         {
                             logger->log("Error: could not save Screenshot.");
