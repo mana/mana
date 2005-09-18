@@ -28,17 +28,11 @@
 #include "graphic/imagerect.h"
 
 #include "resources/image.h"
-#include <physfs.h>
-#include <sstream>
-#include <string>
-#include <fstream>
-#include "resources/imagewriter.h"
 
 extern volatile int framesToDraw;
 
 Graphics::Graphics():
-    mScreen(0),
-    screenshotsCount(1)
+    mScreen(0)
 {
 }
 
@@ -243,43 +237,6 @@ void Graphics::updateScreen()
     while (framesToDraw == 1)
     {
         SDL_Delay(10);
-    }
-}
-
-bool Graphics::saveScreenshot()
-{
-    std::stringstream pictureFilename;
-    // Write it under user home dir on *nices.
-    #ifdef __USE_UNIX98
-        pictureFilename << PHYSFS_getUserDir() << "/";
-    #endif
-    pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
-
-    // While these screenshots files already exists, increment the
-    // screenshots count.
-    std::fstream testExists;
-    testExists.open(std::string(pictureFilename.str()).c_str(), std::ios::in);
-    while ( testExists.is_open() )
-    {
-        testExists.close();
-        screenshotsCount++;
-        pictureFilename.str("");
-        #ifdef __USE_UNIX98
-            pictureFilename << PHYSFS_getUserDir() << "/";
-        #endif
-        pictureFilename << "TMW_Screenshot_" << screenshotsCount << ".png";
-        testExists.open(std::string(pictureFilename.str()).c_str(), std::ios::in);
-    }
-    testExists.close();
-
-    if ( ImageWriter::writePNG(getScreenshot(), pictureFilename.str()) )
-    {
-        screenshotsCount++;
-        return true;
-    }
-    else
-    {
-        return false;
     }
 }
 

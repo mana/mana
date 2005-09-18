@@ -23,7 +23,10 @@
 
 #include "game.h"
 
+#include <fstream>
+#include <physfs.h>
 #include <sstream>
+#include <string>
 
 #include <guichan/sdl/sdlinput.hpp>
 
@@ -68,6 +71,8 @@
 #include "net/messageout.h"
 #include "net/network.h"
 #include "net/protocol.h"
+
+#include "resources/imagewriter.h"
 
 extern Graphics *graphics;
 
@@ -326,6 +331,30 @@ void do_init()
     }
 }
 
+bool saveScreenshot(SDL_Surface *screenshot)
+{
+    static unsigned int screenshotCount = 0;
+
+    // Search for an unused screenshot name
+    std::stringstream filename;
+    std::fstream testExists;
+    bool found = false;
+
+    do {
+        screenshotCount++;
+        filename.str("");
+        #ifdef __USE_UNIX98
+            filename << PHYSFS_getUserDir() << "/";
+        #endif
+        filename << "TMW_Screenshot_" << screenshotCount << ".png";
+        testExists.open(filename.str().c_str(), std::ios::in);
+        found = !testExists.is_open();
+        testExists.close();
+    } while (!found);
+
+    return ImageWriter::writePNG(screenshot, filename.str());
+}
+
 void game()
 {
     // Needs to be initialised _before_ the engine is created...
@@ -578,11 +607,16 @@ void do_input()
                     */
                     // screenshot (picture, hence the p)
                     case SDLK_p:
-                        if (!graphics->saveScreenshot())
                         {
-                            logger->log("Error: could not save Screenshot.");
+                            SDL_Surface *screenshot = graphics->getScreenshot();
+                            if (!saveScreenshot(screenshot))
+                            {
+                                logger->log("Error: could not save Screenshot.");
+                            }
+                            SDL_FreeSurface(screenshot);
                         }
                     break;
+
                         // Skill window
                     case SDLK_k:
                         skillDialog->setVisible(!skillDialog->isVisible());

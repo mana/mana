@@ -17,6 +17,9 @@
 
 2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/graphics.cpp, src/graphics.h: Move the writing
+	logic out of the Graphics class once again... Some cleanups in the
+	screenshot filename selection code.
 	* src/resources/imagewriter.cpp: Small cleanups.
 	* src/Makefile.am, src/game.cpp, src/graphics.cpp, src/graphics.h,
 	src/openglgraphics.cpp, src/openglgraphics.h: Changed saveScreenshot
