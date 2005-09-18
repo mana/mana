@@ -37,8 +37,8 @@ struct PLAYER_INFO
     short statPoint, skillPoint, hairColor, hairStyle;
     char STR, AGI, VIT, INT, DEX, LUK;
     char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
-    char ATK, ATKBonus, MATK, MATKBonus, DEF, DEFBonus, MDEF;
-    char MDEFBonus, HIT, FLEE, FLEEBonus;
+    int ATK, ATKBonus, MATK, MATKBonus, DEF, DEFBonus, MDEF;
+    int MDEFBonus, HIT, FLEE, FLEEBonus;
     char characterNumber;
     int totalWeight, maxWeight;
     short weapon;

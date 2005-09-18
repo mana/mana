@@ -69,7 +69,7 @@ UpdaterWindow::UpdaterWindow():
     mPlayButton->setEnabled(false);
     mPlayButton->addActionListener(this);
     mProgressBar = new ProgressBar(0.0, 5, mCancelButton->getY() - 20 - 5,
-                                   w - 10, 20, 37, 70, 23);
+                                   w - 10, 20, 37, 70, 200);
     mLabel = new gcn::Label("Connecting...");
     mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
     mScrollArea = new ScrollArea(mBrowserBox);
@@ -194,10 +194,8 @@ int UpdaterWindow::updateProgress(void *ptr,
     float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
-    if (progress < 0)
-    {
-        progress = 0.0f;
-    }
+    if (progress < 0)    progress = 0.0f;
+    if (progress > 1) progress = 1.0f;
 
     std::stringstream progressString;
     progressString << uw->mCurrentFile
