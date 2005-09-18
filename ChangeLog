@@ -1,3 +1,8 @@
+2005-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, src/gui/npc.cpp: Updated dev-cpp project file to
+	last changes, and fixed the bug with npc lists I introduced earlier.
+
 2005-09-18  Duane Bailey  <nayryeliab@gmail.com>
 
 	* game.cpp: added weight notice; now notifies person when they
@@ -35,7 +40,6 @@
 	png.
 
 2005-09-17  Duane Bailey  <nayryeliab@gmail.com>
->>>>>>> 1.203
 
 	* src/net/messagin.cpp, src/net/messageout.cpp, src/net/network.cpp:
 	removed replaced MACOSX defines with big endian defines

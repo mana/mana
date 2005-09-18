@@ -111,7 +111,7 @@ NpcListDialog::reset()
 void
 NpcListDialog::action(const std::string& eventId)
 {
-    int choice = 0xff; // 0xff means cancel
+    int choice = 0;
     
     if (eventId == "ok")
     {
@@ -123,15 +123,19 @@ NpcListDialog::action(const std::string& eventId)
         }
     }
     else if (eventId == "cancel")
-    {   
+    {
+        choice = 0xff; // 0xff means cancel
     }
     
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeLong(current_npc);
-    outMsg.writeByte(choice);
-    writeSet(7);
-    setVisible(false);
-    reset();
-    current_npc = 0;
+    if (choice)
+    {
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
+        outMsg.writeLong(current_npc);
+        outMsg.writeByte(choice);
+        writeSet(7);
+        setVisible(false);
+        reset();
+        current_npc = 0;
+    }
 }
