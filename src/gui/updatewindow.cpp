@@ -85,11 +85,7 @@ UpdaterWindow::UpdaterWindow():
     mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
 
-    // That commented line causes problems if the client had a false value for an update host
-    // in its config file.
-    // The update host, unlike the home dir, isn't dynamically set at the start of the client.
-    // mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
-    mUpdateHost = "themanaworld.org/files";
+    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
     mBasePath = config.getValue("homeDir", ".");
 
     // Try to download the updates list

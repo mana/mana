@@ -290,7 +290,7 @@ void init_engine()
     int fpsLimit = (int)config.getValue("fpslimit", 0);
     if (fpsLimit)
     {
-        if (fpsLimit < 20) fpsLimit = 20;
+        if (fpsLimit < 10) fpsLimit = 10;
         if (fpsLimit > 200) fpsLimit = 200;
         SDL_AddTimer(1000 / fpsLimit, nextFrame, NULL);
     }

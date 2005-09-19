@@ -1,3 +1,21 @@
+2005-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Replaced custom function FIND_PATH with AC_PATH_PROG,
+	used for finding sdl-config.
+	* src/Makefile.am: Removed -lphysfs which should be added
+	automatically already.
+	* src/engine.cpp, src/game.h, src/game.cpp, src/openglgraphics.h,
+	src/gui/popupmenu.cpp, src/net/messagein.cpp, src/net/messageout.cpp,
+	src/net/win2mac.h, src/net/win2mac.cpp: Some cleanups.
+	* src/game.cpp: Actually show the overweight message, and only show it
+	once for each time weight goes above half the max weight (apparently
+	this code wasn't even tested once).
+	* src/graphics.cpp: Surfaces passed to SDL_BlitSurface shouldn't be
+	locked according to the manual.
+	* src/main.cpp: Minimal fps limit is now 10 fps.
+	* src/gui/updatewindow.cpp: Reverted change by Bertram that hardcoded
+	the updatehost value.
+
 2005-09-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp, src/gui/trade.cpp, src/gui/updatewindow.cpp,
@@ -16,15 +34,15 @@
 	last changes, and fixed the bug with npc lists I introduced earlier.
 	* data/items.xml: Updated the defense value of fancy hat as pointed out
 	by xand.
-	* src/game.cpp, src/gui/gui.cpp, src/gui/updatewindow.cpp, src/main.cpp,
-	src&resources/mapreader.cpp: Applyed biggeruniverse's patch to fix memory
-	leaks.
-	* src/game.cpp, src/main.cpp: Increased joypad tolerance which is safer 
+	* src/game.cpp, src/gui/gui.cpp, src/gui/updatewindow.cpp,
+	src/main.cpp, src/resources/mapreader.cpp: Applied biggeruniverse's
+	patch to fix memory leaks.
+	* src/game.cpp, src/main.cpp: Increased joypad tolerance which is safer
 	and simplifyed joypad state reset code.
 
 2005-09-18  Duane Bailey  <nayryeliab@gmail.com>
 
-	* game.cpp: added weight notice; now notifies person when they
+	* game.cpp: Added weight notice; now notifies person when they
 	are carrying more then half their weight
 
 2005-09-18  Yohann Ferreira  <bertram@cegetel.net>
@@ -70,8 +88,7 @@
 2005-09-17  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* src/engine.cpp: [TARGET] text over player
-	* src/game.cpp: PVP
-	* src/game.h: PVP
+	* src/game.cpp, src/game.h: PVP
 	* src/gui/popupmenu.cpp: Added "attack" option to the popupmenu
 	* src/net/protocol.cpp: findPlayer
 
@@ -106,7 +123,7 @@
 	src/net/messageout.cpp, src/net/network.cpp, src/net/network.h,
 	src/net/protocol.cpp, src/net/protocol.h: Completed transition to use
 	MessageOut.
-	
+
 2005-09-17  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/game.cpp, src/gui/ministatus.cpp, src/gui/ministatus.h,

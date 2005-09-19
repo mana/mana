@@ -24,7 +24,7 @@
 #include "messagein.h"
 
 #include <cassert>
-#include <SDL_net.h>
+#include <SDL.h>
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #include "win2mac.h"
 #endif

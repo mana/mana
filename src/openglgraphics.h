@@ -35,7 +35,10 @@ class OpenGLGraphics : public Graphics
 
         bool setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel);
 
-        bool drawImage(Image *image, int srcX, int srcY, int dstX, int dstY, int width, int height);
+        bool drawImage(Image *image,
+                       int srcX, int srcY,
+                       int dstX, int dstY,
+                       int width, int height);
 
         void updateScreen();
 
@@ -47,8 +50,10 @@ class OpenGLGraphics : public Graphics
 
         void setColor(const gcn::Color &color);
 
-        void drawImage(const gcn::Image* image, int srcX, int srcY,
-                int dstX, int dstY, int width, int height);
+        void drawImage(const gcn::Image* image,
+                       int srcX, int srcY,
+                       int dstX, int dstY,
+                       int width, int height);
 
         void drawPoint(int x, int y);
 
@@ -63,14 +68,14 @@ class OpenGLGraphics : public Graphics
         void setTargetPlane(int width, int height);
 
         /**
-        * takes a screenshot and returns it as SDL surface
-        */
+         * Takes a screenshot and returns it as SDL surface.
+         */
         SDL_Surface* getScreenshot();
 
     protected:
         void setTexturingAndBlending(bool enable);
         void drawTexedQuad(int x, int y, int w, int h,
-                float texX1, float texY1, float texX2, float texY2);
+                           float texX1, float texY1, float texX2, float texY2);
 
     private:
         bool mAlpha, mTexture;

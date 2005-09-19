@@ -354,9 +354,9 @@ bool saveScreenshot(SDL_Surface *screenshot)
     do {
         screenshotCount++;
         filename.str("");
-        #ifdef __USE_UNIX98
-            filename << PHYSFS_getUserDir() << "/";
-        #endif
+#ifdef __USE_UNIX98
+        filename << PHYSFS_getUserDir() << "/";
+#endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";
         testExists.open(filename.str().c_str(), std::ios::in);
         found = !testExists.is_open();
@@ -405,7 +405,7 @@ void game()
         do_parse();
         flush();
     }
-    
+
     do_exit();
 }
 
@@ -431,7 +431,7 @@ void do_input()
     // TODO: Only <= 6 buttons joypads are allowed
     bool joy[10];
     memset(joy, 0, 10 * sizeof(bool));
-    
+
     // Get the state of the joypad axis/buttons
     if (joypad != NULL)
     {
@@ -548,12 +548,14 @@ void do_input()
                     // Picking up items on the floor
                 case SDLK_g:
                 case SDLK_z:
-                    if (!chatWindow->isFocused()) {
+                    if (!chatWindow->isFocused())
+                    {
                         unsigned short x = player_node->x;
                         unsigned short y = player_node->y;
                         int id = find_floor_item_by_cor(x, y);
 
-                        // If none below the player, try the tile in front of the player
+                        // If none below the player, try the tile in front of
+                        // the player
                         if (!id) {
                             switch (player_node->direction)
                             {
@@ -719,21 +721,8 @@ void do_input()
                 {
                     switch (target->getType())
                     {
-                        // Player default: attack
-                        case Being::PLAYER:
-                            if (target != player_node)
-                            {
-                                autoTarget = target;
-                                attack(target);
-                                /*MessageOut outMsg;
-                                outMsg.writeShort(CMSG_TRADE_REQUEST);
-                                outMsg.writeLong(target->getId());
-                                tradePartnerName = target->getName();*/
-                            }
-                            break;
-
-                            // NPC default: talk
                         case Being::NPC:
+                            // NPC default: talk
                             if (!current_npc)
                             {
                                 MessageOut outMsg;
@@ -744,21 +733,21 @@ void do_input()
                             }
                             break;
 
-                            // Monster default: attack
                         case Being::MONSTER:
+                        case Being::PLAYER:
+                            // Monster and player default: attack
                             /**
                              * TODO: Move player to mouse click position before
                              * attack the monster (maybe using follow mode).
                              */
                             if (target->action != Being::MONSTER_DEAD &&
-                                    player_node->action == Being::STAND)
+                                player_node->action == Being::STAND &&
+                                target != player_node)
                             {
-                                attack(target);
                                 // Autotarget by default with mouse
-                                //if (keys[SDLK_LSHIFT])
-                                //{
                                 autoTarget = target;
-                                //}
+
+                                attack(target);
                             }
                             break;
 
@@ -917,8 +906,11 @@ void do_input()
         tiledMap = engine->getCurrentMap();
 
         // Allow keyboard control to interrupt an existing path
-        if ((xDirection != 0 || yDirection != 0) && player_node->action == Being::WALK)
+        if ((xDirection != 0 || yDirection != 0) &&
+            player_node->action == Being::WALK)
+        {
             player_node->setDestination(x, y);
+        }
 
         if (player_node->action != Being::WALK)
         {
@@ -954,7 +946,8 @@ void do_input()
             if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
             {
                 Being *monster = attack(x, y, player_node->direction);
-                if (monster == NULL && autoTarget != NULL && monster != player_node)
+                if (monster == NULL && autoTarget != NULL &&
+                    monster != player_node)
                 {
                     attack(autoTarget);
                 }
@@ -1540,79 +1533,59 @@ void do_parse()
                 break;
 
             case SMSG_PLAYER_STAT_UPDATE_1:
-                switch (msg.readShort())
                 {
-                    //case 0x0000:
-                    //    player_node->speed = msg.readLong();
-                    //    break;
-                    case 0x0005:
-                        player_info->hp = msg.readLong();
-                        break;
-                    case 0x0006:
-                        player_info->maxHp = msg.readLong();
-                        break;
-                    case 0x0007:
-                        player_info->mp = msg.readLong();
-                        break;
-                    case 0x0008:
-                        player_info->maxMp = msg.readLong();
-                        break;
-                    case 0x000b:
-                        player_info->lvl = msg.readLong();
-                        break;
-                    case 0x000c:
-                        player_info->skillPoint = msg.readLong();
-                        skillDialog->setPoints(player_info->skillPoint);
-                        break;
-                    case 0x0018:
-                        player_info->totalWeight = msg.readLong();
-                        if (player_info->totalWeight >= player_info->maxWeight)
-                        {
-                            weightNotice = new OkDialog("Message",
-                            "You are carrying more then half your weight. You are unable to regain health.",
-                            &weightNoticeListener);
-                            weightNotice->releaseModalFocus();
-                        }
-                        break;
-                    case 0x0019:
-                        player_info->maxWeight = msg.readLong();
-                        break;
-                    case 0x0037:
-                        player_info->jobLvl = msg.readLong();
-                        break;
-                    case 0x0009:
-                        player_info->statsPointsToAttribute = msg.readLong();
-                        break;
-                    case 0x0029:
-                        player_info->ATK = msg.readLong();
-                        break;
-                    case 0x002b:
-                        player_info->MATK = msg.readLong();
-                        break;
-                    case 0x002d:
-                        player_info->DEF = msg.readLong();
-                        break;
-                    case 0x002f:
-                        player_info->MDEF = msg.readLong();
-                        break;
-                    case 0x0031:
-                        player_info->HIT = msg.readLong();
-                        break;
-                    case 0x0032:
-                        player_info->FLEE = msg.readLong();
-                        break;
-                    case 0x0035:
-                        player_node->aspd = msg.readLong();
-                        break;
-                }
+                    short type = msg.readShort();
+                    long value = msg.readLong();
 
-                if (player_info->hp == 0 && deathNotice == NULL)
-                {
-                    deathNotice = new OkDialog("Message",
-                            "You're now dead, press ok to restart",
-                            &deathNoticeListener);
-                    deathNotice->releaseModalFocus();
-                    player_node->action = Being::DEAD;
+                    switch (type)
+                    {
+                        //case 0x0000:
+                        //    player_node->speed = msg.readLong();
+                        //    break;
+                        case 0x0005: player_info->hp = value; break;
+                        case 0x0006: player_info->maxHp = value; break;
+                        case 0x0007: player_info->mp = value; break;
+                        case 0x0008: player_info->maxMp = value; break;
+                        case 0x000b: player_info->lvl = value; break;
+                        case 0x000c:
+                            player_info->skillPoint = value;
+                            skillDialog->setPoints(player_info->skillPoint);
+                            break;
+                        case 0x0018:
+                            if (value >= player_info->maxWeight / 2 &&
+                                player_info->totalWeight <
+                                  player_info->maxWeight / 2)
+                            {
+                                weightNotice = new OkDialog("Message",
+                                        "You are carrying more then half your "
+                                        "weight. You are unable to regain "
+                                        "health.",
+                                        &weightNoticeListener);
+                            }
+                            player_info->totalWeight = value;
+                            break;
+                        case 0x0019: player_info->maxWeight = value; break;
+                        case 0x0037: player_info->jobLvl = value; break;
+                        case 0x0009:
+                            player_info->statsPointsToAttribute = value;
+                            break;
+                        case 0x0029: player_info->ATK = value; break;
+                        case 0x002b: player_info->MATK = value; break;
+                        case 0x002d: player_info->DEF = value; break;
+                        case 0x002f: player_info->MDEF = value; break;
+                        case 0x0031: player_info->HIT = value; break;
+                        case 0x0032: player_info->FLEE = value; break;
+                        case 0x0035: player_node->aspd = value; break;
+                    }
+
+                    if (player_info->hp == 0 && deathNotice == NULL)
+                    {
+                        deathNotice = new OkDialog("Message",
+                                "You're now dead, press ok to restart",
+                                &deathNoticeListener);
+                        deathNotice->releaseModalFocus();
+                        player_node->action = Being::DEAD;
+                    }
                 }
                 break;
 
@@ -1633,14 +1606,13 @@ void do_parse()
                 {
                     Being *srcBeing = findNode(msg.readLong());
                     Being *dstBeing = findNode(msg.readLong());
-//                    msg.readLong();   // server tick
-//                    msg.readLong();   // src speed
-//                    msg.readLong();   // dst speed
-                    msg.skip(12);
+                    msg.readLong();   // server tick
+                    msg.readLong();   // src speed
+                    msg.readLong();   // dst speed
                     short param1 = msg.readShort();
-                    msg.skip(2);  // param 2
+                    msg.readShort();  // param 2
                     char type = msg.readByte();
-                    msg.skip(2);  // param 3
+                    msg.readShort();  // param 3
 
                     switch (type)
                     {

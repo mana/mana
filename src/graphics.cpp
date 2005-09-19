@@ -256,13 +256,7 @@ SDL_Surface* Graphics::getScreenshot()
     SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
             mScreen->h, 24, rmask, gmask, bmask, amask);
 
-    if (SDL_MUSTLOCK(mScreen)) {
-        SDL_LockSurface(mScreen);
-    }
     SDL_BlitSurface(mScreen, NULL, screenshot, NULL);
-    if (SDL_MUSTLOCK(mScreen)) {
-        SDL_UnlockSurface(mScreen);
-    }
 
     return screenshot;
 }

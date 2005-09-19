@@ -24,8 +24,10 @@
 #include "messageout.h"
 
 #include <string>
-#include <SDL_net.h>
+#include <SDL.h>
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
 #include "win2mac.h"
+#endif
 
 #include "network.h"
 #include "packet.h"
@@ -73,7 +75,6 @@ void MessageOut::writeShort(short value)
 #else
     (*(short *)(mData + mPos)) = value;
 #endif
-    //SDLNet_Write16(value, &mData[mPos]);
     mPos += sizeof(short);
     out_size += sizeof(short);
 }
@@ -86,7 +87,6 @@ void MessageOut::writeLong(long value)
 #else
     (*(long *)(mData + mPos)) = value;
 #endif
-    //SDLNet_Write32(value, &mData[mPos]);
     mPos += sizeof(long);
     out_size += sizeof(long);
 }

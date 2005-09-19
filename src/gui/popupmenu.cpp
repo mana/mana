@@ -46,6 +46,7 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
+extern Being* autoTarget;
 
 PopupMenu::PopupMenu():
     Window()
@@ -148,15 +149,14 @@ void PopupMenu::handleLink(const std::string& link)
         //tradePartner << "Trade: You and " << being->name<< "";
         tradePartnerName = being->getName();
     }
-    
+
     // Attack action
     else if ((link == "attack") && being && being->getType() == Being::PLAYER)
     {
-         
-        autoTarget = being;           
+        autoTarget = being;
         attack(being);
-    } 
-    
+    }
+
     /*
     // Follow Player action
     else if (link == "follow")
@@ -215,7 +215,6 @@ void PopupMenu::handleLink(const std::string& link)
     {
         // do nothing for now, I need to write
         // a window for the description first
-        ;
     }
 
     // Unknown actions

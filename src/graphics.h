@@ -120,8 +120,8 @@ class Graphics : public gcn::SDLGraphics {
         int getHeight();
 
         /**
-        * takes a screenshot and returns it as SDL surface
-        */
+         * Takes a screenshot and returns it as SDL surface.
+         */
         virtual SDL_Surface* getScreenshot();
 
     protected:

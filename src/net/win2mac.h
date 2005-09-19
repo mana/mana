@@ -8,6 +8,5 @@
 
 UInt32 DR_SwapFourBytes(UInt32 dw);
 UInt16 DR_SwapTwoBytes(UInt16 w);
-char* SwapChar(char charlist[]);
 
 #endif

@@ -467,16 +467,17 @@ void Engine::draw()
         being->drawSpeech(graphics);
     }
 
-    if (autoTarget) {
+    if (autoTarget)
+    {
         if (autoTarget->getType() == Being::PLAYER)
         {
              graphics->drawText("[TARGET]",
-                   autoTarget->text_x+15,
-                   autoTarget->text_y-60,
+                   autoTarget->text_x + 15,
+                   autoTarget->text_y - 60,
                    gcn::Graphics::CENTER);
-                                
-        } else {
-                
+        }
+        else
+        {
              graphics->drawText("[TARGET]",
                    autoTarget->text_x + 60,
                    autoTarget->text_y,
