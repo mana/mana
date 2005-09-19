@@ -27,6 +27,7 @@
 	src/gui/skill.cpp, src/gui/status.cpp, src/gui/trade.cpp,
 	src/inventory.cpp, src/net/messageout.cpp, src/net/network.cpp,
 	src/net/network.h, src/net/protocol.cpp: Got rid of writeSet() calls.
+	* data/graphics/sprites/monster2.png: Fixed some non very bright pixels.
 
 2005-09-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
