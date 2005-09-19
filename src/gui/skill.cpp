@@ -32,7 +32,6 @@
 #include "../playerinfo.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 char *skill_db[] = {
@@ -129,7 +128,6 @@ void SkillDialog::action(const std::string& eventId)
             MessageOut outMsg;
             outMsg.writeShort(CMSG_SKILL_LEVELUP_REQUEST);
             outMsg.writeShort(skillList[selectedSkill]->id);
-            writeSet(4);
         }
     }
     else if (eventId == "skill")

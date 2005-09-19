@@ -41,7 +41,6 @@
 #include "../item.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 #include "../resources/iteminfo.h"
@@ -136,7 +135,6 @@ void PopupMenu::handleLink(const std::string& link)
         outMsg.writeShort(CMSG_NPC_TALK);
         outMsg.writeLong(being->getId());
         outMsg.writeByte(0);
-        writeSet(7);
         current_npc = being->getId();
     }
 
@@ -146,7 +144,6 @@ void PopupMenu::handleLink(const std::string& link)
         MessageOut outMsg;
         outMsg.writeShort(CMSG_TRADE_REQUEST);
         outMsg.writeLong(being->getId());
-        writeSet(6);
         //tradePartner.flush();
         //tradePartner << "Trade: You and " << being->name<< "";
         tradePartnerName = being->getName();
@@ -182,7 +179,6 @@ void PopupMenu::handleLink(const std::string& link)
         MessageOut outMsg;
         outMsg.writeShort(CMSG_ITEM_PICKUP);
         outMsg.writeLong(floorItem->getId());
-        writeSet(6);
     }
 
     // Look To action

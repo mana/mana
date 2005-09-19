@@ -30,7 +30,6 @@
 #include "../game.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 NpcListDialog::NpcListDialog():
@@ -133,7 +132,6 @@ NpcListDialog::action(const std::string& eventId)
         outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
         outMsg.writeLong(current_npc);
         outMsg.writeByte(choice);
-        writeSet(7);
         setVisible(false);
         reset();
         current_npc = 0;

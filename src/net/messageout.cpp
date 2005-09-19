@@ -36,8 +36,6 @@ MessageOut::MessageOut():
     mDataSize(0),
     mPos(0)
 {
-    // TODO: data not to be already allocated, keep it this way unitl full
-    // conversion
     mData = out + out_size;
 }
 
@@ -64,6 +62,7 @@ void MessageOut::writeByte(char value)
     expand(mPos + sizeof(char));
     mData[mPos] = value;
     mPos += sizeof(char);
+    out_size += sizeof(char);
 }
 
 void MessageOut::writeShort(short value)
@@ -76,6 +75,7 @@ void MessageOut::writeShort(short value)
 #endif
     //SDLNet_Write16(value, &mData[mPos]);
     mPos += sizeof(short);
+    out_size += sizeof(short);
 }
 
 void MessageOut::writeLong(long value)
@@ -88,6 +88,7 @@ void MessageOut::writeLong(long value)
 #endif
     //SDLNet_Write32(value, &mData[mPos]);
     mPos += sizeof(long);
+    out_size += sizeof(long);
 }
 
 void MessageOut::writeString(const std::string &string, int length)
@@ -110,12 +111,14 @@ void MessageOut::writeString(const std::string &string, int length)
     // Write the actual string
     memcpy(&mData[mPos], (void*)toWrite.c_str(), toWrite.length());
     mPos += toWrite.length();
+    out_size += toWrite.length();
 
     // Pad remaining space with zeros
     if (length > (int)toWrite.length())
     {
         memset(&mData[mPos], '\0', length - toWrite.length());
         mPos += length - toWrite.length();
+        out_size += length - toWrite.length();
     }
 }
 

@@ -157,7 +157,6 @@ void server_char_server(int serverIndex)
     outMsg.writeLong(session_ID2);
     outMsg.writeShort(0); // unknown
     outMsg.writeByte(sex);
-    writeSet(17);
 
     // Skipping a mysterious 4 bytes
     while ((in_size < 4) || (out_size > 0)) flush();

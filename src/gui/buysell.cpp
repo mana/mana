@@ -28,7 +28,6 @@
 #include "../game.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 BuySellDialog::BuySellDialog():
@@ -86,7 +85,6 @@ void BuySellDialog::action(const std::string& eventId)
         outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
         outMsg.writeLong(current_npc);
         outMsg.writeByte(actionId);
-        writeSet(7);
     }
 
     setVisible(false);

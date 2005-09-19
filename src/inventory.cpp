@@ -27,7 +27,6 @@
 #include "item.h"
 
 #include "net/messageout.h"
-#include "net/network.h"
 #include "net/protocol.h"
 
 Inventory::Inventory()
@@ -98,7 +97,6 @@ int Inventory::useItem(Item *item)
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
-    writeSet(8);
     return 0;
 }
 
@@ -109,7 +107,6 @@ int Inventory::dropItem(Item *item, int quantity)
     outMsg.writeShort(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeShort(quantity);
-    writeSet(6);
     return 0;
 }
 
@@ -119,7 +116,6 @@ void Inventory::equipItem(Item *item)
     outMsg.writeShort(CMSG_PLAYER_EQUIP);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeShort(0);
-    writeSet(6);
 }
 
 void Inventory::unequipItem(Item *item)
@@ -127,7 +123,6 @@ void Inventory::unequipItem(Item *item)
     MessageOut outMsg;
     outMsg.writeShort(CMSG_PLAYER_UNEQUIP);
     outMsg.writeShort(item->getInvIndex());
-    writeSet(4);
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     Equipment::getInstance()->removeEquipment(item);

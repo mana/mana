@@ -343,8 +343,6 @@ int attemptLogin(const std::string& user, const std::string& pass)
     outMsg.writeString(user, 24);
     outMsg.writeString(pass, 24);
     outMsg.writeByte(0); // unknown
-    // TODO: still have to use writeSet as skip for reading
-    writeSet(55);
 
     // Receive reply
     MessageIn msg = get_next_message();

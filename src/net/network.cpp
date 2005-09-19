@@ -279,16 +279,6 @@ get_next_message()
     return MessageIn(in, length);
 }
 
-void writeSet(unsigned int value)
-{
-    if (out_size + value >= buffer_size) {
-        logger->log("Warning: Output buffer full");
-    }
-    else {
-        out_size += value;
-    }
-}
-
 void skip(int len)
 {
     memcpy(in, in + len, in_size - len);

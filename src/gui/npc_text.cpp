@@ -30,7 +30,6 @@
 #include "../game.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 NpcTextDialog::NpcTextDialog():
@@ -84,7 +83,6 @@ NpcTextDialog::action(const std::string& eventId)
     MessageOut outMsg;
     outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeLong(current_npc);
-    writeSet(6);
     setText("");
     setVisible(false);
     current_npc = 0;

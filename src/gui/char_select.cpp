@@ -199,7 +199,6 @@ void CharSelectDialog::serverCharDelete()
     outMsg.writeShort(0x0068);
     outMsg.writeLong(char_info[0]->id);
     outMsg.writeString("a@a.com", 40);
-    writeSet(46);
 
     MessageIn msg = get_next_message();
 
@@ -229,7 +228,6 @@ void CharSelectDialog::serverCharSelect()
     MessageOut outMsg;
     outMsg.writeShort(0x0066);
     outMsg.writeByte(0);
-    writeSet(3);
 
     MessageIn msg = get_next_message();
 
@@ -426,7 +424,6 @@ void CharCreateDialog::serverCharCreate()
     outMsg.writeByte(0);
     outMsg.writeShort(playerBox->hairColor + 1);
     outMsg.writeShort(playerBox->hairStyle + 1);
-    writeSet(37);
 
     MessageIn msg = get_next_message();
 

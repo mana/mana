@@ -41,7 +41,6 @@
 #include "../resources/itemmanager.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 
@@ -237,7 +236,6 @@ void SellDialog::action(const std::string& eventId)
         outMsg.writeShort(8);
         outMsg.writeShort(shopInventory[selectedItem].index);
         outMsg.writeShort(m_amountItems);
-        writeSet(8);
 
         m_maxItems -= m_amountItems;
         m_amountItems = 0;

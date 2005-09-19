@@ -39,7 +39,6 @@
 #include "../resources/itemmanager.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 
@@ -242,7 +241,6 @@ void BuyDialog::action(const std::string& eventId)
         outMsg.writeShort(8);
         outMsg.writeShort(m_amountItems);
         outMsg.writeShort(shopInventory[selectedItem].id);
-        writeSet(8);
 
         // update money !
         m_money -= m_amountItems * shopInventory[selectedItem].price;

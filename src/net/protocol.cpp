@@ -86,7 +86,6 @@ void map_start()
     outMsg.writeLong(session_ID1);
     outMsg.writeLong(session_ID2);
     outMsg.writeByte(sex);
-    writeSet(19);
 
     // Skip a mysterious 4 bytes
     while ((in_size < 4)|| (out_size > 0)) flush();
@@ -118,7 +117,6 @@ void map_start()
     // TODO: be able to reuse the same msg
     MessageOut newMsg;
     newMsg.writeShort(0x007d);
-    writeSet(2);
 }
 
 void walk(unsigned short x, unsigned short y, unsigned char direction)
@@ -128,7 +126,6 @@ void walk(unsigned short x, unsigned short y, unsigned char direction)
     set_coordinates(temp, x, y, direction);
     outMsg.writeShort(0x0085);
     outMsg.writeString(temp, 3);
-    writeSet(5);
 }
 
 void action(char type, int id)
@@ -137,7 +134,6 @@ void action(char type, int id)
     outMsg.writeShort(0x0089);
     outMsg.writeLong(id);
     outMsg.writeByte(type);
-    writeSet(7);
 }
 
 Being* attack(unsigned short x, unsigned short y, unsigned char direction)

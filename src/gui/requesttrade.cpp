@@ -29,7 +29,6 @@
 #include "button.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 bool requestTradeDialogOpen = false;
@@ -99,6 +98,5 @@ void RequestTradeDialog::action(const std::string& eventId)
     MessageOut outMsg;
     outMsg.writeShort(CMSG_TRADE_RESPONSE);
     outMsg.writeByte(choice);
-    writeSet(3);
     scheduleDelete();
 }

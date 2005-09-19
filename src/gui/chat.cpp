@@ -34,7 +34,6 @@
 #include "../log.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 ChatWindow::ChatWindow(const std::string &logfile):
@@ -222,7 +221,6 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
     outMsg.writeShort(packetId);
     outMsg.writeShort(msg.length() + 4);
     outMsg.writeString(msg, msg.length());
-    writeSet(msg.length() + 4);
 
     return "";
 }

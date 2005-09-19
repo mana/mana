@@ -32,7 +32,6 @@
 #include "../playerinfo.h"
 
 #include "../net/messageout.h"
-#include "../net/network.h"
 #include "../net/protocol.h"
 
 StatusWindow::StatusWindow():
@@ -448,6 +447,5 @@ void StatusWindow::action(const std::string& eventId)
             outMsg.writeShort(0x0012);
         }
         outMsg.writeByte(1);
-        writeSet(5);
     }
 }

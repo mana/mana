@@ -141,7 +141,6 @@ class DeathNoticeListener : public gcn::ActionListener {
             MessageOut outMsg;
             outMsg.writeShort(0x00b2);
             outMsg.writeByte(0);
-            writeSet(3);
             deathNotice = NULL;
         }
 } deathNoticeListener;
@@ -577,7 +576,6 @@ void do_input()
                             MessageOut outMsg;
                             outMsg.writeShort(0x009f);
                             outMsg.writeLong(id);
-                            writeSet(6);
                         }
                         used = true;
                     }
@@ -689,7 +687,6 @@ void do_input()
                         MessageOut outMsg;
                         outMsg.writeShort(0x00bf);
                         outMsg.writeByte(emotion);
-                        writeSet(3);
                         action_time = false;
                         used = true;
                     }
@@ -724,17 +721,14 @@ void do_input()
                     {
                         // Player default: attack
                         case Being::PLAYER:
+                            if (target != player_node)
                             {
-                                if (target != player_node)
-                                {
-                                 autoTarget = target;
-                                 attack(target);/*
-                                    MessageOut outMsg;
-                                    outMsg.writeShort(CMSG_TRADE_REQUEST);
-                                    outMsg.writeLong(target->getId());
-                                    writeSet(6);
-                                    tradePartnerName = target->getName();*/
-                                }
+                                autoTarget = target;
+                                attack(target);
+                                /*MessageOut outMsg;
+                                outMsg.writeShort(CMSG_TRADE_REQUEST);
+                                outMsg.writeLong(target->getId());
+                                tradePartnerName = target->getName();*/
                             }
                             break;
 
@@ -746,7 +740,6 @@ void do_input()
                                 outMsg.writeShort(CMSG_NPC_TALK);
                                 outMsg.writeLong(target->getId());
                                 outMsg.writeByte(0);
-                                writeSet(7);
                                 current_npc = target->getId();
                             }
                             break;
@@ -790,7 +783,6 @@ void do_input()
                         MessageOut outMsg;
                         outMsg.writeShort(0x009f);
                         outMsg.writeLong(floorItemId);
-                        writeSet(6);
                     }
                 }
 
@@ -984,7 +976,6 @@ void do_input()
                 MessageOut outMsg;
                 outMsg.writeShort(CMSG_ITEM_PICKUP);
                 outMsg.writeLong(id);
-                writeSet(6);
             }
         }
         else if (joy[JOY_BTN2] && action_time)
@@ -1298,7 +1289,6 @@ void do_parse()
                     MessageOut outMsg;
                     outMsg.writeShort(CMSG_TRADE_RESPONSE);
                     outMsg.writeByte(4);
-                    writeSet(3);
                     break;
                 }
 
@@ -1529,7 +1519,6 @@ void do_parse()
                     // Send "map loaded"
                     MessageOut outMsg;
                     outMsg.writeShort(CMSG_MAP_LOADED);
-                    writeSet(2);
                 }
                 break;
 

@@ -44,7 +44,6 @@ void flush();
 MessageIn get_next_message();
 extern char *out;
 
-void writeSet(unsigned int value);
 void skip(int len);
 
 extern unsigned int in_size;   /**< Amount of data in input buffer. */
