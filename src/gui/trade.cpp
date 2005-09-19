@@ -247,7 +247,6 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeLong(quantity);
     writeSet(8);
-    flush();
 }
 
 void TradeWindow::mouseClick(int x, int y, int button, int count)
@@ -319,7 +318,6 @@ void TradeWindow::action(const std::string &eventId)
         MessageOut outMsg;
         outMsg.writeShort(CMSG_TRADE_CANCEL_REQUEST);
         writeSet(2);
-        flush();
     }
     else if (eventId == "ok")
     {
@@ -336,7 +334,6 @@ void TradeWindow::action(const std::string &eventId)
             outMsg.writeShort(0);
             outMsg.writeLong(tempInt);
             writeSet(8);
-            flush();
         } else {
             moneyField->setText("");
         }
@@ -344,13 +341,11 @@ void TradeWindow::action(const std::string &eventId)
         MessageOut outMsg;
         outMsg.writeShort(CMSG_TRADE_ADD_COMPLETE);
         writeSet(2);
-        flush();
     }
     else if (eventId == "trade")
     {
         MessageOut outMsg;
         outMsg.writeShort(CMSG_TRADE_OK);
         writeSet(2);
-        flush();
     }
 }

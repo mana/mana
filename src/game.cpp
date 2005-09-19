@@ -1530,7 +1530,6 @@ void do_parse()
                     MessageOut outMsg;
                     outMsg.writeShort(CMSG_MAP_LOADED);
                     writeSet(2);
-                    flush();
                 }
                 break;
 

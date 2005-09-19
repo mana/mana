@@ -88,7 +88,7 @@ UpdaterWindow::UpdaterWindow():
     // That commented line causes problems if the client had a false value for an update host
     // in its config file.
     // The update host, unlike the home dir, isn't dynamically set at the start of the client.
-    //mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
+    // mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
     mUpdateHost = "themanaworld.org/files";
     mBasePath = config.getValue("homeDir", ".");
 
@@ -195,7 +195,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     float progress = dn / dt;
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
 
-    if (progress < 0)    progress = 0.0f;
+    if (progress < 0) progress = 0.0f;
     if (progress > 1) progress = 1.0f;
 
     std::stringstream progressString;
