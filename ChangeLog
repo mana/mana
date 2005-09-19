@@ -1,4 +1,9 @@
-2005-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2005-09-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp, src/gui/trade.cpp, src/gui/updatewindow.cpp,
+	src/inventory.cpp: Removed useless flush() calls.
+
+2005-09-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/gui/npc.cpp: Updated dev-cpp project file to
 	last changes, and fixed the bug with npc lists I introduced earlier.
