@@ -161,15 +161,16 @@ void Window::setWindowContainer(WindowContainer *wc)
 
 void Window::draw(gcn::Graphics* graphics)
 {
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, getWidth(), getHeight(),
-                                         border);
+    Graphics *g = (Graphics*)graphics;
+
+    g->drawImageRect(0, 0, getWidth(), getHeight(), border);
 
     // Draw grip
     if (resizable)
     {
-        dynamic_cast<Graphics*>(graphics)->drawImage(Window::resizeGrip,
-                                                     getWidth() - resizeGrip->getWidth(),
-                                                     getHeight() - resizeGrip->getHeight());
+        g->drawImage(Window::resizeGrip,
+                     getWidth() - resizeGrip->getWidth(),
+                     getHeight() - resizeGrip->getHeight());
     }
 
     // Draw title

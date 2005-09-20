@@ -157,7 +157,8 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
         SDL_LockSurface(screenshot);
     }
     glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, mScreen->w, mScreen->h, GL_RGB, GL_UNSIGNED_BYTE, screenshot->pixels);
+    glReadPixels(0, 0, mScreen->w, mScreen->h, GL_RGB, GL_UNSIGNED_BYTE,
+                 screenshot->pixels);
 
     unsigned char *data = (unsigned char*)screenshot->pixels;
     for (int x = 0; x < mScreen->w; x++) {
@@ -225,24 +226,23 @@ void OpenGLGraphics::popClipArea()
 
     glPopMatrix();
     glScissor(mClipStack.top().x,
-            mScreen->h - mClipStack.top().y - mClipStack.top().height,
-            mClipStack.top().width,
-            mClipStack.top().height);
+              mScreen->h - mClipStack.top().y - mClipStack.top().height,
+              mClipStack.top().width,
+              mClipStack.top().height);
 }
 
 void OpenGLGraphics::setColor(const gcn::Color& color)
 {
     mColor = color;
-    glColor4f(color.r/255.0,
-            color.g/255.0,
-            color.b/255.0,
-            color.a/255.0);
+    glColor4ub(color.r, color.g, color.b, color.a);
 
     mColorAlpha = (color.a != 255);
 }
 
-void OpenGLGraphics::drawImage(const gcn::Image* image, int srcX, int srcY,
-        int dstX, int dstY, int width, int height)
+void OpenGLGraphics::drawImage(const gcn::Image* image,
+                               int srcX, int srcY,
+                               int dstX, int dstY,
+                               int width, int height)
 {
     // The following code finds the real width and height of the texture.
     // OpenGL only supports texture sizes that are powers of two
@@ -260,8 +260,8 @@ void OpenGLGraphics::drawImage(const gcn::Image* image, int srcX, int srcY,
     // Find OpenGL texture coordinates
     float texX1 = srcX / (float)realImageWidth;
     float texY1 = srcY / (float)realImageHeight;
-    float texX2 = (srcX+width) / (float)realImageWidth;
-    float texY2 = (srcY+height) / (float)realImageHeight;
+    float texX2 = (srcX + width) / (float)realImageWidth;
+    float texY2 = (srcY + height) / (float)realImageHeight;
 
     // Please dont look too closely at the next line, it is not pretty.
     // It uses the image data as a pointer to a GLuint
@@ -284,12 +284,12 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     setTexturingAndBlending(false);
 
     glBegin(GL_LINES);
-    glVertex3f(x1+0.5f, y1+0.5f, 0);
-    glVertex3f(x2+0.5f, y2+0.5f, 0);
+    glVertex3f(x1 + 0.5f, y1 + 0.5f, 0);
+    glVertex3f(x2 + 0.5f, y2 + 0.5f, 0);
     glEnd();
 
     glBegin(GL_POINTS);
-    glVertex3f(x2+0.5f, y2+0.5f, 0);
+    glVertex3f(x2 + 0.5f, y2 + 0.5f, 0);
     glEnd();
 }
 

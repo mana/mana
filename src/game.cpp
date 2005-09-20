@@ -124,11 +124,11 @@ const int MAX_TIME = 10000;
 
 class WeightNoticeListener : public gcn::ActionListener
 {
-public:
-    void action(const std::string &eventId)
-    {
-        weightNotice = NULL;
-    }
+    public:
+        void action(const std::string &eventId)
+        {
+            weightNotice = NULL;
+        }
 } weightNoticeListener;
 
 
@@ -509,7 +509,10 @@ void do_input()
 
                     // Input chat window
                 case SDLK_RETURN:
-                    if (chatWindow->isFocused()) {
+                    if (chatWindow->isFocused() ||
+                        deathNotice != NULL ||
+                        weightNotice != NULL)
+                    {
                         break;
                     }
 
@@ -517,15 +520,6 @@ void do_input()
                     if (exitConfirm)
                     {
                         state = EXIT;
-                    }
-                    // Accept the Death Notice...
-                    else if (deathNotice)
-                    {
-                        deathNotice->action("ok");
-                    }
-                    else if (weightNotice)
-                    {
-                        weightNotice->action("ok");
                     }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
@@ -1583,7 +1577,6 @@ void do_parse()
                         deathNotice = new OkDialog("Message",
                                 "You're now dead, press ok to restart",
                                 &deathNoticeListener);
-                        deathNotice->releaseModalFocus();
                         player_node->action = Being::DEAD;
                     }
                 }

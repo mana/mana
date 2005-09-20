@@ -29,14 +29,14 @@
 #include "windowcontainer.h"
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
-        gcn::ActionListener *listener):
+                   gcn::ActionListener *listener):
     Window(title, true)
 {
     init(msg, listener);
 }
 
 OkDialog::OkDialog(Window *parent, const std::string &title,
-        const std::string &msg, gcn::ActionListener *listener):
+                   const std::string &msg, gcn::ActionListener *listener):
     Window(title, true, parent)
 {
     init(msg, listener);
@@ -56,9 +56,8 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 
     setContentSize(w, h);
     userLabel->setPosition(10, 10);
-    okButton->setPosition(
-            (w - okButton->getWidth()) / 2,
-            h - 5 - okButton->getHeight());
+    okButton->setPosition((w - okButton->getWidth()) / 2,
+                          h - 5 - okButton->getHeight());
 
     okButton->setEventId("ok");
     okButton->addActionListener(this);

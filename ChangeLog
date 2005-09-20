@@ -1,3 +1,11 @@
+2005-09-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
+	src/gui/window.cpp: Enter is used to dismiss dialogs currently,
+	removed the hacks for use in combination with non-modal dialogs that
+	made the game crash.
+	* src/openglgraphics.cpp: Changed glColor4f to glColor4ub.
+
 2005-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Replaced custom function FIND_PATH with AC_PATH_PROG,
