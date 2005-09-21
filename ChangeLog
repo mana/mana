@@ -1,3 +1,8 @@
+2005-09-21  Andrej Sinicyn  <andrej4000@gmail.com>
+
+	* The Mana World.dev: Removed reference to src/gui/stats.* since they
+        are in the attic now.
+
 2005-09-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
