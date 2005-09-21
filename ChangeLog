@@ -1,5 +1,6 @@
 2005-09-21  Andrej Sinicyn  <andrej4000@gmail.com>
 
+	* src/gui/chat.cpp: Show time of the messages in the chat window.
 	* The Mana World.dev: Removed reference to src/gui/stats.* since they
         are in the attic now.
 

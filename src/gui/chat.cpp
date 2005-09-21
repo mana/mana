@@ -23,6 +23,8 @@
 
 #include "chat.h"
 
+#include <sstream>
+
 #include <guichan/focushandler.hpp>
 #include <guichan/key.hpp>
 
@@ -144,7 +146,21 @@ void ChatWindow::chat_log(std::string line, int own)
             break;
     }
     
-    line = lineColor + tmp.nick + line;
+    // Get the current system time
+    time_t t;
+    time(&t);
+
+    // Format the time string properly
+    std::stringstream timeStr;
+    timeStr << "[";
+    timeStr << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+    timeStr << (int)(((t / 60) / 60) % 24);
+    timeStr << ":";
+    timeStr << (((t / 60) % 60 < 10) ? "0" : "");
+    timeStr << (int)((t / 60) % 60);
+    timeStr << "] ";
+    
+    line = lineColor + timeStr.str() + tmp.nick + line;
 
     textOutput->addRow(line);
     scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
