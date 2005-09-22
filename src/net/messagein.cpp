@@ -25,9 +25,7 @@
 
 #include <cassert>
 #include <SDL.h>
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-#include "win2mac.h"
-#endif
+#include <SDL_endian.h>
 
 #define MAKEWORD(low,high) \
     ((unsigned short)(((unsigned char)(low)) | \
@@ -56,7 +54,7 @@ MessageIn::readShort()
     assert(mPos + 2 <= mLength);
     mPos += 2;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return DR_SwapTwoBytes(*(short*)(mData + (mPos - 2)));
+    return SDL_Swap16(*(short*)(mData + (mPos - 2)));
 #else
     return (*(short*)(mData + (mPos - 2)));
 #endif
@@ -68,7 +66,7 @@ MessageIn::readLong()
     assert(mPos + 4 <= mLength);
     mPos += 4;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return DR_SwapFourBytes(*(long*)(mData + (mPos - 4)));
+    return SDL_Swap32(*(long*)(mData + (mPos - 4)));
 #else
     return (*(long*)(mData + (mPos - 4)));
 #endif

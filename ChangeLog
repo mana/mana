@@ -1,3 +1,11 @@
+2005-19-22  Duane Bailey  <nayryeliab@gmail.com>
+	
+	* src/net/win2mac.h, src/net/win2mac.cpp: removed
+	* src/net/network.h, src/net/messagein.h, src/net/messageout.h:
+	removed references to win2mac.h
+	* src/net/messagein.cpp, src/net/messageout.cpp, src/net/network.cpp:
+	changed byte swapping support to SDL_endian
+
 2005-09-21  Andrej Sinicyn  <andrej4000@gmail.com>
 
 	* src/gui/chat.cpp: Show time of the messages in the chat window.

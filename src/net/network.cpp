@@ -30,9 +30,6 @@
 #include "messagein.h"
 
 #include "../log.h"
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-#include "win2mac.h"
-#endif
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -248,7 +245,7 @@ void flush()
 unsigned short readWord(int pos)
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return DR_SwapTwoBytes((*(unsigned short*)(in+(pos))));
+    return SDL_Swap16((*(unsigned short*)(in+(pos))));
 #else
     return (*(unsigned short *)(in+(pos)));
 #endif

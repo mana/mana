@@ -56,8 +56,6 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
         return false;
     }
 
-    info_ptr = png_create_info_struct(png_ptr);
-    if (!info_ptr)
     {
         png_destroy_write_struct(&png_ptr, (png_infopp)NULL);
         logger->log("Could not create png_info");

@@ -25,9 +25,7 @@
 
 #include <string>
 #include <SDL.h>
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-#include "win2mac.h"
-#endif
+#include <SDL_endian.h>
 
 #include "network.h"
 #include "packet.h"
@@ -71,7 +69,7 @@ void MessageOut::writeShort(short value)
 {
     expand(mPos + sizeof(short));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(short *)(mData + mPos)) = DR_SwapTwoBytes(value);
+    (*(short *)(mData + mPos)) = SDL_Swap16(value);
 #else
     (*(short *)(mData + mPos)) = value;
 #endif
@@ -83,7 +81,7 @@ void MessageOut::writeLong(long value)
 {
     expand(mPos + sizeof(long));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(long *)(mData + mPos)) = DR_SwapFourBytes(value);
+    (*(long *)(mData + mPos)) = SDL_Swap16(value);
 #else
     (*(long *)(mData + mPos)) = value;
 #endif
