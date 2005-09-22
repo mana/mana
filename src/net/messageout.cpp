@@ -81,7 +81,7 @@ void MessageOut::writeLong(long value)
 {
     expand(mPos + sizeof(long));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(long *)(mData + mPos)) = SDL_Swap16(value);
+    (*(long *)(mData + mPos)) = SDL_Swap32(value);
 #else
     (*(long *)(mData + mPos)) = value;
 #endif
