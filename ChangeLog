@@ -1,3 +1,7 @@
+2005-09-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+	* src/resources/imagewriter.cpp: Reverted the latst change that broke
+	the screenshots facility.
+
 2005-19-22  Duane Bailey  <nayryeliab@gmail.com>
 	
 	* src/net/win2mac.h, src/net/win2mac.cpp: removed
