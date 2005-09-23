@@ -26,12 +26,11 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
+#include <SDL_events.h>
 
 #include "window.h"
 
 #include "../guichanfwd.h"
-
-struct SDL_KeyboardEvent;
 
 /**
  * The list model for the server list.

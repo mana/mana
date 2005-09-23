@@ -1,10 +1,23 @@
+2005-09-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp, src/engine.cpp, src/game.cpp, src/main.cpp, src/map.cpp,
+	src/sound.cpp, src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/char_server.h, src/gui/chargedialog.cpp,
+	src/gui/chargedialog.h, src/gui/chat.cpp, src/gui/equipmentwindow.cpp,
+	src/gui/login.h, src/gui/setup.cpp, src/gui/setup.h, src/gui/status.cpp,
+	src/gui/updatewindow.cpp, src/gui/updatewindow.h,
+	src/resources/iteminfo.cpp, src/resources/iteminfo.h,
+	src/resources/itemmanager.cpp, src/resources/itemmanager.h: Merged most
+	of the changes in biggeruniverse's second memory cleanup patch.
+
 2005-09-23  Duane Bailey  <nayryeliab@gmail.com>
 
-	* src/openglgraphics.cpp: totally redid the opengl screenshot method
-	needs to be tested on lil endian systems. Also made it smoother on
-	OpenGL macosx.
-	
+	* src/openglgraphics.cpp: Totally redid the OpenGL screenshot method.
+	Needs to be tested on lil endian systems. Also made it smoother on
+	OpenGL MacOSX.
+
 2005-09-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
 	* src/resources/imagewriter.cpp: Reverted the latst change that broke
 	the screenshots facility.
 
@@ -20,7 +33,7 @@
 
 	* src/gui/chat.cpp: Show time of the messages in the chat window.
 	* The Mana World.dev: Removed reference to src/gui/stats.* since they
-        are in the attic now.
+      are in the attic now.
 
 2005-09-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -40,6 +40,7 @@
 #include "net/protocol.h"
 
 #include "resources/resourcemanager.h"
+#include "resources/image.h"
 
 extern Being* autoTarget;
 extern std::map<int, Spriteset*> monsterset;
@@ -86,6 +87,7 @@ Being* createBeing(unsigned int id, unsigned short job, Map *map)
             logger->error("Unable to load monster.png");
         } else {
             monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);
+            monsterbitmap->decRef();
         }
     }
 

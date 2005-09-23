@@ -42,12 +42,16 @@ ItemManager::ItemManager()
     xmlDocPtr doc = xmlParseMemory(data, size);
     free(data);
 
-    if (doc) {
+    if (doc)
+    {
         xmlNodePtr node = xmlDocGetRootElement(doc);
 
-        if (!node || !xmlStrEqual(node->name, BAD_CAST "items")) {
+        if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
+        {
             logger->error("items.xml is not a valid database file!");
-        } else {
+        }
+        else
+        {
             for (node = node->xmlChildrenNode; node != NULL; node = node->next)
             {
                 if (xmlStrEqual(node->name, BAD_CAST "item"))
@@ -112,6 +116,14 @@ ItemManager::ItemManager()
 
 ItemManager::~ItemManager()
 {
+    std::map<int, ItemInfo*>::iterator i;
+    for (i = db.begin(); i != db.end(); i++)
+    {
+        delete (*i).second;
+    }
+    db.clear();
+
+    delete unknown;
 }
 
 ItemInfo *ItemManager::getItemInfo(int id)

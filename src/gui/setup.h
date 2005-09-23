@@ -72,6 +72,23 @@ class ModeListModel : public gcn::ListModel
  */
 class Setup : public Window, public gcn::ActionListener
 {
+    public:
+        /**
+         * Constructor.
+         */
+        Setup();
+
+        /**
+         * Destructor.
+         */
+        ~Setup();
+
+        /**
+         * Event handling method.
+         */
+        void
+        action(const std::string& eventId);
+
     private:
         ModeListModel *modeListModel;
 
@@ -97,23 +114,6 @@ class Setup : public Window, public gcn::ActionListener
         bool openGLEnabled;
         bool customCursorEnabled;
         bool soundEnabled;
-
-    public:
-        /**
-         * Constructor.
-         */
-        Setup();
-
-        /**
-         * Destructor.
-         */
-        ~Setup();
-
-        /**
-         * Event handling method.
-         */
-        void
-        action(const std::string& eventId);
 };
 
 extern Setup *setupWindow;

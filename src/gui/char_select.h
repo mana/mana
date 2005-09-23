@@ -29,16 +29,35 @@
 
 #include "../guichanfwd.h"
 
+#include <SDL_events.h>
+
 class PlayerBox;
 struct PLAYER_INFO;
-struct SDL_KeyboardEvent;
 
 /**
  * Character selection dialog.
  *
  * \ingroup Interface
  */
-class CharSelectDialog : public Window, public gcn::ActionListener {
+class CharSelectDialog : public Window, public gcn::ActionListener
+{
+    public:
+        /**
+         * Constructor.
+         */
+        CharSelectDialog();
+
+        /**
+         * Destructor.
+         */
+        ~CharSelectDialog();
+
+        void action(const std::string& eventId);
+
+        void setPlayerInfo(PLAYER_INFO* pi);
+
+        void logic();
+
     private:
         gcn::Button *selectButton;
         gcn::Button *cancelButton;
@@ -73,23 +92,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
             private:
                 CharSelectDialog *master;
         };
-
-    public:
-        /**
-         * Constructor.
-         */
-        CharSelectDialog();
-
-        /**
-         * Destructor.
-         */
-        ~CharSelectDialog();
-
-        void action(const std::string& eventId);
-
-        void setPlayerInfo(PLAYER_INFO* pi);
-
-        void logic();
 };
 
 /**
@@ -97,7 +99,23 @@ class CharSelectDialog : public Window, public gcn::ActionListener {
  *
  * \ingroup GUI
  */
-class CharCreateDialog : public Window, public gcn::ActionListener {
+class CharCreateDialog : public Window, public gcn::ActionListener
+{
+    public:
+        /**
+         * Constructor.
+         */
+        CharCreateDialog(Window *parent = NULL);
+
+        /**
+         * Destructor.
+         */
+        ~CharCreateDialog();
+
+        void action(const std::string& eventId);
+
+        std::string getName();
+
     private:
         gcn::TextField *nameField;
         gcn::Label *nameLabel;
@@ -117,21 +135,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener {
          * info.
          */
         void serverCharCreate();
-
-    public:
-        /**
-         * Constructor.
-         */
-        CharCreateDialog(Window *parent = NULL);
-
-        /**
-         * Destructor.
-         */
-        ~CharCreateDialog();
-
-        void action(const std::string& eventId);
-
-        std::string getName();
 };
 
 void charSelectInputHandler(SDL_KeyboardEvent *keyEvent);

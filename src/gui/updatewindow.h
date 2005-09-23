@@ -25,9 +25,9 @@
 #define _UPDATERWINDOW_H
 
 #include <guichan/actionlistener.hpp>
-
 #include <string>
 #include <vector>
+#include <SDL_events.h>
 
 #include "window.h"
 
@@ -39,7 +39,6 @@ class ProgressBar;
 class ScrollArea;
 
 struct SDL_mutex;
-struct SDL_KeyboardEvent;
 struct SDL_Thread;
 
 /**

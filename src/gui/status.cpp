@@ -220,8 +220,10 @@ StatusWindow::~StatusWindow()
     delete statsTitleLabel;
     delete statsTotalLabel;
     delete statsCostLabel;
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
+    {
         delete statsLabel[i];
+        delete pointsLabel[i];
         delete statsDisplayLabel[i];
         delete statsButton[i];
     }

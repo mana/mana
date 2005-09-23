@@ -415,6 +415,9 @@ void do_exit()
     delete tiledMap;
     destroyGuiWindows();
     close_session();
+    
+    delete inventory;
+    delete player_node;
 
     if (joypad != NULL)
     {

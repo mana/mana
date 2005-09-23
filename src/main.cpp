@@ -307,6 +307,9 @@ void exit_engine()
 
     // Shutdown libxml
     xmlCleanupParser();
+    
+    // Shutdown sound
+    sound.close();
 
     ResourceManager::deleteInstance();
     delete logger;
@@ -501,6 +504,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    fclose(nullFile);
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();

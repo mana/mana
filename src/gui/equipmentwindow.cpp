@@ -46,10 +46,12 @@ EquipmentWindow::EquipmentWindow():
     Image *itemImg = resman->getImage("graphics/sprites/items.png");
     if (!itemImg) logger->error("Unable to load items.png");
     itemset = new Spriteset(itemImg, 32, 32);
+    itemImg->decRef();
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
+    delete itemset;
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)

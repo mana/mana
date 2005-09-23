@@ -177,6 +177,9 @@ void server_char_server(int serverIndex)
         {
             char_info[i] = new PLAYER_INFO;
 
+            char_info[i]->totalWeight = 0;
+            char_info[i]->maxWeight = 0;
+            char_info[i]->lastAttackTime = 0;
             char_info[i]->id = msg.readLong();
             char_info[i]->xp = msg.readLong();
             char_info[i]->gp = msg.readLong();

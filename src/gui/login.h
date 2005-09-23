@@ -26,11 +26,10 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
+#include <SDL_events.h>
 
 #include "window.h"
 #include "../guichanfwd.h"
-
-struct SDL_KeyboardEvent;
 
 /**
  * The login dialog.

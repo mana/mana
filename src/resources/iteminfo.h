@@ -31,12 +31,13 @@
  */
 class ItemInfo
 {
+    friend class ItemManager;
+
     public:
         /**
          * Constructor.
          */
         ItemInfo();
-
 
         void setImage(short image);
         
@@ -70,21 +71,18 @@ class ItemInfo
         
         char getSlot();
 
-
     protected:
         /**
          * Destructor.
          */
         ~ItemInfo();
-        
+
         short image, art;
         std::string name;
         std::string description;
         std::string effect;
         short type, weight;
         char slot;
-        
-
 };
 
 #endif

@@ -30,6 +30,10 @@ ItemInfo::ItemInfo() :
 {
 }
 
+ItemInfo::~ItemInfo()
+{
+}
+
 void ItemInfo::setImage(short image)
 {
     this->image = image;

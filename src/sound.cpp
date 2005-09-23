@@ -38,8 +38,6 @@ Sound::Sound():
 
 Sound::~Sound()
 {
-    stopMusic();
-    close();
 }
 
 void Sound::init()
@@ -207,6 +205,8 @@ void Sound::playSfx(const char *path)
 
 void Sound::close()
 {
+    stopMusic();
+
     installed = false;
     Mix_CloseAudio();
     logger->log("Sound::close() Shutting down sound...");

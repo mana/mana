@@ -46,7 +46,6 @@
 #include "../net/protocol.h"
 
 
-
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
             "Confirm", "Are you sure you want to delete this character?"),

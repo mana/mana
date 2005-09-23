@@ -200,11 +200,13 @@ Setup::Setup():
 
 Setup::~Setup()
 {
+    delete videoLabel;
     delete modeListModel;
     delete modeList;
     delete scrollArea;
     delete fsCheckBox;
     delete openGLCheckBox;
+    delete customCursorCheckBox;
     delete soundCheckBox;
     delete audioLabel;
     delete applyButton;

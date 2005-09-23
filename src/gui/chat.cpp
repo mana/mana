@@ -47,11 +47,11 @@ ChatWindow::ChatWindow(const std::string &logfile):
 
     setContentSize(600, 100);
     setResizable(true);
-    
+
     chatInput = new ChatInput();
     chatInput->setEventId("chatinput");
     chatInput->addActionListener(this);
-    
+
     textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     textOutput->setOpaque(false);
     textOutput->disableLinksAndUserColors();
@@ -73,6 +73,8 @@ ChatWindow::ChatWindow(const std::string &logfile):
 ChatWindow::~ChatWindow()
 {
     delete chatInput;
+    delete textOutput;
+    delete scrollArea;
 
     chatlog_file.flush();
     chatlog_file.close();

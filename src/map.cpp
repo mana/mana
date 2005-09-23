@@ -41,7 +41,7 @@ Location::Location(int x, int y, MetaTile *tile):
 
 bool Location::operator< (const Location &loc) const
 {
-   return tile->Fcost > loc.tile->Fcost; 
+   return tile->Fcost > loc.tile->Fcost;
 }
 
 

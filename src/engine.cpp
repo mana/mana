@@ -176,7 +176,13 @@ Engine::Engine():
 Engine::~Engine()
 {
     // Delete sprite sets
-    //delete monsterset;
+    std::map<int, Spriteset*>::iterator i;
+    for (i = monsterset.begin(); i != monsterset.end(); i++)
+    {
+        delete (*i).second;
+    }
+    monsterset.clear();
+
     delete npcset;
     delete emotionset;
     delete weaponset;
@@ -185,6 +191,7 @@ Engine::~Engine()
     attackTarget->decRef();
 
     delete itemDb;
+    delete debugInfo;
 }
 
 Map *Engine::getCurrentMap()

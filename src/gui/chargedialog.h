@@ -36,10 +36,6 @@ class ProgressBar;
  */
 class ChargeDialog : public Window, public gcn::ActionListener
 {
-    private:
-        // members
-        ProgressBar* progBar;
-    
     public:
         /**
          * Constructor.
@@ -54,6 +50,9 @@ class ChargeDialog : public Window, public gcn::ActionListener
         // action listener
         void action(const std::string&); 
         void logic();
+
+    private:
+        ProgressBar* progBar;
 };
 
 extern ChargeDialog* chargeDialog;
