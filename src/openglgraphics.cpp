@@ -28,6 +28,10 @@
 #include <iostream>
 #include <SDL.h>
 
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#endif
+
 #include <guichan/image.hpp>
 
 #include "log.h"
@@ -61,6 +65,11 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     if (!(mScreen = SDL_SetVideoMode(w, h, bpp, displayFlags))) {
         return false;
     }
+
+#ifdef __APPLE__
+    long VBL = 1;
+    CGLSetParameter(CGLGetCurrentContext(), kCGLCPSwapInterval, &VBL);
+#endif
 
     // Setup OpenGL
     glViewport(0, 0, w, h);
@@ -137,57 +146,24 @@ void OpenGLGraphics::_endDraw()
 
 SDL_Surface* OpenGLGraphics::getScreenshot()
 {
-    // TODO I expect this to be unneeded for OpenGL, someone with a PPC or
-    // sth. else that is big endian should check this.
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    int rmask = 0xff000000;
-    int gmask = 0x00ff0000;
-    int bmask = 0x0000ff00;
-#else
-    int rmask = 0x000000ff;
-    int gmask = 0x0000ff00;
-    int bmask = 0x00ff0000;
-#endif
-    int amask = 0x00000000;
+    int h = mScreen->h;
+    int w = mScreen->w;
+    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
+            mScreen->h, 24, 0xff0000, 0x00ff00, 0x0000ff, NULL);
+    glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 
-    SDL_Surface *screenshot = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
-            mScreen->h, 24, rmask, gmask, bmask, amask);
+    void *data = malloc(w * h * 3);
 
-    if (SDL_MUSTLOCK(screenshot)) {
-        SDL_LockSurface(screenshot);
+    for (int i = 0; i < h; i++)
+    {
+      memcpy(data + 3 * w * i, surface->pixels + 3 * w * (h - i), 3 * w);
     }
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glReadPixels(0, 0, mScreen->w, mScreen->h, GL_RGB, GL_UNSIGNED_BYTE,
-                 screenshot->pixels);
+    surface->pixels = data;
+  
+    //SDL_FreeSurface(surface);
+    //free(data);
 
-    unsigned char *data = (unsigned char*)screenshot->pixels;
-    for (int x = 0; x < mScreen->w; x++) {
-        for (int y=0; y < mScreen->h / 2; y++) {
-            int i1 = (y * mScreen->w + x) * 3;
-            int i2 = ((mScreen->h - y - 1) * mScreen->w + x) * 3;
-
-            unsigned char temp = data[i1];
-            data[i1] = data[i2];
-            data[i2] = temp;
-
-            i1++; i2++;
-            temp = data[i1];
-            data[i1] = data[i2];
-            data[i2] = temp;
-
-            i1++; i2++;
-            temp = data[i1];
-            data[i1] = data[i2];
-            data[i2] = temp;
-
-        }
-    }
-
-    if (SDL_MUSTLOCK(screenshot)) {
-        SDL_UnlockSurface(screenshot);
-    }
-
-    return screenshot;
+    return surface;
 }
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)
