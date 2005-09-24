@@ -148,23 +148,41 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 {
     int h = mScreen->h;
     int w = mScreen->w;
-    SDL_Surface *surface = SDL_CreateRGBSurface(SDL_SWSURFACE, mScreen->w,
-            mScreen->h, 24, 0xff0000, 0x00ff00, 0x0000ff, NULL);
-    glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 
-    void *data = malloc(w * h * 3);
+    SDL_Surface *screenshot = SDL_CreateRGBSurface(
+            SDL_SWSURFACE,
+            w, h, 24,
+            0xff0000, 0x00ff00, 0x0000ff, 0x000000);
 
-    for (int i = 0; i < h; i++)
-    {
-        memcpy((GLubyte*)data + 3 * w * i,
-               (GLubyte*)surface->pixels + 3 * w * (h - i),
-               3 * w);
+    if (SDL_MUSTLOCK(screenshot)) {
+        SDL_LockSurface(screenshot);
     }
 
-    memcpy(surface->pixels, data, w * h * 3);
-    free(data);
-  
-    return surface;
+    // Grap the pixel buffer and write it to the SDL surface
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glReadPixels(0, 0, w, h, GL_RGB, GL_UNSIGNED_BYTE, screenshot->pixels);
+
+    // Flip the screenshot, as OpenGL has 0,0 in bottom left
+    unsigned int lineSize = 3 * w;
+    GLubyte* buf = (GLubyte*)malloc(lineSize);
+
+    for (int i = 0; i < (h / 2); i++)
+    {
+        GLubyte *top = (GLubyte*)screenshot->pixels + lineSize * i;
+        GLubyte *bot = (GLubyte*)screenshot->pixels + lineSize * (h - 1 - i);
+
+        memcpy(buf, top, lineSize);
+        memcpy(top, bot, lineSize);
+        memcpy(bot, buf, lineSize);
+    }
+
+    free(buf);
+
+    if (SDL_MUSTLOCK(screenshot)) {
+        SDL_UnlockSurface(screenshot);
+    }
+
+    return screenshot;
 }
 
 bool OpenGLGraphics::pushClipArea(gcn::Rectangle area)

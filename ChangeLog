@@ -1,14 +1,21 @@
+2005-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp: Fixed taking OpenGL screenshots and in
+	addition made it flip the image using just a line buffer instead of a
+	buffer for the complete image. Still needs testing on MacOS X.
+
 2005-09-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/being.cpp, src/engine.cpp, src/game.cpp, src/main.cpp, src/map.cpp,
-	src/sound.cpp, src/gui/char_select.cpp, src/gui/char_select.h,
-	src/gui/char_server.cpp, src/gui/char_server.h, src/gui/chargedialog.cpp,
-	src/gui/chargedialog.h, src/gui/chat.cpp, src/gui/equipmentwindow.cpp,
-	src/gui/login.h, src/gui/setup.cpp, src/gui/setup.h, src/gui/status.cpp,
-	src/gui/updatewindow.cpp, src/gui/updatewindow.h,
-	src/resources/iteminfo.cpp, src/resources/iteminfo.h,
-	src/resources/itemmanager.cpp, src/resources/itemmanager.h: Merged most
-	of the changes in biggeruniverse's second memory cleanup patch.
+	* src/being.cpp, src/engine.cpp, src/game.cpp, src/main.cpp,
+	src/map.cpp, src/sound.cpp, src/gui/char_select.cpp,
+	src/gui/char_select.h, src/gui/char_server.cpp, src/gui/char_server.h,
+	src/gui/chargedialog.cpp, src/gui/chargedialog.h, src/gui/chat.cpp,
+	src/gui/equipmentwindow.cpp, src/gui/login.h, src/gui/setup.cpp,
+	src/gui/setup.h, src/gui/status.cpp, src/gui/updatewindow.cpp,
+	src/gui/updatewindow.h, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h, src/resources/itemmanager.cpp,
+	src/resources/itemmanager.h: Merged most of the changes in
+	biggeruniverse's second memory cleanup patch.
 
 2005-09-23  Duane Bailey  <nayryeliab@gmail.com>
 
