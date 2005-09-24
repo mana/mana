@@ -156,13 +156,14 @@ SDL_Surface* OpenGLGraphics::getScreenshot()
 
     for (int i = 0; i < h; i++)
     {
-      memcpy(data + 3 * w * i, surface->pixels + 3 * w * (h - i), 3 * w);
+        memcpy((GLubyte*)data + 3 * w * i,
+               (GLubyte*)surface->pixels + 3 * w * (h - i),
+               3 * w);
     }
-    surface->pixels = data;
-  
-    //SDL_FreeSurface(surface);
-    //free(data);
 
+    memcpy(surface->pixels, data, w * h * 3);
+    free(data);
+  
     return surface;
 }
 
