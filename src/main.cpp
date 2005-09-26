@@ -282,7 +282,7 @@ void init_engine()
         sound.setMusicVolume((int)config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
-        state = ERROR;
+        state = ERROR_STATE;
         new OkDialog("Sound Engine", err, &initWarningListener);
         logger->log("Warning: %s", err);
     }
