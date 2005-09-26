@@ -28,8 +28,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/confirm_dialog.h \
 	      gui/equipmentwindow.cpp \
 	      gui/equipmentwindow.h \
-		  gui/error.cpp \
-		  gui/error.h \
+	      gui/error.cpp \
+	      gui/error.h \
 	      gui/focushandler.cpp \
 	      gui/focushandler.h \
 	      gui/gui.cpp \

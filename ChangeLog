@@ -1,8 +1,9 @@
 2005-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/Makefile.am, src/game.cpp,
-    src/gui/char_select.cpp, src/gui/char_server.cpp, src/gui/gui.cpp,
-	src/gui/login.cpp, src/gui/updatewindow.cpp, src/main.cpp, src/main.h,
+    src/gui/char_select.cpp, src/gui/char_server.cpp, src/gui/error.cpp,
+	src/gui/error.h, src/gui/gui.cpp, src/gui/login.cpp,
+	src/gui/updatewindow.cpp, src/main.cpp, src/main.h,
 	src/net/network.cpp: Added a nicer handling of when you get disconnected
     from the server.
 
