@@ -1,2 +1,3 @@
-src/tmw		usr/games
-tmw.desktop	usr/share/applications
+src/tmw		            usr/games
+tmw.desktop	            usr/share/applications
+data/icons/tmw-icon.png     usr/share/games/tmw/data/icons

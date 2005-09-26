@@ -1,3 +1,9 @@
+2005-09-26  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/char_select.cpp, debian/control, debian/rules,
+	debian/tmw.install, debian/changelog: Updated Debian files and fixed a
+	let by Elven.
+
 2005-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/Makefile.am, src/game.cpp,

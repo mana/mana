@@ -1,3 +1,10 @@
+tmw (0.0.16-2) unstable; urgency=low
+
+  * Close the missing icon bug.
+  * Made it compilable in amd64.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 26 Sep 2005 00:22:33 +0200
+
 tmw (0.0.16-1) unstable; urgency=low
 
   * Eighth Release

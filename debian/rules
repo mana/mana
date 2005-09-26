@@ -71,7 +71,6 @@ binary-indep: build install
 	cp data/icons/tmw-icon.xpm debian/tmp/usr/share/pixmaps/tmw.xpm
 	cp data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
 
-
 # Build architecture-dependent files here.
 binary-arch: build install
 	dh_testdir

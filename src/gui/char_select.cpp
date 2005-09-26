@@ -258,7 +258,7 @@ void CharSelectDialog::serverCharSelect()
                 errorMessage = "Cannot use this ID";
                 break;
             default:
-                errorMessage = "Unknown failure to select character");
+                errorMessage = "Unknown failure to select character";
                 break;
         }
         skip(msg.getLength());
