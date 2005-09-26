@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=171
+UnitCount=173
 Type=0
 Ver=1
 ObjFiles=
@@ -32,19 +32,19 @@ CompilerSettings=0010001001001001001101
 [VersionInfo]
 Major=0
 Minor=0
-Release=16
+Release=17
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.16
+FileVersion=0.0.17
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2005 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.16
+ProductVersion=0.0.17
 AutoIncBuildNr=0
 
 [Unit8]
@@ -1767,20 +1767,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit172]
-FileName=src\resources\imagewriter.cpp
+[Unit173]
+FileName=src\gui\error.h
 CompileCpp=1
-Folder=resources
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit173]
-FileName=src\resources\imagewriter.h
+[Unit172]
+FileName=src\gui\error.cpp
 CompileCpp=1
-Folder=resources
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000

@@ -151,7 +151,7 @@ class DeathNoticeListener : public gcn::ActionListener {
 class ExitListener : public gcn::ActionListener {
     void action(const std::string &eventId) {
         if (eventId == "yes") {
-            state = EXIT;
+            state = EXIT_STATE;
         }
         exitConfirm = NULL;
     }
@@ -377,7 +377,7 @@ void game()
 
     int gameTime = tick_time;
 
-    while (state != EXIT)
+    while (state == GAME_STATE)
     {
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
@@ -522,7 +522,7 @@ void do_input()
                     // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm)
                     {
-                        state = EXIT;
+                        state = EXIT_STATE;
                     }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
@@ -826,7 +826,7 @@ void do_input()
         // Quit event
         else if (event.type == SDL_QUIT)
         {
-            state = EXIT;
+            state = EXIT_STATE;
         }
 
         // Push input to GUI when not used

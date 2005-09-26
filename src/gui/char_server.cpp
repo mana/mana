@@ -107,7 +107,7 @@ void ServerSelectDialog::action(const std::string& eventId)
         server_char_server(serverList->getSelected());
     }
     else if (eventId == "cancel") {
-        state = LOGIN;
+        state = LOGIN_STATE;
     }
 }
 
@@ -128,14 +128,14 @@ void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        state = LOGIN;
+        state = LOGIN_STATE;
     }
 }
 
 void server_char_server(int serverIndex)
 {
     int ret;
-    state = LOGIN;
+    state = LOGIN_STATE;
     const char *ipstring = iptostring(server_info[serverIndex]->address);
 
     // Connect to char server
@@ -217,7 +217,7 @@ void server_char_server(int serverIndex)
             msg.readByte();                        // unknown
         }
 
-        state = CHAR_SELECT;
+        state = CHAR_SELECT_STATE;
 
         logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
                     char_info[0]->name.c_str(), msg.getId(), msg.getLength());

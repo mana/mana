@@ -56,6 +56,7 @@
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/updatewindow.h"
+#include "gui/error.h"
 
 #include "net/protocol.h"
 
@@ -101,7 +102,7 @@ Uint32 nextFrame(Uint32 interval, void *param)
 class MapStartErrorListener : public gcn::ActionListener {
     void action(const std::string &eventId) {
         if (eventId == "ok") {
-            state = LOGIN;
+            state = LOGIN_STATE;
         }
     }
 } mapStartErrorListener;
@@ -112,7 +113,7 @@ class MapStartErrorListener : public gcn::ActionListener {
 class InitWarningListener : public gcn::ActionListener {
     void action(const std::string &eventId) {
         if (eventId == "ok") {
-            state = LOGIN;
+            state = LOGIN_STATE;
         }
     }
 } initWarningListener;
@@ -270,7 +271,7 @@ void init_engine()
     hairset = new Spriteset(hairImg, 40, 40);
 
     gui = new Gui(graphics);
-    state = UPDATE; /**< Initial game state */
+    state = UPDATE_STATE; /**< Initial game state */
 
     // Initialize sound engine
     try {
@@ -384,7 +385,8 @@ int main(int argc, char *argv[])
 
     parseOptions(argc, argv, options);
 
-    if (options.printHelp) {
+    if (options.printHelp)
+    {
         printHelp();
         return 0;
     }
@@ -405,27 +407,24 @@ int main(int argc, char *argv[])
 
     SDL_Event event;
 
-    if (options.skipUpdate && state != ERROR) {
-        state = LOGIN;
+    if (options.skipUpdate && state != ERROR)
+    {
+        state = LOGIN_STATE;
     }
 
     unsigned int oldstate = !state; // We start with a status change.
     Window *currentDialog = NULL;
     void (*inputHandler)(SDL_KeyboardEvent*) = NULL;
 
-    Image *login_wallpaper = ResourceManager::getInstance()->
-        getImage("graphics/images/login_wallpaper.png");
-    if (!login_wallpaper) {
-        logger->error("Couldn't load login_wallpaper.png");
-    }
+    Image *login_wallpaper = NULL;
 
-    while (state != EXIT)
+    while (state != EXIT_STATE)
     {
         // Handle SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    state = EXIT;
+                    state = EXIT_STATE;
                     break;
 
                 case SDL_KEYDOWN:
@@ -437,18 +436,29 @@ int main(int argc, char *argv[])
 
             guiInput->pushInput(event);
         }
-
+        
         gui->logic();
+        
+        if (!login_wallpaper)
+        {
+            login_wallpaper = ResourceManager::getInstance()->
+                    getImage("graphics/images/login_wallpaper.png");
+            if (!login_wallpaper)
+            {
+                logger->error("Couldn't load login_wallpaper.png");
+            }
+        }
 
         graphics->drawImage(login_wallpaper, 0, 0);
         gui->draw();
         graphics->updateScreen();
 
         if (state != oldstate) {
-            if (oldstate == UPDATE) {
+            if (oldstate == UPDATE_STATE) {
                 ResourceManager::getInstance()->
                     searchAndAddArchives("/updates", ".zip", 0);
             }
+
             oldstate = state;
 
             if (currentDialog) {
@@ -456,22 +466,22 @@ int main(int argc, char *argv[])
             }
 
             switch (state) {
-                case LOGIN:
+                case LOGIN_STATE:
                     logger->log("State: LOGIN");
                     currentDialog = new LoginDialog();
                     inputHandler = loginInputHandler;
                     break;
-                case CHAR_SERVER:
+                case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
                     currentDialog = new ServerSelectDialog();
                     inputHandler = charServerInputHandler;
                     break;
-                case CHAR_SELECT:
+                case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog();
                     inputHandler = charSelectInputHandler;
                     break;
-                case GAME:
+                case GAME_STATE:
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;
@@ -489,22 +499,28 @@ int main(int argc, char *argv[])
                         new OkDialog("Error", err, &mapStartErrorListener);
                     }
                     break;
-                case UPDATE:
+                case UPDATE_STATE:
+                    logger->log("State: UPDATE");
                     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
                     currentDialog = new UpdaterWindow();
                     inputHandler = updateInputHandler;
                     break;
-                case ERROR:
-                    // Hmm, does this look like an endless loop?
+                case ERROR_STATE:
+                    logger->log("State: ERROR");
+                    currentDialog = new ErrorDialog("You got disconnected from the server");
+                    inputHandler = errorInputHandler;
                     break;
                 default:
-                    state = EXIT;
+                    state = EXIT_STATE;
                     break;
             }
         }
     }
-
-    fclose(nullFile);
+    
+    if (nullFile)
+    {
+        fclose(nullFile);
+    }
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();

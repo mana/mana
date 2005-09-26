@@ -31,20 +31,16 @@ class Sound;
 #define TMW_DATADIR ""
 #endif
 
-#ifdef ERROR
-#undef ERROR
-#endif
-
 enum {
-    EXIT,
-    LOGIN,
-    CHAR_SERVER,
-    CHAR_SELECT,
-    CHAR_NEW,
-    CHAR_DEL,
-    GAME,
-    ERROR,
-    UPDATE
+    EXIT_STATE,
+    LOGIN_STATE,
+    CHAR_SERVER_STATE,
+    CHAR_SELECT_STATE,
+    CHAR_NEW_STATE,
+    CHAR_DEL_STATE,
+    GAME_STATE,
+    ERROR_STATE,
+    UPDATE_STATE
 };
 
 /* length definitions for several char[]s in order

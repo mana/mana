@@ -30,6 +30,7 @@
 #include "messagein.h"
 
 #include "../log.h"
+#include "../main.h"
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -215,10 +216,8 @@ void flush()
         int ret = SDLNet_TCP_Recv(sock, in + in_size, buffer_size - in_size);
         if (ret <= 0)
         {
-            logger->log("Warning: unknown error when receiving data");
-            logger->log("SDLNet_GetError(): %s", SDLNet_GetError());
-            // The client disconnected, notify it somewhere
-            logger->error("Disconnected from server");
+            logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
+            state = ERROR_STATE;
             return;
         }
         else {
@@ -232,10 +231,8 @@ void flush()
         int ret = SDLNet_TCP_Send(sock, (char*)out, out_size);
         if (ret < (int)out_size)
         {
-            // It is likely that the server disconnected
-            std::stringstream ss;
-            ss << "Error in SDLNet_TCP_Send(): " << SDLNet_GetError();
-            logger->error(ss.str());
+            logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
+            state = ERROR_STATE;
             return;
         }
         out_size -= ret;

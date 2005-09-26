@@ -230,7 +230,7 @@ void Gui::mousePress(int mx, int my, int button)
         int tilex = mx / 32 + camera_x;
         int tiley = my / 32 + camera_y;
 
-        if (state == GAME && tiledMap->getWalk(tilex, tiley)) {
+        if (state == GAME_STATE && tiledMap->getWalk(tilex, tiley)) {
             walk(tilex, tiley, 0);
             player_node->setDestination(tilex, tiley);
 

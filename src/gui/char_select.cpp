@@ -139,7 +139,7 @@ void CharSelectDialog::action(const std::string& eventId)
         serverCharSelect();
     }
     else if (eventId == "cancel") {
-        state = EXIT;
+        state = EXIT_STATE;
     }
     else if (eventId == "new") {
         if (n_character == 0) {
@@ -241,7 +241,7 @@ void CharSelectDialog::serverCharSelect()
         map_address = msg.readLong();
         map_port = msg.readShort();
         player_info = char_info[0];
-        state = GAME;
+        state = GAME_STATE;
 
         logger->log("CharSelect: Map: %s", map_path.c_str());
         logger->log("CharSelect: Server: %s:%d", iptostring(map_address),
@@ -278,7 +278,7 @@ void CharSelectDialog::serverCharSelect()
                 break;
         }
         close_session();
-        state = LOGIN;
+        state = LOGIN_STATE;
     }
 
     // Todo: add other packets
@@ -492,6 +492,6 @@ void charSelectInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        state = EXIT;
+        state = EXIT_STATE;
     }
 }

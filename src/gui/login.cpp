@@ -240,7 +240,7 @@ void LoginDialog::action(const std::string& eventId)
     }
     else if (eventId == "cancel")
     {
-        state = EXIT;
+        state = EXIT_STATE;
     }
     else if (eventId == "register")
     {
@@ -315,7 +315,7 @@ void loginInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        state = EXIT;
+        state = EXIT_STATE;
     }
 }
 
@@ -329,7 +329,7 @@ int attemptLogin(const std::string& user, const std::string& pass)
             (short)config.getValue("port", 0));
 
     if (ret == -1) {
-        state = LOGIN;
+        state = LOGIN_STATE;
         wrongLoginNotice = new OkDialog("Error",
                                         "Unable to connect to login server");
         return LOGIN_NO_CONNECTION;
@@ -378,7 +378,7 @@ int attemptLogin(const std::string& user, const std::string& pass)
                         server_info[i]->port);
         }
 
-        state = CHAR_SERVER;
+        state = CHAR_SERVER_STATE;
 
         skip(msg.getLength());
         ret = LOGIN_OK;
@@ -409,11 +409,11 @@ int attemptLogin(const std::string& user, const std::string& pass)
                 break;
         }
         skip(msg.getLength());
-        state = LOGIN;
+        state = LOGIN_STATE;
     }
     else {
         skip(msg.getLength());
-        state = LOGIN;
+        state = LOGIN_STATE;
         ret = LOGIN_UNKNOWN_ERROR;
     }
     // Todo: add other packets, also encrypted

@@ -138,14 +138,14 @@ void UpdaterWindow::action(const std::string& eventId)
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
-            state = EXIT;
+            state = EXIT_STATE;
         }
         else {
             mDownloadStatus = UPDATE_ERROR;
         }
     }
     else if (eventId == "play") {
-        state = LOGIN;
+        state = LOGIN_STATE;
     }
 }
 
@@ -201,7 +201,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     uw->setLabel(progressString.str().c_str());
     uw->setProgress(progress);
 
-    if (state != UPDATE || uw->mDownloadStatus == UPDATE_ERROR) {
+    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR) {
         // If the action was canceled return an error code to stop the mThread
         return -1;
     }
@@ -311,7 +311,7 @@ void updateInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
-        state = EXIT;
+        state = EXIT_STATE;
     }
 }
 
