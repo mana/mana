@@ -407,7 +407,7 @@ int main(int argc, char *argv[])
 
     SDL_Event event;
 
-    if (options.skipUpdate && state != ERROR)
+    if (options.skipUpdate && state != ERROR_STATE)
     {
         state = LOGIN_STATE;
     }
@@ -495,7 +495,7 @@ int main(int argc, char *argv[])
                         game();
                     }
                     catch (const char* err) {
-                        state = ERROR;
+                        state = ERROR_STATE;
                         new OkDialog("Error", err, &mapStartErrorListener);
                     }
                     break;
