@@ -24,6 +24,8 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
+#include <string>
+
 class Image;
 class Sound;
 
@@ -57,6 +59,7 @@ extern short map_port;
 extern int account_ID, session_ID1, session_ID2;
 extern char sex, n_server, n_character;
 extern unsigned char state;
+extern std::string errorMessage;
 extern Sound sound;
 
 #endif

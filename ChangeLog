@@ -6,6 +6,9 @@
 	src/gui/updatewindow.cpp, src/main.cpp, src/main.h,
 	src/net/network.cpp: Added a nicer handling of when you get disconnected
     from the server.
+	* src/gui/char_select.cpp, src/gui/skill.cpp, src/main.cpp, src/main.h,
+	src/net/network.cpp: Now error message is displayed properly when the map
+	server is offline.
 
 2005-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -186,7 +186,6 @@ bool SkillDialog::hasSkill(int id)
 
 void SkillDialog::addSkill(int id, int lvl, int mp)
 {
-    printf("%i\n", id);
     SKILL *tmp = new SKILL();
     tmp->id = id;
     tmp->lv = lvl;

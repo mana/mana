@@ -75,6 +75,7 @@ Graphics *graphics;
 int map_address, char_ID;
 short map_port;
 unsigned char state;
+std::string errorMessage;
 unsigned char screen_mode;
 volatile int framesToDraw = 0;
 
@@ -507,7 +508,7 @@ int main(int argc, char *argv[])
                     break;
                 case ERROR_STATE:
                     logger->log("State: ERROR");
-                    currentDialog = new ErrorDialog("You got disconnected from the server");
+                    currentDialog = new ErrorDialog(errorMessage);
                     inputHandler = errorInputHandler;
                     break;
                 default:

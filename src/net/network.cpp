@@ -217,6 +217,7 @@ void flush()
         if (ret <= 0)
         {
             logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
+            errorMessage = "You got disconnected from server";
             state = ERROR_STATE;
             return;
         }
@@ -232,6 +233,7 @@ void flush()
         if (ret < (int)out_size)
         {
             logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
+            errorMessage = "You got disconnected from server";
             state = ERROR_STATE;
             return;
         }

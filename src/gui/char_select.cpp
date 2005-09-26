@@ -252,14 +252,13 @@ void CharSelectDialog::serverCharSelect()
     {
         switch (msg.readByte()) {
             case 0:
-                new OkDialog(this, "Error", "Access denied");
+                errorMessage = "Access denied";
                 break;
             case 1:
-                new OkDialog(this, "Error", "Cannot use this ID");
+                errorMessage = "Cannot use this ID";
                 break;
             default:
-                new OkDialog(this, "Error",
-                             "Unknown failure to select character");
+                errorMessage = "Unknown failure to select character");
                 break;
         }
         skip(msg.getLength());
@@ -267,18 +266,21 @@ void CharSelectDialog::serverCharSelect()
     else if (msg.getId() == 0x0081)
     {
         switch (msg.readByte()) {
+            case 1:
+                errorMessage = "Map server offline";
+                break;
             case 3:
-                new OkDialog(this, "Error", "Speed hack detected");
+                errorMessage = "Speed hack detected";
                 break;
             case 8:
-                new OkDialog(this, "Error", "Duplicated login");
+                errorMessage = "Duplicated login";
                 break;
             default:
-                new OkDialog(this, "Error", "Unkown error with 0x0081");
+                errorMessage = "Unkown error with 0x0081";
                 break;
         }
         close_session();
-        state = LOGIN_STATE;
+        state = ERROR_STATE;
     }
 
     // Todo: add other packets
