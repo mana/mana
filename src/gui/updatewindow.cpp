@@ -275,8 +275,17 @@ int UpdaterWindow::downloadThread(void *ptr)
         if ((res = curl_easy_perform(curl)) != 0)
         {
             uw->mDownloadStatus = UPDATE_ERROR;
-            std::cerr << "curl error " << res << " : " << uw->mCurlError
+            switch (res)
+            {
+            case CURLE_COULDNT_CONNECT: // give more debug info on that error
+                std::cerr << "curl error " << res << " : " << uw->mCurlError << " " << url.c_str()
                 << std::endl;
+                break;
+
+            default:
+                std::cerr << "curl error " << res << " : " << uw->mCurlError << " host: " << url.c_str()
+                << std::endl;
+            }
         }
 
         curl_easy_cleanup(curl);
