@@ -77,16 +77,19 @@ void MessageOut::writeShort(short value)
     out_size += sizeof(short);
 }
 
-void MessageOut::writeLong(long value)
+/*
+ writeLong should use an int because long is 8 bytes in x86_64 arch !
+*/
+void MessageOut::writeLong(int value)
 {
-    expand(mPos + sizeof(long));
+    expand(mPos + sizeof(int));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(long *)(mData + mPos)) = SDL_Swap32(value);
+    (*(int *)(mData + mPos)) = SDL_Swap32(value);
 #else
-    (*(long *)(mData + mPos)) = value;
+    (*(int *)(mData + mPos)) = value;
 #endif
-    mPos += sizeof(long);
-    out_size += sizeof(long);
+    mPos += sizeof(int);
+    out_size += sizeof(int);
 }
 
 void MessageOut::writeString(const std::string &string, int length)

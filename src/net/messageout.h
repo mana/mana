@@ -50,7 +50,7 @@ class MessageOut
 
         void writeByte(char value);          /**< Writes a byte. */
         void writeShort(short value);        /**< Writes a short. */
-        void writeLong(long value);          /**< Writes a long. */
+        void writeLong(int value);          /**< Writes a long. */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored

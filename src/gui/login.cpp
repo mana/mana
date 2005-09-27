@@ -346,6 +346,11 @@ int attemptLogin(const std::string& user, const std::string& pass)
 
     // Receive reply
     MessageIn msg = get_next_message();
+    if (state == ERROR_STATE)
+    {
+        close_session();
+        return LOGIN_UNKNOWN_ERROR;
+    }
 
     // Login ok
     if (msg.getId() == 0x0069)

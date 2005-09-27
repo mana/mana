@@ -204,13 +204,31 @@ void close_session()
 
 void flush()
 {
+    // Send all available data, waits if not all data can be sent immediately
+    if (out_size > 0)
+    {
+        int ret = SDLNet_TCP_Send(sock, (char*)out, out_size);
+        if (ret < (int)out_size)
+        {
+            logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
+            errorMessage = "You got disconnected from server";
+            state = ERROR_STATE;
+            return;
+        }
+        out_size -= ret;
+    }
+
     int numReady = SDLNet_CheckSockets(set, 0);
     if (numReady == -1)
     {
         logger->log("Error: SDLNet_CheckSockets");
         return;
     }
-    else if (numReady)
+    else if (numReady == 0) // any socket ready
+    {
+        return;
+    }
+    else if (numReady == 1) // one socket is ready
     {
         // Receive data from the socket
         int ret = SDLNet_TCP_Recv(sock, in + in_size, buffer_size - in_size);
@@ -225,19 +243,12 @@ void flush()
             in_size += ret;
         }
     }
-
-    // Send all available data, waits if not all data can be sent immediately
-    if (out_size > 0)
+    else // more than one socket is ready.. this should not happen since we only listen once socket.
     {
-        int ret = SDLNet_TCP_Send(sock, (char*)out, out_size);
-        if (ret < (int)out_size)
-        {
-            logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
+            logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
             errorMessage = "You got disconnected from server";
             state = ERROR_STATE;
             return;
-        }
-        out_size -= ret;
     }
 }
 
@@ -254,7 +265,7 @@ MessageIn
 get_next_message()
 {
     // At least 2 bytes should be received for the message ID
-    while (in_size < 2) flush();
+    while (in_size < 2 && state != ERROR_STATE) flush();
 
     int length = packet_lengths[readWord(0)];
 
@@ -270,7 +281,7 @@ get_next_message()
 #endif
 
     // Make sure the whole packet is received
-    while (in_size < (unsigned int)length) flush();
+    while (in_size < static_cast<unsigned int>(length) && state != ERROR_STATE) flush();
 
     return MessageIn(in, length);
 }
