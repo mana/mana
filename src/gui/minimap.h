@@ -61,4 +61,6 @@ class Minimap : public Window
         Image *mMapImage;
 };
 
+extern Minimap *minimap;
+
 #endif

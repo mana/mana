@@ -41,9 +41,14 @@
 #include "../main.h"
 #include "../sound.h"
 
-#define SETUP_WIDTH 240
-
 extern Graphics *graphics;
+#include "gui/chat.h"
+#include "gui/equipmentwindow.h"
+#include "gui/help.h"
+#include "gui/inventorywindow.h"
+#include "gui/minimap.h"
+#include "gui/skill.h"
+#include "gui/status.h"
 
 ModeListModel::ModeListModel()
 {
@@ -109,19 +114,21 @@ Setup::Setup():
     musicLabel = new gcn::Label("Music volume");
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
+    resetWinsToDefault = new Button("Reset Windows");
 
     // Set events
     applyButton->setEventId("apply");
     cancelButton->setEventId("cancel");
+    resetWinsToDefault->setEventId("winsToDefault");
     alphaSlider->setEventId("guialpha");
     sfxSlider->setEventId("sfx");
     musicSlider->setEventId("music");
     customCursorCheckBox->setEventId("customcursor");
 
     // Set dimensions/positions
-    setContentSize(SETUP_WIDTH, 226);
+    setContentSize(240, 246);
 
-    videoLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 10);
+    videoLabel->setPosition(getWidth() - videoLabel->getWidth() - 5, 10);
     scrollArea->setDimension(gcn::Rectangle(10, 30, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
     fsCheckBox->setPosition(110, 30);
@@ -130,22 +137,24 @@ Setup::Setup():
     alphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
     alphaLabel->setPosition(20 + alphaSlider->getWidth(), 97);
 
-    audioLabel->setPosition(SETUP_WIDTH - videoLabel->getWidth() - 5, 120);
+    audioLabel->setPosition(getWidth() - videoLabel->getWidth() - 5, 120);
     soundCheckBox->setPosition(10, 140);
     sfxSlider->setDimension(gcn::Rectangle(10, 160, 100, 10));
     musicSlider->setDimension(gcn::Rectangle(10, 180, 100, 10));
     sfxLabel->setPosition(20 + sfxSlider->getWidth(), 157);
     musicLabel->setPosition(20 + musicSlider->getWidth(), 177);
+    resetWinsToDefault->setPosition(20, 197);
     cancelButton->setPosition(
-            SETUP_WIDTH - 5 - cancelButton->getWidth(),
-            226 - 5 - cancelButton->getHeight());
+            getWidth() - 10 - cancelButton->getWidth(),
+            getHeight() - 25 - cancelButton->getHeight());
     applyButton->setPosition(
-            cancelButton->getX() - 5 - applyButton->getWidth(),
-            226 - 5 - applyButton->getHeight());
+            cancelButton->getX() - 10 - applyButton->getWidth(),
+            getHeight() - 25 - applyButton->getHeight());
 
     // Listen for actions
     applyButton->addActionListener(this);
     cancelButton->addActionListener(this);
+    resetWinsToDefault->addActionListener(this);
     alphaSlider->addActionListener(this);
     sfxSlider->addActionListener(this);
     musicSlider->addActionListener(this);
@@ -165,6 +174,7 @@ Setup::Setup():
     add(musicSlider);
     add(sfxLabel);
     add(musicLabel);
+    add(resetWinsToDefault);
     add(applyButton);
     add(cancelButton);
 
@@ -209,6 +219,7 @@ Setup::~Setup()
     delete customCursorCheckBox;
     delete soundCheckBox;
     delete audioLabel;
+    delete resetWinsToDefault;
     delete applyButton;
     delete cancelButton;
     delete alphaSlider;
@@ -336,5 +347,34 @@ void Setup::action(const std::string &eventId)
 
         config.setValue("opengl", openGLEnabled ? 1 : 0);
         openGLCheckBox->setMarked(openGLEnabled);
+    }
+    else if (eventId == "winsToDefault")
+    {
+        int screenW = graphics->getWidth();
+        int screenH = graphics->getHeight();
+
+        statusWindow->setWidth(365);
+        statusWindow->setHeight(255);
+        statusWindow->setPosition((screenW - statusWindow->getWidth()) / 2,
+                            (screenH - statusWindow->getHeight()) / 2);
+
+        minimap->setPosition(3, 30);
+
+        chatWindow->setWidth(600);
+        chatWindow->setHeight(100);
+        chatWindow->setPosition(0, screenH - chatWindow->getHeight());
+        if (chatWindow->getContent() != NULL)
+        {
+            chatWindow->getContent()->setDimension(gcn::Rectangle(0,0,594,80));
+        }
+
+        inventoryWindow->setWidth(322);
+        inventoryWindow->setHeight(172);
+        inventoryWindow->setPosition(60, 5);
+
+        equipmentWindow->setPosition(5,140);
+
+        helpWindow->setPosition(100,100);
+
     }
 }

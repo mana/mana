@@ -104,8 +104,8 @@ class Setup : public Window, public gcn::ActionListener
         gcn::CheckBox *customCursorCheckBox;
         gcn::Slider *alphaSlider;
         gcn::Slider *sfxSlider, *musicSlider;
-        gcn::Button *applyButton;
-        gcn::Button *cancelButton;
+        gcn::Button *applyButton, *cancelButton;
+        gcn::Button *resetWinsToDefault;
 
         // Variables that keeps old settings until the user "apply" them...
         int musicVolume, sfxVolume;
