@@ -1,6 +1,8 @@
 2005-09-26  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/updaterwindow.cpp: Fixed the scroll bug in the update window.
+	* src/gui/ministatus.h, src/gui/ministatus.cpp: Added HP, MP Display 
+	in mini-status window.
 
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

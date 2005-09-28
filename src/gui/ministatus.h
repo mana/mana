@@ -72,6 +72,7 @@ class MiniStatusWindow : public Window, public gcn::ActionListener {
          * Mini Status Bars
          */
         ProgressBar *hpBar, *mpBar;
+        gcn::Label *hpLabel, *mpLabel;
 };
 
 extern MiniStatusWindow *miniStatusWindow;

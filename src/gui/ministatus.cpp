@@ -23,7 +23,7 @@
 
 #include "ministatus.h"
 
-// #include <guichan/widgets/label.hpp>
+#include <guichan/widgets/label.hpp>
 #include <sstream>
 
 #include "progressbar.h"
@@ -38,15 +38,24 @@ MiniStatusWindow::MiniStatusWindow():
     setMovable(false);
 
     hpBar = new ProgressBar(1.0f,
-            0, 3, 80, 15,
+            0, 3, 100, 20,
             0, 171, 34);
 
     mpBar = new ProgressBar(1.0f,
             hpBar->getX() + hpBar->getWidth() + 3,
-            hpBar->getY(), 80, 15, 26, 102, 230);
+            hpBar->getY(), 100, 20, 26, 102, 230);
+
+    hpLabel = new gcn::Label("/");
+    mpLabel = new gcn::Label("/");
+    hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),
+                        hpBar->getY() + int((hpBar->getHeight() / 2) - (hpLabel->getHeight() / 2)));
+    mpLabel->setPosition(mpBar->getX() + int((mpBar->getWidth() / 2) - (mpLabel->getWidth() / 2)),
+                        mpBar->getY() + int((mpBar->getHeight() / 2) - (mpLabel->getHeight() / 2)));
 
     add(hpBar);
     add(mpBar);
+    add(hpLabel);
+    add(mpLabel);
 
     setContentSize(mpBar->getX() + mpBar->getWidth(),
                     mpBar->getY() + mpBar->getHeight());
@@ -56,6 +65,8 @@ MiniStatusWindow::~MiniStatusWindow()
 {
     delete hpBar;
     delete mpBar;
+    delete hpLabel;
+    delete mpLabel;
 }
 
 void MiniStatusWindow::update()
@@ -79,6 +90,20 @@ void MiniStatusWindow::update()
 
     hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);
     // mpBar->setProgress((float)player_info->mp / (float)player_info->maxMp);
+
+    // Update and center labels
+    std::stringstream updatedText;
+    updatedText << player_info->hp << "/" << player_info->maxHp;
+    hpLabel->setCaption(updatedText.str());
+    hpLabel->adjustSize();
+    updatedText.str("");
+    updatedText << player_info->mp << "/" << player_info->maxMp;
+    mpLabel->setCaption(updatedText.str());
+    mpLabel->adjustSize();
+    hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),
+                        hpBar->getY() + int((hpBar->getHeight() / 2) - (hpLabel->getHeight() / 2)));
+    mpLabel->setPosition(mpBar->getX() + int((mpBar->getWidth() / 2) - (mpLabel->getWidth() / 2)),
+                        mpBar->getY() + int((mpBar->getHeight() / 2) - (mpLabel->getHeight() / 2)));
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
