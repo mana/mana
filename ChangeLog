@@ -1,3 +1,7 @@
+2005-09-26  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/updaterwindow.cpp: Fixed the scroll bug in the update window.
+
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am: Added -Werror to the CXXFLAGS to catch warnings
@@ -8,7 +12,7 @@
 
 	* src/gui/char_select.cpp, debian/control, debian/rules,
 	debian/tmw.install, debian/changelog: Updated Debian files and fixed a
-	let by Elven.
+	typo let by Elven.
 
 2005-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

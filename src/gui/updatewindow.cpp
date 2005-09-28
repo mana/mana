@@ -134,17 +134,20 @@ void UpdaterWindow::enable()
 
 void UpdaterWindow::action(const std::string& eventId)
 {
-    if (eventId == "cancel") {
+    if (eventId == "cancel")
+    {
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
             state = EXIT_STATE;
         }
-        else {
+        else
+        {
             mDownloadStatus = UPDATE_ERROR;
         }
     }
-    else if (eventId == "play") {
+    else if (eventId == "play")
+    {
         state = LOGIN_STATE;
     }
 }
@@ -201,7 +204,8 @@ int UpdaterWindow::updateProgress(void *ptr,
     uw->setLabel(progressString.str().c_str());
     uw->setProgress(progress);
 
-    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR) {
+    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)
+    {
         // If the action was canceled return an error code to stop the mThread
         return -1;
     }
@@ -310,7 +314,8 @@ void UpdaterWindow::download()
     mDownloadComplete = false;
     mThread = SDL_CreateThread(UpdaterWindow::downloadThread, this);
 
-    if (mThread == NULL) {
+    if (mThread == NULL)
+    {
         logger->log("Unable to create mThread");
         mDownloadStatus = UPDATE_ERROR;
     }
@@ -326,7 +331,11 @@ void updateInputHandler(SDL_KeyboardEvent *keyEvent)
 
 void UpdaterWindow::logic()
 {
-    switch (mDownloadStatus) {
+    // Update Scroll logic
+    mScrollArea->logic();
+
+    switch (mDownloadStatus)
+    {
         case UPDATE_ERROR:
             if (mThread)
             {
@@ -341,7 +350,8 @@ void UpdaterWindow::logic()
             mDownloadStatus = UPDATE_COMPLETE;
             break;
         case UPDATE_NEWS:
-            if (mDownloadComplete) {
+            if (mDownloadComplete)
+            {
                 // Try to open news.txt
                 loadNews();
                 // Doesn't matter if it couldn't find news.txt,
@@ -357,7 +367,8 @@ void UpdaterWindow::logic()
             }
             break;
         case UPDATE_LIST:
-            if (mDownloadComplete) {
+            if (mDownloadComplete)
+            {
                 if (mMemoryBuffer != NULL)
                 {
                     // Tokenize and add each line separately
@@ -390,16 +401,19 @@ void UpdaterWindow::logic()
                     mCurrentFile = mFiles[mFileIndex];
                     std::ifstream temp(
                             (mBasePath + "/updates/" + mCurrentFile).c_str());
-                    if (!temp.is_open()) {
+                    if (!temp.is_open())
+                    {
                         temp.close();
                         download();
                     }
-                    else {
+                    else
+                    {
                         logger->log("%s already here", mCurrentFile.c_str());
                     }
                     mFileIndex++;
                 }
-                else {
+                else
+                {
                     // Download of updates completed
                     mDownloadStatus = UPDATE_COMPLETE;
                 }
