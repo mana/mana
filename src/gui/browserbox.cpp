@@ -76,7 +76,9 @@ BrowserBox::~BrowserBox()
     {
 #ifdef USE_OPENGL
         // Clean up static resource font
-        delete browserFont;
+        if (config.getValue("opengl", 0)) {
+            delete browserFont;
+        }
 #endif
     }
 }

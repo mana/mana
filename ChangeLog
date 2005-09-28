@@ -6,6 +6,8 @@
 
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/browserbox.cpp: Fix deletion of the gui font because of a
+	missing check.
 	* src/Makefile.am: Added -Werror to the CXXFLAGS to catch warnings
 	easier.
 	* src/gui/error.h: Removed unnecessary ambigous inheritance.
