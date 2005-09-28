@@ -7,6 +7,8 @@
 	src/gui/status.cpp, src/gui/equipmentwindow.cpp, src/gui/help.cpp,
 	src/gui/inventorywindow.cpp, src/gui/minimap.cpp, src/gui/chat.cpp:
 	Added window internal name to later get X, Y, height and width be saved.
+	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X, Y,
+	Width and Height of windows when useful.
 
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

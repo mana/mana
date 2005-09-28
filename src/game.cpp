@@ -223,12 +223,21 @@ void createGuiWindows()
 
     statusWindow->setPosition((screenW - statusWindow->getWidth()) / 2,
                             (screenH - statusWindow->getHeight()) / 2);
+    statusWindow->loadWindowState();
+
     miniStatusWindow->setPosition(0, 0);
+
     minimap->setPosition(3, 30);
+    minimap->loadWindowState();
+
     chatWindow->setPosition(0, screenH - chatWindow->getHeight());
+    chatWindow->loadWindowState();
+
     menuWindow->setPosition(screenW - menuWindow->getWidth(), 0);
-    inventoryWindow->setPosition(screenW - statusWindow->getWidth() -
-            inventoryWindow->getWidth() - 10, 5);
+
+    inventoryWindow->setPosition(60, 5);
+    inventoryWindow->loadWindowState();
+
     chargeDialog->setPosition(
             screenW - 5 - chargeDialog->getWidth(),
             screenH - chargeDialog->getHeight() - 15);
@@ -238,6 +247,7 @@ void createGuiWindows()
     /*buddyWindow->setPosition(10,
       minimap->getHeight() + 30);*/
     equipmentWindow->setPosition(5,140);
+    equipmentWindow->loadWindowState();
 
     // Set initial window visibility
     chatWindow->setVisible(true);

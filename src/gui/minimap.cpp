@@ -34,7 +34,7 @@ Minimap::Minimap():
     Window("Map"),
     mMapImage(NULL)
 {
-    setName("MiniMap");
+    setWindowName("MiniMap");
     setContentSize(100, 100);
     setPosition(20, 20);
 }

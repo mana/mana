@@ -131,6 +131,15 @@ Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
 
+    // Saving X, Y and Width and Height for resizables in the config
+    config.setValue(std::string(getWindowName() + "WinX"), getX());
+    config.setValue(std::string(getWindowName() + "WinY"), getY());
+    if ( resizable )
+    {
+        config.setValue(std::string(getWindowName() + "WinWidth"), getWidth());
+        config.setValue(std::string(getWindowName() + "WinHeight"), getHeight());
+    }
+
     instances--;
 
     if (instances == 0)
@@ -415,4 +424,20 @@ void Window::setWindowName(std::string name)
 std::string Window::getWindowName()
 {
     return mWindowName;
+}
+
+void Window::loadWindowState()
+{
+    setPosition((int)config.getValue(std::string(getWindowName() + "WinX"), getX()),
+                (int)config.getValue(std::string(getWindowName() + "WinY"), getY()) );
+
+    if ( resizable )
+    {
+    setWidth((int)config.getValue(std::string(getWindowName() + "WinWidth"), getWidth()) );
+    setHeight((int)config.getValue(std::string(getWindowName() + "WinHeight"), getHeight()) );
+        if (mContent != NULL)
+        {
+            mContent->setDimension(getContentDimension());
+        }
+    }
 }

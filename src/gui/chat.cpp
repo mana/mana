@@ -41,7 +41,7 @@
 ChatWindow::ChatWindow(const std::string &logfile):
     Window("")
 {
-    setName("Chat");
+    setWindowName("Chat");
     chatlog_file.open(logfile.c_str(), std::ios::out | std::ios::app);
     items = 0;
     items_keep = 20;

@@ -46,7 +46,7 @@ InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
     setContentSize(322, 172);
-    setName("Inventory");
+    setWindowName("Inventory");
 
     useButton = new Button("Use");
     dropButton = new Button("Drop");

@@ -169,6 +169,16 @@ class Window : public gcn::Window
          */
         std::string getWindowName();
 
+        /**
+         * Read the X, Y, and Width and Height for resizables
+         * in the config based on its internal name.
+         * That function let the values set with set{X, Y, Height, width}()
+         * if no config value is found.
+         * Don't forget to set these default values and resizable before
+         * calling this function.
+         */
+        void loadWindowState();
+
 
     protected:
         gcn::Container *chrome;    /**< Contained container */
