@@ -64,6 +64,8 @@ SkillDialog::SkillDialog():
     Window("Skills"),
     skillPoints(0)
 {
+    setName("Skills");
+
     skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");

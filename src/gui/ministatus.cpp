@@ -45,12 +45,8 @@ MiniStatusWindow::MiniStatusWindow():
             hpBar->getX() + hpBar->getWidth() + 3,
             hpBar->getY(), 100, 20, 26, 102, 230);
 
-    hpLabel = new gcn::Label("/");
-    mpLabel = new gcn::Label("/");
-    hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),
-                        hpBar->getY() + int((hpBar->getHeight() / 2) - (hpLabel->getHeight() / 2)));
-    mpLabel->setPosition(mpBar->getX() + int((mpBar->getWidth() / 2) - (mpLabel->getWidth() / 2)),
-                        mpBar->getY() + int((mpBar->getHeight() / 2) - (mpLabel->getHeight() / 2)));
+    hpLabel = new gcn::Label("");
+    mpLabel = new gcn::Label("");
 
     add(hpBar);
     add(mpBar);

@@ -37,6 +37,7 @@
 StatusWindow::StatusWindow():
     Window(player_info->name)
 {
+    setName("Status");
     setResizable(true);
     setContentSize(365, 255);
 

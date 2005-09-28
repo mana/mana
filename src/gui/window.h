@@ -159,9 +159,21 @@ class Window : public gcn::Window
          */
         gcn::Rectangle getGripDimension();
 
+        /**
+         * set Window internal name
+         */
+        void setWindowName(std::string name);
+
+        /**
+         * Get window internal name
+         */
+        std::string getWindowName();
+
+
     protected:
         gcn::Container *chrome;    /**< Contained container */
         Window *parent;            /**< The parent window */
+        std::string mWindowName;    /**< Window internal name */
         int snapSize;              /**< Snap distance to window edge */
         bool title;                /**< Window has a title bar */
         bool modal;                /**< Window is modal */

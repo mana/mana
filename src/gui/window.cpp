@@ -68,6 +68,7 @@ class WindowConfigListener : public ConfigListener
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     parent(parent),
+    mWindowName("window"),
     snapSize(8),
     title(true),
     modal(modal),
@@ -404,4 +405,14 @@ gcn::Rectangle Window::getGripDimension ()
 {
     return gcn::Rectangle(getWidth() - resizeGrip->getWidth(), getHeight() - resizeGrip->getHeight(), getWidth(),
                           getHeight());
+}
+
+void Window::setWindowName(std::string name)
+{
+    mWindowName = name;
+}
+
+std::string Window::getWindowName()
+{
+    return mWindowName;
 }
