@@ -1,3 +1,9 @@
+2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am: Added -Werror to the CXXFLAGS to catch warnings
+	easier.
+	* src/gui/error.h: Removed unnecessary ambigous inheritance.
+
 2005-09-26  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/char_select.cpp, debian/control, debian/rules,

@@ -36,7 +36,7 @@
  *
  * \ingroup Interface
  */
-class ErrorDialog : public OkDialog, public gcn::ActionListener {
+class ErrorDialog : public OkDialog {
     public:
         /**
          * Constructor
