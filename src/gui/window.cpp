@@ -441,3 +441,24 @@ void Window::loadWindowState()
         }
     }
 }
+
+void Window::setDefaultSize(int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+{
+    this->defaultX = defaultX;
+    this->defaultY = defaultY;
+    this->defaultWidth = defaultWidth;
+    this->defaultHeight = defaultHeight;
+
+    setPosition(defaultX, defaultY);
+    setContentSize(defaultWidth, defaultHeight);
+}
+
+void Window::resetToDefaultSize()
+{
+    setPosition(defaultX, defaultY);
+    setContentSize(defaultWidth, defaultHeight);
+    if (mContent != NULL)
+    {
+        mContent->setDimension(getContentDimension());
+    }
+}

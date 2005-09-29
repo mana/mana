@@ -179,6 +179,18 @@ class Window : public gcn::Window
          */
         void loadWindowState();
 
+        /**
+         * Set the default win pos and size.
+         * (which can be different of the actual ones.)
+         */
+        void setDefaultSize(int defaultX, int defaultY,
+                        int defaultWidth, int defaultHeight);
+
+        /**
+         * Reset the win pos and size to default.
+         * Don't forget to set defaults first.
+         */
+        void resetToDefaultSize();
 
     protected:
         gcn::Container *chrome;    /**< Contained container */
@@ -195,6 +207,8 @@ class Window : public gcn::Window
         int minWinHeight;          /**< Minimum window height */
         int maxWinWidth;           /**< Maximum window width */
         int maxWinHeight;          /**< Maximum window height */
+        int defaultX, defaultY;    /**< Default Win Pos and size */
+        int defaultWidth, defaultHeight; 
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;

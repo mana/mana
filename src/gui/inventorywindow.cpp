@@ -45,8 +45,11 @@
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {
-    setContentSize(322, 172);
     setWindowName("Inventory");
+    setResizable(true);
+    setMinWidth(240);
+    setMinHeight(172);
+    setDefaultSize(105, 25, 322, 172);
 
     useButton = new Button("Use");
     dropButton = new Button("Drop");
@@ -77,12 +80,11 @@ InventoryWindow::InventoryWindow():
     add(itemEffectLabel);
     add(weightLabel);
 
-    setResizable(true);
-    setMinWidth(240);
-    setMinHeight(172);
-
     updateWidgets();
     useButton->setSize(48, useButton->getHeight());
+
+    loadWindowState();
+
 }
 
 InventoryWindow::~InventoryWindow()

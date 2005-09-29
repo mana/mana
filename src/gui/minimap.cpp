@@ -35,8 +35,8 @@ Minimap::Minimap():
     mMapImage(NULL)
 {
     setWindowName("MiniMap");
-    setContentSize(100, 100);
-    setPosition(20, 20);
+    setDefaultSize(5, 25, 100, 100);
+    loadWindowState();
 }
 
 Minimap::~Minimap()

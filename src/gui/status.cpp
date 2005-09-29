@@ -34,12 +34,17 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
+#include "graphics.h"
+extern Graphics *graphics;
+
 StatusWindow::StatusWindow():
     Window(player_info->name)
 {
     setWindowName("Status");
     setResizable(true);
-    setContentSize(365, 255);
+    setDefaultSize((graphics->getWidth() - 365) / 2,
+                  (graphics->getHeight() - 255) / 2, 365, 255);
+    loadWindowState();
 
     // ----------------------
     // Status Part

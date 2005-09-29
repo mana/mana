@@ -1,8 +1,20 @@
+2005-09-29  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/game.cpp, src/gui/window.h, src/gui/window.cpp, src/gui/setup.h,
+	src/gui/setup.cpp, src/gui/chat.cpp, src/gui/inventorywindow.h,
+	src/gui/inventorywindow.cpp, src/gui/skill.cpp,
+	src/gui/equipmentwindow.cpp, src/gui/menuwindow.cpp,
+	src/gui/ministatus.cpp, src/gui/minimap.cpp, src/gui/status.cpp:
+	Improved a lot windows reset to default size and pos. Also corrected
+	a few the default win position. And moved the setposition from game to
+	each win, to clarify the code.
+
 2005-09-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h, src/tileset.h, src/resources/mapreader.cpp,
 	src/resources/mapreader.h: Moved tileset management into the map class
 	and made sure the tilesets are cleaned up properly on switching maps.
+
 
 2005-09-28  Yohann Ferreira  <bertram@cegetel.net>
 
@@ -14,8 +26,10 @@
 	src/gui/inventorywindow.cpp, src/gui/minimap.cpp, src/gui/chat.cpp:
 	Added window internal name to later get X, Y, height and width be
 	saved.
-	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X,
-	Y, Width and Height of windows when useful.
+	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X, Y,
+	Width and Height of windows when useful.
+	* src/gui/setup.cpp, src/gui/setup.h; src/gui/minimap.h: Added a 'Reset
+	Windows to Default' Button in the Setup Window.
 
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

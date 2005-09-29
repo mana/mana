@@ -34,6 +34,9 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
+#include "graphics.h"
+extern Graphics *graphics;
+
 char *skill_db[] = {
     // 0-99
     "", "Basic", "Sword", "Two hand", "HP regeneration", "Bash", "Provoke", "Magnum", "Endure", "MP regeneration",
@@ -65,6 +68,7 @@ SkillDialog::SkillDialog():
     skillPoints(0)
 {
     setWindowName("Skills");
+    setDefaultSize(graphics->getWidth() - 255, 25, 240, 240);
 
     skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
@@ -79,7 +83,6 @@ SkillDialog::SkillDialog():
     useButton->setEventId("use");
     closeButton->setEventId("close");
 
-    setContentSize(240, 240);
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
     pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
@@ -102,6 +105,7 @@ SkillDialog::SkillDialog():
     closeButton->addActionListener(this);
 
     setLocationRelativeTo(getParent());
+    loadWindowState();
 }
 
 SkillDialog::~SkillDialog()

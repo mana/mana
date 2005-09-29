@@ -350,31 +350,13 @@ void Setup::action(const std::string &eventId)
     }
     else if (eventId == "winsToDefault")
     {
-        int screenW = graphics->getWidth();
-        int screenH = graphics->getHeight();
-
-        statusWindow->setWidth(365);
-        statusWindow->setHeight(255);
-        statusWindow->setPosition((screenW - statusWindow->getWidth()) / 2,
-                            (screenH - statusWindow->getHeight()) / 2);
-
-        minimap->setPosition(3, 30);
-
-        chatWindow->setWidth(600);
-        chatWindow->setHeight(100);
-        chatWindow->setPosition(0, screenH - chatWindow->getHeight());
-        if (chatWindow->getContent() != NULL)
-        {
-            chatWindow->getContent()->setDimension(gcn::Rectangle(0,0,594,80));
-        }
-
-        inventoryWindow->setWidth(322);
-        inventoryWindow->setHeight(172);
-        inventoryWindow->setPosition(60, 5);
-
-        equipmentWindow->setPosition(5,140);
-
-        helpWindow->setPosition(100,100);
-
+        statusWindow->resetToDefaultSize();
+        minimap->resetToDefaultSize();
+        chatWindow->resetToDefaultSize();
+        inventoryWindow->resetToDefaultSize();
+        inventoryWindow->updateWidgets();
+        equipmentWindow->resetToDefaultSize();
+        helpWindow->resetToDefaultSize();
+        skillDialog->resetToDefaultSize();
     }
 }

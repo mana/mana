@@ -32,13 +32,15 @@
 #include "status.h"
 #include "skill.h"
 
+#include "graphics.h"
+extern Graphics *graphics;
 extern Window *setupWindow;
-
 
 MenuWindow::MenuWindow():
     Window("")
 {
     setResizable(false);
+    setWindowName("Menu");
     setMovable(false);
     setTitleBarHeight(0);
 
@@ -74,7 +76,10 @@ MenuWindow::MenuWindow():
     setupButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + 3, statusButton->getY());
     add(setupButton);
 
-    setContentSize(setupButton->getX() + setupButton->getWidth(), setupButton->getY() + setupButton->getHeight());
+    int menuWidth = setupButton->getX() + setupButton->getWidth();
+    setDefaultSize((graphics->getWidth() - menuWidth - 5), 0,
+                menuWidth,
+                (setupButton->getY() + setupButton->getHeight()));
 }
 
 MenuWindow::~MenuWindow()

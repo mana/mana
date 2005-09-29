@@ -39,9 +39,10 @@
 EquipmentWindow::EquipmentWindow():
     Window("Equipment")
 {
-    setContentSize(200, 90);
-    setPosition(40, 40);
     setWindowName("Equipment");
+    setDefaultSize(5, 160, 200, 90);
+    loadWindowState();
+
 
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png");

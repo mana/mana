@@ -35,6 +35,9 @@
 #include "../playerinfo.h"
 #include "../log.h"
 
+#include "graphics.h"
+extern Graphics *graphics;
+
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
@@ -46,8 +49,9 @@ ChatWindow::ChatWindow(const std::string &logfile):
     items = 0;
     items_keep = 20;
 
-    setContentSize(600, 100);
     setResizable(true);
+    setDefaultSize(0, (graphics->getHeight() - 123), 600, 100);
+    loadWindowState();
 
     chatInput = new ChatInput();
     chatInput->setEventId("chatinput");

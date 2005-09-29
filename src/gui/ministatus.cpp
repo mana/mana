@@ -33,9 +33,10 @@
 MiniStatusWindow::MiniStatusWindow():
     Window("")
 {
+    setWindowName("MiniStatus");
     setResizable(false);
-    setTitleBarHeight(0);
     setMovable(false);
+    setTitleBarHeight(0);
 
     hpBar = new ProgressBar(1.0f,
             0, 3, 100, 20,
@@ -53,8 +54,8 @@ MiniStatusWindow::MiniStatusWindow():
     add(hpLabel);
     add(mpLabel);
 
-    setContentSize(mpBar->getX() + mpBar->getWidth(),
-                    mpBar->getY() + mpBar->getHeight());
+    setDefaultSize(0, 0, mpBar->getX() + mpBar->getWidth(),
+                   mpBar->getY() + mpBar->getHeight());
 }
 
 MiniStatusWindow::~MiniStatusWindow()

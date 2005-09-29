@@ -65,10 +65,11 @@ class InventoryWindow : public Window, gcn::ActionListener
 
         void mouseMotion(int mx, int my);
 
+        void updateWidgets();    /** Updates widgets size/position */
+
         Item* getItem();
 
     private:
-        void updateWidgets();    /** Updates widgets size/position */
         void updateButtons();    /** Updates button states */
 
         ItemContainer *items;
