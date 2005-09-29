@@ -26,10 +26,12 @@
 
 #include <list>
 #include <map>
+#include <vector>
 
 class Being;
 class Graphics;
 class Image;
+class Tileset;
 
 struct PATH_NODE;
 
@@ -83,14 +85,9 @@ class Map
 {
     public:
         /**
-         * Constructor.
+         * Constructor, taking map and tile size as parameters.
          */
-        Map();
-
-        /**
-         * Constructor that takes initial map size as parameters.
-         */
-        Map(int width, int height);
+        Map(int width, int height, int tileWidth, int tileHeight);
 
         /**
          * Destructor.
@@ -106,6 +103,19 @@ class Map
          * Sets the size of the map. This will destroy any existing map data.
          */
         void setSize(int width, int height);
+
+        /**
+         * Adds a tileset to this map.
+         */
+        void
+        addTileset(Tileset *tileset);
+
+        /**
+         * Sets a tile using a global tile id. Used by the layer loading
+         * routine.
+         */
+        void
+        setTileWithGid(int x, int y, int layer, int gid);
 
         /**
          * Set tile ID.
@@ -140,28 +150,32 @@ class Map
         /**
          * Returns the width of this map.
          */
-        int getWidth();
+        int
+        getWidth() { return mWidth; }
 
         /**
          * Returns the height of this map.
          */
-        int getHeight();
+        int
+        getHeight() { return mHeight; }
 
         /**
          * Returns the tile width of this map.
          */
-        int getTileWidth();
+        int
+        getTileWidth() { return mTileWidth; }
 
         /**
          * Returns the tile height used by this map.
          */
-        int getTileHeight();
+        int
+        getTileHeight() { return mTileHeight; }
 
         /**
          * Find a path from one location to the next.
          */
-        std::list<PATH_NODE> findPath(
-                int startX, int startY, int destX, int destY);
+        std::list<PATH_NODE>
+        findPath(int startX, int startY, int destX, int destY);
 
         /**
          * Get a map property.
@@ -182,11 +196,27 @@ class Map
         void setProperty(const std::string &name, const std::string &value);
 
     private:
-        int width, height;
-        int tileWidth, tileHeight;
+        /**
+         * Converts a global tile id to the Image* pointing to the associated
+         * tile image.
+         */
+        Image*
+        getTileWithGid(int gid);
+
+        /**
+         * Finds the tile set that a tile with the given global id is part of.
+         */
+        Tileset*
+        getTilesetWithGid(int gid);
+
+        int mWidth, mHeight;
+        int mTileWidth, mTileHeight;
         MetaTile *metaTiles;
         Image **tiles;
         std::map<std::string,std::string> properties;
+
+        typedef std::vector<Tileset*> Tilesets;
+        Tilesets tilesets;
 
         // Pathfinding members
         int onClosedList, onOpenList;

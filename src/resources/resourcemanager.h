@@ -63,38 +63,45 @@ class ResourceManager
         ~ResourceManager();
 
         /**
-         * Sets the write directory
+         * Sets the write directory.
          *
          * @param path The path of the directory to be added.
          * @return <code>true</code> on success, <code>false</code> otherwise.
          */
-        bool setWriteDir(const std::string &path);
+        bool
+        setWriteDir(const std::string &path);
 
         /**
          * Adds a directory or archive to the search path.
          */
-        void addToSearchPath(const std::string &path, bool append);
+        void
+        addToSearchPath(const std::string &path, bool append);
 
         /**
          * Searches for zip files and adds them to the search path.
          */
-        void searchAndAddArchives(
-                const std::string &path, const std::string &ext, bool append);
+        void
+        searchAndAddArchives(const std::string &path,
+                             const std::string &ext,
+                             bool append);
 
         /**
          * Creates a directory in the write path
          */
-        bool mkdir(const std::string &path);
+        bool
+        mkdir(const std::string &path);
 
         /**
          * Checks whether the given file or directory exists in the search path
          */
-        bool exists(const std::string &path);
+        bool
+        exists(const std::string &path);
 
         /**
          * Checks whether the given path is a directory.
          */
-        bool isDirectory(const std::string &path);
+        bool
+        isDirectory(const std::string &path);
 
         /**
          * Creates a resource and adds it to the resource map. The idPath is

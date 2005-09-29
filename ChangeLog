@@ -1,14 +1,21 @@
+2005-09-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h, src/tileset.h, src/resources/mapreader.cpp,
+	src/resources/mapreader.h: Moved tileset management into the map class
+	and made sure the tilesets are cleaned up properly on switching maps.
+
 2005-09-28  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/updaterwindow.cpp: Fixed the scroll bug in the update window.
-	* src/gui/ministatus.h, src/gui/ministatus.cpp: Added HP, MP Display 
+	* src/gui/ministatus.h, src/gui/ministatus.cpp: Added HP, MP Display
 	in mini-status window.
 	* src/gui/window.h, src/gui/window.cpp, src/gui/skill.cpp,
 	src/gui/status.cpp, src/gui/equipmentwindow.cpp, src/gui/help.cpp,
 	src/gui/inventorywindow.cpp, src/gui/minimap.cpp, src/gui/chat.cpp:
-	Added window internal name to later get X, Y, height and width be saved.
-	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X, Y,
-	Width and Height of windows when useful.
+	Added window internal name to later get X, Y, height and width be
+	saved.
+	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X,
+	Y, Width and Height of windows when useful.
 
 2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -27,14 +34,14 @@
 2005-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/Makefile.am, src/game.cpp,
-    src/gui/char_select.cpp, src/gui/char_server.cpp, src/gui/error.cpp,
+	src/gui/char_select.cpp, src/gui/char_server.cpp, src/gui/error.cpp,
 	src/gui/error.h, src/gui/gui.cpp, src/gui/login.cpp,
 	src/gui/updatewindow.cpp, src/main.cpp, src/main.h,
-	src/net/network.cpp: Added a nicer handling of when you get disconnected
-    from the server.
+	src/net/network.cpp: Added a nicer handling of when you get
+	disconnected from the server.
 	* src/gui/char_select.cpp, src/gui/skill.cpp, src/main.cpp, src/main.h,
-	src/net/network.cpp: Now error message is displayed properly when the map
-	server is offline.
+	src/net/network.cpp: Now error message is displayed properly when the
+	map server is offline.
 
 2005-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -78,7 +85,7 @@
 
 	* src/gui/chat.cpp: Show time of the messages in the chat window.
 	* The Mana World.dev: Removed reference to src/gui/stats.* since they
-      are in the attic now.
+	are in the attic now.
 
 2005-09-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

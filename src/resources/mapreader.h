@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _INCLUDED_MAPREADER_H
-#define _INCLUDED_MAPREADER_H
+#ifndef _TMW_MAPREADER_H_
+#define _TMW_MAPREADER_H_
 
 #include <vector>
 
@@ -31,25 +31,7 @@
 #include "../graphic/spriteset.h"
 
 class Map;
-
-/**
- * A tileset, which is basically just a spriteset but it stores a firstgid.
- */
-class Tileset : public Spriteset {
-    public:
-        /**
-         * Constructor.
-         */
-        Tileset(Image *img, int w, int h, int firstGid);
-
-        /**
-         * Returns the first gid.
-         */
-        int getFirstGid();
-
-    private:
-        int firstGid;
-};
+class Tileset;
 
 /**
  * Reader for XML map files (*.tmx)
@@ -88,28 +70,6 @@ class MapReader
          */
         static int
         getProperty(xmlNodePtr node, const char* name, int def);
-
-        /**
-         * Converts a global tile id to the Image* pointing to the associated
-         * tile image.
-         */
-        static Image*
-        getTileWithGid(int gid);
-
-        /**
-         * Finds the tile set that a tile with the given global id is part of.
-         */
-        static Tileset*
-        getTilesetWithGid(int gid);
-
-        /**
-         * Sets a tile using a global tile id. Used by the layer loading
-         * routine.
-         */
-        static void
-        setTileWithGid(Map *map, int x, int y, int layer, int gid);
-
-        static std::vector<Tileset*> tilesets;
 };
 
 #endif

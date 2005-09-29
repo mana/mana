@@ -62,18 +62,22 @@ ResourceManager::~ResourceManager()
             "to %d resources", danglingReferences, danglingResources);
 }
 
-bool ResourceManager::setWriteDir(const std::string &path)
+bool
+ResourceManager::setWriteDir(const std::string &path)
 {
     return (bool)PHYSFS_setWriteDir(path.c_str());
 }
 
-void ResourceManager::addToSearchPath(const std::string &path, bool append)
+void
+ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0);
 }
 
-void ResourceManager::searchAndAddArchives(
-        const std::string &path, const std::string &ext, bool append)
+void
+ResourceManager::searchAndAddArchives(const std::string &path,
+                                      const std::string &ext,
+                                      bool append)
 {
     const char *dirSep = PHYSFS_getDirSeparator();
     char **list = PHYSFS_enumerateFiles(path.c_str());
@@ -98,17 +102,20 @@ void ResourceManager::searchAndAddArchives(
     PHYSFS_freeList(list);
 }
 
-bool ResourceManager::mkdir(const std::string &path)
+bool
+ResourceManager::mkdir(const std::string &path)
 {
     return (bool)PHYSFS_mkdir(path.c_str());
 }
 
-bool ResourceManager::exists(const std::string &path)
+bool
+ResourceManager::exists(const std::string &path)
 {
     return PHYSFS_exists(path.c_str());
 }
 
-bool ResourceManager::isDirectory(const std::string &path)
+bool
+ResourceManager::isDirectory(const std::string &path)
 {
     return PHYSFS_isDirectory(path.c_str());
 }

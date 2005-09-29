@@ -22,7 +22,7 @@
  */
 
 #include "map.h"
-
+#include "tileset.h"
 #include "being.h"
 #include "graphics.h"
 
@@ -44,40 +44,44 @@ bool Location::operator< (const Location &loc) const
    return tile->Fcost > loc.tile->Fcost;
 }
 
-
-Map::Map():
-    width(0), height(0),
-    tileWidth(32), tileHeight(32),
+Map::Map(int width, int height, int tileWidth, int tileHeight):
+    mWidth(width), mHeight(height),
+    mTileWidth(tileWidth), mTileHeight(tileHeight),
     onClosedList(1), onOpenList(2)
 {
-    metaTiles = new MetaTile[width * height];
-    tiles = new Image*[width * height * 3];
-}
-
-Map::Map(int width, int height):
-    width(width), height(height),
-    tileWidth(32), tileHeight(32),
-    onClosedList(1), onOpenList(2)
-{
-    metaTiles = new MetaTile[width * height];
-    tiles = new Image*[width * height * 3];
+    metaTiles = new MetaTile[mWidth * mHeight];
+    tiles = new Image*[mWidth * mHeight * 3];
 }
 
 Map::~Map()
 {
     delete[] metaTiles;
     delete[] tiles;
+
+    // Clean up tilesets
+    Tilesets::iterator i;
+    for (i = tilesets.begin(); i != tilesets.end(); i++)
+    {
+        delete (*i);
+    }
+    tilesets.clear();
 }
 
 void
 Map::setSize(int width, int height)
 {
-    this->width = width;
-    this->height = height;
+    mWidth = width;
+    mHeight = height;
     delete[] metaTiles;
     delete[] tiles;
-    metaTiles = new MetaTile[width * height];
-    tiles = new Image*[width * height * 3];
+    metaTiles = new MetaTile[mWidth * mHeight];
+    tiles = new Image*[mWidth * mHeight * 3];
+}
+
+void
+Map::addTileset(Tileset *tileset)
+{
+    tilesets.push_back(tileset);
 }
 
 void
@@ -90,8 +94,8 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
-    if (endX >= width) endX = width - 1;
-    if (endY >= height) endY = height - 1;
+    if (endX >= mWidth) endX = mWidth - 1;
+    if (endY >= mHeight) endY = mHeight - 1;
 
     for (int y = startY; y < endY; y++)
     {
@@ -106,9 +110,60 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 }
 
 void
+Map::setTileWithGid(int x, int y, int layer, int gid)
+{
+    if (layer == 3)
+    {
+        Tileset *set = getTilesetWithGid(gid);
+        setWalk(x, y, (!set || (gid - set->getFirstGid() == 0)));
+    }
+    else if (layer < 3)
+    {
+        setTile(x, y, layer, getTileWithGid(gid));
+    }
+}
+
+Tileset*
+Map::getTilesetWithGid(int gid)
+{
+    Tilesets::iterator i;
+    Tileset *set = NULL;
+
+    // Find the tileset with the highest firstGid below/equal to gid
+    for (i = tilesets.begin(); i != tilesets.end(); ++i)
+    {
+        if ((*i)->getFirstGid() <= gid) {
+            set = (*i);
+        }
+        else {
+            break;
+        }
+    }
+
+    if (set && (gid - set->getFirstGid()) < (int)set->spriteset.size())
+    {
+        return set;
+    }
+
+    return NULL;
+}
+
+Image*
+Map::getTileWithGid(int gid)
+{
+    Tileset *set = getTilesetWithGid(gid);
+
+    if (set) {
+        return set->spriteset[gid - set->getFirstGid()];
+    }
+
+    return NULL;
+}
+
+void
 Map::setWalk(int x, int y, bool walkable)
 {
-    metaTiles[x + y * width].walkable = walkable;
+    metaTiles[x + y * mWidth].walkable = walkable;
 }
 
 bool
@@ -136,54 +191,30 @@ bool
 Map::tileCollides(int x, int y)
 {
     // You can't walk outside of the map
-    if (x < 0 || y < 0 || x >= width || y >= height) {
+    if (x < 0 || y < 0 || x >= mWidth || y >= mHeight) {
         return true;
     }
 
     // Check if the tile is walkable
-    return !metaTiles[x + y * width].walkable;
+    return !metaTiles[x + y * mWidth].walkable;
 }
 
 void
 Map::setTile(int x, int y, int layer, Image *img)
 {
-    tiles[x + y * width + layer * (width * height)] = img;
+    tiles[x + y * mWidth + layer * (mWidth * mHeight)] = img;
 }
 
 Image*
 Map::getTile(int x, int y, int layer)
 {
-    return tiles[x + y * width + layer * (width * height)];
+    return tiles[x + y * mWidth + layer * (mWidth * mHeight)];
 }
 
 MetaTile*
 Map::getMetaTile(int x, int y)
 {
-    return &metaTiles[x + y * width];
-}
-
-int
-Map::getWidth()
-{
-    return width;
-}
-
-int
-Map::getHeight()
-{
-    return height;
-}
-
-int
-Map::getTileWidth()
-{
-    return tileWidth;
-}
-
-int
-Map::getTileHeight()
-{
-    return tileHeight;
+    return &metaTiles[x + y * mWidth];
 }
 
 std::string
@@ -262,7 +293,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
                 // Skip if if we're checking the same tile we're leaving from,
                 // or if the new location falls outside of the map boundaries
                 if ((dx == 0 && dy == 0) ||
-                        (x < 0 || y < 0 || x >= width || y >= height))
+                    (x < 0 || y < 0 || x >= mWidth || y >= mHeight))
                 {
                     continue;
                 }
