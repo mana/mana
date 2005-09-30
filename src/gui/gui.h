@@ -83,7 +83,7 @@ class Gui : public gcn::Gui, public gcn::MouseListener
          * Return game font
          */
         gcn::ImageFont*
-        getFont();
+        getFont() { return mGuiFont; }
 
         /**
          * Sets whether a custom cursor should be rendered.

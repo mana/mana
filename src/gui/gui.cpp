@@ -239,11 +239,6 @@ void Gui::mousePress(int mx, int my, int button)
     }
 }
 
-gcn::ImageFont *Gui::getFont()
-{
-    return mGuiFont;
-}
-
 void
 Gui::setUseCustomCursor(bool customCursor)
 {

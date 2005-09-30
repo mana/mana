@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.15    Date: 31/7/2005
+ Version: 0.0.17    Date: 09/10/2005
 
 
  Development team:
@@ -51,6 +51,7 @@ Use arrow keys to move around. Other keys:
 - Alt + I            show inventory
 - Alt + E            show equipment
 - Alt + C            show setup window
+- Alt + P            take screenshot
 - Left Shift         hold it when attacking to lock target for auto attack
 
 MOUSE:

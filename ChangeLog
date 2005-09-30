@@ -21,7 +21,6 @@
 	src/resources/mapreader.h: Moved tileset management into the map class
 	and made sure the tilesets are cleaned up properly on switching maps.
 
-
 2005-09-28  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/updaterwindow.cpp: Fixed the scroll bug in the update window.
@@ -90,16 +89,16 @@
 
 2005-09-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/resources/imagewriter.cpp: Reverted the latst change that broke
+	* src/resources/imagewriter.cpp: Reverted the last change that broke
 	the screenshots facility.
 
 2005-19-22  Duane Bailey  <nayryeliab@gmail.com>
 	
-	* src/net/win2mac.h, src/net/win2mac.cpp: removed
+	* src/net/win2mac.h, src/net/win2mac.cpp: Removed
 	* src/net/network.h, src/net/messagein.h, src/net/messageout.h:
-	removed references to win2mac.h
+	Removed references to win2mac.h
 	* src/net/messagein.cpp, src/net/messageout.cpp, src/net/network.cpp:
-	changed byte swapping support to SDL_endian
+	Changed byte swapping support to SDL_endian
 
 2005-09-21  Andrej Sinicyn  <andrej4000@gmail.com>
 

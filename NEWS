@@ -1,3 +1,18 @@
+0.0.17 (WIP)
+- Added remembering of window position and sizes
+- Added taking screenshot with Alt+P
+- Added notice about the player being overweight
+- Added time to chat messages
+- Added messagebox on error for MacOS X
+- Added new network layer based on SDL_net
+- Added proper error message for when the map server goes offline
+- Improved damage text font, shadow is now translucent
+- Improved GUI layout, new profile window
+- Improved support for building on FreeBSD and MacOS X
+- Fixed items on map to be removed on map switch
+- Fixed OpenGL checkbox in the setup window to be usable
+- Cleaned up a lot of code
+
 0.0.16 (04 September 2005)
 - Added inn and casino
 - Improved status window
