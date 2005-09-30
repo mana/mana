@@ -1026,7 +1026,7 @@ void do_parse()
                         {
                             chatWindow->chat_log(chatMsg, BY_PLAYER);
 
-                            unsigned int pos = chatMsg.find(" : ", 0);
+                            unsigned long int pos = chatMsg.find(" : ", 0);
                             if (pos != std::string::npos)
                             {
                                 chatMsg.erase(0, pos + 3);
