@@ -80,7 +80,6 @@ InventoryWindow::InventoryWindow():
     add(itemEffectLabel);
     add(weightLabel);
 
-    updateWidgets();
     useButton->setSize(48, useButton->getHeight());
 
     loadWindowState();
@@ -234,4 +233,21 @@ void InventoryWindow::updateButtons()
 Item* InventoryWindow::getItem()
 {
     return items->getItem();
+}
+
+void InventoryWindow::loadWindowState()
+{
+    Window::loadWindowState();
+    updateWidgets();
+}
+
+void InventoryWindow::setDefaultSize(int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+{
+    Window::setDefaultSize(defaultX, defaultY, defaultWidth, defaultHeight);
+}
+
+void InventoryWindow::resetToDefaultSize()
+{
+    Window::resetToDefaultSize();
+    updateWidgets();
 }

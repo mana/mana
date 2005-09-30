@@ -177,20 +177,20 @@ class Window : public gcn::Window
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
-        void loadWindowState();
+        virtual void loadWindowState();
 
         /**
          * Set the default win pos and size.
          * (which can be different of the actual ones.)
          */
-        void setDefaultSize(int defaultX, int defaultY,
+        virtual void setDefaultSize(int defaultX, int defaultY,
                         int defaultWidth, int defaultHeight);
 
         /**
          * Reset the win pos and size to default.
          * Don't forget to set defaults first.
          */
-        void resetToDefaultSize();
+        virtual void resetToDefaultSize();
 
     protected:
         gcn::Container *chrome;    /**< Contained container */

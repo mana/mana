@@ -354,7 +354,6 @@ void Setup::action(const std::string &eventId)
         minimap->resetToDefaultSize();
         chatWindow->resetToDefaultSize();
         inventoryWindow->resetToDefaultSize();
-        inventoryWindow->updateWidgets();
         equipmentWindow->resetToDefaultSize();
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();

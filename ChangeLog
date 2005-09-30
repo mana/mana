@@ -1,3 +1,9 @@
+2005-09-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.h,
+	src/gui/window.h src/gui/window.cpp src/gui/setup.cpp: Made the
+	inventory Win behave normally when resized by default size functions.
+
 2005-09-29  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/game.cpp, src/gui/window.h, src/gui/window.cpp, src/gui/setup.h,
