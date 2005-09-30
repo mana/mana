@@ -34,7 +34,7 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "graphics.h"
+#include "../graphics.h"
 extern Graphics *graphics;
 
 char *skill_db[] = {

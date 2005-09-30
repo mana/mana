@@ -42,13 +42,13 @@
 #include "../sound.h"
 
 extern Graphics *graphics;
-#include "gui/chat.h"
-#include "gui/equipmentwindow.h"
-#include "gui/help.h"
-#include "gui/inventorywindow.h"
-#include "gui/minimap.h"
-#include "gui/skill.h"
-#include "gui/status.h"
+#include "chat.h"
+#include "equipmentwindow.h"
+#include "help.h"
+#include "inventorywindow.h"
+#include "minimap.h"
+#include "skill.h"
+#include "status.h"
 
 ModeListModel::ModeListModel()
 {

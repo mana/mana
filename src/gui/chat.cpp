@@ -35,7 +35,7 @@
 #include "../playerinfo.h"
 #include "../log.h"
 
-#include "graphics.h"
+#include "../graphics.h"
 extern Graphics *graphics;
 
 #include "../net/messageout.h"

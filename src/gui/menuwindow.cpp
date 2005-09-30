@@ -32,7 +32,7 @@
 #include "status.h"
 #include "skill.h"
 
-#include "graphics.h"
+#include "../graphics.h"
 extern Graphics *graphics;
 extern Window *setupWindow;
 
