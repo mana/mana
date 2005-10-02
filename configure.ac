@@ -10,6 +10,9 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 # Checks for libraries
+AC_CHECK_LIB([pthread], [pthread_create], ,
+AC_MSG_ERROR([ *** Unable to find pthread library ]))
+
 AC_CHECK_LIB([guichan], [gcnGuichanVersion], ,
 AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.sf.net)]))
 
@@ -86,7 +89,7 @@ fi
 AC_PATH_PROG(LIBSDL_CONFIG, sdl-config)
 
 if test -n "$LIBSDL_CONFIG"; then
-  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer -lpthread "
+  LIBSDL_LIBS="`$LIBSDL_CONFIG --libs` -lSDL_image -lSDL_mixer"
   LIBSDL_CFLAGS="`$LIBSDL_CONFIG --cflags`"
   AC_SUBST(LIBSDL_LIBS)
   AC_SUBST(LIBSDL_CFLAGS)

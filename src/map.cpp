@@ -25,6 +25,7 @@
 #include "tileset.h"
 #include "being.h"
 #include "graphics.h"
+#include "resources/image.h"
 
 #include <queue>
 
@@ -103,7 +104,9 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
         {
             Image *img = getTile(x, y, layer);
             if (img) {
-                graphics->drawImage(img, x * 32 - scrollX, y * 32 - scrollY);
+                graphics->drawImage(img,
+                                    x * 32 - scrollX,
+                                    y * 32 - scrollY + 32 - img->getHeight());
             }
         }
     }
@@ -251,7 +254,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
 
-    // Return when destination not walkable
+    // Return empty path when destination not walkable
     if (!getWalk(destX, destY)) return path;
 
     // Reset starting tile's G cost to 0
@@ -266,8 +269,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
     // Keep trying new open tiles until no more tiles to try or target found
     while (!openList.empty() && !foundPath)
     {
-        // Take the location with the lowest F cost from the open list, and
-        // add it to the closed list.
+        // Take the location with the lowest F cost from the open list.
         Location curr = openList.top();
         openList.pop();
 

@@ -184,5 +184,5 @@ INCLUDES =					\
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
 tmw_CXXFLAGS = -Wall -Werror $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl -lguichan $(OPENGL_LIBS) $(CURL_LIBS)
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(OPENGL_LIBS) $(CURL_LIBS)
 tmw_TARGET = tmw

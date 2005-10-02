@@ -147,31 +147,33 @@ class Window : public gcn::Window
         void scheduleDelete();
 
         /**
-         * Window dragging and resizing mouse related. These methods also makes sure the
-         * window is not dragged/resized outside of the screen.
+         * Window dragging and resizing mouse related. These methods also makes
+         * sure the window is not dragged/resized outside of the screen.
          */
         void mousePress(int x, int y, int button);
         void mouseMotion(int mx, int my);
         void mouseRelease(int x, int y, int button);
 
         /**
-         * The position of the resize grip
+         * Gets the position of the resize grip.
          */
         gcn::Rectangle getGripDimension();
 
         /**
-         * set Window internal name
+         * Sets the name of the window. This is not the window title.
          */
-        void setWindowName(std::string name);
+        void
+        setWindowName(const std::string &name) { mWindowName = name; }
 
         /**
-         * Get window internal name
+         * Returns the name of the window. This is not the window title.
          */
-        std::string getWindowName();
+        const std::string&
+        getWindowName() { return mWindowName; }
 
         /**
-         * Read the X, Y, and Width and Height for resizables
-         * in the config based on its internal name.
+         * Read the x, y, and width and height for resizables in the config
+         * based on the name of the window.
          * That function let the values set with set{X, Y, Height, width}()
          * if no config value is found.
          * Don't forget to set these default values and resizable before
@@ -184,7 +186,7 @@ class Window : public gcn::Window
          * (which can be different of the actual ones.)
          */
         virtual void setDefaultSize(int defaultX, int defaultY,
-                        int defaultWidth, int defaultHeight);
+                                    int defaultWidth, int defaultHeight);
 
         /**
          * Reset the win pos and size to default.
@@ -195,20 +197,20 @@ class Window : public gcn::Window
     protected:
         gcn::Container *chrome;    /**< Contained container */
         Window *parent;            /**< The parent window */
-        std::string mWindowName;    /**< Window internal name */
+        std::string mWindowName;   /**< Name of the window */
         int snapSize;              /**< Snap distance to window edge */
         bool title;                /**< Window has a title bar */
         bool modal;                /**< Window is modal */
         bool resizable;            /**< Window can be resized */
-
         bool mMouseResize;         /**< Window is being resized */
-
         int minWinWidth;           /**< Minimum window width */
         int minWinHeight;          /**< Minimum window height */
         int maxWinWidth;           /**< Maximum window width */
         int maxWinHeight;          /**< Maximum window height */
-        int defaultX, defaultY;    /**< Default Win Pos and size */
-        int defaultWidth, defaultHeight; 
+        int mDefaultX;             /**< Default window X position */
+        int mDefaultY;             /**< Default window Y position */
+        int mDefaultWidth;         /**< Default window width */
+        int mDefaultHeight;        /**< Default window height */
 
         /** The window container windows add themselves to. */
         static WindowContainer* windowContainer;
@@ -221,7 +223,7 @@ class Window : public gcn::Window
 
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */
-        static Image *resizeGrip;   /**< The grip to resize window */
+        static Image *resizeGrip;  /**< The grip to resize window */
 };
 
 #endif

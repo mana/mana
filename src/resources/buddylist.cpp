@@ -41,7 +41,7 @@ BuddyList::~BuddyList()
     delete filename;
 }
 
-void BuddyList::loadFile(void)
+void BuddyList::loadFile()
 {
     char *buddy;
 
@@ -64,7 +64,7 @@ void BuddyList::loadFile(void)
     inputStream.close();
 }
 
-void BuddyList::saveFile(void)
+void BuddyList::saveFile()
 {
     std::string str;
 
@@ -121,7 +121,7 @@ bool BuddyList::removeBuddy(const std::string buddy)
     return false;
 }
 
-int  BuddyList::getNumberOfElements(void)
+int  BuddyList::getNumberOfElements()
 {
     return buddylist.size();
 }

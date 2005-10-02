@@ -130,14 +130,16 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
+    const std::string &name = mWindowName;
 
     // Saving X, Y and Width and Height for resizables in the config
-    config.setValue(std::string(getWindowName() + "WinX"), getX());
-    config.setValue(std::string(getWindowName() + "WinY"), getY());
-    if ( resizable )
+    config.setValue(name + "WinX", getX());
+    config.setValue(name + "WinY", getY());
+
+    if (resizable)
     {
-        config.setValue(std::string(getWindowName() + "WinWidth"), getWidth());
-        config.setValue(std::string(getWindowName() + "WinHeight"), getHeight());
+        config.setValue(name + "WinWidth", getWidth());
+        config.setValue(name + "WinHeight", getHeight());
     }
 
     instances--;
@@ -212,9 +214,8 @@ void Window::setLocationRelativeTo(gcn::Widget* widget)
     widget->getAbsolutePosition(wx, wy);
     getAbsolutePosition(x, y);
 
-    setPosition(
-            getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),
-            getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
+    setPosition(getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),
+                getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
 }
 
 void Window::setContentSize(int width, int height)
@@ -281,15 +282,14 @@ void Window::mousePress(int x, int y, int button)
     // If the mouse is not inside the content, the press must have been on the
     // border, and is a candidate for a resize.
     if (isResizable() && button == 1 &&
-            getGripDimension().isPointInRect(x, y) &&
-            !getContentDimension().isPointInRect(x, y) &&
-            hasMouse() &&
-            !(mMouseDrag && y > (int)getPadding()))
+        getGripDimension().isPointInRect(x, y) &&
+        !getContentDimension().isPointInRect(x, y) &&
+        hasMouse() &&
+        !(mMouseDrag && y > (int)getPadding()))
     {
         mMouseResize = true;
         mMouseXOffset = x;
         mMouseYOffset = y;
-
     }
 }
 
@@ -410,31 +410,26 @@ void Window::mouseRelease(int x, int y, int button)
     }
 }
 
-gcn::Rectangle Window::getGripDimension ()
+gcn::Rectangle Window::getGripDimension()
 {
-    return gcn::Rectangle(getWidth() - resizeGrip->getWidth(), getHeight() - resizeGrip->getHeight(), getWidth(),
+    return gcn::Rectangle(getWidth() - resizeGrip->getWidth(),
+                          getHeight() - resizeGrip->getHeight(),
+                          getWidth(),
                           getHeight());
-}
-
-void Window::setWindowName(std::string name)
-{
-    mWindowName = name;
-}
-
-std::string Window::getWindowName()
-{
-    return mWindowName;
 }
 
 void Window::loadWindowState()
 {
-    setPosition((int)config.getValue(std::string(getWindowName() + "WinX"), getX()),
-                (int)config.getValue(std::string(getWindowName() + "WinY"), getY()) );
+    const std::string &name = mWindowName;
 
-    if ( resizable )
+    setPosition((int)config.getValue(name + "WinX", getX()),
+                (int)config.getValue(name + "WinY", getY()));
+
+    if (resizable)
     {
-    setWidth((int)config.getValue(std::string(getWindowName() + "WinWidth"), getWidth()) );
-    setHeight((int)config.getValue(std::string(getWindowName() + "WinHeight"), getHeight()) );
+        setWidth((int)config.getValue(name + "WinWidth", getWidth()));
+        setHeight((int)config.getValue(name + "WinHeight", getHeight()));
+
         if (mContent != NULL)
         {
             mContent->setDimension(getContentDimension());
@@ -442,21 +437,23 @@ void Window::loadWindowState()
     }
 }
 
-void Window::setDefaultSize(int defaultX, int defaultY, int defaultWidth, int defaultHeight)
+void Window::setDefaultSize(int defaultX, int defaultY,
+                            int defaultWidth, int defaultHeight)
 {
-    this->defaultX = defaultX;
-    this->defaultY = defaultY;
-    this->defaultWidth = defaultWidth;
-    this->defaultHeight = defaultHeight;
+    mDefaultX = defaultX;
+    mDefaultY = defaultY;
+    mDefaultWidth = defaultWidth;
+    mDefaultHeight = defaultHeight;
 
-    setPosition(defaultX, defaultY);
-    setContentSize(defaultWidth, defaultHeight);
+    setPosition(mDefaultX, mDefaultY);
+    setContentSize(mDefaultWidth, mDefaultHeight);
 }
 
 void Window::resetToDefaultSize()
 {
-    setPosition(defaultX, defaultY);
-    setContentSize(defaultWidth, defaultHeight);
+    setPosition(mDefaultX, mDefaultY);
+    setContentSize(mDefaultWidth, mDefaultHeight);
+
     if (mContent != NULL)
     {
         mContent->setDimension(getContentDimension());

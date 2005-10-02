@@ -1,3 +1,13 @@
+2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, src/Makefile.am: Added check for pthread library and
+	removed manual -lpthread and -lguichan linker flags.
+	* src/map.cpp: A small start on supporting tile height than the
+	default (map) tile height.
+	* src/gui/window.cpp, src/gui/window.h, src/resources/buddylist.cpp,
+	src/resources/buddylist.h: Some cleanups (void argument list was
+	something you had to do in C times, not necessary in C++).
+
 2005-09-30  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.h,
@@ -31,8 +41,8 @@
 	src/gui/inventorywindow.cpp, src/gui/minimap.cpp, src/gui/chat.cpp:
 	Added window internal name to later get X, Y, height and width be
 	saved.
-	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X, Y,
-	Width and Height of windows when useful.
+	* src/gui/window.h, src/gui/window.cpp, src/game.cpp: Load and save X,
+	Y, Width and Height of windows when useful.
 	* src/gui/setup.cpp, src/gui/setup.h; src/gui/minimap.h: Added a 'Reset
 	Windows to Default' Button in the Setup Window.
 

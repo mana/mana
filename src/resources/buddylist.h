@@ -54,7 +54,7 @@ class BuddyList : public gcn::ListModel {
         /**
          * Returns the number of buddy on the list
          */
-        int  getNumberOfElements(void);
+        int  getNumberOfElements();
 
         /**
          * Returns the buddy of the number or null
@@ -65,12 +65,12 @@ class BuddyList : public gcn::ListModel {
         /**
          * Save buddy to file
          */
-        void saveFile(void);
+        void saveFile();
 
         /**
          * Load buddy from file
          */
-        void loadFile(void);
+        void loadFile();
 
         std::list<std::string> buddylist;               /**< Buddy list */
         std::list<std::string>::iterator buddyit;       /**< Iterator */
