@@ -939,7 +939,7 @@ void do_input()
                 {
                     attack(autoTarget);
                 }
-                else if (keys[SDLK_LSHIFT] && monster != player_node)
+                else if ((keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) && monster != player_node)
                 {
                     autoTarget = monster;
                 }
