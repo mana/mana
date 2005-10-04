@@ -169,8 +169,18 @@ void ChatWindow::chat_log(std::string line, int own)
     
     line = lineColor + timeStr.str() + tmp.nick + line;
 
-    textOutput->addRow(line);
-    scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
+    // We look if the Vertical Scroll Bar is set at the max before
+    // adding a row, otherwise the max will always be a row higher
+    // at comparison.
+    if ( scrollArea->getVerticalScrollAmount() == scrollArea->getVerticalMaxScroll() )
+    {
+        textOutput->addRow(line);
+        scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
+    }
+    else
+    {
+        textOutput->addRow(line);
+    }
 }
 
 void ChatWindow::chat_log(CHATSKILL action)

@@ -4,6 +4,7 @@
 	src/gui/equipmentwindow.cpp: Move to top the requested window with
 	shortcuts or with menu button, also corrected the default position
 	of equipment and inventory windows.
+	* src/gui/chat.cpp: Fixed the Chat Window scrolling bug.
 
 2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
