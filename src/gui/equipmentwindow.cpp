@@ -40,7 +40,7 @@ EquipmentWindow::EquipmentWindow():
     Window("Equipment")
 {
     setWindowName("Equipment");
-    setDefaultSize(5, 160, 200, 90);
+    setDefaultSize(5, 230, 200, 90);
     loadWindowState();
 
 

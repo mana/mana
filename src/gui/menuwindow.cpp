@@ -101,21 +101,26 @@ void MenuWindow::action(const std::string& eventId)
     if (eventId == "Status")
     {
         statusWindow->setVisible(!statusWindow->isVisible());
+        if (statusWindow->isVisible()) statusWindow->requestMoveToTop();
     }
     if (eventId == "Equipment")
     {
         equipmentWindow->setVisible(!equipmentWindow->isVisible());
+        if (equipmentWindow->isVisible()) equipmentWindow->requestMoveToTop();
     }
     if (eventId == "Inventory")
     {
         inventoryWindow->setVisible(!inventoryWindow->isVisible());
+        if (inventoryWindow->isVisible()) inventoryWindow->requestMoveToTop();
     }
     if (eventId == "Skills")
     {
         skillDialog->setVisible(!skillDialog->isVisible());
+        if (skillDialog->isVisible()) skillDialog->requestMoveToTop();
     }
     if (eventId == "Setup")
     {
         setupWindow->setVisible(!setupWindow->isVisible());
+        if (setupWindow->isVisible()) setupWindow->requestMoveToTop();
     }
 }

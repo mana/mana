@@ -1,8 +1,15 @@
+2005-10-04  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/game.cpp, src/gui/menuwindow.cpp, src/gui/inventorywindow.cpp,
+	src/gui/equipmentwindow.cpp: Move to top the requested window with
+	shortcuts or with menu button, also corrected the default position
+	of equipment and inventory windows.
+
 2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac, src/Makefile.am: Added check for pthread library and
 	removed manual -lpthread and -lguichan linker flags.
-	* src/map.cpp: A small start on supporting tile height than the
+	* src/map.cpp: A small start on supporting other tile height than the
 	default (map) tile height.
 	* src/gui/window.cpp, src/gui/window.h, src/resources/buddylist.cpp,
 	src/resources/buddylist.h: Some cleanups (void argument list was

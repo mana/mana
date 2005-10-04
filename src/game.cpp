@@ -475,6 +475,7 @@ void do_input()
                         helpWindow->setVisible(false);
                     } else {
                         helpWindow->loadHelp("index");
+                        if (helpWindow->isVisible()) helpWindow->requestMoveToTop();
                     }
                     used = true;
                     break;
@@ -578,6 +579,7 @@ void do_input()
                                 "Quit", "Are you sure you want to quit?",
                                 (gcn::ActionListener*)&exitListener);
                     }
+                    exitConfirm->requestMoveToTop();
                     break;
 
                 default:
@@ -594,12 +596,14 @@ void do_input()
                     case SDLK_i:
                         inventoryWindow->setVisible(
                                 !inventoryWindow->isVisible());
+                        if (inventoryWindow->isVisible()) inventoryWindow->requestMoveToTop();
                         used = true;
                         break;
 
                         // Statistics window
                     case SDLK_s:
                         statusWindow->setVisible(!statusWindow->isVisible());
+                        if (statusWindow->isVisible()) statusWindow->requestMoveToTop();
                         used = true;
                         break;
 
@@ -607,6 +611,7 @@ void do_input()
                         // New skills window
                     case SDLK_n:
                         newSkillWindow->setVisible(!newSkillWindow->isVisible());
+                        if (newSkillWindow->isVisible()) newSkillWindow->requestMoveToTop();
                         used = true;
                         break;
                     */
@@ -625,12 +630,14 @@ void do_input()
                         // Skill window
                     case SDLK_k:
                         skillDialog->setVisible(!skillDialog->isVisible());
+                        if (skillDialog->isVisible()) skillDialog->requestMoveToTop();
                         used = true;
                         break;
 
                         // Setup window
                     case SDLK_c:
                         setupWindow->setVisible(true);
+                        setupWindow->requestMoveToTop();
                         used = true;
                         break;
 
@@ -638,6 +645,7 @@ void do_input()
                     case SDLK_e:
                         equipmentWindow->setVisible(
                                 !equipmentWindow->isVisible());
+                        if (equipmentWindow->isVisible()) equipmentWindow->requestMoveToTop();
                         used = true;
                         break;
 
@@ -645,6 +653,7 @@ void do_input()
                         // Buddy window
                     case SDLK_b:
                         buddyWindow->setVisible(!buddyWindow->isVisible());
+                        if (buddyWindow->isVisible()) buddyWindow->requestMoveToTop();
                         used = true;
                         break;
                     */

@@ -49,7 +49,7 @@ InventoryWindow::InventoryWindow():
     setResizable(true);
     setMinWidth(240);
     setMinHeight(172);
-    setDefaultSize(105, 25, 322, 172);
+    setDefaultSize(115, 25, 322, 172);
 
     useButton = new Button("Use");
     dropButton = new Button("Drop");
