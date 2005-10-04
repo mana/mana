@@ -50,10 +50,10 @@ MiniStatusWindow::MiniStatusWindow():
 
     hpLabel = new gcn::Label("");
     mpLabel = new gcn::Label("");
-#ifndef USE_OPENGL
     hpLabel->setFont(speechFont);
     mpLabel->setFont(speechFont);
-#endif
+    hpLabel->setForegroundColor(gcn::Color(255,255,255));
+    mpLabel->setForegroundColor(gcn::Color(255,255,255));
 
     add(hpBar);
     add(mpBar);
@@ -96,11 +96,11 @@ void MiniStatusWindow::update()
 
     // Update and center labels
     std::stringstream updatedText;
-    updatedText << player_info->hp << "/" << player_info->maxHp;
+    updatedText << player_info->hp;
     hpLabel->setCaption(updatedText.str());
     hpLabel->adjustSize();
     updatedText.str("");
-    updatedText << player_info->mp << "/" << player_info->maxMp;
+    updatedText << player_info->mp;
     mpLabel->setCaption(updatedText.str());
     mpLabel->adjustSize();
     hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),
