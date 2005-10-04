@@ -8,6 +8,8 @@
 	* src/gui/status.cpp, src/gui/ministatus.cpp: Changed the font used
 	in mini-status. Dynamised previously statically placed widgets in
 	status win to avoid some label over-drawings.
+	* src/gui/setup.cpp: Enable the OpenGL Checkbox only if tmw has been
+	compiled with its support.
 
 2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

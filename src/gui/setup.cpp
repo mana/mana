@@ -103,6 +103,9 @@ Setup::Setup():
     scrollArea = new ScrollArea(modeList);
     fsCheckBox = new CheckBox("Full screen", false);
     openGLCheckBox = new CheckBox("OpenGL", false);
+#ifndef USE_OPENGL
+    openGLCheckBox->setEnabled(false);
+#endif
     customCursorCheckBox = new CheckBox("Custom cursor");
     alphaLabel = new gcn::Label("Gui opacity");
     alphaSlider = new Slider(0.2, 1.0);

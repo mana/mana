@@ -27,6 +27,7 @@
 #include <sstream>
 
 #include "gui.h"
+#include <guichan/imagefont.hpp>
 #include "progressbar.h"
 
 #include "../playerinfo.h"
@@ -49,8 +50,10 @@ MiniStatusWindow::MiniStatusWindow():
 
     hpLabel = new gcn::Label("");
     mpLabel = new gcn::Label("");
-    hpLabel->setFont((gcn::Font*)speechFont);
-    mpLabel->setFont((gcn::Font*)speechFont);
+#ifndef USE_OPENGL
+    hpLabel->setFont(speechFont);
+    mpLabel->setFont(speechFont);
+#endif
 
     add(hpBar);
     add(mpBar);
