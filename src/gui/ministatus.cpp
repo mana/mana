@@ -26,6 +26,7 @@
 #include <guichan/widgets/label.hpp>
 #include <sstream>
 
+#include "gui.h"
 #include "progressbar.h"
 
 #include "../playerinfo.h"
@@ -48,6 +49,8 @@ MiniStatusWindow::MiniStatusWindow():
 
     hpLabel = new gcn::Label("");
     mpLabel = new gcn::Label("");
+    hpLabel->setFont((gcn::Font*)speechFont);
+    mpLabel->setFont((gcn::Font*)speechFont);
 
     add(hpBar);
     add(mpBar);
@@ -106,6 +109,5 @@ void MiniStatusWindow::update()
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
 {
     update();
-
     Window::drawContent(graphics);
 }

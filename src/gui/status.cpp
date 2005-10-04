@@ -413,6 +413,19 @@ void StatusWindow::update()
     statsReflexPoints->setCaption(updateText.str());
     statsReflexPoints->adjustSize();
 
+    // Update Second column widgets position
+    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 20, lvlLabel->getY());
+
+    xpLabel->setPosition(hpValueLabel->getX() + hpValueLabel->getWidth() + 10,
+                         hpLabel->getY());
+    xpBar->setPosition(xpLabel->getX() + xpLabel->getWidth() + 5,
+                       xpLabel->getY());
+    xpValueLabel->setPosition(xpBar->getX() + xpBar->getWidth() + 5,
+                              xpLabel->getY());
+
+    jobXpLabel->setPosition(xpLabel->getX(), mpLabel->getY());
+    jobXpBar->setPosition(xpBar->getX(),jobXpLabel->getY());
+    jobValueLabel->setPosition(290, jobXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *graphics)

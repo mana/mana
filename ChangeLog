@@ -5,6 +5,9 @@
 	shortcuts or with menu button, also corrected the default position
 	of equipment and inventory windows.
 	* src/gui/chat.cpp: Fixed the Chat Window scrolling bug.
+	* src/gui/status.cpp, src/gui/ministatus.cpp: Changed the font used
+	in mini-status. Dynamised previously statically placed widgets in
+	status win to avoid some label over-drawings.
 
 2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
