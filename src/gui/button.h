@@ -54,7 +54,7 @@ class Button : public gcn::Button {
 
     private:
         static ImageRect button[4];    /**< Button state graphics */
-        static int instances;          /**< Number of button instances */
+        static int mInstances;         /**< Number of button instances */
 };
 
 #endif

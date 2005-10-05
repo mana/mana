@@ -51,13 +51,14 @@ SERVER_INFO **server_info;
 WrongUsernameNoticeListener wrongUsernameNoticeListener;
 WrongPasswordNoticeListener wrongPasswordNoticeListener;
 
-void WrongPasswordNoticeListener::setLoginDialog(
-        LoginDialog *loginDialog)
+void
+WrongPasswordNoticeListener::setLoginDialog(LoginDialog *loginDialog)
 {
     mLoginDialog = loginDialog;
 }
 
-void WrongPasswordNoticeListener::action(const std::string &eventId)
+void
+WrongPasswordNoticeListener::action(const std::string &eventId)
 {
     // Reset the password and put the caret ready to retype it.
     mLoginDialog->passField->setText("");
@@ -66,13 +67,14 @@ void WrongPasswordNoticeListener::action(const std::string &eventId)
     wrongLoginNotice = NULL;
 }
 
-void WrongUsernameNoticeListener::setLoginDialog(
-        LoginDialog *loginDialog)
+void
+WrongUsernameNoticeListener::setLoginDialog(LoginDialog *loginDialog)
 {
     mLoginDialog = loginDialog;
 }
 
-void WrongUsernameNoticeListener::action(const std::string &eventId)
+void
+WrongUsernameNoticeListener::action(const std::string &eventId)
 {
     // Set the focus on the username Field
     mLoginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
@@ -175,7 +177,8 @@ LoginDialog::~LoginDialog()
     delete registerButton;
 }
 
-void LoginDialog::action(const std::string& eventId)
+void
+LoginDialog::action(const std::string& eventId)
 {
     if (eventId == "ok")
     {
@@ -267,9 +270,9 @@ void LoginDialog::action(const std::string& eventId)
         {
             // Name too short
             std::stringstream errorMessage;
-            errorMessage << "The username needs to be at least ";
-            errorMessage << LEN_MIN_USERNAME;
-            errorMessage << " characters long.";
+            errorMessage << "The username needs to be at least "
+                         << LEN_MIN_USERNAME
+                         << " characters long.";
             wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
                                             &wrongUsernameNoticeListener);
         }
@@ -277,9 +280,9 @@ void LoginDialog::action(const std::string& eventId)
         {
             // Name too long
             std::stringstream errorMessage;
-            errorMessage << "The username needs to be less than ";
-            errorMessage << LEN_MAX_USERNAME;
-            errorMessage << " characters long.";
+            errorMessage << "The username needs to be less than "
+                         << LEN_MAX_USERNAME
+                         << " characters long.";
             wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
                                             &wrongUsernameNoticeListener);
         }
@@ -287,9 +290,9 @@ void LoginDialog::action(const std::string& eventId)
         {
             // Pass too short
             std::stringstream errorMessage;
-            errorMessage << "The password needs to be at least ";
-            errorMessage << LEN_MIN_PASSWORD;
-            errorMessage << " characters long.";
+            errorMessage << "The password needs to be at least "
+                         << LEN_MIN_PASSWORD
+                         << " characters long.";
             wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
                                             &wrongPasswordNoticeListener);
         }
@@ -297,9 +300,9 @@ void LoginDialog::action(const std::string& eventId)
         {
             // Pass too long
             std::stringstream errorMessage;
-            errorMessage << "The password needs to be less than ";
-            errorMessage << LEN_MAX_PASSWORD;
-            errorMessage << " characters long.";
+            errorMessage << "The password needs to be less than "
+                         << LEN_MAX_PASSWORD
+                         << " characters long.";
             wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
                                             &wrongPasswordNoticeListener);
         }
@@ -311,7 +314,8 @@ void LoginDialog::action(const std::string& eventId)
     }
 }
 
-void loginInputHandler(SDL_KeyboardEvent *keyEvent)
+void
+loginInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
@@ -319,7 +323,8 @@ void loginInputHandler(SDL_KeyboardEvent *keyEvent)
     }
 }
 
-int attemptLogin(const std::string& user, const std::string& pass)
+int
+attemptLogin(const std::string& user, const std::string& pass)
 {
     int ret;
 

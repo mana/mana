@@ -370,6 +370,8 @@ CharCreateDialog::~CharCreateDialog()
     delete nextHairStyleButton;
     delete prevHairStyleButton;
     delete hairStyleLabel;
+    delete createButton;
+    delete cancelButton;
     delete playerBox;
 }
 

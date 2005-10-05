@@ -271,6 +271,9 @@ void init_engine()
     playerset = new Spriteset(playerImg, 64, 64);
     hairset = new Spriteset(hairImg, 40, 40);
 
+    playerImg->decRef();
+    hairImg->decRef();
+
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
 

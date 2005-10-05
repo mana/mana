@@ -35,14 +35,14 @@
 #include "../resources/resourcemanager.h"
 
 ImageRect Button::button[4];
-int Button::instances = 0;
+int Button::mInstances = 0;
 
 Button::Button(const std::string& caption):
     gcn::Button(caption)
 {
     setBorderSize(0);
 
-    if (instances == 0)
+    if (mInstances == 0)
     {
         // Load the skin
         ResourceManager *resman = ResourceManager::getInstance();
@@ -71,14 +71,14 @@ Button::Button(const std::string& caption):
         }
     }
 
-    instances++;
+    mInstances++;
 }
 
 Button::~Button()
 {
-    instances--;
+    mInstances--;
 
-    if (instances == 0)
+    if (mInstances == 0)
     {
         int a, x, y, mode;
 
@@ -112,8 +112,9 @@ void Button::draw(gcn::Graphics* graphics)
         mode = 0;
     }
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, getWidth(), getHeight(),
-                                         button[mode]);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0,
+                                                     getWidth(), getHeight(),
+                                                     button[mode]);
 
     graphics->setColor(getForegroundColor());
 

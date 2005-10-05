@@ -53,6 +53,12 @@ class Resource
         bool
         decRef();
 
+        /**
+         * Return the path identifying this resource.
+         */
+        const std::string&
+        getIdPath() { return mIdPath; }
+
     protected:
         /**
          * Destructor.

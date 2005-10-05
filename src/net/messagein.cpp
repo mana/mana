@@ -145,7 +145,7 @@ MessageIn::readString(int length)
     mPos += stringLength;
 
     readString = tmpString;
-    delete tmpString;
+    delete[] tmpString;
 
     return readString;
 }

@@ -31,6 +31,7 @@
 #include "soundeffect.h"
 
 #include "../log.h"
+#include "../gui/button.h"
 
 
 ResourceManager *ResourceManager::instance = NULL;
@@ -43,23 +44,23 @@ ResourceManager::~ResourceManager()
 {
     // Create our resource iterator.
     std::map<std::string, Resource*>::iterator iter = resources.begin();
-    int danglingResources = 0;
-    int danglingReferences = 0;
 
     // Iterate through and release references until objects are deleted.
     while (!resources.empty())
     {
         Resource *res = resources.begin()->second;
-        danglingResources++;
+        std::string id = res->getIdPath();
+
+        int references = 0;
 
         do {
-            danglingReferences++;
+            references++;
         }
         while (!res->decRef());
-    }
 
-    logger->log("ResourceManager::~ResourceManager() cleaned up %d references "
-            "to %d resources", danglingReferences, danglingResources);
+        logger->log("ResourceManager::~ResourceManager() cleaned up %d "
+                    "references to %s", references, id.c_str());
+    }
 }
 
 bool

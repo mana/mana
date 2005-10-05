@@ -165,12 +165,16 @@ Engine::Engine():
     weaponset = new Spriteset(weaponbitmap, 160, 120);
     itemset = new Spriteset(itembitmap, 32, 32);
 
+    npcbmp->decRef();
+    emotionbmp->decRef();
+    weaponbitmap->decRef();
+    itembitmap->decRef();
+
     attackTarget = resman->getImage("graphics/gui/attack_target.png");
     if (!attackTarget) logger->error("Unable to load attack_target.png");
 
     // Initialize item manager
     itemDb = new ItemManager();
-
 }
 
 Engine::~Engine()
