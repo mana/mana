@@ -26,6 +26,7 @@
 
 #include <list>
 #include <string>
+#include <SDL_types.h>
 
 #define NR_HAIR_STYLES 5
 #define NR_HAIR_COLORS 10
@@ -75,19 +76,19 @@ class Being
             SE        =  7,
         };
 
-        unsigned short job;           /**< Job (player job, npc, monster, ) */
-        unsigned short x, y;          /**< Tile coordinates */
-        unsigned char direction;      /**< Facing direction */
-        unsigned char action;
-        unsigned char frame;
-        int speech_color;
-        unsigned short walk_time;
-        unsigned short speed;
-        unsigned char emotion;        /**< Currently showing emotion */
-        unsigned char emotion_time;   /**< Time until emotion disappears */
-        unsigned int text_x, text_y;  // temp solution to fix speech position
+        Uint16 job;           /**< Job (player job, npc, monster, ) */
+        Uint16 x, y;          /**< Tile coordinates */
+        Uint8 direction;      /**< Facing direction */
+        Uint8 action;
+        Uint8 frame;
+        Sint32 speech_color;
+        Uint16 walk_time;
+        Uint16 speed;
+        Uint8 emotion;        /**< Currently showing emotion */
+        Uint8 emotion_time;   /**< Time until emotion disappears */
+        Uint32 text_x, text_y;  // temp solution to fix speech position
 
-        unsigned short aspd;          /**< Attack speed */
+        Uint16 aspd;          /**< Attack speed */
 
         /**
          * Constructor.
@@ -107,7 +108,7 @@ class Being
         /**
          * Sets a new destination for this being to walk to.
          */
-        void setDestination(int destX, int destY);
+        void setDestination(Uint16 destX, Uint16 destY);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -116,7 +117,7 @@ class Being
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setSpeech(const std::string &text, int time);
+        void setSpeech(const std::string &text, Uint32 time);
 
         /**
          * Puts a damage bubble above this being for the specified amount
@@ -125,7 +126,7 @@ class Being
          * @param text The text that should appear.
          * @param time The amount of time the text should stay in milliseconds.
          */
-        void setDamage(short amount, int time);
+        void setDamage(Sint16 amount, Uint32 time);
 
         /**
          * Returns the name of the being.
@@ -144,22 +145,22 @@ class Being
         /**
          * Sets the hair color for this being.
          */
-        void setHairColor(int color);
+        void setHairColor(Uint16 color);
 
         /**
          * Sets the hair style for this being.
          */
-        void setHairStyle(int style);
+        void setHairStyle(Uint16 style);
 
         /**
          * Gets the hair color for this being.
          */
-        unsigned short getHairColor();
+        Uint16 getHairColor();
 
         /**
          * Gets the hair style for this being.
          */
-        unsigned short getHairStyle();
+        Uint16 getHairStyle();
 
         /**
          * Makes this being take the next step of his path.
@@ -186,12 +187,12 @@ class Being
         /**
          * get the weapon picture id.
          */
-        unsigned short getWeapon() {return m_weapon;}
+        Uint16  getWeapon() { return m_weapon; }
 
         /**
          * get the sprite id.
          */
-        unsigned int getId() {return m_id;}
+        Uint32 getId() { return m_id; }
 
         // MODIFICATION METHODS
 
@@ -200,19 +201,19 @@ class Being
          *
          * @param weapon : the picture id
          */
-        void setWeapon(unsigned short weapon);
+        void setWeapon(Uint16 weapon);
 
         /**
          * set the weapon picture id with the weapon id.
          *
          * @param weapon : the weapon id
          */
-        void setWeaponById(unsigned short weapon);
+        void setWeaponById(Uint16 weapon);
 
         /**
          * set the sprite id.
          */
-        void setId(unsigned int id);
+        void setId(Uint32 id);
 
         /**
          * Set the map the being is on
@@ -220,16 +221,16 @@ class Being
         void setMap(Map *map);
 
     private:
-        unsigned short m_weapon;
-        unsigned int m_id;              /**< Unique id */
+        Uint16 m_weapon;
+        Uint32 m_id;              /**< Unique id */
         Map *map;
 
         std::list<PATH_NODE> path;
         std::string speech;
         std::string damage;
-        unsigned short hairStyle, hairColor;
-        unsigned int speech_time;
-        unsigned int damage_time;
+        Uint16 hairStyle, hairColor;
+        Uint32 speech_time;
+        Uint32 damage_time;
         bool showSpeech, showDamage;
         std::string mName;              /**< Name of character */
 
@@ -240,28 +241,19 @@ class Being
 };
 
 /** Return a specific id Being */
-Being *findNode(unsigned int id);
+Being *findNode(Uint32 id);
 
 /** Return a being at specific coordinates */
-Being *findNode(unsigned short x, unsigned short y);
+Being *findNode(Uint16 x, Uint16 y);
 
 /** Return a being at specific coordinates with specific type*/
-Being *findNode(unsigned short x, unsigned short y, Being::Type type);
+Being *findNode(Uint16 x, Uint16 y, Being::Type type);
 
 /** Create a being and add it to the list of beings */
-Being *createBeing(unsigned int id, unsigned short job, Map *map);
+Being *createBeing(Uint32 id, Uint16 job, Map *map);
 
 /** Remove a Being */
 void remove_node(Being *being);
-
-/** Find a NPC id based on its coordinates */
-unsigned int findNpc(unsigned short x, unsigned short y);
-
-/** Find a PLAYER id based on its coordinates */
-unsigned int findPlayer(unsigned short x, unsigned short y);
-
-/** Find a MONSTER id based on its coordinates */
-unsigned int findMonster(unsigned short x, unsigned short y);
 
 /** Sort beings in vertical order */
 void sort();

@@ -49,12 +49,12 @@ Being *player_node = NULL;
 
 std::list<Being*> beings;
 
-PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
+PATH_NODE::PATH_NODE(Uint16 x, Uint16 y):
     x(x), y(y)
 {
 }
 
-Being* createBeing(unsigned int id, unsigned short job, Map *map)
+Being* createBeing(Uint32 id, Uint16 job, Map *map)
 {
     Being *being = new Being;
 
@@ -100,7 +100,7 @@ void remove_node(Being *being)
     beings.remove(being);
 }
 
-Being *findNode(unsigned int id)
+Being *findNode(Uint32 id)
 {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
@@ -112,7 +112,7 @@ Being *findNode(unsigned int id)
     return NULL;
 }
 
-Being *findNode(unsigned short x, unsigned short y)
+Being *findNode(Uint16 x, Uint16 y)
 {
     std::list<Being*>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
@@ -125,7 +125,7 @@ Being *findNode(unsigned short x, unsigned short y)
     return NULL;
 }
 
-Being* findNode(unsigned short x, unsigned short y, Being::Type type)
+Being* findNode(Uint16 x, Uint16 y, Being::Type type)
 {
     std::list<Being *>::iterator i;
     for (i = beings.begin(); i != beings.end(); i++) {
@@ -176,7 +176,7 @@ Being::~Being()
     clearPath();
 }
 
-void Being::setDestination(int destX, int destY)
+void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (!map)
         return;
@@ -200,7 +200,7 @@ void Being::setPath(std::list<PATH_NODE> path)
     }
 }
 
-void Being::setHairColor(int color)
+void Being::setHairColor(Uint16 color)
 {
     hairColor = color;
     if (hairColor < 1 || hairColor > NR_HAIR_COLORS + 1)
@@ -209,7 +209,7 @@ void Being::setHairColor(int color)
     }
 }
 
-void Being::setHairStyle(int style)
+void Being::setHairStyle(Uint16 style)
 {
     hairStyle = style;
     if (hairStyle < 1 || hairStyle > NR_HAIR_STYLES)
@@ -218,24 +218,24 @@ void Being::setHairStyle(int style)
     }
 }
 
-unsigned short Being::getHairColor()
+Uint16 Being::getHairColor()
 {
     return hairColor;
 }
 
-unsigned short Being::getHairStyle()
+Uint16 Being::getHairStyle()
 {
     return hairStyle;
 }
 
-void Being::setSpeech(const std::string &text, int time)
+void Being::setSpeech(const std::string &text, Uint32 time)
 {
     speech = text;
     speech_time = tick_time;
     showSpeech = true;
 }
 
-void Being::setDamage(short amount, int time)
+void Being::setDamage(Sint16 amount, Uint32 time)
 {
     if (!amount) {
         damage = "miss";
@@ -255,76 +255,75 @@ void Being::setMap(Map *map)
 
 void Being::nextStep()
 {
-    if (!path.empty())
-    {
-        PATH_NODE node = path.front();
-        path.pop_front();
-
-        int oldX = x;
-        int oldY = y;
-        int newX = node.x;
-        int newY = node.y;
-
-        if (newX > oldX) {
-            if (newY > oldY)      direction = SE;
-            else if (newY < oldY) direction = NE;
-            else                  direction = EAST;
-        }
-        else if (newX < oldX) {
-            if (newY > oldY)      direction = SW;
-            else if (newY < oldY) direction = NW;
-            else                  direction = WEST;
-        }
-        else {
-            if (newY > oldY)      direction = SOUTH;
-            else if (newY < oldY) direction = NORTH;
-        }
-
-        x = newX;
-        y = newY;
-        action = WALK;
-        walk_time += speed / 10;
-    } else {
-        action = STAND;
-    }
     frame = 0;
+
+    if (path.empty())
+    {
+        action = STAND;
+        return;
+    }
+
+    PATH_NODE node = path.front();
+    path.pop_front();
+
+    if (node.x > x) {
+        if (node.y > y)       direction = SE;
+        else if (node.y < y)  direction = NE;
+        else                  direction = EAST;
+    }
+    else if (node.x < x) {
+        if (node.y > y)       direction = SW;
+        else if (node.y < y)  direction = NW;
+        else                  direction = WEST;
+    }
+    else {
+        if (node.y > y)       direction = SOUTH;
+        else if (node.y < y)  direction = NORTH;
+    }
+
+    x = node.x;
+    y = node.y;
+    action = WALK;
+    walk_time += speed / 10;
 }
 
 void Being::logic()
 {
-    if (getType() == PLAYER)
-    {
-        switch (action) {
-            case WALK:
-                frame = (get_elapsed_time(walk_time) * 4) / speed;
-                if (frame >= 4) {
-                    nextStep();
-                }
-                break;
-            case ATTACK:
-                frame = (get_elapsed_time(walk_time) * 4) / aspd;
-                if (frame >= 4) {
-                    nextStep();
-                    if (autoTarget && this == player_node) {
-                        attack(autoTarget);
-                    }
-                }
-                break;
-        }
-
-        if (emotion != 0) {
-            emotion_time--;
-            if (emotion_time == 0) {
-                emotion = 0;
-            }
-        }
-    }
-
     if (get_elapsed_time(speech_time) > 5000) {
         showSpeech = false;
     }
     if (get_elapsed_time(damage_time) > 3000) {
         showDamage = false;
+    }
+
+    if (getType() != PLAYER)
+    {
+        return;
+    }
+
+    switch (action) {
+        case WALK:
+            frame = (get_elapsed_time(walk_time) * 4) / speed;
+            if (frame >= 4) {
+                nextStep();
+            }
+            break;
+        case ATTACK:
+            frame = (get_elapsed_time(walk_time) * 4) / aspd;
+            if (frame >= 4) {
+                nextStep();
+                if (autoTarget && this == player_node) {
+                    attack(autoTarget);
+                }
+            }
+            break;
+    }
+
+    if (emotion != 0) {
+        emotion_time--;
+        if (emotion_time == 0) {
+            emotion = 0;
+        }
     }
 }
 
@@ -389,12 +388,12 @@ Being::Type Being::getType()
     }
 }
 
-void Being::setWeapon(unsigned short weapon)
+void Being::setWeapon(Uint16 weapon)
 {
     m_weapon = weapon;
 }
 
-void Being::setWeaponById(unsigned short weapon)
+void Being::setWeaponById(Uint16 weapon)
 {
     switch (weapon)
     {
@@ -424,7 +423,7 @@ void Being::setWeaponById(unsigned short weapon)
     }
 }
 
-void Being::setId(unsigned int id)
+void Being::setId(Uint32 id)
 {
     m_id = id;
 }

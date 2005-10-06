@@ -1,3 +1,10 @@
+2005-10-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp, src/being.h, src/game.cpp: Use integer types from SDL
+	and along the way fixed some long vs. int issues.
+	* src/inventory.cpp: Return NULL when no valid item index is given to
+	getItem() to bail out early.
+
 2005-10-04  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/game.cpp, src/gui/menuwindow.cpp, src/gui/inventorywindow.cpp,

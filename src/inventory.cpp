@@ -44,6 +44,11 @@ Inventory::~Inventory()
 
 Item* Inventory::getItem(int index)
 {
+    if (index < 0 || index > INVENTORY_SIZE)
+    {
+        return 0;
+    }
+
     return &items[index];
 }
 
