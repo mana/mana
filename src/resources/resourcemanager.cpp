@@ -31,7 +31,6 @@
 #include "soundeffect.h"
 
 #include "../log.h"
-#include "../gui/button.h"
 
 
 ResourceManager *ResourceManager::instance = NULL;
@@ -50,7 +49,6 @@ ResourceManager::~ResourceManager()
     {
         Resource *res = resources.begin()->second;
         std::string id = res->getIdPath();
-
         int references = 0;
 
         do {

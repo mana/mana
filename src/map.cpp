@@ -26,6 +26,7 @@
 #include "being.h"
 #include "graphics.h"
 #include "resources/image.h"
+#include "sprite.h"
 
 #include <queue>
 
@@ -85,9 +86,22 @@ Map::addTileset(Tileset *tileset)
     tilesets.push_back(tileset);
 }
 
+bool spriteCompare(const Sprite *a, const Sprite *b)
+{
+    return a->getY() < b->getY();
+}
+
 void
 Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 {
+    // If drawing the fringe layer, make sure sprites are sorted
+    Sprites::iterator si;
+    if (layer == 1)
+    {
+        mSprites.sort(spriteCompare);
+        si = mSprites.begin();
+    }
+
     int startX = scrollX / 32;
     int startY = scrollY / 32;
     int endX = (graphics->getWidth() + scrollX + 31) / 32;
@@ -100,6 +114,17 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 
     for (int y = startY; y < endY; y++)
     {
+        // If drawing the fringe layer, make sure all sprites above this row of
+        // tiles have been drawn
+        if (layer == 1)
+        {
+            while (si != mSprites.end() && (*si)->getY() < y * 32)
+            {
+                (*si)->draw(graphics, -scrollX, -scrollY);
+                si++;
+            }
+        }
+
         for (int x = startX; x < endX; x++)
         {
             Image *img = getTile(x, y, layer);
@@ -220,29 +245,17 @@ Map::getMetaTile(int x, int y)
     return &metaTiles[x + y * mWidth];
 }
 
-std::string
-Map::getProperty(const std::string &name)
+Sprites::iterator
+Map::addSprite(Sprite *sprite)
 {
-    std::map<std::string,std::string>::iterator i = properties.find(name);
-
-    if (i != properties.end())
-    {
-        return (*i).second;
-    }
-
-    return "";
-}
-
-bool
-Map::hasProperty(const std::string &name)
-{
-    return (properties.find(name) != properties.end());
+    mSprites.push_front(sprite);
+    return mSprites.begin();
 }
 
 void
-Map::setProperty(const std::string &name, const std::string &value)
+Map::removeSprite(Sprites::iterator iterator)
 {
-    properties[name] = value;
+    mSprites.erase(iterator);
 }
 
 std::list<PATH_NODE>

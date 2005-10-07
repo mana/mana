@@ -20,7 +20,7 @@
  *
  *  $Id$
  */
- 
+
 #include <libxml/tree.h>
 
 #include "iteminfo.h"
@@ -126,11 +126,15 @@ ItemManager::~ItemManager()
     delete unknown;
 }
 
-ItemInfo *ItemManager::getItemInfo(int id)
+ItemInfo*
+ItemManager::getItemInfo(int id)
 {
     if (db.find(id) != db.end())
+    {
         return db[id];
+    }
     else
+    {
         return unknown;
+    }
 }
-

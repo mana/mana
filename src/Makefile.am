@@ -172,9 +172,11 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      openglgraphics.cpp\
 	      openglgraphics.h \
 	      playerinfo.h \
+	      properties.h \
 	      serverinfo.h \
 	      sound.cpp \
-	      sound.h
+	      sound.h \
+	      sprite.h
 
 # set the include path found by configure
 INCLUDES =					\

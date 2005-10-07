@@ -1859,7 +1859,7 @@ void do_parse()
                     Uint16 y = msg.readShort();
                     msg.skip(4);     // amount,subX,subY / subX,subY,amount
 
-                    add_floor_item(new FloorItem(id, itemId, x, y));
+                    add_floor_item(new FloorItem(id, itemId, x, y, tiledMap));
                 }
                 break;
 

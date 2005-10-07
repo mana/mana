@@ -1,9 +1,33 @@
+2005-10-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp: Modified finding NPC as by timonator's suggestion in
+	order to allow NPCs to be clicked on their heads too.
+	* src/engine.cpp, src/engine.h, src/floor_item.cpp, src/floor_item.h,
+	src/game.cpp, src/map.cpp, src/sprite.h: Added a Sprite class that
+	represents something on the map. The map will make sure to draw the
+	sprites top to bottom, at the same time as the fringe layer tiles.
+	This is currently still only used by the floor items.
+	* src/item.cpp, src/item.h: Changed formatting and added
+	documentation.
+	* src/properies.h: Separated properties class from Map class, in order
+	to simplify Map class and to allow properties to be used by other
+	classes.
+
 2005-10-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/game.cpp: Use integer types from SDL
 	and along the way fixed some long vs. int issues.
 	* src/inventory.cpp: Return NULL when no valid item index is given to
 	getItem() to bail out early.
+
+2005-10-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.cpp, src/main.cpp, src/gui/char_select.cpp,
+	src/gui/skill.cpp, src/net/messagein.cpp: Fixed some resource cleanup
+	and memory leaks.
+	* src/resources/resource.h, src/resources/resourcemanager.cpp:
+	Changed the way dangling references to resources are reported to be
+	more informative.
 
 2005-10-04  Yohann Ferreira  <bertram@cegetel.net>
 

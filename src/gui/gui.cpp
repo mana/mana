@@ -192,7 +192,8 @@ Gui::~Gui()
     delete guiInput;
 }
 
-void Gui::logic()
+void
+Gui::logic()
 {
     gcn::Gui::logic();
 
@@ -201,7 +202,8 @@ void Gui::logic()
     mFocusHandler->applyChanges();
 }
 
-void Gui::draw()
+void
+Gui::draw()
 {
     mGraphics->pushClipArea(mTop->getDimension());
     mTop->draw(mGraphics);
@@ -212,19 +214,24 @@ void Gui::draw()
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
             && mCustomCursor)
     {
-        dynamic_cast<Graphics*>(mGraphics)->drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
+        dynamic_cast<Graphics*>(mGraphics)->drawImage(mMouseCursor,
+                                                      mouseX - 5,
+                                                      mouseY - 2);
     }
 
     mGraphics->popClipArea();
 }
 
-void Gui::mousePress(int mx, int my, int button)
+void
+Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
 
     // When conditions for walking are met, set new player destination
-    if (player_node && player_node->action != Being::DEAD && current_npc == 0 &&
-            button == gcn::MouseInput::LEFT)
+    if (player_node &&
+        player_node->action != Being::DEAD &&
+        current_npc == 0 &&
+        button == gcn::MouseInput::LEFT)
     {
         Map *tiledMap = engine->getCurrentMap();
         int tilex = mx / 32 + camera_x;

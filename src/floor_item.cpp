@@ -22,14 +22,52 @@
  */
 
 #include "floor_item.h"
+#include "sprite.h"
+#include "graphic/spriteset.h"
+#include "resources/itemmanager.h"
+#include "resources/iteminfo.h"
 
 #include <list>
 
-std::list<FloorItem*> floorItems;
+extern Spriteset *itemset;
+
+typedef std::list<FloorItem*> FloorItems;
+FloorItems floorItems;
+
+FloorItem::FloorItem(unsigned int id,
+                     unsigned int itemId,
+                     unsigned short x,
+                     unsigned short y,
+                     Map *map):
+    mId(id),
+    mItemId(itemId),
+    mX(x),
+    mY(y),
+    mMap(map)
+{
+    // Retrieve item image using a global itemset and itemDb (alternative?)
+    Image *image = itemset->spriteset[
+        itemDb->getItemInfo(itemId)->getImage() - 1];
+
+    // Create the sprite representing this floor item
+    mSprite = new Sprite(mX * map->getTileWidth(),
+                         mY * map->getTileHeight(),
+                         image);
+
+    // Add the representative sprite to the map
+    mSpriteIterator = mMap->addSprite(mSprite);
+}
+
+FloorItem::~FloorItem()
+{
+    // Remove and delete the representative sprite
+    mMap->removeSprite(mSpriteIterator);
+    delete mSprite;
+}
 
 void empty_floor_items()
 {
-    std::list<FloorItem *>::iterator i;
+    FloorItems::iterator i;
     for (i = floorItems.begin(); i != floorItems.end(); i++) {
         delete (*i);
     }
@@ -41,11 +79,14 @@ void add_floor_item(FloorItem *floorItem)
     floorItems.push_back(floorItem);
 }
 
-void remove_floor_item(unsigned int int_id)
+void remove_floor_item(unsigned int id)
 {
-    std::list<FloorItem *>::iterator i;
-    for (i = floorItems.begin(); i != floorItems.end(); i++) {
-        if ((*i)->getId() == int_id) {
+    FloorItems::iterator i;
+
+    for (i = floorItems.begin(); i != floorItems.end(); i++)
+    {
+        if ((*i)->getId() == id)
+        {
             delete (*i);
             floorItems.erase(i);
             return;
@@ -55,25 +96,34 @@ void remove_floor_item(unsigned int int_id)
 
 unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y)
 {
-    std::list<FloorItem *>::iterator i;
-    for (i = floorItems.begin(); i != floorItems.end(); i++) {
+    FloorItems::iterator i;
+
+    for (i = floorItems.begin(); i != floorItems.end(); i++)
+    {
         FloorItem *floorItem = (*i);
+
         if (floorItem->getX() == x && floorItem->getY() == y)
         {
             return floorItem->getId();
         }
     }
+
     return 0;
 }
 
 FloorItem *find_floor_item_by_id(unsigned int int_id)
 {
-    std::list<FloorItem*>::iterator i;
-    for (i = floorItems.begin(); i != floorItems.end(); i++) {
+    FloorItems::iterator i;
+
+    for (i = floorItems.begin(); i != floorItems.end(); i++)
+    {
         FloorItem *floorItem = (*i);
-        if (floorItem->getId() == int_id) {
+
+        if (floorItem->getId() == int_id)
+        {
             return floorItem;
         }
     }
+
     return NULL;
 }

@@ -118,7 +118,11 @@ Being *findNode(Uint16 x, Uint16 y)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Return being if found and it is not a dead monster
-        if (being->x == x && being->y == y && being->action != Being::MONSTER_DEAD) {
+        if (being->x == x &&
+            (being->y == y ||
+             (being->getType() == Being::NPC && being->y == y + 1)) &&
+            being->action != Being::MONSTER_DEAD)
+        {
             return being;
         }
     }
@@ -131,8 +135,11 @@ Being* findNode(Uint16 x, Uint16 y, Being::Type type)
     for (i = beings.begin(); i != beings.end(); i++) {
         Being *being = (*i);
         // Check if is a NPC (only low job ids)
-        if (being->x == x && being->y == y &&
-                being->getType() == type && being->action != Being::MONSTER_DEAD)
+        if (being->x == x &&
+            (being->y == y ||
+             (being->getType() == Being::NPC && being->y == y + 1)) &&
+            being->getType() == type &&
+            being->action != Being::MONSTER_DEAD)
         {
             return being;
         }

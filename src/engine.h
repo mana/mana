@@ -69,7 +69,7 @@ class Engine
         void draw();
 
     private:
-        Spriteset *emotionset, *npcset, *weaponset, *itemset;
+        Spriteset *emotionset, *npcset, *weaponset;
         Map *mCurrentMap;
         Image *attackTarget;
 };

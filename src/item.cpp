@@ -21,19 +21,3 @@
  *  $Id$
  */
 
-#include "item.h"
-#include "resources/itemmanager.h"
-
-Item::Item(int id, int quantity, bool equipment, bool equipped):
-    id(id), quantity(quantity), equipment(equipment), equipped(equipped)
-{
-}
-
-Item::~Item()
-{
-}
-
-ItemInfo* Item::getInfo()
-{
-    return itemDb->getItemInfo(id);
-}

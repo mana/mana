@@ -21,99 +21,112 @@
  *  $Id$
  */
 
-#ifndef _ITEM_H
-#define _ITEM_H
+#ifndef _ITEM_H_
+#define _ITEM_H_
 
-class ItemInfo;
+#include "resources/itemmanager.h"
 
+/**
+ * Represents one or more instances of a certain item type.
+ */
 class Item
 {
     public:
-        Item(int id=-1, int quantity=0,
-                bool equipment=false, bool equipped=false);
+        /**
+         * Constructor.
+         */
+        Item(int id = -1, int quantity = 0,
+             bool equipment = false, bool equipped = false):
+            mId(id),
+            mQuantity(quantity),
+            mEquipment(equipment),
+            mEquipped(equipped)
+        {
+        }
 
-        ~Item();
+        /**
+         * Destructor.
+         */
+        ~Item() {}
 
-        void setId(int id);
-        int getId();
+        /**
+         * Sets the item id, identifying the item type.
+         */
+        void
+        setId(int id) { mId = id; }
 
-        void setQuantity(int quantity);
-        void increaseQuantity(int amount);
-        int getQuantity();
+        /**
+         * Returns the item id.
+         */
+        int
+        getId() const { return mId; }
 
-        void setEquipment(bool equipment);
-        bool isEquipment();
+        /**
+         * Sets the number of items.
+         */
+        void
+        setQuantity(int quantity) { mQuantity = quantity; }
 
-        void setEquipped(bool equipped);
-        bool isEquipped();
+        /**
+         * Increases the number of items by the given amount.
+         */
+        void
+        increaseQuantity(int amount) { mQuantity += amount; }
 
-        int getInvIndex();
-        void setInvIndex(int index);
+        /**
+         * Returns the number of items.
+         */
+        int
+        getQuantity() const { return mQuantity; }
 
-        ItemInfo* getInfo();
+        /**
+         * Sets wether this item is considered equipment.
+         */
+        void
+        setEquipment(bool equipment) { mEquipment = equipment; }
+
+        /**
+         * Returns wether this item is considered equipment.
+         */
+        bool
+        isEquipment() const { return mEquipment; }
+
+        /**
+         * Sets wether this item is equipped.
+         */
+        void
+        setEquipped(bool equipped) { mEquipped = equipped; }
+
+        /**
+         * Returns wether this item is equipped.
+         */
+        bool
+        isEquipped() const { return mEquipped; }
+
+        /**
+         * Sets the inventory index of this item.
+         */
+        void
+        setInvIndex(int index) { mInvIndex = index; }
+
+        /**
+         * Returns the inventory index of this item.
+         */
+        int
+        getInvIndex() const { return mInvIndex; }
+
+        /**
+         * Returns information about this item type.
+         */
+        ItemInfo*
+        getInfo() const { return itemDb->getItemInfo(mId); }
 
     protected:
-        int id;
-        int quantity;
-        bool equipment;
-        bool equipped;
-
-        int invIndex;
+        int mId;              /**< Item type id. */
+        int mQuantity;        /**< Number of items. */
+        bool mEquipment;      /**< Item is equipment. */
+        bool mEquipped;       /**< Item is equipped. */
+        int mInvIndex;        /**< Inventory index. */
 };
-
-inline void Item::setId(int id)
-{
-    this->id = id;
-}
-
-inline int Item::getId()
-{
-    return id;
-}
-
-inline void Item::setQuantity(int quantity)
-{
-    this->quantity = quantity;
-}
-
-inline void Item::increaseQuantity(int amount)
-{
-    this->quantity += amount;
-}
-
-inline int Item::getQuantity()
-{
-    return quantity;
-}
-
-inline void Item::setEquipment(bool equipment)
-{
-    this->equipment = equipment;
-}
-
-inline bool Item::isEquipment()
-{
-    return equipment;
-}
-
-inline void Item::setEquipped(bool equipped)
-{
-    this->equipped = equipped;
-}
-
-inline bool Item::isEquipped()
-{
-    return equipped;
-}
-
-inline int Item::getInvIndex()
-{
-    return invIndex;
-}
-
-inline void Item::setInvIndex(int index)
-{
-    this->invIndex = index;
-}
 
 #endif

@@ -21,19 +21,24 @@
  *  $Id$
  */
 
-#ifndef _TMW_MAP_H
-#define _TMW_MAP_H
+#ifndef _TMW_MAP_H_
+#define _TMW_MAP_H_
 
 #include <list>
 #include <map>
 #include <vector>
+#include "properties.h"
 
 class Being;
 class Graphics;
 class Image;
 class Tileset;
+class Sprite;
 
 struct PATH_NODE;
+
+typedef std::vector<Tileset*> Tilesets;
+typedef std::list<Sprite*> Sprites;
 
 /**
  * A meta tile stores additional information about a location on a tile map.
@@ -81,7 +86,7 @@ class Location
 /**
  * A tile map.
  */
-class Map
+class Map : public Properties
 {
     public:
         /**
@@ -178,22 +183,16 @@ class Map
         findPath(int startX, int startY, int destX, int destY);
 
         /**
-         * Get a map property.
-         *
-         * @return the value of the given property or an empty string when it
-         *         doesn't exist.
+         * Adds a sprite to the map.
          */
-        std::string getProperty(const std::string &name);
+        Sprites::iterator
+        addSprite(Sprite *sprite);
 
         /**
-         * Returns whether a certain property is available.
+         * Removes a sprite from the map.
          */
-        bool hasProperty(const std::string &name);
-
-        /**
-         * Set a map property.
-         */
-        void setProperty(const std::string &name, const std::string &value);
+        void
+        removeSprite(Sprites::iterator iterator);
 
     private:
         /**
@@ -215,8 +214,8 @@ class Map
         Image **tiles;
         std::map<std::string,std::string> properties;
 
-        typedef std::vector<Tileset*> Tilesets;
         Tilesets tilesets;
+        Sprites mSprites;
 
         // Pathfinding members
         int onClosedList, onOpenList;

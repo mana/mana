@@ -21,8 +21,12 @@
  *  $Id$
  */
 
-#ifndef _TMW_FLOORITEM_H
-#define _TMW_FLOORITEM_H
+#ifndef _TMW_FLOORITEM_H_
+#define _TMW_FLOORITEM_H_
+
+class Map;
+
+#include "map.h"
 
 /**
  * An item lying on the floor.
@@ -36,38 +40,41 @@ class FloorItem
         FloorItem(unsigned int id,
                   unsigned int itemId,
                   unsigned short x,
-                  unsigned short y):
-            id(itemId),
-            int_id(id),
-            x(x),
-            y(y)
-        {
-        }
+                  unsigned short y,
+                  Map *map);
+
+        /**
+         * Destructor.
+         */
+        ~FloorItem();
 
         /**
          * Returns instance id of this item.
          */
-        unsigned int getId() { return int_id; }
+        unsigned int getId() { return mId; }
 
         /**
          * Returns the item id.
          */
-        unsigned int getItemId() { return id; }
+        unsigned int getItemId() { return mItemId; }
 
         /**
          * Returns the x coordinate.
          */
-        unsigned short getX() { return x; }
+        unsigned short getX() { return mX; }
 
         /**
          * Returns the y coordinate.
          */
-        unsigned short getY() { return y; }
+        unsigned short getY() { return mY; }
 
     private:
-        unsigned int id;
-        unsigned int int_id;
-        unsigned short x, y;
+        unsigned int mId;
+        unsigned int mItemId;
+        unsigned short mX, mY;
+        Sprite *mSprite;
+        Sprites::iterator mSpriteIterator;
+        Map *mMap;
 };
 
 /** Removes all items from the list */

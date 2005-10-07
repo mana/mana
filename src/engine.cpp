@@ -65,6 +65,7 @@ gcn::Label *debugInfo;
 std::map<int, Spriteset*> monsterset;
 
 ItemManager *itemDb;          /**< Item database object */
+Spriteset *itemset;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -292,20 +293,6 @@ void Engine::draw()
     {
         mCurrentMap->draw(graphics, map_x, map_y, 0);
         mCurrentMap->draw(graphics, map_x, map_y, 1);
-    }
-
-    // Draw items
-    for (std::list<FloorItem*>::iterator i = floorItems.begin(); i != floorItems.end(); i++)
-    {
-        FloorItem *floorItem = (*i);
-        if (itemDb->getItemInfo(floorItem->getItemId())->getImage() > 0) {
-            Image *image = itemset->spriteset[itemDb->getItemInfo(
-                    floorItem->getItemId())->getImage() - 1];
-
-            graphics->drawImage(image,
-                                floorItem->getX() * 32 - map_x,
-                                floorItem->getY() * 32 - map_y);
-        }
     }
 
     // Draw nodes
