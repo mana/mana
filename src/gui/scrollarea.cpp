@@ -216,31 +216,26 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
 void ScrollArea::drawBorder(gcn::Graphics *graphics)
 {
-    int w, h, bs;
-    bs = getBorderSize();
-    w = getWidth() + bs * 2;
-    h = getHeight() + bs * 2;
+    int bs = getBorderSize();
+    int w = getWidth() + bs * 2;
+    int h = getHeight() + bs * 2;
 
-    if (isOpaque()) {
-        dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
+    if (mOpaque) {
+        dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h,
+                                                         background);
     }
 }
 
 void ScrollArea::setOpaque(bool opaque)
 {
-    this->opaque = opaque;
+    mOpaque = opaque;
 
-    if (opaque) {
+    if (mOpaque) {
         setBorderSize(2);
     }
     else {
         setBorderSize(0);
     }
-}
-
-bool ScrollArea::isOpaque()
-{
-    return opaque;
 }
 
 void ScrollArea::drawButton(gcn::Graphics *graphics, BUTTON_DIR dir)

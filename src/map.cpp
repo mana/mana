@@ -36,8 +36,8 @@ MetaTile::MetaTile():
 }
 
 
-Location::Location(int x, int y, MetaTile *tile):
-    x(x), y(y), tile(tile)
+Location::Location(int iX, int iY, MetaTile *iTile):
+    x(iX), y(iY), tile(iTile)
 {
 }
 
@@ -88,7 +88,7 @@ Map::addTileset(Tileset *tileset)
 
 bool spriteCompare(const Sprite *a, const Sprite *b)
 {
-    return a->getY() < b->getY();
+    return a->getPixelY() < b->getPixelY();
 }
 
 void
@@ -118,7 +118,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
         // tiles have been drawn
         if (layer == 1)
         {
-            while (si != mSprites.end() && (*si)->getY() < y * 32)
+            while (si != mSprites.end() && (*si)->getPixelY() <= y * 32 - 32)
             {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;
@@ -133,6 +133,16 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
                                     x * 32 - scrollX,
                                     y * 32 - scrollY + 32 - img->getHeight());
             }
+        }
+    }
+
+    // Draw any remaining sprites
+    if (layer == 1)
+    {
+        while (si != mSprites.end())
+        {
+            (*si)->draw(graphics, -scrollX, -scrollY);
+            si++;
         }
     }
 }

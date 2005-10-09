@@ -39,7 +39,7 @@
 #include "../resources/resourcemanager.h"
 
 ItemContainer::ItemContainer(Inventory *inventory):
-    inventory(inventory)
+    mInventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png");
@@ -51,7 +51,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     if (!selImg) logger->error("Unable to load selection.png");
 
     selectedItem = 0; // No item selected
-    maxItems = inventory->getLastUsedSlot();
+    maxItems = mInventory->getLastUsedSlot();
 
     addMouseListener(this);
 }
@@ -66,7 +66,7 @@ void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
-    int i = inventory->getLastUsedSlot();
+    int i = mInventory->getLastUsedSlot();
 
     if (i != maxItems) {
         maxItems = i;
@@ -100,7 +100,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
      */
     for (int i = 2; i < INVENTORY_SIZE; i++)
     {
-        Item *item = inventory->getItem(i);
+        Item *item = mInventory->getItem(i);
 
         if (item->getQuantity() <= 0) {
             continue;
@@ -182,6 +182,6 @@ void ItemContainer::mousePress(int mx, int my, int button)
         if (index > INVENTORY_SIZE) {
             index = INVENTORY_SIZE - 1;
         }
-        selectedItem = inventory->getItem(index);
+        selectedItem = mInventory->getItem(index);
     }
 }

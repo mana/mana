@@ -70,19 +70,21 @@ class ScrollArea : public gcn::ScrollArea {
         /**
          * Sets whether the widget should draw its background or not.
          */
-        void setOpaque(bool opaque);
+        void
+        setOpaque(bool opaque);
 
         /**
          * Returns whether the widget draws its background or not.
          */
-        bool isOpaque();
+        bool
+        isOpaque() { return mOpaque; }
 
     protected:
         enum BUTTON_DIR {
             UP,
             DOWN,
             LEFT,
-            RIGHT,
+            RIGHT
         };
 
         /**
@@ -105,7 +107,7 @@ class ScrollArea : public gcn::ScrollArea {
         static ImageRect vMarker;
         static Image *buttons[4][2];
 
-        bool opaque;
+        bool mOpaque;
 };
 
 #endif

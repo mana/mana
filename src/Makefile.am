@@ -123,7 +123,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
-	      resources/iteminfo.cpp \
 	      resources/iteminfo.h \
 	      resources/itemmanager.cpp \
 	      resources/itemmanager.h \

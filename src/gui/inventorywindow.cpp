@@ -42,6 +42,8 @@
 
 #include "../resources/iteminfo.h"
 
+extern Inventory *inventory;
+
 InventoryWindow::InventoryWindow():
     Window("Inventory")
 {

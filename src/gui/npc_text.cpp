@@ -80,10 +80,13 @@ NpcTextDialog::addText(const std::string &text)
 void
 NpcTextDialog::action(const std::string& eventId)
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeLong(current_npc);
-    setText("");
-    setVisible(false);
-    current_npc = 0;
+    if (eventId == "ok")
+    {
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
+        outMsg.writeLong(current_npc);
+        setText("");
+        setVisible(false);
+        current_npc = 0;
+    }
 }

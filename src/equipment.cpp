@@ -24,17 +24,38 @@
 #include "equipment.h"
 #include "item.h"
 
-Equipment *Equipment::instance = 0;
+Equipment *Equipment::mInstance = NULL;
 
 Equipment::Equipment():
-    arrows(0)
+    mArrows(NULL)
 {
     for (int i = 0; i < EQUIPMENT_SIZE; i++)
     {
-        equipment[i] = 0;
+        mEquipment[i] = NULL;
     }
 }
 
 Equipment::~Equipment()
 {
+}
+
+Equipment*
+Equipment::getInstance()
+{
+    if (!mInstance) {
+        mInstance = new Equipment();
+    }
+
+    return mInstance;
+}
+
+void
+Equipment::removeEquipment(Item *item)
+{
+    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
+        if (mEquipment[i] == item) {
+            mEquipment[i] = 0;
+            break;
+        }
+    }
 }

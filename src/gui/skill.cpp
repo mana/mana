@@ -37,7 +37,7 @@
 #include "../graphics.h"
 extern Graphics *graphics;
 
-char *skill_db[] = {
+const char *skill_db[] = {
     // 0-99
     "", "Basic", "Sword", "Two hand", "HP regeneration", "Bash", "Provoke", "Magnum", "Endure", "MP regeneration",
     "", "", "", "", "", "", "", "", "", "",

@@ -24,14 +24,16 @@
 #ifndef _TMW_FLOORITEM_H_
 #define _TMW_FLOORITEM_H_
 
-class Map;
-
+#include "graphics.h"
 #include "map.h"
+#include "sprite.h"
+
+class Map;
 
 /**
  * An item lying on the floor.
  */
-class FloorItem
+class FloorItem : public Sprite
 {
     public:
         /**
@@ -51,28 +53,53 @@ class FloorItem
         /**
          * Returns instance id of this item.
          */
-        unsigned int getId() { return mId; }
+        unsigned int
+        getId() { return mId; }
 
         /**
          * Returns the item id.
          */
-        unsigned int getItemId() { return mItemId; }
+        unsigned int
+        getItemId() { return mItemId; }
 
         /**
          * Returns the x coordinate.
          */
-        unsigned short getX() { return mX; }
+        unsigned short
+        getX() { return mX; }
 
         /**
          * Returns the y coordinate.
          */
-        unsigned short getY() { return mY; }
+        unsigned short
+        getY() { return mY; }
+
+        /**
+         * Returns the pixel y coordinate.
+         *
+         * @see Sprite::getPixelY()
+         */
+        int
+        getPixelY() const { return mY * 32; }
+
+        /**
+         * Draws this floor item to the given graphics context.
+         *
+         * @see Sprite::draw(Graphics, int, int)
+         */
+        void
+        draw(Graphics *graphics, int offsetX, int offsetY)
+        {
+            graphics->drawImage(mImage,
+                                mX * 32 + offsetX,
+                                mY * 32 + offsetY);
+        }
 
     private:
         unsigned int mId;
         unsigned int mItemId;
         unsigned short mX, mY;
-        Sprite *mSprite;
+        Image *mImage;
         Sprites::iterator mSpriteIterator;
         Map *mMap;
 };

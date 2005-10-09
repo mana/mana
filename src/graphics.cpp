@@ -135,7 +135,7 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcY += image->bounds.y;
 
     // Check that preconditions for blitting are met.
-    if (!mScreen || !image->image) return false;
+    if (!mScreen || !image->mImage) return false;
 
     SDL_Rect dstRect;
     SDL_Rect srcRect;
@@ -144,11 +144,7 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.w = width;
     srcRect.h = height;
 
-    if (SDL_BlitSurface(image->image, &srcRect, mScreen, &dstRect) < 0) {
-        return false;
-    }
-
-    return true;
+    return !(SDL_BlitSurface(image->mImage, &srcRect, mScreen, &dstRect) < 0);
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
@@ -172,13 +168,13 @@ void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
     }
 }
 
-void Graphics::drawImageRect(
-        int x, int y, int w, int h,
-        Image *topLeft, Image *topRight,
-        Image *bottomLeft, Image *bottomRight,
-        Image *top, Image *right,
-        Image *bottom, Image *left,
-        Image *center)
+void
+Graphics::drawImageRect(int x, int y, int w, int h,
+                        Image *topLeft, Image *topRight,
+                        Image *bottomLeft, Image *bottomRight,
+                        Image *top, Image *right,
+                        Image *bottom, Image *left,
+                        Image *center)
 {
     pushClipArea(gcn::Rectangle(x, y, w, h));
 
@@ -216,9 +212,9 @@ void Graphics::drawImageRect(
     popClipArea();
 }
 
-void Graphics::drawImageRect(
-        int x, int y, int w, int h,
-        const ImageRect &imgRect)
+void
+Graphics::drawImageRect(int x, int y, int w, int h,
+                        const ImageRect &imgRect)
 {
     drawImageRect(x, y, w, h,
             imgRect.grid[0], imgRect.grid[2], imgRect.grid[6], imgRect.grid[8],

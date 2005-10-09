@@ -26,15 +26,15 @@
 #include <cstring>
 
 Packet::Packet(const char *data, int length):
-    length(length)
+    mLength(length)
 {
     // Create a copy of the data
-    this->data = new char[length];
-    memcpy(this->data, data, length);
+    mData = new char[mLength];
+    memcpy(mData, data, mLength);
 }
 
 Packet::~Packet()
 {
     // Clean up the data
-    delete[] data;
+    delete[] mData;
 }

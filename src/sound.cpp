@@ -76,7 +76,7 @@ void Sound::info()
     SDL_version compiledVersion;
     const SDL_version *linkedVersion;
     char driver[40] = "Unknown";
-    char *format = "Unknown";
+    const char *format = "Unknown";
     int rate = 0;
     Uint16 audioFormat = 0;
     int channels = 0;

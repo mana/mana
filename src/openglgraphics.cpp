@@ -89,13 +89,13 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     srcY += image->bounds.y;
 
     // Find OpenGL texture coordinates
-    float texX1 = srcX / (float)image->texWidth;
-    float texY1 = srcY / (float)image->texHeight;
-    float texX2 = (srcX + width) / (float)image->texWidth;
-    float texY2 = (srcY + height) / (float)image->texHeight;
+    float texX1 = srcX / (float)image->mTexWidth;
+    float texY1 = srcY / (float)image->mTexHeight;
+    float texX2 = (srcX + width) / (float)image->mTexWidth;
+    float texY2 = (srcY + height) / (float)image->mTexHeight;
 
     glColor4f(1.0f, 1.0f, 1.0f, image->alpha);
-    glBindTexture(GL_TEXTURE_2D, image->glimage);
+    glBindTexture(GL_TEXTURE_2D, image->mGLImage);
 
     drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
 

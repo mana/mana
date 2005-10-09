@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_LINK_HANDLER_H
-#define _TMW_LINK_HANDLER_H
+#ifndef _TMW_LINK_HANDLER_H_
+#define _TMW_LINK_HANDLER_H_
 
 /**
  * A simple interface to windows that need to handle links from BrowserBox
@@ -33,8 +33,8 @@ class LinkHandler
     public:
         virtual ~LinkHandler() { }
 
-        virtual void handleLink(const std::string& link) { }
-        
+        virtual void handleLink(const std::string& link) = 0;
+
     protected:
         LinkHandler() { }
 };

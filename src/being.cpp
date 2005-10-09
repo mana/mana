@@ -45,12 +45,41 @@
 extern Being* autoTarget;
 extern std::map<int, Spriteset*> monsterset;
 
+// From main.cpp
+extern Spriteset *hairset;
+extern Spriteset *playerset;
+
+// From engine.cpp
+extern Spriteset *emotionset;
+extern Spriteset *npcset;
+extern Spriteset *weaponset;
+
 Being *player_node = NULL;
 
 std::list<Being*> beings;
 
-PATH_NODE::PATH_NODE(Uint16 x, Uint16 y):
-    x(x), y(y)
+char hairtable[16][4][2] = {
+    // S(x,y)    W(x,y)   N(x,y)   E(x,y)
+    { { 0,  0}, {-1, 2}, {-1, 2}, { 0, 2} }, // STAND
+    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 1st frame
+    { { 0,  3}, {-2, 4}, {-1, 3}, { 1, 4} }, // WALK 2nd frame
+    { { 0,  1}, {-2, 2}, {-1, 2}, { 1, 2} }, // WALK 3rd frame
+    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 4th frame
+    { { 0,  1}, { 1, 2}, {-1, 3}, {-2, 2} }, // ATTACK 1st frame
+    { { 0,  1}, {-1, 2}, {-1, 3}, { 0, 2} }, // ATTACK 2nd frame
+    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 3rd frame
+    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 4th frame
+    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 1st frame
+    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 2nd frame
+    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 3rd frame
+    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 4th frame
+    { { 0,  4}, {-1, 6}, {-1, 6}, { 0, 6} }, // SIT
+    { { 0,  0}, { 0, 0}, { 0, 0}, { 0, 0} }, // ?? HIT
+    { { 0, 16}, {-1, 6}, {-1, 6}, { 0, 6} }  // DEAD
+};
+
+PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
+    x(iX), y(iY)
 {
 }
 
@@ -161,16 +190,15 @@ void sort() {
 Being::Being():
     job(0),
     x(0), y(0), direction(SOUTH),
-    action(0), frame(0),
+    action(0), mFrame(0),
     speech_color(0),
     walk_time(0),
     speed(150),
     emotion(0), emotion_time(0),
-    text_x(0), text_y(0),
     aspd(350),
-    m_weapon(0),
-    m_id(0),
-    map(0),
+    mWeapon(0),
+    mId(0),
+    mMap(NULL),
     hairStyle(1), hairColor(1),
     speech_time(0),
     damage_time(0),
@@ -181,24 +209,25 @@ Being::Being():
 Being::~Being()
 {
     clearPath();
+    setMap(NULL);
 }
 
 void Being::setDestination(Uint16 destX, Uint16 destY)
 {
-    if (!map)
-        return;
-
-    setPath(map->findPath(x, y, destX, destY));
+    if (mMap)
+    {
+        setPath(mMap->findPath(x, y, destX, destY));
+    }
 }
 
 void Being::clearPath()
 {
-    path.clear();
+    mPath.clear();
 }
 
 void Being::setPath(std::list<PATH_NODE> path)
 {
-    this->path = path;
+    mPath = path;
 
     if (action != WALK && action != DEAD)
     {
@@ -257,21 +286,33 @@ void Being::setDamage(Sint16 amount, Uint32 time)
 
 void Being::setMap(Map *map)
 {
-    this->map = map;
+    // Remove sprite from potential previous map
+    if (mMap != NULL)
+    {
+        mMap->removeSprite(mSpriteIterator);
+    }
+
+    mMap = map;
+
+    // Add sprite to potential new map
+    if (mMap != NULL)
+    {
+        mSpriteIterator = mMap->addSprite(this);
+    }
 }
 
 void Being::nextStep()
 {
-    frame = 0;
+    mFrame = 0;
 
-    if (path.empty())
+    if (mPath.empty())
     {
         action = STAND;
         return;
     }
 
-    PATH_NODE node = path.front();
-    path.pop_front();
+    PATH_NODE node = mPath.front();
+    mPath.pop_front();
 
     if (node.x > x) {
         if (node.y > y)       direction = SE;
@@ -296,57 +337,74 @@ void Being::nextStep()
 
 void Being::logic()
 {
-    if (get_elapsed_time(speech_time) > 5000) {
+    // Determine whether speech should still be displayed
+    if (get_elapsed_time(speech_time) > 5000)
+    {
         showSpeech = false;
     }
-    if (get_elapsed_time(damage_time) > 3000) {
+
+    // Determine whether damange should still be displayed
+    if (get_elapsed_time(damage_time) > 3000)
+    {
         showDamage = false;
     }
 
-    if (getType() != PLAYER)
+    // Execute next walk or attack command for players
+    if (getType() == PLAYER)
     {
-        return;
-    }
-
-    switch (action) {
-        case WALK:
-            frame = (get_elapsed_time(walk_time) * 4) / speed;
-            if (frame >= 4) {
-                nextStep();
-            }
-            break;
-        case ATTACK:
-            frame = (get_elapsed_time(walk_time) * 4) / aspd;
-            if (frame >= 4) {
-                nextStep();
-                if (autoTarget && this == player_node) {
-                    attack(autoTarget);
+        switch (action) {
+            case WALK:
+                mFrame = (get_elapsed_time(walk_time) * 4) / speed;
+                if (mFrame >= 4) {
+                    nextStep();
                 }
+                break;
+            case ATTACK:
+                mFrame = (get_elapsed_time(walk_time) * 4) / aspd;
+                if (mFrame >= 4) {
+                    nextStep();
+                    if (autoTarget && this == player_node) {
+                        attack(autoTarget);
+                    }
+                }
+                break;
+        }
+
+        if (emotion != 0)
+        {
+            emotion_time--;
+            if (emotion_time == 0) {
+                emotion = 0;
             }
-            break;
+        }
     }
 
-    if (emotion != 0) {
-        emotion_time--;
-        if (emotion_time == 0) {
-            emotion = 0;
-        }
+    // Update pixel coordinates
+    mPx = x * 32;
+    mPy = y * 32;
+
+    if (getType() == PLAYER || getType() == MONSTER)
+    {
+        mPy += getYOffset();
+        mPx += getXOffset();
     }
 }
 
-void Being::drawSpeech(Graphics *graphics)
+void Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
-    // Draw speech above this being
-    if (showSpeech) {
-        graphics->setFont(speechFont);
-        graphics->drawText(speech,
-                text_x + 18, text_y - 60,
-                gcn::Graphics::CENTER);
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
 
-        // Backing to default font
-        graphics->setFont(gui->getFont());
+    // Draw speech above this being
+    if (showSpeech)
+    {
+        graphics->setFont(speechFont);
+        graphics->drawText(speech, px + 18, py - 60, gcn::Graphics::CENTER);
     }
-    if (showDamage) {
+
+    // Draw damage above this being
+    if (showDamage)
+    {
         // Selecting the right color
         if (damage == "miss")
         {
@@ -361,28 +419,23 @@ void Being::drawSpeech(Graphics *graphics)
             graphics->setFont(hitRedFont);
         }
 
-        int textX = 0;
-        int textY = 0;
-        if (getType() == PLAYER) {
-            textX = 16;
-            textY = 70;
-        }
-        else {
-            textX = 60;
-            textY = 0;
-        }
+        int textY = (getType() == PLAYER) ? 70 : 32;
 
         graphics->drawText(damage,
-                text_x + textX,
-                text_y - textY - get_elapsed_time(damage_time) / 100,
-                gcn::Graphics::CENTER);
+                           px + 16,
+                           py - textY - get_elapsed_time(damage_time) / 100,
+                           gcn::Graphics::CENTER);
+    }
 
-        // Backing to default font
-        graphics->setFont(gui->getFont());
+    // Draw player name
+    if (getType() == PLAYER && this != player_node)
+    {
+        graphics->setFont(speechFont);
+        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
     }
 }
 
-Being::Type Being::getType()
+Being::Type Being::getType() const
 {
     if (job < 10) {
         return PLAYER;
@@ -393,11 +446,6 @@ Being::Type Being::getType()
     } else {
         return UNKNOWN;
     }
-}
-
-void Being::setWeapon(Uint16 weapon)
-{
-    m_weapon = weapon;
 }
 
 void Being::setWeaponById(Uint16 weapon)
@@ -430,7 +478,154 @@ void Being::setWeaponById(Uint16 weapon)
     }
 }
 
-void Being::setId(Uint32 id)
+int
+Being::getXOffset() const
 {
-    m_id = id;
+    int offset = 0;
+
+    if (action == WALK)
+    {
+        if (direction != NORTH && direction != SOUTH)
+        {
+            offset = (get_elapsed_time(walk_time) * 32) / speed;
+            if (offset > 32) offset = 32;
+
+            if (direction == WEST || direction == NW || direction == SW) {
+                offset = -offset;
+                offset += 32;
+            }
+            else {
+                offset -= 32;
+            }
+        }
+    }
+
+    return offset;
+}
+
+int
+Being::getYOffset() const
+{
+    int offset = 0;
+
+    if (action == WALK)
+    {
+        if (direction != EAST && direction != WEST)
+        {
+            offset = (get_elapsed_time(walk_time) * 32) / speed;
+            if (offset > 32) offset = 32;
+
+            if (direction == NORTH || direction == NW || direction == NE) {
+                offset = -offset;
+                offset += 32;
+            }
+            else {
+                offset -= 32;
+            }
+        }
+    }
+
+    return offset;
+}
+
+void
+Being::draw(Graphics *graphics, int offsetX, int offsetY)
+{
+    unsigned char dir = direction / 2;
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+    int frame;
+
+    switch (getType())
+    {
+        case PLAYER:
+            if (action == SIT || action == DEAD)
+            {
+                frame = 0;
+            }
+
+            frame = mFrame + action;
+
+            if (action == ATTACK && getWeapon() > 0)
+            {
+                frame += 4 * (getWeapon() - 1);
+            }
+
+            graphics->drawImage(playerset->spriteset[frame + 16 * dir],
+                                px - 16, py - 32);
+
+            if (getWeapon() != 0 && action == ATTACK)
+            {
+                Image *image = weaponset->spriteset[
+                    16 * (getWeapon() - 1) + 4 * mFrame + dir];
+
+                graphics->drawImage(image, px - 64, py - 80);
+            }
+
+            if (getHairColor() <= NR_HAIR_COLORS)
+            {
+                int hf = getHairColor() - 1 + 10 * (dir + 4 *
+                         (getHairStyle() - 1));
+
+                graphics->drawImage(hairset->spriteset[hf],
+                                    px - 2 + 2 * hairtable[frame][dir][0],
+                                    py - 50 + 2 * hairtable[frame][dir][1]);
+            }
+
+            if (emotion != 0)
+            {
+                graphics->drawImage(emotionset->spriteset[emotion - 1],
+                                    px + 3, py - 90);
+            }
+            break;
+
+        case NPC:
+            graphics->drawImage(npcset->spriteset[job - 100], px - 8, py - 52);
+            break;
+
+        case MONSTER:
+            if (mFrame >= 4)
+            {
+                mFrame = 3;
+            }
+
+            px -= 42;
+            py -= 65;
+
+            frame = mFrame + action;
+
+            if (action == MONSTER_DEAD)
+            {
+                graphics->drawImage(
+                        monsterset[job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
+                        px + 30, py + 40);
+            }
+            else
+            {
+                graphics->drawImage(
+                        monsterset[job-1002]->spriteset[dir + 4 * frame],
+                        px + 30, py + 40);
+
+                /*
+                if (x == mouseTileX && y == mouseTileY)
+                {
+                    graphics->drawImage(attackTarget, px + 30 + 16, py + 32);
+                }
+                */
+            }
+
+            if (action != STAND)
+            {
+                mFrame = (get_elapsed_time(walk_time) * 4) / speed;
+
+                if (mFrame >= 4 && action != MONSTER_DEAD)
+                {
+                    nextStep();
+                }
+            }
+            break;
+
+        default:
+            break;
+    }
 }

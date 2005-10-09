@@ -47,13 +47,17 @@
 #include "../resources/itemmanager.h"
 
 extern Being* autoTarget;
+extern Inventory* inventory;
 
 PopupMenu::PopupMenu():
-    Window()
+    Window(),
+    mBeing(NULL),
+    mFloorItem(NULL),
+    mItem(NULL)
 {
     setResizable(false);
     setTitleBarHeight(0);
-    title = false;
+    mShowTitle = false;
 
     browserBox = new BrowserBox();
     browserBox->setPosition(4, 4);
@@ -61,29 +65,25 @@ PopupMenu::PopupMenu():
     browserBox->setOpaque(false);
     add(browserBox);
     browserBox->setLinkHandler(this);
-
-    being = NULL;
-    floorItem = NULL;
 }
 
 PopupMenu::~PopupMenu()
 {
     delete browserBox;
-    delete floorItem;
 }
 
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
-    this->being = being;
+    mBeing = being;
     browserBox->clearRows();
 
-    switch (being->getType())
+    switch (mBeing->getType())
     {
         case Being::PLAYER:
             {
                 // Players can be traded with. Later also attack, follow and
                 // add as buddy will be options in this menu.
-                const std::string &name = being->getName();
+                const std::string &name = mBeing->getName();
                 browserBox->addRow("@@trade|Trade With " + name + "@@");
 
                 browserBox->addRow("@@attack|Attack " + name + "@@");
@@ -112,11 +112,11 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
-    this->floorItem = floorItem;
+    mFloorItem = floorItem;
     browserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
-    std::string name = itemDb->getItemInfo(floorItem->getItemId())->getName();
+    std::string name = itemDb->getItemInfo(mFloorItem->getItemId())->getName();
     browserBox->addRow("@@pickup|Pick Up " + name + "@@");
 
     //browserBox->addRow("@@look|Look To@@");
@@ -129,32 +129,38 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 void PopupMenu::handleLink(const std::string& link)
 {
     // Talk To action
-    if ((link == "talk") && being && being->getType() == Being::NPC &&
-            (current_npc == 0))
+    if (link == "talk" &&
+        mBeing != NULL &&
+        mBeing->getType() == Being::NPC &&
+        current_npc == 0)
     {
         MessageOut outMsg;
         outMsg.writeShort(CMSG_NPC_TALK);
-        outMsg.writeLong(being->getId());
+        outMsg.writeLong(mBeing->getId());
         outMsg.writeByte(0);
-        current_npc = being->getId();
+        current_npc = mBeing->getId();
     }
 
     // Trade action
-    else if ((link == "trade") && being && being->getType() == Being::PLAYER)
+    else if (link == "trade" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
     {
         MessageOut outMsg;
         outMsg.writeShort(CMSG_TRADE_REQUEST);
-        outMsg.writeLong(being->getId());
+        outMsg.writeLong(mBeing->getId());
         //tradePartner.flush();
         //tradePartner << "Trade: You and " << being->name<< "";
-        tradePartnerName = being->getName();
+        tradePartnerName = mBeing->getName();
     }
 
     // Attack action
-    else if ((link == "attack") && being && being->getType() == Being::PLAYER)
+    else if (link == "attack" &&
+             mBeing != NULL &&
+             mBeing->getType() == Being::PLAYER)
     {
-        autoTarget = being;
-        attack(being);
+        autoTarget = mBeing;
+        attack(mBeing);
     }
 
     /*
@@ -165,20 +171,20 @@ void PopupMenu::handleLink(const std::string& link)
 
     /*
     // Add Buddy action
-    else if ((link == "buddy") && being && being->isPlayer())
+    else if ((link == "buddy") && mBeing != NULL && mBeing->isPlayer())
     {
         if (!buddyWindow->isVisible())
             buddyWindow->setVisible(true);
 
-        buddyWindow->addBuddy(being->getName());
+        buddyWindow->addBuddy(mBeing->getName());
     }*/
 
     // Pick Up Floor Item action
-    else if ((link == "pickup") && floorItem)
+    else if ((link == "pickup") && mFloorItem != NULL)
     {
         MessageOut outMsg;
         outMsg.writeShort(CMSG_ITEM_PICKUP);
-        outMsg.writeLong(floorItem->getId());
+        outMsg.writeLong(mFloorItem->getId());
     }
 
     // Look To action
@@ -188,27 +194,27 @@ void PopupMenu::handleLink(const std::string& link)
 
     else if (link == "use")
     {
-        assert(m_item);
-        if (m_item->isEquipment())
+        assert(mItem);
+        if (mItem->isEquipment())
         {
-            if (m_item->isEquipped())
+            if (mItem->isEquipped())
             {
-                inventory->unequipItem(m_item);
+                inventory->unequipItem(mItem);
             }
             else
             {
-                inventory->equipItem(m_item);
+                inventory->equipItem(mItem);
             }
         }
         else
         {
-            inventory->useItem(m_item);
+            inventory->useItem(mItem);
         }
     }
 
     else if (link == "drop")
     {
-                new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, m_item);
+        new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
     }
 
     else if (link == "description")
@@ -231,15 +237,15 @@ void PopupMenu::handleLink(const std::string& link)
      */
     _getFocusHandler()->focusNone();
 
-    being = NULL;
-    floorItem = NULL;
-    m_item = NULL;
+    mBeing = NULL;
+    mFloorItem = NULL;
+    mItem = NULL;
 }
 
 void PopupMenu::showPopup(int x, int y, Item *item)
 {
     assert(item);
-    m_item = item;
+    mItem = item;
     browserBox->clearRows();
 
     if (item->isEquipment())

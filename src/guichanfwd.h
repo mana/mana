@@ -68,6 +68,6 @@ namespace gcn {
     class TextField;
     class Widget;
     class Window;
-};
+}
 
 #endif

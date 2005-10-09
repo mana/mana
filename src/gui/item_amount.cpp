@@ -31,6 +31,8 @@
 #include "../inventory.h"
 #include "../item.h"
 
+extern Inventory *inventory;
+
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("Select amount of items to drop.", true, parent),
     mItem(item)

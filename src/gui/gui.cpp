@@ -69,12 +69,15 @@ gcn::ImageFont *speechFont;
 class GuiConfigListener : public ConfigListener
 {
     public:
-        GuiConfigListener(Gui *gui):mGui(gui) {}
+        GuiConfigListener(Gui *g):
+            mGui(g)
+        {}
 
         void optionChanged(const std::string &name)
         {
             if (name == "customcursor") {
-                mGui->setUseCustomCursor(config.getValue("customcursor", 1) == 1);
+                bool bCustomCursor = config.getValue("customcursor", 1) == 1;
+                mGui->setUseCustomCursor(bCustomCursor);
             }
         }
     private:

@@ -60,11 +60,14 @@ WrongPasswordNoticeListener::setLoginDialog(LoginDialog *loginDialog)
 void
 WrongPasswordNoticeListener::action(const std::string &eventId)
 {
-    // Reset the password and put the caret ready to retype it.
-    mLoginDialog->passField->setText("");
-    mLoginDialog->passField->setCaretPosition(0);
-    mLoginDialog->passField->requestFocus();
-    wrongLoginNotice = NULL;
+    if (eventId == "ok")
+    {
+        // Reset the password and put the caret ready to retype it.
+        mLoginDialog->passField->setText("");
+        mLoginDialog->passField->setCaretPosition(0);
+        mLoginDialog->passField->requestFocus();
+        wrongLoginNotice = NULL;
+    }
 }
 
 void
@@ -76,10 +79,13 @@ WrongUsernameNoticeListener::setLoginDialog(LoginDialog *loginDialog)
 void
 WrongUsernameNoticeListener::action(const std::string &eventId)
 {
-    // Set the focus on the username Field
-    mLoginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
-    mLoginDialog->userField->requestFocus();
-    wrongLoginNotice = NULL;
+    if (eventId == "ok")
+    {
+        // Set the focus on the username Field
+        mLoginDialog->userField->setCaretPosition(LEN_MAX_USERNAME - 1);
+        mLoginDialog->userField->requestFocus();
+        wrongLoginNotice = NULL;
+    }
 }
 
 LoginDialog::LoginDialog():
@@ -269,41 +275,41 @@ LoginDialog::action(const std::string& eventId)
         else if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
-            std::stringstream errorMessage;
-            errorMessage << "The username needs to be at least "
-                         << LEN_MIN_USERNAME
-                         << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+            std::stringstream errorMsg;
+            errorMsg << "The username needs to be at least "
+                     << LEN_MIN_USERNAME
+                     << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
                                             &wrongUsernameNoticeListener);
         }
         else if (user.length() > LEN_MAX_USERNAME - 1 )
         {
             // Name too long
-            std::stringstream errorMessage;
-            errorMessage << "The username needs to be less than "
-                         << LEN_MAX_USERNAME
-                         << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+            std::stringstream errorMsg;
+            errorMsg << "The username needs to be less than "
+                     << LEN_MAX_USERNAME
+                     << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
                                             &wrongUsernameNoticeListener);
         }
         else if (passField->getText().length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
-            std::stringstream errorMessage;
-            errorMessage << "The password needs to be at least "
-                         << LEN_MIN_PASSWORD
-                         << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+            std::stringstream errorMsg;
+            errorMsg << "The password needs to be at least "
+                     << LEN_MIN_PASSWORD
+                     << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
                                             &wrongPasswordNoticeListener);
         }
         else if (passField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
             // Pass too long
-            std::stringstream errorMessage;
-            errorMessage << "The password needs to be less than "
-                         << LEN_MAX_PASSWORD
-                         << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMessage.str(),
+            std::stringstream errorMsg;
+            errorMsg << "The password needs to be less than "
+                     << LEN_MAX_PASSWORD
+                     << " characters long.";
+            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
                                             &wrongPasswordNoticeListener);
         }
         else

@@ -28,22 +28,27 @@
 #include <string>
 #include <SDL_types.h>
 
+#include "sprite.h"
+#include "map.h"
+
 #define NR_HAIR_STYLES 5
 #define NR_HAIR_COLORS 10
 
 class Map;
 class Graphics;
 
-struct PATH_NODE {
+struct PATH_NODE
+{
     /**
      * Constructor.
      */
     PATH_NODE(unsigned short x, unsigned short y);
 
-    unsigned short x, y;
+    unsigned short x;
+    unsigned short y;
 };
 
-class Being
+class Being : public Sprite
 {
     public:
         enum Type {
@@ -61,7 +66,7 @@ class Being
             MONSTER_DEAD =  9,
             SIT          = 13,
             HIT          = 14,
-            DEAD         = 15,
+            DEAD         = 15
         };
 
         enum Direction {
@@ -73,20 +78,19 @@ class Being
             NORTH     =  4,
             NE        =  5,
             EAST      =  6,
-            SE        =  7,
+            SE        =  7
         };
 
         Uint16 job;           /**< Job (player job, npc, monster, ) */
         Uint16 x, y;          /**< Tile coordinates */
         Uint8 direction;      /**< Facing direction */
         Uint8 action;
-        Uint8 frame;
+        Uint8 mFrame;
         Sint32 speech_color;
         Uint16 walk_time;
         Uint16 speed;
         Uint8 emotion;        /**< Currently showing emotion */
         Uint8 emotion_time;   /**< Time until emotion disappears */
-        Uint32 text_x, text_y;  // temp solution to fix speech position
 
         Uint16 aspd;          /**< Attack speed */
 
@@ -175,88 +179,147 @@ class Being
         /**
          * Draws the speech text above the being.
          */
-        void drawSpeech(Graphics *graphics);
+        void drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         /**
          * Returns the type of the being.
          */
-        Type getType();
+        Type getType() const;
 
         // ACCES METHODS
 
         /**
-         * get the weapon picture id.
+         * Gets the weapon picture id.
          */
-        Uint16  getWeapon() { return m_weapon; }
+        Uint16 getWeapon() const { return mWeapon; }
 
         /**
-         * get the sprite id.
+         * Gets the sprite id.
          */
-        Uint32 getId() { return m_id; }
+        Uint32 getId() const { return mId; }
 
         // MODIFICATION METHODS
 
         /**
-         * set the weapon picture id.
+         * Sets the weapon picture id.
          *
-         * @param weapon : the picture id
+         * @param weapon the picture id
          */
-        void setWeapon(Uint16 weapon);
+        void
+        setWeapon(Uint16 weapon) { mWeapon = weapon; }
 
         /**
-         * set the weapon picture id with the weapon id.
+         * Sets the weapon picture id with the weapon id.
          *
-         * @param weapon : the weapon id
+         * @param weapon the weapon id
          */
         void setWeaponById(Uint16 weapon);
 
         /**
-         * set the sprite id.
+         * Sets the sprite id.
          */
-        void setId(Uint32 id);
+        void
+        setId(Uint32 id) { mId = id; }
 
         /**
-         * Set the map the being is on
+         * Sets the map the being is on
          */
         void setMap(Map *map);
 
-    private:
-        Uint16 m_weapon;
-        Uint32 m_id;              /**< Unique id */
-        Map *map;
+        // SPRITE METHODS
 
-        std::list<PATH_NODE> path;
+        /**
+         * Draws this being to the given graphics context.
+         *
+         * @see Sprite::draw(Graphics, int, int)
+         */
+        void
+        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+
+        /**
+         * Returns the pixel X coordinate.
+         */
+        int
+        getPixelX() const { return mPx; }
+
+        /**
+         * Returns the pixel Y coordinate.
+         *
+         * @see Sprite::getPixelY()
+         */
+        int
+        getPixelY() const { return mPy; }
+
+        /**
+         * Get the current X pixel offset.
+         */
+        int
+        getXOffset() const;
+
+        /**
+         * Get the current Y pixel offset.
+         */
+        int
+        getYOffset() const;
+
+    private:
+        /**
+         * Sets the new path for this being.
+         */
+        void
+        setPath(std::list<PATH_NODE> path);
+
+        Uint16 mWeapon;                 /**< Weapon picture id */
+        Uint32 mId;                     /**< Unique id */
+        Map *mMap;                      /**< Map on which this being resides */
+        std::string mName;              /**< Name of character */
+        Sprites::iterator mSpriteIterator;
+
+        std::list<PATH_NODE> mPath;
         std::string speech;
         std::string damage;
         Uint16 hairStyle, hairColor;
         Uint32 speech_time;
         Uint32 damage_time;
         bool showSpeech, showDamage;
-        std::string mName;              /**< Name of character */
-
-        /**
-         * Sets the new path for this being.
-         */
-        void setPath(std::list<PATH_NODE> path);
+        Sint32 mPx, mPy;                /**< Pixel coordinates */
 };
 
-/** Return a specific id Being */
-Being *findNode(Uint32 id);
+/**
+ * Return a specific id Being
+ */
+Being*
+findNode(Uint32 id);
 
-/** Return a being at specific coordinates */
-Being *findNode(Uint16 x, Uint16 y);
+/**
+ * Return a being at specific coordinates
+ */
+Being*
+findNode(Uint16 x, Uint16 y);
 
-/** Return a being at specific coordinates with specific type*/
-Being *findNode(Uint16 x, Uint16 y, Being::Type type);
+/**
+ * Return a being at specific coordinates with specific type
+ */
+Being*
+findNode(Uint16 x, Uint16 y, Being::Type type);
 
-/** Create a being and add it to the list of beings */
-Being *createBeing(Uint32 id, Uint16 job, Map *map);
+/**
+ * Create a being and add it to the list of beings
+ */
+Being*
+createBeing(Uint32 id, Uint16 job, Map *map);
 
-/** Remove a Being */
-void remove_node(Being *being);
+/**
+ * Remove a Being
+ */
+void
+remove_node(Being *being);
 
-/** Sort beings in vertical order */
-void sort();
+/**
+ * Sort beings in vertical order
+ */
+void
+sort();
 
 extern Being *player_node;
 

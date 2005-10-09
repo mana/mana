@@ -138,7 +138,8 @@ class Window : public gcn::Window
          *
          * @return The parent window or <code>NULL</code> if there is none.
          */
-        Window *getParentWindow();
+        Window*
+        getParentWindow() { return mParent; }
 
         /**
          * Schedule this window for deletion. It will be deleted at the start
@@ -195,12 +196,12 @@ class Window : public gcn::Window
         virtual void resetToDefaultSize();
 
     protected:
-        gcn::Container *chrome;    /**< Contained container */
-        Window *parent;            /**< The parent window */
+        gcn::Container *mChrome;   /**< Contained container */
+        Window *mParent;           /**< The parent window */
         std::string mWindowName;   /**< Name of the window */
         int snapSize;              /**< Snap distance to window edge */
-        bool title;                /**< Window has a title bar */
-        bool modal;                /**< Window is modal */
+        bool mShowTitle;           /**< Window has a title bar */
+        bool mModal;               /**< Window is modal */
         bool resizable;            /**< Window can be resized */
         bool mMouseResize;         /**< Window is being resized */
         int minWinWidth;           /**< Minimum window width */

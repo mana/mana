@@ -24,19 +24,20 @@
 #include "music.h"
 
 Music::Music(const std::string &idPath, Mix_Chunk *music):
-    Resource(idPath), music(music)
+    Resource(idPath),
+    mChunk(music),
+    mChannel(-1)
 {
-    channel = -1;
 }
 
 Music::~Music()
 {
     //Mix_FreeMusic(music);
-    Mix_FreeChunk(music);
-    music = NULL;
+    Mix_FreeChunk(mChunk);
 }
 
-Music* Music::load(void* buffer, unsigned int bufferSize, const std::string &idPath)
+Music*
+Music::load(void *buffer, unsigned int bufferSize, const std::string &idPath)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
@@ -44,39 +45,41 @@ Music* Music::load(void* buffer, unsigned int bufferSize, const std::string &idP
     // Use Mix_LoadMUS to load the raw music data
     //Mix_Music* music = Mix_LoadMUS_RW(rw); Need to be implemeted
     Mix_Chunk *tmpMusic = Mix_LoadWAV_RW(rw, 0);
-    
+
     // Now free the SDL_RWops data
     SDL_FreeRW(rw);
 
     return new Music(idPath, tmpMusic);
 }
 
-bool Music::play(int loops)
+bool
+Music::play(int loops)
 {
     /*
      * Warning: loops should be always set to -1 (infinite) with current
      * implementation to avoid halting the playback of other samples
      */
-     
+
     /*if (Mix_PlayMusic(music, loops))
         return true;*/
-    Mix_VolumeChunk(music, 120);
-    channel = Mix_PlayChannel(-1, music, loops);
-    if (channel != -1)
-        return true;
-    return false;
+    Mix_VolumeChunk(mChunk, 120);
+    mChannel = Mix_PlayChannel(-1, mChunk, loops);
+
+    return mChannel != -1;
 }
 
-bool Music::stop()
+void
+Music::stop()
 {
     /*
      * Warning: very dungerous trick, it could try to stop channels occupied
      * by samples rather than the current music file
      */
-     
+
     //Mix_HaltMusic();
-    if (channel != -1)
-        Mix_HaltChannel(channel);
-    // Never fails
-    return true;
+
+    if (mChannel != -1)
+    {
+        Mix_HaltChannel(mChannel);
+    }
 }

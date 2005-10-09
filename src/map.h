@@ -29,7 +29,6 @@
 #include <vector>
 #include "properties.h"
 
-class Being;
 class Graphics;
 class Image;
 class Tileset;

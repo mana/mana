@@ -26,6 +26,8 @@
 
 #include <guichan/widget.hpp>
 
+#include <SDL_types.h>
+
 class ImageRect;
 
 
@@ -40,8 +42,8 @@ class ProgressBar : public gcn::Widget {
          * Constructor, initializes the progress with the given value.
          */
         ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
-                unsigned int width = 40, unsigned int height = 7,
-                unsigned char red = 150, unsigned char green = 150, unsigned char blue = 150);
+                    unsigned int width = 40, unsigned int height = 7,
+                    Uint8 red = 150, Uint8 green = 150, Uint8 blue = 150);
 
         /**
          * Destructor.
@@ -51,47 +53,55 @@ class ProgressBar : public gcn::Widget {
         /**
          * Performs progress bar logic (fading colors)
          */
-        void logic();
+        void
+        logic();
 
         /**
          * Draws the progress bar.
          */
-        void draw(gcn::Graphics *graphics);
+        void
+        draw(gcn::Graphics *graphics);
 
         /**
          * Sets the current progress.
          */
-        void setProgress(float progress);
+        void
+        setProgress(float progress);
 
         /**
          * Returns the current progress.
          */
-        float getProgress();
+        float
+        getProgress() { return mProgress; }
 
         /**
          * Change the filling of the progress bar.
          */
-        void setColor(unsigned char red, unsigned char green, unsigned char blue);
+        void
+        setColor(Uint8, Uint8 green, Uint8 blue);
 
         /**
          * Get The red value of color
          */
-        unsigned char getRed();
+        Uint8
+        getRed() { return mRed; }
 
          /**
          * Get The red value of color
          */
-        unsigned char getGreen();
+        Uint8
+        getGreen() { return mGreen; }
 
-         /**
+        /**
          * Get The red value of color
          */
-        unsigned char getBlue();
+        Uint8
+        getBlue() { return mBlue; }
 
     private:
-        float progress;
-        unsigned char red, green, blue;
-        unsigned char redToGo, greenToGo, blueToGo;
+        float mProgress;
+        Uint8 mRed, mGreen, mBlue;
+        Uint8 mRedToGo, mGreenToGo, mBlueToGo;
 
         static ImageRect mBorder;
         static int mInstances;

@@ -33,6 +33,7 @@
 #include "skill.h"
 
 #include "../graphics.h"
+
 extern Graphics *graphics;
 extern Window *setupWindow;
 
@@ -78,8 +79,8 @@ MenuWindow::MenuWindow():
 
     int menuWidth = setupButton->getX() + setupButton->getWidth();
     setDefaultSize((graphics->getWidth() - menuWidth - 5), 0,
-                menuWidth,
-                (setupButton->getY() + setupButton->getHeight()));
+                   menuWidth,
+                   (setupButton->getY() + setupButton->getHeight()));
 }
 
 MenuWindow::~MenuWindow()
@@ -91,9 +92,9 @@ MenuWindow::~MenuWindow()
     delete setupButton;
 }
 
-void MenuWindow::draw(gcn::Graphics *graphics)
+void MenuWindow::draw(gcn::Graphics *g)
 {
-    Window::drawContent(graphics);
+    Window::drawContent(g);
 }
 
 void MenuWindow::action(const std::string& eventId)

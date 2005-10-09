@@ -35,12 +35,10 @@ int ProgressBar::mInstances = 0;
 
 ProgressBar::ProgressBar(float progress, int x, int y,
                          unsigned int width, unsigned int height,
-                         unsigned char red,
-                         unsigned char green,
-                         unsigned char blue):
+                         Uint8 red, Uint8 green, Uint8 blue):
     gcn::Widget(),
-    red(red), green(green), blue(blue),
-    redToGo(red), greenToGo(green), blueToGo(blue)
+    mRed(red), mGreen(green), mBlue(blue),
+    mRedToGo(red), mGreenToGo(green), mBlueToGo(blue)
 {
     setProgress(progress);
     setX(x);
@@ -88,58 +86,43 @@ ProgressBar::~ProgressBar()
 void ProgressBar::logic()
 {
     // Smoothly changing the color for a nicer effect.
-    if (redToGo > red) red++;
-    if (redToGo < red) red--;
-    if (greenToGo > green) green++;
-    if (greenToGo < green) green--;
-    if (blueToGo > blue) blue++;
-    if (blueToGo < blue) blue--;
+    if (mRedToGo > mRed) mRed++;
+    if (mRedToGo < mRed) mRed--;
+    if (mGreenToGo > mGreen) mGreen++;
+    if (mGreenToGo < mGreen) mGreen--;
+    if (mBlueToGo > mBlue) mBlue++;
+    if (mBlueToGo < mBlue) mBlue--;
 }
 
-void ProgressBar::draw(gcn::Graphics *graphics)
+void
+ProgressBar::draw(gcn::Graphics *graphics)
 {
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, getWidth(), getHeight(),
-                                         mBorder);
+    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0,
+                                                     getWidth(), getHeight(),
+                                                     mBorder);
 
     // The bar
-    if (progress > 0)
+    if (mProgress > 0)
     {
-        graphics->setColor(gcn::Color(red, green, blue, 200));
+        graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
-                    (int)(progress * (getWidth() - 8)), getHeight() - 8));
+                                (int)(mProgress * (getWidth() - 8)),
+                                getHeight() - 8));
     }
 }
 
-void ProgressBar::setProgress(float progress)
+void
+ProgressBar::setProgress(float progress)
 {
-    if (progress < 0.0f) this->progress = 0.0;
-    else if (progress > 1.0f) this->progress = 1.0;
-    else this->progress = progress;
+    if (progress < 0.0f) mProgress = 0.0;
+    else if (progress > 1.0f) mProgress = 1.0;
+    else mProgress = progress;
 }
 
-float ProgressBar::getProgress()
+void
+ProgressBar::setColor(Uint8 red, Uint8 green, Uint8 blue)
 {
-    return progress;
-}
-
-void ProgressBar::setColor(unsigned char red, unsigned char green, unsigned char blue)
-{
-    redToGo = red;
-    greenToGo = green;
-    blueToGo = blue;
-}
-
-unsigned char ProgressBar::getRed()
-{
-    return red;
-}
-
-unsigned char ProgressBar::getGreen()
-{
-    return green;
-}
-
-unsigned char ProgressBar::getBlue()
-{
-    return blue;
+    mRedToGo = red;
+    mGreenToGo = green;
+    mBlueToGo = blue;
 }

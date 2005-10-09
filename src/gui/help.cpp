@@ -51,7 +51,7 @@ HelpWindow::HelpWindow():
 
     okButton->setEventId("close");
     okButton->addActionListener(this);
-    
+
     browserBox->setLinkHandler(this);
 
     add(scrollArea);
@@ -69,7 +69,10 @@ HelpWindow::~HelpWindow()
 
 void HelpWindow::action(const std::string& eventId)
 {
-    setVisible(false);
+    if (eventId == "close")
+    {
+        setVisible(false);
+    }
 }
 
 void HelpWindow::handleLink(const std::string& link)
@@ -81,7 +84,7 @@ void HelpWindow::handleLink(const std::string& link)
 void HelpWindow::loadHelp(const std::string &helpFile)
 {
     browserBox->clearRows();
-    
+
     loadFile("header");
     loadFile(helpFile);
 

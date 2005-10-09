@@ -96,7 +96,8 @@ class TradeWindow : public Window, gcn::ActionListener
         /**
          * Send trade packet.
          */
-        void TradeWindow::tradeItem(Item *item, int quantity);
+        void
+        tradeItem(Item *item, int quantity);
 
         /**
          * Called on mouse click.

@@ -40,8 +40,8 @@ class Packet
          */
         ~Packet();
 
-        char *data;                  /**< Packet data */
-        unsigned int length;         /**< Length of data in bytes */
+        char *mData;                  /**< Packet data */
+        unsigned int mLength;         /**< Length of data in bytes */
 };
 
 #endif

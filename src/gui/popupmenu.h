@@ -74,10 +74,9 @@ class PopupMenu : public Window, public LinkHandler
     private:
         BrowserBox* browserBox;
 
-        Being* being;
-        FloorItem* floorItem;
-
-        Item *m_item;
+        Being* mBeing;
+        FloorItem* mFloorItem;
+        Item *mItem;
 
         /**
          * Shared code for the various showPopup functions.

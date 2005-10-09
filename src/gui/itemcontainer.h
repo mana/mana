@@ -82,7 +82,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         void selectNone();
 
     private:
-        Inventory *inventory;
+        Inventory *mInventory;
         Spriteset *itemset;
         Image *selImg;
         Item *selectedItem;

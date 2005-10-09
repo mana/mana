@@ -70,13 +70,14 @@ class Image : public Resource
          * Returns the width of the image.
          */
         virtual int
-        getWidth() const;
+        getWidth() const { return bounds.w; }
+
 
         /**
          * Returns the height of the image.
          */
         virtual int
-        getHeight() const;
+        getHeight() const { return bounds.h; }
 
         /**
          * Creates a new image with the desired clipping rectangle.
@@ -122,12 +123,12 @@ class Image : public Resource
         bool loaded;
 
 #ifdef USE_OPENGL
-        GLuint glimage;
-        int texWidth, texHeight;
+        GLuint mGLImage;
+        int mTexWidth, mTexHeight;
 
-        static bool useOpenGL;
+        static bool mUseOpenGL;
 #endif
-        SDL_Surface *image;
+        SDL_Surface *mImage;
         float alpha;
 };
 
@@ -162,7 +163,7 @@ class SubImage : public Image
         getSubImage(int x, int y, int width, int height);
 
     private:
-        Image *parent;
+        Image *mParent;
 };
 
 #endif

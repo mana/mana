@@ -24,23 +24,20 @@
 #ifndef _TMW_SPRITE_H_
 #define _TMW_SPRITE_H_
 
-#include "graphics.h"
+class Graphics;
 
 /**
- * A sprite is some visible object on a map.
+ * A sprite is some visible object on a map. This abstract class defines the
+ * interface used by the map to sort and display the sprite.
  */
 class Sprite
 {
     public:
         /**
-         * Constructor.
+         * Destructor.
          */
-        Sprite(int x = 0, int y = 0, Image *image = NULL):
-            mX(x),
-            mY(y),
-            mImage(image)
-        {
-        }
+        virtual
+        ~Sprite() {}
 
         /**
          * Draws the sprite to the given graphics context.
@@ -49,28 +46,20 @@ class Sprite
          * would support setting a translation offset. It already does this
          * partly with the clipping rectangle support.
          */
-        void
-        draw(Graphics *graphics, int offsetX, int offsetY)
-        {
-            graphics->drawImage(mImage, mX + offsetX, mY + offsetY);
-        }
+        virtual void
+        draw(Graphics *graphics, int offsetX, int offsetY) = 0;
 
         /**
-         * Returns the X coordinate of the sprite.
+         * Returns the pixel Y coordinate of the sprite.
          */
-        int
-        getY() const { return mY; }
+        virtual int
+        getPixelY() const = 0;
 
+    protected:
         /**
-         * Returns the Y coordinate of the sprite.
+         * Constructor.
          */
-        int
-        getX() const { return mX; }
-
-    private:
-        int mX;           /**< X coordinate in pixels. */
-        int mY;           /**< Y coordinate in pixels. */
-        Image *mImage;    /**< The image currently representing this sprite. */
+        Sprite() {}
 };
 
 #endif

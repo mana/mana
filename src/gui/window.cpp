@@ -67,11 +67,11 @@ class WindowConfigListener : public ConfigListener
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
-    parent(parent),
+    mParent(parent),
     mWindowName("window"),
     snapSize(8),
-    title(true),
-    modal(modal),
+    mShowTitle(true),
+    mModal(modal),
     resizable(false),
     mMouseResize(false),
     minWinWidth(6),
@@ -114,14 +114,14 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     setTitleBarHeight(20);
 
     // Add chrome
-    chrome = new gcn::Container();
-    chrome->setOpaque(false);
-    setContent(chrome);
+    mChrome = new gcn::Container();
+    mChrome->setOpaque(false);
+    setContent(mChrome);
 
     // Add this window to the window container
     windowContainer->add(this);
 
-    if (modal)
+    if (mModal)
     {
         requestModalFocus();
     }
@@ -163,7 +163,7 @@ Window::~Window()
         resizeGrip->decRef();
     }
 
-    delete chrome;
+    delete mChrome;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -186,7 +186,7 @@ void Window::draw(gcn::Graphics* graphics)
     }
 
     // Draw title
-    if (title) {
+    if (mShowTitle) {
         graphics->setFont(getFont());
         graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
@@ -196,13 +196,13 @@ void Window::draw(gcn::Graphics* graphics)
 
 void Window::setContentWidth(int width)
 {
-    chrome->setWidth(width);
+    mChrome->setWidth(width);
     resizeToContent();
 }
 
 void Window::setContentHeight(int height)
 {
-    chrome->setHeight(height);
+    mChrome->setHeight(height);
     resizeToContent();
 }
 
@@ -254,11 +254,6 @@ bool Window::isResizable()
     return resizable;
 }
 
-Window *Window::getParentWindow()
-{
-    return parent;
-}
-
 void Window::scheduleDelete()
 {
     windowContainer->scheduleDelete(this);
@@ -266,12 +261,12 @@ void Window::scheduleDelete()
 
 void Window::add(gcn::Widget *w)
 {
-    chrome->add(w);
+    mChrome->add(w);
 }
 
 void Window::add(gcn::Widget *w, int x, int y)
 {
-    chrome->add(w, x, y);
+    mChrome->add(w, x, y);
 }
 
 void Window::mousePress(int x, int y, int button)
@@ -401,7 +396,8 @@ void Window::mouseMotion(int x, int y)
     }
 }
 
-void Window::mouseRelease(int x, int y, int button)
+void
+Window::mouseRelease(int x, int y, int button)
 {
     if (button == 1)
     {
@@ -410,7 +406,8 @@ void Window::mouseRelease(int x, int y, int button)
     }
 }
 
-gcn::Rectangle Window::getGripDimension()
+gcn::Rectangle
+Window::getGripDimension()
 {
     return gcn::Rectangle(getWidth() - resizeGrip->getWidth(),
                           getHeight() - resizeGrip->getHeight(),
@@ -418,7 +415,8 @@ gcn::Rectangle Window::getGripDimension()
                           getHeight());
 }
 
-void Window::loadWindowState()
+void
+Window::loadWindowState()
 {
     const std::string &name = mWindowName;
 

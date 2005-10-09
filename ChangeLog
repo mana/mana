@@ -1,3 +1,36 @@
+2005-10-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp, src/being.h, src/engine.cpp, src/engine.h,
+	src/floor_item.cpp, src/floor_item.h, src/map.cpp, src/map.h,
+	src/sprite.h: Made Sprite into an interface implemented by both
+	FloorItem and Being, which hook themselves into the map on
+	construction. The improved fringe layer is working as expected now.
+	* src/equipment.cpp, src/equipment.h, src/game.cpp, src/game.h,
+	src/graphics.cpp, src/guichanfwd.h, src/inventory.h,
+	src/openglgraphics.cpp, src/sound.cpp, src/gui/chargedialog.cpp,
+	src/gui/chargedialog.h, src/gui/chat.cpp, src/gui/chat.h,
+	src/gui/equipmentwindow.cpp, src/gui/equipmentwindow.h,
+	src/gui/gui.cpp, src/gui/help.cpp, src/gui/inventorywindow.cpp,
+	src/gui/item_amount.cpp, src/gui/itemcontainer.cpp,
+	src/gui/itemcontainer.h, src/gui/linkhandler.h, src/gui/login.cpp,
+	src/gui/menuwindow.cpp, src/gui/newskill.cpp, src/gui/npc_text.cpp,
+	src/gui/popupmenu.cpp, src/gui/popupmenu.h, src/gui/progressbar.cpp,
+	src/gui/progressbar.h, src/gui/scrollarea.cpp, src/gui/scrollarea.h,
+	src/gui/skill.cpp, src/gui/status.cpp, src/gui/trade.h,
+	src/gui/window.cpp, src/gui/window.h, src/net/messagein.cpp,
+	src/net/packet.cpp, src/net/packet.h, src/resources/image.cpp,
+	src/resources/image.h, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h, src/resources/music.cpp,
+	src/resources/music.h, src/resources/soundeffect.cpp,
+	src/resources/soundeffect.h: Made sure TMW compiles without warnings
+	even when using "-Wconversion -Wshadow -Wcast-qual -Wwrite-strings
+	-ansi -pedantic", lots of cleanups.
+	* src/data/maps/new_3-1.tmx.gz, src/graphics/tiles/desert_x2.png,
+	src/graphics/tiled/desert_x3.png: Added two new small tilesets that
+	contain the desert tiles that are twice and three times the height of
+	a normal tile. One well in new_3-1 has been converted to use the new
+	double tiles for testing purposes.
+
 2005-10-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Modified finding NPC as by timonator's suggestion in

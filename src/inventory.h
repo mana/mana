@@ -97,6 +97,4 @@ class Inventory
         Item *items;  /**< The holder of items */
 };
 
-extern Inventory *inventory;
-
 #endif

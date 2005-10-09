@@ -35,7 +35,8 @@ class Spriteset;
  *
  * \ingroup Interface
  */
-class EquipmentWindow : public Window, gcn::ActionListener {
+class EquipmentWindow : public Window
+{
     public:
         /**
          * Constructor.
@@ -51,11 +52,6 @@ class EquipmentWindow : public Window, gcn::ActionListener {
          * Draws the equipment window.
          */
         void draw(gcn::Graphics *graphics);
-
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
 
     private:
         Spriteset *itemset;

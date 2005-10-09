@@ -21,8 +21,10 @@
  *  $Id$
  */
 
-#ifndef _EQUIPMENT_H
-#define _EQUIPMENT_H
+#ifndef _TMW_EQUIPMENT_H_
+#define _TMW_EQUIPMENT_H_
+
+#include <stdlib.h>
 
 class Item;
 
@@ -31,16 +33,45 @@ class Item;
 class Equipment
 {
     public:
+        /**
+         * Retrieve an instance of the equipment class.
+         */
         static Equipment* getInstance();
 
-        Item* getEquipment(int index);
-        void setEquipment(int index, Item *item);
+        /**
+         * Get equipment at the given slot.
+         */
+        Item*
+        getEquipment(int index) { return mEquipment[index]; }
 
-        void removeEquipment(int index);
+        /**
+         * Set equipment at the given slot.
+         */
+        void
+        setEquipment(int index, Item *item) { mEquipment[index] = item; }
+
+        /**
+         * Remove equipment from the given slot.
+         */
+        void
+        removeEquipment(int index) { mEquipment[index] = NULL; }
+
+        /**
+         * Remove the given item from equipment.
+         */
         void removeEquipment(Item *item);
 
-        Item* getArrows();
-        void setArrows(Item *arrows);
+        /**
+         * Get the item used in the arrow slot.
+         */
+        Item*
+        getArrows() { return mArrows; }
+
+        /**
+         * Set the item used in the arrow slot.
+         */
+        void
+        setArrows(Item *arrows) { mArrows = arrows; }
 
     protected:
         /**
@@ -53,54 +84,11 @@ class Equipment
          */
         ~Equipment();
 
-        Item *equipment[EQUIPMENT_SIZE];
-        Item *arrows;
+        Item *mEquipment[EQUIPMENT_SIZE];
+        Item *mArrows;
 
     private:
-        static Equipment *instance;
+        static Equipment *mInstance;
 };
-
-inline Equipment *Equipment::getInstance()
-{
-    if (!instance)
-        instance = new Equipment();
-
-    return instance;
-}
-
-inline Item* Equipment::getEquipment(int index)
-{
-    return equipment[index];
-}
-
-inline void Equipment::setEquipment(int index, Item *item)
-{
-    equipment[index] = item;
-}
-
-inline void Equipment::removeEquipment(int index)
-{
-    equipment[index] = 0;
-}
-
-inline void Equipment::removeEquipment(Item *item)
-{
-    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
-        if (equipment[i] == item) {
-            equipment[i] = 0;
-            break;
-        }
-    }
-}
-
-inline Item* Equipment::getArrows()
-{
-    return arrows;
-}
-
-inline void Equipment::setArrows(Item *arrows)
-{
-    this->arrows = arrows;
-}
 
 #endif

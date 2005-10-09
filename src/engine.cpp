@@ -54,8 +54,8 @@
 extern Being *autoTarget;
 extern Graphics *graphics;
 extern Minimap *minimap;
-extern Spriteset *hairset, *playerset;
 extern std::list<FloorItem*> floorItems;
+extern int frame;
 
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
@@ -65,27 +65,11 @@ gcn::Label *debugInfo;
 std::map<int, Spriteset*> monsterset;
 
 ItemManager *itemDb;          /**< Item database object */
-Spriteset *itemset;
 
-char hairtable[16][4][2] = {
-    // S(x,y)    W(x,y)   N(x,y)   E(x,y)
-    { { 0,  0}, {-1, 2}, {-1, 2}, { 0, 2} }, // STAND
-    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 1st frame
-    { { 0,  3}, {-2, 4}, {-1, 3}, { 1, 4} }, // WALK 2nd frame
-    { { 0,  1}, {-2, 2}, {-1, 2}, { 1, 2} }, // WALK 3rd frame
-    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 4th frame
-    { { 0,  1}, { 1, 2}, {-1, 3}, {-2, 2} }, // ATTACK 1st frame
-    { { 0,  1}, {-1, 2}, {-1, 3}, { 0, 2} }, // ATTACK 2nd frame
-    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 3rd frame
-    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 4th frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 1st frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 2nd frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 3rd frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 4th frame
-    { { 0,  4}, {-1, 6}, {-1, 6}, { 0, 6} }, // SIT
-    { { 0,  0}, { 0, 0}, { 0, 0}, { 0, 0} }, // ?? HIT
-    { { 0, 16}, {-1, 6}, {-1, 6}, { 0, 6} }  // DEAD
-};
+Spriteset *itemset;
+Spriteset *emotionset;
+Spriteset *npcset;
+Spriteset *weaponset;
 
 
 int get_x_offset(Being *being)
@@ -240,7 +224,7 @@ void Engine::logic()
 
         being->logic();
 
-        if (being->action == Being::MONSTER_DEAD && being->frame >= 20)
+        if (being->action == Being::MONSTER_DEAD && being->mFrame >= 20)
         {
             delete being;
             beingIterator = beings.erase(beingIterator);
@@ -260,17 +244,16 @@ void Engine::draw()
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
 
-    int map_x = (player_node->x - midTileX) * 32 + get_x_offset(player_node);
-    int map_y = (player_node->y -  midTileY) * 32 + get_y_offset(player_node);
-
-    if (map_x < 0) {
-        map_x = 0;
-    }
-    if (map_y < 0) {
-        map_y = 0;
-    }
+    int map_x = (player_node->x - midTileX) * 32 + player_node->getXOffset();
+    int map_y = (player_node->y - midTileY) * 32 + player_node->getYOffset();
 
     if (mCurrentMap) {
+        if (map_x < 0) {
+            map_x = 0;
+        }
+        if (map_y < 0) {
+            map_y = 0;
+        }
         if (map_x > (mCurrentMap->getWidth() - midTileX) * 32) {
             map_x = (mCurrentMap->getWidth() - midTileX) * 32;
         }
@@ -288,145 +271,11 @@ void Engine::draw()
 
     frame++;
 
-    // Draw tiles below nodes
+    // Draw tiles and sprites
     if (mCurrentMap != NULL)
     {
         mCurrentMap->draw(graphics, map_x, map_y, 0);
         mCurrentMap->draw(graphics, map_x, map_y, 1);
-    }
-
-    // Draw nodes
-    for (std::list<Being*>::iterator i = beings.begin(); i != beings.end(); i++)
-    {
-        Being *being = (*i);
-
-        unsigned char dir = being->direction / 2;
-        int x = being->x * 32 - map_x;
-        int y = being->y * 32 - map_y;
-
-        int frame;
-        switch (being->getType())
-        {
-            // Draw a player
-            case Being::PLAYER:
-                being->text_x = x + get_x_offset(being);
-                being->text_y = y + get_y_offset(being);
-
-                if (being->action == Being::SIT || being->action == Being::DEAD)
-                {
-                    being->frame = 0;
-                }
-
-                frame = being->frame + being->action;
-
-                if (being->action == Being::ATTACK)
-                {
-                    if (being->getWeapon() > 0)
-                        frame += 4 * (being->getWeapon() - 1);
-                }
-
-                graphics->drawImage(playerset->spriteset[frame + 16 * dir],
-                        being->text_x - 16, being->text_y - 32);
-
-                if (being->getWeapon() != 0 && being->action == Being::ATTACK)
-                {
-                    Image *image = weaponset->spriteset[
-                        16 * (being->getWeapon() - 1) + 4 * being->frame + dir];
-
-                    graphics->drawImage(image,
-                            being->text_x - 64, being->text_y - 80);
-                }
-
-                if (being->getHairColor() <= NR_HAIR_COLORS)
-                {
-                    int hf = being->getHairColor() - 1 + 10 * (dir + 4 *
-                            (being->getHairStyle() - 1));
-
-                    graphics->drawImage(hairset->spriteset[hf],
-                            being->text_x - 2 + 2 * hairtable[frame][dir][0],
-                            being->text_y - 50 + 2 * hairtable[frame][dir][1]);
-                }
-
-                if (being->emotion != 0)
-                {
-                    graphics->drawImage(
-                            emotionset->spriteset[being->emotion - 1],
-                            being->text_x + 3, being->text_y - 90);
-                }
-
-                if (being != player_node)
-                {
-                    graphics->setFont(speechFont);
-                    graphics->drawText(being->getName(),
-                                       being->text_x + 15, being->text_y + 30,
-                                       gcn::Graphics::CENTER);
-                    graphics->setFont(gui->getFont());
-                }
-                break;
-
-                // Draw a NPC
-            case Being::NPC:
-                graphics->drawImage(npcset->spriteset[being->job - 100],
-                                    x - 8, y - 52);
-                break;
-
-                // Draw a monster
-            case Being::MONSTER:
-                if (being->frame >= 4)
-                {
-                    being->frame = 3;
-                }
-
-                being->text_x = x - 42 + get_x_offset(being);
-                being->text_y = y - 65 + get_y_offset(being);
-
-                frame = being->frame + being->action;
-
-                if (being->action == Being::MONSTER_DEAD) {
-                    graphics->drawImage(
-                            monsterset[being->job - 1002]->spriteset[dir + 4 * Being::MONSTER_DEAD],
-                            being->text_x + 30, being->text_y + 40);
-                }
-                else {
-                    graphics->drawImage(
-                            monsterset[being->job-1002]->spriteset[dir + 4 * frame],
-                            being->text_x + 30, being->text_y + 40);
-
-                    if (being->x == mouseTileX && being->y == mouseTileY)
-                    {
-                        graphics->drawImage(attackTarget,
-                                being->text_x + 30 + 16, being->text_y + 32);
-                    }
-                }
-
-                if (being->action != Being::STAND) {
-                    being->frame =
-                        (get_elapsed_time(being->walk_time) * 4) / (being->speed);
-
-                    if (being->frame >= 4 && being->action != Being::MONSTER_DEAD) {
-                        being->nextStep();
-                    }
-                }
-                break;
-
-                /*
-                // Draw a warp (job == 45)
-            case Being::WARP:
-                break;
-                */
-
-                // No idea how to draw this ;)
-            default:
-                break;
-        }
-
-        // nodes are ordered so if the next being y is > then the
-        // last drawed for fringe layer, draw the missing lines
-    }
-
-    // Draw tiles below nodes
-    if (mCurrentMap != NULL)
-    {
         mCurrentMap->draw(graphics, map_x, map_y, 2);
     }
 
@@ -460,9 +309,7 @@ void Engine::draw()
     // Draw player speech
     for (std::list<Being*>::iterator i = beings.begin(); i != beings.end(); i++)
     {
-        Being *being = (*i);
-
-        being->drawSpeech(graphics);
+        (*i)->drawSpeech(graphics, -map_x, -map_y);
     }
 
     if (autoTarget)
@@ -470,16 +317,16 @@ void Engine::draw()
         if (autoTarget->getType() == Being::PLAYER)
         {
              graphics->drawText("[TARGET]",
-                   autoTarget->text_x + 15,
-                   autoTarget->text_y - 60,
-                   gcn::Graphics::CENTER);
+                                autoTarget->getPixelX() + 15,
+                                autoTarget->getPixelY() - 60,
+                                gcn::Graphics::CENTER);
         }
         else
         {
              graphics->drawText("[TARGET]",
-                   autoTarget->text_x + 60,
-                   autoTarget->text_y,
-                   gcn::Graphics::CENTER);
+                                autoTarget->getPixelX() + 60,
+                                autoTarget->getPixelY(),
+                                gcn::Graphics::CENTER);
         }
     }
 

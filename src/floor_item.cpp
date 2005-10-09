@@ -46,23 +46,16 @@ FloorItem::FloorItem(unsigned int id,
     mMap(map)
 {
     // Retrieve item image using a global itemset and itemDb (alternative?)
-    Image *image = itemset->spriteset[
-        itemDb->getItemInfo(itemId)->getImage() - 1];
+    mImage = itemset->spriteset[itemDb->getItemInfo(itemId)->getImage() - 1];
 
-    // Create the sprite representing this floor item
-    mSprite = new Sprite(mX * map->getTileWidth(),
-                         mY * map->getTileHeight(),
-                         image);
-
-    // Add the representative sprite to the map
-    mSpriteIterator = mMap->addSprite(mSprite);
+    // Add ourselves to the map
+    mSpriteIterator = mMap->addSprite(this);
 }
 
 FloorItem::~FloorItem()
 {
     // Remove and delete the representative sprite
     mMap->removeSprite(mSpriteIterator);
-    delete mSprite;
 }
 
 void empty_floor_items()

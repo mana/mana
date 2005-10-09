@@ -24,34 +24,36 @@
 #include "soundeffect.h"
 
 SoundEffect::SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect):
-    Resource(idPath), soundEffect(soundEffect)
+    Resource(idPath),
+    mChunk(soundEffect)
 {
 }
 
 SoundEffect::~SoundEffect()
 {
-    Mix_FreeChunk(soundEffect);
-    soundEffect = NULL;
+    Mix_FreeChunk(mChunk);
 }
 
-SoundEffect* SoundEffect::load(void* buffer, unsigned int bufferSize, const std::string &idPath)
+SoundEffect*
+SoundEffect::load(void *buffer, unsigned int bufferSize,
+                  const std::string &idPath)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
     // Use Mix_LoadWAV_RW to load the raw music data
     Mix_Chunk *tmpSoundEffect = Mix_LoadWAV_RW(rw, 0);
-    
+
     // Now free the SDL_RWops data
     SDL_FreeRW(rw);
 
     return new SoundEffect(idPath, tmpSoundEffect);
 }
 
-bool SoundEffect::play(int loops, int volume)
+bool
+SoundEffect::play(int loops, int volume)
 {
-    Mix_VolumeChunk(soundEffect, volume);
-    if (Mix_PlayChannel(-1, soundEffect, loops) != -1)
-        return true;
-    return false;
+    Mix_VolumeChunk(mChunk, volume);
+
+    return Mix_PlayChannel(-1, mChunk, loops) != -1;
 }

@@ -176,7 +176,8 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * // for simple message by a user /- message
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
-        char *chat_send(std::string nick, std::string msg);
+        void
+        chat_send(std::string nick, std::string msg);
 
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);

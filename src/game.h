@@ -36,7 +36,7 @@ class Being;
 
 extern std::string map_path;
 extern std::string tradePartnerName;
-extern int fps, frame, current_npc;
+extern int fps, current_npc;
 extern volatile int tick_time;
 extern int server_tick;
 extern bool displayPathToMouse;

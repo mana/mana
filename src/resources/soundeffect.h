@@ -37,7 +37,8 @@ class SoundEffect : public Resource
         /**
          * Destructor.
          */
-        virtual ~SoundEffect();
+        virtual
+        ~SoundEffect();
 
         /**
          * Loads a sample from a buffer in memory.
@@ -48,8 +49,8 @@ class SoundEffect : public Resource
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static SoundEffect *load(void* buffer, unsigned int bufferSize,
-                const std::string &idPath);
+        static SoundEffect*
+        load(void* buffer, unsigned int bufferSize, const std::string &idPath);
 
         /**
          * Plays the sample.
@@ -60,7 +61,8 @@ class SoundEffect : public Resource
          * @return <code>true</code> if the playback started properly
          *         <code>false</code> otherwise.
          */
-        virtual bool play(int loops, int volume);
+        virtual bool
+        play(int loops, int volume);
 
     protected:
         /**
@@ -68,7 +70,7 @@ class SoundEffect : public Resource
          */
         SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect);
 
-        Mix_Chunk *soundEffect;
+        Mix_Chunk *mChunk;
 };
 
 #endif

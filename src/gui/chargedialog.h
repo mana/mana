@@ -34,7 +34,7 @@ class ProgressBar;
 /**
  * \ingroup Interface
  */
-class ChargeDialog : public Window, public gcn::ActionListener
+class ChargeDialog : public Window
 {
     public:
         /**
@@ -45,10 +45,8 @@ class ChargeDialog : public Window, public gcn::ActionListener
         /**
          * Destructor.
          */
-        ~ChargeDialog();  
-        
-        // action listener
-        void action(const std::string&); 
+        ~ChargeDialog();
+
         void logic();
 
     private:

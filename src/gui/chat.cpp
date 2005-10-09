@@ -183,9 +183,9 @@ void ChatWindow::chat_log(std::string line, int own)
     }
 }
 
-void ChatWindow::chat_log(CHATSKILL action)
+void ChatWindow::chat_log(CHATSKILL act)
 {
-    chat_log(const_msg(action), BY_SERVER);
+    chat_log(const_msg(act), BY_SERVER);
 }
 
 void ChatWindow::action(const std::string& eventId)
@@ -227,7 +227,8 @@ bool ChatWindow::isFocused()
     return chatInput->hasFocus();
 }
 
-char *ChatWindow::chat_send(std::string nick, std::string msg)
+void
+ChatWindow::chat_send(std::string nick, std::string msg)
 {
     short packetId = CMSG_CHAT_MESSAGE;
 
@@ -240,7 +241,6 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
         }*/
         // prepare ordinary message
         chat_log("Sorry but /commands are not available yet", BY_PLAYER);
-        return "";
     }
     else {
         nick += " : ";
@@ -254,15 +254,13 @@ char *ChatWindow::chat_send(std::string nick, std::string msg)
     outMsg.writeShort(packetId);
     outMsg.writeShort(msg.length() + 4);
     outMsg.writeString(msg, msg.length());
-
-    return "";
 }
 
-std::string ChatWindow::const_msg(CHATSKILL action)
+std::string ChatWindow::const_msg(CHATSKILL act)
 {
     std::string msg;
-    if (action.success == SKILL_FAILED && action.skill == SKILL_BASIC) {
-        switch (action.bskill) {
+    if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC) {
+        switch (act.bskill) {
             case BSKILL_TRADE :
                 msg = "Trade failed!";
                 break;
@@ -283,7 +281,7 @@ std::string ChatWindow::const_msg(CHATSKILL action)
                 break;
         }
 
-        switch (action.reason) {
+        switch (act.reason) {
             case RFAIL_SKILLDEP :
                 msg += " You have not yet reached a high enough lvl!";
                 break;
@@ -319,7 +317,7 @@ std::string ChatWindow::const_msg(CHATSKILL action)
                 break;
         }
     } else {
-        switch(action.skill) {
+        switch(act.skill) {
             case SKILL_WARP :
                 msg = "Warp failed...";
                 break;

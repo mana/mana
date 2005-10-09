@@ -43,7 +43,6 @@ EquipmentWindow::EquipmentWindow():
     setDefaultSize(5, 230, 200, 90);
     loadWindowState();
 
-
     ResourceManager *resman = ResourceManager::getInstance();
     Image *itemImg = resman->getImage("graphics/sprites/items.png");
     if (!itemImg) logger->error("Unable to load items.png");
@@ -93,8 +92,4 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     n << item->getQuantity();
     graphics->drawText(n.str(), 170, 62,
             gcn::Graphics::CENTER);
-}
-
-void EquipmentWindow::action(const std::string &eventId)
-{
 }

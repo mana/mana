@@ -43,11 +43,6 @@ ChargeDialog::~ChargeDialog()
     delete progBar;
 }
 
-void ChargeDialog::action(const std::string& eventId)
-{
-
-}
-
 // update the dialog
 void ChargeDialog::logic()
 {

@@ -34,7 +34,7 @@
 
 #include "../graphics.h"
 
-char *skill_name[] = {
+const char *skill_name[] = {
     // 0-99
     // weapon skills 0-9
     "Short Blades", "Long Blades", "Hammers", "Archery", "Whip",
@@ -67,7 +67,6 @@ char *skill_name[] = {
     // unused (reserved) 90-99
     "", "", "", "", "", "", "", "", "", ""
 };
-
 
 
 NewSkillDialog::NewSkillDialog():

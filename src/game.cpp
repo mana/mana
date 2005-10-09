@@ -89,7 +89,6 @@ int fps = 0, frame = 0, current_npc = 0;
 bool displayPathToMouse = false;
 Uint16 startX = 0, startY = 0;
 Being *autoTarget = NULL;
-Map *tiledMap = NULL;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
@@ -404,12 +403,11 @@ void game()
 void do_exit()
 {
     delete engine;
-    delete tiledMap;
+    delete player_node;
     destroyGuiWindows();
     close_session();
 
     delete inventory;
-    delete player_node;
 
     if (joypad != NULL)
     {
@@ -538,43 +536,42 @@ void do_input()
                     // Picking up items on the floor
                 case SDLK_g:
                 case SDLK_z:
-                    if (chatWindow->isFocused())
+                    if (!chatWindow->isFocused())
                     {
-                        break;
-                    }
+                        Uint32 id = find_floor_item_by_cor(
+                                player_node->x, player_node->y);
 
-                    Uint32 id = find_floor_item_by_cor(
-                            player_node->x, player_node->y);
+                        // If none below the player, try the tile in front of
+                        // the player
+                        if (!id) {
+                            Uint16 x = player_node->x;
+                            Uint16 y = player_node->y;
 
-                    // If none below the player, try the tile in front of
-                    // the player
-                    if (!id) {
-                        Uint16 x = player_node->x;
-                        Uint16 y = player_node->y;
-
-                        switch (player_node->direction)
-                        {
-                            case Being::NORTH: y--; break;
-                            case Being::SOUTH: y++; break;
-                            case Being::WEST:  x--; break;
-                            case Being::EAST:  x++; break;
-                            case Being::NW:    x--; y--; break;
-                            case Being::NE:    x++; y--; break;
-                            case Being::SW:    x--; y++; break;
-                            case Being::SE:    x++; y++; break;
-                            default: break;
+                            switch (player_node->direction)
+                            {
+                                case Being::NORTH: y--; break;
+                                case Being::SOUTH: y++; break;
+                                case Being::WEST:  x--; break;
+                                case Being::EAST:  x++; break;
+                                case Being::NW:    x--; y--; break;
+                                case Being::NE:    x++; y--; break;
+                                case Being::SW:    x--; y++; break;
+                                case Being::SE:    x++; y++; break;
+                                default: break;
+                            }
+                            id = find_floor_item_by_cor(x, y);
                         }
-                        id = find_floor_item_by_cor(x, y);
-                    }
 
-                    if (id)
-                    {
-                        // TODO: remove duplicated code, probably add a pick up command
-                        MessageOut outMsg;
-                        outMsg.writeShort(0x009f);
-                        outMsg.writeLong(id);
+                        if (id)
+                        {
+                            // TODO: Remove duplicated code, probably add a
+                            // pick up command
+                            MessageOut outMsg;
+                            outMsg.writeShort(0x009f);
+                            outMsg.writeLong(id);
+                        }
+                        used = true;
                     }
-                    used = true;
                     break;
 
                     // Quitting confirmation dialog
@@ -841,8 +838,9 @@ void do_input()
     } // End while
 
     // Moving player around
-    if ((player_node->action != Being::DEAD) && (current_npc == 0) &&
-            !chatWindow->isFocused())
+    if (player_node->action != Being::DEAD &&
+        current_npc == 0 &&
+        !chatWindow->isFocused())
     {
         Uint16 x = player_node->x;
         Uint16 y = player_node->y;
@@ -904,7 +902,7 @@ void do_input()
                 Direction = Being::NE;
         }
 
-        tiledMap = engine->getCurrentMap();
+        Map *tiledMap = engine->getCurrentMap();
 
         // Allow keyboard control to interrupt an existing path
         if ((xDirection != 0 || yDirection != 0) &&
@@ -961,9 +959,7 @@ void do_input()
 
         if (joy[JOY_BTN1])
         {
-            Uint16 x = player_node->x;
-            Uint16 y = player_node->y;
-            Uint32 id = find_floor_item_by_cor(x, y);
+            Uint32 id = find_floor_item_by_cor(player_node->x, player_node->y);
 
             if (id != 0)
             {
@@ -1091,7 +1087,7 @@ void do_parse()
                     else if (msg.getId() == 0x0078)
                     {
                         being->clearPath();
-                        being->frame = 0;
+                        being->mFrame = 0;
                         being->walk_time = tick_time;
                         being->action = Being::STAND;
                     }
@@ -1158,7 +1154,7 @@ void do_parse()
                         {
                             case Being::MONSTER:
                                 being->action = Being::MONSTER_DEAD;
-                                being->frame = 0;
+                                being->mFrame = 0;
                                 being->walk_time = tick_time;
                                 break;
 
@@ -1254,7 +1250,7 @@ void do_parse()
                     msg.readByte();   // unknown
 
                     being->walk_time = tick_time;
-                    being->frame = 0;
+                    being->mFrame = 0;
                 }
                 break;
 
@@ -1506,7 +1502,7 @@ void do_parse()
                     beings.push_back(player_node);
 
                     player_node->action = Being::STAND;
-                    player_node->frame = 0;
+                    player_node->mFrame = 0;
                     player_node->x = x;
                     player_node->y = y;
                     player_node->setMap(tiledMap);
@@ -1595,7 +1591,7 @@ void do_parse()
                 //if (being = findNode(readLong(2))) {
                 //    if (being->getId() != player_node->getId()) {
                 //        being->action = STAND;
-                //        being->frame = 0;
+                //        being->mFrame = 0;
                 //        set_coordinates(being->coordinates,
                 //                        readWord(6), readWord(8),
                 //                        get_direction(being->coordinates));
@@ -1627,20 +1623,20 @@ void do_parse()
                             {
                                 // buggy
                                 srcBeing->action = Being::ATTACK;
-                                srcBeing->frame = 0;
+                                srcBeing->mFrame = 0;
                                 srcBeing->walk_time = tick_time;
                             }
                             break;
 
                         case 2: // Sit
                             if (srcBeing == NULL) break;
-                            srcBeing->frame = 0;
+                            srcBeing->mFrame = 0;
                             srcBeing->action = Being::SIT;
                             break;
 
                         case 3: // Stand up
                             if (srcBeing == NULL) break;
-                            srcBeing->frame = 0;
+                            srcBeing->mFrame = 0;
                             srcBeing->action = Being::STAND;
                             break;
                     }

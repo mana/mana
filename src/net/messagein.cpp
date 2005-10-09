@@ -126,7 +126,6 @@ std::string
 MessageIn::readString(int length)
 {
     int stringLength = 0;
-    std::string readString = "";
 
     // Get string length
     if (length < 0) {
@@ -144,10 +143,10 @@ MessageIn::readString(int length)
     tmpString[stringLength] = 0;
     mPos += stringLength;
 
-    readString = tmpString;
+    std::string read = tmpString;
     delete[] tmpString;
 
-    return readString;
+    return read;
 }
 
 char& operator<<(char &lhs, MessageIn &msg)

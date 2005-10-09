@@ -35,6 +35,7 @@
 #include "../net/protocol.h"
 
 #include "../graphics.h"
+
 extern Graphics *graphics;
 
 StatusWindow::StatusWindow():
@@ -43,7 +44,7 @@ StatusWindow::StatusWindow():
     setWindowName("Status");
     setResizable(true);
     setDefaultSize((graphics->getWidth() - 365) / 2,
-                  (graphics->getHeight() - 255) / 2, 365, 255);
+                   (graphics->getHeight() - 255) / 2, 365, 255);
     loadWindowState();
 
     // ----------------------
@@ -428,11 +429,11 @@ void StatusWindow::update()
     jobValueLabel->setPosition(290, jobXpLabel->getY());
 }
 
-void StatusWindow::draw(gcn::Graphics *graphics)
+void StatusWindow::draw(gcn::Graphics *g)
 {
     update();
 
-    Window::draw(graphics);
+    Window::draw(g);
 }
 
 void StatusWindow::action(const std::string& eventId)

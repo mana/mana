@@ -28,28 +28,28 @@
 #include "../log.h"
 
 #ifdef USE_OPENGL
-bool Image::useOpenGL = false;
+bool Image::mUseOpenGL = false;
 #endif
 
 Image::Image(const std::string &idPath, SDL_Surface *image):
-    Resource(idPath), image(image)
+    Resource(idPath), mImage(image)
 {
     // Default to opaque
     alpha = 1.0f;
 
     bounds.x = 0;
     bounds.y = 0;
-    bounds.w = image->w;
-    bounds.h = image->h;
+    bounds.w = mImage->w;
+    bounds.h = mImage->h;
 }
 
 #ifdef USE_OPENGL
 Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
-        int texWidth, int texHeight):
+             int texWidth, int texHeight):
     Resource(idPath),
-    glimage(glimage),
-    texWidth(texWidth),
-    texHeight(texHeight)
+    mGLImage(glimage),
+    mTexWidth(texWidth),
+    mTexHeight(texHeight)
 {
     // Default to opaque
     alpha = 1.0f;
@@ -66,7 +66,8 @@ Image::~Image()
     unload();
 }
 
-Image* Image::load(void* buffer, unsigned int bufferSize, const std::string &idPath)
+Image* Image::load(void *buffer, unsigned int bufferSize,
+                   const std::string &idPath)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
@@ -154,7 +155,7 @@ Image* Image::load(void* buffer, unsigned int bufferSize, const std::string &idP
     }
 
 #ifdef USE_OPENGL
-    if (useOpenGL)
+    if (mUseOpenGL)
     {
         int width = tmpImage->w;
         int height = tmpImage->h;
@@ -264,40 +265,27 @@ void Image::unload()
     loaded = false;
 
 #ifdef USE_OPENGL
-    if (useOpenGL) {
-        return;
-    }
+    if (mUseOpenGL) return;
 #endif
 
-    if (!image) {
-        return;
-    }
+    if (!mImage) return;
 
     // Free the image surface.
-    SDL_FreeSurface(image);
-    image = NULL;
-}
-
-int Image::getWidth() const
-{
-    return bounds.w;
-}
-
-int Image::getHeight() const
-{
-    return bounds.h;
+    SDL_FreeSurface(mImage);
+    mImage = NULL;
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
 #ifdef USE_OPENGL
-    if (useOpenGL) {
-        return new SubImage(this, glimage, x, y, width, height, texWidth, texHeight);
+    if (mUseOpenGL) {
+        return new SubImage(this, mGLImage, x, y, width, height,
+                            mTexWidth, mTexHeight);
     }
 #endif
 
-    return new SubImage(this, image, x, y, width, height);
+    return new SubImage(this, mImage, x, y, width, height);
 }
 
 void Image::setAlpha(float a)
@@ -305,13 +293,13 @@ void Image::setAlpha(float a)
     alpha = a;
 
 #ifdef USE_OPENGL
-    if (useOpenGL) {
+    if (mUseOpenGL) {
         return;
     }
 #endif
 
     // Set the alpha value this image is drawn at
-    SDL_SetAlpha(image, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
+    SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
 }
 
 float Image::getAlpha()
@@ -322,7 +310,7 @@ float Image::getAlpha()
 #ifdef USE_OPENGL
 void Image::setLoadAsOpenGL(bool useOpenGL)
 {
-    Image::useOpenGL = useOpenGL;
+    Image::mUseOpenGL = useOpenGL;
 }
 #endif
 
@@ -332,9 +320,9 @@ void Image::setLoadAsOpenGL(bool useOpenGL)
 
 SubImage::SubImage(Image *parent, SDL_Surface *image,
         int x, int y, int width, int height):
-    Image("", image), parent(parent)
+    Image("", image), mParent(parent)
 {
-    parent->incRef();
+    mParent->incRef();
 
     // Set up the rectangle.
     bounds.x = x;
@@ -345,10 +333,11 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
 
 #ifdef USE_OPENGL
 SubImage::SubImage(Image *parent, GLuint image,
-        int x, int y, int width, int height, int texWidth, int texHeight):
-    Image("", image, width, height, texWidth, texHeight), parent(parent)
+                   int x, int y, int width, int height,
+                   int texWidth, int texHeight):
+    Image("", image, width, height, texWidth, texHeight), mParent(parent)
 {
-    parent->incRef();
+    mParent->incRef();
 
     // Set up the rectangle.
     bounds.x = x;
@@ -361,14 +350,14 @@ SubImage::SubImage(Image *parent, GLuint image,
 SubImage::~SubImage()
 {
 #ifdef USE_OPENGL
-    if (!useOpenGL) {
-        image = NULL;
+    if (!mUseOpenGL) {
+        mImage = NULL;
     }
 #else
-    image = NULL;
+    mImage = NULL;
 #endif
 
-    parent->decRef();
+    mParent->decRef();
 }
 
 Image *SubImage::getSubImage(int x, int y, int w, int h)

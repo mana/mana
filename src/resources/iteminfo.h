@@ -37,52 +37,80 @@ class ItemInfo
         /**
          * Constructor.
          */
-        ItemInfo();
+        ItemInfo():
+            mImage(0),
+            mArt(0),
+            mType(0),
+            mWeight(0),
+            mSlot(0)
+        {
+        }
 
-        void setImage(short image);
-        
-        short getImage();
-        
-        void setArt(short art);
-        
-        short getArt();
-        
-        void setName(const std::string &name);
-        
-        std::string getName();
-        
-        void setDescription(const std::string &description);
+        void
+        setArt(short art) { mArt = art; }
 
-        std::string getDescription();
+        short
+        getArt() { return mArt; }
 
-        void setEffect(const std::string &effect);
+        void
+        setName(const std::string &name) { mName = name; }
 
-        std::string getEffect();
+        std::string
+        getName() { return mName; }
 
-        void setType(short type);
+        void
+        setImage(short image) { mImage = image; }
 
-        short getType();
-        
-        void setWeight(short weight);
+        short
+        getImage() { return mImage; }
 
-        short getWeight();
-        
-        void setSlot(char slot);
-        
-        char getSlot();
+        void
+        setDescription(const std::string &description)
+        {
+            mDescription = description;
+        }
+
+        std::string
+        getDescription() { return mDescription; }
+
+        void
+        setEffect(const std::string &effect) { mEffect = effect; }
+
+        std::string
+        getEffect() { return mEffect; }
+
+        void
+        setType(short type) { mType = type; }
+
+        short
+        getType() { return mType; }
+
+        void
+        setWeight(short weight) { mWeight = weight; }
+
+        short
+        getWeight() { return mWeight; }
+
+        void
+        setSlot(char slot) { mSlot = slot; }
+
+        char
+        getSlot() { return mSlot; }
 
     protected:
         /**
          * Destructor.
          */
-        ~ItemInfo();
+        ~ItemInfo() {}
 
-        short image, art;
-        std::string name;
-        std::string description;
-        std::string effect;
-        short type, weight;
-        char slot;
+        short mImage;
+        short mArt;
+        std::string mName;
+        std::string mDescription;
+        std::string mEffect;
+        short mType;
+        short mWeight;
+        char mSlot;
 };
 
 #endif
