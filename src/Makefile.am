@@ -26,6 +26,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/checkbox.h \
 	      gui/confirm_dialog.cpp \
 	      gui/confirm_dialog.h \
+	      gui/debugwindow.cpp \
+	      gui/debugwindow.h \
 	      gui/equipmentwindow.cpp \
 	      gui/equipmentwindow.h \
 	      gui/error.cpp \

@@ -286,20 +286,5 @@ void Engine::draw()
         (*i)->drawSpeech(graphics, -map_x, -map_y);
     }
 
-#ifdef DEBUG
-    std::stringstream debugStream;
-    debugStream << "[" << fps << " fps] " << mouseTileX << ", " << mouseTileY;
-
-    if (mCurrentMap != NULL)
-    {
-        debugStream
-            << " [music: " << mCurrentMap->getProperty("music") << "]"
-            << " [minimap: " << mCurrentMap->getProperty("minimap") << "]";
-    }
-
-    debugInfo->setCaption(debugStream.str());
-    debugInfo->adjustSize();
-#endif
-
     gui->draw();
 }

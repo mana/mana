@@ -50,10 +50,10 @@ MiniStatusWindow::MiniStatusWindow():
 
     hpLabel = new gcn::Label("");
     mpLabel = new gcn::Label("");
+    hpLabel->setForegroundColor(gcn::Color(255, 255, 255));
+    mpLabel->setForegroundColor(gcn::Color(255, 255, 255));
     hpLabel->setFont(speechFont);
     mpLabel->setFont(speechFont);
-    hpLabel->setForegroundColor(gcn::Color(255,255,255));
-    mpLabel->setForegroundColor(gcn::Color(255,255,255));
 
     add(hpBar);
     add(mpBar);

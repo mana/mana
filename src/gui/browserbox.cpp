@@ -251,6 +251,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
     unsigned int i, j;
     int x = 0, y = 0;
     int wrappedLines = 0;
+    graphics->setColor(BLACK);
     for (i = 0; i < mTextRows.size(); i++)
     {
         int selColor = BLACK;

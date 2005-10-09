@@ -68,6 +68,10 @@
 #include "gui/ministatus.h"
 #include "gui/trade.h"
 
+#ifdef DEBUG
+#include "gui/debugwindow.h"
+#endif
+
 #include "net/messagein.h"
 #include "net/messageout.h"
 #include "net/network.h"
@@ -116,6 +120,9 @@ TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
 PopupMenu *popupMenu;
+#ifdef DEBUG
+DebugWindow *debugWindow;
+#endif
 
 Inventory *inventory = NULL;
 
@@ -216,7 +223,9 @@ void createGuiWindows()
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     popupMenu = new PopupMenu();
-
+#ifdef DEBUG
+    debugWindow = new DebugWindow();
+#endif
     // Initialize window positions
     int screenW = graphics->getWidth();
     int screenH = graphics->getHeight();
@@ -250,7 +259,9 @@ void createGuiWindows()
     //buddyWindow->setVisible(false);
     helpWindow->setVisible(false);
     popupMenu->setVisible(false);
-
+#ifdef DEBUG
+    debugWindow->setVisible(true);
+#endif
     // Do not focus any text field
     gui->focusNone();
 }
@@ -280,6 +291,9 @@ void destroyGuiWindows()
     //delete buddyWindow;
     delete helpWindow;
     delete popupMenu;
+#ifdef DEBUG
+    delete debugWindow;
+#endif
 }
 
 void do_init()
@@ -635,7 +649,14 @@ void do_input()
                         setupWindow->requestMoveToTop();
                         used = true;
                         break;
-
+#ifdef DEBUG
+                        // Debug window
+                    case SDLK_d:
+                        debugWindow->setVisible(!debugWindow->isVisible());
+                        if (debugWindow->isVisible()) debugWindow->requestMoveToTop();
+                        used = true;
+                        break;
+#endif
                         // screenshot (picture, hence the p)
                     case SDLK_p:
                         {

@@ -1,3 +1,10 @@
+2005-10-09  Yohann Ferreira  <bertram@cegetel.net>
+
+	* ChangeLog, src/gui/browserbox.cpp, src/gui/ministatus.cpp,
+	src/gui/debugwindow.h, src/gui/debugwindow.cpp, src/game.cpp,
+	src/engine.cpp, src/Makefile.am: Corrected the white browser font
+	bug and the black hp/mp bug which were linked. Added a debug window
+
 2005-10-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp, src/being.h, src/engine.cpp, src/engine.h,
