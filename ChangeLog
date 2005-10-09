@@ -30,6 +30,7 @@
 	contain the desert tiles that are twice and three times the height of
 	a normal tile. One well in new_3-1 has been converted to use the new
 	double tiles for testing purposes.
+	* src/game.cpp, src/engine.cpp: Fixed map switch crashing the client.
 
 2005-10-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

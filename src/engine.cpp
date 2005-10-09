@@ -190,12 +190,38 @@ Map *Engine::getCurrentMap()
 
 void Engine::changeMap(const std::string &mapPath)
 {
+    // Clean up floor items
+    empty_floor_items();
+
+    // Remove the local player, so it is not deleted
+    if (player_node != NULL)
+    {
+        beings.remove(player_node);
+    }
+
+    // Delete all beings (except the local player)
+    std::list<Being*>::iterator i;
+    for (i = beings.begin(); i != beings.end(); i++)
+    {
+        delete (*i);
+    }
+    beings.clear();
+
+    // Attempt to load the new map
     Map *newMap = MapReader::readMap(mapPath);
 
     if (!newMap) {
         logger->error("Could not find map file");
     }
 
+    // Re-add the local player node and transfer him to the newly loaded map
+    if (player_node != NULL)
+    {
+        beings.push_back(player_node);
+        player_node->setMap(newMap);
+    }
+
+    // Start playing new music file when necessary
     std::string oldMusic = "";
 
     if (mCurrentMap) {
@@ -211,6 +237,8 @@ void Engine::changeMap(const std::string &mapPath)
     }
 
     mCurrentMap = newMap;
+
+    // Notify the minimap about the map change
     minimap->setMap(mCurrentMap);
 }
 

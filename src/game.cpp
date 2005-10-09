@@ -1472,34 +1472,21 @@ void do_parse()
                 {
                     // Set new map path
                     map_path = "maps/" + msg.readString(16);
-                    map_path= map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
+                    map_path = map_path.substr(0, map_path.rfind(".")) +
+                               ".tmx.gz";
 
                     Uint16 x = msg.readShort();
                     Uint16 y = msg.readShort();
 
-                    logger->log("Warping to %s (%d, %d)", map_path.c_str(), x, y);
+                    logger->log("Warping to %s (%d, %d)",
+                                map_path.c_str(), x, y);
 
+                    // Switch the actual map, deleting the previous one
                     engine->changeMap(map_path);
                     tiledMap = engine->getCurrentMap();
 
-                    empty_floor_items();
-
-                    // Remove the player, so it is not deleted
-                    beings.remove(player_node);
-
-                    // Delete all beings except the local player
-                    std::list<Being *>::iterator i;
-                    for (i = beings.begin(); i != beings.end(); i++)
-                    {
-                        delete (*i);
-                    }
-                    beings.clear();
-
                     autoTarget = NULL;
                     current_npc = 0;
-
-                    // Re-add the local player node
-                    beings.push_back(player_node);
 
                     player_node->action = Being::STAND;
                     player_node->mFrame = 0;
