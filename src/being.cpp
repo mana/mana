@@ -56,7 +56,7 @@ extern Spriteset *weaponset;
 
 Being *player_node = NULL;
 
-std::list<Being*> beings;
+Beings beings;
 
 char hairtable[16][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -131,8 +131,8 @@ void remove_node(Being *being)
 
 Being *findNode(Uint32 id)
 {
-    std::list<Being*>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
+    for (Beings::iterator i = beings.begin(); i != beings.end(); i++)
+    {
         Being *being = (*i);
         if (being->getId() == id) {
             return being;
@@ -143,8 +143,8 @@ Being *findNode(Uint32 id)
 
 Being *findNode(Uint16 x, Uint16 y)
 {
-    std::list<Being*>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
+    for (Beings::iterator i = beings.begin(); i != beings.end(); i++)
+    {
         Being *being = (*i);
         // Return being if found and it is not a dead monster
         if (being->x == x &&
@@ -160,8 +160,8 @@ Being *findNode(Uint16 x, Uint16 y)
 
 Being* findNode(Uint16 x, Uint16 y, Being::Type type)
 {
-    std::list<Being *>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++) {
+    for (Beings::iterator i = beings.begin(); i != beings.end(); i++)
+    {
         Being *being = (*i);
         // Check if is a NPC (only low job ids)
         if (being->x == x &&
@@ -176,28 +176,17 @@ Being* findNode(Uint16 x, Uint16 y, Being::Type type)
     return NULL;
 }
 
-class BeingCompare {
-    public:
-        bool operator() (const Being *a, const Being *b) const {
-            return a->y < b->y;
-        }
-};
-
-void sort() {
-    beings.sort(BeingCompare());
-}
-
 Being::Being():
     job(0),
     x(0), y(0), direction(SOUTH),
     action(0), mFrame(0),
     speech_color(0),
     walk_time(0),
-    speed(150),
     emotion(0), emotion_time(0),
     aspd(350),
-    mWeapon(0),
     mId(0),
+    mWeapon(0),
+    mWalkSpeed(150),
     mMap(NULL),
     hairStyle(1), hairColor(1),
     speech_time(0),
@@ -332,7 +321,7 @@ void Being::nextStep()
     x = node.x;
     y = node.y;
     action = WALK;
-    walk_time += speed / 10;
+    walk_time += mWalkSpeed / 10;
 }
 
 void Being::logic()
@@ -354,7 +343,7 @@ void Being::logic()
     {
         switch (action) {
             case WALK:
-                mFrame = (get_elapsed_time(walk_time) * 4) / speed;
+                mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
                 if (mFrame >= 4) {
                     nextStep();
                 }
@@ -375,6 +364,19 @@ void Being::logic()
             emotion_time--;
             if (emotion_time == 0) {
                 emotion = 0;
+            }
+        }
+    }
+
+    if (getType() == MONSTER)
+    {
+        if (action != STAND)
+        {
+            mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
+
+            if (mFrame >= 4 && action != MONSTER_DEAD)
+            {
+                nextStep();
             }
         }
     }
@@ -436,13 +438,6 @@ void Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         graphics->drawText("[TARGET]", px + 15, py - dy,
                            gcn::Graphics::CENTER);
     }
-
-    // Draw player name
-    if (getType() == PLAYER && this != player_node)
-    {
-        graphics->setFont(speechFont);
-        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
-    }
 }
 
 Being::Type Being::getType() const
@@ -497,7 +492,7 @@ Being::getXOffset() const
     {
         if (direction != NORTH && direction != SOUTH)
         {
-            offset = (get_elapsed_time(walk_time) * 32) / speed;
+            offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
             if (offset > 32) offset = 32;
 
             if (direction == WEST || direction == NW || direction == SW) {
@@ -522,7 +517,7 @@ Being::getYOffset() const
     {
         if (direction != EAST && direction != WEST)
         {
-            offset = (get_elapsed_time(walk_time) * 32) / speed;
+            offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
             if (offset > 32) offset = 32;
 
             if (direction == NORTH || direction == NW || direction == NE) {
@@ -599,43 +594,37 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
                 mFrame = 3;
             }
 
-            px -= 42;
-            py -= 65;
-
             frame = mFrame + action;
 
             if (action == MONSTER_DEAD)
             {
                 graphics->drawImage(
                         monsterset[job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
-                        px + 30, py + 40);
+                        px - 12, py - 25);
             }
             else
             {
                 graphics->drawImage(
                         monsterset[job-1002]->spriteset[dir + 4 * frame],
-                        px + 30, py + 40);
+                        px - 12, py - 25);
 
                 /*
                 if (x == mouseTileX && y == mouseTileY)
                 {
-                    graphics->drawImage(attackTarget, px + 30 + 16, py + 32);
+                    graphics->drawImage(attackTarget, px + 4, py - 33);
                 }
                 */
-            }
-
-            if (action != STAND)
-            {
-                mFrame = (get_elapsed_time(walk_time) * 4) / speed;
-
-                if (mFrame >= 4 && action != MONSTER_DEAD)
-                {
-                    nextStep();
-                }
             }
             break;
 
         default:
             break;
+    }
+
+    // Draw player name
+    if (getType() == PLAYER && this != player_node)
+    {
+        graphics->setFont(speechFont);
+        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
     }
 }

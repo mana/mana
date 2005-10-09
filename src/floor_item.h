@@ -28,8 +28,6 @@
 #include "map.h"
 #include "sprite.h"
 
-class Map;
-
 /**
  * An item lying on the floor.
  */

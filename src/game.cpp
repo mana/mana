@@ -295,7 +295,6 @@ void do_init()
     player_node = createBeing(account_ID, 0, engine->getCurrentMap());
     player_node->x = startX;
     player_node->y = startY;
-    player_node->speed = 150;
     player_node->setHairColor(player_info->hairColor);
     player_node->setHairStyle(player_info->hairStyle);
 
@@ -1095,7 +1094,7 @@ void do_parse()
                     // Prevent division by 0 when calculating frame
                     if (speed == 0) { speed = 150; }
 
-                    being->speed = speed;
+                    being->setWalkSpeed(speed);
                     being->job = job;
                     being->setHairStyle(msg.readShort());
                     being->setWeapon(msg.readShort());
@@ -1194,7 +1193,7 @@ void do_parse()
                         being = createBeing(id, job, tiledMap);
                     }
 
-                    being->speed = speed;
+                    being->setWalkSpeed(speed);
                     being->job = job;
                     being->setHairStyle(msg.readShort());
                     being->setWeaponById(msg.readShort());  // item id 1
@@ -1524,7 +1523,7 @@ void do_parse()
                     switch (type)
                     {
                         //case 0x0000:
-                        //    player_node->speed = msg.readLong();
+                        //    player_node->setWalkSpeed(msg.readLong());
                         //    break;
                         case 0x0005: player_info->hp = value; break;
                         case 0x0006: player_info->maxHp = value; break;

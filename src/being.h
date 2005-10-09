@@ -88,7 +88,6 @@ class Being : public Sprite
         Uint8 mFrame;
         Sint32 speech_color;
         Uint16 walk_time;
-        Uint16 speed;
         Uint8 emotion;        /**< Currently showing emotion */
         Uint8 emotion_time;   /**< Time until emotion disappears */
 
@@ -152,14 +151,14 @@ class Being : public Sprite
         void setHairColor(Uint16 color);
 
         /**
-         * Sets the hair style for this being.
-         */
-        void setHairStyle(Uint16 style);
-
-        /**
          * Gets the hair color for this being.
          */
         Uint16 getHairColor();
+
+        /**
+         * Sets the hair style for this being.
+         */
+        void setHairStyle(Uint16 style);
 
         /**
          * Gets the hair style for this being.
@@ -169,36 +168,30 @@ class Being : public Sprite
         /**
          * Makes this being take the next step of his path.
          */
-        void nextStep();
+        void
+        nextStep();
 
         /**
          * Performs being logic.
          */
-        void logic();
+        void
+        logic();
 
         /**
          * Draws the speech text above the being.
          */
-        void drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        void
+        drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         /**
          * Returns the type of the being.
          */
         Type getType() const;
 
-        // ACCES METHODS
-
         /**
          * Gets the weapon picture id.
          */
         Uint16 getWeapon() const { return mWeapon; }
-
-        /**
-         * Gets the sprite id.
-         */
-        Uint32 getId() const { return mId; }
-
-        // MODIFICATION METHODS
 
         /**
          * Sets the weapon picture id.
@@ -213,7 +206,26 @@ class Being : public Sprite
          *
          * @param weapon the weapon id
          */
-        void setWeaponById(Uint16 weapon);
+        void
+        setWeaponById(Uint16 weapon);
+
+        /**
+         * Gets the walk speed.
+         */
+        Uint16
+        getWalkSpeed() const { return mWalkSpeed; }
+
+        /**
+         * Sets the walk speed.
+         */
+        void
+        setWalkSpeed(Uint16 speed) { mWalkSpeed = speed; }
+
+        /**
+         * Gets the sprite id.
+         */
+        Uint32
+        getId() const { return mId; }
 
         /**
          * Sets the sprite id.
@@ -225,8 +237,6 @@ class Being : public Sprite
          * Sets the map the being is on
          */
         void setMap(Map *map);
-
-        // SPRITE METHODS
 
         /**
          * Draws this being to the given graphics context.
@@ -269,8 +279,9 @@ class Being : public Sprite
         void
         setPath(std::list<PATH_NODE> path);
 
+        Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWeapon;                 /**< Weapon picture id */
-        Uint32 mId;                     /**< Unique id */
+        Uint16 mWalkSpeed;              /**< Walking speed */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         Sprites::iterator mSpriteIterator;
@@ -315,14 +326,9 @@ createBeing(Uint32 id, Uint16 job, Map *map);
 void
 remove_node(Being *being);
 
-/**
- * Sort beings in vertical order
- */
-void
-sort();
-
 extern Being *player_node;
 
-extern std::list<Being*> beings;
+typedef std::list<Being*> Beings;
+extern Beings beings;
 
 #endif

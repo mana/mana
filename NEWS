@@ -9,6 +9,7 @@
 - Improved damage text font, shadow is now translucent
 - Improved GUI layout, new profile window
 - Improved support for building on FreeBSD and MacOS X
+- Improved tile engine to fix graphics glitches and make mapping easier
 - Fixed items on map to be removed on map switch
 - Fixed OpenGL checkbox in the setup window to be usable
 - Cleaned up a lot of code

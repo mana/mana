@@ -72,58 +72,6 @@ Spriteset *npcset;
 Spriteset *weaponset;
 
 
-int get_x_offset(Being *being)
-{
-    int offset = 0;
-    char direction = being->direction;
-
-    if (being->action == Being::WALK)
-    {
-        if (direction != Being::NORTH && direction != Being::SOUTH)
-        {
-            offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
-            if (offset > 32) offset = 32;
-
-            if (direction == Being::WEST || direction == Being::NW ||
-                    direction == Being::SW) {
-                offset = -offset;
-                offset += 32;
-            }
-            else {
-                offset -= 32;
-            }
-        }
-    }
-
-    return offset;
-}
-
-int get_y_offset(Being *being)
-{
-    int offset = 0;
-    char direction = being->direction;
-
-    if (being->action == Being::WALK)
-    {
-        if (direction != Being::EAST && direction != Being::WEST)
-        {
-            offset = (get_elapsed_time(being->walk_time) * 32) / being->speed;
-            if (offset > 32) offset = 32;
-
-            if (direction == Being::NORTH || direction == Being::NW ||
-                    direction == Being::NE) {
-                offset = -offset;
-                offset += 32;
-            }
-            else {
-                offset -= 32;
-            }
-        }
-    }
-
-    return offset;
-}
-
 Engine::Engine():
     mCurrentMap(NULL)
 {
@@ -294,8 +242,6 @@ void Engine::draw()
     camera_y = map_y / 32;
     int mouseTileX = mouseX / 32 + camera_x;
     int mouseTileY = mouseY / 32 + camera_y;
-
-    sort();
 
     frame++;
 

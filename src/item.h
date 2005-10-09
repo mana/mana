@@ -80,25 +80,25 @@ class Item
         getQuantity() const { return mQuantity; }
 
         /**
-         * Sets wether this item is considered equipment.
+         * Sets whether this item is considered equipment.
          */
         void
         setEquipment(bool equipment) { mEquipment = equipment; }
 
         /**
-         * Returns wether this item is considered equipment.
+         * Returns whether this item is considered equipment.
          */
         bool
         isEquipment() const { return mEquipment; }
 
         /**
-         * Sets wether this item is equipped.
+         * Sets whether this item is equipped.
          */
         void
         setEquipped(bool equipped) { mEquipped = equipped; }
 
         /**
-         * Returns wether this item is equipped.
+         * Returns whether this item is equipped.
          */
         bool
         isEquipped() const { return mEquipped; }

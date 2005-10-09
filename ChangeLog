@@ -31,8 +31,8 @@
 	a normal tile. One well in new_3-1 has been converted to use the new
 	double tiles for testing purposes.
 	* src/being.cpp, src/game.cpp, src/engine.cpp: Fixed map switch
-	crashing the client, display of [TARGET] and Alt keys for toggling
-	windows.
+	crashing the client, display of [TARGET], Alt keys for toggling
+	windows and names to overlap other players.
 
 2005-10-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

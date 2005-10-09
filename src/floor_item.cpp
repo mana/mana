@@ -22,7 +22,6 @@
  */
 
 #include "floor_item.h"
-#include "sprite.h"
 #include "graphic/spriteset.h"
 #include "resources/itemmanager.h"
 #include "resources/iteminfo.h"
