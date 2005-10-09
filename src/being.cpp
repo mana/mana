@@ -427,6 +427,16 @@ void Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
                            gcn::Graphics::CENTER);
     }
 
+    // Potentially draw [TARGET] above this being
+    if (this == autoTarget)
+    {
+        graphics->setFont(speechFont);
+        int dy = (getType() == PLAYER) ? 90 : 52;
+
+        graphics->drawText("[TARGET]", px + 15, py - dy,
+                           gcn::Graphics::CENTER);
+    }
+
     // Draw player name
     if (getType() == PLAYER && this != player_node)
     {

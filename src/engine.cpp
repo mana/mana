@@ -340,24 +340,6 @@ void Engine::draw()
         (*i)->drawSpeech(graphics, -map_x, -map_y);
     }
 
-    if (autoTarget)
-    {
-        if (autoTarget->getType() == Being::PLAYER)
-        {
-             graphics->drawText("[TARGET]",
-                                autoTarget->getPixelX() + 15,
-                                autoTarget->getPixelY() - 60,
-                                gcn::Graphics::CENTER);
-        }
-        else
-        {
-             graphics->drawText("[TARGET]",
-                                autoTarget->getPixelX() + 60,
-                                autoTarget->getPixelY(),
-                                gcn::Graphics::CENTER);
-        }
-    }
-
 #ifdef DEBUG
     std::stringstream debugStream;
     debugStream << "[" << fps << " fps] " << mouseTileX << ", " << mouseTileY;

@@ -647,7 +647,7 @@ void do_input()
                             }
                             SDL_FreeSurface(screenshot);
                         }
-                    break;
+                        break;
 
                     default:
                         break;
@@ -655,7 +655,7 @@ void do_input()
 
                 if (requestedWindow)
                 {
-                    requestedWindow->setVisible(requestedWindow->isVisible());
+                    requestedWindow->setVisible(!requestedWindow->isVisible());
                     if (requestedWindow->isVisible())
                     {
                         requestedWindow->requestMoveToTop();
@@ -1492,7 +1492,6 @@ void do_parse()
                     player_node->mFrame = 0;
                     player_node->x = x;
                     player_node->y = y;
-                    player_node->setMap(tiledMap);
 
                     // Send "map loaded"
                     MessageOut outMsg;
