@@ -57,7 +57,8 @@ BrowserBox::BrowserBox(unsigned int mode):
                     "graphics/gui/browserfont.png",
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                    "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`");
+                    "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
+                    "шебЅй…нЌу”ъЏз_•£Ґ°њагхкс—цьд÷№ƒя");
         } else
 #endif
         {
