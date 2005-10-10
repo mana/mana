@@ -29,8 +29,9 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-#include "../map.h"
 #include "../guichanfwd.h"
+
+class Map;
 
 /**
  * The chat window.

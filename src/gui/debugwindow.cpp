@@ -22,14 +22,17 @@
  */
 
 #include "debugwindow.h"
+#include "button.h"
+#include "minimap.h"
 
 #include <guichan/widgets/label.hpp>
-#include "button.h"
 #include <sstream>
-#include "minimap.h"
+
 #include "../game.h"
 #include "../graphics.h"
 #include "../engine.h"
+#include "../map.h"
+
 extern Graphics *graphics;
 extern Minimap *minimap;
 extern int frame;
@@ -72,7 +75,8 @@ DebugWindow::~DebugWindow()
     delete closeButton;
 }
 
-void DebugWindow::logic()
+void
+DebugWindow::logic()
 {
     // Get the current mouse position
     int mouseX, mouseY;
@@ -80,7 +84,7 @@ void DebugWindow::logic()
     int mouseTileX = mouseX / 32 + camera_x;
     int mouseTileY = mouseY / 32 + camera_y;
 
-std::stringstream updatedText;
+    std::stringstream updatedText;
     updatedText << "[" << fps << " FPS]";
     FPSLabel->setCaption(updatedText.str());
     FPSLabel->adjustSize();
@@ -92,21 +96,23 @@ std::stringstream updatedText;
 
     updatedText.str("");
     mCurrentMap = engine->getCurrentMap();
+
     if (mCurrentMap != NULL)
     {
-        updatedText
-            << " [Music File: " << mCurrentMap->getProperty("music") << "]";
+        updatedText << " [Music File: "
+                    << mCurrentMap->getProperty("music") << "]";
         musicFileLabel->setCaption(updatedText.str());
         musicFileLabel->adjustSize();
         updatedText.str("");
-        updatedText
-            << " [MiniMap File: " << mCurrentMap->getProperty("minimap") << "]";
+        updatedText << " [MiniMap File: "
+                    << mCurrentMap->getProperty("minimap") << "]";
         mapFileLabel->setCaption(updatedText.str());
         mapFileLabel->adjustSize();
     }
 }
 
-void DebugWindow::action(const std::string& eventId)
+void
+DebugWindow::action(const std::string& eventId)
 {
     if (eventId == "close")
     {

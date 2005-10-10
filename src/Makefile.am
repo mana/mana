@@ -110,8 +110,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/hbox.cpp \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
-	      gui/debugwindow.cpp \
-	      gui/debugwindow.h \
 	      net/messagein.cpp \
 	      net/messagein.h \
 	      net/messageout.cpp \

@@ -3,6 +3,7 @@
 	* src/being.cpp, src/being.h, src/game.cpp: Always compile with debug
 	window and hide it on startup. Also added fading out effect on damage
 	font (only works in OpenGL).
+	* src/Makefile.am: Don't include debugwindow.h/cpp twice.
 
 2005-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
