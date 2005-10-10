@@ -243,24 +243,16 @@ void Being::setHairStyle(Uint16 style)
     }
 }
 
-Uint16 Being::getHairColor()
-{
-    return hairColor;
-}
-
-Uint16 Being::getHairStyle()
-{
-    return hairStyle;
-}
-
-void Being::setSpeech(const std::string &text, Uint32 time)
+void
+Being::setSpeech(const std::string &text, Uint32 time)
 {
     speech = text;
     speech_time = tick_time;
     showSpeech = true;
 }
 
-void Being::setDamage(Sint16 amount, Uint32 time)
+void
+Being::setDamage(Sint16 amount, Uint32 time)
 {
     if (!amount) {
         damage = "miss";
@@ -273,7 +265,8 @@ void Being::setDamage(Sint16 amount, Uint32 time)
     showDamage = true;
 }
 
-void Being::setMap(Map *map)
+void
+Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
     if (mMap != NULL)
@@ -290,7 +283,8 @@ void Being::setMap(Map *map)
     }
 }
 
-void Being::nextStep()
+void
+Being::nextStep()
 {
     mFrame = 0;
 
@@ -324,7 +318,8 @@ void Being::nextStep()
     walk_time += mWalkSpeed / 10;
 }
 
-void Being::logic()
+void
+Being::logic()
 {
     // Determine whether speech should still be displayed
     if (get_elapsed_time(speech_time) > 5000)
@@ -392,7 +387,8 @@ void Being::logic()
     }
 }
 
-void Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+void
+Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
@@ -422,7 +418,10 @@ void Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         }
 
         int textY = (getType() == PLAYER) ? 70 : 32;
+        int dt = get_elapsed_time(damage_time);
+        float a = (dt > 1500) ? 1.0 - (dt - 1500) / 1500.0 : 1.0;
 
+        graphics->setColor(gcn::Color(255, 255, 255, (int)(255 * a)));
         graphics->drawText(damage,
                            px + 16,
                            py - textY - get_elapsed_time(damage_time) / 100,

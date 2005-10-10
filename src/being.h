@@ -135,7 +135,7 @@ class Being : public Sprite
          * Returns the name of the being.
          */
         const std::string&
-        getName() { return mName; }
+        getName() const { return mName; }
 
         /**
          * Sets the name for the being.
@@ -148,22 +148,26 @@ class Being : public Sprite
         /**
          * Sets the hair color for this being.
          */
-        void setHairColor(Uint16 color);
+        void
+        setHairColor(Uint16 color);
 
         /**
          * Gets the hair color for this being.
          */
-        Uint16 getHairColor();
+        Uint16
+        getHairColor() const { return hairColor; }
 
         /**
          * Sets the hair style for this being.
          */
-        void setHairStyle(Uint16 style);
+        void
+        setHairStyle(Uint16 style);
 
         /**
          * Gets the hair style for this being.
          */
-        Uint16 getHairStyle();
+        Uint16
+        getHairStyle() const { return hairStyle; }
 
         /**
          * Makes this being take the next step of his path.

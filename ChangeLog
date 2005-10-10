@@ -1,6 +1,12 @@
+2005-10-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp, src/being.h, src/game.cpp: Always compile with debug
+	window and hide it on startup. Also added fading out effect on damage
+	font (only works in OpenGL).
+
 2005-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
-	* ChangeLog, src/gui/browserbox.cpp, src/gui/ministatus.cpp,
+	* src/gui/browserbox.cpp, src/gui/ministatus.cpp,
 	src/gui/debugwindow.h, src/gui/debugwindow.cpp, src/game.cpp,
 	src/engine.cpp, src/Makefile.am: Corrected the white browser font
 	bug and the black hp/mp bug which were linked. Added a debug window
@@ -441,7 +447,7 @@
 
 2005-09-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* M src/Makefile.am, src/gui/browserbox.cpp, src/gui/gui.cpp,
+	* src/Makefile.am, src/gui/browserbox.cpp, src/gui/gui.cpp,
 	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h,
 	src/resources/sdlimageloader.cpp, src/resources/sdlimageloader.h:
 	Added SDLImageLoader to make guichan support physfs. Removed
