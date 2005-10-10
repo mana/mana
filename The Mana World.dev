@@ -1790,7 +1790,7 @@ BuildCmd=
 [Unit174]
 FileName=src\gui\debugwindow.cpp
 CompileCpp=1
-Folder=gui/header
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
