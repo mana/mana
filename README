@@ -39,20 +39,23 @@ KEYBOARD:
 
 Use arrow keys to move around. Other keys:
 
-- Left Ctrl          attack
+- Ctrl               attack
+- F1                 toggle the online help
+- F2                 toggle profile window
+- F3                 toggle inventory window
+- F4                 toggle equipment window
+- F5                 toggle skills window
+- F6                 toggle minimap
+- F7                 toggle chat window
+- F9                 show setup window
+- F10                toggle debug window
 - Alt + 0-9          show emotions
-- F1                 show the online help
-- F5                 sit down / stand up
-- F6                 toggle debug pathfinding feature
+- Alt + S            sit down / stand up
+- Alt + F            toggle debug pathfinding feature
+- Alt + P            take screenshot
 - G or Z             pick up item
 - Enter              focus chat window / send message
-- Alt + K            show skills
-- Alt + S            show stats
-- Alt + I            show inventory
-- Alt + E            show equipment
-- Alt + C            show setup window
-- Alt + P            take screenshot
-- Left Shift         hold it when attacking to lock target for auto attack
+- Shift              hold it when attacking to lock target for auto attack
 
 MOUSE:
 

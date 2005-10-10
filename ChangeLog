@@ -8,6 +8,9 @@
 	data/graphics/gui/rpgfont_wider.png, src/gui/browserbox.cpp,
 	src/gui/gui.cpp: Pajarico added more international characters to the
 	fixed font and rpg font.
+	* src/game.cpp, README, data/helps/commands.txt: Introduced new window
+	shortcuts.
+	* src/gui/status.cpp: Corrected position of job XP bar.
 
 2005-10-09  Yohann Ferreira  <bertram@cegetel.net>
 

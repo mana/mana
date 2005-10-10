@@ -9,20 +9,25 @@
  
  Other keys:
  
-     ##2Left Ctrl##P           attack
-     ##2Alt + 0-9##P           show emotions
-     ##2F1##P                  show the in-game help
-     ##2F5##P                  sit down / stand up
-     ##2F6##P                  toggle debug pathfinding feature
-     ##2G or Z##P              pick up item
-     ##2Enter##P               focus chat window / send message
-     ##2Alt + K##P             show skills
-     ##2Alt + S##P             show stats
-     ##2Alt + I##P             show inventory
-     ##2Alt + E##P             show equipment
-     ##2Alt + C##P             show setup window
-     ##2Left Shift##P          hold it when attacking to lock target for auto
-                         attack
+     ##2Ctrl##P               attack
+     ##2F1##P                 toggle the online help
+     ##2F2##P                 toggle profile window
+     ##2F3##P                 toggle inventory window
+     ##2F4##P                 toggle equipment window
+     ##2F5##P                 toggle skills window
+     ##2F6##P                 toggle minimap
+     ##2F7##P                 toggle chat window
+     ##2F9##P                 show setup window
+     ##2F10##P                toggle debug window
+     ##2Alt + 0-9##P          show emotions
+     ##2Alt + S##P            sit down / stand up
+     ##2Alt + F##P            toggle debug pathfinding feature
+     ##2Alt + P##P            take screenshot
+     ##2G or Z##P             pick up item
+     ##2Enter##P              focus chat window / send message
+     ##2Shift##P              hold it when attacking to lock target for auto
+                        attack
+ 
 
 ##2MOUSE:
 

@@ -470,43 +470,44 @@ void do_input()
         // Keyboard events (for discontinuous keys)
         if (event.type == SDL_KEYDOWN)
         {
+            gcn::Window *requestedWindow = NULL;
+
             switch (event.key.keysym.sym)
             {
-                    // In-game Help
                 case SDLK_F1:
-                    if (helpWindow->isVisible()) {
+                    // In-game Help
+                    if (helpWindow->isVisible())
+                    {
                         helpWindow->setVisible(false);
-                    } else {
+                    }
+                    else
+                    {
                         helpWindow->loadHelp("index");
-                        if (helpWindow->isVisible()) helpWindow->requestMoveToTop();
+                        helpWindow->requestMoveToTop();
                     }
                     used = true;
                     break;
 
-                    // Player sit action
-                case SDLK_F5:
-                    if (!action_time) {
-                        break;
-                    }
+                case SDLK_F2: requestedWindow = statusWindow; break;
+                case SDLK_F3: requestedWindow = inventoryWindow; break;
+                case SDLK_F4: requestedWindow = equipmentWindow; break;
+                case SDLK_F5: requestedWindow = skillDialog; break;
+                case SDLK_F6: requestedWindow = minimap; break;
+                case SDLK_F7: requestedWindow = chatWindow; break;
+                //case SDLK_F8: requestedWindow = buddyWindow; break;
 
-                    switch (player_node->action)
-                    {
-                        case Being::STAND:
-                            action(2, 0);
-                            break;
-                        case Being::SIT:
-                            action(3, 0);
-                            break;
-                    }
+                case SDLK_F9:
+                    // Setup window
+                    setupWindow->setVisible(true);
+                    setupWindow->requestMoveToTop();
+                    used = true;
                     break;
 
-                    // Display path to mouse (debug purpose)
-                case SDLK_F6:
-                    displayPathToMouse = !displayPathToMouse;
-                    break;
+                case SDLK_F10: requestedWindow = debugWindow; break;
+                //case SDLK_F11: requestedWindow = newSkillWindow; break;
 
-                    // Input chat window
                 case SDLK_RETURN:
+                    // Input chat window
                     if (chatWindow->isFocused() ||
                         deathNotice != NULL ||
                         weightNotice != NULL)
@@ -592,62 +593,37 @@ void do_input()
                     break;
             }
 
+            if (requestedWindow)
+            {
+                requestedWindow->setVisible(!requestedWindow->isVisible());
+                if (requestedWindow->isVisible())
+                {
+                    requestedWindow->requestMoveToTop();
+                }
+                used = true;
+            }
+
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
             if (event.key.keysym.mod & KMOD_ALT)
             {
-                gcn::Window *requestedWindow = 0;
-
                 switch (event.key.keysym.sym)
                 {
-                        // Inventory window
-                    case SDLK_i:
-                        requestedWindow = inventoryWindow;
-                        break;
-
-                        // Statistics window
                     case SDLK_s:
-                        requestedWindow = statusWindow;
+                        // Player sit action
+                        if (!action_time) {
+                            break;
+                        }
+
+                        switch (player_node->action)
+                        {
+                            case Being::STAND: action(2, 0); break;
+                            case Being::SIT: action(3, 0); break;
+                        }
                         break;
 
-                        // Skill window
-                    case SDLK_k:
-                        requestedWindow = skillDialog;
-                        break;
-
-                        // Equipment window
-                    case SDLK_e:
-                        requestedWindow = equipmentWindow;
-                        break;
-
-                    /*
-                        // Buddy window
-                    case SDLK_b:
-                        requestedWindow = buddyWindow;
-                        break;
-                    */
-
-                    /*
-                        // New skills window
-                    case SDLK_n:
-                        requestedWindow = newSkillWindow;
-                        break;
-                    */
-
-                        // Setup window
-                    case SDLK_c:
-                        setupWindow->setVisible(true);
-                        setupWindow->requestMoveToTop();
-                        used = true;
-                        break;
-
-                        // Debug window
-                    case SDLK_d:
-                        requestedWindow = debugWindow;
-                        break;
-
-                        // screenshot (picture, hence the p)
                     case SDLK_p:
+                        // Screenshot (picture, hence the p)
                         {
                             SDL_Surface *screenshot = graphics->getScreenshot();
                             if (!saveScreenshot(screenshot))
@@ -660,16 +636,11 @@ void do_input()
 
                     default:
                         break;
-                }
 
-                if (requestedWindow)
-                {
-                    requestedWindow->setVisible(!requestedWindow->isVisible());
-                    if (requestedWindow->isVisible())
-                    {
-                        requestedWindow->requestMoveToTop();
-                    }
-                    used = true;
+                    case SDLK_f:
+                        // Find path to mouse (debug purpose)
+                        displayPathToMouse = !displayPathToMouse;
+                        break;
                 }
 
                 // Emotions

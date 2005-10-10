@@ -58,7 +58,7 @@ BrowserBox::BrowserBox(unsigned int mode):
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
-                    "шебЅй…нЌу”ъЏз_•£Ґ°њагхкс—цьд÷№ƒя");
+                    "шебЅй…нЌу”ъЏзл•£Ґ°њагхкс—цьд÷№ƒя");
         } else
 #endif
         {

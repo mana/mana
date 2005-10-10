@@ -66,21 +66,26 @@ StatusWindow::StatusWindow():
     gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 40, 3);
     hpLabel->setPosition(5, lvlLabel->getY() + lvlLabel->getHeight() + 5);
     hpBar = new ProgressBar(1.0f,
-            hpLabel->getX() + hpLabel->getWidth() + 5, hpLabel->getY(), 80,
-            15, 0, 171, 34);
-    hpValueLabel->setPosition(hpBar->getX() + hpBar->getWidth() + 5, hpBar->getY());
-    mpLabel->setPosition(5,hpLabel->getY() + hpLabel->getHeight() + 5);
-    mpBar = new ProgressBar(1.0f, hpBar->getX(),
-            mpLabel->getY(), 80, 15, 26, 102, 230);
+                            hpLabel->getX() + hpLabel->getWidth() + 5,
+                            hpLabel->getY(), 80, 15, 0, 171, 34);
+    hpValueLabel->setPosition(hpBar->getX() + hpBar->getWidth() + 5,
+                              hpBar->getY());
+    mpLabel->setPosition(5, hpLabel->getY() + hpLabel->getHeight() + 5);
+    mpBar = new ProgressBar(1.0f,
+                            hpBar->getX(),
+                            mpLabel->getY(), 80, 15, 26, 102, 230);
     mpValueLabel->setPosition(hpValueLabel->getX(), mpBar->getY());
 
     xpLabel->setPosition(175, hpLabel->getY());
     xpBar = new ProgressBar(1.0f, 205, xpLabel->getY(), 80, 15,
-                             143, 192, 211);
+                            143, 192, 211);
     xpValueLabel->setPosition(290, xpBar->getY());
     jobXpLabel->setPosition(175, mpLabel->getY());
-    jobXpBar = new ProgressBar(1.0f, 225, jobXpLabel->getY(), 60, 15,
-                             220, 135, 203);
+    jobXpBar = new ProgressBar(1.0f,
+                               xpBar->getX() + xpBar->getWidth() - 60,
+                               jobXpLabel->getY(),
+                               60, 15,
+                               220, 135, 203);
     jobValueLabel->setPosition(290, jobXpBar->getY());
 
     add(lvlLabel);
@@ -145,17 +150,22 @@ StatusWindow::StatusWindow():
     statsButton[4]->setEventId("DEX");
     statsButton[5]->setEventId("LUK");
 
+
     // Set position
     statsTitleLabel->setPosition(mpLabel->getX(), mpLabel->getY() + 23 );
     statsTotalLabel->setPosition(110, statsTitleLabel->getY() + 15);
-    statsCostLabel->setPosition(170, statsTotalLabel->getY());
+    int totalLabelY = statsTotalLabel->getY();
+    statsCostLabel->setPosition(170, totalLabelY);
+
     for (int i = 0; i < 6; i++)
     {
         statsLabel[i]->setPosition(5, statsTotalLabel->getY() + (i * 23) + 15);
-        statsDisplayLabel[i]->setPosition(115, statsTotalLabel->getY() + (i * 23) + 15);
-        statsButton[i]->setPosition(145, statsTotalLabel->getY() + (i * 23) + 10);
-        pointsLabel[i]->setPosition(175, statsTotalLabel->getY() + (i * 23) + 15);
+        statsDisplayLabel[i]->setPosition(115,
+                                          totalLabelY + (i * 23) + 15);
+        statsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
+        pointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
     }
+
     remainingStatsPointsLabel->setPosition(5, pointsLabel[5]->getY() + 25);
 
     statsAttackLabel->setPosition(220, statsLabel[0]->getY());
@@ -342,7 +352,7 @@ void StatusWindow::update()
 
     updateText.str("");
     updateText << "Remaining Status Points: " << statusPoints;
-    
+
     pointsStr[0] << (int)player_info->STRUp;
     pointsStr[1] << (int)player_info->AGIUp;
     pointsStr[2] << (int)player_info->VITUp;
@@ -415,7 +425,8 @@ void StatusWindow::update()
     statsReflexPoints->adjustSize();
 
     // Update Second column widgets position
-    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 20, lvlLabel->getY());
+    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 20,
+                         lvlLabel->getY());
 
     xpLabel->setPosition(hpValueLabel->getX() + hpValueLabel->getWidth() + 10,
                          hpLabel->getY());
@@ -425,7 +436,8 @@ void StatusWindow::update()
                               xpLabel->getY());
 
     jobXpLabel->setPosition(xpLabel->getX(), mpLabel->getY());
-    jobXpBar->setPosition(xpBar->getX(),jobXpLabel->getY());
+    jobXpBar->setPosition(xpBar->getX() + xpBar->getWidth() -
+                          jobXpBar->getWidth(), jobXpLabel->getY());
     jobValueLabel->setPosition(290, jobXpLabel->getY());
 }
 

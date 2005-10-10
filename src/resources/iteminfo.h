@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_ITEMINFO_H
-#define _TMW_ITEMINFO_H
+#ifndef _TMW_ITEMINFO_H_
+#define _TMW_ITEMINFO_H_
 
 #include <string>
 
