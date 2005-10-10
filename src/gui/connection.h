@@ -21,45 +21,60 @@
  *  $Id$
  */
 
-#ifndef _TMW_SPRITE_H_
-#define _TMW_SPRITE_H_
+#ifndef _TMW_CONNECTION_H
+#define _TMW_CONNECTION_H
 
-class Graphics;
+#include <iosfwd>
+#include <guichan/actionlistener.hpp>
+#include <SDL_events.h>
+
+#include "window.h"
+
+#include "../guichanfwd.h"
+
+class Button;
+class Label;
+class ProgressBar;
 
 /**
- * A sprite is some visible object on a map. This abstract class defines the
- * interface used by the map to sort and display the sprite.
+ * The connection dialog.
+ *
+ * \ingroup Interface
  */
-class Sprite
-{
+class ConnectionDialog : public Window, public gcn::ActionListener {
     public:
         /**
-         * Destructor.
-         */
-        virtual
-        ~Sprite() {}
-
-        /**
-         * Draws the sprite to the given graphics context.
+         * Constructor
          *
-         * Note: this function could be simplified if the graphics context
-         * would support setting a translation offset. It already does this
-         * partly with the clipping rectangle support.
+         * @see Window::Window
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) = 0;
+        ConnectionDialog();
 
         /**
-         * Returns the pixel Y coordinate of the sprite.
+         * Destructor
          */
-        virtual int
-        getPixelY() const = 0;
+        ~ConnectionDialog();
 
-    protected:
         /**
-         * Constructor.
+         * Called when receiving actions from the widgets.
          */
-        Sprite() {}
+        void action(const std::string& eventId);
+        
+        void logic();
+        
+    private:
+        gcn::Label *mLabel;
+        Button *mCancelButton;
+        ProgressBar *mProgressBar;
+        float mProgress;
+        int mStatus;
+        
+        void mapLogin();
 };
+
+/**
+ * Handle input
+ */
+void connectionInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif
