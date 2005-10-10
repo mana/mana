@@ -29,7 +29,7 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-#include "map.h"
+#include "../map.h"
 #include "../guichanfwd.h"
 
 /**
