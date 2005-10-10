@@ -118,7 +118,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
         // tiles have been drawn
         if (layer == 1)
         {
-            while (si != mSprites.end() && (*si)->getPixelY() < y * 32)
+            while (si != mSprites.end() && (*si)->getPixelY() <= y * 32 - 32)
             {
                 (*si)->draw(graphics, -scrollX, -scrollY);
                 si++;

@@ -11,6 +11,9 @@
 	* src/game.cpp, README, data/helps/commands.txt: Introduced new window
 	shortcuts.
 	* src/gui/status.cpp: Corrected position of job XP bar.
+	* src/data/graphics/tiles/Makefile.am: Forgot to add new tilesets
+	here.
+	* src/map.cpp: Another small fix to sprite rendering.
 
 2005-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
