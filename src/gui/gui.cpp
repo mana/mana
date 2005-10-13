@@ -60,11 +60,11 @@ Gui *gui;
 gcn::SDLInput *guiInput;               // GUI input
 
 // Fonts used in showing hits
-gcn::ImageFont *hitRedFont;
-gcn::ImageFont *hitBlueFont;
-gcn::ImageFont *hitYellowFont;
+gcn::Font *hitRedFont;
+gcn::Font *hitBlueFont;
+gcn::Font *hitYellowFont;
 // Font used to display speech and player names
-gcn::ImageFont *speechFont;
+gcn::Font *speechFont;
 
 class GuiConfigListener : public ConfigListener
 {

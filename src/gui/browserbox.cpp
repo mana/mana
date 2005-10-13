@@ -62,7 +62,7 @@ BrowserBox::BrowserBox(unsigned int mode):
         } else
 #endif
         {
-            browserFont = gui->getFont();
+            browserFont = (gcn::ImageFont*)gui->getFont();
         }
     }
 

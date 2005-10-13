@@ -26,9 +26,9 @@
 #include <list>
 #include <sstream>
 
-#include <guichan/imagefont.hpp>
-
+#ifdef DEBUG
 #include <guichan/widgets/label.hpp>
+#endif
 
 #include "being.h"
 #include "floor_item.h"
@@ -60,7 +60,9 @@ extern int frame;
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
 
+#ifdef DEBUG
 gcn::Label *debugInfo;
+#endif
 
 std::map<int, Spriteset*> monsterset;
 
@@ -76,10 +78,12 @@ Engine::Engine():
     mCurrentMap(NULL)
 {
     // Initializes GUI
+#ifdef DEBUG
     debugInfo = new gcn::Label();
     // Oh, come on guichan folks, how useful is it to have a single widget gui?
     // (Well, the BasicContainer interface isn't that much more useful... ;)
     dynamic_cast<WindowContainer*>(gui->getTop())->add(debugInfo);
+#endif
 
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
@@ -128,7 +132,9 @@ Engine::~Engine()
     attackTarget->decRef();
 
     delete itemDb;
+#ifdef DEBUG
     delete debugInfo;
+#endif
 }
 
 Map *Engine::getCurrentMap()

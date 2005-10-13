@@ -82,7 +82,7 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         /**
          * Return game font
          */
-        gcn::ImageFont*
+        gcn::Font*
         getFont() { return mGuiFont; }
 
         /**
@@ -101,7 +101,7 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         GuiConfigListener *mConfigListener;
         gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
         gcn::ImageLoader *mImageLoader;       /**< For loading images */
-        gcn::ImageFont *mGuiFont;             /**< The global GUI font */
+        gcn::Font *mGuiFont;             /**< The global GUI font */
         Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
 };
@@ -112,12 +112,12 @@ extern gcn::SDLInput *guiInput;               /**< GUI input */
 /**
  * Fonts used in showing hits
  */
-extern gcn::ImageFont *hitRedFont;
-extern gcn::ImageFont *hitBlueFont;
-extern gcn::ImageFont *hitYellowFont;
+extern gcn::Font *hitRedFont;
+extern gcn::Font *hitBlueFont;
+extern gcn::Font *hitYellowFont;
 /**
  * Font used to display speech and player names
  */
-extern gcn::ImageFont *speechFont;
+extern gcn::Font *speechFont;
 
 #endif
