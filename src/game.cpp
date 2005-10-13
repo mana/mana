@@ -620,6 +620,7 @@ void do_input()
                             case Being::STAND: action(2, 0); break;
                             case Being::SIT: action(3, 0); break;
                         }
+                        used = true;
                         break;
 
                     case SDLK_p:
@@ -632,6 +633,7 @@ void do_input()
                             }
                             SDL_FreeSurface(screenshot);
                         }
+                        used = true;
                         break;
 
                     default:
@@ -640,6 +642,7 @@ void do_input()
                     case SDLK_f:
                         // Find path to mouse (debug purpose)
                         displayPathToMouse = !displayPathToMouse;
+                        used = true;
                         break;
                 }
 

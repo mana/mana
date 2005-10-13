@@ -135,7 +135,7 @@ void Button::draw(gcn::Graphics* graphics)
             throw GCN_EXCEPTION("Button::draw. Uknown alignment.");
     }
 
-    graphics->setFont((gcn::ImageFont*)getFont());
+    graphics->setFont(getFont());
 
     if (isPressed()) {
         graphics->drawText(getCaption(), textX + 1, textY + 1, getAlignment());

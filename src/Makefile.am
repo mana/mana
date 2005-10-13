@@ -120,7 +120,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      net/packet.h \
 	      net/protocol.cpp \
 	      net/protocol.h \
-	      net/win2linux.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
@@ -177,7 +176,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      serverinfo.h \
 	      sound.cpp \
 	      sound.h \
-	      sprite.h
+	      sprite.h \
+	      tileset.h
 
 # set the include path found by configure
 INCLUDES =					\

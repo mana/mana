@@ -1,3 +1,8 @@
+2005-10-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp: Prevent Alt+p/s/f from appearing in chatbox.
+	* src/Makefile.am: Some updates for added/removed headers.
+
 2005-10-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
