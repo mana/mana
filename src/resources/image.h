@@ -129,7 +129,7 @@ class Image : public Resource
         static bool mUseOpenGL;
 #endif
         SDL_Surface *mImage;
-        float alpha;
+        float mAlpha;
 };
 
 /**

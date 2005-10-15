@@ -32,11 +32,9 @@ bool Image::mUseOpenGL = false;
 #endif
 
 Image::Image(const std::string &idPath, SDL_Surface *image):
-    Resource(idPath), mImage(image)
+    Resource(idPath), mImage(image),
+    mAlpha(1.0f)
 {
-    // Default to opaque
-    alpha = 1.0f;
-
     bounds.x = 0;
     bounds.y = 0;
     bounds.w = mImage->w;
@@ -49,11 +47,9 @@ Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
     Resource(idPath),
     mGLImage(glimage),
     mTexWidth(texWidth),
-    mTexHeight(texHeight)
+    mTexHeight(texHeight),
+    mAlpha(1.0f)
 {
-    // Default to opaque
-    alpha = 1.0f;
-
     bounds.x = 0;
     bounds.y = 0;
     bounds.w = width;
@@ -243,14 +239,13 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
 
     // Set color key and alpha blending optins, and convert the surface to the
     // current display format
-    SDL_Surface *prevImage = tmpImage;
     if (hasAlpha) {
         image = SDL_DisplayFormatAlpha(tmpImage);
     }
     else {
         image = SDL_DisplayFormat(tmpImage);
     }
-    SDL_FreeSurface(prevImage);
+    SDL_FreeSurface(tmpImage);
 
     if (image == NULL) {
         logger->log("Error: Image convert failed.");
@@ -290,7 +285,7 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 
 void Image::setAlpha(float a)
 {
-    alpha = a;
+    mAlpha = a;
 
 #ifdef USE_OPENGL
     if (mUseOpenGL) {
@@ -299,12 +294,12 @@ void Image::setAlpha(float a)
 #endif
 
     // Set the alpha value this image is drawn at
-    SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * alpha));
+    SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * mAlpha));
 }
 
 float Image::getAlpha()
 {
-    return alpha;
+    return mAlpha;
 }
 
 #ifdef USE_OPENGL

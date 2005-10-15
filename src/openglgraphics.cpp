@@ -94,7 +94,7 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     float texX2 = (srcX + width) / (float)image->mTexWidth;
     float texY2 = (srcY + height) / (float)image->mTexHeight;
 
-    glColor4f(1.0f, 1.0f, 1.0f, image->alpha);
+    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
     glBindTexture(GL_TEXTURE_2D, image->mGLImage);
 
     drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);

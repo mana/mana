@@ -1,5 +1,7 @@
 2005-10-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/openglgraphics.cpp, src/resources/image.cpp,
+	src/resources/image.h: Some small cleanups.
 	* src/engine.cpp: Removed some legacy debug code.
 
 2005-10-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
