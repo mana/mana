@@ -25,8 +25,6 @@
 
 #include <sstream>
 
-#include <guichan/imagefont.hpp>
-
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
@@ -363,16 +361,13 @@ Being::logic()
         }
     }
 
-    if (getType() == MONSTER)
+    if (getType() == MONSTER && action != STAND)
     {
-        if (action != STAND)
-        {
-            mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
+        mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
 
-            if (mFrame >= 4 && action != MONSTER_DEAD)
-            {
-                nextStep();
-            }
+        if (mFrame >= 4 && action != MONSTER_DEAD)
+        {
+            nextStep();
         }
     }
 
@@ -418,8 +413,8 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         }
 
         int textY = (getType() == PLAYER) ? 70 : 32;
-        int dt = get_elapsed_time(damage_time);
-        float a = (dt > 1500) ? 1.0 - (dt - 1500) / 1500.0 : 1.0;
+        int ft = get_elapsed_time(damage_time) - 1500;
+        float a = (ft > 0) ? 1.0 - ft / 1500.0 : 1.0;
 
         graphics->setColor(gcn::Color(255, 255, 255, (int)(255 * a)));
         graphics->drawText(damage,
@@ -485,23 +480,22 @@ void Being::setWeaponById(Uint16 weapon)
 int
 Being::getXOffset() const
 {
-    int offset = 0;
+    // Only beings walking to the left or the right have an x offset
+    if (action != WALK || direction == NORTH || direction == SOUTH) {
+        return 0;
+    }
 
-    if (action == WALK)
-    {
-        if (direction != NORTH && direction != SOUTH)
-        {
-            offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
-            if (offset > 32) offset = 32;
+    int offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
 
-            if (direction == WEST || direction == NW || direction == SW) {
-                offset = -offset;
-                offset += 32;
-            }
-            else {
-                offset -= 32;
-            }
-        }
+    // We calculate the offset _from_ the _target_ location
+    offset -= 32;
+    if (offset > 0) {
+        offset = 0;
+    }
+
+    // Going to the right? Invert the offset.
+    if (direction == WEST || direction == NW || direction == SW) {
+        offset = -offset;
     }
 
     return offset;
@@ -510,23 +504,21 @@ Being::getXOffset() const
 int
 Being::getYOffset() const
 {
-    int offset = 0;
+    // Only beings walking up or down have an y offset
+    if (action != WALK || direction == EAST || direction == WEST) {
+        return 0;
+    }
 
-    if (action == WALK)
-    {
-        if (direction != EAST && direction != WEST)
-        {
-            offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
-            if (offset > 32) offset = 32;
+    int offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
 
-            if (direction == NORTH || direction == NW || direction == NE) {
-                offset = -offset;
-                offset += 32;
-            }
-            else {
-                offset -= 32;
-            }
-        }
+    // We calculate the offset _from_ the _target_ location
+    offset -= 32;
+    if (offset > 0) {
+        offset = 0;
+    }
+
+    if (direction == NORTH || direction == NW || direction == NE) {
+        offset = -offset;
     }
 
     return offset;
@@ -543,12 +535,12 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
     switch (getType())
     {
         case PLAYER:
-            if (action == SIT || action == DEAD)
-            {
-                frame = 0;
-            }
+            frame = action;
 
-            frame = mFrame + action;
+            if (action != SIT && action != DEAD)
+            {
+                frame += mFrame;
+            }
 
             if (action == ATTACK && getWeapon() > 0)
             {
@@ -581,6 +573,12 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
                 graphics->drawImage(emotionset->spriteset[emotion - 1],
                                     px + 3, py - 90);
             }
+
+            // Draw player name
+            if (this != player_node) {
+                graphics->setFont(speechFont);
+                graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+            }
             break;
 
         case NPC:
@@ -593,37 +591,16 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
                 mFrame = 3;
             }
 
-            frame = mFrame + action;
-
-            if (action == MONSTER_DEAD)
-            {
-                graphics->drawImage(
-                        monsterset[job - 1002]->spriteset[dir + 4 * MONSTER_DEAD],
-                        px - 12, py - 25);
+            frame = action;
+            if (action != MONSTER_DEAD) {
+                frame += mFrame;
             }
-            else
-            {
-                graphics->drawImage(
-                        monsterset[job-1002]->spriteset[dir + 4 * frame],
-                        px - 12, py - 25);
-
-                /*
-                if (x == mouseTileX && y == mouseTileY)
-                {
-                    graphics->drawImage(attackTarget, px + 4, py - 33);
-                }
-                */
-            }
+            graphics->drawImage(
+                    monsterset[job-1002]->spriteset[dir + 4 * frame],
+                    px - 12, py - 25);
             break;
 
         default:
             break;
-    }
-
-    // Draw player name
-    if (getType() == PLAYER && this != player_node)
-    {
-        graphics->setFont(speechFont);
-        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
     }
 }

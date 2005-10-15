@@ -1,5 +1,6 @@
 2005-10-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/being.cpp: A few changes that make the code look nicer.
 	* src/openglgraphics.cpp, src/resources/image.cpp,
 	src/resources/image.h: Some small cleanups.
 	* src/engine.cpp: Removed some legacy debug code.
