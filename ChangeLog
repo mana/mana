@@ -1,11 +1,16 @@
+2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am: Added two missing files.
+
 2005-10-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/game.cpp, src/gui/char_select.cpp,
 	src/gui/char_server.cpp, src/gui/char_server.h, src/gui/connection.cpp,
 	src/gui/connection.h, src/gui/login.cpp, src/gui/login.h, src/main.cpp,
-	src/main.h, src/net/network.cpp, src/net/network.h, src/net/protocol.cpp,
-	src/net/protocol.h: The connection should be non-blocking now and fixed
-	the problem with sound not being played at startup.
+	src/main.h, src/net/network.cpp, src/net/network.h,
+	src/net/protocol.cpp, src/net/protocol.h: The connection should be
+	non-blocking now and fixed the problem with sound not being played at
+	startup.
 
 2005-10-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
