@@ -7,6 +7,8 @@
 	
 2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/being.cpp: Reduce code duplication in the findNode functions and
+	use a functor to do the search.
 	* src/map.cpp: Some code improvements.
 	* src/Makefile.am: Added two missing files.
 

@@ -23,6 +23,7 @@
 
 #include "being.h"
 
+#include <algorithm>
 #include <sstream>
 
 #include "game.h"
@@ -139,39 +140,35 @@ Being *findNode(Uint32 id)
     return NULL;
 }
 
+class FindNodeFunctor
+{
+    public:
+        bool operator() (Being *being)
+        {
+            Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
+            return (being->x == x && (being->y == y || being->y == other_y) &&
+                    being->action != Being::MONSTER_DEAD &&
+                    (type == Being::UNKNOWN || being->getType() == type));
+        }
+
+        Uint16 x, y;
+        Being::Type type;
+} nodeFinder;
+
 Being *findNode(Uint16 x, Uint16 y)
 {
-    for (Beings::iterator i = beings.begin(); i != beings.end(); i++)
-    {
-        Being *being = (*i);
-        // Return being if found and it is not a dead monster
-        if (being->x == x &&
-            (being->y == y ||
-             (being->getType() == Being::NPC && being->y == y + 1)) &&
-            being->action != Being::MONSTER_DEAD)
-        {
-            return being;
-        }
-    }
-    return NULL;
+    return findNode(x, y, Being::UNKNOWN);
 }
 
 Being* findNode(Uint16 x, Uint16 y, Being::Type type)
 {
-    for (Beings::iterator i = beings.begin(); i != beings.end(); i++)
-    {
-        Being *being = (*i);
-        // Check if is a NPC (only low job ids)
-        if (being->x == x &&
-            (being->y == y ||
-             (being->getType() == Being::NPC && being->y == y + 1)) &&
-            being->getType() == type &&
-            being->action != Being::MONSTER_DEAD)
-        {
-            return being;
-        }
-    }
-    return NULL;
+    nodeFinder.x = x;
+    nodeFinder.y = y;
+    nodeFinder.type = type;
+
+    Beings::iterator i = find_if(beings.begin(), beings.end(), nodeFinder);
+
+    return (i == beings.end()) ? NULL : *i;
 }
 
 Being::Being():
