@@ -1,5 +1,6 @@
 2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/map.cpp: Some code improvements.
 	* src/Makefile.am: Added two missing files.
 
 2005-10-16  Eugenio Favalli  <elvenprogrammer@gmail.com>

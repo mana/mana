@@ -22,13 +22,15 @@
  */
 
 #include "map.h"
+
+#include <algorithm>
+#include <queue>
+
 #include "tileset.h"
 #include "being.h"
 #include "graphics.h"
 #include "resources/image.h"
 #include "sprite.h"
-
-#include <queue>
 
 MetaTile::MetaTile():
     whichList(0)
@@ -161,29 +163,26 @@ Map::setTileWithGid(int x, int y, int layer, int gid)
     }
 }
 
+class ContainsGidFunctor
+{
+    public:
+        bool operator() (Tileset* set)
+        {
+            return (set->getFirstGid() <= gid &&
+                    gid - set->getFirstGid() < (int)set->spriteset.size());
+        }
+        int gid;
+} containsGid;
+
 Tileset*
 Map::getTilesetWithGid(int gid)
 {
     Tilesets::iterator i;
-    Tileset *set = NULL;
 
-    // Find the tileset with the highest firstGid below/equal to gid
-    for (i = tilesets.begin(); i != tilesets.end(); ++i)
-    {
-        if ((*i)->getFirstGid() <= gid) {
-            set = (*i);
-        }
-        else {
-            break;
-        }
-    }
+    containsGid.gid = gid;
+    i = find_if(tilesets.begin(), tilesets.end(), containsGid);
 
-    if (set && (gid - set->getFirstGid()) < (int)set->spriteset.size())
-    {
-        return set;
-    }
-
-    return NULL;
+    return (i == tilesets.end()) ? NULL : *i;
 }
 
 Image*
@@ -207,22 +206,21 @@ Map::setWalk(int x, int y, bool walkable)
 bool
 Map::getWalk(int x, int y)
 {
-    // If walkable, check for colliding into a being
-    if (!tileCollides(x, y)) {
-        std::list<Being*>::iterator i = beings.begin();
-        while (i != beings.end()) {
-            Being *being = (*i);
-            // Collision when non-portal being is found at this location
-            if (being->x == x && being->y == y && being->job != 45) {
-                return false;
-            }
-            i++;
-        }
-        return true;
-    }
-    else {
+    // Check for being walkable
+    if (tileCollides(x, y)) {
         return false;
     }
+
+    // Check for collision with a being
+    std::list<Being*>::iterator i = beings.begin();
+    for (i = beings.begin(); i != beings.end(); i++) {
+        // job 45 is a portal, they don't collide
+        if ((*i)->x == x && (*i)->y == y && (*i)->job != 45) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool
