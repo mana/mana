@@ -185,7 +185,11 @@ void init_engine()
     config.setValue("host", "animesites.de");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);
+    #if defined __APPLE__ || defined WIN32 || defined USE_OPENGL
+    config.setValue("opengl", 1);
+    #else
     config.setValue("opengl", 0);
+    #endif
     config.setValue("screen", 0);
     config.setValue("sound", 1);
     config.setValue("guialpha", 0.8f);

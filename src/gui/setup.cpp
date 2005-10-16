@@ -262,17 +262,25 @@ void Setup::action(const std::string &eventId)
         bool fullscreen = fsCheckBox->isMarked();
         if (fullscreen != (config.getValue("screen", 0) == 1)) 
         {
-            if (!graphics->setFullscreen(fullscreen))
+            // checks for opengl usage
+            if (!(config.getValue("opengl", 0) == 1))
             {
-                fullscreen = !fullscreen;
                 if (!graphics->setFullscreen(fullscreen))
                 {
-                    std::cerr << "Failed to switch to " <<
+                    fullscreen = !fullscreen;
+                    if (!graphics->setFullscreen(fullscreen))
+                    {
+                        std::stringstream error;
+                        error << "Failed to switch to " <<
                         (fullscreen ? "windowed" : "fullscreen") <<
                         "mode and restoration of old mode also failed!" <<
                         std::endl;
-                    exit(1);
+                        logger->error(error.str());
+                    }
                 }
+            } else {
+            new OkDialog(this, "Switching to FullScreen",
+            "Restart needed for changes to take effect.");
             }
             config.setValue("screen", fullscreen ? 1 : 0);
         }

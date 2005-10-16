@@ -1,3 +1,10 @@
+2005-10-16  Duane Bailey  <nayryeliab@gmail.com>
+
+	* src/main.cpp: opengl is now default for mac, win, and those who
+	define USE_OPENGL
+	* src/gui/setup.cpp: made it so those who use and go to fullscreen
+	requires a restart (texture/context baddies)
+	
 2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp: Some code improvements.
