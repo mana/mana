@@ -32,6 +32,8 @@
 
 #include "../log.h"
 
+#include "../graphic/spriteset.h"
+
 
 ResourceManager *ResourceManager::instance = NULL;
 
@@ -197,6 +199,22 @@ SoundEffect*
 ResourceManager::getSoundEffect(const std::string &idPath)
 {
     return (SoundEffect*)get(SOUND_EFFECT, idPath);
+}
+
+Spriteset* ResourceManager::createSpriteset(const std::string &imagePath,
+        int w, int h)
+{
+    Image *img;
+
+    if (!(img = getImage(imagePath))) {
+        return NULL;
+    }
+
+    Spriteset *result = new Spriteset(img, w, h);
+
+    img->decRef();
+
+    return result;
 }
 
 void

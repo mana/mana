@@ -32,6 +32,7 @@ class Resource;
 class Image;
 class Music;
 class SoundEffect;
+class Spriteset;
 
 /**
  * A class for loading and managing resources.
@@ -136,6 +137,12 @@ class ResourceManager
          */
         SoundEffect*
         getSoundEffect(const std::string &idPath);
+
+        /**
+         * Creates a spriteset based on the image referenced by the given
+         * path and the supplied sprite sizes
+         */
+        Spriteset* createSpriteset(const std::string &imagePath, int w, int h);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.
