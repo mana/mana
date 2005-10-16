@@ -195,8 +195,8 @@ void CharSelectDialog::serverCharDelete()
 {
     // Request character deletion
     MessageOut outMsg;
-    outMsg.writeShort(0x0068);
-    outMsg.writeLong(char_info[0]->id);
+    outMsg.writeInt16(0x0068);
+    outMsg.writeInt32(char_info[0]->id);
     outMsg.writeString("a@a.com", 40);
 
     MessageIn msg = get_next_message();
@@ -225,8 +225,8 @@ void CharSelectDialog::serverCharSelect()
 {
     // Request character selection
     MessageOut outMsg;
-    outMsg.writeShort(0x0066);
-    outMsg.writeByte(0);
+    outMsg.writeInt16(0x0066);
+    outMsg.writeInt8(0);
 
     MessageIn msg = get_next_message();
 
@@ -235,11 +235,11 @@ void CharSelectDialog::serverCharSelect()
 
     if (msg.getId() == 0x0071)
     {
-        char_ID = msg.readLong();
+        char_ID = msg.readInt32();
         map_path = "maps/" + msg.readString(16);
         map_path= map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
-        map_address = msg.readLong();
-        map_port = msg.readShort();
+        map_address = msg.readInt32();
+        map_port = msg.readInt16();
         player_info = char_info[0];
         state = CONNECTING_STATE;
 
@@ -250,7 +250,7 @@ void CharSelectDialog::serverCharSelect()
     }
     else if (msg.getId() == 0x006c)
     {
-        switch (msg.readByte()) {
+        switch (msg.readInt8()) {
             case 0:
                 errorMessage = "Access denied";
                 break;
@@ -265,7 +265,7 @@ void CharSelectDialog::serverCharSelect()
     }
     else if (msg.getId() == 0x0081)
     {
-        switch (msg.readByte()) {
+        switch (msg.readInt8()) {
             case 1:
                 errorMessage = "Map server offline";
                 break;
@@ -416,17 +416,17 @@ void CharCreateDialog::serverCharCreate()
 {
     // Send character infos
     MessageOut outMsg;
-    outMsg.writeShort(0x0067);
+    outMsg.writeInt16(0x0067);
     outMsg.writeString(getName(), 24);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(0);
-    outMsg.writeShort(playerBox->hairColor + 1);
-    outMsg.writeShort(playerBox->hairStyle + 1);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(5);
+    outMsg.writeInt8(0);
+    outMsg.writeInt16(playerBox->hairColor + 1);
+    outMsg.writeInt16(playerBox->hairStyle + 1);
 
     MessageIn msg = get_next_message();
 
@@ -435,41 +435,41 @@ void CharCreateDialog::serverCharCreate()
         char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*));
         char_info[0] = new PLAYER_INFO;
 
-        char_info[0]->id = msg.readLong();
-        char_info[0]->xp = msg.readLong();
-        char_info[0]->gp = msg.readLong();
-        char_info[0]->jobXp = msg.readLong();
-        char_info[0]->jobLvl = msg.readLong();
+        char_info[0]->id = msg.readInt32();
+        char_info[0]->xp = msg.readInt32();
+        char_info[0]->gp = msg.readInt32();
+        char_info[0]->jobXp = msg.readInt32();
+        char_info[0]->jobLvl = msg.readInt32();
         msg.skip(8);                          // unknown
-        msg.readLong();                       // option
-        msg.readLong();                       // karma
-        msg.readLong();                       // manner
+        msg.readInt32();                       // option
+        msg.readInt32();                       // karma
+        msg.readInt32();                       // manner
         msg.skip(2);                          // unknown
-        char_info[0]->hp = msg.readShort();
-        char_info[0]->maxHp = msg.readShort();
-        char_info[0]->mp = msg.readShort();
-        char_info[0]->maxMp = msg.readShort();
-        msg.readShort();                       // speed
-        msg.readShort();                       // class
-        char_info[0]->hairStyle = msg.readShort();
-        char_info[0]->weapon = msg.readShort();
-        char_info[0]->lvl = msg.readShort();
-        msg.readShort();                       // skill point
-        msg.readShort();                       // head bottom
-        msg.readShort();                       // shield
-        msg.readShort();                       // head option top
-        msg.readShort();                       // head option mid
-        char_info[0]->hairColor = msg.readShort();
-        msg.readShort();                       // unknown
+        char_info[0]->hp = msg.readInt16();
+        char_info[0]->maxHp = msg.readInt16();
+        char_info[0]->mp = msg.readInt16();
+        char_info[0]->maxMp = msg.readInt16();
+        msg.readInt16();                       // speed
+        msg.readInt16();                       // class
+        char_info[0]->hairStyle = msg.readInt16();
+        char_info[0]->weapon = msg.readInt16();
+        char_info[0]->lvl = msg.readInt16();
+        msg.readInt16();                       // skill point
+        msg.readInt16();                       // head bottom
+        msg.readInt16();                       // shield
+        msg.readInt16();                       // head option top
+        msg.readInt16();                       // head option mid
+        char_info[0]->hairColor = msg.readInt16();
+        msg.readInt16();                       // unknown
         char_info[0]->name = msg.readString(24);
-        char_info[0]->STR = msg.readByte();
-        char_info[0]->AGI = msg.readByte();
-        char_info[0]->VIT = msg.readByte();
-        char_info[0]->INT = msg.readByte();
-        char_info[0]->DEX = msg.readByte();
-        char_info[0]->LUK = msg.readByte();
-        char_info[0]->characterNumber = msg.readByte(); // character number
-        msg.readByte();                        // unknown
+        char_info[0]->STR = msg.readInt8();
+        char_info[0]->AGI = msg.readInt8();
+        char_info[0]->VIT = msg.readInt8();
+        char_info[0]->INT = msg.readInt8();
+        char_info[0]->DEX = msg.readInt8();
+        char_info[0]->LUK = msg.readInt8();
+        char_info[0]->characterNumber = msg.readInt8(); // character number
+        msg.readInt8();                        // unknown
 
         n_character = 1;
     }

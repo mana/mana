@@ -454,32 +454,32 @@ void StatusWindow::action(const std::string& eventId)
     if (eventId.length() == 3)
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_STAT_UPDATE_REQUEST);
+        outMsg.writeInt16(CMSG_STAT_UPDATE_REQUEST);
 
         if (eventId == "STR")
         {
-            outMsg.writeShort(0x000d);
+            outMsg.writeInt16(0x000d);
         }
         if (eventId == "AGI")
         {
-            outMsg.writeShort(0x000e);
+            outMsg.writeInt16(0x000e);
         }
         if (eventId == "VIT")
         {
-            outMsg.writeShort(0x000f);
+            outMsg.writeInt16(0x000f);
         }
         if (eventId == "INT")
         {
-            outMsg.writeShort(0x0010);
+            outMsg.writeInt16(0x0010);
         }
         if (eventId == "DEX")
         {
-            outMsg.writeShort(0x0011);
+            outMsg.writeInt16(0x0011);
         }
         if (eventId == "LUK")
         {
-            outMsg.writeShort(0x0012);
+            outMsg.writeInt16(0x0012);
         }
-        outMsg.writeByte(1);
+        outMsg.writeInt8(1);
     }
 }

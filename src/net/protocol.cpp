@@ -73,16 +73,16 @@ void walk(unsigned short x, unsigned short y, unsigned char direction)
     char temp[3];
     MessageOut outMsg;
     set_coordinates(temp, x, y, direction);
-    outMsg.writeShort(0x0085);
+    outMsg.writeInt16(0x0085);
     outMsg.writeString(temp, 3);
 }
 
 void action(char type, int id)
 {
     MessageOut outMsg;
-    outMsg.writeShort(0x0089);
-    outMsg.writeLong(id);
-    outMsg.writeByte(type);
+    outMsg.writeInt16(0x0089);
+    outMsg.writeInt32(id);
+    outMsg.writeInt8(type);
 }
 
 Being* attack(unsigned short x, unsigned short y, unsigned char direction)

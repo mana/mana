@@ -82,9 +82,9 @@ void BuySellDialog::action(const std::string& eventId)
     }
     if (actionId > -1) {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
-        outMsg.writeLong(current_npc);
-        outMsg.writeByte(actionId);
+        outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt8(actionId);
     }
 
     setVisible(false);

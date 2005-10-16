@@ -160,12 +160,12 @@ void ServerSelectDialog::selectServer(int index)
 {
     // Send login infos
     MessageOut outMsg;
-    outMsg.writeShort(0x0065);
-    outMsg.writeLong(account_ID);
-    outMsg.writeLong(session_ID1);
-    outMsg.writeLong(session_ID2);
-    outMsg.writeShort(0); // unknown
-    outMsg.writeByte(sex);
+    outMsg.writeInt16(0x0065);
+    outMsg.writeInt32(account_ID);
+    outMsg.writeInt32(session_ID1);
+    outMsg.writeInt32(session_ID2);
+    outMsg.writeInt16(0); // unknown
+    outMsg.writeInt8(sex);
 
     // Skipping a mysterious 4 bytes
     while ((in_size < 4) || (out_size > 0)) flush();
@@ -189,41 +189,41 @@ void ServerSelectDialog::selectServer(int index)
             char_info[i]->totalWeight = 0;
             char_info[i]->maxWeight = 0;
             char_info[i]->lastAttackTime = 0;
-            char_info[i]->id = msg.readLong();
-            char_info[i]->xp = msg.readLong();
-            char_info[i]->gp = msg.readLong();
-            char_info[i]->jobXp = msg.readLong();
-            char_info[i]->jobLvl = msg.readLong();
+            char_info[i]->id = msg.readInt32();
+            char_info[i]->xp = msg.readInt32();
+            char_info[i]->gp = msg.readInt32();
+            char_info[i]->jobXp = msg.readInt32();
+            char_info[i]->jobLvl = msg.readInt32();
             msg.skip(8);                          // unknown
-            msg.readLong();                       // option
-            msg.readLong();                       // karma
-            msg.readLong();                       // manner
+            msg.readInt32();                       // option
+            msg.readInt32();                       // karma
+            msg.readInt32();                       // manner
             msg.skip(2);                          // unknown
-            char_info[i]->hp = msg.readShort();
-            char_info[i]->maxHp = msg.readShort();
-            char_info[i]->mp = msg.readShort();
-            char_info[i]->maxMp = msg.readShort();
-            msg.readShort();                       // speed
-            msg.readShort();                       // class
-            char_info[i]->hairStyle = msg.readShort();
-            char_info[i]->weapon = msg.readShort();
-            char_info[i]->lvl = msg.readShort();
-            msg.readShort();                       // skill point
-            msg.readShort();                       // head bottom
-            msg.readShort();                       // shield
-            msg.readShort();                       // head option top
-            msg.readShort();                       // head option mid
-            char_info[i]->hairColor = msg.readShort();
-            msg.readShort();                       // unknown
+            char_info[i]->hp = msg.readInt16();
+            char_info[i]->maxHp = msg.readInt16();
+            char_info[i]->mp = msg.readInt16();
+            char_info[i]->maxMp = msg.readInt16();
+            msg.readInt16();                       // speed
+            msg.readInt16();                       // class
+            char_info[i]->hairStyle = msg.readInt16();
+            char_info[i]->weapon = msg.readInt16();
+            char_info[i]->lvl = msg.readInt16();
+            msg.readInt16();                       // skill point
+            msg.readInt16();                       // head bottom
+            msg.readInt16();                       // shield
+            msg.readInt16();                       // head option top
+            msg.readInt16();                       // head option mid
+            char_info[i]->hairColor = msg.readInt16();
+            msg.readInt16();                       // unknown
             char_info[i]->name = msg.readString(24);
-            char_info[i]->STR = msg.readByte();
-            char_info[i]->AGI = msg.readByte();
-            char_info[i]->VIT = msg.readByte();
-            char_info[i]->INT = msg.readByte();
-            char_info[i]->DEX = msg.readByte();
-            char_info[i]->LUK = msg.readByte();
-            char_info[i]->characterNumber = msg.readByte();  // character number
-            msg.readByte();                        // unknown
+            char_info[i]->STR = msg.readInt8();
+            char_info[i]->AGI = msg.readInt8();
+            char_info[i]->VIT = msg.readInt8();
+            char_info[i]->INT = msg.readInt8();
+            char_info[i]->DEX = msg.readInt8();
+            char_info[i]->LUK = msg.readInt8();
+            char_info[i]->characterNumber = msg.readInt8();  // character number
+            msg.readInt8();                        // unknown
         }
 
         state = CHAR_SELECT_STATE;
@@ -236,7 +236,7 @@ void ServerSelectDialog::selectServer(int index)
     else if (msg.getId() == 0x006c)
     {
         std::string errorStr;
-        switch (msg.readByte()) {
+        switch (msg.readInt8()) {
             case 0: errorStr = "Access denied"; break;
             case 1: errorStr = "Cannot use this ID"; break;
             default: errorStr = "Rejected from server"; break;

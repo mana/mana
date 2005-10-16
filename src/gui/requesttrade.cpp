@@ -87,16 +87,16 @@ RequestTradeDialog::~RequestTradeDialog()
 void RequestTradeDialog::action(const std::string& eventId)
 {
     int choice = 4; // 4 means trade canceled
-    
+
     if (eventId == "accept") {
         choice = 3; // ok to trade
     }
     else if (eventId == "cancel") {
         requestTradeDialogOpen = false;
     }
-    
+
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_TRADE_RESPONSE);
-    outMsg.writeByte(choice);
+    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
+    outMsg.writeInt8(choice);
     scheduleDelete();
 }

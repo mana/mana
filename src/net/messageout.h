@@ -25,6 +25,7 @@
 #define _TMW_MESSAGEOUT_
 
 #include <iosfwd>
+#include <SDL_types.h>
 
 class Packet;
 
@@ -33,9 +34,9 @@ class Packet;
  */
 class MessageOut
 {
-    friend MessageOut& operator<<(MessageOut &msg, const char &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const short &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const long &rhs);
+    friend MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs);
+    friend MessageOut& operator<<(MessageOut &msg, const Sint16 &rhs);
+    friend MessageOut& operator<<(MessageOut &msg, const Sint32 &rhs);
 
     public:
         /**
@@ -48,9 +49,9 @@ class MessageOut
          */
         ~MessageOut();
 
-        void writeByte(char value);          /**< Writes a byte. */
-        void writeShort(short value);        /**< Writes a short. */
-        void writeLong(int value);          /**< Writes a long. */
+        void writeInt8(Sint8 value);          /**< Writes a byte. */
+        void writeInt16(Sint16 value);        /**< Writes a short. */
+        void writeInt32(Sint32 value);          /**< Writes a long. */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored

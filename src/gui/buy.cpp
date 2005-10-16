@@ -237,10 +237,10 @@ void BuyDialog::action(const std::string& eventId)
     else if (eventId == "buy" && (m_amountItems > 0 &&
                 m_amountItems <= m_maxItems)) {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_BUY_REQUEST);
-        outMsg.writeShort(8);
-        outMsg.writeShort(m_amountItems);
-        outMsg.writeShort(shopInventory[selectedItem].id);
+        outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
+        outMsg.writeInt16(8);
+        outMsg.writeInt16(m_amountItems);
+        outMsg.writeInt16(shopInventory[selectedItem].id);
 
         // update money !
         m_money -= m_amountItems * shopInventory[selectedItem].price;

@@ -129,9 +129,9 @@ NpcListDialog::action(const std::string& eventId)
     if (choice)
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
-        outMsg.writeLong(current_npc);
-        outMsg.writeByte(choice);
+        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
+        outMsg.writeInt32(current_npc);
+        outMsg.writeInt8(choice);
         setVisible(false);
         reset();
         current_npc = 0;

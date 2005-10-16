@@ -25,15 +25,16 @@
 #define _TMW_MESSAGEIN_
 
 #include <string>
+#include <SDL_types.h>
 
 /**
  * Used for parsing an incoming message.
  */
 class MessageIn
 {
-    friend char& operator<<(char &lhs, MessageIn &msg);
-    friend short& operator<<(short &lhs, MessageIn &msg);
-    friend long& operator<<(long &lhs, MessageIn &msg);
+    friend Sint8& operator<<(Sint8 &lhs, MessageIn &msg);
+    friend Sint16& operator<<(Sint16 &lhs, MessageIn &msg);
+    friend Sint32& operator<<(Sint32 &lhs, MessageIn &msg);
 
     public:
         /**
@@ -53,26 +54,24 @@ class MessageIn
         unsigned int
         getLength() { return mLength; }
 
-        char readByte();               /**< Reads a byte. */
-        short readShort();             /**< Reads a short. */
-        long readLong();               /**< Reads a long. */
+        Sint8 readInt8();               /**< Reads a byte. */
+        Sint16 readInt16();             /**< Reads a short. */
+        Sint32 readInt32();               /**< Reads a long. */
 
         /**
          * Reads a special 3 byte block used by eAthena, containing x and y
          * coordinates and direction.
          */
         void
-        readCoordinates(unsigned short &x,
-                        unsigned short &y,
-                        unsigned char &direction);
+        readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
 
         /**
          * Reads a special 5 byte block used by eAthena, containing a source
          * and destination coordinate pair.
          */
         void
-        readCoordinatePair(unsigned short &srcX, unsigned short &srcY,
-                           unsigned short &dstX, unsigned short &dstY);
+        readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
+                Uint16 &dstX, Uint16 &dstY);
 
         /**
          * Skips a given number of bytes.

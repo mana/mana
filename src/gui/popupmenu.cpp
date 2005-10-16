@@ -135,9 +135,9 @@ void PopupMenu::handleLink(const std::string& link)
         current_npc == 0)
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_TALK);
-        outMsg.writeLong(mBeing->getId());
-        outMsg.writeByte(0);
+        outMsg.writeInt16(CMSG_NPC_TALK);
+        outMsg.writeInt32(mBeing->getId());
+        outMsg.writeInt8(0);
         current_npc = mBeing->getId();
     }
 
@@ -147,8 +147,8 @@ void PopupMenu::handleLink(const std::string& link)
              mBeing->getType() == Being::PLAYER)
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_TRADE_REQUEST);
-        outMsg.writeLong(mBeing->getId());
+        outMsg.writeInt16(CMSG_TRADE_REQUEST);
+        outMsg.writeInt32(mBeing->getId());
         //tradePartner.flush();
         //tradePartner << "Trade: You and " << being->name<< "";
         tradePartnerName = mBeing->getName();
@@ -183,8 +183,8 @@ void PopupMenu::handleLink(const std::string& link)
     else if ((link == "pickup") && mFloorItem != NULL)
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_ITEM_PICKUP);
-        outMsg.writeLong(mFloorItem->getId());
+        outMsg.writeInt16(CMSG_ITEM_PICKUP);
+        outMsg.writeInt32(mFloorItem->getId());
     }
 
     // Look To action

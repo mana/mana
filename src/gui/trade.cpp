@@ -242,9 +242,9 @@ void TradeWindow::receivedOk(bool own)
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeLong(quantity);
+    outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
+    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt32(quantity);
 }
 
 void TradeWindow::mouseClick(int x, int y, int button, int count)
@@ -314,7 +314,7 @@ void TradeWindow::action(const std::string &eventId)
     else if (eventId == "cancel")
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_TRADE_CANCEL_REQUEST);
+        outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
     }
     else if (eventId == "ok")
     {
@@ -327,19 +327,19 @@ void TradeWindow::action(const std::string &eventId)
             moneyField->setText(tempMoney[1].str());
             
             MessageOut outMsg;
-            outMsg.writeShort(CMSG_TRADE_ITEM_ADD_REQUEST);
-            outMsg.writeShort(0);
-            outMsg.writeLong(tempInt);
+            outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
+            outMsg.writeInt16(0);
+            outMsg.writeInt32(tempInt);
         } else {
             moneyField->setText("");
         }
         moneyField->setEnabled(false);
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_TRADE_ADD_COMPLETE);
+        outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
     }
     else if (eventId == "trade")
     {
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_TRADE_OK);
+        outMsg.writeInt16(CMSG_TRADE_OK);
     }
 }

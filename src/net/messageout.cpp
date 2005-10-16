@@ -57,39 +57,36 @@ void MessageOut::expand(size_t bytes)
     mDataSize = bytes;*/
 }
 
-void MessageOut::writeByte(char value)
+void MessageOut::writeInt8(Sint8 value)
 {
-    expand(mPos + sizeof(char));
+    expand(mPos + sizeof(Sint8));
     mData[mPos] = value;
-    mPos += sizeof(char);
-    out_size += sizeof(char);
+    mPos += sizeof(Sint8);
+    out_size += sizeof(Sint8);
 }
 
-void MessageOut::writeShort(short value)
+void MessageOut::writeInt16(Sint16 value)
 {
-    expand(mPos + sizeof(short));
+    expand(mPos + sizeof(Sint16));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(short *)(mData + mPos)) = SDL_Swap16(value);
+    (*(Sint16 *)(mData + mPos)) = SDL_Swap16(value);
 #else
-    (*(short *)(mData + mPos)) = value;
+    (*(Sint16 *)(mData + mPos)) = value;
 #endif
-    mPos += sizeof(short);
-    out_size += sizeof(short);
+    mPos += sizeof(Sint16);
+    out_size += sizeof(Sint16);
 }
 
-/*
- writeLong should use an int because long is 8 bytes in x86_64 arch !
-*/
-void MessageOut::writeLong(int value)
+void MessageOut::writeInt32(Sint32 value)
 {
-    expand(mPos + sizeof(int));
+    expand(mPos + sizeof(Sint32));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(int *)(mData + mPos)) = SDL_Swap32(value);
+    (*(Sint32 *)(mData + mPos)) = SDL_Swap32(value);
 #else
-    (*(int *)(mData + mPos)) = value;
+    (*(Sint32 *)(mData + mPos)) = value;
 #endif
-    mPos += sizeof(int);
-    out_size += sizeof(int);
+    mPos += sizeof(Sint32);
+    out_size += sizeof(Sint32);
 }
 
 void MessageOut::writeString(const std::string &string, int length)
@@ -99,7 +96,7 @@ void MessageOut::writeString(const std::string &string, int length)
     if (length < 0)
     {
         // Write the length at the start if not fixed
-        writeShort(string.length());
+        writeInt16(string.length());
         expand(mPos + string.length());
     }
     else
@@ -133,20 +130,20 @@ const Packet *MessageOut::getPacket()
     return mPacket;
 }
 
-MessageOut& operator<<(MessageOut &msg, const char &rhs)
+MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs)
 {
-    msg.writeByte(rhs);
+    msg.writeInt8(rhs);
     return msg;
 }
 
-MessageOut& operator<<(MessageOut &msg, const short &rhs)
+MessageOut& operator<<(MessageOut &msg, const Sint16 &rhs)
 {
-    msg.writeShort(rhs);
+    msg.writeInt16(rhs);
     return msg;
 }
 
-MessageOut& operator<<(MessageOut &msg, const long &rhs)
+MessageOut& operator<<(MessageOut &msg, const Sint32 &rhs)
 {
-    msg.writeLong(rhs);
+    msg.writeInt32(rhs);
     return msg;
 }

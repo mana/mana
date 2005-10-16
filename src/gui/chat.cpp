@@ -251,8 +251,8 @@ ChatWindow::chat_send(std::string nick, std::string msg)
 
     // send processed message
     MessageOut outMsg;
-    outMsg.writeShort(packetId);
-    outMsg.writeShort(msg.length() + 4);
+    outMsg.writeInt16(packetId);
+    outMsg.writeInt16(msg.length() + 4);
     outMsg.writeString(msg, msg.length());
 }
 

@@ -232,10 +232,10 @@ void SellDialog::action(const std::string& eventId)
         assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
         
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_SELL_REQUEST);
-        outMsg.writeShort(8);
-        outMsg.writeShort(shopInventory[selectedItem].index);
-        outMsg.writeShort(m_amountItems);
+        outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
+        outMsg.writeInt16(8);
+        outMsg.writeInt16(shopInventory[selectedItem].index);
+        outMsg.writeInt16(m_amountItems);
 
         m_maxItems -= m_amountItems;
         m_amountItems = 0;

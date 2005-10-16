@@ -95,8 +95,8 @@ Being* createBeing(Uint32 id, Uint16 job, Map *map)
     if (being->getType() == Being::PLAYER)
     {
         MessageOut outMsg;
-        outMsg.writeShort(0x0094);
-        outMsg.writeLong(being->getId());//readLong(2));
+        outMsg.writeInt16(0x0094);
+        outMsg.writeInt32(being->getId());//readLong(2));
     }
     // If the being is a monster then load the monsterset
     else if (being->job >= 1002 &&

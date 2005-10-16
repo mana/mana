@@ -342,11 +342,11 @@ LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
 {
     // Send login infos
     MessageOut outMsg;
-    outMsg.writeShort(0x0064);
-    outMsg.writeLong(0); // client version
+    outMsg.writeInt16(0x0064);
+    outMsg.writeInt32(0); // client version
     outMsg.writeString(user, 24);
     outMsg.writeString(pass, 24);
-    outMsg.writeByte(0); // unknown
+    outMsg.writeInt8(0); // unknown
 
     // Receive reply
     MessageIn msg = get_next_message();
@@ -365,20 +365,20 @@ LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
         n_server = (msg.getLength() - 47) / 32;
         server_info = (SERVER_INFO**)malloc(sizeof(SERVER_INFO*) * n_server);
 
-        session_ID1 = msg.readLong();
-        account_ID = msg.readLong();
-        session_ID2 = msg.readLong();
+        session_ID1 = msg.readInt32();
+        account_ID = msg.readInt32();
+        session_ID2 = msg.readInt32();
         msg.skip(30);                           // unknown
-        sex = msg.readByte();
+        sex = msg.readInt8();
 
         for (int i = 0; i < n_server; i++)
         {
             server_info[i] = new SERVER_INFO;
 
-            server_info[i]->address = msg.readLong();
-            server_info[i]->port = msg.readShort();
+            server_info[i]->address = msg.readInt32();
+            server_info[i]->port = msg.readInt16();
             server_info[i]->name = msg.readString(20);
-            server_info[i]->online_users = msg.readLong();
+            server_info[i]->online_users = msg.readInt32();
             msg.skip(2);                        // unknown
 
             logger->log("Network: Server: %s (%s:%d)",
@@ -392,7 +392,7 @@ LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
     }
     else if (msg.getId() == 0x006a)
     {
-        int loginError = msg.readByte();
+        int loginError = msg.readInt8();
         logger->log("Login::error code: %i", loginError);
 
         switch (loginError) {

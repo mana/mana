@@ -98,9 +98,9 @@ bool Inventory::contains(Item *item)
 int Inventory::useItem(Item *item)
 {
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeLong(item->getId());
+    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_USE);
+    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt32(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
     return 0;
 }
@@ -109,25 +109,25 @@ int Inventory::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeShort(quantity);
+    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_DROP);
+    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(quantity);
     return 0;
 }
 
 void Inventory::equipItem(Item *item)
 {
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_EQUIP);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeShort(0);
+    outMsg.writeInt16(CMSG_PLAYER_EQUIP);
+    outMsg.writeInt16(item->getInvIndex());
+    outMsg.writeInt16(0);
 }
 
 void Inventory::unequipItem(Item *item)
 {
     MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
+    outMsg.writeInt16(item->getInvIndex());
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     Equipment::getInstance()->removeEquipment(item);

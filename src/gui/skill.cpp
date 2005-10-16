@@ -133,8 +133,8 @@ void SkillDialog::action(const std::string& eventId)
         if (player_info->skillPoint > 0 && selectedSkill >= 0)
         {
             MessageOut outMsg;
-            outMsg.writeShort(CMSG_SKILL_LEVELUP_REQUEST);
-            outMsg.writeShort(skillList[selectedSkill]->id);
+            outMsg.writeInt16(CMSG_SKILL_LEVELUP_REQUEST);
+            outMsg.writeInt16(skillList[selectedSkill]->id);
         }
     }
     else if (eventId == "skill")

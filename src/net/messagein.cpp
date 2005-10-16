@@ -38,49 +38,47 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mPos(0)
 {
     // Read the message ID
-    mId = readShort();
+    mId = readInt16();
 }
 
-char
-MessageIn::readByte()
+Sint8
+MessageIn::readInt8()
 {
     assert(mPos < mLength);
     return mData[mPos++];
 }
 
-short
-MessageIn::readShort()
+Sint16
+MessageIn::readInt16()
 {
     assert(mPos + 2 <= mLength);
     mPos += 2;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap16(*(short*)(mData + (mPos - 2)));
+    return SDL_Swap16(*(Sint16*)(mData + (mPos - 2)));
 #else
-    return (*(short*)(mData + (mPos - 2)));
+    return (*(Sint16*)(mData + (mPos - 2)));
 #endif
 }
 
-long
-MessageIn::readLong()
+Sint32
+MessageIn::readInt32()
 {
     assert(mPos + 4 <= mLength);
     mPos += 4;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap32(*(long*)(mData + (mPos - 4)));
+    return SDL_Swap32(*(Sint32*)(mData + (mPos - 4)));
 #else
-    return (*(long*)(mData + (mPos - 4)));
+    return (*(Sint32*)(mData + (mPos - 4)));
 #endif
 }
 
 void
-MessageIn::readCoordinates(unsigned short &x,
-                           unsigned short &y,
-                           unsigned char &direction)
+MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
 {
     assert(mPos + 3 <= mLength);
 
     const char *data = mData + mPos;
-    short temp;
+    Sint16 temp;
 
     temp = MAKEWORD(data[1] & 0x00c0, data[0] & 0x00ff);
     x = temp >> 6;
@@ -93,13 +91,13 @@ MessageIn::readCoordinates(unsigned short &x,
 }
 
 void
-MessageIn::readCoordinatePair(unsigned short &srcX, unsigned short &srcY,
-                              unsigned short &dstX, unsigned short &dstY)
+MessageIn::readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
+                              Uint16 &dstX, Uint16 &dstY)
 {
     assert(mPos + 5 <= mLength);
 
     const char *data = mData + mPos;
-    short temp;
+    Sint16 temp;
 
     temp = MAKEWORD(data[3], data[2] & 0x000f);
     dstX = temp >> 2;
@@ -129,7 +127,7 @@ MessageIn::readString(int length)
 
     // Get string length
     if (length < 0) {
-        stringLength = readShort();
+        stringLength = readInt16();
     } else {
         stringLength = length;
     }
@@ -149,20 +147,20 @@ MessageIn::readString(int length)
     return read;
 }
 
-char& operator<<(char &lhs, MessageIn &msg)
+Sint8& operator<<(Sint8 &lhs, MessageIn &msg)
 {
-    lhs = msg.readByte();
+    lhs = msg.readInt8();
     return lhs;
 }
 
-short& operator<<(short &lhs, MessageIn &msg)
+Sint16& operator<<(Sint16 &lhs, MessageIn &msg)
 {
-    lhs = msg.readShort();
+    lhs = msg.readInt16();
     return lhs;
 }
 
-long& operator<<(long &lhs, MessageIn &msg)
+Sint32& operator<<(Sint32 &lhs, MessageIn &msg)
 {
-    lhs = msg.readLong();
+    lhs = msg.readInt32();
     return lhs;
 }
