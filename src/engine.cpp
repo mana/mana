@@ -201,10 +201,6 @@ void Engine::logic()
 
 void Engine::draw()
 {
-    // Get the current mouse position
-    int mouseX, mouseY;
-    SDL_GetMouseState(&mouseX, &mouseY);
-
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
 
@@ -228,8 +224,6 @@ void Engine::draw()
 
     camera_x = map_x / 32;
     camera_y = map_y / 32;
-    int mouseTileX = mouseX / 32 + camera_x;
-    int mouseTileY = mouseY / 32 + camera_y;
 
     frame++;
 
@@ -245,6 +239,13 @@ void Engine::draw()
     // purposes.
     if (displayPathToMouse && mCurrentMap != NULL)
     {
+        // Get the current mouse position
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+
+        int mouseTileX = mouseX / 32 + camera_x;
+        int mouseTileY = mouseY / 32 + camera_y;
+
         std::list<PATH_NODE> debugPath = mCurrentMap->findPath(
                 player_node->x, player_node->y,
                 mouseTileX, mouseTileY);
