@@ -52,6 +52,8 @@
 
 #include "gui/char_server.h"
 #include "gui/char_select.h"
+#include "gui/connection.h"
+#include "gui/error.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
@@ -421,6 +423,8 @@ int main(int argc, char *argv[])
     void (*inputHandler)(SDL_KeyboardEvent*) = NULL;
 
     Image *login_wallpaper = NULL;
+    
+    sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
     while (state != EXIT_STATE)
     {
@@ -494,18 +498,10 @@ int main(int argc, char *argv[])
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
-                    try {
-                        map_start();
-                        game();
-                    }
-                    catch (const char* err) {
-                        state = ERROR_STATE;
-                        new OkDialog("Error", err, &mapStartErrorListener);
-                    }
+                    game();
                     break;
                 case UPDATE_STATE:
                     logger->log("State: UPDATE");
-                    sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
                     currentDialog = new UpdaterWindow();
                     inputHandler = updateInputHandler;
                     break;
@@ -513,6 +509,11 @@ int main(int argc, char *argv[])
                     logger->log("State: ERROR");
                     currentDialog = new ErrorDialog(errorMessage);
                     inputHandler = errorInputHandler;
+                    break;
+                case CONNECTING_STATE:
+                    logger->log("State: CONNECTING");
+                    currentDialog = new ConnectionDialog();
+                    inputHandler = connectionInputHandler;
                     break;
                 default:
                     state = EXIT_STATE;

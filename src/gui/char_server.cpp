@@ -46,7 +46,7 @@ char server[30];
 
 
 ServerSelectDialog::ServerSelectDialog():
-    Window("Select Server")
+    Window("Select Server"), mStatus(NET_IDLE)
 {
     serverListModel = new ServerListModel();
     serverList = new ListBox(serverListModel);
@@ -82,7 +82,7 @@ ServerSelectDialog::ServerSelectDialog():
 
     if (n_server == 0) {
         // Disable Ok button
-        //okButton->char_server_dialog[2].flags |= D_DISABLED;
+        okButton->setEnabled(false);
     } else {
         // Select first server
         serverList->setSelected(1);
@@ -104,13 +104,37 @@ ServerSelectDialog::~ServerSelectDialog()
 void ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
-        server_char_server(serverList->getSelected());
+        int index = serverList->getSelected();
+        const char *host = iptostring(server_info[index]->address);
+        short port = server_info[index]->port;
+        openConnection(host, port);
+        mStatus = NET_CONNECTING;
+        //server_char_server(serverList->getSelected());
     }
     else if (eventId == "cancel") {
         state = LOGIN_STATE;
     }
 }
 
+void ServerSelectDialog::logic()
+{
+    switch (mStatus)
+    {
+        case NET_CONNECTING:
+            mStatus = pollConnection();
+            break;
+        case NET_ERROR:
+            logger->log("ServerSelect::Unable to connect");
+            errorMessage = "Unable to connect to char server";
+            state = ERROR_STATE;
+            closeConnection();
+            break;
+        case NET_CONNECTED:
+            selectServer(serverList->getSelected());
+            //closeConnection();
+            break;
+    }
+}
 
 int ServerListModel::getNumberOfElements()
 {
@@ -132,23 +156,8 @@ void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
     }
 }
 
-void server_char_server(int serverIndex)
+void ServerSelectDialog::selectServer(int index)
 {
-    int ret;
-    state = LOGIN_STATE;
-    const char *ipstring = iptostring(server_info[serverIndex]->address);
-
-    // Connect to char server
-    ret = open_session(ipstring, server_info[serverIndex]->port);
-
-    if (ret == -1)
-    {
-        std::string str = std::string("Unable to connect to char server ") +
-            std::string(ipstring);
-        new OkDialog("Error", str);
-        return;
-    }
-
     // Send login infos
     MessageOut outMsg;
     outMsg.writeShort(0x0065);
@@ -234,7 +243,7 @@ void server_char_server(int serverIndex)
         }
         new OkDialog("Error", errorStr);
         skip(msg.getLength());
-        close_session();
+        closeConnection();
     }
     else
     {

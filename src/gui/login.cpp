@@ -89,7 +89,7 @@ WrongUsernameNoticeListener::action(const std::string &eventId)
 }
 
 LoginDialog::LoginDialog():
-    Window("Login")
+    Window("Login"), mStatus(NET_IDLE), registration(false)
 {
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
@@ -213,38 +213,11 @@ LoginDialog::action(const std::string& eventId)
         }
         else
         {
-            int ret = attemptLogin(user, passField->getText());
-
-            if (ret == LOGIN_WRONG_PASSWORD)
-            {
-                wrongLoginNotice = new OkDialog("Error", "Wrong Password",
-                                                &wrongPasswordNoticeListener);
-            }
-            else if (ret != LOGIN_OK)
-            {
-                std::string errorMsg = "Unknown error.";
-
-                switch (ret)
-                {
-                    case LOGIN_UNREGISTERED_ID:
-                        errorMsg = "Unregistered ID.";
-                        break;
-                    case LOGIN_EXPIRED:
-                        errorMsg = "This ID is expired";
-                        break;
-                    case LOGIN_REJECTED:
-                        errorMsg = "Rejected from server";
-                        break;
-                    case LOGIN_BLOCKED:
-                        errorMsg = "You have been blocked by the GM Team";
-                        break;
-                    case LOGIN_USERNAME_TWICE:
-                        errorMsg = "The username does already exist.";
-                        break;
-                }
-
-                wrongLoginNotice = new OkDialog("Error", errorMsg);
-            }
+            const std::string host(config.getValue("host", "animesites.de"));
+            short port = (short)config.getValue("port", 0);
+            // Attempt to connect to login server
+            openConnection(host.c_str(), port);
+            mStatus = NET_CONNECTING;
         }
     }
     else if (eventId == "cancel")
@@ -315,8 +288,43 @@ LoginDialog::action(const std::string& eventId)
         else
         {
             // No errors detected, register the new user.
-            attemptLogin(user + "_M", passField->getText());
+            const std::string host(config.getValue("host", "animesites.de"));
+            short port = (short)config.getValue("port", 0);
+            // Attempt to connect to login server
+            openConnection(host.c_str(), port);
+            mStatus = NET_CONNECTING;
+            registration = true;
+            //attemptLogin(user + "_M", passField->getText());
         }
+    }
+}
+
+void
+LoginDialog::logic()
+{
+    switch (mStatus)
+    {
+        case NET_CONNECTING:
+            mStatus = pollConnection();
+            break;
+        case NET_ERROR:
+            logger->log("Login::Unable to connect");
+            errorMessage = "Unable to connect to login server";
+            state = ERROR_STATE;
+            closeConnection();
+            logger->log("Connection closed");
+            break;
+        case NET_CONNECTED:
+            logger->log("Connected...");
+            std::string user = userField->getText();
+            const std::string password = passField->getText();
+            if (registration)
+            {
+                user += "_M";
+            }
+            attemptLogin(user, password);
+            closeConnection();
+            break;
     }
 }
 
@@ -329,24 +337,9 @@ loginInputHandler(SDL_KeyboardEvent *keyEvent)
     }
 }
 
-int
-attemptLogin(const std::string& user, const std::string& pass)
+void
+LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
 {
-    int ret;
-
-    // Connect to login server
-    ret = open_session(
-            config.getValue("host", "animesites.de").c_str(),
-            (short)config.getValue("port", 0));
-
-    if (ret == -1) {
-        state = LOGIN_STATE;
-        wrongLoginNotice = new OkDialog("Error",
-                                        "Unable to connect to login server");
-        return LOGIN_NO_CONNECTION;
-    }
-
-
     // Send login infos
     MessageOut outMsg;
     outMsg.writeShort(0x0064);
@@ -359,8 +352,8 @@ attemptLogin(const std::string& user, const std::string& pass)
     MessageIn msg = get_next_message();
     if (state == ERROR_STATE)
     {
-        close_session();
-        return LOGIN_UNKNOWN_ERROR;
+        closeConnection();
+        return;
     }
 
     // Login ok
@@ -393,47 +386,43 @@ attemptLogin(const std::string& user, const std::string& pass)
                         iptostring(server_info[i]->address),
                         server_info[i]->port);
         }
+        skip(msg.getLength());
 
         state = CHAR_SERVER_STATE;
-
-        skip(msg.getLength());
-        ret = LOGIN_OK;
     }
     else if (msg.getId() == 0x006a)
     {
         int loginError = msg.readByte();
         logger->log("Login::error code: %i", loginError);
-        ret = 0;
+
         switch (loginError) {
             case 0:
-                ret = LOGIN_UNREGISTERED_ID;
+                errorMessage = "Unregistered ID";
                 break;
             case 1:
-                ret = LOGIN_WRONG_PASSWORD;
+                errorMessage = "Wrong password";
                 break;
             case 2:
-                ret = LOGIN_EXPIRED;
+                errorMessage = "Account expired";
                 break;
             case 3:
-                ret = LOGIN_REJECTED;
+                errorMessage = "Rejected from server";
                 break;
             case 4:
-                ret = LOGIN_BLOCKED;
+                errorMessage = "You have been blocked by the GM Team";
                 break;
             case 9:
-                ret = LOGIN_USERNAME_TWICE;
+                errorMessage = "This account is already logged in";
                 break;
         }
         skip(msg.getLength());
-        state = LOGIN_STATE;
+        state = ERROR_STATE;
     }
     else {
         skip(msg.getLength());
-        state = LOGIN_STATE;
-        ret = LOGIN_UNKNOWN_ERROR;
+        logger->log("Login::Unknown error");
+        errorMessage = "Unknown error";
+        state = ERROR_STATE;
     }
     // Todo: add other packets, also encrypted
-
-    close_session();
-    return ret;
 }

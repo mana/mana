@@ -26,6 +26,7 @@
 #include <cassert>
 #include <sstream>
 #include <SDL_net.h>
+#include <SDL_thread.h>
 
 #include "messagein.h"
 
@@ -85,10 +86,13 @@ char *in = NULL;
 char *out = NULL;
 unsigned int in_size = 0;
 unsigned int out_size = 0;
-bool connectionOpen = false;
+int connectionOpen = NET_IDLE;
 
 TCPsocket sock;
 SDLNet_SocketSet set;
+SDL_Thread *mThread = NULL;
+SDL_mutex *mMutex = NULL;
+IPaddress *ip = NULL;
 
 char *iptostring(int address)
 {
@@ -103,32 +107,15 @@ char *iptostring(int address)
     return asciiIP;
 }
 
-int open_session(const char* address, short port)
+int connectionThread(void *ptr)
 {
-    assert(!connectionOpen);
-
-    // Initialize SDL_net
-    if (SDLNet_Init() == -1)
-    {
-        logger->log("Error in SDLNet_Init(): %s", SDLNet_GetError());
-        return -1;
-    }
-
-    IPaddress ip;
-
-    // Resolve host name
-    if (SDLNet_ResolveHost(&ip, address, port) == -1)
-    {
-        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
-        return -1;
-    }
-
     // Create the socket for the current session
-    sock = SDLNet_TCP_Open(&ip);
+    sock = SDLNet_TCP_Open((IPaddress *)ptr);
     if (!sock)
     {
         logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        return -1;
+        connectionOpen = NET_ERROR;
+        return NET_ERROR;
     }
 
     // Create a socket set to listen to socket
@@ -136,7 +123,8 @@ int open_session(const char* address, short port)
     if (!set)
     {
         logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
-        return -1;
+        connectionOpen = NET_ERROR;
+        return NET_ERROR;
     }
 
     // Add the socket to the set
@@ -144,7 +132,8 @@ int open_session(const char* address, short port)
     if (ret == -1)
     {
         logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
-        return -1;
+        connectionOpen = NET_ERROR;
+        return NET_ERROR;
     }
 
     // Init buffers
@@ -154,16 +143,98 @@ int open_session(const char* address, short port)
     memset(out, '\0', buffer_size);
     in_size = 0;
     out_size = 0;
-
-    logger->log("Network::Started session with %s:%i", address, port);
-    connectionOpen = true;
-
-    return 0;
+    
+    SDL_mutexP(mMutex);
+    logger->log("Network::Started session with %s:%i",
+                iptostring(((IPaddress *)ptr)->host),
+                ((IPaddress *)ptr)->port);
+    connectionOpen = NET_CONNECTED;
+    SDL_mutexV(mMutex);
+    return NET_CONNECTED;
 }
 
-void close_session()
+void openConnection(const char* address, short port)
 {
-    assert(connectionOpen);
+    //assert(connectionOpen <= NET_IDLE);
+
+    // Initialize SDL_net
+    if (SDLNet_Init() == -1)
+    {
+        logger->log("Error in SDLNet_Init(): %s", SDLNet_GetError());
+        connectionOpen = NET_ERROR;
+    }
+
+    ip = new IPaddress();
+
+    // Resolve host name
+    if (SDLNet_ResolveHost(ip, address, port) == -1)
+    {
+        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
+        connectionOpen = NET_ERROR;
+    }
+
+    connectionOpen = NET_CONNECTING;
+    // Create the synchronization lock
+    mMutex = SDL_CreateMutex();
+    // Create the connection thread
+    mThread = SDL_CreateThread(connectionThread, ip);
+    if (mThread == NULL) {
+        logger->log("Unable to create connection thread");
+        connectionOpen = NET_ERROR;
+    }
+}
+
+int pollConnection()
+{
+    if (mMutex)
+    {
+        SDL_mutexP(mMutex);
+    }
+
+    switch (connectionOpen)
+    {
+        case NET_IDLE:
+        case NET_CONNECTING:
+            break;
+        case NET_CONNECTED:
+        case NET_ERROR:
+            SDL_WaitThread(mThread, NULL);
+            mThread = NULL;
+            SDL_DestroyMutex(mMutex);
+            mMutex = NULL;
+            break;
+    }
+
+    if (mMutex)
+    {
+        SDL_mutexV(mMutex);
+    }
+    return connectionOpen;
+}
+
+void closeConnection()
+{
+    //assert(connectionOpen > );
+
+    if (connectionOpen == NET_ERROR)return;
+
+    if (mThread)
+    {
+        SDL_WaitThread(mThread, NULL);
+        mThread = NULL;
+    }
+
+    if (mMutex)
+    {
+        SDL_DestroyMutex(mMutex);
+        mMutex = NULL;
+    }
+
+    if (ip)
+    {
+        delete ip;
+        ip = NULL;
+    }
 
     // Remove the socket from the socket set
     int ret = SDLNet_TCP_DelSocket(set, sock);
@@ -199,7 +270,7 @@ void close_session()
     SDLNet_Quit();
 
     logger->log("Network::Closed session");
-    connectionOpen = false;
+    connectionOpen = NET_IDLE;
 }
 
 void flush()

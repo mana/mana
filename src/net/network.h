@@ -24,16 +24,24 @@
 #ifndef _TMW_NETWORK_
 #define _TMW_NETWORK_
 
+#define NET_ERROR      -1
+#define NET_CONNECTED   0
+#define NET_IDLE        1
+#define NET_CONNECTING  2
+
 class MessageIn;
 
 /** Convert an address from int format to string */
 char *iptostring(int address);
 
 /** Open a session with a server */
-int open_session(const char* address, short port);
+void openConnection(const char* address, short port);
+
+/** Returns the status of the current connection attempt. */
+int pollConnection();
 
 /** Close a session */
-void close_session();
+void closeConnection();
 
 /** Send and receive data waiting in the buffers */
 void flush();

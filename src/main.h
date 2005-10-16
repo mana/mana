@@ -42,7 +42,8 @@ enum {
     CHAR_DEL_STATE,
     GAME_STATE,
     ERROR_STATE,
-    UPDATE_STATE
+    UPDATE_STATE,
+    CONNECTING_STATE
 };
 
 /* length definitions for several char[]s in order

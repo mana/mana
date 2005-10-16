@@ -66,6 +66,11 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
+        
+        /**
+         * Updates dialog logic
+         */
+        void logic();
 
     private:
         ServerListModel *serverListModel;
@@ -73,10 +78,11 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         gcn::Button *okButton;
         gcn::Button *cancelButton;
         gcn::ScrollArea *scrollArea;
+        int mStatus;
+        
+        void selectServer(int index);
 };
 
 void charServerInputHandler(SDL_KeyboardEvent *keyEvent);
-void server_char_server(int serverIndex);
-char *server_list(int index, int *size);
 
 #endif

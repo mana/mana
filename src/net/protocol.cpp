@@ -68,57 +68,6 @@ void set_coordinates(char *data,
     data[2] |= direction;
 }
 
-void map_start()
-{
-    // Connect to map server
-    if (open_session(iptostring(map_address), map_port) == -1)
-    {
-        logger->log("Warning: Unable to connect to map server");
-        throw "Unable to connect to map server";
-        return;
-    }
-
-    // Send login infos
-    MessageOut outMsg;
-    outMsg.writeShort(0x0072);
-    outMsg.writeLong(account_ID);
-    outMsg.writeLong(char_ID);
-    outMsg.writeLong(session_ID1);
-    outMsg.writeLong(session_ID2);
-    outMsg.writeByte(sex);
-
-    // Skip a mysterious 4 bytes
-    while ((in_size < 4)|| (out_size > 0)) flush();
-    skip(4);
-
-    MessageIn msg = get_next_message();
-
-    if (msg.getId() == SMSG_LOGIN_SUCCESS)
-    {
-        unsigned char direction;
-        msg.readLong();   // server tick
-        msg.readCoordinates(startX, startY, direction);
-        msg.skip(2);      // unknown
-        logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
-                startX, startY, direction);
-    }
-    else if (msg.getId() == 0x0081)
-    {
-        logger->log("Warning: Map server D/C");
-    }
-    else
-    {
-        logger->error("Unknown packet: map_start");
-    }
-
-    skip(msg.getLength());
-
-    // Send "map loaded"
-    // TODO: be able to reuse the same msg
-    MessageOut newMsg;
-    newMsg.writeShort(0x007d);
-}
-
 void walk(unsigned short x, unsigned short y, unsigned char direction)
 {
     char temp[3];

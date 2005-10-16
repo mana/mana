@@ -54,6 +54,11 @@ class LoginDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
+        
+        /**
+         * Updates dialog logic.
+         */
+        void logic();
 
         // Made them public to have the possibility to request focus
         // from external functions.
@@ -69,6 +74,10 @@ class LoginDialog : public Window, public gcn::ActionListener {
         gcn::Button *okButton;
         gcn::Button *cancelButton;
         gcn::Button *registerButton;
+        int mStatus;
+        bool registration;
+        
+        void attemptLogin(const std::string& user, const std::string& pass);
 };
 
 /**
@@ -99,22 +108,7 @@ class WrongUsernameNoticeListener : public gcn::ActionListener {
  */
 void loginInputHandler(SDL_KeyboardEvent *keyEvent);
 
-/**
- * Attempt to login to login server
- * Return an error code if any, and then stay at LOGIN state.
- * 0 means ok.
- * 1 means Wrong Password
- * 2 means unregistered ID
- * 3 means rejected from server
- * 4 means blocked by GM Team
- * 5 means expired ID
- * 6 means unable to connect to server
- * 9 means username already existing
- * -1 means unknown error
- */
-int attemptLogin(const std::string& user, const std::string& pass);
-
-enum
+/*enum
 {
     LOGIN_OK = 0,
     LOGIN_WRONG_PASSWORD,
@@ -124,8 +118,9 @@ enum
     LOGIN_EXPIRED,
     LOGIN_NO_CONNECTION,
     LOGIN_USERNAME_TWICE = 9,
+    LOGIN_CONNECTING,
     LOGIN_UNKNOWN_ERROR = -1
 
-};
+};*/
 
 #endif

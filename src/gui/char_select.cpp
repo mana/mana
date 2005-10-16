@@ -241,12 +241,12 @@ void CharSelectDialog::serverCharSelect()
         map_address = msg.readLong();
         map_port = msg.readShort();
         player_info = char_info[0];
-        state = GAME_STATE;
+        state = CONNECTING_STATE;
 
         logger->log("CharSelect: Map: %s", map_path.c_str());
         logger->log("CharSelect: Server: %s:%d", iptostring(map_address),
                     map_port);
-        close_session();
+        closeConnection();
     }
     else if (msg.getId() == 0x006c)
     {
@@ -279,7 +279,7 @@ void CharSelectDialog::serverCharSelect()
                 errorMessage = "Unkown error with 0x0081";
                 break;
         }
-        close_session();
+        closeConnection();
         state = ERROR_STATE;
     }
 

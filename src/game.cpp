@@ -409,7 +409,7 @@ void do_exit()
     delete engine;
     delete player_node;
     destroyGuiWindows();
-    close_session();
+    closeConnection();
 
     delete inventory;
 

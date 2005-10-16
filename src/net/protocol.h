@@ -115,9 +115,6 @@ unsigned char get_dest_direction(char data);
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
 
-/** Initialize connection with map server */
-void map_start();
-
 /** Requests to walk */
 void walk(unsigned short x, unsigned short y, unsigned char direction);
 
