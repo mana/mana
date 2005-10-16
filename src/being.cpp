@@ -39,7 +39,6 @@
 #include "net/protocol.h"
 
 #include "resources/resourcemanager.h"
-#include "resources/image.h"
 
 extern Being* autoTarget;
 extern std::map<int, Spriteset*> monsterset;
@@ -108,14 +107,12 @@ Being* createBeing(Uint32 id, Uint16 job, Map *map)
         filename << "graphics/sprites/monster" << (being->job - 1002) << ".png";
         logger->log("%s",filename.str().c_str());
 
-        Image *monsterbitmap =
-            ResourceManager::getInstance()->getImage(filename.str());
-
-        if (!monsterbitmap) {
-            logger->error("Unable to load monster.png");
+        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
+                filename.str(), 60, 60);
+        if (!tmp) {
+            logger->error("Unable to load monster spriteset!");
         } else {
-            monsterset[being->job - 1002] = new Spriteset(monsterbitmap, 60, 60);
-            monsterbitmap->decRef();
+            monsterset[being->job - 1002] = tmp;
         }
     }
 

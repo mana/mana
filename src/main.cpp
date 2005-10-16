@@ -45,7 +45,6 @@
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
-#include "playerinfo.h"
 #include "sound.h"
 
 #include "graphic/spriteset.h"
@@ -58,9 +57,6 @@
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/updatewindow.h"
-#include "gui/error.h"
-
-#include "net/protocol.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -266,19 +262,13 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    Image *playerImg = resman->getImage(
-            "graphics/sprites/player_male_base.png");
-    Image *hairImg = resman->getImage(
-            "graphics/sprites/player_male_hair.png");
+    playerset = resman->createSpriteset(
+            "graphics/sprites/player_male_base.png", 64, 64);
+    hairset = resman->createSpriteset(
+            "graphics/sprites/player_male_hair.png", 40, 40);
 
-    if (!playerImg) logger->error("Couldn't load player_male_base.png");
-    if (!hairImg) logger->error("Couldn't load player_male_hair.png");
-
-    playerset = new Spriteset(playerImg, 64, 64);
-    hairset = new Spriteset(hairImg, 40, 40);
-
-    playerImg->decRef();
-    hairImg->decRef();
+    if (!playerset) logger->error("Couldn't load player spriteset!");
+    if (!hairset) logger->error("Couldn't load hair spriteset!");
 
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
@@ -427,7 +417,7 @@ int main(int argc, char *argv[])
     void (*inputHandler)(SDL_KeyboardEvent*) = NULL;
 
     Image *login_wallpaper = NULL;
-    
+
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
     while (state != EXIT_STATE)
@@ -448,9 +438,9 @@ int main(int argc, char *argv[])
 
             guiInput->pushInput(event);
         }
-        
+
         gui->logic();
-        
+
         if (!login_wallpaper)
         {
             login_wallpaper = ResourceManager::getInstance()->
@@ -525,7 +515,7 @@ int main(int argc, char *argv[])
             }
         }
     }
-    
+
     if (nullFile)
     {
         fclose(nullFile);

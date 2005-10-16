@@ -28,9 +28,9 @@
 
 extern int camera_x, camera_y;
 
+class Graphics;
 class Image;
 class Map;
-class Spriteset;
 
 /**
  * Game engine that does the main drawing.
@@ -66,7 +66,7 @@ class Engine
         /**
          * Draws everything on the screen.
          */
-        void draw();
+        void draw(Graphics *graphics);
 
     private:
         Map *mCurrentMap;

@@ -40,17 +40,11 @@
 #include "gui/gui.h"
 #include "gui/minimap.h"
 
-#include "resources/image.h"
-#include "resources/iteminfo.h"
 #include "resources/itemmanager.h"
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 
-extern Being *autoTarget;
-extern Graphics *graphics;
 extern Minimap *minimap;
-extern std::list<FloorItem*> floorItems;
-extern int frame;
 
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
@@ -68,32 +62,20 @@ Spriteset *weaponset;
 Engine::Engine():
     mCurrentMap(NULL)
 {
-    // Initializes GUI
-
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *npcbmp = resman->getImage("graphics/sprites/npcs.png");
-    Image *emotionbmp = resman->getImage("graphics/sprites/emotions.png");
-    Image *weaponbitmap = resman->getImage("graphics/sprites/weapons.png");
-    Image *itembitmap = resman->getImage("graphics/sprites/items.png");
 
-    if (!npcbmp) logger->error("Unable to load npcs.png");
-    if (!emotionbmp) logger->error("Unable to load emotions.png");
-    if (!weaponbitmap) logger->error("Unable to load weapons.png");
-    if (!itembitmap) logger->error("Unable to load items.png");
+    npcset = resman->createSpriteset("graphics/sprites/npcs.png", 50, 80);
+    emotionset = resman->createSpriteset("graphics/sprites/emotions.png",
+            30, 32);
+    weaponset = resman->createSpriteset("graphics/sprites/weapons.png",
+            160, 120);
+    itemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
 
-    npcset = new Spriteset(npcbmp, 50, 80);
-    emotionset = new Spriteset(emotionbmp, 30, 32);
-    weaponset = new Spriteset(weaponbitmap, 160, 120);
-    itemset = new Spriteset(itembitmap, 32, 32);
-
-    npcbmp->decRef();
-    emotionbmp->decRef();
-    weaponbitmap->decRef();
-    itembitmap->decRef();
-
-    attackTarget = resman->getImage("graphics/gui/attack_target.png");
-    if (!attackTarget) logger->error("Unable to load attack_target.png");
+    if (!npcset) logger->error("Unable to load NPC spriteset!");
+    if (!emotionset) logger->error("Unable to load emotions spriteset!");
+    if (!weaponset) logger->error("Unable to load weapon spriteset!");
+    if (!itemset) logger->error("Unable to load item spriteset!");
 
     // Initialize item manager
     itemDb = new ItemManager();
@@ -113,8 +95,6 @@ Engine::~Engine()
     delete emotionset;
     delete weaponset;
     delete itemset;
-
-    attackTarget->decRef();
 
     delete itemDb;
 }
@@ -199,7 +179,7 @@ void Engine::logic()
     }
 }
 
-void Engine::draw()
+void Engine::draw(Graphics *graphics)
 {
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
@@ -224,8 +204,6 @@ void Engine::draw()
 
     camera_x = map_x / 32;
     camera_y = map_y / 32;
-
-    frame++;
 
     // Draw tiles and sprites
     if (mCurrentMap != NULL)

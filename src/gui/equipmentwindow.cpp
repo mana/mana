@@ -30,7 +30,6 @@
 
 #include "../graphic/spriteset.h"
 
-#include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
@@ -43,11 +42,9 @@ EquipmentWindow::EquipmentWindow():
     setDefaultSize(5, 230, 200, 90);
     loadWindowState();
 
-    ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("graphics/sprites/items.png");
-    if (!itemImg) logger->error("Unable to load items.png");
-    itemset = new Spriteset(itemImg, 32, 32);
-    itemImg->decRef();
+    itemset = ResourceManager::getInstance()->createSpriteset(
+            "graphics/sprites/items.png", 32, 32);
+    if (!itemset) logger->error("Unable to load items.png");
 }
 
 EquipmentWindow::~EquipmentWindow()

@@ -7,6 +7,10 @@
 	
 2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/being.cpp, src/engine.cpp, src/engine.h, src/game.cpp,
+	src/main.cpp, src/gui/equipmentwindow.cpp, src/gui/itemcontainer.cpp,
+	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
+	Use the ResourceManager to get spritesets.
 	* src/being.cpp: Reduce code duplication in the findNode functions and
 	use a functor to do the search.
 	* src/map.cpp: Some code improvements.

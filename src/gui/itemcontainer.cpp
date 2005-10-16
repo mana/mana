@@ -42,10 +42,8 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    Image *itemImg = resman->getImage("graphics/sprites/items.png");
-    if (!itemImg) logger->error("Unable to load items.png");
-    itemset = new Spriteset(itemImg, 32, 32);
-    itemImg->decRef();
+    itemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
+    if (!itemset) logger->error("Unable to load items.png");
 
     selImg = resman->getImage("graphics/gui/selection.png");
     if (!selImg) logger->error("Unable to load selection.png");

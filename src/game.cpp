@@ -388,7 +388,8 @@ void game()
         // Update the screen when application is active, delay otherwise
         if (SDL_GetAppState() & SDL_APPACTIVE)
         {
-            engine->draw();
+            frame++;
+            engine->draw(graphics);
             graphics->updateScreen();
         }
         else
