@@ -29,7 +29,6 @@
 #include "progressbar.h"
 
 #include "../game.h"
-#include "../graphics.h"
 #include "../log.h"
 #include "../main.h"
 
@@ -50,12 +49,12 @@ ConnectionDialog::ConnectionDialog():
                                    200 - 10, 20, 128, 128, 128);
     mLabel = new gcn::Label("Connecting...");
     mLabel->setPosition(5, mProgressBar->getY() - 25);
-                                   
+
     add(mLabel);
     add(mCancelButton);
     add(mProgressBar);
     setLocationRelativeTo(getParent());
-    
+
     const char *host = iptostring(map_address);
     openConnection(host, map_port);
 }
@@ -73,7 +72,7 @@ void ConnectionDialog::logic()
     }
     mProgressBar->setProgress(mProgress);
     Window::logic();
-    
+
     switch (mStatus)
     {
         case NET_CONNECTING:

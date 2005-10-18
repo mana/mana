@@ -25,7 +25,6 @@
 #define _TMW_WINDOW_H__
 
 #include <guichan/widgets/window.hpp>
-#include <guichan/rectangle.hpp>
 
 #include "../guichanfwd.h"
 

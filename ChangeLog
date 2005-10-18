@@ -1,10 +1,16 @@
+2005-10-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/connection.cpp, src/gui/connection.h, src/gui/error.cpp,
+	src/gui/status.cpp, src/gui/window.h: Header, whitespace and
+	indentation cleanups.
+
 2005-10-16  Duane Bailey  <nayryeliab@gmail.com>
 
 	* src/main.cpp: opengl is now default for mac, win, and those who
 	define USE_OPENGL
 	* src/gui/setup.cpp: made it so those who use and go to fullscreen
 	requires a restart (texture/context baddies)
-	
+
 2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/game.cpp, src/inventory.cpp, src/gui/buy.cpp,

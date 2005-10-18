@@ -309,16 +309,13 @@ void StatusWindow::update()
     {
         hpBar->setColor(223, 32, 32); // Red
     }
+    else if (player_info->hp < int((player_info->maxHp / 3) * 2))
+    {
+        hpBar->setColor(230, 171, 34); // Orange
+    }
     else
     {
-        if (player_info->hp < int((player_info->maxHp / 3) * 2))
-        {
-            hpBar->setColor(230, 171, 34); // Orange
-        }
-        else
-        {
-            hpBar->setColor(0, 171, 34); // Green
-        }
+        hpBar->setColor(0, 171, 34); // Green
     }
 
     hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);

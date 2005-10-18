@@ -23,10 +23,7 @@
 
 #include "error.h"
 
-#include <guichan/widgets/label.hpp>
-
 #include "../main.h"
-#include "../graphics.h"
 
 ErrorDialog::ErrorDialog(const std::string &msg):
     OkDialog("Error", msg)

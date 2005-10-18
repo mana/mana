@@ -33,7 +33,6 @@
 #include "../guichanfwd.h"
 
 class Button;
-class Label;
 class ProgressBar;
 
 /**
@@ -59,16 +58,16 @@ class ConnectionDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
+
         void logic();
-        
+
     private:
         gcn::Label *mLabel;
         Button *mCancelButton;
         ProgressBar *mProgressBar;
         float mProgress;
         int mStatus;
-        
+
         void mapLogin();
 };
 
