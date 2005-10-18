@@ -29,8 +29,6 @@
 class HBox : public Box
 {
  public:
-    HBox();
-    ~HBox();
     void draw(gcn::Graphics *);
 };
 

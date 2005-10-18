@@ -33,14 +33,9 @@ class IntTextBox : public TextBox
 {
     public:
         /**
-         * Constructor.
-         */
-        IntTextBox();
-
-        /**
          * Constructor, sets initial value.
          */
-        IntTextBox(int value);
+        IntTextBox(int value=0);
 
         /**
          * Sets the minimum and maximum values of the text box.

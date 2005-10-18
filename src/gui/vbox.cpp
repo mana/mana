@@ -23,15 +23,6 @@
 
 #include "vbox.h"
 
-VBox::VBox()
-    : Box()
-{
-}
-
-VBox::~VBox()
-{
-}
-
 void VBox::draw(gcn::Graphics *graphics)
 {
     int widgetCount = mWidgets.size();

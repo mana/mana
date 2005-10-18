@@ -47,7 +47,7 @@ class BuddyWindow : public Window, public BuddyList,
         BuddyWindow();
 
         /**
-         * Destructor.
+         * Destructor
          */
         ~BuddyWindow();
 

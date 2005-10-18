@@ -61,13 +61,6 @@ BuySellDialog::BuySellDialog():
     buyButton->requestFocus();
 }
 
-BuySellDialog::~BuySellDialog()
-{
-    delete buyButton;
-    delete sellButton;
-    delete cancelButton;
-}
-
 void BuySellDialog::action(const std::string& eventId)
 {
     int actionId = -1;

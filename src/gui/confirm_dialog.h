@@ -56,11 +56,6 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
                 gcn::ActionListener *listener = NULL);
 
         /**
-         * Destructor.
-         */
-        ~ConfirmDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

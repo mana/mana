@@ -48,11 +48,6 @@ class RequestTradeDialog : public Window, public gcn::ActionListener
         RequestTradeDialog(const std::string &name);
 
         /**
-         * Destructor.
-         */
-        ~RequestTradeDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

@@ -96,9 +96,6 @@ ServerSelectDialog::~ServerSelectDialog()
 {
     delete serverList;
     delete serverListModel;
-    delete scrollArea;
-    delete okButton;
-    delete cancelButton;
 }
 
 void ServerSelectDialog::action(const std::string& eventId)

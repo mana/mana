@@ -118,17 +118,7 @@ SellDialog::SellDialog():
 
 SellDialog::~SellDialog()
 {
-    delete increaseButton;
-    delete decreaseButton;
-    delete quitButton;
-    delete sellButton;
-    delete slider;
     delete itemList;
-    delete scrollArea;
-    delete quantityLabel;
-    delete moneyLabel;
-    delete itemDescLabel;
-    delete itemEffectLabel;
 }
 
 void SellDialog::reset()

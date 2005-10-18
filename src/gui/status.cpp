@@ -215,54 +215,6 @@ StatusWindow::StatusWindow():
     add(remainingStatsPointsLabel);
 }
 
-StatusWindow::~StatusWindow()
-{
-    // Status Part
-    delete lvlLabel;
-    delete gpLabel;
-    delete hpLabel;
-    delete hpValueLabel;
-    delete mpLabel;
-    delete mpValueLabel;
-    delete xpLabel;
-    delete xpValueLabel;
-    delete jobXpLabel;
-    delete jobValueLabel;
-    delete hpBar;
-    delete mpBar;
-    delete xpBar;
-    delete jobXpBar;
-
-    // Stats Part
-    delete statsTitleLabel;
-    delete statsTotalLabel;
-    delete statsCostLabel;
-    for (int i = 0; i < 6; i++)
-    {
-        delete statsLabel[i];
-        delete pointsLabel[i];
-        delete statsDisplayLabel[i];
-        delete statsButton[i];
-    }
-    delete statsAttackLabel;
-    delete statsDefenseLabel;
-    delete statsMagicAttackLabel;
-    delete statsMagicDefenseLabel;
-    delete statsAccuracyLabel;
-    delete statsEvadeLabel;
-    delete statsReflexLabel;
-
-    delete statsAttackPoints;
-    delete statsDefensePoints;
-    delete statsMagicAttackPoints;
-    delete statsMagicDefensePoints;
-    delete statsAccuracyPoints;
-    delete statsEvadePoints;
-    delete statsReflexPoints;
-
-    delete remainingStatsPointsLabel;
-}
-
 void StatusWindow::update()
 {
     std::stringstream updateText;

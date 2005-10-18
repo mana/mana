@@ -38,12 +38,12 @@ TabbedContainer::TabbedContainer():
 TabbedContainer::~TabbedContainer()
 {
     std::vector<gcn::Widget*>::iterator i = mTabs.begin();
-    while (i != mTabs.end()) {
+    for (i = mTabs.begin(); i != mTabs.end(); i++) {
         remove(*i);
         delete (*i);
-        i = mTabs.erase(i);
     }
 
+    mTabs.clear();
     mContents.clear();
 }
 

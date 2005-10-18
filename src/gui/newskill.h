@@ -48,7 +48,18 @@ struct nSkill {
  */
 class NewSkillDialog : public Window, public gcn::ActionListener
 {
+    public:
+        /**
+         * Constructor.
+         */
+        NewSkillDialog();
+
+        // action listener
+        void action(const std::string&);
+
     private:
+        void resetNSD(); // updates the values in the dialog box
+
         // members
         int startPoint; // starting point of skill listing
         ProgressBar *skillbar[N_SKILL_CAT_SIZE];
@@ -57,22 +68,6 @@ class NewSkillDialog : public Window, public gcn::ActionListener
         gcn::Button *catButton[N_SKILL_CAT];
         gcn::Button *closeButton;
         nSkill playerSkill[N_SKILL]; // pointer to an array of skill values
-        
-        void resetNSD(); // updates the values in the dialog box
-        
-    public:
-        /**
-         * Constructor.
-         */
-        NewSkillDialog();
-
-        /**
-         * Destructor.
-         */
-        ~NewSkillDialog();  
-        
-        // action listener
-        void action(const std::string&);     
 };
 
 #endif

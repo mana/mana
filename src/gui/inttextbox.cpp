@@ -27,11 +27,6 @@
 
 #include <guichan/key.hpp>
 
-IntTextBox::IntTextBox():
-    value(0)
-{
-}
-
 IntTextBox::IntTextBox(int i):
     value(i)
 {

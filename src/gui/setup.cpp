@@ -213,24 +213,8 @@ Setup::Setup():
 
 Setup::~Setup()
 {
-    delete videoLabel;
     delete modeListModel;
     delete modeList;
-    delete scrollArea;
-    delete fsCheckBox;
-    delete openGLCheckBox;
-    delete customCursorCheckBox;
-    delete soundCheckBox;
-    delete audioLabel;
-    delete resetWinsToDefault;
-    delete applyButton;
-    delete cancelButton;
-    delete alphaSlider;
-    delete alphaLabel;
-    delete sfxSlider;
-    delete musicSlider;
-    delete sfxLabel;
-    delete musicLabel;
 }
 
 void Setup::action(const std::string &eventId)

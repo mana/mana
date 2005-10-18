@@ -48,11 +48,6 @@ class MiniStatusWindow : public Window, public gcn::ActionListener {
         MiniStatusWindow();
 
         /**
-         * Destructor.
-         */
-        ~MiniStatusWindow();
-
-        /**
          * Draw this window
          */
         void draw(gcn::Graphics *graphics);

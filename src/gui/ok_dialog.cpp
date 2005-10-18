@@ -42,6 +42,10 @@ OkDialog::OkDialog(Window *parent, const std::string &title,
     init(msg, listener);
 }
 
+OkDialog::~OkDialog()
+{
+}
+
 void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
     userLabel = new gcn::Label(msg);
@@ -70,12 +74,6 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 
     setLocationRelativeTo(getParent());
     okButton->requestFocus();
-}
-
-OkDialog::~OkDialog()
-{
-    delete userLabel;
-    delete okButton;
 }
 
 void OkDialog::action(const std::string &eventId)

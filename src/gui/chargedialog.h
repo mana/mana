@@ -42,11 +42,6 @@ class ChargeDialog : public Window
          */
         ChargeDialog();
 
-        /**
-         * Destructor.
-         */
-        ~ChargeDialog();
-
         void logic();
 
     private:

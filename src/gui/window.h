@@ -29,6 +29,7 @@
 #include "../guichanfwd.h"
 
 class ConfigListener;
+class GCContainer;
 class Image;
 class ImageRect;
 class WindowContainer;
@@ -75,12 +76,12 @@ class Window : public gcn::Window
         /**
          * Adds a widget to the window.
          */
-        void add(gcn::Widget *w);
+        void add(gcn::Widget *wi, bool delChild=true);
 
         /**
          * Adds a widget to the window and also specifices its position.
          */
-        void add(gcn::Widget *w, int x, int y);
+        void add(gcn::Widget *w, int x, int y, bool delChild=true);
 
         /**
          * Sets the width of the window contents.
@@ -195,7 +196,7 @@ class Window : public gcn::Window
         virtual void resetToDefaultSize();
 
     protected:
-        gcn::Container *mChrome;   /**< Contained container */
+        GCContainer *mChrome;   /**< Contained container */
         Window *mParent;           /**< The parent window */
         std::string mWindowName;   /**< Name of the window */
         int snapSize;              /**< Snap distance to window edge */

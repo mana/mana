@@ -83,15 +83,6 @@ MenuWindow::MenuWindow():
                    (setupButton->getY() + setupButton->getHeight()));
 }
 
-MenuWindow::~MenuWindow()
-{
-    delete statusButton;
-    delete equipmentButton;
-    delete skillsButton;
-    delete inventoryButton;
-    delete setupButton;
-}
-
 void MenuWindow::draw(gcn::Graphics *g)
 {
     Window::drawContent(g);

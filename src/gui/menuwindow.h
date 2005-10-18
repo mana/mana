@@ -44,11 +44,6 @@ class MenuWindow : public Window, public gcn::ActionListener {
          */
         MenuWindow();
 
-        /**
-         * Destructor.
-         */
-        ~MenuWindow();
-
          /**
          * Called when receiving actions from widget.
          */

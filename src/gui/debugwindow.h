@@ -47,11 +47,6 @@ class DebugWindow : public Window, public gcn::ActionListener
         DebugWindow();
 
         /**
-         * Destructor.
-         */
-        ~DebugWindow();
-
-        /**
          * Logic (updates components' size and infos)
          */
         void logic();

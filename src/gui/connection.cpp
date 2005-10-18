@@ -59,10 +59,6 @@ ConnectionDialog::ConnectionDialog():
     openConnection(host, map_port);
 }
 
-ConnectionDialog::~ConnectionDialog()
-{
-}
-
 void ConnectionDialog::logic()
 {
     mProgress += 0.005f;

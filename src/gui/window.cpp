@@ -21,9 +21,11 @@
  *  $Id$
  */
 
+#include "window.h"
+
 #include <guichan/exception.hpp>
 
-#include "window.h"
+#include "gccontainer.h"
 #include "windowcontainer.h"
 
 #include "../configlistener.h"
@@ -114,7 +116,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     setTitleBarHeight(20);
 
     // Add chrome
-    mChrome = new gcn::Container();
+    mChrome = new GCContainer();
     mChrome->setOpaque(false);
     setContent(mChrome);
 
@@ -259,14 +261,14 @@ void Window::scheduleDelete()
     windowContainer->scheduleDelete(this);
 }
 
-void Window::add(gcn::Widget *w)
+void Window::add(gcn::Widget *w, bool delChild)
 {
-    mChrome->add(w);
+    mChrome->add(w, delChild);
 }
 
-void Window::add(gcn::Widget *w, int x, int y)
+void Window::add(gcn::Widget *w, int x, int y, bool delChild)
 {
-    mChrome->add(w, x, y);
+    mChrome->add(w, x, y, delChild);
 }
 
 void Window::mousePress(int x, int y, int button)

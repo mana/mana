@@ -107,11 +107,6 @@ UpdaterWindow::~UpdaterWindow()
     remove((mBasePath + "/updates/download.temp").c_str());
 
     delete[] mCurlError;
-    delete mScrollArea;
-    delete mLabel;
-    delete mProgressBar;
-    delete mCancelButton;
-    delete mPlayButton;
     delete mBrowserBox;
 }
 

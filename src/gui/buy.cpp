@@ -116,17 +116,7 @@ BuyDialog::BuyDialog():
 
 BuyDialog::~BuyDialog()
 {
-    delete increaseButton;
-    delete decreaseButton;
-    delete quitButton;
-    delete buyButton;
-    delete slider;
     delete itemList;
-    delete scrollArea;
-    delete moneyLabel;
-    delete quantityLabel;
-    delete itemDescLabel;
-    delete itemEffectLabel;
 }
 
 void BuyDialog::setMoney(int amount)

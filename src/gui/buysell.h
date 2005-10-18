@@ -47,11 +47,6 @@ class BuySellDialog : public Window, public gcn::ActionListener
         BuySellDialog();
 
         /**
-         * Destructor.
-         */
-        ~BuySellDialog();
-       
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

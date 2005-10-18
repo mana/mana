@@ -119,19 +119,6 @@ CharSelectDialog::CharSelectDialog():
     setPlayerInfo(NULL);
 }
 
-CharSelectDialog::~CharSelectDialog()
-{
-    delete selectButton;
-    delete cancelButton;
-    delete newCharButton;
-    delete delCharButton;
-    delete nameLabel;
-    delete levelLabel;
-    delete jobLevelLabel;
-    delete moneyLabel;
-    delete playerBox;
-}
-
 void CharSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok" && n_character > 0) {

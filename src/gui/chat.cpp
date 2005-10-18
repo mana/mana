@@ -77,9 +77,7 @@ ChatWindow::ChatWindow(const std::string &logfile):
 
 ChatWindow::~ChatWindow()
 {
-    delete chatInput;
     delete textOutput;
-    delete scrollArea;
 
     chatlog_file.flush();
     chatlog_file.close();

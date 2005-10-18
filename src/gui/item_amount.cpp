@@ -99,16 +99,6 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     setLocationRelativeTo(getParentWindow());
 }
 
-ItemAmountWindow::~ItemAmountWindow()
-{
-    delete mItemAmountTextBox;
-    delete mItemAmountPlusButton;
-    delete mItemAmountMinusButton;
-    delete mItemAmountSlide;
-    delete mItemAmountOkButton;
-    delete mItemAmountCancelButton;
-}
-
 void ItemAmountWindow::resetAmount()
 {
     mItemAmountTextBox->setInt(1);

@@ -45,11 +45,6 @@ class PopupMenu : public Window, public LinkHandler
         PopupMenu();
 
         /**
-         * Destructor.
-         */
-        ~PopupMenu();
-
-        /**
          * Shows the being related popup menu at the specified mouse coords.
          */
         void showPopup(int x, int y, Being *being);

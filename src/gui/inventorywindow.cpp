@@ -90,14 +90,7 @@ InventoryWindow::InventoryWindow():
 
 InventoryWindow::~InventoryWindow()
 {
-    delete useButton;
-    delete dropButton;
-    delete invenScroll;
     delete items;
-    delete itemNameLabel;
-    delete itemDescriptionLabel;
-    delete itemEffectLabel;
-    delete weightLabel;
 }
 
 void InventoryWindow::logic()

@@ -29,11 +29,10 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
 
+#include "shop.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
-
-struct ITEM_SHOP;
 
 /**
  * The buy dialog.

@@ -68,10 +68,7 @@ NpcListDialog::NpcListDialog():
 
 NpcListDialog::~NpcListDialog()
 {
-    delete okButton;
-    delete cancelButton;
     delete itemList;
-    delete scrollArea;
 }
 
 int

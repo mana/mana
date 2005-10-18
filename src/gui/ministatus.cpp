@@ -64,14 +64,6 @@ MiniStatusWindow::MiniStatusWindow():
                    mpBar->getY() + mpBar->getHeight());
 }
 
-MiniStatusWindow::~MiniStatusWindow()
-{
-    delete hpBar;
-    delete mpBar;
-    delete hpLabel;
-    delete mpLabel;
-}
-
 void MiniStatusWindow::update()
 {
     // HP Bar coloration

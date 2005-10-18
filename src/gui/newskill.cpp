@@ -168,21 +168,6 @@ NewSkillDialog::NewSkillDialog():
     setLocationRelativeTo(getParent());
 }
 
-NewSkillDialog::~NewSkillDialog()
-{
-    for (int i = 0; i < N_SKILL_CAT_SIZE; i++)
-    {
-        delete skillbar[i];
-        delete skillLabel[i];
-        delete skillLevel[i];
-    }
-    for (int i = 0; i < N_SKILL_CAT; i++)
-    {
-        delete catButton[i];
-    }
-    delete closeButton;
-}
-
 void NewSkillDialog::action(const std::string& eventId)
 {
      int osp = startPoint;

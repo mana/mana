@@ -23,26 +23,17 @@
 
 #include "hbox.h"
 
-HBox::HBox()
-    : Box()
-{
-}
-
-HBox::~HBox()
-{
-}
-
 void HBox::draw(gcn::Graphics *graphics)
 {
     int widgetCount = mWidgets.size();
     int childHeight = getHeight();
     if (widgetCount == 0)
-	return;
+        return;
     int childWidth = getWidth() / widgetCount;
 
     int i = 0;
     for (WidgetIterator w = mWidgets.begin(); w != mWidgets.end(); w++) {
-	(*w)->setPosition(childWidth * i - padding, 0);
+        (*w)->setPosition(childWidth * i - padding, 0);
         (*w)->setSize(childWidth, childHeight);
         i++;
     }

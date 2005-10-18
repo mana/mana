@@ -38,11 +38,6 @@ ChargeDialog::ChargeDialog():
     add(progBar);
 }
 
-ChargeDialog::~ChargeDialog()
-{
-    delete progBar;
-}
-
 // update the dialog
 void ChargeDialog::logic()
 {

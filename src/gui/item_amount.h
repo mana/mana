@@ -52,11 +52,6 @@ class ItemAmountWindow : public Window, public gcn::ActionListener
         ItemAmountWindow(int usage, Window *parent, Item *item);
 
         /**
-         * Destructor.
-         */
-        virtual ~ItemAmountWindow();
-
-        /**
          * Called when receiving actions from widget.
          */
         void action(const std::string& eventId);

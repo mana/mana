@@ -58,7 +58,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         ServerSelectDialog();
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~ServerSelectDialog();
 
@@ -66,7 +66,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
+
         /**
          * Updates dialog logic
          */
@@ -79,7 +79,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         gcn::Button *cancelButton;
         gcn::ScrollArea *scrollArea;
         int mStatus;
-        
+
         void selectServer(int index);
 };
 

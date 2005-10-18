@@ -36,6 +36,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/error.h \
 	      gui/focushandler.cpp \
 	      gui/focushandler.h \
+	      gui/gccontainer.cpp \
+	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
 	      gui/help.cpp \

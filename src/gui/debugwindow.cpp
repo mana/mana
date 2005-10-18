@@ -66,15 +66,6 @@ DebugWindow::DebugWindow():
     add(closeButton);
 }
 
-DebugWindow::~DebugWindow()
-{
-    delete FPSLabel;
-    delete musicFileLabel;
-    delete mapFileLabel;
-    delete tileMouseLabel;
-    delete closeButton;
-}
-
 void
 DebugWindow::logic()
 {

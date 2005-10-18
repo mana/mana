@@ -86,13 +86,6 @@ void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
     yesButton->requestFocus();
 }
 
-ConfirmDialog::~ConfirmDialog()
-{
-    delete userLabel;
-    delete yesButton;
-    delete noButton;
-}
-
 void ConfirmDialog::action(const std::string &eventId)
 {
     if (eventId == "yes" || eventId == "no") {

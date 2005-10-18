@@ -63,8 +63,6 @@ HelpWindow::HelpWindow():
 HelpWindow::~HelpWindow()
 {
     delete browserBox;
-    delete okButton;
-    delete scrollArea;
 }
 
 void HelpWindow::action(const std::string& eventId)

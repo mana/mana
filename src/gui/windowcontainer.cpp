@@ -31,10 +31,11 @@ WindowContainer::WindowContainer()
 void WindowContainer::logic()
 {
     std::list<gcn::Widget*>::iterator i = deathList.begin();
-    while (i != deathList.end()) {
+    for (i= deathList.begin(); i != deathList.end(); i++) {
         delete (*i);
-        i = deathList.erase(i);
     }
+
+    deathList.clear();
 
     gcn::Container::logic();
 }

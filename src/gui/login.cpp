@@ -169,20 +169,6 @@ LoginDialog::LoginDialog():
     wrongPasswordNoticeListener.setLoginDialog(this);
 }
 
-LoginDialog::~LoginDialog()
-{
-    delete userLabel;
-    delete passLabel;
-    delete serverLabel;
-    delete userField;
-    delete passField;
-    delete serverField;
-    delete keepCheck;
-    delete okButton;
-    delete cancelButton;
-    delete registerButton;
-}
-
 void
 LoginDialog::action(const std::string& eventId)
 {

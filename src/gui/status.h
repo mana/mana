@@ -47,11 +47,6 @@ class StatusWindow : public Window, public gcn::ActionListener {
          */
         StatusWindow();
 
-        /**
-         * Destructor.
-         */
-        ~StatusWindow();
-
          /**
          * Called when receiving actions from widget.
          */

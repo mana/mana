@@ -65,10 +65,6 @@ BuddyWindow::BuddyWindow():
 BuddyWindow::~BuddyWindow()
 {
     delete listbox;
-    delete scrollArea;
-    delete talk;
-    delete remove;
-    delete cancel;
 }
 
 void BuddyWindow::action(const std::string& eventId)

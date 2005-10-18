@@ -28,10 +28,8 @@
 
 class VBox : public Box
 {
- public:
-    VBox();
-    ~VBox();
-    void draw(gcn::Graphics *);
+    public:
+        void draw(gcn::Graphics *);
 };
 
 #endif

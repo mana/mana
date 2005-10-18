@@ -25,11 +25,9 @@
 #define _TMW_ERROR_H
 
 #include <iosfwd>
-#include <guichan/actionlistener.hpp>
 #include <SDL_events.h>
 
 #include "ok_dialog.h"
-#include "../guichanfwd.h"
 
 /**
  * The error dialog.

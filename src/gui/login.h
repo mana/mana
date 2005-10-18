@@ -46,15 +46,10 @@ class LoginDialog : public Window, public gcn::ActionListener {
         LoginDialog();
 
         /**
-         * Destructor
-         */
-        ~LoginDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
+
         /**
          * Updates dialog logic.
          */

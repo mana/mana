@@ -75,15 +75,6 @@ RequestTradeDialog::RequestTradeDialog(const std::string &name):
     setLocationRelativeTo(getParent());
 }
 
-RequestTradeDialog::~RequestTradeDialog()
-{
-    delete acceptButton;
-    delete cancelButton;
-    for (int i = 0; i < 2; i++) {
-        delete nameLabel[i];
-    }
-}
-
 void RequestTradeDialog::action(const std::string& eventId)
 {
     int choice = 4; // 4 means trade canceled

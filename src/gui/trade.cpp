@@ -106,10 +106,10 @@ TradeWindow::TradeWindow():
 
     moneyField->setPosition(8 + 60, getHeight() - 20);
     moneyField->setWidth(50);
-    
+
     moneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
     moneyLabel2->setPosition(8, getHeight() - 20);
-    
+
     cancelButton->setPosition(getWidth() - 48, getHeight() - 49);
     tradeButton->setPosition(cancelButton->getX() - 40
         , getHeight() - 49);
@@ -136,19 +136,8 @@ TradeWindow::TradeWindow():
 
 TradeWindow::~TradeWindow()
 {
-    delete addButton;
-    delete okButton;
-    delete cancelButton;
-    delete tradeButton;
     delete myItemContainer;
-    delete myScroll;
     delete partnerItemContainer;
-    delete partnerScroll;
-    delete itemNameLabel;
-    delete itemDescriptionLabel;
-    delete moneyField;
-    delete moneyLabel;
-    delete moneyLabel2;
 
     delete myInventory;
     delete partnerInventory;

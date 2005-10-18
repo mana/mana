@@ -47,11 +47,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
          */
         CharSelectDialog();
 
-        /**
-         * Destructor.
-         */
-        ~CharSelectDialog();
-
         void action(const std::string& eventId);
 
         void setPlayerInfo(PLAYER_INFO* pi);

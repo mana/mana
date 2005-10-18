@@ -67,11 +67,6 @@ PopupMenu::PopupMenu():
     browserBox->setLinkHandler(this);
 }
 
-PopupMenu::~PopupMenu()
-{
-    delete browserBox;
-}
-
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
     mBeing = being;

@@ -111,17 +111,12 @@ SkillDialog::SkillDialog():
 SkillDialog::~SkillDialog()
 {
     delete skillListBox;
-    delete skillScrollArea;
-    delete pointsLabel;
-    delete incButton;
-    delete closeButton;
-    delete useButton;
 
     for (int i = skillList.size() - 1; i >= 0; i--)
     {
         delete skillList[i];
-        skillList.pop_back();
     }
+    skillList.clear();
 }
 
 void SkillDialog::action(const std::string& eventId)

@@ -60,9 +60,7 @@ NpcTextDialog::NpcTextDialog():
 
 NpcTextDialog::~NpcTextDialog()
 {
-    delete okButton;
     delete textBox;
-    delete scrollArea;
 }
 
 void

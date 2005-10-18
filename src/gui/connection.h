@@ -50,11 +50,6 @@ class ConnectionDialog : public Window, public gcn::ActionListener {
         ConnectionDialog();
 
         /**
-         * Destructor
-         */
-        ~ConnectionDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
