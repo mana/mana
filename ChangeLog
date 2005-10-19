@@ -1,5 +1,7 @@
 2005-10-19  Björh Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/resources/resourcemanager.cpp: Fix empty lines not being read
+	from text files.
 	* src/gui/browserbox.cpp, src/gui/browserbox.h: Code cleanup.
 	* src/gui/gccontainer.cpp: Remove debug output.
 
