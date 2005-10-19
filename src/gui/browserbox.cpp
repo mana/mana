@@ -23,6 +23,8 @@
 
 #include "browserbox.h"
 
+#include <algorithm>
+
 #include <guichan/graphics.hpp>
 #include <guichan/imagefont.hpp>
 #include <guichan/mouseinput.hpp>
@@ -39,13 +41,11 @@ int BrowserBox::instances = 0;
 gcn::ImageFont* BrowserBox::browserFont;
 
 BrowserBox::BrowserBox(unsigned int mode):
-    gcn::Widget()
+    gcn::Widget(),
+    mMode(mode), mUseLinksAndUserColors(true), mSelectedLink(-1)
 {
-    mMode = mode;
     setOpaque(true);
-    setHighlightMode(BOTH);
-    mUseLinksAndUserColors = true;
-    mSelectedLink = -1;
+    setHighlightMode(UNDERLINE | BACKGROUND);
     setFocusable(true);
     addMouseListener(this);
 
@@ -158,7 +158,6 @@ void BrowserBox::addRow(const std::string& row)
         newRow = row;
     }
 
-    newRow == (newRow == "" ? " " : newRow);
     mTextRows.push_back(newRow);
 
     // Auto size mode
@@ -184,35 +183,43 @@ void BrowserBox::clearRows()
     mSelectedLink = -1;
 }
 
+class MouseOverLinkFunctor
+{
+    public:
+        bool operator() (BROWSER_LINK &link)
+        {
+            return (mX >= link.x1 && mX < link.x2 &&
+                    mY >= link.y1 && mY < link.y2);
+        }
+        int mX, mY;
+} mouseOverLink;
+
 void BrowserBox::mousePress(int mx, int my, int button)
 {
-    if ((button == gcn::MouseInput::LEFT) && mLinkHandler)
-    {
-        for (unsigned int i = 0; i < mLinks.size(); i++)
-        {
-            if ((mx >= mLinks[i].x1) && (mx < mLinks[i].x2) &&
-                    (my > mLinks[i].y1) && (my < mLinks[i].y2))
-            {
-                mLinkHandler->handleLink(mLinks[i].link);
-                return;
-            }
-        }
+    std::vector<BROWSER_LINK>::iterator i;
+
+    mouseOverLink.mX = mx;
+    mouseOverLink.mY = my;
+    i = find_if(mLinks.begin(), mLinks.end(), mouseOverLink);
+
+    if (i != mLinks.end()) {
+        mLinkHandler->handleLink(i->link);
     }
 }
 
 void BrowserBox::mouseMotion(int mx, int my)
 {
+    mouseOverLink.mX = mx;
+    mouseOverLink.mY = my;
+
+    mSelectedLink = -1;
+
     for (unsigned int i = 0; i < mLinks.size(); i++)
     {
-        if ((mx >= mLinks[i].x1) && (mx < mLinks[i].x2) &&
-                (my > mLinks[i].y1) && (my < mLinks[i].y2))
+        if (mouseOverLink(mLinks[i]))
         {
             mSelectedLink = (int) i;
-            return;
-        }
-        else
-        {
-            mSelectedLink = -1;
+            break;
         }
     }
 }
@@ -227,7 +234,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
 
     if (mSelectedLink >= 0)
     {
-        if ((mHighMode == BACKGROUND) || (mHighMode == BOTH))
+        if ((mHighMode & BACKGROUND))
         {
             graphics->setColor(gcn::Color(HIGHLIGHT));
             graphics->fillRectangle(gcn::Rectangle(
@@ -238,7 +245,7 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                         ));
         }
 
-        if ((mHighMode == UNDERLINE) || (mHighMode == BOTH))
+        if ((mHighMode & UNDERLINE))
         {
             graphics->setColor(gcn::Color(LINK));
             graphics->drawLine(

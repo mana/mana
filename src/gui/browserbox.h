@@ -135,11 +135,11 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
 
         /**
          * Highlight modes for links.
+         * This can be used for a bitmask.
          */
         enum {
-            UNDERLINE,
-            BACKGROUND,
-            BOTH
+            UNDERLINE  = 1,
+            BACKGROUND = 2,
         };
 
     private:
