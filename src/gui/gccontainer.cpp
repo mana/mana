@@ -23,8 +23,6 @@
 
 #include "gccontainer.h"
 
-#include <iostream>
-
 GCContainer::~GCContainer()
 {
     std::list<gcn::Widget*>::iterator i = mDeathList.begin();
@@ -43,7 +41,6 @@ void GCContainer::add(gcn::Widget *w, bool delChild)
 {
     if (delChild) {
         mDeathList.push_back(w);
-        std::cout << "add" << w << std::endl;
     }
 
     Container::add(w);
@@ -53,7 +50,6 @@ void GCContainer::add(gcn::Widget *w, int x, int y, bool delChild)
 {
     if (delChild) {
         mDeathList.push_back(w);
-        std::cout << "add" << w << std::endl;
     }
 
     Container::add(w, x, y);
@@ -62,6 +58,5 @@ void GCContainer::add(gcn::Widget *w, int x, int y, bool delChild)
 void GCContainer::_announceDeath(gcn::Widget *w)
 {
     mDeathList.remove(w);
-    std::cout << w << std::endl;
     Container::_announceDeath(w);
 }

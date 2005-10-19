@@ -1,3 +1,7 @@
+2005-10-19  Björh Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/gccontainer.cpp: Remove debug output.
+
 2005-10-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/gui/buddywindow.cpp, src/gui/buddywindow.h,
