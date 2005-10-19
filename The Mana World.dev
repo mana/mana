@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=176
+UnitCount=178
 Type=0
 Ver=1
 ObjFiles=
@@ -1809,6 +1809,26 @@ BuildCmd=
 
 [Unit176]
 FileName=src\gui\connection.cpp
+CompileCpp=1
+Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit177]
+FileName=src\gui\gccontainer.h
+CompileCpp=1
+Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit178]
+FileName=src\gui\gccontainer.cpp
 CompileCpp=1
 Folder=gui/source
 Compile=1
