@@ -24,6 +24,7 @@
 #include "resourcemanager.h"
 
 #include <cassert>
+#include <sstream>
 #include <physfs.h>
 
 #include "image.h"
@@ -292,16 +293,11 @@ ResourceManager::loadTextFile(const std::string &fileName)
         return lines;
     }
 
-    // Reallocate and include terminating 0 character
-    fileContents = (char*)realloc(fileContents, contentsLength + 1);
-    fileContents[contentsLength] = '\0';
+    std::istringstream iss(std::string(fileContents, contentsLength));
 
-    // Tokenize and add each line separately
-    char *line = strtok(fileContents, "\n");
-    while (line != NULL)
-    {
+    std::string line;
+    while(getline(iss, line, '\n')) {
         lines.push_back(line);
-        line = strtok(NULL, "\n");
     }
 
     free(fileContents);
