@@ -1,3 +1,7 @@
+2005-10-19  Duane Bailey  <nayryeliab@gmail.com>
+
+	* data/help/index.txt: added SDL_net reference.
+
 2005-10-19  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw.install, debian/copyright, debian/compat,
