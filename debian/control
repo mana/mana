@@ -1,15 +1,14 @@
 Source: tmw
-Section: games
 Priority: optional
 Maintainer: FERREIRA Yohann <bertram@cegetel.net>
-Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan-dev (>= 0.4.0-2), libcurl3-dev (>= 7.14.0-2), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1), xlibmesa-gl-dev (>= 6.8.2.dfsg.1-4), libpng12-dev (>= 1.2.5), libsdl-net1.2-dev (>= 1.2.5)
-Standards-Version: 3.6.1
+Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan0-dev (>= 0.4.0-4), libcurl3-gnutls-dev (>= 7.15.0-1), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1), xlibmesa-gl-dev (>= 6.8.2.dfsg.1-4), libpng12-dev (>= 1.2.5), libsdl-net1.2-dev (>= 1.2.5)
+Standards-Version: 3.6.2
 
 Package: tmw
-Architecture: i386 amd64
-Depends: libsdl1.2debian (>= 1.2.7), libsdl-image1.2 (>= 1.2.3), libsdl-mixer1.2 (>= 1.2.5), libguichan (>= 0.4.0-2), libxml2 (>= 2.4.19), libphysfs-1.0-0 (>= 1.0.0-1), libcurl3 (>= 7.14.0-2), tmw-data (>= 0.0.16), libpng12-0 (>= 1.2.8), libsdl-net1.2 (>= 1.2.5)
+Section: games
+Architecture: any
+Depends: ${shlibs:Depends}, tmw-data (= ${Source-Version})
 Suggests: tmw-music
-Maintainer: Ferreira Yohann <bertram@cegetel.net>
 Description: The Mana World is a Great Online Game
  based upon the Seiken Densetsu Serie.
  It has its own universe, and
@@ -17,20 +16,14 @@ Description: The Mana World is a Great Online Game
  give you the opportunity
  to play in a 2D heroic-fantasy world forever.
  .
- This package depends on the non-official package : 
- libguichan which website is : 
- http://guichan.sourceforge.net/
- A repository has been created, if you don't use it,
- you should :)
- .
  Look at the website for further informations...
  .
  Web Site: http://themanaworld.org/
 
 Package: tmw-data
+Section: games
 Architecture: all
-Depends: tmw
-Maintainer: Ferreira Yohann <bertram@cegetel.net>
+Depends: tmw (= ${Source-Version})
 Description: The Mana World is a Great Online Game
  based upon the Seiken Densetsu Serie.
  It has its own universe, and
@@ -46,9 +39,9 @@ Description: The Mana World is a Great Online Game
  Web Site: http://themanaworld.org/
 
 Package: tmw-music
+Section: games
 Architecture: all
 Depends: tmw
-Maintainer: Ferreira Yohann <bertram@cegetel.net>
 Description: The Mana World is a Great Online Game
  based upon the Seiken Densetsu Serie.
  It has its own universe, and

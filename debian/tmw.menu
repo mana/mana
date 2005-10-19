@@ -4,4 +4,4 @@
  title="The Mana World" \
  longtitle="The Mana World is an Online Fantasy arcade game." \
  command="/usr/games/tmw" \
- icon="tmw.xpm"
+ icon="tmw-icon.xpm"

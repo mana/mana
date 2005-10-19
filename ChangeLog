@@ -1,4 +1,10 @@
-2005-10-19  Björh Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-19  Yohann Ferreira  <bertram@cegetel.net>
+
+	* debian/rules, debian/tmw.install, debian/copyright, debian/compat,
+	debian/changelog, debian/control, debian/docs, debian/tmw.menu:
+	Updated Debian files to get tmw ready for official ITP.
+
+2005-10-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/resources/resourcemanager.cpp: Fix empty lines not being read
 	from text files.

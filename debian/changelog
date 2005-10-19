@@ -1,3 +1,18 @@
+tmw (0.0.17-2) unstable; urgency=low
+
+  * Corrected libcurl3 dependencies problem.
+  * Corrected debhelper's compatibility, simplified rules,
+    made dependencies calculated more dynamically.
+    (Thanks to Mickael Koch for advice.)
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 17 Oct 2005 23:40:33 +0200
+
+tmw (0.0.17-1) unstable; urgency=low
+
+  * Ninth Release, fully working with OpenGL now.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 10 Oct 2005 20:16:33 +0200
+
 tmw (0.0.16-2) unstable; urgency=low
 
   * Close the missing icon bug.
@@ -62,14 +77,14 @@ tmw (0.0.11.3-1) unstable; urgency=low
 
  -- FERREIRA Yohann <bertram@cegetel.net>  Sun, 10 Apr 2005 02:42:17 +0200
 
- tmw (0.0.11.2-1) unstable; urgency=low
+tmw (0.0.11.2-1) unstable; urgency=low
 
   * Second Release.
   * Bug fixes to first.
 
  -- FERREIRA Yohann <bertram@cegetel.net>  Fri, 9 Apr 2005 02:42:17 +0200
- 
- tmw (0.0.11.1-1) unstable; urgency=low
+
+tmw (0.0.11.1-1) unstable; urgency=low
 
   * Initial Release.
 

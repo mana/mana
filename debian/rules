@@ -15,15 +15,6 @@
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-
-CFLAGS = -Wall -g
-
-ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
-else
-	CFLAGS += -O2
-endif
-
 config.status: configure
 	dh_testdir
 	./autogen.sh
@@ -64,12 +55,7 @@ install: build
 
 # Build architecture-independent files here.
 binary-indep: build install
-	#DESTDIR=$(CURDIR)/debian/tmp/ \
-	#	$(MAKE) install datadir=/usr/share/games  bindir=/usr/games \
-	#	desktopdir=/usr/share/applications
 
-	cp data/icons/tmw-icon.xpm debian/tmp/usr/share/pixmaps/tmw.xpm
-	cp data/icons/tmw-icon.png debian/tmp/usr/share/pixmaps/tmw.png
 
 # Build architecture-dependent files here.
 binary-arch: build install
@@ -81,23 +67,13 @@ binary-arch: build install
 	dh_install
 	dh_installmenu
 	dh_desktop
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
-#	dh_installinfo
 	dh_installman debian/tmw.6
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_perl
-#	dh_python
-#	dh_makeshlibs
 	dh_installdeb
+	dh_makeshlibs
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums

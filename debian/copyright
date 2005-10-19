@@ -2,29 +2,6 @@ This package was debianized by Yohann FERREIRA <bertram@cegetel.net>.
 
 It was downloaded from http://themanaworld.org/
 
- Development team:
-
-  - Elven Programmer (Admin)
-  - Hammerbear (Admin)
-  - kth5 (Programmer)
-  - Ultramichy (Game server admin)
-  - Rotonen (Background story and music)
-  - Kyokai (Game systems design)
-  - Bertram (Programmer)
-  - zenogais (Programmer)
-
- Special thanks:
-
-  - Sull (Linux Developer)
-  - Neorice (Pixel Artist)
-  - natsuki (Win32 Developer)
-  - Genis (Win32 Developer)
-  - RRC (Graphic Designer)
-  - necromus (Pixel Artist)
-  - LordNev (Artist)
-  - jui-feng for helping in server development and php scripts.
-  - SimEdw (Programmer)
-
 License:
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
