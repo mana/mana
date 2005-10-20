@@ -1,3 +1,7 @@
+2005-10-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* data/help/index.txt: Fix typo, remove spaces on empty lines.
+
 2005-10-19  Duane Bailey  <nayryeliab@gmail.com>
 
 	* data/help/index.txt: added SDL_net reference.
