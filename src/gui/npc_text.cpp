@@ -58,11 +58,6 @@ NpcTextDialog::NpcTextDialog():
     setLocationRelativeTo(getParent());
 }
 
-NpcTextDialog::~NpcTextDialog()
-{
-    delete textBox;
-}
-
 void
 NpcTextDialog::setText(const char *text)
 {

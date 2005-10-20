@@ -54,11 +54,6 @@ class SellDialog : public Window, public gcn::ActionListener,
         SellDialog();
 
         /**
-         * Destructor.
-         */
-        ~SellDialog();
-
-        /**
          * Resets the dialog, clearing inventory.
          */
         void reset();

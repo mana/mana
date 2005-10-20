@@ -51,11 +51,6 @@ class BuyDialog : public Window, public gcn::ActionListener,
         BuyDialog();
 
         /**
-         * Destructor.
-         */
-        ~BuyDialog();
-
-        /**
          * Resets the dialog, clearing shop inventory.
          */
         void reset();
@@ -109,7 +104,5 @@ class BuyDialog : public Window, public gcn::ActionListener,
         int m_amountItems;
         int m_maxItems;
 };
-
-extern BuyDialog *buyDialog;
 
 #endif

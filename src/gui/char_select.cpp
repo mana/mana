@@ -347,21 +347,6 @@ CharCreateDialog::CharCreateDialog(Window *parent):
     setLocationRelativeTo(getParent());
 }
 
-CharCreateDialog::~CharCreateDialog()
-{
-    delete nameField;
-    delete nameLabel;
-    delete nextHairColorButton;
-    delete prevHairColorButton;
-    delete hairColorLabel;
-    delete nextHairStyleButton;
-    delete prevHairStyleButton;
-    delete hairStyleLabel;
-    delete createButton;
-    delete cancelButton;
-    delete playerBox;
-}
-
 void CharCreateDialog::action(const std::string& eventId)
 {
     if (eventId == "create") {

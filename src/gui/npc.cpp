@@ -23,6 +23,8 @@
 
 #include "npc.h"
 
+#include <sstream>
+
 #include "button.h"
 #include "scrollarea.h"
 #include "listbox.h"
@@ -35,10 +37,10 @@
 NpcListDialog::NpcListDialog():
     Window("NPC")
 {
-    itemList = new ListBox(this);
-    scrollArea = new ScrollArea(itemList);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
+    mItemList = new ListBox(this);
+    ScrollArea *scrollArea = new ScrollArea(mItemList);
+    Button *okButton = new Button("OK");
+    Button *cancelButton = new Button("Cancel");
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -51,11 +53,11 @@ NpcListDialog::NpcListDialog():
             cancelButton->getX() - 5 - okButton->getWidth(),
             cancelButton->getY());
 
-    itemList->setEventId("item");
+    mItemList->setEventId("item");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
 
-    itemList->addActionListener(this);
+    mItemList->addActionListener(this);
     okButton->addActionListener(this);
     cancelButton->addActionListener(this);
 
@@ -64,11 +66,6 @@ NpcListDialog::NpcListDialog():
     add(cancelButton);
 
     setLocationRelativeTo(getParent());
-}
-
-NpcListDialog::~NpcListDialog()
-{
-    delete itemList;
 }
 
 int
@@ -86,16 +83,12 @@ NpcListDialog::getElementAt(int i)
 void
 NpcListDialog::parseItems(const std::string &itemString)
 {
-    char *copy = new char[itemString.length() + 1];
-    strcpy(copy, itemString.c_str());
+    std::istringstream iss(itemString);
 
-    char *token = strtok(copy, ":");
-    while (token) {
-        items.push_back(token);
-        token = strtok(NULL, ":");
+    std::string tmp;
+    while(getline(iss, tmp, ':')) {
+        items.push_back(tmp);
     }
-
-    delete[] copy;
 }
 
 void
@@ -108,11 +101,11 @@ void
 NpcListDialog::action(const std::string& eventId)
 {
     int choice = 0;
-    
+
     if (eventId == "ok")
     {
         // Send the selected index back to the server
-        int selectedIndex = itemList->getSelected();
+        int selectedIndex = mItemList->getSelected();
         if (selectedIndex > -1)
         {
             choice = selectedIndex + 1;
@@ -122,7 +115,7 @@ NpcListDialog::action(const std::string& eventId)
     {
         choice = 0xff; // 0xff means cancel
     }
-    
+
     if (choice)
     {
         MessageOut outMsg;

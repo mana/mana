@@ -47,11 +47,6 @@ class InventoryWindow : public Window, gcn::ActionListener
         InventoryWindow();
 
         /**
-         * Destructor.
-         */
-        ~InventoryWindow();
-
-        /**
          * Logic (updates buttons and weight information)
          */
         void logic();

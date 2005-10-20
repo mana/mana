@@ -94,7 +94,6 @@ ServerSelectDialog::ServerSelectDialog():
 
 ServerSelectDialog::~ServerSelectDialog()
 {
-    delete serverList;
     delete serverListModel;
 }
 

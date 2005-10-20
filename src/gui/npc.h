@@ -51,11 +51,6 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         NpcListDialog();
 
         /**
-         * Destructor.
-         */
-        ~NpcListDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void
@@ -88,14 +83,9 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         reset();
 
     private:
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
-        gcn::ListBox *itemList;
-        gcn::ScrollArea *scrollArea;
+        gcn::ListBox *mItemList;
 
         std::vector<std::string> items;
 };
-
-extern NpcListDialog *npcListDialog;
 
 #endif

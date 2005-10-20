@@ -107,7 +107,6 @@ UpdaterWindow::~UpdaterWindow()
     remove((mBasePath + "/updates/download.temp").c_str());
 
     delete[] mCurlError;
-    delete mBrowserBox;
 }
 
 void UpdaterWindow::setProgress(float p)

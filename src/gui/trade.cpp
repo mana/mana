@@ -136,9 +136,6 @@ TradeWindow::TradeWindow():
 
 TradeWindow::~TradeWindow()
 {
-    delete myItemContainer;
-    delete partnerItemContainer;
-
     delete myInventory;
     delete partnerInventory;
 }

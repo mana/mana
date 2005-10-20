@@ -116,11 +116,6 @@ SellDialog::SellDialog():
     setLocationRelativeTo(getParent());
 }
 
-SellDialog::~SellDialog()
-{
-    delete itemList;
-}
-
 void SellDialog::reset()
 {
     shopInventory.clear();

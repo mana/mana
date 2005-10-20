@@ -47,21 +47,12 @@ class BuddyWindow : public Window, public BuddyList,
         BuddyWindow();
 
         /**
-         * Destructor
-         */
-        ~BuddyWindow();
-
-        /**
          * Performs action.
          */
         void action(const std::string &actionId);
 
     private:
-        gcn::ListBox *listbox;
-        gcn::ScrollArea *scrollArea;
-        gcn::Button *talk;
-        gcn::Button *remove;
-        gcn::Button *cancel;
+        gcn::ListBox *mListbox;
 };
 
 #endif /* _TMW_BUDDYWINDOW_H */

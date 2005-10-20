@@ -106,6 +106,7 @@ void ItemAmountWindow::resetAmount()
 
 void ItemAmountWindow::action(const std::string& eventId)
 {
+    int amount = mItemAmountTextBox->getInt();
 
     if (eventId == "Cancel")
     {
@@ -123,15 +124,18 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Plus")
     {
-        mItemAmountTextBox->setInt(mItemAmountTextBox->getInt() + 1);
+        amount++;
     }
     else if (eventId == "Minus")
     {
-        mItemAmountTextBox->setInt(mItemAmountTextBox->getInt() - 1);
+        amount--;
     }
     else if (eventId == "Slide")
     {
-        mItemAmountTextBox->setInt((int)(mItemAmountSlide->getValue()*mItem->getQuantity()));
+        amount = (int)(mItemAmountSlide->getValue()*(mItem->getQuantity()+1));
     }
+    mItemAmountTextBox->setInt(amount);
+    amount = mItemAmountTextBox->getInt(); // The textbox cares about bounds
+    mItemAmountSlide->setValue((amount-1)*1.0f/(mItem->getQuantity()-1));
 }
 

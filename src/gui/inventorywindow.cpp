@@ -88,11 +88,6 @@ InventoryWindow::InventoryWindow():
 
 }
 
-InventoryWindow::~InventoryWindow()
-{
-    delete items;
-}
-
 void InventoryWindow::logic()
 {
     Window::logic();

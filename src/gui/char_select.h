@@ -102,11 +102,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         CharCreateDialog(Window *parent = NULL);
 
-        /**
-         * Destructor.
-         */
-        ~CharCreateDialog();
-
         void action(const std::string& eventId);
 
         std::string getName();

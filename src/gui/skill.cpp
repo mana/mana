@@ -110,13 +110,7 @@ SkillDialog::SkillDialog():
 
 SkillDialog::~SkillDialog()
 {
-    delete skillListBox;
-
-    for (int i = skillList.size() - 1; i >= 0; i--)
-    {
-        delete skillList[i];
-    }
-    skillList.clear();
+    cleanList();
 }
 
 void SkillDialog::action(const std::string& eventId)
@@ -210,6 +204,6 @@ void SkillDialog::cleanList()
     for (int i = skillList.size() - 1; i >= 0; i--)
     {
         delete skillList[i];
-        skillList.pop_back();
     }
+    skillList.clear();
 }

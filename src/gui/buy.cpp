@@ -114,11 +114,6 @@ BuyDialog::BuyDialog():
     setLocationRelativeTo(getParent());
 }
 
-BuyDialog::~BuyDialog()
-{
-    delete itemList;
-}
-
 void BuyDialog::setMoney(int amount)
 {
     m_money = amount;

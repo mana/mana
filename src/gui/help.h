@@ -46,11 +46,6 @@ class HelpWindow : public Window, public LinkHandler,
         HelpWindow();
 
         /**
-         * Destructor.
-         */
-        ~HelpWindow();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
@@ -67,9 +62,8 @@ class HelpWindow : public Window, public LinkHandler,
 
     private:
         void loadFile(const std::string &file);
-        
+
         BrowserBox* browserBox;
-        gcn::Button *okButton;
         gcn::ScrollArea *scrollArea;
 };
 

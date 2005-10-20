@@ -214,7 +214,6 @@ Setup::Setup():
 Setup::~Setup()
 {
     delete modeListModel;
-    delete modeList;
 }
 
 void Setup::action(const std::string &eventId)

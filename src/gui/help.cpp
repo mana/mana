@@ -41,7 +41,7 @@ HelpWindow::HelpWindow():
     browserBox = new BrowserBox();
     browserBox->setOpaque(false);
     scrollArea = new ScrollArea(browserBox);
-    okButton = new Button("Close");
+    Button *okButton = new Button("Close");
 
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 445, 335 - okButton->getHeight()));
@@ -58,11 +58,6 @@ HelpWindow::HelpWindow():
     add(okButton);
 
     setLocationRelativeTo(getParent());
-}
-
-HelpWindow::~HelpWindow()
-{
-    delete browserBox;
 }
 
 void HelpWindow::action(const std::string& eventId)

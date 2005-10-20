@@ -39,12 +39,12 @@ class ScrollArea : public gcn::ScrollArea {
         /**
          * Constructor.
          */
-        ScrollArea();
+        ScrollArea(bool gc=true);
 
         /**
          * Constructor.
          */
-        ScrollArea(gcn::Widget *content);
+        ScrollArea(gcn::Widget *content, bool gc=true);
 
         /**
          * Destructor.
@@ -108,6 +108,7 @@ class ScrollArea : public gcn::ScrollArea {
         static Image *buttons[4][2];
 
         bool mOpaque;
+        bool mGC;
 };
 
 #endif

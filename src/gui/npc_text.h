@@ -47,11 +47,6 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         NpcTextDialog();
 
         /**
-         * Destructor.
-         */
-        ~NpcTextDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void
