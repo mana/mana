@@ -48,13 +48,17 @@ DebugWindow::DebugWindow():
 
     FPSLabel = new gcn::Label("[0 FPS]");
     FPSLabel->setPosition(0,0);
+
     musicFileLabel = new gcn::Label("Music File: ");
     musicFileLabel->setPosition(0, 20);
+
     mapFileLabel = new gcn::Label("Mini-Map File: ");
     mapFileLabel->setPosition(0, 40);
+
     tileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
     tileMouseLabel->setPosition(100, 0);
-    closeButton = new Button("Close");
+
+    Button *closeButton = new Button("Close");
     closeButton->setEventId("close");
     closeButton->setPosition(5, 60);
     closeButton->addActionListener(this);

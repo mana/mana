@@ -23,19 +23,25 @@
 
 #include "menuwindow.h"
 
-#include <guichan/widgets/label.hpp>
-#include <sstream>
+#include <string>
+
+#include <guichan/actionlistener.hpp>
 
 #include "button.h"
-#include "equipmentwindow.h"
-#include "inventorywindow.h"
-#include "status.h"
-#include "skill.h"
 
 #include "../graphics.h"
 
 extern Graphics *graphics;
-extern Window *setupWindow;
+extern Window *setupWindow, *inventoryWindow, *equipmentWindow,
+       *skillDialog, *statusWindow;
+
+class MenuWindowListener : public gcn::ActionListener
+{
+         /**
+         * Called when receiving actions from widget.
+         */
+        void action(const std::string& eventId);
+} menuWindowListener;
 
 MenuWindow::MenuWindow():
     Window("")
@@ -47,33 +53,36 @@ MenuWindow::MenuWindow():
 
     // Buttons
     // ------------
+    gcn::Button *statusButton, *equipmentButton, *skillsButton,
+        *inventoryButton, *setupButton;
+
     statusButton = new Button("Status");
     statusButton->setEventId("Status");
-    statusButton->addActionListener(this);
+    statusButton->addActionListener(&menuWindowListener);
     statusButton->setPosition(0, 3);
     add(statusButton);
 
     equipmentButton = new Button("Equipment");
     equipmentButton->setEventId("Equipment");
-    equipmentButton->addActionListener(this);
+    equipmentButton->addActionListener(&menuWindowListener);
     equipmentButton->setPosition(statusButton->getX() + statusButton->getWidth() + 3, statusButton->getY());
     add(equipmentButton);
 
     inventoryButton = new Button("Inventory");
     inventoryButton->setEventId("Inventory");
-    inventoryButton->addActionListener(this);
+    inventoryButton->addActionListener(&menuWindowListener);
     inventoryButton->setPosition(equipmentButton->getX() + equipmentButton->getWidth() + 3, statusButton->getY());
     add(inventoryButton);
 
     skillsButton = new Button("Skills");
     skillsButton->setEventId("Skills");
-    skillsButton->addActionListener(this);
+    skillsButton->addActionListener(&menuWindowListener);
     skillsButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + 3, statusButton->getY());
     add(skillsButton);
 
     setupButton = new Button("Setup");
     setupButton->setEventId("Setup");
-    setupButton->addActionListener(this);
+    setupButton->addActionListener(&menuWindowListener);
     setupButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + 3, statusButton->getY());
     add(setupButton);
 
@@ -88,31 +97,35 @@ void MenuWindow::draw(gcn::Graphics *g)
     Window::drawContent(g);
 }
 
-void MenuWindow::action(const std::string& eventId)
+
+void MenuWindowListener::action(const std::string& eventId)
 {
+    Window *window;
     if (eventId == "Status")
     {
-        statusWindow->setVisible(!statusWindow->isVisible());
-        if (statusWindow->isVisible()) statusWindow->requestMoveToTop();
+        window = statusWindow;
     }
-    if (eventId == "Equipment")
+    else if (eventId == "Equipment")
     {
-        equipmentWindow->setVisible(!equipmentWindow->isVisible());
-        if (equipmentWindow->isVisible()) equipmentWindow->requestMoveToTop();
+        window = equipmentWindow;
     }
-    if (eventId == "Inventory")
+    else if (eventId == "Inventory")
     {
-        inventoryWindow->setVisible(!inventoryWindow->isVisible());
-        if (inventoryWindow->isVisible()) inventoryWindow->requestMoveToTop();
+        window = inventoryWindow;
     }
-    if (eventId == "Skills")
+    else if (eventId == "Skills")
     {
-        skillDialog->setVisible(!skillDialog->isVisible());
-        if (skillDialog->isVisible()) skillDialog->requestMoveToTop();
+        window = skillDialog;
     }
-    if (eventId == "Setup")
+    else if (eventId == "Setup")
     {
-        setupWindow->setVisible(!setupWindow->isVisible());
-        if (setupWindow->isVisible()) setupWindow->requestMoveToTop();
+        window = setupWindow;
+    }
+
+    if (window) {
+        window->setVisible(!window->isVisible());
+        if (window->isVisible()) {
+            window->requestMoveToTop();
+        }
     }
 }

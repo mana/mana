@@ -32,7 +32,6 @@
 
 #include "../guichanfwd.h"
 
-class Button;
 class ProgressBar;
 
 /**
@@ -57,8 +56,6 @@ class ConnectionDialog : public Window, public gcn::ActionListener {
         void logic();
 
     private:
-        gcn::Label *mLabel;
-        Button *mCancelButton;
         ProgressBar *mProgressBar;
         float mProgress;
         int mStatus;

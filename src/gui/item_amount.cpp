@@ -41,55 +41,55 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     mItemAmountTextBox = new IntTextBox(1);
 
     // New buttons
-    mItemAmountMinusButton = new Button("-");
-    mItemAmountPlusButton = new Button("+");
+    Button *minusButton = new Button("-");
+    Button *plusButton = new Button("+");
     mItemAmountSlide = new Slider(1.0);
-    mItemAmountOkButton = new Button("Okay");
-    mItemAmountCancelButton = new Button("Cancel");
+    Button *okButton = new Button("Okay");
+    Button *cancelButton = new Button("Cancel");
 
     mItemAmountTextBox->setRange(1, mItem->getQuantity());
     mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
-    mItemAmountMinusButton->setEventId("Minus");
-    mItemAmountPlusButton->setEventId("Plus");
+    minusButton->setEventId("Minus");
+    plusButton->setEventId("Plus");
     mItemAmountSlide->setEventId("Slide");
-    mItemAmountOkButton->setEventId("Drop");
-    mItemAmountCancelButton->setEventId("Cancel");
+    okButton->setEventId("Drop");
+    cancelButton->setEventId("Cancel");
 
     // Set position
     mItemAmountTextBox->setPosition(35, 10);
     mItemAmountTextBox->setSize(24, 16);
-    mItemAmountPlusButton->setPosition(60, 5);
-    mItemAmountMinusButton->setPosition(10, 5);
+    plusButton->setPosition(60, 5);
+    minusButton->setPosition(10, 5);
     mItemAmountSlide->setPosition(10, 35);
-    mItemAmountOkButton->setPosition(10, 50);
-    mItemAmountCancelButton->setPosition(60, 50);
+    okButton->setPosition(10, 50);
+    cancelButton->setPosition(60, 50);
 
     // Assemble
     add(mItemAmountTextBox);
-    add(mItemAmountPlusButton);
-    add(mItemAmountMinusButton);
+    add(plusButton);
+    add(minusButton);
     add(mItemAmountSlide);
-    add(mItemAmountOkButton);
-    add(mItemAmountCancelButton);
+    add(okButton);
+    add(cancelButton);
 
-    mItemAmountPlusButton->addActionListener(this);
-    mItemAmountMinusButton->addActionListener(this);
+    plusButton->addActionListener(this);
+    minusButton->addActionListener(this);
     mItemAmountSlide->addActionListener(this);
-    mItemAmountOkButton->addActionListener(this);
-    mItemAmountCancelButton->addActionListener(this);
+    okButton->addActionListener(this);
+    cancelButton->addActionListener(this);
 
     resetAmount();
 
     switch (usage) {
         case AMOUNT_TRADE_ADD:
             setCaption("Select amount of items to trade.");
-            mItemAmountOkButton->setEventId("AddTrade");
+            okButton->setEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
             setCaption("Select amount of items to drop.");
-            mItemAmountOkButton->setEventId("Drop");
+            okButton->setEventId("Drop");
             break;
         default:
             break;

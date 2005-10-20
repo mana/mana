@@ -41,18 +41,23 @@ ConnectionDialog::ConnectionDialog():
     Window("Info"), mProgress(0), mStatus(NET_CONNECTING)
 {
     setContentSize(200, 100);
-    mCancelButton = new Button("Cancel");
-    mCancelButton->setPosition(5, 100 - 5 - mCancelButton->getHeight());
-    mCancelButton->setEventId("cancel");
-    mCancelButton->addActionListener(this);
-    mProgressBar = new ProgressBar(0.0, 5, mCancelButton->getY() - 25,
-                                   200 - 10, 20, 128, 128, 128);
-    mLabel = new gcn::Label("Connecting...");
-    mLabel->setPosition(5, mProgressBar->getY() - 25);
 
-    add(mLabel);
-    add(mCancelButton);
+    Button *cancelButton;
+    cancelButton = new Button("Cancel");
+    cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
+    cancelButton->setEventId("cancel");
+    cancelButton->addActionListener(this);
+
+    mProgressBar = new ProgressBar(0.0, 5, cancelButton->getY() - 25,
+                                   200 - 10, 20, 128, 128, 128);
+    gcn::Label *label;
+    label = new gcn::Label("Connecting...");
+    label->setPosition(5, mProgressBar->getY() - 25);
+
+    add(label);
+    add(cancelButton);
     add(mProgressBar);
+
     setLocationRelativeTo(getParent());
 
     const char *host = iptostring(map_address);

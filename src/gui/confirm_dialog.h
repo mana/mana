@@ -65,9 +65,6 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
          * Initializes the dialog.
          */
         void init(const std::string &msg, gcn::ActionListener *listener);
-
-        gcn::Label *userLabel;
-        gcn::Button *yesButton, *noButton;
 };
 
 #endif

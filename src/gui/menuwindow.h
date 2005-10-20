@@ -24,10 +24,6 @@
 #ifndef _TMW_MENU_H
 #define _TMW_MENU_H
 
-#include <iosfwd>
-
-#include <guichan/actionlistener.hpp>
-
 #include "window.h"
 
 #include "../guichanfwd.h"
@@ -37,33 +33,19 @@
  *
  * \ingroup Interface
  */
-class MenuWindow : public Window, public gcn::ActionListener {
+class MenuWindow : public Window
+{
     public:
         /**
          * Constructor.
          */
         MenuWindow();
 
-         /**
-         * Called when receiving actions from widget.
-         */
-        void action(const std::string& eventId);
-
         /**
          * Draw this window
          */
         void draw(gcn::Graphics *graphics);
-
-    private:
-
-        /**
-         * System Buttons
-         */
-        gcn::Button *statusButton, *equipmentButton;
-        gcn::Button *skillsButton, *inventoryButton, *setupButton;
 };
-
-extern MenuWindow *menuWindow;
 
 #endif
  

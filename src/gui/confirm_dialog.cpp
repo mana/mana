@@ -45,9 +45,9 @@ ConfirmDialog::ConfirmDialog(Window *parent, const std::string &title,
 
 void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
-    userLabel = new gcn::Label(msg);
-    yesButton = new Button("Yes");
-    noButton = new Button("No");
+    gcn::Label *userLabel = new gcn::Label(msg);
+    Button *yesButton = new Button("Yes");
+    Button *noButton = new Button("No");
 
     int w = userLabel->getWidth() + 20;
     int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;

@@ -59,7 +59,6 @@ class DebugWindow : public Window, public gcn::ActionListener
     private:
         gcn::Label *musicFileLabel, *mapFileLabel;
         gcn::Label *tileMouseLabel, *FPSLabel;
-        gcn::Button *closeButton;
         Map *mCurrentMap;
 
 };

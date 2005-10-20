@@ -1,5 +1,10 @@
 2005-10-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/confirm_dialog.cpp, src/gui/confirm_dialog.h,
+	src/gui/connection.cpp, src/gui/connection.h, src/gui/debugwindow.cpp,
+	src/gui/debugwindow.h, src/gui/item_amount.cpp, src/gui/item_amount.h,
+	src/gui/menuwindow.cpp, src/gui/menuwindow.h, src/gui/ok_dialog.cpp,
+	src/gui/ok_dialog.h: Various cleanups and refactorisations.
 	* data/help/index.txt: Fix typo, remove spaces on empty lines.
 
 2005-10-19  Duane Bailey  <nayryeliab@gmail.com>

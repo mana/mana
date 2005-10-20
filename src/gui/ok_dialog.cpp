@@ -48,8 +48,8 @@ OkDialog::~OkDialog()
 
 void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
-    userLabel = new gcn::Label(msg);
-    okButton = new Button("OK");
+    gcn::Label *userLabel = new gcn::Label(msg);
+    Button *okButton = new Button("OK");
 
     int w = userLabel->getWidth() + 20;
     int h = userLabel->getHeight() + 25 + okButton->getHeight();
