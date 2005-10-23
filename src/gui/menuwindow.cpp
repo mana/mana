@@ -100,7 +100,7 @@ void MenuWindow::draw(gcn::Graphics *g)
 
 void MenuWindowListener::action(const std::string& eventId)
 {
-    Window *window;
+    Window *window = NULL;
     if (eventId == "Status")
     {
         window = statusWindow;
