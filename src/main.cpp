@@ -23,6 +23,9 @@
 
 #include "main.h"
 
+// For version support
+#include "../config.h"
+
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
@@ -379,6 +382,7 @@ void parseOptions(int argc, char *argv[], Options &options)
 /** Main */
 int main(int argc, char *argv[])
 {
+    std::cout << "The Mana World v" << PACKAGE_VERSION << std::endl;
     logger = new Logger();
 
     Options options;
@@ -452,6 +456,8 @@ int main(int argc, char *argv[])
         }
 
         graphics->drawImage(login_wallpaper, 0, 0);
+        graphics->setFont(gui->getFont());
+        graphics->drawText(PACKAGE_VERSION, 0, 0);
         gui->draw();
         graphics->updateScreen();
 

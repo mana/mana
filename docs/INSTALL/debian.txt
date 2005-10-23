@@ -3,7 +3,6 @@ How to install TMW on my GNU/Debian Box
 
 Author:   FERREIRA Yohann (Bertram)
 Email:    Bertram@cegetel.net
-Homepage: http://www.behemoth.fr.fm (Take a tour on it with mozilla !)
 
 The Mana World project
 ======================
@@ -18,29 +17,13 @@ IRC:      irc.freenode.net / #manaworld
 1. Installing The Mana World and Dependencies
 =============================================
 
-N.B: XXX is a version number.
-
 The Mana World Debian Package can be installed under the Debian Testing and
 Unstable (Sarge/Sid). In order to have Mana World working, you'll need packages
-for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan.
+for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan0.
 
 To install the dependencies, you can do type (as root):
 
-    apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0
-
-Guichan can be found at :
-
-http://guichan.sourceforge.net/downloads.shtml
-
-After downloading it, you can install it by typing as root :
-
-    dpkg -i libguichan_XXX_i386.deb
-
-We try to release a Debian Package as soon as there a monthly release,
-you can download it at http://www.themanaworld.org,
-and then install it by typing :
-
-    dpkg -i tmw_XXX_i386.deb
+    apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0 libguichan0
 
 Type tmw as a normal user to play ! (Enjoy !)
 
@@ -61,7 +44,7 @@ Download tmw from CVS using the command (You'll need CVS installed on your syste
 
 Rename the tmw folder into tmw-XXX and open a console in it.
 You can now type :
- 
+
     fakeroot dpkg-buildpackage
 
 The package will create itself, including sources and diffs. You only need deb file.
@@ -91,12 +74,14 @@ A Debian Repository has been created.
 
 Simply add in your /etc/apt/sources.list file :
 
-	deb http://themanaworld.org/files/debrepo ./
-	deb-src http://themanaworld.org/files/debrepo ./
+    deb http://bertram.ifrance.com ./
+    deb-src http://bertram.ifrance.com ./
 
 Then, as root, do :
 
-	apt-get update
-	apt-get install tmw
+    apt-get update
+    apt-get install tmw
 
 and you're done !
+
+N.B.: The tmw-music, libguichan0, and libguichan0-dev packages are also provided in this repository.

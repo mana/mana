@@ -1,3 +1,8 @@
+2005-10-24  Ferreira Yohann  <Bertram@cegetel.net>
+
+	* src/main.cpp: Add version displaying at startup.
+	* docs/NSTALL/debian.txt: Updated Debian Install Doc.
+
 2005-10-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/item_amount.cpp: Fix scrollbar not being updated when the
