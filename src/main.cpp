@@ -23,9 +23,6 @@
 
 #include "main.h"
 
-// For version support
-#include "../config.h"
-
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
@@ -39,6 +36,7 @@
 #ifdef __USE_UNIX98
 #include <cerrno>
 #include <sys/stat.h>
+#include "../config.h"
 #endif
 
 #include "configuration.h"
@@ -382,7 +380,9 @@ void parseOptions(int argc, char *argv[], Options &options)
 /** Main */
 int main(int argc, char *argv[])
 {
+#ifdef __USE_UNIX98
     std::cout << "The Mana World v" << PACKAGE_VERSION << std::endl;
+#endif
     logger = new Logger();
 
     Options options;
@@ -456,8 +456,10 @@ int main(int argc, char *argv[])
         }
 
         graphics->drawImage(login_wallpaper, 0, 0);
+#ifdef __USE_UNIX98
         graphics->setFont(gui->getFont());
         graphics->drawText(PACKAGE_VERSION, 0, 0);
+#endif
         gui->draw();
         graphics->updateScreen();
 
