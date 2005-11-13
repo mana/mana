@@ -39,7 +39,8 @@ class ProgressBar;
  *
  * \ingroup Interface
  */
-class ConnectionDialog : public Window, public gcn::ActionListener {
+class ConnectionDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor

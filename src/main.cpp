@@ -309,7 +309,7 @@ void exit_engine()
 
     // Shutdown libxml
     xmlCleanupParser();
-    
+
     // Shutdown sound
     sound.close();
 

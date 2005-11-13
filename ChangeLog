@@ -1,3 +1,10 @@
+2005-11-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_1-1.tmx.gz, data/maps/new_3-1.tmx.gz,
+	data/maps/new_7-1.tmx.gz: Made the three desert maps use the fringe
+	layer for objects. Reveals bug with objects disappearing at the bottom
+	and still some draw order problems.
+
 2005-10-24  Ferreira Yohann  <Bertram@cegetel.net>
 
 	* src/main.cpp: Add version displaying at startup.
@@ -108,7 +115,7 @@
 2005-10-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Moved some variables into the conditional block
-	wehere they are used.
+	where they are used.
 	* src/being.cpp: A few changes that make the code look nicer.
 	* src/openglgraphics.cpp, src/resources/image.cpp,
 	src/resources/image.h: Some small cleanups.
