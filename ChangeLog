@@ -1,12 +1,16 @@
 2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/main.h, src/main.cpp: Display TMW version on Windows too.
+
+2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
 	* src/gui/char_server.cpp: Avoid crashing on trying to log the name
 	of a non-existing character.
 
 2005-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated Dev-Cpp project file.
-	
+
 2005-11-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_3-1.tmx.gz,
@@ -17,7 +21,7 @@
 2005-10-24  Ferreira Yohann  <Bertram@cegetel.net>
 
 	* src/main.cpp: Add version displaying at startup.
-	* docs/NSTALL/debian.txt: Updated Debian Install Doc.
+	* docs/INSTALL/debian.txt: Updated Debian Install Doc.
 
 2005-10-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

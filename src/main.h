@@ -29,9 +29,17 @@
 class Image;
 class Sound;
 
+#ifdef __USE_UNIX98
+#include "../config.h"
+#else
+#include "../The_Mana_World_private.h"
+#define PACKAGE_VERSION PRODUCT_VERSION
+#endif
+
 #ifndef TMW_DATADIR
 #define TMW_DATADIR ""
 #endif
+
 
 enum {
     EXIT_STATE,
