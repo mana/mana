@@ -224,8 +224,12 @@ void ServerSelectDialog::selectServer(int index)
 
         state = CHAR_SELECT_STATE;
 
-        logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
-                    char_info[0]->name.c_str(), msg.getId(), msg.getLength());
+        if (n_character > 0)
+        {
+            logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
+                        char_info[0]->name.c_str(), msg.getId(),
+                        msg.getLength());
+        }
 
         skip(msg.getLength());
     }

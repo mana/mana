@@ -1,7 +1,11 @@
+2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_server.cpp: Avoid crashing on trying to log the name
+	of a non-existing character.
+
 2005-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* The Mana World.dev, src/gui/char_server.cpp: Updated Dev-Cpp project
-	file, removed a crashing log.
+	* The Mana World.dev: Updated Dev-Cpp project file.
 	
 2005-11-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
