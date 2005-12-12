@@ -1,3 +1,19 @@
+2005-12-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, data/graphics/tiles/Makefile.am, data/items.xml,
+	data/maps/Makefile.am, data/graphics/tiles/Woodland.png,
+	data/graphics/tiles/snowset.png, data/maps/new_9-1.tmx.gz,
+	data/maps/new_10-1.tmx.gz: Cleaned Dev-Cpp project file, added new
+	items definitions and new maps and tilesets.
+
+2005-12-08  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/monster11.png,
+	data/graphics/sprites/monster12.png, data/graphics/sprites/monster13.png,
+	data/graphics/sprites/monster14.png, data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/items.png, data/graphics/sprites/npcs.png,: Added
+	new monsters, items and npcs.
+
 2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.h, src/main.cpp: Display TMW version on Windows too.
