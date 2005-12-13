@@ -1,3 +1,8 @@
+2005-12-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/items.xml: Changed item properties according to eAthena scripting
+	capabilities.
+
 2005-12-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, data/graphics/tiles/Makefile.am, data/items.xml,
