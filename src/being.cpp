@@ -345,14 +345,6 @@ Being::logic()
                 }
                 break;
         }
-
-        if (emotion != 0)
-        {
-            emotion_time--;
-            if (emotion_time == 0) {
-                emotion = 0;
-            }
-        }
     }
 
     if (getType() == MONSTER && action != STAND)
@@ -373,6 +365,14 @@ Being::logic()
     {
         mPy += getYOffset();
         mPx += getXOffset();
+    }
+    
+    if (emotion != 0)
+    {
+        emotion_time--;
+        if (emotion_time == 0) {
+            emotion = 0;
+        }
     }
 }
 
@@ -592,6 +592,11 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
             graphics->drawImage(
                     monsterset[job-1002]->spriteset[dir + 4 * frame],
                     px - 12, py - 25);
+            if (emotion != 0)
+            {
+                graphics->drawImage(emotionset->spriteset[emotion - 1],
+                                    px + 3, py - 60);
+            }
             break;
 
         default:

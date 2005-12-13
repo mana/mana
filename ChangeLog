@@ -2,6 +2,7 @@
 
 	* data/items.xml: Changed item properties according to eAthena scripting
 	capabilities.
+	* src/being.cpp: Enabled monster emotions.
 
 2005-12-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
