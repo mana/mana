@@ -1,3 +1,7 @@
+2005-12-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp: Fixed setup window behaviour.
+
 2005-12-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/items.xml: Changed item properties according to eAthena scripting

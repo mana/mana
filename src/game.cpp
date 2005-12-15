@@ -496,14 +496,7 @@ void do_input()
                 case SDLK_F6: requestedWindow = minimap; break;
                 case SDLK_F7: requestedWindow = chatWindow; break;
                 //case SDLK_F8: requestedWindow = buddyWindow; break;
-
-                case SDLK_F9:
-                    // Setup window
-                    setupWindow->setVisible(true);
-                    setupWindow->requestMoveToTop();
-                    used = true;
-                    break;
-
+                case SDLK_F9: requestedWindow = setupWindow; break;
                 case SDLK_F10: requestedWindow = debugWindow; break;
                 //case SDLK_F11: requestedWindow = newSkillWindow; break;
 
