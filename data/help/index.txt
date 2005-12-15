@@ -13,7 +13,9 @@
 ##3                           === Powered By ===
 
 ##2               SDL, SDL_image, SDL_mixer (Media framework)
-##2                   SDL_net (Networking framework)
-##2                      Guichan (GUI framework)
-##2                 libxml2 (XML parsing and writing)
-##2                        PhysFS (Data files)
+##2                     SDL_net (Networking framework)
+##2                        Guichan (GUI framework)
+##2                   libxml2 (XML parsing and writing)
+##2                          PhysFS (Data files)
+##2                        libcurl (HTTP downloads)
+##2                            zlib (Archives)

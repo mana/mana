@@ -1,3 +1,13 @@
+0.0.18 (20 December 2005)
+- Fixed setup window behaviour
+- Enabled monster emotions
+- Added new items, npcs, tilesets, maps and monsters
+- Client version is now displayed during login
+- Fixed a Windows crash issue
+- Fixed ScrollArea and BrowserBow behaviour
+- Non blocking connection at startup
+- Cleaned up a lot of code
+
 0.0.17 (10 October 2005)
 - Added remembering of window position and sizes
 - Added taking screenshot with Alt+P
