@@ -1,3 +1,8 @@
+2005-12-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_10-1.tmx.gz, src/main.cpp: Removed unused code and
+	added changes to snowy map by Bertram.
+
 2005-12-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixed setup window behaviour.

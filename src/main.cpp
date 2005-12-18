@@ -316,21 +316,6 @@ void exit_engine()
     delete logger;
 }
 
-/** Check to see if a file exists */
-int exists(const std::string &file)
-{
-    FILE *fp = NULL;
-    fp = fopen(file.c_str(), "r");
-    if (!fp)
-    {
-        return false;
-    }
-    else {
-        fclose(fp);
-        return true;
-    }
-}
-
 struct Options
 {
     Options():printHelp(false),skipUpdate(false) {};
