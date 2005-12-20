@@ -1,3 +1,7 @@
+2005-12-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Changed version to 0.0.18.
+
 2005-12-18  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_10-1.tmx.gz, src/main.cpp: Removed unused code and
@@ -30,13 +34,9 @@
 	new monsters, items and npcs.
 
 2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
-	* src/main.h, src/main.cpp: Display TMW version on Windows too.
-
-2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
 	* src/gui/char_server.cpp: Avoid crashing on trying to log the name
 	of a non-existing character.
+	* src/main.h, src/main.cpp: Display TMW version on Windows too.
 
 2005-11-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
