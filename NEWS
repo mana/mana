@@ -1,3 +1,6 @@
+0.0.18.1 (24 December 2005)
+- Fixed a drawing glitch with high tiles at the bottom of the screen
+
 0.0.18 (20 December 2005)
 - Added new items, npcs, tilesets, maps and monsters
 - Non blocking connection at startup

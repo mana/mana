@@ -4,6 +4,8 @@
 	* src/main.cpp: When compiling with OpenGL support, it'll default to
 	using OpenGL on only Windows and Mac. These systems are known to have
 	stable acceleration most of the time.
+	* NEWS, configure.ac, The Mana World.dev: Updated in preparation of
+	release 0.0.18.1.
 
 2005-12-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
