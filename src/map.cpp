@@ -96,18 +96,23 @@ bool spriteCompare(const Sprite *a, const Sprite *b)
 void
 Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 {
+    int startX = scrollX / 32;
+    int startY = scrollY / 32;
+    int endX = (graphics->getWidth() + scrollX + 31) / 32;
+    int endY = (graphics->getHeight() + scrollY + 31) / 32;
+
     // If drawing the fringe layer, make sure sprites are sorted
     Sprites::iterator si;
     if (layer == 1)
     {
         mSprites.sort(spriteCompare);
         si = mSprites.begin();
-    }
 
-    int startX = scrollX / 32;
-    int startY = scrollY / 32;
-    int endX = (graphics->getWidth() + scrollX + 31) / 32;
-    int endY = (graphics->getHeight() + scrollY + 31) / 32;
+        // Increase endY to account for high fringe tiles
+        // TODO: Improve this hack so that it'll dynamically account for the
+        //       highest tile.
+        endY += 2;
+    }
 
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;

@@ -1,3 +1,10 @@
+2005-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp: Worked around fringe layer drawing bug at the bottom.
+	* src/main.cpp: When compiling with OpenGL support, it'll default to
+	using OpenGL on only Windows and Mac. These systems are known to have
+	stable acceleration most of the time.
+
 2005-12-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Changed version to 0.0.18.
@@ -77,7 +84,7 @@
 
 2005-10-19  Duane Bailey  <nayryeliab@gmail.com>
 
-	* data/help/index.txt: added SDL_net reference.
+	* data/help/index.txt: Added SDL_net reference.
 
 2005-10-19  Yohann Ferreira  <bertram@cegetel.net>
 
@@ -121,7 +128,7 @@
 
 2005-10-16  Duane Bailey  <nayryeliab@gmail.com>
 
-	* src/main.cpp: opengl is now default for mac, win, and those who
+	* src/main.cpp: OpenGL is now default for mac, win, and those who
 	define USE_OPENGL
 	* src/gui/setup.cpp: made it so those who use and go to fullscreen
 	requires a restart (texture/context baddies)
