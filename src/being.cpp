@@ -415,6 +415,9 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
                            px + 16,
                            py - textY - get_elapsed_time(damage_time) / 100,
                            gcn::Graphics::CENTER);
+
+        // Reset alpha value
+        graphics->setColor(gcn::Color(255, 255, 255));
     }
 
     // Potentially draw [TARGET] above this being

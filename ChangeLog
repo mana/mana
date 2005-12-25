@@ -1,3 +1,8 @@
+2005-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/being.cpp: Small fix to prevent other stuff than the damage
+	numbers from fading out.
+
 2005-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp: Worked around fringe layer drawing bug at the bottom.
