@@ -31,7 +31,7 @@ class Sound;
 
 #ifdef __USE_UNIX98
 #include "../config.h"
-#else
+#elif defined WIN32
 #include "../The_Mana_World_private.h"
 #define PACKAGE_VERSION PRODUCT_VERSION
 #endif

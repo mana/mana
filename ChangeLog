@@ -1,3 +1,7 @@
+2005-12-26  Duane Bailey  <nayryeliab@gmail.com>
+
+	* src/main.h: fixed define problems with The_Mana_World_private.h
+	
 2005-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Small fix to prevent other stuff than the damage
