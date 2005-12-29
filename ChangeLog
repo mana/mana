@@ -1,3 +1,8 @@
+2005-12-09  Jan-Fabian Humann  <malastare@gmx.net>
+
+  * src/gui/gui.cpp: Added rather ugly workaround to prevent a on-start
+	crash by Doener.
+
 2005-12-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/gui/popupmenu.cpp, src/net/protocol.cpp: Remove

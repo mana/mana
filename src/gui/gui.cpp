@@ -172,6 +172,9 @@ Gui::Gui(Graphics *graphics):
     mConfigListener = new GuiConfigListener(this);
     config.addListener("customcursor", mConfigListener);
 
+    // XXX FIXME: Just a temporary solution to work around a bug, better way
+    // would be to implement a FontManager class.
+    gui = this;
     mPopup = new PopupMenu();
 }
 
