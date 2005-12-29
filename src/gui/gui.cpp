@@ -34,6 +34,7 @@
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
+#include "popupmenu.h"
 #include "window.h"
 #include "windowcontainer.h"
 
@@ -41,6 +42,7 @@
 #include "../configlistener.h"
 #include "../configuration.h"
 #include "../engine.h"
+#include "../floor_item.h"
 #include "../game.h"
 #include "../graphics.h"
 #include "../log.h"
@@ -87,7 +89,8 @@ class GuiConfigListener : public ConfigListener
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
     mMouseCursor(NULL),
-    mCustomCursor(false)
+    mCustomCursor(false),
+    mPopupActive(false)
 {
     // Set graphics
     setGraphics(graphics);
@@ -168,10 +171,14 @@ Gui::Gui(Graphics *graphics):
     setUseCustomCursor(config.getValue("customcursor", 1) == 1);
     mConfigListener = new GuiConfigListener(this);
     config.addListener("customcursor", mConfigListener);
+
+    mPopup = new PopupMenu();
 }
 
 Gui::~Gui()
 {
+    delete mPopup;
+
     config.removeListener("customcursor", mConfigListener);
     delete mConfigListener;
 
@@ -231,21 +238,100 @@ Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
 
-    // When conditions for walking are met, set new player destination
-    if (player_node &&
-        player_node->action != Being::DEAD &&
-        current_npc == 0 &&
-        button == gcn::MouseInput::LEFT)
+    // Are we in-game yet?
+    if (state != GAME_STATE)
+        return;
+
+    // Check if we are alive and kickin'
+    if (!player_node || player_node->action == Being::DEAD)
+        return;
+
+    // Check if we are busy
+    if (current_npc)
+        return;
+
+    int tilex = mx / 32 + camera_x;
+    int tiley = my / 32 + camera_y;
+
+    // Right click might open a popup
+    if (button == gcn::MouseInput::RIGHT)
     {
-        Map *tiledMap = engine->getCurrentMap();
-        int tilex = mx / 32 + camera_x;
-        int tiley = my / 32 + camera_y;
+        Being *being;
+        FloorItem *floorItem;
 
-        if (state == GAME_STATE && tiledMap->getWalk(tilex, tiley)) {
-            walk(tilex, tiley, 0);
-            player_node->setDestination(tilex, tiley);
+        if ((being = findNode(tilex, tiley)) && being != player_node)
+        {
+            showPopup(mx, my, being);
+            return;
+        }
+        else if(floorItem = find_floor_item_by_id(
+                    find_floor_item_by_cor(mx, my)))
+        {
+            showPopup(mx, my, floorItem);
+            return;
+        }
+    }
 
-            autoTarget = NULL;
+    // If a popup is active, just remove it
+    if (mPopupActive)
+    {
+        mPopup->setVisible(false);
+        mPopupActive = false;
+        return;
+    }
+
+    // Left click can cause different actions
+    if (button == gcn::MouseInput::LEFT)
+    {
+        Being *being;
+        Uint32 floorItemId;
+
+        // Interact with some being
+        if (being = findNode(tilex, tiley))
+        {
+            switch (being->getType())
+            {
+                case Being::NPC:
+                    talk(being);
+                    current_npc = being->getId();
+                    break;
+
+                case Being::MONSTER:
+                case Being::PLAYER:
+                    if (being->action == Being::MONSTER_DEAD ||
+                            player_node->action != Being::STAND ||
+                            being == player_node)
+                        break;
+
+                    autoTarget = being;
+                    attack(being);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        // Pick up some item
+        else if (floorItemId = find_floor_item_by_cor(tilex, tiley))
+        {
+            int dx = tilex - player_node->x;
+            int dy = tiley - player_node->y;
+
+            if ((dx * dx + dy * dy) < 4)
+                pickUp(floorItemId);
+        }
+        // Just walk around
+        else if (engine->getCurrentMap()->getWalk(tilex, tiley))
+        {
+            // XXX XXX XXX REALLY UGLY!
+            Uint8 *keys = SDL_GetKeyState(NULL);
+            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
+            {
+                walk(tilex, tiley, 0);
+                player_node->setDestination(tilex, tiley);
+
+                autoTarget = NULL;
+            }
         }
     }
 }
@@ -281,4 +367,22 @@ Gui::setUseCustomCursor(bool customCursor)
             }
         }
     }
+}
+
+void Gui::showPopup(int x, int y, Item *item)
+{
+    mPopup->showPopup(x, y, item);
+    mPopupActive = true;
+}
+
+void Gui::showPopup(int x, int y, FloorItem *floorItem)
+{
+    mPopup->showPopup(x, y, floorItem);
+    mPopupActive = true;
+}
+
+void Gui::showPopup(int x, int y, Being *being)
+{
+    mPopup->showPopup(x, y, being);
+    mPopupActive = true;
 }

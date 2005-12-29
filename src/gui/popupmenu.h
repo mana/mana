@@ -79,6 +79,4 @@ class PopupMenu : public Window, public LinkHandler
         void showPopup(int x, int y);
 };
 
-extern PopupMenu *popupMenu;
-
 #endif

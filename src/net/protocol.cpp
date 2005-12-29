@@ -23,13 +23,10 @@
 
 #include "protocol.h"
 
-#include "messagein.h"
 #include "messageout.h"
-#include "network.h"
 
 #include "../being.h"
 #include "../game.h"
-#include "../log.h"
 #include "../main.h"
 #include "../playerinfo.h"
 #include "../sound.h"
@@ -83,6 +80,21 @@ void action(char type, int id)
     outMsg.writeInt16(0x0089);
     outMsg.writeInt32(id);
     outMsg.writeInt8(type);
+}
+
+void talk(Being *being)
+{
+    MessageOut outMsg;
+    outMsg.writeInt16(CMSG_NPC_TALK);
+    outMsg.writeInt32(being->getId());
+    outMsg.writeInt8(0);
+}
+
+void pickUp(Uint32 floorItemId)
+{
+    MessageOut outMsg;
+    outMsg.writeInt16(0x009f);
+    outMsg.writeInt32(floorItemId);
 }
 
 Being* attack(unsigned short x, unsigned short y, unsigned char direction)

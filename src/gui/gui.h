@@ -29,9 +29,13 @@
 
 #include "../guichanfwd.h"
 
+class Being;
+class FloorItem;
 class GuiConfigListener;
 class Graphics;
 class Image;
+class Item;
+class PopupMenu;
 class WindowContainer;
 
 /**
@@ -92,10 +96,22 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         setUseCustomCursor(bool customCursor);
 
         /**
-         * ConfigListener method.
+         * Shows a popup for an item
+         * TODO Find some way to get rid of Item here
          */
-        void
-        optionChanged(const std::string &name);
+        void showPopup(int x, int y, Item *item);
+
+        /**
+         * Shows a popup for a floor item
+         * TODO Find some way to get rid of FloorItem here
+         */
+        void showPopup(int x, int y, FloorItem *floorItem);
+
+        /**
+         * Shows a popup for a being
+         * TODO Find some way to get rid of Being here
+         */
+        void showPopup(int x, int y, Being *being);
 
     private:
         GuiConfigListener *mConfigListener;
@@ -104,6 +120,9 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         gcn::Font *mGuiFont;             /**< The global GUI font */
         Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
+
+        PopupMenu *mPopup;                    /**< Popup window */
+        bool mPopupActive;
 };
 
 extern Gui *gui;                              /**< The GUI system */

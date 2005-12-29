@@ -24,6 +24,8 @@
 #ifndef _TMW_PROTOCOL_
 #define _TMW_PROTOCOL_
 
+#include <SDL_types.h>
+
 class Being;
 
 // Packets from server to client
@@ -126,5 +128,11 @@ void attack(Being *target);
 
 /** Request action */
 void action(char type, int id);
+
+/** Talk to a being */
+void talk(Being *being);
+
+/** Pick up an item */
+void pickUp(Uint32 floorItemId);
 
 #endif

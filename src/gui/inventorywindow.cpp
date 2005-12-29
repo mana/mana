@@ -31,9 +31,9 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "gui.h"
 #include "item_amount.h"
 #include "itemcontainer.h"
-#include "popupmenu.h"
 #include "scrollarea.h"
 
 #include "../inventory.h"
@@ -162,7 +162,7 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
          */
         int mx = x + getX();
         int my = y + getY();
-        popupMenu->showPopup(mx, my, item);
+        gui->showPopup(mx, my, item);
     }
 }
 

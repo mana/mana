@@ -1,3 +1,14 @@
+2005-12-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/gui/gui.cpp, src/gui/gui.h,
+	src/gui/inventorywindow.cpp, src/gui/popupmenu.h: Added popup support
+	to the Gui and moved the according code there to get rid of some nasty
+	hack that made them disappear.
+	* src/game.cpp, src/gui/gui.cpp, src/gui/gui.h,
+	src/gui/inventorywindow.cpp, src/gui/popupmenu.h,
+	src/net/protocol.cpp, src/net/protocol.h: Moved all mouse input code
+	into the Gui class.
+
 2005-12-26  Duane Bailey  <nayryeliab@gmail.com>
 
 	* src/main.h: fixed define problems with The_Mana_World_private.h

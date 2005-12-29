@@ -58,7 +58,6 @@
 #include "gui/npc.h"
 #include "gui/npc_text.h"
 #include "gui/ok_dialog.h"
-#include "gui/popupmenu.h"
 #include "gui/requesttrade.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
@@ -116,7 +115,6 @@ ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
-PopupMenu *popupMenu;
 DebugWindow *debugWindow;
 
 Inventory *inventory = NULL;
@@ -217,7 +215,6 @@ void createGuiWindows()
     tradeWindow = new TradeWindow();
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
-    popupMenu = new PopupMenu();
     debugWindow = new DebugWindow();
 
     // Initialize window positions
@@ -252,7 +249,6 @@ void createGuiWindows()
     tradeWindow->setVisible(false);
     //buddyWindow->setVisible(false);
     helpWindow->setVisible(false);
-    popupMenu->setVisible(false);
     debugWindow->setVisible(false);
 
     // Do not focus any text field
@@ -283,7 +279,6 @@ void destroyGuiWindows()
     delete tradeWindow;
     //delete buddyWindow;
     delete helpWindow;
-    delete popupMenu;
     delete debugWindow;
 }
 
@@ -667,136 +662,6 @@ void do_input()
                         action_time = false;
                         used = true;
                     }
-                }
-            }
-        }
-
-        // Mouse events
-        else if (event.type == SDL_MOUSEBUTTONDOWN)
-        {
-            int mx = event.button.x / 32 + camera_x;
-            int my = event.button.y / 32 + camera_y;
-
-            // Mouse button left
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-                // Don't move when shift is pressed
-                // XXX Is this too hackish? I'm not sure if making the Gui
-                // class a KeyListener is a good idea and works as expected
-                // at all...
-                if (keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) {
-                    used = true;
-                }
-
-                // Check for default actions for NPC/Monster/Players
-                Being *target = findNode(mx, my);
-                Uint32 floorItemId = find_floor_item_by_cor(mx, my);
-
-                if (target)
-                {
-                    switch (target->getType())
-                    {
-                        case Being::NPC:
-                            // NPC default: talk
-                            if (!current_npc)
-                            {
-                                MessageOut outMsg;
-                                outMsg.writeInt16(CMSG_NPC_TALK);
-                                outMsg.writeInt32(target->getId());
-                                outMsg.writeInt8(0);
-                                current_npc = target->getId();
-                            }
-                            break;
-
-                        case Being::MONSTER:
-                        case Being::PLAYER:
-                            // Monster and player default: attack
-                            /**
-                             * TODO: Move player to mouse click position before
-                             * attack the monster (maybe using follow mode).
-                             */
-                            if (target->action != Being::MONSTER_DEAD &&
-                                player_node->action == Being::STAND &&
-                                target != player_node)
-                            {
-                                // Autotarget by default with mouse
-                                autoTarget = target;
-
-                                attack(target);
-                            }
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
-                // Check for default action to items on the floor
-                else if (floorItemId != 0)
-                {
-                    /**
-                     * TODO: Move player to mouse click position before
-                     * pick up the items on the floor.
-                     *
-                     * Provisory: pick up only items near of player.
-                     */
-                    int dx = mx - player_node->x;
-                    int dy = my - player_node->y;
-                    // "sqrt(dx*dx + dy*dy) < 2" is equal to "dx*dx + dy*dy < 4"
-                    if ((dx*dx + dy*dy) < 4)
-                    {
-                        MessageOut outMsg;
-                        outMsg.writeInt16(0x009f);
-                        outMsg.writeInt32(floorItemId);
-                    }
-                }
-
-                // Just cancel the popup menu if shown, and don't make the
-                // character walk
-                if (popupMenu->isVisible() == true)
-                {
-                    // If we click elsewhere than in the window, do not use
-                    // the event
-                    // The user wanted to close the popup.
-                    // Still buggy : Wonder if the x, y, width, and height
-                    // aren't reported partially with these functions.
-                    if (event.button.x >=
-                            (popupMenu->getX() + popupMenu->getWidth()) ||
-                        event.button.x < popupMenu->getX() ||
-                        event.button.y >=
-                            (popupMenu->getY() + popupMenu->getHeight()) ||
-                        event.button.y < popupMenu->getY())
-                    {
-                        used = true;
-                        popupMenu->setVisible(false);
-                    }
-                }
-
-            } // End Mouse left button
-
-            // Mouse button middle
-            else if (event.button.button == SDL_BUTTON_MIDDLE)
-            {
-                /*
-                 * Some people haven't a mouse with three buttons,
-                 * right Usiu??? ;-)
-                 */
-            }
-
-            // Mouse button right
-            else if (event.button.button == SDL_BUTTON_RIGHT)
-            {
-                Being *being;
-                FloorItem *floorItem;
-
-                if ((being = findNode(mx, my)) && being != player_node) {
-                    popupMenu->showPopup(event.button.x, event.button.y,
-                            being);
-                } else if ((floorItem = find_floor_item_by_id(
-                            find_floor_item_by_cor(mx, my)))) {
-                    popupMenu->showPopup(event.button.x, event.button.y,
-                            floorItem);
-                } else {
-                    popupMenu->setVisible(false);
                 }
             }
         }
