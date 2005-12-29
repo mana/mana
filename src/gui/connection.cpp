@@ -86,8 +86,20 @@ void ConnectionDialog::logic()
             closeConnection();
             break;
         case NET_CONNECTED:
-            mapLogin();
-            state = GAME_STATE;
+            attemptMapLogin();
+            mStatus = NET_DATA;
+            break;
+        case NET_DATA:
+            if (in_size > 6)
+            {
+                skip(4);
+                checkMapLogin();
+                state = GAME_STATE;
+            }
+            else
+            {
+                flush();
+            }
             break;
     }
 }
@@ -100,7 +112,7 @@ void ConnectionDialog::action(const std::string& eventId)
     }
 }
 
-void ConnectionDialog::mapLogin()
+void ConnectionDialog::attemptMapLogin()
 {
     // Send login infos
     MessageOut outMsg;
@@ -110,11 +122,10 @@ void ConnectionDialog::mapLogin()
     outMsg.writeInt32(session_ID1);
     outMsg.writeInt32(session_ID2);
     outMsg.writeInt8(sex);
+}
 
-    // Skip a mysterious 4 bytes
-    while ((in_size < 4)|| (out_size > 0)) flush();
-    skip(4);
-
+void ConnectionDialog::checkMapLogin()
+{
     MessageIn msg = get_next_message();
 
     if (msg.getId() == SMSG_LOGIN_SUCCESS)

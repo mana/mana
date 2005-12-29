@@ -61,7 +61,8 @@ class ConnectionDialog : public Window, public gcn::ActionListener
         float mProgress;
         int mStatus;
 
-        void mapLogin();
+        void attemptMapLogin();
+        void checkMapLogin();
 };
 
 /**

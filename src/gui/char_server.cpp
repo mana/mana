@@ -42,9 +42,6 @@
 
 extern SERVER_INFO **server_info;
 
-char server[30];
-
-
 ServerSelectDialog::ServerSelectDialog():
     Window("Select Server"), mStatus(NET_IDLE)
 {
@@ -68,7 +65,7 @@ ServerSelectDialog::ServerSelectDialog():
                 100 - 3 * 5 - cancelButton->getHeight() -
                 scrollArea->getBorderSize()));
 
-    //serverList->setEventId("ok");
+    serverList->setEventId("ok");
     okButton->setEventId("ok");
     cancelButton->setEventId("cancel");
 
@@ -97,7 +94,8 @@ ServerSelectDialog::~ServerSelectDialog()
     delete serverListModel;
 }
 
-void ServerSelectDialog::action(const std::string& eventId)
+void
+ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         int index = serverList->getSelected();
@@ -105,14 +103,14 @@ void ServerSelectDialog::action(const std::string& eventId)
         short port = server_info[index]->port;
         openConnection(host, port);
         mStatus = NET_CONNECTING;
-        //server_char_server(serverList->getSelected());
     }
     else if (eventId == "cancel") {
         state = LOGIN_STATE;
     }
 }
 
-void ServerSelectDialog::logic()
+void
+ServerSelectDialog::logic()
 {
     switch (mStatus)
     {
@@ -126,25 +124,39 @@ void ServerSelectDialog::logic()
             closeConnection();
             break;
         case NET_CONNECTED:
-            selectServer(serverList->getSelected());
-            //closeConnection();
+            attemptServerSelect(serverList->getSelected());
+            mStatus = NET_DATA;
+            break;
+        case NET_DATA:
+            if (in_size > 6)
+            {
+                skip(4);
+                checkServerSelect();
+            }
+            else
+            {
+                flush();
+            }
             break;
     }
 }
 
-int ServerListModel::getNumberOfElements()
+int
+ServerListModel::getNumberOfElements()
 {
     return n_server;
 }
 
-std::string ServerListModel::getElementAt(int i)
+std::string
+ServerListModel::getElementAt(int i)
 {
     std::stringstream s;
     s << server_info[i]->name << " (" << server_info[i]->online_users << ")";
     return s.str();
 }
 
-void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
+void
+charServerInputHandler(SDL_KeyboardEvent *keyEvent)
 {
     if (keyEvent->keysym.sym == SDLK_ESCAPE)
     {
@@ -152,7 +164,8 @@ void charServerInputHandler(SDL_KeyboardEvent *keyEvent)
     }
 }
 
-void ServerSelectDialog::selectServer(int index)
+void
+ServerSelectDialog::attemptServerSelect(int index)
 {
     // Send login infos
     MessageOut outMsg;
@@ -162,11 +175,11 @@ void ServerSelectDialog::selectServer(int index)
     outMsg.writeInt32(session_ID2);
     outMsg.writeInt16(0); // unknown
     outMsg.writeInt8(sex);
+}
 
-    // Skipping a mysterious 4 bytes
-    while ((in_size < 4) || (out_size > 0)) flush();
-    skip(4);
-
+void
+ServerSelectDialog::checkServerSelect()
+{
     MessageIn msg = get_next_message();
 
     if (msg.getId() == 0x006b)

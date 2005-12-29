@@ -62,7 +62,7 @@ void CharSelectDialog::CharDeleteConfirm::action(const std::string &eventId)
 }
 
 CharSelectDialog::CharSelectDialog():
-    Window("Select Character")
+    Window("Select Character"), mStatus(0)
 {
     selectButton = new Button("OK");
     cancelButton = new Button("Cancel");
@@ -123,7 +123,8 @@ void CharSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok" && n_character > 0) {
         // Start game
-        serverCharSelect();
+        attemptCharSelect();
+        mStatus = 1;
     }
     else if (eventId == "cancel") {
         state = EXIT_STATE;
@@ -208,14 +209,23 @@ void CharSelectDialog::serverCharDelete()
     }
 }
 
-void CharSelectDialog::serverCharSelect()
+void CharSelectDialog::attemptCharSelect()
 {
     // Request character selection
     MessageOut outMsg;
     outMsg.writeInt16(0x0066);
     outMsg.writeInt8(0);
+}
 
+void
+CharSelectDialog::checkCharSelect()
+{
+    // Receive reply
     MessageIn msg = get_next_message();
+    if (state == ERROR_STATE)
+    {
+        return;
+    }
 
     logger->log("CharSelect: Packet ID: %x, Length: %d, in_size: %d",
                 msg.getId(), msg.getLength(), in_size);
@@ -224,14 +234,14 @@ void CharSelectDialog::serverCharSelect()
     {
         char_ID = msg.readInt32();
         map_path = "maps/" + msg.readString(16);
-        map_path= map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
+        map_path = map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
         map_address = msg.readInt32();
         map_port = msg.readInt16();
         player_info = char_info[0];
         state = CONNECTING_STATE;
 
         logger->log("CharSelect: Map: %s", map_path.c_str());
-        logger->log("CharSelect: Server: %s:%d", iptostring(map_address),
+        logger->log("CharSelect: Server: %s:%i", iptostring(map_address),
                     map_port);
         closeConnection();
     }
@@ -277,6 +287,18 @@ void CharSelectDialog::logic()
 {
     if (n_character > 0) {
         setPlayerInfo(char_info[0]);
+    }
+    
+    if (mStatus == 1)
+    {
+        if (in_size > 2)
+        {
+            checkCharSelect();
+        }
+        else
+        {
+            flush();
+        }
     }
 }
 

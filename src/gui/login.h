@@ -73,6 +73,7 @@ class LoginDialog : public Window, public gcn::ActionListener {
         bool registration;
         
         void attemptLogin(const std::string& user, const std::string& pass);
+        void checkLogin();
 };
 
 /**
@@ -102,20 +103,5 @@ class WrongUsernameNoticeListener : public gcn::ActionListener {
  * Handle input
  */
 void loginInputHandler(SDL_KeyboardEvent *keyEvent);
-
-/*enum
-{
-    LOGIN_OK = 0,
-    LOGIN_WRONG_PASSWORD,
-    LOGIN_UNREGISTERED_ID,
-    LOGIN_REJECTED,
-    LOGIN_BLOCKED,
-    LOGIN_EXPIRED,
-    LOGIN_NO_CONNECTION,
-    LOGIN_USERNAME_TWICE = 9,
-    LOGIN_CONNECTING,
-    LOGIN_UNKNOWN_ERROR = -1
-
-};*/
 
 #endif

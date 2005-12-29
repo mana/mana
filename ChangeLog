@@ -1,4 +1,13 @@
-2005-12-09  Jan-Fabian Humann  <malastare@gmx.net>
+2005-12-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, data/maps/new_10-1.tmx.gz,
+	src/gui/char_select.cpp, src/gui/char_select.h, src/gui/char_server.cpp,
+	src/gui/char_server.h, src/gui/connection.cpp, src/gui/connection.h,
+	src/gui/login.cpp, src/gui/login.h, src/net/network.h: Restored Dev-Cpp
+	default execution options, updated walkmap in snow map, smoothed login
+	sequence.
+
+2005-12-29  Jan-Fabian Humann  <malastare@gmx.net>
 
   * src/gui/gui.cpp: Added rather ugly workaround to prevent a on-start
 	crash by Doener.
@@ -22,7 +31,7 @@
 2005-12-26  Duane Bailey  <nayryeliab@gmail.com>
 
 	* src/main.h: fixed define problems with The_Mana_World_private.h
-	
+
 2005-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Small fix to prevent other stuff than the damage

@@ -63,6 +63,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Label *levelLabel;
         gcn::Label *jobLevelLabel;
         gcn::Label *moneyLabel;
+        
+        int mStatus;
 
         PlayerBox *playerBox;
 
@@ -74,7 +76,12 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         /**
          * Communicate character selection to the server.
          */
-        void serverCharSelect();
+        void attemptCharSelect();
+        
+        /**
+         * Check server answer.
+         */
+        void checkCharSelect();
 
         /**
          * Listener for confirming character deletion.

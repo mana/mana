@@ -28,6 +28,7 @@
 #define NET_CONNECTED   0
 #define NET_IDLE        1
 #define NET_CONNECTING  2
+#define NET_DATA        3
 
 class MessageIn;
 

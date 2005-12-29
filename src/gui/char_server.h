@@ -80,7 +80,8 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         gcn::ScrollArea *scrollArea;
         int mStatus;
 
-        void selectServer(int index);
+        void attemptServerSelect(int index);
+        void checkServerSelect();
 };
 
 void charServerInputHandler(SDL_KeyboardEvent *keyEvent);

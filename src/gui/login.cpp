@@ -222,52 +222,47 @@ LoginDialog::action(const std::string& eventId)
         } else {
             config.setValue("username", "");
         }
+        
+        std::stringstream errorMsg;
+        bool error = false;
 
         // Check login
         if (user.length() == 0)
         {
             // No username
-            wrongLoginNotice = new OkDialog("Error",
-                                            "Enter your username first.",
-                                            &wrongUsernameNoticeListener);
+            errorMsg << "Enter your username first.";
         }
         else if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
-            std::stringstream errorMsg;
             errorMsg << "The username needs to be at least "
                      << LEN_MIN_USERNAME
                      << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
-                                            &wrongUsernameNoticeListener);
         }
         else if (user.length() > LEN_MAX_USERNAME - 1 )
         {
             // Name too long
-            std::stringstream errorMsg;
             errorMsg << "The username needs to be less than "
                      << LEN_MAX_USERNAME
                      << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
-                                            &wrongUsernameNoticeListener);
         }
         else if (passField->getText().length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
-            std::stringstream errorMsg;
             errorMsg << "The password needs to be at least "
                      << LEN_MIN_PASSWORD
                      << " characters long.";
-            wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
-                                            &wrongPasswordNoticeListener);
         }
         else if (passField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
             // Pass too long
-            std::stringstream errorMsg;
             errorMsg << "The password needs to be less than "
                      << LEN_MAX_PASSWORD
                      << " characters long.";
+        }
+        
+        if (error)
+        {
             wrongLoginNotice = new OkDialog("Error", errorMsg.str(),
                                             &wrongPasswordNoticeListener);
         }
@@ -280,7 +275,6 @@ LoginDialog::action(const std::string& eventId)
             openConnection(host.c_str(), port);
             mStatus = NET_CONNECTING;
             registration = true;
-            //attemptLogin(user + "_M", passField->getText());
         }
     }
 }
@@ -300,6 +294,19 @@ LoginDialog::logic()
             closeConnection();
             logger->log("Connection closed");
             break;
+        case NET_DATA:
+            // TODO: this is a very quick hack, we should implement something
+            // like a bool completePacket() in network functions.
+            if (in_size > 2)
+            {
+                checkLogin();
+                closeConnection();
+            }
+            else
+            {
+                flush();
+            }
+            break;
         case NET_CONNECTED:
             logger->log("Connected...");
             std::string user = userField->getText();
@@ -309,7 +316,7 @@ LoginDialog::logic()
                 user += "_M";
             }
             attemptLogin(user, password);
-            closeConnection();
+            mStatus = NET_DATA;
             break;
     }
 }
@@ -333,12 +340,15 @@ LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
     outMsg.writeString(user, 24);
     outMsg.writeString(pass, 24);
     outMsg.writeInt8(0); // unknown
+}
 
+void
+LoginDialog::checkLogin()
+{
     // Receive reply
     MessageIn msg = get_next_message();
     if (state == ERROR_STATE)
     {
-        closeConnection();
         return;
     }
 
