@@ -267,8 +267,8 @@ Gui::mousePress(int mx, int my, int button)
             showPopup(mx, my, being);
             return;
         }
-        else if(floorItem = find_floor_item_by_id(
-                    find_floor_item_by_cor(mx, my)))
+        else if((floorItem = find_floor_item_by_id(
+                    find_floor_item_by_cor(tilex, tiley))))
         {
             showPopup(mx, my, floorItem);
             return;
@@ -290,7 +290,7 @@ Gui::mousePress(int mx, int my, int button)
         Uint32 floorItemId;
 
         // Interact with some being
-        if (being = findNode(tilex, tiley))
+        if ((being = findNode(tilex, tiley)))
         {
             switch (being->getType())
             {
@@ -315,7 +315,7 @@ Gui::mousePress(int mx, int my, int button)
             }
         }
         // Pick up some item
-        else if (floorItemId = find_floor_item_by_cor(tilex, tiley))
+        else if ((floorItemId = find_floor_item_by_cor(tilex, tiley)))
         {
             int dx = tilex - player_node->x;
             int dy = tiley - player_node->y;
