@@ -557,13 +557,8 @@ void do_input()
                         }
 
                         if (id)
-                        {
-                            // TODO: Remove duplicated code, probably add a
-                            // pick up command
-                            MessageOut outMsg;
-                            outMsg.writeInt16(0x009f);
-                            outMsg.writeInt32(id);
-                        }
+                            pickUp(id);
+
                         used = true;
                     }
                     break;
@@ -803,12 +798,8 @@ void do_input()
         {
             Uint32 id = find_floor_item_by_cor(player_node->x, player_node->y);
 
-            if (id != 0)
-            {
-                MessageOut outMsg;
-                outMsg.writeInt16(CMSG_ITEM_PICKUP);
-                outMsg.writeInt32(id);
-            }
+            if (id)
+                pickUp(id);
         }
         else if (joy[JOY_BTN2] && action_time)
         {

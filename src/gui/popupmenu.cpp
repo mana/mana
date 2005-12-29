@@ -177,9 +177,7 @@ void PopupMenu::handleLink(const std::string& link)
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem != NULL)
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(mFloorItem->getId());
+        pickUp(mFloorItem->getId());
     }
 
     // Look To action

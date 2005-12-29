@@ -93,7 +93,7 @@ void talk(Being *being)
 void pickUp(Uint32 floorItemId)
 {
     MessageOut outMsg;
-    outMsg.writeInt16(0x009f);
+    outMsg.writeInt16(CMSG_ITEM_PICKUP);
     outMsg.writeInt32(floorItemId);
 }
 

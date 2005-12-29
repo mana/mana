@@ -1,5 +1,7 @@
 2005-12-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/gui/popupmenu.cpp, src/net/protocol.cpp: Remove
+	duplicated code for picking up items as patched by pclouds.
 	* src/game.cpp, src/gui/gui.cpp, src/gui/gui.h,
 	src/gui/inventorywindow.cpp, src/gui/popupmenu.h: Added popup support
 	to the Gui and moved the according code there to get rid of some nasty
