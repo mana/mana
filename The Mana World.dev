@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=174
+UnitCount=176
 Type=0
 Ver=1
 ObjFiles=
@@ -27,7 +27,7 @@ CustomMakefile=
 IncludeVersionInfo=1
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001001000001101
+CompilerSettings=0010001001001001001001
 
 [VersionInfo]
 Major=0
@@ -1748,7 +1748,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit176]
-FileName=src\gui\login.cpp
+FileName=src\gui\register.cpp
 CompileCpp=1
 Folder=gui/source
 Compile=1
@@ -1808,7 +1808,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit175]
-FileName=src\gui\login.h
+FileName=src\gui\register.h
 CompileCpp=1
 Folder=gui/header
 Compile=1

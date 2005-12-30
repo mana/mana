@@ -47,6 +47,9 @@ void closeConnection();
 /** Send and receive data waiting in the buffers */
 void flush();
 
+/** Check if a packet is complete */
+bool packetReady();
+
 /**
  * Returns the next arriving message, waiting for it if necessary.
  */

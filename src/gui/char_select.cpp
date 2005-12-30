@@ -291,7 +291,7 @@ void CharSelectDialog::logic()
     
     if (mStatus == 1)
     {
-        if (in_size > 2)
+        if (packetReady())
         {
             checkCharSelect();
         }

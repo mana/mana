@@ -56,6 +56,7 @@
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
+#include "gui/register.h"
 #include "gui/updatewindow.h"
 
 #include "resources/image.h"
@@ -463,6 +464,11 @@ int main(int argc, char *argv[])
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
                     currentDialog = new LoginDialog();
+                    inputHandler = loginInputHandler;
+                    break;
+                case REGISTER_STATE:
+                    logger->log("State: REGISTER");
+                    currentDialog = new RegisterDialog();
                     inputHandler = loginInputHandler;
                     break;
                 case CHAR_SERVER_STATE:

@@ -128,6 +128,8 @@ ServerSelectDialog::logic()
             mStatus = NET_DATA;
             break;
         case NET_DATA:
+            // TODO: cannot substitute with packetReady() because of eAthena
+            // sending 4 unknown bytes.
             if (in_size > 6)
             {
                 skip(4);

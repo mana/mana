@@ -44,6 +44,7 @@ class Sound;
 enum {
     EXIT_STATE,
     LOGIN_STATE,
+    REGISTER_STATE,
     CHAR_SERVER_STATE,
     CHAR_SELECT_STATE,
     CHAR_NEW_STATE,

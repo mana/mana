@@ -21,48 +21,30 @@
  *  $Id$
  */
 
-#ifndef _TMW_LOGIN_H
-#define _TMW_LOGIN_H
+#ifndef _TMW_REGISTER_H
+#define _TMW_REGISTER_H
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
 #include <SDL_events.h>
 
-#include "ok_dialog.h"
 #include "window.h"
+#include "login.h"
 #include "../guichanfwd.h"
-
-class LoginDialog;
-
-/**
- * Listener used for handling wrong data.
- */
-class WrongDataNoticeListener : public gcn::ActionListener {
-    public:
-        void setTarget(gcn::TextField *textField);
-        void action(const std::string &eventId);
-    private:
-        gcn::TextField *target;
-};
 
 /**
  * The login dialog.
  *
  * \ingroup Interface
  */
-class LoginDialog : public Window, public gcn::ActionListener {
+class RegisterDialog : public Window, public gcn::ActionListener {
     public:
         /**
          * Constructor
          *
          * @see Window::Window
          */
-        LoginDialog();
-        
-        /**
-         * Destructor
-         */
-        ~LoginDialog();
+        RegisterDialog();
 
         /**
          * Called when receiving actions from the widgets.
@@ -77,30 +59,32 @@ class LoginDialog : public Window, public gcn::ActionListener {
         // Made them public to have the possibility to request focus
         // from external functions.
         gcn::TextField *userField;
-        gcn::TextField *passField;
+        gcn::TextField *passwordField;
+        gcn::TextField *confirmField;
 
     private:
         gcn::Label *userLabel;
-        gcn::Label *passLabel;
+        gcn::Label *passwordLabel;
+        gcn::Label *confirmLabel;
         gcn::Label *serverLabel;
         gcn::TextField *serverField;
-        gcn::CheckBox *keepCheck;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
         gcn::Button *registerButton;
+        gcn::Button *cancelButton;
+        gcn::RadioButton *maleButton;
+        gcn::RadioButton *femaleButton;
         int mStatus;
-        bool registration;
-        
-        void attemptLogin(const std::string& user, const std::string& pass);
-        void checkLogin();
+
+        void attemptRegistration(const std::string& user,
+                                 const std::string& pass);
+        void checkRegistration();
         
         WrongDataNoticeListener *wrongDataNoticeListener;
-        OkDialog *wrongLoginNotice;
+        OkDialog *wrongRegisterNotice;
 };
 
 /**
  * Handle input
  */
-void loginInputHandler(SDL_KeyboardEvent *keyEvent);
+void registerInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

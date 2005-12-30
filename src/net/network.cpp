@@ -332,6 +332,31 @@ unsigned short readWord(int pos)
 #endif
 }
 
+bool packetReady()
+{
+    bool ret = false;
+    if (in_size >= 2)
+    {
+        int length = packet_lengths[readWord(0)];
+        if (length == -1)
+        {
+            if (in_size >= 4)
+            {
+                length = readWord(2);
+                if (in_size >= length)
+                {
+                    ret = true;
+                }
+            }
+        }
+        else if (in_size >= length)
+        {
+            ret = true;
+        }
+    }
+    return ret;
+}
+
 MessageIn
 get_next_message()
 {

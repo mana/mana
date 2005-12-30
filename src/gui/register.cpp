@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "login.h"
+#include "register.h"
 
 #include <string>
 #include <sstream>
@@ -38,158 +38,189 @@
 #include "button.h"
 #include "checkbox.h"
 #include "passwordfield.h"
+#include "radiobutton.h"
 #include "textfield.h"
+#include "ok_dialog.h"
 
 #include "../net/messagein.h"
 #include "../net/messageout.h"
 #include "../net/network.h"
 
-SERVER_INFO **server_info;
+//OkDialog *wrongLoginNotice = NULL;
+extern SERVER_INFO **server_info;
 
-void
-WrongDataNoticeListener::setTarget(gcn::TextField *textField)
-{
-    this->target = textField;
-}
-
-void
-WrongDataNoticeListener::action(const std::string &eventId)
-{
-    if (eventId == "ok")
-    {
-        // Reset the field
-        target->setText("");
-        target->setCaretPosition(0);
-        target->requestFocus();
-        //wrongLoginNotice = NULL;
-    }
-}
-
-LoginDialog::LoginDialog():
-    Window("Login"), mStatus(NET_IDLE), registration(false)
+RegisterDialog::RegisterDialog():
+    Window("Register"), mStatus(NET_IDLE)
 {
     userLabel = new gcn::Label("Name:");
-    passLabel = new gcn::Label("Password:");
+    passwordLabel = new gcn::Label("Password:");
+    confirmLabel = new gcn::Label("Confirm:");
     serverLabel = new gcn::Label("Server:");
     userField = new TextField("player");
-    passField = new PasswordField();
+    passwordField = new PasswordField();
+    confirmField = new PasswordField();
     serverField = new TextField();
-    keepCheck = new CheckBox("Keep", false);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
+    maleButton = new RadioButton("Male", "sex", true);
+    maleButton->setEnabled(false);
+    femaleButton = new RadioButton("Female", "sex", false);
+    femaleButton->setEnabled(false);
     registerButton = new Button("Register");
-
-    setContentSize(200, 100);
-
-    userLabel->setPosition(5, 5);
-    passLabel->setPosition(5, 14 + userLabel->getHeight());
-    serverLabel->setPosition(
-            5, 23 + userLabel->getHeight() + passLabel->getHeight());
+    cancelButton = new Button("Cancel");
+    
+    int width = 200;
+    int height = 150;
+    setContentSize(width, height);
+    
     userField->setPosition(65, 5);
-    passField->setPosition(65, 14 + userLabel->getHeight());
-    serverField->setPosition(
-            65, 23 + userLabel->getHeight() + passLabel->getHeight());
     userField->setWidth(130);
-    passField->setWidth(130);
+    passwordField->setPosition(
+            65, userField->getY() + userField->getHeight() + 7);
+    passwordField->setWidth(130);
+    confirmField->setPosition(
+            65, passwordField->getY() + passwordField->getHeight() + 7);
+    confirmField->setWidth(130);
+    serverField->setPosition(
+            65, 23 + confirmField->getY() + confirmField->getHeight() + 7);
     serverField->setWidth(130);
-    keepCheck->setPosition(4, 77);
-    keepCheck->setMarked(config.getValue("remember", 0));
-    cancelButton->setPosition(
-            200 - cancelButton->getWidth() - 5,
-            100 - cancelButton->getHeight() - 5);
-    okButton->setPosition(
-            cancelButton->getX() - okButton->getWidth() - 5,
-            100 - okButton->getHeight() - 5);
-    registerButton->setPosition(keepCheck->getX() + keepCheck->getWidth() + 10,
-            100 - registerButton->getHeight() - 5);
 
-    userField->setEventId("ok");
-    passField->setEventId("ok");
-    serverField->setEventId("ok");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
+    userLabel->setPosition(5, userField->getY() + 1);
+    passwordLabel->setPosition(5, passwordField->getY() + 1);
+    confirmLabel->setPosition(5, confirmField->getY() + 1);
+    serverLabel->setPosition(5, serverField->getY() + 1);
+    
+    femaleButton->setPosition(width - femaleButton->getWidth() - 10,
+                              confirmField->getY() + confirmField->getHeight() + 7);
+    maleButton->setPosition(femaleButton->getX() - maleButton->getWidth() - 5,
+                            femaleButton->getY());
+                            
+    registerButton->setPosition(5, height - registerButton->getHeight() - 5);
+    cancelButton->setPosition(10 + registerButton->getWidth(),
+                              registerButton->getY());
+
+
+    /*userField->setEventId("register");
+    passwordField->setEventId("register");
+    confirmField->setEventId("register");
+    serverField->setEventId("register");*/
     registerButton->setEventId("register");
+    cancelButton->setEventId("cancel");
 
-    userField->addActionListener(this);
-    passField->addActionListener(this);
-    serverField->addActionListener(this);
-    keepCheck->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
+
+    /*userField->addActionListener(this);
+    passwordField->addActionListener(this);
+    confirmField->addActionListener(this);
+    serverField->addActionListener(this);*/
     registerButton->addActionListener(this);
+    cancelButton->addActionListener(this);
 
     add(userLabel);
-    add(passLabel);
+    add(passwordLabel);
     add(serverLabel);
+    add(confirmLabel);
     add(userField);
-    add(passField);
+    add(passwordField);
+    add(confirmField);
     add(serverField);
-    add(keepCheck);
-    add(okButton);
-    add(cancelButton);
+    add(maleButton);
+    add(femaleButton);
     add(registerButton);
+    add(cancelButton);
 
     setLocationRelativeTo(getParent());
     userField->requestFocus();
     userField->setCaretPosition(userField->getText().length());
 
-    if (config.getValue("remember", 0) != 0) {
-        if (config.getValue("username", "") != "") {
-            userField->setText(config.getValue("username", ""));
-            passField->requestFocus();
-        }
-    }
-
     serverField->setText(config.getValue("host", ""));
-
+    
     wrongDataNoticeListener = NULL;
-    wrongLoginNotice = NULL;
-}
-
-LoginDialog::~LoginDialog()
-{
-    if (wrongLoginNotice)
-    {
-        delete wrongLoginNotice;
-    }
+    wrongRegisterNotice = NULL;
 }
 
 void
-LoginDialog::action(const std::string& eventId)
+RegisterDialog::action(const std::string& eventId)
 {
-    if (eventId == "ok")
+    if (eventId == "cancel")
+    {
+        state = EXIT_STATE;
+    }
+    else if (eventId == "register")
     {
         const std::string user = userField->getText();
-        logger->log("Network: Username is %s", user.c_str());
+        logger->log("RegisterDialog::register Username is %s", user.c_str());
 
-        // Store config settings
-        config.setValue("remember", keepCheck->isMarked());
-
-        if (keepCheck->isMarked())
-        {
-            config.setValue("username", user);
-            config.setValue("host", serverField->getText());
-        }
-        else
-        {
-            config.setValue("username", "");
-        }
+        std::stringstream errorMsg;
+        int error = 0;
 
         // Check login
         if (user.length() == 0)
         {
+            // No username
+            errorMsg << "Enter your username first.";
+            error = 1;
+        }
+        else if (user.length() < LEN_MIN_USERNAME)
+        {
+            // Name too short
+            errorMsg << "The username needs to be at least "
+                     << LEN_MIN_USERNAME
+                     << " characters long.";
+            error = 1;
+        }
+        else if (user.length() > LEN_MAX_USERNAME - 1 )
+        {
+            // Name too long
+            errorMsg << "The username needs to be less than "
+                     << LEN_MAX_USERNAME
+                     << " characters long.";
+            error = 1;
+        }
+        else if (passwordField->getText().length() < LEN_MIN_PASSWORD)
+        {
+            // Pass too short
+            errorMsg << "The password needs to be at least "
+                     << LEN_MIN_PASSWORD
+                     << " characters long.";
+            error = 2;
+        }
+        else if (passwordField->getText().length() > LEN_MAX_PASSWORD - 1 )
+        {
+            // Pass too long
+            errorMsg << "The password needs to be less than "
+                     << LEN_MAX_PASSWORD
+                     << " characters long.";
+            error = 2;
+        }
+        else if (passwordField->getText() != confirmField->getText())
+        {
+            // Password does not match with the confirmation one
+            errorMsg << "Passwords do not match.";
+            error = 2;
+        }
+        
+        if (error > 0)
+        {
             wrongDataNoticeListener = new WrongDataNoticeListener();
-            wrongDataNoticeListener->setTarget(this->passField);
-            if (wrongLoginNotice)
+            if (error == 1)
             {
-                delete wrongLoginNotice;
+                wrongDataNoticeListener->setTarget(this->userField);
             }
-            wrongLoginNotice = new OkDialog("Error",
-                     "Enter your username first",
-                     wrongDataNoticeListener);
+            else if (error == 2)
+            {
+                wrongDataNoticeListener->setTarget(this->passwordField);
+                // Reset password confirmation
+                confirmField->setText("");
+            }
+
+            if (wrongRegisterNotice)
+            {
+                delete wrongRegisterNotice;
+            }
+            wrongRegisterNotice = new OkDialog("Error", errorMsg.str(),
+                                            wrongDataNoticeListener);
         }
         else
         {
+            // No errors detected, register the new user.
             const std::string host(config.getValue("host", "animesites.de"));
             short port = (short)config.getValue("port", 0);
             // Attempt to connect to login server
@@ -197,18 +228,10 @@ LoginDialog::action(const std::string& eventId)
             mStatus = NET_CONNECTING;
         }
     }
-    else if (eventId == "cancel")
-    {
-        state = EXIT_STATE;
-    }
-    else if (eventId == "register")
-    {
-        state = REGISTER_STATE;
-    }
 }
 
 void
-LoginDialog::logic()
+RegisterDialog::logic()
 {
     switch (mStatus)
     {
@@ -216,7 +239,7 @@ LoginDialog::logic()
             mStatus = pollConnection();
             break;
         case NET_ERROR:
-            logger->log("Login::Unable to connect");
+            logger->log("Register::Unable to connect");
             errorMessage = "Unable to connect to login server";
             state = ERROR_STATE;
             closeConnection();
@@ -225,7 +248,7 @@ LoginDialog::logic()
         case NET_DATA:
             if (packetReady())
             {
-                checkLogin();
+                checkRegistration();
                 closeConnection();
             }
             else
@@ -236,28 +259,24 @@ LoginDialog::logic()
         case NET_CONNECTED:
             logger->log("Connected...");
             std::string user = userField->getText();
-            const std::string password = passField->getText();
-            if (registration)
+            const std::string password = passwordField->getText();
+            if (femaleButton->isMarked())
+            {
+                user += "_F";
+            }
+            else
             {
                 user += "_M";
             }
-            attemptLogin(user, password);
+            attemptRegistration(user, password);
             mStatus = NET_DATA;
             break;
     }
 }
 
 void
-loginInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = EXIT_STATE;
-    }
-}
-
-void
-LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
+RegisterDialog::attemptRegistration(const std::string& user,
+                                    const std::string& pass)
 {
     // Send login infos
     MessageOut outMsg;
@@ -269,7 +288,7 @@ LoginDialog::attemptLogin(const std::string& user, const std::string& pass)
 }
 
 void
-LoginDialog::checkLogin()
+RegisterDialog::checkRegistration()
 {
     // Receive reply
     MessageIn msg = get_next_message();
@@ -347,4 +366,13 @@ LoginDialog::checkLogin()
         state = ERROR_STATE;
     }
     // Todo: add other packets, also encrypted
+}
+
+void
+registerInputHandler(SDL_KeyboardEvent *keyEvent)
+{
+    if (keyEvent->keysym.sym == SDLK_ESCAPE)
+    {
+        state = EXIT_STATE;
+    }
 }
