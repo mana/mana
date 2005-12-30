@@ -143,7 +143,7 @@ int connectionThread(void *ptr)
     memset(out, '\0', buffer_size);
     in_size = 0;
     out_size = 0;
-    
+
     SDL_mutexP(mMutex);
     logger->log("Network::Started session with %s:%i",
                 iptostring(((IPaddress *)ptr)->host),
@@ -343,13 +343,13 @@ bool packetReady()
             if (in_size >= 4)
             {
                 length = readWord(2);
-                if (in_size >= length)
+                if (in_size >= (unsigned int)length)
                 {
                     ret = true;
                 }
             }
         }
-        else if (in_size >= length)
+        else if (in_size >= (unsigned int)length)
         {
             ret = true;
         }

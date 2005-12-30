@@ -1,11 +1,18 @@
+2005-12-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/chat.cpp, src/gui/chat.h: Applied patch by pclouds to have
+	the chat window temporarily become visible when chatting while it is
+	hidden.
+
 2005-12-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, data/graphics/sprites/items.png,
 	data/items.xml, src/Makefile.am, src/gui/char_select.cpp,
-	src/gui/char_server.cpp, src/gui/login.cpp, src/gui/login.h, src/main.cpp,
-	src/main.h, src/net/network.cpp, src/net/network.h, src/gui/register.cpp,
-	src/gui/register.h: Added a new item, improved smooth login sequence,
-	added a registration window (a lot of duplicated code to be removed).
+	src/gui/char_server.cpp, src/gui/login.cpp, src/gui/login.h,
+	src/main.cpp, src/main.h, src/net/network.cpp, src/net/network.h,
+	src/gui/register.cpp, src/gui/register.h: Added a new item, improved
+	smooth login sequence, added a registration window (a lot of
+	duplicated code to be removed).
 
 2005-12-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -37,7 +44,7 @@
 
 2005-12-26  Duane Bailey  <nayryeliab@gmail.com>
 
-	* src/main.h: fixed define problems with The_Mana_World_private.h
+	* src/main.h: Fixed define problems with The_Mana_World_private.h.
 
 2005-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -42,7 +42,8 @@ extern Graphics *graphics;
 #include "../net/protocol.h"
 
 ChatWindow::ChatWindow(const std::string &logfile):
-    Window("")
+    Window(""),
+    mTmpVisible(false)
 {
     setWindowName("Chat");
     chatlog_file.open(logfile.c_str(), std::ios::out | std::ios::app);
@@ -81,7 +82,8 @@ ChatWindow::~ChatWindow()
     chatlog_file.close();
 }
 
-void ChatWindow::logic()
+void
+ChatWindow::logic()
 {
     chatInput->setPosition(
             chatInput->getBorderSize(),
@@ -98,7 +100,8 @@ void ChatWindow::logic()
     scrollArea->logic();
 }
 
-void ChatWindow::chat_log(std::string line, int own)
+void
+ChatWindow::chat_log(std::string line, int own)
 {
     // Delete overhead from the end of the list
     while ((int)chatlog.size() > items_keep) {
@@ -114,13 +117,13 @@ void ChatWindow::chat_log(std::string line, int own)
     {
         own = BY_SERVER;
     }
-    
+
     int pos = line.find(" : ");
     if (pos > 0) {
         tmp.nick = line.substr(0, pos);
         line.erase(0, pos + 3);
     }
-        
+
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
         case BY_GM:
@@ -148,21 +151,21 @@ void ChatWindow::chat_log(std::string line, int own)
             lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
             break;
     }
-    
+
     // Get the current system time
     time_t t;
     time(&t);
 
     // Format the time string properly
     std::stringstream timeStr;
-    timeStr << "[";
-    timeStr << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
-    timeStr << (int)(((t / 60) / 60) % 24);
-    timeStr << ":";
-    timeStr << (((t / 60) % 60 < 10) ? "0" : "");
-    timeStr << (int)((t / 60) % 60);
-    timeStr << "] ";
-    
+    timeStr << "["
+            << ((((t / 60) / 60) % 24 < 10) ? "0" : "")
+            << (int)(((t / 60) / 60) % 24)
+            << ":"
+            << (((t / 60) % 60 < 10) ? "0" : "")
+            << (int)((t / 60) % 60)
+            << "] ";
+
     line = lineColor + timeStr.str() + tmp.nick + line;
 
     // We look if the Vertical Scroll Bar is set at the max before
@@ -179,12 +182,14 @@ void ChatWindow::chat_log(std::string line, int own)
     }
 }
 
-void ChatWindow::chat_log(CHATSKILL act)
+void
+ChatWindow::chat_log(CHATSKILL act)
 {
     chat_log(const_msg(act), BY_SERVER);
 }
 
-void ChatWindow::action(const std::string& eventId)
+void
+ChatWindow::action(const std::string& eventId)
 {
     if (eventId == "chatinput")
     {
@@ -208,17 +213,38 @@ void ChatWindow::action(const std::string& eventId)
 
         // Remove focus and hide input
         mFocusHandler->focusNone();
+
+        // If the chatWindow is shown up because you want to send a message
+        // It should hide now
+        if (mTmpVisible) {
+            setVisible(false);
+        }
     }
 }
 
-void ChatWindow::requestChatFocus()
+void
+ChatWindow::requestChatFocus()
 {
+    // Make sure chatWindow is visible
+    if (!isVisible())
+    {
+        setVisible(true);
+
+        /*
+         * This is used to hide chatWindow after sending the message. There is
+         * a trick here, because setVisible will set mTmpVisible to false, you
+         * have to put this sentence *after* setVisible, not before it
+         */
+        mTmpVisible = true;
+    }
+
     // Give focus to the chat input
     chatInput->setVisible(true);
     chatInput->requestFocus();
 }
 
-bool ChatWindow::isFocused()
+bool
+ChatWindow::isFocused()
 {
     return chatInput->hasFocus();
 }
@@ -252,7 +278,8 @@ ChatWindow::chat_send(std::string nick, std::string msg)
     outMsg.writeString(msg, msg.length());
 }
 
-std::string ChatWindow::const_msg(CHATSKILL act)
+std::string
+ChatWindow::const_msg(CHATSKILL act)
 {
     std::string msg;
     if (act.success == SKILL_FAILED && act.skill == SKILL_BASIC) {
@@ -329,7 +356,8 @@ std::string ChatWindow::const_msg(CHATSKILL act)
     return msg;
 }
 
-void ChatWindow::keyPress(const gcn::Key &key)
+void
+ChatWindow::keyPress(const gcn::Key &key)
 {
     if (key.getValue() == key.DOWN && curHist != history.end())
     {
@@ -353,8 +381,21 @@ void ChatWindow::keyPress(const gcn::Key &key)
     }
 }
 
-void ChatWindow::setInputText(std::string input_str)
+void
+ChatWindow::setInputText(std::string input_str)
 {
      chatInput->setText(input_str + " ");
      requestChatFocus();
+}
+
+void
+ChatWindow::setVisible(bool isVisible)
+{
+     Widget::setVisible(isVisible);
+
+     /*
+      * For whatever reason, if setVisible is called, the mTmpVisible effect
+      * should be disabled.
+      */
+     mTmpVisible = false;
 }

@@ -185,11 +185,16 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /** Called to set current text */
         void setInputText(std::string input_str);
 
+        /** Override to reset mTmpVisible */
+        void setVisible(bool visible);
+
     private:
         std::ofstream chatlog_file;
+        bool mTmpVisible;
 
         /** One item in the chat log */
-        typedef struct CHATLOG {
+        typedef struct CHATLOG
+        {
             std::string nick;
             std::string text;
             int own;
