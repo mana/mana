@@ -9,12 +9,10 @@
 
 2005-12-29  Jan-Fabian Humann  <malastare@gmx.net>
 
-  * src/gui/gui.cpp: Added rather ugly workaround to prevent a on-start
-	crash by Doener.
-  * src/gui/gui.cpp: Fixed GCC 3.3.6 and 4.x paranthesis problem, patch by
-	r0nny.
-	Fixed popupMenu not showing on items.
-	  
+	* src/gui/gui.cpp: Added rather ugly workaround to prevent a on-start
+	crash by Doener. Fixed GCC 3.3.6 and 4.x paranthesis problem, patch
+	by r0nny. Fixed popupMenu not showing on items.
+
 2005-12-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/gui/popupmenu.cpp, src/net/protocol.cpp: Remove
