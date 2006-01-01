@@ -1,3 +1,10 @@
+2006-01-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Applied patch by pclouds that allows for a faster
+	login sequence by providing the username and password from the command
+	line, and allowing the client to choose the default server and
+	character.
+
 2005-12-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/chat.cpp, src/gui/chat.h: Applied patch by pclouds to have

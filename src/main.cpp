@@ -58,6 +58,7 @@
 #include "gui/ok_dialog.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
+#include "gui/textfield.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -317,29 +318,51 @@ void exit_engine()
     delete logger;
 }
 
+/**
+ * A structure holding the values of various options that can be passed from
+ * the command line.
+ */
 struct Options
 {
-    Options():printHelp(false),skipUpdate(false) {};
+    /**
+     * Constructor.
+     */
+    Options():
+        printHelp(false),
+        skipUpdate(false),
+        chooseDefault(false)
+    {};
 
     bool printHelp;
     bool skipUpdate;
+    bool chooseDefault;
+    std::string username;
+    std::string password;
 };
 
 void printHelp()
 {
-    std::cout << "tmw" << std::endl << std::endl;
-    std::cout << "Options: " << std::endl;
-    std::cout << "  -h --help       : Display this help" << std::endl;
-    std::cout << "     --skipupdate : Skip the update process" << std::endl;
+    std::cout
+        << "tmw" << std::endl << std::endl
+        << "Options: " << std::endl
+        << "  -h --help       : Display this help" << std::endl
+        << "  -u --skipupdate : Skip the update process" << std::endl
+        << "  -U --username   : Login with this username" << std::endl
+        << "  -P --password   : Login with this password" << std::endl
+        << "  -D --default    : Bypass the login process with default settings"
+        << std::endl;
 }
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "h";
+    const char *optstring = "hU:P:D";
 
     const struct option long_options[] = {
-        { "help",       no_argument, 0, 'h' },
-        { "skipupdate", no_argument, 0, 'u' },
+        { "help",       no_argument,       0, 'h' },
+        { "skipupdate", no_argument,       0, 'u' },
+        { "username",   required_argument, 0, 'U' },
+        { "password",   required_argument, 0, 'P' },
+        { "default",    no_argument,       0, 'D' },
         0
     };
 
@@ -357,6 +380,15 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'u':
                 options.skipUpdate = true;
+                break;
+            case 'U':
+                options.username = optarg;
+                break;
+            case 'P':
+                options.password = optarg;
+                break;
+            case 'D':
+                options.chooseDefault = true;
                 break;
         }
     }
@@ -465,22 +497,39 @@ int main(int argc, char *argv[])
                     logger->log("State: LOGIN");
                     currentDialog = new LoginDialog();
                     inputHandler = loginInputHandler;
+
+                    if (!options.username.empty()) {
+                        LoginDialog *loginDialog = (LoginDialog*)currentDialog;
+                        loginDialog->userField->setText(options.username);
+                        loginDialog->passField->setText(options.password);
+                        loginDialog->action("ok");
+                    }
                     break;
+
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog();
                     inputHandler = loginInputHandler;
                     break;
+
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
                     currentDialog = new ServerSelectDialog();
                     inputHandler = charServerInputHandler;
+                    if (options.chooseDefault) {
+                        ((ServerSelectDialog*)currentDialog)->action("ok");
+                    }
                     break;
+
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog();
                     inputHandler = charSelectInputHandler;
+                    if (options.chooseDefault) {
+                        ((CharSelectDialog*)currentDialog)->action("ok");
+                    }
                     break;
+
                 case GAME_STATE:
                     sound.fadeOutMusic(1000);
 
@@ -492,6 +541,7 @@ int main(int argc, char *argv[])
                     logger->log("State: GAME");
                     game();
                     break;
+
                 case UPDATE_STATE:
                     logger->log("State: UPDATE");
                     currentDialog = new UpdaterWindow();
