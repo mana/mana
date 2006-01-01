@@ -90,12 +90,11 @@ class LoginDialog : public Window, public gcn::ActionListener {
         gcn::Button *registerButton;
         int mStatus;
         bool registration;
-        
+
         void attemptLogin(const std::string& user, const std::string& pass);
         void checkLogin();
-        
+
         WrongDataNoticeListener *wrongDataNoticeListener;
-        OkDialog *wrongLoginNotice;
 };
 
 /**

@@ -1,3 +1,9 @@
+2006-01-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/login.cpp, src/gui/login.h: Remove tracking of OkDialog, the
+	garbage collection stuff takes care of deletion and breaks manual
+	tracking.
+
 2006-01-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Applied patch by pclouds that allows for a faster

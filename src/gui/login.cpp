@@ -61,7 +61,6 @@ WrongDataNoticeListener::action(const std::string &eventId)
         target->setText("");
         target->setCaretPosition(0);
         target->requestFocus();
-        //wrongLoginNotice = NULL;
     }
 }
 
@@ -143,15 +142,10 @@ LoginDialog::LoginDialog():
     serverField->setText(config.getValue("host", ""));
 
     wrongDataNoticeListener = NULL;
-    wrongLoginNotice = NULL;
 }
 
 LoginDialog::~LoginDialog()
 {
-    if (wrongLoginNotice)
-    {
-        delete wrongLoginNotice;
-    }
 }
 
 void
@@ -180,12 +174,7 @@ LoginDialog::action(const std::string& eventId)
         {
             wrongDataNoticeListener = new WrongDataNoticeListener();
             wrongDataNoticeListener->setTarget(this->passField);
-            if (wrongLoginNotice)
-            {
-                delete wrongLoginNotice;
-            }
-            wrongLoginNotice = new OkDialog("Error",
-                     "Enter your username first",
+            new OkDialog("Error", "Enter your username first",
                      wrongDataNoticeListener);
         }
         else
