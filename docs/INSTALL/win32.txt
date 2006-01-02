@@ -55,14 +55,8 @@ The easy way is to get our development package which should work with the latest
 CVS (I'll try to update it as much as I can).
 You can find it at:
 
-  http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak (by ElvenProgrammer)
-  http://riekale.com/~rotonen/ (by Rotonen)
+  http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak
 
-
-Elven's devpak is usually more recommended than Rotonen's, but Rotonen's might
-be more up to date, although it might also include stuff like a new compiler
-and such, so it might be more unstable to use, a tweaker / power user oriented
-devpak.
 
 Just install this one and you should be ready to go. (Although please remember
 to remove anything the devpak might overlap before installing, for example the
@@ -70,9 +64,11 @@ previous devpak.) Remember to copy the required dlls from your dll folder in
 the Dev-Cpp root directory, to the folder where you have your copy of The Mana
 World. You also have to add the SDL include folder in your C++ include paths.
 If you can't get the package or you are experiencing problems with it, just
-send me an email at elvenprogrammer@gmail.com or continue reading.(Or to
-joni.orponen@gmail.com if you're using Rotonen's devpak. Coming to bug us on
-the IRC channel is a valid alternative too.)
+send me an email at elvenprogrammer@gmail.com or continue reading. (Coming to
+bug us on the IRC channel is a valid alternative too.)
+
+If you installed the tmw-cvs.DevPak, you already have all you need so you can
+skip ahead to compiling.
 
 Most of the libs have DevPaks that are very easy drop-ins for Dev-C++, without
 any complex actions on your side.
@@ -125,7 +121,7 @@ in the same directory as where you opened the .dev from.
 
 Before you can actually run the executable be sure to copy over the following
 DLLs from your Dev-Cpp/dll directory to the directory containing tmw.exe (or 
-alternatively into your c:\windows\system\):
+alternatively into your c:\windows\system\ for a more universal solution):
 
  SDL.dll
  SDL_image.dll
