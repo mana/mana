@@ -1,3 +1,10 @@
+2005-01-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/login.cpp, src/gui/register.cpp:
+	Smoothed also character creation, buttons are now disabled during
+	connection/data phase.
+
 2006-01-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/login.cpp, src/gui/login.h: Remove tracking of OkDialog, the

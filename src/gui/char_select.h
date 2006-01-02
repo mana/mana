@@ -108,6 +108,8 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          * Constructor.
          */
         CharCreateDialog(Window *parent = NULL);
+        
+        void logic();
 
         void action(const std::string& eventId);
 
@@ -126,12 +128,18 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
 
         PlayerBox *playerBox;
+        
+        int mStatus;
 
         /**
-         * Communicate character creation to the server and receive new char
-         * info.
+         * Communicate character creation to the server.
          */
-        void serverCharCreate();
+        void attemptCharCreate();
+        
+        /**
+         * Receive new char info.
+         */
+        void checkCharCreate();
 };
 
 void charSelectInputHandler(SDL_KeyboardEvent *keyEvent);

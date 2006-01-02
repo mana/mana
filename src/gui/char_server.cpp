@@ -102,6 +102,8 @@ ServerSelectDialog::action(const std::string& eventId)
         const char *host = iptostring(server_info[index]->address);
         short port = server_info[index]->port;
         openConnection(host, port);
+        okButton->setEnabled(false);
+        //cancelButton->setEnabled(false);
         mStatus = NET_CONNECTING;
     }
     else if (eventId == "cancel") {

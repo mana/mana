@@ -225,6 +225,7 @@ RegisterDialog::action(const std::string& eventId)
             short port = (short)config.getValue("port", 0);
             // Attempt to connect to login server
             openConnection(host.c_str(), port);
+            registerButton->setEnabled(false);
             mStatus = NET_CONNECTING;
         }
     }

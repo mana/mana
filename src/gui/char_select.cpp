@@ -124,6 +124,9 @@ void CharSelectDialog::action(const std::string& eventId)
     if (eventId == "ok" && n_character > 0) {
         // Start game
         attemptCharSelect();
+        newCharButton->setEnabled(false);
+        delCharButton->setEnabled(false);
+        selectButton->setEnabled(false);
         mStatus = 1;
     }
     else if (eventId == "cancel") {
@@ -303,7 +306,7 @@ void CharSelectDialog::logic()
 }
 
 CharCreateDialog::CharCreateDialog(Window *parent):
-    Window("Create Character", true, parent)
+    Window("Create Character", true, parent), mStatus(0)
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -369,12 +372,29 @@ CharCreateDialog::CharCreateDialog(Window *parent):
     setLocationRelativeTo(getParent());
 }
 
+void CharCreateDialog::logic()
+{
+    if (mStatus == 1)
+    {
+        if (packetReady())
+        {
+            checkCharCreate();
+        }
+        else
+        {
+            flush();
+        }
+    }
+}
+
 void CharCreateDialog::action(const std::string& eventId)
 {
     if (eventId == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
-            serverCharCreate();
+            attemptCharCreate();
+            createButton->setEnabled(false);
+            mStatus = 1;
         }
         else {
             new OkDialog(this, "Error",
@@ -406,7 +426,7 @@ std::string CharCreateDialog::getName()
     return nameField->getText();
 }
 
-void CharCreateDialog::serverCharCreate()
+void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
     MessageOut outMsg;
@@ -421,7 +441,10 @@ void CharCreateDialog::serverCharCreate()
     outMsg.writeInt8(0);
     outMsg.writeInt16(playerBox->hairColor + 1);
     outMsg.writeInt16(playerBox->hairStyle + 1);
+}
 
+void CharCreateDialog::checkCharCreate()
+{
     MessageIn msg = get_next_message();
 
     if (msg.getId() == 0x006d)
