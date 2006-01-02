@@ -1,4 +1,4 @@
-2005-01-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2006-01-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,
 	src/gui/char_server.cpp, src/gui/login.cpp, src/gui/register.cpp:
