@@ -126,7 +126,9 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      net/packet.h \
 	      net/protocol.cpp \
 	      net/protocol.h \
-	      resources/image.cpp \
+	      net/protocol_trade.cpp \
+          net/protocol_trade.h \
+          resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \

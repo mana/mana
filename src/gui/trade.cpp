@@ -39,7 +39,8 @@
 #include "../item.h"
 
 #include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/protocol_trade.h"
+
 
 #include "../resources/iteminfo.h"
 
@@ -227,10 +228,7 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt32(quantity);
+    trade(*item,quantity);
 }
 
 void TradeWindow::mouseClick(int x, int y, int button, int count)
@@ -299,8 +297,7 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "cancel")
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
+        trade(cancel);   
     }
     else if (eventId == "ok")
     {
@@ -312,20 +309,16 @@ void TradeWindow::action(const std::string &eventId)
             tempMoney[1] << tempInt;
             moneyField->setText(tempMoney[1].str());
             
-            MessageOut outMsg;
-            outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
-            outMsg.writeInt16(0);
-            outMsg.writeInt32(tempInt);
+            trade(tempInt);
+            
         } else {
             moneyField->setText("");
         }
         moneyField->setEnabled(false);
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
+        trade(complete);
     }
     else if (eventId == "trade")
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_TRADE_OK);
+        trade();
     }
 }
