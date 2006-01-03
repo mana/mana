@@ -325,8 +325,14 @@ LoginDialog::checkLogin()
             case 4:
                 errorMessage = "You have been blocked by the GM Team";
                 break;
+            case 6:
+                errorMessage = "You have been banned for 5 minutes";
+                break;
             case 9:
                 errorMessage = "This account is already logged in";
+                break;
+            default:
+                errorMessage = "Unknown error";
                 break;
         }
         skip(msg.getLength());

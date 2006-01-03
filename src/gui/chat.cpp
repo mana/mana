@@ -101,7 +101,7 @@ ChatWindow::logic()
 }
 
 void
-ChatWindow::chat_log(std::string line, int own)
+ChatWindow::chatLog(std::string line, int own)
 {
     // Delete overhead from the end of the list
     while ((int)chatlog.size() > items_keep) {
@@ -183,9 +183,9 @@ ChatWindow::chat_log(std::string line, int own)
 }
 
 void
-ChatWindow::chat_log(CHATSKILL act)
+ChatWindow::chatLog(CHATSKILL act)
 {
-    chat_log(const_msg(act), BY_SERVER);
+    chatLog(const_msg(act), BY_SERVER);
 }
 
 void
@@ -194,6 +194,7 @@ ChatWindow::action(const std::string& eventId)
     if (eventId == "chatinput")
     {
         std::string message = chatInput->getText();
+        printf("Message: %s\n", message.c_str());
 
         if (message.length() > 0) {
             // If message different from previous, put it in the history
@@ -205,7 +206,7 @@ ChatWindow::action(const std::string& eventId)
             curHist = history.end();
 
             // Send the message to the server
-            chat_send(player_info->name.c_str(), message.c_str());
+            chatSend(player_info->name.c_str(), message.c_str());
 
             // Clear the text from the chat input
             chatInput->setText("");
@@ -250,32 +251,25 @@ ChatWindow::isFocused()
 }
 
 void
-ChatWindow::chat_send(std::string nick, std::string msg)
+ChatWindow::chatSend(std::string nick, std::string msg)
 {
     short packetId = CMSG_CHAT_MESSAGE;
 
     // prepare command
     if (msg.substr(0, 1) == "/") {
-        // global announcement
-        /*if(msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE) {
-            msg.erase(0, IS_ANNOUNCE_LENGTH);
-            packid = 0x0099;
-        }*/
         // prepare ordinary message
-        chat_log("Sorry but /commands are not available yet", BY_PLAYER);
+        chatLog("Sorry but /commands are not available yet", BY_SERVER);
     }
     else {
         nick += " : ";
         nick += msg;
         msg = nick;
-        //packetId = 0x008c;
-    }
 
-    // send processed message
-    MessageOut outMsg;
-    outMsg.writeInt16(packetId);
-    outMsg.writeInt16(msg.length() + 4);
-    outMsg.writeString(msg, msg.length());
+        MessageOut outMsg;
+        outMsg.writeInt16(packetId);
+        outMsg.writeInt16(msg.length() + 4);
+        outMsg.writeString(msg, msg.length());
+    }
 }
 
 std::string

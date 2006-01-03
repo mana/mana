@@ -284,7 +284,7 @@ void TradeWindow::action(const std::string &eventId)
         }
 
         if (myInventory->contains(item)) {
-            chatWindow->chat_log("Failed adding item. You can not "
+            chatWindow->chatLog("Failed adding item. You can not "
                     "overlap one kind of item on the window.", BY_SERVER);
             return;
         }

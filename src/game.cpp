@@ -849,7 +849,7 @@ void do_parse()
 
                     std::string chatMsg = msg.readString(chatMsgLength);
 
-                    chatWindow->chat_log(chatMsg, BY_OTHER);
+                    chatWindow->chatLog(chatMsg, BY_OTHER);
 
                     chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
                     being->setSpeech(chatMsg, SPEECH_TIME);
@@ -870,7 +870,7 @@ void do_parse()
 
                     if (msg.getId() == SMSG_PLAYER_CHAT)
                     {
-                        chatWindow->chat_log(chatMsg, BY_PLAYER);
+                        chatWindow->chatLog(chatMsg, BY_PLAYER);
 
                         std::string::size_type pos = chatMsg.find(" : ", 0);
                         if (pos != std::string::npos)
@@ -881,7 +881,7 @@ void do_parse()
                     }
                     else
                     {
-                        chatWindow->chat_log(chatMsg, BY_GM);
+                        chatWindow->chatLog(chatMsg, BY_GM);
                     }
                 }
                 break;
@@ -1125,17 +1125,17 @@ void do_parse()
                 switch (msg.readInt8())
                 {
                     case 0: // Too far away
-                        chatWindow->chat_log("Trading isn't possible. "
+                        chatWindow->chatLog("Trading isn't possible. "
                                              "Trade partner is too far away.",
                                              BY_SERVER);
                         break;
                     case 1: // Character doesn't exist
-                        chatWindow->chat_log("Trading isn't possible. "
+                        chatWindow->chatLog("Trading isn't possible. "
                                              "Character doesn't exist.",
                                              BY_SERVER);
                         break;
                     case 2: // Invite request check failed...
-                        chatWindow->chat_log("Trade cancelled due to an "
+                        chatWindow->chatLog("Trade cancelled due to an "
                                              "unknown reason.", BY_SERVER);
                         break;
                     case 3: // Trade accepted
@@ -1146,11 +1146,11 @@ void do_parse()
                         requestTradeDialogOpen = false;
                         break;
                     case 4: // Trade cancelled
-                        chatWindow->chat_log("Trade cancelled.", BY_SERVER);
+                        chatWindow->chatLog("Trade cancelled.", BY_SERVER);
                         tradeWindow->setVisible(false);
                         break;
                     default: // Shouldn't happen as well, but to be sure
-                        chatWindow->chat_log("Unhandled trade cancel packet",
+                        chatWindow->chatLog("Unhandled trade cancel packet",
                                              BY_SERVER);
                         break;
                 }
@@ -1194,12 +1194,12 @@ void do_parse()
                             break;
                         case 1:
                             // Add item failed - player overweighted
-                            chatWindow->chat_log("Failed adding item. Trade "
+                            chatWindow->chatLog("Failed adding item. Trade "
                                                  "partner is over weighted.",
                                                  BY_SERVER);
                             break;
                         default:
-                            chatWindow->chat_log("Failed adding item for "
+                            chatWindow->chatLog("Failed adding item for "
                                                  "unknown reason.", BY_SERVER);
                             break;
                     }
@@ -1212,13 +1212,13 @@ void do_parse()
                 break;
 
             case SMSG_TRADE_CANCEL:
-                chatWindow->chat_log("Trade canceled.", BY_SERVER);
+                chatWindow->chatLog("Trade canceled.", BY_SERVER);
                 tradeWindow->setVisible(false);
                 tradeWindow->reset();
                 break;
 
             case SMSG_TRADE_COMPLETE:
-                chatWindow->chat_log("Trade completed.", BY_SERVER);
+                chatWindow->chatLog("Trade completed.", BY_SERVER);
                 tradeWindow->setVisible(false);
                 tradeWindow->reset();
                 break;
@@ -1294,7 +1294,7 @@ void do_parse()
                     Sint16 amount = msg.readInt16();
 
                     if (msg.readInt8() == 0) {
-                        chatWindow->chat_log("Failed to use item", BY_SERVER);
+                        chatWindow->chatLog("Failed to use item", BY_SERVER);
                     } else {
                         inventory->getItem(index)->setQuantity(amount);
                     }
@@ -1346,7 +1346,7 @@ void do_parse()
                 {
                     printf("Action: %d/%d", action.bskill, action.success);
                 }
-                chatWindow->chat_log(action);
+                chatWindow->chatLog(action);
                 break;
 
             case SMSG_PLAYER_STAT_UPDATE_1:
@@ -1566,24 +1566,24 @@ void do_parse()
                     }
                 }
                 else {
-                    chatWindow->chat_log("Nothing to sell", BY_SERVER);
+                    chatWindow->chatLog("Nothing to sell", BY_SERVER);
                     current_npc = 0;
                 }
                 break;
 
             case SMSG_NPC_BUY_RESPONSE:
                 if (msg.readInt8() == 0) {
-                    chatWindow->chat_log("Thanks for buying", BY_SERVER);
+                    chatWindow->chatLog("Thanks for buying", BY_SERVER);
                 } else {
-                    chatWindow->chat_log("Unable to buy", BY_SERVER);
+                    chatWindow->chatLog("Unable to buy", BY_SERVER);
                 }
                 break;
 
             case SMSG_NPC_SELL_RESPONSE:
                 if (msg.readInt8() == 0) {
-                    chatWindow->chat_log("Thanks for selling", BY_SERVER);
+                    chatWindow->chatLog("Thanks for selling", BY_SERVER);
                 } else {
-                    chatWindow->chat_log("Unable to sell", BY_SERVER);
+                    chatWindow->chatLog("Unable to sell", BY_SERVER);
                 }
                 break;
 
@@ -1601,7 +1601,7 @@ void do_parse()
                     Sint8 fail = msg.readInt8();
 
                     if (fail > 0) {
-                        chatWindow->chat_log("Unable to pick up item",
+                        chatWindow->chatLog("Unable to pick up item",
                                              BY_SERVER);
                     } else {
                         inventory->addItem(index, itemId, amount,
@@ -1661,7 +1661,7 @@ void do_parse()
             case 0x010c:
                 // Display MVP player
                 msg.readInt32(); // id
-                chatWindow->chat_log("MVP player", BY_SERVER);
+                chatWindow->chatLog("MVP player", BY_SERVER);
                 break;
 
             case SMSG_ITEM_VISIBLE:
@@ -1721,7 +1721,7 @@ void do_parse()
                                 index, equipPoint, type);
 
                     if (type == 0) {
-                        chatWindow->chat_log("Unable to equip.", BY_SERVER);
+                        chatWindow->chatLog("Unable to equip.", BY_SERVER);
                     }
                     else if (equipPoint)
                     {
@@ -1768,7 +1768,7 @@ void do_parse()
                     Sint8 type = msg.readInt8();
 
                     if (type == 0) {
-                        chatWindow->chat_log("Unable to unequip.", BY_SERVER);
+                        chatWindow->chatLog("Unable to unequip.", BY_SERVER);
                         break;
                     }
 
@@ -1836,7 +1836,7 @@ void do_parse()
 
                     switch (type) {
                         case 0:
-                            chatWindow->chat_log("Equip arrows first",
+                            chatWindow->chatLog("Equip arrows first",
                                                  BY_SERVER);
                             break;
                         default:

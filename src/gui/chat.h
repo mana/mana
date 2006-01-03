@@ -130,12 +130,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
          */
-        void chat_log(std::string line, int own);
+        void chatLog(std::string line, int own);
 
         /*
          * Calls original chat_log() after processing the packet.
          */
-        void chat_log(CHATSKILL);
+        void chatLog(CHATSKILL);
 
         /**
          * Performs action.
@@ -177,7 +177,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
         void
-        chat_send(std::string nick, std::string msg);
+        chatSend(std::string nick, std::string msg);
 
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);

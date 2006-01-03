@@ -1,3 +1,9 @@
+2006-01-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/gui/login.cpp,
+	src/gui/trade.cpp: Really disabled /commands and added proper message
+	when logging in and banned.
+
 2006-01-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,
