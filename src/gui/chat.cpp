@@ -32,14 +32,15 @@
 #include "chatinput.h"
 #include "scrollarea.h"
 
-#include "../playerinfo.h"
-#include "../log.h"
-
+#include "../game.h"
 #include "../graphics.h"
-extern Graphics *graphics;
+#include "../log.h"
+#include "../playerinfo.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
+
+extern Graphics *graphics;
 
 ChatWindow::ChatWindow(const std::string &logfile):
     Window(""),
@@ -194,7 +195,6 @@ ChatWindow::action(const std::string& eventId)
     if (eventId == "chatinput")
     {
         std::string message = chatInput->getText();
-        printf("Message: %s\n", message.c_str());
 
         if (message.length() > 0) {
             // If message different from previous, put it in the history
@@ -253,20 +253,50 @@ ChatWindow::isFocused()
 void
 ChatWindow::chatSend(std::string nick, std::string msg)
 {
-    short packetId = CMSG_CHAT_MESSAGE;
-
-    // prepare command
-    if (msg.substr(0, 1) == "/") {
-        // prepare ordinary message
-        chatLog("Sorry but /commands are not available yet", BY_SERVER);
+    // Prepare command
+    if (msg.substr(0, 1) == "/")
+    {
+        /* Some messages are managed client side, while others
+         * require server handling by proper packet. Probably
+         * those if elses should be replaced by protocol calls */
+        if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
+        {
+            msg.erase(0, IS_ANNOUNCE_LENGTH);
+            MessageOut outMsg;
+            outMsg.writeInt16(0x0099);
+            outMsg.writeInt16(msg.length() + 4);
+            outMsg.writeString(msg, msg.length());
+        }
+        else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
+        {
+            chatLog("-- Help --", BY_SERVER);
+            chatLog("/help : Display this help.", BY_SERVER);
+            chatLog("/announce : Global announcement (GM only)", BY_SERVER);
+            chatLog("/where : Display map name", BY_SERVER);
+            chatLog("/who : Display number of online users", BY_SERVER);
+        }
+        else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
+        {
+            chatLog(map_path, BY_SERVER);
+        }
+        else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
+        {
+            MessageOut outMsg;
+            outMsg.writeInt16(0x00c1);
+        }
+        else
+        {
+            chatLog("Unknown command", BY_SERVER);
+        }
     }
+    // Prepare ordinary message
     else {
         nick += " : ";
         nick += msg;
         msg = nick;
 
         MessageOut outMsg;
-        outMsg.writeInt16(packetId);
+        outMsg.writeInt16(CMSG_CHAT_MESSAGE);
         outMsg.writeInt16(msg.length() + 4);
         outMsg.writeString(msg, msg.length());
     }

@@ -196,7 +196,7 @@ void createGuiWindows()
 {
     // Create dialogs
     chatWindow = new ChatWindow(
-            config.getValue("homeDir", "") + std::string("/chatlog.txt"));
+    config.getValue("homeDir", "") + std::string("/chatlog.txt"));
     menuWindow = new MenuWindow();
     statusWindow = new StatusWindow();
     miniStatusWindow = new MiniStatusWindow();
@@ -1911,6 +1911,15 @@ void do_parse()
                 if ((being = findNode(msg.readInt32())))
                 {
                     being->setName(msg.readString(24));
+                }
+                break;
+                
+            case SMSG_WHO_ANSWER:
+                {
+                    std::stringstream userMsg;
+                    userMsg << "Online users: ";
+                    userMsg << msg.readInt32();
+                    chatWindow->chatLog(userMsg.str(), BY_SERVER);
                 }
                 break;
 

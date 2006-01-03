@@ -39,6 +39,7 @@ class Being;
 #define SMSG_PLAYER_STAT_UPDATE_4    0x00bc
 #define SMSG_PLAYER_STAT_UPDATE_5    0x00bd
 #define SMSG_PLAYER_STAT_UPDATE_6    0x00be
+#define SMSG_WHO_ANSWER              0x00c2
 #define SMSG_PLAYER_WARP             0x0091 /**< Warp player to map/location */
 #define SMSG_PLAYER_INVENTORY        0x01ee
 #define SMSG_PLAYER_INVENTORY_ADD    0x00a0

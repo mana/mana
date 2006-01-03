@@ -3,6 +3,8 @@
 	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/gui/login.cpp,
 	src/gui/trade.cpp: Really disabled /commands and added proper message
 	when logging in and banned.
+	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/net/protocol.h:
+	Enabled some /commands.
 
 2006-01-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
