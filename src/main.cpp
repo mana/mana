@@ -363,7 +363,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
-        0
+        { 0 }
     };
 
     while (optind < argc) {
