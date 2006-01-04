@@ -58,6 +58,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
         gcn::Button *newCharButton;
         gcn::Button *delCharButton;
+        gcn::Button *previousButton;
+        gcn::Button *nextButton;
 
         gcn::Label *nameLabel;
         gcn::Label *levelLabel;
@@ -65,13 +67,21 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Label *moneyLabel;
         
         int mStatus;
+        int mCurrentSlot;
 
         PlayerBox *playerBox;
+        
+        void changeSlot(int slot);
 
         /**
          * Communicate character deletion to the server.
          */
-        void serverCharDelete();
+        void attemptCharDelete();
+        
+        /**
+         * Check server answer.
+         */
+        void checkCharDelete();
 
         /**
          * Communicate character selection to the server.
@@ -91,8 +101,10 @@ class CharSelectDialog : public Window, public gcn::ActionListener
             public:
                 CharDeleteConfirm(CharSelectDialog *master);
                 void action(const std::string &eventId);
+                void logic();
             private:
                 CharSelectDialog *master;
+                int mStatus;
         };
 };
 
@@ -107,7 +119,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharCreateDialog(Window *parent = NULL);
+        CharCreateDialog(Window *parent = NULL, int slot = 0);
         
         void logic();
 
@@ -130,6 +142,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         PlayerBox *playerBox;
         
         int mStatus;
+        int mSlot;
 
         /**
          * Communicate character creation to the server.

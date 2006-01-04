@@ -48,18 +48,18 @@ OkDialog::~OkDialog()
 
 void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
-    gcn::Label *userLabel = new gcn::Label(msg);
-    Button *okButton = new Button("OK");
+    textLabel = new gcn::Label(msg);
+    okButton = new Button("Ok");
 
-    int w = userLabel->getWidth() + 20;
-    int h = userLabel->getHeight() + 25 + okButton->getHeight();
+    int w = textLabel->getWidth() + 20;
+    int h = textLabel->getHeight() + 25 + okButton->getHeight();
 
     if (okButton->getWidth() + 10 > w) {
         w = okButton->getWidth() + 10;
     }
 
     setContentSize(w, h);
-    userLabel->setPosition(10, 10);
+    textLabel->setPosition(10, 10);
     okButton->setPosition((w - okButton->getWidth()) / 2,
                           h - 5 - okButton->getHeight());
 
@@ -69,7 +69,7 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
         okButton->addActionListener(listener);
     }
 
-    add(userLabel);
+    add(textLabel);
     add(okButton);
 
     setLocationRelativeTo(getParent());

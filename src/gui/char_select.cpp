@@ -45,29 +45,53 @@
 #include "../net/network.h"
 #include "../net/protocol.h"
 
-
 CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
             "Confirm", "Are you sure you want to delete this character?"),
-    master(m)
+    master(m), mStatus(0)
 {
 }
 
 void CharSelectDialog::CharDeleteConfirm::action(const std::string &eventId)
 {
-    ConfirmDialog::action(eventId);
+    //ConfirmDialog::action(eventId);
     if (eventId == "yes") {
-        master->serverCharDelete();
+        master->attemptCharDelete();
+        ConfirmDialog::yesButton->setEnabled(false);
+        ConfirmDialog::noButton->setEnabled(false);
+        mStatus = 1;
+    }
+    else
+    {
+        ConfirmDialog::action(eventId);
+    }
+}
+
+void CharSelectDialog::CharDeleteConfirm::logic()
+{
+    if (mStatus == 1)
+    {
+        if (packetReady())
+        {
+            master->checkCharDelete();
+            ConfirmDialog::action("yes");
+        }
+        else
+        {
+            flush();
+        }
     }
 }
 
 CharSelectDialog::CharSelectDialog():
-    Window("Select Character"), mStatus(0)
+    Window("Select Character"), mStatus(0), mCurrentSlot(0)
 {
-    selectButton = new Button("OK");
+    selectButton = new Button("Ok");
     cancelButton = new Button("Cancel");
     newCharButton = new Button("New");
     delCharButton = new Button("Delete");
+    previousButton = new Button("Previous");
+    nextButton = new Button("Next");
     nameLabel = new gcn::Label("Name");
     levelLabel = new gcn::Label("Level");
     jobLevelLabel = new gcn::Label("Job Level");
@@ -78,15 +102,19 @@ CharSelectDialog::CharSelectDialog():
     newCharButton->setEventId("new");
     cancelButton->setEventId("cancel");
     delCharButton->setEventId("delete");
+    previousButton->setEventId("previous");
+    nextButton->setEventId("next");
 
     int w = 195;
-    int h = 195;
+    int h = 220;
     setContentSize(w, h);
     playerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
     nameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
     levelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
     jobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
     moneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
+    previousButton->setPosition(5, 170);
+    nextButton->setPosition(previousButton->getWidth() + 10, 170);
     newCharButton->setPosition(5, h - 5 - newCharButton->getHeight());
     delCharButton->setPosition(
             5 + newCharButton->getWidth() + 5,
@@ -103,6 +131,8 @@ CharSelectDialog::CharSelectDialog():
     add(cancelButton);
     add(newCharButton);
     add(delCharButton);
+    add(previousButton);
+    add(nextButton);
     add(nameLabel);
     add(levelLabel);
     add(jobLevelLabel);
@@ -113,35 +143,72 @@ CharSelectDialog::CharSelectDialog():
     cancelButton->addActionListener(this);
     newCharButton->addActionListener(this);
     delCharButton->addActionListener(this);
+    previousButton->addActionListener(this);
+    nextButton->addActionListener(this);
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
     setPlayerInfo(NULL);
 }
 
+void CharSelectDialog::changeSlot(int slot)
+{
+    mCurrentSlot = slot;
+    if (mCurrentSlot < 0)
+    {
+        mCurrentSlot = MAX_SLOT;
+    }
+    else if (mCurrentSlot > MAX_SLOT)
+    {
+        mCurrentSlot = 0;
+    }
+    
+    if (char_info[mCurrentSlot] == NULL)
+    {
+        newCharButton->setEnabled(true);
+    }
+}
+
 void CharSelectDialog::action(const std::string& eventId)
 {
-    if (eventId == "ok" && n_character > 0) {
+    if (eventId == "ok" && n_character > 0)
+    {
         // Start game
-        attemptCharSelect();
         newCharButton->setEnabled(false);
         delCharButton->setEnabled(false);
         selectButton->setEnabled(false);
+        previousButton->setEnabled(false);
+        nextButton->setEnabled(false);
+        attemptCharSelect();
         mStatus = 1;
     }
-    else if (eventId == "cancel") {
+    else if (eventId == "cancel")
+    {
         state = EXIT_STATE;
     }
-    else if (eventId == "new") {
-        if (n_character == 0) {
+    else if (eventId == "new")
+    {
+        if (n_character < MAX_SLOT + 1)
+        {
             // Start new character dialog
-            new CharCreateDialog(this);
+            new CharCreateDialog(this, mCurrentSlot);
         }
-    } else if (eventId == "delete") {
+    }
+    else if (eventId == "delete")
+    {
         // Delete character
-        if (n_character > 0) {
+        if (n_character > 0)
+        {
             new CharDeleteConfirm(this);
         }
+    }
+    else if (eventId == "previous")
+    {
+        changeSlot(mCurrentSlot - 1);
+    }
+    else if (eventId == "next")
+    {
+        changeSlot(mCurrentSlot + 1);
     }
 }
 
@@ -159,10 +226,12 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         levelLabel->setCaption(levelCaption.str());
         jobLevelLabel->setCaption(jobCaption.str());
         moneyLabel->setCaption(moneyCaption.str());
-        newCharButton->setEnabled(false);
-        delCharButton->setEnabled(true);
-        selectButton->setEnabled(true);
-
+        if (mStatus != 1)
+        {
+            newCharButton->setEnabled(false);
+            delCharButton->setEnabled(true);
+            selectButton->setEnabled(true);
+        }
         playerBox->hairStyle = pi->hairStyle - 1;
         playerBox->hairColor = pi->hairColor - 1;
         playerBox->showPlayer = true;
@@ -182,22 +251,25 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
     }
 }
 
-void CharSelectDialog::serverCharDelete()
+void CharSelectDialog::attemptCharDelete()
 {
     // Request character deletion
     MessageOut outMsg;
     outMsg.writeInt16(0x0068);
-    outMsg.writeInt32(char_info[0]->id);
+    outMsg.writeInt32(char_info[mCurrentSlot]->id);
     outMsg.writeString("a@a.com", 40);
+}
 
+void CharSelectDialog::checkCharDelete()
+{
     MessageIn msg = get_next_message();
 
     if (msg.getId() == 0x006f)
     {
         skip(msg.getLength());
-        delete char_info[0];
-        free(char_info);
-        n_character = 0;
+        delete char_info[mCurrentSlot];
+        n_character--;
+        char_info[mCurrentSlot] = NULL;
         setPlayerInfo(NULL);
         new OkDialog(this, "Info", "Player deleted");
     }
@@ -217,7 +289,7 @@ void CharSelectDialog::attemptCharSelect()
     // Request character selection
     MessageOut outMsg;
     outMsg.writeInt16(0x0066);
-    outMsg.writeInt8(0);
+    outMsg.writeInt8(mCurrentSlot);
 }
 
 void
@@ -240,7 +312,16 @@ CharSelectDialog::checkCharSelect()
         map_path = map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
         map_address = msg.readInt32();
         map_port = msg.readInt16();
-        player_info = char_info[0];
+        player_info = char_info[mCurrentSlot];
+        // Clear unselected players infos
+        for (int i = 0; i < MAX_SLOT + 1; i++)
+        {
+            if (i != mCurrentSlot)
+            {
+                delete char_info[i];
+            }
+        }
+        free(char_info);
         state = CONNECTING_STATE;
 
         logger->log("CharSelect: Map: %s", map_path.c_str());
@@ -288,8 +369,9 @@ CharSelectDialog::checkCharSelect()
 
 void CharSelectDialog::logic()
 {
-    if (n_character > 0) {
-        setPlayerInfo(char_info[0]);
+    if (n_character > 0)
+    {
+        setPlayerInfo(char_info[mCurrentSlot]);
     }
     
     if (mStatus == 1)
@@ -305,8 +387,8 @@ void CharSelectDialog::logic()
     }
 }
 
-CharCreateDialog::CharCreateDialog(Window *parent):
-    Window("Create Character", true, parent), mStatus(0)
+CharCreateDialog::CharCreateDialog(Window *parent, int slot):
+    Window("Create Character", true, parent), mStatus(0), mSlot(slot)
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -392,8 +474,8 @@ void CharCreateDialog::action(const std::string& eventId)
     if (eventId == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
-            attemptCharCreate();
             createButton->setEnabled(false);
+            attemptCharCreate();
             mStatus = 1;
         }
         else {
@@ -438,7 +520,7 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);
-    outMsg.writeInt8(0);
+    outMsg.writeInt8(mSlot);
     outMsg.writeInt16(playerBox->hairColor + 1);
     outMsg.writeInt16(playerBox->hairStyle + 1);
 }
@@ -449,64 +531,60 @@ void CharCreateDialog::checkCharCreate()
 
     if (msg.getId() == 0x006d)
     {
-        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*));
-        char_info[0] = new PLAYER_INFO;
+        PLAYER_INFO *tempPlayer = new PLAYER_INFO;
 
-        char_info[0]->id = msg.readInt32();
-        char_info[0]->xp = msg.readInt32();
-        char_info[0]->gp = msg.readInt32();
-        char_info[0]->jobXp = msg.readInt32();
-        char_info[0]->jobLvl = msg.readInt32();
+        tempPlayer->id = msg.readInt32();
+        tempPlayer->xp = msg.readInt32();
+        tempPlayer->gp = msg.readInt32();
+        tempPlayer->jobXp = msg.readInt32();
+        tempPlayer->jobLvl = msg.readInt32();
         msg.skip(8);                          // unknown
         msg.readInt32();                       // option
         msg.readInt32();                       // karma
         msg.readInt32();                       // manner
         msg.skip(2);                          // unknown
-        char_info[0]->hp = msg.readInt16();
-        char_info[0]->maxHp = msg.readInt16();
-        char_info[0]->mp = msg.readInt16();
-        char_info[0]->maxMp = msg.readInt16();
+        tempPlayer->hp = msg.readInt16();
+        tempPlayer->maxHp = msg.readInt16();
+        tempPlayer->mp = msg.readInt16();
+        tempPlayer->maxMp = msg.readInt16();
         msg.readInt16();                       // speed
         msg.readInt16();                       // class
-        char_info[0]->hairStyle = msg.readInt16();
-        char_info[0]->weapon = msg.readInt16();
-        char_info[0]->lvl = msg.readInt16();
+        tempPlayer->hairStyle = msg.readInt16();
+        tempPlayer->weapon = msg.readInt16();
+        tempPlayer->lvl = msg.readInt16();
         msg.readInt16();                       // skill point
         msg.readInt16();                       // head bottom
         msg.readInt16();                       // shield
         msg.readInt16();                       // head option top
         msg.readInt16();                       // head option mid
-        char_info[0]->hairColor = msg.readInt16();
+        tempPlayer->hairColor = msg.readInt16();
         msg.readInt16();                       // unknown
-        char_info[0]->name = msg.readString(24);
-        char_info[0]->STR = msg.readInt8();
-        char_info[0]->AGI = msg.readInt8();
-        char_info[0]->VIT = msg.readInt8();
-        char_info[0]->INT = msg.readInt8();
-        char_info[0]->DEX = msg.readInt8();
-        char_info[0]->LUK = msg.readInt8();
-        char_info[0]->characterNumber = msg.readInt8(); // character number
+        tempPlayer->name = msg.readString(24);
+        tempPlayer->STR = msg.readInt8();
+        tempPlayer->AGI = msg.readInt8();
+        tempPlayer->VIT = msg.readInt8();
+        tempPlayer->INT = msg.readInt8();
+        tempPlayer->DEX = msg.readInt8();
+        tempPlayer->LUK = msg.readInt8();
+        int slot = msg.readInt8(); // character slot
         msg.readInt8();                        // unknown
 
-        n_character = 1;
+        n_character++;
+        char_info[slot] = tempPlayer;
+        windowContainer->scheduleDelete(this);
     }
     else if (msg.getId() == 0x006e)
     {
         new OkDialog(this, "Error", "Failed to create character");
-        n_character = 0;
+        createButton->setEnabled(true);
     }
     else
     {
         new OkDialog(this, "Error", "Unknown error");
-        n_character = 0;
+        createButton->setEnabled(true);
     }
 
     skip(msg.getLength());
-
-    // Remove window when succeeded
-    if (n_character == 1) {
-        windowContainer->scheduleDelete(this);
-    }
 }
 
 void charSelectInputHandler(SDL_KeyboardEvent *keyEvent)

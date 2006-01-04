@@ -24,6 +24,8 @@
 #ifndef _TMW_PLAYERINFO_
 #define _TMW_PLAYERINFO_
 
+#define MAX_SLOT 2
+
 #include <string>
 
 struct PLAYER_INFO
@@ -39,7 +41,6 @@ struct PLAYER_INFO
     char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
     int ATK, ATKBonus, MATK, MATKBonus, DEF, DEFBonus, MDEF;
     int MDEFBonus, HIT, FLEE, FLEEBonus;
-    char characterNumber;
     int totalWeight, maxWeight;
     short weapon;
 };

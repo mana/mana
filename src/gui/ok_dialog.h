@@ -69,6 +69,9 @@ class OkDialog : public Window, public gcn::ActionListener {
          * Initializes the dialog.
          */
         void init(const std::string &msg, gcn::ActionListener *listener);
+        
+        gcn::Label *textLabel;
+        gcn::Button *okButton;
 };
 
 #endif

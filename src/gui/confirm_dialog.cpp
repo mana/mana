@@ -45,20 +45,20 @@ ConfirmDialog::ConfirmDialog(Window *parent, const std::string &title,
 
 void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
 {
-    gcn::Label *userLabel = new gcn::Label(msg);
-    Button *yesButton = new Button("Yes");
-    Button *noButton = new Button("No");
+    textLabel = new gcn::Label(msg);
+    yesButton = new Button("Yes");
+    noButton = new Button("No");
 
-    int w = userLabel->getWidth() + 20;
+    int w = textLabel->getWidth() + 20;
     int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
-    int h = userLabel->getHeight() + 25 + yesButton->getHeight();
+    int h = textLabel->getHeight() + 25 + yesButton->getHeight();
 
     if (w < inWidth + 10) {
         w = inWidth + 10;
     }
 
     setContentSize(w, h);
-    userLabel->setPosition(10, 10);
+    textLabel->setPosition(10, 10);
     yesButton->setPosition(
             (w - inWidth) / 2,
             h - 5 - noButton->getHeight());
@@ -75,7 +75,7 @@ void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
         noButton->addActionListener(listener);
     }
 
-    add(userLabel);
+    add(textLabel);
     add(yesButton);
     add(noButton);
 

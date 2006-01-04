@@ -193,61 +193,60 @@ ServerSelectDialog::checkServerSelect()
 
         // Derive number of characters from message length
         n_character = (msg.getLength() - 24) / 106;
-        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*) * n_character);
+        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*) * (MAX_SLOT+1));
+        for (int i = 0; i < MAX_SLOT + 1; i++)
+            char_info[i] = NULL;
 
         for (int i = 0; i < n_character; i++)
         {
-            char_info[i] = new PLAYER_INFO;
+            PLAYER_INFO *tempPlayer = new PLAYER_INFO;
 
-            char_info[i]->totalWeight = 0;
-            char_info[i]->maxWeight = 0;
-            char_info[i]->lastAttackTime = 0;
-            char_info[i]->id = msg.readInt32();
-            char_info[i]->xp = msg.readInt32();
-            char_info[i]->gp = msg.readInt32();
-            char_info[i]->jobXp = msg.readInt32();
-            char_info[i]->jobLvl = msg.readInt32();
+            tempPlayer->totalWeight = 0;
+            tempPlayer->maxWeight = 0;
+            tempPlayer->lastAttackTime = 0;
+            tempPlayer->id = msg.readInt32();
+            tempPlayer->xp = msg.readInt32();
+            tempPlayer->gp = msg.readInt32();
+            tempPlayer->jobXp = msg.readInt32();
+            tempPlayer->jobLvl = msg.readInt32();
             msg.skip(8);                          // unknown
             msg.readInt32();                       // option
             msg.readInt32();                       // karma
             msg.readInt32();                       // manner
             msg.skip(2);                          // unknown
-            char_info[i]->hp = msg.readInt16();
-            char_info[i]->maxHp = msg.readInt16();
-            char_info[i]->mp = msg.readInt16();
-            char_info[i]->maxMp = msg.readInt16();
+            tempPlayer->hp = msg.readInt16();
+            tempPlayer->maxHp = msg.readInt16();
+            tempPlayer->mp = msg.readInt16();
+            tempPlayer->maxMp = msg.readInt16();
             msg.readInt16();                       // speed
             msg.readInt16();                       // class
-            char_info[i]->hairStyle = msg.readInt16();
-            char_info[i]->weapon = msg.readInt16();
-            char_info[i]->lvl = msg.readInt16();
+            tempPlayer->hairStyle = msg.readInt16();
+            tempPlayer->weapon = msg.readInt16();
+            tempPlayer->lvl = msg.readInt16();
             msg.readInt16();                       // skill point
             msg.readInt16();                       // head bottom
             msg.readInt16();                       // shield
             msg.readInt16();                       // head option top
             msg.readInt16();                       // head option mid
-            char_info[i]->hairColor = msg.readInt16();
+            tempPlayer->hairColor = msg.readInt16();
             msg.readInt16();                       // unknown
-            char_info[i]->name = msg.readString(24);
-            char_info[i]->STR = msg.readInt8();
-            char_info[i]->AGI = msg.readInt8();
-            char_info[i]->VIT = msg.readInt8();
-            char_info[i]->INT = msg.readInt8();
-            char_info[i]->DEX = msg.readInt8();
-            char_info[i]->LUK = msg.readInt8();
-            char_info[i]->characterNumber = msg.readInt8();  // character number
+            tempPlayer->name = msg.readString(24);
+            tempPlayer->STR = msg.readInt8();
+            tempPlayer->AGI = msg.readInt8();
+            tempPlayer->VIT = msg.readInt8();
+            tempPlayer->INT = msg.readInt8();
+            tempPlayer->DEX = msg.readInt8();
+            tempPlayer->LUK = msg.readInt8();
+            int slot = msg.readInt8();  // character slot
             msg.readInt8();                        // unknown
+            
+            char_info[slot] = tempPlayer;
+            
+            logger->log("CharServer: Player: %s (%d)",
+                        char_info[slot]->name.c_str(), slot);
         }
 
         state = CHAR_SELECT_STATE;
-
-        if (n_character > 0)
-        {
-            logger->log("CharServer: Player: %s (Packet ID: %x, Length: %d)",
-                        char_info[0]->name.c_str(), msg.getId(),
-                        msg.getLength());
-        }
-
         skip(msg.getLength());
     }
     else if (msg.getId() == 0x006c)

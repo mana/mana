@@ -59,12 +59,17 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
+        
+        gcn::Button *yesButton;
+        gcn::Button *noButton;
 
     private:
         /**
          * Initializes the dialog.
          */
         void init(const std::string &msg, gcn::ActionListener *listener);
+        
+        gcn::Label *textLabel;
 };
 
 #endif
