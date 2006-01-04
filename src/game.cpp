@@ -344,7 +344,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
     do {
         screenshotCount++;
         filename.str("");
-#ifdef __USE_UNIX98
+#if (defined __USE_UNIX98 || defined __FreeBSD__)
         filename << PHYSFS_getUserDir() << "/";
 #endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";

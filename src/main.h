@@ -29,7 +29,7 @@
 class Image;
 class Sound;
 
-#ifdef __USE_UNIX98
+#if (defined __USE_UNIX98 || defined __FreeBSD__)
 #include "../config.h"
 #elif defined WIN32
 #include "../The_Mana_World_private.h"
@@ -59,10 +59,12 @@ enum {
  * to be able to use strncpy instead of strcpy for
  * security and stability reasons
  */
-#define LEN_MAX_USERNAME    25
-#define LEN_MIN_USERNAME    4
-#define LEN_MAX_PASSWORD    25
-#define LEN_MIN_PASSWORD    4
+enum {
+    LEN_MAX_USERNAME     = 25,
+    LEN_MIN_USERNAME     = 4,
+    LEN_MAX_PASSWORD     = 25,
+    LEN_MIN_PASSWORD     = 4
+};
 
 extern int map_address, char_ID;
 extern short map_port;

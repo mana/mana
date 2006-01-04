@@ -33,7 +33,7 @@
 
 #include <libxml/parser.h>
 
-#ifdef __USE_UNIX98
+#if (defined __USE_UNIX98 || defined __FreeBSD__)
 #include <cerrno>
 #include <sys/stat.h>
 #endif
@@ -136,7 +136,7 @@ void init_engine()
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     std::string homeDir = "";
-#ifndef __USE_UNIX98
+#if !(defined __USE_UNIX98 || defined __FreeBSD__)
     // In Windows and other systems we currently store data next to executable.
     homeDir = ".";
 #else

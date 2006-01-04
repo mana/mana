@@ -1,3 +1,8 @@
+2006-01-04  Icy  <icywolf@web.de>
+
+	* src/game.cpp, src/main.cpp, src/main.h: FreeBSD fixes to The Mana
+	World.
+
 2006-01-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp, src/gui/chat.cpp, src/gui/chat.h, src/gui/login.cpp,
