@@ -51,7 +51,6 @@
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/equipmentwindow.h"
-#include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/minimap.h"
@@ -76,6 +75,7 @@
 #include "resources/imagewriter.h"
 
 extern Graphics *graphics;
+extern gcn::SDLInput *guiInput;
 
 std::string map_path;
 std::string tradePartnerName;
@@ -86,7 +86,6 @@ volatile int tick_time;
 volatile bool action_time = false;
 int server_tick;
 int fps = 0, frame = 0, current_npc = 0;
-bool displayPathToMouse = false;
 Uint16 startX = 0, startY = 0;
 Being *autoTarget = NULL;
 Engine *engine = NULL;
@@ -250,9 +249,6 @@ void createGuiWindows()
     //buddyWindow->setVisible(false);
     helpWindow->setVisible(false);
     debugWindow->setVisible(false);
-
-    // Do not focus any text field
-    gui->focusNone();
 }
 
 /**
@@ -374,7 +370,6 @@ void game()
         {
             do_input();
             engine->logic();
-            gui->logic();
             gameTime++;
         }
 
@@ -625,7 +620,7 @@ void do_input()
 
                     case SDLK_f:
                         // Find path to mouse (debug purpose)
-                        displayPathToMouse = !displayPathToMouse;
+                        engine->toggleDebugPath();
                         used = true;
                         break;
                 }
@@ -821,7 +816,7 @@ void do_parse()
     Being *being;
 
     // We need at least 2 bytes to identify a packet
-    while (in_size >= 2)
+    while (packetReady())
     {
         MessageIn msg = get_next_message();
 

@@ -36,7 +36,6 @@ class Graphics;
 class Image;
 class Item;
 class PopupMenu;
-class WindowContainer;
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)

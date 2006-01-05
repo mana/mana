@@ -116,6 +116,4 @@ class Setup : public Window, public gcn::ActionListener
         bool soundEnabled;
 };
 
-extern Setup *setupWindow;
-
 #endif

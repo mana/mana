@@ -63,6 +63,4 @@ class DebugWindow : public Window, public gcn::ActionListener
 
 };
 
-extern DebugWindow *debugWindow;
-
 #endif

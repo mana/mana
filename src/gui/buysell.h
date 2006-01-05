@@ -57,6 +57,4 @@ class BuySellDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
 };
 
-extern BuySellDialog *buySellDialog;
-
 #endif

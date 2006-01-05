@@ -48,6 +48,4 @@ class ChargeDialog : public Window
         ProgressBar* progBar;
 };
 
-extern ChargeDialog* chargeDialog;
-
 #endif

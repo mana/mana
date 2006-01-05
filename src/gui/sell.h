@@ -102,6 +102,4 @@ class SellDialog : public Window, public gcn::ActionListener,
         int m_amountItems;
 };
 
-extern SellDialog *sellDialog;
-
 #endif

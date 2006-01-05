@@ -60,6 +60,7 @@ Spriteset *weaponset;
 
 
 Engine::Engine():
+    mShowDebugPath(false),
     mCurrentMap(NULL)
 {
     // Load the sprite sets
@@ -177,6 +178,8 @@ void Engine::logic()
             beingIterator++;
         }
     }
+
+    gui->logic();
 }
 
 void Engine::draw(Graphics *graphics)
@@ -215,7 +218,7 @@ void Engine::draw(Graphics *graphics)
 
     // Find a path from the player to the mouse, and draw it. This is for debug
     // purposes.
-    if (displayPathToMouse && mCurrentMap != NULL)
+    if (mShowDebugPath && mCurrentMap != NULL)
     {
         // Get the current mouse position
         int mouseX, mouseY;

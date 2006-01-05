@@ -70,7 +70,5 @@ class MiniStatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *hpLabel, *mpLabel;
 };
 
-extern MiniStatusWindow *miniStatusWindow;
-
 #endif
  

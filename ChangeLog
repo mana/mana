@@ -1,3 +1,10 @@
+2006-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* engine.cpp, engine.h, game.cpp, game.h, gui/buysell.h,
+	gui/chargedialog.h, gui/debugwindow.cpp, gui/debugwindow.h, gui/gui.h,
+	gui/ministatus.h, gui/npc_text.h, gui/sell.h, gui/setup.h: Remove some
+	useless code.
+
 2006-01-04  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/Makefile.am, src/gui/char_select.cpp, src/gui/char_select.h,

@@ -68,7 +68,14 @@ class Engine
          */
         void draw(Graphics *graphics);
 
+        /**
+         * Toggles whether the path debug graphics are shown
+         */
+        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; };
+
     private:
+        bool mShowDebugPath;
+
         Map *mCurrentMap;
         Image *attackTarget;
 };

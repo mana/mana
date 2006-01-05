@@ -22,20 +22,16 @@
  */
 
 #include "debugwindow.h"
-#include "button.h"
-#include "minimap.h"
 
 #include <guichan/widgets/label.hpp>
 #include <sstream>
+#include <SDL_mouse.h>
+
+#include "button.h"
 
 #include "../game.h"
-#include "../graphics.h"
 #include "../engine.h"
 #include "../map.h"
-
-extern Graphics *graphics;
-extern Minimap *minimap;
-extern int frame;
 
 DebugWindow::DebugWindow():
     Window("Debug")

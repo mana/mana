@@ -39,7 +39,6 @@ extern std::string tradePartnerName;
 extern int fps, current_npc;
 extern volatile int tick_time;
 extern int server_tick;
-extern bool displayPathToMouse;
 extern unsigned short startX, startY;
 
 enum {
