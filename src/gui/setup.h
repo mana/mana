@@ -88,6 +88,8 @@ class Setup : public Window, public gcn::ActionListener
          */
         void
         action(const std::string& eventId);
+        
+        void logic();
 
     private:
         ModeListModel *modeListModel;
@@ -95,15 +97,16 @@ class Setup : public Window, public gcn::ActionListener
         // Dialog widgets
         gcn::ListBox *modeList;
         gcn::ScrollArea *scrollArea;
-        gcn::Label *videoLabel, *audioLabel;
         gcn::Label *alphaLabel;
         gcn::Label *sfxLabel, *musicLabel;
+        gcn::Label *calibrateLabel;
         gcn::CheckBox *fsCheckBox;
         gcn::CheckBox *openGLCheckBox;
         gcn::CheckBox *soundCheckBox;
         gcn::CheckBox *customCursorCheckBox;
         gcn::Slider *alphaSlider;
         gcn::Slider *sfxSlider, *musicSlider;
+        gcn::Button *calibrateButton;
         gcn::Button *applyButton, *cancelButton;
         gcn::Button *resetWinsToDefault;
 
@@ -114,6 +117,8 @@ class Setup : public Window, public gcn::ActionListener
         bool openGLEnabled;
         bool customCursorEnabled;
         bool soundEnabled;
+        bool mCalibrating;
+        int leftTolerance, rightTolerance, upTolerance, downTolerance;
 };
 
 #endif

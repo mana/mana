@@ -26,6 +26,7 @@
 #include <iostream>
 #include <sstream>
 
+#include <guichan/widgets/container.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -34,6 +35,7 @@
 #include "ok_dialog.h"
 #include "scrollarea.h"
 #include "slider.h"
+#include "tabbedcontainer.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -49,6 +51,8 @@ extern Graphics *graphics;
 #include "minimap.h"
 #include "skill.h"
 #include "status.h"
+
+extern SDL_Joystick *joypad;
 
 ModeListModel::ModeListModel()
 {
@@ -68,13 +72,13 @@ ModeListModel::ModeListModel()
     }
     else{
         /* Print valid modes */
-        /*logger->log("Available Modes");
+        //logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i) {
-            logger->log("  %dx%d", modes[i]->w, modes[i]->h);
+            //logger->log("  %dx%d", modes[i]->w, modes[i]->h);
             std::stringstream mode;
             mode << (int)modes[i]->w << "x" << (int)modes[i]->h;
             videoModes.push_back(mode.str());
-        }*/
+        }
     }
 }
 
@@ -94,9 +98,9 @@ std::string ModeListModel::getElementAt(int i)
 
 
 Setup::Setup():
-    Window("Setup")
+    Window("Setup"), mCalibrating(false), leftTolerance(0), rightTolerance(0),
+    upTolerance(0), downTolerance(0)
 {
-    videoLabel = new gcn::Label("Video settings");
     modeListModel = new ModeListModel();
     modeList = new ListBox(modeListModel);
     modeList->setEnabled(false);
@@ -109,12 +113,13 @@ Setup::Setup():
     customCursorCheckBox = new CheckBox("Custom cursor");
     alphaLabel = new gcn::Label("Gui opacity");
     alphaSlider = new Slider(0.2, 1.0);
-    audioLabel = new gcn::Label("Audio settings");
     soundCheckBox = new CheckBox("Sound", false);
     sfxSlider = new Slider(0, 128);
     musicSlider = new Slider(0, 128);
     sfxLabel = new gcn::Label("Sfx volume");
     musicLabel = new gcn::Label("Music volume");
+    calibrateLabel = new gcn::Label("Press the button to start calibration");
+    calibrateButton = new Button("Calibrate");
     applyButton = new Button("Apply");
     cancelButton = new Button("Cancel");
     resetWinsToDefault = new Button("Reset Windows");
@@ -127,33 +132,40 @@ Setup::Setup():
     sfxSlider->setEventId("sfx");
     musicSlider->setEventId("music");
     customCursorCheckBox->setEventId("customcursor");
+    calibrateButton->setEventId("calibrate");
 
     // Set dimensions/positions
-    setContentSize(240, 246);
+    int width = 230;
+    int height = 185;
+    setContentSize(width, height);
 
-    videoLabel->setPosition(getWidth() - videoLabel->getWidth() - 5, 10);
-    scrollArea->setDimension(gcn::Rectangle(10, 30, 90, 50));
+    scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 50));
     modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    fsCheckBox->setPosition(110, 30);
-    openGLCheckBox->setPosition(110, 50);
-    customCursorCheckBox->setPosition(110, 70);
-    alphaSlider->setDimension(gcn::Rectangle(10, 100, 100, 10));
-    alphaLabel->setPosition(20 + alphaSlider->getWidth(), 97);
+    fsCheckBox->setPosition(110, 10);
+    openGLCheckBox->setPosition(110, 30);
+    customCursorCheckBox->setPosition(110, 50);
+    alphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
+    alphaLabel->setPosition(20 + alphaSlider->getWidth(), alphaSlider->getY());
 
-    audioLabel->setPosition(getWidth() - videoLabel->getWidth() - 5, 120);
-    soundCheckBox->setPosition(10, 140);
-    sfxSlider->setDimension(gcn::Rectangle(10, 160, 100, 10));
-    musicSlider->setDimension(gcn::Rectangle(10, 180, 100, 10));
-    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 157);
-    musicLabel->setPosition(20 + musicSlider->getWidth(), 177);
-    resetWinsToDefault->setPosition(20, 197);
+    soundCheckBox->setPosition(10, 10);
+    sfxSlider->setDimension(gcn::Rectangle(10, 30, 100, 10));
+    musicSlider->setDimension(gcn::Rectangle(10, 50, 100, 10));
+    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 27);
+    musicLabel->setPosition(20 + musicSlider->getWidth(), 47);
+    
+    calibrateLabel->setPosition(5, 10);
+    calibrateButton->setPosition(10, 20 + calibrateLabel->getHeight());
+    
     cancelButton->setPosition(
-            getWidth() - 10 - cancelButton->getWidth(),
-            getHeight() - 25 - cancelButton->getHeight());
+            width - cancelButton->getWidth() - 5,
+            height - cancelButton->getHeight() - 5);
     applyButton->setPosition(
-            cancelButton->getX() - 10 - applyButton->getWidth(),
-            getHeight() - 25 - applyButton->getHeight());
-
+            cancelButton->getX() - applyButton->getWidth() - 5,
+            cancelButton->getY());
+    resetWinsToDefault->setPosition(
+            applyButton->getX() - resetWinsToDefault->getWidth() - 5,
+            applyButton->getY());
+               
     // Listen for actions
     applyButton->addActionListener(this);
     cancelButton->addActionListener(this);
@@ -162,21 +174,38 @@ Setup::Setup():
     sfxSlider->addActionListener(this);
     musicSlider->addActionListener(this);
     customCursorCheckBox->addActionListener(this);
+    calibrateButton->addActionListener(this);
 
     // Assemble dialog
-    add(videoLabel);
-    add(scrollArea);
-    add(fsCheckBox);
-    add(openGLCheckBox);
-    add(customCursorCheckBox);
-    add(audioLabel);
-    add(soundCheckBox);
-    add(alphaSlider);
-    add(alphaLabel);
-    add(sfxSlider);
-    add(musicSlider);
-    add(sfxLabel);
-    add(musicLabel);
+    gcn::Container *video = new gcn::Container();
+    video->setOpaque(false);
+    video->add(scrollArea);
+    video->add(fsCheckBox);
+    video->add(openGLCheckBox);
+    video->add(customCursorCheckBox);
+    video->add(alphaSlider);
+    video->add(alphaLabel);
+
+    gcn::Container *audio = new gcn::Container();
+    audio->setOpaque(false);
+    audio->add(soundCheckBox);
+    audio->add(sfxSlider);
+    audio->add(musicSlider);
+    audio->add(sfxLabel);
+    audio->add(musicLabel);
+    
+    gcn::Container *input = new gcn::Container();
+    input->setOpaque(false);
+    input->add(calibrateLabel);
+    input->add(calibrateButton);
+    
+    TabbedContainer *panel = new TabbedContainer();
+    panel->setDimension(gcn::Rectangle(5, 5, 220, 130));
+    panel->setOpaque(false);
+    panel->addTab(video, "Video");
+    panel->addTab(audio, "Audio");
+    panel->addTab(input, "Input");
+    add(panel);
     add(resetWinsToDefault);
     add(applyButton);
     add(cancelButton);
@@ -236,6 +265,28 @@ void Setup::action(const std::string &eventId)
     {
         config.setValue("customcursor",
                 customCursorCheckBox->isMarked() ? 1 : 0);
+    }
+    else if (eventId == "calibrate" && joypad != NULL)
+    {
+        if (mCalibrating)
+        {
+            calibrateButton->setCaption("Calibrate");
+            calibrateLabel->setCaption("Press the button to start calibration");
+            config.setValue("leftTolerance", leftTolerance);
+            config.setValue("rightTolerance", rightTolerance);
+            config.setValue("upTolerance", upTolerance);
+            config.setValue("downTolerance", downTolerance);            
+        }
+        else
+        {
+            calibrateButton->setCaption("Stop");
+            calibrateLabel->setCaption("Rotate the stick");          
+            leftTolerance = 0;
+            rightTolerance = 0;
+            upTolerance = 0;
+            downTolerance = 0;  
+        }
+        mCalibrating = !mCalibrating;
     }
     else if (eventId == "apply")
     {
@@ -351,5 +402,33 @@ void Setup::action(const std::string &eventId)
         equipmentWindow->resetToDefaultSize();
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
+    }
+}
+
+void Setup::logic()
+{
+    Window::logic();
+    if (mCalibrating)
+    {
+        SDL_JoystickUpdate();
+        int position = SDL_JoystickGetAxis(joypad, 0);
+        if (position > rightTolerance)
+        {
+            rightTolerance = position;
+        }
+        else if (position < leftTolerance)
+        {
+            leftTolerance = position;
+        }
+        
+        position = SDL_JoystickGetAxis(joypad, 1);
+        if (position > downTolerance)
+        {
+            downTolerance = position;
+        }
+        else if (position < upTolerance)
+        {
+            upTolerance = position;
+        }
     }
 }

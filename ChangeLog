@@ -1,6 +1,10 @@
 2006-01-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_9-1.tmx.gz: Crush fixed the issues reported on wiki.
+	* The Mana World.dev, src/game.cpp, src/gui/setup.cpp, src/gui/setup.h,
+	src/main.cpp: Removed --skipupdate option from Dev.Cpp project file,
+	splitted the setup window into 3 tabs and added a joystick calibration
+	tool.
 	
 2006-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

@@ -301,8 +301,6 @@ void do_init()
 
     player_node->setWeapon(player_info->weapon);
 
-    remove("packet.list");
-
     // Initialize joypad
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);
     //SDL_JoystickEventState(SDL_ENABLE);
@@ -423,23 +421,26 @@ void do_input()
     // Get the state of the joypad axis/buttons
     if (joypad != NULL)
     {
-        // TODO: one different value of tolerance is needed for each direction
-        // This probably means the need for a tuning utility/window
-        int tolerance = (int)config.getValue("joytolerance", 100);
+        int lowerTolerance = (int)config.getValue("leftTolerance", -100);
+        int upperTolerance = (int)config.getValue("rightTolerance", 100);
         SDL_JoystickUpdate();
-        if (SDL_JoystickGetAxis(joypad, 0) > tolerance)
+        int position = SDL_JoystickGetAxis(joypad, 0);
+        if (position >= upperTolerance)
         {
             joy[JOY_RIGHT] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 0) < -tolerance)
+        else if (position <= lowerTolerance)
         {
             joy[JOY_LEFT] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 1) < -tolerance)
+        lowerTolerance = (int)config.getValue("upTolerance", -100);
+        upperTolerance = (int)config.getValue("downTolerance", 100);
+        position = SDL_JoystickGetAxis(joypad, 1);
+        if (position <= lowerTolerance)
         {
             joy[JOY_UP] = true;
         }
-        if (SDL_JoystickGetAxis(joypad, 1) > tolerance)
+        else if (position >= upperTolerance)
         {
             joy[JOY_DOWN] = true;
         }

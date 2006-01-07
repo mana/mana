@@ -198,7 +198,6 @@ void init_engine()
     config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
     config.setValue("homeDir", homeDir);
-    config.setValue("joytolerance", 100);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
