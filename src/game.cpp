@@ -1131,7 +1131,7 @@ void do_parse()
                                              BY_SERVER);
                         break;
                     case 2: // Invite request check failed...
-                        chatWindow->chatLog("Trade cancelled due to an "
+                        chatWindow->chatLog("Trade canceled due to an "
                                              "unknown reason.", BY_SERVER);
                         break;
                     case 3: // Trade accepted
@@ -1141,8 +1141,8 @@ void do_parse()
                         tradeWindow->setVisible(true);
                         requestTradeDialogOpen = false;
                         break;
-                    case 4: // Trade cancelled
-                        chatWindow->chatLog("Trade cancelled.", BY_SERVER);
+                    case 4: // Trade canceled
+                        chatWindow->chatLog("Trade canceled.", BY_SERVER);
                         tradeWindow->setVisible(false);
                         break;
                     default: // Shouldn't happen as well, but to be sure

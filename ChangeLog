@@ -1,3 +1,7 @@
+2006-01-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp: Fixed canceled/cancelled inconsistency.
+
 2006-01-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_9-1.tmx.gz: Crush fixed the issues reported on wiki.
