@@ -1,3 +1,7 @@
+2006-01-10  Philipp Sehmisch <tmw@crushnet.org>
+	* data/graphics/tiles/Woodland.png: color modifications
+	* data/maps/new_9-1.tmx.gz: some more errors fixed
+	
 2006-01-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixed canceled/cancelled inconsistency.
@@ -9,7 +13,7 @@
 	src/main.cpp: Removed --skipupdate option from Dev.Cpp project file,
 	splitted the setup window into 3 tabs and added a joystick calibration
 	tool.
-	
+
 2006-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* engine.cpp, engine.h, game.cpp, game.h, gui/buysell.h,
@@ -24,7 +28,7 @@
 	src/gui/confirm_dialog.h, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
 	src/gui/trade.cpp, src/playerinfo.h: Reverted r0nny changes, enabled 3
 	slots to create players, smoothed player deletion.
-	
+
 2006-01-04  Icy  <icywolf@web.de>
 
 	* src/game.cpp, src/main.cpp, src/main.h: FreeBSD fixes to The Mana
@@ -509,7 +513,7 @@
 	the screenshots facility.
 
 2005-19-22  Duane Bailey  <nayryeliab@gmail.com>
-	
+
 	* src/net/win2mac.h, src/net/win2mac.cpp: Removed
 	* src/net/network.h, src/net/messagein.h, src/net/messageout.h:
 	Removed references to win2mac.h
@@ -1241,9 +1245,9 @@
 	* src/graphics.cpp, src/graphics.h, src/main.cpp, src/main.h,
 	src/gui/setup.cpp: Moved graphics setup code into the graphics class.
 
-2005-08-02  Marcel W. Wysocki  <maci@satgnu.org> 
+2005-08-02  Marcel W. Wysocki  <maci@satgnu.org>
 
-	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking 
+	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking
 	on setup button while dialog is opened
 
 2005-08-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
