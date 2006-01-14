@@ -65,7 +65,7 @@ WrongDataNoticeListener::action(const std::string &eventId)
 }
 
 LoginDialog::LoginDialog():
-    Window("Login"), mStatus(NET_IDLE), registration(false)
+    Window("Login"), mStatus(NET_IDLE)
 {
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
@@ -229,10 +229,6 @@ LoginDialog::logic()
             logger->log("Connected...");
             std::string user = userField->getText();
             const std::string password = passField->getText();
-            if (registration)
-            {
-                user += "_M";
-            }
             attemptLogin(user, password);
             mStatus = NET_DATA;
             break;

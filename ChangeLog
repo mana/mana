@@ -1,4 +1,8 @@
-2006-01-10  Philipp Sehmisch <tmw@crushnet.org>
+2006-01-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/login.cpp, src/gui/login.h: Removed unused var.
+
+2006-01-10  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/Woodland.png: color modifications
 	* data/maps/new_9-1.tmx.gz: some more errors fixed
