@@ -1,7 +1,8 @@
 2006-01-10  Philipp Sehmisch <tmw@crushnet.org>
+
 	* data/graphics/tiles/Woodland.png: color modifications
 	* data/maps/new_9-1.tmx.gz: some more errors fixed
-	
+
 2006-01-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixed canceled/cancelled inconsistency.
