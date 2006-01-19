@@ -11,7 +11,7 @@
  
  or come visit us on our IRC channel:
  
-##2     #manaworld ##P@##2 irc.freenode.net
+##2     #themanaworld ##P@##2 irc.freenode.net
  
  Otherwise see the @@team|Development Team@@ section to have a list of
  developers and how to contact them.

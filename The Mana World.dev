@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=176
+UnitCount=178
 Type=0
 Ver=1
 ObjFiles=
@@ -32,19 +32,19 @@ CompilerSettings=0010001001001001001001
 [VersionInfo]
 Major=0
 Minor=0
-Release=18
-Build=1
+Release=19
+Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.18.1
+FileVersion=0.0.19
 FileDescription=The Mana World
 InternalName=tmw.exe
-LegalCopyright=2004-2005 (C)
+LegalCopyright=2004-2006 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.18.1
+ProductVersion=0.0.19
 AutoIncBuildNr=0
 
 [Unit8]
@@ -1418,16 +1418,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit145]
-FileName=src\playerinfo.h
-CompileCpp=1
-Folder=header
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit146]
 FileName=src\serverinfo.h
 CompileCpp=1
 Folder=header
@@ -1437,7 +1427,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit147]
+[Unit146]
 FileName=src\openglgraphics.h
 CompileCpp=1
 Folder=header
@@ -1447,7 +1437,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit148]
+[Unit147]
 FileName=src\openglgraphics.cpp
 CompileCpp=1
 Folder=
@@ -1457,10 +1447,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit149]
+[Unit148]
 FileName=src\gui\tabbedcontainer.h
 CompileCpp=1
 Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit149]
+FileName=src\gui\tabbedcontainer.cpp
+CompileCpp=1
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
@@ -1478,16 +1478,6 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit150]
-FileName=src\gui\tabbedcontainer.cpp
-CompileCpp=1
-Folder=gui/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit151]
 FileName=src\resources\sdlimageloader.cpp
 CompileCpp=1
 Folder=resources
@@ -1497,7 +1487,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit152]
+[Unit151]
 FileName=src\resources\sdlimageloader.h
 CompileCpp=1
 Folder=resources
@@ -1507,7 +1497,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit153]
+[Unit152]
 FileName=src\net\messageout.cpp
 CompileCpp=1
 Folder=net/source
@@ -1517,7 +1507,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit154]
+[Unit153]
 FileName=src\net\messageout.h
 CompileCpp=1
 Folder=net/header
@@ -1527,7 +1517,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit155]
+[Unit154]
 FileName=src\net\packet.cpp
 CompileCpp=1
 Folder=net/source
@@ -1537,7 +1527,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit156]
+[Unit155]
 FileName=src\net\packet.h
 CompileCpp=1
 Folder=net/header
@@ -1547,7 +1537,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit157]
+[Unit156]
 FileName=src\net\messagein.cpp
 CompileCpp=1
 Folder=net/source
@@ -1557,7 +1547,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit158]
+[Unit157]
 FileName=src\net\messagein.h
 CompileCpp=1
 Folder=net/header
@@ -1567,17 +1557,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit166]
-FileName=src\gui\error.h
+[Unit158]
+FileName=src\gui\menuwindow.cpp
 CompileCpp=1
-Folder=gui/header
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit167]
+[Unit166]
 FileName=src\gui\debugwindow.h
 CompileCpp=1
 Folder=gui/header
@@ -1587,10 +1577,20 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit160]
-FileName=src\gui\menuwindow.h
+[Unit167]
+FileName=src\gui\debugwindow.cpp
 CompileCpp=1
-Folder=gui/header
+Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit160]
+FileName=src\gui\ministatus.cpp
+CompileCpp=1
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
@@ -1598,9 +1598,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit161]
-FileName=src\gui\ministatus.cpp
+FileName=src\gui\ministatus.h
 CompileCpp=1
-Folder=gui/source
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000
@@ -1628,17 +1628,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit159]
-FileName=src\gui\menuwindow.cpp
-CompileCpp=1
-Folder=gui/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit162]
-FileName=src\gui\ministatus.h
+FileName=src\gui\menuwindow.h
 CompileCpp=1
 Folder=gui/header
 Compile=1
@@ -1647,7 +1637,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit163]
+[Unit162]
 FileName=src\resources\imagewriter.cpp
 CompileCpp=1
 Folder=resources
@@ -1657,7 +1647,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit164]
+[Unit163]
 FileName=src\resources\imagewriter.h
 CompileCpp=1
 Folder=resources
@@ -1667,7 +1657,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit165]
+[Unit164]
 FileName=src\gui\error.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1677,17 +1667,17 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit168]
-FileName=src\gui\debugwindow.cpp
+[Unit165]
+FileName=src\gui\error.h
 CompileCpp=1
-Folder=gui/source
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit169]
+[Unit168]
 FileName=src\gui\connection.h
 CompileCpp=1
 Folder=gui/header
@@ -1697,7 +1687,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit170]
+[Unit169]
 FileName=src\gui\connection.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1707,7 +1697,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit171]
+[Unit170]
 FileName=src\gui\gccontainer.h
 CompileCpp=1
 Folder=gui/header
@@ -1717,7 +1707,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit172]
+[Unit171]
 FileName=src\gui\gccontainer.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1727,7 +1717,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit173]
+[Unit172]
 FileName=src\gui\login.h
 CompileCpp=1
 Folder=gui/header
@@ -1737,7 +1727,7 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit174]
+[Unit173]
 FileName=src\gui\login.cpp
 CompileCpp=1
 Folder=gui/source
@@ -1747,18 +1737,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit176]
-FileName=src\gui\register.cpp
-CompileCpp=1
-Folder=gui/source
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
-[Unit177]
-FileName=src\gui\gccontainer.h
+[Unit174]
+FileName=src\gui\register.h
 CompileCpp=1
 Folder=gui/header
 Compile=1
@@ -1767,10 +1747,30 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit178]
-FileName=src\gui\gccontainer.cpp
+[Unit176]
+FileName=src\tileset.h
 CompileCpp=1
-Folder=gui/source
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit177]
+FileName=src\properties.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit178]
+FileName=src\sprite.h
+CompileCpp=1
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -1808,9 +1808,9 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit175]
-FileName=src\gui\register.h
+FileName=src\gui\register.cpp
 CompileCpp=1
-Folder=gui/header
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
@@ -1831,6 +1831,96 @@ BuildCmd=
 FileName=src\gui\minimap.h
 CompileCpp=1
 Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit179]
+FileName=src\localplayer.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit180]
+FileName=src\localplayer.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit181]
+FileName=src\monster.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit182]
+FileName=src\monster.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit183]
+FileName=src\player.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit184]
+FileName=src\player.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit185]
+FileName=src\properties.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit186]
+FileName=src\sprite.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit187]
+FileName=src\sprite.h
+CompileCpp=1
+Folder=header
 Compile=1
 Link=1
 Priority=1000

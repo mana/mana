@@ -7,7 +7,7 @@ Email:    Bertram@cegetel.net
 The Mana World project
 ======================
 Homepage: http://themanaworld.org/
-IRC:      irc.freenode.net / #manaworld
+IRC:      irc.freenode.net / #themanaworld
 
 1) Installing The Mana World and dependencies
 2) Creating a Debian Package using DebHelper Tools

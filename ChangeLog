@@ -1,3 +1,9 @@
+2006-01-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* INSTALL, README, The Mana World.dev, data/help/support.txt,
+	docs/INSTALL/debian.txt, docs/INSTALL/win32.txt, docs/progression.txt:
+	Updated infos on new irc channel.
+
 2006-01-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/login.cpp, src/gui/login.h: Removed unused var.

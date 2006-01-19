@@ -4,7 +4,7 @@ How setup Dev-C++ to compile TMW on a Win32 Box
 The Mana World project
 ======================
 Homepage: themanaworld.sourceforge.net
-IRC:      irc.freenode.net / #manaworld
+IRC:      irc.freenode.net / #themanaworld
 
 
 0. Index
