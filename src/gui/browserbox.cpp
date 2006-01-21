@@ -172,7 +172,55 @@ void BrowserBox::addRow(const std::string& row)
         if (w > getWidth())
             setWidth(w);
     }
-    setHeight(browserFont->getHeight() * mTextRows.size());
+    
+    if (mMode == AUTO_WRAP)
+    {
+        unsigned int i, j, x = 0, y = 0;
+        unsigned int nextChar;
+        char hyphen = '~';
+        int hyphenWidth = browserFont->getWidth(hyphen);
+        for (i = 0; i < mTextRows.size(); i++)
+        {
+            std::string row = mTextRows[i];
+            for (j = 0; j < row.size(); j++)
+            {
+                x += browserFont->getWidth(row.at(j));
+                nextChar = j + 1;
+
+                // Wraping between words (at blank spaces)
+                if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
+                {
+                    int nextSpacePos = row.find(" ", (nextChar + 1));
+                    if (nextSpacePos <= 0)
+                    {
+                        nextSpacePos = row.size() - 1;
+                    }
+                    int nextWordWidth = browserFont->getWidth(
+                            row.substr(nextChar,
+                                (nextSpacePos - nextChar)));
+
+                    if ((int)(x + nextWordWidth + 10) > getWidth())
+                    {
+                        x = 15; // Ident in new line
+                        y += 1;
+                        j++;
+                    }
+                }
+                // Wrapping looong lines (brutal force)
+                else if ((int)(x + 2 * hyphenWidth) > getWidth())
+                {
+                    x = 15; // Ident in new line
+                    y += 1;
+                }
+            }
+        }
+        
+        setHeight(browserFont->getHeight() * (mTextRows.size() + y));
+    }
+    else
+    {
+        setHeight(browserFont->getHeight() * mTextRows.size());
+    }
 }
 
 void BrowserBox::clearRows()

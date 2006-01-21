@@ -1,3 +1,9 @@
+2006-01-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/browserbox.cpp: Applied a patch by Ar2ro that works around
+	the problems with line wrapping in the chatbox. Note though that this
+	while code should be properly rewritten later.
+
 2006-01-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* INSTALL, README, The Mana World.dev, data/help/support.txt,
