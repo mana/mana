@@ -175,10 +175,11 @@ void BrowserBox::addRow(const std::string& row)
     
     if (mMode == AUTO_WRAP)
     {
-        unsigned int i, j, x = 0, y = 0;
+        unsigned int i, j, y = 0;
         unsigned int nextChar;
         char hyphen = '~';
         int hyphenWidth = browserFont->getWidth(hyphen);
+	int x = 0;
         for (i = 0; i < mTextRows.size(); i++)
         {
             std::string row = mTextRows[i];
@@ -199,7 +200,7 @@ void BrowserBox::addRow(const std::string& row)
                             row.substr(nextChar,
                                 (nextSpacePos - nextChar)));
 
-                    if ((int)(x + nextWordWidth + 10) > getWidth())
+                    if ((x + nextWordWidth + 10) > getWidth())
                     {
                         x = 15; // Ident in new line
                         y += 1;
@@ -207,7 +208,7 @@ void BrowserBox::addRow(const std::string& row)
                     }
                 }
                 // Wrapping looong lines (brutal force)
-                else if ((int)(x + 2 * hyphenWidth) > getWidth())
+                else if ((x + 2 * hyphenWidth) > getWidth())
                 {
                     x = 15; // Ident in new line
                     y += 1;
