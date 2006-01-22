@@ -36,6 +36,8 @@
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
 #include <cerrno>
 #include <sys/stat.h>
+#elif defined WIN32
+#define NOGDI
 #endif
 
 #include "configuration.h"

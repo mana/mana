@@ -1,3 +1,8 @@
+2006-01-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, src/main.cpp: Updated Dev-Cpp project file, fixed
+	a GDI issue.
+
 2006-01-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/net/network.cpp: Make dispatchMessages actually
