@@ -214,20 +214,20 @@ void Network::clearHandlers()
 
 void Network::dispatchMessages()
 {
-    if (!messageReady())
-        return;
+    while (messageReady())
+    {
+        MessageIn msg = getNextMessage();
 
-    MessageIn msg = getNextMessage();
+        std::map<Uint16, MessageHandler*>::iterator iter;
+        iter = mMessageHandlers.find(msg.getId());
 
-    std::map<Uint16, MessageHandler*>::iterator iter;
-    iter = mMessageHandlers.find(msg.getId());
+        if (iter != mMessageHandlers.end())
+            iter->second->handleMessage(&msg);
+        else
+            logger->log("Unhandled packet: %x", msg.getId());
 
-    if (iter != mMessageHandlers.end())
-        iter->second->handleMessage(&msg);
-    else
-        logger->log("Unhandled packet: %x", msg.getId());
-
-    skip(msg.getLength());
+        skip(msg.getLength());
+    }
 }
 
 void Network::flush()

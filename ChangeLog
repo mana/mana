@@ -1,5 +1,7 @@
 2006-01-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/net/network.cpp: Make dispatchMessages actually
+	handle more than one message per call.
 	* src/main.cpp: Remove obsoleted action listeners.
 	* src/main.cpp: Use generic error method for sound failure.
 	* src/main.cpp, src/net/charserverhandler.cpp,

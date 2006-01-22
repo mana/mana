@@ -369,10 +369,8 @@ void game(Network *network)
         }
 
         // Handle network stuff
-        while(network->messageReady())
-            network->dispatchMessages();
-
         network->flush();
+        network->dispatchMessages();
     }
 
     do_exit(network);
