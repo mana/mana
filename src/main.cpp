@@ -59,7 +59,6 @@
 #include "gui/error.h"
 #include "gui/gui.h"
 #include "gui/login.h"
-#include "gui/ok_dialog.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
@@ -294,7 +293,7 @@ void init_engine()
     }
     catch (const char *err) {
         state = ERROR_STATE;
-        new OkDialog("Sound Engine", err, &initWarningListener);
+        errorMessage = err;
         logger->log("Warning: %s", err);
     }
 

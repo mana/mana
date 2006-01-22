@@ -1,5 +1,6 @@
 2006-01-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/main.cpp: Use generic error method for sound failure.
 	* src/main.cpp, src/net/charserverhandler.cpp,
 	src/net/loginhandler.cpp, src/net/maploginhandler.cpp,
 	src/net/network.cpp: Unify some network stuff in the main loop and fix
