@@ -25,17 +25,14 @@
 
 #include "button.h"
 
-#include "../game.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../npc.h"
 
 BuySellDialog::BuySellDialog():
     Window("Shop")
 {
-    buyButton = new Button("Buy");
-    sellButton = new Button("Sell");
-    cancelButton = new Button("Cancel");
+    gcn::Button *buyButton = new Button("Buy");
+    gcn::Button *sellButton = new Button("Sell");
+    gcn::Button *cancelButton = new Button("Cancel");
 
     buyButton->setPosition(10, 10);
     sellButton->setPosition(
@@ -63,22 +60,13 @@ BuySellDialog::BuySellDialog():
 
 void BuySellDialog::action(const std::string& eventId)
 {
-    int actionId = -1;
-
     if (eventId == "buy") {
-        actionId = 0;
+        current_npc->buy();
     }
     else if (eventId == "sell") {
-        actionId = 1;
+        current_npc->sell();
     } else if (eventId == "cancel") {
         current_npc = 0;
     }
-    if (actionId > -1) {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-        outMsg.writeInt32(current_npc);
-        outMsg.writeInt8(actionId);
-    }
-
     setVisible(false);
 }

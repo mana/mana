@@ -36,13 +36,10 @@
 #include "itemcontainer.h"
 #include "scrollarea.h"
 
-#include "../inventory.h"
 #include "../item.h"
-#include "../playerinfo.h"
+#include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
-
-extern Inventory *inventory;
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")
@@ -56,7 +53,7 @@ InventoryWindow::InventoryWindow():
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
-    items = new ItemContainer(inventory);
+    items = new ItemContainer(player_node->mInventory);
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -98,8 +95,8 @@ void InventoryWindow::logic()
 
     // Update weight information
     std::stringstream tempstr;
-    tempstr << "Total Weight: " << player_info->totalWeight
-            << " - Maximum Weight: " << player_info->maxWeight;
+    tempstr << "Total Weight: " << player_node->totalWeight
+            << " - Maximum Weight: " << player_node->maxWeight;
     weightLabel->setCaption(tempstr.str());
     weightLabel->adjustSize();
 }
@@ -115,14 +112,14 @@ void InventoryWindow::action(const std::string &eventId)
     if (eventId == "use") {
         if (item->isEquipment()) {
             if (item->isEquipped()) {
-                inventory->unequipItem(item);
+                player_node->unequipItem(item);
             }
             else {
-                inventory->equipItem(item);
+                player_node->equipItem(item);
             }
         }
         else {
-            inventory->useItem(item);
+            player_node->useItem(item);
         }
     }
     else if (eventId == "drop")

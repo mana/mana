@@ -25,66 +25,52 @@
 
 #include <sstream>
 #include <string>
-#include <SDL.h>
 
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "confirm_dialog.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
 #include "textfield.h"
 #include "windowcontainer.h"
-#include "../being.h"
+
 #include "../game.h"
-#include "../log.h"
+#include "../localplayer.h"
 #include "../main.h"
-#include "../playerinfo.h"
 
-#include "../net/messagein.h"
 #include "../net/messageout.h"
-#include "../net/network.h"
-#include "../net/protocol.h"
 
-CharSelectDialog::CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
+/**
+ * Listener for confirming character deletion.
+ */
+class CharDeleteConfirm : public ConfirmDialog
+{
+    public:
+        CharDeleteConfirm(CharSelectDialog *master);
+        void action(const std::string &eventId);
+    private:
+        CharSelectDialog *master;
+};
+
+CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog(m,
             "Confirm", "Are you sure you want to delete this character?"),
-    master(m), mStatus(0)
+    master(m)
 {
 }
 
-void CharSelectDialog::CharDeleteConfirm::action(const std::string &eventId)
+void CharDeleteConfirm::action(const std::string &eventId)
 {
     //ConfirmDialog::action(eventId);
     if (eventId == "yes") {
         master->attemptCharDelete();
-        ConfirmDialog::yesButton->setEnabled(false);
-        ConfirmDialog::noButton->setEnabled(false);
-        mStatus = 1;
     }
-    else
-    {
-        ConfirmDialog::action(eventId);
-    }
+    ConfirmDialog::action(eventId);
 }
 
-void CharSelectDialog::CharDeleteConfirm::logic()
-{
-    if (mStatus == 1)
-    {
-        if (packetReady())
-        {
-            master->checkCharDelete();
-            ConfirmDialog::action("yes");
-        }
-        else
-        {
-            flush();
-        }
-    }
-}
-
-CharSelectDialog::CharSelectDialog():
-    Window("Select Character"), mStatus(0), mCurrentSlot(0)
+CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
+    Window("Select Character"), mNetwork(network), mCharInfo(charInfo)
 {
     selectButton = new Button("Ok");
     cancelButton = new Button("Cancel");
@@ -148,25 +134,7 @@ CharSelectDialog::CharSelectDialog():
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
-    setPlayerInfo(NULL);
-}
-
-void CharSelectDialog::changeSlot(int slot)
-{
-    mCurrentSlot = slot;
-    if (mCurrentSlot < 0)
-    {
-        mCurrentSlot = MAX_SLOT;
-    }
-    else if (mCurrentSlot > MAX_SLOT)
-    {
-        mCurrentSlot = 0;
-    }
-    
-    if (char_info[mCurrentSlot] == NULL)
-    {
-        newCharButton->setEnabled(true);
-    }
+    updatePlayerInfo();
 }
 
 void CharSelectDialog::action(const std::string& eventId)
@@ -180,7 +148,6 @@ void CharSelectDialog::action(const std::string& eventId)
         previousButton->setEnabled(false);
         nextButton->setEnabled(false);
         attemptCharSelect();
-        mStatus = 1;
     }
     else if (eventId == "cancel")
     {
@@ -191,33 +158,36 @@ void CharSelectDialog::action(const std::string& eventId)
         if (n_character < MAX_SLOT + 1)
         {
             // Start new character dialog
-            new CharCreateDialog(this, mCurrentSlot);
+            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork);
+            mCharInfo->lock();
         }
     }
     else if (eventId == "delete")
     {
         // Delete character
-        if (n_character > 0)
+        if (mCharInfo->getEntry())
         {
             new CharDeleteConfirm(this);
         }
     }
     else if (eventId == "previous")
     {
-        changeSlot(mCurrentSlot - 1);
+        mCharInfo->prev();
     }
     else if (eventId == "next")
     {
-        changeSlot(mCurrentSlot + 1);
+        mCharInfo->next();
     }
 }
 
-void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
+void CharSelectDialog::updatePlayerInfo()
 {
+    LocalPlayer *pi = mCharInfo->getEntry();
+
     if (pi) {
         std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
 
-        nameCaption << pi->name;
+        nameCaption << pi->getName();
         levelCaption << "Lvl: " << pi->lvl;
         jobCaption << "Job Lvl: " << pi->jobLvl;
         moneyCaption << "Gold: " << pi->gp;
@@ -226,14 +196,11 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
         levelLabel->setCaption(levelCaption.str());
         jobLevelLabel->setCaption(jobCaption.str());
         moneyLabel->setCaption(moneyCaption.str());
-        if (mStatus != 1)
-        {
-            newCharButton->setEnabled(false);
-            delCharButton->setEnabled(true);
-            selectButton->setEnabled(true);
-        }
-        playerBox->hairStyle = pi->hairStyle - 1;
-        playerBox->hairColor = pi->hairColor - 1;
+        newCharButton->setEnabled(false);
+        delCharButton->setEnabled(true);
+        selectButton->setEnabled(true);
+        playerBox->hairStyle = pi->getHairStyle() - 1;
+        playerBox->hairColor = pi->getHairColor() - 1;
         playerBox->showPlayer = true;
     }
     else {
@@ -254,141 +221,29 @@ void CharSelectDialog::setPlayerInfo(PLAYER_INFO *pi)
 void CharSelectDialog::attemptCharDelete()
 {
     // Request character deletion
-    MessageOut outMsg;
+    MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x0068);
-    outMsg.writeInt32(char_info[mCurrentSlot]->id);
+    outMsg.writeInt32(mCharInfo->getEntry()->mLoginId);
     outMsg.writeString("a@a.com", 40);
-}
-
-void CharSelectDialog::checkCharDelete()
-{
-    MessageIn msg = get_next_message();
-
-    if (msg.getId() == 0x006f)
-    {
-        skip(msg.getLength());
-        delete char_info[mCurrentSlot];
-        n_character--;
-        char_info[mCurrentSlot] = NULL;
-        setPlayerInfo(NULL);
-        new OkDialog(this, "Info", "Player deleted");
-    }
-    else if (msg.getId() == 0x0070)
-    {
-        new OkDialog(this, "Error", "Failed to delete character.");
-        skip(msg.getLength());
-    }
-    else {
-        new OkDialog(this, "Error", "Unknown");
-        skip(msg.getLength());
-    }
+    mCharInfo->lock();
 }
 
 void CharSelectDialog::attemptCharSelect()
 {
     // Request character selection
-    MessageOut outMsg;
+    MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x0066);
-    outMsg.writeInt8(mCurrentSlot);
-}
-
-void
-CharSelectDialog::checkCharSelect()
-{
-    // Receive reply
-    MessageIn msg = get_next_message();
-    if (state == ERROR_STATE)
-    {
-        return;
-    }
-
-    logger->log("CharSelect: Packet ID: %x, Length: %d, in_size: %d",
-                msg.getId(), msg.getLength(), in_size);
-
-    if (msg.getId() == 0x0071)
-    {
-        char_ID = msg.readInt32();
-        map_path = "maps/" + msg.readString(16);
-        map_path = map_path.substr(0, map_path.rfind(".")) + ".tmx.gz";
-        map_address = msg.readInt32();
-        map_port = msg.readInt16();
-        player_info = char_info[mCurrentSlot];
-        // Clear unselected players infos
-        for (int i = 0; i < MAX_SLOT + 1; i++)
-        {
-            if (i != mCurrentSlot)
-            {
-                delete char_info[i];
-            }
-        }
-        free(char_info);
-        state = CONNECTING_STATE;
-
-        logger->log("CharSelect: Map: %s", map_path.c_str());
-        logger->log("CharSelect: Server: %s:%i", iptostring(map_address),
-                    map_port);
-        closeConnection();
-    }
-    else if (msg.getId() == 0x006c)
-    {
-        switch (msg.readInt8()) {
-            case 0:
-                errorMessage = "Access denied";
-                break;
-            case 1:
-                errorMessage = "Cannot use this ID";
-                break;
-            default:
-                errorMessage = "Unknown failure to select character";
-                break;
-        }
-        skip(msg.getLength());
-    }
-    else if (msg.getId() == 0x0081)
-    {
-        switch (msg.readInt8()) {
-            case 1:
-                errorMessage = "Map server offline";
-                break;
-            case 3:
-                errorMessage = "Speed hack detected";
-                break;
-            case 8:
-                errorMessage = "Duplicated login";
-                break;
-            default:
-                errorMessage = "Unkown error with 0x0081";
-                break;
-        }
-        closeConnection();
-        state = ERROR_STATE;
-    }
-
-    // Todo: add other packets
+    outMsg.writeInt8(mCharInfo->getPos());
+    mCharInfo->lock();
 }
 
 void CharSelectDialog::logic()
 {
-    if (n_character > 0)
-    {
-        setPlayerInfo(char_info[mCurrentSlot]);
-    }
-    
-    if (mStatus == 1)
-    {
-        if (packetReady())
-        {
-            checkCharSelect();
-        }
-        else
-        {
-            flush();
-        }
-    }
+    updatePlayerInfo();
 }
 
-CharCreateDialog::CharCreateDialog(Window *parent, int slot):
-    Window("Create Character", true, parent), mStatus(0), mSlot(slot)
+CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
+    Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
@@ -454,21 +309,6 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     setLocationRelativeTo(getParent());
 }
 
-void CharCreateDialog::logic()
-{
-    if (mStatus == 1)
-    {
-        if (packetReady())
-        {
-            checkCharCreate();
-        }
-        else
-        {
-            flush();
-        }
-    }
-}
-
 void CharCreateDialog::action(const std::string& eventId)
 {
     if (eventId == "create") {
@@ -476,7 +316,7 @@ void CharCreateDialog::action(const std::string& eventId)
             // Attempt to create the character
             createButton->setEnabled(false);
             attemptCharCreate();
-            mStatus = 1;
+            windowContainer->scheduleDelete(this);
         }
         else {
             new OkDialog(this, "Error",
@@ -511,7 +351,7 @@ std::string CharCreateDialog::getName()
 void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
-    MessageOut outMsg;
+    MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x0067);
     outMsg.writeString(getName(), 24);
     outMsg.writeInt8(5);
@@ -523,74 +363,4 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeInt8(mSlot);
     outMsg.writeInt16(playerBox->hairColor + 1);
     outMsg.writeInt16(playerBox->hairStyle + 1);
-}
-
-void CharCreateDialog::checkCharCreate()
-{
-    MessageIn msg = get_next_message();
-
-    if (msg.getId() == 0x006d)
-    {
-        PLAYER_INFO *tempPlayer = new PLAYER_INFO;
-
-        tempPlayer->id = msg.readInt32();
-        tempPlayer->xp = msg.readInt32();
-        tempPlayer->gp = msg.readInt32();
-        tempPlayer->jobXp = msg.readInt32();
-        tempPlayer->jobLvl = msg.readInt32();
-        msg.skip(8);                          // unknown
-        msg.readInt32();                       // option
-        msg.readInt32();                       // karma
-        msg.readInt32();                       // manner
-        msg.skip(2);                          // unknown
-        tempPlayer->hp = msg.readInt16();
-        tempPlayer->maxHp = msg.readInt16();
-        tempPlayer->mp = msg.readInt16();
-        tempPlayer->maxMp = msg.readInt16();
-        msg.readInt16();                       // speed
-        msg.readInt16();                       // class
-        tempPlayer->hairStyle = msg.readInt16();
-        tempPlayer->weapon = msg.readInt16();
-        tempPlayer->lvl = msg.readInt16();
-        msg.readInt16();                       // skill point
-        msg.readInt16();                       // head bottom
-        msg.readInt16();                       // shield
-        msg.readInt16();                       // head option top
-        msg.readInt16();                       // head option mid
-        tempPlayer->hairColor = msg.readInt16();
-        msg.readInt16();                       // unknown
-        tempPlayer->name = msg.readString(24);
-        tempPlayer->STR = msg.readInt8();
-        tempPlayer->AGI = msg.readInt8();
-        tempPlayer->VIT = msg.readInt8();
-        tempPlayer->INT = msg.readInt8();
-        tempPlayer->DEX = msg.readInt8();
-        tempPlayer->LUK = msg.readInt8();
-        int slot = msg.readInt8(); // character slot
-        msg.readInt8();                        // unknown
-
-        n_character++;
-        char_info[slot] = tempPlayer;
-        windowContainer->scheduleDelete(this);
-    }
-    else if (msg.getId() == 0x006e)
-    {
-        new OkDialog(this, "Error", "Failed to create character");
-        createButton->setEnabled(true);
-    }
-    else
-    {
-        new OkDialog(this, "Error", "Unknown error");
-        createButton->setEnabled(true);
-    }
-
-    skip(msg.getLength());
-}
-
-void charSelectInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = EXIT_STATE;
-    }
 }

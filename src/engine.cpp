@@ -27,9 +27,11 @@
 #include <sstream>
 
 #include "being.h"
+#include "beingmanager.h"
 #include "floor_item.h"
 #include "game.h"
 #include "graphics.h"
+#include "localplayer.h"
 #include "log.h"
 #include "main.h"
 #include "map.h"
@@ -39,6 +41,9 @@
 
 #include "gui/gui.h"
 #include "gui/minimap.h"
+
+#include "net/messageout.h"
+#include "net/protocol.h"
 
 #include "resources/itemmanager.h"
 #include "resources/mapreader.h"
@@ -59,9 +64,10 @@ Spriteset *npcset;
 Spriteset *weaponset;
 
 
-Engine::Engine():
+Engine::Engine(Network *network):
     mShowDebugPath(false),
-    mCurrentMap(NULL)
+    mCurrentMap(NULL),
+    mNetwork(network)
 {
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
@@ -105,24 +111,19 @@ Map *Engine::getCurrentMap()
     return mCurrentMap;
 }
 
-void Engine::changeMap(const std::string &mapPath)
+void Engine::changeMap(std::string mapPath)
 {
     // Clean up floor items
     empty_floor_items();
 
-    // Remove the local player, so it is not deleted
-    if (player_node != NULL)
-    {
-        beings.remove(player_node);
-    }
+    beingManager->clear();
 
-    // Delete all beings (except the local player)
-    std::list<Being*>::iterator i;
-    for (i = beings.begin(); i != beings.end(); i++)
-    {
-        delete (*i);
-    }
-    beings.clear();
+    // Generate full map path
+    mapPath = "maps/" + mapPath;
+    mapPath = mapPath.substr(0, mapPath.rfind(".")) + ".tmx.gz";
+
+    // Store in global var
+    map_path = mapPath;
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(mapPath);
@@ -131,15 +132,12 @@ void Engine::changeMap(const std::string &mapPath)
         logger->error("Could not find map file");
     }
 
-    // Re-add the local player node and transfer him to the newly loaded map
-    if (player_node != NULL)
-    {
-        beings.push_back(player_node);
-        player_node->setMap(newMap);
-    }
-
     // Start playing new music file when necessary
     std::string oldMusic = "";
+
+    // Notify the minimap and beingManager about the map change
+    minimap->setMap(newMap);
+    beingManager->setMap(newMap);
 
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");
@@ -155,15 +153,17 @@ void Engine::changeMap(const std::string &mapPath)
 
     mCurrentMap = newMap;
 
-    // Notify the minimap about the map change
-    minimap->setMap(mCurrentMap);
+    // Send "map loaded"
+    MessageOut outMsg(mNetwork);
+    outMsg.writeInt16(CMSG_MAP_LOADED);
 }
 
 void Engine::logic()
 {
+    Beings *beings = beingManager->getAll();
     // Update beings
-    std::list<Being*>::iterator beingIterator = beings.begin();
-    while (beingIterator != beings.end())
+    Beings::iterator beingIterator = beings->begin();
+    while (beingIterator != beings->end())
     {
         Being *being = (*beingIterator);
 
@@ -172,7 +172,7 @@ void Engine::logic()
         if (being->action == Being::MONSTER_DEAD && being->mFrame >= 20)
         {
             delete being;
-            beingIterator = beings.erase(beingIterator);
+            beingIterator = beings->erase(beingIterator);
         }
         else {
             beingIterator++;
@@ -251,9 +251,21 @@ void Engine::draw(Graphics *graphics)
     }
 
     // Draw player speech
-    for (std::list<Being*>::iterator i = beings.begin(); i != beings.end(); i++)
+    Beings *beings = beingManager->getAll();
+    for (Beings::iterator i = beings->begin(); i != beings->end(); i++)
     {
         (*i)->drawSpeech(graphics, -map_x, -map_y);
+    }
+
+    // Draw target marker if needed
+    Being *target;
+    if ((target = player_node->getTarget()))
+    {
+        graphics->setFont(speechFont);
+        int dy = (target->getType() == Being::PLAYER) ? 90 : 52;
+
+        graphics->drawText("[TARGET]", target->getPixelX() - map_x + 15,
+                target->getPixelY() - map_y  - dy, gcn::Graphics::CENTER);
     }
 
     gui->draw();

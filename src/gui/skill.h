@@ -46,17 +46,6 @@ struct SKILL {
 class SkillDialog : public Window, public gcn::ActionListener,
                     public gcn::ListModel
 {
-    private:
-        gcn::ListBox *skillListBox;
-        gcn::ScrollArea *skillScrollArea;
-        gcn::Label *pointsLabel;
-        gcn::Button *incButton;
-        gcn::Button *useButton;
-        gcn::Button *closeButton;
-
-        std::vector<SKILL*> skillList;
-        int skillPoints;
-
     public:
         /**
          * Constructor.
@@ -70,7 +59,7 @@ class SkillDialog : public Window, public gcn::ActionListener,
 
         void action(const std::string&);
 
-        void setPoints(int i);
+        void update();
 
         int getNumberOfElements();
         std::string getElementAt(int);
@@ -79,6 +68,16 @@ class SkillDialog : public Window, public gcn::ActionListener,
         void addSkill(int id, int lv, int sp);
         void setSkill(int id, int lv, int sp);
         void cleanList();
+
+    private:
+        gcn::ListBox *skillListBox;
+        gcn::ScrollArea *skillScrollArea;
+        gcn::Label *pointsLabel;
+        gcn::Button *incButton;
+        gcn::Button *useButton;
+        gcn::Button *closeButton;
+
+        std::vector<SKILL*> skillList;
 };
 
 extern SkillDialog *skillDialog;

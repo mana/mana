@@ -24,6 +24,7 @@
 #include "minimap.h"
 
 #include "../being.h"
+#include "../beingmanager.h"
 #include "../graphics.h"
 #include "../map.h"
 
@@ -86,38 +87,36 @@ void Minimap::draw(gcn::Graphics *graphics)
                 mMapImage, getPadding(), getTitleBarHeight());
     }
 
-    std::list<Being*>::iterator bi;
+    Beings *beings = beingManager->getAll();
+    Beings::iterator bi;
 
-    for (bi = beings.begin(); bi != beings.end(); bi++)
+    for (bi = beings->begin(); bi != beings->end(); bi++)
     {
         Being *being = (*bi);
+        int dotSize = 1;
 
-        if (being == player_node)
-        {
-            // Player dot
-            graphics->setColor(gcn::Color(209, 52, 61));
-            graphics->fillRectangle(gcn::Rectangle(
-                        being->x / 2 + getPadding() - 1,
-                        being->y / 2 + getTitleBarHeight() - 1, 3, 3));
+        switch (being->getType()) {
+            case Being::LOCALPLAYER:
+                dotSize = 3;
+                graphics->setColor(gcn::Color(209, 52, 61));
+                break;
+
+            case Being::PLAYER:
+                graphics->setColor(gcn::Color(61, 52, 209));
+                break;
+
+            case Being::MONSTER:
+                graphics->setColor(gcn::Color(209, 52, 61));
+                break;
+
+            default:
+                break;
         }
-        else
-        {
-            switch (being->getType()) {
-                case Being::PLAYER:
-                    graphics->setColor(gcn::Color(61, 52, 209));
-                    break;
 
-                case Being::MONSTER:
-                    graphics->setColor(gcn::Color(209, 52, 61));
-                    break;
+        int offset = (dotSize - 1) / 2;
 
-                default:
-                    break;
-            }
-
-            graphics->fillRectangle(gcn::Rectangle(
-                        being->x / 2 + getPadding(),
-                        being->y / 2 + getTitleBarHeight(), 1, 1));
-        }
+        graphics->fillRectangle(gcn::Rectangle(
+                    being->x / 2 + getPadding() - offset,
+                    being->y / 2 + getTitleBarHeight() - offset, 1, 1));
     }
 }

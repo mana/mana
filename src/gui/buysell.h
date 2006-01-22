@@ -28,8 +28,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 /**
  * A dialog to choose between buying or selling at a shop.
  *
@@ -50,11 +48,6 @@ class BuySellDialog : public Window, public gcn::ActionListener
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-
-    private:
-        gcn::Button *buyButton;
-        gcn::Button *sellButton;
-        gcn::Button *cancelButton;
 };
 
 #endif

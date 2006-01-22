@@ -26,11 +26,12 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
-#include <SDL_events.h>
 
 #include "window.h"
 
 #include "../guichanfwd.h"
+
+class SERVER_INFO;
 
 /**
  * The list model for the server list.
@@ -68,9 +69,9 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
         /**
-         * Updates dialog logic
+         * Returns the index of the selected server
          */
-        void logic();
+        SERVER_INFO* getServerInfo();
 
     private:
         ServerListModel *serverListModel;
@@ -78,12 +79,6 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         gcn::Button *okButton;
         gcn::Button *cancelButton;
         gcn::ScrollArea *scrollArea;
-        int mStatus;
-
-        void attemptServerSelect(int index);
-        void checkServerSelect();
 };
-
-void charServerInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

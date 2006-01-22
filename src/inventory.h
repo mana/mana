@@ -60,20 +60,6 @@ class Inventory
         bool contains(Item *item);
 
         /**
-         * Equips an item.
-         */
-        void equipItem(Item *item);
-
-        /**
-         * Unequips an item.
-         */
-        void unequipItem(Item *item);
-
-        int useItem(Item *item);
-
-        int dropItem(Item *item, int quantity);
-
-        /**
          * Returns id of next free slot or -1 if all occupied.
          */
         int getFreeSlot();
@@ -81,7 +67,7 @@ class Inventory
         /**
          * Reset all item slots.
          */
-        void resetItems();
+        void clear();
 
         /**
          * Get the number of slots filled with an item

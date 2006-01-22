@@ -24,41 +24,77 @@
 #ifndef _TMW_NETWORK_
 #define _TMW_NETWORK_
 
-#define NET_ERROR      -1
-#define NET_CONNECTED   0
-#define NET_IDLE        1
-#define NET_CONNECTING  2
-#define NET_DATA        3
+#include <map>
+#include <SDL_net.h>
+#include <SDL_thread.h>
 
+class MessageHandler;
 class MessageIn;
+
+class Network;
+
+class Network
+{
+    public:
+        friend int networkThread(void *data);
+        friend class MessageOut;
+
+        Network();
+        ~Network();
+
+        bool connect(const char *address, short port);
+        void disconnect();
+
+        void registerHandler(MessageHandler *handler);
+        void unregisterHandler(MessageHandler *handler);
+        void clearHandlers();
+
+        int getState() const { return mState; }
+        bool isConnected() const { return mState == CONNECTED; }
+
+        int getInSize() const { return mInSize; }
+
+        void skip(int len);
+
+        bool messageReady();
+        MessageIn getNextMessage();
+
+        void dispatchMessages();
+        void flush();
+
+        enum {
+            IDLE,
+            CONNECTED,
+            CONNECTING,
+            DATA,
+            ERROR
+        };
+
+    protected:
+        Uint16 readWord(int pos);
+
+        TCPsocket mSocket;
+
+        char *mAddress;
+        short mPort;
+
+        char *mInBuffer, *mOutBuffer;
+        unsigned int mInSize, mOutSize;
+
+        unsigned int mToSkip;
+
+        int mState;
+
+        SDL_Thread *mWorkerThread;
+        SDL_mutex *mMutex;
+
+        std::map<Uint16, MessageHandler*> mMessageHandlers;
+
+        bool realConnect();
+        void receive();
+};
 
 /** Convert an address from int format to string */
 char *iptostring(int address);
-
-/** Open a session with a server */
-void openConnection(const char* address, short port);
-
-/** Returns the status of the current connection attempt. */
-int pollConnection();
-
-/** Close a session */
-void closeConnection();
-
-/** Send and receive data waiting in the buffers */
-void flush();
-
-/** Check if a packet is complete */
-bool packetReady();
-
-/**
- * Returns the next arriving message, waiting for it if necessary.
- */
-MessageIn get_next_message();
-extern char *out;
-
-void skip(int len);
-
-extern unsigned int in_size;   /**< Amount of data in input buffer. */
-extern unsigned int out_size;  /**< Amount of data in output buffer. */
 
 #endif

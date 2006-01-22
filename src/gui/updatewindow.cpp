@@ -315,14 +315,6 @@ void UpdaterWindow::download()
     }
 }
 
-void updateInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = EXIT_STATE;
-    }
-}
-
 void UpdaterWindow::logic()
 {
     // Update Scroll logic

@@ -24,10 +24,9 @@
 #ifndef _TMW_EQUIPMENT_H
 #define _TMW_EQUIPMENT_H 
 
-#include <guichan/actionlistener.hpp>
-
 #include "window.h"
 
+class Equipment;
 class Spriteset;
 
 /**
@@ -41,7 +40,7 @@ class EquipmentWindow : public Window
         /**
          * Constructor.
          */
-        EquipmentWindow();
+        EquipmentWindow(Equipment *equipment);
 
         /**
          * Destructor.
@@ -55,6 +54,8 @@ class EquipmentWindow : public Window
 
     private:
         Spriteset *itemset;
+
+        Equipment *mEquipment;
 
 };
 

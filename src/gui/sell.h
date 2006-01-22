@@ -34,6 +34,7 @@
 #include "../guichanfwd.h"
 
 class Item;
+class Network;
 
 struct ITEM_SHOP;
 
@@ -51,7 +52,7 @@ class SellDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        SellDialog();
+        SellDialog(Network *network);
 
         /**
          * Resets the dialog, clearing inventory.
@@ -84,6 +85,7 @@ class SellDialog : public Window, public gcn::ActionListener,
         std::string getElementAt(int i);
 
     private:
+        Network *mNetwork;
         gcn::Button *sellButton;
         gcn::Button *quitButton;
         gcn::Button *increaseButton;

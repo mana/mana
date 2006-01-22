@@ -32,6 +32,7 @@
 
 #include "../guichanfwd.h"
 
+class LocalPlayer;
 class ProgressBar;
 
 
@@ -45,7 +46,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         /**
          * Constructor.
          */
-        StatusWindow();
+        StatusWindow(LocalPlayer *player);
 
          /**
          * Called when receiving actions from widget.
@@ -63,6 +64,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         void update();
 
     private:
+        LocalPlayer *mPlayer;
 
         /**
          * Status Part

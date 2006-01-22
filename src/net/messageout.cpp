@@ -30,63 +30,42 @@
 #include "network.h"
 #include "packet.h"
 
-MessageOut::MessageOut():
-    mPacket(0),
+MessageOut::MessageOut(Network *network):
+    mNetwork(network),
     mData(0),
     mDataSize(0),
     mPos(0)
 {
-    mData = out + out_size;
-}
-
-MessageOut::~MessageOut()
-{
-    if (mPacket) {
-        delete mPacket;
-    }
-
-    // Don't free this data for now, see above.
-    //if (mData) {
-    //    free(mData);
-    //}
-}
-
-void MessageOut::expand(size_t bytes)
-{
-    /*mData = (char*)realloc(mData, bytes);
-    mDataSize = bytes;*/
+    mData = mNetwork->mOutBuffer + mNetwork->mOutSize;
 }
 
 void MessageOut::writeInt8(Sint8 value)
 {
-    expand(mPos + sizeof(Sint8));
     mData[mPos] = value;
     mPos += sizeof(Sint8);
-    out_size += sizeof(Sint8);
+    mNetwork->mOutSize+= sizeof(Sint8);
 }
 
 void MessageOut::writeInt16(Sint16 value)
 {
-    expand(mPos + sizeof(Sint16));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     (*(Sint16 *)(mData + mPos)) = SDL_Swap16(value);
 #else
     (*(Sint16 *)(mData + mPos)) = value;
 #endif
     mPos += sizeof(Sint16);
-    out_size += sizeof(Sint16);
+    mNetwork->mOutSize += sizeof(Sint16);
 }
 
 void MessageOut::writeInt32(Sint32 value)
 {
-    expand(mPos + sizeof(Sint32));
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     (*(Sint32 *)(mData + mPos)) = SDL_Swap32(value);
 #else
     (*(Sint32 *)(mData + mPos)) = value;
 #endif
     mPos += sizeof(Sint32);
-    out_size += sizeof(Sint32);
+    mNetwork->mOutSize += sizeof(Sint32);
 }
 
 void MessageOut::writeString(const std::string &string, int length)
@@ -97,37 +76,25 @@ void MessageOut::writeString(const std::string &string, int length)
     {
         // Write the length at the start if not fixed
         writeInt16(string.length());
-        expand(mPos + string.length());
     }
     else
     {
         // Make sure the length of the string is no longer than specified
         toWrite = string.substr(0, length);
-        expand(mPos + length);
     }
 
     // Write the actual string
     memcpy(&mData[mPos], (void*)toWrite.c_str(), toWrite.length());
     mPos += toWrite.length();
-    out_size += toWrite.length();
+    mNetwork->mOutSize += toWrite.length();
 
     // Pad remaining space with zeros
     if (length > (int)toWrite.length())
     {
         memset(&mData[mPos], '\0', length - toWrite.length());
         mPos += length - toWrite.length();
-        out_size += length - toWrite.length();
+        mNetwork->mOutSize += length - toWrite.length();
     }
-}
-
-const Packet *MessageOut::getPacket()
-{
-    if (!mPacket)
-    {
-        mPacket = new Packet(mData, mDataSize);
-    }
-
-    return mPacket;
 }
 
 MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs)

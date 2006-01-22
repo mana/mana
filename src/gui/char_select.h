@@ -24,15 +24,14 @@
 #ifndef _CHAR_SELECT_H
 #define _CHAR_SELECT_H
 
-#include "confirm_dialog.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
+#include "../lockedarray.h"
 
-#include <SDL_events.h>
-
+class LocalPlayer;
+class Network;
 class PlayerBox;
-struct PLAYER_INFO;
 
 /**
  * Character selection dialog.
@@ -42,18 +41,22 @@ struct PLAYER_INFO;
 class CharSelectDialog : public Window, public gcn::ActionListener
 {
     public:
+        friend class CharDeleteConfirm;
         /**
          * Constructor.
          */
-        CharSelectDialog();
+        CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo);
 
         void action(const std::string& eventId);
 
-        void setPlayerInfo(PLAYER_INFO* pi);
+        void updatePlayerInfo();
 
         void logic();
 
     private:
+        Network *mNetwork;
+        LockedArray<LocalPlayer*> *mCharInfo;
+
         gcn::Button *selectButton;
         gcn::Button *cancelButton;
         gcn::Button *newCharButton;
@@ -65,47 +68,18 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Label *levelLabel;
         gcn::Label *jobLevelLabel;
         gcn::Label *moneyLabel;
-        
-        int mStatus;
-        int mCurrentSlot;
 
         PlayerBox *playerBox;
-        
-        void changeSlot(int slot);
 
         /**
          * Communicate character deletion to the server.
          */
         void attemptCharDelete();
-        
-        /**
-         * Check server answer.
-         */
-        void checkCharDelete();
 
         /**
          * Communicate character selection to the server.
          */
         void attemptCharSelect();
-        
-        /**
-         * Check server answer.
-         */
-        void checkCharSelect();
-
-        /**
-         * Listener for confirming character deletion.
-         */
-        class CharDeleteConfirm : public ConfirmDialog
-        {
-            public:
-                CharDeleteConfirm(CharSelectDialog *master);
-                void action(const std::string &eventId);
-                void logic();
-            private:
-                CharSelectDialog *master;
-                int mStatus;
-        };
 };
 
 /**
@@ -119,15 +93,14 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharCreateDialog(Window *parent = NULL, int slot = 0);
-        
-        void logic();
+        CharCreateDialog(Window *parent, int slot, Network *network);
 
         void action(const std::string& eventId);
 
         std::string getName();
 
     private:
+        Network *mNetwork;
         gcn::TextField *nameField;
         gcn::Label *nameLabel;
         gcn::Button *nextHairColorButton;
@@ -140,21 +113,13 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *cancelButton;
 
         PlayerBox *playerBox;
-        
-        int mStatus;
+
         int mSlot;
 
         /**
          * Communicate character creation to the server.
          */
         void attemptCharCreate();
-        
-        /**
-         * Receive new char info.
-         */
-        void checkCharCreate();
 };
-
-void charSelectInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

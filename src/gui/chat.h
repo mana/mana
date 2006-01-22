@@ -36,6 +36,7 @@
 #include "../guichanfwd.h"
 
 class BrowserBox;
+class Network;
 class ScrollArea;
 
 #define BY_GM         0   // those should be self-explanatory =)
@@ -116,7 +117,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Constructor.
          */
-        ChatWindow(const std::string &logfile);
+        ChatWindow(const std::string &logfile, Network *network);
 
         /**
          * Destructor.
@@ -193,6 +194,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void setVisible(bool visible);
 
     private:
+        Network *mNetwork;
         std::ofstream chatlog_file;
         bool mTmpVisible;
 

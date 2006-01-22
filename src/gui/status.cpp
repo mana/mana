@@ -29,17 +29,15 @@
 #include "button.h"
 #include "progressbar.h"
 
-#include "../playerinfo.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../localplayer.h"
 
 #include "../graphics.h"
 
 extern Graphics *graphics;
 
-StatusWindow::StatusWindow():
-    Window(player_info->name)
+StatusWindow::StatusWindow(LocalPlayer *player):
+    Window(player->getName()),
+    mPlayer(player)
 {
     setWindowName("Status");
     setResizable(true);
@@ -222,46 +220,46 @@ void StatusWindow::update()
     // Status Part
     // -----------
     updateText.str("");
-    updateText << "Level: " << player_info->lvl;
+    updateText << "Level: " << mPlayer->lvl;
     lvlLabel->setCaption(updateText.str());
     lvlLabel->adjustSize();
 
     updateText.str("");
-    updateText << "Money: " << player_info->gp << " GP";
+    updateText << "Money: " << mPlayer->gp << " GP";
     gpLabel->setCaption(updateText.str());
     gpLabel->adjustSize();
 
     updateText.str("");
-    updateText << "Job: " << player_info->jobLvl;
+    updateText << "Job: " << mPlayer->jobLvl;
     jobXpLabel->setCaption(updateText.str());
     jobXpLabel->adjustSize();
 
     updateText.str("");
-    updateText << player_info->hp << "/" << player_info->maxHp;
+    updateText << mPlayer->hp << "/" << mPlayer->maxHp;
     hpValueLabel->setCaption(updateText.str());
     hpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << player_info->mp <<  "/" << player_info->maxMp;
+    updateText << mPlayer->mp <<  "/" << mPlayer->maxMp;
     mpValueLabel->setCaption(updateText.str());
     mpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << (int)player_info->xp << "/" << (int)player_info->xpForNextLevel;
+    updateText << (int)mPlayer->xp << "/" << (int)mPlayer->xpForNextLevel;
     xpValueLabel->setCaption(updateText.str());
     xpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << (int)player_info->jobXp << "/" << (int)player_info->jobXpForNextLevel;
+    updateText << (int)mPlayer->jobXp << "/" << (int)mPlayer->jobXpForNextLevel;
     jobValueLabel->setCaption(updateText.str());
     jobValueLabel->adjustSize();
 
     // HP Bar coloration
-    if (player_info->hp < int(player_info->maxHp / 3))
+    if (mPlayer->hp < int(mPlayer->maxHp / 3))
     {
         hpBar->setColor(223, 32, 32); // Red
     }
-    else if (player_info->hp < int((player_info->maxHp / 3) * 2))
+    else if (mPlayer->hp < int((mPlayer->maxHp / 3) * 2))
     {
         hpBar->setColor(230, 171, 34); // Orange
     }
@@ -270,61 +268,48 @@ void StatusWindow::update()
         hpBar->setColor(0, 171, 34); // Green
     }
 
-    hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);
-    // mpBar->setProgress((float)player_info->mp / (float)player_info->maxMp);
+    hpBar->setProgress((float)mPlayer->hp / (float)mPlayer->maxHp);
+    // mpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
 
     xpBar->setProgress(
-            (float)player_info->xp / (float)player_info->xpForNextLevel);
+            (float)mPlayer->xp / (float)mPlayer->xpForNextLevel);
     jobXpBar->setProgress(
-            (float)player_info->jobXp / (float)player_info->jobXpForNextLevel);
+            (float)mPlayer->jobXp / (float)mPlayer->jobXpForNextLevel);
 
     // Stats Part
     // ----------
-    std::stringstream statsStr[6];
-    std::stringstream figureStr[6];
-    std::stringstream pointsStr[6];
+    static const std::string attrNames[6] = {
+        "Strength",
+        "Agility",
+        "Vitality",
+        "Intelligence",
+        "Dexterity",
+        "Luck"
+    };
 
-    statsStr[0] << "Strength:";
-    figureStr[0] << (int)player_info->STR;
-    statsStr[1] << "Agility:";
-    figureStr[1] << (int)player_info->AGI;
-    statsStr[2] << "Vitality:";
-    figureStr[2] << (int)player_info->VIT;
-    statsStr[3] << "Intelligence:";
-    figureStr[3] << (int)player_info->INT;
-    statsStr[4] << "Dexterity:";
-    figureStr[4] << (int)player_info->DEX;
-    statsStr[5] << "Luck:";
-    figureStr[5] << (int)player_info->LUK;
-
-    int statusPoints = player_info->statsPointsToAttribute;
+    int statusPoints = mPlayer->statsPointsToAttribute;
 
     updateText.str("");
     updateText << "Remaining Status Points: " << statusPoints;
 
-    pointsStr[0] << (int)player_info->STRUp;
-    pointsStr[1] << (int)player_info->AGIUp;
-    pointsStr[2] << (int)player_info->VITUp;
-    pointsStr[3] << (int)player_info->INTUp;
-    pointsStr[4] << (int)player_info->DEXUp;
-    pointsStr[5] << (int)player_info->LUKUp;
-
-    // Enable buttons for which there are enough status points
-    statsButton[0]->setEnabled(player_info->STRUp <= statusPoints);
-    statsButton[1]->setEnabled(player_info->AGIUp <= statusPoints);
-    statsButton[2]->setEnabled(player_info->VITUp <= statusPoints);
-    statsButton[3]->setEnabled(player_info->INTUp <= statusPoints);
-    statsButton[4]->setEnabled(player_info->DEXUp <= statusPoints);
-    statsButton[5]->setEnabled(player_info->LUKUp <= statusPoints);
-
     // Update labels
     for (int i = 0; i < 6; i++) {
-        statsLabel[i]->setCaption(statsStr[i].str());
+        std::stringstream sstr;
+
+        statsLabel[i]->setCaption(attrNames[i]);
         statsLabel[i]->adjustSize();
-        statsDisplayLabel[i]->setCaption(figureStr[i].str());
+
+        sstr.str("");
+        sstr << (int)mPlayer->ATTR[i];
+        statsDisplayLabel[i]->setCaption(sstr.str());
         statsDisplayLabel[i]->adjustSize();
-        pointsLabel[i]->setCaption(pointsStr[i].str());
+
+        sstr.str("");
+        sstr << (int)mPlayer->ATTR_UP[i];
+        pointsLabel[i]->setCaption(sstr.str());
         pointsLabel[i]->adjustSize();
+
+        statsButton[i]->setEnabled(mPlayer->ATTR_UP[i] <= statusPoints);
     }
     remainingStatsPointsLabel->setCaption(updateText.str());
     remainingStatsPointsLabel->adjustSize();
@@ -333,43 +318,43 @@ void StatusWindow::update()
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
     updateText.str("");
-    updateText << int(player_info->ATK + player_info->ATKBonus);
+    updateText << int(mPlayer->ATK + mPlayer->ATK_BONUS);
     statsAttackPoints->setCaption(updateText.str());
     statsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
     updateText.str("");
-    updateText << int(player_info->DEF + player_info->DEFBonus);
+    updateText << int(mPlayer->DEF + mPlayer->DEF_BONUS);
     statsDefensePoints->setCaption(updateText.str());
     statsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
     updateText.str("");
-    updateText << int(player_info->MATK + player_info->MATKBonus);
+    updateText << int(mPlayer->MATK + mPlayer->MATK_BONUS);
     statsMagicAttackPoints->setCaption(updateText.str());
     statsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
     updateText.str("");
-    updateText << int(player_info->MDEF + player_info->MDEFBonus);
+    updateText << int(mPlayer->MDEF + mPlayer->MDEF_BONUS);
     statsMagicDefensePoints->setCaption(updateText.str());
     statsMagicDefensePoints->adjustSize();
 
     // Accuracy %
     updateText.str("");
-    updateText << (int)player_info->HIT;
+    updateText << (int)mPlayer->HIT;
     statsAccuracyPoints->setCaption(updateText.str());
     statsAccuracyPoints->adjustSize();
 
     // Evasion %
     updateText.str("");
-    updateText << (int)player_info->FLEE;
+    updateText << (int)mPlayer->FLEE;
     statsEvadePoints->setCaption(updateText.str());
     statsEvadePoints->adjustSize();
 
     // Reflex %
     updateText.str("");
-    updateText << ((int)player_info->DEX / 4); // + counter
+    updateText << ((int)mPlayer->DEX / 4); // + counter
     statsReflexPoints->setCaption(updateText.str());
     statsReflexPoints->adjustSize();
 
@@ -402,33 +387,29 @@ void StatusWindow::action(const std::string& eventId)
     // Stats Part
     if (eventId.length() == 3)
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_STAT_UPDATE_REQUEST);
-
         if (eventId == "STR")
         {
-            outMsg.writeInt16(0x000d);
+            player_node->raiseAttribute(LocalPlayer::STR);
         }
         if (eventId == "AGI")
         {
-            outMsg.writeInt16(0x000e);
+            player_node->raiseAttribute(LocalPlayer::AGI);
         }
         if (eventId == "VIT")
         {
-            outMsg.writeInt16(0x000f);
+            player_node->raiseAttribute(LocalPlayer::VIT);
         }
         if (eventId == "INT")
         {
-            outMsg.writeInt16(0x0010);
+            player_node->raiseAttribute(LocalPlayer::INT);
         }
         if (eventId == "DEX")
         {
-            outMsg.writeInt16(0x0011);
+            player_node->raiseAttribute(LocalPlayer::DEX);
         }
         if (eventId == "LUK")
         {
-            outMsg.writeInt16(0x0012);
+            player_node->raiseAttribute(LocalPlayer::LUK);
         }
-        outMsg.writeInt8(1);
     }
 }

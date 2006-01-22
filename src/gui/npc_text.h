@@ -25,7 +25,6 @@
 #define _TMW_NPC_TEXT_H
 
 #include <iosfwd>
-#include <string>
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
@@ -70,9 +69,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
         addText(const std::string &string);
 
     private:
-        gcn::Button *okButton;
-        gcn::TextBox *textBox;
-        gcn::ScrollArea *scrollArea;
+        gcn::TextBox *mTextBox;
 };
 
 #endif

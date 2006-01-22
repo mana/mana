@@ -26,11 +26,13 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
-#include <SDL_events.h>
 
 #include "window.h"
-#include "login.h"
 #include "../guichanfwd.h"
+
+class LoginData;
+class OkDialog;
+class WrongDataNoticeListener;
 
 /**
  * The login dialog.
@@ -44,17 +46,12 @@ class RegisterDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        RegisterDialog();
+        RegisterDialog(LoginData *loginData);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-
-        /**
-         * Updates dialog logic.
-         */
-        void logic();
 
         // Made them public to have the possibility to request focus
         // from external functions.
@@ -72,19 +69,11 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         gcn::Button *cancelButton;
         gcn::RadioButton *maleButton;
         gcn::RadioButton *femaleButton;
-        int mStatus;
 
-        void attemptRegistration(const std::string& user,
-                                 const std::string& pass);
-        void checkRegistration();
-        
         WrongDataNoticeListener *wrongDataNoticeListener;
         OkDialog *wrongRegisterNotice;
-};
 
-/**
- * Handle input
- */
-void registerInputHandler(SDL_KeyboardEvent *keyEvent);
+        LoginData *mLoginData;
+};
 
 #endif

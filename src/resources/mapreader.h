@@ -24,11 +24,9 @@
 #ifndef _TMW_MAPREADER_H_
 #define _TMW_MAPREADER_H_
 
-#include <vector>
+#include <iosfwd>
 
 #include <libxml/tree.h>
-
-#include "../graphic/spriteset.h"
 
 class Map;
 class Tileset;

@@ -26,11 +26,12 @@
 #include <algorithm>
 #include <queue>
 
-#include "tileset.h"
-#include "being.h"
+#include "beingmanager.h"
 #include "graphics.h"
-#include "resources/image.h"
 #include "sprite.h"
+#include "tileset.h"
+
+#include "resources/image.h"
 
 MetaTile::MetaTile():
     whichList(0)
@@ -217,8 +218,9 @@ Map::getWalk(int x, int y)
     }
 
     // Check for collision with a being
-    std::list<Being*>::iterator i = beings.begin();
-    for (i = beings.begin(); i != beings.end(); i++) {
+    Beings *beings = beingManager->getAll();
+    Beings::iterator i;
+    for (i = beings->begin(); i != beings->end(); i++) {
         // job 45 is a portal, they don't collide
         if ((*i)->x == x && (*i)->y == y && (*i)->job != 45) {
             return false;

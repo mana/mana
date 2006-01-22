@@ -29,8 +29,8 @@
 extern int camera_x, camera_y;
 
 class Graphics;
-class Image;
 class Map;
+class Network;
 
 /**
  * Game engine that does the main drawing.
@@ -41,7 +41,7 @@ class Engine
         /**
          * Constructor.
          */
-        Engine();
+        Engine(Network *network);
 
         /**
          * Destructor.
@@ -56,7 +56,7 @@ class Engine
         /**
          * Sets the currently active map.
          */
-        void changeMap(const std::string &mapName);
+        void changeMap(std::string mapName);
 
         /**
          * Performs engine logic.
@@ -77,7 +77,7 @@ class Engine
         bool mShowDebugPath;
 
         Map *mCurrentMap;
-        Image *attackTarget;
+        Network *mNetwork;
 };
 
 extern Engine *engine;

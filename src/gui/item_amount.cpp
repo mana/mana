@@ -28,10 +28,8 @@
 #include "slider.h"
 #include "trade.h"
 
-#include "../inventory.h"
 #include "../item.h"
-
-extern Inventory *inventory;
+#include "../localplayer.h"
 
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Window("Select amount of items to drop.", true, parent),
@@ -114,7 +112,7 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Drop")
     {
-        inventory->dropItem(mItem, mItemAmountTextBox->getInt());
+        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
         scheduleDelete();
     }
     else if (eventId == "AddTrade")

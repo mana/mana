@@ -23,22 +23,21 @@
 
 #include "npc_text.h"
 
+#include <string>
+
 #include "scrollarea.h"
 #include "button.h"
 #include "textbox.h"
 
-#include "../game.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../npc.h"
 
 NpcTextDialog::NpcTextDialog():
     Window("NPC")
 {
-    textBox = new TextBox();
-    textBox->setEditable(false);
-    scrollArea = new ScrollArea(textBox);
-    okButton = new Button("OK");
+    mTextBox = new TextBox();
+    mTextBox->setEditable(false);
+    gcn::ScrollArea *scrollArea = new ScrollArea(mTextBox);
+    Button *okButton = new Button("OK");
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -61,13 +60,13 @@ NpcTextDialog::NpcTextDialog():
 void
 NpcTextDialog::setText(const char *text)
 {
-    textBox->setText(text);
+    mTextBox->setText(text);
 }
 
 void
 NpcTextDialog::addText(const std::string &text)
 {
-    textBox->setText(textBox->getText() + text + "\n");
+    mTextBox->setText(mTextBox->getText() + text + "\n");
 }
 
 void
@@ -75,11 +74,9 @@ NpcTextDialog::action(const std::string& eventId)
 {
     if (eventId == "ok")
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
-        outMsg.writeInt32(current_npc);
         setText("");
         setVisible(false);
+        current_npc->nextDialog();
         current_npc = 0;
     }
 }

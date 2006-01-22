@@ -23,15 +23,10 @@
 
 #include "network.h"
 
-#include <cassert>
-#include <sstream>
-#include <SDL_net.h>
-#include <SDL_thread.h>
-
+#include "messagehandler.h"
 #include "messagein.h"
 
 #include "../log.h"
-#include "../main.h"
 
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
@@ -81,18 +76,360 @@ short packet_lengths[] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
 
-unsigned int buffer_size = 65536;
-char *in = NULL;
-char *out = NULL;
-unsigned int in_size = 0;
-unsigned int out_size = 0;
-int connectionOpen = NET_IDLE;
+const unsigned int BUFFER_SIZE = 65536;
 
-TCPsocket sock;
-SDLNet_SocketSet set;
-SDL_Thread *mThread = NULL;
-SDL_mutex *mMutex = NULL;
-IPaddress *ip = NULL;
+int networkThread(void *data)
+{
+    Network *network = static_cast<Network*>(data);
+
+    if (!network->realConnect())
+        return -1;
+
+    network->receive();
+
+    return 0;
+}
+
+Network::Network():
+    mAddress(0), mPort(0),
+    mInBuffer(new char[BUFFER_SIZE]),
+    mOutBuffer(new char[BUFFER_SIZE]),
+    mInSize(0), mOutSize(0),
+    mToSkip(0),
+    mState(IDLE),
+    mWorkerThread(0)
+{
+    mMutex = SDL_CreateMutex();
+}
+
+Network::~Network()
+{
+    clearHandlers();
+
+    if (mAddress)
+        free(mAddress);
+
+    if (mState != IDLE && mState != ERROR)
+        disconnect();
+
+    SDL_DestroyMutex(mMutex);
+
+    delete mInBuffer;
+    delete mOutBuffer;
+}
+
+bool Network::connect(const char *address, short port)
+{
+    if (mState != IDLE && mState != ERROR)
+    {
+        logger->log("Tried to connect an already connected socket!");
+        return false;
+    }
+
+    if (!address)
+    {
+        logger->log("Empty address given to Network::connect()!");
+        mState = ERROR;
+        return false;
+    }
+
+    if (mAddress)
+        free(mAddress);
+
+    mAddress = strdup(address);
+    mPort = port;
+
+    // Reset to sane values
+    mOutSize = 0;
+    mInSize = 0;
+    mToSkip = 0;
+
+    mState = CONNECTING;
+    mWorkerThread = SDL_CreateThread(networkThread, this);
+    if (!mWorkerThread)
+    {
+        logger->log("Unable to create network worker thread");
+        mState = ERROR;
+        return false;
+    }
+
+    return true;
+}
+
+void Network::disconnect()
+{
+    if (mState != CONNECTED && mState != CONNECTING)
+        return;
+
+    mState = IDLE;
+
+    if (mWorkerThread)
+    {
+        SDL_WaitThread(mWorkerThread, NULL);
+        mWorkerThread = NULL;
+    }
+    SDLNet_TCP_Close(mSocket);
+}
+
+void Network::registerHandler(MessageHandler *handler)
+{
+    const Uint16 *i = handler->handledMessages;
+
+    while(*i)
+    {
+        mMessageHandlers[*i] = handler;
+        i++;
+    }
+
+    handler->setNetwork(this);
+}
+
+void Network::unregisterHandler(MessageHandler *handler)
+{
+    const Uint16 *i = handler->handledMessages;
+
+    while(*i)
+    {
+        std::map<Uint16, MessageHandler*>::iterator iter;
+        iter = mMessageHandlers.find(*i);
+        if (iter != mMessageHandlers.end())
+        {
+            mMessageHandlers.erase(iter);
+        }
+        i++;
+    }
+
+    handler->setNetwork(0);
+}
+
+void Network::clearHandlers()
+{
+    std::map<Uint16, MessageHandler*>::iterator i;
+    for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); i++)
+    {
+        i->second->setNetwork(0);
+    }
+    mMessageHandlers.clear();
+}
+
+void Network::dispatchMessages()
+{
+    if (!messageReady())
+        return;
+
+    MessageIn msg = getNextMessage();
+
+    std::map<Uint16, MessageHandler*>::iterator iter;
+    iter = mMessageHandlers.find(msg.getId());
+
+    if (iter != mMessageHandlers.end())
+        iter->second->handleMessage(&msg);
+    else
+        logger->log("Unhandled packet: %x", msg.getId());
+
+    skip(msg.getLength());
+}
+
+void Network::flush()
+{
+    if (!mOutSize || mState != CONNECTED)
+        return;
+
+    int ret;
+
+
+    SDL_mutexP(mMutex);
+    ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
+    if (ret < (int)mOutSize)
+    {
+        logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
+        mState = ERROR;
+    }
+    mOutSize = 0;
+    SDL_mutexV(mMutex);
+}
+
+void Network::skip(int len)
+{
+    SDL_mutexP(mMutex);
+    mToSkip += len;
+    if (!mInSize)
+    {
+        SDL_mutexV(mMutex);
+        return;
+    }
+
+    if (mInSize >= mToSkip)
+    {
+        mInSize -= mToSkip;
+        memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
+        mToSkip = 0;
+    }
+    else
+    {
+        mToSkip -= mInSize;
+        mInSize = 0;
+    }
+    SDL_mutexV(mMutex);
+}
+
+bool Network::messageReady()
+{
+    int len = -1;
+
+    SDL_mutexP(mMutex);
+    if (mInSize >= 2)
+    {
+        len = packet_lengths[readWord(0)];
+
+        if (len == -1 && mInSize > 4)
+            len = readWord(2);
+
+    }
+
+    bool ret = (mInSize >= static_cast<unsigned int>(len));
+    SDL_mutexV(mMutex);
+
+    return ret;
+}
+
+MessageIn Network::getNextMessage()
+{
+    while (!messageReady())
+    {
+        if (mState == ERROR)
+            break;
+    }
+
+    SDL_mutexP(mMutex);
+    int msgId = readWord(0);
+    int len = packet_lengths[msgId];
+
+    if (len == -1)
+        len = readWord(2);
+
+#ifdef DEBUG
+    printf("Received packet 0x%x of length %d\n", msgId, length);
+#endif
+
+    MessageIn msg(mInBuffer, len);
+    SDL_mutexV(mMutex);
+
+    return msg;
+}
+
+bool Network::realConnect()
+{
+    IPaddress ipAddress;
+
+    if (SDLNet_ResolveHost(&ipAddress, mAddress, mPort) == -1)
+    {
+        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
+        mState = ERROR;
+        return false;
+    }
+
+    mState = CONNECTING;
+
+    mSocket = SDLNet_TCP_Open(&ipAddress);
+    if (!mSocket)
+    {
+        logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
+        mState = ERROR;
+        return false;
+    }
+
+    logger->log("Network::Started session with %s:%i",
+                iptostring(ipAddress.host), ipAddress.port);
+
+    mState = CONNECTED;
+
+    return true;
+}
+
+void Network::receive()
+{
+    SDLNet_SocketSet set;
+
+    if (!(set = SDLNet_AllocSocketSet(1)))
+    {
+        logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
+        mState = ERROR;
+        return;
+    }
+
+    if (SDLNet_TCP_AddSocket(set, mSocket) == -1)
+    {
+        logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
+        mState = ERROR;
+    }
+
+    while (mState == CONNECTED)
+    {
+        // TODO Try to get this to block all the time while still being able
+        // to escape the loop
+        int numReady = SDLNet_CheckSockets(set, ((Uint32)500));
+        int ret;
+        switch (numReady)
+        {
+            case -1:
+                logger->log("Error: SDLNet_CheckSockets");
+                // FALLTHROUGH
+            case 0:
+                break;
+
+            case 1:
+                // Receive data from the socket
+                SDL_mutexP(mMutex);
+                ret = SDLNet_TCP_Recv(mSocket, mInBuffer + mInSize, BUFFER_SIZE - mInSize);
+
+                if (!ret)
+                {
+                    // We got disconnected
+                    mState = IDLE;
+                    logger->log("Disconnected.");
+                }
+                else if (ret < 0)
+                {
+                    logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
+                    mState = ERROR;
+                }
+                else {
+                    mInSize += ret;
+                    if (mToSkip)
+                    {
+                        if (mInSize >= mToSkip)
+                        {
+                            mInSize -= mToSkip;
+                            memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
+                            mToSkip = 0;
+                        }
+                        else
+                        {
+                            mToSkip -= mInSize;
+                            mInSize = 0;
+                        }
+                    }
+                }
+                SDL_mutexV(mMutex);
+                break;
+
+            default:
+                // more than one socket is ready..
+                // this should not happen since we only listen once socket.
+                logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
+                mState = ERROR;
+                break;
+        }
+    }
+
+    if (SDLNet_TCP_DelSocket(set, mSocket) == -1)
+    {
+        logger->log("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
+    }
+
+    SDLNet_FreeSocketSet(set);
+}
 
 char *iptostring(int address)
 {
@@ -107,283 +444,11 @@ char *iptostring(int address)
     return asciiIP;
 }
 
-int connectionThread(void *ptr)
-{
-    // Create the socket for the current session
-    sock = SDLNet_TCP_Open((IPaddress *)ptr);
-    if (!sock)
-    {
-        logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        connectionOpen = NET_ERROR;
-        return NET_ERROR;
-    }
-
-    // Create a socket set to listen to socket
-    set = SDLNet_AllocSocketSet(1);
-    if (!set)
-    {
-        logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
-        connectionOpen = NET_ERROR;
-        return NET_ERROR;
-    }
-
-    // Add the socket to the set
-    int ret = SDLNet_TCP_AddSocket(set, sock);
-    if (ret == -1)
-    {
-        logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
-        connectionOpen = NET_ERROR;
-        return NET_ERROR;
-    }
-
-    // Init buffers
-    in = (char*)malloc(buffer_size);
-    out = (char*)malloc(buffer_size);
-    memset(in, '\0', buffer_size);
-    memset(out, '\0', buffer_size);
-    in_size = 0;
-    out_size = 0;
-
-    SDL_mutexP(mMutex);
-    logger->log("Network::Started session with %s:%i",
-                iptostring(((IPaddress *)ptr)->host),
-                ((IPaddress *)ptr)->port);
-    connectionOpen = NET_CONNECTED;
-    SDL_mutexV(mMutex);
-    return NET_CONNECTED;
-}
-
-void openConnection(const char* address, short port)
-{
-    //assert(connectionOpen <= NET_IDLE);
-
-    // Initialize SDL_net
-    if (SDLNet_Init() == -1)
-    {
-        logger->log("Error in SDLNet_Init(): %s", SDLNet_GetError());
-        connectionOpen = NET_ERROR;
-    }
-
-    ip = new IPaddress();
-
-    // Resolve host name
-    if (SDLNet_ResolveHost(ip, address, port) == -1)
-    {
-        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
-        connectionOpen = NET_ERROR;
-    }
-
-    connectionOpen = NET_CONNECTING;
-    // Create the synchronization lock
-    mMutex = SDL_CreateMutex();
-    // Create the connection thread
-    mThread = SDL_CreateThread(connectionThread, ip);
-    if (mThread == NULL) {
-        logger->log("Unable to create connection thread");
-        connectionOpen = NET_ERROR;
-    }
-}
-
-int pollConnection()
-{
-    if (mMutex)
-    {
-        SDL_mutexP(mMutex);
-    }
-
-    switch (connectionOpen)
-    {
-        case NET_IDLE:
-        case NET_CONNECTING:
-            break;
-        case NET_CONNECTED:
-        case NET_ERROR:
-            SDL_WaitThread(mThread, NULL);
-            mThread = NULL;
-            SDL_DestroyMutex(mMutex);
-            mMutex = NULL;
-            break;
-    }
-
-    if (mMutex)
-    {
-        SDL_mutexV(mMutex);
-    }
-    return connectionOpen;
-}
-
-void closeConnection()
-{
-    //assert(connectionOpen > );
-
-    if (connectionOpen == NET_ERROR)return;
-
-    if (mThread)
-    {
-        SDL_WaitThread(mThread, NULL);
-        mThread = NULL;
-    }
-
-    if (mMutex)
-    {
-        SDL_DestroyMutex(mMutex);
-        mMutex = NULL;
-    }
-
-    if (ip)
-    {
-        delete ip;
-        ip = NULL;
-    }
-
-    // Remove the socket from the socket set
-    int ret = SDLNet_TCP_DelSocket(set, sock);
-    if (ret == -1)
-    {
-        logger->log("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
-    }
-
-    // Close the TCP connection
-    SDLNet_TCP_Close(sock);
-
-    // Free the socket set
-    SDLNet_FreeSocketSet(set);
-    set = NULL;
-
-    // Clear buffers
-    if (in != NULL)
-    {
-        free(in);
-        in = NULL;
-    }
-
-    if (out != NULL)
-    {
-        free(out);
-        out = NULL;
-    }
-
-    in_size = 0;
-    out_size = 0;
-
-    // Shutdown the network API
-    SDLNet_Quit();
-
-    logger->log("Network::Closed session");
-    connectionOpen = NET_IDLE;
-}
-
-void flush()
-{
-    // Send all available data, waits if not all data can be sent immediately
-    if (out_size > 0)
-    {
-        int ret = SDLNet_TCP_Send(sock, (char*)out, out_size);
-        if (ret < (int)out_size)
-        {
-            logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
-            errorMessage = "You got disconnected from server";
-            state = ERROR_STATE;
-            return;
-        }
-        out_size -= ret;
-    }
-
-    int numReady = SDLNet_CheckSockets(set, 0);
-    if (numReady == -1)
-    {
-        logger->log("Error: SDLNet_CheckSockets");
-        return;
-    }
-    else if (numReady == 0) // any socket ready
-    {
-        return;
-    }
-    else if (numReady == 1) // one socket is ready
-    {
-        // Receive data from the socket
-        int ret = SDLNet_TCP_Recv(sock, in + in_size, buffer_size - in_size);
-        if (ret <= 0)
-        {
-            logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
-            errorMessage = "You got disconnected from server";
-            state = ERROR_STATE;
-            return;
-        }
-        else {
-            in_size += ret;
-        }
-    }
-    else // more than one socket is ready.. this should not happen since we only listen once socket.
-    {
-            logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
-            errorMessage = "You got disconnected from server";
-            state = ERROR_STATE;
-            return;
-    }
-}
-
-unsigned short readWord(int pos)
+Uint16 Network::readWord(int pos)
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap16((*(unsigned short*)(in+(pos))));
+    return SDL_Swap16((*(Uint16*)(mInBuffer+(pos))));
 #else
-    return (*(unsigned short *)(in+(pos)));
+    return (*(Uint16*)(mInBuffer+(pos)));
 #endif
-}
-
-bool packetReady()
-{
-    bool ret = false;
-    if (in_size >= 2)
-    {
-        int length = packet_lengths[readWord(0)];
-        if (length == -1)
-        {
-            if (in_size >= 4)
-            {
-                length = readWord(2);
-                if (in_size >= (unsigned int)length)
-                {
-                    ret = true;
-                }
-            }
-        }
-        else if (in_size >= (unsigned int)length)
-        {
-            ret = true;
-        }
-    }
-    return ret;
-}
-
-MessageIn
-get_next_message()
-{
-    // At least 2 bytes should be received for the message ID
-    while (in_size < 2 && state != ERROR_STATE) flush();
-
-    int length = packet_lengths[readWord(0)];
-
-    if (length == -1)
-    {
-        // Another 2 bytes should be received for the length
-        while (in_size < 4) flush();
-        length = readWord(2);
-    }
-
-#ifdef DEBUG
-    printf("Received packet 0x%x of length %d\n", readWord(0), length);
-#endif
-
-    // Make sure the whole packet is received
-    while (in_size < static_cast<unsigned int>(length) && state != ERROR_STATE) flush();
-
-    return MessageIn(in, length);
-}
-
-void skip(int len)
-{
-    memcpy(in, in + len, in_size - len);
-    in_size -= len;
 }

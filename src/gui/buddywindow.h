@@ -30,15 +30,14 @@
 
 #include "../guichanfwd.h"
 
-#include "../resources/buddylist.h"
+class BuddyList;
 
 /**
  * Window showing buddy list.
  *
  * \ingroup Interface
  */
-class BuddyWindow : public Window, public BuddyList,
-                    public gcn::ActionListener
+class BuddyWindow : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -52,6 +51,7 @@ class BuddyWindow : public Window, public BuddyList,
         void action(const std::string &actionId);
 
     private:
+        BuddyList *mBuddyList;
         gcn::ListBox *mListbox;
 };
 

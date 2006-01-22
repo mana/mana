@@ -35,8 +35,8 @@
 
 #include <sstream>
 
-EquipmentWindow::EquipmentWindow():
-    Window("Equipment")
+EquipmentWindow::EquipmentWindow(Equipment *equipment):
+    Window("Equipment"), mEquipment(equipment)
 {
     setWindowName("Equipment");
     setDefaultSize(5, 230, 200, 90);
@@ -57,7 +57,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    Equipment *equipment = Equipment::getInstance();
     Item *item;
     Image *image;
 
@@ -66,7 +65,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
-        if (!(item = equipment->getEquipment(i))) {
+        if (!(item = mEquipment->getEquipment(i))) {
             continue;
         }
 
@@ -78,7 +77,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
-    if (!(item = equipment->getArrows())) {
+    if (!(item = mEquipment->getArrows())) {
         return;
     }
 

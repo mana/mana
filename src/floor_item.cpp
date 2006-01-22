@@ -86,7 +86,7 @@ void remove_floor_item(unsigned int id)
     }
 }
 
-unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y)
+FloorItem* find_floor_item_by_cor(unsigned short x, unsigned short y)
 {
     FloorItems::iterator i;
 
@@ -96,7 +96,7 @@ unsigned int find_floor_item_by_cor(unsigned short x, unsigned short y)
 
         if (floorItem->getX() == x && floorItem->getY() == y)
         {
-            return floorItem->getId();
+            return floorItem;
         }
     }
 

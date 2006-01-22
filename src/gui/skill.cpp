@@ -29,10 +29,7 @@
 #include "listbox.h"
 #include "scrollarea.h"
 
-#include "../playerinfo.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../localplayer.h"
 
 #include "../graphics.h"
 extern Graphics *graphics;
@@ -64,8 +61,7 @@ const char *skill_db[] = {
 
 
 SkillDialog::SkillDialog():
-    Window("Skills"),
-    skillPoints(0)
+    Window("Skills")
 {
     setWindowName("Skills");
     setDefaultSize(graphics->getWidth() - 255, 25, 240, 240);
@@ -119,18 +115,16 @@ void SkillDialog::action(const std::string& eventId)
     {
         // Increment skill
         int selectedSkill = skillListBox->getSelected();
-        if (player_info->skillPoint > 0 && selectedSkill >= 0)
+        if (selectedSkill >= 0)
         {
-            MessageOut outMsg;
-            outMsg.writeInt16(CMSG_SKILL_LEVELUP_REQUEST);
-            outMsg.writeInt16(skillList[selectedSkill]->id);
+            player_node->raiseSkill(skillList[selectedSkill]->id);
         }
     }
     else if (eventId == "skill")
     {
         incButton->setEnabled(
                 skillListBox->getSelected() > -1 &&
-                skillPoints > 0);
+                player_node->skillPoint > 0);
     }
     else if (eventId == "close")
     {
@@ -138,17 +132,15 @@ void SkillDialog::action(const std::string& eventId)
     }
 }
 
-void SkillDialog::setPoints(int i)
+void SkillDialog::update()
 {
-    skillPoints = i;
-
     if (pointsLabel != NULL) {
         char tmp[128];
-        sprintf(tmp, "Skill points: %i", skillPoints);
+        sprintf(tmp, "Skill points: %i", player_node->skillPoint);
         pointsLabel->setCaption(tmp);
     }
 
-    incButton->setEnabled(skillListBox->getSelected() > -1 && skillPoints > 0);
+    incButton->setEnabled(skillListBox->getSelected() > -1 && player_node->skillPoint > 0);
 }
 
 int SkillDialog::getNumberOfElements()

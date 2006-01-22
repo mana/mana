@@ -34,8 +34,8 @@
 #include "shop.h"
 #include "slider.h"
 
-#include "../game.h"
 #include "../item.h"
+#include "../npc.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
@@ -44,8 +44,9 @@
 #include "../net/protocol.h"
 
 
-SellDialog::SellDialog():
+SellDialog::SellDialog(Network *network):
     Window("Sell"),
+    mNetwork(network),
     m_maxItems(0), m_amountItems(0)
 {
     itemList = new ListBox(this);
@@ -216,7 +217,7 @@ void SellDialog::action(const std::string& eventId)
         // Attempt sell
         assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
         
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(shopInventory[selectedItem].index);

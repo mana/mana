@@ -34,16 +34,17 @@
 
 #include "../game.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 #include "../log.h"
-#include "../playerinfo.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
 extern Graphics *graphics;
 
-ChatWindow::ChatWindow(const std::string &logfile):
+ChatWindow::ChatWindow(const std::string &logfile, Network *network):
     Window(""),
+    mNetwork(network),
     mTmpVisible(false)
 {
     setWindowName("Chat");
@@ -206,7 +207,7 @@ ChatWindow::action(const std::string& eventId)
             curHist = history.end();
 
             // Send the message to the server
-            chatSend(player_info->name.c_str(), message.c_str());
+            chatSend(player_node->getName().c_str(), message.c_str());
 
             // Clear the text from the chat input
             chatInput->setText("");
@@ -262,7 +263,7 @@ ChatWindow::chatSend(std::string nick, std::string msg)
         if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
         {
             msg.erase(0, IS_ANNOUNCE_LENGTH);
-            MessageOut outMsg;
+            MessageOut outMsg(mNetwork);
             outMsg.writeInt16(0x0099);
             outMsg.writeInt16(msg.length() + 4);
             outMsg.writeString(msg, msg.length());
@@ -281,7 +282,7 @@ ChatWindow::chatSend(std::string nick, std::string msg)
         }
         else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
         {
-            MessageOut outMsg;
+            MessageOut outMsg(mNetwork);
             outMsg.writeInt16(0x00c1);
         }
         else
@@ -295,7 +296,7 @@ ChatWindow::chatSend(std::string nick, std::string msg)
         nick += msg;
         msg = nick;
 
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_CHAT_MESSAGE);
         outMsg.writeInt16(msg.length() + 4);
         outMsg.writeString(msg, msg.length());

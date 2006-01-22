@@ -27,7 +27,6 @@
 #include <guichan/actionlistener.hpp>
 #include <string>
 #include <vector>
-#include <SDL_events.h>
 
 #include "window.h"
 
@@ -193,7 +192,5 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     BrowserBox* mBrowserBox;      /**< Box to display news. */
     ScrollArea *mScrollArea;      /**< Used to scroll news box. */
 };
-
-void updateInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

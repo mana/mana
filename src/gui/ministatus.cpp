@@ -30,7 +30,7 @@
 #include <guichan/imagefont.hpp>
 #include "progressbar.h"
 
-#include "../playerinfo.h"
+#include "../localplayer.h"
 
 MiniStatusWindow::MiniStatusWindow():
     Window("")
@@ -67,13 +67,13 @@ MiniStatusWindow::MiniStatusWindow():
 void MiniStatusWindow::update()
 {
     // HP Bar coloration
-    if (player_info->hp < int(player_info->maxHp / 3))
+    if (player_node->hp < int(player_node->maxHp / 3))
     {
         hpBar->setColor(223, 32, 32); // Red
     }
     else
     {
-        if (player_info->hp < int((player_info->maxHp / 3) * 2))
+        if (player_node->hp < int((player_node->maxHp / 3) * 2))
         {
             hpBar->setColor(230, 171, 34); // Orange
         }
@@ -83,16 +83,16 @@ void MiniStatusWindow::update()
         }
     }
 
-    hpBar->setProgress((float)player_info->hp / (float)player_info->maxHp);
-    // mpBar->setProgress((float)player_info->mp / (float)player_info->maxMp);
+    hpBar->setProgress((float)player_node->hp / (float)player_node->maxHp);
+    // mpBar->setProgress((float)player_node->mp / (float)player_node->maxMp);
 
     // Update and center labels
     std::stringstream updatedText;
-    updatedText << player_info->hp;
+    updatedText << player_node->hp;
     hpLabel->setCaption(updatedText.str());
     hpLabel->adjustSize();
     updatedText.str("");
-    updatedText << player_info->mp;
+    updatedText << player_node->mp;
     mpLabel->setCaption(updatedText.str());
     mpLabel->adjustSize();
     hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),

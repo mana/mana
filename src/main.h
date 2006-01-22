@@ -26,7 +26,6 @@
 
 #include <string>
 
-class Image;
 class Sound;
 
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
@@ -44,7 +43,9 @@ class Sound;
 enum {
     EXIT_STATE,
     LOGIN_STATE,
+    ACCOUNT_STATE,
     REGISTER_STATE,
+    CHAR_CONNECT_STATE,
     CHAR_SERVER_STATE,
     CHAR_SELECT_STATE,
     CHAR_NEW_STATE,

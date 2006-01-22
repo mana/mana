@@ -41,11 +41,3 @@ void ErrorDialog::action(const std::string& eventId)
         state = LOGIN_STATE;
     }
 }
-
-void errorInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = EXIT_STATE;
-    }
-}

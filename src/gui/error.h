@@ -25,7 +25,6 @@
 #define _TMW_ERROR_H
 
 #include <iosfwd>
-#include <SDL_events.h>
 
 #include "ok_dialog.h"
 
@@ -53,10 +52,5 @@ class ErrorDialog : public OkDialog {
          */
         void action(const std::string& eventId);
 };
-
-/**
- * Handle input
- */
-void errorInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

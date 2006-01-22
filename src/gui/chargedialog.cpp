@@ -28,7 +28,7 @@
 
 #include "progressbar.h"
 
-#include "../playerinfo.h"
+#include "../localplayer.h"
 
 ChargeDialog::ChargeDialog():
     Window("")
@@ -42,15 +42,15 @@ ChargeDialog::ChargeDialog():
 void ChargeDialog::logic()
 {
     // calculate time since the last attack was made
-    player_info->lastAttackTime += .01; // this a hack until someone explains
+    player_node->lastAttackTime += .01; // this a hack until someone explains
                                       // to me how to work the timer
-    if (player_info->lastAttackTime > 1)
+    if (player_node->lastAttackTime > 1)
     {
-        player_info->lastAttackTime = 1;
+        player_node->lastAttackTime = 1;
     }
 
     // reset the progress bar to display accurate time since attack
-    progBar->setProgress(player_info->lastAttackTime);
+    progBar->setProgress(player_node->lastAttackTime);
 
     Window::logic();
 }

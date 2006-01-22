@@ -34,6 +34,8 @@
 
 #include "../guichanfwd.h"
 
+class Network;
+
 /**
  * The buy dialog.
  *
@@ -48,7 +50,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
          *
          * @see Window::Window
          */
-        BuyDialog();
+        BuyDialog(Network *network);
 
         /**
          * Resets the dialog, clearing shop inventory.
@@ -86,6 +88,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         std::string getElementAt(int i);
 
     private:
+        Network *mNetwork;
         gcn::Button *buyButton;
         gcn::Button *quitButton;
         gcn::Button *increaseButton;

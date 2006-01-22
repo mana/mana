@@ -61,8 +61,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/ministatus.h \
 	      gui/newskill.cpp \
 	      gui/newskill.h \
-	      gui/npc.cpp \
-	      gui/npc.h \
+	      gui/npclistdialog.cpp \
+	      gui/npclistdialog.h \
 	      gui/npc_text.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
@@ -116,16 +116,44 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/hbox.cpp \
 	      gui/updatewindow.h \
 	      gui/updatewindow.cpp \
+	      net/beinghandler.h \
+	      net/beinghandler.cpp \
+	      net/buysellhandler.h \
+	      net/buysellhandler.cpp \
+	      net/charserverhandler.h \
+	      net/charserverhandler.cpp \
+	      net/chathandler.h \
+	      net/chathandler.cpp \
+	      net/equipmenthandler.h \
+	      net/equipmenthandler.cpp \
+	      net/inventoryhandler.h \
+	      net/inventoryhandler.cpp \
+	      net/itemhandler.h \
+	      net/itemhandler.cpp \
+	      net/loginhandler.h \
+	      net/loginhandler.cpp \
+	      net/maploginhandler.cpp \
+	      net/maploginhandler.h \
+	      net/messagehandler.cpp \
+	      net/messagehandler.h \
 	      net/messagein.cpp \
 	      net/messagein.h \
 	      net/messageout.cpp \
 	      net/messageout.h \
 	      net/network.cpp \
 	      net/network.h \
+	      net/npchandler.cpp \
+	      net/npchandler.h \
 	      net/packet.cpp \
 	      net/packet.h \
+	      net/playerhandler.cpp \
+	      net/playerhandler.h \
 	      net/protocol.cpp \
 	      net/protocol.h \
+	      net/skillhandler.cpp \
+	      net/skillhandler.h \
+	      net/tradehandler.cpp \
+	      net/tradehandler.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
@@ -151,6 +179,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      base64.h \
 	      being.cpp \
 	      being.h \
+	      beingmanager.cpp \
+	      beingmanager.h \
 	      configlistener.h \
 	      configuration.cpp \
 	      configuration.h \
@@ -169,15 +199,24 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
+	      localplayer.cpp \
+	      localplayer.h \
+	      lockedarray.h \
 	      log.cpp \
 	      log.h \
+	      logindata.h \
 	      main.cpp \
 	      main.h \
 	      map.cpp\
 	      map.h \
+	      monster.cpp\
+	      monster.h \
+	      npc.cpp \
+	      npc.h \
 	      openglgraphics.cpp\
 	      openglgraphics.h \
-	      playerinfo.h \
+	      player.cpp \
+	      player.h \
 	      properties.h \
 	      serverinfo.h \
 	      sound.cpp \

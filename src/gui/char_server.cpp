@@ -24,26 +24,18 @@
 #include "char_server.h"
 
 #include <sstream>
-#include <SDL.h>
 
 #include "button.h"
 #include "listbox.h"
-#include "ok_dialog.h"
 #include "scrollarea.h"
 
-#include "../log.h"
 #include "../main.h"
-#include "../playerinfo.h"
 #include "../serverinfo.h"
-
-#include "../net/messagein.h"
-#include "../net/messageout.h"
-#include "../net/network.h"
 
 extern SERVER_INFO **server_info;
 
 ServerSelectDialog::ServerSelectDialog():
-    Window("Select Server"), mStatus(NET_IDLE)
+    Window("Select Server")
 {
     serverListModel = new ServerListModel();
     serverList = new ListBox(serverListModel);
@@ -98,51 +90,17 @@ void
 ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
-        int index = serverList->getSelected();
-        const char *host = iptostring(server_info[index]->address);
-        short port = server_info[index]->port;
-        openConnection(host, port);
         okButton->setEnabled(false);
-        //cancelButton->setEnabled(false);
-        mStatus = NET_CONNECTING;
+        state = CHAR_CONNECT_STATE;
     }
     else if (eventId == "cancel") {
         state = LOGIN_STATE;
     }
 }
 
-void
-ServerSelectDialog::logic()
+SERVER_INFO* ServerSelectDialog::getServerInfo()
 {
-    switch (mStatus)
-    {
-        case NET_CONNECTING:
-            mStatus = pollConnection();
-            break;
-        case NET_ERROR:
-            logger->log("ServerSelect::Unable to connect");
-            errorMessage = "Unable to connect to char server";
-            state = ERROR_STATE;
-            closeConnection();
-            break;
-        case NET_CONNECTED:
-            attemptServerSelect(serverList->getSelected());
-            mStatus = NET_DATA;
-            break;
-        case NET_DATA:
-            // TODO: cannot substitute with packetReady() because of eAthena
-            // sending 4 unknown bytes.
-            if (in_size > 6)
-            {
-                skip(4);
-                checkServerSelect();
-            }
-            else
-            {
-                flush();
-            }
-            break;
-    }
+    return server_info[serverList->getSelected()];
 }
 
 int
@@ -157,114 +115,4 @@ ServerListModel::getElementAt(int i)
     std::stringstream s;
     s << server_info[i]->name << " (" << server_info[i]->online_users << ")";
     return s.str();
-}
-
-void
-charServerInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = LOGIN_STATE;
-    }
-}
-
-void
-ServerSelectDialog::attemptServerSelect(int index)
-{
-    // Send login infos
-    MessageOut outMsg;
-    outMsg.writeInt16(0x0065);
-    outMsg.writeInt32(account_ID);
-    outMsg.writeInt32(session_ID1);
-    outMsg.writeInt32(session_ID2);
-    outMsg.writeInt16(0); // unknown
-    outMsg.writeInt8(sex);
-}
-
-void
-ServerSelectDialog::checkServerSelect()
-{
-    MessageIn msg = get_next_message();
-
-    if (msg.getId() == 0x006b)
-    {
-        // Skip length word and an additional mysterious 20 bytes
-        msg.skip(2 + 20);
-
-        // Derive number of characters from message length
-        n_character = (msg.getLength() - 24) / 106;
-        char_info = (PLAYER_INFO**)malloc(sizeof(PLAYER_INFO*) * (MAX_SLOT+1));
-        for (int i = 0; i < MAX_SLOT + 1; i++)
-            char_info[i] = NULL;
-
-        for (int i = 0; i < n_character; i++)
-        {
-            PLAYER_INFO *tempPlayer = new PLAYER_INFO;
-
-            tempPlayer->totalWeight = 0;
-            tempPlayer->maxWeight = 0;
-            tempPlayer->lastAttackTime = 0;
-            tempPlayer->id = msg.readInt32();
-            tempPlayer->xp = msg.readInt32();
-            tempPlayer->gp = msg.readInt32();
-            tempPlayer->jobXp = msg.readInt32();
-            tempPlayer->jobLvl = msg.readInt32();
-            msg.skip(8);                          // unknown
-            msg.readInt32();                       // option
-            msg.readInt32();                       // karma
-            msg.readInt32();                       // manner
-            msg.skip(2);                          // unknown
-            tempPlayer->hp = msg.readInt16();
-            tempPlayer->maxHp = msg.readInt16();
-            tempPlayer->mp = msg.readInt16();
-            tempPlayer->maxMp = msg.readInt16();
-            msg.readInt16();                       // speed
-            msg.readInt16();                       // class
-            tempPlayer->hairStyle = msg.readInt16();
-            tempPlayer->weapon = msg.readInt16();
-            tempPlayer->lvl = msg.readInt16();
-            msg.readInt16();                       // skill point
-            msg.readInt16();                       // head bottom
-            msg.readInt16();                       // shield
-            msg.readInt16();                       // head option top
-            msg.readInt16();                       // head option mid
-            tempPlayer->hairColor = msg.readInt16();
-            msg.readInt16();                       // unknown
-            tempPlayer->name = msg.readString(24);
-            tempPlayer->STR = msg.readInt8();
-            tempPlayer->AGI = msg.readInt8();
-            tempPlayer->VIT = msg.readInt8();
-            tempPlayer->INT = msg.readInt8();
-            tempPlayer->DEX = msg.readInt8();
-            tempPlayer->LUK = msg.readInt8();
-            int slot = msg.readInt8();  // character slot
-            msg.readInt8();                        // unknown
-            
-            char_info[slot] = tempPlayer;
-            
-            logger->log("CharServer: Player: %s (%d)",
-                        char_info[slot]->name.c_str(), slot);
-        }
-
-        state = CHAR_SELECT_STATE;
-        skip(msg.getLength());
-    }
-    else if (msg.getId() == 0x006c)
-    {
-        std::string errorStr;
-        switch (msg.readInt8()) {
-            case 0: errorStr = "Access denied"; break;
-            case 1: errorStr = "Cannot use this ID"; break;
-            default: errorStr = "Rejected from server"; break;
-        }
-        new OkDialog("Error", errorStr);
-        skip(msg.getLength());
-        closeConnection();
-    }
-    else
-    {
-        new OkDialog("Error", "Unknown error");
-        skip(msg.getLength());
-    }
-    // Todo: add other packets
 }

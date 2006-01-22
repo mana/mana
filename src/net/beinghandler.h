@@ -21,31 +21,17 @@
  *  $Id$
  */
 
-#ifndef _TMW_PLAYERINFO_
-#define _TMW_PLAYERINFO_
+#ifndef _TMW_NET_BEINGHANDLER_H
+#define _TMW_NET_BEINGHANDLER_H
 
-#define MAX_SLOT 2
+#include "messagehandler.h"
 
-#include <string>
-
-struct PLAYER_INFO
+class BeingHandler : public MessageHandler
 {
-    int id;
-    float lastAttackTime;      /**< Used to synchronize the charge dialog */
-    std::string name;          /**< Player name */
-    short hp, maxHp, mp, maxMp, lvl;
-    short statsPointsToAttribute;
-    int xp, xpForNextLevel, gp, jobXp, jobXpForNextLevel, jobLvl;
-    short statPoint, skillPoint, hairColor, hairStyle;
-    char STR, AGI, VIT, INT, DEX, LUK;
-    char STRUp, AGIUp, VITUp, INTUp, DEXUp, LUKUp;
-    int ATK, ATKBonus, MATK, MATKBonus, DEF, DEFBonus, MDEF;
-    int MDEFBonus, HIT, FLEE, FLEEBonus;
-    int totalWeight, maxWeight;
-    short weapon;
-};
+    public:
+        BeingHandler();
 
-extern PLAYER_INFO **char_info;
-extern PLAYER_INFO *player_info;
+        void handleMessage(MessageIn *msg);
+};
 
 #endif

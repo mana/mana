@@ -29,17 +29,13 @@
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
 
-#define LOCK 254
-#define IDLE 255
-
-class Being;
+class Network;
+class NPC;
 
 extern std::string map_path;
-extern std::string tradePartnerName;
-extern int fps, current_npc;
+extern int fps;
 extern volatile int tick_time;
 extern int server_tick;
-extern unsigned short startX, startY;
 
 enum {
     JOY_UP,
@@ -63,22 +59,22 @@ enum {
 /**
  * Main game loop
  */
-void game();
+void game(Network*);
 
 /**
  * Check user input
  */
-void do_input();
+void do_input(Network*);
 
 /**
  * Parse data received from map server into input buffer
  */
-void do_parse();
+void do_parse(Network*);
 
 /**
  * Clean the engine
  */
-void do_exit();
+void do_exit(Network*);
 
 /**
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay

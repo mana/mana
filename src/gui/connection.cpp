@@ -23,22 +23,29 @@
 
 #include "connection.h"
 
+#include <guichan/actionlistener.hpp>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 #include "progressbar.h"
 
-#include "../game.h"
-#include "../log.h"
 #include "../main.h"
 
-#include "../net/messagein.h"
-#include "../net/messageout.h"
-#include "../net/network.h"
-#include "../net/protocol.h"
+class ConnectionActionListener : public gcn::ActionListener
+{
+    public:
+        void action(const std::string& eventId)
+        {
+            if (eventId == "cancel")
+            {
+                state = EXIT_STATE;
+            }
+        }
+} connectionActionListener;
 
 ConnectionDialog::ConnectionDialog():
-    Window("Info"), mProgress(0), mStatus(NET_CONNECTING)
+    Window("Info"), mProgress(0)
 {
     setContentSize(200, 100);
 
@@ -46,7 +53,7 @@ ConnectionDialog::ConnectionDialog():
     cancelButton = new Button("Cancel");
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
     cancelButton->setEventId("cancel");
-    cancelButton->addActionListener(this);
+    cancelButton->addActionListener(&connectionActionListener);
 
     mProgressBar = new ProgressBar(0.0, 5, cancelButton->getY() - 25,
                                    200 - 10, 20, 128, 128, 128);
@@ -59,9 +66,6 @@ ConnectionDialog::ConnectionDialog():
     add(mProgressBar);
 
     setLocationRelativeTo(getParent());
-
-    const char *host = iptostring(map_address);
-    openConnection(host, map_port);
 }
 
 void ConnectionDialog::logic()
@@ -73,91 +77,4 @@ void ConnectionDialog::logic()
     }
     mProgressBar->setProgress(mProgress);
     Window::logic();
-
-    switch (mStatus)
-    {
-        case NET_CONNECTING:
-            mStatus = pollConnection();
-            break;
-        case NET_ERROR:
-            logger->log("Connection::Unable to connect");
-            errorMessage = "Unable to connect to map server";
-            state = ERROR_STATE;
-            closeConnection();
-            break;
-        case NET_CONNECTED:
-            attemptMapLogin();
-            mStatus = NET_DATA;
-            break;
-        case NET_DATA:
-            if (in_size > 6)
-            {
-                skip(4);
-                checkMapLogin();
-                state = GAME_STATE;
-            }
-            else
-            {
-                flush();
-            }
-            break;
-    }
-}
-
-void ConnectionDialog::action(const std::string& eventId)
-{
-    if (eventId == "cancel")
-    {
-        state = EXIT_STATE;
-    }
-}
-
-void ConnectionDialog::attemptMapLogin()
-{
-    // Send login infos
-    MessageOut outMsg;
-    outMsg.writeInt16(0x0072);
-    outMsg.writeInt32(account_ID);
-    outMsg.writeInt32(char_ID);
-    outMsg.writeInt32(session_ID1);
-    outMsg.writeInt32(session_ID2);
-    outMsg.writeInt8(sex);
-}
-
-void ConnectionDialog::checkMapLogin()
-{
-    MessageIn msg = get_next_message();
-
-    if (msg.getId() == SMSG_LOGIN_SUCCESS)
-    {
-        unsigned char direction;
-        msg.readInt32();   // server tick
-        msg.readCoordinates(startX, startY, direction);
-        msg.skip(2);      // unknown
-        logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
-                startX, startY, direction);
-    }
-    else if (msg.getId() == 0x0081)
-    {
-        logger->log("Warning: Map server D/C");
-    }
-    else
-    {
-        logger->error("Unknown packet: map_start");
-    }
-
-    skip(msg.getLength());
-
-    // Send "map loaded"
-    // TODO: be able to reuse the same msg
-    MessageOut newMsg;
-    newMsg.writeInt16(0x007d);
-}
-
-void connectionInputHandler(SDL_KeyboardEvent *keyEvent)
-{
-    if (keyEvent->keysym.sym == SDLK_ESCAPE)
-    {
-        state = EXIT_STATE;
-    }
 }

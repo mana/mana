@@ -23,18 +23,24 @@
 
 #include "setup.h"
 
-#include <iostream>
 #include <sstream>
 
 #include <guichan/widgets/container.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "chat.h"
 #include "checkbox.h"
+#include "equipmentwindow.h"
+#include "help.h"
+#include "inventorywindow.h"
 #include "listbox.h"
 #include "ok_dialog.h"
+#include "minimap.h"
 #include "scrollarea.h"
+#include "skill.h"
 #include "slider.h"
+#include "status.h"
 #include "tabbedcontainer.h"
 
 #include "../configuration.h"
@@ -44,13 +50,8 @@
 #include "../sound.h"
 
 extern Graphics *graphics;
-#include "chat.h"
-#include "equipmentwindow.h"
-#include "help.h"
-#include "inventorywindow.h"
-#include "minimap.h"
-#include "skill.h"
-#include "status.h"
+
+extern SDL_Joystick *joypad;
 
 extern SDL_Joystick *joypad;
 

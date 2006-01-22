@@ -39,23 +39,21 @@
 #include "windowcontainer.h"
 
 #include "../being.h"
+#include "../beingmanager.h"
 #include "../configlistener.h"
 #include "../configuration.h"
 #include "../engine.h"
 #include "../floor_item.h"
-#include "../game.h"
 #include "../graphics.h"
+#include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
 #include "../map.h"
-
-#include "../net/protocol.h"
+#include "../npc.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/sdlimageloader.h"
-
-extern Being* autoTarget;
 
 // Guichan stuff
 Gui *gui;
@@ -262,13 +260,12 @@ Gui::mousePress(int mx, int my, int button)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = findNode(tilex, tiley)) && being != player_node)
+        if ((being = beingManager->findBeing(tilex, tiley)) && being->getType() != Being::LOCALPLAYER)
         {
             showPopup(mx, my, being);
             return;
         }
-        else if((floorItem = find_floor_item_by_id(
-                    find_floor_item_by_cor(tilex, tiley))))
+        else if((floorItem = find_floor_item_by_cor(tilex, tiley)))
         {
             showPopup(mx, my, floorItem);
             return;
@@ -287,27 +284,23 @@ Gui::mousePress(int mx, int my, int button)
     if (button == gcn::MouseInput::LEFT)
     {
         Being *being;
-        Uint32 floorItemId;
+        FloorItem *item;
 
         // Interact with some being
-        if ((being = findNode(tilex, tiley)))
+        if ((being = beingManager->findBeing(tilex, tiley)))
         {
             switch (being->getType())
             {
                 case Being::NPC:
-                    talk(being);
-                    current_npc = being->getId();
+                    dynamic_cast<NPC*>(being)->talk();
                     break;
 
                 case Being::MONSTER:
                 case Being::PLAYER:
-                    if (being->action == Being::MONSTER_DEAD ||
-                            player_node->action != Being::STAND ||
-                            being == player_node)
+                    if (being->action == Being::MONSTER_DEAD)
                         break;
 
-                    autoTarget = being;
-                    attack(being);
+                    player_node->attack(being, true);
                     break;
 
                 default:
@@ -315,13 +308,13 @@ Gui::mousePress(int mx, int my, int button)
             }
         }
         // Pick up some item
-        else if ((floorItemId = find_floor_item_by_cor(tilex, tiley)))
+        else if ((item = find_floor_item_by_cor(tilex, tiley)))
         {
             int dx = tilex - player_node->x;
             int dy = tiley - player_node->y;
 
             if ((dx * dx + dy * dy) < 4)
-                pickUp(floorItemId);
+                player_node->pickUp(item);
         }
         // Just walk around
         else if (engine->getCurrentMap()->getWalk(tilex, tiley))
@@ -330,10 +323,8 @@ Gui::mousePress(int mx, int my, int button)
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
-                walk(tilex, tiley, 0);
                 player_node->setDestination(tilex, tiley);
-
-                autoTarget = NULL;
+                player_node->stopAttack();
             }
         }
     }

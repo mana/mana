@@ -31,19 +31,14 @@
 
 #include <guichan/sdl/sdlinput.hpp>
 
-#include "being.h"
+#include "beingmanager.h"
 #include "configuration.h"
 #include "engine.h"
-#include "equipment.h"
 #include "floor_item.h"
 #include "graphics.h"
-#include "inventory.h"
-#include "item.h"
+#include "localplayer.h"
 #include "log.h"
-#include "main.h"
-#include "map.h"
-#include "playerinfo.h"
-#include "sound.h"
+#include "npc.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -54,10 +49,8 @@
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
 #include "gui/minimap.h"
-#include "gui/npc.h"
+#include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
-#include "gui/ok_dialog.h"
-#include "gui/requesttrade.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
@@ -67,32 +60,36 @@
 #include "gui/trade.h"
 #include "gui/debugwindow.h"
 
-#include "net/messagein.h"
-#include "net/messageout.h"
+#include "net/beinghandler.h"
+#include "net/buysellhandler.h"
+#include "net/chathandler.h"
+#include "net/equipmenthandler.h"
+#include "net/inventoryhandler.h"
+#include "net/itemhandler.h"
 #include "net/network.h"
-#include "net/protocol.h"
+#include "net/npchandler.h"
+#include "net/playerhandler.h"
+#include "net/skillhandler.h"
+#include "net/tradehandler.h"
 
 #include "resources/imagewriter.h"
 
 extern Graphics *graphics;
 extern gcn::SDLInput *guiInput;
 
-std::string map_path;
-std::string tradePartnerName;
+class Map;
 
-bool refresh_beings = false;
-unsigned char keyb_state;
+std::string map_path;
+
+bool done = false;
 volatile int tick_time;
 volatile bool action_time = false;
-int server_tick;
-int fps = 0, frame = 0, current_npc = 0;
-Uint16 startX = 0, startY = 0;
-Being *autoTarget = NULL;
+int fps = 0, frame = 0;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
-OkDialog *weightNotice = NULL;
-OkDialog *deathNotice = NULL;
+extern Window *weightNotice;
+extern Window *deathNotice;
 ConfirmDialog *exitConfirm = NULL;
 
 ChatWindow *chatWindow;
@@ -116,33 +113,9 @@ TradeWindow *tradeWindow;
 HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 
-Inventory *inventory = NULL;
+BeingManager *beingManager = NULL;
 
-const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
 const int MAX_TIME = 10000;
-
-class WeightNoticeListener : public gcn::ActionListener
-{
-    public:
-        void action(const std::string &eventId)
-        {
-            weightNotice = NULL;
-        }
-} weightNoticeListener;
-
-
-/**
- * Listener used for handling death message.
- */
-class DeathNoticeListener : public gcn::ActionListener {
-    public:
-        void action(const std::string &eventId) {
-            MessageOut outMsg;
-            outMsg.writeInt16(0x00b2);
-            outMsg.writeInt8(0);
-            deathNotice = NULL;
-        }
-} deathNoticeListener;
 
 /**
  * Listener used for exitting handling.
@@ -150,7 +123,7 @@ class DeathNoticeListener : public gcn::ActionListener {
 class ExitListener : public gcn::ActionListener {
     void action(const std::string &eventId) {
         if (eventId == "yes") {
-            state = EXIT_STATE;
+            done = true;
         }
         exitConfirm = NULL;
     }
@@ -191,16 +164,16 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
-void createGuiWindows()
+void createGuiWindows(Network *network)
 {
     // Create dialogs
     chatWindow = new ChatWindow(
-    config.getValue("homeDir", "") + std::string("/chatlog.txt"));
+    config.getValue("homeDir", "") + std::string("/chatlog.txt"), network);
     menuWindow = new MenuWindow();
-    statusWindow = new StatusWindow();
+    statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow();
-    buyDialog = new BuyDialog();
-    sellDialog = new SellDialog();
+    buyDialog = new BuyDialog(network);
+    sellDialog = new SellDialog(network);
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
     npcTextDialog = new NpcTextDialog();
@@ -209,9 +182,9 @@ void createGuiWindows()
     //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
-    equipmentWindow = new EquipmentWindow();
+    equipmentWindow = new EquipmentWindow(player_node->mEquipment);
     chargeDialog = new ChargeDialog();
-    tradeWindow = new TradeWindow();
+    tradeWindow = new TradeWindow(network);
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
@@ -278,9 +251,9 @@ void destroyGuiWindows()
     delete debugWindow;
 }
 
-void do_init()
+void do_init(Network *network)
 {
-    engine->changeMap(map_path);
+    beingManager = new BeingManager(network);
 
     // Initialize timers
     tick_time = 0;
@@ -288,18 +261,9 @@ void do_init()
     SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
     // Initialize beings
-    player_node = createBeing(account_ID, 0, engine->getCurrentMap());
-    player_node->x = startX;
-    player_node->y = startY;
-    player_node->setHairColor(player_info->hairColor);
-    player_node->setHairStyle(player_info->hairStyle);
-
-    if (player_info->weapon == 11)
-    {
-        player_info->weapon = 2;
-    }
-
-    player_node->setWeapon(player_info->weapon);
+    beingManager->setPlayer(player_node);
+    player_node->setNetwork(network);
+    engine->changeMap(map_path);
 
     // Initialize joypad
     SDL_InitSubSystem(SDL_INIT_JOYSTICK);
@@ -350,23 +314,42 @@ bool saveScreenshot(SDL_Surface *screenshot)
     return ImageWriter::writePNG(screenshot, filename.str());
 }
 
-void game()
+void game(Network *network)
 {
-    // Needs to be initialised _before_ the engine is created...
-    inventory = new Inventory();
-
-    createGuiWindows();
-    engine = new Engine();
-    do_init();
+    createGuiWindows(network);
+    engine = new Engine(network);
+    do_init(network);
 
     int gameTime = tick_time;
 
-    while (state == GAME_STATE)
+    BeingHandler beingHandler;
+    BuySellHandler buySellHandler;
+    ChatHandler chatHandler;
+    EquipmentHandler equipmentHandler;
+    InventoryHandler inventoryHandler;
+    ItemHandler itemHandler;
+    NPCHandler npcHandler;
+    PlayerHandler playerHandler;
+    SkillHandler skillHandler;
+    TradeHandler tradeHandler;
+
+    network->registerHandler(&beingHandler);
+    network->registerHandler(&buySellHandler);
+    network->registerHandler(&chatHandler);
+    network->registerHandler(&equipmentHandler);
+    network->registerHandler(&inventoryHandler);
+    network->registerHandler(&itemHandler);
+    network->registerHandler(&npcHandler);
+    network->registerHandler(&playerHandler);
+    network->registerHandler(&skillHandler);
+    network->registerHandler(&tradeHandler);
+
+    while (!done)
     {
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
-            do_input();
+            do_input(network);
             engine->logic();
             gameTime++;
         }
@@ -385,22 +368,22 @@ void game()
             SDL_Delay(10);
         }
 
-        // Handle network stuff and flush it
-        do_parse();
-        flush();
+        // Handle network stuff
+        while(network->messageReady())
+            network->dispatchMessages();
+
+        network->flush();
     }
 
-    do_exit();
+    do_exit(network);
 }
 
-void do_exit()
+void do_exit(Network *network)
 {
     delete engine;
     delete player_node;
     destroyGuiWindows();
-    closeConnection();
-
-    delete inventory;
+    network->disconnect();
 
     if (joypad != NULL)
     {
@@ -408,7 +391,7 @@ void do_exit()
     }
 }
 
-void do_input()
+void do_input(Network *network)
 {
     // Get the state of the keyboard keys
     Uint8* keys;
@@ -503,7 +486,7 @@ void do_input()
                     // Quit by pressing Enter if the exit confirm is there
                     if (exitConfirm)
                     {
-                        state = EXIT_STATE;
+                        done = true;
                     }
                     // Close the Browser if opened
                     else if (helpWindow->isVisible())
@@ -528,12 +511,12 @@ void do_input()
                 case SDLK_z:
                     if (!chatWindow->isFocused())
                     {
-                        Uint32 id = find_floor_item_by_cor(
+                        FloorItem *item = find_floor_item_by_cor(
                                 player_node->x, player_node->y);
 
                         // If none below the player, try the tile in front of
                         // the player
-                        if (!id) {
+                        if (!item) {
                             Uint16 x = player_node->x;
                             Uint16 y = player_node->y;
 
@@ -549,11 +532,11 @@ void do_input()
                                 case Being::SE:    x++; y++; break;
                                 default: break;
                             }
-                            id = find_floor_item_by_cor(x, y);
+                            item = find_floor_item_by_cor(x, y);
                         }
 
-                        if (id)
-                            pickUp(id);
+                        if (item)
+                            player_node->pickUp(item);
 
                         used = true;
                     }
@@ -595,11 +578,7 @@ void do_input()
                             break;
                         }
 
-                        switch (player_node->action)
-                        {
-                            case Being::STAND: action(2, 0); break;
-                            case Being::SIT: action(3, 0); break;
-                        }
+                        player_node->toggleSit();
                         used = true;
                         break;
 
@@ -647,9 +626,7 @@ void do_input()
 
                     if (emotion)
                     {
-                        MessageOut outMsg;
-                        outMsg.writeInt16(0x00bf);
-                        outMsg.writeInt8(emotion);
+                        player_node->emote(emotion);
                         action_time = false;
                         used = true;
                     }
@@ -660,7 +637,7 @@ void do_input()
         // Quit event
         else if (event.type == SDL_QUIT)
         {
-            state = EXIT_STATE;
+            done = true;
         }
 
         // Push input to GUI when not used
@@ -677,1258 +654,111 @@ void do_input()
     {
         Uint16 x = player_node->x;
         Uint16 y = player_node->y;
-        Sint16 xDirection = 0;
-        Sint16 yDirection = 0;
         Being::Direction Direction = Being::DIR_NONE;
 
         // Translate pressed keys to movement and direction
         if (keys[SDLK_UP] || keys[SDLK_KP8] || joy[JOY_UP])
         {
-            yDirection = -1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::NORTH;
+            Direction = Being::NORTH;
         }
         if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joy[JOY_DOWN])
         {
-            yDirection = 1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::SOUTH;
+            Direction = Being::SOUTH;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joy[JOY_LEFT])
         {
-            xDirection = -1;
-            if (player_node->action != Being::WALK)
+            // Allow diagonal walking
+            // TODO: Make this nicer, once we got a bitfield for directions
+            if (Direction == Being::NORTH)
+                Direction = Being::NW;
+            else if (Direction == Being::SOUTH)
+                Direction = Being::SW;
+            else
                 Direction = Being::WEST;
         }
         if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joy[JOY_RIGHT])
         {
-            xDirection = 1;
-            if (player_node->action != Being::WALK)
+            // Allow diagonal walking
+            // TODO: Make this nicer, once we got a bitfield for directions
+            if (Direction == Being::NORTH)
+                Direction = Being::NE;
+            else if (Direction == Being::SOUTH)
+                Direction = Being::SE;
+            else
                 Direction = Being::EAST;
         }
         if (keys[SDLK_KP1]) // Bottom Left
         {
-            xDirection = -1;
-            yDirection = 1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::SW;
+            Direction = Being::SW;
         }
         if (keys[SDLK_KP3]) // Bottom Right
         {
-            xDirection = 1;
-            yDirection = 1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::SE;
+            Direction = Being::SE;
         }
         if (keys[SDLK_KP7]) // Top Left
         {
-            xDirection = -1;
-            yDirection = -1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::NW;
+            Direction = Being::NW;
         }
         if (keys[SDLK_KP9]) // Top Right
         {
-            xDirection = 1;
-            yDirection = -1;
-            if (player_node->action != Being::WALK)
-                Direction = Being::NE;
+            Direction = Being::NE;
         }
 
-        Map *tiledMap = engine->getCurrentMap();
-
-        // Allow keyboard control to interrupt an existing path
-        if ((xDirection != 0 || yDirection != 0) &&
-            player_node->action == Being::WALK)
-        {
-            player_node->setDestination(x, y);
-        }
-
-        if (player_node->action != Being::WALK)
-        {
-            // Prevent skipping corners over colliding tiles
-            if ((xDirection != 0) && tiledMap->tileCollides(x + xDirection, y))
-                xDirection = 0;
-            if ((yDirection != 0) && tiledMap->tileCollides(x, y + yDirection))
-                yDirection = 0;
-
-            // Choose a straight direction when diagonal target is blocked
-            if ((yDirection != 0) && (xDirection != 0) &&
-                    !tiledMap->getWalk(x + xDirection, y + yDirection))
-                xDirection = 0;
-
-            // Walk to where the player can actually go
-            if (((xDirection != 0) || (yDirection != 0)) &&
-                    tiledMap->getWalk(x + xDirection, y + yDirection))
-            {
-                walk(x + xDirection, y + yDirection, Direction);
-                player_node->setDestination(x + xDirection, y + yDirection);
-            }
-            else if (Direction != Being::DIR_NONE)
-            {
-                // Update the player direction to where he wants to walk
-                // Warning: Not communicated to the server yet
-                player_node->direction = Direction;
-            }
-        }
+        player_node->walk(Direction);
 
         // Attacking monsters
-        if (player_node->action == Being::STAND)
+        if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
         {
-            if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
+            Being *target = NULL;
+            bool newTarget = keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT];
+
+            // A set target has highest priority
+            if (newTarget || !player_node->getTarget())
             {
-                Being *monster = attack(x, y, player_node->direction);
-                if (monster == NULL && autoTarget != NULL &&
-                    monster != player_node)
+                Uint16 targetX = x, targetY = y;
+
+                switch (player_node->direction)
                 {
-                    attack(autoTarget);
+                    case Being::SOUTH:
+                        targetY++;
+                        break;
+
+                    case Being::WEST:
+                        targetX--;
+                        break;
+
+                    case Being::NORTH:
+                        targetY--;
+                        break;
+
+                    case Being::EAST:
+                        targetX++;
+                        break;
                 }
-                else if ((keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]) && monster != player_node)
-                {
-                    autoTarget = monster;
-                }
+
+                // Attack priorioty is: Monster, Player, auto target
+                target = beingManager->findBeing(
+                        targetX, targetY, Being::MONSTER);
+                if (!target)
+                    target = beingManager->findBeing(
+                            targetX, targetY, Being::PLAYER);
             }
+
+            player_node->attack(target, newTarget);
         }
 
         if (joy[JOY_BTN1])
         {
-            Uint32 id = find_floor_item_by_cor(player_node->x, player_node->y);
+            FloorItem *item = find_floor_item_by_cor(
+                    player_node->x, player_node->y);
 
-            if (id)
-                pickUp(id);
+            if (item)
+                player_node->pickUp(item);
         }
         else if (joy[JOY_BTN2] && action_time)
         {
-            if (player_node->action == Being::STAND)
-                action(2, 0);
-            else if (player_node->action == Being::SIT)
-                action(3, 0);
+            player_node->toggleSit();
             action_time = false;
         }
-    }
-}
-
-void do_parse()
-{
-    Map *tiledMap = engine->getCurrentMap();
-    Equipment *equipment = Equipment::getInstance();
-
-    int n_items;
-    Being *being;
-
-    // We need at least 2 bytes to identify a packet
-    while (packetReady())
-    {
-        MessageIn msg = get_next_message();
-
-        // Parse packet based on their id
-        switch (msg.getId())
-        {
-            case SMSG_LOGIN_SUCCESS:
-                // Connected to game server succesfully, set spawn point
-                msg.readInt32(); // server tick
-                msg.readCoordinates(player_node->x, player_node->y,
-                        player_node->direction);
-                msg.skip(2);    // unknown
-                break;
-
-                // Received speech from being
-            case SMSG_BEING_CHAT:
-                {
-                    Sint16 chatMsgLength = msg.readInt16() - 8;
-                    being = findNode(msg.readInt32());
-
-                    if (!being || chatMsgLength <= 0)
-                    {
-                        break;
-                    }
-
-                    std::string chatMsg = msg.readString(chatMsgLength);
-
-                    chatWindow->chatLog(chatMsg, BY_OTHER);
-
-                    chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
-                    being->setSpeech(chatMsg, SPEECH_TIME);
-                }
-                break;
-
-            case SMSG_PLAYER_CHAT:
-            case SMSG_GM_CHAT:
-                {
-                    Sint16 chatMsgLength = msg.readInt16() - 4;
-
-                    if (chatMsgLength <= 0)
-                    {
-                        break;
-                    }
-
-                    std::string chatMsg = msg.readString(chatMsgLength);
-
-                    if (msg.getId() == SMSG_PLAYER_CHAT)
-                    {
-                        chatWindow->chatLog(chatMsg, BY_PLAYER);
-
-                        std::string::size_type pos = chatMsg.find(" : ", 0);
-                        if (pos != std::string::npos)
-                        {
-                            chatMsg.erase(0, pos + 3);
-                        }
-                        player_node->setSpeech(chatMsg, SPEECH_TIME);
-                    }
-                    else
-                    {
-                        chatWindow->chatLog(chatMsg, BY_GM);
-                    }
-                }
-                break;
-
-            case SMSG_WALK_RESPONSE:
-                // It is assumed by the client any request to walk actually
-                // succeeds on the server. The plan is to have a correction
-                // message when the server senses the client has the wrong
-                // idea.
-                break;
-
-            case SMSG_BEING_VISIBLE:
-            case SMSG_BEING_MOVE:
-                // Information about a being in range
-                {
-                    Uint32 id = msg.readInt32();
-                    Uint16 speed = msg.readInt16();
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // option
-                    Uint16 job = msg.readInt16();  // class
-
-                    being = findNode(id);
-
-                    if (being == NULL)
-                    {
-                        // Being with id >= 110000000 and job 0 are better
-                        // known as ghosts, so don't create those.
-                        if (job == 0 && id >= 110000000)
-                        {
-                            break;
-                        }
-
-                        being = createBeing(id, job, tiledMap);
-                    }
-                    else if (msg.getId() == 0x0078)
-                    {
-                        being->clearPath();
-                        being->mFrame = 0;
-                        being->walk_time = tick_time;
-                        being->action = Being::STAND;
-                    }
-
-                    // Prevent division by 0 when calculating frame
-                    if (speed == 0) { speed = 150; }
-
-                    being->setWalkSpeed(speed);
-                    being->job = job;
-                    being->setHairStyle(msg.readInt16());
-                    being->setWeapon(msg.readInt16());
-                    msg.readInt16();  // head option bottom
-
-                    if (msg.getId() == SMSG_BEING_MOVE)
-                    {
-                        msg.readInt32(); // server tick
-                    }
-
-                    msg.readInt16();  // shield
-                    msg.readInt16();  // head option top
-                    msg.readInt16();  // head option mid
-                    being->setHairColor(msg.readInt16());
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // head dir
-                    msg.readInt16();  // guild
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // manner
-                    msg.readInt16();  // karma
-                    msg.readInt8();   // unknown
-                    msg.readInt8();   // sex
-
-                    if (msg.getId() == SMSG_BEING_MOVE)
-                    {
-                        Uint16 srcX, srcY, dstX, dstY;
-                        msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                        being->action = Being::STAND;
-                        being->x = srcX;
-                        being->y = srcY;
-                        being->setDestination(dstX, dstY);
-                    }
-                    else
-                    {
-                        msg.readCoordinates(being->x, being->y,
-                                            being->direction);
-                    }
-
-                    msg.readInt8();   // unknown
-                    msg.readInt8();   // unknown
-                    msg.readInt8();   // unknown / sit
-                }
-                break;
-
-            case SMSG_BEING_REMOVE:
-                // A being should be removed or has died
-                being = findNode(msg.readInt32());
-
-                if (being != NULL)
-                {
-                    if (msg.readInt8() == 1)
-                    {
-                        // Death
-                        switch (being->getType())
-                        {
-                            case Being::MONSTER:
-                                being->action = Being::MONSTER_DEAD;
-                                being->mFrame = 0;
-                                being->walk_time = tick_time;
-                                break;
-
-                            default:
-                                being->action = Being::DEAD;
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        remove_node(being);
-                    }
-
-                    if (being == autoTarget)
-                    {
-                        autoTarget = NULL;
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_UPDATE_1:
-            case SMSG_PLAYER_UPDATE_2:
-            case SMSG_PLAYER_MOVE:
-                // An update about a player, potentially including movement.
-                {
-                    Uint32 id = msg.readInt32();
-                    Uint16 speed = msg.readInt16();
-                    msg.readInt16();  // option 1
-                    msg.readInt16();  // option 2
-                    msg.readInt16();  // option
-                    Uint16 job = msg.readInt16();
-
-                    being = findNode(id);
-
-                    if (being == NULL)
-                    {
-                        being = createBeing(id, job, tiledMap);
-                    }
-
-                    being->setWalkSpeed(speed);
-                    being->job = job;
-                    being->setHairStyle(msg.readInt16());
-                    being->setWeaponById(msg.readInt16());  // item id 1
-                    msg.readInt16();  // item id 2
-                    msg.readInt16();  // head option bottom
-
-                    if (msg.getId() == SMSG_PLAYER_MOVE)
-                    {
-                        msg.readInt32(); // server tick
-                    }
-
-                    msg.readInt16();  // head option top
-                    msg.readInt16();  // head option mid
-                    being->setHairColor(msg.readInt16());
-                    msg.readInt16();  // unknown
-                    msg.readInt16();  // head dir
-                    msg.readInt32();   // guild
-                    msg.readInt32();   // emblem
-                    msg.readInt16();  // manner
-                    msg.readInt8();   // karma
-                    msg.readInt8();   // sex
-
-                    if (msg.getId() == SMSG_PLAYER_MOVE)
-                    {
-                        Uint16 srcX, srcY, dstX, dstY;
-                        msg.readCoordinatePair(srcX, srcY, dstX, dstY);
-                        being->x = srcX;
-                        being->y = srcY;
-                        being->setDestination(dstX, dstY);
-                    }
-                    else
-                    {
-                        msg.readCoordinates(being->x, being->y,
-                                            being->direction);
-                    }
-
-                    msg.readInt8();   // unknown
-                    msg.readInt8();   // unknown
-
-                    if (msg.getId() == SMSG_PLAYER_UPDATE_1)
-                    {
-                        if (msg.readInt8() == 2)
-                        {
-                            being->action = Being::SIT;
-                        }
-                    }
-                    else if (msg.getId() == SMSG_PLAYER_MOVE)
-                    {
-                        msg.readInt8(); // unknown
-                    }
-
-                    msg.readInt8();   // Lv
-                    msg.readInt8();   // unknown
-
-                    being->walk_time = tick_time;
-                    being->mFrame = 0;
-                }
-                break;
-
-            case SMSG_NPC_MESSAGE:
-                msg.readInt16();  // length
-                current_npc = msg.readInt32();
-                npcTextDialog->addText(msg.readString(msg.getLength() - 8));
-                npcListDialog->setVisible(false);
-                npcTextDialog->setVisible(true);
-                break;
-
-            case SMSG_NPC_NEXT:
-            case SMSG_NPC_CLOSE:
-                // Next/Close button in NPC dialog, currently unused
-                break;
-
-            case SMSG_TRADE_REQUEST:
-                // If a trade window or request window is already open, send a
-                // trade cancel to any other trade request.
-                //
-                // Note that it would be nice if the server would prevent this
-                // situation, and that the requesting player would get a
-                // special message about the player being occupied.
-
-                if (tradeWindow->isVisible() || requestTradeDialogOpen)
-                {
-                    MessageOut outMsg;
-                    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
-                    outMsg.writeInt8(4);
-                    break;
-                }
-
-                requestTradeDialogOpen = true;
-                tradePartnerName = msg.readString(24);
-                new RequestTradeDialog(tradePartnerName);
-                break;
-
-            case SMSG_TRADE_RESPONSE:
-                switch (msg.readInt8())
-                {
-                    case 0: // Too far away
-                        chatWindow->chatLog("Trading isn't possible. "
-                                             "Trade partner is too far away.",
-                                             BY_SERVER);
-                        break;
-                    case 1: // Character doesn't exist
-                        chatWindow->chatLog("Trading isn't possible. "
-                                             "Character doesn't exist.",
-                                             BY_SERVER);
-                        break;
-                    case 2: // Invite request check failed...
-                        chatWindow->chatLog("Trade canceled due to an "
-                                             "unknown reason.", BY_SERVER);
-                        break;
-                    case 3: // Trade accepted
-                        tradeWindow->reset();
-                        tradeWindow->setCaption(
-                                "Trade: You and " + tradePartnerName);
-                        tradeWindow->setVisible(true);
-                        requestTradeDialogOpen = false;
-                        break;
-                    case 4: // Trade canceled
-                        chatWindow->chatLog("Trade canceled.", BY_SERVER);
-                        tradeWindow->setVisible(false);
-                        break;
-                    default: // Shouldn't happen as well, but to be sure
-                        chatWindow->chatLog("Unhandled trade cancel packet",
-                                             BY_SERVER);
-                        break;
-                }
-                break;
-
-            case SMSG_TRADE_ITEM_ADD:
-                {
-                    Sint32 amount = msg.readInt32();
-                    Sint16 type = msg.readInt16();
-                    msg.readInt8();  // identified flag
-                    msg.readInt8();  // attribute
-                    msg.readInt8();  // refine
-                    msg.skip(8);     // card (4 shorts)
-
-                    // TODO: handle also identified, etc
-                    if (type == 0) {
-                        tradeWindow->addMoney(amount);
-                    } else {
-                        tradeWindow->addItem(type, false, amount, false);
-                    }
-                }
-                break;
-
-            case SMSG_TRADE_ITEM_ADD_RESPONSE:
-                // Trade: New Item add response (was 0x00ea, now 01b1)
-                {
-                    Item *item = inventory->getItem(msg.readInt16());
-                    Sint16 quantity = msg.readInt16();
-
-                    switch (msg.readInt8())
-                    {
-                        case 0:
-                            // Successfully added item
-                            if (item->isEquipment() && item->isEquipped())
-                            {
-                                inventory->unequipItem(item);
-                            }
-                            tradeWindow->addItem(item->getId(), true, quantity,
-                                                 item->isEquipment());
-                            item->increaseQuantity(-quantity);
-                            break;
-                        case 1:
-                            // Add item failed - player overweighted
-                            chatWindow->chatLog("Failed adding item. Trade "
-                                                 "partner is over weighted.",
-                                                 BY_SERVER);
-                            break;
-                        default:
-                            chatWindow->chatLog("Failed adding item for "
-                                                 "unknown reason.", BY_SERVER);
-                            break;
-                    }
-                }
-                break;
-
-            case SMSG_TRADE_OK:
-                // 0 means ok from myself, 1 means ok from other;
-                tradeWindow->receivedOk(msg.readInt8() == 0);
-                break;
-
-            case SMSG_TRADE_CANCEL:
-                chatWindow->chatLog("Trade canceled.", BY_SERVER);
-                tradeWindow->setVisible(false);
-                tradeWindow->reset();
-                break;
-
-            case SMSG_TRADE_COMPLETE:
-                chatWindow->chatLog("Trade completed.", BY_SERVER);
-                tradeWindow->setVisible(false);
-                tradeWindow->reset();
-                break;
-
-            case SMSG_PLAYER_INVENTORY:
-                {
-                    // Only called on map load / warp. First reset all items
-                    // to not load them twice on map change.
-                    inventory->resetItems();
-                    msg.readInt16();  // length
-                    Sint32 number = (msg.getLength() - 4) / 18;
-
-                    for (int loop = 0; loop < number; loop++)
-                    {
-                        Sint16 index = msg.readInt16();
-                        Sint16 itemId = msg.readInt16();
-                        msg.readInt8(); // type
-                        msg.readInt8(); // identify flag
-                        Sint16 amount = msg.readInt16();
-                        msg.skip(2);    // unknown
-                        msg.skip(8);    // card (4 shorts)
-
-                        inventory->addItem(index, itemId, amount, false);
-
-                        // Trick because arrows are not considered equipment
-                        if (itemId == 1199 || itemId == 529)
-                        {
-                            inventory->getItem(index)->setEquipment(true);
-                        }
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_EQUIPMENT:
-                {
-                    msg.readInt16(); // length
-                    Sint32 number = (msg.getLength() - 4) / 20;
-
-                    for (int loop = 0; loop < number; loop++)
-                    {
-                        Sint16 index = msg.readInt16();
-                        Sint16 itemId = msg.readInt16();
-                        msg.readInt8();  // type
-                        msg.readInt8();  // identify flag
-                        msg.readInt16(); // equip type
-                        Sint16 equipPoint = msg.readInt16();
-                        msg.readInt8();  // attribute
-                        msg.readInt8();  // refine
-                        msg.skip(8);     // card
-
-                        inventory->addItem(index, itemId, 1, true);
-
-                        if (equipPoint)
-                        {
-                            int mask = 1;
-                            int position = 0;
-                            while (!(equipPoint & mask))
-                            {
-                                mask <<= 1;
-                                position++;
-                            }
-                            Item *item = inventory->getItem(index);
-                            item->setEquipped(true);
-                            equipment->setEquipment(position - 1, item);
-                        }
-                    }
-                }
-                break;
-
-            case SMSG_ITEM_USE_RESPONSE:
-                {
-                    Sint16 index = msg.readInt16();
-                    Sint16 amount = msg.readInt16();
-
-                    if (msg.readInt8() == 0) {
-                        chatWindow->chatLog("Failed to use item", BY_SERVER);
-                    } else {
-                        inventory->getItem(index)->setQuantity(amount);
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_WARP:
-                {
-                    // Set new map path
-                    map_path = "maps/" + msg.readString(16);
-                    map_path = map_path.substr(0, map_path.rfind(".")) +
-                               ".tmx.gz";
-
-                    Uint16 x = msg.readInt16();
-                    Uint16 y = msg.readInt16();
-
-                    logger->log("Warping to %s (%d, %d)",
-                                map_path.c_str(), x, y);
-
-                    // Switch the actual map, deleting the previous one
-                    engine->changeMap(map_path);
-                    tiledMap = engine->getCurrentMap();
-
-                    autoTarget = NULL;
-                    current_npc = 0;
-
-                    player_node->action = Being::STAND;
-                    player_node->mFrame = 0;
-                    player_node->x = x;
-                    player_node->y = y;
-
-                    // Send "map loaded"
-                    MessageOut outMsg;
-                    outMsg.writeInt16(CMSG_MAP_LOADED);
-                }
-                break;
-
-            case SMSG_SKILL_FAILED:
-                // Action failed (ex. sit because you have not reached the
-                // right level)
-                CHATSKILL action;
-                action.skill   = msg.readInt16();
-                action.bskill  = msg.readInt16();
-                action.unused  = msg.readInt16(); // unknown
-                action.success = msg.readInt8();
-                action.reason  = msg.readInt8();
-                if (action.success != SKILL_FAILED &&
-                    action.bskill == BSKILL_EMOTE)
-                {
-                    printf("Action: %d/%d", action.bskill, action.success);
-                }
-                chatWindow->chatLog(action);
-                break;
-
-            case SMSG_PLAYER_STAT_UPDATE_1:
-                {
-                    Sint16 type = msg.readInt16();
-                    Sint32 value = msg.readInt32();
-
-                    switch (type)
-                    {
-                        //case 0x0000:
-                        //    player_node->setWalkSpeed(msg.readInt32());
-                        //    break;
-                        case 0x0005: player_info->hp = value; break;
-                        case 0x0006: player_info->maxHp = value; break;
-                        case 0x0007: player_info->mp = value; break;
-                        case 0x0008: player_info->maxMp = value; break;
-                        case 0x000b: player_info->lvl = value; break;
-                        case 0x000c:
-                            player_info->skillPoint = value;
-                            skillDialog->setPoints(player_info->skillPoint);
-                            break;
-                        case 0x0018:
-                            if (value >= player_info->maxWeight / 2 &&
-                                player_info->totalWeight <
-                                  player_info->maxWeight / 2)
-                            {
-                                weightNotice = new OkDialog("Message",
-                                        "You are carrying more then half your "
-                                        "weight. You are unable to regain "
-                                        "health.",
-                                        &weightNoticeListener);
-                            }
-                            player_info->totalWeight = value;
-                            break;
-                        case 0x0019: player_info->maxWeight = value; break;
-                        case 0x0037: player_info->jobLvl = value; break;
-                        case 0x0009:
-                            player_info->statsPointsToAttribute = value;
-                            break;
-                        case 0x0029: player_info->ATK = value; break;
-                        case 0x002b: player_info->MATK = value; break;
-                        case 0x002d: player_info->DEF = value; break;
-                        case 0x002f: player_info->MDEF = value; break;
-                        case 0x0031: player_info->HIT = value; break;
-                        case 0x0032: player_info->FLEE = value; break;
-                        case 0x0035: player_node->aspd = value; break;
-                    }
-
-                    if (player_info->hp == 0 && deathNotice == NULL)
-                    {
-                        deathNotice = new OkDialog("Message",
-                                "You're now dead, press ok to restart",
-                                &deathNoticeListener);
-                        player_node->action = Being::DEAD;
-                    }
-                }
-                break;
-
-                // Stop walking
-                // case 0x0088:  // Disabled because giving some problems
-                //if (being = findNode(readInt32(2))) {
-                //    if (being->getId() != player_node->getId()) {
-                //        being->action = STAND;
-                //        being->mFrame = 0;
-                //        set_coordinates(being->coordinates,
-                //                        readWord(6), readWord(8),
-                //                        get_direction(being->coordinates));
-                //    }
-                //}
-                //break;
-
-            case SMSG_BEING_ACTION:
-                {
-                    Being *srcBeing = findNode(msg.readInt32());
-                    Being *dstBeing = findNode(msg.readInt32());
-                    msg.readInt32();   // server tick
-                    msg.readInt32();   // src speed
-                    msg.readInt32();   // dst speed
-                    Sint16 param1 = msg.readInt16();
-                    msg.readInt16();  // param 2
-                    Sint8 type = msg.readInt8();
-                    msg.readInt16();  // param 3
-
-                    switch (type)
-                    {
-                        case 0: // Damage
-                            if (dstBeing == NULL) break;
-
-                            dstBeing->setDamage(param1, SPEECH_TIME);
-
-                            if (srcBeing != NULL &&
-                                srcBeing != player_node)
-                            {
-                                // buggy
-                                srcBeing->action = Being::ATTACK;
-                                srcBeing->mFrame = 0;
-                                srcBeing->walk_time = tick_time;
-                            }
-                            break;
-
-                        case 2: // Sit
-                            if (srcBeing == NULL) break;
-                            srcBeing->mFrame = 0;
-                            srcBeing->action = Being::SIT;
-                            break;
-
-                        case 3: // Stand up
-                            if (srcBeing == NULL) break;
-                            srcBeing->mFrame = 0;
-                            srcBeing->action = Being::STAND;
-                            break;
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_STAT_UPDATE_2:
-                switch (msg.readInt16()) {
-                    case 0x0001:
-                        player_info->xp = msg.readInt32();
-                        break;
-                    case 0x0002:
-                        player_info->jobXp = msg.readInt32();
-                        break;
-                    case 0x0014:
-                        player_info->gp = msg.readInt32();
-                        break;
-                    case 0x0016:
-                        player_info->xpForNextLevel = msg.readInt32();
-                        break;
-                    case 0x0017:
-                        player_info->jobXpForNextLevel = msg.readInt32();
-                        break;
-                }
-                break;
-
-            case SMSG_BEING_LEVELUP:
-                if ((Uint32)msg.readInt32() == player_node->getId()) {
-                    logger->log("Level up");
-                    sound.playSfx("sfx/levelup.ogg");
-                } else {
-                    logger->log("Someone else went level up");
-                }
-                msg.readInt32();  // type
-                break;
-
-            case SMSG_BEING_EMOTION:
-                if (!(being = findNode(msg.readInt32())))
-                {
-                    break;
-                }
-
-                being->emotion = msg.readInt8();
-                being->emotion_time = EMOTION_TIME;
-                break;
-
-            case SMSG_PLAYER_STAT_UPDATE_3:
-                {
-                    Sint32 type = msg.readInt32();
-                    Sint32 base = msg.readInt32();
-                    Sint32 bonus = msg.readInt32();
-                    Sint32 total = base + bonus;
-
-                    switch (type) {
-                        case 0x000d: player_info->STR = total; break;
-                        case 0x000e: player_info->AGI = total; break;
-                        case 0x000f: player_info->VIT = total; break;
-                        case 0x0010: player_info->INT = total; break;
-                        case 0x0011: player_info->DEX = total; break;
-                        case 0x0012: player_info->LUK = total; break;
-                    }
-                }
-                break;
-
-            case SMSG_NPC_BUY_SELL_CHOICE:
-                buyDialog->setVisible(false);
-                buyDialog->reset();
-                sellDialog->setVisible(false);
-                sellDialog->reset();
-                buySellDialog->setVisible(true);
-                current_npc = msg.readInt32();
-                break;
-
-            case SMSG_NPC_BUY:
-                msg.readInt16();  // length
-                n_items = (msg.getLength() - 4) / 11;
-                buyDialog->reset();
-                buyDialog->setMoney(player_info->gp);
-                buyDialog->setVisible(true);
-
-                for (int k = 0; k < n_items; k++)
-                {
-                    Sint32 value = msg.readInt32();
-                    msg.readInt32();  // DCvalue
-                    msg.readInt8();  // type
-                    Sint16 itemId = msg.readInt16();
-                    buyDialog->addItem(itemId, value);
-                }
-                break;
-
-            case SMSG_NPC_SELL:
-                msg.readInt16();  // length
-                n_items = (msg.getLength() - 4) / 10;
-                if (n_items > 0) {
-                    sellDialog->reset();
-                    sellDialog->setVisible(true);
-
-                    for (int k = 0; k < n_items; k++)
-                    {
-                        Sint16 index = msg.readInt16();
-                        Sint32 value = msg.readInt32();
-                        msg.readInt32();  // OCvalue
-
-                        Item *item = inventory->getItem(index);
-                        if (item && !(item->isEquipped())) {
-                            sellDialog->addItem(item, value);
-                        }
-                    }
-                }
-                else {
-                    chatWindow->chatLog("Nothing to sell", BY_SERVER);
-                    current_npc = 0;
-                }
-                break;
-
-            case SMSG_NPC_BUY_RESPONSE:
-                if (msg.readInt8() == 0) {
-                    chatWindow->chatLog("Thanks for buying", BY_SERVER);
-                } else {
-                    chatWindow->chatLog("Unable to buy", BY_SERVER);
-                }
-                break;
-
-            case SMSG_NPC_SELL_RESPONSE:
-                if (msg.readInt8() == 0) {
-                    chatWindow->chatLog("Thanks for selling", BY_SERVER);
-                } else {
-                    chatWindow->chatLog("Unable to sell", BY_SERVER);
-                }
-                break;
-
-            case SMSG_PLAYER_INVENTORY_ADD:
-                {
-                    Sint16 index = msg.readInt16();
-                    Sint16 amount = msg.readInt16();
-                    Sint16 itemId = msg.readInt16();
-                    msg.readInt8();  // identify flag
-                    msg.readInt8();  // attribute
-                    msg.readInt8();  // refine
-                    msg.skip(8);     // card
-                    Sint16 equipType = msg.readInt16();
-                    msg.readInt8();  // type
-                    Sint8 fail = msg.readInt8();
-
-                    if (fail > 0) {
-                        chatWindow->chatLog("Unable to pick up item",
-                                             BY_SERVER);
-                    } else {
-                        inventory->addItem(index, itemId, amount,
-                                           equipType != 0);
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_INVENTORY_REMOVE:
-                {
-                    Sint16 index = msg.readInt16();
-                    Sint16 amount = msg.readInt16();
-                    inventory->getItem(index)->increaseQuantity(-amount);
-                }
-                break;
-
-            case SMSG_PLAYER_INVENTORY_USE:
-                {
-                    Sint16 index = msg.readInt16();
-                    msg.readInt16(); // item id
-                    msg.readInt32();  // id
-                    Sint16 amountLeft = msg.readInt16();
-                    msg.readInt8();  // type
-
-                    inventory->getItem(index)->setQuantity(amountLeft);
-                }
-                break;
-
-            case SMSG_PLAYER_SKILLS:
-                msg.readInt16();  // length
-                n_items = (msg.getLength() - 4) / 37;
-                skillDialog->cleanList();
-
-                for (int k = 0; k < n_items; k++)
-                {
-                    Sint16 skillId = msg.readInt16();
-                    msg.readInt16();  // target type
-                    msg.readInt16();  // unknown
-                    Sint16 level = msg.readInt16();
-                    Sint16 sp = msg.readInt16();
-                    msg.readInt16();  // range
-                    std::string skillName = msg.readString(24);
-                    Sint8 up = msg.readInt8();
-
-                    if (level != 0 || up != 0)
-                    {
-                        if (skillDialog->hasSkill(skillId)) {
-                            skillDialog->setSkill(skillId, level, sp);
-                        }
-                        else {
-                            skillDialog->addSkill(skillId, level, sp);
-                        }
-                    }
-                }
-                break;
-
-            case 0x010c:
-                // Display MVP player
-                msg.readInt32(); // id
-                chatWindow->chatLog("MVP player", BY_SERVER);
-                break;
-
-            case SMSG_ITEM_VISIBLE:
-            case SMSG_ITEM_DROPPED:
-                {
-                    Uint32 id = msg.readInt32();
-                    Sint16 itemId = msg.readInt16();
-                    msg.readInt8();  // identify flag
-                    Uint16 x = msg.readInt16();
-                    Uint16 y = msg.readInt16();
-                    msg.skip(4);     // amount,subX,subY / subX,subY,amount
-
-                    add_floor_item(new FloorItem(id, itemId, x, y, tiledMap));
-                }
-                break;
-
-            case SMSG_ITEM_REMOVE:
-                remove_floor_item(msg.readInt32());
-                break;
-
-            case SMSG_NPC_CHOICE:
-                msg.readInt16();  // length
-                current_npc = msg.readInt32();
-                npcListDialog->parseItems(msg.readString(msg.getLength() - 8));
-                npcListDialog->setVisible(true);
-                break;
-
-            case SMSG_BEING_CHANGE_LOOKS:
-                if (!(being = findNode(msg.readInt32())))
-                {
-                    break;
-                }
-
-                switch (msg.readInt8()) {
-                    case 1:
-                        being->setHairStyle(msg.readInt8());
-                        break;
-                    case 2:
-                        being->setWeapon(msg.readInt8());
-                        break;
-                    case 6:
-                        being->setHairColor(msg.readInt8());
-                        break;
-                    default:
-                        msg.readInt8(); // unsupported
-                        break;
-                }
-                break;
-
-            case SMSG_PLAYER_EQUIP:
-                {
-                    Sint16 index = msg.readInt16();
-                    Sint16 equipPoint = msg.readInt16();
-                    Sint8 type = msg.readInt8();
-
-                    logger->log("Equipping: %i %i %i",
-                                index, equipPoint, type);
-
-                    if (type == 0) {
-                        chatWindow->chatLog("Unable to equip.", BY_SERVER);
-                    }
-                    else if (equipPoint)
-                    {
-                        // Unequip any existing equipped item in this position
-                        int mask = 1;
-                        int position = 0;
-                        while (!(equipPoint & mask)) {
-                            mask <<= 1;
-                            position++;
-                        }
-                        logger->log("Position %i", position - 1);
-                        Item *item = equipment->getEquipment(position - 1);
-                        if (item) {
-                            item->setEquipped(false);
-                        }
-
-                        item = inventory->getItem(index);
-                        item->setEquipped(true);
-                        equipment->setEquipment(position - 1, item);
-                        player_node->setWeaponById(item->getId());
-                    }
-                }
-                break;
-
-            case 0x01d7:
-                // Equipment related
-                {
-                    being = findNode(msg.readInt32());
-                    msg.readInt8();  // equip point
-                    Sint16 itemId1 = msg.readInt16();
-                    msg.readInt16(); // item id 2
-
-                    if (being != NULL)
-                    {
-                        being->setWeaponById(itemId1);
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_UNEQUIP:
-                {
-                    Sint16 index = msg.readInt16();
-                    Sint16 equipPoint = msg.readInt16();
-                    Sint8 type = msg.readInt8();
-
-                    if (type == 0) {
-                        chatWindow->chatLog("Unable to unequip.", BY_SERVER);
-                        break;
-                    }
-
-                    if (equipPoint == 0) {
-                        // No point given, no point in searching
-                        break;
-                    }
-
-                    int mask = 1;
-                    int position = 0;
-                    while (!(equipPoint & mask)) {
-                        mask <<= 1;
-                        position++;
-                    }
-
-                    Item *item = inventory->getItem(index);
-
-                    if (item != NULL)
-                    {
-                        item->setEquipped(false);
-
-                        switch (item->getId()) {
-                            case 529:
-                            case 1199:
-                                equipment->setArrows(NULL);
-                                break;
-                            case 521:
-                            case 522:
-                            case 530:
-                            case 536:
-                            case 1200:
-                            case 1201:
-                                player_node->setWeapon(0);
-                                // TODO: Why this break? Shouldn't a weapon be
-                                //       unequipped in inventory too?
-                                break;
-                            default:
-                                equipment->removeEquipment(position - 1);
-                                break;
-                        }
-                        logger->log("Unequipping: %i %i(%i) %i",
-                                    index, equipPoint, type, position - 1);
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_ARROW_EQUIP:
-                {
-                    Sint16 id = msg.readInt16();
-
-                    if (id > 1) {
-                        Item *item = inventory->getItem(id);
-                        if (item) {
-                            item->setEquipped(true);
-                            equipment->setArrows(item);
-                            logger->log("Arrows equipped: %i", id);
-                        }
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_ARROW_MESSAGE:
-                {
-                    Sint16 type = msg.readInt16();
-
-                    switch (type) {
-                        case 0:
-                            chatWindow->chatLog("Equip arrows first",
-                                                 BY_SERVER);
-                            break;
-                        default:
-                            logger->log("0x013b: Unhandled message %i", type);
-                            break;
-                    }
-                }
-                break;
-
-            case SMSG_PLAYER_STAT_UPDATE_4:
-                {
-                    Sint16 type = msg.readInt16();
-                    Sint8 fail = msg.readInt8();
-                    Sint8 value = msg.readInt8();
-
-                    if (fail == 1)
-                    {
-                        switch (type) {
-                            case 0x000d: player_info->STR = value; break;
-                            case 0x000e: player_info->AGI = value; break;
-                            case 0x000f: player_info->VIT = value; break;
-                            case 0x0010: player_info->INT = value; break;
-                            case 0x0011: player_info->DEX = value; break;
-                            case 0x0012: player_info->LUK = value; break;
-                        }
-                    }
-                }
-                break;
-
-                // Updates stats and status points
-            case SMSG_PLAYER_STAT_UPDATE_5:
-                player_info->statsPointsToAttribute = msg.readInt16();
-                player_info->STR   = msg.readInt8();
-                player_info->STRUp = msg.readInt8();
-                player_info->AGI   = msg.readInt8();
-                player_info->AGIUp = msg.readInt8();
-                player_info->VIT   = msg.readInt8();
-                player_info->VITUp = msg.readInt8();
-                player_info->INT   = msg.readInt8();
-                player_info->INTUp = msg.readInt8();
-                player_info->DEX   = msg.readInt8();
-                player_info->DEXUp = msg.readInt8();
-                player_info->LUK   = msg.readInt8();
-                player_info->LUKUp = msg.readInt8();
-                player_info->ATK       = msg.readInt16();  // ATK
-                player_info->ATKBonus  = msg.readInt16();  // ATK bonus
-                player_info->MATK      = msg.readInt16();  // MATK max
-                player_info->MATKBonus = msg.readInt16();  // MATK min
-                player_info->DEF       = msg.readInt16();  // DEF
-                player_info->DEFBonus  = msg.readInt16();  // DEF bonus
-                player_info->MDEF      = msg.readInt16();  // MDEF
-                player_info->MDEFBonus = msg.readInt16();  // MDEF bonus
-                player_info->HIT       = msg.readInt16();  // HIT
-                player_info->FLEE      = msg.readInt16();  // FLEE
-                player_info->FLEEBonus = msg.readInt16();  // FLEE bonus
-                msg.readInt16();  // critical
-                msg.readInt16();  // unknown
-                break;
-
-            case SMSG_PLAYER_STAT_UPDATE_6:
-                switch (msg.readInt16()) {
-                    case 0x0020: player_info->STRUp = msg.readInt8(); break;
-                    case 0x0021: player_info->AGIUp = msg.readInt8(); break;
-                    case 0x0022: player_info->VITUp = msg.readInt8(); break;
-                    case 0x0023: player_info->INTUp = msg.readInt8(); break;
-                    case 0x0024: player_info->DEXUp = msg.readInt8(); break;
-                    case 0x0025: player_info->LUKUp = msg.readInt8(); break;
-                }
-                break;
-
-            case SMSG_BEING_NAME_RESPONSE:
-                if ((being = findNode(msg.readInt32())))
-                {
-                    being->setName(msg.readString(24));
-                }
-                break;
-                
-            case SMSG_WHO_ANSWER:
-                {
-                    std::stringstream userMsg;
-                    userMsg << "Online users: ";
-                    userMsg << msg.readInt32();
-                    chatWindow->chatLog(userMsg.str(), BY_SERVER);
-                }
-                break;
-
-            case 0x0119:
-                // Change in players look
-                break;
-
-            default:
-                // Manage non implemented packets
-                logger->log("Unhandled packet: %x", msg.getId());
-                break;
-        }
-
-        skip(msg.getLength());
     }
 }

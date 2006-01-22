@@ -26,13 +26,11 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
-#include <SDL_events.h>
 
-#include "ok_dialog.h"
 #include "window.h"
 #include "../guichanfwd.h"
 
-class LoginDialog;
+class LoginData;
 
 /**
  * Listener used for handling wrong data.
@@ -57,22 +55,12 @@ class LoginDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        LoginDialog();
-        
-        /**
-         * Destructor
-         */
-        ~LoginDialog();
+        LoginDialog(LoginData *loginData);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-
-        /**
-         * Updates dialog logic.
-         */
-        void logic();
 
         // Made them public to have the possibility to request focus
         // from external functions.
@@ -88,17 +76,10 @@ class LoginDialog : public Window, public gcn::ActionListener {
         gcn::Button *okButton;
         gcn::Button *cancelButton;
         gcn::Button *registerButton;
-        int mStatus;
-
-        void attemptLogin(const std::string& user, const std::string& pass);
-        void checkLogin();
 
         WrongDataNoticeListener *wrongDataNoticeListener;
-};
 
-/**
- * Handle input
- */
-void loginInputHandler(SDL_KeyboardEvent *keyEvent);
+        LoginData *mLoginData;
+};
 
 #endif

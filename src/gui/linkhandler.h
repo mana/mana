@@ -34,9 +34,6 @@ class LinkHandler
         virtual ~LinkHandler() { }
 
         virtual void handleLink(const std::string& link) = 0;
-
-    protected:
-        LinkHandler() { }
 };
 
 #endif

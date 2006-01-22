@@ -1,8 +1,54 @@
+2006-01-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/main.cpp, src/net/charserverhandler.cpp,
+	src/net/loginhandler.cpp, src/net/maploginhandler.cpp,
+	src/net/network.cpp: Unify some network stuff in the main loop and fix
+	a bug in the network class that triggers when a handlers survives the
+	network object.
+
 2006-01-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/browserbox.cpp: Applied a patch by Ar2ro that works around
 	the problems with line wrapping in the chatbox. Note though that this
 	while code should be properly rewritten later.
+
+2006-01-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev: Updated Dev-Cpp project file.
+
+2006-01-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/equipment.h, src/game.cpp, src/game.h, src/main.h,
+	src/gui/buddywindow.cpp, src/gui/buddywindow.h,
+	src/gui/chargedialog.h, src/gui/connection.cpp, src/gui/connection.h,
+	src/gui/equipmentwindow.cpp, src/gui/equipmentwindow.h,
+	src/gui/linkhandler.h, src/gui/ministatus.h, src/gui/register.h,
+	src/net/protocol.h, src/resources/mapreader.h: Header, class
+	declaration and include cleanup.
+	* src/localplayer.cpp, src/localplayer.h, src/gui/requesttrade.cpp,
+	src/net/tradehandler.cpp: Made the local player object care about its
+	trading state, later this could be used for different stuff, like the
+	player setting itself to auto-decline trade offers without messing up
+	the code in the tradehandler. Removed message sending code from the
+	trade handler.
+	* src/npc.cpp, src/npc.h: Added the files for real this time.
+	* src/npc.cpp, src/npc.h, src/Makefile.am, src/being.cpp,
+	src/beingmanager.cpp, src/beingmanager.h, src/engine.cpp,
+	src/engine.h, src/game.cpp, src/game.h, src/localplayer.cpp,
+	src/localplayer.h, src/map.cpp, src/gui/buy.cpp, src/gui/buysell.cpp,
+	src/gui/buysell.h, src/gui/gui.cpp, src/gui/minimap.cpp,
+	src/gui/npc.cpp, src/gui/npc.h, src/gui/npc_text.cpp,
+	src/gui/npc_text.h, src/gui/npclistdialog.cpp,
+	src/gui/npclistdialog.h, src/gui/popupmenu.cpp,
+	src/gui/requesttrade.cpp, src/gui/requesttrade.h, src/gui/sell.cpp,
+	src/gui/setup.cpp, src/gui/skill.cpp, src/gui/skill.h,
+	src/gui/status.cpp, src/gui/status.h, src/net/buysellhandler.cpp,
+	src/net/charserverhandler.cpp, src/net/chathandler.cpp,
+	src/net/equipmenthandler.cpp, src/net/npchandler.cpp,
+	src/net/playerhandler.cpp, src/net/protocol.cpp,
+	src/net/tradehandler.cpp: Added a class for NPCs. Removed network
+	stuff from a bunch of gui dialog classes. Cleaned up some gui class
+	declarations and checked a bunch of includes for being useless.
 
 2006-01-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -12,7 +58,171 @@
 
 2006-01-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/main.cpp, src/main.h, src/gui/char_server.cpp,
+	src/gui/char_server.h: Moved network code out of the
+	ServerSelectDialog.
+	* src/gui/char_select.cpp, src/gui/char_select.h: Change setPlayerInfo
+	to updatePlayerInfo, as there's now a convenient wrapper around the
+	plain data.
+	* src/Makefile.am, src/lockedarray.cpp, src/lockedarray.h,
+	src/main.cpp, src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/net/charserverhandler.cpp,
+	src/net/charserverhandler.h, src/net/network.cpp, src/net/network.h:
+	Created a single CharServerHandler. Created a LockedArray class to
+	"synchronize" access to arrays. Moved a bunch of networking out of the
+	char server related gui classes.
+	* src/Makefile.am, src/logindata.h, src/main.cpp, src/main.h,
+	src/gui/login.cpp, src/gui/login.h, src/gui/register.cpp,
+	src/gui/register.h: Removed network code from login and register
+	dialogs.
 	* src/gui/login.cpp, src/gui/login.h: Removed unused var.
+	* src/main.cpp, src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/char_server.h,
+	src/gui/connection.cpp, src/gui/connection.h, src/gui/error.cpp,
+	src/gui/error.h, src/gui/login.cpp, src/gui/login.h,
+	src/gui/register.cpp, src/gui/register.h, src/gui/updatewindow.cpp,
+	src/gui/updatewindow.h: Removed the pre-game input handlers and
+	unified them in main.cpp. Some header and class cleanups.
+	* src/net/maploginhandler.cpp, src/net/maploginhandler.h,
+	src/Makefile.am, src/engine.cpp, src/engine.h, src/game.cpp,
+	src/main.cpp, src/gui/connection.cpp, src/gui/connection.h,
+	src/net/playerhandler.cpp: Made changeMap() care about sending the
+	map-loaded message. Removed network stuff from connection dialog.
+
+2006-01-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am, src/gui/login.cpp, src/gui/login.h,
+	src/gui/register.cpp, src/net/loginhandler.cpp,
+	src/net/loginhandler.h: Remove duplicated code by unifying the message
+	handlers for login and register.
+	* src/gui/char_server.cpp, src/gui/char_server.h: Removed the polling
+	loop.
+	* src/gui/char_select.cpp, src/gui/char_select.h: Remove destructor
+	again, no idea why the compiler complained earlier.
+	* src/gui/char_select.cpp, src/gui/char_select.h: Created a message
+	handler for character creation and cleaned up the header file.
+	* src/gui/register.cpp, src/gui/register.h: Added a message handler
+	and removed the polling loop.
+	* src/net/network.cpp: Add recognition of disconnects.
+	* src/gui/connection.cpp, src/gui/connection.h,
+	src/net/playerhandler.cpp: Removed the polling loop and the duplicate
+	login message handler.
+	* src/gui/login.cpp, src/gui/login.h: Remove polling loop, the new
+	network code takes care of all that.
+	* src/net/network.cpp: Make sure that we don't send anything when not
+	connected.
+	* src/gui/login.cpp: Added a handler for network messages.
+	* src/game.cpp, src/net/beinghandler.cpp, src/net/beinghandler.h,
+	src/net/buysellhandler.cpp, src/net/buysellhandler.h,
+	src/net/chathandler.cpp, src/net/chathandler.h,
+	src/net/equipmenthandler.cpp, src/net/equipmenthandler.h,
+	src/net/inventoryhandler.cpp, src/net/inventoryhandler.h,
+	src/net/itemhandler.cpp, src/net/itemhandler.h,
+	src/net/messagehandler.cpp, src/net/messagehandler.h,
+	src/net/npchandler.cpp, src/net/npchandler.h,
+	src/net/playerhandler.cpp, src/net/playerhandler.h,
+	src/net/skillhandler.cpp, src/net/skillhandler.h,
+	src/net/tradehandler.cpp, src/net/tradehandler.h: Reverted the patch
+	to make the handlers register themselves, this just cannot work.
+	* src/game.cpp: Small cleanup.
+	* src/game.cpp, src/localplayer.cpp, src/localplayer.h: Made emote() a
+	method of the LocalPlayer class.
+
+2006-01-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/main.cpp, src/net/beinghandler.cpp,
+	src/net/beinghandler.h, src/net/buysellhandler.cpp,
+	src/net/buysellhandler.h, src/net/chathandler.cpp,
+	src/net/chathandler.h, src/net/equipmenthandler.cpp,
+	src/net/equipmenthandler.h, src/net/inventoryhandler.cpp,
+	src/net/inventoryhandler.h, src/net/itemhandler.cpp,
+	src/net/itemhandler.h, src/net/messagehandler.cpp,
+	src/net/messagehandler.h, src/net/npchandler.cpp,
+	src/net/npchandler.h, src/net/playerhandler.cpp,
+	src/net/playerhandler.h, src/net/skillhandler.cpp,
+	src/net/skillhandler.h, src/net/tradehandler.cpp,
+	src/net/tradehandler.h: Added a constructor parameter to the
+	MessageHandler class to support it self-registering to a network.
+	* src/game.cpp, src/net/beinghandler.cpp, src/net/network.cpp,
+	src/net/network.h, src/net/playerhandler.cpp: Moved the last few
+	messages out of the game loop into handlers. Added logging of
+	unhandled messages to the network class.
+	* src/Makefile.am, src/game.cpp, src/net/skillhandler.cpp,
+	src/net/skillhandler.h: Added a dedicated handler for skill messages.
+	* src/game.cpp, src/net/beinghandler.cpp: Moved some messages into the
+	being message handler.
+	* src/net/playerhandler.cpp: Fixed death listener.
+	* src/Makefile.am, src/game.cpp, src/net/playerhandler.cpp,
+	src/net/playerhandler.h: Added a dedicated handler for player
+	messages.
+	* src/game.cpp, src/net/chathandler.cpp: Moved WHO answer and some MVP
+	thing into the chat handler.
+	* src/Makefile.am, src/game.cpp, src/net/npchandler.cpp,
+	src/net/npchandler.h: Added a dedicated handler for npc messages.
+	* src/Makefile.am, src/game.cpp, src/net/itemhandler.cpp,
+	src/net/itemhandler.h: Added a dedicated handler for item messages.
+	* src/net/messagehandler.cpp, src/Makefile.am, src/game.cpp,
+	src/gui/char_select.cpp, src/gui/char_server.cpp,
+	src/gui/connection.cpp, src/net/messagehandler.h, src/net/network.cpp,
+	src/net/tradehandler.cpp, src/net/tradehandler.h: Made the
+	MessageHandler class aware of the network it is listening to and
+	unregistering itself.
+	* src/Makefile.am, src/beingmanager.cpp, src/beingmanager.h,
+	src/engine.cpp, src/game.cpp, src/net/beinghandler.cpp,
+	src/net/beinghandler.h: Added a dedicated handler for being messages.
+	Made the beingManager care about map changes.
+	* src/net/network.cpp: Removed some debug output.
+	* src/Makefile.am, src/game.cpp, src/net/inventoryhandler.cpp,
+	src/net/inventoryhandler.h: Added a dedicated handler for inventory
+	messages.
+	* src/game.cpp, src/inventory.cpp, src/inventory.h,
+	src/localplayer.cpp, src/localplayer.h, src/gui/trade.cpp,
+	src/net/buysellhandler.cpp, src/net/equipmenthandler.cpp,
+	src/net/tradehandler.cpp: Added delegation methods for inventory stuff
+	to the LocalPlayer class. Removed some unneeded includes.
+	* src/Makefile.am, src/game.cpp, src/net/equipmenthandler.cpp,
+	src/net/equipmenthandler.h: Added a dedicated handler for equipment
+	messages.
+	* src/game.cpp, src/localplayer.h: Removed unions, array are indexed
+	by the existing enums now.
+	* src/Makefile.am, src/game.cpp, src/net/buysellhandler.cpp,
+	src/net/buysellhandler.h: Added a dedicated handler for buy and sell
+	messages.
+	* src/Makefile.am, src/game.cpp, src/net/chathandler.cpp,
+	src/net/chathandler.h, src/net/tradehandler.cpp: Added a dedicated
+	handler for chat messages.
+
+2006-01-11  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am, src/game.cpp, src/game.h, src/gui/popupmenu.cpp,
+	src/gui/requesttrade.h, src/net/messagehandler.h, src/net/network.cpp,
+	src/net/network.h, src/net/tradehandler.cpp, src/net/tradehandler.h:
+	Added a dedicated handler for trade messages.
+	* gui/char_select.cpp, gui/char_server.cpp, gui/connection.cpp,
+	net/messagehandler.h, net/network.cpp: Fixed a memory leak.
+	* src/Makefile.am, src/game.cpp, src/localplayer.cpp, src/main.cpp,
+	src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/char_server.h,
+	src/gui/connection.cpp, src/gui/connection.h, src/gui/gui.cpp,
+	src/gui/popupmenu.cpp, src/net/messagehandler.h, src/net/network.cpp,
+	src/net/network.h, src/net/protocol.cpp, src/net/protocol.h: Fixed
+	networking thread. Made skip calls queuable. Added MessageHandler base
+	class and added derived message handlers for some stuff.
+	* src/being.h, src/beingmanager.cpp, src/beingmanager.h,
+	src/game.cpp, src/game.h, src/localplayer.cpp, src/localplayer.h,
+	src/main.cpp, src/gui/buy.cpp, src/gui/buy.h, src/gui/buysell.cpp,
+	src/gui/buysell.h, src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/char_server.h, src/gui/chat.cpp,
+	src/gui/chat.h, src/gui/connection.cpp, src/gui/connection.h,
+	src/gui/gui.cpp, src/gui/login.cpp, src/gui/login.h, src/gui/npc.cpp,
+	src/gui/npc.h, src/gui/npc_text.cpp, src/gui/npc_text.h,
+	src/gui/popupmenu.cpp, src/gui/register.cpp, src/gui/register.h,
+	src/gui/requesttrade.cpp, src/gui/requesttrade.h, src/gui/sell.cpp,
+	src/gui/sell.h, src/gui/skill.cpp, src/gui/skill.h,
+	src/gui/status.cpp, src/gui/status.h, src/gui/trade.cpp,
+	src/gui/trade.h, src/net/messageout.cpp, src/net/messageout.h,
+	src/net/network.cpp, src/net/network.h, src/net/protocol.cpp,
+	src/net/protocol.h: Created a network class.
 
 2006-01-10  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -23,6 +233,25 @@
 
 	* src/game.cpp: Fixed canceled/cancelled inconsistency.
 
+2006-01-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/floor_item.cpp, src/floor_item.h, src/game.cpp,
+	src/localplayer.cpp, src/localplayer.h, src/gui/gui.cpp,
+	src/gui/popupmenu.cpp, src/net/protocol.cpp, src/net/protocol.h: Made
+	find_floor_item_by_cor return the item instead of its id. Made pickUp
+	a method of the LocalPlayer class.
+	* equipment.cpp, equipment.h, game.cpp, inventory.cpp, inventory.h,
+	localplayer.cpp, localplayer.h, gui/equipmentwindow.cpp,
+	gui/inventorywindow.cpp, gui/item_amount.cpp, gui/popupmenu.cpp: Made
+	inventory and equipment properties of the LocalPlayer class.
+	* src/game.cpp, src/game.h, src/gui/connection.cpp: Removed some
+	globals.
+
+2006-01-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/localplayer.cpp, src/localplayer.h: Created a walk
+	method for LocalPlayer.
+
 2006-01-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_9-1.tmx.gz: Crush fixed the issues reported on wiki.
@@ -30,6 +259,29 @@
 	src/main.cpp: Removed --skipupdate option from Dev.Cpp project file,
 	splitted the setup window into 3 tabs and added a joystick calibration
 	tool.
+
+2006-01-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/localplayer.cpp: Changed semantics for auto
+	target. The player now keeps attacking the select target till he
+	selects an other one, and not just by running into another one.
+	* src/being.cpp, src/beingmanager.cpp, src/beingmanager.h,
+	src/game.cpp, src/localplayer.h, src/gui/char_select.cpp,
+	src/gui/char_server.cpp: Fix local player id being wrongly assigned
+	causing various issues.
+	* src/gui/status.cpp: Fix attributes not being shown.
+	* src/Makefile.am, src/being.cpp, src/being.h, src/beingmanager.cpp,
+	src/beingmanager.h, src/engine.cpp, src/game.cpp, src/game.h,
+	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/map.cpp,
+	src/monster.cpp, src/monster.h, src/player.cpp, src/player.h,
+	src/playerinfo.h, src/gui/char_select.cpp, src/gui/char_select.h,
+	src/gui/char_server.cpp, src/gui/chargedialog.cpp, src/gui/chat.cpp,
+	src/gui/gui.cpp, src/gui/inventorywindow.cpp, src/gui/minimap.cpp,
+	src/gui/ministatus.cpp, src/gui/popupmenu.cpp, src/gui/skill.cpp,
+	src/gui/status.cpp, src/gui/status.h, src/net/protocol.cpp,
+	src/net/protocol.h: Created subclasses of the Being class to move
+	specific code there. Added a BeingManager to remove use of globals.
+	Moved PLAYERINFO stuff into the new LocalPlayer class.
 
 2006-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

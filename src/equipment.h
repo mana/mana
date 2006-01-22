@@ -24,8 +24,6 @@
 #ifndef _TMW_EQUIPMENT_H_
 #define _TMW_EQUIPMENT_H_
 
-#include <stdlib.h>
-
 class Item;
 
 #define EQUIPMENT_SIZE 10
@@ -34,9 +32,14 @@ class Equipment
 {
     public:
         /**
-         * Retrieve an instance of the equipment class.
+         * Constructor.
          */
-        static Equipment* getInstance();
+        Equipment();
+
+        /**
+         * Destructor.
+         */
+        ~Equipment();
 
         /**
          * Get equipment at the given slot.
@@ -48,13 +51,13 @@ class Equipment
          * Set equipment at the given slot.
          */
         void
-        setEquipment(int index, Item *item) { mEquipment[index] = item; }
+        setEquipment(int index, Item *item);
 
         /**
          * Remove equipment from the given slot.
          */
         void
-        removeEquipment(int index) { mEquipment[index] = NULL; }
+        removeEquipment(int index) { mEquipment[index] = 0; }
 
         /**
          * Remove the given item from equipment.
@@ -74,21 +77,8 @@ class Equipment
         setArrows(Item *arrows) { mArrows = arrows; }
 
     protected:
-        /**
-         * Constructor.
-         */
-        Equipment();
-
-        /**
-         * Destructor.
-         */
-        ~Equipment();
-
         Item *mEquipment[EQUIPMENT_SIZE];
         Item *mArrows;
-
-    private:
-        static Equipment *mInstance;
 };
 
 #endif

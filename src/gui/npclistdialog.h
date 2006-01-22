@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_NPC_H
-#define _TMW_NPC_H
+#ifndef _TMW_GUI_NPCLISTDIALOG_H
+#define _TMW_GUI_NPCLISTDIALOG_H
 
 #include <iosfwd>
 #include <vector>

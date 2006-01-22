@@ -29,6 +29,8 @@
 #include "chat.h"
 #include "scrollarea.h"
 
+#include "../resources/buddylist.h"
+
 extern ChatWindow *chatWindow;
 
 BuddyWindow::BuddyWindow():
@@ -36,8 +38,10 @@ BuddyWindow::BuddyWindow():
 {
     setContentSize(124, 202);
 
+    mBuddyList = new BuddyList();
+
     mListbox = new gcn::ListBox();
-    mListbox->setListModel(this);
+    mListbox->setListModel(mBuddyList);
 
     ScrollArea *scrollArea = new ScrollArea(mListbox);
     scrollArea->setDimension(gcn::Rectangle(
@@ -68,7 +72,7 @@ void BuddyWindow::action(const std::string& eventId)
         int selected = mListbox->getSelected();
         if ( selected > -1 )
         {
-            std::string who = getElementAt(selected);
+            std::string who = mBuddyList->getElementAt(selected);
             chatWindow->setInputText(who +": ");
         }
     }
@@ -76,8 +80,8 @@ void BuddyWindow::action(const std::string& eventId)
         int selected = mListbox->getSelected();
         if ( selected > -1 )
         {
-            std::string who = getElementAt(selected);
-            removeBuddy(who);
+            std::string who = mBuddyList->getElementAt(selected);
+            mBuddyList->removeBuddy(who);
         }
     }
     else if (eventId == "Cancel") {

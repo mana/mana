@@ -43,8 +43,9 @@
 
 #include "../resources/iteminfo.h"
 
-TradeWindow::TradeWindow():
-    Window("Trade: You")
+TradeWindow::TradeWindow(Network *network):
+    Window("Trade: You"),
+    mNetwork(network)
 {
     setContentSize(322, 150);
 
@@ -186,8 +187,8 @@ void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 
 void TradeWindow::reset()
 {
-    myInventory->resetItems();
-    partnerInventory->resetItems();
+    myInventory->clear();
+    partnerInventory->clear();
     tradeButton->setEnabled(false);
     okButton->setEnabled(true);
     ok_other = false;
@@ -227,7 +228,7 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    MessageOut outMsg;
+    MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex());
     outMsg.writeInt32(quantity);
@@ -299,7 +300,7 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "cancel")
     {
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
     }
     else if (eventId == "ok")
@@ -312,7 +313,7 @@ void TradeWindow::action(const std::string &eventId)
             tempMoney[1] << tempInt;
             moneyField->setText(tempMoney[1].str());
             
-            MessageOut outMsg;
+            MessageOut outMsg(mNetwork);
             outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
             outMsg.writeInt16(0);
             outMsg.writeInt32(tempInt);
@@ -320,12 +321,12 @@ void TradeWindow::action(const std::string &eventId)
             moneyField->setText("");
         }
         moneyField->setEnabled(false);
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
     }
     else if (eventId == "trade")
     {
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_OK);
     }
 }

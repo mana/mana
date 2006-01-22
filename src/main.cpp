@@ -41,10 +41,14 @@
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
+#include "lockedarray.h"
+#include "localplayer.h"
 #include "log.h"
+#include "logindata.h"
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
+#include "serverinfo.h"
 #include "sound.h"
 
 #include "graphic/spriteset.h"
@@ -60,17 +64,23 @@
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
 
+#include "net/charserverhandler.h"
+#include "net/loginhandler.h"
+#include "net/maploginhandler.h"
+#include "net/messageout.h"
+#include "net/network.h"
+
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
 // Account infos
 int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
-PLAYER_INFO **char_info;
-PLAYER_INFO *player_info;
 
 Spriteset *hairset = NULL, *playerset = NULL;
 Graphics *graphics;
+
+SERVER_INFO **server_info;
 
 int map_address, char_ID;
 short map_port;
@@ -393,6 +403,69 @@ void parseOptions(int argc, char *argv[], Options &options)
     }
 }
 
+CharServerHandler charServerHandler;
+LoginData accountLoginData;
+LoginHandler loginHandler;
+LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
+MapLoginHandler mapLoginHandler;
+
+// TODO Find some nice place for these functions
+void accountLogin(Network *network, LoginData *loginData)
+{
+    logger->log("Trying to connect to account server...");
+    network->connect(loginData->hostname.c_str(), loginData->port);
+    network->registerHandler(&loginHandler);
+
+    // Send login infos
+    MessageOut outMsg(network);
+    outMsg.writeInt16(0x0064);
+    outMsg.writeInt32(0); // client version
+    outMsg.writeString(loginData->username, 24);
+    outMsg.writeString(loginData->password, 24);
+    outMsg.writeInt8(0); // unknown
+}
+
+void charLogin(Network *network, const SERVER_INFO *si)
+{
+    logger->log("Trying to connect to char server...");
+    network->connect(iptostring(si->address), si->port);
+    network->registerHandler(&charServerHandler);
+    charServerHandler.setCharInfo(&charInfo);
+
+    // Send login infos
+    MessageOut outMsg(network);
+    outMsg.writeInt16(0x0065);
+    outMsg.writeInt32(account_ID);
+    outMsg.writeInt32(session_ID1);
+    outMsg.writeInt32(session_ID2);
+    outMsg.writeInt16(0); // unknown
+    outMsg.writeInt8(sex);
+
+    // We get 4 useless bytes before the real answer comes in
+    network->skip(4);
+}
+
+void mapLogin(Network *network)
+{
+    const char *host = iptostring(map_address);
+    MessageOut outMsg(network);
+
+    logger->log("Trying to connect to map server...");
+    network->connect(host, map_port);
+    network->registerHandler(&mapLoginHandler);
+
+    // Send login infos
+    outMsg.writeInt16(0x0072);
+    outMsg.writeInt32(account_ID);
+    outMsg.writeInt32(char_ID);
+    outMsg.writeInt32(session_ID1);
+    outMsg.writeInt32(session_ID2);
+    outMsg.writeInt8(sex);
+
+    // We get 4 useless bytes before the real answer comes in
+    network->skip(4);
+}
+
 /** Main */
 int main(int argc, char *argv[])
 {
@@ -434,12 +507,13 @@ int main(int argc, char *argv[])
 
     unsigned int oldstate = !state; // We start with a status change.
     Window *currentDialog = NULL;
-    void (*inputHandler)(SDL_KeyboardEvent*) = NULL;
 
     Image *login_wallpaper = NULL;
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
+    SDLNet_Init();
+    Network *network = new Network();
     while (state != EXIT_STATE)
     {
         // Handle SDL events
@@ -450,9 +524,8 @@ int main(int argc, char *argv[])
                     break;
 
                 case SDL_KEYDOWN:
-                    if (inputHandler) {
-                        inputHandler(&event.key);
-                    }
+                    if (event.key.keysym.sym == SDLK_ESCAPE)
+                        state = EXIT_STATE;
                     break;
             }
 
@@ -460,6 +533,14 @@ int main(int argc, char *argv[])
         }
 
         gui->logic();
+        network->flush();
+        network->dispatchMessages();
+
+        if (network->getState() == Network::ERROR)
+        {
+            state = ERROR_STATE;
+            errorMessage = "Got disconnected from server!";
+        }
 
         if (!login_wallpaper)
         {
@@ -480,22 +561,35 @@ int main(int argc, char *argv[])
         graphics->updateScreen();
 
         if (state != oldstate) {
-            if (oldstate == UPDATE_STATE) {
-                ResourceManager::getInstance()->
-                    searchAndAddArchives("/updates", ".zip", 0);
+            switch (oldstate)
+            {
+                case UPDATE_STATE:
+                    ResourceManager::getInstance()->
+                        searchAndAddArchives("/updates", ".zip", 0);
+                    break;
+
+                    // Those states don't cause a network disconnect
+                case ACCOUNT_STATE:
+                case CHAR_CONNECT_STATE:
+                case CONNECTING_STATE:
+                    break;
+
+                default:
+                    network->disconnect();
+                    network->clearHandlers();
+                    break;
             }
 
             oldstate = state;
 
-            if (currentDialog) {
+            if (currentDialog && state != ACCOUNT_STATE && state != CHAR_CONNECT_STATE) {
                 delete currentDialog;
             }
 
             switch (state) {
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
-                    currentDialog = new LoginDialog();
-                    inputHandler = loginInputHandler;
+                    currentDialog = new LoginDialog(&accountLoginData);
 
                     if (!options.username.empty()) {
                         LoginDialog *loginDialog = (LoginDialog*)currentDialog;
@@ -507,14 +601,12 @@ int main(int argc, char *argv[])
 
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
-                    currentDialog = new RegisterDialog();
-                    inputHandler = loginInputHandler;
+                    currentDialog = new RegisterDialog(&accountLoginData);
                     break;
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
                     currentDialog = new ServerSelectDialog();
-                    inputHandler = charServerInputHandler;
                     if (options.chooseDefault) {
                         ((ServerSelectDialog*)currentDialog)->action("ok");
                     }
@@ -522,8 +614,7 @@ int main(int argc, char *argv[])
 
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog();
-                    inputHandler = charSelectInputHandler;
+                    currentDialog = new CharSelectDialog(network, &charInfo);
                     if (options.chooseDefault) {
                         ((CharSelectDialog*)currentDialog)->action("ok");
                     }
@@ -533,35 +624,49 @@ int main(int argc, char *argv[])
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;
-                    inputHandler = NULL;
                     login_wallpaper->decRef();
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
-                    game();
+                    game(network);
+                    state = EXIT_STATE;
                     break;
 
                 case UPDATE_STATE:
                     logger->log("State: UPDATE");
                     currentDialog = new UpdaterWindow();
-                    inputHandler = updateInputHandler;
                     break;
+
                 case ERROR_STATE:
                     logger->log("State: ERROR");
                     currentDialog = new ErrorDialog(errorMessage);
-                    inputHandler = errorInputHandler;
+                    network->disconnect();
+                    network->clearHandlers();
                     break;
+
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
+                    mapLogin(network);
                     currentDialog = new ConnectionDialog();
-                    inputHandler = connectionInputHandler;
                     break;
+
+                case CHAR_CONNECT_STATE:
+                    charLogin(network, ((ServerSelectDialog*)currentDialog)->getServerInfo());
+                    break;
+
+                case ACCOUNT_STATE:
+                    accountLogin(network, &accountLoginData);
+                    break;
+
                 default:
                     state = EXIT_STATE;
                     break;
             }
         }
     }
+
+    delete network;
+    SDLNet_Quit();
 
     if (nullFile)
     {

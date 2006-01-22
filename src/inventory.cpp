@@ -23,11 +23,7 @@
 
 #include "inventory.h"
 
-#include "equipment.h"
 #include "item.h"
-
-#include "net/messageout.h"
-#include "net/protocol.h"
 
 Inventory::Inventory()
 {
@@ -65,7 +61,7 @@ void Inventory::addItem(int index, int id, int quantity, bool equipment)
 }
 
 
-void Inventory::resetItems()
+void Inventory::clear()
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         items[i].setId(-1);
@@ -93,44 +89,6 @@ bool Inventory::contains(Item *item)
     }
 
     return false;
-}
-
-int Inventory::useItem(Item *item)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt32(item->getId());
-    // Note: id is dest of item, usually player_node->account_ID ??
-    return 0;
-}
-
-int Inventory::dropItem(Item *item, int quantity)
-{
-    // TODO: Fix wrong coordinates of drops, serverside?
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(quantity);
-    return 0;
-}
-
-void Inventory::equipItem(Item *item)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(0);
-}
-
-void Inventory::unequipItem(Item *item)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex());
-
-    // Tidy equipment directly to avoid weapon still shown bug, by instance
-    Equipment::getInstance()->removeEquipment(item);
 }
 
 int Inventory::getFreeSlot()

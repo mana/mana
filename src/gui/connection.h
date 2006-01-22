@@ -24,13 +24,7 @@
 #ifndef _TMW_CONNECTION_H
 #define _TMW_CONNECTION_H
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
-#include <SDL_events.h>
-
 #include "window.h"
-
-#include "../guichanfwd.h"
 
 class ProgressBar;
 
@@ -39,7 +33,7 @@ class ProgressBar;
  *
  * \ingroup Interface
  */
-class ConnectionDialog : public Window, public gcn::ActionListener
+class ConnectionDialog : public Window
 {
     public:
         /**
@@ -49,25 +43,11 @@ class ConnectionDialog : public Window, public gcn::ActionListener
          */
         ConnectionDialog();
 
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
-
         void logic();
 
     private:
         ProgressBar *mProgressBar;
         float mProgress;
-        int mStatus;
-
-        void attemptMapLogin();
-        void checkMapLogin();
 };
-
-/**
- * Handle input
- */
-void connectionInputHandler(SDL_KeyboardEvent *keyEvent);
 
 #endif

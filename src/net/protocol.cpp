@@ -23,14 +23,6 @@
 
 #include "protocol.h"
 
-#include "messageout.h"
-
-#include "../being.h"
-#include "../game.h"
-#include "../main.h"
-#include "../playerinfo.h"
-#include "../sound.h"
-
 #define LOBYTE(w)  ((unsigned char)(w))
 #define HIBYTE(w)  ((unsigned char)(((unsigned short)(w)) >> 8))
 
@@ -63,102 +55,4 @@ void set_coordinates(char *data,
     data[1] |= HIBYTE(temp);
     data[2] = LOBYTE(temp);
     data[2] |= direction;
-}
-
-void walk(unsigned short x, unsigned short y, unsigned char direction)
-{
-    char temp[3];
-    MessageOut outMsg;
-    set_coordinates(temp, x, y, direction);
-    outMsg.writeInt16(0x0085);
-    outMsg.writeString(temp, 3);
-}
-
-void action(char type, int id)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(0x0089);
-    outMsg.writeInt32(id);
-    outMsg.writeInt8(type);
-}
-
-void talk(Being *being)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_NPC_TALK);
-    outMsg.writeInt32(being->getId());
-    outMsg.writeInt8(0);
-}
-
-void pickUp(Uint32 floorItemId)
-{
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_ITEM_PICKUP);
-    outMsg.writeInt32(floorItemId);
-}
-
-Being* attack(unsigned short x, unsigned short y, unsigned char direction)
-{
-    Being *target = NULL;
-
-    switch (direction)
-    {
-        case Being::SOUTH:
-            target = findNode(x, y + 1, Being::MONSTER);
-            if (!target) target = findNode(x, y + 1, Being::PLAYER);
-            break;
-
-        case Being::WEST:
-            target = findNode(x - 1, y, Being::MONSTER);
-            if (!target) target = findNode(x - 1, y, Being::PLAYER);
-            break;
-
-        case Being::NORTH:
-            target = findNode(x, y - 1, Being::MONSTER);
-            if (!target) target = findNode(x, y - 1, Being::PLAYER);
-            break;
-
-        case Being::EAST:
-            target = findNode(x + 1, y, Being::MONSTER);
-            if (!target) target = findNode(x + 1, y, Being::PLAYER);
-            break;
-    }
-
-    if (target) {
-        attack(target);
-    }
-
-    return target;
-}
-
-void attack(Being *target)
-{
-    int dist_x = target->x - player_node->x;
-    int dist_y = target->y - player_node->y;
-
-    if (abs(dist_y) >= abs(dist_x))
-    {
-        if (dist_y > 0)
-            player_node->direction = Being::SOUTH;
-        else
-            player_node->direction = Being::NORTH;
-    }
-    else
-    {
-        if (dist_x > 0)
-            player_node->direction = Being::EAST;
-        else
-            player_node->direction = Being::WEST;
-    }
-
-    // Implement charging attacks here
-    player_info->lastAttackTime = 0;
-
-    player_node->action = Being::ATTACK;
-    action(0, target->getId());
-    player_node->walk_time = tick_time;
-    if (player_node->getWeapon() == 2)
-        sound.playSfx("sfx/bow_shoot_1.ogg");
-    else
-        sound.playSfx("sfx/fist-swish.ogg");
 }

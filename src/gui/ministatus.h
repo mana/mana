@@ -26,21 +26,19 @@
 
 #include <iosfwd>
 
-#include <guichan/actionlistener.hpp>
-
 #include "window.h"
 
 #include "../guichanfwd.h"
 
 class ProgressBar;
 
-
 /**
  * The player mini-status dialog.
  *
  * \ingroup Interface
  */
-class MiniStatusWindow : public Window, public gcn::ActionListener {
+class MiniStatusWindow : public Window
+{
     public:
         /**
          * Constructor.
@@ -52,14 +50,9 @@ class MiniStatusWindow : public Window, public gcn::ActionListener {
          */
         void draw(gcn::Graphics *graphics);
 
-        /**
-         * Does Nothing
-         **/
-        void action(const std::string&) {};
-
     private:
         /**
-         * Updates this dialog with values from PLAYER_INFO *char_info
+         * Updates this dialog with values from player_node
          */
         void update();
 

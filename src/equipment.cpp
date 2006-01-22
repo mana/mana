@@ -24,8 +24,6 @@
 #include "equipment.h"
 #include "item.h"
 
-Equipment *Equipment::mInstance = NULL;
-
 Equipment::Equipment():
     mArrows(NULL)
 {
@@ -39,16 +37,6 @@ Equipment::~Equipment()
 {
 }
 
-Equipment*
-Equipment::getInstance()
-{
-    if (!mInstance) {
-        mInstance = new Equipment();
-    }
-
-    return mInstance;
-}
-
 void
 Equipment::removeEquipment(Item *item)
 {
@@ -58,4 +46,10 @@ Equipment::removeEquipment(Item *item)
             break;
         }
     }
+}
+
+void Equipment::setEquipment(int index, Item *item)
+{
+    mEquipment[index] = item;
+    item->setEquipped(true);
 }

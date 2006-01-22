@@ -23,53 +23,46 @@
 
 #include "requesttrade.h"
 
-#include <sstream>
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
-
-bool requestTradeDialogOpen = false;
+#include "../localplayer.h"
 
 RequestTradeDialog::RequestTradeDialog(const std::string &name):
     Window("Request for Trade", true)
 {
+    gcn::Label *nameLabel[2];
     nameLabel[0] = new gcn::Label("");
     nameLabel[1] = new gcn::Label("");
-    acceptButton = new Button("Accept");
-    cancelButton = new Button("Cancel");
+    mAcceptButton = new Button("Accept");
+    mCancelButton = new Button("Cancel");
 
     setContentSize(260, 75);
 
     nameLabel[0]->setPosition(5, 30);
     nameLabel[1]->setPosition(5, 40);
-    cancelButton->setPosition(
-            260 - 5 - cancelButton->getWidth(),
-            75 - 5 - cancelButton->getHeight());
-    acceptButton->setPosition(
-            cancelButton->getX() - 5 - acceptButton->getWidth(),
-            cancelButton->getY());
+    mCancelButton->setPosition(
+            260 - 5 - mCancelButton->getWidth(),
+            75 - 5 - mCancelButton->getHeight());
+    mAcceptButton->setPosition(
+            mCancelButton->getX() - 5 - mAcceptButton->getWidth(),
+            mCancelButton->getY());
 
-    acceptButton->setEventId("accept");
-    cancelButton->setEventId("cancel");
+    mAcceptButton->setEventId("accept");
+    mCancelButton->setEventId("cancel");
 
-    acceptButton->addActionListener(this);
-    cancelButton->addActionListener(this);
+    mAcceptButton->addActionListener(this);
+    mCancelButton->addActionListener(this);
 
     add(nameLabel[0]);
     add(nameLabel[1]);
-    add(acceptButton);
-    add(cancelButton);
+    add(mAcceptButton);
+    add(mCancelButton);
 
-    std::stringstream cap[2];
-    cap[0] << name << " wants to trade with you.";
-    cap[1] << "Do you want to accept?";
-
-    nameLabel[0]->setCaption(cap[0].str());
+    nameLabel[0]->setCaption(name + " wants to trade with you.");
     nameLabel[0]->adjustSize();
-    nameLabel[1]->setCaption(cap[1].str());
+    nameLabel[1]->setCaption("Do you want to accept?");
     nameLabel[1]->adjustSize();
 
     setLocationRelativeTo(getParent());
@@ -77,17 +70,12 @@ RequestTradeDialog::RequestTradeDialog(const std::string &name):
 
 void RequestTradeDialog::action(const std::string& eventId)
 {
-    int choice = 4; // 4 means trade canceled
+    bool accept = false;
 
     if (eventId == "accept") {
-        choice = 3; // ok to trade
-    }
-    else if (eventId == "cancel") {
-        requestTradeDialogOpen = false;
+        accept = true;
     }
 
-    MessageOut outMsg;
-    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
-    outMsg.writeInt8(choice);
+    player_node->tradeReply(accept);
     scheduleDelete();
 }

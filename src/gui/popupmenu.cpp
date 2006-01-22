@@ -35,19 +35,14 @@
 
 #include "../being.h"
 #include "../floor_item.h"
-#include "../game.h"
-#include "../graphics.h"
-#include "../inventory.h"
 #include "../item.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../localplayer.h"
+#include "../npc.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
-extern Being* autoTarget;
-extern Inventory* inventory;
+extern std::string tradePartnerName;
 
 PopupMenu::PopupMenu():
     Window(),
@@ -129,11 +124,7 @@ void PopupMenu::handleLink(const std::string& link)
         mBeing->getType() == Being::NPC &&
         current_npc == 0)
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_NPC_TALK);
-        outMsg.writeInt32(mBeing->getId());
-        outMsg.writeInt8(0);
-        current_npc = mBeing->getId();
+        dynamic_cast<NPC*>(mBeing)->talk();
     }
 
     // Trade action
@@ -141,11 +132,7 @@ void PopupMenu::handleLink(const std::string& link)
              mBeing != NULL &&
              mBeing->getType() == Being::PLAYER)
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_TRADE_REQUEST);
-        outMsg.writeInt32(mBeing->getId());
-        //tradePartner.flush();
-        //tradePartner << "Trade: You and " << being->name<< "";
+        player_node->trade(mBeing);
         tradePartnerName = mBeing->getName();
     }
 
@@ -154,8 +141,7 @@ void PopupMenu::handleLink(const std::string& link)
              mBeing != NULL &&
              mBeing->getType() == Being::PLAYER)
     {
-        autoTarget = mBeing;
-        attack(mBeing);
+        player_node->attack(mBeing, true);
     }
 
     /*
@@ -177,7 +163,7 @@ void PopupMenu::handleLink(const std::string& link)
     // Pick Up Floor Item action
     else if ((link == "pickup") && mFloorItem != NULL)
     {
-        pickUp(mFloorItem->getId());
+        player_node->pickUp(mFloorItem);
     }
 
     // Look To action
@@ -192,16 +178,16 @@ void PopupMenu::handleLink(const std::string& link)
         {
             if (mItem->isEquipped())
             {
-                inventory->unequipItem(mItem);
+                player_node->unequipItem(mItem);
             }
             else
             {
-                inventory->equipItem(mItem);
+                player_node->equipItem(mItem);
             }
         }
         else
         {
-            inventory->useItem(mItem);
+            player_node->useItem(mItem);
         }
     }
 

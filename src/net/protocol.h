@@ -24,10 +24,6 @@
 #ifndef _TMW_PROTOCOL_
 #define _TMW_PROTOCOL_
 
-#include <SDL_types.h>
-
-class Being;
-
 // Packets from server to client
 #define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
 #define SMSG_PLAYER_UPDATE_1         0x01d8
@@ -108,7 +104,6 @@ class Being;
 #define CMSG_PLAYER_EQUIP            0x00a9
 #define CMSG_PLAYER_UNEQUIP          0x00ab
 
-
 /** Decodes src direction */
 unsigned char get_src_direction(char data);
 
@@ -117,23 +112,5 @@ unsigned char get_dest_direction(char data);
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
-
-/** Requests to walk */
-void walk(unsigned short x, unsigned short y, unsigned char direction);
-
-/** Request to attack */
-Being* attack(unsigned short x, unsigned short y, unsigned char direction);
-
-/** Request to attack */
-void attack(Being *target);
-
-/** Request action */
-void action(char type, int id);
-
-/** Talk to a being */
-void talk(Being *being);
-
-/** Pick up an item */
-void pickUp(Uint32 floorItemId);
 
 #endif

@@ -33,6 +33,7 @@
 class Inventory;
 class Item;
 class ItemContainer;
+class Network;
 class ScrollArea;
 
 /**
@@ -46,7 +47,7 @@ class TradeWindow : public Window, gcn::ActionListener
         /**
          * Constructor.
          */
-        TradeWindow();
+        TradeWindow(Network *network);
 
         /**
          * Destructor.
@@ -115,6 +116,7 @@ class TradeWindow : public Window, gcn::ActionListener
         ItemContainer *partnerItemContainer;
 
     private:
+        Network *mNetwork;
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
         gcn::Label *moneyLabel;

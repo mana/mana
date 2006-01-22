@@ -53,6 +53,7 @@ class Being : public Sprite
     public:
         enum Type {
             UNKNOWN,
+            LOCALPLAYER,
             PLAYER,
             NPC,
             MONSTER
@@ -96,12 +97,12 @@ class Being : public Sprite
         /**
          * Constructor.
          */
-        Being();
+        Being(Uint32 id, Uint16 job, Map *map);
 
         /**
          * Destructor.
          */
-        ~Being();
+        virtual ~Being();
 
         /**
          * Removes all path nodes from this being.
@@ -111,7 +112,7 @@ class Being : public Sprite
         /**
          * Sets a new destination for this being to walk to.
          */
-        void setDestination(Uint16 destX, Uint16 destY);
+        virtual void setDestination(Uint16 destX, Uint16 destY);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -178,7 +179,7 @@ class Being : public Sprite
         /**
          * Performs being logic.
          */
-        void
+        virtual void
         logic();
 
         /**
@@ -190,7 +191,7 @@ class Being : public Sprite
         /**
          * Returns the type of the being.
          */
-        Type getType() const;
+        virtual Type getType() const;
 
         /**
          * Gets the weapon picture id.
@@ -276,7 +277,7 @@ class Being : public Sprite
         int
         getYOffset() const;
 
-    private:
+    protected:
         /**
          * Sets the new path for this being.
          */
@@ -299,40 +300,5 @@ class Being : public Sprite
         bool showSpeech, showDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 };
-
-/**
- * Return a specific id Being
- */
-Being*
-findNode(Uint32 id);
-
-/**
- * Return a being at specific coordinates
- */
-Being*
-findNode(Uint16 x, Uint16 y);
-
-/**
- * Return a being at specific coordinates with specific type
- */
-Being*
-findNode(Uint16 x, Uint16 y, Being::Type type);
-
-/**
- * Create a being and add it to the list of beings
- */
-Being*
-createBeing(Uint32 id, Uint16 job, Map *map);
-
-/**
- * Remove a Being
- */
-void
-remove_node(Being *being);
-
-extern Being *player_node;
-
-typedef std::list<Being*> Beings;
-extern Beings beings;
 
 #endif

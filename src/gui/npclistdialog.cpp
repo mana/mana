@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "npc.h"
+#include "npclistdialog.h"
 
 #include <sstream>
 
@@ -29,10 +29,7 @@
 #include "scrollarea.h"
 #include "listbox.h"
 
-#include "../game.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../npc.h"
 
 NpcListDialog::NpcListDialog():
     Window("NPC")
@@ -118,12 +115,9 @@ NpcListDialog::action(const std::string& eventId)
 
     if (choice)
     {
-        MessageOut outMsg;
-        outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
-        outMsg.writeInt32(current_npc);
-        outMsg.writeInt8(choice);
         setVisible(false);
         reset();
+        current_npc->dialogChoice(choice);
         current_npc = 0;
     }
 }

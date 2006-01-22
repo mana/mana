@@ -30,8 +30,6 @@
 #include "window.h"
 #include "../guichanfwd.h"
 
-extern bool requestTradeDialogOpen;
-
 /**
  * The request trade dialog.
  *
@@ -53,9 +51,8 @@ class RequestTradeDialog : public Window, public gcn::ActionListener
         void action(const std::string& eventId);
 
     private:
-        gcn::Button *acceptButton;
-        gcn::Button *cancelButton;
-        gcn::Label *nameLabel[2];
+        gcn::Button *mAcceptButton;
+        gcn::Button *mCancelButton;
 };
 
 #endif

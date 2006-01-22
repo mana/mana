@@ -33,7 +33,7 @@
 #include "shop.h"
 #include "slider.h"
 
-#include "../game.h"
+#include "../npc.h"
 
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
@@ -42,8 +42,8 @@
 #include "../net/protocol.h"
 
 
-BuyDialog::BuyDialog():
-    Window("Buy"),
+BuyDialog::BuyDialog(Network *network):
+    Window("Buy"), mNetwork(network),
     m_money(0), m_amountItems(0), m_maxItems(0)
 {
     itemList = new ListBox(this);
@@ -221,7 +221,7 @@ void BuyDialog::action(const std::string& eventId)
     // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (eventId == "buy" && (m_amountItems > 0 &&
                 m_amountItems <= m_maxItems)) {
-        MessageOut outMsg;
+        MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(m_amountItems);
