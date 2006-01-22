@@ -107,28 +107,6 @@ Uint32 nextFrame(Uint32 interval, void *param)
 }
 
 /**
- * Listener used for responding to map start error dialog.
- */
-class MapStartErrorListener : public gcn::ActionListener {
-    void action(const std::string &eventId) {
-        if (eventId == "ok") {
-            state = LOGIN_STATE;
-        }
-    }
-} mapStartErrorListener;
-
-/**
- * Listener used for responding to init warning.
- */
-class InitWarningListener : public gcn::ActionListener {
-    void action(const std::string &eventId) {
-        if (eventId == "ok") {
-            state = LOGIN_STATE;
-        }
-    }
-} initWarningListener;
-
-/**
  * Do all initialization stuff
  */
 void init_engine()
