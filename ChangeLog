@@ -1,3 +1,9 @@
+2006-01-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/game.h, src/main.cpp: Moved some setup code out of
+	the game loop into the setup functions. Setup functions are now called
+	from the outside.
+
 2006-01-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/main.cpp: Updated Dev-Cpp project file, fixed

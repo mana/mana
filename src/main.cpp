@@ -607,7 +607,9 @@ int main(int argc, char *argv[])
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
+                    do_init(network);
                     game(network);
+                    do_exit();
                     state = EXIT_STATE;
                     break;
 

@@ -115,6 +115,17 @@ DebugWindow *debugWindow;
 
 BeingManager *beingManager = NULL;
 
+BeingHandler *beingHandler;
+BuySellHandler *buySellHandler;
+ChatHandler *chatHandler;
+EquipmentHandler *equipmentHandler;
+InventoryHandler *inventoryHandler;
+ItemHandler *itemHandler;
+NPCHandler *npcHandler;
+PlayerHandler *playerHandler;
+SkillHandler *skillHandler;
+TradeHandler *tradeHandler;
+
 const int MAX_TIME = 10000;
 
 /**
@@ -253,6 +264,9 @@ void destroyGuiWindows()
 
 void do_init(Network *network)
 {
+    createGuiWindows(network);
+    engine = new Engine(network);
+
     beingManager = new BeingManager(network);
 
     // Initialize timers
@@ -288,6 +302,28 @@ void do_init(Network *network)
             logger->log("Buttons: %i", SDL_JoystickNumButtons(joypad));
         }
     }
+
+    beingHandler = new BeingHandler();
+    buySellHandler = new BuySellHandler();
+    chatHandler = new ChatHandler();
+    equipmentHandler = new EquipmentHandler();
+    inventoryHandler = new InventoryHandler();
+    itemHandler = new ItemHandler();
+    npcHandler = new NPCHandler();
+    playerHandler = new PlayerHandler();
+    skillHandler = new SkillHandler();
+    tradeHandler = new TradeHandler();
+
+    network->registerHandler(beingHandler);
+    network->registerHandler(buySellHandler);
+    network->registerHandler(chatHandler);
+    network->registerHandler(equipmentHandler);
+    network->registerHandler(inventoryHandler);
+    network->registerHandler(itemHandler);
+    network->registerHandler(npcHandler);
+    network->registerHandler(playerHandler);
+    network->registerHandler(skillHandler);
+    network->registerHandler(tradeHandler);
 }
 
 bool saveScreenshot(SDL_Surface *screenshot)
@@ -316,33 +352,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
 
 void game(Network *network)
 {
-    createGuiWindows(network);
-    engine = new Engine(network);
-    do_init(network);
-
     int gameTime = tick_time;
-
-    BeingHandler beingHandler;
-    BuySellHandler buySellHandler;
-    ChatHandler chatHandler;
-    EquipmentHandler equipmentHandler;
-    InventoryHandler inventoryHandler;
-    ItemHandler itemHandler;
-    NPCHandler npcHandler;
-    PlayerHandler playerHandler;
-    SkillHandler skillHandler;
-    TradeHandler tradeHandler;
-
-    network->registerHandler(&beingHandler);
-    network->registerHandler(&buySellHandler);
-    network->registerHandler(&chatHandler);
-    network->registerHandler(&equipmentHandler);
-    network->registerHandler(&inventoryHandler);
-    network->registerHandler(&itemHandler);
-    network->registerHandler(&npcHandler);
-    network->registerHandler(&playerHandler);
-    network->registerHandler(&skillHandler);
-    network->registerHandler(&tradeHandler);
 
     while (!done)
     {
@@ -372,16 +382,24 @@ void game(Network *network)
         network->flush();
         network->dispatchMessages();
     }
-
-    do_exit(network);
 }
 
-void do_exit(Network *network)
+void do_exit()
 {
+    delete beingHandler;
+    delete buySellHandler;
+    delete chatHandler;
+    delete equipmentHandler;
+    delete inventoryHandler;
+    delete itemHandler;
+    delete npcHandler;
+    delete playerHandler;
+    delete skillHandler;
+    delete tradeHandler;
+
     delete engine;
     delete player_node;
     destroyGuiWindows();
-    network->disconnect();
 
     if (joypad != NULL)
     {

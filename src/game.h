@@ -30,7 +30,6 @@
 #define SPEECH_MAX_TIME 100
 
 class Network;
-class NPC;
 
 extern std::string map_path;
 extern int fps;
@@ -67,14 +66,14 @@ void game(Network*);
 void do_input(Network*);
 
 /**
- * Parse data received from map server into input buffer
+ * Initialize
  */
-void do_parse(Network*);
+void do_init(Network*);
 
 /**
  * Clean the engine
  */
-void do_exit(Network*);
+void do_exit();
 
 /**
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay
