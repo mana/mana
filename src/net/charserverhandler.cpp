@@ -102,7 +102,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006e:
-            new OkDialog(NULL, "Error", "Failed to create character");
+            new OkDialog("Error", "Failed to create character");
             break;
 
         case 0x006f:
@@ -110,12 +110,12 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             mCharInfo->setEntry(0);
             mCharInfo->unlock();
             n_character--;
-            new OkDialog(NULL, "Info", "Player deleted");
+            new OkDialog("Info", "Player deleted");
             break;
 
         case 0x0070:
             mCharInfo->unlock();
-            new OkDialog(NULL, "Error", "Failed to delete character.");
+            new OkDialog("Error", "Failed to delete character.");
             break;
 
         case 0x0071:

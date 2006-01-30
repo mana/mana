@@ -43,11 +43,6 @@ class ErrorDialog : public OkDialog {
         ErrorDialog(const std::string &msg);
 
         /**
-         * Destructor
-         */
-        ~ErrorDialog();
-
-        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

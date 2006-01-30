@@ -43,35 +43,12 @@ class OkDialog : public Window, public gcn::ActionListener {
          * @see Window::Window
          */
         OkDialog(const std::string &title, const std::string &msg,
-                 gcn::ActionListener *listener = NULL);
-
-        /**
-         * Constructor with parent reference.
-         *
-         * @see Window::Window
-         */
-        OkDialog(Window *window, const std::string &title,
-                 const std::string &msg,
-                 gcn::ActionListener *listener = NULL);
-
-        /**
-         * Destructor.
-         */
-        ~OkDialog();
+                 gcn::ActionListener *listener = NULL, Window *parent = NULL);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-
-    private:
-        /**
-         * Initializes the dialog.
-         */
-        void init(const std::string &msg, gcn::ActionListener *listener);
-        
-        gcn::Label *textLabel;
-        gcn::Button *okButton;
 };
 
 #endif

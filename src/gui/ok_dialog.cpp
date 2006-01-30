@@ -26,30 +26,14 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "windowcontainer.h"
+
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
-                   gcn::ActionListener *listener):
-    Window(title, true)
-{
-    init(msg, listener);
-}
-
-OkDialog::OkDialog(Window *parent, const std::string &title,
-                   const std::string &msg, gcn::ActionListener *listener):
+        gcn::ActionListener *listener, Window *parent):
     Window(title, true, parent)
 {
-    init(msg, listener);
-}
-
-OkDialog::~OkDialog()
-{
-}
-
-void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
-{
-    textLabel = new gcn::Label(msg);
-    okButton = new Button("Ok");
+    gcn::Label *textLabel = new gcn::Label(msg);
+    gcn::Button *okButton = new Button("Ok");
 
     int w = textLabel->getWidth() + 20;
     int h = textLabel->getHeight() + 25 + okButton->getHeight();
@@ -78,7 +62,8 @@ void OkDialog::init(const std::string &msg, gcn::ActionListener *listener)
 
 void OkDialog::action(const std::string &eventId)
 {
+    // Can we receive anything else anyway?
     if (eventId == "ok") {
-        windowContainer->scheduleDelete(this);
+        scheduleDelete();
     }
 }

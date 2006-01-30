@@ -30,10 +30,6 @@ ErrorDialog::ErrorDialog(const std::string &msg):
 {
 }
 
-ErrorDialog::~ErrorDialog()
-{
-}
-
 void ErrorDialog::action(const std::string& eventId)
 {
     if (eventId == "ok")

@@ -1,3 +1,11 @@
+2006-01-39  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	 * src/gui/char_select.cpp, src/gui/confirm_dialog.cpp,
+	 src/gui/confirm_dialog.h, src/gui/error.cpp, src/gui/error.h,
+	 src/gui/ministatus.cpp, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
+	 src/gui/setup.cpp, src/net/charserverhandler.cpp: A few cleanups and
+	 simplifications.
+
 2006-01-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/game.h, src/main.cpp: Moved some setup code out of

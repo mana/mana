@@ -26,28 +26,15 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "windowcontainer.h"
 
 
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
-        gcn::ActionListener *listener):
-    Window(title, true)
-{
-    init(msg, listener);
-}
-
-ConfirmDialog::ConfirmDialog(Window *parent, const std::string &title,
-        const std::string &msg, gcn::ActionListener *listener):
+        gcn::ActionListener *listener, Window *parent):
     Window(title, true, parent)
 {
-    init(msg, listener);
-}
-
-void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
-{
-    textLabel = new gcn::Label(msg);
-    yesButton = new Button("Yes");
-    noButton = new Button("No");
+    gcn::Label *textLabel = new gcn::Label(msg);
+    gcn::Button *yesButton = new Button("Yes");
+    gcn::Button *noButton = new Button("No");
 
     int w = textLabel->getWidth() + 20;
     int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;
@@ -88,7 +75,8 @@ void ConfirmDialog::init(const std::string &msg, gcn::ActionListener *listener)
 
 void ConfirmDialog::action(const std::string &eventId)
 {
+    // Can we receive anything else anyway?
     if (eventId == "yes" || eventId == "no") {
-        windowContainer->scheduleDelete(this);
+        scheduleDelete();
     }
 }

@@ -44,32 +44,12 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
          * @see Window::Window
          */
         ConfirmDialog(const std::string &title, const std::string &msg,
-                gcn::ActionListener *listener = NULL);
-
-        /**
-         * Constructor with parent reference.
-         *
-         * @see Window::Window
-         */
-        ConfirmDialog(Window *window, const std::string &title,
-                const std::string &msg,
-                gcn::ActionListener *listener = NULL);
+                gcn::ActionListener *listener = NULL, Window *parent = NULL);
 
         /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);
-        
-        gcn::Button *yesButton;
-        gcn::Button *noButton;
-
-    private:
-        /**
-         * Initializes the dialog.
-         */
-        void init(const std::string &msg, gcn::ActionListener *listener);
-        
-        gcn::Label *textLabel;
 };
 
 #endif

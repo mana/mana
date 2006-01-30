@@ -33,7 +33,6 @@
 #include "ok_dialog.h"
 #include "playerbox.h"
 #include "textfield.h"
-#include "windowcontainer.h"
 
 #include "../game.h"
 #include "../localplayer.h"
@@ -54,8 +53,8 @@ class CharDeleteConfirm : public ConfirmDialog
 };
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
-    ConfirmDialog(m,
-            "Confirm", "Are you sure you want to delete this character?"),
+    ConfirmDialog("Confirm", "Are you sure you want to delete this character?",
+            NULL, m),
     master(m)
 {
 }
@@ -316,15 +315,15 @@ void CharCreateDialog::action(const std::string& eventId)
             // Attempt to create the character
             createButton->setEnabled(false);
             attemptCharCreate();
-            windowContainer->scheduleDelete(this);
+            scheduleDelete();
         }
         else {
-            new OkDialog(this, "Error",
-                    "Your name needs to be at least 4 characters.");
+            new OkDialog("Error",
+                    "Your name needs to be at least 4 characters.", NULL, this);
         }
     }
     else if (eventId == "cancel") {
-        windowContainer->scheduleDelete(this);
+        scheduleDelete();
     }
     else if (eventId == "nextcolor") {
         playerBox->hairColor++;

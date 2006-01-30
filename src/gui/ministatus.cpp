@@ -23,11 +23,11 @@
 
 #include "ministatus.h"
 
+#include <guichan/imagefont.hpp>
 #include <guichan/widgets/label.hpp>
 #include <sstream>
 
 #include "gui.h"
-#include <guichan/imagefont.hpp>
 #include "progressbar.h"
 
 #include "../localplayer.h"
