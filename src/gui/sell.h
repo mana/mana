@@ -24,10 +24,7 @@
 #ifndef _TMW_SELL_H
 #define _TMW_SELL_H
 
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
-#include <guichan/listmodel.hpp>
 
 #include "window.h"
 
@@ -35,16 +32,15 @@
 
 class Item;
 class Network;
+class ShopItems;
 
-struct ITEM_SHOP;
 
 /**
  * The sell dialog.
  *
  * \ingroup Interface
  */
-class SellDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel
+class SellDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -53,6 +49,11 @@ class SellDialog : public Window, public gcn::ActionListener,
          * @see Window::Window
          */
         SellDialog(Network *network);
+
+        /**
+         * Destructor
+         */
+        virtual ~SellDialog();
 
         /**
          * Resets the dialog, clearing inventory.
@@ -70,19 +71,9 @@ class SellDialog : public Window, public gcn::ActionListener,
         void action(const std::string& eventId);
 
         /**
-         * Returns the number of items in the inventory.
-         */
-        int getNumberOfElements();
-
-        /**
          * Mouse callback
          */
         void mouseClick(int x, int y, int buton, int count);
-
-        /**
-         * Returns the name of item number i in the inventory.
-         */
-        std::string getElementAt(int i);
 
     private:
         Network *mNetwork;
@@ -98,7 +89,7 @@ class SellDialog : public Window, public gcn::ActionListener,
         gcn::Label *quantityLabel;
         gcn::Slider *slider;
 
-        std::vector<ITEM_SHOP> shopInventory;
+        ShopItems *mShopItems;
 
         int m_maxItems;
         int m_amountItems;

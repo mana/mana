@@ -23,3 +23,12 @@
 
 #include "shop.h"
 
+int ShopItems::getNumberOfElements()
+{
+    return size();
+}
+
+std::string ShopItems::getElementAt(int i)
+{
+    return at(i).name;
+}
