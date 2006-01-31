@@ -1,5 +1,6 @@
 2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/setup.cpp: Cleanup.
 	* src/gui/requesttrade.cpp, src/gui/requesttrade.h: Made
 	RequestTradeDialog inherit from ConfirmDialog.
 	* src/Makefile.am, src/gui/buy.cpp, src/gui/buy.h, src/gui/sell.cpp,

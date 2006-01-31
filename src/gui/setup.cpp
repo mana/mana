@@ -29,18 +29,11 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "chat.h"
 #include "checkbox.h"
-#include "equipmentwindow.h"
-#include "help.h"
-#include "inventorywindow.h"
 #include "listbox.h"
 #include "ok_dialog.h"
-#include "minimap.h"
 #include "scrollarea.h"
-#include "skill.h"
 #include "slider.h"
-#include "status.h"
 #include "tabbedcontainer.h"
 
 #include "../configuration.h"
@@ -54,6 +47,14 @@ extern Graphics *graphics;
 extern SDL_Joystick *joypad;
 
 extern SDL_Joystick *joypad;
+
+extern Window *statusWindow;
+extern Window *minimap;
+extern Window *chatWindow;
+extern Window *inventoryWindow;
+extern Window *equipmentWindow;
+extern Window *helpWindow;
+extern Window *skillDialog;
 
 ModeListModel::ModeListModel()
 {
