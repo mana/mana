@@ -49,7 +49,9 @@ SellDialog::SellDialog(Network *network):
     mNetwork(network),
     m_maxItems(0), m_amountItems(0)
 {
-    itemList = new ListBox(this);
+    mShopItems = new ShopItems();
+
+    itemList = new ListBox(mShopItems);
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
@@ -117,9 +119,14 @@ SellDialog::SellDialog(Network *network):
     setLocationRelativeTo(getParent());
 }
 
+SellDialog::~SellDialog()
+{
+    delete mShopItems;
+}
+
 void SellDialog::reset()
 {
-    shopInventory.clear();
+    mShopItems->clear();
     slider->setValue(0.0);
     m_amountItems = 0;
 
@@ -152,7 +159,7 @@ void SellDialog::addItem(Item *item, int price)
     item_shop.id = item->getId();
     item_shop.quantity = item->getQuantity();
 
-    shopInventory.push_back(item_shop);
+    mShopItems->push_back(item_shop);
     itemList->adjustSize();
 }
 
@@ -174,7 +181,7 @@ void SellDialog::action(const std::string& eventId)
         if (selectedItem > -1) {
             slider->setEnabled(true);
             increaseButton->setEnabled(true);
-            m_maxItems = shopInventory[selectedItem].quantity;
+            m_maxItems = mShopItems->at(selectedItem).quantity;
         } else {
             slider->setEnabled(false);
             increaseButton->setEnabled(false);
@@ -187,7 +194,7 @@ void SellDialog::action(const std::string& eventId)
     }
 
     // The following actions require a valid item selection
-    if (selectedItem == -1 || selectedItem >= int(shopInventory.size())) {
+    if (selectedItem == -1 || selectedItem >= int(mShopItems->size())) {
         return;
     }
 
@@ -220,7 +227,7 @@ void SellDialog::action(const std::string& eventId)
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
         outMsg.writeInt16(8);
-        outMsg.writeInt16(shopInventory[selectedItem].index);
+        outMsg.writeInt16(mShopItems->at(selectedItem).index);
         outMsg.writeInt16(m_amountItems);
 
         m_maxItems -= m_amountItems;
@@ -231,10 +238,12 @@ void SellDialog::action(const std::string& eventId)
         // All were sold
         if (!m_maxItems) {
             itemList->setSelected(-1);
-            shopInventory.erase(shopInventory.begin() + selectedItem);
+            mShopItems->erase(mShopItems->begin() + selectedItem);
         }
 
-        updateButtonsAndLabels = true;
+        // Update only when there are items left, the entry doesn't exist
+        // otherwise and can't be updated
+        updateButtonsAndLabels = bool(m_maxItems);
     }
 
     // If anything changed, we need to update the buttons and labels
@@ -246,7 +255,7 @@ void SellDialog::action(const std::string& eventId)
         quantityLabel->setCaption(oss.str());
         quantityLabel->adjustSize();
         oss.str("");
-        oss << "Price: " << m_amountItems * shopInventory[selectedItem].price;
+        oss << "Price: " << m_amountItems * mShopItems->at(selectedItem).price;
         moneyLabel->setCaption(oss.str());
         moneyLabel->adjustSize();
 
@@ -261,23 +270,12 @@ void SellDialog::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-//    shopInventory[selectedItem];
     int selectedItem = itemList->getSelected();
     if (selectedItem > -1)
     {
         itemDescLabel->setCaption("Description: " +
-                itemDb->getItemInfo(shopInventory[selectedItem].id)->getDescription());
+                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
         itemEffectLabel->setCaption("Effect: " +
-                itemDb->getItemInfo(shopInventory[selectedItem].id)->getEffect());
+                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
     }
-}
-
-int SellDialog::getNumberOfElements()
-{
-    return shopInventory.size();
-}
-
-std::string SellDialog::getElementAt(int i)
-{
-    return shopInventory[i].name;
 }

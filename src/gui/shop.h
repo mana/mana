@@ -25,6 +25,9 @@
 #define _SHOP_H
 
 #include <string>
+#include <vector>
+
+#include <guichan/listmodel.hpp>
 
 struct ITEM_SHOP {
     std::string name;
@@ -32,6 +35,25 @@ struct ITEM_SHOP {
     short id;
     int index;
     int quantity;
+};
+
+class ShopItems : public std::vector<ITEM_SHOP>, public gcn::ListModel
+{
+    public:
+        /**
+         * Destructor
+         */
+        virtual ~ShopItems() {};
+
+        /**
+         * Returns the number of items in the shop.
+         */
+        int getNumberOfElements();
+
+        /**
+         * Returns the name of item number i in the shop.
+         */
+        std::string getElementAt(int i);
 };
 
 #endif

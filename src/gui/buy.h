@@ -24,25 +24,21 @@
 #ifndef _TMW_BUY_H
 #define _TMW_BUY_H
 
-#include <vector>
-
 #include <guichan/actionlistener.hpp>
-#include <guichan/listmodel.hpp>
 
-#include "shop.h"
 #include "window.h"
 
 #include "../guichanfwd.h"
 
 class Network;
+class ShopItems;
 
 /**
  * The buy dialog.
  *
  * \ingroup Interface
  */
-class BuyDialog : public Window, public gcn::ActionListener,
-                  public gcn::ListModel
+class BuyDialog : public Window, public gcn::ActionListener
 {
     public:
         /**
@@ -51,6 +47,11 @@ class BuyDialog : public Window, public gcn::ActionListener,
          * @see Window::Window
          */
         BuyDialog(Network *network);
+
+        /**
+         * Destructor
+         */
+        ~BuyDialog();
 
         /**
          * Resets the dialog, clearing shop inventory.
@@ -101,7 +102,7 @@ class BuyDialog : public Window, public gcn::ActionListener,
         gcn::Label *quantityLabel;
         gcn::Slider *slider;
 
-        std::vector<ITEM_SHOP> shopInventory;
+        ShopItems *mShopItems;
 
         int m_money;
         int m_amountItems;

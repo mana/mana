@@ -1,5 +1,8 @@
 2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/Makefile.am, src/gui/buy.cpp, src/gui/buy.h, src/gui/sell.cpp,
+	src/gui/sell.h, src/gui/shop.cpp, src/gui/shop.h: Created a ListModel
+	for ShopItems.
 	* src/floor_item.cpp, src/graphics.h, src/map.cpp, src/map.h,
 	src/properties.h, src/sprite.h, src/gui/login.cpp,
 	src/gui/scrollarea.cpp, src/gui/windowcontainer.cpp,

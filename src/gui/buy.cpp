@@ -46,7 +46,9 @@ BuyDialog::BuyDialog(Network *network):
     Window("Buy"), mNetwork(network),
     m_money(0), m_amountItems(0), m_maxItems(0)
 {
-    itemList = new ListBox(this);
+    mShopItems = new ShopItems;
+
+    itemList = new ListBox(mShopItems);
     scrollArea = new ScrollArea(itemList);
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
@@ -114,6 +116,11 @@ BuyDialog::BuyDialog(Network *network):
     setLocationRelativeTo(getParent());
 }
 
+BuyDialog::~BuyDialog()
+{
+    delete mShopItems;
+}
+
 void BuyDialog::setMoney(int amount)
 {
     m_money = amount;
@@ -121,7 +128,7 @@ void BuyDialog::setMoney(int amount)
 
 void BuyDialog::reset()
 {
-    shopInventory.clear();
+    mShopItems->clear();
     m_money = 0;
     slider->setValue(0.0);
     m_amountItems = 0;
@@ -149,7 +156,7 @@ void BuyDialog::addItem(short id, int price)
     item_shop.price = price;
     item_shop.id = id;
 
-    shopInventory.push_back(item_shop);
+    mShopItems->push_back(item_shop);
     itemList->adjustSize();
 }
 
@@ -173,7 +180,7 @@ void BuyDialog::action(const std::string& eventId)
         // If no item was selected, none can be bought, otherwise
         // calculate how many the player can afford
         m_maxItems = (itemList->getSelected() == -1) ? 0 :
-            m_money / shopInventory[selectedItem].price;
+            m_money / mShopItems->at(selectedItem).price;
 
         // When at least one item can be bought, enable the slider and the
         // increase button
@@ -186,7 +193,7 @@ void BuyDialog::action(const std::string& eventId)
     }
 
     // The following actions require a valid selection
-    if (selectedItem < 0 || selectedItem >= int(shopInventory.size())) {
+    if (selectedItem < 0 || selectedItem >= int(mShopItems->size())) {
         return;
     }
 
@@ -225,10 +232,10 @@ void BuyDialog::action(const std::string& eventId)
         outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(m_amountItems);
-        outMsg.writeInt16(shopInventory[selectedItem].id);
+        outMsg.writeInt16(mShopItems->at(selectedItem).id);
 
         // update money !
-        m_money -= m_amountItems * shopInventory[selectedItem].price;
+        m_money -= m_amountItems * mShopItems->at(selectedItem).price;
         // Update number of items that can be bought at max
         m_maxItems -= m_amountItems;
 
@@ -258,7 +265,7 @@ void BuyDialog::action(const std::string& eventId)
         quantityLabel->adjustSize();
 
         oss.str("");
-        oss << "Price : " << m_amountItems * shopInventory[selectedItem].price << " GP";
+        oss << "Price : " << m_amountItems * mShopItems->at(selectedItem).price << " GP";
         moneyLabel->setCaption(oss.str());
         moneyLabel->adjustSize();
     }
@@ -268,23 +275,12 @@ void BuyDialog::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-//    shopInventory[selectedItem];
     int selectedItem = itemList->getSelected();
     if (selectedItem > -1)
     {
         itemDescLabel->setCaption("Description: " +
-                itemDb->getItemInfo(shopInventory[selectedItem].id)->getDescription());
+                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
         itemEffectLabel->setCaption("Effect: " +
-                itemDb->getItemInfo(shopInventory[selectedItem].id)->getEffect());
+                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
     }
-}
-
-int BuyDialog::getNumberOfElements()
-{
-    return shopInventory.size();
-}
-
-std::string BuyDialog::getElementAt(int i)
-{
-    return shopInventory[i].name;
 }
