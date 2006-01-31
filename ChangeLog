@@ -1,5 +1,9 @@
 2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/floor_item.cpp, src/graphics.h, src/map.cpp, src/map.h,
+	src/properties.h, src/sprite.h, src/gui/login.cpp,
+	src/gui/scrollarea.cpp, src/gui/windowcontainer.cpp,
+	src/resources/sdlimageloader.cpp: Various small cleanups.
 	* src/resources/resource.cpp, src/resources/resourcemanager.cpp,
 	src/resources/resource.h, src/resources/resourcemanager.h: Made
 	ResourceManager a friend of Resource to avoid looping over decRef,
