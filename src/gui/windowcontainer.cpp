@@ -21,7 +21,6 @@
  *  $Id$
  */
 
-#include <iostream>
 #include "windowcontainer.h"
 
 WindowContainer::WindowContainer()

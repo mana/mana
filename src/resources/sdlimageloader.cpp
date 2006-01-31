@@ -23,7 +23,6 @@
 
 #include "sdlimageloader.h"
 
-#include <iostream>
 #include <string>
 #include <SDL_image.h>
 

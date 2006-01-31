@@ -54,12 +54,6 @@ class Sprite
          */
         virtual int
         getPixelY() const = 0;
-
-    protected:
-        /**
-         * Constructor.
-         */
-        Sprite() {}
 };
 
 #endif

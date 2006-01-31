@@ -77,7 +77,7 @@ class Properties
             properties[name] = value;
         }
 
-    private:
+    protected:
         std::map<std::string, std::string> properties;
 };
 

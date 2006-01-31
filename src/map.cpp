@@ -33,21 +33,27 @@
 
 #include "resources/image.h"
 
-MetaTile::MetaTile():
-    whichList(0)
+/**
+ * A location on a tile map. Used for pathfinding, open list.
+ */
+struct Location
 {
-}
+    /**
+     * Constructor.
+     */
+    Location(int px, int py, MetaTile *ptile):x(px),y(py),tile(ptile) {};
 
+    /**
+     * Comparison operator.
+     */
+    bool operator< (const Location &loc) const
+    {
+        return tile->Fcost > loc.tile->Fcost;
+    }
 
-Location::Location(int iX, int iY, MetaTile *iTile):
-    x(iX), y(iY), tile(iTile)
-{
-}
-
-bool Location::operator< (const Location &loc) const
-{
-   return tile->Fcost > loc.tile->Fcost;
-}
+    int x, y;
+    MetaTile *tile;
+};
 
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),

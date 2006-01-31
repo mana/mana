@@ -25,8 +25,8 @@
 #define _TMW_MAP_H_
 
 #include <list>
-#include <map>
 #include <vector>
+
 #include "properties.h"
 
 class Graphics;
@@ -44,42 +44,21 @@ typedef std::list<Sprite*> Sprites;
  * This is information that doesn't need to be repeated for each tile in each
  * layer of the map.
  */
-class MetaTile
+struct MetaTile
 {
-    public:
-        /**
-         * Constructor.
-         */
-        MetaTile();
+    /**
+     * Constructor.
+     */
+    MetaTile():whichList(0) {};
 
-        // Pathfinding members
-        int Fcost;              /**< Estimation of total path cost */
-        int Gcost;              /**< Cost from start to this location */
-        int Hcost;              /**< Estimated cost to goal */
-        int whichList;          /**< No list, open list or closed list */
-        int parentX;            /**< X coordinate of parent tile */
-        int parentY;            /**< Y coordinate of parent tile */
-        bool walkable;          /**< Can beings walk on this tile */
-};
-
-/**
- * A location on a tile map. Used for pathfinding, open list.
- */
-class Location
-{
-    public:
-        /**
-         * Constructor.
-         */
-        Location(int x, int y, MetaTile *tile);
-
-        /**
-         * Comparison operator.
-         */
-        bool operator< (const Location &loc) const;
-
-        int x, y;
-        MetaTile *tile;
+    // Pathfinding members
+    int Fcost;              /**< Estimation of total path cost */
+    int Gcost;              /**< Cost from start to this location */
+    int Hcost;              /**< Estimated cost to goal */
+    int whichList;          /**< No list, open list or closed list */
+    int parentX;            /**< X coordinate of parent tile */
+    int parentY;            /**< Y coordinate of parent tile */
+    bool walkable;          /**< Can beings walk on this tile */
 };
 
 /**
@@ -211,7 +190,6 @@ class Map : public Properties
         int mTileWidth, mTileHeight;
         MetaTile *metaTiles;
         Image **tiles;
-        std::map<std::string,std::string> properties;
 
         Tilesets tilesets;
         Sprites mSprites;

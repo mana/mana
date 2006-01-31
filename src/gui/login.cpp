@@ -24,7 +24,6 @@
 #include "login.h"
 
 #include <string>
-#include <sstream>
 
 #include <guichan/widgets/label.hpp>
 

@@ -22,11 +22,15 @@
  */
 
 #include "floor_item.h"
-#include "graphic/spriteset.h"
-#include "resources/itemmanager.h"
-#include "resources/iteminfo.h"
 
 #include <list>
+
+#include "map.h"
+
+#include "graphic/spriteset.h"
+
+#include "resources/itemmanager.h"
+#include "resources/iteminfo.h"
 
 extern Spriteset *itemset;
 

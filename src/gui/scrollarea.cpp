@@ -199,7 +199,6 @@ void ScrollArea::draw(gcn::Graphics *graphics)
 
     if (mContent)
     {
-        gcn::Rectangle contdim = mContent->getDimension();
         graphics->pushClipArea(getContentDimension());
 
         if (mContent->getBorderSize() > 0)
@@ -214,7 +213,7 @@ void ScrollArea::draw(gcn::Graphics *graphics)
             graphics->popClipArea();
         }
 
-        graphics->pushClipArea(contdim);
+        graphics->pushClipArea(mContent->getDimension());
         mContent->draw(graphics);
         graphics->popClipArea();
         graphics->popClipArea();

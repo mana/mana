@@ -26,8 +26,6 @@
 
 #include <guichan/sdl/sdlgraphics.hpp>
 
-#include "guichanfwd.h"
-
 class Image;
 class ImageRect;
 
