@@ -24,18 +24,14 @@
 #ifndef _TMW_REQUESTTRADE_
 #define _TMW_REQUESTTRADE_
 
-#include <iosfwd>
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-#include "../guichanfwd.h"
+#include "confirm_dialog.h"
 
 /**
  * The request trade dialog.
  *
  * \ingroup Interface
  */
-class RequestTradeDialog : public Window, public gcn::ActionListener
+class RequestTradeDialog : public ConfirmDialog
 {
     public:
         /**
@@ -44,15 +40,6 @@ class RequestTradeDialog : public Window, public gcn::ActionListener
          * @see Window::Window
          */
         RequestTradeDialog(const std::string &name);
-
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId);
-
-    private:
-        gcn::Button *mAcceptButton;
-        gcn::Button *mCancelButton;
 };
 
 #endif

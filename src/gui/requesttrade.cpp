@@ -23,59 +23,17 @@
 
 #include "requesttrade.h"
 
-#include <guichan/widgets/label.hpp>
-
-#include "button.h"
-
 #include "../localplayer.h"
 
+struct RequestTradeListener : public gcn::ActionListener
+{
+    void action(const std::string& eventId)
+    {
+        player_node->tradeReply(eventId == "yes");
+    };
+} requestTradeListener;
+
 RequestTradeDialog::RequestTradeDialog(const std::string &name):
-    Window("Request for Trade", true)
+    ConfirmDialog("Request for Trade", name + " wants to trade with you, do you accept?", &requestTradeListener)
 {
-    gcn::Label *nameLabel[2];
-    nameLabel[0] = new gcn::Label("");
-    nameLabel[1] = new gcn::Label("");
-    mAcceptButton = new Button("Accept");
-    mCancelButton = new Button("Cancel");
-
-    setContentSize(260, 75);
-
-    nameLabel[0]->setPosition(5, 30);
-    nameLabel[1]->setPosition(5, 40);
-    mCancelButton->setPosition(
-            260 - 5 - mCancelButton->getWidth(),
-            75 - 5 - mCancelButton->getHeight());
-    mAcceptButton->setPosition(
-            mCancelButton->getX() - 5 - mAcceptButton->getWidth(),
-            mCancelButton->getY());
-
-    mAcceptButton->setEventId("accept");
-    mCancelButton->setEventId("cancel");
-
-    mAcceptButton->addActionListener(this);
-    mCancelButton->addActionListener(this);
-
-    add(nameLabel[0]);
-    add(nameLabel[1]);
-    add(mAcceptButton);
-    add(mCancelButton);
-
-    nameLabel[0]->setCaption(name + " wants to trade with you.");
-    nameLabel[0]->adjustSize();
-    nameLabel[1]->setCaption("Do you want to accept?");
-    nameLabel[1]->adjustSize();
-
-    setLocationRelativeTo(getParent());
-}
-
-void RequestTradeDialog::action(const std::string& eventId)
-{
-    bool accept = false;
-
-    if (eventId == "accept") {
-        accept = true;
-    }
-
-    player_node->tradeReply(accept);
-    scheduleDelete();
 }
