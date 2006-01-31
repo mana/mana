@@ -31,6 +31,8 @@
  */
 class Resource
 {
+    friend class ResourceManager;
+
     public:
         /**
          * Constructor
@@ -50,7 +52,7 @@ class Resource
          * @return <code>true</code> if the object was deleted
          *         <code>false</code> otherwise.
          */
-        bool
+        void
         decRef();
 
         /**

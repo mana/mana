@@ -184,7 +184,9 @@ class ResourceManager
 
     private:
         static ResourceManager *instance;
-        std::map<std::string, Resource*> resources;
+        typedef std::map<std::string, Resource*> Resources;
+        typedef Resources::iterator ResourceIterator;
+        Resources mResources;
 };
 
 #endif

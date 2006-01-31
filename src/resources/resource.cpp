@@ -43,7 +43,7 @@ Resource::incRef()
     mRefCount++;
 }
 
-bool
+void
 Resource::decRef()
 {
     // Reference may not already have reached zero
@@ -56,9 +56,5 @@ Resource::decRef()
         ResourceManager *resman = ResourceManager::getInstance();
         resman->release(mIdPath);
         delete this;
-        return true;
-    }
-    else {
-        return false;
     }
 }

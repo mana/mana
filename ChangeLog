@@ -1,4 +1,11 @@
-2006-01-39  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/resource.cpp, src/resources/resourcemanager.cpp,
+	src/resources/resource.h, src/resources/resourcemanager.h: Made
+	ResourceManager a friend of Resource to avoid looping over decRef,
+	which returns void now.
+
+2006-01-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	 * src/gui/char_select.cpp, src/gui/confirm_dialog.cpp,
 	 src/gui/confirm_dialog.h, src/gui/error.cpp, src/gui/error.h,

@@ -45,19 +45,18 @@ ResourceManager::ResourceManager()
 ResourceManager::~ResourceManager()
 {
     // Create our resource iterator.
-    std::map<std::string, Resource*>::iterator iter = resources.begin();
+    ResourceIterator iter = mResources.begin();
 
     // Iterate through and release references until objects are deleted.
-    while (!resources.empty())
+    while (!mResources.empty())
     {
-        Resource *res = resources.begin()->second;
+        Resource *res = mResources.begin()->second;
         std::string id = res->getIdPath();
         int references = 0;
 
-        do {
-            references++;
-        }
-        while (!res->decRef());
+        references += res->mRefCount;
+        release(res->mIdPath);
+        delete res;
 
         logger->log("ResourceManager::~ResourceManager() cleaned up %d "
                     "references to %s", references, id.c_str());
@@ -126,10 +125,9 @@ Resource*
 ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 {
     // Check if the id exists, and return the value if it does.
-    std::map<std::string, Resource*>::iterator resIter =
-        resources.find(idPath);
+    ResourceIterator resIter = mResources.find(idPath);
 
-    if (resIter != resources.end() && resIter->second) {
+    if (resIter != mResources.end() && resIter->second) {
         resIter->second->incRef();
         return resIter->second;
     }
@@ -177,7 +175,7 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
     if (resource) {
         resource->incRef();
 
-        resources[idPath] = resource;
+        mResources[idPath] = resource;
     }
 
     // Return NULL if the object could not be created.
@@ -223,13 +221,12 @@ ResourceManager::release(const std::string &idPath)
 {
     logger->log("ResourceManager::release(%s)", idPath.c_str());
 
-    std::map<std::string, Resource*>::iterator resIter =
-        resources.find(idPath);
+    ResourceIterator resIter = mResources.find(idPath);
 
     // The resource has to exist
-    assert(resIter != resources.end() && resIter->second);
+    assert(resIter != mResources.end() && resIter->second);
 
-    resources.erase(idPath);
+    mResources.erase(idPath);
 }
 
 ResourceManager*
