@@ -1,5 +1,16 @@
 2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/Makefile.am, src/game.cpp, src/gui/buysell.cpp,
+	src/gui/char_select.cpp, src/gui/confirm_dialog.cpp,
+	src/gui/confirm_dialog.h, src/gui/login.cpp, src/gui/login.h,
+	src/gui/menuwindow.cpp, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
+	src/gui/register.cpp, src/gui/requesttrade.cpp,
+	src/gui/requesttrade.h, src/gui/setup.cpp, src/net/playerhandler.cpp,
+	src/net/tradehandler.cpp: Made the OkDialog and ConfirmDialog classes
+	proxies for their buttons' events. Removed the RequestTradeWindow
+	class, replaced with a plain ConfirmDialog. Fixed a memory leak along
+	the way.
+
 	* src/gui/buysell.cpp, src/gui/menuwindow.cpp: Simplified button
 	creation code.
 	* src/gui/npc_text.cpp: Fixed a bug where the game crashes if there's a

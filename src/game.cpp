@@ -562,8 +562,8 @@ void do_input(Network *network)
                 case SDLK_ESCAPE:
                     if (!exitConfirm) {
                         exitConfirm = new ConfirmDialog(
-                                "Quit", "Are you sure you want to quit?",
-                                (gcn::ActionListener*)&exitListener);
+                                "Quit", "Are you sure you want to quit?");
+                        exitConfirm->addActionListener(&exitListener);
                     }
                     exitConfirm->requestMoveToTop();
                     break;

@@ -316,7 +316,7 @@ void Setup::action(const std::string &eventId)
                 }
             } else {
             new OkDialog("Switching to FullScreen",
-                    "Restart needed for changes to take effect.", NULL, this);
+                    "Restart needed for changes to take effect.", this);
             }
             config.setValue("screen", fullscreen ? 1 : 0);
         }
@@ -330,7 +330,7 @@ void Setup::action(const std::string &eventId)
             }
             catch (const char *err)
             {
-                new OkDialog("Sound Engine", err, NULL, this);
+                new OkDialog("Sound Engine", err, this);
                 logger->log("Warning: %s", err);
             }
         }
@@ -347,7 +347,7 @@ void Setup::action(const std::string &eventId)
 
             // OpenGL can currently only be changed by restarting, notify user.
             new OkDialog("Changing OpenGL",
-                    "Applying change to OpenGL requires restart.", NULL, this);
+                    "Applying change to OpenGL requires restart.", this);
         }
 
         // We sync old and new values at apply time

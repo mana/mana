@@ -141,8 +141,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                      weightNotice = new OkDialog("Message",
                                              "You are carrying more then half your "
                                              "weight. You are unable to regain "
-                                             "health.",
-                                             &weightNoticeListener);
+                                             "health.");
+                                     weightNotice->addActionListener(&weightNoticeListener);
                                  }
                                  player_node->totalWeight = value;
                                  break;
@@ -163,8 +163,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 if (player_node->hp == 0 && deathNotice == NULL)
                 {
                     deathNotice = new OkDialog("Message",
-                            "You're now dead, press ok to restart",
-                            &deathNoticeListener);
+                            "You're now dead, press ok to restart");
+                    deathNotice->addActionListener(&deathNoticeListener);
                     player_node->action = Being::DEAD;
                 }
             }

@@ -54,7 +54,7 @@ class CharDeleteConfirm : public ConfirmDialog
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
     ConfirmDialog("Confirm", "Are you sure you want to delete this character?",
-            NULL, m),
+            m),
     master(m)
 {
 }
@@ -319,7 +319,7 @@ void CharCreateDialog::action(const std::string& eventId)
         }
         else {
             new OkDialog("Error",
-                    "Your name needs to be at least 4 characters.", NULL, this);
+                    "Your name needs to be at least 4 characters.", this);
         }
     }
     else if (eventId == "cancel") {

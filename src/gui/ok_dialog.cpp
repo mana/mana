@@ -29,7 +29,7 @@
 
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
-        gcn::ActionListener *listener, Window *parent):
+        Window *parent):
     Window(title, true, parent)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
@@ -49,9 +49,6 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
 
     okButton->setEventId("ok");
     okButton->addActionListener(this);
-    if (listener) {
-        okButton->addActionListener(listener);
-    }
 
     add(textLabel);
     add(okButton);
@@ -62,6 +59,13 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
 
 void OkDialog::action(const std::string &eventId)
 {
+    // Proxy button events to our listeners
+    ActionListenerIterator i;
+    for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
+    {
+        (*i)->action(eventId);
+    }
+
     // Can we receive anything else anyway?
     if (eventId == "ok") {
         scheduleDelete();

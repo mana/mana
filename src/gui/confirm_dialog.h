@@ -28,8 +28,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 
 /**
  * An option dialog.
@@ -44,7 +42,7 @@ class ConfirmDialog : public Window, public gcn::ActionListener {
          * @see Window::Window
          */
         ConfirmDialog(const std::string &title, const std::string &msg,
-                gcn::ActionListener *listener = NULL, Window *parent = NULL);
+                Window *parent = NULL);
 
         /**
          * Called when receiving actions from the widgets.

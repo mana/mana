@@ -34,7 +34,7 @@ BuySellDialog::BuySellDialog():
     char *buttonNames[] = {
         "Buy", "Sell", "Cancel", 0
     };
-    int x = 10, y = 10, h;
+    int x = 10, y = 10;
 
     for (char **curBtn = buttonNames; *curBtn; curBtn++)
     {

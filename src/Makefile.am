@@ -79,8 +79,6 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/radiobutton.h \
 	      gui/register.cpp \
 	      gui/register.h \
-	      gui/requesttrade.cpp \
-	      gui/requesttrade.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
 	      gui/sell.cpp \

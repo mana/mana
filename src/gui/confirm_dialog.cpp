@@ -29,7 +29,7 @@
 
 
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
-        gcn::ActionListener *listener, Window *parent):
+        Window *parent):
     Window(title, true, parent)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
@@ -57,10 +57,6 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     noButton->setEventId("no");
     yesButton->addActionListener(this);
     noButton->addActionListener(this);
-    if (listener) {
-        yesButton->addActionListener(listener);
-        noButton->addActionListener(listener);
-    }
 
     add(textLabel);
     add(yesButton);
@@ -75,6 +71,13 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
 
 void ConfirmDialog::action(const std::string &eventId)
 {
+    // Proxy button events to our listeners
+    ActionListenerIterator i;
+    for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
+    {
+        (*i)->action(eventId);
+    }
+
     // Can we receive anything else anyway?
     if (eventId == "yes" || eventId == "no") {
         scheduleDelete();

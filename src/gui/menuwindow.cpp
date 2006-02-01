@@ -35,12 +35,12 @@ extern Graphics *graphics;
 extern Window *setupWindow, *inventoryWindow, *equipmentWindow,
        *skillDialog, *statusWindow;
 
-class MenuWindowListener : public gcn::ActionListener
+struct MenuWindowListener : public gcn::ActionListener
 {
-         /**
-         * Called when receiving actions from widget.
-         */
-        void action(const std::string& eventId);
+    /**
+     * Called when receiving actions from widget.
+     */
+    void action(const std::string& eventId);
 } menuWindowListener;
 
 MenuWindow::MenuWindow():

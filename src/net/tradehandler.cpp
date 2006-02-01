@@ -30,10 +30,21 @@
 #include "../localplayer.h"
 
 #include "../gui/chat.h"
-#include "../gui/requesttrade.h"
+#include "../gui/confirm_dialog.h"
 #include "../gui/trade.h"
 
 std::string tradePartnerName;
+
+/**
+ * Listener for request trade dialogs
+ */
+struct RequestTradeListener : public gcn::ActionListener
+{
+    void action(const std::string& eventId)
+    {
+        player_node->tradeReply(eventId == "yes");
+    };
+} requestTradeListener;
 
 TradeHandler::TradeHandler()
 {
@@ -69,7 +80,10 @@ void TradeHandler::handleMessage(MessageIn *msg)
 
             player_node->setTrading(true);
             tradePartnerName = msg->readString(24);
-            new RequestTradeDialog(tradePartnerName);
+            ConfirmDialog *dlg = new ConfirmDialog("Request for trade",
+                    tradePartnerName +
+                    " wants to trade with you, do you accept?");
+            dlg->addActionListener(&requestTradeListener);
             break;
 
         case SMSG_TRADE_RESPONSE:

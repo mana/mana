@@ -208,8 +208,8 @@ RegisterDialog::action(const std::string& eventId)
                 delete wrongRegisterNotice;
                 wrongRegisterNotice = NULL;
             }
-            wrongRegisterNotice = new OkDialog("Error", errorMsg.str(),
-                                            wrongDataNoticeListener);
+            wrongRegisterNotice = new OkDialog("Error", errorMsg.str());
+            wrongRegisterNotice->addActionListener(wrongDataNoticeListener);
         }
         else
         {

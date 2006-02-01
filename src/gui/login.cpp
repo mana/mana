@@ -133,7 +133,12 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     serverField->setText(config.getValue("host", ""));
 
-    wrongDataNoticeListener = NULL;
+    wrongDataNoticeListener = new WrongDataNoticeListener();
+}
+
+LoginDialog::~LoginDialog()
+{
+    delete wrongDataNoticeListener;
 }
 
 void
@@ -160,10 +165,9 @@ LoginDialog::action(const std::string& eventId)
         // Check login
         if (user.length() == 0)
         {
-            wrongDataNoticeListener = new WrongDataNoticeListener();
             wrongDataNoticeListener->setTarget(this->passField);
-            new OkDialog("Error", "Enter your username first",
-                     wrongDataNoticeListener);
+            OkDialog *dlg = new OkDialog("Error", "Enter your username first");
+            dlg->addActionListener(wrongDataNoticeListener);
         }
         else
         {

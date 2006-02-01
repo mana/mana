@@ -28,8 +28,6 @@
 
 #include "window.h"
 
-#include "../guichanfwd.h"
-
 /**
  * An 'Ok' button dialog.
  *
@@ -43,7 +41,7 @@ class OkDialog : public Window, public gcn::ActionListener {
          * @see Window::Window
          */
         OkDialog(const std::string &title, const std::string &msg,
-                 gcn::ActionListener *listener = NULL, Window *parent = NULL);
+                Window *parent = NULL);
 
         /**
          * Called when receiving actions from the widgets.
