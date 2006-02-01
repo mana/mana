@@ -29,51 +29,37 @@
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
 
+class MessageHandler;
 class Network;
 
 extern std::string map_path;
-extern int fps;
+extern volatile int fps;
 extern volatile int tick_time;
-extern int server_tick;
 
-enum {
-    JOY_UP,
-    JOY_DOWN,
-    JOY_LEFT,
-    JOY_RIGHT,
-    JOY_BTN0,
-    JOY_BTN1,
-    JOY_BTN2,
-    JOY_BTN3,
-    JOY_BTN4,
-    JOY_BTN5,
-    JOY_BTN6,
-    JOY_BTN7,
-    JOY_BTN8,
-    JOY_BTN9,
-    JOY_BTN10,
-    JOY_BTN11
+class Game
+{
+    public:
+        Game(Network *network);
+        ~Game();
+
+        void logic();
+
+        void handleInput();
+
+    protected:
+        Network *mNetwork;
+
+        MessageHandler *mBeingHandler;
+        MessageHandler *mBuySellHandler;
+        MessageHandler *mChatHandler;
+        MessageHandler *mEquipmentHandler;
+        MessageHandler *mInventoryHandler;
+        MessageHandler *mItemHandler;
+        MessageHandler *mNpcHandler;
+        MessageHandler *mPlayerHandler;
+        MessageHandler *mSkillHandler;
+        MessageHandler *mTradeHandler;
 };
-
-/**
- * Main game loop
- */
-void game(Network*);
-
-/**
- * Check user input
- */
-void do_input(Network*);
-
-/**
- * Initialize
- */
-void do_init(Network*);
-
-/**
- * Clean the engine
- */
-void do_exit();
 
 /**
  * Returns elapsed time. (Warning: very unsafe function, it supposes the delay

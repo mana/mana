@@ -1,5 +1,6 @@
 2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/game.h, src/main.cpp: Created a Game class.
 	* src/gui/passwordfield.cpp: Removed duplicated code.
 	* src/Makefile.am, src/main.cpp, src/gui/error.cpp, src/gui/error.h:
 	Replaced ErrorDialog by OkDialog + listener.

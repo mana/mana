@@ -501,6 +501,7 @@ int main(int argc, char *argv[])
     Window *currentDialog = NULL;
 
     Image *login_wallpaper = NULL;
+    Game *game = NULL;
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
@@ -620,9 +621,9 @@ int main(int argc, char *argv[])
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
-                    do_init(network);
-                    game(network);
-                    do_exit();
+                    game = new Game(network);
+                    game->logic();
+                    delete game;
                     state = EXIT_STATE;
                     break;
 

@@ -74,6 +74,25 @@
 
 #include "resources/imagewriter.h"
 
+enum {
+    JOY_UP,
+    JOY_DOWN,
+    JOY_LEFT,
+    JOY_RIGHT,
+    JOY_BTN0,
+    JOY_BTN1,
+    JOY_BTN2,
+    JOY_BTN3,
+    JOY_BTN4,
+    JOY_BTN5,
+    JOY_BTN6,
+    JOY_BTN7,
+    JOY_BTN8,
+    JOY_BTN9,
+    JOY_BTN10,
+    JOY_BTN11
+};
+
 extern Graphics *graphics;
 extern gcn::SDLInput *guiInput;
 
@@ -84,7 +103,7 @@ std::string map_path;
 bool done = false;
 volatile int tick_time;
 volatile bool action_time = false;
-int fps = 0, frame = 0;
+volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
 SDL_Joystick *joypad = NULL;       /**< Joypad object */
 
@@ -114,17 +133,6 @@ HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 
 BeingManager *beingManager = NULL;
-
-BeingHandler *beingHandler;
-BuySellHandler *buySellHandler;
-ChatHandler *chatHandler;
-EquipmentHandler *equipmentHandler;
-InventoryHandler *inventoryHandler;
-ItemHandler *itemHandler;
-NPCHandler *npcHandler;
-PlayerHandler *playerHandler;
-SkillHandler *skillHandler;
-TradeHandler *tradeHandler;
 
 const int MAX_TIME = 10000;
 
@@ -262,7 +270,8 @@ void destroyGuiWindows()
     delete debugWindow;
 }
 
-void do_init(Network *network)
+Game::Game(Network *network):
+    mNetwork(network)
 {
     createGuiWindows(network);
     engine = new Engine(network);
@@ -303,27 +312,50 @@ void do_init(Network *network)
         }
     }
 
-    beingHandler = new BeingHandler();
-    buySellHandler = new BuySellHandler();
-    chatHandler = new ChatHandler();
-    equipmentHandler = new EquipmentHandler();
-    inventoryHandler = new InventoryHandler();
-    itemHandler = new ItemHandler();
-    npcHandler = new NPCHandler();
-    playerHandler = new PlayerHandler();
-    skillHandler = new SkillHandler();
-    tradeHandler = new TradeHandler();
+    mBeingHandler = new BeingHandler();
+    mBuySellHandler = new BuySellHandler();
+    mChatHandler = new ChatHandler();
+    mEquipmentHandler = new EquipmentHandler();
+    mInventoryHandler = new InventoryHandler();
+    mItemHandler = new ItemHandler();
+    mNpcHandler = new NPCHandler();
+    mPlayerHandler = new PlayerHandler();
+    mSkillHandler = new SkillHandler();
+    mTradeHandler = new TradeHandler();
 
-    network->registerHandler(beingHandler);
-    network->registerHandler(buySellHandler);
-    network->registerHandler(chatHandler);
-    network->registerHandler(equipmentHandler);
-    network->registerHandler(inventoryHandler);
-    network->registerHandler(itemHandler);
-    network->registerHandler(npcHandler);
-    network->registerHandler(playerHandler);
-    network->registerHandler(skillHandler);
-    network->registerHandler(tradeHandler);
+    network->registerHandler(mBeingHandler);
+    network->registerHandler(mBuySellHandler);
+    network->registerHandler(mChatHandler);
+    network->registerHandler(mEquipmentHandler);
+    network->registerHandler(mInventoryHandler);
+    network->registerHandler(mItemHandler);
+    network->registerHandler(mNpcHandler);
+    network->registerHandler(mPlayerHandler);
+    network->registerHandler(mSkillHandler);
+    network->registerHandler(mTradeHandler);
+}
+
+Game::~Game()
+{
+    delete mBeingHandler;
+    delete mBuySellHandler;
+    delete mChatHandler;
+    delete mEquipmentHandler;
+    delete mInventoryHandler;
+    delete mItemHandler;
+    delete mNpcHandler;
+    delete mPlayerHandler;
+    delete mSkillHandler;
+    delete mTradeHandler;
+
+    delete engine;
+    delete player_node;
+    destroyGuiWindows();
+
+    if (joypad != NULL)
+    {
+        SDL_JoystickClose(joypad);
+    }
 }
 
 bool saveScreenshot(SDL_Surface *screenshot)
@@ -350,7 +382,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
     return ImageWriter::writePNG(screenshot, filename.str());
 }
 
-void game(Network *network)
+void Game::logic()
 {
     int gameTime = tick_time;
 
@@ -359,7 +391,7 @@ void game(Network *network)
         // Handle all necessary game logic
         while (get_elapsed_time(gameTime) > 0)
         {
-            do_input(network);
+            handleInput();
             engine->logic();
             gameTime++;
         }
@@ -379,35 +411,12 @@ void game(Network *network)
         }
 
         // Handle network stuff
-        network->flush();
-        network->dispatchMessages();
+        mNetwork->flush();
+        mNetwork->dispatchMessages();
     }
 }
 
-void do_exit()
-{
-    delete beingHandler;
-    delete buySellHandler;
-    delete chatHandler;
-    delete equipmentHandler;
-    delete inventoryHandler;
-    delete itemHandler;
-    delete npcHandler;
-    delete playerHandler;
-    delete skillHandler;
-    delete tradeHandler;
-
-    delete engine;
-    delete player_node;
-    destroyGuiWindows();
-
-    if (joypad != NULL)
-    {
-        SDL_JoystickClose(joypad);
-    }
-}
-
-void do_input(Network *network)
+void Game::handleInput()
 {
     // Get the state of the keyboard keys
     Uint8* keys;
