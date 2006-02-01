@@ -1,5 +1,7 @@
 2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/Makefile.am, src/main.cpp, src/gui/error.cpp, src/gui/error.h:
+	Replaced ErrorDialog by OkDialog + listener.
 	* src/Makefile.am, src/game.cpp, src/gui/buysell.cpp,
 	src/gui/char_select.cpp, src/gui/confirm_dialog.cpp,
 	src/gui/confirm_dialog.h, src/gui/login.cpp, src/gui/login.h,

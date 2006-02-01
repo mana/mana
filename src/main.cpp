@@ -29,6 +29,8 @@
 #include <unistd.h>
 #include <SDL_image.h>
 
+#include <guichan/actionlistener.hpp>
+
 #include <guichan/sdl/sdlinput.hpp>
 
 #include <libxml/parser.h>
@@ -58,9 +60,9 @@
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/connection.h"
-#include "gui/error.h"
 #include "gui/gui.h"
 #include "gui/login.h"
+#include "gui/ok_dialog.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
@@ -107,6 +109,17 @@ Uint32 nextFrame(Uint32 interval, void *param)
     }
     return interval;
 }
+
+struct ErrorListener : public gcn::ActionListener
+{
+    void action(const std::string& eventId)
+    {
+        if (eventId == "ok")
+        {
+            state = LOGIN_STATE;
+        }
+    }
+} errorListener;
 
 /**
  * Do all initialization stuff
@@ -620,7 +633,9 @@ int main(int argc, char *argv[])
 
                 case ERROR_STATE:
                     logger->log("State: ERROR");
-                    currentDialog = new ErrorDialog(errorMessage);
+                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
                     network->disconnect();
                     network->clearHandlers();
                     break;
