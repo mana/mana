@@ -76,7 +76,8 @@ NpcTextDialog::action(const std::string& eventId)
     {
         setText("");
         setVisible(false);
-        current_npc->nextDialog();
+        if (current_npc)
+            current_npc->nextDialog();
         current_npc = 0;
     }
 }

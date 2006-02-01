@@ -1,3 +1,11 @@
+2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/buysell.cpp, src/gui/menuwindow.cpp: Simplified button
+	creation code.
+	* src/gui/npc_text.cpp: Fixed a bug where the game crashes if there's a
+	message dialog from a npc that no longer exists.
+	* src/properties.h: Reverted properties to private.
+
 2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/setup.cpp: Cleanup.

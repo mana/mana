@@ -30,42 +30,35 @@
 BuySellDialog::BuySellDialog():
     Window("Shop")
 {
-    gcn::Button *buyButton = new Button("Buy");
-    gcn::Button *sellButton = new Button("Sell");
-    gcn::Button *cancelButton = new Button("Cancel");
+    Button *buyButton = 0;
+    char *buttonNames[] = {
+        "Buy", "Sell", "Cancel", 0
+    };
+    int x = 10, y = 10, h;
 
-    buyButton->setPosition(10, 10);
-    sellButton->setPosition(
-            buyButton->getX() + buyButton->getWidth() + 10, 10);
-    cancelButton->setPosition(
-            sellButton->getX() + sellButton->getWidth() + 10, 10);
-    setContentSize(cancelButton->getX() + cancelButton->getWidth() + 10,
-            cancelButton->getY() + cancelButton->getHeight() + 10);
-
-    buyButton->setEventId("buy");
-    sellButton->setEventId("sell");
-    cancelButton->setEventId("cancel");
-
-    buyButton->addActionListener(this);
-    sellButton->addActionListener(this);
-    cancelButton->addActionListener(this);
-
-    add(buyButton);
-    add(sellButton);
-    add(cancelButton);
-
-    setLocationRelativeTo(getParent());
+    for (char **curBtn = buttonNames; *curBtn; curBtn++)
+    {
+        Button *btn = new Button(*curBtn);
+        if (!buyButton) buyButton = btn; // For focus request
+        btn->setEventId(*curBtn);
+        btn->addActionListener(this);
+        btn->setPosition(x, y);
+        add(btn);
+        x += btn->getWidth() + 10;
+    }
     buyButton->requestFocus();
+
+    setContentSize(x, 2 * y + buyButton->getHeight());
+    setLocationRelativeTo(getParent());
 }
 
 void BuySellDialog::action(const std::string& eventId)
 {
-    if (eventId == "buy") {
+    if (eventId == "Buy") {
         current_npc->buy();
-    }
-    else if (eventId == "sell") {
+    } else if (eventId == "Sell") {
         current_npc->sell();
-    } else if (eventId == "cancel") {
+    } else if (eventId == "Cancel") {
         current_npc = 0;
     }
     setVisible(false);

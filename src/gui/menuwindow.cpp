@@ -53,43 +53,22 @@ MenuWindow::MenuWindow():
 
     // Buttons
     // ------------
-    gcn::Button *statusButton, *equipmentButton, *skillsButton,
-        *inventoryButton, *setupButton;
+    char *buttonNames[] = {
+        "Status", "Equipment", "Inventory", "Skills", "Setup", 0
+    };
+    int x = 0, y = 3, h = 0;
 
-    statusButton = new Button("Status");
-    statusButton->setEventId("Status");
-    statusButton->addActionListener(&menuWindowListener);
-    statusButton->setPosition(0, 3);
-    add(statusButton);
+    for (char **curBtn = buttonNames; *curBtn; curBtn++) {
+        gcn::Button *btn = new Button(*curBtn);
+        btn->setEventId(*curBtn);
+        btn->addActionListener(&menuWindowListener);
+        btn->setPosition(x, y);
+        add(btn);
+        x += btn->getWidth() + 3;
+        h = btn->getHeight();
+    }
 
-    equipmentButton = new Button("Equipment");
-    equipmentButton->setEventId("Equipment");
-    equipmentButton->addActionListener(&menuWindowListener);
-    equipmentButton->setPosition(statusButton->getX() + statusButton->getWidth() + 3, statusButton->getY());
-    add(equipmentButton);
-
-    inventoryButton = new Button("Inventory");
-    inventoryButton->setEventId("Inventory");
-    inventoryButton->addActionListener(&menuWindowListener);
-    inventoryButton->setPosition(equipmentButton->getX() + equipmentButton->getWidth() + 3, statusButton->getY());
-    add(inventoryButton);
-
-    skillsButton = new Button("Skills");
-    skillsButton->setEventId("Skills");
-    skillsButton->addActionListener(&menuWindowListener);
-    skillsButton->setPosition(inventoryButton->getX() + inventoryButton->getWidth() + 3, statusButton->getY());
-    add(skillsButton);
-
-    setupButton = new Button("Setup");
-    setupButton->setEventId("Setup");
-    setupButton->addActionListener(&menuWindowListener);
-    setupButton->setPosition(skillsButton->getX() + skillsButton->getWidth() + 3, statusButton->getY());
-    add(setupButton);
-
-    int menuWidth = setupButton->getX() + setupButton->getWidth();
-    setDefaultSize((graphics->getWidth() - menuWidth - 5), 0,
-                   menuWidth,
-                   (setupButton->getY() + setupButton->getHeight()));
+    setDefaultSize((graphics->getWidth() - x - 2), 0, x, (y + h));
 }
 
 void MenuWindow::draw(gcn::Graphics *g)
