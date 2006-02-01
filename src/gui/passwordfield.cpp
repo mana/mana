@@ -23,9 +23,7 @@
 
 #include "passwordfield.h"
 
-#include <guichan/font.hpp>
-#include <guichan/graphics.hpp>
-
+#include <string>
 
 PasswordField::PasswordField(const std::string& text):
     TextField(text)
@@ -34,16 +32,9 @@ PasswordField::PasswordField(const std::string& text):
 
 void PasswordField::draw(gcn::Graphics *graphics)
 {
-    std::string stars;
-    stars.assign(mText.length(), '*');
-
-    if (hasFocus()) {
-        drawCaret(graphics,
-                getFont()->getWidth(stars.substr(0, mCaretPosition)) -
-                mXScroll);
-    }
-
-    graphics->setColor(getForegroundColor());
-    graphics->setFont(getFont());
-    graphics->drawText(stars, 1 - mXScroll, 1);
+    // std::string uses cow, thus cheap copy
+    const std::string original = mText;
+    mText.assign(mText.length(), '*');
+    TextField::draw(graphics);
+    mText = original;
 }

@@ -1,5 +1,6 @@
 2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/passwordfield.cpp: Removed duplicated code.
 	* src/Makefile.am, src/main.cpp, src/gui/error.cpp, src/gui/error.h:
 	Replaced ErrorDialog by OkDialog + listener.
 	* src/Makefile.am, src/game.cpp, src/gui/buysell.cpp,
