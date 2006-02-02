@@ -1,3 +1,10 @@
+2006-02-02 Philipp Sehmisch <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert1.png, data/graphics/tiles/desert2.png, 
+	data/graphics/tiles/desert_x2.png, data/graphics/tiles/desert_x3.png:
+	Replaced the old sand tile with Irucards new one. Added new crates.
+	Made some minor corrections.
+
 2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/game.h, src/main.cpp: Created a Game class.
