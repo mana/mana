@@ -26,17 +26,6 @@
 #define LOBYTE(w)  ((unsigned char)(w))
 #define HIBYTE(w)  ((unsigned char)(((unsigned short)(w)) >> 8))
 
-unsigned char get_src_direction(char data)
-{
-    data >>= 4;
-    return data;
-}
-
-unsigned char get_dest_direction(char data)
-{
-    return data & 0x000f;
-}
-
 void set_coordinates(char *data,
                      unsigned short x,
                      unsigned short y,

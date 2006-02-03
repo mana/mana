@@ -104,12 +104,6 @@
 #define CMSG_PLAYER_EQUIP            0x00a9
 #define CMSG_PLAYER_UNEQUIP          0x00ab
 
-/** Decodes src direction */
-unsigned char get_src_direction(char data);
-
-/** Decodes dest direction */
-unsigned char get_dest_direction(char data);
-
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
 
