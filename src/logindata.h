@@ -30,6 +30,8 @@ struct LoginData
     std::string password;
     std::string hostname;
     short port;
+
+    bool remember;
 };
 
 #endif

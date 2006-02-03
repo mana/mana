@@ -28,8 +28,6 @@
 #include <guichan/widgets/label.hpp>
 
 #include "../main.h"
-#include "../configuration.h"
-#include "../log.h"
 #include "../logindata.h"
 
 #include "button.h"
@@ -62,9 +60,9 @@ LoginDialog::LoginDialog(LoginData *loginData):
     userLabel = new gcn::Label("Name:");
     passLabel = new gcn::Label("Password:");
     serverLabel = new gcn::Label("Server:");
-    userField = new TextField("player");
-    passField = new PasswordField();
-    serverField = new TextField();
+    userField = new TextField(mLoginData->username);
+    passField = new PasswordField(mLoginData->password);
+    serverField = new TextField(mLoginData->hostname);
     keepCheck = new CheckBox("Keep", false);
     okButton = new Button("OK");
     cancelButton = new Button("Cancel");
@@ -84,7 +82,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     passField->setWidth(130);
     serverField->setWidth(130);
     keepCheck->setPosition(4, 77);
-    keepCheck->setMarked(config.getValue("remember", 0));
+    keepCheck->setMarked(mLoginData->remember);
     cancelButton->setPosition(
             200 - cancelButton->getWidth() - 5,
             100 - cancelButton->getHeight() - 5);
@@ -121,17 +119,12 @@ LoginDialog::LoginDialog(LoginData *loginData):
     add(registerButton);
 
     setLocationRelativeTo(getParent());
-    userField->requestFocus();
-    userField->setCaretPosition(userField->getText().length());
 
-    if (config.getValue("remember", 0) != 0) {
-        if (config.getValue("username", "") != "") {
-            userField->setText(config.getValue("username", ""));
-            passField->requestFocus();
-        }
+    if (!userField->getText().length()) {
+        userField->requestFocus();
+    } else {
+        passField->requestFocus();
     }
-
-    serverField->setText(config.getValue("host", ""));
 
     wrongDataNoticeListener = new WrongDataNoticeListener();
 }
@@ -146,24 +139,8 @@ LoginDialog::action(const std::string& eventId)
 {
     if (eventId == "ok")
     {
-        const std::string user = userField->getText();
-        logger->log("Network: Username is %s", user.c_str());
-
-        // Store config settings
-        config.setValue("remember", keepCheck->isMarked());
-
-        if (keepCheck->isMarked())
-        {
-            config.setValue("username", user);
-            config.setValue("host", serverField->getText());
-        }
-        else
-        {
-            config.setValue("username", "");
-        }
-
         // Check login
-        if (user.length() == 0)
+        if (userField->getText().length() == 0)
         {
             wrongDataNoticeListener->setTarget(this->passField);
             OkDialog *dlg = new OkDialog("Error", "Enter your username first");
@@ -171,10 +148,10 @@ LoginDialog::action(const std::string& eventId)
         }
         else
         {
-            mLoginData->hostname = config.getValue("host", "animesites.de");
-            mLoginData->port = (short)config.getValue("port", 0);
+            mLoginData->hostname = serverField->getText();
             mLoginData->username = userField->getText();
             mLoginData->password = passField->getText();
+            mLoginData->remember = keepCheck->isMarked();
 
             okButton->setEnabled(false);
             //cancelButton->setEnabled(false);

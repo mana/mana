@@ -1,5 +1,8 @@
 2006-02-03  Björn Steinbrink <B.Steinbrink@gmx.de>
 
+	* src/logindata.h, src/main.cpp, src/gui/login.cpp, src/gui/login.h:
+	Made the login dialog work on LoginData only, without playing with the
+	config, it's not its job to do so.
 	* src/net/protocol.cpp, src/net/protocol.h: Removed some unused code.
 
 2006-02-02  Philipp Sehmisch  <tmw@crushnet.org>

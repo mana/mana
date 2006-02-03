@@ -405,6 +405,7 @@ MapLoginHandler mapLoginHandler;
 void accountLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to account server...");
+    logger->log("Username is %s", loginData->username.c_str());
     network->connect(loginData->hostname.c_str(), loginData->port);
     network->registerHandler(&loginHandler);
 
@@ -415,6 +416,14 @@ void accountLogin(Network *network, LoginData *loginData)
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
     outMsg.writeInt8(0); // unknown
+
+    // TODO This is not the best place to save the config, but at least better
+    // than the login gui window
+    if (loginData->remember) {
+        config.setValue("host", loginData->hostname);
+        config.setValue("username", loginData->username);
+    }
+    config.setValue("remember", loginData->remember);
 }
 
 void charLogin(Network *network, const SERVER_INFO *si)
@@ -505,6 +514,19 @@ int main(int argc, char *argv[])
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
+    accountLoginData.username = options.username;
+    if (accountLoginData.username.empty()) {
+        if (config.getValue("remember", 0)) {
+            accountLoginData.username = config.getValue("username", "");
+        }
+    }
+    if (!options.password.empty()) {
+        accountLoginData.password = options.password;
+    }
+    accountLoginData.hostname = config.getValue("host", "animesites.de");
+    accountLoginData.port = (short)config.getValue("port", 0);
+    accountLoginData.remember = config.getValue("remember", 0);
+
     SDLNet_Init();
     Network *network = new Network();
     while (state != EXIT_STATE)
@@ -577,18 +599,16 @@ int main(int argc, char *argv[])
 
             if (currentDialog && state != ACCOUNT_STATE && state != CHAR_CONNECT_STATE) {
                 delete currentDialog;
+                currentDialog = NULL;
             }
 
             switch (state) {
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
-                    currentDialog = new LoginDialog(&accountLoginData);
-
-                    if (!options.username.empty()) {
-                        LoginDialog *loginDialog = (LoginDialog*)currentDialog;
-                        loginDialog->userField->setText(options.username);
-                        loginDialog->passField->setText(options.password);
-                        loginDialog->action("ok");
+                    if (!accountLoginData.password.empty()) {
+                        state = ACCOUNT_STATE;
+                    } else {
+                        currentDialog = new LoginDialog(&accountLoginData);
                     }
                     break;
 

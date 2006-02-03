@@ -67,15 +67,12 @@ class LoginDialog : public Window, public gcn::ActionListener {
          */
         void action(const std::string& eventId);
 
-        // Made them public to have the possibility to request focus
-        // from external functions.
-        gcn::TextField *userField;
-        gcn::TextField *passField;
-
     private:
         gcn::Label *userLabel;
         gcn::Label *passLabel;
         gcn::Label *serverLabel;
+        gcn::TextField *userField;
+        gcn::TextField *passField;
         gcn::TextField *serverField;
         gcn::CheckBox *keepCheck;
         gcn::Button *okButton;
