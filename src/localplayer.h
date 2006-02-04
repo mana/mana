@@ -112,7 +112,7 @@ class LocalPlayer : public Player
 
         void revive();
 
-        Uint32 mLoginId;
+        Uint32 mCharId;
 
         Uint32 xp, jobXp;
         Uint16 lvl;

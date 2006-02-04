@@ -31,18 +31,8 @@
 
 #include "../guichanfwd.h"
 
-class SERVER_INFO;
-
-/**
- * The list model for the server list.
- */
-class ServerListModel : public gcn::ListModel {
-    public:
-        virtual ~ServerListModel() {};
-
-        int getNumberOfElements();
-        std::string getElementAt(int i);
-};
+class LoginData;
+class ServerListModel;
 
 /**
  * The server select dialog.
@@ -56,7 +46,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          *
          * @see Window::Window
          */
-        ServerSelectDialog();
+        ServerSelectDialog(LoginData *loginData);
 
         /**
          * Destructor.
@@ -68,12 +58,8 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
          */
         void action(const std::string& eventId);
 
-        /**
-         * Returns the index of the selected server
-         */
-        SERVER_INFO* getServerInfo();
-
     private:
+        LoginData *mLoginData;
         ServerListModel *serverListModel;
         gcn::ListBox *serverList;
         gcn::Button *okButton;

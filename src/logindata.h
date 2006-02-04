@@ -31,6 +31,10 @@ struct LoginData
     std::string hostname;
     short port;
 
+    int account_ID;
+    int session_ID1;
+    int session_ID2;
+
     bool remember;
 };
 

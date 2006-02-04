@@ -29,6 +29,7 @@
 #include "../lockedarray.h"
 
 class LocalPlayer;
+class LoginData;
 
 class CharServerHandler : public MessageHandler
 {
@@ -39,7 +40,10 @@ class CharServerHandler : public MessageHandler
 
         void setCharInfo(LockedArray<LocalPlayer*> *charInfo) { mCharInfo = charInfo; };
 
+        void setLoginData(LoginData *loginData) { mLoginData = loginData; };
+
     protected:
+        LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
 
         LocalPlayer* readPlayerData(MessageIn *msg, int &slot);

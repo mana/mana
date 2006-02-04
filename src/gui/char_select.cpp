@@ -222,7 +222,7 @@ void CharSelectDialog::attemptCharDelete()
     // Request character deletion
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x0068);
-    outMsg.writeInt32(mCharInfo->getEntry()->mLoginId);
+    outMsg.writeInt32(mCharInfo->getEntry()->mCharId);
     outMsg.writeString("a@a.com", 40);
     mCharInfo->lock();
 }

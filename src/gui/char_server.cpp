@@ -29,13 +29,27 @@
 #include "listbox.h"
 #include "scrollarea.h"
 
+#include "../logindata.h"
 #include "../main.h"
 #include "../serverinfo.h"
 
+#include "../net/network.h" // TODO this is just for iptostring, move that?
+
 extern SERVER_INFO **server_info;
 
-ServerSelectDialog::ServerSelectDialog():
-    Window("Select Server")
+/**
+ * The list model for the server list.
+ */
+class ServerListModel : public gcn::ListModel {
+    public:
+        virtual ~ServerListModel() {};
+
+        int getNumberOfElements();
+        std::string getElementAt(int i);
+};
+
+ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
+    Window("Select Server"), mLoginData(loginData)
 {
     serverListModel = new ServerListModel();
     serverList = new ListBox(serverListModel);
@@ -91,16 +105,14 @@ ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
         okButton->setEnabled(false);
+        const SERVER_INFO *si = server_info[serverList->getSelected()];
+        mLoginData->hostname = iptostring(si->address);
+        mLoginData->port = si->port;
         state = CHAR_CONNECT_STATE;
     }
     else if (eventId == "cancel") {
         state = LOGIN_STATE;
     }
-}
-
-SERVER_INFO* ServerSelectDialog::getServerInfo()
-{
-    return server_info[serverList->getSelected()];
 }
 
 int

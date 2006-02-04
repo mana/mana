@@ -28,6 +28,7 @@
 #include "protocol.h"
 
 #include "../log.h"
+#include "../logindata.h"
 #include "../main.h"
 #include "../serverinfo.h"
 
@@ -54,9 +55,9 @@ void LoginHandler::handleMessage(MessageIn *msg)
             n_server = (msg->getLength() - 47) / 32;
             server_info = (SERVER_INFO**)malloc(sizeof(SERVER_INFO*) * n_server);
 
-            session_ID1 = msg->readInt32();
-            account_ID = msg->readInt32();
-            session_ID2 = msg->readInt32();
+            mLoginData->session_ID1 = msg->readInt32();
+            mLoginData->account_ID = msg->readInt32();
+            mLoginData->session_ID2 = msg->readInt32();
             msg->skip(30);                           // unknown
             sex = msg->readInt8();
 

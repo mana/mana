@@ -91,7 +91,7 @@ int networkThread(void *data)
 }
 
 Network::Network():
-    mAddress(0), mPort(0),
+    mAddress(), mPort(0),
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE]),
     mInSize(0), mOutSize(0),
@@ -106,9 +106,6 @@ Network::~Network()
 {
     clearHandlers();
 
-    if (mAddress)
-        free(mAddress);
-
     if (mState != IDLE && mState != ERROR)
         disconnect();
 
@@ -118,7 +115,7 @@ Network::~Network()
     delete mOutBuffer;
 }
 
-bool Network::connect(const char *address, short port)
+bool Network::connect(const std::string &address, short port)
 {
     if (mState != IDLE && mState != ERROR)
     {
@@ -126,17 +123,16 @@ bool Network::connect(const char *address, short port)
         return false;
     }
 
-    if (!address)
+    if (address.empty())
     {
         logger->log("Empty address given to Network::connect()!");
         mState = ERROR;
         return false;
     }
 
-    if (mAddress)
-        free(mAddress);
+    logger->log("Network::Connecting to %s:%i", address.c_str(), port);
 
-    mAddress = strdup(address);
+    mAddress = address;
     mPort = port;
 
     // Reset to sane values
@@ -322,7 +318,7 @@ bool Network::realConnect()
 {
     IPaddress ipAddress;
 
-    if (SDLNet_ResolveHost(&ipAddress, mAddress, mPort) == -1)
+    if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
     {
         logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
         mState = ERROR;

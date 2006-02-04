@@ -26,12 +26,19 @@
 
 #include "messagehandler.h"
 
+struct LoginData;
+
 class LoginHandler : public MessageHandler
 {
     public:
         LoginHandler();
 
         void handleMessage(MessageIn *msg);
+
+        void setLoginData(LoginData *loginData) { mLoginData = loginData; };
+
+    protected:
+        LoginData *mLoginData;
 };
 
 #endif

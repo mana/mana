@@ -27,6 +27,7 @@
 #include <map>
 #include <SDL_net.h>
 #include <SDL_thread.h>
+#include <string>
 
 class MessageHandler;
 class MessageIn;
@@ -42,7 +43,7 @@ class Network
         Network();
         ~Network();
 
-        bool connect(const char *address, short port);
+        bool connect(const std::string &address, short port);
         void disconnect();
 
         void registerHandler(MessageHandler *handler);
@@ -75,7 +76,7 @@ class Network
 
         TCPsocket mSocket;
 
-        char *mAddress;
+        std::string mAddress;
         short mPort;
 
         char *mInBuffer, *mOutBuffer;

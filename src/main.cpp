@@ -52,7 +52,6 @@
 #ifdef USE_OPENGL
 #include "openglgraphics.h"
 #endif
-#include "serverinfo.h"
 #include "sound.h"
 
 #include "graphic/spriteset.h"
@@ -77,16 +76,15 @@
 #include "resources/resourcemanager.h"
 
 // Account infos
-int account_ID, session_ID1, session_ID2;
 char sex, n_server, n_character;
 
 Spriteset *hairset = NULL, *playerset = NULL;
 Graphics *graphics;
 
+// TODO Anyone knows a good location for this? Or a way to make it non-global?
+class SERVER_INFO;
 SERVER_INFO **server_info;
 
-int map_address, char_ID;
-short map_port;
 unsigned char state;
 std::string errorMessage;
 unsigned char screen_mode;
@@ -396,7 +394,7 @@ void parseOptions(int argc, char *argv[], Options &options)
 }
 
 CharServerHandler charServerHandler;
-LoginData accountLoginData;
+LoginData loginData;
 LoginHandler loginHandler;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 MapLoginHandler mapLoginHandler;
@@ -406,8 +404,9 @@ void accountLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
-    network->connect(loginData->hostname.c_str(), loginData->port);
+    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
+    loginHandler.setLoginData(loginData);
 
     // Send login infos
     MessageOut outMsg(network);
@@ -416,6 +415,9 @@ void accountLogin(Network *network, LoginData *loginData)
     outMsg.writeString(loginData->username, 24);
     outMsg.writeString(loginData->password, 24);
     outMsg.writeInt8(0); // unknown
+
+    // Clear the password, avoids auto login when returning to login
+    loginData->password = "";
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
@@ -426,19 +428,20 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-void charLogin(Network *network, const SERVER_INFO *si)
+void charLogin(Network *network, LoginData *loginData)
 {
     logger->log("Trying to connect to char server...");
-    network->connect(iptostring(si->address), si->port);
+    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&charServerHandler);
     charServerHandler.setCharInfo(&charInfo);
+    charServerHandler.setLoginData(loginData);
 
     // Send login infos
     MessageOut outMsg(network);
     outMsg.writeInt16(0x0065);
-    outMsg.writeInt32(account_ID);
-    outMsg.writeInt32(session_ID1);
-    outMsg.writeInt32(session_ID2);
+    outMsg.writeInt32(loginData->account_ID);
+    outMsg.writeInt32(loginData->session_ID1);
+    outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt16(0); // unknown
     outMsg.writeInt8(sex);
 
@@ -446,21 +449,22 @@ void charLogin(Network *network, const SERVER_INFO *si)
     network->skip(4);
 }
 
-void mapLogin(Network *network)
+void mapLogin(Network *network, LoginData *loginData)
 {
-    const char *host = iptostring(map_address);
     MessageOut outMsg(network);
 
     logger->log("Trying to connect to map server...");
-    network->connect(host, map_port);
+    logger->log("Map: %s", map_path.c_str());
+
+    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&mapLoginHandler);
 
     // Send login infos
     outMsg.writeInt16(0x0072);
-    outMsg.writeInt32(account_ID);
-    outMsg.writeInt32(char_ID);
-    outMsg.writeInt32(session_ID1);
-    outMsg.writeInt32(session_ID2);
+    outMsg.writeInt32(loginData->account_ID);
+    outMsg.writeInt32(player_node->mCharId);
+    outMsg.writeInt32(loginData->session_ID1);
+    outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt8(sex);
 
     // We get 4 useless bytes before the real answer comes in
@@ -514,18 +518,18 @@ int main(int argc, char *argv[])
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
-    accountLoginData.username = options.username;
-    if (accountLoginData.username.empty()) {
+    loginData.username = options.username;
+    if (loginData.username.empty()) {
         if (config.getValue("remember", 0)) {
-            accountLoginData.username = config.getValue("username", "");
+            loginData.username = config.getValue("username", "");
         }
     }
     if (!options.password.empty()) {
-        accountLoginData.password = options.password;
+        loginData.password = options.password;
     }
-    accountLoginData.hostname = config.getValue("host", "animesites.de");
-    accountLoginData.port = (short)config.getValue("port", 0);
-    accountLoginData.remember = config.getValue("remember", 0);
+    loginData.hostname = config.getValue("host", "animesites.de");
+    loginData.port = (short)config.getValue("port", 0);
+    loginData.remember = config.getValue("remember", 0);
 
     SDLNet_Init();
     Network *network = new Network();
@@ -605,21 +609,21 @@ int main(int argc, char *argv[])
             switch (state) {
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
-                    if (!accountLoginData.password.empty()) {
+                    if (!loginData.password.empty()) {
                         state = ACCOUNT_STATE;
                     } else {
-                        currentDialog = new LoginDialog(&accountLoginData);
+                        currentDialog = new LoginDialog(&loginData);
                     }
                     break;
 
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
-                    currentDialog = new RegisterDialog(&accountLoginData);
+                    currentDialog = new RegisterDialog(&loginData);
                     break;
 
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
-                    currentDialog = new ServerSelectDialog();
+                    currentDialog = new ServerSelectDialog(&loginData);
                     if (options.chooseDefault) {
                         ((ServerSelectDialog*)currentDialog)->action("ok");
                     }
@@ -663,16 +667,16 @@ int main(int argc, char *argv[])
 
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
-                    mapLogin(network);
+                    mapLogin(network, &loginData);
                     currentDialog = new ConnectionDialog();
                     break;
 
                 case CHAR_CONNECT_STATE:
-                    charLogin(network, ((ServerSelectDialog*)currentDialog)->getServerInfo());
+                    charLogin(network, &loginData);
                     break;
 
                 case ACCOUNT_STATE:
-                    accountLogin(network, &accountLoginData);
+                    accountLogin(network, &loginData);
                     break;
 
                 default:

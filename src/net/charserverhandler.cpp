@@ -30,6 +30,7 @@
 #include "../game.h"
 #include "../localplayer.h"
 #include "../log.h"
+#include "../logindata.h"
 #include "../main.h"
 
 #include "../gui/ok_dialog.h"
@@ -119,11 +120,11 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x0071:
-            char_ID = msg->readInt32();
-            map_path = msg->readString(16);
-            map_address = msg->readInt32();
-            map_port = msg->readInt16();
             player_node = mCharInfo->getEntry();
+            msg->skip(4); // CharID, must be the same as player_node->charID
+            map_path = msg->readString(16);
+            mLoginData->hostname = iptostring(msg->readInt32());
+            mLoginData->port = msg->readInt16();
             mCharInfo->unlock();
             mCharInfo->select(0);
             // Clear unselected players infos
@@ -136,10 +137,6 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             } while (mCharInfo->getPos());
 
             state = CONNECTING_STATE;
-
-            logger->log("CharSelect: Map: %s", map_path.c_str());
-            logger->log("CharSelect: Server: %s:%i", iptostring(map_address),
-                    map_port);
             break;
 
         case 0x0081:
@@ -165,9 +162,9 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
 LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
 {
-    LocalPlayer *tempPlayer = new LocalPlayer(account_ID, 0, NULL);
+    LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
 
-    tempPlayer->mLoginId = msg->readInt32();
+    tempPlayer->mCharId = msg->readInt32();
     tempPlayer->totalWeight = 0;
     tempPlayer->maxWeight = 0;
     tempPlayer->lastAttackTime = 0;
