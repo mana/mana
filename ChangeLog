@@ -1,3 +1,15 @@
+2006-02-04  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/graphics/tiles/Woodland.png: new path design
+	* data/graphics/tiles/Woodland_ground.png, 
+	data/graphics/tiles/Woodland_x2.png,
+	data/graphics/tiles/Woodland_x3.png: splitted the tileset into three 
+	tilesets with different tile sizes
+	(i kept the original tileset for backward compatiblity)
+	* data/maps/new_9.1.tmx.gz: remapped with the oversized tile technology. 
+	made the forests less regular. made the unwalkable map borders more 
+	visual appealing
+	
+
 2006-02-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/localplayer.h, src/logindata.h, src/main.cpp, src/main.h,
