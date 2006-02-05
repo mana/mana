@@ -71,6 +71,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         PlayerBox *playerBox;
 
+        bool mCharSelected;
+
         /**
          * Communicate character deletion to the server.
          */

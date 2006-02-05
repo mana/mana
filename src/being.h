@@ -189,6 +189,18 @@ class Being : public Sprite
         drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         /**
+         * Draws the emotion picture above the being.
+         */
+        void
+        drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+
+        /**
+         * Draws the name text below the being.
+         */
+        void
+        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+
+        /**
          * Returns the type of the being.
          */
         virtual Type getType() const;
@@ -249,7 +261,7 @@ class Being : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
 
         /**
          * Returns the pixel X coordinate.

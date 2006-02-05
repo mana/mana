@@ -122,12 +122,4 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
                 px - 2 + 2 * hairtable[frame][dir][0],
                 py - 50 + 2 * hairtable[frame][dir][1]);
     }
-
-    // Draw player name
-    if (getType() != LOCALPLAYER) {
-        graphics->setFont(speechFont);
-        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
-    }
-
-    Being::draw(graphics, offsetX, offsetY);
 }

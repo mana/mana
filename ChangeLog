@@ -1,5 +1,9 @@
 2006-02-05  Yohann Ferreira  <bertram@cegetel.net>
 
+	* src/engine.cpp, src/being.h, src/being.cpp, src/player.cpp,
+	src/gui/char_select.h, src/gui/char_select.cpp: Made the nickname and
+	emotions displayed above every layers. Made the delete and ok buttons
+	be disabled once the character is selected at login.
 	* src/net/tradehandler.cpp, src/resources/itemmanager.cpp: Fixed a gcc
 	4.0 issue in the tradehandler. Strengthen the xml parser in the
 	itemmanager so tmw doesn't crash anymore if an item lacks some

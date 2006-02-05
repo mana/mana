@@ -218,6 +218,32 @@ Being::logic()
 }
 
 void
+Being::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    // Draw player name
+    if (getType() != LOCALPLAYER) {
+        graphics->setFont(speechFont);
+        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+    }
+}
+
+void
+Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    if (emotion)
+    {
+        graphics->drawImage(emotionset->spriteset[emotion - 1],
+                px + 3, py - 60);
+    }
+}
+
+void
 Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
     int px = mPx + offsetX;
@@ -342,17 +368,4 @@ Being::getYOffset() const
     }
 
     return offset;
-}
-
-void
-Being::draw(Graphics *graphics, int offsetX, int offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    if (emotion)
-    {
-        graphics->drawImage(emotionset->spriteset[emotion - 1],
-                px + 3, py - 60);
-    }
 }

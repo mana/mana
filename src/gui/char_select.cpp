@@ -69,7 +69,7 @@ void CharDeleteConfirm::action(const std::string &eventId)
 }
 
 CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
-    Window("Select Character"), mNetwork(network), mCharInfo(charInfo)
+    Window("Select Character"), mNetwork(network), mCharInfo(charInfo), mCharSelected(false)
 {
     selectButton = new Button("Ok");
     cancelButton = new Button("Cancel");
@@ -146,6 +146,7 @@ void CharSelectDialog::action(const std::string& eventId)
         selectButton->setEnabled(false);
         previousButton->setEnabled(false);
         nextButton->setEnabled(false);
+        mCharSelected = true;
         attemptCharSelect();
     }
     else if (eventId == "cancel")
@@ -195,9 +196,12 @@ void CharSelectDialog::updatePlayerInfo()
         levelLabel->setCaption(levelCaption.str());
         jobLevelLabel->setCaption(jobCaption.str());
         moneyLabel->setCaption(moneyCaption.str());
-        newCharButton->setEnabled(false);
-        delCharButton->setEnabled(true);
-        selectButton->setEnabled(true);
+        if (!mCharSelected)
+        {
+            newCharButton->setEnabled(false);
+            delCharButton->setEnabled(true);
+            selectButton->setEnabled(true);
+        }
         playerBox->hairStyle = pi->getHairStyle() - 1;
         playerBox->hairColor = pi->getHairColor() - 1;
         playerBox->showPlayer = true;
