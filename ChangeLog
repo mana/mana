@@ -11,6 +11,7 @@
 
 2006-02-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* data/graphics/tiles/Makefile.am: Added the new tilesets.
 	* src/localplayer.cpp, src/localplayer.h, src/gui/gui.cpp: Made the
 	player walk to items prior to picking them up.
 
