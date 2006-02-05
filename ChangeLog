@@ -1,3 +1,10 @@
+2006-02-05  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/net/tradehandler.cpp, src/resources/itemmanager.cpp: Fixed a gcc
+	4.0 issue in the tradehandler. Strengthen the xml parser in the
+	itemmanager so tmw doesn't crash anymore if an item lacks some
+	parameters.
+
 2006-02-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Updated dependencies in response to patch by Hanno Braun.

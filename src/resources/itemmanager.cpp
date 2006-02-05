@@ -54,47 +54,62 @@ ItemManager::ItemManager()
         {
             for (node = node->xmlChildrenNode; node != NULL; node = node->next)
             {
+                int id = 0, image = 0, art = 0, type = 0, weight = 0, slot = 0;
+                std::string name = "", description = "", effect = "";
+
                 if (xmlStrEqual(node->name, BAD_CAST "item"))
                 {
-                    xmlChar *prop;
+                    xmlChar *prop = NULL;
+                    // Item id
                     prop = xmlGetProp(node, BAD_CAST "id");
-                    int id = atoi((const char*)prop);
+                    if (prop) id = atoi((const char*)prop);
                     xmlFree(prop);
+                    // Image id
                     prop = xmlGetProp(node, BAD_CAST "image");
-                    int image = atoi((const char*)prop);
+                    if (prop) image = atoi((const char*)prop);
                     xmlFree(prop);
+                    // Art id
                     prop = xmlGetProp(node, BAD_CAST "art");
-                    int art = atoi((const char*)prop);
+                    if (prop) art = atoi((const char*)prop);
                     xmlFree(prop);
+                    // Name
                     prop = xmlGetProp(node, BAD_CAST "name");
-                    std::string name((const char*)prop);
+                    if (prop) name = (const char*)prop;
                     xmlFree(prop);
+                    // Description
                     prop = xmlGetProp(node, BAD_CAST "description");
-                    std::string description((const char*)prop);
+                    if (prop) description = (const char*)prop;
                     xmlFree(prop);
+                    // Effect
                     prop = xmlGetProp(node, BAD_CAST "effect");
-                    std::string effect((const char*)prop);
+                    if (prop) effect = (const char*)prop;
                     xmlFree(prop);
+                    // Type id
                     prop = xmlGetProp(node, BAD_CAST "type");
-                    int type = atoi((const char*)prop);
+                    if (prop) type = atoi((const char*)prop);
                     xmlFree(prop);
+                    // Weight
                     prop = xmlGetProp(node, BAD_CAST "weight");
-                    int weight = atoi((const char*)prop);
+                    if (prop) weight = atoi((const char*)prop);
                     xmlFree(prop);
+                    // Slot
                     prop = xmlGetProp(node, BAD_CAST "slot");
-                    int slot = atoi((const char*)prop);
+                    if (prop) slot = atoi((const char*)prop);
                     xmlFree(prop);
 
-                    ItemInfo *itemInfo = new ItemInfo();
-                    itemInfo->setImage(image);
-                    itemInfo->setArt(art);
-                    itemInfo->setName(name);
-                    itemInfo->setDescription(description);
-                    itemInfo->setEffect(effect);
-                    itemInfo->setType(type);
-                    itemInfo->setWeight(weight);
-                    itemInfo->setSlot(slot);
-                    db[id] = itemInfo;
+                    if (id && name != "")
+                    {
+                        ItemInfo *itemInfo = new ItemInfo();
+                        itemInfo->setImage(image);
+                        itemInfo->setArt(art);
+                        itemInfo->setName(name);
+                        itemInfo->setDescription(description);
+                        itemInfo->setEffect(effect);
+                        itemInfo->setType(type);
+                        itemInfo->setWeight(weight);
+                        itemInfo->setSlot(slot);
+                        db[id] = itemInfo;
+                    }
 
                     /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
                         getImage(id), getArt(id), getName(id).c_str(),

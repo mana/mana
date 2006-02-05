@@ -80,7 +80,8 @@ void TradeHandler::handleMessage(MessageIn *msg)
 
             player_node->setTrading(true);
             tradePartnerName = msg->readString(24);
-            ConfirmDialog *dlg = new ConfirmDialog("Request for trade",
+            ConfirmDialog *dlg;
+            dlg = new ConfirmDialog("Request for trade",
                     tradePartnerName +
                     " wants to trade with you, do you accept?");
             dlg->addActionListener(&requestTradeListener);
