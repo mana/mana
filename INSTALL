@@ -16,18 +16,20 @@ You are expected to have either checked out TMW from CVS or you have downloaded
 a source release. To get The Mana World to compile, you need a compiler (GCC)
 and some libraries. The required libraries are:
 
-1) SDL               http://www.libsdl.org/
-2) SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
-3) SDL_image         http://www.libsdl.org/projects/SDL_image/
-4) Guichan 0.4.0     http://guichan.sourceforge.net/
-5) libxml2           http://www.xmlsoft.org/
-6) physfs 1.0.0      http://icculus.org/physfs/
-7) zlib 1.2.x        http://www.gzip.org/zlib
+* SDL               http://www.libsdl.org/
+* SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
+* SDL_image         http://www.libsdl.org/projects/SDL_image/
+* SDL_net           http://www.libsdl.org/projects/SDL_net/
+* Guichan 0.4.0     http://guichan.sourceforge.net/
+* libxml2           http://www.xmlsoft.org/
+* physfs 1.0.x      http://icculus.org/physfs/
+* zlib 1.2.x        http://www.gzip.org/zlib/
+* libcurl           http://curl.haxx.se/libcurl/
 
 If you checked TMW out from CVS you will also need these tools to compile:
 
-6) GNU automake 1.9  http://www.gnu.org/software/automake/
-7) GNU autoconf      http://www.gnu.org/software/autoconf/
+* GNU automake 1.9  http://www.gnu.org/software/automake/
+* GNU autoconf      http://www.gnu.org/software/autoconf/
 
 Installing these dependencies is distributions-specific, and we'll leave it to
 you to figure this out.
