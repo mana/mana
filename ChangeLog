@@ -1,3 +1,7 @@
+2006-02-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* INSTALL: Updated dependencies in response to patch by Hanno Braun.
+
 2006-02-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/localplayer.cpp, src/localplayer.h, src/gui/gui.cpp: Made the
