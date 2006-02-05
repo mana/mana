@@ -255,8 +255,8 @@ void Engine::draw(Graphics *graphics)
     for (Beings::iterator i = beings->begin(); i != beings->end(); i++)
     {
         (*i)->drawSpeech(graphics, -map_x, -map_y);
-(*i)->drawName(graphics, -map_x, -map_y);
-(*i)->drawEmotion(graphics, -map_x, -map_y);
+        (*i)->drawName(graphics, -map_x, -map_y);
+        (*i)->drawEmotion(graphics, -map_x, -map_y);
     }
 
     // Draw target marker if needed
