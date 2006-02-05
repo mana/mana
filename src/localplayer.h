@@ -49,6 +49,7 @@ class LocalPlayer : public Player
         void setNetwork(Network *network) { mNetwork = network; }
 
         virtual void logic();
+        virtual void nextStep();
 
         virtual Type getType() const;
 
@@ -140,6 +141,7 @@ class LocalPlayer : public Player
     protected:
         Network *mNetwork;
         Being *mTarget;
+        FloorItem *mPickUpTarget;
 
         bool mTrading;
 };

@@ -310,10 +310,6 @@ Gui::mousePress(int mx, int my, int button)
         // Pick up some item
         else if ((item = find_floor_item_by_cor(tilex, tiley)))
         {
-            int dx = tilex - player_node->x;
-            int dy = tiley - player_node->y;
-
-            if ((dx * dx + dy * dy) < 4)
                 player_node->pickUp(item);
         }
         // Just walk around

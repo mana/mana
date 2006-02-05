@@ -40,7 +40,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
     mInventory(new Inventory()),
     mEquipment(new Equipment()),
-    mTarget(NULL),
+    mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false)
 {
 }
@@ -70,6 +70,14 @@ void LocalPlayer::logic()
     }
 
     Being::logic();
+}
+
+void LocalPlayer::nextStep()
+{
+    if (mPath.empty() && mPickUpTarget) {
+        pickUp(mPickUpTarget);
+    }
+    Player::nextStep();
 }
 
 Being::Type LocalPlayer::getType() const
@@ -138,9 +146,19 @@ void LocalPlayer::dropItem(Item *item, int quantity)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_ITEM_PICKUP);
-    outMsg.writeInt32(item->getId());
+    int dx = item->getX() - x;
+    int dy = item->getY() - y;
+
+    if (dx * dx + dy * dy < 4) {
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(CMSG_ITEM_PICKUP);
+        outMsg.writeInt32(item->getId());
+        mPickUpTarget = NULL;
+    } else {
+        setDestination(item->getX(), item->getY());
+        mPickUpTarget = item;
+        stopAttack();
+    }
 }
 
 void LocalPlayer::walk(Being::Direction dir)
@@ -228,6 +246,9 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
     set_coordinates(temp, x, y, direction);
     outMsg.writeInt16(0x0085);
     outMsg.writeString(temp, 3);
+
+    mPickUpTarget = NULL;
+
     Being::setDestination(x, y);
 }
 
