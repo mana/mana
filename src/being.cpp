@@ -218,19 +218,6 @@ Being::logic()
 }
 
 void
-Being::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    // Draw player name
-    if (getType() != LOCALPLAYER) {
-        graphics->setFont(speechFont);
-        graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
-    }
-}
-
-void
 Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
     int px = mPx + offsetX;

@@ -123,3 +123,13 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
                 py - 50 + 2 * hairtable[frame][dir][1]);
     }
 }
+
+void
+Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    graphics->setFont(speechFont);
+    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
+}

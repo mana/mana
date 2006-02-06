@@ -197,8 +197,8 @@ class Being : public Sprite
         /**
          * Draws the name text below the being.
          */
-        void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        virtual void
+        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
 
         /**
          * Returns the type of the being.

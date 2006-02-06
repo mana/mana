@@ -51,6 +51,12 @@ class LocalPlayer : public Player
         virtual void logic();
         virtual void nextStep();
 
+        /**
+         * Draws the name text below the being.
+         */
+        virtual void
+        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
+
         virtual Type getType() const;
 
         void clearInventory();

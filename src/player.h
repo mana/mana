@@ -39,6 +39,8 @@ class Player : public Being
         virtual Type getType() const;
 
         virtual void draw(Graphics *graphics, int offsetX, int offsetY);
+
+        virtual void drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 };
 
 #endif
