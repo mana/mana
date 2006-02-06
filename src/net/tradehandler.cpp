@@ -66,25 +66,27 @@ void TradeHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_TRADE_REQUEST:
-            // If a trade window or request window is already open, send a
-            // trade cancel to any other trade request.
-            //
-            // Note that it would be nice if the server would prevent this
-            // situation, and that the requesting player would get a
-            // special message about the player being occupied.
-            if (!player_node->tradeRequestOk())
             {
-                player_node->tradeReply(false);
-                break;
+                // If a trade window or request window is already open, send a
+                // trade cancel to any other trade request.
+                //
+                // Note that it would be nice if the server would prevent this
+                // situation, and that the requesting player would get a
+                // special message about the player being occupied.
+                if (!player_node->tradeRequestOk())
+                {
+                    player_node->tradeReply(false);
+                    break;
+                }
+                
+                player_node->setTrading(true);
+                tradePartnerName = msg->readString(24);
+                ConfirmDialog *dlg;
+                dlg = new ConfirmDialog("Request for trade",
+                        tradePartnerName +
+                        " wants to trade with you, do you accept?");
+                dlg->addActionListener(&requestTradeListener);
             }
-
-            player_node->setTrading(true);
-            tradePartnerName = msg->readString(24);
-            ConfirmDialog *dlg;
-            dlg = new ConfirmDialog("Request for trade",
-                    tradePartnerName +
-                    " wants to trade with you, do you accept?");
-            dlg->addActionListener(&requestTradeListener);
             break;
 
         case SMSG_TRADE_RESPONSE:
