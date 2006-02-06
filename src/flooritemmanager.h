@@ -21,37 +21,37 @@
  *  $Id$
  */
 
-#include "floor_item.h"
+#ifndef _TMW_FLOORITEMMANAGER_H
+#define _TMW_FLOORITEMMANAGER_H
 
-#include "map.h"
+#include <list>
 
-#include "graphic/spriteset.h"
+class FloorItem;
+class Map;
 
-#include "resources/itemmanager.h"
-#include "resources/iteminfo.h"
-
-extern Spriteset *itemset;
-
-FloorItem::FloorItem(unsigned int id,
-                     unsigned int itemId,
-                     unsigned short x,
-                     unsigned short y,
-                     Map *map):
-    mId(id),
-    mItemId(itemId),
-    mX(x),
-    mY(y),
-    mMap(map)
+class FloorItemManager
 {
-    // Retrieve item image using a global itemset and itemDb (alternative?)
-    mImage = itemset->spriteset[itemDb->getItemInfo(itemId)->getImage() - 1];
+    public:
+        ~FloorItemManager();
 
-    // Add ourselves to the map
-    mSpriteIterator = mMap->addSprite(this);
-}
+        FloorItem* create(unsigned int id, unsigned int itemId,
+                unsigned short x, unsigned short y, Map *map);
 
-FloorItem::~FloorItem()
-{
-    // Remove and delete the representative sprite
-    mMap->removeSprite(mSpriteIterator);
-}
+        void destroy(FloorItem *item);
+
+        void clear();
+
+        FloorItem* findById(unsigned int id);
+        FloorItem* findByCoordinates(unsigned short x, unsigned short y);
+
+    private:
+        typedef std::list<FloorItem*> FloorItems;
+        typedef FloorItems::iterator FloorItemIterator;
+        FloorItems mFloorItems;
+
+};
+
+// TODO Get rid of the global?
+extern FloorItemManager *floorItemManager;
+
+#endif

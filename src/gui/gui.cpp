@@ -43,7 +43,7 @@
 #include "../configlistener.h"
 #include "../configuration.h"
 #include "../engine.h"
-#include "../floor_item.h"
+#include "../flooritemmanager.h"
 #include "../graphics.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -265,7 +265,7 @@ Gui::mousePress(int mx, int my, int button)
             showPopup(mx, my, being);
             return;
         }
-        else if((floorItem = find_floor_item_by_cor(tilex, tiley)))
+        else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
         {
             showPopup(mx, my, floorItem);
             return;
@@ -308,7 +308,7 @@ Gui::mousePress(int mx, int my, int button)
             }
         }
         // Pick up some item
-        else if ((item = find_floor_item_by_cor(tilex, tiley)))
+        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
                 player_node->pickUp(item);
         }

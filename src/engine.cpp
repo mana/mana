@@ -28,7 +28,7 @@
 
 #include "being.h"
 #include "beingmanager.h"
-#include "floor_item.h"
+#include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
@@ -114,7 +114,7 @@ Map *Engine::getCurrentMap()
 void Engine::changeMap(std::string mapPath)
 {
     // Clean up floor items
-    empty_floor_items();
+    floorItemManager->clear();
 
     beingManager->clear();
 

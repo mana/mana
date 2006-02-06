@@ -1,3 +1,12 @@
+2006-02-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* ChangeLog, data/graphics/gui/browserfont.png,
+	data/graphics/gui/fixedfont.png, data/graphics/gui/rpgfont_wider.png,
+	data/graphics/gui/sansserif8.png, src/Makefile.am, src/engine.cpp,
+	src/floor_item.cpp, src/floor_item.h, src/flooritemmanager.cpp,
+	src/flooritemmanager.h, src/game.cpp, src/gui/gui.cpp,
+	src/net/itemhandler.cpp: Introduced a FloorItemManager class.
+
 2006-02-05  Yohann Ferreira  <bertram@cegetel.net>
 
 	* data/graphics/gui/rpgfont_wider.png,

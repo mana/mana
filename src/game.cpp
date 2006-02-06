@@ -34,7 +34,7 @@
 #include "beingmanager.h"
 #include "configuration.h"
 #include "engine.h"
-#include "floor_item.h"
+#include "flooritemmanager.h"
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
@@ -133,6 +133,7 @@ HelpWindow *helpWindow;
 DebugWindow *debugWindow;
 
 BeingManager *beingManager = NULL;
+FloorItemManager *floorItemManager = NULL;
 
 const int MAX_TIME = 10000;
 
@@ -277,6 +278,7 @@ Game::Game(Network *network):
     engine = new Engine(network);
 
     beingManager = new BeingManager(network);
+    floorItemManager = new FloorItemManager();
 
     // Initialize timers
     tick_time = 0;
@@ -351,6 +353,12 @@ Game::~Game()
     delete engine;
     delete player_node;
     destroyGuiWindows();
+
+    delete beingManager;
+    delete floorItemManager;
+
+    beingManager = NULL;
+    floorItemManager = NULL;
 
     if (joypad != NULL)
     {
@@ -536,7 +544,7 @@ void Game::handleInput()
                 case SDLK_z:
                     if (!chatWindow->isFocused())
                     {
-                        FloorItem *item = find_floor_item_by_cor(
+                        FloorItem *item = floorItemManager->findByCoordinates(
                                 player_node->x, player_node->y);
 
                         // If none below the player, try the tile in front of
@@ -557,7 +565,7 @@ void Game::handleInput()
                                 case Being::SE:    x++; y++; break;
                                 default: break;
                             }
-                            item = find_floor_item_by_cor(x, y);
+                            item = floorItemManager->findByCoordinates(x, y);
                         }
 
                         if (item)
@@ -774,7 +782,7 @@ void Game::handleInput()
 
         if (joy[JOY_BTN1])
         {
-            FloorItem *item = find_floor_item_by_cor(
+            FloorItem *item = floorItemManager->findByCoordinates(
                     player_node->x, player_node->y);
 
             if (item)

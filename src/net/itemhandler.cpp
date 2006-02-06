@@ -27,7 +27,7 @@
 #include "protocol.h"
 
 #include "../engine.h"
-#include "../floor_item.h"
+#include "../flooritemmanager.h"
 
 ItemHandler::ItemHandler()
 {
@@ -57,11 +57,14 @@ void ItemHandler::handleMessage(MessageIn *msg)
             y = msg->readInt16();
             msg->skip(4);     // amount,subX,subY / subX,subY,amount
 
-            add_floor_item(new FloorItem(id, itemId, x, y, engine->getCurrentMap()));
+            floorItemManager->create(id, itemId, x, y, engine->getCurrentMap());
             break;
 
         case SMSG_ITEM_REMOVE:
-            remove_floor_item(msg->readInt32());
+            FloorItem *item;
+            item = floorItemManager->findById(msg->readInt32());
+            if (item)
+                floorItemManager->destroy(item);
             break;
     }
 }

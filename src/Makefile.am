@@ -187,6 +187,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      equipment.h \
 	      floor_item.cpp \
 	      floor_item.h \
+	      flooritemmanager.cpp \
+	      flooritemmanager.h \
 	      game.cpp \
 	      game.h \
 	      graphics.cpp \

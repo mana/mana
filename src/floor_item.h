@@ -102,19 +102,4 @@ class FloorItem : public Sprite
         Map *mMap;
 };
 
-/** Removes all items from the list */
-void empty_floor_items();
-
-/** Add an Item to the list */
-void add_floor_item(FloorItem *floorItem);
-
-/** Return a specific id FloorItem */
-FloorItem *find_floor_item_by_id(unsigned int int_id);
-
-/** Remove a FloorItem */
-void remove_floor_item(unsigned int int_id);
-
-/** Find a Item id based on its coordinates */
-FloorItem* find_floor_item_by_cor(unsigned short x, unsigned short y);
-
 #endif
