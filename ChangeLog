@@ -2,6 +2,8 @@
 
 	* The Mana World.dev, src/net/tradehandler.cpp: Updated Dev-Cpp project
 	file, fixed a gcc 3.4 issue.
+	* src/net/tradehandler.cpp: Undone last changes because Bertram
+	already fixed the compiler issue.
 
 2006-02-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

@@ -66,7 +66,6 @@ void TradeHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_TRADE_REQUEST:
-            {
                 // If a trade window or request window is already open, send a
                 // trade cancel to any other trade request.
                 //
@@ -86,7 +85,6 @@ void TradeHandler::handleMessage(MessageIn *msg)
                         tradePartnerName +
                         " wants to trade with you, do you accept?");
                 dlg->addActionListener(&requestTradeListener);
-            }
             break;
 
         case SMSG_TRADE_RESPONSE:
