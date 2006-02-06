@@ -1,3 +1,10 @@
+2006-02-06 Philipp Sehmisch  <tmw@crushnet.org>
+	* data/graphics/tiles/Woodland_ground.png,
+	data/graphics/tiles/Woodland_x2.png,
+	data/maps/new_9.1.tmx.gz: added dynamic grass that
+	covers the lower area of sprites (doesn't work for flower
+	beds yet).
+
 2006-02-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, src/net/tradehandler.cpp: Updated Dev-Cpp project
