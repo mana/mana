@@ -1,5 +1,7 @@
 2006-02-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/being.cpp, src/being.h, src/monster.cpp, src/npc.cpp: Unify some
+	of the drawing code for beings.
 	* src/being.cpp, src/being.h, src/localplayer.h, src/player.cpp,
 	src/player.h: Use virtual methods instead of getType() checks.
 	* data/graphics/gui/browserfont.png,

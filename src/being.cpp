@@ -22,15 +22,12 @@
  */
 #include "being.h"
 
-#include <algorithm>
 #include <sstream>
 
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
 #include "map.h"
-#include "monster.h"
-#include "player.h"
 
 #include "graphic/spriteset.h"
 
@@ -58,7 +55,8 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     hairStyle(1), hairColor(1),
     speech_time(0),
     damage_time(0),
-    showSpeech(false), showDamage(false)
+    showSpeech(false), showDamage(false),
+    mSpriteset(NULL), mSpriteFrame(0)
 {
     setMap(map);
 }
@@ -215,6 +213,17 @@ Being::logic()
             emotion = 0;
         }
     }
+}
+
+void Being::draw(Graphics *graphics, int offsetX, int offsetY)
+{
+    if (!mSpriteset)
+        return;
+
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    graphics->drawImage(mSpriteset->spriteset[mSpriteFrame], px, py);
 }
 
 void

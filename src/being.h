@@ -36,6 +36,7 @@
 
 class Map;
 class Graphics;
+class Spriteset;
 
 struct PATH_NODE
 {
@@ -260,8 +261,8 @@ class Being : public Sprite
          *
          * @see Sprite::draw(Graphics, int, int)
          */
-        void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
+        virtual void
+        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         /**
          * Returns the pixel X coordinate.
@@ -311,6 +312,9 @@ class Being : public Sprite
         Uint32 damage_time;
         bool showSpeech, showDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
+
+        Spriteset *mSpriteset;
+        int mSpriteFrame;
 };
 
 #endif

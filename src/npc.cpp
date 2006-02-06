@@ -23,13 +23,10 @@
 
 #include "npc.h"
 
-#include "graphics.h"
-
-#include "graphic/spriteset.h"
-
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+class Spriteset;
 extern Spriteset *npcset;
 
 NPC *current_npc = 0;
@@ -37,6 +34,8 @@ NPC *current_npc = 0;
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
     Being(id, job, map), mNetwork(network)
 {
+    mSpriteset = npcset;
+    mSpriteFrame = job-100;
 }
 
 Being::Type NPC::getType() const
@@ -46,12 +45,7 @@ Being::Type NPC::getType() const
 
 void NPC::draw(Graphics *graphics, int offsetX, int offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-
-    graphics->drawImage(npcset->spriteset[job - 100], px - 8, py - 52);
-
-    Being::draw(graphics, offsetX, offsetY);
+    Being::draw(graphics, offsetX - 8, offsetY - 52);
 }
 
 void NPC::talk()

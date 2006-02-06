@@ -26,13 +26,11 @@
 #include <sstream>
 
 #include "game.h"
-#include "graphics.h"
 #include "log.h"
-
-#include "graphic/spriteset.h"
 
 #include "resources/resourcemanager.h"
 
+class Spriteset;
 extern std::map<int, Spriteset*> monsterset;
 
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
@@ -54,6 +52,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
             monsterset[job - 1002] = tmp;
         }
     }
+    mSpriteset = monsterset[job-1002];
 }
 
 void Monster::logic()
@@ -78,24 +77,17 @@ Being::Type Monster::getType() const
 
 void Monster::draw(Graphics *graphics, int offsetX, int offsetY)
 {
-    unsigned char dir = direction / 2;
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-    int frame;
-
     if (mFrame >= 4)
     {
         mFrame = 3;
     }
 
-    frame = action;
+    mSpriteFrame = action;
     if (action != MONSTER_DEAD) {
-        frame += mFrame;
+        mSpriteFrame += mFrame;
     }
 
-    graphics->drawImage(
-            monsterset[job-1002]->spriteset[dir + 4 * frame],
-            px - 12, py - 25);
+    mSpriteFrame = direction / 2 + 4 * mSpriteFrame;
 
-    Being::draw(graphics, offsetX, offsetY);
+    Being::draw(graphics, offsetX - 12, offsetY - 25);
 }
