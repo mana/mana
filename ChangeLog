@@ -1,5 +1,7 @@
 2006-02-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/Makefile.am, src/game.cpp, src/joystick.cpp, src/joystick.h,
+	src/gui/setup.cpp, src/gui/setup.h: Added a Joystick class.
 	* src/being.cpp, src/being.h, src/monster.cpp, src/npc.cpp: Unify some
 	of the drawing code for beings.
 	* src/being.cpp, src/being.h, src/localplayer.h, src/player.cpp,

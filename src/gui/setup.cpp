@@ -38,15 +38,14 @@
 
 #include "../configuration.h"
 #include "../graphics.h"
+#include "../joystick.h"
 #include "../log.h"
 #include "../main.h"
 #include "../sound.h"
 
 extern Graphics *graphics;
 
-extern SDL_Joystick *joypad;
-
-extern SDL_Joystick *joypad;
+extern Joystick *joystick;
 
 extern Window *statusWindow;
 extern Window *minimap;
@@ -100,8 +99,7 @@ std::string ModeListModel::getElementAt(int i)
 
 
 Setup::Setup():
-    Window("Setup"), mCalibrating(false), leftTolerance(0), rightTolerance(0),
-    upTolerance(0), downTolerance(0)
+    Window("Setup")
 {
     modeListModel = new ModeListModel();
     modeList = new ListBox(modeListModel);
@@ -268,27 +266,20 @@ void Setup::action(const std::string &eventId)
         config.setValue("customcursor",
                 customCursorCheckBox->isMarked() ? 1 : 0);
     }
-    else if (eventId == "calibrate" && joypad != NULL)
+    else if (eventId == "calibrate" && joystick != NULL)
     {
-        if (mCalibrating)
+        if (joystick->isCalibrating())
         {
             calibrateButton->setCaption("Calibrate");
             calibrateLabel->setCaption("Press the button to start calibration");
-            config.setValue("leftTolerance", leftTolerance);
-            config.setValue("rightTolerance", rightTolerance);
-            config.setValue("upTolerance", upTolerance);
-            config.setValue("downTolerance", downTolerance);            
+            joystick->finishCalibration();
         }
         else
         {
             calibrateButton->setCaption("Stop");
-            calibrateLabel->setCaption("Rotate the stick");          
-            leftTolerance = 0;
-            rightTolerance = 0;
-            upTolerance = 0;
-            downTolerance = 0;  
+            calibrateLabel->setCaption("Rotate the stick");
+            joystick->startCalibration();
         }
-        mCalibrating = !mCalibrating;
     }
     else if (eventId == "apply")
     {
@@ -404,33 +395,5 @@ void Setup::action(const std::string &eventId)
         equipmentWindow->resetToDefaultSize();
         helpWindow->resetToDefaultSize();
         skillDialog->resetToDefaultSize();
-    }
-}
-
-void Setup::logic()
-{
-    Window::logic();
-    if (mCalibrating)
-    {
-        SDL_JoystickUpdate();
-        int position = SDL_JoystickGetAxis(joypad, 0);
-        if (position > rightTolerance)
-        {
-            rightTolerance = position;
-        }
-        else if (position < leftTolerance)
-        {
-            leftTolerance = position;
-        }
-        
-        position = SDL_JoystickGetAxis(joypad, 1);
-        if (position > downTolerance)
-        {
-            downTolerance = position;
-        }
-        else if (position < upTolerance)
-        {
-            upTolerance = position;
-        }
     }
 }

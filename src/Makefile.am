@@ -198,6 +198,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
+	      joystick.cpp \
+	      joystick.h \
 	      localplayer.cpp \
 	      localplayer.h \
 	      lockedarray.h \

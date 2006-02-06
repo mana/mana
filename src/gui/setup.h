@@ -88,8 +88,6 @@ class Setup : public Window, public gcn::ActionListener
          */
         void
         action(const std::string& eventId);
-        
-        void logic();
 
     private:
         ModeListModel *modeListModel;
@@ -117,8 +115,6 @@ class Setup : public Window, public gcn::ActionListener
         bool openGLEnabled;
         bool customCursorEnabled;
         bool soundEnabled;
-        bool mCalibrating;
-        int leftTolerance, rightTolerance, upTolerance, downTolerance;
 };
 
 #endif

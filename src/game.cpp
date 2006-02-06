@@ -27,7 +27,6 @@
 #include <physfs.h>
 #include <sstream>
 #include <string>
-#include <SDL_types.h>
 
 #include <guichan/sdl/sdlinput.hpp>
 
@@ -36,6 +35,7 @@
 #include "engine.h"
 #include "flooritemmanager.h"
 #include "graphics.h"
+#include "joystick.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
@@ -74,25 +74,6 @@
 
 #include "resources/imagewriter.h"
 
-enum {
-    JOY_UP,
-    JOY_DOWN,
-    JOY_LEFT,
-    JOY_RIGHT,
-    JOY_BTN0,
-    JOY_BTN1,
-    JOY_BTN2,
-    JOY_BTN3,
-    JOY_BTN4,
-    JOY_BTN5,
-    JOY_BTN6,
-    JOY_BTN7,
-    JOY_BTN8,
-    JOY_BTN9,
-    JOY_BTN10,
-    JOY_BTN11
-};
-
 extern Graphics *graphics;
 extern gcn::SDLInput *guiInput;
 
@@ -105,7 +86,7 @@ volatile int tick_time;
 volatile bool action_time = false;
 volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
-SDL_Joystick *joypad = NULL;       /**< Joypad object */
+Joystick *joystick;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
@@ -290,28 +271,12 @@ Game::Game(Network *network):
     player_node->setNetwork(network);
     engine->changeMap(map_path);
 
-    // Initialize joypad
-    SDL_InitSubSystem(SDL_INIT_JOYSTICK);
-    //SDL_JoystickEventState(SDL_ENABLE);
-    int num_joy = SDL_NumJoysticks();
-    logger->log("%i joysticks/gamepads found", num_joy);
-    for (int i = 0; i < num_joy; i++)
-        logger->log("- %s", SDL_JoystickName(i));
+    Joystick::init();
     // TODO: The user should be able to choose which one to use
     // Open the first device
-    if (num_joy > 0)
+    if (Joystick::getNumberOfJoysticks() > 0)
     {
-        joypad = SDL_JoystickOpen(0);
-        if (joypad == NULL)
-        {
-            logger->log("Couldn't open joystick: %s", SDL_GetError());
-        }
-        else {
-            logger->log("Axes: %i ", SDL_JoystickNumAxes(joypad));
-            logger->log("Balls: %i", SDL_JoystickNumBalls(joypad));
-            logger->log("Hats: %i", SDL_JoystickNumHats(joypad));
-            logger->log("Buttons: %i", SDL_JoystickNumButtons(joypad));
-        }
+        joystick = new Joystick(0);
     }
 
     mBeingHandler = new BeingHandler();
@@ -360,9 +325,9 @@ Game::~Game()
     beingManager = NULL;
     floorItemManager = NULL;
 
-    if (joypad != NULL)
+    if (joystick != NULL)
     {
-        SDL_JoystickClose(joypad);
+        delete joystick;
     }
 }
 
@@ -430,43 +395,9 @@ void Game::handleInput()
     Uint8* keys;
     keys = SDL_GetKeyState(NULL);
 
-    // TODO: Only <= 6 buttons joypads are allowed
-    bool joy[10];
-    memset(joy, 0, 10 * sizeof(bool));
-
-    // Get the state of the joypad axis/buttons
-    if (joypad != NULL)
+    if (joystick != NULL)
     {
-        int lowerTolerance = (int)config.getValue("leftTolerance", -100);
-        int upperTolerance = (int)config.getValue("rightTolerance", 100);
-        SDL_JoystickUpdate();
-        int position = SDL_JoystickGetAxis(joypad, 0);
-        if (position >= upperTolerance)
-        {
-            joy[JOY_RIGHT] = true;
-        }
-        else if (position <= lowerTolerance)
-        {
-            joy[JOY_LEFT] = true;
-        }
-        lowerTolerance = (int)config.getValue("upTolerance", -100);
-        upperTolerance = (int)config.getValue("downTolerance", 100);
-        position = SDL_JoystickGetAxis(joypad, 1);
-        if (position <= lowerTolerance)
-        {
-            joy[JOY_UP] = true;
-        }
-        else if (position >= upperTolerance)
-        {
-            joy[JOY_DOWN] = true;
-        }
-        for (int i=0; i<6; i++)
-        {
-            if (SDL_JoystickGetButton(joypad, i) == 1)
-            {
-                joy[JOY_BTN0 + i] = true;
-            }
-        }
+        joystick->update();
     }
 
     // Events
@@ -690,15 +621,15 @@ void Game::handleInput()
         Being::Direction Direction = Being::DIR_NONE;
 
         // Translate pressed keys to movement and direction
-        if (keys[SDLK_UP] || keys[SDLK_KP8] || joy[JOY_UP])
+        if (keys[SDLK_UP] || keys[SDLK_KP8] || joystick && joystick->isUp())
         {
             Direction = Being::NORTH;
         }
-        if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joy[JOY_DOWN])
+        if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joystick && joystick->isDown())
         {
             Direction = Being::SOUTH;
         }
-        if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joy[JOY_LEFT])
+        if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joystick && joystick->isLeft())
         {
             // Allow diagonal walking
             // TODO: Make this nicer, once we got a bitfield for directions
@@ -709,7 +640,7 @@ void Game::handleInput()
             else
                 Direction = Being::WEST;
         }
-        if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joy[JOY_RIGHT])
+        if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joystick && joystick->isRight())
         {
             // Allow diagonal walking
             // TODO: Make this nicer, once we got a bitfield for directions
@@ -740,7 +671,8 @@ void Game::handleInput()
         player_node->walk(Direction);
 
         // Attacking monsters
-        if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] || joy[JOY_BTN0])
+        if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||
+                joystick && joystick->buttonPressed(0))
         {
             Being *target = NULL;
             bool newTarget = keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT];
@@ -780,18 +712,21 @@ void Game::handleInput()
             player_node->attack(target, newTarget);
         }
 
-        if (joy[JOY_BTN1])
+        if (joystick)
         {
-            FloorItem *item = floorItemManager->findByCoordinates(
-                    player_node->x, player_node->y);
+            if (joystick->buttonPressed(1))
+            {
+                FloorItem *item = floorItemManager->findByCoordinates(
+                        player_node->x, player_node->y);
 
-            if (item)
-                player_node->pickUp(item);
-        }
-        else if (joy[JOY_BTN2] && action_time)
-        {
-            player_node->toggleSit();
-            action_time = false;
+                if (item)
+                    player_node->pickUp(item);
+            }
+            else if (joystick->buttonPressed(2) && action_time)
+            {
+                player_node->toggleSit();
+                action_time = false;
+            }
         }
     }
 }
