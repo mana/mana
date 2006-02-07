@@ -104,7 +104,7 @@ class LocalPlayer : public Player
         void stopAttack();
         Being* getTarget() const;
 
-        void walk(Being::Direction dir);
+        void walk(unsigned char dir);
 
         /**
          * Sets a new destination for this being to walk to.
@@ -150,6 +150,7 @@ class LocalPlayer : public Player
         FloorItem *mPickUpTarget;
 
         bool mTrading;
+        int mLastAction;    /**< Time stamp of the last action, -1 if none */
 };
 
 extern LocalPlayer *player_node;

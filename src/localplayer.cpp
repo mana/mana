@@ -41,7 +41,7 @@ LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     mInventory(new Inventory()),
     mEquipment(new Equipment()),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false)
+    mTrading(false), mLastAction(-1)
 {
 }
 
@@ -67,6 +67,11 @@ void LocalPlayer::logic()
                 attack();
             }
             break;
+    }
+
+    // Actions are allowed once per second
+    if (get_elapsed_time(mLastAction) >= 1000) {
+        mLastAction = -1;
     }
 
     Being::logic();
@@ -161,9 +166,9 @@ void LocalPlayer::pickUp(FloorItem *item)
     }
 }
 
-void LocalPlayer::walk(Being::Direction dir)
+void LocalPlayer::walk(unsigned char dir)
 {
-    if (!mMap || dir == DIR_NONE)
+    if (!mMap || !dir)
         return;
 
     if (action == WALK)
@@ -174,47 +179,14 @@ void LocalPlayer::walk(Being::Direction dir)
     }
 
     Sint16 dx = 0, dy = 0;
-    switch (dir)
-    {
-        case SOUTH:
-            dy = 1;
-            break;
-
-        case WEST:
-            dx = -1;
-            break;
-
-        case NORTH:
-            dy = -1;
-            break;
-
-        case EAST:
-            dx = 1;
-            break;
-
-        case SW:
-            dx = -1;
-            dy = 1;
-            break;
-
-        case NW:
-            dx = -1;
-            dy = -1;
-            break;
-
-        case NE:
-            dx = 1;
-            dy = -1;
-            break;
-
-        case SE:
-            dx = 1;
-            dy = 1;
-            break;
-
-        default:
-            break;
-    }
+    if (dir & UP)
+        dy--;
+    if (dir & DOWN)
+        dy++;
+    if (dir & LEFT)
+        dx--;
+    if (dir & RIGHT)
+        dx++;
 
     // Prevent skipping corners over colliding tiles
     if (dx && mMap->tileCollides(x + dx, y))
@@ -231,7 +203,7 @@ void LocalPlayer::walk(Being::Direction dir)
     {
         setDestination(x + dx, y + dy);
     }
-    else if (dir != DIR_NONE)
+    else if (dir)
     {
         // Update the player direction to where he wants to walk
         // Warning: Not communicated to the server yet
@@ -298,6 +270,10 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
 
 void LocalPlayer::toggleSit()
 {
+    if (mLastAction != -1)
+        return;
+    mLastAction = tick_time;
+
     char type;
     switch (action)
     {
@@ -314,6 +290,10 @@ void LocalPlayer::toggleSit()
 
 void LocalPlayer::emote(Uint8 emotion)
 {
+    if (mLastAction != -1)
+        return;
+    mLastAction = tick_time;
+
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x00bf);
     outMsg.writeInt8(emotion);
@@ -361,16 +341,16 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
-            direction = SOUTH;
+            direction = DOWN;
         else
-            direction = NORTH;
+            direction = UP;
     }
     else
     {
         if (dist_x > 0)
-            direction = EAST;
+            direction = RIGHT;
         else
-            direction = WEST;
+            direction = LEFT;
     }
 
     // Implement charging attacks here

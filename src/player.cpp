@@ -85,7 +85,6 @@ Being::Type Player::getType() const
 
 void Player::draw(Graphics *graphics, int offsetX, int offsetY)
 {
-    unsigned char dir = direction / 2;
     int px = mPx + offsetX;
     int py = mPy + offsetY;
     int frame = action;
@@ -101,6 +100,9 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     {
         frame += 4 * (getWeapon() - 1);
     }
+
+    unsigned char dir = 0;
+    while (!(direction & (1 << dir))) dir++;
 
     graphics->drawImage(playerset->spriteset[frame + 16 * dir],
             px - 16, py - 32);

@@ -83,7 +83,6 @@ std::string map_path;
 
 bool done = false;
 volatile int tick_time;
-volatile bool action_time = false;
 volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
 Joystick *joystick;
@@ -141,12 +140,10 @@ Uint32 nextTick(Uint32 interval, void *param)
 }
 
 /**
- * Lets u only trigger an action every other second
- * tmp. counts fps
+ * Updates fps.
  */
 Uint32 nextSecond(Uint32 interval, void *param)
 {
-    action_time = true;
     fps = frame;
     frame = 0;
     return interval;
@@ -483,19 +480,15 @@ void Game::handleInput()
                         if (!item) {
                             Uint16 x = player_node->x;
                             Uint16 y = player_node->y;
+                            if (player_node->direction & Being::UP)
+                                y--;
+                            if (player_node->direction & Being::DOWN)
+                                y++;
+                            if (player_node->direction & Being::LEFT)
+                                x--;
+                            if (player_node->direction & Being::RIGHT)
+                                x++;
 
-                            switch (player_node->direction)
-                            {
-                                case Being::NORTH: y--; break;
-                                case Being::SOUTH: y++; break;
-                                case Being::WEST:  x--; break;
-                                case Being::EAST:  x++; break;
-                                case Being::NW:    x--; y--; break;
-                                case Being::NE:    x++; y--; break;
-                                case Being::SW:    x--; y++; break;
-                                case Being::SE:    x++; y++; break;
-                                default: break;
-                            }
                             item = floorItemManager->findByCoordinates(x, y);
                         }
 
@@ -538,10 +531,6 @@ void Game::handleInput()
                 {
                     case SDLK_s:
                         // Player sit action
-                        if (!action_time) {
-                            break;
-                        }
-
                         player_node->toggleSit();
                         used = true;
                         break;
@@ -570,30 +559,26 @@ void Game::handleInput()
                 }
 
                 // Emotions
-                if (action_time && !player_node->emotion)
+                Uint8 emotion;
+                switch (event.key.keysym.sym)
                 {
-                    Uint8 emotion = 0;
-                    switch (event.key.keysym.sym)
-                    {
-                        case SDLK_1: emotion = 1; break;
-                        case SDLK_2: emotion = 2; break;
-                        case SDLK_3: emotion = 3; break;
-                        case SDLK_4: emotion = 4; break;
-                        case SDLK_5: emotion = 5; break;
-                        case SDLK_6: emotion = 6; break;
-                        case SDLK_7: emotion = 7; break;
-                        case SDLK_8: emotion = 8; break;
-                        case SDLK_9: emotion = 9; break;
-                        case SDLK_0: emotion = 10; break;
-                        default: break;
-                    }
+                    case SDLK_1: emotion = 1; break;
+                    case SDLK_2: emotion = 2; break;
+                    case SDLK_3: emotion = 3; break;
+                    case SDLK_4: emotion = 4; break;
+                    case SDLK_5: emotion = 5; break;
+                    case SDLK_6: emotion = 6; break;
+                    case SDLK_7: emotion = 7; break;
+                    case SDLK_8: emotion = 8; break;
+                    case SDLK_9: emotion = 9; break;
+                    case SDLK_0: emotion = 10; break;
+                    default: emotion = 0; break;
+                }
 
-                    if (emotion)
-                    {
-                        player_node->emote(emotion);
-                        action_time = false;
-                        used = true;
-                    }
+                if (emotion)
+                {
+                    player_node->emote(emotion);
+                    used = true;
                 }
             }
         }
@@ -618,54 +603,32 @@ void Game::handleInput()
     {
         Uint16 x = player_node->x;
         Uint16 y = player_node->y;
-        Being::Direction Direction = Being::DIR_NONE;
+        unsigned char Direction = 0;
 
         // Translate pressed keys to movement and direction
-        if (keys[SDLK_UP] || keys[SDLK_KP8] || joystick && joystick->isUp())
+        if (keys[SDLK_UP] || keys[SDLK_KP8] ||
+                keys[SDLK_KP7] || keys[SDLK_KP9] ||
+                joystick && joystick->isUp())
         {
-            Direction = Being::NORTH;
+            Direction |= Being::UP;
         }
-        if (keys[SDLK_DOWN] || keys[SDLK_KP2] || joystick && joystick->isDown())
+        else if (keys[SDLK_DOWN] || keys[SDLK_KP2] ||
+                keys[SDLK_KP1] || keys[SDLK_KP3] ||
+                joystick && joystick->isDown())
         {
-            Direction = Being::SOUTH;
+            Direction |= Being::DOWN;
         }
-        if (keys[SDLK_LEFT] || keys[SDLK_KP4] || joystick && joystick->isLeft())
+        if (keys[SDLK_LEFT] || keys[SDLK_KP4] ||
+                keys[SDLK_KP1] || keys[SDLK_KP7] ||
+                joystick && joystick->isLeft())
         {
-            // Allow diagonal walking
-            // TODO: Make this nicer, once we got a bitfield for directions
-            if (Direction == Being::NORTH)
-                Direction = Being::NW;
-            else if (Direction == Being::SOUTH)
-                Direction = Being::SW;
-            else
-                Direction = Being::WEST;
+            Direction |= Being::LEFT;
         }
-        if (keys[SDLK_RIGHT] || keys[SDLK_KP6] || joystick && joystick->isRight())
+        else if (keys[SDLK_RIGHT] || keys[SDLK_KP6] ||
+                keys[SDLK_KP3] || keys[SDLK_KP9] ||
+                joystick && joystick->isRight())
         {
-            // Allow diagonal walking
-            // TODO: Make this nicer, once we got a bitfield for directions
-            if (Direction == Being::NORTH)
-                Direction = Being::NE;
-            else if (Direction == Being::SOUTH)
-                Direction = Being::SE;
-            else
-                Direction = Being::EAST;
-        }
-        if (keys[SDLK_KP1]) // Bottom Left
-        {
-            Direction = Being::SW;
-        }
-        if (keys[SDLK_KP3]) // Bottom Right
-        {
-            Direction = Being::SE;
-        }
-        if (keys[SDLK_KP7]) // Top Left
-        {
-            Direction = Being::NW;
-        }
-        if (keys[SDLK_KP9]) // Top Right
-        {
-            Direction = Being::NE;
+            Direction |= Being::RIGHT;
         }
 
         player_node->walk(Direction);
@@ -682,24 +645,14 @@ void Game::handleInput()
             {
                 Uint16 targetX = x, targetY = y;
 
-                switch (player_node->direction)
-                {
-                    case Being::SOUTH:
-                        targetY++;
-                        break;
-
-                    case Being::WEST:
-                        targetX--;
-                        break;
-
-                    case Being::NORTH:
-                        targetY--;
-                        break;
-
-                    case Being::EAST:
-                        targetX++;
-                        break;
-                }
+                if (player_node->direction & Being::UP)
+                    targetY--;
+                if (player_node->direction & Being::DOWN)
+                    targetY++;
+                if (player_node->direction & Being::LEFT)
+                    targetX--;
+                if (player_node->direction & Being::RIGHT)
+                    targetX++;
 
                 // Attack priorioty is: Monster, Player, auto target
                 target = beingManager->findBeing(
@@ -722,10 +675,9 @@ void Game::handleInput()
                 if (item)
                     player_node->pickUp(item);
             }
-            else if (joystick->buttonPressed(2) && action_time)
+            else if (joystick->buttonPressed(2))
             {
                 player_node->toggleSit();
-                action_time = false;
             }
         }
     }

@@ -87,6 +87,38 @@ MessageIn::readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction)
 
     direction = data[2] & 0x000f;
 
+    // Translate from eAthena format
+    switch (direction)
+    {
+        case 0:
+            direction = 1;
+            break;
+        case 1:
+            direction = 3;
+            break;
+        case 2:
+            direction = 2;
+            break;
+        case 3:
+            direction = 6;
+            break;
+        case 4:
+            direction = 4;
+            break;
+        case 5:
+            direction = 12;
+            break;
+        case 6:
+            direction = 8;
+            break;
+        case 7:
+            direction = 9;
+            break;
+        default:
+            // OOPSIE! Impossible or unknown
+            direction = 0;
+    }
+
     mPos += 3;
 }
 

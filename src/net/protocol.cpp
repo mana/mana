@@ -43,5 +43,37 @@ void set_coordinates(char *data,
     temp <<= 4;
     data[1] |= HIBYTE(temp);
     data[2] = LOBYTE(temp);
+
+    // Translate direction to eAthena format
+    switch (direction)
+    {
+        case 1:
+            direction = 0;
+            break;
+        case 3:
+            direction = 1;
+            break;
+        case 2:
+            direction = 2;
+            break;
+        case 6:
+            direction = 3;
+            break;
+        case 4:
+            direction = 4;
+            break;
+        case 12:
+            direction = 5;
+            break;
+        case 8:
+            direction = 6;
+            break;
+        case 9:
+            direction = 7;
+            break;
+        default:
+            // OOPSIE! Impossible or unknown
+            direction = (unsigned char)-1;
+    }
     data[2] |= direction;
 }

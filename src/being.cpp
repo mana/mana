@@ -42,7 +42,7 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 
 Being::Being(Uint32 id, Uint16 job, Map *map):
     job(job),
-    x(0), y(0), direction(SOUTH),
+    x(0), y(0), direction(DOWN),
     action(0), mFrame(0),
     speech_color(0),
     walk_time(0),
@@ -163,20 +163,15 @@ Being::nextStep()
     PATH_NODE node = mPath.front();
     mPath.pop_front();
 
-    if (node.x > x) {
-        if (node.y > y)       direction = SE;
-        else if (node.y < y)  direction = NE;
-        else                  direction = EAST;
-    }
-    else if (node.x < x) {
-        if (node.y > y)       direction = SW;
-        else if (node.y < y)  direction = NW;
-        else                  direction = WEST;
-    }
-    else {
-        if (node.y > y)       direction = SOUTH;
-        else if (node.y < y)  direction = NORTH;
-    }
+    direction = 0;
+    if (node.x > x)
+        direction |= RIGHT;
+    else if (node.x < x)
+        direction |= LEFT;
+    if (node.y > y)
+        direction |= DOWN;
+    else if (node.y < y)
+        direction |= UP;
 
     x = node.x;
     y = node.y;
@@ -323,7 +318,7 @@ int
 Being::getXOffset() const
 {
     // Only beings walking to the left or the right have an x offset
-    if (action != WALK || direction == NORTH || direction == SOUTH) {
+    if (action != WALK || !(direction & (LEFT | RIGHT))) {
         return 0;
     }
 
@@ -335,8 +330,8 @@ Being::getXOffset() const
         offset = 0;
     }
 
-    // Going to the right? Invert the offset.
-    if (direction == WEST || direction == NW || direction == SW) {
+    // Going to the left? Invert the offset.
+    if (direction & LEFT) {
         offset = -offset;
     }
 
@@ -347,7 +342,7 @@ int
 Being::getYOffset() const
 {
     // Only beings walking up or down have an y offset
-    if (action != WALK || direction == EAST || direction == WEST) {
+    if (action != WALK || !(direction & (UP | DOWN))) {
         return 0;
     }
 
@@ -359,7 +354,8 @@ Being::getYOffset() const
         offset = 0;
     }
 
-    if (direction == NORTH || direction == NW || direction == NE) {
+    // Going up? Invert the offset.
+    if (direction & UP) {
         offset = -offset;
     }
 

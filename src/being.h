@@ -71,17 +71,13 @@ class Being : public Sprite
             DEAD         = 15
         };
 
-        enum Direction {
-            DIR_NONE  = -1,
-            SOUTH     =  0,
-            SW        =  1,
-            WEST      =  2,
-            NW        =  3,
-            NORTH     =  4,
-            NE        =  5,
-            EAST      =  6,
-            SE        =  7
-        };
+        /**
+         * Directions, to be used as bitmask values
+         */
+        static const char DOWN = 1;
+        static const char LEFT = 2;
+        static const char UP = 4;
+        static const char RIGHT = 8;
 
         Uint16 job;           /**< Job (player job, npc, monster, ) */
         Uint16 x, y;          /**< Tile coordinates */

@@ -87,7 +87,10 @@ void Monster::draw(Graphics *graphics, int offsetX, int offsetY)
         mSpriteFrame += mFrame;
     }
 
-    mSpriteFrame = direction / 2 + 4 * mSpriteFrame;
+    unsigned char dir = 0;
+    while (!(direction & (1 << dir))) dir++;
+
+    mSpriteFrame = dir + 4 * mSpriteFrame;
 
     Being::draw(graphics, offsetX - 12, offsetY - 25);
 }

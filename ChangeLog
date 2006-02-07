@@ -1,9 +1,16 @@
-2006-02-06 Philipp Sehmisch  <tmw@crushnet.org>
+2006-02-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp, src/being.h, src/game.cpp, src/localplayer.cpp,
+	src/localplayer.h, src/monster.cpp, src/player.cpp,
+	src/net/messagein.cpp, src/net/protocol.cpp: Made the being directions
+	being stored in a bitfield.
+
+2006-02-06  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/graphics/tiles/Woodland_ground.png,
-	data/graphics/tiles/Woodland_x2.png,
-	data/maps/new_9.1.tmx.gz: added dynamic grass that
-	covers the lower area of sprites (doesn't work for flower
-	beds yet).
+	data/graphics/tiles/Woodland_x2.png, data/maps/new_9.1.tmx.gz: added
+	dynamic grass that covers the lower area of sprites (doesn't work for
+	flower beds yet).
 
 2006-02-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
