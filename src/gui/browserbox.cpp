@@ -30,58 +30,54 @@
 #include <guichan/mouseinput.hpp>
 
 #include "linkhandler.h"
-#include "gui.h"
 
 #ifdef USE_OPENGL
 #include "../configuration.h"
 #include "../resources/resourcemanager.h"
-#endif
 
 int BrowserBox::instances = 0;
-gcn::ImageFont* BrowserBox::browserFont;
+gcn::ImageFont* BrowserBox::browserFont = NULL;
+#endif
 
 BrowserBox::BrowserBox(unsigned int mode):
     gcn::Widget(),
-    mMode(mode), mUseLinksAndUserColors(true), mSelectedLink(-1)
+    mMode(mode), mHighMode(UNDERLINE | BACKGROUND),
+    mOpaque(true),
+    mUseLinksAndUserColors(true), mSelectedLink(-1)
 {
-    setOpaque(true);
-    setHighlightMode(UNDERLINE | BACKGROUND);
     setFocusable(true);
     addMouseListener(this);
 
-    if (instances == 0)
-    {
 #ifdef USE_OPENGL
-        if (config.getValue("opengl", 0)) {
+    if (config.getValue("opengl", 0)) {
+        if (instances == 0) {
             browserFont = new gcn::ImageFont(
                     "graphics/gui/browserfont.png",
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
                     "øåáÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄß");
-        } else
-#endif
-        {
-            browserFont = (gcn::ImageFont*)gui->getFont();
         }
+        setFont(browserFont);
+        instances++;
     }
-
-    instances++;
+#endif
 }
 
 BrowserBox::~BrowserBox()
 {
+#ifdef USE_OPENGL
     instances--;
 
     if (instances == 0)
     {
-#ifdef USE_OPENGL
         // Clean up static resource font
-        if (config.getValue("opengl", 0)) {
+        if (browserFont) {
             delete browserFont;
+            browserFont = NULL;
         }
-#endif
     }
+#endif
 }
 
 void BrowserBox::setLinkHandler(LinkHandler* linkHandler)
@@ -110,6 +106,7 @@ void BrowserBox::addRow(const std::string& row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
+    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -122,8 +119,8 @@ void BrowserBox::addRow(const std::string& row)
             idx3 = tmp.find("@@", idx2);
             bLink.link = tmp.substr(idx1 + 2, idx2 - (idx1 + 2));
             bLink.caption = tmp.substr(idx2 + 1, idx3 - (idx2 + 1));
-            bLink.y1 = mTextRows.size() * browserFont->getHeight();
-            bLink.y2 = bLink.y1 + browserFont->getHeight();
+            bLink.y1 = mTextRows.size() * font->getHeight();
+            bLink.y2 = bLink.y1 + font->getHeight();
 
             newRow += tmp.substr(0, idx1);
 
@@ -134,8 +131,8 @@ void BrowserBox::addRow(const std::string& row)
                 tmp2.erase(idx1, 3);
                 idx1 = tmp2.find("##");
             }
-            bLink.x1 = browserFont->getWidth(tmp2) - 1;
-            bLink.x2 = bLink.x1 + browserFont->getWidth(bLink.caption) + 1;
+            bLink.x1 = font->getWidth(tmp2) - 1;
+            bLink.x2 = bLink.x1 + font->getWidth(bLink.caption) + 1;
 
             mLinks.push_back(bLink);
 
@@ -168,24 +165,24 @@ void BrowserBox::addRow(const std::string& row)
             plain.erase(idx1, 3);
 
         // Adjust the BrowserBox size
-        int w = browserFont->getWidth(plain);
+        int w = font->getWidth(plain);
         if (w > getWidth())
             setWidth(w);
     }
-    
+
     if (mMode == AUTO_WRAP)
     {
         unsigned int i, j, y = 0;
         unsigned int nextChar;
         char hyphen = '~';
-        int hyphenWidth = browserFont->getWidth(hyphen);
-	int x = 0;
+        int hyphenWidth = font->getWidth(hyphen);
+        int x = 0;
         for (i = 0; i < mTextRows.size(); i++)
         {
             std::string row = mTextRows[i];
             for (j = 0; j < row.size(); j++)
             {
-                x += browserFont->getWidth(row.at(j));
+                x += font->getWidth(row.at(j));
                 nextChar = j + 1;
 
                 // Wraping between words (at blank spaces)
@@ -196,7 +193,7 @@ void BrowserBox::addRow(const std::string& row)
                     {
                         nextSpacePos = row.size() - 1;
                     }
-                    int nextWordWidth = browserFont->getWidth(
+                    int nextWordWidth = font->getWidth(
                             row.substr(nextChar,
                                 (nextSpacePos - nextChar)));
 
@@ -215,12 +212,12 @@ void BrowserBox::addRow(const std::string& row)
                 }
             }
         }
-        
-        setHeight(browserFont->getHeight() * (mTextRows.size() + y));
+
+        setHeight(font->getHeight() * (mTextRows.size() + y));
     }
     else
     {
-        setHeight(browserFont->getHeight() * mTextRows.size());
+        setHeight(font->getHeight() * mTextRows.size());
     }
 }
 
@@ -232,15 +229,14 @@ void BrowserBox::clearRows()
     mSelectedLink = -1;
 }
 
-class MouseOverLinkFunctor
+struct MouseOverLinkFunctor
 {
-    public:
-        bool operator() (BROWSER_LINK &link)
-        {
-            return (mX >= link.x1 && mX < link.x2 &&
-                    mY >= link.y1 && mY < link.y2);
-        }
-        int mX, mY;
+    bool operator() (BROWSER_LINK &link)
+    {
+        return (mX >= link.x1 && mX < link.x2 &&
+                mY >= link.y1 && mY < link.y2);
+    }
+    int mX, mY;
 } mouseOverLink;
 
 void BrowserBox::mousePress(int mx, int my, int button)
@@ -298,16 +294,18 @@ void BrowserBox::draw(gcn::Graphics* graphics)
         {
             graphics->setColor(gcn::Color(LINK));
             graphics->drawLine(
-                        mLinks[mSelectedLink].x1,
-                        mLinks[mSelectedLink].y2,
-                        mLinks[mSelectedLink].x2,
-                        mLinks[mSelectedLink].y2);
+                    mLinks[mSelectedLink].x1,
+                    mLinks[mSelectedLink].y2,
+                    mLinks[mSelectedLink].x2,
+                    mLinks[mSelectedLink].y2);
         }
     }
 
     unsigned int i, j;
     int x = 0, y = 0;
     int wrappedLines = 0;
+    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
+
     graphics->setColor(BLACK);
     for (i = 0; i < mTextRows.size(); i++)
     {
@@ -389,23 +387,23 @@ void BrowserBox::draw(gcn::Graphics* graphics)
             {
                 for (x = 0; x < getWidth(); x++)
                 {
-                    browserFont->drawGlyph(graphics, '-', x, y);
-                    x += browserFont->getWidth('-') - 2;
+                    font->drawGlyph(graphics, '-', x, y);
+                    x += font->getWidth('-') - 2;
                 }
                 break;
             }
             // Draw each char
             else
             {
-                browserFont->drawGlyph(graphics, row.at(j), x, y);
-                x += browserFont->getWidth(row.at(j));
+                font->drawGlyph(graphics, row.at(j), x, y);
+                x += font->getWidth(row.at(j));
 
                 // Auto wrap mode
                 if (mMode == AUTO_WRAP)
                 {
                     unsigned int nextChar = j + 1;
                     char hyphen = '~';
-                    int hyphenWidth =  browserFont->getWidth(hyphen);
+                    int hyphenWidth =  font->getWidth(hyphen);
 
                     // Wraping between words (at blank spaces)
                     if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
@@ -415,14 +413,14 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                         {
                             nextSpacePos = row.size() - 1;
                         }
-                        int nextWordWidth = browserFont->getWidth(
+                        int nextWordWidth = font->getWidth(
                                 row.substr(nextChar,
                                     (nextSpacePos - nextChar)));
 
                         if ((x + nextWordWidth + 10) > getWidth())
                         {
                             x = 15; // Ident in new line
-                            y += browserFont->getHeight();
+                            y += font->getHeight();
                             wrappedLines++;
                             j++;
                         }
@@ -431,16 +429,16 @@ void BrowserBox::draw(gcn::Graphics* graphics)
                     // Wrapping looong lines (brutal force)
                     else if ((x + 2 * hyphenWidth) > getWidth())
                     {
-                        browserFont->drawGlyph(graphics, hyphen,
+                        font->drawGlyph(graphics, hyphen,
                                 getWidth() - hyphenWidth, y);
                         x = 15; // Ident in new line
-                        y += browserFont->getHeight();
+                        y += font->getHeight();
                         wrappedLines++;
                     }
                 }
             }
         }
-        y += browserFont->getHeight();
-        setHeight((mTextRows.size() + wrappedLines) * browserFont->getHeight());
+        y += font->getHeight();
+        setHeight((mTextRows.size() + wrappedLines) * font->getHeight());
     }
 }
