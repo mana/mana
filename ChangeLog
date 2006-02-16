@@ -1,7 +1,7 @@
 2006-02-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/browserbox.cpp, src/gui/browserbox.h, src/gui/gui.cpp: Use
-	Widget::mFont instead of browerFont in the methods, fixes the "gui
+	Widget::mFont instead of browerFont for drawing, fixes the "gui
 	needs to be valid real early" issue.
 
 2006-02-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
