@@ -1,3 +1,8 @@
+2006-02-05  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/resources/itemmanager.cpp: Added warnings when parameters are
+	missing in the items xml file.
+
 2006-02-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/browserbox.cpp, src/gui/browserbox.h, src/gui/gui.cpp: Use

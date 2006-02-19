@@ -36,7 +36,7 @@ ItemManager::ItemManager()
     char *data = (char*)resman->loadFile("items.xml", size);
 
     if (!data) {
-        logger->error("Could not find items.xml!");
+        logger->error("Item Manager: Could not find items.xml!");
     }
 
     xmlDocPtr doc = xmlParseMemory(data, size);
@@ -48,7 +48,7 @@ ItemManager::ItemManager()
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
         {
-            logger->error("items.xml is not a valid database file!");
+            logger->error("Item Manager: items.xml is not a valid database file!");
         }
         else
         {
@@ -111,6 +111,51 @@ ItemManager::ItemManager()
                         db[id] = itemInfo;
                     }
 
+                    if (id == 0)
+                    {
+                        logger->log("Item Manager: An item has no ID in items.xml!");
+                    }
+                    if (name == "")
+                    {
+                        logger->log("Item Manager: An item has no name in items.xml!");
+                    }
+
+                    if (image == 0)
+                    {
+                        logger->log("Item Manager: Missing image parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (art == 0)
+                    {
+                        logger->log("Item Manager: Missing art parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (description == "")
+                    {
+                        logger->log("Item Manager: Missing description parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (effect == "")
+                    {
+                        logger->log("Item Manager: Missing effect parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (type == 0)
+                    {
+                        logger->log("Item Manager: Missing type parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (weight == 0)
+                    {
+                        logger->log("Item Manager: Missing weight parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+                    if (slot == 0)
+                    {
+                        logger->log("Item Manager: Missing image parameter for item: %i. %s",
+                        id, name.c_str());
+                    }
+
                     /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
                         getImage(id), getArt(id), getName(id).c_str(),
                         getDescription(id).c_str(), getType(id), getWeight(id),
@@ -122,7 +167,7 @@ ItemManager::ItemManager()
         xmlFreeDoc(doc);
     }
     else {
-        logger->error("Error while parsing item database (items.xml)!");
+        logger->error("Item Manager: Error while parsing item database (items.xml)!");
     }
 
     unknown = new ItemInfo();
