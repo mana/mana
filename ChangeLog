@@ -1,3 +1,6 @@
+2006-02-21  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9.1.tmx.gz: fixed another map bug.
+
 2006-02-05  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/resources/itemmanager.cpp: Added warnings when parameters are
