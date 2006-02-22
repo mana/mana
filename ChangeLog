@@ -1,3 +1,7 @@
+2006-02-22  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/graphics/tiles/cave.png:
+	fixed two almost invisible pixel errors
+
 2006-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 	* data/maps/new_9.1.tmx.gz: fixed another map bug.
 
