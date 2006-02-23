@@ -95,7 +95,7 @@ void BeingManager::destroyBeing(Being *being)
 
 Being* BeingManager::findBeing(Uint32 id)
 {
-    for (Beings::iterator i = mBeings.begin(); i != mBeings.end(); i++)
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         Being *being = (*i);
         if (being->getId() == id) {
@@ -111,7 +111,7 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     beingFinder.y = y;
     beingFinder.type = type;
 
-    Beings::iterator i = find_if(mBeings.begin(), mBeings.end(), beingFinder);
+    BeingIterator i = find_if(mBeings.begin(), mBeings.end(), beingFinder);
 
     return (i == mBeings.end()) ? NULL : *i;
 }
@@ -128,8 +128,7 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    Beings::iterator i;
-    for (i = mBeings.begin(); i != mBeings.end(); i++)
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
         delete (*i);
     }

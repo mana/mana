@@ -80,7 +80,7 @@ class Inventory
         int getLastUsedSlot();
 
     protected:
-        Item *items;  /**< The holder of items */
+        Item *mItems;  /**< The holder of items */
 };
 
 #endif

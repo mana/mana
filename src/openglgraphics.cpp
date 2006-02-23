@@ -25,7 +25,6 @@
 
 #include "openglgraphics.h"
 
-#include <iostream>
 #include <SDL.h>
 
 #ifdef __APPLE__

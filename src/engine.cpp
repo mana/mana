@@ -136,7 +136,12 @@ void Engine::changeMap(std::string mapPath)
     std::string oldMusic = "";
 
     // Notify the minimap and beingManager about the map change
-    minimap->setMap(newMap);
+    Image *mapImage = NULL;
+    if (newMap->hasProperty("minimap")) {
+        ResourceManager *resman = ResourceManager::getInstance();
+        mapImage = resman->getImage(newMap->getProperty("minimap"));
+    }
+    minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
 
     if (mCurrentMap) {
@@ -252,7 +257,7 @@ void Engine::draw(Graphics *graphics)
 
     // Draw player nickname, speech, and emotion sprite as needed
     Beings *beings = beingManager->getAll();
-    for (Beings::iterator i = beings->begin(); i != beings->end(); i++)
+    for (BeingIterator i = beings->begin(); i != beings->end(); i++)
     {
         (*i)->drawSpeech(graphics, -map_x, -map_y);
         (*i)->drawName(graphics, -map_x, -map_y);

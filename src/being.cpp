@@ -314,11 +314,10 @@ void Being::setWeaponById(Uint16 weapon)
     }
 }
 
-int
-Being::getXOffset() const
+int Being::getOffset(char pos, char neg) const
 {
-    // Only beings walking to the left or the right have an x offset
-    if (action != WALK || !(direction & (LEFT | RIGHT))) {
+    // Check whether we're walking in the requested direction
+    if (action != WALK || !(direction & (pos | neg))) {
         return 0;
     }
 
@@ -330,32 +329,8 @@ Being::getXOffset() const
         offset = 0;
     }
 
-    // Going to the left? Invert the offset.
-    if (direction & LEFT) {
-        offset = -offset;
-    }
-
-    return offset;
-}
-
-int
-Being::getYOffset() const
-{
-    // Only beings walking up or down have an y offset
-    if (action != WALK || !(direction & (UP | DOWN))) {
-        return 0;
-    }
-
-    int offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
-
-    // We calculate the offset _from_ the _target_ location
-    offset -= 32;
-    if (offset > 0) {
-        offset = 0;
-    }
-
-    // Going up? Invert the offset.
-    if (direction & UP) {
+    // Going into negative direction? Invert the offset.
+    if (direction & pos) {
         offset = -offset;
     }
 

@@ -34,11 +34,6 @@
 class WindowContainer : public gcn::Container {
     public:
         /**
-         * Constructor.
-         */
-        WindowContainer();
-
-        /**
          * Do GUI logic. This functions adds automatic deletion of objects that
          * volunteered to be deleted.
          */
@@ -50,11 +45,13 @@ class WindowContainer : public gcn::Container {
          */
         void scheduleDelete(gcn::Widget *widget);
 
-    protected:
+    private:
         /**
          * List of widgets that are scheduled to be deleted.
          */
-        std::list<gcn::Widget*> deathList;
+        typedef std::list<gcn::Widget*> Widgets;
+        typedef Widgets::iterator WidgetIterator;
+        Widgets mDeathList;
 };
 
 #endif

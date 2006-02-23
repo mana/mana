@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_EQUIPMENT_H
-#define _TMW_EQUIPMENT_H 
+#define _TMW_EQUIPMENT_H
 
 #include "window.h"
 
@@ -56,7 +56,6 @@ class EquipmentWindow : public Window
         Spriteset *itemset;
 
         Equipment *mEquipment;
-
 };
 
 extern EquipmentWindow *equipmentWindow;

@@ -278,13 +278,13 @@ class Being : public Sprite
          * Get the current X pixel offset.
          */
         int
-        getXOffset() const;
+        getXOffset() const { return getOffset(LEFT, RIGHT); }
 
         /**
          * Get the current Y pixel offset.
          */
         int
-        getYOffset() const;
+        getYOffset() const { return getOffset(UP, DOWN); }
 
     protected:
         /**
@@ -292,6 +292,12 @@ class Being : public Sprite
          */
         void
         setPath(std::list<PATH_NODE> path);
+
+        /**
+         * Calculates the offset in the given directions.
+         * If walking in direction 'neg' the value is negated.
+         */
+        int getOffset(char pos, char neg) const;
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWeapon;                 /**< Weapon picture id */

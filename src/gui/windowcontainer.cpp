@@ -23,23 +23,17 @@
 
 #include "windowcontainer.h"
 
-WindowContainer::WindowContainer()
-{
-}
-
 void WindowContainer::logic()
 {
-    std::list<gcn::Widget*>::iterator i = deathList.begin();
-    for (i= deathList.begin(); i != deathList.end(); i++) {
+    for (WidgetIterator i = mDeathList.begin(); i != mDeathList.end(); i++) {
         delete (*i);
     }
-
-    deathList.clear();
+    mDeathList.clear();
 
     gcn::Container::logic();
 }
 
 void WindowContainer::scheduleDelete(gcn::Widget *widget)
 {
-    deathList.push_back(widget);
+    mDeathList.push_back(widget);
 }

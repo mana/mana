@@ -26,7 +26,6 @@
 
 #include "window.h"
 
-class Map;
 class Image;
 
 /**
@@ -48,9 +47,9 @@ class Minimap : public Window
         ~Minimap();
 
         /**
-         * Sets the map that should be displayed.
+         * Sets the map image that should be displayed.
          */
-        void setMap(Map *map);
+        void setMapImage(Image *img);
 
         /**
          * Draws the minimap.

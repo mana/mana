@@ -26,10 +26,8 @@
 #include "../being.h"
 #include "../beingmanager.h"
 #include "../graphics.h"
-#include "../map.h"
 
 #include "../resources/image.h"
-#include "../resources/resourcemanager.h"
 
 Minimap::Minimap():
     Window("Map"),
@@ -48,32 +46,23 @@ Minimap::~Minimap()
     }
 }
 
-void Minimap::setMap(Map *map)
+void Minimap::setMapImage(Image *img)
 {
     if (mMapImage)
     {
         mMapImage->decRef();
     }
 
-    if (map->hasProperty("minimap"))
-    {
-        ResourceManager *resman = ResourceManager::getInstance();
-        mMapImage = resman->getImage(map->getProperty("minimap"));
+    mMapImage = img;
 
-        if (mMapImage != NULL)
-        {
-            setVisible(true);
-            mMapImage->setAlpha(0.7);
-        }
-        else
-        {
-            setVisible(false);
-        }
+    if (mMapImage)
+    {
+        setVisible(true);
+        mMapImage->setAlpha(0.7);
     }
     else
     {
         setVisible(false);
-        mMapImage = NULL;
     }
 }
 

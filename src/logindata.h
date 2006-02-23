@@ -34,6 +34,7 @@ struct LoginData
     int account_ID;
     int session_ID1;
     int session_ID2;
+    char sex;
 
     bool remember;
 };

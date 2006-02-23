@@ -31,6 +31,7 @@ class Map;
 class Network;
 
 typedef std::list<Being*> Beings;
+typedef Beings::iterator BeingIterator;
 
 class BeingManager
 {

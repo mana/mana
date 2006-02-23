@@ -59,7 +59,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
             mLoginData->account_ID = msg->readInt32();
             mLoginData->session_ID2 = msg->readInt32();
             msg->skip(30);                           // unknown
-            sex = msg->readInt8();
+            mLoginData->sex = msg->readInt8();
 
             for (int i = 0; i < n_server; i++)
             {

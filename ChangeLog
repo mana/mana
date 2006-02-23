@@ -1,13 +1,25 @@
+2006-02-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp, src/being.h, src/beingmanager.cpp,
+	src/beingmanager.h, src/engine.cpp, src/inventory.cpp,
+	src/inventory.h, src/logindata.h, src/main.cpp, src/main.h,
+	src/openglgraphics.cpp, src/gui/equipmentwindow.h,
+	src/gui/minimap.cpp, src/gui/minimap.h, src/gui/windowcontainer.cpp,
+	src/gui/windowcontainer.h, src/net/loginhandler.cpp: A bunch of mostly
+	cosmetic cleanups.
+
 2006-02-23  Philipp Sehmisch  <tmw@crushnet.org>
-	* data/maps/new_4.1.tmx.gz:
-	 I remapped the hermits cave. It looks much more natural now. A new
-	 server sided walkmap is required.
+
+	* data/maps/new_4.1.tmx.gz: I remapped the hermits cave. It looks much
+	more natural now. A new server sided walkmap is required.
 
 2006-02-22  Philipp Sehmisch  <tmw@crushnet.org>
-	* data/graphics/tiles/cave.png:
-	fixed two almost invisible pixel errors
+
+	* data/graphics/tiles/cave.png: fixed two almost invisible pixel
+	errors
 
 2006-02-21  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/maps/new_9.1.tmx.gz: fixed another map bug.
 
 2006-02-05  Yohann Ferreira  <bertram@cegetel.net>

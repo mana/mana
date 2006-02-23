@@ -76,7 +76,7 @@
 #include "resources/resourcemanager.h"
 
 // Account infos
-char sex, n_server, n_character;
+char n_server, n_character;
 
 Spriteset *hairset = NULL, *playerset = NULL;
 Graphics *graphics;
@@ -443,7 +443,7 @@ void charLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
     outMsg.writeInt16(0); // unknown
-    outMsg.writeInt8(sex);
+    outMsg.writeInt8(loginData->sex);
 
     // We get 4 useless bytes before the real answer comes in
     network->skip(4);
@@ -465,7 +465,7 @@ void mapLogin(Network *network, LoginData *loginData)
     outMsg.writeInt32(player_node->mCharId);
     outMsg.writeInt32(loginData->session_ID1);
     outMsg.writeInt32(loginData->session_ID2);
-    outMsg.writeInt8(sex);
+    outMsg.writeInt8(loginData->sex);
 
     // We get 4 useless bytes before the real answer comes in
     network->skip(4);

@@ -67,7 +67,7 @@ enum {
     LEN_MIN_PASSWORD     = 4
 };
 
-extern char sex, n_server, n_character;
+extern char n_server, n_character;
 extern unsigned char state;
 extern std::string errorMessage;
 extern Sound sound;

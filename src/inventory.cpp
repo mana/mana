@@ -27,15 +27,15 @@
 
 Inventory::Inventory()
 {
-    items = new Item[INVENTORY_SIZE];
+    mItems = new Item[INVENTORY_SIZE];
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].setInvIndex(i);
+        mItems[i].setInvIndex(i);
     }
 }
 
 Inventory::~Inventory()
 {
-    delete [] items;
+    delete [] mItems;
 }
 
 Item* Inventory::getItem(int index)
@@ -45,7 +45,7 @@ Item* Inventory::getItem(int index)
         return 0;
     }
 
-    return &items[index];
+    return &mItems[index];
 }
 
 void Inventory::addItem(int id, int quantity, bool equipment)
@@ -55,27 +55,27 @@ void Inventory::addItem(int id, int quantity, bool equipment)
 
 void Inventory::addItem(int index, int id, int quantity, bool equipment)
 {
-    items[index].setId(id);
-    items[index].increaseQuantity(quantity);
-    items[index].setEquipment(equipment);
+    mItems[index].setId(id);
+    mItems[index].increaseQuantity(quantity);
+    mItems[index].setEquipment(equipment);
 }
 
 
 void Inventory::clear()
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        items[i].setId(-1);
-        items[i].setQuantity(0);
-        items[i].setEquipped(false);
+        mItems[i].setId(-1);
+        mItems[i].setQuantity(0);
+        mItems[i].setEquipped(false);
     }
 }
 
 void Inventory::removeItem(int id)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == id) {
-            items[i].setId(-1);
-            items[i].setQuantity(0);
+        if (mItems[i].getId() == id) {
+            mItems[i].setId(-1);
+            mItems[i].setQuantity(0);
         }
     }
 }
@@ -83,7 +83,7 @@ void Inventory::removeItem(int id)
 bool Inventory::contains(Item *item)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == item->getId()) {
+        if (mItems[i].getId() == item->getId()) {
             return true;
         }
     }
@@ -94,7 +94,7 @@ bool Inventory::contains(Item *item)
 int Inventory::getFreeSlot()
 {
     for (int i = 2; i < INVENTORY_SIZE; i++) {
-        if (items[i].getId() == -1) {
+        if (mItems[i].getId() == -1) {
             return i;
         }
     }
@@ -103,16 +103,16 @@ int Inventory::getFreeSlot()
 
 int Inventory::getNumberOfSlotsUsed()
 {
-    int NumberOfFilledSlot = 0;
+    int numberOfFilledSlot = 0;
     for (int i = 0; i < INVENTORY_SIZE; i++)
     {
-        if (items[i].getId() > -1 || items[i].getQuantity() > 0) 
+        if (mItems[i].getId() > -1 || mItems[i].getQuantity() > 0) 
         {
-            NumberOfFilledSlot++;
+            numberOfFilledSlot++;
         }
     }
 
-    return NumberOfFilledSlot;
+    return numberOfFilledSlot;
 }
 
 int Inventory::getLastUsedSlot()
@@ -120,7 +120,7 @@ int Inventory::getLastUsedSlot()
     int i;
 
     for (i = INVENTORY_SIZE - 1; i >= 0; i--) {
-        if ((items[i].getId() != -1) && (items[i].getQuantity() > 0)) {
+        if ((mItems[i].getId() != -1) && (mItems[i].getQuantity() > 0)) {
             break;
         }
     }
