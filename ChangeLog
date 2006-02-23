@@ -1,3 +1,8 @@
+2006-02-23  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_4.1.tmx.gz:
+	 I remapped the hermits cave. It looks much more natural now. A new
+	 server sided walkmap is required.
+
 2006-02-22  Philipp Sehmisch  <tmw@crushnet.org>
 	* data/graphics/tiles/cave.png:
 	fixed two almost invisible pixel errors
