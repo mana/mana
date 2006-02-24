@@ -241,11 +241,10 @@ struct MouseOverLinkFunctor
 
 void BrowserBox::mousePress(int mx, int my, int button)
 {
-    std::vector<BROWSER_LINK>::iterator i;
-
     mouseOverLink.mX = mx;
     mouseOverLink.mY = my;
-    i = find_if(mLinks.begin(), mLinks.end(), mouseOverLink);
+
+    LinkIterator i = find_if(mLinks.begin(), mLinks.end(), mouseOverLink);
 
     if (i != mLinks.end()) {
         mLinkHandler->handleLink(i->link);

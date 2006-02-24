@@ -48,6 +48,8 @@ struct PATH_NODE
     unsigned short x;
     unsigned short y;
 };
+typedef std::list<PATH_NODE> Path;
+typedef Path::iterator PathIterator;
 
 class Being : public Sprite
 {
@@ -291,7 +293,7 @@ class Being : public Sprite
          * Sets the new path for this being.
          */
         void
-        setPath(std::list<PATH_NODE> path);
+        setPath(const Path &path);
 
         /**
          * Calculates the offset in the given directions.
@@ -304,9 +306,9 @@ class Being : public Sprite
         Uint16 mWalkSpeed;              /**< Walking speed */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
-        Sprites::iterator mSpriteIterator;
+        SpriteIterator mSpriteIterator;
 
-        std::list<PATH_NODE> mPath;
+        Path mPath;
         std::string speech;
         std::string damage;
         Uint16 hairStyle, hairColor;

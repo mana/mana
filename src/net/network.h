@@ -89,7 +89,9 @@ class Network
         SDL_Thread *mWorkerThread;
         SDL_mutex *mMutex;
 
-        std::map<Uint16, MessageHandler*> mMessageHandlers;
+        typedef std::map<Uint16, MessageHandler*> MessageHandlers;
+        typedef MessageHandlers::iterator MessageHandlerIterator;
+        MessageHandlers mMessageHandlers;
 
         bool realConnect();
         void receive();

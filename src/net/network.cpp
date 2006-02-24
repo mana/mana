@@ -182,17 +182,9 @@ void Network::registerHandler(MessageHandler *handler)
 
 void Network::unregisterHandler(MessageHandler *handler)
 {
-    const Uint16 *i = handler->handledMessages;
-
-    while(*i)
+    for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
-        std::map<Uint16, MessageHandler*>::iterator iter;
-        iter = mMessageHandlers.find(*i);
-        if (iter != mMessageHandlers.end())
-        {
-            mMessageHandlers.erase(iter);
-        }
-        i++;
+        mMessageHandlers.erase(*i);
     }
 
     handler->setNetwork(0);
@@ -200,7 +192,7 @@ void Network::unregisterHandler(MessageHandler *handler)
 
 void Network::clearHandlers()
 {
-    std::map<Uint16, MessageHandler*>::iterator i;
+    MessageHandlerIterator i;
     for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); i++)
     {
         i->second->setNetwork(0);
@@ -214,8 +206,7 @@ void Network::dispatchMessages()
     {
         MessageIn msg = getNextMessage();
 
-        std::map<Uint16, MessageHandler*>::iterator iter;
-        iter = mMessageHandlers.find(msg.getId());
+        MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
         if (iter != mMessageHandlers.end())
             iter->second->handleMessage(&msg);

@@ -29,8 +29,18 @@
 
 #include "../log.h"
 
+#define READ_PROP(node, prop, name, target, cast) \
+        prop = xmlGetProp(node, BAD_CAST name); \
+        if (prop) { \
+            target = cast((const char*)prop); \
+            xmlFree(prop); \
+        }
+
 ItemManager::ItemManager()
 {
+    unknown = new ItemInfo();
+    unknown->setName("Unknown item");
+
     ResourceManager *resman = ResourceManager::getInstance();
     int size;
     char *data = (char*)resman->loadFile("items.xml", size);
@@ -42,146 +52,114 @@ ItemManager::ItemManager()
     xmlDocPtr doc = xmlParseMemory(data, size);
     free(data);
 
-    if (doc)
+    if (!doc)
     {
-        xmlNodePtr node = xmlDocGetRootElement(doc);
-
-        if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
-        {
-            logger->error("Item Manager: items.xml is not a valid database file!");
-        }
-        else
-        {
-            for (node = node->xmlChildrenNode; node != NULL; node = node->next)
-            {
-                int id = 0, image = 0, art = 0, type = 0, weight = 0, slot = 0;
-                std::string name = "", description = "", effect = "";
-
-                if (xmlStrEqual(node->name, BAD_CAST "item"))
-                {
-                    xmlChar *prop = NULL;
-                    // Item id
-                    prop = xmlGetProp(node, BAD_CAST "id");
-                    if (prop) id = atoi((const char*)prop);
-                    xmlFree(prop);
-                    // Image id
-                    prop = xmlGetProp(node, BAD_CAST "image");
-                    if (prop) image = atoi((const char*)prop);
-                    xmlFree(prop);
-                    // Art id
-                    prop = xmlGetProp(node, BAD_CAST "art");
-                    if (prop) art = atoi((const char*)prop);
-                    xmlFree(prop);
-                    // Name
-                    prop = xmlGetProp(node, BAD_CAST "name");
-                    if (prop) name = (const char*)prop;
-                    xmlFree(prop);
-                    // Description
-                    prop = xmlGetProp(node, BAD_CAST "description");
-                    if (prop) description = (const char*)prop;
-                    xmlFree(prop);
-                    // Effect
-                    prop = xmlGetProp(node, BAD_CAST "effect");
-                    if (prop) effect = (const char*)prop;
-                    xmlFree(prop);
-                    // Type id
-                    prop = xmlGetProp(node, BAD_CAST "type");
-                    if (prop) type = atoi((const char*)prop);
-                    xmlFree(prop);
-                    // Weight
-                    prop = xmlGetProp(node, BAD_CAST "weight");
-                    if (prop) weight = atoi((const char*)prop);
-                    xmlFree(prop);
-                    // Slot
-                    prop = xmlGetProp(node, BAD_CAST "slot");
-                    if (prop) slot = atoi((const char*)prop);
-                    xmlFree(prop);
-
-                    if (id && name != "")
-                    {
-                        ItemInfo *itemInfo = new ItemInfo();
-                        itemInfo->setImage(image);
-                        itemInfo->setArt(art);
-                        itemInfo->setName(name);
-                        itemInfo->setDescription(description);
-                        itemInfo->setEffect(effect);
-                        itemInfo->setType(type);
-                        itemInfo->setWeight(weight);
-                        itemInfo->setSlot(slot);
-                        db[id] = itemInfo;
-                    }
-
-                    if (id == 0)
-                    {
-                        logger->log("Item Manager: An item has no ID in items.xml!");
-                    }
-                    if (name == "")
-                    {
-                        logger->log("Item Manager: An item has no name in items.xml!");
-                    }
-
-                    if (image == 0)
-                    {
-                        logger->log("Item Manager: Missing image parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (art == 0)
-                    {
-                        logger->log("Item Manager: Missing art parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (description == "")
-                    {
-                        logger->log("Item Manager: Missing description parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (effect == "")
-                    {
-                        logger->log("Item Manager: Missing effect parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (type == 0)
-                    {
-                        logger->log("Item Manager: Missing type parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (weight == 0)
-                    {
-                        logger->log("Item Manager: Missing weight parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-                    if (slot == 0)
-                    {
-                        logger->log("Item Manager: Missing image parameter for item: %i. %s",
-                        id, name.c_str());
-                    }
-
-                    /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
-                        getImage(id), getArt(id), getName(id).c_str(),
-                        getDescription(id).c_str(), getType(id), getWeight(id),
-                        getSlot(id));*/
-                }
-            }
-        }
-
-        xmlFreeDoc(doc);
-    }
-    else {
         logger->error("Item Manager: Error while parsing item database (items.xml)!");
+        return;
     }
 
-    unknown = new ItemInfo();
-    unknown->setName("Unknown item");
+    xmlNodePtr node = xmlDocGetRootElement(doc);
+    if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
+    {
+        logger->error("Item Manager: items.xml is not a valid database file!");
+        return;
+    }
+
+    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    {
+        int id = 0, image = 0, art = 0, type = 0, weight = 0, slot = 0;
+        std::string name = "", description = "", effect = "";
+
+        if (!xmlStrEqual(node->name, BAD_CAST "item")) {
+            continue;
+        }
+
+        xmlChar *prop = NULL;
+        READ_PROP(node, prop, "id", id, atoi);
+        READ_PROP(node, prop, "image", image, atoi);
+        READ_PROP(node, prop, "art", art, atoi);
+        READ_PROP(node, prop, "name", name, );
+        READ_PROP(node, prop, "description", description, );
+        READ_PROP(node, prop, "effect", effect, );
+        READ_PROP(node, prop, "type", type, atoi);
+        READ_PROP(node, prop, "weight", weight, atoi);
+        READ_PROP(node, prop, "slot", slot, atoi);
+
+        if (id && name != "")
+        {
+            ItemInfo *itemInfo = new ItemInfo();
+            itemInfo->setImage(image);
+            itemInfo->setArt(art);
+            itemInfo->setName(name);
+            itemInfo->setDescription(description);
+            itemInfo->setEffect(effect);
+            itemInfo->setType(type);
+            itemInfo->setWeight(weight);
+            itemInfo->setSlot(slot);
+            mItemInfos[id] = itemInfo;
+        }
+
+        if (id == 0)
+        {
+            logger->log("Item Manager: An item has no ID in items.xml!");
+        }
+        if (name == "")
+        {
+            logger->log("Item Manager: An item has no name in items.xml!");
+        }
+
+        if (image == 0)
+        {
+            logger->log("Item Manager: Missing image parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (art == 0)
+        {
+            logger->log("Item Manager: Missing art parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (description == "")
+        {
+            logger->log("Item Manager: Missing description parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (effect == "")
+        {
+            logger->log("Item Manager: Missing effect parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (type == 0)
+        {
+            logger->log("Item Manager: Missing type parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (weight == 0)
+        {
+            logger->log("Item Manager: Missing weight parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+        if (slot == 0)
+        {
+            logger->log("Item Manager: Missing image parameter for item: %i. %s",
+                    id, name.c_str());
+        }
+
+        /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
+          getImage(id), getArt(id), getName(id).c_str(),
+          getDescription(id).c_str(), getType(id), getWeight(id),
+          getSlot(id));*/
+    }
+
+    xmlFreeDoc(doc);
 }
 
 ItemManager::~ItemManager()
 {
-    std::map<int, ItemInfo*>::iterator i;
-    for (i = db.begin(); i != db.end(); i++)
+    for (ItemInfoIterator i = mItemInfos.begin(); i != mItemInfos.end(); i++)
     {
-        delete (*i).second;
+        delete i->second;
     }
-    db.clear();
+    mItemInfos.clear();
 
     delete unknown;
 }
@@ -189,12 +167,7 @@ ItemManager::~ItemManager()
 ItemInfo*
 ItemManager::getItemInfo(int id)
 {
-    if (db.find(id) != db.end())
-    {
-        return db[id];
-    }
-    else
-    {
-        return unknown;
-    }
+    ItemInfoIterator i = mItemInfos.find(id);
+
+    return (i != mItemInfos.end()) ? i->second : unknown;
 }

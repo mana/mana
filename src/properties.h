@@ -46,17 +46,9 @@ class Properties
         getProperty(const std::string &name)
         {
             const static std::string undefined = "";
-            std::map<std::string, std::string>::const_iterator i =
-                properties.find(name);
+            PropertyMap::const_iterator i = mProperties.find(name);
 
-            if (i != properties.end())
-            {
-                return (*i).second;
-            }
-            else
-            {
-                return undefined;
-            }
+            return (i != mProperties.end()) ? i->second : undefined;
         }
 
         /**
@@ -65,7 +57,7 @@ class Properties
         bool
         hasProperty(const std::string &name)
         {
-            return (properties.find(name) != properties.end());
+            return (mProperties.find(name) != mProperties.end());
         }
 
         /**
@@ -74,11 +66,12 @@ class Properties
         void
         setProperty(const std::string &name, const std::string &value)
         {
-            properties[name] = value;
+            mProperties[name] = value;
         }
 
     private:
-        std::map<std::string, std::string> properties;
+        typedef std::map<std::string, std::string> PropertyMap;
+        PropertyMap mProperties;
 };
 
 #endif

@@ -1,3 +1,15 @@
+2006-03-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp, src/being.h, src/configuration.cpp,
+	src/configuration.h, src/engine.cpp, src/map.cpp, src/map.h,
+	src/properties.h, src/gui/browserbox.cpp, src/gui/browserbox.h,
+	src/gui/chat.cpp, src/gui/chat.h, src/gui/gccontainer.cpp,
+	src/gui/gccontainer.h, src/gui/minimap.cpp,
+	src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h,
+	src/net/network.cpp, src/net/network.h, src/resources/itemmanager.cpp,
+	src/resources/itemmanager.h: Another bunch of cosmetic cleanups, i.e.
+	mostly typedefs...
+
 2006-02-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/beingmanager.cpp,

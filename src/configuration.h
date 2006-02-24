@@ -94,8 +94,15 @@ class Configuration
         void removeListener(const std::string &key, ConfigListener *listener);
 
     private:
-        std::map<std::string, std::string> options;
-        std::map<std::string, std::list<ConfigListener*> > listeners;
+        typedef std::map<std::string, std::string> Options;
+        typedef Options::iterator OptionIterator;
+        Options mOptions;
+
+        typedef std::list<ConfigListener*> Listeners;
+        typedef Listeners::iterator ListenerIterator;
+        typedef std::map<std::string, Listeners> ListenerMap;
+        typedef ListenerMap::iterator ListenerMapIterator;
+        ListenerMap mListenerMap;
 
         std::string mConfigPath;         /**< Location of config file */
 };

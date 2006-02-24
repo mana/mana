@@ -218,8 +218,10 @@ class ChatWindow : public Window, public gcn::ActionListener,
         BrowserBox *textOutput;    /**< Text box for displaying chat history */
         ScrollArea *scrollArea;    /**< Scroll area around text output */
 
-        std::list<std::string> history;           /**< Command history */
-        std::list<std::string>::iterator curHist; /**< History iterator */
+        typedef std::list<std::string> History;
+        typedef History::iterator HistoryIterator;
+        History mHistory;           /**< Command history */
+        HistoryIterator mCurHist; /**< History iterator */
 };
 
 extern ChatWindow *chatWindow;

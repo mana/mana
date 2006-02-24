@@ -77,7 +77,7 @@ void Minimap::draw(gcn::Graphics *graphics)
     }
 
     Beings *beings = beingManager->getAll();
-    Beings::iterator bi;
+    BeingIterator bi;
 
     for (bi = beings->begin(); bi != beings->end(); bi++)
     {

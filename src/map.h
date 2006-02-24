@@ -37,7 +37,9 @@ class Sprite;
 struct PATH_NODE;
 
 typedef std::vector<Tileset*> Tilesets;
+typedef Tilesets::iterator TilesetIterator;
 typedef std::list<Sprite*> Sprites;
+typedef Sprites::iterator SpriteIterator;
 
 /**
  * A meta tile stores additional information about a location on a tile map.
@@ -163,14 +165,14 @@ class Map : public Properties
         /**
          * Adds a sprite to the map.
          */
-        Sprites::iterator
+        SpriteIterator
         addSprite(Sprite *sprite);
 
         /**
          * Removes a sprite from the map.
          */
         void
-        removeSprite(Sprites::iterator iterator);
+        removeSprite(SpriteIterator iterator);
 
     private:
         /**

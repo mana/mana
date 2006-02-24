@@ -62,8 +62,7 @@ void Configuration::init(const std::string &filename)
             xmlChar *value = xmlGetProp(node, BAD_CAST "value");
 
             if (name && value) {
-                options[std::string((const char*)name)] =
-                    std::string((const char*)value);
+                mOptions[(const char*)name] = (const char*)value;
             }
 
             if (name) xmlFree(name);
@@ -93,18 +92,16 @@ void Configuration::write()
         xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
         xmlTextWriterStartElement(writer, BAD_CAST "configuration");
 
-        std::map<std::string, std::string>::iterator iter;
-
-        for (iter = options.begin(); iter != options.end(); iter++)
+        for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
         {
             logger->log("Configuration::write(%s, \"%s\")",
-                    iter->first.c_str(), iter->second.c_str());
+                    i->first.c_str(), i->second.c_str());
 
             xmlTextWriterStartElement(writer, BAD_CAST "option");
             xmlTextWriterWriteAttribute(writer,
-                    BAD_CAST "name", BAD_CAST iter->first.c_str());
+                    BAD_CAST "name", BAD_CAST i->first.c_str());
             xmlTextWriterWriteAttribute(writer,
-                    BAD_CAST "value", BAD_CAST iter->second.c_str());
+                    BAD_CAST "value", BAD_CAST i->second.c_str());
             xmlTextWriterEndElement(writer);
         }
 
@@ -115,19 +112,15 @@ void Configuration::write()
 
 void Configuration::setValue(const std::string &key, std::string value)
 {
-    options[key] = value;
+    mOptions[key] = value;
 
     // Notify listeners
-    std::map<std::string, std::list<ConfigListener*> >::iterator list =
-        listeners.find(key);
-
-    if (list != listeners.end()) {
-        std::list<ConfigListener*>::iterator listener = (*list).second.begin();
-
-        while (listener != (*list).second.end())
+    ListenerMapIterator list = mListenerMap.find(key);
+    if (list != mListenerMap.end()) {
+        Listeners listeners = list->second;
+        for (ListenerIterator i = listeners.begin(); i != listeners.end(); i++)
         {
-            (*listener)->optionChanged(key);
-            listener++;
+            (*i)->optionChanged(key);
         }
     }
 }
@@ -141,33 +134,24 @@ void Configuration::setValue(const std::string &key, float value)
 
 std::string Configuration::getValue(const std::string &key, std::string deflt)
 {
-    std::map<std::string, std::string>::iterator iter = options.find(key);
-    return ((iter != options.end()) ? (*iter).second : deflt);
+    OptionIterator iter = mOptions.find(key);
+    return ((iter != mOptions.end()) ? iter->second : deflt);
 }
 
 float Configuration::getValue(const std::string &key, float deflt)
 {
-    std::map<std::string, std::string>::iterator iter = options.find(key);
-    return (iter != options.end()) ? atof((*iter).second.c_str()) : deflt;
+    OptionIterator iter = mOptions.find(key);
+    return (iter != mOptions.end()) ? atof(iter->second.c_str()) : deflt;
 }
 
 void Configuration::addListener(
         const std::string &key, ConfigListener *listener)
 {
-    listeners[key].push_front(listener);
+    mListenerMap[key].push_front(listener);
 }
 
 void Configuration::removeListener(
         const std::string &key, ConfigListener *listener)
 {
-    std::list<ConfigListener*>::iterator i = listeners[key].begin();
-
-    while (i != listeners[key].end())
-    {
-        if ((*i) == listener) {
-            listeners[key].erase(i);
-            return;
-        }
-        i++;
-    }
+    mListenerMap[key].remove(listener);
 }

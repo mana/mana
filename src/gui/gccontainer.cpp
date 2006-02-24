@@ -25,7 +25,7 @@
 
 GCContainer::~GCContainer()
 {
-    std::list<gcn::Widget*>::iterator i = mDeathList.begin();
+    WidgetIterator i = mDeathList.begin();
 
     while (i != mDeathList.end()) {
         /* Take care _not_ to modify the list in our _announceDeath method */

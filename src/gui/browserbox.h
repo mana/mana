@@ -143,8 +143,14 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         };
 
     private:
-        std::vector<std::string> mTextRows;
-        std::vector<BROWSER_LINK> mLinks;
+        typedef std::vector<std::string> TextRows;
+        typedef TextRows::iterator TextRowIterator;
+        TextRows mTextRows;
+
+        typedef std::vector<BROWSER_LINK> Links;
+        typedef Links::iterator LinkIterator;
+        Links mLinks;
+
         LinkHandler *mLinkHandler;
         unsigned int mMode;
         unsigned int mHighMode;

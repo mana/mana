@@ -80,7 +80,7 @@ void Being::clearPath()
     mPath.clear();
 }
 
-void Being::setPath(std::list<PATH_NODE> path)
+void Being::setPath(const Path &path)
 {
     mPath = path;
 

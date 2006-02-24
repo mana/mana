@@ -48,7 +48,9 @@ class ItemManager
 
     protected:
         // Items database
-        std::map<int, ItemInfo*> db;
+        typedef std::map<int, ItemInfo*> ItemInfos;
+        typedef ItemInfos::iterator ItemInfoIterator;
+        ItemInfos mItemInfos;
         ItemInfo *unknown;
 };
 

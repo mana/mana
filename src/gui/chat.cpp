@@ -75,7 +75,7 @@ ChatWindow::ChatWindow(const std::string &logfile, Network *network):
 
     // Add key listener to chat input to be able to respond to up/down
     chatInput->addKeyListener(this);
-    curHist = history.end();
+    mCurHist = mHistory.end();
 }
 
 ChatWindow::~ChatWindow()
@@ -199,12 +199,12 @@ ChatWindow::action(const std::string& eventId)
 
         if (message.length() > 0) {
             // If message different from previous, put it in the history
-            if (history.size() == 0 || message != history.back()) {
-                history.push_back(message);
+            if (mHistory.size() == 0 || message != mHistory.back()) {
+                mHistory.push_back(message);
             }
 
             // Reset history iterator
-            curHist = history.end();
+            mCurHist = mHistory.end();
 
             // Send the message to the server
             chatSend(player_node->getName().c_str(), message.c_str());
@@ -384,24 +384,24 @@ ChatWindow::const_msg(CHATSKILL act)
 void
 ChatWindow::keyPress(const gcn::Key &key)
 {
-    if (key.getValue() == key.DOWN && curHist != history.end())
+    if (key.getValue() == key.DOWN && mCurHist != mHistory.end())
     {
         // Move forward through the history
-        std::list<std::string>::iterator prevHist = curHist++;
-        if (curHist != history.end()) {
-            chatInput->setText(*curHist);
+        HistoryIterator prevHist = mCurHist++;
+        if (mCurHist != mHistory.end()) {
+            chatInput->setText(*mCurHist);
             chatInput->setCaretPosition(chatInput->getText().length());
         }
         else {
-            curHist = prevHist;
+            mCurHist = prevHist;
         }
     }
-    else if (key.getValue() == key.UP && curHist != history.begin() &&
-            history.size() > 0)
+    else if (key.getValue() == key.UP && mCurHist != mHistory.begin() &&
+            mHistory.size() > 0)
     {
         // Move backward through the history
-        curHist--;
-        chatInput->setText(*curHist);
+        mCurHist--;
+        chatInput->setText(*mCurHist);
         chatInput->setCaretPosition(chatInput->getText().length());
     }
 }

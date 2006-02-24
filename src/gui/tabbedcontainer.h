@@ -48,8 +48,10 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
         void setOpaque(bool opaque);
 
     private:
-        std::vector<gcn::Widget*> mTabs;      // The actual tabs at the top
-        std::vector<gcn::Widget*> mContents;  // The contents of the tabs
+        typedef std::vector<gcn::Widget*> Widgets;
+        typedef Widgets::iterator WidgetIterator;
+        Widgets mTabs;      // The actual tabs at the top
+        Widgets mContents;  // The contents of the tabs
 
         Widget *mActiveContent;
 };

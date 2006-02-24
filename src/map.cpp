@@ -70,8 +70,7 @@ Map::~Map()
     delete[] tiles;
 
     // Clean up tilesets
-    Tilesets::iterator i;
-    for (i = tilesets.begin(); i != tilesets.end(); i++)
+    for (TilesetIterator i = tilesets.begin(); i != tilesets.end(); i++)
     {
         delete (*i);
     }
@@ -109,7 +108,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     int endY = (graphics->getHeight() + scrollY + 31) / 32;
 
     // If drawing the fringe layer, make sure sprites are sorted
-    Sprites::iterator si;
+    SpriteIterator si;
     if (layer == 1)
     {
         mSprites.sort(spriteCompare);
@@ -189,10 +188,9 @@ class ContainsGidFunctor
 Tileset*
 Map::getTilesetWithGid(int gid)
 {
-    Tilesets::iterator i;
-
     containsGid.gid = gid;
-    i = find_if(tilesets.begin(), tilesets.end(), containsGid);
+
+    TilesetIterator i = find_if(tilesets.begin(), tilesets.end(), containsGid);
 
     return (i == tilesets.end()) ? NULL : *i;
 }
@@ -225,8 +223,7 @@ Map::getWalk(int x, int y)
 
     // Check for collision with a being
     Beings *beings = beingManager->getAll();
-    Beings::iterator i;
-    for (i = beings->begin(); i != beings->end(); i++) {
+    for (BeingIterator i = beings->begin(); i != beings->end(); i++) {
         // job 45 is a portal, they don't collide
         if ((*i)->x == x && (*i)->y == y && (*i)->job != 45) {
             return false;
@@ -266,7 +263,7 @@ Map::getMetaTile(int x, int y)
     return &metaTiles[x + y * mWidth];
 }
 
-Sprites::iterator
+SpriteIterator
 Map::addSprite(Sprite *sprite)
 {
     mSprites.push_front(sprite);
@@ -274,16 +271,16 @@ Map::addSprite(Sprite *sprite)
 }
 
 void
-Map::removeSprite(Sprites::iterator iterator)
+Map::removeSprite(SpriteIterator iterator)
 {
     mSprites.erase(iterator);
 }
 
-std::list<PATH_NODE>
+Path
 Map::findPath(int startX, int startY, int destX, int destY)
 {
     // Path to be built up (empty by default)
-    std::list<PATH_NODE> path;
+    Path path;
 
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;

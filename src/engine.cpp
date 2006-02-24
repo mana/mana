@@ -167,7 +167,7 @@ void Engine::logic()
 {
     Beings *beings = beingManager->getAll();
     // Update beings
-    Beings::iterator beingIterator = beings->begin();
+    BeingIterator beingIterator = beings->begin();
     while (beingIterator != beings->end())
     {
         Being *being = (*beingIterator);
@@ -232,21 +232,18 @@ void Engine::draw(Graphics *graphics)
         int mouseTileX = mouseX / 32 + camera_x;
         int mouseTileY = mouseY / 32 + camera_y;
 
-        std::list<PATH_NODE> debugPath = mCurrentMap->findPath(
+        Path debugPath = mCurrentMap->findPath(
                 player_node->x, player_node->y,
                 mouseTileX, mouseTileY);
 
-        while (!debugPath.empty())
+        for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
         {
-            PATH_NODE node = debugPath.front();
-            debugPath.pop_front();
-
-            int squareX = node.x * 32 - map_x + 12;
-            int squareY = node.y * 32 - map_y + 12;
+            int squareX = i->x * 32 - map_x + 12;
+            int squareY = i->y * 32 - map_y + 12;
             graphics->setColor(gcn::Color(255, 0, 0));
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
 
-            MetaTile *tile = mCurrentMap->getMetaTile(node.x, node.y);
+            MetaTile *tile = mCurrentMap->getMetaTile(i->x, i->y);
 
             std::stringstream cost;
             cost << tile->Gcost;

@@ -37,7 +37,9 @@ class GCContainer : public gcn::Container
         virtual void _announceDeath(gcn::Widget *w);
 
     protected:
-        std::list<gcn::Widget*> mDeathList;
+        typedef std::list<gcn::Widget*> Widgets;
+        typedef Widgets::iterator WidgetIterator;
+        Widgets mDeathList;
 };
 
 #endif
