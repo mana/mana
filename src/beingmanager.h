@@ -74,6 +74,11 @@ class BeingManager
         Beings* getAll();
 
         /**
+         * Logic.
+         */
+        void logic();
+
+        /**
          * Destroys all beings except the local player
          */
         void clear();

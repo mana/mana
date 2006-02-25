@@ -116,4 +116,6 @@ class Sound {
         Mix_Music *music;
 };
 
+extern Sound sound;
+
 #endif

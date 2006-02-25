@@ -26,8 +26,6 @@
 
 #include <string>
 
-class Sound;
-
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
 #include "../config.h"
 #elif defined WIN32
@@ -70,6 +68,5 @@ enum {
 extern char n_server, n_character;
 extern unsigned char state;
 extern std::string errorMessage;
-extern Sound sound;
 
 #endif

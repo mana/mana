@@ -1,4 +1,9 @@
-2006-03-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/beingmanager.cpp, src/beingmanager.h, src/engine.cpp,
+	src/main.h, src/sound.h: Added a logic method to the being manager.
+
+2006-02-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/configuration.cpp,
 	src/configuration.h, src/engine.cpp, src/map.cpp, src/map.h,

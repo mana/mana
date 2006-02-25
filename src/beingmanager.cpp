@@ -121,6 +121,26 @@ Beings* BeingManager::getAll()
     return &mBeings;
 }
 
+void BeingManager::logic()
+{
+    BeingIterator i = mBeings.begin();
+    while (i != mBeings.end())
+    {
+        Being *being = (*i);
+
+        being->logic();
+
+        if (being->action == Being::MONSTER_DEAD && being->mFrame >= 20)
+        {
+            delete being;
+            i = mBeings.erase(i);
+        }
+        else {
+            i++;
+        }
+    }
+}
+
 void BeingManager::clear()
 {
     if (player_node)

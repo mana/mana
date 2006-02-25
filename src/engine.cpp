@@ -33,7 +33,6 @@
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
-#include "main.h"
 #include "map.h"
 #include "sound.h"
 
@@ -94,7 +93,7 @@ Engine::~Engine()
     std::map<int, Spriteset*>::iterator i;
     for (i = monsterset.begin(); i != monsterset.end(); i++)
     {
-        delete (*i).second;
+        delete i->second;
     }
     monsterset.clear();
 
@@ -165,25 +164,7 @@ void Engine::changeMap(std::string mapPath)
 
 void Engine::logic()
 {
-    Beings *beings = beingManager->getAll();
-    // Update beings
-    BeingIterator beingIterator = beings->begin();
-    while (beingIterator != beings->end())
-    {
-        Being *being = (*beingIterator);
-
-        being->logic();
-
-        if (being->action == Being::MONSTER_DEAD && being->mFrame >= 20)
-        {
-            delete being;
-            beingIterator = beings->erase(beingIterator);
-        }
-        else {
-            beingIterator++;
-        }
-    }
-
+    beingManager->logic();
     gui->logic();
 }
 
