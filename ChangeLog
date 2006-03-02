@@ -1,3 +1,7 @@
+2006-03-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/monster15.png: Added bat monster.
+
 2006-02-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/beingmanager.cpp, src/beingmanager.h, src/engine.cpp,
