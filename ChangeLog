@@ -1,3 +1,7 @@
+2006-03-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/engine.cpp: Re-add main.h header, Windows build needs it.
+
 2006-03-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/monster15.png: Added bat monster.

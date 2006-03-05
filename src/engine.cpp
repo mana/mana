@@ -33,6 +33,7 @@
 #include "graphics.h"
 #include "localplayer.h"
 #include "log.h"
+#include "main.h"
 #include "map.h"
 #include "sound.h"
 
