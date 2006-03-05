@@ -26,7 +26,9 @@
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
+#include <sstream>
 #include <unistd.h>
+#include <vector>
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
@@ -78,7 +80,8 @@
 // Account infos
 char n_server, n_character;
 
-Spriteset *hairset = NULL, *playerset = NULL;
+std::vector<Spriteset *> hairset;
+Spriteset *playerset = NULL;
 Graphics *graphics;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
@@ -265,11 +268,24 @@ void init_engine()
 
     playerset = resman->createSpriteset(
             "graphics/sprites/player_male_base.png", 64, 64);
-    hairset = resman->createSpriteset(
-            "graphics/sprites/player_male_hair.png", 40, 40);
-
     if (!playerset) logger->error("Couldn't load player spriteset!");
-    if (!hairset) logger->error("Couldn't load hair spriteset!");
+    
+    for (int i=0; i < NR_HAIR_STYLES; i++)
+    {
+        std::stringstream filename;
+        filename << "graphics/sprites/hairstyle" << (i + 1) << ".png";
+        printf("hairstyle: %s\n", filename.str().c_str());
+        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
+                filename.str(), 40, 40);
+        if (!tmp) {
+            logger->error("Unable to load hairstyle");
+        } else {
+            hairset.push_back(tmp);
+        }
+    }
+    /*hairset = resman->createSpriteset(
+            "graphics/sprites/player_male_hair.png", 29, 29);
+    if (!hairset) logger->error("Couldn't load hair spriteset!");*/
 
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
@@ -304,7 +320,12 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
-    delete hairset;
+    //delete hairset;
+    for (unsigned int i = 0; i < hairset.size(); i++)
+    {
+        delete hairset[i];
+    }
+    hairset.clear();
     delete playerset;
 
     // Shutdown libxml

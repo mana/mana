@@ -31,7 +31,7 @@
 #include "sprite.h"
 #include "map.h"
 
-#define NR_HAIR_STYLES 5
+#define NR_HAIR_STYLES 6
 #define NR_HAIR_COLORS 10
 
 class Map;
@@ -63,14 +63,14 @@ class Being : public Sprite
         };
 
         enum Action {
-            STAND        =  0,
-            WALK         =  1,
-            ATTACK       =  5,
-            BOW_ATTACK   =  9,
-            MONSTER_DEAD =  9,
-            SIT          = 13,
-            HIT          = 14,
-            DEAD         = 15
+            STAND          =  0,
+            WALK           =  1,
+            MONSTER_ATTACK =  5,
+            SIT            =  7,
+            DEAD           =  8,
+            ATTACK         =  9,
+            MONSTER_DEAD   =  9,
+            HIT            = 17
         };
 
         /**

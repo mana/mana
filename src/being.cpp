@@ -188,7 +188,7 @@ Being::logic()
         showSpeech = false;
     }
 
-    // Determine whether damange should still be displayed
+    // Determine whether damage should still be displayed
     if (get_elapsed_time(damage_time) > 3000)
     {
         showDamage = false;

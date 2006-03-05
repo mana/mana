@@ -1,10 +1,37 @@
 2006-03-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* data/graphics/sprites/Makefile.am: Remove trailing whitespace.
 	* src/engine.cpp: Re-add main.h header, Windows build needs it.
 
+2006-03-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/player_male_base.png: Added pants.
+	
 2006-03-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
+	* data/graphics/sprites/weapon1.png: Added missing frames.
+	* src/player.cpp: Fixed north shooting hair position.
+	* data/graphics/sprites/Makefile.am: Added new graphics.
 	* data/graphics/sprites/monster15.png: Added bat monster.
+
+2006-03-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev: Enabled -Wall switch.
+	* data/graphics/sprites/monster9.png: Fixed fire goblin north walking
+	  animation.
+	* data/graphics/sprites/hairstyle1.png, 
+	  data/graphics/sprites/hairstyle2.png,
+	  data/graphics/sprites/hairstyle3.png,
+	  data/graphics/sprites/hairstyle4.png,
+	  data/graphics/sprites/hairstyle5.png,
+	  data/graphics/sprites/hairstyle6.png,
+	  data/graphics/sprites/player_male_base.png,
+	  data/graphics/sprites/weapon0.png,
+	  data/graphics/sprites/weapon1.png: New graphics for hair styles,
+	  player and weapons.
+	* src/being.cpp, src/being.h, src/engine.cpp, src/gui/playerbox.cpp,
+	  src/localplayer.cpp, src/main.cpp, beinghandler.cpp, player.cpp,
+	  src/resources/image.cpp: Hacked code to support the new playerset.
 
 2006-02-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

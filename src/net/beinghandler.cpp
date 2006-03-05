@@ -203,7 +203,14 @@ void BeingHandler::handleMessage(MessageIn *msg)
                             srcBeing != player_node)
                     {
                         // buggy
-                        srcBeing->action = Being::ATTACK;
+                        if (srcBeing->getType() == Being::MONSTER)
+                        {
+                            srcBeing->action = Being::MONSTER_ATTACK;
+                        }
+                        else
+                        {
+                            srcBeing->action = Being::ATTACK;
+                        }
                         srcBeing->mFrame = 0;
                         srcBeing->walk_time = tick_time;
                     }

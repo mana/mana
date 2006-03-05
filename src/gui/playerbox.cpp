@@ -32,7 +32,8 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
-extern Spriteset *hairset, *playerset;
+extern std::vector<Spriteset *> hairset;
+extern Spriteset *playerset;
 
 int PlayerBox::instances = 0;
 ImageRect PlayerBox::background;
@@ -89,16 +90,16 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
     // Draw character
     dynamic_cast<Graphics*>(graphics)->drawImage(
-            playerset->spriteset[0], 23, 23);
+            playerset->spriteset[0], 23, 12);
 
     // Draw his hair
     if (hairColor >= 0 && hairStyle >= 0 &&
             hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
     {
-        int hf = hairColor + 40 * (hairStyle);
-        if (hf >= 0 && hf < (int)hairset->spriteset.size()) {
+        int hf = 9 * hairColor;
+        if (hf >= 0 && hf < (int)hairset[hairStyle]->spriteset.size()) {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    hairset->spriteset[hf], 37, 5);
+                    hairset[hairStyle]->spriteset[hf], 35, 7);
         }
     }
 }

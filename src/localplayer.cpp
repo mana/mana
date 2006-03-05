@@ -54,15 +54,20 @@ void LocalPlayer::logic()
 {
     switch (action) {
         case WALK:
-            mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
-            if (mFrame >= 4) {
+            mFrame = (get_elapsed_time(walk_time) * 6) / mWalkSpeed;
+            if (mFrame >= 6) {
                 nextStep();
             }
             break;
 
         case ATTACK:
-            mFrame = (get_elapsed_time(walk_time) * 4) / aspd;
-            if (mFrame >= 4) {
+            int frames = 4;
+            if (getWeapon() == 2)
+            {
+                frames = 5;
+            }
+            mFrame = (get_elapsed_time(walk_time) * frames) / aspd;
+            if (mFrame >= frames) {
                 nextStep();
                 attack();
             }

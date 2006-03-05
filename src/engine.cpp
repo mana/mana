@@ -31,6 +31,7 @@
 #include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
+#include "main.h"
 #include "localplayer.h"
 #include "log.h"
 #include "main.h"
@@ -61,7 +62,7 @@ ItemManager *itemDb;          /**< Item database object */
 Spriteset *itemset;
 Spriteset *emotionset;
 Spriteset *npcset;
-Spriteset *weaponset;
+std::vector<Spriteset *> weaponset;
 
 
 Engine::Engine(Network *network):
@@ -75,13 +76,24 @@ Engine::Engine(Network *network):
     npcset = resman->createSpriteset("graphics/sprites/npcs.png", 50, 80);
     emotionset = resman->createSpriteset("graphics/sprites/emotions.png",
             30, 32);
-    weaponset = resman->createSpriteset("graphics/sprites/weapons.png",
-            160, 120);
+    for (int i = 0; i < 2; i++)
+    {
+        std::stringstream filename;
+        filename << "graphics/sprites/weapon" << i << ".png";
+        printf("hairstyle: %s\n", filename.str().c_str());
+        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
+                filename.str(), 64, 64);
+        if (!tmp) {
+            logger->error("Unable to load weaponset");
+        } else {
+            weaponset.push_back(tmp);
+        }
+    }
     itemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
 
     if (!npcset) logger->error("Unable to load NPC spriteset!");
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
-    if (!weaponset) logger->error("Unable to load weapon spriteset!");
+    //if (!weaponset) logger->error("Unable to load weapon spriteset!");
     if (!itemset) logger->error("Unable to load item spriteset!");
 
     // Initialize item manager
@@ -100,7 +112,12 @@ Engine::~Engine()
 
     delete npcset;
     delete emotionset;
-    delete weaponset;
+    //delete weaponset;
+    for (unsigned int i = 0; i < weaponset.size(); i++)
+    {
+        delete weaponset[i];
+    }
+    weaponset.clear();
     delete itemset;
 
     delete itemDb;

@@ -30,28 +30,38 @@
 
 #include "gui/gui.h"
 
-extern Spriteset *hairset;
+extern std::vector<Spriteset *> hairset;
 extern Spriteset *playerset;
-extern Spriteset *weaponset;
+extern std::vector<Spriteset *> weaponset;
 
-signed char hairtable[16][4][2] = {
+signed char hairtable[19][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
-    { { 0,  0}, {-1, 2}, {-1, 2}, { 0, 2} }, // STAND
-    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 1st frame
-    { { 0,  3}, {-2, 4}, {-1, 3}, { 1, 4} }, // WALK 2nd frame
-    { { 0,  1}, {-2, 2}, {-1, 2}, { 1, 2} }, // WALK 3rd frame
-    { { 0,  2}, {-2, 3}, {-1, 2}, { 1, 3} }, // WALK 4th frame
-    { { 0,  1}, { 1, 2}, {-1, 3}, {-2, 2} }, // ATTACK 1st frame
-    { { 0,  1}, {-1, 2}, {-1, 3}, { 0, 2} }, // ATTACK 2nd frame
-    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 3rd frame
-    { { 0,  2}, {-4, 3}, { 0, 4}, { 3, 3} }, // ATTACK 4th frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 1st frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 2nd frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 3rd frame
-    { { 0,  0}, {-1, 2}, {-1, 2}, {-1, 2} }, // BOW_ATTACK 4th frame
-    { { 0,  4}, {-1, 6}, {-1, 6}, { 0, 6} }, // SIT
-    { { 0,  0}, { 0, 0}, { 0, 0}, { 0, 0} }, // ?? HIT
-    { { 0, 16}, {-1, 6}, {-1, 6}, { 0, 6} }  // DEAD
+    { {-5, -4}, {-6, -4}, {-6,  0}, {-4, -4} }, // STAND
+    { {-5, -3}, {-6, -4}, {-6,  0}, {-4, -4} }, // WALK 1st frame
+    { {-5, -4}, {-6, -3}, {-6, -1}, {-4, -3} }, // WALK 2nd frame
+    { {-5, -4}, {-6, -4}, {-6, -1}, {-4, -4} }, // WALK 3rd frame
+    { {-5, -3}, {-6, -4}, {-6,  0}, {-4, -4} }, // WALK 4th frame
+    { {-5, -4}, {-6, -3}, {-6, -1}, {-4, -3} }, // WALK 5th frame
+    { {-5, -4}, {-6, -4}, {-6, -1}, {-4, -4} }, // WALK 6th frame
+    { {-5,  8}, {-1,  5}, {-6,  8}, {-9,  5} },  // SIT
+    { {16, 21}, {16, 21}, {16, 21}, {16, 21} }, // DEAD
+    { {-5, -2}, {-2, -5}, {-6,  0}, {-7, -5} }, // ATTACK 1st frame
+    { {-5, -3}, {-2, -6}, {-6,  0}, {-7, -6} }, // ATTACK 2nd frame
+    { {-5,  0}, {-6, -3}, {-6,  0}, {-4, -3} }, // ATTACK 3rd frame
+    { {-5,  1}, {-7, -2}, {-6,  2}, {-3, -2} }, // ATTACK 4th frame
+    { {-5, -3}, {-3, -4}, {-6,  0}, {-7, -4} }, // BOW_ATTACK 1st frame
+    { {-5, -3}, {-3, -4}, {-6,  0}, {-7, -4} }, // BOW_ATTACK 2nd frame
+    { {-5, -3}, {-3, -4}, {-7,  0}, {-7, -4} }, // BOW_ATTACK 3rd frame
+    { {-5, -2}, {-1, -5}, {-7,  1}, {-9, -5} }, // BOW_ATTACK 4th frame
+    { {-5, -3}, {-1, -5}, {-7,  0}, {-9, -5} }, // BOW_ATTACK 5th frame
+    { { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0} }  // ?? HIT
+};
+
+unsigned char hairframe[4][20] = {
+    { 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+    { 3, 3, 3, 3, 3, 3, 3, 3, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
+    { 4, 4, 4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
+    { 5, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 }
 };
 
 Player::Player(Uint32 id, Uint16 job, Map *map):
@@ -63,17 +73,26 @@ void Player::logic()
 {
     switch (action) {
         case WALK:
-            mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
+            mFrame = (get_elapsed_time(walk_time) * 6) / mWalkSpeed;
+            if (mFrame >= 6) {
+                nextStep();
+            }
             break;
 
         case ATTACK:
-            mFrame = (get_elapsed_time(walk_time) * 4) / aspd;
+            int frames = 4;
+            if (getWeapon() == 2)
+            {
+                frames = 5;
+            }
+            mFrame = (get_elapsed_time(walk_time) * frames) / aspd;
+            if (mFrame >= frames) {
+                nextStep();
+            }
             break;
     }
 
-    if (mFrame >= 4) {
-        nextStep();
-    }
+
 
     Being::logic();
 }
@@ -98,31 +117,37 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
 
     if (action == ATTACK && getWeapon() > 0)
     {
-        frame += 4 * (getWeapon() - 1);
+        if (getWeapon() == 2)
+        {
+            frame += 4;
+        }
     }
 
     unsigned char dir = 0;
     while (!(direction & (1 << dir))) dir++;
 
-    graphics->drawImage(playerset->spriteset[frame + 16 * dir],
+    graphics->drawImage(playerset->spriteset[frame + 18 * dir],
             px - 16, py - 32);
 
     if (getWeapon() != 0 && action == ATTACK)
     {
-        Image *image = weaponset->spriteset[
-            16 * (getWeapon() - 1) + 4 * mFrame + dir];
-
-        graphics->drawImage(image, px - 64, py - 80);
+        int frames = 4;
+        if (getWeapon() == 2)
+        {
+            frames = 5;
+        }
+        Image *image = weaponset[getWeapon() - 1]->spriteset[
+                    mFrame + frames * dir];
+        graphics->drawImage(image, px - 16, py - 32);
     }
 
     if (getHairColor() <= NR_HAIR_COLORS)
     {
-        int hf = getHairColor() - 1 + 10 * (dir + 4 *
-                (getHairStyle() - 1));
+        int hf = 9 * (getHairColor() - 1) + hairframe[dir][frame];
 
-        graphics->drawImage(hairset->spriteset[hf],
-                px - 2 + 2 * hairtable[frame][dir][0],
-                py - 50 + 2 * hairtable[frame][dir][1]);
+        graphics->drawImage(hairset[getHairStyle() - 1]->spriteset[hf],
+                px + 1 + hairtable[frame][dir][0],
+                py - 33 + hairtable[frame][dir][1]);
     }
 }
 
