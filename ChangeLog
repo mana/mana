@@ -1,8 +1,11 @@
+2006-03-06  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9.1.tmx.gz: Fixed some mapping bugs.
+
 2006-03-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* AUTHORS, NEWS, README, data/help/changes.txt, data/help/header.txt,
 	data/help/team.txt: A bunch of updates to docs, ready for 0.0.19.
-	
+
 2006-03-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/sprites/Makefile.am: Remove trailing whitespace.
@@ -11,7 +14,7 @@
 2006-03-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/player_male_base.png: Added pants.
-	
+
 2006-03-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/weapon1.png: Added missing frames.
@@ -24,7 +27,7 @@
 	* The Mana World.dev: Enabled -Wall switch.
 	* data/graphics/sprites/monster9.png: Fixed fire goblin north walking
 	  animation.
-	* data/graphics/sprites/hairstyle1.png, 
+	* data/graphics/sprites/hairstyle1.png,
 	  data/graphics/sprites/hairstyle2.png,
 	  data/graphics/sprites/hairstyle3.png,
 	  data/graphics/sprites/hairstyle4.png,
