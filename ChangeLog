@@ -1,3 +1,8 @@
+2006-03-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* AUTHORS, NEWS, README, data/help/changes.txt, data/help/header.txt,
+	data/help/team.txt: A bunch of updates to docs, ready for 0.0.19.
+	
 2006-03-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/sprites/Makefile.am: Remove trailing whitespace.

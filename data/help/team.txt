@@ -15,6 +15,10 @@
          b_lindeijer@users.sourceforge.net
              (various parts, GUI, graphics, A* and map rewrites)
  
+     ##9Björn Steinbrink  (aka Doener)
+         der_doener@users.sourceforge.net
+             (various parts)
+ 
      ##9Eric Scrivner (aka zenogais)
          bitshift2002@users.sourceforge.net
              (resource manager)

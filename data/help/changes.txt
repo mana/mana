@@ -3,6 +3,33 @@
  
 ##3                         === RECENT CHANGES ===
  
+ 0.0.19 (6 March 2006)
+ 
+ - Added --username, --password and --defaults command line options
+ - Improved login sequence
+ - Enabled 3 slots to create players
+ - Improved setup window and added a joystick calibration tool
+ - Some maps fixes
+ - Reorganized and improved network code
+ - Fixed some bugs
+ - Made the player walk to items prior to picking them up
+ - Added new playerset
+ - Lots of cleanups and code re-roganization
+ 
+ 0.0.18.1 (30 December 2005)
+ - Fixed a drawing glitch with high tiles at the bottom of the screen
+ - Fixed glitches caused by fading out the damage display
+ 
+ 0.0.18 (20 December 2005)
+ - Added new items, npcs, tilesets, maps and monsters
+ - Non blocking connection at startup
+ - Enabled monster emotions
+ - Client version is now displayed during login
+ - Fixed setup window behaviour
+ - Fixed a Windows crash issue
+ - Fixed ScrollArea and BrowserBox behaviour
+ - Code cleanups
+ 
  0.0.17 (10 October 2005)
  
  - Added remembering of window position and sizes
