@@ -1,4 +1,9 @@
+2006-03-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* configure.ac: Version changed to 0.0.19.
+
 2006-03-06  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/maps/new_9.1.tmx.gz: Fixed some mapping bugs.
 
 2006-03-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
