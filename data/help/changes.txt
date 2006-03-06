@@ -17,10 +17,12 @@
  - Lots of cleanups and code re-roganization
  
  0.0.18.1 (30 December 2005)
+ 
  - Fixed a drawing glitch with high tiles at the bottom of the screen
  - Fixed glitches caused by fading out the damage display
  
  0.0.18 (20 December 2005)
+ 
  - Added new items, npcs, tilesets, maps and monsters
  - Non blocking connection at startup
  - Enabled monster emotions

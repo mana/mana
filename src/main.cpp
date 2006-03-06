@@ -274,7 +274,6 @@ void init_engine()
     {
         std::stringstream filename;
         filename << "graphics/sprites/hairstyle" << (i + 1) << ".png";
-        printf("hairstyle: %s\n", filename.str().c_str());
         Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
                 filename.str(), 40, 40);
         if (!tmp) {
