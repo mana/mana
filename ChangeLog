@@ -1,3 +1,8 @@
+2006-03-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/tiles/Makefile.am, data/graphics/tiles/Woodland.png:
+	Removed unused tileset.
+	
 2006-03-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* configure.ac: Version changed to 0.0.19.
