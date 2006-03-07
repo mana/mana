@@ -1,3 +1,16 @@
+tmw (0.0.19-1) unstable; urgency=low
+
+  * New Playerset Build.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 07 Mar 2006 21:02:33 +0200
+
+tmw (0.0.18.1-1) unstable; urgency=low
+
+  * Santa's Build. Merry Christmas.
+  * Now removes old build dirs.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 25 Dec 2005 11:30:33 +0200
+
 tmw (0.0.17-2) unstable; urgency=low
 
   * Corrected libcurl3 dependencies problem.

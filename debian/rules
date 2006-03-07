@@ -15,7 +15,7 @@
 DEB_HOST_GNU_TYPE   ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-config.status: configure
+config.status:
 	dh_testdir
 	./autogen.sh
 	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man6/man --infodir=/usr/share/doc/tmw --datadir=/usr/share/games --bindir=/usr/games --with-opengl
@@ -34,7 +34,11 @@ build-stamp:  config.status
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp 
+	rm -f build-stamp
+#	Removing dirs from old Debian builds
+	rm -rf debian/tmw
+	rm -rf debian/tmw-music
+	rm -rf debian/tmw-data
 
 	-$(MAKE) distclean
 ifneq "$(wildcard /usr/share/misc/config.sub)" ""

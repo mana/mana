@@ -1,3 +1,9 @@
+2006-03-07  Yohann Ferreira  <bertram@cegetel.net>
+
+	* trunk/debian/rules, trunk/debian/changelog,
+	tags/0.0.19/debian/rules, tags/0.0.19/debian/changelog,
+	trunk/ChangeLog: Updating Debian files for 0.0.19 release.
+
 2006-03-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/Makefile.am, data/graphics/tiles/Woodland.png:
