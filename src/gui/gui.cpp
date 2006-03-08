@@ -48,7 +48,6 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
-#include "../map.h"
 #include "../npc.h"
 
 #include "../resources/image.h"
@@ -257,7 +256,8 @@ Gui::mousePress(int mx, int my, int button)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeing(tilex, tiley)) && being->getType() != Being::LOCALPLAYER)
+        if ((being = beingManager->findBeing(tilex, tiley))
+                && being->getType() != Being::LOCALPLAYER)
         {
             showPopup(mx, my, being);
             return;
@@ -310,7 +310,7 @@ Gui::mousePress(int mx, int my, int button)
                 player_node->pickUp(item);
         }
         // Just walk around
-        else if (engine->getCurrentMap()->getWalk(tilex, tiley))
+        else
         {
             // XXX XXX XXX REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);

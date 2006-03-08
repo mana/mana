@@ -1,3 +1,8 @@
+2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/localplayer.cpp, src/gui/gui.cpp: Let the LocalPlayer decide
+	whether it can walk to a destination.
+
 2006-03-07  Yohann Ferreira  <bertram@cegetel.net>
 
 	* trunk/debian/rules, trunk/debian/changelog,
@@ -8,7 +13,7 @@
 
 	* data/graphics/tiles/Makefile.am, data/graphics/tiles/Woodland.png:
 	Removed unused tileset.
-	
+
 2006-03-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* configure.ac: Version changed to 0.0.19.
