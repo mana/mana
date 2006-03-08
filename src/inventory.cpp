@@ -23,7 +23,16 @@
 
 #include "inventory.h"
 
+#include <algorithm>
+
 #include "item.h"
+
+struct SlotUsed : public std::unary_function<Item, bool>
+{
+    bool operator()(const Item &item) const {
+        return (item.getId() != -1 && item.getQuantity() > 0);
+    }
+};
 
 Inventory::Inventory()
 {
@@ -76,6 +85,7 @@ void Inventory::removeItem(int id)
         if (mItems[i].getId() == id) {
             mItems[i].setId(-1);
             mItems[i].setQuantity(0);
+            mItems[i].setEquipped(false);
         }
     }
 }
@@ -93,37 +103,23 @@ bool Inventory::contains(Item *item)
 
 int Inventory::getFreeSlot()
 {
-    for (int i = 2; i < INVENTORY_SIZE; i++) {
-        if (mItems[i].getId() == -1) {
-            return i;
-        }
-    }
-    return -1;
+    Item *i = std::find_if(mItems + 2, mItems + INVENTORY_SIZE,
+            std::not1(SlotUsed()));
+    return (i == mItems + INVENTORY_SIZE) ? -1 : (i - mItems);
 }
 
 int Inventory::getNumberOfSlotsUsed()
 {
-    int numberOfFilledSlot = 0;
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-    {
-        if (mItems[i].getId() > -1 || mItems[i].getQuantity() > 0) 
-        {
-            numberOfFilledSlot++;
-        }
-    }
-
-    return numberOfFilledSlot;
+    return count_if(mItems, mItems + INVENTORY_SIZE, SlotUsed());
 }
 
 int Inventory::getLastUsedSlot()
 {
-    int i;
-
-    for (i = INVENTORY_SIZE - 1; i >= 0; i--) {
-        if ((mItems[i].getId() != -1) && (mItems[i].getQuantity() > 0)) {
-            break;
+    for (int i = INVENTORY_SIZE - 1; i >= 0; i--) {
+        if (SlotUsed()(mItems[i])) {
+            return i;
         }
     }
 
-    return --i;
+    return -1;
 }

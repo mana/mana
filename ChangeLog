@@ -1,5 +1,7 @@
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/itemcontainer.cpp, src/inventory.cpp: Made Inventory use STL
+	algorithms and fixed getLastUsedSlot semantics.
 	* src/engine.cpp, src/engine.h: Moved a variable definition into the
 	right place and made getCurrentMap inline.
 	* src/equipment.cpp, src/equipment.h: Use STL algorithms and make

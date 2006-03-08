@@ -49,7 +49,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     if (!selImg) logger->error("Unable to load selection.png");
 
     selectedItem = 0; // No item selected
-    maxItems = mInventory->getLastUsedSlot();
+    maxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
     addMouseListener(this);
 }
@@ -64,7 +64,7 @@ void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
-    int i = mInventory->getLastUsedSlot();
+    int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
     if (i != maxItems) {
         maxItems = i;
