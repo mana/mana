@@ -24,6 +24,8 @@
 #ifndef _TMW_LOCKEDARRAY_H
 #define _TMW_LOCKEDARRAY_H
 
+#include <algorithm>
+
 /**
  * A _very_ basic array class that allows simple iteration and jumps, keeping
  * its currently selected entry and providing a mechanism to lock this
@@ -66,8 +68,7 @@ template<class T>
 LockedArray<T>::LockedArray(unsigned int size):
     mSize(size), mData(new T[size]), mCurEntry(0), mLocked(false)
 {
-    for (unsigned int i = 0; i < mSize; i++)
-        mData[i] = 0;
+    std::fill_n(mData, mSize, (T)0);
 }
 
 template<class T>

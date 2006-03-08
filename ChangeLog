@@ -1,5 +1,6 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/lockedarray.h: Use fill_n instead of for-loop.
 	* src/gui/browserbox.cpp: Make the MouseOverLink functor dynamic and
 	use a STL algorithm in one more place.
 
