@@ -229,22 +229,21 @@ void BrowserBox::clearRows()
     mSelectedLink = -1;
 }
 
-struct MouseOverLinkFunctor
+struct MouseOverLink
 {
+    MouseOverLink(int x, int y) : mX(x),mY(y) { }
     bool operator() (BROWSER_LINK &link)
     {
         return (mX >= link.x1 && mX < link.x2 &&
                 mY >= link.y1 && mY < link.y2);
     }
     int mX, mY;
-} mouseOverLink;
+};
 
 void BrowserBox::mousePress(int mx, int my, int button)
 {
-    mouseOverLink.mX = mx;
-    mouseOverLink.mY = my;
-
-    LinkIterator i = find_if(mLinks.begin(), mLinks.end(), mouseOverLink);
+    LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
+            MouseOverLink(mx, my));
 
     if (i != mLinks.end()) {
         mLinkHandler->handleLink(i->link);
@@ -253,19 +252,10 @@ void BrowserBox::mousePress(int mx, int my, int button)
 
 void BrowserBox::mouseMotion(int mx, int my)
 {
-    mouseOverLink.mX = mx;
-    mouseOverLink.mY = my;
+    LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
+            MouseOverLink(mx, my));
 
-    mSelectedLink = -1;
-
-    for (unsigned int i = 0; i < mLinks.size(); i++)
-    {
-        if (mouseOverLink(mLinks[i]))
-        {
-            mSelectedLink = (int) i;
-            break;
-        }
-    }
+    mSelectedLink = (i != mLinks.end()) ? (i - mLinks.begin()) : -1;
 }
 
 void BrowserBox::draw(gcn::Graphics* graphics)
