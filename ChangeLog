@@ -1,5 +1,6 @@
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/resources/image.cpp: Removed some conditional code.
 	* src/localplayer.cpp, src/gui/gui.cpp: Reverted changes from r2225,
 	it broke walking code as I missed the differences between tile and
 	being collisions.

@@ -48,7 +48,8 @@ Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
     mGLImage(glimage),
     mTexWidth(texWidth),
     mTexHeight(texHeight),
-    mAlpha(1.0f)
+    mImage(0),
+    mAlpha(1.0)
 {
     bounds.x = 0;
     bounds.y = 0;
@@ -259,10 +260,6 @@ void Image::unload()
 {
     loaded = false;
 
-#ifdef USE_OPENGL
-    if (mUseOpenGL) return;
-#endif
-
     if (!mImage) return;
 
     // Free the image surface.
@@ -287,11 +284,9 @@ void Image::setAlpha(float a)
 {
     mAlpha = a;
 
-#ifdef USE_OPENGL
-    if (mUseOpenGL) {
+    if (!mImage) {
         return;
     }
-#endif
 
     // Set the alpha value this image is drawn at
     SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * mAlpha));
@@ -344,14 +339,7 @@ SubImage::SubImage(Image *parent, GLuint image,
 
 SubImage::~SubImage()
 {
-#ifdef USE_OPENGL
-    if (!mUseOpenGL) {
-        mImage = NULL;
-    }
-#else
-    mImage = NULL;
-#endif
-
+    mImage = 0; // Avoid destruction of the image
     mParent->decRef();
 }
 
