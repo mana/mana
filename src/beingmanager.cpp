@@ -31,6 +31,8 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "utils/dtor.h"
+
 class FindBeingFunctor
 {
     public:
@@ -148,11 +150,7 @@ void BeingManager::clear()
         mBeings.remove(player_node);
     }
 
-    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
-    {
-        delete (*i);
-    }
-
+    for_each(mBeings.begin(), mBeings.end(), make_dtor(mBeings));
     mBeings.clear();
 
     if (player_node)

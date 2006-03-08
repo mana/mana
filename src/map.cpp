@@ -33,6 +33,8 @@
 
 #include "resources/image.h"
 
+#include "utils/dtor.h"
+
 /**
  * A location on a tile map. Used for pathfinding, open list.
  */
@@ -70,10 +72,7 @@ Map::~Map()
     delete[] tiles;
 
     // Clean up tilesets
-    for (TilesetIterator i = tilesets.begin(); i != tilesets.end(); i++)
-    {
-        delete (*i);
-    }
+    for_each(tilesets.begin(), tilesets.end(), make_dtor(tilesets));
     tilesets.clear();
 }
 

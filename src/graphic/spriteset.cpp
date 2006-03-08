@@ -25,13 +25,13 @@
 
 #include "../resources/image.h"
 
+#include "../utils/dtor.h"
+
 Spriteset::Spriteset(Image *img, int width, int height)
 {
-    int x, y;
-
-    for (y = 0; y + height <= img->getHeight(); y += height)
+    for (int y = 0; y + height <= img->getHeight(); y += height)
     {
-        for (x = 0; x + width <= img->getWidth(); x += width)
+        for (int x = 0; x + width <= img->getWidth(); x += width)
         {
             spriteset.push_back(img->getSubImage(x, y, width, height));
         }
@@ -40,7 +40,5 @@ Spriteset::Spriteset(Image *img, int width, int height)
 
 Spriteset::~Spriteset()
 {
-    for (unsigned int i = 0; i < spriteset.size(); i++) {
-        delete spriteset[i];
-    }
+    for_each(spriteset.begin(), spriteset.end(), make_dtor(spriteset));
 }

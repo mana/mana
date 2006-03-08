@@ -25,6 +25,8 @@
 
 #include "floor_item.h"
 
+#include "utils/dtor.h"
+
 FloorItemManager::~FloorItemManager()
 {
     clear();
@@ -46,11 +48,7 @@ void FloorItemManager::destroy(FloorItem *item)
 
 void FloorItemManager::clear()
 {
-    FloorItemIterator i;
-    for (i = mFloorItems.begin(); i != mFloorItems.end(); i++)
-    {
-        delete *i;
-    }
+    for_each(mFloorItems.begin(), mFloorItems.end(), make_dtor(mFloorItems));
     mFloorItems.clear();
 }
 

@@ -32,6 +32,8 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
+
 extern std::vector<Spriteset *> hairset;
 extern Spriteset *playerset;
 
@@ -76,9 +78,7 @@ PlayerBox::~PlayerBox()
 
     if (instances == 0)
     {
-        for (int a = 0; a < 9; a++) {
-            delete background.grid[a];
-        }
+        for_each(background.grid, background.grid + 9, dtor<Image*>());
     }
 }
 

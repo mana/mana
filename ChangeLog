@@ -1,5 +1,13 @@
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/map.cpp, src/main.cpp, src/gui/button.cpp,
+	src/gui/textfield.cpp, src/gui/playerbox.cpp,
+	src/gui/windowcontainer.cpp, src/gui/skill.cpp,
+	src/gui/scrollarea.cpp, src/engine.cpp, src/beingmanager.cpp,
+	src/utils, src/utils/dtor.h, src/Makefile.am,
+	src/flooritemmanager.cpp, src/graphic/spriteset.cpp: Added a 'dtor'
+	helper functor to delete objects in arrays and containers using STL
+	algorithms.
 	* src/resources/image.cpp: Removed some conditional code.
 	* src/localplayer.cpp, src/gui/gui.cpp: Reverted changes from r2225,
 	it broke walking code as I missed the differences between tile and

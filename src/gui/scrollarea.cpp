@@ -30,6 +30,8 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
+
 int ScrollArea::instances = 0;
 ImageRect ScrollArea::background;
 ImageRect ScrollArea::vMarker;
@@ -60,10 +62,8 @@ ScrollArea::~ScrollArea()
 
     if (instances == 0)
     {
-        for (int a = 0; a < 9; a++) {
-            delete background.grid[a];
-            delete vMarker.grid[a];
-        }
+        for_each(background.grid, background.grid + 9, dtor<Image*>());
+        for_each(vMarker.grid, vMarker.grid + 9, dtor<Image*>());
 
         buttons[UP][0]->decRef();
         buttons[UP][1]->decRef();

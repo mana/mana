@@ -50,6 +50,8 @@
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/dtor.h"
+
 extern Minimap *minimap;
 
 char itemCurrenyQ[10] = "0";
@@ -103,20 +105,12 @@ Engine::Engine(Network *network):
 Engine::~Engine()
 {
     // Delete sprite sets
-    std::map<int, Spriteset*>::iterator i;
-    for (i = monsterset.begin(); i != monsterset.end(); i++)
-    {
-        delete i->second;
-    }
+    for_each(monsterset.begin(), monsterset.end(), make_dtor(monsterset));
     monsterset.clear();
 
     delete npcset;
     delete emotionset;
-    //delete weaponset;
-    for (unsigned int i = 0; i < weaponset.size(); i++)
-    {
-        delete weaponset[i];
-    }
+    for_each(weaponset.begin(), weaponset.end(), make_dtor(weaponset));
     weaponset.clear();
     delete itemset;
 

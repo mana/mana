@@ -172,6 +172,7 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/soundeffect.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
+	      utils/dtor.h \
 	      base64.cpp \
 	      base64.h \
 	      being.cpp \

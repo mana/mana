@@ -34,6 +34,8 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
+
 ImageRect Button::button[4];
 int Button::mInstances = 0;
 
@@ -80,17 +82,9 @@ Button::~Button()
 
     if (mInstances == 0)
     {
-        int a, x, y, mode;
-
-        for (mode = 0; mode < 4; mode++)
+        for (int mode = 0; mode < 4; mode++)
         {
-            a = 0;
-            for (y = 0; y < 3; y++) {
-                for (x = 0; x < 3; x++) {
-                    delete button[mode].grid[a];
-                    a++;
-                }
-            }
+            for_each(button[mode].grid, button[mode].grid + 9, dtor<Image*>());
         }
     }
 }

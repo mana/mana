@@ -30,8 +30,10 @@
 #include "scrollarea.h"
 
 #include "../localplayer.h"
-
 #include "../graphics.h"
+
+#include "../utils/dtor.h"
+
 extern Graphics *graphics;
 
 const char *skill_db[] = {
@@ -193,9 +195,6 @@ void SkillDialog::setSkill(int id, int lvl, int mp)
 
 void SkillDialog::cleanList()
 {
-    for (int i = skillList.size() - 1; i >= 0; i--)
-    {
-        delete skillList[i];
-    }
+    for_each(skillList.begin(), skillList.end(), make_dtor(skillList));
     skillList.clear();
 }

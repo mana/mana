@@ -32,6 +32,8 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
+#include "../utils/dtor.h"
+
 int TextField::instances = 0;
 ImageRect TextField::skin;
 
@@ -74,9 +76,7 @@ TextField::~TextField()
 
     if (instances == 0)
     {
-        for (int a = 0; a < 9; a++) {
-            delete skin.grid[a];
-        }
+        for_each(skin.grid, skin.grid + 9, dtor<Image*>());
     }
 }
 

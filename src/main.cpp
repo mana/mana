@@ -77,6 +77,8 @@
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
 
+#include "utils/dtor.h"
+
 // Account infos
 char n_server, n_character;
 
@@ -319,11 +321,7 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
-    //delete hairset;
-    for (unsigned int i = 0; i < hairset.size(); i++)
-    {
-        delete hairset[i];
-    }
+    for_each(hairset.begin(), hairset.end(), make_dtor(hairset));
     hairset.clear();
     delete playerset;
 
