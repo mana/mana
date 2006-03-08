@@ -139,7 +139,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
          */
         enum {
             UNDERLINE  = 1,
-            BACKGROUND = 2,
+            BACKGROUND = 2
         };
 
     private:

@@ -53,12 +53,12 @@ MenuWindow::MenuWindow():
 
     // Buttons
     // ------------
-    char *buttonNames[] = {
+    const char *buttonNames[] = {
         "Status", "Equipment", "Inventory", "Skills", "Setup", 0
     };
     int x = 0, y = 3, h = 0;
 
-    for (char **curBtn = buttonNames; *curBtn; curBtn++) {
+    for (const char **curBtn = buttonNames; *curBtn; curBtn++) {
         gcn::Button *btn = new Button(*curBtn);
         btn->setEventId(*curBtn);
         btn->addActionListener(&menuWindowListener);

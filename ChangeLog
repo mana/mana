@@ -1,3 +1,9 @@
+2006-03-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/browserbox.h, src/gui/menuwindow.cpp, src/gui/buysell.cpp:
+	Some fixes for compiling with pedantic compiler settings and const
+	char* checks.
+
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp, src/main.cpp, src/gui/button.cpp,
@@ -23,9 +29,8 @@
 
 2006-03-07  Yohann Ferreira  <bertram@cegetel.net>
 
-	* trunk/debian/rules, trunk/debian/changelog,
-	tags/0.0.19/debian/rules, tags/0.0.19/debian/changelog,
-	trunk/ChangeLog: Updating Debian files for 0.0.19 release.
+	* debian/rules, debian/changelog, ChangeLog: Updating Debian files for
+	0.0.19 release.
 
 2006-03-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

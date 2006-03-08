@@ -31,12 +31,12 @@ BuySellDialog::BuySellDialog():
     Window("Shop")
 {
     Button *buyButton = 0;
-    char *buttonNames[] = {
+    const char *buttonNames[] = {
         "Buy", "Sell", "Cancel", 0
     };
     int x = 10, y = 10;
 
-    for (char **curBtn = buttonNames; *curBtn; curBtn++)
+    for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
         Button *btn = new Button(*curBtn);
         if (!buyButton) buyButton = btn; // For focus request

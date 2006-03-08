@@ -158,11 +158,11 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         int height = tmpImage->h;
         int realWidth = 1, realHeight = 1;
 
-        while (realWidth < width && realWidth < 2048) {
+        while (realWidth < width && realWidth < 1024) {
             realWidth *= 2;
         }
 
-        while (realHeight < height && realHeight < 2048) {
+        while (realHeight < height && realHeight < 1024) {
             realHeight *= 2;
         }
 
