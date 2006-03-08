@@ -123,11 +123,6 @@ Engine::~Engine()
     delete itemDb;
 }
 
-Map *Engine::getCurrentMap()
-{
-    return mCurrentMap;
-}
-
 void Engine::changeMap(std::string mapPath)
 {
     // Clean up floor items
@@ -149,9 +144,6 @@ void Engine::changeMap(std::string mapPath)
         logger->error("Could not find map file");
     }
 
-    // Start playing new music file when necessary
-    std::string oldMusic = "";
-
     // Notify the minimap and beingManager about the map change
     Image *mapImage = NULL;
     if (newMap->hasProperty("minimap")) {
@@ -160,6 +152,9 @@ void Engine::changeMap(std::string mapPath)
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
+
+    // Start playing new music file when necessary
+    std::string oldMusic = "";
 
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");

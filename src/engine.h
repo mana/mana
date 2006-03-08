@@ -51,7 +51,7 @@ class Engine
         /**
          * Returns the currently active map.
          */
-        Map *getCurrentMap();
+        Map *getCurrentMap() { return mCurrentMap; }
 
         /**
          * Sets the currently active map.
