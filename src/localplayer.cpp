@@ -203,7 +203,8 @@ void LocalPlayer::walk(unsigned char dir)
     if (dx && dy && !mMap->getWalk(x + dx, y + dy))
         dx = 0;
 
-    if (dx || dy)
+    // Walk to where the player can actually go
+    if ((dx || dy) && mMap->getWalk(x + dx, y + dy))
     {
         setDestination(x + dx, y + dy);
     }
@@ -217,10 +218,6 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
-    // Check if we can walk there
-    if (!mMap->getWalk(x, y))
-        return;
-
     char temp[3];
     MessageOut outMsg(mNetwork);
     set_coordinates(temp, x, y, direction);
