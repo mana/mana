@@ -37,11 +37,6 @@ class Equipment
         Equipment();
 
         /**
-         * Destructor.
-         */
-        ~Equipment();
-
-        /**
          * Get equipment at the given slot.
          */
         Item*

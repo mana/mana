@@ -1,5 +1,7 @@
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/equipment.cpp, src/equipment.h: Use STL algorithms and make
+	destructor inline.
 	* src/localplayer.cpp, src/gui/gui.cpp: Let the LocalPlayer decide
 	whether it can walk to a destination.
 

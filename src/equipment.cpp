@@ -22,29 +22,23 @@
  */
 
 #include "equipment.h"
+
+#include <algorithm>
+
 #include "item.h"
 
 Equipment::Equipment():
-    mArrows(NULL)
+    mArrows(0)
 {
-    for (int i = 0; i < EQUIPMENT_SIZE; i++)
-    {
-        mEquipment[i] = NULL;
-    }
-}
-
-Equipment::~Equipment()
-{
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*)0);
 }
 
 void
 Equipment::removeEquipment(Item *item)
 {
-    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
-        if (mEquipment[i] == item) {
-            mEquipment[i] = 0;
-            break;
-        }
+    Item **i = std::find(mEquipment, mEquipment+EQUIPMENT_SIZE, item);
+    if (i != mEquipment+EQUIPMENT_SIZE) {
+        *i = 0;
     }
 }
 
