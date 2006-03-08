@@ -3,6 +3,9 @@
 	* src/gui/browserbox.h, src/gui/menuwindow.cpp, src/gui/buysell.cpp:
 	Some fixes for compiling with pedantic compiler settings and const
 	char* checks.
+	* data/graphics/sprites/player_male_base.png: Use two rows for each
+	direction in order to make the texture less wide so that it stays
+	within the 1024 texture limit for OpenGL mode.
 
 2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
