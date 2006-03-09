@@ -190,14 +190,14 @@ class Map : public Properties
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;
-        MetaTile *metaTiles;
-        Image **tiles;
+        MetaTile *mMetaTiles;
+        Image **mTiles;
 
-        Tilesets tilesets;
+        Tilesets mTilesets;
         Sprites mSprites;
 
         // Pathfinding members
-        int onClosedList, onOpenList;
+        int mOnClosedList, mOnOpenList;
 };
 
 #endif

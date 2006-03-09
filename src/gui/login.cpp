@@ -39,7 +39,7 @@
 void
 WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
-    this->target = textField;
+    this->mTarget = textField;
 }
 
 void
@@ -48,25 +48,25 @@ WrongDataNoticeListener::action(const std::string &eventId)
     if (eventId == "ok")
     {
         // Reset the field
-        target->setText("");
-        target->setCaretPosition(0);
-        target->requestFocus();
+        mTarget->setText("");
+        mTarget->setCaretPosition(0);
+        mTarget->requestFocus();
     }
 }
 
 LoginDialog::LoginDialog(LoginData *loginData):
     Window("Login"), mLoginData(loginData)
 {
-    userLabel = new gcn::Label("Name:");
-    passLabel = new gcn::Label("Password:");
-    serverLabel = new gcn::Label("Server:");
-    userField = new TextField(mLoginData->username);
-    passField = new PasswordField(mLoginData->password);
-    serverField = new TextField(mLoginData->hostname);
-    keepCheck = new CheckBox("Keep", false);
-    okButton = new Button("OK", "ok", this);
-    cancelButton = new Button("Cancel", "cancel", this);
-    registerButton = new Button("Register", "register", this);
+    gcn::Label *userLabel = new gcn::Label("Name:");
+    gcn::Label *passLabel = new gcn::Label("Password:");
+    gcn::Label *serverLabel = new gcn::Label("Server:");
+    mUserField = new TextField(mLoginData->username);
+    mPassField = new PasswordField(mLoginData->password);
+    mServerField = new TextField(mLoginData->hostname);
+    mKeepCheck = new CheckBox("Keep", false);
+    mOkButton = new Button("OK", "ok", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
+    mRegisterButton = new Button("Register", "register", this);
 
     setContentSize(200, 100);
 
@@ -74,58 +74,58 @@ LoginDialog::LoginDialog(LoginData *loginData):
     passLabel->setPosition(5, 14 + userLabel->getHeight());
     serverLabel->setPosition(
             5, 23 + userLabel->getHeight() + passLabel->getHeight());
-    userField->setPosition(65, 5);
-    passField->setPosition(65, 14 + userLabel->getHeight());
-    serverField->setPosition(
+    mUserField->setPosition(65, 5);
+    mPassField->setPosition(65, 14 + userLabel->getHeight());
+    mServerField->setPosition(
             65, 23 + userLabel->getHeight() + passLabel->getHeight());
-    userField->setWidth(130);
-    passField->setWidth(130);
-    serverField->setWidth(130);
-    keepCheck->setPosition(4, 77);
-    keepCheck->setMarked(mLoginData->remember);
-    cancelButton->setPosition(
-            200 - cancelButton->getWidth() - 5,
-            100 - cancelButton->getHeight() - 5);
-    okButton->setPosition(
-            cancelButton->getX() - okButton->getWidth() - 5,
-            100 - okButton->getHeight() - 5);
-    registerButton->setPosition(keepCheck->getX() + keepCheck->getWidth() + 10,
-            100 - registerButton->getHeight() - 5);
+    mUserField->setWidth(130);
+    mPassField->setWidth(130);
+    mServerField->setWidth(130);
+    mKeepCheck->setPosition(4, 77);
+    mKeepCheck->setMarked(mLoginData->remember);
+    mCancelButton->setPosition(
+            200 - mCancelButton->getWidth() - 5,
+            100 - mCancelButton->getHeight() - 5);
+    mOkButton->setPosition(
+            mCancelButton->getX() - mOkButton->getWidth() - 5,
+            100 - mOkButton->getHeight() - 5);
+    mRegisterButton->setPosition(mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
+            100 - mRegisterButton->getHeight() - 5);
 
-    userField->setEventId("ok");
-    passField->setEventId("ok");
-    serverField->setEventId("ok");
+    mUserField->setEventId("ok");
+    mPassField->setEventId("ok");
+    mServerField->setEventId("ok");
 
-    userField->addActionListener(this);
-    passField->addActionListener(this);
-    serverField->addActionListener(this);
-    keepCheck->addActionListener(this);
+    mUserField->addActionListener(this);
+    mPassField->addActionListener(this);
+    mServerField->addActionListener(this);
+    mKeepCheck->addActionListener(this);
 
     add(userLabel);
     add(passLabel);
     add(serverLabel);
-    add(userField);
-    add(passField);
-    add(serverField);
-    add(keepCheck);
-    add(okButton);
-    add(cancelButton);
-    add(registerButton);
+    add(mUserField);
+    add(mPassField);
+    add(mServerField);
+    add(mKeepCheck);
+    add(mOkButton);
+    add(mCancelButton);
+    add(mRegisterButton);
 
     setLocationRelativeTo(getParent());
 
-    if (!userField->getText().length()) {
-        userField->requestFocus();
+    if (!mUserField->getText().length()) {
+        mUserField->requestFocus();
     } else {
-        passField->requestFocus();
+        mPassField->requestFocus();
     }
 
-    wrongDataNoticeListener = new WrongDataNoticeListener();
+    mWrongDataNoticeListener = new WrongDataNoticeListener();
 }
 
 LoginDialog::~LoginDialog()
 {
-    delete wrongDataNoticeListener;
+    delete mWrongDataNoticeListener;
 }
 
 void
@@ -134,22 +134,22 @@ LoginDialog::action(const std::string& eventId)
     if (eventId == "ok")
     {
         // Check login
-        if (userField->getText().length() == 0)
+        if (mUserField->getText().length() == 0)
         {
-            wrongDataNoticeListener->setTarget(this->passField);
+            mWrongDataNoticeListener->setTarget(this->mPassField);
             OkDialog *dlg = new OkDialog("Error", "Enter your username first");
-            dlg->addActionListener(wrongDataNoticeListener);
+            dlg->addActionListener(mWrongDataNoticeListener);
         }
         else
         {
-            mLoginData->hostname = serverField->getText();
-            mLoginData->username = userField->getText();
-            mLoginData->password = passField->getText();
-            mLoginData->remember = keepCheck->isMarked();
+            mLoginData->hostname = mServerField->getText();
+            mLoginData->username = mUserField->getText();
+            mLoginData->password = mPassField->getText();
+            mLoginData->remember = mKeepCheck->isMarked();
 
-            okButton->setEnabled(false);
-            //cancelButton->setEnabled(false);
-            registerButton->setEnabled(false);
+            mOkButton->setEnabled(false);
+            //mCancelButton->setEnabled(false);
+            mRegisterButton->setEnabled(false);
 
             state = ACCOUNT_STATE;
         }

@@ -75,23 +75,24 @@ NewSkillDialog::NewSkillDialog():
     startPoint = 0;
     for ( int i = 0; i < N_SKILL_CAT_SIZE; i++)
     {
-        skillLabel[i] = new gcn::Label("Empty               ");
-        skillLevel[i] = new gcn::Label("00000");
-        skillbar[i] = new ProgressBar(0.0f,0,0,100,15,0,0,255);
-        skillLevel[i]->setAlignment(Graphics::RIGHT);
-        add(skillLabel[i],40,5+i*25);
-        add(skillLevel[i],150,5+i*25);
-        add(skillbar[i],180,5+i*25);
+        mSkillLabel[i] = new gcn::Label("Empty               ");
+        mSkillLevel[i] = new gcn::Label("00000");
+        mSkillbar[i] = new ProgressBar(0.0f,0,0,100,15,0,0,255);
+        mSkillLevel[i]->setAlignment(Graphics::RIGHT);
+        add(mSkillLabel[i],40,5+i*25);
+        add(mSkillLevel[i],150,5+i*25);
+        add(mSkillbar[i],180,5+i*25);
     }
     // initialize the skills
     for(int i=0;i<N_SKILL;i++)
     {
-        playerSkill[i].level = 0;
-        playerSkill[i].exp = 0;
+        mPlayerSkill[i].level = 0;
+        mPlayerSkill[i].exp = 0;
     }
     resetNSD();
 
     // create controls
+    Button *catButton[N_SKILL_CAT];
     catButton[0] = new Button("Weapons", "g1", this);
     catButton[1] = new Button("Magic", "g2", this);
     catButton[2] = new Button("Craft", "g3", this);
@@ -101,43 +102,18 @@ NewSkillDialog::NewSkillDialog():
     catButton[6] = new Button("S. Resist", "g7", this);
     catButton[7] = new Button("Hunting", "g8", this);
     catButton[8] = new Button("Stat", "g9", this);
-    closeButton = new Button("Close", "close", this);
 
-    // captions
-
-    // positioning
     setContentSize(350, 250);
-    catButton[0]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[0]->setPosition(290, 0);
-    catButton[1]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[1]->setPosition(290, 20);
-    catButton[2]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[2]->setPosition(290, 40);
-    catButton[3]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[3]->setPosition(290, 60);
-    catButton[4]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[4]->setPosition(290, 80);
-    catButton[5]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[5]->setPosition(290, 100);
-    catButton[6]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[6]->setPosition(290, 120);
-    catButton[7]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[7]->setPosition(290, 140);
-    catButton[8]->setDimension(gcn::Rectangle(0,0,60,20));
-    catButton[8]->setPosition(290, 160);
+
+    for (int i = 0; i < 9; ++i) {
+        catButton[i]->setDimension(gcn::Rectangle(0, 0, 60, 20));
+        catButton[i]->setPosition(290, 20 * i);
+        add(catButton[i]);
+    }
+
+    Button *closeButton = new Button("Close", "close", this);
     closeButton->setDimension(gcn::Rectangle(0,0,60,20));
     closeButton->setPosition(290, 230);
-
-    // add controls
-    add(catButton[0]);
-    add(catButton[1]);
-    add(catButton[2]);
-    add(catButton[3]);
-    add(catButton[4]);
-    add(catButton[5]);
-    add(catButton[6]);
-    add(catButton[7]);
-    add(catButton[8]);
     add(closeButton);
 
     // finsihing touches
@@ -199,20 +175,20 @@ void NewSkillDialog::resetNSD()
      {
          if(skill_name[a+startPoint] != "")
          {
-             skillLabel[a]->setCaption(skill_name[a+startPoint]);
-             skillLabel[a]->setVisible(true);
+             mSkillLabel[a]->setCaption(skill_name[a+startPoint]);
+             mSkillLabel[a]->setVisible(true);
              char tmp[5];
-             sprintf(tmp, "%d",playerSkill[a+startPoint].level);
-             skillLevel[a]->setCaption(tmp);
-             skillLevel[a]->setVisible(true);
-             skillbar[a]->setProgress(0.0f);
-             skillbar[a]->setVisible(true);
+             sprintf(tmp, "%d",mPlayerSkill[a+startPoint].level);
+             mSkillLevel[a]->setCaption(tmp);
+             mSkillLevel[a]->setVisible(true);
+             mSkillbar[a]->setProgress(0.0f);
+             mSkillbar[a]->setVisible(true);
          }
          else
          {
-             skillLevel[a]->setVisible(false);
-             skillLabel[a]->setVisible(false);
-             skillbar[a]->setVisible(false);
+             mSkillLevel[a]->setVisible(false);
+             mSkillLabel[a]->setVisible(false);
+             mSkillbar[a]->setVisible(false);
          }
      }
 }

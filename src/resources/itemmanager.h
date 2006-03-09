@@ -51,7 +51,7 @@ class ItemManager
         typedef std::map<int, ItemInfo*> ItemInfos;
         typedef ItemInfos::iterator ItemInfoIterator;
         ItemInfos mItemInfos;
-        ItemInfo *unknown;
+        ItemInfo *mUnknown;
 };
 
 extern ItemManager *itemDb;

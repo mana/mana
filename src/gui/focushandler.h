@@ -62,7 +62,7 @@ class FocusHandler : public gcn::FocusHandler
         /**
          * Stack of widgets that have requested modal forcus.
          */
-        std::list<gcn::Widget*> modalStack;
+        std::list<gcn::Widget*> mModalStack;
 };
 
 #endif

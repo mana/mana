@@ -71,9 +71,9 @@ Player::Player(Uint32 id, Uint16 job, Map *map):
 
 void Player::logic()
 {
-    switch (action) {
+    switch (mAction) {
         case WALK:
-            mFrame = (get_elapsed_time(walk_time) * 6) / mWalkSpeed;
+            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {
                 nextStep();
             }
@@ -85,7 +85,7 @@ void Player::logic()
             {
                 frames = 5;
             }
-            mFrame = (get_elapsed_time(walk_time) * frames) / aspd;
+            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
             if (mFrame >= frames) {
                 nextStep();
             }
@@ -106,16 +106,16 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;
-    int frame = action;
+    int frame = mAction;
 
-    frame = action;
+    frame = mAction;
 
-    if (action != SIT && action != DEAD)
+    if (mAction != SIT && mAction != DEAD)
     {
         frame += mFrame;
     }
 
-    if (action == ATTACK && getWeapon() > 0)
+    if (mAction == ATTACK && getWeapon() > 0)
     {
         if (getWeapon() == 2)
         {
@@ -124,12 +124,12 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     }
 
     unsigned char dir = 0;
-    while (!(direction & (1 << dir))) dir++;
+    while (!(mDirection & (1 << dir))) dir++;
 
     graphics->drawImage(playerset->get(frame + 18 * dir),
             px - 16, py - 32);
 
-    if (getWeapon() != 0 && action == ATTACK)
+    if (getWeapon() != 0 && mAction == ATTACK)
     {
         int frames = 4;
         if (getWeapon() == 2)

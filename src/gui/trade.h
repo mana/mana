@@ -116,20 +116,20 @@ class TradeWindow : public Window, gcn::ActionListener
         Network *mNetwork;
 
         typedef std::auto_ptr<Inventory> InventoryPtr;
-        InventoryPtr myInventory;
-        InventoryPtr partnerInventory;
+        InventoryPtr mMyInventory;
+        InventoryPtr mPartnerInventory;
 
-        ItemContainer *myItemContainer;
-        ItemContainer *partnerItemContainer;
+        ItemContainer *mMyItemContainer;
+        ItemContainer *mPartnerItemContainer;
 
-        gcn::Label *itemNameLabel;
-        gcn::Label *itemDescriptionLabel;
-        gcn::Label *moneyLabel;
-        gcn::Label *moneyLabel2;
-        gcn::Button *addButton, *okButton, *cancelButton, *tradeButton;
-        ScrollArea *myScroll, *partnerScroll;
-        gcn::TextField *moneyField;
-        bool ok_other, ok_me;
+        gcn::Label *mItemNameLabel;
+        gcn::Label *mItemDescriptionLabel;
+        gcn::Label *mMoneyLabel;
+        gcn::Label *mMoneyLabel2;
+        gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;
+        ScrollArea *mMyScroll, *mPartnerScroll;
+        gcn::TextField *mMoneyField;
+        bool mOkOther, mOkMe;
 };
 
 extern TradeWindow *tradeWindow;

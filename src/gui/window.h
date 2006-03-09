@@ -199,15 +199,15 @@ class Window : public gcn::Window
         GCContainer *mChrome;   /**< Contained container */
         Window *mParent;           /**< The parent window */
         std::string mWindowName;   /**< Name of the window */
-        int snapSize;              /**< Snap distance to window edge */
+        int mSnapSize;              /**< Snap distance to window edge */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
-        bool resizable;            /**< Window can be resized */
+        bool mResizable;            /**< Window can be resized */
         bool mMouseResize;         /**< Window is being resized */
-        int minWinWidth;           /**< Minimum window width */
-        int minWinHeight;          /**< Minimum window height */
-        int maxWinWidth;           /**< Maximum window width */
-        int maxWinHeight;          /**< Maximum window height */
+        int mMinWinWidth;           /**< Minimum window width */
+        int mMinWinHeight;          /**< Minimum window height */
+        int mMaxWinWidth;           /**< Maximum window width */
+        int mMaxWinHeight;          /**< Maximum window height */
         int mDefaultX;             /**< Default window X position */
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */

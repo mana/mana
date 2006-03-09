@@ -54,18 +54,18 @@ PopupMenu::PopupMenu():
     setTitleBarHeight(0);
     mShowTitle = false;
 
-    browserBox = new BrowserBox();
-    browserBox->setPosition(4, 4);
-    browserBox->setHighlightMode(BrowserBox::BACKGROUND);
-    browserBox->setOpaque(false);
-    add(browserBox);
-    browserBox->setLinkHandler(this);
+    mBrowserBox = new BrowserBox();
+    mBrowserBox->setPosition(4, 4);
+    mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
+    mBrowserBox->setOpaque(false);
+    add(mBrowserBox);
+    mBrowserBox->setLinkHandler(this);
 }
 
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
     mBeing = being;
-    browserBox->clearRows();
+    mBrowserBox->clearRows();
 
     switch (mBeing->getType())
     {
@@ -74,18 +74,18 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 // Players can be traded with. Later also attack, follow and
                 // add as buddy will be options in this menu.
                 const std::string &name = mBeing->getName();
-                browserBox->addRow("@@trade|Trade With " + name + "@@");
+                mBrowserBox->addRow("@@trade|Trade With " + name + "@@");
 
-                browserBox->addRow("@@attack|Attack " + name + "@@");
-                //browserBox->addRow("@@follow|Follow " + name + "@@");
-                //browserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
+                mBrowserBox->addRow("@@attack|Attack " + name + "@@");
+                //mBrowserBox->addRow("@@follow|Follow " + name + "@@");
+                //mBrowserBox->addRow("@@buddy|Add " + name + " to Buddy List@@");
             }
             break;
 
         case Being::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            browserBox->addRow("@@talk|Talk To NPC@@");
+            mBrowserBox->addRow("@@talk|Talk To NPC@@");
             break;
 
         default:
@@ -94,8 +94,8 @@ void PopupMenu::showPopup(int x, int y, Being *being)
     }
 
     //browserBox->addRow("@@look|Look To@@");
-    browserBox->addRow("##3---");
-    browserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow("##3---");
+    mBrowserBox->addRow("@@cancel|Cancel@@");
 
     showPopup(x, y);
 }
@@ -103,15 +103,15 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
     mFloorItem = floorItem;
-    browserBox->clearRows();
+    mBrowserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
     std::string name = itemDb->getItemInfo(mFloorItem->getItemId())->getName();
-    browserBox->addRow("@@pickup|Pick Up " + name + "@@");
+    mBrowserBox->addRow("@@pickup|Pick Up " + name + "@@");
 
     //browserBox->addRow("@@look|Look To@@");
-    browserBox->addRow("##3---");
-    browserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow("##3---");
+    mBrowserBox->addRow("@@cancel|Cancel@@");
 
     showPopup(x, y);
 }
@@ -225,29 +225,29 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 {
     assert(item);
     mItem = item;
-    browserBox->clearRows();
+    mBrowserBox->clearRows();
 
     if (item->isEquipment())
     {
         if (item->isEquipped())
-            browserBox->addRow("@@use|Unequip@@");
+            mBrowserBox->addRow("@@use|Unequip@@");
         else
-            browserBox->addRow("@@use|Equip@@");
+            mBrowserBox->addRow("@@use|Equip@@");
     }
     else
-        browserBox->addRow("@@use|Use@@");
+        mBrowserBox->addRow("@@use|Use@@");
 
-    browserBox->addRow("@@drop|Drop@@");
-    browserBox->addRow("@@description|Description@@");
-    browserBox->addRow("##3---");
-    browserBox->addRow("@@cancel|Cancel@@");
+    mBrowserBox->addRow("@@drop|Drop@@");
+    mBrowserBox->addRow("@@description|Description@@");
+    mBrowserBox->addRow("##3---");
+    mBrowserBox->addRow("@@cancel|Cancel@@");
 
     showPopup(x, y);
 }
 
 void PopupMenu::showPopup(int x, int y)
 {
-    setContentSize(browserBox->getWidth() + 8, browserBox->getHeight() + 8);
+    setContentSize(mBrowserBox->getWidth() + 8, mBrowserBox->getHeight() + 8);
     if (windowContainer->getWidth() < (x + getWidth() + 5))
         x -= (getWidth() + 50);
     if (windowContainer->getHeight() < (y + getHeight() + 5))

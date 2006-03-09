@@ -42,22 +42,22 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    itemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
-    if (!itemset) logger->error("Unable to load items.png");
+    mItemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
+    if (!mItemset) logger->error("Unable to load items.png");
 
-    selImg = resman->getImage("graphics/gui/selection.png");
-    if (!selImg) logger->error("Unable to load selection.png");
+    mSelImg = resman->getImage("graphics/gui/selection.png");
+    if (!mSelImg) logger->error("Unable to load selection.png");
 
-    selectedItem = 0; // No item selected
-    maxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    mSelectedItem = 0; // No item selected
+    mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
     addMouseListener(this);
 }
 
 ItemContainer::~ItemContainer()
 {
-    delete itemset;
-    selImg->decRef();
+    delete mItemset;
+    mSelImg->decRef();
 }
 
 void ItemContainer::logic()
@@ -66,16 +66,16 @@ void ItemContainer::logic()
 
     int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
-    if (i != maxItems) {
-        maxItems = i;
+    if (i != mMaxItems) {
+        mMaxItems = i;
         setWidth(getWidth());
     }
 }
 
 void ItemContainer::draw(gcn::Graphics* graphics)
 {
-    int gridWidth = itemset->get(0)->getWidth() + 4;
-    int gridHeight = itemset->get(0)->getHeight() + 10;
+    int gridWidth = mItemset->get(0)->getWidth() + 4;
+    int gridHeight = mItemset->get(0)->getHeight() + 10;
     int w = getWidth();
     int columns = w / gridWidth;
 
@@ -87,9 +87,9 @@ void ItemContainer::draw(gcn::Graphics* graphics)
 
     // Reset selected item when quantity not above 0 (should probably be made
     // sure somewhere else)
-    if (selectedItem && selectedItem->getQuantity() <= 0)
+    if (mSelectedItem && mSelectedItem->getQuantity() <= 0)
     {
-        selectedItem = 0;
+        mSelectedItem = 0;
     }
 
     /*
@@ -108,10 +108,10 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         int itemY = ((i - 2) / columns) * gridHeight;
 
         // Draw selection image below selected item
-        if (selectedItem == item)
+        if (mSelectedItem == item)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    selImg, itemX, itemY);
+                    mSelImg, itemX, itemY);
         }
 
         // Draw item icon
@@ -119,7 +119,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         if ((idx = item->getInfo()->getImage()) > 0)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    itemset->get(idx - 1), itemX, itemY);
+                    mItemset->get(idx - 1), itemX, itemY);
         }
 
         // Draw item caption
@@ -143,8 +143,8 @@ void ItemContainer::setWidth(int width)
 {
     gcn::Widget::setWidth(width);
 
-    int gridWidth = itemset->get(0)->getWidth() + 4;
-    int gridHeight = itemset->get(0)->getHeight() + 14;
+    int gridWidth = mItemset->get(0)->getWidth() + 4;
+    int gridHeight = mItemset->get(0)->getHeight() + 14;
     int columns = getWidth() / gridWidth;
 
     if (columns < 1)
@@ -152,24 +152,24 @@ void ItemContainer::setWidth(int width)
         columns = 1;
     }
 
-    setHeight(((maxItems / columns) +
-            (maxItems % columns > 0 ? 1 : 0)) * gridHeight);
+    setHeight(((mMaxItems / columns) +
+            (mMaxItems % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
 Item* ItemContainer::getItem()
 {
-    return selectedItem;
+    return mSelectedItem;
 }
 
 void ItemContainer::selectNone()
 {
-    selectedItem = 0;
+    mSelectedItem = 0;
 }
 
 void ItemContainer::mousePress(int mx, int my, int button)
 {
-    int gridWidth = itemset->get(0)->getWidth() + 4;
-    int gridHeight = itemset->get(0)->getHeight() + 10;
+    int gridWidth = mItemset->get(0)->getWidth() + 4;
+    int gridHeight = mItemset->get(0)->getHeight() + 10;
     int w = getWidth();
     int columns = w / gridWidth;
 
@@ -180,6 +180,6 @@ void ItemContainer::mousePress(int mx, int my, int button)
         if (index > INVENTORY_SIZE) {
             index = INVENTORY_SIZE - 1;
         }
-        selectedItem = mInventory->getItem(index);
+        mSelectedItem = mInventory->getItem(index);
     }
 }

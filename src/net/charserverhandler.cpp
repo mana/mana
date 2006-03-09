@@ -165,22 +165,22 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
 
     tempPlayer->mCharId = msg->readInt32();
-    tempPlayer->totalWeight = 0;
-    tempPlayer->maxWeight = 0;
-    tempPlayer->lastAttackTime = 0;
-    tempPlayer->xp = msg->readInt32();
-    tempPlayer->gp = msg->readInt32();
-    tempPlayer->jobXp = msg->readInt32();
-    tempPlayer->jobLvl = msg->readInt32();
+    tempPlayer->mTotalWeight = 0;
+    tempPlayer->mMaxWeight = 0;
+    tempPlayer->mLastAttackTime = 0;
+    tempPlayer->mXp = msg->readInt32();
+    tempPlayer->mGp = msg->readInt32();
+    tempPlayer->mJobXp = msg->readInt32();
+    tempPlayer->mJobLevel = msg->readInt32();
     msg->skip(8);                          // unknown
     msg->readInt32();                       // option
     msg->readInt32();                       // karma
     msg->readInt32();                       // manner
     msg->skip(2);                          // unknown
-    tempPlayer->hp = msg->readInt16();
-    tempPlayer->maxHp = msg->readInt16();
-    tempPlayer->mp = msg->readInt16();
-    tempPlayer->maxMp = msg->readInt16();
+    tempPlayer->mHp = msg->readInt16();
+    tempPlayer->mMaxHp = msg->readInt16();
+    tempPlayer->mMp = msg->readInt16();
+    tempPlayer->mMaxMp = msg->readInt16();
     msg->readInt16();                       // speed
     msg->readInt16();                       // class
     tempPlayer->setHairStyle(msg->readInt16());
@@ -188,7 +188,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
     if (weapon == 11)
         weapon = 2;
     tempPlayer->setWeapon(weapon);
-    tempPlayer->lvl = msg->readInt16();
+    tempPlayer->mLevel = msg->readInt16();
     msg->readInt16();                       // skill point
     msg->readInt16();                       // head bottom
     msg->readInt16();                       // shield
@@ -198,7 +198,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
     msg->readInt16();                       // unknown
     tempPlayer->setName(msg->readString(24));
     for (int i = 0; i < 6; i++) {
-        tempPlayer->ATTR[i] = msg->readInt8();
+        tempPlayer->mAttr[i] = msg->readInt8();
     }
     slot = msg->readInt8(); // character slot
     msg->readInt8();                        // unknown

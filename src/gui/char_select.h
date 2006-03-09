@@ -57,19 +57,19 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         Network *mNetwork;
         LockedArray<LocalPlayer*> *mCharInfo;
 
-        gcn::Button *selectButton;
-        gcn::Button *cancelButton;
-        gcn::Button *newCharButton;
-        gcn::Button *delCharButton;
-        gcn::Button *previousButton;
-        gcn::Button *nextButton;
+        gcn::Button *mSelectButton;
+        gcn::Button *mCancelButton;
+        gcn::Button *mNewCharButton;
+        gcn::Button *mDelCharButton;
+        gcn::Button *mPreviousButton;
+        gcn::Button *mNextButton;
 
-        gcn::Label *nameLabel;
-        gcn::Label *levelLabel;
-        gcn::Label *jobLevelLabel;
-        gcn::Label *moneyLabel;
+        gcn::Label *mNameLabel;
+        gcn::Label *mLevelLabel;
+        gcn::Label *mJobLevelLabel;
+        gcn::Label *mMoneyLabel;
 
-        PlayerBox *playerBox;
+        PlayerBox *mPlayerBox;
 
         bool mCharSelected;
 
@@ -103,18 +103,18 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
     private:
         Network *mNetwork;
-        gcn::TextField *nameField;
-        gcn::Label *nameLabel;
-        gcn::Button *nextHairColorButton;
-        gcn::Button *prevHairColorButton;
-        gcn::Label *hairColorLabel;
-        gcn::Button *nextHairStyleButton;
-        gcn::Button *prevHairStyleButton;
-        gcn::Label *hairStyleLabel;
-        gcn::Button *createButton;
-        gcn::Button *cancelButton;
+        gcn::TextField *mNameField;
+        gcn::Label *mNameLabel;
+        gcn::Button *mNextHairColorButton;
+        gcn::Button *mPrevHairColorButton;
+        gcn::Label *mHairColorLabel;
+        gcn::Button *mNextHairStyleButton;
+        gcn::Button *mPrevHairStyleButton;
+        gcn::Label *mHairStyleLabel;
+        gcn::Button *mCreateButton;
+        gcn::Button *mCancelButton;
 
-        PlayerBox *playerBox;
+        PlayerBox *mPlayerBox;
 
         int mSlot;
 

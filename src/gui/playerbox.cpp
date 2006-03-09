@@ -41,9 +41,9 @@ int PlayerBox::instances = 0;
 ImageRect PlayerBox::background;
 
 PlayerBox::PlayerBox():
-    hairColor(0),
-    hairStyle(0),
-    showPlayer(false)
+    mHairColor(0),
+    mHairStyle(0),
+    mShowPlayer(false)
 {
     setBorderSize(2);
 
@@ -84,7 +84,7 @@ PlayerBox::~PlayerBox()
 
 void PlayerBox::draw(gcn::Graphics *graphics)
 {
-    if (!showPlayer) {
+    if (!mShowPlayer) {
         return;
     }
 
@@ -93,13 +93,13 @@ void PlayerBox::draw(gcn::Graphics *graphics)
             playerset->get(0), 23, 12);
 
     // Draw his hair
-    if (hairColor >= 0 && hairStyle >= 0 &&
-            hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
+    if (mHairColor >= 0 && mHairStyle >= 0 &&
+            mHairColor < NR_HAIR_COLORS && mHairStyle < NR_HAIR_STYLES)
     {
-        int hf = 9 * hairColor;
-        if (hf >= 0 && hf < (int)hairset[hairStyle]->size()) {
+        int hf = 9 * mHairColor;
+        if (hf >= 0 && hf < (int)hairset[mHairStyle]->size()) {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    hairset[hairStyle]->get(hf), 35, 7);
+                    hairset[mHairStyle]->get(hf), 35, 7);
         }
     }
 }

@@ -67,7 +67,7 @@ class PopupMenu : public Window, public LinkHandler
         void handleLink(const std::string& link);
 
     private:
-        BrowserBox* browserBox;
+        BrowserBox* mBrowserBox;
 
         Being* mBeing;
         FloorItem* mFloorItem;

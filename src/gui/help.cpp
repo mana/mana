@@ -38,20 +38,20 @@ HelpWindow::HelpWindow():
     setContentSize(455, 350);
     setWindowName("Help");
 
-    browserBox = new BrowserBox();
-    browserBox->setOpaque(false);
-    scrollArea = new ScrollArea(browserBox);
+    mBrowserBox = new BrowserBox();
+    mBrowserBox->setOpaque(false);
+    mScrollArea = new ScrollArea(mBrowserBox);
     Button *okButton = new Button("Close", "close", this);
 
-    scrollArea->setDimension(gcn::Rectangle(
+    mScrollArea->setDimension(gcn::Rectangle(
                 5, 5, 445, 335 - okButton->getHeight()));
     okButton->setPosition(
             450 - okButton->getWidth(),
             345 - okButton->getHeight());
 
-    browserBox->setLinkHandler(this);
+    mBrowserBox->setLinkHandler(this);
 
-    add(scrollArea);
+    add(mScrollArea);
     add(okButton);
 
     setLocationRelativeTo(getParent());
@@ -73,12 +73,12 @@ void HelpWindow::handleLink(const std::string& link)
 
 void HelpWindow::loadHelp(const std::string &helpFile)
 {
-    browserBox->clearRows();
+    mBrowserBox->clearRows();
 
     loadFile("header");
     loadFile(helpFile);
 
-    scrollArea->setVerticalScrollAmount(0);
+    mScrollArea->setVerticalScrollAmount(0);
     setVisible(true);
 }
 
@@ -90,6 +90,6 @@ void HelpWindow::loadFile(const std::string &file)
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {
-        browserBox->addRow(lines[i]);
+        mBrowserBox->addRow(lines[i]);
     }
 }

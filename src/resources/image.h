@@ -70,14 +70,14 @@ class Image : public Resource
          * Returns the width of the image.
          */
         virtual int
-        getWidth() const { return bounds.w; }
+        getWidth() const { return mBounds.w; }
 
 
         /**
          * Returns the height of the image.
          */
         virtual int
-        getHeight() const { return bounds.h; }
+        getHeight() const { return mBounds.h; }
 
         /**
          * Creates a new image with the desired clipping rectangle.
@@ -119,8 +119,8 @@ class Image : public Resource
 #endif
         Image(const std::string &idPath, SDL_Surface *image);
 
-        SDL_Rect bounds;
-        bool loaded;
+        SDL_Rect mBounds;
+        bool mLoaded;
 
 #ifdef USE_OPENGL
         GLuint mGLImage;

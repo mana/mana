@@ -106,11 +106,11 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 current_npc = 0;
 
-                player_node->action = Being::STAND;
+                player_node->mAction = Being::STAND;
                 player_node->stopAttack();
                 player_node->mFrame = 0;
-                player_node->x = x;
-                player_node->y = y;
+                player_node->mX = x;
+                player_node->mY = y;
             }
             break;
 
@@ -124,19 +124,19 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     //case 0x0000:
                     //    player_node->setWalkSpeed(msg->readInt32());
                     //    break;
-                    case 0x0005: player_node->hp = value; break;
-                    case 0x0006: player_node->maxHp = value; break;
-                    case 0x0007: player_node->mp = value; break;
-                    case 0x0008: player_node->maxMp = value; break;
-                    case 0x000b: player_node->lvl = value; break;
+                    case 0x0005: player_node->mHp = value; break;
+                    case 0x0006: player_node->mMaxHp = value; break;
+                    case 0x0007: player_node->mMp = value; break;
+                    case 0x0008: player_node->mMaxMp = value; break;
+                    case 0x000b: player_node->mLevel = value; break;
                     case 0x000c:
-                                 player_node->skillPoint = value;
+                                 player_node->mSkillPoint = value;
                                  skillDialog->update();
                                  break;
                     case 0x0018:
-                                 if (value >= player_node->maxWeight / 2 &&
-                                         player_node->totalWeight <
-                                         player_node->maxWeight / 2)
+                                 if (value >= player_node->mMaxWeight / 2 &&
+                                         player_node->mTotalWeight <
+                                         player_node->mMaxWeight / 2)
                                  {
                                      weightNotice = new OkDialog("Message",
                                              "You are carrying more then half your "
@@ -144,12 +144,12 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                              "health.");
                                      weightNotice->addActionListener(&weightNoticeListener);
                                  }
-                                 player_node->totalWeight = value;
+                                 player_node->mTotalWeight = value;
                                  break;
-                    case 0x0019: player_node->maxWeight = value; break;
-                    case 0x0037: player_node->jobLvl = value; break;
+                    case 0x0019: player_node->mMaxWeight = value; break;
+                    case 0x0037: player_node->mJobLevel = value; break;
                     case 0x0009:
-                                 player_node->statsPointsToAttribute = value;
+                                 player_node->mStatsPointsToAttribute = value;
                                  break;
                     case 0x0029: player_node->ATK = value; break;
                     case 0x002b: player_node->MATK = value; break;
@@ -157,15 +157,15 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x002f: player_node->MDEF = value; break;
                     case 0x0031: player_node->HIT = value; break;
                     case 0x0032: player_node->FLEE = value; break;
-                    case 0x0035: player_node->aspd = value; break;
+                    case 0x0035: player_node->mAttackSpeed = value; break;
                 }
 
-                if (player_node->hp == 0 && deathNotice == NULL)
+                if (player_node->mHp == 0 && deathNotice == NULL)
                 {
                     deathNotice = new OkDialog("Message",
                             "You're now dead, press ok to restart");
                     deathNotice->addActionListener(&deathNoticeListener);
-                    player_node->action = Being::DEAD;
+                    player_node->mAction = Being::DEAD;
                 }
             }
             break;
@@ -173,19 +173,19 @@ void PlayerHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_STAT_UPDATE_2:
             switch (msg->readInt16()) {
                 case 0x0001:
-                    player_node->xp = msg->readInt32();
+                    player_node->mXp = msg->readInt32();
                     break;
                 case 0x0002:
-                    player_node->jobXp = msg->readInt32();
+                    player_node->mJobXp = msg->readInt32();
                     break;
                 case 0x0014:
-                    player_node->gp = msg->readInt32();
+                    player_node->mGp = msg->readInt32();
                     break;
                 case 0x0016:
-                    player_node->xpForNextLevel = msg->readInt32();
+                    player_node->mXpForNextLevel = msg->readInt32();
                     break;
                 case 0x0017:
-                    player_node->jobXpForNextLevel = msg->readInt32();
+                    player_node->mJobXpForNextLevel = msg->readInt32();
                     break;
             }
             break;
@@ -198,12 +198,18 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 Sint32 total = base + bonus;
 
                 switch (type) {
-                    case 0x000d: player_node->ATTR[LocalPlayer::STR] = total; break;
-                    case 0x000e: player_node->ATTR[LocalPlayer::AGI] = total; break;
-                    case 0x000f: player_node->ATTR[LocalPlayer::VIT] = total; break;
-                    case 0x0010: player_node->ATTR[LocalPlayer::INT] = total; break;
-                    case 0x0011: player_node->ATTR[LocalPlayer::DEX] = total; break;
-                    case 0x0012: player_node->ATTR[LocalPlayer::LUK] = total; break;
+                    case 0x000d: player_node->mAttr[LocalPlayer::STR] = total;
+                                 break;
+                    case 0x000e: player_node->mAttr[LocalPlayer::AGI] = total;
+                                 break;
+                    case 0x000f: player_node->mAttr[LocalPlayer::VIT] = total;
+                                 break;
+                    case 0x0010: player_node->mAttr[LocalPlayer::INT] = total;
+                                 break;
+                    case 0x0011: player_node->mAttr[LocalPlayer::DEX] = total;
+                                 break;
+                    case 0x0012: player_node->mAttr[LocalPlayer::LUK] = total;
+                                 break;
                 }
             }
             break;
@@ -214,35 +220,41 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 Sint8 fail = msg->readInt8();
                 Sint8 value = msg->readInt8();
 
-                if (fail == 1)
-                {
-                    switch (type) {
-                        case 0x000d: player_node->ATTR[LocalPlayer::STR] = value; break;
-                        case 0x000e: player_node->ATTR[LocalPlayer::AGI] = value; break;
-                        case 0x000f: player_node->ATTR[LocalPlayer::VIT] = value; break;
-                        case 0x0010: player_node->ATTR[LocalPlayer::INT] = value; break;
-                        case 0x0011: player_node->ATTR[LocalPlayer::DEX] = value; break;
-                        case 0x0012: player_node->ATTR[LocalPlayer::LUK] = value; break;
-                    }
+                if (fail != 1)
+                    break;
+
+                switch (type) {
+                    case 0x000d: player_node->mAttr[LocalPlayer::STR] = value;
+                                 break;
+                    case 0x000e: player_node->mAttr[LocalPlayer::AGI] = value;
+                                 break;
+                    case 0x000f: player_node->mAttr[LocalPlayer::VIT] = value;
+                                 break;
+                    case 0x0010: player_node->mAttr[LocalPlayer::INT] = value;
+                                 break;
+                    case 0x0011: player_node->mAttr[LocalPlayer::DEX] = value;
+                                 break;
+                    case 0x0012: player_node->mAttr[LocalPlayer::LUK] = value;
+                                 break;
                 }
             }
             break;
 
             // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
-            player_node->statsPointsToAttribute = msg->readInt16();
-            player_node->ATTR[LocalPlayer::STR] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::STR] = msg->readInt8();
-            player_node->ATTR[LocalPlayer::AGI] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::AGI] = msg->readInt8();
-            player_node->ATTR[LocalPlayer::VIT] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::VIT] = msg->readInt8();
-            player_node->ATTR[LocalPlayer::INT] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::INT] = msg->readInt8();
-            player_node->ATTR[LocalPlayer::DEX] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::DEX] = msg->readInt8();
-            player_node->ATTR[LocalPlayer::LUK] = msg->readInt8();
-            player_node->ATTR_UP[LocalPlayer::LUK] = msg->readInt8();
+            player_node->mStatsPointsToAttribute = msg->readInt16();
+            player_node->mAttr[LocalPlayer::STR] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::STR] = msg->readInt8();
+            player_node->mAttr[LocalPlayer::AGI] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::AGI] = msg->readInt8();
+            player_node->mAttr[LocalPlayer::VIT] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::VIT] = msg->readInt8();
+            player_node->mAttr[LocalPlayer::INT] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::INT] = msg->readInt8();
+            player_node->mAttr[LocalPlayer::DEX] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::DEX] = msg->readInt8();
+            player_node->mAttr[LocalPlayer::LUK] = msg->readInt8();
+            player_node->mAttrUp[LocalPlayer::LUK] = msg->readInt8();
             player_node->ATK       = msg->readInt16();  // ATK
             player_node->ATK_BONUS  = msg->readInt16();  // ATK bonus
             player_node->MATK      = msg->readInt16();  // MATK max
@@ -260,12 +272,24 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_6:
             switch (msg->readInt16()) {
-                case 0x0020: player_node->ATTR_UP[LocalPlayer::STR] = msg->readInt8(); break;
-                case 0x0021: player_node->ATTR_UP[LocalPlayer::AGI] = msg->readInt8(); break;
-                case 0x0022: player_node->ATTR_UP[LocalPlayer::VIT] = msg->readInt8(); break;
-                case 0x0023: player_node->ATTR_UP[LocalPlayer::INT] = msg->readInt8(); break;
-                case 0x0024: player_node->ATTR_UP[LocalPlayer::DEX] = msg->readInt8(); break;
-                case 0x0025: player_node->ATTR_UP[LocalPlayer::LUK] = msg->readInt8(); break;
+                case 0x0020:
+                    player_node->mAttrUp[LocalPlayer::STR] = msg->readInt8();
+                    break;
+                case 0x0021:
+                    player_node->mAttrUp[LocalPlayer::AGI] = msg->readInt8();
+                    break;
+                case 0x0022:
+                    player_node->mAttrUp[LocalPlayer::VIT] = msg->readInt8();
+                    break;
+                case 0x0023:
+                    player_node->mAttrUp[LocalPlayer::INT] = msg->readInt8();
+                    break;
+                case 0x0024:
+                    player_node->mAttrUp[LocalPlayer::DEX] = msg->readInt8();
+                    break;
+                case 0x0025:
+                    player_node->mAttrUp[LocalPlayer::LUK] = msg->readInt8();
+                    break;
             }
             break;
 

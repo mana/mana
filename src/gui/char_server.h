@@ -60,11 +60,9 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
 
     private:
         LoginData *mLoginData;
-        ServerListModel *serverListModel;
-        gcn::ListBox *serverList;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
-        gcn::ScrollArea *scrollArea;
+        ServerListModel *mServerListModel;
+        gcn::ListBox *mServerList;
+        gcn::Button *mOkButton;
 };
 
 #endif

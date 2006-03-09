@@ -47,65 +47,65 @@
 SellDialog::SellDialog(Network *network):
     Window("Sell"),
     mNetwork(network),
-    m_maxItems(0), m_amountItems(0)
+    mMaxItems(0), mAmountItems(0)
 {
     mShopItems = new ShopItems();
 
-    itemList = new ListBox(mShopItems);
-    scrollArea = new ScrollArea(itemList);
-    slider = new Slider(1.0);
-    quantityLabel = new gcn::Label("0");
-    moneyLabel = new gcn::Label("Price: 0");
-    itemDescLabel = new gcn::Label("Description:");
-    itemEffectLabel = new gcn::Label("Effect:");
-    increaseButton = new Button("+", "+", this);
-    decreaseButton = new Button("-", "-", this);
-    sellButton = new Button("Sell", "sell", this);
-    quitButton = new Button("Quit", "quit", this);
-    sellButton->setEnabled(false);
+    mItemList = new ListBox(mShopItems);
+    ScrollArea *scrollArea = new ScrollArea(mItemList);
+    mSlider = new Slider(1.0);
+    mQuantityLabel = new gcn::Label("0");
+    mMoneyLabel = new gcn::Label("Price: 0");
+    mItemDescLabel = new gcn::Label("Description:");
+    mItemEffectLabel = new gcn::Label("Effect:");
+    mIncreaseButton = new Button("+", "+", this);
+    mDecreaseButton = new Button("-", "-", this);
+    mSellButton = new Button("Sell", "sell", this);
+    Button *quitButton = new Button("Quit", "quit", this);
+    mSellButton->setEnabled(false);
 
     setContentSize(260, 210);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    itemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
+    mItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
 
-    slider->setDimension(gcn::Rectangle(5, 120, 200, 10));
-    slider->setEnabled(false);
+    mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
+    mSlider->setEnabled(false);
 
-    quantityLabel->setPosition(215, 120);
+    mQuantityLabel->setPosition(215, 120);
 
-    increaseButton->setPosition(40, 186);
-    increaseButton->setSize(20, 20);
-    increaseButton->setEnabled(false);
+    mIncreaseButton->setPosition(40, 186);
+    mIncreaseButton->setSize(20, 20);
+    mIncreaseButton->setEnabled(false);
 
-    decreaseButton->setPosition(10, 186);
-    decreaseButton->setSize(20, 20);
-    decreaseButton->setEnabled(false);
+    mDecreaseButton->setPosition(10, 186);
+    mDecreaseButton->setSize(20, 20);
+    mDecreaseButton->setEnabled(false);
 
-    moneyLabel->setPosition(5, 130);
-    itemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
-    itemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
+    mMoneyLabel->setPosition(5, 130);
+    mItemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
+    mItemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
 
-    sellButton->setPosition(175, 186);
-    sellButton->setEnabled(false);
+    mSellButton->setPosition(175, 186);
+    mSellButton->setEnabled(false);
 
     quitButton->setPosition(208, 186);
 
-    itemList->setEventId("item");
-    slider->setEventId("slider");
+    mItemList->setEventId("item");
+    mSlider->setEventId("mSlider");
 
-    itemList->addActionListener(this);
-    slider->addActionListener(this);
+    mItemList->addActionListener(this);
+    mSlider->addActionListener(this);
 
     add(scrollArea);
-    add(slider);
-    add(quantityLabel);
-    add(moneyLabel);
-    add(itemEffectLabel);
-    add(itemDescLabel);
-    add(increaseButton);
-    add(decreaseButton);
-    add(sellButton);
+    add(mSlider);
+    add(mQuantityLabel);
+    add(mMoneyLabel);
+    add(mItemEffectLabel);
+    add(mItemDescLabel);
+    add(mIncreaseButton);
+    add(mDecreaseButton);
+    add(mSellButton);
     add(quitButton);
 
     setLocationRelativeTo(getParent());
@@ -119,20 +119,20 @@ SellDialog::~SellDialog()
 void SellDialog::reset()
 {
     mShopItems->clear();
-    slider->setValue(0.0);
-    m_amountItems = 0;
+    mSlider->setValue(0.0);
+    mAmountItems = 0;
 
-    quantityLabel->setCaption("0");
-    quantityLabel->adjustSize();
-    moneyLabel->setCaption("Price: 0");
-    moneyLabel->adjustSize();
-    itemDescLabel->setCaption("");
-    itemEffectLabel->setCaption("");
+    mQuantityLabel->setCaption("0");
+    mQuantityLabel->adjustSize();
+    mMoneyLabel->setCaption("Price: 0");
+    mMoneyLabel->adjustSize();
+    mItemDescLabel->setCaption("");
+    mItemEffectLabel->setCaption("");
 
     // Reset Previous Selected Items to prevent failing asserts
-    itemList->setSelected(-1);
-    increaseButton->setEnabled(false);
-    decreaseButton->setEnabled(false);
+    mItemList->setSelected(-1);
+    mIncreaseButton->setEnabled(false);
+    mDecreaseButton->setEnabled(false);
 }
 
 void SellDialog::addItem(Item *item, int price)
@@ -152,31 +152,31 @@ void SellDialog::addItem(Item *item, int price)
     item_shop.quantity = item->getQuantity();
 
     mShopItems->push_back(item_shop);
-    itemList->adjustSize();
+    mItemList->adjustSize();
 }
 
 void SellDialog::action(const std::string& eventId)
 {
-    int selectedItem = itemList->getSelected();
+    int selectedItem = mItemList->getSelected();
 
     if (eventId == "item") {
-        m_amountItems = 0;
-        slider->setValue(0);
-        decreaseButton->setEnabled(false);
-        sellButton->setEnabled(false);
+        mAmountItems = 0;
+        mSlider->setValue(0);
+        mDecreaseButton->setEnabled(false);
+        mSellButton->setEnabled(false);
 
-        quantityLabel->setCaption("0");
-        quantityLabel->adjustSize();
-        moneyLabel->setCaption("Price: 0");
-        moneyLabel->adjustSize();
+        mQuantityLabel->setCaption("0");
+        mQuantityLabel->adjustSize();
+        mMoneyLabel->setCaption("Price: 0");
+        mMoneyLabel->adjustSize();
 
         if (selectedItem > -1) {
-            slider->setEnabled(true);
-            increaseButton->setEnabled(true);
-            m_maxItems = mShopItems->at(selectedItem).quantity;
+            mSlider->setEnabled(true);
+            mIncreaseButton->setEnabled(true);
+            mMaxItems = mShopItems->at(selectedItem).quantity;
         } else {
-            slider->setEnabled(false);
-            increaseButton->setEnabled(false);
+            mSlider->setEnabled(false);
+            mIncreaseButton->setEnabled(false);
         }
     }
     else if (eventId == "quit")
@@ -192,50 +192,50 @@ void SellDialog::action(const std::string& eventId)
 
     bool updateButtonsAndLabels = false;
 
-    if (eventId == "slider") {
-        m_amountItems = (int)(slider->getValue() * m_maxItems);
+    if (eventId == "mSlider") {
+        mAmountItems = (int)(mSlider->getValue() * mMaxItems);
 
         updateButtonsAndLabels = true;
     }
     else if (eventId == "+") {
-        assert(m_amountItems < m_maxItems);
-        m_amountItems++;
-        slider->setValue(double(m_amountItems)/double(m_maxItems));
+        assert(mAmountItems < mMaxItems);
+        mAmountItems++;
+        mSlider->setValue(double(mAmountItems)/double(mMaxItems));
 
         updateButtonsAndLabels = true;
     }
     else if (eventId == "-") {
-        assert(m_amountItems > 0);
-        m_amountItems--;
+        assert(mAmountItems > 0);
+        mAmountItems--;
 
-        slider->setValue(double(m_amountItems)/double(m_maxItems));
+        mSlider->setValue(double(mAmountItems)/double(mMaxItems));
 
         updateButtonsAndLabels = true;
     }
     else if (eventId == "sell") {
         // Attempt sell
-        assert(m_amountItems > 0 && m_amountItems <= m_maxItems);
+        assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
         
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
         outMsg.writeInt16(8);
         outMsg.writeInt16(mShopItems->at(selectedItem).index);
-        outMsg.writeInt16(m_amountItems);
+        outMsg.writeInt16(mAmountItems);
 
-        m_maxItems -= m_amountItems;
-        m_amountItems = 0;
-        slider->setValue(0);
-        slider->setEnabled(m_maxItems != 0);
+        mMaxItems -= mAmountItems;
+        mAmountItems = 0;
+        mSlider->setValue(0);
+        mSlider->setEnabled(mMaxItems != 0);
 
         // All were sold
-        if (!m_maxItems) {
-            itemList->setSelected(-1);
+        if (!mMaxItems) {
+            mItemList->setSelected(-1);
             mShopItems->erase(mShopItems->begin() + selectedItem);
         }
 
         // Update only when there are items left, the entry doesn't exist
         // otherwise and can't be updated
-        updateButtonsAndLabels = bool(m_maxItems);
+        updateButtonsAndLabels = bool(mMaxItems);
     }
 
     // If anything changed, we need to update the buttons and labels
@@ -243,18 +243,18 @@ void SellDialog::action(const std::string& eventId)
         std::stringstream oss;
 
         // Update labels
-        oss << m_amountItems;
-        quantityLabel->setCaption(oss.str());
-        quantityLabel->adjustSize();
+        oss << mAmountItems;
+        mQuantityLabel->setCaption(oss.str());
+        mQuantityLabel->adjustSize();
         oss.str("");
-        oss << "Price: " << m_amountItems * mShopItems->at(selectedItem).price;
-        moneyLabel->setCaption(oss.str());
-        moneyLabel->adjustSize();
+        oss << "Price: " << mAmountItems * mShopItems->at(selectedItem).price;
+        mMoneyLabel->setCaption(oss.str());
+        mMoneyLabel->adjustSize();
 
         // Update Buttons
-        sellButton->setEnabled(m_amountItems > 0);
-        decreaseButton->setEnabled(m_amountItems > 0);
-        increaseButton->setEnabled(m_amountItems < m_maxItems);
+        mSellButton->setEnabled(mAmountItems > 0);
+        mDecreaseButton->setEnabled(mAmountItems > 0);
+        mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
     }
 }
 
@@ -262,12 +262,12 @@ void SellDialog::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-    int selectedItem = itemList->getSelected();
+    int selectedItem = mItemList->getSelected();
     if (selectedItem > -1)
     {
-        itemDescLabel->setCaption("Description: " +
+        mItemDescLabel->setCaption("Description: " +
                 itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
-        itemEffectLabel->setCaption("Effect: " +
+        mItemEffectLabel->setCaption("Effect: " +
                 itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
     }
 }

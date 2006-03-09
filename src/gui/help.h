@@ -63,8 +63,8 @@ class HelpWindow : public Window, public LinkHandler,
     private:
         void loadFile(const std::string &file);
 
-        BrowserBox* browserBox;
-        gcn::ScrollArea *scrollArea;
+        BrowserBox* mBrowserBox;
+        gcn::ScrollArea *mScrollArea;
 };
 
 extern HelpWindow *helpWindow;

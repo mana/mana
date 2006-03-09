@@ -68,33 +68,33 @@ SkillDialog::SkillDialog():
     setWindowName("Skills");
     setDefaultSize(graphics->getWidth() - 255, 25, 240, 240);
 
-    skillListBox = new ListBox(this);
-    skillScrollArea = new ScrollArea(skillListBox);
-    pointsLabel = new gcn::Label("Skill Points:");
-    incButton = new Button("Up", "inc", this);
-    useButton = new Button("Use", "use", this);
-    useButton->setEnabled(false);
-    closeButton = new Button("Close", "close", this);
+    mSkillListBox = new ListBox(this);
+    ScrollArea *skillScrollArea = new ScrollArea(mSkillListBox);
+    mPointsLabel = new gcn::Label("Skill Points:");
+    mIncButton = new Button("Up", "inc", this);
+    mUseButton = new Button("Use", "use", this);
+    mUseButton->setEnabled(false);
+    mCloseButton = new Button("Close", "close", this);
 
-    skillListBox->setEventId("skill");
+    mSkillListBox->setEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-    pointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
-    incButton->setPosition(skillScrollArea->getX(), 210);
-    useButton->setPosition(incButton->getX() + incButton->getWidth() + 5,
+    mPointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
+    mIncButton->setPosition(skillScrollArea->getX(), 210);
+    mUseButton->setPosition(mIncButton->getX() + mIncButton->getWidth() + 5,
         210);
-    closeButton->setPosition(
-        skillScrollArea->getX() + skillScrollArea->getWidth() - closeButton->getWidth(),
+    mCloseButton->setPosition(
+        skillScrollArea->getX() + skillScrollArea->getWidth() - mCloseButton->getWidth(),
         210);
 
     add(skillScrollArea);
-    add(pointsLabel);
-    add(incButton);
-    add(useButton);
-    add(closeButton);
+    add(mPointsLabel);
+    add(mIncButton);
+    add(mUseButton);
+    add(mCloseButton);
 
-    skillListBox->addActionListener(this);
+    mSkillListBox->addActionListener(this);
 
     setLocationRelativeTo(getParent());
     loadWindowState();
@@ -110,17 +110,17 @@ void SkillDialog::action(const std::string& eventId)
     if (eventId == "inc")
     {
         // Increment skill
-        int selectedSkill = skillListBox->getSelected();
+        int selectedSkill = mSkillListBox->getSelected();
         if (selectedSkill >= 0)
         {
-            player_node->raiseSkill(skillList[selectedSkill]->id);
+            player_node->raiseSkill(mSkillList[selectedSkill]->id);
         }
     }
     else if (eventId == "skill")
     {
-        incButton->setEnabled(
-                skillListBox->getSelected() > -1 &&
-                player_node->skillPoint > 0);
+        mIncButton->setEnabled(
+                mSkillListBox->getSelected() > -1 &&
+                player_node->mSkillPoint > 0);
     }
     else if (eventId == "close")
     {
@@ -130,29 +130,30 @@ void SkillDialog::action(const std::string& eventId)
 
 void SkillDialog::update()
 {
-    if (pointsLabel != NULL) {
+    if (mPointsLabel != NULL) {
         char tmp[128];
-        sprintf(tmp, "Skill points: %i", player_node->skillPoint);
-        pointsLabel->setCaption(tmp);
+        sprintf(tmp, "Skill points: %i", player_node->mSkillPoint);
+        mPointsLabel->setCaption(tmp);
     }
 
-    incButton->setEnabled(skillListBox->getSelected() > -1 && player_node->skillPoint > 0);
+    mIncButton->setEnabled(mSkillListBox->getSelected() > -1 &&
+            player_node->mSkillPoint > 0);
 }
 
 int SkillDialog::getNumberOfElements()
 {
-    return skillList.size();
+    return mSkillList.size();
 }
 
 std::string SkillDialog::getElementAt(int i)
 {
-    if (i >= 0 && i < (int)skillList.size())
+    if (i >= 0 && i < (int)mSkillList.size())
     {
         char tmp[128];
         sprintf(tmp, "%s    Lv: %i    Sp: %i",
-                skill_db[skillList[i]->id],
-                skillList[i]->lv,
-                skillList[i]->sp);
+                skill_db[mSkillList[i]->id],
+                mSkillList[i]->lv,
+                mSkillList[i]->sp);
         return tmp;
     }
     return "";
@@ -160,8 +161,8 @@ std::string SkillDialog::getElementAt(int i)
 
 bool SkillDialog::hasSkill(int id)
 {
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
+    for (unsigned int i = 0; i < mSkillList.size(); i++) {
+        if (mSkillList[i]->id == id) {
             return true;
         }
     }
@@ -174,21 +175,21 @@ void SkillDialog::addSkill(int id, int lvl, int mp)
     tmp->id = id;
     tmp->lv = lvl;
     tmp->sp = mp;
-    skillList.push_back(tmp);
+    mSkillList.push_back(tmp);
 }
 
 void SkillDialog::setSkill(int id, int lvl, int mp)
 {
-    for (unsigned int i = 0; i < skillList.size(); i++) {
-        if (skillList[i]->id == id) {
-            skillList[i]->lv = lvl;
-            skillList[i]->sp = mp;
+    for (unsigned int i = 0; i < mSkillList.size(); i++) {
+        if (mSkillList[i]->id == id) {
+            mSkillList[i]->lv = lvl;
+            mSkillList[i]->sp = mp;
         }
     }
 }
 
 void SkillDialog::cleanList()
 {
-    for_each(skillList.begin(), skillList.end(), make_dtor(skillList));
-    skillList.clear();
+    for_each(mSkillList.begin(), mSkillList.end(), make_dtor(mSkillList));
+    mSkillList.clear();
 }

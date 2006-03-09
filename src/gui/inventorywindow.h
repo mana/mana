@@ -73,14 +73,14 @@ class InventoryWindow : public Window, gcn::ActionListener
 
         void updateWidgets();    /** Updates widgets size/position */
 
-        ItemContainer *items;
+        ItemContainer *mItems;
 
-        gcn::Button *useButton, *dropButton;
-        gcn::ScrollArea *invenScroll;
-        gcn::Label *itemNameLabel;
-        gcn::Label *itemDescriptionLabel;
-        gcn::Label *itemEffectLabel;
-        gcn::Label *weightLabel;
+        gcn::Button *mUseButton, *mDropButton;
+        gcn::ScrollArea *mInvenScroll;
+        gcn::Label *mItemNameLabel;
+        gcn::Label *mItemDescriptionLabel;
+        gcn::Label *mItemEffectLabel;
+        gcn::Label *mWeightLabel;
 };
 
 extern InventoryWindow *inventoryWindow;

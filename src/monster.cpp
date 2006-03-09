@@ -57,11 +57,11 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
 
 void Monster::logic()
 {
-    if (action != STAND)
+    if (mAction != STAND)
     {
-        mFrame = (get_elapsed_time(walk_time) * 4) / mWalkSpeed;
+        mFrame = (get_elapsed_time(mWalkTime) * 4) / mWalkSpeed;
 
-        if (mFrame >= 4 && action != MONSTER_DEAD)
+        if (mFrame >= 4 && mAction != MONSTER_DEAD)
         {
             nextStep();
         }
@@ -82,13 +82,13 @@ void Monster::draw(Graphics *graphics, int offsetX, int offsetY)
         mFrame = 3;
     }
 
-    mSpriteFrame = action;
-    if (action != MONSTER_DEAD) {
+    mSpriteFrame = mAction;
+    if (mAction != MONSTER_DEAD) {
         mSpriteFrame += mFrame;
     }
 
     unsigned char dir = 0;
-    while (!(direction & (1 << dir))) dir++;
+    while (!(mDirection & (1 << dir))) dir++;
 
     mSpriteFrame = dir + 4 * mSpriteFrame;
 

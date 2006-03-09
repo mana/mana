@@ -34,23 +34,23 @@ ChargeDialog::ChargeDialog():
     Window("")
 {
     setContentSize(180, 70);
-    progBar = new ProgressBar(0.0f, 20, 40, 140, 25, 128, 128, 128);
-    add(progBar);
+    mProgBar = new ProgressBar(0.0f, 20, 40, 140, 25, 128, 128, 128);
+    add(mProgBar);
 }
 
 // update the dialog
 void ChargeDialog::logic()
 {
     // calculate time since the last attack was made
-    player_node->lastAttackTime += .01; // this a hack until someone explains
+    player_node->mLastAttackTime += .01; // this a hack until someone explains
                                       // to me how to work the timer
-    if (player_node->lastAttackTime > 1)
+    if (player_node->mLastAttackTime > 1)
     {
-        player_node->lastAttackTime = 1;
+        player_node->mLastAttackTime = 1;
     }
 
     // reset the progress bar to display accurate time since attack
-    progBar->setProgress(player_node->lastAttackTime);
+    mProgBar->setProgress(player_node->mLastAttackTime);
 
     Window::logic();
 }

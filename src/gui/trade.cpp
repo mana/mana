@@ -46,80 +46,80 @@
 TradeWindow::TradeWindow(Network *network):
     Window("Trade: You"),
     mNetwork(network),
-    myInventory(new Inventory()),
-    partnerInventory(new Inventory())
+    mMyInventory(new Inventory()),
+    mPartnerInventory(new Inventory())
 {
     setContentSize(322, 150);
 
-    addButton = new Button("Add", "add", this);
-    okButton = new Button("Ok", "ok", this);
-    cancelButton = new Button("Cancel", "cancel", this);
-    tradeButton = new Button("Trade", "trade", this);
+    mAddButton = new Button("Add", "add", this);
+    mOkButton = new Button("Ok", "ok", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
+    mTradeButton = new Button("Trade", "trade", this);
 
-    myItemContainer = new ItemContainer(myInventory.get());
-    myItemContainer->setPosition(2, 2);
+    mMyItemContainer = new ItemContainer(mMyInventory.get());
+    mMyItemContainer->setPosition(2, 2);
 
-    myScroll = new ScrollArea(myItemContainer);
-    myScroll->setPosition(8, 8);
+    mMyScroll = new ScrollArea(mMyItemContainer);
+    mMyScroll->setPosition(8, 8);
 
-    partnerItemContainer = new ItemContainer(partnerInventory.get());
-    partnerItemContainer->setPosition(2, 58);
+    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
+    mPartnerItemContainer->setPosition(2, 58);
 
-    partnerScroll = new ScrollArea(partnerItemContainer);
-    partnerScroll->setPosition(8, 64);
+    mPartnerScroll = new ScrollArea(mPartnerItemContainer);
+    mPartnerScroll->setPosition(8, 64);
 
-    moneyLabel = new gcn::Label("You get: 0z");
-    moneyLabel2 = new gcn::Label("You give:");
-    moneyField = new TextField();
+    mMoneyLabel = new gcn::Label("You get: 0z");
+    mMoneyLabel2 = new gcn::Label("You give:");
+    mMoneyField = new TextField();
 
-    addButton->adjustSize();
-    okButton->adjustSize();
-    cancelButton->adjustSize();
-    tradeButton->adjustSize();
+    mAddButton->adjustSize();
+    mOkButton->adjustSize();
+    mCancelButton->adjustSize();
+    mTradeButton->adjustSize();
 
-    tradeButton->setEnabled(false);
+    mTradeButton->setEnabled(false);
 
-    itemNameLabel = new gcn::Label("Name:");
-    itemDescriptionLabel = new gcn::Label("Description:");
+    mItemNameLabel = new gcn::Label("Name:");
+    mItemDescriptionLabel = new gcn::Label("Description:");
 
-    add(myScroll);
-    add(partnerScroll);
-    add(addButton);
-    add(okButton);
-    add(cancelButton);
-    add(tradeButton);
-    add(itemNameLabel);
-    add(itemDescriptionLabel);
-    add(moneyLabel2);
-    add(moneyField);
-    add(moneyLabel);
+    add(mMyScroll);
+    add(mPartnerScroll);
+    add(mAddButton);
+    add(mOkButton);
+    add(mCancelButton);
+    add(mTradeButton);
+    add(mItemNameLabel);
+    add(mItemDescriptionLabel);
+    add(mMoneyLabel2);
+    add(mMoneyField);
+    add(mMoneyLabel);
 
-    moneyField->setPosition(8 + 60, getHeight() - 20);
-    moneyField->setWidth(50);
+    mMoneyField->setPosition(8 + 60, getHeight() - 20);
+    mMoneyField->setWidth(50);
 
-    moneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
-    moneyLabel2->setPosition(8, getHeight() - 20);
+    mMoneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
+    mMoneyLabel2->setPosition(8, getHeight() - 20);
 
-    cancelButton->setPosition(getWidth() - 48, getHeight() - 49);
-    tradeButton->setPosition(cancelButton->getX() - 40
+    mCancelButton->setPosition(getWidth() - 48, getHeight() - 49);
+    mTradeButton->setPosition(mCancelButton->getX() - 40
         , getHeight() - 49);
-    okButton->setPosition(tradeButton->getX() - 24,
+    mOkButton->setPosition(mTradeButton->getX() - 24,
         getHeight() - 49);
-    addButton->setPosition(okButton->getX() - 32,
+    mAddButton->setPosition(mOkButton->getX() - 32,
         getHeight() - 49);
 
-    myItemContainer->setSize(getWidth() - 24 - 12 - 1,
+    mMyItemContainer->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    myScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+    mMyScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
 
-    partnerItemContainer->setSize(getWidth() - 24 - 12 - 1,
+    mPartnerItemContainer->setSize(getWidth() - 24 - 12 - 1,
         (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    partnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+    mPartnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
 
-    itemNameLabel->setPosition(8,
-        partnerScroll->getY() + partnerScroll->getHeight() + 4);
-    itemDescriptionLabel->setPosition(8,
-        itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
+    mItemNameLabel->setPosition(8,
+        mPartnerScroll->getY() + mPartnerScroll->getHeight() + 4);
+    mItemDescriptionLabel->setPosition(8,
+        mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
 
     setContentSize(getWidth(), getHeight());
 }
@@ -132,83 +132,83 @@ void TradeWindow::addMoney(int amount)
 {
     std::stringstream tempMoney;
     tempMoney << "You get: " << amount << "z";
-    moneyLabel->setCaption(tempMoney.str());
-    moneyLabel->adjustSize();
+    mMoneyLabel->setCaption(tempMoney.str());
+    mMoneyLabel->adjustSize();
 }
 
 void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
 {
     if (own) {
-        myInventory->addItem(id, quantity, equipment);
+        mMyInventory->addItem(id, quantity, equipment);
     } else {
-        partnerInventory->addItem(id, quantity, equipment);
+        mPartnerInventory->addItem(id, quantity, equipment);
     }
 }
 
 void TradeWindow::removeItem(int id, bool own)
 {
     if (own) {
-        myInventory->removeItem(id);
+        mMyInventory->removeItem(id);
     } else {
-        partnerInventory->removeItem(id);
+        mPartnerInventory->removeItem(id);
     }
 }
 
 void TradeWindow::changeQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myInventory->getItem(index)->setQuantity(quantity);
+        mMyInventory->getItem(index)->setQuantity(quantity);
     } else {
-        partnerInventory->getItem(index)->setQuantity(quantity);
+        mPartnerInventory->getItem(index)->setQuantity(quantity);
     }
 }
 
 void TradeWindow::increaseQuantity(int index, bool own, int quantity)
 {
     if (own) {
-        myInventory->getItem(index)->increaseQuantity(quantity);
+        mMyInventory->getItem(index)->increaseQuantity(quantity);
     } else {
-        partnerInventory->getItem(index)->increaseQuantity(quantity);
+        mPartnerInventory->getItem(index)->increaseQuantity(quantity);
     }
 }
 
 void TradeWindow::reset()
 {
-    myInventory->clear();
-    partnerInventory->clear();
-    tradeButton->setEnabled(false);
-    okButton->setEnabled(true);
-    ok_other = false;
-    ok_me = false;
-    moneyLabel->setCaption("You get: 0z");
-    moneyField->setEnabled(true);
-    moneyField->setText("");
+    mMyInventory->clear();
+    mPartnerInventory->clear();
+    mTradeButton->setEnabled(false);
+    mOkButton->setEnabled(true);
+    mOkOther = false;
+    mOkMe = false;
+    mMoneyLabel->setCaption("You get: 0z");
+    mMoneyField->setEnabled(true);
+    mMoneyField->setText("");
 }
 
 void TradeWindow::setTradeButton(bool enabled)
 {
-    tradeButton->setEnabled(enabled);
+    mTradeButton->setEnabled(enabled);
 }
 
 void TradeWindow::receivedOk(bool own)
 {
     if (own) {
-        ok_me = true;
-        if (ok_other) {
-            tradeButton->setEnabled(true);
-            okButton->setEnabled(false);
+        mOkMe = true;
+        if (mOkOther) {
+            mTradeButton->setEnabled(true);
+            mOkButton->setEnabled(false);
         } else {
-            tradeButton->setEnabled(false);
-            okButton->setEnabled(false);
+            mTradeButton->setEnabled(false);
+            mOkButton->setEnabled(false);
         }
     } else {
-        ok_other = true;
-        if (ok_me) {
-            tradeButton->setEnabled(true);
-            okButton->setEnabled(false);
+        mOkOther = true;
+        if (mOkMe) {
+            mTradeButton->setEnabled(true);
+            mOkButton->setEnabled(false);
         } else {
-            tradeButton->setEnabled(false);
-            okButton->setEnabled(true);
+            mTradeButton->setEnabled(false);
+            mOkButton->setEnabled(true);
         }
     }
 }
@@ -227,23 +227,23 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
 
     Item *item;
 
-    // myItems selected
-    if (x >= myScroll->getX() + 3
-        && x <= myScroll->getX() + myScroll->getWidth() - 10
-        && y >= myScroll->getY() + 16
-        && y <= myScroll->getY() + myScroll->getHeight() + 15
-        && (item = myItemContainer->getItem()))
+    // mMyItems selected
+    if (x >= mMyScroll->getX() + 3
+        && x <= mMyScroll->getX() + mMyScroll->getWidth() - 10
+        && y >= mMyScroll->getY() + 16
+        && y <= mMyScroll->getY() + mMyScroll->getHeight() + 15
+        && (item = mMyItemContainer->getItem()))
     {
-            partnerItemContainer->selectNone();
-    // partnerItems selected
+            mPartnerItemContainer->selectNone();
+    // mPartnerItems selected
     }
-    else if (x >= partnerScroll->getX() + 3
-        && x <= partnerScroll->getX() + partnerScroll->getWidth() - 20
-        && y >= partnerScroll->getY() + 16
-        && y <= partnerScroll->getY() + partnerScroll->getHeight() + 15
-        && (item = partnerItemContainer->getItem()))
+    else if (x >= mPartnerScroll->getX() + 3
+        && x <= mPartnerScroll->getX() + mPartnerScroll->getWidth() - 20
+        && y >= mPartnerScroll->getY() + 16
+        && y <= mPartnerScroll->getY() + mPartnerScroll->getHeight() + 15
+        && (item = mPartnerItemContainer->getItem()))
     {
-            myItemContainer->selectNone();
+            mMyItemContainer->selectNone();
     } else {
         return;
     }
@@ -251,11 +251,11 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
     // Show Name and Description
     std::string SomeText;
     SomeText = "Name: " + item->getInfo()->getName();
-    itemNameLabel->setCaption(SomeText);
-    itemNameLabel->adjustSize();
+    mItemNameLabel->setCaption(SomeText);
+    mItemNameLabel->adjustSize();
     SomeText = "Description: " + item->getInfo()->getDescription();
-    itemDescriptionLabel->setCaption(SomeText);
-    itemDescriptionLabel->adjustSize();
+    mItemDescriptionLabel->setCaption(SomeText);
+    mItemDescriptionLabel->adjustSize();
 }
 
 void TradeWindow::action(const std::string &eventId)
@@ -267,11 +267,11 @@ void TradeWindow::action(const std::string &eventId)
             return;
         }
 
-        if (myInventory->getFreeSlot() < 1) {
+        if (mMyInventory->getFreeSlot() < 1) {
             return;
         }
 
-        if (myInventory->contains(item)) {
+        if (mMyInventory->contains(item)) {
             chatWindow->chatLog("Failed adding item. You can not "
                     "overlap one kind of item on the window.", BY_SERVER);
             return;
@@ -293,21 +293,21 @@ void TradeWindow::action(const std::string &eventId)
     else if (eventId == "ok")
     {
         std::stringstream tempMoney[2];
-        tempMoney[0] << moneyField->getText();
+        tempMoney[0] << mMoneyField->getText();
         int tempInt;
         if (tempMoney[0] >> tempInt)
         {
             tempMoney[1] << tempInt;
-            moneyField->setText(tempMoney[1].str());
+            mMoneyField->setText(tempMoney[1].str());
             
             MessageOut outMsg(mNetwork);
             outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
             outMsg.writeInt16(0);
             outMsg.writeInt32(tempInt);
         } else {
-            moneyField->setText("");
+            mMoneyField->setText("");
         }
-        moneyField->setEnabled(false);
+        mMoneyField->setEnabled(false);
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
     }

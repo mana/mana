@@ -40,7 +40,7 @@ class WrongDataNoticeListener : public gcn::ActionListener {
         void setTarget(gcn::TextField *textField);
         void action(const std::string &eventId);
     private:
-        gcn::TextField *target;
+        gcn::TextField *mTarget;
 };
 
 /**
@@ -68,18 +68,15 @@ class LoginDialog : public Window, public gcn::ActionListener {
         void action(const std::string& eventId);
 
     private:
-        gcn::Label *userLabel;
-        gcn::Label *passLabel;
-        gcn::Label *serverLabel;
-        gcn::TextField *userField;
-        gcn::TextField *passField;
-        gcn::TextField *serverField;
-        gcn::CheckBox *keepCheck;
-        gcn::Button *okButton;
-        gcn::Button *cancelButton;
-        gcn::Button *registerButton;
+        gcn::TextField *mUserField;
+        gcn::TextField *mPassField;
+        gcn::TextField *mServerField;
+        gcn::CheckBox *mKeepCheck;
+        gcn::Button *mOkButton;
+        gcn::Button *mCancelButton;
+        gcn::Button *mRegisterButton;
 
-        WrongDataNoticeListener *wrongDataNoticeListener;
+        WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
 };

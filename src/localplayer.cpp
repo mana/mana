@@ -51,9 +51,9 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    switch (action) {
+    switch (mAction) {
         case WALK:
-            mFrame = (get_elapsed_time(walk_time) * 6) / mWalkSpeed;
+            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
             if (mFrame >= 6) {
                 nextStep();
             }
@@ -65,7 +65,7 @@ void LocalPlayer::logic()
             {
                 frames = 5;
             }
-            mFrame = (get_elapsed_time(walk_time) * frames) / aspd;
+            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
             if (mFrame >= frames) {
                 nextStep();
                 attack();
@@ -155,8 +155,8 @@ void LocalPlayer::dropItem(Item *item, int quantity)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - x;
-    int dy = item->getY() - y;
+    int dx = item->getX() - mX;
+    int dy = item->getY() - mY;
 
     if (dx * dx + dy * dy < 4) {
         MessageOut outMsg(mNetwork);
@@ -175,10 +175,10 @@ void LocalPlayer::walk(unsigned char dir)
     if (!mMap || !dir)
         return;
 
-    if (action == WALK)
+    if (mAction == WALK)
     {
         // Just finish the current action, otherwise we get out of sync
-        Being::setDestination(x, y);
+        Being::setDestination(mX, mY);
         return;
     }
 
@@ -193,25 +193,25 @@ void LocalPlayer::walk(unsigned char dir)
         dx++;
 
     // Prevent skipping corners over colliding tiles
-    if (dx && mMap->tileCollides(x + dx, y))
+    if (dx && mMap->tileCollides(mX + dx, mY))
         dx = 0;
-    if (dy && mMap->tileCollides(x, y + dy))
+    if (dy && mMap->tileCollides(mX, mY + dy))
         dy = 0;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk(x + dx, y + dy))
+    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy))
         dx = 0;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(x + dx, y + dy))
+    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy))
     {
-        setDestination(x + dx, y + dy);
+        setDestination(mX + dx, mY + dy);
     }
     else if (dir)
     {
         // Update the player direction to where he wants to walk
         // Warning: Not communicated to the server yet
-        direction = dir;
+        mDirection = dir;
     }
 }
 
@@ -219,7 +219,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     char temp[3];
     MessageOut outMsg(mNetwork);
-    set_coordinates(temp, x, y, direction);
+    set_coordinates(temp, mX, mY, mDirection);
     outMsg.writeInt16(0x0085);
     outMsg.writeString(temp, 3);
 
@@ -264,7 +264,7 @@ void LocalPlayer::raiseAttribute(Attribute attr)
 
 void LocalPlayer::raiseSkill(Uint16 skillId)
 {
-    if (skillPoint <= 0)
+    if (mSkillPoint <= 0)
         return;
 
     MessageOut outMsg(mNetwork);
@@ -279,7 +279,7 @@ void LocalPlayer::toggleSit()
     mLastAction = tick_time;
 
     char type;
-    switch (action)
+    switch (mAction)
     {
         case STAND: type = 2; break;
         case SIT: type = 3; break;
@@ -328,7 +328,7 @@ bool LocalPlayer::tradeRequestOk() const
 void LocalPlayer::attack(Being *target, bool keep)
 {
     // Can only attack when standing still
-    if (action != STAND)
+    if (mAction != STAND)
         return;
 
     if (keep && target)
@@ -339,29 +339,29 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (!target)
         return;
 
-    int dist_x = target->x - x;
-    int dist_y = target->y - y;
+    int dist_x = target->mX - mX;
+    int dist_y = target->mY - mY;
 
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
-            direction = DOWN;
+            mDirection = DOWN;
         else
-            direction = UP;
+            mDirection = UP;
     }
     else
     {
         if (dist_x > 0)
-            direction = RIGHT;
+            mDirection = RIGHT;
         else
-            direction = LEFT;
+            mDirection = LEFT;
     }
 
     // Implement charging attacks here
-    lastAttackTime = 0;
+    mLastAttackTime = 0;
 
-    action = ATTACK;
-    walk_time = tick_time;
+    mAction = ATTACK;
+    mWalkTime = tick_time;
     if (getWeapon() == 2)
         sound.playSfx("sfx/bow_shoot_1.ogg");
     else

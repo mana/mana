@@ -64,13 +64,13 @@ NpcListDialog::NpcListDialog():
 int
 NpcListDialog::getNumberOfElements()
 {
-    return items.size();
+    return mItems.size();
 }
 
 std::string
 NpcListDialog::getElementAt(int i)
 {
-    return items[i];
+    return mItems[i];
 }
 
 void
@@ -80,14 +80,14 @@ NpcListDialog::parseItems(const std::string &itemString)
 
     std::string tmp;
     while(getline(iss, tmp, ':')) {
-        items.push_back(tmp);
+        mItems.push_back(tmp);
     }
 }
 
 void
 NpcListDialog::reset()
 {
-    items.clear();
+    mItems.clear();
 }
 
 void

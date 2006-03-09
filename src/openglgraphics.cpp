@@ -84,8 +84,8 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
         int dstX, int dstY, int width, int height)
 {
-    srcX += image->bounds.x;
-    srcY += image->bounds.y;
+    srcX += image->mBounds.x;
+    srcY += image->mBounds.y;
 
     // Find OpenGL texture coordinates
     float texX1 = srcX / (float)image->mTexWidth;

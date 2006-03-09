@@ -42,25 +42,25 @@ DebugWindow::DebugWindow():
     setDefaultSize(0, 0, 400, 100);
     loadWindowState();
 
-    FPSLabel = new gcn::Label("[0 FPS]");
-    FPSLabel->setPosition(0,0);
+    mFPSLabel = new gcn::Label("[0 FPS]");
+    mFPSLabel->setPosition(0,0);
 
-    musicFileLabel = new gcn::Label("Music File: ");
-    musicFileLabel->setPosition(0, 20);
+    mMusicFileLabel = new gcn::Label("Music File: ");
+    mMusicFileLabel->setPosition(0, 20);
 
-    mapFileLabel = new gcn::Label("Mini-Map File: ");
-    mapFileLabel->setPosition(0, 40);
+    mMapFileLabel = new gcn::Label("Mini-Map File: ");
+    mMapFileLabel->setPosition(0, 40);
 
-    tileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
-    tileMouseLabel->setPosition(100, 0);
+    mTileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
+    mTileMouseLabel->setPosition(100, 0);
 
     Button *closeButton = new Button("Close", "close", this);
     closeButton->setPosition(5, 60);
 
-    add(FPSLabel);
-    add(musicFileLabel);
-    add(mapFileLabel);
-    add(tileMouseLabel);
+    add(mFPSLabel);
+    add(mMusicFileLabel);
+    add(mMapFileLabel);
+    add(mTileMouseLabel);
     add(closeButton);
 }
 
@@ -75,13 +75,13 @@ DebugWindow::logic()
 
     std::stringstream updatedText;
     updatedText << "[" << fps << " FPS]";
-    FPSLabel->setCaption(updatedText.str());
-    FPSLabel->adjustSize();
+    mFPSLabel->setCaption(updatedText.str());
+    mFPSLabel->adjustSize();
 
     updatedText.str("");
     updatedText << "[Mouse: " << mouseTileX << ", " << mouseTileY << "]";
-    tileMouseLabel->setCaption(updatedText.str());
-    tileMouseLabel->adjustSize();
+    mTileMouseLabel->setCaption(updatedText.str());
+    mTileMouseLabel->adjustSize();
 
     updatedText.str("");
     mCurrentMap = engine->getCurrentMap();
@@ -90,13 +90,13 @@ DebugWindow::logic()
     {
         updatedText << " [Music File: "
                     << mCurrentMap->getProperty("music") << "]";
-        musicFileLabel->setCaption(updatedText.str());
-        musicFileLabel->adjustSize();
+        mMusicFileLabel->setCaption(updatedText.str());
+        mMusicFileLabel->adjustSize();
         updatedText.str("");
         updatedText << " [MiniMap File: "
                     << mCurrentMap->getProperty("minimap") << "]";
-        mapFileLabel->setCaption(updatedText.str());
-        mapFileLabel->adjustSize();
+        mMapFileLabel->setCaption(updatedText.str());
+        mMapFileLabel->adjustSize();
     }
 }
 

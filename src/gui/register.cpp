@@ -44,83 +44,83 @@
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window("Register"), mLoginData(loginData)
 {
-    userLabel = new gcn::Label("Name:");
-    passwordLabel = new gcn::Label("Password:");
-    confirmLabel = new gcn::Label("Confirm:");
-    serverLabel = new gcn::Label("Server:");
-    userField = new TextField("player");
-    passwordField = new PasswordField();
-    confirmField = new PasswordField();
-    serverField = new TextField();
-    maleButton = new RadioButton("Male", "sex", true);
-    maleButton->setEnabled(false);
-    femaleButton = new RadioButton("Female", "sex", false);
-    femaleButton->setEnabled(false);
-    registerButton = new Button("Register", "register", this);
-    cancelButton = new Button("Cancel", "cancel", this);
+    gcn::Label *userLabel = new gcn::Label("Name:");
+    gcn::Label *passwordLabel = new gcn::Label("Password:");
+    gcn::Label *confirmLabel = new gcn::Label("Confirm:");
+    gcn::Label *serverLabel = new gcn::Label("Server:");
+    mUserField = new TextField("player");
+    mPasswordField = new PasswordField();
+    mConfirmField = new PasswordField();
+    mServerField = new TextField();
+    mMaleButton = new RadioButton("Male", "sex", true);
+    mMaleButton->setEnabled(false);
+    mFemaleButton = new RadioButton("Female", "sex", false);
+    mFemaleButton->setEnabled(false);
+    mRegisterButton = new Button("Register", "register", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
     
     int width = 200;
     int height = 150;
     setContentSize(width, height);
     
-    userField->setPosition(65, 5);
-    userField->setWidth(130);
-    passwordField->setPosition(
-            65, userField->getY() + userField->getHeight() + 7);
-    passwordField->setWidth(130);
-    confirmField->setPosition(
-            65, passwordField->getY() + passwordField->getHeight() + 7);
-    confirmField->setWidth(130);
-    serverField->setPosition(
-            65, 23 + confirmField->getY() + confirmField->getHeight() + 7);
-    serverField->setWidth(130);
+    mUserField->setPosition(65, 5);
+    mUserField->setWidth(130);
+    mPasswordField->setPosition(
+            65, mUserField->getY() + mUserField->getHeight() + 7);
+    mPasswordField->setWidth(130);
+    mConfirmField->setPosition(
+            65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
+    mConfirmField->setWidth(130);
+    mServerField->setPosition(
+            65, 23 + mConfirmField->getY() + mConfirmField->getHeight() + 7);
+    mServerField->setWidth(130);
 
-    userLabel->setPosition(5, userField->getY() + 1);
-    passwordLabel->setPosition(5, passwordField->getY() + 1);
-    confirmLabel->setPosition(5, confirmField->getY() + 1);
-    serverLabel->setPosition(5, serverField->getY() + 1);
+    userLabel->setPosition(5, mUserField->getY() + 1);
+    passwordLabel->setPosition(5, mPasswordField->getY() + 1);
+    confirmLabel->setPosition(5, mConfirmField->getY() + 1);
+    serverLabel->setPosition(5, mServerField->getY() + 1);
     
-    femaleButton->setPosition(width - femaleButton->getWidth() - 10,
-                              confirmField->getY() + confirmField->getHeight() + 7);
-    maleButton->setPosition(femaleButton->getX() - maleButton->getWidth() - 5,
-                            femaleButton->getY());
+    mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
+                              mConfirmField->getY() + mConfirmField->getHeight() + 7);
+    mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
+                            mFemaleButton->getY());
                             
-    registerButton->setPosition(5, height - registerButton->getHeight() - 5);
-    cancelButton->setPosition(10 + registerButton->getWidth(),
-                              registerButton->getY());
+    mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
+    mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
+                              mRegisterButton->getY());
 
 
-    /*userField->setEventId("register");
-    passwordField->setEventId("register");
-    confirmField->setEventId("register");
-    serverField->setEventId("register");*/
+    /*mUserField->setEventId("register");
+    mPasswordField->setEventId("register");
+    mConfirmField->setEventId("register");
+    mServerField->setEventId("register");*/
 
-    /*userField->addActionListener(this);
-    passwordField->addActionListener(this);
-    confirmField->addActionListener(this);
-    serverField->addActionListener(this);*/
+    /*mUserField->addActionListener(this);
+    mPasswordField->addActionListener(this);
+    mConfirmField->addActionListener(this);
+    mServerField->addActionListener(this);*/
 
     add(userLabel);
     add(passwordLabel);
     add(serverLabel);
     add(confirmLabel);
-    add(userField);
-    add(passwordField);
-    add(confirmField);
-    add(serverField);
-    add(maleButton);
-    add(femaleButton);
-    add(registerButton);
-    add(cancelButton);
+    add(mUserField);
+    add(mPasswordField);
+    add(mConfirmField);
+    add(mServerField);
+    add(mMaleButton);
+    add(mFemaleButton);
+    add(mRegisterButton);
+    add(mCancelButton);
 
     setLocationRelativeTo(getParent());
-    userField->requestFocus();
-    userField->setCaretPosition(userField->getText().length());
+    mUserField->requestFocus();
+    mUserField->setCaretPosition(mUserField->getText().length());
 
-    serverField->setText(config.getValue("host", ""));
+    mServerField->setText(config.getValue("host", ""));
     
-    wrongDataNoticeListener = NULL;
-    wrongRegisterNotice = NULL;
+    mWrongDataNoticeListener = NULL;
+    mWrongRegisterNotice = NULL;
 }
 
 void
@@ -132,7 +132,7 @@ RegisterDialog::action(const std::string& eventId)
     }
     else if (eventId == "register")
     {
-        const std::string user = userField->getText();
+        const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());
 
         std::stringstream errorMsg;
@@ -161,7 +161,7 @@ RegisterDialog::action(const std::string& eventId)
                      << " characters long.";
             error = 1;
         }
-        else if (passwordField->getText().length() < LEN_MIN_PASSWORD)
+        else if (mPasswordField->getText().length() < LEN_MIN_PASSWORD)
         {
             // Pass too short
             errorMsg << "The password needs to be at least "
@@ -169,7 +169,7 @@ RegisterDialog::action(const std::string& eventId)
                      << " characters long.";
             error = 2;
         }
-        else if (passwordField->getText().length() > LEN_MAX_PASSWORD - 1 )
+        else if (mPasswordField->getText().length() > LEN_MAX_PASSWORD - 1 )
         {
             // Pass too long
             errorMsg << "The password needs to be less than "
@@ -177,7 +177,7 @@ RegisterDialog::action(const std::string& eventId)
                      << " characters long.";
             error = 2;
         }
-        else if (passwordField->getText() != confirmField->getText())
+        else if (mPasswordField->getText() != mConfirmField->getText())
         {
             // Password does not match with the confirmation one
             errorMsg << "Passwords do not match.";
@@ -186,36 +186,36 @@ RegisterDialog::action(const std::string& eventId)
         
         if (error > 0)
         {
-            wrongDataNoticeListener = new WrongDataNoticeListener();
+            mWrongDataNoticeListener = new WrongDataNoticeListener();
             if (error == 1)
             {
-                wrongDataNoticeListener->setTarget(this->userField);
+                mWrongDataNoticeListener->setTarget(this->mUserField);
             }
             else if (error == 2)
             {
-                wrongDataNoticeListener->setTarget(this->passwordField);
+                mWrongDataNoticeListener->setTarget(this->mPasswordField);
                 // Reset password confirmation
-                confirmField->setText("");
+                mConfirmField->setText("");
             }
 
-            if (wrongRegisterNotice)
+            if (mWrongRegisterNotice)
             {
-                delete wrongRegisterNotice;
-                wrongRegisterNotice = NULL;
+                delete mWrongRegisterNotice;
+                mWrongRegisterNotice = NULL;
             }
-            wrongRegisterNotice = new OkDialog("Error", errorMsg.str());
-            wrongRegisterNotice->addActionListener(wrongDataNoticeListener);
+            mWrongRegisterNotice = new OkDialog("Error", errorMsg.str());
+            mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
         }
         else
         {
             // No errors detected, register the new user.
-            registerButton->setEnabled(false);
+            mRegisterButton->setEnabled(false);
 
             mLoginData->hostname = config.getValue("host", "animesites.de");
             mLoginData->port = (short)config.getValue("port", 0);
-            mLoginData->username = userField->getText();
-            mLoginData->password = passwordField->getText();
-            mLoginData->username += femaleButton->isMarked() ? "_F" : "_M";
+            mLoginData->username = mUserField->getText();
+            mLoginData->password = mPasswordField->getText();
+            mLoginData->username += mFemaleButton->isMarked() ? "_F" : "_M";
 
             state = ACCOUNT_STATE;
         }

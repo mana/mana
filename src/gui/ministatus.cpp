@@ -40,65 +40,71 @@ MiniStatusWindow::MiniStatusWindow():
     setMovable(false);
     setTitleBarHeight(0);
 
-    hpBar = new ProgressBar(1.0f,
+    mHpBar = new ProgressBar(1.0f,
             0, 3, 100, 20,
             0, 171, 34);
 
-    mpBar = new ProgressBar(1.0f,
-            hpBar->getX() + hpBar->getWidth() + 3,
-            hpBar->getY(), 100, 20, 26, 102, 230);
+    mMpBar = new ProgressBar(1.0f,
+            mHpBar->getX() + mHpBar->getWidth() + 3,
+            mHpBar->getY(), 100, 20, 26, 102, 230);
 
-    hpLabel = new gcn::Label("");
-    mpLabel = new gcn::Label("");
-    hpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    mpLabel->setForegroundColor(gcn::Color(255, 255, 255));
-    hpLabel->setFont(speechFont);
-    mpLabel->setFont(speechFont);
+    mHpLabel = new gcn::Label("");
+    mMpLabel = new gcn::Label("");
+    mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
+    mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
+    mHpLabel->setFont(speechFont);
+    mMpLabel->setFont(speechFont);
 
-    add(hpBar);
-    add(mpBar);
-    add(hpLabel);
-    add(mpLabel);
+    add(mHpBar);
+    add(mMpBar);
+    add(mHpLabel);
+    add(mMpLabel);
 
-    setDefaultSize(0, 0, mpBar->getX() + mpBar->getWidth(),
-                   mpBar->getY() + mpBar->getHeight());
+    setDefaultSize(0, 0, mMpBar->getX() + mMpBar->getWidth(),
+                   mMpBar->getY() + mMpBar->getHeight());
 }
 
 void MiniStatusWindow::update()
 {
     // HP Bar coloration
-    if (player_node->hp < int(player_node->maxHp / 3))
+    if (player_node->mHp < int(player_node->mMaxHp / 3))
     {
-        hpBar->setColor(223, 32, 32); // Red
+        mHpBar->setColor(223, 32, 32); // Red
     }
     else
     {
-        if (player_node->hp < int((player_node->maxHp / 3) * 2))
+        if (player_node->mHp < int((player_node->mMaxHp / 3) * 2))
         {
-            hpBar->setColor(230, 171, 34); // Orange
+            mHpBar->setColor(230, 171, 34); // Orange
         }
         else
         {
-            hpBar->setColor(0, 171, 34); // Green
+            mHpBar->setColor(0, 171, 34); // Green
         }
     }
 
-    hpBar->setProgress((float)player_node->hp / (float)player_node->maxHp);
+    mHpBar->setProgress((float)player_node->mHp / (float)player_node->mMaxHp);
     // mpBar->setProgress((float)player_node->mp / (float)player_node->maxMp);
 
     // Update and center labels
     std::stringstream updatedText;
-    updatedText << player_node->hp;
-    hpLabel->setCaption(updatedText.str());
-    hpLabel->adjustSize();
+    updatedText << player_node->mHp;
+    mHpLabel->setCaption(updatedText.str());
+    mHpLabel->adjustSize();
     updatedText.str("");
-    updatedText << player_node->mp;
-    mpLabel->setCaption(updatedText.str());
-    mpLabel->adjustSize();
-    hpLabel->setPosition(hpBar->getX() + int((hpBar->getWidth() / 2) - (hpLabel->getWidth() / 2)),
-                        hpBar->getY() + int((hpBar->getHeight() / 2) - (hpLabel->getHeight() / 2)));
-    mpLabel->setPosition(mpBar->getX() + int((mpBar->getWidth() / 2) - (mpLabel->getWidth() / 2)),
-                        mpBar->getY() + int((mpBar->getHeight() / 2) - (mpLabel->getHeight() / 2)));
+    updatedText << player_node->mMp;
+    mMpLabel->setCaption(updatedText.str());
+    mMpLabel->adjustSize();
+    mHpLabel->setPosition(
+            mHpBar->getX() +
+                int((mHpBar->getWidth() / 2) - (mHpLabel->getWidth() / 2)),
+            mHpBar->getY() +
+                int((mHpBar->getHeight() / 2) - (mHpLabel->getHeight() / 2)));
+    mMpLabel->setPosition(
+            mMpBar->getX() +
+                int((mMpBar->getWidth() / 2) - (mMpLabel->getWidth() / 2)),
+            mMpBar->getY() +
+                int((mMpBar->getHeight() / 2) - (mMpLabel->getHeight() / 2)));
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)

@@ -241,7 +241,7 @@ Gui::mousePress(int mx, int my, int button)
         return;
 
     // Check if we are alive and kickin'
-    if (!player_node || player_node->action == Being::DEAD)
+    if (!player_node || player_node->mAction == Being::DEAD)
         return;
 
     // Check if we are busy
@@ -294,7 +294,7 @@ Gui::mousePress(int mx, int my, int button)
 
                 case Being::MONSTER:
                 case Being::PLAYER:
-                    if (being->action == Being::MONSTER_DEAD)
+                    if (being->mAction == Being::MONSTER_DEAD)
                         break;
 
                     player_node->attack(being, true);

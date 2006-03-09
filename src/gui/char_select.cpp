@@ -71,53 +71,53 @@ void CharDeleteConfirm::action(const std::string &eventId)
 CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
     Window("Select Character"), mNetwork(network), mCharInfo(charInfo), mCharSelected(false)
 {
-    selectButton = new Button("Ok", "ok", this);
-    cancelButton = new Button("Cancel", "cancel", this);
-    newCharButton = new Button("New", "new", this);
-    delCharButton = new Button("Delete", "delete", this);
-    previousButton = new Button("Previous", "previous", this);
-    nextButton = new Button("Next", "next", this);
+    mSelectButton = new Button("Ok", "ok", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
+    mNewCharButton = new Button("New", "new", this);
+    mDelCharButton = new Button("Delete", "delete", this);
+    mPreviousButton = new Button("Previous", "previous", this);
+    mNextButton = new Button("Next", "next", this);
 
-    nameLabel = new gcn::Label("Name");
-    levelLabel = new gcn::Label("Level");
-    jobLevelLabel = new gcn::Label("Job Level");
-    moneyLabel = new gcn::Label("Money");
-    playerBox = new PlayerBox();
+    mNameLabel = new gcn::Label("Name");
+    mLevelLabel = new gcn::Label("Level");
+    mJobLevelLabel = new gcn::Label("Job Level");
+    mMoneyLabel = new gcn::Label("Money");
+    mPlayerBox = new PlayerBox();
 
     int w = 195;
     int h = 220;
     setContentSize(w, h);
-    playerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
-    nameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
-    levelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    jobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
-    moneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
-    previousButton->setPosition(5, 170);
-    nextButton->setPosition(previousButton->getWidth() + 10, 170);
-    newCharButton->setPosition(5, h - 5 - newCharButton->getHeight());
-    delCharButton->setPosition(
-            5 + newCharButton->getWidth() + 5,
-            newCharButton->getY());
-    cancelButton->setPosition(
-            w - 5 - cancelButton->getWidth(),
-            newCharButton->getY());
-    selectButton->setPosition(
-            cancelButton->getX() - 5 - selectButton->getWidth(),
-            newCharButton->getY());
+    mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
+    mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
+    mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
+    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
+    mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
+    mPreviousButton->setPosition(5, 170);
+    mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
+    mNewCharButton->setPosition(5, h - 5 - mNewCharButton->getHeight());
+    mDelCharButton->setPosition(
+            5 + mNewCharButton->getWidth() + 5,
+            mNewCharButton->getY());
+    mCancelButton->setPosition(
+            w - 5 - mCancelButton->getWidth(),
+            mNewCharButton->getY());
+    mSelectButton->setPosition(
+            mCancelButton->getX() - 5 - mSelectButton->getWidth(),
+            mNewCharButton->getY());
 
-    add(playerBox);
-    add(selectButton);
-    add(cancelButton);
-    add(newCharButton);
-    add(delCharButton);
-    add(previousButton);
-    add(nextButton);
-    add(nameLabel);
-    add(levelLabel);
-    add(jobLevelLabel);
-    add(moneyLabel);
+    add(mPlayerBox);
+    add(mSelectButton);
+    add(mCancelButton);
+    add(mNewCharButton);
+    add(mDelCharButton);
+    add(mPreviousButton);
+    add(mNextButton);
+    add(mNameLabel);
+    add(mLevelLabel);
+    add(mJobLevelLabel);
+    add(mMoneyLabel);
 
-    selectButton->requestFocus();
+    mSelectButton->requestFocus();
     setLocationRelativeTo(getParent());
     updatePlayerInfo();
 }
@@ -127,11 +127,11 @@ void CharSelectDialog::action(const std::string& eventId)
     if (eventId == "ok" && n_character > 0)
     {
         // Start game
-        newCharButton->setEnabled(false);
-        delCharButton->setEnabled(false);
-        selectButton->setEnabled(false);
-        previousButton->setEnabled(false);
-        nextButton->setEnabled(false);
+        mNewCharButton->setEnabled(false);
+        mDelCharButton->setEnabled(false);
+        mSelectButton->setEnabled(false);
+        mPreviousButton->setEnabled(false);
+        mNextButton->setEnabled(false);
         mCharSelected = true;
         attemptCharSelect();
     }
@@ -174,36 +174,36 @@ void CharSelectDialog::updatePlayerInfo()
         std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
 
         nameCaption << pi->getName();
-        levelCaption << "Lvl: " << pi->lvl;
-        jobCaption << "Job Lvl: " << pi->jobLvl;
-        moneyCaption << "Gold: " << pi->gp;
+        levelCaption << "Lvl: " << pi->mLevel;
+        jobCaption << "Job Lvl: " << pi->mJobLevel;
+        moneyCaption << "Gold: " << pi->mGp;
 
-        nameLabel->setCaption(nameCaption.str());
-        levelLabel->setCaption(levelCaption.str());
-        jobLevelLabel->setCaption(jobCaption.str());
-        moneyLabel->setCaption(moneyCaption.str());
+        mNameLabel->setCaption(nameCaption.str());
+        mLevelLabel->setCaption(levelCaption.str());
+        mJobLevelLabel->setCaption(jobCaption.str());
+        mMoneyLabel->setCaption(moneyCaption.str());
         if (!mCharSelected)
         {
-            newCharButton->setEnabled(false);
-            delCharButton->setEnabled(true);
-            selectButton->setEnabled(true);
+            mNewCharButton->setEnabled(false);
+            mDelCharButton->setEnabled(true);
+            mSelectButton->setEnabled(true);
         }
-        playerBox->hairStyle = pi->getHairStyle() - 1;
-        playerBox->hairColor = pi->getHairColor() - 1;
-        playerBox->showPlayer = true;
+        mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
+        mPlayerBox->mHairColor = pi->getHairColor() - 1;
+        mPlayerBox->mShowPlayer = true;
     }
     else {
-        nameLabel->setCaption("Name");
-        levelLabel->setCaption("Level");
-        jobLevelLabel->setCaption("Job Level");
-        moneyLabel->setCaption("Money");
-        newCharButton->setEnabled(true);
-        delCharButton->setEnabled(false);
-        selectButton->setEnabled(false);
+        mNameLabel->setCaption("Name");
+        mLevelLabel->setCaption("Level");
+        mJobLevelLabel->setCaption("Job Level");
+        mMoneyLabel->setCaption("Money");
+        mNewCharButton->setEnabled(true);
+        mDelCharButton->setEnabled(false);
+        mSelectButton->setEnabled(false);
 
-        playerBox->hairStyle = 0;
-        playerBox->hairColor = 0;
-        playerBox->showPlayer = false;
+        mPlayerBox->mHairStyle = 0;
+        mPlayerBox->mHairColor = 0;
+        mPlayerBox->mShowPlayer = false;
     }
 }
 
@@ -234,54 +234,54 @@ void CharSelectDialog::logic()
 CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
-    nameField = new TextField("");
-    nameLabel = new gcn::Label("Name:");
-    nextHairColorButton = new Button(">", "nextcolor", this);
-    prevHairColorButton = new Button("<", "prevcolor", this);
-    hairColorLabel = new gcn::Label("Hair Color:");
-    nextHairStyleButton = new Button(">", "nextstyle", this);
-    prevHairStyleButton = new Button("<", "prevstyle", this);
-    hairStyleLabel = new gcn::Label("Hair Style:");
-    createButton = new Button("Create", "create", this);
-    cancelButton = new Button("Cancel", "cancel", this);
-    playerBox = new PlayerBox();
-    playerBox->showPlayer = true;
+    mNameField = new TextField("");
+    mNameLabel = new gcn::Label("Name:");
+    mNextHairColorButton = new Button(">", "nextcolor", this);
+    mPrevHairColorButton = new Button("<", "prevcolor", this);
+    mHairColorLabel = new gcn::Label("Hair Color:");
+    mNextHairStyleButton = new Button(">", "nextstyle", this);
+    mPrevHairStyleButton = new Button("<", "prevstyle", this);
+    mHairStyleLabel = new gcn::Label("Hair Style:");
+    mCreateButton = new Button("Create", "create", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
+    mPlayerBox = new PlayerBox();
+    mPlayerBox->mShowPlayer = true;
 
-    nameField->setEventId("create");
+    mNameField->setEventId("create");
 
     int w = 200;
     int h = 150;
     setContentSize(w, h);
-    playerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
-    nameLabel->setPosition(5, 5);
-    nameField->setDimension(
-            gcn::Rectangle(45, 5, w - 45 - 7, nameField->getHeight()));
-    prevHairColorButton->setPosition(90, 35);
-    nextHairColorButton->setPosition(165, 35);
-    hairColorLabel->setPosition(5, 40);
-    prevHairStyleButton->setPosition(90, 64);
-    nextHairStyleButton->setPosition(165, 64);
-    hairStyleLabel->setPosition(5, 70);
-    cancelButton->setPosition(
-            w - 5 - cancelButton->getWidth(),
-            h - 5 - cancelButton->getHeight());
-    createButton->setPosition(
-            cancelButton->getX() - 5 - createButton->getWidth(),
-            h - 5 - cancelButton->getHeight());
+    mPlayerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
+    mNameLabel->setPosition(5, 5);
+    mNameField->setDimension(
+            gcn::Rectangle(45, 5, w - 45 - 7, mNameField->getHeight()));
+    mPrevHairColorButton->setPosition(90, 35);
+    mNextHairColorButton->setPosition(165, 35);
+    mHairColorLabel->setPosition(5, 40);
+    mPrevHairStyleButton->setPosition(90, 64);
+    mNextHairStyleButton->setPosition(165, 64);
+    mHairStyleLabel->setPosition(5, 70);
+    mCancelButton->setPosition(
+            w - 5 - mCancelButton->getWidth(),
+            h - 5 - mCancelButton->getHeight());
+    mCreateButton->setPosition(
+            mCancelButton->getX() - 5 - mCreateButton->getWidth(),
+            h - 5 - mCancelButton->getHeight());
 
-    nameField->addActionListener(this);
+    mNameField->addActionListener(this);
 
-    add(playerBox);
-    add(nameField);
-    add(nameLabel);
-    add(nextHairColorButton);
-    add(prevHairColorButton);
-    add(hairColorLabel);
-    add(nextHairStyleButton);
-    add(prevHairStyleButton);
-    add(hairStyleLabel);
-    add(createButton);
-    add(cancelButton);
+    add(mPlayerBox);
+    add(mNameField);
+    add(mNameLabel);
+    add(mNextHairColorButton);
+    add(mPrevHairColorButton);
+    add(mHairColorLabel);
+    add(mNextHairStyleButton);
+    add(mPrevHairStyleButton);
+    add(mHairStyleLabel);
+    add(mCreateButton);
+    add(mCancelButton);
 
     setLocationRelativeTo(getParent());
 }
@@ -291,7 +291,7 @@ void CharCreateDialog::action(const std::string& eventId)
     if (eventId == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
-            createButton->setEnabled(false);
+            mCreateButton->setEnabled(false);
             attemptCharCreate();
             scheduleDelete();
         }
@@ -304,25 +304,25 @@ void CharCreateDialog::action(const std::string& eventId)
         scheduleDelete();
     }
     else if (eventId == "nextcolor") {
-        playerBox->hairColor++;
+        mPlayerBox->mHairColor++;
     }
     else if (eventId == "prevcolor") {
-        playerBox->hairColor += NR_HAIR_COLORS - 1;
+        mPlayerBox->mHairColor += NR_HAIR_COLORS - 1;
     }
     else if (eventId == "nextstyle") {
-        playerBox->hairStyle++;
+        mPlayerBox->mHairStyle++;
     }
     else if (eventId == "prevstyle") {
-        playerBox->hairStyle += NR_HAIR_STYLES - 1;
+        mPlayerBox->mHairStyle += NR_HAIR_STYLES - 1;
     }
 
-    playerBox->hairColor %= NR_HAIR_COLORS;
-    playerBox->hairStyle %= NR_HAIR_STYLES;
+    mPlayerBox->mHairColor %= NR_HAIR_COLORS;
+    mPlayerBox->mHairStyle %= NR_HAIR_STYLES;
 }
 
 std::string CharCreateDialog::getName()
 {
-    return nameField->getText();
+    return mNameField->getText();
 }
 
 void CharCreateDialog::attemptCharCreate()
@@ -338,6 +338,6 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);
     outMsg.writeInt8(mSlot);
-    outMsg.writeInt16(playerBox->hairColor + 1);
-    outMsg.writeInt16(playerBox->hairStyle + 1);
+    outMsg.writeInt16(mPlayerBox->mHairColor + 1);
+    outMsg.writeInt16(mPlayerBox->mHairStyle + 1);
 }

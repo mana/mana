@@ -180,8 +180,8 @@ void Engine::draw(Graphics *graphics)
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
 
-    int map_x = (player_node->x - midTileX) * 32 + player_node->getXOffset();
-    int map_y = (player_node->y - midTileY) * 32 + player_node->getYOffset();
+    int map_x = (player_node->mX - midTileX) * 32 + player_node->getXOffset();
+    int map_y = (player_node->mY - midTileY) * 32 + player_node->getYOffset();
 
     if (mCurrentMap) {
         if (map_x < 0) {
@@ -221,7 +221,7 @@ void Engine::draw(Graphics *graphics)
         int mouseTileY = mouseY / 32 + camera_y;
 
         Path debugPath = mCurrentMap->findPath(
-                player_node->x, player_node->y,
+                player_node->mX, player_node->mY,
                 mouseTileX, mouseTileY);
 
         for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)

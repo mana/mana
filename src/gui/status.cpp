@@ -49,162 +49,162 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Status Part
     // ----------------------
 
-    lvlLabel = new gcn::Label("Level:");
-    gpLabel = new gcn::Label("Money:");
-    hpLabel = new gcn::Label("HP:");
-    hpValueLabel = new gcn::Label("");
-    mpLabel = new gcn::Label("MP:");
-    mpValueLabel = new gcn::Label("");
-    xpLabel = new gcn::Label("Exp:");
-    xpValueLabel = new gcn::Label("");
-    jobXpLabel = new gcn::Label("Job:");
-    jobValueLabel = new gcn::Label("");
+    mLvlLabel = new gcn::Label("Level:");
+    mGpLabel = new gcn::Label("Money:");
+    mHpLabel = new gcn::Label("HP:");
+    mHpValueLabel = new gcn::Label("");
+    mMpLabel = new gcn::Label("MP:");
+    mMpValueLabel = new gcn::Label("");
+    mXpLabel = new gcn::Label("Exp:");
+    mXpValueLabel = new gcn::Label("");
+    mJobXpLabel = new gcn::Label("Job:");
+    mJobValueLabel = new gcn::Label("");
 
-    lvlLabel->setPosition(5, 3);
-    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 40, 3);
-    hpLabel->setPosition(5, lvlLabel->getY() + lvlLabel->getHeight() + 5);
-    hpBar = new ProgressBar(1.0f,
-                            hpLabel->getX() + hpLabel->getWidth() + 5,
-                            hpLabel->getY(), 80, 15, 0, 171, 34);
-    hpValueLabel->setPosition(hpBar->getX() + hpBar->getWidth() + 5,
-                              hpBar->getY());
-    mpLabel->setPosition(5, hpLabel->getY() + hpLabel->getHeight() + 5);
-    mpBar = new ProgressBar(1.0f,
-                            hpBar->getX(),
-                            mpLabel->getY(), 80, 15, 26, 102, 230);
-    mpValueLabel->setPosition(hpValueLabel->getX(), mpBar->getY());
+    mLvlLabel->setPosition(5, 3);
+    mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 40, 3);
+    mHpLabel->setPosition(5, mLvlLabel->getY() + mLvlLabel->getHeight() + 5);
+    mHpBar = new ProgressBar(1.0f,
+                            mHpLabel->getX() + mHpLabel->getWidth() + 5,
+                            mHpLabel->getY(), 80, 15, 0, 171, 34);
+    mHpValueLabel->setPosition(mHpBar->getX() + mHpBar->getWidth() + 5,
+                              mHpBar->getY());
+    mMpLabel->setPosition(5, mHpLabel->getY() + mHpLabel->getHeight() + 5);
+    mMpBar = new ProgressBar(1.0f,
+                            mHpBar->getX(),
+                            mMpLabel->getY(), 80, 15, 26, 102, 230);
+    mMpValueLabel->setPosition(mHpValueLabel->getX(), mMpBar->getY());
 
-    xpLabel->setPosition(175, hpLabel->getY());
-    xpBar = new ProgressBar(1.0f, 205, xpLabel->getY(), 80, 15,
+    mXpLabel->setPosition(175, mHpLabel->getY());
+    mXpBar = new ProgressBar(1.0f, 205, mXpLabel->getY(), 80, 15,
                             143, 192, 211);
-    xpValueLabel->setPosition(290, xpBar->getY());
-    jobXpLabel->setPosition(175, mpLabel->getY());
-    jobXpBar = new ProgressBar(1.0f,
-                               xpBar->getX() + xpBar->getWidth() - 60,
-                               jobXpLabel->getY(),
+    mXpValueLabel->setPosition(290, mXpBar->getY());
+    mJobXpLabel->setPosition(175, mMpLabel->getY());
+    mJobXpBar = new ProgressBar(1.0f,
+                               mXpBar->getX() + mXpBar->getWidth() - 60,
+                               mJobXpLabel->getY(),
                                60, 15,
                                220, 135, 203);
-    jobValueLabel->setPosition(290, jobXpBar->getY());
+    mJobValueLabel->setPosition(290, mJobXpBar->getY());
 
-    add(lvlLabel);
-    add(gpLabel);
-    add(hpLabel);
-    add(hpValueLabel);
-    add(mpLabel);
-    add(mpValueLabel);
-    add(xpLabel);
-    add(xpValueLabel);
-    add(jobXpLabel);
-    add(jobValueLabel);
-    add(hpBar);
-    add(mpBar);
-    add(xpBar);
-    add(jobXpBar);
+    add(mLvlLabel);
+    add(mGpLabel);
+    add(mHpLabel);
+    add(mHpValueLabel);
+    add(mMpLabel);
+    add(mMpValueLabel);
+    add(mXpLabel);
+    add(mXpValueLabel);
+    add(mJobXpLabel);
+    add(mJobValueLabel);
+    add(mHpBar);
+    add(mMpBar);
+    add(mXpBar);
+    add(mJobXpBar);
 
     // ----------------------
     // Stats Part
     // ----------------------
 
     // Static Labels
-    statsTitleLabel = new gcn::Label("Stats");
-    statsTotalLabel = new gcn::Label("Total");
-    statsCostLabel = new gcn::Label("Cost");
+    gcn::Label *mStatsTitleLabel = new gcn::Label("Stats");
+    gcn::Label *mStatsTotalLabel = new gcn::Label("Total");
+    gcn::Label *mStatsCostLabel = new gcn::Label("Cost");
 
     // Derived Stats
-    statsAttackLabel = new gcn::Label("Attack:");
-    statsDefenseLabel= new gcn::Label("Defense:");
-    statsMagicAttackLabel = new gcn::Label("M.Attack:");
-    statsMagicDefenseLabel = new gcn::Label("M.Defense:");
-    statsAccuracyLabel = new gcn::Label("% Accuracy:");
-    statsEvadeLabel = new gcn::Label("% Evade:");
-    statsReflexLabel = new gcn::Label("% Reflex:");
+    mStatsAttackLabel = new gcn::Label("Attack:");
+    mStatsDefenseLabel= new gcn::Label("Defense:");
+    mStatsMagicAttackLabel = new gcn::Label("M.Attack:");
+    mStatsMagicDefenseLabel = new gcn::Label("M.Defense:");
+    mStatsAccuracyLabel = new gcn::Label("% Accuracy:");
+    mStatsEvadeLabel = new gcn::Label("% Evade:");
+    mStatsReflexLabel = new gcn::Label("% Reflex:");
 
-    statsAttackPoints = new gcn::Label("");
-    statsDefensePoints = new gcn::Label("");
-    statsMagicAttackPoints = new gcn::Label("");
-    statsMagicDefensePoints = new gcn::Label("");
-    statsAccuracyPoints = new gcn::Label("% Accuracy:");
-    statsEvadePoints = new gcn::Label("% Evade:");
-    statsReflexPoints = new gcn::Label("% Reflex:");
+    mStatsAttackPoints = new gcn::Label("");
+    mStatsDefensePoints = new gcn::Label("");
+    mStatsMagicAttackPoints = new gcn::Label("");
+    mStatsMagicDefensePoints = new gcn::Label("");
+    mStatsAccuracyPoints = new gcn::Label("% Accuracy:");
+    mStatsEvadePoints = new gcn::Label("% Evade:");
+    mStatsReflexPoints = new gcn::Label("% Reflex:");
 
     // New labels
     for (int i = 0; i < 6; i++) {
-        statsLabel[i] = new gcn::Label();
-        statsDisplayLabel[i] = new gcn::Label();
-        pointsLabel[i] = new gcn::Label("0");
+        mStatsLabel[i] = new gcn::Label();
+        mStatsDisplayLabel[i] = new gcn::Label();
+        mPointsLabel[i] = new gcn::Label("0");
     }
-    remainingStatsPointsLabel = new gcn::Label();
+    mRemainingStatsPointsLabel = new gcn::Label();
 
     // Set button events Id
-    statsButton[0] = new Button("+", "STR", this);
-    statsButton[1] = new Button("+", "AGI", this);
-    statsButton[2] = new Button("+", "VIT", this);
-    statsButton[3] = new Button("+", "INT", this);
-    statsButton[4] = new Button("+", "DEX", this);
-    statsButton[5] = new Button("+", "LUK", this);
+    mStatsButton[0] = new Button("+", "STR", this);
+    mStatsButton[1] = new Button("+", "AGI", this);
+    mStatsButton[2] = new Button("+", "VIT", this);
+    mStatsButton[3] = new Button("+", "INT", this);
+    mStatsButton[4] = new Button("+", "DEX", this);
+    mStatsButton[5] = new Button("+", "LUK", this);
 
 
     // Set position
-    statsTitleLabel->setPosition(mpLabel->getX(), mpLabel->getY() + 23 );
-    statsTotalLabel->setPosition(110, statsTitleLabel->getY() + 15);
-    int totalLabelY = statsTotalLabel->getY();
-    statsCostLabel->setPosition(170, totalLabelY);
+    mStatsTitleLabel->setPosition(mMpLabel->getX(), mMpLabel->getY() + 23 );
+    mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
+    int totalLabelY = mStatsTotalLabel->getY();
+    mStatsCostLabel->setPosition(170, totalLabelY);
 
     for (int i = 0; i < 6; i++)
     {
-        statsLabel[i]->setPosition(5, statsTotalLabel->getY() + (i * 23) + 15);
-        statsDisplayLabel[i]->setPosition(115,
+        mStatsLabel[i]->setPosition(5, mStatsTotalLabel->getY() + (i * 23) + 15);
+        mStatsDisplayLabel[i]->setPosition(115,
                                           totalLabelY + (i * 23) + 15);
-        statsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
-        pointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
+        mStatsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
+        mPointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
     }
 
-    remainingStatsPointsLabel->setPosition(5, pointsLabel[5]->getY() + 25);
+    mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[5]->getY() + 25);
 
-    statsAttackLabel->setPosition(220, statsLabel[0]->getY());
-    statsDefenseLabel->setPosition(220, statsLabel[1]->getY());
-    statsMagicAttackLabel->setPosition(220, statsLabel[2]->getY());
-    statsMagicDefenseLabel->setPosition(220, statsLabel[3]->getY());
-    statsAccuracyLabel->setPosition(220, statsLabel[4]->getY());
-    statsEvadeLabel->setPosition(220, statsLabel[5]->getY());
-    statsReflexLabel->setPosition(220, remainingStatsPointsLabel->getY());
+    mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
+    mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
+    mStatsMagicAttackLabel->setPosition(220, mStatsLabel[2]->getY());
+    mStatsMagicDefenseLabel->setPosition(220, mStatsLabel[3]->getY());
+    mStatsAccuracyLabel->setPosition(220, mStatsLabel[4]->getY());
+    mStatsEvadeLabel->setPosition(220, mStatsLabel[5]->getY());
+    mStatsReflexLabel->setPosition(220, mRemainingStatsPointsLabel->getY());
 
-    statsAttackPoints->setPosition(310, statsLabel[0]->getY());
-    statsDefensePoints->setPosition(310, statsLabel[1]->getY());
-    statsMagicAttackPoints->setPosition(310, statsLabel[2]->getY());
-    statsMagicDefensePoints->setPosition(310, statsLabel[3]->getY());
-    statsAccuracyPoints->setPosition(310, statsLabel[4]->getY());
-    statsEvadePoints->setPosition(310, statsLabel[5]->getY());
-    statsReflexPoints->setPosition(310, remainingStatsPointsLabel->getY());
+    mStatsAttackPoints->setPosition(310, mStatsLabel[0]->getY());
+    mStatsDefensePoints->setPosition(310, mStatsLabel[1]->getY());
+    mStatsMagicAttackPoints->setPosition(310, mStatsLabel[2]->getY());
+    mStatsMagicDefensePoints->setPosition(310, mStatsLabel[3]->getY());
+    mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
+    mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
+    mStatsReflexPoints->setPosition(310, mRemainingStatsPointsLabel->getY());
 
     // Assemble
-    add(statsTitleLabel);
-    add(statsTotalLabel);
-    add(statsCostLabel);
+    add(mStatsTitleLabel);
+    add(mStatsTotalLabel);
+    add(mStatsCostLabel);
     for(int i = 0; i < 6; i++)
     {
-        add(statsLabel[i]);
-        add(statsDisplayLabel[i]);
-        add(statsButton[i]);
-        add(pointsLabel[i]);
+        add(mStatsLabel[i]);
+        add(mStatsDisplayLabel[i]);
+        add(mStatsButton[i]);
+        add(mPointsLabel[i]);
     }
-    add(statsAttackLabel);
-    add(statsDefenseLabel);
-    add(statsMagicAttackLabel);
-    add(statsMagicDefenseLabel);
-    add(statsAccuracyLabel);
-    add(statsEvadeLabel);
-    add(statsReflexLabel);
+    add(mStatsAttackLabel);
+    add(mStatsDefenseLabel);
+    add(mStatsMagicAttackLabel);
+    add(mStatsMagicDefenseLabel);
+    add(mStatsAccuracyLabel);
+    add(mStatsEvadeLabel);
+    add(mStatsReflexLabel);
 
-    add(statsAttackPoints);
-    add(statsDefensePoints);
-    add(statsMagicAttackPoints);
-    add(statsMagicDefensePoints);
-    add(statsAccuracyPoints);
-    add(statsEvadePoints);
-    add(statsReflexPoints);
+    add(mStatsAttackPoints);
+    add(mStatsDefensePoints);
+    add(mStatsMagicAttackPoints);
+    add(mStatsMagicDefensePoints);
+    add(mStatsAccuracyPoints);
+    add(mStatsEvadePoints);
+    add(mStatsReflexPoints);
 
-    add(remainingStatsPointsLabel);
+    add(mRemainingStatsPointsLabel);
 }
 
 void StatusWindow::update()
@@ -214,61 +214,61 @@ void StatusWindow::update()
     // Status Part
     // -----------
     updateText.str("");
-    updateText << "Level: " << mPlayer->lvl;
-    lvlLabel->setCaption(updateText.str());
-    lvlLabel->adjustSize();
+    updateText << "Level: " << mPlayer->mLevel;
+    mLvlLabel->setCaption(updateText.str());
+    mLvlLabel->adjustSize();
 
     updateText.str("");
-    updateText << "Money: " << mPlayer->gp << " GP";
-    gpLabel->setCaption(updateText.str());
-    gpLabel->adjustSize();
+    updateText << "Money: " << mPlayer->mGp << " GP";
+    mGpLabel->setCaption(updateText.str());
+    mGpLabel->adjustSize();
 
     updateText.str("");
-    updateText << "Job: " << mPlayer->jobLvl;
-    jobXpLabel->setCaption(updateText.str());
-    jobXpLabel->adjustSize();
+    updateText << "Job: " << mPlayer->mJobLevel;
+    mJobXpLabel->setCaption(updateText.str());
+    mJobXpLabel->adjustSize();
 
     updateText.str("");
-    updateText << mPlayer->hp << "/" << mPlayer->maxHp;
-    hpValueLabel->setCaption(updateText.str());
-    hpValueLabel->adjustSize();
+    updateText << mPlayer->mHp << "/" << mPlayer->mMaxHp;
+    mHpValueLabel->setCaption(updateText.str());
+    mHpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << mPlayer->mp <<  "/" << mPlayer->maxMp;
-    mpValueLabel->setCaption(updateText.str());
-    mpValueLabel->adjustSize();
+    updateText << mPlayer->mMp <<  "/" << mPlayer->mMaxMp;
+    mMpValueLabel->setCaption(updateText.str());
+    mMpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << (int)mPlayer->xp << "/" << (int)mPlayer->xpForNextLevel;
-    xpValueLabel->setCaption(updateText.str());
-    xpValueLabel->adjustSize();
+    updateText << (int)mPlayer->mXp << "/" << (int)mPlayer->mXpForNextLevel;
+    mXpValueLabel->setCaption(updateText.str());
+    mXpValueLabel->adjustSize();
 
     updateText.str("");
-    updateText << (int)mPlayer->jobXp << "/" << (int)mPlayer->jobXpForNextLevel;
-    jobValueLabel->setCaption(updateText.str());
-    jobValueLabel->adjustSize();
+    updateText << (int)mPlayer->mJobXp << "/" << (int)mPlayer->mJobXpForNextLevel;
+    mJobValueLabel->setCaption(updateText.str());
+    mJobValueLabel->adjustSize();
 
     // HP Bar coloration
-    if (mPlayer->hp < int(mPlayer->maxHp / 3))
+    if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
     {
-        hpBar->setColor(223, 32, 32); // Red
+        mHpBar->setColor(223, 32, 32); // Red
     }
-    else if (mPlayer->hp < int((mPlayer->maxHp / 3) * 2))
+    else if (mPlayer->mHp < int((mPlayer->mMaxHp / 3) * 2))
     {
-        hpBar->setColor(230, 171, 34); // Orange
+        mHpBar->setColor(230, 171, 34); // Orange
     }
     else
     {
-        hpBar->setColor(0, 171, 34); // Green
+        mHpBar->setColor(0, 171, 34); // Green
     }
 
-    hpBar->setProgress((float)mPlayer->hp / (float)mPlayer->maxHp);
-    // mpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
+    mHpBar->setProgress((float)mPlayer->mHp / (float)mPlayer->mMaxHp);
+    // mMpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
 
-    xpBar->setProgress(
-            (float)mPlayer->xp / (float)mPlayer->xpForNextLevel);
-    jobXpBar->setProgress(
-            (float)mPlayer->jobXp / (float)mPlayer->jobXpForNextLevel);
+    mXpBar->setProgress(
+            (float)mPlayer->mXp / (float)mPlayer->mXpForNextLevel);
+    mJobXpBar->setProgress(
+            (float)mPlayer->mJobXp / (float)mPlayer->mJobXpForNextLevel);
 
     // Stats Part
     // ----------
@@ -281,7 +281,7 @@ void StatusWindow::update()
         "Luck"
     };
 
-    int statusPoints = mPlayer->statsPointsToAttribute;
+    int statusPoints = mPlayer->mStatsPointsToAttribute;
 
     updateText.str("");
     updateText << "Remaining Status Points: " << statusPoints;
@@ -290,83 +290,83 @@ void StatusWindow::update()
     for (int i = 0; i < 6; i++) {
         std::stringstream sstr;
 
-        statsLabel[i]->setCaption(attrNames[i]);
-        statsLabel[i]->adjustSize();
+        mStatsLabel[i]->setCaption(attrNames[i]);
+        mStatsLabel[i]->adjustSize();
 
         sstr.str("");
-        sstr << (int)mPlayer->ATTR[i];
-        statsDisplayLabel[i]->setCaption(sstr.str());
-        statsDisplayLabel[i]->adjustSize();
+        sstr << (int)mPlayer->mAttr[i];
+        mStatsDisplayLabel[i]->setCaption(sstr.str());
+        mStatsDisplayLabel[i]->adjustSize();
 
         sstr.str("");
-        sstr << (int)mPlayer->ATTR_UP[i];
-        pointsLabel[i]->setCaption(sstr.str());
-        pointsLabel[i]->adjustSize();
+        sstr << (int)mPlayer->mAttrUp[i];
+        mPointsLabel[i]->setCaption(sstr.str());
+        mPointsLabel[i]->adjustSize();
 
-        statsButton[i]->setEnabled(mPlayer->ATTR_UP[i] <= statusPoints);
+        mStatsButton[i]->setEnabled(mPlayer->mAttrUp[i] <= statusPoints);
     }
-    remainingStatsPointsLabel->setCaption(updateText.str());
-    remainingStatsPointsLabel->adjustSize();
+    mRemainingStatsPointsLabel->setCaption(updateText.str());
+    mRemainingStatsPointsLabel->adjustSize();
 
     // Derived Stats Points
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
     updateText.str("");
     updateText << int(mPlayer->ATK + mPlayer->ATK_BONUS);
-    statsAttackPoints->setCaption(updateText.str());
-    statsAttackPoints->adjustSize();
+    mStatsAttackPoints->setCaption(updateText.str());
+    mStatsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
     updateText.str("");
     updateText << int(mPlayer->DEF + mPlayer->DEF_BONUS);
-    statsDefensePoints->setCaption(updateText.str());
-    statsDefensePoints->adjustSize();
+    mStatsDefensePoints->setCaption(updateText.str());
+    mStatsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
     updateText.str("");
     updateText << int(mPlayer->MATK + mPlayer->MATK_BONUS);
-    statsMagicAttackPoints->setCaption(updateText.str());
-    statsMagicAttackPoints->adjustSize();
+    mStatsMagicAttackPoints->setCaption(updateText.str());
+    mStatsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
     updateText.str("");
     updateText << int(mPlayer->MDEF + mPlayer->MDEF_BONUS);
-    statsMagicDefensePoints->setCaption(updateText.str());
-    statsMagicDefensePoints->adjustSize();
+    mStatsMagicDefensePoints->setCaption(updateText.str());
+    mStatsMagicDefensePoints->adjustSize();
 
     // Accuracy %
     updateText.str("");
     updateText << (int)mPlayer->HIT;
-    statsAccuracyPoints->setCaption(updateText.str());
-    statsAccuracyPoints->adjustSize();
+    mStatsAccuracyPoints->setCaption(updateText.str());
+    mStatsAccuracyPoints->adjustSize();
 
     // Evasion %
     updateText.str("");
     updateText << (int)mPlayer->FLEE;
-    statsEvadePoints->setCaption(updateText.str());
-    statsEvadePoints->adjustSize();
+    mStatsEvadePoints->setCaption(updateText.str());
+    mStatsEvadePoints->adjustSize();
 
     // Reflex %
     updateText.str("");
     updateText << ((int)mPlayer->DEX / 4); // + counter
-    statsReflexPoints->setCaption(updateText.str());
-    statsReflexPoints->adjustSize();
+    mStatsReflexPoints->setCaption(updateText.str());
+    mStatsReflexPoints->adjustSize();
 
     // Update Second column widgets position
-    gpLabel->setPosition(lvlLabel->getX() + lvlLabel->getWidth() + 20,
-                         lvlLabel->getY());
+    mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
+                         mLvlLabel->getY());
 
-    xpLabel->setPosition(hpValueLabel->getX() + hpValueLabel->getWidth() + 10,
-                         hpLabel->getY());
-    xpBar->setPosition(xpLabel->getX() + xpLabel->getWidth() + 5,
-                       xpLabel->getY());
-    xpValueLabel->setPosition(xpBar->getX() + xpBar->getWidth() + 5,
-                              xpLabel->getY());
+    mXpLabel->setPosition(mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
+                         mHpLabel->getY());
+    mXpBar->setPosition(mXpLabel->getX() + mXpLabel->getWidth() + 5,
+                       mXpLabel->getY());
+    mXpValueLabel->setPosition(mXpBar->getX() + mXpBar->getWidth() + 5,
+                              mXpLabel->getY());
 
-    jobXpLabel->setPosition(xpLabel->getX(), mpLabel->getY());
-    jobXpBar->setPosition(xpBar->getX() + xpBar->getWidth() -
-                          jobXpBar->getWidth(), jobXpLabel->getY());
-    jobValueLabel->setPosition(290, jobXpLabel->getY());
+    mJobXpLabel->setPosition(mXpLabel->getX(), mMpLabel->getY());
+    mJobXpBar->setPosition(mXpBar->getX() + mXpBar->getWidth() -
+                          mJobXpBar->getWidth(), mJobXpLabel->getY());
+    mJobValueLabel->setPosition(290, mJobXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *g)

@@ -55,6 +55,38 @@ extern Window *equipmentWindow;
 extern Window *helpWindow;
 extern Window *skillDialog;
 
+/**
+ * The list model for mode list.
+ *
+ * \ingroup Interface
+ */
+class ModeListModel : public gcn::ListModel
+{
+    public:
+        /**
+         * Constructor.
+         */
+        ModeListModel();
+
+        /**
+         * Destructor.
+         */
+        virtual ~ModeListModel() { }
+
+        /**
+         * Returns the number of elements in container.
+         */
+        int getNumberOfElements() { return mVideoModes.size(); }
+
+        /**
+         * Returns element from container.
+         */
+        std::string getElementAt(int i) { return mVideoModes[i]; }
+
+    private:
+        std::vector<std::string> mVideoModes;
+};
+
 ModeListModel::ModeListModel()
 {
     SDL_Rect **modes;
@@ -78,57 +110,42 @@ ModeListModel::ModeListModel()
             //logger->log("  %dx%d", modes[i]->w, modes[i]->h);
             std::stringstream mode;
             mode << (int)modes[i]->w << "x" << (int)modes[i]->h;
-            videoModes.push_back(mode.str());
+            mVideoModes.push_back(mode.str());
         }
     }
 }
 
-ModeListModel::~ModeListModel()
-{
-}
-
-int ModeListModel::getNumberOfElements()
-{
-    return videoModes.size();
-}
-
-std::string ModeListModel::getElementAt(int i)
-{
-    return videoModes[i];
-}
-
-
 Setup::Setup():
     Window("Setup")
 {
-    modeListModel = new ModeListModel();
-    modeList = new ListBox(modeListModel);
-    modeList->setEnabled(false);
-    scrollArea = new ScrollArea(modeList);
-    fsCheckBox = new CheckBox("Full screen", false);
-    openGLCheckBox = new CheckBox("OpenGL", false);
+    mModeListModel = new ModeListModel();
+    mModeList = new ListBox(mModeListModel);
+    mModeList->setEnabled(false);
+    ScrollArea *scrollArea = new ScrollArea(mModeList);
+    mFsCheckBox = new CheckBox("Full screen", false);
+    mOpenGLCheckBox = new CheckBox("OpenGL", false);
 #ifndef USE_OPENGL
-    openGLCheckBox->setEnabled(false);
+    mOpenGLCheckBox->setEnabled(false);
 #endif
-    customCursorCheckBox = new CheckBox("Custom cursor");
-    alphaLabel = new gcn::Label("Gui opacity");
-    alphaSlider = new Slider(0.2, 1.0);
-    soundCheckBox = new CheckBox("Sound", false);
-    sfxSlider = new Slider(0, 128);
-    musicSlider = new Slider(0, 128);
-    sfxLabel = new gcn::Label("Sfx volume");
-    musicLabel = new gcn::Label("Music volume");
-    calibrateLabel = new gcn::Label("Press the button to start calibration");
-    calibrateButton = new Button("Calibrate", "calibrate", this);
-    applyButton = new Button("Apply", "apply", this);
-    cancelButton = new Button("Cancel", "cancel", this);
-    resetWinsToDefault = new Button("Reset Windows", "winsToDefault", this);
+    mCustomCursorCheckBox = new CheckBox("Custom cursor");
+    gcn::Label *alphaLabel = new gcn::Label("Gui opacity");
+    mAlphaSlider = new Slider(0.2, 1.0);
+    mSoundCheckBox = new CheckBox("Sound", false);
+    mSfxSlider = new Slider(0, 128);
+    mMusicSlider = new Slider(0, 128);
+    gcn::Label *sfxLabel = new gcn::Label("Sfx volume");
+    gcn::Label *musicLabel = new gcn::Label("Music volume");
+    mCalibrateLabel = new gcn::Label("Press the button to start calibration");
+    mCalibrateButton = new Button("Calibrate", "calibrate", this);
+    Button *applyButton = new Button("Apply", "apply", this);
+    Button *cancelButton = new Button("Cancel", "cancel", this);
+    Button *resetWinsToDefault = new Button("Reset Windows", "winsToDefault", this);
 
     // Set events
-    alphaSlider->setEventId("guialpha");
-    sfxSlider->setEventId("sfx");
-    musicSlider->setEventId("music");
-    customCursorCheckBox->setEventId("customcursor");
+    mAlphaSlider->setEventId("guialpha");
+    mSfxSlider->setEventId("sfx");
+    mMusicSlider->setEventId("music");
+    mCustomCursorCheckBox->setEventId("customcursor");
 
     // Set dimensions/positions
     int width = 230;
@@ -136,21 +153,21 @@ Setup::Setup():
     setContentSize(width, height);
 
     scrollArea->setDimension(gcn::Rectangle(10, 10, 90, 50));
-    modeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
-    fsCheckBox->setPosition(110, 10);
-    openGLCheckBox->setPosition(110, 30);
-    customCursorCheckBox->setPosition(110, 50);
-    alphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
-    alphaLabel->setPosition(20 + alphaSlider->getWidth(), alphaSlider->getY());
+    mModeList->setDimension(gcn::Rectangle(0, 0, 60, 50));
+    mFsCheckBox->setPosition(110, 10);
+    mOpenGLCheckBox->setPosition(110, 30);
+    mCustomCursorCheckBox->setPosition(110, 50);
+    mAlphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
+    alphaLabel->setPosition(20 + mAlphaSlider->getWidth(), mAlphaSlider->getY());
 
-    soundCheckBox->setPosition(10, 10);
-    sfxSlider->setDimension(gcn::Rectangle(10, 30, 100, 10));
-    musicSlider->setDimension(gcn::Rectangle(10, 50, 100, 10));
-    sfxLabel->setPosition(20 + sfxSlider->getWidth(), 27);
-    musicLabel->setPosition(20 + musicSlider->getWidth(), 47);
+    mSoundCheckBox->setPosition(10, 10);
+    mSfxSlider->setDimension(gcn::Rectangle(10, 30, 100, 10));
+    mMusicSlider->setDimension(gcn::Rectangle(10, 50, 100, 10));
+    sfxLabel->setPosition(20 + mSfxSlider->getWidth(), 27);
+    musicLabel->setPosition(20 + mMusicSlider->getWidth(), 47);
     
-    calibrateLabel->setPosition(5, 10);
-    calibrateButton->setPosition(10, 20 + calibrateLabel->getHeight());
+    mCalibrateLabel->setPosition(5, 10);
+    mCalibrateButton->setPosition(10, 20 + mCalibrateLabel->getHeight());
     
     cancelButton->setPosition(
             width - cancelButton->getWidth() - 5,
@@ -163,33 +180,33 @@ Setup::Setup():
             applyButton->getY());
                
     // Listen for actions
-    alphaSlider->addActionListener(this);
-    sfxSlider->addActionListener(this);
-    musicSlider->addActionListener(this);
-    customCursorCheckBox->addActionListener(this);
+    mAlphaSlider->addActionListener(this);
+    mSfxSlider->addActionListener(this);
+    mMusicSlider->addActionListener(this);
+    mCustomCursorCheckBox->addActionListener(this);
 
     // Assemble dialog
     gcn::Container *video = new gcn::Container();
     video->setOpaque(false);
     video->add(scrollArea);
-    video->add(fsCheckBox);
-    video->add(openGLCheckBox);
-    video->add(customCursorCheckBox);
-    video->add(alphaSlider);
+    video->add(mFsCheckBox);
+    video->add(mOpenGLCheckBox);
+    video->add(mCustomCursorCheckBox);
+    video->add(mAlphaSlider);
     video->add(alphaLabel);
 
     gcn::Container *audio = new gcn::Container();
     audio->setOpaque(false);
-    audio->add(soundCheckBox);
-    audio->add(sfxSlider);
-    audio->add(musicSlider);
+    audio->add(mSoundCheckBox);
+    audio->add(mSfxSlider);
+    audio->add(mMusicSlider);
     audio->add(sfxLabel);
     audio->add(musicLabel);
     
     gcn::Container *input = new gcn::Container();
     input->setOpaque(false);
-    input->add(calibrateLabel);
-    input->add(calibrateButton);
+    input->add(mCalibrateLabel);
+    input->add(mCalibrateButton);
     
     TabbedContainer *panel = new TabbedContainer();
     panel->setDimension(gcn::Rectangle(5, 5, 220, 130));
@@ -205,71 +222,71 @@ Setup::Setup():
     setLocationRelativeTo(getParent());
 
     // Load default settings
-    modeList->setSelected(-1);
+    mModeList->setSelected(-1);
 
     // Full Screen
-    fullScreenEnabled = config.getValue("screen", 0);
-    fsCheckBox->setMarked(fullScreenEnabled);
+    mFullScreenEnabled = config.getValue("screen", 0);
+    mFsCheckBox->setMarked(mFullScreenEnabled);
 
     // Sound
-    soundEnabled = config.getValue("sound", 0);
-    soundCheckBox->setMarked(soundEnabled);
+    mSoundEnabled = config.getValue("sound", 0);
+    mSoundCheckBox->setMarked(mSoundEnabled);
 
-    sfxVolume = (int)config.getValue("sfxVolume", 100);
-    sfxSlider->setValue(sfxVolume);
+    mSfxVolume = (int)config.getValue("sfxVolume", 100);
+    mSfxSlider->setValue(mSfxVolume);
 
-    musicVolume = (int)config.getValue("musicVolume", 60);
-    musicSlider->setValue(musicVolume);
+    mMusicVolume = (int)config.getValue("musicVolume", 60);
+    mMusicSlider->setValue(mMusicVolume);
 
     // Graphics
-    customCursorEnabled = config.getValue("customcursor", 1);
-    customCursorCheckBox->setMarked(customCursorEnabled);
+    mCustomCursorEnabled = config.getValue("customcursor", 1);
+    mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
 
-    opacity = config.getValue("guialpha", 0.8);
-    alphaSlider->setValue(opacity);
+    mOpacity = config.getValue("guialpha", 0.8);
+    mAlphaSlider->setValue(mOpacity);
 
-    openGLEnabled = config.getValue("opengl", 0);
-    openGLCheckBox->setMarked(openGLEnabled);
+    mOpenGLEnabled = config.getValue("opengl", 0);
+    mOpenGLCheckBox->setMarked(mOpenGLEnabled);
 }
 
 Setup::~Setup()
 {
-    delete modeListModel;
+    delete mModeListModel;
 }
 
 void Setup::action(const std::string &eventId)
 {
     if (eventId == "sfx")
     {
-        config.setValue("sfxVolume", (int)sfxSlider->getValue());
-        sound.setSfxVolume((int)sfxSlider->getValue());
+        config.setValue("sfxVolume", (int)mSfxSlider->getValue());
+        sound.setSfxVolume((int)mSfxSlider->getValue());
     }
     else if (eventId == "music")
     {
-        config.setValue("musicVolume", (int)musicSlider->getValue());
-        sound.setMusicVolume((int)musicSlider->getValue());
+        config.setValue("musicVolume", (int)mMusicSlider->getValue());
+        sound.setMusicVolume((int)mMusicSlider->getValue());
     }
     else if (eventId == "guialpha")
     {
-        config.setValue("guialpha", alphaSlider->getValue());
+        config.setValue("guialpha", mAlphaSlider->getValue());
     }
     else if (eventId == "customcursor")
     {
         config.setValue("customcursor",
-                customCursorCheckBox->isMarked() ? 1 : 0);
+                mCustomCursorCheckBox->isMarked() ? 1 : 0);
     }
     else if (eventId == "calibrate" && joystick != NULL)
     {
         if (joystick->isCalibrating())
         {
-            calibrateButton->setCaption("Calibrate");
-            calibrateLabel->setCaption("Press the button to start calibration");
+            mCalibrateButton->setCaption("Calibrate");
+            mCalibrateLabel->setCaption("Press the button to start calibration");
             joystick->finishCalibration();
         }
         else
         {
-            calibrateButton->setCaption("Stop");
-            calibrateLabel->setCaption("Rotate the stick");
+            mCalibrateButton->setCaption("Stop");
+            mCalibrateLabel->setCaption("Rotate the stick");
             joystick->startCalibration();
         }
     }
@@ -278,7 +295,7 @@ void Setup::action(const std::string &eventId)
         setVisible(false);
 
         // Full screen changes
-        bool fullscreen = fsCheckBox->isMarked();
+        bool fullscreen = mFsCheckBox->isMarked();
         if (fullscreen != (config.getValue("screen", 0) == 1)) 
         {
             // checks for opengl usage
@@ -305,7 +322,7 @@ void Setup::action(const std::string &eventId)
         }
 
         // Sound settings changes
-        if (soundCheckBox->isMarked())
+        if (mSoundCheckBox->isMarked())
         {
             config.setValue("sound", 1);
             try {
@@ -324,9 +341,9 @@ void Setup::action(const std::string &eventId)
         }
 
         // OpenGL change
-        if (openGLCheckBox->isMarked() != openGLEnabled)
+        if (mOpenGLCheckBox->isMarked() != mOpenGLEnabled)
         {
-            config.setValue("opengl", openGLCheckBox->isMarked() ? 1 : 0);
+            config.setValue("opengl", mOpenGLCheckBox->isMarked() ? 1 : 0);
 
             // OpenGL can currently only be changed by restarting, notify user.
             new OkDialog("Changing OpenGL",
@@ -335,17 +352,17 @@ void Setup::action(const std::string &eventId)
 
         // We sync old and new values at apply time
         // Screen
-        fullScreenEnabled = config.getValue("screen", 0);
+        mFullScreenEnabled = config.getValue("screen", 0);
 
         // Sound
-        soundEnabled = config.getValue("sound", 0);
-        sfxVolume = (int)config.getValue("sfxVolume", 100);
-        musicVolume = (int)config.getValue("musicVolume", 60);
+        mSoundEnabled = config.getValue("sound", 0);
+        mSfxVolume = (int)config.getValue("sfxVolume", 100);
+        mMusicVolume = (int)config.getValue("musicVolume", 60);
 
         // Graphics
-        customCursorEnabled = config.getValue("customcursor", 1);
-        opacity = config.getValue("guialpha", 0.8);
-        openGLEnabled = config.getValue("opengl", 0);
+        mCustomCursorEnabled = config.getValue("customcursor", 1);
+        mOpacity = config.getValue("guialpha", 0.8);
+        mOpenGLEnabled = config.getValue("opengl", 0);
     }
     else if (eventId == "cancel")
     {
@@ -353,30 +370,30 @@ void Setup::action(const std::string &eventId)
 
         // Restoring old values when cancelling
         // Screen
-        config.setValue("screen", fullScreenEnabled ? 1 : 0);
-        fsCheckBox->setMarked(fullScreenEnabled);
+        config.setValue("screen", mFullScreenEnabled ? 1 : 0);
+        mFsCheckBox->setMarked(mFullScreenEnabled);
 
         // Sound
-        config.getValue("sound", soundEnabled ? 1 : 0);
-        soundCheckBox->setMarked(soundEnabled);
+        config.getValue("sound", mSoundEnabled ? 1 : 0);
+        mSoundCheckBox->setMarked(mSoundEnabled);
 
-        config.getValue("sfxVolume", sfxVolume ? 1 : 0);
-        sound.setSfxVolume(sfxVolume);
-        sfxSlider->setValue(sfxVolume);
+        config.getValue("sfxVolume", mSfxVolume ? 1 : 0);
+        sound.setSfxVolume(mSfxVolume);
+        mSfxSlider->setValue(mSfxVolume);
 
-        config.setValue("musicVolume", musicVolume);
-        sound.setMusicVolume(musicVolume);
-        musicSlider->setValue(musicVolume);
+        config.setValue("musicVolume", mMusicVolume);
+        sound.setMusicVolume(mMusicVolume);
+        mMusicSlider->setValue(mMusicVolume);
 
         // Graphics
-        config.setValue("customcursor", customCursorEnabled ? 1 : 0);
-        customCursorCheckBox->setMarked(customCursorEnabled);
+        config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
+        mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
 
-        config.setValue("guialpha", opacity);
-        alphaSlider->setValue(opacity);
+        config.setValue("guialpha", mOpacity);
+        mAlphaSlider->setValue(mOpacity);
 
-        config.setValue("opengl", openGLEnabled ? 1 : 0);
-        openGLCheckBox->setMarked(openGLEnabled);
+        config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
+        mOpenGLCheckBox->setMarked(mOpenGLEnabled);
     }
     else if (eventId == "winsToDefault")
     {

@@ -39,8 +39,9 @@ class FindBeingFunctor
         bool operator() (Being *being)
         {
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
-            return (being->x == x && (being->y == y || being->y == other_y) &&
-                    being->action != Being::MONSTER_DEAD &&
+            return (being->mX == x &&
+                    (being->mY == y || being->mY == other_y) &&
+                    being->mAction != Being::MONSTER_DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
 
@@ -132,7 +133,7 @@ void BeingManager::logic()
 
         being->logic();
 
-        if (being->action == Being::MONSTER_DEAD && being->mFrame >= 20)
+        if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);

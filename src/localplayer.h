@@ -123,25 +123,25 @@ class LocalPlayer : public Player
 
         Uint32 mCharId;
 
-        Uint32 xp, jobXp;
-        Uint16 lvl;
-        Uint32 jobLvl;
-        Uint32 xpForNextLevel, jobXpForNextLevel;
-        Uint16 hp, maxHp, mp, maxMp;
-        Uint32 gp;
+        Uint32 mXp, mJobXp;
+        Uint16 mLevel;
+        Uint32 mJobLevel;
+        Uint32 mXpForNextLevel, mJobXpForNextLevel;
+        Uint16 mHp, mMaxHp, mMp, mMaxMp;
+        Uint32 mGp;
 
-        Uint32 totalWeight, maxWeight;
+        Uint32 mTotalWeight, mMaxWeight;
 
-        Uint8 ATTR[6];
-        Uint8 ATTR_UP[6];
+        Uint8 mAttr[6];
+        Uint8 mAttrUp[6];
 
         Sint16 ATK, MATK, DEF, MDEF, HIT, FLEE;
         Sint16 ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
 
-        Uint16 statPoint, skillPoint;
-        Uint16 statsPointsToAttribute;
+        Uint16 mStatPoint, mSkillPoint;
+        Uint16 mStatsPointsToAttribute;
 
-        float lastAttackTime; /**< Used to synchronize the charge dialog */
+        float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         std::auto_ptr<Inventory> mInventory;
         std::auto_ptr<Equipment> mEquipment;

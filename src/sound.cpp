@@ -30,9 +30,9 @@
 #include "resources/soundeffect.h"
 
 Sound::Sound():
-    installed(false),
-    sfxVolume(100),
-    musicVolume(60)
+    mInstalled(false),
+    mSfxVolume(100),
+    mMusicVolume(60)
 {
 }
 
@@ -43,7 +43,7 @@ Sound::~Sound()
 void Sound::init()
 {
     // Don't initialize sound engine twice
-    if (installed) return;
+    if (mInstalled) return;
 
     logger->log("Sound::init() Initializing sound...");
 
@@ -66,9 +66,9 @@ void Sound::init()
 
     info();
 
-    music = NULL;
+    mMusic = NULL;
 
-    installed = true;
+    mInstalled = true;
 }
 
 void Sound::info()
@@ -112,33 +112,33 @@ void Sound::info()
 
 void Sound::setMusicVolume(int volume)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
-    musicVolume = volume;
+    mMusicVolume = volume;
     Mix_VolumeMusic(volume);
 }
 
 void Sound::setSfxVolume(int volume)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
-    sfxVolume = volume;
+    mSfxVolume = volume;
     Mix_Volume(-1, volume);
 }
 
 void Sound::playMusic(const char *path, int loop)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
-    if (music != NULL) {
+    if (mMusic != NULL) {
         stopMusic();
     }
 
     logger->log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
 
-    music = Mix_LoadMUS(path);
-    if (music) {
-        Mix_PlayMusic(music, loop);
+    mMusic = Mix_LoadMUS(path);
+    if (mMusic) {
+        Mix_PlayMusic(mMusic, loop);
     }
     else {
         logger->log("Sound::startMusic() Warning: error loading file.");
@@ -147,31 +147,31 @@ void Sound::playMusic(const char *path, int loop)
 
 void Sound::stopMusic()
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
     logger->log("Sound::stopMusic()");
 
-    if (music != NULL) {
+    if (mMusic != NULL) {
         Mix_HaltMusic();
-        Mix_FreeMusic(music);
-        music = NULL;
+        Mix_FreeMusic(mMusic);
+        mMusic = NULL;
     }
 }
 
 void Sound::fadeInMusic(const char *path, int loop, int ms)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
-    if (music != NULL) {
+    if (mMusic != NULL) {
         stopMusic();
     }
 
     logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
             loop, ms);
 
-    music = Mix_LoadMUS(path);
-    if (music) {
-        Mix_FadeInMusic(music, loop, ms);
+    mMusic = Mix_LoadMUS(path);
+    if (mMusic) {
+        Mix_FadeInMusic(mMusic, loop, ms);
     }
     else {
         logger->log("Sound::fadeInMusic() Warning: error loading file.");
@@ -180,20 +180,20 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
 
 void Sound::fadeOutMusic(int ms)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
     logger->log("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
 
-    if (music != NULL) {
+    if (mMusic != NULL) {
         Mix_FadeOutMusic(ms);
-        Mix_FreeMusic(music);
-        music = NULL;
+        Mix_FreeMusic(mMusic);
+        mMusic = NULL;
     }
 }
 
 void Sound::playSfx(const char *path)
 {
-    if (!installed) return;
+    if (!mInstalled) return;
 
     ResourceManager *resman = ResourceManager::getInstance();
     SoundEffect *sample = resman->getSoundEffect(path);
@@ -207,7 +207,7 @@ void Sound::close()
 {
     stopMusic();
 
-    installed = false;
+    mInstalled = false;
     Mix_CloseAudio();
     logger->log("Sound::close() Shutting down sound...");
 }

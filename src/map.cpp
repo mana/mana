@@ -60,20 +60,20 @@ struct Location
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
-    onClosedList(1), onOpenList(2)
+    mOnClosedList(1), mOnOpenList(2)
 {
-    metaTiles = new MetaTile[mWidth * mHeight];
-    tiles = new Image*[mWidth * mHeight * 3];
+    mMetaTiles = new MetaTile[mWidth * mHeight];
+    mTiles = new Image*[mWidth * mHeight * 3];
 }
 
 Map::~Map()
 {
-    delete[] metaTiles;
-    delete[] tiles;
+    delete[] mMetaTiles;
+    delete[] mTiles;
 
     // Clean up tilesets
-    for_each(tilesets.begin(), tilesets.end(), make_dtor(tilesets));
-    tilesets.clear();
+    for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
+    mTilesets.clear();
 }
 
 void
@@ -81,16 +81,16 @@ Map::setSize(int width, int height)
 {
     mWidth = width;
     mHeight = height;
-    delete[] metaTiles;
-    delete[] tiles;
-    metaTiles = new MetaTile[mWidth * mHeight];
-    tiles = new Image*[mWidth * mHeight * 3];
+    delete[] mMetaTiles;
+    delete[] mTiles;
+    mMetaTiles = new MetaTile[mWidth * mHeight];
+    mTiles = new Image*[mWidth * mHeight * 3];
 }
 
 void
 Map::addTileset(Tileset *tileset)
 {
-    tilesets.push_back(tileset);
+    mTilesets.push_back(tileset);
 }
 
 bool spriteCompare(const Sprite *a, const Sprite *b)
@@ -189,9 +189,10 @@ Map::getTilesetWithGid(int gid)
 {
     containsGid.gid = gid;
 
-    TilesetIterator i = find_if(tilesets.begin(), tilesets.end(), containsGid);
+    TilesetIterator i = find_if(mTilesets.begin(), mTilesets.end(),
+            containsGid);
 
-    return (i == tilesets.end()) ? NULL : *i;
+    return (i == mTilesets.end()) ? NULL : *i;
 }
 
 Image*
@@ -209,7 +210,7 @@ Map::getTileWithGid(int gid)
 void
 Map::setWalk(int x, int y, bool walkable)
 {
-    metaTiles[x + y * mWidth].walkable = walkable;
+    mMetaTiles[x + y * mWidth].walkable = walkable;
 }
 
 bool
@@ -224,7 +225,7 @@ Map::getWalk(int x, int y)
     Beings *beings = beingManager->getAll();
     for (BeingIterator i = beings->begin(); i != beings->end(); i++) {
         // job 45 is a portal, they don't collide
-        if ((*i)->x == x && (*i)->y == y && (*i)->job != 45) {
+        if ((*i)->mX == x && (*i)->mY == y && (*i)->mJob != 45) {
             return false;
         }
     }
@@ -241,25 +242,25 @@ Map::tileCollides(int x, int y)
     }
 
     // Check if the tile is walkable
-    return !metaTiles[x + y * mWidth].walkable;
+    return !mMetaTiles[x + y * mWidth].walkable;
 }
 
 void
 Map::setTile(int x, int y, int layer, Image *img)
 {
-    tiles[x + y * mWidth + layer * (mWidth * mHeight)] = img;
+    mTiles[x + y * mWidth + layer * (mWidth * mHeight)] = img;
 }
 
 Image*
 Map::getTile(int x, int y, int layer)
 {
-    return tiles[x + y * mWidth + layer * (mWidth * mHeight)];
+    return mTiles[x + y * mWidth + layer * (mWidth * mHeight)];
 }
 
 MetaTile*
 Map::getMetaTile(int x, int y)
 {
-    return &metaTiles[x + y * mWidth];
+    return &mMetaTiles[x + y * mWidth];
 }
 
 SpriteIterator
@@ -305,13 +306,13 @@ Map::findPath(int startX, int startY, int destX, int destY)
 
         // If the tile is already on the closed list, this means it has already
         // been processed with a shorter path to the start point (lower G cost)
-        if (curr.tile->whichList == onClosedList)
+        if (curr.tile->whichList == mOnClosedList)
         {
             continue;
         }
 
         // Put the current tile on the closed list
-        curr.tile->whichList = onClosedList;
+        curr.tile->whichList = mOnClosedList;
 
         // Check the adjacent tiles
         for (int dy = -1; dy <= 1; dy++)
@@ -333,7 +334,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
                 MetaTile *newTile = getMetaTile(x, y);
 
                 // Skip if the tile is on the closed list or is not walkable
-                if (newTile->whichList == onClosedList || !getWalk(x, y))
+                if (newTile->whichList == mOnClosedList || !getWalk(x, y))
                 {
                     continue;
                 }
@@ -363,7 +364,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
                     continue;
                 }
 
-                if (newTile->whichList != onOpenList)
+                if (newTile->whichList != mOnOpenList)
                 {
                     // Found a new tile (not on open nor on closed list)
                     // Update Hcost of the new tile using Manhatten distance
@@ -379,7 +380,7 @@ Map::findPath(int startX, int startY, int destX, int destY)
 
                     if (x != destX || y != destY) {
                         // Add this tile to the open list
-                        newTile->whichList = onOpenList;
+                        newTile->whichList = mOnOpenList;
                         openList.push(Location(x, y, newTile));
                     }
                     else {
@@ -408,8 +409,8 @@ Map::findPath(int startX, int startY, int destX, int destY)
 
     // Two new values to indicate whether a tile is on the open or closed list,
     // this way we don't have to clear all the values between each pathfinding.
-    onClosedList += 2;
-    onOpenList += 2;
+    mOnClosedList += 2;
+    mOnOpenList += 2;
 
     // If a path has been found, iterate backwards using the parent locations
     // to extract it.

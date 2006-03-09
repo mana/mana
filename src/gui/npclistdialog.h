@@ -85,7 +85,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
     private:
         gcn::ListBox *mItemList;
 
-        std::vector<std::string> items;
+        std::vector<std::string> mItems;
 };
 
 #endif

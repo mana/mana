@@ -24,8 +24,8 @@
 #ifndef _TMW_BUDDYLIST_H
 #define _TMW_BUDDYLIST_H
 
-#include <iosfwd>
 #include <list>
+#include <string>
 
 #include <guichan/listmodel.hpp>
 
@@ -39,7 +39,7 @@ class BuddyList : public gcn::ListModel {
         /**
          * Destructor
          */
-        virtual ~BuddyList();
+        virtual ~BuddyList() { }
 
         /**
          * Adds buddy to the list
@@ -72,9 +72,10 @@ class BuddyList : public gcn::ListModel {
          */
         void loadFile();
 
-        std::list<std::string> buddylist;               /**< Buddy list */
-        std::list<std::string>::iterator buddyit;       /**< Iterator */
-        std::string *filename;                          /* File to work with */
+        typedef std::list<std::string> Buddies;
+        typedef Buddies::iterator BuddyIterator;
+        Buddies mBuddylist;               /**< Buddy list */
+        std::string mFilename;            /* File to work with */
 };
 
 #endif /* _TMW_BUDDYLIST_H */

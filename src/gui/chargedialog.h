@@ -43,7 +43,7 @@ class ChargeDialog : public Window
         void logic();
 
     private:
-        ProgressBar* progBar;
+        ProgressBar* mProgBar;
 };
 
 #endif

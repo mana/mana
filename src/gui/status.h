@@ -69,39 +69,37 @@ class StatusWindow : public Window, public gcn::ActionListener {
         /**
          * Status Part
          */
-        gcn::Label *lvlLabel, *gpLabel, *hpLabel, *hpValueLabel, *mpLabel, *mpValueLabel;
-        gcn::Label *xpLabel, *xpValueLabel, *jobXpLabel, *jobValueLabel;
-        ProgressBar *hpBar, *mpBar;
-        ProgressBar *xpBar, *jobXpBar;
-
-        /**
-         * Caracteristics Part
-         */
-        gcn::Label *statsTitleLabel, *statsTotalLabel, *statsCostLabel;
+        gcn::Label *mLvlLabel, *mGpLabel, *mHpLabel, *mHpValueLabel;
+        gcn::Label *mMpLabel, *mMpValueLabel;
+        gcn::Label *mXpLabel, *mXpValueLabel, *mJobXpLabel, *mJobValueLabel;
+        ProgressBar *mHpBar, *mMpBar;
+        ProgressBar *mXpBar, *mJobXpBar;
 
         /**
          * Derived Statistics captions
          */
-        gcn::Label *statsAttackLabel, *statsDefenseLabel, *statsMagicAttackLabel;
-        gcn::Label *statsMagicDefenseLabel, *statsAccuracyLabel, *statsEvadeLabel;
-        gcn::Label *statsReflexLabel;
+        gcn::Label *mStatsAttackLabel, *mStatsDefenseLabel;
+        gcn::Label *mStatsMagicAttackLabel, *mStatsMagicDefenseLabel;
+        gcn::Label *mStatsAccuracyLabel, *mStatsEvadeLabel;
+        gcn::Label *mStatsReflexLabel;
 
-        gcn::Label *statsAttackPoints, *statsDefensePoints, *statsMagicAttackPoints;
-        gcn::Label *statsMagicDefensePoints, *statsAccuracyPoints, *statsEvadePoints;
-        gcn::Label *statsReflexPoints;
+        gcn::Label *mStatsAttackPoints, *mStatsDefensePoints;
+        gcn::Label *mStatsMagicAttackPoints, *mStatsMagicDefensePoints;
+        gcn::Label *mStatsAccuracyPoints, *mStatsEvadePoints;
+        gcn::Label *mStatsReflexPoints;
 
         /** 
          * Stats captions.
          */
-        gcn::Label *statsLabel[6];
-        gcn::Label *pointsLabel[6];
-        gcn::Label *statsDisplayLabel[6];
-        gcn::Label *remainingStatsPointsLabel;
+        gcn::Label *mStatsLabel[6];
+        gcn::Label *mPointsLabel[6];
+        gcn::Label *mStatsDisplayLabel[6];
+        gcn::Label *mRemainingStatsPointsLabel;
 
         /** 
          * Stats buttons.
          */
-        gcn::Button *statsButton[6];
+        gcn::Button *mStatsButton[6];
 };
 
 extern StatusWindow *statusWindow;

@@ -35,10 +35,10 @@ Image::Image(const std::string &idPath, SDL_Surface *image):
     Resource(idPath), mImage(image),
     mAlpha(1.0f)
 {
-    bounds.x = 0;
-    bounds.y = 0;
-    bounds.w = mImage->w;
-    bounds.h = mImage->h;
+    mBounds.x = 0;
+    mBounds.y = 0;
+    mBounds.w = mImage->w;
+    mBounds.h = mImage->h;
 }
 
 #ifdef USE_OPENGL
@@ -51,10 +51,10 @@ Image::Image(const std::string &idPath, GLuint glimage, int width, int height,
     mImage(0),
     mAlpha(1.0)
 {
-    bounds.x = 0;
-    bounds.y = 0;
-    bounds.w = width;
-    bounds.h = height;
+    mBounds.x = 0;
+    mBounds.y = 0;
+    mBounds.w = width;
+    mBounds.h = height;
 }
 #endif
 
@@ -258,7 +258,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
 
 void Image::unload()
 {
-    loaded = false;
+    mLoaded = false;
 
     if (!mImage) return;
 
@@ -315,10 +315,10 @@ SubImage::SubImage(Image *parent, SDL_Surface *image,
     mParent->incRef();
 
     // Set up the rectangle.
-    bounds.x = x;
-    bounds.y = y;
-    bounds.w = width;
-    bounds.h = height;
+    mBounds.x = x;
+    mBounds.y = y;
+    mBounds.w = width;
+    mBounds.h = height;
 }
 
 #ifdef USE_OPENGL
@@ -330,10 +330,10 @@ SubImage::SubImage(Image *parent, GLuint image,
     mParent->incRef();
 
     // Set up the rectangle.
-    bounds.x = x;
-    bounds.y = y;
-    bounds.w = width;
-    bounds.h = height;
+    mBounds.x = x;
+    mBounds.y = y;
+    mBounds.w = width;
+    mBounds.h = height;
 }
 #endif
 

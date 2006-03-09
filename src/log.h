@@ -53,7 +53,7 @@ class Logger
         void error(const std::string &error_text);
 
     private:
-        std::ofstream logFile;
+        std::ofstream mLogFile;
 };
 
 extern Logger *logger;

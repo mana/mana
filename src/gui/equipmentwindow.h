@@ -53,7 +53,7 @@ class EquipmentWindow : public Window
         void draw(gcn::Graphics *graphics);
 
     private:
-        Spriteset *itemset;
+        Spriteset *mItemset;
 
         Equipment *mEquipment;
 };

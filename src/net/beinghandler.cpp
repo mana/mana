@@ -95,15 +95,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 dstBeing->clearPath();
                 dstBeing->mFrame = 0;
-                dstBeing->walk_time = tick_time;
-                dstBeing->action = Being::STAND;
+                dstBeing->mWalkTime = tick_time;
+                dstBeing->mAction = Being::STAND;
             }
 
             // Prevent division by 0 when calculating frame
             if (speed == 0) { speed = 150; }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->job = job;
+            dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeapon(msg->readInt16());
             msg->readInt16();  // head option bottom
@@ -131,15 +131,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg->readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->action = Being::STAND;
-                dstBeing->x = srcX;
-                dstBeing->y = srcY;
+                dstBeing->mAction = Being::STAND;
+                dstBeing->mX = srcX;
+                dstBeing->mY = srcY;
                 dstBeing->setDestination(dstX, dstY);
             }
             else
             {
-                msg->readCoordinates(dstBeing->x, dstBeing->y,
-                        dstBeing->direction);
+                msg->readCoordinates(dstBeing->mX, dstBeing->mY,
+                        dstBeing->mDirection);
             }
 
             msg->readInt8();   // unknown
@@ -160,13 +160,13 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 switch (dstBeing->getType())
                 {
                     case Being::MONSTER:
-                        dstBeing->action = Being::MONSTER_DEAD;
+                        dstBeing->mAction = Being::MONSTER_DEAD;
                         dstBeing->mFrame = 0;
-                        dstBeing->walk_time = tick_time;
+                        dstBeing->mWalkTime = tick_time;
                         break;
 
                     default:
-                        dstBeing->action = Being::DEAD;
+                        dstBeing->mAction = Being::DEAD;
                         break;
                 }
             }
@@ -205,27 +205,27 @@ void BeingHandler::handleMessage(MessageIn *msg)
                         // buggy
                         if (srcBeing->getType() == Being::MONSTER)
                         {
-                            srcBeing->action = Being::MONSTER_ATTACK;
+                            srcBeing->mAction = Being::MONSTER_ATTACK;
                         }
                         else
                         {
-                            srcBeing->action = Being::ATTACK;
+                            srcBeing->mAction = Being::ATTACK;
                         }
                         srcBeing->mFrame = 0;
-                        srcBeing->walk_time = tick_time;
+                        srcBeing->mWalkTime = tick_time;
                     }
                     break;
 
                 case 2: // Sit
                     if (srcBeing == NULL) break;
                     srcBeing->mFrame = 0;
-                    srcBeing->action = Being::SIT;
+                    srcBeing->mAction = Being::SIT;
                     break;
 
                 case 3: // Stand up
                     if (srcBeing == NULL) break;
                     srcBeing->mFrame = 0;
-                    srcBeing->action = Being::STAND;
+                    srcBeing->mAction = Being::STAND;
                     break;
             }
             break;
@@ -246,8 +246,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 break;
             }
 
-            dstBeing->emotion = msg->readInt8();
-            dstBeing->emotion_time = EMOTION_TIME;
+            dstBeing->mEmotion = msg->readInt8();
+            dstBeing->mEmotionTime = EMOTION_TIME;
             break;
 
         case SMSG_BEING_CHANGE_LOOKS:
@@ -298,7 +298,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             dstBeing->setWalkSpeed(speed);
-            dstBeing->job = job;
+            dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeaponById(msg->readInt16());  // item id 1
             msg->readInt16();  // item id 2
@@ -324,14 +324,14 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg->readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->x = srcX;
-                dstBeing->y = srcY;
+                dstBeing->mX = srcX;
+                dstBeing->mY = srcY;
                 dstBeing->setDestination(dstX, dstY);
             }
             else
             {
-                msg->readCoordinates(dstBeing->x, dstBeing->y,
-                        dstBeing->direction);
+                msg->readCoordinates(dstBeing->mX, dstBeing->mY,
+                        dstBeing->mDirection);
             }
 
             msg->readInt8();   // unknown
@@ -341,7 +341,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 if (msg->readInt8() == 2)
                 {
-                    dstBeing->action = Being::SIT;
+                    dstBeing->mAction = Being::SIT;
                 }
             }
             else if (msg->getId() == SMSG_PLAYER_MOVE)
@@ -352,7 +352,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt8();   // Lv
             msg->readInt8();   // unknown
 
-            dstBeing->walk_time = tick_time;
+            dstBeing->mWalkTime = tick_time;
             dstBeing->mFrame = 0;
             break;
 

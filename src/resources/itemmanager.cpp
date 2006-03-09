@@ -38,8 +38,8 @@
 
 ItemManager::ItemManager()
 {
-    unknown = new ItemInfo();
-    unknown->setName("Unknown item");
+    mUnknown = new ItemInfo();
+    mUnknown->setName("Unknown item");
 
     ResourceManager *resman = ResourceManager::getInstance();
     int size;
@@ -161,7 +161,7 @@ ItemManager::~ItemManager()
     }
     mItemInfos.clear();
 
-    delete unknown;
+    delete mUnknown;
 }
 
 ItemInfo*
@@ -169,5 +169,5 @@ ItemManager::getItemInfo(int id)
 {
     ItemInfoIterator i = mItemInfos.find(id);
 
-    return (i != mItemInfos.end()) ? i->second : unknown;
+    return (i != mItemInfos.end()) ? i->second : mUnknown;
 }

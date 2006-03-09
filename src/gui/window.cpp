@@ -71,15 +71,15 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     mParent(parent),
     mWindowName("window"),
-    snapSize(8),
+    mSnapSize(8),
     mShowTitle(true),
     mModal(modal),
-    resizable(false),
+    mResizable(false),
     mMouseResize(false),
-    minWinWidth(6),
-    minWinHeight(23),
-    maxWinWidth(INT_MAX),
-    maxWinHeight(INT_MAX)
+    mMinWinWidth(6),
+    mMinWinHeight(23),
+    mMaxWinWidth(INT_MAX),
+    mMaxWinHeight(INT_MAX)
 {
     logger->log("Window::Window(\"%s\")", caption.c_str());
 
@@ -138,7 +138,7 @@ Window::~Window()
     config.setValue(name + "WinX", getX());
     config.setValue(name + "WinY", getY());
 
-    if (resizable)
+    if (mResizable)
     {
         config.setValue(name + "WinWidth", getWidth());
         config.setValue(name + "WinHeight", getHeight());
@@ -180,7 +180,7 @@ void Window::draw(gcn::Graphics* graphics)
     g->drawImageRect(0, 0, getWidth(), getHeight(), border);
 
     // Draw grip
-    if (resizable)
+    if (mResizable)
     {
         g->drawImage(Window::resizeGrip,
                      getWidth() - resizeGrip->getWidth(),
@@ -228,32 +228,32 @@ void Window::setContentSize(int width, int height)
 
 void Window::setMinWidth(unsigned int width)
 {
-    minWinWidth = width;
+    mMinWinWidth = width;
 }
 
 void Window::setMinHeight(unsigned int height)
 {
-    minWinHeight = height;
+    mMinWinHeight = height;
 }
 
 void Window::setMaxWidth(unsigned int width)
 {
-    maxWinWidth = width;
+    mMaxWinWidth = width;
 }
 
 void Window::setMaxHeight(unsigned int height)
 {
-    maxWinHeight = height;
+    mMaxWinHeight = height;
 }
 
 void Window::setResizable(bool r)
 {
-    resizable = r;
+    mResizable = r;
 }
 
 bool Window::isResizable()
 {
-    return resizable;
+    return mResizable;
 }
 
 void Window::scheduleDelete()
@@ -357,22 +357,22 @@ void Window::mouseMotion(int x, int y)
         int Xcorrection = 0;
         int Ycorrection = 0;
 
-        if (newDim.width < minWinWidth)
+        if (newDim.width < mMinWinWidth)
         {
-            Xcorrection = minWinWidth - newDim.width;
+            Xcorrection = mMinWinWidth - newDim.width;
         }
-        else if (newDim.width > maxWinWidth)
+        else if (newDim.width > mMaxWinWidth)
         {
-            Xcorrection = maxWinWidth - newDim.width;
+            Xcorrection = mMaxWinWidth - newDim.width;
         }
 
-        if (newDim.height < minWinHeight)
+        if (newDim.height < mMinWinHeight)
         {
-            Ycorrection = minWinHeight - newDim.height;
+            Ycorrection = mMinWinHeight - newDim.height;
         }
-        else if (newDim.height > maxWinHeight)
+        else if (newDim.height > mMaxWinHeight)
         {
-            Ycorrection = maxWinHeight - newDim.height;
+            Ycorrection = mMaxWinHeight - newDim.height;
         }
 
         // Snap window to edges
@@ -425,7 +425,7 @@ Window::loadWindowState()
     setPosition((int)config.getValue(name + "WinX", getX()),
                 (int)config.getValue(name + "WinY", getY()));
 
-    if (resizable)
+    if (mResizable)
     {
         setWidth((int)config.getValue(name + "WinWidth", getWidth()));
         setHeight((int)config.getValue(name + "WinHeight", getHeight()));

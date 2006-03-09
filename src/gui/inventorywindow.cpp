@@ -50,34 +50,33 @@ InventoryWindow::InventoryWindow():
     setMinHeight(172);
     setDefaultSize(115, 25, 322, 172);
 
-    useButton = new Button("Use", "use", this);
-    dropButton = new Button("Drop", "drop", this);
+    mUseButton = new Button("Use", "use", this);
+    mDropButton = new Button("Drop", "drop", this);
 
-    items = new ItemContainer(player_node->mInventory.get());
-    invenScroll = new ScrollArea(items);
-    invenScroll->setPosition(8, 8);
-    invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mItems = new ItemContainer(player_node->mInventory.get());
+    mInvenScroll = new ScrollArea(mItems);
+    mInvenScroll->setPosition(8, 8);
+    mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    itemNameLabel = new gcn::Label("Name:");
-    itemDescriptionLabel = new gcn::Label("Description:");
-    itemEffectLabel = new gcn::Label("Effect:");
-    weightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
-    weightLabel->setPosition(8, 8);
-    invenScroll->setPosition(8,
-            weightLabel->getY() + weightLabel->getHeight() + 5);
+    mItemNameLabel = new gcn::Label("Name:");
+    mItemDescriptionLabel = new gcn::Label("Description:");
+    mItemEffectLabel = new gcn::Label("Effect:");
+    mWeightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
+    mWeightLabel->setPosition(8, 8);
+    mInvenScroll->setPosition(8,
+            mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
 
-    add(useButton);
-    add(dropButton);
-    add(invenScroll);
-    add(itemNameLabel);
-    add(itemDescriptionLabel);
-    add(itemEffectLabel);
-    add(weightLabel);
+    add(mUseButton);
+    add(mDropButton);
+    add(mInvenScroll);
+    add(mItemNameLabel);
+    add(mItemDescriptionLabel);
+    add(mItemEffectLabel);
+    add(mWeightLabel);
 
-    useButton->setSize(48, useButton->getHeight());
+    mUseButton->setSize(48, mUseButton->getHeight());
 
     loadWindowState();
-
 }
 
 void InventoryWindow::logic()
@@ -90,15 +89,15 @@ void InventoryWindow::logic()
 
     // Update weight information
     std::stringstream tempstr;
-    tempstr << "Total Weight: " << player_node->totalWeight
-            << " - Maximum Weight: " << player_node->maxWeight;
-    weightLabel->setCaption(tempstr.str());
-    weightLabel->adjustSize();
+    tempstr << "Total Weight: " << player_node->mTotalWeight
+            << " - Maximum Weight: " << player_node->mMaxWeight;
+    mWeightLabel->setCaption(tempstr.str());
+    mWeightLabel->adjustSize();
 }
 
 void InventoryWindow::action(const std::string &eventId)
 {
-    Item *item = items->getItem();
+    Item *item = mItems->getItem();
 
     if (!item) {
         return;
@@ -128,7 +127,7 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-    Item *item = items->getItem();
+    Item *item = mItems->getItem();
 
     if (!item) {
         return;
@@ -137,14 +136,14 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
     // Show Name and Description
     std::string SomeText;
     SomeText = "Name: " + item->getInfo()->getName();
-    itemNameLabel->setCaption(SomeText);
-    itemNameLabel->adjustSize();
+    mItemNameLabel->setCaption(SomeText);
+    mItemNameLabel->adjustSize();
     SomeText = "Effect: " + item->getInfo()->getEffect();
-    itemEffectLabel->setCaption(SomeText);
-    itemEffectLabel->adjustSize();
+    mItemEffectLabel->setCaption(SomeText);
+    mItemEffectLabel->adjustSize();
     SomeText = "Description: " + item->getInfo()->getDescription();
-    itemDescriptionLabel->setCaption(SomeText);
-    itemDescriptionLabel->adjustSize();
+    mItemDescriptionLabel->setCaption(SomeText);
+    mItemDescriptionLabel->adjustSize();
 
     if (button == gcn::MouseInput::RIGHT)
     {
@@ -179,42 +178,42 @@ void InventoryWindow::updateWidgets()
     }
 
     // Resize widgets
-    useButton->setPosition(8, height - 24);
-    dropButton->setPosition(48 + 16, height - 24);
-    invenScroll->setSize(width - 16, height - 110);
+    mUseButton->setPosition(8, height - 24);
+    mDropButton->setPosition(48 + 16, height - 24);
+    mInvenScroll->setSize(width - 16, height - 110);
 
-    itemNameLabel->setPosition(8,
-            invenScroll->getY() + invenScroll->getHeight() + 4);
-    itemEffectLabel->setPosition(8,
-            itemNameLabel->getY() + itemNameLabel->getHeight() + 4);
-    itemDescriptionLabel->setPosition(8,
-            itemEffectLabel->getY() + itemEffectLabel->getHeight() + 4);
+    mItemNameLabel->setPosition(8,
+            mInvenScroll->getY() + mInvenScroll->getHeight() + 4);
+    mItemEffectLabel->setPosition(8,
+            mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
+    mItemDescriptionLabel->setPosition(8,
+            mItemEffectLabel->getY() + mItemEffectLabel->getHeight() + 4);
 }
 
 void InventoryWindow::updateButtons()
 {
     Item *item;
 
-    if ((item = items->getItem()) && item->isEquipment())
+    if ((item = mItems->getItem()) && item->isEquipment())
     {
         if (item->isEquipped()) {
-            useButton->setCaption("Unequip");
+            mUseButton->setCaption("Unequip");
         }
         else {
-            useButton->setCaption("Equip");
+            mUseButton->setCaption("Equip");
         }
     }
     else {
-        useButton ->setCaption("Use");
+        mUseButton ->setCaption("Use");
     }
 
-    useButton->setEnabled(!!item);
-    dropButton->setEnabled(!!item);
+    mUseButton->setEnabled(!!item);
+    mDropButton->setEnabled(!!item);
 }
 
 Item* InventoryWindow::getItem()
 {
-    return items->getItem();
+    return mItems->getItem();
 }
 
 void InventoryWindow::loadWindowState()

@@ -461,20 +461,20 @@ void Game::handleInput()
                     if (!chatWindow->isFocused())
                     {
                         FloorItem *item = floorItemManager->findByCoordinates(
-                                player_node->x, player_node->y);
+                                player_node->mX, player_node->mY);
 
                         // If none below the player, try the tile in front of
                         // the player
                         if (!item) {
-                            Uint16 x = player_node->x;
-                            Uint16 y = player_node->y;
-                            if (player_node->direction & Being::UP)
+                            Uint16 x = player_node->mX;
+                            Uint16 y = player_node->mY;
+                            if (player_node->mDirection & Being::UP)
                                 y--;
-                            if (player_node->direction & Being::DOWN)
+                            if (player_node->mDirection & Being::DOWN)
                                 y++;
-                            if (player_node->direction & Being::LEFT)
+                            if (player_node->mDirection & Being::LEFT)
                                 x--;
-                            if (player_node->direction & Being::RIGHT)
+                            if (player_node->mDirection & Being::RIGHT)
                                 x++;
 
                             item = floorItemManager->findByCoordinates(x, y);
@@ -585,12 +585,12 @@ void Game::handleInput()
     } // End while
 
     // Moving player around
-    if (player_node->action != Being::DEAD &&
+    if (player_node->mAction != Being::DEAD &&
         current_npc == 0 &&
         !chatWindow->isFocused())
     {
-        Uint16 x = player_node->x;
-        Uint16 y = player_node->y;
+        Uint16 x = player_node->mX;
+        Uint16 y = player_node->mY;
         unsigned char Direction = 0;
 
         // Translate pressed keys to movement and direction
@@ -633,13 +633,13 @@ void Game::handleInput()
             {
                 Uint16 targetX = x, targetY = y;
 
-                if (player_node->direction & Being::UP)
+                if (player_node->mDirection & Being::UP)
                     targetY--;
-                if (player_node->direction & Being::DOWN)
+                if (player_node->mDirection & Being::DOWN)
                     targetY++;
-                if (player_node->direction & Being::LEFT)
+                if (player_node->mDirection & Being::LEFT)
                     targetX--;
-                if (player_node->direction & Being::RIGHT)
+                if (player_node->mDirection & Being::RIGHT)
                     targetX++;
 
                 // Attack priorioty is: Monster, Player, auto target
@@ -658,7 +658,7 @@ void Game::handleInput()
             if (joystick->buttonPressed(1))
             {
                 FloorItem *item = floorItemManager->findByCoordinates(
-                        player_node->x, player_node->y);
+                        player_node->mX, player_node->mY);
 
                 if (item)
                     player_node->pickUp(item);

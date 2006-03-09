@@ -28,7 +28,7 @@
 #include <guichan/key.hpp>
 
 IntTextBox::IntTextBox(int i):
-    value(i)
+    mValue(i)
 {
 }
 
@@ -48,26 +48,26 @@ void IntTextBox::keyPress(const gcn::Key &key)
         setInt(i);
 }
 
-void IntTextBox::setRange(int minValue, int maxValue)
+void IntTextBox::setRange(int min, int max)
 {
-    min = minValue;
-    max = maxValue;
+    mMin = min;
+    mMax = max;
 }
 
 int IntTextBox::getInt()
 {
     if (gcn::TextBox::getText() == "")
         return 0;
-    return value;
+    return mValue;
 }
 
 void IntTextBox::setInt(int i)
 {
     std::stringstream s;
 
-    if (i >= min && i <= max)
-        value = i;
-    s << value;
+    if (i >= mMin && i <= mMax)
+        mValue = i;
+    s << mValue;
     setText(s.str());
     setCaretPosition(s.str().length() + 1);
 }

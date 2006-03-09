@@ -57,8 +57,8 @@ class DebugWindow : public Window, public gcn::ActionListener
         void action(const std::string &actionId);
 
     private:
-        gcn::Label *musicFileLabel, *mapFileLabel;
-        gcn::Label *tileMouseLabel, *FPSLabel;
+        gcn::Label *mMusicFileLabel, *mMapFileLabel;
+        gcn::Label *mTileMouseLabel, *mFPSLabel;
         Map *mCurrentMap;
 
 };

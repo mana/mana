@@ -34,38 +34,6 @@
 #include "../guichanfwd.h"
 
 /**
- * The list model for mode list.
- *
- * \ingroup Interface
- */
-class ModeListModel : public gcn::ListModel
-{
-    public:
-        /**
-         * Constructor.
-         */
-        ModeListModel();
-
-        /**
-         * Destructor.
-         */
-        virtual ~ModeListModel();
-
-        /**
-         * Returns the number of elements in container.
-         */
-        int getNumberOfElements();
-
-        /**
-         * Returns element from container.
-         */
-        std::string getElementAt(int i);
-
-    private:
-        std::vector<std::string> videoModes;
-};
-
-/**
  * The setup dialog.
  *
  * \ingroup GUI
@@ -90,31 +58,26 @@ class Setup : public Window, public gcn::ActionListener
         action(const std::string& eventId);
 
     private:
-        ModeListModel *modeListModel;
+        class ModeListModel *mModeListModel;
 
         // Dialog widgets
-        gcn::ListBox *modeList;
-        gcn::ScrollArea *scrollArea;
-        gcn::Label *alphaLabel;
-        gcn::Label *sfxLabel, *musicLabel;
-        gcn::Label *calibrateLabel;
-        gcn::CheckBox *fsCheckBox;
-        gcn::CheckBox *openGLCheckBox;
-        gcn::CheckBox *soundCheckBox;
-        gcn::CheckBox *customCursorCheckBox;
-        gcn::Slider *alphaSlider;
-        gcn::Slider *sfxSlider, *musicSlider;
-        gcn::Button *calibrateButton;
-        gcn::Button *applyButton, *cancelButton;
-        gcn::Button *resetWinsToDefault;
+        gcn::ListBox *mModeList;
+        gcn::CheckBox *mFsCheckBox;
+        gcn::CheckBox *mOpenGLCheckBox;
+        gcn::CheckBox *mSoundCheckBox;
+        gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::Slider *mAlphaSlider;
+        gcn::Slider *mSfxSlider, *mMusicSlider;
+        gcn::Label *mCalibrateLabel;
+        gcn::Button *mCalibrateButton;
 
         // Variables that keeps old settings until the user "apply" them...
-        int musicVolume, sfxVolume;
-        double opacity;
-        bool fullScreenEnabled;
-        bool openGLEnabled;
-        bool customCursorEnabled;
-        bool soundEnabled;
+        int mMusicVolume, mSfxVolume;
+        double mOpacity;
+        bool mFullScreenEnabled;
+        bool mOpenGLEnabled;
+        bool mCustomCursorEnabled;
+        bool mSoundEnabled;
 };
 
 #endif

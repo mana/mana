@@ -195,7 +195,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
     private:
         Network *mNetwork;
-        std::ofstream chatlog_file;
+        std::ofstream mChatlogFile;
         bool mTmpVisible;
 
         /** One item in the chat log */
@@ -206,17 +206,17 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
-        std::list<CHATLOG> chatlog;               /**< Chat log */
+        std::list<CHATLOG> mChatlog;               /**< Chat log */
 
-        int items;
-        int items_keep;
+        int mItems;
+        int mItemsKeep;
 
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
 
-        gcn::TextField *chatInput; /**< Input box for typing chat messages */
-        BrowserBox *textOutput;    /**< Text box for displaying chat history */
-        ScrollArea *scrollArea;    /**< Scroll area around text output */
+        gcn::TextField *mChatInput; /**< Input box for typing chat messages */
+        BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
+        ScrollArea *mScrollArea;    /**< Scroll area around text output */
 
         typedef std::list<std::string> History;
         typedef History::iterator HistoryIterator;

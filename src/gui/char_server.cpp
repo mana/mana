@@ -51,57 +51,57 @@ class ServerListModel : public gcn::ListModel {
 ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
     Window("Select Server"), mLoginData(loginData)
 {
-    serverListModel = new ServerListModel();
-    serverList = new ListBox(serverListModel);
-    scrollArea = new ScrollArea(serverList);
-    okButton = new Button("OK", "ok", this);
-    cancelButton = new Button("Cancel", "cancel", this);
+    mServerListModel = new ServerListModel();
+    mServerList = new ListBox(mServerListModel);
+    ScrollArea *mScrollArea = new ScrollArea(mServerList);
+    mOkButton = new Button("OK", "ok", this);
+    Button *mCancelButton = new Button("Cancel", "cancel", this);
 
     setContentSize(200, 100);
 
-    cancelButton->setPosition(
-            200 - cancelButton->getWidth() - 5,
-            100 - cancelButton->getHeight() - 5);
-    okButton->setPosition(
-            cancelButton->getX() - okButton->getWidth() - 5,
-            100 - okButton->getHeight() - 5);
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setDimension(gcn::Rectangle(
+    mCancelButton->setPosition(
+            200 - mCancelButton->getWidth() - 5,
+            100 - mCancelButton->getHeight() - 5);
+    mOkButton->setPosition(
+            mCancelButton->getX() - mOkButton->getWidth() - 5,
+            100 - mOkButton->getHeight() - 5);
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mScrollArea->setDimension(gcn::Rectangle(
                 5, 5, 200 - 2 * 5,
-                100 - 3 * 5 - cancelButton->getHeight() -
-                scrollArea->getBorderSize()));
+                100 - 3 * 5 - mCancelButton->getHeight() -
+                mScrollArea->getBorderSize()));
 
-    serverList->setEventId("ok");
+    mServerList->setEventId("ok");
 
-    //serverList->addActionListener(this);
+    //mServerList->addActionListener(this);
 
-    add(scrollArea);
-    add(okButton);
-    add(cancelButton);
+    add(mScrollArea);
+    add(mOkButton);
+    add(mCancelButton);
 
     if (n_server == 0) {
         // Disable Ok button
-        okButton->setEnabled(false);
+        mOkButton->setEnabled(false);
     } else {
         // Select first server
-        serverList->setSelected(1);
+        mServerList->setSelected(1);
     }
 
-    okButton->requestFocus();
+    mOkButton->requestFocus();
     setLocationRelativeTo(getParent());
 }
 
 ServerSelectDialog::~ServerSelectDialog()
 {
-    delete serverListModel;
+    delete mServerListModel;
 }
 
 void
 ServerSelectDialog::action(const std::string& eventId)
 {
     if (eventId == "ok") {
-        okButton->setEnabled(false);
-        const SERVER_INFO *si = server_info[serverList->getSelected()];
+        mOkButton->setEnabled(false);
+        const SERVER_INFO *si = server_info[mServerList->getSelected()];
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
         state = CHAR_CONNECT_STATE;

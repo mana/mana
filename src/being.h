@@ -81,17 +81,17 @@ class Being : public Sprite
         static const char UP = 4;
         static const char RIGHT = 8;
 
-        Uint16 job;           /**< Job (player job, npc, monster, ) */
-        Uint16 x, y;          /**< Tile coordinates */
-        Uint8 direction;      /**< Facing direction */
-        Uint8 action;
+        Uint16 mJob;           /**< Job (player job, npc, monster, ) */
+        Uint16 mX, mY;          /**< Tile coordinates */
+        Uint8 mDirection;      /**< Facing direction */
+        Uint8 mAction;
         Uint8 mFrame;
-        Sint32 speech_color;
-        Uint16 walk_time;
-        Uint8 emotion;        /**< Currently showing emotion */
-        Uint8 emotion_time;   /**< Time until emotion disappears */
+        Sint32 mSpeechColor;
+        Uint16 mWalkTime;
+        Uint8 mEmotion;        /**< Currently showing emotion */
+        Uint8 mEmotionTime;   /**< Time until emotion disappears */
 
-        Uint16 aspd;          /**< Attack speed */
+        Uint16 mAttackSpeed;          /**< Attack speed */
 
         /**
          * Constructor.
@@ -155,7 +155,7 @@ class Being : public Sprite
          * Gets the hair color for this being.
          */
         Uint16
-        getHairColor() const { return hairColor; }
+        getHairColor() const { return mHairColor; }
 
         /**
          * Sets the hair style for this being.
@@ -167,7 +167,7 @@ class Being : public Sprite
          * Gets the hair style for this being.
          */
         Uint16
-        getHairStyle() const { return hairStyle; }
+        getHairStyle() const { return mHairStyle; }
 
         /**
          * Makes this being take the next step of his path.
@@ -309,12 +309,12 @@ class Being : public Sprite
         SpriteIterator mSpriteIterator;
 
         Path mPath;
-        std::string speech;
-        std::string damage;
-        Uint16 hairStyle, hairColor;
-        Uint32 speech_time;
-        Uint32 damage_time;
-        bool showSpeech, showDamage;
+        std::string mSpeech;
+        std::string mDamage;
+        Uint16 mHairStyle, mHairColor;
+        Uint32 mSpeechTime;
+        Uint32 mDamageTime;
+        bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         Spriteset *mSpriteset;

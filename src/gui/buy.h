@@ -90,23 +90,23 @@ class BuyDialog : public Window, public gcn::ActionListener
 
     private:
         Network *mNetwork;
-        gcn::Button *buyButton;
-        gcn::Button *quitButton;
-        gcn::Button *increaseButton;
-        gcn::Button *decreaseButton;
-        gcn::ListBox *itemList;
-        gcn::ScrollArea *scrollArea;
-        gcn::Label *itemDescLabel;
-        gcn::Label *itemEffectLabel;
-        gcn::Label *moneyLabel;
-        gcn::Label *quantityLabel;
-        gcn::Slider *slider;
+        gcn::Button *mBuyButton;
+        gcn::Button *mQuitButton;
+        gcn::Button *mIncreaseButton;
+        gcn::Button *mDecreaseButton;
+        gcn::ListBox *mItemList;
+        gcn::ScrollArea *mScrollArea;
+        gcn::Label *mItemDescLabel;
+        gcn::Label *mItemEffectLabel;
+        gcn::Label *mMoneyLabel;
+        gcn::Label *mQuantityLabel;
+        gcn::Slider *mSlider;
 
         ShopItems *mShopItems;
 
-        int m_money;
-        int m_amountItems;
-        int m_maxItems;
+        int mMoney;
+        int mAmountItems;
+        int mMaxItems;
 };
 
 #endif

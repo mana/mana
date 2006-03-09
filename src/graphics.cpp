@@ -122,7 +122,7 @@ int Graphics::getHeight()
 
 bool Graphics::drawImage(Image *image, int x, int y)
 {
-    return drawImage(image, 0, 0, x, y, image->bounds.w, image->bounds.h);
+    return drawImage(image, 0, 0, x, y, image->mBounds.w, image->mBounds.h);
 }
 
 bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
@@ -131,8 +131,8 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     dstX += mClipStack.top().xOffset;
     dstY += mClipStack.top().yOffset;
 
-    srcX += image->bounds.x;
-    srcY += image->bounds.y;
+    srcX += image->mBounds.x;
+    srcY += image->mBounds.y;
 
     // Check that preconditions for blitting are met.
     if (!mScreen || !image->mImage) return false;

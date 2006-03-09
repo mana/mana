@@ -70,14 +70,13 @@ class SkillDialog : public Window, public gcn::ActionListener,
         void cleanList();
 
     private:
-        gcn::ListBox *skillListBox;
-        gcn::ScrollArea *skillScrollArea;
-        gcn::Label *pointsLabel;
-        gcn::Button *incButton;
-        gcn::Button *useButton;
-        gcn::Button *closeButton;
+        gcn::ListBox *mSkillListBox;
+        gcn::Label *mPointsLabel;
+        gcn::Button *mIncButton;
+        gcn::Button *mUseButton;
+        gcn::Button *mCloseButton;
 
-        std::vector<SKILL*> skillList;
+        std::vector<SKILL*> mSkillList;
 };
 
 extern SkillDialog *skillDialog;

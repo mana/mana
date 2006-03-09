@@ -30,34 +30,27 @@
 BuddyList::BuddyList()
 {
     // Find saved buddy list file
-    filename = new std::string(std::string(config.getValue("homeDir", "") + "/buddy.txt"));
+    mFilename = config.getValue("homeDir", "") + "/buddy.txt";
 
     // Load buddy from file
     loadFile();
 }
 
-BuddyList::~BuddyList()
-{
-    delete filename;
-}
-
 void BuddyList::loadFile()
 {
-    char *buddy;
-
     // Open file
-    std::ifstream inputStream(filename->c_str(), std::ios::in);
-    if( !inputStream ) {
+    std::ifstream inputStream(mFilename.c_str(), std::ios::in);
+    if (!inputStream) {
         std::cerr << "Error opening input stream" << std::endl;
         return;
     }
 
     do {
-        buddy = (char *) calloc(LEN_MAX_USERNAME, sizeof(char));
+        char *buddy = new char[LEN_MAX_USERNAME];
         inputStream.getline(buddy, LEN_MAX_USERNAME);
         // Ugly ?
-        if(strcmp(buddy,"") != 0) buddylist.push_back(buddy);
-        free(buddy);
+        if(strcmp(buddy,"")) mBuddylist.push_back(buddy);
+        delete [] buddy;
     } while(!inputStream.eof());
 
     // Read buddy and close file
@@ -69,31 +62,29 @@ void BuddyList::saveFile()
     std::string str;
 
     // Open file
-    std::ofstream outputStream(filename->c_str(), std::ios::trunc);
-    if( !outputStream ) {
+    std::ofstream outputStream(mFilename.c_str(), std::ios::trunc);
+    if (!outputStream) {
         std::cerr << "Error opening output stream" << std::endl;
         return;
     }
 
     // Write buddy and close file
-    for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+    for (BuddyIterator i = mBuddylist.begin(); i != mBuddylist.end(); ++i)
     {
-        str = *buddyit;
-        outputStream << (const char*) str.c_str() << std::endl;
+        outputStream << (const char*) i->c_str() << std::endl;
     }
     outputStream.close();
 }
 
 bool BuddyList::addBuddy(const std::string buddy)
 {
-    for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
+    if (find(mBuddylist.begin(), mBuddylist.end(), buddy) != mBuddylist.end())
     {
-        // Buddy already exist
-        if (*buddyit == buddy) return false;
+        return false;
     }
 
     // Buddy doesnt exist, add it
-    buddylist.push_back(buddy);
+    mBuddylist.push_back(buddy);
 
     // Save file
     saveFile();
@@ -103,37 +94,29 @@ bool BuddyList::addBuddy(const std::string buddy)
 
 bool BuddyList::removeBuddy(const std::string buddy)
 {
-    if (buddylist.size() > 0) {
-        for (buddyit = buddylist.begin(); buddyit != buddylist.end(); buddyit++)
-        {
-            // Buddy exist, remove it
-            if (*buddyit == buddy) {
-                buddylist.remove(buddy);
+    BuddyIterator i = find(mBuddylist.begin(), mBuddylist.end(), buddy);
 
-                // Save file
-                saveFile();
-                return true;
-            }
-        }
+    if (i != mBuddylist.end()) {
+        mBuddylist.erase(i);
+        saveFile();
+        return true;
     }
 
-    // Buddy doesnt exist
     return false;
 }
 
 int  BuddyList::getNumberOfElements()
 {
-    return buddylist.size();
+    return mBuddylist.size();
 }
 
 std::string BuddyList::getElementAt(int number)
 {
-    if (number <= (int) buddylist.size() - 1)
-    {
-        buddyit = buddylist.begin();
-        std::advance(buddyit, number);
-        return *buddyit;
+    if (number >= (int) mBuddylist.size()) {
+        return "";
     }
 
-    return "";
+    BuddyIterator i = mBuddylist.begin();
+    std::advance(i, number);
+    return *i;
 }

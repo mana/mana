@@ -55,23 +55,20 @@ class RegisterDialog : public Window, public gcn::ActionListener {
 
         // Made them public to have the possibility to request focus
         // from external functions.
-        gcn::TextField *userField;
-        gcn::TextField *passwordField;
-        gcn::TextField *confirmField;
 
     private:
-        gcn::Label *userLabel;
-        gcn::Label *passwordLabel;
-        gcn::Label *confirmLabel;
-        gcn::Label *serverLabel;
-        gcn::TextField *serverField;
-        gcn::Button *registerButton;
-        gcn::Button *cancelButton;
-        gcn::RadioButton *maleButton;
-        gcn::RadioButton *femaleButton;
+        gcn::TextField *mUserField;
+        gcn::TextField *mPasswordField;
+        gcn::TextField *mConfirmField;
+        gcn::TextField *mServerField;
 
-        WrongDataNoticeListener *wrongDataNoticeListener;
-        OkDialog *wrongRegisterNotice;
+        gcn::Button *mRegisterButton;
+        gcn::Button *mCancelButton;
+        gcn::RadioButton *mMaleButton;
+        gcn::RadioButton *mFemaleButton;
+
+        WrongDataNoticeListener *mWrongDataNoticeListener;
+        OkDialog *mWrongRegisterNotice;
 
         LoginData *mLoginData;
 };

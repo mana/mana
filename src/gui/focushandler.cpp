@@ -31,7 +31,7 @@ void FocusHandler::requestModalFocus(gcn::Widget *widget)
      */
     if (mModalFocusedWidget != NULL && mModalFocusedWidget != widget)
     {
-        modalStack.push_front(mModalFocusedWidget);
+        mModalStack.push_front(mModalFocusedWidget);
         mModalFocusedWidget = NULL;
     }
 
@@ -40,7 +40,7 @@ void FocusHandler::requestModalFocus(gcn::Widget *widget)
 
 void FocusHandler::releaseModalFocus(gcn::Widget *widget)
 {
-    modalStack.remove(widget);
+    mModalStack.remove(widget);
 
     if (mModalFocusedWidget == widget)
     {
@@ -49,10 +49,10 @@ void FocusHandler::releaseModalFocus(gcn::Widget *widget)
         /* Check if there were any previously modal widgets that'd still like
          * to regain their modal focus.
          */
-        if (modalStack.size() > 0)
+        if (mModalStack.size() > 0)
         {
-            gcn::FocusHandler::requestModalFocus(modalStack.front());
-            modalStack.pop_front();
+            gcn::FocusHandler::requestModalFocus(mModalStack.front());
+            mModalStack.pop_front();
         }
     }
 }

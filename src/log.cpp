@@ -34,17 +34,17 @@
 
 Logger::~Logger()
 {
-    if (logFile.is_open())
+    if (mLogFile.is_open())
     {
-        logFile.close();
+        mLogFile.close();
     }
 }
 
 void Logger::setLogFile(const std::string &logFilename)
 {
-    logFile.open(logFilename.c_str(), std::ios_base::trunc);
+    mLogFile.open(logFilename.c_str(), std::ios_base::trunc);
 
-    if (!logFile.is_open())
+    if (!mLogFile.is_open())
     {
         std::cout << "Warning: error while opening " << logFilename <<
             " for writing.\n";
@@ -53,7 +53,7 @@ void Logger::setLogFile(const std::string &logFilename)
 
 void Logger::log(const char *log_text, ...)
 {
-    if (!logFile.is_open()) {
+    if (!mLogFile.is_open()) {
         return;
     }
 
@@ -82,7 +82,7 @@ void Logger::log(const char *log_text, ...)
     timeStr << (int)(t % 60);
     timeStr << "] ";
 
-    logFile << timeStr.str() << buf << std::endl;
+    mLogFile << timeStr.str() << buf << std::endl;
 
     // Delete temporary buffer
     delete[] buf;

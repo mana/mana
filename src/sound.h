@@ -108,12 +108,12 @@ class Sound {
         void playSfx(const char *path);
 
     private:
-        bool installed;
+        bool mInstalled;
 
-        int sfxVolume;
-        int musicVolume;
+        int mSfxVolume;
+        int mMusicVolume;
 
-        Mix_Music *music;
+        Mix_Music *mMusic;
 };
 
 extern Sound sound;

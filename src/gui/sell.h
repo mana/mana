@@ -77,22 +77,20 @@ class SellDialog : public Window, public gcn::ActionListener
 
     private:
         Network *mNetwork;
-        gcn::Button *sellButton;
-        gcn::Button *quitButton;
-        gcn::Button *increaseButton;
-        gcn::Button *decreaseButton;
-        gcn::ListBox *itemList;
-        gcn::ScrollArea *scrollArea;
-        gcn::Label *moneyLabel;
-        gcn::Label *itemDescLabel;
-        gcn::Label *itemEffectLabel;
-        gcn::Label *quantityLabel;
-        gcn::Slider *slider;
+        gcn::Button *mSellButton;
+        gcn::Button *mIncreaseButton;
+        gcn::Button *mDecreaseButton;
+        gcn::ListBox *mItemList;
+        gcn::Label *mMoneyLabel;
+        gcn::Label *mItemDescLabel;
+        gcn::Label *mItemEffectLabel;
+        gcn::Label *mQuantityLabel;
+        gcn::Slider *mSlider;
 
         ShopItems *mShopItems;
 
-        int m_maxItems;
-        int m_amountItems;
+        int mMaxItems;
+        int mAmountItems;
 };
 
 #endif

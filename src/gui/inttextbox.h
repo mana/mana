@@ -58,9 +58,9 @@ class IntTextBox : public TextBox
         void keyPress(const gcn::Key &key);
 
     private:
-        int min;            /**< Minimum value */
-        int max;            /**< Maximum value */
-        int value;          /**< Current value */
+        int mMin;            /**< Minimum value */
+        int mMax;            /**< Maximum value */
+        int mValue;          /**< Current value */
 };
 
 #endif

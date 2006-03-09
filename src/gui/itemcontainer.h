@@ -83,11 +83,11 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
 
     private:
         Inventory *mInventory;
-        Spriteset *itemset;
-        Image *selImg;
-        Item *selectedItem;
+        Spriteset *mItemset;
+        Image *mSelImg;
+        Item *mSelectedItem;
 
-        int maxItems;
+        int mMaxItems;
 };
 
 #endif

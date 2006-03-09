@@ -48,66 +48,66 @@ ChatWindow::ChatWindow(const std::string &logfile, Network *network):
     mTmpVisible(false)
 {
     setWindowName("Chat");
-    chatlog_file.open(logfile.c_str(), std::ios::out | std::ios::app);
-    items = 0;
-    items_keep = 20;
+    mChatlogFile.open(logfile.c_str(), std::ios::out | std::ios::app);
+    mItems = 0;
+    mItemsKeep = 20;
 
     setResizable(true);
     setDefaultSize(0, (graphics->getHeight() - 123), 600, 100);
     loadWindowState();
 
-    chatInput = new ChatInput();
-    chatInput->setEventId("chatinput");
-    chatInput->addActionListener(this);
+    mChatInput = new ChatInput();
+    mChatInput->setEventId("chatinput");
+    mChatInput->addActionListener(this);
 
-    textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
-    textOutput->setOpaque(false);
-    textOutput->disableLinksAndUserColors();
-    scrollArea = new ScrollArea(textOutput);
-    scrollArea->setPosition(
-            scrollArea->getBorderSize(), scrollArea->getBorderSize());
-    scrollArea->setScrollPolicy(
+    mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    mTextOutput->setOpaque(false);
+    mTextOutput->disableLinksAndUserColors();
+    mScrollArea = new ScrollArea(mTextOutput);
+    mScrollArea->setPosition(
+            mScrollArea->getBorderSize(), mScrollArea->getBorderSize());
+    mScrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
-    scrollArea->setOpaque(false);
+    mScrollArea->setOpaque(false);
 
-    add(scrollArea);
-    add(chatInput);
+    add(mScrollArea);
+    add(mChatInput);
 
     // Add key listener to chat input to be able to respond to up/down
-    chatInput->addKeyListener(this);
+    mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
 }
 
 ChatWindow::~ChatWindow()
 {
-    chatlog_file.flush();
-    chatlog_file.close();
+    mChatlogFile.flush();
+    mChatlogFile.close();
 }
 
 void
 ChatWindow::logic()
 {
-    chatInput->setPosition(
-            chatInput->getBorderSize(),
-            getContent()->getHeight() - chatInput->getHeight() -
-                chatInput->getBorderSize());
-    chatInput->setWidth(
-            getContent()->getWidth() - 2 * chatInput->getBorderSize());
+    mChatInput->setPosition(
+            mChatInput->getBorderSize(),
+            getContent()->getHeight() - mChatInput->getHeight() -
+                mChatInput->getBorderSize());
+    mChatInput->setWidth(
+            getContent()->getWidth() - 2 * mChatInput->getBorderSize());
 
-    scrollArea->setWidth(
-            getContent()->getWidth() - 2 * scrollArea->getBorderSize());
-    scrollArea->setHeight(
-            getContent()->getHeight() - 2 * scrollArea->getBorderSize() -
-                chatInput->getHeight() - 5);
-    scrollArea->logic();
+    mScrollArea->setWidth(
+            getContent()->getWidth() - 2 * mScrollArea->getBorderSize());
+    mScrollArea->setHeight(
+            getContent()->getHeight() - 2 * mScrollArea->getBorderSize() -
+                mChatInput->getHeight() - 5);
+    mScrollArea->logic();
 }
 
 void
 ChatWindow::chatLog(std::string line, int own)
 {
     // Delete overhead from the end of the list
-    while ((int)chatlog.size() > items_keep) {
-        chatlog.pop_back();
+    while ((int)mChatlog.size() > mItemsKeep) {
+        mChatlog.pop_back();
     }
 
     CHATLOG tmp;
@@ -173,14 +173,14 @@ ChatWindow::chatLog(std::string line, int own)
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
-    if ( scrollArea->getVerticalScrollAmount() == scrollArea->getVerticalMaxScroll() )
+    if (mScrollArea->getVerticalScrollAmount() == mScrollArea->getVerticalMaxScroll() )
     {
-        textOutput->addRow(line);
-        scrollArea->setVerticalScrollAmount(scrollArea->getVerticalMaxScroll());
+        mTextOutput->addRow(line);
+        mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
     }
     else
     {
-        textOutput->addRow(line);
+        mTextOutput->addRow(line);
     }
 }
 
@@ -195,7 +195,7 @@ ChatWindow::action(const std::string& eventId)
 {
     if (eventId == "chatinput")
     {
-        std::string message = chatInput->getText();
+        std::string message = mChatInput->getText();
 
         if (message.length() > 0) {
             // If message different from previous, put it in the history
@@ -210,7 +210,7 @@ ChatWindow::action(const std::string& eventId)
             chatSend(player_node->getName().c_str(), message.c_str());
 
             // Clear the text from the chat input
-            chatInput->setText("");
+            mChatInput->setText("");
         }
 
         // Remove focus and hide input
@@ -241,14 +241,14 @@ ChatWindow::requestChatFocus()
     }
 
     // Give focus to the chat input
-    chatInput->setVisible(true);
-    chatInput->requestFocus();
+    mChatInput->setVisible(true);
+    mChatInput->requestFocus();
 }
 
 bool
 ChatWindow::isFocused()
 {
-    return chatInput->hasFocus();
+    return mChatInput->hasFocus();
 }
 
 void
@@ -389,8 +389,8 @@ ChatWindow::keyPress(const gcn::Key &key)
         // Move forward through the history
         HistoryIterator prevHist = mCurHist++;
         if (mCurHist != mHistory.end()) {
-            chatInput->setText(*mCurHist);
-            chatInput->setCaretPosition(chatInput->getText().length());
+            mChatInput->setText(*mCurHist);
+            mChatInput->setCaretPosition(mChatInput->getText().length());
         }
         else {
             mCurHist = prevHist;
@@ -401,15 +401,15 @@ ChatWindow::keyPress(const gcn::Key &key)
     {
         // Move backward through the history
         mCurHist--;
-        chatInput->setText(*mCurHist);
-        chatInput->setCaretPosition(chatInput->getText().length());
+        mChatInput->setText(*mCurHist);
+        mChatInput->setCaretPosition(mChatInput->getText().length());
     }
 }
 
 void
 ChatWindow::setInputText(std::string input_str)
 {
-     chatInput->setText(input_str + " ");
+     mChatInput->setText(input_str + " ");
      requestChatFocus();
 }
 

@@ -41,21 +41,21 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 }
 
 Being::Being(Uint32 id, Uint16 job, Map *map):
-    job(job),
-    x(0), y(0), direction(DOWN),
-    action(0), mFrame(0),
-    speech_color(0),
-    walk_time(0),
-    emotion(0), emotion_time(0),
-    aspd(350),
+    mJob(job),
+    mX(0), mY(0), mDirection(DOWN),
+    mAction(0), mFrame(0),
+    mSpeechColor(0),
+    mWalkTime(0),
+    mEmotion(0), mEmotionTime(0),
+    mAttackSpeed(350),
     mId(id),
     mWeapon(0),
     mWalkSpeed(150),
     mMap(NULL),
-    hairStyle(1), hairColor(1),
-    speech_time(0),
-    damage_time(0),
-    showSpeech(false), showDamage(false),
+    mHairStyle(1), mHairColor(1),
+    mSpeechTime(0),
+    mDamageTime(0),
+    mShowSpeech(false), mShowDamage(false),
     mSpriteset(NULL), mSpriteFrame(0)
 {
     setMap(map);
@@ -71,7 +71,7 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
     {
-        setPath(mMap->findPath(x, y, destX, destY));
+        setPath(mMap->findPath(mX, mY, destX, destY));
     }
 }
 
@@ -84,51 +84,51 @@ void Being::setPath(const Path &path)
 {
     mPath = path;
 
-    if (action != WALK && action != DEAD)
+    if (mAction != WALK && mAction != DEAD)
     {
         nextStep();
-        walk_time = tick_time;
+        mWalkTime = tick_time;
     }
 }
 
 void Being::setHairColor(Uint16 color)
 {
-    hairColor = color;
-    if (hairColor < 1 || hairColor > NR_HAIR_COLORS + 1)
+    mHairColor = color;
+    if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
     {
-        hairColor = 1;
+        mHairColor = 1;
     }
 }
 
 void Being::setHairStyle(Uint16 style)
 {
-    hairStyle = style;
-    if (hairStyle < 1 || hairStyle > NR_HAIR_STYLES)
+    mHairStyle = style;
+    if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
     {
-        hairStyle = 1;
+        mHairStyle = 1;
     }
 }
 
 void
 Being::setSpeech(const std::string &text, Uint32 time)
 {
-    speech = text;
-    speech_time = tick_time;
-    showSpeech = true;
+    mSpeech = text;
+    mSpeechTime = tick_time;
+    mShowSpeech = true;
 }
 
 void
 Being::setDamage(Sint16 amount, Uint32 time)
 {
     if (!amount) {
-        damage = "miss";
+        mDamage = "miss";
     } else {
         std::stringstream damageString;
         damageString << amount;
-        damage = damageString.str();
+        mDamage = damageString.str();
     }
-    damage_time = tick_time;
-    showDamage = true;
+    mDamageTime = tick_time;
+    mShowDamage = true;
 }
 
 void
@@ -156,56 +156,56 @@ Being::nextStep()
 
     if (mPath.empty())
     {
-        action = STAND;
+        mAction = STAND;
         return;
     }
 
     PATH_NODE node = mPath.front();
     mPath.pop_front();
 
-    direction = 0;
-    if (node.x > x)
-        direction |= RIGHT;
-    else if (node.x < x)
-        direction |= LEFT;
-    if (node.y > y)
-        direction |= DOWN;
-    else if (node.y < y)
-        direction |= UP;
+    mDirection = 0;
+    if (node.x > mX)
+        mDirection |= RIGHT;
+    else if (node.x < mX)
+        mDirection |= LEFT;
+    if (node.y > mY)
+        mDirection |= DOWN;
+    else if (node.y < mY)
+        mDirection |= UP;
 
-    x = node.x;
-    y = node.y;
-    action = WALK;
-    walk_time += mWalkSpeed / 10;
+    mX = node.x;
+    mY = node.y;
+    mAction = WALK;
+    mWalkTime += mWalkSpeed / 10;
 }
 
 void
 Being::logic()
 {
     // Determine whether speech should still be displayed
-    if (get_elapsed_time(speech_time) > 5000)
+    if (get_elapsed_time(mSpeechTime) > 5000)
     {
-        showSpeech = false;
+        mShowSpeech = false;
     }
 
     // Determine whether damage should still be displayed
-    if (get_elapsed_time(damage_time) > 3000)
+    if (get_elapsed_time(mDamageTime) > 3000)
     {
-        showDamage = false;
+        mShowDamage = false;
     }
 
     // Update pixel coordinates
-    mPx = x * 32;
-    mPy = y * 32;
+    mPx = mX * 32;
+    mPy = mY * 32;
 
     mPy += getYOffset();
     mPx += getXOffset();
 
-    if (emotion != 0)
+    if (mEmotion != 0)
     {
-        emotion_time--;
-        if (emotion_time == 0) {
-            emotion = 0;
+        mEmotionTime--;
+        if (mEmotionTime == 0) {
+            mEmotion = 0;
         }
     }
 }
@@ -227,9 +227,9 @@ Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    if (emotion)
+    if (mEmotion)
     {
-        graphics->drawImage(emotionset->get(emotion - 1),
+        graphics->drawImage(emotionset->get(mEmotion - 1),
                 px + 3, py - 60);
     }
 }
@@ -241,17 +241,17 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     int py = mPy + offsetY;
 
     // Draw speech above this being
-    if (showSpeech)
+    if (mShowSpeech)
     {
         graphics->setFont(speechFont);
-        graphics->drawText(speech, px + 18, py - 60, gcn::Graphics::CENTER);
+        graphics->drawText(mSpeech, px + 18, py - 60, gcn::Graphics::CENTER);
     }
 
     // Draw damage above this being
-    if (showDamage)
+    if (mShowDamage)
     {
         // Selecting the right color
-        if (damage == "miss")
+        if (mDamage == "miss")
         {
             graphics->setFont(hitYellowFont);
         }
@@ -265,13 +265,13 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         }
 
         int textY = (getType() == MONSTER) ? 32 : 70;
-        int ft = get_elapsed_time(damage_time) - 1500;
+        int ft = get_elapsed_time(mDamageTime) - 1500;
         float a = (ft > 0) ? 1.0 - ft / 1500.0 : 1.0;
 
         graphics->setColor(gcn::Color(255, 255, 255, (int)(255 * a)));
-        graphics->drawText(damage,
+        graphics->drawText(mDamage,
                            px + 16,
-                           py - textY - get_elapsed_time(damage_time) / 100,
+                           py - textY - get_elapsed_time(mDamageTime) / 100,
                            gcn::Graphics::CENTER);
 
         // Reset alpha value
@@ -317,11 +317,11 @@ void Being::setWeaponById(Uint16 weapon)
 int Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
-    if (action != WALK || !(direction & (pos | neg))) {
+    if (mAction != WALK || !(mDirection & (pos | neg))) {
         return 0;
     }
 
-    int offset = (get_elapsed_time(walk_time) * 32) / mWalkSpeed;
+    int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
 
     // We calculate the offset _from_ the _target_ location
     offset -= 32;
@@ -330,7 +330,7 @@ int Being::getOffset(char pos, char neg) const
     }
 
     // Going into negative direction? Invert the offset.
-    if (direction & pos) {
+    if (mDirection & pos) {
         offset = -offset;
     }
 
