@@ -21,6 +21,9 @@
  *  $Id$
  */
 
+#ifndef _TMW_UTILS_DTOR_H
+#define _TMW_UTILS_DTOR_H
+
 #include <functional>
 #include <utility>
 
@@ -42,3 +45,5 @@ inline dtor<typename Cont::value_type> make_dtor(Cont const&)
 {
 	return dtor<typename Cont::value_type>();
 }
+
+#endif

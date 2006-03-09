@@ -1,5 +1,6 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/utils/dtor.h: Added guards.
 	* src/game.cpp, src/main.cpp, src/gui/connection.cpp,
 	src/gui/menuwindow.cpp, src/net/tradehandler.cpp,
 	src/net/playerhandler.cpp: Made all local action listeners structs and
