@@ -180,7 +180,7 @@ void createGuiWindows(Network *network)
     //newSkillWindow = new NewSkillDialog();
     setupWindow = new Setup();
     minimap = new Minimap();
-    equipmentWindow = new EquipmentWindow(player_node->mEquipment);
+    equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow(network);
     //buddyWindow = new BuddyWindow();
@@ -250,7 +250,17 @@ void destroyGuiWindows()
 }
 
 Game::Game(Network *network):
-    mNetwork(network)
+    mNetwork(network),
+    mBeingHandler(new BeingHandler()),
+    mBuySellHandler(new BuySellHandler()),
+    mChatHandler(new ChatHandler()),
+    mEquipmentHandler(new EquipmentHandler()),
+    mInventoryHandler(new InventoryHandler()),
+    mItemHandler(new ItemHandler()),
+    mNpcHandler(new NPCHandler()),
+    mPlayerHandler(new PlayerHandler()),
+    mSkillHandler(new SkillHandler()),
+    mTradeHandler(new TradeHandler())
 {
     createGuiWindows(network);
     engine = new Engine(network);
@@ -276,42 +286,20 @@ Game::Game(Network *network):
         joystick = new Joystick(0);
     }
 
-    mBeingHandler = new BeingHandler();
-    mBuySellHandler = new BuySellHandler();
-    mChatHandler = new ChatHandler();
-    mEquipmentHandler = new EquipmentHandler();
-    mInventoryHandler = new InventoryHandler();
-    mItemHandler = new ItemHandler();
-    mNpcHandler = new NPCHandler();
-    mPlayerHandler = new PlayerHandler();
-    mSkillHandler = new SkillHandler();
-    mTradeHandler = new TradeHandler();
-
-    network->registerHandler(mBeingHandler);
-    network->registerHandler(mBuySellHandler);
-    network->registerHandler(mChatHandler);
-    network->registerHandler(mEquipmentHandler);
-    network->registerHandler(mInventoryHandler);
-    network->registerHandler(mItemHandler);
-    network->registerHandler(mNpcHandler);
-    network->registerHandler(mPlayerHandler);
-    network->registerHandler(mSkillHandler);
-    network->registerHandler(mTradeHandler);
+    network->registerHandler(mBeingHandler.get());
+    network->registerHandler(mBuySellHandler.get());
+    network->registerHandler(mChatHandler.get());
+    network->registerHandler(mEquipmentHandler.get());
+    network->registerHandler(mInventoryHandler.get());
+    network->registerHandler(mItemHandler.get());
+    network->registerHandler(mNpcHandler.get());
+    network->registerHandler(mPlayerHandler.get());
+    network->registerHandler(mSkillHandler.get());
+    network->registerHandler(mTradeHandler.get());
 }
 
 Game::~Game()
 {
-    delete mBeingHandler;
-    delete mBuySellHandler;
-    delete mChatHandler;
-    delete mEquipmentHandler;
-    delete mInventoryHandler;
-    delete mItemHandler;
-    delete mNpcHandler;
-    delete mPlayerHandler;
-    delete mSkillHandler;
-    delete mTradeHandler;
-
     delete engine;
     delete player_node;
     destroyGuiWindows();

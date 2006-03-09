@@ -1,5 +1,8 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
+	src/gui/inventorywindow.cpp, src/gui/trade.h, src/localplayer.h,
+	src/game.h: Use std::auto_ptr in some places.
 	* src/lockedarray.h: Use fill_n instead of for-loop.
 	* src/gui/browserbox.cpp: Make the MouseOverLink functor dynamic and
 	use a STL algorithm in one more place.

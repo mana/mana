@@ -24,6 +24,8 @@
 #ifndef _TMW_TRADE_H
 #define _TMW_TRADE_H
 
+#include <memory>
+
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
@@ -110,13 +112,16 @@ class TradeWindow : public Window, gcn::ActionListener
          */
         void action(const std::string& eventId);
 
-        Inventory *myInventory;
-        Inventory *partnerInventory;
+    private:
+        Network *mNetwork;
+
+        typedef std::auto_ptr<Inventory> InventoryPtr;
+        InventoryPtr myInventory;
+        InventoryPtr partnerInventory;
+
         ItemContainer *myItemContainer;
         ItemContainer *partnerItemContainer;
 
-    private:
-        Network *mNetwork;
         gcn::Label *itemNameLabel;
         gcn::Label *itemDescriptionLabel;
         gcn::Label *moneyLabel;

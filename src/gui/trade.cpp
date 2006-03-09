@@ -45,7 +45,9 @@
 
 TradeWindow::TradeWindow(Network *network):
     Window("Trade: You"),
-    mNetwork(network)
+    mNetwork(network),
+    myInventory(new Inventory()),
+    partnerInventory(new Inventory())
 {
     setContentSize(322, 150);
 
@@ -54,16 +56,13 @@ TradeWindow::TradeWindow(Network *network):
     cancelButton = new Button("Cancel");
     tradeButton = new Button("Trade");
 
-    myInventory = new Inventory();
-    partnerInventory = new Inventory();
-
-    myItemContainer = new ItemContainer(myInventory);
+    myItemContainer = new ItemContainer(myInventory.get());
     myItemContainer->setPosition(2, 2);
 
     myScroll = new ScrollArea(myItemContainer);
     myScroll->setPosition(8, 8);
 
-    partnerItemContainer = new ItemContainer(partnerInventory);
+    partnerItemContainer = new ItemContainer(partnerInventory.get());
     partnerItemContainer->setPosition(2, 58);
 
     partnerScroll = new ScrollArea(partnerItemContainer);
@@ -137,8 +136,6 @@ TradeWindow::TradeWindow(Network *network):
 
 TradeWindow::~TradeWindow()
 {
-    delete myInventory;
-    delete partnerInventory;
 }
 
 void TradeWindow::addMoney(int amount)

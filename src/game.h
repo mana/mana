@@ -25,6 +25,7 @@
 #define _TMW_GAME_
 
 #include <iosfwd>
+#include <memory>
 
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
@@ -49,16 +50,17 @@ class Game
     protected:
         Network *mNetwork;
 
-        MessageHandler *mBeingHandler;
-        MessageHandler *mBuySellHandler;
-        MessageHandler *mChatHandler;
-        MessageHandler *mEquipmentHandler;
-        MessageHandler *mInventoryHandler;
-        MessageHandler *mItemHandler;
-        MessageHandler *mNpcHandler;
-        MessageHandler *mPlayerHandler;
-        MessageHandler *mSkillHandler;
-        MessageHandler *mTradeHandler;
+        typedef std::auto_ptr<MessageHandler> MessageHandlerPtr;
+        MessageHandlerPtr mBeingHandler;
+        MessageHandlerPtr mBuySellHandler;
+        MessageHandlerPtr mChatHandler;
+        MessageHandlerPtr mEquipmentHandler;
+        MessageHandlerPtr mInventoryHandler;
+        MessageHandlerPtr mItemHandler;
+        MessageHandlerPtr mNpcHandler;
+        MessageHandlerPtr mPlayerHandler;
+        MessageHandlerPtr mSkillHandler;
+        MessageHandlerPtr mTradeHandler;
 };
 
 /**

@@ -53,7 +53,7 @@ InventoryWindow::InventoryWindow():
     useButton = new Button("Use");
     dropButton = new Button("Drop");
 
-    items = new ItemContainer(player_node->mInventory);
+    items = new ItemContainer(player_node->mInventory.get());
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
