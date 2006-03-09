@@ -113,16 +113,12 @@ Uint32 nextFrame(Uint32 interval, void *param)
     return interval;
 }
 
-struct ErrorListener : public gcn::ActionListener
-{
-    void action(const std::string& eventId)
+namespace {
+    struct ErrorListener : public gcn::ActionListener
     {
-        if (eventId == "ok")
-        {
-            state = LOGIN_STATE;
-        }
-    }
-} errorListener;
+        void action(const std::string& eventId) { state = LOGIN_STATE; }
+    } errorListener;
+}
 
 /**
  * Do all initialization stuff

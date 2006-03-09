@@ -120,14 +120,16 @@ const int MAX_TIME = 10000;
 /**
  * Listener used for exitting handling.
  */
-class ExitListener : public gcn::ActionListener {
-    void action(const std::string &eventId) {
-        if (eventId == "yes") {
-            done = true;
+namespace {
+    struct ExitListener : public gcn::ActionListener {
+        void action(const std::string &eventId) {
+            if (eventId == "yes") {
+                done = true;
+            }
+            exitConfirm = NULL;
         }
-        exitConfirm = NULL;
-    }
-} exitListener;
+    } exitListener;
+}
 
 /**
  * Advances game logic counter.

@@ -43,27 +43,25 @@ OkDialog *deathNotice = NULL;
  * Listener used for handling the overweigth message.
  */
 // TODO Move somewhere else
-class WeightNoticeListener : public gcn::ActionListener
-{
-    public:
-        void action(const std::string &eventId)
-        {
-            weightNotice = NULL;
-        }
-} weightNoticeListener;
-
+namespace {
+    struct WeightListener : public gcn::ActionListener
+    {
+        void action(const std::string &eventId) { weightNotice = NULL; }
+    } weightListener;
+}
 
 /**
  * Listener used for handling death message.
  */
 // TODO Move somewhere else
-class DeathNoticeListener : public gcn::ActionListener {
-    public:
+namespace {
+    struct DeathListener : public gcn::ActionListener {
         void action(const std::string &eventId) {
             player_node->revive();
             deathNotice = NULL;
         }
-} deathNoticeListener;
+    } deathListener;
+}
 
 PlayerHandler::PlayerHandler()
 {
@@ -142,7 +140,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                              "You are carrying more then half your "
                                              "weight. You are unable to regain "
                                              "health.");
-                                     weightNotice->addActionListener(&weightNoticeListener);
+                                     weightNotice->addActionListener(&weightListener);
                                  }
                                  player_node->mTotalWeight = value;
                                  break;
@@ -164,7 +162,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                 {
                     deathNotice = new OkDialog("Message",
                             "You're now dead, press ok to restart");
-                    deathNotice->addActionListener(&deathNoticeListener);
+                    deathNotice->addActionListener(&deathListener);
                     player_node->mAction = Being::DEAD;
                 }
             }

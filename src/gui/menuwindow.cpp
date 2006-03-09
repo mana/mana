@@ -35,13 +35,15 @@ extern Graphics *graphics;
 extern Window *setupWindow, *inventoryWindow, *equipmentWindow,
        *skillDialog, *statusWindow;
 
-struct MenuWindowListener : public gcn::ActionListener
-{
-    /**
-     * Called when receiving actions from widget.
-     */
-    void action(const std::string& eventId);
-} menuWindowListener;
+namespace {
+    struct MenuWindowListener : public gcn::ActionListener
+    {
+        /**
+         * Called when receiving actions from widget.
+         */
+        void action(const std::string& eventId);
+    } listener;
+}
 
 MenuWindow::MenuWindow():
     Window("")
@@ -59,7 +61,7 @@ MenuWindow::MenuWindow():
     int x = 0, y = 3, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++) {
-        gcn::Button *btn = new Button(*curBtn, *curBtn, &menuWindowListener);
+        gcn::Button *btn = new Button(*curBtn, *curBtn, &listener);
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 3;

@@ -1,5 +1,9 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/game.cpp, src/main.cpp, src/gui/connection.cpp,
+	src/gui/menuwindow.cpp, src/net/tradehandler.cpp,
+	src/net/playerhandler.cpp: Made all local action listeners structs and
+	moved them into anonymous namespaces.
 	* src/gui/connection.cpp, src/gui/newskill.cpp,
 	src/gui/chargedialog.cpp, src/gui/updatewindow.cpp,
 	src/gui/progressbar.h, src/gui/ministatus.cpp,

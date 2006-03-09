@@ -38,13 +38,15 @@ std::string tradePartnerName;
 /**
  * Listener for request trade dialogs
  */
-struct RequestTradeListener : public gcn::ActionListener
-{
-    void action(const std::string& eventId)
+namespace {
+    struct RequestTradeListener : public gcn::ActionListener
     {
-        player_node->tradeReply(eventId == "yes");
-    };
-} requestTradeListener;
+        void action(const std::string& eventId)
+        {
+            player_node->tradeReply(eventId == "yes");
+        };
+    } listener;
+}
 
 TradeHandler::TradeHandler()
 {
@@ -77,14 +79,14 @@ void TradeHandler::handleMessage(MessageIn *msg)
                     player_node->tradeReply(false);
                     break;
                 }
-                
+
                 player_node->setTrading(true);
                 tradePartnerName = msg->readString(24);
                 ConfirmDialog *dlg;
                 dlg = new ConfirmDialog("Request for trade",
                         tradePartnerName +
                         " wants to trade with you, do you accept?");
-                dlg->addActionListener(&requestTradeListener);
+                dlg->addActionListener(&listener);
             break;
 
         case SMSG_TRADE_RESPONSE:

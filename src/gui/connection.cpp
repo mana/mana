@@ -32,25 +32,19 @@
 
 #include "../main.h"
 
-class ConnectionActionListener : public gcn::ActionListener
-{
-    public:
-        void action(const std::string& eventId)
-        {
-            if (eventId == "cancel")
-            {
-                state = EXIT_STATE;
-            }
-        }
-} connectionActionListener;
+namespace {
+    struct ConnectionActionListener : public gcn::ActionListener
+    {
+        void action(const std::string& eventId) { state = EXIT_STATE; }
+    } listener;
+}
 
 ConnectionDialog::ConnectionDialog():
     Window("Info"), mProgress(0)
 {
     setContentSize(200, 100);
 
-    Button *cancelButton = new Button("Cancel", "cancelButton",
-            &connectionActionListener);
+    Button *cancelButton = new Button("Cancel", "cancelButton", &listener);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
     gcn::Label *label = new gcn::Label("Connecting...");
 
