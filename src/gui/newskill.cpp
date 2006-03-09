@@ -77,7 +77,7 @@ NewSkillDialog::NewSkillDialog():
     {
         mSkillLabel[i] = new gcn::Label("Empty               ");
         mSkillLevel[i] = new gcn::Label("00000");
-        mSkillbar[i] = new ProgressBar(0.0f,0,0,100,15,0,0,255);
+        mSkillbar[i] = new ProgressBar(0.0f,100,15,0,0,255);
         mSkillLevel[i]->setAlignment(Graphics::RIGHT);
         add(mSkillLabel[i],40,5+i*25);
         add(mSkillLevel[i],150,5+i*25);

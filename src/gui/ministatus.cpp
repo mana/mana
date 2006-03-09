@@ -40,18 +40,17 @@ MiniStatusWindow::MiniStatusWindow():
     setMovable(false);
     setTitleBarHeight(0);
 
-    mHpBar = new ProgressBar(1.0f,
-            0, 3, 100, 20,
-            0, 171, 34);
-
-    mMpBar = new ProgressBar(1.0f,
-            mHpBar->getX() + mHpBar->getWidth() + 3,
-            mHpBar->getY(), 100, 20, 26, 102, 230);
-
+    mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
+    mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
     mHpLabel = new gcn::Label("");
     mMpLabel = new gcn::Label("");
+
+    mHpBar->setPosition(0, 3);
+    mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
+
     mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
     mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
+
     mHpLabel->setFont(speechFont);
     mMpLabel->setFont(speechFont);
 

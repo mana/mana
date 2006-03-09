@@ -51,40 +51,55 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel = new gcn::Label("Level:");
     mGpLabel = new gcn::Label("Money:");
+
     mHpLabel = new gcn::Label("HP:");
+    mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
     mHpValueLabel = new gcn::Label("");
-    mMpLabel = new gcn::Label("MP:");
-    mMpValueLabel = new gcn::Label("");
+
     mXpLabel = new gcn::Label("Exp:");
+    mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
     mXpValueLabel = new gcn::Label("");
+
+    mMpLabel = new gcn::Label("MP:");
+    mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
+    mMpValueLabel = new gcn::Label("");
+
     mJobXpLabel = new gcn::Label("Job:");
+    mJobXpBar = new ProgressBar(1.0f, 60, 15, 220, 135, 203);
     mJobValueLabel = new gcn::Label("");
 
-    mLvlLabel->setPosition(5, 3);
-    mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 40, 3);
-    mHpLabel->setPosition(5, mLvlLabel->getY() + mLvlLabel->getHeight() + 5);
-    mHpBar = new ProgressBar(1.0f,
-                            mHpLabel->getX() + mHpLabel->getWidth() + 5,
-                            mHpLabel->getY(), 80, 15, 0, 171, 34);
-    mHpValueLabel->setPosition(mHpBar->getX() + mHpBar->getWidth() + 5,
-                              mHpBar->getY());
-    mMpLabel->setPosition(5, mHpLabel->getY() + mHpLabel->getHeight() + 5);
-    mMpBar = new ProgressBar(1.0f,
-                            mHpBar->getX(),
-                            mMpLabel->getY(), 80, 15, 26, 102, 230);
-    mMpValueLabel->setPosition(mHpValueLabel->getX(), mMpBar->getY());
+    int y = 3;
+    int x = 5;
 
-    mXpLabel->setPosition(175, mHpLabel->getY());
-    mXpBar = new ProgressBar(1.0f, 205, mXpLabel->getY(), 80, 15,
-                            143, 192, 211);
-    mXpValueLabel->setPosition(290, mXpBar->getY());
-    mJobXpLabel->setPosition(175, mMpLabel->getY());
-    mJobXpBar = new ProgressBar(1.0f,
-                               mXpBar->getX() + mXpBar->getWidth() - 60,
-                               mJobXpLabel->getY(),
-                               60, 15,
-                               220, 135, 203);
-    mJobValueLabel->setPosition(290, mJobXpBar->getY());
+    mLvlLabel->setPosition(x, y);
+    x += mLvlLabel->getWidth() + 40;
+    mGpLabel->setPosition(x, y);
+
+    y += mLvlLabel->getHeight() + 5; // Next Row
+    x = 5;
+
+    mHpLabel->setPosition(x, y);
+    x += mHpLabel->getWidth() + 5;
+    mHpBar->setPosition(x, y);
+    x += mHpBar->getWidth() + 5;
+    mHpValueLabel->setPosition(x, y);
+
+    mXpLabel->setPosition(175, y);
+    mXpBar->setPosition(205, y);
+    mXpValueLabel->setPosition(290, y);
+
+    y += mHpLabel->getHeight() + 5; // Next Row
+    x = 5;
+
+    mMpLabel->setPosition(x, y);
+    x += mMpLabel->getWidth() + 5;
+    mMpBar->setPosition(x, y);
+    x += mMpBar->getWidth() + 5;
+    mMpValueLabel->setPosition(x, y);
+
+    mJobXpLabel->setPosition(175, y);
+    mJobXpBar->setPosition(225, y);
+    mJobValueLabel->setPosition(290, y);
 
     add(mLvlLabel);
     add(mGpLabel);

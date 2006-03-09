@@ -33,7 +33,7 @@
 ImageRect ProgressBar::mBorder;
 int ProgressBar::mInstances = 0;
 
-ProgressBar::ProgressBar(float progress, int x, int y,
+ProgressBar::ProgressBar(float progress,
                          unsigned int width, unsigned int height,
                          Uint8 red, Uint8 green, Uint8 blue):
     gcn::Widget(),
@@ -41,8 +41,6 @@ ProgressBar::ProgressBar(float progress, int x, int y,
     mRedToGo(red), mGreenToGo(green), mBlueToGo(blue)
 {
     setProgress(progress);
-    setX(x);
-    setY(y);
     setWidth(width);
     setHeight(height);
 
@@ -98,16 +96,16 @@ void
 ProgressBar::draw(gcn::Graphics *graphics)
 {
     dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0,
-                                                     getWidth(), getHeight(),
-                                                     mBorder);
+            getWidth(), getHeight(),
+            mBorder);
 
     // The bar
     if (mProgress > 0)
     {
         graphics->setColor(gcn::Color(mRed, mGreen, mBlue, 200));
         graphics->fillRectangle(gcn::Rectangle(4, 4,
-                                (int)(mProgress * (getWidth() - 8)),
-                                getHeight() - 8));
+                    (int)(mProgress * (getWidth() - 8)),
+                    getHeight() - 8));
     }
 }
 

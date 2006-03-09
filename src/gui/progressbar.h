@@ -41,7 +41,7 @@ class ProgressBar : public gcn::Widget {
         /**
          * Constructor, initializes the progress with the given value.
          */
-        ProgressBar(float progress = 0.0f, int x = 0, int y = 0,
+        ProgressBar(float progress = 0.0f,
                     unsigned int width = 40, unsigned int height = 7,
                     Uint8 red = 150, Uint8 green = 150, Uint8 blue = 150);
 

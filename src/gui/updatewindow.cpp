@@ -51,26 +51,28 @@ UpdaterWindow::UpdaterWindow():
 {
     mCurlError[0] = 0;
 
-    int h = 240;
-    int w = 320;
+    const int h = 240;
+    const int w = 320;
     setContentSize(w, h);
 
     mBrowserBox = new BrowserBox();
-    mBrowserBox->setOpaque(false);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
-    mPlayButton = new Button("Play", "play", this);
-    mPlayButton->setPosition(mCancelButton->getX() +
-                             mCancelButton->getWidth() + 5,
-                             h - 5 - mPlayButton->getHeight());
-    mPlayButton->setEnabled(false);
-    mProgressBar = new ProgressBar(0.0, 5, mCancelButton->getY() - 20 - 5,
-                                   w - 10, 20, 37, 70, 200);
-    mLabel = new gcn::Label("Connecting...");
-    mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
     mScrollArea = new ScrollArea(mBrowserBox);
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310,
-                                             mLabel->getY() - 12));
+    mLabel = new gcn::Label("Connecting...");
+    mProgressBar = new ProgressBar(0.0, w - 10, 20, 37, 70, 200);
+    mCancelButton = new Button("Cancel", "cancel", this);
+    mPlayButton = new Button("Play", "play", this);
+
+    mBrowserBox->setOpaque(false);
+    mPlayButton->setEnabled(false);
+
+    mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
+    mPlayButton->setPosition(
+            mCancelButton->getX() + mCancelButton->getWidth() + 5,
+            h - 5 - mPlayButton->getHeight());
+    mProgressBar->setPosition(5, mCancelButton->getY() - 20 - 5);
+    mLabel->setPosition(5, mProgressBar->getY() - mLabel->getHeight() - 5);
+
+    mScrollArea->setDimension(gcn::Rectangle(5, 5, 310, mLabel->getY() - 12));
 
     add(mScrollArea);
     add(mLabel);

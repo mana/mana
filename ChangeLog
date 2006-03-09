@@ -1,5 +1,10 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/connection.cpp, src/gui/newskill.cpp,
+	src/gui/chargedialog.cpp, src/gui/updatewindow.cpp,
+	src/gui/progressbar.h, src/gui/ministatus.cpp,
+	src/gui/progressbar.cpp, src/gui/status.cpp: Removed coordinate
+	arguments from ProgressBar ctor.
 	* src/openglgraphics.cpp, src/localplayer.cpp, src/game.cpp,
 	src/map.cpp, src/log.cpp, src/being.cpp, src/monster.cpp, src/sound.h,
 	src/graphics.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,

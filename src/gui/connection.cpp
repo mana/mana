@@ -51,12 +51,11 @@ ConnectionDialog::ConnectionDialog():
 
     Button *cancelButton = new Button("Cancel", "cancelButton",
             &connectionActionListener);
-    cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
+    mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
+    gcn::Label *label = new gcn::Label("Connecting...");
 
-    mProgressBar = new ProgressBar(0.0, 5, cancelButton->getY() - 25,
-                                   200 - 10, 20, 128, 128, 128);
-    gcn::Label *label;
-    label = new gcn::Label("Connecting...");
+    cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
+    mProgressBar->setPosition(5, cancelButton->getY() - 25);
     label->setPosition(5, mProgressBar->getY() - 25);
 
     add(label);
