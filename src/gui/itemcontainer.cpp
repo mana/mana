@@ -74,8 +74,8 @@ void ItemContainer::logic()
 
 void ItemContainer::draw(gcn::Graphics* graphics)
 {
-    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
-    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int gridWidth = itemset->get(0)->getWidth() + 4;
+    int gridHeight = itemset->get(0)->getHeight() + 10;
     int w = getWidth();
     int columns = w / gridWidth;
 
@@ -119,7 +119,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         if ((idx = item->getInfo()->getImage()) > 0)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    itemset->spriteset[idx - 1], itemX, itemY);
+                    itemset->get(idx - 1), itemX, itemY);
         }
 
         // Draw item caption
@@ -143,8 +143,8 @@ void ItemContainer::setWidth(int width)
 {
     gcn::Widget::setWidth(width);
 
-    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
-    int gridHeight = itemset->spriteset[0]->getHeight() + 14;
+    int gridWidth = itemset->get(0)->getWidth() + 4;
+    int gridHeight = itemset->get(0)->getHeight() + 14;
     int columns = getWidth() / gridWidth;
 
     if (columns < 1)
@@ -168,8 +168,8 @@ void ItemContainer::selectNone()
 
 void ItemContainer::mousePress(int mx, int my, int button)
 {
-    int gridWidth = itemset->spriteset[0]->getWidth() + 4;
-    int gridHeight = itemset->spriteset[0]->getHeight() + 10;
+    int gridWidth = itemset->get(0)->getWidth() + 4;
+    int gridHeight = itemset->get(0)->getHeight() + 10;
     int w = getWidth();
     int columns = w / gridWidth;
 

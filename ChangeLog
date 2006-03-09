@@ -1,5 +1,11 @@
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/floor_item.cpp, src/map.cpp, src/being.cpp,
+	src/gui/equipmentwindow.cpp, src/gui/playerbox.cpp,
+	src/gui/itemcontainer.cpp, src/graphic/spriteset.cpp,
+	src/graphic/spriteset.h, src/player.cpp: Added Spriteset::get() and
+	Spriteset::size() to hide the member vector and remove the weird
+	mySpriteset->spriteset stuff.
 	* src/gui/buddywindow.cpp, src/gui/connection.cpp, src/gui/sell.cpp,
 	src/gui/trade.cpp, src/gui/char_server.cpp, src/gui/login.cpp,
 	src/gui/button.h, src/gui/newskill.cpp, src/gui/setup.cpp,

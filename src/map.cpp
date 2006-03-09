@@ -179,7 +179,7 @@ class ContainsGidFunctor
         bool operator() (Tileset* set)
         {
             return (set->getFirstGid() <= gid &&
-                    gid - set->getFirstGid() < (int)set->spriteset.size());
+                    gid - set->getFirstGid() < (int)set->size());
         }
         int gid;
 } containsGid;
@@ -200,7 +200,7 @@ Map::getTileWithGid(int gid)
     Tileset *set = getTilesetWithGid(gid);
 
     if (set) {
-        return set->spriteset[gid - set->getFirstGid()];
+        return set->get(gid - set->getFirstGid());
     }
 
     return NULL;

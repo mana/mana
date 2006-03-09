@@ -33,12 +33,12 @@ Spriteset::Spriteset(Image *img, int width, int height)
     {
         for (int x = 0; x + width <= img->getWidth(); x += width)
         {
-            spriteset.push_back(img->getSubImage(x, y, width, height));
+            mSpriteset.push_back(img->getSubImage(x, y, width, height));
         }
     }
 }
 
 Spriteset::~Spriteset()
 {
-    for_each(spriteset.begin(), spriteset.end(), make_dtor(spriteset));
+    for_each(mSpriteset.begin(), mSpriteset.end(), make_dtor(mSpriteset));
 }

@@ -126,7 +126,7 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     unsigned char dir = 0;
     while (!(direction & (1 << dir))) dir++;
 
-    graphics->drawImage(playerset->spriteset[frame + 18 * dir],
+    graphics->drawImage(playerset->get(frame + 18 * dir),
             px - 16, py - 32);
 
     if (getWeapon() != 0 && action == ATTACK)
@@ -136,8 +136,7 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
         {
             frames = 5;
         }
-        Image *image = weaponset[getWeapon() - 1]->spriteset[
-                    mFrame + frames * dir];
+        Image *image = weaponset[getWeapon() - 1]->get(mFrame + frames * dir);
         graphics->drawImage(image, px - 16, py - 32);
     }
 
@@ -145,7 +144,7 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     {
         int hf = 9 * (getHairColor() - 1) + hairframe[dir][frame];
 
-        graphics->drawImage(hairset[getHairStyle() - 1]->spriteset[hf],
+        graphics->drawImage(hairset[getHairStyle() - 1]->get(hf),
                 px + 1 + hairtable[frame][dir][0],
                 py - 33 + hairtable[frame][dir][1]);
     }

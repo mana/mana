@@ -44,7 +44,7 @@ FloorItem::FloorItem(unsigned int id,
     mMap(map)
 {
     // Retrieve item image using a global itemset and itemDb (alternative?)
-    mImage = itemset->spriteset[itemDb->getItemInfo(itemId)->getImage() - 1];
+    mImage = itemset->get(itemDb->getItemInfo(itemId)->getImage() - 1);
 
     // Add ourselves to the map
     mSpriteIterator = mMap->addSprite(this);

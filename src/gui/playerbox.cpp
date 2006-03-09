@@ -90,16 +90,16 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
     // Draw character
     dynamic_cast<Graphics*>(graphics)->drawImage(
-            playerset->spriteset[0], 23, 12);
+            playerset->get(0), 23, 12);
 
     // Draw his hair
     if (hairColor >= 0 && hairStyle >= 0 &&
             hairColor < NR_HAIR_COLORS && hairStyle < NR_HAIR_STYLES)
     {
         int hf = 9 * hairColor;
-        if (hf >= 0 && hf < (int)hairset[hairStyle]->spriteset.size()) {
+        if (hf >= 0 && hf < (int)hairset[hairStyle]->size()) {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    hairset[hairStyle]->spriteset[hf], 35, 7);
+                    hairset[hairStyle]->get(hf), 35, 7);
         }
     }
 }

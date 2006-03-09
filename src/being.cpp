@@ -218,7 +218,7 @@ void Being::draw(Graphics *graphics, int offsetX, int offsetY)
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    graphics->drawImage(mSpriteset->spriteset[mSpriteFrame], px, py);
+    graphics->drawImage(mSpriteset->get(mSpriteFrame), px, py);
 }
 
 void
@@ -229,7 +229,7 @@ Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 
     if (emotion)
     {
-        graphics->drawImage(emotionset->spriteset[emotion - 1],
+        graphics->drawImage(emotionset->get(emotion - 1),
                 px + 3, py - 60);
     }
 }

@@ -34,9 +34,6 @@ class Image;
  */
 class Spriteset {
     public:
-        // Vector storing the whole spriteset.
-        std::vector<Image*> spriteset;
-
         /*
          * Cuts the passed image in a grid of sub images.
          */
@@ -46,6 +43,15 @@ class Spriteset {
          * Destructor.
          */
         ~Spriteset();
+
+        typedef std::vector<Image*>::size_type size_type;
+        Image* get(size_type i) { return mSpriteset[i]; }
+
+        size_type size() { return mSpriteset.size(); }
+
+    private:
+        // Vector storing the whole spriteset.
+        std::vector<Image*> mSpriteset;
 };
 
 #endif
