@@ -38,10 +38,8 @@ BuySellDialog::BuySellDialog():
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        Button *btn = new Button(*curBtn);
+        Button *btn = new Button(*curBtn, *curBtn, this);
         if (!buyButton) buyButton = btn; // For focus request
-        btn->setEventId(*curBtn);
-        btn->addActionListener(this);
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 10;

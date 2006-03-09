@@ -56,8 +56,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     maleButton->setEnabled(false);
     femaleButton = new RadioButton("Female", "sex", false);
     femaleButton->setEnabled(false);
-    registerButton = new Button("Register");
-    cancelButton = new Button("Cancel");
+    registerButton = new Button("Register", "register", this);
+    cancelButton = new Button("Cancel", "cancel", this);
     
     int width = 200;
     int height = 150;
@@ -94,16 +94,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     passwordField->setEventId("register");
     confirmField->setEventId("register");
     serverField->setEventId("register");*/
-    registerButton->setEventId("register");
-    cancelButton->setEventId("cancel");
-
 
     /*userField->addActionListener(this);
     passwordField->addActionListener(this);
     confirmField->addActionListener(this);
     serverField->addActionListener(this);*/
-    registerButton->addActionListener(this);
-    cancelButton->addActionListener(this);
 
     add(userLabel);
     add(passwordLabel);

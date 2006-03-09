@@ -54,8 +54,8 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
     serverListModel = new ServerListModel();
     serverList = new ListBox(serverListModel);
     scrollArea = new ScrollArea(serverList);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
+    okButton = new Button("OK", "ok", this);
+    cancelButton = new Button("Cancel", "cancel", this);
 
     setContentSize(200, 100);
 
@@ -72,12 +72,8 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
                 scrollArea->getBorderSize()));
 
     serverList->setEventId("ok");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
 
     //serverList->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
 
     add(scrollArea);
     add(okButton);

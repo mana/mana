@@ -57,17 +57,13 @@ UpdaterWindow::UpdaterWindow():
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setOpaque(false);
-    mCancelButton = new Button("Cancel");
+    mCancelButton = new Button("Cancel", "cancel", this);
     mCancelButton->setPosition(5, h - 5 - mCancelButton->getHeight());
-    mCancelButton->setEventId("cancel");
-    mCancelButton->addActionListener(this);
-    mPlayButton = new Button("Play");
+    mPlayButton = new Button("Play", "play", this);
     mPlayButton->setPosition(mCancelButton->getX() +
                              mCancelButton->getWidth() + 5,
                              h - 5 - mPlayButton->getHeight());
-    mPlayButton->setEventId("play");
     mPlayButton->setEnabled(false);
-    mPlayButton->addActionListener(this);
     mProgressBar = new ProgressBar(0.0, 5, mCancelButton->getY() - 20 - 5,
                                    w - 10, 20, 37, 70, 200);
     mLabel = new gcn::Label("Connecting...");

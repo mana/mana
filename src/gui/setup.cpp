@@ -119,20 +119,16 @@ Setup::Setup():
     sfxLabel = new gcn::Label("Sfx volume");
     musicLabel = new gcn::Label("Music volume");
     calibrateLabel = new gcn::Label("Press the button to start calibration");
-    calibrateButton = new Button("Calibrate");
-    applyButton = new Button("Apply");
-    cancelButton = new Button("Cancel");
-    resetWinsToDefault = new Button("Reset Windows");
+    calibrateButton = new Button("Calibrate", "calibrate", this);
+    applyButton = new Button("Apply", "apply", this);
+    cancelButton = new Button("Cancel", "cancel", this);
+    resetWinsToDefault = new Button("Reset Windows", "winsToDefault", this);
 
     // Set events
-    applyButton->setEventId("apply");
-    cancelButton->setEventId("cancel");
-    resetWinsToDefault->setEventId("winsToDefault");
     alphaSlider->setEventId("guialpha");
     sfxSlider->setEventId("sfx");
     musicSlider->setEventId("music");
     customCursorCheckBox->setEventId("customcursor");
-    calibrateButton->setEventId("calibrate");
 
     // Set dimensions/positions
     int width = 230;
@@ -167,14 +163,10 @@ Setup::Setup():
             applyButton->getY());
                
     // Listen for actions
-    applyButton->addActionListener(this);
-    cancelButton->addActionListener(this);
-    resetWinsToDefault->addActionListener(this);
     alphaSlider->addActionListener(this);
     sfxSlider->addActionListener(this);
     musicSlider->addActionListener(this);
     customCursorCheckBox->addActionListener(this);
-    calibrateButton->addActionListener(this);
 
     // Assemble dialog
     gcn::Container *video = new gcn::Container();

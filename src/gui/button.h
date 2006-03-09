@@ -40,7 +40,8 @@ class Button : public gcn::Button {
         /**
          * Constructor, sets the caption of the button to the given string.
          */
-        Button(const std::string& caption);
+        Button(const std::string& caption, const std::string &eventId,
+                gcn::ActionListener *listener);
 
         /**
          * Destructor.

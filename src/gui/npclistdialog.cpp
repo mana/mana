@@ -36,8 +36,8 @@ NpcListDialog::NpcListDialog():
 {
     mItemList = new ListBox(this);
     ScrollArea *scrollArea = new ScrollArea(mItemList);
-    Button *okButton = new Button("OK");
-    Button *cancelButton = new Button("Cancel");
+    Button *okButton = new Button("OK", "ok", this);
+    Button *cancelButton = new Button("Cancel", "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -51,12 +51,8 @@ NpcListDialog::NpcListDialog():
             cancelButton->getY());
 
     mItemList->setEventId("item");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
 
     mItemList->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
 
     add(scrollArea);
     add(okButton);

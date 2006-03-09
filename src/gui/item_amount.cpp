@@ -39,21 +39,17 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     mItemAmountTextBox = new IntTextBox(1);
 
     // New buttons
-    Button *minusButton = new Button("-");
-    Button *plusButton = new Button("+");
+    Button *minusButton = new Button("-", "Minus", this);
+    Button *plusButton = new Button("+", "Plus", this);
+    Button *okButton = new Button("Okay", "Drop", this);
+    Button *cancelButton = new Button("Cancel", "Cancel", this);
     mItemAmountSlide = new Slider(1.0);
-    Button *okButton = new Button("Okay");
-    Button *cancelButton = new Button("Cancel");
 
     mItemAmountTextBox->setRange(1, mItem->getQuantity());
     mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
-    minusButton->setEventId("Minus");
-    plusButton->setEventId("Plus");
     mItemAmountSlide->setEventId("Slide");
-    okButton->setEventId("Drop");
-    cancelButton->setEventId("Cancel");
 
     // Set position
     mItemAmountTextBox->setPosition(35, 10);
@@ -72,11 +68,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     add(okButton);
     add(cancelButton);
 
-    plusButton->addActionListener(this);
-    minusButton->addActionListener(this);
     mItemAmountSlide->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
 
     resetAmount();
 

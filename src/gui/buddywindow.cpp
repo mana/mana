@@ -48,17 +48,12 @@ BuddyWindow::BuddyWindow():
                 7, 5, 110, 170));
     add(scrollArea);
 
-    Button *talk = new Button("Talk");
+    Button *talk = new Button("Talk", "Talk", this);
+    Button *remove = new Button("Remove", "Remove", this);
+    Button *cancel = new Button("Cancel", "Cancel", this);
+
     talk->setPosition(2,180);
-    talk->addActionListener(this);
-    talk->setEventId("Talk");
-    Button *remove = new Button("Remove");
-    remove->addActionListener(this);
-    remove->setEventId("Remove");
     remove->setPosition(talk->getWidth()+2,180);
-    Button *cancel = new Button("Cancel");
-    cancel->addActionListener(this);
-    cancel->setEventId("Cancel");
     cancel->setPosition(talk->getWidth()+remove->getWidth()+2,180);
 
     add(talk);

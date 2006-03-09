@@ -50,18 +50,13 @@ InventoryWindow::InventoryWindow():
     setMinHeight(172);
     setDefaultSize(115, 25, 322, 172);
 
-    useButton = new Button("Use");
-    dropButton = new Button("Drop");
+    useButton = new Button("Use", "use", this);
+    dropButton = new Button("Drop", "drop", this);
 
     items = new ItemContainer(player_node->mInventory.get());
     invenScroll = new ScrollArea(items);
     invenScroll->setPosition(8, 8);
     invenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-
-    useButton->setEventId("use");
-    dropButton->setEventId("drop");
-    useButton->addActionListener(this);
-    dropButton->addActionListener(this);
 
     itemNameLabel = new gcn::Label("Name:");
     itemDescriptionLabel = new gcn::Label("Description:");

@@ -64,9 +64,9 @@ LoginDialog::LoginDialog(LoginData *loginData):
     passField = new PasswordField(mLoginData->password);
     serverField = new TextField(mLoginData->hostname);
     keepCheck = new CheckBox("Keep", false);
-    okButton = new Button("OK");
-    cancelButton = new Button("Cancel");
-    registerButton = new Button("Register");
+    okButton = new Button("OK", "ok", this);
+    cancelButton = new Button("Cancel", "cancel", this);
+    registerButton = new Button("Register", "register", this);
 
     setContentSize(200, 100);
 
@@ -95,17 +95,11 @@ LoginDialog::LoginDialog(LoginData *loginData):
     userField->setEventId("ok");
     passField->setEventId("ok");
     serverField->setEventId("ok");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
-    registerButton->setEventId("register");
 
     userField->addActionListener(this);
     passField->addActionListener(this);
     serverField->addActionListener(this);
     keepCheck->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
-    registerButton->addActionListener(this);
 
     add(userLabel);
     add(passLabel);

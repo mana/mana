@@ -41,16 +41,13 @@ HelpWindow::HelpWindow():
     browserBox = new BrowserBox();
     browserBox->setOpaque(false);
     scrollArea = new ScrollArea(browserBox);
-    Button *okButton = new Button("Close");
+    Button *okButton = new Button("Close", "close", this);
 
     scrollArea->setDimension(gcn::Rectangle(
                 5, 5, 445, 335 - okButton->getHeight()));
     okButton->setPosition(
             450 - okButton->getWidth(),
             345 - okButton->getHeight());
-
-    okButton->setEventId("close");
-    okButton->addActionListener(this);
 
     browserBox->setLinkHandler(this);
 

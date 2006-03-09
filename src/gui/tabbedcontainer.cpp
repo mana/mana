@@ -49,15 +49,13 @@ TabbedContainer::~TabbedContainer()
 void TabbedContainer::addTab(gcn::Widget *widget, const std::string &caption)
 {
     std::stringstream ss;
-
-    Button *tab = new Button(caption);
-
     int tabNumber = mTabs.size();
 
     ss << tabNumber;
-    tab->setEventId(ss.str());
+
+    Button *tab = new Button(caption, ss.str(), this);
+
     tab->setSize(TABWIDTH, TABHEIGHT);
-    tab->addActionListener(this);
     add(tab, TABWIDTH * tabNumber, 0);
 
     mTabs.push_back(tab);

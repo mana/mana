@@ -49,11 +49,9 @@ ConnectionDialog::ConnectionDialog():
 {
     setContentSize(200, 100);
 
-    Button *cancelButton;
-    cancelButton = new Button("Cancel");
+    Button *cancelButton = new Button("Cancel", "cancelButton",
+            &connectionActionListener);
     cancelButton->setPosition(5, 100 - 5 - cancelButton->getHeight());
-    cancelButton->setEventId("cancel");
-    cancelButton->addActionListener(&connectionActionListener);
 
     mProgressBar = new ProgressBar(0.0, 5, cancelButton->getY() - 25,
                                    200 - 10, 20, 128, 128, 128);

@@ -92,30 +92,18 @@ NewSkillDialog::NewSkillDialog():
     resetNSD();
 
     // create controls
-    catButton[0] = new Button("Weapons");
-    catButton[1] = new Button("Magic");
-    catButton[2] = new Button("Craft");
-    catButton[3] = new Button("General");
-    catButton[4] = new Button("Combat");
-    catButton[5] = new Button("E. Resist");
-    catButton[6] = new Button("S. Resist");
-    catButton[7] = new Button("Hunting");
-    catButton[8] = new Button("Stat");
-    closeButton = new Button("Close");
+    catButton[0] = new Button("Weapons", "g1", this);
+    catButton[1] = new Button("Magic", "g2", this);
+    catButton[2] = new Button("Craft", "g3", this);
+    catButton[3] = new Button("General", "g4", this);
+    catButton[4] = new Button("Combat", "g5", this);
+    catButton[5] = new Button("E. Resist", "g6", this);
+    catButton[6] = new Button("S. Resist", "g7", this);
+    catButton[7] = new Button("Hunting", "g8", this);
+    catButton[8] = new Button("Stat", "g9", this);
+    closeButton = new Button("Close", "close", this);
 
     // captions
-
-    // events
-    catButton[0]->setEventId("g1");
-    catButton[1]->setEventId("g2");
-    catButton[2]->setEventId("g3");
-    catButton[3]->setEventId("g4");
-    catButton[4]->setEventId("g5");
-    catButton[5]->setEventId("g6");
-    catButton[6]->setEventId("g7");
-    catButton[7]->setEventId("g8");
-    catButton[8]->setEventId("g9");
-    closeButton->setEventId("close");
 
     // positioning
     setContentSize(350, 250);
@@ -151,18 +139,6 @@ NewSkillDialog::NewSkillDialog():
     add(catButton[7]);
     add(catButton[8]);
     add(closeButton);
-
-    // add event detection
-    catButton[0]->addActionListener(this);
-    catButton[1]->addActionListener(this);
-    catButton[2]->addActionListener(this);
-    catButton[3]->addActionListener(this);
-    catButton[4]->addActionListener(this);
-    catButton[5]->addActionListener(this);
-    catButton[6]->addActionListener(this);
-    catButton[7]->addActionListener(this);
-    catButton[8]->addActionListener(this);
-    closeButton->addActionListener(this);
 
     // finsihing touches
     setLocationRelativeTo(getParent());

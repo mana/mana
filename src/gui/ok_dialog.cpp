@@ -33,7 +33,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     Window(title, true, parent)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
-    gcn::Button *okButton = new Button("Ok");
+    gcn::Button *okButton = new Button("Ok", "ok", this);
 
     int w = textLabel->getWidth() + 20;
     int h = textLabel->getHeight() + 25 + okButton->getHeight();
@@ -46,9 +46,6 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     textLabel->setPosition(10, 10);
     okButton->setPosition((w - okButton->getWidth()) / 2,
                           h - 5 - okButton->getHeight());
-
-    okButton->setEventId("ok");
-    okButton->addActionListener(this);
 
     add(textLabel);
     add(okButton);

@@ -58,10 +58,10 @@ SellDialog::SellDialog(Network *network):
     moneyLabel = new gcn::Label("Price: 0");
     itemDescLabel = new gcn::Label("Description:");
     itemEffectLabel = new gcn::Label("Effect:");
-    increaseButton = new Button("+");
-    decreaseButton = new Button("-");
-    sellButton = new Button("Sell");
-    quitButton = new Button("Quit");
+    increaseButton = new Button("+", "+", this);
+    decreaseButton = new Button("-", "-", this);
+    sellButton = new Button("Sell", "sell", this);
+    quitButton = new Button("Quit", "quit", this);
     sellButton->setEnabled(false);
 
     setContentSize(260, 210);
@@ -93,17 +93,9 @@ SellDialog::SellDialog(Network *network):
 
     itemList->setEventId("item");
     slider->setEventId("slider");
-    increaseButton->setEventId("+");
-    decreaseButton->setEventId("-");
-    sellButton->setEventId("sell");
-    quitButton->setEventId("quit");
 
     itemList->addActionListener(this);
     slider->addActionListener(this);
-    increaseButton->addActionListener(this);
-    decreaseButton->addActionListener(this);
-    sellButton->addActionListener(this);
-    quitButton->addActionListener(this);
 
     add(scrollArea);
     add(slider);

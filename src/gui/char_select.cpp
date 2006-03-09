@@ -71,24 +71,18 @@ void CharDeleteConfirm::action(const std::string &eventId)
 CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
     Window("Select Character"), mNetwork(network), mCharInfo(charInfo), mCharSelected(false)
 {
-    selectButton = new Button("Ok");
-    cancelButton = new Button("Cancel");
-    newCharButton = new Button("New");
-    delCharButton = new Button("Delete");
-    previousButton = new Button("Previous");
-    nextButton = new Button("Next");
+    selectButton = new Button("Ok", "ok", this);
+    cancelButton = new Button("Cancel", "cancel", this);
+    newCharButton = new Button("New", "new", this);
+    delCharButton = new Button("Delete", "delete", this);
+    previousButton = new Button("Previous", "previous", this);
+    nextButton = new Button("Next", "next", this);
+
     nameLabel = new gcn::Label("Name");
     levelLabel = new gcn::Label("Level");
     jobLevelLabel = new gcn::Label("Job Level");
     moneyLabel = new gcn::Label("Money");
     playerBox = new PlayerBox();
-
-    selectButton->setEventId("ok");
-    newCharButton->setEventId("new");
-    cancelButton->setEventId("cancel");
-    delCharButton->setEventId("delete");
-    previousButton->setEventId("previous");
-    nextButton->setEventId("next");
 
     int w = 195;
     int h = 220;
@@ -122,14 +116,6 @@ CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *
     add(levelLabel);
     add(jobLevelLabel);
     add(moneyLabel);
-
-    // Set up event listener
-    selectButton->addActionListener(this);
-    cancelButton->addActionListener(this);
-    newCharButton->addActionListener(this);
-    delCharButton->addActionListener(this);
-    previousButton->addActionListener(this);
-    nextButton->addActionListener(this);
 
     selectButton->requestFocus();
     setLocationRelativeTo(getParent());
@@ -250,24 +236,18 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
 {
     nameField = new TextField("");
     nameLabel = new gcn::Label("Name:");
-    nextHairColorButton = new Button(">");
-    prevHairColorButton = new Button("<");
+    nextHairColorButton = new Button(">", "nextcolor", this);
+    prevHairColorButton = new Button("<", "prevcolor", this);
     hairColorLabel = new gcn::Label("Hair Color:");
-    nextHairStyleButton = new Button(">");
-    prevHairStyleButton = new Button("<");
+    nextHairStyleButton = new Button(">", "nextstyle", this);
+    prevHairStyleButton = new Button("<", "prevstyle", this);
     hairStyleLabel = new gcn::Label("Hair Style:");
-    createButton = new Button("Create");
-    cancelButton = new Button("Cancel");
+    createButton = new Button("Create", "create", this);
+    cancelButton = new Button("Cancel", "cancel", this);
     playerBox = new PlayerBox();
     playerBox->showPlayer = true;
 
     nameField->setEventId("create");
-    nextHairColorButton->setEventId("nextcolor");
-    prevHairColorButton->setEventId("prevcolor");
-    nextHairStyleButton->setEventId("nextstyle");
-    prevHairStyleButton->setEventId("prevstyle");
-    createButton->setEventId("create");
-    cancelButton->setEventId("cancel");
 
     int w = 200;
     int h = 150;
@@ -290,12 +270,6 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
             h - 5 - cancelButton->getHeight());
 
     nameField->addActionListener(this);
-    nextHairColorButton->addActionListener(this);
-    prevHairColorButton->addActionListener(this);
-    nextHairStyleButton->addActionListener(this);
-    prevHairStyleButton->addActionListener(this);
-    createButton->addActionListener(this);
-    cancelButton->addActionListener(this);
 
     add(playerBox);
     add(nameField);

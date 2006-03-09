@@ -135,18 +135,13 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     }
     remainingStatsPointsLabel = new gcn::Label();
 
-    // New buttons
-    for (int i = 0; i < 6; i++) {
-        statsButton[i] = new Button("+");
-    }
-
     // Set button events Id
-    statsButton[0]->setEventId("STR");
-    statsButton[1]->setEventId("AGI");
-    statsButton[2]->setEventId("VIT");
-    statsButton[3]->setEventId("INT");
-    statsButton[4]->setEventId("DEX");
-    statsButton[5]->setEventId("LUK");
+    statsButton[0] = new Button("+", "STR", this);
+    statsButton[1] = new Button("+", "AGI", this);
+    statsButton[2] = new Button("+", "VIT", this);
+    statsButton[3] = new Button("+", "INT", this);
+    statsButton[4] = new Button("+", "DEX", this);
+    statsButton[5] = new Button("+", "LUK", this);
 
 
     // Set position
@@ -192,7 +187,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
         add(statsDisplayLabel[i]);
         add(statsButton[i]);
         add(pointsLabel[i]);
-        statsButton[i]->addActionListener(this);
     }
     add(statsAttackLabel);
     add(statsDefenseLabel);

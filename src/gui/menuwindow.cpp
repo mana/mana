@@ -59,9 +59,7 @@ MenuWindow::MenuWindow():
     int x = 0, y = 3, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++) {
-        gcn::Button *btn = new Button(*curBtn);
-        btn->setEventId(*curBtn);
-        btn->addActionListener(&menuWindowListener);
+        gcn::Button *btn = new Button(*curBtn, *curBtn, &menuWindowListener);
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 3;

@@ -54,10 +54,8 @@ DebugWindow::DebugWindow():
     tileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
     tileMouseLabel->setPosition(100, 0);
 
-    Button *closeButton = new Button("Close");
-    closeButton->setEventId("close");
+    Button *closeButton = new Button("Close", "close", this);
     closeButton->setPosition(5, 60);
-    closeButton->addActionListener(this);
 
     add(FPSLabel);
     add(musicFileLabel);

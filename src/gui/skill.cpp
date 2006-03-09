@@ -71,15 +71,12 @@ SkillDialog::SkillDialog():
     skillListBox = new ListBox(this);
     skillScrollArea = new ScrollArea(skillListBox);
     pointsLabel = new gcn::Label("Skill Points:");
-    incButton = new Button("Up");
-    useButton = new Button("Use");
+    incButton = new Button("Up", "inc", this);
+    useButton = new Button("Use", "use", this);
     useButton->setEnabled(false);
-    closeButton = new Button("Close");
+    closeButton = new Button("Close", "close", this);
 
     skillListBox->setEventId("skill");
-    incButton->setEventId("inc");
-    useButton->setEventId("use");
-    closeButton->setEventId("close");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
@@ -98,9 +95,6 @@ SkillDialog::SkillDialog():
     add(closeButton);
 
     skillListBox->addActionListener(this);
-    incButton->addActionListener(this);
-    useButton->addActionListener(this);
-    closeButton->addActionListener(this);
 
     setLocationRelativeTo(getParent());
     loadWindowState();

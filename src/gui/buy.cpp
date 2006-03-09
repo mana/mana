@@ -53,10 +53,10 @@ BuyDialog::BuyDialog(Network *network):
     slider = new Slider(1.0);
     quantityLabel = new gcn::Label("0");
     moneyLabel = new gcn::Label("Price: 0 GP");
-    increaseButton = new Button("+");
-    decreaseButton = new Button("-");
-    buyButton = new Button("Buy");
-    quitButton = new Button("Quit");
+    increaseButton = new Button("+", "+", this);
+    decreaseButton = new Button("-", "-", this);
+    buyButton = new Button("Buy", "buy", this);
+    quitButton = new Button("Quit", "quit", this);
     itemDescLabel = new gcn::Label("Description:");
     itemEffectLabel = new gcn::Label("Effect:");
 
@@ -89,18 +89,9 @@ BuyDialog::BuyDialog(Network *network):
 
     itemList->setEventId("item");
     slider->setEventId("slider");
-    increaseButton->setEventId("+");
-    decreaseButton->setEventId("-");
-    buyButton->setEventId("buy");
-    quitButton->setEventId("quit");
 
     itemList->addActionListener(this);
     slider->addActionListener(this);
-    increaseButton->addActionListener(this);
-    decreaseButton->addActionListener(this);
-    buyButton->addActionListener(this);
-    quitButton->addActionListener(this);
-
 
     add(scrollArea);
     add(slider);

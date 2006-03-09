@@ -39,7 +39,8 @@
 ImageRect Button::button[4];
 int Button::mInstances = 0;
 
-Button::Button(const std::string& caption):
+Button::Button(const std::string& caption, const std::string &eventId,
+        gcn::ActionListener *listener):
     gcn::Button(caption)
 {
     setBorderSize(0);
@@ -74,6 +75,10 @@ Button::Button(const std::string& caption):
     }
 
     mInstances++;
+    setEventId(eventId);
+    if (listener) {
+        addActionListener(listener);
+    }
 }
 
 Button::~Button()

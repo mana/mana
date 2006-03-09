@@ -51,10 +51,10 @@ TradeWindow::TradeWindow(Network *network):
 {
     setContentSize(322, 150);
 
-    addButton = new Button("Add");
-    okButton = new Button("Ok");
-    cancelButton = new Button("Cancel");
-    tradeButton = new Button("Trade");
+    addButton = new Button("Add", "add", this);
+    okButton = new Button("Ok", "ok", this);
+    cancelButton = new Button("Cancel", "cancel", this);
+    tradeButton = new Button("Trade", "trade", this);
 
     myItemContainer = new ItemContainer(myInventory.get());
     myItemContainer->setPosition(2, 2);
@@ -72,20 +72,10 @@ TradeWindow::TradeWindow(Network *network):
     moneyLabel2 = new gcn::Label("You give:");
     moneyField = new TextField();
 
-    addButton->setEventId("add");
-    okButton->setEventId("ok");
-    cancelButton->setEventId("cancel");
-    tradeButton->setEventId("trade");
-
     addButton->adjustSize();
     okButton->adjustSize();
     cancelButton->adjustSize();
     tradeButton->adjustSize();
-
-    addButton->addActionListener(this);
-    okButton->addActionListener(this);
-    cancelButton->addActionListener(this);
-    tradeButton->addActionListener(this);
 
     tradeButton->setEnabled(false);
 
