@@ -1,3 +1,14 @@
+2006-03-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/hairstyle1.png,
+	data/graphics/sprites/hairstyle2.png,
+	data/graphics/sprites/hairstyle3.png,
+	data/graphics/sprites/hairstyle4.png,
+	data/graphics/sprites/hairstyle6.png,
+	data/graphics/sprites/hairstyle7.png,
+	data/graphics/sprites/Makefile.am: Fixed some hair positions, added a
+	new style, updated makefile.
+
 2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/utils/dtor.h: Added guards.
