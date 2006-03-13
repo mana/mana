@@ -368,7 +368,7 @@ void printHelp()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "hU:P:D";
+    const char *optstring = "huU:P:D";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
