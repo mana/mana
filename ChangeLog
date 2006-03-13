@@ -1,3 +1,8 @@
+2006-03-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_7.1.tmx.gz: fixed some map bugs (update
+	of server sided walkmap required!)
+
 2006-03-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/hairstyle1.png,
