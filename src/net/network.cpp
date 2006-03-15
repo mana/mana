@@ -91,6 +91,7 @@ int networkThread(void *data)
 }
 
 Network::Network():
+    mSocket(0),
     mAddress(), mPort(0),
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE]),
@@ -154,9 +155,6 @@ bool Network::connect(const std::string &address, short port)
 
 void Network::disconnect()
 {
-    if (mState != CONNECTED && mState != CONNECTING)
-        return;
-
     mState = IDLE;
 
     if (mWorkerThread)
@@ -164,7 +162,12 @@ void Network::disconnect()
         SDL_WaitThread(mWorkerThread, NULL);
         mWorkerThread = NULL;
     }
-    SDLNet_TCP_Close(mSocket);
+
+    if (mSocket)
+    {
+        SDLNet_TCP_Close(mSocket);
+        mSocket = 0;
+    }
 }
 
 void Network::registerHandler(MessageHandler *handler)

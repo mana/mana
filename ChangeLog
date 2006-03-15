@@ -1,3 +1,8 @@
+2006-03-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/net/network.cpp: Fixed connection not being shut down completely
+	in case of an error.
+
 2006-03-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/main.cpp: Fixed skip update option.
