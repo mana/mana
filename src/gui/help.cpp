@@ -26,9 +26,6 @@
 #include "button.h"
 #include "browserbox.h"
 #include "scrollarea.h"
-#include "textbox.h"
-
-#include "../log.h"
 
 #include "../resources/resourcemanager.h"
 

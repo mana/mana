@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef __TMW_LISTBOX_H__
-#define __TMW_LISTBOX_H__
+#ifndef _TMW_LISTBOX_H
+#define _TMW_LISTBOX_H
 
 #include <guichan/widgets/listbox.hpp>
 
@@ -33,13 +33,9 @@
  *
  * \ingroup GUI
  */
-class ListBox : public gcn::ListBox {
+class ListBox : public gcn::ListBox
+{
     public:
-        /**
-         * Constructor.
-         */
-        ListBox();
-
         /**
          * Constructor.
          */

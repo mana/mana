@@ -56,7 +56,7 @@ class Engine
         /**
          * Sets the currently active map.
          */
-        void changeMap(std::string mapName);
+        void changeMap(const std::string &mapName);
 
         /**
          * Performs engine logic.

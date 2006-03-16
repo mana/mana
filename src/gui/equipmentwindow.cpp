@@ -60,8 +60,10 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     Item *item;
     Image *image;
 
+    // Rectangles around items are black
+    graphics->setColor(gcn::Color(0, 0, 0));
+
     for (int i = 0; i < 8; i++) {
-        graphics->setColor(gcn::Color(0, 0, 0));
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
@@ -74,7 +76,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
                 image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
 
-    graphics->setColor(gcn::Color(0, 0, 0));
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
     if (!(item = mEquipment->getArrows())) {
@@ -86,6 +87,5 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     std::stringstream n;
     n << item->getQuantity();
-    graphics->drawText(n.str(), 170, 62,
-            gcn::Graphics::CENTER);
+    graphics->drawText(n.str(), 170, 62, gcn::Graphics::CENTER);
 }

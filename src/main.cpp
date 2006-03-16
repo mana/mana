@@ -210,15 +210,11 @@ void init_engine()
     if (tmwFile == NULL) {
         // We reopen the file in write mode and we create it
         tmwFile = fopen(configPath.c_str(), "wt");
-        if (tmwFile == NULL) {
-            std::cout << "Can't create " << configPath << ". Using Defaults." << std::endl;
-        }
-        else {
-            fclose(tmwFile);
-            config.init(configPath);
-        }
     }
-    else {
+    if (tmwFile == NULL) {
+        std::cout << "Can't create " << configPath << ". "
+            "Using Defaults." << std::endl;
+    } else {
         fclose(tmwFile);
         config.init(configPath);
     }
@@ -267,7 +263,7 @@ void init_engine()
     playerset = resman->createSpriteset(
             "graphics/sprites/player_male_base.png", 64, 64);
     if (!playerset) logger->error("Couldn't load player spriteset!");
-    
+
     for (int i=0; i < NR_HAIR_STYLES; i++)
     {
         std::stringstream filename;

@@ -1,5 +1,11 @@
 2006-03-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/engine.h, src/main.cpp, src/gui/equipmentwindow.cpp,
+	src/gui/window.cpp, src/gui/login.cpp, src/gui/listbox.h,
+	src/gui/chat.h, src/gui/ministatus.cpp, src/gui/chat.cpp,
+	src/gui/help.cpp, src/gui/itemcontainer.cpp, src/gui/listbox.cpp,
+	src/gui/checkbox.cpp, src/engine.cpp, src/resources/image.cpp: A bunch
+	of cosmetic changes.
 	* src/net/network.cpp: Fixed connection not being shut down completely
 	in case of an error.
 

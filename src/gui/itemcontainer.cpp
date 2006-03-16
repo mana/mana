@@ -76,8 +76,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
 {
     int gridWidth = mItemset->get(0)->getWidth() + 4;
     int gridHeight = mItemset->get(0)->getHeight() + 10;
-    int w = getWidth();
-    int columns = w / gridWidth;
+    int columns = getWidth() / gridWidth;
 
     // Have at least 1 column
     if (columns < 1)
@@ -170,8 +169,7 @@ void ItemContainer::mousePress(int mx, int my, int button)
 {
     int gridWidth = mItemset->get(0)->getWidth() + 4;
     int gridHeight = mItemset->get(0)->getHeight() + 10;
-    int w = getWidth();
-    int columns = w / gridWidth;
+    int columns = getWidth() / gridWidth;
 
     if (button == gcn::MouseInput::LEFT || gcn::MouseInput::RIGHT)
     {

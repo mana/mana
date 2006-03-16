@@ -23,7 +23,6 @@
 
 #include "ministatus.h"
 
-#include <guichan/imagefont.hpp>
 #include <guichan/widgets/label.hpp>
 #include <sstream>
 
@@ -48,11 +47,17 @@ MiniStatusWindow::MiniStatusWindow():
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
 
+    mHpLabel->setDimension(mHpBar->getDimension());
+    mMpLabel->setDimension(mMpBar->getDimension());
+
     mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
     mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
 
     mHpLabel->setFont(speechFont);
     mMpLabel->setFont(speechFont);
+
+    mHpLabel->setAlignment(gcn::Graphics::CENTER);
+    mMpLabel->setAlignment(gcn::Graphics::CENTER);
 
     add(mHpBar);
     add(mMpBar);
@@ -70,16 +75,13 @@ void MiniStatusWindow::update()
     {
         mHpBar->setColor(223, 32, 32); // Red
     }
+    else if (player_node->mHp < int((player_node->mMaxHp / 3) * 2))
+    {
+        mHpBar->setColor(230, 171, 34); // Orange
+    }
     else
     {
-        if (player_node->mHp < int((player_node->mMaxHp / 3) * 2))
-        {
-            mHpBar->setColor(230, 171, 34); // Orange
-        }
-        else
-        {
-            mHpBar->setColor(0, 171, 34); // Green
-        }
+        mHpBar->setColor(0, 171, 34); // Green
     }
 
     mHpBar->setProgress((float)player_node->mHp / (float)player_node->mMaxHp);
@@ -89,21 +91,9 @@ void MiniStatusWindow::update()
     std::stringstream updatedText;
     updatedText << player_node->mHp;
     mHpLabel->setCaption(updatedText.str());
-    mHpLabel->adjustSize();
     updatedText.str("");
     updatedText << player_node->mMp;
     mMpLabel->setCaption(updatedText.str());
-    mMpLabel->adjustSize();
-    mHpLabel->setPosition(
-            mHpBar->getX() +
-                int((mHpBar->getWidth() / 2) - (mHpLabel->getWidth() / 2)),
-            mHpBar->getY() +
-                int((mHpBar->getHeight() / 2) - (mHpLabel->getHeight() / 2)));
-    mMpLabel->setPosition(
-            mMpBar->getX() +
-                int((mMpBar->getWidth() / 2) - (mMpLabel->getWidth() / 2)),
-            mMpBar->getY() +
-                int((mMpBar->getHeight() / 2) - (mMpLabel->getHeight() / 2)));
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)

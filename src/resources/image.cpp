@@ -282,14 +282,16 @@ Image *Image::getSubImage(int x, int y, int width, int height)
 
 void Image::setAlpha(float a)
 {
-    mAlpha = a;
-
-    if (!mImage) {
+    if (mAlpha == a) {
         return;
     }
 
-    // Set the alpha value this image is drawn at
-    SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * mAlpha));
+    mAlpha = a;
+
+    if (mImage) {
+        // Set the alpha value this image is drawn at
+        SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * mAlpha));
+    }
 }
 
 float Image::getAlpha()

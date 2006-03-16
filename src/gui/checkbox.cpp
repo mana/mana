@@ -37,10 +37,9 @@ Image *CheckBox::checkBoxDisabledChecked;
 CheckBox::CheckBox(const std::string& caption, bool marked):
     gcn::CheckBox(caption, marked)
 {
-    ResourceManager *resman = ResourceManager::getInstance();
-
     if (instances == 0)
     {
+        ResourceManager *resman = ResourceManager::getInstance();
         Image *checkBox = resman->getImage("graphics/gui/checkbox.png");
         checkBoxNormal = checkBox->getSubImage(0, 0, 9, 10);
         checkBoxChecked = checkBox->getSubImage(9, 0, 9, 10);

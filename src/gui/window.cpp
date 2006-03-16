@@ -46,25 +46,12 @@ Image *Window::resizeGrip;
 
 class WindowConfigListener : public ConfigListener
 {
-    public:
-        /**
-         * Called when an config option changes.
-         */
-        void optionChanged(const std::string &name)
-        {
-            if (name == "guialpha")
-            {
-                float guiAlpha = config.getValue("guialpha", 0.8);
-
-                for (int i = 0; i < 9; i++)
-                {
-                    if (Window::border.grid[i]->getAlpha() != guiAlpha)
-                    {
-                        Window::border.grid[i]->setAlpha(guiAlpha);
-                    }
-                }
-            }
-        }
+    void optionChanged(const std::string &)
+    {
+        for_each(Window::border.grid, Window::border.grid + 9,
+                std::bind2nd(std::mem_fun(&Image::setAlpha),
+                    config.getValue("guialpha", 0.8)));
+    }
 };
 
 Window::Window(const std::string& caption, bool modal, Window *parent):

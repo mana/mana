@@ -27,11 +27,6 @@
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
 
-ListBox::ListBox():
-    gcn::ListBox()
-{
-}
-
 ListBox::ListBox(gcn::ListModel *listModel):
     gcn::ListBox(listModel)
 {

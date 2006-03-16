@@ -82,7 +82,6 @@ Engine::Engine(Network *network):
     {
         std::stringstream filename;
         filename << "graphics/sprites/weapon" << i << ".png";
-        printf("hairstyle: %s\n", filename.str().c_str());
         Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
                 filename.str(), 64, 64);
         if (!tmp) {
@@ -117,52 +116,43 @@ Engine::~Engine()
     delete itemDb;
 }
 
-void Engine::changeMap(std::string mapPath)
+void Engine::changeMap(const std::string &mapPath)
 {
-    // Clean up floor items
+    // Clear floor items and beings
     floorItemManager->clear();
-
     beingManager->clear();
 
-    // Generate full map path
-    mapPath = "maps/" + mapPath;
-    mapPath = mapPath.substr(0, mapPath.rfind(".")) + ".tmx.gz";
-
-    // Store in global var
-    map_path = mapPath;
-
-    // Attempt to load the new map
-    Map *newMap = MapReader::readMap(mapPath);
-
-    if (!newMap) {
-        logger->error("Could not find map file");
-    }
-
-    // Notify the minimap and beingManager about the map change
-    Image *mapImage = NULL;
-    if (newMap->hasProperty("minimap")) {
-        ResourceManager *resman = ResourceManager::getInstance();
-        mapImage = resman->getImage(newMap->getProperty("minimap"));
-    }
-    minimap->setMapImage(mapImage);
-    beingManager->setMap(newMap);
-
-    // Start playing new music file when necessary
-    std::string oldMusic = "";
-
+    std::string oldMusic;
+    // Remove old map
     if (mCurrentMap) {
         oldMusic = mCurrentMap->getProperty("music");
         delete mCurrentMap;
     }
 
-    std::string newMusic = newMap->getProperty("music");
+    // Generate full map path
+    map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx.gz";
 
-    if (newMusic != oldMusic) {
-        newMusic = std::string(TMW_DATADIR) + "data/music/" + newMusic;
-        sound.playMusic(newMusic.c_str(), -1);
+    // Attempt to load the new map
+    if (!(mCurrentMap = MapReader::readMap(map_path))) {
+        logger->error("Could not find map file");
     }
 
-    mCurrentMap = newMap;
+    // Notify the minimap and beingManager about the map change
+    Image *mapImage = NULL;
+    if (mCurrentMap->hasProperty("minimap")) {
+        ResourceManager *resman = ResourceManager::getInstance();
+        mapImage = resman->getImage(mCurrentMap->getProperty("minimap"));
+    }
+    minimap->setMapImage(mapImage);
+    beingManager->setMap(mCurrentMap);
+
+    // Change the music, if necessary
+    std::string newMusic = mCurrentMap->getProperty("music");
+
+    if (newMusic != oldMusic) {
+        newMusic = std::string(TMW_DATADIR "data/music/") + newMusic;
+        sound.playMusic(newMusic.c_str(), -1);
+    }
 
     // Send "map loaded"
     MessageOut outMsg(mNetwork);

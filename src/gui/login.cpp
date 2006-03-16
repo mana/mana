@@ -39,7 +39,7 @@
 void
 WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 {
-    this->mTarget = textField;
+    mTarget = textField;
 }
 
 void
@@ -114,7 +114,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
 
     setLocationRelativeTo(getParent());
 
-    if (!mUserField->getText().length()) {
+    if (mUserField->getText().empty()) {
         mUserField->requestFocus();
     } else {
         mPassField->requestFocus();
@@ -134,9 +134,9 @@ LoginDialog::action(const std::string& eventId)
     if (eventId == "ok")
     {
         // Check login
-        if (mUserField->getText().length() == 0)
+        if (mUserField->getText().empty())
         {
-            mWrongDataNoticeListener->setTarget(this->mPassField);
+            mWrongDataNoticeListener->setTarget(mPassField);
             OkDialog *dlg = new OkDialog("Error", "Enter your username first");
             dlg->addActionListener(mWrongDataNoticeListener);
         }

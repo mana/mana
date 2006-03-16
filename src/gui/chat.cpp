@@ -197,9 +197,9 @@ ChatWindow::action(const std::string& eventId)
     {
         std::string message = mChatInput->getText();
 
-        if (message.length() > 0) {
+        if (!message.empty()) {
             // If message different from previous, put it in the history
-            if (mHistory.size() == 0 || message != mHistory.back()) {
+            if (mHistory.empty() || message != mHistory.back()) {
                 mHistory.push_back(message);
             }
 
@@ -207,7 +207,7 @@ ChatWindow::action(const std::string& eventId)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            chatSend(player_node->getName().c_str(), message.c_str());
+            chatSend(player_node->getName(), message);
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -252,7 +252,7 @@ ChatWindow::isFocused()
 }
 
 void
-ChatWindow::chatSend(std::string nick, std::string msg)
+ChatWindow::chatSend(const std::string &nick, std::string msg)
 {
     // Prepare command
     if (msg.substr(0, 1) == "/")
@@ -292,9 +292,7 @@ ChatWindow::chatSend(std::string nick, std::string msg)
     }
     // Prepare ordinary message
     else {
-        nick += " : ";
-        nick += msg;
-        msg = nick;
+        msg = nick + " : " + msg;
 
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_CHAT_MESSAGE);
