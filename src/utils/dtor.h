@@ -30,20 +30,20 @@
 template<typename T>
 struct dtor : public std::unary_function <T, void>
 {
-	void operator()(T &ptr) { delete ptr; }
+    void operator()(T &ptr) { delete ptr; }
 };
 
 template<typename T1, typename T2>
 struct dtor<std::pair<T1, T2> > :
-	public std::unary_function <std::pair<T1, T2>, void>
+public std::unary_function <std::pair<T1, T2>, void>
 {
-	void operator()(std::pair<T1, T2> &pair) { delete pair.second; }
+    void operator()(std::pair<T1, T2> &pair) { delete pair.second; }
 };
 
-template<class Cont>
+    template<class Cont>
 inline dtor<typename Cont::value_type> make_dtor(Cont const&)
 {
-	return dtor<typename Cont::value_type>();
+    return dtor<typename Cont::value_type>();
 }
 
 #endif

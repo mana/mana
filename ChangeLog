@@ -1,5 +1,6 @@
 2006-03-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/utils/dtor.h: Fixed indentation.
 	* src/configuration.cpp, src/log.cpp, src/main.cpp, src/being.cpp,
 	src/monster.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,
 	src/gui/trade.cpp, src/gui/char_server.cpp, src/gui/setup.cpp,
