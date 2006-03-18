@@ -31,16 +31,14 @@
 #include "browserbox.h"
 #include "chatinput.h"
 #include "scrollarea.h"
+#include "windowcontainer.h"
 
 #include "../game.h"
-#include "../graphics.h"
 #include "../localplayer.h"
 #include "../log.h"
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
-
-extern Graphics *graphics;
 
 ChatWindow::ChatWindow(const std::string &logfile, Network *network):
     Window(""),
@@ -53,7 +51,7 @@ ChatWindow::ChatWindow(const std::string &logfile, Network *network):
     mItemsKeep = 20;
 
     setResizable(true);
-    setDefaultSize(0, (graphics->getHeight() - 123), 600, 100);
+    setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
     loadWindowState();
 
     mChatInput = new ChatInput();

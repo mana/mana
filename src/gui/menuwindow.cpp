@@ -28,10 +28,8 @@
 #include <guichan/actionlistener.hpp>
 
 #include "button.h"
+#include "windowcontainer.h"
 
-#include "../graphics.h"
-
-extern Graphics *graphics;
 extern Window *setupWindow, *inventoryWindow, *equipmentWindow,
        *skillDialog, *statusWindow;
 
@@ -68,7 +66,7 @@ MenuWindow::MenuWindow():
         h = btn->getHeight();
     }
 
-    setDefaultSize((graphics->getWidth() - x - 2), 0, x, (y + h));
+    setDefaultSize((windowContainer->getWidth() - x - 2), 0, x, (y + h));
 }
 
 void MenuWindow::draw(gcn::Graphics *g)

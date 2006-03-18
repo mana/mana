@@ -28,13 +28,11 @@
 #include "button.h"
 #include "listbox.h"
 #include "scrollarea.h"
+#include "windowcontainer.h"
 
 #include "../localplayer.h"
-#include "../graphics.h"
 
 #include "../utils/dtor.h"
-
-extern Graphics *graphics;
 
 const char *skill_db[] = {
     // 0-99
@@ -66,7 +64,7 @@ SkillDialog::SkillDialog():
     Window("Skills")
 {
     setWindowName("Skills");
-    setDefaultSize(graphics->getWidth() - 255, 25, 240, 240);
+    setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
 
     mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(mSkillListBox);

@@ -1,5 +1,8 @@
 2006-03-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/chat.cpp, src/gui/menuwindow.cpp, src/gui/skill.cpp,
+	src/gui/status.cpp: Use the window container instead of the graphics
+	class to calculate window positions.
 	* src/utils/dtor.h: Fixed indentation.
 	* src/configuration.cpp, src/log.cpp, src/main.cpp, src/being.cpp,
 	src/monster.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,

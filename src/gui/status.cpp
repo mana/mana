@@ -27,14 +27,11 @@
 
 #include "button.h"
 #include "progressbar.h"
+#include "windowcontainer.h"
 
 #include "../localplayer.h"
 
-#include "../graphics.h"
-
 #include "../utils/tostring.h"
-
-extern Graphics *graphics;
 
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
@@ -42,8 +39,8 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 {
     setWindowName("Status");
     setResizable(true);
-    setDefaultSize((graphics->getWidth() - 365) / 2,
-                   (graphics->getHeight() - 255) / 2, 365, 255);
+    setDefaultSize((windowContainer->getWidth() - 365) / 2,
+                   (windowContainer->getHeight() - 255) / 2, 365, 255);
     loadWindowState();
 
     // ----------------------
