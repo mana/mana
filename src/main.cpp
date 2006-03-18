@@ -26,7 +26,6 @@
 #include <getopt.h>
 #include <iostream>
 #include <physfs.h>
-#include <sstream>
 #include <unistd.h>
 #include <vector>
 #include <SDL_image.h>
@@ -78,6 +77,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/tostring.h"
 
 // Account infos
 char n_server, n_character;
@@ -266,10 +266,9 @@ void init_engine()
 
     for (int i=0; i < NR_HAIR_STYLES; i++)
     {
-        std::stringstream filename;
-        filename << "graphics/sprites/hairstyle" << (i + 1) << ".png";
         Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
-                filename.str(), 40, 40);
+                "graphics/sprites/hairstyle" + toString(i + 1) + ".png",
+                40, 40);
         if (!tmp) {
             logger->error("Unable to load hairstyle");
         } else {

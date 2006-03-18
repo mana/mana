@@ -23,12 +23,12 @@
 
 #include "monster.h"
 
-#include <sstream>
-
 #include "game.h"
 #include "log.h"
 
 #include "resources/resourcemanager.h"
+
+#include "utils/tostring.h"
 
 class Spriteset;
 extern std::map<int, Spriteset*> monsterset;
@@ -39,13 +39,9 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     // Load monster spriteset, if necessary
     if (monsterset.find(job - 1002) == monsterset.end())
     {
-        std::stringstream filename;
-
-        filename << "graphics/sprites/monster" << (job - 1002) << ".png";
-        logger->log("%s",filename.str().c_str());
-
         Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
-                filename.str(), 60, 60);
+                "graphics/sprites/monster" + toString(job - 1002) + ".png",
+                60, 60);
         if (!tmp) {
             logger->error("Unable to load monster spriteset!");
         } else {

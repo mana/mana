@@ -23,15 +23,17 @@
 
 #include "debugwindow.h"
 
-#include <guichan/widgets/label.hpp>
-#include <sstream>
 #include <SDL_mouse.h>
+
+#include <guichan/widgets/label.hpp>
 
 #include "button.h"
 
 #include "../game.h"
 #include "../engine.h"
 #include "../map.h"
+
+#include "../utils/tostring.h"
 
 DebugWindow::DebugWindow():
     Window("Debug")
@@ -73,29 +75,24 @@ DebugWindow::logic()
     int mouseTileX = mouseX / 32 + camera_x;
     int mouseTileY = mouseY / 32 + camera_y;
 
-    std::stringstream updatedText;
-    updatedText << "[" << fps << " FPS]";
-    mFPSLabel->setCaption(updatedText.str());
+    mFPSLabel->setCaption("[" + toString(fps) + " FPS");
     mFPSLabel->adjustSize();
 
-    updatedText.str("");
-    updatedText << "[Mouse: " << mouseTileX << ", " << mouseTileY << "]";
-    mTileMouseLabel->setCaption(updatedText.str());
+    mTileMouseLabel->setCaption("[Mouse: " +
+            toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
     mTileMouseLabel->adjustSize();
 
-    updatedText.str("");
-    mCurrentMap = engine->getCurrentMap();
-
-    if (mCurrentMap != NULL)
+    Map *currentMap = engine->getCurrentMap();
+    if (currentMap != NULL)
     {
-        updatedText << " [Music File: "
-                    << mCurrentMap->getProperty("music") << "]";
-        mMusicFileLabel->setCaption(updatedText.str());
+        const std::string music =
+            " [Music File: " + currentMap->getProperty("music") + "]";
+        mMusicFileLabel->setCaption(music);
         mMusicFileLabel->adjustSize();
-        updatedText.str("");
-        updatedText << " [MiniMap File: "
-                    << mCurrentMap->getProperty("minimap") << "]";
-        mMapFileLabel->setCaption(updatedText.str());
+
+        const std::string minimap =
+            " [MiniMap File: " + currentMap->getProperty("minimap") + "]";
+        mMapFileLabel->setCaption(minimap);
         mMapFileLabel->adjustSize();
     }
 }

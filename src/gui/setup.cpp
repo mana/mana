@@ -308,9 +308,9 @@ void Setup::action(const std::string &eventId)
                     {
                         std::stringstream error;
                         error << "Failed to switch to " <<
-                        (fullscreen ? "windowed" : "fullscreen") <<
-                        "mode and restoration of old mode also failed!" <<
-                        std::endl;
+                            (fullscreen ? "windowed" : "fullscreen") <<
+                            "mode and restoration of old mode also failed!" <<
+                            std::endl;
                         logger->error(error.str());
                     }
                 }

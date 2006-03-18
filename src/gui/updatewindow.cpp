@@ -24,7 +24,6 @@
 #include "updatewindow.h"
 
 #include <iostream>
-#include <sstream>
 #include <SDL.h>
 #include <SDL_thread.h>
 
@@ -40,6 +39,8 @@
 #include "../configuration.h"
 #include "../log.h"
 #include "../main.h"
+
+#include "../utils/tostring.h"
 
 UpdaterWindow::UpdaterWindow():
     Window("Updating..."),
@@ -190,10 +191,8 @@ int UpdaterWindow::updateProgress(void *ptr,
     if (progress < 0) progress = 0.0f;
     if (progress > 1) progress = 1.0f;
 
-    std::stringstream progressString;
-    progressString << uw->mCurrentFile
-                   << " (" << ((int)(progress * 100)) << "%)";
-    uw->setLabel(progressString.str().c_str());
+    uw->setLabel(
+            uw->mCurrentFile + " (" + toString((int)progress * 100) + "%)");
     uw->setProgress(progress);
 
     if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)

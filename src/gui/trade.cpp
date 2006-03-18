@@ -43,6 +43,8 @@
 
 #include "../resources/iteminfo.h"
 
+#include "../utils/tostring.h"
+
 TradeWindow::TradeWindow(Network *network):
     Window("Trade: You"),
     mNetwork(network),
@@ -130,9 +132,7 @@ TradeWindow::~TradeWindow()
 
 void TradeWindow::addMoney(int amount)
 {
-    std::stringstream tempMoney;
-    tempMoney << "You get: " << amount << "z";
-    mMoneyLabel->setCaption(tempMoney.str());
+    mMoneyLabel->setCaption("You get: " + toString(amount) + "z");
     mMoneyLabel->adjustSize();
 }
 
@@ -292,14 +292,12 @@ void TradeWindow::action(const std::string &eventId)
     }
     else if (eventId == "ok")
     {
-        std::stringstream tempMoney[2];
-        tempMoney[0] << mMoneyField->getText();
+        std::stringstream tempMoney(mMoneyField->getText());
         int tempInt;
-        if (tempMoney[0] >> tempInt)
+        if (tempMoney >> tempInt)
         {
-            tempMoney[1] << tempInt;
-            mMoneyField->setText(tempMoney[1].str());
-            
+            mMoneyField->setText(toString(tempInt));
+
             MessageOut outMsg(mNetwork);
             outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
             outMsg.writeInt16(0);

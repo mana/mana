@@ -33,7 +33,7 @@
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
-#include <sstream>
+#include "../utils/tostring.h"
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window("Equipment"), mEquipment(equipment)
@@ -85,7 +85,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     image = mItemset->get(item->getInfo()->getImage() - 1);
 
     dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
-    std::stringstream n;
-    n << item->getQuantity();
-    graphics->drawText(n.str(), 170, 62, gcn::Graphics::CENTER);
+    graphics->drawText(toString(item->getQuantity()), 170, 62,
+            gcn::Graphics::CENTER);
 }

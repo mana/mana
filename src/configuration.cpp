@@ -24,11 +24,12 @@
 
 #include "configuration.h"
 
-#include <sstream>
 #include <libxml/xmlwriter.h>
 
 #include "configlistener.h"
 #include "log.h"
+
+#include "utils/tostring.h"
 
 void Configuration::init(const std::string &filename)
 {
@@ -127,9 +128,7 @@ void Configuration::setValue(const std::string &key, std::string value)
 
 void Configuration::setValue(const std::string &key, float value)
 {
-    std::stringstream ss;
-    ss << ((value == (int)value) ? (int)value : value);
-    setValue(key, ss.str());
+    setValue(key, toString((value == (int)value) ? (int)value : value));
 }
 
 std::string Configuration::getValue(const std::string &key, std::string deflt)
