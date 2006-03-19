@@ -81,8 +81,15 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      gui/scrollarea.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
+	      gui/setup_audio.cpp \
+	      gui/setup_audio.h \
 	      gui/setup.cpp \
 	      gui/setup.h \
+	      gui/setup_joystick.cpp \
+	      gui/setup_joystick.h \
+	      gui/setuptab.h \
+	      gui/setup_video.cpp \
+	      gui/setup_video.h \
 	      gui/shop.cpp \
 	      gui/shop.h \
 	      gui/skill.cpp \

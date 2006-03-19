@@ -21,43 +21,16 @@
  *  $Id$
  */
 
-#ifndef _TMW_SETUP_H
-#define _TMW_SETUP_H
+#ifndef _TMW_GUI_SETUPTAB_H
+#define _TMW_GUI_SETUPTAB_H
 
-#include <list>
+#include "gccontainer.h"
 
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-class SetupTab;
-
-/**
- * The setup dialog.
- *
- * \ingroup GUI
- */
-class Setup : public Window, public gcn::ActionListener
+class SetupTab : public GCContainer
 {
     public:
-        /**
-         * Constructor.
-         */
-        Setup();
-
-        /**
-         * Destructor.
-         */
-        ~Setup();
-
-        /**
-         * Event handling method.
-         */
-        void
-        action(const std::string& eventId);
-
-    private:
-        std::list<SetupTab*> mTabs;
+        virtual void apply() =0;
+        virtual void cancel() =0;
 };
 
 #endif

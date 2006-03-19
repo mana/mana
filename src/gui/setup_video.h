@@ -21,43 +21,39 @@
  *  $Id$
  */
 
-#ifndef _TMW_SETUP_H
-#define _TMW_SETUP_H
+#ifndef _TMW_GUI_SETUP_VIDEO_H
+#define _TMW_GUI_SETUP_VIDEO_H
 
-#include <list>
+#include "setuptab.h"
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
+#include "../guichanfwd.h"
 
-class SetupTab;
-
-/**
- * The setup dialog.
- *
- * \ingroup GUI
- */
-class Setup : public Window, public gcn::ActionListener
+class Setup_Video : public SetupTab, public gcn::ActionListener
 {
     public:
-        /**
-         * Constructor.
-         */
-        Setup();
+        Setup_Video();
+        ~Setup_Video();
 
-        /**
-         * Destructor.
-         */
-        ~Setup();
+        void apply();
+        void cancel();
 
-        /**
-         * Event handling method.
-         */
-        void
-        action(const std::string& eventId);
+        void action(const std::string&);
 
     private:
-        std::list<SetupTab*> mTabs;
+        class ModeListModel *mModeListModel;
+
+        gcn::ListBox *mModeList;
+        gcn::CheckBox *mFsCheckBox;
+        gcn::CheckBox *mOpenGLCheckBox;
+        gcn::CheckBox *mCustomCursorCheckBox;
+        gcn::Slider *mAlphaSlider;
+
+        bool mFullScreenEnabled;
+        bool mOpenGLEnabled;
+        bool mCustomCursorEnabled;
+        double mOpacity;
 };
 
 #endif

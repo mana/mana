@@ -1,3 +1,12 @@
+2006-03-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/setup_audio.h, src/gui/setup.cpp, src/gui/setup_audio.cpp,
+	src/gui/setup_joystick.h, src/gui/setup_video.cpp, src/gui/setuptab.h,
+	src/gui/setup.h, src/gui/setup_joystick.cpp, src/gui/setup_video.h,
+	src/Makefile.am: Splitted setup window into manageable pieces
+	according to their tabs in the window. Fixed some memory leaks along
+	the way. Also fixed two settings not being stored on "apply".
+
 2006-03-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/chat.cpp, src/gui/menuwindow.cpp, src/gui/skill.cpp,
