@@ -99,16 +99,16 @@ ModeListModel::ModeListModel()
 }
 
 Setup_Video::Setup_Video():
-    mModeListModel(new ModeListModel()),
-    mModeList(new ListBox(mModeListModel)),
-    mFsCheckBox(new CheckBox("Full screen", false)),
-    mOpenGLCheckBox(new CheckBox("OpenGL", false)),
-    mCustomCursorCheckBox(new CheckBox("Custom cursor")),
-    mAlphaSlider(new Slider(0.2, 1.0)),
     mFullScreenEnabled(config.getValue("screen", 0)),
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
-    mOpacity(config.getValue("guialpha", 0.8))
+    mOpacity(config.getValue("guialpha", 0.8)),
+    mModeListModel(new ModeListModel()),
+    mModeList(new ListBox(mModeListModel)),
+    mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
+    mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
+    mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
+    mAlphaSlider(new Slider(0.2, 1.0))
 {
     setOpaque(false);
 
@@ -129,9 +129,6 @@ Setup_Video::Setup_Video():
     alphaLabel->setPosition(20 + mAlphaSlider->getWidth(), mAlphaSlider->getY());
 
     mModeList->setSelected(-1);
-    mFsCheckBox->setMarked(mFullScreenEnabled);
-    mOpenGLCheckBox->setMarked(mOpenGLEnabled);
-    mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
     mAlphaSlider->setValue(mOpacity);
 
     mCustomCursorCheckBox->setEventId("customcursor");

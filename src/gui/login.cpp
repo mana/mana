@@ -63,7 +63,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
     mServerField = new TextField(mLoginData->hostname);
-    mKeepCheck = new CheckBox("Keep", false);
+    mKeepCheck = new CheckBox("Keep", mLoginData->remember);
     mOkButton = new Button("OK", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
     mRegisterButton = new Button("Register", "register", this);
@@ -82,7 +82,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField->setWidth(130);
     mServerField->setWidth(130);
     mKeepCheck->setPosition(4, 77);
-    mKeepCheck->setMarked(mLoginData->remember);
     mCancelButton->setPosition(
             200 - mCancelButton->getWidth() - 5,
             100 - mCancelButton->getHeight() - 5);

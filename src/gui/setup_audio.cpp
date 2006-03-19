@@ -34,12 +34,12 @@
 #include "../sound.h"
 
 Setup_Audio::Setup_Audio():
-    mSoundCheckBox(new CheckBox("Sound", false)),
-    mSfxSlider(new Slider(0, 128)),
-    mMusicSlider(new Slider(0, 128)),
     mMusicVolume((int)config.getValue("musicVolume", 60)),
     mSfxVolume((int)config.getValue("sfxVolume", 100)),
-    mSoundEnabled(config.getValue("sound", 0))
+    mSoundEnabled(config.getValue("sound", 0)),
+    mSoundCheckBox(new CheckBox("Sound", mSoundEnabled)),
+    mSfxSlider(new Slider(0, 128)),
+    mMusicSlider(new Slider(0, 128))
 {
     setOpaque(false);
 
@@ -58,7 +58,6 @@ Setup_Audio::Setup_Audio():
     sfxLabel->setPosition(20 + mSfxSlider->getWidth(), 27);
     musicLabel->setPosition(20 + mMusicSlider->getWidth(), 47);
 
-    mSoundCheckBox->setMarked(mSoundEnabled);
     mSfxSlider->setValue(mSfxVolume);
     mMusicSlider->setValue(mMusicVolume);
 

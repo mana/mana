@@ -42,24 +42,20 @@ extern Window *skillDialog;
 Setup::Setup():
     Window("Setup")
 {
-    Button *applyButton = new Button("Apply", "apply", this);
-    Button *cancelButton = new Button("Cancel", "cancel", this);
-    Button *resetWinsToDefault = new Button("Reset Windows", "winsToDefault", this);
-
-    // Set dimensions/positions
     int width = 230;
     int height = 185;
     setContentSize(width, height);
 
-    cancelButton->setPosition(
-            width - cancelButton->getWidth() - 5,
-            height - cancelButton->getHeight() - 5);
-    applyButton->setPosition(
-            cancelButton->getX() - applyButton->getWidth() - 5,
-            cancelButton->getY());
-    resetWinsToDefault->setPosition(
-            applyButton->getX() - resetWinsToDefault->getWidth() - 5,
-            applyButton->getY());
+    const char *buttonNames[] = {
+        "Apply", "Cancel", "Reset Windows", 0
+    };
+    int x = width;
+    for (const char **curBtn = buttonNames; *curBtn; ++curBtn) {
+        Button *btn = new Button(*curBtn, *curBtn, this);
+        x -= btn->getWidth() + 5;
+        btn->setPosition(x, height - btn->getHeight() - 5);
+        add(btn);
+    }
 
     TabbedContainer *panel = new TabbedContainer();
     panel->setDimension(gcn::Rectangle(5, 5, 220, 130));
@@ -80,9 +76,6 @@ Setup::Setup():
     mTabs.push_back(tab);
 
     add(panel);
-    add(resetWinsToDefault);
-    add(applyButton);
-    add(cancelButton);
 
     setLocationRelativeTo(getParent());
 }
@@ -94,17 +87,17 @@ Setup::~Setup()
 
 void Setup::action(const std::string &event)
 {
-    if (event == "apply")
+    if (event == "Apply")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::apply));
     }
-    else if (event == "cancel")
+    else if (event == "Cancel")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::cancel));
     }
-    else if (event == "winsToDefault")
+    else if (event == "Reset Windows")
     {
         statusWindow->resetToDefaultSize();
         minimap->resetToDefaultSize();

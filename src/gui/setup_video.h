@@ -42,6 +42,11 @@ class Setup_Video : public SetupTab, public gcn::ActionListener
         void action(const std::string&);
 
     private:
+        bool mFullScreenEnabled;
+        bool mOpenGLEnabled;
+        bool mCustomCursorEnabled;
+        double mOpacity;
+
         class ModeListModel *mModeListModel;
 
         gcn::ListBox *mModeList;
@@ -49,11 +54,6 @@ class Setup_Video : public SetupTab, public gcn::ActionListener
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::Slider *mAlphaSlider;
-
-        bool mFullScreenEnabled;
-        bool mOpenGLEnabled;
-        bool mCustomCursorEnabled;
-        double mOpacity;
 };
 
 #endif

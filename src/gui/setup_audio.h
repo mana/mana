@@ -41,11 +41,11 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
         void action(const std::string&);
 
     private:
-        gcn::CheckBox *mSoundCheckBox;
-        gcn::Slider *mSfxSlider, *mMusicSlider;
-
         int mMusicVolume, mSfxVolume;
         bool mSoundEnabled;
+
+        gcn::CheckBox *mSoundCheckBox;
+        gcn::Slider *mSfxSlider, *mMusicSlider;
 };
 
 #endif
