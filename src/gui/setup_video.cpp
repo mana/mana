@@ -23,7 +23,6 @@
 
 #include "setup_video.h"
 
-#include <sstream>
 #include <string>
 #include <vector>
 #include <SDL.h>
@@ -41,6 +40,8 @@
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
+
+#include "../utils/tostring.h"
 
 extern Graphics *graphics;
 
@@ -89,10 +90,10 @@ ModeListModel::ModeListModel()
     } else {
         //logger->log("Available Modes");
         for (int i = 0; modes[i]; ++i) {
-            std::stringstream ss;
-            ss << (int)modes[i]->w << "x" << (int)modes[i]->h;
-            //logger->log(ss.str().c_str());
-            mVideoModes.push_back(ss.str());
+            const std::string modeString =
+                toString((int)modes[i]->w) + "x" + toString((int)modes[i]->h);
+            //logger->log(modeString.c_str());
+            mVideoModes.push_back(modeString);
         }
     }
 }

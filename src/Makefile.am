@@ -180,6 +180,7 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/dtor.h \
+	      utils/tostring.h \
 	      base64.cpp \
 	      base64.h \
 	      being.cpp \

@@ -23,9 +23,9 @@
 
 #include "inttextbox.h"
 
-#include <sstream>
-
 #include <guichan/key.hpp>
+
+#include "../utils/tostring.h"
 
 IntTextBox::IntTextBox(int i):
     mValue(i)
@@ -40,9 +40,8 @@ void IntTextBox::keyPress(const gcn::Key &key)
         gcn::TextBox::keyPress(key);
     }
 
-    std::stringstream s;
+    std::stringstream s(gcn::TextBox::getText());
     int i;
-    s << gcn::TextBox::getText();
     s >> i;
     if (gcn::TextBox::getText() != "")
         setInt(i);
@@ -63,11 +62,10 @@ int IntTextBox::getInt()
 
 void IntTextBox::setInt(int i)
 {
-    std::stringstream s;
-
     if (i >= mMin && i <= mMax)
         mValue = i;
-    s << mValue;
-    setText(s.str());
-    setCaretPosition(s.str().length() + 1);
+
+    const std::string valStr = toString(mValue);
+    setText(valStr);
+    setCaretPosition(valStr.length() + 1);
 }

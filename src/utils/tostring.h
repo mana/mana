@@ -21,43 +21,17 @@
  *  $Id$
  */
 
-#ifndef _TMW_DEBUGWINDOW_H
-#define _TMW_DEBUGWINDOW_H
+#ifndef _TMW_UTILS_TOSTRING_H
+#define _TMW_UTISL_TOSTRING_H
 
-#include <iosfwd>
+#include <sstream>
 
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-#include "../guichanfwd.h"
-
-/**
- * The chat window.
- *
- * \ingroup Interface
- */
-class DebugWindow : public Window, public gcn::ActionListener
+template<typename T>
+std::string toString(const T &arg)
 {
-    public:
-        /**
-         * Constructor.
-         */
-        DebugWindow();
-
-        /**
-         * Logic (updates components' size and infos)
-         */
-        void logic();
-
-        /**
-         * Performs action.
-         */
-        void action(const std::string &actionId);
-
-    private:
-        gcn::Label *mMusicFileLabel, *mMapFileLabel;
-        gcn::Label *mTileMouseLabel, *mFPSLabel;
-};
+    std::stringstream ss;
+    ss << arg;
+    return ss.str();
+}
 
 #endif

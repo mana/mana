@@ -22,8 +22,6 @@
  */
 #include "being.h"
 
-#include <sstream>
-
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
@@ -32,6 +30,8 @@
 #include "graphic/spriteset.h"
 
 #include "gui/gui.h"
+
+#include "utils/tostring.h"
 
 extern Spriteset *emotionset;
 
@@ -120,13 +120,7 @@ Being::setSpeech(const std::string &text, Uint32 time)
 void
 Being::setDamage(Sint16 amount, Uint32 time)
 {
-    if (!amount) {
-        mDamage = "miss";
-    } else {
-        std::stringstream damageString;
-        damageString << amount;
-        mDamage = damageString.str();
-    }
+    mDamage = amount ? toString(amount) : "miss";
     mDamageTime = tick_time;
     mShowDamage = true;
 }

@@ -24,7 +24,6 @@
 #include "engine.h"
 
 #include <list>
-#include <sstream>
 
 #include "being.h"
 #include "beingmanager.h"
@@ -51,6 +50,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/tostring.h"
 
 extern Minimap *minimap;
 
@@ -80,10 +80,8 @@ Engine::Engine(Network *network):
             30, 32);
     for (int i = 0; i < 2; i++)
     {
-        std::stringstream filename;
-        filename << "graphics/sprites/weapon" << i << ".png";
         Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
-                filename.str(), 64, 64);
+                "graphics/sprites/weapon" + toString(i) + ".png", 64, 64);
         if (!tmp) {
             logger->error("Unable to load weaponset");
         } else {
@@ -218,15 +216,12 @@ void Engine::draw(Graphics *graphics)
         {
             int squareX = i->x * 32 - map_x + 12;
             int squareY = i->y * 32 - map_y + 12;
+
             graphics->setColor(gcn::Color(255, 0, 0));
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-
-            MetaTile *tile = mCurrentMap->getMetaTile(i->x, i->y);
-
-            std::stringstream cost;
-            cost << tile->Gcost;
-            graphics->drawText(cost.str(), squareX + 4, squareY + 12,
-                    gcn::Graphics::CENTER);
+            graphics->drawText(
+                    toString(mCurrentMap->getMetaTile(i->x, i->y)->Gcost),
+                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
         }
     }
 
