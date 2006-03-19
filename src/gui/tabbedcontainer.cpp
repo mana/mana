@@ -23,9 +23,9 @@
 
 #include "tabbedcontainer.h"
 
-#include "button.h"
+#include <sstream>
 
-#include "../utils/tostring.h"
+#include "button.h"
 
 #define TABWIDTH 60
 #define TABHEIGHT 20
@@ -48,9 +48,12 @@ TabbedContainer::~TabbedContainer()
 
 void TabbedContainer::addTab(gcn::Widget *widget, const std::string &caption)
 {
+    std::stringstream ss;
     int tabNumber = mTabs.size();
 
-    Button *tab = new Button(caption, toString(tabNumber), this);
+    ss << tabNumber;
+
+    Button *tab = new Button(caption, ss.str(), this);
 
     tab->setSize(TABWIDTH, TABHEIGHT);
     add(tab, TABWIDTH * tabNumber, 0);
@@ -80,12 +83,14 @@ void TabbedContainer::logic()
 
 void TabbedContainer::action(const std::string &event)
 {
-    std::stringstream ss(event);
     int tabNo;
+    std::stringstream ss;
+    gcn::Widget *newContent;
+
+    ss << event;
     ss >> tabNo;
 
-    gcn::Widget *newContent = mContents[tabNo];
-    if (newContent) {
+    if ((newContent = mContents[tabNo])) {
         if (mActiveContent) {
             remove(mActiveContent);
         }

@@ -24,14 +24,13 @@
 #include "status.h"
 
 #include <guichan/widgets/label.hpp>
+#include <sstream>
 
 #include "button.h"
 #include "progressbar.h"
 #include "windowcontainer.h"
 
 #include "../localplayer.h"
-
-#include "../utils/tostring.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
@@ -222,31 +221,43 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
 void StatusWindow::update()
 {
+    std::stringstream updateText;
+
     // Status Part
     // -----------
-    mLvlLabel->setCaption("Level: " + toString(mPlayer->mLevel));
+    updateText.str("");
+    updateText << "Level: " << mPlayer->mLevel;
+    mLvlLabel->setCaption(updateText.str());
     mLvlLabel->adjustSize();
 
-    mGpLabel->setCaption("Money: " + toString(mPlayer->mGp) + " GP");
+    updateText.str("");
+    updateText << "Money: " << mPlayer->mGp << " GP";
+    mGpLabel->setCaption(updateText.str());
     mGpLabel->adjustSize();
 
-    mJobXpLabel->setCaption("Job: " + toString(mPlayer->mJobLevel));
+    updateText.str("");
+    updateText << "Job: " << mPlayer->mJobLevel;
+    mJobXpLabel->setCaption(updateText.str());
     mJobXpLabel->adjustSize();
 
-    mHpValueLabel->setCaption(toString(mPlayer->mHp) +
-            "/" + toString(mPlayer->mMaxHp));
+    updateText.str("");
+    updateText << mPlayer->mHp << "/" << mPlayer->mMaxHp;
+    mHpValueLabel->setCaption(updateText.str());
     mHpValueLabel->adjustSize();
 
-    mMpValueLabel->setCaption(toString(mPlayer->mMp) +
-            "/" + toString(mPlayer->mMaxMp));
+    updateText.str("");
+    updateText << mPlayer->mMp <<  "/" << mPlayer->mMaxMp;
+    mMpValueLabel->setCaption(updateText.str());
     mMpValueLabel->adjustSize();
 
-    mXpValueLabel->setCaption(toString(mPlayer->mXp) +
-            "/" + toString(mPlayer->mXpForNextLevel));
+    updateText.str("");
+    updateText << (int)mPlayer->mXp << "/" << (int)mPlayer->mXpForNextLevel;
+    mXpValueLabel->setCaption(updateText.str());
     mXpValueLabel->adjustSize();
 
-    mJobValueLabel->setCaption(toString(mPlayer->mJobXp) +
-            "/" + toString(mPlayer->mJobXpForNextLevel));
+    updateText.str("");
+    updateText << (int)mPlayer->mJobXp << "/" << (int)mPlayer->mJobXpForNextLevel;
+    mJobValueLabel->setCaption(updateText.str());
     mJobValueLabel->adjustSize();
 
     // HP Bar coloration
@@ -281,76 +292,92 @@ void StatusWindow::update()
         "Dexterity",
         "Luck"
     };
+
     int statusPoints = mPlayer->mStatsPointsToAttribute;
+
+    updateText.str("");
+    updateText << "Remaining Status Points: " << statusPoints;
 
     // Update labels
     for (int i = 0; i < 6; i++) {
-        mStatsLabel[i]->setCaption(attrNames[i]);
-        mStatsDisplayLabel[i]->setCaption(toString((int)mPlayer->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int)mPlayer->mAttrUp[i]));
+        std::stringstream sstr;
 
+        mStatsLabel[i]->setCaption(attrNames[i]);
         mStatsLabel[i]->adjustSize();
+
+        sstr.str("");
+        sstr << (int)mPlayer->mAttr[i];
+        mStatsDisplayLabel[i]->setCaption(sstr.str());
         mStatsDisplayLabel[i]->adjustSize();
+
+        sstr.str("");
+        sstr << (int)mPlayer->mAttrUp[i];
+        mPointsLabel[i]->setCaption(sstr.str());
         mPointsLabel[i]->adjustSize();
 
         mStatsButton[i]->setEnabled(mPlayer->mAttrUp[i] <= statusPoints);
     }
-    mRemainingStatsPointsLabel->setCaption("Remaining Status Points: " +
-            toString(statusPoints));
+    mRemainingStatsPointsLabel->setCaption(updateText.str());
     mRemainingStatsPointsLabel->adjustSize();
 
     // Derived Stats Points
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
-    mStatsAttackPoints->setCaption(
-            toString(mPlayer->ATK + mPlayer->ATK_BONUS));
+    updateText.str("");
+    updateText << int(mPlayer->ATK + mPlayer->ATK_BONUS);
+    mStatsAttackPoints->setCaption(updateText.str());
     mStatsAttackPoints->adjustSize();
 
     // Defense TODO: Count equipped Armors and items defense bonuses
-    mStatsDefensePoints->setCaption(
-            toString(mPlayer->DEF + mPlayer->DEF_BONUS));
+    updateText.str("");
+    updateText << int(mPlayer->DEF + mPlayer->DEF_BONUS);
+    mStatsDefensePoints->setCaption(updateText.str());
     mStatsDefensePoints->adjustSize();
 
     // Magic Attack TODO: Count equipped items M.Attack bonuses
-    mStatsMagicAttackPoints->setCaption(
-            toString(mPlayer->MATK + mPlayer->MATK_BONUS));
+    updateText.str("");
+    updateText << int(mPlayer->MATK + mPlayer->MATK_BONUS);
+    mStatsMagicAttackPoints->setCaption(updateText.str());
     mStatsMagicAttackPoints->adjustSize();
 
     // Magic Defense TODO: Count equipped items M.Defense bonuses
-    mStatsMagicDefensePoints->setCaption(
-            toString(mPlayer->MDEF + mPlayer->MDEF_BONUS));
+    updateText.str("");
+    updateText << int(mPlayer->MDEF + mPlayer->MDEF_BONUS);
+    mStatsMagicDefensePoints->setCaption(updateText.str());
     mStatsMagicDefensePoints->adjustSize();
 
     // Accuracy %
-    mStatsAccuracyPoints->setCaption(toString(mPlayer->HIT));
+    updateText.str("");
+    updateText << (int)mPlayer->HIT;
+    mStatsAccuracyPoints->setCaption(updateText.str());
     mStatsAccuracyPoints->adjustSize();
 
     // Evasion %
-    mStatsEvadePoints->setCaption(toString(mPlayer->FLEE));
+    updateText.str("");
+    updateText << (int)mPlayer->FLEE;
+    mStatsEvadePoints->setCaption(updateText.str());
     mStatsEvadePoints->adjustSize();
 
     // Reflex %
-    mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
+    updateText.str("");
+    updateText << ((int)mPlayer->DEX / 4); // + counter
+    mStatsReflexPoints->setCaption(updateText.str());
     mStatsReflexPoints->adjustSize();
 
     // Update Second column widgets position
     mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
                          mLvlLabel->getY());
 
-    mXpLabel->setPosition(
-            mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
-            mHpLabel->getY());
-    mXpBar->setPosition(
-            mXpLabel->getX() + mXpLabel->getWidth() + 5,
-            mXpLabel->getY());
-    mXpValueLabel->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() + 5,
-            mXpLabel->getY());
+    mXpLabel->setPosition(mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
+                         mHpLabel->getY());
+    mXpBar->setPosition(mXpLabel->getX() + mXpLabel->getWidth() + 5,
+                       mXpLabel->getY());
+    mXpValueLabel->setPosition(mXpBar->getX() + mXpBar->getWidth() + 5,
+                              mXpLabel->getY());
 
     mJobXpLabel->setPosition(mXpLabel->getX(), mMpLabel->getY());
-    mJobXpBar->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() - mJobXpBar->getWidth(),
-            mJobXpLabel->getY());
+    mJobXpBar->setPosition(mXpBar->getX() + mXpBar->getWidth() -
+                          mJobXpBar->getWidth(), mJobXpLabel->getY());
     mJobValueLabel->setPosition(290, mJobXpLabel->getY());
 }
 

@@ -23,6 +23,8 @@
 
 #include "char_server.h"
 
+#include <sstream>
+
 #include "button.h"
 #include "listbox.h"
 #include "scrollarea.h"
@@ -32,8 +34,6 @@
 #include "../serverinfo.h"
 
 #include "../net/network.h" // TODO this is just for iptostring, move that?
-
-#include "../utils/tostring.h"
 
 extern SERVER_INFO **server_info;
 
@@ -120,6 +120,7 @@ ServerListModel::getNumberOfElements()
 std::string
 ServerListModel::getElementAt(int i)
 {
-    const SERVER_INFO *si = server_info[i];
-    return si->name + " (" + toString(si->online_users) + ")";
+    std::stringstream s;
+    s << server_info[i]->name << " (" << server_info[i]->online_users << ")";
+    return s.str();
 }

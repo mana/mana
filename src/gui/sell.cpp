@@ -24,6 +24,7 @@
 #include "sell.h"
 
 #include <cassert>
+#include <sstream>
 
 #include <guichan/widgets/label.hpp>
 
@@ -42,7 +43,6 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
-#include "../utils/tostring.h"
 
 SellDialog::SellDialog(Network *network):
     Window("Sell"),
@@ -141,8 +141,11 @@ void SellDialog::addItem(Item *item, int price)
         return;
 
     ITEM_SHOP item_shop;
+    std::stringstream ss;
 
-    item_shop.name = item->getInfo()->getName() + " " + toString(price) + " GP";
+    ss << item->getInfo()->getName() << " " << price << " GP";
+
+    item_shop.name = ss.str();
     item_shop.price = price;
     item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();
@@ -237,12 +240,15 @@ void SellDialog::action(const std::string& eventId)
 
     // If anything changed, we need to update the buttons and labels
     if (updateButtonsAndLabels) {
-        // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems));
-        mQuantityLabel->adjustSize();
+        std::stringstream oss;
 
-        int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price: " + toString(price));
+        // Update labels
+        oss << mAmountItems;
+        mQuantityLabel->setCaption(oss.str());
+        mQuantityLabel->adjustSize();
+        oss.str("");
+        oss << "Price: " << mAmountItems * mShopItems->at(selectedItem).price;
+        mMoneyLabel->setCaption(oss.str());
         mMoneyLabel->adjustSize();
 
         // Update Buttons

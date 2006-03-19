@@ -23,6 +23,7 @@
 
 #include "char_select.h"
 
+#include <sstream>
 #include <string>
 
 #include <guichan/widgets/label.hpp>
@@ -38,8 +39,6 @@
 #include "../main.h"
 
 #include "../net/messageout.h"
-
-#include "./utils/tostring.h"
 
 /**
  * Listener for confirming character deletion.
@@ -70,8 +69,7 @@ void CharDeleteConfirm::action(const std::string &eventId)
 }
 
 CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
-    Window("Select Character"), mNetwork(network),
-    mCharInfo(charInfo), mCharSelected(false)
+    Window("Select Character"), mNetwork(network), mCharInfo(charInfo), mCharSelected(false)
 {
     mSelectButton = new Button("Ok", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
@@ -173,10 +171,17 @@ void CharSelectDialog::updatePlayerInfo()
     LocalPlayer *pi = mCharInfo->getEntry();
 
     if (pi) {
-        mNameLabel->setCaption(pi->getName());
-        mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
-        mJobLevelLabel->setCaption("Job Lvl: " + toString(pi->mJobLevel));
-        mMoneyLabel->setCaption("Gold: " + toString(pi->mGp));
+        std::stringstream nameCaption, levelCaption, jobCaption, moneyCaption;
+
+        nameCaption << pi->getName();
+        levelCaption << "Lvl: " << pi->mLevel;
+        jobCaption << "Job Lvl: " << pi->mJobLevel;
+        moneyCaption << "Gold: " << pi->mGp;
+
+        mNameLabel->setCaption(nameCaption.str());
+        mLevelLabel->setCaption(levelCaption.str());
+        mJobLevelLabel->setCaption(jobCaption.str());
+        mMoneyLabel->setCaption(moneyCaption.str());
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);
@@ -186,7 +191,8 @@ void CharSelectDialog::updatePlayerInfo()
         mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
         mPlayerBox->mHairColor = pi->getHairColor() - 1;
         mPlayerBox->mShowPlayer = true;
-    } else {
+    }
+    else {
         mNameLabel->setCaption("Name");
         mLevelLabel->setCaption("Level");
         mJobLevelLabel->setCaption("Job Level");

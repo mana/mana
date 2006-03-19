@@ -25,6 +25,7 @@
 
 #include <SDL_types.h>
 #include <string>
+#include <sstream>
 
 #include "messagein.h"
 #include "protocol.h"
@@ -34,8 +35,6 @@
 #include "../game.h"
 
 #include "../gui/chat.h"
-
-#include "../utils/tostring.h"
 
 extern Being *player_node;
 
@@ -56,6 +55,7 @@ void ChatHandler::handleMessage(MessageIn *msg)
 {
     Being *being;
     std::string chatMsg;
+    std::stringstream ss;
     Sint16 chatMsgLength;
 
     switch (msg->getId())
@@ -105,8 +105,8 @@ void ChatHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            chatWindow->chatLog("Online users: " + toString(msg->readInt32()),
-                    BY_SERVER);
+            ss << "Online users: " << msg->readInt32();
+            chatWindow->chatLog(ss.str(), BY_SERVER);
             break;
 
         case 0x010c:

@@ -24,13 +24,12 @@
 #include "ministatus.h"
 
 #include <guichan/widgets/label.hpp>
+#include <sstream>
 
 #include "gui.h"
 #include "progressbar.h"
 
 #include "../localplayer.h"
-
-#include "../utils/tostring.h"
 
 MiniStatusWindow::MiniStatusWindow():
     Window("")
@@ -89,8 +88,12 @@ void MiniStatusWindow::update()
     // mpBar->setProgress((float)player_node->mp / (float)player_node->maxMp);
 
     // Update and center labels
-    mHpLabel->setCaption(toString(player_node->mHp));
-    mMpLabel->setCaption(toString(player_node->mMp));
+    std::stringstream updatedText;
+    updatedText << player_node->mHp;
+    mHpLabel->setCaption(updatedText.str());
+    updatedText.str("");
+    updatedText << player_node->mMp;
+    mMpLabel->setCaption(updatedText.str());
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)

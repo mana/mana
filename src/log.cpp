@@ -71,16 +71,16 @@ void Logger::log(const char *log_text, ...)
 
     // Print the log entry
     std::stringstream timeStr;
-    timeStr << "["
-        << ((((t / 60) / 60) % 24 < 10) ? "0" : "")
-        << (int)(((t / 60) / 60) % 24)
-        << ":"
-        << (((t / 60) % 60 < 10) ? "0" : "")
-        << (int)((t / 60) % 60)
-        << ":"
-        << ((t % 60 < 10) ? "0" : "")
-        << (int)(t % 60)
-        << "] ";
+    timeStr << "[";
+    timeStr << ((((t / 60) / 60) % 24 < 10) ? "0" : "");
+    timeStr << (int)(((t / 60) / 60) % 24);
+    timeStr << ":";
+    timeStr << (((t / 60) % 60 < 10) ? "0" : "");
+    timeStr << (int)((t / 60) % 60);
+    timeStr << ":";
+    timeStr << ((t % 60 < 10) ? "0" : "");
+    timeStr << (int)(t % 60);
+    timeStr << "] ";
 
     mLogFile << timeStr.str() << buf << std::endl;
 

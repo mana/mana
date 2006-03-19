@@ -24,13 +24,14 @@
 #ifndef _TMW_DEBUGWINDOW_H
 #define _TMW_DEBUGWINDOW_H
 
-#include <iosfwd>
+#include <string>
 
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
-
 #include "../guichanfwd.h"
+
+class Map;
 
 /**
  * The chat window.
@@ -58,6 +59,8 @@ class DebugWindow : public Window, public gcn::ActionListener
     private:
         gcn::Label *mMusicFileLabel, *mMapFileLabel;
         gcn::Label *mTileMouseLabel, *mFPSLabel;
+        Map *mCurrentMap;
+
 };
 
 #endif

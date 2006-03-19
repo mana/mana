@@ -23,6 +23,8 @@
 
 #include "itemcontainer.h"
 
+#include <sstream>
+
 #include <guichan/mouseinput.hpp>
 
 #include "../graphics.h"
@@ -35,8 +37,6 @@
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
-
-#include "../utils/tostring.h"
 
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
@@ -122,8 +122,16 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         }
 
         // Draw item caption
-        graphics->drawText(
-                (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
+        std::stringstream ss;
+
+        if (!item->isEquipped()) {
+            ss << item->getQuantity();
+        }
+        else {
+            ss << "Eq.";
+        }
+
+        graphics->drawText(ss.str(),
                 itemX + gridWidth / 2,
                 itemY + gridHeight - 11,
                 gcn::Graphics::CENTER);

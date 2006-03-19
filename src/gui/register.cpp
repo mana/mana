@@ -139,7 +139,7 @@ RegisterDialog::action(const std::string& eventId)
         int error = 0;
 
         // Check login
-        if (user.empty())
+        if (user.length() == 0)
         {
             // No username
             errorMsg << "Enter your username first.";

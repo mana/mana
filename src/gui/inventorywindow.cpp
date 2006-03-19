@@ -24,6 +24,7 @@
 #include "inventorywindow.h"
 
 #include <string>
+#include <sstream>
 
 #include <guichan/mouseinput.hpp>
 
@@ -39,8 +40,6 @@
 #include "../localplayer.h"
 
 #include "../resources/iteminfo.h"
-
-#include "../utils/tostring.h"
 
 InventoryWindow::InventoryWindow():
     Window("Inventory")
@@ -89,9 +88,10 @@ void InventoryWindow::logic()
     updateButtons();
 
     // Update weight information
-    mWeightLabel->setCaption(
-            "Total Weight: " + toString(player_node->mTotalWeight) + " - "
-            "Maximum Weight: " + toString(player_node->mMaxWeight));
+    std::stringstream tempstr;
+    tempstr << "Total Weight: " << player_node->mTotalWeight
+            << " - Maximum Weight: " << player_node->mMaxWeight;
+    mWeightLabel->setCaption(tempstr.str());
     mWeightLabel->adjustSize();
 }
 

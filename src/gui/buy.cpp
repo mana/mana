@@ -23,6 +23,8 @@
 
 #include "buy.h"
 
+#include <sstream>
+
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -38,8 +40,6 @@
 
 #include "../net/messageout.h"
 #include "../net/protocol.h"
-
-#include "../utils/tostring.h"
 
 
 BuyDialog::BuyDialog(Network *network):
@@ -139,8 +139,10 @@ void BuyDialog::reset()
 void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
+    std::stringstream ss;
 
-    item_shop.name = itemDb->getItemInfo(id)->getName() + " " + toString(price) + " GP";
+    ss << itemDb->getItemInfo(id)->getName() << " " << price << " GP";
+    item_shop.name = ss.str();
     item_shop.price = price;
     item_shop.id = id;
 
@@ -240,17 +242,21 @@ void BuyDialog::action(const std::string& eventId)
 
     // If anything has changed, we have to update the buttons and labels
     if (updateButtonsAndLabels) {
+        std::stringstream oss;
+
         // Update buttons
         mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
         mDecreaseButton->setEnabled(mAmountItems > 0);
         mBuyButton->setEnabled(mAmountItems > 0);
 
         // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems));
+        oss << mAmountItems;
+        mQuantityLabel->setCaption(oss.str());
         mQuantityLabel->adjustSize();
 
-        int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price : " + toString(price)  + " GP");
+        oss.str("");
+        oss << "Price : " << mAmountItems * mShopItems->at(selectedItem).price << " GP";
+        mMoneyLabel->setCaption(oss.str());
         mMoneyLabel->adjustSize();
     }
 }
