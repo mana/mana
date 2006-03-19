@@ -1,5 +1,7 @@
 2006-03-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/register.h, src/gui/register.cpp: Fixed a memory leak and
+	removed some whitespace noise.
 	* src/lockedarray.h, src/game.cpp, src/gui/gui.cpp,
 	src/gui/browserbox.cpp, src/gui/register.cpp,
 	src/resources/resourcemanager.cpp: Removed some useless null pointer

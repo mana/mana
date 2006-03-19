@@ -49,6 +49,11 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         RegisterDialog(LoginData *loginData);
 
         /**
+         * Destructor
+         */
+        ~RegisterDialog();
+
+        /**
          * Called when receiving actions from the widgets.
          */
         void action(const std::string& eventId);

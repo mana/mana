@@ -42,7 +42,10 @@
 #include "ok_dialog.h"
 
 RegisterDialog::RegisterDialog(LoginData *loginData):
-    Window("Register"), mLoginData(loginData)
+    Window("Register"),
+    mWrongDataNoticeListener(new WrongDataNoticeListener()),
+    mWrongRegisterNotice(0),
+    mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label("Name:");
     gcn::Label *passwordLabel = new gcn::Label("Password:");
@@ -58,11 +61,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mFemaleButton->setEnabled(false);
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
-    
+
     int width = 200;
     int height = 150;
     setContentSize(width, height);
-    
+
     mUserField->setPosition(65, 5);
     mUserField->setWidth(130);
     mPasswordField->setPosition(
@@ -79,15 +82,15 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
     serverLabel->setPosition(5, mServerField->getY() + 1);
-    
+
     mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
-                              mConfirmField->getY() + mConfirmField->getHeight() + 7);
+            mConfirmField->getY() + mConfirmField->getHeight() + 7);
     mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
-                            mFemaleButton->getY());
-                            
+            mFemaleButton->getY());
+
     mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
     mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
-                              mRegisterButton->getY());
+            mRegisterButton->getY());
 
 
     /*mUserField->setEventId("register");
@@ -118,9 +121,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mUserField->setCaretPosition(mUserField->getText().length());
 
     mServerField->setText(config.getValue("host", ""));
-    
-    mWrongDataNoticeListener = NULL;
-    mWrongRegisterNotice = NULL;
+}
+
+RegisterDialog::~RegisterDialog()
+{
+    delete mWrongRegisterNotice;
 }
 
 void
@@ -183,10 +188,9 @@ RegisterDialog::action(const std::string& eventId)
             errorMsg << "Passwords do not match.";
             error = 2;
         }
-        
+
         if (error > 0)
         {
-            mWrongDataNoticeListener = new WrongDataNoticeListener();
             if (error == 1)
             {
                 mWrongDataNoticeListener->setTarget(this->mUserField);
