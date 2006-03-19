@@ -1,5 +1,9 @@
 2006-03-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/lockedarray.h, src/game.cpp, src/gui/gui.cpp,
+	src/gui/browserbox.cpp, src/gui/register.cpp,
+	src/resources/resourcemanager.cpp: Removed some useless null pointer
+	checks.
 	* src/gui/login.cpp, src/gui/setup_audio.h, src/gui/setup.cpp,
 	src/gui/setup_audio.cpp, src/gui/setup_video.cpp,
 	src/gui/setup_video.h: Removed some duplicated initializations.

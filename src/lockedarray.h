@@ -74,8 +74,7 @@ LockedArray<T>::LockedArray(unsigned int size):
 template<class T>
 LockedArray<T>::~LockedArray()
 {
-    if (mData)
-        delete [] mData;
+    delete [] mData;
 }
 
 template<class T>

@@ -72,10 +72,8 @@ BrowserBox::~BrowserBox()
     if (instances == 0)
     {
         // Clean up static resource font
-        if (browserFont) {
-            delete browserFont;
-            browserFont = NULL;
-        }
+        delete browserFont;
+        browserFont = NULL;
     }
 #endif
 }

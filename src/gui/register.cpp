@@ -198,11 +198,7 @@ RegisterDialog::action(const std::string& eventId)
                 mConfirmField->setText("");
             }
 
-            if (mWrongRegisterNotice)
-            {
-                delete mWrongRegisterNotice;
-                mWrongRegisterNotice = NULL;
-            }
+            delete mWrongRegisterNotice;
             mWrongRegisterNotice = new OkDialog("Error", errorMsg.str());
             mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
         }

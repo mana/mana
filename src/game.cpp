@@ -308,14 +308,11 @@ Game::~Game()
 
     delete beingManager;
     delete floorItemManager;
+    delete joystick;
 
     beingManager = NULL;
     floorItemManager = NULL;
-
-    if (joystick != NULL)
-    {
-        delete joystick;
-    }
+    joystick = NULL;
 }
 
 bool saveScreenshot(SDL_Surface *screenshot)

@@ -193,10 +193,7 @@ Gui::~Gui()
     delete speechFont;
     delete mTop;
     delete mImageLoader;
-
-    if (mHostImageLoader) {
-        delete mHostImageLoader;
-    }
+    delete mHostImageLoader;
 
     delete guiInput;
 }

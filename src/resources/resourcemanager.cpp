@@ -240,10 +240,8 @@ ResourceManager::getInstance()
 void
 ResourceManager::deleteInstance()
 {
-    if (instance != NULL) {
-        delete instance;
-        instance = NULL;
-    }
+    delete instance;
+    instance = NULL;
 }
 
 void*
