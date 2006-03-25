@@ -63,8 +63,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     mModal(modal),
     mResizable(false),
     mMouseResize(false),
-    mMinWinWidth(6),
-    mMinWinHeight(23),
+    mMinWinWidth(100),
+    mMinWinHeight(28),
     mMaxWinWidth(INT_MAX),
     mMaxWinHeight(INT_MAX)
 {
@@ -341,25 +341,22 @@ void Window::mouseMotion(int x, int y)
         }
 
         // Keep the window at least its minimum size
-        int Xcorrection = 0;
-        int Ycorrection = 0;
-
         if (newDim.width < mMinWinWidth)
         {
-            Xcorrection = mMinWinWidth - newDim.width;
+            newDim.width = mMinWinWidth;
         }
         else if (newDim.width > mMaxWinWidth)
         {
-            Xcorrection = mMaxWinWidth - newDim.width;
+            newDim.width = mMaxWinWidth;
         }
 
         if (newDim.height < mMinWinHeight)
         {
-            Ycorrection = mMinWinHeight - newDim.height;
+            newDim.height = mMinWinHeight;
         }
         else if (newDim.height > mMaxWinHeight)
         {
-            Ycorrection = mMaxWinHeight - newDim.height;
+            newDim.height = mMaxWinHeight;
         }
 
         // Snap window to edges
