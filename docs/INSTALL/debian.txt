@@ -18,38 +18,40 @@ IRC:      irc.freenode.net / #themanaworld
 =============================================
 
 The Mana World Debian Package can be installed under the Debian Testing and
-Unstable (Sarge/Sid). In order to have Mana World working, you'll need packages
-for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan0.
+Unstable (Sarge/Sid). In order to have Mana World working, you'll need
+packages for SDL, SDL_mixer, SDL_image, libxml2, libphysfs and libguichan0.
 
 To install the dependencies, you can do type (as root):
 
     apt-get install libsdl-mixer1.2 libsdl-image1.2 libxml2 libphysfs-1.0-0 libguichan0
 
-Type tmw as a normal user to play ! (Enjoy !)
+Type tmw as a normal user to play! (Enjoy!)
 
 2. Creating a Debian Package using DebHelper Tools
 ==================================================
 
-You'll need the gcc, g++ and dev packages of dependencies :
+You'll need the gcc, g++ and dev packages of dependencies:
 
    apt-get install gcc g++ libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
 
-And the debhelper tools :
+And the debhelper tools:
 
    apt-get install dh-make fakeroot dpkg-dev build-essentials
 
-Download tmw from CVS using the command (You'll need CVS installed on your system) :
+Download tmw from Subversion using the command (You'll need Subversion
+installed on your system):
 
-   cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/themanaworld co -P tmw
+   svn https://svn.sourceforge.net/svnroot/themanaworld/tmw/trunk tmw
 
 Rename the tmw folder into tmw-XXX and open a console in it.
-You can now type :
+You can now type:
 
     fakeroot dpkg-buildpackage
 
-The package will create itself, including sources and diffs. You only need deb file.
+The package will create itself, including sources and diffs. You only need deb
+file.
 
-Install it :
+Install it:
 
     dpkg -i tmw_XXXXXX_i386.deb
 
@@ -60,28 +62,26 @@ don't forget to remove it with :)
 
 (Don't worry, you configuration files are not removed...)
 
-And now the final step : type 'tmw' as a normal user in a shell and
-you're in !!! 
+And now the final step: type 'tmw' as a normal user in a shell and you're in!
 
-KDE/Gnome menu entries are created in Arcade Games upon installation.
-
-(Don't forget : To create a new account, add a '_M' after your account name the first time. After that just type your account name normally...)
+KDE/GNOME menu entries are created in Arcade Games upon installation.
 
 3. Notes
 ========
 
 A Debian Repository has been created.
 
-Simply add in your /etc/apt/sources.list file :
+Simply add in your /etc/apt/sources.list file:
 
     deb http://bertram.ifrance.com ./
     deb-src http://bertram.ifrance.com ./
 
-Then, as root, do :
+Then, as root, do:
 
     apt-get update
     apt-get install tmw
 
-and you're done !
+and you're done!
 
-N.B.: The tmw-music, libguichan0, and libguichan0-dev packages are also provided in this repository.
+N.B.: The tmw-music, libguichan0, and libguichan0-dev packages are also
+provided in this repository.

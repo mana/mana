@@ -52,7 +52,7 @@ After you fetched it simply run and install.
 ====================================
 
 The easy way is to get our development package which should work with the latest
-CVS (I'll try to update it as much as I can).
+development code (I'll try to update it as much as I can).
 You can find it at:
 
   http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak
@@ -103,17 +103,18 @@ Install them all through the Dev-C++ package manager.
 	 
 ****) Get latest win32 - mingw package and install as usual.
 
-You should now be fully equipped for compiling the latest TMW CVS code!
+You should now be fully equipped for compiling the latest TMW development
+code!
 
 
 4. Compiling The Mana World
 ===========================
 
-Check out The Mana World from CVS using either the command line cvs tool or
-TortoiseCVS, pick what you like to use most and install that. Next, check out
-the tmw module from our repository. For anonymous users, the CVSROOT is:
+Check out The Mana World from Subversion using either the command line svn
+tool or TortoiseSVN, pick what you like to use most and install that. Next,
+check out the following directory from our repository:
 
-  :pserver:anonymous@cvs.sourceforge.net:/cvsroot/themanaworld
+  https://svn.sourceforge.net/svnroot/themanaworld/tmw/trunk
 
 Open "The Mana World.dev" in Dev-C++. From there on you should be able to
 start compilition with Excute -> Compile. A file called tmw.exe should appear
@@ -129,7 +130,7 @@ alternatively into your c:\windows\system\ for a more universal solution):
  guichan.dll
  guichan_opengl.dll
  guichan_sdl.dll
- 
+
 And also make sure you have:
 
  libxml2.dll
@@ -137,10 +138,9 @@ And also make sure you have:
  libiconv-2.dll
  physfs.dll
  zlib1.dll
- 
+
 Additionally don't forget to copy any updated .dll (when libs are updated,
 the dll are usually updated too) to the folder containing tmw.exe (or to the
 c:\windows\system\).
 
 Have fun hacking The Mana World!
-

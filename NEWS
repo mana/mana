@@ -1,14 +1,14 @@
 0.0.19 (6 March 2006)
-- Added --username, --password and --defaults command line options
-- Improved login sequence
-- Enabled 3 slots to create players
-- Improved setup window and added a joystick calibration tool
-- Some maps fixes
-- Reorganized and improved network code
-- Fixed some bugs
-- Made the player walk to items prior to picking them up
 - Added new playerset
-- Lots of cleanups and code re-roganization
+- Added --username, --password and --defaults command line options
+- Made the player walk to items prior to picking them up
+- Improved login sequence
+- Improved setup window and added a joystick calibration tool
+- Enabled 3 slots to create players
+- Reorganized and improved network code
+- Some maps fixes
+- Fixed some bugs
+- Lots of cleanups and code re-organization
 
 0.0.18.1 (30 December 2005)
 - Fixed a drawing glitch with high tiles at the bottom of the screen

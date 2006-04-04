@@ -6,7 +6,7 @@
 
 	* The Mana World.dev: Updated project.
 
-2006-03-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-20  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Fixed a crash on map change.
 
@@ -14,7 +14,7 @@
 
 	* src/gui/char_select.cpp: Fixed an include.
 
-2006-03-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-19  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/register.h, src/gui/register.cpp: Fixed a memory leak and
 	removed some whitespace noise.
@@ -32,7 +32,7 @@
 	according to their tabs in the window. Fixed some memory leaks along
 	the way. Also fixed two settings not being stored on "apply".
 
-2006-03-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-18  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/chat.cpp, src/gui/menuwindow.cpp, src/gui/skill.cpp,
 	src/gui/status.cpp: Use the window container instead of the graphics
@@ -49,7 +49,7 @@
 	src/net/chathandler.cpp, src/engine.cpp, src/utils/tostring.h,
 	src/Makefile.am: Added a toString conversion function.
 
-2006-03-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-15  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.h, src/main.cpp, src/gui/equipmentwindow.cpp,
 	src/gui/window.cpp, src/gui/login.cpp, src/gui/listbox.h,
@@ -80,7 +80,7 @@
 	data/graphics/sprites/Makefile.am: Fixed some hair positions, added a
 	new style, updated makefile.
 
-2006-03-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-09  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/utils/dtor.h: Added guards.
 	* src/game.cpp, src/main.cpp, src/gui/connection.cpp,
@@ -144,7 +144,7 @@
 	* src/gui/browserbox.cpp: Make the MouseOverLink functor dynamic and
 	use a STL algorithm in one more place.
 
-2006-03-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-03-08  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/browserbox.h, src/gui/menuwindow.cpp, src/gui/buysell.cpp:
 	Some fixes for compiling with pedantic compiler settings and const
@@ -153,7 +153,7 @@
 	direction in order to make the texture less wide so that it stays
 	within the 1024 texture limit for OpenGL mode.
 
-2006-03-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-08  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp, src/main.cpp, src/gui/button.cpp,
 	src/gui/textfield.cpp, src/gui/playerbox.cpp,
@@ -186,7 +186,7 @@
 	* data/graphics/tiles/Makefile.am, data/graphics/tiles/Woodland.png:
 	Removed unused tileset.
 
-2006-03-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-06  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* configure.ac: Version changed to 0.0.19.
 
@@ -200,7 +200,7 @@
 	data/help/team.txt: A bunch of updates to docs, ready for 0.0.19.
 	* data/help/changes.txt, src/main.cpp: Small fixes before releasing.
 
-2006-03-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-03-05  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/sprites/Makefile.am: Remove trailing whitespace.
 	* src/engine.cpp: Re-add main.h header, Windows build needs it.
@@ -235,12 +235,12 @@
 	  src/localplayer.cpp, src/main.cpp, beinghandler.cpp, player.cpp,
 	  src/resources/image.cpp: Hacked code to support the new playerset.
 
-2006-02-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-25  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/beingmanager.cpp, src/beingmanager.h, src/engine.cpp,
 	src/main.h, src/sound.h: Added a logic method to the being manager.
 
-2006-02-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-24  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/configuration.cpp,
 	src/configuration.h, src/engine.cpp, src/map.cpp, src/map.h,
@@ -252,7 +252,7 @@
 	src/resources/itemmanager.h: Another bunch of cosmetic cleanups, i.e.
 	mostly typedefs...
 
-2006-02-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-23  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/beingmanager.cpp,
 	src/beingmanager.h, src/engine.cpp, src/inventory.cpp,
@@ -281,13 +281,13 @@
 	* src/resources/itemmanager.cpp: Added warnings when parameters are
 	missing in the items xml file.
 
-2006-02-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-16  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/browserbox.cpp, src/gui/browserbox.h, src/gui/gui.cpp: Use
 	Widget::mFont instead of browerFont for drawing, fixes the "gui
 	needs to be valid real early" issue.
 
-2006-02-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-07  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/game.cpp, src/localplayer.cpp,
 	src/localplayer.h, src/monster.cpp, src/player.cpp,
@@ -308,7 +308,7 @@
 	* src/net/tradehandler.cpp: Undone last changes because Bertram
 	already fixed the compiler issue.
 
-2006-02-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-06  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/game.cpp, src/joystick.cpp, src/joystick.h,
 	src/gui/setup.cpp, src/gui/setup.h: Added a Joystick class.
@@ -327,7 +327,7 @@
 
 	* data/graphics/gui/rpgfont_wider.png,
 	data/graphics/gui/fixedfont.png,data/graphics/gui/browserfont.png,
-	data/graphics/gui/sansserif8.png: Adding è accents mostly to the font
+	data/graphics/gui/sansserif8.png: Adding Ã¨ accents mostly to the font
 	images.
 	* src/engine.cpp, src/being.h, src/being.cpp, src/player.cpp,
 	src/gui/char_select.h, src/gui/char_select.cpp: Made the nickname and
@@ -338,11 +338,11 @@
 	itemmanager so tmw doesn't crash anymore if an item lacks some
 	parameters.
 
-2006-02-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-02-05  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Updated dependencies in response to patch by Hanno Braun.
 
-2006-02-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-05  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/tiles/Makefile.am: Added the new tilesets.
 	* src/localplayer.cpp, src/localplayer.h, src/gui/gui.cpp: Made the
@@ -360,7 +360,7 @@
 	technology. made the forests less regular. made the unwalkable map
 	borders more visual appealing
 
-2006-02-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-04  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/localplayer.h, src/logindata.h, src/main.cpp, src/main.h,
 	src/gui/char_select.cpp, src/gui/char_server.cpp,
@@ -369,7 +369,7 @@
 	src/net/loginhandler.h, src/net/network.cpp, src/net/network.h: Unify
 	the gui code for the various logins to use LoginData.
 
-2006-02-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-03  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/logindata.h, src/main.cpp, src/gui/login.cpp, src/gui/login.h:
 	Made the login dialog work on LoginData only, without playing with the
@@ -383,7 +383,7 @@
 	Replaced the old sand tile with Irucards new one. Added new crates.
 	Made some minor corrections.
 
-2006-02-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-02-01  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/game.h, src/main.cpp: Created a Game class.
 	* src/gui/passwordfield.cpp: Removed duplicated code.
@@ -406,7 +406,7 @@
 	message dialog from a npc that no longer exists.
 	* src/properties.h: Reverted properties to private.
 
-2006-01-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-31  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/setup.cpp: Cleanup.
 	* src/gui/requesttrade.cpp, src/gui/requesttrade.h: Made
@@ -423,7 +423,7 @@
 	ResourceManager a friend of Resource to avoid looping over decRef,
 	which returns void now.
 
-2006-01-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-30  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	 * src/gui/char_select.cpp, src/gui/confirm_dialog.cpp,
 	 src/gui/confirm_dialog.h, src/gui/error.cpp, src/gui/error.h,
@@ -431,7 +431,7 @@
 	 src/gui/setup.cpp, src/net/charserverhandler.cpp: A few cleanups and
 	 simplifications.
 
-2006-01-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-26  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/game.h, src/main.cpp: Moved some setup code out of
 	the game loop into the setup functions. Setup functions are now called
@@ -442,7 +442,7 @@
 	* The Mana World.dev, src/main.cpp: Updated Dev-Cpp project file, fixed
 	a GDI issue.
 
-2006-01-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-22  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/net/network.cpp: Make dispatchMessages actually
 	handle more than one message per call.
@@ -454,7 +454,7 @@
 	a bug in the network class that triggers when a handlers survives the
 	network object.
 
-2006-01-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-01-21  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/browserbox.cpp: Applied a patch by Ar2ro that works around
 	the problems with line wrapping in the chatbox. Note though that this
@@ -464,7 +464,7 @@
 
 	* The Mana World.dev: Updated Dev-Cpp project file.
 
-2006-01-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-20  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/equipment.h, src/game.cpp, src/game.h, src/main.h,
 	src/gui/buddywindow.cpp, src/gui/buddywindow.h,
@@ -504,7 +504,7 @@
 	docs/INSTALL/debian.txt, docs/INSTALL/win32.txt, docs/progression.txt:
 	Updated infos on new irc channel.
 
-2006-01-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-14  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/main.h, src/gui/char_server.cpp,
 	src/gui/char_server.h: Moved network code out of the
@@ -537,7 +537,7 @@
 	src/net/playerhandler.cpp: Made changeMap() care about sending the
 	map-loaded message. Removed network stuff from connection dialog.
 
-2006-01-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-13  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/gui/login.cpp, src/gui/login.h,
 	src/gui/register.cpp, src/net/loginhandler.cpp,
@@ -576,7 +576,7 @@
 	* src/game.cpp, src/localplayer.cpp, src/localplayer.h: Made emote() a
 	method of the LocalPlayer class.
 
-2006-01-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-12  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/main.cpp, src/net/beinghandler.cpp,
 	src/net/beinghandler.h, src/net/buysellhandler.cpp,
@@ -640,7 +640,7 @@
 	src/net/chathandler.h, src/net/tradehandler.cpp: Added a dedicated
 	handler for chat messages.
 
-2006-01-11  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-11  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/game.cpp, src/game.h, src/gui/popupmenu.cpp,
 	src/gui/requesttrade.h, src/net/messagehandler.h, src/net/network.cpp,
@@ -681,7 +681,7 @@
 
 	* src/game.cpp: Fixed canceled/cancelled inconsistency.
 
-2006-01-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-08  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/floor_item.cpp, src/floor_item.h, src/game.cpp,
 	src/localplayer.cpp, src/localplayer.h, src/gui/gui.cpp,
@@ -695,7 +695,7 @@
 	* src/game.cpp, src/game.h, src/gui/connection.cpp: Removed some
 	globals.
 
-2006-01-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-07  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/localplayer.cpp, src/localplayer.h: Created a walk
 	method for LocalPlayer.
@@ -708,7 +708,7 @@
 	splitted the setup window into 3 tabs and added a joystick calibration
 	tool.
 
-2006-01-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-06  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/localplayer.cpp: Changed semantics for auto
 	target. The player now keeps attacking the select target till he
@@ -731,7 +731,7 @@
 	specific code there. Added a BeingManager to remove use of globals.
 	Moved PLAYERINFO stuff into the new LocalPlayer class.
 
-2006-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-05  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* engine.cpp, engine.h, game.cpp, game.h, gui/buysell.h,
 	gui/chargedialog.h, gui/debugwindow.cpp, gui/debugwindow.h, gui/gui.h,
@@ -767,20 +767,20 @@
 	Smoothed also character creation, buttons are now disabled during
 	connection/data phase.
 
-2006-01-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-01-01  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/login.cpp, src/gui/login.h: Remove tracking of OkDialog, the
 	garbage collection stuff takes care of deletion and breaks manual
 	tracking.
 
-2006-01-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-01-01  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Applied patch by pclouds that allows for a faster
 	login sequence by providing the username and password from the command
 	line, and allowing the client to choose the default server and
 	character.
 
-2005-12-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-12-30  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/chat.cpp, src/gui/chat.h: Applied patch by pclouds to have
 	the chat window temporarily become visible when chatting while it is
@@ -811,7 +811,7 @@
 	crash by Doener. Fixed GCC 3.3.6 and 4.x paranthesis problem, patch
 	by r0nny. Fixed popupMenu not showing on items.
 
-2005-12-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-12-29  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/gui/popupmenu.cpp, src/net/protocol.cpp: Remove
 	duplicated code for picking up items as patched by pclouds.
@@ -828,12 +828,12 @@
 
 	* src/main.h: Fixed define problems with The_Mana_World_private.h.
 
-2005-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-12-25  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Small fix to prevent other stuff than the damage
 	numbers from fading out.
 
-2005-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-12-24  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp: Worked around fringe layer drawing bug at the bottom.
 	* src/main.cpp: When compiling with OpenGL support, it'll default to
@@ -842,7 +842,7 @@
 	* NEWS, configure.ac, The Mana World.dev: Updated in preparation of
 	release 0.0.18.1.
 
-2005-12-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-12-20  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Changed version to 0.0.18.
 
@@ -877,7 +877,7 @@
 	data/graphics/sprites/items.png, data/graphics/sprites/npcs.png,: Added
 	new monsters, items and npcs.
 
-2005-12-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-12-05  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 	* src/gui/char_server.cpp: Avoid crashing on trying to log the name
 	of a non-existing character.
 	* src/main.h, src/main.cpp: Display TMW version on Windows too.
@@ -886,7 +886,7 @@
 
 	* The Mana World.dev: Updated Dev-Cpp project file.
 
-2005-11-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-11-13  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_3-1.tmx.gz,
 	data/maps/new_7-1.tmx.gz: Made the three desert maps use the fringe
@@ -898,7 +898,7 @@
 	* src/main.cpp: Add version displaying at startup.
 	* docs/INSTALL/debian.txt: Updated Debian Install Doc.
 
-2005-10-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-20  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/item_amount.cpp: Fix scrollbar not being updated when the
 	amount is changed using the buttons.
@@ -929,14 +929,14 @@
 	debian/changelog, debian/control, debian/docs, debian/tmw.menu:
 	Updated Debian files to get tmw ready for official ITP.
 
-2005-10-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-19  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/resources/resourcemanager.cpp: Fix empty lines not being read
 	from text files.
 	* src/gui/browserbox.cpp, src/gui/browserbox.h: Code cleanup.
 	* src/gui/gccontainer.cpp: Remove debug output.
 
-2005-10-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-18  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/gui/buddywindow.cpp, src/gui/buddywindow.h,
 	src/gui/buy.cpp, src/gui/buy.h, src/gui/buysell.cpp,
@@ -970,7 +970,7 @@
 	* src/gui/setup.cpp: made it so those who use and go to fullscreen
 	requires a restart (texture/context baddies)
 
-2005-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-16  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/game.cpp, src/inventory.cpp, src/gui/buy.cpp,
 	src/gui/buysell.cpp, src/gui/char_select.cpp, src/gui/char_server.cpp,
@@ -1000,7 +1000,7 @@
 	non-blocking now and fixed the problem with sound not being played at
 	startup.
 
-2005-10-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-15  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Moved some variables into the conditional block
 	where they are used.
@@ -1009,19 +1009,19 @@
 	src/resources/image.h: Some small cleanups.
 	* src/engine.cpp: Removed some legacy debug code.
 
-2005-10-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-13  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp: Prevent Alt+p/s/f from appearing in chatbox.
 	* src/Makefile.am: Some updates for added/removed headers.
 	* src/being.cpp: Changed char to signed char for GNU/Linux PPC.
 
-2005-10-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-13  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
 	src/gui/gui.h: Use gcn::Font instead of gcn::ImageFont where the
 	former is sufficient.
 
-2005-10-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-10  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp, src/being.h, src/game.cpp: Always compile with debug
 	window and hide it on startup. Also added fading out effect on damage
@@ -1045,7 +1045,7 @@
 	src/engine.cpp, src/Makefile.am: Corrected the white browser font
 	bug and the black hp/mp bug which were linked. Added a debug window
 
-2005-10-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-09  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp, src/being.h, src/engine.cpp, src/engine.h,
 	src/floor_item.cpp, src/floor_item.h, src/map.cpp, src/map.h,
@@ -1081,7 +1081,7 @@
 	crashing the client, display of [TARGET], Alt keys for toggling
 	windows and names to overlap other players.
 
-2005-10-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-06  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Modified finding NPC as by timonator's suggestion in
 	order to allow NPCs to be clicked on their heads too.
@@ -1096,14 +1096,14 @@
 	to simplify Map class and to allow properties to be used by other
 	classes.
 
-2005-10-06  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-10-06  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/game.cpp: Use integer types from SDL
 	and along the way fixed some long vs. int issues.
 	* src/inventory.cpp: Return NULL when no valid item index is given to
 	getItem() to bail out early.
 
-2005-10-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-05  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/main.cpp, src/gui/char_select.cpp,
 	src/gui/skill.cpp, src/net/messagein.cpp: Fixed some resource cleanup
@@ -1125,7 +1125,7 @@
 	* src/gui/setup.cpp: Enable the OpenGL Checkbox only if tmw has been
 	compiled with its support.
 
-2005-10-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-10-02  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac, src/Makefile.am: Added check for pthread library and
 	removed manual -lpthread and -lguichan linker flags.
@@ -1152,7 +1152,7 @@
 	a few the default win position. And moved the setposition from game to
 	each win, to clarify the code.
 
-2005-09-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-29  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h, src/tileset.h, src/resources/mapreader.cpp,
 	src/resources/mapreader.h: Moved tileset management into the map class
@@ -1173,7 +1173,7 @@
 	* src/gui/setup.cpp, src/gui/setup.h; src/gui/minimap.h: Added a 'Reset
 	Windows to Default' Button in the Setup Window.
 
-2005-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-28  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/browserbox.cpp: Fix deletion of the gui font because of a
 	missing check.
@@ -1199,13 +1199,13 @@
 	src/net/network.cpp: Now error message is displayed properly when the
 	map server is offline.
 
-2005-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-25  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp: Fixed taking OpenGL screenshots and in
 	addition made it flip the image using just a line buffer instead of a
 	buffer for the complete image. Still needs testing on MacOS X.
 
-2005-09-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-24  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp, src/engine.cpp, src/game.cpp, src/main.cpp,
 	src/map.cpp, src/sound.cpp, src/gui/char_select.cpp,
@@ -1243,7 +1243,7 @@
 	* The Mana World.dev: Removed reference to src/gui/stats.* since they
 	are in the attic now.
 
-2005-09-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-20  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/gui/ok_dialog.cpp, src/gui/ok_dialog.h,
 	src/gui/window.cpp: Enter is used to dismiss dialogs currently,
@@ -1251,7 +1251,7 @@
 	made the game crash.
 	* src/openglgraphics.cpp: Changed glColor4f to glColor4ub.
 
-2005-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-19  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Replaced custom function FIND_PATH with AC_PATH_PROG,
 	used for finding sdl-config.
@@ -1316,7 +1316,7 @@
 	* src/gui/status.cpp: As m[a]tt noticed, made the status win a
 	little more wide, and resizable.
 
-2005-09-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-18  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp, src/graphics.cpp, src/graphics.h: Move the writing
 	logic out of the Graphics class once again... Some cleanups in the
@@ -1346,11 +1346,11 @@
 	* src/gui/popupmenu.cpp: Added "attack" option to the popupmenu
 	* src/net/protocol.cpp: findPlayer
 
-2005-09-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-17  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/game.cpp: Indent properly.
 
-2005-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-17  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* configure.ac: Fix typo.
 	* src/Makefile.am: Remove useless (duplicate) -lpng.
@@ -1392,12 +1392,12 @@
 	* src/gui/status.cpp, src/game.cpp: The derived stats are now updated
 	correctly upon equipping/unequipping.
 
-2005-09-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-16  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/resources/image.cpp: Report which error occured when loading of
 	an image fails.
 
-2005-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-14  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Fix missing parentheses in a negated check.
 	* src/engine.cpp, src/engine.h, src/game.cpp: Moved Map management
@@ -1427,7 +1427,7 @@
 	src/net/network.cpp, src/net/network.h: Started to use MessageOut to
 	send login data.
 
-2005-09-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-13  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* ChangeLog, The Mana World.dev, configure.ac, src/Makefile.am,
 	src/being.cpp, src/being.h, src/engine.cpp, src/floor_item.cpp,
@@ -1459,7 +1459,7 @@
 	* src/gui/login.cpp: Removed a close_session call i missed.
 	* src/gui/login.cpp: Close the session only when it was opened.
 
-2005-09-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-13  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/floor_item.cpp, src/floor_item.h, src/engine.cpp,
 	popupmenu.cpp: Made members private and provided more convenient
@@ -1479,7 +1479,7 @@
 	* src/gui/updatewindow.cpp: Start displaying file progress at 0% and
 	some small fixes.
 
-2005-09-12  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-12  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/gui/browserbox.cpp, src/gui/gui.cpp,
 	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h,
@@ -1487,7 +1487,7 @@
 	Added SDLImageLoader to make guichan support physfs. Removed
 	ResourceManager::getRealPath() because it's no longer needed.
 
-2005-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-12  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/hits_blue.png, data/graphics/gui/hits_red.png,
 	data/graphics/gui/hits_yellow.png: Made shadow translucent.
@@ -1495,7 +1495,7 @@
 	* data/help/changes.txt, data/help/commands.txt: Added 0.0.16 changes.
 	* data/maps/new_7-1.tmx.gz: Fixed well being in the wrong layer.
 
-2005-09-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-11  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/network.cpp: Improved error reporting a bit and got rid of
 	loop for sending data, which shouldn't be necessary according to
@@ -1545,12 +1545,12 @@
 	flush() was still called in a loop for sending and added asserts to
 	MessageIn methods.
 
-2005-09-10  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-10  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/log.cpp: Committed patch by Nayr for displaying a messagebox
 	when an error occurs on MacOS.
 
-2005-09-10  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-10  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* configure.ac: Add check for SDL_net.
 
@@ -1558,12 +1558,12 @@
 
 	* src/game.cpp: Fixes to dropped items network code
 
-2005-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-09-09  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/win2linux.h: Removed inclusion of malloc.h header as it
 	doens't seem necessary and was problematic on FreeBSD.
 
-2005-09-08  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-09-08  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Clean the floor items when the map changes.
 
@@ -1575,7 +1575,7 @@
 	Updated docs for release, fixed Dev-Cpp project file, added more items
 	and npcs, fixed the new map and added it to the makefile.
 
-2005-08-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-31  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp: Fix push/pop of clip area, we need to
 	translate using the x/y offset, not the x/y coordinates of the clip
@@ -1587,7 +1587,7 @@
 	* data/graphics/sprites/npcs.png, src/gui/sell.cpp: Added empty sprite
 	and reorganized spriteset, fixed a typo.
 
-2005-08-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-29  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/configlistener.cpp, src/configlistener.h: Made
 	the destructor inline, as it is an interface, we don't need a .cpp
@@ -1604,7 +1604,7 @@
 
 	* data/maps/new_8-1.tmx.gz: Some layer and walkability fixes.
 
-2005-08-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-28  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp, src/gui/browserbox.cpp,
 	src/gui/buddywindow.cpp, src/gui/buddywindow.h, src/gui/buysell.h,
@@ -1626,7 +1626,7 @@
 	for the Window class. (Fixes each Window listening to config changes,
 	although they only affect a static class member.)
 
-2005-08-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-27  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/npc.cpp: Fix a memory leak.
 	* src/game.cpp, src/gui/npc.cpp, src/gui/npc.h: Fix the bug when
@@ -1650,7 +1650,7 @@
 	bugfixes as I was on it.
 	* data/maps/new_7-1.tmx.gz: Added eyecandy to the map 7-1.
 
-2005-08-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-26  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* ChangeLog: Fix indentation and line length.
 	* docs/HACKING.txt: Fix the example (OOPS!).
@@ -1671,7 +1671,7 @@
 	src/resources/iteminfo.cpp, data/items.xml, data/items.xsd: Added
 	Effects description to items.
 
-2005-08-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-08-25  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Fixed line length using tab size of 8.
 	* src/configuration.h, src/configuration.cpp: Removed some debug code
@@ -1679,7 +1679,7 @@
 	* src/resources/resourcemanager.cpp: Removed unused (I think) headers
 	for Windows.
 
-2005-08-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-25  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp: Use the translation capabilities of OpenGL
 	instead of doing it ourselves all the time.
@@ -1717,7 +1717,7 @@
 	* src/gui/login.h, src/gui/login.cpp: Code cleanups and improvements
 	to the login sequence.
 
-2005-08-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-23  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/shop.h: Fixed using a forward declaration for std::string,
 	where it was a class member.
@@ -1743,7 +1743,7 @@
 	* src/gui/skill.cpp: Disabled use button in skill dialog since is still
 	not being used.
 
-2005-08-20  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-20  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/openglgraphics.cpp: Added some missing state changes and checks.
 	* src/gui/inventorywindow.cpp, src/gui/item_amount.cpp,
@@ -1751,7 +1751,7 @@
 	the item amount dialog work on a provided item, instead of having it
 	ask the inventory window itself.
 
-2005-08-19  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-19  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/game.cpp: The engine isn't connected to all the
 	gui windows, so move creation from its constructor into the game.cpp
@@ -1767,7 +1767,7 @@
 	Updated reference to latest libxml, fixed a bug in updating skills,
 	updated skill names database.
 
-2005-08-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-18  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/graphics.cpp, src/graphics.h, src/main.cpp,
 	src/openglgraphics.cpp src/openglgraphics.h, src/gui/gui.cpp,
@@ -1799,7 +1799,7 @@
 	data/graphics/gui/resize.png: Added a resize grip to resizable window,
 	fixed some compiling errors.
 
-2005-08-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-15  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/gui/gui.cpp, src/gui/gui.h: Removed guiTop global
 	variable.
@@ -1819,7 +1819,7 @@
 	dependencies on gui.h in some places.
 
 
-2005-08-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-14  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/graphics.cpp, src/graphics.h, src/resources/image.cpp,
 	src/resources/image.h: Moved the image drawing code into the graphics
@@ -1828,7 +1828,7 @@
 	the wrapper functions in the Graphics class conditional on whether we
 	compile with OpenGL support.
 
-2005-08-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-13  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am, src/being.cpp, src/being.h, src/configlistener.cpp,
 	src/configlistener.h, src/configuration.cpp, src/configuration.h,
@@ -1904,7 +1904,7 @@
 
 	* src/resources/image.cpp: Little cleanup and simplification.
 
-2005-08-10  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-10  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp, src/graphics.cpp, src/graphics.h,
 	src/gui/browserbox.cpp, src/gui/gui.cpp, src/gui/listbox.cpp,
@@ -1914,12 +1914,12 @@
 	* src/game.cpp: Added helper function for being creation to reduce code
 	duplication. Some code simplifications.
 
-2005-08-09  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-09  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Adjust drawing offset to have the player centered in
 	higher resolutions as well.
 
-2005-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-04  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp: Use "true" instead of "1" as bool argument.
 	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
@@ -1938,7 +1938,7 @@
 	* src/game.cpp, src/game.h, src/gui/requesttrade.cpp: Fix my previous
 	fix because it broke my own code.
 
-2005-08-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-03  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp: Use PhysFS to determine user's home directory on unix
 	system. Removed an now unused header.
@@ -1953,7 +1953,7 @@
 
 	* src/game.cpp: Fixed "Trade canceled" happening often.
 
-2005-08-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-02  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/engine.cpp: Cleanups in the drawing code.
 	* src/engine.cpp, src/game.cpp: Made autoTarget checks being handled at
@@ -1967,7 +1967,7 @@
 	* tmw/src/gui/status.cpp: making setup dialog quitting when clicking
 	on setup button while dialog is opened
 
-2005-08-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-08-01  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/inventory.cpp, src/inventory.h, src/gui/itemcontainer.cpp,
 	src/gui/itemcontainer.h: Added a logic function to dynamically adjust
@@ -1979,7 +1979,7 @@
 	* src/game.cpp, src/game.h, src/gui/popupmenu.cpp: Show the name of the
 	trade partner in the trade dialog.
 
-2005-07-31  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-31  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/listbox.cpp: Small cleanup of the drawing code.
 	* src/engine.cpp: Added a check to stop scrolling when we hit the map
@@ -1995,7 +1995,7 @@
 
 	* src/main.cpp: Removed unnecessary value assignment to a variable.
 
-2005-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-30  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/resources/resourcemanager.h,
 	src/resources/resourcemanager.cpp: Fixed buggy check for the existence
@@ -2003,12 +2003,12 @@
 	physfs functions and moved the actual setup process from the resource
 	manager constructor into the main initialization.
 
-2005-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-29  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Fixed popup window not always being correctly hidden
 	when the player clicks somewhere else.
 
-2005-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-28  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.cpp, src/gui/update.cpp, src/resources/resourcemanager.cpp,
 	src/resources/resourcemanager.h: Added support for files downloaded
@@ -2026,7 +2026,7 @@
 	* src/main.cpp: Fixed updates directory not being created on non-unix
 	systems. Started using PhysFS write support.
 
-2005-07-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-07-27  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/game.cpp, src/graphics.cpp, src/graphics.h,
 	src/main.cpp, src/gui/browserbox.cpp, src/gui/button.cpp,
@@ -2037,12 +2037,12 @@
 	src/resources/mapreader.h: Merged OpenGL/SDL merge patch by Andrej
 	Sinicyn, and his followup patch for fixing SDL-only build.
 
-2005-07-27  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-27  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/gui.cpp, src/gui/gui.h: Removed continous mouse movement,
 	that implementation wasn't suitable for a release.
 
-2005-07-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-26  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.cpp, src/being.h, src/engine.cpp, src/game.cpp,
 	src/gui/minimap.cpp, src/gui/popupmenu.cpp, src/net/protocol.cpp:
@@ -2062,14 +2062,14 @@
 	* src/gui/skill.cpp: Added new skill names.
 	* src/main.cpp: Moved sound playback to update screen and changed song.
 
-2005-07-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-24  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Made the key-event handler use switches instead of
 	if-else.
 	* src/gui/gui.cpp, src/gui/gui.h: Allow continous movement when holding
 	down the left mouse button.
 
-2005-07-23  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2005-07-23  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/being.h, src/being.cpp: Added a member to keep the current map,
 	restored setDestination.
@@ -2077,7 +2077,7 @@
 	Being::setDestination().
 	* src/map.h: Add a forward declaration for struct PATH_NODE.
 
-2005-07-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2005-07-23  BjÃ¸rn Lindeijer  <bjorn@lindeijer.nl>
 
 	* NEWS: Moved project news here.
 	* ChangeLog: Started standard ChangeLog file here.
