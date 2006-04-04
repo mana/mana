@@ -1,3 +1,10 @@
+2006-04-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* ChangeLog: Converted to UTF-8.
+	* NEWS: Spelling correction.
+	* docs/INSTALL/debian.txt, docs/INSTALL/win32.txt: Updated with respect
+	to the move from CVS to Subversion.
+
 2006-03-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/window.cpp: Added window resize patch by peoro.
