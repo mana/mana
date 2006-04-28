@@ -1,3 +1,15 @@
+2006-04-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/Woodland_ground.png: Graphical update of the 
+	woodland tileset. Paths improved, and tiles	that were redunant replaced	by 
+	new dirt tiles.
+	* data/maps/new_9.1.tmx.gz:	modified because of changes in the tileset 
+	layout (no new server sided walkmap required)
+	* data/graphics/sprites/monster11.png: improved the shading of the mushroom
+	monster
+	* data/graphics/sprites/monster15.png: added dropshadow to the bat monster
+	(note that the version 0.0.19 live update overrides the changed file)
+	
 2006-04-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Converted to UTF-8.
