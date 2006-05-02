@@ -1,13 +1,17 @@
-2006-03-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-05-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/localplayer.cpp: Fixed the delay last move bug.
+
+2006-04-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/cave.png: Added tiles by yosuhara.
 
 2006-04-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/Woodland_ground.png: Graphical update of the 
-	woodland tileset. Paths improved, and tiles	that were redunant replaced	by 
-	new dirt tiles.
-	* data/maps/new_9.1.tmx.gz:	modified because of changes in the tileset 
+	woodland tileset. Paths improved, and tiles that were redunant replaced	
+	by new dirt tiles.
+	* data/maps/new_9.1.tmx.gz: modified because of changes in the tileset 
 	layout (no new server sided walkmap required)
 	* data/graphics/sprites/monster11.png: improved the shading of the mushroom
 	monster

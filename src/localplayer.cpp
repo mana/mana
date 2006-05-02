@@ -219,7 +219,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     char temp[3];
     MessageOut outMsg(mNetwork);
-    set_coordinates(temp, mX, mY, mDirection);
+    set_coordinates(temp, x, y, mDirection);
     outMsg.writeInt16(0x0085);
     outMsg.writeString(temp, 3);
 
