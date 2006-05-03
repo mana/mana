@@ -342,6 +342,13 @@ bool saveScreenshot(SDL_Surface *screenshot)
 void Game::logic()
 {
     int gameTime = tick_time;
+    int drawTime = tick_time * 10;
+    int delta = 0;
+    int fpsLimit = (int)config.getValue("fpslimit", 0);
+    if (fpsLimit)
+    {
+        delta = 1000 / fpsLimit;
+    }
 
     while (!done)
     {
@@ -358,9 +365,17 @@ void Game::logic()
         // Update the screen when application is active, delay otherwise
         if (SDL_GetAppState() & SDL_APPACTIVE)
         {
-            frame++;
-            engine->draw(graphics);
-            graphics->updateScreen();
+            if (abs(tick_time * 10 - drawTime) >= delta)
+            {
+                frame++;
+                engine->draw(graphics);
+                graphics->updateScreen();
+                drawTime += delta;
+            }
+            else
+            {
+                SDL_Delay(10);
+            }
         }
         else
         {

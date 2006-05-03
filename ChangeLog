@@ -1,4 +1,11 @@
-﻿2006-05-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-05-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* configure.ac, src/game.cpp, src/graphics.cpp, src/main.cpp,
+	src/openglgraphics.cpp, The Mana World: Increased fps limit granularity
+	and cleaned some code, fixed some xml library name in Dev-C++ project
+	file, switched version to 0.0.20.
+
+2006-05-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/localplayer.cpp: Fixed the delay last move bug.
 

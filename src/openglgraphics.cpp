@@ -37,8 +37,6 @@
 
 #include "resources/image.h"
 
-extern volatile int framesToDraw;
-
 OpenGLGraphics::OpenGLGraphics():
     mAlpha(false), mTexture(false), mColorAlpha(false)
 {
@@ -108,15 +106,6 @@ void OpenGLGraphics::updateScreen()
     glFlush();
     glFinish();
     SDL_GL_SwapBuffers();
-
-    // Decrement frame counter when using framerate limiting
-    if (framesToDraw > 1) framesToDraw--;
-
-    // Wait while we're not allowed to draw next frame yet
-    while (framesToDraw == 1)
-    {
-        SDL_Delay(10);
-    }
 }
 
 void OpenGLGraphics::_beginDraw()

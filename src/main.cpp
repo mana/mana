@@ -93,25 +93,12 @@ SERVER_INFO **server_info;
 unsigned char state;
 std::string errorMessage;
 unsigned char screen_mode;
-volatile int framesToDraw = 0;
 
 Sound sound;
 Music *bgm;
 
 Configuration config;         /**< Xml file configuration reader */
 Logger *logger;               /**< Log object */
-
-/**
- * Allows the next frame to be drawn (part of framerate limiting)
- */
-Uint32 nextFrame(Uint32 interval, void *param)
-{
-    if (framesToDraw < 10)
-    {
-        framesToDraw++;
-    }
-    return interval;
-}
 
 namespace {
     struct ErrorListener : public gcn::ActionListener
@@ -275,9 +262,6 @@ void init_engine()
             hairset.push_back(tmp);
         }
     }
-    /*hairset = resman->createSpriteset(
-            "graphics/sprites/player_male_hair.png", 29, 29);
-    if (!hairset) logger->error("Couldn't load hair spriteset!");*/
 
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
@@ -294,15 +278,6 @@ void init_engine()
         state = ERROR_STATE;
         errorMessage = err;
         logger->log("Warning: %s", err);
-    }
-
-    // Set frame counter when using fps limit
-    int fpsLimit = (int)config.getValue("fpslimit", 0);
-    if (fpsLimit)
-    {
-        if (fpsLimit < 10) fpsLimit = 10;
-        if (fpsLimit > 200) fpsLimit = 200;
-        SDL_AddTimer(1000 / fpsLimit, nextFrame, NULL);
     }
 }
 

@@ -29,8 +29,6 @@
 
 #include "resources/image.h"
 
-extern volatile int framesToDraw;
-
 Graphics::Graphics():
     mScreen(0)
 {
@@ -225,15 +223,6 @@ Graphics::drawImageRect(int x, int y, int w, int h,
 void Graphics::updateScreen()
 {
     SDL_Flip(mScreen);
-
-    // Decrement frame counter when using framerate limiting
-    if (framesToDraw > 1) framesToDraw--;
-
-    // Wait while we're not allowed to draw next frame yet
-    while (framesToDraw == 1)
-    {
-        SDL_Delay(10);
-    }
 }
 
 SDL_Surface* Graphics::getScreenshot()
