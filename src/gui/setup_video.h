@@ -27,10 +27,12 @@
 #include "setuptab.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include "../guichanfwd.h"
 
-class Setup_Video : public SetupTab, public gcn::ActionListener
+class Setup_Video : public SetupTab, public gcn::ActionListener,
+                    public gcn::KeyListener
 {
     public:
         Setup_Video();
@@ -40,12 +42,16 @@ class Setup_Video : public SetupTab, public gcn::ActionListener
         void cancel();
 
         void action(const std::string&);
+        
+        /** Called when key is pressed */
+        void keyPress(const gcn::Key& key);
 
     private:
         bool mFullScreenEnabled;
         bool mOpenGLEnabled;
         bool mCustomCursorEnabled;
         double mOpacity;
+        int mFps;
 
         class ModeListModel *mModeListModel;
 
@@ -54,6 +60,9 @@ class Setup_Video : public SetupTab, public gcn::ActionListener
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::Slider *mAlphaSlider;
+        gcn::CheckBox *mFpsCheckBox;
+        gcn::Slider *mFpsSlider;
+        gcn::TextField *mFpsField;
 };
 
 #endif

@@ -4,6 +4,9 @@
 	src/openglgraphics.cpp, The Mana World: Increased fps limit granularity
 	and cleaned some code, fixed some xml library name in Dev-C++ project
 	file, switched version to 0.0.20.
+	* src/game.cpp, src/gui/setup.cpp, src/gui/setup_video.cpp,
+	src/gui/setup_video.h, src/main.cpp: FPS limit can now be set in setup
+	dialog. Default value for FPS is 50. (Code based on peoro's patch).
 
 2006-05-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

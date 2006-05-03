@@ -58,7 +58,7 @@ Setup::Setup():
     }
 
     TabbedContainer *panel = new TabbedContainer();
-    panel->setDimension(gcn::Rectangle(5, 5, 220, 130));
+    panel->setDimension(gcn::Rectangle(5, 5, 220, 150));
     panel->setOpaque(false);
 
     SetupTab *tab;

@@ -182,7 +182,7 @@ void init_engine()
     config.setValue("remember", 1);
     config.setValue("sfxVolume", 100);
     config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 0);
+    config.setValue("fpslimit", 50);
     config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
     config.setValue("homeDir", homeDir);

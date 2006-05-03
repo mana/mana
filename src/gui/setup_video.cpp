@@ -27,6 +27,7 @@
 #include <vector>
 #include <SDL.h>
 
+#include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
 
 #include <guichan/widgets/label.hpp>
@@ -36,6 +37,7 @@
 #include "ok_dialog.h"
 #include "scrollarea.h"
 #include "slider.h"
+#include "textfield.h"
 
 #include "../configuration.h"
 #include "../graphics.h"
@@ -103,12 +105,16 @@ Setup_Video::Setup_Video():
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
     mOpacity(config.getValue("guialpha", 0.8)),
+    mFps((int)config.getValue("fpslimit", 50)),
     mModeListModel(new ModeListModel()),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
     mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
     mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
-    mAlphaSlider(new Slider(0.2, 1.0))
+    mAlphaSlider(new Slider(0.2, 1.0)),
+    mFpsCheckBox(new CheckBox("FPS Limit: ")),
+    mFpsSlider(new Slider(10, 200)),
+    mFpsField(new TextField())
 {
     setOpaque(false);
 
@@ -126,16 +132,32 @@ Setup_Video::Setup_Video():
     mOpenGLCheckBox->setPosition(110, 30);
     mCustomCursorCheckBox->setPosition(110, 50);
     mAlphaSlider->setDimension(gcn::Rectangle(10, 80, 100, 10));
-    alphaLabel->setPosition(20 + mAlphaSlider->getWidth(), mAlphaSlider->getY());
+    alphaLabel->setPosition(20 + mAlphaSlider->getWidth(),
+                            mAlphaSlider->getY());
+    mFpsCheckBox->setPosition(90, 100);
+    mFpsSlider->setDimension(gcn::Rectangle(10, 100, 75, 10));
+    mFpsField->setPosition(100 + mFpsCheckBox->getWidth(), 100);
+    mFpsField->setWidth(30);
 
     mModeList->setSelected(-1);
     mAlphaSlider->setValue(mOpacity);
+    
+    mFpsField->setText(toString(mFps));
+    mFpsField->setEnabled(mFps > 0);
+    mFpsSlider->setValue(mFps);
+    mFpsSlider->setEnabled(mFps > 0);
+    mFpsCheckBox->setMarked(mFps > 0);
 
     mCustomCursorCheckBox->setEventId("customcursor");
     mAlphaSlider->setEventId("guialpha");
+    mFpsCheckBox->setEventId("fpslimitcheckbox");
+    mFpsSlider->setEventId("fpslimitslider");
 
     mCustomCursorCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
+    mFpsCheckBox->addActionListener(this);
+    mFpsSlider->addActionListener(this);
+    mFpsField->addKeyListener(this);
 
     add(scrollArea);
     add(mFsCheckBox);
@@ -143,6 +165,9 @@ Setup_Video::Setup_Video():
     add(mCustomCursorCheckBox);
     add(mAlphaSlider);
     add(alphaLabel);
+    add(mFpsCheckBox);
+    add(mFpsSlider);
+    add(mFpsField);
 }
 
 Setup_Video::~Setup_Video()
@@ -188,6 +213,9 @@ void Setup_Video::apply()
         new OkDialog("Changing OpenGL",
                 "Applying change to OpenGL requires restart.");
     }
+    
+    // FPS change
+    config.setValue("fpslimit", mFps);
 
     // We sync old and new values at apply time
     mFullScreenEnabled = config.getValue("screen", 0);
@@ -219,5 +247,49 @@ void Setup_Video::action(const std::string &event)
     {
         config.setValue("customcursor",
                 mCustomCursorCheckBox->isMarked() ? 1 : 0);
+    }
+    else if (event == "fpslimitslider")
+    {
+        mFps = mFpsSlider->getValue();
+        mFpsField->setText(toString(mFps));
+    }
+    else if (event == "fpslimitcheckbox")
+    {
+        if (mFpsCheckBox->isMarked())
+        {
+            mFps = mFpsSlider->getValue();
+        }
+        else
+        {
+            mFps = 0;
+        }
+        mFpsField->setEnabled(mFps > 0);
+        mFpsField->setText(toString(mFps));
+        mFpsSlider->setValue(mFps);
+        mFpsSlider->setEnabled(mFps > 0);
+    }
+}
+
+void Setup_Video::keyPress(const gcn::Key &key)
+{
+    std::stringstream tempFps(mFpsField->getText());
+    
+    if (tempFps >> mFps)
+    {
+        if (mFps < 10)
+        {
+            mFps = 10;
+        }
+        else if (mFps > 200)
+        {
+            mFps = 200;
+        }
+        mFpsField->setText(toString(mFps));
+        mFpsSlider->setValue(mFps);
+    }
+    else
+    {
+        mFpsField->setText("");
+        mFps = 0;
     }
 }
