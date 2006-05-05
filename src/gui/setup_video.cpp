@@ -250,14 +250,14 @@ void Setup_Video::action(const std::string &event)
     }
     else if (event == "fpslimitslider")
     {
-        mFps = mFpsSlider->getValue();
+        mFps = (int)mFpsSlider->getValue();
         mFpsField->setText(toString(mFps));
     }
     else if (event == "fpslimitcheckbox")
     {
         if (mFpsCheckBox->isMarked())
         {
-            mFps = mFpsSlider->getValue();
+            mFps = (int)mFpsSlider->getValue();
         }
         else
         {

@@ -1,4 +1,8 @@
-﻿2006-05-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-05-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/setup_video.cpp: Fixed some numeric conversions.
+
+2006-05-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* configure.ac, src/game.cpp, src/graphics.cpp, src/main.cpp,
 	src/openglgraphics.cpp, The Mana World: Increased fps limit granularity
