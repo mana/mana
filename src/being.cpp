@@ -49,6 +49,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
+    mEquipment(new Equipment()),
     mId(id),
     mWeapon(0),
     mWalkSpeed(150),
@@ -57,8 +58,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),
-    mSpriteset(NULL), mSpriteFrame(0),
-    mEquipment(new Equipment())
+    mSpriteset(NULL), mSpriteFrame(0)
 {
     setMap(map);
 }

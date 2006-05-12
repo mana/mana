@@ -1,4 +1,8 @@
-﻿2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-05-12  Björn Steinbrink <B.Steinbrink@gmx.de>
+
+	* src/being.cpp: Fixed initialization order in Being ctor.
+
+2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/item1202.png, 
 	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
