@@ -96,7 +96,7 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
 
     drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
 
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
 
     return true;
 }

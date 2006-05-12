@@ -1,4 +1,9 @@
-﻿2006-05-12  Björn Steinbrink <B.Steinbrink@gmx.de>
+﻿2006-05-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp: Set color back to current color instead of
+	setting it to white. Fixes white rectangles in equipment window.
+
+2006-05-12  Björn Steinbrink <B.Steinbrink@gmx.de>
 
 	* src/being.cpp: Fixed initialization order in Being ctor.
 
