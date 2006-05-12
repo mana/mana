@@ -23,9 +23,9 @@
 
 #include "localplayer.h"
 
-#include "game.h"
 #include "equipment.h"
 #include "floor_item.h"
+#include "game.h"
 #include "inventory.h"
 #include "item.h"
 #include "main.h"
@@ -39,7 +39,6 @@ LocalPlayer *player_node = NULL;
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
     mInventory(new Inventory()),
-    mEquipment(new Equipment()),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mLastAction(-1)
 {

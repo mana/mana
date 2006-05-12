@@ -23,6 +23,7 @@
 
 #include "player.h"
 
+#include "equipment.h"
 #include "game.h"
 #include "graphics.h"
 
@@ -33,6 +34,7 @@
 extern std::vector<Spriteset *> hairset;
 extern Spriteset *playerset;
 extern std::vector<Spriteset *> weaponset;
+extern Spriteset *equipmentset;
 
 signed char hairtable[19][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -128,6 +130,13 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
 
     graphics->drawImage(playerset->get(frame + 18 * dir),
             px - 16, py - 32);
+
+    Item *item = mEquipment->getEquipment(3);
+    if (item)
+    {
+        graphics->drawImage(equipmentset->get(frame + 18 * dir),
+                px - 16, py - 32);
+    }
 
     if (getWeapon() != 0 && mAction == ATTACK)
     {

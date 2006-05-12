@@ -1,4 +1,12 @@
-﻿2006-05-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/item1202.png, 
+	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
+	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
+	The Mana World: You can now see the shirt when equipping a top 
+	equipment.
+
+2006-05-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/setup_video.cpp: Fixed some numeric conversions.
 

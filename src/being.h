@@ -34,6 +34,8 @@
 #define NR_HAIR_STYLES 6
 #define NR_HAIR_COLORS 10
 
+class Equipment;
+class Item;
 class Map;
 class Graphics;
 class Spriteset;
@@ -287,6 +289,8 @@ class Being : public Sprite
          */
         int
         getYOffset() const { return getOffset(UP, DOWN); }
+        
+        std::auto_ptr<Equipment> mEquipment;
 
     protected:
         /**

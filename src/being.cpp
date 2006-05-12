@@ -22,6 +22,7 @@
  */
 #include "being.h"
 
+#include "equipment.h"
 #include "game.h"
 #include "graphics.h"
 #include "log.h"
@@ -56,7 +57,8 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),
-    mSpriteset(NULL), mSpriteFrame(0)
+    mSpriteset(NULL), mSpriteFrame(0),
+    mEquipment(new Equipment())
 {
     setMap(map);
 }

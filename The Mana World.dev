@@ -1860,7 +1860,7 @@ BuildCmd=
 [Unit181]
 FileName=src\lockedarray.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -1870,7 +1870,7 @@ BuildCmd=
 [Unit182]
 FileName=src\logindata.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -1880,7 +1880,7 @@ BuildCmd=
 [Unit183]
 FileName=src\monster.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -1890,7 +1890,7 @@ BuildCmd=
 [Unit184]
 FileName=src\monster.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -1900,7 +1900,7 @@ BuildCmd=
 [Unit185]
 FileName=src\player.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -1910,7 +1910,7 @@ BuildCmd=
 [Unit186]
 FileName=src\player.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -2200,7 +2200,7 @@ BuildCmd=
 [Unit215]
 FileName=src\joystick.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -2210,7 +2210,7 @@ BuildCmd=
 [Unit216]
 FileName=src\flooritemmanager.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2220,7 +2220,7 @@ BuildCmd=
 [Unit217]
 FileName=src\flooritemmanager.h
 CompileCpp=1
-Folder=tmw
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -2230,7 +2230,7 @@ BuildCmd=
 [Unit218]
 FileName=src\joystick.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000

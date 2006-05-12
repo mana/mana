@@ -31,7 +31,6 @@
 // TODO move into some sane place...
 #define MAX_SLOT 2
 
-class Equipment;
 class FloorItem;
 class Inventory;
 class Item;
@@ -144,7 +143,6 @@ class LocalPlayer : public Player
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         std::auto_ptr<Inventory> mInventory;
-        std::auto_ptr<Equipment> mEquipment;
 
     protected:
         Network *mNetwork;

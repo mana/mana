@@ -84,6 +84,7 @@ char n_server, n_character;
 
 std::vector<Spriteset *> hairset;
 Spriteset *playerset = NULL;
+Spriteset *equipmentset = NULL;
 Graphics *graphics;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
@@ -250,6 +251,9 @@ void init_engine()
     playerset = resman->createSpriteset(
             "graphics/sprites/player_male_base.png", 64, 64);
     if (!playerset) logger->error("Couldn't load player spriteset!");
+    equipmentset = resman->createSpriteset(
+            "graphics/sprites/item1202.png", 64, 64);
+    if (!equipmentset) logger->error("Couldn't load player equipmentset!");
 
     for (int i=0; i < NR_HAIR_STYLES; i++)
     {
@@ -290,6 +294,7 @@ void exit_engine()
     for_each(hairset.begin(), hairset.end(), make_dtor(hairset));
     hairset.clear();
     delete playerset;
+    delete equipmentset;
 
     // Shutdown libxml
     xmlCleanupParser();
