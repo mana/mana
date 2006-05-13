@@ -45,7 +45,6 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
     mAction(0), mFrame(0),
-    mSpeechColor(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
@@ -191,11 +190,8 @@ Being::logic()
     }
 
     // Update pixel coordinates
-    mPx = mX * 32;
-    mPy = mY * 32;
-
-    mPy += getYOffset();
-    mPx += getXOffset();
+    mPx = mX * 32 + getXOffset();
+    mPy = mY * 32 + getYOffset();
 
     if (mEmotion != 0)
     {
@@ -240,6 +236,7 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     if (mShowSpeech)
     {
         graphics->setFont(speechFont);
+        graphics->setColor(gcn::Color(255, 255, 255));
         graphics->drawText(mSpeech, px + 18, py - 60, gcn::Graphics::CENTER);
     }
 

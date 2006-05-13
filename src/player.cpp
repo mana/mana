@@ -166,5 +166,6 @@ Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     int py = mPy + offsetY;
 
     graphics->setFont(speechFont);
+    graphics->setColor(gcn::Color(255, 255, 255));
     graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }

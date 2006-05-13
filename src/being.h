@@ -88,7 +88,6 @@ class Being : public Sprite
         Uint8 mDirection;      /**< Facing direction */
         Uint8 mAction;
         Uint8 mFrame;
-        Sint32 mSpeechColor;
         Uint16 mWalkTime;
         Uint8 mEmotion;        /**< Currently showing emotion */
         Uint8 mEmotionTime;   /**< Time until emotion disappears */
