@@ -1,4 +1,9 @@
-﻿2006-05-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-05-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/item_amount.cpp: Set slider range to the real values instead
+	of mapping the amount between [0,1] and [1,max] all the time.
+
+2006-05-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp: Set color back to current color instead of
 	setting it to white. Fixes white rectangles in equipment window.

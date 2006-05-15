@@ -43,7 +43,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Button *plusButton = new Button("+", "Plus", this);
     Button *okButton = new Button("Okay", "Drop", this);
     Button *cancelButton = new Button("Cancel", "Cancel", this);
-    mItemAmountSlide = new Slider(1.0);
+    mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
 
     mItemAmountTextBox->setRange(1, mItem->getQuantity());
     mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
@@ -122,10 +122,9 @@ void ItemAmountWindow::action(const std::string& eventId)
     }
     else if (eventId == "Slide")
     {
-        amount = (int)(mItemAmountSlide->getValue()*(mItem->getQuantity()+1));
+        amount = static_cast<int>(mItemAmountSlide->getValue());
     }
     mItemAmountTextBox->setInt(amount);
-    amount = mItemAmountTextBox->getInt(); // The textbox cares about bounds
-    mItemAmountSlide->setValue((amount-1)*1.0f/(mItem->getQuantity()-1));
+    mItemAmountSlide->setValue(amount);
 }
 
