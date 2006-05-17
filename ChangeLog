@@ -1,4 +1,11 @@
-﻿2006-05-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-05-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/npcs.png, data/graphics/tiles/Makefile.am,
+	data/graphics/snow_building.png, data/graphics/tiles/snowset.png,
+	data/maps/Makefile.am, data/maps/new_11-1.tmx.gz: New NPCs, new snow
+	tiles and village.
+
+2006-05-15  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/item_amount.cpp: Set slider range to the real values instead
 	of mapping the amount between [0,1] and [1,max] all the time.
@@ -21,6 +28,14 @@
 	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
 	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
 	The Mana World: You can now see the shirt when equipping a top
+	equipment.
+
+2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/item1202.png, 
+	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
+	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
+	The Mana World: You can now see the shirt when equipping a top 
 	equipment.
 
 2006-05-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
