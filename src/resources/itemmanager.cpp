@@ -113,11 +113,11 @@ ItemManager::ItemManager()
             logger->log("Item Manager: Missing image parameter for item: %i. %s",
                     id, name.c_str());
         }
-        if (art == 0)
+        /*if (art == 0)
         {
             logger->log("Item Manager: Missing art parameter for item: %i. %s",
                     id, name.c_str());
-        }
+        }*/
         if (description == "")
         {
             logger->log("Item Manager: Missing description parameter for item: %i. %s",
@@ -128,11 +128,11 @@ ItemManager::ItemManager()
             logger->log("Item Manager: Missing effect parameter for item: %i. %s",
                     id, name.c_str());
         }
-        if (type == 0)
+        /*if (type == 0)
         {
             logger->log("Item Manager: Missing type parameter for item: %i. %s",
                     id, name.c_str());
-        }
+        }*/
         if (weight == 0)
         {
             logger->log("Item Manager: Missing weight parameter for item: %i. %s",

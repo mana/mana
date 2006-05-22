@@ -1,3 +1,12 @@
+2006-05-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/tiles/icecave.png, data/graphics/tiles/Makefile.am,
+	data/maps/Makefile.am, data/maps/new_10-1.tmx.gz,
+	data/maps/new_11-1.tmx.gz, data/maps/new_4-1.tmx.gz,
+	data/maps/new_5-1.tmx.gz, src/resources/itemmanager.cpp: A bunch of
+	updates to the world and disabled art and type xml parser checks since
+	they're not used.
+
 2006-05-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev: Updated dev-cpp project file.
