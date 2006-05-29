@@ -1,3 +1,10 @@
+tmw (0.0.20-1) unstable; urgency=low
+
+  * Make use of a own desktop file for the Debian Package. Close the missing icon bug.
+  * Changed a dependency from xlibmesa-dev to libgl1-mesa-dev to cope with new X server.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 29 May 2006 03:55:33 +0200
+
 tmw (0.0.19-1) unstable; urgency=low
 
   * New Playerset Build.
