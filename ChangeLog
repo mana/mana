@@ -1,3 +1,7 @@
+2006-06-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/monster16.png: added the little pink monster
+
 2006-05-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/icecave.png, data/graphics/tiles/Makefile.am,
@@ -37,7 +41,7 @@
 
 2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* data/graphics/sprites/item1202.png, 
+	* data/graphics/sprites/item1202.png,
 	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
 	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
 	The Mana World: You can now see the shirt when equipping a top
@@ -45,10 +49,10 @@
 
 2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* data/graphics/sprites/item1202.png, 
+	* data/graphics/sprites/item1202.png,
 	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
 	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
-	The Mana World: You can now see the shirt when equipping a top 
+	The Mana World: You can now see the shirt when equipping a top
 	equipment.
 
 2006-05-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
@@ -75,16 +79,16 @@
 
 2006-04-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/tiles/Woodland_ground.png: Graphical update of the 
-	woodland tileset. Paths improved, and tiles that were redunant replaced	
+	* data/graphics/tiles/Woodland_ground.png: Graphical update of the
+	woodland tileset. Paths improved, and tiles that were redunant replaced
 	by new dirt tiles.
-	* data/maps/new_9.1.tmx.gz: modified because of changes in the tileset 
+	* data/maps/new_9.1.tmx.gz: modified because of changes in the tileset
 	layout (no new server sided walkmap required)
 	* data/graphics/sprites/monster11.png: improved the shading of the mushroom
 	monster
 	* data/graphics/sprites/monster15.png: added dropshadow to the bat monster
 	(note that the version 0.0.19 live update overrides the changed file)
-	
+
 2006-04-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Converted to UTF-8.
