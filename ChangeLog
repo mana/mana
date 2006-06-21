@@ -1,3 +1,10 @@
+2006-06-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/monster11.png,
+	data/graphics/sprites/monster17.png: Fixed attack animation of monster
+	11 and added a new monster.
+
 2006-06-19  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/monster16.png: added the little pink monster
