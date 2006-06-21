@@ -169,6 +169,18 @@ class Being : public Sprite
          */
         Uint16
         getHairStyle() const { return mHairStyle; }
+        
+        /**
+         * Sets the sex for this being.
+         */
+        void
+        setSex(Uint8 sex) { mSex = sex; }
+
+        /**
+         * Gets the sex for this being.
+         */
+        Uint8
+        getSex() const { return mSex; }
 
         /**
          * Makes this being take the next step of his path.
@@ -315,6 +327,7 @@ class Being : public Sprite
         std::string mSpeech;
         std::string mDamage;
         Uint16 mHairStyle, mHairColor;
+        Uint8 mSex;
         Uint32 mSpeechTime;
         Uint32 mDamageTime;
         bool mShowSpeech, mShowDamage;

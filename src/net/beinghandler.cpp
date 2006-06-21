@@ -125,7 +125,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt16();  // karma
             msg->readInt8();   // unknown
-            msg->readInt8();   // sex
+            dstBeing->setSex(1 - msg->readInt8());   // sex
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -318,7 +318,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt32();   // emblem
             msg->readInt16();  // manner
             msg->readInt8();   // karma
-            msg->readInt8();   // sex
+            dstBeing->setSex(1 - msg->readInt8());   // sex
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {

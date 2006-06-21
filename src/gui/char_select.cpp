@@ -69,9 +69,11 @@ void CharDeleteConfirm::action(const std::string &eventId)
     ConfirmDialog::action(eventId);
 }
 
-CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *charInfo):
+CharSelectDialog::CharSelectDialog(Network *network,
+                                   LockedArray<LocalPlayer*> *charInfo,
+                                   unsigned char sex):
     Window("Select Character"), mNetwork(network),
-    mCharInfo(charInfo), mCharSelected(false)
+    mCharInfo(charInfo), mSex(sex), mCharSelected(false)
 {
     mSelectButton = new Button("Ok", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
@@ -84,7 +86,7 @@ CharSelectDialog::CharSelectDialog(Network *network, LockedArray<LocalPlayer*> *
     mLevelLabel = new gcn::Label("Level");
     mJobLevelLabel = new gcn::Label("Job Level");
     mMoneyLabel = new gcn::Label("Money");
-    mPlayerBox = new PlayerBox();
+    mPlayerBox = new PlayerBox(sex);
 
     int w = 195;
     int h = 220;
@@ -146,7 +148,7 @@ void CharSelectDialog::action(const std::string& eventId)
         if (n_character < MAX_SLOT + 1)
         {
             // Start new character dialog
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork);
+            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
             mCharInfo->lock();
         }
     }
@@ -225,7 +227,8 @@ void CharSelectDialog::logic()
     updatePlayerInfo();
 }
 
-CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
+CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
+                                   unsigned char sex):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
     mNameField = new TextField("");
@@ -238,7 +241,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
     mHairStyleLabel = new gcn::Label("Hair Style:");
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayerBox = new PlayerBox();
+    mPlayerBox = new PlayerBox(sex);
     mPlayerBox->mShowPlayer = true;
 
     mNameField->setEventId("create");

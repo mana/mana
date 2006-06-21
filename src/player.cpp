@@ -32,7 +32,7 @@
 #include "gui/gui.h"
 
 extern std::vector<Spriteset *> hairset;
-extern Spriteset *playerset;
+extern Spriteset *playerset[2];
 extern std::vector<Spriteset *> weaponset;
 extern Spriteset *equipmentset;
 
@@ -128,7 +128,7 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     unsigned char dir = 0;
     while (!(mDirection & (1 << dir))) dir++;
 
-    graphics->drawImage(playerset->get(frame + 18 * dir),
+    graphics->drawImage(playerset[mSex]->get(frame + 18 * dir),
             px - 16, py - 32);
 
     Item *item = mEquipment->getEquipment(3);

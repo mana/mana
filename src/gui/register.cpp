@@ -56,9 +56,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mConfirmField = new PasswordField();
     mServerField = new TextField();
     mMaleButton = new RadioButton("Male", "sex", true);
-    mMaleButton->setEnabled(false);
     mFemaleButton = new RadioButton("Female", "sex", false);
-    mFemaleButton->setEnabled(false);
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
@@ -91,17 +89,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
     mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
             mRegisterButton->getY());
-
-
-    /*mUserField->setEventId("register");
-    mPasswordField->setEventId("register");
-    mConfirmField->setEventId("register");
-    mServerField->setEventId("register");*/
-
-    /*mUserField->addActionListener(this);
-    mPasswordField->addActionListener(this);
-    mConfirmField->addActionListener(this);
-    mServerField->addActionListener(this);*/
 
     add(userLabel);
     add(passwordLabel);

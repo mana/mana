@@ -83,7 +83,7 @@
 char n_server, n_character;
 
 std::vector<Spriteset *> hairset;
-Spriteset *playerset = NULL;
+Spriteset *playerset[2];
 Spriteset *equipmentset = NULL;
 Graphics *graphics;
 
@@ -248,9 +248,12 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    playerset = resman->createSpriteset(
+    playerset[0] = resman->createSpriteset(
             "graphics/sprites/player_male_base.png", 64, 64);
-    if (!playerset) logger->error("Couldn't load player spriteset!");
+    playerset[1] = resman->createSpriteset(
+            "graphics/sprites/player_female_base.png", 64, 64);
+    if (!playerset[0]) logger->error("Couldn't load male player spriteset!");
+    if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
     equipmentset = resman->createSpriteset(
             "graphics/sprites/item1202.png", 64, 64);
     if (!equipmentset) logger->error("Couldn't load player equipmentset!");
@@ -293,7 +296,8 @@ void exit_engine()
     delete graphics;
     for_each(hairset.begin(), hairset.end(), make_dtor(hairset));
     hairset.clear();
-    delete playerset;
+    delete playerset[0];
+    delete playerset[1];
     delete equipmentset;
 
     // Shutdown libxml
@@ -620,7 +624,8 @@ int main(int argc, char *argv[])
 
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(network, &charInfo);
+                    currentDialog = new CharSelectDialog(network, &charInfo,
+                                                         1 - loginData.sex);
                     if (options.chooseDefault) {
                         ((CharSelectDialog*)currentDialog)->action("ok");
                     }

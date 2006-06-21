@@ -54,6 +54,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mWalkSpeed(150),
     mMap(NULL),
     mHairStyle(1), mHairColor(1),
+    mSex(0),
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),

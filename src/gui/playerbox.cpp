@@ -35,14 +35,15 @@
 #include "../utils/dtor.h"
 
 extern std::vector<Spriteset *> hairset;
-extern Spriteset *playerset;
+extern Spriteset *playerset[2];
 
 int PlayerBox::instances = 0;
 ImageRect PlayerBox::background;
 
-PlayerBox::PlayerBox():
+PlayerBox::PlayerBox(unsigned char sex):
     mHairColor(0),
     mHairStyle(0),
+    mSex(sex),
     mShowPlayer(false)
 {
     setBorderSize(2);
@@ -90,7 +91,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
 
     // Draw character
     dynamic_cast<Graphics*>(graphics)->drawImage(
-            playerset->get(0), 23, 12);
+            playerset[mSex]->get(0), 23, 12);
 
     // Draw his hair
     if (mHairColor >= 0 && mHairStyle >= 0 &&

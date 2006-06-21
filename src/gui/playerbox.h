@@ -40,7 +40,7 @@ class PlayerBox : public gcn::ScrollArea
         /**
          * Constructor.
          */
-        PlayerBox();
+        PlayerBox(unsigned char sex);
 
         /**
          * Destructor.
@@ -59,6 +59,7 @@ class PlayerBox : public gcn::ScrollArea
 
         int mHairColor;         /**< The hair color index */
         int mHairStyle;         /**< The hair style index */
+        unsigned char mSex;     /**< Sex */
         bool mShowPlayer;       /**< Wether to show the player or not */
 
     private:
