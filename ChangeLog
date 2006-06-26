@@ -1,3 +1,8 @@
+2006-06-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/messagein.cpp: Fixed the readString method (synchronized
+	with the server version by Guillaume Melquiond).
+
 2006-06-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am,
@@ -93,21 +98,22 @@
 2006-04-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/Woodland_ground.png: Graphical update of the
-	woodland tileset. Paths improved, and tiles that were redunant replaced
-	by new dirt tiles.
-	* data/maps/new_9.1.tmx.gz: modified because of changes in the tileset
-	layout (no new server sided walkmap required)
-	* data/graphics/sprites/monster11.png: improved the shading of the mushroom
-	monster
-	* data/graphics/sprites/monster15.png: added dropshadow to the bat monster
-	(note that the version 0.0.19 live update overrides the changed file)
+	woodland tileset. Paths improved, and tiles that were redunant
+	replaced by new dirt tiles.
+	* data/maps/new_9.1.tmx.gz: Modified because of changes in the tileset
+	layout (no new server sided walkmap required).
+	* data/graphics/sprites/monster11.png: Improved the shading of the
+	mushroom monster.
+	* data/graphics/sprites/monster15.png: Added dropshadow to the bat
+	monster (note that the version 0.0.19 live update overrides the
+	changed file).
 
 2006-04-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* ChangeLog: Converted to UTF-8.
 	* NEWS: Spelling correction.
-	* docs/INSTALL/debian.txt, docs/INSTALL/win32.txt: Updated with respect
-	to the move from CVS to Subversion.
+	* docs/INSTALL/debian.txt, docs/INSTALL/win32.txt: Updated with
+	respect to the move from CVS to Subversion.
 
 2006-03-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -177,7 +183,7 @@
 
 2006-03-13  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_7.1.tmx.gz: fixed some map bugs (update of server sided
+	* data/maps/new_7.1.tmx.gz: Fixed some map bugs (update of server sided
 	walkmap required!)
 
 2006-03-11  Eugenio Favalli  <elvenprogrammer@gmail.com>

@@ -155,28 +155,24 @@ MessageIn::skip(unsigned int length)
 std::string
 MessageIn::readString(int length)
 {
-    int stringLength = 0;
-
     // Get string length
     if (length < 0) {
-        stringLength = readInt16();
-    } else {
-        stringLength = length;
+        length = readInt16();
     }
 
-    // Make sure there is enough data available
-    assert(mPos + length <= mLength);
+    // Make sure the string isn't erroneous
+    if (length < 0 || mPos + length > mLength) {
+        mPos = mLength + 1;
+        return "";
+    }
 
     // Read the string
-    char *tmpString = new char[stringLength + 1];
-    memcpy(tmpString, (void*)&mData[mPos], stringLength);
-    tmpString[stringLength] = 0;
-    mPos += stringLength;
-
-    std::string read = tmpString;
-    delete[] tmpString;
-
-    return read;
+    char const *stringBeg = mData + mPos;
+    char const *stringEnd = (char const *)memchr(stringBeg, '\0', length);
+    std::string readString(stringBeg,
+                           stringEnd ? stringEnd - stringBeg : length);
+    mPos += length;
+    return readString;
 }
 
 Sint8& operator<<(Sint8 &lhs, MessageIn &msg)
