@@ -1,3 +1,8 @@
+2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
+	
+	* /tmw/trunk/data/graphics/sprites/player_male_base.png:
+	Fixed transparency issue with the north punching frames
+
 2006-06-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/messagein.cpp: Fixed the readString method (synchronized
