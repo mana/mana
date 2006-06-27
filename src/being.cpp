@@ -304,7 +304,7 @@ void Being::setWeaponById(Uint16 weapon)
         break;
 
     default:
-        logger->log("unknown item equiped : %d", weapon);
+        logger->log("Not a weapon: %d", weapon);
     }
 }
 

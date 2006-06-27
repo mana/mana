@@ -1,3 +1,9 @@
+2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/being.cpp, src/gui/equipmentwindow.cpp, src/player.cpp: Equipment
+	window now show all the slots, and adapted visible shirts to head
+	(middle) equipments.
+
 2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
 	
 	* /tmw/trunk/data/graphics/sprites/player_male_base.png:

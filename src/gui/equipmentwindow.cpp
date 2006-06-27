@@ -39,7 +39,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window("Equipment"), mEquipment(equipment)
 {
     setWindowName("Equipment");
-    setDefaultSize(5, 230, 200, 90);
+    setDefaultSize(5, 230, 200, 120);
     loadWindowState();
 
     mItemset = ResourceManager::getInstance()->createSpriteset(
@@ -63,7 +63,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Rectangles around items are black
     graphics->setColor(gcn::Color(0, 0, 0));
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < EQUIPMENT_SIZE; i++) {
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 

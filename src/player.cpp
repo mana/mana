@@ -131,7 +131,8 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     graphics->drawImage(playerset[mSex]->get(frame + 18 * dir),
             px - 16, py - 32);
 
-    Item *item = mEquipment->getEquipment(3);
+    // Display a shirt if equipped
+    Item *item = mEquipment->getEquipment(8);
     if (item)
     {
         graphics->drawImage(equipmentset->get(frame + 18 * dir),
