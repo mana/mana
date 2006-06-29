@@ -131,14 +131,6 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     graphics->drawImage(playerset[mSex]->get(frame + 18 * dir),
             px - 16, py - 32);
 
-    // Display a shirt if equipped
-    Item *item = mEquipment->getEquipment(8);
-    if (item)
-    {
-        graphics->drawImage(equipmentset->get(frame + 18 * dir),
-                px - 16, py - 32);
-    }
-
     if (getWeapon() != 0 && mAction == ATTACK)
     {
         int frames = 4;
@@ -157,6 +149,13 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
         graphics->drawImage(hairset[getHairStyle() - 1]->get(hf),
                 px + 1 + hairtable[frame][dir][0],
                 py - 33 + hairtable[frame][dir][1]);
+    }
+    
+    // Display middle equipment
+    if (mVisibleEquipment[5])
+    {
+        graphics->drawImage(equipmentset->get(frame + 18 * dir),
+                px - 16, py - 32);
     }
 }
 

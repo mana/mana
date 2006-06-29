@@ -61,6 +61,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mSpriteset(NULL), mSpriteFrame(0)
 {
     setMap(map);
+    memset(mVisibleEquipment, 0, 6 * sizeof(int));
 }
 
 Being::~Being()

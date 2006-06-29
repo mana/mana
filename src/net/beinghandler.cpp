@@ -106,7 +106,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeapon(msg->readInt16());
-            msg->readInt16();  // head option bottom
+            dstBeing->mVisibleEquipment[3] = msg->readInt16(); // head (bottom)
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -114,8 +114,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             msg->readInt16();  // shield
-            msg->readInt16();  // head option top
-            msg->readInt16();  // head option mid
+            dstBeing->mVisibleEquipment[4] = msg->readInt16(); // head (top)
+            dstBeing->mVisibleEquipment[5] = msg->readInt16(); // head (mid)
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -255,19 +255,29 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 break;
             }
+            
+            int type = msg->readInt8();
 
-            switch (msg->readInt8()) {
+            switch (type) {
                 case 1:
                     dstBeing->setHairStyle(msg->readInt8());
                     break;
                 case 2:
                     dstBeing->setWeapon(msg->readInt8());
                     break;
+                case 3:
+                case 4:
+                case 5:
+                    // Equip/unequip head 3. Bottom 4. Top 5. Bottom
+                    dstBeing->mVisibleEquipment[type] = msg->readInt8();
+                    // First 3 slots  of mVisibleEquipments are reserved for
+                    // later use, probably accessories.
+                    break;
                 case 6:
                     dstBeing->setHairColor(msg->readInt8());
                     break;
                 default:
-                    msg->readInt8(); // unsupported
+                    printf("c3: %i\n", msg->readInt8()); // unsupported
                     break;
             }
             break;
@@ -302,20 +312,20 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeaponById(msg->readInt16());  // item id 1
             msg->readInt16();  // item id 2
-            msg->readInt16();  // head option bottom
+            dstBeing->mVisibleEquipment[3] = msg->readInt16(); // head (bottom)
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
                 msg->readInt32(); // server tick
             }
 
-            msg->readInt16();  // head option top
-            msg->readInt16();  // head option mid
+            dstBeing->mVisibleEquipment[4] = msg->readInt16(); // head (top)
+            dstBeing->mVisibleEquipment[5] = msg->readInt16(); // head (mid)
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
-            msg->readInt32();   // guild
-            msg->readInt32();   // emblem
+            msg->readInt32();  // guild
+            msg->readInt32();  // emblem
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setSex(1 - msg->readInt8());   // sex
@@ -358,6 +368,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case 0x0119:
             // Change in players look
+            printf("0x0119 %i %i %i %x %i\n", msg->readInt32(),
+                    msg->readInt16(), msg->readInt16(), msg->readInt16(),
+                    msg->readInt8());
             break;
     }
 }

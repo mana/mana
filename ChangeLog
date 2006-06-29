@@ -1,3 +1,8 @@
+2006-06-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
+	src/player.cpp: Clients get notified of equipping visible items.
+
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/being.cpp, src/gui/equipmentwindow.cpp, src/player.cpp: Equipment

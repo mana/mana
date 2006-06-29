@@ -302,6 +302,7 @@ class Being : public Sprite
         getYOffset() const { return getOffset(UP, DOWN); }
         
         std::auto_ptr<Equipment> mEquipment;
+        int mVisibleEquipment[6];       /**< Visible equipments */
 
     protected:
         /**
