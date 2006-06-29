@@ -2,6 +2,7 @@
 
 	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
 	src/player.cpp: Clients get notified of equipping visible items.
+	* src/net/beinghandler.cpp : GCC 4 fix.
 
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

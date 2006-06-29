@@ -251,6 +251,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_BEING_CHANGE_LOOKS:
+        {
             if (!(dstBeing = beingManager->findBeing(msg->readInt32())))
             {
                 break;
@@ -280,6 +281,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     printf("c3: %i\n", msg->readInt8()); // unsupported
                     break;
             }
+        }
             break;
 
         case SMSG_BEING_NAME_RESPONSE:
