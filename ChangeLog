@@ -1,3 +1,8 @@
+2006-07-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tools/Reorganize.java: Added tool used for reorganizing and
+	auto-cropping the monster spritesets.
+
 2006-06-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
