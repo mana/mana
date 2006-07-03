@@ -34,7 +34,7 @@
 extern std::vector<Spriteset *> hairset;
 extern Spriteset *playerset[2];
 extern std::vector<Spriteset *> weaponset;
-extern Spriteset *equipmentset;
+extern Spriteset *equipmentset[2];
 
 signed char hairtable[19][4][2] = {
     // S(x,y)    W(x,y)   N(x,y)   E(x,y)
@@ -154,7 +154,8 @@ void Player::draw(Graphics *graphics, int offsetX, int offsetY)
     // Display middle equipment
     if (mVisibleEquipment[5])
     {
-        graphics->drawImage(equipmentset->get(frame + 18 * dir),
+        graphics->drawImage(
+                equipmentset[mVisibleEquipment[5] - 1]->get(frame + 18 * dir),
                 px - 16, py - 32);
     }
 }
