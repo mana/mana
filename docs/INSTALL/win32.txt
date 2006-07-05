@@ -55,7 +55,7 @@ The easy way is to get our development package which should work with the latest
 development code (I'll try to update it as much as I can).
 You can find it at:
 
-  http://themanaworld.sourceforge.net/files/tmw-cvs.DevPak
+  http://themanaworld.sourceforge.net/files/tmw-svn.DevPak
 
 
 Just install this one and you should be ready to go. (Although please remember
@@ -67,7 +67,7 @@ If you can't get the package or you are experiencing problems with it, just
 send me an email at elvenprogrammer@gmail.com or continue reading. (Coming to
 bug us on the IRC channel is a valid alternative too.)
 
-If you installed the tmw-cvs.DevPak, you already have all you need so you can
+If you installed the tmw-svn.DevPak, you already have all you need so you can
 skip ahead to compiling.
 
 Most of the libs have DevPaks that are very easy drop-ins for Dev-C++, without
