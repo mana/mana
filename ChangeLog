@@ -1,7 +1,12 @@
+2006-07-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/newskill.cpp: Fixed up a string comparison that caused a
+	warning with GCC 4.2.
+
 2006-07-12 Frode Lindeijer <f.lindeijer@gmail.com>
-	
-	* /tmw/trunk/data/graphics/sprites/item001.png:
-	Completed the cotton shirt equipment graphic
+
+	* /tmw/trunk/data/graphics/sprites/item001.png: Completed the cotton
+	shirt equipment graphic.
 
 2006-07-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -12,7 +17,7 @@
 
 	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
 	src/player.cpp: Clients get notified of equipping visible items.
-	* src/net/beinghandler.cpp : GCC 4 fix.
+	* src/net/beinghandler.cpp: GCC 4 fix.
 
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -21,7 +26,7 @@
 	(middle) equipments.
 
 2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
-	
+
 	* /tmw/trunk/data/graphics/sprites/player_male_base.png:
 	Fixed transparency issue with the north punching frames
 

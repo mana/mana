@@ -38,34 +38,35 @@ const char *skill_name[] = {
     // 0-99
     // weapon skills 0-9
     "Short Blades", "Long Blades", "Hammers", "Archery", "Whip",
-    "Staves", "Throwing", "Piercing", "Hand to Hand", "",
+    "Staves", "Throwing", "Piercing", "Hand to Hand", NULL,
     // magic skills 10-19
     "Epyri (Fire)", "Merene (Water)", "Geon (Earth)", "Izurial (Air)",
     "Lumine (Light)", "Tenebrae (Dark)", "Chronos (Time)", "Teless (Space)",
-    "Gen (Mana)", "",
+    "Gen (Mana)", NULL,
     // craft skills 20-29
     "Metalworking", "Woodworking", "Jeweler", "Cook", "Tailor",
-    "Alchemist", "Artisan", "Synthesis", "", "",
+    "Alchemist", "Artisan", "Synthesis", NULL, NULL,
     // general skills 30-39
     "Running", "Searching", "Sneak", "Trading", "Intimidate",
-    "Athletics", "", "", "","",
+    "Athletics", NULL, NULL, NULL,NULL,
     // combat skills 40-49
     "Dodge", "Accuracy", "Critical", "Block", "Parry", "Diehard", "Magic Aura",
-    "Counter", "", "",
+    "Counter", NULL, NULL,
     // resistance skills 50-59
     "Poison", "Silence", "Petrify", "Paralyze", "Blind", "Slow", "Zombie",
-    "Critical", "", "",
+    "Critical", NULL, NULL,
     // element reistance 60-69
-    "Heat (Fire)", "Chill (Water)", "Stone (Earth)", "Wind (Air)", 
-    "Shine (Light)", "Shadow (Dark)", "Decay (Time)", "Chaos (Space)", "", "",
+    "Heat (Fire)", "Chill (Water)", "Stone (Earth)", "Wind (Air)",
+    "Shine (Light)", "Shadow (Dark)", "Decay (Time)", "Chaos (Space)", NULL,
+    NULL,
     // hunting skills 70-79
     "Insects", "Birds", "Lizards", "Amorphs", "Undead", "Machines", "Arcana",
-    "Humanoids", "Plantoids", "",
+    "Humanoids", "Plantoids", NULL,
     // stats 80-89
     "Strength", "Fortitude", "Vitality", "Menality", "Awareness", "Mana",
-    "Dexterity", "", "", "",
+    "Dexterity", NULL, NULL, NULL,
     // unused (reserved) 90-99
-    "", "", "", "", "", "", "", "", "", ""
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL
 };
 
 
@@ -73,7 +74,7 @@ NewSkillDialog::NewSkillDialog():
     Window("Skills")
 {
     startPoint = 0;
-    for ( int i = 0; i < N_SKILL_CAT_SIZE; i++)
+    for (int i = 0; i < N_SKILL_CAT_SIZE; i++)
     {
         mSkillLabel[i] = new gcn::Label("Empty               ");
         mSkillLevel[i] = new gcn::Label("00000");
@@ -84,7 +85,7 @@ NewSkillDialog::NewSkillDialog():
         add(mSkillbar[i],180,5+i*25);
     }
     // initialize the skills
-    for(int i=0;i<N_SKILL;i++)
+    for (int i = 0; i < N_SKILL; i++)
     {
         mPlayerSkill[i].level = 0;
         mPlayerSkill[i].exp = 0;
@@ -163,7 +164,7 @@ void NewSkillDialog::action(const std::string& eventId)
     {
         startPoint =80;
     }
-    if(osp != startPoint)
+    if (osp != startPoint)
     {
         resetNSD();
     }
@@ -171,14 +172,14 @@ void NewSkillDialog::action(const std::string& eventId)
 
 void NewSkillDialog::resetNSD()
 {
-     for(int a=0;a<N_SKILL_CAT_SIZE;a++)
+     for (int a = 0; a < N_SKILL_CAT_SIZE; a++)
      {
-         if(skill_name[a+startPoint] != "")
+         if (skill_name[a + startPoint])
          {
-             mSkillLabel[a]->setCaption(skill_name[a+startPoint]);
+             mSkillLabel[a]->setCaption(skill_name[a + startPoint]);
              mSkillLabel[a]->setVisible(true);
              char tmp[5];
-             sprintf(tmp, "%d",mPlayerSkill[a+startPoint].level);
+             sprintf(tmp, "%d", mPlayerSkill[a+startPoint].level);
              mSkillLevel[a]->setCaption(tmp);
              mSkillLevel[a]->setVisible(true);
              mSkillbar[a]->setProgress(0.0f);
