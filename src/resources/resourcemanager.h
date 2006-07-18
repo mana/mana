@@ -73,18 +73,12 @@ class ResourceManager
         setWriteDir(const std::string &path);
 
         /**
-         * Adds a directory or archive to the search path.
+         * Adds a directory or archive to the search path. If append is true
+         * then the directory is added to the end of the search path, otherwise
+         * it is added at the front.
          */
         void
         addToSearchPath(const std::string &path, bool append);
-
-        /**
-         * Searches for zip files and adds them to the search path.
-         */
-        void
-        searchAndAddArchives(const std::string &path,
-                             const std::string &ext,
-                             bool append);
 
         /**
          * Creates a directory in the write path

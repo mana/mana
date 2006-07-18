@@ -74,7 +74,8 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     void enable();
 
     /**
-     * Loads and display news
+     * Loads and display news. Assumes the news file contents have been loaded
+     * into the memory buffer.
      */
     void loadNews();
 

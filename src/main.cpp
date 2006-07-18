@@ -163,10 +163,6 @@ void init_engine()
     // Add the main data directory to our PhysicsFS search path
     resman->addToSearchPath("data", true);
     resman->addToSearchPath(TMW_DATADIR "data", true);
-    // Add zip files to PhysicsFS
-    resman->searchAndAddArchives("/", ".zip", true);
-    // Updates, these override other files
-    resman->searchAndAddArchives("/updates", ".zip", false);
 
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
@@ -391,6 +387,22 @@ void parseOptions(int argc, char *argv[], Options &options)
     }
 }
 
+/**
+ * Reads the file "updates/resources.txt" and attempts to load each update
+ * mentioned in it.
+ */
+void loadUpdates()
+{
+    const std::string updatesFile = "updates/resources.txt";
+    ResourceManager *resman = ResourceManager::getInstance();
+    std::vector<std::string> lines = resman->loadTextFile(updatesFile);
+
+    for (unsigned int i = 0; i < lines.size(); ++i)
+    {
+        resman->addToSearchPath(lines[i], false);
+    }
+}
+
 CharServerHandler charServerHandler;
 LoginData loginData;
 LoginHandler loginHandler;
@@ -503,14 +515,17 @@ int main(int argc, char *argv[])
 
     SDL_Event event;
 
-    if (options.skipUpdate && state != ERROR_STATE)
-    {
+    if (options.skipUpdate && state != ERROR_STATE) {
+        loadUpdates();
         state = LOGIN_STATE;
+    }
+    else {
+        state = UPDATE_STATE;
     }
 
     unsigned int oldstate = !state; // We start with a status change.
-    Window *currentDialog = NULL;
 
+    Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
     Game *game = NULL;
 
@@ -581,8 +596,7 @@ int main(int argc, char *argv[])
             switch (oldstate)
             {
                 case UPDATE_STATE:
-                    ResourceManager::getInstance()->
-                        searchAndAddArchives("/updates", ".zip", 0);
+                    loadUpdates();
                     break;
 
                     // Those states don't cause a network disconnect

@@ -72,35 +72,8 @@ ResourceManager::setWriteDir(const std::string &path)
 void
 ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
+    logger->log("Adding to PhysicsFS: %s", path.c_str());
     PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0);
-}
-
-void
-ResourceManager::searchAndAddArchives(const std::string &path,
-                                      const std::string &ext,
-                                      bool append)
-{
-    const char *dirSep = PHYSFS_getDirSeparator();
-    char **list = PHYSFS_enumerateFiles(path.c_str());
-
-    for (char **i = list; *i != NULL; i++)
-    {
-        size_t len = strlen(*i);
-
-        if (len > ext.length() && !ext.compare((*i)+(len - ext.length())))
-        {
-            std::string file, realPath, archive;
-
-            file = path + "/" + (*i);
-            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
-            archive = realPath + path + dirSep + (*i);
-
-            logger->log("Adding to PhysicsFS: %s", archive.c_str());
-            addToSearchPath(archive, append);
-        }
-    }
-
-    PHYSFS_freeList(list);
 }
 
 bool
@@ -289,9 +262,9 @@ ResourceManager::loadTextFile(const std::string &fileName)
     }
 
     std::istringstream iss(std::string(fileContents, contentsLength));
-
     std::string line;
-    while(getline(iss, line, '\n')) {
+
+    while (getline(iss, line, '\n')) {
         lines.push_back(line);
     }
 

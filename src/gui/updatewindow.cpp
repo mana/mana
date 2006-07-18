@@ -42,6 +42,8 @@
 
 #include "../utils/tostring.h"
 
+#include "../resources/resourcemanager.h"
+
 UpdaterWindow::UpdaterWindow():
     Window("Updating..."),
     mThread(NULL), mMutex(NULL), mDownloadStatus(UPDATE_NEWS),
@@ -99,10 +101,13 @@ UpdaterWindow::~UpdaterWindow()
          mThread = NULL;
     }
 
-    free(mMemoryBuffer);
+    if (mMemoryBuffer)
+    {
+        free(mMemoryBuffer);
+    }
+
     // Remove downloaded files
     remove((mBasePath + "/updates/news.txt").c_str());
-    remove((mBasePath + "/updates/resources.txt").c_str());
     remove((mBasePath + "/updates/download.temp").c_str());
 
     delete[] mCurlError;
@@ -147,30 +152,29 @@ void UpdaterWindow::action(const std::string& eventId)
 
 void UpdaterWindow::loadNews()
 {
-    int contentsLength = mDownloadedBytes;
-    char *fileContents = mMemoryBuffer;
-
-    if (!fileContents)
+    if (!mMemoryBuffer)
     {
         logger->log("Couldn't load news");
         return;
     }
 
     // Reallocate and include terminating 0 character
-    fileContents = (char*)realloc(fileContents, contentsLength + 1);
-    fileContents[contentsLength] = '\0';
+    mMemoryBuffer = (char*)realloc(mMemoryBuffer, mDownloadedBytes + 1);
+    mMemoryBuffer[mDownloadedBytes] = '\0';
 
     mBrowserBox->clearRows();
 
     // Tokenize and add each line separately
-    char *line = strtok(fileContents, "\n");
+    char *line = strtok(mMemoryBuffer, "\n");
     while (line != NULL)
     {
         mBrowserBox->addRow(line);
         line = strtok(NULL, "\n");
     }
 
-    //free(fileContents);
+    // Free the memory buffer now that we don't need it anymore
+    free(mMemoryBuffer);
+    mMemoryBuffer = NULL;
 
     mScrollArea->setVerticalScrollAmount(0);
     setVisible(true);
@@ -335,16 +339,11 @@ void UpdaterWindow::logic()
         case UPDATE_NEWS:
             if (mDownloadComplete)
             {
-                // Try to open news.txt
+                // Parse current memory buffer as news and dispose of the data
                 loadNews();
-                // Doesn't matter if it couldn't find news.txt,
-                // go to the next step
+
                 mCurrentFile = "resources.txt";
-                if (mMemoryBuffer != NULL)
-                {
-                    free(mMemoryBuffer);
-                    mMemoryBuffer = NULL;
-                }
+                mStoreInMemory = false;
                 download();
                 mDownloadStatus = UPDATE_LIST;
             }
@@ -352,22 +351,10 @@ void UpdaterWindow::logic()
         case UPDATE_LIST:
             if (mDownloadComplete)
             {
-                if (mMemoryBuffer != NULL)
-                {
-                    // Tokenize and add each line separately
-                    char *line = strtok(mMemoryBuffer, "\n");
-                    while (line != NULL)
-                    {
-                        mFiles.push_back(line);
-                        line = strtok(NULL, "\n");
-                    }
-                    mStoreInMemory = false;
-                    mDownloadStatus = UPDATE_RESOURCES;
-                }
-                else {
-                    logger->log("Unable to download resources.txt");
-                    mDownloadStatus = UPDATE_ERROR;
-                }
+                ResourceManager *resman = ResourceManager::getInstance();
+                mFiles = resman->loadTextFile("updates/resources.txt");
+                mStoreInMemory = false;
+                mDownloadStatus = UPDATE_RESOURCES;
             }
             break;
         case UPDATE_RESOURCES:

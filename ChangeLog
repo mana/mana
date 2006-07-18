@@ -1,3 +1,12 @@
+2006-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp,
+	src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
+	Updated the updating system. It will now only load those updates
+	specified in the downloaded resources.txt file, and in the order
+	in which they are mentioned (the top one being the most
+	significant).
+
 2006-07-17 Frode Lindeijer <f.lindeijer@gmail.com>
 
 	* Added shorts to items.png
