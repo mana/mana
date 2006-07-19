@@ -1,3 +1,7 @@
+2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tmw.cbp: Added Code::Blocks project file.
+
 2006-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp,
