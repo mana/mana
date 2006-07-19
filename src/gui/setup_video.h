@@ -42,7 +42,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void cancel();
 
         void action(const std::string&);
-        
+
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);
 

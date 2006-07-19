@@ -210,7 +210,7 @@ void LocalPlayer::walk(unsigned char dir)
     {
         // Update the player direction to where he wants to walk
         // Warning: Not communicated to the server yet
-        mDirection = dir;
+        setDirection(dir);
     }
 }
 
@@ -344,22 +344,22 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
-            mDirection = DOWN;
+            setDirection(DOWN);
         else
-            mDirection = UP;
+            setDirection(UP);
     }
     else
     {
         if (dist_x > 0)
-            mDirection = RIGHT;
+            setDirection(RIGHT);
         else
-            mDirection = LEFT;
+            setDirection(LEFT);
     }
 
     // Implement charging attacks here
     mLastAttackTime = 0;
 
-    mAction = ATTACK;
+    setAction(ATTACK);
     mWalkTime = tick_time;
     if (getWeapon() == 2)
         sound.playSfx("sfx/bow_shoot_1.ogg");

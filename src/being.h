@@ -27,11 +27,13 @@
 #include <list>
 #include <string>
 #include <SDL_types.h>
+#include <vector>
 
+#include "animation.h"
 #include "sprite.h"
 #include "map.h"
 
-#define NR_HAIR_STYLES 6
+#define NR_HAIR_STYLES 7
 #define NR_HAIR_COLORS 10
 
 class Equipment;
@@ -75,6 +77,19 @@ class Being : public Sprite
             HIT            = 17
         };
 
+        enum Sprite {
+            BASE_SPRITE = 0,
+            SHOE_SPRITE,
+            BOTTOMCLOTHES_SPRITE,
+            TOPCLOTHES_SPRITE,
+            HAIR_SPRITE,
+            HAT_SPRITE,
+            WEAPON_SPRITE,
+            VECTOREND_SPRITE
+        };
+
+
+
         /**
          * Directions, to be used as bitmask values
          */
@@ -83,14 +98,14 @@ class Being : public Sprite
         static const char UP = 4;
         static const char RIGHT = 8;
 
-        Uint16 mJob;           /**< Job (player job, npc, monster, ) */
+        Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
-        Uint8 mDirection;      /**< Facing direction */
-        Uint8 mAction;
+        Uint8 mDirection;       /**< Facing direction */
+        Uint8 mAction;          /**< Action the being is performing */
         Uint8 mFrame;
         Uint16 mWalkTime;
-        Uint8 mEmotion;        /**< Currently showing emotion */
-        Uint8 mEmotionTime;   /**< Time until emotion disappears */
+        Uint8 mEmotion;         /**< Currently showing emotion */
+        Uint8 mEmotionTime;     /**< Time until emotion disappears */
 
         Uint16 mAttackSpeed;          /**< Attack speed */
 
@@ -149,7 +164,7 @@ class Being : public Sprite
         /**
          * Sets the hair color for this being.
          */
-        void
+        virtual void
         setHairColor(Uint16 color);
 
         /**
@@ -161,7 +176,7 @@ class Being : public Sprite
         /**
          * Sets the hair style for this being.
          */
-        void
+        virtual void
         setHairStyle(Uint16 style);
 
         /**
@@ -169,11 +184,23 @@ class Being : public Sprite
          */
         Uint16
         getHairStyle() const { return mHairStyle; }
-        
+
+        /**
+         * Sets the hair style and color for this being.
+         */
+        virtual void
+        setHair(Uint16 style, Uint16 color);
+
+        /**
+         * Sets visible equipments for this being.
+         */
+        virtual void
+        setVisibleEquipment(Uint8 slot, Uint8 id);
+
         /**
          * Sets the sex for this being.
          */
-        void
+        virtual void
         setSex(Uint8 sex) { mSex = sex; }
 
         /**
@@ -268,6 +295,16 @@ class Being : public Sprite
         void setMap(Map *map);
 
         /**
+         * Sets the current action.
+         */
+        void setAction(Action action);
+
+        /**
+         * Sets the current direction.
+         */
+        void setDirection(Uint8 direction);
+
+        /**
          * Draws this being to the given graphics context.
          *
          * @see Sprite::draw(Graphics, int, int)
@@ -300,7 +337,7 @@ class Being : public Sprite
          */
         int
         getYOffset() const { return getOffset(UP, DOWN); }
-        
+
         std::auto_ptr<Equipment> mEquipment;
         int mVisibleEquipment[6];       /**< Visible equipments */
 
@@ -334,8 +371,7 @@ class Being : public Sprite
         bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
-        Spriteset *mSpriteset;
-        int mSpriteFrame;
+        std::vector<AnimatedSprite *>mSprites;
 };
 
 #endif

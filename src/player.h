@@ -26,8 +26,11 @@
 
 #include "being.h"
 
+#include <string>
+
 class Graphics;
 class Map;
+class AnimatedSprite;
 
 class Player : public Being
 {
@@ -38,9 +41,15 @@ class Player : public Being
 
         virtual Type getType() const;
 
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY);
-
         virtual void drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+
+        virtual void setSex(Uint8 sex);
+
+        virtual void setHairColor(Uint16 color);
+
+        virtual void setHairStyle(Uint16 style);
+
+        virtual void setVisibleEquipment(Uint8 slot, Uint8 id);
 };
 
 #endif

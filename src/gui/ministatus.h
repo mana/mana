@@ -64,4 +64,4 @@ class MiniStatusWindow : public Window
 };
 
 #endif
- 
+

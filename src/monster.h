@@ -34,8 +34,6 @@ class Monster : public Being
         virtual void logic();
 
         virtual Type getType() const;
-
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY);
 };
 
 #endif

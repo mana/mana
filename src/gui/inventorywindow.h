@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_INVENTORYWINDOW_H
-#define _TMW_INVENTORYWINDOW_H 
+#define _TMW_INVENTORYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
 

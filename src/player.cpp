@@ -23,55 +23,26 @@
 
 #include "player.h"
 
+#include "animation.h"
 #include "equipment.h"
 #include "game.h"
 #include "graphics.h"
 
-#include "graphic/spriteset.h"
+#include "utils/tostring.h"
 
 #include "gui/gui.h"
-
-extern std::vector<Spriteset *> hairset;
-extern Spriteset *playerset[2];
-extern std::vector<Spriteset *> weaponset;
-extern Spriteset *equipmentset[2];
-
-signed char hairtable[19][4][2] = {
-    // S(x,y)    W(x,y)   N(x,y)   E(x,y)
-    { {-5, -4}, {-6, -4}, {-6,  0}, {-4, -4} }, // STAND
-    { {-5, -3}, {-6, -4}, {-6,  0}, {-4, -4} }, // WALK 1st frame
-    { {-5, -4}, {-6, -3}, {-6, -1}, {-4, -3} }, // WALK 2nd frame
-    { {-5, -4}, {-6, -4}, {-6, -1}, {-4, -4} }, // WALK 3rd frame
-    { {-5, -3}, {-6, -4}, {-6,  0}, {-4, -4} }, // WALK 4th frame
-    { {-5, -4}, {-6, -3}, {-6, -1}, {-4, -3} }, // WALK 5th frame
-    { {-5, -4}, {-6, -4}, {-6, -1}, {-4, -4} }, // WALK 6th frame
-    { {-5,  8}, {-1,  5}, {-6,  8}, {-9,  5} },  // SIT
-    { {16, 21}, {16, 21}, {16, 21}, {16, 21} }, // DEAD
-    { {-5, -2}, {-2, -5}, {-6,  0}, {-7, -5} }, // ATTACK 1st frame
-    { {-5, -3}, {-2, -6}, {-6,  0}, {-7, -6} }, // ATTACK 2nd frame
-    { {-5,  0}, {-6, -3}, {-6,  0}, {-4, -3} }, // ATTACK 3rd frame
-    { {-5,  1}, {-7, -2}, {-6,  2}, {-3, -2} }, // ATTACK 4th frame
-    { {-5, -3}, {-3, -4}, {-6,  0}, {-7, -4} }, // BOW_ATTACK 1st frame
-    { {-5, -3}, {-3, -4}, {-6,  0}, {-7, -4} }, // BOW_ATTACK 2nd frame
-    { {-5, -3}, {-3, -4}, {-7,  0}, {-7, -4} }, // BOW_ATTACK 3rd frame
-    { {-5, -2}, {-1, -5}, {-7,  1}, {-9, -5} }, // BOW_ATTACK 4th frame
-    { {-5, -3}, {-1, -5}, {-7,  0}, {-9, -5} }, // BOW_ATTACK 5th frame
-    { { 0,  0}, { 0,  0}, { 0,  0}, { 0,  0} }  // ?? HIT
-};
-
-unsigned char hairframe[4][20] = {
-    { 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-    { 3, 3, 3, 3, 3, 3, 3, 3, 8, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 },
-    { 4, 4, 4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 },
-    { 5, 5, 5, 5, 5, 5, 5, 5, 8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 }
-};
 
 Player::Player(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
+    // Load the weapon sprite.
+    // When there are more different weapons this should be moved to the
+    // setWeapon Method.
+    mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapons.xml", 0);
 }
 
-void Player::logic()
+void
+Player::logic()
 {
     switch (mAction) {
         case WALK:
@@ -80,7 +51,6 @@ void Player::logic()
                 nextStep();
             }
             break;
-
         case ATTACK:
             int frames = 4;
             if (getWeapon() == 2)
@@ -93,71 +63,13 @@ void Player::logic()
             }
             break;
     }
-
-
-
     Being::logic();
 }
 
-Being::Type Player::getType() const
+Being::Type
+Player::getType() const
 {
     return PLAYER;
-}
-
-void Player::draw(Graphics *graphics, int offsetX, int offsetY)
-{
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
-    int frame = mAction;
-
-    frame = mAction;
-
-    if (mAction != SIT && mAction != DEAD)
-    {
-        frame += mFrame;
-    }
-
-    if (mAction == ATTACK && getWeapon() > 0)
-    {
-        if (getWeapon() == 2)
-        {
-            frame += 4;
-        }
-    }
-
-    unsigned char dir = 0;
-    while (!(mDirection & (1 << dir))) dir++;
-
-    graphics->drawImage(playerset[mSex]->get(frame + 18 * dir),
-            px - 16, py - 32);
-
-    if (getWeapon() != 0 && mAction == ATTACK)
-    {
-        int frames = 4;
-        if (getWeapon() == 2)
-        {
-            frames = 5;
-        }
-        Image *image = weaponset[getWeapon() - 1]->get(mFrame + frames * dir);
-        graphics->drawImage(image, px - 16, py - 32);
-    }
-
-    if (getHairColor() <= NR_HAIR_COLORS)
-    {
-        int hf = 9 * (getHairColor() - 1) + hairframe[dir][frame];
-
-        graphics->drawImage(hairset[getHairStyle() - 1]->get(hf),
-                px + 1 + hairtable[frame][dir][0],
-                py - 33 + hairtable[frame][dir][1]);
-    }
-    
-    // Display middle equipment
-    if (mVisibleEquipment[5])
-    {
-        graphics->drawImage(
-                equipmentset[mVisibleEquipment[5] - 1]->get(frame + 18 * dir),
-                px - 16, py - 32);
-    }
 }
 
 void
@@ -170,3 +82,76 @@ Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     graphics->setColor(gcn::Color(255, 255, 255));
     graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
+
+void
+Player::setSex(Uint8 sex)
+{
+    if (sex != mSex)
+    {
+        delete mSprites[BASE_SPRITE];
+        if (sex == 0)
+        {
+            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_male_base.xml", 0);
+        }
+        else
+        {
+            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_female_base.xml", 0);
+        }
+    }
+    Being::setSex(sex);
+}
+
+void
+Player::setHairColor(Uint16 color)
+{
+    if (color != mHairColor && mHairStyle > 0)
+    {
+        delete mSprites[HAIR_SPRITE];
+        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(mHairStyle)+".xml", color - 1);
+    }
+    Being::setHairColor(color);
+};
+
+void
+Player::setHairStyle(Uint16 style)
+{
+    if (style != mHairStyle && mHairColor > 0)
+    {
+        delete mSprites[HAIR_SPRITE];
+        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(style)+".xml", mHairColor - 1);
+    }
+    Being::setHairStyle(style);
+};
+
+void
+Player::setVisibleEquipment(Uint8 slot, Uint8 id)
+{
+    // Translate eAthena specific slot
+    Uint8 position = 0;
+    switch (slot) {
+        case 3:
+            position = BOTTOMCLOTHES_SPRITE;
+            break;
+        case 4:
+            position = HAT_SPRITE;
+            break;
+        case 5:
+            position = TOPCLOTHES_SPRITE;
+            break;
+    }
+    // id = 0 means unequip
+    if (mSprites[position]) {
+        delete mSprites[position];
+        mSprites[position] = 0;
+    }
+    if (id) {
+        char stringId[4];
+        sprintf(stringId, "%03i", id);
+        printf("Id: %i %i %s\n", id, slot, stringId);
+        mSprites[position] = new AnimatedSprite(
+                "graphics/sprites/item" + toString(stringId) + ".xml", 0);
+    }
+    Being::setVisibleEquipment(slot, id);
+}
+
+

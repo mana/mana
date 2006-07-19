@@ -96,7 +96,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 dstBeing->clearPath();
                 dstBeing->mFrame = 0;
                 dstBeing->mWalkTime = tick_time;
-                dstBeing->mAction = Being::STAND;
+                dstBeing->setAction(Being::STAND);
             }
 
             // Prevent division by 0 when calculating frame
@@ -106,7 +106,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeapon(msg->readInt16());
-            dstBeing->mVisibleEquipment[3] = msg->readInt16(); // head (bottom)
+            dstBeing->setVisibleEquipment(3, msg->readInt16()); // head bottom
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -114,8 +114,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             msg->readInt16();  // shield
-            dstBeing->mVisibleEquipment[4] = msg->readInt16(); // head (top)
-            dstBeing->mVisibleEquipment[5] = msg->readInt16(); // head (mid)
+            dstBeing->setVisibleEquipment(4, msg->readInt16()); // head top
+            dstBeing->setVisibleEquipment(5, msg->readInt16()); // head mid
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -131,7 +131,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 Uint16 srcX, srcY, dstX, dstY;
                 msg->readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->mAction = Being::STAND;
+                dstBeing->setAction(Being::STAND);
                 dstBeing->mX = srcX;
                 dstBeing->mY = srcY;
                 dstBeing->setDestination(dstX, dstY);
@@ -160,13 +160,13 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 switch (dstBeing->getType())
                 {
                     case Being::MONSTER:
-                        dstBeing->mAction = Being::MONSTER_DEAD;
+                        dstBeing->setAction(Being::MONSTER_DEAD);
                         dstBeing->mFrame = 0;
                         dstBeing->mWalkTime = tick_time;
                         break;
 
                     default:
-                        dstBeing->mAction = Being::DEAD;
+                        dstBeing->setAction(Being::DEAD);
                         break;
                 }
             }
@@ -205,11 +205,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
                         // buggy
                         if (srcBeing->getType() == Being::MONSTER)
                         {
-                            srcBeing->mAction = Being::MONSTER_ATTACK;
+                            srcBeing->setAction(Being::MONSTER_ATTACK);
                         }
                         else
                         {
-                            srcBeing->mAction = Being::ATTACK;
+                            srcBeing->setAction(Being::ATTACK);
                         }
                         srcBeing->mFrame = 0;
                         srcBeing->mWalkTime = tick_time;
@@ -219,13 +219,13 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 2: // Sit
                     if (srcBeing == NULL) break;
                     srcBeing->mFrame = 0;
-                    srcBeing->mAction = Being::SIT;
+                    srcBeing->setAction(Being::SIT);
                     break;
 
                 case 3: // Stand up
                     if (srcBeing == NULL) break;
                     srcBeing->mFrame = 0;
-                    srcBeing->mAction = Being::STAND;
+                    srcBeing->setAction(Being::STAND);
                     break;
             }
             break;
@@ -269,8 +269,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 3:
                 case 4:
                 case 5:
-                    // Equip/unequip head 3. Bottom 4. Top 5. Bottom
-                    dstBeing->mVisibleEquipment[type] = msg->readInt8();
+                    // Equip/unequip head 3. Bottom 4. Top 5. Middle
+                    dstBeing->setVisibleEquipment(type, msg->readInt8());
                     // First 3 slots  of mVisibleEquipments are reserved for
                     // later use, probably accessories.
                     break;
@@ -314,15 +314,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeaponById(msg->readInt16());  // item id 1
             msg->readInt16();  // item id 2
-            dstBeing->mVisibleEquipment[3] = msg->readInt16(); // head (bottom)
+            dstBeing->setVisibleEquipment(3, msg->readInt16()); // head bottom
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
                 msg->readInt32(); // server tick
             }
 
-            dstBeing->mVisibleEquipment[4] = msg->readInt16(); // head (top)
-            dstBeing->mVisibleEquipment[5] = msg->readInt16(); // head (mid)
+            dstBeing->setVisibleEquipment(4, msg->readInt16()); // head top
+            dstBeing->setVisibleEquipment(5, msg->readInt16()); // head mid
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -353,7 +353,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 if (msg->readInt8() == 2)
                 {
-                    dstBeing->mAction = Being::SIT;
+                    dstBeing->setAction(Being::SIT);
                 }
             }
             else if (msg->getId() == SMSG_PLAYER_MOVE)
@@ -371,8 +371,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
         case 0x0119:
             // Change in players look
             printf("0x0119 %i %i %i %x %i\n", msg->readInt32(),
-                    msg->readInt16(), msg->readInt16(), msg->readInt16(),
-                    msg->readInt8());
+                   msg->readInt16(), msg->readInt16(), msg->readInt16(),
+                   msg->readInt8());
             break;
     }
 }

@@ -55,7 +55,7 @@ bool ImageWriter::writePNG(SDL_Surface *surface,
         logger->log("Had trouble creating png_structp");
         return false;
     }
-    
+
     info_ptr = png_create_info_struct(png_ptr);
     if (!info_ptr)
     {

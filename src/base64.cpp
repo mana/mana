@@ -105,7 +105,7 @@ unsigned char *php_base64_decode(const unsigned char *str, int length, int *ret_
            headache.  - Turadg Aleahmad <turadg@wise.berkeley.edu>
            */
 
-        if (ch == ' ') ch = '+'; 
+        if (ch == ' ') ch = '+';
 
         ch = reverse_table[ch];
         if (ch < 0) continue;

@@ -44,14 +44,21 @@ class Spriteset {
          */
         ~Spriteset();
 
+        int getWidth() { return mWidth; };
+
+        int getHeight() { return mHeight; };
+
         typedef std::vector<Image*>::size_type size_type;
-        Image* get(size_type i) { return mSpriteset[i]; }
+        Image * get(size_type i);
 
         size_type size() { return mSpriteset.size(); }
 
     private:
         // Vector storing the whole spriteset.
         std::vector<Image*> mSpriteset;
+        //height and width of the images in the spriteset
+        int mHeight;
+        int mWidth;
 };
 
 #endif

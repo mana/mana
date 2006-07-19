@@ -21,10 +21,11 @@
  *  $Id$
  */
 
+#include "itemmanager.h"
+
 #include <libxml/tree.h>
 
 #include "iteminfo.h"
-#include "itemmanager.h"
 #include "resourcemanager.h"
 
 #include "../log.h"

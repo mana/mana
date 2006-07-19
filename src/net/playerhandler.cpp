@@ -104,7 +104,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
                 current_npc = 0;
 
-                player_node->mAction = Being::STAND;
+                player_node->setAction(Being::STAND);
                 player_node->stopAttack();
                 player_node->mFrame = 0;
                 player_node->mX = x;
@@ -163,7 +163,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     deathNotice = new OkDialog("Message",
                             "You're now dead, press ok to restart");
                     deathNotice->addActionListener(&deathListener);
-                    player_node->mAction = Being::DEAD;
+                    player_node->setAction(Being::DEAD);
                 }
             }
             break;

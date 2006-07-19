@@ -126,14 +126,16 @@ bool Graphics::drawImage(Image *image, int x, int y)
 bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
         int width, int height)
 {
+    // Check that preconditions for blitting are met.
+    if (!mScreen || !image || !image->mImage) return false;
+
     dstX += mClipStack.top().xOffset;
     dstY += mClipStack.top().yOffset;
 
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
-    // Check that preconditions for blitting are met.
-    if (!mScreen || !image->mImage) return false;
+
 
     SDL_Rect dstRect;
     SDL_Rect srcRect;

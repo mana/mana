@@ -34,21 +34,17 @@ NPC *current_npc = 0;
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
     Being(id, job, map), mNetwork(network)
 {
-    mSpriteset = npcset;
-    mSpriteFrame = job-100;
+    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml", job-100);
 }
 
-Being::Type NPC::getType() const
+Being::Type
+NPC::getType() const
 {
     return Being::NPC;
 }
 
-void NPC::draw(Graphics *graphics, int offsetX, int offsetY)
-{
-    Being::draw(graphics, offsetX - 8, offsetY - 52);
-}
-
-void NPC::talk()
+void
+NPC::talk()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_TALK);
@@ -57,14 +53,16 @@ void NPC::talk()
     current_npc = this;
 }
 
-void NPC::nextDialog()
+void
+NPC::nextDialog()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(mId);
 }
 
-void NPC::dialogChoice(char choice)
+void
+NPC::dialogChoice(char choice)
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
@@ -76,7 +74,8 @@ void NPC::dialogChoice(char choice)
  * TODO Unify the buy() and sell() methods, without sacrificing readability of
  * the code calling the method. buy(bool buySell) would be bad...
  */
-void NPC::buy()
+void
+NPC::buy()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
@@ -84,7 +83,8 @@ void NPC::buy()
     outMsg.writeInt8(0);
 }
 
-void NPC::sell()
+void
+NPC::sell()
 {
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);

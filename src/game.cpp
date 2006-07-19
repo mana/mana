@@ -357,7 +357,7 @@ void Game::logic()
         }
 
         gameTime = tick_time;
-        
+
         fpsLimit = (int)config.getValue("fpslimit", 50);
         if (fpsLimit)
         {

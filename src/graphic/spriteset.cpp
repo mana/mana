@@ -23,6 +23,8 @@
 
 #include "spriteset.h"
 
+#include "../log.h"
+
 #include "../resources/image.h"
 
 #include "../utils/dtor.h"
@@ -36,9 +38,25 @@ Spriteset::Spriteset(Image *img, int width, int height)
             mSpriteset.push_back(img->getSubImage(x, y, width, height));
         }
     }
+    mWidth = width;
+    mHeight = height;
 }
 
 Spriteset::~Spriteset()
 {
     for_each(mSpriteset.begin(), mSpriteset.end(), make_dtor(mSpriteset));
+}
+
+Image *
+Spriteset::get(size_type i)
+{
+    if (i > mSpriteset.size())
+    {
+        logger->log("Warning: Sprite #%i does not exist in this spriteset", i);
+        return NULL;
+    }
+    else
+    {
+        return mSpriteset[i];
+    }
 }

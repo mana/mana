@@ -88,7 +88,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *mStatsAccuracyPoints, *mStatsEvadePoints;
         gcn::Label *mStatsReflexPoints;
 
-        /** 
+        /**
          * Stats captions.
          */
         gcn::Label *mStatsLabel[6];
@@ -96,7 +96,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *mStatsDisplayLabel[6];
         gcn::Label *mRemainingStatsPointsLabel;
 
-        /** 
+        /**
          * Stats buttons.
          */
         gcn::Button *mStatsButton[6];

@@ -35,8 +35,6 @@ class NPC : public Being
 
         virtual Type getType() const;
 
-        virtual void draw(Graphics *graphics, int offsetX, int offsetY);
-
         void talk();
         void nextDialog();
         void dialogChoice(char choice);

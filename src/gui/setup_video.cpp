@@ -141,7 +141,7 @@ Setup_Video::Setup_Video():
 
     mModeList->setSelected(-1);
     mAlphaSlider->setValue(mOpacity);
-    
+
     mFpsField->setText(toString(mFps));
     mFpsField->setEnabled(mFps > 0);
     mFpsSlider->setValue(mFps);
@@ -213,7 +213,7 @@ void Setup_Video::apply()
         new OkDialog("Changing OpenGL",
                 "Applying change to OpenGL requires restart.");
     }
-    
+
     // FPS change
     config.setValue("fpslimit", mFps);
 
@@ -273,7 +273,7 @@ void Setup_Video::action(const std::string &event)
 void Setup_Video::keyPress(const gcn::Key &key)
 {
     std::stringstream tempFps(mFpsField->getText());
-    
+
     if (tempFps >> mFps)
     {
         if (mFps < 10)

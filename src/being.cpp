@@ -44,7 +44,7 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 Being::Being(Uint32 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
-    mAction(0), mFrame(0),
+    mAction(0),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
@@ -53,24 +53,29 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mWeapon(0),
     mWalkSpeed(150),
     mMap(NULL),
-    mHairStyle(1), mHairColor(1),
-    mSex(0),
+    mHairStyle(0), mHairColor(0),
+    mSex(2),
     mSpeechTime(0),
     mDamageTime(0),
-    mShowSpeech(false), mShowDamage(false),
-    mSpriteset(NULL), mSpriteFrame(0)
+    mShowSpeech(false), mShowDamage(false)
 {
     setMap(map);
-    memset(mVisibleEquipment, 0, 6 * sizeof(int));
+    mSprites.resize(VECTOREND_SPRITE, NULL);
 }
 
 Being::~Being()
 {
+    for (int i =0; i < VECTOREND_SPRITE; i++)
+    {
+        delete mSprites[i];
+    }
+
     clearPath();
     setMap(NULL);
 }
 
-void Being::setDestination(Uint16 destX, Uint16 destY)
+void
+Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
     {
@@ -78,12 +83,14 @@ void Being::setDestination(Uint16 destX, Uint16 destY)
     }
 }
 
-void Being::clearPath()
+void
+Being::clearPath()
 {
     mPath.clear();
 }
 
-void Being::setPath(const Path &path)
+void
+Being::setPath(const Path &path)
 {
     mPath = path;
 
@@ -94,7 +101,8 @@ void Being::setPath(const Path &path)
     }
 }
 
-void Being::setHairColor(Uint16 color)
+void
+Being::setHairColor(Uint16 color)
 {
     mHairColor = color;
     if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
@@ -103,13 +111,34 @@ void Being::setHairColor(Uint16 color)
     }
 }
 
-void Being::setHairStyle(Uint16 style)
+void
+Being::setHairStyle(Uint16 style)
 {
     mHairStyle = style;
     if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
     {
         mHairStyle = 1;
     }
+}
+
+void
+Being::setHair(Uint16 style, Uint16 color)
+{
+    mHairStyle = style;
+    if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
+    {
+        mHairStyle = 1;
+    }
+    mHairColor = color;
+    if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
+    {
+        mHairColor = 1;
+    }
+}
+
+void
+Being::setVisibleEquipment(Uint8 slot, Uint8 id)
+{
 }
 
 void
@@ -147,13 +176,93 @@ Being::setMap(Map *map)
 }
 
 void
+Being::setAction(Action action)
+{
+    if (action != mAction)
+    {
+        std::string currentAction = "stand";
+        switch (action)
+        {
+            case WALK:
+                currentAction = "walk";
+                break;
+            case SIT:
+                currentAction = "sit";
+                break;
+            case ATTACK:
+                if (getType() == MONSTER)
+                {
+                    currentAction = "dead";
+                }else{
+                    switch (getWeapon())
+                    {
+                        case 2:
+                            currentAction = "attack_bow";
+                            break;
+                        case 1:
+                            currentAction = "attack_stab";
+                            break;
+                        case 0:
+                            currentAction = "attack";
+                            break;
+                    }
+                };
+                break;
+            case MONSTER_ATTACK:
+                currentAction = "attack";
+                break;
+            case DEAD:
+                currentAction = "dead";
+                break;
+            default:
+                currentAction = "stand";
+                break;
+        }
+
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
+        {
+            if (mSprites[i] != NULL) mSprites[i]->play(currentAction);
+        }
+    }
+    mAction = action;
+}
+
+void
+Being::setDirection(Uint8 direction)
+{
+    mDirection |= direction;
+    std::string dir;
+
+    if (direction & UP)
+    {
+        dir = "up";
+    }
+    else if (direction & RIGHT)
+    {
+        dir = "right";
+    }
+    else if (direction & DOWN)
+    {
+        dir = "down";
+    }
+    else
+    {
+        dir = "left";
+    }
+
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (mSprites[i] != NULL) mSprites[i]->setDirection(dir);
+    }
+
+}
+
+void
 Being::nextStep()
 {
-    mFrame = 0;
-
     if (mPath.empty())
     {
-        mAction = STAND;
+        setAction(STAND);
         return;
     }
 
@@ -162,17 +271,17 @@ Being::nextStep()
 
     mDirection = 0;
     if (node.x > mX)
-        mDirection |= RIGHT;
+        setDirection(RIGHT);
     else if (node.x < mX)
-        mDirection |= LEFT;
+        setDirection(LEFT);
     if (node.y > mY)
-        mDirection |= DOWN;
+        setDirection(DOWN);
     else if (node.y < mY)
-        mDirection |= UP;
+        setDirection(UP);
 
     mX = node.x;
     mY = node.y;
-    mAction = WALK;
+    setAction(WALK);
     mWalkTime += mWalkSpeed / 10;
 }
 
@@ -202,17 +311,36 @@ Being::logic()
             mEmotion = 0;
         }
     }
+
+    // Update sprite animations
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (mSprites[i] != NULL)
+        {
+            printf("Draw: %i\n", i);
+            mSprites[i]->update(tick_time * 10);
+        }
+    }
 }
 
-void Being::draw(Graphics *graphics, int offsetX, int offsetY)
+void
+Being::draw(Graphics *graphics, int offsetX, int offsetY)
 {
-    if (!mSpriteset)
-        return;
-
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    graphics->drawImage(mSpriteset->get(mSpriteFrame), px, py);
+    //what are these two lines good for? please add a comment.
+    unsigned char dir = 0;
+    while (!(mDirection & (1 << dir))) dir++;
+
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (mSprites[i] != NULL)
+        {
+            mSprites[i]->draw(graphics, px, py);
+            printf("Draw: %i\n", i);
+        }
+    }
 }
 
 void
@@ -274,12 +402,14 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     }
 }
 
-Being::Type Being::getType() const
+Being::Type
+Being::getType() const
 {
     return UNKNOWN;
 }
 
-void Being::setWeaponById(Uint16 weapon)
+void
+Being::setWeaponById(Uint16 weapon)
 {
     switch (weapon)
     {
@@ -309,7 +439,8 @@ void Being::setWeaponById(Uint16 weapon)
     }
 }
 
-int Being::getOffset(char pos, char neg) const
+int
+Being::getOffset(char pos, char neg) const
 {
     // Check whether we're walking in the requested direction
     if (mAction != WALK || !(mDirection & (pos | neg))) {

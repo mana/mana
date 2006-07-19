@@ -30,28 +30,15 @@
 
 #include "utils/tostring.h"
 
-class Spriteset;
-extern std::map<int, Spriteset*> monsterset;
 
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    // Load monster spriteset, if necessary
-    if (monsterset.find(job - 1002) == monsterset.end())
-    {
-        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
-                "graphics/sprites/monster" + toString(job - 1002) + ".png",
-                60, 60);
-        if (!tmp) {
-            logger->error("Unable to load monster spriteset!");
-        } else {
-            monsterset[job - 1002] = tmp;
-        }
-    }
-    mSpriteset = monsterset[job-1002];
+    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/monster" + toString(job - 1002) + ".xml", 0);
 }
 
-void Monster::logic()
+void
+Monster::logic()
 {
     if (mAction != STAND)
     {
@@ -66,27 +53,9 @@ void Monster::logic()
     Being::logic();
 }
 
-Being::Type Monster::getType() const
+Being::Type
+Monster::getType() const
 {
     return MONSTER;
 }
 
-void Monster::draw(Graphics *graphics, int offsetX, int offsetY)
-{
-    if (mFrame >= 4)
-    {
-        mFrame = 3;
-    }
-
-    mSpriteFrame = mAction;
-    if (mAction != MONSTER_DEAD) {
-        mSpriteFrame += mFrame;
-    }
-
-    unsigned char dir = 0;
-    while (!(mDirection & (1 << dir))) dir++;
-
-    mSpriteFrame = dir + 4 * mSpriteFrame;
-
-    Being::draw(graphics, offsetX - 12, offsetY - 25);
-}

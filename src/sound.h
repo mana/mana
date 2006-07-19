@@ -88,7 +88,7 @@ class Sound {
 
         /**
          * Sets music volume.
-         * 
+         *
          * \param volume Volume value
          */
         void setMusicVolume(int volume);

@@ -43,6 +43,7 @@
 #define NOGDI
 #endif
 
+#include "animation.h"
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"
@@ -84,7 +85,6 @@ char n_server, n_character;
 
 std::vector<Spriteset *> hairset;
 Spriteset *playerset[2];
-Spriteset *equipmentset[2];
 Graphics *graphics;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
@@ -250,12 +250,6 @@ void init_engine()
     playerset[1] = resman->createSpriteset(
             "graphics/sprites/player_female_base.png", 64, 64);
     if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
-    equipmentset[0] = resman->createSpriteset(
-            "graphics/sprites/item001.png", 64, 64);
-    if (!equipmentset[0]) logger->error("Couldn't load player equipmentset!");
-    equipmentset[1] = resman->createSpriteset(
-            "graphics/sprites/item002.png", 64, 64);
-    if (!equipmentset[1]) logger->error("Couldn't load player equipmentset!");
 
 
     for (int i=0; i < NR_HAIR_STYLES; i++)
@@ -298,8 +292,6 @@ void exit_engine()
     hairset.clear();
     delete playerset[0];
     delete playerset[1];
-    delete equipmentset[0];
-    delete equipmentset[1];
 
     // Shutdown libxml
     xmlCleanupParser();
@@ -685,10 +677,12 @@ int main(int argc, char *argv[])
                     break;
 
                 case CHAR_CONNECT_STATE:
+                    printf("Char: %i\n", loginData.sex);
                     charLogin(network, &loginData);
                     break;
 
                 case ACCOUNT_STATE:
+                    printf("Account: %i\n", loginData.sex);
                     accountLogin(network, &loginData);
                     break;
 

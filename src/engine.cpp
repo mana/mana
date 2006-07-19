@@ -25,6 +25,7 @@
 
 #include <list>
 
+#include "animation.h"
 #include "being.h"
 #include "beingmanager.h"
 #include "flooritemmanager.h"
@@ -57,14 +58,13 @@ extern Minimap *minimap;
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
 
-std::map<int, Spriteset*> monsterset;
-
 ItemManager *itemDb;          /**< Item database object */
 
 Spriteset *itemset;
 Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
+AnimatedSprite *animatedSprite;
 
 
 Engine::Engine(Network *network):
@@ -102,9 +102,6 @@ Engine::Engine(Network *network):
 Engine::~Engine()
 {
     // Delete sprite sets
-    for_each(monsterset.begin(), monsterset.end(), make_dtor(monsterset));
-    monsterset.clear();
-
     delete npcset;
     delete emotionset;
     for_each(weaponset.begin(), weaponset.end(), make_dtor(weaponset));
@@ -112,6 +109,8 @@ Engine::~Engine()
     delete itemset;
 
     delete itemDb;
+
+    delete animatedSprite;
 }
 
 void Engine::changeMap(const std::string &mapPath)

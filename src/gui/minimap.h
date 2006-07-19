@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_MINIMAP_H
-#define _TMW_MINIMAP_H 
+#define _TMW_MINIMAP_H
 
 #include "window.h"
 

@@ -2,6 +2,17 @@
 
 	* tmw.cbp: Added Code::Blocks project file.
 
+2006-07-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/item001.png, data/graphics/sprites/item001.xml,
+	data/graphics/sprites/item002.png, data/graphics/sprites/item002.xml,
+	data/graphics/sprites/item1202.png, data/graphics/sprites/Makefile.am,
+	docs/INSTALL/win32.txt, src/animation.cpp, src/being.cpp, src/being.h,
+	src/gui/equipmentwindow.cpp, src/gui/newskill.cpp, src/main.cpp,
+	src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
+	src/player.cpp, src/player.h: Merged trunk changes r2381:2397 into
+	new_animation branch.
+
 2006-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp,
@@ -10,11 +21,11 @@
 	specified in the downloaded resources.txt file, and in the order
 	in which they are mentioned (the top one being the most
 	significant).
-
+	
 2006-07-17 Frode Lindeijer <f.lindeijer@gmail.com>
 
 	* Added shorts to items.png
-
+	
 2006-07-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/newskill.cpp: Fixed up a string comparison that caused a
@@ -24,23 +35,204 @@
 
 	* /tmw/trunk/data/graphics/sprites/item001.png: Completed the cotton
 	shirt equipment graphic.
+	
+2006-07-06  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.cpp, src/animation.h, src/being.cpp, src/being.h,
+	src/monster.cpp, src/npc.cpp, src/player.cpp:
+	Fixed some minor bugs, cleaned up general code style and added more
+	comments.
+
+2006-07-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/monster.cpp, src/npc.cpp, src/player.cpp: Fixed broken paths.
+	* data/graphics/sprites/Makefile.am: Added new files.
+	* src/animation.cpp: Added missing return value...
+	* src/Makefile.am: Added new files.
+	
+2006-07-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/monster0.xml: Fixed frame size of maggot.
+	* src/being.h: drawName should be virtual, lest we want names to be
+	drawn.
+	
+2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/spriteset.cpp, src/spriteset.h: Spriteset::get() doesn't crash
+	anymore when requesting a sprite outside of the spriteset. (it returns
+	NULL instead and logs a warning).
+	
+2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp: Fixed a compiler issue reported by Pajarico.
 
 2006-07-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* tools/Reorganize.java: Added tool used for reorganizing and
 	auto-cropping the monster spritesets.
+	
+2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp, src/engine.cpp: Removed some no longer required old
+	style spritesets.
+	* src/being.h, src/being.cpp: Removed some no longer needed member
+	variables.
+	* src/monster.cpp: Monsters are now drawed with the new animation
+	system.
+	* src/npc.cpp, data/graphics/sprites/npcs.xml: NPCs are now drawed
+	with the new animation system.
+	* src/being.h, src/being.cpp, src/npc.cpp, src/npc.h, src/monster.cpp,
+	src/monster.h: Moved all drawing code from the Being based classes
+	into Being.
+	* data/graphics/sprites/monster0.png,
+	data/graphics/sprites/monster1.png,
+	data/graphics/sprites/monster2.png,
+	data/graphics/sprites/monster3.png,
+	data/graphics/sprites/monster4.png,
+	data/graphics/sprites/monster5.png,
+	data/graphics/sprites/monster6.png,
+	data/graphics/sprites/monster7.png,
+	data/graphics/sprites/monster8.png,
+	data/graphics/sprites/monster9.png,
+	data/graphics/sprites/monster10.png,
+	data/graphics/sprites/monster11.png,
+	data/graphics/sprites/monster12.png,
+	data/graphics/sprites/monster13.png,
+	data/graphics/sprites/monster14.png,
+	data/graphics/sprites/monster15.png,
+	data/graphics/sprites/monster16.png,
+	data/graphics/sprites/monster17.png: Resized and reorganized the
+	monster spritesets to fit the new animation system (thanks, Bjørn).
+	* data/graphics/sprites/monster0.xml,
+	data/graphics/sprites/monster1.xml,
+	data/graphics/sprites/monster2.xml,
+	data/graphics/sprites/monster3.xml,
+	data/graphics/sprites/monster4.xml,
+	data/graphics/sprites/monster5.xml,
+	data/graphics/sprites/monster6.xml,
+	data/graphics/sprites/monster7.xml,
+	data/graphics/sprites/monster8.xml,
+	data/graphics/sprites/monster9.xml,
+	data/graphics/sprites/monster10.xml,
+	data/graphics/sprites/monster11.xml,
+	data/graphics/sprites/monster12.xml,
+	data/graphics/sprites/monster13.xml,
+	data/graphics/sprites/monster14.xml,
+	data/graphics/sprites/monster15.xml,
+	data/graphics/sprites/monster16.xml,
+	data/graphics/sprites/monster17.xml: Added animation files for all
+	monsters.
+	* src/animation.cpp: The offset values of the Frames of animated
+	sprites are now modified so every frame is drawn centered.
+	* data/graphics/sprites/hairstyle0.xml,
+	data/graphics/sprites/hairstyle1.xml,
+	data/graphics/sprites/hairstyle2.xml,
+	data/graphics/sprites/hairstyle3.xml,
+	data/graphics/sprites/hairstyle4.xml,
+	data/graphics/sprites/hairstyle5.xml,
+	data/graphics/sprites/hairstyle6.xml,
+	data/graphics/sprites/hairstyle7.xml: Retuned the offsets of the hair
+	sprites.
+	* src/animation.cpp: Small stability fix.
+	* src/being.cpp, src/being.h: weapon animation now uses the new
+	animation system.
+	* data/graphics/sprites/player_male_base.xml
+	data/graphics/sprites/player_female_base.xml
+	data/graphics/sprites/hairstyle0.xml,
+	data/graphics/sprites/hairstyle1.xml,
+	data/graphics/sprites/hairstyle2.xml,
+	data/graphics/sprites/hairstyle3.xml,
+	data/graphics/sprites/hairstyle4.xml,
+	data/graphics/sprites/hairstyle5.xml,
+	data/graphics/sprites/hairstyle6.xml,
+	data/graphics/sprites/hairstyle7.xml: Tuned walk speed and added bow
+	animations.
+
+2006-07-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/being.cpp: Removed an unnecessary parameter.
+
+2006-07-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/Makefile.am: Updated to new xml files.
+
+2006-07-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/localplayer.cpp: Fixed the "walking against walls" bug.
+	* src/animation.cpp src/animation.h: fixed the "sliding" bug and
+	removed some unused variables.
+
+2006-07-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/player.cpp, src/player.h,
+	src/localplayer.cpp: Sprites are now stored in a vector instead of a
+	list, so they can be replaced a lot easier; added female playerset;
+	added hairstyles and colors.
+	* src/animation.cpp, src/animation.h: added support for variations,
+	variations are animations stored in the same spriteset with the same
+	layout and sequence but starting at another index.
+	* data/graphics/sprites/player_female_base.xml: Added xml file for
+	female characters.
+	* data/graphics/sprites/hairstyle0.xml,
+	data/graphics/sprites/hairstyle1.xml,
+	data/graphics/sprites/hairstyle2.xml,
+	data/graphics/sprites/hairstyle3.xml,
+	data/graphics/sprites/hairstyle4.xml,
+	data/graphics/sprites/hairstyle5.xml,
+	data/graphics/sprites/hairstyle6.xml,
+	data/graphics/sprites/hairstyle7.xml: Added xml files for all
+	hairstyles (these xml files are using the new variation feature).
+	* src/being.cpp, src/being.h, src/localplayer.cpp, src/player.cpp: The
+	beings now haven't got one, but a list of animated sprites (named
+	mSprites). At the moment it contains the hair and the base sprite.
+	* src/animation.cpp, src/animation,h: Fixed a crash when substituting
+	an undefined direction; renamed completeDirections method to
+	substituteAction.
+	* data/graphics/sprites/hairstyle0.xml: Made a xml file for the hair
+	animation.
 
 2006-06-29  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
 	src/player.cpp: Clients get notified of equipping visible items.
 	* src/net/beinghandler.cpp: GCC 4 fix.
+	
+2006-06-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.cpp, src/animation.h: Parser now works like described
+	on the wiki; the single animation phases are now stored in structures;
+	drawing call for animatiedSprites moved into the animatiedSprite
+	class.
+	* src/being.cpp, src/being.h, src/localplayer.cpp, src/player.cpp:
+	Renamed mAnimatedSprite to mBaseSprite to distinct it from hair-equip
+	and other sprites that will also be part of the class.
+	* src/player.cpp: Drawing call for animatiedSprites moved into the
+	animatiedSprite class; time now correctly passed in ms to the
+	animatedSprite class.
+	* src/graphic/spriteset.cpp, src/graphic/spriteset.h: Width and height
+	of the subimages is now saved in the spritesheet class.
+	* src/graphics.cpp: Added an additional check to avoid crashes when
+	passing a NULL pointer as image argument.
+	* data/graphics/sprites/player_male_base.xml: Animation file now has
+	the syntax described on the wiki.
+	
+2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
+
+	* /tmw/trunk/data/graphics/sprites/player_male_base.png:
+	Fixed transparency issue with the north punching frames
 
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/being.cpp, src/gui/equipmentwindow.cpp, src/player.cpp: Equipment
-	window now show all the slots, and adapted visible shirts to head
-	(middle) equipments.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/player_male_base.xml, src/being.cpp,
+	src/being.h, src/engine.cpp, src/localplayer.cpp, src/main.cpp,
+	src/net/beinghandler.cpp, src/net/playerhandler.cpp,
+	src/resources/itemmanager.cpp, The Mana World.dev: Added a beginning
+	of a new animation system to slow down player walking.
+	* src/animation.cpp, src/animation.h: Forgot 2 files.
+	* src/being.cpp, src/gui/equipmentwindow.cpp, src/player.cpp:
+	Equipment window now show all the slots, and adapted visible shirts to
+	head (middle) equipments.
 
 2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
 
@@ -129,9 +321,9 @@
 2006-05-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* configure.ac, src/game.cpp, src/graphics.cpp, src/main.cpp,
-	src/openglgraphics.cpp, The Mana World: Increased fps limit granularity
-	and cleaned some code, fixed some xml library name in Dev-C++ project
-	file, switched version to 0.0.20.
+	src/openglgraphics.cpp, The Mana World: Increased fps limit
+	granularity and cleaned some code, fixed some xml library name in
+	Dev-C++ project file, switched version to 0.0.20.
 	* src/game.cpp, src/gui/setup.cpp, src/gui/setup_video.cpp,
 	src/gui/setup_video.h, src/main.cpp: FPS limit can now be set in setup
 	dialog. Default value for FPS is 50. (Code based on peoro's patch).
@@ -232,8 +424,8 @@
 
 2006-03-13  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_7.1.tmx.gz: Fixed some map bugs (update of server sided
-	walkmap required!)
+	* data/maps/new_7.1.tmx.gz: Fixed some map bugs (update of server
+	sided walkmap required!)
 
 2006-03-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
