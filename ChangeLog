@@ -13,6 +13,8 @@
 	src/player.cpp, src/player.h: Merged trunk changes r2381:2397 into
 	new_animation branch.
 	* tmw.cbp: Updated Code::Blocks project file.
+	*src/gui/char_select.cpp: Fixed next/previous buttons behaviour in
+	character selection dialog.
 
 2006-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

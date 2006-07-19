@@ -148,8 +148,9 @@ void CharSelectDialog::action(const std::string& eventId)
         if (n_character < MAX_SLOT + 1)
         {
             // Start new character dialog
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
             mCharInfo->lock();
+            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
+            mCharInfo->unlock();
         }
     }
     else if (eventId == "delete")
