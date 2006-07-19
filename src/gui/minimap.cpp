@@ -106,6 +106,7 @@ void Minimap::draw(gcn::Graphics *graphics)
 
         graphics->fillRectangle(gcn::Rectangle(
                     being->mX / 2 + getPadding() - offset,
-                    being->mY / 2 + getTitleBarHeight() - offset, 1, 1));
+                    being->mY / 2 + getTitleBarHeight() - offset,
+                    dotSize, dotSize));
     }
 }

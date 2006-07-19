@@ -1,6 +1,8 @@
 2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* tmw.cbp: Added Code::Blocks project file.
+	* src/gui/minimap.cpp: Fixed dot size of local player.
+	* src/engine.cpp: Fixed color of "[TARGET]".
 
 2006-07-19  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -25,21 +27,21 @@
 	specified in the downloaded resources.txt file, and in the order
 	in which they are mentioned (the top one being the most
 	significant).
-	
-2006-07-17 Frode Lindeijer <f.lindeijer@gmail.com>
+
+2006-07-17 Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* Added shorts to items.png
-	
+
 2006-07-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/newskill.cpp: Fixed up a string comparison that caused a
 	warning with GCC 4.2.
 
-2006-07-12 Frode Lindeijer <f.lindeijer@gmail.com>
+2006-07-12 Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* /tmw/trunk/data/graphics/sprites/item001.png: Completed the cotton
 	shirt equipment graphic.
-	
+
 2006-07-06  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/animation.cpp, src/animation.h, src/being.cpp, src/being.h,
@@ -53,19 +55,19 @@
 	* data/graphics/sprites/Makefile.am: Added new files.
 	* src/animation.cpp: Added missing return value...
 	* src/Makefile.am: Added new files.
-	
+
 2006-07-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/sprites/monster0.xml: Fixed frame size of maggot.
 	* src/being.h: drawName should be virtual, lest we want names to be
 	drawn.
-	
+
 2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/spriteset.cpp, src/spriteset.h: Spriteset::get() doesn't crash
 	anymore when requesting a sprite outside of the spriteset. (it returns
 	NULL instead and logs a warning).
-	
+
 2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp: Fixed a compiler issue reported by Pajarico.
@@ -74,7 +76,7 @@
 
 	* tools/Reorganize.java: Added tool used for reorganizing and
 	auto-cropping the monster spritesets.
-	
+
 2006-07-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/main.cpp, src/engine.cpp: Removed some no longer required old
@@ -238,7 +240,7 @@
 	Equipment window now show all the slots, and adapted visible shirts to
 	head (middle) equipments.
 
-2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
+2006-06-27 Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* /tmw/trunk/data/graphics/sprites/player_male_base.png:
 	Fixed transparency issue with the north punching frames

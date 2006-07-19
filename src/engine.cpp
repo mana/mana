@@ -243,6 +243,7 @@ void Engine::draw(Graphics *graphics)
     if ((target = player_node->getTarget()))
     {
         graphics->setFont(speechFont);
+        graphics->setColor(gcn::Color(255, 255, 255));
         int dy = (target->getType() == Being::PLAYER) ? 90 : 52;
 
         graphics->drawText("[TARGET]", target->getPixelX() - map_x + 15,
