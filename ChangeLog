@@ -12,6 +12,7 @@
 	src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
 	src/player.cpp, src/player.h: Merged trunk changes r2381:2397 into
 	new_animation branch.
+	* tmw.cbp: Updated Code::Blocks project file.
 
 2006-07-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
