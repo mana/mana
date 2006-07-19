@@ -28,6 +28,7 @@
 
 #include <libxml/tree.h>
 
+class Properties;
 class Map;
 class Tileset;
 
@@ -51,6 +52,15 @@ class MapReader
         readMap(xmlNodePtr node, const std::string &path);
 
     private:
+        /**
+         * Reads the properties element.
+         *
+         * @param props the Properties instance to which the properties will
+         *              be assigned
+         */
+        static void
+        readProperties(xmlNodePtr node, Properties* props);
+
         /**
          * Reads a map layer.
          */

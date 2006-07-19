@@ -192,26 +192,11 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
     int tilew = getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
     int tileh = getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
     int layerNr = 0;
-    Map* map = new Map(w, h, tilew, tileh);
+    Map *map = new Map(w, h, tilew, tileh);
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "property"))
-        {
-            // Example: <property name="name" value="value"/>
-
-            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
-            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
-
-            if (name && value)
-            {
-                map->setProperty((const char*)name, (const char*)value);
-            }
-
-            if (name) xmlFree(name);
-            if (value) xmlFree(value);
-        }
-        else if (xmlStrEqual(node->name, BAD_CAST "tileset"))
+        if (xmlStrEqual(node->name, BAD_CAST "tileset"))
         {
             Tileset *tileset = readTileset(node, pathDir, map);
             if (tileset) {
@@ -224,9 +209,40 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
             readLayer(node, map, layerNr);
             layerNr++;
         }
+        else if (xmlStrEqual(node->name, BAD_CAST "properties"))
+        {
+            readProperties(node, map);
+        }
     }
 
     return map;
+}
+
+void
+MapReader::readProperties(xmlNodePtr node, Properties* props)
+{
+    node = node->xmlChildrenNode;
+
+    while (node != NULL)
+    {
+        if (xmlStrEqual(node->name, BAD_CAST "property"))
+        {
+            // Example: <property name="name" value="value"/>
+
+            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
+            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+
+            if (name && value)
+            {
+                props->setProperty((const char*) name, (const char*) value);
+            }
+
+            if (name) xmlFree(name);
+            if (value) xmlFree(value);
+        }
+
+        node = node->next;
+    }
 }
 
 void
