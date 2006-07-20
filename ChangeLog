@@ -2,6 +2,7 @@
 
 	* data/help/header.txt, data/help/skills.txt, docs/FAQ.txt, README:
 	Updated some docs for the 0.0.20 release.
+	* NEWS: Added new features of 0.0.20.
 
 2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -239,11 +240,6 @@
 	* data/graphics/sprites/player_male_base.xml: Animation file now has
 	the syntax described on the wiki.
 	
-2006-06-27 Frode Lindeijer <f.lindeijer@gmail.com>
-
-	* /tmw/trunk/data/graphics/sprites/player_male_base.png:
-	Fixed transparency issue with the north punching frames
-
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am,
@@ -320,14 +316,6 @@
 2006-05-12  Björn Steinbrink <B.Steinbrink@gmx.de>
 
 	* src/being.cpp: Fixed initialization order in Being ctor.
-
-2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
-
-	* data/graphics/sprites/item1202.png,
-	data/graphics/sprites/Makefile.am, src/being.cpp, src/being.h,
-	src/localplayer.cpp, src/localplayer.h, src/main.cpp, src/player.cpp,
-	The Mana World: You can now see the shirt when equipping a top
-	equipment.
 
 2006-05-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
