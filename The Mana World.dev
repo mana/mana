@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=229
+UnitCount=230
 Type=0
 Ver=1
 ObjFiles=
@@ -14,7 +14,7 @@ Compiler=
 CppCompiler=-DUSE_OPENGL_@@_-Wall_@@_
 Linker=-lguichan_@@_-lguichan_sdl_@@_-lguichan_opengl_@@_-lwsock32_@@_-lSDL_image.dll_@@_-lSDL_mixer.dll_@@_-lSDL_net.dll_@@_-lmingw32_@@_-lSDLmain_@@_-lSDL.dll_@@_-lxml2.dll_@@_-lopengl32_@@_-lpng12.dll_@@_-lz.dll_@@_-lphysfs_@@_-lcurl_@@_
 IsCpp=1
-Icon=The Mana World.ico
+Icon=
 ExeOutput=
 ObjectOutput=obj
 OverrideOutput=1
@@ -24,10 +24,10 @@ Folders=graphic,graphic/header,graphic/source,gui,gui/header,gui/source,header,n
 CommandLine=
 UseCustomMakefile=0
 CustomMakefile=
-IncludeVersionInfo=1
+IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
-CompilerSettings=0010001001000001001001
+CompilerSettings=0010001001000001001101
 
 [VersionInfo]
 Major=0
@@ -2343,6 +2343,15 @@ CompileCpp=1
 Folder=utils
 Compile=1
 Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit230]
+FileName=src\tmw.rc
+Folder=tmw
+Compile=1
+Link=0
 Priority=1000
 OverrideBuildCmd=0
 BuildCmd=

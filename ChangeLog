@@ -4,6 +4,9 @@
 	Updated some docs for the 0.0.20 release.
 	* NEWS: Added new features of 0.0.20.
 	* data/items.xml: Added shorts.
+	* src/tmw.rc, The Mana World.dev, tmw.cbp: Added a resource script to
+	let both Dev-Cpp and Code::Blocks share the same binary icon and
+	version infos.
 
 2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

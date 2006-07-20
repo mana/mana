@@ -1227,6 +1227,11 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\tmw.rc">
+			<Option compilerVar="WINDRES"/>
+			<Option objectName="src\tmw.res"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\utils\dtor.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
