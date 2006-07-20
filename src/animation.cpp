@@ -91,6 +91,22 @@ Animation::addPhase (int image, unsigned int delay, int offsetX, int offsetY)
     iCurrentPhase = mAnimationPhases.begin();
 }
 
+int
+Animation::getLength()
+{
+    std::list<AnimationPhase>::iterator i;
+    int length = 0;
+    if (!mAnimationPhases.empty())
+    {
+        for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
+        {
+            length += (*i).delay;
+        }
+    }
+    printf("length: %i\n", length);
+    return length;
+}
+
 Action::Action()
     :mImageset("")
 {
@@ -138,7 +154,7 @@ Action::setAnimation(std::string direction, Animation *animation)
 
 
 AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
-    mAction("stand"), mDirection("down"), mLastTime(0)
+    mAction("stand"), mDirection("down"), mLastTime(0), mSpeed(1.0f)
 {
     int variant_num = 0;
     int variant_offset = 0;
@@ -211,7 +227,7 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
             xmlChar *prop = NULL;
             READ_PROP(node, prop, "name", name, );
             READ_PROP(node, prop, "imageset", imageset, );
-            
+
             Action *action = new Action();
             mActions[name] = action;
             action->setImageset(imageset);
@@ -315,6 +331,29 @@ AnimatedSprite::play(std::string action)
         mAction = action;
     }
     mLastTime = 0;
+    mSpeed = 1.0f;
+}
+
+void
+AnimatedSprite::play(std::string action, int time)
+{
+    if (mAction != action)
+    {
+        mAction = action;
+    }
+    mLastTime = 0;
+    int animationLength = 0;
+    Action *nextAction = mActions[mAction];
+    Animation *animation = nextAction->getAnimation(mDirection);
+    animationLength = animation->getLength();
+    if (animationLength)
+    {
+        mSpeed = time / animationLength;
+    }
+    else
+    {
+        mSpeed = 1.0f;
+    }
 }
 
 void
@@ -331,7 +370,8 @@ AnimatedSprite::update(int time)
     if (time < mLastTime || mLastTime == 0) mLastTime = time;
 
     Action *action = mActions[mAction];
-    action->getAnimation(mDirection)->update(time - mLastTime);
+    Animation *animation = action->getAnimation(mDirection);
+    animation->update((unsigned int)((time - mLastTime) / mSpeed));
     mLastTime = time;
 }
 

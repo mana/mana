@@ -46,14 +46,16 @@ class Animation
     public:
         Animation();
 
-        void addPhase (int image, unsigned int delay, int offsetX, int offsetY);
+        void addPhase(int image, unsigned int delay, int offsetX, int offsetY);
 
         void update(unsigned int time);
 
         int getCurrentPhase();
 
-        int getOffsetX() { return (*iCurrentPhase).offsetX ; };
-        int getOffsetY() { return (*iCurrentPhase).offsetY ; };
+        int getOffsetX() { return (*iCurrentPhase).offsetX; };
+        int getOffsetY() { return (*iCurrentPhase).offsetY; };
+
+        int getLength();
 
     protected:
         std::list<AnimationPhase> mAnimationPhases;
@@ -103,6 +105,11 @@ class AnimatedSprite
          * Sets a new action using the current direction.
          */
         void play(std::string action);
+
+        /**
+         * Plays an action in a specified time.
+         */
+        void play(std::string action, int time);
 
         /**
          * Sets a new action with a new direction.
@@ -155,6 +162,7 @@ class AnimatedSprite
         Actions mActions;
         std::string mAction, mDirection;
         int mLastTime;
+        float mSpeed;
 };
 
 #endif

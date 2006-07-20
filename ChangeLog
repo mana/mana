@@ -7,6 +7,10 @@
 	* src/tmw.rc, The Mana World.dev, tmw.cbp: Added a resource script to
 	let both Dev-Cpp and Code::Blocks share the same binary icon and
 	version infos.
+	* data/graphics/sprites/player_female_base.xml,
+	data/graphics/sprites/player_male_base.xml, src/animation.cpp,
+	src/animation.h, src/being.cpp: Fixed left bow attack animation,
+	made the attack animation stay in sync with attack speed.
 
 2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

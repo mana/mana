@@ -221,7 +221,19 @@ Being::setAction(Action action)
 
         for (int i = 0; i < VECTOREND_SPRITE; i++)
         {
-            if (mSprites[i] != NULL) mSprites[i]->play(currentAction);
+            if (mSprites[i] != NULL)
+            {
+                if (currentAction == "attack" ||
+                    currentAction == "attack_stab" ||
+                    currentAction == "attack_bow")
+                {
+                    mSprites[i]->play(currentAction, mAttackSpeed);
+                }
+                else
+                {
+                    mSprites[i]->play(currentAction);
+                }
+            }
         }
     }
     mAction = action;
@@ -317,7 +329,6 @@ Being::logic()
     {
         if (mSprites[i] != NULL)
         {
-            printf("Draw: %i\n", i);
             mSprites[i]->update(tick_time * 10);
         }
     }
@@ -338,7 +349,6 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
         if (mSprites[i] != NULL)
         {
             mSprites[i]->draw(graphics, px, py);
-            printf("Draw: %i\n", i);
         }
     }
 }
