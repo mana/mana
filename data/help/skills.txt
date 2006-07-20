@@ -13,15 +13,3 @@
      ##2Level 3:##P enables character to sit
      Other levels are still not implemented.
  
-   ##4 Soul-less skills:
-     
-     ##2Sword:##P increase sword damage add skill
-     ##2HP Recovery:##P increases HP regeneration
-     ##2SP Recovery:##P increases SP regeneration (requires HP recovery level 10)
-     ##2Max weight:##P increase max weight you can carry
-     ##2Discount:##P get cheaper prices from NPCs
-     ##2Overcharge:##P sell stuff for better price to NPCs
-     ##2Double:##P a chance for double hits (requires Sword level 5)
-     ##2Miss:##P increased chance of dodging (requires Sword level 10)
-
- 

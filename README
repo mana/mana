@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.19    Date: 06/03/2006
+ Version: 0.0.20    Date: 23/07/2006
 
 
  Development team:
@@ -74,21 +74,7 @@ BASIC SKILLS:
 Level 1: enables the ability to trade with others
 Level 2: enables the ability to express emotions
 Level 3: enables character to sit
-...
-Level 9: enables soul-less skills (after changing job to soul-less)
-
-Other levels are still not implemented.
-
-SOUL-LESS SKILLS:
-
-Sword: increase	sword damage add skill
-HP Recovery: increases HP regeneration
-SP Recovery: increases SP regeneration (requires HP recovery level 10)
-Max weight: increase max weight you can carry
-Discount: get cheaper prices from NPCs
-Overcharge: sell stuff for better price to NPCs
-Double: a chance for double hits (requires Sword level 5)
-Miss: increased chance of dodging (requires Sword level 10)
+Other level not yet implemented.
 
 4. Support
 ----------

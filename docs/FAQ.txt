@@ -7,36 +7,34 @@ Q: How to get help?
 
 A: The fastest way is to come on our IRC channel. There you can find a lot of
    nice people that will help you until you solve your problem. Server:
-   irc.freenode.net Channel: manaworld.
-
-   If you don't like IRC just come to our forum:
-   http://themanaworld.sourceforge.net/phpBB2. It is not needed to register
-   since guest posting is active, but you're welcome if you want to subscribe,
-   it will help to get more players. Ok you think forums are evil? Don't worry,
-   send me an e-mail at umperio@users.sourceforge.net and you're done. That's
-   not enough? No, I won't give you my phone number! ;P
+   irc.freenode.net Channel: #themanaworld.
+   If you don't like IRC just come to our forums:
+   http://forums.themanaworld.org. Ok, do you think forums are evil? Don't
+   worry, send me an e-mail at elvenprogrammer@gmail.com and you're done.
+   That's not enough? No, I won't give you my phone number! ;P
    
 GAME
 
 Q: I always get "Unregistered ID" error message, why?
 
 A: First of all check that your username is at least 4 characters long. Is the
-   first time you login? Then add _M at the end of the username you chose the
-   first time you login. (You don't need to add _M the following times). If you
-   already succesfully connected, but now getting this message, please send an
-   e-mail to umperio@users.sourceforge.net.
+   first time you login? Have you registered an account? If not use the
+   "Register" button in game. If you already succesfully connected before, but
+   now you're getting this message, please send an e-mail to
+   elvenprogrammer@gmail.com.
 
 
 Q: I always get "Wrong password" but I'm sure I typed it right, why?
 
 A: If is the first time you login be sure you're not adding _M at the end of
-   your username. Else please send an e-mail to umperio@users.sourceforge.net.
+   your username. Else please send an e-mail to elvenprogrammer@gmail.com.
 
 Q: How can I talk to NPCs?
 
 A: Did you read README? Are you really sure? If not go read it and you'll find
-   all the known commands. If you notice the README is not up to date/wrong,
-   please report it to the developers.
+   all the known commands. Or just press F1 in game. If you notice the
+   README/ingame help is not up to date/wrong, please report it to the
+   developers.
 
 Q: I just typed /<command> in the chat window and then I saw "Your account has
    been banished until ..." and TMW closed. Now when I try to log in nothing
@@ -54,14 +52,14 @@ A: Check your inventory, if you've got lots of stuff probably you're
    carrying 50% of your maximum weight.
 
 
-CVS
+SVN
 
-Q: What's CVS?
+Q: What's SVN?
 
 A: It's a system where is stored the latest development version. It's not
-   assured that it's stable, but surely it has the latest updates. (CVS version
+   assured that it's stable, but surely it has the latest updates. (SVN version
    is updated quite frequently). If you want to check it out, read this guide
-   http://themanaworld.sourceforge.net/cvs-tutorial.txt 
+   http://themanaworld.org/svn-tutorial.txt 
 
 
 DEVELOPMENT
@@ -76,19 +74,17 @@ Q: How can I contribute?
 
 A: There are a lot of ways:
    
-   - If you're a programmer or an artist you can be part of the development
-     team. Send an e-mail to umperio@users.sourceforge.net explaining what you
-     want to do.
+   - If you're a programmer, an artist or just willing to help in any way, you
+     can become part of the development team. Send an e-mail to
+     elvenprogrammer@gmail.com explaining what you want to do, or join our irc
+     channel: #themanaworld @ irc.freenode.net.
    
-   - You want to work on the server: server customization, scripts, maps. Send
-     an e-mail to umperio@users.sourceforge.net explaining what you want to do.
-   
-   - You can donate money. Follow the link in the main web page
-     http://themanaworld.souceforge.net.
+   - You can donate money. Follow the link on the project page:
+	http://sourceforge.net/projects/themanaworld.
    
    - You can be a beta tester. Just play with The Mana World and report every
-     error to the tracker. Read for more infos on the main page
-     http://themanaworld.sourceforge.net.
+     error to the tracker. Read for more infos on the project page:
+	http://themanaworld.org.
    
    - Play with The Mana World: more players, more fun! Simple as that! ;-)
 

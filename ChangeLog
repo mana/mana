@@ -1,3 +1,8 @@
+2006-07-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/header.txt, data/help/skills.txt, docs/FAQ.txt, README:
+	Updated some docs for the 0.0.20 release.
+
 2006-07-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/minimap.cpp: Fixed dot size of local player.
