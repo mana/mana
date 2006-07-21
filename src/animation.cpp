@@ -359,7 +359,7 @@ AnimatedSprite::update(int time)
     {
         Action *action = mActions[mAction];
         Animation *animation = action->getAnimation(mDirection);
-        animation->update((time - mLastTime) * mSpeed, mSpeed);
+        animation->update((unsigned int)((time - mLastTime) * mSpeed));
         mLastTime = time;
     }
 }

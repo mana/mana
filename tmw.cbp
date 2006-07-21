@@ -15,6 +15,7 @@
 				<Option deps_output=".deps"/>
 				<Option type="0"/>
 				<Option compiler="0"/>
+				<Option parameters="--skipupdate"/>
 				<Option projectResourceIncludeDirsRelation="0"/>
 				<Compiler>
 					<Add option="-Wall"/>
