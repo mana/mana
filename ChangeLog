@@ -1,3 +1,8 @@
+2006-07-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/animation.cpp, src/animation.h: Removed unused code, fixed a
+	numeric conversion, used a more meaningful speed.
+
 2006-07-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/help/header.txt, data/help/skills.txt, docs/FAQ.txt, README:

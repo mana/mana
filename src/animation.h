@@ -112,11 +112,6 @@ class AnimatedSprite
         void play(std::string action, int time);
 
         /**
-         * Sets a new action with a new direction.
-         */
-        void play(std::string action, std::string direction);
-
-        /**
          * Inform the animation of the passed time so that it can output the
          * correct animation phase.
          */

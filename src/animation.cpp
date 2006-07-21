@@ -51,10 +51,10 @@ Animation::update(unsigned int time)
     mTime += time;
     if (!mAnimationPhases.empty())
     {
-        while ((mTime > (*iCurrentPhase).delay) &&
-                (*iCurrentPhase).delay > 0)
+        unsigned int delay = iCurrentPhase->delay;
+        while (mTime > delay && delay > 0)
         {
-            mTime -= (*iCurrentPhase).delay;
+            mTime -= delay;
             iCurrentPhase++;
             if (iCurrentPhase == mAnimationPhases.end())
             {
@@ -73,7 +73,7 @@ Animation::getCurrentPhase()
     }
     else
     {
-        return (*iCurrentPhase).image;
+        return iCurrentPhase->image;
     }
 }
 
@@ -103,7 +103,6 @@ Animation::getLength()
             length += (*i).delay;
         }
     }
-    printf("length: %i\n", length);
     return length;
 }
 
@@ -346,33 +345,23 @@ AnimatedSprite::play(std::string action, int time)
     Action *nextAction = mActions[mAction];
     Animation *animation = nextAction->getAnimation(mDirection);
     animationLength = animation->getLength();
-    if (animationLength)
-    {
-        mSpeed = time / animationLength;
-    }
-    else
-    {
-        mSpeed = 1.0f;
-    }
-}
-
-void
-AnimatedSprite::play(std::string action, std::string direction)
-{
-    play(action);
-    mDirection = direction;
+    mSpeed = (float)animationLength / time;
 }
 
 void
 AnimatedSprite::update(int time)
 {
-    //avoid freaking out at first frame or when tick_time overflows
+    // avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0) mLastTime = time;
 
-    Action *action = mActions[mAction];
-    Animation *animation = action->getAnimation(mDirection);
-    animation->update((unsigned int)((time - mLastTime) / mSpeed));
-    mLastTime = time;
+    // if not enough time have passed yet, do nothing
+    if (time > mLastTime)
+    {
+        Action *action = mActions[mAction];
+        Animation *animation = action->getAnimation(mDirection);
+        animation->update((time - mLastTime) * mSpeed, mSpeed);
+        mLastTime = time;
+    }
 }
 
 bool
