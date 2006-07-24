@@ -7,6 +7,9 @@
 
 	* data/graphics/sprites/npcs.png: Added the organdealer to
 	the NPCs
+	* data/graphics/sprites/player_male_base.png,
+	data/graphics/sprites/player_female_base.png: Fixed some
+	transparency issues
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
