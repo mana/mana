@@ -186,12 +186,6 @@ class Being : public Sprite
         getHairStyle() const { return mHairStyle; }
 
         /**
-         * Sets the hair style and color for this being.
-         */
-        virtual void
-        setHair(Uint16 style, Uint16 color);
-
-        /**
          * Sets visible equipments for this being.
          */
         virtual void

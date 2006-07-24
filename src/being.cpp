@@ -125,21 +125,6 @@ Being::setHairStyle(Uint16 style)
 }
 
 void
-Being::setHair(Uint16 style, Uint16 color)
-{
-    mHairStyle = style;
-    if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
-    {
-        mHairStyle = 1;
-    }
-    mHairColor = color;
-    if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
-    {
-        mHairColor = 1;
-    }
-}
-
-void
 Being::setVisibleEquipment(Uint8 slot, Uint8 id)
 {
 }

@@ -1,3 +1,9 @@
+2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/being.cpp, src/being.h, src/localplayer, The Mana World.dev,
+	tmw.cbp: Removed unused code, fixed "change direction when not walking"
+	bug, updated project files.
+
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/floor_item.cpp, src/animation.h, src/being.cpp, src/main.cpp,
