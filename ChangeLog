@@ -18,6 +18,10 @@
 	problem.
 	* data/graphics/sprites/player_female_base.xml: Fixed female playerset
 	animation definition.
+	* data/help/about.txt, data/help/changes.txt, data/help/commands.txt,
+	data/help/header.txt, data/help/index.txt, data/help/skills.txt,
+	data/help/support.txt, data/help/team.txt: Forced to use UNIX end of
+	line character.	
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
