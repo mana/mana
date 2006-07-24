@@ -1,6 +1,12 @@
-2006-07-24 Frode Lindeijer  <f.lindeijer@gmail.com>
+2006-07-24  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* /tmw/trunk/data/graphics/sprites/npcs.png: Added the organdealer to the NPCs
+	* src/localplayer.cpp, src/being.cpp: Fixed setDirection() semantics.
+	Removed a printf-leftover.
+
+2006-07-24  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/sprites/npcs.png: Added the organdealer to
+	the NPCs
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

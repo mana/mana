@@ -230,7 +230,7 @@ Being::setAction(Action action)
 void
 Being::setDirection(Uint8 direction)
 {
-    mDirection |= direction;
+    mDirection = direction;
     std::string dir;
 
     if (direction & UP)
@@ -268,15 +268,17 @@ Being::nextStep()
     PATH_NODE node = mPath.front();
     mPath.pop_front();
 
-    mDirection = 0;
+    int dir = 0;
     if (node.x > mX)
-        setDirection(RIGHT);
+        dir |= RIGHT;
     else if (node.x < mX)
-        setDirection(LEFT);
+        dir |= LEFT;
     if (node.y > mY)
-        setDirection(DOWN);
+        dir |= DOWN;
     else if (node.y < mY)
-        setDirection(UP);
+        dir |= UP;
+
+    setDirection(dir);
 
     mX = node.x;
     mY = node.y;

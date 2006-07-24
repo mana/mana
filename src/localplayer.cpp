@@ -212,7 +212,6 @@ void LocalPlayer::walk(unsigned char dir)
         // Warning: Not communicated to the server yet
 
         // If the being can't move, just change direction
-        mDirection = dir;
         setDirection(dir);
     }
 }
@@ -347,10 +346,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     if (abs(dist_y) >= abs(dist_x))
     {
         if (dist_y > 0)
-        {
             setDirection(DOWN);
-            printf("DOWN\n");
-        }
         else
             setDirection(UP);
     }
