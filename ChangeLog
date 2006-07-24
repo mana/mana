@@ -1,3 +1,23 @@
+2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/floor_item.cpp, src/animation.h, src/being.cpp, src/main.cpp,
+	src/gui/equipmentwindow.cpp, src/gui/playerbox.cpp,
+	src/gui/itemcontainer.cpp, src/engine.cpp, src/tileset.h,
+	src/animation.cpp, src/Makefile.am, src/resources/mapreader.cpp,
+	src/resources/resourcemanager.cpp, src/resources/spriteset.cpp,
+	src/resources/resourcemanager.h, src/resources/spriteset.h,
+	src/being.h, src/graphic/spriteset.cpp, src/graphic/spriteset.h,
+	data/graphics/sprites/npc.xml, data/graphics/sprites/weapons.xml:
+	Implemented caching of spritesets, including a lot of cleanups to the
+	new animation system. Action now refers to the Spriteset directly and
+	AnimatedSprite refers to the current Action directly instead of using
+	the std::map with a std::string constantly. Some methods and
+	parameters are marked as const. The READ_PROP macro was replaced by
+	static methods. Warnings are logged when unnamed actions are defined
+	or when actions refer to undefined imagesets. Code is more tolerant
+	towards missing actions.
+	* NEWS: Rearranged some items.
+
 2006-07-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/animation.cpp, src/animation.h: Removed unused code, fixed a

@@ -28,13 +28,12 @@
 
 #include "resourcemanager.h"
 #include "image.h"
+#include "spriteset.h"
 
 #include "../base64.h"
 #include "../log.h"
 #include "../map.h"
 #include "../tileset.h"
-
-#include "../graphic/spriteset.h"
 
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;

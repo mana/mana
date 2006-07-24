@@ -23,21 +23,13 @@
 
 #include "animation.h"
 
-#include <libxml/tree.h>
+#include <cassert>
 
 #include "log.h"
 
-#include "graphic/spriteset.h"
-
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-
-#define READ_PROP(node, prop, name, target, cast) \
-        prop = xmlGetProp(node, BAD_CAST name); \
-        if (prop) { \
-            target = cast((const char*)prop); \
-            xmlFree(prop); \
-        }
+#include "resources/spriteset.h"
 
 Animation::Animation():
     mTime(0)
@@ -65,7 +57,7 @@ Animation::update(unsigned int time)
 }
 
 int
-Animation::getCurrentPhase()
+Animation::getCurrentPhase() const
 {
     if (mAnimationPhases.empty())
     {
@@ -78,7 +70,7 @@ Animation::getCurrentPhase()
 }
 
 void
-Animation::addPhase (int image, unsigned int delay, int offsetX, int offsetY)
+Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 {
     //add new phase to animation list
     AnimationPhase newPhase;
@@ -106,10 +98,9 @@ Animation::getLength()
     return length;
 }
 
-Action::Action()
-    :mImageset("")
+Action::Action():
+    mSpriteset(NULL)
 {
-    //NOOP
 }
 
 Action::~Action()
@@ -121,28 +112,30 @@ Action::~Action()
     mAnimations.clear();
 }
 
-Animation *
-Action::getAnimation(std::string direction)
+Animation*
+Action::getAnimation(const std::string& direction) const
 {
     Animation *animation = NULL;
-    AnimationIterator i = mAnimations.find(direction);
+    Animations::const_iterator i = mAnimations.find(direction);
+
+    // When the direction isn't defined, try the default
     if (i == mAnimations.end())
     {
-        //when the direction isn't defined just use another one
-        animation = mAnimations["default"];
+        i = mAnimations.find("default");
     }
-    else
+
+    if (i != mAnimations.end())
     {
-        animation = mAnimations[direction];
+        animation = i->second;
     }
 
     return animation;
 }
 
 void
-Action::setAnimation(std::string direction, Animation *animation)
+Action::setAnimation(const std::string& direction, Animation *animation)
 {
-    //set first direction as default direction
+    // Set first direction as default direction
     if (mAnimations.empty())
     {
         mAnimations["default"] = animation;
@@ -152,18 +145,18 @@ Action::setAnimation(std::string direction, Animation *animation)
 }
 
 
-AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
-    mAction("stand"), mDirection("down"), mLastTime(0), mSpeed(1.0f)
+AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
+    mAction(NULL),
+    mDirection("down"),
+    mLastTime(0),
+    mSpeed(1.0f)
 {
-    int variant_num = 0;
-    int variant_offset = 0;
     int size;
     ResourceManager *resman = ResourceManager::getInstance();
-    char *data = (char*)resman->loadFile(
-            animationFile.c_str(), size);
+    char *data = (char*)resman->loadFile(animationFile.c_str(), size);
 
     if (!data) {
-        logger->error("Animation: Could not find " + animationFile + " !");
+        logger->error("Animation: Could not find " + animationFile + "!");
     }
 
     xmlDocPtr doc = xmlParseMemory(data, size);
@@ -182,10 +175,9 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
         return;
     }
 
-    //get the variant
-    xmlChar *prop = NULL;
-    READ_PROP(node, prop, "variants", variant_num, atoi);
-    READ_PROP(node, prop, "variant_offset", variant_offset, atoi);
+    // Get the variant
+    int variant_num = getProperty(node, "variants", 0);
+    int variant_offset = getProperty(node, "variant_offset", 0);
 
     if (variant_num > 0 && variant < variant_num )
     {
@@ -200,16 +192,14 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
-            int width = 0, height = 0;
-            std::string name = "", imageSrc = "";
-            xmlChar *prop = NULL;
-            READ_PROP(node, prop, "name", name, );
-            READ_PROP(node, prop, "src", imageSrc, );
-            READ_PROP(node, prop, "width", width, atoi);
-            READ_PROP(node, prop, "height", height, atoi);
+            int width = getProperty(node, "width", 0);
+            int height = getProperty(node, "height", 0);
+            std::string name = getProperty(node, "name", "");
+            std::string imageSrc = getProperty(node, "src", "");
 
-            Spriteset *spriteset = resman->createSpriteset(
-                    imageSrc, width, height);
+            Spriteset *spriteset =
+                resman->getSpriteset(imageSrc, width, height);
+
             if (!spriteset)
             {
                 logger->error("Couldn't load spriteset!");
@@ -222,59 +212,73 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
         // get action
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            std::string name = "", imageset = "";
-            xmlChar *prop = NULL;
-            READ_PROP(node, prop, "name", name, );
-            READ_PROP(node, prop, "imageset", imageset, );
+            std::string name = getProperty(node, "name", "");
+            std::string imageset = getProperty(node, "imageset", "");
+
+            if (name.length() == 0)
+            {
+                logger->log("Warning: unnamed action in %s",
+                            animationFile.c_str());
+            }
 
             Action *action = new Action();
-            mActions[name] = action;
-            action->setImageset(imageset);
 
-            //get animations
-            for (   xmlNodePtr animationNode = node->xmlChildrenNode;
-                    animationNode != NULL;
-                    animationNode = animationNode->next)
+            if (mSpritesets.find(imageset) != mSpritesets.end())
+            {
+                action->setSpriteset(mSpritesets[imageset]);
+                mActions[name] = action;
+            }
+            else
+            {
+                logger->log("Warning: imageset \"%s\" not defined in %s",
+                            imageset.c_str(),
+                            animationFile.c_str());
+
+                // Discard action and skip loading animations
+                delete action;
+                continue;
+            }
+
+            // get animations
+            for (xmlNodePtr animationNode = node->xmlChildrenNode;
+                 animationNode != NULL;
+                 animationNode = animationNode->next)
             {
                 if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
                 {
-                    std::string direction = "";
-
+                    std::string direction =
+                        getProperty(animationNode, "direction", "");
 
                     Animation *animation = new Animation();
-                    READ_PROP(animationNode, prop, "direction", direction, );
 
-                    //get animation phases
-                    for (   xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
-                            phaseNode != NULL;
-                            phaseNode = phaseNode->next)
+                    // Get animation phases
+                    for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
+                         phaseNode != NULL;
+                         phaseNode = phaseNode->next)
                     {
-                        int index = -1;
-                        int start = 0;
-                        int end = 0;
-                        int delay = 0;
-                        int offsetX = 0;
-                        int offsetY = 0;
+                        int delay = getProperty(phaseNode, "delay", 0);
+
                         if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
                         {
-                            READ_PROP(phaseNode, prop, "index", index, atoi);
-                            READ_PROP(phaseNode, prop, "delay", delay, atoi);
-                            READ_PROP(phaseNode, prop, "offsetX", offsetX, atoi);
-                            READ_PROP(phaseNode, prop, "offsetY", offsetY, atoi);
+                            int index = getProperty(phaseNode, "index", -1);
+                            int offsetX = getProperty(phaseNode, "offsetX", 0);
+                            int offsetY = getProperty(phaseNode, "offsetY", 0);
+
                             offsetY = offsetY - mSpritesets[imageset]->getHeight() + 32;
                             offsetX = offsetX - mSpritesets[imageset]->getWidth() / 2 + 16;
-                            animation->addPhase(index + variant_offset, delay, offsetX, offsetY);
+                            animation->addPhase(index + variant_offset, delay,
+                                                offsetX, offsetY);
                         }
-                        if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
+                        else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
                         {
-                            READ_PROP(phaseNode, prop, "start", start, atoi);
-                            READ_PROP(phaseNode, prop, "end", end, atoi);
-                            READ_PROP(phaseNode, prop, "delay", delay, atoi);
-                            offsetY = 0 - mSpritesets[imageset]->getHeight() + 32;
-                            offsetX = 0 - mSpritesets[imageset]->getWidth() / 2 + 16;
+                            int start = getProperty(phaseNode, "start", 0);
+                            int end = getProperty(phaseNode, "end", 0);
+                            int offsetY = 0 - mSpritesets[imageset]->getHeight() + 32;
+                            int offsetX = 0 - mSpritesets[imageset]->getWidth() / 2 + 16;
                             while (end >= start)
                             {
-                                animation->addPhase(start + variant_offset, delay, offsetX, offsetY);
+                                animation->addPhase(start + variant_offset,
+                                                    delay, offsetX, offsetY);
                                 start++;
                             }
                         }
@@ -285,8 +289,7 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
         } // if "<imageset>" else if "<action>"
     } // for node
 
-    //complete missing actions
-    substituteAction("stand", "");
+    // Complete missing actions
     substituteAction("walk", "stand");
     substituteAction("walk", "run");
     substituteAction("attack", "stand");
@@ -301,11 +304,44 @@ AnimatedSprite::AnimatedSprite(std::string animationFile, int variant):
     substituteAction("hurt", "stand");
     substituteAction("dead", "hurt");
 
+    // Play the stand animation by default
+    play("stand");
+
     xmlFreeDoc(doc);
 }
 
+int
+AnimatedSprite::getProperty(xmlNodePtr node, const char* name, int def)
+{
+    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
+    if (prop) {
+        int val = atoi((char*)prop);
+        xmlFree(prop);
+        return val;
+    }
+    else {
+        return def;
+    }
+}
+
+std::string
+AnimatedSprite::getProperty(xmlNodePtr node, const char* name,
+                            const std::string& def)
+{
+    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
+    if (prop) {
+        std::string val = (char*)prop;
+        xmlFree(prop);
+        return val;
+    }
+    else {
+        return def;
+    }
+}
+
 void
-AnimatedSprite::substituteAction(std::string complete, std::string with)
+AnimatedSprite::substituteAction(const std::string& complete,
+                                 const std::string& with)
 {
     if (mActions.find(complete) == mActions.end())
     {
@@ -315,104 +351,106 @@ AnimatedSprite::substituteAction(std::string complete, std::string with)
 
 AnimatedSprite::~AnimatedSprite()
 {
-    for (SpritesetIterator i = mSpritesets.begin(); i != mSpritesets.end(); i++)
+    for (SpritesetIterator i = mSpritesets.begin(); i != mSpritesets.end(); ++i)
     {
-        delete i->second;
+        i->second->decRef();
     }
     mSpritesets.clear();
 }
 
 void
-AnimatedSprite::play(std::string action)
+AnimatedSprite::play(const std::string& action)
 {
-    if (mAction != action)
+    Actions::iterator iAction;
+    iAction = mActions.find(action);
+
+    if (iAction == mActions.end())
     {
-        mAction = action;
+        logger->log("Warning: no action \"%s\" defined!", action.c_str());
+        mAction = NULL;
+        return;
     }
-    mLastTime = 0;
+
+    if (mAction != iAction->second)
+    {
+        mAction = iAction->second;
+        mLastTime = 0;
+    }
+
     mSpeed = 1.0f;
 }
 
 void
-AnimatedSprite::play(std::string action, int time)
+AnimatedSprite::play(const std::string& action, int time)
 {
-    if (mAction != action)
+    play(action);
+
+    if (mAction != NULL)
     {
-        mAction = action;
+        Animation *animation = mAction->getAnimation(mDirection);
+        int animationLength = animation->getLength();
+        mSpeed = (float) animationLength / time;
     }
-    mLastTime = 0;
-    int animationLength = 0;
-    Action *nextAction = mActions[mAction];
-    Animation *animation = nextAction->getAnimation(mDirection);
-    animationLength = animation->getLength();
-    mSpeed = (float)animationLength / time;
 }
 
 void
 AnimatedSprite::update(int time)
 {
-    // avoid freaking out at first frame or when tick_time overflows
+    // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0) mLastTime = time;
 
-    // if not enough time have passed yet, do nothing
+    // If not enough time have passed yet, do nothing
     if (time > mLastTime)
     {
-        Action *action = mActions[mAction];
-        Animation *animation = action->getAnimation(mDirection);
-        animation->update((unsigned int)((time - mLastTime) * mSpeed));
-        mLastTime = time;
+        if (mAction != NULL)
+        {
+            Animation *animation = mAction->getAnimation(mDirection);
+            animation->update((unsigned int)((time - mLastTime) * mSpeed));
+            mLastTime = time;
+        }
     }
 }
 
 bool
-AnimatedSprite::draw(Graphics * graphics, Sint32 posX, Sint32 posY)
+AnimatedSprite::draw(Graphics* graphics, Sint32 posX, Sint32 posY) const
 {
-    Sint32 offsetX, offsetY;
-    Action *action = mActions[mAction];
-    Spriteset *spriteset = mSpritesets[action->getImageset()];
-    Animation *animation = action->getAnimation(mDirection);
+    if (mAction != NULL)
+    {
+        Animation *animation = mAction->getAnimation(mDirection);
 
-    if (animation->getCurrentPhase() >= 0)
-    {
-        Image *image = spriteset->get(animation->getCurrentPhase());
-        offsetX = animation->getOffsetX();
-        offsetY = animation->getOffsetY();
-        return graphics->drawImage(image, posX + offsetX, posY + offsetY);
+        if (animation->getCurrentPhase() >= 0)
+        {
+            Spriteset *spriteset = mAction->getSpriteset();
+            Image *image = spriteset->get(animation->getCurrentPhase());
+            Sint32 offsetX = animation->getOffsetX();
+            Sint32 offsetY = animation->getOffsetY();
+            return graphics->drawImage(image, posX + offsetX, posY + offsetY);
+        }
     }
-    else
-    {
-        return false;
-    }
-}
 
-Image *
-AnimatedSprite::getCurrentFrame()
-{
-    Action *action = mActions[mAction];
-    Spriteset *spriteset = mSpritesets[action->getImageset()];
-    Animation *animation = action->getAnimation(mDirection);
-    if (animation->getCurrentPhase() >= 0)
-    {
-        return spriteset->get(animation->getCurrentPhase());
-    }
-    else
-    {
-        return NULL;
-    }
+    return false;
 }
 
 int
-AnimatedSprite::getWidth()
+AnimatedSprite::getWidth() const
 {
-    Action *action = mActions[mAction];
-    Spriteset *spriteset = mSpritesets[action->getImageset()];
-    return spriteset->getWidth();
+    if (mAction != NULL)
+    {
+        Spriteset *spriteset = mAction->getSpriteset();
+        return spriteset->getWidth();
+    }
+
+    return 0;
 }
 
 int
-AnimatedSprite::getHeight()
+AnimatedSprite::getHeight() const
 {
-    Action *action = mActions[mAction];
-    Spriteset *spriteset = mSpritesets[action->getImageset()];
-    return spriteset->getHeight();
+    if (mAction != NULL)
+    {
+        Spriteset *spriteset = mAction->getSpriteset();
+        return spriteset->getHeight();
+    }
+
+    return 0;
 }

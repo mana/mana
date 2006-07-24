@@ -1,7 +1,5 @@
 bin_PROGRAMS = tmw
-tmw_SOURCES = graphic/spriteset.cpp \
-	      graphic/imagerect.h \
-	      graphic/spriteset.h \
+tmw_SOURCES = graphic/imagerect.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -177,6 +175,8 @@ tmw_SOURCES = graphic/spriteset.cpp \
 	      resources/sdlimageloader.cpp \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
+	      resources/spriteset.h \
+	      resources/spriteset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/dtor.h \

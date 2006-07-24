@@ -56,8 +56,6 @@
 #endif
 #include "sound.h"
 
-#include "graphic/spriteset.h"
-
 #include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/connection.h"
@@ -76,6 +74,7 @@
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
+#include "resources/spriteset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -244,17 +243,17 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    playerset[0] = resman->createSpriteset(
+    playerset[0] = resman->getSpriteset(
             "graphics/sprites/player_male_base.png", 64, 64);
     if (!playerset[0]) logger->error("Couldn't load male player spriteset!");
-    playerset[1] = resman->createSpriteset(
+    playerset[1] = resman->getSpriteset(
             "graphics/sprites/player_female_base.png", 64, 64);
     if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
 
 
     for (int i=0; i < NR_HAIR_STYLES; i++)
     {
-        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
+        Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
                 "graphics/sprites/hairstyle" + toString(i + 1) + ".png",
                 40, 40);
         if (!tmp) {
@@ -288,10 +287,16 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
-    for_each(hairset.begin(), hairset.end(), make_dtor(hairset));
+
+    std::vector<Spriteset *>::iterator iter;
+    for (iter = hairset.begin(); iter != hairset.end(); ++iter)
+    {
+        (*iter)->decRef();
+    }
     hairset.clear();
-    delete playerset[0];
-    delete playerset[1];
+
+    playerset[0]->decRef();
+    playerset[1]->decRef();
 
     // Shutdown libxml
     xmlCleanupParser();

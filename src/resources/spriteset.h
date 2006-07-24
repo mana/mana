@@ -26,18 +26,21 @@
 
 #include <vector>
 
+#include "resource.h"
+
 class Image;
 
 
 /**
  * Stores a complete set of sprites.
  */
-class Spriteset {
+class Spriteset : public Resource
+{
     public:
         /*
          * Cuts the passed image in a grid of sub images.
          */
-        Spriteset(Image *img, int w, int h);
+        Spriteset(const std::string& idPath, Image *img, int w, int h);
 
         /**
          * Destructor.
@@ -49,14 +52,14 @@ class Spriteset {
         int getHeight() { return mHeight; };
 
         typedef std::vector<Image*>::size_type size_type;
-        Image * get(size_type i);
+        Image* get(size_type i);
 
         size_type size() { return mSpriteset.size(); }
 
     private:
         // Vector storing the whole spriteset.
         std::vector<Image*> mSpriteset;
-        //height and width of the images in the spriteset
+        // Height and width of the images in the spriteset
         int mHeight;
         int mWidth;
 };

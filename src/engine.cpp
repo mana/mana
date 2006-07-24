@@ -38,8 +38,6 @@
 #include "map.h"
 #include "sound.h"
 
-#include "graphic/spriteset.h"
-
 #include "gui/gui.h"
 #include "gui/minimap.h"
 
@@ -49,6 +47,7 @@
 #include "resources/itemmanager.h"
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
+#include "resources/spriteset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -75,12 +74,12 @@ Engine::Engine(Network *network):
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();
 
-    npcset = resman->createSpriteset("graphics/sprites/npcs.png", 50, 80);
-    emotionset = resman->createSpriteset("graphics/sprites/emotions.png",
+    npcset = resman->getSpriteset("graphics/sprites/npcs.png", 50, 80);
+    emotionset = resman->getSpriteset("graphics/sprites/emotions.png",
             30, 32);
     for (int i = 0; i < 2; i++)
     {
-        Spriteset *tmp = ResourceManager::getInstance()->createSpriteset(
+        Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
                 "graphics/sprites/weapon" + toString(i) + ".png", 64, 64);
         if (!tmp) {
             logger->error("Unable to load weaponset");
@@ -88,11 +87,10 @@ Engine::Engine(Network *network):
             weaponset.push_back(tmp);
         }
     }
-    itemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
+    itemset = resman->getSpriteset("graphics/sprites/items.png", 32, 32);
 
     if (!npcset) logger->error("Unable to load NPC spriteset!");
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
-    //if (!weaponset) logger->error("Unable to load weapon spriteset!");
     if (!itemset) logger->error("Unable to load item spriteset!");
 
     // Initialize item manager
@@ -102,11 +100,16 @@ Engine::Engine(Network *network):
 Engine::~Engine()
 {
     // Delete sprite sets
-    delete npcset;
-    delete emotionset;
-    for_each(weaponset.begin(), weaponset.end(), make_dtor(weaponset));
+    npcset->decRef();
+    emotionset->decRef();
+    itemset->decRef();
+
+    std::vector<Spriteset *>::iterator iter;
+    for (iter = weaponset.begin(); iter != weaponset.end(); ++iter)
+    {
+        (*iter)->decRef();
+    }
     weaponset.clear();
-    delete itemset;
 
     delete itemDb;
 

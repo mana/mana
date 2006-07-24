@@ -25,11 +25,14 @@
 
 #include "../log.h"
 
-#include "../resources/image.h"
+#include "image.h"
 
 #include "../utils/dtor.h"
 
-Spriteset::Spriteset(Image *img, int width, int height)
+Spriteset::Spriteset(const std::string& idPath,
+                     Image *img,
+                     int width, int height):
+    Resource(idPath)
 {
     for (int y = 0; y + height <= img->getHeight(); y += height)
     {
@@ -47,7 +50,7 @@ Spriteset::~Spriteset()
     for_each(mSpriteset.begin(), mSpriteset.end(), make_dtor(mSpriteset));
 }
 
-Image *
+Image*
 Spriteset::get(size_type i)
 {
     if (i > mSpriteset.size())

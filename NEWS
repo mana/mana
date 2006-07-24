@@ -1,16 +1,16 @@
 0.0.20 (23 July 2006)
-- Reduced size of textures to stay within the OpenGL limits
 - Added new hairstyle, and some fixes to the old ones
-- Fixed connection not being shut down completely in case of an error
-- Fixed min size of a window when resizing
 - Added slider to set FPS limit
 - Added visible equipments
 - Added new maps and monsters
 - Added female characters
-- Some fixes to monsters and player graphics
 - Implemented a new animation system
 - Updated the updating system
+- Reduced size of textures to stay within the limits of some OpenGL drivers
+- Fixed connection not being shut down completely in case of an error
+- Fixed min size of a window when resizing
 - Fixed some maps issues
+- Some fixes to monsters and player graphics
 - Minor bug fixes and lots of code cleanups
 
 0.0.19 (6 March 2006)

@@ -30,10 +30,9 @@
 #include "image.h"
 #include "music.h"
 #include "soundeffect.h"
+#include "spriteset.h"
 
 #include "../log.h"
-
-#include "../graphic/spriteset.h"
 
 
 ResourceManager *ResourceManager::instance = NULL;
@@ -44,23 +43,37 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // Create our resource iterator.
+    // Release any remaining spritesets first because they depend on images
     ResourceIterator iter = mResources.begin();
+    while (iter != mResources.end())
+    {
+        if (dynamic_cast<Spriteset*>(iter->second) != NULL)
+        {
+            cleanUp(iter->second);
+            ResourceIterator toErase = iter;
+            ++iter;
+            mResources.erase(toErase);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
 
-    // Iterate through and release references until objects are deleted.
+    // Release remaining resources, logging the number of dangling references.
     while (!mResources.empty())
     {
-        Resource *res = mResources.begin()->second;
-        std::string id = res->getIdPath();
-        int references = 0;
-
-        references += res->mRefCount;
-        release(res->mIdPath);
-        delete res;
-
-        logger->log("ResourceManager::~ResourceManager() cleaned up %d "
-                    "references to %s", references, id.c_str());
+        cleanUp(mResources.begin()->second);
+        mResources.erase(mResources.begin());
     }
+}
+
+void
+ResourceManager::cleanUp(Resource *res)
+{
+    logger->log("ResourceManager::~ResourceManager() cleaning up %d "
+                "references to %s", res->mRefCount, res->mIdPath.c_str());
+    delete res;
 }
 
 bool
@@ -151,42 +164,55 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
         mResources[idPath] = resource;
     }
 
-    // Return NULL if the object could not be created.
+    // Returns NULL if the object could not be created.
     return resource;
 }
 
 Image*
 ResourceManager::getImage(const std::string &idPath)
 {
-    return (Image*)get(IMAGE, idPath);
+    return dynamic_cast<Image*>(get(IMAGE, idPath));
 }
 
 Music*
 ResourceManager::getMusic(const std::string &idPath)
 {
-    return (Music*)get(MUSIC, idPath);
+    return dynamic_cast<Music*>(get(MUSIC, idPath));
 }
 
 SoundEffect*
 ResourceManager::getSoundEffect(const std::string &idPath)
 {
-    return (SoundEffect*)get(SOUND_EFFECT, idPath);
+    return dynamic_cast<SoundEffect*>(get(SOUND_EFFECT, idPath));
 }
 
-Spriteset* ResourceManager::createSpriteset(const std::string &imagePath,
-        int w, int h)
+Spriteset*
+ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
 {
-    Image *img;
+    std::stringstream ss;
+    ss << imagePath << "[" << w << "x" << h << "]";
+    const std::string idPath = ss.str();
 
-    if (!(img = getImage(imagePath))) {
+    ResourceIterator resIter = mResources.find(idPath);
+
+    if (resIter != mResources.end()) {
+        resIter->second->incRef();
+        return dynamic_cast<Spriteset*>(resIter->second);
+    }
+
+    Image *img = getImage(imagePath);
+
+    if (!img) {
         return NULL;
     }
 
-    Spriteset *result = new Spriteset(img, w, h);
+    Spriteset *spriteset = new Spriteset(idPath, img, w, h);
+    spriteset->incRef();
+    mResources[idPath] = spriteset;
 
     img->decRef();
 
-    return result;
+    return spriteset;
 }
 
 void

@@ -371,7 +371,7 @@ class Being : public Sprite
         bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
-        std::vector<AnimatedSprite *>mSprites;
+        std::vector<AnimatedSprite*> mSprites;
 };
 
 #endif

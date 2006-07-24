@@ -28,7 +28,7 @@
 #include "log.h"
 #include "map.h"
 
-#include "graphic/spriteset.h"
+#include "resources/spriteset.h"
 
 #include "gui/gui.h"
 
@@ -65,9 +65,12 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
 
 Being::~Being()
 {
-    for (int i =0; i < VECTOREND_SPRITE; i++)
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        delete mSprites[i];
+        if (mSprites[i] != NULL)
+        {
+            delete mSprites[i];
+        }
     }
 
     clearPath();
@@ -266,7 +269,6 @@ Being::setDirection(Uint8 direction)
     {
         if (mSprites[i] != NULL) mSprites[i]->setDirection(dir);
     }
-
 }
 
 void

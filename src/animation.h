@@ -28,11 +28,16 @@
 #include <map>
 #include <string>
 
+#include <libxml/tree.h>
+
 #include "graphics.h"
 
 class Image;
 class Spriteset;
 
+/**
+ * A single frame in an animation, with a delay and an offset.
+ */
 struct AnimationPhase
 {
     int image;
@@ -41,19 +46,26 @@ struct AnimationPhase
     int offsetY;
 };
 
+/**
+ * An animation consists of several frames, each with their own delay and
+ * offset.
+ */
 class Animation
 {
     public:
+        /**
+         * Constructor.
+         */
         Animation();
 
         void addPhase(int image, unsigned int delay, int offsetX, int offsetY);
 
         void update(unsigned int time);
 
-        int getCurrentPhase();
+        int getCurrentPhase() const;
 
-        int getOffsetX() { return (*iCurrentPhase).offsetX; };
-        int getOffsetY() { return (*iCurrentPhase).offsetY; };
+        int getOffsetX() const { return (*iCurrentPhase).offsetX; };
+        int getOffsetY() const { return (*iCurrentPhase).offsetY; };
 
         int getLength();
 
@@ -63,23 +75,42 @@ class Animation
         unsigned int mTime;
 };
 
+/**
+ * An action consists of several animations, one for each direction.
+ */
 class Action
 {
     public:
+        /**
+         * Constructor.
+         */
         Action();
 
+        /**
+         * Destructor.
+         */
         ~Action();
 
-        void setImageset(std::string imageset) { mImageset = imageset; }
+        /**
+         * Sets the spriteset used by this action.
+         */
+        void
+        setSpriteset(Spriteset *spriteset) { mSpriteset = spriteset; }
 
-        std::string getImageset() { return mImageset; }
+        /**
+         * Returns the spriteset used by this action.
+         */
+        Spriteset*
+        getSpriteset() const { return mSpriteset; }
 
-        void setAnimation(std::string direction, Animation *animation);
+        void
+        setAnimation(const std::string& direction, Animation *animation);
 
-        Animation *getAnimation(std::string direction); // { return mAnimations[direction]; }
+        Animation*
+        getAnimation(const std::string& direction) const;
 
     protected:
-        std::string mImageset;
+        Spriteset *mSpriteset;
         typedef std::map<std::string, Animation*> Animations;
         typedef Animations::iterator AnimationIterator;
         Animations mAnimations;
@@ -94,7 +125,7 @@ class AnimatedSprite
         /**
          * Constructor.
          */
-        AnimatedSprite(std::string animationFile, int variant);
+        AnimatedSprite(const std::string& animationFile, int variant);
 
         /**
          * Destructor.
@@ -104,12 +135,14 @@ class AnimatedSprite
         /**
          * Sets a new action using the current direction.
          */
-        void play(std::string action);
+        void
+        play(const std::string& action);
 
         /**
          * Plays an action in a specified time.
          */
-        void play(std::string action, int time);
+        void
+        play(const std::string& action, int time);
 
         /**
          * Inform the animation of the passed time so that it can output the
@@ -119,45 +152,66 @@ class AnimatedSprite
 
         /**
          * Draw the current animation phase at the coordinates given in screen
-         * pixels
+         * pixels.
          */
-        bool draw(Graphics * graphics, Sint32 posX, Sint32 posY);
-
-        /**
-         * Draw the current animation phase.
-         */
-        Image *getCurrentFrame();
+        bool
+        draw(Graphics* graphics, Sint32 posX, Sint32 posY) const;
 
         /**
          * gets the width in pixels of the current animation phase.
          */
-        int getWidth();
+        int
+        getWidth() const;
 
         /**
          * gets the height in pixels of the current animation phase.
          */
-        int getHeight();
+        int
+        getHeight() const;
 
         /**
          * Sets the direction.
          */
-        void setDirection(std::string direction) { mDirection = direction; }
+        void
+        setDirection(const std::string& direction)
+        {
+            mDirection = direction;
+        }
 
     protected:
         /**
          * When there are no animations defined for the action "complete", its
          * animations become a copy of those of the action "with".
          */
-        void substituteAction(std::string complete, std::string with);
+        void
+        substituteAction(const std::string& complete,
+                         const std::string& with);
 
         typedef std::map<std::string, Spriteset*> Spritesets;
         typedef Spritesets::iterator SpritesetIterator;
         Spritesets mSpritesets;
         typedef std::map<std::string, Action*> Actions;
         Actions mActions;
-        std::string mAction, mDirection;
+        Action *mAction;
+        std::string mDirection;
         int mLastTime;
         float mSpeed;
+
+    private:
+        /**
+         * Gets an integer property from an xmlNodePtr.
+         *
+         * TODO: Same function is present in MapReader. Should probably be
+         * TODO: shared in a static utility class.
+         */
+        static int
+        getProperty(xmlNodePtr node, const char* name, int def);
+
+        /**
+         * Gets a string property from an xmlNodePtr.
+         */
+        static std::string
+        getProperty(xmlNodePtr node, const char* name, const std::string& def);
 };
 
 #endif

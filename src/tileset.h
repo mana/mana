@@ -24,7 +24,7 @@
 #ifndef _TMW_TILESET_H_
 #define _TMW_TILESET_H_
 
-#include "graphic/spriteset.h"
+#include "resources/spriteset.h"
 
 /**
  * A tileset, which is basically just a spriteset but it stores a firstgid.
@@ -36,7 +36,7 @@ class Tileset : public Spriteset
          * Constructor.
          */
         Tileset(Image *img, int w, int h, int firstGid):
-            Spriteset(img, w, h),
+            Spriteset("", img, w, h),
             mFirstGid(firstGid)
         {
         }

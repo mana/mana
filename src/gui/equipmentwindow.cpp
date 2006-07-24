@@ -28,10 +28,9 @@
 #include "../item.h"
 #include "../log.h"
 
-#include "../graphic/spriteset.h"
-
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/spriteset.h"
 
 #include "../utils/tostring.h"
 
@@ -42,14 +41,14 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
 
-    mItemset = ResourceManager::getInstance()->createSpriteset(
+    mItemset = ResourceManager::getInstance()->getSpriteset(
             "graphics/sprites/items.png", 32, 32);
     if (!mItemset) logger->error("Unable to load items.png");
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
-    delete mItemset;
+    mItemset->decRef();
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)

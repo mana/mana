@@ -30,11 +30,10 @@
 #include "../item.h"
 #include "../log.h"
 
-#include "../graphic/spriteset.h"
-
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/spriteset.h"
 
 #include "../utils/tostring.h"
 
@@ -42,7 +41,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    mItemset = resman->createSpriteset("graphics/sprites/items.png", 32, 32);
+    mItemset = resman->getSpriteset("graphics/sprites/items.png", 32, 32);
     if (!mItemset) logger->error("Unable to load items.png");
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
@@ -56,7 +55,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
 
 ItemContainer::~ItemContainer()
 {
-    delete mItemset;
+    mItemset->decRef();
     mSelImg->decRef();
 }
 

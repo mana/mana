@@ -136,7 +136,7 @@ class ResourceManager
          * Creates a spriteset based on the image referenced by the given
          * path and the supplied sprite sizes
          */
-        Spriteset* createSpriteset(const std::string &imagePath, int w, int h);
+        Spriteset* getSpriteset(const std::string &imagePath, int w, int h);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.
@@ -177,6 +177,12 @@ class ResourceManager
         deleteInstance();
 
     private:
+        /**
+         * Deletes the resource after logging a cleanup message.
+         */
+        static void
+        cleanUp(Resource *resource);
+
         static ResourceManager *instance;
         typedef std::map<std::string, Resource*> Resources;
         typedef Resources::iterator ResourceIterator;

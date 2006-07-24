@@ -53,7 +53,8 @@ void Logger::setLogFile(const std::string &logFilename)
 
 void Logger::log(const char *log_text, ...)
 {
-    if (!mLogFile.is_open()) {
+    if (!mLogFile.is_open())
+    {
         return;
     }
 

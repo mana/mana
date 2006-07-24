@@ -25,10 +25,9 @@
 
 #include "map.h"
 
-#include "graphic/spriteset.h"
-
 #include "resources/itemmanager.h"
 #include "resources/iteminfo.h"
+#include "resources/spriteset.h"
 
 extern Spriteset *itemset;
 
