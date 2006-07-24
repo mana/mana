@@ -134,7 +134,9 @@ void init_engine()
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
     {
-        std::cout << homeDir << " can't be made, but it doesn't exist! Exitting." << std::endl;
+        std::cout << homeDir
+                  << " can't be made, but it doesn't exist! Exitting."
+                  << std::endl;
         exit(1);
     }
 #endif
@@ -145,7 +147,9 @@ void init_engine()
     ResourceManager *resman = ResourceManager::getInstance();
 
     if (!resman->setWriteDir(homeDir)) {
-        std::cout << homeDir << " couldn't be set as home directory! Exitting." << std::endl;
+        std::cout << homeDir
+                  << " couldn't be set as home directory! Exitting."
+                  << std::endl;
         exit(1);
     }
 
@@ -154,8 +158,10 @@ void init_engine()
     // Creating and checking the updates folder existence and rights.
     if (!resman->isDirectory("/updates")) {
         if (!resman->mkdir("/updates")) {
-        std::cout << homeDir << "/updates can't be made, but it doesn't exist! Exitting." << std::endl;
-        exit(1);
+            std::cout << homeDir << "/updates "
+                      << "can't be made, but it doesn't exist! Exitting."
+                      << std::endl;
+            exit(1);
         }
     }
 
@@ -393,10 +399,11 @@ void loadUpdates()
     const std::string updatesFile = "updates/resources.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
+    std::string homeDir = config.getValue("homeDir", "");
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {
-        resman->addToSearchPath(lines[i], false);
+        resman->addToSearchPath(homeDir + "/updates/" + lines[i], false);
     }
 }
 
@@ -513,7 +520,6 @@ int main(int argc, char *argv[])
     SDL_Event event;
 
     if (options.skipUpdate && state != ERROR_STATE) {
-        loadUpdates();
         state = LOGIN_STATE;
     }
     else {

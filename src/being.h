@@ -89,7 +89,6 @@ class Being : public Sprite
         };
 
 
-
         /**
          * Directions, to be used as bitmask values
          */
