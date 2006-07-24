@@ -3,6 +3,7 @@
 	* src/being.cpp, src/being.h, src/localplayer, The Mana World.dev,
 	tmw.cbp: Removed unused code, fixed "change direction when not walking"
 	bug, updated project files.
+	* data/graphics/sprites/monster1.xml: Slowed down scorpions.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
