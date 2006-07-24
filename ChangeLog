@@ -1,3 +1,7 @@
+2006-07-24 Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* /tmw/trunk/data/graphics/sprites/npcs.png: Added the organdealer to the NPCs
+
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/being.cpp, src/being.h, src/localplayer, The Mana World.dev,
