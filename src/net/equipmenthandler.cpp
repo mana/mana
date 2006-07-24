@@ -87,7 +87,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                         position++;
                     }
                     item = player_node->getInvItem(index);
-                    player_node->mEquipment->setEquipment(position - 1, item);
+                    player_node->mEquipment->setEquipment(position, item);
                 }
             }
             break;
@@ -116,14 +116,14 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 mask <<= 1;
                 position++;
             }
-            logger->log("Position %i", position - 1);
-            item = player_node->mEquipment->getEquipment(position - 1);
+            logger->log("Position %i", position);
+            item = player_node->mEquipment->getEquipment(position);
             if (item) {
                 item->setEquipped(false);
             }
 
             item = player_node->getInvItem(index);
-            player_node->mEquipment->setEquipment(position - 1, item);
+            player_node->mEquipment->setEquipment(position, item);
             player_node->setWeaponById(item->getId());
             break;
 
@@ -185,11 +185,11 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                     //       unequipped in inventory too?
                     break;
                 default:
-                    player_node->mEquipment->removeEquipment(position - 1);
+                    player_node->mEquipment->removeEquipment(position);
                     break;
             }
             logger->log("Unequipping: %i %i(%i) %i",
-                    index, equipPoint, type, position - 1);
+                    index, equipPoint, type, position);
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:
