@@ -4,6 +4,8 @@
 	tmw.cbp: Removed unused code, fixed "change direction when not walking"
 	bug, updated project files.
 	* data/graphics/sprites/monster1.xml: Slowed down scorpions.
+	* data/graphics/sprites/monster2.xml: Red scorpions have got the same
+	problem.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
