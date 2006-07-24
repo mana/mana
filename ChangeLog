@@ -16,6 +16,8 @@
 	* data/graphics/sprites/monster1.xml: Slowed down scorpions.
 	* data/graphics/sprites/monster2.xml: Red scorpions have got the same
 	problem.
+	* data/graphics/sprites/player_female_base.xml: Fixed female playerset
+	animation definition.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
