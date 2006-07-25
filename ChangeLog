@@ -1,11 +1,15 @@
+2006-07-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_4-1.tmx.gz: Fixes to the collision layer.
+
 2006-07-26  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* data/graphics/tiles/snowset.png, data/graphics/tiles/snow_x2.png,
 	data/graphics/tiles/snow_x3.png: Moved the lamppost, the rock and the
 	bench to seperate tall tilebitmaps.
-	* data/maps/new_11-1.tmx.gz: Improved the snow village map, main changes
-	are that the player can now walk better behind houses, lampposts, rocks
-	and benches.
+	* data/maps/new_11-1.tmx.gz: Improved the snow village map, main
+	changes are that the player can now walk better behind houses,
+	lampposts, rocks and benches.
 
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
