@@ -1,3 +1,9 @@
+2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Fixed updating on Windows.
+	* src/net/beinghandler.cpp, src/net/network.cpp, configure.ac: Fixed
+	Linux compiling issues.
+
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Fixed the loading of updates and made skipping the

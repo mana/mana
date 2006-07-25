@@ -1,5 +1,5 @@
 AC_PREREQ(2.59)
-AC_INIT([The Mana World], [0.0.20], [elvenprogrammer@gmail.com], [tmw])
+AC_INIT([The Mana World], [0.1.0], [elvenprogrammer@gmail.com], [tmw])
 AC_CONFIG_HEADERS([config.h:config.h.in])
 AC_LANG_CPLUSPLUS
 
@@ -43,8 +43,8 @@ AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, ,
 AC_MSG_ERROR([ *** Unable to find SDL_mixer library
 (http://www.libsdl.org/projects/SDL_mixer/)]))
 
-AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
-AC_MSG_ERROR([ *** Unable to find SDL_net library]))
+AC_CHECK_LIB([enet], [enet_initialize], ,
+AC_MSG_ERROR([ *** Unable to find enet library (enet.bespin.org)]))
 
 AC_CHECK_LIB(png, png_write_info, ,
 AC_MSG_ERROR([ *** Unable to find png library]))

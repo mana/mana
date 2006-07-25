@@ -106,8 +106,7 @@ UpdaterWindow::~UpdaterWindow()
         free(mMemoryBuffer);
     }
 
-    // Remove downloaded files
-    remove((mBasePath + "/updates/news.txt").c_str());
+    // Remove possibly leftover temporary download
     remove((mBasePath + "/updates/download.temp").c_str());
 
     delete[] mCurlError;
@@ -293,10 +292,14 @@ int UpdaterWindow::downloadThread(void *ptr)
         if (!uw->mStoreInMemory)
         {
             fclose(outfile);
-            // If the download was successful give the file the proper name
-            // else it will be deleted later
+
+            // Give the file the proper name
             std::string newName(uw->mBasePath + "/updates/" +
                                 uw->mCurrentFile.c_str());
+
+            // Any existing file with this name is deleted first, otherwise the
+            // rename will fail on Windows.
+            remove(newName.c_str());
             rename(outFilename.c_str(), newName.c_str());
         }
     }

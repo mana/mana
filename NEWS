@@ -1,4 +1,7 @@
-0.0.20 (23 July 2006)
+0.0.20.1 (25 July 2006)
+- Fixed updating system on Windows
+
+0.0.20 (24 July 2006)
 - Added new hairstyle, and some fixes to the old ones
 - Added slider to set FPS limit
 - Added visible equipments

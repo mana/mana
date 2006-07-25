@@ -40,13 +40,13 @@ Network::~Network()
 {
     clearHandlers();
 
-    if (mState != IDLE && mState != ERROR)
+    if (mState != IDLE && mState != NET_ERROR)
         disconnect();
 }
 
 bool Network::connect(const std::string &address, short port)
 {
-    if (mState != IDLE && mState != ERROR)
+    if (mState != IDLE && mState != NET_ERROR)
     {
         logger->log("Tried to connect an already connected socket!");
         return false;
@@ -55,7 +55,7 @@ bool Network::connect(const std::string &address, short port)
     if (address.empty())
     {
         logger->log("Empty address given to Network::connect()!");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -84,7 +84,7 @@ bool Network::connect(const std::string &address, short port)
     if (mServer == 0)
     {
         logger->log("Unable to initiate connection to the server.");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 

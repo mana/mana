@@ -368,7 +368,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case 0x0119:
             // Change in players look
-            printf("0x0119 %i %i %i %x %i\n", msg->readLong(),
+            printf("0x0119 %li %i %i %x %i\n", msg->readLong(),
                    msg->readShort(), msg->readShort(), msg->readShort(),
                    msg->readByte());
             break;
