@@ -31,6 +31,10 @@
 #include <iostream>
 #include <sstream>
 
+Logger::Logger():
+    mLogToStandardOut(false)
+{
+}
 
 Logger::~Logger()
 {
@@ -84,6 +88,11 @@ void Logger::log(const char *log_text, ...)
         << "] ";
 
     mLogFile << timeStr.str() << buf << std::endl;
+
+    if (mLogToStandardOut)
+    {
+        std::cout << timeStr.str() << buf << std::endl;
+    }
 
     // Delete temporary buffer
     delete[] buf;

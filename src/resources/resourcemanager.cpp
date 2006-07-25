@@ -72,7 +72,10 @@ void
 ResourceManager::cleanUp(Resource *res)
 {
     logger->log("ResourceManager::~ResourceManager() cleaning up %d "
-                "references to %s", res->mRefCount, res->mIdPath.c_str());
+                "reference%s to %s",
+                res->mRefCount,
+                (res->mRefCount == 1) ? "" : "s",
+                res->mIdPath.c_str());
     delete res;
 }
 

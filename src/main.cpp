@@ -93,6 +93,7 @@ SERVER_INFO **server_info;
 
 unsigned char state;
 std::string errorMessage;
+std::string homeDir;
 unsigned char screen_mode;
 
 Sound sound;
@@ -106,6 +107,74 @@ namespace {
     {
         void action(const std::string& eventId) { state = LOGIN_STATE; }
     } errorListener;
+}
+
+/**
+ * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
+ * Windows and other systems we use the current working directory.
+ */
+void initHomeDir()
+{
+#if !(defined __USE_UNIX98 || defined __FreeBSD__)
+    homeDir = ".";
+#else
+    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+
+    // Checking if /home/user/.tmw folder exists.
+    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
+            (errno != EEXIST))
+    {
+        std::cout << homeDir
+                  << " can't be made, but it doesn't exist! Exitting."
+                  << std::endl;
+        exit(1);
+    }
+#endif
+}
+
+/**
+ * Initialize configuration.
+ */
+void initConfiguration()
+{
+    // Fill configuration with defaults
+    config.setValue("host", "animesites.de");
+    config.setValue("port", 9601);
+    config.setValue("hwaccel", 0);
+#if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
+    config.setValue("opengl", 1);
+#else
+    config.setValue("opengl", 0);
+#endif
+    config.setValue("screen", 0);
+    config.setValue("sound", 1);
+    config.setValue("guialpha", 0.8f);
+    config.setValue("remember", 1);
+    config.setValue("sfxVolume", 100);
+    config.setValue("musicVolume", 60);
+    config.setValue("fpslimit", 0);
+    config.setValue("updatehost", "http://themanaworld.org/files");
+    config.setValue("customcursor", 1);
+    config.setValue("homeDir", homeDir);
+
+    // Checking if the configuration file exists... otherwise create it with
+    // default options.
+    FILE *tmwFile = 0;
+    std::string configPath = homeDir + "/config.xml";
+    tmwFile = fopen(configPath.c_str(), "r");
+
+    // If we can't read it, it doesn't exist !
+    if (tmwFile == NULL) {
+        // We reopen the file in write mode and we create it
+        tmwFile = fopen(configPath.c_str(), "wt");
+    }
+    if (tmwFile == NULL) {
+        std::cout << "Can't create " << configPath << ". "
+                  << "Using Defaults." << std::endl;
+    } else {
+        fclose(tmwFile);
+        config.init(configPath);
+    }
 }
 
 /**
@@ -124,26 +193,8 @@ void init_engine()
     SDL_EnableUNICODE(1);
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
-    std::string homeDir = "";
-#if !(defined __USE_UNIX98 || defined __FreeBSD__)
-    // In Windows and other systems we currently store data next to executable.
-    homeDir = ".";
-#else
-    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
-
-    // Checking if /home/user/.tmw folder exists.
-    if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
-            (errno != EEXIST))
-    {
-        std::cout << homeDir
-                  << " can't be made, but it doesn't exist! Exitting."
-                  << std::endl;
-        exit(1);
-    }
-#endif
-
-    // Set log file
-    logger->setLogFile(homeDir + std::string("/tmw.log"));
+    SDL_WM_SetCaption("The Mana World", NULL);
+    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -169,48 +220,6 @@ void init_engine()
     // Add the main data directory to our PhysicsFS search path
     resman->addToSearchPath("data", true);
     resman->addToSearchPath(TMW_DATADIR "data", true);
-
-    // Fill configuration with defaults
-    config.setValue("host", "animesites.de");
-    config.setValue("port", 9601);
-    config.setValue("hwaccel", 0);
-#if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
-    config.setValue("opengl", 1);
-#else
-    config.setValue("opengl", 0);
-#endif
-    config.setValue("screen", 0);
-    config.setValue("sound", 1);
-    config.setValue("guialpha", 0.8f);
-    config.setValue("remember", 1);
-    config.setValue("sfxVolume", 100);
-    config.setValue("musicVolume", 60);
-    config.setValue("fpslimit", 50);
-    config.setValue("updatehost", "http://themanaworld.org/files");
-    config.setValue("customcursor", 1);
-    config.setValue("homeDir", homeDir);
-
-    // Checking if the configuration file exists... otherwise creates it with
-    // default options !
-    FILE *tmwFile = 0;
-    std::string configPath = homeDir + "/config.xml";
-    tmwFile = fopen(configPath.c_str(), "r");
-
-    // If we can't read it, it doesn't exist !
-    if (tmwFile == NULL) {
-        // We reopen the file in write mode and we create it
-        tmwFile = fopen(configPath.c_str(), "wt");
-    }
-    if (tmwFile == NULL) {
-        std::cout << "Can't create " << configPath << ". "
-            "Using Defaults." << std::endl;
-    } else {
-        fclose(tmwFile);
-        config.init(configPath);
-    }
-
-    SDL_WM_SetCaption("The Mana World", NULL);
-    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
     int width, height, bpp;
     bool fullscreen, hwaccel;
@@ -238,12 +247,12 @@ void init_engine()
     graphics = new Graphics();
 #endif
 
-
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
     {
-        std::cerr << "Couldn't set " << width << "x" << height << "x" <<
-            bpp << " video mode: " << SDL_GetError() << std::endl;
+        std::cerr << "Couldn't set "
+                  << width << "x" << height << "x" << bpp << " video mode: "
+                  << SDL_GetError() << std::endl;
         exit(1);
     }
 
@@ -258,7 +267,7 @@ void init_engine()
     if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
 
 
-    for (int i=0; i < NR_HAIR_STYLES; i++)
+    for (int i = 0; i < NR_HAIR_STYLES; i++)
     {
         Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
                 "graphics/sprites/hairstyle" + toString(i + 1) + ".png",
@@ -312,7 +321,6 @@ void exit_engine()
     sound.close();
 
     ResourceManager::deleteInstance();
-    delete logger;
 }
 
 /**
@@ -486,20 +494,30 @@ int main(int argc, char *argv[])
 #ifdef PACKAGE_VERSION
     std::cout << "The Mana World v" << PACKAGE_VERSION << std::endl;
 #endif
-    logger = new Logger();
 
+    // Parse command line options
     Options options;
-
     parseOptions(argc, argv, options);
-
     if (options.printHelp)
     {
         printHelp();
         return 0;
     }
 
+    // Initialize PhysicsFS
+    PHYSFS_init(argv[0]);
+
+    initHomeDir();
+    initConfiguration();
+
+    // Configure logger
+    logger = new Logger();
+    logger->setLogFile(homeDir + std::string("/tmw.log"));
+    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
+
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
+    logger->log("Initializing libxml2...");
     xmlInitParser();
     LIBXML_TEST_VERSION;
 
@@ -507,12 +525,7 @@ int main(int argc, char *argv[])
     FILE *nullFile = fopen("/dev/null", "w");
     xmlSetGenericErrorFunc(nullFile, NULL);
 
-    // Initialize PhysicsFS
-    PHYSFS_init(argv[0]);
-
     init_engine();
-
-    SDL_Event event;
 
     if (options.skipUpdate && state != ERROR_STATE) {
         state = LOGIN_STATE;
@@ -547,6 +560,9 @@ int main(int argc, char *argv[])
         logger->error("An error occurred while initializing ENet.");
     }
     Network *network = new Network();
+
+    SDL_Event event;
+
     while (state != EXIT_STATE)
     {
         // Handle SDL events
@@ -712,5 +728,6 @@ int main(int argc, char *argv[])
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();
+    delete logger;
     return 0;
 }

@@ -32,6 +32,11 @@ class Logger
 {
     public:
         /**
+         * Constructor.
+         */
+        Logger();
+
+        /**
          * Destructor, closes log file.
          */
         ~Logger();
@@ -40,6 +45,11 @@ class Logger
          * Sets the file to log to and opens it
          */
         void setLogFile(const std::string &logFilename);
+
+        /**
+         * Sets whether the log should be written to standard output.
+         */
+        void setLogToStandardOut(bool value) { mLogToStandardOut = value; }
 
         /**
          * Enters a message in the log. The message will be timestamped.
@@ -54,6 +64,7 @@ class Logger
 
     private:
         std::ofstream mLogFile;
+        bool mLogToStandardOut;
 };
 
 extern Logger *logger;

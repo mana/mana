@@ -3,6 +3,11 @@
 	* src/gui/updatewindow.cpp: Fixed updating on Windows.
 	* src/net/beinghandler.cpp, src/net/network.cpp, configure.ac: Fixed
 	Linux compiling issues.
+	* src/configuration.cpp: Reduced amount of logging.
+	* src/log.cpp, src/log.h: Added support for writing log to standard
+	output.
+	* src/main.cpp: Reorganized initialization somewhat.
+	* src/resources/resourcemanager.cpp: Take into account singular form.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
