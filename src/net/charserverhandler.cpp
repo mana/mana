@@ -61,9 +61,6 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case 0x006b:
-            // Skip length word and an additional mysterious 20 bytes
-            msg->skip(2 + 20);
-
             // Derive number of characters from message length
             n_character = (msg->getLength() - 24) / 106;
 
@@ -80,7 +77,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006c:
-            switch (msg->readInt8()) {
+            switch (msg->readByte()) {
                 case 0:
                     errorMessage = "Access denied";
                     break;
@@ -121,10 +118,9 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
         case 0x0071:
             player_node = mCharInfo->getEntry();
-            msg->skip(4); // CharID, must be the same as player_node->charID
             map_path = msg->readString(16);
-            mLoginData->hostname = iptostring(msg->readInt32());
-            mLoginData->port = msg->readInt16();
+            mLoginData->hostname = iptostring(msg->readLong());
+            mLoginData->port = msg->readShort();
             mCharInfo->unlock();
             mCharInfo->select(0);
             // Clear unselected players infos
@@ -140,7 +136,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x0081:
-            switch (msg->readInt8()) {
+            switch (msg->readByte()) {
                 case 1:
                     errorMessage = "Map server offline";
                     break;
@@ -165,44 +161,42 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
     tempPlayer->setSex(1 - mLoginData->sex);
 
-    tempPlayer->mCharId = msg->readInt32();
+    tempPlayer->mCharId = msg->readLong();
     tempPlayer->mTotalWeight = 0;
     tempPlayer->mMaxWeight = 0;
     tempPlayer->mLastAttackTime = 0;
-    tempPlayer->mXp = msg->readInt32();
-    tempPlayer->mGp = msg->readInt32();
-    tempPlayer->mJobXp = msg->readInt32();
-    tempPlayer->mJobLevel = msg->readInt32();
-    msg->skip(8);                          // unknown
-    msg->readInt32();                       // option
-    msg->readInt32();                       // karma
-    msg->readInt32();                       // manner
-    msg->skip(2);                          // unknown
-    tempPlayer->mHp = msg->readInt16();
-    tempPlayer->mMaxHp = msg->readInt16();
-    tempPlayer->mMp = msg->readInt16();
-    tempPlayer->mMaxMp = msg->readInt16();
-    msg->readInt16();                       // speed
-    msg->readInt16();                       // class
-    tempPlayer->setHairStyle(msg->readInt16());
-    Uint16 weapon = msg->readInt16();
+    tempPlayer->mXp = msg->readLong();
+    tempPlayer->mGp = msg->readLong();
+    tempPlayer->mJobXp = msg->readLong();
+    tempPlayer->mJobLevel = msg->readLong();
+    msg->readLong();                       // option
+    msg->readLong();                       // karma
+    msg->readLong();                       // manner
+    tempPlayer->mHp = msg->readShort();
+    tempPlayer->mMaxHp = msg->readShort();
+    tempPlayer->mMp = msg->readShort();
+    tempPlayer->mMaxMp = msg->readShort();
+    msg->readShort();                       // speed
+    msg->readShort();                       // class
+    tempPlayer->setHairStyle(msg->readShort());
+    Uint16 weapon = msg->readShort();
     if (weapon == 11)
         weapon = 2;
     tempPlayer->setWeapon(weapon);
-    tempPlayer->mLevel = msg->readInt16();
-    msg->readInt16();                       // skill point
-    tempPlayer->setVisibleEquipment(3, msg->readInt16()); // head bottom
-    msg->readInt16();                       // shield
-    tempPlayer->setVisibleEquipment(4, msg->readInt16()); // head option top
-    tempPlayer->setVisibleEquipment(5, msg->readInt16()); // head option mid
-    tempPlayer->setHairColor(msg->readInt16());
-    msg->readInt16();                       // unknown
+    tempPlayer->mLevel = msg->readShort();
+    msg->readShort();                       // skill point
+    tempPlayer->setVisibleEquipment(3, msg->readShort()); // head bottom
+    msg->readShort();                       // shield
+    tempPlayer->setVisibleEquipment(4, msg->readShort()); // head option top
+    tempPlayer->setVisibleEquipment(5, msg->readShort()); // head option mid
+    tempPlayer->setHairColor(msg->readShort());
+    msg->readShort();                       // unknown
     tempPlayer->setName(msg->readString(24));
     for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg->readInt8();
+        tempPlayer->mAttr[i] = msg->readByte();
     }
-    slot = msg->readInt8(); // character slot
-    msg->readInt8();                        // unknown
+    slot = msg->readByte(); // character slot
+    msg->readByte();                        // unknown
 
     return tempPlayer;
 }

@@ -261,9 +261,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
         {
             msg.erase(0, IS_ANNOUNCE_LENGTH);
-            MessageOut outMsg(mNetwork);
-            outMsg.writeInt16(0x0099);
-            outMsg.writeInt16(msg.length() + 4);
+            MessageOut outMsg;
+            outMsg.writeShort(0x0099);
+            outMsg.writeShort(msg.length() + 4);
             outMsg.writeString(msg, msg.length());
         }
         else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
@@ -280,8 +280,8 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         }
         else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
         {
-            MessageOut outMsg(mNetwork);
-            outMsg.writeInt16(0x00c1);
+            MessageOut outMsg;
+            outMsg.writeShort(0x00c1);
         }
         else
         {
@@ -292,9 +292,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     else {
         msg = nick + " : " + msg;
 
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_MESSAGE);
-        outMsg.writeInt16(msg.length() + 4);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_CHAT_MESSAGE);
+        outMsg.writeShort(msg.length() + 4);
         outMsg.writeString(msg, msg.length());
     }
 }

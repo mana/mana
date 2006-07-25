@@ -71,6 +71,7 @@
 #include "net/maploginhandler.h"
 #include "net/messageout.h"
 #include "net/network.h"
+#include "net/protocol.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -171,7 +172,7 @@ void init_engine()
 
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
-    config.setValue("port", 6901);
+    config.setValue("port", 9601);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
     config.setValue("opengl", 1);
@@ -423,12 +424,12 @@ void accountLogin(Network *network, LoginData *loginData)
     loginHandler.setLoginData(loginData);
 
     // Send login infos
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0064);
-    outMsg.writeInt32(0); // client version
-    outMsg.writeString(loginData->username, 24);
-    outMsg.writeString(loginData->password, 24);
-    outMsg.writeInt8(0); // unknown
+    MessageOut *msg = new MessageOut();
+    msg->writeShort(PAMSG_LOGIN);
+    msg->writeString("0.1.0"); // client version
+    msg->writeString(loginData->username);
+    msg->writeString(loginData->password);
+    network->send(msg);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -451,21 +452,18 @@ void charLogin(Network *network, LoginData *loginData)
     charServerHandler.setLoginData(loginData);
 
     // Send login infos
-    MessageOut outMsg(network);
-    outMsg.writeInt16(0x0065);
-    outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(loginData->session_ID1);
-    outMsg.writeInt32(loginData->session_ID2);
-    outMsg.writeInt16(0); // unknown
-    outMsg.writeInt8(loginData->sex);
-
-    // We get 4 useless bytes before the real answer comes in
-    network->skip(4);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0065);
+    outMsg.writeLong(loginData->account_ID);
+    outMsg.writeLong(loginData->session_ID1);
+    outMsg.writeLong(loginData->session_ID2);
+    outMsg.writeShort(0); // unknown
+    outMsg.writeByte(loginData->sex);
 }
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    MessageOut outMsg(network);
+    MessageOut outMsg;
 
     logger->log("Trying to connect to map server...");
     logger->log("Map: %s", map_path.c_str());
@@ -474,15 +472,12 @@ void mapLogin(Network *network, LoginData *loginData)
     network->registerHandler(&mapLoginHandler);
 
     // Send login infos
-    outMsg.writeInt16(0x0072);
-    outMsg.writeInt32(loginData->account_ID);
-    outMsg.writeInt32(player_node->mCharId);
-    outMsg.writeInt32(loginData->session_ID1);
-    outMsg.writeInt32(loginData->session_ID2);
-    outMsg.writeInt8(loginData->sex);
-
-    // We get 4 useless bytes before the real answer comes in
-    network->skip(4);
+    outMsg.writeShort(0x0072);
+    outMsg.writeLong(loginData->account_ID);
+    outMsg.writeLong(player_node->mCharId);
+    outMsg.writeLong(loginData->session_ID1);
+    outMsg.writeLong(loginData->session_ID2);
+    outMsg.writeByte(loginData->sex);
 }
 
 /** Main */
@@ -547,7 +542,10 @@ int main(int argc, char *argv[])
     loginData.port = (short)config.getValue("port", 0);
     loginData.remember = config.getValue("remember", 0);
 
-    SDLNet_Init();
+    if (enet_initialize() != 0)
+    {
+        logger->error("An error occurred while initializing ENet.");
+    }
     Network *network = new Network();
     while (state != EXIT_STATE)
     {
@@ -569,9 +567,8 @@ int main(int argc, char *argv[])
 
         gui->logic();
         network->flush();
-        network->dispatchMessages();
 
-        if (network->getState() == Network::ERROR)
+        if (network->getState() == Network::NET_ERROR)
         {
             state = ERROR_STATE;
             errorMessage = "Got disconnected from server!";
@@ -704,8 +701,9 @@ int main(int argc, char *argv[])
         }
     }
 
+    network->disconnect();
     delete network;
-    SDLNet_Quit();
+    enet_deinitialize();
 
     if (nullFile)
     {

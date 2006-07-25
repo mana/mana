@@ -94,8 +94,8 @@ void PlayerHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_WARP:
             {
                 std::string mapPath = msg->readString(16);
-                Uint16 x = msg->readInt16();
-                Uint16 y = msg->readInt16();
+                Uint16 x = msg->readShort();
+                Uint16 y = msg->readShort();
 
                 logger->log("Warping to %s (%d, %d)", mapPath.c_str(), x, y);
 
@@ -114,13 +114,13 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
-                Sint16 type = msg->readInt16();
-                Uint32 value = msg->readInt32();
+                Sint16 type = msg->readShort();
+                Uint32 value = msg->readLong();
 
                 switch (type)
                 {
                     //case 0x0000:
-                    //    player_node->setWalkSpeed(msg->readInt32());
+                    //    player_node->setWalkSpeed(msg->readLong());
                     //    break;
                     case 0x0005: player_node->mHp = value; break;
                     case 0x0006: player_node->mMaxHp = value; break;
@@ -169,30 +169,30 @@ void PlayerHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_2:
-            switch (msg->readInt16()) {
+            switch (msg->readShort()) {
                 case 0x0001:
-                    player_node->mXp = msg->readInt32();
+                    player_node->mXp = msg->readLong();
                     break;
                 case 0x0002:
-                    player_node->mJobXp = msg->readInt32();
+                    player_node->mJobXp = msg->readLong();
                     break;
                 case 0x0014:
-                    player_node->mGp = msg->readInt32();
+                    player_node->mGp = msg->readLong();
                     break;
                 case 0x0016:
-                    player_node->mXpForNextLevel = msg->readInt32();
+                    player_node->mXpForNextLevel = msg->readLong();
                     break;
                 case 0x0017:
-                    player_node->mJobXpForNextLevel = msg->readInt32();
+                    player_node->mJobXpForNextLevel = msg->readLong();
                     break;
             }
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_3:
             {
-                Sint32 type = msg->readInt32();
-                Sint32 base = msg->readInt32();
-                Sint32 bonus = msg->readInt32();
+                Sint32 type = msg->readLong();
+                Sint32 base = msg->readLong();
+                Sint32 bonus = msg->readLong();
                 Sint32 total = base + bonus;
 
                 switch (type) {
@@ -214,9 +214,9 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_STAT_UPDATE_4:
             {
-                Sint16 type = msg->readInt16();
-                Sint8 fail = msg->readInt8();
-                Sint8 value = msg->readInt8();
+                Sint16 type = msg->readShort();
+                Sint8 fail = msg->readByte();
+                Sint8 value = msg->readByte();
 
                 if (fail != 1)
                     break;
@@ -240,60 +240,60 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
             // Updates stats and status points
         case SMSG_PLAYER_STAT_UPDATE_5:
-            player_node->mStatsPointsToAttribute = msg->readInt16();
-            player_node->mAttr[LocalPlayer::STR] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::STR] = msg->readInt8();
-            player_node->mAttr[LocalPlayer::AGI] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::AGI] = msg->readInt8();
-            player_node->mAttr[LocalPlayer::VIT] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::VIT] = msg->readInt8();
-            player_node->mAttr[LocalPlayer::INT] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::INT] = msg->readInt8();
-            player_node->mAttr[LocalPlayer::DEX] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::DEX] = msg->readInt8();
-            player_node->mAttr[LocalPlayer::LUK] = msg->readInt8();
-            player_node->mAttrUp[LocalPlayer::LUK] = msg->readInt8();
-            player_node->ATK       = msg->readInt16();  // ATK
-            player_node->ATK_BONUS  = msg->readInt16();  // ATK bonus
-            player_node->MATK      = msg->readInt16();  // MATK max
-            player_node->MATK_BONUS = msg->readInt16();  // MATK min
-            player_node->DEF       = msg->readInt16();  // DEF
-            player_node->DEF_BONUS  = msg->readInt16();  // DEF bonus
-            player_node->MDEF      = msg->readInt16();  // MDEF
-            player_node->MDEF_BONUS = msg->readInt16();  // MDEF bonus
-            player_node->HIT       = msg->readInt16();  // HIT
-            player_node->FLEE      = msg->readInt16();  // FLEE
-            player_node->FLEE_BONUS = msg->readInt16();  // FLEE bonus
-            msg->readInt16();  // critical
-            msg->readInt16();  // unknown
+            player_node->mStatsPointsToAttribute = msg->readShort();
+            player_node->mAttr[LocalPlayer::STR] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::STR] = msg->readByte();
+            player_node->mAttr[LocalPlayer::AGI] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::AGI] = msg->readByte();
+            player_node->mAttr[LocalPlayer::VIT] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::VIT] = msg->readByte();
+            player_node->mAttr[LocalPlayer::INT] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::INT] = msg->readByte();
+            player_node->mAttr[LocalPlayer::DEX] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::DEX] = msg->readByte();
+            player_node->mAttr[LocalPlayer::LUK] = msg->readByte();
+            player_node->mAttrUp[LocalPlayer::LUK] = msg->readByte();
+            player_node->ATK       = msg->readShort();  // ATK
+            player_node->ATK_BONUS  = msg->readShort();  // ATK bonus
+            player_node->MATK      = msg->readShort();  // MATK max
+            player_node->MATK_BONUS = msg->readShort();  // MATK min
+            player_node->DEF       = msg->readShort();  // DEF
+            player_node->DEF_BONUS  = msg->readShort();  // DEF bonus
+            player_node->MDEF      = msg->readShort();  // MDEF
+            player_node->MDEF_BONUS = msg->readShort();  // MDEF bonus
+            player_node->HIT       = msg->readShort();  // HIT
+            player_node->FLEE      = msg->readShort();  // FLEE
+            player_node->FLEE_BONUS = msg->readShort();  // FLEE bonus
+            msg->readShort();  // critical
+            msg->readShort();  // unknown
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_6:
-            switch (msg->readInt16()) {
+            switch (msg->readShort()) {
                 case 0x0020:
-                    player_node->mAttrUp[LocalPlayer::STR] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::STR] = msg->readByte();
                     break;
                 case 0x0021:
-                    player_node->mAttrUp[LocalPlayer::AGI] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::AGI] = msg->readByte();
                     break;
                 case 0x0022:
-                    player_node->mAttrUp[LocalPlayer::VIT] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::VIT] = msg->readByte();
                     break;
                 case 0x0023:
-                    player_node->mAttrUp[LocalPlayer::INT] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::INT] = msg->readByte();
                     break;
                 case 0x0024:
-                    player_node->mAttrUp[LocalPlayer::DEX] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::DEX] = msg->readByte();
                     break;
                 case 0x0025:
-                    player_node->mAttrUp[LocalPlayer::LUK] = msg->readInt8();
+                    player_node->mAttrUp[LocalPlayer::LUK] = msg->readByte();
                     break;
             }
             break;
 
         case SMSG_PLAYER_ARROW_MESSAGE:
             {
-                Sint16 type = msg->readInt16();
+                Sint16 type = msg->readShort();
 
                 switch (type) {
                     case 0:
@@ -309,7 +309,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
 
         //Stop walking
         //case 0x0088:  // Disabled because giving some problems
-        //if (being = beingManager->findBeing(readInt32(2))) {
+        //if (being = beingManager->findBeing(readLong(2))) {
         //    if (being->getId() != player_node->getId()) {
         //        being->action = STAND;
         //        being->mFrame = 0;

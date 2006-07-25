@@ -213,11 +213,11 @@ void SellDialog::action(const std::string& eventId)
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
 
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
-        outMsg.writeInt16(8);
-        outMsg.writeInt16(mShopItems->at(selectedItem).index);
-        outMsg.writeInt16(mAmountItems);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_SELL_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(mShopItems->at(selectedItem).index);
+        outMsg.writeShort(mAmountItems);
 
         mMaxItems -= mAmountItems;
         mAmountItems = 0;

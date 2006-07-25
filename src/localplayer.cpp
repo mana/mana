@@ -115,10 +115,10 @@ Item* LocalPlayer::getInvItem(int index)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(0);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_EQUIP);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeShort(0);
 }
 
 void LocalPlayer::unequipItem(Item *item)
@@ -126,9 +126,9 @@ void LocalPlayer::unequipItem(Item *item)
     if (!item)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex());
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_UNEQUIP);
+    outMsg.writeShort(item->getInvIndex());
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     mEquipment->removeEquipment(item);
@@ -136,20 +136,20 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt32(item->getId());
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_INVENTORY_USE);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(quantity);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_PLAYER_INVENTORY_DROP);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeShort(quantity);
 }
 
 void LocalPlayer::pickUp(FloorItem *item)
@@ -158,9 +158,9 @@ void LocalPlayer::pickUp(FloorItem *item)
     int dy = item->getY() - mY;
 
     if (dx * dx + dy * dy < 4) {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(item->getId());
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_ITEM_PICKUP);
+        outMsg.writeLong(item->getId());
         mPickUpTarget = NULL;
     } else {
         setDestination(item->getX(), item->getY());
@@ -219,9 +219,9 @@ void LocalPlayer::walk(unsigned char dir)
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     char temp[3];
-    MessageOut outMsg(mNetwork);
+    MessageOut outMsg;
     set_coordinates(temp, x, y, mDirection);
-    outMsg.writeInt16(0x0085);
+    outMsg.writeShort(0x0085);
     outMsg.writeString(temp, 3);
 
     mPickUpTarget = NULL;
@@ -231,36 +231,36 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
 void LocalPlayer::raiseAttribute(Attribute attr)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_STAT_UPDATE_REQUEST);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_STAT_UPDATE_REQUEST);
 
     switch (attr)
     {
         case STR:
-            outMsg.writeInt16(0x000d);
+            outMsg.writeShort(0x000d);
             break;
 
         case AGI:
-            outMsg.writeInt16(0x000e);
+            outMsg.writeShort(0x000e);
             break;
 
         case VIT:
-            outMsg.writeInt16(0x000f);
+            outMsg.writeShort(0x000f);
             break;
 
         case INT:
-            outMsg.writeInt16(0x0010);
+            outMsg.writeShort(0x0010);
             break;
 
         case DEX:
-            outMsg.writeInt16(0x0011);
+            outMsg.writeShort(0x0011);
             break;
 
         case LUK:
-            outMsg.writeInt16(0x0012);
+            outMsg.writeShort(0x0012);
             break;
     }
-    outMsg.writeInt8(1);
+    outMsg.writeByte(1);
 }
 
 void LocalPlayer::raiseSkill(Uint16 skillId)
@@ -268,9 +268,9 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeInt16(skillId);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_SKILL_LEVELUP_REQUEST);
+    outMsg.writeShort(skillId);
 }
 
 void LocalPlayer::toggleSit()
@@ -287,10 +287,10 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
-    outMsg.writeInt32(0);
-    outMsg.writeInt8(type);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0089);
+    outMsg.writeLong(0);
+    outMsg.writeByte(type);
 }
 
 void LocalPlayer::emote(Uint8 emotion)
@@ -299,9 +299,9 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00bf);
-    outMsg.writeInt8(emotion);
+    MessageOut outMsg;
+    outMsg.writeShort(0x00bf);
+    outMsg.writeByte(emotion);
 }
 
 void LocalPlayer::tradeReply(bool accept)
@@ -309,16 +309,16 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
-    outMsg.writeInt8(accept ? 3 : 4);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_TRADE_RESPONSE);
+    outMsg.writeByte(accept ? 3 : 4);
 }
 
 void LocalPlayer::trade(Being *being) const
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_REQUEST);
-    outMsg.writeInt32(being->getId());
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_TRADE_REQUEST);
+    outMsg.writeLong(being->getId());
 }
 
 bool LocalPlayer::tradeRequestOk() const
@@ -368,10 +368,10 @@ void LocalPlayer::attack(Being *target, bool keep)
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
-    outMsg.writeInt32(target->getId());
-    outMsg.writeInt8(0);
+    MessageOut outMsg;
+    outMsg.writeShort(0x0089);
+    outMsg.writeLong(target->getId());
+    outMsg.writeByte(0);
 }
 
 void LocalPlayer::stopAttack()
@@ -386,7 +386,7 @@ Being* LocalPlayer::getTarget() const
 
 void LocalPlayer::revive()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00b2);
-    outMsg.writeInt8(0);
+    MessageOut outMsg;
+    outMsg.writeShort(0x00b2);
+    outMsg.writeByte(0);
 }

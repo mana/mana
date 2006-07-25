@@ -62,8 +62,8 @@ void ChatHandler::handleMessage(MessageIn *msg)
     {
         // Received speech from being
         case SMSG_BEING_CHAT:
-            chatMsgLength = msg->readInt16() - 8;
-            being = beingManager->findBeing(msg->readInt32());
+            chatMsgLength = msg->readShort() - 8;
+            being = beingManager->findBeing(msg->readLong());
 
             if (!being || chatMsgLength <= 0)
             {
@@ -78,7 +78,7 @@ void ChatHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_CHAT:
         case SMSG_GM_CHAT:
-            chatMsgLength = msg->readInt16() - 4;
+            chatMsgLength = msg->readShort() - 4;
 
             if (chatMsgLength <= 0)
             {
@@ -105,13 +105,13 @@ void ChatHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            chatWindow->chatLog("Online users: " + toString(msg->readInt32()),
+            chatWindow->chatLog("Online users: " + toString(msg->readLong()),
                     BY_SERVER);
             break;
 
         case 0x010c:
             // Display MVP player
-            msg->readInt32(); // id
+            msg->readLong(); // id
             chatWindow->chatLog("MVP player", BY_SERVER);
             break;
     }

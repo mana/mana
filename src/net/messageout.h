@@ -1,5 +1,5 @@
 /*
- *  The Mana World
+ *  The Mana World Server
  *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -21,32 +21,30 @@
  *  $Id$
  */
 
-#ifndef _TMW_MESSAGEOUT_
-#define _TMW_MESSAGEOUT_
+#ifndef _TMWSERV_MESSAGEOUT_H_
+#define _TMWSERV_MESSAGEOUT_H_
 
 #include <iosfwd>
-#include <SDL_types.h>
-
-class Network;
 
 /**
  * Used for building an outgoing message.
  */
 class MessageOut
 {
-    friend MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const Sint16 &rhs);
-    friend MessageOut& operator<<(MessageOut &msg, const Sint32 &rhs);
-
     public:
         /**
          * Constructor.
          */
-        MessageOut(Network *network);
+        MessageOut();
 
-        void writeInt8(Sint8 value);          /**< Writes a byte. */
-        void writeInt16(Sint16 value);        /**< Writes a short. */
-        void writeInt32(Sint32 value);          /**< Writes a long. */
+        /**
+         * Destructor.
+         */
+        ~MessageOut();
+
+        void writeByte(char value);          /**< Writes a byte. */
+        void writeShort(short value);        /**< Writes a short. */
+        void writeLong(long value);          /**< Writes a long. */
 
         /**
          * Writes a string. If a fixed length is not given (-1), it is stored
@@ -54,8 +52,25 @@ class MessageOut
          */
         void writeString(const std::string &string, int length = -1);
 
+        /**
+         * Returns the content of the message.
+         */
+        char *getData();
+
+        /**
+         * Returns the length of the data.
+         */
+        unsigned int getDataSize();
+
     private:
-        Network *mNetwork;
+        /**
+         * Expand the packet data to be able to hold more data.
+         *
+         * NOTE: For performance enhancements this method could allocate extra
+         * memory in advance instead of expanding size every time more data is
+         * added.
+         */
+        void expand(size_t size);
 
         char *mData;                         /**< Data building up. */
         unsigned int mDataSize;              /**< Size of data. */

@@ -46,20 +46,20 @@ void SkillHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_PLAYER_SKILLS:
-            msg->readInt16();  // length
+            msg->readShort();  // length
             skillCount = (msg->getLength() - 4) / 37;
             skillDialog->cleanList();
 
             for (int k = 0; k < skillCount; k++)
             {
-                Sint16 skillId = msg->readInt16();
-                msg->readInt16();  // target type
-                msg->readInt16();  // unknown
-                Sint16 level = msg->readInt16();
-                Sint16 sp = msg->readInt16();
-                msg->readInt16();  // range
+                Sint16 skillId = msg->readShort();
+                msg->readShort();  // target type
+                msg->readShort();  // unknown
+                Sint16 level = msg->readShort();
+                Sint16 sp = msg->readShort();
+                msg->readShort();  // range
                 std::string skillName = msg->readString(24);
-                Sint8 up = msg->readInt8();
+                Sint8 up = msg->readByte();
 
                 if (level != 0 || up != 0)
                 {
@@ -77,11 +77,11 @@ void SkillHandler::handleMessage(MessageIn *msg)
             // Action failed (ex. sit because you have not reached the
             // right level)
             CHATSKILL action;
-            action.skill   = msg->readInt16();
-            action.bskill  = msg->readInt16();
-            action.unused  = msg->readInt16(); // unknown
-            action.success = msg->readInt8();
-            action.reason  = msg->readInt8();
+            action.skill   = msg->readShort();
+            action.bskill  = msg->readShort();
+            action.unused  = msg->readShort(); // unknown
+            action.success = msg->readByte();
+            action.reason  = msg->readByte();
             if (action.success != SKILL_FAILED &&
                 action.bskill == BSKILL_EMOTE)
             {

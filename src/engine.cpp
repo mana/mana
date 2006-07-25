@@ -160,8 +160,8 @@ void Engine::changeMap(const std::string &mapPath)
     mCurrentMap = newMap;
 
     // Send "map loaded"
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_MAP_LOADED);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_MAP_LOADED);
 }
 
 void Engine::logic()

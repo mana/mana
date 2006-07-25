@@ -25,19 +25,22 @@
 #define _TMW_NETWORK_
 
 #include <map>
-#include <SDL_net.h>
-#include <SDL_thread.h>
+#include <queue>
 #include <string>
+
+#include <guichan.hpp>
+
+#include <enet/enet.h>
 
 class MessageHandler;
 class MessageIn;
+class MessageOut;
 
 class Network;
 
 class Network
 {
     public:
-        friend int networkThread(void *data);
         friend class MessageOut;
 
         Network();
@@ -53,45 +56,38 @@ class Network
         int getState() const { return mState; }
         bool isConnected() const { return mState == CONNECTED; }
 
-        int getInSize() const { return mInSize; }
-
-        void skip(int len);
-
-        bool messageReady();
-        MessageIn getNextMessage();
-
         void dispatchMessages();
         void flush();
 
-        enum {
+        void send(MessageOut *msg);
+
+        enum State {
             IDLE,
             CONNECTED,
             CONNECTING,
             DATA,
-            ERROR
+            NET_ERROR
         };
 
-    protected:
-        Uint16 readWord(int pos);
+        ENetHost *mClient;
+        ENetPeer *mServer;
 
-        TCPsocket mSocket;
+    protected:
+
 
         std::string mAddress;
         short mPort;
-
-        char *mInBuffer, *mOutBuffer;
-        unsigned int mInSize, mOutSize;
 
         unsigned int mToSkip;
 
         int mState;
 
-        SDL_Thread *mWorkerThread;
-        SDL_mutex *mMutex;
-
-        typedef std::map<Uint16, MessageHandler*> MessageHandlers;
+        typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
         typedef MessageHandlers::iterator MessageHandlerIterator;
         MessageHandlers mMessageHandlers;
+
+        std::queue<ENetPacket *> mOutgoingPackets;
+        std::queue<ENetPacket *> mIncomingPackets;
 
         bool realConnect();
         void receive();

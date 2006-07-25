@@ -52,15 +52,15 @@ void NPCHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case SMSG_NPC_CHOICE:
-            msg->readInt16();  // length
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readInt32()));
+            msg->readShort();  // length
+            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readLong()));
             npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(true);
             break;
 
         case SMSG_NPC_MESSAGE:
-            msg->readInt16();  // length
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readInt32()));
+            msg->readShort();  // length
+            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readLong()));
             npcTextDialog->addText(msg->readString(msg->getLength() - 8));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);

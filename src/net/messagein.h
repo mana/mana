@@ -1,5 +1,5 @@
 /*
- *  The Mana World
+ *  The Mana World Server
  *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -21,21 +21,16 @@
  *  $Id$
  */
 
-#ifndef _TMW_MESSAGEIN_
-#define _TMW_MESSAGEIN_
+#ifndef _TMWSERV_MESSAGEIN_H_
+#define _TMWSERV_MESSAGEIN_H_
 
 #include <string>
-#include <SDL_types.h>
 
 /**
  * Used for parsing an incoming message.
  */
 class MessageIn
 {
-    friend Sint8& operator<<(Sint8 &lhs, MessageIn &msg);
-    friend Sint16& operator<<(Sint16 &lhs, MessageIn &msg);
-    friend Sint32& operator<<(Sint32 &lhs, MessageIn &msg);
-
     public:
         /**
          * Constructor.
@@ -43,10 +38,22 @@ class MessageIn
         MessageIn(const char *data, unsigned int length);
 
         /**
-         * Returns the message ID.
+         * Destructor.
          */
-        short
-        getId() { return mId; }
+        ~MessageIn();
+
+        short getId() { return mId; } /**< Returns the message ID. */
+
+        char readByte();              /**< Reads a byte. */
+        short readShort();            /**< Reads a short. */
+        long readLong();              /**< Reads a long. */
+
+        /**
+         * Reads a string. If a length is not given (-1), it is assumed
+         * that the length of the string is stored in a short at the
+         * start of the string.
+         */
+        std::string readString(int length = -1);
 
         /**
          * Returns the message length.
@@ -54,44 +61,17 @@ class MessageIn
         unsigned int
         getLength() { return mLength; }
 
-        Sint8 readInt8();               /**< Reads a byte. */
-        Sint16 readInt16();             /**< Reads a short. */
-        Sint32 readInt32();               /**< Reads a long. */
-
-        /**
-         * Reads a special 3 byte block used by eAthena, containing x and y
-         * coordinates and direction.
-         */
-        void
-        readCoordinates(Uint16 &x, Uint16 &y, Uint8 &direction);
-
-        /**
-         * Reads a special 5 byte block used by eAthena, containing a source
-         * and destination coordinate pair.
-         */
-        void
-        readCoordinatePair(Uint16 &srcX, Uint16 &srcY,
-                Uint16 &dstX, Uint16 &dstY);
-
-        /**
-         * Skips a given number of bytes.
-         */
-        void
-        skip(unsigned int length);
-
-        /**
-         * Reads a string. If a length is not given (-1), it is assumed
-         * that the length of the string is stored in a short at the
-         * start of the string.
-         */
-        std::string
-        readString(int length = -1);
-
     private:
         const char* mData;             /**< The message data. */
         unsigned int mLength;          /**< The length of the data. */
-        unsigned int mPos;             /**< The position in the data. */
         short mId;                     /**< The message ID. */
+
+        /**
+         * Actual position in the packet. From 0 to packet->length.
+         * A value bigger than packet->length means EOP was reached when
+         * reading it.
+         */
+        unsigned int mPos;
 };
 
 #endif

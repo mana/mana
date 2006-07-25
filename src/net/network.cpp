@@ -25,82 +25,15 @@
 
 #include "messagehandler.h"
 #include "messagein.h"
+#include "messageout.h"
 
 #include "../log.h"
 
-/** Warning: buffers and other variables are shared,
-    so there can be only one connection active at a time */
-
-short packet_lengths[] = {
-   10,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-// #0x0040
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-    0,  0,  0,  0, 55, 17,  3, 37, 46, -1, 23, -1,  3,108,  3,  2,
-    3, 28, 19, 11,  3, -1,  9,  5, 54, 53, 58, 60, 41,  2,  6,  6,
-// #0x0080
-    7,  3,  2,  2,  2,  5, 16, 12, 10,  7, 29, 23, -1, -1, -1,  0,
-    7, 22, 28,  2,  6, 30, -1, -1,  3, -1, -1,  5,  9, 17, 17,  6,
-   23,  6,  6, -1, -1, -1, -1,  8,  7,  6,  7,  4,  7,  0, -1,  6,
-    8,  8,  3,  3, -1,  6,  6, -1,  7,  6,  2,  5,  6, 44,  5,  3,
-// #0x00C0
-    7,  2,  6,  8,  6,  7, -1, -1, -1, -1,  3,  3,  6,  6,  2, 27,
-    3,  4,  4,  2, -1, -1,  3, -1,  6, 14,  3, -1, 28, 29, -1, -1,
-   30, 30, 26,  2,  6, 26,  3,  3,  8, 19,  5,  2,  3,  2,  2,  2,
-    3,  2,  6,  8, 21,  8,  8,  2,  2, 26,  3, -1,  6, 27, 30, 10,
-// #0x0100
-    2,  6,  6, 30, 79, 31, 10, 10, -1, -1,  4,  6,  6,  2, 11, -1,
-   10, 39,  4, 10, 31, 35, 10, 18,  2, 13, 15, 20, 68,  2,  3, 16,
-    6, 14, -1, -1, 21,  8,  8,  8,  8,  8,  2,  2,  3,  4,  2, -1,
-    6, 86,  6, -1, -1,  7, -1,  6,  3, 16,  4,  4,  4,  6, 24, 26,
-// #0x0140
-   22, 14,  6, 10, 23, 19,  6, 39,  8,  9,  6, 27, -1,  2,  6,  6,
-  110,  6, -1, -1, -1, -1, -1,  6, -1, 54, 66, 54, 90, 42,  6, 42,
-   -1, -1, -1, -1, -1, 30, -1,  3, 14,  3, 30, 10, 43, 14,186,182,
-   14, 30, 10,  3, -1,  6,106, -1,  4,  5,  4, -1,  6,  7, -1, -1,
-// #0x0180
-    6,  3,106, 10, 10, 34,  0,  6,  8,  4,  4,  4, 29, -1, 10,  6,
-   90, 86, 24,  6, 30,102,  9,  4,  8,  4, 14, 10,  4,  6,  2,  6,
-    3,  3, 35,  5, 11, 26, -1,  4,  4,  6, 10, 12,  6, -1,  4,  4,
-   11,  7, -1, 67, 12, 18,114,  6,  3,  6, 26, 26, 26, 26,  2,  3,
-// #0x01C0
-    2, 14, 10, -1, 22, 22,  4,  2, 13, 97,  0,  9,  9, 29,  6, 28,
-    8, 14, 10, 35,  6,  8,  4, 11, 54, 53, 60,  2, -1, 47, 33,  6,
-   30,  8, 34, 14,  2,  6, 26,  2, 28, 81,  6, 10, 26,  2, -1, -1,
-   -1, -1, 20, 10, 32,  9, 34, 14,  2,  6, 48, 56, -1,  4,  5, 10,
-// #0x200
-   26,  0,  0,  0, 18,  0,  0,  0,  0,  0,  0, 19,  0,  0,  0,  0,
-    0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-};
-
-const unsigned int BUFFER_SIZE = 65536;
-
-int networkThread(void *data)
-{
-    Network *network = static_cast<Network*>(data);
-
-    if (!network->realConnect())
-        return -1;
-
-    network->receive();
-
-    return 0;
-}
-
 Network::Network():
-    mSocket(0),
+    mClient(0), mServer(0),
     mAddress(), mPort(0),
-    mInBuffer(new char[BUFFER_SIZE]),
-    mOutBuffer(new char[BUFFER_SIZE]),
-    mInSize(0), mOutSize(0),
-    mToSkip(0),
-    mState(IDLE),
-    mWorkerThread(0)
+    mState(IDLE)
 {
-    mMutex = SDL_CreateMutex();
 }
 
 Network::~Network()
@@ -109,11 +42,6 @@ Network::~Network()
 
     if (mState != IDLE && mState != ERROR)
         disconnect();
-
-    SDL_DestroyMutex(mMutex);
-
-    delete mInBuffer;
-    delete mOutBuffer;
 }
 
 bool Network::connect(const std::string &address, short port)
@@ -136,16 +64,26 @@ bool Network::connect(const std::string &address, short port)
     mAddress = address;
     mPort = port;
 
-    // Reset to sane values
-    mOutSize = 0;
-    mInSize = 0;
-    mToSkip = 0;
-
     mState = CONNECTING;
-    mWorkerThread = SDL_CreateThread(networkThread, this);
-    if (!mWorkerThread)
+
+    mClient = enet_host_create (0, 1, 0, 0);
+
+    if (!mClient)
     {
-        logger->log("Unable to create network worker thread");
+        logger->error("An error occurred while trying to create an ENet client.");
+    }
+
+    ENetAddress enetAddress;
+
+    enet_address_set_host(&enetAddress, address.c_str());
+    enetAddress.port = port;
+
+    // Initiate the connection, allocating channel 0.
+    mServer = enet_host_connect(mClient, &enetAddress, 1);
+
+    if (mServer == 0)
+    {
+        logger->log("Unable to initiate connection to the server.");
         mState = ERROR;
         return false;
     }
@@ -157,16 +95,12 @@ void Network::disconnect()
 {
     mState = IDLE;
 
-    if (mWorkerThread)
+    if (mServer)
     {
-        SDL_WaitThread(mWorkerThread, NULL);
-        mWorkerThread = NULL;
-    }
-
-    if (mSocket)
-    {
-        SDLNet_TCP_Close(mSocket);
-        mSocket = 0;
+        enet_peer_disconnect(mServer, 0);
+        enet_host_flush(mClient);
+        enet_peer_reset(mServer);
+        mServer = 0;
     }
 }
 
@@ -205,220 +139,84 @@ void Network::clearHandlers()
 
 void Network::dispatchMessages()
 {
-    while (messageReady())
+    while (!mIncomingPackets.empty())
     {
-        MessageIn msg = getNextMessage();
+        ENetPacket *packet = mIncomingPackets.front();
+        MessageIn msg((const char *)packet->data, packet->dataLength);
 
         MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+
+        printf("Received packet: %x\n", msg.getId());
 
         if (iter != mMessageHandlers.end())
             iter->second->handleMessage(&msg);
         else
             logger->log("Unhandled packet: %x", msg.getId());
-
-        skip(msg.getLength());
+        mIncomingPackets.pop();
+        // Clean up the packet now that we're done using it.
+        enet_packet_destroy(packet);
     }
 }
 
 void Network::flush()
 {
-    if (!mOutSize || mState != CONNECTED)
-        return;
-
-    int ret;
-
-
-    SDL_mutexP(mMutex);
-    ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
-    if (ret < (int)mOutSize)
+    if (mState == IDLE || mState == NET_ERROR)
     {
-        logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
-        mState = ERROR;
-    }
-    mOutSize = 0;
-    SDL_mutexV(mMutex);
-}
-
-void Network::skip(int len)
-{
-    SDL_mutexP(mMutex);
-    mToSkip += len;
-    if (!mInSize)
-    {
-        SDL_mutexV(mMutex);
         return;
     }
 
-    if (mInSize >= mToSkip)
+    ENetEvent event;
+
+    // Wait up to 10 milliseconds for an event.
+    while (enet_host_service(mClient, &event, 10) > 0)
     {
-        mInSize -= mToSkip;
-        memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
-        mToSkip = 0;
-    }
-    else
-    {
-        mToSkip -= mInSize;
-        mInSize = 0;
-    }
-    SDL_mutexV(mMutex);
-}
-
-bool Network::messageReady()
-{
-    int len = -1;
-
-    SDL_mutexP(mMutex);
-    if (mInSize >= 2)
-    {
-        len = packet_lengths[readWord(0)];
-
-        if (len == -1 && mInSize > 4)
-            len = readWord(2);
-
-    }
-
-    bool ret = (mInSize >= static_cast<unsigned int>(len));
-    SDL_mutexV(mMutex);
-
-    return ret;
-}
-
-MessageIn Network::getNextMessage()
-{
-    while (!messageReady())
-    {
-        if (mState == ERROR)
-            break;
-    }
-
-    SDL_mutexP(mMutex);
-    int msgId = readWord(0);
-    int len = packet_lengths[msgId];
-
-    if (len == -1)
-        len = readWord(2);
-
-#ifdef DEBUG
-    printf("Received packet 0x%x of length %d\n", msgId, length);
-#endif
-
-    MessageIn msg(mInBuffer, len);
-    SDL_mutexV(mMutex);
-
-    return msg;
-}
-
-bool Network::realConnect()
-{
-    IPaddress ipAddress;
-
-    if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
-    {
-        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
-        mState = ERROR;
-        return false;
-    }
-
-    mState = CONNECTING;
-
-    mSocket = SDLNet_TCP_Open(&ipAddress);
-    if (!mSocket)
-    {
-        logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        mState = ERROR;
-        return false;
-    }
-
-    logger->log("Network::Started session with %s:%i",
-                iptostring(ipAddress.host), ipAddress.port);
-
-    mState = CONNECTED;
-
-    return true;
-}
-
-void Network::receive()
-{
-    SDLNet_SocketSet set;
-
-    if (!(set = SDLNet_AllocSocketSet(1)))
-    {
-        logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
-        mState = ERROR;
-        return;
-    }
-
-    if (SDLNet_TCP_AddSocket(set, mSocket) == -1)
-    {
-        logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
-        mState = ERROR;
-    }
-
-    while (mState == CONNECTED)
-    {
-        // TODO Try to get this to block all the time while still being able
-        // to escape the loop
-        int numReady = SDLNet_CheckSockets(set, ((Uint32)500));
-        int ret;
-        switch (numReady)
+        switch (event.type)
         {
-            case -1:
-                logger->log("Error: SDLNet_CheckSockets");
-                // FALLTHROUGH
-            case 0:
+            case ENET_EVENT_TYPE_CONNECT:
+                mState = CONNECTED;
+                // Store any relevant server information here.
+                event.peer->data = 0;
                 break;
 
-            case 1:
-                // Receive data from the socket
-                SDL_mutexP(mMutex);
-                ret = SDLNet_TCP_Recv(mSocket, mInBuffer + mInSize, BUFFER_SIZE - mInSize);
-
-                if (!ret)
-                {
-                    // We got disconnected
-                    mState = IDLE;
-                    logger->log("Disconnected.");
-                }
-                else if (ret < 0)
-                {
-                    logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
-                    mState = ERROR;
-                }
-                else {
-                    mInSize += ret;
-                    if (mToSkip)
-                    {
-                        if (mInSize >= mToSkip)
-                        {
-                            mInSize -= mToSkip;
-                            memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
-                            mToSkip = 0;
-                        }
-                        else
-                        {
-                            mToSkip -= mInSize;
-                            mInSize = 0;
-                        }
-                    }
-                }
-                SDL_mutexV(mMutex);
+            case ENET_EVENT_TYPE_RECEIVE:
+                mIncomingPackets.push(event.packet);
                 break;
-
+            case ENET_EVENT_TYPE_DISCONNECT:
+                mState = IDLE;
+                printf("Disconnected\n");
+                // Reset the server information.
+                event.peer->data = 0;
+                break;
             default:
-                // more than one socket is ready..
-                // this should not happen since we only listen once socket.
-                logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
-                mState = ERROR;
+                logger->log("Unhandled enet event.");
                 break;
         }
     }
 
-    if (SDLNet_TCP_DelSocket(set, mSocket) == -1)
+    // If connected, manage incoming and outcoming packets
+    if (isConnected())
     {
-        logger->log("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
+        while (isConnected() && !mOutgoingPackets.empty())
+        {
+            ENetPacket *packet = mOutgoingPackets.front();
+            enet_peer_send(mServer, 0, packet);
+            mOutgoingPackets.pop();
+        }
+
+        dispatchMessages();
+    }
+}
+
+void Network::send(MessageOut *msg)
+{
+    if (mState == IDLE || mState == NET_ERROR)
+    {
+        return;
     }
 
-    SDLNet_FreeSocketSet(set);
+    ENetPacket *packet = enet_packet_create(msg->getData(),
+            msg->getDataSize() + 1, ENET_PACKET_FLAG_RELIABLE);
+    mOutgoingPackets.push(packet);
 }
 
 char *iptostring(int address)
@@ -432,13 +230,4 @@ char *iptostring(int address)
             (unsigned char)(address >> 24));
 
     return asciiIP;
-}
-
-Uint16 Network::readWord(int pos)
-{
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    return SDL_Swap16((*(Uint16*)(mInBuffer+(pos))));
-#else
-    return (*(Uint16*)(mInBuffer+(pos)));
-#endif
 }

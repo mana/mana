@@ -74,9 +74,9 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
     if (job < 10)
     {
         being = new Player(id, job, mMap);
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x0094);
-        outMsg.writeInt32(id);//readLong(2));
+        MessageOut outMsg;
+        outMsg.writeShort(0x0094);
+        outMsg.writeLong(id);
     }
     else if (job >= 100 & job < 200)
         being = new NPC(id, job, mMap, mNetwork);

@@ -216,11 +216,11 @@ void BuyDialog::action(const std::string& eventId)
     // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (eventId == "buy" && (mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)) {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
-        outMsg.writeInt16(8);
-        outMsg.writeInt16(mAmountItems);
-        outMsg.writeInt16(mShopItems->at(selectedItem).id);
+        MessageOut outMsg;
+        outMsg.writeShort(CMSG_NPC_BUY_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(mAmountItems);
+        outMsg.writeShort(mShopItems->at(selectedItem).id);
 
         // update money !
         mMoney -= mAmountItems * mShopItems->at(selectedItem).price;

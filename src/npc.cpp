@@ -46,28 +46,28 @@ NPC::getType() const
 void
 NPC::talk()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_TALK);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_TALK);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(0);
     current_npc = this;
 }
 
 void
 NPC::nextDialog()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(mId);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeLong(mId);
 }
 
 void
 NPC::dialogChoice(char choice)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(choice);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(choice);
 }
 
 /*
@@ -77,17 +77,17 @@ NPC::dialogChoice(char choice)
 void
 NPC::buy()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(0);
 }
 
 void
 NPC::sell()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(1);
+    MessageOut outMsg;
+    outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(1);
 }

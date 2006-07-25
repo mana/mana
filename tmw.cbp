@@ -23,7 +23,9 @@
 					<Add option="-lwsock32" />
 					<Add option="-lSDL_image.dll" />
 					<Add option="-lSDL_mixer.dll" />
-					<Add option="-lSDL_net.dll" />
+					<Add option="-lenet" />
+					<Add option="-lws2_32" />
+					<Add option="-lwinmm" />
 					<Add option="-lmingw32" />
 					<Add option="-lSDLmain" />
 					<Add option="-lSDL.dll" />
@@ -36,11 +38,6 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add library="mingw32" />
-			<Add library="SDLmain" />
-			<Add library="SDL" />
-		</Linker>
 		<Unit filename="src\animation.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="default" />
