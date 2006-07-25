@@ -1,3 +1,12 @@
+2006-07-26  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/tiles/snowset.png, data/graphics/tiles/snow_x2.png,
+	data/graphics/tiles/snow_x3.png: Moved the lamppost, the rock and the
+	bench to seperate tall tilebitmaps.
+	* data/maps/new_11-1.tmx.gz: Improved the snow village map, main changes
+	are that the player can now walk better behind houses, lampposts, rocks
+	and benches.
+
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp: Fixed updating on Windows.
@@ -15,10 +24,10 @@
 2006-07-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* data/graphics/sprites/npcs.png: Added the organdealer to
-	the NPCs
+	the NPCs.
 	* data/graphics/sprites/player_male_base.png,
 	data/graphics/sprites/player_female_base.png: Fixed some
-	transparency issues
+	transparency issues.
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -119,7 +128,7 @@
 
 2006-07-17 Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* Added shorts to items.png
+	* data/graphics/sprites/items.png: Added shorts' icon to items.png
 
 2006-07-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
