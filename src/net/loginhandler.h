@@ -26,7 +26,10 @@
 
 #include "messagehandler.h"
 
-struct LoginData;
+#include "../lockedarray.h"
+
+class LocalPlayer;
+class LoginData;
 
 class LoginHandler : public MessageHandler
 {
@@ -35,10 +38,13 @@ class LoginHandler : public MessageHandler
 
         void handleMessage(MessageIn *msg);
 
+        void setCharInfo(LockedArray<LocalPlayer*> *charInfo) { mCharInfo = charInfo; };
+
         void setLoginData(LoginData *loginData) { mLoginData = loginData; };
 
     protected:
         LoginData *mLoginData;
+        LockedArray<LocalPlayer*> *mCharInfo;
 };
 
 #endif

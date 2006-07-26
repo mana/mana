@@ -27,12 +27,10 @@
 #include "network.h"
 #include "protocol.h"
 
+#include "../localplayer.h"
 #include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
-#include "../serverinfo.h"
-
-extern SERVER_INFO **server_info;
 
 LoginHandler::LoginHandler()
 {
@@ -56,9 +54,19 @@ void LoginHandler::handleMessage(MessageIn *msg)
                 charNumber = msg->readByte();
                 printf("Account has %i characters:\n", charNumber);
                 for (unsigned int i = 0; i < charNumber; i++) {
-                    printf("%i) %s\n", i, msg->readString().c_str());
+                    // Create a temp empty player to show up in character
+                    // selection dialog
+                    LocalPlayer *temp = new LocalPlayer(0, 0, 0);
+                    temp->setName(msg->readString());
+                    temp->setSex(msg->readByte());
+                    temp->setHairStyle(msg->readByte());
+                    temp->setHairColor(msg->readByte());
+                    temp->mLevel = msg->readByte();
+                    temp->mGp = msg->readShort();
+                    mCharInfo->select(i);
+                    mCharInfo->setEntry(temp);
                 }
-                state = CHAR_SERVER_STATE;
+                state = CHAR_SELECT_STATE;
             }
             // Login failed
             else

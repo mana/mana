@@ -56,7 +56,6 @@
 #endif
 #include "sound.h"
 
-#include "gui/char_server.h"
 #include "gui/char_select.h"
 #include "gui/connection.h"
 #include "gui/gui.h"
@@ -81,15 +80,11 @@
 #include "utils/tostring.h"
 
 // Account infos
-char n_server, n_character;
+char n_character;
 
 std::vector<Spriteset *> hairset;
 Spriteset *playerset[2];
 Graphics *graphics;
-
-// TODO Anyone knows a good location for this? Or a way to make it non-global?
-class SERVER_INFO;
-SERVER_INFO **server_info;
 
 unsigned char state;
 std::string errorMessage;
@@ -429,6 +424,7 @@ void accountLogin(Network *network, LoginData *loginData)
     logger->log("Username is %s", loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
+    loginHandler.setCharInfo(&charInfo);
     loginHandler.setLoginData(loginData);
 
     // Send login infos
@@ -449,24 +445,6 @@ void accountLogin(Network *network, LoginData *loginData)
         config.setValue("username", loginData->username);
     }
     config.setValue("remember", loginData->remember);
-}
-
-void charLogin(Network *network, LoginData *loginData)
-{
-    logger->log("Trying to connect to char server...");
-    network->connect(loginData->hostname, loginData->port);
-    network->registerHandler(&charServerHandler);
-    charServerHandler.setCharInfo(&charInfo);
-    charServerHandler.setLoginData(loginData);
-
-    // Send login infos
-    MessageOut outMsg;
-    outMsg.writeShort(0x0065);
-    outMsg.writeLong(loginData->account_ID);
-    outMsg.writeLong(loginData->session_ID1);
-    outMsg.writeLong(loginData->session_ID2);
-    outMsg.writeShort(0); // unknown
-    outMsg.writeByte(loginData->sex);
 }
 
 void mapLogin(Network *network, LoginData *loginData)
@@ -617,7 +595,6 @@ int main(int argc, char *argv[])
 
                     // Those states don't cause a network disconnect
                 case ACCOUNT_STATE:
-                case CHAR_CONNECT_STATE:
                 case CONNECTING_STATE:
                     break;
 
@@ -647,14 +624,6 @@ int main(int argc, char *argv[])
                 case REGISTER_STATE:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
-                    break;
-
-                case CHAR_SERVER_STATE:
-                    logger->log("State: CHAR_SERVER");
-                    currentDialog = new ServerSelectDialog(&loginData);
-                    if (options.chooseDefault) {
-                        ((ServerSelectDialog*)currentDialog)->action("ok");
-                    }
                     break;
 
                 case CHAR_SELECT_STATE:
@@ -700,11 +669,6 @@ int main(int argc, char *argv[])
                     currentDialog = new ConnectionDialog();
                     break;
 
-                case CHAR_CONNECT_STATE:
-                    printf("Char: %i\n", loginData.sex);
-                    charLogin(network, &loginData);
-                    break;
-
                 case ACCOUNT_STATE:
                     printf("Account: %i\n", loginData.sex);
                     accountLogin(network, &loginData);
@@ -717,7 +681,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    network->disconnect();
     delete network;
     enet_deinitialize();
 

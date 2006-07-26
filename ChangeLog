@@ -1,3 +1,10 @@
+2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/char_server.cpp, src/gui/char_sever.h, src/main.cpp,
+	src/net/loginhandler.cpp, src/net/loginhandler.h, tmw,cbp: Removed char
+	server selection dialog, and added character visualization in character
+	selection dialog.
+	
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp: Fixed updating on Windows.
@@ -8,6 +15,23 @@
 	output.
 	* src/main.cpp: Reorganized initialization somewhat.
 	* src/resources/resourcemanager.cpp: Take into account singular form.
+
+2006-07-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/beingmanager.cpp, src/engine.cpp, src/gui/buy.cpp,
+	src/gui/char_select.cpp,src/gui/chat.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/localplayer.cpp, src/main.cpp,
+	src/net/beinghandler.cpp, src/net/buysellhandler.cpp,
+	src/net/charserverhandler.cpp, src/net/chathandler,
+	src/net/equipmenthandler.cpp, src/net/inventoryhandler.cpp,
+	src/net/itemhandler.cpp, src/net/loginhandler.cpp,
+	src/net/maploginhandler.cpp, src/net/messagein.cpp,
+	src/net/messagein.h, src/net/messageout.cpp, src/net/messageout.h,
+	src/net/network.cpp, src/net/network.h, src/net/npchandler.cpp,
+	src/net/playerhandler.cpp, src/net/protocol.h,
+	src/net/skillhandler.cpp, src/net/tradehandler.cpp, src/npc.cpp,
+	tmw.cbp: Switched client to use enet and modified login sequence to
+	work with the new protocol from tmwserv.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

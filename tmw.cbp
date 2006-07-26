@@ -225,17 +225,7 @@
 			<Option target="default" />
 		</Unit>
 		<Unit filename="src\gui\char_select.h">
-			<Option compilerVar="" />
-			<Option compile="0" />
-			<Option link="0" />
-			<Option target="default" />
-		</Unit>
-		<Unit filename="src\gui\char_server.cpp">
 			<Option compilerVar="CPP" />
-			<Option target="default" />
-		</Unit>
-		<Unit filename="src\gui\char_server.h">
-			<Option compilerVar="" />
 			<Option compile="0" />
 			<Option link="0" />
 			<Option target="default" />
