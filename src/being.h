@@ -290,7 +290,7 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        void setAction(Action action);
+        void setAction(Uint8 action);
 
         /**
          * Sets the current direction.

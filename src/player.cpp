@@ -106,9 +106,14 @@ Player::setHairColor(Uint16 color)
 {
     if (color != mHairColor && mHairStyle > 0)
     {
-        delete mSprites[HAIR_SPRITE];
+        if (mSprites[HAIR_SPRITE])
+        {
+            delete mSprites[HAIR_SPRITE];
+        }
         mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(mHairStyle)+".xml", color - 1);
     }
+    setDirection(mDirection);
+    setAction(mAction);
     Being::setHairColor(color);
 };
 
@@ -117,9 +122,14 @@ Player::setHairStyle(Uint16 style)
 {
     if (style != mHairStyle && mHairColor > 0)
     {
-        delete mSprites[HAIR_SPRITE];
+        if (mSprites[HAIR_SPRITE])
+        {
+            delete mSprites[HAIR_SPRITE];
+        }
         mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(style)+".xml", mHairColor - 1);
     }
+    setDirection(mDirection);
+    setAction(mAction);
     Being::setHairStyle(style);
 };
 
@@ -147,10 +157,11 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
     if (id) {
         char stringId[4];
         sprintf(stringId, "%03i", id);
-        printf("Id: %i %i %s\n", id, slot, stringId);
         mSprites[position] = new AnimatedSprite(
                 "graphics/sprites/item" + toString(stringId) + ".xml", 0);
     }
+    setDirection(mDirection);
+    setAction(mAction);
     Being::setVisibleEquipment(slot, id);
 }
 

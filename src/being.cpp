@@ -164,9 +164,9 @@ Being::setMap(Map *map)
 }
 
 void
-Being::setAction(Action action)
+Being::setAction(Uint8 action)
 {
-    if (action != mAction)
+    //if (action != mAction)
     {
         std::string currentAction = "stand";
         switch (action)

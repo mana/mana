@@ -3,6 +3,8 @@
 	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
 	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with inside
 	of snow village buildings and fixed makefiles.
+	* src/being.cpp, src/being.h, src/player.cpp: Fixed direction and
+	action issues when changing appeareance, frames are still out of sync.
 
 2006-07-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
