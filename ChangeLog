@@ -5,6 +5,9 @@
 	of snow village buildings and fixed makefiles.
 	* src/being.cpp, src/being.h, src/player.cpp: Fixed direction and
 	action issues when changing appeareance, frames are still out of sync.
+	* data/maps/Makefile.am, data/maps/new_14-1.tmx.gz,
+	data/maps/new_9-1.tmx.gz: Added new woodland map by Crush and fixed
+	connection with the old one.
 
 2006-07-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
