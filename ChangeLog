@@ -1,3 +1,9 @@
+2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
+	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with inside
+	of snow village buildings and fixed makefiles.
+
 2006-07-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_4-1.tmx.gz: Fixes to the collision layer.
