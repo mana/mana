@@ -1,3 +1,7 @@
+2006-07-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/main.cpp: Modified client version to be an int.
+
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/char_server.cpp, src/gui/char_sever.h, src/main.cpp,

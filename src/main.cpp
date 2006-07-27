@@ -430,7 +430,7 @@ void accountLogin(Network *network, LoginData *loginData)
     // Send login infos
     MessageOut *msg = new MessageOut();
     msg->writeShort(PAMSG_LOGIN);
-    msg->writeString("0.1.0"); // client version
+    msg->writeLong(0); // client version
     msg->writeString(loginData->username);
     msg->writeString(loginData->password);
     network->send(msg);
