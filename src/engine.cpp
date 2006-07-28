@@ -25,7 +25,6 @@
 
 #include <list>
 
-#include "animation.h"
 #include "being.h"
 #include "beingmanager.h"
 #include "flooritemmanager.h"
@@ -63,8 +62,6 @@ Spriteset *itemset;
 Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
-AnimatedSprite *animatedSprite;
-
 
 Engine::Engine(Network *network):
     mShowDebugPath(false),
@@ -112,8 +109,6 @@ Engine::~Engine()
     weaponset.clear();
 
     delete itemDb;
-
-    delete animatedSprite;
 }
 
 void Engine::changeMap(const std::string &mapPath)

@@ -1,3 +1,7 @@
+2006-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/engine.cpp: Removed an unused var.
+
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
