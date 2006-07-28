@@ -1,5 +1,9 @@
 2006-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/npc.cpp, src/player.cpp, src/animatedsprite.h, src/animation.h,
+	src/being.cpp, src/main.cpp, src/monster.cpp, src/animatedsprite.cpp,
+	src/animation.cpp, src/Makefile.am, src/being.h: Moved AnimatedSprite
+	into its own files, removed useless includes.
 	* src/engine.cpp: Removed an unused var.
 
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>

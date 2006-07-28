@@ -23,8 +23,7 @@
 
 #include "player.h"
 
-#include "animation.h"
-#include "equipment.h"
+#include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
 

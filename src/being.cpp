@@ -22,6 +22,7 @@
  */
 #include "being.h"
 
+#include "animatedsprite.h"
 #include "equipment.h"
 #include "game.h"
 #include "graphics.h"

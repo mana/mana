@@ -43,7 +43,6 @@
 #define NOGDI
 #endif
 
-#include "animation.h"
 #include "configuration.h"
 #include "game.h"
 #include "graphics.h"

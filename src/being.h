@@ -29,13 +29,13 @@
 #include <SDL_types.h>
 #include <vector>
 
-#include "animation.h"
 #include "sprite.h"
 #include "map.h"
 
 #define NR_HAIR_STYLES 7
 #define NR_HAIR_COLORS 10
 
+class AnimatedSprite;
 class Equipment;
 class Item;
 class Map;
