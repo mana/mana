@@ -109,6 +109,7 @@ class AnimatedSprite
         typedef Spritesets::iterator SpritesetIterator;
         Spritesets mSpritesets;
         typedef std::map<std::string, Action*> Actions;
+        typedef Actions::iterator ActionIterator;
         Actions mActions;
         Action *mAction;
         std::string mDirection;

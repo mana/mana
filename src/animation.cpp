@@ -59,25 +59,15 @@ Animation::update(unsigned int time)
 int
 Animation::getCurrentPhase() const
 {
-    if (mAnimationPhases.empty())
-    {
-        return -1;
-    }
-    else
-    {
-        return iCurrentPhase->image;
-    }
+    return mAnimationPhases.empty() ? -1 : iCurrentPhase->image;
 }
 
 void
 Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 {
     //add new phase to animation list
-    AnimationPhase newPhase;
-    newPhase.image = image;
-    newPhase.delay = delay;
-    newPhase.offsetX = offsetX;
-    newPhase.offsetY = offsetY;
+    AnimationPhase newPhase = { image, delay, offsetX, offsetY };
+
     mAnimationPhases.push_back(newPhase);
     //reset animation circle
     iCurrentPhase = mAnimationPhases.begin();
@@ -86,14 +76,15 @@ Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 int
 Animation::getLength()
 {
+    if (mAnimationPhases.empty())
+        return 0;
+
+
     std::list<AnimationPhase>::iterator i;
     int length = 0;
-    if (!mAnimationPhases.empty())
+    for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
     {
-        for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
-        {
-            length += (*i).delay;
-        }
+        length += i->delay;
     }
     return length;
 }
@@ -115,7 +106,6 @@ Action::~Action()
 Animation*
 Action::getAnimation(const std::string& direction) const
 {
-    Animation *animation = NULL;
     Animations::const_iterator i = mAnimations.find(direction);
 
     // When the direction isn't defined, try the default
@@ -124,12 +114,7 @@ Action::getAnimation(const std::string& direction) const
         i = mAnimations.find("default");
     }
 
-    if (i != mAnimations.end())
-    {
-        animation = i->second;
-    }
-
-    return animation;
+    return (i == mAnimations.end()) ? NULL : i->second;
 }
 
 void

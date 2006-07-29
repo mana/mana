@@ -1,5 +1,7 @@
 2006-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/animatedsprite.h, src/animatedsprite.cpp, src/animation.cpp: A
+	bunch of cleanups.
 	* src/animation.h, src/animatedsprite.cpp: Moved included from header
 	to source file.
 
