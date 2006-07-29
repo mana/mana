@@ -30,8 +30,6 @@
 
 #include <libxml/tree.h>
 
-#include "graphics.h"
-
 class Image;
 class Spriteset;
 

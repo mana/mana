@@ -1,3 +1,8 @@
+2006-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animation.h, src/animatedsprite.cpp: Moved included from header
+	to source file.
+
 2006-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/npc.cpp, src/player.cpp, src/animatedsprite.h, src/animation.h,
