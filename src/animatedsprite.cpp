@@ -228,7 +228,7 @@ AnimatedSprite::~AnimatedSprite()
 }
 
 void
-AnimatedSprite::play(const std::string& action)
+AnimatedSprite::play(const std::string& action, int time)
 {
     ActionIterator i = mActions.find(action);
 
@@ -245,18 +245,10 @@ AnimatedSprite::play(const std::string& action)
         mLastTime = 0;
     }
 
-    mSpeed = 1.0f;
-}
-
-void
-AnimatedSprite::play(const std::string& action, int time)
-{
-    play(action);
-
-    if (mAction != NULL)
-    {
-        Animation *animation = mAction->getAnimation(mDirection);
-        int animationLength = animation->getLength();
+    if (!mAction || !time)
+        mSpeed = 1.0f;
+    else {
+        int animationLength = mAction->getAnimation(mDirection)->getLength();
         mSpeed = (float) animationLength / time;
     }
 }

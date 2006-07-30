@@ -51,16 +51,11 @@ class AnimatedSprite
         ~AnimatedSprite();
 
         /**
-         * Sets a new action using the current direction.
+         * Plays an action using the current direction that will have a
+         * duration of the specified time, 0 means default.
          */
         void
-        play(const std::string& action);
-
-        /**
-         * Plays an action in a specified time.
-         */
-        void
-        play(const std::string& action, int time);
+        play(const std::string& action, int time = 0);
 
         /**
          * Inform the animation of the passed time so that it can output the
