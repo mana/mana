@@ -208,6 +208,6 @@ void Sound::close()
     stopMusic();
 
     mInstalled = false;
-    Mix_CloseAudio();
     logger->log("Sound::close() Shutting down sound...");
+    Mix_CloseAudio();
 }

@@ -12,8 +12,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/buysell.h \
 	      gui/chargedialog.cpp \
 	      gui/chargedialog.h \
-	      gui/char_server.cpp \
-	      gui/char_server.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \
@@ -167,6 +165,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/mapreader.h \
 	      resources/music.h \
 	      resources/music.cpp \
+	      resources/openglsdlimageloader.h \
+	      resources/openglsdlimageloader.cpp \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \

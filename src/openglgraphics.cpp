@@ -31,7 +31,9 @@
 #include <OpenGL/OpenGL.h>
 #endif
 
+#include <guichan/exception.hpp>
 #include <guichan/image.hpp>
+#include <guichan/opengl/openglimage.hpp>
 
 #include "log.h"
 
@@ -227,28 +229,24 @@ void OpenGLGraphics::drawImage(const gcn::Image* image,
                                int dstX, int dstY,
                                int width, int height)
 {
-    // The following code finds the real width and height of the texture.
-    // OpenGL only supports texture sizes that are powers of two
-    int realImageWidth = 1;
-    int realImageHeight = 1;
-    while (realImageWidth < image->getWidth())
+    const gcn::OpenGLImage* srcImage =
+        dynamic_cast<const gcn::OpenGLImage*>(image);
+
+    if (srcImage == NULL)
     {
-        realImageWidth *= 2;
-    }
-    while (realImageHeight < image->getHeight())
-    {
-        realImageHeight *= 2;
+        throw GCN_EXCEPTION("Trying to draw an image of unknown format, "
+                            "must be an SDLImage.");
     }
 
     // Find OpenGL texture coordinates
-    float texX1 = srcX / (float)realImageWidth;
-    float texY1 = srcY / (float)realImageHeight;
-    float texX2 = (srcX + width) / (float)realImageWidth;
-    float texY2 = (srcY + height) / (float)realImageHeight;
+    float texX1 = srcX / (float)srcImage->getTextureWidth();
+    float texY1 = srcY / (float)srcImage->getTextureHeight();
+    float texX2 = (srcX + width) / (float)srcImage->getTextureWidth();
+    float texY2 = (srcY + height) / (float)srcImage->getTextureHeight();
 
     // Please dont look too closely at the next line, it is not pretty.
     // It uses the image data as a pointer to a GLuint
-    glBindTexture(GL_TEXTURE_2D, *((GLuint *)(image->_getData())));
+    glBindTexture(GL_TEXTURE_2D, srcImage->getTextureHandle());
 
     drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
 }

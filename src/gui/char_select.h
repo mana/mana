@@ -29,6 +29,8 @@
 #include "../guichanfwd.h"
 #include "../lockedarray.h"
 
+#include <guichan/actionlistener.hpp>
+
 class LocalPlayer;
 class Network;
 class PlayerBox;
@@ -49,7 +51,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
                          LockedArray<LocalPlayer*> *charInfo,
                          unsigned char sex);
 
-        void action(const std::string& eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
         void updatePlayerInfo();
 
@@ -101,7 +103,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         CharCreateDialog(Window *parent, int slot, Network *network,
                          unsigned char sex);
 
-        void action(const std::string& eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
         std::string getName();
 

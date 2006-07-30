@@ -66,7 +66,7 @@ bool Network::connect(const std::string &address, short port)
 
     mState = CONNECTING;
 
-    mClient = enet_host_create (0, 1, 0, 0);
+    mClient = enet_host_create(0, 1, 0, 0);
 
     if (!mClient)
     {
@@ -160,8 +160,10 @@ void Network::dispatchMessages()
 
 void Network::flush()
 {
+    logger->log("Network::flush()");
     if (mState == IDLE || mState == NET_ERROR)
     {
+        logger->log("Idle or error, returning");
         return;
     }
 
@@ -173,19 +175,24 @@ void Network::flush()
         switch (event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
+                logger->log("Connected.");
                 mState = CONNECTED;
                 // Store any relevant server information here.
                 event.peer->data = 0;
                 break;
 
             case ENET_EVENT_TYPE_RECEIVE:
+                logger->log("Incoming data...");
                 mIncomingPackets.push(event.packet);
                 break;
             case ENET_EVENT_TYPE_DISCONNECT:
                 mState = IDLE;
-                printf("Disconnected\n");
+                logger->log("Disconnected.");
                 // Reset the server information.
                 event.peer->data = 0;
+                break;
+            case ENET_EVENT_TYPE_NONE:
+                logger->log("No event during 10 milliseconds.");
                 break;
             default:
                 logger->log("Unhandled enet event.");

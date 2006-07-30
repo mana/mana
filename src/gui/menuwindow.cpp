@@ -39,7 +39,7 @@ namespace {
         /**
          * Called when receiving actions from widget.
          */
-        void action(const std::string& eventId);
+        void action(const std::string &eventId, gcn::Widget *widget);
     } listener;
 }
 
@@ -69,13 +69,13 @@ MenuWindow::MenuWindow():
     setDefaultSize((windowContainer->getWidth() - x - 2), 0, x, (y + h));
 }
 
-void MenuWindow::draw(gcn::Graphics *g)
+void MenuWindow::draw(gcn::Graphics *graphics)
 {
-    Window::drawContent(g);
+    drawChildren(graphics);
 }
 
 
-void MenuWindowListener::action(const std::string& eventId)
+void MenuWindowListener::action(const std::string &eventId, gcn::Widget *widget)
 {
     Window *window = NULL;
     if (eventId == "Status")

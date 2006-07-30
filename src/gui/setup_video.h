@@ -41,7 +41,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void apply();
         void cancel();
 
-        void action(const std::string&);
+        void action(const std::string &eventId, gcn::Widget *widget);
 
         /** Called when key is pressed */
         void keyPress(const gcn::Key& key);

@@ -108,7 +108,7 @@ void Setup_Audio::cancel()
     config.setValue("musicVolume", mMusicVolume);
 }
 
-void Setup_Audio::action(const std::string &event)
+void Setup_Audio::action(const std::string& event, gcn::Widget *widget)
 {
     if (event == "sfx")
     {

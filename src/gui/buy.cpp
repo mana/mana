@@ -148,7 +148,7 @@ void BuyDialog::addItem(short id, int price)
     mItemList->adjustSize();
 }
 
-void BuyDialog::action(const std::string& eventId)
+void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     int selectedItem = mItemList->getSelected();
 

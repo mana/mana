@@ -28,7 +28,7 @@
 #include <guichan/imagefont.hpp>
 
 #ifdef USE_OPENGL
-#include <guichan/opengl/openglimageloader.hpp>
+#include "../resources/openglsdlimageloader.h"
 #endif
 
 #include <guichan/sdl/sdlinput.hpp>
@@ -92,16 +92,14 @@ Gui::Gui(Graphics *graphics):
 {
     // Set graphics
     setGraphics(graphics);
+
+    // Set image loader
 #ifdef USE_OPENGL
     if (config.getValue("opengl", 0)) {
-
-        // Set image loader
-        mHostImageLoader = new SDLImageLoader();
-        mImageLoader = new gcn::OpenGLImageLoader(mHostImageLoader);
+        mImageLoader = new OpenGLSDLImageLoader();
     } else
 #endif
     {
-        // Set image loader
         mImageLoader = new SDLImageLoader();
     }
 

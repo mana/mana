@@ -361,7 +361,7 @@ void StatusWindow::draw(gcn::Graphics *g)
     Window::draw(g);
 }
 
-void StatusWindow::action(const std::string& eventId)
+void StatusWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Stats Part
     if (eventId.length() == 3)

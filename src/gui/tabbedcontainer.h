@@ -43,7 +43,7 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
 
         void logic();
 
-        void action(const std::string &event);
+        void action(const std::string &event, gcn::Widget *widget);
 
         void setOpaque(bool opaque);
 
@@ -53,7 +53,7 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
         Widgets mTabs;      // The actual tabs at the top
         Widgets mContents;  // The contents of the tabs
 
-        Widget *mActiveContent;
+        gcn::Widget *mActiveContent;
 };
 
 #endif

@@ -54,13 +54,13 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     okButton->requestFocus();
 }
 
-void OkDialog::action(const std::string &eventId)
+void OkDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;
     for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
     {
-        (*i)->action(eventId);
+        (*i)->action(eventId, widget);
     }
 
     // Can we receive anything else anyway?

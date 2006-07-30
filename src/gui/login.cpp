@@ -43,7 +43,7 @@ WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 }
 
 void
-WrongDataNoticeListener::action(const std::string &eventId)
+WrongDataNoticeListener::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "ok")
     {
@@ -128,7 +128,7 @@ LoginDialog::~LoginDialog()
 }
 
 void
-LoginDialog::action(const std::string& eventId)
+LoginDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "ok")
     {

@@ -38,7 +38,7 @@ class LoginData;
 class WrongDataNoticeListener : public gcn::ActionListener {
     public:
         void setTarget(gcn::TextField *textField);
-        void action(const std::string &eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
     private:
         gcn::TextField *mTarget;
 };
@@ -65,7 +65,7 @@ class LoginDialog : public Window, public gcn::ActionListener {
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
     private:
         gcn::TextField *mUserField;

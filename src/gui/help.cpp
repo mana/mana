@@ -54,7 +54,7 @@ HelpWindow::HelpWindow():
     setLocationRelativeTo(getParent());
 }
 
-void HelpWindow::action(const std::string& eventId)
+void HelpWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "close")
     {

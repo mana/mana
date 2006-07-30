@@ -24,60 +24,11 @@
 #include "sdlimageloader.h"
 
 #include <string>
-#include <SDL_image.h>
-
-#include <guichan/exception.hpp>
 
 #include "resourcemanager.h"
 
-void SDLImageLoader::prepare(const std::string &filename)
+SDL_Surface* SDLImageLoader::loadSDLSurface(const std::string& filename)
 {
-    if (mCurrentImage)
-    {
-        throw GCN_EXCEPTION("Function called before finalizing or discarding last loaded image.");
-    }
-
     ResourceManager *resman = ResourceManager::getInstance();
-
-    int fileSize;
-    void *buffer = resman->loadFile(filename, fileSize);
-
-    SDL_Surface *tmp = NULL;
-    if (buffer) {
-        SDL_RWops *rw = SDL_RWFromMem(buffer, fileSize);
-        tmp = IMG_Load_RW(rw, 1);
-        ::free(buffer);
-    }
-
-    if (!tmp)
-    {
-        throw GCN_EXCEPTION(std::string("Unable to load image file: ")+filename);
-    }
-
-    Uint32 rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
-
-    mCurrentImage = SDL_CreateRGBSurface(SDL_SWSURFACE, 0, 0, 32,
-            rmask, gmask, bmask, amask);
-
-    if (!mCurrentImage)
-    {
-        throw GCN_EXCEPTION(std::string("Not enough memory to load: ")+filename);
-    }
-
-    SDL_Surface* tmp2 = SDL_ConvertSurface(tmp, mCurrentImage->format, SDL_SWSURFACE);
-    SDL_FreeSurface(tmp);
-    SDL_FreeSurface(mCurrentImage);
-
-    mCurrentImage = tmp2;
+    return resman->loadSDLSurface(filename);
 }

@@ -61,7 +61,7 @@ BuddyWindow::BuddyWindow():
     add(cancel);
 }
 
-void BuddyWindow::action(const std::string& eventId)
+void BuddyWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "Talk") {
         int selected = mListbox->getSelected();

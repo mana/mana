@@ -116,7 +116,7 @@ RegisterDialog::~RegisterDialog()
 }
 
 void
-RegisterDialog::action(const std::string& eventId)
+RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {

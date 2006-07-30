@@ -107,7 +107,7 @@ UpdaterWindow::~UpdaterWindow()
     }
 
     // Remove possibly leftover temporary download
-    remove((mBasePath + "/updates/download.temp").c_str());
+    ::remove((mBasePath + "/updates/download.temp").c_str());
 
     delete[] mCurlError;
 }
@@ -129,7 +129,7 @@ void UpdaterWindow::enable()
     mPlayButton->requestFocus();
 }
 
-void UpdaterWindow::action(const std::string& eventId)
+void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {
@@ -299,7 +299,7 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             // Any existing file with this name is deleted first, otherwise the
             // rename will fail on Windows.
-            remove(newName.c_str());
+            ::remove(newName.c_str());
             rename(outFilename.c_str(), newName.c_str());
         }
     }

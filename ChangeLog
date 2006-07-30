@@ -1,3 +1,36 @@
+2006-07-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp, src/game.cpp, src/main.cpp,
+	src/gui/buddywindow.cpp, src/gui/connection.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/gui/char_server.cpp, src/gui/window.cpp,
+	src/gui/login.cpp, src/gui/skill.h, src/gui/gui.cpp,
+	src/gui/item_amount.h, src/gui/setup_audio.h, src/gui/newskill.cpp,
+	src/gui/register.h, src/gui/setup.cpp, src/gui/npclistdialog.h,
+	src/gui/updatewindow.cpp, src/gui/char_select.cpp, src/gui/login.h,
+	src/gui/item_amount.cpp, src/gui/setup_audio.cpp,
+	src/gui/npc_text.cpp, src/gui/chat.h, src/gui/setup_joystick.h,
+	src/gui/setup_video.cpp, src/gui/ok_dialog.cpp, src/gui/textfield.cpp,
+	src/gui/inventorywindow.h, src/gui/newskill.h, src/gui/box.h,
+	src/gui/ministatus.cpp, src/gui/buy.h, src/gui/setup.h,
+	src/gui/confirm_dialog.cpp, src/gui/debugwindow.cpp, src/gui/vbox.cpp,
+	src/gui/chat.cpp, src/gui/setup_joystick.cpp, src/gui/updatewindow.h,
+	src/gui/char_select.h, src/gui/buysell.h, src/gui/tabbedcontainer.cpp,
+	src/gui/inventorywindow.cpp, src/gui/help.cpp, src/gui/status.h,
+	src/gui/npc_text.h, src/gui/setup_video.h, src/gui/menuwindow.cpp,
+	src/gui/ok_dialog.h, src/gui/buy.cpp, src/gui/buddywindow.h,
+	src/gui/sell.h, src/gui/trade.h, src/gui/char_server.h,
+	src/gui/skill.cpp, src/gui/buysell.cpp, src/gui/confirm_dialog.h,
+	src/gui/debugwindow.h, src/gui/status.cpp, src/gui/register.cpp,
+	src/gui/scrollarea.cpp, src/gui/tabbedcontainer.h,
+	src/gui/npclistdialog.cpp, src/gui/help.h, src/net/tradehandler.cpp,
+	src/net/playerhandler.cpp, src/Makefile.am,
+	src/resources/sdlimageloader.cpp, src/resources/sdlimageloader.h,
+	src/resources/openglsdlimageloader.cpp,
+	src/resources/resourcemanager.cpp,
+	src/resources/openglsdlimageloader.h, src/resources/resourcemanager.h:
+	Updated TMW to be compatible with Guichan 0.5.0 (merged from
+	guichan-0.5.0 branch).
+
 2006-07-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/main.cpp: Modified client version to be an int.

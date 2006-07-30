@@ -258,7 +258,7 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
     mItemDescriptionLabel->adjustSize();
 }
 
-void TradeWindow::action(const std::string &eventId)
+void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     Item *item = inventoryWindow->getItem();
 
