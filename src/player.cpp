@@ -110,7 +110,7 @@ Player::setHairColor(Uint16 color)
         mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(mHairStyle)+".xml", color - 1);
     }
     Being::setHairColor(color);
-};
+}
 
 void
 Player::setHairStyle(Uint16 style)
@@ -121,7 +121,7 @@ Player::setHairStyle(Uint16 style)
         mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(style)+".xml", mHairColor - 1);
     }
     Being::setHairStyle(style);
-};
+}
 
 void
 Player::setVisibleEquipment(Uint8 slot, Uint8 id)

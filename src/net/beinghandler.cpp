@@ -129,12 +129,12 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
-                Uint16 srcX, srcY, dstX, dstY;
+                //Uint16 srcX, srcY, dstX, dstY;
                 //msg->readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->setAction(Being::STAND);
-                dstBeing->mX = srcX;
-                dstBeing->mY = srcY;
-                dstBeing->setDestination(dstX, dstY);
+                //dstBeing->setAction(Being::STAND);
+                //dstBeing->mX = srcX;
+                //dstBeing->mY = srcY;
+                //dstBeing->setDestination(dstX, dstY);
             }
             else
             {
@@ -333,11 +333,11 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
-                Uint16 srcX, srcY, dstX, dstY;
+                //Uint16 srcX, srcY, dstX, dstY;
                 //msg->readCoordinatePair(srcX, srcY, dstX, dstY);
-                dstBeing->mX = srcX;
-                dstBeing->mY = srcY;
-                dstBeing->setDestination(dstX, dstY);
+                //dstBeing->mX = srcX;
+                //dstBeing->mY = srcY;
+                //dstBeing->setDestination(dstX, dstY);
             }
             else
             {

@@ -3,6 +3,10 @@
 	* configure.ac: Moved some basic checks above the checks on the
 	libraries we depend on, in order to get rid of the confusing
 	rpl_realloc error.
+	* src/net/beinghandler.cpp, src/net/maploginhandler.cpp,
+	src/net/protocol.h, src/resources/openglsdlimageloader.cpp,
+	src/player.cpp: Fixed several compiler warnings and a linker error
+	when compiling without OpenGL support.
 
 2006-08-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
