@@ -27,11 +27,11 @@
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
+#include <guichan/sdl/sdlinput.hpp>
+
 #ifdef USE_OPENGL
 #include "../resources/openglsdlimageloader.h"
 #endif
-
-#include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
 #include "popupmenu.h"

@@ -1,3 +1,8 @@
+2006-08-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/gui.cpp, The Mana World.dev, tmw.cbp: Fixed compilation
+	issues in windows.
+
 2006-07-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/network.cpp: Corrected an off by one error in packet size.
