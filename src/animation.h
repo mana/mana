@@ -26,7 +26,6 @@
 
 #include <list>
 #include <map>
-#include <string>
 
 #include <libxml/tree.h>
 
@@ -102,14 +101,14 @@ class Action
         getSpriteset() const { return mSpriteset; }
 
         void
-        setAnimation(const std::string& direction, Animation *animation);
+        setAnimation(int direction, Animation *animation);
 
         Animation*
-        getAnimation(const std::string& direction) const;
+        getAnimation(int direction) const;
 
     protected:
         Spriteset *mSpriteset;
-        typedef std::map<std::string, Animation*> Animations;
+        typedef std::map<int, Animation*> Animations;
         typedef Animations::iterator AnimationIterator;
         Animations mAnimations;
 };

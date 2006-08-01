@@ -169,42 +169,42 @@ Being::setAction(Uint8 action)
 {
     //if (action != mAction)
     {
-        std::string currentAction = "stand";
+        SpriteAction currentAction = ACTION_STAND;
         switch (action)
         {
             case WALK:
-                currentAction = "walk";
+                currentAction = ACTION_WALK;
                 break;
             case SIT:
-                currentAction = "sit";
+                currentAction = ACTION_SIT;
                 break;
             case ATTACK:
                 if (getType() == MONSTER)
                 {
-                    currentAction = "dead";
+                    currentAction = ACTION_DEAD;
                 }else{
                     switch (getWeapon())
                     {
                         case 2:
-                            currentAction = "attack_bow";
+                            currentAction = ACTION_ATTACK_BOW;
                             break;
                         case 1:
-                            currentAction = "attack_stab";
+                            currentAction = ACTION_ATTACK_STAB;
                             break;
                         case 0:
-                            currentAction = "attack";
+                            currentAction = ACTION_ATTACK;
                             break;
                     }
                 };
                 break;
             case MONSTER_ATTACK:
-                currentAction = "attack";
+                currentAction = ACTION_ATTACK;
                 break;
             case DEAD:
-                currentAction = "dead";
+                currentAction = ACTION_DEAD;
                 break;
             default:
-                currentAction = "stand";
+                currentAction = ACTION_STAND;
                 break;
         }
 
@@ -212,9 +212,9 @@ Being::setAction(Uint8 action)
         {
             if (mSprites[i] != NULL)
             {
-                if (currentAction == "attack" ||
-                    currentAction == "attack_stab" ||
-                    currentAction == "attack_bow")
+                if (currentAction == ACTION_ATTACK ||
+                    currentAction == ACTION_ATTACK_STAB ||
+                    currentAction == ACTION_ATTACK_BOW)
                 {
                     mSprites[i]->play(currentAction, mAttackSpeed);
                 }
@@ -232,23 +232,23 @@ void
 Being::setDirection(Uint8 direction)
 {
     mDirection = direction;
-    std::string dir;
+    SpriteDirection dir;
 
     if (direction & UP)
     {
-        dir = "up";
+        dir = DIRECTION_UP;
     }
     else if (direction & RIGHT)
     {
-        dir = "right";
+        dir = DIRECTION_RIGHT;
     }
     else if (direction & DOWN)
     {
-        dir = "down";
+        dir = DIRECTION_DOWN;
     }
     else
     {
-        dir = "left";
+        dir = DIRECTION_LEFT;
     }
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)

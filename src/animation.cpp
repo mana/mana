@@ -104,26 +104,26 @@ Action::~Action()
 }
 
 Animation*
-Action::getAnimation(const std::string& direction) const
+Action::getAnimation(int direction) const
 {
     Animations::const_iterator i = mAnimations.find(direction);
 
     // When the direction isn't defined, try the default
     if (i == mAnimations.end())
     {
-        i = mAnimations.find("default");
+        i = mAnimations.find(0);
     }
 
     return (i == mAnimations.end()) ? NULL : i->second;
 }
 
 void
-Action::setAnimation(const std::string& direction, Animation *animation)
+Action::setAnimation(int direction, Animation *animation)
 {
     // Set first direction as default direction
     if (mAnimations.empty())
     {
-        mAnimations["default"] = animation;
+        mAnimations[0] = animation;
     }
 
     mAnimations[direction] = animation;

@@ -1,3 +1,9 @@
+2006-08-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.h, src/animation.cpp, src/animatedsprite.h, 
+	src/animatedsprite.cpp, src/being.cpp: animations and directions
+	are now passed and stored as enums and no longer as strings.
+
 2006-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/animatedsprite.h, src/animatedsprite.cpp: Unified the play

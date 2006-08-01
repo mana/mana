@@ -34,6 +34,33 @@ class Action;
 class Graphics;
 class Spriteset;
 
+enum SpriteAction
+{
+    ACTION_DEFAULT = 0,
+    ACTION_STAND,
+    ACTION_WALK,
+    ACTION_RUN,
+    ACTION_ATTACK,
+    ACTION_ATTACK_SWING,
+    ACTION_ATTACK_STAB,
+    ACTION_ATTACK_BOW,
+    ACTION_ATTACK_THROW,
+    ACTION_CAST_MAGIC,
+    ACTION_USE_ITEM,
+    ACTION_SIT,
+    ACTION_SLEEP,
+    ACTION_HURT,
+    ACTION_DEAD
+};
+
+enum SpriteDirection
+{
+    DIRECTION_DOWN = 0,
+    DIRECTION_UP,
+    DIRECTION_LEFT,
+    DIRECTION_RIGHT
+};
+
 /**
  * Defines a class to load an animation.
  */
@@ -55,7 +82,7 @@ class AnimatedSprite
          * duration of the specified time, 0 means default.
          */
         void
-        play(const std::string& action, int time = 0);
+        play(SpriteAction action, int time = 0);
 
         /**
          * Inform the animation of the passed time so that it can output the
@@ -86,7 +113,7 @@ class AnimatedSprite
          * Sets the direction.
          */
         void
-        setDirection(const std::string& direction)
+        setDirection(SpriteDirection direction)
         {
             mDirection = direction;
         }
@@ -97,17 +124,17 @@ class AnimatedSprite
          * animations become a copy of those of the action "with".
          */
         void
-        substituteAction(const std::string& complete,
-                         const std::string& with);
+        substituteAction(SpriteAction complete,
+                         SpriteAction with);
 
         typedef std::map<std::string, Spriteset*> Spritesets;
         typedef Spritesets::iterator SpritesetIterator;
         Spritesets mSpritesets;
-        typedef std::map<std::string, Action*> Actions;
+        typedef std::map<SpriteAction, Action*> Actions;
         typedef Actions::iterator ActionIterator;
         Actions mActions;
         Action *mAction;
-        std::string mDirection;
+        SpriteDirection mDirection;
         int mLastTime;
         float mSpeed;
 
@@ -126,6 +153,18 @@ class AnimatedSprite
          */
         static std::string
         getProperty(xmlNodePtr node, const char* name, const std::string& def);
+
+        /**
+         * converts a string into a SpriteAction enum
+         */
+        SpriteAction
+        makeSpriteAction(const std::string& action);
+
+        /**
+         * converts a string into a SpriteDirection enum
+         */
+        SpriteDirection
+        makeSpriteDirection(const std::string& direction);
 };
 
 #endif

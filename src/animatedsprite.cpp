@@ -32,7 +32,7 @@
 
 AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     mAction(NULL),
-    mDirection("down"),
+    mDirection(DIRECTION_DOWN),
     mLastTime(0),
     mSpeed(1.0f)
 {
@@ -107,7 +107,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
             Action *action = new Action();
 
             action->setSpriteset(mSpritesets[imageset]);
-            mActions[name] = action;
+            mActions[makeSpriteAction(name)] = action;
 
             // get animations
             for (xmlNodePtr animationNode = node->xmlChildrenNode;
@@ -153,29 +153,29 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                             }
                         }
                     } // for phaseNode
-                    action->setAnimation(direction, animation);
+                    action->setAnimation(makeSpriteDirection(direction), animation);
                 } // if "<animation>"
             } // for animationNode
         } // if "<imageset>" else if "<action>"
     } // for node
 
     // Complete missing actions
-    substituteAction("walk", "stand");
-    substituteAction("walk", "run");
-    substituteAction("attack", "stand");
-    substituteAction("attack_swing", "attack");
-    substituteAction("attack_stab", "attack_swing");
-    substituteAction("attack_bow", "attack_stab");
-    substituteAction("attack_throw", "attack_swing");
-    substituteAction("cast_magic", "attack_swing");
-    substituteAction("use_item", "cast_magic");
-    substituteAction("sit", "stand");
-    substituteAction("sleeping", "sit");
-    substituteAction("hurt", "stand");
-    substituteAction("dead", "hurt");
+    substituteAction(ACTION_WALK, ACTION_STAND);
+    substituteAction(ACTION_WALK, ACTION_RUN);
+    substituteAction(ACTION_ATTACK, ACTION_STAND);
+    substituteAction(ACTION_ATTACK_SWING, ACTION_ATTACK);
+    substituteAction(ACTION_ATTACK_STAB, ACTION_ATTACK_SWING);
+    substituteAction(ACTION_ATTACK_BOW, ACTION_ATTACK_STAB);
+    substituteAction(ACTION_ATTACK_THROW, ACTION_ATTACK_SWING);
+    substituteAction(ACTION_CAST_MAGIC, ACTION_ATTACK_SWING);
+    substituteAction(ACTION_USE_ITEM, ACTION_CAST_MAGIC);
+    substituteAction(ACTION_SIT, ACTION_STAND);
+    substituteAction(ACTION_SLEEP, ACTION_SIT);
+    substituteAction(ACTION_HURT, ACTION_STAND);
+    substituteAction(ACTION_DEAD, ACTION_HURT);
 
     // Play the stand animation by default
-    play("stand");
+    play(ACTION_STAND);
 
     xmlFreeDoc(doc);
 }
@@ -209,8 +209,8 @@ AnimatedSprite::getProperty(xmlNodePtr node, const char* name,
 }
 
 void
-AnimatedSprite::substituteAction(const std::string& complete,
-                                 const std::string& with)
+AnimatedSprite::substituteAction(SpriteAction complete,
+                                 SpriteAction with)
 {
     if (mActions.find(complete) == mActions.end())
     {
@@ -228,13 +228,13 @@ AnimatedSprite::~AnimatedSprite()
 }
 
 void
-AnimatedSprite::play(const std::string& action, int time)
+AnimatedSprite::play(SpriteAction action, int time)
 {
     ActionIterator i = mActions.find(action);
 
     if (i == mActions.end())
     {
-        logger->log("Warning: no action \"%s\" defined!", action.c_str());
+        logger->log("Warning: no action \"%s\" defined!", action);
         mAction = NULL;
         return;
     }
@@ -297,4 +297,75 @@ int
 AnimatedSprite::getHeight() const
 {
     return mAction ? mAction->getSpriteset()->getHeight() : 0;
+}
+
+SpriteAction
+AnimatedSprite::makeSpriteAction(const std::string& action)
+{
+    if (action == "stand") {
+        return ACTION_STAND;
+    }
+    else if (action == "walk") {
+            return ACTION_WALK;
+    }
+    else if (action == "run") {
+            return ACTION_RUN;
+    }
+    else if (action == "attack") {
+            return ACTION_ATTACK;
+    }
+    else if (action == "attack_swing") {
+            return ACTION_ATTACK_SWING;
+    }
+    else if (action == "attack_stab") {
+            return ACTION_ATTACK_STAB;
+    }
+    else if (action == "attack_bow") {
+            return ACTION_ATTACK_BOW;
+    }
+    else if (action == "attack_throw") {
+            return ACTION_ATTACK_THROW;
+    }
+    else if (action == "cast_magic") {
+            return ACTION_CAST_MAGIC;
+    }
+    else if (action == "use_item") {
+            return ACTION_USE_ITEM;
+    }
+    else if (action == "sit") {
+            return ACTION_SIT;
+    }
+    else if (action == "sleep") {
+            return ACTION_SLEEP;
+    }
+    else if (action == "hurt") {
+            return ACTION_HURT;
+    }
+    else if (action == "dead") {
+            return ACTION_DEAD;
+    }
+    else
+    {
+        return ACTION_DEFAULT;
+    }
+}
+
+
+
+SpriteDirection
+AnimatedSprite::makeSpriteDirection(const std::string& direction)
+{
+    if (direction == "up") {
+            return DIRECTION_UP;
+    }
+    else if (direction == "left") {
+            return DIRECTION_LEFT;
+    }
+    else if (direction == "right") {
+            return DIRECTION_RIGHT;
+    }
+    else
+    {
+        return DIRECTION_DOWN;
+    }
 }
