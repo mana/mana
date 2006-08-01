@@ -1,3 +1,9 @@
+2006-08-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Moved some basic checks above the checks on the
+	libraries we depend on, in order to get rid of the confusing
+	rpl_realloc error.
+
 2006-08-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/gui.cpp, The Mana World.dev, tmw.cbp: Fixed compilation
