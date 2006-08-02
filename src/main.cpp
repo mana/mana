@@ -447,6 +447,25 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
+void accountRegister(Network *network, LoginData *loginData)
+{
+    logger->log("Trying to connect to account server...");
+    logger->log("Username is %s", loginData->username.c_str());
+    network->connect(loginData->hostname, loginData->port);
+    network->registerHandler(&loginHandler);
+    loginHandler.setCharInfo(&charInfo);
+    loginHandler.setLoginData(loginData);
+
+    // Send login infos
+    MessageOut *msg = new MessageOut();
+    msg->writeShort(PAMSG_REGISTER);
+    msg->writeLong(0); // client version
+    msg->writeString(loginData->username);
+    msg->writeString(loginData->password);
+    msg->writeString(loginData->email);
+    network->send(msg);
+}
+
 void mapLogin(Network *network, LoginData *loginData)
 {
     MessageOut outMsg;
@@ -463,7 +482,6 @@ void mapLogin(Network *network, LoginData *loginData)
     outMsg.writeLong(player_node->mCharId);
     outMsg.writeLong(loginData->session_ID1);
     outMsg.writeLong(loginData->session_ID2);
-    outMsg.writeByte(loginData->sex);
 }
 
 /** Main */
@@ -629,8 +647,7 @@ int main(int argc, char *argv[])
 
                 case CHAR_SELECT_STATE:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(network, &charInfo,
-                                                         1 - loginData.sex);
+                    currentDialog = new CharSelectDialog(network, &charInfo);
                     if (options.chooseDefault) {
                         ((CharSelectDialog*)currentDialog)->action("ok",
                                                                    NULL);
@@ -672,8 +689,11 @@ int main(int argc, char *argv[])
                     break;
 
                 case ACCOUNT_STATE:
-                    printf("Account: %i\n", loginData.sex);
                     accountLogin(network, &loginData);
+                    break;
+
+                case REGISTER_ACCOUNT_STATE:
+                    accountRegister(network, &loginData);
                     break;
 
                 default:

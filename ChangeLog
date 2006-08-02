@@ -1,3 +1,11 @@
+2006-08-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/gui/register.cpp,
+	src/gui/register.h, src/logindata.h, src/main.cpp, src/main.h,
+	src/net/charserverhandler.cpp, src/net/loginhandler.cpp,
+	src/net/protocol.h: Ported account registration to tmwserv. There's
+	still a disconnection/reconnection between registration and login.
+
 2006-08-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Moved some basic checks above the checks on the

@@ -159,8 +159,6 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
-    tempPlayer->setSex(1 - mLoginData->sex);
-
     tempPlayer->mCharId = msg->readLong();
     tempPlayer->mTotalWeight = 0;
     tempPlayer->mMaxWeight = 0;

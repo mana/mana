@@ -29,12 +29,12 @@ struct LoginData
     std::string username;
     std::string password;
     std::string hostname;
+    std::string email;
     short port;
 
     int account_ID;
     int session_ID1;
     int session_ID2;
-    char sex;
 
     bool remember;
 };

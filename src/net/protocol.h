@@ -200,6 +200,13 @@ enum {
     LOGIN_SERVER_FULL                   // the server is overloaded
 };
 
+// Account register specific return values
+enum {
+    REGISTER_INVALID_VERSION = 0x40,    // the user is using an incompatible protocol
+    REGISTER_EXISTS_USERNAME,           // there already is an account with this username
+    REGISTER_EXISTS_EMAIL               // there already is an account with this email address
+};
+
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

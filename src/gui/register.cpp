@@ -50,10 +50,12 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *userLabel = new gcn::Label("Name:");
     gcn::Label *passwordLabel = new gcn::Label("Password:");
     gcn::Label *confirmLabel = new gcn::Label("Confirm:");
+    gcn::Label *emailLabel = new gcn::Label("Email:");
     gcn::Label *serverLabel = new gcn::Label("Server:");
     mUserField = new TextField("player");
     mPasswordField = new PasswordField();
     mConfirmField = new PasswordField();
+    mEmailField = new TextField();
     mServerField = new TextField();
     mMaleButton = new RadioButton("Male", "sex", true);
     mFemaleButton = new RadioButton("Female", "sex", false);
@@ -61,7 +63,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mCancelButton = new Button("Cancel", "cancel", this);
 
     int width = 200;
-    int height = 150;
+    int height = 170;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
@@ -72,17 +74,21 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mConfirmField->setPosition(
             65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
     mConfirmField->setWidth(130);
+    mEmailField->setPosition(
+            65, mConfirmField->getY() + mConfirmField->getHeight() + 7);
+    mEmailField->setWidth(130);
     mServerField->setPosition(
-            65, 23 + mConfirmField->getY() + mConfirmField->getHeight() + 7);
+            65, 23 + mEmailField->getY() + mEmailField->getHeight() + 7);
     mServerField->setWidth(130);
 
     userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
+    emailLabel->setPosition(5, mEmailField->getY() + 1);
     serverLabel->setPosition(5, mServerField->getY() + 1);
 
     mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
-            mConfirmField->getY() + mConfirmField->getHeight() + 7);
+            mEmailField->getY() + mEmailField->getHeight() + 7);
     mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
             mFemaleButton->getY());
 
@@ -92,11 +98,13 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
 
     add(userLabel);
     add(passwordLabel);
+    add(emailLabel);
     add(serverLabel);
     add(confirmLabel);
     add(mUserField);
     add(mPasswordField);
     add(mConfirmField);
+    add(mEmailField);
     add(mServerField);
     add(mMaleButton);
     add(mFemaleButton);
@@ -176,6 +184,8 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
             error = 2;
         }
 
+        // TODO: Check if a valid email address was given
+
         if (error > 0)
         {
             if (error == 1)
@@ -202,9 +212,9 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
             mLoginData->port = (short)config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
-            mLoginData->username += mFemaleButton->isMarked() ? "_F" : "_M";
+            mLoginData->email = mEmailField->getText();
 
-            state = ACCOUNT_STATE;
+            state = REGISTER_ACCOUNT_STATE;
         }
     }
 }

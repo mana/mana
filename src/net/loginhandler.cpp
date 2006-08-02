@@ -36,6 +36,7 @@ LoginHandler::LoginHandler()
 {
     static const Uint16 _messages[] = {
         APMSG_LOGIN_RESPONSE,
+        APMSG_REGISTER_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -46,6 +47,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case APMSG_LOGIN_RESPONSE:
+        {
             int errMsg = msg->readByte();
             // Successful login
             if (errMsg == ERRMSG_OK)
@@ -90,6 +92,38 @@ void LoginHandler::handleMessage(MessageIn *msg)
                 }
                 state = ERROR_STATE;
             }
+        }
+            break;
+        case APMSG_REGISTER_RESPONSE:
+        {
+            int errMsg = msg->readByte();
+            // Successful registration
+            if (errMsg == ERRMSG_OK)
+            {
+                state = ACCOUNT_STATE;
+            }
+            // Registration failed
+            else {
+                switch (errMsg) {
+                    case REGISTER_INVALID_VERSION:
+                    errorMessage = "Client has an insufficient version number to login.";
+                        break;
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "Wrong username, password or email address";
+                        break;
+                    case REGISTER_EXISTS_USERNAME:
+                        errorMessage = "Username already exists";
+                        break;
+                    case REGISTER_EXISTS_EMAIL:
+                        errorMessage = "Email address already exists";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = ERROR_STATE;
+            }
+        }
             break;
     }
 }
