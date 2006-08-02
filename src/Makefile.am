@@ -1,3 +1,5 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
@@ -310,9 +312,3 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 INCLUDES =					\
 	$(all_includes)				\
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
-
-# the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
-tmw_TARGET = tmw
