@@ -31,6 +31,7 @@
 
 #include "sprite.h"
 #include "map.h"
+#include "animatedsprite.h"
 
 #define NR_HAIR_STYLES 7
 #define NR_HAIR_COLORS 10
@@ -346,6 +347,12 @@ class Being : public Sprite
          * If walking in direction 'neg' the value is negated.
          */
         int getOffset(char pos, char neg) const;
+
+        /**
+         * Returns the sprite direction of this being.
+         */
+        SpriteDirection
+        getSpriteDirection() const;
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWeapon;                 /**< Weapon picture id */

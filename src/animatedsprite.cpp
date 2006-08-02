@@ -228,6 +228,19 @@ AnimatedSprite::~AnimatedSprite()
 }
 
 void
+AnimatedSprite::reset()
+{
+    // Reset all defined actions (because of aliases, some will be resetted
+    // multiple times)
+    for (ActionIterator i = mActions.begin(); i != mActions.end(); ++i)
+    {
+        //TODO: If resetting everything is really a nice way of fixing the
+        //      synchronization issues, finish implementing this.
+        //i->second->reset();
+    }
+}
+
+void
 AnimatedSprite::play(SpriteAction action, int time)
 {
     ActionIterator i = mActions.find(action);
@@ -306,66 +319,62 @@ AnimatedSprite::makeSpriteAction(const std::string& action)
         return ACTION_STAND;
     }
     else if (action == "walk") {
-            return ACTION_WALK;
+        return ACTION_WALK;
     }
     else if (action == "run") {
-            return ACTION_RUN;
+        return ACTION_RUN;
     }
     else if (action == "attack") {
-            return ACTION_ATTACK;
+        return ACTION_ATTACK;
     }
     else if (action == "attack_swing") {
-            return ACTION_ATTACK_SWING;
+        return ACTION_ATTACK_SWING;
     }
     else if (action == "attack_stab") {
-            return ACTION_ATTACK_STAB;
+        return ACTION_ATTACK_STAB;
     }
     else if (action == "attack_bow") {
-            return ACTION_ATTACK_BOW;
+        return ACTION_ATTACK_BOW;
     }
     else if (action == "attack_throw") {
-            return ACTION_ATTACK_THROW;
+        return ACTION_ATTACK_THROW;
     }
     else if (action == "cast_magic") {
-            return ACTION_CAST_MAGIC;
+        return ACTION_CAST_MAGIC;
     }
     else if (action == "use_item") {
-            return ACTION_USE_ITEM;
+        return ACTION_USE_ITEM;
     }
     else if (action == "sit") {
-            return ACTION_SIT;
+        return ACTION_SIT;
     }
     else if (action == "sleep") {
-            return ACTION_SLEEP;
+        return ACTION_SLEEP;
     }
     else if (action == "hurt") {
-            return ACTION_HURT;
+        return ACTION_HURT;
     }
     else if (action == "dead") {
-            return ACTION_DEAD;
+        return ACTION_DEAD;
     }
-    else
-    {
+    else {
         return ACTION_DEFAULT;
     }
 }
-
-
 
 SpriteDirection
 AnimatedSprite::makeSpriteDirection(const std::string& direction)
 {
     if (direction == "up") {
-            return DIRECTION_UP;
+        return DIRECTION_UP;
     }
     else if (direction == "left") {
-            return DIRECTION_LEFT;
+        return DIRECTION_LEFT;
     }
     else if (direction == "right") {
-            return DIRECTION_RIGHT;
+        return DIRECTION_RIGHT;
     }
-    else
-    {
+    else {
         return DIRECTION_DOWN;
     }
 }

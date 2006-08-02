@@ -112,8 +112,8 @@ Network::~Network()
 
     SDL_DestroyMutex(mMutex);
 
-    delete mInBuffer;
-    delete mOutBuffer;
+    delete[] mInBuffer;
+    delete[] mOutBuffer;
 }
 
 bool Network::connect(const std::string &address, short port)

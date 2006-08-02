@@ -90,11 +90,13 @@ Player::setSex(Uint8 sex)
         delete mSprites[BASE_SPRITE];
         if (sex == 0)
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_male_base.xml", 0);
+            mSprites[BASE_SPRITE] = new AnimatedSprite(
+                    "graphics/sprites/player_male_base.xml", 0);
         }
         else
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_female_base.xml", 0);
+            mSprites[BASE_SPRITE] = new AnimatedSprite(
+                    "graphics/sprites/player_female_base.xml", 0);
         }
     }
     Being::setSex(sex);
@@ -109,10 +111,17 @@ Player::setHairColor(Uint16 color)
         {
             delete mSprites[HAIR_SPRITE];
         }
-        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(mHairStyle)+".xml", color - 1);
+
+        AnimatedSprite *newHairSprite = new AnimatedSprite(
+                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
+                color - 1);
+        newHairSprite->setDirection(getSpriteDirection());
+
+        mSprites[HAIR_SPRITE] = newHairSprite;
+
+        setAction(mAction);
     }
-    setDirection(mDirection);
-    setAction(mAction);
+
     Being::setHairColor(color);
 };
 
@@ -125,10 +134,17 @@ Player::setHairStyle(Uint16 style)
         {
             delete mSprites[HAIR_SPRITE];
         }
-        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(style)+".xml", mHairColor - 1);
+
+        AnimatedSprite *newHairSprite = new AnimatedSprite(
+                "graphics/sprites/hairstyle" + toString(style) + ".xml",
+                mHairColor - 1);
+        newHairSprite->setDirection(getSpriteDirection());
+
+        mSprites[HAIR_SPRITE] = newHairSprite;
+
+        setAction(mAction);
     }
-    setDirection(mDirection);
-    setAction(mAction);
+
     Being::setHairStyle(style);
 };
 
@@ -151,16 +167,21 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
     // id = 0 means unequip
     if (mSprites[position]) {
         delete mSprites[position];
-        mSprites[position] = 0;
+        mSprites[position] = NULL;
     }
     if (id) {
         char stringId[4];
         sprintf(stringId, "%03i", id);
-        mSprites[position] = new AnimatedSprite(
+
+        AnimatedSprite *equipmentSprite = new AnimatedSprite(
                 "graphics/sprites/item" + toString(stringId) + ".xml", 0);
+        equipmentSprite->setDirection(getSpriteDirection());
+
+        mSprites[position] = equipmentSprite;
+
+        setAction(mAction);
     }
-    setDirection(mDirection);
-    setAction(mAction);
+
     Being::setVisibleEquipment(slot, id);
 }
 

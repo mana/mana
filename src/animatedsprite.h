@@ -78,6 +78,13 @@ class AnimatedSprite
         ~AnimatedSprite();
 
         /**
+         * Resets the animated sprite. This is used to synchronize several
+         * animated sprites.
+         */
+        void
+        reset();
+
+        /**
          * Plays an action using the current direction that will have a
          * duration of the specified time, 0 means default.
          */
@@ -118,27 +125,14 @@ class AnimatedSprite
             mDirection = direction;
         }
 
-    protected:
+    private:
         /**
          * When there are no animations defined for the action "complete", its
          * animations become a copy of those of the action "with".
          */
         void
-        substituteAction(SpriteAction complete,
-                         SpriteAction with);
+        substituteAction(SpriteAction complete, SpriteAction with);
 
-        typedef std::map<std::string, Spriteset*> Spritesets;
-        typedef Spritesets::iterator SpritesetIterator;
-        Spritesets mSpritesets;
-        typedef std::map<SpriteAction, Action*> Actions;
-        typedef Actions::iterator ActionIterator;
-        Actions mActions;
-        Action *mAction;
-        SpriteDirection mDirection;
-        int mLastTime;
-        float mSpeed;
-
-    private:
         /**
          * Gets an integer property from an xmlNodePtr.
          *
@@ -146,25 +140,39 @@ class AnimatedSprite
          * TODO: shared in a static utility class.
          */
         static int
-        getProperty(xmlNodePtr node, const char* name, int def);
+        getProperty(xmlNodePtr node, const char *name, int def);
 
         /**
          * Gets a string property from an xmlNodePtr.
          */
         static std::string
-        getProperty(xmlNodePtr node, const char* name, const std::string& def);
+        getProperty(xmlNodePtr node, const char *name, const std::string &def);
 
         /**
-         * converts a string into a SpriteAction enum
+         * Converts a string into a SpriteAction enum.
          */
-        SpriteAction
-        makeSpriteAction(const std::string& action);
+        static SpriteAction
+        makeSpriteAction(const std::string &action);
 
         /**
-         * converts a string into a SpriteDirection enum
+         * Converts a string into a SpriteDirection enum.
          */
-        SpriteDirection
-        makeSpriteDirection(const std::string& direction);
+        static SpriteDirection
+        makeSpriteDirection(const std::string &direction);
+
+
+        typedef std::map<std::string, Spriteset*> Spritesets;
+        typedef Spritesets::iterator SpritesetIterator;
+
+        typedef std::map<SpriteAction, Action*> Actions;
+        typedef Actions::iterator ActionIterator;
+
+        Spritesets mSpritesets;
+        Actions mActions;
+        Action *mAction;
+        SpriteDirection mDirection;
+        int mLastTime;
+        float mSpeed;
 };
 
 #endif

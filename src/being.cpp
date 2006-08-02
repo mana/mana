@@ -167,64 +167,63 @@ Being::setMap(Map *map)
 void
 Being::setAction(Uint8 action)
 {
-    //if (action != mAction)
+    SpriteAction currentAction = ACTION_STAND;
+    switch (action)
     {
-        SpriteAction currentAction = ACTION_STAND;
-        switch (action)
-        {
-            case WALK:
-                currentAction = ACTION_WALK;
-                break;
-            case SIT:
-                currentAction = ACTION_SIT;
-                break;
-            case ATTACK:
-                if (getType() == MONSTER)
-                {
-                    currentAction = ACTION_DEAD;
-                }else{
-                    switch (getWeapon())
-                    {
-                        case 2:
-                            currentAction = ACTION_ATTACK_BOW;
-                            break;
-                        case 1:
-                            currentAction = ACTION_ATTACK_STAB;
-                            break;
-                        case 0:
-                            currentAction = ACTION_ATTACK;
-                            break;
-                    }
-                };
-                break;
-            case MONSTER_ATTACK:
-                currentAction = ACTION_ATTACK;
-                break;
-            case DEAD:
-                currentAction = ACTION_DEAD;
-                break;
-            default:
-                currentAction = ACTION_STAND;
-                break;
-        }
-
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i] != NULL)
+        case WALK:
+            currentAction = ACTION_WALK;
+            break;
+        case SIT:
+            currentAction = ACTION_SIT;
+            break;
+        case ATTACK:
+            if (getType() == MONSTER)
             {
-                if (currentAction == ACTION_ATTACK ||
-                    currentAction == ACTION_ATTACK_STAB ||
-                    currentAction == ACTION_ATTACK_BOW)
+                currentAction = ACTION_DEAD;
+            }
+            else {
+                switch (getWeapon())
                 {
-                    mSprites[i]->play(currentAction, mAttackSpeed);
+                    case 2:
+                        currentAction = ACTION_ATTACK_BOW;
+                        break;
+                    case 1:
+                        currentAction = ACTION_ATTACK_STAB;
+                        break;
+                    case 0:
+                        currentAction = ACTION_ATTACK;
+                        break;
                 }
-                else
-                {
-                    mSprites[i]->play(currentAction);
-                }
+            };
+            break;
+        case MONSTER_ATTACK:
+            currentAction = ACTION_ATTACK;
+            break;
+        case DEAD:
+            currentAction = ACTION_DEAD;
+            break;
+        default:
+            currentAction = ACTION_STAND;
+            break;
+    }
+
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (mSprites[i] != NULL)
+        {
+            if (currentAction == ACTION_ATTACK ||
+                currentAction == ACTION_ATTACK_STAB ||
+                currentAction == ACTION_ATTACK_BOW)
+            {
+                mSprites[i]->play(currentAction, mAttackSpeed);
+            }
+            else
+            {
+                mSprites[i]->play(currentAction);
             }
         }
     }
+
     mAction = action;
 }
 
@@ -232,29 +231,36 @@ void
 Being::setDirection(Uint8 direction)
 {
     mDirection = direction;
-    SpriteDirection dir;
-
-    if (direction & UP)
-    {
-        dir = DIRECTION_UP;
-    }
-    else if (direction & RIGHT)
-    {
-        dir = DIRECTION_RIGHT;
-    }
-    else if (direction & DOWN)
-    {
-        dir = DIRECTION_DOWN;
-    }
-    else
-    {
-        dir = DIRECTION_LEFT;
-    }
+    SpriteDirection dir = getSpriteDirection();
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i] != NULL) mSprites[i]->setDirection(dir);
     }
+}
+
+SpriteDirection
+Being::getSpriteDirection() const
+{
+    SpriteDirection dir;
+
+    if (mDirection & UP)
+    {
+        dir = DIRECTION_UP;
+    }
+    else if (mDirection & RIGHT)
+    {
+        dir = DIRECTION_RIGHT;
+    }
+    else if (mDirection & DOWN)
+    {
+        dir = DIRECTION_DOWN;
+    }
+    else {
+        dir = DIRECTION_LEFT;
+    }
+
+    return dir;
 }
 
 void

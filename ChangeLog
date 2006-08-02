@@ -1,7 +1,19 @@
+2006-08-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player.cpp, src/being.cpp, src/being.h: Removed three
+	setDirection(mDirection) calls by instead specifically setting the
+	current direction on the newly added animated sprite. The same might
+	be done for the action later.
+	* src/animatedsprite.h, src/animatedsprite.cpp: Since this class isn't
+	subclassed and has no virtual functions, make protected members
+	private. Also added a start of a reset function which could be a
+	solution to unsynchronized animated sprites.
+	* src/net/network.cpp: Fixed two delete/delete[] errors.
+
 2006-08-01  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/animation.h, src/animation.cpp, src/animatedsprite.h, 
-	src/animatedsprite.cpp, src/being.cpp: animations and directions
+	* src/animation.h, src/animation.cpp, src/animatedsprite.h,
+	src/animatedsprite.cpp, src/being.cpp: Animations and directions
 	are now passed and stored as enums and no longer as strings.
 
 2006-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
@@ -9,7 +21,7 @@
 	* src/animatedsprite.h, src/animatedsprite.cpp: Unified the play
 	methods.
 
-﻿2006-07-30  Philipp Sehmisch  <tmw@crushnet.org>
+2006-07-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_5-1.tmx.gz: Fixed two minor mapping errors (no new
 	walkmap required).

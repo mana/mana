@@ -55,16 +55,32 @@ class Animation
          */
         Animation();
 
-        void addPhase(int image, unsigned int delay, int offsetX, int offsetY);
+        void
+        addPhase(int image, unsigned int delay, int offsetX, int offsetY);
 
-        void update(unsigned int time);
+        void
+        update(unsigned int time);
 
-        int getCurrentPhase() const;
+        int
+        getCurrentPhase() const;
 
-        int getOffsetX() const { return (*iCurrentPhase).offsetX; };
-        int getOffsetY() const { return (*iCurrentPhase).offsetY; };
+        /**
+         * Returns the x offset of the current frame.
+         */
+        int
+        getOffsetX() const { return (*iCurrentPhase).offsetX; };
 
-        int getLength();
+        /**
+         * Returns the y offset of the current frame.
+         */
+        int
+        getOffsetY() const { return (*iCurrentPhase).offsetY; };
+
+        /**
+         * Returns the length of this animation.
+         */
+        int
+        getLength();
 
     protected:
         std::list<AnimationPhase> mAnimationPhases;
