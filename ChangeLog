@@ -5,6 +5,8 @@
 	src/net/charserverhandler.cpp, src/net/loginhandler.cpp,
 	src/net/protocol.h: Ported account registration to tmwserv. There's
 	still a disconnection/reconnection between registration and login.
+	* src/gui/gui.cpp, src/register.cpp, src/register.h: Removed sex
+	choice.
 
 2006-08-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

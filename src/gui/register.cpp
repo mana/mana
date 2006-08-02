@@ -57,13 +57,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mConfirmField = new PasswordField();
     mEmailField = new TextField();
     mServerField = new TextField();
-    mMaleButton = new RadioButton("Male", "sex", true);
-    mFemaleButton = new RadioButton("Female", "sex", false);
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
     int width = 200;
-    int height = 170;
+    int height = 150;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
@@ -78,7 +76,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
             65, mConfirmField->getY() + mConfirmField->getHeight() + 7);
     mEmailField->setWidth(130);
     mServerField->setPosition(
-            65, 23 + mEmailField->getY() + mEmailField->getHeight() + 7);
+            65, 8 + mEmailField->getY() + mEmailField->getHeight() + 7);
     mServerField->setWidth(130);
 
     userLabel->setPosition(5, mUserField->getY() + 1);
@@ -86,11 +84,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
     emailLabel->setPosition(5, mEmailField->getY() + 1);
     serverLabel->setPosition(5, mServerField->getY() + 1);
-
-    mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
-            mEmailField->getY() + mEmailField->getHeight() + 7);
-    mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
-            mFemaleButton->getY());
 
     mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
     mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
@@ -106,8 +99,6 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     add(mConfirmField);
     add(mEmailField);
     add(mServerField);
-    add(mMaleButton);
-    add(mFemaleButton);
     add(mRegisterButton);
     add(mCancelButton);
 

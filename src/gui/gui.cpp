@@ -27,6 +27,9 @@
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
+
+// Moved up because of nested inclusion of winnt.h which defines DELETE
+// constant as well as guichan does
 #include <guichan/sdl/sdlinput.hpp>
 
 #ifdef USE_OPENGL
