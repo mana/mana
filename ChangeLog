@@ -1,3 +1,9 @@
+2006-08-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* configure.ac, src/Makefile.am: Put object files in subdirectories.
+	Moved compilation flags to configure script. Added library header
+	checks.
+
 2006-08-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h, src/gui/register.cpp,
