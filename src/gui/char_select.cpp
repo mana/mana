@@ -187,6 +187,7 @@ void CharSelectDialog::updatePlayerInfo()
         }
         mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
         mPlayerBox->mHairColor = pi->getHairColor() - 1;
+        mPlayerBox->mSex = pi->getSex();
         mPlayerBox->mShowPlayer = true;
     } else {
         mNameLabel->setCaption("Name");

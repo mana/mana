@@ -1,3 +1,7 @@
+2006-08-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/char_select.cpp: Fixed character gender in selection dialog.
+
 2006-08-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* configure.ac, src/Makefile.am: Put object files in subdirectories.
