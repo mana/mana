@@ -23,13 +23,9 @@
 
 #include "animation.h"
 
-#include <cassert>
+#include <algorithm>
 
-#include "log.h"
-
-#include "resources/image.h"
-#include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
+#include "utils/dtor.h"
 
 Animation::Animation():
     mTime(0)
@@ -41,17 +37,20 @@ void
 Animation::update(unsigned int time)
 {
     mTime += time;
-    if (!mAnimationPhases.empty())
+    if (mAnimationPhases.empty())
+        return;
+
+    unsigned int delay = iCurrentPhase->delay;
+    if (!delay)
+        return;
+
+    while (mTime > delay)
     {
-        unsigned int delay = iCurrentPhase->delay;
-        while (mTime > delay && delay > 0)
+        mTime -= delay;
+        iCurrentPhase++;
+        if (iCurrentPhase == mAnimationPhases.end())
         {
-            mTime -= delay;
-            iCurrentPhase++;
-            if (iCurrentPhase == mAnimationPhases.end())
-            {
-                iCurrentPhase = mAnimationPhases.begin();
-            }
+            iCurrentPhase = mAnimationPhases.begin();
         }
     }
 }
@@ -79,7 +78,6 @@ Animation::getLength()
     if (mAnimationPhases.empty())
         return 0;
 
-
     std::list<AnimationPhase>::iterator i;
     int length = 0;
     for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
@@ -96,10 +94,7 @@ Action::Action():
 
 Action::~Action()
 {
-    for (AnimationIterator i = mAnimations.begin(); i != mAnimations.end(); i++)
-    {
-        delete i->second;
-    }
+    std::for_each(mAnimations.begin(), mAnimations.end(), make_dtor(mAnimations));
     mAnimations.clear();
 }
 

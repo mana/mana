@@ -1,5 +1,6 @@
 2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx
 
+	* src/animation.cpp: Small code cleanups. Removed unused headers.
 	* src/animatedsprite.cpp: Small code cleanup/lower indentation.
 
 2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
