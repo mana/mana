@@ -249,7 +249,7 @@ AnimatedSprite::play(SpriteAction action, int time)
 
     if (i == mActions.end())
     {
-        logger->log("Warning: no action \"%s\" defined!", action);
+        logger->log("Warning: no action \"%u\" defined!", action);
         mAction = NULL;
         return;
     }
