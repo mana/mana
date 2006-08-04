@@ -1,3 +1,8 @@
+2006-08-4  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/tiles/desert_x3.png: Replaced the old cactus with
+	a nice new high-res one.
+
 2006-08-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/player.cpp, src/being.cpp, src/being.h: Removed three
