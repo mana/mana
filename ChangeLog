@@ -1,4 +1,10 @@
-2006-08-4  Frode Lindeijer  <f.lindeijer@gmail.com>
+2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.cpp: Fixed presence of NULL actions. This is
+	doener's version of the fix, because it was more efficient in the more
+	common case.
+
+2006-08-04  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* data/graphics/tiles/desert_x3.png: Replaced the old cactus with
 	a nice new high-res one.

@@ -214,7 +214,10 @@ AnimatedSprite::substituteAction(SpriteAction complete,
 {
     if (mActions.find(complete) == mActions.end())
     {
-        mActions[complete] = mActions[with];
+        ActionIterator i = mActions.find(with);
+        if (i != mActions.end()) {
+            mActions[complete] = i->second;
+        }
     }
 }
 
