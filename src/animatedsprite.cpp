@@ -114,47 +114,46 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                  animationNode != NULL;
                  animationNode = animationNode->next)
             {
-                if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
+                // We're only interested in animations
+                if (!xmlStrEqual(animationNode->name, BAD_CAST "animation"))
+                    continue;
+
+                std::string dir = getProperty(animationNode, "direction", "");
+                Animation *animation = new Animation();
+                action->setAnimation(makeSpriteDirection(dir), animation);
+
+                // Get animation phases
+                for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
+                        phaseNode != NULL;
+                        phaseNode = phaseNode->next)
                 {
-                    std::string direction =
-                        getProperty(animationNode, "direction", "");
+                    int delay = getProperty(phaseNode, "delay", 0);
 
-                    Animation *animation = new Animation();
-
-                    // Get animation phases
-                    for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
-                         phaseNode != NULL;
-                         phaseNode = phaseNode->next)
+                    if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
                     {
-                        int delay = getProperty(phaseNode, "delay", 0);
+                        int index = getProperty(phaseNode, "index", -1);
+                        int offsetX = getProperty(phaseNode, "offsetX", 0);
+                        int offsetY = getProperty(phaseNode, "offsetY", 0);
 
-                        if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
+                        offsetY -= mSpritesets[imageset]->getHeight() - 32;
+                        offsetX -= mSpritesets[imageset]->getWidth() / 2 - 16;
+                        animation->addPhase(index + variant_offset, delay,
+                                offsetX, offsetY);
+                    }
+                    else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
+                    {
+                        int start = getProperty(phaseNode, "start", 0);
+                        int end = getProperty(phaseNode, "end", 0);
+                        int offsetY = -mSpritesets[imageset]->getHeight() + 32;
+                        int offsetX = -mSpritesets[imageset]->getWidth() / 2 + 16;
+                        while (end >= start)
                         {
-                            int index = getProperty(phaseNode, "index", -1);
-                            int offsetX = getProperty(phaseNode, "offsetX", 0);
-                            int offsetY = getProperty(phaseNode, "offsetY", 0);
-
-                            offsetY -= mSpritesets[imageset]->getHeight() - 32;
-                            offsetX -= mSpritesets[imageset]->getWidth() / 2 - 16;
-                            animation->addPhase(index + variant_offset, delay,
-                                                offsetX, offsetY);
+                            animation->addPhase(start + variant_offset,
+                                    delay, offsetX, offsetY);
+                            start++;
                         }
-                        else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
-                        {
-                            int start = getProperty(phaseNode, "start", 0);
-                            int end = getProperty(phaseNode, "end", 0);
-                            int offsetY = -mSpritesets[imageset]->getHeight() + 32;
-                            int offsetX = -mSpritesets[imageset]->getWidth() / 2 + 16;
-                            while (end >= start)
-                            {
-                                animation->addPhase(start + variant_offset,
-                                                    delay, offsetX, offsetY);
-                                start++;
-                            }
-                        }
-                    } // for phaseNode
-                    action->setAnimation(makeSpriteDirection(direction), animation);
-                } // if "<animation>"
+                    }
+                } // for phaseNode
             } // for animationNode
         } // if "<imageset>" else if "<action>"
     } // for node

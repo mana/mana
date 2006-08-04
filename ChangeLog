@@ -1,3 +1,7 @@
+2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx
+
+	* src/animatedsprite.cpp: Small code cleanup/lower indentation.
+
 2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/animatedsprite.cpp: Fixed presence of NULL actions. This is
