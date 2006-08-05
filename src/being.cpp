@@ -22,6 +22,8 @@
  */
 #include "being.h"
 
+#include <algorithm>
+
 #include "animatedsprite.h"
 #include "equipment.h"
 #include "game.h"
@@ -33,6 +35,7 @@
 
 #include "gui/gui.h"
 
+#include "utils/dtor.h"
 #include "utils/tostring.h"
 
 extern Spriteset *emotionset;
@@ -66,14 +69,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
 
 Being::~Being()
 {
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i] != NULL)
-        {
-            delete mSprites[i];
-        }
-    }
-
+    std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
     setMap(NULL);
 }
