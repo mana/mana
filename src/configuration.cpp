@@ -57,18 +57,18 @@ void Configuration::init(const std::string &filename)
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "option"))
-        {
-            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
-            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+        if (!xmlStrEqual(node->name, BAD_CAST "option"))
+            continue;
 
-            if (name && value) {
-                mOptions[(const char*)name] = (const char*)value;
-            }
+        xmlChar *name = xmlGetProp(node, BAD_CAST "name");
+        xmlChar *value = xmlGetProp(node, BAD_CAST "value");
 
-            if (name) xmlFree(name);
-            if (value) xmlFree(value);
+        if (name && value) {
+            mOptions[(const char*)name] = (const char*)value;
         }
+
+        if (name) xmlFree(name);
+        if (value) xmlFree(value);
     }
 
     xmlFreeDoc(doc);
@@ -87,28 +87,28 @@ void Configuration::write()
 
     xmlTextWriterPtr writer = xmlNewTextWriterFilename(mConfigPath.c_str(), 0);
 
-    if (writer)
+    if (!writer)
+        return;
+
+    xmlTextWriterSetIndent(writer, 1);
+    xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
+    xmlTextWriterStartElement(writer, BAD_CAST "configuration");
+
+    for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
     {
-        xmlTextWriterSetIndent(writer, 1);
-        xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
-        xmlTextWriterStartElement(writer, BAD_CAST "configuration");
+        logger->log("Configuration::write(%s, \"%s\")",
+                i->first.c_str(), i->second.c_str());
 
-        for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
-        {
-            logger->log("Configuration::write(%s, \"%s\")",
-                    i->first.c_str(), i->second.c_str());
-
-            xmlTextWriterStartElement(writer, BAD_CAST "option");
-            xmlTextWriterWriteAttribute(writer,
-                    BAD_CAST "name", BAD_CAST i->first.c_str());
-            xmlTextWriterWriteAttribute(writer,
-                    BAD_CAST "value", BAD_CAST i->second.c_str());
-            xmlTextWriterEndElement(writer);
-        }
-
-        xmlTextWriterEndDocument(writer);
-        xmlFreeTextWriter(writer);
+        xmlTextWriterStartElement(writer, BAD_CAST "option");
+        xmlTextWriterWriteAttribute(writer,
+                BAD_CAST "name", BAD_CAST i->first.c_str());
+        xmlTextWriterWriteAttribute(writer,
+                BAD_CAST "value", BAD_CAST i->second.c_str());
+        xmlTextWriterEndElement(writer);
     }
+
+    xmlTextWriterEndDocument(writer);
+    xmlFreeTextWriter(writer);
 }
 
 void Configuration::setValue(const std::string &key, std::string value)

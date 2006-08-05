@@ -28,7 +28,6 @@
 
 #include "resourcemanager.h"
 #include "image.h"
-#include "spriteset.h"
 
 #include "../base64.h"
 #include "../log.h"
@@ -220,34 +219,26 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
 void
 MapReader::readProperties(xmlNodePtr node, Properties* props)
 {
-    node = node->xmlChildrenNode;
+    for (node = node->xmlChildrenNode; node; node = node->next) {
+        if (!xmlStrEqual(node->name, BAD_CAST "property"))
+            continue;
 
-    while (node != NULL)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "property"))
-        {
-            // Example: <property name="name" value="value"/>
+        // Example: <property name="name" value="value"/>
+        xmlChar *name = xmlGetProp(node, BAD_CAST "name");
+        xmlChar *value = xmlGetProp(node, BAD_CAST "value");
 
-            xmlChar *name = xmlGetProp(node, BAD_CAST "name");
-            xmlChar *value = xmlGetProp(node, BAD_CAST "value");
-
-            if (name && value)
-            {
-                props->setProperty((const char*) name, (const char*) value);
-            }
-
-            if (name) xmlFree(name);
-            if (value) xmlFree(value);
+        if (name && value) {
+            props->setProperty((const char*)name, (const char*)value);
         }
 
-        node = node->next;
+        if (name) xmlFree(name);
+        if (value) xmlFree(value);
     }
 }
 
 void
 MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 {
-    node = node->xmlChildrenNode;
     int h = map->getHeight();
     int w = map->getWidth();
     int x = 0;
@@ -255,89 +246,86 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 
     // Load the tile data. Layers are assumed to be map size, with (0,0) as
     // origin.
-    while (node != NULL)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "data"))
+    for (node = node->xmlChildrenNode; node; node = node->next) {
+        if (!xmlStrEqual(node->name, BAD_CAST "data"))
+            continue;
+
+        xmlChar *encoding = xmlGetProp(node, BAD_CAST "encoding");
+        xmlChar *compression = xmlGetProp(node, BAD_CAST "compression");
+
+        if (encoding && xmlStrEqual(encoding, BAD_CAST "base64"))
         {
-            xmlChar *encoding = xmlGetProp(node, BAD_CAST "encoding");
-            xmlChar *compression = xmlGetProp(node, BAD_CAST "compression");
+            xmlFree(encoding);
 
-            if (encoding && xmlStrEqual(encoding, BAD_CAST "base64"))
-            {
-                xmlFree(encoding);
-
-                if (compression) {
-                    logger->log("Warning: no layer compression supported!");
-                    xmlFree(compression);
-                    return;
-                }
-
-                // Read base64 encoded map file
-                xmlNodePtr dataChild = node->xmlChildrenNode;
-                if (!dataChild) continue;
-
-                int len = strlen((const char*)dataChild->content) + 1;
-                unsigned char *charData = new unsigned char[len + 1];
-                const char *charStart = (const char*)dataChild->content;
-                unsigned char *charIndex = charData;
-
-                while (*charStart) {
-                    if (*charStart != ' ' && *charStart != '\t' &&
-                            *charStart != '\n')
-                    {
-                        *charIndex = *charStart;
-                        charIndex++;
-                    }
-                    charStart++;
-                }
-                *charIndex = '\0';
-
-                int binLen;
-                unsigned char *binData =
-                    php_base64_decode(charData, strlen((char*)charData),
-                            &binLen);
-
-                delete[] charData;
-
-                if (binData) {
-                    for (int i = 0; i < binLen - 3; i += 4) {
-                        int gid = binData[i] |
-                            binData[i + 1] << 8 |
-                            binData[i + 2] << 16 |
-                            binData[i + 3] << 24;
-
-                        map->setTileWithGid(x, y, layer, gid);
-
-                        x++;
-                        if (x == w) {x = 0; y++;}
-                    }
-                    free(binData);
-                }
+            if (compression) {
+                logger->log("Warning: no layer compression supported!");
+                xmlFree(compression);
+                return;
             }
-            else {
-                // Read plain XML map file
-                xmlNodePtr n2 = node->xmlChildrenNode;
 
-                while (n2 != NULL)
+            // Read base64 encoded map file
+            xmlNodePtr dataChild = node->xmlChildrenNode;
+            if (!dataChild)
+                continue;
+
+            int len = strlen((const char*)dataChild->content) + 1;
+            unsigned char *charData = new unsigned char[len + 1];
+            const char *charStart = (const char*)dataChild->content;
+            unsigned char *charIndex = charData;
+
+            while (*charStart) {
+                if (*charStart != ' ' && *charStart != '\t' &&
+                        *charStart != '\n')
                 {
-                    if (xmlStrEqual(n2->name, BAD_CAST "tile") && y < h)
-                    {
-                        int gid = getProperty(n2, "gid", -1);
-                        map->setTileWithGid(x, y, layer, gid);
+                    *charIndex = *charStart;
+                    charIndex++;
+                }
+                charStart++;
+            }
+            *charIndex = '\0';
 
-                        x++;
-                        if (x == w) {x = 0; y++;}
-                    }
+            int binLen;
+            unsigned char *binData =
+                php_base64_decode(charData, strlen((char*)charData),
+                        &binLen);
 
-                    n2 = n2->next;
+            delete[] charData;
+
+            if (binData) {
+                for (int i = 0; i < binLen - 3; i += 4) {
+                    int gid = binData[i] |
+                        binData[i + 1] << 8 |
+                        binData[i + 2] << 16 |
+                        binData[i + 3] << 24;
+
+                    map->setTileWithGid(x, y, layer, gid);
+
+                    x++;
+                    if (x == w) {x = 0; y++;}
+                }
+                free(binData);
+            }
+        }
+        else {
+            // Read plain XML map file
+            for (xmlNodePtr n2 = node->xmlChildrenNode; n2; n2 = n2->next) {
+                if (!xmlStrEqual(n2->name, BAD_CAST "tile"))
+                    continue;
+
+                int gid = getProperty(n2, "gid", -1);
+                map->setTileWithGid(x, y, layer, gid);
+
+                x++;
+                if (x == w) {
+                    x = 0; y++;
+                    if (y >= h)
+                        break;
                 }
             }
-
-            // There can be only one data element
-            break;
         }
 
-        node = node->next;
+        // There can be only one data element
+        break;
     }
 }
 
@@ -356,38 +344,33 @@ MapReader::readTileset(xmlNodePtr node,
     int tw = getProperty(node, "tilewidth", map->getTileWidth());
     int th = getProperty(node, "tileheight", map->getTileHeight());
 
-    node = node->xmlChildrenNode;
+    for (node = node->xmlChildrenNode; node; node = node->next) {
+        if (!xmlStrEqual(node->name, BAD_CAST "image"))
+            continue;
 
-    while (node != NULL)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "image"))
+        xmlChar* source = xmlGetProp(node, BAD_CAST "source");
+
+        if (source)
         {
-            xmlChar* source = xmlGetProp(node, BAD_CAST "source");
+            std::string sourceStr = std::string((const char*)source);
+            sourceStr.erase(0, 3);  // Remove "../"
 
-            if (source)
+            ResourceManager *resman = ResourceManager::getInstance();
+            Image* tilebmp = resman->getImage(sourceStr);
+
+            if (tilebmp)
             {
-                std::string sourceStr = std::string((const char*)source);
-                sourceStr.erase(0, 3);  // Remove "../"
-
-                ResourceManager *resman = ResourceManager::getInstance();
-                Image* tilebmp = resman->getImage(sourceStr);
-
-                if (tilebmp)
-                {
-                    Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
-                    tilebmp->decRef();
-                    xmlFree(source);
-                    return set;
-                }
-                else {
-                    logger->log("Warning: Failed to load tileset (%s)", source);
-                }
+                Tileset *set = new Tileset(tilebmp, tw, th, firstGid);
+                tilebmp->decRef();
+                xmlFree(source);
+                return set;
             }
-
-            break;
+            else {
+                logger->log("Warning: Failed to load tileset (%s)", source);
+            }
         }
 
-        node = node->next;
+        break;
     }
 
     return NULL;
@@ -396,13 +379,12 @@ MapReader::readTileset(xmlNodePtr node,
 int
 MapReader::getProperty(xmlNodePtr node, const char* name, int def)
 {
+    int &ret = def;
+
     xmlChar *prop = xmlGetProp(node, BAD_CAST name);
     if (prop) {
-        int val = atoi((char*)prop);
+        ret = atoi((char*)prop);
         xmlFree(prop);
-        return val;
     }
-    else {
-        return def;
-    }
+    return ret;
 }

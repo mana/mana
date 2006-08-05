@@ -107,11 +107,7 @@ Player::setHairColor(Uint16 color)
 {
     if (color != mHairColor && mHairStyle > 0)
     {
-        if (mSprites[HAIR_SPRITE])
-        {
-            delete mSprites[HAIR_SPRITE];
-        }
-
+        delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
                 color - 1);
@@ -130,11 +126,7 @@ Player::setHairStyle(Uint16 style)
 {
     if (style != mHairStyle && mHairColor > 0)
     {
-        if (mSprites[HAIR_SPRITE])
-        {
-            delete mSprites[HAIR_SPRITE];
-        }
-
+        delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(style) + ".xml",
                 mHairColor - 1);
@@ -164,11 +156,11 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
             position = TOPCLOTHES_SPRITE;
             break;
     }
+
+    delete mSprites[position];
+    mSprites[position] = NULL;
+
     // id = 0 means unequip
-    if (mSprites[position]) {
-        delete mSprites[position];
-        mSprites[position] = NULL;
-    }
     if (id) {
         char stringId[4];
         sprintf(stringId, "%03i", id);

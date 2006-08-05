@@ -205,18 +205,18 @@ Being::setAction(Uint8 action)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL)
-        {
-            if (currentAction == ACTION_ATTACK ||
+        if (!mSprites[i])
+            continue;
+
+        if (currentAction == ACTION_ATTACK ||
                 currentAction == ACTION_ATTACK_STAB ||
                 currentAction == ACTION_ATTACK_BOW)
-            {
-                mSprites[i]->play(currentAction, mAttackSpeed);
-            }
-            else
-            {
-                mSprites[i]->play(currentAction);
-            }
+        {
+            mSprites[i]->play(currentAction, mAttackSpeed);
+        }
+        else
+        {
+            mSprites[i]->play(currentAction);
         }
     }
 
@@ -231,7 +231,8 @@ Being::setDirection(Uint8 direction)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL) mSprites[i]->setDirection(dir);
+        if (mSprites[i] != NULL)
+            mSprites[i]->setDirection(dir);
     }
 }
 
@@ -332,10 +333,6 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    //what are these two lines good for? please add a comment.
-    unsigned char dir = 0;
-    while (!(mDirection & (1 << dir))) dir++;
-
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i] != NULL)
@@ -348,14 +345,13 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
 void
 Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    if (!mEmotion)
+        return;
 
-    if (mEmotion)
-    {
-        graphics->drawImage(emotionset->get(mEmotion - 1),
-                px + 3, py - 60);
-    }
+    int px = mPx + offsetX + 3;
+    int py = mPy + offsetY - 60;
+
+    graphics->drawImage(emotionset->get(mEmotion - 1), px, py);
 }
 
 void

@@ -101,11 +101,8 @@ Engine::~Engine()
     emotionset->decRef();
     itemset->decRef();
 
-    std::vector<Spriteset *>::iterator iter;
-    for (iter = weaponset.begin(); iter != weaponset.end(); ++iter)
-    {
-        (*iter)->decRef();
-    }
+    std::for_each(weaponset.begin(), weaponset.end(),
+            std::mem_fun(&Spriteset::decRef));
     weaponset.clear();
 
     delete itemDb;
@@ -214,12 +211,12 @@ void Engine::draw(Graphics *graphics)
                 player_node->mX, player_node->mY,
                 mouseTileX, mouseTileY);
 
+        graphics->setColor(gcn::Color(255, 0, 0));
         for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
         {
             int squareX = i->x * 32 - map_x + 12;
             int squareY = i->y * 32 - map_y + 12;
 
-            graphics->setColor(gcn::Color(255, 0, 0));
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
             graphics->drawText(
                     toString(mCurrentMap->getMetaTile(i->x, i->y)->Gcost),

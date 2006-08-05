@@ -1,5 +1,9 @@
 2006-08-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/configuration.cpp, src/game.cpp, src/engine.cpp, src/player.cpp,
+	src/being.cpp, src/resources/mapreader.cpp,
+	src/resources/itemmanager.cpp: Some cleanups, mostly lowering
+	indentation.
 	* src/being.cpp: Small code cleanup.
 
 2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
