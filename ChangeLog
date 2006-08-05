@@ -1,4 +1,8 @@
-2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx
+2006-08-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/being.cpp: Small code cleanup.
+
+2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/animatedsprite.cpp: Fix enum being treated as string.
 	* src/animation.cpp: Small code cleanups. Removed unused headers.
