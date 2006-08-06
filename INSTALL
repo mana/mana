@@ -20,7 +20,7 @@ and some libraries. The required libraries are:
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
 * SDL_image         http://www.libsdl.org/projects/SDL_image/
 * SDL_net           http://www.libsdl.org/projects/SDL_net/
-* Guichan 0.4.0     http://guichan.sourceforge.net/
+* Guichan 0.5.0     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/
 * physfs 1.0.x      http://icculus.org/physfs/
 * zlib 1.2.x        http://www.gzip.org/zlib/
