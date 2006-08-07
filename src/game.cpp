@@ -167,8 +167,7 @@ int get_elapsed_time(int start_time)
 void createGuiWindows(Network *network)
 {
     // Create dialogs
-    chatWindow = new ChatWindow(
-    config.getValue("homeDir", "") + std::string("/chatlog.txt"), network);
+    chatWindow = new ChatWindow(network);
     menuWindow = new MenuWindow();
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow();

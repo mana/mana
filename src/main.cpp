@@ -210,15 +210,6 @@ void init_engine()
     SDL_WM_SetCaption("The Mana World", NULL);
     SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
 
-    int width, height, bpp;
-    bool fullscreen, hwaccel;
-
-    width = (int)config.getValue("screenwidth", 800);
-    height = (int)config.getValue("screenheight", 600);
-    bpp = 0;
-    fullscreen = ((int)config.getValue("screen", 0) == 1);
-    hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
-
 #ifdef USE_OPENGL
     bool useOpenGL = (config.getValue("opengl", 0) == 1);
 
@@ -226,16 +217,17 @@ void init_engine()
     Image::setLoadAsOpenGL(useOpenGL);
 
     // Create the graphics context
-    if (useOpenGL) {
-        graphics = new OpenGLGraphics();
-    } else {
-        graphics = new Graphics();
-    }
+    graphics = useOpenGL ? new OpenGLGraphics() : new Graphics();
 #else
     // Create the graphics context
     graphics = new Graphics();
 #endif
 
+    int width = (int)config.getValue("screenwidth", 800);
+    int height = (int)config.getValue("screenheight", 600);
+    int bpp = 0;
+    bool fullscreen = ((int)config.getValue("screen", 0) == 1);
+    bool hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
@@ -293,11 +285,8 @@ void exit_engine()
     delete gui;
     delete graphics;
 
-    std::vector<Spriteset *>::iterator iter;
-    for (iter = hairset.begin(); iter != hairset.end(); ++iter)
-    {
-        (*iter)->decRef();
-    }
+    std::for_each(hairset.begin(), hairset.end(),
+            std::mem_fun(&Spriteset::decRef));
     hairset.clear();
 
     playerset[0]->decRef();
