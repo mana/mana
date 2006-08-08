@@ -1,3 +1,12 @@
+﻿2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/graphics/images/minimap_new_9-1.png,
+	data/graphics/images/minimap_new_14-1.png,
+	data/graphics/images/minimap_new_15-1.png,
+	data/graphics/images/minimap_new_16-1.png:
+	added minimaps for woodland maps.
+
 2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_14-1.tmx.gz,
