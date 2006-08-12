@@ -1,4 +1,9 @@
-﻿2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+2006-08-12  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz:
+	fixed some inaccessible areas.	
+
+2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
 	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
 	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
 	data/graphics/images/minimap_new_9-1.png,
