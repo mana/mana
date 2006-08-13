@@ -26,6 +26,7 @@
 #include <cassert>
 #include <sstream>
 #include <physfs.h>
+#include <SDL_image.h>
 
 #include "image.h"
 #include "music.h"
@@ -296,4 +297,20 @@ ResourceManager::loadTextFile(const std::string &fileName)
 
     free(fileContents);
     return lines;
+}
+
+SDL_Surface*
+ResourceManager::loadSDLSurface(const std::string& filename)
+{
+    int fileSize;
+    void *buffer = loadFile(filename, fileSize);
+    SDL_Surface *tmp = NULL;
+
+    if (buffer) {
+        SDL_RWops *rw = SDL_RWFromMem(buffer, fileSize);
+        tmp = IMG_Load_RW(rw, 1);
+        ::free(buffer);
+    }
+
+    return tmp;
 }

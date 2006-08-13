@@ -139,7 +139,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Performs action.
          */
-        void action(const std::string &actionId);
+        void action(const std::string& actionId, gcn::Widget* widget);
 
         /**
          * Request focus for typing chat message.

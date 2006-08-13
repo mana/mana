@@ -64,13 +64,13 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     yesButton->requestFocus();
 }
 
-void ConfirmDialog::action(const std::string &eventId)
+void ConfirmDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;
     for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
     {
-        (*i)->action(eventId);
+        (*i)->action(eventId, widget);
     }
 
     // Can we receive anything else anyway?

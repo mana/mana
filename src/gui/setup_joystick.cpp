@@ -44,7 +44,7 @@ Setup_Joystick::Setup_Joystick():
     add(mCalibrateButton);
 }
 
-void Setup_Joystick::action(const std::string &event)
+void Setup_Joystick::action(const std::string &event, gcn::Widget *widget)
 {
     if (!joystick) {
         return;

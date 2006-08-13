@@ -49,7 +49,7 @@ class NpcTextDialog : public Window, public gcn::ActionListener
          * Called when receiving actions from the widgets.
          */
         void
-        action(const std::string &eventId);
+        action(const std::string& eventId, gcn::Widget* widget);
 
         /**
          * Sets the text shows in the dialog.

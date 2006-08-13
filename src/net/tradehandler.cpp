@@ -41,7 +41,7 @@ std::string tradePartnerName;
 namespace {
     struct RequestTradeListener : public gcn::ActionListener
     {
-        void action(const std::string& eventId)
+        void action(const std::string& eventId, gcn::Widget* widget)
         {
             player_node->tradeReply(eventId == "yes");
         };

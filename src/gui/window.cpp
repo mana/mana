@@ -105,7 +105,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     // Add chrome
     mChrome = new GCContainer();
     mChrome->setOpaque(false);
-    setContent(mChrome);
+    gcn::Window::add(mChrome);
 
     // Add this window to the window container
     windowContainer->add(this);
@@ -180,7 +180,7 @@ void Window::draw(gcn::Graphics* graphics)
         graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
 
-    drawContent(graphics);
+    drawChildren(graphics);
 }
 
 void Window::setContentWidth(int width)
@@ -267,7 +267,7 @@ void Window::mousePress(int x, int y, int button)
     // border, and is a candidate for a resize.
     if (isResizable() && button == 1 &&
         getGripDimension().isPointInRect(x, y) &&
-        !getContentDimension().isPointInRect(x, y) &&
+        !getChildrenArea().isPointInRect(x, y) &&
         hasMouse() &&
         !(mMouseDrag && y > (int)getPadding()))
     {
@@ -374,11 +374,8 @@ void Window::mouseMotion(int x, int y)
 
         // Set the new window and content dimensions
         setDimension(newDim);
-
-        if (mContent != NULL && mMouseResize)
-        {
-            mContent->setDimension(getContentDimension());
-        }
+        const gcn::Rectangle area = getChildrenArea();
+        mChrome->setSize(area.width, area.height);
     }
 }
 
@@ -406,18 +403,16 @@ Window::loadWindowState()
 {
     const std::string &name = mWindowName;
 
-    setPosition((int)config.getValue(name + "WinX", getX()),
-                (int)config.getValue(name + "WinY", getY()));
+    setPosition((int) config.getValue(name + "WinX", getX()),
+                (int) config.getValue(name + "WinY", getY()));
 
     if (mResizable)
     {
-        setWidth((int)config.getValue(name + "WinWidth", getWidth()));
-        setHeight((int)config.getValue(name + "WinHeight", getHeight()));
+        setSize((int) config.getValue(name + "WinWidth", getWidth()),
+                (int) config.getValue(name + "WinHeight", getHeight()));
 
-        if (mContent != NULL)
-        {
-            mContent->setDimension(getContentDimension());
-        }
+        const gcn::Rectangle area = getChildrenArea();
+        mChrome->setSize(area.width, area.height);
     }
 }
 
@@ -437,9 +432,4 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setContentSize(mDefaultWidth, mDefaultHeight);
-
-    if (mContent != NULL)
-    {
-        mContent->setDimension(getContentDimension());
-    }
 }

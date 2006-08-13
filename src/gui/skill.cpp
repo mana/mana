@@ -103,7 +103,7 @@ SkillDialog::~SkillDialog()
     cleanList();
 }
 
-void SkillDialog::action(const std::string& eventId)
+void SkillDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "inc")
     {

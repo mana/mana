@@ -85,7 +85,7 @@ Setup::~Setup()
     for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
 }
 
-void Setup::action(const std::string &event)
+void Setup::action(const std::string& event, gcn::Widget* widget)
 {
     if (event == "Apply")
     {

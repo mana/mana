@@ -237,7 +237,7 @@ void Setup_Video::cancel()
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
 
-void Setup_Video::action(const std::string &event)
+void Setup_Video::action(const std::string &event, gcn::Widget *widget)
 {
     if (event == "guialpha")
     {

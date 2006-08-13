@@ -56,7 +56,7 @@ class ServerSelectDialog : public Window, public gcn::ActionListener {
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
     private:
         LoginData *mLoginData;

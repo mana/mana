@@ -25,17 +25,21 @@
 
 void VBox::draw(gcn::Graphics *graphics)
 {
-    int widgetCount = mWidgets.size();
-    int childWidth = getWidth();
-    if (widgetCount == 0)
-	return;
-    int childHeight = getHeight() / widgetCount;
+    if (mWidgets.size() == 0)
+    {
+        return;
+    }
 
+    int childWidth = getWidth();
+    int childHeight = getHeight() / mWidgets.size();
     int i = 0;
-    for (WidgetIterator w = mWidgets.begin(); w != mWidgets.end(); w++) {
-	(*w)->setPosition(0, childHeight * i - padding);
+
+    for (WidgetIterator w = mWidgets.begin(); w != mWidgets.end(); w++)
+    {
+        (*w)->setPosition(0, childHeight * i - padding);
         (*w)->setSize(childWidth, childHeight);
         i++;
     }
+
     gcn::Container::draw(graphics);
 }

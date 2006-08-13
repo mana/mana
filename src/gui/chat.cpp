@@ -77,18 +77,17 @@ ChatWindow::ChatWindow(Network *network):
 void
 ChatWindow::logic()
 {
-    mChatInput->setPosition(
-            mChatInput->getBorderSize(),
-            getContent()->getHeight() - mChatInput->getHeight() -
-                mChatInput->getBorderSize());
-    mChatInput->setWidth(
-            getContent()->getWidth() - 2 * mChatInput->getBorderSize());
+    // todo: only do this when the size changes (updateWidgets?)
 
-    mScrollArea->setWidth(
-            getContent()->getWidth() - 2 * mScrollArea->getBorderSize());
-    mScrollArea->setHeight(
-            getContent()->getHeight() - 2 * mScrollArea->getBorderSize() -
-                mChatInput->getHeight() - 5);
+    const gcn::Rectangle area = getChildrenArea();
+
+    mChatInput->setPosition(mChatInput->getBorderSize(),
+                            area.height - mChatInput->getHeight() -
+                                mChatInput->getBorderSize());
+    mChatInput->setWidth(area.width - 2 * mChatInput->getBorderSize());
+    mScrollArea->setWidth(area.width - 2 * mScrollArea->getBorderSize());
+    mScrollArea->setHeight(area.height - 2 * mScrollArea->getBorderSize() -
+            mChatInput->getHeight() - 5);
     mScrollArea->logic();
 }
 
@@ -181,7 +180,7 @@ ChatWindow::chatLog(CHATSKILL act)
 }
 
 void
-ChatWindow::action(const std::string& eventId)
+ChatWindow::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "chatinput")
     {
@@ -238,7 +237,7 @@ ChatWindow::requestChatFocus()
 bool
 ChatWindow::isFocused()
 {
-    return mChatInput->hasFocus();
+    return mChatInput->isFocused();
 }
 
 void

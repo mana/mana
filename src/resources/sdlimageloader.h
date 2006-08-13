@@ -30,8 +30,8 @@
 
 class SDLImageLoader : public gcn::SDLImageLoader
 {
-    public:
-        void prepare(const std::string &filename);
+    protected:
+        SDL_Surface* loadSDLSurface(const std::string& filename);
 };
 
 #endif

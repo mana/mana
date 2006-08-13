@@ -91,7 +91,7 @@ NpcListDialog::reset()
 }
 
 void
-NpcListDialog::action(const std::string& eventId)
+NpcListDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     int choice = 0;
 

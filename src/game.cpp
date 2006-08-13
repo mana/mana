@@ -122,7 +122,7 @@ const int MAX_TIME = 10000;
  */
 namespace {
     struct ExitListener : public gcn::ActionListener {
-        void action(const std::string &eventId) {
+        void action(const std::string& eventId, gcn::Widget* widget) {
             if (eventId == "yes") {
                 done = true;
             }
@@ -451,7 +451,7 @@ void Game::handleInput()
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible())
                     {
-                        setupWindow->action("cancel");
+                        setupWindow->action("cancel", NULL);
                     }
                     // Else, open the chat edit box
                     else

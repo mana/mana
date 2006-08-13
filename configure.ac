@@ -9,6 +9,20 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_HEADER_TIME
+AC_C_VOLATILE
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_VPRINTF
+AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
+
 # Checks for libraries
 AC_CHECK_LIB([pthread], [pthread_create], ,
 AC_MSG_ERROR([ *** Unable to find pthread library ]))
@@ -56,20 +70,6 @@ AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h str
 # Check for guichan headers
 AC_CHECK_HEADERS([guichan.hpp], ,
 AC_MSG_ERROR([*** Library found but cannot find headers (guichan.sf.net) *** ]))
-
-# Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
-AC_C_CONST
-AC_HEADER_TIME
-AC_C_VOLATILE
-
-# Checks for library functions.
-AC_FUNC_ERROR_AT_LINE
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
-AC_FUNC_SELECT_ARGTYPES
-AC_FUNC_VPRINTF
-AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
 
 AM_INIT_AUTOMAKE
 

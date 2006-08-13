@@ -31,27 +31,30 @@
 
 class Box : public gcn::Container
 {
+    public:
+        /**
+         * Returns padding.
+         */
+        unsigned int getPadding();
+
+        /**
+         * Sets padding between widgets.
+         */
+        void setPadding(unsigned int);
+
     protected:
         Box();
         virtual ~Box();
 
-        /*
-         * Spacing between client widgets
+        /**
+         * Spacing between client widgets.
          */
         unsigned int padding;
 
         virtual void draw(gcn::Graphics *) = 0;
 
-    public:
-        /*
-         * Returns padding
-         */
-        unsigned int getPadding();
-
-        /*
-         * Sets padding between widgets
-         */
-        void setPadding(unsigned int);
+        typedef std::list<gcn::Widget*> Widgets;
+        typedef Widgets::iterator WidgetIterator;
 };
 
 #endif

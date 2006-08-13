@@ -95,7 +95,7 @@ void InventoryWindow::logic()
     mWeightLabel->adjustSize();
 }
 
-void InventoryWindow::action(const std::string &eventId)
+void InventoryWindow::action(const std::string& eventId, gcn::Widget* widget)
 {
     Item *item = mItems->getItem();
 
@@ -168,8 +168,9 @@ void InventoryWindow::mouseMotion(int mx, int my)
 
 void InventoryWindow::updateWidgets()
 {
-    int width = getContent()->getWidth();
-    int height = getContent()->getHeight();
+    gcn::Rectangle area = getChildrenArea();
+    int width = area.width;
+    int height = area.height;
     int columns = width / 24;
 
     if (columns < 1)

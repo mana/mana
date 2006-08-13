@@ -48,7 +48,7 @@ class CharDeleteConfirm : public ConfirmDialog
 {
     public:
         CharDeleteConfirm(CharSelectDialog *master);
-        void action(const std::string &eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
     private:
         CharSelectDialog *master;
 };
@@ -60,13 +60,13 @@ CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
 {
 }
 
-void CharDeleteConfirm::action(const std::string &eventId)
+void CharDeleteConfirm::action(const std::string& eventId, gcn::Widget* widget)
 {
     //ConfirmDialog::action(eventId);
     if (eventId == "yes") {
         master->attemptCharDelete();
     }
-    ConfirmDialog::action(eventId);
+    ConfirmDialog::action(eventId, widget);
 }
 
 CharSelectDialog::CharSelectDialog(Network *network,
@@ -126,7 +126,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     updatePlayerInfo();
 }
 
-void CharSelectDialog::action(const std::string& eventId)
+void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "ok" && n_character > 0)
     {
@@ -284,7 +284,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     setLocationRelativeTo(getParent());
 }
 
-void CharCreateDialog::action(const std::string& eventId)
+void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "create") {
         if (getName().length() >= 4) {

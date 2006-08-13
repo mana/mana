@@ -102,7 +102,7 @@ Logger *logger;               /**< Log object */
 namespace {
     struct ErrorListener : public gcn::ActionListener
     {
-        void action(const std::string& eventId) { state = LOGIN_STATE; }
+        void action(const std::string& eventId, gcn::Widget* widget) { state = LOGIN_STATE; }
     } errorListener;
 }
 
@@ -604,7 +604,8 @@ int main(int argc, char *argv[])
 
             oldstate = state;
 
-            if (currentDialog && state != ACCOUNT_STATE && state != CHAR_CONNECT_STATE) {
+            if (currentDialog && state != ACCOUNT_STATE &&
+                    state != CHAR_CONNECT_STATE) {
                 delete currentDialog;
                 currentDialog = NULL;
             }
@@ -628,7 +629,8 @@ int main(int argc, char *argv[])
                     logger->log("State: CHAR_SERVER");
                     currentDialog = new ServerSelectDialog(&loginData);
                     if (options.chooseDefault) {
-                        ((ServerSelectDialog*)currentDialog)->action("ok");
+                        ((ServerSelectDialog*)currentDialog)->action("ok",
+                                                                     NULL);
                     }
                     break;
 
@@ -637,7 +639,8 @@ int main(int argc, char *argv[])
                     currentDialog = new CharSelectDialog(network, &charInfo,
                                                          1 - loginData.sex);
                     if (options.chooseDefault) {
-                        ((CharSelectDialog*)currentDialog)->action("ok");
+                        ((CharSelectDialog*)currentDialog)->action("ok",
+                                                                   NULL);
                     }
                     break;
 

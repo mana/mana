@@ -96,5 +96,5 @@ void MiniStatusWindow::update()
 void MiniStatusWindow::draw(gcn::Graphics *graphics)
 {
     update();
-    Window::drawContent(graphics);
+    drawChildren(graphics);
 }

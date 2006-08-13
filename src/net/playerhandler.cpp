@@ -46,7 +46,7 @@ OkDialog *deathNotice = NULL;
 namespace {
     struct WeightListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId) { weightNotice = NULL; }
+        void action(const std::string& eventId, gcn::Widget* widget) { weightNotice = NULL; }
     } weightListener;
 }
 
@@ -56,7 +56,7 @@ namespace {
 // TODO Move somewhere else
 namespace {
     struct DeathListener : public gcn::ActionListener {
-        void action(const std::string &eventId) {
+        void action(const std::string& eventId, gcn::Widget* widget) {
             player_node->revive();
             deathNotice = NULL;
         }

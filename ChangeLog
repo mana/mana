@@ -1,7 +1,49 @@
+2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp, src/game.cpp, src/main.cpp,
+	src/gui/buddywindow.cpp, src/gui/connection.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/gui/char_server.cpp, src/gui/window.cpp,
+	src/gui/login.cpp, src/gui/skill.h, src/gui/gui.cpp,
+	src/gui/item_amount.h, src/gui/setup_audio.h, src/gui/newskill.cpp,
+	src/gui/register.h, src/gui/setup.cpp, src/gui/npclistdialog.h,
+	src/gui/updatewindow.cpp, src/gui/char_select.cpp, src/gui/login.h,
+	src/gui/item_amount.cpp, src/gui/setup_audio.cpp,
+	src/gui/npc_text.cpp, src/gui/chat.h, src/gui/setup_joystick.h,
+	src/gui/setup_video.cpp, src/gui/ok_dialog.cpp, src/gui/textfield.cpp,
+	src/gui/inventorywindow.h, src/gui/newskill.h, src/gui/box.h,
+	src/gui/ministatus.cpp, src/gui/buy.h, src/gui/setup.h,
+	src/gui/confirm_dialog.cpp, src/gui/debugwindow.cpp, src/gui/vbox.cpp,
+	src/gui/chat.cpp, src/gui/setup_joystick.cpp, src/gui/updatewindow.h,
+	src/gui/char_select.h, src/gui/buysell.h, src/gui/tabbedcontainer.cpp,
+	src/gui/inventorywindow.cpp, src/gui/help.cpp, src/gui/status.h,
+	src/gui/npc_text.h, src/gui/setup_video.h, src/gui/menuwindow.cpp,
+	src/gui/ok_dialog.h, src/gui/buy.cpp, src/gui/buddywindow.h,
+	src/gui/sell.h, src/gui/trade.h, src/gui/char_server.h,
+	src/gui/skill.cpp, src/gui/buysell.cpp, src/gui/confirm_dialog.h,
+	src/gui/debugwindow.h, src/gui/status.cpp, src/gui/register.cpp,
+	src/gui/scrollarea.cpp, src/gui/tabbedcontainer.h,
+	src/gui/npclistdialog.cpp, src/gui/help.h, src/net/tradehandler.cpp,
+	src/net/playerhandler.cpp, src/Makefile.am,
+	src/resources/sdlimageloader.cpp, src/resources/sdlimageloader.h,
+	src/resources/openglsdlimageloader.cpp,
+	src/resources/resourcemanager.cpp,
+	src/resources/openglsdlimageloader.h, src/resources/resourcemanager.h:
+	Updated TMW to be compatible with Guichan 0.5.0 (merged from
+	guichan-0.5.0 branch).
+	* INSTALL, docs/INSTALL/win32.txt: Updated required Guichan to version
+	0.5.0.
+	* configure.ac: Moved some basic checks above the checks on the
+	libraries we depend on, in order to get rid of the confusing
+	rpl_realloc error.
+	* src/resources/openglsdlimageloader.cpp, src/player.cpp: Fixed
+	several compiler warnings and a linker error when compiling without
+	OpenGL support.
+
 2006-08-12  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
-	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz:
-	fixed some inaccessible areas.	
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Fixed some
+	inaccessible areas.
 
 2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
 	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
@@ -9,17 +51,16 @@
 	data/graphics/images/minimap_new_9-1.png,
 	data/graphics/images/minimap_new_14-1.png,
 	data/graphics/images/minimap_new_15-1.png,
-	data/graphics/images/minimap_new_16-1.png:
-	added minimaps for woodland maps.
+	data/graphics/images/minimap_new_16-1.png: Added minimaps for woodland
+	maps.
 
 2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_14-1.tmx.gz,
 	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz:
-	added a new woodland map and a connection map between
-	desert and woodland.
-	* data/graphics/woodland_ground.png: added some new
-	rocks
+	Added a new woodland map and a connection map between desert and
+	woodland.
+	* data/graphics/woodland_ground.png: Added some new rocks.
 
 2006-08-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -136,17 +177,16 @@
 
 2006-07-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* data/graphics/sprites/npcs.png: Added the organdealer to
-	the NPCs.
+	* data/graphics/sprites/npcs.png: Added the organdealer to the NPCs.
 	* data/graphics/sprites/player_male_base.png,
-	data/graphics/sprites/player_female_base.png: Fixed some
-	transparency issues.
+	data/graphics/sprites/player_female_base.png: Fixed some transparency
+	issues.
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/being.cpp, src/being.h, src/localplayer, The Mana World.dev,
-	tmw.cbp: Removed unused code, fixed "change direction when not walking"
-	bug, updated project files.
+	tmw.cbp: Removed unused code, fixed "change direction when not
+	walking" bug, updated project files.
 	* data/graphics/sprites/monster1.xml: Slowed down scorpions.
 	* data/graphics/sprites/monster2.xml: Red scorpions have got the same
 	problem.
@@ -155,8 +195,9 @@
 	* data/help/about.txt, data/help/changes.txt, data/help/commands.txt,
 	data/help/header.txt, data/help/index.txt, data/help/skills.txt,
 	data/help/support.txt, data/help/team.txt: Forced to use UNIX end of
-	line character.	
-	* src/net/equipmenthandler.cpp: Equipments now use real slot positions.
+	line character.
+	* src/net/equipmenthandler.cpp: Equipments now use real slot
+	positions.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -432,7 +473,7 @@
 	passing a NULL pointer as image argument.
 	* data/graphics/sprites/player_male_base.xml: Animation file now has
 	the syntax described on the wiki.
-	
+
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am,

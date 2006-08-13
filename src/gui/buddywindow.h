@@ -48,7 +48,7 @@ class BuddyWindow : public Window, public gcn::ActionListener
         /**
          * Performs action.
          */
-        void action(const std::string &actionId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
     private:
         BuddyList *mBuddyList;

@@ -57,7 +57,7 @@ class SkillDialog : public Window, public gcn::ActionListener,
          */
         ~SkillDialog();
 
-        void action(const std::string&);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
         void update();
 

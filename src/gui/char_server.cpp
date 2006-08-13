@@ -97,7 +97,7 @@ ServerSelectDialog::~ServerSelectDialog()
 }
 
 void
-ServerSelectDialog::action(const std::string& eventId)
+ServerSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "ok") {
         mOkButton->setEnabled(false);

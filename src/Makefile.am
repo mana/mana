@@ -167,6 +167,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/mapreader.h \
 	      resources/music.h \
 	      resources/music.cpp \
+	      resources/openglsdlimageloader.h \
+	      resources/openglsdlimageloader.cpp \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \

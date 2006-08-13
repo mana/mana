@@ -119,7 +119,7 @@ Player::setHairColor(Uint16 color)
     }
 
     Being::setHairColor(color);
-};
+}
 
 void
 Player::setHairStyle(Uint16 style)
@@ -138,7 +138,7 @@ Player::setHairStyle(Uint16 style)
     }
 
     Being::setHairStyle(style);
-};
+}
 
 void
 Player::setVisibleEquipment(Uint8 slot, Uint8 id)

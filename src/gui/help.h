@@ -48,7 +48,7 @@ class HelpWindow : public Window, public LinkHandler,
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId);
+        void action(const std::string& eventId, gcn::Widget* widget);
 
         /**
          * Handles link action.

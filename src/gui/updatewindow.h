@@ -79,7 +79,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      */
     void loadNews();
 
-    void action(const std::string& eventId);
+    void action(const std::string& eventId, gcn::Widget* widget);
 
     /**
      * Add a row to the message field.

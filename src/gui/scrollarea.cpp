@@ -55,7 +55,7 @@ ScrollArea::~ScrollArea()
 {
     // Garbage collection
     if (mGC) {
-        delete mContent;
+        delete getContent();
     }
 
     instances--;
@@ -144,20 +144,21 @@ void ScrollArea::init()
 void ScrollArea::logic()
 {
     gcn::ScrollArea::logic();
+    gcn::Widget *content = getContent();
 
     // When no scrollbar in a certain direction, adapt content size to match
     // the content dimension exactly.
-    if (mContent != NULL)
+    if (content != NULL)
     {
         if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
-            mContent->setWidth(getContentDimension().width -
-                    2 * mContent->getBorderSize());
+            content->setWidth(getChildrenArea().width -
+                    2 * content->getBorderSize());
         }
         if (getVerticalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
-            mContent->setHeight(getContentDimension().height -
-                    2 * mContent->getBorderSize());
+            content->setHeight(getChildrenArea().height -
+                    2 * content->getBorderSize());
         }
     }
 }
@@ -197,24 +198,26 @@ void ScrollArea::draw(gcn::Graphics *graphics)
                     mScrollbarWidth));
     }
 
-    if (mContent)
-    {
-        graphics->pushClipArea(getContentDimension());
+    gcn::Widget *content = getContent();
 
-        if (mContent->getBorderSize() > 0)
+    if (content != NULL)
+    {
+        graphics->pushClipArea(getChildrenArea());
+
+        if (content->getBorderSize() > 0)
         {
-            gcn::Rectangle rec = mContent->getDimension();
-            rec.x -= mContent->getBorderSize();
-            rec.y -= mContent->getBorderSize();
-            rec.width += 2 * mContent->getBorderSize();
-            rec.height += 2 * mContent->getBorderSize();
+            gcn::Rectangle rec = content->getDimension();
+            rec.x -= content->getBorderSize();
+            rec.y -= content->getBorderSize();
+            rec.width += 2 * content->getBorderSize();
+            rec.height += 2 * content->getBorderSize();
             graphics->pushClipArea(rec);
-            mContent->drawBorder(graphics);
+            content->drawBorder(graphics);
             graphics->popClipArea();
         }
 
-        graphics->pushClipArea(mContent->getDimension());
-        mContent->draw(graphics);
+        graphics->pushClipArea(content->getDimension());
+        content->draw(graphics);
         graphics->popClipArea();
         graphics->popClipArea();
     }

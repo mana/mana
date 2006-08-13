@@ -50,7 +50,7 @@ BuySellDialog::BuySellDialog():
     setLocationRelativeTo(getParent());
 }
 
-void BuySellDialog::action(const std::string& eventId)
+void BuySellDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "Buy") {
         current_npc->buy();

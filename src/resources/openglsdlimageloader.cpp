@@ -18,35 +18,21 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: sdlimageloader.cpp 2121 2006-01-31 02:55:26Z der_doener $
  */
 
-#ifndef _OK_DIALOG_H
-#define _OK_DIALOG_H
+#ifdef USE_OPENGL
 
-#include <guichan/actionlistener.hpp>
+#include "openglsdlimageloader.h"
 
-#include "window.h"
+#include <string>
 
-/**
- * An 'Ok' button dialog.
- *
- * \ingroup GUI
- */
-class OkDialog : public Window, public gcn::ActionListener {
-    public:
-        /**
-         * Constructor.
-         *
-         * @see Window::Window
-         */
-        OkDialog(const std::string &title, const std::string &msg,
-                Window *parent = NULL);
+#include "resourcemanager.h"
 
-        /**
-         * Called when receiving actions from the widgets.
-         */
-        void action(const std::string& eventId, gcn::Widget* widget);
-};
+SDL_Surface* OpenGLSDLImageLoader::loadSDLSurface(const std::string& filename)
+{
+    ResourceManager *resman = ResourceManager::getInstance();
+    return resman->loadSDLSurface(filename);
+}
 
 #endif
