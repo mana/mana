@@ -23,13 +23,9 @@
 
 #include "animation.h"
 
-#include <cassert>
+#include <algorithm>
 
-#include "log.h"
-
-#include "resources/image.h"
-#include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
+#include "utils/dtor.h"
 
 Animation::Animation():
     mTime(0)
@@ -41,17 +37,20 @@ void
 Animation::update(unsigned int time)
 {
     mTime += time;
-    if (!mAnimationPhases.empty())
+    if (mAnimationPhases.empty())
+        return;
+
+    unsigned int delay = iCurrentPhase->delay;
+    if (!delay)
+        return;
+
+    while (mTime > delay)
     {
-        unsigned int delay = iCurrentPhase->delay;
-        while (mTime > delay && delay > 0)
+        mTime -= delay;
+        iCurrentPhase++;
+        if (iCurrentPhase == mAnimationPhases.end())
         {
-            mTime -= delay;
-            iCurrentPhase++;
-            if (iCurrentPhase == mAnimationPhases.end())
-            {
-                iCurrentPhase = mAnimationPhases.begin();
-            }
+            iCurrentPhase = mAnimationPhases.begin();
         }
     }
 }
@@ -59,25 +58,15 @@ Animation::update(unsigned int time)
 int
 Animation::getCurrentPhase() const
 {
-    if (mAnimationPhases.empty())
-    {
-        return -1;
-    }
-    else
-    {
-        return iCurrentPhase->image;
-    }
+    return mAnimationPhases.empty() ? -1 : iCurrentPhase->image;
 }
 
 void
 Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 {
     //add new phase to animation list
-    AnimationPhase newPhase;
-    newPhase.image = image;
-    newPhase.delay = delay;
-    newPhase.offsetX = offsetX;
-    newPhase.offsetY = offsetY;
+    AnimationPhase newPhase = { image, delay, offsetX, offsetY };
+
     mAnimationPhases.push_back(newPhase);
     //reset animation circle
     iCurrentPhase = mAnimationPhases.begin();
@@ -86,14 +75,14 @@ Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 int
 Animation::getLength()
 {
+    if (mAnimationPhases.empty())
+        return 0;
+
     std::list<AnimationPhase>::iterator i;
     int length = 0;
-    if (!mAnimationPhases.empty())
+    for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
     {
-        for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
-        {
-            length += (*i).delay;
-        }
+        length += i->delay;
     }
     return length;
 }
@@ -105,352 +94,32 @@ Action::Action():
 
 Action::~Action()
 {
-    for (AnimationIterator i = mAnimations.begin(); i != mAnimations.end(); i++)
-    {
-        delete i->second;
-    }
+    std::for_each(mAnimations.begin(), mAnimations.end(), make_dtor(mAnimations));
     mAnimations.clear();
 }
 
 Animation*
-Action::getAnimation(const std::string& direction) const
+Action::getAnimation(int direction) const
 {
-    Animation *animation = NULL;
     Animations::const_iterator i = mAnimations.find(direction);
 
     // When the direction isn't defined, try the default
     if (i == mAnimations.end())
     {
-        i = mAnimations.find("default");
+        i = mAnimations.find(0);
     }
 
-    if (i != mAnimations.end())
-    {
-        animation = i->second;
-    }
-
-    return animation;
+    return (i == mAnimations.end()) ? NULL : i->second;
 }
 
 void
-Action::setAnimation(const std::string& direction, Animation *animation)
+Action::setAnimation(int direction, Animation *animation)
 {
     // Set first direction as default direction
     if (mAnimations.empty())
     {
-        mAnimations["default"] = animation;
+        mAnimations[0] = animation;
     }
 
     mAnimations[direction] = animation;
-}
-
-
-AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
-    mAction(NULL),
-    mDirection("down"),
-    mLastTime(0),
-    mSpeed(1.0f)
-{
-    int size;
-    ResourceManager *resman = ResourceManager::getInstance();
-    char *data = (char*)resman->loadFile(animationFile.c_str(), size);
-
-    if (!data) {
-        logger->error("Animation: Could not find " + animationFile + "!");
-    }
-
-    xmlDocPtr doc = xmlParseMemory(data, size);
-    free(data);
-
-    if (!doc)
-    {
-        logger->error("Animation: Error while parsing animation definition file!");
-        return;
-    }
-
-    xmlNodePtr node = xmlDocGetRootElement(doc);
-    if (!node || !xmlStrEqual(node->name, BAD_CAST "sprite"))
-    {
-        logger->error("Animation: this is not a valid animation definition file!");
-        return;
-    }
-
-    // Get the variant
-    int variant_num = getProperty(node, "variants", 0);
-    int variant_offset = getProperty(node, "variant_offset", 0);
-
-    if (variant_num > 0 && variant < variant_num )
-    {
-        variant_offset *= variant;
-    }
-    else
-    {
-        variant_offset = 0;
-    }
-
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
-    {
-        if (xmlStrEqual(node->name, BAD_CAST "imageset"))
-        {
-            int width = getProperty(node, "width", 0);
-            int height = getProperty(node, "height", 0);
-            std::string name = getProperty(node, "name", "");
-            std::string imageSrc = getProperty(node, "src", "");
-
-            Spriteset *spriteset =
-                resman->getSpriteset(imageSrc, width, height);
-
-            if (!spriteset)
-            {
-                logger->error("Couldn't load spriteset!");
-            }
-            else
-            {
-                mSpritesets[name] = spriteset;
-            }
-        }
-        // get action
-        else if (xmlStrEqual(node->name, BAD_CAST "action"))
-        {
-            std::string name = getProperty(node, "name", "");
-            std::string imageset = getProperty(node, "imageset", "");
-
-            if (name.length() == 0)
-            {
-                logger->log("Warning: unnamed action in %s",
-                            animationFile.c_str());
-            }
-
-            Action *action = new Action();
-
-            if (mSpritesets.find(imageset) != mSpritesets.end())
-            {
-                action->setSpriteset(mSpritesets[imageset]);
-                mActions[name] = action;
-            }
-            else
-            {
-                logger->log("Warning: imageset \"%s\" not defined in %s",
-                            imageset.c_str(),
-                            animationFile.c_str());
-
-                // Discard action and skip loading animations
-                delete action;
-                continue;
-            }
-
-            // get animations
-            for (xmlNodePtr animationNode = node->xmlChildrenNode;
-                 animationNode != NULL;
-                 animationNode = animationNode->next)
-            {
-                if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
-                {
-                    std::string direction =
-                        getProperty(animationNode, "direction", "");
-
-                    Animation *animation = new Animation();
-
-                    // Get animation phases
-                    for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
-                         phaseNode != NULL;
-                         phaseNode = phaseNode->next)
-                    {
-                        int delay = getProperty(phaseNode, "delay", 0);
-
-                        if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
-                        {
-                            int index = getProperty(phaseNode, "index", -1);
-                            int offsetX = getProperty(phaseNode, "offsetX", 0);
-                            int offsetY = getProperty(phaseNode, "offsetY", 0);
-
-                            offsetY = offsetY - mSpritesets[imageset]->getHeight() + 32;
-                            offsetX = offsetX - mSpritesets[imageset]->getWidth() / 2 + 16;
-                            animation->addPhase(index + variant_offset, delay,
-                                                offsetX, offsetY);
-                        }
-                        else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
-                        {
-                            int start = getProperty(phaseNode, "start", 0);
-                            int end = getProperty(phaseNode, "end", 0);
-                            int offsetY = 0 - mSpritesets[imageset]->getHeight() + 32;
-                            int offsetX = 0 - mSpritesets[imageset]->getWidth() / 2 + 16;
-                            while (end >= start)
-                            {
-                                animation->addPhase(start + variant_offset,
-                                                    delay, offsetX, offsetY);
-                                start++;
-                            }
-                        }
-                    } // for phaseNode
-                    action->setAnimation(direction, animation);
-                } // if "<animation>"
-            } // for animationNode
-        } // if "<imageset>" else if "<action>"
-    } // for node
-
-    // Complete missing actions
-    substituteAction("walk", "stand");
-    substituteAction("walk", "run");
-    substituteAction("attack", "stand");
-    substituteAction("attack_swing", "attack");
-    substituteAction("attack_stab", "attack_swing");
-    substituteAction("attack_bow", "attack_stab");
-    substituteAction("attack_throw", "attack_swing");
-    substituteAction("cast_magic", "attack_swing");
-    substituteAction("use_item", "cast_magic");
-    substituteAction("sit", "stand");
-    substituteAction("sleeping", "sit");
-    substituteAction("hurt", "stand");
-    substituteAction("dead", "hurt");
-
-    // Play the stand animation by default
-    play("stand");
-
-    xmlFreeDoc(doc);
-}
-
-int
-AnimatedSprite::getProperty(xmlNodePtr node, const char* name, int def)
-{
-    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-    if (prop) {
-        int val = atoi((char*)prop);
-        xmlFree(prop);
-        return val;
-    }
-    else {
-        return def;
-    }
-}
-
-std::string
-AnimatedSprite::getProperty(xmlNodePtr node, const char* name,
-                            const std::string& def)
-{
-    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-    if (prop) {
-        std::string val = (char*)prop;
-        xmlFree(prop);
-        return val;
-    }
-    else {
-        return def;
-    }
-}
-
-void
-AnimatedSprite::substituteAction(const std::string& complete,
-                                 const std::string& with)
-{
-    if (mActions.find(complete) == mActions.end())
-    {
-        mActions[complete] = mActions[with];
-    }
-}
-
-AnimatedSprite::~AnimatedSprite()
-{
-    for (SpritesetIterator i = mSpritesets.begin(); i != mSpritesets.end(); ++i)
-    {
-        i->second->decRef();
-    }
-    mSpritesets.clear();
-}
-
-void
-AnimatedSprite::play(const std::string& action)
-{
-    Actions::iterator iAction;
-    iAction = mActions.find(action);
-
-    if (iAction == mActions.end())
-    {
-        logger->log("Warning: no action \"%s\" defined!", action.c_str());
-        mAction = NULL;
-        return;
-    }
-
-    if (mAction != iAction->second)
-    {
-        mAction = iAction->second;
-        mLastTime = 0;
-    }
-
-    mSpeed = 1.0f;
-}
-
-void
-AnimatedSprite::play(const std::string& action, int time)
-{
-    play(action);
-
-    if (mAction != NULL)
-    {
-        Animation *animation = mAction->getAnimation(mDirection);
-        int animationLength = animation->getLength();
-        mSpeed = (float) animationLength / time;
-    }
-}
-
-void
-AnimatedSprite::update(int time)
-{
-    // Avoid freaking out at first frame or when tick_time overflows
-    if (time < mLastTime || mLastTime == 0) mLastTime = time;
-
-    // If not enough time have passed yet, do nothing
-    if (time > mLastTime)
-    {
-        if (mAction != NULL)
-        {
-            Animation *animation = mAction->getAnimation(mDirection);
-            animation->update((unsigned int)((time - mLastTime) * mSpeed));
-            mLastTime = time;
-        }
-    }
-}
-
-bool
-AnimatedSprite::draw(Graphics* graphics, Sint32 posX, Sint32 posY) const
-{
-    if (mAction != NULL)
-    {
-        Animation *animation = mAction->getAnimation(mDirection);
-
-        if (animation->getCurrentPhase() >= 0)
-        {
-            Spriteset *spriteset = mAction->getSpriteset();
-            Image *image = spriteset->get(animation->getCurrentPhase());
-            Sint32 offsetX = animation->getOffsetX();
-            Sint32 offsetY = animation->getOffsetY();
-            return graphics->drawImage(image, posX + offsetX, posY + offsetY);
-        }
-    }
-
-    return false;
-}
-
-int
-AnimatedSprite::getWidth() const
-{
-    if (mAction != NULL)
-    {
-        Spriteset *spriteset = mAction->getSpriteset();
-        return spriteset->getWidth();
-    }
-
-    return 0;
-}
-
-int
-AnimatedSprite::getHeight() const
-{
-    if (mAction != NULL)
-    {
-        Spriteset *spriteset = mAction->getSpriteset();
-        return spriteset->getHeight();
-    }
-
-    return 0;
 }

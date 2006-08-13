@@ -23,6 +23,8 @@
 
 #include "npc.h"
 
+#include "animatedsprite.h"
+
 #include "net/messageout.h"
 #include "net/protocol.h"
 

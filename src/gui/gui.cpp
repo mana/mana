@@ -32,10 +32,6 @@
 // constant as well as guichan does
 #include <guichan/sdl/sdlinput.hpp>
 
-#ifdef USE_OPENGL
-#include "../resources/openglsdlimageloader.h"
-#endif
-
 #include "focushandler.h"
 #include "popupmenu.h"
 #include "window.h"
@@ -57,6 +53,9 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/sdlimageloader.h"
+#ifdef USE_OPENGL
+#include "../resources/openglsdlimageloader.h"
+#endif
 
 // Guichan stuff
 Gui *gui;

@@ -23,10 +23,8 @@
 
 #include "monster.h"
 
+#include "animatedsprite.h"
 #include "game.h"
-#include "log.h"
-
-#include "resources/resourcemanager.h"
 
 #include "utils/tostring.h"
 

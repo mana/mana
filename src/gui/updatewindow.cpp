@@ -300,7 +300,7 @@ int UpdaterWindow::downloadThread(void *ptr)
             // Any existing file with this name is deleted first, otherwise the
             // rename will fail on Windows.
             ::remove(newName.c_str());
-            rename(outFilename.c_str(), newName.c_str());
+            ::rename(outFilename.c_str(), newName.c_str());
         }
     }
 

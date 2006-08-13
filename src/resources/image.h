@@ -24,6 +24,8 @@
 #ifndef _TMW_IMAGE_H
 #define _TMW_IMAGE_H
 
+#include "../main.h"
+
 #include <SDL.h>
 #ifdef USE_OPENGL
 #include <SDL_opengl.h>

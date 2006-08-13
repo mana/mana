@@ -24,7 +24,6 @@
 #ifndef _TMW_CHAT_H
 #define _TMW_CHAT_H
 
-#include <fstream>
 #include <list>
 #include <string>
 
@@ -117,12 +116,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Constructor.
          */
-        ChatWindow(const std::string &logfile, Network *network);
-
-        /**
-         * Destructor.
-         */
-        ~ChatWindow();
+        ChatWindow(Network *network);
 
         /**
          * Logic (updates components' size)
@@ -195,7 +189,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
     private:
         Network *mNetwork;
-        std::ofstream mChatlogFile;
         bool mTmpVisible;
 
         /** One item in the chat log */

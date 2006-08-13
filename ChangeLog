@@ -1,10 +1,81 @@
+2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp, src/gui/browserbox.h, src/gui/gui.cpp,
+	src/gui/chat.cpp, src/resources/image.h: Added include main.h in order
+	to have USE_OPENGL defined correctly, since it is no longer passed as
+	a compiler parameter.
+
+2006-08-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Fixed some
+	inaccessible areas.
+
+2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/graphics/images/minimap_new_9-1.png,
+	data/graphics/images/minimap_new_14-1.png,
+	data/graphics/images/minimap_new_15-1.png,
+	data/graphics/images/minimap_new_16-1.png: Added minimaps for woodland
+	maps.
+
+2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Added a new
+	woodland map and a connection map between desert and woodland.
+	* data/graphics/woodland_ground.png: Added some new rocks.
+
+2006-08-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp, src/main.cpp: A
+	bunch of cleanups.
+
 2006-08-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* INSTALL: Updated required Guichan to version 0.5.0.
 
+2006-08-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/configuration.cpp, src/game.cpp, src/engine.cpp, src/player.cpp,
+	src/being.cpp, src/resources/mapreader.cpp,
+	src/resources/itemmanager.cpp: Some cleanups, mostly lowering
+	indentation.
+	* src/being.cpp: Small code cleanup.
+
 2006-08-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/char_select.cpp: Fixed character gender in selection dialog.
+
+2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animatedsprite.cpp: Fix enum being treated as string.
+	* src/animation.cpp: Small code cleanups. Removed unused headers.
+	* src/animatedsprite.cpp: Small code cleanup/lower indentation.
+
+2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.cpp: Fixed presence of NULL actions. This is
+	doener's version of the fix, because it was more efficient in the more
+	common case.
+
+2006-08-04  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/tiles/desert_x3.png: Replaced the old cactus with
+	a nice new high-res one.
+
+2006-08-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player.cpp, src/being.cpp, src/being.h: Removed three
+	setDirection(mDirection) calls by instead specifically setting the
+	current direction on the newly added animated sprite. The same might
+	be done for the action later.
+	* src/animatedsprite.h, src/animatedsprite.cpp: Since this class isn't
+	subclassed and has no virtual functions, make protected members
+	private. Also added a start of a reset function which could be a
+	solution to unsynchronized animated sprites.
+	* src/net/network.cpp: Fixed two delete/delete[] errors.
 
 2006-08-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -37,9 +108,25 @@
 	* src/gui/gui.cpp, The Mana World.dev, tmw.cbp: Fixed compilation
 	issues in windows.
 
+2006-08-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.h, src/animation.cpp, src/animatedsprite.h,
+	src/animatedsprite.cpp, src/being.cpp: Animations and directions
+	are now passed and stored as enums and no longer as strings.
+
 2006-07-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/network.cpp: Corrected an off by one error in packet size.
+
+2006-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animatedsprite.h, src/animatedsprite.cpp: Unified the play
+	methods.
+
+2006-07-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_5-1.tmx.gz: Fixed two minor mapping errors (no new
+	walkmap required).
 
 2006-07-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -74,6 +161,21 @@
 	Updated TMW to be compatible with Guichan 0.5.0 (merged from
 	guichan-0.5.0 branch).
 
+2006-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animatedsprite.h, src/animatedsprite.cpp, src/animation.cpp: A
+	bunch of cleanups.
+	* src/animation.h, src/animatedsprite.cpp: Moved included from header
+	to source file.
+
+2006-07-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/npc.cpp, src/player.cpp, src/animatedsprite.h, src/animation.h,
+	src/being.cpp, src/main.cpp, src/monster.cpp, src/animatedsprite.cpp,
+	src/animation.cpp, src/Makefile.am, src/being.h: Moved AnimatedSprite
+	into its own files, removed useless includes.
+	* src/engine.cpp: Removed an unused var.
+
 2006-07-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/main.cpp: Modified client version to be an int.
@@ -81,20 +183,32 @@
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/char_server.cpp, src/gui/char_sever.h, src/main.cpp,
-	src/net/loginhandler.cpp, src/net/loginhandler.h, tmw,cbp: Removed char
-	server selection dialog, and added character visualization in character
-	selection dialog.
-	
-2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+	src/net/loginhandler.cpp, src/net/loginhandler.h, tmw,cbp: Removed
+	char server selection dialog, and added character visualization in
+	character selection dialog.
+	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
+	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with inside
+	of snow village buildings and fixed makefiles.
+	* src/being.cpp, src/being.h, src/player.cpp: Fixed direction and
+	action issues when changing appeareance, frames are still out of sync.
+	* data/maps/Makefile.am, data/maps/new_14-1.tmx.gz,
+	data/maps/new_9-1.tmx.gz: Added new woodland map by Crush and fixed
+	connection with the old one.
 
-	* src/gui/updatewindow.cpp: Fixed updating on Windows.
-	* src/net/beinghandler.cpp, src/net/network.cpp, configure.ac: Fixed
-	Linux compiling issues.
-	* src/configuration.cpp: Reduced amount of logging.
-	* src/log.cpp, src/log.h: Added support for writing log to standard
-	output.
-	* src/main.cpp: Reorganized initialization somewhat.
-	* src/resources/resourcemanager.cpp: Take into account singular form.
+2006-07-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_4-1.tmx.gz: Fixes to the collision layer.
+
+2006-07-26  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/tiles/snowset.png, data/graphics/tiles/snow_x2.png,
+	data/graphics/tiles/snow_x3.png: Moved the lamppost, the rock and the
+	bench to seperate tall tilebitmaps.
+	* data/maps/new_11-1.tmx.gz: Improved the snow village map, main
+	changes are that the player can now walk better behind houses,
+	lampposts, rocks and benches.
+	* data/graphics/sprites/item003.png, data/graphics/sprites/item003.xml:
+	Added the leather shirt
 
 2006-07-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -113,6 +227,17 @@
 	tmw.cbp: Switched client to use enet and modified login sequence to
 	work with the new protocol from tmwserv.
 
+2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Fixed updating on Windows.
+	* src/net/beinghandler.cpp, src/net/network.cpp, configure.ac: Fixed
+	Linux compiling issues.
+	* src/configuration.cpp: Reduced amount of logging.
+	* src/log.cpp, src/log.h: Added support for writing log to standard
+	output.
+	* src/main.cpp: Reorganized initialization somewhat.
+	* src/resources/resourcemanager.cpp: Take into account singular form.
+
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Fixed the loading of updates and made skipping the
@@ -126,10 +251,10 @@
 2006-07-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* data/graphics/sprites/npcs.png: Added the organdealer to
-	the NPCs
+	the NPCs.
 	* data/graphics/sprites/player_male_base.png,
 	data/graphics/sprites/player_female_base.png: Fixed some
-	transparency issues
+	transparency issues.
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -144,7 +269,7 @@
 	* data/help/about.txt, data/help/changes.txt, data/help/commands.txt,
 	data/help/header.txt, data/help/index.txt, data/help/skills.txt,
 	data/help/support.txt, data/help/team.txt: Forced to use UNIX end of
-	line character.	
+	line character.
 	* src/net/equipmenthandler.cpp: Equipments now use real slot positions.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -230,7 +355,7 @@
 
 2006-07-17 Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* Added shorts to items.png
+	* data/graphics/sprites/items.png: Added shorts' icon to items.png
 
 2006-07-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -22,6 +22,9 @@
  */
 #include "being.h"
 
+#include <algorithm>
+
+#include "animatedsprite.h"
 #include "equipment.h"
 #include "game.h"
 #include "graphics.h"
@@ -32,6 +35,7 @@
 
 #include "gui/gui.h"
 
+#include "utils/dtor.h"
 #include "utils/tostring.h"
 
 extern Spriteset *emotionset;
@@ -65,14 +69,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
 
 Being::~Being()
 {
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i] != NULL)
-        {
-            delete mSprites[i];
-        }
-    }
-
+    std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
     setMap(NULL);
 }
@@ -164,66 +161,65 @@ Being::setMap(Map *map)
 }
 
 void
-Being::setAction(Action action)
+Being::setAction(Uint8 action)
 {
-    if (action != mAction)
+    SpriteAction currentAction = ACTION_STAND;
+    switch (action)
     {
-        std::string currentAction = "stand";
-        switch (action)
-        {
-            case WALK:
-                currentAction = "walk";
-                break;
-            case SIT:
-                currentAction = "sit";
-                break;
-            case ATTACK:
-                if (getType() == MONSTER)
-                {
-                    currentAction = "dead";
-                }else{
-                    switch (getWeapon())
-                    {
-                        case 2:
-                            currentAction = "attack_bow";
-                            break;
-                        case 1:
-                            currentAction = "attack_stab";
-                            break;
-                        case 0:
-                            currentAction = "attack";
-                            break;
-                    }
-                };
-                break;
-            case MONSTER_ATTACK:
-                currentAction = "attack";
-                break;
-            case DEAD:
-                currentAction = "dead";
-                break;
-            default:
-                currentAction = "stand";
-                break;
-        }
-
-        for (int i = 0; i < VECTOREND_SPRITE; i++)
-        {
-            if (mSprites[i] != NULL)
+        case WALK:
+            currentAction = ACTION_WALK;
+            break;
+        case SIT:
+            currentAction = ACTION_SIT;
+            break;
+        case ATTACK:
+            if (getType() == MONSTER)
             {
-                if (currentAction == "attack" ||
-                    currentAction == "attack_stab" ||
-                    currentAction == "attack_bow")
-                {
-                    mSprites[i]->play(currentAction, mAttackSpeed);
-                }
-                else
-                {
-                    mSprites[i]->play(currentAction);
-                }
+                currentAction = ACTION_DEAD;
             }
+            else {
+                switch (getWeapon())
+                {
+                    case 2:
+                        currentAction = ACTION_ATTACK_BOW;
+                        break;
+                    case 1:
+                        currentAction = ACTION_ATTACK_STAB;
+                        break;
+                    case 0:
+                        currentAction = ACTION_ATTACK;
+                        break;
+                }
+            };
+            break;
+        case MONSTER_ATTACK:
+            currentAction = ACTION_ATTACK;
+            break;
+        case DEAD:
+            currentAction = ACTION_DEAD;
+            break;
+        default:
+            currentAction = ACTION_STAND;
+            break;
+    }
+
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (!mSprites[i])
+            continue;
+
+        if (currentAction == ACTION_ATTACK ||
+                currentAction == ACTION_ATTACK_STAB ||
+                currentAction == ACTION_ATTACK_BOW)
+        {
+            mSprites[i]->play(currentAction, mAttackSpeed);
+        }
+        else
+        {
+            mSprites[i]->play(currentAction);
         }
     }
+
     mAction = action;
 }
 
@@ -231,29 +227,37 @@ void
 Being::setDirection(Uint8 direction)
 {
     mDirection = direction;
-    std::string dir;
-
-    if (direction & UP)
-    {
-        dir = "up";
-    }
-    else if (direction & RIGHT)
-    {
-        dir = "right";
-    }
-    else if (direction & DOWN)
-    {
-        dir = "down";
-    }
-    else
-    {
-        dir = "left";
-    }
+    SpriteDirection dir = getSpriteDirection();
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (mSprites[i] != NULL) mSprites[i]->setDirection(dir);
+        if (mSprites[i] != NULL)
+            mSprites[i]->setDirection(dir);
     }
+}
+
+SpriteDirection
+Being::getSpriteDirection() const
+{
+    SpriteDirection dir;
+
+    if (mDirection & UP)
+    {
+        dir = DIRECTION_UP;
+    }
+    else if (mDirection & RIGHT)
+    {
+        dir = DIRECTION_RIGHT;
+    }
+    else if (mDirection & DOWN)
+    {
+        dir = DIRECTION_DOWN;
+    }
+    else {
+        dir = DIRECTION_LEFT;
+    }
+
+    return dir;
 }
 
 void
@@ -329,10 +333,6 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
     int px = mPx + offsetX;
     int py = mPy + offsetY;
 
-    //what are these two lines good for? please add a comment.
-    unsigned char dir = 0;
-    while (!(mDirection & (1 << dir))) dir++;
-
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
         if (mSprites[i] != NULL)
@@ -345,14 +345,13 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY)
 void
 Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 {
-    int px = mPx + offsetX;
-    int py = mPy + offsetY;
+    if (!mEmotion)
+        return;
 
-    if (mEmotion)
-    {
-        graphics->drawImage(emotionset->get(mEmotion - 1),
-                px + 3, py - 60);
-    }
+    int px = mPx + offsetX + 3;
+    int py = mPy + offsetY - 60;
+
+    graphics->drawImage(emotionset->get(mEmotion - 1), px, py);
 }
 
 void

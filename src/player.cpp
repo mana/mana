@@ -23,8 +23,7 @@
 
 #include "player.h"
 
-#include "animation.h"
-#include "equipment.h"
+#include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
 
@@ -91,11 +90,13 @@ Player::setSex(Uint8 sex)
         delete mSprites[BASE_SPRITE];
         if (sex == 0)
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_male_base.xml", 0);
+            mSprites[BASE_SPRITE] = new AnimatedSprite(
+                    "graphics/sprites/player_male_base.xml", 0);
         }
         else
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/player_female_base.xml", 0);
+            mSprites[BASE_SPRITE] = new AnimatedSprite(
+                    "graphics/sprites/player_female_base.xml", 0);
         }
     }
     Being::setSex(sex);
@@ -107,8 +108,16 @@ Player::setHairColor(Uint16 color)
     if (color != mHairColor && mHairStyle > 0)
     {
         delete mSprites[HAIR_SPRITE];
-        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(mHairStyle)+".xml", color - 1);
+        AnimatedSprite *newHairSprite = new AnimatedSprite(
+                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
+                color - 1);
+        newHairSprite->setDirection(getSpriteDirection());
+
+        mSprites[HAIR_SPRITE] = newHairSprite;
+
+        setAction(mAction);
     }
+
     Being::setHairColor(color);
 }
 
@@ -118,8 +127,16 @@ Player::setHairStyle(Uint16 style)
     if (style != mHairStyle && mHairColor > 0)
     {
         delete mSprites[HAIR_SPRITE];
-        mSprites[HAIR_SPRITE] = new AnimatedSprite("graphics/sprites/hairstyle"+toString(style)+".xml", mHairColor - 1);
+        AnimatedSprite *newHairSprite = new AnimatedSprite(
+                "graphics/sprites/hairstyle" + toString(style) + ".xml",
+                mHairColor - 1);
+        newHairSprite->setDirection(getSpriteDirection());
+
+        mSprites[HAIR_SPRITE] = newHairSprite;
+
+        setAction(mAction);
     }
+
     Being::setHairStyle(style);
 }
 
@@ -139,18 +156,24 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
             position = TOPCLOTHES_SPRITE;
             break;
     }
+
+    delete mSprites[position];
+    mSprites[position] = NULL;
+
     // id = 0 means unequip
-    if (mSprites[position]) {
-        delete mSprites[position];
-        mSprites[position] = 0;
-    }
     if (id) {
         char stringId[4];
         sprintf(stringId, "%03i", id);
-        printf("Id: %i %i %s\n", id, slot, stringId);
-        mSprites[position] = new AnimatedSprite(
+
+        AnimatedSprite *equipmentSprite = new AnimatedSprite(
                 "graphics/sprites/item" + toString(stringId) + ".xml", 0);
+        equipmentSprite->setDirection(getSpriteDirection());
+
+        mSprites[position] = equipmentSprite;
+
+        setAction(mAction);
     }
+
     Being::setVisibleEquipment(slot, id);
 }
 

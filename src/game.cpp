@@ -167,8 +167,7 @@ int get_elapsed_time(int start_time)
 void createGuiWindows(Network *network)
 {
     // Create dialogs
-    chatWindow = new ChatWindow(
-    config.getValue("homeDir", "") + std::string("/chatlog.txt"), network);
+    chatWindow = new ChatWindow(network);
     menuWindow = new MenuWindow();
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow();
@@ -359,29 +358,16 @@ void Game::logic()
         gameTime = tick_time;
 
         fpsLimit = (int)config.getValue("fpslimit", 50);
-        if (fpsLimit)
-        {
-            delta = 1000 / fpsLimit;
-        }
-        else
-        {
-            delta = 0;
-        }
+        delta = fpsLimit ? 1000 / fpsLimit : 0;
 
         // Update the screen when application is active, delay otherwise
-        if (SDL_GetAppState() & SDL_APPACTIVE)
+        if (SDL_GetAppState() & SDL_APPACTIVE &&
+                (abs(tick_time * 10 - drawTime) >= delta))
         {
-            if (abs(tick_time * 10 - drawTime) >= delta)
-            {
-                frame++;
-                engine->draw(graphics);
-                graphics->updateScreen();
-                drawTime += delta;
-            }
-            else
-            {
-                SDL_Delay(10);
-            }
+            frame++;
+            engine->draw(graphics);
+            graphics->updateScreen();
+            drawTime += delta;
         }
         else
         {

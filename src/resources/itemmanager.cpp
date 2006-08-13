@@ -30,6 +30,8 @@
 
 #include "../log.h"
 
+#include "../utils/dtor.h"
+
 #define READ_PROP(node, prop, name, target, cast) \
         prop = xmlGetProp(node, BAD_CAST name); \
         if (prop) { \
@@ -56,14 +58,12 @@ ItemManager::ItemManager()
     if (!doc)
     {
         logger->error("Item Manager: Error while parsing item database (items.xml)!");
-        return;
     }
 
     xmlNodePtr node = xmlDocGetRootElement(doc);
     if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
     {
         logger->error("Item Manager: items.xml is not a valid database file!");
-        return;
     }
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)

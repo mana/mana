@@ -183,6 +183,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/buddylist.cpp \
 	      utils/dtor.h \
 	      utils/tostring.h \
+	      animatedsprite.cpp \
+	      animatedsprite.h \
 	      animation.cpp \
 	      animation.h \
 	      base64.cpp \
