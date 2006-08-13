@@ -146,12 +146,16 @@ void Network::dispatchMessages()
 
         MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
-        printf("Received packet: %x\n", msg.getId());
-
-        if (iter != mMessageHandlers.end())
+        if (iter != mMessageHandlers.end()) {
+            logger->log("Received packet %x (%i B)",
+                        msg.getId(), msg.getLength());
             iter->second->handleMessage(&msg);
-        else
-            logger->log("Unhandled packet: %x", msg.getId());
+        }
+        else {
+            logger->log("Unhandled packet %x (%i B)",
+                        msg.getId(), msg.getLength());
+        }
+
         mIncomingPackets.pop();
         // Clean up the packet now that we're done using it.
         enet_packet_destroy(packet);

@@ -26,6 +26,7 @@
 #include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
+#include "log.h"
 
 #include "utils/tostring.h"
 
@@ -85,6 +86,13 @@ Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 void
 Player::setSex(Uint8 sex)
 {
+    // Players can only be male or female
+    if (sex > 1)
+    {
+        logger->log("Warning: unsupported gender %i, assuming male.", sex);
+        sex = 0;
+    }
+
     if (sex != mSex)
     {
         delete mSprites[BASE_SPRITE];
@@ -98,8 +106,9 @@ Player::setSex(Uint8 sex)
             mSprites[BASE_SPRITE] = new AnimatedSprite(
                     "graphics/sprites/player_female_base.xml", 0);
         }
+
+        Being::setSex(sex);
     }
-    Being::setSex(sex);
 }
 
 void

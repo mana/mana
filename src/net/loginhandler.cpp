@@ -52,8 +52,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                unsigned char charNumber;
-                charNumber = msg->readByte();
+                unsigned char charNumber = msg->readByte();
                 printf("Account has %i characters:\n", charNumber);
                 for (unsigned int i = 0; i < charNumber; i++) {
                     // Create a temp empty player to show up in character
