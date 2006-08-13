@@ -1,3 +1,10 @@
+2006-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/monster18.png,
+	data/graphics/sprites/monster18.xml,
+	data/graphics/sprites/npcs.png: Added new monster and npcs.
+
 2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp, src/game.cpp, src/main.cpp,
