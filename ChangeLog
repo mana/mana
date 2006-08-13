@@ -4,6 +4,8 @@
 	data/graphics/sprites/monster18.png,
 	data/graphics/sprites/monster18.xml,
 	data/graphics/sprites/npcs.png: Added new monster and npcs.
+	* src/gui.cpp, tmw.cbp, The Mana World.dev: Fixed Guichan 0.5.0
+	compilation issues.
 
 2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

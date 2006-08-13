@@ -27,11 +27,12 @@
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
+// Should stay here because of Guichan being sensitive to headers order
+#include <guichan/sdl/sdlinput.hpp>
+
 #ifdef USE_OPENGL
 #include "../resources/openglsdlimageloader.h"
 #endif
-
-#include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
 #include "popupmenu.h"

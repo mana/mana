@@ -10,6 +10,7 @@
 				<Option output="tmw.exe" />
 				<Option type="0" />
 				<Option compiler="gcc" />
+				<Option parameters="--skipupdate" />
 				<Option includeInTargetAll="1" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
@@ -41,6 +42,16 @@
 			<Add library="SDLmain" />
 			<Add library="SDL" />
 		</Linker>
+		<Unit filename="src\animatedsprite.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="src\animatedsprite.h">
+			<Option compilerVar="CPP" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
+		</Unit>
 		<Unit filename="src\animation.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="default" />
@@ -1141,6 +1152,16 @@
 		</Unit>
 		<Unit filename="src\resources\music.h">
 			<Option compilerVar="" />
+			<Option compile="0" />
+			<Option link="0" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="src\resources\openglsdlimageloader.cpp">
+			<Option compilerVar="CPP" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="src\resources\openglsdlimageloader.h">
+			<Option compilerVar="CPP" />
 			<Option compile="0" />
 			<Option link="0" />
 			<Option target="default" />
