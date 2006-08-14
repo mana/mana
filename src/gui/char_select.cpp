@@ -215,9 +215,10 @@ void CharSelectDialog::attemptCharDelete()
 void CharSelectDialog::attemptCharSelect()
 {
     // Request character selection
-    MessageOut outMsg;
-    outMsg.writeShort(0x0066);
-    outMsg.writeByte(mCharInfo->getPos());
+    MessageOut msg;
+    msg.writeShort(PAMSG_CHAR_SELECT);
+    msg.writeByte(mCharInfo->getPos());
+    network->send(msg);
     mCharInfo->lock();
 }
 

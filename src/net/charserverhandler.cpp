@@ -57,6 +57,7 @@ CharServerHandler::handleMessage(MessageIn *msg)
         case APMSG_CHAR_CREATE_RESPONSE:
             handleCharCreateResponse(*msg);
             break;
+
         case APMSG_CHAR_DELETE_RESPONSE:
         {
             int errMsg = msg->readByte();
@@ -89,12 +90,17 @@ CharServerHandler::handleMessage(MessageIn *msg)
             }
         }
             break;
+
         case APMSG_CHAR_INFO:
             tempPlayer = readPlayerData(msg, slot);
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
             n_character++;
+            break;
+
+        case PMSG_CHAR_SELECT_RESPONSE:
+            handleCharSelectResponse(*msg);
             break;
     }
 }
@@ -104,12 +110,8 @@ CharServerHandler::handleCharCreateResponse(MessageIn &msg)
 {
     int errMsg = msg.readByte();
 
-    // Character creation successful
-    if (errMsg == ERRMSG_OK)
-    {
-    }
     // Character creation failed
-    else
+    if (errMsg != ERRMSG_OK)
     {
         std::string message = "";
         switch (errMsg)
@@ -152,6 +154,24 @@ CharServerHandler::handleCharCreateResponse(MessageIn &msg)
                 break;
         }
         new OkDialog("Error", message);
+    }
+}
+
+void
+CharServerHandler::handleCharSelectResponse(MessageIn &msg)
+{
+    int errMsg = msg.readByte();
+
+    if (errMsg == 0)
+    {
+        //std::string token = msg.readString(32);
+        //std::string gameServer = msg.readString();
+        //unsigned short gameServerPort = msg.readShort();
+        //std::string chatServer = msg.readString();
+        //unsigned short chatServerPort = msg.readShort();
+
+        // TODO: Connect to game and chat servers, and login using the given
+        // TODO: token.
     }
 }
 

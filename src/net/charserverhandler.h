@@ -52,6 +52,9 @@ class CharServerHandler : public MessageHandler
         void
         handleCharCreateResponse(MessageIn &msg);
 
+        void
+        handleCharSelectResponse(MessageIn &msg);
+
         LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
 

@@ -1,3 +1,9 @@
+2006-08-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.cpp, src/net/charserverhandler.h,
+	src/net/charserverhandler.cpp: Some preparations towards supporting
+	character select and response handling.
+
 2006-08-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/charserverhandler.h, src/net/charserverhandler.cpp: Fix
