@@ -38,13 +38,10 @@ class LoginHandler : public MessageHandler
 
         void handleMessage(MessageIn *msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo) { mCharInfo = charInfo; };
-
         void setLoginData(LoginData *loginData) { mLoginData = loginData; };
 
     protected:
         LoginData *mLoginData;
-        LockedArray<LocalPlayer*> *mCharInfo;
 };
 
 #endif

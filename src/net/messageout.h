@@ -55,12 +55,12 @@ class MessageOut
         /**
          * Returns the content of the message.
          */
-        char *getData();
+        char *getData() const;
 
         /**
          * Returns the length of the data.
          */
-        unsigned int getDataSize();
+        unsigned int getDataSize() const;
 
     private:
         /**

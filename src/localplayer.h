@@ -127,7 +127,7 @@ class LocalPlayer : public Player
         Uint32 mJobLevel;
         Uint32 mXpForNextLevel, mJobXpForNextLevel;
         Uint16 mHp, mMaxHp, mMp, mMaxMp;
-        Uint32 mGp;
+        Uint32 mMoney;
 
         Uint32 mTotalWeight, mMaxWeight;
 

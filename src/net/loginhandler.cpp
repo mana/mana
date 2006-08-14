@@ -27,7 +27,6 @@
 #include "network.h"
 #include "protocol.h"
 
-#include "../localplayer.h"
 #include "../log.h"
 #include "../logindata.h"
 #include "../main.h"
@@ -52,21 +51,6 @@ void LoginHandler::handleMessage(MessageIn *msg)
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                unsigned char charNumber = msg->readByte();
-                printf("Account has %i characters:\n", charNumber);
-                for (unsigned int i = 0; i < charNumber; i++) {
-                    // Create a temp empty player to show up in character
-                    // selection dialog
-                    LocalPlayer *temp = new LocalPlayer(0, 0, 0);
-                    temp->setName(msg->readString());
-                    temp->setSex(msg->readByte());
-                    temp->setHairStyle(msg->readByte());
-                    temp->setHairColor(msg->readByte());
-                    temp->mLevel = msg->readByte();
-                    temp->mGp = msg->readShort();
-                    mCharInfo->select(i);
-                    mCharInfo->setEntry(temp);
-                }
                 state = CHAR_SELECT_STATE;
             }
             // Login failed
@@ -102,7 +86,8 @@ void LoginHandler::handleMessage(MessageIn *msg)
                 state = ACCOUNT_STATE;
             }
             // Registration failed
-            else {
+            else
+            {
                 switch (errMsg) {
                     case REGISTER_INVALID_VERSION:
                     errorMessage = "Client has an insufficient version number to login.";

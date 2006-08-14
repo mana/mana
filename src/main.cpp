@@ -407,21 +407,23 @@ LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 MapLoginHandler mapLoginHandler;
 
 // TODO Find some nice place for these functions
-void accountLogin(Network *network, LoginData *loginData)
+void accountLogin(LoginData *loginData)
 {
     logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
-    loginHandler.setCharInfo(&charInfo);
+    network->registerHandler(&charServerHandler);
     loginHandler.setLoginData(loginData);
+    charServerHandler.setLoginData(loginData);
+    charServerHandler.setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut *msg = new MessageOut();
-    msg->writeShort(PAMSG_LOGIN);
-    msg->writeLong(0); // client version
-    msg->writeString(loginData->username);
-    msg->writeString(loginData->password);
+    MessageOut msg;
+    msg.writeShort(PAMSG_LOGIN);
+    msg.writeLong(0); // client version
+    msg.writeString(loginData->username);
+    msg.writeString(loginData->password);
     network->send(msg);
 
     // Clear the password, avoids auto login when returning to login
@@ -436,22 +438,23 @@ void accountLogin(Network *network, LoginData *loginData)
     config.setValue("remember", loginData->remember);
 }
 
-void accountRegister(Network *network, LoginData *loginData)
+void accountRegister(LoginData *loginData)
 {
     logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
     network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
-    loginHandler.setCharInfo(&charInfo);
     loginHandler.setLoginData(loginData);
+    charServerHandler.setLoginData(loginData);
+    charServerHandler.setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut *msg = new MessageOut();
-    msg->writeShort(PAMSG_REGISTER);
-    msg->writeLong(0); // client version
-    msg->writeString(loginData->username);
-    msg->writeString(loginData->password);
-    msg->writeString(loginData->email);
+    MessageOut msg;
+    msg.writeShort(PAMSG_REGISTER);
+    msg.writeLong(0); // client version
+    msg.writeString(loginData->username);
+    msg.writeString(loginData->password);
+    msg.writeString(loginData->email);
     network->send(msg);
 }
 
@@ -544,7 +547,7 @@ int main(int argc, char *argv[])
     {
         logger->error("An error occurred while initializing ENet.");
     }
-    Network *network = new Network();
+    network = new Network();
 
     SDL_Event event;
 
@@ -678,11 +681,11 @@ int main(int argc, char *argv[])
                     break;
 
                 case ACCOUNT_STATE:
-                    accountLogin(network, &loginData);
+                    accountLogin(&loginData);
                     break;
 
                 case REGISTER_ACCOUNT_STATE:
-                    accountRegister(network, &loginData);
+                    accountRegister(&loginData);
                     break;
 
                 default:

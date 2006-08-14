@@ -177,7 +177,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     player_node->mJobXp = msg->readLong();
                     break;
                 case 0x0014:
-                    player_node->mGp = msg->readLong();
+                    player_node->mMoney = msg->readLong();
                     break;
                 case 0x0016:
                     player_node->mXpForNextLevel = msg->readLong();

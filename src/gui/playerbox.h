@@ -57,10 +57,10 @@ class PlayerBox : public gcn::ScrollArea
          */
         void drawBorder(gcn::Graphics *graphics);
 
-        int mHairColor;         /**< The hair color index */
-        int mHairStyle;         /**< The hair style index */
-        unsigned char mSex;     /**< Sex */
-        bool mShowPlayer;       /**< Wether to show the player or not */
+        unsigned char mHairColor;     /**< The hair color index */
+        unsigned char mHairStyle;     /**< The hair style index */
+        unsigned char mSex;           /**< Sex */
+        bool mShowPlayer;             /**< Wether to show the player or not */
 
     private:
         static int instances;

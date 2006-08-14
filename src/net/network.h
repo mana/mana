@@ -59,7 +59,7 @@ class Network
         void dispatchMessages();
         void flush();
 
-        void send(MessageOut *msg);
+        void send(const MessageOut &msg);
 
         enum State {
             IDLE,
@@ -95,5 +95,8 @@ class Network
 
 /** Convert an address from int format to string */
 char *iptostring(int address);
+
+// TODO: remove this global, just a temp solution.
+extern Network *network;
 
 #endif

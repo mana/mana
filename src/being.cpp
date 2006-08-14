@@ -46,6 +46,7 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 }
 
 Being::Being(Uint32 id, Uint16 job, Map *map):
+    mSex(2),
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
     mAction(0),
@@ -58,7 +59,6 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mWalkSpeed(150),
     mMap(NULL),
     mHairStyle(0), mHairColor(0),
-    mSex(2),
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false)

@@ -29,6 +29,8 @@
 
 #include "../log.h"
 
+Network *network;
+
 Network::Network():
     mClient(0), mServer(0),
     mAddress(), mPort(0),
@@ -216,7 +218,7 @@ void Network::flush()
     }
 }
 
-void Network::send(MessageOut *msg)
+void Network::send(const MessageOut &msg)
 {
     if (mState == IDLE || mState == NET_ERROR)
     {
@@ -225,8 +227,8 @@ void Network::send(MessageOut *msg)
         return;
     }
 
-    ENetPacket *packet = enet_packet_create(msg->getData(),
-                                            msg->getDataSize(),
+    ENetPacket *packet = enet_packet_create(msg.getData(),
+                                            msg.getDataSize(),
                                             ENET_PACKET_FLAG_RELIABLE);
     mOutgoingPackets.push(packet);
 }

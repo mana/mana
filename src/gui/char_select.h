@@ -69,7 +69,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         gcn::Label *mNameLabel;
         gcn::Label *mLevelLabel;
-        gcn::Label *mJobLevelLabel;
         gcn::Label *mMoneyLabel;
 
         PlayerBox *mPlayerBox;

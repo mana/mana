@@ -128,7 +128,7 @@ enum {
     APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
     PAMSG_CHAR_DELETE              = 0x0022, // B index
     APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
-    PAMSG_CHAR_LIST                = 0x0024, // -
+    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats, S mapname, W*2 position
     APMSG_CHAR_LIST_RESPONSE       = 0x0025, // B number, { B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats, S mapname, W*2 position }*
     PAMSG_CHAR_SELECT              = 0x0026, // B index
     APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, S mapname, W*2 position
@@ -207,6 +207,18 @@ enum {
     REGISTER_EXISTS_EMAIL               // there already is an account with this email address
 };
 
+// Character creation specific return values
+enum {
+    CREATE_INVALID_HAIRSTYLE = 0x40,
+    CREATE_INVALID_HAIRCOLOR,
+    CREATE_INVALID_GENDER,
+    CREATE_RAW_STATS_TOO_HIGH,
+    CREATE_RAW_STATS_TOO_LOW,
+    CREATE_RAW_STATS_INVALID_DIFF,
+    CREATE_RAW_STATS_EQUAL_TO_ZERO,
+    CREATE_EXISTS_NAME,
+    CREATE_TOO_MUCH_CHARACTERS
+};
 
 /** Encodes coords and direction in 3 bytes data */
 void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);

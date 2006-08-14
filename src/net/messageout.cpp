@@ -104,13 +104,13 @@ MessageOut::writeString(const std::string &string, int length)
 }
 
 char*
-MessageOut::getData()
+MessageOut::getData() const
 {
     return mData;
 }
 
 unsigned int
-MessageOut::getDataSize()
+MessageOut::getDataSize() const
 {
     return mDataSize;
 }

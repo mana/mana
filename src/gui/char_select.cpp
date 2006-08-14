@@ -38,6 +38,8 @@
 #include "../main.h"
 
 #include "../net/messageout.h"
+#include "../net/network.h"
+#include "../net/protocol.h"
 
 #include "../utils/tostring.h"
 
@@ -83,7 +85,6 @@ CharSelectDialog::CharSelectDialog(Network *network,
 
     mNameLabel = new gcn::Label("Name");
     mLevelLabel = new gcn::Label("Level");
-    mJobLevelLabel = new gcn::Label("Job Level");
     mMoneyLabel = new gcn::Label("Money");
     mPlayerBox = new PlayerBox(0);
 
@@ -93,7 +94,6 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
     mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
     mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
     mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
     mPreviousButton->setPosition(5, 170);
     mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
@@ -117,7 +117,6 @@ CharSelectDialog::CharSelectDialog(Network *network,
     add(mNextButton);
     add(mNameLabel);
     add(mLevelLabel);
-    add(mJobLevelLabel);
     add(mMoneyLabel);
 
     mSelectButton->requestFocus();
@@ -177,8 +176,7 @@ void CharSelectDialog::updatePlayerInfo()
     if (pi) {
         mNameLabel->setCaption(pi->getName());
         mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
-        mJobLevelLabel->setCaption("Job Lvl: " + toString(pi->mJobLevel));
-        mMoneyLabel->setCaption("Gold: " + toString(pi->mGp));
+        mMoneyLabel->setCaption("Money: " + toString(pi->mMoney));
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);
@@ -192,7 +190,6 @@ void CharSelectDialog::updatePlayerInfo()
     } else {
         mNameLabel->setCaption("Name");
         mLevelLabel->setCaption("Level");
-        mJobLevelLabel->setCaption("Job Level");
         mMoneyLabel->setCaption("Money");
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
@@ -207,10 +204,11 @@ void CharSelectDialog::updatePlayerInfo()
 void CharSelectDialog::attemptCharDelete()
 {
     // Request character deletion
-    MessageOut outMsg;
-    outMsg.writeShort(0x0068);
-    outMsg.writeLong(mCharInfo->getEntry()->mCharId);
-    outMsg.writeString("a@a.com", 40);
+    MessageOut msg;
+    msg.writeShort(PAMSG_CHAR_DELETE);
+    // TODO: Send the selected slot
+    msg.writeByte(0);
+    network->send(msg);
     mCharInfo->lock();
 }
 
@@ -326,15 +324,17 @@ void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
     MessageOut outMsg;
-    outMsg.writeShort(0x0067);
-    outMsg.writeString(getName(), 24);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(5);
-    outMsg.writeByte(mSlot);
-    outMsg.writeShort(mPlayerBox->mHairColor + 1);
-    outMsg.writeShort(mPlayerBox->mHairStyle + 1);
+    outMsg.writeShort(PAMSG_CHAR_CREATE);
+    outMsg.writeString(getName());
+    outMsg.writeByte(mPlayerBox->mHairStyle + 1);
+    outMsg.writeByte(mPlayerBox->mHairColor + 1);
+    // TODO: send selected sex
+    outMsg.writeByte(0); // Player sex
+    outMsg.writeShort(10); // STR
+    outMsg.writeShort(10); // AGI
+    outMsg.writeShort(10); // VIT
+    outMsg.writeShort(10); // INT
+    outMsg.writeShort(10); // DEX
+    outMsg.writeShort(10); // LUK
+    network->send(outMsg);
 }

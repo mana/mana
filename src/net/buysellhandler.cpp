@@ -72,7 +72,7 @@ void BuySellHandler::handleMessage(MessageIn *msg)
             msg->readShort();  // length
             n_items = (msg->getLength() - 4) / 11;
             buyDialog->reset();
-            buyDialog->setMoney(player_node->mGp);
+            buyDialog->setMoney(player_node->mMoney);
             buyDialog->setVisible(true);
 
             for (int k = 0; k < n_items; k++)

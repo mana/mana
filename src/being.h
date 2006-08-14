@@ -98,6 +98,8 @@ class Being : public Sprite
         static const char UP = 4;
         static const char RIGHT = 8;
 
+        std::string mName;      /**< Name of character */
+        Uint8 mSex;             /**< Character's gender */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
         Uint8 mDirection;       /**< Facing direction */
@@ -358,14 +360,12 @@ class Being : public Sprite
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Map *mMap;                      /**< Map on which this being resides */
-        std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
 
         Path mPath;
         std::string mSpeech;
         std::string mDamage;
         Uint16 mHairStyle, mHairColor;
-        Uint8 mSex;
         Uint32 mSpeechTime;
         Uint32 mDamageTime;
         bool mShowSpeech, mShowDamage;
