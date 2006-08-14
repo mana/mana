@@ -46,7 +46,8 @@ CharServerHandler::CharServerHandler()
     handledMessages = _messages;
 }
 
-void CharServerHandler::handleMessage(MessageIn *msg)
+void
+CharServerHandler::handleMessage(MessageIn *msg)
 {
     int slot;
     LocalPlayer *tempPlayer;
@@ -54,56 +55,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     switch (msg->getId())
     {
         case APMSG_CHAR_CREATE_RESPONSE:
-            int errMsg = msg->readByte();
-            // Character creation successful
-            if (errMsg == ERRMSG_OK)
-            {
-            }
-            // Character creation failed
-            else
-            {
-                std::string message = "";
-                switch (errMsg)
-                {
-                    case ERRMSG_NO_LOGIN:
-                        message = "Not logged in";
-                        break;
-                    case CREATE_TOO_MUCH_CHARACTERS:
-                        message = "No empty slot";
-                        break;
-                    case ERRMSG_INVALID_ARGUMENT:
-                        message = "Invalid name";
-                        break;
-                    case CREATE_EXISTS_NAME:
-                        message = "Character's name already exists";
-                        break;
-                    case CREATE_INVALID_HAIRSTYLE:
-                        message = "Invalid hairstyle";
-                        break;
-                    case CREATE_INVALID_HAIRCOLOR:
-                        message = "Invalid hair color";
-                        break;
-                    case CREATE_INVALID_GENDER:
-                        message = "Invalid gender";
-                        break;
-                    case CREATE_RAW_STATS_TOO_HIGH:
-                        message = "Character's stats are too high";
-                        break;
-                    case CREATE_RAW_STATS_TOO_LOW:
-                        message = "Character's stats are too low";
-                        break;
-                    case CREATE_RAW_STATS_INVALID_DIFF:
-                        message = "Character's stats difference is too high";
-                        break;
-                    case CREATE_RAW_STATS_EQUAL_TO_ZERO:
-                        message = "One stat is zero";
-                        break;
-                    default:
-                        message = "Unknown error";
-                        break;
-                }
-                new OkDialog("Error", message);
-            }
+            handleCharCreateResponse(*msg);
             break;
         case APMSG_CHAR_DELETE_RESPONSE:
         {
@@ -147,7 +99,64 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     }
 }
 
-LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
+void
+CharServerHandler::handleCharCreateResponse(MessageIn &msg)
+{
+    int errMsg = msg.readByte();
+
+    // Character creation successful
+    if (errMsg == ERRMSG_OK)
+    {
+    }
+    // Character creation failed
+    else
+    {
+        std::string message = "";
+        switch (errMsg)
+        {
+            case ERRMSG_NO_LOGIN:
+                message = "Not logged in";
+                break;
+            case CREATE_TOO_MUCH_CHARACTERS:
+                message = "No empty slot";
+                break;
+            case ERRMSG_INVALID_ARGUMENT:
+                message = "Invalid name";
+                break;
+            case CREATE_EXISTS_NAME:
+                message = "Character's name already exists";
+                break;
+            case CREATE_INVALID_HAIRSTYLE:
+                message = "Invalid hairstyle";
+                break;
+            case CREATE_INVALID_HAIRCOLOR:
+                message = "Invalid hair color";
+                break;
+            case CREATE_INVALID_GENDER:
+                message = "Invalid gender";
+                break;
+            case CREATE_RAW_STATS_TOO_HIGH:
+                message = "Character's stats are too high";
+                break;
+            case CREATE_RAW_STATS_TOO_LOW:
+                message = "Character's stats are too low";
+                break;
+            case CREATE_RAW_STATS_INVALID_DIFF:
+                message = "Character's stats difference is too high";
+                break;
+            case CREATE_RAW_STATS_EQUAL_TO_ZERO:
+                message = "One stat is zero";
+                break;
+            default:
+                message = "Unknown error";
+                break;
+        }
+        new OkDialog("Error", message);
+    }
+}
+
+LocalPlayer*
+CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
     slot = msg->readByte(); // character slot
