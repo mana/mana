@@ -41,6 +41,7 @@ CharServerHandler::CharServerHandler()
         APMSG_CHAR_CREATE_RESPONSE,
         APMSG_CHAR_DELETE_RESPONSE,
         APMSG_CHAR_INFO,
+        APMSG_CHAR_SELECT_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -99,7 +100,7 @@ CharServerHandler::handleMessage(MessageIn *msg)
             n_character++;
             break;
 
-        case PMSG_CHAR_SELECT_RESPONSE:
+        case APMSG_CHAR_SELECT_RESPONSE:
             handleCharSelectResponse(*msg);
             break;
     }

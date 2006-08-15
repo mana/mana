@@ -3,6 +3,8 @@
 	* src/gui/char_select.cpp, src/net/charserverhandler.h,
 	src/net/charserverhandler.cpp: Some preparations towards supporting
 	character select and response handling.
+	* src/net/charserverhandler.cpp: Fixed typo and forgetting to add
+	APMSG_CHAR_SELECT_RESPONSE to the list of handled messages.
 
 2006-08-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
