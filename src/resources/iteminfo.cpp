@@ -18,43 +18,27 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
  */
 
-#ifndef _TMW_EQUIPMENT_H
-#define _TMW_EQUIPMENT_H
+#include "iteminfo.h"
 
-#include "window.h"
+#include "resourcemanager.h"
 
-class Equipment;
+Image*
+ItemInfo::getImage() {
+    if (mImage == NULL && mImageName != "") {
+        mImage = ResourceManager::getInstance()->getImage(mImageName);
+    }
+    return mImage;
+}
 
-/**
- * Equipment dialog.
- *
- * \ingroup Interface
- */
-class EquipmentWindow : public Window
-{
-    public:
-        /**
-         * Constructor.
-         */
-        EquipmentWindow(Equipment *equipment);
+void
+ItemInfo::setImage(const std::string &image) {
+    mImageName = "graphics/items/" + image;
+}
 
-        /**
-         * Destructor.
-         */
-        ~EquipmentWindow();
-
-        /**
-         * Draws the equipment window.
-         */
-        void draw(gcn::Graphics *graphics);
-
-    private:
-        Equipment *mEquipment;
-};
-
-extern EquipmentWindow *equipmentWindow;
-
-#endif
+ItemInfo::~ItemInfo() {
+    if (mImage != NULL){
+        mImage->decRef();
+    }
+}

@@ -58,7 +58,6 @@ int camera_x, camera_y;
 
 ItemManager *itemDb;          /**< Item database object */
 
-Spriteset *itemset;
 Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
@@ -84,11 +83,9 @@ Engine::Engine(Network *network):
             weaponset.push_back(tmp);
         }
     }
-    itemset = resman->getSpriteset("graphics/sprites/items.png", 32, 32);
 
     if (!npcset) logger->error("Unable to load NPC spriteset!");
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
-    if (!itemset) logger->error("Unable to load item spriteset!");
 
     // Initialize item manager
     itemDb = new ItemManager();
@@ -99,7 +96,6 @@ Engine::~Engine()
     // Delete sprite sets
     npcset->decRef();
     emotionset->decRef();
-    itemset->decRef();
 
     std::for_each(weaponset.begin(), weaponset.end(),
             std::mem_fun(&Spriteset::decRef));

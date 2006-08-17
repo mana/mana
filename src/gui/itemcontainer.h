@@ -30,7 +30,6 @@
 class Image;
 class Inventory;
 class Item;
-class Spriteset;
 
 /**
  * An item container. Used to show items in inventory and trade dialog.
@@ -83,7 +82,6 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
 
     private:
         Inventory *mInventory;
-        Spriteset *mItemset;
         Image *mSelImg;
         Item *mSelectedItem;
 

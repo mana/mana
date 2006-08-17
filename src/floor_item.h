@@ -27,6 +27,7 @@
 #include "graphics.h"
 #include "map.h"
 #include "sprite.h"
+#include "resources/image.h"
 
 /**
  * An item lying on the floor.
