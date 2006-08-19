@@ -139,29 +139,25 @@ void Network::clearHandlers()
     mMessageHandlers.clear();
 }
 
-void Network::dispatchMessages()
+void
+Network::dispatchMessage(ENetPacket *packet)
 {
-    while (!mIncomingPackets.empty())
-    {
-        ENetPacket *packet = mIncomingPackets.front();
-        MessageIn msg((const char *)packet->data, packet->dataLength);
+    MessageIn msg((const char *)packet->data, packet->dataLength);
 
-        MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+    MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
-        if (iter != mMessageHandlers.end()) {
-            logger->log("Received packet %x (%i B)",
-                        msg.getId(), msg.getLength());
-            iter->second->handleMessage(&msg);
-        }
-        else {
-            logger->log("Unhandled packet %x (%i B)",
-                        msg.getId(), msg.getLength());
-        }
-
-        mIncomingPackets.pop();
-        // Clean up the packet now that we're done using it.
-        enet_packet_destroy(packet);
+    if (iter != mMessageHandlers.end()) {
+        logger->log("Received packet %x (%i B)",
+                    msg.getId(), msg.getLength());
+        iter->second->handleMessage(&msg);
     }
+    else {
+        logger->log("Unhandled packet %x (%i B)",
+                    msg.getId(), msg.getLength());
+    }
+
+    // Clean up the packet now that we're done using it.
+    enet_packet_destroy(packet);
 }
 
 void Network::flush()
@@ -187,7 +183,7 @@ void Network::flush()
 
             case ENET_EVENT_TYPE_RECEIVE:
                 logger->log("Incoming data...");
-                mIncomingPackets.push(event.packet);
+                dispatchMessage(event.packet);
                 break;
             case ENET_EVENT_TYPE_DISCONNECT:
                 mState = IDLE;
@@ -213,8 +209,6 @@ void Network::flush()
             enet_peer_send(mServer, 0, packet);
             mOutgoingPackets.pop();
         }
-
-        dispatchMessages();
     }
 }
 

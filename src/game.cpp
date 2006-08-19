@@ -376,7 +376,6 @@ void Game::logic()
 
         // Handle network stuff
         mNetwork->flush();
-        mNetwork->dispatchMessages();
     }
 }
 

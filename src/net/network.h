@@ -56,7 +56,7 @@ class Network
         int getState() const { return mState; }
         bool isConnected() const { return mState == CONNECTED; }
 
-        void dispatchMessages();
+        void dispatchMessage(ENetPacket *packet);
         void flush();
 
         void send(const MessageOut &msg);
@@ -69,11 +69,9 @@ class Network
             NET_ERROR
         };
 
+    private:
         ENetHost *mClient;
         ENetPeer *mServer;
-
-    protected:
-
 
         std::string mAddress;
         short mPort;
@@ -87,7 +85,6 @@ class Network
         MessageHandlers mMessageHandlers;
 
         std::queue<ENetPacket *> mOutgoingPackets;
-        std::queue<ENetPacket *> mIncomingPackets;
 
         bool realConnect();
         void receive();

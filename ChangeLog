@@ -1,3 +1,8 @@
+2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/net/network.h, src/net/network.cpp: Removed
+	incoming packets queue. Messages are now processed as they come in.
+
 2006-08-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.cpp, src/net/charserverhandler.h,
