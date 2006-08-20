@@ -25,7 +25,6 @@
 #define _TMW_NETWORK_
 
 #include <map>
-#include <queue>
 #include <string>
 
 #include <guichan.hpp>
@@ -33,15 +32,26 @@
 #include <enet/enet.h>
 
 class MessageHandler;
-class MessageIn;
 class MessageOut;
 
+/**
+ * The client network layer. Facilitates connecting and communicating to the
+ * account, game and chat servers. Also routes incoming message to the
+ * appropriate message handlers.
+ */
 class Network
 {
     public:
         friend class MessageOut;
 
+        /**
+         * Constructor. Sets up the local host.
+         */
         Network();
+
+        /**
+         * Destructor.
+         */
         ~Network();
 
         typedef enum {
@@ -50,15 +60,30 @@ class Network
             CHAT
         } Server;
 
+        /**
+         * Connects to the given server with the specified address and port.
+         * This method is non-blocking, use isConnected to check whether the
+         * server is connected.
+         */
         bool
         connect(Server server, const std::string &address, short port);
 
+        /**
+         * Disconnects from the given server.
+         */
         void
         disconnect(Server server);
 
+        /**
+         * Registers a message handler. A message handler handles a certain
+         * subset of incoming messages.
+         */
         void
         registerHandler(MessageHandler *handler);
 
+        /**
+         * Unregisters a message handler.
+         */
         void
         unregisterHandler(MessageHandler *handler);
 
@@ -68,15 +93,18 @@ class Network
         int
         getState() const { return mState; }
 
+        /**
+         * Returns whether the given server is connected.
+         */
         bool
         isConnected(Server server) const;
 
         void
-        dispatchMessage(ENetPacket *packet);
-
-        void
         flush();
 
+        /**
+         * Send a message to a given server. The server should be connected.
+         */
         void
         send(Server server, const MessageOut &msg);
 
@@ -86,11 +114,22 @@ class Network
         };
 
     private:
+        /**
+         * The local host.
+         */
         ENetHost *mClient;
 
-        ENetPeer *mAccountServer;
-        ENetPeer *mGameServer;
-        ENetPeer *mChatServer;
+        /**
+         * An array holding the peers of the account, game and chat servers.
+         */
+        ENetPeer *mServers[3];
+
+        /**
+         * Dispatches a message to the appropriate message handler and
+         * destroys it afterwards.
+         */
+        void
+        dispatchMessage(ENetPacket *packet);
 
         unsigned int mToSkip;
 

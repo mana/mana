@@ -32,11 +32,12 @@
 Network *network;
 
 Network::Network():
-    mAccountServer(NULL),
-    mGameServer(NULL),
-    mChatServer(NULL),
     mState(NET_OK)
 {
+    // Initialize server peers
+    for (int i = 0; i < 3; ++i)
+        mServers[i] = NULL;
+
     mClient = enet_host_create(NULL, 3, 0, 0);
 
     if (!mClient)
@@ -68,15 +69,7 @@ Network::connect(Server server, const std::string &address, short port)
         return false;
     }
 
-    ENetPeer *peer = NULL;
-
-    switch (server) {
-        case ACCOUNT: peer = mAccountServer; break;
-        case GAME:    peer = mGameServer; break;
-        case CHAT:    peer = mChatServer; break;
-    }
-
-    if (peer != NULL)
+    if (mServers[server] != NULL)
     {
         logger->log("Network::connect() already connected (or connecting) to "
                 "this server!");
@@ -89,19 +82,13 @@ Network::connect(Server server, const std::string &address, short port)
     enetAddress.port = port;
 
     // Initiate the connection, allocating channel 0.
-    peer = enet_host_connect(mClient, &enetAddress, 1);
+    mServers[server] = enet_host_connect(mClient, &enetAddress, 1);
 
-    if (peer == NULL)
+    if (mServers[server] == NULL)
     {
         logger->log("Unable to initiate connection to the server.");
         mState = NET_ERROR;
         return false;
-    }
-
-    switch (server) {
-        case ACCOUNT: mAccountServer = peer; break;
-        case GAME:    mGameServer = peer; break;
-        case CHAT:    mChatServer = peer; break;
     }
 
     return true;
@@ -110,25 +97,13 @@ Network::connect(Server server, const std::string &address, short port)
 void
 Network::disconnect(Server server)
 {
-    ENetPeer *peer = NULL;
-
-    switch (server) {
-        case ACCOUNT: peer = mAccountServer; break;
-        case GAME:    peer = mGameServer; break;
-        case CHAT:    peer = mChatServer; break;
-    }
-
-    if (peer)
+    if (mServers[server])
     {
-        enet_peer_disconnect(peer, 0);
+        enet_peer_disconnect(mServers[server], 0);
         enet_host_flush(mClient);
-        enet_peer_reset(peer);
+        enet_peer_reset(mServers[server]);
 
-        switch (server) {
-            case ACCOUNT: mAccountServer = NULL; break;
-            case GAME:    mGameServer = NULL; break;
-            case CHAT:    mChatServer = NULL; break;
-        }
+        mServers[server] = NULL;
     }
 }
 
@@ -171,15 +146,8 @@ Network::clearHandlers()
 bool
 Network::isConnected(Server server) const
 {
-    ENetPeer *peer = NULL;
-
-    switch (server) {
-        case ACCOUNT: peer = mAccountServer; break;
-        case GAME:    peer = mGameServer; break;
-        case CHAT:    peer = mChatServer; break;
-    }
-
-    return peer->state == ENET_PEER_STATE_CONNECTED;
+    return mServers[server] != NULL &&
+           mServers[server]->state == ENET_PEER_STATE_CONNECTED;
 }
 
 void
@@ -253,27 +221,20 @@ void Network::send(Server server, const MessageOut &msg)
                     "ready.");
         return;
     }
-
-    ENetPeer *peer = NULL;
-
-    switch (server) {
-        case ACCOUNT: peer = mAccountServer; break;
-        case GAME:    peer = mGameServer; break;
-        case CHAT:    peer = mChatServer; break;
-    }
-
-    if (peer)
+    else if (!isConnected(server))
     {
-        logger->log("Sending message of size %d to server %d...",
-                    msg.getDataSize(), server);
-
-        // Directly send away the packet (TODO: check what ENet does in case
-        // this is done before connection is ready)
-        ENetPacket *packet = enet_packet_create(msg.getData(),
-                                                msg.getDataSize(),
-                                                ENET_PACKET_FLAG_RELIABLE);
-        enet_peer_send(peer, 0, packet);
+        logger->log("Warning: cannot send message to not connected server %d!",
+                    server);
+        return;
     }
+
+    logger->log("Sending message of size %d to server %d...",
+                msg.getDataSize(), server);
+
+    ENetPacket *packet = enet_packet_create(msg.getData(),
+                                            msg.getDataSize(),
+                                            ENET_PACKET_FLAG_RELIABLE);
+    enet_peer_send(mServers[server], 0, packet);
 }
 
 char *iptostring(int address)
