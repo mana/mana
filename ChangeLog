@@ -18,6 +18,8 @@
 	entries in the code.
 	* src/net/network.h, src/net/network.cpp: Added documentation and did
 	a bit of cleanup (peer pointers now stored in an array).
+	* src/gui/register.cpp, src/main.h: Made cancel button in register
+	dialog go back to the login dialog and cleaned up two unused states.
 
 2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

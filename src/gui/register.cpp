@@ -119,7 +119,7 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {
-        state = STATE_EXIT;
+        state = STATE_LOGIN;
     }
     else if (eventId == "register")
     {
