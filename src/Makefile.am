@@ -161,6 +161,7 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
 	      resources/iteminfo.h \
+	      resources/iteminfo.cpp \
 	      resources/itemmanager.cpp \
 	      resources/itemmanager.h \
 	      resources/mapreader.cpp \

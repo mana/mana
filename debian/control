@@ -1,7 +1,7 @@
 Source: tmw
 Priority: optional
 Maintainer: FERREIRA Yohann <bertram@cegetel.net>
-Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan0-dev (>= 0.4.0-4), libcurl3-gnutls-dev (>= 7.15.0-1), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1), libgl1-mesa-dev (>= 6.4.1), libpng12-dev (>= 1.2.5), libsdl-net1.2-dev (>= 1.2.5)
+Build-Depends: debhelper (>= 4.0.0), autotools-dev, docbook-to-man, libsdl1.2-dev (>= 1.2.7), libsdl-image1.2-dev (>= 1.2.3), libsdl-mixer1.2-dev (>= 1.2.5), libguichan0-dev (>= 0.5.0-1), libcurl3-gnutls-dev (>= 7.15.0-1), libxml2-dev (>= 2.4.19), libphysfs-dev (>= 1.0.0-1), libgl1-mesa-dev (>= 6.4.1), libpng12-dev (>= 1.2.5), libsdl-net1.2-dev (>= 1.2.5)
 Standards-Version: 3.6.2
 
 Package: tmw

@@ -1,3 +1,11 @@
+2006-08-20  Yohann Ferreira  <bertram@cegetel.net>
+	* data/graphics/sprites/Makefile.am : Following the splitting from
+	Philipp, moved out the items.png file from the Makefile.am.
+	* debian/control, debian/tmw-data.install : Updated debian package
+	creation process.
+	* src/Makefile.am : Added iteminfo.cpp to avoid an undefined reference
+	with gcc 4.1.2. Happy to be back :)
+
 2006-08-17  Philipp Sehmisch  <tmw@crushnet.org>
 	* data/graphics/items/*: Splitted the items.png into separate images
 	with more distinctive names. (no, i won't list all 114)
