@@ -1,4 +1,10 @@
+2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Moved libpng check before SDL_image check, since the
+	latter requires the former.
+
 2006-08-20  Yohann Ferreira  <bertram@cegetel.net>
+
 	* data/graphics/sprites/Makefile.am : Following the splitting from
 	Philipp, moved out the items.png file from the Makefile.am.
 	* debian/control, debian/tmw-data.install : Updated debian package
@@ -7,18 +13,20 @@
 	with gcc 4.1.2. Happy to be back :)
 
 2006-08-17  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/graphics/items/*: Splitted the items.png into separate images
 	with more distinctive names. (no, i won't list all 114)
 	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
 	spriteset with filenames. added names and descriptions for all missing
 	items. Changed names and dascriptions of some items.
 	* src/engine.cpp: removed global item spriteset.
-	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp, src/iteminfo.h
-	src/equipmentwindow.cpp, src/equipmentwindow.h, src/itemcontainer.cpp,
-	src/itemcontainer.h: the iteminfo class now provides a pointer to the item
-	icon image instead of providing the index on the item spriteset.
-	* data/graphics/tiles/trans_desert-woodland.png: added transmission tileset
-	between desert and woodland.
+	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
+	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,
+	src/itemcontainer.cpp, src/itemcontainer.h: the iteminfo class now
+	provides a pointer to the item icon image instead of providing the
+	index on the item spriteset.
+	* data/graphics/tiles/trans_desert-woodland.png: added transmission
+	tileset between desert and woodland.
 
 2006-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

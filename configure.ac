@@ -49,6 +49,9 @@ AC_SUBST(CURL_CFLAGS)
 AC_CHECK_LIB([xml2], [xmlInitParser], ,
 AC_MSG_ERROR([ *** Unable to find libxml2 library (xmlsoft.org)]))
 
+AC_CHECK_LIB(png, png_write_info, ,
+AC_MSG_ERROR([ *** Unable to find png library]))
+
 AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
@@ -59,9 +62,6 @@ AC_MSG_ERROR([ *** Unable to find SDL_mixer library
 
 AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
 AC_MSG_ERROR([ *** Unable to find SDL_net library]))
-
-AC_CHECK_LIB(png, png_write_info, ,
-AC_MSG_ERROR([ *** Unable to find png library]))
 
 # Checks for header files.
 AC_HEADER_STDC
