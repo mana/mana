@@ -31,7 +31,7 @@ class PlayerHandler : public MessageHandler
     public:
         PlayerHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

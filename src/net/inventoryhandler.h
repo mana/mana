@@ -31,7 +31,7 @@ class InventoryHandler : public MessageHandler
     public:
         InventoryHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

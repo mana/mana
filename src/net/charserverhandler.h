@@ -37,7 +37,7 @@ class CharServerHandler : public MessageHandler
         CharServerHandler();
 
         void
-        handleMessage(MessageIn *msg);
+        handleMessage(MessageIn &msg);
 
         void
         setCharInfo(LockedArray<LocalPlayer*> *charInfo)
@@ -58,7 +58,8 @@ class CharServerHandler : public MessageHandler
         LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
 
-        LocalPlayer* readPlayerData(MessageIn *msg, int &slot);
+        LocalPlayer*
+        readPlayerData(MessageIn &msg, int &slot);
 };
 
 #endif

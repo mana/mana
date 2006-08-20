@@ -47,21 +47,23 @@ NPCHandler::NPCHandler()
     handledMessages = _messages;
 }
 
-void NPCHandler::handleMessage(MessageIn *msg)
+void NPCHandler::handleMessage(MessageIn &msg)
 {
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_NPC_CHOICE:
-            msg->readShort();  // length
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readLong()));
-            npcListDialog->parseItems(msg->readString(msg->getLength() - 8));
+            msg.readShort();  // length
+            current_npc = dynamic_cast<NPC*>(
+                    beingManager->findBeing(msg.readLong()));
+            npcListDialog->parseItems(msg.readString(msg.getLength() - 8));
             npcListDialog->setVisible(true);
             break;
 
         case SMSG_NPC_MESSAGE:
-            msg->readShort();  // length
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg->readLong()));
-            npcTextDialog->addText(msg->readString(msg->getLength() - 8));
+            msg.readShort();  // length
+            current_npc = dynamic_cast<NPC*>(
+                    beingManager->findBeing(msg.readLong()));
+            npcTextDialog->addText(msg.readString(msg.getLength() - 8));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
             break;

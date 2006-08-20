@@ -31,7 +31,11 @@ class BeingHandler : public MessageHandler
     public:
         BeingHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
+
+    private:
+        void
+        handleBeingEnterMessage(MessageIn &msg);
 };
 
 #endif

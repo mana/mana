@@ -48,20 +48,20 @@ CharServerHandler::CharServerHandler()
 }
 
 void
-CharServerHandler::handleMessage(MessageIn *msg)
+CharServerHandler::handleMessage(MessageIn &msg)
 {
     int slot;
     LocalPlayer *tempPlayer;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case APMSG_CHAR_CREATE_RESPONSE:
-            handleCharCreateResponse(*msg);
+            handleCharCreateResponse(msg);
             break;
 
         case APMSG_CHAR_DELETE_RESPONSE:
         {
-            int errMsg = msg->readByte();
+            int errMsg = msg.readByte();
             // Character deletion successful
             if (errMsg == ERRMSG_OK)
             {
@@ -101,7 +101,7 @@ CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case APMSG_CHAR_SELECT_RESPONSE:
-            handleCharSelectResponse(*msg);
+            handleCharSelectResponse(msg);
             break;
     }
 }
@@ -193,18 +193,18 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 }
 
 LocalPlayer*
-CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
+CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
-    slot = msg->readByte(); // character slot
-    tempPlayer->mName = msg->readString();
-    tempPlayer->mSex = msg->readByte();
-    tempPlayer->setHairStyle(msg->readByte());
-    tempPlayer->setHairColor(msg->readByte());
-    tempPlayer->mLevel = msg->readByte();
-    tempPlayer->mMoney = msg->readShort();
+    slot = msg.readByte(); // character slot
+    tempPlayer->mName = msg.readString();
+    tempPlayer->mSex = msg.readByte();
+    tempPlayer->setHairStyle(msg.readByte());
+    tempPlayer->setHairColor(msg.readByte());
+    tempPlayer->mLevel = msg.readByte();
+    tempPlayer->mMoney = msg.readShort();
     for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg->readByte();
+        tempPlayer->mAttr[i] = msg.readByte();
     }
     return tempPlayer;
 }

@@ -40,14 +40,14 @@ MapLoginHandler::MapLoginHandler()
     handledMessages = _messages;
 }
 
-void MapLoginHandler::handleMessage(MessageIn *msg)
+void MapLoginHandler::handleMessage(MessageIn &msg)
 {
     //unsigned char direction;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_LOGIN_SUCCESS:
-            msg->readLong();   // server tick
+            msg.readLong();   // server tick
             //logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
             //        player_node->mX, player_node->mY, direction);
             state = STATE_GAME;

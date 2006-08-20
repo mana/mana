@@ -52,25 +52,25 @@ ChatHandler::ChatHandler()
     handledMessages = _messages;
 }
 
-void ChatHandler::handleMessage(MessageIn *msg)
+void ChatHandler::handleMessage(MessageIn &msg)
 {
     Being *being;
     std::string chatMsg;
     Sint16 chatMsgLength;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         // Received speech from being
         case SMSG_BEING_CHAT:
-            chatMsgLength = msg->readShort() - 8;
-            being = beingManager->findBeing(msg->readLong());
+            chatMsgLength = msg.readShort() - 8;
+            being = beingManager->findBeing(msg.readLong());
 
             if (!being || chatMsgLength <= 0)
             {
                 break;
             }
 
-            chatMsg = msg->readString(chatMsgLength);
+            chatMsg = msg.readString(chatMsgLength);
             chatWindow->chatLog(chatMsg, BY_OTHER);
             chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
             being->setSpeech(chatMsg, SPEECH_TIME);
@@ -78,16 +78,16 @@ void ChatHandler::handleMessage(MessageIn *msg)
 
         case SMSG_PLAYER_CHAT:
         case SMSG_GM_CHAT:
-            chatMsgLength = msg->readShort() - 4;
+            chatMsgLength = msg.readShort() - 4;
 
             if (chatMsgLength <= 0)
             {
                 break;
             }
 
-            chatMsg = msg->readString(chatMsgLength);
+            chatMsg = msg.readString(chatMsgLength);
 
-            if (msg->getId() == SMSG_PLAYER_CHAT)
+            if (msg.getId() == SMSG_PLAYER_CHAT)
             {
                 chatWindow->chatLog(chatMsg, BY_PLAYER);
 
@@ -105,13 +105,13 @@ void ChatHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_WHO_ANSWER:
-            chatWindow->chatLog("Online users: " + toString(msg->readLong()),
+            chatWindow->chatLog("Online users: " + toString(msg.readLong()),
                     BY_SERVER);
             break;
 
         case 0x010c:
             // Display MVP player
-            msg->readLong(); // id
+            msg.readLong(); // id
             chatWindow->chatLog("MVP player", BY_SERVER);
             break;
     }

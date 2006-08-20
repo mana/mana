@@ -25,6 +25,9 @@
 	selection of player character and implemented sending of game and chat
 	server tokens. It gets you in the game (or what's left of it), but not
 	on any map yet.
+	* src/net/*: Changed MessageHandler::handleMessage to take a reference
+	instead of a pointer. Removed unused Packet class. Added stub for
+	handling GPMSG_BEING_ENTER.
 
 2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

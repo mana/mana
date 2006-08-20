@@ -37,7 +37,7 @@ class MessageHandler
         MessageHandler();
         virtual ~MessageHandler();
 
-        virtual void handleMessage(MessageIn *msg) =0;
+        virtual void handleMessage(MessageIn &msg) = 0;
 
         void setNetwork(Network *network);
 

@@ -63,9 +63,9 @@ TradeHandler::TradeHandler()
     handledMessages = _messages;
 }
 
-void TradeHandler::handleMessage(MessageIn *msg)
+void TradeHandler::handleMessage(MessageIn &msg)
 {
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_TRADE_REQUEST:
                 // If a trade window or request window is already open, send a
@@ -81,7 +81,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
                 }
 
                 player_node->setTrading(true);
-                tradePartnerName = msg->readString(24);
+                tradePartnerName = msg.readString(24);
                 ConfirmDialog *dlg;
                 dlg = new ConfirmDialog("Request for trade",
                         tradePartnerName +
@@ -90,7 +90,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_TRADE_RESPONSE:
-            switch (msg->readByte())
+            switch (msg.readByte())
             {
                 case 0: // Too far away
                     chatWindow->chatLog("Trading isn't possible. "
@@ -126,11 +126,11 @@ void TradeHandler::handleMessage(MessageIn *msg)
 
         case SMSG_TRADE_ITEM_ADD:
             {
-                Sint32 amount = msg->readLong();
-                Sint16 type = msg->readShort();
-                msg->readByte();  // identified flag
-                msg->readByte();  // attribute
-                msg->readByte();  // refine
+                Sint32 amount = msg.readLong();
+                Sint16 type = msg.readShort();
+                msg.readByte();  // identified flag
+                msg.readByte();  // attribute
+                msg.readByte();  // refine
 
                 // TODO: handle also identified, etc
                 if (type == 0) {
@@ -144,10 +144,10 @@ void TradeHandler::handleMessage(MessageIn *msg)
         case SMSG_TRADE_ITEM_ADD_RESPONSE:
             // Trade: New Item add response (was 0x00ea, now 01b1)
             {
-                Item *item = player_node->getInvItem(msg->readShort());
-                Sint16 quantity = msg->readShort();
+                Item *item = player_node->getInvItem(msg.readShort());
+                Sint16 quantity = msg.readShort();
 
-                switch (msg->readByte())
+                switch (msg.readByte())
                 {
                     case 0:
                         // Successfully added item
@@ -175,7 +175,7 @@ void TradeHandler::handleMessage(MessageIn *msg)
 
         case SMSG_TRADE_OK:
             // 0 means ok from myself, 1 means ok from other;
-            tradeWindow->receivedOk(msg->readByte() == 0);
+            tradeWindow->receivedOk(msg.readByte() == 0);
             break;
 
         case SMSG_TRADE_CANCEL:

@@ -160,7 +160,7 @@ Network::dispatchMessage(ENetPacket *packet)
     if (iter != mMessageHandlers.end()) {
         logger->log("Received packet %x (%i B)",
                     msg.getId(), msg.getLength());
-        iter->second->handleMessage(&msg);
+        iter->second->handleMessage(msg);
     }
     else {
         logger->log("Unhandled packet %x (%i B)",

@@ -41,13 +41,13 @@ LoginHandler::LoginHandler()
     handledMessages = _messages;
 }
 
-void LoginHandler::handleMessage(MessageIn *msg)
+void LoginHandler::handleMessage(MessageIn &msg)
 {
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case APMSG_LOGIN_RESPONSE:
         {
-            int errMsg = msg->readByte();
+            int errMsg = msg.readByte();
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
@@ -79,7 +79,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
             break;
         case APMSG_REGISTER_RESPONSE:
         {
-            int errMsg = msg->readByte();
+            int errMsg = msg.readByte();
             // Successful registration
             if (errMsg == ERRMSG_OK)
             {

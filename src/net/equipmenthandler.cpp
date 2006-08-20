@@ -48,7 +48,7 @@ EquipmentHandler::EquipmentHandler()
     handledMessages = _messages;
 }
 
-void EquipmentHandler::handleMessage(MessageIn *msg)
+void EquipmentHandler::handleMessage(MessageIn &msg)
 {
     Sint32 itemCount;
     Sint16 index, equipPoint, itemId;
@@ -57,22 +57,22 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
     Being *being;
     Item *item;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_PLAYER_EQUIPMENT:
-            msg->readShort(); // length
-            itemCount = (msg->getLength() - 4) / 20;
+            msg.readShort(); // length
+            itemCount = (msg.getLength() - 4) / 20;
 
             for (int loop = 0; loop < itemCount; loop++)
             {
-                index = msg->readShort();
-                itemId = msg->readShort();
-                msg->readByte();  // type
-                msg->readByte();  // identify flag
-                msg->readShort(); // equip type
-                equipPoint = msg->readShort();
-                msg->readByte();  // attribute
-                msg->readByte();  // refine
+                index = msg.readShort();
+                itemId = msg.readShort();
+                msg.readByte();  // type
+                msg.readByte();  // identify flag
+                msg.readShort(); // equip type
+                equipPoint = msg.readShort();
+                msg.readByte();  // attribute
+                msg.readByte();  // refine
 
                 player_node->addInvItem(index, itemId, 1, true);
 
@@ -92,9 +92,9 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_EQUIP:
-            index = msg->readShort();
-            equipPoint = msg->readShort();
-            type = msg->readByte();
+            index = msg.readShort();
+            equipPoint = msg.readShort();
+            type = msg.readByte();
 
             logger->log("Equipping: %i %i %i", index, equipPoint, type);
 
@@ -128,10 +128,10 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
         case 0x01d7:
             // Equipment related
-            being = beingManager->findBeing(msg->readLong());
-            msg->readByte();  // equip point
-            itemId = msg->readShort();
-            msg->readShort(); // item id 2
+            being = beingManager->findBeing(msg.readLong());
+            msg.readByte();  // equip point
+            itemId = msg.readShort();
+            msg.readShort(); // item id 2
 
             if (!being)
                 break;
@@ -140,9 +140,9 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_UNEQUIP:
-            index = msg->readShort();
-            equipPoint = msg->readShort();
-            type = msg->readByte();
+            index = msg.readShort();
+            equipPoint = msg.readShort();
+            type = msg.readByte();
 
             if (!type) {
                 chatWindow->chatLog("Unable to unequip.", BY_SERVER);
@@ -192,7 +192,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:
-            itemId = msg->readShort();
+            itemId = msg.readShort();
 
             if (itemId <= 1)
                 break;

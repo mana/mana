@@ -31,7 +31,7 @@ class SkillHandler : public MessageHandler
     public:
         SkillHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

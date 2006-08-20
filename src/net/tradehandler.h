@@ -33,7 +33,7 @@ class TradeHandler : public MessageHandler
     public:
         TradeHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

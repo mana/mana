@@ -27,8 +27,6 @@
 
 #include <enet/enet.h>
 
-#include "packet.h"
-
 MessageIn::MessageIn(const char *data, unsigned int length):
     mData(data),
     mLength(length),

@@ -36,7 +36,7 @@ class LoginHandler : public MessageHandler
     public:
         LoginHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 
         void setLoginData(LoginData *loginData) { mLoginData = loginData; };
 

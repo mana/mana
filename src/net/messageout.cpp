@@ -27,8 +27,6 @@
 
 #include <enet/enet.h>
 
-#include "packet.h"
-
 MessageOut::MessageOut():
     mData(0),
     mDataSize(0),
