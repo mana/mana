@@ -51,7 +51,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                state = CHAR_SELECT_STATE;
+                state = STATE_CHAR_SELECT;
             }
             // Login failed
             else
@@ -73,7 +73,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                         errorMessage = "Unknown error";
                         break;
                 }
-                state = ERROR_STATE;
+                state = STATE_ERROR;
             }
         }
             break;
@@ -83,7 +83,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
             // Successful registration
             if (errMsg == ERRMSG_OK)
             {
-                state = ACCOUNT_STATE;
+                state = STATE_CHAR_SELECT;
             }
             // Registration failed
             else
@@ -105,7 +105,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                         errorMessage = "Unknown error";
                         break;
                 }
-                state = ERROR_STATE;
+                state = STATE_ERROR;
             }
         }
             break;

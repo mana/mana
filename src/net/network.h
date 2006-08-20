@@ -36,8 +36,6 @@ class MessageHandler;
 class MessageIn;
 class MessageOut;
 
-class Network;
-
 class Network
 {
     public:
@@ -46,35 +44,53 @@ class Network
         Network();
         ~Network();
 
-        bool connect(const std::string &address, short port);
-        void disconnect();
+        typedef enum {
+            ACCOUNT,
+            GAME,
+            CHAT
+        } Server;
 
-        void registerHandler(MessageHandler *handler);
-        void unregisterHandler(MessageHandler *handler);
-        void clearHandlers();
+        bool
+        connect(Server server, const std::string &address, short port);
 
-        int getState() const { return mState; }
-        bool isConnected() const { return mState == CONNECTED; }
+        void
+        disconnect(Server server);
 
-        void dispatchMessage(ENetPacket *packet);
-        void flush();
+        void
+        registerHandler(MessageHandler *handler);
 
-        void send(const MessageOut &msg);
+        void
+        unregisterHandler(MessageHandler *handler);
+
+        void
+        clearHandlers();
+
+        int
+        getState() const { return mState; }
+
+        bool
+        isConnected(Server server) const;
+
+        void
+        dispatchMessage(ENetPacket *packet);
+
+        void
+        flush();
+
+        void
+        send(Server server, const MessageOut &msg);
 
         enum State {
-            IDLE,
-            CONNECTED,
-            CONNECTING,
-            DATA,
+            NET_OK,
             NET_ERROR
         };
 
     private:
         ENetHost *mClient;
-        ENetPeer *mServer;
 
-        std::string mAddress;
-        short mPort;
+        ENetPeer *mAccountServer;
+        ENetPeer *mGameServer;
+        ENetPeer *mChatServer;
 
         unsigned int mToSkip;
 
@@ -83,11 +99,6 @@ class Network
         typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
         typedef MessageHandlers::iterator MessageHandlerIterator;
         MessageHandlers mMessageHandlers;
-
-        std::queue<ENetPacket *> mOutgoingPackets;
-
-        bool realConnect();
-        void receive();
 };
 
 /** Convert an address from int format to string */

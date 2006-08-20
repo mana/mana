@@ -165,14 +165,20 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 
     if (errMsg == 0)
     {
-        //std::string token = msg.readString(32);
-        //std::string gameServer = msg.readString();
-        //unsigned short gameServerPort = msg.readShort();
-        //std::string chatServer = msg.readString();
-        //unsigned short chatServerPort = msg.readShort();
+        // TODO: Somehow be able to send this token once connected
+        std::string token = msg.readString(32);
+        std::string gameServer = msg.readString();
+        unsigned short gameServerPort = msg.readShort();
+        std::string chatServer = msg.readString();
+        unsigned short chatServerPort = msg.readShort();
 
-        // TODO: Connect to game and chat servers, and login using the given
-        // TODO: token.
+        logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
+        logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
+
+        network->connect(Network::GAME, gameServer, gameServerPort);
+        network->connect(Network::CHAT, chatServer, chatServerPort);
+
+        state = STATE_CONNECT_GAME;
     }
 }
 

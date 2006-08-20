@@ -38,6 +38,11 @@ class MessageOut
         MessageOut();
 
         /**
+         * Constructor.
+         */
+        MessageOut(short id);
+
+        /**
          * Destructor.
          */
         ~MessageOut();

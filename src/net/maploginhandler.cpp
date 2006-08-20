@@ -50,12 +50,12 @@ void MapLoginHandler::handleMessage(MessageIn *msg)
             msg->readLong();   // server tick
             //logger->log("Protocol: Player start position: (%d, %d), Direction: %d",
             //        player_node->mX, player_node->mY, direction);
-            state = GAME_STATE;
+            state = STATE_GAME;
             break;
 
         case 0x0081:
             logger->log("Warning: Map server D/C");
-            state = ERROR_STATE;
+            state = STATE_ERROR;
             break;
     }
 }

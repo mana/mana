@@ -99,7 +99,9 @@ Logger *logger;               /**< Log object */
 namespace {
     struct ErrorListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId, gcn::Widget *widget) { state = LOGIN_STATE; }
+        void action(const std::string &eventId, gcn::Widget *widget) {
+            state = STATE_CHOOSE_SERVER;
+        }
     } errorListener;
 }
 
@@ -267,7 +269,7 @@ void init_engine()
     }
 
     gui = new Gui(graphics);
-    state = UPDATE_STATE; /**< Initial game state */
+    state = STATE_CHOOSE_SERVER; /**< Initial game state */
 
     // Initialize sound engine
     try {
@@ -278,7 +280,7 @@ void init_engine()
         sound.setMusicVolume((int)config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
-        state = ERROR_STATE;
+        state = STATE_ERROR;
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
@@ -409,9 +411,7 @@ MapLoginHandler mapLoginHandler;
 // TODO Find some nice place for these functions
 void accountLogin(LoginData *loginData)
 {
-    logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
-    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
     network->registerHandler(&charServerHandler);
     loginHandler.setLoginData(loginData);
@@ -419,12 +419,11 @@ void accountLogin(LoginData *loginData)
     charServerHandler.setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut msg;
-    msg.writeShort(PAMSG_LOGIN);
+    MessageOut msg(PAMSG_LOGIN);
     msg.writeLong(0); // client version
     msg.writeString(loginData->username);
     msg.writeString(loginData->password);
-    network->send(msg);
+    network->send(Network::ACCOUNT, msg);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -440,40 +439,37 @@ void accountLogin(LoginData *loginData)
 
 void accountRegister(LoginData *loginData)
 {
-    logger->log("Trying to connect to account server...");
     logger->log("Username is %s", loginData->username.c_str());
-    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
     charServerHandler.setLoginData(loginData);
     charServerHandler.setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut msg;
-    msg.writeShort(PAMSG_REGISTER);
+    MessageOut msg(PAMSG_REGISTER);
     msg.writeLong(0); // client version
     msg.writeString(loginData->username);
     msg.writeString(loginData->password);
     msg.writeString(loginData->email);
-    network->send(msg);
+    network->send(Network::ACCOUNT, msg);
 }
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    MessageOut outMsg;
-
-    logger->log("Trying to connect to map server...");
+    // TODO: Before the client has been identified using the magic token, the
+    // map path is not known yet.
     logger->log("Map: %s", map_path.c_str());
 
-    network->connect(loginData->hostname, loginData->port);
     network->registerHandler(&mapLoginHandler);
 
     // Send login infos
-    outMsg.writeShort(0x0072);
-    outMsg.writeLong(loginData->account_ID);
-    outMsg.writeLong(player_node->mCharId);
-    outMsg.writeLong(loginData->session_ID1);
-    outMsg.writeLong(loginData->session_ID2);
+    // TODO: The token would need to be sent to complete client identification
+    // for the game server
+    //MessageOut outMsg(0x0072);
+    //outMsg.writeLong(loginData->account_ID);
+    //outMsg.writeLong(player_node->mCharId);
+    //outMsg.writeLong(loginData->session_ID1);
+    //outMsg.writeLong(loginData->session_ID2);
 }
 
 /** Main */
@@ -515,13 +511,6 @@ int main(int argc, char *argv[])
 
     init_engine();
 
-    if (options.skipUpdate && state != ERROR_STATE) {
-        state = LOGIN_STATE;
-    }
-    else {
-        state = UPDATE_STATE;
-    }
-
     unsigned int oldstate = !state; // We start with a status change.
 
     Window *currentDialog = NULL;
@@ -549,20 +538,21 @@ int main(int argc, char *argv[])
     }
     network = new Network();
 
+
     SDL_Event event;
 
-    while (state != EXIT_STATE)
+    while (state != STATE_EXIT)
     {
         // Handle SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    state = EXIT_STATE;
+                    state = STATE_EXIT;
                     break;
 
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
-                        state = EXIT_STATE;
+                        state = STATE_EXIT;
                     break;
             }
 
@@ -574,7 +564,7 @@ int main(int argc, char *argv[])
 
         if (network->getState() == Network::NET_ERROR)
         {
-            state = ERROR_STATE;
+            state = STATE_ERROR;
             errorMessage = "Got disconnected from server!";
         }
 
@@ -596,48 +586,89 @@ int main(int argc, char *argv[])
         gui->draw();
         graphics->updateScreen();
 
+        // TODO: Add connect timeout to go back to choose server
+        if (state == STATE_CONNECT_ACCOUNT &&
+                network->isConnected(Network::ACCOUNT))
+        {
+            if (options.skipUpdate) {
+                state = STATE_LOGIN;
+            } else {
+                state = STATE_UPDATE;
+            }
+        }
+        else if (state == STATE_CONNECT_GAME &&
+                network->isConnected(Network::GAME) &&
+                network->isConnected(Network::CHAT))
+        {
+            // TODO: Somehow send the token
+            state = STATE_GAME;
+        }
+
         if (state != oldstate) {
-            switch (oldstate)
+            // Load updates after exiting the update state
+            if (oldstate == STATE_UPDATE)
             {
-                case UPDATE_STATE:
-                    loadUpdates();
-                    break;
+                loadUpdates();
+            }
 
-                    // Those states don't cause a network disconnect
-                case ACCOUNT_STATE:
-                case CONNECTING_STATE:
-                    break;
-
-                default:
-                    network->disconnect();
-                    network->clearHandlers();
-                    break;
+            // Disconnect from account server once connected to game server
+            if (oldstate == STATE_CONNECT_GAME && state == STATE_GAME)
+            {
+                network->disconnect(Network::ACCOUNT);
             }
 
             oldstate = state;
 
-            if (currentDialog && state != ACCOUNT_STATE &&
-                    state != CHAR_CONNECT_STATE) {
+            // Get rid of the dialog of the previous state
+            if (currentDialog) {
                 delete currentDialog;
                 currentDialog = NULL;
             }
 
             switch (state) {
-                case LOGIN_STATE:
-                    logger->log("State: LOGIN");
-                    if (!loginData.password.empty()) {
-                        state = ACCOUNT_STATE;
-                    } else {
-                        currentDialog = new LoginDialog(&loginData);
-                    }
+                case STATE_CHOOSE_SERVER:
+                    logger->log("State: CHOOSE_SERVER");
+                    // TODO: Allow changing this using a server choice dialog
+                    logger->log("Trying to connect to account server...");
+                    network->connect(Network::ACCOUNT,
+                                     loginData.hostname, loginData.port);
+                    state = STATE_CONNECT_ACCOUNT;
                     break;
 
-                case REGISTER_STATE:
+                case STATE_CONNECT_ACCOUNT:
+                    logger->log("State: CONNECT_ACCOUNT");
+                    break;
+
+                case STATE_UPDATE:
+                    logger->log("State: UPDATE");
+                    // TODO: Revive later
+                    //currentDialog = new UpdaterWindow();
+                    state = STATE_LOGIN;
+                    break;
+
+                case STATE_LOGIN:
+                    logger->log("State: LOGIN");
+                    currentDialog = new LoginDialog(&loginData);
+                    // TODO: Restore autologin
+                    //if (!loginData.password.empty()) {
+                    //    accountLogin(&loginData);
+                    //}
+                    break;
+
+                case STATE_LOGIN_ATTEMPT:
+                    accountLogin(&loginData);
+                    break;
+
+                case STATE_REGISTER:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
                     break;
 
-                case CHAR_SELECT_STATE:
+                case STATE_REGISTER_ATTEMPT:
+                    accountRegister(&loginData);
+                    break;
+
+                case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo);
                     if (options.chooseDefault) {
@@ -646,7 +677,23 @@ int main(int argc, char *argv[])
                     }
                     break;
 
-                case GAME_STATE:
+                case STATE_ERROR:
+                    logger->log("State: ERROR");
+                    currentDialog = new OkDialog("Error", errorMessage);
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
+                    network->disconnect(Network::GAME);
+                    network->disconnect(Network::CHAT);
+                    network->clearHandlers();
+                    break;
+
+                case STATE_CONNECT_GAME:
+                    logger->log("State: CONNECT_GAME");
+                    mapLogin(network, &loginData);
+                    currentDialog = new ConnectionDialog();
+                    break;
+
+                case STATE_GAME:
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;
@@ -657,39 +704,11 @@ int main(int argc, char *argv[])
                     game = new Game(network);
                     game->logic();
                     delete game;
-                    state = EXIT_STATE;
-                    break;
-
-                case UPDATE_STATE:
-                    logger->log("State: UPDATE");
-                    currentDialog = new UpdaterWindow();
-                    break;
-
-                case ERROR_STATE:
-                    logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    network->disconnect();
-                    network->clearHandlers();
-                    break;
-
-                case CONNECTING_STATE:
-                    logger->log("State: CONNECTING");
-                    mapLogin(network, &loginData);
-                    currentDialog = new ConnectionDialog();
-                    break;
-
-                case ACCOUNT_STATE:
-                    accountLogin(&loginData);
-                    break;
-
-                case REGISTER_ACCOUNT_STATE:
-                    accountRegister(&loginData);
+                    state = STATE_EXIT;
                     break;
 
                 default:
-                    state = EXIT_STATE;
+                    state = STATE_EXIT;
                     break;
             }
         }

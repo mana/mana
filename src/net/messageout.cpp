@@ -36,6 +36,14 @@ MessageOut::MessageOut():
 {
 }
 
+MessageOut::MessageOut(short id):
+    mData(0),
+    mDataSize(0),
+    mPos(0)
+{
+    writeShort(id);
+}
+
 MessageOut::~MessageOut()
 {
     if (mData) {

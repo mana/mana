@@ -136,7 +136,7 @@ void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
-            state = EXIT_STATE;
+            state = STATE_EXIT;
         }
         else
         {
@@ -145,7 +145,7 @@ void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
     }
     else if (eventId == "play")
     {
-        state = LOGIN_STATE;
+        state = STATE_LOGIN;
     }
 }
 
@@ -198,7 +198,7 @@ int UpdaterWindow::updateProgress(void *ptr,
             uw->mCurrentFile + " (" + toString((int)progress * 100) + "%)");
     uw->setProgress(progress);
 
-    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (state != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;

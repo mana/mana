@@ -1,3 +1,22 @@
+2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/connection.cpp, src/gui/login.cpp, src/gui/gui.cpp,
+	src/gui/updatewindow.cpp, src/gui/char_select.cpp,
+	src/gui/register.cpp, src/main.cpp, src/net/loginhandler.cpp,
+	src/net/messageout.cpp, src/net/network.h,
+	src/net/charserverhandler.cpp, src/net/maploginhandler.cpp,
+	src/net/messageout.h, src/net/network.cpp, src/main.h: The Network
+	can now connect to the three servers and affected methods now take the
+	server type as a parameter. The MessageOut gained a convenience
+	constructor (same as was added server side). The game states during
+	login sequence have been renamed and redone in order to ensure no
+	communication is attempted to unconnected servers. This allowed the
+	removal of the outgoing message queue. Connecting to the account
+	server has been moved before the login/register phase (dialogs will
+	still need to be updated). Quite a few things are expected to be
+	broken since I'm rather tired at the moment. I've left many TODO
+	entries in the code.
+
 2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/net/network.h, src/net/network.cpp: Removed

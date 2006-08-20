@@ -39,20 +39,20 @@
 
 
 enum {
-    EXIT_STATE,
-    LOGIN_STATE,
-    ACCOUNT_STATE,
-    REGISTER_STATE,
-    REGISTER_ACCOUNT_STATE,
-    CHAR_CONNECT_STATE,
-    CHAR_SERVER_STATE,
-    CHAR_SELECT_STATE,
-    CHAR_NEW_STATE,
-    CHAR_DEL_STATE,
-    GAME_STATE,
-    ERROR_STATE,
-    UPDATE_STATE,
-    CONNECTING_STATE
+    STATE_CHOOSE_SERVER,
+    STATE_CONNECT_ACCOUNT,
+    STATE_UPDATE,
+    STATE_LOGIN,
+    STATE_LOGIN_ATTEMPT,
+    STATE_REGISTER,
+    STATE_REGISTER_ATTEMPT,
+    STATE_CHAR_SELECT,
+    STATE_CHAR_NEW,
+    STATE_CHAR_DELETE,
+    STATE_ERROR,
+    STATE_CONNECT_GAME,
+    STATE_GAME,
+    STATE_EXIT
 };
 
 /* length definitions for several char[]s in order
@@ -66,7 +66,7 @@ enum {
     LEN_MIN_PASSWORD     = 4
 };
 
-extern char n_server, n_character;
+extern char n_character;
 extern unsigned char state;
 extern std::string errorMessage;
 

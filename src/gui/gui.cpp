@@ -234,7 +234,7 @@ Gui::mousePress(int mx, int my, int button)
     // Mouse pressed on window container (basically, the map)
 
     // Are we in-game yet?
-    if (state != GAME_STATE)
+    if (state != STATE_GAME)
         return;
 
     // Check if we are alive and kickin'

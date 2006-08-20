@@ -147,18 +147,17 @@ LoginDialog::action(const std::string &eventId, gcn::Widget *widget)
             mLoginData->remember = mKeepCheck->isMarked();
 
             mOkButton->setEnabled(false);
-            //mCancelButton->setEnabled(false);
             mRegisterButton->setEnabled(false);
 
-            state = ACCOUNT_STATE;
+            state = STATE_LOGIN_ATTEMPT;
         }
     }
     else if (eventId == "cancel")
     {
-        state = EXIT_STATE;
+        state = STATE_EXIT;
     }
     else if (eventId == "register")
     {
-        state = REGISTER_STATE;
+        state = STATE_REGISTER;
     }
 }

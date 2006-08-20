@@ -119,7 +119,7 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {
-        state = EXIT_STATE;
+        state = STATE_EXIT;
     }
     else if (eventId == "register")
     {
@@ -205,7 +205,7 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
             mLoginData->password = mPasswordField->getText();
             mLoginData->email = mEmailField->getText();
 
-            state = REGISTER_ACCOUNT_STATE;
+            state = STATE_REGISTER_ATTEMPT;
         }
     }
 }

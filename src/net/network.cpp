@@ -32,47 +32,55 @@
 Network *network;
 
 Network::Network():
-    mClient(0), mServer(0),
-    mAddress(), mPort(0),
-    mState(IDLE)
+    mAccountServer(NULL),
+    mGameServer(NULL),
+    mChatServer(NULL),
+    mState(NET_OK)
 {
+    mClient = enet_host_create(NULL, 3, 0, 0);
+
+    if (!mClient)
+    {
+        logger->error(
+                "An error occurred while trying to create an ENet client.");
+        mState = NET_ERROR;
+    }
 }
 
 Network::~Network()
 {
     clearHandlers();
 
-    if (mState != IDLE && mState != NET_ERROR)
-        disconnect();
+    disconnect(ACCOUNT);
+    disconnect(GAME);
+    disconnect(CHAT);
 }
 
-bool Network::connect(const std::string &address, short port)
+bool
+Network::connect(Server server, const std::string &address, short port)
 {
-    if (mState != IDLE && mState != NET_ERROR)
-    {
-        logger->log("Tried to connect an already connected socket!");
-        return false;
-    }
+    logger->log("Network::connect(%d, %s, %i)", server, address.c_str(), port);
 
     if (address.empty())
     {
-        logger->log("Empty address given to Network::connect()!");
+        logger->log("Network::connect() got empty address!");
         mState = NET_ERROR;
         return false;
     }
 
-    logger->log("Network::Connecting to %s:%i", address.c_str(), port);
+    ENetPeer *peer = NULL;
 
-    mAddress = address;
-    mPort = port;
+    switch (server) {
+        case ACCOUNT: peer = mAccountServer; break;
+        case GAME:    peer = mGameServer; break;
+        case CHAT:    peer = mChatServer; break;
+    }
 
-    mState = CONNECTING;
-
-    mClient = enet_host_create(NULL, 1, 0, 0);
-
-    if (!mClient)
+    if (peer != NULL)
     {
-        logger->error("An error occurred while trying to create an ENet client.");
+        logger->log("Network::connect() already connected (or connecting) to "
+                "this server!");
+        return false;
     }
 
     ENetAddress enetAddress;
@@ -81,32 +89,51 @@ bool Network::connect(const std::string &address, short port)
     enetAddress.port = port;
 
     // Initiate the connection, allocating channel 0.
-    mServer = enet_host_connect(mClient, &enetAddress, 1);
+    peer = enet_host_connect(mClient, &enetAddress, 1);
 
-    if (mServer == 0)
+    if (peer == NULL)
     {
         logger->log("Unable to initiate connection to the server.");
         mState = NET_ERROR;
         return false;
     }
 
+    switch (server) {
+        case ACCOUNT: mAccountServer = peer; break;
+        case GAME:    mGameServer = peer; break;
+        case CHAT:    mChatServer = peer; break;
+    }
+
     return true;
 }
 
-void Network::disconnect()
+void
+Network::disconnect(Server server)
 {
-    mState = IDLE;
+    ENetPeer *peer = NULL;
 
-    if (mServer)
+    switch (server) {
+        case ACCOUNT: peer = mAccountServer; break;
+        case GAME:    peer = mGameServer; break;
+        case CHAT:    peer = mChatServer; break;
+    }
+
+    if (peer)
     {
-        enet_peer_disconnect(mServer, 0);
+        enet_peer_disconnect(peer, 0);
         enet_host_flush(mClient);
-        enet_peer_reset(mServer);
-        mServer = 0;
+        enet_peer_reset(peer);
+
+        switch (server) {
+            case ACCOUNT: mAccountServer = NULL; break;
+            case GAME:    mGameServer = NULL; break;
+            case CHAT:    mChatServer = NULL; break;
+        }
     }
 }
 
-void Network::registerHandler(MessageHandler *handler)
+void
+Network::registerHandler(MessageHandler *handler)
 {
     const Uint16 *i = handler->handledMessages;
 
@@ -119,7 +146,8 @@ void Network::registerHandler(MessageHandler *handler)
     handler->setNetwork(this);
 }
 
-void Network::unregisterHandler(MessageHandler *handler)
+void
+Network::unregisterHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -129,7 +157,8 @@ void Network::unregisterHandler(MessageHandler *handler)
     handler->setNetwork(0);
 }
 
-void Network::clearHandlers()
+void
+Network::clearHandlers()
 {
     MessageHandlerIterator i;
     for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); i++)
@@ -137,6 +166,20 @@ void Network::clearHandlers()
         i->second->setNetwork(0);
     }
     mMessageHandlers.clear();
+}
+
+bool
+Network::isConnected(Server server) const
+{
+    ENetPeer *peer = NULL;
+
+    switch (server) {
+        case ACCOUNT: peer = mAccountServer; break;
+        case GAME:    peer = mGameServer; break;
+        case CHAT:    peer = mChatServer; break;
+    }
+
+    return peer->state == ENET_PEER_STATE_CONNECTED;
 }
 
 void
@@ -162,7 +205,7 @@ Network::dispatchMessage(ENetPacket *packet)
 
 void Network::flush()
 {
-    if (mState == IDLE || mState == NET_ERROR)
+    if (mState == NET_ERROR)
     {
         return;
     }
@@ -176,7 +219,6 @@ void Network::flush()
         {
             case ENET_EVENT_TYPE_CONNECT:
                 logger->log("Connected.");
-                mState = CONNECTED;
                 // Store any relevant server information here.
                 event.peer->data = 0;
                 break;
@@ -185,46 +227,53 @@ void Network::flush()
                 logger->log("Incoming data...");
                 dispatchMessage(event.packet);
                 break;
+
             case ENET_EVENT_TYPE_DISCONNECT:
-                mState = IDLE;
                 logger->log("Disconnected.");
                 // Reset the server information.
                 event.peer->data = 0;
                 break;
+
             case ENET_EVENT_TYPE_NONE:
                 logger->log("No event during 10 milliseconds.");
                 break;
+
             default:
                 logger->log("Unhandled enet event.");
                 break;
         }
     }
-
-    // If connected, manage incoming and outcoming packets
-    if (isConnected())
-    {
-        while (isConnected() && !mOutgoingPackets.empty())
-        {
-            ENetPacket *packet = mOutgoingPackets.front();
-            enet_peer_send(mServer, 0, packet);
-            mOutgoingPackets.pop();
-        }
-    }
 }
 
-void Network::send(const MessageOut &msg)
+void Network::send(Server server, const MessageOut &msg)
 {
-    if (mState == IDLE || mState == NET_ERROR)
+    if (mState == NET_ERROR)
     {
         logger->log("Warning: attempt to send a message while network not "
                     "ready.");
         return;
     }
 
-    ENetPacket *packet = enet_packet_create(msg.getData(),
-                                            msg.getDataSize(),
-                                            ENET_PACKET_FLAG_RELIABLE);
-    mOutgoingPackets.push(packet);
+    ENetPeer *peer = NULL;
+
+    switch (server) {
+        case ACCOUNT: peer = mAccountServer; break;
+        case GAME:    peer = mGameServer; break;
+        case CHAT:    peer = mChatServer; break;
+    }
+
+    if (peer)
+    {
+        logger->log("Sending message of size %d to server %d...",
+                    msg.getDataSize(), server);
+
+        // Directly send away the packet (TODO: check what ENet does in case
+        // this is done before connection is ready)
+        ENetPacket *packet = enet_packet_create(msg.getData(),
+                                                msg.getDataSize(),
+                                                ENET_PACKET_FLAG_RELIABLE);
+        enet_peer_send(peer, 0, packet);
+    }
 }
 
 char *iptostring(int address)

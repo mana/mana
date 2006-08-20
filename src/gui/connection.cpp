@@ -35,7 +35,9 @@
 namespace {
     struct ConnectionActionListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId, gcn::Widget *widget) { state = EXIT_STATE; }
+        void action(const std::string &eventId, gcn::Widget *widget) {
+            state = STATE_EXIT;
+        }
     } listener;
 }
 

@@ -139,7 +139,7 @@ void CharSelectDialog::action(const std::string &eventId, gcn::Widget *widget)
     }
     else if (eventId == "cancel")
     {
-        state = EXIT_STATE;
+        state = STATE_EXIT;
     }
     else if (eventId == "new")
     {
@@ -208,7 +208,7 @@ void CharSelectDialog::attemptCharDelete()
     msg.writeShort(PAMSG_CHAR_DELETE);
     // TODO: Send the selected slot
     msg.writeByte(0);
-    network->send(msg);
+    network->send(Network::ACCOUNT, msg);
     mCharInfo->lock();
 }
 
@@ -218,7 +218,7 @@ void CharSelectDialog::attemptCharSelect()
     MessageOut msg;
     msg.writeShort(PAMSG_CHAR_SELECT);
     msg.writeByte(mCharInfo->getPos());
-    network->send(msg);
+    network->send(Network::ACCOUNT, msg);
     mCharInfo->lock();
 }
 
@@ -337,5 +337,5 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeShort(10); // INT
     outMsg.writeShort(10); // DEX
     outMsg.writeShort(10); // LUK
-    network->send(outMsg);
+    network->send(Network::ACCOUNT, outMsg);
 }
