@@ -80,6 +80,7 @@
 
 // Account infos
 char n_character;
+std::string token;
 
 std::vector<Spriteset *> hairset;
 Spriteset *playerset[2];
@@ -456,20 +457,16 @@ void accountRegister(LoginData *loginData)
 
 void mapLogin(Network *network, LoginData *loginData)
 {
-    // TODO: Before the client has been identified using the magic token, the
-    // map path is not known yet.
-    logger->log("Map: %s", map_path.c_str());
-
     network->registerHandler(&mapLoginHandler);
 
-    // Send login infos
-    // TODO: The token would need to be sent to complete client identification
-    // for the game server
-    //MessageOut outMsg(0x0072);
-    //outMsg.writeLong(loginData->account_ID);
-    //outMsg.writeLong(player_node->mCharId);
-    //outMsg.writeLong(loginData->session_ID1);
-    //outMsg.writeLong(loginData->session_ID2);
+    // Send connect messages with the magic token to game and chat servers
+    MessageOut gameServerConnect(PGMSG_CONNECT);
+    gameServerConnect.writeString(token, 32);
+    network->send(Network::GAME, gameServerConnect);
+
+    MessageOut chatServerConnect(PCMSG_CONNECT);
+    chatServerConnect.writeString(token, 32);
+    network->send(Network::CHAT, chatServerConnect);
 }
 
 /** Main */
@@ -689,11 +686,11 @@ int main(int argc, char *argv[])
 
                 case STATE_CONNECT_GAME:
                     logger->log("State: CONNECT_GAME");
-                    mapLogin(network, &loginData);
                     currentDialog = new ConnectionDialog();
                     break;
 
                 case STATE_GAME:
+                    mapLogin(network, &loginData);
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;

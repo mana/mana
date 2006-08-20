@@ -20,6 +20,11 @@
 	a bit of cleanup (peer pointers now stored in an array).
 	* src/gui/register.cpp, src/main.h: Made cancel button in register
 	dialog go back to the login dialog and cleaned up two unused states.
+	* src/game.cpp, src/engine.cpp, src/main.cpp,
+	src/net/charserverhandler.cpp, src/net/network.cpp, src/main.h: Fixed
+	selection of player character and implemented sending of game and chat
+	server tokens. It gets you in the game (or what's left of it), but not
+	on any map yet.
 
 2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

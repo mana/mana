@@ -194,6 +194,13 @@ void Engine::draw(Graphics *graphics)
         mCurrentMap->draw(graphics, map_x, map_y, 1);
         mCurrentMap->draw(graphics, map_x, map_y, 2);
     }
+    else
+    {
+        // When no map is loaded, draw a replacement background
+        graphics->setColor(gcn::Color(128, 128, 128));
+        graphics->fillRectangle(gcn::Rectangle(0, 0,
+                    graphics->getWidth(), graphics->getHeight()));
+    }
 
     // Find a path from the player to the mouse, and draw it. This is for debug
     // purposes.

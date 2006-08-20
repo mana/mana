@@ -277,7 +277,6 @@ Game::Game(Network *network):
     // Initialize beings
     beingManager->setPlayer(player_node);
     player_node->setNetwork(network);
-    engine->changeMap(map_path);
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use

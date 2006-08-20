@@ -163,10 +163,9 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 {
     int errMsg = msg.readByte();
 
-    if (errMsg == 0)
+    if (errMsg == ERRMSG_OK)
     {
-        // TODO: Somehow be able to send this token once connected
-        std::string token = msg.readString(32);
+        token = msg.readString(32);
         std::string gameServer = msg.readString();
         unsigned short gameServerPort = msg.readShort();
         std::string chatServer = msg.readString();
@@ -177,6 +176,17 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 
         network->connect(Network::GAME, gameServer, gameServerPort);
         network->connect(Network::CHAT, chatServer, chatServerPort);
+
+        // Keep the selected character and delete the others
+        player_node = mCharInfo->getEntry();
+        mCharInfo->unlock();
+        mCharInfo->select(0);
+        do {
+            LocalPlayer *tmp = mCharInfo->getEntry();
+            if (tmp != player_node)
+                delete tmp;
+            mCharInfo->next();
+        } while (mCharInfo->getPos());
 
         state = STATE_CONNECT_GAME;
     }

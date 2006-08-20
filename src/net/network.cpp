@@ -192,7 +192,6 @@ void Network::flush()
                 break;
 
             case ENET_EVENT_TYPE_RECEIVE:
-                logger->log("Incoming data...");
                 dispatchMessage(event.packet);
                 break;
 

@@ -65,6 +65,7 @@ enum {
 };
 
 extern char n_character;
+extern std::string token;
 extern unsigned char state;
 extern std::string errorMessage;
 
