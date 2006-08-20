@@ -115,7 +115,7 @@ void Engine::changeMap(const std::string &mapPath)
     beingManager->clear();
 
     // Store full map path in global var
-    map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx.gz";
+    map_path = "maps/" + mapPath;
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(map_path);

@@ -68,15 +68,14 @@ namespace {
 PlayerHandler::PlayerHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_WALK_RESPONSE,
-        SMSG_PLAYER_WARP,
-        SMSG_PLAYER_STAT_UPDATE_1,
-        SMSG_PLAYER_STAT_UPDATE_2,
-        SMSG_PLAYER_STAT_UPDATE_3,
-        SMSG_PLAYER_STAT_UPDATE_4,
-        SMSG_PLAYER_STAT_UPDATE_5,
-        SMSG_PLAYER_STAT_UPDATE_6,
-        SMSG_PLAYER_ARROW_MESSAGE,
+        //SMSG_PLAYER_STAT_UPDATE_1,
+        //SMSG_PLAYER_STAT_UPDATE_2,
+        //SMSG_PLAYER_STAT_UPDATE_3,
+        //SMSG_PLAYER_STAT_UPDATE_4,
+        //SMSG_PLAYER_STAT_UPDATE_5,
+        //SMSG_PLAYER_STAT_UPDATE_6,
+        //SMSG_PLAYER_ARROW_MESSAGE,
+        GPMSG_PLAYER_MAP_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -86,32 +85,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
-        case SMSG_WALK_RESPONSE:
-            // It is assumed by the client any request to walk actually
-            // succeeds on the server. The plan is to have a correction
-            // message when the server senses the client has the wrong
-            // idea.
-            break;
-
-        case SMSG_PLAYER_WARP:
-            {
-                std::string mapPath = msg.readString(16);
-                Uint16 x = msg.readShort();
-                Uint16 y = msg.readShort();
-
-                logger->log("Warping to %s (%d, %d)", mapPath.c_str(), x, y);
-
-                // Switch the actual map, deleting the previous one
-                engine->changeMap(mapPath);
-
-                current_npc = 0;
-
-                player_node->setAction(Being::STAND);
-                player_node->stopAttack();
-                player_node->mFrame = 0;
-                player_node->mX = x;
-                player_node->mY = y;
-            }
+        case GPMSG_PLAYER_MAP_CHANGE:
+            handleMapChangeMessage(msg);
             break;
 
         case SMSG_PLAYER_STAT_UPDATE_1:
@@ -321,5 +296,41 @@ void PlayerHandler::handleMessage(MessageIn &msg)
         //    }
         //}
         //break;
+    }
+}
+
+void
+PlayerHandler::handleMapChangeMessage(MessageIn &msg)
+{
+    // { "mapname", x, y, B new server [, token, "gameserver", W port] }
+
+    std::string mapName = msg.readString();
+    unsigned short x = msg.readShort();
+    unsigned short y = msg.readShort();
+    unsigned char newServer = msg.readByte();
+
+    logger->log("Changing map to %s (%d, %d) on %s server",
+            mapName.c_str(), x, y, (newServer) ? "another" : "same");
+
+    // Switch the actual map, deleting the previous one
+    engine->changeMap(mapName);
+
+    current_npc = 0;
+
+    player_node->setAction(Being::STAND);
+    player_node->stopAttack();
+    player_node->mFrame = 0;
+
+    // TODO: Server is sending pixel coordinates. Client will need to work with
+    // these instead of converting them to tile coordinates.
+    player_node->mX = x / 32;
+    player_node->mY = y / 32;
+
+    if (newServer)
+    {
+        // TODO: Implement reconnecting to another game server
+        //std::string token = msg.readString(32);
+        //std::string gameServer = msg.readString();
+        //unsigned short gameServerPort = msg.readShort();
     }
 }

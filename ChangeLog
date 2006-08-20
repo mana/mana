@@ -28,6 +28,9 @@
 	* src/net/*: Changed MessageHandler::handleMessage to take a reference
 	instead of a pointer. Removed unused Packet class. Added stub for
 	handling GPMSG_BEING_ENTER.
+	* src/engine.cpp, src/net/playerhandler.h, src/net/protocol.h,
+	src/net/playerhandler.cpp: GPMSG_PLAYER_MAP_CHANGE is now partly
+	handled.
 
 2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
