@@ -1,21 +1,28 @@
+2006-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, data/graphics/images/ambient,
+	data/graphics/images/ambient/Makefile.am,
+	data/graphics/images/Makefile.am: Updated makefiles to account for new
+	ambient images and changed the version from 0.0.20.1 to 0.0.21.
+
 2006-08-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
 
 2006-08-21  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/mapreader.cpp: added logic for initialisation of the overlays
-	* src/map.cpp, src/map.h: code for updating and drawing the overlays
-	* src/engine.cpp, src/engine.h: added smooth scrolling and the call
-	to draw the overlays
-	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz, 
+	* src/mapreader.cpp: Added logic for initialisation of the overlays.
+	* src/map.cpp, src/map.h: Code for updating and drawing the overlays.
+	* src/engine.cpp, src/engine.h: Added smooth scrolling and the call
+	to draw the overlays.
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz,
 	data/graphics/images/ambient/sandstorm.png: Added sandstorm effect
-	to the desert maps outside of the city (feedback, please)
-	* data/maps/new_2-1.tmx.gz, data/maps/new_4-1.tmx.gz, 
+	to the desert maps outside of the city (feedback, please).
+	* data/maps/new_2-1.tmx.gz, data/maps/new_4-1.tmx.gz,
 	data/maps/new_5-1.tmx.gz, data/graphics/images/ambient/spotlight.png
 	Added spotlight effect to the cave maps (feedback, please)
-	* data/graphics/maps/new_9-1.tmx.gz, 
-	data/graphics/images/ambient/clouds.png
+	* data/graphics/maps/new_9-1.tmx.gz,
+	data/graphics/images/ambient/clouds.png:
 	Added cloudshadow effect to the woodland map (feedback, please)
 
 2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
