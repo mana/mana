@@ -78,6 +78,11 @@ class Engine
 
         Map *mCurrentMap;
         Network *mNetwork;
+
+        int scrollRadius;
+        int scrollLaziness;
+        float view_x; // current viewpoint in pixels
+        float view_y; // current viewpoint in pixels
 };
 
 extern Engine *engine;

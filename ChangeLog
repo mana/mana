@@ -1,3 +1,19 @@
+2006-08-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/mapreader.cpp: added logic for initialisation of the overlays
+	* src/map.cpp, src/map.h: code for updating and drawing the overlays
+	* src/engine.cpp, src/engine.h: added smooth scrolling and the call
+	to draw the overlays
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_5-1.tmx.gz, 
+	data/graphics/images/ambient/sandstorm.png: Added sandstorm effect
+	to the desert maps outside of the city (feedback, please)
+	* data/maps/new_2-1.tmx.gz, data/maps/new_4-1.tmx.gz, 
+	data/maps/new_5-1.tmx.gz, data/graphics/images/ambient/spotlight.png
+	Added spotlight effect to the cave maps (feedback, please)
+	* data/graphics/maps/new_9-1.tmx.gz, 
+	data/graphics/images/ambient/clouds.png
+	Added cloudshadow effect to the woodland map (feedback, please)
+
 2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Moved libpng check before SDL_image check, since the

@@ -34,6 +34,7 @@
 #include "../map.h"
 #include "../tileset.h"
 
+#include "../utils/tostring.h"
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;
 const unsigned int DEFAULT_TILE_HEIGHT = 32;
@@ -211,6 +212,32 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
         {
             readProperties(node, map);
         }
+    }
+
+    //set Overlays
+    int i = 0;
+    ResourceManager *resman = ResourceManager::getInstance();
+
+    while (map->hasProperty("overlay" + toString(i) + "image"))
+    {
+        Image *overlayImage = resman->getImage(map->getProperty("overlay" + toString(i) + "image"));
+        float scrollX = 0.0f;
+        float scrollY = 0.0f;
+        float parallax = 0.0f;
+        if (map->hasProperty("overlay" + toString(i) + "scrollX"))
+        {
+            scrollX = atof(map->getProperty("overlay" + toString(i) + "scrollX").c_str());
+        }
+        if (map->hasProperty("overlay" + toString(i) + "scrollY"))
+        {
+            scrollY = atof(map->getProperty("overlay" + toString(i) + "scrollY").c_str());
+        }
+        if (map->hasProperty("overlay" + toString(i) + "parallax"))
+        {
+            parallax = atof(map->getProperty("overlay" + toString(i) + "parallax").c_str());
+        }
+        map->setOverlay (overlayImage, scrollX, scrollY, parallax);
+        i++;
     }
 
     return map;
