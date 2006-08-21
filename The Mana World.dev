@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=234
+UnitCount=235
 Type=0
 Ver=1
 ObjFiles=
@@ -2391,6 +2391,16 @@ BuildCmd=
 FileName=src\animatedsprite.h
 CompileCpp=1
 Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit235]
+FileName=src\resources\iteminfo.cpp
+CompileCpp=1
+Folder=tmw
 Compile=1
 Link=1
 Priority=1000

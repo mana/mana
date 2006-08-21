@@ -1,3 +1,7 @@
+2006-08-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
 2006-08-21  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/mapreader.cpp: added logic for initialisation of the overlays

@@ -10,7 +10,6 @@
 				<Option output="tmw.exe" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters="--skipupdate" />
 				<Option includeInTargetAll="1" />
 				<Option projectResourceIncludeDirsRelation="0" />
 				<Compiler>
@@ -1118,6 +1117,10 @@
 			<Option compilerVar="" />
 			<Option compile="0" />
 			<Option link="0" />
+			<Option target="default" />
+		</Unit>
+		<Unit filename="src\resources\iteminfo.cpp">
+			<Option compilerVar="CPP" />
 			<Option target="default" />
 		</Unit>
 		<Unit filename="src\resources\iteminfo.h">
