@@ -4,7 +4,7 @@
 	* src/map.cpp, src/map.h: code for updating and drawing the overlays
 	* src/engine.cpp, src/engine.h: added smooth scrolling and the call
 	to draw the overlays
-	* data/maps/new_1-1.tmx.gz, data/graphics/new_5-1.tmx.gz, 
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz, 
 	data/graphics/images/ambient/sandstorm.png: Added sandstorm effect
 	to the desert maps outside of the city (feedback, please)
 	* data/maps/new_2-1.tmx.gz, data/maps/new_4-1.tmx.gz, 
