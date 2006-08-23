@@ -1,3 +1,12 @@
+2006-08-24  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/sprites/item004.png, data/graphics/sprites/item005.png,
+	data/graphics/sprites/Makefile.am,
+	data/graphics/items/armor-legs-cottonshorts,
+	data/graphics/items/armor-legs-jeanshorts: Added the equip graphics of
+	the short jeans and the cotton shorts and an inventory icon of the
+	cotton shorts. Also added all added files to the makefile.
+	
 2006-08-23  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_7-1.tmx.gz: fixed a minor mapping bug reported on the
