@@ -1,3 +1,8 @@
+2006-08-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_7-1.tmx.gz: fixed a minor mapping bug reported on the 
+	forum (no new walkmap required).
+
 2006-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac, data/graphics/images/ambient,
