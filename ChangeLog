@@ -10,6 +10,9 @@
 	* src/engine.cpp: Scrolling speed no longer affected by framerate.
 	* src/map.cpp, scr/map.h: Overlay speed no longer affected by
 	framerate.
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz,
+	data/graphics/images/ambient/sandstorm.png: Redone sandstorm effect
+	(larger and more transparent image, tripple layer parallax scrolling)
 
 2006-08-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
