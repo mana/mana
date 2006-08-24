@@ -1,3 +1,9 @@
+﻿2006-08-25  Philipp Sehmisch  <tmw@crushnet.org>
+	
+	* src/engine.cpp, src/map.h, src/map.cpp: Addded new config variable
+	"OverlayDetail" to control the number of drawn overlays. 
+	2 (or more) = all (default), 1 = only the first one, 0 = none.
+
 2006-08-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,

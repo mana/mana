@@ -167,11 +167,14 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 }
 
 void
-Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY)
+Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
 {
-    std::list<AmbientOverlay>::iterator i;
-
     static int lastTick = tick_time;
+
+    // detail 0: no overlays
+    if (detail <= 0) return;
+
+    std::list<AmbientOverlay>::iterator i;
 
     // Avoid freaking out when tick_time overflows
     if (tick_time < lastTick)
@@ -223,6 +226,9 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY)
         mLastScrollX = scrollX;
         mLastScrollY = scrollY;
         lastTick++;
+
+        // detail 1: only one overlay, higher: all overlays
+        if (detail == 1) break;
     }
 
     //draw overlays
@@ -237,6 +243,8 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY)
                                         graphics->getHeight() + (int)(*i).scrollY
                                     );
         };
+        // detail 1: only one overlay, higher: all overlays
+        if (detail == 1) break;
     };
 }
 

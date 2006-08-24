@@ -239,7 +239,11 @@ void Engine::draw(Graphics *graphics)
         mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 0);
         mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 1);
         mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 2);
-        mCurrentMap->drawOverlay(graphics, view_x, view_y);
+        mCurrentMap->drawOverlay(   graphics,
+                                    view_x,
+                                    view_y,
+                                    (int)config.getValue("OverlayDetail", 2)
+                                );
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug

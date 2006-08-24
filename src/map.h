@@ -104,7 +104,7 @@ class Map : public Properties
         /**
          * Draws the overlay graphic to the given graphics output.
          */
-        void drawOverlay(Graphics *graphics, float scrollX, float scrollY);
+        void drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail);
 
         /**
          * Sets the size of the map. This will destroy any existing map data.
