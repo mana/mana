@@ -161,6 +161,14 @@ void Engine::logic()
 
 void Engine::draw(Graphics *graphics)
 {
+    static int lastTick = tick_time;
+
+    // Avoid freaking out when tick_time overflows
+    if (tick_time < lastTick)
+    {
+        lastTick = tick_time;
+    }
+
     // calculate viewpoint
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
@@ -174,22 +182,27 @@ void Engine::draw(Graphics *graphics)
     if (scrollLaziness < 1)
         scrollLaziness = 1; //avoids division by zero
 
-    if (player_x > view_x + scrollRadius)
+    //apply lazy scrolling
+    while (lastTick < tick_time)
     {
-        view_x += (player_x - view_x - scrollRadius) / scrollLaziness;
-    };
-    if (player_x < view_x - scrollRadius)
-    {
-        view_x += (player_x - view_x + scrollRadius) / scrollLaziness;
-    };
-    if (player_y > view_y + scrollRadius)
-    {
-        view_y += (player_y - view_y - scrollRadius) / scrollLaziness;
-    };
-    if (player_y < view_y - scrollRadius)
-    {
-        view_y += (player_y - view_y + scrollRadius) / scrollLaziness;
-    };
+        if (player_x > view_x + scrollRadius)
+        {
+            view_x += (player_x - view_x - scrollRadius) / scrollLaziness;
+        }
+        if (player_x < view_x - scrollRadius)
+        {
+            view_x += (player_x - view_x + scrollRadius) / scrollLaziness;
+        }
+        if (player_y > view_y + scrollRadius)
+        {
+            view_y += (player_y - view_y - scrollRadius) / scrollLaziness;
+        }
+        if (player_y < view_y - scrollRadius)
+        {
+            view_y += (player_y - view_y + scrollRadius) / scrollLaziness;
+        }
+        lastTick++;
+    }
 
     //auto center when player is off screen
     if (        player_x - view_x > graphics->getWidth() / 2

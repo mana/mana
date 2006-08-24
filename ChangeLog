@@ -1,3 +1,9 @@
+2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
+	
+	* src/engine.cpp: Scrolling speed no longer affected by framerate.
+	* src/map.cpp, scr/map.h: Overlay speed no longer affected by
+	framerate.
+
 2006-08-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* data/graphics/sprites/item004.png, data/graphics/sprites/item005.png,
