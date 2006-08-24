@@ -1,3 +1,9 @@
+2006-08-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,
+	src/gui/window.cpp, src/gui/window.h: Added support for sticky windows
+	as discussed with doener. Patch by AHarrison.
+
 2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
 	
 	* src/engine.cpp: Scrolling speed no longer affected by framerate.

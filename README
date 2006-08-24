@@ -53,6 +53,7 @@ Use arrow keys to move around. Other keys:
 - Alt + S            sit down / stand up
 - Alt + F            toggle debug pathfinding feature
 - Alt + P            take screenshot
+- H                  hide all non-sticky windows
 - G or Z             pick up item
 - Enter              focus chat window / send message
 - Shift              hold it when attacking to lock target for auto attack

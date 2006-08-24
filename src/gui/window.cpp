@@ -63,6 +63,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     mModal(modal),
     mResizable(false),
     mMouseResize(false),
+    mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(28),
     mMaxWinWidth(INT_MAX),
@@ -241,6 +242,26 @@ void Window::setResizable(bool r)
 bool Window::isResizable()
 {
     return mResizable;
+}
+
+void Window::setSticky(bool sticky)
+{
+    mSticky = sticky;
+}
+
+bool Window::isSticky() {
+    return mSticky;
+}
+
+void Window::setVisible(bool visible) {
+    if(isSticky()) 
+    {
+        gcn::Window::setVisible(true);
+    } 
+    else 
+    {
+        gcn::Window::setVisible(visible);
+    }
 }
 
 void Window::scheduleDelete()

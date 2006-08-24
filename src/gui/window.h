@@ -134,6 +134,25 @@ class Window : public gcn::Window
         void setMaxHeight(unsigned int height);
 
         /**
+          * Sets whether the window is sticky.
+          * A sticky window will not have its visibility set to false
+          * on a general setVisible(false) call.
+          */
+        void setSticky(bool sticky);
+
+        /**
+         * Returns whether the window is sticky.
+         */
+        bool isSticky();
+
+        /** 
+         * Overloads window setVisible by guichan to allow sticky window
+         * Handling
+         */
+
+        void setVisible(bool visible);
+
+        /**
          * Returns the parent window.
          *
          * @return The parent window or <code>NULL</code> if there is none.
@@ -204,6 +223,7 @@ class Window : public gcn::Window
         bool mModal;               /**< Window is modal */
         bool mResizable;            /**< Window can be resized */
         bool mMouseResize;         /**< Window is being resized */
+        bool mSticky;              /**< Window resists minimzation */
         int mMinWinWidth;           /**< Minimum window width */
         int mMinWinHeight;          /**< Minimum window height */
         int mMaxWinWidth;           /**< Maximum window width */

@@ -23,6 +23,7 @@
      ##2Alt + S##P            sit down / stand up
      ##2Alt + F##P            toggle debug pathfinding feature
      ##2Alt + P##P            take screenshot
+     ##2H##P                  hide all non-sticky windows
      ##2G or Z##P             pick up item
      ##2Enter##P              focus chat window / send message
      ##2Shift##P              hold it when attacking to lock target for auto

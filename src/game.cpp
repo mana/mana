@@ -202,6 +202,10 @@ void createGuiWindows(Network *network)
       minimap->getHeight() + 30);*/
 
     // Set initial window visibility
+    chatWindow->setSticky(true);
+    miniStatusWindow->setSticky(true);
+    menuWindow->setSticky(true);
+
     chatWindow->setVisible(true);
     miniStatusWindow->setVisible(true);
     statusWindow->setVisible(false);
@@ -461,7 +465,30 @@ void Game::handleInput()
                     }
                     break;
 
-                    // Picking up items on the floor
+                // Attempt to hide all windows
+                case SDLK_h:
+                    chatWindow->setVisible(false);
+                    miniStatusWindow->setVisible(false);
+                    statusWindow->setVisible(false);
+                    menuWindow->setVisible(false);
+                    buyDialog->setVisible(false);
+                    sellDialog->setVisible(false);
+                    buySellDialog->setVisible(false);
+                    inventoryWindow->setVisible(false);
+                    npcTextDialog->setVisible(false);
+                    npcListDialog->setVisible(false);
+                    skillDialog->setVisible(false);
+                    //newSkillWindow->setVisible(false);
+                    setupWindow->setVisible(false);
+                    equipmentWindow->setVisible(false);
+                    chargeDialog->setVisible(false);
+                    tradeWindow->setVisible(false);
+                    //buddyWindow->setVisible(false);
+                    helpWindow->setVisible(false);
+                    debugWindow->setVisible(false);
+                break;
+
+                // Picking up items on the floor
                 case SDLK_g:
                 case SDLK_z:
                     if (!chatWindow->isFocused())
