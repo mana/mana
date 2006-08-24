@@ -3,6 +3,7 @@
 	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,
 	src/gui/window.cpp, src/gui/window.h: Added support for sticky windows
 	as discussed with doener. Patch by AHarrison.
+	* data/items.xml: Added jeans shorts.
 
 2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
 	
