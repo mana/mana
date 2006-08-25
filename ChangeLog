@@ -1,3 +1,8 @@
+2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/ministatus.cpp, src/gui/ministatus.h: Applied patch by mrha
+	(Herbi), adding experience bar to the ministatus in the top left.
+
 2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Added

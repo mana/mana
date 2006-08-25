@@ -56,11 +56,15 @@ class MiniStatusWindow : public Window
          */
         void update();
 
-        /**
+        /*
          * Mini Status Bars
          */
-        ProgressBar *mHpBar, *mMpBar;
-        gcn::Label *mHpLabel, *mMpLabel;
+        ProgressBar *mHpBar;
+        ProgressBar *mMpBar;
+        ProgressBar *mXpBar;
+        gcn::Label *mHpLabel;
+        gcn::Label *mMpLabel;
+        gcn::Label *mXpLabel;
 };
 
 #endif
