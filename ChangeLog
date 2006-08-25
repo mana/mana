@@ -1,7 +1,13 @@
-﻿2006-08-25  Philipp Sehmisch  <tmw@crushnet.org>
-	
+2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Added
+	--playername command line option for selecting the character you want
+	to play with (patch applied by Bjørn Lindeijer).
+
+2006-08-25  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* src/engine.cpp, src/map.h, src/map.cpp: Addded new config variable
-	"OverlayDetail" to control the number of drawn overlays. 
+	"OverlayDetail" to control the number of drawn overlays.
 	2 (or more) = all (default), 1 = only the first one, 0 = none.
 
 2006-08-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
@@ -12,7 +18,7 @@
 	* data/items.xml: Added jeans shorts.
 
 2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
-	
+
 	* src/engine.cpp: Scrolling speed no longer affected by framerate.
 	* src/map.cpp, scr/map.h: Overlay speed no longer affected by
 	framerate.
@@ -28,12 +34,12 @@
 	data/graphics/items/armor-legs-jeanshorts: Added the equip graphics of
 	the short jeans and the cotton shorts and an inventory icon of the
 	cotton shorts. Also added all added files to the makefile.
-	
+
 2006-08-23  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_7-1.tmx.gz: fixed a minor mapping bug reported on the
+	* data/maps/new_7-1.tmx.gz: Fixed a minor mapping bug reported on the
 	forum (no new walkmap required).
-	* data/maps/new_9-1.tmx.gz: fixed two minor mapping bugs (new walkmap
+	* data/maps/new_9-1.tmx.gz: Fixed two minor mapping bugs (new walkmap
 	required).
 
 2006-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>

@@ -322,6 +322,7 @@ struct Options
     bool chooseDefault;
     std::string username;
     std::string password;
+    std::string playername;
 };
 
 void printHelp()
@@ -333,13 +334,14 @@ void printHelp()
         << "  -u --skipupdate : Skip the update process" << std::endl
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
-        << "  -D --default    : Bypass the login process with default settings"
+        << "  -D --default    : Bypass the login process with default settings" << std::endl
+        << "  -p --playername : Login with this player"
         << std::endl;
 }
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:D";
+    const char *optstring = "huU:P:Dp:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -347,6 +349,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
+        { "playername", required_argument, 0, 'p' },
         { 0 }
     };
 
@@ -373,6 +376,9 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'D':
                 options.chooseDefault = true;
+                break;
+            case 'p':
+                options.playername = optarg;
                 break;
         }
     }
@@ -628,7 +634,7 @@ int main(int argc, char *argv[])
                 case CHAR_SERVER_STATE:
                     logger->log("State: CHAR_SERVER");
                     currentDialog = new ServerSelectDialog(&loginData);
-                    if (options.chooseDefault) {
+                    if (options.chooseDefault || options.playername != "") {
                         ((ServerSelectDialog*)currentDialog)->action("ok",
                                                                      NULL);
                     }
@@ -638,7 +644,20 @@ int main(int argc, char *argv[])
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
                                                          1 - loginData.sex);
-                    if (options.chooseDefault) {
+                    if (options.playername != "") {
+                        n_character = 0;
+                        while (((CharSelectDialog*) currentDialog)->getName()
+                                != options.playername &&
+                                n_character < MAX_SLOT + 1)
+                        {
+                            ((CharSelectDialog*) currentDialog)->action("next",
+                                                                        NULL);
+                            ((CharSelectDialog*) currentDialog)->updatePlayerInfo();
+                            n_character++;
+                        }
+                        n_character = MAX_SLOT + 1;
+                    }
+                    if (options.chooseDefault || options.playername != "") {
                         ((CharSelectDialog*)currentDialog)->action("ok",
                                                                    NULL);
                     }
