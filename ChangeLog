@@ -1,3 +1,12 @@
+2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.cpp, src/gui/playerbox.cpp, src/player.cpp,
+	src/main.cpp, src/being.cpp, src/net/beinghandler.cpp, src/being.h,
+	data/graphics/sprites/hairstyle0.xml,
+	data/graphics/sprites/Makefile.am: Got rid of numerous additions and
+	substractions to the hair style and color. Hair style 0 was added and
+	defined as being bald (so bald is no longer a hardcoded style).
+
 2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/net/chathandler.cpp, src/gui/chat.cpp, src/net/protocol.h: Added

@@ -398,7 +398,7 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
         being = beingManager->createBeing(id, 0);
         being->setName(name);
     }
-    being->setHairStyle(msg.readByte() + 1);
-    being->setHairColor(msg.readByte() + 1);
+    being->setHairStyle(msg.readByte());
+    being->setHairColor(msg.readByte());
     being->setSex(msg.readByte());
 }

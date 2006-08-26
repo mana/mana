@@ -183,8 +183,8 @@ void CharSelectDialog::updatePlayerInfo()
             mDelCharButton->setEnabled(true);
             mSelectButton->setEnabled(true);
         }
-        mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
-        mPlayerBox->mHairColor = pi->getHairColor() - 1;
+        mPlayerBox->mHairStyle = pi->getHairStyle();
+        mPlayerBox->mHairColor = pi->getHairColor();
         mPlayerBox->mSex = pi->getSex();
         mPlayerBox->mShowPlayer = true;
     } else {
@@ -324,11 +324,10 @@ std::string CharCreateDialog::getName()
 void CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
-    MessageOut outMsg;
-    outMsg.writeShort(PAMSG_CHAR_CREATE);
+    MessageOut outMsg(PAMSG_CHAR_CREATE);
     outMsg.writeString(getName());
-    outMsg.writeByte(mPlayerBox->mHairStyle + 1);
-    outMsg.writeByte(mPlayerBox->mHairColor + 1);
+    outMsg.writeByte(mPlayerBox->mHairStyle);
+    outMsg.writeByte(mPlayerBox->mHairColor);
     // TODO: send selected sex
     outMsg.writeByte(0); // Player sex
     outMsg.writeShort(10); // STR

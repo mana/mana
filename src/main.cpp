@@ -257,7 +257,7 @@ void init_engine()
     if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
 
 
-    for (int i = 0; i < NR_HAIR_STYLES; i++)
+    for (int i = 0; i < NR_HAIR_STYLES - 1; i++)
     {
         Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
                 "graphics/sprites/hairstyle" + toString(i + 1) + ".png",

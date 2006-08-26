@@ -114,12 +114,12 @@ Player::setSex(Uint8 sex)
 void
 Player::setHairColor(Uint16 color)
 {
-    if (color != mHairColor && mHairStyle > 0)
+    if (color != mHairColor)
     {
         delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
-                color - 1);
+                color);
         newHairSprite->setDirection(getSpriteDirection());
 
         mSprites[HAIR_SPRITE] = newHairSprite;
@@ -133,12 +133,12 @@ Player::setHairColor(Uint16 color)
 void
 Player::setHairStyle(Uint16 style)
 {
-    if (style != mHairStyle && mHairColor > 0)
+    if (style != mHairStyle)
     {
         delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(style) + ".xml",
-                mHairColor - 1);
+                mHairColor);
         newHairSprite->setDirection(getSpriteDirection());
 
         mSprites[HAIR_SPRITE] = newHairSprite;

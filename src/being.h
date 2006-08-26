@@ -33,7 +33,7 @@
 #include "map.h"
 #include "animatedsprite.h"
 
-#define NR_HAIR_STYLES 7
+#define NR_HAIR_STYLES 8
 #define NR_HAIR_COLORS 10
 
 class AnimatedSprite;
