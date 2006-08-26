@@ -69,8 +69,7 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
     if (job < 10)
     {
         being = new Player(id, job, mMap);
-        MessageOut outMsg;
-        outMsg.writeShort(0x0094);
+        MessageOut outMsg(0x0094);
         outMsg.writeLong(id);
     }
     else if (job >= 100 & job < 200)

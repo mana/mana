@@ -249,16 +249,14 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
-        MessageOut outMsg;
-        outMsg.writeShort(PGMSG_SAY);
+        MessageOut outMsg(PGMSG_SAY);
         outMsg.writeString(msg);
         Network::send(Network::GAME, outMsg);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {
         msg.erase(0, IS_ANNOUNCE_LENGTH);
-        MessageOut outMsg;
-        outMsg.writeShort(0x0099);
+        MessageOut outMsg(0x0099);
         outMsg.writeShort(msg.length() + 4);
         outMsg.writeString(msg, msg.length());
     }
@@ -276,8 +274,7 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
-        MessageOut outMsg;
-        outMsg.writeShort(0x00c1);
+        MessageOut outMsg(0x00c1);
     }
     else
     {

@@ -35,11 +35,6 @@ class MessageOut
         /**
          * Constructor.
          */
-        MessageOut();
-
-        /**
-         * Constructor.
-         */
         MessageOut(short id);
 
         /**

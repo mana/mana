@@ -203,8 +203,7 @@ void CharSelectDialog::updatePlayerInfo()
 void CharSelectDialog::attemptCharDelete()
 {
     // Request character deletion
-    MessageOut msg;
-    msg.writeShort(PAMSG_CHAR_DELETE);
+    MessageOut msg(PAMSG_CHAR_DELETE);
     // TODO: Send the selected slot
     msg.writeByte(0);
     Network::send(Network::ACCOUNT, msg);
@@ -214,8 +213,7 @@ void CharSelectDialog::attemptCharDelete()
 void CharSelectDialog::attemptCharSelect()
 {
     // Request character selection
-    MessageOut msg;
-    msg.writeShort(PAMSG_CHAR_SELECT);
+    MessageOut msg(PAMSG_CHAR_SELECT);
     msg.writeByte(mCharInfo->getPos());
     Network::send(Network::ACCOUNT, msg);
     mCharInfo->lock();

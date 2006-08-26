@@ -39,9 +39,6 @@
 #include "gui/gui.h"
 #include "gui/minimap.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
-
 #include "resources/itemmanager.h"
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
@@ -148,10 +145,6 @@ void Engine::changeMap(const std::string &mapPath)
     }
 
     mCurrentMap = newMap;
-
-    // Send "map loaded"
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_MAP_LOADED);
 }
 
 void Engine::logic()

@@ -215,9 +215,9 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
     // of items to be bought ever fails, Bertram removed the assertions, is
     // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (eventId == "buy" && (mAmountItems > 0 &&
-                mAmountItems <= mMaxItems)) {
-        MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_BUY_REQUEST);
+                mAmountItems <= mMaxItems))
+    {
+        MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
         outMsg.writeShort(8);
         outMsg.writeShort(mAmountItems);
         outMsg.writeShort(mShopItems->at(selectedItem).id);
@@ -262,9 +262,12 @@ void BuyDialog::mouseClick(int x, int y, int button, int count)
     int selectedItem = mItemList->getSelected();
     if (selectedItem > -1)
     {
+        int itemId = mShopItems->at(selectedItem).id;
+        ItemInfo *itemInfo = itemDb->getItemInfo(itemId);
+
         mItemDescLabel->setCaption("Description: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
+                itemInfo->getDescription());
         mItemEffectLabel->setCaption("Effect: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
+                itemInfo->getEffect());
     }
 }

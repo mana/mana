@@ -48,8 +48,7 @@ NPC::getType() const
 void
 NPC::talk()
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_TALK);
+    MessageOut outMsg(CMSG_NPC_TALK);
     outMsg.writeLong(mId);
     outMsg.writeByte(0);
     current_npc = this;
@@ -58,16 +57,14 @@ NPC::talk()
 void
 NPC::nextDialog()
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_NEXT_REQUEST);
+    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeLong(mId);
 }
 
 void
 NPC::dialogChoice(char choice)
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_LIST_CHOICE);
+    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
     outMsg.writeLong(mId);
     outMsg.writeByte(choice);
 }
@@ -79,8 +76,7 @@ NPC::dialogChoice(char choice)
 void
 NPC::buy()
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeLong(mId);
     outMsg.writeByte(0);
 }
@@ -88,8 +84,7 @@ NPC::buy()
 void
 NPC::sell()
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_NPC_BUY_SELL_REQUEST);
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeLong(mId);
     outMsg.writeByte(1);
 }

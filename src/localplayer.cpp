@@ -116,8 +116,7 @@ Item* LocalPlayer::getInvItem(int index)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_EQUIP);
+    MessageOut outMsg(CMSG_PLAYER_EQUIP);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeShort(0);
 }
@@ -127,8 +126,7 @@ void LocalPlayer::unequipItem(Item *item)
     if (!item)
         return;
 
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_UNEQUIP);
+    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
     outMsg.writeShort(item->getInvIndex());
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
@@ -137,8 +135,7 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_INVENTORY_USE);
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
@@ -147,8 +144,7 @@ void LocalPlayer::useItem(Item *item)
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
     // TODO: Fix wrong coordinates of drops, serverside?
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_PLAYER_INVENTORY_DROP);
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeShort(quantity);
 }
@@ -159,8 +155,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     int dy = item->getY() - mY;
 
     if (dx * dx + dy * dy < 4) {
-        MessageOut outMsg;
-        outMsg.writeShort(CMSG_ITEM_PICKUP);
+        MessageOut outMsg(CMSG_ITEM_PICKUP);
         outMsg.writeLong(item->getId());
         mPickUpTarget = NULL;
     } else {
@@ -220,9 +215,8 @@ void LocalPlayer::walk(unsigned char dir)
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     char temp[3];
-    MessageOut outMsg;
+    MessageOut outMsg(0x0085);
     set_coordinates(temp, x, y, mDirection);
-    outMsg.writeShort(0x0085);
     outMsg.writeString(temp, 3);
 
     mPickUpTarget = NULL;
@@ -232,8 +226,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
 void LocalPlayer::raiseAttribute(Attribute attr)
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_STAT_UPDATE_REQUEST);
+    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
 
     switch (attr)
     {
@@ -269,8 +262,7 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_SKILL_LEVELUP_REQUEST);
+    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeShort(skillId);
 }
 
@@ -288,8 +280,7 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
-    MessageOut outMsg;
-    outMsg.writeShort(0x0089);
+    MessageOut outMsg(0x0089);
     outMsg.writeLong(0);
     outMsg.writeByte(type);
 }
@@ -300,8 +291,7 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
-    MessageOut outMsg;
-    outMsg.writeShort(0x00bf);
+    MessageOut outMsg(0x00bf);
     outMsg.writeByte(emotion);
 }
 
@@ -310,15 +300,13 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_TRADE_RESPONSE);
+    MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeByte(accept ? 3 : 4);
 }
 
 void LocalPlayer::trade(Being *being) const
 {
-    MessageOut outMsg;
-    outMsg.writeShort(CMSG_TRADE_REQUEST);
+    MessageOut outMsg(CMSG_TRADE_REQUEST);
     outMsg.writeLong(being->getId());
 }
 
@@ -369,8 +357,7 @@ void LocalPlayer::attack(Being *target, bool keep)
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
-    MessageOut outMsg;
-    outMsg.writeShort(0x0089);
+    MessageOut outMsg(0x0089);
     outMsg.writeLong(target->getId());
     outMsg.writeByte(0);
 }
@@ -387,7 +374,6 @@ Being* LocalPlayer::getTarget() const
 
 void LocalPlayer::revive()
 {
-    MessageOut outMsg;
-    outMsg.writeShort(0x00b2);
+    MessageOut outMsg(0x00b2);
     outMsg.writeByte(0);
 }

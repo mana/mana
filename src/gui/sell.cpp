@@ -212,8 +212,7 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
 
-        MessageOut outMsg;
-        outMsg.writeShort(CMSG_NPC_SELL_REQUEST);
+        MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
         outMsg.writeShort(8);
         outMsg.writeShort(mShopItems->at(selectedItem).index);
         outMsg.writeShort(mAmountItems);

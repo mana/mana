@@ -27,13 +27,6 @@
 
 #include <enet/enet.h>
 
-MessageOut::MessageOut():
-    mData(0),
-    mDataSize(0),
-    mPos(0)
-{
-}
-
 MessageOut::MessageOut(short id):
     mData(0),
     mDataSize(0),
