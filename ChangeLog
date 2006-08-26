@@ -2,6 +2,9 @@
 
 	* src/gui/ministatus.cpp, src/gui/ministatus.h: Applied patch by mrha
 	(Herbi), adding experience bar to the ministatus in the top left.
+	* configure.ac, data/graphics/items/Makefile.am,
+	data/graphics/Makefile.am: Added Makefile.am to make sure the item
+	icons are installed.
 
 2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
