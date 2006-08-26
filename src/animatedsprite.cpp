@@ -48,12 +48,14 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     free(data);
 
     if (!doc) {
-        logger->error("Animation: Error while parsing animation definition file!");
+        logger->error(
+                "Animation: Error while parsing animation definition file!");
     }
 
     xmlNodePtr node = xmlDocGetRootElement(doc);
     if (!node || !xmlStrEqual(node->name, BAD_CAST "sprite")) {
-        logger->error("Animation: this is not a valid animation definition file!");
+        logger->error(
+                "Animation: this is not a valid animation definition file!");
     }
 
     // Get the variant
@@ -232,13 +234,14 @@ AnimatedSprite::~AnimatedSprite()
 void
 AnimatedSprite::reset()
 {
-    // Reset all defined actions (because of aliases, some will be resetted
-    // multiple times)
+    // Reset all defined actions (because of aliases some will be resetted
+    // multiple times, but this doesn't matter)
     for (ActionIterator i = mActions.begin(); i != mActions.end(); ++i)
     {
-        //TODO: If resetting everything is really a nice way of fixing the
-        //      synchronization issues, finish implementing this.
-        //i->second->reset();
+        if (i->second)
+        {
+            i->second->reset();
+        }
     }
 }
 

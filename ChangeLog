@@ -5,6 +5,10 @@
 	* configure.ac, data/graphics/items/Makefile.am,
 	data/graphics/Makefile.am: Added Makefile.am to make sure the item
 	icons are installed.
+	* src/player.cpp, src/animation.h, src/player.h,
+	src/animatedsprite.cpp, src/animation.cpp: Applied patch by Bahamut81
+	which implements resetting of Animation, Action and AnimatedSprite.
+	This fixes the animation synchronization issues.
 
 2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
 

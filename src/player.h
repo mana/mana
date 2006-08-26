@@ -37,19 +37,34 @@ class Player : public Being
     public:
         Player(Uint32 id, Uint16 job, Map *map);
 
-        virtual void logic();
+        virtual void
+        logic();
 
-        virtual Type getType() const;
+        virtual Type
+        getType() const;
 
-        virtual void drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        virtual void
+        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
-        virtual void setSex(Uint8 sex);
+        virtual void
+        setSex(Uint8 sex);
 
-        virtual void setHairColor(Uint16 color);
+        virtual void
+        setHairColor(Uint16 color);
 
-        virtual void setHairStyle(Uint16 style);
+        virtual void
+        setHairStyle(Uint16 style);
 
-        virtual void setVisibleEquipment(Uint8 slot, Uint8 id);
+        virtual void
+        setVisibleEquipment(Uint8 slot, Uint8 id);
+
+    private:
+        /**
+         * Resets all animations associated with this player. This is used to
+         * synchronize the animations after a new one has been added.
+         */
+        void
+        resetAnimations();
 };
 
 #endif

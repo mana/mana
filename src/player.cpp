@@ -98,6 +98,7 @@ Player::setSex(Uint8 sex)
             mSprites[BASE_SPRITE] = new AnimatedSprite(
                     "graphics/sprites/player_female_base.xml", 0);
         }
+        resetAnimations();
     }
     Being::setSex(sex);
 }
@@ -114,6 +115,7 @@ Player::setHairColor(Uint16 color)
         newHairSprite->setDirection(getSpriteDirection());
 
         mSprites[HAIR_SPRITE] = newHairSprite;
+        resetAnimations();
 
         setAction(mAction);
     }
@@ -133,6 +135,7 @@ Player::setHairStyle(Uint16 style)
         newHairSprite->setDirection(getSpriteDirection());
 
         mSprites[HAIR_SPRITE] = newHairSprite;
+        resetAnimations();
 
         setAction(mAction);
     }
@@ -170,6 +173,7 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
         equipmentSprite->setDirection(getSpriteDirection());
 
         mSprites[position] = equipmentSprite;
+        resetAnimations();
 
         setAction(mAction);
     }
@@ -177,4 +181,14 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
     Being::setVisibleEquipment(slot, id);
 }
 
-
+void
+Player::resetAnimations()
+{
+    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    {
+        if (mSprites[i] != NULL)
+        {
+            mSprites[i]->reset();
+        }
+    }
+}
