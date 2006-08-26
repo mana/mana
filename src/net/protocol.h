@@ -157,7 +157,7 @@ enum {
     GPMSG_BEING_LEAVE              = 0x0201, // B type, L being id
     PGMSG_WALK                     = 0x0260, // L*2 destination
     PGMSG_SAY                      = 0x02A0, // S text
-    GPMSG_SAY                      = 0x02A1, // S being, S text
+    GPMSG_SAY                      = 0x02A1, // L being id, S text
     PGMSG_USE_ITEM                 = 0x0300, // L item id
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     PGMSG_EQUIP                    = 0x0302, // L item id, B slot

@@ -42,11 +42,14 @@ extern Being *player_node;
 ChatHandler::ChatHandler()
 {
     static const Uint16 _messages[] = {
+        GPMSG_SAY,
+        /*
         SMSG_BEING_CHAT,
         SMSG_PLAYER_CHAT,
         SMSG_GM_CHAT,
         SMSG_WHO_ANSWER,
         0x10c, // MVP
+        */
         0
     };
     handledMessages = _messages;
@@ -60,6 +63,20 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
     switch (msg.getId())
     {
+        case GPMSG_SAY:
+            being = beingManager->findBeing(msg.readLong());
+            chatMsg = msg.readString();
+            if (being)
+            {
+                chatWindow->chatLog(being->getName() + " : " + chatMsg, being == player_node ? BY_PLAYER : BY_OTHER);
+                being->setSpeech(chatMsg, SPEECH_TIME);
+            }
+            else
+            {
+                chatWindow->chatLog("John Doe : " + chatMsg, BY_OTHER);
+            }
+            break;
+
         // Received speech from being
         case SMSG_BEING_CHAT:
             chatMsgLength = msg.readShort() - 8;

@@ -383,17 +383,22 @@ void BeingHandler::handleMessage(MessageIn &msg)
 void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
-    // Not sure what do to exactly with this message yet.
-    /*
-    unsigned char type = msg.readByte();
-    unsigned long id = msg.readLong();
-
-    if (type == OBJECT_PLAYER)
+    msg.readByte(); // type
+    int id = msg.readLong();
+    std::string name = msg.readString();
+    Being *being;
+    if (player_node->getName() == name)
     {
-        std::string name = msg.readString();
-        unsigned char hairStyle = msg.readByte();
-        unsigned char hairColor = msg.readByte();
-        unsigned char gender = msg.readByte();
+        being = player_node;
+        being->setId(id);
     }
-    */
+    else
+    {
+        // assume type is player for now, so job 0, TODO
+        being = beingManager->createBeing(id, 0);
+        being->setName(name);
+    }
+    being->setHairStyle(msg.readByte() + 1);
+    being->setHairColor(msg.readByte() + 1);
+    being->setSex(msg.readByte());
 }

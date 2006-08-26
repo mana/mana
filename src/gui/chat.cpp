@@ -37,6 +37,7 @@
 #include "../localplayer.h"
 
 #include "../net/messageout.h"
+#include "../net/network.h"
 #include "../net/protocol.h"
 
 ChatWindow::ChatWindow(Network *network):
@@ -249,12 +250,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
-        msg = nick + " : " + msg;
-
         MessageOut outMsg;
-        outMsg.writeShort(CMSG_CHAT_MESSAGE);
-        outMsg.writeShort(msg.length() + 4);
-        outMsg.writeString(msg, msg.length());
+        outMsg.writeShort(PGMSG_SAY);
+        outMsg.writeString(msg);
+        network->send(Network::GAME, outMsg);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {

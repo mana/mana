@@ -1,3 +1,10 @@
+2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/chathandler.cpp, src/gui/chat.cpp, src/net/protocol.h: Added
+	support for "say around" messages.
+	* src/net/beinghandler.cpp: Partly implemented being creation, so that
+	chat works.
+
 2006-08-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
