@@ -35,14 +35,16 @@ class Setup_Joystick : public SetupTab, public gcn::ActionListener
     public:
         Setup_Joystick();
 
-        void apply() {}
-        void cancel() {}
+        void apply();
+        void cancel();
 
         void action(const std::string& eventId, gcn::Widget* widget);
 
     private:
         gcn::Label *mCalibrateLabel;
         gcn::Button *mCalibrateButton;
+        bool mOriginalJoystickEnabled;
+        gcn::CheckBox *mJoystickEnabled;
 };
 
 #endif

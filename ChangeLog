@@ -1,3 +1,13 @@
+2006-08-26  Pascal Ganaye <pascalganaye@users.sourceforge.net>
+
+	* src/joystick.h, src/joystick.cpp, src/gui/setup.cpp,
+	src/gui/setup_joystick.h, src/gui/setup_video.cpp,
+	src/gui/setup_joystick.cpp, src/gui/setup_video.h: Added sliders to
+	the video section of the setup window to configure the laziness and
+	radius of the scrolling behaviour. Added a checkbox to the joystick
+	section to allow enabling/disabling the joystick (patch applied by
+	Bjørn Lindeijer).
+
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/ministatus.cpp, src/gui/ministatus.h: Applied patch by mrha

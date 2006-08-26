@@ -59,10 +59,26 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::CheckBox *mFsCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
+
         gcn::Slider *mAlphaSlider;
         gcn::CheckBox *mFpsCheckBox;
         gcn::Slider *mFpsSlider;
         gcn::TextField *mFpsField;
+
+        int mOriginalScrollLaziness;
+        gcn::Slider *mScrollLazinessSlider;
+        gcn::TextField *mScrollLazinessField;
+
+        int mOriginalScrollRadius;
+        gcn::Slider *mScrollRadiusSlider;
+        gcn::TextField *mScrollRadiusField;
+
+        void
+        updateSliders(bool originalValues);
+
+        int
+        updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                     const std::string &configName);
 };
 
 #endif

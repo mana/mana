@@ -59,10 +59,11 @@ Joystick::Joystick(int no):
     logger->log("Hats: %i", SDL_JoystickNumHats(mJoystick));
     logger->log("Buttons: %i", SDL_JoystickNumButtons(mJoystick));
 
-    mUpTolerance = (int)config.getValue("upTolerance", 100);
-    mDownTolerance = (int)config.getValue("downTolerance", 100);
-    mLeftTolerance = (int)config.getValue("leftTolerance", 100);
-    mRightTolerance = (int)config.getValue("rightTolerance", 100);
+    mEnabled = (int) config.getValue("joystickEnabled", 0) != 0;
+    mUpTolerance = (int) config.getValue("upTolerance", 100);
+    mDownTolerance = (int) config.getValue("downTolerance", 100);
+    mLeftTolerance = (int) config.getValue("leftTolerance", 100);
+    mRightTolerance = (int) config.getValue("rightTolerance", 100);
 }
 
 Joystick::~Joystick()
@@ -73,6 +74,7 @@ Joystick::~Joystick()
 void Joystick::update()
 {
     mDirection = 0;
+
     SDL_JoystickUpdate();
 
     // When calibrating, don't bother the outside with our state
@@ -80,6 +82,8 @@ void Joystick::update()
         doCalibration();
         return;
     };
+
+    if (!mEnabled) return;
 
     // X-Axis
     int position = SDL_JoystickGetAxis(mJoystick, 0);
@@ -144,7 +148,6 @@ void Joystick::doCalibration()
     }
 }
 
-
 void Joystick::finishCalibration()
 {
     config.setValue("leftTolerance", mLeftTolerance);
@@ -154,10 +157,7 @@ void Joystick::finishCalibration()
     mCalibrating = false;
 }
 
-bool Joystick::buttonPressed(unsigned char no)
+bool Joystick::buttonPressed(unsigned char no) const
 {
-    if (no > MAX_BUTTONS)
-        return false;
-
-    return mButtons[no];
+    return (no < MAX_BUTTONS) ? mButtons[no] : false;
 }
