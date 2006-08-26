@@ -156,6 +156,7 @@ enum {
                                              // player: S name, B hair style, B hair color, B gender
     GPMSG_BEING_LEAVE              = 0x0201, // B type, L being id
     PGMSG_WALK                     = 0x0260, // L*2 destination
+    GPMSG_BEINGS_MOVE              = 0x0280, // { L being id, W*2 position, W*2 destination }*
     PGMSG_SAY                      = 0x02A0, // S text
     GPMSG_SAY                      = 0x02A1, // L being id, S text
     PGMSG_USE_ITEM                 = 0x0300, // L item id

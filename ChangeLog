@@ -24,6 +24,8 @@
 	src/net/charserverhandler.cpp, src/net/messagehandler.cpp,
 	src/net/network.cpp, src/localplayer.h, src/game.h: Made the Network
 	class a purely static interface, as there is only one instance.
+	* src/net/beinghandler.cpp, src/net/beinghandler.h, src/net/protocol.h:
+	Added support for "beings move" messages.
 
 2006-08-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

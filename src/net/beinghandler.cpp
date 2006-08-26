@@ -54,6 +54,7 @@ BeingHandler::BeingHandler()
         //SMSG_PLAYER_MOVE,
         //0x0119,
         GPMSG_BEING_ENTER,
+        GPMSG_BEINGS_MOVE,
         0
     };
     handledMessages = _messages;
@@ -61,11 +62,13 @@ BeingHandler::BeingHandler()
 
 void BeingHandler::handleMessage(MessageIn &msg)
 {
+    /*
     Uint32 id;
     Uint16 job, speed;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
+    */
 
     switch (msg.getId())
     {
@@ -73,6 +76,11 @@ void BeingHandler::handleMessage(MessageIn &msg)
             handleBeingEnterMessage(msg);
             break;
 
+        case GPMSG_BEINGS_MOVE:
+            handleBeingsMoveMessage(msg);
+            break;
+
+        /*
         case SMSG_BEING_VISIBLE:
         case SMSG_BEING_MOVE:
             // Information about a being in range
@@ -377,6 +385,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                    msg.readShort(), msg.readShort(), msg.readShort(),
                    msg.readByte());
             break;
+        */
     }
 }
 
@@ -401,4 +410,19 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
     being->setHairStyle(msg.readByte());
     being->setHairColor(msg.readByte());
     being->setSex(msg.readByte());
+}
+
+void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
+{
+    for (int nb = (msg.getLength() - 2) / (4 + 4 * 2); nb > 0; --nb)
+    {
+        Uint32 id = msg.readLong();
+        Being *being = beingManager->findBeing(id);
+        if (!being) continue;
+        int sx = msg.readShort(), sy = msg.readShort(),
+            dx = msg.readShort(), dy = msg.readShort();
+        being->mX = sx / 32;
+        being->mY = sy / 32;
+        being->setDestination(dx / 32, dy / 32);
+    }
 }
