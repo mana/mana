@@ -30,7 +30,6 @@
 
 #include "../guichanfwd.h"
 
-class Network;
 class ShopItems;
 
 /**
@@ -46,7 +45,7 @@ class BuyDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        BuyDialog(Network *network);
+        BuyDialog();
 
         /**
          * Destructor
@@ -89,7 +88,6 @@ class BuyDialog : public Window, public gcn::ActionListener
         std::string getElementAt(int i);
 
     private:
-        Network *mNetwork;
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;

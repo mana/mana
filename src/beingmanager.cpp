@@ -49,11 +49,6 @@ class FindBeingFunctor
         Being::Type type;
 } beingFinder;
 
-BeingManager::BeingManager(Network *network):
-    mNetwork(network)
-{
-}
-
 void BeingManager::setMap(Map *map)
 {
     mMap = map;
@@ -79,7 +74,7 @@ Being* BeingManager::createBeing(Uint32 id, Uint16 job)
         outMsg.writeLong(id);
     }
     else if (job >= 100 & job < 200)
-        being = new NPC(id, job, mMap, mNetwork);
+        being = new NPC(id, job, mMap);
     else if (job >= 1000 && job < 1200)
         being = new Monster(id, job, mMap);
     else

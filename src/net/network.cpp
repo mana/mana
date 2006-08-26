@@ -29,10 +29,25 @@
 
 #include "../log.h"
 
-Network *network;
+static Network::State mState;
 
-Network::Network():
-    mState(NET_OK)
+/**
+ * The local host.
+ */
+static ENetHost *mClient;
+
+/**
+ * An array holding the peers of the account, game and chat servers.
+ */
+static ENetPeer *mServers[3];
+
+typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
+typedef MessageHandlers::iterator MessageHandlerIterator;
+static MessageHandlers mMessageHandlers;
+
+Network::State Network::getState() { return mState; }
+
+void Network::initialize()
 {
     // Initialize server peers
     for (int i = 0; i < 3; ++i)
@@ -48,7 +63,7 @@ Network::Network():
     }
 }
 
-Network::~Network()
+void Network::finalize()
 {
     clearHandlers();
 
@@ -110,15 +125,10 @@ Network::disconnect(Server server)
 void
 Network::registerHandler(MessageHandler *handler)
 {
-    const Uint16 *i = handler->handledMessages;
-
-    while(*i)
+    for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
         mMessageHandlers[*i] = handler;
-        i++;
     }
-
-    handler->setNetwork(this);
 }
 
 void
@@ -128,30 +138,27 @@ Network::unregisterHandler(MessageHandler *handler)
     {
         mMessageHandlers.erase(*i);
     }
-
-    handler->setNetwork(0);
 }
 
 void
 Network::clearHandlers()
 {
-    MessageHandlerIterator i;
-    for (i = mMessageHandlers.begin(); i != mMessageHandlers.end(); i++)
-    {
-        i->second->setNetwork(0);
-    }
     mMessageHandlers.clear();
 }
 
 bool
-Network::isConnected(Server server) const
+Network::isConnected(Server server)
 {
     return mServers[server] != NULL &&
            mServers[server]->state == ENET_PEER_STATE_CONNECTED;
 }
 
-void
-Network::dispatchMessage(ENetPacket *packet)
+/**
+ * Dispatches a message to the appropriate message handler and
+ * destroys it afterwards.
+ */
+static void
+dispatchMessage(ENetPacket *packet)
 {
     MessageIn msg((const char *)packet->data, packet->dataLength);
 

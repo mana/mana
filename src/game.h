@@ -31,7 +31,6 @@
 #define SPEECH_MAX_TIME 100
 
 class MessageHandler;
-class Network;
 
 extern std::string map_path;
 extern volatile int fps;
@@ -40,7 +39,7 @@ extern volatile int tick_time;
 class Game
 {
     public:
-        Game(Network *network);
+        Game();
         ~Game();
 
         void logic();
@@ -48,8 +47,6 @@ class Game
         void handleInput();
 
     protected:
-        Network *mNetwork;
-
         typedef std::auto_ptr<MessageHandler> MessageHandlerPtr;
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;

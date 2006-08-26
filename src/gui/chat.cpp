@@ -40,9 +40,8 @@
 #include "../net/network.h"
 #include "../net/protocol.h"
 
-ChatWindow::ChatWindow(Network *network):
+ChatWindow::ChatWindow():
     Window(""),
-    mNetwork(network),
     mTmpVisible(false)
 {
     setWindowName("Chat");
@@ -253,7 +252,7 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         MessageOut outMsg;
         outMsg.writeShort(PGMSG_SAY);
         outMsg.writeString(msg);
-        network->send(Network::GAME, outMsg);
+        Network::send(Network::GAME, outMsg);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {

@@ -413,8 +413,8 @@ MapLoginHandler mapLoginHandler;
 void accountLogin(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
-    network->registerHandler(&loginHandler);
-    network->registerHandler(&charServerHandler);
+    Network::registerHandler(&loginHandler);
+    Network::registerHandler(&charServerHandler);
     loginHandler.setLoginData(loginData);
     charServerHandler.setLoginData(loginData);
     charServerHandler.setCharInfo(&charInfo);
@@ -424,7 +424,7 @@ void accountLogin(LoginData *loginData)
     msg.writeLong(0); // client version
     msg.writeString(loginData->username);
     msg.writeString(loginData->password);
-    network->send(Network::ACCOUNT, msg);
+    Network::send(Network::ACCOUNT, msg);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -441,7 +441,7 @@ void accountLogin(LoginData *loginData)
 void accountRegister(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
-    network->registerHandler(&loginHandler);
+    Network::registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
     charServerHandler.setLoginData(loginData);
     charServerHandler.setCharInfo(&charInfo);
@@ -452,21 +452,21 @@ void accountRegister(LoginData *loginData)
     msg.writeString(loginData->username);
     msg.writeString(loginData->password);
     msg.writeString(loginData->email);
-    network->send(Network::ACCOUNT, msg);
+    Network::send(Network::ACCOUNT, msg);
 }
 
-void mapLogin(Network *network, LoginData *loginData)
+void mapLogin(LoginData *loginData)
 {
-    network->registerHandler(&mapLoginHandler);
+    Network::registerHandler(&mapLoginHandler);
 
     // Send connect messages with the magic token to game and chat servers
     MessageOut gameServerConnect(PGMSG_CONNECT);
     gameServerConnect.writeString(token, 32);
-    network->send(Network::GAME, gameServerConnect);
+    Network::send(Network::GAME, gameServerConnect);
 
     MessageOut chatServerConnect(PCMSG_CONNECT);
     chatServerConnect.writeString(token, 32);
-    network->send(Network::CHAT, chatServerConnect);
+    Network::send(Network::CHAT, chatServerConnect);
 }
 
 /** Main */
@@ -533,7 +533,7 @@ int main(int argc, char *argv[])
     {
         logger->error("An error occurred while initializing ENet.");
     }
-    network = new Network();
+    Network::initialize();
 
 
     SDL_Event event;
@@ -557,9 +557,9 @@ int main(int argc, char *argv[])
         }
 
         gui->logic();
-        network->flush();
+        Network::flush();
 
-        if (network->getState() == Network::NET_ERROR)
+        if (Network::getState() == Network::NET_ERROR)
         {
             state = STATE_ERROR;
             errorMessage = "Got disconnected from server!";
@@ -585,7 +585,7 @@ int main(int argc, char *argv[])
 
         // TODO: Add connect timeout to go back to choose server
         if (state == STATE_CONNECT_ACCOUNT &&
-                network->isConnected(Network::ACCOUNT))
+                Network::isConnected(Network::ACCOUNT))
         {
             if (options.skipUpdate) {
                 state = STATE_LOGIN;
@@ -594,8 +594,8 @@ int main(int argc, char *argv[])
             }
         }
         else if (state == STATE_CONNECT_GAME &&
-                network->isConnected(Network::GAME) &&
-                network->isConnected(Network::CHAT))
+                Network::isConnected(Network::GAME) &&
+                Network::isConnected(Network::CHAT))
         {
             // TODO: Somehow send the token
             state = STATE_GAME;
@@ -611,7 +611,7 @@ int main(int argc, char *argv[])
             // Disconnect from account server once connected to game server
             if (oldstate == STATE_CONNECT_GAME && state == STATE_GAME)
             {
-                network->disconnect(Network::ACCOUNT);
+                Network::disconnect(Network::ACCOUNT);
             }
 
             oldstate = state;
@@ -627,7 +627,7 @@ int main(int argc, char *argv[])
                     logger->log("State: CHOOSE_SERVER");
                     // TODO: Allow changing this using a server choice dialog
                     logger->log("Trying to connect to account server...");
-                    network->connect(Network::ACCOUNT,
+                    Network::connect(Network::ACCOUNT,
                                      loginData.hostname, loginData.port);
                     state = STATE_CONNECT_ACCOUNT;
                     break;
@@ -667,7 +667,7 @@ int main(int argc, char *argv[])
 
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(network, &charInfo);
+                    currentDialog = new CharSelectDialog(&charInfo);
                     if (options.chooseDefault) {
                         ((CharSelectDialog*)currentDialog)->action("ok",
                                                                    NULL);
@@ -679,9 +679,9 @@ int main(int argc, char *argv[])
                     currentDialog = new OkDialog("Error", errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
-                    network->disconnect(Network::GAME);
-                    network->disconnect(Network::CHAT);
-                    network->clearHandlers();
+                    Network::disconnect(Network::GAME);
+                    Network::disconnect(Network::CHAT);
+                    Network::clearHandlers();
                     break;
 
                 case STATE_CONNECT_GAME:
@@ -690,7 +690,7 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_GAME:
-                    mapLogin(network, &loginData);
+                    mapLogin(&loginData);
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;
@@ -698,7 +698,7 @@ int main(int argc, char *argv[])
                     login_wallpaper = NULL;
 
                     logger->log("State: GAME");
-                    game = new Game(network);
+                    game = new Game;
                     game->logic();
                     delete game;
                     state = STATE_EXIT;
@@ -711,7 +711,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    delete network;
+    Network::finalize();
     enet_deinitialize();
 
     if (nullFile)

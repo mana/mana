@@ -174,8 +174,8 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
         logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
         logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
 
-        network->connect(Network::GAME, gameServer, gameServerPort);
-        network->connect(Network::CHAT, chatServer, chatServerPort);
+        Network::connect(Network::GAME, gameServer, gameServerPort);
+        Network::connect(Network::CHAT, chatServer, chatServerPort);
 
         // Keep the selected character and delete the others
         player_node = mCharInfo->getEntry();

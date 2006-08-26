@@ -27,22 +27,15 @@
 #include <SDL_types.h>
 
 class MessageIn;
-class Network;
 
 class MessageHandler
 {
     public:
         const Uint16 *handledMessages;
 
-        MessageHandler();
         virtual ~MessageHandler();
 
         virtual void handleMessage(MessageIn &msg) = 0;
-
-        void setNetwork(Network *network);
-
-    protected:
-        Network *mNetwork;
 };
 
 #endif

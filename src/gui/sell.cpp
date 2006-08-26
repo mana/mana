@@ -44,9 +44,8 @@
 
 #include "../utils/tostring.h"
 
-SellDialog::SellDialog(Network *network):
+SellDialog::SellDialog():
     Window("Sell"),
-    mNetwork(network),
     mMaxItems(0), mAmountItems(0)
 {
     mShopItems = new ShopItems();

@@ -31,7 +31,6 @@
 #include "../guichanfwd.h"
 
 class Item;
-class Network;
 class ShopItems;
 
 
@@ -48,7 +47,7 @@ class SellDialog : public Window, public gcn::ActionListener
          *
          * @see Window::Window
          */
-        SellDialog(Network *network);
+        SellDialog();
 
         /**
          * Destructor
@@ -76,7 +75,6 @@ class SellDialog : public Window, public gcn::ActionListener
         void mouseClick(int x, int y, int buton, int count);
 
     private:
-        Network *mNetwork;
         gcn::Button *mSellButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;

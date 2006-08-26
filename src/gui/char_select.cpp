@@ -71,9 +71,8 @@ void CharDeleteConfirm::action(const std::string &eventId, gcn::Widget *widget)
     ConfirmDialog::action(eventId, widget);
 }
 
-CharSelectDialog::CharSelectDialog(Network *network,
-                                   LockedArray<LocalPlayer*> *charInfo):
-    Window("Select Character"), mNetwork(network),
+CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
+    Window("Select Character"),
     mCharInfo(charInfo), mCharSelected(false)
 {
     mSelectButton = new Button("Ok", "ok", this);
@@ -147,7 +146,7 @@ void CharSelectDialog::action(const std::string &eventId, gcn::Widget *widget)
         {
             // Start new character dialog
             mCharInfo->lock();
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork);
+            new CharCreateDialog(this, mCharInfo->getPos());
             mCharInfo->unlock();
         }
     }
@@ -208,7 +207,7 @@ void CharSelectDialog::attemptCharDelete()
     msg.writeShort(PAMSG_CHAR_DELETE);
     // TODO: Send the selected slot
     msg.writeByte(0);
-    network->send(Network::ACCOUNT, msg);
+    Network::send(Network::ACCOUNT, msg);
     mCharInfo->lock();
 }
 
@@ -218,7 +217,7 @@ void CharSelectDialog::attemptCharSelect()
     MessageOut msg;
     msg.writeShort(PAMSG_CHAR_SELECT);
     msg.writeByte(mCharInfo->getPos());
-    network->send(Network::ACCOUNT, msg);
+    Network::send(Network::ACCOUNT, msg);
     mCharInfo->lock();
 }
 
@@ -227,8 +226,8 @@ void CharSelectDialog::logic()
     updatePlayerInfo();
 }
 
-CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network):
-    Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
+CharCreateDialog::CharCreateDialog(Window *parent, int slot):
+    Window("Create Character", true, parent), mSlot(slot)
 {
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -336,5 +335,5 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeShort(10); // INT
     outMsg.writeShort(10); // DEX
     outMsg.writeShort(10); // LUK
-    network->send(Network::ACCOUNT, outMsg);
+    Network::send(Network::ACCOUNT, outMsg);
 }

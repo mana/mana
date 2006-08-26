@@ -42,108 +42,79 @@ class MessageOut;
 class Network
 {
     public:
-        friend class MessageOut;
+        /**
+         * Sets up the local host.
+         */
+        static void
+        initialize();
 
         /**
-         * Constructor. Sets up the local host.
+         * Closes the connections.
          */
-        Network();
+        static void
+        finalize();
 
-        /**
-         * Destructor.
-         */
-        ~Network();
-
-        typedef enum {
+        enum Server {
             ACCOUNT,
             GAME,
             CHAT
-        } Server;
-
-        /**
-         * Connects to the given server with the specified address and port.
-         * This method is non-blocking, use isConnected to check whether the
-         * server is connected.
-         */
-        bool
-        connect(Server server, const std::string &address, short port);
-
-        /**
-         * Disconnects from the given server.
-         */
-        void
-        disconnect(Server server);
-
-        /**
-         * Registers a message handler. A message handler handles a certain
-         * subset of incoming messages.
-         */
-        void
-        registerHandler(MessageHandler *handler);
-
-        /**
-         * Unregisters a message handler.
-         */
-        void
-        unregisterHandler(MessageHandler *handler);
-
-        void
-        clearHandlers();
-
-        int
-        getState() const { return mState; }
-
-        /**
-         * Returns whether the given server is connected.
-         */
-        bool
-        isConnected(Server server) const;
-
-        void
-        flush();
-
-        /**
-         * Send a message to a given server. The server should be connected.
-         */
-        void
-        send(Server server, const MessageOut &msg);
+        };
 
         enum State {
             NET_OK,
             NET_ERROR
         };
 
-    private:
         /**
-         * The local host.
+         * Connects to the given server with the specified address and port.
+         * This method is non-blocking, use isConnected to check whether the
+         * server is connected.
          */
-        ENetHost *mClient;
-
-        /**
-         * An array holding the peers of the account, game and chat servers.
-         */
-        ENetPeer *mServers[3];
+        static bool
+        connect(Server server, const std::string &address, short port);
 
         /**
-         * Dispatches a message to the appropriate message handler and
-         * destroys it afterwards.
+         * Disconnects from the given server.
          */
-        void
-        dispatchMessage(ENetPacket *packet);
+        static void
+        disconnect(Server server);
 
-        unsigned int mToSkip;
+        /**
+         * Registers a message handler. A message handler handles a certain
+         * subset of incoming messages.
+         */
+        static void
+        registerHandler(MessageHandler *handler);
 
-        int mState;
+        /**
+         * Unregisters a message handler.
+         */
+        static void
+        unregisterHandler(MessageHandler *handler);
 
-        typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
-        typedef MessageHandlers::iterator MessageHandlerIterator;
-        MessageHandlers mMessageHandlers;
+        static void
+        clearHandlers();
+
+        static State
+        getState();
+
+        /**
+         * Returns whether the given server is connected.
+         */
+        static bool
+        isConnected(Server server);
+
+        static void
+        flush();
+
+        /**
+         * Sends a message to a given server. The server should be connected.
+         */
+        static void
+        send(Server server, const MessageOut &msg);
 };
 
 /** Convert an address from int format to string */
 char *iptostring(int address);
-
-// TODO: remove this global, just a temp solution.
-extern Network *network;
 
 #endif

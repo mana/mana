@@ -26,8 +26,6 @@
 
 #include "messagehandler.h"
 
-class Network;
-
 class TradeHandler : public MessageHandler
 {
     public:

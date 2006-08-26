@@ -32,7 +32,6 @@
 #include <guichan/actionlistener.hpp>
 
 class LocalPlayer;
-class Network;
 class PlayerBox;
 
 /**
@@ -47,8 +46,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharSelectDialog(Network *network,
-                         LockedArray<LocalPlayer*> *charInfo);
+        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo);
 
         void action(const std::string& eventId, gcn::Widget* widget);
 
@@ -57,7 +55,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         void logic();
 
     private:
-        Network *mNetwork;
         LockedArray<LocalPlayer*> *mCharInfo;
 
         gcn::Button *mSelectButton;
@@ -97,14 +94,13 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharCreateDialog(Window *parent, int slot, Network *network);
+        CharCreateDialog(Window *parent, int slot);
 
         void action(const std::string& eventId, gcn::Widget* widget);
 
         std::string getName();
 
     private:
-        Network *mNetwork;
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
         gcn::Button *mNextHairColorButton;

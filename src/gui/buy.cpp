@@ -42,8 +42,8 @@
 #include "../utils/tostring.h"
 
 
-BuyDialog::BuyDialog(Network *network):
-    Window("Buy"), mNetwork(network),
+BuyDialog::BuyDialog():
+    Window("Buy"),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     mShopItems = new ShopItems;

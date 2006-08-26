@@ -28,7 +28,6 @@
 
 class LocalPlayer;
 class Map;
-class Network;
 
 typedef std::list<Being*> Beings;
 typedef Beings::iterator BeingIterator;
@@ -36,8 +35,6 @@ typedef Beings::iterator BeingIterator;
 class BeingManager
 {
     public:
-        BeingManager(Network *network);
-
         /**
          * Sets the map on which beings are created
          */
@@ -86,7 +83,6 @@ class BeingManager
     protected:
         Beings mBeings;
         Map *mMap;
-        Network *mNetwork;
 };
 
 extern BeingManager *beingManager;

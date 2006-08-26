@@ -30,7 +30,6 @@ extern int camera_x, camera_y;
 
 class Graphics;
 class Map;
-class Network;
 
 /**
  * Game engine that does the main drawing.
@@ -41,7 +40,7 @@ class Engine
         /**
          * Constructor.
          */
-        Engine(Network *network);
+        Engine();
 
         /**
          * Destructor.
@@ -77,7 +76,6 @@ class Engine
         bool mShowDebugPath;
 
         Map *mCurrentMap;
-        Network *mNetwork;
 };
 
 extern Engine *engine;

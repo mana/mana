@@ -45,9 +45,8 @@
 
 #include "../utils/tostring.h"
 
-TradeWindow::TradeWindow(Network *network):
+TradeWindow::TradeWindow():
     Window("Trade: You"),
-    mNetwork(network),
     mMyInventory(new Inventory()),
     mPartnerInventory(new Inventory())
 {

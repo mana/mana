@@ -26,12 +26,10 @@
 
 #include "being.h"
 
-class Network;
-
 class NPC : public Being
 {
     public:
-        NPC(Uint32 id, Uint16 job, Map *map, Network *network);
+        NPC(Uint32 id, Uint16 job, Map *map);
 
         virtual Type getType() const;
 
@@ -41,9 +39,6 @@ class NPC : public Being
 
         void buy();
         void sell();
-
-    protected:
-        Network *mNetwork;
 };
 
 extern NPC *current_npc;

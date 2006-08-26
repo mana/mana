@@ -62,10 +62,9 @@ Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
 
-Engine::Engine(Network *network):
+Engine::Engine():
     mShowDebugPath(false),
-    mCurrentMap(NULL),
-    mNetwork(network)
+    mCurrentMap(NULL)
 {
     // Load the sprite sets
     ResourceManager *resman = ResourceManager::getInstance();

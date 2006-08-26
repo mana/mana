@@ -27,19 +27,7 @@
 
 #include "network.h"
 
-MessageHandler::MessageHandler():
-    mNetwork(0)
-{
-}
-
 MessageHandler::~MessageHandler()
 {
-    if (mNetwork)
-        mNetwork->unregisterHandler(this);
-}
-
-void MessageHandler::setNetwork(Network *network)
-{
-    assert(!(network && mNetwork));
-    mNetwork = network;
+    Network::unregisterHandler(this);
 }

@@ -164,15 +164,15 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
-void createGuiWindows(Network *network)
+void createGuiWindows()
 {
     // Create dialogs
-    chatWindow = new ChatWindow(network);
+    chatWindow = new ChatWindow;
     menuWindow = new MenuWindow();
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow();
-    buyDialog = new BuyDialog(network);
-    sellDialog = new SellDialog(network);
+    buyDialog = new BuyDialog;
+    sellDialog = new SellDialog;
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
     npcTextDialog = new NpcTextDialog();
@@ -183,7 +183,7 @@ void createGuiWindows(Network *network)
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     chargeDialog = new ChargeDialog();
-    tradeWindow = new TradeWindow(network);
+    tradeWindow = new TradeWindow;
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
@@ -250,8 +250,7 @@ void destroyGuiWindows()
     delete debugWindow;
 }
 
-Game::Game(Network *network):
-    mNetwork(network),
+Game::Game():
     mBeingHandler(new BeingHandler()),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
@@ -263,10 +262,10 @@ Game::Game(Network *network):
     mSkillHandler(new SkillHandler()),
     mTradeHandler(new TradeHandler())
 {
-    createGuiWindows(network);
-    engine = new Engine(network);
+    createGuiWindows();
+    engine = new Engine;
 
-    beingManager = new BeingManager(network);
+    beingManager = new BeingManager;
     floorItemManager = new FloorItemManager();
 
     // Initialize timers
@@ -276,7 +275,6 @@ Game::Game(Network *network):
 
     // Initialize beings
     beingManager->setPlayer(player_node);
-    player_node->setNetwork(network);
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -286,16 +284,16 @@ Game::Game(Network *network):
         joystick = new Joystick(0);
     }
 
-    network->registerHandler(mBeingHandler.get());
-    network->registerHandler(mBuySellHandler.get());
-    network->registerHandler(mChatHandler.get());
-    network->registerHandler(mEquipmentHandler.get());
-    network->registerHandler(mInventoryHandler.get());
-    network->registerHandler(mItemHandler.get());
-    network->registerHandler(mNpcHandler.get());
-    network->registerHandler(mPlayerHandler.get());
-    network->registerHandler(mSkillHandler.get());
-    network->registerHandler(mTradeHandler.get());
+    Network::registerHandler(mBeingHandler.get());
+    Network::registerHandler(mBuySellHandler.get());
+    Network::registerHandler(mChatHandler.get());
+    Network::registerHandler(mEquipmentHandler.get());
+    Network::registerHandler(mInventoryHandler.get());
+    Network::registerHandler(mItemHandler.get());
+    Network::registerHandler(mNpcHandler.get());
+    Network::registerHandler(mPlayerHandler.get());
+    Network::registerHandler(mSkillHandler.get());
+    Network::registerHandler(mTradeHandler.get());
 }
 
 Game::~Game()
@@ -374,7 +372,7 @@ void Game::logic()
         }
 
         // Handle network stuff
-        mNetwork->flush();
+        Network::flush();
     }
 }
 

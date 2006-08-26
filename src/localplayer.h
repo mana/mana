@@ -34,7 +34,6 @@
 class FloorItem;
 class Inventory;
 class Item;
-class Network;
 
 class LocalPlayer : public Player
 {
@@ -46,8 +45,6 @@ class LocalPlayer : public Player
         LocalPlayer(Uint32 id, Uint16 job, Map *map);
 
         virtual ~LocalPlayer();
-
-        void setNetwork(Network *network) { mNetwork = network; }
 
         virtual void logic();
         virtual void nextStep();
@@ -145,7 +142,6 @@ class LocalPlayer : public Player
         std::auto_ptr<Inventory> mInventory;
 
     protected:
-        Network *mNetwork;
         Being *mTarget;
         FloorItem *mPickUpTarget;
 
