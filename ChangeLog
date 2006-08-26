@@ -6,6 +6,8 @@
 	data/graphics/sprites/Makefile.am: Got rid of numerous additions and
 	substractions to the hair style and color. Hair style 0 was added and
 	defined as being bald (so bald is no longer a hardcoded style).
+	* src/player.cpp, src/being.cpp, src/net/charserverhandler.cpp,
+	src/being.h: Fixed player sprite not showing up.
 
 2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

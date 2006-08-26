@@ -46,7 +46,6 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 }
 
 Being::Being(Uint32 id, Uint16 job, Map *map):
-    mSex(2),
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
     mAction(0),
@@ -55,6 +54,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mAttackSpeed(350),
     mEquipment(new Equipment()),
     mId(id),
+    mSex(2),
     mWeapon(0),
     mWalkSpeed(150),
     mMap(NULL),
