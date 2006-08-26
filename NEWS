@@ -1,5 +1,12 @@
-0.0.20.1 (25 July 2006)
+0.0.21 (.. September 2006)
+- Added item pickup messages to the chat dialog
+- Added XP bar to ministatus in the top left
+- Added configurable smooth and lazy scrolling
+- Added option to turn off the joystick
+- Added --playername command line option for automatic character picking
 - Fixed updating system on Windows
+- Fixed player animations going out of sync on changing equipment or hairstyle
+- Fixed SDL_image configure check on some systems by first checking for libpng
 
 0.0.20 (24 July 2006)
 - Added new hairstyle, and some fixes to the old ones

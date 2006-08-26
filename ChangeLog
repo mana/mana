@@ -1,3 +1,10 @@
+2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/inventoryhandler.cpp: Applied patch by AHarrison that adds
+	item pickup messages to the chat window.
+	* NEWS: Updated with some recently added and fixed issues. Doesn't
+	mention any of the recent content updates yet.
+
 2006-08-26  Pascal Ganaye <pascalganaye@users.sourceforge.net>
 
 	* src/joystick.h, src/joystick.cpp, src/gui/setup.cpp,
@@ -50,8 +57,8 @@
 
 2006-08-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* data/graphics/sprites/item004.png, data/graphics/sprites/item005.png,
-	data/graphics/sprites/Makefile.am,
+	* data/graphics/sprites/item004.png,
+	data/graphics/sprites/item005.png, data/graphics/sprites/Makefile.am,
 	data/graphics/items/armor-legs-cottonshorts,
 	data/graphics/items/armor-legs-jeanshorts: Added the equip graphics of
 	the short jeans and the cotton shorts and an inventory icon of the
@@ -89,7 +96,7 @@
 	Added spotlight effect to the cave maps (feedback, please)
 	* data/graphics/maps/new_9-1.tmx.gz,
 	data/graphics/images/ambient/clouds.png:
-	Added cloudshadow effect to the woodland map (feedback, please)
+	Added cloudshadow effect to the woodland map (feedback, please).
 
 2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
