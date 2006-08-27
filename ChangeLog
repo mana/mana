@@ -25,6 +25,9 @@
 	to tile centers for now).
 	* src/net/beinghandler.cpp, src/net/beinghandler.h: Added support for
 	leaving beings.
+	* src/localplayer.cpp, src/beingmanager.cpp, src/player.cpp,
+	src/monster.cpp, src/net/playerhandler.cpp, src/being.h: Removed
+	Being::mFrame field.
 
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

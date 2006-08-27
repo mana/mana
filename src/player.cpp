@@ -47,19 +47,14 @@ Player::logic()
 {
     switch (mAction) {
         case WALK:
-            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
-            if (mFrame >= 6) {
+            if (get_elapsed_time(mWalkTime) >= mWalkSpeed)
+            {
                 nextStep();
             }
             break;
         case ATTACK:
-            int frames = 4;
-            if (getWeapon() == 2)
+            if (get_elapsed_time(mWalkTime) >= mAttackSpeed)
             {
-                frames = 5;
-            }
-            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-            if (mFrame >= frames) {
                 nextStep();
             }
             break;

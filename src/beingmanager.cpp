@@ -127,12 +127,12 @@ void BeingManager::logic()
 
         being->logic();
 
-        if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
+        /*if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
         }
-        else {
+        else*/ {
             i++;
         }
     }

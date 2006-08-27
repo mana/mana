@@ -103,7 +103,6 @@ class Being : public Sprite
         Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
         Uint8 mDirection;       /**< Facing direction */
         Uint8 mAction;          /**< Action the being is performing */
-        Uint8 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */

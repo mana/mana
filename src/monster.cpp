@@ -40,9 +40,7 @@ Monster::logic()
 {
     if (mAction != STAND)
     {
-        mFrame = (get_elapsed_time(mWalkTime) * 4) / mWalkSpeed;
-
-        if (mFrame >= 4 && mAction != MONSTER_DEAD)
+        if (get_elapsed_time(mWalkTime) >= mWalkSpeed && mAction != MONSTER_DEAD)
         {
             nextStep();
         }

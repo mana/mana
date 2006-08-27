@@ -306,7 +306,6 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 
     player_node->setAction(Being::STAND);
     player_node->stopAttack();
-    player_node->mFrame = 0;
 
     player_node->mX = x;
     player_node->mY = y;
