@@ -59,53 +59,43 @@ LoginDialog::LoginDialog(LoginData *loginData):
 {
     gcn::Label *userLabel = new gcn::Label("Name:");
     gcn::Label *passLabel = new gcn::Label("Password:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
-    mServerField = new TextField(mLoginData->hostname);
     mKeepCheck = new CheckBox("Keep", mLoginData->remember);
     mOkButton = new Button("OK", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
     mRegisterButton = new Button("Register", "register", this);
 
-    setContentSize(200, 100);
+    setContentSize(200, 91);
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());
-    serverLabel->setPosition(
-            5, 23 + userLabel->getHeight() + passLabel->getHeight());
     mUserField->setPosition(65, 5);
     mPassField->setPosition(65, 14 + userLabel->getHeight());
-    mServerField->setPosition(
-            65, 23 + userLabel->getHeight() + passLabel->getHeight());
     mUserField->setWidth(130);
     mPassField->setWidth(130);
-    mServerField->setWidth(130);
-    mKeepCheck->setPosition(4, 77);
+    mKeepCheck->setPosition(4, 68);
     mCancelButton->setPosition(
             200 - mCancelButton->getWidth() - 5,
-            100 - mCancelButton->getHeight() - 5);
+            91 - mCancelButton->getHeight() - 5);
     mOkButton->setPosition(
             mCancelButton->getX() - mOkButton->getWidth() - 5,
-            100 - mOkButton->getHeight() - 5);
-    mRegisterButton->setPosition(mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
-            100 - mRegisterButton->getHeight() - 5);
+            91 - mOkButton->getHeight() - 5);
+    mRegisterButton->setPosition(
+            mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
+            91 - mRegisterButton->getHeight() - 5);
 
     mUserField->setEventId("ok");
     mPassField->setEventId("ok");
-    mServerField->setEventId("ok");
 
     mUserField->addActionListener(this);
     mPassField->addActionListener(this);
-    mServerField->addActionListener(this);
     mKeepCheck->addActionListener(this);
 
     add(userLabel);
     add(passLabel);
-    add(serverLabel);
     add(mUserField);
     add(mPassField);
-    add(mServerField);
     add(mKeepCheck);
     add(mOkButton);
     add(mCancelButton);
@@ -141,7 +131,6 @@ LoginDialog::action(const std::string &eventId, gcn::Widget *widget)
         }
         else
         {
-            mLoginData->hostname = mServerField->getText();
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPassField->getText();
             mLoginData->remember = mKeepCheck->isMarked();

@@ -66,7 +66,6 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
         gcn::TextField *mEmailField;
-        gcn::TextField *mServerField;
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;

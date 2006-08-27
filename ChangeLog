@@ -8,6 +8,10 @@
 	* src/net/protocol.cpp, src/net/protocol.h, src/net/messagein.cpp,
 	src/net/playerhandler.cpp, src/Makefile.am: Got rid of no longer used
 	protocol.cpp.
+	* src/gui/login.cpp, src/gui/register.h, src/gui/login.h,
+	src/gui/register.cpp: Got rid of server input field since connecting
+	to the account server now happens before the login and register
+	dialogs.
 
 2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

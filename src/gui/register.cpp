@@ -51,17 +51,15 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *passwordLabel = new gcn::Label("Password:");
     gcn::Label *confirmLabel = new gcn::Label("Confirm:");
     gcn::Label *emailLabel = new gcn::Label("Email:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
     mUserField = new TextField("player");
     mPasswordField = new PasswordField();
     mConfirmField = new PasswordField();
     mEmailField = new TextField();
-    mServerField = new TextField();
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
-    int width = 200;
-    int height = 150;
+    const int width = 200;
+    const int height = 130;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
@@ -75,38 +73,33 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mEmailField->setPosition(
             65, mConfirmField->getY() + mConfirmField->getHeight() + 7);
     mEmailField->setWidth(130);
-    mServerField->setPosition(
-            65, 8 + mEmailField->getY() + mEmailField->getHeight() + 7);
-    mServerField->setWidth(130);
 
     userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
     emailLabel->setPosition(5, mEmailField->getY() + 1);
-    serverLabel->setPosition(5, mServerField->getY() + 1);
 
-    mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
-    mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
-            mRegisterButton->getY());
+    mCancelButton->setPosition(
+            width - 5 - mCancelButton->getWidth(),
+            height - 5 - mCancelButton->getHeight());
+    mRegisterButton->setPosition(
+            mCancelButton->getX() - 5 - mRegisterButton->getWidth(),
+            mCancelButton->getY());
 
     add(userLabel);
     add(passwordLabel);
     add(emailLabel);
-    add(serverLabel);
     add(confirmLabel);
     add(mUserField);
     add(mPasswordField);
     add(mConfirmField);
     add(mEmailField);
-    add(mServerField);
     add(mRegisterButton);
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
-
-    mServerField->setText(config.getValue("host", ""));
 }
 
 RegisterDialog::~RegisterDialog()
@@ -199,7 +192,6 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
             // No errors detected, register the new user.
             mRegisterButton->setEnabled(false);
 
-            mLoginData->hostname = config.getValue("host", "animesites.de");
             mLoginData->port = (short)config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
