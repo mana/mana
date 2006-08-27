@@ -462,14 +462,12 @@ void Game::handleInput()
                 case SDLK_z:
                     if (!chatWindow->isFocused())
                     {
-                        FloorItem *item = floorItemManager->findByCoordinates(
-                                player_node->mX, player_node->mY);
+                        Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
+                        FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
                         // If none below the player, try the tile in front of
                         // the player
                         if (!item) {
-                            Uint16 x = player_node->mX;
-                            Uint16 y = player_node->mY;
                             if (player_node->mDirection & Being::UP)
                                 y--;
                             if (player_node->mDirection & Being::DOWN)
@@ -591,8 +589,7 @@ void Game::handleInput()
         current_npc == 0 &&
         !chatWindow->isFocused())
     {
-        Uint16 x = player_node->mX;
-        Uint16 y = player_node->mY;
+        Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
         unsigned char Direction = 0;
 
         // Translate pressed keys to movement and direction
@@ -644,7 +641,7 @@ void Game::handleInput()
                 if (player_node->mDirection & Being::RIGHT)
                     targetX++;
 
-                // Attack priorioty is: Monster, Player, auto target
+                // Attack priority is: Monster, Player, auto target
                 target = beingManager->findBeing(
                         targetX, targetY, Being::MONSTER);
                 if (!target)
@@ -659,8 +656,7 @@ void Game::handleInput()
         {
             if (joystick->buttonPressed(1))
             {
-                FloorItem *item = floorItemManager->findByCoordinates(
-                        player_node->mX, player_node->mY);
+                FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
                 if (item)
                     player_node->pickUp(item);

@@ -225,7 +225,7 @@ Map::getWalk(int x, int y)
     Beings *beings = beingManager->getAll();
     for (BeingIterator i = beings->begin(); i != beings->end(); i++) {
         // job 45 is a portal, they don't collide
-        if ((*i)->mX == x && (*i)->mY == y && (*i)->mJob != 45) {
+        if ((*i)->mX / 32 == x && (*i)->mY / 32 == y && (*i)->mJob != 45) {
             return false;
         }
     }

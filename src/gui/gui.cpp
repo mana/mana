@@ -313,7 +313,7 @@ Gui::mousePress(int mx, int my, int button)
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
-                player_node->setDestination(tilex, tiley);
+                player_node->setDestination(tilex * 32 + 16, tiley * 32 + 16);
                 player_node->stopAttack();
             }
         }

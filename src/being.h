@@ -100,7 +100,7 @@ class Being : public Sprite
 
         std::string mName;      /**< Name of character */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
-        Uint16 mX, mY;          /**< Tile coordinates */
+        Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
         Uint8 mDirection;       /**< Facing direction */
         Uint8 mAction;          /**< Action the being is performing */
         Uint8 mFrame;

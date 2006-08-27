@@ -79,7 +79,7 @@ Being::setDestination(Uint16 destX, Uint16 destY)
 {
     if (mMap)
     {
-        setPath(mMap->findPath(mX, mY, destX, destY));
+        setPath(mMap->findPath(mX / 32, mY / 32, destX / 32, destY / 32));
     }
 }
 
@@ -265,19 +265,19 @@ Being::nextStep()
     mPath.pop_front();
 
     int dir = 0;
-    if (node.x > mX)
+    if (node.x > mX / 32)
         dir |= RIGHT;
-    else if (node.x < mX)
+    else if (node.x < mX / 32)
         dir |= LEFT;
-    if (node.y > mY)
+    if (node.y > mY / 32)
         dir |= DOWN;
-    else if (node.y < mY)
+    else if (node.y < mY / 32)
         dir |= UP;
 
     setDirection(dir);
 
-    mX = node.x;
-    mY = node.y;
+    mX = node.x * 32 + 16;
+    mY = node.y * 32 + 16;
     setAction(WALK);
     mWalkTime += mWalkSpeed / 10;
 }
@@ -298,8 +298,8 @@ Being::logic()
     }
 
     // Update pixel coordinates
-    mPx = mX * 32 + getXOffset();
-    mPy = mY * 32 + getYOffset();
+    mPx = mX - 16 + getXOffset();
+    mPy = mY - 16 + getYOffset();
 
     if (mEmotion != 0)
     {

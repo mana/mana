@@ -152,15 +152,15 @@ void LocalPlayer::dropItem(Item *item, int quantity)
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - mX;
-    int dy = item->getY() - mY;
+    int dx = item->getX() - mX / 32;
+    int dy = item->getY() - mY / 32;
 
     if (dx * dx + dy * dy < 4) {
         MessageOut outMsg(CMSG_ITEM_PICKUP);
         outMsg.writeLong(item->getId());
         mPickUpTarget = NULL;
     } else {
-        setDestination(item->getX(), item->getY());
+        setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
         mPickUpTarget = item;
         stopAttack();
     }
@@ -189,19 +189,19 @@ void LocalPlayer::walk(unsigned char dir)
         dx++;
 
     // Prevent skipping corners over colliding tiles
-    if (dx && mMap->tileCollides(mX + dx, mY))
+    if (dx && mMap->tileCollides(mX / 32 + dx, mY / 32))
         dx = 0;
-    if (dy && mMap->tileCollides(mX, mY + dy))
+    if (dy && mMap->tileCollides(mX / 32, mY / 32 + dy))
         dy = 0;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy))
+    if (dx && dy && !mMap->getWalk(mX / 32 + dx, mY / 32 + dy))
         dx = 0;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy))
+    if ((dx || dy) && mMap->getWalk(mX / 32 + dx, mY / 32 + dy))
     {
-        setDestination(mX + dx, mY + dy);
+        setDestination(mX + dx * 32, mY + dy * 32);
     }
     else if (dir)
     {
@@ -216,8 +216,8 @@ void LocalPlayer::walk(unsigned char dir)
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     MessageOut msg(PGMSG_WALK);
-    msg.writeShort(x * 32 + 16);
-    msg.writeShort(y * 32 + 16);
+    msg.writeShort(x);
+    msg.writeShort(y);
     Network::send(Network::GAME, msg);
 
     mPickUpTarget = NULL;

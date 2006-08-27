@@ -3,6 +3,11 @@
 	* src/localplayer.cpp, src/net/protocol.h: Send move message
 	whenever a destination is selected.
 	* src/beinghandler.cpp: Smoothed being trajectories.
+	* src/localplayer.cpp, src/game.cpp, src/map.cpp, src/gui/gui.cpp,
+	src/engine.cpp, src/beingmanager.cpp, src/being.cpp, src/being.h,
+	src/net/beinghandler.cpp, src/net/playerhandler.cpp: Changed beings
+	tile-based coordinates to pixel-based coordinates (almost, they point
+	to tile centers for now).
 
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

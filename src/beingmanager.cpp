@@ -39,8 +39,8 @@ class FindBeingFunctor
         bool operator() (Being *being)
         {
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
-            return (being->mX == x &&
-                    (being->mY == y || being->mY == other_y) &&
+            return (being->mX / 32 == x &&
+                    (being->mY / 32 == y || being->mY / 32 == other_y) &&
                     being->mAction != Being::MONSTER_DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }

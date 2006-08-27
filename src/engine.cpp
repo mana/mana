@@ -155,11 +155,11 @@ void Engine::logic()
 
 void Engine::draw(Graphics *graphics)
 {
-    int midTileX = graphics->getWidth() / 32 / 2;
-    int midTileY = graphics->getHeight() / 32 / 2;
+    int midTileX = graphics->getWidth() / 2;
+    int midTileY = graphics->getHeight() / 2;
 
-    int map_x = (player_node->mX - midTileX) * 32 + player_node->getXOffset();
-    int map_y = (player_node->mY - midTileY) * 32 + player_node->getYOffset();
+    int map_x = (player_node->mX - midTileX) + player_node->getXOffset();
+    int map_y = (player_node->mY - midTileY) + player_node->getYOffset();
 
     if (mCurrentMap) {
         if (map_x < 0) {
@@ -168,11 +168,11 @@ void Engine::draw(Graphics *graphics)
         if (map_y < 0) {
             map_y = 0;
         }
-        if (map_x > (mCurrentMap->getWidth() - midTileX) * 32) {
-            map_x = (mCurrentMap->getWidth() - midTileX) * 32;
+        if (map_x > mCurrentMap->getWidth() * 32 - midTileX) {
+            map_x = mCurrentMap->getWidth() * 32 - midTileX;
         }
-        if (map_y > (mCurrentMap->getHeight() - midTileY) * 32) {
-            map_y = (mCurrentMap->getHeight() - midTileY) * 32;
+        if (map_y > mCurrentMap->getHeight() * 32 - midTileY) {
+            map_y = mCurrentMap->getHeight() * 32 - midTileY;
         }
     }
 

@@ -321,10 +321,8 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     player_node->stopAttack();
     player_node->mFrame = 0;
 
-    // TODO: Server is sending pixel coordinates. Client will need to work with
-    // these instead of converting them to tile coordinates.
-    player_node->mX = x / 32;
-    player_node->mY = y / 32;
+    player_node->mX = x;
+    player_node->mY = y;
 
     if (newServer)
     {
