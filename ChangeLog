@@ -1,3 +1,9 @@
+2006-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Fixed crash when map is not loaded yet.
+	* src/net/beinghandler.cpp, src/net/protocol.h: Added support for
+	entering monsters.
+
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/localplayer.cpp, src/gui/sell.cpp, src/gui/trade.cpp,

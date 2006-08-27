@@ -223,4 +223,18 @@ enum {
     CREATE_TOO_MUCH_CHARACTERS
 };
 
+// Object type enumeration
+enum {
+    // A simple item
+    OBJECT_ITEM = 0,
+    // An item that can be activated (doors, switchs, sign, ...)
+    OBJECT_ACTOR,
+    // Non-Playable-Character is an actor capable of movement and maybe actions
+    OBJECT_NPC,
+    // A monster (moving actor with AI. able to toggle map/quest actions, too)
+    OBJECT_MONSTER,
+    // A player
+    OBJECT_PLAYER
+};
+
 #endif

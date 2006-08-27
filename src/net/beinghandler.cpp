@@ -397,24 +397,36 @@ void BeingHandler::handleMessage(MessageIn &msg)
 void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
-    msg.readByte(); // type
+    int type = msg.readByte(); // type
     int id = msg.readLong();
-    std::string name = msg.readString();
-    Being *being;
-    if (player_node->getName() == name)
+
+    switch (type) {
+    case OBJECT_PLAYER:
     {
-        being = player_node;
-        being->setId(id);
-    }
-    else
+        std::string name = msg.readString();
+        Being *being;
+        if (player_node->getName() == name)
+        {
+            being = player_node;
+            being->setId(id);
+        }
+        else
+        {
+            being = beingManager->createBeing(id, 0);
+            being->setName(name);
+        }
+        being->setHairStyle(msg.readByte());
+        being->setHairColor(msg.readByte());
+        being->setSex(msg.readByte());
+    } break;
+    case OBJECT_MONSTER:
     {
-        // assume type is player for now, so job 0, TODO
-        being = beingManager->createBeing(id, 0);
-        being->setName(name);
+        int monsterId = msg.readShort();
+        Being *being;
+        being = beingManager->createBeing(id, 1002 + monsterId);
+        being->setWalkSpeed(150); // TODO
+    } break;
     }
-    being->setHairStyle(msg.readByte());
-    being->setHairColor(msg.readByte());
-    being->setSex(msg.readByte());
 }
 
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
