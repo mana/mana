@@ -90,7 +90,7 @@ std::string MessageIn::readString(int length)
         return "";
     }
 
-        // Read the string
+    // Read the string
     char const *stringBeg = mData + mPos,
                *stringEnd = (char const *)memchr(stringBeg, '\0', length);
     std::string readString(stringBeg, stringEnd ? stringEnd - stringBeg : length);

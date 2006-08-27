@@ -148,7 +148,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/npchandler.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
-	      net/protocol.cpp \
 	      net/protocol.h \
 	      net/skillhandler.cpp \
 	      net/skillhandler.h \

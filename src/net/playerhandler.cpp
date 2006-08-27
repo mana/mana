@@ -283,19 +283,6 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 }
             }
             break;
-
-        //Stop walking
-        //case 0x0088:  // Disabled because giving some problems
-        //if (being = beingManager->findBeing(readLong(2))) {
-        //    if (being->getId() != player_node->getId()) {
-        //        being->action = STAND;
-        //        being->mFrame = 0;
-        //        set_coordinates(being->coordinates,
-        //                        readWord(6), readWord(8),
-        //                        get_direction(being->coordinates));
-        //    }
-        //}
-        //break;
     }
 }
 

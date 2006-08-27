@@ -223,7 +223,4 @@ enum {
     CREATE_TOO_MUCH_CHARACTERS
 };
 
-/** Encodes coords and direction in 3 bytes data */
-void set_coordinates(char *data, unsigned short x, unsigned short y, unsigned char direction);
-
 #endif
