@@ -421,8 +421,17 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         if (!being) continue;
         int sx = msg.readShort(), sy = msg.readShort(),
             dx = msg.readShort(), dy = msg.readShort();
-        being->mX = sx / 32;
-        being->mY = sy / 32;
-        being->setDestination(dx / 32, dy / 32);
+        bool update = being != player_node; // the local player already knows where he wants to go
+        if (abs(being->mX - sx / 32) + abs(being->mY - sy / 32) > 4)
+        {
+            // crude handling of synchronization messages
+            being->mX = sx / 32;
+            being->mY = sy / 32;
+            update = true;
+        }
+        if (update)
+        {
+            being->setDestination(dx / 32, dy / 32);
+        }
     }
 }

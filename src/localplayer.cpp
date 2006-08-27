@@ -32,6 +32,7 @@
 #include "sound.h"
 
 #include "net/messageout.h"
+#include "net/network.h"
 #include "net/protocol.h"
 
 LocalPlayer *player_node = NULL;
@@ -214,10 +215,10 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
-    char temp[3];
-    MessageOut outMsg(0x0085);
-    set_coordinates(temp, x, y, mDirection);
-    outMsg.writeString(temp, 3);
+    MessageOut msg(PGMSG_WALK);
+    msg.writeShort(x * 32 + 16);
+    msg.writeShort(y * 32 + 16);
+    Network::send(Network::GAME, msg);
 
     mPickUpTarget = NULL;
 
