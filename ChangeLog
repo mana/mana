@@ -9,7 +9,7 @@
 	src/net/playerhandler.cpp, src/Makefile.am: Got rid of no longer used
 	protocol.cpp.
 
-2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/localplayer.cpp, src/net/protocol.h: Send move message
 	whenever a destination is selected.
@@ -19,6 +19,8 @@
 	src/net/beinghandler.cpp, src/net/playerhandler.cpp: Changed beings
 	tile-based coordinates to pixel-based coordinates (almost, they point
 	to tile centers for now).
+	* src/net/beinghandler.cpp, src/net/beinghandler.h: Added support for
+	leaving beings.
 
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
