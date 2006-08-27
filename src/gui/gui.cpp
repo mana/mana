@@ -245,8 +245,8 @@ Gui::mousePress(int mx, int my, int button)
     if (current_npc)
         return;
 
-    int tilex = mx / 32 + camera_x;
-    int tiley = my / 32 + camera_y;
+    int tilex = (mx + camera_x) / 32;
+    int tiley = (my + camera_y) / 32;
 
     // Right click might open a popup
     if (button == gcn::MouseInput::RIGHT)
@@ -313,7 +313,7 @@ Gui::mousePress(int mx, int my, int button)
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
-                player_node->setDestination(tilex * 32 + 16, tiley * 32 + 16);
+                player_node->setDestination(mx + camera_x, my + camera_y);
                 player_node->stopAttack();
             }
         }

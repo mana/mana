@@ -324,13 +324,13 @@ class Being : public Sprite
          * Get the current X pixel offset.
          */
         int
-        getXOffset() const { return getOffset(LEFT, RIGHT); }
+        getXOffset() const { return getOffset(mStepX); }
 
         /**
          * Get the current Y pixel offset.
          */
         int
-        getYOffset() const { return getOffset(UP, DOWN); }
+        getYOffset() const { return getOffset(mStepY); }
 
         std::auto_ptr<Equipment> mEquipment;
         int mVisibleEquipment[6];       /**< Visible equipments */
@@ -341,12 +341,6 @@ class Being : public Sprite
          */
         void
         setPath(const Path &path);
-
-        /**
-         * Calculates the offset in the given directions.
-         * If walking in direction 'neg' the value is negated.
-         */
-        int getOffset(char pos, char neg) const;
 
         /**
          * Returns the sprite direction of this being.
@@ -371,6 +365,11 @@ class Being : public Sprite
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
+
+    private:
+        Sint16 mStepX, mStepY;
+        Uint16 mStepTime;
+        int getOffset(int) const;
 };
 
 #endif

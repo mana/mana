@@ -30,7 +30,8 @@
 	Being::mFrame field.
 	* src/localplayer.cpp, src/player.cpp, src/monster.h, src/being.cpp,
 	src/monster.cpp, src/player.h: Cleaned the logic members.
-
+	* src/engine.cpp, src/localplayer.cpp, src/gui/gui.cpp, src/being.cpp,
+	src/being.h: Implemented pixel-grained movements.
 
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

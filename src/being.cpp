@@ -23,6 +23,7 @@
 #include "being.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "animatedsprite.h"
 #include "equipment.h"
@@ -48,7 +49,7 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 Being::Being(Uint32 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
-    mAction(0),
+    mAction(STAND),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
@@ -77,10 +78,31 @@ Being::~Being()
 void
 Being::setDestination(Uint16 destX, Uint16 destY)
 {
-    if (mMap)
+    if (!mMap || (mX == destX && mY == destY))
     {
-        setPath(mMap->findPath(mX / 32, mY / 32, destX / 32, destY / 32));
+        return;
     }
+
+    Path p;
+    if (mX / 32 != destX / 32 || mY / 32 != destY / 32)
+    {
+        p = mMap->findPath(mX / 32, mY / 32, destX / 32, destY / 32);
+        if (p.empty())
+        {
+            setPath(p);
+            return;
+        }
+        // Remove last tile so that it can be replaced by the exact destination.
+        p.pop_back();
+        for (Path::iterator i = p.begin(), i_end = p.end(); i != i_end; ++i)
+        {
+            // Set intermediate step to tile centers.
+            i->x = i->x * 32 + 16;
+            i->y = i->y * 32 + 16;
+        }
+    }
+    p.push_back(PATH_NODE(destX, destY));
+    setPath(p);
 }
 
 void
@@ -96,8 +118,9 @@ Being::setPath(const Path &path)
 
     if (mAction != WALK && mAction != DEAD)
     {
-        nextStep();
         mWalkTime = tick_time;
+        mStepTime = 0;
+        nextStep();
     }
 }
 
@@ -265,28 +288,31 @@ Being::nextStep()
     mPath.pop_front();
 
     int dir = 0;
-    if (node.x > mX / 32)
+    if (node.x > mX)
         dir |= RIGHT;
-    else if (node.x < mX / 32)
+    else if (node.x < mX)
         dir |= LEFT;
-    if (node.y > mY / 32)
+    if (node.y > mY)
         dir |= DOWN;
-    else if (node.y < mY / 32)
+    else if (node.y < mY)
         dir |= UP;
 
     setDirection(dir);
 
-    mX = node.x * 32 + 16;
-    mY = node.y * 32 + 16;
+    mStepX = node.x - mX;
+    mStepY = node.y - mY;
+    mX = node.x;
+    mY = node.y;
     setAction(WALK);
-    mWalkTime += mWalkSpeed / 10;
+    mWalkTime += mStepTime / 10;
+    mStepTime = mWalkSpeed * (int)std::sqrt((double)mStepX * mStepX + (double)mStepY * mStepY) / 32;
 }
 
 void
 Being::logic()
 {
     // Determine whether the being should take another step
-    if (mAction == WALK && get_elapsed_time(mWalkTime) >= mWalkSpeed)
+    if (mAction == WALK && get_elapsed_time(mWalkTime) >= mStepTime)
     {
         nextStep();
     }
@@ -435,24 +461,23 @@ Being::setWeaponById(Uint16 weapon)
     }
 }
 
-int
-Being::getOffset(char pos, char neg) const
+int Being::getOffset(int step) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK || !(mDirection & (pos | neg))) {
+    if (mAction != WALK || step == 0) {
         return 0;
     }
 
-    int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
+    int offset = (get_elapsed_time(mWalkTime) * std::abs(step)) / mStepTime;
 
     // We calculate the offset _from_ the _target_ location
-    offset -= 32;
+    offset -= std::abs(step);
     if (offset > 0) {
         offset = 0;
     }
 
     // Going into negative direction? Invert the offset.
-    if (mDirection & pos) {
+    if (step < 0) {
         offset = -offset;
     }
 

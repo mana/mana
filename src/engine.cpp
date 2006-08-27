@@ -176,8 +176,8 @@ void Engine::draw(Graphics *graphics)
         }
     }
 
-    camera_x = map_x / 32;
-    camera_y = map_y / 32;
+    camera_x = map_x;
+    camera_y = map_y;
 
     // Draw tiles and sprites
     if (mCurrentMap != NULL)
@@ -202,11 +202,11 @@ void Engine::draw(Graphics *graphics)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        int mouseTileX = mouseX / 32 + camera_x;
-        int mouseTileY = mouseY / 32 + camera_y;
+        int mouseTileX = (mouseX + map_x) / 32;
+        int mouseTileY = (mouseY + map_y) / 32;
 
         Path debugPath = mCurrentMap->findPath(
-                player_node->mX, player_node->mY,
+                player_node->mX / 32, player_node->mY / 32,
                 mouseTileX, mouseTileY);
 
         graphics->setColor(gcn::Color(255, 0, 0));
