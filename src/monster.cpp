@@ -35,20 +35,6 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/monster" + toString(job - 1002) + ".xml", 0);
 }
 
-void
-Monster::logic()
-{
-    if (mAction != STAND)
-    {
-        if (get_elapsed_time(mWalkTime) >= mWalkSpeed && mAction != MONSTER_DEAD)
-        {
-            nextStep();
-        }
-    }
-
-    Being::logic();
-}
-
 Being::Type
 Monster::getType() const
 {

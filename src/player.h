@@ -40,9 +40,6 @@ class Player : public Being
          */
         Player(Uint32 id, Uint16 job, Map *map);
 
-        virtual void
-        logic();
-
         virtual Type
         getType() const;
 

@@ -52,21 +52,9 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    switch (mAction) {
-        case WALK:
-            if (get_elapsed_time(mWalkTime) >= mWalkSpeed)
-            {
-                nextStep();
-            }
-            break;
-
-        case ATTACK:
-            if (get_elapsed_time(mWalkTime) >= mAttackSpeed)
-            {
-                nextStep();
-                attack();
-            }
-            break;
+    if (mAction == ATTACK && get_elapsed_time(mWalkTime) >= mAttackSpeed)
+    {
+        attack();
     }
 
     // Actions are allowed once per second

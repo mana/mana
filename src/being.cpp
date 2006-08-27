@@ -285,6 +285,12 @@ Being::nextStep()
 void
 Being::logic()
 {
+    // Determine whether the being should take another step
+    if (mAction == WALK && get_elapsed_time(mWalkTime) >= mWalkSpeed)
+    {
+        nextStep();
+    }
+
     // Determine whether speech should still be displayed
     if (get_elapsed_time(mSpeechTime) > 5000)
     {

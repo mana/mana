@@ -28,6 +28,9 @@
 	* src/localplayer.cpp, src/beingmanager.cpp, src/player.cpp,
 	src/monster.cpp, src/net/playerhandler.cpp, src/being.h: Removed
 	Being::mFrame field.
+	* src/localplayer.cpp, src/player.cpp, src/monster.h, src/being.cpp,
+	src/monster.cpp, src/player.h: Cleaned the logic members.
+
 
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -42,26 +42,6 @@ Player::Player(Uint32 id, Uint16 job, Map *map):
         new AnimatedSprite("graphics/sprites/weapons.xml", 0);
 }
 
-void
-Player::logic()
-{
-    switch (mAction) {
-        case WALK:
-            if (get_elapsed_time(mWalkTime) >= mWalkSpeed)
-            {
-                nextStep();
-            }
-            break;
-        case ATTACK:
-            if (get_elapsed_time(mWalkTime) >= mAttackSpeed)
-            {
-                nextStep();
-            }
-            break;
-    }
-    Being::logic();
-}
-
 Being::Type
 Player::getType() const
 {
