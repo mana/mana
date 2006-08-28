@@ -30,12 +30,12 @@ class Joystick
 {
     public:
         /**
-         * Number of buttons we can handle
+         * Number of buttons we can handle.
          */
         static const unsigned char MAX_BUTTONS = 6;
 
         /**
-         * Directions, to be used as bitmask values
+         * Directions, to be used as bitmask values.
          */
         static const char UP = 1;
         static const char DOWN = 2;
@@ -43,12 +43,12 @@ class Joystick
         static const char RIGHT = 8;
 
         /**
-         * Initializes the joystick subsystem
+         * Initializes the joystick subsystem.
          */
         static void init();
 
         /**
-         * Returns the number of available joysticks
+         * Returns the number of available joysticks.
          */
         static int getNumberOfJoysticks() { return joystickCount; }
 
@@ -60,21 +60,33 @@ class Joystick
 
         ~Joystick();
 
+        bool
+        isEnabled() const { return mEnabled; }
+
+        void
+        setEnabled(bool enabled) { mEnabled = enabled; }
+
         /**
          * Updates the direction and button information.
          */
-        void update();
+        void
+        update();
 
-        void startCalibration();
-        void finishCalibration();
-        bool isCalibrating() { return mCalibrating; };
+        void
+        startCalibration();
 
-        bool buttonPressed(unsigned char no);
+        void
+        finishCalibration();
 
-        bool isUp() { return mDirection & UP; };
-        bool isDown() { return mDirection & DOWN; };
-        bool isLeft() { return mDirection & LEFT; };
-        bool isRight() { return mDirection & RIGHT; };
+        bool
+        isCalibrating() const { return mCalibrating; }
+
+        bool buttonPressed(unsigned char no) const;
+
+        bool isUp() const { return mDirection & UP; };
+        bool isDown() const { return mDirection & DOWN; };
+        bool isLeft() const { return mDirection & LEFT; };
+        bool isRight() const { return mDirection & RIGHT; };
 
     protected:
         unsigned char mDirection;
@@ -83,6 +95,7 @@ class Joystick
 
         int mUpTolerance, mDownTolerance, mLeftTolerance, mRightTolerance;
         bool mCalibrating;
+        bool mEnabled;
 
         static int joystickCount;
 

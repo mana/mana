@@ -27,10 +27,12 @@
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
 
-
-// Moved up because of nested inclusion of winnt.h which defines DELETE
-// constant as well as guichan does
+// Should stay here because of Guichan being sensitive to headers order
 #include <guichan/sdl/sdlinput.hpp>
+
+#ifdef USE_OPENGL
+#include "../resources/openglsdlimageloader.h"
+#endif
 
 #include "focushandler.h"
 #include "popupmenu.h"
@@ -231,6 +233,7 @@ Gui::draw()
 void
 Gui::mousePress(int mx, int my, int button)
 {
+    printf("Gui::mousePress(%d,%d)\n", mx, my);
     // Mouse pressed on window container (basically, the map)
 
     // Are we in-game yet?
@@ -247,6 +250,7 @@ Gui::mousePress(int mx, int my, int button)
 
     int tilex = (mx + camera_x) / 32;
     int tiley = (my + camera_y) / 32;
+    printf("tilex,tiley: %d,%d\n", tilex, tiley);
 
     // Right click might open a popup
     if (button == gcn::MouseInput::RIGHT)

@@ -27,9 +27,15 @@
 
 #include "utils/dtor.h"
 
-Animation::Animation():
-    mTime(0)
+Animation::Animation()
 {
+    reset();
+}
+
+void
+Animation::reset()
+{
+    mTime = 0;
     iCurrentPhase = mAnimationPhases.begin();
 }
 
@@ -122,4 +128,14 @@ Action::setAnimation(int direction, Animation *animation)
     }
 
     mAnimations[direction] = animation;
+}
+
+void
+Action::reset()
+{
+    for (AnimationIterator i = mAnimations.begin();
+         i != mAnimations.end(); ++i)
+    {
+        i->second->reset();
+    }
 }

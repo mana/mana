@@ -4,20 +4,19 @@
 	* src/net/beinghandler.cpp, src/net/protocol.h: Added support for
 	entering monsters.
 
-2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/localplayer.cpp, src/gui/sell.cpp, src/gui/trade.cpp,
-	src/gui/char_select.cpp, src/gui/chat.cpp, src/gui/buy.cpp,
-	src/engine.cpp, src/beingmanager.cpp, src/npc.cpp,
-	src/net/messageout.cpp, src/net/messageout.h: Got rid of the default
-	MessageOut constructor, since all messages should have an ID.
-	* src/net/protocol.cpp, src/net/protocol.h, src/net/messagein.cpp,
-	src/net/playerhandler.cpp, src/Makefile.am: Got rid of no longer used
-	protocol.cpp.
-	* src/gui/login.cpp, src/gui/register.h, src/gui/login.h,
-	src/gui/register.cpp: Got rid of server input field since connecting
-	to the account server now happens before the login and register
-	dialogs.
+	* src/gui/setup_video.cpp: Modified the ranges of the ScrollLaziness
+	and ScrollRadius sliders.
+
+2006-08-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/items/*: Changed svn properties.
+	* data/graphics/sprites/item001.xml, data/graphics/sprites/item002.xml,
+	data/graphics/sprites/item003.xml, data/graphics/sprites/item004.xml,
+	data/graphics/sprites/item005.xml, data/graphics/sprites/item006.png,
+	data/graphics/sprites/item006.xml, data/graphics/sprites/Makefile.am:
+	Added headband and fixed svn properties.
 
 2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -39,6 +38,35 @@
 	* src/engine.cpp, src/localplayer.cpp, src/gui/gui.cpp, src/being.cpp,
 	src/being.h: Implemented pixel-grained movements.
 
+2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/inventoryhandler.cpp: Applied patch by AHarrison that adds
+	item pickup messages to the chat window.
+	* NEWS: Updated with some recently added and fixed issues. Doesn't
+	mention any of the recent content updates yet.
+	* src/localplayer.cpp, src/gui/sell.cpp, src/gui/trade.cpp,
+	src/gui/char_select.cpp, src/gui/chat.cpp, src/gui/buy.cpp,
+	src/engine.cpp, src/beingmanager.cpp, src/npc.cpp,
+	src/net/messageout.cpp, src/net/messageout.h: Got rid of the default
+	MessageOut constructor, since all messages should have an ID.
+	* src/net/protocol.cpp, src/net/protocol.h, src/net/messagein.cpp,
+	src/net/playerhandler.cpp, src/Makefile.am: Got rid of no longer used
+	protocol.cpp.
+	* src/gui/login.cpp, src/gui/register.h, src/gui/login.h,
+	src/gui/register.cpp: Got rid of server input field since connecting
+	to the account server now happens before the login and register
+	dialogs.
+
+2006-08-26  Pascal Ganaye <pascalganaye@users.sourceforge.net>
+
+	* src/joystick.h, src/joystick.cpp, src/gui/setup.cpp,
+	src/gui/setup_joystick.h, src/gui/setup_video.cpp,
+	src/gui/setup_joystick.cpp, src/gui/setup_video.h: Added sliders to
+	the video section of the setup window to configure the laziness and
+	radius of the scrolling behaviour. Added a checkbox to the joystick
+	section to allow enabling/disabling the joystick (patch applied by
+	Bjørn Lindeijer).
+
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.cpp, src/gui/playerbox.cpp, src/player.cpp,
@@ -49,6 +77,15 @@
 	defined as being bald (so bald is no longer a hardcoded style).
 	* src/player.cpp, src/being.cpp, src/net/charserverhandler.cpp,
 	src/being.h: Fixed player sprite not showing up.
+	* src/gui/ministatus.cpp, src/gui/ministatus.h: Applied patch by mrha
+	(Herbi), adding experience bar to the ministatus in the top left.
+	* configure.ac, data/graphics/items/Makefile.am,
+	data/graphics/Makefile.am: Added Makefile.am to make sure the item
+	icons are installed.
+	* src/player.cpp, src/animation.h, src/player.h,
+	src/animatedsprite.cpp, src/animation.cpp: Applied patch by Bahamut81
+	which implements resetting of Animation, Action and AnimatedSprite.
+	This fixes the animation synchronization issues.
 
 2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -68,9 +105,90 @@
 	* src/net/beinghandler.cpp, src/net/beinghandler.h,
 	src/net/protocol.h: Added support for "beings move" messages.
 
+2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Added
+	--playername command line option for selecting the character you want
+	to play with (patch applied by Bjørn Lindeijer).
+
+2006-08-25  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp, src/map.h, src/map.cpp: Addded new config variable
+	"OverlayDetail" to control the number of drawn overlays.
+	2 (or more) = all (default), 1 = only the first one, 0 = none.
+
+2006-08-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,
+	src/gui/window.cpp, src/gui/window.h: Added support for sticky windows
+	as discussed with doener. Patch by AHarrison.
+	* data/items.xml: Added jeans shorts.
+
+2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp: Scrolling speed no longer affected by framerate.
+	* src/map.cpp, scr/map.h: Overlay speed no longer affected by
+	framerate.
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz,
+	data/graphics/images/ambient/sandstorm.png: Redone sandstorm effect
+	(larger and more transparent image, tripple layer parallax scrolling)
+
+2006-08-24  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/sprites/item004.png,
+	data/graphics/sprites/item005.png, data/graphics/sprites/Makefile.am,
+	data/graphics/items/armor-legs-cottonshorts,
+	data/graphics/items/armor-legs-jeanshorts: Added the equip graphics of
+	the short jeans and the cotton shorts and an inventory icon of the
+	cotton shorts. Also added all added files to the makefile.
+
+2006-08-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_7-1.tmx.gz: Fixed a minor mapping bug reported on the
+	forum (no new walkmap required).
+	* data/maps/new_9-1.tmx.gz: Fixed two minor mapping bugs (new walkmap
+	required).
+
+2006-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, data/graphics/images/ambient,
+	data/graphics/images/ambient/Makefile.am,
+	data/graphics/images/Makefile.am: Updated makefiles to account for new
+	ambient images and changed the version from 0.0.20.1 to 0.0.21.
+
 2006-08-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-08-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/mapreader.cpp: Added logic for initialisation of the overlays.
+	* src/map.cpp, src/map.h: Code for updating and drawing the overlays.
+	* src/engine.cpp, src/engine.h: Added smooth scrolling and the call
+	to draw the overlays.
+	* data/maps/new_1-1.tmx.gz, data/graphics/new_7-1.tmx.gz,
+	data/graphics/images/ambient/sandstorm.png: Added sandstorm effect
+	to the desert maps outside of the city (feedback, please).
+	* data/maps/new_2-1.tmx.gz, data/maps/new_4-1.tmx.gz,
+	data/maps/new_5-1.tmx.gz, data/graphics/images/ambient/spotlight.png
+	Added spotlight effect to the cave maps (feedback, please)
+	* data/graphics/maps/new_9-1.tmx.gz,
+	data/graphics/images/ambient/clouds.png:
+	Added cloudshadow effect to the woodland map (feedback, please).
+
+2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Moved libpng check before SDL_image check, since the
+	latter requires the former.
+
+2006-08-20  Yohann Ferreira  <bertram@cegetel.net>
+
+	* data/graphics/sprites/Makefile.am : Following the splitting from
+	Philipp, moved out the items.png file from the Makefile.am.
+	* debian/control, debian/tmw-data.install : Updated debian package
+	creation process.
+	* src/Makefile.am : Added iteminfo.cpp to avoid an undefined reference
+	with gcc 4.1.2. Happy to be back :)
 
 2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -111,6 +229,22 @@
 	* src/game.cpp, src/net/network.h, src/net/network.cpp: Removed
 	incoming packets queue. Messages are now processed as they come in.
 
+2006-08-17  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/*: Splitted the items.png into separate images
+	with more distinctive names. (no, i won't list all 114)
+	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
+	spriteset with filenames. added names and descriptions for all missing
+	items. Changed names and dascriptions of some items.
+	* src/engine.cpp: removed global item spriteset.
+	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
+	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,
+	src/itemcontainer.cpp, src/itemcontainer.h: the iteminfo class now
+	provides a pointer to the item icon image instead of providing the
+	index on the item spriteset.
+	* data/graphics/tiles/trans_desert-woodland.png: added transmission
+	tileset between desert and woodland.
+
 2006-08-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.cpp, src/net/charserverhandler.h,
@@ -142,6 +276,15 @@
 
 	* src/player.cpp: Verify the gender to prevent crashing when something
 	is wrong with the communication.
+
+2006-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/monster18.png,
+	data/graphics/sprites/monster18.xml,
+	data/graphics/sprites/npcs.png: Added new monster and npcs.
+	* src/gui.cpp, tmw.cbp, The Mana World.dev: Fixed Guichan 0.5.0
+	compilation issues.
 
 2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -672,7 +815,7 @@
 	* data/items.xml, src/being.cpp, src/being.h src/net/beinghandler.cpp,
 	src/player.cpp: Clients get notified of equipping visible items.
 	* src/net/beinghandler.cpp: GCC 4 fix.
-	
+
 2006-06-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/animation.cpp, src/animation.h: Parser now works like described

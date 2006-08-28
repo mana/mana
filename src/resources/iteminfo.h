@@ -26,6 +26,8 @@
 
 #include <string>
 
+#include "image.h"
+
 /**
  * Defines a class for storing item infos.
  */
@@ -38,7 +40,8 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mImage(0),
+            mImage(NULL),
+            mImageName(""),
             mArt(0),
             mType(0),
             mWeight(0),
@@ -59,10 +62,10 @@ class ItemInfo
         getName() { return mName; }
 
         void
-        setImage(short image) { mImage = image; }
+        setImage(const std::string &image);
 
-        short
-        getImage() { return mImage; }
+        Image*
+        getImage();
 
         void
         setDescription(const std::string &description)
@@ -101,9 +104,10 @@ class ItemInfo
         /**
          * Destructor.
          */
-        ~ItemInfo() {}
+        ~ItemInfo();
 
-        short mImage;
+        Image* mImage;
+        std::string mImageName;
         short mArt;
         std::string mName;
         std::string mDescription;

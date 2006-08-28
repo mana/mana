@@ -43,7 +43,7 @@ Setup::Setup():
     Window("Setup")
 {
     int width = 230;
-    int height = 185;
+    int height = 225;
     setContentSize(width, height);
 
     const char *buttonNames[] = {
@@ -58,7 +58,7 @@ Setup::Setup():
     }
 
     TabbedContainer *panel = new TabbedContainer();
-    panel->setDimension(gcn::Rectangle(5, 5, 220, 150));
+    panel->setDimension(gcn::Rectangle(5, 5, 220, 185));
     panel->setOpaque(false);
 
     SetupTab *tab;

@@ -41,8 +41,6 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    mItemset = resman->getSpriteset("graphics/sprites/items.png", 32, 32);
-    if (!mItemset) logger->error("Unable to load items.png");
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error("Unable to load selection.png");
@@ -55,7 +53,6 @@ ItemContainer::ItemContainer(Inventory *inventory):
 
 ItemContainer::~ItemContainer()
 {
-    mItemset->decRef();
     mSelImg->decRef();
 }
 
@@ -73,8 +70,8 @@ void ItemContainer::logic()
 
 void ItemContainer::draw(gcn::Graphics* graphics)
 {
-    int gridWidth = mItemset->get(0)->getWidth() + 4;
-    int gridHeight = mItemset->get(0)->getHeight() + 10;
+    int gridWidth = 36; //(item icon width + 4)
+    int gridHeight = 42; //(item icon height + 10)
     int columns = getWidth() / gridWidth;
 
     // Have at least 1 column
@@ -113,11 +110,11 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         }
 
         // Draw item icon
-        int idx;
-        if ((idx = item->getInfo()->getImage()) > 0)
+        Image* image;
+        if ((image = item->getInfo()->getImage()) != NULL)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    mItemset->get(idx - 1), itemX, itemY);
+                    image, itemX, itemY);
         }
 
         // Draw item caption
@@ -133,8 +130,8 @@ void ItemContainer::setWidth(int width)
 {
     gcn::Widget::setWidth(width);
 
-    int gridWidth = mItemset->get(0)->getWidth() + 4;
-    int gridHeight = mItemset->get(0)->getHeight() + 14;
+    int gridWidth = 36; //item icon width + 4
+    int gridHeight = 46; //item icon height + 14
     int columns = getWidth() / gridWidth;
 
     if (columns < 1)
@@ -158,8 +155,8 @@ void ItemContainer::selectNone()
 
 void ItemContainer::mousePress(int mx, int my, int button)
 {
-    int gridWidth = mItemset->get(0)->getWidth() + 4;
-    int gridHeight = mItemset->get(0)->getHeight() + 10;
+    int gridWidth = 36; //(item icon width + 4)
+    int gridHeight = 42; //(item icon height + 10)
     int columns = getWidth() / gridWidth;
 
     if (button == gcn::MouseInput::LEFT || gcn::MouseInput::RIGHT)

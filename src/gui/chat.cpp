@@ -395,7 +395,7 @@ ChatWindow::setInputText(std::string input_str)
 void
 ChatWindow::setVisible(bool isVisible)
 {
-     Widget::setVisible(isVisible);
+     Window::setVisible(isVisible);
 
      /*
       * For whatever reason, if setVisible is called, the mTmpVisible effect

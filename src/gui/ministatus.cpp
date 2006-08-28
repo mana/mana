@@ -29,6 +29,8 @@
 #include "progressbar.h"
 
 #include "../localplayer.h"
+#include "../configuration.h"
+#include "../graphics.h"
 
 #include "../utils/tostring.h"
 
@@ -42,31 +44,40 @@ MiniStatusWindow::MiniStatusWindow():
 
     mHpBar = new ProgressBar(1.0f, 100, 20, 0, 171, 34);
     mMpBar = new ProgressBar(1.0f, 100, 20, 26, 102, 230);
+    mXpBar = new ProgressBar(1.0f, 100, 20, 143, 192, 211);
     mHpLabel = new gcn::Label("");
     mMpLabel = new gcn::Label("");
+    mXpLabel = new gcn::Label("");
 
     mHpBar->setPosition(0, 3);
     mMpBar->setPosition(mHpBar->getWidth() + 3, 3);
+    mXpBar->setPosition(mMpBar->getX() + mMpBar->getWidth() + 3, 3);
 
     mHpLabel->setDimension(mHpBar->getDimension());
     mMpLabel->setDimension(mMpBar->getDimension());
+    mXpLabel->setDimension(mXpBar->getDimension());
 
     mHpLabel->setForegroundColor(gcn::Color(255, 255, 255));
     mMpLabel->setForegroundColor(gcn::Color(255, 255, 255));
+    mXpLabel->setForegroundColor(gcn::Color(255, 255, 255));
 
     mHpLabel->setFont(speechFont);
     mMpLabel->setFont(speechFont);
+    mXpLabel->setFont(speechFont);
 
     mHpLabel->setAlignment(gcn::Graphics::CENTER);
     mMpLabel->setAlignment(gcn::Graphics::CENTER);
+    mXpLabel->setAlignment(gcn::Graphics::CENTER);
 
     add(mHpBar);
     add(mMpBar);
+    add(mXpBar);
     add(mHpLabel);
     add(mMpLabel);
+    add(mXpLabel);
 
-    setDefaultSize(0, 0, mMpBar->getX() + mMpBar->getWidth(),
-                   mMpBar->getY() + mMpBar->getHeight());
+    setDefaultSize(0, 0, mXpBar->getX() + mXpBar->getWidth(),
+                   mXpBar->getY() + mXpBar->getHeight());
 }
 
 void MiniStatusWindow::update()
@@ -85,12 +96,33 @@ void MiniStatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
-    mHpBar->setProgress((float)player_node->mHp / (float)player_node->mMaxHp);
-    // mpBar->setProgress((float)player_node->mp / (float)player_node->maxMp);
+    mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
+    // mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
+    mXpBar->setProgress((float) player_node->mXp / player_node->mXpForNextLevel);
 
-    // Update and center labels
+    // Update labels
     mHpLabel->setCaption(toString(player_node->mHp));
     mMpLabel->setCaption(toString(player_node->mMp));
+
+    std::stringstream updatedText;
+    updatedText << (int) (
+            (float) player_node->mXp /
+            player_node->mXpForNextLevel * 100) << "%";
+
+    // Displays the number of monsters to next lvl
+    // (disabled for now but interesting idea)
+    /*
+    if(config.getValue("xpBarMonsterCounterExp", 0)!=0)
+    {
+        updatedText << " | "
+            << (int)(((float)player_node->mXpForNextLevel - (float)player_node->mXp)
+             / (float)config.getValue("xpBarMonsterCounterExp", 0))
+            << " "
+            << config.getValue("xpBarMonsterCounterName", "Monsters") <<" left...";
+    }
+    */
+
+    mXpLabel->setCaption(updatedText.str());
 }
 
 void MiniStatusWindow::draw(gcn::Graphics *graphics)

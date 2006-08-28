@@ -1,3 +1,4 @@
+SUBDIRS = ambient
 
 imagesdir = $(pkgdatadir)/data/graphics/images
 

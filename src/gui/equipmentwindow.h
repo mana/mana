@@ -27,7 +27,6 @@
 #include "window.h"
 
 class Equipment;
-class Spriteset;
 
 /**
  * Equipment dialog.
@@ -53,8 +52,6 @@ class EquipmentWindow : public Window
         void draw(gcn::Graphics *graphics);
 
     private:
-        Spriteset *mItemset;
-
         Equipment *mEquipment;
 };
 

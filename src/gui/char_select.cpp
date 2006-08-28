@@ -224,6 +224,11 @@ void CharSelectDialog::logic()
     updatePlayerInfo();
 }
 
+std::string CharSelectDialog::getName()
+{
+    return mNameLabel->getCaption();
+}
+
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     Window("Create Character", true, parent), mSlot(slot)
 {

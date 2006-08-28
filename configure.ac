@@ -70,8 +70,12 @@ AC_MSG_ERROR([ *** Unable to find libxml2 library (http://xmlsoft.org/)]))
 AC_CHECK_HEADERS([libxml/xmlreader.h], ,
 AC_MSG_ERROR([ *** libxml2 library found but cannot find headers (http://xmlsoft.org/)]))
 
-AC_CHECK_LIB([SDL_image], [IMG_LoadPNG_RW], ,
-AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support (http://www.libsdl.org/projects/SDL_image/)]))
+AC_CHECK_LIB(png, png_write_info, ,
+AC_MSG_ERROR([ *** Unable to find png library]))
+
+AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
+AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
+(http://www.libsdl.org/projects/SDL_image/)]))
 
 AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
 AC_MSG_ERROR([ *** Unable to find Guichan SDL library (http://guichan.sf.net/)]))
@@ -81,9 +85,6 @@ AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/proje
 
 AC_CHECK_LIB([enet], [enet_initialize], ,
 AC_MSG_ERROR([ *** Unable to find enet library (http://enet.bespin.org/)]))
-
-AC_CHECK_LIB(png, png_write_info, ,
-AC_MSG_ERROR([ *** Unable to find png library (http://www.libpng.org/)]))
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -108,6 +109,8 @@ data/Makefile
 data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
+data/graphics/images/ambient/Makefile
+data/graphics/items/Makefile
 data/graphics/sprites/Makefile
 data/graphics/tiles/Makefile
 data/help/Makefile

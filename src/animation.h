@@ -55,6 +55,12 @@ class Animation
          */
         Animation();
 
+        /**
+         * Restarts the animation from the first frame.
+         */
+        void
+        reset();
+
         void
         addPhase(int image, unsigned int delay, int offsetX, int offsetY);
 
@@ -68,13 +74,13 @@ class Animation
          * Returns the x offset of the current frame.
          */
         int
-        getOffsetX() const { return (*iCurrentPhase).offsetX; };
+        getOffsetX() const { return iCurrentPhase->offsetX; };
 
         /**
          * Returns the y offset of the current frame.
          */
         int
-        getOffsetY() const { return (*iCurrentPhase).offsetY; };
+        getOffsetY() const { return iCurrentPhase->offsetY; };
 
         /**
          * Returns the length of this animation.
@@ -118,6 +124,12 @@ class Action
 
         void
         setAnimation(int direction, Animation *animation);
+
+        /**
+         * Resets all animations associated with this action.
+         */
+        void
+        reset();
 
         Animation*
         getAnimation(int direction) const;

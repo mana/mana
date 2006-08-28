@@ -115,7 +115,13 @@ Setup_Video::Setup_Video():
     mAlphaSlider(new Slider(0.2, 1.0)),
     mFpsCheckBox(new CheckBox("FPS Limit: ")),
     mFpsSlider(new Slider(10, 200)),
-    mFpsField(new TextField())
+    mFpsField(new TextField()),
+    mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 32)),
+    mScrollLazinessSlider(new Slider(1, 64)),
+    mScrollLazinessField(new TextField()),
+    mOriginalScrollRadius((int) config.getValue("ScrollRadius", 32)),
+    mScrollRadiusSlider(new Slider(0, 128)),
+    mScrollRadiusField(new TextField())
 {
     setOpaque(false);
 
@@ -153,12 +159,36 @@ Setup_Video::Setup_Video():
     mAlphaSlider->setEventId("guialpha");
     mFpsCheckBox->setEventId("fpslimitcheckbox");
     mFpsSlider->setEventId("fpslimitslider");
+    mScrollRadiusSlider->setEventId("scrollradiusslider");
+    mScrollRadiusField->setEventId("scrollradiusfield");
+    mScrollLazinessSlider->setEventId("scrolllazinessslider");
+    mScrollLazinessField->setEventId("scrolllazinessfield");
 
     mCustomCursorCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mFpsCheckBox->addActionListener(this);
     mFpsSlider->addActionListener(this);
     mFpsField->addKeyListener(this);
+    mScrollRadiusSlider->addActionListener(this);
+    mScrollRadiusField->addKeyListener(this);
+    mScrollLazinessSlider->addActionListener(this);
+    mScrollLazinessField->addKeyListener(this);
+
+    mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
+    gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
+    scrollRadiusLabel->setPosition(90, 120);
+    mScrollRadiusField->setPosition(180, 120);
+    mScrollRadiusField->setWidth(30);
+    mScrollRadiusField->setText(toString(mOriginalScrollRadius));
+    mScrollRadiusSlider->setValue(mOriginalScrollRadius);
+
+    mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
+    gcn::Label *scrollLazinessLabel = new gcn::Label("Scroll laziness");
+    scrollLazinessLabel->setPosition(90, 140);
+    mScrollLazinessField->setPosition(180, 140);
+    mScrollLazinessField->setWidth(30);
+    mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
+    mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
     add(scrollArea);
     add(mFsCheckBox);
@@ -169,6 +199,12 @@ Setup_Video::Setup_Video():
     add(mFpsCheckBox);
     add(mFpsSlider);
     add(mFpsField);
+    add(mScrollRadiusSlider);
+    add(scrollRadiusLabel);
+    add(mScrollRadiusField);
+    add(mScrollLazinessSlider);
+    add(scrollLazinessLabel);
+    add(mScrollLazinessField);
 }
 
 Setup_Video::~Setup_Video()
@@ -225,12 +261,38 @@ void Setup_Video::apply()
     mOpenGLEnabled = config.getValue("opengl", 0);
 }
 
+int
+Setup_Video::updateSlider(gcn::Slider *slider, gcn::TextField *field,
+                          const std::string &configName)
+{
+    int value;
+    std::stringstream temp(field->getText());
+    temp >> value;
+    if (value < slider->getScaleStart())
+    {
+        value = (int) slider->getScaleStart();
+    }
+    else if (value > slider->getScaleEnd())
+    {
+        value = (int) slider->getScaleEnd();
+    }
+    field->setText(toString(value));
+    slider->setValue(value);
+    config.setValue(configName, value);
+    return value;
+}
+
 void Setup_Video::cancel()
 {
     mFsCheckBox->setMarked(mFullScreenEnabled);
     mOpenGLCheckBox->setMarked(mOpenGLEnabled);
     mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
     mAlphaSlider->setValue(mOpacity);
+
+    mScrollRadiusField->setText(toString(mOriginalScrollRadius));
+    mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
+    updateSlider(mScrollRadiusSlider, mScrollRadiusField, "ScrollRadius");
+    updateSlider(mScrollLazinessSlider, mScrollLazinessField, "ScrollLaziness");
 
     config.setValue("screen", mFullScreenEnabled ? 1 : 0);
     config.setValue("customcursor", mCustomCursorEnabled ? 1 : 0);
@@ -253,6 +315,18 @@ void Setup_Video::action(const std::string &event, gcn::Widget *widget)
     {
         mFps = (int)mFpsSlider->getValue();
         mFpsField->setText(toString(mFps));
+    }
+    else if (event == "scrollradiusslider")
+    {
+        int val = (int)mScrollRadiusSlider->getValue();
+        mScrollRadiusField->setText(toString(val));
+        config.setValue("ScrollRadius", val);
+    }
+    else if (event == "scrolllazinessslider")
+    {
+        int val = (int)mScrollLazinessSlider->getValue();
+        mScrollLazinessField->setText(toString(val));
+        config.setValue("ScrollLaziness", val);
     }
     else if (event == "fpslimitcheckbox")
     {
@@ -293,4 +367,6 @@ void Setup_Video::keyPress(const gcn::Key &key)
         mFpsField->setText("");
         mFps = 0;
     }
+    updateSlider(mScrollRadiusSlider, mScrollRadiusField, "ScrollRadius");
+    updateSlider(mScrollLazinessSlider, mScrollLazinessField, "ScrollLaziness");
 }

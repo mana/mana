@@ -68,8 +68,8 @@ ItemManager::ItemManager()
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        int id = 0, image = 0, art = 0, type = 0, weight = 0, slot = 0;
-        std::string name = "", description = "", effect = "";
+        int id = 0, art = 0, type = 0, weight = 0, slot = 0;
+        std::string name = "", description = "", effect = "", image = "";
 
         if (!xmlStrEqual(node->name, BAD_CAST "item")) {
             continue;
@@ -77,7 +77,7 @@ ItemManager::ItemManager()
 
         xmlChar *prop = NULL;
         READ_PROP(node, prop, "id", id, atoi);
-        READ_PROP(node, prop, "image", image, atoi);
+        READ_PROP(node, prop, "image", image, );
         READ_PROP(node, prop, "art", art, atoi);
         READ_PROP(node, prop, "name", name, );
         READ_PROP(node, prop, "description", description, );
@@ -85,6 +85,7 @@ ItemManager::ItemManager()
         READ_PROP(node, prop, "type", type, atoi);
         READ_PROP(node, prop, "weight", weight, atoi);
         READ_PROP(node, prop, "slot", slot, atoi);
+
 
         if (id && name != "")
         {
@@ -100,6 +101,7 @@ ItemManager::ItemManager()
             mItemInfos[id] = itemInfo;
         }
 
+
         if (id == 0)
         {
             logger->log("Item Manager: An item has no ID in items.xml!");
@@ -109,7 +111,7 @@ ItemManager::ItemManager()
             logger->log("Item Manager: An item has no name in items.xml!");
         }
 
-        if (image == 0)
+        if (image == "")
         {
             logger->log("Item Manager: Missing image parameter for item: %i. %s",
                     id, name.c_str());
@@ -141,7 +143,7 @@ ItemManager::ItemManager()
         }
         if (slot == 0)
         {
-            logger->log("Item Manager: Missing image parameter for item: %i. %s",
+            logger->log("Item Manager: Missing slot parameter for item: %i. %s",
                     id, name.c_str());
         }
 

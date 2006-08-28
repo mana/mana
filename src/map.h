@@ -41,6 +41,8 @@ typedef Tilesets::iterator TilesetIterator;
 typedef std::list<Sprite*> Sprites;
 typedef Sprites::iterator SpriteIterator;
 
+extern volatile int tick_time;
+
 /**
  * A meta tile stores additional information about a location on a tile map.
  * This is information that doesn't need to be repeated for each tile in each
@@ -63,6 +65,16 @@ struct MetaTile
     bool walkable;          /**< Can beings walk on this tile */
 };
 
+struct AmbientOverlay
+{
+    Image *image;
+    float parallax;
+    float scrollX;
+    float scrollY;
+    float scrollSpeedX;
+    float scrollSpeedY;
+};
+
 /**
  * A tile map.
  */
@@ -80,9 +92,19 @@ class Map : public Properties
         ~Map();
 
         /**
-         * Draws the map to the given graphics output.
+         * Draws a map layer to the given graphics output.
          */
         void draw(Graphics *graphics, int scrollX, int scrollY, int layer);
+
+        /**
+         * Sets Overlay Graphic and Scrollspeed
+         */
+        void setOverlay(Image *image, float speedX, float speedY, float parallax);
+
+        /**
+         * Draws the overlay graphic to the given graphics output.
+         */
+        void drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail);
 
         /**
          * Sets the size of the map. This will destroy any existing map data.
@@ -198,6 +220,12 @@ class Map : public Properties
 
         // Pathfinding members
         int mOnClosedList, mOnOpenList;
+
+        //overlay Data
+        AmbientOverlay mFoo;
+        std::list<AmbientOverlay> mOverlays;
+        float mLastScrollX;
+        float mLastScrollY;
 };
 
 #endif

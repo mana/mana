@@ -57,6 +57,14 @@ class Player : public Being
 
         virtual void
         setVisibleEquipment(Uint8 slot, Uint8 id);
+
+    private:
+        /**
+         * Resets all animations associated with this player. This is used to
+         * synchronize the animations after a new one has been added.
+         */
+        void
+        resetAnimations();
 };
 
 #endif

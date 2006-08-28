@@ -28,6 +28,7 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "../resources/iteminfo.h"
 #include "../item.h"
 #include "../localplayer.h"
 
@@ -91,6 +92,14 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             if (msg.readByte()> 0) {
                 chatWindow->chatLog("Unable to pick up item", BY_SERVER);
             } else {
+                ItemInfo *itemInfo = itemDb->getItemInfo(itemId);
+                if (itemInfo) {
+                    chatWindow->chatLog("You picked up a " +
+                                        itemInfo->getName(), BY_SERVER);
+                } else {
+                    chatWindow->chatLog("You picked up an unknown item",
+                                        BY_SERVER);
+                }
                 player_node->addInvItem(index, itemId, amount, equipType != 0);
             }
             break;

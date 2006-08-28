@@ -60,7 +60,8 @@ struct Location
 Map::Map(int width, int height, int tileWidth, int tileHeight):
     mWidth(width), mHeight(height),
     mTileWidth(tileWidth), mTileHeight(tileHeight),
-    mOnClosedList(1), mOnOpenList(2)
+    mOnClosedList(1), mOnOpenList(2),
+    mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
     mMetaTiles = new MetaTile[mWidth * mHeight];
     mTiles = new Image*[mWidth * mHeight * 3];
@@ -68,12 +69,18 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
 
 Map::~Map()
 {
+    // clean up map data
     delete[] mMetaTiles;
     delete[] mTiles;
-
-    // Clean up tilesets
+    // clean up tilesets
     for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
     mTilesets.clear();
+    // clean up overlays
+    std::list<AmbientOverlay>::iterator i;
+    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+    {
+        (*i).image->decRef();
+    }
 }
 
 void
@@ -156,6 +163,106 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
             (*si)->draw(graphics, -scrollX, -scrollY);
             si++;
         }
+    }
+}
+
+void
+Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
+{
+    static int lastTick = tick_time;
+
+    // detail 0: no overlays
+    if (detail <= 0) return;
+
+    std::list<AmbientOverlay>::iterator i;
+
+    // Avoid freaking out when tick_time overflows
+    if (tick_time < lastTick)
+    {
+        lastTick = tick_time;
+    }
+
+    if (mLastScrollX == 0.0f && mLastScrollY == 0.0f)
+    {
+        // first call - initialisation
+        mLastScrollX = scrollX;
+        mLastScrollY = scrollY;
+    }
+
+    //update Overlays
+    while (lastTick < tick_time)
+    {
+        for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+        {
+            if ((*i).image != NULL)
+            {
+                //apply self scrolling
+                (*i).scrollX -= (*i).scrollSpeedX;
+                (*i).scrollY -= (*i).scrollSpeedY;
+
+                //apply parallaxing
+                (*i).scrollX += (scrollX - mLastScrollX) * (*i).parallax;
+                (*i).scrollY += (scrollY - mLastScrollY) * (*i).parallax;
+
+                //keep the image pattern on the screen
+                while ((*i).scrollX > (*i).image->getWidth())
+                {
+                    (*i).scrollX -= (*i).image->getWidth();
+                }
+                while ((*i).scrollY > (*i).image->getHeight())
+                {
+                    (*i).scrollY -= (*i).image->getHeight();
+                }
+                while ((*i).scrollX < 0)
+                {
+                    (*i).scrollX += (*i).image->getWidth();
+                }
+                while ((*i).scrollY < 0)
+                {
+                    (*i).scrollY += (*i).image->getHeight();
+                }
+            }
+        }
+        mLastScrollX = scrollX;
+        mLastScrollY = scrollY;
+        lastTick++;
+
+        // detail 1: only one overlay, higher: all overlays
+        if (detail == 1) break;
+    }
+
+    //draw overlays
+    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+    {
+        if ((*i).image != NULL)
+        {
+        graphics->drawImagePattern  (   (*i).image,
+                                        0 - (int)(*i).scrollX,
+                                        0 - (int)(*i).scrollY,
+                                        graphics->getWidth() + (int)(*i).scrollX,
+                                        graphics->getHeight() + (int)(*i).scrollY
+                                    );
+        };
+        // detail 1: only one overlay, higher: all overlays
+        if (detail == 1) break;
+    };
+}
+
+void
+Map::setOverlay(Image *image, float speedX, float speedY, float parallax)
+{
+    if (image != NULL)
+    {
+        AmbientOverlay newOverlay;
+
+        newOverlay.image = image;
+        newOverlay.parallax = parallax;
+        newOverlay.scrollSpeedX = speedX;
+        newOverlay.scrollSpeedY = speedY;
+        newOverlay.scrollX = 0;
+        newOverlay.scrollY = 0;
+
+        mOverlays.push_back(newOverlay);
     }
 }
 

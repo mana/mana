@@ -18,33 +18,27 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
  */
 
-#ifndef _TMW_GUI_SETUP_JOYSTICK_H
-#define _TMW_GUI_SETUP_JOYSTICK_H
+#include "iteminfo.h"
 
-#include "setuptab.h"
+#include "resourcemanager.h"
 
-#include <guichan/actionlistener.hpp>
+Image*
+ItemInfo::getImage() {
+    if (mImage == NULL && mImageName != "") {
+        mImage = ResourceManager::getInstance()->getImage(mImageName);
+    }
+    return mImage;
+}
 
-#include "../guichanfwd.h"
+void
+ItemInfo::setImage(const std::string &image) {
+    mImageName = "graphics/items/" + image;
+}
 
-class Setup_Joystick : public SetupTab, public gcn::ActionListener
-{
-    public:
-        Setup_Joystick();
-
-        void apply();
-        void cancel();
-
-        void action(const std::string& eventId, gcn::Widget* widget);
-
-    private:
-        gcn::Label *mCalibrateLabel;
-        gcn::Button *mCalibrateButton;
-        bool mOriginalJoystickEnabled;
-        gcn::CheckBox *mJoystickEnabled;
-};
-
-#endif
+ItemInfo::~ItemInfo() {
+    if (mImage != NULL){
+        mImage->decRef();
+    }
+}

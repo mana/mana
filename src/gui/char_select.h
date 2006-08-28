@@ -54,6 +54,11 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         void logic();
 
+        /**
+         * Returns name of selected player
+         */
+        std::string getName();
+
     private:
         LockedArray<LocalPlayer*> *mCharInfo;
 

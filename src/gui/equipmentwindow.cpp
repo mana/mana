@@ -40,15 +40,10 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     setWindowName("Equipment");
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
-
-    mItemset = ResourceManager::getInstance()->getSpriteset(
-            "graphics/sprites/items.png", 32, 32);
-    if (!mItemset) logger->error("Unable to load items.png");
 }
 
 EquipmentWindow::~EquipmentWindow()
 {
-    mItemset->decRef();
 }
 
 void EquipmentWindow::draw(gcn::Graphics *graphics)
@@ -70,7 +65,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             continue;
         }
 
-        image = mItemset->get(item->getInfo()->getImage() - 1);
+        image = item->getInfo()->getImage();
         dynamic_cast<Graphics*>(graphics)->drawImage(
                 image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
@@ -81,7 +76,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         return;
     }
 
-    image = mItemset->get(item->getInfo()->getImage() - 1);
+    image = item->getInfo()->getImage();
 
     dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     graphics->drawText(toString(item->getQuantity()), 170, 62,

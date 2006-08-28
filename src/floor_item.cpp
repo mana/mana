@@ -29,7 +29,6 @@
 #include "resources/iteminfo.h"
 #include "resources/spriteset.h"
 
-extern Spriteset *itemset;
 
 FloorItem::FloorItem(unsigned int id,
                      unsigned int itemId,
@@ -42,8 +41,8 @@ FloorItem::FloorItem(unsigned int id,
     mY(y),
     mMap(map)
 {
-    // Retrieve item image using a global itemset and itemDb (alternative?)
-    mImage = itemset->get(itemDb->getItemInfo(itemId)->getImage() - 1);
+    // Retrieve item image from item info
+    mImage = itemDb->getItemInfo(itemId)->getImage();
 
     // Add ourselves to the map
     mSpriteIterator = mMap->addSprite(this);

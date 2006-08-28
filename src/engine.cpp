@@ -27,6 +27,7 @@
 
 #include "being.h"
 #include "beingmanager.h"
+#include "configuration.h"
 #include "flooritemmanager.h"
 #include "game.h"
 #include "graphics.h"
@@ -54,7 +55,6 @@ int camera_x, camera_y;
 
 ItemManager *itemDb;          /**< Item database object */
 
-Spriteset *itemset;
 Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
@@ -79,11 +79,9 @@ Engine::Engine():
             weaponset.push_back(tmp);
         }
     }
-    itemset = resman->getSpriteset("graphics/sprites/items.png", 32, 32);
 
     if (!npcset) logger->error("Unable to load NPC spriteset!");
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
-    if (!itemset) logger->error("Unable to load item spriteset!");
 
     // Initialize item manager
     itemDb = new ItemManager();
@@ -94,7 +92,6 @@ Engine::~Engine()
     // Delete sprite sets
     npcset->decRef();
     emotionset->decRef();
-    itemset->decRef();
 
     std::for_each(weaponset.begin(), weaponset.end(),
             std::mem_fun(&Spriteset::decRef));
@@ -157,34 +154,85 @@ void Engine::draw(Graphics *graphics)
 {
     int midTileX = graphics->getWidth() / 2;
     int midTileY = graphics->getHeight() / 2;
+    static int lastTick = tick_time;
 
-    int map_x = (player_node->mX - midTileX) + player_node->getXOffset();
-    int map_y = (player_node->mY - midTileY) + player_node->getYOffset();
+    // Avoid freaking out when tick_time overflows
+    if (tick_time < lastTick)
+    {
+        lastTick = tick_time;
+    }
+
+    int player_x = player_node->mX - midTileX + player_node->getXOffset();
+    int player_y = player_node->mY - midTileY + player_node->getYOffset();
+
+    scrollLaziness = (int)config.getValue("ScrollLaziness", 32);
+    scrollRadius = (int)config.getValue("ScrollRadius", 32);
+
+    if (scrollLaziness < 1)
+        scrollLaziness = 1; //avoids division by zero
+
+    //apply lazy scrolling
+    while (lastTick < tick_time)
+    {
+        if (player_x > view_x + scrollRadius)
+        {
+            view_x += (player_x - view_x - scrollRadius) / scrollLaziness;
+        }
+        if (player_x < view_x - scrollRadius)
+        {
+            view_x += (player_x - view_x + scrollRadius) / scrollLaziness;
+        }
+        if (player_y > view_y + scrollRadius)
+        {
+            view_y += (player_y - view_y - scrollRadius) / scrollLaziness;
+        }
+        if (player_y < view_y - scrollRadius)
+        {
+            view_y += (player_y - view_y + scrollRadius) / scrollLaziness;
+        }
+        lastTick++;
+    }
+
+    //auto center when player is off screen
+    if (        player_x - view_x > graphics->getWidth() / 2
+            ||  view_x - player_x > graphics->getWidth() / 2
+            ||  view_y - player_y > graphics->getHeight() / 2
+            ||  player_y - view_y > graphics->getHeight() / 2
+        )
+    {
+        view_x = player_x;
+        view_y = player_y;
+    };
 
     if (mCurrentMap) {
-        if (map_x < 0) {
-            map_x = 0;
+        if (view_x < 0) {
+            view_x = 0;
         }
-        if (map_y < 0) {
-            map_y = 0;
+        if (view_y < 0) {
+            view_y = 0;
         }
-        if (map_x > mCurrentMap->getWidth() * 32 - midTileX) {
-            map_x = mCurrentMap->getWidth() * 32 - midTileX;
+        if (view_x > mCurrentMap->getWidth() * 32 - midTileX) {
+            view_x = mCurrentMap->getWidth() * 32 - midTileX;
         }
-        if (map_y > mCurrentMap->getHeight() * 32 - midTileY) {
-            map_y = mCurrentMap->getHeight() * 32 - midTileY;
+        if (view_y > mCurrentMap->getHeight() * 32 - midTileY) {
+            view_y = mCurrentMap->getHeight() * 32 - midTileY;
         }
     }
 
-    camera_x = map_x;
-    camera_y = map_y;
+    camera_x = (int)(view_x + 16);
+    camera_y = (int)(view_y + 16);
 
     // Draw tiles and sprites
     if (mCurrentMap != NULL)
     {
-        mCurrentMap->draw(graphics, map_x, map_y, 0);
-        mCurrentMap->draw(graphics, map_x, map_y, 1);
-        mCurrentMap->draw(graphics, map_x, map_y, 2);
+        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 0);
+        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 1);
+        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 2);
+        mCurrentMap->drawOverlay(   graphics,
+                                    view_x,
+                                    view_y,
+                                    (int)config.getValue("OverlayDetail", 2)
+                                );
     }
     else
     {
@@ -202,8 +250,8 @@ void Engine::draw(Graphics *graphics)
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        int mouseTileX = (mouseX + map_x) / 32;
-        int mouseTileY = (mouseY + map_y) / 32;
+        int mouseTileX = (int)(mouseX + view_x) / 32;
+        int mouseTileY = (int)(mouseY + view_y) / 32;
 
         Path debugPath = mCurrentMap->findPath(
                 player_node->mX / 32, player_node->mY / 32,
@@ -212,8 +260,8 @@ void Engine::draw(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 0, 0));
         for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
         {
-            int squareX = i->x * 32 - map_x + 12;
-            int squareY = i->y * 32 - map_y + 12;
+            int squareX = i->x * 32 - int(view_x) + 12;
+            int squareY = i->y * 32 - int(view_y) + 12;
 
             graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
             graphics->drawText(
@@ -226,9 +274,9 @@ void Engine::draw(Graphics *graphics)
     Beings *beings = beingManager->getAll();
     for (BeingIterator i = beings->begin(); i != beings->end(); i++)
     {
-        (*i)->drawSpeech(graphics, -map_x, -map_y);
-        (*i)->drawName(graphics, -map_x, -map_y);
-        (*i)->drawEmotion(graphics, -map_x, -map_y);
+        (*i)->drawSpeech(graphics, -(int)view_x, -(int)view_y);
+        (*i)->drawName(graphics, -(int)view_x, -(int)view_y);
+        (*i)->drawEmotion(graphics, -(int)view_x, -(int)view_y);
     }
 
     // Draw target marker if needed
@@ -239,8 +287,8 @@ void Engine::draw(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 255, 255));
         int dy = (target->getType() == Being::PLAYER) ? 90 : 52;
 
-        graphics->drawText("[TARGET]", target->getPixelX() - map_x + 15,
-                target->getPixelY() - map_y  - dy, gcn::Graphics::CENTER);
+        graphics->drawText("[TARGET]", target->getPixelX() - (int)view_x + 15,
+                target->getPixelY() - (int)view_y  - dy, gcn::Graphics::CENTER);
     }
 
     gui->draw();
