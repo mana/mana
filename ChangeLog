@@ -1,3 +1,12 @@
+2006-08-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/items/*: Changed svn properties.
+	* data/graphics/sprites/item001.xml, data/graphics/sprites/item002.xml,
+	data/graphics/sprites/item003.xml, data/graphics/sprites/item004.xml,
+	data/graphics/sprites/item005.xml, data/graphics/sprites/item006.png,
+	data/graphics/sprites/item006.xml, data/graphics/sprites/Makefile.am:
+	Added headband and fixed svn properties.
+
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/inventoryhandler.cpp: Applied patch by AHarrison that adds
