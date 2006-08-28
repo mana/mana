@@ -115,11 +115,11 @@ Setup_Video::Setup_Video():
     mFpsCheckBox(new CheckBox("FPS Limit: ")),
     mFpsSlider(new Slider(10, 200)),
     mFpsField(new TextField()),
-    mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 0)),
-    mScrollLazinessSlider(new Slider(0, 100)),
+    mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 32)),
+    mScrollLazinessSlider(new Slider(1, 64)),
     mScrollLazinessField(new TextField()),
-    mOriginalScrollRadius((int) config.getValue("ScrollRadius", 0)),
-    mScrollRadiusSlider(new Slider(0, 100)),
+    mOriginalScrollRadius((int) config.getValue("ScrollRadius", 32)),
+    mScrollRadiusSlider(new Slider(0, 128)),
     mScrollRadiusField(new TextField())
 {
     setOpaque(false);
