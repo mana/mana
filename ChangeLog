@@ -1,7 +1,13 @@
+2006-08-29  Andrew Harrison  <atharris@users.sourceforge.net>
+
+	* src/main.cpp: Added command line option to specify which
+	configuration file to use (patch applied by Bjørn Lindeijer).
+
 2006-08-29  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
-	*  data/graphics/sprites/item006.png, data/graphics/sprites/item006.xml, 
-	data/graphics/sprites/item008.xml Fixed fancy hat + silk headband positions.
+	* data/graphics/sprites/item006.png,
+	data/graphics/sprites/item006.xml, data/graphics/sprites/item008.xml:
+	Fixed fancy hat + silk headband positions.
 
 2006-08-29  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -24,8 +30,8 @@
 
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/net/inventoryhandler.cpp: Applied patch by AHarrison that adds
-	item pickup messages to the chat window.
+	* src/net/inventoryhandler.cpp: Applied patch by Andrew Harrison that
+	adds item pickup messages to the chat window.
 	* NEWS: Updated with some recently added and fixed issues. Doesn't
 	mention any of the recent content updates yet.
 
@@ -67,7 +73,7 @@
 
 	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,
 	src/gui/window.cpp, src/gui/window.h: Added support for sticky windows
-	as discussed with doener. Patch by AHarrison.
+	as discussed with doener. Patch by Andrew Harrison.
 	* data/items.xml: Added jeans shorts.
 
 2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>

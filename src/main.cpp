@@ -107,9 +107,33 @@ namespace {
 }
 
 /**
+ * A structure holding the values of various options that can be passed from
+ * the command line.
+ */
+struct Options
+{
+    /**
+     * Constructor.
+     */
+    Options():
+        printHelp(false),
+        skipUpdate(false),
+        chooseDefault(false)
+    {};
+
+    bool printHelp;
+    bool skipUpdate;
+    bool chooseDefault;
+    std::string username;
+    std::string password;
+    std::string playername;
+    std::string configPath;
+};
+
+/**
  * Do all initialization stuff
  */
-void init_engine()
+void init_engine(const Options &options)
 {
     // Initialize SDL
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
@@ -191,7 +215,10 @@ void init_engine()
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
     FILE *tmwFile = 0;
-    std::string configPath = homeDir + "/config.xml";
+    std::string configPath = options.configPath;
+    if (configPath == "") {
+        configPath = homeDir + "/config.xml";
+    }
     tmwFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
@@ -302,29 +329,6 @@ void exit_engine()
     delete logger;
 }
 
-/**
- * A structure holding the values of various options that can be passed from
- * the command line.
- */
-struct Options
-{
-    /**
-     * Constructor.
-     */
-    Options():
-        printHelp(false),
-        skipUpdate(false),
-        chooseDefault(false)
-    {};
-
-    bool printHelp;
-    bool skipUpdate;
-    bool chooseDefault;
-    std::string username;
-    std::string password;
-    std::string playername;
-};
-
 void printHelp()
 {
     std::cout
@@ -335,13 +339,14 @@ void printHelp()
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
         << "  -D --default    : Bypass the login process with default settings" << std::endl
-        << "  -p --playername : Login with this player"
+        << "  -p --playername : Login with this player" << std::endl
+        << "  -C --configfile : Configuration file to use"
         << std::endl;
 }
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:";
+    const char *optstring = "huU:P:Dp:C:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -350,6 +355,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
         { "playername", required_argument, 0, 'p' },
+        { "configfile", required_argument, 0, 'C' },
         { 0 }
     };
 
@@ -379,6 +385,9 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'p':
                 options.playername = optarg;
+                break;
+            case 'C':
+                options.configPath = optarg;
                 break;
         }
     }
@@ -509,7 +518,7 @@ int main(int argc, char *argv[])
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
 
-    init_engine();
+    init_engine(options);
 
     SDL_Event event;
 
