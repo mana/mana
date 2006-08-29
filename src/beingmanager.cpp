@@ -119,9 +119,9 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Beings* BeingManager::getAll()
+Beings& BeingManager::getAll()
 {
-    return &mBeings;
+    return mBeings;
 }
 
 void BeingManager::logic()

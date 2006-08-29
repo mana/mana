@@ -1,3 +1,10 @@
+2006-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/beingmanager.h, src/gui/minimap.cpp,
+	src/engine.cpp, src/beingmanager.cpp: It's better to use a reference
+	when you don't need a pointer.
+	* NEWS: Updated with addition of config file option.
+
 2006-08-29  Andrew Harrison  <atharris@users.sourceforge.net>
 
 	* src/main.cpp: Added command line option to specify which

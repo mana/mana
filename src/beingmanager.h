@@ -71,7 +71,7 @@ class BeingManager
         /**
          * Returns the whole list of beings
          */
-        Beings* getAll();
+        Beings& getAll();
 
         /**
          * Logic.

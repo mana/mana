@@ -3,7 +3,8 @@
 - Added XP bar to ministatus in the top left
 - Added configurable smooth and lazy scrolling
 - Added option to turn off the joystick
-- Added --playername command line option for automatic character picking
+- Added --playername option for automatic character picking
+- Added --configfile option for specifying which configuration file to use
 - Fixed updating system on Windows
 - Fixed player animations going out of sync on changing equipment or hairstyle
 - Fixed SDL_image configure check on some systems by first checking for libpng
