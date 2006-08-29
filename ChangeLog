@@ -1,3 +1,9 @@
+2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/engine.cpp, src/gui/gui.cpp: Fixed merge issues: printfs and
+	inconsistency between view and camera variables. Fixed lazy scrolling:
+	there is no "freaking out" when the correct function is used.
+
 2006-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/gui.cpp: Fixed crash when map is not loaded yet.

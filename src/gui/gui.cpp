@@ -233,7 +233,6 @@ Gui::draw()
 void
 Gui::mousePress(int mx, int my, int button)
 {
-    printf("Gui::mousePress(%d,%d)\n", mx, my);
     // Mouse pressed on window container (basically, the map)
 
     // Are we in-game yet?
@@ -250,7 +249,6 @@ Gui::mousePress(int mx, int my, int button)
 
     int tilex = (mx + camera_x) / 32;
     int tiley = (my + camera_y) / 32;
-    printf("tilex,tiley: %d,%d\n", tilex, tiley);
 
     // Right click might open a popup
     if (button == gcn::MouseInput::RIGHT)
