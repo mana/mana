@@ -31,7 +31,7 @@
 #include "../guichanfwd.h"
 
 #include "login.h"
-#include "net/network.h"
+#include "../net/network.h"
 
 class LoginData;
 
