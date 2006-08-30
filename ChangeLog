@@ -1,3 +1,9 @@
+2006-08-30
+
+	* data/graphics/sprites/item007.png, data/graphics/sprites/item007.xml, 
+	data/graphics/sprites/item009.png, data/graphics/sprites/item009.xml:
+	Added sprites for miners helm and standard headband.
+
 2006-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/beingmanager.h, src/gui/minimap.cpp,
