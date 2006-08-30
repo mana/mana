@@ -79,6 +79,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/scrollarea.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
+	      gui/serverdialog.cpp \
+	      gui/serverdialog.h \
 	      gui/setup_audio.cpp \
 	      gui/setup_audio.h \
 	      gui/setup.cpp \

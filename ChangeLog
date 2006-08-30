@@ -1,3 +1,11 @@
+2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/main.cpp, src/main.h, src/Makefile.am, src/gui/connection.h,
+	src/gui/connection.cpp, src/gui/serverdialog.cpp,
+	src/gui/serverdialog.h: Added a first version of the server dialog
+	with an unskinned dropdown. Upgraded also the connection window a bit
+	to handle Cancelling more gracefully.
+
 2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/engine.cpp, src/gui/gui.cpp: Fixed merge issues: printfs and

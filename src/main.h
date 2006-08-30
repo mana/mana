@@ -37,7 +37,9 @@
 #define TMW_DATADIR ""
 #endif
 
-
+/*
+ * Client different States
+ */
 enum {
     STATE_CHOOSE_SERVER,
     STATE_CONNECT_ACCOUNT,
@@ -63,6 +65,18 @@ enum {
     LEN_MAX_PASSWORD     = 25,
     LEN_MIN_PASSWORD     = 4
 };
+
+// Default game values
+// -------------------
+// Screen
+const short defaultScreenWidth = 800;
+const short defaultScreenHeight = 600;
+// Sound
+const short defaultSfxVolume = 100;
+const short defaultMusicVolume = 60;
+// Account Server Name and port
+const std::string defaultAccountServerName = "animesites.de";
+const short defaultAccountServerPort = 9601;
 
 extern char n_character;
 extern std::string token;

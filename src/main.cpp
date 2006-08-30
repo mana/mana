@@ -58,6 +58,7 @@
 #include "gui/char_select.h"
 #include "gui/connection.h"
 #include "gui/gui.h"
+#include "gui/serverdialog.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
 #include "gui/register.h"
@@ -231,8 +232,8 @@ void init_engine()
     graphics = new Graphics();
 #endif
 
-    int width = (int)config.getValue("screenwidth", 800);
-    int height = (int)config.getValue("screenheight", 600);
+    int width = (int)config.getValue("screenwidth", defaultScreenWidth);
+    int height = (int)config.getValue("screenheight", defaultScreenHeight);
     int bpp = 0;
     bool fullscreen = ((int)config.getValue("screen", 0) == 1);
     bool hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
@@ -277,8 +278,8 @@ void init_engine()
         if (config.getValue("sound", 0) == 1) {
             sound.init();
         }
-        sound.setSfxVolume((int)config.getValue("sfxVolume", 100));
-        sound.setMusicVolume((int)config.getValue("musicVolume", 60));
+        sound.setSfxVolume((int)config.getValue("sfxVolume", defaultSfxVolume));
+        sound.setMusicVolume((int)config.getValue("musicVolume", defaultMusicVolume));
     }
     catch (const char *err) {
         state = STATE_ERROR;
@@ -322,15 +323,19 @@ struct Options
     Options():
         printHelp(false),
         skipUpdate(false),
-        chooseDefault(false)
+        chooseDefault(false),
+        serverPort(0)
     {};
 
     bool printHelp;
     bool skipUpdate;
     bool chooseDefault;
-    std::string username;
-    std::string password;
     std::string playername;
+    std::string password;
+
+    std::string serverName;
+    short serverPort;
+
 };
 
 void printHelp()
@@ -343,13 +348,14 @@ void printHelp()
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
         << "  -D --default    : Bypass the login process with default settings" << std::endl
-        << "  -p --playername : Login with this player"
-        << std::endl;
+        << "  -s --server     : Login Server name or IP" << std::endl
+        << "  -o --port       : Login Server Port" << std::endl
+        << "  -p --playername : Login with this player" << std::endl;
 }
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:";
+    const char *optstring = "huU:P:Dp:so";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -357,6 +363,8 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
         { "default",    no_argument,       0, 'D' },
+        { "server",     required_argument, 0, 's' },
+        { "port",       required_argument, 0, 'o' },
         { "playername", required_argument, 0, 'p' },
         { 0 }
     };
@@ -377,13 +385,19 @@ void parseOptions(int argc, char *argv[], Options &options)
                 options.skipUpdate = true;
                 break;
             case 'U':
-                options.username = optarg;
+                options.playername = optarg;
                 break;
             case 'P':
                 options.password = optarg;
                 break;
             case 'D':
                 options.chooseDefault = true;
+                break;
+            case 's':
+                options.serverName = optarg;
+                break;
+            case 'o':
+                options.serverPort = (short)atoi(optarg);
                 break;
             case 'p':
                 options.playername = optarg;
@@ -502,6 +516,11 @@ int main(int argc, char *argv[])
     logger->setLogFile(homeDir + std::string("/tmw.log"));
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
+    // Log the tmw version
+#ifdef PACKAGE_VERSION
+    logger->log("The Mana World v%s", PACKAGE_VERSION);
+#endif
+
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     logger->log("Initializing libxml2...");
@@ -522,7 +541,22 @@ int main(int argc, char *argv[])
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
-    loginData.username = options.username;
+    // Server choice
+    if (options.serverName.empty()) {
+        loginData.hostname = config.getValue("MostUsedServerName0",
+                                defaultAccountServerName.c_str());
+    }
+    else {
+        loginData.hostname = options.serverName;
+    }
+    if (options.serverPort == 0) {
+        loginData.port = (short)config.getValue("MostUsedServerPort0",
+                                                defaultAccountServerPort);
+    } else {
+        loginData.port = options.serverPort;
+    }
+
+    loginData.username = options.playername;
     if (loginData.username.empty()) {
         if (config.getValue("remember", 0)) {
             loginData.username = config.getValue("username", "");
@@ -531,8 +565,7 @@ int main(int argc, char *argv[])
     if (!options.password.empty()) {
         loginData.password = options.password;
     }
-    loginData.hostname = config.getValue("host", "animesites.de");
-    loginData.port = (short)config.getValue("port", 0);
+
     loginData.remember = config.getValue("remember", 0);
 
     if (enet_initialize() != 0)
@@ -631,15 +664,23 @@ int main(int argc, char *argv[])
             switch (state) {
                 case STATE_CHOOSE_SERVER:
                     logger->log("State: CHOOSE_SERVER");
-                    // TODO: Allow changing this using a server choice dialog
-                    logger->log("Trying to connect to account server...");
-                    Network::connect(Network::ACCOUNT,
-                                     loginData.hostname, loginData.port);
-                    state = STATE_CONNECT_ACCOUNT;
+
+                    // Allow changing this using a server choice dialog
+                    // We show the dialog box only if the command-line options weren't set.
+                    if (options.serverName.empty() && options.serverPort == 0) {
+                        currentDialog = new ServerDialog(&loginData);
+                    } else {
+                        logger->log("Trying to connect to account server...");
+                        Network::connect(Network::ACCOUNT,
+                                          loginData.hostname, loginData.port);
+                        state = STATE_CONNECT_ACCOUNT;
+                    }
                     break;
+
 
                 case STATE_CONNECT_ACCOUNT:
                     logger->log("State: CONNECT_ACCOUNT");
+                    currentDialog = new ConnectionDialog(STATE_CHOOSE_SERVER);
                     break;
 
                 case STATE_UPDATE:
@@ -705,7 +746,7 @@ int main(int argc, char *argv[])
 
                 case STATE_CONNECT_GAME:
                     logger->log("State: CONNECT_GAME");
-                    currentDialog = new ConnectionDialog();
+                    currentDialog = new ConnectionDialog(STATE_CHAR_SELECT);
                     break;
 
                 case STATE_GAME:
