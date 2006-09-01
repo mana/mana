@@ -1,4 +1,12 @@
-2006-08-30
+2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/monster19.png,
+	data/graphics/sprites/monster19.xml, data/graphics/tiles/arena.png,
+	data/graphics/tiles/cave.png, data/maps/new_17-1.tmx.gz,
+	data/maps/new_6-1.tmx.gz: Added new big cave map, lamp-snake monster,
+	improved arena map.
+
+2006-08-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/item007.png, data/graphics/sprites/item007.xml, 
 	data/graphics/sprites/item009.png, data/graphics/sprites/item009.xml:
