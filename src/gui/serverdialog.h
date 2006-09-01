@@ -25,12 +25,16 @@
 #define _TMW_SERVERDIALOG_H
 
 #include <iosfwd>
-#include <guichan/actionlistener.hpp>
+#include <vector>
 
-#include "window.h"
-#include "../guichanfwd.h"
+#include <guichan/actionlistener.hpp>
+#include <guichan/listmodel.hpp>
 
 #include "login.h"
+#include "window.h"
+
+#include "../guichanfwd.h"
+
 #include "../net/network.h"
 
 class LoginData;
@@ -50,7 +54,8 @@ struct Server {
 /**
  * Server and Port List Model
  */
-class ServersListModel : public gcn::ListModel {
+class ServersListModel : public gcn::ListModel
+{
     public:
         /**
          * Used to get number of line in the list
@@ -72,6 +77,7 @@ class ServersListModel : public gcn::ListModel {
          * Add an Element at the beginning of the server list
          */
         void addFirstElement(Server server);
+
     private:
         std::vector<Server> servers;
 };
@@ -79,7 +85,8 @@ class ServersListModel : public gcn::ListModel {
 /**
  * Listener used for handling the DropDown in the server Dialog.
  */
-class DropDownListener : public gcn::ActionListener {
+class DropDownListener : public gcn::ActionListener
+{
     public:
         DropDownListener(gcn::TextField *serverNameField,
                          gcn::TextField *serverPortField,
@@ -106,7 +113,8 @@ class DropDownListener : public gcn::ActionListener {
  *
  * \ingroup Interface
  */
-class ServerDialog : public Window, public gcn::ActionListener {
+class ServerDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor

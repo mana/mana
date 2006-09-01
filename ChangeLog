@@ -1,3 +1,9 @@
+2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/serverdialog.cpp, src/gui/serverdialog.h, src/net/network.h:
+	Fixed some header issues.
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
 2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/main.cpp, src/main.h, src/Makefile.am, src/gui/connection.h,

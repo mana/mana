@@ -23,26 +23,25 @@
 
 #include "serverdialog.h"
 
-#include <string>
 #include <iostream>
-#include "../utils/tostring.h"
-
-#include <guichan/widgets/label.hpp>
-
-#include "../main.h"
-#include "../logindata.h"
-
-#include "log.h"
-#include "configuration.h"
-
-#include "button.h"
-#include "ok_dialog.h"
-#include "textfield.h"
+#include <string>
 
 // TODO : Replace the dropdown by our own skinned one.
 #include <guichan/widgets/dropdown.hpp>
+#include <guichan/widgets/label.hpp>
+
+#include "button.h"
 #include "listbox.h"
+#include "ok_dialog.h"
 #include "scrollarea.h"
+#include "textfield.h"
+
+#include "../configuration.h"
+#include "../log.h"
+#include "../logindata.h"
+#include "../main.h"
+
+#include "../utils/tostring.h"
 
 const short MAX_SERVERLIST = 5;
 

@@ -27,8 +27,6 @@
 #include <map>
 #include <string>
 
-#include <guichan.hpp>
-
 #include <enet/enet.h>
 
 class MessageHandler;
