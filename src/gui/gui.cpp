@@ -280,7 +280,7 @@ Gui::mousePress(int mx, int my, int button)
         FloorItem *item;
 
         // Interact with some being
-        if ((being = beingManager->findBeing(tilex, tiley)))
+        if ((being = beingManager->findNearestLivingBeing(tilex, tiley, 1)))
         {
             switch (being->getType())
             {
@@ -315,6 +315,20 @@ Gui::mousePress(int mx, int my, int button)
                 player_node->setDestination(tilex, tiley);
                 player_node->stopAttack();
             }
+        }
+    }
+
+    if (button == gcn::MouseInput::MIDDLE)
+    {
+        // Find the being nearest to the clicked position
+        Being *target = beingManager->findNearestLivingBeing(
+                player_node->mX,
+                player_node->mY,
+                20, Being::MONSTER);
+
+        if (target)
+        {
+            player_node->setTarget(target);
         }
     }
 }

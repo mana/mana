@@ -686,6 +686,18 @@ void Game::handleInput()
             player_node->attack(target, newTarget);
         }
 
+        // Target the nearest monster if 'a' pressed
+        if (keys[SDLK_a])
+        {
+            Being *target =
+                beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+
+            if (target)
+            {
+                player_node->setTarget(target);
+            }
+        }
+
         if (joystick)
         {
             if (joystick->buttonPressed(1))

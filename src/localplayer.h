@@ -99,11 +99,16 @@ class LocalPlayer : public Player
          * Sets the trading state of the player, i.e. whether or not he is
          * currently involved into some trade.
          */
-        void setTrading(bool trading) { mTrading = trading; };
+        void setTrading(bool trading) { mTrading = trading; }
 
         void attack(Being *target=NULL, bool keep=false);
         void stopAttack();
         Being* getTarget() const;
+
+        /**
+         * Sets the target being of the player.
+         */
+        void setTarget(Being* target) { mTarget = target; }
 
         void walk(unsigned char dir);
 
