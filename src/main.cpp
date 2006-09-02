@@ -347,7 +347,8 @@ void printHelp()
         << "  -u --skipupdate : Skip the update process" << std::endl
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
-        << "  -D --default    : Bypass the login process with default settings" << std::endl
+        << "  -D --default    : Bypass the login process with default settings"
+        << std::endl
         << "  -s --server     : Login Server name or IP" << std::endl
         << "  -o --port       : Login Server Port" << std::endl
         << "  -p --playername : Login with this player" << std::endl;
@@ -355,7 +356,7 @@ void printHelp()
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:so";
+    const char *optstring = "huU:P:Dp:s:o:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -666,17 +667,22 @@ int main(int argc, char *argv[])
                     logger->log("State: CHOOSE_SERVER");
 
                     // Allow changing this using a server choice dialog
-                    // We show the dialog box only if the command-line options weren't set.
+                    // We show the dialog box only if the command-line options
+                    // weren't set.
                     if (options.serverName.empty() && options.serverPort == 0) {
                         currentDialog = new ServerDialog(&loginData);
                     } else {
                         logger->log("Trying to connect to account server...");
                         Network::connect(Network::ACCOUNT,
-                                          loginData.hostname, loginData.port);
+                                loginData.hostname, loginData.port);
                         state = STATE_CONNECT_ACCOUNT;
+
+                        // Reset options so that cancelling or connect timeout
+                        // will show the server dialog
+                        options.serverName = "";
+                        options.serverPort = 0;
                     }
                     break;
-
 
                 case STATE_CONNECT_ACCOUNT:
                     logger->log("State: CONNECT_ACCOUNT");

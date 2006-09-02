@@ -1,3 +1,9 @@
+2006-09-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/serverdialog.cpp, src/main.cpp: Fixed crash when using short
+	versions of server and port command line options and made sure
+	cancelling the account server connect shows the server dialog.
+
 2006-09-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/localplayer.cpp, src/beingmanager.h, src/beingmanager.cpp,

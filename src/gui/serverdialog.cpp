@@ -238,9 +238,9 @@ ServerDialog::action(const std::string &eventId, gcn::Widget *widget)
                 config.setValue(currentConfig, toString(currentServer.port));
             }
             logger->log("Trying to connect to account server...");
-                Network::connect(Network::ACCOUNT,
-                                  mLoginData->hostname, mLoginData->port);
-                state = STATE_CONNECT_ACCOUNT;
+            Network::connect(Network::ACCOUNT,
+                    mLoginData->hostname, mLoginData->port);
+            state = STATE_CONNECT_ACCOUNT;
         }
     }
     else if (eventId == "cancel")
