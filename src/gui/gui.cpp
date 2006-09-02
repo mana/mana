@@ -322,8 +322,7 @@ Gui::mousePress(int mx, int my, int button)
     {
         // Find the being nearest to the clicked position
         Being *target = beingManager->findNearestLivingBeing(
-                player_node->mX,
-                player_node->mY,
+                tilex, tiley,
                 20, Being::MONSTER);
 
         if (target)
