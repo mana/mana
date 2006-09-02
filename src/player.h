@@ -38,7 +38,7 @@ class Player : public Being
         /**
          * Constructor.
          */
-        Player(Uint32 id, Uint16 job, Map *map);
+        Player(Uint16 id, Uint16 job, Map *map);
 
         virtual Type
         getType() const;

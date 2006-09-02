@@ -48,7 +48,7 @@ class BeingManager
         /**
          * Create a being and add it to the list of beings
          */
-        Being* createBeing(Uint32 id, Uint16 job);
+        Being* createBeing(Uint16 id, Uint16 job);
 
         /**
          * Remove a Being
@@ -58,7 +58,7 @@ class BeingManager
         /**
          * Return a specific id Being
          */
-        Being* findBeing(Uint32 id);
+        Being* findBeing(Uint16 id);
 
         /**
          * Return a being at specific coordinates

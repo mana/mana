@@ -62,7 +62,7 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-Being* BeingManager::createBeing(Uint32 id, Uint16 job)
+Being* BeingManager::createBeing(Uint16 id, Uint16 job)
 {
     Being *being;
 
@@ -90,7 +90,7 @@ void BeingManager::destroyBeing(Being *being)
     delete being;
 }
 
-Being* BeingManager::findBeing(Uint32 id)
+Being* BeingManager::findBeing(Uint16 id)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {

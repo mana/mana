@@ -195,7 +195,7 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 LocalPlayer*
 CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
-    LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
+    LocalPlayer *tempPlayer = new LocalPlayer;
     slot = msg.readByte(); // character slot
     tempPlayer->mName = msg.readString();
     tempPlayer->setSex(msg.readByte());

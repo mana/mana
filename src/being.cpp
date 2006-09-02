@@ -46,7 +46,7 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 {
 }
 
-Being::Being(Uint32 id, Uint16 job, Map *map):
+Being::Being(Uint16 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
     mAction(STAND),

@@ -1,3 +1,11 @@
+2006-09-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/localplayer.cpp, src/beingmanager.h, src/beingmanager.cpp,
+	src/npc.cpp, src/player.cpp, src/monster.h, src/being.cpp, src/npc.h,
+	src/monster.cpp, src/player.h, src/net/beinghandler.cpp, src/being.h,
+	src/net/charserverhandler.cpp, src/net/protocol.h, src/localplayer.h,
+	src/net/chathandler.cpp: Switched to short IDs for beings.
+
 2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/serverdialog.cpp, src/gui/serverdialog.h, src/net/network.h:

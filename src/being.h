@@ -112,7 +112,7 @@ class Being : public Sprite
         /**
          * Constructor.
          */
-        Being(Uint32 id, Uint16 job, Map *map);
+        Being(Uint16 id, Uint16 job, Map *map);
 
         /**
          * Destructor.
@@ -274,14 +274,14 @@ class Being : public Sprite
         /**
          * Gets the sprite id.
          */
-        Uint32
+        Uint16
         getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
         void
-        setId(Uint32 id) { mId = id; }
+        setId(Uint16 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -348,7 +348,7 @@ class Being : public Sprite
         SpriteDirection
         getSpriteDirection() const;
 
-        Uint32 mId;                     /**< Unique sprite id */
+        Uint16 mId;                     /**< Unique being id */
         Uint8 mSex;                     /**< Character's gender */
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */

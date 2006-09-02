@@ -398,7 +398,7 @@ void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
     int type = msg.readByte(); // type
-    int id = msg.readLong();
+    int id = msg.readShort();
 
     switch (type) {
     case OBJECT_PLAYER:
@@ -431,8 +431,7 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 {
-    msg.readByte(); // type, assume player for now, TODO
-    Being *being = beingManager->findBeing(msg.readLong());
+    Being *being = beingManager->findBeing(msg.readShort());
     if (!being) return;
     if (being == player_node->getTarget())
     {
@@ -443,9 +442,9 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
-    for (int nb = (msg.getLength() - 2) / (4 + 4 * 2); nb > 0; --nb)
+    for (int nb = (msg.getLength() - 2) / (2 + 4 * 2); nb > 0; --nb)
     {
-        Uint32 id = msg.readLong();
+        Uint16 id = msg.readShort();
         Being *being = beingManager->findBeing(id);
         if (!being) continue;
         int sx = msg.readShort(), sy = msg.readShort(),

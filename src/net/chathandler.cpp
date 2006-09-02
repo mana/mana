@@ -59,12 +59,12 @@ void ChatHandler::handleMessage(MessageIn &msg)
 {
     Being *being;
     std::string chatMsg;
-    Sint16 chatMsgLength;
+    //Sint16 chatMsgLength;
 
     switch (msg.getId())
     {
         case GPMSG_SAY:
-            being = beingManager->findBeing(msg.readLong());
+            being = beingManager->findBeing(msg.readShort());
             chatMsg = msg.readString();
             if (being)
             {
@@ -77,6 +77,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             }
             break;
 
+        /*
         // Received speech from being
         case SMSG_BEING_CHAT:
             chatMsgLength = msg.readShort() - 8;
@@ -131,5 +132,6 @@ void ChatHandler::handleMessage(MessageIn &msg)
             msg.readLong(); // id
             chatWindow->chatLog("MVP player", BY_SERVER);
             break;
+        */
     }
 }

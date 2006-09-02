@@ -42,7 +42,7 @@ class LocalPlayer : public Player
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 
-        LocalPlayer(Uint32 id, Uint16 job, Map *map);
+        LocalPlayer();
 
         virtual ~LocalPlayer();
 
