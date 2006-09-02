@@ -26,6 +26,8 @@
 
 #include <string>
 
+#include <SDL_types.h>
+
 /**
  * Used for parsing an incoming message.
  */
@@ -49,6 +51,11 @@ class MessageIn
         long readLong();              /**< Reads a long. */
 
         /**
+         * Reads a 3-byte block containing tile-based coordinates.
+         */
+        void readCoordinates(Uint16 &x, Uint16 &y);
+
+        /**
          * Reads a string. If a length is not given (-1), it is assumed
          * that the length of the string is stored in a short at the
          * start of the string.
@@ -60,6 +67,12 @@ class MessageIn
          */
         unsigned int
         getLength() { return mLength; }
+
+        /**
+         * Returns the length of unread data.
+         */
+        unsigned int
+        getUnreadLength() { return mLength - mPos; }
 
     private:
         const char* mData;             /**< The message data. */

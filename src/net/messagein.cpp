@@ -77,6 +77,17 @@ long MessageIn::readLong()
     return value;
 }
 
+void MessageIn::readCoordinates(Uint16 &x, Uint16 &y)
+{
+    if (mPos + 3 <= mLength)
+    {
+        unsigned char const *p = reinterpret_cast< unsigned char const * >(mData + mPos);
+        x = p[0] | ((p[1] & 0x07) << 8);
+        y = (p[1] >> 3) | ((p[2] & 0x3F) << 5);
+    }
+    mPos += 3;
+}
+
 std::string MessageIn::readString(int length)
 {
     // Get string length

@@ -5,6 +5,9 @@
 	src/monster.cpp, src/player.h, src/net/beinghandler.cpp, src/being.h,
 	src/net/charserverhandler.cpp, src/net/protocol.h, src/localplayer.h,
 	src/net/chathandler.cpp: Switched to short IDs for beings.
+	* src/net/messagein.h, src/net/beinghandler.cpp, src/net/protocol.h,
+	src/net/messagein.cpp: Removed pixel-based synchronisation. Added
+	variable length move messages.
 
 2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

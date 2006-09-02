@@ -442,13 +442,33 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 
 void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
-    for (int nb = (msg.getLength() - 2) / (2 + 4 * 2); nb > 0; --nb)
+    while (msg.getUnreadLength())
     {
         Uint16 id = msg.readShort();
+        Uint8 flags = msg.readByte();
         Being *being = beingManager->findBeing(id);
-        if (!being) continue;
-        int sx = msg.readShort(), sy = msg.readShort(),
-            dx = msg.readShort(), dy = msg.readShort();
+        int sx = 0, sy = 0, dx = 0, dy = 0;
+        if (flags & MOVING_POSITION)
+        {
+            Uint16 sx2, sy2;
+            msg.readCoordinates(sx2, sy2);
+            sx = sx2 * 32 + 16;
+            sy = sy2 * 32 + 16;
+        }
+        if (flags & MOVING_DESTINATION)
+        {
+            dx = msg.readShort();
+            dy = msg.readShort();
+            if (!(flags & MOVING_POSITION))
+            {
+                sx = dx;
+                sy = dy;
+            }
+        }
+        if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
+        {
+            continue;
+        }
         bool update = being != player_node; // the local player already knows where he wants to go
         if (abs(being->mX - sx) + abs(being->mY - sy) > 4 * 32)
         {
@@ -457,7 +477,7 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
             being->mY = sy;
             update = true;
         }
-        if (update)
+        if (update && (flags & MOVING_DESTINATION))
         {
             being->setDestination(dx, dy);
         }
