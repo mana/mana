@@ -29,6 +29,7 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
+#include "selectionlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -43,7 +44,7 @@ class ScrollArea;
  *
  * \ingroup Interface
  */
-class TradeWindow : public Window, gcn::ActionListener
+class TradeWindow : public Window, gcn::ActionListener, SelectionListener
 {
     public:
         /**
@@ -103,14 +104,15 @@ class TradeWindow : public Window, gcn::ActionListener
         tradeItem(Item *item, int quantity);
 
         /**
-         * Called on mouse click.
+         * Updates the labels and makes sure only one item is selected in
+         * either my inventory or partner inventory.
          */
-        void mouseClick(int x, int y, int button, int count);
+        void selectionChanged(const SelectionEvent &event);
 
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const std::string &eventId, gcn::Widget *widget);
 
     private:
         Network *mNetwork;

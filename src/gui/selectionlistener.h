@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: itemcontainer.h 2545 2006-08-17 19:11:28Z crush_tmw $
+ *  $Id$
  */
 
 #ifndef _TMW_SELECTIONLISTENER_H__

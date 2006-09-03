@@ -12,6 +12,8 @@
 	also be used to fix similar problem in trade, buy and sell dialogs).
 	Made the ItemInfo be passed around as a reference instead of a pointer,
 	since it is never NULL.
+	* src/gui/trade.cpp, src/gui/trade.h: Fixed updating of labels in
+	trade window.
 
 2006-09-02  Bernard Lidicky  <bernard@matfyz.cz>
 
