@@ -142,7 +142,7 @@ void SellDialog::addItem(Item *item, int price)
 
     ITEM_SHOP item_shop;
 
-    item_shop.name = item->getInfo()->getName() + " " + toString(price) + " GP";
+    item_shop.name = item->getInfo().getName() + " " + toString(price) + " GP";
     item_shop.price = price;
     item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();
@@ -259,9 +259,10 @@ void SellDialog::mouseClick(int x, int y, int button, int count)
     int selectedItem = mItemList->getSelected();
     if (selectedItem > -1)
     {
-        mItemDescLabel->setCaption("Description: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
-        mItemEffectLabel->setCaption("Effect: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
+        const ItemInfo &info =
+            itemDb->getItemInfo(mShopItems->at(selectedItem).id);
+
+        mItemDescLabel->setCaption("Description: " + info.getDescription());
+        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
     }
 }

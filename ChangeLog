@@ -1,3 +1,18 @@
+2006-09-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/floor_item.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/gui/inventorywindow.h,
+	src/gui/selectionlistener.h, src/gui/itemcontainer.h,
+	src/gui/inventorywindow.cpp, src/gui/buy.cpp,
+	src/gui/itemcontainer.cpp, src/gui/popupmenu.cpp, src/item.h,
+	src/net/inventoryhandler.cpp, src/Makefile.am,
+	src/resources/itemmanager.h, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h, src/resources/itemmanager.cpp: Introduced
+	SelectionListener to fix updating problem in inventory window (should
+	also be used to fix similar problem in trade, buy and sell dialogs).
+	Made the ItemInfo be passed around as a reference instead of a pointer,
+	since it is never NULL.
+
 2006-09-02  Bernard Lidicky  <bernard@matfyz.cz>
 
 	* src/game.cpp, src/beingmanager.h, src/gui/gui.cpp,

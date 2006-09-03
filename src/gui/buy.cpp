@@ -140,7 +140,8 @@ void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    item_shop.name = itemDb->getItemInfo(id)->getName() + " " + toString(price) + " GP";
+    item_shop.name = itemDb->getItemInfo(id).getName() + " "
+        + toString(price) + " GP";
     item_shop.price = price;
     item_shop.id = id;
 
@@ -262,9 +263,10 @@ void BuyDialog::mouseClick(int x, int y, int button, int count)
     int selectedItem = mItemList->getSelected();
     if (selectedItem > -1)
     {
-        mItemDescLabel->setCaption("Description: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getDescription());
-        mItemEffectLabel->setCaption("Effect: " +
-                itemDb->getItemInfo(mShopItems->at(selectedItem).id)->getEffect());
+        const ItemInfo &info =
+            itemDb->getItemInfo(mShopItems->at(selectedItem).id);
+
+        mItemDescLabel->setCaption("Description: " + info.getDescription());
+        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
     }
 }

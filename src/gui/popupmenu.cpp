@@ -106,7 +106,7 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
     mBrowserBox->clearRows();
 
     // Floor item can be picked up (single option, candidate for removal)
-    std::string name = itemDb->getItemInfo(mFloorItem->getItemId())->getName();
+    std::string name = itemDb->getItemInfo(mFloorItem->getItemId()).getName();
     mBrowserBox->addRow("@@pickup|Pick Up " + name + "@@");
 
     //browserBox->addRow("@@look|Look To@@");

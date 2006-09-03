@@ -24,9 +24,9 @@
 #ifndef _TMW_ITEM_MANAGER_H
 #define _TMW_ITEM_MANAGER_H
 
-#include <map>
+#include "iteminfo.h"
 
-class ItemInfo;
+#include <map>
 
 /**
  * Defines a class to load items database.
@@ -44,14 +44,14 @@ class ItemManager
          */
         ~ItemManager();
 
-        ItemInfo *getItemInfo(int id);
+        const ItemInfo& getItemInfo(int id);
 
     protected:
         // Items database
         typedef std::map<int, ItemInfo*> ItemInfos;
         typedef ItemInfos::iterator ItemInfoIterator;
         ItemInfos mItemInfos;
-        ItemInfo *mUnknown;
+        ItemInfo mUnknown;
 };
 
 extern ItemManager *itemDb;

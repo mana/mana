@@ -250,10 +250,10 @@ void TradeWindow::mouseClick(int x, int y, int button, int count)
 
     // Show Name and Description
     std::string SomeText;
-    SomeText = "Name: " + item->getInfo()->getName();
+    SomeText = "Name: " + item->getInfo().getName();
     mItemNameLabel->setCaption(SomeText);
     mItemNameLabel->adjustSize();
-    SomeText = "Description: " + item->getInfo()->getDescription();
+    SomeText = "Description: " + item->getInfo().getDescription();
     mItemDescriptionLabel->setCaption(SomeText);
     mItemDescriptionLabel->adjustSize();
 }

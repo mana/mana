@@ -42,7 +42,7 @@ FloorItem::FloorItem(unsigned int id,
     mMap(map)
 {
     // Retrieve item image from item info
-    mImage = itemDb->getItemInfo(itemId)->getImage();
+    mImage = itemDb->getItemInfo(itemId).getImage();
 
     // Add ourselves to the map
     mSpriteIterator = mMap->addSprite(this);
@@ -50,6 +50,6 @@ FloorItem::FloorItem(unsigned int id,
 
 FloorItem::~FloorItem()
 {
-    // Remove and delete the representative sprite
+    // Remove ourselves from the map
     mMap->removeSprite(mSpriteIterator);
 }

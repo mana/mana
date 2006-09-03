@@ -25,6 +25,8 @@
 
 #include <guichan/mouseinput.hpp>
 
+#include "selectionlistener.h"
+
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
@@ -38,14 +40,14 @@
 #include "../utils/tostring.h"
 
 ItemContainer::ItemContainer(Inventory *inventory):
-    mInventory(inventory)
+    mInventory(inventory),
+    mSelectedItem(NULL)
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error("Unable to load selection.png");
 
-    mSelectedItem = 0; // No item selected
     mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
 
     addMouseListener(this);
@@ -84,7 +86,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     // sure somewhere else)
     if (mSelectedItem && mSelectedItem->getQuantity() <= 0)
     {
-        mSelectedItem = 0;
+        selectNone();
     }
 
     /*
@@ -111,7 +113,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
 
         // Draw item icon
         Image* image;
-        if ((image = item->getInfo()->getImage()) != NULL)
+        if ((image = item->getInfo().getImage()) != NULL)
         {
             dynamic_cast<Graphics*>(graphics)->drawImage(
                     image, itemX, itemY);
@@ -150,7 +152,28 @@ Item* ItemContainer::getItem()
 
 void ItemContainer::selectNone()
 {
-    mSelectedItem = 0;
+    setSelectedItem(NULL);
+}
+
+void ItemContainer::setSelectedItem(Item *item)
+{
+    if (mSelectedItem != item)
+    {
+        mSelectedItem = item;
+        fireSelectionChangedEvent();
+    }
+}
+
+void ItemContainer::fireSelectionChangedEvent()
+{
+    SelectionEvent event(this);
+    SelectionListeners::iterator i_end = mListeners.end();
+    SelectionListeners::iterator i;
+
+    for (i = mListeners.begin(); i != i_end; ++i)
+    {
+        (*i)->selectionChanged(event);
+    }
 }
 
 void ItemContainer::mousePress(int mx, int my, int button)
@@ -166,6 +189,6 @@ void ItemContainer::mousePress(int mx, int my, int button)
         if (index > INVENTORY_SIZE) {
             index = INVENTORY_SIZE - 1;
         }
-        mSelectedItem = mInventory->getItem(index);
+        setSelectedItem(mInventory->getItem(index));
     }
 }

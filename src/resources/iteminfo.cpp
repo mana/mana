@@ -23,22 +23,33 @@
 #include "iteminfo.h"
 
 #include "resourcemanager.h"
+#include "image.h"
 
-Image*
-ItemInfo::getImage() {
-    if (mImage == NULL && mImageName != "") {
-        mImage = ResourceManager::getInstance()->getImage(mImageName);
+
+ItemInfo::~ItemInfo()
+{
+    if (mImage != NULL)
+    {
+        mImage->decRef();
     }
-    return mImage;
 }
 
 void
-ItemInfo::setImage(const std::string &image) {
+ItemInfo::setImage(const std::string &image)
+{
     mImageName = "graphics/items/" + image;
-}
 
-ItemInfo::~ItemInfo() {
-    if (mImage != NULL){
-        mImage->decRef();
+    if (mImageName != "")
+    {
+        if (mImage != NULL)
+        {
+            mImage->decRef();
+        }
+
+        mImage = ResourceManager::getInstance()->getImage(mImageName);
+    }
+    else
+    {
+        mImage = NULL;
     }
 }
