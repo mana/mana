@@ -75,9 +75,9 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
         void selectionChanged(const SelectionEvent &event);
 
     private:
-        void updateButtons();    /** Updates button states */
+        void updateButtons();    /**< Updates button states. */
 
-        void updateWidgets();    /** Updates widgets size/position */
+        void updateWidgets();    /**< Updates widgets size/position. */
 
         ItemContainer *mItems;
 

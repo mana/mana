@@ -95,6 +95,7 @@ SellDialog::SellDialog(Network *network):
     mSlider->setEventId("mSlider");
 
     mItemList->addActionListener(this);
+    mItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
     add(scrollArea);
@@ -156,7 +157,8 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     int selectedItem = mItemList->getSelected();
 
-    if (eventId == "item") {
+    if (eventId == "item")
+    {
         mAmountItems = 0;
         mSlider->setValue(0);
         mDecreaseButton->setEnabled(false);
@@ -189,19 +191,22 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
     bool updateButtonsAndLabels = false;
 
-    if (eventId == "mSlider") {
+    if (eventId == "mSlider")
+    {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "+") {
+    else if (eventId == "+")
+    {
         assert(mAmountItems < mMaxItems);
         mAmountItems++;
         mSlider->setValue(double(mAmountItems)/double(mMaxItems));
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "-") {
+    else if (eventId == "-")
+    {
         assert(mAmountItems > 0);
         mAmountItems--;
 
@@ -209,7 +214,8 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "sell") {
+    else if (eventId == "sell")
+    {
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
 
@@ -236,7 +242,8 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     }
 
     // If anything changed, we need to update the buttons and labels
-    if (updateButtonsAndLabels) {
+    if (updateButtonsAndLabels)
+    {
         // Update labels
         mQuantityLabel->setCaption(toString(mAmountItems));
         mQuantityLabel->adjustSize();
@@ -252,11 +259,10 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     }
 }
 
-void SellDialog::mouseClick(int x, int y, int button, int count)
+void SellDialog::selectionChanged(const SelectionEvent &event)
 {
-    Window::mouseClick(x, y, button, count);
-
     int selectedItem = mItemList->getSelected();
+
     if (selectedItem > -1)
     {
         const ItemInfo &info =
@@ -264,5 +270,10 @@ void SellDialog::mouseClick(int x, int y, int button, int count)
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());
+    }
+    else
+    {
+        mItemDescLabel->setCaption("Description");
+        mItemEffectLabel->setCaption("Effect");
     }
 }

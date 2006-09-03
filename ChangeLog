@@ -14,6 +14,10 @@
 	since it is never NULL.
 	* src/gui/trade.cpp, src/gui/trade.h: Fixed updating of labels in
 	trade window.
+	* src/gui/sell.cpp, src/gui/listbox.h, src/gui/inventorywindow.h,
+	src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/listbox.cpp:
+	Fixed updating of labels in buy and sell dialogs. Also made our
+	listbox respond to mouse dragging to change the selection.
 
 2006-09-02  Bernard Lidicky  <bernard@matfyz.cz>
 
@@ -506,8 +510,8 @@
 
 2006-07-12 Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* /tmw/trunk/data/graphics/sprites/item001.png: Completed the cotton
-	shirt equipment graphic.
+	* data/graphics/sprites/item001.png: Completed the cotton shirt
+	equipment graphic.
 
 2006-07-06  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -557,68 +561,20 @@
 	* src/being.h, src/being.cpp, src/npc.cpp, src/npc.h, src/monster.cpp,
 	src/monster.h: Moved all drawing code from the Being based classes
 	into Being.
-	* data/graphics/sprites/monster0.png,
-	data/graphics/sprites/monster1.png,
-	data/graphics/sprites/monster2.png,
-	data/graphics/sprites/monster3.png,
-	data/graphics/sprites/monster4.png,
-	data/graphics/sprites/monster5.png,
-	data/graphics/sprites/monster6.png,
-	data/graphics/sprites/monster7.png,
-	data/graphics/sprites/monster8.png,
-	data/graphics/sprites/monster9.png,
-	data/graphics/sprites/monster10.png,
-	data/graphics/sprites/monster11.png,
-	data/graphics/sprites/monster12.png,
-	data/graphics/sprites/monster13.png,
-	data/graphics/sprites/monster14.png,
-	data/graphics/sprites/monster15.png,
-	data/graphics/sprites/monster16.png,
-	data/graphics/sprites/monster17.png: Resized and reorganized the
+	* data/graphics/sprites/monster*.png: Resized and reorganized the
 	monster spritesets to fit the new animation system (thanks, Bjørn).
-	* data/graphics/sprites/monster0.xml,
-	data/graphics/sprites/monster1.xml,
-	data/graphics/sprites/monster2.xml,
-	data/graphics/sprites/monster3.xml,
-	data/graphics/sprites/monster4.xml,
-	data/graphics/sprites/monster5.xml,
-	data/graphics/sprites/monster6.xml,
-	data/graphics/sprites/monster7.xml,
-	data/graphics/sprites/monster8.xml,
-	data/graphics/sprites/monster9.xml,
-	data/graphics/sprites/monster10.xml,
-	data/graphics/sprites/monster11.xml,
-	data/graphics/sprites/monster12.xml,
-	data/graphics/sprites/monster13.xml,
-	data/graphics/sprites/monster14.xml,
-	data/graphics/sprites/monster15.xml,
-	data/graphics/sprites/monster16.xml,
-	data/graphics/sprites/monster17.xml: Added animation files for all
+	* data/graphics/sprites/monster*.xml: Added animation files for all
 	monsters.
 	* src/animation.cpp: The offset values of the Frames of animated
 	sprites are now modified so every frame is drawn centered.
-	* data/graphics/sprites/hairstyle0.xml,
-	data/graphics/sprites/hairstyle1.xml,
-	data/graphics/sprites/hairstyle2.xml,
-	data/graphics/sprites/hairstyle3.xml,
-	data/graphics/sprites/hairstyle4.xml,
-	data/graphics/sprites/hairstyle5.xml,
-	data/graphics/sprites/hairstyle6.xml,
-	data/graphics/sprites/hairstyle7.xml: Retuned the offsets of the hair
-	sprites.
+	* data/graphics/sprites/hairstyle*.xml: Retuned the offsets of the
+	hair sprites.
 	* src/animation.cpp: Small stability fix.
 	* src/being.cpp, src/being.h: weapon animation now uses the new
 	animation system.
 	* data/graphics/sprites/player_male_base.xml
 	data/graphics/sprites/player_female_base.xml
-	data/graphics/sprites/hairstyle0.xml,
-	data/graphics/sprites/hairstyle1.xml,
-	data/graphics/sprites/hairstyle2.xml,
-	data/graphics/sprites/hairstyle3.xml,
-	data/graphics/sprites/hairstyle4.xml,
-	data/graphics/sprites/hairstyle5.xml,
-	data/graphics/sprites/hairstyle6.xml,
-	data/graphics/sprites/hairstyle7.xml: Tuned walk speed and added bow
+	data/graphics/sprites/hairstyle*.xml: Tuned walk speed and added bow
 	animations.
 
 2006-07-03  Eugenio Favalli  <elvenprogrammer@gmail.com>
