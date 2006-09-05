@@ -1,3 +1,10 @@
+2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/Woodland_ground.png, 
+	data/graphics/tiles/Woodland_x2.png, 
+	data/graphics/tiles/Woodland_x3.png:
+	Some minor improvements and additions at my tilesets.
+
 2006-09-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/floor_item.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,
