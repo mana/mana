@@ -4,6 +4,7 @@
 	Added new market stand.
 	* src/game.cpp, src/gui/setup_video.cpp, src/main.cpp: Fixed fps
 	limiter issues and increased default limit to 60.
+	* src/game.cpp: Fixed fps limiter when disabled.
 
 2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
 

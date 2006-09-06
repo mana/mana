@@ -366,11 +366,20 @@ void Game::logic()
 
         // Update the screen when application is active, delay otherwise
         if (SDL_GetAppState() & SDL_APPACTIVE) {
-            while (abs(tick_time * 10 - drawTime) >= delta) {
+            if (fpsLimit == 0) {
                 frame++;
                 engine->draw(graphics);
                 graphics->updateScreen();
-                drawTime += delta;
+                drawTime = tick_time * 10;
+            }
+            else
+            {
+                while (abs(tick_time * 10 - drawTime) >= delta) {
+                    frame++;
+                    engine->draw(graphics);
+                    graphics->updateScreen();
+                    drawTime += delta;
+                }
             }
         }
         else
