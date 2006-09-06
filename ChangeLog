@@ -1,9 +1,14 @@
-﻿2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-09-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_3.png:
+	Added new market stand.
+
+2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/Woodland_ground.png, 
 	data/graphics/tiles/Woodland_x2.png, 
-	data/graphics/tiles/Woodland_x3.png:
-	Some minor improvements and additions at my tilesets.
+	data/graphics/tiles/Woodland_x3.png: Some minor improvements and
+	additions at my tilesets.
 	* data/graphics/sprites/monster0.xml,
 	data/graphics/sprites/monster1.xml,
 	data/graphics/sprites/monster2.xml,
@@ -15,9 +20,8 @@
 	data/graphics/sprites/monster9.xml,
 	data/graphics/sprites/monster11.xml,
 	data/graphics/sprites/monster13.xml,
-	data/graphics/sprites/monster0.xml:
-	Adjusted the animation speed of several monsters.
-
+	data/graphics/sprites/monster0.xml: Adjusted the animation speed of
+	several monsters.
 
 2006-09-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
