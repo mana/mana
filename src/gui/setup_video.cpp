@@ -105,7 +105,7 @@ Setup_Video::Setup_Video():
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
     mOpacity(config.getValue("guialpha", 0.8)),
-    mFps((int)config.getValue("fpslimit", 50)),
+    mFps((int)config.getValue("fpslimit", 60)),
     mModeListModel(new ModeListModel()),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),

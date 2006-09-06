@@ -361,17 +361,17 @@ void Game::logic()
 
         gameTime = tick_time;
 
-        fpsLimit = (int)config.getValue("fpslimit", 50);
+        fpsLimit = (int)config.getValue("fpslimit", 60);
         delta = fpsLimit ? 1000 / fpsLimit : 0;
 
         // Update the screen when application is active, delay otherwise
-        if (SDL_GetAppState() & SDL_APPACTIVE &&
-                (abs(tick_time * 10 - drawTime) >= delta))
-        {
-            frame++;
-            engine->draw(graphics);
-            graphics->updateScreen();
-            drawTime += delta;
+        if (SDL_GetAppState() & SDL_APPACTIVE) {
+            while (abs(tick_time * 10 - drawTime) >= delta) {
+                frame++;
+                engine->draw(graphics);
+                graphics->updateScreen();
+                drawTime += delta;
+            }
         }
         else
         {

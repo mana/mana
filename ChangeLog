@@ -2,6 +2,8 @@
 
 	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_3.png:
 	Added new market stand.
+	* src/game.cpp, src/gui/setup_video.cpp, src/main.cpp: Fixed fps
+	limiter issues and increased default limit to 60.
 
 2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
 
