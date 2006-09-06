@@ -1,4 +1,10 @@
-﻿2006-09-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2006-09-06  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/item010.png, data/graphics/sprites/item010.xml,
+    data/graphics/sprites/Makefile.am:
+    Added santa hat sprites and updated makefile.
+
+2006-09-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_3.png:
 	Added new market stand.
