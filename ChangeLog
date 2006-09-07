@@ -1,4 +1,10 @@
+2006-09-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/image.cpp: Worked around a memory leak when using
+	OpenGL.
+
 2006-09-06  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/graphics/sprites/item010.png, data/graphics/sprites/item010.xml,
 	data/graphics/sprites/Makefile.am: Added santa hat sprites and updated
 	makefile.
