@@ -260,7 +260,7 @@ void Image::unload()
 {
     mLoaded = false;
 
-    if (!mImage) {
+    if (mImage) {
         // Free the image surface.
         SDL_FreeSurface(mImage);
         mImage = NULL;

@@ -1,5 +1,6 @@
 2006-09-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/resources/image.cpp: Fixed a typo.
 	* src/resources/image.cpp: Worked around a memory leak when using
 	OpenGL.
 
