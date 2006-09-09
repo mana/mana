@@ -1,3 +1,8 @@
+2006-09-09  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/map.cpp: Removed being collisions. Fixed wrong heuristic cost
+	of the pathfinder.
+
 2006-09-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/serverdialog.cpp, src/main.cpp: Fixed crash when using short
