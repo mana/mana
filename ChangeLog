@@ -1,3 +1,9 @@
+2006-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Removed easy targeting functionality since it
+	interferes with walking around too much. Targeting can still be rather
+	conveniently done with 'a' or the middle mouse button.
+
 2006-09-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/resources/image.cpp: Fixed a typo.
@@ -60,7 +66,7 @@
 
 	* src/game.cpp, src/beingmanager.h, src/gui/gui.cpp,
 	src/beingmanager.cpp, src/localplayer.h, README,
-	data/help/commands.txt, NEWS: Added targetting nearest monster with
+	data/help/commands.txt, NEWS: Added targeting nearest monster with
 	either keyboard or mouse. Also made clicking beings in general a bit
 	easier (patch applied by Bjørn Lindeijer).
 
@@ -236,13 +242,13 @@
 	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
 	spriteset with filenames. added names and descriptions for all missing
 	items. Changed names and dascriptions of some items.
-	* src/engine.cpp: removed global item spriteset.
+	* src/engine.cpp: Removed global item spriteset.
 	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
 	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,
-	src/itemcontainer.cpp, src/itemcontainer.h: the iteminfo class now
+	src/itemcontainer.cpp, src/itemcontainer.h: The iteminfo class now
 	provides a pointer to the item icon image instead of providing the
 	index on the item spriteset.
-	* data/graphics/tiles/trans_desert-woodland.png: added transmission
+	* data/graphics/tiles/trans_desert-woodland.png: Added transmission
 	tileset between desert and woodland.
 
 2006-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>

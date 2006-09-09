@@ -253,7 +253,8 @@ Gui::mousePress(int mx, int my, int button)
         Being *being;
         FloorItem *floorItem;
 
-        if ((being = beingManager->findBeing(tilex, tiley)) && being->getType() != Being::LOCALPLAYER)
+        if ((being = beingManager->findBeing(tilex, tiley)) &&
+                being->getType() != Being::LOCALPLAYER)
         {
             showPopup(mx, my, being);
             return;
@@ -280,7 +281,7 @@ Gui::mousePress(int mx, int my, int button)
         FloorItem *item;
 
         // Interact with some being
-        if ((being = beingManager->findNearestLivingBeing(tilex, tiley, 1)))
+        if ((being = beingManager->findBeing(tilex, tiley)))
         {
             switch (being->getType())
             {
