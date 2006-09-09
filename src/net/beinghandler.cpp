@@ -469,17 +469,24 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         {
             continue;
         }
-        bool update = being != player_node; // the local player already knows where he wants to go
         if (abs(being->mX - sx) + abs(being->mY - sy) > 4 * 32)
         {
-            // crude handling of synchronization messages
+            // Too large a desynchronization.
             being->mX = sx;
             being->mY = sy;
-            update = true;
+            being->setDestination(dx, dy);
         }
-        if (update && (flags & MOVING_DESTINATION))
+        else if (!(flags & MOVING_POSITION))
         {
             being->setDestination(dx, dy);
+        }
+        else if (!(flags & MOVING_DESTINATION))
+        {
+            being->adjustCourse(sx, sy);
+        }
+        else
+        {
+            being->adjustCourse(sx, sy, dx, dy);
         }
     }
 }

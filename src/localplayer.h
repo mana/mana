@@ -107,7 +107,7 @@ class LocalPlayer : public Player
         /**
          * Sets a new destination for this being to walk to.
          */
-        virtual void setDestination(Uint16 x, Uint16 y);
+        void setDestination(Uint16 x, Uint16 y);
 
         void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);

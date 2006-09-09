@@ -2,6 +2,8 @@
 
 	* src/map.cpp: Removed being collisions. Fixed wrong heuristic cost
 	of the pathfinder.
+	* src/localplayer.h, src/being.cpp, src/net/beinghandler.cpp,
+	src/being.h: Fitted being trajectories to synchronization messages.
 
 2006-09-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

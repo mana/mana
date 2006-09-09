@@ -127,7 +127,17 @@ class Being : public Sprite
         /**
          * Sets a new destination for this being to walk to.
          */
-        virtual void setDestination(Uint16 destX, Uint16 destY);
+        void setDestination(Uint16 destX, Uint16 destY);
+
+        /**
+         * Adjusts course to expected stat point.
+         */
+        void adjustCourse(Uint16, Uint16);
+
+        /**
+         * Adjusts course to expected start and end points.
+         */
+        void adjustCourse(Uint16, Uint16, Uint16, Uint16);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -340,7 +350,7 @@ class Being : public Sprite
          * Sets the new path for this being.
          */
         void
-        setPath(const Path &path);
+        setPath(const Path &path, int mod = 1024);
 
         /**
          * Returns the sprite direction of this being.
@@ -352,6 +362,7 @@ class Being : public Sprite
         Uint8 mSex;                     /**< Character's gender */
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
+        Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
         Map *mMap;                      /**< Map on which this being resides */
         SpriteIterator mSpriteIterator;
 
