@@ -389,6 +389,10 @@ void Game::logic()
                 engine->draw(graphics);
                 graphics->updateScreen();
                 mDrawTime += mMinFrameTime;
+
+                // Make sure to wrap mDrawTime, since tick_time will wrap.
+                if (mDrawTime > MAX_TIME * 10)
+                    mDrawTime -= MAX_TIME * 10;
             }
             else
             {
