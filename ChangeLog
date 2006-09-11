@@ -1,3 +1,9 @@
+2006-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/game.h: Simplified fps limiting a bit and added
+	some comments. Now based on ConfigListener so that the fpslimit option
+	doesn't need to be queried the whole time.
+
 2006-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/game.cpp: Fixed more fps issues.

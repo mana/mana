@@ -278,6 +278,10 @@ Game::Game(Network *network):
     SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
     SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
+    // Initialize frame limiting
+    config.addListener("fpslimit", this);
+    optionChanged("fpslimit");
+
     // Initialize beings
     beingManager->setPlayer(player_node);
     player_node->setNetwork(network);
@@ -342,12 +346,23 @@ bool saveScreenshot(SDL_Surface *screenshot)
     return ImageWriter::writePNG(screenshot, filename.str());
 }
 
+void Game::optionChanged(const std::string &name)
+{
+    int fpsLimit = (int) config.getValue("fpslimit", 0);
+
+    // Calculate new minimum frame time
+    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
+
+    // Reset draw time to current time
+    mDrawTime = tick_time * 10;
+}
+
 void Game::logic()
 {
+    // mDrawTime has a higher granularity than gameTime in order to be able to
+    // work with minimum frame durations in milliseconds.
     int gameTime = tick_time;
-    int drawTime = tick_time * 10;
-    int delta = 0;
-    int fpsLimit = 0;
+    mDrawTime = tick_time * 10;
 
     while (!done)
     {
@@ -359,35 +374,31 @@ void Game::logic()
             gameTime++;
         }
 
+        // This is done because at some point tick_time will wrap.
         gameTime = tick_time;
 
-        fpsLimit = (int)config.getValue("fpslimit", 60);
-        delta = fpsLimit ? 1000 / fpsLimit : 0;
-
-        // Update the screen when application is active, delay otherwise
-        if (SDL_GetAppState() & SDL_APPACTIVE) {
-            if (fpsLimit == 0) {
+        // Update the screen when application is active, delay otherwise.
+        if (SDL_GetAppState() & SDL_APPACTIVE)
+        {
+            // Draw a frame if either frames are not limited or enough time has
+            // passed since the last frame.
+            if (!mMinFrameTime ||
+                    get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
+            {
                 frame++;
                 engine->draw(graphics);
                 graphics->updateScreen();
-                drawTime = tick_time * 10;
+                mDrawTime += mMinFrameTime;
             }
             else
             {
-                if (abs(tick_time * 10 - drawTime) <= delta) {
-                    SDL_Delay(10);
-                } else {
-                    frame++;
-                    engine->draw(graphics);
-                    graphics->updateScreen();
-                    drawTime += delta;
-                }
+                SDL_Delay(10);
             }
         }
         else
         {
             SDL_Delay(10);
-            drawTime = tick_time * 10;
+            mDrawTime = tick_time * 10;
         }
 
         // Handle network stuff
