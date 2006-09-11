@@ -374,7 +374,9 @@ void Game::logic()
             }
             else
             {
-                while (abs(tick_time * 10 - drawTime) >= delta) {
+                if (abs(tick_time * 10 - drawTime) <= delta) {
+                    SDL_Delay(10);
+                } else {
                     frame++;
                     engine->draw(graphics);
                     graphics->updateScreen();
@@ -385,6 +387,7 @@ void Game::logic()
         else
         {
             SDL_Delay(10);
+            drawTime = tick_time * 10;
         }
 
         // Handle network stuff
