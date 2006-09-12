@@ -74,8 +74,7 @@ class Game : public ConfigListener
 };
 
 /**
- * Returns elapsed time. (Warning: very unsafe function, it supposes the delay
- * is always < 10 seconds)
+ * Returns elapsed time. (Warning: supposes the delay is always < 100 seconds)
  */
 int get_elapsed_time(int start_time);
 

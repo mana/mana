@@ -6,9 +6,13 @@
 - Added --playername option for automatic character picking
 - Added --configfile option for specifying which configuration file to use
 - Added shortcut and middle mouse button for targetting nearest monster
+- Added support for map effect overlays
+- Fixed FPS limiter
 - Fixed updating system on Windows
 - Fixed player animations going out of sync on changing equipment or hairstyle
 - Fixed SDL_image configure check on some systems by first checking for libpng
+- Fixed big memory leak when using OpenGL
+- Updated to work with Guichan 0.5.0 (older versions no longer supported)
 
 0.0.20 (24 July 2006)
 - Added new hairstyle, and some fixes to the old ones

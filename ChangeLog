@@ -3,6 +3,7 @@
 	* src/game.cpp, src/game.h: Simplified fps limiting a bit and added
 	some comments. Now based on ConfigListener so that the fpslimit option
 	doesn't need to be queried the whole time.
+	* NEWS: Updated with some items.
 
 2006-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -33,8 +34,8 @@
 	* src/game.cpp: Fixed fps limiter when disabled.
 
 2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
-	* data/graphics/tiles/Woodland_ground.png, 
-	data/graphics/tiles/Woodland_x2.png, 
+	* data/graphics/tiles/Woodland_ground.png,
+	data/graphics/tiles/Woodland_x2.png,
 	data/graphics/tiles/Woodland_x3.png: Some minor improvements and
 	additions at my tilesets.
 	* data/graphics/sprites/monster0.xml,
@@ -90,8 +91,9 @@
 
 2006-08-30  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/sprites/item007.png, data/graphics/sprites/item007.xml, 
-	data/graphics/sprites/item009.png, data/graphics/sprites/item009.xml:
+	* data/graphics/sprites/item007.png,
+	data/graphics/sprites/item007.xml, data/graphics/sprites/item009.png,
+	data/graphics/sprites/item009.xml:
 	Added sprites for miners helm and standard headband.
 
 2006-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -114,8 +116,9 @@
 
 2006-08-29  Philipp Sehmisch  <tmw@crushnet.org>
 
-	*  data/graphics/sprites/item008.png, data/graphics/sprites/item008.xml, 
-	data/graphics/sprites/Makefile.am: Added fancy hat sprite.
+	* data/graphics/sprites/item008.png,
+	data/graphics/sprites/item008.xml, data/graphics/sprites/Makefile.am:
+	Added fancy hat sprite.
 
 2006-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -238,11 +241,11 @@
 
 2006-08-20  Yohann Ferreira  <bertram@cegetel.net>
 
-	* data/graphics/sprites/Makefile.am : Following the splitting from
+	* data/graphics/sprites/Makefile.am: Following the splitting from
 	Philipp, moved out the items.png file from the Makefile.am.
-	* debian/control, debian/tmw-data.install : Updated debian package
+	* debian/control, debian/tmw-data.install: Updated debian package
 	creation process.
-	* src/Makefile.am : Added iteminfo.cpp to avoid an undefined reference
+	* src/Makefile.am: Added iteminfo.cpp to avoid an undefined reference
 	with gcc 4.1.2. Happy to be back :)
 
 2006-08-17  Philipp Sehmisch  <tmw@crushnet.org>
@@ -410,8 +413,8 @@
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
-	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with inside
-	of snow village buildings and fixed makefiles.
+	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with
+	inside of snow village buildings and fixed makefiles.
 	* src/being.cpp, src/being.h, src/player.cpp: Fixed direction and
 	action issues when changing appeareance, frames are still out of sync.
 	* data/maps/Makefile.am, data/maps/new_14-1.tmx.gz,
