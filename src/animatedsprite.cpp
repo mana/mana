@@ -92,11 +92,6 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
             std::string name = getProperty(node, "name", "");
             std::string imageset = getProperty(node, "imageset", "");
 
-            if (name.empty())
-            {
-                logger->log("Warning: unnamed action in %s",
-                            animationFile.c_str());
-            }
             if (mSpritesets.find(imageset) == mSpritesets.end()) {
                 logger->log("Warning: imageset \"%s\" not defined in %s",
                             imageset.c_str(),
@@ -109,7 +104,26 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
             Action *action = new Action();
 
             action->setSpriteset(mSpritesets[imageset]);
-            mActions[makeSpriteAction(name)] = action;
+
+            SpriteAction actionname = makeSpriteAction(name);
+            if (actionname == ACTION_INVALID)
+            {
+
+                logger->log("Warning: Unknown action \"%s\" defined in %s",
+                            name.c_str(),
+                            animationFile.c_str());
+                continue;
+            }
+            else {
+                mActions[makeSpriteAction(name)] = action;
+
+                // When first action set it as default direction
+                if (mActions.empty())
+                {
+                    mActions[ACTION_DEFAULT] = action;
+                }
+            };
+
 
             // get animations
             for (xmlNodePtr animationNode = node->xmlChildrenNode;
@@ -161,6 +175,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     } // for node
 
     // Complete missing actions
+    substituteAction(ACTION_STAND, ACTION_DEFAULT);
     substituteAction(ACTION_WALK, ACTION_STAND);
     substituteAction(ACTION_WALK, ACTION_RUN);
     substituteAction(ACTION_ATTACK, ACTION_STAND);
@@ -278,11 +293,12 @@ AnimatedSprite::update(int time)
     if (time < mLastTime || mLastTime == 0)
         mLastTime = time;
 
-    // If not enough time have passed yet, do nothing
+    // If not enough time has passed yet, do nothing
     if (time > mLastTime && mAction)
     {
         Animation *animation = mAction->getAnimation(mDirection);
-        animation->update((unsigned int)((time - mLastTime) * mSpeed));
+        if (animation != NULL) {
+            animation->update((unsigned int)((time - mLastTime) * mSpeed));}
         mLastTime = time;
     }
 }
@@ -294,6 +310,8 @@ AnimatedSprite::draw(Graphics* graphics, Sint32 posX, Sint32 posY) const
         return false;
 
     Animation *animation = mAction->getAnimation(mDirection);
+    if (animation == NULL) return false;
+
     int phase = animation->getCurrentPhase();
     if (phase < 0)
         return false;
@@ -320,6 +338,9 @@ AnimatedSprite::getHeight() const
 SpriteAction
 AnimatedSprite::makeSpriteAction(const std::string& action)
 {
+    if (action == "" || action == "default") {
+        return ACTION_DEFAULT;
+    }
     if (action == "stand") {
         return ACTION_STAND;
     }
@@ -363,7 +384,7 @@ AnimatedSprite::makeSpriteAction(const std::string& action)
         return ACTION_DEAD;
     }
     else {
-        return ACTION_DEFAULT;
+        return ACTION_INVALID;
     }
 }
 

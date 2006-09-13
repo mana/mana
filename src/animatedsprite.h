@@ -50,7 +50,8 @@ enum SpriteAction
     ACTION_SIT,
     ACTION_SLEEP,
     ACTION_HURT,
-    ACTION_DEAD
+    ACTION_DEAD,
+    ACTION_INVALID
 };
 
 enum SpriteDirection
