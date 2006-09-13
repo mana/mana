@@ -1,3 +1,11 @@
+2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/Makefile.am, src/gui/widgets, src/gui/widgets/dropdown.h,
+	src/gui/widgets/dropdown.cpp, src/gui/serverdialog.h,
+	src/gui/serverdialog.cpp: Added a reusable skinned dropdown widget in
+	the new widgets folder. Other widgets will be be moved there later.
+
+
 2006-09-09  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/map.cpp: Removed being collisions. Fixed wrong heuristic cost

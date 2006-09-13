@@ -26,10 +26,9 @@
 #include <iostream>
 #include <string>
 
-// TODO : Replace the dropdown by our own skinned one.
-#include <guichan/widgets/dropdown.hpp>
 #include <guichan/widgets/label.hpp>
 
+// TODO : Replace the dropdown by our own skinned one.
 #include "button.h"
 #include "listbox.h"
 #include "ok_dialog.h"
@@ -126,9 +125,10 @@ ServerDialog::ServerDialog(LoginData *loginData):
         }
     }
 
-    mMostUsedServersListBox = new ListBox(mMostUsedServersListModel);
+    mMostUsedServersListBox = new ListBox(NULL);
+    mMostUsedServersListBox->setListModel(mMostUsedServersListModel);
     mMostUsedServersScrollArea = new ScrollArea();
-    mMostUsedServersDropDown = new gcn::DropDown(mMostUsedServersListModel,
+    mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel,
         mMostUsedServersScrollArea, mMostUsedServersListBox);
 
     mDropDownListener = new DropDownListener(mServerNameField, mPortField,
