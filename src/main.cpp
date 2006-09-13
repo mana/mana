@@ -653,23 +653,24 @@ int main(int argc, char *argv[])
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(network, &charInfo,
                                                          1 - loginData.sex);
+
                     if (options.playername != "") {
-                        n_character = 0;
-                        while (((CharSelectDialog*) currentDialog)->getName()
-                                != options.playername &&
-                                n_character < MAX_SLOT + 1)
-                        {
-                            ((CharSelectDialog*) currentDialog)->action("next",
-                                                                        NULL);
-                            ((CharSelectDialog*) currentDialog)->updatePlayerInfo();
-                            n_character++;
-                        }
-                        n_character = MAX_SLOT + 1;
+                        charInfo.select(0);
+                        do {
+                            LocalPlayer *player = charInfo.getEntry();
+
+                            if (player && player->getName() ==
+                                    options.playername) {
+                                options.chooseDefault = true;
+                                break;
+                            }
+
+                            charInfo.next();
+                        } while (charInfo.getPos());
                     }
-                    if (options.chooseDefault || options.playername != "") {
-                        ((CharSelectDialog*)currentDialog)->action("ok",
-                                                                   NULL);
-                    }
+
+                    if (options.chooseDefault)
+                        ((CharSelectDialog*)currentDialog)->action("ok", NULL);
                     break;
 
                 case GAME_STATE:
