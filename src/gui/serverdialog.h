@@ -29,7 +29,6 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/listmodel.hpp>
-//#include <guichan/widgets/dropdown.hpp>
 #include "./widgets/dropdown.h"
 
 #include "login.h"
@@ -141,7 +140,6 @@ class ServerDialog : public Window, public gcn::ActionListener
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
 
-        // TODO : child the Dropdown List to skin it.
         DropDown *mMostUsedServersDropDown;
         gcn::ListBox *mMostUsedServersListBox;
         gcn::ScrollArea *mMostUsedServersScrollArea;

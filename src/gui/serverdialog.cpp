@@ -28,7 +28,6 @@
 
 #include <guichan/widgets/label.hpp>
 
-// TODO : Replace the dropdown by our own skinned one.
 #include "button.h"
 #include "listbox.h"
 #include "ok_dialog.h"
