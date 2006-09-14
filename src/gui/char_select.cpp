@@ -23,7 +23,6 @@
 
 #include "char_select.h"
 
-#include <iostream>
 #include <string>
 
 #include <guichan/widgets/label.hpp>
@@ -239,7 +238,6 @@ bool CharSelectDialog::selectByName(const std::string &name)
     mCharInfo->select(0);
     do {
         LocalPlayer *player = mCharInfo->getEntry();
-        std::cout << name << " " << (player ? player->getName() : "") << "\n";
 
         if (player && player->getName() == name)
             return true;
