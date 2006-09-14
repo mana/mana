@@ -7,6 +7,9 @@
 
 2006-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/char_select.cpp, src/main.cpp: Fix the character name
+	matching loop and add support for saving the last used character
+	(based on a patch by Andrew Harrison).
 	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Clean
 	up the player selection stuff, it's a bit nicer now.
 	* src/main.cpp: Fix up the player selection command line option.

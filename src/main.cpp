@@ -468,6 +468,10 @@ void charLogin(Network *network, LoginData *loginData)
 
 void mapLogin(Network *network, LoginData *loginData)
 {
+    logger->log("Memorizing selected character %s",
+            player_node->getName().c_str());
+    config.setValue("lastCharacter", player_node->getName());
+
     MessageOut outMsg(network);
 
     logger->log("Trying to connect to map server...");
@@ -657,6 +661,9 @@ int main(int argc, char *argv[])
                     if (((CharSelectDialog*)currentDialog)->
                             selectByName(options.playername))
                         options.chooseDefault = true;
+                    else
+                        ((CharSelectDialog*)currentDialog)->selectByName(
+                            config.getValue("lastCharacter", ""));
 
                     if (options.chooseDefault)
                         ((CharSelectDialog*)currentDialog)->action("ok", NULL);
