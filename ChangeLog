@@ -1,12 +1,14 @@
 2006-09-14  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/animation.h, src/animatedsprite.h, 
+	* src/animation.h, src/animatedsprite.h,
 	data/graphics/sprites/weapon.xml: Some modifications at the animation
 	system. No more "undefined action foo" warnings in the tmw.log. Not
 	visible actions must now be declared explicitely.
 
 2006-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Clean
+	up the player selection stuff, it's a bit nicer now.
 	* src/main.cpp: Fix up the player selection command line option.
 
 2006-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>

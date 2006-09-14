@@ -228,6 +228,26 @@ void CharSelectDialog::logic()
     updatePlayerInfo();
 }
 
+bool CharSelectDialog::selectByName(const std::string &name)
+{
+    if (mCharInfo->isLocked())
+        return false;
+
+    unsigned int oldPos = mCharInfo->getPos();
+
+    mCharInfo->select(0);
+    do {
+        LocalPlayer *player = mCharInfo->getEntry();
+
+        if (player && player->getName() == name)
+            return true;
+    } while (mCharInfo->getPos());
+
+    mCharInfo->select(oldPos);
+
+    return false;
+}
+
 std::string CharSelectDialog::getName()
 {
     return mNameLabel->getCaption();

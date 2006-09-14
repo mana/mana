@@ -654,20 +654,9 @@ int main(int argc, char *argv[])
                     currentDialog = new CharSelectDialog(network, &charInfo,
                                                          1 - loginData.sex);
 
-                    if (options.playername != "") {
-                        charInfo.select(0);
-                        do {
-                            LocalPlayer *player = charInfo.getEntry();
-
-                            if (player && player->getName() ==
-                                    options.playername) {
-                                options.chooseDefault = true;
-                                break;
-                            }
-
-                            charInfo.next();
-                        } while (charInfo.getPos());
-                    }
+                    if (((CharSelectDialog*)currentDialog)->
+                            selectByName(options.playername))
+                        options.chooseDefault = true;
 
                     if (options.chooseDefault)
                         ((CharSelectDialog*)currentDialog)->action("ok", NULL);
