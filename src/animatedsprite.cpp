@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: animation.cpp 2430 2006-07-24 00:13:24Z b_lindeijer $
+ *  $Id$
  */
 
 #include "animatedsprite.h"
