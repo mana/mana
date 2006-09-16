@@ -1,3 +1,8 @@
+2006-09-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/changes.txt, data/help/header.txt, NEWS, README, 
+	src/tmw.rc: Updated release infos.
+
 2006-09-14  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/animation.h, src/animatedsprite.h,
