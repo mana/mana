@@ -102,8 +102,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
             }
 
 
-            SpriteAction actionEnum = makeSpriteAction(actionName);
-            if (actionEnum == ACTION_INVALID)
+            SpriteAction actionType = makeSpriteAction(actionName);
+            if (actionType == ACTION_INVALID)
             {
                 logger->log("Warning: Unknown action \"%s\" defined in %s",
                     actionName.c_str(),
@@ -112,7 +112,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
             }
             Action *action = new Action();
             action->setSpriteset(mSpritesets[imageset]);
-            mActions[actionEnum] = action;
+            mActions[actionType] = action;
 
             // When first action set it as default direction
             if (mActions.empty())
@@ -132,8 +132,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
 
                 std::string directionName = getProperty(animationNode, "direction", "");
 
-                SpriteDirection directionEnum = makeSpriteDirection(directionName);
-                if (directionEnum == DIRECTION_INVALID)
+                SpriteDirection directionType = makeSpriteDirection(directionName);
+                if (directionType == DIRECTION_INVALID)
                 {
                     logger->log("Warning: Unknown direction \"%s\" defined for action %s in %s",
                         directionName.c_str(),
@@ -143,7 +143,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 }
 
                 Animation *animation = new Animation();
-                action->setAnimation(directionEnum, animation);
+                action->setAnimation(directionType, animation);
 
                 // Get animation phases
                 for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
