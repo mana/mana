@@ -89,7 +89,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
         // get action
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            std::string name = getProperty(node, "name", "");
+            std::string actionName = getProperty(node, "name", "");
             std::string imageset = getProperty(node, "imageset", "");
 
             if (mSpritesets.find(imageset) == mSpritesets.end()) {
@@ -101,28 +101,24 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 continue;
             }
 
-            Action *action = new Action();
 
-            action->setSpriteset(mSpritesets[imageset]);
-
-            SpriteAction actionname = makeSpriteAction(name);
-            if (actionname == ACTION_INVALID)
+            SpriteAction actionEnum = makeSpriteAction(actionName);
+            if (actionEnum == ACTION_INVALID)
             {
-
                 logger->log("Warning: Unknown action \"%s\" defined in %s",
-                            name.c_str(),
-                            animationFile.c_str());
+                    actionName.c_str(),
+                    animationFile.c_str());
                 continue;
             }
-            else {
-                mActions[makeSpriteAction(name)] = action;
+            Action *action = new Action();
+            action->setSpriteset(mSpritesets[imageset]);
+            mActions[actionEnum] = action;
 
-                // When first action set it as default direction
-                if (mActions.empty())
-                {
-                    mActions[ACTION_DEFAULT] = action;
-                }
-            };
+            // When first action set it as default direction
+            if (mActions.empty())
+            {
+                mActions[ACTION_DEFAULT] = action;
+            }
 
 
             // get animations
@@ -134,9 +130,20 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 if (!xmlStrEqual(animationNode->name, BAD_CAST "animation"))
                     continue;
 
-                std::string dir = getProperty(animationNode, "direction", "");
+                std::string directionName = getProperty(animationNode, "direction", "");
+
+                SpriteDirection directionEnum = makeSpriteDirection(directionName);
+                if (directionEnum == DIRECTION_INVALID)
+                {
+                    logger->log("Warning: Unknown direction \"%s\" defined for action %s in %s",
+                        directionName.c_str(),
+                        actionName.c_str(),
+                        animationFile.c_str());
+                    continue;
+                }
+
                 Animation *animation = new Animation();
-                action->setAnimation(makeSpriteDirection(dir), animation);
+                action->setAnimation(directionEnum, animation);
 
                 // Get animation phases
                 for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
@@ -281,8 +288,11 @@ AnimatedSprite::play(SpriteAction action, int time)
     if (!mAction || !time)
         mSpeed = 1.0f;
     else {
-        int animationLength = mAction->getAnimation(mDirection)->getLength();
-        mSpeed = (float) animationLength / time;
+        Animation* animation= mAction->getAnimation(mDirection);
+        if (animation) {
+            int animationLength = animation->getLength();
+            mSpeed = (float) animationLength / time;
+        }
     }
 }
 
@@ -391,7 +401,10 @@ AnimatedSprite::makeSpriteAction(const std::string& action)
 SpriteDirection
 AnimatedSprite::makeSpriteDirection(const std::string& direction)
 {
-    if (direction == "up") {
+    if (direction == "" || direction == "default") {
+        return DIRECTION_DEFAULT;
+    }
+    else if (direction == "up") {
         return DIRECTION_UP;
     }
     else if (direction == "left") {
@@ -400,7 +413,10 @@ AnimatedSprite::makeSpriteDirection(const std::string& direction)
     else if (direction == "right") {
         return DIRECTION_RIGHT;
     }
-    else {
+    else if (direction == "down") {
         return DIRECTION_DOWN;
     }
+    else {
+        return DIRECTION_INVALID;
+    };
 }
