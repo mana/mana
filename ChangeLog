@@ -1,3 +1,9 @@
+2006-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp: Stop using the sticky window attribute which is
+	unneeded for the current implementation, instead adjust the set of
+	affected windows by the 'hide' shortcut.
+
 2006-09-17  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz, 
