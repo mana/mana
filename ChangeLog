@@ -1,3 +1,8 @@
+2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_10-1.tmx.gz: Fixed transparent snow issue (Fix by
+	Pajarico).
+
 2006-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/game.cpp: Stop using the sticky window attribute which is
