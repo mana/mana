@@ -1,3 +1,7 @@
+2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/Makefile.am: Added missing monster19 sprite.
+
 2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/Makefile.am: Added missing maps.
@@ -5,7 +9,7 @@
 
 2006-09-18  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_9-1.tmx.gz: Fixed some mapping bugs (new walkmap 
+	* data/maps/new_9-1.tmx.gz: Fixed some mapping bugs (new walkmap
 	required).
 
 2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
@@ -21,7 +25,7 @@
 
 2006-09-17  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz, 
+	* data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz,
 	data/maps/new_16-1.tmx.gz: fixed some mapping errors.
 
 2006-09-16  Philipp Sehmisch  <tmw@crushnet.org>
@@ -33,7 +37,7 @@
 
 2006-09-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* data/help/changes.txt, data/help/header.txt, NEWS, README, 
+	* data/help/changes.txt, data/help/header.txt, NEWS, README,
 	src/tmw.rc: Updated release infos.
 
 2006-09-14  Philipp Sehmisch  <tmw@crushnet.org>
@@ -42,7 +46,7 @@
 	data/graphics/sprites/weapon.xml: Some modifications at the animation
 	system. No more "undefined action foo" warnings in the tmw.log. Not
 	visible actions must now be declared explicitely.
-	* data/graphics/images/ambient/sandstorm.png, 
+	* data/graphics/images/ambient/sandstorm.png,
 	data/graphics/images/ambient/clouds.png: Improved quality of the overlay
 	graphics.
 
