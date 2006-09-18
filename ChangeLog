@@ -1,6 +1,7 @@
 2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/Makefile.am: Added missing maps.
+	* data/maps/new_10-1.tmx.gz: Disabled layer compression.
 
 2006-09-18  Philipp Sehmisch  <tmw@crushnet.org>
 
