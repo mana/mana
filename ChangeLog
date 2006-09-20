@@ -9,6 +9,9 @@
 	* src/gui/setup.cpp, src/gui/setup_video.cpp,
 	src/gui/setup_video.h: Added a slider for controlling the overlay 
 	detail to the video setup dialog based on a patch by VictorSan.
+	* data/maps/new_14-1.tmx.gz, data/maps/new_16-1.tmx.gz: 
+	added cloud effect and minimap.
+	* data/images/Makefile.am: Updated makefile.
 
 2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
