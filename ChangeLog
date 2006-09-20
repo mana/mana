@@ -6,6 +6,9 @@
 	data/graphics/items/generic-pinkantennae.png,
 	data/graphics/items/Makefile.am, data/items.xml: 
 	Added drops for new monsters.
+	* src/gui/setup.cpp, src/gui/setup_video.cpp,
+	src/gui/setup_video.h: Added a slider for controlling the overlay 
+	detail to the video setup dialog based on a patch by VictorSan.
 
 2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -73,6 +73,10 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::Slider *mScrollRadiusSlider;
         gcn::TextField *mScrollRadiusField;
 
+        int mOverlayDetail;
+        gcn::Slider *mOverlayDetailSlider;
+        gcn::Label *mOverlayDetailField;
+
         void
         updateSliders(bool originalValues);
 
