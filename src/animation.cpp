@@ -39,27 +39,35 @@ Animation::reset()
     iCurrentPhase = mAnimationPhases.begin();
 }
 
-void
+
+bool
 Animation::update(unsigned int time)
 {
     mTime += time;
     if (mAnimationPhases.empty())
-        return;
+        return true;
+    if (isTerminator(*iCurrentPhase))
+        return false;
 
     unsigned int delay = iCurrentPhase->delay;
-    if (!delay)
-        return;
 
     while (mTime > delay)
     {
+        if (!delay)
+            return true;
         mTime -= delay;
         iCurrentPhase++;
         if (iCurrentPhase == mAnimationPhases.end())
         {
             iCurrentPhase = mAnimationPhases.begin();
         }
+        if (isTerminator(*iCurrentPhase))
+            return false;
+        delay = iCurrentPhase->delay;
     }
+    return true;
 }
+
 
 int
 Animation::getCurrentPhase() const
@@ -67,15 +75,30 @@ Animation::getCurrentPhase() const
     return mAnimationPhases.empty() ? -1 : iCurrentPhase->image;
 }
 
+
 void
 Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
 {
     //add new phase to animation list
-    AnimationPhase newPhase = { image, delay, offsetX, offsetY };
+    AnimationPhase newPhase = { image, delay, offsetX, offsetY};
 
     mAnimationPhases.push_back(newPhase);
     //reset animation circle
     iCurrentPhase = mAnimationPhases.begin();
+}
+
+void
+Animation::addTerminator()
+{
+    AnimationPhase terminator = { -1, 0, 0, 0};
+    mAnimationPhases.push_back(terminator);
+    iCurrentPhase = mAnimationPhases.begin();
+}
+
+bool
+Animation::isTerminator(AnimationPhase candidate)
+{
+    return (candidate.image < 0);
 }
 
 int

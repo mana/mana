@@ -1,4 +1,52 @@
-2006-09-20 Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-09-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.cpp, src/animation.h, src/animatedsprite.cpp,
+	src/animatedsprite.h: Removed some obsolete code and implemented
+	the posibility to define an <end /> token in the <animation>s 
+	that allows to define an animation that doesn't loop and returns
+	to the STAND animation when finished.
+	* data/graphics/sprites/hairstyle1.xml,
+	data/graphics/sprites/hairstyle2.xml,
+	data/graphics/sprites/hairstyle3.xml,
+	data/graphics/sprites/hairstyle4.xml,
+	data/graphics/sprites/hairstyle5.xml,
+	data/graphics/sprites/hairstyle6.xml,
+	data/graphics/sprites/hairstyle7.xml,
+	data/graphics/sprites/item001.xml,
+	data/graphics/sprites/item002.xml,
+	data/graphics/sprites/item003.xml,
+	data/graphics/sprites/item004.xml,
+	data/graphics/sprites/item005.xml,
+	data/graphics/sprites/item006.xml,
+	data/graphics/sprites/item007.xml,
+	data/graphics/sprites/item008.xml,
+	data/graphics/sprites/item009.xml,
+	data/graphics/sprites/item010.xml,
+	data/graphics/sprites/monster0.xml,
+	data/graphics/sprites/monster1.xml,
+	data/graphics/sprites/monster2.xml,
+	data/graphics/sprites/monster3.xml,
+	data/graphics/sprites/monster4.xml,
+	data/graphics/sprites/monster5.xml,
+	data/graphics/sprites/monster6.xml,
+	data/graphics/sprites/monster7.xml,
+	data/graphics/sprites/monster8.xml,
+	data/graphics/sprites/monster9.xml,
+	data/graphics/sprites/monster10.xml,
+	data/graphics/sprites/monster11.xml,
+	data/graphics/sprites/monster12.xml,
+	data/graphics/sprites/monster13.xml,
+	data/graphics/sprites/monster14.xml,
+	data/graphics/sprites/monster15.xml,
+	data/graphics/sprites/monster16.xml,
+	data/graphics/sprites/monster17.xml,
+	data/graphics/sprites/monster18.xml,
+	data/graphics/sprites/monster19.xml,
+	data/graphics/sprites/weapons.xml:
+	Used the <end /> token for all attack animations fixing the problem
+	with looping monster attack animations.
+
+2006-09-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/generic-whitefur.png, 
 	data/graphics/items/generic-cavesnakelamp.png, 

@@ -176,6 +176,10 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                             start++;
                         }
                     }
+                    else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
+                    {
+                        animation->addTerminator();
+                    };
                 } // for phaseNode
             } // for animationNode
         } // if "<imageset>" else if "<action>"
@@ -268,7 +272,7 @@ AnimatedSprite::reset()
 }
 
 void
-AnimatedSprite::play(SpriteAction action, int time)
+AnimatedSprite::play(SpriteAction action)
 {
     ActionIterator i = mActions.find(action);
 
@@ -282,23 +286,14 @@ AnimatedSprite::play(SpriteAction action, int time)
     if (mAction != i->second)
     {
         mAction = i->second;
-        mLastTime = 0;
-    }
-
-    if (!mAction || !time)
-        mSpeed = 1.0f;
-    else {
-        Animation* animation= mAction->getAnimation(mDirection);
-        if (animation) {
-            int animationLength = animation->getLength();
-            mSpeed = (float) animationLength / time;
-        }
+        //mAction->reset();
     }
 }
 
 void
 AnimatedSprite::update(int time)
 {
+    bool notFinished = true;
     // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0)
         mLastTime = time;
@@ -308,8 +303,13 @@ AnimatedSprite::update(int time)
     {
         Animation *animation = mAction->getAnimation(mDirection);
         if (animation != NULL) {
-            animation->update((unsigned int)((time - mLastTime) * mSpeed));}
+            notFinished = animation->update((unsigned int)(time - mLastTime));}
         mLastTime = time;
+    }
+
+    if (!notFinished)
+    {
+        play(ACTION_STAND);
     }
 }
 
