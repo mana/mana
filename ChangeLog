@@ -1,3 +1,12 @@
+2006-09-20 Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-whitefur.png, 
+	data/graphics/items/generic-cavesnakelamp.png, 
+	data/graphics/items/generic-hardspike.png, 
+	data/graphics/items/generic-pinkantennae.png,
+	data/graphics/items/Makefile.am, data/items.xml: 
+	Added drops for new monsters.
+
 2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/sprites/Makefile.am: Added missing monster19 sprite.
