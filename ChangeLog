@@ -1,6 +1,8 @@
 ﻿2006-09-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/Makefile.am: Added missing tileset.
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Made canceling the
+	update process non-blocking (Patch by VictorSan).
 
 2006-09-21  Philipp Sehmisch  <tmw@crushnet.org>
 

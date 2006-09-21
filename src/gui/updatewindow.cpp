@@ -48,9 +48,9 @@ UpdaterWindow::UpdaterWindow():
     Window("Updating..."),
     mThread(NULL), mMutex(NULL), mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(""), mCurrentFile("news.txt"), mBasePath(""),
-    mStoreInMemory(true), mDownloadComplete(true), mDownloadedBytes(0),
-    mMemoryBuffer(NULL), mCurlError(new char[CURL_ERROR_SIZE]),
-    mFileIndex(0)
+    mStoreInMemory(true), mDownloadComplete(true), mUserCancel(false), 
+    mDownloadedBytes(0), mMemoryBuffer(NULL), 
+    mCurlError(new char[CURL_ERROR_SIZE]), mFileIndex(0)
 {
     mCurlError[0] = 0;
 
@@ -133,6 +133,8 @@ void UpdaterWindow::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "cancel")
     {
+        // Register the user cancel
+        mUserCancel=true;
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
@@ -329,7 +331,15 @@ void UpdaterWindow::logic()
         case UPDATE_ERROR:
             if (mThread)
             {
-                SDL_WaitThread(mThread, NULL);
+                if(mUserCancel){
+                    // Kill the thread, because user has canceled
+                    SDL_KillThread(mThread);
+                    // Set the flag to false again
+                    mUserCancel = false;
+                }
+                else{
+                    SDL_WaitThread(mThread, NULL);
+                }
                 mThread = NULL;
             }
             addRow("");
