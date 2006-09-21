@@ -1,4 +1,8 @@
-﻿2006-09-21  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-09-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/tiles/Makefile.am: Added missing tileset.
+
+2006-09-21  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/animation.cpp, src/animation.h, src/animatedsprite.cpp,
 	src/animatedsprite.h: Removed some obsolete code and implemented
