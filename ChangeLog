@@ -1,4 +1,9 @@
-﻿2006-09-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2006-09-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_5-1.tmx.gz: Accepted new version by Matt Howe, fixing
+	several mapping issues.
+
+2006-09-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/tiles/Makefile.am: Added missing tileset.
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Made canceling the
@@ -58,13 +63,13 @@
 	data/graphics/items/generic-cavesnakelamp.png, 
 	data/graphics/items/generic-hardspike.png, 
 	data/graphics/items/generic-pinkantennae.png,
-	data/graphics/items/Makefile.am, data/items.xml: 
+	data/graphics/items/Makefile.am, data/items.xml:
 	Added drops for new monsters.
 	* src/gui/setup.cpp, src/gui/setup_video.cpp,
-	src/gui/setup_video.h: Added a slider for controlling the overlay 
+	src/gui/setup_video.h: Added a slider for controlling the overlay
 	detail to the video setup dialog based on a patch by VictorSan.
-	* data/maps/new_14-1.tmx.gz, data/maps/new_16-1.tmx.gz: 
-	added cloud effect and minimap.
+	* data/maps/new_14-1.tmx.gz, data/maps/new_16-1.tmx.gz:
+	Added cloud effect and minimap.
 	* data/images/Makefile.am: Updated makefile.
 
 2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
