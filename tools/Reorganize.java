@@ -12,7 +12,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 /**
- * Very simple tool to reorganize the monster spritesets.
+ * Tool to reorganize the hair spritesets.
  */
 public class Reorganize
 {
@@ -20,6 +20,12 @@ public class Reorganize
     private static final int SPRITE_HEIGHT = 60;
     private static final int FRAMES = 10;
     private static final int DIRECTIONS = 4;
+
+    private static final int HAIR_COLORS = 10;
+    private static final int HAIR_FRAMES = 9;
+    private static final int HAIR_SPRITE_WIDTH = 40;
+    private static final int HAIR_SPRITE_HEIGHT = 40;
+
     private static final int TRANSPARENT = new Color(255, 0, 255).getRGB();
 
     public static void main(String[] arg)
@@ -38,30 +44,15 @@ public class Reorganize
             System.exit(1);
         }
 
-        Rectangle cropRect = null;
+        // Read the existing frames into a vector
+        Vector<BufferedImage> spriteSet = gridCut(source,
+                HAIR_SPRITE_WIDTH, HAIR_SPRITE_HEIGHT,
+                HAIR_FRAMES, HAIR_COLORS);
 
-        // Read the existing frames into a vector and determine minimal
-        // rectangle that still can contain the contents of any frame.
-        Vector<BufferedImage> spriteSet = new Vector<BufferedImage>();
-        for (int x = 0; x < DIRECTIONS; x++) {
-            for (int y = 0; y < FRAMES; y++) {
-                BufferedImage sprite = source.getSubimage(
-                        x * SPRITE_WIDTH,
-                        y * SPRITE_HEIGHT,
-                        SPRITE_WIDTH,
-                        SPRITE_HEIGHT);
-
-                spriteSet.add(sprite);
-
-                Rectangle frameCropRect = determineCropRect(sprite);
-
-                if (cropRect == null) {
-                    cropRect = frameCropRect;
-                } else {
-                    cropRect.add(frameCropRect);
-                }
-            }
-        }
+        // Determine minimal rectangle that can still contain the contents of
+        // any frame
+        /*
+        Rectangle cropRect = minimumCropRect(spriteSet);
 
         if (cropRect == null) {
             System.out.println(
@@ -76,19 +67,61 @@ public class Reorganize
 
         System.out.println(arg[0] + ": width=\"" +
                 cropRect.width + "\" height=\"" + cropRect.height + "\"");
+        */
 
-        // Create a new image (with frame direction flipped)
+        filterHairstyle(spriteSet);
+
+        BufferedImage target = gridDraw(
+                spriteSet,
+                new Rectangle(0, 0, HAIR_SPRITE_WIDTH, HAIR_SPRITE_HEIGHT),
+                HAIR_FRAMES - 4, HAIR_COLORS);
+
+        // Save the target image
+        try {
+            ImageIO.write(target, "png", new File(arg[1]));
+        } catch (IOException e) {
+            System.out.println("Error while trying to write " + arg[1] + ".");
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private static Vector<BufferedImage> gridCut(
+            BufferedImage source,
+            int width, int height, int xFrames, int yFrames)
+    {
+        Vector<BufferedImage> spriteSet = new Vector<BufferedImage>();
+
+        for (int y = 0; y < yFrames; y++) {
+            for (int x = 0; x < xFrames; x++) {
+                BufferedImage sprite = source.getSubimage(
+                        x * width,
+                        y * height,
+                        width,
+                        height);
+
+                spriteSet.add(sprite);
+            }
+        }
+
+        return spriteSet;
+    }
+
+    private static BufferedImage gridDraw(Vector<BufferedImage> spriteSet,
+            Rectangle cropRect, int xFrames, int yFrames)
+    {
+        // Create a new image
         BufferedImage target = new BufferedImage(
-                FRAMES * cropRect.width,
-                DIRECTIONS * cropRect.height,
+                xFrames * cropRect.width,
+                yFrames * cropRect.height,
                 BufferedImage.TYPE_INT_ARGB);
 
         // Draw the frames onto the target image
         Graphics g = target.getGraphics();
-        for (int y = 0; y < DIRECTIONS; y++) {
-            for (int x = 0; x < FRAMES; x++) {
+        for (int y = 0; y < yFrames; y++) {
+            for (int x = 0; x < xFrames; x++) {
                 g.drawImage(
-                        spriteSet.get(x + FRAMES * y).getSubimage(
+                        spriteSet.get(x + xFrames * y).getSubimage(
                             cropRect.x,
                             cropRect.y,
                             cropRect.width,
@@ -99,14 +132,24 @@ public class Reorganize
             }
         }
 
-        // Save the target image
-        try {
-            ImageIO.write(target, "png", new File(arg[1]));
-        } catch (IOException e) {
-            System.out.println("Error while trying to write " + arg[1] + ".");
-            e.printStackTrace();
-            System.exit(1);
+        return target;
+    }
+
+    private static Rectangle minimumCropRect(Vector<BufferedImage> spriteSet)
+    {
+        Rectangle cropRect = null;
+
+        for (BufferedImage sprite : spriteSet) {
+            Rectangle frameCropRect = determineCropRect(sprite);
+
+            if (cropRect == null) {
+                cropRect = frameCropRect;
+            } else {
+                cropRect.add(frameCropRect);
+            }
         }
+
+        return cropRect;
     }
 
     private static Rectangle determineCropRect(BufferedImage image)
@@ -129,5 +172,16 @@ public class Reorganize
         }
 
         return rect;
+    }
+
+    private static void filterHairstyle(Vector<BufferedImage> spriteSet)
+    {
+        // Remove frame 1, 2, 6 and 7 from each color
+        for (int i = HAIR_COLORS - 1; i >= 0; i--) {
+            spriteSet.remove(i * HAIR_FRAMES + 7);
+            spriteSet.remove(i * HAIR_FRAMES + 6);
+            spriteSet.remove(i * HAIR_FRAMES + 2);
+            spriteSet.remove(i * HAIR_FRAMES + 1);
+        }
     }
 }
