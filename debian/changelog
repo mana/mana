@@ -1,3 +1,11 @@
+tmw (0.0.21-1) unstable; urgency=low
+
+  * New upstream release:
+  * Now linked against libguichan-0.5.0.
+  * Readded the correct music package.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Wed, 27 Sep 2006 21:40:33 +0200
+
 tmw (0.0.20-1) unstable; urgency=low
 
   * Make use of a own desktop file for the Debian Package. Close the missing icon bug.
