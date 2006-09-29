@@ -118,7 +118,7 @@ class Item
         /**
          * Returns information about this item type.
          */
-        ItemInfo*
+        const ItemInfo&
         getInfo() const { return itemDb->getItemInfo(mId); }
 
     protected:

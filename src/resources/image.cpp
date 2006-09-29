@@ -260,11 +260,18 @@ void Image::unload()
 {
     mLoaded = false;
 
-    if (!mImage) return;
+    if (mImage) {
+        // Free the image surface.
+        SDL_FreeSurface(mImage);
+        mImage = NULL;
+    }
 
-    // Free the image surface.
-    SDL_FreeSurface(mImage);
-    mImage = NULL;
+#ifdef USE_OPENGL
+    if (mGLImage) {
+        glDeleteTextures(1, &mGLImage);
+        mGLImage = 0;
+    }
+#endif
 }
 
 Image *Image::getSubImage(int x, int y, int width, int height)
@@ -341,7 +348,11 @@ SubImage::SubImage(Image *parent, GLuint image,
 
 SubImage::~SubImage()
 {
-    mImage = 0; // Avoid destruction of the image
+    // Avoid destruction of the image
+    mImage = 0;
+#ifdef USE_OPENGL
+    mGLImage = 0;
+#endif
     mParent->decRef();
 }
 

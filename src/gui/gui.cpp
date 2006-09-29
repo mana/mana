@@ -322,6 +322,19 @@ Gui::mousePress(int mx, int my, int button)
             }
         }
     }
+
+    if (button == gcn::MouseInput::MIDDLE)
+    {
+        // Find the being nearest to the clicked position
+        Being *target = beingManager->findNearestLivingBeing(
+                tilex, tiley,
+                20, Being::MONSTER);
+
+        if (target)
+        {
+            player_node->setTarget(target);
+        }
+    }
 }
 
 void

@@ -113,9 +113,9 @@ Being* BeingManager::findBeing(Uint16 x, Uint16 y, Being::Type type)
     return (i == mBeings.end()) ? NULL : *i;
 }
 
-Beings* BeingManager::getAll()
+Beings& BeingManager::getAll()
 {
-    return &mBeings;
+    return mBeings;
 }
 
 void BeingManager::logic()
@@ -152,4 +152,29 @@ void BeingManager::clear()
     {
         mBeings.push_back(player_node);
     }
+}
+
+Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+                                            Being::Type type)
+{
+    Being *closestBeing = NULL;
+    int dist = 0;
+
+    for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
+    {
+        Being *being = (*i);
+        int d = abs(being->mX - x) + abs(being->mY - y);
+
+        if ((being->getType() == type || type == Being::UNKNOWN)
+                && (d < dist || closestBeing == NULL)   // it is closer
+                && being->mAction != Being::DEAD        // no dead beings
+                && being->mAction != Being::MONSTER_DEAD
+           )
+        {
+            dist = d;
+            closestBeing = being;
+        }
+    }
+
+    return (maxdist >= dist) ? closestBeing : NULL;
 }

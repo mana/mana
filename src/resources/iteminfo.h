@@ -26,7 +26,7 @@
 
 #include <string>
 
-#include "image.h"
+class Image;
 
 /**
  * Defines a class for storing item infos.
@@ -40,8 +40,8 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mImage(NULL),
             mImageName(""),
+            mImage(NULL),
             mArt(0),
             mType(0),
             mWeight(0),
@@ -53,19 +53,19 @@ class ItemInfo
         setArt(short art) { mArt = art; }
 
         short
-        getArt() { return mArt; }
+        getArt() const { return mArt; }
 
         void
         setName(const std::string &name) { mName = name; }
 
-        std::string
-        getName() { return mName; }
+        const std::string&
+        getName() const { return mName; }
 
         void
         setImage(const std::string &image);
 
         Image*
-        getImage();
+        getImage() const { return mImage; }
 
         void
         setDescription(const std::string &description)
@@ -73,32 +73,32 @@ class ItemInfo
             mDescription = description;
         }
 
-        std::string
-        getDescription() { return mDescription; }
+        const std::string&
+        getDescription() const { return mDescription; }
 
         void
         setEffect(const std::string &effect) { mEffect = effect; }
 
-        std::string
-        getEffect() { return mEffect; }
+        const std::string&
+        getEffect() const { return mEffect; }
 
         void
         setType(short type) { mType = type; }
 
         short
-        getType() { return mType; }
+        getType() const { return mType; }
 
         void
         setWeight(short weight) { mWeight = weight; }
 
         short
-        getWeight() { return mWeight; }
+        getWeight() const { return mWeight; }
 
         void
         setSlot(char slot) { mSlot = slot; }
 
         char
-        getSlot() { return mSlot; }
+        getSlot() const { return mSlot; }
 
     protected:
         /**
@@ -106,8 +106,14 @@ class ItemInfo
          */
         ~ItemInfo();
 
-        Image* mImage;
         std::string mImageName;
+
+        /* TODO (BL): I do not think the item info should keep a reference to
+         * the item icon. It would probably be better if this was kept in the
+         * Item class, so that the images can be lazily instantiated and also
+         * unloaded when no longer used.
+         */
+        Image *mImage;
         short mArt;
         std::string mName;
         std::string mDescription;

@@ -331,10 +331,24 @@ Being::setAction(Uint8 action)
                         currentAction = ACTION_ATTACK;
                         break;
                 }
+                for (int i = 0; i < VECTOREND_SPRITE; i++)
+                {
+                    if (mSprites[i])
+                    {
+                        mSprites[i]->reset();
+                    }
+                }
             };
             break;
         case MONSTER_ATTACK:
             currentAction = ACTION_ATTACK;
+            for (int i = 0; i < VECTOREND_SPRITE; i++)
+            {
+                if (mSprites[i])
+                {
+                    mSprites[i]->reset();
+                }
+            }
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
@@ -346,16 +360,7 @@ Being::setAction(Uint8 action)
 
     for (int i = 0; i < VECTOREND_SPRITE; i++)
     {
-        if (!mSprites[i])
-            continue;
-
-        if (currentAction == ACTION_ATTACK ||
-                currentAction == ACTION_ATTACK_STAB ||
-                currentAction == ACTION_ATTACK_BOW)
-        {
-            mSprites[i]->play(currentAction, mAttackSpeed);
-        }
-        else
+        if (mSprites[i])
         {
             mSprites[i]->play(currentAction);
         }

@@ -106,7 +106,7 @@ Setup_Video::Setup_Video():
     mOpenGLEnabled(config.getValue("opengl", 0)),
     mCustomCursorEnabled(config.getValue("customcursor", 1)),
     mOpacity(config.getValue("guialpha", 0.8)),
-    mFps((int)config.getValue("fpslimit", 50)),
+    mFps((int)config.getValue("fpslimit", 60)),
     mModeListModel(new ModeListModel()),
     mModeList(new ListBox(mModeListModel)),
     mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
@@ -121,7 +121,10 @@ Setup_Video::Setup_Video():
     mScrollLazinessField(new TextField()),
     mOriginalScrollRadius((int) config.getValue("ScrollRadius", 32)),
     mScrollRadiusSlider(new Slider(0, 128)),
-    mScrollRadiusField(new TextField())
+    mScrollRadiusField(new TextField()),
+    mOverlayDetail((int) config.getValue("OverlayDetail", 2)),
+    mOverlayDetailSlider(new Slider(0, 2)),
+    mOverlayDetailField(new gcn::Label(""))
 {
     setOpaque(false);
 
@@ -163,6 +166,8 @@ Setup_Video::Setup_Video():
     mScrollRadiusField->setEventId("scrollradiusfield");
     mScrollLazinessSlider->setEventId("scrolllazinessslider");
     mScrollLazinessField->setEventId("scrolllazinessfield");
+    mOverlayDetailSlider->setEventId("overlaydetailslider");
+    mOverlayDetailField->setEventId("overlaydetailfield");
 
     mCustomCursorCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
@@ -173,6 +178,8 @@ Setup_Video::Setup_Video():
     mScrollRadiusField->addKeyListener(this);
     mScrollLazinessSlider->addActionListener(this);
     mScrollLazinessField->addKeyListener(this);
+    mOverlayDetailSlider->addActionListener(this);
+    mOverlayDetailField->addKeyListener(this);
 
     mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
     gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
@@ -190,6 +197,25 @@ Setup_Video::Setup_Video():
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
+    mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
+    gcn::Label *overlayDetailLabel = new gcn::Label("Ambient FX");
+    overlayDetailLabel->setPosition(90, 160);
+    mOverlayDetailField->setPosition(180, 160);
+    mOverlayDetailField->setWidth(30);
+    switch (mOverlayDetail)
+    {
+        case 0:
+            mOverlayDetailField->setCaption("off");
+            break;
+        case 1:
+            mOverlayDetailField->setCaption("low");
+            break;
+        case 2:
+            mOverlayDetailField->setCaption("high");
+            break;
+    }
+    mOverlayDetailSlider->setValue(mOverlayDetail);
+
     add(scrollArea);
     add(mFsCheckBox);
     add(mOpenGLCheckBox);
@@ -205,6 +231,9 @@ Setup_Video::Setup_Video():
     add(mScrollLazinessSlider);
     add(scrollLazinessLabel);
     add(mScrollLazinessField);
+    add(mOverlayDetailSlider);
+    add(overlayDetailLabel);
+    add(mOverlayDetailField);
 }
 
 Setup_Video::~Setup_Video()
@@ -258,6 +287,7 @@ void Setup_Video::apply()
     mFullScreenEnabled = config.getValue("screen", 0);
     mCustomCursorEnabled = config.getValue("customcursor", 1);
     mOpacity = config.getValue("guialpha", 0.8);
+    mOverlayDetail = (int)config.getValue("OverlayDetail", 2);
     mOpenGLEnabled = config.getValue("opengl", 0);
 }
 
@@ -288,6 +318,7 @@ void Setup_Video::cancel()
     mOpenGLCheckBox->setMarked(mOpenGLEnabled);
     mCustomCursorCheckBox->setMarked(mCustomCursorEnabled);
     mAlphaSlider->setValue(mOpacity);
+    mOverlayDetailSlider->setValue(mOverlayDetail);
 
     mScrollRadiusField->setText(toString(mOriginalScrollRadius));
     mScrollLazinessField->setText(toString(mOriginalScrollLaziness));
@@ -327,6 +358,23 @@ void Setup_Video::action(const std::string &event, gcn::Widget *widget)
         int val = (int)mScrollLazinessSlider->getValue();
         mScrollLazinessField->setText(toString(val));
         config.setValue("ScrollLaziness", val);
+    }
+    else if (event == "overlaydetailslider")
+    {
+        int val = (int)mOverlayDetailSlider->getValue();
+        switch (val)
+        {
+            case 0:
+                mOverlayDetailField->setCaption("off");
+                break;
+            case 1:
+                mOverlayDetailField->setCaption("low");
+                break;
+            case 2:
+                mOverlayDetailField->setCaption("high");
+                break;
+        }
+        config.setValue("OverlayDetail", val);
     }
     else if (event == "fpslimitcheckbox")
     {

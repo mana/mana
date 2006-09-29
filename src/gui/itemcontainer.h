@@ -27,9 +27,12 @@
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 
+#include <list>
+
 class Image;
 class Inventory;
 class Item;
+class SelectionListener;
 
 /**
  * An item container. Used to show items in inventory and trade dialog.
@@ -76,16 +79,46 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         Item* getItem();
 
         /**
-         * Set selected item to -1.
+         * Sets selected item to NULL.
          */
         void selectNone();
 
+        /**
+         * Adds a listener to the list that's notified each time a change to
+         * the selection occurs.
+         */
+        void addSelectionListener(SelectionListener *listener)
+        {
+            mListeners.push_back(listener);
+        }
+
+        /**
+         * Removes a listener from the list that's notified each time a change
+         * to the selection occurs.
+         */
+        void removeSelectionListener(SelectionListener *listener)
+        {
+            mListeners.remove(listener);
+        }
+
     private:
+        /**
+         * Sets the currently selected item.
+         */
+        void setSelectedItem(Item *item);
+
+        /**
+         * Sends out selection events to the list of selection listeners.
+         */
+        void fireSelectionChangedEvent();
+
         Inventory *mInventory;
         Image *mSelImg;
         Item *mSelectedItem;
 
         int mMaxItems;
+
+        std::list<SelectionListener*> mListeners;
 };
 
 #endif

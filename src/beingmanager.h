@@ -46,29 +46,38 @@ class BeingManager
         void setPlayer(LocalPlayer *player);
 
         /**
-         * Create a being and add it to the list of beings
+         * Create a being and add it to the list of beings.
          */
         Being* createBeing(Uint16 id, Uint16 job);
 
         /**
-         * Remove a Being
+         * Remove a Being.
          */
         void destroyBeing(Being *being);
 
         /**
-         * Return a specific id Being
+         * Return a specific id Being.
          */
         Being* findBeing(Uint16 id);
 
         /**
-         * Return a being at specific coordinates
+         * Return a being at specific coordinates.
          */
         Being* findBeing(Uint16 x, Uint16 y, Being::Type type = Being::UNKNOWN);
 
         /**
+         * Return a being nearest to specific coordinates.
+         *
+         * \param maxdist maximal distance. If minimal distance is larger,
+         *                no being is returned
+         */
+        Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
+                                      Being::Type type = Being::UNKNOWN);
+
+        /**
          * Returns the whole list of beings
          */
-        Beings* getAll();
+        Beings& getAll();
 
         /**
          * Logic.

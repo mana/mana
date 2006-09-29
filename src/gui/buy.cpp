@@ -91,6 +91,7 @@ BuyDialog::BuyDialog():
     mSlider->setEventId("slider");
 
     mItemList->addActionListener(this);
+    mItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
     add(mScrollArea);
@@ -140,7 +141,8 @@ void BuyDialog::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    item_shop.name = itemDb->getItemInfo(id)->getName() + " " + toString(price) + " GP";
+    item_shop.name = itemDb->getItemInfo(id).getName() + " "
+        + toString(price) + " GP";
     item_shop.price = price;
     item_shop.id = id;
 
@@ -152,7 +154,8 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     int selectedItem = mItemList->getSelected();
 
-    if (eventId == "item") {
+    if (eventId == "item")
+    {
         // Reset amount of items and update labels
         mAmountItems = 0;
         mSlider->setValue(0);
@@ -175,23 +178,27 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
         mIncreaseButton->setEnabled(mMaxItems > 0);
         mSlider->setEnabled(mMaxItems > 0);
     }
-    else if (eventId == "quit") {
+    else if (eventId == "quit")
+    {
         setVisible(false);
         current_npc = 0;
     }
 
     // The following actions require a valid selection
-    if (selectedItem < 0 || selectedItem >= int(mShopItems->size())) {
+    if (selectedItem < 0 || selectedItem >= int(mShopItems->size()))
+    {
         return;
     }
 
     bool updateButtonsAndLabels = false;
 
-    if (eventId == "slider") {
+    if (eventId == "slider")
+    {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "+") {
+    else if (eventId == "+")
+    {
         if (mAmountItems < mMaxItems) {
             mAmountItems++;
         } else {
@@ -201,7 +208,8 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
         mSlider->setValue(double(mAmountItems)/double(mMaxItems));
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "-") {
+    else if (eventId == "-")
+    {
         if (mAmountItems > 0) {
             mAmountItems--;
         } else {
@@ -211,7 +219,7 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
         mSlider->setValue(double(mAmountItems)/double(mMaxItems));
         updateButtonsAndLabels = true;
     }
-    // TODO Actually we'd have a bug elsewhere if this check for the number
+    // TODO: Actually we'd have a bug elsewhere if this check for the number
     // of items to be bought ever fails, Bertram removed the assertions, is
     // there a better way to ensure this fails in an _obivous_ way in C++?
     else if (eventId == "buy" && (mAmountItems > 0 &&
@@ -239,7 +247,8 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
     }
 
     // If anything has changed, we have to update the buttons and labels
-    if (updateButtonsAndLabels) {
+    if (updateButtonsAndLabels)
+    {
         // Update buttons
         mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
         mDecreaseButton->setEnabled(mAmountItems > 0);
@@ -255,19 +264,21 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
     }
 }
 
-void BuyDialog::mouseClick(int x, int y, int button, int count)
+void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
-    Window::mouseClick(x, y, button, count);
-
     int selectedItem = mItemList->getSelected();
+
     if (selectedItem > -1)
     {
-        int itemId = mShopItems->at(selectedItem).id;
-        ItemInfo *itemInfo = itemDb->getItemInfo(itemId);
+        const ItemInfo &info =
+            itemDb->getItemInfo(mShopItems->at(selectedItem).id);
 
-        mItemDescLabel->setCaption("Description: " +
-                itemInfo->getDescription());
-        mItemEffectLabel->setCaption("Effect: " +
-                itemInfo->getEffect());
+        mItemDescLabel->setCaption("Description: " + info.getDescription());
+        mItemEffectLabel->setCaption("Effect: " + info.getEffect());
+    }
+    else
+    {
+        mItemDescLabel->setCaption("Description:");
+        mItemEffectLabel->setCaption("Effect:");
     }
 }

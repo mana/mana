@@ -202,9 +202,9 @@ void createGuiWindows()
       minimap->getHeight() + 30);*/
 
     // Set initial window visibility
-    chatWindow->setSticky(true);
-    miniStatusWindow->setSticky(true);
-    menuWindow->setSticky(true);
+//    chatWindow->setSticky(true);
+//    miniStatusWindow->setSticky(true);
+//    menuWindow->setSticky(true);
 
     chatWindow->setVisible(true);
     miniStatusWindow->setVisible(true);
@@ -277,6 +277,10 @@ Game::Game():
     SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
     SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
 
+    // Initialize frame limiting
+    config.addListener("fpslimit", this);
+    optionChanged("fpslimit");
+
     // Initialize beings
     beingManager->setPlayer(player_node);
 
@@ -339,12 +343,23 @@ bool saveScreenshot(SDL_Surface *screenshot)
     return ImageWriter::writePNG(screenshot, filename.str());
 }
 
+void Game::optionChanged(const std::string &name)
+{
+    int fpsLimit = (int) config.getValue("fpslimit", 0);
+
+    // Calculate new minimum frame time
+    mMinFrameTime = fpsLimit ? 1000 / fpsLimit : 0;
+
+    // Reset draw time to current time
+    mDrawTime = tick_time * 10;
+}
+
 void Game::logic()
 {
+    // mDrawTime has a higher granularity than gameTime in order to be able to
+    // work with minimum frame durations in milliseconds.
     int gameTime = tick_time;
-    int drawTime = tick_time * 10;
-    int delta = 0;
-    int fpsLimit = 0;
+    mDrawTime = tick_time * 10;
 
     while (!done)
     {
@@ -356,23 +371,35 @@ void Game::logic()
             gameTime++;
         }
 
+        // This is done because at some point tick_time will wrap.
         gameTime = tick_time;
 
-        fpsLimit = (int)config.getValue("fpslimit", 50);
-        delta = fpsLimit ? 1000 / fpsLimit : 0;
-
-        // Update the screen when application is active, delay otherwise
-        if (SDL_GetAppState() & SDL_APPACTIVE &&
-                (abs(tick_time * 10 - drawTime) >= delta))
+        // Update the screen when application is active, delay otherwise.
+        if (SDL_GetAppState() & SDL_APPACTIVE)
         {
-            frame++;
-            engine->draw(graphics);
-            graphics->updateScreen();
-            drawTime += delta;
+            // Draw a frame if either frames are not limited or enough time has
+            // passed since the last frame.
+            if (!mMinFrameTime ||
+                    get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
+            {
+                frame++;
+                engine->draw(graphics);
+                graphics->updateScreen();
+                mDrawTime += mMinFrameTime;
+
+                // Make sure to wrap mDrawTime, since tick_time will wrap.
+                if (mDrawTime > MAX_TIME * 10)
+                    mDrawTime -= MAX_TIME * 10;
+            }
+            else
+            {
+                SDL_Delay(10);
+            }
         }
         else
         {
             SDL_Delay(10);
+            mDrawTime = tick_time * 10;
         }
 
         // Handle network stuff
@@ -463,10 +490,7 @@ void Game::handleInput()
 
                 // Attempt to hide all windows
                 case SDLK_h:
-                    chatWindow->setVisible(false);
-                    miniStatusWindow->setVisible(false);
                     statusWindow->setVisible(false);
-                    menuWindow->setVisible(false);
                     buyDialog->setVisible(false);
                     sellDialog->setVisible(false);
                     buySellDialog->setVisible(false);
@@ -474,12 +498,9 @@ void Game::handleInput()
                     npcTextDialog->setVisible(false);
                     npcListDialog->setVisible(false);
                     skillDialog->setVisible(false);
-                    //newSkillWindow->setVisible(false);
                     setupWindow->setVisible(false);
                     equipmentWindow->setVisible(false);
                     chargeDialog->setVisible(false);
-                    tradeWindow->setVisible(false);
-                    //buddyWindow->setVisible(false);
                     helpWindow->setVisible(false);
                     debugWindow->setVisible(false);
                 break;
@@ -677,6 +698,18 @@ void Game::handleInput()
             }
 
             player_node->attack(target, newTarget);
+        }
+
+        // Target the nearest monster if 'a' pressed
+        if (keys[SDLK_a])
+        {
+            Being *target =
+                beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
+
+            if (target)
+            {
+                player_node->setTarget(target);
+            }
         }
 
         if (joystick)

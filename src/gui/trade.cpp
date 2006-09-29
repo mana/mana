@@ -58,12 +58,14 @@ TradeWindow::TradeWindow():
     mTradeButton = new Button("Trade", "trade", this);
 
     mMyItemContainer = new ItemContainer(mMyInventory.get());
+    mMyItemContainer->addSelectionListener(this);
     mMyItemContainer->setPosition(2, 2);
 
     mMyScroll = new ScrollArea(mMyItemContainer);
     mMyScroll->setPosition(8, 8);
 
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
+    mPartnerItemContainer->addSelectionListener(this);
     mPartnerItemContainer->setPosition(2, 58);
 
     mPartnerScroll = new ScrollArea(mPartnerItemContainer);
@@ -219,53 +221,54 @@ void TradeWindow::tradeItem(Item *item, int quantity)
     outMsg.writeLong(quantity);
 }
 
-void TradeWindow::mouseClick(int x, int y, int button, int count)
+void TradeWindow::selectionChanged(const SelectionEvent &event)
 {
-    Window::mouseClick(x, y, button, count);
-
     Item *item;
 
-    // mMyItems selected
-    if (x >= mMyScroll->getX() + 3
-        && x <= mMyScroll->getX() + mMyScroll->getWidth() - 10
-        && y >= mMyScroll->getY() + 16
-        && y <= mMyScroll->getY() + mMyScroll->getHeight() + 15
-        && (item = mMyItemContainer->getItem()))
+    /* If an item is selected in one container, make sure no item is selected
+     * in the other container.
+     */
+    if (event.getSource() == mMyItemContainer &&
+            (item = mMyItemContainer->getItem()))
     {
-            mPartnerItemContainer->selectNone();
-    // mPartnerItems selected
+        mPartnerItemContainer->selectNone();
     }
-    else if (x >= mPartnerScroll->getX() + 3
-        && x <= mPartnerScroll->getX() + mPartnerScroll->getWidth() - 20
-        && y >= mPartnerScroll->getY() + 16
-        && y <= mPartnerScroll->getY() + mPartnerScroll->getHeight() + 15
-        && (item = mPartnerItemContainer->getItem()))
+    else if ((item = mPartnerItemContainer->getItem()))
     {
-            mMyItemContainer->selectNone();
-    } else {
-        return;
+        mMyItemContainer->selectNone();
     }
 
-    // Show Name and Description
-    std::string SomeText;
-    SomeText = "Name: " + item->getInfo()->getName();
-    mItemNameLabel->setCaption(SomeText);
-    mItemNameLabel->adjustSize();
-    SomeText = "Description: " + item->getInfo()->getDescription();
-    mItemDescriptionLabel->setCaption(SomeText);
-    mItemDescriptionLabel->adjustSize();
+    // Update name and description
+    if (!item)
+    {
+        mItemNameLabel->setCaption("Name:");
+        mItemDescriptionLabel->setCaption("Description:");
+    }
+    else
+    {
+        std::string SomeText;
+        SomeText = "Name: " + item->getInfo().getName();
+        mItemNameLabel->setCaption(SomeText);
+        mItemNameLabel->adjustSize();
+        SomeText = "Description: " + item->getInfo().getDescription();
+        mItemDescriptionLabel->setCaption(SomeText);
+        mItemDescriptionLabel->adjustSize();
+    }
 }
 
 void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     Item *item = inventoryWindow->getItem();
 
-    if (eventId == "add") {
-        if (!item) {
+    if (eventId == "add")
+    {
+        if (!item)
+        {
             return;
         }
 
-        if (mMyInventory->getFreeSlot() < 1) {
+        if (mMyInventory->getFreeSlot() < 1)
+        {
             return;
         }
 

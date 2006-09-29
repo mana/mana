@@ -63,8 +63,11 @@ Map::Map(int width, int height, int tileWidth, int tileHeight):
     mOnClosedList(1), mOnOpenList(2),
     mLastScrollX(0.0f), mLastScrollY(0.0f)
 {
-    mMetaTiles = new MetaTile[mWidth * mHeight];
-    mTiles = new Image*[mWidth * mHeight * 3];
+    int size = mWidth * mHeight;
+
+    mMetaTiles = new MetaTile[size];
+    mTiles = new Image*[size * 3];
+    std::fill_n(mTiles, size * 3, (Image*)0);
 }
 
 Map::~Map()
@@ -86,12 +89,17 @@ Map::~Map()
 void
 Map::setSize(int width, int height)
 {
-    mWidth = width;
-    mHeight = height;
     delete[] mMetaTiles;
     delete[] mTiles;
-    mMetaTiles = new MetaTile[mWidth * mHeight];
-    mTiles = new Image*[mWidth * mHeight * 3];
+
+    mWidth = width;
+    mHeight = height;
+
+    int size = width * height;
+
+    mMetaTiles = new MetaTile[size];
+    mTiles = new Image*[size * 3];
+    std::fill_n(mTiles, size * 3, (Image*)0);
 }
 
 void
@@ -330,8 +338,8 @@ Map::getWalk(int x, int y)
 
     /*
     // Check for collision with a being
-    Beings *beings = beingManager->getAll();
-    for (BeingIterator i = beings->begin(); i != beings->end(); i++) {
+    Beings &beings = beingManager->getAll();
+    for (BeingIterator i = beings.begin(); i != beings.end(); i++) {
         // job 45 is a portal, they don't collide
         if ((*i)->mX / 32 == x && (*i)->mY / 32 == y && (*i)->mJob != 45) {
             return false;

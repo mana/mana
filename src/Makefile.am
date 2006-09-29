@@ -2,6 +2,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/imagerect.h \
+	      gui/widgets/dropdown.cpp \
+	      gui/widgets/dropdown.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -77,6 +79,7 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
+	      gui/selectionlistener.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
 	      gui/serverdialog.cpp \

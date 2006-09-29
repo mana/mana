@@ -27,6 +27,8 @@
 #include <iosfwd>
 #include <memory>
 
+#include "configlistener.h"
+
 #define SPEECH_TIME 80
 #define SPEECH_MAX_TIME 100
 
@@ -36,7 +38,7 @@ extern std::string map_path;
 extern volatile int fps;
 extern volatile int tick_time;
 
-class Game
+class Game : public ConfigListener
 {
     public:
         Game();
@@ -46,7 +48,15 @@ class Game
 
         void handleInput();
 
-    protected:
+        void optionChanged(const std::string &name);
+
+    private:
+        /** Used to determine whether to draw the next frame. */
+        int mDrawTime;
+
+        /** The minimum frame time (used for frame limiting). */
+        int mMinFrameTime;
+
         typedef std::auto_ptr<MessageHandler> MessageHandlerPtr;
         MessageHandlerPtr mBeingHandler;
         MessageHandlerPtr mBuySellHandler;
@@ -61,8 +71,7 @@ class Game
 };
 
 /**
- * Returns elapsed time. (Warning: very unsafe function, it supposes the delay
- * is always < 10 seconds)
+ * Returns elapsed time. (Warning: supposes the delay is always < 100 seconds)
  */
 int get_elapsed_time(int start_time);
 

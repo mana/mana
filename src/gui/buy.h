@@ -27,17 +27,19 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
+#include "selectionlistener.h"
 
 #include "../guichanfwd.h"
 
 class ShopItems;
+class ListBox;
 
 /**
  * The buy dialog.
  *
  * \ingroup Interface
  */
-class BuyDialog : public Window, public gcn::ActionListener
+class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
 {
     public:
         /**
@@ -78,9 +80,11 @@ class BuyDialog : public Window, public gcn::ActionListener
         int getNumberOfElements();
 
         /**
-         * Mouse callback
+         * Updates the labels according to the selected item.
+         *
+         * @see SelectionListener::selectionChanged
          */
-        void mouseClick(int x, int y, int buton, int count);
+        void selectionChanged(const SelectionEvent &event);
 
         /**
          * Returns the name of item number i in the shop inventory.
@@ -92,7 +96,7 @@ class BuyDialog : public Window, public gcn::ActionListener
         gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
-        gcn::ListBox *mItemList;
+        ListBox *mItemList;
         gcn::ScrollArea *mScrollArea;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;

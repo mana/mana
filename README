@@ -1,7 +1,7 @@
 THE MANA WORLD
 ==============
 
- Version: 0.0.20    Date: 23/07/2006
+ Version: 0.0.21    Date: 17/09/2006
 
 
  Development team:
@@ -53,6 +53,7 @@ Use arrow keys to move around. Other keys:
 - Alt + S            sit down / stand up
 - Alt + F            toggle debug pathfinding feature
 - Alt + P            take screenshot
+- A                  target nearest monster
 - H                  hide all non-sticky windows
 - G or Z             pick up item
 - Enter              focus chat window / send message

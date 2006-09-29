@@ -55,6 +55,8 @@ InventoryWindow::InventoryWindow():
     mDropButton = new Button("Drop", "drop", this);
 
     mItems = new ItemContainer(player_node->mInventory.get());
+    mItems->addSelectionListener(this);
+
     mInvenScroll = new ScrollArea(mItems);
     mInvenScroll->setPosition(8, 8);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -123,33 +125,46 @@ void InventoryWindow::action(const std::string &eventId, gcn::Widget *widget)
     }
 }
 
+void InventoryWindow::selectionChanged(const SelectionEvent &event)
+{
+    Item *item = mItems->getItem();
+
+    // Update name, effect and description
+    if (!item)
+    {
+        mItemNameLabel->setCaption("Name:");
+        mItemEffectLabel->setCaption("Effect:");
+        mItemDescriptionLabel->setCaption("Description:");
+    }
+    else
+    {
+        const ItemInfo& itemInfo = item->getInfo();
+        std::string SomeText;
+        SomeText = "Name: " + itemInfo.getName();
+        mItemNameLabel->setCaption(SomeText);
+        SomeText = "Effect: " + itemInfo.getEffect();
+        mItemEffectLabel->setCaption(SomeText);
+        SomeText = "Description: " + itemInfo.getDescription();
+        mItemDescriptionLabel->setCaption(SomeText);
+
+        mItemNameLabel->adjustSize();
+        mItemEffectLabel->adjustSize();
+        mItemDescriptionLabel->adjustSize();
+    }
+}
+
 void InventoryWindow::mouseClick(int x, int y, int button, int count)
 {
     Window::mouseClick(x, y, button, count);
 
-    Item *item = mItems->getItem();
-
-    if (!item) {
-        return;
-    }
-
-    // Show Name and Description
-    std::string SomeText;
-    SomeText = "Name: " + item->getInfo()->getName();
-    mItemNameLabel->setCaption(SomeText);
-    mItemNameLabel->adjustSize();
-    SomeText = "Effect: " + item->getInfo()->getEffect();
-    mItemEffectLabel->setCaption(SomeText);
-    mItemEffectLabel->adjustSize();
-    SomeText = "Description: " + item->getInfo()->getDescription();
-    mItemDescriptionLabel->setCaption(SomeText);
-    mItemDescriptionLabel->adjustSize();
-
     if (button == gcn::MouseInput::RIGHT)
     {
-        /*
-         * convert relative to the window coordinates to
-         * absolute screen coordinates
+        Item *item = mItems->getItem();
+
+        if (!item) return;
+
+        /* Convert relative to the window coordinates to
+         * absolute screen coordinates.
          */
         int mx = x + getX();
         int my = y + getY();
@@ -221,11 +236,6 @@ void InventoryWindow::loadWindowState()
 {
     Window::loadWindowState();
     updateWidgets();
-}
-
-void InventoryWindow::setDefaultSize(int defaultX, int defaultY, int defaultWidth, int defaultHeight)
-{
-    Window::setDefaultSize(defaultX, defaultY, defaultWidth, defaultHeight);
 }
 
 void InventoryWindow::resetToDefaultSize()

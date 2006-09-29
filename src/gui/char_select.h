@@ -54,6 +54,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         void logic();
 
+        bool selectByName(const std::string &name);
+
         /**
          * Returns name of selected player
          */

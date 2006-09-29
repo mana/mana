@@ -266,8 +266,8 @@ void Engine::draw(Graphics *graphics)
     }
 
     // Draw player nickname, speech, and emotion sprite as needed
-    Beings *beings = beingManager->getAll();
-    for (BeingIterator i = beings->begin(); i != beings->end(); i++)
+    Beings &beings = beingManager->getAll();
+    for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
         (*i)->drawSpeech(graphics, -camera_x, -camera_y);
         (*i)->drawName(graphics, -camera_x, -camera_y);

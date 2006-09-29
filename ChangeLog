@@ -1,10 +1,148 @@
-2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
+2006-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/map.cpp: Fix random crashes when map tiles are missing.
+
+2006-09-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/maps/new_2-1.tmx.gz: Matt Howe fixed up cave map.
+
+2006-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/maps/new_6-1.tmx.gz: Alderan fixed a map issue.
+
+2006-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/hairstyle*.png,
+	data/graphics/sprites/hairstyle*.xml, tools/Reorganize.java: Removed
+	unused frames from the hairsets.
+	* src/resources/image.h: Defined NO_SDL_GLEXT to prevent a
+	redefinition when gl.h also tries to define OpenGL extensions (patch
+	accepted from Rogier Polak).
+
+2006-09-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_5-1.tmx.gz: Accepted new version by Matt Howe, fixing
+	several mapping issues.
+
+2006-09-21  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/tiles/Makefile.am: Added missing tileset.
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Made canceling the
+	update process non-blocking (Patch by VictorSan).
+
+2006-09-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.cpp, src/animation.h, src/animatedsprite.cpp,
+	src/animatedsprite.h: Removed some obsolete code and implemented
+	the posibility to define an <end /> token in the <animation>s
+	that allows to define an animation that doesn't loop and returns
+	to the STAND animation when finished.
+	* data/graphics/sprites/hairstyle*.xml,
+	data/graphics/sprites/item0*.xml,
+	data/graphics/sprites/monster*.xml,
+	data/graphics/sprites/weapons.xml: Used the <end /> token for all
+	attack animations fixing the problem with looping monster attack
+	animations.
+
+2006-09-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-whitefur.png,
+	data/graphics/items/generic-cavesnakelamp.png,
+	data/graphics/items/generic-hardspike.png,
+	data/graphics/items/generic-pinkantennae.png,
+	data/graphics/items/Makefile.am, data/items.xml: Added drops for new
+	monsters.
+	* src/gui/setup.cpp, src/gui/setup_video.cpp,
+	src/gui/setup_video.h: Added a slider for controlling the overlay
+	detail to the video setup dialog based on a patch by VictorSan.
+	* data/maps/new_14-1.tmx.gz, data/maps/new_16-1.tmx.gz: Added cloud
+	effect and minimap.
+	* data/images/Makefile.am: Updated makefile.
+
+2006-09-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/Makefile.am: Added missing monster19 sprite.
+
+2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/Makefile.am: Added missing maps.
+	* data/maps/new_10-1.tmx.gz: Disabled layer compression.
+
+2006-09-18  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_9-1.tmx.gz: Fixed some mapping bugs (new walkmap
+	required).
+
+2006-09-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_10-1.tmx.gz: Fixed transparent snow issue (Fix by
+	Pajarico).
+
+2006-09-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp: Stop using the sticky window attribute which is
+	unneeded for the current implementation, instead adjust the set of
+	affected windows by the 'hide' shortcut.
+
+2006-09-17  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz,
+	data/maps/new_16-1.tmx.gz: fixed some mapping errors.
+
+2006-09-16  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animatedsprite.cpp, src/animatedsprite.h: Fixed the crash when
+	attacking without a weapon, some additional stability improvements and
+	more descriptive variable names in the parsing algorithmn.
+
+2006-09-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/changes.txt, data/help/header.txt, NEWS, README,
+	src/tmw.rc: Updated release infos.
+
+2006-09-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.h, src/animatedsprite.h,
+	data/graphics/sprites/weapon.xml: Some modifications at the animation
+	system. No more "undefined action foo" warnings in the tmw.log. Not
+	visible actions must now be declared explicitely.
+	* data/graphics/images/ambient/sandstorm.png,
+	data/graphics/images/ambient/clouds.png: Improved quality of the overlay
+	graphics.
+
+2006-09-14  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/char_select.cpp: Remove debug output.
+	* src/gui/char_select.cpp, src/main.cpp: Fix the character name
+	matching loop and add support for saving the last used character
+	(based on a patch by Andrew Harrison).
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/main.cpp: Clean
+	up the player selection stuff, it's a bit nicer now.
+	* src/main.cpp: Fix up the player selection command line option.
+
+2006-09-13  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/Makefile.am, src/gui/widgets, src/gui/widgets/dropdown.h,
 	src/gui/widgets/dropdown.cpp, src/gui/serverdialog.h,
 	src/gui/serverdialog.cpp: Added a reusable skinned dropdown widget in
 	the new widgets folder. Other widgets will be be moved there later.
 
+2006-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/game.h: Simplified fps limiting a bit and added
+	some comments. Now based on ConfigListener so that the fpslimit option
+	doesn't need to be queried the whole time.
+	* NEWS: Updated with some items.
+
+2006-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp: Fixed more fps issues.
+
+2006-09-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Removed easy targeting functionality since it
+	interferes with walking around too much. Targeting can still be rather
+	conveniently done with 'a' or the middle mouse button.
 
 2006-09-09  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -12,6 +150,72 @@
 	of the pathfinder.
 	* src/localplayer.h, src/being.cpp, src/net/beinghandler.cpp,
 	src/being.h: Fitted being trajectories to synchronization messages.
+
+2006-09-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/image.cpp: Fixed a typo.
+	* src/resources/image.cpp: Worked around a memory leak when using
+	OpenGL.
+
+2006-09-06  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/item010.png, data/graphics/sprites/item010.xml,
+	data/graphics/sprites/Makefile.am: Added santa hat sprites and updated
+	makefile.
+
+2006-09-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp, src/gui/setup_video.cpp, src/main.cpp: Fixed fps
+	limiter issues and increased default limit to 60.
+	* src/game.cpp: Fixed fps limiter when disabled.
+
+2006-09-05  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/graphics/tiles/Woodland_ground.png,
+	data/graphics/tiles/Woodland_x2.png,
+	data/graphics/tiles/Woodland_x3.png: Some minor improvements and
+	additions at my tilesets.
+	* data/graphics/sprites/monster0.xml,
+	data/graphics/sprites/monster1.xml,
+	data/graphics/sprites/monster2.xml,
+	data/graphics/sprites/monster3.xml,
+	data/graphics/sprites/monster4.xml,
+	data/graphics/sprites/monster5.xml,
+	data/graphics/sprites/monster6.xml,
+	data/graphics/sprites/monster8.xml,
+	data/graphics/sprites/monster9.xml,
+	data/graphics/sprites/monster11.xml,
+	data/graphics/sprites/monster13.xml,
+	data/graphics/sprites/monster0.xml: Adjusted the animation speed of
+	several monsters.
+
+2006-09-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/floor_item.cpp, src/gui/equipmentwindow.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/gui/inventorywindow.h,
+	src/gui/selectionlistener.h, src/gui/itemcontainer.h,
+	src/gui/inventorywindow.cpp, src/gui/buy.cpp,
+	src/gui/itemcontainer.cpp, src/gui/popupmenu.cpp, src/item.h,
+	src/net/inventoryhandler.cpp, src/Makefile.am,
+	src/resources/itemmanager.h, src/resources/iteminfo.cpp,
+	src/resources/iteminfo.h, src/resources/itemmanager.cpp: Introduced
+	SelectionListener to fix updating problem in inventory window (should
+	also be used to fix similar problem in trade, buy and sell dialogs).
+	Made the ItemInfo be passed around as a reference instead of a pointer,
+	since it is never NULL.
+	* src/gui/trade.cpp, src/gui/trade.h: Fixed updating of labels in
+	trade window.
+	* src/gui/sell.cpp, src/gui/listbox.h, src/gui/inventorywindow.h,
+	src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h, src/gui/listbox.cpp:
+	Fixed updating of labels in buy and sell dialogs. Also made our
+	listbox respond to mouse dragging to change the selection.
+
+2006-09-02  Bernard Lidicky  <bernard@matfyz.cz>
+
+	* src/game.cpp, src/beingmanager.h, src/gui/gui.cpp,
+	src/beingmanager.cpp, src/localplayer.h, README,
+	data/help/commands.txt, NEWS: Added targeting nearest monster with
+	either keyboard or mouse. Also made clicking beings in general a bit
+	easier (patch applied by Bjørn Lindeijer).
 
 2006-09-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -32,9 +236,21 @@
 
 2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
+	* data/graphics/sprites/monster19.png,
+	data/graphics/sprites/monster19.xml, data/graphics/tiles/arena.png,
+	data/graphics/tiles/cave.png, data/maps/new_17-1.tmx.gz,
+	data/maps/new_6-1.tmx.gz: Added new big cave map, lamp-snake monster,
+	improved arena map.
 	* src/gui/serverdialog.cpp, src/gui/serverdialog.h, src/net/network.h:
 	Fixed some header issues.
 	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-08-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/item007.png,
+	data/graphics/sprites/item007.xml, data/graphics/sprites/item009.png,
+	data/graphics/sprites/item009.xml:
+	Added sprites for miners helm and standard headband.
 
 2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
 
@@ -44,17 +260,29 @@
 	with an unskinned dropdown. Upgraded also the connection window a bit
 	to handle Cancelling more gracefully.
 
-2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+2006-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/engine.cpp, src/gui/gui.cpp: Fixed merge issues: printfs and
-	inconsistency between view and camera variables. Fixed lazy scrolling:
-	there is no "freaking out" when the correct function is used.
+	* src/map.cpp, src/beingmanager.h, src/gui/minimap.cpp,
+	src/engine.cpp, src/beingmanager.cpp: It's better to use a reference
+	when you don't need a pointer.
+	* NEWS: Updated with addition of config file option.
 
-2006-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-08-29  Andrew Harrison  <atharris@users.sourceforge.net>
 
-	* src/gui/gui.cpp: Fixed crash when map is not loaded yet.
-	* src/net/beinghandler.cpp, src/net/protocol.h: Added support for
-	entering monsters.
+	* src/main.cpp: Added command line option to specify which
+	configuration file to use (patch applied by Bjørn Lindeijer).
+
+2006-08-29  Matthias Hartmann  <hartmann.matthias@gmail.com>
+
+	* data/graphics/sprites/item006.png,
+	data/graphics/sprites/item006.xml, data/graphics/sprites/item008.xml:
+	Fixed fancy hat + silk headband positions.
+
+2006-08-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/item008.png,
+	data/graphics/sprites/item008.xml, data/graphics/sprites/Makefile.am:
+	Added fancy hat sprite.
 
 2006-08-28  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -69,6 +297,12 @@
 	data/graphics/sprites/item005.xml, data/graphics/sprites/item006.png,
 	data/graphics/sprites/item006.xml, data/graphics/sprites/Makefile.am:
 	Added headband and fixed svn properties.
+
+2006-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Fixed crash when map is not loaded yet.
+	* src/net/beinghandler.cpp, src/net/protocol.h: Added support for
+	entering monsters.
 
 2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -89,11 +323,14 @@
 	src/monster.cpp, src/player.h: Cleaned the logic members.
 	* src/engine.cpp, src/localplayer.cpp, src/gui/gui.cpp, src/being.cpp,
 	src/being.h: Implemented pixel-grained movements.
+	* src/engine.cpp, src/gui/gui.cpp: Fixed merge issues: printfs and
+	inconsistency between view and camera variables. Fixed lazy scrolling:
+	there is no "freaking out" when the correct function is used.
 
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/net/inventoryhandler.cpp: Applied patch by AHarrison that adds
-	item pickup messages to the chat window.
+	* src/net/inventoryhandler.cpp: Applied patch by Andrew Harrison that
+	adds item pickup messages to the chat window.
 	* NEWS: Updated with some recently added and fixed issues. Doesn't
 	mention any of the recent content updates yet.
 	* src/localplayer.cpp, src/gui/sell.cpp, src/gui/trade.cpp,
@@ -173,7 +410,7 @@
 
 	* data/help/commands.txt, README, src/game.cpp, src/gui/chat.cpp,
 	src/gui/window.cpp, src/gui/window.h: Added support for sticky windows
-	as discussed with doener. Patch by AHarrison.
+	as discussed with doener. Patch by Andrew Harrison.
 	* data/items.xml: Added jeans shorts.
 
 2006-08-24  Philipp Sehmisch  <tmw@crushnet.org>
@@ -235,11 +472,11 @@
 
 2006-08-20  Yohann Ferreira  <bertram@cegetel.net>
 
-	* data/graphics/sprites/Makefile.am : Following the splitting from
+	* data/graphics/sprites/Makefile.am: Following the splitting from
 	Philipp, moved out the items.png file from the Makefile.am.
-	* debian/control, debian/tmw-data.install : Updated debian package
+	* debian/control, debian/tmw-data.install: Updated debian package
 	creation process.
-	* src/Makefile.am : Added iteminfo.cpp to avoid an undefined reference
+	* src/Makefile.am: Added iteminfo.cpp to avoid an undefined reference
 	with gcc 4.1.2. Happy to be back :)
 
 2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -288,13 +525,13 @@
 	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
 	spriteset with filenames. added names and descriptions for all missing
 	items. Changed names and dascriptions of some items.
-	* src/engine.cpp: removed global item spriteset.
+	* src/engine.cpp: Removed global item spriteset.
 	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
 	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,
-	src/itemcontainer.cpp, src/itemcontainer.h: the iteminfo class now
+	src/itemcontainer.cpp, src/itemcontainer.h: The iteminfo class now
 	provides a pointer to the item icon image instead of providing the
 	index on the item spriteset.
-	* data/graphics/tiles/trans_desert-woodland.png: added transmission
+	* data/graphics/tiles/trans_desert-woodland.png: Added transmission
 	tileset between desert and woodland.
 
 2006-08-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -527,8 +764,8 @@
 	char server selection dialog, and added character visualization in
 	character selection dialog.
 	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
-	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with inside
-	of snow village buildings and fixed makefiles.
+	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with
+	inside of snow village buildings and fixed makefiles.
 	* src/being.cpp, src/being.h, src/player.cpp: Fixed direction and
 	action issues when changing appeareance, frames are still out of sync.
 	* data/maps/Makefile.am, data/maps/new_14-1.tmx.gz,
@@ -704,8 +941,8 @@
 
 2006-07-12 Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* /tmw/trunk/data/graphics/sprites/item001.png: Completed the cotton
-	shirt equipment graphic.
+	* data/graphics/sprites/item001.png: Completed the cotton shirt
+	equipment graphic.
 
 2006-07-06  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -755,68 +992,20 @@
 	* src/being.h, src/being.cpp, src/npc.cpp, src/npc.h, src/monster.cpp,
 	src/monster.h: Moved all drawing code from the Being based classes
 	into Being.
-	* data/graphics/sprites/monster0.png,
-	data/graphics/sprites/monster1.png,
-	data/graphics/sprites/monster2.png,
-	data/graphics/sprites/monster3.png,
-	data/graphics/sprites/monster4.png,
-	data/graphics/sprites/monster5.png,
-	data/graphics/sprites/monster6.png,
-	data/graphics/sprites/monster7.png,
-	data/graphics/sprites/monster8.png,
-	data/graphics/sprites/monster9.png,
-	data/graphics/sprites/monster10.png,
-	data/graphics/sprites/monster11.png,
-	data/graphics/sprites/monster12.png,
-	data/graphics/sprites/monster13.png,
-	data/graphics/sprites/monster14.png,
-	data/graphics/sprites/monster15.png,
-	data/graphics/sprites/monster16.png,
-	data/graphics/sprites/monster17.png: Resized and reorganized the
+	* data/graphics/sprites/monster*.png: Resized and reorganized the
 	monster spritesets to fit the new animation system (thanks, Bjørn).
-	* data/graphics/sprites/monster0.xml,
-	data/graphics/sprites/monster1.xml,
-	data/graphics/sprites/monster2.xml,
-	data/graphics/sprites/monster3.xml,
-	data/graphics/sprites/monster4.xml,
-	data/graphics/sprites/monster5.xml,
-	data/graphics/sprites/monster6.xml,
-	data/graphics/sprites/monster7.xml,
-	data/graphics/sprites/monster8.xml,
-	data/graphics/sprites/monster9.xml,
-	data/graphics/sprites/monster10.xml,
-	data/graphics/sprites/monster11.xml,
-	data/graphics/sprites/monster12.xml,
-	data/graphics/sprites/monster13.xml,
-	data/graphics/sprites/monster14.xml,
-	data/graphics/sprites/monster15.xml,
-	data/graphics/sprites/monster16.xml,
-	data/graphics/sprites/monster17.xml: Added animation files for all
+	* data/graphics/sprites/monster*.xml: Added animation files for all
 	monsters.
 	* src/animation.cpp: The offset values of the Frames of animated
 	sprites are now modified so every frame is drawn centered.
-	* data/graphics/sprites/hairstyle0.xml,
-	data/graphics/sprites/hairstyle1.xml,
-	data/graphics/sprites/hairstyle2.xml,
-	data/graphics/sprites/hairstyle3.xml,
-	data/graphics/sprites/hairstyle4.xml,
-	data/graphics/sprites/hairstyle5.xml,
-	data/graphics/sprites/hairstyle6.xml,
-	data/graphics/sprites/hairstyle7.xml: Retuned the offsets of the hair
-	sprites.
+	* data/graphics/sprites/hairstyle*.xml: Retuned the offsets of the
+	hair sprites.
 	* src/animation.cpp: Small stability fix.
 	* src/being.cpp, src/being.h: weapon animation now uses the new
 	animation system.
 	* data/graphics/sprites/player_male_base.xml
 	data/graphics/sprites/player_female_base.xml
-	data/graphics/sprites/hairstyle0.xml,
-	data/graphics/sprites/hairstyle1.xml,
-	data/graphics/sprites/hairstyle2.xml,
-	data/graphics/sprites/hairstyle3.xml,
-	data/graphics/sprites/hairstyle4.xml,
-	data/graphics/sprites/hairstyle5.xml,
-	data/graphics/sprites/hairstyle6.xml,
-	data/graphics/sprites/hairstyle7.xml: Tuned walk speed and added bow
+	data/graphics/sprites/hairstyle*.xml: Tuned walk speed and added bow
 	animations.
 
 2006-07-03  Eugenio Favalli  <elvenprogrammer@gmail.com>

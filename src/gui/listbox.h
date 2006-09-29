@@ -26,10 +26,12 @@
 
 #include <guichan/widgets/listbox.hpp>
 
+class SelectionListener;
+
 /**
  * A list box, meant to be used inside a scroll area. Same as the Guichan list
  * box except this one doesn't have a background, instead completely relying
- * on the scroll area.
+ * on the scroll area. It also adds selection listener functionality.
  *
  * \ingroup GUI
  */
@@ -45,6 +47,43 @@ class ListBox : public gcn::ListBox
          * Draws the list box.
          */
         void draw(gcn::Graphics *graphics);
+
+        void mousePress(int x, int y, int button);
+        void mouseRelease(int x, int y, int button);
+        void mouseMotion(int x, int y);
+
+        /**
+         * Adds a listener to the list that's notified each time a change to
+         * the selection occurs.
+         */
+        void addSelectionListener(SelectionListener *listener)
+        {
+            mListeners.push_back(listener);
+        }
+
+        /**
+         * Removes a listener from the list that's notified each time a change
+         * to the selection occurs.
+         */
+        void removeSelectionListener(SelectionListener *listener)
+        {
+            mListeners.remove(listener);
+        }
+
+        /**
+         * Sets the index of the selected element.
+         */
+        void setSelected(int selected);
+
+    private:
+        /**
+         * Sends out selection events to the list of selection listeners.
+         */
+        void fireSelectionChangedEvent();
+
+        bool mMousePressed;    /**< Keeps track of mouse pressed status. */
+
+        std::list<SelectionListener*> mListeners;
 };
 
 #endif

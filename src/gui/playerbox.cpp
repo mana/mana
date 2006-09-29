@@ -97,7 +97,7 @@ void PlayerBox::draw(gcn::Graphics *graphics)
     if (mHairStyle > 0 && mHairColor < NR_HAIR_COLORS &&
             mHairStyle < NR_HAIR_STYLES)
     {
-        int hf = 9 * mHairColor;
+        int hf = 5 * mHairColor;
         if (hf >= 0 && hf < (int)hairset[mHairStyle]->size()) {
             dynamic_cast<Graphics*>(graphics)->drawImage(
                     hairset[mHairStyle - 1]->get(hf), 35, 7);

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: animation.cpp 2430 2006-07-24 00:13:24Z b_lindeijer $
+ *  $Id$
  */
 
 #include "animatedsprite.h"
@@ -90,14 +90,9 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
         // get action
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            std::string name = getProperty(node, "name", "");
+            std::string actionName = getProperty(node, "name", "");
             std::string imageset = getProperty(node, "imageset", "");
 
-            if (name.empty())
-            {
-                logger->log("Warning: unnamed action in %s",
-                            animationFile.c_str());
-            }
             if (mSpritesets.find(imageset) == mSpritesets.end()) {
                 logger->log("Warning: imageset \"%s\" not defined in %s",
                             imageset.c_str(),
@@ -107,10 +102,25 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 continue;
             }
 
-            Action *action = new Action();
 
+            SpriteAction actionType = makeSpriteAction(actionName);
+            if (actionType == ACTION_INVALID)
+            {
+                logger->log("Warning: Unknown action \"%s\" defined in %s",
+                    actionName.c_str(),
+                    animationFile.c_str());
+                continue;
+            }
+            Action *action = new Action();
             action->setSpriteset(mSpritesets[imageset]);
-            mActions[makeSpriteAction(name)] = action;
+            mActions[actionType] = action;
+
+            // When first action set it as default direction
+            if (mActions.empty())
+            {
+                mActions[ACTION_DEFAULT] = action;
+            }
+
 
             // get animations
             for (xmlNodePtr animationNode = node->xmlChildrenNode;
@@ -121,9 +131,20 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 if (!xmlStrEqual(animationNode->name, BAD_CAST "animation"))
                     continue;
 
-                std::string dir = getProperty(animationNode, "direction", "");
+                std::string directionName = getProperty(animationNode, "direction", "");
+
+                SpriteDirection directionType = makeSpriteDirection(directionName);
+                if (directionType == DIRECTION_INVALID)
+                {
+                    logger->log("Warning: Unknown direction \"%s\" defined for action %s in %s",
+                        directionName.c_str(),
+                        actionName.c_str(),
+                        animationFile.c_str());
+                    continue;
+                }
+
                 Animation *animation = new Animation();
-                action->setAnimation(makeSpriteDirection(dir), animation);
+                action->setAnimation(directionType, animation);
 
                 // Get animation phases
                 for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
@@ -156,12 +177,17 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                             start++;
                         }
                     }
+                    else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
+                    {
+                        animation->addTerminator();
+                    };
                 } // for phaseNode
             } // for animationNode
         } // if "<imageset>" else if "<action>"
     } // for node
 
     // Complete missing actions
+    substituteAction(ACTION_STAND, ACTION_DEFAULT);
     substituteAction(ACTION_WALK, ACTION_STAND);
     substituteAction(ACTION_WALK, ACTION_RUN);
     substituteAction(ACTION_ATTACK, ACTION_STAND);
@@ -247,7 +273,7 @@ AnimatedSprite::reset()
 }
 
 void
-AnimatedSprite::play(SpriteAction action, int time)
+AnimatedSprite::play(SpriteAction action)
 {
     ActionIterator i = mActions.find(action);
 
@@ -262,30 +288,30 @@ AnimatedSprite::play(SpriteAction action, int time)
     if (mAction != i->second)
     {
         mAction = i->second;
-        mLastTime = 0;
-    }
-
-    if (!mAction || !time)
-        mSpeed = 1.0f;
-    else {
-        int animationLength = mAction->getAnimation(mDirection)->getLength();
-        mSpeed = (float) animationLength / time;
+        //mAction->reset();
     }
 }
 
 void
 AnimatedSprite::update(int time)
 {
+    bool notFinished = true;
     // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0)
         mLastTime = time;
 
-    // If not enough time have passed yet, do nothing
+    // If not enough time has passed yet, do nothing
     if (time > mLastTime && mAction)
     {
         Animation *animation = mAction->getAnimation(mDirection);
-        animation->update((unsigned int)((time - mLastTime) * mSpeed));
+        if (animation != NULL) {
+            notFinished = animation->update((unsigned int)(time - mLastTime));}
         mLastTime = time;
+    }
+
+    if (!notFinished)
+    {
+        play(ACTION_STAND);
     }
 }
 
@@ -296,6 +322,8 @@ AnimatedSprite::draw(Graphics* graphics, Sint32 posX, Sint32 posY) const
         return false;
 
     Animation *animation = mAction->getAnimation(mDirection);
+    if (animation == NULL) return false;
+
     int phase = animation->getCurrentPhase();
     if (phase < 0)
         return false;
@@ -322,6 +350,9 @@ AnimatedSprite::getHeight() const
 SpriteAction
 AnimatedSprite::makeSpriteAction(const std::string& action)
 {
+    if (action == "" || action == "default") {
+        return ACTION_DEFAULT;
+    }
     if (action == "stand") {
         return ACTION_STAND;
     }
@@ -365,14 +396,17 @@ AnimatedSprite::makeSpriteAction(const std::string& action)
         return ACTION_DEAD;
     }
     else {
-        return ACTION_DEFAULT;
+        return ACTION_INVALID;
     }
 }
 
 SpriteDirection
 AnimatedSprite::makeSpriteDirection(const std::string& direction)
 {
-    if (direction == "up") {
+    if (direction == "" || direction == "default") {
+        return DIRECTION_DEFAULT;
+    }
+    else if (direction == "up") {
         return DIRECTION_UP;
     }
     else if (direction == "left") {
@@ -381,7 +415,10 @@ AnimatedSprite::makeSpriteDirection(const std::string& direction)
     else if (direction == "right") {
         return DIRECTION_RIGHT;
     }
-    else {
+    else if (direction == "down") {
         return DIRECTION_DOWN;
     }
+    else {
+        return DIRECTION_INVALID;
+    };
 }

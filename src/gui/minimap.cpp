@@ -76,10 +76,10 @@ void Minimap::draw(gcn::Graphics *graphics)
                 mMapImage, getPadding(), getTitleBarHeight());
     }
 
-    Beings *beings = beingManager->getAll();
+    Beings &beings = beingManager->getAll();
     BeingIterator bi;
 
-    for (bi = beings->begin(); bi != beings->end(); bi++)
+    for (bi = beings.begin(); bi != beings.end(); bi++)
     {
         Being *being = (*bi);
         int dotSize = 1;

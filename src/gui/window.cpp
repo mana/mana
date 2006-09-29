@@ -249,16 +249,18 @@ void Window::setSticky(bool sticky)
     mSticky = sticky;
 }
 
-bool Window::isSticky() {
+bool Window::isSticky()
+{
     return mSticky;
 }
 
-void Window::setVisible(bool visible) {
-    if(isSticky()) 
+void Window::setVisible(bool visible)
+{
+    if (isSticky())
     {
         gcn::Window::setVisible(true);
-    } 
-    else 
+    }
+    else
     {
         gcn::Window::setVisible(visible);
     }

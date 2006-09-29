@@ -3,6 +3,37 @@
  
 ##3                         === RECENT CHANGES ===
  
+ 0.0.21 (17 September 2006)
+ - Added item pickup messages to the chat dialog
+ - Added XP bar to ministatus in the top left
+ - Added configurable smooth and lazy scrolling
+ - Added option to turn off the joystick
+ - Added --playername option for automatic character picking
+ - Added --configfile option for specifying which configuration file to use
+ - Added shortcut and middle mouse button for targetting nearest monster
+ - Added support for map effect overlays
+ - Fixed FPS limiter
+ - Fixed updating system on Windows
+ - Fixed player animations going out of sync on changing equipment or hairstyle
+ - Fixed SDL_image configure check on some systems by first checking for libpng
+ - Fixed big memory leak when using OpenGL
+ - Updated to work with Guichan 0.5.0 (older versions no longer supported)
+ 
+ 0.0.20 (24 July 2006)
+ - Added new hairstyle, and some fixes to the old ones
+ - Added slider to set FPS limit
+ - Added visible equipments
+ - Added new maps and monsters
+ - Added female characters
+ - Implemented a new animation system
+ - Updated the updating system
+ - Reduced size of textures to stay within the limits of some OpenGL drivers
+ - Fixed connection not being shut down completely in case of an error
+ - Fixed min size of a window when resizing
+ - Fixed some maps issues
+ - Some fixes to monsters and player graphics
+ - Minor bug fixes and lots of code cleanups
+ 
  0.0.19 (6 March 2006)
  
  - Added --username, --password and --defaults command line options

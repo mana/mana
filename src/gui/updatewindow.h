@@ -162,6 +162,11 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     bool mDownloadComplete;
 
     /**
+     * Flag that show if the user has canceled the update
+     */
+    bool mUserCancel;
+
+    /**
      * Byte count currently downloaded in mMemoryBuffer.
      */
     int mDownloadedBytes;

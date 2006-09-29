@@ -23,12 +23,16 @@
 
 #include "listbox.h"
 
+#include "selectionlistener.h"
+
 #include <guichan/font.hpp>
 #include <guichan/graphics.hpp>
 #include <guichan/listmodel.hpp>
+#include <guichan/mouseinput.hpp>
 
 ListBox::ListBox(gcn::ListModel *listModel):
-    gcn::ListBox(listModel)
+    gcn::ListBox(listModel),
+    mMousePressed(false)
 {
 }
 
@@ -45,13 +49,60 @@ void ListBox::draw(gcn::Graphics *graphics)
 
     // Draw rectangle below the selected list element
     if (mSelected >= 0) {
-        graphics->fillRectangle(
-                gcn::Rectangle(0, fontHeight * mSelected, getWidth(), fontHeight));
+        graphics->fillRectangle(gcn::Rectangle(0, fontHeight * mSelected,
+                                               getWidth(), fontHeight));
     }
 
     // Draw the list elements
     for (int i = 0, y = 0; i < mListModel->getNumberOfElements(); ++i, y += fontHeight)
     {
         graphics->drawText(mListModel->getElementAt(i), 1, y);
+    }
+}
+
+void ListBox::setSelected(int selected)
+{
+    gcn::ListBox::setSelected(selected);
+    fireSelectionChangedEvent();
+}
+
+void ListBox::mousePress(int x, int y, int button)
+{
+    gcn::ListBox::mousePress(x, y, button);
+
+    if (button == gcn::MouseInput::LEFT && hasMouse())
+    {
+        mMousePressed = true;
+    }
+}
+
+void ListBox::mouseRelease(int x, int y, int button)
+{
+    gcn::ListBox::mouseRelease(x, y, button);
+
+    mMousePressed = false;
+}
+
+void ListBox::mouseMotion(int x, int y)
+{
+    gcn::ListBox::mouseMotion(x, y);
+
+    // Pretend mouse is pressed continuously while dragged. Causes list
+    // selection to be updated as is default in many GUIs.
+    if (mMousePressed)
+    {
+        mousePress(x, y, gcn::MouseInput::LEFT);
+    }
+}
+
+void ListBox::fireSelectionChangedEvent()
+{
+    SelectionEvent event(this);
+    SelectionListeners::iterator i_end = mListeners.end();
+    SelectionListeners::iterator i;
+
+    for (i = mListeners.begin(); i != i_end; ++i)
+    {
+        (*i)->selectionChanged(event);
     }
 }

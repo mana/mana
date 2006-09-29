@@ -27,19 +27,20 @@
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
+#include "selectionlistener.h"
 
 #include "../guichanfwd.h"
 
 class Item;
 class ShopItems;
-
+class ListBox;
 
 /**
  * The sell dialog.
  *
  * \ingroup Interface
  */
-class SellDialog : public Window, public gcn::ActionListener
+class SellDialog : public Window, gcn::ActionListener, SelectionListener
 {
     public:
         /**
@@ -70,15 +71,17 @@ class SellDialog : public Window, public gcn::ActionListener
         void action(const std::string& eventId, gcn::Widget* widget);
 
         /**
-         * Mouse callback
+         * Updates labels according to selected item.
+         *
+         * @see SelectionListener::selectionChanged
          */
-        void mouseClick(int x, int y, int buton, int count);
+        void selectionChanged(const SelectionEvent &event);
 
     private:
         gcn::Button *mSellButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
-        gcn::ListBox *mItemList;
+        ListBox *mItemList;
         gcn::Label *mMoneyLabel;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;

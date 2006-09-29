@@ -41,8 +41,7 @@
 
 ItemManager::ItemManager()
 {
-    mUnknown = new ItemInfo();
-    mUnknown->setName("Unknown item");
+    mUnknown.setName("Unknown item");
 
     ResourceManager *resman = ResourceManager::getInstance();
     int size;
@@ -163,14 +162,12 @@ ItemManager::~ItemManager()
         delete i->second;
     }
     mItemInfos.clear();
-
-    delete mUnknown;
 }
 
-ItemInfo*
+const ItemInfo&
 ItemManager::getItemInfo(int id)
 {
     ItemInfoIterator i = mItemInfos.find(id);
 
-    return (i != mItemInfos.end()) ? i->second : mUnknown;
+    return (i != mItemInfos.end()) ? *(i->second) : mUnknown;
 }

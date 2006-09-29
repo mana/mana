@@ -108,6 +108,33 @@ namespace {
 }
 
 /**
+ * A structure holding the values of various options that can be passed from
+ * the command line.
+ */
+struct Options
+{
+    /**
+     * Constructor.
+     */
+    Options():
+        printHelp(false),
+        skipUpdate(false),
+        chooseDefault(false),
+        serverPort(0)
+    {};
+
+    bool printHelp;
+    bool skipUpdate;
+    bool chooseDefault;
+    std::string playername;
+    std::string password;
+    std::string configPath;
+
+    std::string serverName;
+    short serverPort;
+};
+
+/**
  * Initializes the home directory. On UNIX and FreeBSD, ~/.tmw is used. On
  * Windows and other systems we use the current working directory.
  */
@@ -133,7 +160,7 @@ void initHomeDir()
 /**
  * Initialize configuration.
  */
-void initConfiguration()
+void initConfiguration(const Options &options)
 {
     // Fill configuration with defaults
     config.setValue("host", "animesites.de");
@@ -158,7 +185,10 @@ void initConfiguration()
     // Checking if the configuration file exists... otherwise create it with
     // default options.
     FILE *tmwFile = 0;
-    std::string configPath = homeDir + "/config.xml";
+    std::string configPath = options.configPath;
+    if (configPath == "") {
+        configPath = homeDir + "/config.xml";
+    }
     tmwFile = fopen(configPath.c_str(), "r");
 
     // If we can't read it, it doesn't exist !
@@ -176,7 +206,7 @@ void initConfiguration()
 }
 
 /**
- * Do all initialization stuff
+ * Do all initialization stuff.
  */
 void init_engine()
 {
@@ -279,7 +309,8 @@ void init_engine()
             sound.init();
         }
         sound.setSfxVolume((int)config.getValue("sfxVolume", defaultSfxVolume));
-        sound.setMusicVolume((int)config.getValue("musicVolume", defaultMusicVolume));
+        sound.setMusicVolume((int)config.getValue("musicVolume",
+                    defaultMusicVolume));
     }
     catch (const char *err) {
         state = STATE_ERROR;
@@ -311,33 +342,6 @@ void exit_engine()
     ResourceManager::deleteInstance();
 }
 
-/**
- * A structure holding the values of various options that can be passed from
- * the command line.
- */
-struct Options
-{
-    /**
-     * Constructor.
-     */
-    Options():
-        printHelp(false),
-        skipUpdate(false),
-        chooseDefault(false),
-        serverPort(0)
-    {};
-
-    bool printHelp;
-    bool skipUpdate;
-    bool chooseDefault;
-    std::string playername;
-    std::string password;
-
-    std::string serverName;
-    short serverPort;
-
-};
-
 void printHelp()
 {
     std::cout
@@ -351,12 +355,13 @@ void printHelp()
         << std::endl
         << "  -s --server     : Login Server name or IP" << std::endl
         << "  -o --port       : Login Server Port" << std::endl
-        << "  -p --playername : Login with this player" << std::endl;
+        << "  -p --playername : Login with this player" << std::endl
+        << "  -C --configfile : Configuration file to use" << std::endl;
 }
 
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:s:o:";
+    const char *optstring = "huU:P:Dp:s:o:C:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
@@ -367,6 +372,7 @@ void parseOptions(int argc, char *argv[], Options &options)
         { "server",     required_argument, 0, 's' },
         { "port",       required_argument, 0, 'o' },
         { "playername", required_argument, 0, 'p' },
+        { "configfile", required_argument, 0, 'C' },
         { 0 }
     };
 
@@ -402,6 +408,9 @@ void parseOptions(int argc, char *argv[], Options &options)
                 break;
             case 'p':
                 options.playername = optarg;
+                break;
+            case 'C':
+                options.configPath = optarg;
                 break;
         }
     }
@@ -480,6 +489,10 @@ void mapLogin(LoginData *loginData)
 {
     Network::registerHandler(&mapLoginHandler);
 
+    logger->log("Memorizing selected character %s",
+            player_node->getName().c_str());
+    config.setValue("lastCharacter", player_node->getName());
+
     // Send connect messages with the magic token to game and chat servers
     MessageOut gameServerConnect(PGMSG_CONNECT);
     gameServerConnect.writeString(token, 32);
@@ -510,7 +523,7 @@ int main(int argc, char *argv[])
     PHYSFS_init(argv[0]);
 
     initHomeDir();
-    initConfiguration();
+    initConfiguration(options);
 
     // Configure logger
     logger = new Logger();
@@ -721,23 +734,16 @@ int main(int argc, char *argv[])
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(&charInfo);
-                    if (options.playername != "") {
-                        n_character = 0;
-                        while (((CharSelectDialog*) currentDialog)->getName()
-                                != options.playername &&
-                                n_character < MAX_SLOT + 1)
-                        {
-                            ((CharSelectDialog*) currentDialog)->action("next",
-                                                                        NULL);
-                            ((CharSelectDialog*) currentDialog)->updatePlayerInfo();
-                            n_character++;
-                        }
-                        n_character = MAX_SLOT + 1;
-                    }
-                    if (options.chooseDefault || options.playername != "") {
-                        ((CharSelectDialog*)currentDialog)->action("ok",
-                                                                   NULL);
-                    }
+
+                    if (((CharSelectDialog*)currentDialog)->
+                            selectByName(options.playername))
+                        options.chooseDefault = true;
+                    else
+                        ((CharSelectDialog*)currentDialog)->selectByName(
+                            config.getValue("lastCharacter", ""));
+
+                    if (options.chooseDefault)
+                        ((CharSelectDialog*)currentDialog)->action("ok", NULL);
                     break;
 
                 case STATE_ERROR:

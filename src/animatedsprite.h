@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: animation.h 2430 2006-07-24 00:13:24Z b_lindeijer $
+ *  $Id$
  */
 
 #ifndef _TMW_ANIMATEDSPRITE_H
@@ -50,15 +50,18 @@ enum SpriteAction
     ACTION_SIT,
     ACTION_SLEEP,
     ACTION_HURT,
-    ACTION_DEAD
+    ACTION_DEAD,
+    ACTION_INVALID
 };
 
 enum SpriteDirection
 {
-    DIRECTION_DOWN = 0,
+    DIRECTION_DEFAULT = 0,
+    DIRECTION_DOWN,
     DIRECTION_UP,
     DIRECTION_LEFT,
-    DIRECTION_RIGHT
+    DIRECTION_RIGHT,
+    DIRECTION_INVALID
 };
 
 /**
@@ -85,11 +88,10 @@ class AnimatedSprite
         reset();
 
         /**
-         * Plays an action using the current direction that will have a
-         * duration of the specified time, 0 means default.
+         * Plays an action using the current direction
          */
         void
-        play(SpriteAction action, int time = 0);
+        play(SpriteAction action);
 
         /**
          * Inform the animation of the passed time so that it can output the

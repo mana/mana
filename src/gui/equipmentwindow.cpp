@@ -65,7 +65,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
             continue;
         }
 
-        image = item->getInfo()->getImage();
+        image = item->getInfo().getImage();
         dynamic_cast<Graphics*>(graphics)->drawImage(
                 image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
@@ -76,7 +76,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         return;
     }
 
-    image = item->getInfo()->getImage();
+    image = item->getInfo().getImage();
 
     dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     graphics->drawText(toString(item->getQuantity()), 170, 62,
