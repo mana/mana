@@ -12,7 +12,7 @@ import java.io.File;
 import javax.imageio.ImageIO;
 
 /**
- * Tool to reorganize the hair spritesets.
+ * Tool to reorganize the headgears.
  */
 public class Reorganize
 {
@@ -47,7 +47,7 @@ public class Reorganize
         // Read the existing frames into a vector
         Vector<BufferedImage> spriteSet = gridCut(source,
                 HAIR_SPRITE_WIDTH, HAIR_SPRITE_HEIGHT,
-                HAIR_FRAMES, HAIR_COLORS);
+                HAIR_FRAMES, 1);
 
         // Determine minimal rectangle that can still contain the contents of
         // any frame
@@ -60,21 +60,16 @@ public class Reorganize
             System.exit(1);
         }
 
-        // Make crop rect one pixel larger (since we want an inclusive rect)
-        cropRect.add(
-                cropRect.x + cropRect.width + 1,
-                cropRect.y + cropRect.height + 1);
-
         System.out.println(arg[0] + ": width=\"" +
                 cropRect.width + "\" height=\"" + cropRect.height + "\"");
         */
 
-        filterHairstyle(spriteSet);
+        filterHeadgear(spriteSet);
 
         BufferedImage target = gridDraw(
                 spriteSet,
                 new Rectangle(0, 0, HAIR_SPRITE_WIDTH, HAIR_SPRITE_HEIGHT),
-                HAIR_FRAMES - 4, HAIR_COLORS);
+                HAIR_FRAMES - 4, 1);
 
         // Save the target image
         try {
@@ -149,6 +144,13 @@ public class Reorganize
             }
         }
 
+        // Make crop rect one pixel larger (since we want an inclusive rect)
+        if (cropRect != null) {
+            cropRect.add(
+                    cropRect.x + cropRect.width + 1,
+                    cropRect.y + cropRect.height + 1);
+        }
+
         return cropRect;
     }
 
@@ -183,5 +185,14 @@ public class Reorganize
             spriteSet.remove(i * HAIR_FRAMES + 2);
             spriteSet.remove(i * HAIR_FRAMES + 1);
         }
+    }
+
+    private static void filterHeadgear(Vector<BufferedImage> spriteSet)
+    {
+        // Remove frame 1, 2, 6 and 7
+        spriteSet.remove(7);
+        spriteSet.remove(6);
+        spriteSet.remove(2);
+        spriteSet.remove(1);
     }
 }

@@ -1,3 +1,17 @@
+2006-10-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/item006.xml,
+	data/graphics/sprites/item007.xml,
+	data/graphics/sprites/item008.xml,
+	data/graphics/sprites/item009.xml,
+	data/graphics/sprites/item006.png,
+	data/graphics/sprites/item007.png,
+	data/graphics/sprites/item008.png,
+	data/graphics/sprites/item009.png,
+	data/graphics/sprites/item010.xml,
+	data/graphics/sprites/item010.png: Removed empty frames from
+	headgears.
+
 2006-10-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp, src/map.h, src/Makefile.am,
