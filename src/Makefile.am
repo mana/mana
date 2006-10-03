@@ -157,6 +157,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/skillhandler.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
+	      resources/ambientoverlay.cpp \
+	      resources/ambientoverlay.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \

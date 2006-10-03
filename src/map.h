@@ -29,6 +29,7 @@
 
 #include "properties.h"
 
+class AmbientOverlay;
 class Graphics;
 class Image;
 class Tileset;
@@ -63,16 +64,6 @@ struct MetaTile
     int parentX;            /**< X coordinate of parent tile */
     int parentY;            /**< Y coordinate of parent tile */
     bool walkable;          /**< Can beings walk on this tile */
-};
-
-struct AmbientOverlay
-{
-    Image *image;
-    float parallax;
-    float scrollX;
-    float scrollY;
-    float scrollSpeedX;
-    float scrollSpeedY;
 };
 
 /**
@@ -222,8 +213,7 @@ class Map : public Properties
         int mOnClosedList, mOnOpenList;
 
         //overlay Data
-        AmbientOverlay mFoo;
-        std::list<AmbientOverlay> mOverlays;
+        std::list<AmbientOverlay*> mOverlays;
         float mLastScrollX;
         float mLastScrollY;
 };

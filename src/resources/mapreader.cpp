@@ -24,6 +24,7 @@
 #include "mapreader.h"
 
 #include <cassert>
+#include <iostream>
 #include <zlib.h>
 
 #include "resourcemanager.h"
@@ -215,29 +216,37 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
     }
 
     //set Overlays
-    int i = 0;
     ResourceManager *resman = ResourceManager::getInstance();
-
-    while (map->hasProperty("overlay" + toString(i) + "image"))
+    for (int i = 0; ; i++)
     {
-        Image *overlayImage = resman->getImage(map->getProperty("overlay" + toString(i) + "image"));
+        const std::string name = "overlay" + toString(i);
+
+        if (!map->hasProperty(name + "image"))
+            break; // Finished
+
+        Image *img = resman->getImage(map->getProperty(name + "image"));
         float scrollX = 0.0f;
         float scrollY = 0.0f;
         float parallax = 0.0f;
-        if (map->hasProperty("overlay" + toString(i) + "scrollX"))
+        std::stringstream ss;
+
+        if (map->hasProperty(name + "scrollX"))
         {
-            scrollX = atof(map->getProperty("overlay" + toString(i) + "scrollX").c_str());
+            ss.str(map->getProperty(name + "scrollX"));
+            ss >> scrollX;
         }
-        if (map->hasProperty("overlay" + toString(i) + "scrollY"))
+        if (map->hasProperty(name + "scrollY"))
         {
-            scrollY = atof(map->getProperty("overlay" + toString(i) + "scrollY").c_str());
+            ss.str(map->getProperty(name + "scrollY"));
+            ss >> scrollY;
         }
-        if (map->hasProperty("overlay" + toString(i) + "parallax"))
+        if (map->hasProperty(name + "parallax"))
         {
-            parallax = atof(map->getProperty("overlay" + toString(i) + "parallax").c_str());
+            ss.str(map->getProperty(name + "parallax"));
+            ss >> parallax;
         }
-        map->setOverlay (overlayImage, scrollX, scrollY, parallax);
-        i++;
+        map->setOverlay(img, scrollX, scrollY, parallax);
+        img->decRef();
     }
 
     return map;
@@ -350,6 +359,11 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 }
             }
         }
+
+        if (y < h)
+            std::cerr << "TOO SMALL!\n";
+        if (x)
+            std::cerr << "TOO SMALL!\n";
 
         // There can be only one data element
         break;

@@ -1,3 +1,10 @@
+2006-10-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/map.cpp, src/map.h, src/Makefile.am,
+	src/resources/mapreader.cpp, src/resources/ambientoverlay.cpp,
+	src/resources/ambientoverlay.h: Turned AmbientOverlay into a class.
+	Cleaned up the associated code.
+
 2006-10-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tools/Purger.java: Added a tool to purge old accounts from eAthena's
