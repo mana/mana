@@ -30,9 +30,15 @@ class Image;
 class AmbientOverlay
 {
     public:
+        /**
+         * Constructor.
+         */
         AmbientOverlay(Image *img, float parallax,
-                float scrollX, float scrollY, float speedX, float speedY);
+                       float speedX, float speedY);
 
+        /**
+         * Destructor.
+         */
         ~AmbientOverlay();
 
         void update(int timePassed, float dx, float dy);
@@ -42,10 +48,10 @@ class AmbientOverlay
     private:
         Image *mImage;
         float mParallax;
-        float mScrollX;
-        float mScrollY;
-        float mSpeedX;
-        float mSpeedY;
+        float mPosX;              /**< Current layer X position. */
+        float mPosY;              /**< Current layer Y position. */
+        float mSpeedX;            /**< Scroll speed in X direction. */
+        float mSpeedY;            /**< Scroll speed in Y direction. */
 };
 
 #endif

@@ -8,6 +8,10 @@
 	actually added one).
 	* src/properties.h: Added convenience method to read a property as a
 	float.
+	* src/map.cpp, src/resources/ambientoverlay.cpp,
+	src/resources/ambientoverlay.h: Resolved some weirdness involving
+	the terms scroll and speed.
+
 
 2006-10-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

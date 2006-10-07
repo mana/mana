@@ -28,9 +28,9 @@
 #include "../graphics.h"
 
 AmbientOverlay::AmbientOverlay(Image *img, float parallax,
-        float scrollX, float scrollY, float speedX, float speedY):
+                               float speedX, float speedY):
     mImage(img), mParallax(parallax),
-    mScrollX(scrollX), mScrollY(scrollY),
+    mPosX(0), mPosY(0),
     mSpeedX(speedX), mSpeedY(speedY)
 {
     mImage->incRef();
@@ -44,30 +44,30 @@ AmbientOverlay::~AmbientOverlay()
 void AmbientOverlay::update(int timePassed, float dx, float dy)
 {
     // Self scrolling of the overlay
-    mScrollX -= mSpeedX * timePassed / 10;
-    mScrollY -= mSpeedY * timePassed / 10;
+    mPosX -= mSpeedX * timePassed / 10;
+    mPosY -= mSpeedY * timePassed / 10;
 
     // Parallax scrolling
-    mScrollX += dx * mParallax;
-    mScrollY += dy * mParallax;
+    mPosX += dx * mParallax;
+    mPosY += dy * mParallax;
 
     int imgW = mImage->getWidth();
     int imgH = mImage->getHeight();
 
     // Wrap values
-    while (mScrollX > imgW)
-        mScrollX -= imgW;
-    while (mScrollX < 0)
-        mScrollX += imgW;
+    while (mPosX > imgW)
+        mPosX -= imgW;
+    while (mPosX < 0)
+        mPosX += imgW;
 
-    while (mScrollY > imgH)
-        mScrollY -= imgH;
-    while (mScrollY < 0)
-        mScrollY += imgH;
+    while (mPosY > imgH)
+        mPosY -= imgH;
+    while (mPosY < 0)
+        mPosY += imgH;
 }
 
 void AmbientOverlay::draw(Graphics *graphics, int x, int y)
 {
-    graphics->drawImagePattern(mImage, (int)(-mScrollX), (int)(-mScrollY),
-            x + (int)mScrollX, y + (int)mScrollY);
+    graphics->drawImagePattern(mImage,
+            (int) -mPosX, (int) -mPosY, x + (int) mPosX, y + (int) mPosY);
 }

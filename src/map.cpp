@@ -98,16 +98,14 @@ Map::initializeOverlays()
         const std::string name = "overlay" + toString(i);
 
         Image *img = resman->getImage(getProperty(name + "image"));
-        float scrollX = getFloatProperty(name + "scrollX");
-        //float scrollY = getFloatProperty(name + "scrollY");
+        float speedX = getFloatProperty(name + "scrollX");
+        float speedY = getFloatProperty(name + "scrollY");
         float parallax = getFloatProperty(name + "parallax");
 
         if (img)
         {
-            // TODO: For some reason scrollX is passed as speedX and speedY.
-            //       Maybe Crush knows why?
             mOverlays.push_back(
-                    new AmbientOverlay(img, parallax, 0, 0, scrollX, scrollX));
+                    new AmbientOverlay(img, parallax, speedX, speedY));
 
             // The AmbientOverlay takes control over the image.
             img->decRef();
