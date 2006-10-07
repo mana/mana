@@ -32,10 +32,12 @@
 #include "sprite.h"
 #include "tileset.h"
 
+#include "resources/resourcemanager.h"
 #include "resources/ambientoverlay.h"
 #include "resources/image.h"
 
 #include "utils/dtor.h"
+#include "utils/tostring.h"
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -85,19 +87,32 @@ Map::~Map()
 }
 
 void
-Map::setSize(int width, int height)
+Map::initializeOverlays()
 {
-    delete[] mMetaTiles;
-    delete[] mTiles;
+    ResourceManager *resman = ResourceManager::getInstance();
 
-    mWidth = width;
-    mHeight = height;
+    for (int i = 0;
+         hasProperty("overlay" + toString(i) + "image");
+         i++)
+    {
+        const std::string name = "overlay" + toString(i);
 
-    int size = width * height;
+        Image *img = resman->getImage(getProperty(name + "image"));
+        float scrollX = getFloatProperty(name + "scrollX");
+        //float scrollY = getFloatProperty(name + "scrollY");
+        float parallax = getFloatProperty(name + "parallax");
 
-    mMetaTiles = new MetaTile[size];
-    mTiles = new Image*[size * 3];
-    std::fill_n(mTiles, size * 3, (Image*)0);
+        if (img)
+        {
+            // TODO: For some reason scrollX is passed as speedX and speedY.
+            //       Maybe Crush knows why?
+            mOverlays.push_back(
+                    new AmbientOverlay(img, parallax, 0, 0, scrollX, scrollX));
+
+            // The AmbientOverlay takes control over the image.
+            img->decRef();
+        }
+    }
 }
 
 void
@@ -177,17 +192,17 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
 {
     static int lastTick = tick_time;
 
-    // detail 0: no overlays
+    // Detail 0: no overlays
     if (detail <= 0) return;
 
     if (mLastScrollX == 0.0f && mLastScrollY == 0.0f)
     {
-        // first call - initialisation
+        // First call - initialisation
         mLastScrollX = scrollX;
         mLastScrollY = scrollY;
     }
 
-    //update Overlays
+    // Update Overlays
     int timePassed = get_elapsed_time(lastTick);
     float dx = scrollX - mLastScrollX;
     float dy = scrollY - mLastScrollY;
@@ -201,25 +216,15 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
     mLastScrollY = scrollY;
     lastTick = tick_time;
 
-    //draw overlays
+    // Draw overlays
     for (i = mOverlays.begin(); i != mOverlays.end(); i++)
     {
         (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
 
-        // detail 1: only one overlay, higher: all overlays
+        // Detail 1: only one overlay, higher: all overlays
         if (detail == 1)
             break;
     };
-}
-
-void
-Map::setOverlay(Image *image, float speedX, float speedY, float parallax)
-{
-    if (!image)
-        return;
-
-    mOverlays.push_back(
-            new AmbientOverlay(image, parallax, 0, 0, speedX, speedX));
 }
 
 void

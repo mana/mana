@@ -1,3 +1,14 @@
+2006-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/resources/mapreader.cpp: Added support for gzip compressed map
+	layers.
+	* configure.ac, The Mana World.dev: Increased version to 0.0.22.
+	* src/map.cpp: Removed unused setSize method. Also introduced
+	initializeOverlays method and removed the confusing setOverlay (which
+	actually added one).
+	* src/properties.h: Added convenience method to read a property as a
+	float.
+
 2006-10-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.

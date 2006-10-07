@@ -83,24 +83,22 @@ class Map : public Properties
         ~Map();
 
         /**
+         * Initialize map overlays. Should be called after all the properties
+         * are set.
+         */
+        void initializeOverlays();
+
+        /**
          * Draws a map layer to the given graphics output.
          */
         void draw(Graphics *graphics, int scrollX, int scrollY, int layer);
 
         /**
-         * Sets Overlay Graphic and Scrollspeed
-         */
-        void setOverlay(Image *image, float speedX, float speedY, float parallax);
-
-        /**
          * Draws the overlay graphic to the given graphics output.
          */
-        void drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail);
-
-        /**
-         * Sets the size of the map. This will destroy any existing map data.
-         */
-        void setSize(int width, int height);
+        void
+        drawOverlay(Graphics *graphics, float scrollX, float scrollY,
+                    int detail);
 
         /**
          * Adds a tileset to this map.

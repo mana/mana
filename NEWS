@@ -1,4 +1,5 @@
 0.0.22 (...)
+- Added support for gzip compressed map layer data
 - Fixed problem with OpenGL related redefinition
 - Fixed problems with hiding windows using h
 - Fixed trade window positioning

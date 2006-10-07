@@ -26,6 +26,7 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 
 /**
  * A class holding a set of properties.
@@ -39,16 +40,36 @@ class Properties
         /**
          * Get a map property.
          *
-         * @return the value of the given property or an empty string when it
+         * @param def default value, empty string by default
+         * @return the value of the given property or the given default when it
          *         doesn't exist.
          */
         const std::string&
-        getProperty(const std::string &name)
+        getProperty(const std::string &name, const std::string &def = "")
         {
-            const static std::string undefined = "";
             PropertyMap::const_iterator i = mProperties.find(name);
+            return (i != mProperties.end()) ? i->second : def;
+        }
 
-            return (i != mProperties.end()) ? i->second : undefined;
+        /**
+         * Gets a map property as a float.
+         *
+         * @param def default value, 0.0f by default
+         * @return the value of the given property, or 0.0f when it doesn't
+         *         exist.
+         */
+        const float
+        getFloatProperty(const std::string &name, float def = 0.0f)
+        {
+            PropertyMap::const_iterator i = mProperties.find(name);
+            float ret = def;
+            if (i != mProperties.end())
+            {
+                std::stringstream ss;
+                ss.str(i->second);
+                ss >> ret;
+            }
+            return ret;
         }
 
         /**
