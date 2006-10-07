@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=235
+UnitCount=237
 Type=0
 Ver=1
 ObjFiles=
@@ -2401,6 +2401,26 @@ BuildCmd=
 FileName=src\resources\iteminfo.cpp
 CompileCpp=1
 Folder=tmw
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit236]
+FileName=src\resources\ambientoverlay.cpp
+CompileCpp=1
+Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit237]
+FileName=src\resources\ambientoverlay.h
+CompileCpp=1
+Folder=resources
 Compile=1
 Link=1
 Priority=1000
