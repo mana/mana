@@ -52,7 +52,7 @@ BuyDialog::BuyDialog(Network *network):
     mScrollArea = new ScrollArea(mItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Price: 0 GP");
+    mMoneyLabel = new gcn::Label("Price : 0 GP / 0 GP");
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
     mBuyButton = new Button("Buy", "buy", this);
@@ -116,6 +116,8 @@ BuyDialog::~BuyDialog()
 void BuyDialog::setMoney(int amount)
 {
     mMoney = amount;
+    mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney)  + " GP");
+    mMoneyLabel->adjustSize();
 }
 
 void BuyDialog::reset()
@@ -131,7 +133,7 @@ void BuyDialog::reset()
     mDecreaseButton->setEnabled(false);
     mQuantityLabel->setCaption("0");
     mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Price: 0");
+    mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney) + " GP");
     mMoneyLabel->adjustSize();
     mItemDescLabel->setCaption("");
     mItemEffectLabel->setCaption("");
@@ -161,7 +163,7 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
         mSlider->setValue(0);
         mQuantityLabel->setCaption("0");
         mQuantityLabel->adjustSize();
-        mMoneyLabel->setCaption("Price : 0 GP");
+        mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney) + " GP");
         mMoneyLabel->adjustSize();
 
         // Disable buttons for buying and decreasing
@@ -260,7 +262,8 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
         mQuantityLabel->adjustSize();
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price : " + toString(price)  + " GP");
+        mMoneyLabel->setCaption("Price : " + toString(price)  + " GP / "
+                                + toString(mMoney) + " GP" );
         mMoneyLabel->adjustSize();
     }
 }

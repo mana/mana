@@ -1,3 +1,8 @@
+2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/buysell.cpp, src/gui/buy.cpp : A little tweak to the buy
+	dialogs.
+
 2006-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/resources/mapreader.cpp: Added support for gzip compressed map
@@ -57,6 +62,7 @@
 
 	* data/graphics/maps/new_2-1.tmx.gz: Matt Howe fixed up cave map.
 
+>>>>>>> .r2727
 2006-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/maps/new_6-1.tmx.gz: Alderan fixed a map issue.

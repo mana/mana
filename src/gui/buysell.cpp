@@ -48,6 +48,8 @@ BuySellDialog::BuySellDialog():
 
     setContentSize(x, 2 * y + buyButton->getHeight());
     setLocationRelativeTo(getParent());
+
+    requestFocus();
 }
 
 void BuySellDialog::action(const std::string& eventId, gcn::Widget* widget)
