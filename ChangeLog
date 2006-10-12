@@ -1,3 +1,8 @@
+2006-10-12  Cédric Borgese  <cedric.borgese@gmail.com>
+
+	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the 
+	base of the trees in the woodland tileset.
+
 2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/gui/buysell.cpp, src/gui/buy.cpp : A little tweak to the buy
