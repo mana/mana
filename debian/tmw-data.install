@@ -4,6 +4,7 @@ data/graphics/gui/*.png		usr/share/games/tmw/data/graphics/gui
 data/graphics/sprites/*.png	usr/share/games/tmw/data/graphics/sprites
 data/graphics/sprites/*.xml	usr/share/games/tmw/data/graphics/sprites
 data/graphics/images/*.png	usr/share/games/tmw/data/graphics/images
+data/graphics/items/*.png	usr/share/games/tmw/data/graphics/items
 data/graphics/tiles/*.png	usr/share/games/tmw/data/graphics/tiles
 data/maps/*.tmx.gz		usr/share/games/tmw/data/maps
 data/sfx/*.ogg			usr/share/games/tmw/data/sfx

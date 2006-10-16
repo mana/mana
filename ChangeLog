@@ -1,10 +1,16 @@
+2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
+
+	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
+	debian/tmw-music.install: Updating debian files for bug fixing.
+
 2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
-	* \data\graphics\sprites\npcs.png: Updated the clothes salesman,
+
+	* /data/graphics/sprites/npcs.png: Updated the clothes salesman,
 	it was way out of date.
 
 2006-10-12  Cédric Borgese  <cedric.borgese@gmail.com>
 
-	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the 
+	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the
 	base of the trees in the woodland tileset.
 
 2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
