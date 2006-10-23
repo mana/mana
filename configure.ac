@@ -36,6 +36,9 @@ AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.sf.net)]))
 #AC_CHECK_LIB([guichan_opengl], [gcnOpenGL], ,
 #AC_MSG_ERROR([ *** Unable to find Guichan OpenGL library (guichan.sf.net)]))
 
+AC_CHECK_LIB([z], [inflate], ,
+AC_MSG_ERROR([ *** Unable to find zlib (http://www.gzip.org/zlib/)]))
+
 AC_CHECK_LIB([physfs], [PHYSFS_init], ,
 AC_MSG_ERROR([ *** Unable to find PhysFS library (icculus.org/physfs/)]))
 

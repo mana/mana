@@ -1,3 +1,8 @@
+2006-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Added zlib check before PhysFS check. The PhysFS check
+	was failing on MSYS because of a missing -lz.
+
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
@@ -31,7 +36,6 @@
 	* src/map.cpp, src/resources/ambientoverlay.cpp,
 	src/resources/ambientoverlay.h: Resolved some weirdness involving
 	the terms scroll and speed.
-
 
 2006-10-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
