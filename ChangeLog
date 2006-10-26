@@ -8,6 +8,49 @@
 	* configure.ac: Added zlib check before PhysFS check. The PhysFS check
 	was failing on MSYS because of a missing -lz.
 
+2006-10-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* CMakeLists.txt, src/CMakeLists.txt: Add PACKAGE_VERSION support.
+	* CMakeLists.txt, src/CMakeLists.txt: Setup the binary dir in the main
+	CMakeLists.txt file.
+	* src/main.h: Include config.h only when we have it.
+	* src/CMakeLists.txt: Properly set build flags for the tmw target.
+
+2006-10-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/CMakeLists.txt, data/graphics/tiles/CMakeLists.txt,
+	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+	data/graphics/images/ambient/CMakeLists.txt,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/maps/CMakeLists.txt,
+	data/sfx/CMakeLists.txt, data/help/CMakeLists.txt,
+	data/icons/CMakeLists.txt, data/CMakeLists.txt, CMakeLists.txt: Add
+	TMW_DATADIR definition.
+
+2006-10-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/CMakeLists.txt: Adjusted path for Windows.
+
+2006-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* CMakeLists.txt: Enable OpenGL by default.
+	* CMake/Modules/FindLibcurl.cmake: Fix libcurl library not being
+	marked as advanced option.
+	* CMakeLists.txt, src/CMakeLists.txt: Add OpenGL option.
+	* data/CMakeLists.txt: Adjust data destination for Windows.
+	* src/CMakeLists.txt: Adjust binary destination for Windows.
+	* src/CMakeLists.txt, data/graphics/tiles/CMakeLists.txt,
+	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+	data/graphics/images/ambient/CMakeLists.txt,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
+	data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
+	data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
+	data/CMakeLists.txt, CMakeLists.txt: Add CMake install support.
+	* CMake/Modules/FindGuichan.cmake, CMake/Modules/FindLibXml2.cmake,
+	CMake/Modules/FindLibcurl.cmake, CMakeLists.txt, src/CMakeLists.txt:
+	Add basic CMake support for building tmw.
+
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
