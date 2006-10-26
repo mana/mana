@@ -54,7 +54,8 @@
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
-	debian/tmw-music.install: Updating debian files for bug fixing.
+	debian/tmw-music.install, debian/changelog: Updating debian files for
+	bug fixing.
 
 2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
 
