@@ -4,14 +4,17 @@
 
 2006-10-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* /data/graphics/sprites/monster20.png, 
-	/data/graphics/sprites/monster20.xml,
-	/data/graphics/sprites/CMakeLists.txt:
+	* data/graphics/sprites/monster20.png, 
+	data/graphics/sprites/monster20.xml,
+	data/graphics/sprites/CMakeLists.txt:
 	Added pumpkin ghost monster for halloween event.
+	* data/maps/new_9-1.tmx.gz: Fixed a map discrepancy between
+	new_9-1 and new_14-1 (no new walkmap required). Thanks to QOAL
+	for reporting.
 
 2006-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* /data/graphics/images/ambient/night.png: added graphic for night 
+	* data/graphics/images/ambient/night.png: added graphic for night 
 	ambient effect.
 
 2006-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
