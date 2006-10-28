@@ -1,3 +1,10 @@
+2006-10-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* /data/graphics/sprites/monster20.png, 
+	/data/graphics/sprites/monster20.xml,
+	/data/graphics/sprites/CMakeLists.txt:
+	Added pumpkin ghost monster for halloween event.
+
 2006-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* /data/graphics/images/ambient/night.png: added graphic for night 
