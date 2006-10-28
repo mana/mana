@@ -607,6 +607,10 @@ int main(int argc, char *argv[])
             {
                 case UPDATE_STATE:
                     loadUpdates();
+                    // Reload the wallpaper in case that it was updated
+                    login_wallpaper->decRef();
+                    login_wallpaper = ResourceManager::getInstance()->
+                        getImage("graphics/images/login_wallpaper.png");
                     break;
 
                     // Those states don't cause a network disconnect

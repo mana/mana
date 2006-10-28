@@ -1,5 +1,6 @@
 2006-10-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/main.c: Reload wallpaper after updates are fetched.
 	* data/graphics/sprites/Makefile.am: Added monster20.
 
 2006-10-28  Philipp Sehmisch  <tmw@crushnet.org>
