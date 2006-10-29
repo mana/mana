@@ -1,4 +1,5 @@
-0.0.22 (...)
+0.0.21.1 (.. October 2006)
+- Reload wallpaper after loading updates
 - Added support for gzip compressed map layer data
 - Fixed problem with OpenGL related redefinition
 - Fixed problems with hiding windows using h
