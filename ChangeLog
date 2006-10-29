@@ -1,3 +1,9 @@
+2006-10-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, The Mana World.dev, CMakeLists.txt,
+	data/help/header.txt, NEWS: Set version to 0.0.21.1.
+	* src/player.cpp: Fixed excessive unnecessary reloading of sprites.
+
 2006-10-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/main.c: Reload wallpaper after updates are fetched.
@@ -5,7 +11,7 @@
 
 2006-10-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/sprites/monster20.png, 
+	* data/graphics/sprites/monster20.png,
 	data/graphics/sprites/monster20.xml,
 	data/graphics/sprites/CMakeLists.txt:
 	Added pumpkin ghost monster for halloween event.
@@ -15,7 +21,7 @@
 
 2006-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/images/ambient/night.png: added graphic for night 
+	* data/graphics/images/ambient/night.png: added graphic for night
 	ambient effect.
 
 2006-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -79,7 +85,7 @@
 
 2006-10-12  Cédric Borgese  <cedric.borgese@gmail.com>
 
-	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the
+	* data/graphics/tiles/Woodland_x3.png: Enlarge the trunk and the
 	base of the trees in the woodland tileset.
 
 2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
@@ -145,7 +151,6 @@
 
 	* data/graphics/maps/new_2-1.tmx.gz: Matt Howe fixed up cave map.
 
->>>>>>> .r2727
 2006-09-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/maps/new_6-1.tmx.gz: Alderan fixed a map issue.
@@ -231,10 +236,9 @@
 
 2006-09-16  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/animatedsprite.cpp, src/animatedsprite.h:
-	Fixed the crash when attacking without a weapon, some additional stability
-	improvements and more descriptive variable names in the parsing
-	algorithmn.
+	* src/animatedsprite.cpp, src/animatedsprite.h: Fixed the crash when
+	attacking without a weapon, some additional stability improvements and
+	more descriptive variable names in the parsing algorithmn.
 
 2006-09-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
