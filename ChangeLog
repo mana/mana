@@ -1,3 +1,7 @@
+2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+        * src/being.cpp: Properly initialize sprite vector.
+
 2006-10-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac, The Mana World.dev, CMakeLists.txt,
