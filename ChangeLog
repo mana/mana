@@ -38,7 +38,8 @@
 	data/maps/new_7-1.tmx.gz, data/maps/new_9-1.tmx.gz: Halloween related
 	contents.
 	* data/graphics/items/Makefile.am: Fixed wrong filename.
-	* data/graphics/sprites/Makefile.am: .
+	* data/graphics/sprites/Makefile.am: Fixed wrong filenames.
+	* data/graphics/sprites/weapon0.png: Replaced knife with scythe.
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
