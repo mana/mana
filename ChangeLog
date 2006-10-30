@@ -1,3 +1,8 @@
+2006-10-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_9-1.tmx.gz: Removed the night effect that accidently
+	sneaked in with the last map change.
+
 2006-10-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/tmw.rc: Updated Windows binary version.
