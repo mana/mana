@@ -11,7 +11,12 @@
 	data/graphics/items/armor-head-leathergoggles.png,
 	data/graphics/items/armor-head-piratehat.png,
 	data/graphics/items/armor-head-pumpkinhelmet.png,
-	data/graphics/items/Makefile.am, data/items.xml: Added new items.	
+	data/graphics/items/Makefile.am, data/items.xml: Added new items.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/monster21.png,
+	data/graphics/sprites/monster21.xml,
+	data/graphics/sprites/monster22.png,
+	data/graphics/sprites/monster22.xml: Added new monsters.
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
