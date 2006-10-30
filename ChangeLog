@@ -42,6 +42,7 @@
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+        * data/graphics/items/CMakeLists.txt: Synced with autotools config.
         * data/graphics/items/CMakeLists.txt: Added new items to CMake config.
         * src/being.cpp: Properly initialize sprite vector.
 
