@@ -3,6 +3,15 @@
 	* src/tmw.rc: Updated Windows binary version.
 	* data/help/header.txt, NEWS, README: Fixed some release dates and
 	versions.
+	* data/graphics/items/armor-head-axehat.png,
+	data/graphics/items/armor-head-bandana.png,
+	data/graphics/items/armor-head-circlet.png,
+	data/graphics/items/armor-head-eyepatch.png,
+	data/graphics/items/armor-head-goggles.png,
+	data/graphics/items/armor-head-leathergoggles.png,
+	data/graphics/items/armor-head-piratehat.png,
+	data/graphics/items/armor-head-pumpkinhelmet.png,
+	data/graphics/items/Makefile.am, data/items.xml: Added new items.	
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
