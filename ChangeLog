@@ -17,6 +17,15 @@
 	data/graphics/sprites/monster21.xml,
 	data/graphics/sprites/monster22.png,
 	data/graphics/sprites/monster22.xml: Added new monsters.
+	* data/graphics/sprites/item011.png, data/graphics/sprites/item011.xml,
+	data/graphics/sprites/item012.png, data/graphics/sprites/item012.xml,
+	data/graphics/sprites/item013.png, data/graphics/sprites/item013.xml,
+	data/graphics/sprites/item014.png, data/graphics/sprites/item014.xml,
+	data/graphics/sprites/item015.png, data/graphics/sprites/item015.xml,
+	data/graphics/sprites/item016.png, data/graphics/sprites/item016.xml,
+	data/graphics/sprites/item017.png, data/graphics/sprites/item017.xml,
+	data/graphics/sprites/item018.png, data/graphics/sprites/item018.xml,
+	data/graphics/sprites/Makefile.am: Added new visible equipments.
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
