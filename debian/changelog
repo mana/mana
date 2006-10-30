@@ -1,3 +1,9 @@
+tmw (0.0.21.1-1) unstable; urgency=low
+
+  * Bugfixes release.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 30 Oct 2006 22:32:00 +0200
+
 tmw (0.0.21-2) unstable; urgency=low
 
   * Readded Music Files in ogg format.

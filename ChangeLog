@@ -1,3 +1,7 @@
+2006-10-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* debian/changelog: Updated the package's version.
+
 2006-10-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_9-1.tmx.gz: Removed the night effect that accidently
