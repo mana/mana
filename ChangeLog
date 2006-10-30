@@ -31,6 +31,12 @@
 	data/graphics/sprites/item017.png, data/graphics/sprites/item017.xml,
 	data/graphics/sprites/item018.png, data/graphics/sprites/item018.xml,
 	data/graphics/sprites/Makefile.am: Added new visible equipments.
+	* data/graphics/images/login_wallpaper.png, data/maps/new_1-1.tmx.gz,
+	data/maps/new_10-1.tmx.gz, data/maps/new_11-1.tmx.gz,
+	data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz,
+	data/maps/new_16-1.tmx.gz, data/maps/new_3-1.tmx.gz,
+	data/maps/new_7-1.tmx.gz, data/maps/new_9-1.tmx.gz: Halloween related
+	contents.	
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
