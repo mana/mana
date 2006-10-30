@@ -36,7 +36,8 @@
 	data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz,
 	data/maps/new_16-1.tmx.gz, data/maps/new_3-1.tmx.gz,
 	data/maps/new_7-1.tmx.gz, data/maps/new_9-1.tmx.gz: Halloween related
-	contents.	
+	contents.
+	* data/graphics/items/Makefile.am: Fixed wrong filename.
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
