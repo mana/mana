@@ -1,4 +1,4 @@
-0.0.21.1 (.. October 2006)
+0.0.21.1 (30 October 2006)
 - Reload wallpaper after loading updates
 - Added support for gzip compressed map layer data
 - Added support for building with CMake
