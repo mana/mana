@@ -1,3 +1,7 @@
+2006-10-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/tmw.rc: Updated Windows binary version.
+
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
         * src/being.cpp: Properly initialize sprite vector.
