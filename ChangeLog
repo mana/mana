@@ -1,3 +1,9 @@
+2006-10-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	*data/graphics/tiles/desert1.png, d
+	ata/graphics/tiles/desert_x2.png: adding a bunch of graphical 
+	improvements made by VxD.
+
 2006-10-31  Frode Lindeijer  <f.lindeijer@gmail.com>
 
 	* /data/graphics/sprites/item011.png,
@@ -6,7 +12,6 @@
 	/data/graphics/sprites/item018.xml,
 	/data/graphics/sprites/monster21.xml: Fixed some graphical issues,
 	mostly a cosmetic update.
-
 
 2006-10-30  Yohann Ferreira  <bertram@cegetel.net>
 
