@@ -1,3 +1,13 @@
+2006-10-31  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* /data/graphics/sprites/item011.png,
+	/data/graphics/sprites/item011.xml,
+	/data/graphics/sprites/item012.png,
+	/data/graphics/sprites/item018.xml,
+	/data/graphics/sprites/monster21.xml: Fixed some graphical issues,
+	mostly a cosmetic update.
+
+
 2006-10-30  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/changelog: Updated the package's version.
