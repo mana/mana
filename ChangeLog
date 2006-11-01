@@ -1,3 +1,16 @@
+2006-11-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+        * CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindENet.cmake,
+        CMake/Modules/FindLibcurl.cmake, CMake/Modules/FindGuichan.cmake,
+        src/CMakeLists.txt, src/main.h, data/graphics/tiles/CMakeLists.txt,
+        data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+        data/graphics/images/ambient/CMakeLists.txt,
+        data/graphics/images/CMakeLists.txt,
+        data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
+        data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
+        data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
+        data/CMakeLists.txt, CMakeLists.txt: Added CMake support.
+
 2006-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp: Fix random crashes when map tiles are missing.

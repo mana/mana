@@ -1,0 +1,21 @@
+PROJECT(TMW)
+
+SET(VERSION 0.1.0)
+
+# where to look for cmake modules
+SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+
+OPTION(WITH_OPENGL "Enable OpenGL support" ON)
+
+IF (WIN32)
+    SET(PKG_DATADIR ".")
+    SET(PKG_BINDIR ".")
+ELSE (WIN32)
+    SET(PKG_DATADIR ${CMAKE_INSTALL_PREFIX}/share/tmw)
+    SET(PKG_BINDIR ${CMAKE_INSTALL_PREFIX}/bin)
+ENDIF (WIN32)
+
+ADD_SUBDIRECTORY(data)
+ADD_SUBDIRECTORY(src)
+
+INSTALL(FILES tmw.desktop DESTINATION share/applications)

@@ -26,7 +26,7 @@
 
 #include <string>
 
-#if (defined __USE_UNIX98 || defined __FreeBSD__)
+#ifdef HAVE_CONFIG_H
 #include "../config.h"
 #elif defined WIN32
 #include "../The_Mana_World_private.h"
