@@ -1,3 +1,10 @@
+2006-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp, src/gui/browserbox.cpp,
+	data/graphics/gui/rpgfont_wider.png,
+	data/graphics/gui/browserfont.png, data/graphics/gui/fixedfont.png:
+	Added support for å and Å (with help of Håkan Rönn).
+
 2006-10-31  Philipp Sehmisch  <tmw@crushnet.org>
 
 	*data/graphics/tiles/desert1.png, d

@@ -56,7 +56,7 @@ BrowserBox::BrowserBox(unsigned int mode):
                     " abcdefghijklmnopqrstuvwxyz"
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
                     "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
-                    "шебЅй…нЌу”ъЏзл•£Ґ°њагхкс—цьд÷№ƒя");
+                    "шебЅй…нЌу”ъЏзл•£Ґ°њагхкс—цьд÷№ƒяи»≈");
         }
         setFont(browserFont);
         instances++;
