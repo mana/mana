@@ -211,6 +211,8 @@ SET(SRCS
     net/gameserver/internal.h
     net/gameserver/player.cpp
     net/gameserver/player.h
+    resources/ambientoverlay.cpp
+    resources/ambientoverlay.h
     resources/buddylist.cpp
     resources/buddylist.h
     resources/image.cpp

@@ -1,3 +1,9 @@
+0.0.22 (...)
+- Added support for gzip compressed map layer data
+- Fixed problem with OpenGL related redefinition
+- Fixed problems with hiding windows using h
+- Fixed trade window positioning
+
 0.0.21 (17 September 2006)
 - Added item pickup messages to the chat dialog
 - Added XP bar to ministatus in the top left

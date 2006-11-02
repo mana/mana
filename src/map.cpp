@@ -27,13 +27,17 @@
 #include <queue>
 
 #include "beingmanager.h"
+#include "game.h"
 #include "graphics.h"
 #include "sprite.h"
 #include "tileset.h"
 
+#include "resources/resourcemanager.h"
+#include "resources/ambientoverlay.h"
 #include "resources/image.h"
 
 #include "utils/dtor.h"
+#include "utils/tostring.h"
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -79,27 +83,34 @@ Map::~Map()
     for_each(mTilesets.begin(), mTilesets.end(), make_dtor(mTilesets));
     mTilesets.clear();
     // clean up overlays
-    std::list<AmbientOverlay>::iterator i;
-    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
-    {
-        (*i).image->decRef();
-    }
+    for_each(mOverlays.begin(), mOverlays.end(), make_dtor(mOverlays));
 }
 
 void
-Map::setSize(int width, int height)
+Map::initializeOverlays()
 {
-    delete[] mMetaTiles;
-    delete[] mTiles;
+    ResourceManager *resman = ResourceManager::getInstance();
 
-    mWidth = width;
-    mHeight = height;
+    for (int i = 0;
+         hasProperty("overlay" + toString(i) + "image");
+         i++)
+    {
+        const std::string name = "overlay" + toString(i);
 
-    int size = width * height;
+        Image *img = resman->getImage(getProperty(name + "image"));
+        float speedX = getFloatProperty(name + "scrollX");
+        float speedY = getFloatProperty(name + "scrollY");
+        float parallax = getFloatProperty(name + "parallax");
 
-    mMetaTiles = new MetaTile[size];
-    mTiles = new Image*[size * 3];
-    std::fill_n(mTiles, size * 3, (Image*)0);
+        if (img)
+        {
+            mOverlays.push_back(
+                    new AmbientOverlay(img, parallax, speedX, speedY));
+
+            // The AmbientOverlay takes control over the image.
+            img->decRef();
+        }
+    }
 }
 
 void
@@ -179,99 +190,39 @@ Map::drawOverlay(Graphics *graphics, float scrollX, float scrollY, int detail)
 {
     static int lastTick = tick_time;
 
-    // detail 0: no overlays
+    // Detail 0: no overlays
     if (detail <= 0) return;
-
-    std::list<AmbientOverlay>::iterator i;
-
-    // Avoid freaking out when tick_time overflows
-    if (tick_time < lastTick)
-    {
-        lastTick = tick_time;
-    }
 
     if (mLastScrollX == 0.0f && mLastScrollY == 0.0f)
     {
-        // first call - initialisation
+        // First call - initialisation
         mLastScrollX = scrollX;
         mLastScrollY = scrollY;
     }
 
-    //update Overlays
-    while (lastTick < tick_time)
-    {
-        for (i = mOverlays.begin(); i != mOverlays.end(); i++)
-        {
-            if ((*i).image != NULL)
-            {
-                //apply self scrolling
-                (*i).scrollX -= (*i).scrollSpeedX;
-                (*i).scrollY -= (*i).scrollSpeedY;
+    // Update Overlays
+    int timePassed = get_elapsed_time(lastTick);
+    float dx = scrollX - mLastScrollX;
+    float dy = scrollY - mLastScrollY;
 
-                //apply parallaxing
-                (*i).scrollX += (scrollX - mLastScrollX) * (*i).parallax;
-                (*i).scrollY += (scrollY - mLastScrollY) * (*i).parallax;
-
-                //keep the image pattern on the screen
-                while ((*i).scrollX > (*i).image->getWidth())
-                {
-                    (*i).scrollX -= (*i).image->getWidth();
-                }
-                while ((*i).scrollY > (*i).image->getHeight())
-                {
-                    (*i).scrollY -= (*i).image->getHeight();
-                }
-                while ((*i).scrollX < 0)
-                {
-                    (*i).scrollX += (*i).image->getWidth();
-                }
-                while ((*i).scrollY < 0)
-                {
-                    (*i).scrollY += (*i).image->getHeight();
-                }
-            }
-        }
-        mLastScrollX = scrollX;
-        mLastScrollY = scrollY;
-        lastTick++;
-
-        // detail 1: only one overlay, higher: all overlays
-        if (detail == 1) break;
-    }
-
-    //draw overlays
+    std::list<AmbientOverlay*>::iterator i;
     for (i = mOverlays.begin(); i != mOverlays.end(); i++)
     {
-        if ((*i).image != NULL)
-        {
-        graphics->drawImagePattern  (   (*i).image,
-                                        0 - (int)(*i).scrollX,
-                                        0 - (int)(*i).scrollY,
-                                        graphics->getWidth() + (int)(*i).scrollX,
-                                        graphics->getHeight() + (int)(*i).scrollY
-                                    );
-        };
-        // detail 1: only one overlay, higher: all overlays
-        if (detail == 1) break;
-    };
-}
-
-void
-Map::setOverlay(Image *image, float speedX, float speedY, float parallax)
-{
-    if (image != NULL)
-    {
-        AmbientOverlay newOverlay;
-
-        newOverlay.image = image;
-        newOverlay.parallax = parallax;
-        newOverlay.scrollSpeedX = speedX;
-        newOverlay.scrollSpeedY = speedY;
-        newOverlay.scrollX = 0;
-        newOverlay.scrollY = 0;
-
-        mOverlays.push_back(newOverlay);
+        (*i)->update(timePassed, dx, dy);
     }
+    mLastScrollX = scrollX;
+    mLastScrollY = scrollY;
+    lastTick = tick_time;
+
+    // Draw overlays
+    for (i = mOverlays.begin(); i != mOverlays.end(); i++)
+    {
+        (*i)->draw(graphics, graphics->getWidth(), graphics->getHeight());
+
+        // Detail 1: only one overlay, higher: all overlays
+        if (detail == 1)
+            break;
+    };
 }
 
 void

@@ -31,20 +31,20 @@ CompilerSettings=0010001001000001001101
 
 [VersionInfo]
 Major=0
-Minor=0
-Release=20
+Minor=1
+Release=0
 Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=The Mana World Development Team
-FileVersion=0.0.20
+FileVersion=0.1.0
 FileDescription=The Mana World
 InternalName=tmw.exe
 LegalCopyright=2004-2006 (C)
 LegalTrademarks=
 OriginalFilename=tmw.exe
 ProductName=The Mana World MMORPG
-ProductVersion=0.0.20
+ProductVersion=0.1.0
 AutoIncBuildNr=0
 
 [Unit8]
@@ -2457,3 +2457,22 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
+[Unit236]
+FileName=src\resources\ambientoverlay.cpp
+CompileCpp=1
+Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit237]
+FileName=src\resources\ambientoverlay.h
+CompileCpp=1
+Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=

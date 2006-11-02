@@ -47,6 +47,9 @@ AC_MSG_ERROR([ *** Unable to find SDL library (http://www.libsdl.org/)]))
 AC_CHECK_HEADERS([SDL.h], ,
 AC_MSG_ERROR([ *** SDL library found but cannot find headers (http://www.libsdl.org/)]))
 
+AC_CHECK_LIB([z], [inflate], ,
+AC_MSG_ERROR([ *** Unable to find zlib (http://www.gzip.org/zlib/)]))
+
 AC_CHECK_LIB([physfs], [PHYSFS_init], ,
 AC_MSG_ERROR([ *** Unable to find PhysFS library (http://icculus.org/physfs/)]))
 AC_CHECK_HEADERS([physfs.h], ,

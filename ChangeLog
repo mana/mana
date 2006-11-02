@@ -1,43 +1,123 @@
 2006-11-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-        * src/gui/register.cpp, src/gui/register.h: Fixed a memory leak and a
-        double deletion.
-        * src/main.cpp, src/CMakeLists.txt, src/net/loginhandler.cpp,
-        src/net/charserverhandler.h, src/net/maploginhandler.h,
-        src/net/maploginhandler.cpp, src/net/loginhandler.h, src/Makefile.am:
-        Removed some cruft that was needed for eAthena.
-        * src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
-        src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/serverdialog.cpp,
-        src/gui/chat.cpp, src/gui/buy.cpp, src/gui/status.cpp,
-        src/beingmanager.cpp, src/npc.cpp, src/main.cpp, src/CMakeLists.txt,
-        src/net/connection.cpp, src/net/accountserver,
-        src/net/accountserver/account.h, src/net/accountserver/internal.h,
-        src/net/accountserver/accountserver.cpp,
-        src/net/accountserver/accountserver.h,
-        src/net/accountserver/account.cpp, src/net/accountserver/internal.cpp,
-        src/net/internal.cpp, src/net/network.h,
-        src/net/charserverhandler.cpp, src/net/connection.h,
-        src/net/gameserver, src/net/gameserver/gameserver.cpp,
-        src/net/gameserver/player.h, src/net/gameserver/internal.h,
-        src/net/gameserver/gameserver.h, src/net/gameserver/internal.cpp,
-        src/net/gameserver/player.cpp, src/net/internal.h,
-        src/net/messagehandler.cpp, src/net/chatserver,
-        src/net/chatserver/internal.h, src/net/chatserver/chatserver.cpp,
-        src/net/chatserver/chatserver.h, src/net/chatserver/internal.cpp,
-        src/net/network.cpp, src/Makefile.am: Network layer refactoring.
+	* src/gui/register.cpp, src/gui/register.h: Fixed a memory leak and a
+	double deletion.
+	* src/main.cpp, src/CMakeLists.txt, src/net/loginhandler.cpp,
+	src/net/charserverhandler.h, src/net/maploginhandler.h,
+	src/net/maploginhandler.cpp, src/net/loginhandler.h, src/Makefile.am:
+	Removed some cruft that was needed for eAthena.
+	* src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
+	src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/serverdialog.cpp,
+	src/gui/chat.cpp, src/gui/buy.cpp, src/gui/status.cpp,
+	src/beingmanager.cpp, src/npc.cpp, src/main.cpp, src/CMakeLists.txt,
+	src/net/connection.cpp, src/net/accountserver,
+	src/net/accountserver/account.h, src/net/accountserver/internal.h,
+	src/net/accountserver/accountserver.cpp,
+	src/net/accountserver/accountserver.h,
+	src/net/accountserver/account.cpp, src/net/accountserver/internal.cpp,
+	src/net/internal.cpp, src/net/network.h,
+	src/net/charserverhandler.cpp, src/net/connection.h,
+	src/net/gameserver, src/net/gameserver/gameserver.cpp,
+	src/net/gameserver/player.h, src/net/gameserver/internal.h,
+	src/net/gameserver/gameserver.h, src/net/gameserver/internal.cpp,
+	src/net/gameserver/player.cpp, src/net/internal.h,
+	src/net/messagehandler.cpp, src/net/chatserver,
+	src/net/chatserver/internal.h, src/net/chatserver/chatserver.cpp,
+	src/net/chatserver/chatserver.h, src/net/chatserver/internal.cpp,
+	src/net/network.cpp, src/Makefile.am: Network layer refactoring.
 
 2006-11-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-        * CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindENet.cmake,
-        CMake/Modules/FindLibcurl.cmake, CMake/Modules/FindGuichan.cmake,
-        src/CMakeLists.txt, src/main.h, data/graphics/tiles/CMakeLists.txt,
-        data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
-        data/graphics/images/ambient/CMakeLists.txt,
-        data/graphics/images/CMakeLists.txt,
-        data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
-        data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
-        data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
-        data/CMakeLists.txt, CMakeLists.txt: Added CMake support.
+	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindENet.cmake,
+	CMake/Modules/FindLibcurl.cmake, CMake/Modules/FindGuichan.cmake,
+	src/CMakeLists.txt, src/main.h, data/graphics/tiles/CMakeLists.txt,
+	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+	data/graphics/images/ambient/CMakeLists.txt,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
+	data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
+	data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
+	data/CMakeLists.txt, CMakeLists.txt: Added CMake support.
+
+2006-10-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* /data/graphics/images/ambient/night.png: Added graphic for night
+	ambient effect.
+
+2006-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Added zlib check before PhysFS check. The PhysFS check
+	was failing on MSYS because of a missing -lz.
+
+2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
+
+	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
+	debian/tmw-music.install: Updating debian files for bug fixing.
+
+2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* /data/graphics/sprites/npcs.png: Updated the clothes salesman,
+	it was way out of date.
+
+2006-10-12  Cédric Borgese  <cedric.borgese@gmail.com>
+
+	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the
+	base of the trees in the woodland tileset.
+
+2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/gui/buysell.cpp, src/gui/buy.cpp : A little tweak to the buy
+	dialogs.
+
+2006-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/resources/mapreader.cpp: Added support for gzip compressed map
+	layers.
+	* configure.ac, The Mana World.dev: Increased version to 0.0.22.
+	* src/map.cpp: Removed unused setSize method. Also introduced
+	initializeOverlays method and removed the confusing setOverlay (which
+	actually added one).
+	* src/properties.h: Added convenience method to read a property as a
+	float.
+	* src/map.cpp, src/resources/ambientoverlay.cpp,
+	src/resources/ambientoverlay.h: Resolved some weirdness involving
+	the terms scroll and speed.
+
+2006-10-07  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-10-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/item006.xml,
+	data/graphics/sprites/item007.xml,
+	data/graphics/sprites/item008.xml,
+	data/graphics/sprites/item009.xml,
+	data/graphics/sprites/item006.png,
+	data/graphics/sprites/item007.png,
+	data/graphics/sprites/item008.png,
+	data/graphics/sprites/item009.png,
+	data/graphics/sprites/item010.xml,
+	data/graphics/sprites/item010.png: Removed empty frames from
+	headgears.
+
+2006-10-03  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/map.cpp, src/map.h, src/Makefile.am,
+	src/resources/mapreader.cpp, src/resources/ambientoverlay.cpp,
+	src/resources/ambientoverlay.h: Turned AmbientOverlay into a class.
+	Cleaned up the associated code.
+
+2006-10-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tools/Purger.java: Added a tool to purge old accounts from eAthena's
+	database files.
+
+2006-10-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/gui/trade.cpp, src/gui/inventorywindow.cpp:
+	Accepted patches by GDO and VictorSan that fix problems with hiding
+	windows using h and problems with trade window positioning.
 
 2006-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

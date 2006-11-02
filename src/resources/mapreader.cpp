@@ -24,6 +24,7 @@
 #include "mapreader.h"
 
 #include <cassert>
+#include <iostream>
 #include <zlib.h>
 
 #include "resourcemanager.h"
@@ -51,7 +52,7 @@ inflateMemory(unsigned char *in, unsigned int inLength,
     int ret;
     z_stream strm;
 
-    out = (unsigned char*)malloc(bufferSize);
+    out = (unsigned char*) malloc(bufferSize);
 
     strm.zalloc = Z_NULL;
     strm.zfree = Z_NULL;
@@ -82,13 +83,13 @@ inflateMemory(unsigned char *in, unsigned int inLength,
                 ret = Z_DATA_ERROR;
             case Z_DATA_ERROR:
             case Z_MEM_ERROR:
-                (void)inflateEnd(&strm);
+                (void) inflateEnd(&strm);
                 return ret;
         }
 
         if (ret != Z_STREAM_END)
         {
-            out = (unsigned char*)realloc(out, bufferSize * 2);
+            out = (unsigned char*) realloc(out, bufferSize * 2);
 
             if (out == NULL)
             {
@@ -105,8 +106,42 @@ inflateMemory(unsigned char *in, unsigned int inLength,
     assert(strm.avail_in == 0);
 
     outLength = bufferSize - strm.avail_out;
-    (void)inflateEnd(&strm);
+    (void) inflateEnd(&strm);
     return ret == Z_STREAM_END ? Z_OK : Z_DATA_ERROR;
+}
+
+int
+inflateMemory(unsigned char *in, unsigned int inLength,
+              unsigned char *&out)
+{
+    unsigned int outLength = 0;
+    int ret = inflateMemory(in, inLength, out, outLength);
+
+    if (ret != Z_OK || out == NULL)
+    {
+        if (ret == Z_MEM_ERROR)
+        {
+            logger->log("Error: Out of memory while decompressing map data!");
+        }
+        else if (ret == Z_VERSION_ERROR)
+        {
+            logger->log("Error: Incompatible zlib version!");
+        }
+        else if (ret == Z_DATA_ERROR)
+        {
+            logger->log("Error: Incorrect zlib compressed data!");
+        }
+        else
+        {
+            logger->log("Error: Unknown error while decompressing map data!");
+        }
+
+        free(out);
+        out = NULL;
+        outLength = 0;
+    }
+
+    return outLength;
 }
 
 Map*
@@ -126,33 +161,17 @@ MapReader::readMap(const std::string &filename)
 
     // Inflate the gzipped map data
     unsigned char *inflated;
-    unsigned int inflatedSize = 0;
-    int ret = inflateMemory((unsigned char*)buffer,
-                            fileSize, inflated, inflatedSize);
+    unsigned int inflatedSize = inflateMemory((unsigned char*) buffer,
+                                              fileSize, inflated);
     free(buffer);
 
-    if (ret == Z_MEM_ERROR)
+    if (inflated == NULL)
     {
-        logger->log("Error: Out of memory while decompressing map data!");
-        return NULL;
-    }
-    else if (ret == Z_VERSION_ERROR)
-    {
-        logger->log("Error: Incompatible zlib version!");
-        return NULL;
-    }
-    else if (ret == Z_DATA_ERROR)
-    {
-        logger->log("Error: Incorrect zlib compressed data!");
-        return NULL;
-    }
-    else if (ret != Z_OK || inflated == NULL)
-    {
-        logger->log("Error: Unknown error while decompressing map data!");
+        logger->log("Could not decompress map file (%s)\n", filename.c_str());
         return NULL;
     }
 
-    xmlDocPtr doc = xmlParseMemory((char*)inflated, inflatedSize);
+    xmlDocPtr doc = xmlParseMemory((char*) inflated, inflatedSize);
     free(inflated);
 
     // Parse the inflated map data
@@ -214,31 +233,7 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
         }
     }
 
-    //set Overlays
-    int i = 0;
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    while (map->hasProperty("overlay" + toString(i) + "image"))
-    {
-        Image *overlayImage = resman->getImage(map->getProperty("overlay" + toString(i) + "image"));
-        float scrollX = 0.0f;
-        float scrollY = 0.0f;
-        float parallax = 0.0f;
-        if (map->hasProperty("overlay" + toString(i) + "scrollX"))
-        {
-            scrollX = atof(map->getProperty("overlay" + toString(i) + "scrollX").c_str());
-        }
-        if (map->hasProperty("overlay" + toString(i) + "scrollY"))
-        {
-            scrollY = atof(map->getProperty("overlay" + toString(i) + "scrollY").c_str());
-        }
-        if (map->hasProperty("overlay" + toString(i) + "parallax"))
-        {
-            parallax = atof(map->getProperty("overlay" + toString(i) + "parallax").c_str());
-        }
-        map->setOverlay (overlayImage, scrollX, scrollY, parallax);
-        i++;
-    }
+    map->initializeOverlays();
 
     return map;
 }
@@ -284,8 +279,8 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
         {
             xmlFree(encoding);
 
-            if (compression) {
-                logger->log("Warning: no layer compression supported!");
+            if (compression && !xmlStrEqual(compression, BAD_CAST "gzip")) {
+                logger->log("Warning: only gzip layer compression supported!");
                 xmlFree(compression);
                 return;
             }
@@ -313,12 +308,32 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 
             int binLen;
             unsigned char *binData =
-                php_base64_decode(charData, strlen((char*)charData),
-                        &binLen);
+                php_base64_decode(charData, strlen((char*)charData), &binLen);
 
             delete[] charData;
 
             if (binData) {
+                if (compression) {
+                    if (xmlStrEqual(compression, BAD_CAST "gzip")) {
+                        // Inflate the gzipped layer data
+                        unsigned char *inflated;
+                        unsigned int inflatedSize =
+                            inflateMemory(binData, binLen, inflated);
+
+                        free(binData);
+                        binData = inflated;
+                        binLen = inflatedSize;
+
+                        if (inflated == NULL)
+                        {
+                            logger->log("Error: Could not decompress layer!");
+                            xmlFree(compression);
+                            return;
+                        }
+                    }
+                    xmlFree(compression);
+                }
+
                 for (int i = 0; i < binLen - 3; i += 4) {
                     int gid = binData[i] |
                         binData[i + 1] << 8 |
@@ -350,6 +365,11 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 }
             }
         }
+
+        if (y < h)
+            std::cerr << "TOO SMALL!\n";
+        if (x)
+            std::cerr << "TOO SMALL!\n";
 
         // There can be only one data element
         break;

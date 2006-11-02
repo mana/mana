@@ -174,6 +174,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/gameserver/internal.h \
 	      net/gameserver/player.cpp \
 	      net/gameserver/player.h \
+	      resources/ambientoverlay.cpp \
+	      resources/ambientoverlay.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \

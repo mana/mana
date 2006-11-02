@@ -195,9 +195,7 @@ void createGuiWindows()
     chargeDialog->setPosition(
             screenW - 5 - chargeDialog->getWidth(),
             screenH - chargeDialog->getHeight() - 15);
-    tradeWindow->setPosition(screenW - statusWindow->getWidth() -
-            tradeWindow->getWidth() - 10,
-            inventoryWindow->getY() + inventoryWindow->getHeight());
+
     /*buddyWindow->setPosition(10,
       minimap->getHeight() + 30);*/
 
@@ -488,21 +486,18 @@ void Game::handleInput()
                     }
                     break;
 
-                // Attempt to hide all windows
+                // Hide certain windows
                 case SDLK_h:
-                    statusWindow->setVisible(false);
-                    buyDialog->setVisible(false);
-                    sellDialog->setVisible(false);
-                    buySellDialog->setVisible(false);
-                    inventoryWindow->setVisible(false);
-                    npcTextDialog->setVisible(false);
-                    npcListDialog->setVisible(false);
-                    skillDialog->setVisible(false);
-                    setupWindow->setVisible(false);
-                    equipmentWindow->setVisible(false);
-                    chargeDialog->setVisible(false);
-                    helpWindow->setVisible(false);
-                    debugWindow->setVisible(false);
+                    if (!chatWindow->isFocused())
+                    {
+                        statusWindow->setVisible(false);
+                        inventoryWindow->setVisible(false);
+                        skillDialog->setVisible(false);
+                        setupWindow->setVisible(false);
+                        equipmentWindow->setVisible(false);
+                        helpWindow->setVisible(false);
+                        debugWindow->setVisible(false);
+                    }
                 break;
 
                 // Picking up items on the floor

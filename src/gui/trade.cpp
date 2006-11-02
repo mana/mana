@@ -47,7 +47,8 @@ TradeWindow::TradeWindow():
     mMyInventory(new Inventory()),
     mPartnerInventory(new Inventory())
 {
-    setContentSize(322, 150);
+    setWindowName("Trade");
+    setDefaultSize(115, 197, 322, 150);
 
     mAddButton = new Button("Add", "add", this);
     mOkButton = new Button("Ok", "ok", this);
@@ -100,12 +101,12 @@ TradeWindow::TradeWindow():
     mMoneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
     mMoneyLabel2->setPosition(8, getHeight() - 20);
 
-    mCancelButton->setPosition(getWidth() - 48, getHeight() - 49);
-    mTradeButton->setPosition(mCancelButton->getX() - 40
+    mCancelButton->setPosition(getWidth() - 54, getHeight() - 49);
+    mTradeButton->setPosition(mCancelButton->getX() - 41
         , getHeight() - 49);
     mOkButton->setPosition(mTradeButton->getX() - 24,
         getHeight() - 49);
-    mAddButton->setPosition(mOkButton->getX() - 32,
+    mAddButton->setPosition(mOkButton->getX() - 31,
         getHeight() - 49);
 
     mMyItemContainer->setSize(getWidth() - 24 - 12 - 1,
@@ -121,7 +122,6 @@ TradeWindow::TradeWindow():
     mItemDescriptionLabel->setPosition(8,
         mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
 
-    setContentSize(getWidth(), getHeight());
 }
 
 TradeWindow::~TradeWindow()

@@ -21,51 +21,37 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#ifndef _TMW_RESOURCES_AMBIENTOVERLAY_H_
+#define _TMW_RESOURCES_AMBIENTOVERLAY_H_
 
-#include <iosfwd>
+class Graphics;
+class Image;
 
-class MessageHandler;
-class MessageOut;
-
-namespace Net
+class AmbientOverlay
 {
-    class Connection;
+    public:
+        /**
+         * Constructor.
+         */
+        AmbientOverlay(Image *img, float parallax,
+                       float speedX, float speedY);
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+        /**
+         * Destructor.
+         */
+        ~AmbientOverlay();
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+        void update(int timePassed, float dx, float dy);
 
-    Connection *getConnection();
+        void draw(Graphics *graphics, int x, int y);
 
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
-
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
-
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
-
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-}
+    private:
+        Image *mImage;
+        float mParallax;
+        float mPosX;              /**< Current layer X position. */
+        float mPosY;              /**< Current layer Y position. */
+        float mSpeedX;            /**< Scroll speed in X direction. */
+        float mSpeedY;            /**< Scroll speed in Y direction. */
+};
 
 #endif

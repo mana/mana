@@ -17,7 +17,13 @@ DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
 config.status:
 	dh_testdir
-	./autogen.sh
+
+	echo "Generating build information using aclocal, autoheader, automake and autoconf."
+# Regerate configuration files
+	aclocal
+	autoheader
+	automake --gnu --add-missing --copy
+	autoconf
 	CFLAGS="$(CFLAGS)" ./configure --host=$(DEB_HOST_GNU_TYPE) --build=$(DEB_BUILD_GNU_TYPE) --prefix=/usr --mandir=/usr/share/man6/man --infodir=/usr/share/doc/tmw --datadir=/usr/share/games --bindir=/usr/games --with-opengl
 
 
