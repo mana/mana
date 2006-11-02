@@ -39,9 +39,103 @@
 	data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
 	data/CMakeLists.txt, CMakeLists.txt: Added CMake support.
 
+2006-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp, src/gui/browserbox.cpp,
+	data/graphics/gui/rpgfont_wider.png,
+	data/graphics/gui/browserfont.png, data/graphics/gui/fixedfont.png:
+	Added support for å and Å (with help of Håkan Rönn).
+
+2006-10-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	*data/graphics/tiles/desert1.png, d
+	ata/graphics/tiles/desert_x2.png: adding a bunch of graphical 
+	improvements made by VxD.
+
+2006-10-31  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* /data/graphics/sprites/item011.png,
+	/data/graphics/sprites/item011.xml,
+	/data/graphics/sprites/item012.png,
+	/data/graphics/sprites/item018.xml,
+	/data/graphics/sprites/monster21.xml: Fixed some graphical issues,
+	mostly a cosmetic update.
+
+2006-10-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* debian/changelog: Updated the package's version.
+
+2006-10-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_9-1.tmx.gz: Removed the night effect that accidently
+	sneaked in with the last map change.
+
+2006-10-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/tmw.rc: Updated Windows binary version.
+	* data/help/header.txt, NEWS, README: Fixed some release dates and
+	versions.
+	* data/graphics/items/armor-head-axehat.png,
+	data/graphics/items/armor-head-bandana.png,
+	data/graphics/items/armor-head-circlet.png,
+	data/graphics/items/armor-head-eyepatch.png,
+	data/graphics/items/armor-head-goggles.png,
+	data/graphics/items/armor-head-leathergoggles.png,
+	data/graphics/items/armor-head-piratehat.png,
+	data/graphics/items/armor-head-pumpkinhelmet.png,
+	data/graphics/items/Makefile.am, data/items.xml: Added new items.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/monster21.png,
+	data/graphics/sprites/monster21.xml,
+	data/graphics/sprites/monster22.png,
+	data/graphics/sprites/monster22.xml: Added new monsters.
+	* data/graphics/sprites/item011.png, data/graphics/sprites/item011.xml,
+	data/graphics/sprites/item012.png, data/graphics/sprites/item012.xml,
+	data/graphics/sprites/item013.png, data/graphics/sprites/item013.xml,
+	data/graphics/sprites/item014.png, data/graphics/sprites/item014.xml,
+	data/graphics/sprites/item015.png, data/graphics/sprites/item015.xml,
+	data/graphics/sprites/item016.png, data/graphics/sprites/item016.xml,
+	data/graphics/sprites/item017.png, data/graphics/sprites/item017.xml,
+	data/graphics/sprites/item018.png, data/graphics/sprites/item018.xml,
+	data/graphics/sprites/Makefile.am: Added new visible equipments.
+	* data/graphics/images/login_wallpaper.png, data/maps/new_1-1.tmx.gz,
+	data/maps/new_10-1.tmx.gz, data/maps/new_11-1.tmx.gz,
+	data/maps/new_14-1.tmx.gz, data/maps/new_15-1.tmx.gz,
+	data/maps/new_16-1.tmx.gz, data/maps/new_3-1.tmx.gz,
+	data/maps/new_7-1.tmx.gz, data/maps/new_9-1.tmx.gz: Halloween related
+	contents.
+	* data/graphics/items/Makefile.am: Fixed wrong filename.
+	* data/graphics/sprites/Makefile.am: Fixed wrong filenames.
+	* data/graphics/sprites/weapon0.png: Replaced knife with scythe.
+
+2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* data/graphics/items/CMakeLists.txt: Synced with autotools config.
+	* data/graphics/items/CMakeLists.txt: Added new items to CMake config.
+	* src/being.cpp: Properly initialize sprite vector.
+
+2006-10-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player.cpp: Fixed excessive unnecessary reloading of sprites.
+
+2006-10-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/main.c: Reload wallpaper after updates are fetched.
+	* data/graphics/sprites/Makefile.am: Added monster20.
+
+2006-10-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/monster20.png,
+	data/graphics/sprites/monster20.xml,
+	data/graphics/sprites/CMakeLists.txt:
+	Added pumpkin ghost monster for halloween event.
+	* data/maps/new_9-1.tmx.gz: Fixed a map discrepancy between
+	new_9-1 and new_14-1 (no new walkmap required). Thanks to QOAL
+	for reporting.
+
 2006-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* /data/graphics/images/ambient/night.png: Added graphic for night
+	* data/graphics/images/ambient/night.png: added graphic for night
 	ambient effect.
 
 2006-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -52,7 +146,8 @@
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
-	debian/tmw-music.install: Updating debian files for bug fixing.
+	debian/tmw-music.install, debian/changelog: Updating debian files for
+	bug fixing.
 
 2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
 
@@ -61,12 +156,12 @@
 
 2006-10-12  Cédric Borgese  <cedric.borgese@gmail.com>
 
-	* data/graphics/tiles/Woodland_x3.png : Enlarge the trunk and the
+	* data/graphics/tiles/Woodland_x3.png: Enlarge the trunk and the
 	base of the trees in the woodland tileset.
 
 2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
-	* src/gui/buysell.cpp, src/gui/buy.cpp : A little tweak to the buy
+	* src/gui/buysell.cpp, src/gui/buy.cpp: A little tweak to the buy
 	dialogs.
 
 2006-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -2711,9 +2806,9 @@
 	src/gui/status.h: Improving General Layout.
 	* src/games.cpp, src/playerinfo.h, src/gui/char_server.cpp,
 	src/gui/char_select.cpp, src/gui/ministatus.cpp, src/gui/skill.cpp,
-	src/gui/status.cpp, src/gui/status.h : Now the derived stats values
+	src/gui/status.cpp, src/gui/status.h: Now the derived stats values
 	are got from the server, and then, are correct ones.
-	* src/gui/minimap.cpp : Only shows the Minimap Window if there's
+	* src/gui/minimap.cpp: Only shows the Minimap Window if there's
 	actually a minimap to the current map.
 	* src/gui/status.cpp, src/game.cpp: The derived stats are now updated
 	correctly upon equipping/unequipping.

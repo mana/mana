@@ -64,10 +64,10 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     mHairStyle(0), mHairColor(0),
     mSpeechTime(0),
     mDamageTime(0),
-    mShowSpeech(false), mShowDamage(false)
+    mShowSpeech(false), mShowDamage(false),
+    mSprites(VECTOREND_SPRITE, NULL)
 {
     setMap(map);
-    mSprites.resize(VECTOREND_SPRITE, NULL);
 }
 
 Being::~Being()

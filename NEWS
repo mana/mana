@@ -1,5 +1,9 @@
-0.0.22 (...)
+0.0.21.1 (30 October 2006)
+- Reload wallpaper after loading updates
 - Added support for gzip compressed map layer data
+- Added support for building with CMake
+- Added slider to setup dialog for configuring overlay effect
+- Fixed excessive unnecessary reloading of sprites
 - Fixed problem with OpenGL related redefinition
 - Fixed problems with hiding windows using h
 - Fixed trade window positioning

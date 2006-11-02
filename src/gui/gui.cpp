@@ -143,7 +143,7 @@ Gui::Gui(Graphics *graphics):
         speechFont = new gcn::ImageFont("graphics/gui/rpgfont_wider.png",
                 " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "бЅй…нЌу”ъЏзл•£Ґ°њагхкс—цьд÷№ƒяш"
+                "бЅй…нЌу”ъЏзл•£Ґ°њагхкс—цьд÷№ƒяши»е≈"
                 );
     }
     catch (gcn::Exception e)

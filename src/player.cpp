@@ -93,12 +93,12 @@ Player::setHairColor(Uint16 color)
 {
     if (color != mHairColor)
     {
-        delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
                 color);
         newHairSprite->setDirection(getSpriteDirection());
 
+        delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
         resetAnimations();
 
@@ -113,12 +113,12 @@ Player::setHairStyle(Uint16 style)
 {
     if (style != mHairStyle)
     {
-        delete mSprites[HAIR_SPRITE];
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(style) + ".xml",
                 mHairColor);
         newHairSprite->setDirection(getSpriteDirection());
 
+        delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
         resetAnimations();
 
@@ -145,11 +145,14 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
             break;
     }
 
-    delete mSprites[position];
-    mSprites[position] = NULL;
-
     // id = 0 means unequip
-    if (id) {
+    if (id == 0)
+    {
+        delete mSprites[position];
+        mSprites[position] = NULL;
+    }
+    else
+    {
         char stringId[4];
         sprintf(stringId, "%03i", id);
 
@@ -157,6 +160,7 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
                 "graphics/sprites/item" + toString(stringId) + ".xml", 0);
         equipmentSprite->setDirection(getSpriteDirection());
 
+        delete mSprites[position];
         mSprites[position] = equipmentSprite;
         resetAnimations();
 

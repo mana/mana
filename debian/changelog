@@ -1,3 +1,16 @@
+tmw (0.0.21.1-1) unstable; urgency=low
+
+  * Bugfixes release.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 30 Oct 2006 22:32:00 +0200
+
+tmw (0.0.21-2) unstable; urgency=low
+
+  * Readded Music Files in ogg format.
+  * Added the forgotten data/graphics/items folder to avoid a crash.
+
+ -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 16 Oct 2006 15:52:00 +0200
+
 tmw (0.0.21-1) unstable; urgency=low
 
   * New upstream release:
@@ -9,7 +22,7 @@ tmw (0.0.21-1) unstable; urgency=low
 tmw (0.0.20-1) unstable; urgency=low
 
   * Make use of a own desktop file for the Debian Package. Close the missing icon bug.
-  * Changed a dependency from xlibmesa-dev to libgl1-mesa-dev to cope with new X server.
+  * Changed dependency from xlibmesa-dev to libgl1-mesa-dev to cope with new X server.
 
  -- FERREIRA Yohann <bertram@cegetel.net>  Mon, 29 May 2006 03:55:33 +0200
 

@@ -643,6 +643,10 @@ int main(int argc, char *argv[])
             if (oldstate == STATE_UPDATE)
             {
                 loadUpdates();
+                // Reload the wallpaper in case that it was updated
+                login_wallpaper->decRef();
+                login_wallpaper = ResourceManager::getInstance()->
+                    getImage("graphics/images/login_wallpaper.png");
             }
 
             oldstate = state;
