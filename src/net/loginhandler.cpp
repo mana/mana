@@ -24,11 +24,8 @@
 #include "loginhandler.h"
 
 #include "messagein.h"
-#include "network.h"
 #include "protocol.h"
 
-#include "../log.h"
-#include "../logindata.h"
 #include "../main.h"
 
 LoginHandler::LoginHandler()

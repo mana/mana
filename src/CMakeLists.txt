@@ -178,8 +178,6 @@ SET(SRCS
     net/itemhandler.h
     net/loginhandler.cpp
     net/loginhandler.h
-    net/maploginhandler.cpp
-    net/maploginhandler.h
     net/messagehandler.cpp
     net/messagehandler.h
     net/messagein.cpp

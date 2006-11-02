@@ -68,7 +68,6 @@
 #include "net/charserverhandler.h"
 #include "net/connection.h"
 #include "net/loginhandler.h"
-#include "net/maploginhandler.h"
 #include "net/network.h"
 
 #include "net/accountserver/accountserver.h"
@@ -446,17 +445,16 @@ CharServerHandler charServerHandler;
 LoginData loginData;
 LoginHandler loginHandler;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
-MapLoginHandler mapLoginHandler;
 
 // TODO Find some nice place for these functions
 void accountLogin(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
+
     Net::registerHandler(&loginHandler);
-    Net::registerHandler(&charServerHandler);
-    loginHandler.setLoginData(loginData);
-    charServerHandler.setLoginData(loginData);
+
     charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
 
     // Send login infos
     Net::AccountServer::login(accountServerConnection, 0,
@@ -477,25 +475,14 @@ void accountLogin(LoginData *loginData)
 void accountRegister(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
+
     Net::registerHandler(&loginHandler);
-    loginHandler.setLoginData(loginData);
-    charServerHandler.setLoginData(loginData);
+
     charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
 
     Net::AccountServer::registerAccount(accountServerConnection, 0,
             loginData->username, loginData->password, loginData->email);
-}
-
-void mapLogin(LoginData *loginData)
-{
-    Net::registerHandler(&mapLoginHandler);
-
-    logger->log("Memorizing selected character %s",
-            player_node->getName().c_str());
-    config.setValue("lastCharacter", player_node->getName());
-
-    Net::GameServer::connect(gameServerConnection, token);
-    Net::ChatServer::connect(chatServerConnection, token);
 }
 
 /** Main */
@@ -647,6 +634,7 @@ int main(int argc, char *argv[])
                 chatServerConnection->isConnected())
         {
             accountServerConnection->disconnect();
+            Net::clearHandlers();
             state = STATE_GAME;
         }
 
@@ -752,7 +740,12 @@ int main(int argc, char *argv[])
                     break;
 
                 case STATE_GAME:
-                    mapLogin(&loginData);
+                    logger->log("Memorizing selected character %s",
+                            player_node->getName().c_str());
+                    config.setValue("lastCharacter", player_node->getName());
+
+                    Net::GameServer::connect(gameServerConnection, token);
+                    Net::ChatServer::connect(chatServerConnection, token);
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;

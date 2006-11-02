@@ -1,5 +1,9 @@
 2006-11-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+        * src/main.cpp, src/CMakeLists.txt, src/net/loginhandler.cpp,
+        src/net/charserverhandler.h, src/net/maploginhandler.h,
+        src/net/maploginhandler.cpp, src/net/loginhandler.h, src/Makefile.am:
+        Removed some cruft that was needed for eAthena.
         * src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
         src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/serverdialog.cpp,
         src/gui/chat.cpp, src/gui/buy.cpp, src/gui/status.cpp,

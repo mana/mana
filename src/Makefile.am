@@ -141,8 +141,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/itemhandler.cpp \
 	      net/loginhandler.h \
 	      net/loginhandler.cpp \
-	      net/maploginhandler.cpp \
-	      net/maploginhandler.h \
 	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \

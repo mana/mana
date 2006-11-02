@@ -45,9 +45,6 @@ class CharServerHandler : public MessageHandler
             mCharInfo = charInfo;
         }
 
-        void
-        setLoginData(LoginData *loginData) { mLoginData = loginData; };
-
     protected:
         void
         handleCharCreateResponse(MessageIn &msg);
@@ -55,7 +52,6 @@ class CharServerHandler : public MessageHandler
         void
         handleCharSelectResponse(MessageIn &msg);
 
-        LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
 
         LocalPlayer*
