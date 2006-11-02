@@ -21,51 +21,14 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
-
-#include <iosfwd>
-
-class MessageHandler;
-class MessageOut;
+#include "internal.h"
 
 namespace Net
 {
     class Connection;
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
-
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
-
-    Connection *getConnection();
-
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
-
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
-
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
-
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
-
-#endif
+    namespace GameServer
+    {
+        Connection *connection = 0;
+    }
+}

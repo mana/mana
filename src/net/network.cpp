@@ -23,107 +23,70 @@
 
 #include "network.h"
 
+#include <enet/enet.h>
+
+#include <map>
+
+#include "connection.h"
+#include "internal.h"
 #include "messagehandler.h"
 #include "messagein.h"
-#include "messageout.h"
 
 #include "../log.h"
 
-static Network::State mState;
-
 /**
- * The local host.
+ * The local host which is shared for all outgoing connections.
  */
-static ENetHost *mClient;
-
-/**
- * An array holding the peers of the account, game and chat servers.
- */
-static ENetPeer *mServers[3];
+namespace {
+    ENetHost *client;
+}
 
 typedef std::map<unsigned short, MessageHandler*> MessageHandlers;
 typedef MessageHandlers::iterator MessageHandlerIterator;
 static MessageHandlers mMessageHandlers;
 
-Network::State Network::getState() { return mState; }
-
-void Network::initialize()
+void Net::initialize()
 {
-    // Initialize server peers
-    for (int i = 0; i < 3; ++i)
-        mServers[i] = NULL;
-
-    mClient = enet_host_create(NULL, 3, 0, 0);
-
-    if (!mClient)
+    if (enet_initialize())
     {
-        logger->error(
-                "An error occurred while trying to create an ENet client.");
-        mState = NET_ERROR;
+        logger->error("Failed to initialize ENet.");
+    }
+
+    client = enet_host_create(NULL, 3, 0, 0);
+
+    if (!client)
+    {
+        logger->error("Failed to create the local host.");
     }
 }
 
-void Network::finalize()
+void Net::finalize()
 {
+    if (!client)
+        return; // Wasn't initialized at all
+
+    if (Net::connections) {
+        logger->error("Tried to shutdown the network subsystem while there "
+                "are network connections left!");
+    }
+
     clearHandlers();
-
-    disconnect(ACCOUNT);
-    disconnect(GAME);
-    disconnect(CHAT);
+    enet_deinitialize();
 }
 
-bool
-Network::connect(Server server, const std::string &address, short port)
+Net::Connection *Net::getConnection()
 {
-    logger->log("Network::connect(%d, %s, %i)", server, address.c_str(), port);
-
-    if (address.empty())
+    if (!client)
     {
-        logger->log("Network::connect() got empty address!");
-        mState = NET_ERROR;
-        return false;
+        logger->error("Tried to instantiate a network object before "
+                "initializing the network subsystem!");
     }
 
-    if (mServers[server] != NULL)
-    {
-        logger->log("Network::connect() already connected (or connecting) to "
-                "this server!");
-        return false;
-    }
-
-    ENetAddress enetAddress;
-
-    enet_address_set_host(&enetAddress, address.c_str());
-    enetAddress.port = port;
-
-    // Initiate the connection, allocating channel 0.
-    mServers[server] = enet_host_connect(mClient, &enetAddress, 1);
-
-    if (mServers[server] == NULL)
-    {
-        logger->log("Unable to initiate connection to the server.");
-        mState = NET_ERROR;
-        return false;
-    }
-
-    return true;
+    return new Net::Connection(client);
 }
 
 void
-Network::disconnect(Server server)
-{
-    if (mServers[server])
-    {
-        enet_peer_disconnect(mServers[server], 0);
-        enet_host_flush(mClient);
-        enet_peer_reset(mServers[server]);
-
-        mServers[server] = NULL;
-    }
-}
-
-void
-Network::registerHandler(MessageHandler *handler)
+Net::registerHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -132,7 +95,7 @@ Network::registerHandler(MessageHandler *handler)
 }
 
 void
-Network::unregisterHandler(MessageHandler *handler)
+Net::unregisterHandler(MessageHandler *handler)
 {
     for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
@@ -141,54 +104,46 @@ Network::unregisterHandler(MessageHandler *handler)
 }
 
 void
-Network::clearHandlers()
+Net::clearHandlers()
 {
     mMessageHandlers.clear();
 }
 
-bool
-Network::isConnected(Server server)
-{
-    return mServers[server] != NULL &&
-           mServers[server]->state == ENET_PEER_STATE_CONNECTED;
-}
 
 /**
  * Dispatches a message to the appropriate message handler and
  * destroys it afterwards.
  */
-static void
-dispatchMessage(ENetPacket *packet)
+namespace
 {
-    MessageIn msg((const char *)packet->data, packet->dataLength);
+    void
+        dispatchMessage(ENetPacket *packet)
+        {
+            MessageIn msg((const char *)packet->data, packet->dataLength);
 
-    MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
+            MessageHandlerIterator iter = mMessageHandlers.find(msg.getId());
 
-    if (iter != mMessageHandlers.end()) {
-        logger->log("Received packet %x (%i B)",
-                    msg.getId(), msg.getLength());
-        iter->second->handleMessage(msg);
-    }
-    else {
-        logger->log("Unhandled packet %x (%i B)",
-                    msg.getId(), msg.getLength());
-    }
+            if (iter != mMessageHandlers.end()) {
+                logger->log("Received packet %x (%i B)",
+                        msg.getId(), msg.getLength());
+                iter->second->handleMessage(msg);
+            }
+            else {
+                logger->log("Unhandled packet %x (%i B)",
+                        msg.getId(), msg.getLength());
+            }
 
-    // Clean up the packet now that we're done using it.
-    enet_packet_destroy(packet);
+            // Clean up the packet now that we're done using it.
+            enet_packet_destroy(packet);
+        }
 }
 
-void Network::flush()
+void Net::flush()
 {
-    if (mState == NET_ERROR)
-    {
-        return;
-    }
-
     ENetEvent event;
 
     // Wait up to 10 milliseconds for an event.
-    while (enet_host_service(mClient, &event, 10) > 0)
+    while (enet_host_service(client, &event, 10) > 0)
     {
         switch (event.type)
         {
@@ -217,41 +172,4 @@ void Network::flush()
                 break;
         }
     }
-}
-
-void Network::send(Server server, const MessageOut &msg)
-{
-    if (mState == NET_ERROR)
-    {
-        logger->log("Warning: attempt to send a message while network not "
-                    "ready.");
-        return;
-    }
-    else if (!isConnected(server))
-    {
-        logger->log("Warning: cannot send message to not connected server %d!",
-                    server);
-        return;
-    }
-
-    logger->log("Sending message of size %d to server %d...",
-                msg.getDataSize(), server);
-
-    ENetPacket *packet = enet_packet_create(msg.getData(),
-                                            msg.getDataSize(),
-                                            ENET_PACKET_FLAG_RELIABLE);
-    enet_peer_send(mServers[server], 0, packet);
-}
-
-char *iptostring(int address)
-{
-    static char asciiIP[16];
-
-    sprintf(asciiIP, "%i.%i.%i.%i",
-            (unsigned char)(address),
-            (unsigned char)(address >> 8),
-            (unsigned char)(address >> 16),
-            (unsigned char)(address >> 24));
-
-    return asciiIP;
 }

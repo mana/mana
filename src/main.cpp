@@ -66,11 +66,16 @@
 #include "gui/textfield.h"
 
 #include "net/charserverhandler.h"
+#include "net/connection.h"
 #include "net/loginhandler.h"
 #include "net/maploginhandler.h"
-#include "net/messageout.h"
 #include "net/network.h"
-#include "net/protocol.h"
+
+#include "net/accountserver/accountserver.h"
+
+#include "net/chatserver/chatserver.h"
+
+#include "net/gameserver/gameserver.h"
 
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
@@ -97,6 +102,10 @@ Music *bgm;
 
 Configuration config;         /**< Xml file configuration reader */
 Logger *logger;               /**< Log object */
+
+Net::Connection *accountServerConnection = 0;
+Net::Connection *gameServerConnection = 0;
+Net::Connection *chatServerConnection = 0;
 
 namespace {
     struct ErrorListener : public gcn::ActionListener
@@ -443,18 +452,15 @@ MapLoginHandler mapLoginHandler;
 void accountLogin(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
-    Network::registerHandler(&loginHandler);
-    Network::registerHandler(&charServerHandler);
+    Net::registerHandler(&loginHandler);
+    Net::registerHandler(&charServerHandler);
     loginHandler.setLoginData(loginData);
     charServerHandler.setLoginData(loginData);
     charServerHandler.setCharInfo(&charInfo);
 
     // Send login infos
-    MessageOut msg(PAMSG_LOGIN);
-    msg.writeLong(0); // client version
-    msg.writeString(loginData->username);
-    msg.writeString(loginData->password);
-    Network::send(Network::ACCOUNT, msg);
+    Net::AccountServer::login(accountServerConnection, 0,
+            loginData->username, loginData->password);
 
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
@@ -471,36 +477,25 @@ void accountLogin(LoginData *loginData)
 void accountRegister(LoginData *loginData)
 {
     logger->log("Username is %s", loginData->username.c_str());
-    Network::registerHandler(&loginHandler);
+    Net::registerHandler(&loginHandler);
     loginHandler.setLoginData(loginData);
     charServerHandler.setLoginData(loginData);
     charServerHandler.setCharInfo(&charInfo);
 
-    // Send login infos
-    MessageOut msg(PAMSG_REGISTER);
-    msg.writeLong(0); // client version
-    msg.writeString(loginData->username);
-    msg.writeString(loginData->password);
-    msg.writeString(loginData->email);
-    Network::send(Network::ACCOUNT, msg);
+    Net::AccountServer::registerAccount(accountServerConnection, 0,
+            loginData->username, loginData->password, loginData->email);
 }
 
 void mapLogin(LoginData *loginData)
 {
-    Network::registerHandler(&mapLoginHandler);
+    Net::registerHandler(&mapLoginHandler);
 
     logger->log("Memorizing selected character %s",
             player_node->getName().c_str());
     config.setValue("lastCharacter", player_node->getName());
 
-    // Send connect messages with the magic token to game and chat servers
-    MessageOut gameServerConnect(PGMSG_CONNECT);
-    gameServerConnect.writeString(token, 32);
-    Network::send(Network::GAME, gameServerConnect);
-
-    MessageOut chatServerConnect(PCMSG_CONNECT);
-    chatServerConnect.writeString(token, 32);
-    Network::send(Network::CHAT, chatServerConnect);
+    Net::GameServer::connect(gameServerConnection, token);
+    Net::ChatServer::connect(chatServerConnection, token);
 }
 
 /** Main */
@@ -582,12 +577,10 @@ int main(int argc, char *argv[])
 
     loginData.remember = config.getValue("remember", 0);
 
-    if (enet_initialize() != 0)
-    {
-        logger->error("An error occurred while initializing ENet.");
-    }
-    Network::initialize();
-
+    Net::initialize();
+    accountServerConnection = Net::getConnection();
+    gameServerConnection = Net::getConnection();
+    chatServerConnection = Net::getConnection();
 
     SDL_Event event;
 
@@ -610,12 +603,15 @@ int main(int argc, char *argv[])
         }
 
         gui->logic();
-        Network::flush();
+        Net::flush();
 
-        if (Network::getState() == Network::NET_ERROR)
+        if (state > STATE_CONNECT_ACCOUNT  && state < STATE_GAME)
         {
-            state = STATE_ERROR;
-            errorMessage = "Got disconnected from server!";
+            if (!accountServerConnection->isConnected())
+            {
+                state = STATE_ERROR;
+                errorMessage = "Got disconnected from account server!";
+            }
         }
 
         if (!login_wallpaper)
@@ -638,7 +634,7 @@ int main(int argc, char *argv[])
 
         // TODO: Add connect timeout to go back to choose server
         if (state == STATE_CONNECT_ACCOUNT &&
-                Network::isConnected(Network::ACCOUNT))
+                accountServerConnection->isConnected())
         {
             if (options.skipUpdate) {
                 state = STATE_LOGIN;
@@ -647,10 +643,10 @@ int main(int argc, char *argv[])
             }
         }
         else if (state == STATE_CONNECT_GAME &&
-                Network::isConnected(Network::GAME) &&
-                Network::isConnected(Network::CHAT))
+                gameServerConnection->isConnected() &&
+                chatServerConnection->isConnected())
         {
-            // TODO: Somehow send the token
+            accountServerConnection->disconnect();
             state = STATE_GAME;
         }
 
@@ -659,12 +655,6 @@ int main(int argc, char *argv[])
             if (oldstate == STATE_UPDATE)
             {
                 loadUpdates();
-            }
-
-            // Disconnect from account server once connected to game server
-            if (oldstate == STATE_CONNECT_GAME && state == STATE_GAME)
-            {
-                Network::disconnect(Network::ACCOUNT);
             }
 
             oldstate = state;
@@ -685,9 +675,6 @@ int main(int argc, char *argv[])
                     if (options.serverName.empty() && options.serverPort == 0) {
                         currentDialog = new ServerDialog(&loginData);
                     } else {
-                        logger->log("Trying to connect to account server...");
-                        Network::connect(Network::ACCOUNT,
-                                loginData.hostname, loginData.port);
                         state = STATE_CONNECT_ACCOUNT;
 
                         // Reset options so that cancelling or connect timeout
@@ -699,6 +686,9 @@ int main(int argc, char *argv[])
 
                 case STATE_CONNECT_ACCOUNT:
                     logger->log("State: CONNECT_ACCOUNT");
+                    logger->log("Trying to connect to account server...");
+                    accountServerConnection->connect(loginData.hostname,
+                            loginData.port);
                     currentDialog = new ConnectionDialog(STATE_CHOOSE_SERVER);
                     break;
 
@@ -751,9 +741,9 @@ int main(int argc, char *argv[])
                     currentDialog = new OkDialog("Error", errorMessage);
                     currentDialog->addActionListener(&errorListener);
                     currentDialog = NULL; // OkDialog deletes itself
-                    Network::disconnect(Network::GAME);
-                    Network::disconnect(Network::CHAT);
-                    Network::clearHandlers();
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+                    Net::clearHandlers();
                     break;
 
                 case STATE_CONNECT_GAME:
@@ -783,8 +773,10 @@ int main(int argc, char *argv[])
         }
     }
 
-    Network::finalize();
-    enet_deinitialize();
+    delete accountServerConnection;
+    delete gameServerConnection;
+    delete chatServerConnection;
+    Net::finalize();
 
     if (nullFile)
     {

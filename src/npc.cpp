@@ -25,9 +25,6 @@
 
 #include "animatedsprite.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
-
 class Spriteset;
 extern Spriteset *npcset;
 
@@ -48,25 +45,34 @@ NPC::getType() const
 void
 NPC::talk()
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_NPC_TALK);
     outMsg.writeLong(mId);
     outMsg.writeByte(0);
     current_npc = this;
+    */
 }
 
 void
 NPC::nextDialog()
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeLong(mId);
+    */
 }
 
 void
 NPC::dialogChoice(char choice)
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
     outMsg.writeLong(mId);
     outMsg.writeByte(choice);
+    */
 }
 
 /*
@@ -76,15 +82,21 @@ NPC::dialogChoice(char choice)
 void
 NPC::buy()
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeLong(mId);
     outMsg.writeByte(0);
+    */
 }
 
 void
 NPC::sell()
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeLong(mId);
     outMsg.writeByte(1);
+    */
 }

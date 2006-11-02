@@ -21,51 +21,26 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#ifndef _TMW_NET_GAMESERVER_PLAYER_H
+#define _TMW_NET_GAMESERVER_PLAYER_H
 
 #include <iosfwd>
-
-class MessageHandler;
-class MessageOut;
 
 namespace Net
 {
     class Connection;
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
-
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
-
-    Connection *getConnection();
-
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
-
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
-
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
-
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
+    namespace GameServer
+    {
+        namespace Player
+        {
+            void say(const std::string &text);
+            void walk(short x, short y);
+//            void pickUp(...);
+            void useItem(int itemId);
+            void equip(int itemId, char slot);
+        }
+    }
+}
 
 #endif

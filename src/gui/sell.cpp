@@ -39,9 +39,6 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
-
 #include "../utils/tostring.h"
 
 SellDialog::SellDialog():
@@ -218,10 +215,13 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
 
+        // XXX Convert for new server
+        /*
         MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
         outMsg.writeShort(8);
         outMsg.writeShort(mShopItems->at(selectedItem).index);
         outMsg.writeShort(mAmountItems);
+        */
 
         mMaxItems -= mAmountItems;
         mAmountItems = 0;

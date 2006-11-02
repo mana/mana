@@ -21,51 +21,35 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#ifndef _TMW_NET_CHATSERVER_CHATSERVER_H
+#define _TMW_NET_CHATSERVER_CHATSERVER_H
 
 #include <iosfwd>
-
-class MessageHandler;
-class MessageOut;
 
 namespace Net
 {
     class Connection;
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+    namespace ChatServer
+    {
+        void connect(Net::Connection *connection, const std::string &token);
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+        void chat(short channel, const std::string &text);
 
-    Connection *getConnection();
+        void announce(const std::string &text);
 
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
+        void privMsg(const std::string &recipient, const std::string &text);
 
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
+        void registerChannel(const std::string &name,
+                const std::string &announcement, const std::string &password,
+                char isPrivate);
 
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
+        void unregisterChannel(short channel);
 
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
+        void enterChannel(short channel, const std::string &password);
+
+        void quitChannel(short channel);
+    }
+}
 
 #endif

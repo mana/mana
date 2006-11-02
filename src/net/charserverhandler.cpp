@@ -23,9 +23,9 @@
 
 #include "charserverhandler.h"
 
-#include "messagein.h"
-#include "network.h"
+#include "connection.h"
 #include "protocol.h"
+#include "messagein.h"
 
 #include "../game.h"
 #include "../localplayer.h"
@@ -34,6 +34,9 @@
 #include "../main.h"
 
 #include "../gui/ok_dialog.h"
+
+extern Net::Connection *gameServerConnection;
+extern Net::Connection *chatServerConnection;
 
 CharServerHandler::CharServerHandler()
 {
@@ -174,8 +177,8 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
         logger->log("Game server: %s:%d", gameServer.c_str(), gameServerPort);
         logger->log("Chat server: %s:%d", chatServer.c_str(), chatServerPort);
 
-        Network::connect(Network::GAME, gameServer, gameServerPort);
-        Network::connect(Network::CHAT, chatServer, chatServerPort);
+        gameServerConnection->connect(gameServer, gameServerPort);
+        chatServerConnection->connect(chatServer, chatServerPort);
 
         // Keep the selected character and delete the others
         player_node = mCharInfo->getEntry();

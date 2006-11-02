@@ -29,5 +29,5 @@
 
 MessageHandler::~MessageHandler()
 {
-    Network::unregisterHandler(this);
+    Net::unregisterHandler(this);
 }

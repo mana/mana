@@ -131,6 +131,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/charserverhandler.cpp \
 	      net/chathandler.h \
 	      net/chathandler.cpp \
+	      net/connection.h \
+	      net/connection.cpp \
 	      net/equipmenthandler.h \
 	      net/equipmenthandler.cpp \
 	      net/inventoryhandler.h \
@@ -158,6 +160,22 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/skillhandler.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
+	      net/accountserver/account.cpp \
+	      net/accountserver/account.h \
+	      net/accountserver/accountserver.cpp \
+	      net/accountserver/accountserver.h \
+	      net/accountserver/internal.cpp \
+	      net/accountserver/internal.h \
+	      net/chatserver/chatserver.cpp \
+	      net/chatserver/chatserver.h \
+	      net/chatserver/internal.cpp \
+	      net/chatserver/internal.h \
+	      net/gameserver/gameserver.cpp \
+	      net/gameserver/gameserver.h \
+	      net/gameserver/internal.cpp \
+	      net/gameserver/internal.h \
+	      net/gameserver/player.cpp \
+	      net/gameserver/player.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \

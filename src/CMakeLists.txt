@@ -166,8 +166,12 @@ SET(SRCS
     net/charserverhandler.h
     net/chathandler.cpp
     net/chathandler.h
+    net/connection.cpp
+    net/connection.h
     net/equipmenthandler.cpp
     net/equipmenthandler.h
+    net/internal.cpp
+    net/internal.h
     net/inventoryhandler.cpp
     net/inventoryhandler.h
     net/itemhandler.cpp
@@ -193,6 +197,22 @@ SET(SRCS
     net/skillhandler.h
     net/tradehandler.cpp
     net/tradehandler.h
+    net/accountserver/account.cpp
+    net/accountserver/account.h
+    net/accountserver/accountserver.cpp
+    net/accountserver/accountserver.h
+    net/accountserver/internal.cpp
+    net/accountserver/internal.h
+    net/chatserver/chatserver.cpp
+    net/chatserver/chatserver.h
+    net/chatserver/internal.cpp
+    net/chatserver/internal.h
+    net/gameserver/gameserver.cpp
+    net/gameserver/gameserver.h
+    net/gameserver/internal.cpp
+    net/gameserver/internal.h
+    net/gameserver/player.cpp
+    net/gameserver/player.h
     resources/buddylist.cpp
     resources/buddylist.h
     resources/image.cpp

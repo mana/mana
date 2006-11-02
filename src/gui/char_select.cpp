@@ -37,9 +37,7 @@
 #include "../localplayer.h"
 #include "../main.h"
 
-#include "../net/messageout.h"
-#include "../net/network.h"
-#include "../net/protocol.h"
+#include "../net/accountserver/account.h"
 
 #include "../utils/tostring.h"
 
@@ -134,7 +132,8 @@ void CharSelectDialog::action(const std::string &eventId, gcn::Widget *widget)
         mPreviousButton->setEnabled(false);
         mNextButton->setEnabled(false);
         mCharSelected = true;
-        attemptCharSelect();
+        Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
+        mCharInfo->lock();
     }
     else if (eventId == "cancel")
     {
@@ -202,20 +201,7 @@ void CharSelectDialog::updatePlayerInfo()
 
 void CharSelectDialog::attemptCharDelete()
 {
-    // Request character deletion
-    MessageOut msg(PAMSG_CHAR_DELETE);
-    // TODO: Send the selected slot
-    msg.writeByte(0);
-    Network::send(Network::ACCOUNT, msg);
-    mCharInfo->lock();
-}
-
-void CharSelectDialog::attemptCharSelect()
-{
-    // Request character selection
-    MessageOut msg(PAMSG_CHAR_SELECT);
-    msg.writeByte(mCharInfo->getPos());
-    Network::send(Network::ACCOUNT, msg);
+    Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
     mCharInfo->lock();
 }
 
@@ -312,7 +298,15 @@ void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
         if (getName().length() >= 4) {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
-            attemptCharCreate();
+            Net::AccountServer::Account::createCharacter(
+                    getName(), mPlayerBox->mHairStyle, mPlayerBox->mHairColor,
+                    0,   // gender
+                    10,  // STR
+                    10,  // AGI
+                    10,  // VIT
+                    10,  // INT
+                    10,  // DEX
+                    10); // LUK
             scheduleDelete();
         }
         else {
@@ -343,22 +337,4 @@ void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
 std::string CharCreateDialog::getName()
 {
     return mNameField->getText();
-}
-
-void CharCreateDialog::attemptCharCreate()
-{
-    // Send character infos
-    MessageOut outMsg(PAMSG_CHAR_CREATE);
-    outMsg.writeString(getName());
-    outMsg.writeByte(mPlayerBox->mHairStyle);
-    outMsg.writeByte(mPlayerBox->mHairColor);
-    // TODO: send selected sex
-    outMsg.writeByte(0); // Player sex
-    outMsg.writeShort(10); // STR
-    outMsg.writeShort(10); // AGI
-    outMsg.writeShort(10); // VIT
-    outMsg.writeShort(10); // INT
-    outMsg.writeShort(10); // DEX
-    outMsg.writeShort(10); // LUK
-    Network::send(Network::ACCOUNT, outMsg);
 }

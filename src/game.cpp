@@ -292,16 +292,16 @@ Game::Game():
         joystick = new Joystick(0);
     }
 
-    Network::registerHandler(mBeingHandler.get());
-    Network::registerHandler(mBuySellHandler.get());
-    Network::registerHandler(mChatHandler.get());
-    Network::registerHandler(mEquipmentHandler.get());
-    Network::registerHandler(mInventoryHandler.get());
-    Network::registerHandler(mItemHandler.get());
-    Network::registerHandler(mNpcHandler.get());
-    Network::registerHandler(mPlayerHandler.get());
-    Network::registerHandler(mSkillHandler.get());
-    Network::registerHandler(mTradeHandler.get());
+    Net::registerHandler(mBeingHandler.get());
+    Net::registerHandler(mBuySellHandler.get());
+    Net::registerHandler(mChatHandler.get());
+    Net::registerHandler(mEquipmentHandler.get());
+    Net::registerHandler(mInventoryHandler.get());
+    Net::registerHandler(mItemHandler.get());
+    Net::registerHandler(mNpcHandler.get());
+    Net::registerHandler(mPlayerHandler.get());
+    Net::registerHandler(mSkillHandler.get());
+    Net::registerHandler(mTradeHandler.get());
 }
 
 Game::~Game()
@@ -403,7 +403,7 @@ void Game::logic()
         }
 
         // Handle network stuff
-        Network::flush();
+        Net::flush();
     }
 }
 

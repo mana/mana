@@ -1,3 +1,25 @@
+2006-11-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+        * src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
+        src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/serverdialog.cpp,
+        src/gui/chat.cpp, src/gui/buy.cpp, src/gui/status.cpp,
+        src/beingmanager.cpp, src/npc.cpp, src/main.cpp, src/CMakeLists.txt,
+        src/net/connection.cpp, src/net/accountserver,
+        src/net/accountserver/account.h, src/net/accountserver/internal.h,
+        src/net/accountserver/accountserver.cpp,
+        src/net/accountserver/accountserver.h,
+        src/net/accountserver/account.cpp, src/net/accountserver/internal.cpp,
+        src/net/internal.cpp, src/net/network.h,
+        src/net/charserverhandler.cpp, src/net/connection.h,
+        src/net/gameserver, src/net/gameserver/gameserver.cpp,
+        src/net/gameserver/player.h, src/net/gameserver/internal.h,
+        src/net/gameserver/gameserver.h, src/net/gameserver/internal.cpp,
+        src/net/gameserver/player.cpp, src/net/internal.h,
+        src/net/messagehandler.cpp, src/net/chatserver,
+        src/net/chatserver/internal.h, src/net/chatserver/chatserver.cpp,
+        src/net/chatserver/chatserver.h, src/net/chatserver/internal.cpp,
+        src/net/network.cpp, src/Makefile.am: Network layer refactoring.
+
 2006-11-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
         * CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindENet.cmake,

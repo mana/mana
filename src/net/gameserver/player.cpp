@@ -21,51 +21,48 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#include "player.h"
 
-#include <iosfwd>
+#include "internal.h"
 
-class MessageHandler;
-class MessageOut;
+#include "../connection.h"
+#include "../messageout.h"
+#include "../protocol.h"
 
-namespace Net
+void Net::GameServer::Player::say(const std::string &text)
 {
-    class Connection;
+    MessageOut msg(PGMSG_SAY);
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+    msg.writeString(text);
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+    Net::GameServer::connection->send(msg);
+}
 
-    Connection *getConnection();
+void Net::GameServer::Player::walk(short x, short y)
+{
+    MessageOut msg(PGMSG_WALK);
 
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
+    msg.writeShort(x);
+    msg.writeShort(y);
 
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
+    Net::GameServer::connection->send(msg);
+}
 
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
+void Net::GameServer::Player::useItem(int itemId)
+{
+    MessageOut msg(PGMSG_USE_ITEM);
 
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
+    msg.writeLong(itemId);
 
-#endif
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::equip(int itemId, char slot)
+{
+    MessageOut msg(PGMSG_EQUIP);
+
+    msg.writeLong(itemId);
+    msg.writeByte(slot);
+
+    Net::GameServer::connection->send(msg);
+}

@@ -36,9 +36,6 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
-
 #include "../utils/tostring.h"
 
 
@@ -225,10 +222,13 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
     else if (eventId == "buy" && (mAmountItems > 0 &&
                 mAmountItems <= mMaxItems))
     {
+        // XXX Convert for new server
+        /*
         MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
         outMsg.writeShort(8);
         outMsg.writeShort(mAmountItems);
         outMsg.writeShort(mShopItems->at(selectedItem).id);
+        */
 
         // update money !
         mMoney -= mAmountItems * mShopItems->at(selectedItem).price;

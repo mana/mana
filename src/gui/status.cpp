@@ -368,27 +368,27 @@ void StatusWindow::action(const std::string &eventId, gcn::Widget *widget)
     {
         if (eventId == "STR")
         {
-            player_node->raiseAttribute(LocalPlayer::STR);
+            mPlayer->raiseAttribute(LocalPlayer::STR);
         }
         if (eventId == "AGI")
         {
-            player_node->raiseAttribute(LocalPlayer::AGI);
+            mPlayer->raiseAttribute(LocalPlayer::AGI);
         }
         if (eventId == "VIT")
         {
-            player_node->raiseAttribute(LocalPlayer::VIT);
+            mPlayer->raiseAttribute(LocalPlayer::VIT);
         }
         if (eventId == "INT")
         {
-            player_node->raiseAttribute(LocalPlayer::INT);
+            mPlayer->raiseAttribute(LocalPlayer::INT);
         }
         if (eventId == "DEX")
         {
-            player_node->raiseAttribute(LocalPlayer::DEX);
+            mPlayer->raiseAttribute(LocalPlayer::DEX);
         }
         if (eventId == "LUK")
         {
-            player_node->raiseAttribute(LocalPlayer::LUK);
+            mPlayer->raiseAttribute(LocalPlayer::LUK);
         }
     }
 }

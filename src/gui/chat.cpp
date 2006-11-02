@@ -36,9 +36,9 @@
 #include "../game.h"
 #include "../localplayer.h"
 
-#include "../net/messageout.h"
-#include "../net/network.h"
-#include "../net/protocol.h"
+#include "../net/chatserver/chatserver.h"
+
+#include "../net/gameserver/player.h"
 
 ChatWindow::ChatWindow():
     Window(""),
@@ -249,16 +249,12 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
-        MessageOut outMsg(PGMSG_SAY);
-        outMsg.writeString(msg);
-        Network::send(Network::GAME, outMsg);
+        Net::GameServer::Player::say(msg);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {
         msg.erase(0, IS_ANNOUNCE_LENGTH);
-        MessageOut outMsg(0x0099);
-        outMsg.writeShort(msg.length() + 4);
-        outMsg.writeString(msg, msg.length());
+        Net::ChatServer::announce(msg);
     }
     else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
     {
@@ -274,7 +270,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
+        // XXX Convert for new server
+        /*
         MessageOut outMsg(0x00c1);
+        */
     }
     else
     {

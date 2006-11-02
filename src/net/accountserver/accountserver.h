@@ -21,51 +21,26 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#ifndef _TMW_NET_ACCOUNTSERVER_ACCOUNTSERVER_H
+#define _TMW_NET_ACCOUNTSERVER_ACCOUNTSERVER_H
 
 #include <iosfwd>
-
-class MessageHandler;
-class MessageOut;
 
 namespace Net
 {
     class Connection;
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+    namespace AccountServer
+    {
+        void login(Net::Connection *connection, int version,
+                const std::string &username, const std::string &password);
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+        void registerAccount(Net::Connection *connection, int version,
+                const std::string &username, const std::string &password,
+                const std::string &email);
 
-    Connection *getConnection();
-
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
-
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
-
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
-
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
+        void logout();
+    }
+}
 
 #endif

@@ -236,9 +236,6 @@ ServerDialog::action(const std::string &eventId, gcn::Widget *widget)
                 currentConfig = "MostUsedServerPort" + toString(i);
                 config.setValue(currentConfig, toString(currentServer.port));
             }
-            logger->log("Trying to connect to account server...");
-            Network::connect(Network::ACCOUNT,
-                    mLoginData->hostname, mLoginData->port);
             state = STATE_CONNECT_ACCOUNT;
         }
     }

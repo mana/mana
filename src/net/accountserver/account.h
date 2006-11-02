@@ -21,51 +21,40 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#ifndef _TMW_NET_ACCOUNTSERVER_CHARACTER_H
+#define _TMW_NET_ACCOUNTSERVER_CHARACTER_H
 
 #include <iosfwd>
 
-class MessageHandler;
-class MessageOut;
-
 namespace Net
 {
-    class Connection;
+    namespace AccountServer
+    {
+        namespace Account
+        {
+            void createCharacter(const std::string &name,
+                    char hairColor, char hairStyle, char gender,
+                    short strength, short agility, short vitality,
+                    short intelligence, short dexterity, short luck);
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+            void deleteCharacter(char slot);
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+            void selectCharacter(char slot);
 
-    Connection *getConnection();
+            void unregister();
 
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
+            void changeEmail(const std::string &email);
 
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
+            void getEmail();
 
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
+            void changePassword(const std::string &oldPassowrd,
+                    const std::string &newPassword);
 
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
+            void enterWorld();
+
+            void enterChat();
+        }
+    }
+}
 
 #endif

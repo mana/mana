@@ -21,51 +21,22 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_NETWORK_H
-#define _TMW_NET_NETWORK_H
+#include "gameserver.h"
 
-#include <iosfwd>
+#include "internal.h"
 
-class MessageHandler;
-class MessageOut;
+#include "../connection.h"
+#include "../messageout.h"
+#include "../protocol.h"
 
-namespace Net
+void Net::GameServer::connect(Net::Connection *connection,
+        const std::string &token)
 {
-    class Connection;
+    Net::GameServer::connection = connection;
 
-    /**
-     * Initializes the network subsystem.
-     */
-    void initialize();
+    MessageOut msg(PGMSG_CONNECT);
 
-    /**
-     * Finalizes the network subsystem.
-     */
-    void finalize();
+    msg.writeString(token, 32);
 
-    Connection *getConnection();
-
-    /**
-     * Registers a message handler. A message handler handles a certain
-     * subset of incoming messages.
-     */
-    void registerHandler(MessageHandler *handler);
-
-    /**
-     * Unregisters a message handler.
-     */
-    void unregisterHandler(MessageHandler *handler);
-
-    /**
-     * Clears all registered message handlers.
-     */
-    void clearHandlers();
-
-    /*
-     * Handles all events and dispatches incoming messages to the
-     * registered handlers
-     */
-    void flush();
-};
-
-#endif
+    Net::GameServer::connection->send(msg);
+}

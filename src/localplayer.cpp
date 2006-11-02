@@ -31,9 +31,7 @@
 #include "main.h"
 #include "sound.h"
 
-#include "net/messageout.h"
-#include "net/network.h"
-#include "net/protocol.h"
+#include "net/gameserver/player.h"
 
 LocalPlayer *player_node = NULL;
 
@@ -100,9 +98,10 @@ Item* LocalPlayer::getInvItem(int index)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    MessageOut outMsg(CMSG_PLAYER_EQUIP);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeShort(0);
+    // XXX What's itemId and slot exactly? Same as eAthena?
+    /*
+    Net::GameServer::Player::equip(itemId, slot));
+    */
 }
 
 void LocalPlayer::unequipItem(Item *item)
@@ -110,8 +109,11 @@ void LocalPlayer::unequipItem(Item *item)
     if (!item)
         return;
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
     outMsg.writeShort(item->getInvIndex());
+    */
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     mEquipment->removeEquipment(item);
@@ -119,18 +121,23 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
+    */
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
-    // TODO: Fix wrong coordinates of drops, serverside?
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
     outMsg.writeShort(item->getInvIndex());
     outMsg.writeShort(quantity);
+    */
 }
 
 void LocalPlayer::pickUp(FloorItem *item)
@@ -139,8 +146,11 @@ void LocalPlayer::pickUp(FloorItem *item)
     int dy = item->getY() - mY / 32;
 
     if (dx * dx + dy * dy < 4) {
+        // XXX Convert for new server
+        /*
         MessageOut outMsg(CMSG_ITEM_PICKUP);
         outMsg.writeLong(item->getId());
+        */
         mPickUpTarget = NULL;
     } else {
         setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
@@ -206,10 +216,7 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
     x = tx * 32 + fx;
     y = ty * 32 + fy;
 
-    MessageOut msg(PGMSG_WALK);
-    msg.writeShort(x);
-    msg.writeShort(y);
-    Network::send(Network::GAME, msg);
+    Net::GameServer::Player::walk(x, y);
 
     mPickUpTarget = NULL;
 
@@ -218,6 +225,8 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
 void LocalPlayer::raiseAttribute(Attribute attr)
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
 
     switch (attr)
@@ -247,6 +256,7 @@ void LocalPlayer::raiseAttribute(Attribute attr)
             break;
     }
     outMsg.writeByte(1);
+    */
 }
 
 void LocalPlayer::raiseSkill(Uint16 skillId)
@@ -254,8 +264,11 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeShort(skillId);
+    */
 }
 
 void LocalPlayer::toggleSit()
@@ -272,9 +285,12 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(0x0089);
     outMsg.writeLong(0);
     outMsg.writeByte(type);
+    */
 }
 
 void LocalPlayer::emote(Uint8 emotion)
@@ -283,8 +299,11 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(0x00bf);
     outMsg.writeByte(emotion);
+    */
 }
 
 void LocalPlayer::tradeReply(bool accept)
@@ -292,14 +311,20 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_TRADE_RESPONSE);
     outMsg.writeByte(accept ? 3 : 4);
+    */
 }
 
 void LocalPlayer::trade(Being *being) const
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(CMSG_TRADE_REQUEST);
     outMsg.writeLong(being->getId());
+    */
 }
 
 bool LocalPlayer::tradeRequestOk() const
@@ -349,9 +374,12 @@ void LocalPlayer::attack(Being *target, bool keep)
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(0x0089);
     outMsg.writeLong(target->getId());
     outMsg.writeByte(0);
+    */
 }
 
 void LocalPlayer::stopAttack()
@@ -366,6 +394,9 @@ Being* LocalPlayer::getTarget() const
 
 void LocalPlayer::revive()
 {
+    // XXX Convert for new server
+    /*
     MessageOut outMsg(0x00b2);
     outMsg.writeByte(0);
+    */
 }

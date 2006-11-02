@@ -28,9 +28,6 @@
 #include "npc.h"
 #include "player.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
-
 #include "utils/dtor.h"
 
 class FindBeingFunctor
@@ -69,8 +66,11 @@ Being* BeingManager::createBeing(Uint16 id, Uint16 job)
     if (job < 10)
     {
         being = new Player(id, job, mMap);
+        // XXX Convert for new server
+        /*
         MessageOut outMsg(0x0094);
         outMsg.writeLong(id);
+        */
     }
     else if (job >= 100 & job < 200)
         being = new NPC(id, job, mMap);
