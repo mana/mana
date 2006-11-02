@@ -44,7 +44,6 @@
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window("Register"),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
-    mWrongRegisterNotice(0),
     mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label("Name:");
@@ -104,7 +103,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
 
 RegisterDialog::~RegisterDialog()
 {
-    delete mWrongRegisterNotice;
+    delete mWrongDataNoticeListener;
 }
 
 void
@@ -183,9 +182,8 @@ RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
                 mConfirmField->setText("");
             }
 
-            delete mWrongRegisterNotice;
-            mWrongRegisterNotice = new OkDialog("Error", errorMsg.str());
-            mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
+            OkDialog *dlg = new OkDialog("Error", errorMsg.str());
+            dlg->addActionListener(mWrongDataNoticeListener);
         }
         else
         {

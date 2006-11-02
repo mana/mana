@@ -1,5 +1,7 @@
 2006-11-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+        * src/gui/register.cpp, src/gui/register.h: Fixed a memory leak and a
+        double deletion.
         * src/main.cpp, src/CMakeLists.txt, src/net/loginhandler.cpp,
         src/net/charserverhandler.h, src/net/maploginhandler.h,
         src/net/maploginhandler.cpp, src/net/loginhandler.h, src/Makefile.am:

@@ -71,7 +71,6 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         gcn::Button *mCancelButton;
 
         WrongDataNoticeListener *mWrongDataNoticeListener;
-        OkDialog *mWrongRegisterNotice;
 
         LoginData *mLoginData;
 };
