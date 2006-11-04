@@ -188,7 +188,6 @@ void initConfiguration(const Options &options)
     config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
-    config.setValue("homeDir", homeDir);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
@@ -485,6 +484,23 @@ void accountRegister(LoginData *loginData)
             loginData->username, loginData->password, loginData->email);
 }
 
+void xmlNullLogger(void *ctx, const char *msg, ...)
+{
+    // Does nothing, that's the whole point of it
+}
+
+// Initialize libxml2 and check for potential ABI mismatches between
+// compiled version and the shared library actually used.
+void initXML()
+{
+    logger->log("Initializing libxml2...");
+    xmlInitParser();
+    LIBXML_TEST_VERSION;
+
+    // Suppress libxml2 error messages
+    xmlSetGenericErrorFunc(NULL, xmlNullLogger);
+}
+
 /** Main */
 int main(int argc, char *argv[])
 {
@@ -504,6 +520,7 @@ int main(int argc, char *argv[])
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
 
+    initXML();
     initHomeDir();
     initConfiguration(options);
 
@@ -517,19 +534,7 @@ int main(int argc, char *argv[])
     logger->log("The Mana World v%s", PACKAGE_VERSION);
 #endif
 
-    // Initialize libxml2 and check for potential ABI mismatches between
-    // compiled version and the shared library actually used.
-    logger->log("Initializing libxml2...");
-    xmlInitParser();
-    LIBXML_TEST_VERSION;
-
-    // Redirect libxml errors to /dev/null
-    FILE *nullFile = fopen("/dev/null", "w");
-    xmlSetGenericErrorFunc(nullFile, NULL);
-
     init_engine();
-
-    unsigned int oldstate = !state; // We start with a status change.
 
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
@@ -569,8 +574,9 @@ int main(int argc, char *argv[])
     gameServerConnection = Net::getConnection();
     chatServerConnection = Net::getConnection();
 
-    SDL_Event event;
+    unsigned int oldstate = !state; // We start with a status change.
 
+    SDL_Event event;
     while (state != STATE_EXIT)
     {
         // Handle SDL events
@@ -775,10 +781,6 @@ int main(int argc, char *argv[])
     delete chatServerConnection;
     Net::finalize();
 
-    if (nullFile)
-    {
-        fclose(nullFile);
-    }
     logger->log("State: EXIT");
     exit_engine();
     PHYSFS_deinit();
