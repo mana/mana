@@ -1,3 +1,16 @@
+2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	*data/graphics/sprites/weapon0.png, 
+	data/graphics/sprites/weapon2.png,
+    data/graphics/sprites/weapon-bow.xml, 
+	data/graphics/sprites/weapon-dagger.xml,
+    data/graphics/sprites/weapon-fist.xml,
+    data/graphics/sprites/weapon-scythe.xml,
+	data/graphics/items/weapon-polearm-scythe.png,
+	src/player.cpp, src/player.h, src/being.cpp, src/being.h, 
+	data/items.xml:
+	Added scythe as a permanent weapon (ID: 623)
+
 2006-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_10-1.tmx.gz,
