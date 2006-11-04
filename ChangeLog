@@ -1,3 +1,11 @@
+2006-11-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_17-1.tmx.gz, 
+	data/graphics/images/minimap_new_17-1.png,
+	data/graphics/images/Makefile.am,
+	data/graphics/images/CMakeLists.txt:
+	Added music and minimap to woodland cave level 2.
+
 2006-11-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/main.cpp: Updated to the new default
