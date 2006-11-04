@@ -5,6 +5,8 @@
 	data/graphics/images/Makefile.am,
 	data/graphics/images/CMakeLists.txt:
 	Added music and minimap to woodland cave level 2.
+	data/maps/new_10-1.tmx.gz, maps/new_11-1.tmx.gz:
+	Fixed some map bugs (please update server sided walkmap)
 
 2006-11-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
