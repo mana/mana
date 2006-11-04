@@ -1,3 +1,13 @@
+2006-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_1-1.tmx.gz, data/maps/new_10-1.tmx.gz,
+	data/maps/new_11-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/maps/new_3-1.tmx.gz, data/maps/new_7-1.tmx.gz,
+	data/maps/new_9-1.tmx.gz: Reverted Halloween map versions, except for
+	map 10 and 11 which include the latest fixes by Crush but now have
+	their night layer removed.
+
 2006-11-04  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_17-1.tmx.gz, 
@@ -5,7 +15,7 @@
 	data/graphics/images/Makefile.am,
 	data/graphics/images/CMakeLists.txt:
 	Added music and minimap to woodland cave level 2.
-	data/maps/new_10-1.tmx.gz, maps/new_11-1.tmx.gz:
+	* data/maps/new_10-1.tmx.gz, maps/new_11-1.tmx.gz:
 	Fixed some map bugs (please update server sided walkmap)
 
 2006-11-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -82,9 +92,9 @@
 
 2006-10-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-        * data/graphics/items/CMakeLists.txt: Synced with autotools config.
-        * data/graphics/items/CMakeLists.txt: Added new items to CMake config.
-        * src/being.cpp: Properly initialize sprite vector.
+	* data/graphics/items/CMakeLists.txt: Synced with autotools config.
+	* data/graphics/items/CMakeLists.txt: Added new items to CMake config.
+	* src/being.cpp: Properly initialize sprite vector.
 
 2006-10-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -231,7 +241,7 @@
 	Accepted patches by GDO and VictorSan that fix problems with hiding
 	windows using h and problems with trade window positioning.
 
-2006-09-38  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-09-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/map.cpp: Fix random crashes when map tiles are missing.
 
