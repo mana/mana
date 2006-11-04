@@ -1,5 +1,7 @@
 2006-11-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/main.cpp: Restore the homeDir config entry (temporarily).
+	Initialize the logger before libxml2.
 	* src/main.cpp: Add a libxml2 init wrapper. Use a null-logger function
 	instead of /dev/null to quieten libxml2. Actually initialize libxml2
 	before using it to load the configuration.

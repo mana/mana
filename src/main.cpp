@@ -188,6 +188,7 @@ void initConfiguration(const Options &options)
     config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://themanaworld.org/files");
     config.setValue("customcursor", 1);
+    config.setValue("homeDir", homeDir);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
@@ -520,14 +521,15 @@ int main(int argc, char *argv[])
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);
 
-    initXML();
     initHomeDir();
-    initConfiguration(options);
-
     // Configure logger
     logger = new Logger();
     logger->setLogFile(homeDir + std::string("/tmw.log"));
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
+
+    initXML();
+    initConfiguration(options);
+
 
     // Log the tmw version
 #ifdef PACKAGE_VERSION
