@@ -1,5 +1,7 @@
 2006-11-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Removed useless
+	addRow method.
 	* src/main.cpp: Restore the homeDir config entry (temporarily).
 	Initialize the logger before libxml2.
 	* src/main.cpp: Add a libxml2 init wrapper. Use a null-logger function

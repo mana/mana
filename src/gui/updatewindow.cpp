@@ -181,12 +181,6 @@ void UpdaterWindow::loadNews()
     setVisible(true);
 }
 
-void UpdaterWindow::addRow(const std::string &row)
-{
-    mBrowserBox->addRow(row);
-    mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
-}
-
 int UpdaterWindow::updateProgress(void *ptr,
                                   double dt, double dn, double ut, double un)
 {
@@ -342,11 +336,12 @@ void UpdaterWindow::logic()
                 }
                 mThread = NULL;
             }
-            addRow("");
-            addRow("##1  The update process is incomplete.");
-            addRow("##1  It is strongly recommended that");
-            addRow("##1  you try again later");
-            addRow(mCurlError);
+            mBrowserBox->addRow("");
+            mBrowserBox->addRow("##1  The update process is incomplete.");
+            mBrowserBox->addRow("##1  It is strongly recommended that");
+            mBrowserBox->addRow("##1  you try again later");
+            mBrowserBox->addRow(mCurlError);
+            mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
             break;
         case UPDATE_NEWS:

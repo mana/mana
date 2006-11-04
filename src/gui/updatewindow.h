@@ -81,11 +81,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener
 
     void action(const std::string& eventId, gcn::Widget* widget);
 
-    /**
-     * Add a row to the message field.
-     */
-    void addRow(const std::string &row);
-
     void logic();
 
     int updateState;
