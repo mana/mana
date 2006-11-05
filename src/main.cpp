@@ -352,19 +352,18 @@ void exit_engine()
 
 void printHelp()
 {
-    std::cout
-        << "tmw" << std::endl << std::endl
-        << "Options: " << std::endl
-        << "  -h --help       : Display this help" << std::endl
-        << "  -u --skipupdate : Skip the update process" << std::endl
-        << "  -U --username   : Login with this username" << std::endl
-        << "  -P --password   : Login with this password" << std::endl
-        << "  -D --default    : Bypass the login process with default settings"
-        << std::endl
-        << "  -s --server     : Login Server name or IP" << std::endl
-        << "  -o --port       : Login Server Port" << std::endl
-        << "  -p --playername : Login with this player" << std::endl
-        << "  -C --configfile : Configuration file to use" << std::endl;
+    std::cout <<
+        "tmw\n\n"
+        "Options:\n"
+        "  -h --help       : Display this help\n"
+        "  -u --skipupdate : Skip the update process\n"
+        "  -U --username   : Login with this username\n"
+        "  -P --password   : Login with this password\n"
+        "  -D --default    : Bypass the login process with default settings\n"
+        "  -s --server     : Login Server name or IP\n"
+        "  -o --port       : Login Server Port\n"
+        "  -p --playername : Login with this player\n"
+        "  -C --configfile : Configuration file to use\n";
 }
 
 void parseOptions(int argc, char *argv[], Options &options)

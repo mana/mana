@@ -1,5 +1,6 @@
 2006-11-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
+	* src/main.cpp: Use \n instead of std::endl when writing to stdout.
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Removed useless
 	addRow method.
 	* src/main.cpp: Restore the homeDir config entry (temporarily).
