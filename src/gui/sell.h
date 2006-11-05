@@ -34,7 +34,7 @@
 class Item;
 class Network;
 class ShopItems;
-class ListBox;
+class ShopListBox;
 
 /**
  * The sell dialog.
@@ -78,12 +78,17 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
          */
         void selectionChanged(const SelectionEvent &event);
 
+        /**
+         * Gives Player's Money amount
+         */
+        void setMoney(int amount);
+
     private:
         Network *mNetwork;
         gcn::Button *mSellButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
-        ListBox *mItemList;
+        ShopListBox *mShopItemList;
         gcn::Label *mMoneyLabel;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;
@@ -91,6 +96,7 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
         gcn::Slider *mSlider;
 
         ShopItems *mShopItems;
+        int mPlayerMoney;
 
         int mMaxItems;
         int mAmountItems;

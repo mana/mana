@@ -67,3 +67,8 @@ void ShopItems::clear()
 {
     mItemsShop.clear();
 }
+
+std::vector<ITEM_SHOP> ShopItems::getShop()
+{
+    return mItemsShop;
+}

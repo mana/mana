@@ -5,6 +5,10 @@
 	src/gui/shoplistbox.cpp: Added pictures to items in buy dialogs.
 	Also too expensive items are highlighted in gray and can't be
 	selected.
+	* src/gui/shop.cpp, src/gui/shop.h, src/gui.sell.h, src/gui/sell.cpp,
+	src/net/buysellhandler.cpp, src/gui/shoplistbox.h,
+	src/gui/shoplistbox.cpp: Added item's pictures in sell dialogs, and
+	precisions about the total money in it.
 
 2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

@@ -73,11 +73,16 @@ class ShopItems : public gcn::ListModel
         ITEM_SHOP at(int i);
 
         /**
-         * Clear the vector and delete the pictures' instances.
+         * Clear the vector.
          */
         void clear();
 
-//    private: // This is to be readded as soon as the sell dialog is redone.
+        /**
+         * Direct access to the vector
+         */
+        std::vector<ITEM_SHOP> getShop();
+
+    private:
         std::vector<ITEM_SHOP> mItemsShop;
 
 };

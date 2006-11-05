@@ -42,7 +42,7 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel):
     mPlayerMoney(0)
 {
     mRowHeight = getFont()->getHeight();
-
+    mPriceCheck = true;
 }
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
@@ -53,6 +53,7 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
 {
     mRowHeight = (getFont()->getHeight() > ITEM_SPRITE_HEIGHT ?
         getFont()->getHeight() : ITEM_SPRITE_HEIGHT);
+    mPriceCheck = true;
 }
 
 
@@ -75,7 +76,7 @@ void ShopListBox::draw(gcn::Graphics *graphics)
         graphics->setColor(gcn::Color(0xffffff));
         if (mShopItems)
         {
-            if(mPlayerMoney < mShopItems->at(i).price)
+            if(mPlayerMoney < mShopItems->at(i).price && mPriceCheck)
             {
                 graphics->setColor(gcn::Color(0x919191));
             }
@@ -142,6 +143,9 @@ void ShopListBox::mousePress(int x, int y, int button)
         else // Old Behaviour
             enoughMoney = true;
 
+    if (!mPriceCheck)
+        enoughMoney = true;
+
         if (enoughMoney)
         {
             setSelected(y / mRowHeight);
@@ -188,4 +192,9 @@ void ShopListBox::adjustSize()
     {
         setHeight(mRowHeight * mListModel->getNumberOfElements());
     }
+}
+
+void ShopListBox::setPriceCheck(bool check)
+{
+    mPriceCheck = check;
 }

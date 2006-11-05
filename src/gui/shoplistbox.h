@@ -91,6 +91,12 @@ class ShopListBox : public gcn::ListBox
          */
         void adjustSize();
 
+        /**
+         * Set on/off the disabling of too expensive items.
+         * (Good for selling mode.)
+         */
+        void setPriceCheck(bool check);
+
     private:
         /**
          * Sends out selection events to the list of selection listeners.
@@ -110,6 +116,8 @@ class ShopListBox : public gcn::ListBox
         ShopItems *mShopItems;
 
         int mRowHeight; /**< Row Height */
+
+        bool mPriceCheck;
 
 };
 
