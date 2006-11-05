@@ -3,6 +3,8 @@
 	* src/gui/trade.cpp: Fixed money field to no longer hide below the
 	bottom of the window.
 	* src/CMakeLists.txt: Added shoplistbox.h/cpp files.
+	* src/gui/updatewindow.cpp: Fixed percentage indicator of update
+	window.
 
 2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

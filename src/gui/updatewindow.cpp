@@ -198,7 +198,7 @@ int UpdaterWindow::updateProgress(void *ptr,
     if (progress > 1) progress = 1.0f;
 
     uw->setLabel(
-            uw->mCurrentFile + " (" + toString((int)progress * 100) + "%)");
+            uw->mCurrentFile + " (" + toString((int) (progress * 100)) + "%)");
     uw->setProgress(progress);
 
     if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)
