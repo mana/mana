@@ -434,8 +434,8 @@ Being::setWeaponById(Uint16 weapon)
         setWeapon(2);
         break;
 
-    case 521: // sharp knive
-        /*  UNCOMMENT TO TEST SHARP KNIVE AS SCYTHE
+    case 521: // sharp knife
+        /*  UNCOMMENT TO TEST SHARP KNIFE AS SCYTHE
          *  setWeapon(3)
          *  break;
          */
