@@ -168,7 +168,6 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         mDecreaseButton->setEnabled(false);
         mSellButton->setEnabled(false);
 
-        mQuantityLabel->setCaption("0");
         mQuantityLabel->adjustSize();
         mMoneyLabel->setCaption("Money: 0 GP / Total: "
             + toString(mPlayerMoney) + " GP");
@@ -178,10 +177,13 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
             mSlider->setEnabled(true);
             mIncreaseButton->setEnabled(true);
             mMaxItems = mShopItems->at(selectedItem).quantity;
+            mQuantityLabel->setCaption("0 / " + toString(mMaxItems));
         } else {
             mSlider->setEnabled(false);
             mIncreaseButton->setEnabled(false);
+            mQuantityLabel->setCaption("0");
         }
+        mQuantityLabel->adjustSize();
     }
     else if (eventId == "quit")
     {
@@ -231,14 +233,16 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         outMsg.writeInt16(mAmountItems);
 
         mMaxItems -= mAmountItems;
+        mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
         mAmountItems = 0;
         mSlider->setValue(0);
         mSlider->setEnabled(mMaxItems != 0);
 
         // All were sold
         if (!mMaxItems) {
+
             mShopItemList->setSelected(-1);
-            mShopItems->getShop().erase(mShopItems->getShop().begin() + selectedItem);
+            mShopItems->getShop()->erase(mShopItems->getShop()->begin() + selectedItem);
         }
 
         // Update only when there are items left, the entry doesn't exist
@@ -250,7 +254,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     if (updateButtonsAndLabels)
     {
         // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems));
+        mQuantityLabel->setCaption(toString(mAmountItems) + " / " + toString(mMaxItems));
         mQuantityLabel->adjustSize();
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;

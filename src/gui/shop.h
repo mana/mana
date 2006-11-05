@@ -80,7 +80,7 @@ class ShopItems : public gcn::ListModel
         /**
          * Direct access to the vector
          */
-        std::vector<ITEM_SHOP> getShop();
+        std::vector<ITEM_SHOP>* getShop();
 
     private:
         std::vector<ITEM_SHOP> mItemsShop;
