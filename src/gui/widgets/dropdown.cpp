@@ -25,8 +25,6 @@
 
 #include "../../graphics.h"
 
-#include "../../graphic/imagerect.h"
-
 #include "../../resources/image.h"
 #include "../../resources/resourcemanager.h"
 
@@ -138,17 +136,17 @@ void DropDown::draw(gcn::Graphics* graphics)
 
     drawButton(graphics);
 
-        if (mDroppedDown)
-        {
-            drawChildren(graphics);
+    if (mDroppedDown)
+    {
+        drawChildren(graphics);
 
-            // Draw two lines separating the ListBox with se selected
-            // element view.
-            graphics->setColor(highlightColor);
-            graphics->drawLine(0, h, getWidth(), h);
-            graphics->setColor(shadowColor);
-            graphics->drawLine(0, h + 1,getWidth(),h + 1);
-        }
+        // Draw two lines separating the ListBox with se selected
+        // element view.
+        graphics->setColor(highlightColor);
+        graphics->drawLine(0, h, getWidth(), h);
+        graphics->setColor(shadowColor);
+        graphics->drawLine(0, h + 1,getWidth(),h + 1);
+    }
 }
 
 void DropDown::drawBorder(gcn::Graphics *graphics)

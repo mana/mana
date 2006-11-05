@@ -36,7 +36,6 @@ INCLUDE_DIRECTORIES(
     )
 
 SET(SRCS
-    graphic/imagerect.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp

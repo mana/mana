@@ -25,8 +25,6 @@
 
 #include "log.h"
 
-#include "graphic/imagerect.h"
-
 #include "resources/image.h"
 
 Graphics::Graphics():
