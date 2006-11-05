@@ -708,12 +708,12 @@ int main(int argc, char *argv[])
                     break;
 
                 case CHAR_CONNECT_STATE:
-                    printf("Char: %i\n", loginData.sex);
+                    logger->log("Char: %i\n", loginData.sex);
                     charLogin(network, &loginData);
                     break;
 
                 case ACCOUNT_STATE:
-                    printf("Account: %i\n", loginData.sex);
+                    logger->log("Account: %i\n", loginData.sex);
                     accountLogin(network, &loginData);
                     break;
 

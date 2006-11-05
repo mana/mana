@@ -256,7 +256,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             {
                 break;
             }
-            
+
             int type = msg->readInt8();
 
             switch (type) {
@@ -278,7 +278,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     dstBeing->setHairColor(msg->readInt8());
                     break;
                 default:
-                    printf("c3: %i\n", msg->readInt8()); // unsupported
+                    logger->log("c3: %i\n", msg->readInt8()); // unsupported
                     break;
             }
         }
@@ -370,9 +370,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case 0x0119:
             // Change in players look
-            printf("0x0119 %i %i %i %x %i\n", msg->readInt32(),
-                   msg->readInt16(), msg->readInt16(), msg->readInt16(),
-                   msg->readInt8());
+            logger->log("0x0119 %i %i %i %x %i\n", msg->readInt32(),
+                    msg->readInt16(), msg->readInt16(), msg->readInt16(),
+                    msg->readInt8());
             break;
     }
 }

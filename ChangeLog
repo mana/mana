@@ -5,6 +5,8 @@
 	* src/CMakeLists.txt: Added shoplistbox.h/cpp files.
 	* src/gui/updatewindow.cpp: Fixed percentage indicator of update
 	window.
+	* src/main.cpp, src/net/beinghandler.cpp, src/net/skillhandler.cpp,
+	src/net/network.cpp: Changed some printf statements to log statements.
 
 2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -26,7 +28,7 @@
 	precisions about the total money in it.
 	* src/gui/shop.h, src/gui/shop.cpp, src/gui/sell.cpp: Fixes to Sell
 	dialog.
-	* src/gui/sell.cpp: Fixes the money value after seling something.
+	* src/gui/sell.cpp: Fixes the money value after selling something.
 
 2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

@@ -299,7 +299,7 @@ MessageIn Network::getNextMessage()
         len = readWord(2);
 
 #ifdef DEBUG
-    printf("Received packet 0x%x of length %d\n", msgId, length);
+    logger->log("Received packet 0x%x of length %d\n", msgId, length);
 #endif
 
     MessageIn msg(mInBuffer, len);
