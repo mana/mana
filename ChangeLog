@@ -1,5 +1,11 @@
 2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/gui/trade.cpp: Fixed money field to no longer hide below the
+	bottom of the window.
+	* src/CMakeLists.txt: Added shoplistbox.h/cpp files.
+
+2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
 	* data/graphics/images/login_wallpaper.png: Reverted to standard
 	wallpaper.
 	* src/resources/resourcemanager.cpp: More useful logging about
