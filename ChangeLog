@@ -1,3 +1,10 @@
+2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/images/login_wallpaper.png: Reverted to standard
+	wallpaper.
+	* src/resources/resourcemanager.cpp: More useful logging about
+	resources that are being loaded (including source).
+
 2006-11-05  Yohann Ferreira  <bertram@cegetel.net>
 
 	* src/Makefile.am, src/gui/buy.cpp, src/gui/buy.h, src/gui/shop.h,

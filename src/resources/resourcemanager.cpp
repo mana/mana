@@ -119,13 +119,9 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
         return resIter->second;
     }
 
-    logger->log("ResourceManager::get(%s)", idPath.c_str());
-
     int fileSize;
     void *buffer = loadFile(idPath, fileSize);
-
     if (!buffer) {
-        logger->log("Warning: resource doesn't exist!");
         return NULL;
     }
 
@@ -261,6 +257,10 @@ ResourceManager::loadFile(const std::string &fileName, int &fileSize)
         logger->log("Warning: %s failed to load!", fileName.c_str());
         return NULL;
     }
+
+    // Log the real dir of the file
+    logger->log("Loaded %s/%s", PHYSFS_getRealDir(fileName.c_str()),
+            fileName.c_str());
 
     // Get the size of the file
     fileSize = PHYSFS_fileLength(file);
