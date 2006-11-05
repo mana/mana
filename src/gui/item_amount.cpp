@@ -94,7 +94,7 @@ void ItemAmountWindow::resetAmount()
     mItemAmountTextBox->setInt(1);
 }
 
-void ItemAmountWindow::action(const std::string& eventId, gcn::Widget* widget)
+void ItemAmountWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     int amount = mItemAmountTextBox->getInt();
 

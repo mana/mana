@@ -122,7 +122,7 @@ const int MAX_TIME = 10000;
  */
 namespace {
     struct ExitListener : public gcn::ActionListener {
-        void action(const std::string& eventId, gcn::Widget* widget) {
+        void action(const std::string &eventId, gcn::Widget *widget) {
             if (eventId == "yes") {
                 done = true;
             }
@@ -164,15 +164,15 @@ int get_elapsed_time(int start_time)
 /**
  * Create all the various globally accessible gui windows
  */
-void createGuiWindows(Network *network)
+void createGuiWindows()
 {
     // Create dialogs
-    chatWindow = new ChatWindow(network);
+    chatWindow = new ChatWindow;
     menuWindow = new MenuWindow();
     statusWindow = new StatusWindow(player_node);
     miniStatusWindow = new MiniStatusWindow();
-    buyDialog = new BuyDialog(network);
-    sellDialog = new SellDialog(network);
+    buyDialog = new BuyDialog;
+    sellDialog = new SellDialog;
     buySellDialog = new BuySellDialog();
     inventoryWindow = new InventoryWindow();
     npcTextDialog = new NpcTextDialog();
@@ -183,7 +183,7 @@ void createGuiWindows(Network *network)
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
     chargeDialog = new ChargeDialog();
-    tradeWindow = new TradeWindow(network);
+    tradeWindow = new TradeWindow;
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
@@ -252,8 +252,7 @@ void destroyGuiWindows()
     delete debugWindow;
 }
 
-Game::Game(Network *network):
-    mNetwork(network),
+Game::Game():
     mBeingHandler(new BeingHandler()),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
@@ -265,10 +264,10 @@ Game::Game(Network *network):
     mSkillHandler(new SkillHandler()),
     mTradeHandler(new TradeHandler())
 {
-    createGuiWindows(network);
-    engine = new Engine(network);
+    createGuiWindows();
+    engine = new Engine;
 
-    beingManager = new BeingManager(network);
+    beingManager = new BeingManager;
     floorItemManager = new FloorItemManager();
 
     // Initialize timers
@@ -282,8 +281,6 @@ Game::Game(Network *network):
 
     // Initialize beings
     beingManager->setPlayer(player_node);
-    player_node->setNetwork(network);
-    engine->changeMap(map_path);
 
     Joystick::init();
     // TODO: The user should be able to choose which one to use
@@ -293,16 +290,16 @@ Game::Game(Network *network):
         joystick = new Joystick(0);
     }
 
-    network->registerHandler(mBeingHandler.get());
-    network->registerHandler(mBuySellHandler.get());
-    network->registerHandler(mChatHandler.get());
-    network->registerHandler(mEquipmentHandler.get());
-    network->registerHandler(mInventoryHandler.get());
-    network->registerHandler(mItemHandler.get());
-    network->registerHandler(mNpcHandler.get());
-    network->registerHandler(mPlayerHandler.get());
-    network->registerHandler(mSkillHandler.get());
-    network->registerHandler(mTradeHandler.get());
+    Net::registerHandler(mBeingHandler.get());
+    Net::registerHandler(mBuySellHandler.get());
+    Net::registerHandler(mChatHandler.get());
+    Net::registerHandler(mEquipmentHandler.get());
+    Net::registerHandler(mInventoryHandler.get());
+    Net::registerHandler(mItemHandler.get());
+    Net::registerHandler(mNpcHandler.get());
+    Net::registerHandler(mPlayerHandler.get());
+    Net::registerHandler(mSkillHandler.get());
+    Net::registerHandler(mTradeHandler.get());
 }
 
 Game::~Game()
@@ -404,8 +401,7 @@ void Game::logic()
         }
 
         // Handle network stuff
-        mNetwork->flush();
-        mNetwork->dispatchMessages();
+        Net::flush();
     }
 }
 
@@ -509,14 +505,12 @@ void Game::handleInput()
                 case SDLK_z:
                     if (!chatWindow->isFocused())
                     {
-                        FloorItem *item = floorItemManager->findByCoordinates(
-                                player_node->mX, player_node->mY);
+                        Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
+                        FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
                         // If none below the player, try the tile in front of
                         // the player
                         if (!item) {
-                            Uint16 x = player_node->mX;
-                            Uint16 y = player_node->mY;
                             if (player_node->mDirection & Being::UP)
                                 y--;
                             if (player_node->mDirection & Being::DOWN)
@@ -638,8 +632,7 @@ void Game::handleInput()
         current_npc == 0 &&
         !chatWindow->isFocused())
     {
-        Uint16 x = player_node->mX;
-        Uint16 y = player_node->mY;
+        Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
         unsigned char Direction = 0;
 
         // Translate pressed keys to movement and direction
@@ -691,7 +684,7 @@ void Game::handleInput()
                 if (player_node->mDirection & Being::RIGHT)
                     targetX++;
 
-                // Attack priorioty is: Monster, Player, auto target
+                // Attack priority is: Monster, Player, auto target
                 target = beingManager->findBeing(
                         targetX, targetY, Being::MONSTER);
                 if (!target)
@@ -718,8 +711,7 @@ void Game::handleInput()
         {
             if (joystick->buttonPressed(1))
             {
-                FloorItem *item = floorItemManager->findByCoordinates(
-                        player_node->mX, player_node->mY);
+                FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
                 if (item)
                     player_node->pickUp(item);

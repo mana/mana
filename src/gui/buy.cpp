@@ -26,28 +26,27 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "listbox.h"
 #include "scrollarea.h"
 #include "shop.h"
 #include "slider.h"
 
 #include "../npc.h"
 
+#include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
-
-#include "../net/messageout.h"
-#include "../net/protocol.h"
 
 #include "../utils/tostring.h"
 
 
-BuyDialog::BuyDialog(Network *network):
-    Window("Buy"), mNetwork(network),
+BuyDialog::BuyDialog():
+    Window("Buy"),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
     mShopItems = new ShopItems;
 
-    mShopItemList = new ShopListBox(mShopItems, mShopItems);
-    mScrollArea = new ScrollArea(mShopItemList);
+    mItemList = new ListBox(mShopItems);
+    mScrollArea = new ScrollArea(mItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
     mMoneyLabel = new gcn::Label("Price : 0 GP / 0 GP");
@@ -61,7 +60,7 @@ BuyDialog::BuyDialog(Network *network):
     setContentSize(260, 210);
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mScrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    mShopItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
+    mItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
 
     mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     mSlider->setEnabled(false);
@@ -85,11 +84,11 @@ BuyDialog::BuyDialog(Network *network):
     mItemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
     mItemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
 
-    mShopItemList->setEventId("item");
+    mItemList->setEventId("item");
     mSlider->setEventId("slider");
 
-    mShopItemList->addActionListener(this);
-    mShopItemList->addSelectionListener(this);
+    mItemList->addActionListener(this);
+    mItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
     add(mScrollArea);
@@ -114,7 +113,6 @@ BuyDialog::~BuyDialog()
 void BuyDialog::setMoney(int amount)
 {
     mMoney = amount;
-    mShopItemList->setPlayersMoney(amount);
     mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney)  + " GP");
     mMoneyLabel->adjustSize();
 }
@@ -127,7 +125,7 @@ void BuyDialog::reset()
     mAmountItems = 0;
 
     // Reset Previous Selected Items to prevent failing asserts
-    mShopItemList->setSelected(-1);
+    mItemList->setSelected(-1);
     mIncreaseButton->setEnabled(false);
     mDecreaseButton->setEnabled(false);
     mQuantityLabel->setCaption("0");
@@ -140,13 +138,20 @@ void BuyDialog::reset()
 
 void BuyDialog::addItem(short id, int price)
 {
-    mShopItems->addItem(id, price);
-    mShopItemList->adjustSize();
+    ITEM_SHOP item_shop;
+
+    item_shop.name = itemDb->getItemInfo(id).getName() + " "
+        + toString(price) + " GP";
+    item_shop.price = price;
+    item_shop.id = id;
+
+    mShopItems->push_back(item_shop);
+    mItemList->adjustSize();
 }
 
-void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
+void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
-    int selectedItem = mShopItemList->getSelected();
+    int selectedItem = mItemList->getSelected();
 
     if (eventId == "item")
     {
@@ -164,7 +169,7 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
 
         // If no item was selected, none can be bought, otherwise
         // calculate how many the player can afford
-        mMaxItems = (mShopItemList->getSelected() == -1) ? 0 :
+        mMaxItems = (mItemList->getSelected() == -1) ? 0 :
             mMoney / mShopItems->at(selectedItem).price;
 
         // When at least one item can be bought, enable the slider and the
@@ -179,7 +184,7 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
     }
 
     // The following actions require a valid selection
-    if (selectedItem < 0 || selectedItem >= int(mShopItems->getNumberOfElements()))
+    if (selectedItem < 0 || selectedItem >= int(mShopItems->size()))
     {
         return;
     }
@@ -219,11 +224,13 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
     else if (eventId == "buy" && (mAmountItems > 0 &&
                 mAmountItems <= mMaxItems))
     {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
-        outMsg.writeInt16(8);
-        outMsg.writeInt16(mAmountItems);
-        outMsg.writeInt16(mShopItems->at(selectedItem).id);
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(mAmountItems);
+        outMsg.writeShort(mShopItems->at(selectedItem).id);
+        */
 
         // update money !
         mMoney -= mAmountItems * mShopItems->at(selectedItem).price;
@@ -262,7 +269,7 @@ void BuyDialog::action(const std::string& eventId, gcn::Widget* widget)
 
 void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
-    int selectedItem = mShopItemList->getSelected();
+    int selectedItem = mItemList->getSelected();
 
     if (selectedItem > -1)
     {

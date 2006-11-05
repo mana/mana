@@ -33,7 +33,7 @@
 #include "map.h"
 #include "animatedsprite.h"
 
-#define NR_HAIR_STYLES 7
+#define NR_HAIR_STYLES 8
 #define NR_HAIR_COLORS 10
 
 class AnimatedSprite;
@@ -98,11 +98,11 @@ class Being : public Sprite
         static const char UP = 4;
         static const char RIGHT = 8;
 
+        std::string mName;      /**< Name of character */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
-        Uint16 mX, mY;          /**< Tile coordinates */
+        Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
         Uint8 mDirection;       /**< Facing direction */
         Uint8 mAction;          /**< Action the being is performing */
-        Uint8 mFrame;
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
@@ -112,7 +112,7 @@ class Being : public Sprite
         /**
          * Constructor.
          */
-        Being(Uint32 id, Uint16 job, Map *map);
+        Being(Uint16 id, Uint16 job, Map *map);
 
         /**
          * Destructor.
@@ -127,7 +127,17 @@ class Being : public Sprite
         /**
          * Sets a new destination for this being to walk to.
          */
-        virtual void setDestination(Uint16 destX, Uint16 destY);
+        void setDestination(Uint16 destX, Uint16 destY);
+
+        /**
+         * Adjusts course to expected stat point.
+         */
+        void adjustCourse(Uint16, Uint16);
+
+        /**
+         * Adjusts course to expected start and end points.
+         */
+        void adjustCourse(Uint16, Uint16, Uint16, Uint16);
 
         /**
          * Puts a "speech balloon" above this being for the specified amount
@@ -248,7 +258,7 @@ class Being : public Sprite
          *
          * @param weapon the picture id
          */
-        virtual void
+        void
         setWeapon(Uint16 weapon) { mWeapon = weapon; }
 
         /**
@@ -274,14 +284,14 @@ class Being : public Sprite
         /**
          * Gets the sprite id.
          */
-        Uint32
+        Uint16
         getId() const { return mId; }
 
         /**
          * Sets the sprite id.
          */
         void
-        setId(Uint32 id) { mId = id; }
+        setId(Uint16 id) { mId = id; }
 
         /**
          * Sets the map the being is on
@@ -324,13 +334,13 @@ class Being : public Sprite
          * Get the current X pixel offset.
          */
         int
-        getXOffset() const { return getOffset(LEFT, RIGHT); }
+        getXOffset() const { return getOffset(mStepX); }
 
         /**
          * Get the current Y pixel offset.
          */
         int
-        getYOffset() const { return getOffset(UP, DOWN); }
+        getYOffset() const { return getOffset(mStepY); }
 
         std::auto_ptr<Equipment> mEquipment;
         int mVisibleEquipment[6];       /**< Visible equipments */
@@ -340,13 +350,7 @@ class Being : public Sprite
          * Sets the new path for this being.
          */
         void
-        setPath(const Path &path);
-
-        /**
-         * Calculates the offset in the given directions.
-         * If walking in direction 'neg' the value is negated.
-         */
-        int getOffset(char pos, char neg) const;
+        setPath(const Path &path, int mod = 1024);
 
         /**
          * Returns the sprite direction of this being.
@@ -354,24 +358,29 @@ class Being : public Sprite
         SpriteDirection
         getSpriteDirection() const;
 
-        Uint32 mId;                     /**< Unique sprite id */
+        Uint16 mId;                     /**< Unique being id */
+        Uint8 mSex;                     /**< Character's gender */
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
+        Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
         Map *mMap;                      /**< Map on which this being resides */
-        std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
 
         Path mPath;
         std::string mSpeech;
         std::string mDamage;
         Uint16 mHairStyle, mHairColor;
-        Uint8 mSex;
         Uint32 mSpeechTime;
         Uint32 mDamageTime;
         bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
+
+    private:
+        Sint16 mStepX, mStepY;
+        Uint16 mStepTime;
+        int getOffset(int) const;
 };
 
 #endif

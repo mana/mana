@@ -35,10 +35,10 @@ class AnimatedSprite;
 class Player : public Being
 {
     public:
-        Player(Uint32 id, Uint16 job, Map *map);
-
-        virtual void
-        logic();
+        /**
+         * Constructor.
+         */
+        Player(Uint16 id, Uint16 job, Map *map);
 
         virtual Type
         getType() const;
@@ -57,9 +57,6 @@ class Player : public Being
 
         virtual void
         setVisibleEquipment(Uint8 slot, Uint8 id);
-
-        virtual void
-        setWeapon(Uint16 weapon);
 
     private:
         /**

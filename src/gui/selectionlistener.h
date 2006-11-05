@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
+ *  $Id: selectionlistener.h 2651 2006-09-03 16:47:48Z b_lindeijer $
  */
 
 #ifndef _TMW_SELECTIONLISTENER_H__

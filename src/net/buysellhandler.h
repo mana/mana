@@ -31,7 +31,7 @@ class BuySellHandler : public MessageHandler
     public:
         BuySellHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

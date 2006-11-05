@@ -21,17 +21,14 @@
  *  $Id$
  */
 
-#ifndef _TMW_NET_MAPLOGINHANDLER_H
-#define _TMW_NET_MAPLOGINHANDLER_H
+#include "internal.h"
 
-#include "messagehandler.h"
-
-class MapLoginHandler : public MessageHandler
+namespace Net
 {
-    public:
-        MapLoginHandler();
+    class Connection;
 
-        void handleMessage(MessageIn *msg);
-};
-
-#endif
+    namespace AccountServer
+    {
+        Connection *connection = 0;
+    }
+}

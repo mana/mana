@@ -39,7 +39,7 @@ namespace {
         /**
          * Called when receiving actions from widget.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const std::string &eventId, gcn::Widget *widget);
     } listener;
 }
 
@@ -75,7 +75,7 @@ void MenuWindow::draw(gcn::Graphics *graphics)
 }
 
 
-void MenuWindowListener::action(const std::string& eventId, gcn::Widget* widget)
+void MenuWindowListener::action(const std::string &eventId, gcn::Widget *widget)
 {
     Window *window = NULL;
     if (eventId == "Status")

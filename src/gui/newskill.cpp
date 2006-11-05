@@ -121,7 +121,7 @@ NewSkillDialog::NewSkillDialog():
     setLocationRelativeTo(getParent());
 }
 
-void NewSkillDialog::action(const std::string& eventId, gcn::Widget* widget)
+void NewSkillDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
      int osp = startPoint;
     if (eventId == "close")

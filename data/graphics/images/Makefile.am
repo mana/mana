@@ -12,8 +12,7 @@ images_DATA =				\
 	minimap_new_9-1.png		\
 	minimap_new_14-1.png	\
 	minimap_new_15-1.png	\
-	minimap_new_16-1.png	\
-	minimap_new_17-1.png
+	minimap_new_16-1.png
 
 EXTRA_DIST =				\
 	$(images_DATA)

@@ -21,27 +21,22 @@
  *  $Id$
  */
 
-#ifndef _TMW_PACKET_
-#define _TMW_PACKET_
+#include "gameserver.h"
 
-/**
- * A packet wraps a certain amount of bytes for sending and receiving.
- */
-class Packet
+#include "internal.h"
+
+#include "../connection.h"
+#include "../messageout.h"
+#include "../protocol.h"
+
+void Net::GameServer::connect(Net::Connection *connection,
+        const std::string &token)
 {
-    public:
-        /**
-         * Constructor.
-         */
-        Packet(const char *data, int length);
+    Net::GameServer::connection = connection;
 
-        /**
-         * Destructor.
-         */
-        ~Packet();
+    MessageOut msg(PGMSG_CONNECT);
 
-        char *mData;                  /**< Packet data */
-        unsigned int mLength;         /**< Length of data in bytes */
-};
+    msg.writeString(token, 32);
 
-#endif
+    Net::GameServer::connection->send(msg);
+}

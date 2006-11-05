@@ -86,8 +86,7 @@ UpdaterWindow::UpdaterWindow():
     mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
 
-    mUpdateHost =
-        config.getValue("updatehost", "http://updates.themanaworld.org");
+    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
     mBasePath = config.getValue("homeDir", ".");
 
     // Try to download the updates list
@@ -130,7 +129,7 @@ void UpdaterWindow::enable()
     mPlayButton->requestFocus();
 }
 
-void UpdaterWindow::action(const std::string& eventId, gcn::Widget* widget)
+void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {
@@ -139,7 +138,7 @@ void UpdaterWindow::action(const std::string& eventId, gcn::Widget* widget)
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
-            state = EXIT_STATE;
+            state = STATE_EXIT;
         }
         else
         {
@@ -148,7 +147,7 @@ void UpdaterWindow::action(const std::string& eventId, gcn::Widget* widget)
     }
     else if (eventId == "play")
     {
-        state = LOGIN_STATE;
+        state = STATE_LOGIN;
     }
 }
 
@@ -182,12 +181,6 @@ void UpdaterWindow::loadNews()
     setVisible(true);
 }
 
-void UpdaterWindow::addRow(const std::string &row)
-{
-    mBrowserBox->addRow(row);
-    mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
-}
-
 int UpdaterWindow::updateProgress(void *ptr,
                                   double dt, double dn, double ut, double un)
 {
@@ -201,7 +194,7 @@ int UpdaterWindow::updateProgress(void *ptr,
             uw->mCurrentFile + " (" + toString((int)progress * 100) + "%)");
     uw->setProgress(progress);
 
-    if (state != UPDATE_STATE || uw->mDownloadStatus == UPDATE_ERROR)
+    if (state != STATE_UPDATE || uw->mDownloadStatus == UPDATE_ERROR)
     {
         // If the action was canceled return an error code to stop the mThread
         return -1;
@@ -343,11 +336,12 @@ void UpdaterWindow::logic()
                 }
                 mThread = NULL;
             }
-            addRow("");
-            addRow("##1  The update process is incomplete.");
-            addRow("##1  It is strongly recommended that");
-            addRow("##1  you try again later");
-            addRow(mCurlError);
+            mBrowserBox->addRow("");
+            mBrowserBox->addRow("##1  The update process is incomplete.");
+            mBrowserBox->addRow("##1  It is strongly recommended that");
+            mBrowserBox->addRow("##1  you try again later");
+            mBrowserBox->addRow(mCurlError);
+            mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
             mDownloadStatus = UPDATE_COMPLETE;
             break;
         case UPDATE_NEWS:

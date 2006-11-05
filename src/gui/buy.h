@@ -28,11 +28,9 @@
 
 #include "window.h"
 #include "selectionlistener.h"
-#include "shoplistbox.h"
 
 #include "../guichanfwd.h"
 
-class Network;
 class ShopItems;
 class ListBox;
 
@@ -49,7 +47,7 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
          *
          * @see Window::Window
          */
-        BuyDialog(Network *network);
+        BuyDialog();
 
         /**
          * Destructor
@@ -94,12 +92,11 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
         std::string getElementAt(int i);
 
     private:
-        Network *mNetwork;
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
-        ShopListBox *mShopItemList;
+        ListBox *mItemList;
         gcn::ScrollArea *mScrollArea;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;

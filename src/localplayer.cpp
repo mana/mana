@@ -31,13 +31,13 @@
 #include "main.h"
 #include "sound.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
+#include "net/gameserver/player.h"
 
 LocalPlayer *player_node = NULL;
 
-LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
-    Player(id, job, map),
+LocalPlayer::LocalPlayer():
+    Player(65535, 0, NULL),
+    mLevel(1),
     mInventory(new Inventory()),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mLastAction(-1)
@@ -50,26 +50,9 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    switch (mAction) {
-        case WALK:
-            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
-            if (mFrame >= 6) {
-                nextStep();
-            }
-            break;
-
-        case ATTACK:
-            int frames = 4;
-            if (getWeapon() == 2)
-            {
-                frames = 5;
-            }
-            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-            if (mFrame >= frames) {
-                nextStep();
-                attack();
-            }
-            break;
+    if (mAction == ATTACK && get_elapsed_time(mWalkTime) >= mAttackSpeed)
+    {
+        attack();
     }
 
     // Actions are allowed once per second
@@ -115,10 +98,10 @@ Item* LocalPlayer::getInvItem(int index)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_EQUIP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(0);
+    // XXX What's itemId and slot exactly? Same as eAthena?
+    /*
+    Net::GameServer::Player::equip(itemId, slot));
+    */
 }
 
 void LocalPlayer::unequipItem(Item *item)
@@ -126,9 +109,11 @@ void LocalPlayer::unequipItem(Item *item)
     if (!item)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeInt16(item->getInvIndex());
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
+    outMsg.writeShort(item->getInvIndex());
+    */
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     mEquipment->removeEquipment(item);
@@ -136,34 +121,39 @@ void LocalPlayer::unequipItem(Item *item)
 
 void LocalPlayer::useItem(Item *item)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt32(item->getId());
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeLong(item->getId());
     // Note: id is dest of item, usually player_node->account_ID ??
+    */
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
-    // TODO: Fix wrong coordinates of drops, serverside?
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt16(quantity);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeShort(quantity);
+    */
 }
 
 void LocalPlayer::pickUp(FloorItem *item)
 {
-    int dx = item->getX() - mX;
-    int dy = item->getY() - mY;
+    int dx = item->getX() - mX / 32;
+    int dy = item->getY() - mY / 32;
 
     if (dx * dx + dy * dy < 4) {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_ITEM_PICKUP);
-        outMsg.writeInt32(item->getId());
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_ITEM_PICKUP);
+        outMsg.writeLong(item->getId());
+        */
         mPickUpTarget = NULL;
     } else {
-        setDestination(item->getX(), item->getY());
+        setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
         mPickUpTarget = item;
         stopAttack();
     }
@@ -181,28 +171,28 @@ void LocalPlayer::walk(unsigned char dir)
         return;
     }
 
-    Sint16 dx = 0, dy = 0;
+    int dx = 0, dy = 0;
     if (dir & UP)
-        dy--;
+        dy -= 32;
     if (dir & DOWN)
-        dy++;
+        dy += 32;
     if (dir & LEFT)
-        dx--;
+        dx -= 32;
     if (dir & RIGHT)
-        dx++;
+        dx += 32;
 
     // Prevent skipping corners over colliding tiles
-    if (dx && mMap->tileCollides(mX + dx, mY))
-        dx = 0;
-    if (dy && mMap->tileCollides(mX, mY + dy))
-        dy = 0;
+    if (dx && mMap->tileCollides((mX + dx) / 32, mY / 32))
+        dx = 16 - mX % 32;
+    if (dy && mMap->tileCollides(mX / 32, (mY + dy) / 32))
+        dy = 16 - mY % 32;
 
     // Choose a straight direction when diagonal target is blocked
-    if (dx && dy && !mMap->getWalk(mX + dx, mY + dy))
-        dx = 0;
+    if (dx && dy && !mMap->getWalk((mX + dx) / 32, (mY + dy) / 32))
+        dx = 16 - mX % 32;
 
     // Walk to where the player can actually go
-    if ((dx || dy) && mMap->getWalk(mX + dx, mY + dy))
+    if ((dx || dy) && mMap->getWalk((mX + dx) / 32, (mY + dy) / 32))
     {
         setDestination(mX + dx, mY + dy);
     }
@@ -218,11 +208,15 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
-    char temp[3];
-    MessageOut outMsg(mNetwork);
-    set_coordinates(temp, x, y, mDirection);
-    outMsg.writeInt16(0x0085);
-    outMsg.writeString(temp, 3);
+    // Fix coordinates so that the player does not seem to dig into walls.
+    int tx = x / 32, ty = y / 32, fx = x % 32, fy = y % 32;
+    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty)) fx = 16;
+    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1)) fy = 16;
+    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1)) fx = 16;
+    x = tx * 32 + fx;
+    y = ty * 32 + fy;
+
+    Net::GameServer::Player::walk(x, y);
 
     mPickUpTarget = NULL;
 
@@ -231,36 +225,38 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
 void LocalPlayer::raiseAttribute(Attribute attr)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_STAT_UPDATE_REQUEST);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
 
     switch (attr)
     {
         case STR:
-            outMsg.writeInt16(0x000d);
+            outMsg.writeShort(0x000d);
             break;
 
         case AGI:
-            outMsg.writeInt16(0x000e);
+            outMsg.writeShort(0x000e);
             break;
 
         case VIT:
-            outMsg.writeInt16(0x000f);
+            outMsg.writeShort(0x000f);
             break;
 
         case INT:
-            outMsg.writeInt16(0x0010);
+            outMsg.writeShort(0x0010);
             break;
 
         case DEX:
-            outMsg.writeInt16(0x0011);
+            outMsg.writeShort(0x0011);
             break;
 
         case LUK:
-            outMsg.writeInt16(0x0012);
+            outMsg.writeShort(0x0012);
             break;
     }
-    outMsg.writeInt8(1);
+    outMsg.writeByte(1);
+    */
 }
 
 void LocalPlayer::raiseSkill(Uint16 skillId)
@@ -268,9 +264,11 @@ void LocalPlayer::raiseSkill(Uint16 skillId)
     if (mSkillPoint <= 0)
         return;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeInt16(skillId);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
+    outMsg.writeShort(skillId);
+    */
 }
 
 void LocalPlayer::toggleSit()
@@ -287,10 +285,12 @@ void LocalPlayer::toggleSit()
         default: return;
     }
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
-    outMsg.writeInt32(0);
-    outMsg.writeInt8(type);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(0x0089);
+    outMsg.writeLong(0);
+    outMsg.writeByte(type);
+    */
 }
 
 void LocalPlayer::emote(Uint8 emotion)
@@ -299,9 +299,11 @@ void LocalPlayer::emote(Uint8 emotion)
         return;
     mLastAction = tick_time;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00bf);
-    outMsg.writeInt8(emotion);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(0x00bf);
+    outMsg.writeByte(emotion);
+    */
 }
 
 void LocalPlayer::tradeReply(bool accept)
@@ -309,16 +311,20 @@ void LocalPlayer::tradeReply(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_RESPONSE);
-    outMsg.writeInt8(accept ? 3 : 4);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_TRADE_RESPONSE);
+    outMsg.writeByte(accept ? 3 : 4);
+    */
 }
 
 void LocalPlayer::trade(Being *being) const
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_REQUEST);
-    outMsg.writeInt32(being->getId());
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_TRADE_REQUEST);
+    outMsg.writeLong(being->getId());
+    */
 }
 
 bool LocalPlayer::tradeRequestOk() const
@@ -368,10 +374,12 @@ void LocalPlayer::attack(Being *target, bool keep)
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0089);
-    outMsg.writeInt32(target->getId());
-    outMsg.writeInt8(0);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(0x0089);
+    outMsg.writeLong(target->getId());
+    outMsg.writeByte(0);
+    */
 }
 
 void LocalPlayer::stopAttack()
@@ -386,7 +394,9 @@ Being* LocalPlayer::getTarget() const
 
 void LocalPlayer::revive()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x00b2);
-    outMsg.writeInt8(0);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(0x00b2);
+    outMsg.writeByte(0);
+    */
 }

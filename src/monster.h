@@ -29,9 +29,7 @@
 class Monster : public Being
 {
     public:
-        Monster(Uint32 id, Uint16 job, Map *map);
-
-        virtual void logic();
+        Monster(Uint16 id, Uint16 job, Map *map);
 
         virtual Type getType() const;
 };

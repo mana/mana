@@ -37,7 +37,7 @@
 #include "../localplayer.h"
 #include "../main.h"
 
-#include "../net/messageout.h"
+#include "../net/accountserver/account.h"
 
 #include "../utils/tostring.h"
 
@@ -48,7 +48,7 @@ class CharDeleteConfirm : public ConfirmDialog
 {
     public:
         CharDeleteConfirm(CharSelectDialog *master);
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const std::string &eventId, gcn::Widget *widget);
     private:
         CharSelectDialog *master;
 };
@@ -60,7 +60,7 @@ CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
 {
 }
 
-void CharDeleteConfirm::action(const std::string& eventId, gcn::Widget* widget)
+void CharDeleteConfirm::action(const std::string &eventId, gcn::Widget *widget)
 {
     //ConfirmDialog::action(eventId);
     if (eventId == "yes") {
@@ -69,11 +69,9 @@ void CharDeleteConfirm::action(const std::string& eventId, gcn::Widget* widget)
     ConfirmDialog::action(eventId, widget);
 }
 
-CharSelectDialog::CharSelectDialog(Network *network,
-                                   LockedArray<LocalPlayer*> *charInfo,
-                                   unsigned char sex):
-    Window("Select Character"), mNetwork(network),
-    mCharInfo(charInfo), mSex(sex), mCharSelected(false)
+CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
+    Window("Select Character"),
+    mCharInfo(charInfo), mCharSelected(false)
 {
     mSelectButton = new Button("Ok", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
@@ -84,9 +82,8 @@ CharSelectDialog::CharSelectDialog(Network *network,
 
     mNameLabel = new gcn::Label("Name");
     mLevelLabel = new gcn::Label("Level");
-    mJobLevelLabel = new gcn::Label("Job Level");
     mMoneyLabel = new gcn::Label("Money");
-    mPlayerBox = new PlayerBox(sex);
+    mPlayerBox = new PlayerBox(0);
 
     int w = 195;
     int h = 220;
@@ -94,7 +91,6 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
     mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
     mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mJobLevelLabel->setDimension(gcn::Rectangle(10, 132, 128, 16));
     mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
     mPreviousButton->setPosition(5, 170);
     mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
@@ -118,7 +114,6 @@ CharSelectDialog::CharSelectDialog(Network *network,
     add(mNextButton);
     add(mNameLabel);
     add(mLevelLabel);
-    add(mJobLevelLabel);
     add(mMoneyLabel);
 
     mSelectButton->requestFocus();
@@ -126,7 +121,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     updatePlayerInfo();
 }
 
-void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
+void CharSelectDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "ok" && n_character > 0)
     {
@@ -137,11 +132,12 @@ void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
         mPreviousButton->setEnabled(false);
         mNextButton->setEnabled(false);
         mCharSelected = true;
-        attemptCharSelect();
+        Net::AccountServer::Account::selectCharacter(mCharInfo->getPos());
+        mCharInfo->lock();
     }
     else if (eventId == "cancel")
     {
-        state = EXIT_STATE;
+        state = STATE_EXIT;
     }
     else if (eventId == "new")
     {
@@ -149,7 +145,7 @@ void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
         {
             // Start new character dialog
             mCharInfo->lock();
-            new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
+            new CharCreateDialog(this, mCharInfo->getPos());
             mCharInfo->unlock();
         }
     }
@@ -178,21 +174,20 @@ void CharSelectDialog::updatePlayerInfo()
     if (pi) {
         mNameLabel->setCaption(pi->getName());
         mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
-        mJobLevelLabel->setCaption("Job Lvl: " + toString(pi->mJobLevel));
-        mMoneyLabel->setCaption("Gold: " + toString(pi->mGp));
+        mMoneyLabel->setCaption("Money: " + toString(pi->mMoney));
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);
             mDelCharButton->setEnabled(true);
             mSelectButton->setEnabled(true);
         }
-        mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
-        mPlayerBox->mHairColor = pi->getHairColor() - 1;
+        mPlayerBox->mHairStyle = pi->getHairStyle();
+        mPlayerBox->mHairColor = pi->getHairColor();
+        mPlayerBox->mSex = pi->getSex();
         mPlayerBox->mShowPlayer = true;
     } else {
         mNameLabel->setCaption("Name");
         mLevelLabel->setCaption("Level");
-        mJobLevelLabel->setCaption("Job Level");
         mMoneyLabel->setCaption("Money");
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
@@ -206,20 +201,7 @@ void CharSelectDialog::updatePlayerInfo()
 
 void CharSelectDialog::attemptCharDelete()
 {
-    // Request character deletion
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0068);
-    outMsg.writeInt32(mCharInfo->getEntry()->mCharId);
-    outMsg.writeString("a@a.com", 40);
-    mCharInfo->lock();
-}
-
-void CharSelectDialog::attemptCharSelect()
-{
-    // Request character selection
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0066);
-    outMsg.writeInt8(mCharInfo->getPos());
+    Net::AccountServer::Account::deleteCharacter(mCharInfo->getPos());
     mCharInfo->lock();
 }
 
@@ -255,9 +237,8 @@ std::string CharSelectDialog::getName()
     return mNameLabel->getCaption();
 }
 
-CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
-                                   unsigned char sex):
-    Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
+CharCreateDialog::CharCreateDialog(Window *parent, int slot):
+    Window("Create Character", true, parent), mSlot(slot)
 {
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
@@ -269,7 +250,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mHairStyleLabel = new gcn::Label("Hair Style:");
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayerBox = new PlayerBox(sex);
+    mPlayerBox = new PlayerBox(0);
     mPlayerBox->mShowPlayer = true;
 
     mNameField->setEventId("create");
@@ -311,13 +292,21 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     setLocationRelativeTo(getParent());
 }
 
-void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
+void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
-            attemptCharCreate();
+            Net::AccountServer::Account::createCharacter(
+                    getName(), mPlayerBox->mHairStyle, mPlayerBox->mHairColor,
+                    0,   // gender
+                    10,  // STR
+                    10,  // AGI
+                    10,  // VIT
+                    10,  // INT
+                    10,  // DEX
+                    10); // LUK
             scheduleDelete();
         }
         else {
@@ -348,21 +337,4 @@ void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
 std::string CharCreateDialog::getName()
 {
     return mNameField->getText();
-}
-
-void CharCreateDialog::attemptCharCreate()
-{
-    // Send character infos
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(0x0067);
-    outMsg.writeString(getName(), 24);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(5);
-    outMsg.writeInt8(mSlot);
-    outMsg.writeInt16(mPlayerBox->mHairColor + 1);
-    outMsg.writeInt16(mPlayerBox->mHairStyle + 1);
 }

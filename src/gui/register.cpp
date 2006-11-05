@@ -44,24 +44,21 @@
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window("Register"),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
-    mWrongRegisterNotice(0),
     mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label("Name:");
     gcn::Label *passwordLabel = new gcn::Label("Password:");
     gcn::Label *confirmLabel = new gcn::Label("Confirm:");
-    gcn::Label *serverLabel = new gcn::Label("Server:");
+    gcn::Label *emailLabel = new gcn::Label("Email:");
     mUserField = new TextField("player");
     mPasswordField = new PasswordField();
     mConfirmField = new PasswordField();
-    mServerField = new TextField();
-    mMaleButton = new RadioButton("Male", "sex", true);
-    mFemaleButton = new RadioButton("Female", "sex", false);
+    mEmailField = new TextField();
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
-    int width = 200;
-    int height = 150;
+    const int width = 200;
+    const int height = 130;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
@@ -72,55 +69,49 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     mConfirmField->setPosition(
             65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
     mConfirmField->setWidth(130);
-    mServerField->setPosition(
-            65, 23 + mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mServerField->setWidth(130);
+    mEmailField->setPosition(
+            65, mConfirmField->getY() + mConfirmField->getHeight() + 7);
+    mEmailField->setWidth(130);
 
     userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
-    serverLabel->setPosition(5, mServerField->getY() + 1);
+    emailLabel->setPosition(5, mEmailField->getY() + 1);
 
-    mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
-            mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
-            mFemaleButton->getY());
-
-    mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
-    mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
-            mRegisterButton->getY());
+    mCancelButton->setPosition(
+            width - 5 - mCancelButton->getWidth(),
+            height - 5 - mCancelButton->getHeight());
+    mRegisterButton->setPosition(
+            mCancelButton->getX() - 5 - mRegisterButton->getWidth(),
+            mCancelButton->getY());
 
     add(userLabel);
     add(passwordLabel);
-    add(serverLabel);
+    add(emailLabel);
     add(confirmLabel);
     add(mUserField);
     add(mPasswordField);
     add(mConfirmField);
-    add(mServerField);
-    add(mMaleButton);
-    add(mFemaleButton);
+    add(mEmailField);
     add(mRegisterButton);
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
-
-    mServerField->setText(config.getValue("host", ""));
 }
 
 RegisterDialog::~RegisterDialog()
 {
-    delete mWrongRegisterNotice;
+    delete mWrongDataNoticeListener;
 }
 
 void
-RegisterDialog::action(const std::string& eventId, gcn::Widget* widget)
+RegisterDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "cancel")
     {
-        state = EXIT_STATE;
+        state = STATE_LOGIN;
     }
     else if (eventId == "register")
     {
@@ -176,6 +167,8 @@ RegisterDialog::action(const std::string& eventId, gcn::Widget* widget)
             error = 2;
         }
 
+        // TODO: Check if a valid email address was given
+
         if (error > 0)
         {
             if (error == 1)
@@ -189,22 +182,20 @@ RegisterDialog::action(const std::string& eventId, gcn::Widget* widget)
                 mConfirmField->setText("");
             }
 
-            delete mWrongRegisterNotice;
-            mWrongRegisterNotice = new OkDialog("Error", errorMsg.str());
-            mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
+            OkDialog *dlg = new OkDialog("Error", errorMsg.str());
+            dlg->addActionListener(mWrongDataNoticeListener);
         }
         else
         {
             // No errors detected, register the new user.
             mRegisterButton->setEnabled(false);
 
-            mLoginData->hostname = config.getValue("host", "animesites.de");
             mLoginData->port = (short)config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
-            mLoginData->username += mFemaleButton->isMarked() ? "_F" : "_M";
+            mLoginData->email = mEmailField->getText();
 
-            state = ACCOUNT_STATE;
+            state = STATE_REGISTER_ATTEMPT;
         }
     }
 }

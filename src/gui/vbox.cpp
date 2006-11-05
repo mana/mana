@@ -25,7 +25,7 @@
 
 void VBox::draw(gcn::Graphics *graphics)
 {
-    if (mWidgets.size() == 0)
+    if (mWidgets.empty())
     {
         return;
     }

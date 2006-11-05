@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include "main.h"
+
 #ifdef USE_OPENGL
 
 #include "openglgraphics.h"

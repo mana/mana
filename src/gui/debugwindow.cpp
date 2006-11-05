@@ -98,7 +98,7 @@ DebugWindow::logic()
 }
 
 void
-DebugWindow::action(const std::string& eventId, gcn::Widget* widget)
+DebugWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "close")
     {

@@ -37,21 +37,22 @@
 #define TMW_DATADIR ""
 #endif
 
-
+/*
+ * Client different States
+ */
 enum {
-    EXIT_STATE,
-    LOGIN_STATE,
-    ACCOUNT_STATE,
-    REGISTER_STATE,
-    CHAR_CONNECT_STATE,
-    CHAR_SERVER_STATE,
-    CHAR_SELECT_STATE,
-    CHAR_NEW_STATE,
-    CHAR_DEL_STATE,
-    GAME_STATE,
-    ERROR_STATE,
-    UPDATE_STATE,
-    CONNECTING_STATE
+    STATE_CHOOSE_SERVER,
+    STATE_CONNECT_ACCOUNT,
+    STATE_UPDATE,
+    STATE_LOGIN,
+    STATE_LOGIN_ATTEMPT,
+    STATE_REGISTER,
+    STATE_REGISTER_ATTEMPT,
+    STATE_CHAR_SELECT,
+    STATE_ERROR,
+    STATE_CONNECT_GAME,
+    STATE_GAME,
+    STATE_EXIT
 };
 
 /* length definitions for several char[]s in order
@@ -65,7 +66,20 @@ enum {
     LEN_MIN_PASSWORD     = 4
 };
 
-extern char n_server, n_character;
+// Default game values
+// -------------------
+// Screen
+const short defaultScreenWidth = 800;
+const short defaultScreenHeight = 600;
+// Sound
+const short defaultSfxVolume = 100;
+const short defaultMusicVolume = 60;
+// Account Server Name and port
+const std::string defaultAccountServerName = "animesites.de";
+const short defaultAccountServerPort = 9601;
+
+extern char n_character;
+extern std::string token;
 extern unsigned char state;
 extern std::string errorMessage;
 

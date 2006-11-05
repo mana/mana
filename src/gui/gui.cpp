@@ -55,6 +55,9 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/sdlimageloader.h"
+#ifdef USE_OPENGL
+#include "../resources/openglsdlimageloader.h"
+#endif
 
 // Guichan stuff
 Gui *gui;
@@ -233,7 +236,7 @@ Gui::mousePress(int mx, int my, int button)
     // Mouse pressed on window container (basically, the map)
 
     // Are we in-game yet?
-    if (state != GAME_STATE)
+    if (state != STATE_GAME)
         return;
 
     // Check if we are alive and kickin'
@@ -244,8 +247,8 @@ Gui::mousePress(int mx, int my, int button)
     if (current_npc)
         return;
 
-    int tilex = mx / 32 + camera_x;
-    int tiley = my / 32 + camera_y;
+    int tilex = (mx + camera_x) / 32;
+    int tiley = (my + camera_y) / 32;
 
     // Right click might open a popup
     if (button == gcn::MouseInput::RIGHT)
@@ -307,13 +310,14 @@ Gui::mousePress(int mx, int my, int button)
                 player_node->pickUp(item);
         }
         // Just walk around
-        else if (engine->getCurrentMap()->getWalk(tilex, tiley))
+        else if (engine->getCurrentMap() &&
+                engine->getCurrentMap()->getWalk(tilex, tiley))
         {
             // XXX XXX XXX REALLY UGLY!
             Uint8 *keys = SDL_GetKeyState(NULL);
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
-                player_node->setDestination(tilex, tiley);
+                player_node->setDestination(mx + camera_x, my + camera_y);
                 player_node->stopAttack();
             }
         }

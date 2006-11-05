@@ -41,7 +41,7 @@ class ConnectionDialog : public Window
          *
          * @see Window::Window
          */
-        ConnectionDialog();
+        ConnectionDialog(unsigned char previousState);
 
         void logic();
 

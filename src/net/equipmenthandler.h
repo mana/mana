@@ -31,7 +31,7 @@ class EquipmentHandler : public MessageHandler
     public:
         EquipmentHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

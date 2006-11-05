@@ -34,7 +34,6 @@
 class FloorItem;
 class Inventory;
 class Item;
-class Network;
 
 class LocalPlayer : public Player
 {
@@ -43,11 +42,9 @@ class LocalPlayer : public Player
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 
-        LocalPlayer(Uint32 id, Uint16 job, Map *map);
+        LocalPlayer();
 
         virtual ~LocalPlayer();
-
-        void setNetwork(Network *network) { mNetwork = network; }
 
         virtual void logic();
         virtual void nextStep();
@@ -115,7 +112,7 @@ class LocalPlayer : public Player
         /**
          * Sets a new destination for this being to walk to.
          */
-        virtual void setDestination(Uint16 x, Uint16 y);
+        void setDestination(Uint16 x, Uint16 y);
 
         void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);
@@ -132,7 +129,7 @@ class LocalPlayer : public Player
         Uint32 mJobLevel;
         Uint32 mXpForNextLevel, mJobXpForNextLevel;
         Uint16 mHp, mMaxHp, mMp, mMaxMp;
-        Uint32 mGp;
+        Uint32 mMoney;
 
         Uint32 mTotalWeight, mMaxWeight;
 
@@ -150,7 +147,6 @@ class LocalPlayer : public Player
         std::auto_ptr<Inventory> mInventory;
 
     protected:
-        Network *mNetwork;
         Being *mTarget;
         FloorItem *mPickUpTarget;
 

@@ -22,53 +22,13 @@
  */
 
 #include "shop.h"
-#include "../utils/tostring.h"
-#include "../resources/itemmanager.h"
-
-ShopItems::~ShopItems()
-{
-    clear();
-}
 
 int ShopItems::getNumberOfElements()
 {
-    return mItemsShop.size();
+    return size();
 }
 
 std::string ShopItems::getElementAt(int i)
 {
-    return mItemsShop.at(i).name;
-}
-
-void ShopItems::addItem(short id, int price)
-{
-    ITEM_SHOP item_shop;
-
-    item_shop.name = itemDb->getItemInfo(id).getName()
-                     + " " + toString(price) + " GP";
-    item_shop.price = price;
-    item_shop.id = id;
-    item_shop.image = itemDb->getItemInfo(id).getImage();
-
-    mItemsShop.push_back(item_shop);
-}
-
-ITEM_SHOP ShopItems::at(int i)
-{
-    return mItemsShop.at(i);
-}
-
-void ShopItems::push_back(ITEM_SHOP item_shop)
-{
-    mItemsShop.push_back(item_shop);
-}
-
-void ShopItems::clear()
-{
-    mItemsShop.clear();
-}
-
-std::vector<ITEM_SHOP>* ShopItems::getShop()
-{
-    return &mItemsShop;
+    return at(i).name;
 }

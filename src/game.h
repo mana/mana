@@ -33,7 +33,6 @@
 #define SPEECH_MAX_TIME 100
 
 class MessageHandler;
-class Network;
 
 extern std::string map_path;
 extern volatile int fps;
@@ -42,7 +41,7 @@ extern volatile int tick_time;
 class Game : public ConfigListener
 {
     public:
-        Game(Network *network);
+        Game();
         ~Game();
 
         void logic();
@@ -52,8 +51,6 @@ class Game : public ConfigListener
         void optionChanged(const std::string &name);
 
     private:
-        Network *mNetwork;
-
         /** Used to determine whether to draw the next frame. */
         int mDrawTime;
 

@@ -28,7 +28,7 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "shoplistbox.h"
+#include "listbox.h"
 #include "scrollarea.h"
 #include "shop.h"
 #include "slider.h"
@@ -39,23 +39,19 @@
 #include "../resources/iteminfo.h"
 #include "../resources/itemmanager.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
-
 #include "../utils/tostring.h"
 
-SellDialog::SellDialog(Network *network):
+SellDialog::SellDialog():
     Window("Sell"),
-    mNetwork(network),
     mMaxItems(0), mAmountItems(0)
 {
     mShopItems = new ShopItems();
 
-    mShopItemList = new ShopListBox(mShopItems, mShopItems);
-    ScrollArea *scrollArea = new ScrollArea(mShopItemList);
+    mItemList = new ListBox(mShopItems);
+    ScrollArea *scrollArea = new ScrollArea(mItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Money: 0 GP / Total: 0 GP");
+    mMoneyLabel = new gcn::Label("Price: 0");
     mItemDescLabel = new gcn::Label("Description:");
     mItemEffectLabel = new gcn::Label("Effect:");
     mIncreaseButton = new Button("+", "+", this);
@@ -67,7 +63,7 @@ SellDialog::SellDialog(Network *network):
     setContentSize(260, 210);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    mShopItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
+    mItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
 
     mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     mSlider->setEnabled(false);
@@ -91,13 +87,11 @@ SellDialog::SellDialog(Network *network):
 
     quitButton->setPosition(208, 186);
 
-    mShopItemList->setEventId("item");
+    mItemList->setEventId("item");
     mSlider->setEventId("mSlider");
 
-    mShopItemList->setPriceCheck(false);
-
-    mShopItemList->addActionListener(this);
-    mShopItemList->addSelectionListener(this);
+    mItemList->addActionListener(this);
+    mItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
     add(scrollArea);
@@ -127,14 +121,13 @@ void SellDialog::reset()
 
     mQuantityLabel->setCaption("0");
     mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Money: 0 GP / Total: "
-            + toString(mPlayerMoney) + " GP");
+    mMoneyLabel->setCaption("Price: 0");
     mMoneyLabel->adjustSize();
     mItemDescLabel->setCaption("");
     mItemEffectLabel->setCaption("");
 
     // Reset Previous Selected Items to prevent failing asserts
-    mShopItemList->setSelected(-1);
+    mItemList->setSelected(-1);
     mIncreaseButton->setEnabled(false);
     mDecreaseButton->setEnabled(false);
 }
@@ -151,15 +144,14 @@ void SellDialog::addItem(Item *item, int price)
     item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();
     item_shop.quantity = item->getQuantity();
-    item_shop.image = item->getInfo().getImage();
 
     mShopItems->push_back(item_shop);
-    mShopItemList->adjustSize();
+    mItemList->adjustSize();
 }
 
-void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
+void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
-    int selectedItem = mShopItemList->getSelected();
+    int selectedItem = mItemList->getSelected();
 
     if (eventId == "item")
     {
@@ -168,22 +160,19 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         mDecreaseButton->setEnabled(false);
         mSellButton->setEnabled(false);
 
+        mQuantityLabel->setCaption("0");
         mQuantityLabel->adjustSize();
-        mMoneyLabel->setCaption("Money: 0 GP / Total: "
-            + toString(mPlayerMoney) + " GP");
+        mMoneyLabel->setCaption("Price: 0");
         mMoneyLabel->adjustSize();
 
         if (selectedItem > -1) {
             mSlider->setEnabled(true);
             mIncreaseButton->setEnabled(true);
             mMaxItems = mShopItems->at(selectedItem).quantity;
-            mQuantityLabel->setCaption("0 / " + toString(mMaxItems));
         } else {
             mSlider->setEnabled(false);
             mIncreaseButton->setEnabled(false);
-            mQuantityLabel->setCaption("0");
         }
-        mQuantityLabel->adjustSize();
     }
     else if (eventId == "quit")
     {
@@ -192,7 +181,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     }
 
     // The following actions require a valid item selection
-    if (selectedItem == -1 || selectedItem >= int(mShopItems->getNumberOfElements())) {
+    if (selectedItem == -1 || selectedItem >= int(mShopItems->size())) {
         return;
     }
 
@@ -226,23 +215,23 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);
 
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_NPC_SELL_REQUEST);
-        outMsg.writeInt16(8);
-        outMsg.writeInt16(mShopItems->at(selectedItem).index);
-        outMsg.writeInt16(mAmountItems);
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
+        outMsg.writeShort(8);
+        outMsg.writeShort(mShopItems->at(selectedItem).index);
+        outMsg.writeShort(mAmountItems);
+        */
 
         mMaxItems -= mAmountItems;
-        mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
         mAmountItems = 0;
         mSlider->setValue(0);
         mSlider->setEnabled(mMaxItems != 0);
 
         // All were sold
         if (!mMaxItems) {
-
-            mShopItemList->setSelected(-1);
-            mShopItems->getShop()->erase(mShopItems->getShop()->begin() + selectedItem);
+            mItemList->setSelected(-1);
+            mShopItems->erase(mShopItems->begin() + selectedItem);
         }
 
         // Update only when there are items left, the entry doesn't exist
@@ -254,12 +243,11 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     if (updateButtonsAndLabels)
     {
         // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems) + " / " + toString(mMaxItems));
+        mQuantityLabel->setCaption(toString(mAmountItems));
         mQuantityLabel->adjustSize();
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Money: " + toString(price) + " GP / Total: "
-            + toString(price + mPlayerMoney) + " GP");
+        mMoneyLabel->setCaption("Price: " + toString(price));
         mMoneyLabel->adjustSize();
 
         // Update Buttons
@@ -271,7 +259,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
 void SellDialog::selectionChanged(const SelectionEvent &event)
 {
-    int selectedItem = mShopItemList->getSelected();
+    int selectedItem = mItemList->getSelected();
 
     if (selectedItem > -1)
     {
@@ -286,10 +274,4 @@ void SellDialog::selectionChanged(const SelectionEvent &event)
         mItemDescLabel->setCaption("Description");
         mItemEffectLabel->setCaption("Effect");
     }
-}
-
-void SellDialog::setMoney(int amount)
-{
-    mPlayerMoney = amount;
-    mShopItemList->setPlayersMoney(amount);
 }

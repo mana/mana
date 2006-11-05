@@ -79,6 +79,8 @@ void Configuration::write()
     // Do not attempt to write to file that cannot be opened for writing
     FILE *testFile = fopen(mConfigPath.c_str(), "w");
     if (!testFile) {
+        logger->log("Configuration::write() couldn't open %s for writing",
+                    mConfigPath.c_str());
         return;
     }
     else {
@@ -87,8 +89,12 @@ void Configuration::write()
 
     xmlTextWriterPtr writer = xmlNewTextWriterFilename(mConfigPath.c_str(), 0);
 
-    if (!writer)
+    if (!writer) {
+        logger->log("Configuration::write() error while creating writer");
         return;
+    }
+
+    logger->log("Configuration::write() writing configuration...");
 
     xmlTextWriterSetIndent(writer, 1);
     xmlTextWriterStartDocument(writer, NULL, NULL, NULL);
@@ -96,9 +102,6 @@ void Configuration::write()
 
     for (OptionIterator i = mOptions.begin(); i != mOptions.end(); i++)
     {
-        logger->log("Configuration::write(%s, \"%s\")",
-                i->first.c_str(), i->second.c_str());
-
         xmlTextWriterStartElement(writer, BAD_CAST "option");
         xmlTextWriterWriteAttribute(writer,
                 BAD_CAST "name", BAD_CAST i->first.c_str());

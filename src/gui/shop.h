@@ -28,34 +28,22 @@
 #include <vector>
 
 #include <guichan/listmodel.hpp>
-#include "../resources/image.h"
 
 struct ITEM_SHOP {
-    short id;
     std::string name;
-    Image *image;
     int price;
+    short id;
     int index;
     int quantity;
 };
 
-class ShopItems : public gcn::ListModel
+class ShopItems : public std::vector<ITEM_SHOP>, public gcn::ListModel
 {
     public:
         /**
          * Destructor
          */
-        ~ShopItems();
-
-        /**
-         * Adds an item and its associated picture
-         */
-        void addItem(short id, int price);
-
-        /**
-         * Convenience function for adding items
-         */
-        void push_back(ITEM_SHOP item_shop);
+        virtual ~ShopItems() {};
 
         /**
          * Returns the number of items in the shop.
@@ -66,25 +54,6 @@ class ShopItems : public gcn::ListModel
          * Returns the name of item number i in the shop.
          */
         std::string getElementAt(int i);
-
-        /**
-         * Returns the item number i in the shop.
-         */
-        ITEM_SHOP at(int i);
-
-        /**
-         * Clear the vector.
-         */
-        void clear();
-
-        /**
-         * Direct access to the vector
-         */
-        std::vector<ITEM_SHOP>* getShop();
-
-    private:
-        std::vector<ITEM_SHOP> mItemsShop;
-
 };
 
 #endif

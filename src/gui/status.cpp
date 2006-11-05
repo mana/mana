@@ -48,7 +48,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // ----------------------
 
     mLvlLabel = new gcn::Label("Level:");
-    mGpLabel = new gcn::Label("Money:");
+    mMoneyLabel = new gcn::Label("Money:");
 
     mHpLabel = new gcn::Label("HP:");
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
@@ -71,7 +71,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
     mLvlLabel->setPosition(x, y);
     x += mLvlLabel->getWidth() + 40;
-    mGpLabel->setPosition(x, y);
+    mMoneyLabel->setPosition(x, y);
 
     y += mLvlLabel->getHeight() + 5; // Next Row
     x = 5;
@@ -100,7 +100,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mJobValueLabel->setPosition(290, y);
 
     add(mLvlLabel);
-    add(mGpLabel);
+    add(mMoneyLabel);
     add(mHpLabel);
     add(mHpValueLabel);
     add(mMpLabel);
@@ -227,8 +227,8 @@ void StatusWindow::update()
     mLvlLabel->setCaption("Level: " + toString(mPlayer->mLevel));
     mLvlLabel->adjustSize();
 
-    mGpLabel->setCaption("Money: " + toString(mPlayer->mGp) + " GP");
-    mGpLabel->adjustSize();
+    mMoneyLabel->setCaption("Money: " + toString(mPlayer->mMoney) + " GP");
+    mMoneyLabel->adjustSize();
 
     mJobXpLabel->setCaption("Job: " + toString(mPlayer->mJobLevel));
     mJobXpLabel->adjustSize();
@@ -334,7 +334,7 @@ void StatusWindow::update()
     mStatsReflexPoints->adjustSize();
 
     // Update Second column widgets position
-    mGpLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
+    mMoneyLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
                          mLvlLabel->getY());
 
     mXpLabel->setPosition(
@@ -361,34 +361,34 @@ void StatusWindow::draw(gcn::Graphics *g)
     Window::draw(g);
 }
 
-void StatusWindow::action(const std::string& eventId, gcn::Widget* widget)
+void StatusWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Stats Part
     if (eventId.length() == 3)
     {
         if (eventId == "STR")
         {
-            player_node->raiseAttribute(LocalPlayer::STR);
+            mPlayer->raiseAttribute(LocalPlayer::STR);
         }
         if (eventId == "AGI")
         {
-            player_node->raiseAttribute(LocalPlayer::AGI);
+            mPlayer->raiseAttribute(LocalPlayer::AGI);
         }
         if (eventId == "VIT")
         {
-            player_node->raiseAttribute(LocalPlayer::VIT);
+            mPlayer->raiseAttribute(LocalPlayer::VIT);
         }
         if (eventId == "INT")
         {
-            player_node->raiseAttribute(LocalPlayer::INT);
+            mPlayer->raiseAttribute(LocalPlayer::INT);
         }
         if (eventId == "DEX")
         {
-            player_node->raiseAttribute(LocalPlayer::DEX);
+            mPlayer->raiseAttribute(LocalPlayer::DEX);
         }
         if (eventId == "LUK")
         {
-            player_node->raiseAttribute(LocalPlayer::LUK);
+            mPlayer->raiseAttribute(LocalPlayer::LUK);
         }
     }
 }

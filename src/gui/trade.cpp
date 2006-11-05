@@ -38,16 +38,12 @@
 #include "../inventory.h"
 #include "../item.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
-
 #include "../resources/iteminfo.h"
 
 #include "../utils/tostring.h"
 
-TradeWindow::TradeWindow(Network *network):
+TradeWindow::TradeWindow():
     Window("Trade: You"),
-    mNetwork(network),
     mMyInventory(new Inventory()),
     mPartnerInventory(new Inventory())
 {
@@ -217,10 +213,12 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeInt16(item->getInvIndex());
-    outMsg.writeInt32(quantity);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+    outMsg.writeShort(item->getInvIndex());
+    outMsg.writeLong(quantity);
+    */
 }
 
 void TradeWindow::selectionChanged(const SelectionEvent &event)
@@ -258,7 +256,7 @@ void TradeWindow::selectionChanged(const SelectionEvent &event)
     }
 }
 
-void TradeWindow::action(const std::string& eventId, gcn::Widget* widget)
+void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     Item *item = inventoryWindow->getItem();
 
@@ -290,8 +288,10 @@ void TradeWindow::action(const std::string& eventId, gcn::Widget* widget)
     }
     else if (eventId == "cancel")
     {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_CANCEL_REQUEST);
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
+        */
     }
     else if (eventId == "ok")
     {
@@ -301,20 +301,27 @@ void TradeWindow::action(const std::string& eventId, gcn::Widget* widget)
         {
             mMoneyField->setText(toString(tempInt));
 
-            MessageOut outMsg(mNetwork);
-            outMsg.writeInt16(CMSG_TRADE_ITEM_ADD_REQUEST);
-            outMsg.writeInt16(0);
-            outMsg.writeInt32(tempInt);
+            // XXX Convert for new server
+            /*
+            MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+            outMsg.writeShort(0);
+            outMsg.writeLong(tempInt);
+            */
         } else {
             mMoneyField->setText("");
         }
         mMoneyField->setEnabled(false);
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_ADD_COMPLETE);
+
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
+        */
     }
     else if (eventId == "trade")
     {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_TRADE_OK);
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(CMSG_TRADE_OK);
+        */
     }
 }

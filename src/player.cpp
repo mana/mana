@@ -26,43 +26,20 @@
 #include "animatedsprite.h"
 #include "game.h"
 #include "graphics.h"
+#include "log.h"
 
 #include "utils/tostring.h"
 
 #include "gui/gui.h"
 
-Player::Player(Uint32 id, Uint16 job, Map *map):
+Player::Player(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    // Load the weapon sprite.
-    // When there are more different weapons this should be moved to the
-    // setWeapon Method.
-    setWeapon(0);
-}
-
-void
-Player::logic()
-{
-    switch (mAction) {
-        case WALK:
-            mFrame = (get_elapsed_time(mWalkTime) * 6) / mWalkSpeed;
-            if (mFrame >= 6) {
-                nextStep();
-            }
-            break;
-        case ATTACK:
-            int frames = 4;
-            if (getWeapon() == 2)
-            {
-                frames = 5;
-            }
-            mFrame = (get_elapsed_time(mWalkTime) * frames) / mAttackSpeed;
-            if (mFrame >= frames) {
-                nextStep();
-            }
-            break;
-    }
-    Being::logic();
+    /* Load the weapon sprite. When there are more different weapons this
+     * should be moved to the setWeapon Method.
+     */
+    mSprites[WEAPON_SPRITE] =
+        new AnimatedSprite("graphics/sprites/weapons.xml", 0);
 }
 
 Being::Type
@@ -85,6 +62,13 @@ Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 void
 Player::setSex(Uint8 sex)
 {
+    // Players can only be male or female
+    if (sex > 1)
+    {
+        logger->log("Warning: unsupported gender %i, assuming male.", sex);
+        sex = 0;
+    }
+
     if (sex != mSex)
     {
         delete mSprites[BASE_SPRITE];
@@ -98,48 +82,20 @@ Player::setSex(Uint8 sex)
             mSprites[BASE_SPRITE] = new AnimatedSprite(
                     "graphics/sprites/player_female_base.xml", 0);
         }
+
+        Being::setSex(sex);
         resetAnimations();
     }
-    Being::setSex(sex);
 }
-
-
-void
-Player::setWeapon(Uint16 weapon)
-{
-    if (weapon != mWeapon)
-    {
-        delete mSprites[WEAPON_SPRITE];
-        mSprites[WEAPON_SPRITE] = NULL;
-
-        switch (weapon)
-        {
-            case 0:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-fist.xml", 0);
-                break;
-            case 1:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-dagger.xml", 0);
-                break;
-            case 2:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-bow.xml", 0);
-                break;
-            case 3:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-scythe.xml", 0);
-                break;
-        }
-    }
-    Being::setWeapon(weapon);
-}
-
 
 void
 Player::setHairColor(Uint16 color)
 {
-    if (color != mHairColor && mHairStyle > 0)
+    if (color != mHairColor)
     {
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
-                color - 1);
+                color);
         newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
@@ -155,11 +111,11 @@ Player::setHairColor(Uint16 color)
 void
 Player::setHairStyle(Uint16 style)
 {
-    if (style != mHairStyle && mHairColor > 0)
+    if (style != mHairStyle)
     {
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(style) + ".xml",
-                mHairColor - 1);
+                mHairColor);
         newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];

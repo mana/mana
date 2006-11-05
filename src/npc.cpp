@@ -25,16 +25,13 @@
 
 #include "animatedsprite.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
-
 class Spriteset;
 extern Spriteset *npcset;
 
 NPC *current_npc = 0;
 
-NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
-    Being(id, job, map), mNetwork(network)
+NPC::NPC(Uint16 id, Uint16 job, Map *map):
+    Being(id, job, map)
 {
     mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml", job-100);
 }
@@ -48,28 +45,34 @@ NPC::getType() const
 void
 NPC::talk()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_TALK);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_NPC_TALK);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(0);
     current_npc = this;
+    */
 }
 
 void
 NPC::nextDialog()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeInt32(mId);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
+    outMsg.writeLong(mId);
+    */
 }
 
 void
 NPC::dialogChoice(char choice)
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(choice);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(choice);
+    */
 }
 
 /*
@@ -79,17 +82,21 @@ NPC::dialogChoice(char choice)
 void
 NPC::buy()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(0);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(0);
+    */
 }
 
 void
 NPC::sell()
 {
-    MessageOut outMsg(mNetwork);
-    outMsg.writeInt16(CMSG_NPC_BUY_SELL_REQUEST);
-    outMsg.writeInt32(mId);
-    outMsg.writeInt8(1);
+    // XXX Convert for new server
+    /*
+    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    outMsg.writeLong(mId);
+    outMsg.writeByte(1);
+    */
 }

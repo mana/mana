@@ -1,5 +1,5 @@
 /*
- *  The Mana World
+ *  The Mana World Server
  *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -24,93 +24,92 @@
 #include "messageout.h"
 
 #include <string>
-#include <SDL.h>
-#include <SDL_endian.h>
 
-#include "network.h"
-#include "packet.h"
+#include <enet/enet.h>
 
-MessageOut::MessageOut(Network *network):
-    mNetwork(network),
+MessageOut::MessageOut(short id):
     mData(0),
     mDataSize(0),
     mPos(0)
 {
-    mData = mNetwork->mOutBuffer + mNetwork->mOutSize;
+    writeShort(id);
 }
 
-void MessageOut::writeInt8(Sint8 value)
+MessageOut::~MessageOut()
 {
+    if (mData) {
+        free(mData);
+    }
+}
+
+void
+MessageOut::expand(size_t bytes)
+{
+    mData = (char*)realloc(mData, bytes);
+    mDataSize = bytes;
+}
+
+void
+MessageOut::writeByte(char value)
+{
+    expand(mPos + 1);
     mData[mPos] = value;
-    mPos += sizeof(Sint8);
-    mNetwork->mOutSize+= sizeof(Sint8);
+    mPos += 1;
 }
 
-void MessageOut::writeInt16(Sint16 value)
+void MessageOut::writeShort(short value)
 {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(Sint16 *)(mData + mPos)) = SDL_Swap16(value);
-#else
-    (*(Sint16 *)(mData + mPos)) = value;
-#endif
-    mPos += sizeof(Sint16);
-    mNetwork->mOutSize += sizeof(Sint16);
+    expand(mPos + 2);
+    uint16_t t = ENET_HOST_TO_NET_16(value);
+    memcpy(mData + mPos, &t, 2);
+    mPos += 2;
 }
 
-void MessageOut::writeInt32(Sint32 value)
+void
+MessageOut::writeLong(long value)
 {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    (*(Sint32 *)(mData + mPos)) = SDL_Swap32(value);
-#else
-    (*(Sint32 *)(mData + mPos)) = value;
-#endif
-    mPos += sizeof(Sint32);
-    mNetwork->mOutSize += sizeof(Sint32);
+    expand(mPos + 4);
+    uint32_t t = ENET_HOST_TO_NET_32(value);
+    memcpy(mData + mPos, &t, 4);
+    mPos += 4;
 }
 
-void MessageOut::writeString(const std::string &string, int length)
+void
+MessageOut::writeString(const std::string &string, int length)
 {
-    std::string toWrite = string;
-
+    int stringLength = string.length();
     if (length < 0)
     {
         // Write the length at the start if not fixed
-        writeInt16(string.length());
+        writeShort(stringLength);
+        length = stringLength;
     }
-    else
+    else if (length < stringLength)
     {
         // Make sure the length of the string is no longer than specified
-        toWrite = string.substr(0, length);
+        stringLength = length;
     }
+    expand(mPos + length);
 
     // Write the actual string
-    memcpy(&mData[mPos], (void*)toWrite.c_str(), toWrite.length());
-    mPos += toWrite.length();
-    mNetwork->mOutSize += toWrite.length();
+    memcpy(mData + mPos, string.c_str(), stringLength);
 
     // Pad remaining space with zeros
-    if (length > (int)toWrite.length())
+    if (length > stringLength)
     {
-        memset(&mData[mPos], '\0', length - toWrite.length());
-        mPos += length - toWrite.length();
-        mNetwork->mOutSize += length - toWrite.length();
+        memset(mData + mPos + stringLength, '\0', length - stringLength);
     }
+    mPos += length;
 }
 
-MessageOut& operator<<(MessageOut &msg, const Sint8 &rhs)
+char*
+MessageOut::getData() const
 {
-    msg.writeInt8(rhs);
-    return msg;
+    return mData;
 }
 
-MessageOut& operator<<(MessageOut &msg, const Sint16 &rhs)
+unsigned int
+MessageOut::getDataSize() const
 {
-    msg.writeInt16(rhs);
-    return msg;
-}
-
-MessageOut& operator<<(MessageOut &msg, const Sint32 &rhs)
-{
-    msg.writeInt32(rhs);
-    return msg;
+    return mDataSize;
 }

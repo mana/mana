@@ -36,12 +36,12 @@
 #include "../game.h"
 #include "../localplayer.h"
 
-#include "../net/messageout.h"
-#include "../net/protocol.h"
+#include "../net/chatserver/chatserver.h"
 
-ChatWindow::ChatWindow(Network *network):
+#include "../net/gameserver/player.h"
+
+ChatWindow::ChatWindow():
     Window(""),
-    mNetwork(network),
     mTmpVisible(false)
 {
     setWindowName("Chat");
@@ -180,7 +180,7 @@ ChatWindow::chatLog(CHATSKILL act)
 }
 
 void
-ChatWindow::action(const std::string& eventId, gcn::Widget* widget)
+ChatWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     if (eventId == "chatinput")
     {
@@ -249,20 +249,12 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
-        msg = nick + " : " + msg;
-
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(CMSG_CHAT_MESSAGE);
-        outMsg.writeInt16(msg.length() + 4);
-        outMsg.writeString(msg, msg.length());
+        Net::GameServer::Player::say(msg);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {
         msg.erase(0, IS_ANNOUNCE_LENGTH);
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x0099);
-        outMsg.writeInt16(msg.length() + 4);
-        outMsg.writeString(msg, msg.length());
+        Net::ChatServer::announce(msg);
     }
     else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
     {
@@ -278,8 +270,10 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
     {
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x00c1);
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(0x00c1);
+        */
     }
     else
     {

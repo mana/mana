@@ -54,7 +54,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     okButton->requestFocus();
 }
 
-void OkDialog::action(const std::string& eventId, gcn::Widget* widget)
+void OkDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;

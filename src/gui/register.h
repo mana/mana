@@ -65,15 +65,12 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
-        gcn::TextField *mServerField;
+        gcn::TextField *mEmailField;
 
         gcn::Button *mRegisterButton;
         gcn::Button *mCancelButton;
-        gcn::RadioButton *mMaleButton;
-        gcn::RadioButton *mFemaleButton;
 
         WrongDataNoticeListener *mWrongDataNoticeListener;
-        OkDialog *mWrongRegisterNotice;
 
         LoginData *mLoginData;
 };

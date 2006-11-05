@@ -21,13 +21,15 @@
  *  $Id: sdlimageloader.cpp 2121 2006-01-31 02:55:26Z der_doener $
  */
 
-#ifdef USE_OPENGL
-
 #include "openglsdlimageloader.h"
 
 #include <string>
 
 #include "resourcemanager.h"
+
+#include "../main.h"
+
+#ifdef USE_OPENGL
 
 SDL_Surface* OpenGLSDLImageLoader::loadSDLSurface(const std::string& filename)
 {

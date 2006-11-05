@@ -40,29 +40,28 @@ ItemHandler::ItemHandler()
     handledMessages = _messages;
 }
 
-void ItemHandler::handleMessage(MessageIn *msg)
+void ItemHandler::handleMessage(MessageIn &msg)
 {
     Uint32 id;
     Uint16 x, y;
     Sint16 itemId;
 
-    switch (msg->getId())
+    switch (msg.getId())
     {
         case SMSG_ITEM_VISIBLE:
         case SMSG_ITEM_DROPPED:
-            id = msg->readInt32();
-            itemId = msg->readInt16();
-            msg->readInt8();  // identify flag
-            x = msg->readInt16();
-            y = msg->readInt16();
-            msg->skip(4);     // amount,subX,subY / subX,subY,amount
+            id = msg.readLong();
+            itemId = msg.readShort();
+            msg.readByte();  // identify flag
+            x = msg.readShort();
+            y = msg.readShort();
 
             floorItemManager->create(id, itemId, x, y, engine->getCurrentMap());
             break;
 
         case SMSG_ITEM_REMOVE:
             FloorItem *item;
-            item = floorItemManager->findById(msg->readInt32());
+            item = floorItemManager->findById(msg.readLong());
             if (item)
                 floorItemManager->destroy(item);
             break;

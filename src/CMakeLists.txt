@@ -1,8 +1,7 @@
 FIND_PACKAGE(SDL REQUIRED)
 FIND_PACKAGE(SDL_image REQUIRED)
 FIND_PACKAGE(SDL_mixer REQUIRED)
-FIND_PACKAGE(SDL_net REQUIRED)
-
+FIND_PACKAGE(ENet REQUIRED)
 FIND_PACKAGE(Libcurl REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
 FIND_PACKAGE(PhysFS REQUIRED)
@@ -28,7 +27,7 @@ INCLUDE_DIRECTORIES(
     ${SDL_INCLUDE_DIR}
     ${SDLIMAGE_INCLUDE_DIR}
     ${SDLMIXER_INCLUDE_DIR}
-    ${SDLNET_INCLUDE_DIR}
+    ${ENET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
     ${LIBCURL_INCLUDE_DIR}
@@ -38,6 +37,8 @@ INCLUDE_DIRECTORIES(
 
 SET(SRCS
     graphic/imagerect.h
+    gui/box.cpp
+    gui/box.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp
@@ -50,8 +51,6 @@ SET(SRCS
     gui/buysell.h
     gui/chargedialog.cpp
     gui/chargedialog.h
-    gui/char_server.cpp
-    gui/char_server.h
     gui/char_select.cpp
     gui/char_select.h
     gui/chat.cpp
@@ -74,14 +73,18 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
+    gui/hbox.cpp
+    gui/hbox.h
     gui/help.cpp
     gui/help.h
+    gui/inttextbox.cpp
+    gui/inttextbox.h
     gui/inventorywindow.cpp
     gui/inventorywindow.h
-    gui/itemcontainer.cpp
-    gui/itemcontainer.h
     gui/item_amount.cpp
     gui/item_amount.h
+    gui/itemcontainer.cpp
+    gui/itemcontainer.h
     gui/linkhandler.h
     gui/listbox.cpp
     gui/listbox.h
@@ -118,6 +121,8 @@ SET(SRCS
     gui/selectionlistener.h
     gui/sell.cpp
     gui/sell.h
+    gui/serverdialog.cpp
+    gui/serverdialog.h
     gui/setup_audio.cpp
     gui/setup_audio.h
     gui/setup.cpp
@@ -143,38 +148,36 @@ SET(SRCS
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
-    gui/window.cpp
-    gui/window.h
+    gui/updatewindow.cpp
+    gui/updatewindow.h
+    gui/vbox.cpp
+    gui/vbox.h
     gui/windowcontainer.cpp
     gui/windowcontainer.h
-    gui/inttextbox.h
-    gui/inttextbox.cpp
-    gui/box.h
-    gui/box.cpp
-    gui/vbox.h
-    gui/vbox.cpp
-    gui/hbox.h
-    gui/hbox.cpp
-    gui/updatewindow.h
-    gui/updatewindow.cpp
-    net/beinghandler.h
+    gui/window.cpp
+    gui/window.h
+    gui/widgets/dropdown.cpp
+    gui/widgets/dropdown.h
     net/beinghandler.cpp
-    net/buysellhandler.h
+    net/beinghandler.h
     net/buysellhandler.cpp
-    net/charserverhandler.h
+    net/buysellhandler.h
     net/charserverhandler.cpp
-    net/chathandler.h
+    net/charserverhandler.h
     net/chathandler.cpp
-    net/equipmenthandler.h
+    net/chathandler.h
+    net/connection.cpp
+    net/connection.h
     net/equipmenthandler.cpp
-    net/inventoryhandler.h
+    net/equipmenthandler.h
+    net/internal.cpp
+    net/internal.h
     net/inventoryhandler.cpp
-    net/itemhandler.h
+    net/inventoryhandler.h
     net/itemhandler.cpp
-    net/loginhandler.h
+    net/itemhandler.h
     net/loginhandler.cpp
-    net/maploginhandler.cpp
-    net/maploginhandler.h
+    net/loginhandler.h
     net/messagehandler.cpp
     net/messagehandler.h
     net/messagein.cpp
@@ -185,44 +188,57 @@ SET(SRCS
     net/network.h
     net/npchandler.cpp
     net/npchandler.h
-    net/packet.cpp
-    net/packet.h
     net/playerhandler.cpp
     net/playerhandler.h
-    net/protocol.cpp
     net/protocol.h
     net/skillhandler.cpp
     net/skillhandler.h
     net/tradehandler.cpp
     net/tradehandler.h
+    net/accountserver/account.cpp
+    net/accountserver/account.h
+    net/accountserver/accountserver.cpp
+    net/accountserver/accountserver.h
+    net/accountserver/internal.cpp
+    net/accountserver/internal.h
+    net/chatserver/chatserver.cpp
+    net/chatserver/chatserver.h
+    net/chatserver/internal.cpp
+    net/chatserver/internal.h
+    net/gameserver/gameserver.cpp
+    net/gameserver/gameserver.h
+    net/gameserver/internal.cpp
+    net/gameserver/internal.h
+    net/gameserver/player.cpp
+    net/gameserver/player.h
     resources/ambientoverlay.cpp
     resources/ambientoverlay.h
+    resources/buddylist.cpp
+    resources/buddylist.h
     resources/image.cpp
     resources/image.h
     resources/imagewriter.cpp
     resources/imagewriter.h
-    resources/iteminfo.h
     resources/iteminfo.cpp
+    resources/iteminfo.h
     resources/itemmanager.cpp
     resources/itemmanager.h
     resources/mapreader.cpp
     resources/mapreader.h
-    resources/music.h
     resources/music.cpp
-    resources/openglsdlimageloader.h
+    resources/music.h
     resources/openglsdlimageloader.cpp
+    resources/openglsdlimageloader.h
     resources/resource.cpp
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
-    resources/sdlimageloader.h
     resources/sdlimageloader.cpp
-    resources/soundeffect.h
+    resources/sdlimageloader.h
     resources/soundeffect.cpp
-    resources/spriteset.h
+    resources/soundeffect.h
     resources/spriteset.cpp
-    resources/buddylist.h
-    resources/buddylist.cpp
+    resources/spriteset.h
     utils/dtor.h
     utils/tostring.h
     animatedsprite.cpp
@@ -289,7 +305,7 @@ TARGET_LINK_LIBRARIES(tmw
     ${SDL_LIBRARY}
     ${SDLIMAGE_LIBRARY}
     ${SDLMIXER_LIBRARY}
-    ${SDLNET_LIBRARY}
+    ${ENET_LIBRARIES}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}
     ${LIBCURL_LIBRARIES}

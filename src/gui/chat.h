@@ -35,7 +35,6 @@
 #include "../guichanfwd.h"
 
 class BrowserBox;
-class Network;
 class ScrollArea;
 
 #define BY_GM         0   // those should be self-explanatory =)
@@ -116,7 +115,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Constructor.
          */
-        ChatWindow(Network *network);
+        ChatWindow();
 
         /**
          * Logic (updates components' size)
@@ -188,7 +187,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
         void setVisible(bool visible);
 
     private:
-        Network *mNetwork;
         bool mTmpVisible;
 
         /** One item in the chat log */

@@ -1,5 +1,9 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
 bin_PROGRAMS = tmw
 tmw_SOURCES = graphic/imagerect.h \
+	      gui/widgets/dropdown.cpp \
+	      gui/widgets/dropdown.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -12,8 +16,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/buysell.h \
 	      gui/chargedialog.cpp \
 	      gui/chargedialog.h \
-	      gui/char_server.cpp \
-	      gui/char_server.h \
 	      gui/char_select.cpp \
 	      gui/char_select.h \
 	      gui/chat.cpp \
@@ -80,6 +82,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/selectionlistener.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
+	      gui/serverdialog.cpp \
+	      gui/serverdialog.h \
 	      gui/setup_audio.cpp \
 	      gui/setup_audio.h \
 	      gui/setup.cpp \
@@ -91,8 +95,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/setup_video.h \
 	      gui/shop.cpp \
 	      gui/shop.h \
-	      gui/shoplistbox.cpp \
-	      gui/shoplistbox.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
 	      gui/slider.cpp \
@@ -129,6 +131,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/charserverhandler.cpp \
 	      net/chathandler.h \
 	      net/chathandler.cpp \
+	      net/connection.h \
+	      net/connection.cpp \
 	      net/equipmenthandler.h \
 	      net/equipmenthandler.cpp \
 	      net/inventoryhandler.h \
@@ -137,8 +141,6 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/itemhandler.cpp \
 	      net/loginhandler.h \
 	      net/loginhandler.cpp \
-	      net/maploginhandler.cpp \
-	      net/maploginhandler.h \
 	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \
@@ -149,16 +151,29 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/network.h \
 	      net/npchandler.cpp \
 	      net/npchandler.h \
-	      net/packet.cpp \
-	      net/packet.h \
 	      net/playerhandler.cpp \
 	      net/playerhandler.h \
-	      net/protocol.cpp \
 	      net/protocol.h \
 	      net/skillhandler.cpp \
 	      net/skillhandler.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
+	      net/accountserver/account.cpp \
+	      net/accountserver/account.h \
+	      net/accountserver/accountserver.cpp \
+	      net/accountserver/accountserver.h \
+	      net/accountserver/internal.cpp \
+	      net/accountserver/internal.h \
+	      net/chatserver/chatserver.cpp \
+	      net/chatserver/chatserver.h \
+	      net/chatserver/internal.cpp \
+	      net/chatserver/internal.h \
+	      net/gameserver/gameserver.cpp \
+	      net/gameserver/gameserver.h \
+	      net/gameserver/internal.cpp \
+	      net/gameserver/internal.h \
+	      net/gameserver/player.cpp \
+	      net/gameserver/player.h \
 	      resources/ambientoverlay.cpp \
 	      resources/ambientoverlay.h \
 	      resources/image.cpp \
@@ -250,9 +265,3 @@ tmw_SOURCES = graphic/imagerect.h \
 INCLUDES =					\
 	$(all_includes)				\
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"
-
-# the library search path.
-tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall -Werror $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(OPENGL_LIBS) $(CURL_LIBS)
-tmw_TARGET = tmw

@@ -287,14 +287,16 @@ Map::getWalk(int x, int y)
         return false;
     }
 
+    /*
     // Check for collision with a being
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++) {
         // job 45 is a portal, they don't collide
-        if ((*i)->mX == x && (*i)->mY == y && (*i)->mJob != 45) {
+        if ((*i)->mX / 32 == x && (*i)->mY / 32 == y && (*i)->mJob != 45) {
             return false;
         }
     }
+    */
 
     return true;
 }
@@ -341,6 +343,8 @@ Map::removeSprite(SpriteIterator iterator)
 {
     mSprites.erase(iterator);
 }
+
+static int const basicCost = 100;
 
 Path
 Map::findPath(int startX, int startY, int destX, int destY)
@@ -419,13 +423,27 @@ Map::findPath(int startX, int startY, int destX, int destY)
                     }
                 }
 
-                // Calculate G cost for this route, 10 for moving straight and
-                // 14 for moving diagonal
-                int Gcost = curr.tile->Gcost + ((dx == 0 || dy == 0) ? 10 : 14);
+                // Calculate G cost for this route, ~sqrt(2) for moving diagonal
+                int Gcost = curr.tile->Gcost +
+                    (dx == 0 || dy == 0 ? basicCost : basicCost * 362 / 256);
+
+                /* Demote an arbitrary direction to speed pathfinding by
+                   adding a defect (TODO: change depending on the desired
+                   visual effect, e.g. a cross-product defect toward
+                   destination).
+                   Important: as long as the total defect along any path is
+                   less than the basicCost, the pathfinder will still find one
+                   of the shortest paths! */
+                if (dx == 0 || dy == 0)
+                {
+                    // Demote horizontal and vertical directions, so that two
+                    // consecutive directions cannot have the same Fcost.
+                    ++Gcost;
+                }
 
                 // Skip if Gcost becomes too much
                 // Warning: probably not entirely accurate
-                if (Gcost > 200)
+                if (Gcost > 20 * basicCost)
                 {
                     continue;
                 }
@@ -433,8 +451,14 @@ Map::findPath(int startX, int startY, int destX, int destY)
                 if (newTile->whichList != mOnOpenList)
                 {
                     // Found a new tile (not on open nor on closed list)
-                    // Update Hcost of the new tile using Manhatten distance
-                    newTile->Hcost = 10 * (abs(x - destX) + abs(y - destY));
+
+                    /* Update Hcost of the new tile. The pathfinder does not
+                       work reliably if the heuristic cost is higher than the
+                       real cost. In particular, using Manhattan distance is
+                       forbidden here. */
+                    int dx = std::abs(x - destX), dy = std::abs(y - destY);
+                    newTile->Hcost = std::abs(dx - dy) * basicCost +
+                        std::min(dx, dy) * (basicCost * 362 / 256);
 
                     // Set the current tile as the parent of the new tile
                     newTile->parentX = curr.x;

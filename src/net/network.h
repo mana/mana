@@ -21,83 +21,51 @@
  *  $Id$
  */
 
-#ifndef _TMW_NETWORK_
-#define _TMW_NETWORK_
+#ifndef _TMW_NET_NETWORK_H
+#define _TMW_NET_NETWORK_H
 
-#include <map>
-#include <SDL_net.h>
-#include <SDL_thread.h>
-#include <string>
+#include <iosfwd>
 
 class MessageHandler;
-class MessageIn;
+class MessageOut;
 
-class Network;
-
-class Network
+namespace Net
 {
-    public:
-        friend int networkThread(void *data);
-        friend class MessageOut;
+    class Connection;
 
-        Network();
-        ~Network();
+    /**
+     * Initializes the network subsystem.
+     */
+    void initialize();
 
-        bool connect(const std::string &address, short port);
-        void disconnect();
+    /**
+     * Finalizes the network subsystem.
+     */
+    void finalize();
 
-        void registerHandler(MessageHandler *handler);
-        void unregisterHandler(MessageHandler *handler);
-        void clearHandlers();
+    Connection *getConnection();
 
-        int getState() const { return mState; }
-        bool isConnected() const { return mState == CONNECTED; }
+    /**
+     * Registers a message handler. A message handler handles a certain
+     * subset of incoming messages.
+     */
+    void registerHandler(MessageHandler *handler);
 
-        int getInSize() const { return mInSize; }
+    /**
+     * Unregisters a message handler.
+     */
+    void unregisterHandler(MessageHandler *handler);
 
-        void skip(int len);
+    /**
+     * Clears all registered message handlers.
+     */
+    void clearHandlers();
 
-        bool messageReady();
-        MessageIn getNextMessage();
-
-        void dispatchMessages();
-        void flush();
-
-        enum {
-            IDLE,
-            CONNECTED,
-            CONNECTING,
-            DATA,
-            ERROR
-        };
-
-    protected:
-        Uint16 readWord(int pos);
-
-        TCPsocket mSocket;
-
-        std::string mAddress;
-        short mPort;
-
-        char *mInBuffer, *mOutBuffer;
-        unsigned int mInSize, mOutSize;
-
-        unsigned int mToSkip;
-
-        int mState;
-
-        SDL_Thread *mWorkerThread;
-        SDL_mutex *mMutex;
-
-        typedef std::map<Uint16, MessageHandler*> MessageHandlers;
-        typedef MessageHandlers::iterator MessageHandlerIterator;
-        MessageHandlers mMessageHandlers;
-
-        bool realConnect();
-        void receive();
-};
-
-/** Convert an address from int format to string */
-char *iptostring(int address);
+    /*
+     * Handles all events and dispatches incoming messages to the
+     * registered handlers
+     */
+    void flush();
+}
 
 #endif

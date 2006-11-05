@@ -28,9 +28,6 @@
 #include "npc.h"
 #include "player.h"
 
-#include "net/messageout.h"
-#include "net/protocol.h"
-
 #include "utils/dtor.h"
 
 class FindBeingFunctor
@@ -39,8 +36,8 @@ class FindBeingFunctor
         bool operator() (Being *being)
         {
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
-            return (being->mX == x &&
-                    (being->mY == y || being->mY == other_y) &&
+            return (being->mX / 32 == x &&
+                    (being->mY / 32 == y || being->mY / 32 == other_y) &&
                     being->mAction != Being::MONSTER_DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
@@ -48,11 +45,6 @@ class FindBeingFunctor
         Uint16 x, y;
         Being::Type type;
 } beingFinder;
-
-BeingManager::BeingManager(Network *network):
-    mNetwork(network)
-{
-}
 
 void BeingManager::setMap(Map *map)
 {
@@ -67,19 +59,21 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-Being* BeingManager::createBeing(Uint32 id, Uint16 job)
+Being* BeingManager::createBeing(Uint16 id, Uint16 job)
 {
     Being *being;
 
     if (job < 10)
     {
         being = new Player(id, job, mMap);
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x0094);
-        outMsg.writeInt32(id);//readLong(2));
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(0x0094);
+        outMsg.writeLong(id);
+        */
     }
     else if (job >= 100 & job < 200)
-        being = new NPC(id, job, mMap, mNetwork);
+        being = new NPC(id, job, mMap);
     else if (job >= 1000 && job < 1200)
         being = new Monster(id, job, mMap);
     else
@@ -96,7 +90,7 @@ void BeingManager::destroyBeing(Being *being)
     delete being;
 }
 
-Being* BeingManager::findBeing(Uint32 id)
+Being* BeingManager::findBeing(Uint16 id)
 {
     for (BeingIterator i = mBeings.begin(); i != mBeings.end(); i++)
     {
@@ -133,12 +127,12 @@ void BeingManager::logic()
 
         being->logic();
 
-        if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
+        /*if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
         }
-        else {
+        else*/ {
             i++;
         }
     }

@@ -35,16 +35,25 @@
 namespace {
     struct ConnectionActionListener : public gcn::ActionListener
     {
-        void action(const std::string& eventId, gcn::Widget* widget) { state = EXIT_STATE; }
-    } listener;
+        ConnectionActionListener(unsigned char previousState):
+            mPreviousState(previousState) {};
+
+        void action(const std::string &eventId, gcn::Widget *widget) {
+            state = mPreviousState;
+        }
+
+        unsigned char mPreviousState;
+    };
 }
 
-ConnectionDialog::ConnectionDialog():
+ConnectionDialog::ConnectionDialog(unsigned char previousState):
     Window("Info"), mProgress(0)
 {
     setContentSize(200, 100);
 
-    Button *cancelButton = new Button("Cancel", "cancelButton", &listener);
+    ConnectionActionListener *connectionListener = new ConnectionActionListener(previousState);
+
+    Button *cancelButton = new Button("Cancel", "cancelButton", connectionListener);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
     gcn::Label *label = new gcn::Label("Connecting...");
 

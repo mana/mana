@@ -27,7 +27,7 @@
 					<Add option="-lwsock32"/>
 					<Add option="-lSDL_image.dll"/>
 					<Add option="-lSDL_mixer.dll"/>
-					<Add option="-lSDL_net.dll"/>
+					<Add option="-lenet"/>
 					<Add option="-lmingw32"/>
 					<Add option="-lSDLmain"/>
 					<Add option="-lSDL.dll"/>
@@ -598,6 +598,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\sell.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\serverdialog.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\serverdialog.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

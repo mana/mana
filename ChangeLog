@@ -1,65 +1,54 @@
-2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2006-11-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* data/graphics/images/login_wallpaper.png: Reverted to standard
-	wallpaper.
-	* src/resources/resourcemanager.cpp: More useful logging about
-	resources that are being loaded (including source).
+	* src/main.cpp: Use \n instead of std::endl when writing to stdout.
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Removed useless
+	addRow method.
+	* src/main.cpp: Restore the homeDir config entry (temporarily).
+	Initialize the logger before libxml2.
+	* src/main.cpp: Add a libxml2 init wrapper. Use a null-logger function
+	instead of /dev/null to quieten libxml2. Actually initialize libxml2
+	before using it to load the configuration.
 
-2006-11-05  Yohann Ferreira  <bertram@cegetel.net>
+2006-11-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* src/Makefile.am, src/gui/buy.cpp, src/gui/buy.h, src/gui/shop.h,
-	src/gui/shop.cpp, src/gui/sell.cpp, src/gui/shoplistbox.h,
-	src/gui/shoplistbox.cpp: Added pictures to items in buy dialogs.
-	Also too expensive items are highlighted in gray and can't be
-	selected.
-	* src/gui/shop.cpp, src/gui/shop.h, src/gui.sell.h, src/gui/sell.cpp,
-	src/net/buysellhandler.cpp, src/gui/shoplistbox.h,
-	src/gui/shoplistbox.cpp: Added item's pictures in sell dialogs, and
-	precisions about the total money in it.
-	* src/gui/shop.h, src/gui/shop.cpp, src/gui/sell.cpp: Fixes to Sell
-	dialog.
+	* src/gui/register.cpp, src/gui/register.h: Fixed a memory leak and a
+	double deletion.
+	* src/main.cpp, src/CMakeLists.txt, src/net/loginhandler.cpp,
+	src/net/charserverhandler.h, src/net/maploginhandler.h,
+	src/net/maploginhandler.cpp, src/net/loginhandler.h, src/Makefile.am:
+	Removed some cruft that was needed for eAthena.
+	* src/localplayer.cpp, src/game.cpp, src/gui/trade.cpp,
+	src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/serverdialog.cpp,
+	src/gui/chat.cpp, src/gui/buy.cpp, src/gui/status.cpp,
+	src/beingmanager.cpp, src/npc.cpp, src/main.cpp, src/CMakeLists.txt,
+	src/net/connection.cpp, src/net/accountserver,
+	src/net/accountserver/account.h, src/net/accountserver/internal.h,
+	src/net/accountserver/accountserver.cpp,
+	src/net/accountserver/accountserver.h,
+	src/net/accountserver/account.cpp, src/net/accountserver/internal.cpp,
+	src/net/internal.cpp, src/net/network.h,
+	src/net/charserverhandler.cpp, src/net/connection.h,
+	src/net/gameserver, src/net/gameserver/gameserver.cpp,
+	src/net/gameserver/player.h, src/net/gameserver/internal.h,
+	src/net/gameserver/gameserver.h, src/net/gameserver/internal.cpp,
+	src/net/gameserver/player.cpp, src/net/internal.h,
+	src/net/messagehandler.cpp, src/net/chatserver,
+	src/net/chatserver/internal.h, src/net/chatserver/chatserver.cpp,
+	src/net/chatserver/chatserver.h, src/net/chatserver/internal.cpp,
+	src/net/network.cpp, src/Makefile.am: Network layer refactoring.
 
-2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+2006-11-01  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
-	* data/graphics/sprites/Makefile.am: Use tabs instead of spaces as
-	required by automake (AFAIK).
-
-2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/graphics/sprites/weapon0.png,
-	data/graphics/sprites/weapon2.png,
-	data/graphics/sprites/weapon-bow.xml,
-	data/graphics/sprites/weapon-dagger.xml,
-	data/graphics/sprites/weapon-fist.xml,
-	data/graphics/sprites/weapon-scythe.xml,
-	data/graphics/items/weapon-polearm-scythe.png, src/player.cpp,
-	src/player.h, src/being.cpp, src/being.h, data/items.xml: Added scythe
-	as a permanent weapon (ID: 623)
-
-2006-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
-	* data/maps/new_1-1.tmx.gz, data/maps/new_10-1.tmx.gz,
-	data/maps/new_11-1.tmx.gz, data/maps/new_14-1.tmx.gz,
-	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
-	data/maps/new_3-1.tmx.gz, data/maps/new_7-1.tmx.gz,
-	data/maps/new_9-1.tmx.gz: Reverted Halloween map versions, except for
-	map 10 and 11 which include the latest fixes by Crush but now have
-	their night layer removed.
-
-2006-11-04  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/maps/new_17-1.tmx.gz, 
-	data/graphics/images/minimap_new_17-1.png,
-	data/graphics/images/Makefile.am,
-	data/graphics/images/CMakeLists.txt:
-	Added music and minimap to woodland cave level 2.
-	* data/maps/new_10-1.tmx.gz, maps/new_11-1.tmx.gz:
-	Fixed some map bugs (please update server sided walkmap)
-
-2006-11-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
-	* src/gui/updatewindow.cpp, src/main.cpp: Updated to the new default
-	updatehost.
+	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindENet.cmake,
+	CMake/Modules/FindLibcurl.cmake, CMake/Modules/FindGuichan.cmake,
+	src/CMakeLists.txt, src/main.h, data/graphics/tiles/CMakeLists.txt,
+	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
+	data/graphics/images/ambient/CMakeLists.txt,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
+	data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
+	data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
+	data/CMakeLists.txt, CMakeLists.txt: Added CMake support.
 
 2006-11-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -70,15 +59,17 @@
 
 2006-10-31  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/tiles/desert1.png, data/graphics/tiles/desert_x2.png:
-	Adding a bunch of graphical improvements made by VxD.
+	*data/graphics/tiles/desert1.png, d
+	ata/graphics/tiles/desert_x2.png: adding a bunch of graphical 
+	improvements made by VxD.
 
 2006-10-31  Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* data/graphics/sprites/item011.png,
-	data/graphics/sprites/item011.xml, data/graphics/sprites/item012.png,
-	data/graphics/sprites/item018.xml,
-	data/graphics/sprites/monster21.xml: Fixed some graphical issues,
+	* /data/graphics/sprites/item011.png,
+	/data/graphics/sprites/item011.xml,
+	/data/graphics/sprites/item012.png,
+	/data/graphics/sprites/item018.xml,
+	/data/graphics/sprites/monster21.xml: Fixed some graphical issues,
 	mostly a cosmetic update.
 
 2006-10-30  Yohann Ferreira  <bertram@cegetel.net>
@@ -87,7 +78,7 @@
 
 2006-10-30  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_9-1.tmx.gz: Removed the night effect that accidentally
+	* data/maps/new_9-1.tmx.gz: Removed the night effect that accidently
 	sneaked in with the last map change.
 
 2006-10-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
@@ -136,8 +127,6 @@
 
 2006-10-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* configure.ac, The Mana World.dev, CMakeLists.txt,
-	data/help/header.txt, NEWS: Set version to 0.0.21.1.
 	* src/player.cpp: Fixed excessive unnecessary reloading of sprites.
 
 2006-10-28  Björn Steinbrink  <B.Steinbrink@gmx.de>
@@ -165,49 +154,6 @@
 	* configure.ac: Added zlib check before PhysFS check. The PhysFS check
 	was failing on MSYS because of a missing -lz.
 
-2006-10-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* CMakeLists.txt, src/CMakeLists.txt: Add PACKAGE_VERSION support.
-	* CMakeLists.txt, src/CMakeLists.txt: Setup the binary dir in the main
-	CMakeLists.txt file.
-	* src/main.h: Include config.h only when we have it.
-	* src/CMakeLists.txt: Properly set build flags for the tmw target.
-
-2006-10-18  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* src/CMakeLists.txt, data/graphics/tiles/CMakeLists.txt,
-	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
-	data/graphics/images/ambient/CMakeLists.txt,
-	data/graphics/images/CMakeLists.txt,
-	data/graphics/sprites/CMakeLists.txt, data/maps/CMakeLists.txt,
-	data/sfx/CMakeLists.txt, data/help/CMakeLists.txt,
-	data/icons/CMakeLists.txt, data/CMakeLists.txt, CMakeLists.txt: Add
-	TMW_DATADIR definition.
-
-2006-10-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
-
-	* src/CMakeLists.txt: Adjusted path for Windows.
-
-2006-10-16  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* CMakeLists.txt: Enable OpenGL by default.
-	* CMake/Modules/FindLibcurl.cmake: Fix libcurl library not being
-	marked as advanced option.
-	* CMakeLists.txt, src/CMakeLists.txt: Add OpenGL option.
-	* data/CMakeLists.txt: Adjust data destination for Windows.
-	* src/CMakeLists.txt: Adjust binary destination for Windows.
-	* src/CMakeLists.txt, data/graphics/tiles/CMakeLists.txt,
-	data/graphics/items/CMakeLists.txt, data/graphics/gui/CMakeLists.txt,
-	data/graphics/images/ambient/CMakeLists.txt,
-	data/graphics/images/CMakeLists.txt,
-	data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt,
-	data/maps/CMakeLists.txt, data/sfx/CMakeLists.txt,
-	data/help/CMakeLists.txt, data/icons/CMakeLists.txt,
-	data/CMakeLists.txt, CMakeLists.txt: Add CMake install support.
-	* CMake/Modules/FindGuichan.cmake, CMake/Modules/FindLibXml2.cmake,
-	CMake/Modules/FindLibcurl.cmake, CMakeLists.txt, src/CMakeLists.txt:
-	Add basic CMake support for building tmw.
-
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
@@ -226,7 +172,7 @@
 
 2006-10-09  Yohann Ferreira  <bertram@cegetel.net>
 
-	* src/gui/buysell.cpp, src/gui/buy.cpp : A little tweak to the buy
+	* src/gui/buysell.cpp, src/gui/buy.cpp: A little tweak to the buy
 	dialogs.
 
 2006-10-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -401,6 +347,13 @@
 	up the player selection stuff, it's a bit nicer now.
 	* src/main.cpp: Fix up the player selection command line option.
 
+2006-09-13  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/Makefile.am, src/gui/widgets, src/gui/widgets/dropdown.h,
+	src/gui/widgets/dropdown.cpp, src/gui/serverdialog.h,
+	src/gui/serverdialog.cpp: Added a reusable skinned dropdown widget in
+	the new widgets folder. Other widgets will be be moved there later.
+
 2006-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/game.h: Simplified fps limiting a bit and added
@@ -417,6 +370,13 @@
 	* src/gui/gui.cpp: Removed easy targeting functionality since it
 	interferes with walking around too much. Targeting can still be rather
 	conveniently done with 'a' or the middle mouse button.
+
+2006-09-09  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/map.cpp: Removed being collisions. Fixed wrong heuristic cost
+	of the pathfinder.
+	* src/localplayer.h, src/being.cpp, src/net/beinghandler.cpp,
+	src/being.h: Fitted being trajectories to synchronization messages.
 
 2006-09-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -484,6 +444,23 @@
 	either keyboard or mouse. Also made clicking beings in general a bit
 	easier (patch applied by Bjørn Lindeijer).
 
+2006-09-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/serverdialog.cpp, src/main.cpp: Fixed crash when using short
+	versions of server and port command line options and made sure
+	cancelling the account server connect shows the server dialog.
+
+2006-09-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/localplayer.cpp, src/beingmanager.h, src/beingmanager.cpp,
+	src/npc.cpp, src/player.cpp, src/monster.h, src/being.cpp, src/npc.h,
+	src/monster.cpp, src/player.h, src/net/beinghandler.cpp, src/being.h,
+	src/net/charserverhandler.cpp, src/net/protocol.h, src/localplayer.h,
+	src/net/chathandler.cpp: Switched to short IDs for beings.
+	* src/net/messagein.h, src/net/beinghandler.cpp, src/net/protocol.h,
+	src/net/messagein.cpp: Removed pixel-based synchronisation. Added
+	variable length move messages.
+
 2006-09-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/monster19.png,
@@ -491,6 +468,9 @@
 	data/graphics/tiles/cave.png, data/maps/new_17-1.tmx.gz,
 	data/maps/new_6-1.tmx.gz: Added new big cave map, lamp-snake monster,
 	improved arena map.
+	* src/gui/serverdialog.cpp, src/gui/serverdialog.h, src/net/network.h:
+	Fixed some header issues.
+	* The Mana World.dev, tmw.cbp: Updated project files.
 
 2006-08-30  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -498,6 +478,14 @@
 	data/graphics/sprites/item007.xml, data/graphics/sprites/item009.png,
 	data/graphics/sprites/item009.xml:
 	Added sprites for miners helm and standard headband.
+
+2006-08-30  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/main.cpp, src/main.h, src/Makefile.am, src/gui/connection.h,
+	src/gui/connection.cpp, src/gui/serverdialog.cpp,
+	src/gui/serverdialog.h: Added a first version of the server dialog
+	with an unskinned dropdown. Upgraded also the connection window a bit
+	to handle Cancelling more gracefully.
 
 2006-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -537,12 +525,53 @@
 	data/graphics/sprites/item006.xml, data/graphics/sprites/Makefile.am:
 	Added headband and fixed svn properties.
 
+2006-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp: Fixed crash when map is not loaded yet.
+	* src/net/beinghandler.cpp, src/net/protocol.h: Added support for
+	entering monsters.
+
+2006-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/localplayer.cpp, src/net/protocol.h: Send move message
+	whenever a destination is selected.
+	* src/beinghandler.cpp: Smoothed being trajectories.
+	* src/localplayer.cpp, src/game.cpp, src/map.cpp, src/gui/gui.cpp,
+	src/engine.cpp, src/beingmanager.cpp, src/being.cpp, src/being.h,
+	src/net/beinghandler.cpp, src/net/playerhandler.cpp: Changed beings
+	tile-based coordinates to pixel-based coordinates (almost, they point
+	to tile centers for now).
+	* src/net/beinghandler.cpp, src/net/beinghandler.h: Added support for
+	leaving beings.
+	* src/localplayer.cpp, src/beingmanager.cpp, src/player.cpp,
+	src/monster.cpp, src/net/playerhandler.cpp, src/being.h: Removed
+	Being::mFrame field.
+	* src/localplayer.cpp, src/player.cpp, src/monster.h, src/being.cpp,
+	src/monster.cpp, src/player.h: Cleaned the logic members.
+	* src/engine.cpp, src/localplayer.cpp, src/gui/gui.cpp, src/being.cpp,
+	src/being.h: Implemented pixel-grained movements.
+	* src/engine.cpp, src/gui/gui.cpp: Fixed merge issues: printfs and
+	inconsistency between view and camera variables. Fixed lazy scrolling:
+	there is no "freaking out" when the correct function is used.
+
 2006-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/net/inventoryhandler.cpp: Applied patch by Andrew Harrison that
 	adds item pickup messages to the chat window.
 	* NEWS: Updated with some recently added and fixed issues. Doesn't
 	mention any of the recent content updates yet.
+	* src/localplayer.cpp, src/gui/sell.cpp, src/gui/trade.cpp,
+	src/gui/char_select.cpp, src/gui/chat.cpp, src/gui/buy.cpp,
+	src/engine.cpp, src/beingmanager.cpp, src/npc.cpp,
+	src/net/messageout.cpp, src/net/messageout.h: Got rid of the default
+	MessageOut constructor, since all messages should have an ID.
+	* src/net/protocol.cpp, src/net/protocol.h, src/net/messagein.cpp,
+	src/net/playerhandler.cpp, src/Makefile.am: Got rid of no longer used
+	protocol.cpp.
+	* src/gui/login.cpp, src/gui/register.h, src/gui/login.h,
+	src/gui/register.cpp: Got rid of server input field since connecting
+	to the account server now happens before the login and register
+	dialogs.
 
 2006-08-26  Pascal Ganaye <pascalganaye@users.sourceforge.net>
 
@@ -556,6 +585,14 @@
 
 2006-08-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/gui/char_select.cpp, src/gui/playerbox.cpp, src/player.cpp,
+	src/main.cpp, src/being.cpp, src/net/beinghandler.cpp, src/being.h,
+	data/graphics/sprites/hairstyle0.xml,
+	data/graphics/sprites/Makefile.am: Got rid of numerous additions and
+	substractions to the hair style and color. Hair style 0 was added and
+	defined as being bald (so bald is no longer a hardcoded style).
+	* src/player.cpp, src/being.cpp, src/net/charserverhandler.cpp,
+	src/being.h: Fixed player sprite not showing up.
 	* src/gui/ministatus.cpp, src/gui/ministatus.h: Applied patch by mrha
 	(Herbi), adding experience bar to the ministatus in the top left.
 	* configure.ac, data/graphics/items/Makefile.am,
@@ -565,6 +602,24 @@
 	src/animatedsprite.cpp, src/animation.cpp: Applied patch by Bahamut81
 	which implements resetting of Animation, Action and AnimatedSprite.
 	This fixes the animation synchronization issues.
+
+2006-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/chathandler.cpp, src/gui/chat.cpp, src/net/protocol.h: Added
+	support for "say around" messages.
+	* src/net/beinghandler.cpp: Partly implemented being creation, so that
+	chat works.
+	* src/game.cpp, src/engine.h, src/beingmanager.h, src/gui/trade.cpp,
+	src/gui/sell.cpp, src/gui/char_select.cpp, src/gui/chat.h,
+	src/gui/buy.h, src/gui/chat.cpp, src/gui/char_select.h,
+	src/gui/buy.cpp, src/gui/sell.h, src/gui/trade.h, src/engine.cpp,
+	src/beingmanager.cpp, src/npc.cpp, src/main.cpp, src/npc.h,
+	src/net/tradehandler.h, src/net/messagehandler.h, src/net/network.h,
+	src/net/charserverhandler.cpp, src/net/messagehandler.cpp,
+	src/net/network.cpp, src/localplayer.h, src/game.h: Made the Network
+	class a purely static interface, as there is only one instance.
+	* src/net/beinghandler.cpp, src/net/beinghandler.h,
+	src/net/protocol.h: Added support for "beings move" messages.
 
 2006-08-25  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
@@ -651,6 +706,45 @@
 	* src/Makefile.am: Added iteminfo.cpp to avoid an undefined reference
 	with gcc 4.1.2. Happy to be back :)
 
+2006-08-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/connection.cpp, src/gui/login.cpp, src/gui/gui.cpp,
+	src/gui/updatewindow.cpp, src/gui/char_select.cpp,
+	src/gui/register.cpp, src/main.cpp, src/net/loginhandler.cpp,
+	src/net/messageout.cpp, src/net/network.h,
+	src/net/charserverhandler.cpp, src/net/maploginhandler.cpp,
+	src/net/messageout.h, src/net/network.cpp, src/main.h: The Network
+	can now connect to the three servers and affected methods now take the
+	server type as a parameter. The MessageOut gained a convenience
+	constructor (same as was added server side). The game states during
+	login sequence have been renamed and redone in order to ensure no
+	communication is attempted to unconnected servers. This allowed the
+	removal of the outgoing message queue. Connecting to the account
+	server has been moved before the login/register phase (dialogs will
+	still need to be updated). Quite a few things are expected to be
+	broken since I'm rather tired at the moment. I've left many TODO
+	entries in the code.
+	* src/net/network.h, src/net/network.cpp: Added documentation and did
+	a bit of cleanup (peer pointers now stored in an array).
+	* src/gui/register.cpp, src/main.h: Made cancel button in register
+	dialog go back to the login dialog and cleaned up two unused states.
+	* src/game.cpp, src/engine.cpp, src/main.cpp,
+	src/net/charserverhandler.cpp, src/net/network.cpp, src/main.h: Fixed
+	selection of player character and implemented sending of game and chat
+	server tokens. It gets you in the game (or what's left of it), but not
+	on any map yet.
+	* src/net/*: Changed MessageHandler::handleMessage to take a reference
+	instead of a pointer. Removed unused Packet class. Added stub for
+	handling GPMSG_BEING_ENTER.
+	* src/engine.cpp, src/net/playerhandler.h, src/net/protocol.h,
+	src/net/playerhandler.cpp: GPMSG_PLAYER_MAP_CHANGE is now partly
+	handled.
+
+2006-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/net/network.h, src/net/network.cpp: Removed
+	incoming packets queue. Messages are now processed as they come in.
+
 2006-08-17  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/*: Splitted the items.png into separate images
@@ -667,6 +761,38 @@
 	* data/graphics/tiles/trans_desert-woodland.png: Added transmission
 	tileset between desert and woodland.
 
+2006-08-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.cpp, src/net/charserverhandler.h,
+	src/net/charserverhandler.cpp: Some preparations towards supporting
+	character select and response handling.
+	* src/net/charserverhandler.cpp: Fixed typo and forgetting to add
+	APMSG_CHAR_SELECT_RESPONSE to the list of handled messages.
+
+2006-08-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/charserverhandler.h, src/net/charserverhandler.cpp: Fix
+	warning about jump to case label crossing an initialization.
+	* src/gui/vbox.cpp: Use std::list#empty since it is more efficient as
+	pointed out by doener.
+
+2006-08-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/being.cpp, src/being.h, src/gui/char_select.cpp,
+	src/gui/char_select.h, src/gui/playerbox.cpp, src/gui/playerbox.h,
+	src/gui/status.cpp, src/gui/status.h, src/localplayer.cpp,
+	src/localplayer.h, src/main.cpp, src/net/buysellhandler.cpp,
+	src/net/charserverhandler.cpp, src/net/loginhandler.cpp,
+	src/net/loginhandler.h, src/net/messageout.cpp, src/net/messageout.h,
+	src/net/network.cpp, src/net/network.h, src/net/playerhandler.cpp,
+	src/net/protocol.h: Completed porting of character creation/deletion,
+	fixed some issues with network code.
+
+2006-08-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player.cpp: Verify the gender to prevent crashing when something
+	is wrong with the communication.
+
 2006-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am,
@@ -677,6 +803,136 @@
 	compilation issues.
 
 2006-08-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp, src/gui/browserbox.h, src/gui/gui.cpp,
+	src/gui/chat.cpp, src/resources/image.h: Added include main.h in order
+	to have USE_OPENGL defined correctly, since it is no longer passed as
+	a compiler parameter.
+
+2006-08-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Fixed some
+	inaccessible areas.
+
+2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/graphics/images/minimap_new_9-1.png,
+	data/graphics/images/minimap_new_14-1.png,
+	data/graphics/images/minimap_new_15-1.png,
+	data/graphics/images/minimap_new_16-1.png: Added minimaps for woodland
+	maps.
+
+2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Added a new
+	woodland map and a connection map between desert and woodland.
+	* data/graphics/woodland_ground.png: Added some new rocks.
+
+2006-08-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp, src/main.cpp: A
+	bunch of cleanups.
+
+2006-08-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* INSTALL: Updated required Guichan to version 0.5.0.
+
+2006-08-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/configuration.cpp, src/game.cpp, src/engine.cpp, src/player.cpp,
+	src/being.cpp, src/resources/mapreader.cpp,
+	src/resources/itemmanager.cpp: Some cleanups, mostly lowering
+	indentation.
+	* src/being.cpp: Small code cleanup.
+
+2006-08-04  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/char_select.cpp: Fixed character gender in selection dialog.
+
+2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animatedsprite.cpp: Fix enum being treated as string.
+	* src/animation.cpp: Small code cleanups. Removed unused headers.
+	* src/animatedsprite.cpp: Small code cleanup/lower indentation.
+
+2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.cpp: Fixed presence of NULL actions. This is
+	doener's version of the fix, because it was more efficient in the more
+	common case.
+
+2006-08-04  Frode Lindeijer  <f.lindeijer@gmail.com>
+
+	* data/graphics/tiles/desert_x3.png: Replaced the old cactus with
+	a nice new high-res one.
+
+2006-08-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/player.cpp, src/being.cpp, src/being.h: Removed three
+	setDirection(mDirection) calls by instead specifically setting the
+	current direction on the newly added animated sprite. The same might
+	be done for the action later.
+	* src/animatedsprite.h, src/animatedsprite.cpp: Since this class isn't
+	subclassed and has no virtual functions, make protected members
+	private. Also added a start of a reset function which could be a
+	solution to unsynchronized animated sprites.
+	* src/net/network.cpp: Fixed two delete/delete[] errors.
+
+2006-08-02  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* configure.ac, src/Makefile.am: Put object files in subdirectories.
+	Moved compilation flags to configure script. Added library header
+	checks.
+
+2006-08-02  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h, src/gui/register.cpp,
+	src/gui/register.h, src/logindata.h, src/main.cpp, src/main.h,
+	src/net/charserverhandler.cpp, src/net/loginhandler.cpp,
+	src/net/protocol.h: Ported account registration to tmwserv. There's
+	still a disconnection/reconnection between registration and login.
+	* src/gui/gui.cpp, src/register.cpp, src/register.h: Removed sex
+	choice.
+
+2006-08-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Moved some basic checks above the checks on the
+	libraries we depend on, in order to get rid of the confusing
+	rpl_realloc error.
+	* src/net/beinghandler.cpp, src/net/maploginhandler.cpp,
+	src/net/protocol.h, src/resources/openglsdlimageloader.cpp,
+	src/player.cpp: Fixed several compiler warnings and a linker error
+	when compiling without OpenGL support.
+
+2006-08-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/gui.cpp, The Mana World.dev, tmw.cbp: Fixed compilation
+	issues in windows.
+
+2006-08-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animation.h, src/animation.cpp, src/animatedsprite.h,
+	src/animatedsprite.cpp, src/being.cpp: Animations and directions
+	are now passed and stored as enums and no longer as strings.
+
+2006-07-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/net/network.cpp: Corrected an off by one error in packet size.
+
+2006-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/animatedsprite.h, src/animatedsprite.cpp: Unified the play
+	methods.
+
+2006-07-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_5-1.tmx.gz: Fixed two minor mapping errors (no new
+	walkmap required).
+
+2006-07-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp, src/game.cpp, src/main.cpp,
 	src/gui/buddywindow.cpp, src/gui/connection.cpp, src/gui/sell.cpp,
@@ -708,95 +964,6 @@
 	src/resources/openglsdlimageloader.h, src/resources/resourcemanager.h:
 	Updated TMW to be compatible with Guichan 0.5.0 (merged from
 	guichan-0.5.0 branch).
-	* INSTALL, docs/INSTALL/win32.txt: Updated required Guichan to version
-	0.5.0.
-	* configure.ac: Moved some basic checks above the checks on the
-	libraries we depend on, in order to get rid of the confusing
-	rpl_realloc error.
-	* src/resources/openglsdlimageloader.cpp, src/player.cpp: Fixed
-	several compiler warnings and a linker error when compiling without
-	OpenGL support.
-
-2006-08-12  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
-	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz: Fixed some
-	inaccessible areas.
-
-2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
-	* data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
-	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
-	data/graphics/images/minimap_new_9-1.png,
-	data/graphics/images/minimap_new_14-1.png,
-	data/graphics/images/minimap_new_15-1.png,
-	data/graphics/images/minimap_new_16-1.png: Added minimaps for woodland
-	maps.
-
-2006-08-07  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/maps/new_1-1.tmx.gz, data/maps/new_14-1.tmx.gz,
-	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz:
-	Added a new woodland map and a connection map between desert and
-	woodland.
-	* data/graphics/woodland_ground.png: Added some new rocks.
-
-2006-08-07  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* src/game.cpp, src/gui/chat.h, src/gui/chat.cpp, src/main.cpp: A
-	bunch of cleanups.
-
-2006-08-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* src/configuration.cpp, src/game.cpp, src/engine.cpp, src/player.cpp,
-	src/being.cpp, src/resources/mapreader.cpp,
-	src/resources/itemmanager.cpp: Some cleanups, mostly lowering
-	indentation.
-	* src/being.cpp: Small code cleanup.
-
-2006-08-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* src/animatedsprite.cpp: Fix enum being treated as string.
-	* src/animation.cpp: Small code cleanups. Removed unused headers.
-	* src/animatedsprite.cpp: Small code cleanup/lower indentation.
-
-2006-08-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
-	* src/animatedsprite.cpp: Fixed presence of NULL actions. This is
-	doener's version of the fix, because it was more efficient in the more
-	common case.
-
-2006-08-04  Frode Lindeijer  <f.lindeijer@gmail.com>
-
-	* data/graphics/tiles/desert_x3.png: Replaced the old cactus with
-	a nice new high-res one.
-
-2006-08-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
-
-	* src/player.cpp, src/being.cpp, src/being.h: Removed three
-	setDirection(mDirection) calls by instead specifically setting the
-	current direction on the newly added animated sprite. The same might
-	be done for the action later.
-	* src/animatedsprite.h, src/animatedsprite.cpp: Since this class isn't
-	subclassed and has no virtual functions, make protected members
-	private. Also added a start of a reset function which could be a
-	solution to unsynchronized animated sprites.
-	* src/net/network.cpp: Fixed two delete/delete[] errors.
-
-2006-08-01  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* src/animation.h, src/animation.cpp, src/animatedsprite.h,
-	src/animatedsprite.cpp, src/being.cpp: Animations and directions
-	are now passed and stored as enums and no longer as strings.
-
-2006-07-30  Björn Steinbrink  <B.Steinbrink@gmx.de>
-
-	* src/animatedsprite.h, src/animatedsprite.cpp: Unified the play
-	methods.
-
-2006-07-30  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/maps/new_5-1.tmx.gz: Fixed two minor mapping errors (no new
-	walkmap required).
 
 2006-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -813,8 +980,16 @@
 	into its own files, removed useless includes.
 	* src/engine.cpp: Removed an unused var.
 
+2006-07-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/main.cpp: Modified client version to be an int.
+
 2006-07-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
+	* src/gui/char_server.cpp, src/gui/char_sever.h, src/main.cpp,
+	src/net/loginhandler.cpp, src/net/loginhandler.h, tmw,cbp: Removed
+	char server selection dialog, and added character visualization in
+	character selection dialog.
 	* data/graphics/sprites/Makefile.am, data/graphics/tiles/Makefile.am,
 	data/maps/Makefile.am, data/maps/new_13-1.tmx.gz: Added map with
 	inside of snow village buildings and fixed makefiles.
@@ -839,9 +1014,33 @@
 	* data/graphics/sprites/item003.png, data/graphics/sprites/item003.xml:
 	Added the leather shirt
 
+2006-07-25  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/beingmanager.cpp, src/engine.cpp, src/gui/buy.cpp,
+	src/gui/char_select.cpp,src/gui/chat.cpp, src/gui/sell.cpp,
+	src/gui/trade.cpp, src/localplayer.cpp, src/main.cpp,
+	src/net/beinghandler.cpp, src/net/buysellhandler.cpp,
+	src/net/charserverhandler.cpp, src/net/chathandler,
+	src/net/equipmenthandler.cpp, src/net/inventoryhandler.cpp,
+	src/net/itemhandler.cpp, src/net/loginhandler.cpp,
+	src/net/maploginhandler.cpp, src/net/messagein.cpp,
+	src/net/messagein.h, src/net/messageout.cpp, src/net/messageout.h,
+	src/net/network.cpp, src/net/network.h, src/net/npchandler.cpp,
+	src/net/playerhandler.cpp, src/net/protocol.h,
+	src/net/skillhandler.cpp, src/net/tradehandler.cpp, src/npc.cpp,
+	tmw.cbp: Switched client to use enet and modified login sequence to
+	work with the new protocol from tmwserv.
+
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp: Fixed updating on Windows.
+	* src/net/beinghandler.cpp, src/net/network.cpp, configure.ac: Fixed
+	Linux compiling issues.
+	* src/configuration.cpp: Reduced amount of logging.
+	* src/log.cpp, src/log.h: Added support for writing log to standard
+	output.
+	* src/main.cpp: Reorganized initialization somewhat.
+	* src/resources/resourcemanager.cpp: Take into account singular form.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -855,16 +1054,17 @@
 
 2006-07-24  Frode Lindeijer  <f.lindeijer@gmail.com>
 
-	* data/graphics/sprites/npcs.png: Added the organdealer to the NPCs.
+	* data/graphics/sprites/npcs.png: Added the organdealer to
+	the NPCs.
 	* data/graphics/sprites/player_male_base.png,
-	data/graphics/sprites/player_female_base.png: Fixed some transparency
-	issues.
+	data/graphics/sprites/player_female_base.png: Fixed some
+	transparency issues.
 
 2006-07-24  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/being.cpp, src/being.h, src/localplayer, The Mana World.dev,
-	tmw.cbp: Removed unused code, fixed "change direction when not
-	walking" bug, updated project files.
+	tmw.cbp: Removed unused code, fixed "change direction when not walking"
+	bug, updated project files.
 	* data/graphics/sprites/monster1.xml: Slowed down scorpions.
 	* data/graphics/sprites/monster2.xml: Red scorpions have got the same
 	problem.
@@ -874,8 +1074,7 @@
 	data/help/header.txt, data/help/index.txt, data/help/skills.txt,
 	data/help/support.txt, data/help/team.txt: Forced to use UNIX end of
 	line character.
-	* src/net/equipmenthandler.cpp: Equipments now use real slot
-	positions.
+	* src/net/equipmenthandler.cpp: Equipments now use real slot positions.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -1103,7 +1302,7 @@
 	passing a NULL pointer as image argument.
 	* data/graphics/sprites/player_male_base.xml: Animation file now has
 	the syntax described on the wiki.
-
+	
 2006-06-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/Makefile.am,
@@ -2618,9 +2817,9 @@
 	src/gui/status.h: Improving General Layout.
 	* src/games.cpp, src/playerinfo.h, src/gui/char_server.cpp,
 	src/gui/char_select.cpp, src/gui/ministatus.cpp, src/gui/skill.cpp,
-	src/gui/status.cpp, src/gui/status.h : Now the derived stats values
+	src/gui/status.cpp, src/gui/status.h: Now the derived stats values
 	are got from the server, and then, are correct ones.
-	* src/gui/minimap.cpp : Only shows the Minimap Window if there's
+	* src/gui/minimap.cpp: Only shows the Minimap Window if there's
 	actually a minimap to the current map.
 	* src/gui/status.cpp, src/game.cpp: The derived stats are now updated
 	correctly upon equipping/unequipping.

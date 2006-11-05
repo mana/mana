@@ -175,6 +175,7 @@ class AnimatedSprite
         SpriteDirection mDirection;
         int mLastTime;
         float mSpeed;
+        std::string mAnimationFile;
 };
 
 #endif

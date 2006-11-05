@@ -98,7 +98,7 @@ void InventoryWindow::logic()
     mWeightLabel->adjustSize();
 }
 
-void InventoryWindow::action(const std::string& eventId, gcn::Widget* widget)
+void InventoryWindow::action(const std::string &eventId, gcn::Widget *widget)
 {
     Item *item = mItems->getItem();
 

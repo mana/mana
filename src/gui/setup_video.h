@@ -44,7 +44,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void action(const std::string &eventId, gcn::Widget *widget);
 
         /** Called when key is pressed */
-        void keyPress(const gcn::Key &key);
+        void keyPress(const gcn::Key& key);
 
     private:
         bool mFullScreenEnabled;

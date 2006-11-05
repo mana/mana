@@ -64,7 +64,7 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     yesButton->requestFocus();
 }
 
-void ConfirmDialog::action(const std::string& eventId, gcn::Widget* widget)
+void ConfirmDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;

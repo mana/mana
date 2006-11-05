@@ -34,7 +34,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     mAction(NULL),
     mDirection(DIRECTION_DOWN),
     mLastTime(0),
-    mSpeed(1.0f)
+    mSpeed(1.0f),
+    mAnimationFile(animationFile)
 {
     int size;
     ResourceManager *resman = ResourceManager::getInstance();
@@ -278,7 +279,8 @@ AnimatedSprite::play(SpriteAction action)
 
     if (i == mActions.end())
     {
-        logger->log("Warning: no action \"%u\" defined!", action);
+        //logger->log("Warning: no action %u defined for \"%s\"!",
+        //        action, mAnimationFile.c_str());
         mAction = NULL;
         return;
     }

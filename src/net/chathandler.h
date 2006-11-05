@@ -31,7 +31,7 @@ class ChatHandler : public MessageHandler
     public:
         ChatHandler();
 
-        void handleMessage(MessageIn *msg);
+        void handleMessage(MessageIn &msg);
 };
 
 #endif

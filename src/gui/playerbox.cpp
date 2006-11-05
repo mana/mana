@@ -94,13 +94,13 @@ void PlayerBox::draw(gcn::Graphics *graphics)
             playerset[mSex]->get(0), 23, 12);
 
     // Draw his hair
-    if (mHairColor >= 0 && mHairStyle >= 0 &&
-            mHairColor < NR_HAIR_COLORS && mHairStyle < NR_HAIR_STYLES)
+    if (mHairStyle > 0 && mHairColor < NR_HAIR_COLORS &&
+            mHairStyle < NR_HAIR_STYLES)
     {
         int hf = 5 * mHairColor;
         if (hf >= 0 && hf < (int)hairset[mHairStyle]->size()) {
             dynamic_cast<Graphics*>(graphics)->drawImage(
-                    hairset[mHairStyle]->get(hf), 35, 7);
+                    hairset[mHairStyle - 1]->get(hf), 35, 7);
         }
     }
 }

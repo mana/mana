@@ -23,6 +23,8 @@
 #include "being.h"
 
 #include <algorithm>
+#include <cassert>
+#include <cmath>
 
 #include "animatedsprite.h"
 #include "equipment.h"
@@ -45,20 +47,21 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 {
 }
 
-Being::Being(Uint32 id, Uint16 job, Map *map):
+Being::Being(Uint16 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0), mDirection(DOWN),
-    mAction(0),
+    mAction(STAND),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
     mEquipment(new Equipment()),
     mId(id),
+    mSex(2),
     mWeapon(0),
     mWalkSpeed(150),
+    mSpeedModifier(1024),
     mMap(NULL),
     mHairStyle(0), mHairColor(0),
-    mSex(2),
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),
@@ -74,13 +77,157 @@ Being::~Being()
     setMap(NULL);
 }
 
+void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
+{
+    if (!mMap || (mX == dstX && mY == dstY))
+    {
+        setPath(Path());
+        return;
+    }
+
+    if (mX / 32 == dstX / 32 && mY / 32 == dstY / 32)
+    {
+        // The being is already on the last tile of the path.
+        Path p;
+        p.push_back(PATH_NODE(dstX, dstY));
+        setPath(p);
+        return;
+    }
+
+    Path p1;
+    int p1_size, p1_length;
+    Uint16 *p1_dist;
+    int onPath = -1;
+    if (srcX / 32 == dstX / 32 && srcY / 32 == dstY / 32)
+    {
+        p1_dist = new Uint16[1];
+        p1_size = 1;
+        p1_dist[0] = 0;
+        p1_length = 0;
+    }
+    else
+    {
+        p1 = mMap->findPath(srcX / 32, srcY / 32, dstX / 32, dstY / 32);
+        if (p1.empty())
+        {
+            // No path? Better teleport.
+            mX = dstX;
+            mY = dstY;
+            setPath(p1);
+            return;
+        }
+        p1_size = p1.size();
+        p1_dist = new Uint16[p1_size];
+        int j = 0;
+        // Remove last tile so that it can be replaced by the exact destination.
+        p1.pop_back();
+        for (Path::iterator i = p1.begin(), i_end = p1.end(); i != i_end; ++i)
+        {
+            // Get distance from source to tile i.
+            p1_dist[j] = mMap->getMetaTile(i->x, i->y)->Gcost;
+            // Check if the being is already walking on the path.
+            if (i->x == mX / 32 && i->y == mY / 32)
+            {
+                onPath = j;
+            }
+            // Set intermediate steps to tile centers.
+            i->x = i->x * 32 + 16;
+            i->y = i->y * 32 + 16;
+            ++j;
+        }
+        p1_length = mMap->getMetaTile(dstX / 32, dstY / 32)->Gcost;
+        p1_dist[p1_size - 1] = p1_length;
+    }
+    p1.push_back(PATH_NODE(dstX, dstY));
+
+    if (mX / 32 == srcX / 32 && mY / 32 == srcY / 32)
+    {
+        // The being is at the start of the path.
+        setPath(p1);
+        delete[] p1_dist;
+        return;
+    }
+
+    if (onPath >= 0)
+    {
+        // The being is already on the path, but it needs to be slowed down.
+        for (int j = onPath; j >= 0; --j)
+        {
+            p1.pop_front();
+        }
+        int r = p1_length - p1_dist[onPath];  // remaining length
+        assert(r > 0);
+        setPath(p1, p1_length * 1024 / r);
+        delete[] p1_dist;
+        return;
+    }
+
+    Path bestPath;
+    int bestRating = -1, bestStart = 0, bestLength = 0;
+    int j = 0;
+
+    for (Path::iterator i = p1.begin(), i_end = p1.end(); i != i_end; ++i)
+    {
+        // Look if it is worth passing by tile i.
+        Path p2 = mMap->findPath(mX / 32, mY / 32, i->x / 32, i->y / 32);
+        if (!p2.empty())
+        {
+            int l1 = mMap->getMetaTile(i->x / 32, i->y / 32)->Gcost;
+            int l2 = p1_length - p1_dist[j];
+            int r = l1 + l2 / 2; // TODO: tune rating formula
+            assert(r > 0);
+            if (bestRating < 0 || r < bestRating)
+            {
+                bestPath.swap(p2);
+                bestRating = r;
+                bestStart = j;
+                bestLength = l1 + l2;
+            }
+        }
+        ++j;
+    }
+
+    if (bestRating < 0)
+    {
+        // Unable to reach the path? Better teleport.
+        mX = srcX;
+        mY = srcY;
+        setPath(p1);
+        delete[] p1_dist;
+        return;
+    }
+
+    bestPath.pop_back();
+    for (Path::iterator i = bestPath.begin(), i_end = bestPath.end(); i != i_end; ++i)
+    {
+        i->x = i->x * 32 + 16;
+        i->y = i->y * 32 + 16;
+    }
+
+    // Concatenate paths.
+    for (int j = bestStart; j > 0; --j)
+    {
+        p1.pop_front();
+    }
+    p1.splice(p1.begin(), bestPath);
+
+    assert(bestLength > 0);
+    setPath(p1, p1_length * 1024 / bestLength);
+    delete[] p1_dist;
+}
+
+void Being::adjustCourse(Uint16 srcX, Uint16 srcY)
+{
+    if (!mPath.empty())
+    {
+        adjustCourse(srcX, srcY, mPath.back().x, mPath.back().y);
+    }
+}
+
 void
 Being::setDestination(Uint16 destX, Uint16 destY)
 {
-    if (mMap)
-    {
-        setPath(mMap->findPath(mX, mY, destX, destY));
-    }
+    adjustCourse(mX, mY, destX, destY);
 }
 
 void
@@ -90,35 +237,29 @@ Being::clearPath()
 }
 
 void
-Being::setPath(const Path &path)
+Being::setPath(const Path &path, int mod)
 {
     mPath = path;
+    mSpeedModifier = mod >= 512 ? (mod <= 2048 ? mod : 2048) : 512; // TODO: tune bounds
 
     if (mAction != WALK && mAction != DEAD)
     {
-        nextStep();
         mWalkTime = tick_time;
+        mStepTime = 0;
+        nextStep();
     }
 }
 
 void
 Being::setHairColor(Uint16 color)
 {
-    mHairColor = color;
-    if (mHairColor < 1 || mHairColor > NR_HAIR_COLORS + 1)
-    {
-        mHairColor = 1;
-    }
+    mHairColor = (color < NR_HAIR_COLORS) ? color : 0;
 }
 
 void
 Being::setHairStyle(Uint16 style)
 {
-    mHairStyle = style;
-    if (mHairStyle < 1 || mHairStyle > NR_HAIR_STYLES)
-    {
-        mHairStyle = 1;
-    }
+    mHairStyle = (style < NR_HAIR_STYLES) ? style : 0;
 }
 
 void
@@ -180,9 +321,6 @@ Being::setAction(Uint8 action)
             else {
                 switch (getWeapon())
                 {
-                    case 3:
-                        currentAction = ACTION_ATTACK;
-                        break;
                     case 2:
                         currentAction = ACTION_ATTACK_BOW;
                         break;
@@ -292,15 +430,25 @@ Being::nextStep()
 
     setDirection(dir);
 
+    mStepX = node.x - mX;
+    mStepY = node.y - mY;
     mX = node.x;
     mY = node.y;
     setAction(WALK);
-    mWalkTime += mWalkSpeed / 10;
+    mWalkTime += mStepTime / 10;
+    mStepTime = mWalkSpeed * (int)std::sqrt((double)mStepX * mStepX + (double)mStepY * mStepY) *
+                mSpeedModifier / (32 * 1024);
 }
 
 void
 Being::logic()
 {
+    // Determine whether the being should take another step
+    if (mAction == WALK && get_elapsed_time(mWalkTime) >= mStepTime)
+    {
+        nextStep();
+    }
+
     // Determine whether speech should still be displayed
     if (get_elapsed_time(mSpeechTime) > 5000)
     {
@@ -314,8 +462,8 @@ Being::logic()
     }
 
     // Update pixel coordinates
-    mPx = mX * 32 + getXOffset();
-    mPy = mY * 32 + getYOffset();
+    mPx = mX - 16 + getXOffset();
+    mPy = mY - 16 + getYOffset();
 
     if (mEmotion != 0)
     {
@@ -417,15 +565,10 @@ Being::getType() const
 void
 Being::setWeaponById(Uint16 weapon)
 {
-    //TODO: Use an external file to map weapon IDs to weapon types
     switch (weapon)
     {
     case 529: // iron arrows
     case 1199: // arrows
-        break;
-
-    case 623: //scythe
-        setWeapon(3);
         break;
 
     case 1200: // bow
@@ -435,10 +578,6 @@ Being::setWeaponById(Uint16 weapon)
         break;
 
     case 521: // sharp knife
-        /*  UNCOMMENT TO TEST SHARP KNIFE AS SCYTHE
-         *  setWeapon(3)
-         *  break;
-         */
     case 522: // dagger
     case 536: // short sword
     case 1201: // knife
@@ -454,24 +593,23 @@ Being::setWeaponById(Uint16 weapon)
     }
 }
 
-int
-Being::getOffset(char pos, char neg) const
+int Being::getOffset(int step) const
 {
     // Check whether we're walking in the requested direction
-    if (mAction != WALK || !(mDirection & (pos | neg))) {
+    if (mAction != WALK || step == 0) {
         return 0;
     }
 
-    int offset = (get_elapsed_time(mWalkTime) * 32) / mWalkSpeed;
+    int offset = (get_elapsed_time(mWalkTime) * std::abs(step)) / mStepTime;
 
     // We calculate the offset _from_ the _target_ location
-    offset -= 32;
+    offset -= std::abs(step);
     if (offset > 0) {
         offset = 0;
     }
 
     // Going into negative direction? Invert the offset.
-    if (mDirection & pos) {
+    if (step < 0) {
         offset = -offset;
     }
 

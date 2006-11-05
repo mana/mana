@@ -2,11 +2,12 @@ SET (FILES
     attack_target.png
     bg_quad_dis.png
     browserfont.png
-    button.png
     button_disabled.png
     buttonhi.png
+    button.png
     buttonpress.png
     checkbox.png
+    deepbox.png
     fixedfont.png
     hits_blue.png
     hits_red.png
@@ -17,17 +18,18 @@ SET (FILES
     hscroll_right_default.png
     hscroll_right_highlight.png
     hscroll_right_pressed.png
-    mouse.png
     menuitemD.png
     menuitemF.png
     menuitemN.png
     menuitemP.png
+    mouse.png
     radioin.png
     radioout.png
-    selection.png
+    resize.png
+    rpgfont_wider.png
     sansserif8.png
+    selection.png
     slider.png
-    deepbox.png
     thickborder.png
     vscroll_blue.png
     vscroll_down_default.png
@@ -38,8 +40,6 @@ SET (FILES
     vscroll_up_default.png
     vscroll_up_highlight.png
     vscroll_up_pressed.png
-    rpgfont_wider.png
-    resize.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/gui)

@@ -36,17 +36,26 @@ class CharServerHandler : public MessageHandler
     public:
         CharServerHandler();
 
-        void handleMessage(MessageIn *msg);
+        void
+        handleMessage(MessageIn &msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo) { mCharInfo = charInfo; };
-
-        void setLoginData(LoginData *loginData) { mLoginData = loginData; };
+        void
+        setCharInfo(LockedArray<LocalPlayer*> *charInfo)
+        {
+            mCharInfo = charInfo;
+        }
 
     protected:
-        LoginData *mLoginData;
+        void
+        handleCharCreateResponse(MessageIn &msg);
+
+        void
+        handleCharSelectResponse(MessageIn &msg);
+
         LockedArray<LocalPlayer*> *mCharInfo;
 
-        LocalPlayer* readPlayerData(MessageIn *msg, int &slot);
+        LocalPlayer*
+        readPlayerData(MessageIn &msg, int &slot);
 };
 
 #endif

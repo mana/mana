@@ -70,7 +70,6 @@ class LoginDialog : public Window, public gcn::ActionListener {
     private:
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;
-        gcn::TextField *mServerField;
         gcn::CheckBox *mKeepCheck;
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;

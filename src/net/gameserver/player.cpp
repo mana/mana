@@ -21,20 +21,48 @@
  *  $Id$
  */
 
-#include "packet.h"
+#include "player.h"
 
-#include <cstring>
+#include "internal.h"
 
-Packet::Packet(const char *data, int length):
-    mLength(length)
+#include "../connection.h"
+#include "../messageout.h"
+#include "../protocol.h"
+
+void Net::GameServer::Player::say(const std::string &text)
 {
-    // Create a copy of the data
-    mData = new char[mLength];
-    memcpy(mData, data, mLength);
+    MessageOut msg(PGMSG_SAY);
+
+    msg.writeString(text);
+
+    Net::GameServer::connection->send(msg);
 }
 
-Packet::~Packet()
+void Net::GameServer::Player::walk(short x, short y)
 {
-    // Clean up the data
-    delete[] mData;
+    MessageOut msg(PGMSG_WALK);
+
+    msg.writeShort(x);
+    msg.writeShort(y);
+
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::useItem(int itemId)
+{
+    MessageOut msg(PGMSG_USE_ITEM);
+
+    msg.writeLong(itemId);
+
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::equip(int itemId, char slot)
+{
+    MessageOut msg(PGMSG_EQUIP);
+
+    msg.writeLong(itemId);
+    msg.writeByte(slot);
+
+    Net::GameServer::connection->send(msg);
 }
