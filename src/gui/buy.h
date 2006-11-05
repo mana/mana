@@ -28,6 +28,7 @@
 
 #include "window.h"
 #include "selectionlistener.h"
+#include "shoplistbox.h"
 
 #include "../guichanfwd.h"
 
@@ -98,7 +99,7 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
         gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
-        ListBox *mItemList;
+        ShopListBox *mShopItemList;
         gcn::ScrollArea *mScrollArea;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;

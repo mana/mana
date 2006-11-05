@@ -185,7 +185,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
     }
 
     // The following actions require a valid item selection
-    if (selectedItem == -1 || selectedItem >= int(mShopItems->size())) {
+    if (selectedItem == -1 || selectedItem >= int(mShopItems->getNumberOfElements())) {
         return;
     }
 
@@ -233,7 +233,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         // All were sold
         if (!mMaxItems) {
             mItemList->setSelected(-1);
-            mShopItems->erase(mShopItems->begin() + selectedItem);
+            mShopItems->mItemsShop.erase(mShopItems->mItemsShop.begin() + selectedItem);
         }
 
         // Update only when there are items left, the entry doesn't exist

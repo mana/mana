@@ -1,4 +1,12 @@
-2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de
+2006-11-05  Yohann Ferreira  <bertram@cegetel.net>
+
+	* src/Makefile.am, src/gui/buy.cpp, src/gui/buy.h, src/gui/shop.h,
+	src/gui/shop.cpp, src/gui/sell.cpp, src/gui/shoplistbox.h,
+	src/gui/shoplistbox.cpp: Added pictures to items in buy dialogs.
+	Also too expensive items are highlighted in gray and can't be
+	selected.
+
+2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/sprites/Makefile.am: Use tabs instead of spaces as
 	required by automake (AFAIK).
