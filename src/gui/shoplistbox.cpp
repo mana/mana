@@ -74,7 +74,7 @@ void ShopListBox::draw(gcn::Graphics *graphics)
     for (int i = 0, y = 0; i < mListModel->getNumberOfElements(); ++i, y += mRowHeight)
     {
         graphics->setColor(gcn::Color(0xffffff));
-        if (mShopItems)
+        if (mShopItems != NULL)
         {
             if(mPlayerMoney < mShopItems->at(i).price && mPriceCheck)
             {
