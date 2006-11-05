@@ -58,6 +58,9 @@ class Player : public Being
         virtual void
         setVisibleEquipment(Uint8 slot, Uint8 id);
 
+        virtual void
+        setWeapon(Uint16 weapon);
+
     private:
         /**
          * Resets all animations associated with this player. This is used to

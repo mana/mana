@@ -28,7 +28,7 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
-#include "listbox.h"
+#include "shoplistbox.h"
 #include "scrollarea.h"
 #include "shop.h"
 #include "slider.h"
@@ -47,11 +47,11 @@ SellDialog::SellDialog():
 {
     mShopItems = new ShopItems();
 
-    mItemList = new ListBox(mShopItems);
-    ScrollArea *scrollArea = new ScrollArea(mItemList);
+    mShopItemList = new ShopListBox(mShopItems, mShopItems);
+    ScrollArea *scrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
-    mMoneyLabel = new gcn::Label("Price: 0");
+    mMoneyLabel = new gcn::Label("Money: 0 GP / Total: 0 GP");
     mItemDescLabel = new gcn::Label("Description:");
     mItemEffectLabel = new gcn::Label("Effect:");
     mIncreaseButton = new Button("+", "+", this);
@@ -63,7 +63,7 @@ SellDialog::SellDialog():
     setContentSize(260, 210);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    mItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
+    mShopItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
 
     mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     mSlider->setEnabled(false);
@@ -87,11 +87,13 @@ SellDialog::SellDialog():
 
     quitButton->setPosition(208, 186);
 
-    mItemList->setEventId("item");
+    mShopItemList->setEventId("item");
     mSlider->setEventId("mSlider");
 
-    mItemList->addActionListener(this);
-    mItemList->addSelectionListener(this);
+    mShopItemList->setPriceCheck(false);
+
+    mShopItemList->addActionListener(this);
+    mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
     add(scrollArea);
@@ -121,13 +123,14 @@ void SellDialog::reset()
 
     mQuantityLabel->setCaption("0");
     mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Price: 0");
+    mMoneyLabel->setCaption("Money: 0 GP / Total: "
+            + toString(mPlayerMoney) + " GP");
     mMoneyLabel->adjustSize();
     mItemDescLabel->setCaption("");
     mItemEffectLabel->setCaption("");
 
     // Reset Previous Selected Items to prevent failing asserts
-    mItemList->setSelected(-1);
+    mShopItemList->setSelected(-1);
     mIncreaseButton->setEnabled(false);
     mDecreaseButton->setEnabled(false);
 }
@@ -144,14 +147,15 @@ void SellDialog::addItem(Item *item, int price)
     item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();
     item_shop.quantity = item->getQuantity();
+    item_shop.image = item->getInfo().getImage();
 
     mShopItems->push_back(item_shop);
-    mItemList->adjustSize();
+    mShopItemList->adjustSize();
 }
 
 void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
-    int selectedItem = mItemList->getSelected();
+    int selectedItem = mShopItemList->getSelected();
 
     if (eventId == "item")
     {
@@ -160,19 +164,22 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
         mDecreaseButton->setEnabled(false);
         mSellButton->setEnabled(false);
 
-        mQuantityLabel->setCaption("0");
         mQuantityLabel->adjustSize();
-        mMoneyLabel->setCaption("Price: 0");
+        mMoneyLabel->setCaption("Money: 0 GP / Total: "
+            + toString(mPlayerMoney) + " GP");
         mMoneyLabel->adjustSize();
 
         if (selectedItem > -1) {
             mSlider->setEnabled(true);
             mIncreaseButton->setEnabled(true);
             mMaxItems = mShopItems->at(selectedItem).quantity;
+            mQuantityLabel->setCaption("0 / " + toString(mMaxItems));
         } else {
             mSlider->setEnabled(false);
             mIncreaseButton->setEnabled(false);
+            mQuantityLabel->setCaption("0");
         }
+        mQuantityLabel->adjustSize();
     }
     else if (eventId == "quit")
     {
@@ -181,7 +188,7 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
     }
 
     // The following actions require a valid item selection
-    if (selectedItem == -1 || selectedItem >= int(mShopItems->size())) {
+    if (selectedItem == -1 || selectedItem >= int(mShopItems->getNumberOfElements())) {
         return;
     }
 
@@ -224,14 +231,16 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
         */
 
         mMaxItems -= mAmountItems;
+        mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
         mAmountItems = 0;
         mSlider->setValue(0);
         mSlider->setEnabled(mMaxItems != 0);
 
         // All were sold
         if (!mMaxItems) {
-            mItemList->setSelected(-1);
-            mShopItems->erase(mShopItems->begin() + selectedItem);
+
+            mShopItemList->setSelected(-1);
+            mShopItems->getShop()->erase(mShopItems->getShop()->begin() + selectedItem);
         }
 
         // Update only when there are items left, the entry doesn't exist
@@ -243,11 +252,12 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
     if (updateButtonsAndLabels)
     {
         // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems));
+        mQuantityLabel->setCaption(toString(mAmountItems) + " / " + toString(mMaxItems));
         mQuantityLabel->adjustSize();
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price: " + toString(price));
+        mMoneyLabel->setCaption("Money: " + toString(price) + " GP / Total: "
+            + toString(price + mPlayerMoney) + " GP");
         mMoneyLabel->adjustSize();
 
         // Update Buttons
@@ -259,7 +269,7 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
 
 void SellDialog::selectionChanged(const SelectionEvent &event)
 {
-    int selectedItem = mItemList->getSelected();
+    int selectedItem = mShopItemList->getSelected();
 
     if (selectedItem > -1)
     {
@@ -274,4 +284,10 @@ void SellDialog::selectionChanged(const SelectionEvent &event)
         mItemDescLabel->setCaption("Description");
         mItemEffectLabel->setCaption("Effect");
     }
+}
+
+void SellDialog::setMoney(int amount)
+{
+    mPlayerMoney = amount;
+    mShopItemList->setPlayersMoney(amount);
 }

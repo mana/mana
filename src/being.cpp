@@ -321,6 +321,9 @@ Being::setAction(Uint8 action)
             else {
                 switch (getWeapon())
                 {
+                    case 3:
+                        currentAction = ACTION_ATTACK;
+                        break;
                     case 2:
                         currentAction = ACTION_ATTACK_BOW;
                         break;
@@ -565,10 +568,15 @@ Being::getType() const
 void
 Being::setWeaponById(Uint16 weapon)
 {
+    //TODO: Use an external file to map weapon IDs to weapon types
     switch (weapon)
     {
     case 529: // iron arrows
     case 1199: // arrows
+        break;
+
+    case 623: //scythe
+        setWeapon(3);
         break;
 
     case 1200: // bow
@@ -578,6 +586,10 @@ Being::setWeaponById(Uint16 weapon)
         break;
 
     case 521: // sharp knife
+        /*  UNCOMMENT TO TEST SHARP KNIFE AS SCYTHE
+         *  setWeapon(3)
+         *  break;
+         */
     case 522: // dagger
     case 536: // short sword
     case 1201: // knife

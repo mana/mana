@@ -258,7 +258,7 @@ class Being : public Sprite
          *
          * @param weapon the picture id
          */
-        void
+        virtual void
         setWeapon(Uint16 weapon) { mWeapon = weapon; }
 
         /**

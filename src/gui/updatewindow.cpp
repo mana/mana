@@ -86,7 +86,8 @@ UpdaterWindow::UpdaterWindow():
     mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
 
-    mUpdateHost = config.getValue("updatehost", "themanaworld.org/files");
+    mUpdateHost =
+        config.getValue("updatehost", "http://updates.themanaworld.org");
     mBasePath = config.getValue("homeDir", ".");
 
     // Try to download the updates list

@@ -11,6 +11,7 @@ SET(FILES
     minimap_new_5-1.png
     minimap_new_7-1.png
     minimap_new_9-1.png
+    minimap_new_17-1.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/images)

@@ -89,6 +89,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             msg.readShort();  // length
             n_items = (msg.getLength() - 4) / 10;
             if (n_items > 0) {
+                sellDialog->setMoney(player_node->mMoney);
                 sellDialog->reset();
                 sellDialog->setVisible(true);
 

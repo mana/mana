@@ -35,11 +35,10 @@
 Player::Player(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    /* Load the weapon sprite. When there are more different weapons this
-     * should be moved to the setWeapon Method.
-     */
-    mSprites[WEAPON_SPRITE] =
-        new AnimatedSprite("graphics/sprites/weapons.xml", 0);
+    // Load the weapon sprite.
+    // When there are more different weapons this should be moved to the
+    // setWeapon Method.
+    setWeapon(0);
 }
 
 Being::Type
@@ -87,6 +86,35 @@ Player::setSex(Uint8 sex)
         resetAnimations();
     }
 }
+
+
+void
+Player::setWeapon(Uint16 weapon)
+{
+    if (weapon != mWeapon)
+    {
+        delete mSprites[WEAPON_SPRITE];
+        mSprites[WEAPON_SPRITE] = NULL;
+
+        switch (weapon)
+        {
+            case 0:
+                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-fist.xml", 0);
+                break;
+            case 1:
+                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-dagger.xml", 0);
+                break;
+            case 2:
+                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-bow.xml", 0);
+                break;
+            case 3:
+                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-scythe.xml", 0);
+                break;
+        }
+    }
+    Being::setWeapon(weapon);
+}
+
 
 void
 Player::setHairColor(Uint16 color)

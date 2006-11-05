@@ -95,6 +95,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/setup_video.h \
 	      gui/shop.cpp \
 	      gui/shop.h \
+	      gui/shoplistbox.cpp \
+	      gui/shoplistbox.h \
 	      gui/skill.cpp \
 	      gui/skill.h \
 	      gui/slider.cpp \
