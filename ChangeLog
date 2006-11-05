@@ -26,6 +26,7 @@
 	precisions about the total money in it.
 	* src/gui/shop.h, src/gui/shop.cpp, src/gui/sell.cpp: Fixes to Sell
 	dialog.
+	* src/gui/sell.cpp: Fixes the money value after seling something.
 
 2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
