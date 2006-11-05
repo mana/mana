@@ -21,22 +21,23 @@
 					<Add option="-DUSE_OPENGL"/>
 				</Compiler>
 				<Linker>
-					<Add option="-lguichan"/>
-					<Add option="-lguichan_sdl"/>
-					<Add option="-lguichan_opengl"/>
-					<Add option="-lwsock32"/>
-					<Add option="-lSDL_image.dll"/>
-					<Add option="-lSDL_mixer.dll"/>
-					<Add option="-lenet"/>
-					<Add option="-lmingw32"/>
-					<Add option="-lSDLmain"/>
-					<Add option="-lSDL.dll"/>
-					<Add option="-lxml2.dll"/>
-					<Add option="-lopengl32"/>
-					<Add option="-lpng12.dll"/>
-					<Add option="-lz.dll"/>
-					<Add option="-lphysfs"/>
-					<Add option="-lcurl"/>
+					<Add library="mingw32"/>
+					<Add library="enet"/>
+					<Add library="ws2_32"/>
+					<Add library="winmm"/>
+					<Add library="opengl32"/>
+					<Add library="guichan"/>
+					<Add library="guichan_sdl"/>
+					<Add library="guichan_opengl"/>
+					<Add library="SDL_image.dll"/>
+					<Add library="SDL_mixer.dll"/>
+					<Add library="SDLmain"/>
+					<Add library="SDL.dll"/>
+					<Add library="xml2.dll"/>
+					<Add library="png12.dll"/>
+					<Add library="z.dll"/>
+					<Add library="physfs"/>
+					<Add library="curl"/>
 				</Linker>
 			</Target>
 		</Build>
@@ -106,6 +107,12 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\configuration.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\defines.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -242,16 +249,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\char_select.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\char_server.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\char_server.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -593,6 +590,12 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\selectionlistener.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\sell.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -759,6 +762,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\widgets\dropdown.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\widgets\dropdown.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\window.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -877,6 +890,36 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\net\accountserver\account.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\accountserver\account.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\accountserver\accountserver.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\accountserver\accountserver.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\accountserver\internal.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\accountserver\internal.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\net\beinghandler.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -917,11 +960,81 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\net\chatserver\chatserver.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\chatserver\chatserver.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\chatserver\internal.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\chatserver\internal.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\connection.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\connection.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\net\equipmenthandler.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\net\equipmenthandler.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\gameserver.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\gameserver.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\internal.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\internal.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\player.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\gameserver\player.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\internal.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\internal.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -952,16 +1065,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\net\loginhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\maploginhandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\maploginhandler.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1017,31 +1120,11 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\net\packet.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\packet.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\net\playerhandler.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\net\playerhandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\protocol.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\protocol.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
