@@ -1,15 +1,19 @@
+2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de
+
+	* data/graphics/sprites/Makefile.am: Use tabs instead of spaces as
+	required by automake (AFAIK).
+
 2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
 
-	*data/graphics/sprites/weapon0.png, 
+	* data/graphics/sprites/weapon0.png,
 	data/graphics/sprites/weapon2.png,
-    data/graphics/sprites/weapon-bow.xml, 
+	data/graphics/sprites/weapon-bow.xml,
 	data/graphics/sprites/weapon-dagger.xml,
-    data/graphics/sprites/weapon-fist.xml,
-    data/graphics/sprites/weapon-scythe.xml,
-	data/graphics/items/weapon-polearm-scythe.png,
-	src/player.cpp, src/player.h, src/being.cpp, src/being.h, 
-	data/items.xml:
-	Added scythe as a permanent weapon (ID: 623)
+	data/graphics/sprites/weapon-fist.xml,
+	data/graphics/sprites/weapon-scythe.xml,
+	data/graphics/items/weapon-polearm-scythe.png, src/player.cpp,
+	src/player.h, src/being.cpp, src/being.h, data/items.xml: Added scythe
+	as a permanent weapon (ID: 623)
 
 2006-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
