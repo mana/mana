@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=237
+UnitCount=239
 Type=0
 Ver=1
 ObjFiles=
@@ -2421,6 +2421,26 @@ BuildCmd=
 FileName=src\resources\ambientoverlay.h
 CompileCpp=1
 Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit238]
+FileName=src\gui\shoplistbox.cpp
+CompileCpp=1
+Folder=tmw
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit239]
+FileName=src\gui\shoplistbox.h
+CompileCpp=1
+Folder=tmw
 Compile=1
 Link=1
 Priority=1000

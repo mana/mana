@@ -1,3 +1,9 @@
+2006-11-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.cpp, src/net/network.cpp, src/net/network.h,
+	The Mana World.dev, tmw.cbp: Fixed a conflict with Windows headers and
+	updated project files.
+
 2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/trade.cpp: Fixed money field to no longer hide below the

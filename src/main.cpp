@@ -578,7 +578,7 @@ int main(int argc, char *argv[])
         network->flush();
         network->dispatchMessages();
 
-        if (network->getState() == Network::ERROR)
+        if (network->getState() == Network::NET_ERROR)
         {
             state = ERROR_STATE;
             errorMessage = "Got disconnected from server!";

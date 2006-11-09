@@ -107,7 +107,7 @@ Network::~Network()
 {
     clearHandlers();
 
-    if (mState != IDLE && mState != ERROR)
+    if (mState != IDLE && mState != NET_ERROR)
         disconnect();
 
     SDL_DestroyMutex(mMutex);
@@ -118,7 +118,7 @@ Network::~Network()
 
 bool Network::connect(const std::string &address, short port)
 {
-    if (mState != IDLE && mState != ERROR)
+    if (mState != IDLE && mState != NET_ERROR)
     {
         logger->log("Tried to connect an already connected socket!");
         return false;
@@ -127,7 +127,7 @@ bool Network::connect(const std::string &address, short port)
     if (address.empty())
     {
         logger->log("Empty address given to Network::connect()!");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -146,7 +146,7 @@ bool Network::connect(const std::string &address, short port)
     if (!mWorkerThread)
     {
         logger->log("Unable to create network worker thread");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -233,7 +233,7 @@ void Network::flush()
     if (ret < (int)mOutSize)
     {
         logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
-        mState = ERROR;
+        mState = NET_ERROR;
     }
     mOutSize = 0;
     SDL_mutexV(mMutex);
@@ -287,7 +287,7 @@ MessageIn Network::getNextMessage()
 {
     while (!messageReady())
     {
-        if (mState == ERROR)
+        if (mState == NET_ERROR)
             break;
     }
 
@@ -315,7 +315,7 @@ bool Network::realConnect()
     if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
     {
         logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -325,7 +325,7 @@ bool Network::realConnect()
     if (!mSocket)
     {
         logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -344,14 +344,14 @@ void Network::receive()
     if (!(set = SDLNet_AllocSocketSet(1)))
     {
         logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
-        mState = ERROR;
+        mState = NET_ERROR;
         return;
     }
 
     if (SDLNet_TCP_AddSocket(set, mSocket) == -1)
     {
         logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
-        mState = ERROR;
+        mState = NET_ERROR;
     }
 
     while (mState == CONNECTED)
@@ -382,7 +382,7 @@ void Network::receive()
                 else if (ret < 0)
                 {
                     logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
-                    mState = ERROR;
+                    mState = NET_ERROR;
                 }
                 else {
                     mInSize += ret;
@@ -408,7 +408,7 @@ void Network::receive()
                 // more than one socket is ready..
                 // this should not happen since we only listen once socket.
                 logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
-                mState = ERROR;
+                mState = NET_ERROR;
                 break;
         }
     }

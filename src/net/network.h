@@ -63,12 +63,13 @@ class Network
         void dispatchMessages();
         void flush();
 
+        // ERROR replaced by NET_ERROR because  already defined in Windows
         enum {
             IDLE,
             CONNECTED,
             CONNECTING,
             DATA,
-            ERROR
+            NET_ERROR
         };
 
     protected:
