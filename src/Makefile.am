@@ -136,6 +136,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/connection.cpp \
 	      net/equipmenthandler.h \
 	      net/equipmenthandler.cpp \
+	      net/internal.h \
+	      net/internal.cpp \
 	      net/inventoryhandler.h \
 	      net/inventoryhandler.cpp \
 	      net/itemhandler.h \
