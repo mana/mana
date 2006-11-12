@@ -1,6 +1,8 @@
 0.0.21.2 (...)
 - Changed to new update host (http://updates.themanaworld.org)
+- Worked around a Guichan exception thrown for mice with many buttons
 - Fixed money field to no longer hide below the bottom of the window
+- Fixed pathfinding to allow walking through beings when they block your path
 
 0.0.21.1 (30 October 2006)
 - Reload wallpaper after loading updates

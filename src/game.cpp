@@ -29,6 +29,7 @@
 #include <string>
 
 #include <guichan/sdl/sdlinput.hpp>
+#include <guichan/exception.hpp>
 
 #include "beingmanager.h"
 #include "configuration.h"
@@ -627,8 +628,17 @@ void Game::handleInput()
         }
 
         // Push input to GUI when not used
-        if (!used) {
-            guiInput->pushInput(event);
+        if (!used)
+        {
+            try
+            {
+                guiInput->pushInput(event);
+            }
+            catch (gcn::Exception e)
+            {
+                const char* err = e.getMessage().c_str();
+                logger->log("Warning: guichan input exception: %s", err);
+            }
         }
 
     } // End while
