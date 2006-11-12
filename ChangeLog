@@ -1,3 +1,10 @@
+2006-11-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h: Made pathfinding algorithm cope better with
+	beings blocking the road. This is done by allowing walking over other
+	beings, but at an additional cost so that it is preferable to walk
+	around them.
+
 2006-11-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/main.cpp, src/net/network.cpp, src/net/network.h,

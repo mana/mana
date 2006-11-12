@@ -282,33 +282,35 @@ Map::setWalk(int x, int y, bool walkable)
 bool
 Map::getWalk(int x, int y)
 {
-    // Check for being walkable
-    if (tileCollides(x, y)) {
-        return false;
-    }
+    return !tileCollides(x, y) && !occupied(x, y);
+}
 
-    // Check for collision with a being
+bool
+Map::occupied(int x, int y)
+{
     Beings &beings = beingManager->getAll();
-    for (BeingIterator i = beings.begin(); i != beings.end(); i++) {
+    for (BeingIterator i = beings.begin(); i != beings.end(); i++)
+    {
         // job 45 is a portal, they don't collide
-        if ((*i)->mX == x && (*i)->mY == y && (*i)->mJob != 45) {
-            return false;
+        if ((*i)->mX == x && (*i)->mY == y && (*i)->mJob != 45)
+        {
+            return true;
         }
     }
 
-    return true;
+    return false;
 }
 
 bool
 Map::tileCollides(int x, int y)
 {
-    // You can't walk outside of the map
-    if (x < 0 || y < 0 || x >= mWidth || y >= mHeight) {
-        return true;
-    }
+    return !(contains(x, y) && mMetaTiles[x + y * mWidth].walkable);
+}
 
-    // Check if the tile is walkable
-    return !mMetaTiles[x + y * mWidth].walkable;
+bool
+Map::contains(int x, int y)
+{
+    return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }
 
 void
@@ -351,8 +353,9 @@ Map::findPath(int startX, int startY, int destX, int destY)
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
 
-    // Return empty path when destination not walkable
-    if (!getWalk(destX, destY)) return path;
+    // Return empty path when destination collides
+    if (tileCollides(destX, destY))
+        return path;
 
     // Reset starting tile's G cost to 0
     MetaTile *startTile = getMetaTile(startX, startY);
@@ -391,16 +394,15 @@ Map::findPath(int startX, int startY, int destX, int destY)
 
                 // Skip if if we're checking the same tile we're leaving from,
                 // or if the new location falls outside of the map boundaries
-                if ((dx == 0 && dy == 0) ||
-                    (x < 0 || y < 0 || x >= mWidth || y >= mHeight))
+                if ((dx == 0 && dy == 0) || !contains(x, y))
                 {
                     continue;
                 }
 
                 MetaTile *newTile = getMetaTile(x, y);
 
-                // Skip if the tile is on the closed list or is not walkable
-                if (newTile->whichList == mOnClosedList || !getWalk(x, y))
+                // Skip if the tile is on the closed list or collides
+                if (newTile->whichList == mOnClosedList || tileCollides(x, y))
                 {
                     continue;
                 }
@@ -420,8 +422,15 @@ Map::findPath(int startX, int startY, int destX, int destY)
                 }
 
                 // Calculate G cost for this route, 10 for moving straight and
-                // 14 for moving diagonal
+                // 14 for moving diagonal (sqrt(200) = 14.1421...)
                 int Gcost = curr.tile->Gcost + ((dx == 0 || dy == 0) ? 10 : 14);
+
+                // It costs extra to walk through a being (needs to be enough
+                // to make it more attractive to walk around).
+                if (occupied(x, y))
+                {
+                    Gcost += 30;
+                }
 
                 // Skip if Gcost becomes too much
                 // Warning: probably not entirely accurate

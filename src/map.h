@@ -129,7 +129,7 @@ class Map : public Properties
         MetaTile *getMetaTile(int x, int y);
 
         /**
-         * Set walkability flag for a tile
+         * Set walkability flag for a tile.
          */
         void setWalk(int x, int y, bool walkable);
 
@@ -198,6 +198,16 @@ class Map : public Properties
          */
         Tileset*
         getTilesetWithGid(int gid);
+
+        /**
+         * Tells whether a tile is occupied by a being.
+         */
+        bool occupied(int x, int y);
+
+        /**
+         * Tells whether the given coordinates fall within the map boundaries.
+         */
+        bool contains(int x, int y);
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;
