@@ -29,15 +29,14 @@
 #include "utils/dtor.h"
 
 
-Action::Action():
-    mSpriteset(NULL)
+Action::Action()
 {
 }
 
 Action::~Action()
 {
-    std::for_each(mAnimations.begin(), mAnimations.end(), make_dtor(mAnimations));
-    mAnimations.clear();
+    std::for_each(mAnimations.begin(), mAnimations.end(),
+                  make_dtor(mAnimations));
 }
 
 Animation*

@@ -37,7 +37,7 @@ class Spriteset;
  */
 struct AnimationPhase
 {
-    int image;
+    Image *image;
     unsigned int delay;
     int offsetX;
     int offsetY;
@@ -65,7 +65,7 @@ class Animation
          * Appends a new animation at the end of the sequence
          */
         void
-        addPhase(int image, unsigned int delay, int offsetX, int offsetY);
+        addPhase(Image *image, unsigned int delay, int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation
@@ -82,7 +82,7 @@ class Animation
         bool
         update(unsigned int time);
 
-        int
+        const AnimationPhase*
         getCurrentPhase() const;
 
         /**
@@ -101,13 +101,14 @@ class Animation
          * Returns the length of this animation.
          */
         int
-        getLength();
+        getLength() const { return mLength; }
 
     protected:
-        static bool isTerminator(AnimationPhase);
+        static bool isTerminator(AnimationPhase phase);
         std::list<AnimationPhase> mAnimationPhases;
         std::list<AnimationPhase>::iterator iCurrentPhase;
         unsigned int mTime;
+        int mLength;
 };
 
 #endif

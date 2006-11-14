@@ -33,6 +33,7 @@
 class Action;
 class Graphics;
 class Spriteset;
+struct AnimationPhase;
 
 enum SpriteAction
 {
@@ -97,7 +98,8 @@ class AnimatedSprite
          * Inform the animation of the passed time so that it can output the
          * correct animation phase.
          */
-        void update(int time);
+        void
+        update(int time);
 
         /**
          * Draw the current animation phase at the coordinates given in screen
@@ -107,13 +109,13 @@ class AnimatedSprite
         draw(Graphics* graphics, Sint32 posX, Sint32 posY) const;
 
         /**
-         * gets the width in pixels of the current animation phase.
+         * Returns the width in pixels of the current animation phase.
          */
         int
         getWidth() const;
 
         /**
-         * gets the height in pixels of the current animation phase.
+         * Returns the height in pixels of the current animation phase.
          */
         int
         getHeight() const;
@@ -134,6 +136,12 @@ class AnimatedSprite
          */
         void
         substituteAction(SpriteAction complete, SpriteAction with);
+
+        /**
+         * Returns the current animation frame.
+         */
+        const AnimationPhase*
+        getCurrentPhase() const;
 
         /**
          * Gets an integer property from an xmlNodePtr.

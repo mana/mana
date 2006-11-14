@@ -29,7 +29,6 @@
 #include <libxml/tree.h>
 
 class Image;
-class Spriteset;
 
 struct AnimationPhase;
 class Animation;
@@ -50,18 +49,6 @@ class Action
          */
         ~Action();
 
-        /**
-         * Sets the spriteset used by this action.
-         */
-        void
-        setSpriteset(Spriteset *spriteset) { mSpriteset = spriteset; }
-
-        /**
-         * Returns the spriteset used by this action.
-         */
-        Spriteset*
-        getSpriteset() const { return mSpriteset; }
-
         void
         setAnimation(int direction, Animation *animation);
 
@@ -75,7 +62,6 @@ class Action
         getAnimation(int direction) const;
 
     protected:
-        Spriteset *mSpriteset;
         typedef std::map<int, Animation*> Animations;
         typedef Animations::iterator AnimationIterator;
         Animations mAnimations;

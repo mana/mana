@@ -27,7 +27,8 @@
 
 #include "utils/dtor.h"
 
-Animation::Animation()
+Animation::Animation():
+    mLength(0)
 {
     reset();
 }
@@ -38,7 +39,6 @@ Animation::reset()
     mTime = 0;
     iCurrentPhase = mAnimationPhases.begin();
 }
-
 
 bool
 Animation::update(unsigned int time)
@@ -68,29 +68,28 @@ Animation::update(unsigned int time)
     return true;
 }
 
-
-int
+const AnimationPhase*
 Animation::getCurrentPhase() const
 {
-    return mAnimationPhases.empty() ? -1 : iCurrentPhase->image;
+    return mAnimationPhases.empty() ? NULL : &(*iCurrentPhase);
 }
 
-
 void
-Animation::addPhase(int image, unsigned int delay, int offsetX, int offsetY)
+Animation::addPhase(Image *image, unsigned int delay, int offsetX, int offsetY)
 {
-    //add new phase to animation list
+    // Add new phase to animation list
     AnimationPhase newPhase = { image, delay, offsetX, offsetY};
 
     mAnimationPhases.push_back(newPhase);
-    //reset animation circle
+    mLength += delay;
+    // Reset animation circle
     iCurrentPhase = mAnimationPhases.begin();
 }
 
 void
 Animation::addTerminator()
 {
-    AnimationPhase terminator = { -1, 0, 0, 0};
+    AnimationPhase terminator = { NULL, 0, 0, 0};
     mAnimationPhases.push_back(terminator);
     iCurrentPhase = mAnimationPhases.begin();
 }
@@ -98,20 +97,5 @@ Animation::addTerminator()
 bool
 Animation::isTerminator(AnimationPhase candidate)
 {
-    return (candidate.image < 0);
-}
-
-int
-Animation::getLength()
-{
-    if (mAnimationPhases.empty())
-        return 0;
-
-    std::list<AnimationPhase>::iterator i;
-    int length = 0;
-    for (i = mAnimationPhases.begin(); i != mAnimationPhases.end(); i++)
-    {
-        length += i->delay;
-    }
-    return length;
+    return (candidate.image == NULL);
 }

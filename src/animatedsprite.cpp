@@ -30,6 +30,7 @@
 
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
+#include "resources/image.h"
 
 AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     mAction(NULL),
@@ -91,17 +92,18 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
             std::string actionName = getProperty(node, "name", "");
-            std::string imageset = getProperty(node, "imageset", "");
+            std::string imagesetName = getProperty(node, "imageset", "");
 
-            if (mSpritesets.find(imageset) == mSpritesets.end()) {
+            SpritesetIterator si = mSpritesets.find(imagesetName);
+            if (si == mSpritesets.end()) {
                 logger->log("Warning: imageset \"%s\" not defined in %s",
-                            imageset.c_str(),
+                            imagesetName.c_str(),
                             animationFile.c_str());
 
                 // skip loading animations
                 continue;
             }
-
+            Spriteset *imageset = si->second;
 
             SpriteAction actionType = makeSpriteAction(actionName);
             if (actionType == ACTION_INVALID)
@@ -112,7 +114,6 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 continue;
             }
             Action *action = new Action();
-            action->setSpriteset(mSpritesets[imageset]);
             mActions[actionType] = action;
 
             // When first action set it as default direction
@@ -131,12 +132,15 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                 if (!xmlStrEqual(animationNode->name, BAD_CAST "animation"))
                     continue;
 
-                std::string directionName = getProperty(animationNode, "direction", "");
+                std::string directionName =
+                    getProperty(animationNode, "direction", "");
+                SpriteDirection directionType =
+                    makeSpriteDirection(directionName);
 
-                SpriteDirection directionType = makeSpriteDirection(directionName);
                 if (directionType == DIRECTION_INVALID)
                 {
-                    logger->log("Warning: Unknown direction \"%s\" defined for action %s in %s",
+                    logger->log("Warning: Unknown direction \"%s\" defined "
+                                "for action %s in %s",
                         directionName.c_str(),
                         actionName.c_str(),
                         animationFile.c_str());
@@ -159,28 +163,28 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                         int offsetX = getProperty(phaseNode, "offsetX", 0);
                         int offsetY = getProperty(phaseNode, "offsetY", 0);
 
-                        offsetY -= mSpritesets[imageset]->getHeight() - 32;
-                        offsetX -= mSpritesets[imageset]->getWidth() / 2 - 16;
-                        animation->addPhase(index + variant_offset, delay,
-                                offsetX, offsetY);
+                        offsetY -= imageset->getHeight() - 32;
+                        offsetX -= imageset->getWidth() / 2 - 16;
+                        Image *img = imageset->get(index + variant_offset);
+                        animation->addPhase(img, delay, offsetX, offsetY);
                     }
                     else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
                     {
                         int start = getProperty(phaseNode, "start", 0);
                         int end = getProperty(phaseNode, "end", 0);
-                        int offsetY = -mSpritesets[imageset]->getHeight() + 32;
-                        int offsetX = -mSpritesets[imageset]->getWidth() / 2 + 16;
+                        int offsetY = -imageset->getHeight() + 32;
+                        int offsetX = -imageset->getWidth() / 2 + 16;
                         while (end >= start)
                         {
-                            animation->addPhase(start + variant_offset,
-                                    delay, offsetX, offsetY);
+                            Image *img = imageset->get(start + variant_offset);
+                            animation->addPhase(img, delay, offsetX, offsetY);
                             start++;
                         }
                     }
                     else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
                     {
                         animation->addTerminator();
-                    };
+                    }
                 } // for phaseNode
             } // for animationNode
         } // if "<imageset>" else if "<action>"
@@ -223,8 +227,8 @@ AnimatedSprite::getProperty(xmlNodePtr node, const char* name, int def)
 }
 
 std::string
-AnimatedSprite::getProperty(xmlNodePtr node, const char* name,
-                            const std::string& def)
+AnimatedSprite::getProperty(xmlNodePtr node, const char *name,
+                            const std::string &def)
 {
     xmlChar *prop = xmlGetProp(node, BAD_CAST name);
     if (prop) {
@@ -294,7 +298,7 @@ AnimatedSprite::play(SpriteAction action)
 void
 AnimatedSprite::update(int time)
 {
-    bool notFinished = true;
+    bool finished = false;
     // Avoid freaking out at first frame or when tick_time overflows
     if (time < mLastTime || mLastTime == 0)
         mLastTime = time;
@@ -304,11 +308,12 @@ AnimatedSprite::update(int time)
     {
         Animation *animation = mAction->getAnimation(mDirection);
         if (animation != NULL) {
-            notFinished = animation->update((unsigned int)(time - mLastTime));}
+            finished = !animation->update((unsigned int)(time - mLastTime));
+        }
         mLastTime = time;
     }
 
-    if (!notFinished)
+    if (finished)
     {
         play(ACTION_STAND);
     }
@@ -317,33 +322,46 @@ AnimatedSprite::update(int time)
 bool
 AnimatedSprite::draw(Graphics* graphics, Sint32 posX, Sint32 posY) const
 {
-    if (!mAction)
+    const AnimationPhase *phase = getCurrentPhase();
+    if (!phase || !phase->image)
+    {
         return false;
+    }
 
-    Animation *animation = mAction->getAnimation(mDirection);
-    if (animation == NULL) return false;
-
-    int phase = animation->getCurrentPhase();
-    if (phase < 0)
-        return false;
-
-    Spriteset *spriteset = mAction->getSpriteset();
-    Image *image = spriteset->get(phase);
-    Sint32 offsetX = animation->getOffsetX();
-    Sint32 offsetY = animation->getOffsetY();
-    return graphics->drawImage(image, posX + offsetX, posY + offsetY);
+    Sint32 offsetX = phase->offsetX;
+    Sint32 offsetY = phase->offsetY;
+    return graphics->drawImage(phase->image, posX + offsetX, posY + offsetY);
 }
 
 int
 AnimatedSprite::getWidth() const
 {
-    return mAction ? mAction->getSpriteset()->getWidth() : 0;
+    const AnimationPhase *phase = getCurrentPhase();
+    return (phase && phase->image) ? phase->image->getWidth() : 0;
 }
 
 int
 AnimatedSprite::getHeight() const
 {
-    return mAction ? mAction->getSpriteset()->getHeight() : 0;
+    const AnimationPhase *phase = getCurrentPhase();
+    return (phase && phase->image) ? phase->image->getHeight() : 0;
+}
+
+const AnimationPhase*
+AnimatedSprite::getCurrentPhase() const
+{
+    if (!mAction)
+    {
+        return NULL;
+    }
+
+    Animation *animation = mAction->getAnimation(mDirection);
+    if (animation == NULL)
+    {
+        return NULL;
+    }
+
+    return animation->getCurrentPhase();
 }
 
 SpriteAction

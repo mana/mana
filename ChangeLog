@@ -3,6 +3,12 @@
 	* src/action.h, src/action.cpp, src/animation.h, src/CMakeLists.txt,
 	src/animatedsprite.cpp, src/animation.cpp, src/Makefile.am: Separated
 	Action class to its own module.
+	* src/action.h, src/action.cpp, src/animatedsprite.h, src/animation.h,
+	src/animatedsprite.cpp, src/animation.cpp: Resolve Image* of animation
+	phase at load time instead of storing just the spriteset index and
+	looking it up later (checking validity should still be added). Also
+	calculate animation length during loading instead of summing it up
+	each time it is requested.
 
 2006-11-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
