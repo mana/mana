@@ -227,6 +227,8 @@ SET(SRCS
     resources/buddylist.cpp
     utils/dtor.h
     utils/tostring.h
+    action.cpp
+    action.h
     animatedsprite.cpp
     animatedsprite.h
     animation.cpp

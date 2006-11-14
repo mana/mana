@@ -24,6 +24,7 @@
 #include "animatedsprite.h"
 
 #include "animation.h"
+#include "action.h"
 #include "graphics.h"
 #include "log.h"
 

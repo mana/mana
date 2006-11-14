@@ -1,3 +1,9 @@
+2006-11-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/action.h, src/action.cpp, src/animation.h, src/CMakeLists.txt,
+	src/animatedsprite.cpp, src/animation.cpp, src/Makefile.am: Separated
+	Action class to its own module.
+
 2006-11-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h: Made pathfinding algorithm cope better with
