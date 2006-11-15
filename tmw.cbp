@@ -45,6 +45,16 @@
 			<Add library="SDLmain"/>
 			<Add library="SDL"/>
 		</Linker>
+		<Unit filename="src\action.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\action.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\animatedsprite.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>

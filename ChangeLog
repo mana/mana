@@ -1,3 +1,7 @@
+2006-11-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
 2006-11-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/action.h, src/action.cpp, src/animation.h, src/CMakeLists.txt,

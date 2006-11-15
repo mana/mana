@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=239
+UnitCount=241
 Type=0
 Ver=1
 ObjFiles=
@@ -2290,7 +2290,7 @@ BuildCmd=
 [Unit224]
 FileName=src\animation.h
 CompileCpp=1
-Folder=
+Folder=header
 Compile=1
 Link=1
 Priority=1000
@@ -2330,7 +2330,7 @@ BuildCmd=
 [Unit228]
 FileName=src\tmw.rc
 CompileCpp=1
-Folder=Resources
+Folder=resources
 Compile=1
 Link=0
 Priority=1000
@@ -2400,7 +2400,7 @@ BuildCmd=
 [Unit235]
 FileName=src\resources\iteminfo.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2430,7 +2430,7 @@ BuildCmd=
 [Unit238]
 FileName=src\gui\shoplistbox.cpp
 CompileCpp=1
-Folder=tmw
+Folder=gui/source
 Compile=1
 Link=1
 Priority=1000
@@ -2440,7 +2440,27 @@ BuildCmd=
 [Unit239]
 FileName=src\gui\shoplistbox.h
 CompileCpp=1
-Folder=tmw
+Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit240]
+FileName=src\action.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit241]
+FileName=src\action.h
+CompileCpp=1
+Folder=header
 Compile=1
 Link=1
 Priority=1000
