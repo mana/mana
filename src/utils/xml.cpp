@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: dtor.h 2822 2006-11-05 14:30:53Z b_lindeijer $
+ *  $Id$
  */
 
 #include "xml.h"
