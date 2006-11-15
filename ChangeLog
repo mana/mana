@@ -1,6 +1,7 @@
 2006-11-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
+	* The Mana World.dev, tmw.cbp: Fixed dynamic linking of libcurl.
 
 2006-11-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

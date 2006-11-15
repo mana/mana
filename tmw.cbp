@@ -21,30 +21,25 @@
 					<Add option="-DUSE_OPENGL"/>
 				</Compiler>
 				<Linker>
-					<Add option="-lguichan"/>
-					<Add option="-lguichan_sdl"/>
-					<Add option="-lguichan_opengl"/>
-					<Add option="-lwsock32"/>
-					<Add option="-lSDL_image.dll"/>
-					<Add option="-lSDL_mixer.dll"/>
-					<Add option="-lSDL_net.dll"/>
-					<Add option="-lmingw32"/>
-					<Add option="-lSDLmain"/>
-					<Add option="-lSDL.dll"/>
-					<Add option="-lxml2.dll"/>
-					<Add option="-lopengl32"/>
-					<Add option="-lpng12.dll"/>
-					<Add option="-lz.dll"/>
-					<Add option="-lphysfs"/>
-					<Add option="-lcurl"/>
+					<Add library="guichan"/>
+					<Add library="guichan_sdl"/>
+					<Add library="guichan_opengl"/>
+					<Add library="wsock32"/>
+					<Add library="SDL_image"/>
+					<Add library="SDL_mixer"/>
+					<Add library="SDL_net"/>
+					<Add library="mingw32"/>
+					<Add library="SDLmain"/>
+					<Add library="SDL.dll"/>
+					<Add library="xml2.dll"/>
+					<Add library="opengl32"/>
+					<Add library="png12.dll"/>
+					<Add library="z.dll"/>
+					<Add library="physfs"/>
+					<Add library="curl.dll"/>
 				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add library="mingw32"/>
-			<Add library="SDLmain"/>
-			<Add library="SDL"/>
-		</Linker>
 		<Unit filename="src\action.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
