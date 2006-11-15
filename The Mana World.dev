@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=241
+UnitCount=243
 Type=0
 Ver=1
 ObjFiles=
@@ -2461,6 +2461,26 @@ BuildCmd=
 FileName=src\action.h
 CompileCpp=1
 Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit242]
+FileName=src\utils\xml.cpp
+CompileCpp=1
+Folder=utils
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit243]
+FileName=src\utils\xml.h
+CompileCpp=1
+Folder=utils
 Compile=1
 Link=1
 Priority=1000
