@@ -1,3 +1,18 @@
+2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/Woodland_village.png,
+	data/graphics/tiles/Woodland_village_x2.png,
+	data/graphics/tiles/Woodland_x2.png,
+	data/graphics/tiles/Makefile.AM,
+	data/graphics/tiles/CMakeList.txt,
+	data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/maps/new_17-1.tmx.gz, data/maps/new_18-1.tmx.gz,
+	data/maps/new_19-1.tmx.gz, data/maps/CMakeList.txt,
+	data/maps/Makefile.AM:
+	Added woodland village outdoor tileset and maps. Modified gates on
+	the nearby maps.
+
 2006-11-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/animatedsprite.h, src/CMakeLists.txt, src/animatedsprite.cpp,
@@ -98,7 +113,7 @@
 
 2006-11-04  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_17-1.tmx.gz, 
+	* data/maps/new_17-1.tmx.gz,
 	data/graphics/images/minimap_new_17-1.png,
 	data/graphics/images/Makefile.am,
 	data/graphics/images/CMakeLists.txt:
