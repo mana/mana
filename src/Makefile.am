@@ -189,6 +189,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/buddylist.cpp \
 	      utils/dtor.h \
 	      utils/tostring.h \
+	      utils/xml.cpp \
+	      utils/xml.h \
 	      action.cpp \
 	      action.h \
 	      animatedsprite.cpp \

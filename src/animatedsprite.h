@@ -28,8 +28,6 @@
 #include <string>
 #include <SDL_types.h>
 
-#include <libxml/tree.h>
-
 class Action;
 class Graphics;
 class Spriteset;
@@ -144,21 +142,6 @@ class AnimatedSprite
         getCurrentPhase() const;
 
         /**
-         * Gets an integer property from an xmlNodePtr.
-         *
-         * TODO: Same function is present in MapReader. Should probably be
-         * TODO: shared in a static utility class.
-         */
-        static int
-        getProperty(xmlNodePtr node, const char *name, int def);
-
-        /**
-         * Gets a string property from an xmlNodePtr.
-         */
-        static std::string
-        getProperty(xmlNodePtr node, const char *name, const std::string &def);
-
-        /**
          * Converts a string into a SpriteAction enum.
          */
         static SpriteAction
@@ -182,7 +165,6 @@ class AnimatedSprite
         Action *mAction;
         SpriteDirection mDirection;
         int mLastTime;
-        float mSpeed;
 };
 
 #endif

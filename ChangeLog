@@ -1,3 +1,10 @@
+2006-11-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.h, src/CMakeLists.txt, src/animatedsprite.cpp,
+	src/utils/xml.cpp, src/utils/xml.h, src/Makefile.am,
+	src/resources/mapreader.cpp: Separated getProperty method to an XML
+	utility namespace.
+
 2006-11-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.

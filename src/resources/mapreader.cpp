@@ -36,6 +36,7 @@
 #include "../tileset.h"
 
 #include "../utils/tostring.h"
+#include "../utils/xml.h"
 
 const unsigned int DEFAULT_TILE_WIDTH = 32;
 const unsigned int DEFAULT_TILE_HEIGHT = 32;
@@ -205,10 +206,10 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
     prop = xmlGetProp(node, BAD_CAST "version");
     xmlFree(prop);
 
-    int w = getProperty(node, "width", 0);
-    int h = getProperty(node, "height", 0);
-    int tilew = getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
-    int tileh = getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
+    int w = XML::getProperty(node, "width", 0);
+    int h = XML::getProperty(node, "height", 0);
+    int tilew = XML::getProperty(node, "tilewidth", DEFAULT_TILE_WIDTH);
+    int tileh = XML::getProperty(node, "tileheight", DEFAULT_TILE_HEIGHT);
     int layerNr = 0;
     Map *map = new Map(w, h, tilew, tileh);
 
@@ -354,7 +355,7 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
                 if (!xmlStrEqual(n2->name, BAD_CAST "tile"))
                     continue;
 
-                int gid = getProperty(n2, "gid", -1);
+                int gid = XML::getProperty(n2, "gid", -1);
                 map->setTileWithGid(x, y, layer, gid);
 
                 x++;
@@ -387,9 +388,9 @@ MapReader::readTileset(xmlNodePtr node,
         return NULL;
     }
 
-    int firstGid = getProperty(node, "firstgid", 0);
-    int tw = getProperty(node, "tilewidth", map->getTileWidth());
-    int th = getProperty(node, "tileheight", map->getTileHeight());
+    int firstGid = XML::getProperty(node, "firstgid", 0);
+    int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
+    int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
     for (node = node->xmlChildrenNode; node; node = node->next) {
         if (!xmlStrEqual(node->name, BAD_CAST "image"))
@@ -421,17 +422,4 @@ MapReader::readTileset(xmlNodePtr node,
     }
 
     return NULL;
-}
-
-int
-MapReader::getProperty(xmlNodePtr node, const char* name, int def)
-{
-    int &ret = def;
-
-    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-    if (prop) {
-        ret = atoi((char*)prop);
-        xmlFree(prop);
-    }
-    return ret;
 }

@@ -32,11 +32,12 @@
 #include "resources/spriteset.h"
 #include "resources/image.h"
 
+#include "utils/xml.h"
+
 AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     mAction(NULL),
     mDirection(DIRECTION_DOWN),
-    mLastTime(0),
-    mSpeed(1.0f)
+    mLastTime(0)
 {
     int size;
     ResourceManager *resman = ResourceManager::getInstance();
@@ -61,8 +62,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     }
 
     // Get the variant
-    int variant_num = getProperty(node, "variants", 0);
-    int variant_offset = getProperty(node, "variant_offset", 0);
+    int variant_num = XML::getProperty(node, "variants", 0);
+    int variant_offset = XML::getProperty(node, "variant_offset", 0);
 
     if (variant_num > 0 && variant < variant_num ) {
         variant_offset *= variant;
@@ -74,10 +75,10 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
-            int width = getProperty(node, "width", 0);
-            int height = getProperty(node, "height", 0);
-            std::string name = getProperty(node, "name", "");
-            std::string imageSrc = getProperty(node, "src", "");
+            int width = XML::getProperty(node, "width", 0);
+            int height = XML::getProperty(node, "height", 0);
+            std::string name = XML::getProperty(node, "name", "");
+            std::string imageSrc = XML::getProperty(node, "src", "");
 
             Spriteset *spriteset =
                 resman->getSpriteset(imageSrc, width, height);
@@ -91,8 +92,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
         // get action
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            std::string actionName = getProperty(node, "name", "");
-            std::string imagesetName = getProperty(node, "imageset", "");
+            std::string actionName = XML::getProperty(node, "name", "");
+            std::string imagesetName = XML::getProperty(node, "imageset", "");
 
             SpritesetIterator si = mSpritesets.find(imagesetName);
             if (si == mSpritesets.end()) {
@@ -133,7 +134,7 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                     continue;
 
                 std::string directionName =
-                    getProperty(animationNode, "direction", "");
+                    XML::getProperty(animationNode, "direction", "");
                 SpriteDirection directionType =
                     makeSpriteDirection(directionName);
 
@@ -155,13 +156,13 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                         phaseNode != NULL;
                         phaseNode = phaseNode->next)
                 {
-                    int delay = getProperty(phaseNode, "delay", 0);
+                    int delay = XML::getProperty(phaseNode, "delay", 0);
 
                     if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
                     {
-                        int index = getProperty(phaseNode, "index", -1);
-                        int offsetX = getProperty(phaseNode, "offsetX", 0);
-                        int offsetY = getProperty(phaseNode, "offsetY", 0);
+                        int index = XML::getProperty(phaseNode, "index", -1);
+                        int offsetX = XML::getProperty(phaseNode, "offsetX", 0);
+                        int offsetY = XML::getProperty(phaseNode, "offsetY", 0);
 
                         offsetY -= imageset->getHeight() - 32;
                         offsetX -= imageset->getWidth() / 2 - 16;
@@ -170,8 +171,8 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
                     }
                     else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
                     {
-                        int start = getProperty(phaseNode, "start", 0);
-                        int end = getProperty(phaseNode, "end", 0);
+                        int start = XML::getProperty(phaseNode, "start", 0);
+                        int end = XML::getProperty(phaseNode, "end", 0);
                         int offsetY = -imageset->getHeight() + 32;
                         int offsetX = -imageset->getWidth() / 2 + 16;
                         while (end >= start)
@@ -210,34 +211,6 @@ AnimatedSprite::AnimatedSprite(const std::string& animationFile, int variant):
     play(ACTION_STAND);
 
     xmlFreeDoc(doc);
-}
-
-int
-AnimatedSprite::getProperty(xmlNodePtr node, const char* name, int def)
-{
-    int &ret = def;
-
-    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-    if (prop) {
-        ret = atoi((char*)prop);
-        xmlFree(prop);
-    }
-
-    return ret;
-}
-
-std::string
-AnimatedSprite::getProperty(xmlNodePtr node, const char *name,
-                            const std::string &def)
-{
-    xmlChar *prop = xmlGetProp(node, BAD_CAST name);
-    if (prop) {
-        std::string val = (char*)prop;
-        xmlFree(prop);
-        return val;
-    }
-
-    return def;
 }
 
 void
