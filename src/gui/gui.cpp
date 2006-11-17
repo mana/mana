@@ -89,7 +89,9 @@ Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
     mMouseCursor(NULL),
     mCustomCursor(false),
-    mPopupActive(false)
+    mPopupActive(false),
+    mPlayerFollowMouse(false),
+    mWalkTime(0)
 {
     // Set graphics
     setGraphics(graphics);
@@ -205,6 +207,16 @@ Gui::logic()
     // Work around Guichan bug of only applying focus on mouse or keyboard
     // events.
     mFocusHandler->applyChanges();
+
+    int mouseX, mouseY;
+    Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
+    
+    if ( mPlayerFollowMouse && button & SDL_BUTTON(1) &&
+            mWalkTime != player_node -> mWalkTime)
+    {
+        player_node->setDestination(mouseX / 32 + camera_x, mouseY / 32 + camera_y);
+        mWalkTime = player_node -> mWalkTime;
+    }
 }
 
 void
@@ -231,6 +243,7 @@ void
 Gui::mousePress(int mx, int my, int button)
 {
     // Mouse pressed on window container (basically, the map)
+    mPlayerFollowMouse = false;
 
     // Are we in-game yet?
     if (state != GAME_STATE)
@@ -316,6 +329,7 @@ Gui::mousePress(int mx, int my, int button)
                 player_node->setDestination(tilex, tiley);
                 player_node->stopAttack();
             }
+            mPlayerFollowMouse = true;
         }
     }
 
@@ -332,6 +346,20 @@ Gui::mousePress(int mx, int my, int button)
         }
     }
 }
+
+void
+Gui::mouseMotion(int mx, int my)
+{
+    if (mPlayerFollowMouse && mWalkTime == player_node -> mWalkTime)
+        player_node->setDestination(mx / 32 + camera_x, my / 32 + camera_y);
+}
+
+void
+Gui::mouseRelease(int mx, int my, int button)
+{
+    mPlayerFollowMouse = false;
+}
+
 
 void
 Gui::setUseCustomCursor(bool customCursor)

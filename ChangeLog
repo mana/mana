@@ -1,3 +1,10 @@
+2006-11-17  Wai Ling Tsang  <simotsa@gmail.com>
+
+	* src/gui/gui.cpp: Added mouse following ability/feature under
+	logic().
+	* src/gui/gui.h: Added mouseMotion(), mouseRelease() and private
+	variables for mouse following.
+
 2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/Woodland_village.png,

@@ -83,6 +83,18 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         mousePress(int mx, int my, int button);
 
         /**
+         * Handles mouse move on map
+         */
+        void
+        mouseMotion(int mx, int my);
+        
+        /**
+         * Handles mouse button release on map.
+         */
+        void
+        mouseRelease(int mx, int my, int button);
+
+        /**
          * Return game font
          */
         gcn::Font*
@@ -122,6 +134,8 @@ class Gui : public gcn::Gui, public gcn::MouseListener
 
         PopupMenu *mPopup;                    /**< Popup window */
         bool mPopupActive;
+        bool mPlayerFollowMouse;
+        int mWalkTime;
 };
 
 extern Gui *gui;                              /**< The GUI system */
