@@ -1,3 +1,7 @@
+2006-11-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* data/graphics/sprites/CMakeLists.txt: Fixed some filenames.
+
 2006-11-17  Wai Ling Tsang  <simotsa@gmail.com>
 
 	* src/gui/gui.cpp: Added mouse following ability/feature under
