@@ -42,7 +42,7 @@ Setup_Joystick::Setup_Joystick():
     mCalibrateLabel->setPosition(10, 25);
     mCalibrateButton->setPosition(10, 30 + mCalibrateLabel->getHeight());
 
-    mOriginalJoystickEnabled = (joystick ? joystick->isEnabled() : false);
+    mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
     mJoystickEnabled->setMarked(mOriginalJoystickEnabled);
 
     mJoystickEnabled->setEventId("joystickEnabled");
