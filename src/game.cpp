@@ -86,7 +86,7 @@ bool done = false;
 volatile int tick_time;
 volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
-Joystick *joystick;
+Joystick *joystick = NULL;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
@@ -650,35 +650,35 @@ void Game::handleInput()
     {
         Uint16 x = player_node->mX;
         Uint16 y = player_node->mY;
-        unsigned char Direction = 0;
+        unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
         if (keys[SDLK_UP] || keys[SDLK_KP8] ||
                 keys[SDLK_KP7] || keys[SDLK_KP9] ||
                 joystick && joystick->isUp())
         {
-            Direction |= Being::UP;
+            direction |= Being::UP;
         }
         else if (keys[SDLK_DOWN] || keys[SDLK_KP2] ||
                 keys[SDLK_KP1] || keys[SDLK_KP3] ||
                 joystick && joystick->isDown())
         {
-            Direction |= Being::DOWN;
+            direction |= Being::DOWN;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4] ||
                 keys[SDLK_KP1] || keys[SDLK_KP7] ||
                 joystick && joystick->isLeft())
         {
-            Direction |= Being::LEFT;
+            direction |= Being::LEFT;
         }
         else if (keys[SDLK_RIGHT] || keys[SDLK_KP6] ||
                 keys[SDLK_KP3] || keys[SDLK_KP9] ||
                 joystick && joystick->isRight())
         {
-            Direction |= Being::RIGHT;
+            direction |= Being::RIGHT;
         }
 
-        player_node->walk(Direction);
+        player_node->walk(direction);
 
         // Attacking monsters
         if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||

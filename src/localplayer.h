@@ -50,6 +50,11 @@ class LocalPlayer : public Player
         void setNetwork(Network *network) { mNetwork = network; }
 
         virtual void logic();
+
+        /**
+         * Adds a new step when walking before calling super. Also, when
+         * specified it picks up an item at the end of a path.
+         */
         virtual void nextStep();
 
         /**
@@ -155,7 +160,10 @@ class LocalPlayer : public Player
         FloorItem *mPickUpTarget;
 
         bool mTrading;
-        int mLastAction;    /**< Time stamp of the last action, -1 if none */
+        int mLastAction;    /**< Time stamp of the last action, -1 if none. */
+        int mWalkingDir;    /**< The direction the player is walking in. */
+        int destX;          /**< X coordinate of destination. */
+        int destY;          /**< Y coordinate of destination. */
 };
 
 extern LocalPlayer *player_node;

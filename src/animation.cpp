@@ -28,74 +28,28 @@
 #include "utils/dtor.h"
 
 Animation::Animation():
-    mLength(0)
+    mDuration(0)
 {
-    reset();
-}
-
-void
-Animation::reset()
-{
-    mTime = 0;
-    iCurrentPhase = mAnimationPhases.begin();
-}
-
-bool
-Animation::update(unsigned int time)
-{
-    mTime += time;
-    if (mAnimationPhases.empty())
-        return true;
-    if (isTerminator(*iCurrentPhase))
-        return false;
-
-    unsigned int delay = iCurrentPhase->delay;
-
-    while (mTime > delay)
-    {
-        if (!delay)
-            return true;
-        mTime -= delay;
-        iCurrentPhase++;
-        if (iCurrentPhase == mAnimationPhases.end())
-        {
-            iCurrentPhase = mAnimationPhases.begin();
-        }
-        if (isTerminator(*iCurrentPhase))
-            return false;
-        delay = iCurrentPhase->delay;
-    }
-    return true;
-}
-
-const AnimationPhase*
-Animation::getCurrentPhase() const
-{
-    return mAnimationPhases.empty() ? NULL : &(*iCurrentPhase);
 }
 
 void
 Animation::addPhase(Image *image, unsigned int delay, int offsetX, int offsetY)
 {
     // Add new phase to animation list
-    AnimationPhase newPhase = { image, delay, offsetX, offsetY};
+    AnimationPhase newPhase = { image, delay, offsetX, offsetY };
 
     mAnimationPhases.push_back(newPhase);
-    mLength += delay;
-    // Reset animation circle
-    iCurrentPhase = mAnimationPhases.begin();
+    mDuration += delay;
 }
 
 void
 Animation::addTerminator()
 {
-    AnimationPhase terminator = { NULL, 0, 0, 0};
-    mAnimationPhases.push_back(terminator);
-    iCurrentPhase = mAnimationPhases.begin();
+    addPhase(NULL, 0, 0, 0);
 }
 
 bool
-Animation::isTerminator(AnimationPhase candidate)
+Animation::isTerminator(const AnimationPhase candidate)
 {
     return (candidate.image == NULL);
 }

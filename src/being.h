@@ -206,7 +206,7 @@ class Being : public Sprite
         /**
          * Makes this being take the next step of his path.
          */
-        void
+        virtual void
         nextStep();
 
         /**

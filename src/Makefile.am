@@ -183,6 +183,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/sdlimageloader.cpp \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
+	      resources/spritedef.h \
+	      resources/spritedef.cpp \
 	      resources/spriteset.h \
 	      resources/spriteset.cpp \
 	      resources/buddylist.h \

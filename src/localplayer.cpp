@@ -82,9 +82,19 @@ void LocalPlayer::logic()
 
 void LocalPlayer::nextStep()
 {
-    if (mPath.empty() && mPickUpTarget) {
-        pickUp(mPickUpTarget);
+    if (mPath.empty())
+    {
+        if (mPickUpTarget)
+        {
+            pickUp(mPickUpTarget);
+        }
+
+        if (mWalkingDir)
+        {
+            walk(mWalkingDir);
+        }
     }
+
     Player::nextStep();
 }
 
@@ -171,10 +181,15 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
+    if (mWalkingDir != dir)
+    {
+        mWalkingDir = dir;
+    }
+
     if (!mMap || !dir)
         return;
 
-    if (mAction == WALK)
+    if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
         Being::setDestination(mX, mY);
@@ -218,14 +233,20 @@ void LocalPlayer::walk(unsigned char dir)
 
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
-    char temp[3];
-    MessageOut outMsg(mNetwork);
-    set_coordinates(temp, x, y, mDirection);
-    outMsg.writeInt16(0x0085);
-    outMsg.writeString(temp, 3);
+    // Only send a new message to the server when destination changes
+    if (x != destX || y != destY)
+    {
+        destX = x;
+        destY = y;
+
+        char temp[3];
+        MessageOut outMsg(mNetwork);
+        set_coordinates(temp, x, y, mDirection);
+        outMsg.writeInt16(0x0085);
+        outMsg.writeString(temp, 3);
+    }
 
     mPickUpTarget = NULL;
-
     Being::setDestination(x, y);
 }
 

@@ -64,13 +64,3 @@ Action::setAnimation(int direction, Animation *animation)
 
     mAnimations[direction] = animation;
 }
-
-void
-Action::reset()
-{
-    for (AnimationIterator i = mAnimations.begin();
-         i != mAnimations.end(); ++i)
-    {
-        i->second->reset();
-    }
-}

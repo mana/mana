@@ -2,6 +2,14 @@
 
 	* src/gui/setup_joystick.cpp: Fixed joystick option to show enabled
 	when the joystick is enabled.
+	*  src/localplayer.cpp, src/game.cpp, src/action.h, src/action.cpp,
+	src/player.cpp, src/animatedsprite.h, src/being.cpp, src/animation.h,
+	src/monster.cpp, src/CMakeLists.txt, src/player.h,
+	src/animatedsprite.cpp, src/localplayer.h, src/animation.cpp,
+	src/Makefile.am, src/being.h, src/resources/resourcemanager.cpp,
+	src/resources/spritedef.cpp, src/resources/resourcemanager.h,
+	src/resources/spriteset.h, src/resources/spritedef.cpp: Separated
+	sprite definition from playback.
 
 2006-11-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

@@ -32,7 +32,9 @@ class Image;
 
 
 /**
- * Stores a complete set of sprites.
+ * Stores a set of subimages originating from a single image.
+ *
+ * TODO: Should probably be renamed to ImageSet or TileSet.
  */
 class Spriteset : public Resource
 {
@@ -40,7 +42,7 @@ class Spriteset : public Resource
         /*
          * Cuts the passed image in a grid of sub images.
          */
-        Spriteset(const std::string& idPath, Image *img, int w, int h);
+        Spriteset(const std::string &idPath, Image *img, int w, int h);
 
         /**
          * Destructor.

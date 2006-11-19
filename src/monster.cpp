@@ -32,7 +32,8 @@
 Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/monster" + toString(job - 1002) + ".xml", 0);
+    mSprites[BASE_SPRITE] = new AnimatedSprite(
+            "graphics/sprites/monster" + toString(job - 1002) + ".xml", 0);
 }
 
 void

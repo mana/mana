@@ -28,9 +28,6 @@
 
 #include <libxml/tree.h>
 
-class Image;
-
-struct AnimationPhase;
 class Animation;
 
 /**
@@ -51,12 +48,6 @@ class Action
 
         void
         setAnimation(int direction, Animation *animation);
-
-        /**
-         * Resets all animations associated with this action.
-         */
-        void
-        reset();
 
         Animation*
         getAnimation(int direction) const;

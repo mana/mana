@@ -60,14 +60,6 @@ class Player : public Being
 
         virtual void
         setWeapon(Uint16 weapon);
-
-    private:
-        /**
-         * Resets all animations associated with this player. This is used to
-         * synchronize the animations after a new one has been added.
-         */
-        void
-        resetAnimations();
 };
 
 #endif

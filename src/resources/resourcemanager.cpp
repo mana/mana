@@ -32,6 +32,7 @@
 #include "music.h"
 #include "soundeffect.h"
 #include "spriteset.h"
+#include "spritedef.h"
 
 #include "../log.h"
 
@@ -44,11 +45,28 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // Release any remaining spritesets first because they depend on images
+    // Release any remaining spritedefs first because they depend on spritesets
     ResourceIterator iter = mResources.begin();
     while (iter != mResources.end())
     {
-        if (dynamic_cast<Spriteset*>(iter->second) != NULL)
+        if (dynamic_cast<SpriteDef*>(iter->second) != 0)
+        {
+            cleanUp(iter->second);
+            ResourceIterator toErase = iter;
+            ++iter;
+            mResources.erase(toErase);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+
+    // Release any remaining spritesets first because they depend on images
+    iter = mResources.begin();
+    while (iter != mResources.end())
+    {
+        if (dynamic_cast<Spriteset*>(iter->second) != 0)
         {
             cleanUp(iter->second);
             ResourceIterator toErase = iter;
@@ -80,7 +98,7 @@ ResourceManager::cleanUp(Resource *res)
 bool
 ResourceManager::setWriteDir(const std::string &path)
 {
-    return (bool)PHYSFS_setWriteDir(path.c_str());
+    return (bool) PHYSFS_setWriteDir(path.c_str());
 }
 
 void
@@ -93,7 +111,7 @@ ResourceManager::addToSearchPath(const std::string &path, bool append)
 bool
 ResourceManager::mkdir(const std::string &path)
 {
-    return (bool)PHYSFS_mkdir(path.c_str());
+    return (bool) PHYSFS_mkdir(path.c_str());
 }
 
 bool
@@ -210,6 +228,27 @@ ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
     img->decRef();
 
     return spriteset;
+}
+
+SpriteDef*
+ResourceManager::getSprite(const std::string &path, int variant)
+{
+    std::stringstream ss;
+    ss << path << "[" << variant << "]";
+    const std::string idPath = ss.str();
+
+    ResourceIterator resIter = mResources.find(idPath);
+
+    if (resIter != mResources.end()) {
+        resIter->second->incRef();
+        return dynamic_cast<SpriteDef*>(resIter->second);
+    }
+
+    SpriteDef *sprite = new SpriteDef(idPath, path, variant);
+    sprite->incRef();
+    mResources[idPath] = sprite;
+
+    return sprite;
 }
 
 void

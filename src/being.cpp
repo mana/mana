@@ -193,24 +193,10 @@ Being::setAction(Uint8 action)
                         currentAction = ACTION_ATTACK;
                         break;
                 }
-                for (int i = 0; i < VECTOREND_SPRITE; i++)
-                {
-                    if (mSprites[i])
-                    {
-                        mSprites[i]->reset();
-                    }
-                }
             };
             break;
         case MONSTER_ATTACK:
             currentAction = ACTION_ATTACK;
-            for (int i = 0; i < VECTOREND_SPRITE; i++)
-            {
-                if (mSprites[i])
-                {
-                    mSprites[i]->reset();
-                }
-            }
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
