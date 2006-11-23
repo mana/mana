@@ -1,3 +1,7 @@
+2006-11-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
 2006-11-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/setup_joystick.cpp: Fixed joystick option to show enabled
