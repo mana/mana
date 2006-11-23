@@ -72,6 +72,7 @@
 #include "net/network.h"
 
 #include "resources/image.h"
+#include "resources/itemdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
 
@@ -303,6 +304,9 @@ void init_engine(const Options &options)
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
+
+    // Initialize item database
+    ItemDB::load();
 }
 
 /** Clear the engine */
@@ -327,6 +331,8 @@ void exit_engine()
 
     ResourceManager::deleteInstance();
     delete logger;
+
+    ItemDB::unload();
 }
 
 void printHelp()

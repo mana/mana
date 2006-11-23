@@ -44,7 +44,6 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
-#include "resources/itemmanager.h"
 #include "resources/mapreader.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
@@ -56,8 +55,6 @@ extern Minimap *minimap;
 
 char itemCurrenyQ[10] = "0";
 int camera_x, camera_y;
-
-ItemManager *itemDb;          /**< Item database object */
 
 Spriteset *emotionset;
 Spriteset *npcset;
@@ -87,9 +84,6 @@ Engine::Engine(Network *network):
 
     if (!npcset) logger->error("Unable to load NPC spriteset!");
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
-
-    // Initialize item manager
-    itemDb = new ItemManager();
 }
 
 Engine::~Engine()
@@ -101,8 +95,6 @@ Engine::~Engine()
     std::for_each(weaponset.begin(), weaponset.end(),
             std::mem_fun(&Spriteset::decRef));
     weaponset.clear();
-
-    delete itemDb;
 }
 
 void Engine::changeMap(const std::string &mapPath)

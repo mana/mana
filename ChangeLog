@@ -1,3 +1,12 @@
+2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp, src/floor_item.cpp, src/item.h, src/main.cpp,
+	src/gui/buy.cpp, src/gui/popupmenu.cpp, src/gui/sell.cpp, src/gui/shop.cpp,
+	src/net/inventoryhandler.cpp, src/resources/itemdb.cpp,
+	src/resources/itemdb.h, src/resources/iteminfo.h,
+	src/resources/itemmanager.cpp, src/resources/itemmanager.h:
+	Refectored the Itemmanager class to an ItemDB namespace.
+
 2006-11-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
