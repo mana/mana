@@ -56,7 +56,7 @@ class Player : public Being
         setHairStyle(Uint16 style);
 
         virtual void
-        setVisibleEquipment(Uint8 slot, Uint8 id);
+        setVisibleEquipment(Uint8 slot, int id);
 
         virtual void
         setWeapon(Uint16 weapon);

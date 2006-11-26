@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,36 +18,35 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: itemdb.h 2650 2006-09-03 15:00:47Z b_lindeijer $
+ *  $Id:
  */
 
-#ifndef _TMW_ITEM_MANAGER_H
-#define _TMW_ITEM_MANAGER_H
-
-#include "iteminfo.h"
+#ifndef _TMW_EQUIPMENT_DB_H
+#define _TMW_EQUIPMENT_DB_H
 
 #include <map>
 
-/**
- * The namespace that holds the item information
- */
-namespace ItemDB
+#include "equipmentinfo.h"
+
+namespace EquipmentDB
 {
     /**
-     * Loads the item data from Items.xml
+     * Loads the equipment info from Items.xml
      */
     void load();
 
     /**
-     * Frees item data
+     * Frees equipment data
      */
     void unload();
 
-    const ItemInfo& get(int id);
+    void setEquipment(int id, EquipmentInfo* equipmentInfo);
 
-    // Items database
-    typedef std::map<int, ItemInfo*> ItemInfos;
-    typedef ItemInfos::iterator ItemInfoIterator;
+    EquipmentInfo* get(int id);
+
+    // Equipment database types
+    typedef std::map<int, EquipmentInfo*> EquipmentInfos;
+    typedef EquipmentInfos::iterator EquipmentInfoIterator;
 }
 
 #endif

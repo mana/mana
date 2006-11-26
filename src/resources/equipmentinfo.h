@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,36 +18,35 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: itemdb.h 2650 2006-09-03 15:00:47Z b_lindeijer $
+ *  $Id:
  */
 
-#ifndef _TMW_ITEM_MANAGER_H
-#define _TMW_ITEM_MANAGER_H
+#ifndef _TMW_EQUIPMENTINFO_H_
+#define _TMW_EQUIPMENTINFO_H_
 
-#include "iteminfo.h"
-
+#include <string>
 #include <map>
 
-/**
- * The namespace that holds the item information
- */
-namespace ItemDB
+class EquipmentInfo
 {
-    /**
-     * Loads the item data from Items.xml
-     */
-    void load();
+    public:
+        EquipmentInfo():
+            mSlot (0)
+        {
+        };
 
-    /**
-     * Frees item data
-     */
-    void unload();
+        void
+        setSlot (int slot) { mSlot = slot; };
 
-    const ItemInfo& get(int id);
+        std::string
+        getSprite(int gender) {return animationFiles[gender]; };
 
-    // Items database
-    typedef std::map<int, ItemInfo*> ItemInfos;
-    typedef ItemInfos::iterator ItemInfoIterator;
-}
+        void
+        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; };
+
+    private:
+        int mSlot;   //not used at the moment but maybe useful on our own server
+        std::map<int, std::string> animationFiles;
+};
 
 #endif

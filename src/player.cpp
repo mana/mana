@@ -27,6 +27,8 @@
 #include "game.h"
 #include "graphics.h"
 
+#include "resources/equipmentdb.h"
+
 #include "utils/tostring.h"
 
 #include "gui/gui.h"
@@ -87,6 +89,7 @@ Player::setSex(Uint8 sex)
 {
     if (sex != mSex)
     {
+        //reload base sprite
         delete mSprites[BASE_SPRITE];
         if (sex == 0)
         {
@@ -98,7 +101,20 @@ Player::setSex(Uint8 sex)
             mSprites[BASE_SPRITE] = new AnimatedSprite(
                     "graphics/sprites/player_female_base.xml", 0);
         }
+
+        //reload equipment
+        for (int i=1; i<VECTOREND_SPRITE ; i++)
+        {
+            if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
+            {
+                delete mSprites[i];
+                mSprites[i] = new AnimatedSprite(
+                        "graphics/sprites/" + EquipmentDB::get(mEquipmentSpriteIDs.at(i))->getSprite(sex),
+                        0);
+            }
+        }
     }
+
     Being::setSex(sex);
 }
 
@@ -170,7 +186,7 @@ Player::setHairStyle(Uint16 style)
 }
 
 void
-Player::setVisibleEquipment(Uint8 slot, Uint8 id)
+Player::setVisibleEquipment(Uint8 slot, int id)
 {
     // Translate eAthena specific slot
     Uint8 position = 0;
@@ -194,11 +210,20 @@ Player::setVisibleEquipment(Uint8 slot, Uint8 id)
     }
     else
     {
-        char stringId[4];
-        sprintf(stringId, "%03i", id);
+        AnimatedSprite *equipmentSprite;
 
-        AnimatedSprite *equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/item" + toString(stringId) + ".xml", 0);
+        if (mSex == 0)
+        {
+            equipmentSprite = new AnimatedSprite(
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0),
+                0);
+        }
+        else {
+            equipmentSprite = new AnimatedSprite(
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1),
+                0);
+        }
+
         equipmentSprite->setDirection(getSpriteDirection());
 
         delete mSprites[position];

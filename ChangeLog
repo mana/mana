@@ -1,4 +1,23 @@
-2006-11-05  Philipp Sehmisch  <tmw@crushnet.org>
+2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+    * src/being.cpp, src/being.h, src/engine.cpp, src/main.cpp, src/player.cpp,
+    src/player.h, src/resources/equipmentdb.h, src/resources/equipmentdb.cpp,
+    src/resources/equipmentinfo.h, src/resources/itemdb.cpp,
+    src/resources/itemdb.h, data/graphics/images/error.png,
+    data/graphics/sprites/error.xml:
+    Added the EquipmentDB namespace that reads the equipment.xml, maps
+    equipment IDs to sprite definition files and thus allows gender specific
+    equipment sprites.
+    * data/graphics/sprites/chest-leather-female.png,
+    data/graphics/sprites/chest-leather-male.png,
+    data/graphics/sprites/chest-leather-female.xml,
+    data/graphics/sprites/chest-leather-male.xml,
+    data/equipment.xml:
+    Added and defined male and female leather shirt as proof of concept of the
+    gender specific equipment.
+    * data/graphics/tiles/desert_x2.png: Added new cactus by Yosuhara.
+
+2006-11-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/engine.cpp, src/floor_item.cpp, src/item.h, src/main.cpp,
 	src/gui/buy.cpp, src/gui/popupmenu.cpp, src/gui/sell.cpp, src/gui/shop.cpp,

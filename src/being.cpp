@@ -62,7 +62,8 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),
-    mSprites(VECTOREND_SPRITE, NULL)
+    mSprites(VECTOREND_SPRITE, NULL),
+    mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
 {
     setMap(map);
 }
@@ -122,8 +123,9 @@ Being::setHairStyle(Uint16 style)
 }
 
 void
-Being::setVisibleEquipment(Uint8 slot, Uint8 id)
+Being::setVisibleEquipment(Uint8 slot, int id)
 {
+    mEquipmentSpriteIDs[slot] = id;
 }
 
 void

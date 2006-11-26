@@ -189,7 +189,7 @@ class Being : public Sprite
          * Sets visible equipments for this being.
          */
         virtual void
-        setVisibleEquipment(Uint8 slot, Uint8 id);
+        setVisibleEquipment(Uint8 slot, int id);
 
         /**
          * Sets the sex for this being.
@@ -333,7 +333,6 @@ class Being : public Sprite
         getYOffset() const { return getOffset(UP, DOWN); }
 
         std::auto_ptr<Equipment> mEquipment;
-        int mVisibleEquipment[6];       /**< Visible equipments */
 
     protected:
         /**
@@ -372,6 +371,7 @@ class Being : public Sprite
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
+        std::vector<int> mEquipmentSpriteIDs;
 };
 
 #endif

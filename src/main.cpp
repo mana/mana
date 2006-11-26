@@ -71,6 +71,7 @@
 #include "net/messageout.h"
 #include "net/network.h"
 
+#include "resources/equipmentdb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/resourcemanager.h"
@@ -305,7 +306,8 @@ void init_engine(const Options &options)
         logger->log("Warning: %s", err);
     }
 
-    // Initialize item database
+    // Load XML databases
+    EquipmentDB::load();
     ItemDB::load();
 }
 
@@ -332,6 +334,8 @@ void exit_engine()
     ResourceManager::deleteInstance();
     delete logger;
 
+    // Unload XML databases
+    EquipmentDB::unload();
     ItemDB::unload();
 }
 
