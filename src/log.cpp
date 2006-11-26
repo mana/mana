@@ -30,6 +30,7 @@
 #include <cstdarg>
 #include <iostream>
 #include <sstream>
+#include <sys/time.h>
 
 
 Logger::~Logger()
@@ -60,7 +61,6 @@ void Logger::log(const char *log_text, ...)
 
     char* buf = new char[1024];
     va_list ap;
-    time_t t;
 
     // Use a temporary buffer to fill in the variables
     va_start(ap, log_text);
@@ -68,19 +68,23 @@ void Logger::log(const char *log_text, ...)
     va_end(ap);
 
     // Get the current system time
-    time(&t);
+    timeval tv;
+    gettimeofday(&tv, NULL);
 
     // Print the log entry
     std::stringstream timeStr;
     timeStr << "["
-        << ((((t / 60) / 60) % 24 < 10) ? "0" : "")
-        << (int)(((t / 60) / 60) % 24)
+        << ((((tv.tv_sec / 60) / 60) % 24 < 10) ? "0" : "")
+        << (int)(((tv.tv_sec / 60) / 60) % 24)
         << ":"
-        << (((t / 60) % 60 < 10) ? "0" : "")
-        << (int)((t / 60) % 60)
+        << (((tv.tv_sec / 60) % 60 < 10) ? "0" : "")
+        << (int)((tv.tv_sec / 60) % 60)
         << ":"
-        << ((t % 60 < 10) ? "0" : "")
-        << (int)(t % 60)
+        << ((tv.tv_sec % 60 < 10) ? "0" : "")
+        << (int)(tv.tv_sec % 60)
+        << "."
+        << (((tv.tv_usec / 10000) % 100) < 10 ? "0" : "")
+        << (int)((tv.tv_usec / 10000) % 100)
         << "] ";
 
     mLogFile << timeStr.str() << buf << std::endl;

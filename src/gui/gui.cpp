@@ -93,6 +93,7 @@ Gui::Gui(Graphics *graphics):
     mPlayerFollowMouse(false),
     mWalkTime(0)
 {
+    logger->log("Initializing GUI...");
     // Set graphics
     setGraphics(graphics);
 

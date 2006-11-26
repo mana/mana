@@ -41,6 +41,7 @@ ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
 {
+    logger->log("Initializing resource manager...");
 }
 
 ResourceManager::~ResourceManager()

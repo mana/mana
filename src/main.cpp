@@ -137,17 +137,6 @@ struct Options
  */
 void init_engine(const Options &options)
 {
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-        std::cerr << "Could not initialize SDL: " <<
-            SDL_GetError() << std::endl;
-        exit(1);
-    }
-    atexit(SDL_Quit);
-
-    SDL_EnableUNICODE(1);
-    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-
     std::string homeDir = "";
 #if !(defined __USE_UNIX98 || defined __FreeBSD__)
     // In Windows and other systems we currently store data next to executable.
@@ -168,6 +157,18 @@ void init_engine(const Options &options)
 
     // Set log file
     logger->setLogFile(homeDir + std::string("/tmw.log"));
+
+    // Initialize SDL
+    logger->log("Initializing SDL...");
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
+        std::cerr << "Could not initialize SDL: " <<
+            SDL_GetError() << std::endl;
+        exit(1);
+    }
+    atexit(SDL_Quit);
+
+    SDL_EnableUNICODE(1);
+    SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -195,6 +196,7 @@ void init_engine(const Options &options)
     resman->addToSearchPath(TMW_DATADIR "data", true);
 
     // Fill configuration with defaults
+    logger->log("Initializing configuration...");
     config.setValue("host", "animesites.de");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);

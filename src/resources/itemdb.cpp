@@ -31,13 +31,8 @@
 #include "../log.h"
 
 #include "../utils/dtor.h"
+#include "../utils/xml.h"
 
-#define READ_PROP(node, prop, name, target, cast) \
-        prop = xmlGetProp(node, BAD_CAST name); \
-        if (prop) { \
-            target = cast((const char*)prop); \
-            xmlFree(prop); \
-        }
 namespace
 {
     ItemDB::ItemInfos mItemInfos;
@@ -47,6 +42,7 @@ namespace
 
 void ItemDB::load()
 {
+    logger->log("Initializing item database...");
     mUnknown.setName("Unknown item");
 
     ResourceManager *resman = ResourceManager::getInstance();
@@ -54,7 +50,7 @@ void ItemDB::load()
     char *data = (char*)resman->loadFile("items.xml", size);
 
     if (!data) {
-        logger->error("Item Manager: Could not find items.xml!");
+        logger->error("ItemDB: Could not find items.xml!");
     }
 
     xmlDocPtr doc = xmlParseMemory(data, size);
@@ -62,35 +58,31 @@ void ItemDB::load()
 
     if (!doc)
     {
-        logger->error("Item Manager: Error while parsing item database (items.xml)!");
+        logger->error("ItemDB: Error while parsing item database (items.xml)!");
     }
 
     xmlNodePtr node = xmlDocGetRootElement(doc);
     if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
     {
-        logger->error("Item Manager: items.xml is not a valid database file!");
+        logger->error("ItemDB: items.xml is not a valid database file!");
     }
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
-        int id = 0, art = 0, type = 0, weight = 0, slot = 0;
-        std::string name = "", description = "", effect = "", image = "";
-
         if (!xmlStrEqual(node->name, BAD_CAST "item")) {
             continue;
         }
 
-        xmlChar *prop = NULL;
-        READ_PROP(node, prop, "id", id, atoi);
-        READ_PROP(node, prop, "image", image, );
-        READ_PROP(node, prop, "art", art, atoi);
-        READ_PROP(node, prop, "name", name, );
-        READ_PROP(node, prop, "description", description, );
-        READ_PROP(node, prop, "effect", effect, );
-        READ_PROP(node, prop, "type", type, atoi);
-        READ_PROP(node, prop, "weight", weight, atoi);
-        READ_PROP(node, prop, "slot", slot, atoi);
+        int id = XML::getProperty(node, "id", 0);
+        int art = XML::getProperty(node, "art", 0);
+        int type = XML::getProperty(node, "type", 0);
+        int weight = XML::getProperty(node, "weight", 0);
+        int slot = XML::getProperty(node, "slot", 0);
 
+        std::string name = XML::getProperty(node, "name", "");
+        std::string image = XML::getProperty(node, "image", "");
+        std::string description = XML::getProperty(node, "description", "");
+        std::string effect = XML::getProperty(node, "effect", "");
 
         if (id && name != "")
         {
@@ -109,53 +101,52 @@ void ItemDB::load()
 
         if (id == 0)
         {
-            logger->log("Item Manager: An item has no ID in items.xml!");
+            logger->log("ItemDB: An item has no ID in items.xml!");
         }
         if (name == "")
         {
-            logger->log("Item Manager: An item has no name in items.xml!");
+            logger->log("ItemDB: Missing name for item %d!", id);
         }
 
         if (image == "")
         {
-            logger->log("Item Manager: Missing image parameter for item: %i. %s",
+            logger->log("ItemDB: Missing image parameter for item: %i. %s",
                     id, name.c_str());
         }
-        /*if (art == 0)
+        /*
+        if (art == 0)
         {
             logger->log("Item Manager: Missing art parameter for item: %i. %s",
                     id, name.c_str());
-        }*/
+        }
         if (description == "")
         {
-            logger->log("Item Manager: Missing description parameter for item: %i. %s",
+            logger->log("ItemDB: Missing description parameter for item: %i. %s",
                     id, name.c_str());
         }
         if (effect == "")
         {
-            logger->log("Item Manager: Missing effect parameter for item: %i. %s",
+            logger->log("ItemDB: Missing effect parameter for item: %i. %s",
                     id, name.c_str());
         }
-        /*if (type == 0)
+        if (type == 0)
         {
             logger->log("Item Manager: Missing type parameter for item: %i. %s",
                     id, name.c_str());
-        }*/
+        }
+        */
         if (weight == 0)
         {
             logger->log("Item Manager: Missing weight parameter for item: %i. %s",
                     id, name.c_str());
         }
+        /*
         if (slot == 0)
         {
             logger->log("Item Manager: Missing slot parameter for item: %i. %s",
                     id, name.c_str());
         }
-
-        /*logger->log("Item: %i %i %i %s %s %i %i %i", id,
-          getImage(id), getArt(id), getName(id).c_str(),
-          getDescription(id).c_str(), getType(id), getWeight(id),
-          getSlot(id));*/
+        */
     }
 
     xmlFreeDoc(doc);

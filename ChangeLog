@@ -1,4 +1,15 @@
-﻿2006-11-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+﻿2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/log.cpp: Higher precision log timestamps.
+	* src/graphics.cpp, src/gui/gui.cpp, src/openglgraphics.cpp,
+	src/main.cpp, src/resources/equipmentdb.cpp,
+	src/resources/resourcemanager.cpp: Added some additional log
+	statements.
+	* src/resources/itemdb.cpp: Removed usage of READ_PROP in favour of
+	XML::getProperty and updated log statements.
+	* src/resources/image.cpp: Added support for loading TGA images.
+
+2006-11-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/resources/resourcemanager.cpp: Remove unnecessary check for
 	file existance, loading will just fail with the correct error message.
