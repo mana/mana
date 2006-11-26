@@ -161,14 +161,17 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/tradehandler.h \
 	      resources/ambientoverlay.cpp \
 	      resources/ambientoverlay.h \
+	      resources/equipmentdb.cpp \
+	      resources/equipmentdb.h \
+	      resources/equipmentinfo.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
+	      resources/itemdb.cpp \
+	      resources/itemdb.h \
 	      resources/iteminfo.h \
 	      resources/iteminfo.cpp \
-	      resources/itemmanager.cpp \
-	      resources/itemmanager.h \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
 	      resources/music.h \

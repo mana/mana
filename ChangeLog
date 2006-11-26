@@ -1,4 +1,4 @@
-2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
 
     * src/being.cpp, src/being.h, src/engine.cpp, src/main.cpp, src/player.cpp,
     src/player.h, src/resources/equipmentdb.h, src/resources/equipmentdb.cpp,
@@ -15,7 +15,10 @@
     data/equipment.xml:
     Added and defined male and female leather shirt as proof of concept of the
     gender specific equipment.
-    * data/graphics/tiles/desert_x2.png: Added new cactus by Yosuhara.
+    * data/graphics/images/Makefile.am, data/graphics/sprites/Makefile.am,
+    data/Makefile.am, src/Makefile.am, data/graphics/images/CMakeLists.txt,
+    data/graphics/sprites/CMakeLists.txt, data/CMakeLists.txt, src/CMakeLists.txt:
+    Updated Makefiles and CMake Lists.
 
 2006-11-24  Philipp Sehmisch  <tmw@crushnet.org>
 

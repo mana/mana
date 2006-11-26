@@ -1,6 +1,7 @@
 ADD_SUBDIRECTORY(ambient)
 
 SET (FILES
+	error.png
     login_wallpaper.png
     minimap_new_1-1.png
     minimap_new_2-1.png
