@@ -36,7 +36,8 @@ NPC *current_npc = 0;
 NPC::NPC(Uint32 id, Uint16 job, Map *map, Network *network):
     Being(id, job, map), mNetwork(network)
 {
-    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml", job-100);
+    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml",
+            job - 100);
 }
 
 Being::Type

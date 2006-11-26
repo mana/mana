@@ -1,33 +1,45 @@
-﻿2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-    * src/being.cpp, src/being.h, src/engine.cpp, src/main.cpp, src/player.cpp,
-    src/player.h, src/resources/equipmentdb.h, src/resources/equipmentdb.cpp,
-    src/resources/equipmentinfo.h, src/resources/itemdb.cpp,
-    src/resources/itemdb.h, data/graphics/images/error.png,
-    data/graphics/sprites/error.xml:
-    Added the EquipmentDB namespace that reads the equipment.xml, maps
-    equipment IDs to sprite definition files and thus allows gender specific
-    equipment sprites.
-    * data/graphics/sprites/chest-leather-female.png,
-    data/graphics/sprites/chest-leather-male.png,
-    data/graphics/sprites/chest-leather-female.xml,
-    data/graphics/sprites/chest-leather-male.xml,
-    data/equipment.xml:
-    Added and defined male and female leather shirt as proof of concept of the
-    gender specific equipment.
-    * data/graphics/images/Makefile.am, data/graphics/sprites/Makefile.am,
-    data/Makefile.am, src/Makefile.am, data/graphics/images/CMakeLists.txt,
-    data/graphics/sprites/CMakeLists.txt, data/CMakeLists.txt, src/CMakeLists.txt:
-    Updated Makefiles and CMake Lists.
+	* src/game.cpp, src/being.cpp, src/net/beinghandler.cpp, src/being.h:
+	Made Being::mDirection protected, forcing the use of setDirection.
+	* src/npc.cpp, src/player.cpp, src/animatedsprite.h, src/monster.cpp,
+	src/resources/resourcemanager.h: Defaulted variant argument to 0 since
+	this is the most common situation.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h: Some
+	refactoring, splitting up the loading into several methods, in
+	preparation of adding support for including other sprites.
+
+2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/engine.cpp, src/main.cpp,
+	src/player.cpp, src/player.h, src/resources/equipmentdb.h,
+	src/resources/equipmentdb.cpp, src/resources/equipmentinfo.h,
+	src/resources/itemdb.cpp, src/resources/itemdb.h,
+	data/graphics/images/error.png, data/graphics/sprites/error.xml:
+	Added the EquipmentDB namespace that reads the equipment.xml, maps
+	equipment IDs to sprite definition files and thus allows gender
+	specific equipment sprites.
+	* data/graphics/sprites/chest-leather-female.png,
+	data/graphics/sprites/chest-leather-male.png,
+	data/graphics/sprites/chest-leather-female.xml,
+	data/graphics/sprites/chest-leather-male.xml,
+	data/equipment.xml: Added and defined male and female leather shirt as
+	proof of concept of the gender specific equipment.
+	* data/graphics/images/Makefile.am, data/graphics/sprites/Makefile.am,
+	data/Makefile.am, src/Makefile.am,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/CMakeLists.txt,
+	src/CMakeLists.txt: Updated Makefiles and CMake Lists.
 
 2006-11-24  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/engine.cpp, src/floor_item.cpp, src/item.h, src/main.cpp,
-	src/gui/buy.cpp, src/gui/popupmenu.cpp, src/gui/sell.cpp, src/gui/shop.cpp,
-	src/net/inventoryhandler.cpp, src/resources/itemdb.cpp,
-	src/resources/itemdb.h, src/resources/iteminfo.h,
-	src/resources/itemmanager.cpp, src/resources/itemmanager.h:
-	Refectored the Itemmanager class to an ItemDB namespace.
+	src/gui/buy.cpp, src/gui/popupmenu.cpp, src/gui/sell.cpp,
+	src/gui/shop.cpp, src/net/inventoryhandler.cpp,
+	src/resources/itemdb.cpp, src/resources/itemdb.h,
+	src/resources/iteminfo.h, src/resources/itemmanager.cpp,
+	src/resources/itemmanager.h: Refectored the Itemmanager class to an
+	ItemDB namespace.
 
 2006-11-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

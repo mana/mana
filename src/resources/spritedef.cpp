@@ -85,133 +85,30 @@ SpriteDef::load(const std::string &animationFile, int variant)
 
     // Get the variant
     int variant_num = XML::getProperty(node, "variants", 0);
-    int variant_offset = XML::getProperty(node, "variant_offset", 0);
+    int variant_offset = 0;
 
-    if (variant_num > 0 && variant < variant_num ) {
-        variant_offset *= variant;
-    } else {
-        variant_offset = 0;
+    if (variant_num > 0 && variant < variant_num)
+    {
+        variant_offset = variant * XML::getProperty(node, "variant_offset", 0);
     }
 
     for (node = node->xmlChildrenNode; node != NULL; node = node->next)
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
-            int width = XML::getProperty(node, "width", 0);
-            int height = XML::getProperty(node, "height", 0);
-            std::string name = XML::getProperty(node, "name", "");
-            std::string imageSrc = XML::getProperty(node, "src", "");
-
-            Spriteset *spriteset =
-                resman->getSpriteset(imageSrc, width, height);
-
-            if (!spriteset) {
-                logger->error("Couldn't load spriteset!");
-            }
-
-            mSpritesets[name] = spriteset;
+            loadImageSet(node);
         }
-        // get action
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            std::string actionName = XML::getProperty(node, "name", "");
-            std::string imagesetName = XML::getProperty(node, "imageset", "");
+            loadAction(node, variant_offset);
+        }
+        else if (xmlStrEqual(node->name, BAD_CAST "include"))
+        {
+            includeSprite(node);
+        }
+    }
 
-            SpritesetIterator si = mSpritesets.find(imagesetName);
-            if (si == mSpritesets.end()) {
-                logger->log("Warning: imageset \"%s\" not defined in %s",
-                            imagesetName.c_str(),
-                            animationFile.c_str());
-
-                // skip loading animations
-                continue;
-            }
-            Spriteset *imageset = si->second;
-
-            SpriteAction actionType = makeSpriteAction(actionName);
-            if (actionType == ACTION_INVALID)
-            {
-                logger->log("Warning: Unknown action \"%s\" defined in %s",
-                    actionName.c_str(),
-                    animationFile.c_str());
-                continue;
-            }
-            Action *action = new Action();
-            mActions[actionType] = action;
-
-            // When first action set it as default direction
-            if (mActions.empty())
-            {
-                mActions[ACTION_DEFAULT] = action;
-            }
-
-
-            // get animations
-            for (xmlNodePtr animationNode = node->xmlChildrenNode;
-                 animationNode != NULL;
-                 animationNode = animationNode->next)
-            {
-                // We're only interested in animations
-                if (!xmlStrEqual(animationNode->name, BAD_CAST "animation"))
-                    continue;
-
-                std::string directionName =
-                    XML::getProperty(animationNode, "direction", "");
-                SpriteDirection directionType =
-                    makeSpriteDirection(directionName);
-
-                if (directionType == DIRECTION_INVALID)
-                {
-                    logger->log("Warning: Unknown direction \"%s\" defined "
-                                "for action %s in %s",
-                        directionName.c_str(),
-                        actionName.c_str(),
-                        animationFile.c_str());
-                    continue;
-                }
-
-                Animation *animation = new Animation();
-                action->setAnimation(directionType, animation);
-
-                // Get animation phases
-                for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
-                        phaseNode != NULL;
-                        phaseNode = phaseNode->next)
-                {
-                    int delay = XML::getProperty(phaseNode, "delay", 0);
-
-                    if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
-                    {
-                        int index = XML::getProperty(phaseNode, "index", -1);
-                        int offsetX = XML::getProperty(phaseNode, "offsetX", 0);
-                        int offsetY = XML::getProperty(phaseNode, "offsetY", 0);
-
-                        offsetY -= imageset->getHeight() - 32;
-                        offsetX -= imageset->getWidth() / 2 - 16;
-                        Image *img = imageset->get(index + variant_offset);
-                        animation->addPhase(img, delay, offsetX, offsetY);
-                    }
-                    else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
-                    {
-                        int start = XML::getProperty(phaseNode, "start", 0);
-                        int end = XML::getProperty(phaseNode, "end", 0);
-                        int offsetY = -imageset->getHeight() + 32;
-                        int offsetX = -imageset->getWidth() / 2 + 16;
-                        while (end >= start)
-                        {
-                            Image *img = imageset->get(start + variant_offset);
-                            animation->addPhase(img, delay, offsetX, offsetY);
-                            start++;
-                        }
-                    }
-                    else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
-                    {
-                        animation->addTerminator();
-                    }
-                } // for phaseNode
-            } // for animationNode
-        } // if "<imageset>" else if "<action>"
-    } // for node
+    xmlFreeDoc(doc);
 
     // Complete missing actions
     substituteAction(ACTION_STAND, ACTION_DEFAULT);
@@ -228,8 +125,162 @@ SpriteDef::load(const std::string &animationFile, int variant)
     substituteAction(ACTION_SLEEP, ACTION_SIT);
     substituteAction(ACTION_HURT, ACTION_STAND);
     substituteAction(ACTION_DEAD, ACTION_HURT);
+}
 
-    xmlFreeDoc(doc);
+void
+SpriteDef::loadImageSet(xmlNodePtr node)
+{
+    int width = XML::getProperty(node, "width", 0);
+    int height = XML::getProperty(node, "height", 0);
+    std::string name = XML::getProperty(node, "name", "");
+    std::string imageSrc = XML::getProperty(node, "src", "");
+
+    ResourceManager *resman = ResourceManager::getInstance();
+    Spriteset *spriteset = resman->getSpriteset(imageSrc, width, height);
+
+    if (!spriteset)
+    {
+        logger->error("Couldn't load imageset!");
+    }
+
+    mSpritesets[name] = spriteset;
+}
+
+void
+SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
+{
+    const std::string actionName = XML::getProperty(node, "name", "");
+    const std::string imagesetName = XML::getProperty(node, "imageset", "");
+
+    SpritesetIterator si = mSpritesets.find(imagesetName);
+    if (si == mSpritesets.end())
+    {
+        logger->log("Warning: imageset \"%s\" not defined in %s",
+                imagesetName.c_str(), getIdPath().c_str());
+        return;
+    }
+    Spriteset *imageset = si->second;
+
+    SpriteAction actionType = makeSpriteAction(actionName);
+    if (actionType == ACTION_INVALID)
+    {
+        logger->log("Warning: Unknown action \"%s\" defined in %s",
+                actionName.c_str(), getIdPath().c_str());
+        return;
+    }
+    Action *action = new Action();
+    mActions[actionType] = action;
+
+    // When first action set it as default direction
+    if (mActions.empty())
+    {
+        mActions[ACTION_DEFAULT] = action;
+    }
+
+    // Load animations
+    for (xmlNodePtr animationNode = node->xmlChildrenNode;
+            animationNode != NULL;
+            animationNode = animationNode->next)
+    {
+        if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
+        {
+            loadAnimation(animationNode, action, imageset, variant_offset);
+        }
+    }
+}
+
+void
+SpriteDef::loadAnimation(xmlNodePtr animationNode,
+                         Action *action, Spriteset *imageset,
+                         int variant_offset)
+{
+    std::string directionName =
+        XML::getProperty(animationNode, "direction", "");
+    SpriteDirection directionType = makeSpriteDirection(directionName);
+
+    if (directionType == DIRECTION_INVALID)
+    {
+        logger->log("Warning: Unknown direction \"%s\" used in %s",
+                directionName.c_str(), getIdPath().c_str());
+        return;
+    }
+
+    Animation *animation = new Animation();
+    action->setAnimation(directionType, animation);
+
+    // Get animation phases
+    for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
+            phaseNode != NULL;
+            phaseNode = phaseNode->next)
+    {
+        int delay = XML::getProperty(phaseNode, "delay", 0);
+        int offsetX = XML::getProperty(phaseNode, "offsetX", 0);
+        int offsetY = XML::getProperty(phaseNode, "offsetY", 0);
+        offsetY -= imageset->getHeight() - 32;
+        offsetX -= imageset->getWidth() / 2 - 16;
+
+        if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
+        {
+            int index = XML::getProperty(phaseNode, "index", -1);
+
+            if (index < 0)
+            {
+                logger->log("No valid value for 'index'");
+                continue;
+            }
+
+            Image *img = imageset->get(index + variant_offset);
+
+            if (!img)
+            {
+                logger->log("No image at index " + (index + variant_offset));
+                continue;
+            }
+
+            animation->addPhase(img, delay, offsetX, offsetY);
+        }
+        else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
+        {
+            int start = XML::getProperty(phaseNode, "start", -1);
+            int end = XML::getProperty(phaseNode, "end", -1);
+
+            if (start < 0 || end < 0)
+            {
+                logger->log("No valid value for 'start' or 'end'");
+                continue;
+            }
+
+            while (end >= start)
+            {
+                Image *img = imageset->get(start + variant_offset);
+
+                if (!img)
+                {
+                    logger->log("No image at index " +
+                            (start + variant_offset));
+                    continue;
+                }
+
+                animation->addPhase(img, delay, offsetX, offsetY);
+                start++;
+            }
+        }
+        else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
+        {
+            animation->addTerminator();
+        }
+    } // for phaseNode
+}
+
+void
+SpriteDef::includeSprite(xmlNodePtr includeNode)
+{
+    std::string filename = XML::getProperty(includeNode, "file", "");
+    ResourceManager *resman = ResourceManager::getInstance();
+    SpriteDef *sprite = resman->getSprite("graphics/sprites/" + filename);
+
+    // TODO: Somehow implement actually including it
+    sprite->decRef();
 }
 
 void
@@ -246,7 +297,8 @@ SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
 
 SpriteDef::~SpriteDef()
 {
-    for (SpritesetIterator i = mSpritesets.begin(); i != mSpritesets.end(); ++i)
+    for (SpritesetIterator i = mSpritesets.begin();
+            i != mSpritesets.end(); ++i)
     {
         i->second->decRef();
     }

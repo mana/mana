@@ -100,7 +100,6 @@ class Being : public Sprite
 
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Tile coordinates */
-        Uint8 mDirection;       /**< Facing direction */
         Uint8 mAction;          /**< Action the being is performing */
         Uint8 mFrame;
         Uint16 mWalkTime;
@@ -294,6 +293,11 @@ class Being : public Sprite
         void setAction(Uint8 action);
 
         /**
+         * Returns the current direction.
+         */
+        Uint8 getDirection() const { return mDirection; }
+
+        /**
          * Sets the current direction.
          */
         void setDirection(Uint8 direction);
@@ -356,6 +360,7 @@ class Being : public Sprite
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
+        Uint8 mDirection;               /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;

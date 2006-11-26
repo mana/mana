@@ -518,13 +518,13 @@ void Game::handleInput()
                         if (!item) {
                             Uint16 x = player_node->mX;
                             Uint16 y = player_node->mY;
-                            if (player_node->mDirection & Being::UP)
+                            if (player_node->getDirection() & Being::UP)
                                 y--;
-                            if (player_node->mDirection & Being::DOWN)
+                            if (player_node->getDirection() & Being::DOWN)
                                 y++;
-                            if (player_node->mDirection & Being::LEFT)
+                            if (player_node->getDirection() & Being::LEFT)
                                 x--;
-                            if (player_node->mDirection & Being::RIGHT)
+                            if (player_node->getDirection() & Being::RIGHT)
                                 x++;
 
                             item = floorItemManager->findByCoordinates(x, y);
@@ -692,13 +692,13 @@ void Game::handleInput()
             {
                 Uint16 targetX = x, targetY = y;
 
-                if (player_node->mDirection & Being::UP)
+                if (player_node->getDirection() & Being::UP)
                     targetY--;
-                if (player_node->mDirection & Being::DOWN)
+                if (player_node->getDirection() & Being::DOWN)
                     targetY++;
-                if (player_node->mDirection & Being::LEFT)
+                if (player_node->getDirection() & Being::LEFT)
                     targetX--;
-                if (player_node->mDirection & Being::RIGHT)
+                if (player_node->getDirection() & Being::RIGHT)
                     targetX++;
 
                 // Attack priorioty is: Monster, Player, auto target

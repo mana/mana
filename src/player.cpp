@@ -94,12 +94,12 @@ Player::setSex(Uint8 sex)
         if (sex == 0)
         {
             mSprites[BASE_SPRITE] = new AnimatedSprite(
-                    "graphics/sprites/player_male_base.xml", 0);
+                    "graphics/sprites/player_male_base.xml");
         }
         else
         {
             mSprites[BASE_SPRITE] = new AnimatedSprite(
-                    "graphics/sprites/player_female_base.xml", 0);
+                    "graphics/sprites/player_female_base.xml");
         }
 
         //reload equipment
@@ -109,8 +109,8 @@ Player::setSex(Uint8 sex)
             {
                 delete mSprites[i];
                 mSprites[i] = new AnimatedSprite(
-                        "graphics/sprites/" + EquipmentDB::get(mEquipmentSpriteIDs.at(i))->getSprite(sex),
-                        0);
+                        "graphics/sprites/" + EquipmentDB::get(
+                            mEquipmentSpriteIDs.at(i))->getSprite(sex));
             }
         }
     }
@@ -130,16 +130,20 @@ Player::setWeapon(Uint16 weapon)
         switch (weapon)
         {
             case 0:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-fist.xml", 0);
+                mSprites[WEAPON_SPRITE] =
+                    new AnimatedSprite("graphics/sprites/weapon-fist.xml");
                 break;
             case 1:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-dagger.xml", 0);
+                mSprites[WEAPON_SPRITE] =
+                    new AnimatedSprite("graphics/sprites/weapon-dagger.xml");
                 break;
             case 2:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-bow.xml", 0);
+                mSprites[WEAPON_SPRITE] =
+                    new AnimatedSprite("graphics/sprites/weapon-bow.xml");
                 break;
             case 3:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-scythe.xml", 0);
+                mSprites[WEAPON_SPRITE] =
+                    new AnimatedSprite("graphics/sprites/weapon-scythe.xml");
                 break;
         }
     }
@@ -215,13 +219,11 @@ Player::setVisibleEquipment(Uint8 slot, int id)
         if (mSex == 0)
         {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0),
-                0);
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0));
         }
         else {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1),
-                0);
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1));
         }
 
         equipmentSprite->setDirection(getSpriteDirection());

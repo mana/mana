@@ -51,7 +51,7 @@ class AnimatedSprite
          * @param filename the file of the sprite to animate
          * @param variant  the sprite variant
          */
-        AnimatedSprite(const std::string& filename, int variant);
+        AnimatedSprite(const std::string& filename, int variant = 0);
 
         /**
          * Destructor.

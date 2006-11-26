@@ -146,7 +146,7 @@ class ResourceManager
          * variant.
          */
         SpriteDef*
-        getSprite(const std::string &path, int variant);
+        getSprite(const std::string &path, int variant = 0);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.

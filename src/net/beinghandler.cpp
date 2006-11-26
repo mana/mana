@@ -138,8 +138,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
             else
             {
-                msg->readCoordinates(dstBeing->mX, dstBeing->mY,
-                        dstBeing->mDirection);
+                Uint8 dir;
+                msg->readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                dstBeing->setDirection(dir);
             }
 
             msg->readInt8();   // unknown
@@ -342,8 +343,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
             else
             {
-                msg->readCoordinates(dstBeing->mX, dstBeing->mY,
-                        dstBeing->mDirection);
+                Uint8 dir;
+                msg->readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                dstBeing->setDirection(dir);
             }
 
             msg->readInt8();   // unknown

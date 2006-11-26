@@ -29,6 +29,8 @@
 #include <map>
 #include <string>
 
+#include <libxml/tree.h>
+
 class Action;
 class Graphics;
 class Spriteset;
@@ -94,6 +96,32 @@ class SpriteDef : public Resource
          */
         void
         load(const std::string &file, int variant);
+
+        /**
+         * Loads an imageset element.
+         */
+        void
+        loadImageSet(xmlNodePtr node);
+
+        /**
+         * Loads an action element.
+         */
+        void
+        loadAction(xmlNodePtr node, int variant_offset);
+
+        /**
+         * Loads an animation element.
+         */
+        void
+        loadAnimation(xmlNodePtr animationNode,
+                      Action *action, Spriteset *imageset,
+                      int variant_offset);
+
+        /**
+         * Include another sprite into this one.
+         */
+        void
+        includeSprite(xmlNodePtr includeNode);
 
         /**
          * When there are no animations defined for the action "complete", its
