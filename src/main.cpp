@@ -331,12 +331,12 @@ void exit_engine()
     // Shutdown sound
     sound.close();
 
-    ResourceManager::deleteInstance();
-    delete logger;
-
     // Unload XML databases
     EquipmentDB::unload();
     ItemDB::unload();
+
+    ResourceManager::deleteInstance();
+    delete logger;
 }
 
 void printHelp()

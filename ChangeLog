@@ -8,6 +8,8 @@
 	* src/resources/spritedef.cpp, src/resources/spritedef.h: Some
 	refactoring, splitting up the loading into several methods, in
 	preparation of adding support for including other sprites.
+	* src/main.cpp: ItemDB needs to be unloaded before deleting the
+	resource manager instance, since ItemInfo refers to an Image.
 
 2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -38,7 +40,7 @@
 	src/gui/shop.cpp, src/net/inventoryhandler.cpp,
 	src/resources/itemdb.cpp, src/resources/itemdb.h,
 	src/resources/iteminfo.h, src/resources/itemmanager.cpp,
-	src/resources/itemmanager.h: Refectored the Itemmanager class to an
+	src/resources/itemmanager.h: Refactored the Itemmanager class to an
 	ItemDB namespace.
 
 2006-11-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
