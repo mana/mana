@@ -1,4 +1,9 @@
-﻿2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-11-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/resourcemanager.cpp: Remove unnecessary check for
+	file existance, loading will just fail with the correct error message.
+
+2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/being.cpp, src/net/beinghandler.cpp, src/being.h:
 	Made Being::mDirection protected, forcing the use of setDirection.

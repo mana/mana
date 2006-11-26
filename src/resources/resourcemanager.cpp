@@ -282,18 +282,13 @@ ResourceManager::deleteInstance()
 void*
 ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
-    // If the file doesn't exist indicate failure
-    if (!PHYSFS_exists(fileName.c_str())) {
-        logger->log("Warning: %s not found!", fileName.c_str());
-        return NULL;
-    }
-
     // Attempt to open the specified file using PhysicsFS
     PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
     if (file == NULL) {
-        logger->log("Warning: %s failed to load!", fileName.c_str());
+        logger->log("Warning: Failed to load %s: %s",
+                fileName.c_str(), PHYSFS_getLastError());
         return NULL;
     }
 
