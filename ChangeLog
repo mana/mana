@@ -1,7 +1,11 @@
+2006-11-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tmw.cbp: Updated Code::Blocks project file.
+
 2006-11-27  Philipp Sehmisch  <tmw@crushnet.org>
 
-    * src/log.cpp, src/util/wingettimeofday.h:
-    Added implementation of gettimeofday() for windows machines.
+	* src/log.cpp, src/util/wingettimeofday.h:
+	Added implementation of gettimeofday() for windows machines.
 
 2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
