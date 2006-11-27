@@ -21,7 +21,7 @@
 
 #include "log.h"
 #ifdef WIN32
-#include <windows.h>
+#include "utils/wingettimeofday.h"
 #endif
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
