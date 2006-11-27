@@ -21,7 +21,9 @@
 
 #include "log.h"
 #ifdef WIN32
-#include "utils/wingettimeofday.h"
+    #include "utils/wingettimeofday.h"
+#else
+    #include <sys/time.h>
 #endif
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
@@ -30,7 +32,6 @@
 #include <cstdarg>
 #include <iostream>
 #include <sstream>
-#include <sys/time.h>
 
 
 Logger::~Logger()
