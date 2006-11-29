@@ -53,7 +53,7 @@ MonsterInfo::addSFX (SoundEvent event, std::string filename)
 
 
 std::string
-MonsterInfo::getSFX (SoundEvent event)
+MonsterInfo::getSound (SoundEvent event)
 {
     std::map<SoundEvent, std::vector<std::string>* >::iterator i = mSounds.find(event);
 
