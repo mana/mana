@@ -35,7 +35,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
     mSprites[BASE_SPRITE] = new AnimatedSprite(
-        "data/graphics/sprites/" + MonsterDB::get(job-1002).getSprite());
+            "graphics/sprites/" + MonsterDB::get(job - 1002).getSprite());
 }
 
 void
