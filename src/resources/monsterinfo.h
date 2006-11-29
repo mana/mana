@@ -52,7 +52,7 @@ class MonsterInfo
         setSprite(std::string filename) { mSprite = filename; }
 
         void
-        addSFX (SoundEvent event, std::string filename);
+        addSound (SoundEvent event, std::string filename);
 
         const std::string&
         getName () const { return mName; };

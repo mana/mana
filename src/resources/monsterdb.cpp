@@ -100,19 +100,19 @@ MonsterDB::load()
 
                 if (event == "hit")
                 {
-                    currentInfo->addSFX(EVENT_HIT, filename);
+                    currentInfo->addSound(EVENT_HIT, filename);
                 }
                 else if (event == "miss")
                 {
-                    currentInfo->addSFX(EVENT_MISS, filename);
+                    currentInfo->addSound(EVENT_MISS, filename);
                 }
                 else if (event == "hurt")
                 {
-                    currentInfo->addSFX(EVENT_HURT, filename);
+                    currentInfo->addSound(EVENT_HURT, filename);
                 }
                 else if (event == "die")
                 {
-                    currentInfo->addSFX(EVENT_DIE, filename);
+                    currentInfo->addSound(EVENT_DIE, filename);
                 }
                 else
                 {

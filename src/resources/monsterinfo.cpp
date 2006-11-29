@@ -41,7 +41,7 @@ MonsterInfo::~MonsterInfo()
 
 
 void
-MonsterInfo::addSFX (SoundEvent event, std::string filename)
+MonsterInfo::addSound (SoundEvent event, std::string filename)
 {
     if (mSounds.find(event) == mSounds.end())
     {
