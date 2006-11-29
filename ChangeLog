@@ -3,7 +3,8 @@
 	* src/resources/equipment.h: Made getSprite return a constant reference
 	* src/resources/monsterdb.cpp, src/resources/monsterdb.h,
 	src/resources/monsterinfo.cpp, src/resources/monsterinfo.h,
-	src/main.cpp: Added the MonsterDB namespace that reads the monsters.xml
+	src/Makefile.AM, src/CMakeLists.txt, src/main.cpp:
+	Added the MonsterDB namespace that reads the monsters.xml
 	and maps monster IDs to names, sprite definitions and sound effects.
 	* src/monster.cpp: Get sprite definition filenames from MonsterDB
 	* src/engine.cpp: Show monster name when targeting a monster

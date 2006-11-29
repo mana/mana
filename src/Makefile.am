@@ -174,6 +174,10 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/iteminfo.cpp \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
+	      resources/monsterdb.h \
+	      resources/monsterdb.cpp \
+	      resources/monsterinfo.h \
+	      resources/monsterinfo.cpp \
 	      resources/music.h \
 	      resources/music.cpp \
 	      resources/openglsdlimageloader.h \
