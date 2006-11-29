@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2006 The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,35 +18,57 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id:
+ *  $Id: monsterinfo.h 2650 2006-09-03 15:00:47Z b_lindeijer $
  */
 
-#ifndef _TMW_EQUIPMENTINFO_H_
-#define _TMW_EQUIPMENTINFO_H_
+#ifndef _TMW_MONSTERINFO_H_
+#define _TMW_MONSTERINFO_H_
 
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
 
-class EquipmentInfo
+
+enum SoundEvent
+{
+    EVENT_HIT,
+    EVENT_MISS,
+    EVENT_HURT,
+    EVENT_DIE
+};
+
+
+class MonsterInfo
 {
     public:
-        EquipmentInfo():
-            mSlot (0)
-        {
-        };
+        MonsterInfo();
+
+        ~MonsterInfo();
 
         void
-        setSlot (int slot) { mSlot = slot; };
+        setName(std::string name) { mName = name; } ;
+
+        void
+        setSprite(std::string filename) { mSprite = filename; }
+
+        void
+        addSFX (SoundEvent event, std::string filename);
 
         const std::string&
-        getSprite(int gender) {return animationFiles[gender]; };
+        getName () const { return mName; };
 
-        void
-        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; };
+        const std::string&
+        getSprite () const { return mSprite; };
+
+        std::string
+        getSFX (SoundEvent event);
 
     private:
-        int mSlot;   //not used at the moment but maybe useful on our own server
-        std::map<int, std::string> animationFiles;
+
+        std::string mName;
+        std::string mSprite;
+
+        std::map<SoundEvent, std::vector<std::string>* > mSounds;
 };
 
 #endif

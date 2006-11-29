@@ -1,3 +1,17 @@
+2006-11-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/equipment.h: Made getSprite return a constant reference
+	* src/resources/monsterdb.cpp, src/resources/monsterdb.h,
+	src/resources/monsterinfo.cpp, src/resources/monsterinfo.h,
+	src/main.cpp: Added the MonsterDB namespace that reads the monsters.xml
+	and maps monster IDs to names, sprite definitions and sound effects.
+	* src/monster.cpp: Get sprite definition filenames from MonsterDB
+	* src/engine.cpp: Show monster name when targeting a monster
+	* data/monsters.xml, data/graphics/sprites/Makefile.AM,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/sprites/monster*:
+	Renamed all monster sprites to more	associative names
+	(whew, we got to train some monkeys for tasks like that)
+
 2006-11-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* tmw.cbp: Updated Code::Blocks project file.

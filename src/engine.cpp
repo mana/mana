@@ -46,6 +46,7 @@
 
 
 #include "resources/mapreader.h"
+#include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
 
@@ -281,10 +282,18 @@ void Engine::draw(Graphics *graphics)
     if ((target = player_node->getTarget()))
     {
         graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 255, 255));
-        int dy = (target->getType() == Being::PLAYER) ? 90 : 52;
+        graphics->setColor(gcn::Color(255, 32, 32));
+        int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
 
-        graphics->drawText("[TARGET]", target->getPixelX() - (int)view_x + 15,
+        std::string mobName = "";
+
+        if (target->mJob >= 1002 )
+        {
+            int mobId = target->mJob - 1002;
+            mobName = MonsterDB::get(mobId).getName();
+        }
+
+        graphics->drawText(mobName, target->getPixelX() - (int)view_x + 15,
                 target->getPixelY() - (int)view_y  - dy, gcn::Graphics::CENTER);
     }
 

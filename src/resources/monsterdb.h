@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2006 The Mana World Development Team
+ *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,32 +21,25 @@
  *  $Id:
  */
 
-#ifndef _TMW_EQUIPMENTINFO_H_
-#define _TMW_EQUIPMENTINFO_H_
+#ifndef _TMW_MONSTER_DB_H
+#define _TMW_MONSTER_DB_H
 
-#include <string>
 #include <map>
 
-class EquipmentInfo
+#include "monsterinfo.h"
+
+namespace MonsterDB
 {
-    public:
-        EquipmentInfo():
-            mSlot (0)
-        {
-        };
+    void
+    load();
 
-        void
-        setSlot (int slot) { mSlot = slot; };
+    void
+    unload();
 
-        const std::string&
-        getSprite(int gender) {return animationFiles[gender]; };
+    const MonsterInfo& get (int id);
 
-        void
-        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; };
-
-    private:
-        int mSlot;   //not used at the moment but maybe useful on our own server
-        std::map<int, std::string> animationFiles;
-};
+    typedef std::map<int, MonsterInfo*> MonsterInfos;
+    typedef MonsterInfos::iterator MonsterInfoIterator;
+}
 
 #endif

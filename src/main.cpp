@@ -74,6 +74,7 @@
 #include "resources/equipmentdb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
+#include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
 
@@ -311,6 +312,7 @@ void init_engine(const Options &options)
     // Load XML databases
     EquipmentDB::load();
     ItemDB::load();
+    MonsterDB::load();
 }
 
 /** Clear the engine */
@@ -336,6 +338,7 @@ void exit_engine()
     // Unload XML databases
     EquipmentDB::unload();
     ItemDB::unload();
+    MonsterDB::unload();
 
     ResourceManager::deleteInstance();
     delete logger;

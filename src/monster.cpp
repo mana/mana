@@ -26,6 +26,8 @@
 #include "animatedsprite.h"
 #include "game.h"
 
+#include "resources/monsterdb.h"
+
 #include "utils/tostring.h"
 
 
@@ -33,7 +35,7 @@ Monster::Monster(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
     mSprites[BASE_SPRITE] = new AnimatedSprite(
-            "graphics/sprites/monster" + toString(job - 1002) + ".xml");
+        "data/graphics/sprites/" + MonsterDB::get(job-1002).getSprite());
 }
 
 void
