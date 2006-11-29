@@ -1,3 +1,7 @@
+2006-11-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
 2006-11-29  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/equipment.h: Made getSprite return a constant reference
