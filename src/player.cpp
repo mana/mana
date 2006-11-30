@@ -89,28 +89,31 @@ Player::setSex(Uint8 sex)
 {
     if (sex != mSex)
     {
-        //reload base sprite
-        delete mSprites[BASE_SPRITE];
+        // Reload base sprite
+        AnimatedSprite *newBaseSprite;
         if (sex == 0)
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite(
+            newBaseSprite = new AnimatedSprite(
                     "graphics/sprites/player_male_base.xml");
         }
         else
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite(
+            newBaseSprite = new AnimatedSprite(
                     "graphics/sprites/player_female_base.xml");
         }
+        delete mSprites[BASE_SPRITE];
+        mSprites[BASE_SPRITE] = newBaseSprite;
 
-        //reload equipment
+        // Reload equipment
         for (int i=1; i<VECTOREND_SPRITE ; i++)
         {
             if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
             {
-                delete mSprites[i];
-                mSprites[i] = new AnimatedSprite(
+                AnimatedSprite *newEqSprite = new AnimatedSprite(
                         "graphics/sprites/" + EquipmentDB::get(
                             mEquipmentSpriteIDs.at(i))->getSprite(sex));
+                delete mSprites[i];
+                mSprites[i] = newEqSprite;
             }
         }
     }
@@ -124,28 +127,30 @@ Player::setWeapon(Uint16 weapon)
 {
     if (weapon != mWeapon)
     {
-        delete mSprites[WEAPON_SPRITE];
-        mSprites[WEAPON_SPRITE] = NULL;
+        AnimatedSprite *newWeaponSprite = NULL;
 
         switch (weapon)
         {
             case 0:
-                mSprites[WEAPON_SPRITE] =
+                newWeaponSprite =
                     new AnimatedSprite("graphics/sprites/weapon-fist.xml");
                 break;
             case 1:
-                mSprites[WEAPON_SPRITE] =
+                newWeaponSprite =
                     new AnimatedSprite("graphics/sprites/weapon-dagger.xml");
                 break;
             case 2:
-                mSprites[WEAPON_SPRITE] =
+                newWeaponSprite =
                     new AnimatedSprite("graphics/sprites/weapon-bow.xml");
                 break;
             case 3:
-                mSprites[WEAPON_SPRITE] =
+                newWeaponSprite =
                     new AnimatedSprite("graphics/sprites/weapon-scythe.xml");
                 break;
         }
+
+        delete mSprites[WEAPON_SPRITE];
+        mSprites[WEAPON_SPRITE] = newWeaponSprite;
     }
     Being::setWeapon(weapon);
 }

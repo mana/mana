@@ -1,21 +1,37 @@
+2006-11-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/Makefile.am: Fixed small trailing slash issue.
+	* src/player.cpp: Optimized setSex and setWeapon by first loading the
+	new sprite and then deleting the old one (prevents potentially
+	unnecessary reload).
+	* src/net/beinghandler.cpp: Optimized handling of player walk
+	messages, by first setting the gender right and then setting the
+	equipment. Gets rid of reload of complete equipment in the case of
+	female.
+
 2006-11-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files.
 
+2006-11-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/monster.cpp: Small fix to resource path.
+
 2006-11-29  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/resources/equipment.h: Made getSprite return a constant reference
+	* src/resources/equipment.h: Made getSprite return a constant
+	reference.
 	* src/resources/monsterdb.cpp, src/resources/monsterdb.h,
 	src/resources/monsterinfo.cpp, src/resources/monsterinfo.h,
 	src/Makefile.AM, src/CMakeLists.txt, src/main.cpp:
 	Added the MonsterDB namespace that reads the monsters.xml
 	and maps monster IDs to names, sprite definitions and sound effects.
-	* src/monster.cpp: Get sprite definition filenames from MonsterDB
-	* src/engine.cpp: Show monster name when targeting a monster
+	* src/monster.cpp: Get sprite definition filenames from MonsterDB.
+	* src/engine.cpp: Show monster name when targeting a monster.
 	* data/monsters.xml, data/graphics/sprites/Makefile.AM,
 	data/graphics/sprites/CMakeLists.txt, data/graphics/sprites/monster*:
-	Renamed all monster sprites to more	associative names
-	(whew, we got to train some monkeys for tasks like that)
+	Renamed all monster sprites to more associative names (whew, we got to
+	train some monkeys for tasks like that).
 
 2006-11-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -23,8 +39,8 @@
 
 2006-11-27  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/log.cpp, src/util/wingettimeofday.h:
-	Added implementation of gettimeofday() for windows machines.
+	* src/log.cpp, src/util/wingettimeofday.h: Added implementation of
+	gettimeofday() for windows machines.
 
 2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

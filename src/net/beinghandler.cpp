@@ -62,6 +62,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 {
     Uint32 id;
     Uint16 job, speed;
+    Uint16 headBottom, headTop, headMid;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -315,15 +316,15 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeaponById(msg->readInt16());  // item id 1
             msg->readInt16();  // item id 2
-            dstBeing->setVisibleEquipment(3, msg->readInt16()); // head bottom
+            headBottom = msg->readInt16();
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
                 msg->readInt32(); // server tick
             }
 
-            dstBeing->setVisibleEquipment(4, msg->readInt16()); // head top
-            dstBeing->setVisibleEquipment(5, msg->readInt16()); // head mid
+            headTop = msg->readInt16();
+            headMid = msg->readInt16();
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -332,6 +333,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setSex(1 - msg->readInt8());   // sex
+            dstBeing->setVisibleEquipment(3, headBottom);
+            dstBeing->setVisibleEquipment(4, headTop);
+            dstBeing->setVisibleEquipment(5, headMid);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {
