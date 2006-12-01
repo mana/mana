@@ -1,6 +1,7 @@
 2006-12-01  Philipp Sehmisch  <tmw@crushnet.org>
 
-    * src/net/beinghandler.cpp, src/being.h, src/being.cpp, src/monster.h:
+    * src/net/beinghandler.cpp, src/being.h, src/being.cpp, src/monster.h,
+    src/gui/gui.cpp:
     Visible equipment slot numbers are now converted by the beinghandler from
     eAthena to our system. No more distinction between monster attacking and
     player attacking between beinghandler and the being classes.

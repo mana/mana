@@ -211,7 +211,7 @@ Gui::logic()
 
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
-    
+
     if ( mPlayerFollowMouse && button & SDL_BUTTON(1) &&
             mWalkTime != player_node -> mWalkTime)
     {
@@ -305,7 +305,7 @@ Gui::mousePress(int mx, int my, int button)
 
                 case Being::MONSTER:
                 case Being::PLAYER:
-                    if (being->mAction == Being::MONSTER_DEAD)
+                    if (being->mAction == Being::DEAD)
                         break;
 
                     player_node->attack(being, true);
