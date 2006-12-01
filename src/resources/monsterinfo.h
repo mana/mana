@@ -61,7 +61,7 @@ class MonsterInfo
         getSprite () const { return mSprite; };
 
         std::string
-        getSound (SoundEvent event);
+        getSound (SoundEvent event) const;
 
     private:
 

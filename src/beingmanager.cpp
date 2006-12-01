@@ -41,7 +41,7 @@ class FindBeingFunctor
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
             return (being->mX == x &&
                     (being->mY == y || being->mY == other_y) &&
-                    being->mAction != Being::MONSTER_DEAD &&
+                    being->mAction != Being::DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
 
@@ -133,7 +133,7 @@ void BeingManager::logic()
 
         being->logic();
 
-        if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
+        if (being->mAction == Being::DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
@@ -174,7 +174,6 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
                 && being->mAction != Being::DEAD        // no dead beings
-                && being->mAction != Being::MONSTER_DEAD
            )
         {
             dist = d;

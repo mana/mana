@@ -191,10 +191,10 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
     tempPlayer->setWeapon(weapon);
     tempPlayer->mLevel = msg->readInt16();
     msg->readInt16();                       // skill point
-    tempPlayer->setVisibleEquipment(3, msg->readInt16()); // head bottom
+    tempPlayer->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt16()); // head bottom
     msg->readInt16();                       // shield
-    tempPlayer->setVisibleEquipment(4, msg->readInt16()); // head option top
-    tempPlayer->setVisibleEquipment(5, msg->readInt16()); // head option mid
+    tempPlayer->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16()); // head option top
+    tempPlayer->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt16()); // head option mid
     tempPlayer->setHairColor(msg->readInt16());
     msg->readInt16();                       // unknown
     tempPlayer->setName(msg->readString(24));

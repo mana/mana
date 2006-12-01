@@ -48,14 +48,16 @@ MonsterInfo::addSound (SoundEvent event, std::string filename)
         mSounds[event] = new std::vector<std::string>;
     }
 
-    mSounds[event]->push_back(filename);
+    mSounds[event]->push_back("sfx/" + filename);
 }
 
 
 std::string
-MonsterInfo::getSound (SoundEvent event)
+MonsterInfo::getSound (SoundEvent event) const
 {
-    std::map<SoundEvent, std::vector<std::string>* >::iterator i = mSounds.find(event);
+    std::map<SoundEvent, std::vector<std::string>* >::const_iterator i;
+
+    i = mSounds.find(event);
 
     if (i == mSounds.end())
     {

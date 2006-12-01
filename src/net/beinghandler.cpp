@@ -107,7 +107,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeapon(msg->readInt16());
-            dstBeing->setVisibleEquipment(3, msg->readInt16()); // head bottom
+            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt16()); // head bottom
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -115,8 +115,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             msg->readInt16();  // shield
-            dstBeing->setVisibleEquipment(4, msg->readInt16()); // head top
-            dstBeing->setVisibleEquipment(5, msg->readInt16()); // head mid
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16()); // head top
+            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt16()); // head mid
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -158,19 +158,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             if (msg->readInt8() == 1)
             {
-                // Death
-                switch (dstBeing->getType())
-                {
-                    case Being::MONSTER:
-                        dstBeing->setAction(Being::MONSTER_DEAD);
-                        dstBeing->mFrame = 0;
-                        dstBeing->mWalkTime = tick_time;
-                        break;
-
-                    default:
-                        dstBeing->setAction(Being::DEAD);
-                        break;
-                }
+                dstBeing->setAction(Being::DEAD);
             }
             else
             {
@@ -204,15 +192,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     if (srcBeing != NULL &&
                             srcBeing != player_node)
                     {
-                        // buggy
-                        if (srcBeing->getType() == Being::MONSTER)
-                        {
-                            srcBeing->setAction(Being::MONSTER_ATTACK);
-                        }
-                        else
-                        {
-                            srcBeing->setAction(Being::ATTACK);
-                        }
+                        srcBeing->setAction(Being::ATTACK);
                         srcBeing->mFrame = 0;
                         srcBeing->mWalkTime = tick_time;
                     }
@@ -272,9 +252,18 @@ void BeingHandler::handleMessage(MessageIn *msg)
                 case 4:
                 case 5:
                     // Equip/unequip head 3. Bottom 4. Top 5. Middle
-                    dstBeing->setVisibleEquipment(type, msg->readInt8());
-                    // First 3 slots  of mVisibleEquipments are reserved for
-                    // later use, probably accessories.
+                    switch (msg->readInt8())
+                    {
+                        case 3:
+                            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt8());
+                            break;
+                        case 4:
+                            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt8());
+                            break;
+                        case 5:
+                            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt8());
+                            break;
+                    }
                     break;
                 case 6:
                     dstBeing->setHairColor(msg->readInt8());
@@ -333,9 +322,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setSex(1 - msg->readInt8());   // sex
-            dstBeing->setVisibleEquipment(3, headBottom);
-            dstBeing->setVisibleEquipment(4, headTop);
-            dstBeing->setVisibleEquipment(5, headMid);
+            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, headBottom);
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
+            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
 
             if (msg->getId() == SMSG_PLAYER_MOVE)
             {

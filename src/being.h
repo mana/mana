@@ -68,14 +68,12 @@ class Being : public Sprite
         };
 
         enum Action {
-            STAND          =  0,
-            WALK           =  1,
-            MONSTER_ATTACK =  5,
-            SIT            =  7,
-            DEAD           =  8,
-            ATTACK         =  9,
-            MONSTER_DEAD   =  9,
-            HIT            = 17
+            STAND,
+            WALK,
+            ATTACK,
+            SIT,
+            DEAD,
+            HURT
         };
 
         enum Sprite {
@@ -290,7 +288,8 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        void setAction(Uint8 action);
+        virtual void
+        setAction(Uint8 action);
 
         /**
          * Returns the current direction.

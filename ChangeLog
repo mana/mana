@@ -1,3 +1,30 @@
+2006-12-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+    * src/net/beinghandler.cpp, src/being.h, src/being.cpp, src/monster.h:
+    Visible equipment slot numbers are now converted by the beinghandler from
+    eAthena to our system. No more distinction between monster attacking and
+    player attacking between beinghandler and the being classes.
+    * src/being.cpp, src/monster.cpp, src/being.h, src/monster.h: Moved the
+    monster specific action handling into the monster class.
+    * monster.cpp, mosterinfo.cpp, monsterinfo.h: Monsters now make sounds when
+    they attack, gett hurt or die.
+    * src/being.cpp: Delayed the damage numbers a bit to synchronize them better
+    with the hurt sounds.
+    * data/monsters.xml, data/sfx//bat-dying1.ogg, data/sfx/bat-hit1.ogg,
+    data/sfx/bow_shoot_1.ogg, data/sfx/fire-goblin-hit1.ogg,
+    data/sfx/fire-goblin-hit2.ogg, data/sfx/fire-goblin-miss1.ogg,
+    data/sfx/fist-swish.ogg, data/sfx/flower-hit1.ogg, data/sfx/flower-hit2.ogg,
+    data/sfx/flower-miss1.ogg, data/sfx/fluffy-hit1.ogg,
+    data/sfx/fluffy-hit2.ogg, data/sfx/fluffy-hit3.ogg,
+    data/sfx/fluffy-hurt1.ogg, data/sfx/fluffy-miss1.ogg,
+    data/sfx/knife-hit1.ogg, data/sfx/knife-miss1.ogg, data/sfx/levelup.ogg,
+    data/sfx/scorpion-hit1.ogg, data/sfx/scorpion-hit2.ogg,
+    data/sfx/scorpion-hit3.ogg, data/sfx/scorpion-hit4.ogg,
+    data/sfx/scorpion-miss1.ogg, data/sfx/short-sword-hit1.ogg,
+    data/sfx/short-sword-miss1.ogg, data/sfx/shroom-hit1.ogg,
+    data/sfx/slime-hit1.ogg, data/sfx/Makefile.AM, data/sfx/CMakeLists.txt:
+    Added a lot of sound effects by Cosmostrator.
+
 2006-11-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/Makefile.am: Fixed small trailing slash issue.

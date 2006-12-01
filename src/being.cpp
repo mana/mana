@@ -166,7 +166,7 @@ Being::setMap(Map *map)
 void
 Being::setAction(Uint8 action)
 {
-    SpriteAction currentAction = ACTION_STAND;
+    SpriteAction currentAction = ACTION_INVALID;
     switch (action)
     {
         case WALK:
@@ -176,49 +176,55 @@ Being::setAction(Uint8 action)
             currentAction = ACTION_SIT;
             break;
         case ATTACK:
-            if (getType() == MONSTER)
+            switch (getWeapon())
             {
-                currentAction = ACTION_DEAD;
+                case 3:
+                    currentAction = ACTION_ATTACK;
+                    break;
+                case 2:
+                    currentAction = ACTION_ATTACK_BOW;
+                    break;
+                case 1:
+                    currentAction = ACTION_ATTACK_STAB;
+                    break;
+                case 0:
+                    currentAction = ACTION_ATTACK;
+                    break;
             }
-            else {
-                switch (getWeapon())
+            for (int i = 0; i < VECTOREND_SPRITE; i++)
+            {
+                if (mSprites[i])
                 {
-                    case 3:
-                        currentAction = ACTION_ATTACK;
-                        break;
-                    case 2:
-                        currentAction = ACTION_ATTACK_BOW;
-                        break;
-                    case 1:
-                        currentAction = ACTION_ATTACK_STAB;
-                        break;
-                    case 0:
-                        currentAction = ACTION_ATTACK;
-                        break;
+                    mSprites[i]->reset();
                 }
-            };
+            }
             break;
-        case MONSTER_ATTACK:
-            currentAction = ACTION_ATTACK;
+        case HURT:
+            //currentAction = ACTION_HURT;  // Buggy: makes the player stop
+                                            // attacking and unable to attack
+                                            // again until he moves
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
             break;
-        default:
+        case STAND:
             currentAction = ACTION_STAND;
             break;
     }
 
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
+    if (currentAction != ACTION_INVALID)
     {
-        if (mSprites[i])
+        for (int i = 0; i < VECTOREND_SPRITE; i++)
         {
-            mSprites[i]->play(currentAction);
+            if (mSprites[i])
+            {
+                mSprites[i]->play(currentAction);
+            }
         }
+        mAction = action;
     }
-
-    mAction = action;
 }
+
 
 void
 Being::setDirection(Uint8 direction)
@@ -366,7 +372,7 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     }
 
     // Draw damage above this being
-    if (mShowDamage)
+    if (mShowDamage && get_elapsed_time(mDamageTime) > 250)
     {
         // Selecting the right color
         if (mDamage == "miss")

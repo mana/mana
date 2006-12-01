@@ -25,6 +25,7 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "sound.h"
 
 #include "resources/monsterdb.h"
 
@@ -45,7 +46,7 @@ Monster::logic()
     {
         mFrame = (get_elapsed_time(mWalkTime) * 4) / mWalkSpeed;
 
-        if (mFrame >= 4 && mAction != MONSTER_DEAD)
+        if (mFrame >= 4 && mAction != DEAD)
         {
             nextStep();
         }
@@ -60,3 +61,36 @@ Monster::getType() const
     return MONSTER;
 }
 
+void
+Monster::setAction(Uint8 action)
+{
+    SpriteAction currentAction = ACTION_INVALID;
+
+    switch (action)
+    {
+        case WALK:
+            currentAction = ACTION_WALK;
+            break;
+        case DEAD:
+            currentAction = ACTION_DEAD;
+            sound.playSfx(MonsterDB::get(mJob-1002).getSound(EVENT_DIE).c_str());
+            break;
+        case ATTACK:
+            currentAction = ACTION_ATTACK;
+            sound.playSfx(MonsterDB::get(mJob-1002).getSound(EVENT_HIT).c_str());
+            mSprites[BASE_SPRITE]->reset();
+            break;
+        case STAND:
+            currentAction = ACTION_STAND;
+            break;
+        case HURT:
+            // Not implemented yet
+            break;
+    }
+
+    if (currentAction != ACTION_INVALID)
+    {
+        mSprites[BASE_SPRITE]->play(currentAction);
+        mAction = action;
+    }
+}

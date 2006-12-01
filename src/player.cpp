@@ -197,25 +197,11 @@ Player::setHairStyle(Uint16 style)
 void
 Player::setVisibleEquipment(Uint8 slot, int id)
 {
-    // Translate eAthena specific slot
-    Uint8 position = 0;
-    switch (slot) {
-        case 3:
-            position = BOTTOMCLOTHES_SPRITE;
-            break;
-        case 4:
-            position = HAT_SPRITE;
-            break;
-        case 5:
-            position = TOPCLOTHES_SPRITE;
-            break;
-    }
-
     // id = 0 means unequip
     if (id == 0)
     {
-        delete mSprites[position];
-        mSprites[position] = NULL;
+        delete mSprites[slot];
+        mSprites[slot] = NULL;
     }
     else
     {
@@ -233,8 +219,8 @@ Player::setVisibleEquipment(Uint8 slot, int id)
 
         equipmentSprite->setDirection(getSpriteDirection());
 
-        delete mSprites[position];
-        mSprites[position] = equipmentSprite;
+        delete mSprites[slot];
+        mSprites[slot] = equipmentSprite;
 
         setAction(mAction);
     }

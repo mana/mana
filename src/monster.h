@@ -33,6 +33,8 @@ class Monster : public Being
 
         virtual void logic();
 
+        virtual void setAction(Uint8 action);
+
         virtual Type getType() const;
 };
 
