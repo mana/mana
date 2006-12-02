@@ -1,5 +1,10 @@
 2006-12-01  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/graphics/sprites/chest-leather-female.png: A little correction at the
+	female leather shirt by mangamaniac.
+
+2006-12-01  Philipp Sehmisch  <tmw@crushnet.org>
+
     * src/net/beinghandler.cpp, src/being.h, src/being.cpp, src/monster.h,
     src/gui/gui.cpp:
     Visible equipment slot numbers are now converted by the beinghandler from
