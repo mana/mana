@@ -174,9 +174,9 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 
     free(buffer);
 
-    if (resource) {
+    if (resource)
+    {
         resource->incRef();
-
         mResources[idPath] = resource;
     }
 

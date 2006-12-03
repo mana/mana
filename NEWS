@@ -1,4 +1,6 @@
-0.0.21.2 (...)
+0.0.22 (...)
+- Added support for female-specific equipment graphics
+- Added support for monster sounds
 - Changed to new update host (http://updates.themanaworld.org)
 - Worked around a Guichan exception thrown for mice with many buttons
 - Changed mouse walk to keep following mouse while button is held down

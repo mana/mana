@@ -191,15 +191,15 @@ void Sound::fadeOutMusic(int ms)
     }
 }
 
-void Sound::playSfx(const char *path)
+void Sound::playSfx(const std::string &path)
 {
-    if (!mInstalled) return;
+    if (!mInstalled || path.length() == 0) return;
 
     ResourceManager *resman = ResourceManager::getInstance();
     SoundEffect *sample = resman->getSoundEffect(path);
     if (sample) {
+        logger->log("Sound::playSfx() Playing: %s", path.c_str());
         sample->play(0, 120);
-        logger->log("Sound::playSfx() Playing: %s", path);
     }
 }
 
