@@ -163,7 +163,7 @@ void Engine::draw(Graphics *graphics)
         lastTick = tick_time;
     }
 
-    // calculate viewpoint
+    // Calculate viewpoint
     int midTileX = graphics->getWidth() / 32 / 2;
     int midTileY = graphics->getHeight() / 32 / 2;
 
@@ -174,9 +174,9 @@ void Engine::draw(Graphics *graphics)
     scrollRadius = (int)config.getValue("ScrollRadius", 32);
 
     if (scrollLaziness < 1)
-        scrollLaziness = 1; //avoids division by zero
+        scrollLaziness = 1; // Avoids division by zero
 
-    //apply lazy scrolling
+    // Apply lazy scrolling
     while (lastTick < tick_time)
     {
         if (player_x > view_x + scrollRadius)
@@ -198,7 +198,7 @@ void Engine::draw(Graphics *graphics)
         lastTick++;
     }
 
-    //auto center when player is off screen
+    // Auto center when player is off screen
     if (        player_x - view_x > graphics->getWidth() / 2
             ||  view_x - player_x > graphics->getWidth() / 2
             ||  view_y - player_y > graphics->getHeight() / 2
@@ -224,19 +224,19 @@ void Engine::draw(Graphics *graphics)
         }
     }
 
-    camera_x = int(view_x + 16) / 32;
-    camera_y = int(view_y + 16) / 32;
+    camera_x = (int) (view_x + 16) / 32;
+    camera_y = (int) (view_y + 16) / 32;
 
     // Draw tiles and sprites
     if (mCurrentMap != NULL)
     {
-        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 0);
-        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 1);
-        mCurrentMap->draw(graphics, (int)view_x, (int)view_y, 2);
+        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 0);
+        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 1);
+        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 2);
         mCurrentMap->drawOverlay(   graphics,
                                     view_x,
                                     view_y,
-                                    (int)config.getValue("OverlayDetail", 2)
+                                    (int) config.getValue("OverlayDetail", 2)
                                 );
     }
 
@@ -272,9 +272,9 @@ void Engine::draw(Graphics *graphics)
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
     {
-        (*i)->drawSpeech(graphics, -(int)view_x, -(int)view_y);
-        (*i)->drawName(graphics, -(int)view_x, -(int)view_y);
-        (*i)->drawEmotion(graphics, -(int)view_x, -(int)view_y);
+        (*i)->drawSpeech(graphics, -(int) view_x, -(int) view_y);
+        (*i)->drawName(graphics, -(int) view_x, -(int) view_y);
+        (*i)->drawEmotion(graphics, -(int) view_x, -(int) view_y);
     }
 
     // Draw target marker if needed

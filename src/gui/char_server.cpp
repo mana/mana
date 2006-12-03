@@ -87,8 +87,9 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
         mServerList->setSelected(1);
     }
 
-    mOkButton->requestFocus();
     setLocationRelativeTo(getParent());
+    setVisible(true);
+    mOkButton->requestFocus();
 }
 
 ServerSelectDialog::~ServerSelectDialog()

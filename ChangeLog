@@ -4,6 +4,12 @@
 	src/resources/soundeffect.cpp, src/resources/resourcemanager.cpp:
 	Don't try to play empty strings as sounds, and don't return a
 	SoundEffect instance when Mix_Chunk loading failed.
+	* src/beingmanager.cpp, src/npc.cpp, src/npc.h: Show NPC names.
+	* src/game.cpp, src/gui/char_server.cpp, src/gui/window.cpp,
+	src/gui/login.cpp, src/gui/char_select.cpp, src/gui/ok_dialog.cpp,
+	src/gui/confirm_dialog.cpp, src/gui/ok_dialog.h, src/gui/window.h,
+	src/gui/confirm_dialog.h, src/gui/register.cpp: Windows now default
+	to invisible, since this seems the most common case.
 
 2006-12-02  Philipp Sehmisch  <tmw@crushnet.org>
 

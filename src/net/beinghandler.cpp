@@ -107,7 +107,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setWeapon(msg->readInt16());
-            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt16()); // head bottom
+            dstBeing->setVisibleEquipment(
+                    Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
             if (msg->getId() == SMSG_BEING_MOVE)
             {
@@ -115,8 +116,9 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             msg->readInt16();  // shield
-            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16()); // head top
-            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt16()); // head mid
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16());
+            dstBeing->setVisibleEquipment(
+                    Being::TOPCLOTHES_SPRITE, msg->readInt16());
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -255,13 +257,19 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     switch (msg->readInt8())
                     {
                         case 3:
-                            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt8());
+                            dstBeing->setVisibleEquipment(
+                                    Being::BOTTOMCLOTHES_SPRITE,
+                                    msg->readInt8());
                             break;
                         case 4:
-                            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt8());
+                            dstBeing->setVisibleEquipment(
+                                    Being::HAT_SPRITE,
+                                    msg->readInt8());
                             break;
                         case 5:
-                            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt8());
+                            dstBeing->setVisibleEquipment(
+                                    Being::TOPCLOTHES_SPRITE,
+                                    msg->readInt8());
                             break;
                     }
                     break;
@@ -322,7 +330,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             msg->readInt16();  // manner
             msg->readInt8();   // karma
             dstBeing->setSex(1 - msg->readInt8());   // sex
-            dstBeing->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, headBottom);
+            dstBeing->setVisibleEquipment(
+                    Being::BOTTOMCLOTHES_SPRITE, headBottom);
             dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
             dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
 

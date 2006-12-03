@@ -61,10 +61,11 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
     }
+    setVisible(true);
     yesButton->requestFocus();
 }
 
-void ConfirmDialog::action(const std::string& eventId, gcn::Widget* widget)
+void ConfirmDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;

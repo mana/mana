@@ -112,6 +112,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     add(mRegisterButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
 
     if (mUserField->getText().empty()) {
         mUserField->requestFocus();

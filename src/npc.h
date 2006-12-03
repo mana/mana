@@ -27,13 +27,18 @@
 #include "being.h"
 
 class Network;
+class Graphics;
 
 class NPC : public Being
 {
     public:
         NPC(Uint32 id, Uint16 job, Map *map, Network *network);
 
-        virtual Type getType() const;
+        virtual Type
+        getType() const;
+
+        virtual void
+        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
 
         void talk();
         void nextDialog();

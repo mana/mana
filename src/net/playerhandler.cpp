@@ -46,7 +46,10 @@ OkDialog *deathNotice = NULL;
 namespace {
     struct WeightListener : public gcn::ActionListener
     {
-        void action(const std::string& eventId, gcn::Widget* widget) { weightNotice = NULL; }
+        void action(const std::string &eventId, gcn::Widget *widget)
+        {
+            weightNotice = NULL;
+        }
     } weightListener;
 }
 
@@ -55,8 +58,10 @@ namespace {
  */
 // TODO Move somewhere else
 namespace {
-    struct DeathListener : public gcn::ActionListener {
-        void action(const std::string& eventId, gcn::Widget* widget) {
+    struct DeathListener : public gcn::ActionListener
+    {
+        void action(const std::string &eventId, gcn::Widget *widget)
+        {
             player_node->revive();
             deathNotice = NULL;
         }
@@ -137,10 +142,11 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                                          player_node->mMaxWeight / 2)
                                  {
                                      weightNotice = new OkDialog("Message",
-                                             "You are carrying more then half your "
-                                             "weight. You are unable to regain "
-                                             "health.");
-                                     weightNotice->addActionListener(&weightListener);
+                                             "You are carrying more then half "
+                                             "your weight. You are unable to "
+                                             "regain health.");
+                                     weightNotice->addActionListener(
+                                             &weightListener);
                                  }
                                  player_node->mTotalWeight = value;
                                  break;

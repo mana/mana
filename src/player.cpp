@@ -36,9 +36,6 @@
 Player::Player(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    // Load the weapon sprite.
-    // When there are more different weapons this should be moved to the
-    // setWeapon Method.
     setWeapon(0);
 }
 

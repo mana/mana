@@ -121,8 +121,9 @@ CharSelectDialog::CharSelectDialog(Network *network,
     add(mJobLevelLabel);
     add(mMoneyLabel);
 
-    mSelectButton->requestFocus();
     setLocationRelativeTo(getParent());
+    setVisible(true);
+    mSelectButton->requestFocus();
     updatePlayerInfo();
 }
 
@@ -309,6 +310,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
 }
 
 void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)

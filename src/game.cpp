@@ -43,7 +43,7 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
-#include "gui/chargedialog.h"
+//#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
 #include "gui/equipmentwindow.h"
@@ -107,7 +107,7 @@ SkillDialog *skillDialog;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
-ChargeDialog *chargeDialog;
+//ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
@@ -183,47 +183,23 @@ void createGuiWindows(Network *network)
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    chargeDialog = new ChargeDialog();
+    //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow(network);
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
 
     // Initialize window positions
-    int screenW = graphics->getWidth();
-    int screenH = graphics->getHeight();
+    //chargeDialog->setPosition(
+    //        graphics->getWidth() - 5 - chargeDialog->getWidth(),
+    //        graphics->getHeight() - chargeDialog->getHeight() - 15);
 
-    chargeDialog->setPosition(
-            screenW - 5 - chargeDialog->getWidth(),
-            screenH - chargeDialog->getHeight() - 15);
-
-    /*buddyWindow->setPosition(10,
-      minimap->getHeight() + 30);*/
+    //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
-//    chatWindow->setSticky(true);
-//    miniStatusWindow->setSticky(true);
-//    menuWindow->setSticky(true);
-
     chatWindow->setVisible(true);
     miniStatusWindow->setVisible(true);
-    statusWindow->setVisible(false);
     menuWindow->setVisible(true);
-    buyDialog->setVisible(false);
-    sellDialog->setVisible(false);
-    buySellDialog->setVisible(false);
-    inventoryWindow->setVisible(false);
-    npcTextDialog->setVisible(false);
-    npcListDialog->setVisible(false);
-    skillDialog->setVisible(false);
-    //newSkillWindow->setVisible(false);
-    setupWindow->setVisible(false);
-    equipmentWindow->setVisible(false);
-    chargeDialog->setVisible(false);
-    tradeWindow->setVisible(false);
-    //buddyWindow->setVisible(false);
-    helpWindow->setVisible(false);
-    debugWindow->setVisible(false);
 }
 
 /**
@@ -245,7 +221,7 @@ void destroyGuiWindows()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    delete chargeDialog;
+    //delete chargeDialog;
     //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;

@@ -83,7 +83,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
 
     mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
             mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mMaleButton->setPosition(mFemaleButton->getX() - mMaleButton->getWidth() - 5,
+    mMaleButton->setPosition(
+            mFemaleButton->getX() - mMaleButton->getWidth() - 5,
             mFemaleButton->getY());
 
     mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
@@ -104,6 +105,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
 

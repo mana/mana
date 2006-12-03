@@ -223,10 +223,8 @@ void LocalPlayer::walk(unsigned char dir)
     }
     else if (dir)
     {
-        // Update the player direction to where he wants to walk
-        // Warning: Not communicated to the server yet
-
         // If the being can't move, just change direction
+        // TODO: Communicate this to the server (waiting on tmwserv)
         setDirection(dir);
     }
 }

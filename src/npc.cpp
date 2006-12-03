@@ -24,9 +24,12 @@
 #include "npc.h"
 
 #include "animatedsprite.h"
+#include "graphics.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
+
+#include "gui/gui.h"
 
 class Spriteset;
 extern Spriteset *npcset;
@@ -44,6 +47,17 @@ Being::Type
 NPC::getType() const
 {
     return Being::NPC;
+}
+
+void
+NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    graphics->setFont(speechFont);
+    graphics->setColor(gcn::Color(200, 200, 255));
+    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
 void
