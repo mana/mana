@@ -1,3 +1,14 @@
+2006-12-04  Bjørn Lindeijer  <bjorn@lindeijer>
+
+	* src/game.cpp, src/engine.h, src/gui/windowcontainer.h,
+	src/gui/viewport.cpp, src/gui/gui.cpp, src/gui/gui.h,
+	src/gui/debugwindow.cpp, src/gui/inventorywindow.cpp,
+	src/gui/viewport.h, src/engine.cpp, src/CMakeLists.txt,
+	src/Makefile.am: Introduced a new class Viewport which combines the
+	drawing code from Engine with the (rather misplaced) input handling
+	from the Gui class. Also, it's a Container itself which should allow
+	for extending it to show Guichan widgets on map coordinates.
+
 2006-12-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/sound.cpp, src/monster.cpp, src/sound.h,

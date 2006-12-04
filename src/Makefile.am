@@ -107,6 +107,8 @@ tmw_SOURCES = graphic/imagerect.h \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/viewport.cpp \
+	      gui/viewport.h \
 	      gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \

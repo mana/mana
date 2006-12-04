@@ -46,20 +46,22 @@
 //#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
+#include "gui/debugwindow.h"
 #include "gui/equipmentwindow.h"
+#include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
+#include "gui/menuwindow.h"
 #include "gui/minimap.h"
+#include "gui/ministatus.h"
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
-#include "gui/menuwindow.h"
 #include "gui/status.h"
-#include "gui/ministatus.h"
 #include "gui/trade.h"
-#include "gui/debugwindow.h"
+#include "gui/viewport.h"
 
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
@@ -567,7 +569,7 @@ void Game::handleInput()
 
                     case SDLK_f:
                         // Find path to mouse (debug purpose)
-                        engine->toggleDebugPath();
+                        viewport->toggleDebugPath();
                         used = true;
                         break;
                 }

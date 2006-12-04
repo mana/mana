@@ -27,7 +27,8 @@
 #include <guichan/widgets/container.hpp>
 
 /**
- * A window container. This container makes draggable windows possible.
+ * A window container. This container adds functionality for more convenient
+ * widget (windows in particular) destruction.
  *
  * \ingroup GUI
  */

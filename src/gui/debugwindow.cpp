@@ -72,15 +72,15 @@ DebugWindow::logic()
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-    int mouseTileX = mouseX / 32 + camera_x;
-    int mouseTileY = mouseY / 32 + camera_y;
+    //int mouseTileX = mouseX / 32 + camera_x;
+    //int mouseTileY = mouseY / 32 + camera_y;
 
     mFPSLabel->setCaption("[" + toString(fps) + " FPS");
     mFPSLabel->adjustSize();
 
-    mTileMouseLabel->setCaption("[Mouse: " +
-            toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
-    mTileMouseLabel->adjustSize();
+    //mTileMouseLabel->setCaption("[Mouse: " +
+    //        toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
+    //mTileMouseLabel->adjustSize();
 
     Map *currentMap = engine->getCurrentMap();
     if (currentMap != NULL)

@@ -145,6 +145,8 @@ SET(SRCS
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
+    gui/viewport.cpp
+    gui/viewport.h
     gui/window.cpp
     gui/window.h
     gui/windowcontainer.cpp
@@ -199,23 +201,23 @@ SET(SRCS
     net/tradehandler.h
     resources/ambientoverlay.cpp
     resources/ambientoverlay.h
-	resources/equipmentdb.cpp
-	resources/equipmentdb.h
-	resources/equipmentinfo.h
+    resources/equipmentdb.cpp
+    resources/equipmentdb.h
+    resources/equipmentinfo.h
     resources/image.cpp
     resources/image.h
     resources/imagewriter.cpp
     resources/imagewriter.h
-	resources/itemdb.cpp
-	resources/itemdb.h
-	resources/iteminfo.h
-	resources/iteminfo.cpp
+    resources/itemdb.cpp
+    resources/itemdb.h
+    resources/iteminfo.h
+    resources/iteminfo.cpp
     resources/mapreader.cpp
     resources/mapreader.h
     resources/monsterdb.h
-	resources/monsterdb.cpp
-	resources/monsterinfo.h
-	resources/monsterinfo.cpp
+    resources/monsterdb.cpp
+    resources/monsterinfo.h
+    resources/monsterinfo.cpp
     resources/music.h
     resources/music.cpp
     resources/openglsdlimageloader.h

@@ -34,6 +34,7 @@
 #include "item_amount.h"
 #include "itemcontainer.h"
 #include "scrollarea.h"
+#include "viewport.h"
 
 #include "../item.h"
 #include "../localplayer.h"
@@ -169,7 +170,7 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
          */
         int mx = x + getX();
         int my = y + getY();
-        gui->showPopup(mx, my, item);
+        viewport->showPopup(mx, my, item);
     }
 }
 

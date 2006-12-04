@@ -40,10 +40,10 @@
 
 #include "gui/gui.h"
 #include "gui/minimap.h"
+#include "gui/viewport.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
-
 
 #include "resources/mapreader.h"
 #include "resources/monsterdb.h"
@@ -56,14 +56,12 @@
 extern Minimap *minimap;
 
 char itemCurrenyQ[10] = "0";
-int camera_x, camera_y;
 
 Spriteset *emotionset;
 Spriteset *npcset;
 std::vector<Spriteset *> weaponset;
 
 Engine::Engine(Network *network):
-    mShowDebugPath(false),
     mCurrentMap(NULL),
     mNetwork(network)
 {
@@ -124,6 +122,7 @@ void Engine::changeMap(const std::string &mapPath)
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
+    viewport->setMap(newMap);
 
     // Start playing new music file when necessary
     std::string oldMusic = "";
@@ -155,147 +154,5 @@ void Engine::logic()
 
 void Engine::draw(Graphics *graphics)
 {
-    static int lastTick = tick_time;
-
-    // Avoid freaking out when tick_time overflows
-    if (tick_time < lastTick)
-    {
-        lastTick = tick_time;
-    }
-
-    // Calculate viewpoint
-    int midTileX = graphics->getWidth() / 32 / 2;
-    int midTileY = graphics->getHeight() / 32 / 2;
-
-    int player_x = (player_node->mX - midTileX) * 32 + player_node->getXOffset();
-    int player_y = (player_node->mY - midTileY) * 32 + player_node->getYOffset();
-
-    scrollLaziness = (int)config.getValue("ScrollLaziness", 32);
-    scrollRadius = (int)config.getValue("ScrollRadius", 32);
-
-    if (scrollLaziness < 1)
-        scrollLaziness = 1; // Avoids division by zero
-
-    // Apply lazy scrolling
-    while (lastTick < tick_time)
-    {
-        if (player_x > view_x + scrollRadius)
-        {
-            view_x += (player_x - view_x - scrollRadius) / scrollLaziness;
-        }
-        if (player_x < view_x - scrollRadius)
-        {
-            view_x += (player_x - view_x + scrollRadius) / scrollLaziness;
-        }
-        if (player_y > view_y + scrollRadius)
-        {
-            view_y += (player_y - view_y - scrollRadius) / scrollLaziness;
-        }
-        if (player_y < view_y - scrollRadius)
-        {
-            view_y += (player_y - view_y + scrollRadius) / scrollLaziness;
-        }
-        lastTick++;
-    }
-
-    // Auto center when player is off screen
-    if (        player_x - view_x > graphics->getWidth() / 2
-            ||  view_x - player_x > graphics->getWidth() / 2
-            ||  view_y - player_y > graphics->getHeight() / 2
-            ||  player_y - view_y > graphics->getHeight() / 2
-        )
-    {
-        view_x = player_x;
-        view_y = player_y;
-    };
-
-    if (mCurrentMap) {
-        if (view_x < 0) {
-            view_x = 0;
-        }
-        if (view_y < 0) {
-            view_y = 0;
-        }
-        if (view_x > (mCurrentMap->getWidth() - midTileX) * 32) {
-            view_x = (mCurrentMap->getWidth() - midTileX) * 32;
-        }
-        if (view_y > (mCurrentMap->getHeight() - midTileY) * 32) {
-            view_y = (mCurrentMap->getHeight() - midTileY) * 32;
-        }
-    }
-
-    camera_x = (int) (view_x + 16) / 32;
-    camera_y = (int) (view_y + 16) / 32;
-
-    // Draw tiles and sprites
-    if (mCurrentMap != NULL)
-    {
-        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 0);
-        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 1);
-        mCurrentMap->draw(graphics, (int) view_x, (int) view_y, 2);
-        mCurrentMap->drawOverlay(   graphics,
-                                    view_x,
-                                    view_y,
-                                    (int) config.getValue("OverlayDetail", 2)
-                                );
-    }
-
-    // Find a path from the player to the mouse, and draw it. This is for debug
-    // purposes.
-    if (mShowDebugPath && mCurrentMap != NULL)
-    {
-        // Get the current mouse position
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        int mouseTileX = mouseX / 32 + camera_x;
-        int mouseTileY = mouseY / 32 + camera_y;
-
-        Path debugPath = mCurrentMap->findPath(
-                player_node->mX, player_node->mY,
-                mouseTileX, mouseTileY);
-
-        graphics->setColor(gcn::Color(255, 0, 0));
-        for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
-        {
-            int squareX = i->x * 32 - int(view_x) + 12;
-            int squareY = i->y * 32 - int(view_y) + 12;
-
-            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            graphics->drawText(
-                    toString(mCurrentMap->getMetaTile(i->x, i->y)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
-        }
-    }
-
-    // Draw player nickname, speech, and emotion sprite as needed
-    Beings &beings = beingManager->getAll();
-    for (BeingIterator i = beings.begin(); i != beings.end(); i++)
-    {
-        (*i)->drawSpeech(graphics, -(int) view_x, -(int) view_y);
-        (*i)->drawName(graphics, -(int) view_x, -(int) view_y);
-        (*i)->drawEmotion(graphics, -(int) view_x, -(int) view_y);
-    }
-
-    // Draw target marker if needed
-    Being *target;
-    if ((target = player_node->getTarget()))
-    {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 32, 32));
-        int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
-
-        std::string mobName = "";
-
-        if (target->mJob >= 1002 )
-        {
-            int mobId = target->mJob - 1002;
-            mobName = MonsterDB::get(mobId).getName();
-        }
-
-        graphics->drawText(mobName, target->getPixelX() - (int)view_x + 15,
-                target->getPixelY() - (int)view_y  - dy, gcn::Graphics::CENTER);
-    }
-
     gui->draw();
 }
