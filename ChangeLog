@@ -1,3 +1,9 @@
+﻿﻿2006-12-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert1.png: Improved the tiling behavior
+	of the cliffs (still not gridless but at least the edges fit
+	together in the most common situations)
+
 2006-12-04  Bjørn Lindeijer  <bjorn@lindeijer>
 
 	* src/game.cpp, src/engine.h, src/gui/windowcontainer.h,
