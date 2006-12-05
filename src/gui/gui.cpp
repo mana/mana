@@ -184,6 +184,7 @@ Gui::~Gui()
 
     delete mGuiFont;
     delete speechFont;
+    delete viewport;
     delete mTop;
     delete mImageLoader;
     delete mHostImageLoader;

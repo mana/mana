@@ -1,10 +1,14 @@
-﻿﻿2006-12-05  Philipp Sehmisch  <tmw@crushnet.org>
+2006-12-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/item_amount.cpp: Fixed visibility of item amount window.
+
+2006-12-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/desert1.png: Improved the tiling behavior
 	of the cliffs (still not gridless but at least the edges fit
 	together in the most common situations)
 
-2006-12-04  Bjørn Lindeijer  <bjorn@lindeijer>
+2006-12-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/engine.h, src/gui/windowcontainer.h,
 	src/gui/viewport.cpp, src/gui/gui.cpp, src/gui/gui.h,

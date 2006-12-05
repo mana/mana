@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id $
+ *  $Id$
  */
 
 #include "item_amount.h"
@@ -87,6 +87,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     setContentSize(200, 80);
     setLocationRelativeTo(getParentWindow());
+    setVisible(true);
 }
 
 void ItemAmountWindow::resetAmount()
