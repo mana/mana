@@ -242,42 +242,35 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             int type = msg->readInt8();
+            int id = msg->readInt8();
 
             switch (type) {
                 case 1:
-                    dstBeing->setHairStyle(msg->readInt8());
+                    dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setWeapon(msg->readInt8());
+                    dstBeing->setWeapon(id);
                     break;
-                case 3:
-                case 4:
-                case 5:
-                    // Equip/unequip head 3. Bottom 4. Top 5. Middle
-                    switch (msg->readInt8())
-                    {
-                        case 3:
-                            dstBeing->setVisibleEquipment(
-                                    Being::BOTTOMCLOTHES_SPRITE,
-                                    msg->readInt8());
-                            break;
-                        case 4:
-                            dstBeing->setVisibleEquipment(
-                                    Being::HAT_SPRITE,
-                                    msg->readInt8());
-                            break;
-                        case 5:
-                            dstBeing->setVisibleEquipment(
-                                    Being::TOPCLOTHES_SPRITE,
-                                    msg->readInt8());
-                            break;
-                    }
+                case 3:     // Change lower headgear for eAthena, pants for us
+                    dstBeing->setVisibleEquipment(
+                            Being::BOTTOMCLOTHES_SPRITE,
+                            id);
+                    break;
+                case 4:     // Change upper headgear for eAthena, hat for us
+                    dstBeing->setVisibleEquipment(
+                            Being::HAT_SPRITE,
+                            id);
+                    break;
+                case 5:     // Change middle headgear for eathena, armor for us
+                     dstBeing->setVisibleEquipment(
+                            Being::TOPCLOTHES_SPRITE,
+                            id);
                     break;
                 case 6:
-                    dstBeing->setHairColor(msg->readInt8());
+                    dstBeing->setHairColor(id);
                     break;
                 default:
-                    logger->log("c3: %i\n", msg->readInt8()); // unsupported
+                    logger->log("c3: %i\n", id); // unsupported
                     break;
             }
         }
