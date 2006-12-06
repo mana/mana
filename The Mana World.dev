@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=251
+UnitCount=253
 Type=0
 Ver=1
 ObjFiles=
@@ -2561,6 +2561,26 @@ BuildCmd=
 FileName=src\resources\equipmentdb.h
 CompileCpp=1
 Folder=resources
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit252]
+FileName=src\gui\viewport.cpp
+CompileCpp=1
+Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit253]
+FileName=src\gui\viewport.h
+CompileCpp=1
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000
