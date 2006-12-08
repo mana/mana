@@ -309,7 +309,7 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 
             int binLen;
             unsigned char *binData =
-                php_base64_decode(charData, strlen((char*)charData), &binLen);
+                php3_base64_decode(charData, strlen((char*)charData), &binLen);
 
             delete[] charData;
 
