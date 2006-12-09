@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef __PASSWORDFIELD_H__
-#define __PASSWORDFIELD_H__
+#ifndef _TMW_PASSWORDFIELD_H_
+#define _TMW_PASSWORDFIELD_H_
 
 #include "textfield.h"
 

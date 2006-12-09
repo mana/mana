@@ -53,25 +53,25 @@ class FloorItem : public Sprite
          * Returns instance id of this item.
          */
         unsigned int
-        getId() { return mId; }
+        getId() const { return mId; }
 
         /**
          * Returns the item id.
          */
         unsigned int
-        getItemId() { return mItemId; }
+        getItemId() const { return mItemId; }
 
         /**
          * Returns the x coordinate.
          */
         unsigned short
-        getX() { return mX; }
+        getX() const { return mX; }
 
         /**
          * Returns the y coordinate.
          */
         unsigned short
-        getY() { return mY; }
+        getY() const { return mY; }
 
         /**
          * Returns the pixel y coordinate.
@@ -87,7 +87,7 @@ class FloorItem : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         void
-        draw(Graphics *graphics, int offsetX, int offsetY)
+        draw(Graphics *graphics, int offsetX, int offsetY) const
         {
             graphics->drawImage(mImage,
                                 mX * 32 + offsetX,

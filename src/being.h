@@ -307,7 +307,7 @@ class Being : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         virtual void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) const;
 
         /**
          * Returns the pixel X coordinate.

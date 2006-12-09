@@ -26,12 +26,14 @@
 
 #include "being.h"
 
-#include <string>
-
 class Graphics;
 class Map;
-class AnimatedSprite;
 
+/**
+ * A player being. Players have their name drawn beneath them. This class also
+ * implements player-specific loading of base sprite, hair sprite and equipment
+ * sprites.
+ */
 class Player : public Being
 {
     public:

@@ -84,8 +84,6 @@
 // Account infos
 char n_server, n_character;
 
-std::vector<Spriteset *> hairset;
-Spriteset *playerset[2];
 Graphics *graphics;
 
 // TODO Anyone knows a good location for this? Or a way to make it non-global?
@@ -272,26 +270,6 @@ void init_engine(const Options &options)
     // Initialize for drawing
     graphics->_beginDraw();
 
-    playerset[0] = resman->getSpriteset(
-            "graphics/sprites/player_male_base.png", 64, 64);
-    if (!playerset[0]) logger->error("Couldn't load male player spriteset!");
-    playerset[1] = resman->getSpriteset(
-            "graphics/sprites/player_female_base.png", 64, 64);
-    if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
-
-
-    for (int i=0; i < NR_HAIR_STYLES; i++)
-    {
-        Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
-                "graphics/sprites/hairstyle" + toString(i + 1) + ".png",
-                40, 40);
-        if (!tmp) {
-            logger->error("Unable to load hairstyle");
-        } else {
-            hairset.push_back(tmp);
-        }
-    }
-
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
 
@@ -300,8 +278,8 @@ void init_engine(const Options &options)
         if (config.getValue("sound", 0) == 1) {
             sound.init();
         }
-        sound.setSfxVolume((int)config.getValue("sfxVolume", 100));
-        sound.setMusicVolume((int)config.getValue("musicVolume", 60));
+        sound.setSfxVolume((int) config.getValue("sfxVolume", 100));
+        sound.setMusicVolume((int) config.getValue("musicVolume", 60));
     }
     catch (const char *err) {
         state = ERROR_STATE;
@@ -321,13 +299,6 @@ void exit_engine()
     config.write();
     delete gui;
     delete graphics;
-
-    std::for_each(hairset.begin(), hairset.end(),
-            std::mem_fun(&Spriteset::decRef));
-    hairset.clear();
-
-    playerset[0]->decRef();
-    playerset[1]->decRef();
 
     // Shutdown libxml
     xmlCleanupParser();

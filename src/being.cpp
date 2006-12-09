@@ -63,6 +63,7 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mSpeechTime(0),
     mDamageTime(0),
     mShowSpeech(false), mShowDamage(false),
+    mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
 {
@@ -331,7 +332,7 @@ Being::logic()
 }
 
 void
-Being::draw(Graphics *graphics, int offsetX, int offsetY)
+Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;

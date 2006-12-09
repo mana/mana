@@ -27,10 +27,10 @@
 #include <guichan/widgets/scrollarea.hpp>
 
 class ImageRect;
+class Player;
 
 /**
- * A box showing a player. Draws the various hair styles a player can have
- * currently.
+ * A box showing a player character.
  *
  * \ingroup GUI
  */
@@ -38,14 +38,23 @@ class PlayerBox : public gcn::ScrollArea
 {
     public:
         /**
-         * Constructor.
+         * Constructor. Takes the initial player character that this box should
+         * display, which defaults to <code>NULL</code>.
          */
-        PlayerBox(unsigned char sex);
+        PlayerBox(const Player *player = NULL);
 
         /**
          * Destructor.
          */
         ~PlayerBox();
+
+        /**
+         * Sets a new player character to be displayed by this box. Setting the
+         * player to <code>NULL</code> causes the box not to draw any
+         * character.
+         */
+        void
+        setPlayer(const Player *player) { mPlayer = player; }
 
         /**
          * Draws the scroll area.
@@ -57,12 +66,9 @@ class PlayerBox : public gcn::ScrollArea
          */
         void drawBorder(gcn::Graphics *graphics);
 
-        int mHairColor;         /**< The hair color index */
-        int mHairStyle;         /**< The hair style index */
-        unsigned char mSex;     /**< Sex */
-        bool mShowPlayer;       /**< Wether to show the player or not */
-
     private:
+        const Player *mPlayer;       /**< The character used for display */
+
         static int instances;
         static ImageRect background;
 };

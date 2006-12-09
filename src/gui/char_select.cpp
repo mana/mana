@@ -86,7 +86,7 @@ CharSelectDialog::CharSelectDialog(Network *network,
     mLevelLabel = new gcn::Label("Level");
     mJobLevelLabel = new gcn::Label("Job Level");
     mMoneyLabel = new gcn::Label("Money");
-    mPlayerBox = new PlayerBox(sex);
+    mPlayerBox = new PlayerBox();
 
     int w = 195;
     int h = 220;
@@ -176,7 +176,8 @@ void CharSelectDialog::updatePlayerInfo()
 {
     LocalPlayer *pi = mCharInfo->getEntry();
 
-    if (pi) {
+    if (pi)
+    {
         mNameLabel->setCaption(pi->getName());
         mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
         mJobLevelLabel->setCaption("Job Lvl: " + toString(pi->mJobLevel));
@@ -187,10 +188,8 @@ void CharSelectDialog::updatePlayerInfo()
             mDelCharButton->setEnabled(true);
             mSelectButton->setEnabled(true);
         }
-        mPlayerBox->mHairStyle = pi->getHairStyle() - 1;
-        mPlayerBox->mHairColor = pi->getHairColor() - 1;
-        mPlayerBox->mShowPlayer = true;
-    } else {
+    }
+    else {
         mNameLabel->setCaption("Name");
         mLevelLabel->setCaption("Level");
         mJobLevelLabel->setCaption("Job Level");
@@ -198,11 +197,9 @@ void CharSelectDialog::updatePlayerInfo()
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
-
-        mPlayerBox->mHairStyle = 0;
-        mPlayerBox->mHairColor = 0;
-        mPlayerBox->mShowPlayer = false;
     }
+
+    mPlayerBox->setPlayer(pi);
 }
 
 void CharSelectDialog::attemptCharDelete()
@@ -260,6 +257,11 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
                                    unsigned char sex):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
 {
+    mPlayer = new Player(0, 0, NULL);
+    mPlayer->setSex(sex);
+    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES + 1);
+    mPlayer->setHairColor(rand() % NR_HAIR_COLORS + 1);
+
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
     mNextHairColorButton = new Button(">", "nextcolor", this);
@@ -270,8 +272,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mHairStyleLabel = new gcn::Label("Hair Style:");
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayerBox = new PlayerBox(sex);
-    mPlayerBox->mShowPlayer = true;
+    mPlayerBox = new PlayerBox(mPlayer);
 
     mNameField->setEventId("create");
 
@@ -313,6 +314,11 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     setVisible(true);
 }
 
+CharCreateDialog::~CharCreateDialog()
+{
+    delete mPlayer;
+}
+
 void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
 {
     if (eventId == "create") {
@@ -331,20 +337,19 @@ void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
         scheduleDelete();
     }
     else if (eventId == "nextcolor") {
-        mPlayerBox->mHairColor++;
+        mPlayer->setHairColor(mPlayer->getHairColor() % NR_HAIR_COLORS + 1);
     }
     else if (eventId == "prevcolor") {
-        mPlayerBox->mHairColor += NR_HAIR_COLORS - 1;
+        int prevColor = mPlayer->getHairColor() + NR_HAIR_COLORS - 2;
+        mPlayer->setHairColor(prevColor % NR_HAIR_COLORS + 1);
     }
     else if (eventId == "nextstyle") {
-        mPlayerBox->mHairStyle++;
+        mPlayer->setHairStyle(mPlayer->getHairStyle() % NR_HAIR_STYLES + 1);
     }
     else if (eventId == "prevstyle") {
-        mPlayerBox->mHairStyle += NR_HAIR_STYLES - 1;
+        int prevStyle = mPlayer->getHairStyle() + NR_HAIR_STYLES - 2;
+        mPlayer->setHairStyle(prevStyle % NR_HAIR_STYLES + 1);
     }
-
-    mPlayerBox->mHairColor %= NR_HAIR_COLORS;
-    mPlayerBox->mHairStyle %= NR_HAIR_STYLES;
 }
 
 std::string CharCreateDialog::getName()
@@ -365,6 +370,6 @@ void CharCreateDialog::attemptCharCreate()
     outMsg.writeInt8(5);
     outMsg.writeInt8(5);
     outMsg.writeInt8(mSlot);
-    outMsg.writeInt16(mPlayerBox->mHairColor + 1);
-    outMsg.writeInt16(mPlayerBox->mHairStyle + 1);
+    outMsg.writeInt16(mPlayer->getHairColor());
+    outMsg.writeInt16(mPlayer->getHairStyle());
 }

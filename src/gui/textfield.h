@@ -28,7 +28,6 @@
 
 class ImageRect;
 
-
 /**
  * A text field.
  *
