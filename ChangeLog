@@ -1,4 +1,9 @@
-﻿2006-12-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-12-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* docs/INSTALL/win32.txt: Added more detailed instructions for Dev-C++
+	users.
+
+2006-12-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/npcs.png: Added pirate NPC.
 

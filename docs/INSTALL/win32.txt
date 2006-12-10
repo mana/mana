@@ -63,6 +63,9 @@ to remove anything the devpak might overlap before installing, for example the
 previous devpak.) Remember to copy the required dlls from your dll folder in
 the Dev-Cpp root directory, to the folder where you have your copy of The Mana
 World. You also have to add the SDL include folder in your C++ include paths.
+If you're using Dev-C++, this means: Tools -> Compiler options ->
+-> Directories -> C++ includes -> Browse... (browse to MinGW/include/SDL) ->
+-> Add -> Ok.
 If you can't get the package or you are experiencing problems with it, just
 send me an email at elvenprogrammer@gmail.com or continue reading. (Coming to
 bug us on the IRC channel is a valid alternative too.)
