@@ -1,4 +1,24 @@
-﻿2006-12-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2006-12-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+    * data/equipment.xml, data/items.xml,
+    data/graphics/sprites/chest-tnecksweater-male.png,
+    data/graphics/sprites/chest-tnecksweater-female.png,
+    data/graphics/sprites/chest-vnecksweater-male.png,
+    data/graphics/sprites/chest-vnecksweater-female.png,
+    data/graphics/sprites/chest-tnecksweater-male.xml,
+    data/graphics/sprites/chest-tnecksweater-female.xml,
+    data/graphics/sprites/chest-vnecksweater-male.xml,
+    data/graphics/sprites/chest-vnecksweater-female.xml,
+    data/graphics/sprites/Makefile.AM, data/graphics/sprites/CMakeLists.txt,
+    data/graphics/items/armor-chest-vnecksweater.png,
+    data/graphics/items/armor-chest-tnecksweater.png,
+    data/graphics/items/armor-chest-woolsweater.png,
+    data/graphics/items/Makefile.AM, data/graphics/items/CMakeLists.txt:
+    Added new sweaters by Saphy. Info for server admins: Item IDs are 564 for
+    turtleneck (should already be in there) and 624 for v-neck. The visible
+    sprite IDs are 19 for turtleneck and 20 for v-neck.
+
+2006-12-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/main.h, src/tmw.rc, src/winver.h, The Mana World.dev, tmw.cbp:
 	Fixed windows binary version.
