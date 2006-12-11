@@ -66,6 +66,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     /*
     Uint32 id;
     Uint16 job, speed;
+    Uint16 headBottom, headTop, headMid;
     Sint16 param1;
     Sint8 type;
     Being *srcBeing, *dstBeing;
@@ -124,7 +125,8 @@ void BeingHandler::handleMessage(MessageIn &msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg.readShort());
             dstBeing->setWeapon(msg.readShort());
-            dstBeing->setVisibleEquipment(3, msg.readShort()); // head bottom
+            dstBeing->setVisibleEquipment(
+                    Being::BOTTOMCLOTHES_SPRITE, msg.readShort());
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
@@ -132,8 +134,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             msg.readShort();  // shield
-            dstBeing->setVisibleEquipment(4, msg.readShort()); // head top
-            dstBeing->setVisibleEquipment(5, msg.readShort()); // head mid
+            dstBeing->setVisibleEquipment(Being::HAIT_SPRITE, msg.readShort());
+            dstBeing->setVisibleEquipment(
+                    Being::TOPCLOTHES_SPRITE, msg.readShort());
             dstBeing->setHairColor(msg.readShort());
             msg.readShort();  // unknown
             msg.readShort();  // head dir
@@ -156,7 +159,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                //msg.readCoordinates(dstBeing->mX, dstBeing->mY, dstBeing->mDirection);
+                //Uint8 dir;
+                //msg->readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                //dstBeing->setDirection(dir);
             }
 
             msg.readByte();   // unknown
@@ -173,19 +178,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             if (msg.readByte() == 1)
             {
-                // Death
-                switch (dstBeing->getType())
-                {
-                    case Being::MONSTER:
-                        dstBeing->setAction(Being::MONSTER_DEAD);
-                        dstBeing->mFrame = 0;
-                        dstBeing->mWalkTime = tick_time;
-                        break;
-
-                    default:
-                        dstBeing->setAction(Being::DEAD);
-                        break;
-                }
+                dstBeing->setAction(Being::DEAD);
             }
             else
             {
@@ -219,15 +212,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     if (srcBeing != NULL &&
                             srcBeing != player_node)
                     {
-                        // buggy
-                        if (srcBeing->getType() == Being::MONSTER)
-                        {
-                            srcBeing->setAction(Being::MONSTER_ATTACK);
-                        }
-                        else
-                        {
-                            srcBeing->setAction(Being::ATTACK);
-                        }
+                        srcBeing->setAction(Being::ATTACK);
                         srcBeing->mFrame = 0;
                         srcBeing->mWalkTime = tick_time;
                     }
@@ -275,27 +260,35 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
 
             int type = msg.readByte();
+            int id = msg.readByte();
 
             switch (type) {
                 case 1:
-                    dstBeing->setHairStyle(msg.readByte());
+                    dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setWeapon(msg.readByte());
+                    dstBeing->setWeapon(id);
                     break;
-                case 3:
-                case 4:
-                case 5:
-                    // Equip/unequip head 3. Bottom 4. Top 5. Middle
-                    dstBeing->setVisibleEquipment(type, msg.readByte());
-                    // First 3 slots  of mVisibleEquipments are reserved for
-                    // later use, probably accessories.
+                case 3:     // Change lower headgear for eAthena, pants for us
+                    dstBeing->setVisibleEquipment(
+                            Being::BOTTOMCLOTHES_SPRITE,
+                            id);
+                    break;
+                case 4:     // Change upper headgear for eAthena, hat for us
+                    dstBeing->setVisibleEquipment(
+                            Being::HAT_SPRITE,
+                            id);
+                    break;
+                case 5:     // Change middle headgear for eathena, armor for us
+                     dstBeing->setVisibleEquipment(
+                            Being::TOPCLOTHES_SPRITE,
+                            id);
                     break;
                 case 6:
-                    dstBeing->setHairColor(msg.readByte());
+                    dstBeing->setHairColor(id);
                     break;
                 default:
-                    printf("c3: %i\n", msg.readByte()); // unsupported
+                    logger->log("c3: %i\n", id); // unsupported
                     break;
             }
         }
@@ -331,15 +324,15 @@ void BeingHandler::handleMessage(MessageIn &msg)
             dstBeing->setHairStyle(msg.readShort());
             dstBeing->setWeaponById(msg.readShort());  // item id 1
             msg.readShort();  // item id 2
-            dstBeing->setVisibleEquipment(3, msg.readShort()); // head bottom
+            headBottom = msg.readShort();
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
                 msg.readLong(); // server tick
             }
 
-            dstBeing->setVisibleEquipment(4, msg.readShort()); // head top
-            dstBeing->setVisibleEquipment(5, msg.readShort()); // head mid
+            headTop = msg.readShort();
+            headMid = msg.readShort();
             dstBeing->setHairColor(msg.readShort());
             msg.readShort();  // unknown
             msg.readShort();  // head dir
@@ -348,6 +341,10 @@ void BeingHandler::handleMessage(MessageIn &msg)
             msg.readShort();  // manner
             msg.readByte();   // karma
             dstBeing->setSex(1 - msg.readByte());   // sex
+            dstBeing->setVisibleEquipment(
+                    Being::BOTTOMCLOTHES_SPRITE, headBottom);
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
+            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
@@ -359,7 +356,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             else
             {
-                //msg.readCoordinates(dstBeing->mX, dstBeing->mY, dstBeing->mDirection);
+                //Uint8 dir;
+                //msg->readCoordinates(dstBeing->mX, dstBeing->mY, dir);
+                //dstBeing->setDirection(dir);
             }
 
             msg.readByte();   // unknown
@@ -386,7 +385,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case 0x0119:
             // Change in players look
-            printf("0x0119 %li %i %i %x %i\n", msg.readLong(),
+            logger->log("0x0119 %li %i %i %x %i\n", msg.readLong(),
                    msg.readShort(), msg.readShort(), msg.readShort(),
                    msg.readByte());
             break;

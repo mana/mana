@@ -68,9 +68,17 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
+    SDL_Surface *tmpImage;
 
     // Use SDL_Image to load the raw image data and have it free the data
-    SDL_Surface *tmpImage = IMG_Load_RW(rw, 1);
+    if (!idPath.compare(idPath.length() - 4, 4, ".tga"))
+    {
+        tmpImage = IMG_LoadTyped_RW(rw, 1, const_cast<char*>("TGA"));
+    }
+    else
+    {
+        tmpImage = IMG_Load_RW(rw, 1);
+    }
 
     if (tmpImage == NULL) {
         logger->log("Error, image load failed: %s", IMG_GetError());

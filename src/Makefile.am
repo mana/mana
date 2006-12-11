@@ -110,6 +110,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/viewport.cpp \
+	      gui/viewport.h \
 	      gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
@@ -179,16 +181,23 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/gameserver/player.h \
 	      resources/ambientoverlay.cpp \
 	      resources/ambientoverlay.h \
+	      resources/equipmentdb.cpp \
+	      resources/equipmentdb.h \
+	      resources/equipmentinfo.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
+	      resources/itemdb.cpp \
+	      resources/itemdb.h \
 	      resources/iteminfo.h \
 	      resources/iteminfo.cpp \
-	      resources/itemmanager.cpp \
-	      resources/itemmanager.h \
 	      resources/mapreader.cpp \
 	      resources/mapreader.h \
+	      resources/monsterdb.h \
+	      resources/monsterdb.cpp \
+	      resources/monsterinfo.h \
+	      resources/monsterinfo.cpp \
 	      resources/music.h \
 	      resources/music.cpp \
 	      resources/openglsdlimageloader.h \
@@ -201,12 +210,18 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/sdlimageloader.cpp \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
+	      resources/spritedef.h \
+	      resources/spritedef.cpp \
 	      resources/spriteset.h \
 	      resources/spriteset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/dtor.h \
 	      utils/tostring.h \
+	      utils/xml.cpp \
+	      utils/xml.h \
+	      action.cpp \
+	      action.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
 	      animation.cpp \

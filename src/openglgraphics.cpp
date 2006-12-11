@@ -52,6 +52,9 @@ OpenGLGraphics::~OpenGLGraphics()
 
 bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 {
+    logger->log("Setting video mode %dx%d %s",
+            w, h, fs ? "fullscreen" : "windowed");
+
     int displayFlags = SDL_ANYFORMAT | SDL_OPENGL;
 
     mFullscreen = fs;

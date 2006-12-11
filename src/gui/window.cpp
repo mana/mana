@@ -113,6 +113,9 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     {
         requestModalFocus();
     }
+
+    // Windows are invisible by default
+    setVisible(false);
 }
 
 Window::~Window()

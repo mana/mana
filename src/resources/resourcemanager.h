@@ -34,6 +34,7 @@ class Image;
 class Music;
 class SoundEffect;
 class Spriteset;
+class SpriteDef;
 
 /**
  * A class for loading and managing resources.
@@ -113,21 +114,21 @@ class ResourceManager
         get(const E_RESOURCE_TYPE &type, const std::string &idPath);
 
         /**
-         * Convenience wrapper around ResourceManager::create for loading
+         * Convenience wrapper around ResourceManager::get for loading
          * images.
          */
         Image*
         getImage(const std::string &idPath);
 
         /**
-         * Convenience wrapper around ResourceManager::create for loading
+         * Convenience wrapper around ResourceManager::get for loading
          * songs.
          */
         Music*
         getMusic(const std::string &idPath);
 
         /**
-         * Convenience wrapper around ResourceManager::create for loading
+         * Convenience wrapper around ResourceManager::get for loading
          * samples.
          */
         SoundEffect*
@@ -137,7 +138,15 @@ class ResourceManager
          * Creates a spriteset based on the image referenced by the given
          * path and the supplied sprite sizes
          */
-        Spriteset* getSpriteset(const std::string &imagePath, int w, int h);
+        Spriteset*
+        getSpriteset(const std::string &imagePath, int w, int h);
+
+        /**
+         * Creates a sprite definition based on a given path and the supplied
+         * variant.
+         */
+        SpriteDef*
+        getSprite(const std::string &path, int variant = 0);
 
         /**
          * Releases a resource, removing it from the set of loaded resources.

@@ -31,14 +31,7 @@
 #ifndef _TMW_BASE64_H
 #define _TMW_BASE64_H
 
-extern unsigned char *php_base64_encode(const unsigned char *, int, int *);
-extern unsigned char *php_base64_decode(const unsigned char *, int, int *);
+extern unsigned char *php3_base64_encode(const unsigned char *, int, int *);
+extern unsigned char *php3_base64_decode(const unsigned char *, int, int *);
 
 #endif /* _TMW_BASE64_H */
-
-/*
- * Local variables:
- * tab-width: 4
- * c-basic-offset: 4
- * End:
- */

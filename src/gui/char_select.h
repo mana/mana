@@ -31,6 +31,7 @@
 
 #include <guichan/actionlistener.hpp>
 
+class Player;
 class LocalPlayer;
 class PlayerBox;
 
@@ -48,7 +49,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
          */
         CharSelectDialog(LockedArray<LocalPlayer*> *charInfo);
 
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const std::string &eventId, gcn::Widget *widget);
 
         void updatePlayerInfo();
 
@@ -103,7 +104,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         CharCreateDialog(Window *parent, int slot);
 
-        void action(const std::string& eventId, gcn::Widget* widget);
+        /**
+         * Destructor.
+         */
+        ~CharCreateDialog();
+
+        void action(const std::string &eventId, gcn::Widget *widget);
 
         std::string getName();
 
@@ -119,6 +125,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mCreateButton;
         gcn::Button *mCancelButton;
 
+        Player *mPlayer;
         PlayerBox *mPlayerBox;
 
         int mSlot;

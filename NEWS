@@ -1,3 +1,14 @@
+0.0.22 (...)
+- Added support for female-specific equipment graphics
+- Added support for monster sounds
+- Changed to new update host (http://updates.themanaworld.org)
+- Worked around a Guichan exception thrown for mice with many buttons
+- Changed mouse walk to keep following mouse while button is held down
+- Extended font support for å and Å.
+- Fixed joystick setting not to show disabled when it's actually enabled
+- Fixed money field to no longer hide below the bottom of the window
+- Fixed pathfinding to allow walking through beings when they block your path
+
 0.0.21.1 (30 October 2006)
 - Reload wallpaper after loading updates
 - Added support for gzip compressed map layer data

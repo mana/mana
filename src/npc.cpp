@@ -24,6 +24,9 @@
 #include "npc.h"
 
 #include "animatedsprite.h"
+#include "graphics.h"
+
+#include "gui/gui.h"
 
 class Spriteset;
 extern Spriteset *npcset;
@@ -33,13 +36,25 @@ NPC *current_npc = 0;
 NPC::NPC(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml", job-100);
+    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml",
+            job - 100);
 }
 
 Being::Type
 NPC::getType() const
 {
     return Being::NPC;
+}
+
+void
+NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+{
+    int px = mPx + offsetX;
+    int py = mPy + offsetY;
+
+    graphics->setFont(speechFont);
+    graphics->setColor(gcn::Color(200, 200, 255));
+    graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
 void

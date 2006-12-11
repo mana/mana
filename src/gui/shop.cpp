@@ -23,7 +23,7 @@
 
 #include "shop.h"
 #include "../utils/tostring.h"
-#include "../resources/itemmanager.h"
+#include "../resources/itemdb.h"
 
 ShopItems::~ShopItems()
 {
@@ -44,11 +44,11 @@ void ShopItems::addItem(short id, int price)
 {
     ITEM_SHOP item_shop;
 
-    item_shop.name = itemDb->getItemInfo(id).getName()
+    item_shop.name = ItemDB::get(id).getName()
                      + " " + toString(price) + " GP";
     item_shop.price = price;
     item_shop.id = id;
-    item_shop.image = itemDb->getItemInfo(id).getImage();
+    item_shop.image = ItemDB::get(id).getImage();
 
     mItemsShop.push_back(item_shop);
 }

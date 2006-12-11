@@ -3,6 +3,7 @@ SUBDIRS = ambient
 imagesdir = $(pkgdatadir)/data/graphics/images
 
 images_DATA =				\
+	error.png				\
 	login_wallpaper.png		\
 	minimap_new_1-1.png		\
 	minimap_new_2-1.png		\

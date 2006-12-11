@@ -97,6 +97,7 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
 }

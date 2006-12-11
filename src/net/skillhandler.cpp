@@ -26,6 +26,8 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "../log.h"
+
 #include "../gui/chat.h"
 #include "../gui/skill.h"
 
@@ -85,7 +87,7 @@ void SkillHandler::handleMessage(MessageIn &msg)
             if (action.success != SKILL_FAILED &&
                 action.bskill == BSKILL_EMOTE)
             {
-                printf("Action: %d/%d", action.bskill, action.success);
+                logger->log("Action: %d/%d", action.bskill, action.success);
             }
             chatWindow->chatLog(action);
             break;

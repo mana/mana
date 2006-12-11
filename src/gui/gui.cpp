@@ -35,22 +35,14 @@
 #endif
 
 #include "focushandler.h"
-#include "popupmenu.h"
 #include "window.h"
 #include "windowcontainer.h"
+#include "viewport.h"
 
-#include "../being.h"
-#include "../beingmanager.h"
 #include "../configlistener.h"
 #include "../configuration.h"
-#include "../engine.h"
-#include "../flooritemmanager.h"
 #include "../graphics.h"
-#include "../localplayer.h"
 #include "../log.h"
-#include "../main.h"
-#include "../map.h"
-#include "../npc.h"
 
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
@@ -61,7 +53,8 @@
 
 // Guichan stuff
 Gui *gui;
-gcn::SDLInput *guiInput;               // GUI input
+Viewport *viewport;                    /**< Viewport on the map. */
+gcn::SDLInput *guiInput;               /**< GUI input. */
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont;
@@ -91,9 +84,9 @@ class GuiConfigListener : public ConfigListener
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
     mMouseCursor(NULL),
-    mCustomCursor(false),
-    mPopupActive(false)
+    mCustomCursor(false)
 {
+    logger->log("Initializing GUI...");
     // Set graphics
     setGraphics(graphics);
 
@@ -122,7 +115,6 @@ Gui::Gui(Graphics *graphics):
     guiTop->setDimension(gcn::Rectangle(0, 0,
                 graphics->getWidth(), graphics->getHeight()));
     guiTop->setOpaque(false);
-    guiTop->addMouseListener(this);
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
@@ -172,13 +164,15 @@ Gui::Gui(Graphics *graphics):
     mConfigListener = new GuiConfigListener(this);
     config.addListener("customcursor", mConfigListener);
 
-    mPopup = new PopupMenu();
+    // Create the viewport
+    viewport = new Viewport();
+    viewport->setDimension(gcn::Rectangle(0, 0,
+                graphics->getWidth(), graphics->getHeight()));
+    guiTop->add(viewport);
 }
 
 Gui::~Gui()
 {
-    delete mPopup;
-
     config.removeListener("customcursor", mConfigListener);
     delete mConfigListener;
 
@@ -193,6 +187,7 @@ Gui::~Gui()
 
     delete mGuiFont;
     delete speechFont;
+    delete viewport;
     delete mTop;
     delete mImageLoader;
     delete mHostImageLoader;
@@ -231,113 +226,6 @@ Gui::draw()
 }
 
 void
-Gui::mousePress(int mx, int my, int button)
-{
-    // Mouse pressed on window container (basically, the map)
-
-    // Are we in-game yet?
-    if (state != STATE_GAME)
-        return;
-
-    // Check if we are alive and kickin'
-    if (!player_node || player_node->mAction == Being::DEAD)
-        return;
-
-    // Check if we are busy
-    if (current_npc)
-        return;
-
-    int tilex = (mx + camera_x) / 32;
-    int tiley = (my + camera_y) / 32;
-
-    // Right click might open a popup
-    if (button == gcn::MouseInput::RIGHT)
-    {
-        Being *being;
-        FloorItem *floorItem;
-
-        if ((being = beingManager->findBeing(tilex, tiley)) &&
-                being->getType() != Being::LOCALPLAYER)
-        {
-            showPopup(mx, my, being);
-            return;
-        }
-        else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
-        {
-            showPopup(mx, my, floorItem);
-            return;
-        }
-    }
-
-    // If a popup is active, just remove it
-    if (mPopupActive)
-    {
-        mPopup->setVisible(false);
-        mPopupActive = false;
-        return;
-    }
-
-    // Left click can cause different actions
-    if (button == gcn::MouseInput::LEFT)
-    {
-        Being *being;
-        FloorItem *item;
-
-        // Interact with some being
-        if ((being = beingManager->findBeing(tilex, tiley)))
-        {
-            switch (being->getType())
-            {
-                case Being::NPC:
-                    dynamic_cast<NPC*>(being)->talk();
-                    break;
-
-                case Being::MONSTER:
-                case Being::PLAYER:
-                    if (being->mAction == Being::MONSTER_DEAD)
-                        break;
-
-                    player_node->attack(being, true);
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        // Pick up some item
-        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
-        {
-                player_node->pickUp(item);
-        }
-        // Just walk around
-        else if (engine->getCurrentMap() &&
-                engine->getCurrentMap()->getWalk(tilex, tiley))
-        {
-            // XXX XXX XXX REALLY UGLY!
-            Uint8 *keys = SDL_GetKeyState(NULL);
-            if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
-            {
-                player_node->setDestination(mx + camera_x, my + camera_y);
-                player_node->stopAttack();
-            }
-        }
-    }
-
-    if (button == gcn::MouseInput::MIDDLE)
-    {
-        // Find the being nearest to the clicked position
-        Being *target = beingManager->findNearestLivingBeing(
-                tilex, tiley,
-                20, Being::MONSTER);
-
-        if (target)
-        {
-            player_node->setTarget(target);
-        }
-    }
-}
-
-void
 Gui::setUseCustomCursor(bool customCursor)
 {
     if (customCursor != mCustomCursor)
@@ -368,22 +256,4 @@ Gui::setUseCustomCursor(bool customCursor)
             }
         }
     }
-}
-
-void Gui::showPopup(int x, int y, Item *item)
-{
-    mPopup->showPopup(x, y, item);
-    mPopupActive = true;
-}
-
-void Gui::showPopup(int x, int y, FloorItem *floorItem)
-{
-    mPopup->showPopup(x, y, floorItem);
-    mPopupActive = true;
-}
-
-void Gui::showPopup(int x, int y, Being *being)
-{
-    mPopup->showPopup(x, y, being);
-    mPopupActive = true;
 }

@@ -25,7 +25,7 @@
 
 #include "map.h"
 
-#include "resources/itemmanager.h"
+#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 #include "resources/spriteset.h"
 
@@ -42,7 +42,7 @@ FloorItem::FloorItem(unsigned int id,
     mMap(map)
 {
     // Retrieve item image from item info
-    mImage = itemDb->getItemInfo(itemId).getImage();
+    mImage = ItemDB::get(itemId).getImage();
 
     // Add ourselves to the map
     mSpriteIterator = mMap->addSprite(this);

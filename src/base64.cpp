@@ -1,16 +1,27 @@
 /*
    +----------------------------------------------------------------------+
-   | PHP version 4.0                                                      |
+   | PHP HTML Embedded Scripting Language Version 3.0                     |
    +----------------------------------------------------------------------+
-   | Copyright (c) 1997, 1998, 1999, 2000 The PHP Group                   |
+   | Copyright (c) 1997-2000 PHP Development Team (See Credits file)      |
    +----------------------------------------------------------------------+
-   | This source file is subject to version 2.02 of the PHP license,      |
-   | that is bundled with this package in the file LICENSE, and is        |
-   | available at through the world-wide-web at                           |
-   | http://www.php.net/license/2_02.txt.                                 |
-   | If you did not receive a copy of the PHP license and are unable to   |
-   | obtain it through the world-wide-web, please send a note to          |
-   | license@php.net so we can mail you a copy immediately.               |
+   | This program is free software; you can redistribute it and/or modify |
+   | it under the terms of one of the following licenses:                 |
+   |                                                                      |
+   |  A) the GNU General Public License as published by the Free Software |
+   |     Foundation; either version 2 of the License, or (at your option) |
+   |     any later version.                                               |
+   |                                                                      |
+   |  B) the PHP License as published by the PHP Development Team and     |
+   |     included in the distribution in the file: LICENSE                |
+   |                                                                      |
+   | This program is distributed in the hope that it will be useful,      |
+   | but WITHOUT ANY WARRANTY; without even the implied warranty of       |
+   | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the        |
+   | GNU General Public License for more details.                         |
+   |                                                                      |
+   | You should have received a copy of both licenses referred to here.   |
+   | If you did not, or have any questions about PHP licensing, please    |
+   | contact core@php.net.                                                |
    +----------------------------------------------------------------------+
    | Author: Jim Winstead (jimw@php.net)                                  |
    +----------------------------------------------------------------------+
@@ -32,8 +43,8 @@ static char base64_table[] =
 };
 static char base64_pad = '=';
 
-unsigned char *php_base64_encode(const unsigned char *str, int length, int *ret_length) {
-    const unsigned char *current = str;
+unsigned char *php3_base64_encode(const unsigned char *string, int length, int *ret_length) {
+    const unsigned char *current = string;
     int i = 0;
     unsigned char *result = (unsigned char *)malloc(((length + 3 - length % 3) * 4 / 3 + 1) * sizeof(char));
 
@@ -69,27 +80,13 @@ unsigned char *php_base64_encode(const unsigned char *str, int length, int *ret_
 }
 
 /* as above, but backwards. :) */
-unsigned char *php_base64_decode(const unsigned char *str, int length, int *ret_length) {
-    const unsigned char *current = str;
+unsigned char *php3_base64_decode(const unsigned char *string, int length, int *ret_length) {
+    const unsigned char *current = string;
     int ch, i = 0, j = 0, k;
-    /* this sucks for threaded environments */
-    static short reverse_table[256];
-    static int table_built;
-    unsigned char *result;
+    char *chp;
 
-    if (++table_built == 1) {
-        char *chp;
-        for(ch = 0; ch < 256; ch++) {
-            chp = strchr(base64_table, ch);
-            if(chp) {
-                reverse_table[ch] = chp - base64_table;
-            } else {
-                reverse_table[ch] = -1;
-            }
-        }
-    }
+    unsigned char *result = (unsigned char *)malloc(length + 1);
 
-    result = (unsigned char *)malloc(length + 1);
     if (result == NULL) {
         return NULL;
     }
@@ -107,8 +104,9 @@ unsigned char *php_base64_decode(const unsigned char *str, int length, int *ret_
 
         if (ch == ' ') ch = '+';
 
-        ch = reverse_table[ch];
-        if (ch < 0) continue;
+        chp = strchr(base64_table, ch);
+        if (chp == NULL) continue;
+        ch = chp - base64_table;
 
         switch(i % 4) {
             case 0:
@@ -149,4 +147,3 @@ unsigned char *php_base64_decode(const unsigned char *str, int length, int *ret_
     result[k] = '\0';
     return result;
 }
-

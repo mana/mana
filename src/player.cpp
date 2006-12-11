@@ -28,6 +28,8 @@
 #include "graphics.h"
 #include "log.h"
 
+#include "resources/equipmentdb.h"
+
 #include "utils/tostring.h"
 
 #include "gui/gui.h"
@@ -35,9 +37,6 @@
 Player::Player(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    // Load the weapon sprite.
-    // When there are more different weapons this should be moved to the
-    // setWeapon Method.
     setWeapon(0);
 }
 
@@ -70,51 +69,71 @@ Player::setSex(Uint8 sex)
 
     if (sex != mSex)
     {
-        delete mSprites[BASE_SPRITE];
+        Being::setSex(sex);
+
+        // Reload base sprite
+        AnimatedSprite *newBaseSprite;
         if (sex == 0)
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite(
-                    "graphics/sprites/player_male_base.xml", 0);
+            newBaseSprite = new AnimatedSprite(
+                    "graphics/sprites/player_male_base.xml");
         }
         else
         {
-            mSprites[BASE_SPRITE] = new AnimatedSprite(
-                    "graphics/sprites/player_female_base.xml", 0);
+            newBaseSprite = new AnimatedSprite(
+                    "graphics/sprites/player_female_base.xml");
         }
 
-        Being::setSex(sex);
-        resetAnimations();
+        delete mSprites[BASE_SPRITE];
+        mSprites[BASE_SPRITE] = newBaseSprite;
+
+        // Reload equipment
+        for (int i = 1; i < VECTOREND_SPRITE; i++)
+        {
+            if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
+            {
+                AnimatedSprite *newEqSprite = new AnimatedSprite(
+                        "graphics/sprites/" + EquipmentDB::get(
+                            mEquipmentSpriteIDs.at(i))->getSprite(sex));
+                delete mSprites[i];
+                mSprites[i] = newEqSprite;
+            }
+        }
     }
 }
-
 
 void
 Player::setWeapon(Uint16 weapon)
 {
     if (weapon != mWeapon)
     {
-        delete mSprites[WEAPON_SPRITE];
-        mSprites[WEAPON_SPRITE] = NULL;
+        AnimatedSprite *newWeaponSprite = NULL;
 
         switch (weapon)
         {
             case 0:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-fist.xml", 0);
+                newWeaponSprite =
+                    new AnimatedSprite("graphics/sprites/weapon-fist.xml");
                 break;
             case 1:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-dagger.xml", 0);
+                newWeaponSprite =
+                    new AnimatedSprite("graphics/sprites/weapon-dagger.xml");
                 break;
             case 2:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-bow.xml", 0);
+                newWeaponSprite =
+                    new AnimatedSprite("graphics/sprites/weapon-bow.xml");
                 break;
             case 3:
-                mSprites[WEAPON_SPRITE] = new AnimatedSprite("graphics/sprites/weapon-scythe.xml", 0);
+                newWeaponSprite =
+                    new AnimatedSprite("graphics/sprites/weapon-scythe.xml");
                 break;
         }
+
+        delete mSprites[WEAPON_SPRITE];
+        mSprites[WEAPON_SPRITE] = newWeaponSprite;
     }
     Being::setWeapon(weapon);
 }
-
 
 void
 Player::setHairColor(Uint16 color)
@@ -128,7 +147,6 @@ Player::setHairColor(Uint16 color)
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
-        resetAnimations();
 
         setAction(mAction);
     }
@@ -148,7 +166,6 @@ Player::setHairStyle(Uint16 style)
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
-        resetAnimations();
 
         setAction(mAction);
     }
@@ -157,55 +174,35 @@ Player::setHairStyle(Uint16 style)
 }
 
 void
-Player::setVisibleEquipment(Uint8 slot, Uint8 id)
+Player::setVisibleEquipment(Uint8 slot, int id)
 {
-    // Translate eAthena specific slot
-    Uint8 position = 0;
-    switch (slot) {
-        case 3:
-            position = BOTTOMCLOTHES_SPRITE;
-            break;
-        case 4:
-            position = HAT_SPRITE;
-            break;
-        case 5:
-            position = TOPCLOTHES_SPRITE;
-            break;
-    }
-
     // id = 0 means unequip
     if (id == 0)
     {
-        delete mSprites[position];
-        mSprites[position] = NULL;
+        delete mSprites[slot];
+        mSprites[slot] = NULL;
     }
     else
     {
-        char stringId[4];
-        sprintf(stringId, "%03i", id);
+        AnimatedSprite *equipmentSprite;
 
-        AnimatedSprite *equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/item" + toString(stringId) + ".xml", 0);
+        if (mSex == 0)
+        {
+            equipmentSprite = new AnimatedSprite(
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0));
+        }
+        else {
+            equipmentSprite = new AnimatedSprite(
+                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1));
+        }
+
         equipmentSprite->setDirection(getSpriteDirection());
 
-        delete mSprites[position];
-        mSprites[position] = equipmentSprite;
-        resetAnimations();
+        delete mSprites[slot];
+        mSprites[slot] = equipmentSprite;
 
         setAction(mAction);
     }
 
     Being::setVisibleEquipment(slot, id);
-}
-
-void
-Player::resetAnimations()
-{
-    for (int i = 0; i < VECTOREND_SPRITE; i++)
-    {
-        if (mSprites[i] != NULL)
-        {
-            mSprites[i]->reset();
-        }
-    }
 }

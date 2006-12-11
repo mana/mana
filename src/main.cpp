@@ -76,7 +76,10 @@
 
 #include "net/gameserver/gameserver.h"
 
+#include "resources/equipmentdb.h"
 #include "resources/image.h"
+#include "resources/itemdb.h"
+#include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
 
@@ -87,8 +90,6 @@
 char n_character;
 std::string token;
 
-std::vector<Spriteset *> hairset;
-Spriteset *playerset[2];
 Graphics *graphics;
 
 unsigned char state;
@@ -171,6 +172,7 @@ void initHomeDir()
 void initConfiguration(const Options &options)
 {
     // Fill configuration with defaults
+    logger->log("Initializing configuration...");
     config.setValue("host", "animesites.de");
     config.setValue("port", 9601);
     config.setValue("hwaccel", 0);
@@ -219,6 +221,7 @@ void initConfiguration(const Options &options)
 void init_engine()
 {
     // Initialize SDL
+    logger->log("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
         std::cerr << "Could not initialize SDL: " <<
             SDL_GetError() << std::endl;
@@ -288,26 +291,6 @@ void init_engine()
     // Initialize for drawing
     graphics->_beginDraw();
 
-    playerset[0] = resman->getSpriteset(
-            "graphics/sprites/player_male_base.png", 64, 64);
-    if (!playerset[0]) logger->error("Couldn't load male player spriteset!");
-    playerset[1] = resman->getSpriteset(
-            "graphics/sprites/player_female_base.png", 64, 64);
-    if (!playerset[1]) logger->error("Couldn't load female player spriteset!");
-
-
-    for (int i = 0; i < NR_HAIR_STYLES - 1; i++)
-    {
-        Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
-                "graphics/sprites/hairstyle" + toString(i + 1) + ".png",
-                40, 40);
-        if (!tmp) {
-            logger->error("Unable to load hairstyle");
-        } else {
-            hairset.push_back(tmp);
-        }
-    }
-
     gui = new Gui(graphics);
     state = STATE_CHOOSE_SERVER; /**< Initial game state */
 
@@ -316,8 +299,9 @@ void init_engine()
         if (config.getValue("sound", 0) == 1) {
             sound.init();
         }
-        sound.setSfxVolume((int)config.getValue("sfxVolume", defaultSfxVolume));
-        sound.setMusicVolume((int)config.getValue("musicVolume",
+        sound.setSfxVolume((int) config.getValue("sfxVolume",
+                    defaultSfxVolume));
+        sound.setMusicVolume((int) config.getValue("musicVolume",
                     defaultMusicVolume));
     }
     catch (const char *err) {
@@ -325,6 +309,11 @@ void init_engine()
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
+
+    // Load XML databases
+    EquipmentDB::load();
+    ItemDB::load();
+    MonsterDB::load();
 }
 
 /** Clear the engine */
@@ -334,18 +323,16 @@ void exit_engine()
     delete gui;
     delete graphics;
 
-    std::for_each(hairset.begin(), hairset.end(),
-            std::mem_fun(&Spriteset::decRef));
-    hairset.clear();
-
-    playerset[0]->decRef();
-    playerset[1]->decRef();
-
     // Shutdown libxml
     xmlCleanupParser();
 
     // Shutdown sound
     sound.close();
+
+    // Unload XML databases
+    EquipmentDB::unload();
+    ItemDB::unload();
+    MonsterDB::unload();
 
     ResourceManager::deleteInstance();
 }
@@ -599,7 +586,7 @@ int main(int argc, char *argv[])
         gui->logic();
         Net::flush();
 
-        if (state > STATE_CONNECT_ACCOUNT  && state < STATE_GAME)
+        if (state > STATE_CONNECT_ACCOUNT && state < STATE_GAME)
         {
             if (!accountServerConnection->isConnected())
             {

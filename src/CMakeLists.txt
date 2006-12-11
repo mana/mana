@@ -155,6 +155,8 @@ SET(SRCS
     gui/vbox.h
     gui/windowcontainer.cpp
     gui/windowcontainer.h
+    gui/viewport.cpp
+    gui/viewport.h
     gui/window.cpp
     gui/window.h
     gui/widgets/dropdown.cpp
@@ -216,17 +218,24 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/buddylist.cpp
     resources/buddylist.h
+    resources/equipmentdb.cpp
+    resources/equipmentdb.h
+    resources/equipmentinfo.h
     resources/image.cpp
     resources/image.h
     resources/imagewriter.cpp
     resources/imagewriter.h
     resources/iteminfo.cpp
+    resources/itemdb.cpp
+    resources/itemdb.h
     resources/iteminfo.h
-    resources/itemmanager.cpp
-    resources/itemmanager.h
     resources/mapreader.cpp
     resources/mapreader.h
     resources/music.cpp
+    resources/monsterdb.h
+    resources/monsterdb.cpp
+    resources/monsterinfo.h
+    resources/monsterinfo.cpp
     resources/music.h
     resources/openglsdlimageloader.cpp
     resources/openglsdlimageloader.h
@@ -239,9 +248,15 @@ SET(SRCS
     resources/soundeffect.cpp
     resources/soundeffect.h
     resources/spriteset.cpp
+    resources/spritedef.h
+    resources/spritedef.cpp
     resources/spriteset.h
     utils/dtor.h
     utils/tostring.h
+    utils/xml.cpp
+    utils/xml.h
+    action.cpp
+    action.h
     animatedsprite.cpp
     animatedsprite.h
     animation.cpp

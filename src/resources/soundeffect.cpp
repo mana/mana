@@ -23,6 +23,8 @@
 
 #include "soundeffect.h"
 
+#include "../log.h"
+
 SoundEffect::SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect):
     Resource(idPath),
     mChunk(soundEffect)
@@ -41,13 +43,18 @@ SoundEffect::load(void *buffer, unsigned int bufferSize,
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
-    // Use Mix_LoadWAV_RW to load the raw music data
-    Mix_Chunk *tmpSoundEffect = Mix_LoadWAV_RW(rw, 0);
+    // Load the music data and free the RWops structure
+    Mix_Chunk *tmpSoundEffect = Mix_LoadWAV_RW(rw, 1);
 
-    // Now free the SDL_RWops data
-    SDL_FreeRW(rw);
-
-    return new SoundEffect(idPath, tmpSoundEffect);
+    if (tmpSoundEffect)
+    {
+        return new SoundEffect(idPath, tmpSoundEffect);
+    }
+    else
+    {
+        logger->log("Error while loading sound effect (%s)", idPath.c_str());
+        return NULL;
+    }
 }
 
 bool

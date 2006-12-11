@@ -68,14 +68,12 @@ class Being : public Sprite
         };
 
         enum Action {
-            STAND          =  0,
-            WALK           =  1,
-            MONSTER_ATTACK =  5,
-            SIT            =  7,
-            DEAD           =  8,
-            ATTACK         =  9,
-            MONSTER_DEAD   =  9,
-            HIT            = 17
+            STAND,
+            WALK,
+            ATTACK,
+            SIT,
+            DEAD,
+            HURT
         };
 
         enum Sprite {
@@ -101,7 +99,6 @@ class Being : public Sprite
         std::string mName;      /**< Name of character */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
-        Uint8 mDirection;       /**< Facing direction */
         Uint8 mAction;          /**< Action the being is performing */
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
@@ -199,7 +196,7 @@ class Being : public Sprite
          * Sets visible equipments for this being.
          */
         virtual void
-        setVisibleEquipment(Uint8 slot, Uint8 id);
+        setVisibleEquipment(Uint8 slot, int id);
 
         /**
          * Sets the sex for this being.
@@ -216,7 +213,7 @@ class Being : public Sprite
         /**
          * Makes this being take the next step of his path.
          */
-        void
+        virtual void
         nextStep();
 
         /**
@@ -301,7 +298,13 @@ class Being : public Sprite
         /**
          * Sets the current action.
          */
-        void setAction(Uint8 action);
+        virtual void
+        setAction(Uint8 action);
+
+        /**
+         * Returns the current direction.
+         */
+        Uint8 getDirection() const { return mDirection; }
 
         /**
          * Sets the current direction.
@@ -314,7 +317,7 @@ class Being : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         virtual void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) const;
 
         /**
          * Returns the pixel X coordinate.
@@ -343,7 +346,6 @@ class Being : public Sprite
         getYOffset() const { return getOffset(mStepY); }
 
         std::auto_ptr<Equipment> mEquipment;
-        int mVisibleEquipment[6];       /**< Visible equipments */
 
     protected:
         /**
@@ -363,6 +365,7 @@ class Being : public Sprite
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
+        Uint8 mDirection;               /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         SpriteIterator mSpriteIterator;
 
@@ -376,11 +379,14 @@ class Being : public Sprite
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
+        std::vector<int> mEquipmentSpriteIDs;
 
     private:
+        int
+        getOffset(int step) const;
+
         Sint16 mStepX, mStepY;
         Uint16 mStepTime;
-        int getOffset(int) const;
 };
 
 #endif

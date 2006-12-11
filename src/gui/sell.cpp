@@ -37,7 +37,7 @@
 #include "../npc.h"
 
 #include "../resources/iteminfo.h"
-#include "../resources/itemmanager.h"
+#include "../resources/itemdb.h"
 
 #include "../utils/tostring.h"
 
@@ -232,6 +232,7 @@ void SellDialog::action(const std::string &eventId, gcn::Widget *widget)
 
         mMaxItems -= mAmountItems;
         mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
+        mPlayerMoney += (mAmountItems * mShopItems->at(selectedItem).price);
         mAmountItems = 0;
         mSlider->setValue(0);
         mSlider->setEnabled(mMaxItems != 0);
@@ -274,7 +275,7 @@ void SellDialog::selectionChanged(const SelectionEvent &event)
     if (selectedItem > -1)
     {
         const ItemInfo &info =
-            itemDb->getItemInfo(mShopItems->at(selectedItem).id);
+            ItemDB::get(mShopItems->at(selectedItem).id);
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());

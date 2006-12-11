@@ -29,6 +29,7 @@
 #include <string>
 
 #include <guichan/sdl/sdlinput.hpp>
+#include <guichan/exception.hpp>
 
 #include "beingmanager.h"
 #include "configuration.h"
@@ -42,23 +43,25 @@
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
-#include "gui/chargedialog.h"
+//#include "gui/chargedialog.h"
 #include "gui/chat.h"
 #include "gui/confirm_dialog.h"
+#include "gui/debugwindow.h"
 #include "gui/equipmentwindow.h"
+#include "gui/gui.h"
 #include "gui/help.h"
 #include "gui/inventorywindow.h"
+#include "gui/menuwindow.h"
 #include "gui/minimap.h"
+#include "gui/ministatus.h"
 #include "gui/npclistdialog.h"
 #include "gui/npc_text.h"
 #include "gui/sell.h"
 #include "gui/setup.h"
 #include "gui/skill.h"
-#include "gui/menuwindow.h"
 #include "gui/status.h"
-#include "gui/ministatus.h"
 #include "gui/trade.h"
-#include "gui/debugwindow.h"
+#include "gui/viewport.h"
 
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
@@ -85,7 +88,7 @@ bool done = false;
 volatile int tick_time;
 volatile int fps = 0, frame = 0;
 Engine *engine = NULL;
-Joystick *joystick;
+Joystick *joystick = NULL;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
@@ -106,7 +109,7 @@ SkillDialog *skillDialog;
 Setup* setupWindow;
 Minimap *minimap;
 EquipmentWindow *equipmentWindow;
-ChargeDialog *chargeDialog;
+//ChargeDialog *chargeDialog;
 TradeWindow *tradeWindow;
 //BuddyWindow *buddyWindow;
 HelpWindow *helpWindow;
@@ -182,47 +185,23 @@ void createGuiWindows()
     setupWindow = new Setup();
     minimap = new Minimap();
     equipmentWindow = new EquipmentWindow(player_node->mEquipment.get());
-    chargeDialog = new ChargeDialog();
+    //chargeDialog = new ChargeDialog();
     tradeWindow = new TradeWindow;
     //buddyWindow = new BuddyWindow();
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
 
     // Initialize window positions
-    int screenW = graphics->getWidth();
-    int screenH = graphics->getHeight();
+    //chargeDialog->setPosition(
+    //        graphics->getWidth() - 5 - chargeDialog->getWidth(),
+    //        graphics->getHeight() - chargeDialog->getHeight() - 15);
 
-    chargeDialog->setPosition(
-            screenW - 5 - chargeDialog->getWidth(),
-            screenH - chargeDialog->getHeight() - 15);
-
-    /*buddyWindow->setPosition(10,
-      minimap->getHeight() + 30);*/
+    //buddyWindow->setPosition(10, minimap->getHeight() + 30);
 
     // Set initial window visibility
-//    chatWindow->setSticky(true);
-//    miniStatusWindow->setSticky(true);
-//    menuWindow->setSticky(true);
-
     chatWindow->setVisible(true);
     miniStatusWindow->setVisible(true);
-    statusWindow->setVisible(false);
     menuWindow->setVisible(true);
-    buyDialog->setVisible(false);
-    sellDialog->setVisible(false);
-    buySellDialog->setVisible(false);
-    inventoryWindow->setVisible(false);
-    npcTextDialog->setVisible(false);
-    npcListDialog->setVisible(false);
-    skillDialog->setVisible(false);
-    //newSkillWindow->setVisible(false);
-    setupWindow->setVisible(false);
-    equipmentWindow->setVisible(false);
-    chargeDialog->setVisible(false);
-    tradeWindow->setVisible(false);
-    //buddyWindow->setVisible(false);
-    helpWindow->setVisible(false);
-    debugWindow->setVisible(false);
 }
 
 /**
@@ -244,7 +223,7 @@ void destroyGuiWindows()
     delete setupWindow;
     delete minimap;
     delete equipmentWindow;
-    delete chargeDialog;
+    //delete chargeDialog;
     //delete newSkillWindow;
     delete tradeWindow;
     //delete buddyWindow;
@@ -511,13 +490,13 @@ void Game::handleInput()
                         // If none below the player, try the tile in front of
                         // the player
                         if (!item) {
-                            if (player_node->mDirection & Being::UP)
+                            if (player_node->getDirection() & Being::UP)
                                 y--;
-                            if (player_node->mDirection & Being::DOWN)
+                            if (player_node->getDirection() & Being::DOWN)
                                 y++;
-                            if (player_node->mDirection & Being::LEFT)
+                            if (player_node->getDirection() & Being::LEFT)
                                 x--;
-                            if (player_node->mDirection & Being::RIGHT)
+                            if (player_node->getDirection() & Being::RIGHT)
                                 x++;
 
                             item = floorItemManager->findByCoordinates(x, y);
@@ -584,7 +563,7 @@ void Game::handleInput()
 
                     case SDLK_f:
                         // Find path to mouse (debug purpose)
-                        engine->toggleDebugPath();
+                        viewport->toggleDebugPath();
                         used = true;
                         break;
                 }
@@ -621,8 +600,17 @@ void Game::handleInput()
         }
 
         // Push input to GUI when not used
-        if (!used) {
-            guiInput->pushInput(event);
+        if (!used)
+        {
+            try
+            {
+                guiInput->pushInput(event);
+            }
+            catch (gcn::Exception e)
+            {
+                const char* err = e.getMessage().c_str();
+                logger->log("Warning: guichan input exception: %s", err);
+            }
         }
 
     } // End while
@@ -633,35 +621,35 @@ void Game::handleInput()
         !chatWindow->isFocused())
     {
         Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
-        unsigned char Direction = 0;
+        unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
         if (keys[SDLK_UP] || keys[SDLK_KP8] ||
                 keys[SDLK_KP7] || keys[SDLK_KP9] ||
                 joystick && joystick->isUp())
         {
-            Direction |= Being::UP;
+            direction |= Being::UP;
         }
         else if (keys[SDLK_DOWN] || keys[SDLK_KP2] ||
                 keys[SDLK_KP1] || keys[SDLK_KP3] ||
                 joystick && joystick->isDown())
         {
-            Direction |= Being::DOWN;
+            direction |= Being::DOWN;
         }
         if (keys[SDLK_LEFT] || keys[SDLK_KP4] ||
                 keys[SDLK_KP1] || keys[SDLK_KP7] ||
                 joystick && joystick->isLeft())
         {
-            Direction |= Being::LEFT;
+            direction |= Being::LEFT;
         }
         else if (keys[SDLK_RIGHT] || keys[SDLK_KP6] ||
                 keys[SDLK_KP3] || keys[SDLK_KP9] ||
                 joystick && joystick->isRight())
         {
-            Direction |= Being::RIGHT;
+            direction |= Being::RIGHT;
         }
 
-        player_node->walk(Direction);
+        player_node->walk(direction);
 
         // Attacking monsters
         if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||
@@ -675,13 +663,13 @@ void Game::handleInput()
             {
                 Uint16 targetX = x, targetY = y;
 
-                if (player_node->mDirection & Being::UP)
+                if (player_node->getDirection() & Being::UP)
                     targetY--;
-                if (player_node->mDirection & Being::DOWN)
+                if (player_node->getDirection() & Being::DOWN)
                     targetY++;
-                if (player_node->mDirection & Being::LEFT)
+                if (player_node->getDirection() & Being::LEFT)
                     targetX--;
-                if (player_node->mDirection & Being::RIGHT)
+                if (player_node->getDirection() & Being::RIGHT)
                     targetX++;
 
                 // Attack priority is: Monster, Player, auto target

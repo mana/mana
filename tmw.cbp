@@ -21,31 +21,35 @@
 					<Add option="-DUSE_OPENGL"/>
 				</Compiler>
 				<Linker>
-					<Add library="mingw32"/>
 					<Add library="enet"/>
-					<Add library="ws2_32"/>
-					<Add library="winmm"/>
-					<Add library="opengl32"/>
 					<Add library="guichan"/>
 					<Add library="guichan_sdl"/>
 					<Add library="guichan_opengl"/>
-					<Add library="SDL_image.dll"/>
-					<Add library="SDL_mixer.dll"/>
+					<Add library="wsock32"/>
+					<Add library="SDL_image"/>
+					<Add library="SDL_mixer"/>
+					<Add library="mingw32"/>
 					<Add library="SDLmain"/>
 					<Add library="SDL.dll"/>
 					<Add library="xml2.dll"/>
+					<Add library="opengl32"/>
 					<Add library="png12.dll"/>
 					<Add library="z.dll"/>
 					<Add library="physfs"/>
-					<Add library="curl"/>
+					<Add library="curl.dll"/>
 				</Linker>
 			</Target>
 		</Build>
-		<Linker>
-			<Add library="mingw32"/>
-			<Add library="SDLmain"/>
-			<Add library="SDL"/>
-		</Linker>
+		<Unit filename="src\action.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\action.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\animatedsprite.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -772,6 +776,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\viewport.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\viewport.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\widgets\dropdown.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1216,6 +1230,22 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\resources\equipmentdb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\equipmentdb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\equipmentinfo.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\resources\image.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1236,6 +1266,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\resources\itemdb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\itemdb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\resources\iteminfo.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1246,21 +1286,31 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\resources\itemmanager.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\itemmanager.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\resources\mapreader.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\resources\mapreader.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\monsterdb.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\monsterdb.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\monsterinfo.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\monsterinfo.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1326,6 +1376,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\resources\spritedef.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\spritedef.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\resources\spriteset.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1376,6 +1436,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\utils\tostring.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\xml.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\xml.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

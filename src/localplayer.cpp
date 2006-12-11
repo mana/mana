@@ -30,6 +30,7 @@
 #include "item.h"
 #include "main.h"
 #include "sound.h"
+#include "log.h"
 
 #include "net/gameserver/player.h"
 
@@ -65,9 +66,19 @@ void LocalPlayer::logic()
 
 void LocalPlayer::nextStep()
 {
-    if (mPath.empty() && mPickUpTarget) {
-        pickUp(mPickUpTarget);
+    if (mPath.empty())
+    {
+        if (mPickUpTarget)
+        {
+            pickUp(mPickUpTarget);
+        }
+
+        if (mWalkingDir)
+        {
+            walk(mWalkingDir);
+        }
     }
+
     Player::nextStep();
 }
 
@@ -161,10 +172,15 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
+    if (mWalkingDir != dir)
+    {
+        mWalkingDir = dir;
+    }
+
     if (!mMap || !dir)
         return;
 
-    if (mAction == WALK)
+    if (mAction == WALK && !mPath.empty())
     {
         // Just finish the current action, otherwise we get out of sync
         Being::setDestination(mX, mY);
@@ -198,10 +214,8 @@ void LocalPlayer::walk(unsigned char dir)
     }
     else if (dir)
     {
-        // Update the player direction to where he wants to walk
-        // Warning: Not communicated to the server yet
-
         // If the being can't move, just change direction
+        // TODO: Communicate this to the server (waiting on tmwserv)
         setDirection(dir);
     }
 }
@@ -216,10 +230,16 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
     x = tx * 32 + fx;
     y = ty * 32 + fy;
 
-    Net::GameServer::Player::walk(x, y);
+    // Only send a new message to the server when destination changes
+    if (x != mDestX || y != mDestY)
+    {
+        mDestX = x;
+        mDestY = y;
+
+        Net::GameServer::Player::walk(x, y);
+    }
 
     mPickUpTarget = NULL;
-
     Being::setDestination(x, y);
 }
 

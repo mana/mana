@@ -32,7 +32,7 @@
 
 #include "../npc.h"
 
-#include "../resources/itemmanager.h"
+#include "../resources/itemdb.h"
 
 #include "../utils/tostring.h"
 
@@ -266,7 +266,7 @@ void BuyDialog::selectionChanged(const SelectionEvent &event)
     if (selectedItem > -1)
     {
         const ItemInfo &info =
-            itemDb->getItemInfo(mShopItems->at(selectedItem).id);
+            ItemDB::get(mShopItems->at(selectedItem).id);
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());

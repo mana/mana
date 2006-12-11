@@ -26,8 +26,6 @@
 
 #include <iosfwd>
 
-extern int camera_x, camera_y;
-
 class Graphics;
 class Map;
 
@@ -67,20 +65,8 @@ class Engine
          */
         void draw(Graphics *graphics);
 
-        /**
-         * Toggles whether the path debug graphics are shown
-         */
-        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; };
-
     private:
-        bool mShowDebugPath;
-
         Map *mCurrentMap;
-
-        int scrollRadius;
-        int scrollLaziness;
-        float view_x; // current viewpoint in pixels
-        float view_y; // current viewpoint in pixels
 };
 
 extern Engine *engine;

@@ -38,7 +38,7 @@ class FindBeingFunctor
             Uint16 other_y = y + ((being->getType() == Being::NPC) ? 1 : 0);
             return (being->mX / 32 == x &&
                     (being->mY / 32 == y || being->mY / 32 == other_y) &&
-                    being->mAction != Being::MONSTER_DEAD &&
+                    being->mAction != Being::DEAD &&
                     (type == Being::UNKNOWN || being->getType() == type));
         }
 
@@ -64,20 +64,24 @@ Being* BeingManager::createBeing(Uint16 id, Uint16 job)
     Being *being;
 
     if (job < 10)
-    {
         being = new Player(id, job, mMap);
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(0x0094);
-        outMsg.writeLong(id);
-        */
-    }
     else if (job >= 100 & job < 200)
         being = new NPC(id, job, mMap);
     else if (job >= 1000 && job < 1200)
         being = new Monster(id, job, mMap);
     else
         being = new Being(id, job, mMap);
+
+    // Player or NPC
+    if (job < 200)
+    {
+        // XXX Convert for new server
+        /*
+        MessageOut outMsg(mNetwork);
+        outMsg.writeInt16(0x0094);
+        outMsg.writeInt32(id);//readLong(2));
+        */
+    }
 
     mBeings.push_back(being);
 
@@ -127,7 +131,8 @@ void BeingManager::logic()
 
         being->logic();
 
-        /*if (being->mAction == Being::MONSTER_DEAD && being->mFrame >= 20)
+        /*
+        if (being->mAction == Being::DEAD && being->mFrame >= 20)
         {
             delete being;
             i = mBeings.erase(i);
@@ -168,7 +173,6 @@ Being* BeingManager::findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
         if ((being->getType() == type || type == Being::UNKNOWN)
                 && (d < dist || closestBeing == NULL)   // it is closer
                 && being->mAction != Being::DEAD        // no dead beings
-                && being->mAction != Being::MONSTER_DEAD
            )
         {
             dist = d;

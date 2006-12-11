@@ -174,6 +174,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
 
     if (mServerNameField->getText().empty()) {
         mServerNameField->requestFocus();

@@ -1,15 +1,304 @@
+2006-12-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/graphics/sprites/npcs.png: Added pirate NPC.
+
+2006-12-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/sprite.h, src/gui/playerbox.h, src/gui/char_select.cpp,
+	src/gui/playerbox.cpp, src/gui/passwordfield.h,src/gui/char_select.h,
+	src/gui/textfield.h, src/main.cpp, src/being.cpp, src/player.h,
+	src/floor_item.h, src/being.h: Use new animation system in character
+	selection/creation. Shows equipment and allowed for some cleanup. Had
+	a bit of help from the patch by VictorSan.
+
+2006-12-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/base64.cpp, src/base64.h, src/resources/mapreader.cpp:
+	Downgraded to base64 codec from PHP 3 to resolve licensing issues.
+
+2006-12-06  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-12-06  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp: Fixed crashs when changing equipment.
+	* data/graphics/tiles/desert1.png, data/graphics/tiles/desert2.png:
+	More tiling related fixes at the cliffs.
+
+2006-12-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/item_amount.cpp: Fixed visibility of item amount window.
+
+2006-12-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert1.png: Improved the tiling behavior
+	of the cliffs (still not gridless but at least the edges fit
+	together in the most common situations)
+
+2006-12-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/engine.h, src/gui/windowcontainer.h,
+	src/gui/viewport.cpp, src/gui/gui.cpp, src/gui/gui.h,
+	src/gui/debugwindow.cpp, src/gui/inventorywindow.cpp,
+	src/gui/viewport.h, src/engine.cpp, src/CMakeLists.txt,
+	src/Makefile.am: Introduced a new class Viewport which combines the
+	drawing code from Engine with the (rather misplaced) input handling
+	from the Gui class. Also, it's a Container itself which should allow
+	for extending it to show Guichan widgets on map coordinates.
+
+2006-12-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/sound.cpp, src/monster.cpp, src/sound.h,
+	src/resources/soundeffect.cpp, src/resources/resourcemanager.cpp:
+	Don't try to play empty strings as sounds, and don't return a
+	SoundEffect instance when Mix_Chunk loading failed.
+	* src/beingmanager.cpp, src/npc.cpp, src/npc.h: Show NPC names.
+	* src/game.cpp, src/gui/char_server.cpp, src/gui/window.cpp,
+	src/gui/login.cpp, src/gui/char_select.cpp, src/gui/ok_dialog.cpp,
+	src/gui/confirm_dialog.cpp, src/gui/ok_dialog.h, src/gui/window.h,
+	src/gui/confirm_dialog.h, src/gui/register.cpp: Windows now default
+	to invisible, since this seems the most common case.
+
+2006-12-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-leather-female.png: A little correction
+	at the female leather shirt by mangamaniac.
+
+2006-12-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp, src/being.h, src/being.cpp, src/monster.h,
+	src/gui/gui.cpp: Visible equipment slot numbers are now converted by
+	the beinghandler from eAthena to our system. No more distinction
+	between monster attacking and player attacking between beinghandler
+	and the being classes.
+	* src/being.cpp, src/monster.cpp, src/being.h, src/monster.h: Moved
+	the monster specific action handling into the monster class.
+	* monster.cpp, mosterinfo.cpp, monsterinfo.h: Monsters now make sounds
+	when they attack, gett hurt or die.
+	* src/being.cpp: Delayed the damage numbers a bit to synchronize them
+	better with the hurt sounds.
+	* data/monsters.xml, data/sfx//bat-dying1.ogg, data/sfx/bat-hit1.ogg,
+	data/sfx/bow_shoot_1.ogg, data/sfx/fire-goblin-hit1.ogg,
+	data/sfx/fire-goblin-hit2.ogg, data/sfx/fire-goblin-miss1.ogg,
+	data/sfx/fist-swish.ogg, data/sfx/flower-hit1.ogg,
+	data/sfx/flower-hit2.ogg, data/sfx/flower-miss1.ogg,
+	data/sfx/fluffy-hit1.ogg, data/sfx/fluffy-hit2.ogg,
+	data/sfx/fluffy-hit3.ogg, data/sfx/fluffy-hurt1.ogg,
+	data/sfx/fluffy-miss1.ogg, data/sfx/knife-hit1.ogg,
+	data/sfx/knife-miss1.ogg, data/sfx/levelup.ogg,
+	data/sfx/scorpion-hit1.ogg, data/sfx/scorpion-hit2.ogg,
+	data/sfx/scorpion-hit3.ogg, data/sfx/scorpion-hit4.ogg,
+	data/sfx/scorpion-miss1.ogg, data/sfx/short-sword-hit1.ogg,
+	data/sfx/short-sword-miss1.ogg, data/sfx/shroom-hit1.ogg,
+	data/sfx/slime-hit1.ogg, data/sfx/Makefile.AM,
+	data/sfx/CMakeLists.txt: Added a lot of sound effects by Cosmostrator.
+
+2006-11-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/Makefile.am: Fixed small trailing slash issue.
+	* src/player.cpp: Optimized setSex and setWeapon by first loading the
+	new sprite and then deleting the old one (prevents potentially
+	unnecessary reload).
+	* src/net/beinghandler.cpp: Optimized handling of player walk
+	messages, by first setting the gender right and then setting the
+	equipment. Gets rid of reload of complete equipment in the case of
+	female.
+
+2006-11-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-11-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/monster.cpp: Small fix to resource path.
+
+2006-11-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/equipment.h: Made getSprite return a constant
+	reference.
+	* src/resources/monsterdb.cpp, src/resources/monsterdb.h,
+	src/resources/monsterinfo.cpp, src/resources/monsterinfo.h,
+	src/Makefile.AM, src/CMakeLists.txt, src/main.cpp:
+	Added the MonsterDB namespace that reads the monsters.xml
+	and maps monster IDs to names, sprite definitions and sound effects.
+	* src/monster.cpp: Get sprite definition filenames from MonsterDB.
+	* src/engine.cpp: Show monster name when targeting a monster.
+	* data/monsters.xml, data/graphics/sprites/Makefile.AM,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/sprites/monster*:
+	Renamed all monster sprites to more associative names (whew, we got to
+	train some monkeys for tasks like that).
+
+2006-11-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tmw.cbp: Updated Code::Blocks project file.
+
+2006-11-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/log.cpp, src/util/wingettimeofday.h: Added implementation of
+	gettimeofday() for windows machines.
+
+2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/log.cpp: Higher precision log timestamps.
+	* src/graphics.cpp, src/gui/gui.cpp, src/openglgraphics.cpp,
+	src/main.cpp, src/resources/equipmentdb.cpp,
+	src/resources/resourcemanager.cpp: Added some additional log
+	statements.
+	* src/resources/itemdb.cpp: Removed usage of READ_PROP in favour of
+	XML::getProperty and updated log statements.
+	* src/resources/image.cpp: Added support for loading TGA images.
+
+2006-11-26  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/resources/resourcemanager.cpp: Remove unnecessary check for
+	file existance, loading will just fail with the correct error message.
+
+2006-11-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/being.cpp, src/net/beinghandler.cpp, src/being.h:
+	Made Being::mDirection protected, forcing the use of setDirection.
+	* src/npc.cpp, src/player.cpp, src/animatedsprite.h, src/monster.cpp,
+	src/resources/resourcemanager.h: Defaulted variant argument to 0 since
+	this is the most common situation.
+	* src/resources/spritedef.cpp, src/resources/spritedef.h: Some
+	refactoring, splitting up the loading into several methods, in
+	preparation of adding support for including other sprites.
+	* src/main.cpp: ItemDB needs to be unloaded before deleting the
+	resource manager instance, since ItemInfo refers to an Image.
+
+2006-11-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/engine.cpp, src/main.cpp,
+	src/player.cpp, src/player.h, src/resources/equipmentdb.h,
+	src/resources/equipmentdb.cpp, src/resources/equipmentinfo.h,
+	src/resources/itemdb.cpp, src/resources/itemdb.h,
+	data/graphics/images/error.png, data/graphics/sprites/error.xml:
+	Added the EquipmentDB namespace that reads the equipment.xml, maps
+	equipment IDs to sprite definition files and thus allows gender
+	specific equipment sprites.
+	* data/graphics/sprites/chest-leather-female.png,
+	data/graphics/sprites/chest-leather-male.png,
+	data/graphics/sprites/chest-leather-female.xml,
+	data/graphics/sprites/chest-leather-male.xml,
+	data/equipment.xml: Added and defined male and female leather shirt as
+	proof of concept of the gender specific equipment.
+	* data/graphics/images/Makefile.am, data/graphics/sprites/Makefile.am,
+	data/Makefile.am, src/Makefile.am,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt, data/CMakeLists.txt,
+	src/CMakeLists.txt: Updated Makefiles and CMake Lists.
+
+2006-11-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp, src/floor_item.cpp, src/item.h, src/main.cpp,
+	src/gui/buy.cpp, src/gui/popupmenu.cpp, src/gui/sell.cpp,
+	src/gui/shop.cpp, src/net/inventoryhandler.cpp,
+	src/resources/itemdb.cpp, src/resources/itemdb.h,
+	src/resources/iteminfo.h, src/resources/itemmanager.cpp,
+	src/resources/itemmanager.h: Refactored the Itemmanager class to an
+	ItemDB namespace.
+
+2006-11-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+
+2006-11-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/setup_joystick.cpp: Fixed joystick option to show enabled
+	when the joystick is enabled.
+	*  src/localplayer.cpp, src/game.cpp, src/action.h, src/action.cpp,
+	src/player.cpp, src/animatedsprite.h, src/being.cpp, src/animation.h,
+	src/monster.cpp, src/CMakeLists.txt, src/player.h,
+	src/animatedsprite.cpp, src/localplayer.h, src/animation.cpp,
+	src/Makefile.am, src/being.h, src/resources/resourcemanager.cpp,
+	src/resources/spritedef.cpp, src/resources/resourcemanager.h,
+	src/resources/spriteset.h, src/resources/spritedef.cpp: Separated
+	sprite definition from playback.
+
 2006-11-17  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/sprites/CMakeLists.txt: Fixed some filenames.
+
+2006-11-17  Wai Ling Tsang  <simotsa@gmail.com>
+
+	* src/gui/gui.cpp: Added mouse following ability/feature under
+	logic().
+	* src/gui/gui.h: Added mouseMotion(), mouseRelease() and private
+	variables for mouse following.
+
+2006-11-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/Woodland_village.png,
+	data/graphics/tiles/Woodland_village_x2.png,
+	data/graphics/tiles/Woodland_x2.png,
+	data/graphics/tiles/Makefile.AM,
+	data/graphics/tiles/CMakeList.txt,
+	data/maps/new_9-1.tmx.gz, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx.gz, data/maps/new_16-1.tmx.gz,
+	data/maps/new_17-1.tmx.gz, data/maps/new_18-1.tmx.gz,
+	data/maps/new_19-1.tmx.gz, data/maps/CMakeList.txt,
+	data/maps/Makefile.AM:
+	Added woodland village outdoor tileset and maps. Modified gates on
+	the nearby maps.
+
+2006-11-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.h, src/CMakeLists.txt, src/animatedsprite.cpp,
+	src/utils/xml.cpp, src/utils/xml.h, src/Makefile.am,
+	src/resources/mapreader.cpp: Separated getProperty method to an XML
+	utility namespace.
+
+2006-11-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+	* The Mana World.dev, tmw.cbp: Fixed dynamic linking of libcurl.
+
+2006-11-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/action.h, src/action.cpp, src/animation.h, src/CMakeLists.txt,
+	src/animatedsprite.cpp, src/animation.cpp, src/Makefile.am: Separated
+	Action class to its own module.
+	* src/action.h, src/action.cpp, src/animatedsprite.h, src/animation.h,
+	src/animatedsprite.cpp, src/animation.cpp: Resolve Image* of animation
+	phase at load time instead of storing just the spriteset index and
+	looking it up later (checking validity should still be added). Also
+	calculate animation length during loading instead of summing it up
+	each time it is requested.
+
+2006-11-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h: Made pathfinding algorithm cope better with
+	beings blocking the road. This is done by allowing walking over other
+	beings, but at an additional cost so that it is preferable to walk
+	around them.
+	* src/game.cpp: Worked around a Guichan exception thrown for mice with
+	many buttons (patch by Roel van Dijk).
 
 2006-11-11  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/Makefile.am: Fixed autotools configuration.
 
+2006-11-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.cpp, src/net/network.cpp, src/net/network.h,
+	The Mana World.dev, tmw.cbp: Fixed a conflict with Windows headers and
+	updated project files.
+
 2006-11-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* The Mana World.dev, tmw.cbp: Updated project files. Warning: Dev-Cpp
 	will now build objects in the source folder.
+
+2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/trade.cpp: Fixed money field to no longer hide below the
+	bottom of the window.
+	* src/CMakeLists.txt: Added shoplistbox.h/cpp files.
+	* src/gui/updatewindow.cpp: Fixed percentage indicator of update
+	window.
+	* src/main.cpp, src/net/beinghandler.cpp, src/net/skillhandler.cpp,
+	src/net/network.cpp: Changed some printf statements to log statements.
 
 2006-11-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -37,6 +326,7 @@
 	precisions about the total money in it.
 	* src/gui/shop.h, src/gui/shop.cpp, src/gui/sell.cpp: Fixes to Sell
 	dialog.
+	* src/gui/sell.cpp: Fixes the money value after selling something.
 
 2006-11-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -78,7 +368,7 @@
 
 2006-11-04  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/maps/new_17-1.tmx.gz, 
+	* data/maps/new_17-1.tmx.gz,
 	data/graphics/images/minimap_new_17-1.png,
 	data/graphics/images/Makefile.am,
 	data/graphics/images/CMakeLists.txt:

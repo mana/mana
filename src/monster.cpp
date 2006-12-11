@@ -25,6 +25,9 @@
 
 #include "animatedsprite.h"
 #include "game.h"
+#include "sound.h"
+
+#include "resources/monsterdb.h"
 
 #include "utils/tostring.h"
 
@@ -32,7 +35,8 @@
 Monster::Monster(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/monster" + toString(job - 1002) + ".xml", 0);
+    mSprites[BASE_SPRITE] = new AnimatedSprite(
+            "graphics/sprites/" + MonsterDB::get(job - 1002).getSprite());
 }
 
 Being::Type
@@ -41,3 +45,36 @@ Monster::getType() const
     return MONSTER;
 }
 
+void
+Monster::setAction(Uint8 action)
+{
+    SpriteAction currentAction = ACTION_INVALID;
+
+    switch (action)
+    {
+        case WALK:
+            currentAction = ACTION_WALK;
+            break;
+        case DEAD:
+            currentAction = ACTION_DEAD;
+            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_DIE));
+            break;
+        case ATTACK:
+            currentAction = ACTION_ATTACK;
+            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_HIT));
+            mSprites[BASE_SPRITE]->reset();
+            break;
+        case STAND:
+            currentAction = ACTION_STAND;
+            break;
+        case HURT:
+            // Not implemented yet
+            break;
+    }
+
+    if (currentAction != ACTION_INVALID)
+    {
+        mSprites[BASE_SPRITE]->play(currentAction);
+        mAction = action;
+    }
+}

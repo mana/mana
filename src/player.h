@@ -26,12 +26,14 @@
 
 #include "being.h"
 
-#include <string>
-
 class Graphics;
 class Map;
-class AnimatedSprite;
 
+/**
+ * A player being. Players have their name drawn beneath them. This class also
+ * implements player-specific loading of base sprite, hair sprite and equipment
+ * sprites.
+ */
 class Player : public Being
 {
     public:
@@ -56,18 +58,10 @@ class Player : public Being
         setHairStyle(Uint16 style);
 
         virtual void
-        setVisibleEquipment(Uint8 slot, Uint8 id);
+        setVisibleEquipment(Uint8 slot, int id);
 
         virtual void
         setWeapon(Uint16 weapon);
-
-    private:
-        /**
-         * Resets all animations associated with this player. This is used to
-         * synchronize the animations after a new one has been added.
-         */
-        void
-        resetAnimations();
 };
 
 #endif

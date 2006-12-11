@@ -36,7 +36,8 @@ class WindowContainer;
 
 
 /**
- * A window. This window can be dragged around and has a title bar.
+ * A window. This window can be dragged around and has a title bar. Windows are
+ * invisible by default.
  *
  * \ingroup GUI
  */

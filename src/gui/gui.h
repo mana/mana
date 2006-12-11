@@ -25,17 +25,13 @@
 #define _TMW_GUI
 
 #include <guichan/gui.hpp>
-#include <guichan/mouselistener.hpp>
 
 #include "../guichanfwd.h"
 
-class Being;
-class FloorItem;
 class GuiConfigListener;
 class Graphics;
 class Image;
-class Item;
-class PopupMenu;
+class Viewport;
 
 /**
  * \defgroup GUI Core GUI related classes (widgets)
@@ -50,7 +46,7 @@ class PopupMenu;
  *
  * \ingroup GUI
  */
-class Gui : public gcn::Gui, public gcn::MouseListener
+class Gui : public gcn::Gui
 {
     public:
         /**
@@ -77,12 +73,6 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         draw();
 
         /**
-         * Handles mouse press on map.
-         */
-        void
-        mousePress(int mx, int my, int button);
-
-        /**
          * Return game font
          */
         gcn::Font*
@@ -94,37 +84,17 @@ class Gui : public gcn::Gui, public gcn::MouseListener
         void
         setUseCustomCursor(bool customCursor);
 
-        /**
-         * Shows a popup for an item
-         * TODO Find some way to get rid of Item here
-         */
-        void showPopup(int x, int y, Item *item);
-
-        /**
-         * Shows a popup for a floor item
-         * TODO Find some way to get rid of FloorItem here
-         */
-        void showPopup(int x, int y, FloorItem *floorItem);
-
-        /**
-         * Shows a popup for a being
-         * TODO Find some way to get rid of Being here
-         */
-        void showPopup(int x, int y, Being *being);
-
     private:
         GuiConfigListener *mConfigListener;
         gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
         gcn::ImageLoader *mImageLoader;       /**< For loading images */
-        gcn::Font *mGuiFont;             /**< The global GUI font */
+        gcn::Font *mGuiFont;                  /**< The global GUI font */
         Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
-
-        PopupMenu *mPopup;                    /**< Popup window */
-        bool mPopupActive;
 };
 
 extern Gui *gui;                              /**< The GUI system */
+extern Viewport *viewport;                    /**< The viewport */
 extern gcn::SDLInput *guiInput;               /**< GUI input */
 
 /**

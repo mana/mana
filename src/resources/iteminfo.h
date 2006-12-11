@@ -33,8 +33,6 @@ class Image;
  */
 class ItemInfo
 {
-    friend class ItemManager;
-
     public:
         /**
          * Constructor.
@@ -48,6 +46,11 @@ class ItemInfo
             mSlot(0)
         {
         }
+
+        /**
+         * Destructor.
+         */
+        ~ItemInfo();
 
         void
         setArt(short art) { mArt = art; }
@@ -101,11 +104,6 @@ class ItemInfo
         getSlot() const { return mSlot; }
 
     protected:
-        /**
-         * Destructor.
-         */
-        ~ItemInfo();
-
         std::string mImageName;
 
         /* TODO (BL): I do not think the item info should keep a reference to

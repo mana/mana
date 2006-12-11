@@ -32,6 +32,7 @@
 #include "music.h"
 #include "soundeffect.h"
 #include "spriteset.h"
+#include "spritedef.h"
 
 #include "../log.h"
 
@@ -40,15 +41,33 @@ ResourceManager *ResourceManager::instance = NULL;
 
 ResourceManager::ResourceManager()
 {
+    logger->log("Initializing resource manager...");
 }
 
 ResourceManager::~ResourceManager()
 {
-    // Release any remaining spritesets first because they depend on images
+    // Release any remaining spritedefs first because they depend on spritesets
     ResourceIterator iter = mResources.begin();
     while (iter != mResources.end())
     {
-        if (dynamic_cast<Spriteset*>(iter->second) != NULL)
+        if (dynamic_cast<SpriteDef*>(iter->second) != 0)
+        {
+            cleanUp(iter->second);
+            ResourceIterator toErase = iter;
+            ++iter;
+            mResources.erase(toErase);
+        }
+        else
+        {
+            ++iter;
+        }
+    }
+
+    // Release any remaining spritesets first because they depend on images
+    iter = mResources.begin();
+    while (iter != mResources.end())
+    {
+        if (dynamic_cast<Spriteset*>(iter->second) != 0)
         {
             cleanUp(iter->second);
             ResourceIterator toErase = iter;
@@ -83,7 +102,7 @@ ResourceManager::cleanUp(Resource *res)
 bool
 ResourceManager::setWriteDir(const std::string &path)
 {
-    return (bool)PHYSFS_setWriteDir(path.c_str());
+    return (bool) PHYSFS_setWriteDir(path.c_str());
 }
 
 void
@@ -96,7 +115,7 @@ ResourceManager::addToSearchPath(const std::string &path, bool append)
 bool
 ResourceManager::mkdir(const std::string &path)
 {
-    return (bool)PHYSFS_mkdir(path.c_str());
+    return (bool) PHYSFS_mkdir(path.c_str());
 }
 
 bool
@@ -158,9 +177,9 @@ ResourceManager::get(const E_RESOURCE_TYPE &type, const std::string &idPath)
 
     free(buffer);
 
-    if (resource) {
+    if (resource)
+    {
         resource->incRef();
-
         mResources[idPath] = resource;
     }
 
@@ -215,6 +234,27 @@ ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
     return spriteset;
 }
 
+SpriteDef*
+ResourceManager::getSprite(const std::string &path, int variant)
+{
+    std::stringstream ss;
+    ss << path << "[" << variant << "]";
+    const std::string idPath = ss.str();
+
+    ResourceIterator resIter = mResources.find(idPath);
+
+    if (resIter != mResources.end()) {
+        resIter->second->incRef();
+        return dynamic_cast<SpriteDef*>(resIter->second);
+    }
+
+    SpriteDef *sprite = new SpriteDef(idPath, path, variant);
+    sprite->incRef();
+    mResources[idPath] = sprite;
+
+    return sprite;
+}
+
 void
 ResourceManager::release(const std::string &idPath)
 {
@@ -246,18 +286,13 @@ ResourceManager::deleteInstance()
 void*
 ResourceManager::loadFile(const std::string &fileName, int &fileSize)
 {
-    // If the file doesn't exist indicate failure
-    if (!PHYSFS_exists(fileName.c_str())) {
-        logger->log("Warning: %s not found!", fileName.c_str());
-        return NULL;
-    }
-
     // Attempt to open the specified file using PhysicsFS
     PHYSFS_file *file = PHYSFS_openRead(fileName.c_str());
 
     // If the handler is an invalid pointer indicate failure
     if (file == NULL) {
-        logger->log("Warning: %s failed to load!", fileName.c_str());
+        logger->log("Warning: Failed to load %s: %s",
+                fileName.c_str(), PHYSFS_getLastError());
         return NULL;
     }
 

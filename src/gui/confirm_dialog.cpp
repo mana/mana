@@ -61,6 +61,7 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         setLocationRelativeTo(getParent());
         getParent()->moveToTop(this);
     }
+    setVisible(true);
     yesButton->requestFocus();
 }
 

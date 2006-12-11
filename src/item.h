@@ -24,7 +24,7 @@
 #ifndef _ITEM_H_
 #define _ITEM_H_
 
-#include "resources/itemmanager.h"
+#include "resources/itemdb.h"
 
 /**
  * Represents one or more instances of a certain item type.
@@ -119,7 +119,7 @@ class Item
          * Returns information about this item type.
          */
         const ItemInfo&
-        getInfo() const { return itemDb->getItemInfo(mId); }
+        getInfo() const { return ItemDB::get(mId); }
 
     protected:
         int mId;              /**< Item type id. */

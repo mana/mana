@@ -47,7 +47,7 @@ class Sprite
          * partly with the clipping rectangle support.
          */
         virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) = 0;
+        draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
 
         /**
          * Returns the pixel Y coordinate of the sprite.

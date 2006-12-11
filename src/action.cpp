@@ -21,39 +21,46 @@
  *  $Id$
  */
 
-#ifndef _TMW_ITEM_MANAGER_H
-#define _TMW_ITEM_MANAGER_H
+#include "action.h"
 
-#include "iteminfo.h"
+#include <algorithm>
 
-#include <map>
+#include "animation.h"
+#include "utils/dtor.h"
 
-/**
- * Defines a class to load items database.
- */
-class ItemManager
+
+Action::Action()
 {
-    public:
-        /**
-         * Constructor.
-         */
-        ItemManager();
+}
 
-        /**
-         * Destructor.
-         */
-        ~ItemManager();
+Action::~Action()
+{
+    std::for_each(mAnimations.begin(), mAnimations.end(),
+                  make_dtor(mAnimations));
+}
 
-        const ItemInfo& getItemInfo(int id);
+Animation*
+Action::getAnimation(int direction) const
+{
+    Animations::const_iterator i = mAnimations.find(direction);
 
-    protected:
-        // Items database
-        typedef std::map<int, ItemInfo*> ItemInfos;
-        typedef ItemInfos::iterator ItemInfoIterator;
-        ItemInfos mItemInfos;
-        ItemInfo mUnknown;
-};
+    // When the direction isn't defined, try the default
+    if (i == mAnimations.end())
+    {
+        i = mAnimations.find(0);
+    }
 
-extern ItemManager *itemDb;
+    return (i == mAnimations.end()) ? NULL : i->second;
+}
 
-#endif
+void
+Action::setAnimation(int direction, Animation *animation)
+{
+    // Set first direction as default direction
+    if (mAnimations.empty())
+    {
+        mAnimations[0] = animation;
+    }
+
+    mAnimations[direction] = animation;
+}

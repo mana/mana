@@ -51,6 +51,7 @@ OkDialog::OkDialog(const std::string &title, const std::string &msg,
     add(okButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
     okButton->requestFocus();
 }
 

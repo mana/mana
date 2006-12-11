@@ -24,56 +24,34 @@
 #ifndef _TMW_ANIMATEDSPRITE_H
 #define _TMW_ANIMATEDSPRITE_H
 
+#include "resources/spritedef.h"
+
 #include <map>
 #include <string>
-#include <SDL_types.h>
 
-#include <libxml/tree.h>
-
-class Action;
 class Graphics;
-class Spriteset;
-
-enum SpriteAction
-{
-    ACTION_DEFAULT = 0,
-    ACTION_STAND,
-    ACTION_WALK,
-    ACTION_RUN,
-    ACTION_ATTACK,
-    ACTION_ATTACK_SWING,
-    ACTION_ATTACK_STAB,
-    ACTION_ATTACK_BOW,
-    ACTION_ATTACK_THROW,
-    ACTION_CAST_MAGIC,
-    ACTION_USE_ITEM,
-    ACTION_SIT,
-    ACTION_SLEEP,
-    ACTION_HURT,
-    ACTION_DEAD,
-    ACTION_INVALID
-};
-
-enum SpriteDirection
-{
-    DIRECTION_DEFAULT = 0,
-    DIRECTION_DOWN,
-    DIRECTION_UP,
-    DIRECTION_LEFT,
-    DIRECTION_RIGHT,
-    DIRECTION_INVALID
-};
+struct AnimationPhase;
 
 /**
- * Defines a class to load an animation.
+ * Animates a sprite by adding playback state.
  */
 class AnimatedSprite
 {
     public:
         /**
          * Constructor.
+         * @param sprite the sprite to animate
          */
-        AnimatedSprite(const std::string& animationFile, int variant);
+        AnimatedSprite(SpriteDef *sprite);
+
+        /**
+         * A convenience constructor, which will request the sprite to animate
+         * from the resource manager.
+         *
+         * @param filename the file of the sprite to animate
+         * @param variant  the sprite variant
+         */
+        AnimatedSprite(const std::string& filename, int variant = 0);
 
         /**
          * Destructor.
@@ -81,8 +59,7 @@ class AnimatedSprite
         ~AnimatedSprite();
 
         /**
-         * Resets the animated sprite. This is used to synchronize several
-         * animated sprites.
+         * Resets the animated sprite.
          */
         void
         reset();
@@ -97,84 +74,36 @@ class AnimatedSprite
          * Inform the animation of the passed time so that it can output the
          * correct animation phase.
          */
-        void update(int time);
+        void
+        update(int time);
 
         /**
          * Draw the current animation phase at the coordinates given in screen
          * pixels.
          */
         bool
-        draw(Graphics* graphics, Sint32 posX, Sint32 posY) const;
-
-        /**
-         * gets the width in pixels of the current animation phase.
-         */
-        int
-        getWidth() const;
-
-        /**
-         * gets the height in pixels of the current animation phase.
-         */
-        int
-        getHeight() const;
+        draw(Graphics* graphics, int posX, int posY) const;
 
         /**
          * Sets the direction.
          */
         void
-        setDirection(SpriteDirection direction)
-        {
-            mDirection = direction;
-        }
+        setDirection(SpriteDirection direction);
 
     private:
-        /**
-         * When there are no animations defined for the action "complete", its
-         * animations become a copy of those of the action "with".
-         */
-        void
-        substituteAction(SpriteAction complete, SpriteAction with);
+        bool
+        updateCurrentAnimation(unsigned int dt);
 
-        /**
-         * Gets an integer property from an xmlNodePtr.
-         *
-         * TODO: Same function is present in MapReader. Should probably be
-         * TODO: shared in a static utility class.
-         */
-        static int
-        getProperty(xmlNodePtr node, const char *name, int def);
+        SpriteDirection mDirection;    /**< The sprite direction. */
+        int mLastTime;                 /**< The last time update was called. */
 
-        /**
-         * Gets a string property from an xmlNodePtr.
-         */
-        static std::string
-        getProperty(xmlNodePtr node, const char *name, const std::string &def);
+        unsigned int mFrameIndex;      /**< The index of the current frame. */
+        unsigned int mFrameTime;       /**< The time since start of frame. */
 
-        /**
-         * Converts a string into a SpriteAction enum.
-         */
-        static SpriteAction
-        makeSpriteAction(const std::string &action);
-
-        /**
-         * Converts a string into a SpriteDirection enum.
-         */
-        static SpriteDirection
-        makeSpriteDirection(const std::string &direction);
-
-
-        typedef std::map<std::string, Spriteset*> Spritesets;
-        typedef Spritesets::iterator SpritesetIterator;
-
-        typedef std::map<SpriteAction, Action*> Actions;
-        typedef Actions::iterator ActionIterator;
-
-        Spritesets mSpritesets;
-        Actions mActions;
-        Action *mAction;
-        SpriteDirection mDirection;
-        int mLastTime;
-        float mSpeed;
+        SpriteDef *mSprite;            /**< The sprite definition. */
+        Action *mAction;               /**< The currently active action. */
+        Animation *mAnimation;         /**< The currently active animation. */
+        AnimationPhase *mFrame;        /**< The currently active frame. */
         std::string mAnimationFile;
 };
 

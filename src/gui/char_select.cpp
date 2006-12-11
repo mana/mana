@@ -83,7 +83,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
     mNameLabel = new gcn::Label("Name");
     mLevelLabel = new gcn::Label("Level");
     mMoneyLabel = new gcn::Label("Money");
-    mPlayerBox = new PlayerBox(0);
+    mPlayerBox = new PlayerBox();
 
     int w = 195;
     int h = 220;
@@ -116,8 +116,9 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
     add(mLevelLabel);
     add(mMoneyLabel);
 
-    mSelectButton->requestFocus();
     setLocationRelativeTo(getParent());
+    setVisible(true);
+    mSelectButton->requestFocus();
     updatePlayerInfo();
 }
 
@@ -171,7 +172,8 @@ void CharSelectDialog::updatePlayerInfo()
 {
     LocalPlayer *pi = mCharInfo->getEntry();
 
-    if (pi) {
+    if (pi)
+    {
         mNameLabel->setCaption(pi->getName());
         mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
         mMoneyLabel->setCaption("Money: " + toString(pi->mMoney));
@@ -181,22 +183,17 @@ void CharSelectDialog::updatePlayerInfo()
             mDelCharButton->setEnabled(true);
             mSelectButton->setEnabled(true);
         }
-        mPlayerBox->mHairStyle = pi->getHairStyle();
-        mPlayerBox->mHairColor = pi->getHairColor();
-        mPlayerBox->mSex = pi->getSex();
-        mPlayerBox->mShowPlayer = true;
-    } else {
+    }
+    else {
         mNameLabel->setCaption("Name");
         mLevelLabel->setCaption("Level");
         mMoneyLabel->setCaption("Money");
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
-
-        mPlayerBox->mHairStyle = 0;
-        mPlayerBox->mHairColor = 0;
-        mPlayerBox->mShowPlayer = false;
     }
+
+    mPlayerBox->setPlayer(pi);
 }
 
 void CharSelectDialog::attemptCharDelete()
@@ -240,6 +237,10 @@ std::string CharSelectDialog::getName()
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     Window("Create Character", true, parent), mSlot(slot)
 {
+    mPlayer = new Player(0, 0, NULL);
+    mPlayer->setHairStyle(rand() % NR_HAIR_STYLES + 1);
+    mPlayer->setHairColor(rand() % NR_HAIR_COLORS + 1);
+
     mNameField = new TextField("");
     mNameLabel = new gcn::Label("Name:");
     mNextHairColorButton = new Button(">", "nextcolor", this);
@@ -250,8 +251,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mHairStyleLabel = new gcn::Label("Hair Style:");
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
-    mPlayerBox = new PlayerBox(0);
-    mPlayerBox->mShowPlayer = true;
+    mPlayerBox = new PlayerBox(mPlayer);
 
     mNameField->setEventId("create");
 
@@ -290,6 +290,12 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     add(mCancelButton);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
+}
+
+CharCreateDialog::~CharCreateDialog()
+{
+    delete mPlayer;
 }
 
 void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
@@ -299,7 +305,9 @@ void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
             // Attempt to create the character
             mCreateButton->setEnabled(false);
             Net::AccountServer::Account::createCharacter(
-                    getName(), mPlayerBox->mHairStyle, mPlayerBox->mHairColor,
+                    getName(),
+                    mPlayer->getHairStyle(),
+                    mPlayer->getHairColor(),
                     0,   // gender
                     10,  // STR
                     10,  // AGI
@@ -318,20 +326,19 @@ void CharCreateDialog::action(const std::string &eventId, gcn::Widget *widget)
         scheduleDelete();
     }
     else if (eventId == "nextcolor") {
-        mPlayerBox->mHairColor++;
+        mPlayer->setHairColor(mPlayer->getHairColor() % NR_HAIR_COLORS + 1);
     }
     else if (eventId == "prevcolor") {
-        mPlayerBox->mHairColor += NR_HAIR_COLORS - 1;
+        int prevColor = mPlayer->getHairColor() + NR_HAIR_COLORS - 2;
+        mPlayer->setHairColor(prevColor % NR_HAIR_COLORS + 1);
     }
     else if (eventId == "nextstyle") {
-        mPlayerBox->mHairStyle++;
+        mPlayer->setHairStyle(mPlayer->getHairStyle() % NR_HAIR_STYLES + 1);
     }
     else if (eventId == "prevstyle") {
-        mPlayerBox->mHairStyle += NR_HAIR_STYLES - 1;
+        int prevStyle = mPlayer->getHairStyle() + NR_HAIR_STYLES - 2;
+        mPlayer->setHairStyle(prevStyle % NR_HAIR_STYLES + 1);
     }
-
-    mPlayerBox->mHairColor %= NR_HAIR_COLORS;
-    mPlayerBox->mHairStyle %= NR_HAIR_STYLES;
 }
 
 std::string CharCreateDialog::getName()

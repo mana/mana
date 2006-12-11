@@ -132,7 +132,7 @@ class ServerDialog : public Window, public gcn::ActionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const std::string &eventId, gcn::Widget *widget);
 
     private:
         gcn::TextField *mServerNameField;

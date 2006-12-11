@@ -7,6 +7,7 @@ ADD_SUBDIRECTORY(maps)
 ADD_SUBDIRECTORY(sfx)
 
 SET(FILES
+	equipment.xml
     items.xml
     )
 

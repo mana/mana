@@ -24,8 +24,7 @@
 #ifndef _TMW_ANIMATION_H
 #define _TMW_ANIMATION_H
 
-#include <list>
-#include <map>
+#include <vector>
 
 #include <libxml/tree.h>
 
@@ -34,10 +33,12 @@ class Spriteset;
 
 /**
  * A single frame in an animation, with a delay and an offset.
+ *
+ * TODO: Rename this struct to Frame
  */
 struct AnimationPhase
 {
-    int image;
+    Image *image;
     unsigned int delay;
     int offsetX;
     int offsetY;
@@ -56,105 +57,45 @@ class Animation
         Animation();
 
         /**
-         * Restarts the animation from the first frame.
-         */
-        void
-        reset();
-
-        /**
          * Appends a new animation at the end of the sequence
          */
         void
-        addPhase(int image, unsigned int delay, int offsetX, int offsetY);
+        addPhase(Image *image, unsigned int delay, int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation
-         * should not loop
+         * should not loop.
          */
         void
         addTerminator();
 
         /**
-         * Updates animation phase.
-         * true indicates a still running animation while false indicates a
-         * finished animation
+         * Returns the frame at the specified index.
          */
-        bool
-        update(unsigned int time);
-
-        int
-        getCurrentPhase() const;
+        AnimationPhase*
+        getFrame(int index) { return &(mAnimationPhases[index]); }
 
         /**
-         * Returns the x offset of the current frame.
+         * Returns the length of this animation in frames.
          */
-        int
-        getOffsetX() const { return iCurrentPhase->offsetX; };
+        unsigned int
+        getLength() const { return mAnimationPhases.size(); }
 
         /**
-         * Returns the y offset of the current frame.
+         * Returns the duration of this animation.
          */
         int
-        getOffsetY() const { return iCurrentPhase->offsetY; };
+        getDuration() const { return mDuration; }
 
         /**
-         * Returns the length of this animation.
+         * Determines whether the given animation frame is a terminator.
          */
-        int
-        getLength();
+        static bool
+        isTerminator(const AnimationPhase phase);
 
     protected:
-        static bool isTerminator(AnimationPhase);
-        std::list<AnimationPhase> mAnimationPhases;
-        std::list<AnimationPhase>::iterator iCurrentPhase;
-        unsigned int mTime;
-};
-
-/**
- * An action consists of several animations, one for each direction.
- */
-class Action
-{
-    public:
-        /**
-         * Constructor.
-         */
-        Action();
-
-        /**
-         * Destructor.
-         */
-        ~Action();
-
-        /**
-         * Sets the spriteset used by this action.
-         */
-        void
-        setSpriteset(Spriteset *spriteset) { mSpriteset = spriteset; }
-
-        /**
-         * Returns the spriteset used by this action.
-         */
-        Spriteset*
-        getSpriteset() const { return mSpriteset; }
-
-        void
-        setAnimation(int direction, Animation *animation);
-
-        /**
-         * Resets all animations associated with this action.
-         */
-        void
-        reset();
-
-        Animation*
-        getAnimation(int direction) const;
-
-    protected:
-        Spriteset *mSpriteset;
-        typedef std::map<int, Animation*> Animations;
-        typedef Animations::iterator AnimationIterator;
-        Animations mAnimations;
+        std::vector<AnimationPhase> mAnimationPhases;
+        int mDuration;
 };
 
 #endif

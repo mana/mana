@@ -23,7 +23,7 @@
 
 #include "playerbox.h"
 
-#include "../being.h"
+#include "../player.h"
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -32,17 +32,11 @@
 
 #include "../utils/dtor.h"
 
-extern std::vector<Spriteset *> hairset;
-extern Spriteset *playerset[2];
-
 int PlayerBox::instances = 0;
 ImageRect PlayerBox::background;
 
-PlayerBox::PlayerBox(unsigned char sex):
-    mHairColor(0),
-    mHairStyle(0),
-    mSex(sex),
-    mShowPlayer(false)
+PlayerBox::PlayerBox(const Player *player):
+    mPlayer(player)
 {
     setBorderSize(2);
 
@@ -81,29 +75,18 @@ PlayerBox::~PlayerBox()
     }
 }
 
-void PlayerBox::draw(gcn::Graphics *graphics)
+void
+PlayerBox::draw(gcn::Graphics *graphics)
 {
-    if (!mShowPlayer) {
-        return;
-    }
-
-    // Draw character
-    dynamic_cast<Graphics*>(graphics)->drawImage(
-            playerset[mSex]->get(0), 23, 12);
-
-    // Draw his hair
-    if (mHairStyle > 0 && mHairColor < NR_HAIR_COLORS &&
-            mHairStyle < NR_HAIR_STYLES)
+    if (mPlayer)
     {
-        int hf = 5 * mHairColor;
-        if (hf >= 0 && hf < (int)hairset[mHairStyle]->size()) {
-            dynamic_cast<Graphics*>(graphics)->drawImage(
-                    hairset[mHairStyle - 1]->get(hf), 35, 7);
-        }
+        // Draw character
+        mPlayer->draw(dynamic_cast<Graphics*>(graphics), 40, 42);
     }
 }
 
-void PlayerBox::drawBorder(gcn::Graphics *graphics)
+void
+PlayerBox::drawBorder(gcn::Graphics *graphics)
 {
     int w, h, bs;
     bs = getBorderSize();

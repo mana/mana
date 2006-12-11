@@ -26,6 +26,8 @@
 
 #include <SDL_mixer.h>
 
+#include <string>
+
 /** Sound engine
  *
  * \ingroup CORE
@@ -105,7 +107,7 @@ class Sound {
          *
          * \param path     Full path to file
          */
-        void playSfx(const char *path);
+        void playSfx(const std::string &path);
 
     private:
         bool mInstalled;

@@ -48,7 +48,7 @@ TradeWindow::TradeWindow():
     mPartnerInventory(new Inventory())
 {
     setWindowName("Trade");
-    setDefaultSize(115, 197, 322, 150);
+    setDefaultSize(115, 197, 332, 209);
 
     mAddButton = new Button("Add", "add", this);
     mOkButton = new Button("Ok", "ok", this);
@@ -95,33 +95,33 @@ TradeWindow::TradeWindow():
     add(mMoneyField);
     add(mMoneyLabel);
 
-    mMoneyField->setPosition(8 + 60, getHeight() - 20);
+    gcn::Rectangle area = getChildrenArea();
+    int width = area.width;
+    int height = area.height;
+
+    mMoneyField->setPosition(8 + 60, height - 20);
     mMoneyField->setWidth(50);
 
-    mMoneyLabel->setPosition(8 + 60 + 50 + 6, getHeight() - 20);
-    mMoneyLabel2->setPosition(8, getHeight() - 20);
+    mMoneyLabel->setPosition(8 + 60 + 50 + 6, height - 20);
+    mMoneyLabel2->setPosition(8, height - 20);
 
-    mCancelButton->setPosition(getWidth() - 54, getHeight() - 49);
-    mTradeButton->setPosition(mCancelButton->getX() - 41
-        , getHeight() - 49);
-    mOkButton->setPosition(mTradeButton->getX() - 24,
-        getHeight() - 49);
-    mAddButton->setPosition(mOkButton->getX() - 31,
-        getHeight() - 49);
+    mCancelButton->setPosition(width - 54, height - 49);
+    mTradeButton->setPosition(mCancelButton->getX() - 41, height - 49);
+    mOkButton->setPosition(mTradeButton->getX() - 24, height - 49);
+    mAddButton->setPosition(mOkButton->getX() - 31, height - 49);
 
-    mMyItemContainer->setSize(getWidth() - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    mMyScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+    mMyItemContainer->setSize(width - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (width / 24) - 1);
+    mMyScroll->setSize(width - 16, (height - 76) / 2);
 
-    mPartnerItemContainer->setSize(getWidth() - 24 - 12 - 1,
-        (INVENTORY_SIZE * 24) / (getWidth() / 24) - 1);
-    mPartnerScroll->setSize(getWidth() - 16, (getHeight() - 76) / 2);
+    mPartnerItemContainer->setSize(width - 24 - 12 - 1,
+        (INVENTORY_SIZE * 24) / (width / 24) - 1);
+    mPartnerScroll->setSize(width - 16, (height - 76) / 2);
 
     mItemNameLabel->setPosition(8,
         mPartnerScroll->getY() + mPartnerScroll->getHeight() + 4);
     mItemDescriptionLabel->setPosition(8,
         mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
-
 }
 
 TradeWindow::~TradeWindow()
