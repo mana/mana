@@ -232,10 +232,10 @@ void LocalPlayer::walk(unsigned char dir)
 void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Only send a new message to the server when destination changes
-    if (x != destX || y != destY)
+    if (x != mDestX || y != mDestY)
     {
-        destX = x;
-        destY = y;
+        mDestX = x;
+        mDestY = y;
 
         char temp[3];
         MessageOut outMsg(mNetwork);

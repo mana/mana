@@ -83,8 +83,9 @@ UpdaterWindow::UpdaterWindow():
     add(mCancelButton);
     add(mPlayButton);
 
-    mCancelButton->requestFocus();
     setLocationRelativeTo(getParent());
+    setVisible(true);
+    mCancelButton->requestFocus();
 
     mUpdateHost =
         config.getValue("updatehost", "http://updates.themanaworld.org");
@@ -179,7 +180,6 @@ void UpdaterWindow::loadNews()
     mMemoryBuffer = NULL;
 
     mScrollArea->setVerticalScrollAmount(0);
-    setVisible(true);
 }
 
 void UpdaterWindow::addRow(const std::string &row)

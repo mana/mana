@@ -162,8 +162,8 @@ class LocalPlayer : public Player
         bool mTrading;
         int mLastAction;    /**< Time stamp of the last action, -1 if none. */
         int mWalkingDir;    /**< The direction the player is walking in. */
-        int destX;          /**< X coordinate of destination. */
-        int destY;          /**< Y coordinate of destination. */
+        int mDestX;         /**< X coordinate of destination. */
+        int mDestY;         /**< Y coordinate of destination. */
 };
 
 extern LocalPlayer *player_node;
