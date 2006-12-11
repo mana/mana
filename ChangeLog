@@ -1,4 +1,9 @@
-﻿2006-12-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2006-12-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.h, src/tmw.rc, src/winver.h, The Mana World.dev, tmw.cbp:
+	Fixed windows binary version.
+
+2006-12-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* docs/INSTALL/win32.txt: Added more detailed instructions for Dev-C++
 	users.

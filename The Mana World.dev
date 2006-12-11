@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=253
+UnitCount=254
 Type=0
 Ver=1
 ObjFiles=
@@ -32,19 +32,19 @@ CompilerSettings=0010001001000001001101
 [VersionInfo]
 Major=0
 Minor=0
-Release=21
-Build=1
+Release=0
+Build=0
 LanguageID=1033
 CharsetID=1252
-CompanyName=The Mana World Development Team
-FileVersion=0.0.21.1
-FileDescription=The Mana World
-InternalName=tmw.exe
-LegalCopyright=2004-2006 (C)
+CompanyName=
+FileVersion=
+FileDescription=
+InternalName=
+LegalCopyright=
 LegalTrademarks=
-OriginalFilename=tmw.exe
-ProductName=The Mana World MMORPG
-ProductVersion=0.0.21.1
+OriginalFilename=
+ProductName=
+ProductVersion=
 AutoIncBuildNr=0
 
 [Unit8]
@@ -2581,6 +2581,16 @@ BuildCmd=
 FileName=src\gui\viewport.h
 CompileCpp=1
 Folder=gui/header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit254]
+FileName=src\winver.h
+CompileCpp=1
+Folder=tmw
 Compile=1
 Link=1
 Priority=1000
