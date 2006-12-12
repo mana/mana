@@ -32,12 +32,15 @@
 #include "../npc.h"
 
 #include "../gui/chat.h"
+#include "../gui/npclistdialog.h"
 #include "../gui/ok_dialog.h"
 #include "../gui/skill.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
+
+extern NpcListDialog *npcListDialog;
 
 /**
  * Listener used for handling the overweigth message.
@@ -64,6 +67,8 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
+            npcListDialog->setVisible(false);
+            current_npc = 0;
         }
     } deathListener;
 }

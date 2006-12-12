@@ -3,6 +3,8 @@
 	* The Mana World.dev, tmw.cbp: Updated project files.
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp: Added
 	Adler32 checksum for updates.
+	* src/net/playerhandler.cpp: Fixed crash when selecting an item after
+	death.
 
 2006-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
