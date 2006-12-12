@@ -40,42 +40,12 @@
 				</Linker>
 			</Target>
 		</Build>
-		<Unit filename="src\action.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\action.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\animatedsprite.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\animatedsprite.h">
 			<Option compilerVar="CPP"/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\animation.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\animation.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\base64.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\base64.h">
-			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
@@ -161,12 +131,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\game.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\graphic\imagerect.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1118,11 +1082,31 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\resources\action.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\action.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\resources\ambientoverlay.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\resources\ambientoverlay.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\animation.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\animation.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1335,6 +1319,16 @@
 		<Unit filename="src\tmw.rc">
 			<Option compilerVar="WINDRES"/>
 			<Option objectName="src\tmw.res"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\base64.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\base64.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\utils\dtor.h">
