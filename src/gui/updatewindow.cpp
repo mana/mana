@@ -26,6 +26,7 @@
 #include <iostream>
 #include <SDL.h>
 #include <SDL_thread.h>
+#include <zlib.h>
 
 #include <curl/curl.h>
 
@@ -48,9 +49,9 @@ UpdaterWindow::UpdaterWindow():
     Window("Updating..."),
     mThread(NULL), mMutex(NULL), mDownloadStatus(UPDATE_NEWS),
     mUpdateHost(""), mCurrentFile("news.txt"), mBasePath(""),
-    mStoreInMemory(true), mDownloadComplete(true), mUserCancel(false), 
-    mDownloadedBytes(0), mMemoryBuffer(NULL), 
-    mCurlError(new char[CURL_ERROR_SIZE]), mFileIndex(0)
+    mStoreInMemory(true), mDownloadComplete(true), mUserCancel(false),
+    mDownloadedBytes(0), mMemoryBuffer(NULL),
+    mCurlError(new char[CURL_ERROR_SIZE]), mLineIndex(0)
 {
     mCurlError[0] = 0;
 
@@ -233,78 +234,116 @@ size_t UpdaterWindow::memoryWrite(void *ptr,
 
 int UpdaterWindow::downloadThread(void *ptr)
 {
+    int attempts = 0;
+    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     CURL *curl;
     CURLcode res;
-    FILE *outfile = NULL;
-    UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(ptr);
     std::string outFilename;
     std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
-    uw->setLabel(uw->mCurrentFile + " (0%)");
 
-    curl = curl_easy_init();
+    while (attempts < 3 && !uw->mDownloadComplete) {
+        FILE *outfile = NULL;
+        uw->setLabel(uw->mCurrentFile + " (0%)");
 
-    if (curl)
-    {
-        logger->log("Downloading: %s", url.c_str());
+        curl = curl_easy_init();
 
-        if (uw->mStoreInMemory)
+        if (curl)
         {
-            uw->mDownloadedBytes = 0;
-            curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
-                                   UpdaterWindow::memoryWrite);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
-        }
-        else
-        {
-            // Download in the proper folder : ./updates under win,
-            // /home/user/.tmw/updates for unices
-            outFilename =  uw->mBasePath + "/updates/download.temp";
-            outfile = fopen(outFilename.c_str(), "wb");
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
-        }
+            logger->log("Downloading: %s", url.c_str());
 
-        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, uw->mCurlError);
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION,
-                               UpdaterWindow::updateProgress);
-        curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
-        curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
-        curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
-
-        if ((res = curl_easy_perform(curl)) != 0)
-        {
-            uw->mDownloadStatus = UPDATE_ERROR;
-            switch (res)
+            if (uw->mStoreInMemory)
             {
-            case CURLE_COULDNT_CONNECT: // give more debug info on that error
-                std::cerr << "curl error " << res << " : " << uw->mCurlError << " " << url.c_str()
-                << std::endl;
-                break;
+                uw->mDownloadedBytes = 0;
+                curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
+                curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION,
+                                       UpdaterWindow::memoryWrite);
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
+            }
+            else
+            {
+                // Download in the proper folder : ./updates under win,
+                // /home/user/.tmw/updates for unices
+                outFilename =  uw->mBasePath + "/updates/download.temp";
+                outfile = fopen(outFilename.c_str(), "w+b");
+                curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
+            }
 
-            default:
-                std::cerr << "curl error " << res << " : " << uw->mCurlError << " host: " << url.c_str()
-                << std::endl;
+            curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, uw->mCurlError);
+            curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+            curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
+            curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION,
+                                   UpdaterWindow::updateProgress);
+            curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, ptr);
+            curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+            curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
+
+            if ((res = curl_easy_perform(curl)) != 0)
+            {
+                uw->mDownloadStatus = UPDATE_ERROR;
+                switch (res)
+                {
+                case CURLE_COULDNT_CONNECT: // give more debug info on that error
+                    std::cerr << "curl error " << res << " : " << uw->mCurlError << " " << url.c_str()
+                    << std::endl;
+                    break;
+
+                default:
+                    std::cerr << "curl error " << res << " : " << uw->mCurlError << " host: " << url.c_str()
+                    << std::endl;
+                }
+            }
+
+            curl_easy_cleanup(curl);
+
+            uw->mDownloadComplete = true;
+
+            if (!uw->mStoreInMemory)
+            {
+                long fileSize;
+                char *buffer;
+                // Obtain file size.
+                fseek(outfile, 0, SEEK_END);
+                fileSize = ftell(outfile);
+                rewind(outfile);
+                buffer = (char*)malloc(fileSize);
+                fread(buffer, 1, fileSize, outfile);
+                fclose(outfile);
+
+                // Give the file the proper name
+                std::string newName(uw->mBasePath + "/updates/" +
+                                    uw->mCurrentFile.c_str());
+
+                // Any existing file with this name is deleted first, otherwise the
+                // rename will fail on Windows.
+                ::remove(newName.c_str());
+                ::rename(outFilename.c_str(), newName.c_str());
+
+                // Don't check resources2.txt checksum
+                if (uw->mDownloadStatus == UPDATE_RESOURCES)
+                {
+                    // Calculate Adler-32 checksum
+                    unsigned long adler = adler32(0L, Z_NULL, 0);
+                    adler = adler32(adler, (Bytef *)buffer, fileSize);
+                    free(buffer);
+
+                    if (uw->mCurrentChecksum != adler) {
+                        uw->mDownloadComplete = false;
+                        // Remove the corrupted file
+                        ::remove(newName.c_str());
+                        logger->log(
+                            "Checksum for file %s failed: (%lx/%lx)",
+                            uw->mCurrentFile.c_str(),
+                            adler, uw->mCurrentChecksum);
+                    }
+                }
+
             }
         }
+        attempts++;
+    }
 
-        curl_easy_cleanup(curl);
-        uw->mDownloadComplete = true;
-
-        if (!uw->mStoreInMemory)
-        {
-            fclose(outfile);
-
-            // Give the file the proper name
-            std::string newName(uw->mBasePath + "/updates/" +
-                                uw->mCurrentFile.c_str());
-
-            // Any existing file with this name is deleted first, otherwise the
-            // rename will fail on Windows.
-            ::remove(newName.c_str());
-            ::rename(outFilename.c_str(), newName.c_str());
-        }
+    if (!uw->mDownloadComplete) {
+        uw->mDownloadStatus = UPDATE_ERROR;
     }
 
     return 0;
@@ -356,7 +395,7 @@ void UpdaterWindow::logic()
                 // Parse current memory buffer as news and dispose of the data
                 loadNews();
 
-                mCurrentFile = "resources.txt";
+                mCurrentFile = "resources2.txt";
                 mStoreInMemory = false;
                 download();
                 mDownloadStatus = UPDATE_LIST;
@@ -366,7 +405,7 @@ void UpdaterWindow::logic()
             if (mDownloadComplete)
             {
                 ResourceManager *resman = ResourceManager::getInstance();
-                mFiles = resman->loadTextFile("updates/resources.txt");
+                mLines = resman->loadTextFile("updates/resources2.txt");
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_RESOURCES;
             }
@@ -380,9 +419,15 @@ void UpdaterWindow::logic()
                     mThread = NULL;
                 }
 
-                if (mFileIndex < mFiles.size())
+                if (mLineIndex < mLines.size())
                 {
-                    mCurrentFile = mFiles[mFileIndex];
+                    std::stringstream line(mLines[mLineIndex]);
+                    line >> mCurrentFile;
+                    std::string checksum;
+                    line >> checksum;
+                    std::stringstream ss(checksum);
+                    ss >> std::hex >> mCurrentChecksum;
+
                     std::ifstream temp(
                             (mBasePath + "/updates/" + mCurrentFile).c_str());
                     if (!temp.is_open())
@@ -394,7 +439,7 @@ void UpdaterWindow::logic()
                     {
                         logger->log("%s already here", mCurrentFile.c_str());
                     }
-                    mFileIndex++;
+                    mLineIndex++;
                 }
                 else
                 {
