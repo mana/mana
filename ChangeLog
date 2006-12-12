@@ -362,6 +362,12 @@
 	wallpaper.
 	* src/resources/resourcemanager.cpp: More useful logging about
 	resources that are being loaded (including source).
+	* src/graphics.cpp, src/gui/window.cpp, src/gui/button.cpp,
+	src/gui/widgets/dropdown.cpp, src/gui/textfield.cpp,
+	src/gui/playerbox.cpp, src/gui/progressbar.cpp,
+	src/gui/scrollarea.cpp, src/graphics.h, src/CMakeLists.txt,
+	src/Makefile.am, src/graphic, src/graphic/imagerect.h: Merged the
+	definition of ImageRect into graphics.h.
 
 2006-11-05  Yohann Ferreira  <bertram@cegetel.net>
 

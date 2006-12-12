@@ -1,6 +1,5 @@
 bin_PROGRAMS = tmw
-tmw_SOURCES = graphic/imagerect.h \
-	      gui/browserbox.cpp \
+tmw_SOURCES = gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
 	      gui/buddywindow.h \

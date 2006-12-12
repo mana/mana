@@ -33,8 +33,6 @@
 #include "../graphics.h"
 #include "../log.h"
 
-#include "../graphic/imagerect.h"
-
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
