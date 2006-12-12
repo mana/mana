@@ -58,43 +58,20 @@ extern Minimap *minimap;
 char itemCurrenyQ[10] = "0";
 
 Spriteset *emotionset;
-Spriteset *npcset;
-std::vector<Spriteset *> weaponset;
 
 Engine::Engine(Network *network):
     mCurrentMap(NULL),
     mNetwork(network)
 {
-    // Load the sprite sets
+    // Load the emotion set
     ResourceManager *resman = ResourceManager::getInstance();
-
-    npcset = resman->getSpriteset("graphics/sprites/npcs.png", 50, 80);
-    emotionset = resman->getSpriteset("graphics/sprites/emotions.png",
-            30, 32);
-    for (int i = 0; i < 2; i++)
-    {
-        Spriteset *tmp = ResourceManager::getInstance()->getSpriteset(
-                "graphics/sprites/weapon" + toString(i) + ".png", 64, 64);
-        if (!tmp) {
-            logger->error("Unable to load weaponset");
-        } else {
-            weaponset.push_back(tmp);
-        }
-    }
-
-    if (!npcset) logger->error("Unable to load NPC spriteset!");
+    emotionset = resman->getSpriteset("graphics/sprites/emotions.png", 30, 32);
     if (!emotionset) logger->error("Unable to load emotions spriteset!");
 }
 
 Engine::~Engine()
 {
-    // Delete sprite sets
-    npcset->decRef();
     emotionset->decRef();
-
-    std::for_each(weaponset.begin(), weaponset.end(),
-            std::mem_fun(&Spriteset::decRef));
-    weaponset.clear();
 }
 
 void Engine::changeMap(const std::string &mapPath)

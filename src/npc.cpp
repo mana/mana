@@ -32,7 +32,6 @@
 #include "gui/gui.h"
 
 class Spriteset;
-extern Spriteset *npcset;
 
 NPC *current_npc = 0;
 

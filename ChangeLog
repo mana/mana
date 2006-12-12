@@ -15,6 +15,7 @@
 	* src/CMakeLists.txt, src/utils/base64.cpp, src/utils/base64.h,
 	src/Makefile.am, src/resources/mapreader.cpp: Moved base64 module into
 	utils directory.
+	* src/engine.cpp, src/npc.cpp: Cleaned up some unused stuff.
 
 2006-12-12  Philipp Sehmisch  <tmw@crushnet.org>
 
