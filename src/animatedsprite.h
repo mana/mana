@@ -29,8 +29,9 @@
 #include <map>
 #include <string>
 
+class Animation;
 class Graphics;
-struct AnimationPhase;
+struct Frame;
 
 /**
  * Animates a sprite by adding playback state.
@@ -72,13 +73,13 @@ class AnimatedSprite
 
         /**
          * Inform the animation of the passed time so that it can output the
-         * correct animation phase.
+         * correct animation frame.
          */
         void
         update(int time);
 
         /**
-         * Draw the current animation phase at the coordinates given in screen
+         * Draw the current animation frame at the coordinates given in screen
          * pixels.
          */
         bool
@@ -103,7 +104,7 @@ class AnimatedSprite
         SpriteDef *mSprite;            /**< The sprite definition. */
         Action *mAction;               /**< The currently active action. */
         Animation *mAnimation;         /**< The currently active animation. */
-        AnimationPhase *mFrame;        /**< The currently active frame. */
+        Frame *mFrame;                 /**< The currently active frame. */
 };
 
 #endif

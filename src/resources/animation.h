@@ -33,10 +33,8 @@ class Spriteset;
 
 /**
  * A single frame in an animation, with a delay and an offset.
- *
- * TODO: Rename this struct to Frame
  */
-struct AnimationPhase
+struct Frame
 {
     Image *image;
     unsigned int delay;
@@ -60,7 +58,7 @@ class Animation
          * Appends a new animation at the end of the sequence
          */
         void
-        addPhase(Image *image, unsigned int delay, int offsetX, int offsetY);
+        addFrame(Image *image, unsigned int delay, int offsetX, int offsetY);
 
         /**
          * Appends an animation terminator that states that the animation
@@ -72,14 +70,14 @@ class Animation
         /**
          * Returns the frame at the specified index.
          */
-        AnimationPhase*
-        getFrame(int index) { return &(mAnimationPhases[index]); }
+        Frame*
+        getFrame(int index) { return &(mFrames[index]); }
 
         /**
          * Returns the length of this animation in frames.
          */
         unsigned int
-        getLength() const { return mAnimationPhases.size(); }
+        getLength() const { return mFrames.size(); }
 
         /**
          * Returns the duration of this animation.
@@ -91,10 +89,10 @@ class Animation
          * Determines whether the given animation frame is a terminator.
          */
         static bool
-        isTerminator(const AnimationPhase phase);
+        isTerminator(const Frame &phase);
 
     protected:
-        std::vector<AnimationPhase> mAnimationPhases;
+        std::vector<Frame> mFrames;
         int mDuration;
 };
 

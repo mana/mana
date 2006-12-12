@@ -23,14 +23,14 @@
 
 #include "animatedsprite.h"
 
-#include "animation.h"
-#include "action.h"
 #include "graphics.h"
 #include "log.h"
 
+#include "resources/action.h"
+#include "resources/animation.h"
+#include "resources/image.h"
 #include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
-#include "resources/image.h"
 
 #include "utils/xml.h"
 

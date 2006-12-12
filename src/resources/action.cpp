@@ -26,7 +26,8 @@
 #include <algorithm>
 
 #include "animation.h"
-#include "utils/dtor.h"
+
+#include "../utils/dtor.h"
 
 
 Action::Action()

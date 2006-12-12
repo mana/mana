@@ -1,6 +1,15 @@
-﻿2006-12-11  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* data/sfx/bat-dying1.ogg, data/sfx/bat-hit1.ogg, 
+	* src/animatedsprite.h, src/CMakeLists.txt, src/animatedsprite.cpp,
+	src/resources/action.h, src/resources/animation.h,
+	src/resources/spritedef.cpp, src/resources/action.cpp,
+	src/resources/animation.cpp, src/resources/spritedef.h: Moved
+	Action, Animation and Frame (renamed from AnimationPhase) classes into
+	the resources directory, since they are part of the SpriteDef class.
+
+2006-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/sfx/bat-dying1.ogg, data/sfx/bat-hit1.ogg,
 	data/sfx/bow_shoot_1.ogg, data/sfx/fire-goblin-hit1.ogg
 	data/sfx/fire-goblin-hit2.ogg, data/sfx/fire-goblin-miss1.ogg,
 	data/sfx/fist-swish.ogg, data/sfx/flower-hit1.ogg,

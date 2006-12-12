@@ -25,7 +25,7 @@
 
 #include <algorithm>
 
-#include "utils/dtor.h"
+#include "../utils/dtor.h"
 
 Animation::Animation():
     mDuration(0)
@@ -33,23 +33,21 @@ Animation::Animation():
 }
 
 void
-Animation::addPhase(Image *image, unsigned int delay, int offsetX, int offsetY)
+Animation::addFrame(Image *image, unsigned int delay, int offsetX, int offsetY)
 {
-    // Add new phase to animation list
-    AnimationPhase newPhase = { image, delay, offsetX, offsetY };
-
-    mAnimationPhases.push_back(newPhase);
+    Frame frame = { image, delay, offsetX, offsetY };
+    mFrames.push_back(frame);
     mDuration += delay;
 }
 
 void
 Animation::addTerminator()
 {
-    addPhase(NULL, 0, 0, 0);
+    addFrame(NULL, 0, 0, 0);
 }
 
 bool
-Animation::isTerminator(const AnimationPhase candidate)
+Animation::isTerminator(const Frame &candidate)
 {
     return (candidate.image == NULL);
 }
