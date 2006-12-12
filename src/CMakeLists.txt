@@ -240,14 +240,14 @@ SET(SRCS
     resources/spriteset.cpp
     resources/buddylist.h
     resources/buddylist.cpp
+    utils/base64.cpp
+    utils/base64.h
     utils/dtor.h
     utils/tostring.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp
     animatedsprite.h
-    base64.cpp
-    base64.h
     being.cpp
     being.h
     beingmanager.cpp

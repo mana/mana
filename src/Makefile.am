@@ -161,8 +161,12 @@ tmw_SOURCES = graphic/imagerect.h \
 	      net/skillhandler.h \
 	      net/tradehandler.cpp \
 	      net/tradehandler.h \
+	      resources/action.cpp \
+	      resources/action.h \
 	      resources/ambientoverlay.cpp \
 	      resources/ambientoverlay.h \
+	      resources/animation.cpp \
+	      resources/animation.h \
 	      resources/equipmentdb.cpp \
 	      resources/equipmentdb.h \
 	      resources/equipmentinfo.h \
@@ -198,18 +202,14 @@ tmw_SOURCES = graphic/imagerect.h \
 	      resources/spriteset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
+	      utils/base64.cpp \
+	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/tostring.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
-	      action.cpp \
-	      action.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
-	      animation.cpp \
-	      animation.h \
-	      base64.cpp \
-	      base64.h \
 	      being.cpp \
 	      being.h \
 	      beingmanager.cpp \

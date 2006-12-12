@@ -30,11 +30,11 @@
 #include "resourcemanager.h"
 #include "image.h"
 
-#include "../base64.h"
 #include "../log.h"
 #include "../map.h"
 #include "../tileset.h"
 
+#include "../utils/base64.h"
 #include "../utils/tostring.h"
 #include "../utils/xml.h"
 
