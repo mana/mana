@@ -5,6 +5,7 @@
 	Adler32 checksum for updates.
 	* src/net/playerhandler.cpp: Fixed crash when selecting an item after
 	death.
+	* data/items.xml: Fixed defense values for sweaters.
 
 2006-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
