@@ -128,8 +128,3 @@ void Engine::logic()
     beingManager->logic();
     gui->logic();
 }
-
-void Engine::draw(Graphics *graphics)
-{
-    gui->draw();
-}

@@ -371,7 +371,6 @@ class Being : public Sprite
         Uint8 mSex;
         Uint32 mSpeechTime;
         Uint32 mDamageTime;
-        bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;

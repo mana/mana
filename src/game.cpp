@@ -363,7 +363,7 @@ void Game::logic()
                     get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
             {
                 frame++;
-                engine->draw(graphics);
+                gui->draw();
                 graphics->updateScreen();
                 mDrawTime += mMinFrameTime;
 

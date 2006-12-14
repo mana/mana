@@ -1,5 +1,5 @@
 /*
- *  The Mana World Server
+ *  The Mana World
  *  Copyright 2004 The Mana World Development Team
  *
  *  This file is part of The Mana World.
@@ -17,10 +17,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ *  $Id$
  */
 
-#ifndef _TMWSERV_WINGETTIMEOFDAY_H_
-#define _TMWSERV_WINGETTIMEOFDAY_H_
+#ifndef _TMW_WINGETTIMEOFDAY_H_
+#define _TMW_WINGETTIMEOFDAY_H_
 
 #ifdef WIN32
 
