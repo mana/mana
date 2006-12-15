@@ -1,4 +1,9 @@
-﻿2006-12-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert1.png: Removed some unused legacy tiles and 
+	added variant tiles for the cliffs.
+
+2006-12-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/engine.h, src/engine.cpp: Removed the rather
 	useless remaining draw function from the engine class.
