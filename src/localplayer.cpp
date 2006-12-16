@@ -181,11 +181,6 @@ void LocalPlayer::pickUp(FloorItem *item)
 
 void LocalPlayer::walk(unsigned char dir)
 {
-    if (mWalkingDir != dir)
-    {
-        mWalkingDir = dir;
-    }
-
     if (!mMap || !dir)
         return;
 
@@ -246,6 +241,20 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 
     mPickUpTarget = NULL;
     Being::setDestination(x, y);
+}
+
+void LocalPlayer::setWalkingDir(int dir)
+{
+    if (mWalkingDir != dir)
+    {
+        mWalkingDir = dir;
+    }
+
+    // If we're not already walking, start walking.
+    if (mAction != WALK && dir)
+    {
+        walk(dir);
+    }
 }
 
 void LocalPlayer::raiseAttribute(Attribute attr)

@@ -1,4 +1,12 @@
-﻿2006-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-12-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/connection.cpp, src/gui/chargedialog.cpp: Fixed dialog
+	visibility.
+	* src/localplayer.cpp, src/game.cpp, src/localplayer.h: Fixed issues
+	with walking one tile too many and changing direction towards an
+	obstacle.
+
+2006-12-15  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/desert1.png: Removed some unused legacy tiles and 
 	added variant tiles for the cliffs.

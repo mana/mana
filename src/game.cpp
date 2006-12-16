@@ -656,7 +656,7 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        player_node->walk(direction);
+        player_node->setWalkingDir(direction);
 
         // Attacking monsters
         if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||

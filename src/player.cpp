@@ -49,6 +49,7 @@ Player::logic()
                 nextStep();
             }
             break;
+
         case ATTACK:
             int frames = 4;
             if (getWeapon() == 2)
@@ -61,6 +62,7 @@ Player::logic()
             }
             break;
     }
+
     Being::logic();
 }
 

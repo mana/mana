@@ -43,9 +43,15 @@ class LocalPlayer : public Player
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 
+        /**
+         * Constructor.
+         */
         LocalPlayer(Uint32 id, Uint16 job, Map *map);
 
-        virtual ~LocalPlayer();
+        /**
+         * Destructor.
+         */
+        ~LocalPlayer();
 
         void setNetwork(Network *network) { mNetwork = network; }
 
@@ -115,12 +121,15 @@ class LocalPlayer : public Player
          */
         void setTarget(Being* target) { mTarget = target; }
 
-        void walk(unsigned char dir);
-
         /**
          * Sets a new destination for this being to walk to.
          */
         virtual void setDestination(Uint16 x, Uint16 y);
+
+        /**
+         * Sets a new direction to keep walking in.
+         */
+        void setWalkingDir(int dir);
 
         void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);
@@ -155,6 +164,8 @@ class LocalPlayer : public Player
         std::auto_ptr<Inventory> mInventory;
 
     protected:
+        void walk(unsigned char dir);
+
         Network *mNetwork;
         Being *mTarget;
         FloorItem *mPickUpTarget;
