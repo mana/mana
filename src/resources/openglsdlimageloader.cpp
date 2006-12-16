@@ -29,7 +29,8 @@
 
 #include "resourcemanager.h"
 
-SDL_Surface* OpenGLSDLImageLoader::loadSDLSurface(const std::string& filename)
+SDL_Surface*
+OpenGLSDLImageLoader::loadSDLSurface(const std::string &filename)
 {
     ResourceManager *resman = ResourceManager::getInstance();
     return resman->loadSDLSurface(filename);

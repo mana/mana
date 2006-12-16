@@ -1,4 +1,13 @@
-﻿2006-12-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-12-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/shoplistbox.h, src/gui/listbox.h,
+	src/gui/shop.cpp, src/gui/buy.cpp, src/gui/shoplistbox.cpp,
+	src/gui/listbox.cpp: Subclassed ShopListBox from ListBox to get rid of
+	some duplicated code, and fixed a problem with scrolling to the
+	current selection. Also aligned the text a bit better and put the
+	price in parenthesis.
+
+2006-12-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/connection.cpp, src/gui/chargedialog.cpp: Fixed dialog
 	visibility.

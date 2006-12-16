@@ -146,7 +146,8 @@ void SellDialog::addItem(Item *item, int price)
 
     ITEM_SHOP item_shop;
 
-    item_shop.name = item->getInfo().getName() + " " + toString(price) + " GP";
+    item_shop.name = item->getInfo().getName()
+        + " (" + toString(price) + " GP)";
     item_shop.price = price;
     item_shop.index = item->getInvIndex();
     item_shop.id = item->getId();

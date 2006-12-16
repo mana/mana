@@ -45,7 +45,7 @@ void ShopItems::addItem(short id, int price)
     ITEM_SHOP item_shop;
 
     item_shop.name = ItemDB::get(id).getName()
-                     + " " + toString(price) + " GP";
+                     + " (" + toString(price) + " GP)";
     item_shop.price = price;
     item_shop.id = id;
     item_shop.image = ItemDB::get(id).getImage();

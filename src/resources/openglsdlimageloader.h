@@ -31,7 +31,8 @@
 class OpenGLSDLImageLoader : public gcn::OpenGLSDLImageLoader
 {
     protected:
-        SDL_Surface* loadSDLSurface(const std::string& filename);
+        SDL_Surface*
+        loadSDLSurface(const std::string &filename);
 };
 
 #endif

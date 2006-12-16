@@ -34,11 +34,10 @@
 
 #include "../graphics.h"
 
-const int ITEM_SPRITE_HEIGHT = 32;
+const int ITEM_ICON_SIZE = 32;
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel):
-    gcn::ListBox(listModel),
-    mMousePressed(false),
+    ListBox(listModel),
     mPlayerMoney(0)
 {
     mRowHeight = getFont()->getHeight();
@@ -46,105 +45,97 @@ ShopListBox::ShopListBox(gcn::ListModel *listModel):
 }
 
 ShopListBox::ShopListBox(gcn::ListModel *listModel, ShopItems *shopListModel):
-    gcn::ListBox(listModel),
-    mMousePressed(false),
+    ListBox(listModel),
     mPlayerMoney(0),
     mShopItems(shopListModel)
 {
-    mRowHeight = (getFont()->getHeight() > ITEM_SPRITE_HEIGHT ?
-        getFont()->getHeight() : ITEM_SPRITE_HEIGHT);
+    mRowHeight = std::max(getFont()->getHeight(), ITEM_ICON_SIZE);
     mPriceCheck = true;
 }
-
 
 void ShopListBox::setPlayersMoney(int money)
 {
     mPlayerMoney = money;
 }
 
-void ShopListBox::draw(gcn::Graphics *graphics)
+void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 {
-    if (mListModel == NULL) {
+    if (!mListModel)
         return;
-    }
+
+    Graphics *graphics = static_cast<Graphics*>(gcnGraphics);
 
     graphics->setFont(getFont());
 
     // Draw the list elements
-    for (int i = 0, y = 0; i < mListModel->getNumberOfElements(); ++i, y += mRowHeight)
+    for (int i = 0, y = 0;
+         i < mListModel->getNumberOfElements();
+         ++i, y += mRowHeight)
     {
-        graphics->setColor(gcn::Color(0xffffff));
-        if (mShopItems != NULL)
-        {
-            if(mPlayerMoney < mShopItems->at(i).price && mPriceCheck)
-            {
-                graphics->setColor(gcn::Color(0x919191));
-            }
-        }
-        graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
-        if (mShopItems)
-            dynamic_cast<Graphics*>(graphics)->drawImage(mShopItems->at(i).image, 1, y);
-        graphics->drawText(mListModel->getElementAt(i), ITEM_SPRITE_HEIGHT, y);
-    }
+        gcn::Color backgroundColor = gcn::Color(0xffffff);
 
-    // Draw rectangle below the selected list element and the list element
-    // not shown.
-    if (mSelected >= 0) {
-        graphics->setColor(gcn::Color(110, 160, 255));
-        graphics->fillRectangle(gcn::Rectangle(0, mRowHeight * mSelected,
-                                               getWidth(), mRowHeight));
+        if (i == mSelected)
+        {
+            backgroundColor = gcn::Color(110, 160, 255);
+        }
+        else if (mShopItems &&
+                mPlayerMoney < mShopItems->at(i).price && mPriceCheck)
+        {
+            backgroundColor = gcn::Color(0x919191);
+        }
+
+        graphics->setColor(backgroundColor);
+        graphics->fillRectangle(gcn::Rectangle(0, y, getWidth(), mRowHeight));
+
         if (mShopItems)
-            dynamic_cast<Graphics*>(graphics)->drawImage(
-            mShopItems->at(mSelected).image, 1, mRowHeight * mSelected);
-        graphics->drawText(mListModel->getElementAt(mSelected),
-            ITEM_SPRITE_HEIGHT, mRowHeight * mSelected);
+        {
+            graphics->drawImage(mShopItems->at(i).image, 1, y);
+        }
+        graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
+                y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);
     }
 }
 
 void ShopListBox::setSelected(int selected)
 {
-    gcn::ListBox::setSelected(selected);
-    if (mListModel != NULL)
+    if (!mListModel)
     {
-        gcn::BasicContainer *par = getParent();
-        if (par == NULL)
-        {
-            return;
-        }
-
-        gcn::Rectangle scroll;
-
-        if (mSelected < 0)
-        {
-            scroll.y = 0;
-        }
-        else
-        {
-            scroll.y = mRowHeight * mSelected;
-        }
-
-        scroll.height = mRowHeight;
-        par->showWidgetPart(this, scroll);
+        mSelected = -1;
     }
+    else
+    {
+        // Update mSelected with bounds checking
+        mSelected = std::min(mListModel->getNumberOfElements() - 1,
+                             std::max(-1, selected));
+
+        gcn::BasicContainer *parent = getParent();
+        if (parent)
+        {
+            gcn::Rectangle scroll;
+            scroll.y = (mSelected < 0) ? 0 : mRowHeight * mSelected;
+            scroll.height = mRowHeight;
+            parent->showWidgetPart(this, scroll);
+        }
+    }
+
     fireSelectionChangedEvent();
 }
 
 void ShopListBox::mousePress(int x, int y, int button)
 {
-
-    bool enoughMoney = false;
     if (button == gcn::MouseInput::LEFT && hasMouse())
     {
-        if (mShopItems)
+        bool enoughMoney = false;
+
+        if (mShopItems && mPriceCheck)
         {
-            if(mPlayerMoney >= mShopItems->at(y / mRowHeight).price)
+            if (mPlayerMoney >= mShopItems->at(y / mRowHeight).price)
                 enoughMoney = true;
         }
         else // Old Behaviour
+        {
             enoughMoney = true;
-
-    if (!mPriceCheck)
-        enoughMoney = true;
+        }
 
         if (enoughMoney)
         {
@@ -155,40 +146,9 @@ void ShopListBox::mousePress(int x, int y, int button)
     }
 }
 
-void ShopListBox::mouseRelease(int x, int y, int button)
-{
-    gcn::ListBox::mouseRelease(x, y, button);
-
-    mMousePressed = false;
-}
-
-void ShopListBox::mouseMotion(int x, int y)
-{
-    gcn::ListBox::mouseMotion(x, y);
-
-    // Pretend mouse is pressed continuously while dragged. Causes list
-    // selection to be updated as is default in many GUIs.
-    if (mMousePressed)
-    {
-        mousePress(x, y, gcn::MouseInput::LEFT);
-    }
-}
-
-void ShopListBox::fireSelectionChangedEvent()
-{
-    SelectionEvent event(this);
-    SelectionListeners::iterator i_end = mListeners.end();
-    SelectionListeners::iterator i;
-
-    for (i = mListeners.begin(); i != i_end; ++i)
-    {
-        (*i)->selectionChanged(event);
-    }
-}
-
 void ShopListBox::adjustSize()
 {
-    if (mListModel != NULL)
+    if (mListModel)
     {
         setHeight(mRowHeight * mListModel->getNumberOfElements());
     }
