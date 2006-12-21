@@ -1,4 +1,4 @@
-0.0.22 (...)
+0.0.22 (.. December 2006)
 - Added support for female-specific equipment graphics
 - Added support for monster sounds
 - Added item icons to buy/sell dialogs
@@ -10,6 +10,7 @@
 - Fixed joystick setting not to show disabled when it's actually enabled
 - Fixed money field to no longer hide below the bottom of the window
 - Fixed pathfinding to allow walking through beings when they block your path
+- Fixed an issue with NPC dialogs staying open after player respawn
 
 0.0.21.1 (30 October 2006)
 - Reload wallpaper after loading updates

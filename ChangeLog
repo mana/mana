@@ -1,4 +1,9 @@
-﻿2006-12-18  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2006-12-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, CMakeLists.txt, README, data/help/header.txt: Updated
+	version to 0.0.22.
+
+2006-12-18  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/armor-chest-vnecksweater.png: New version of
 	the inventory icon for the V-neck sweater by Saphy.
