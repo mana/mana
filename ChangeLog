@@ -15,6 +15,10 @@
 	data/graphics/sprites/head-rangerhat.xml, data/items.xml,
 	data/equipment.xml, data/monsters.xml: Added new Christmas themed
 	headwear by Pauan.
+	* data/graphics/items/Makefile.am, data/graphics/items/CMakeLists.txt,
+	data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt, data/Makefile.am,
+	data/CMakeLists.txt: Updated Makefiles.
 
 2006-12-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

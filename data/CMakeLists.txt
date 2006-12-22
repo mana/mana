@@ -7,8 +7,9 @@ ADD_SUBDIRECTORY(maps)
 ADD_SUBDIRECTORY(sfx)
 
 SET(FILES
-	equipment.xml
+    equipment.xml
     items.xml
+    monsters.xml
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR})
