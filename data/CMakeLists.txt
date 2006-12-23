@@ -3,13 +3,3 @@ SET(DATA_DIR ${PKG_DATADIR}/data)
 ADD_SUBDIRECTORY(graphics)
 ADD_SUBDIRECTORY(help)
 ADD_SUBDIRECTORY(icons)
-ADD_SUBDIRECTORY(maps)
-ADD_SUBDIRECTORY(sfx)
-
-SET(FILES
-    equipment.xml
-    items.xml
-    monsters.xml
-    )
-
-INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR})

@@ -1,2 +1,2 @@
 
-SUBDIRS = gui images items sprites tiles
+SUBDIRS = gui images sprites tiles

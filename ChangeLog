@@ -1,4 +1,19 @@
-﻿2006-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-12-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, data/graphics/items/Makefile.am,
+	data/graphics/items/CMakeLists.txt, data/graphics/images/Makefile.am,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/Makefile.am,
+	data/graphics/CMakeLists.txt, data/maps/Makefile.am,
+	data/maps/CMakeLists.txt, data/sfx/Makefile.am,
+	data/sfx/CMakeLists.txt, data/Makefile.am, data/CMakeLists.txt:
+	Removed database files, minimaps, items, monster sprites, maps and
+	sounds from the release. They will be released dynamically only.
+	* data/graphics/tiles/snow_x3.png: Added bottom of Christmas tree by
+	pauan.
+
+2006-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/items/armor-head-rangerhat.png,
 	data/graphics/items/generic-redstocking.png,
