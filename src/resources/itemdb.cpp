@@ -37,11 +37,15 @@ namespace
 {
     ItemDB::ItemInfos mItemInfos;
     ItemInfo mUnknown;
+    bool mLoaded = false;
 }
 
 
 void ItemDB::load()
 {
+    if (mLoaded)
+        return;
+
     logger->log("Initializing item database...");
     mUnknown.setName("Unknown item");
 
@@ -150,6 +154,8 @@ void ItemDB::load()
     }
 
     xmlFreeDoc(doc);
+
+    mLoaded = true;
 }
 
 void ItemDB::unload()
@@ -159,6 +165,8 @@ void ItemDB::unload()
         delete i->second;
     }
     mItemInfos.clear();
+
+    mLoaded = false;
 }
 
 const ItemInfo&

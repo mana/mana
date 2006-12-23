@@ -12,6 +12,10 @@
 	sounds from the release. They will be released dynamically only.
 	* data/graphics/tiles/snow_x3.png: Added bottom of Christmas tree by
 	pauan.
+	* src/main.cpp, src/resources/itemdb.h, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/equipmentdb.cpp: Load the
+	databases at the start of the LOGIN state, after the updates are
+	loaded.
 
 2006-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -40,6 +40,9 @@ namespace
 void
 EquipmentDB::load()
 {
+    if (mLoaded)
+        return;
+
     logger->log("Initializing equipment database...");
     mUnknown.setSprite("error.xml", 0);
     mUnknown.setSprite("error.xml", 1);

@@ -286,11 +286,6 @@ void init_engine(const Options &options)
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
-
-    // Load XML databases
-    EquipmentDB::load();
-    ItemDB::load();
-    MonsterDB::load();
 }
 
 /** Clear the engine */
@@ -625,6 +620,12 @@ int main(int argc, char *argv[])
             switch (state) {
                 case LOGIN_STATE:
                     logger->log("State: LOGIN");
+
+                    // Load XML databases
+                    EquipmentDB::load();
+                    ItemDB::load();
+                    MonsterDB::load();
+
                     if (!loginData.password.empty()) {
                         state = ACCOUNT_STATE;
                     } else {
