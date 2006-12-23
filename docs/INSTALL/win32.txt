@@ -45,7 +45,7 @@ the old stable version, so don't do that. Get Dev-C++ here:
 
   http://www.bloodshed.net/
  
-After you fetched it simply run and install.
+After you have fetched it, simply run and install as prompted.
 
 
 3. Installing the required libraries
