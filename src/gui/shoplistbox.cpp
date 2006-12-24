@@ -89,7 +89,11 @@ void ShopListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (mShopItems)
         {
-            graphics->drawImage(mShopItems->at(i).image, 1, y);
+            Image *icon = mShopItems->at(i).image;
+            if (icon)
+            {
+                graphics->drawImage(icon, 1, y);
+            }
         }
         graphics->drawText(mListModel->getElementAt(i), ITEM_ICON_SIZE + 5,
                 y + (ITEM_ICON_SIZE - getFont()->getHeight()) / 2);

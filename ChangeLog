@@ -1,4 +1,12 @@
-﻿2006-12-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp: Don't try to draw an icon when it is not
+	defined or failed to load properly.
+	* src/resources/image.cpp: Major rendering performance increase in
+	software mode, by not using RLE compression on loaded images while
+	most of the time, we're only drawing a small subimage of them.
+
+2006-12-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac, data/graphics/items/Makefile.am,
 	data/graphics/items/CMakeLists.txt, data/graphics/images/Makefile.am,

@@ -199,8 +199,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     }
 
     // Draw target marker if needed
-    Being *target;
-    if ((target = player_node->getTarget()))
+    Being *target = player_node->getTarget();
+    if (target)
     {
         graphics->setFont(speechFont);
         graphics->setColor(gcn::Color(255, 32, 32));
