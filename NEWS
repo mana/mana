@@ -1,4 +1,4 @@
-0.0.22 (.. December 2006)
+0.0.22 (24 December 2006)
 - Added support for female-specific equipment graphics
 - Added support for monster sounds
 - Added item icons to buy/sell dialogs
@@ -7,6 +7,7 @@
 - Worked around a Guichan exception thrown for mice with many buttons
 - Changed mouse walk to keep following mouse while button is held down
 - Extended font support for å and Å.
+- Disabled RLE compression on all surfaces in software mode
 - Fixed joystick setting not to show disabled when it's actually enabled
 - Fixed money field to no longer hide below the bottom of the window
 - Fixed pathfinding to allow walking through beings when they block your path
