@@ -4,6 +4,14 @@
 	Added Christmas tree by Pauan.
 	* data/graphics/sprites/head-christmastree.xml: Fixed name of image.
 	* src/resources/spriteset.cpp: Fixed index check to prevent crashing.
+	* data/graphics/sprites/head-christmastreehat.png,
+	data/graphics/sprites/head-rangerhat.png,
+	data/graphics/sprites/head-christmastree.xml,
+	data/graphics/sprites/head-antlerhat.xml,
+	data/graphics/sprites/head-santabeardhat.xml,
+	data/graphics/sprites/head-santabeardhat.png,
+	data/graphics/sprites/head-rangerhat.xml: Updates to Pauan's recent
+	sprites by Pauan.
 
 2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
