@@ -53,7 +53,7 @@ Spriteset::~Spriteset()
 Image*
 Spriteset::get(size_type i)
 {
-    if (i > mSpriteset.size())
+    if (i >= mSpriteset.size())
     {
         logger->log("Warning: Sprite #%i does not exist in this spriteset", i);
         return NULL;
