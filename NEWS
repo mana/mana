@@ -6,7 +6,7 @@
 - Changed to new update host (http://updates.themanaworld.org)
 - Worked around a Guichan exception thrown for mice with many buttons
 - Changed mouse walk to keep following mouse while button is held down
-- Extended font support for å and Å.
+- Extended font support for å and Å
 - Disabled RLE compression on all surfaces in software mode
 - Fixed joystick setting not to show disabled when it's actually enabled
 - Fixed money field to no longer hide below the bottom of the window

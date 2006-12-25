@@ -1,4 +1,9 @@
-﻿2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/tiles/christmastree.png, data/maps/new_11-1.tmx.gz:
+	Added Christmas tree by Pauan.
+
+2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/shoplistbox.cpp: Don't try to draw an icon when it is not
 	defined or failed to load properly.
