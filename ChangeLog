@@ -12,6 +12,7 @@
 	data/graphics/sprites/head-santabeardhat.png,
 	data/graphics/sprites/head-rangerhat.xml: Updates to Pauan's recent
 	sprites by Pauan.
+	* data/items.xml: Fixes to descriptions and weights by Pauan.
 
 2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
