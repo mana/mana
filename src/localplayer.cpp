@@ -51,11 +51,6 @@ LocalPlayer::~LocalPlayer()
 
 void LocalPlayer::logic()
 {
-    if (mAction == ATTACK && get_elapsed_time(mWalkTime) >= mAttackSpeed)
-    {
-        attack();
-    }
-
     // Actions are allowed once per second
     if (get_elapsed_time(mLastAction) >= 1000) {
         mLastAction = -1;
@@ -166,7 +161,6 @@ void LocalPlayer::pickUp(FloorItem *item)
     } else {
         setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);
         mPickUpTarget = item;
-        stopAttack();
     }
 }
 
@@ -352,59 +346,26 @@ bool LocalPlayer::tradeRequestOk() const
     return !mTrading;
 }
 
-void LocalPlayer::attack(Being *target, bool keep)
+void LocalPlayer::attack()
 {
+    if (mLastAction != -1)
+        return;
+
     // Can only attack when standing still
-    if (mAction != STAND)
+    if (mAction != STAND && mAction != ATTACK)
         return;
 
-    if (keep && target)
-        mTarget = target;
-    else if (mTarget)
-        target = mTarget;
-
-    if (!target)
-        return;
-
-    int dist_x = target->mX - mX;
-    int dist_y = target->mY - mY;
-
-    if (abs(dist_y) >= abs(dist_x))
-    {
-        if (dist_y > 0)
-            setDirection(DOWN);
-        else
-            setDirection(UP);
-    }
-    else
-    {
-        if (dist_x > 0)
-            setDirection(RIGHT);
-        else
-            setDirection(LEFT);
-    }
-
-    // Implement charging attacks here
-    mLastAttackTime = 0;
+    mLastAction = tick_time;
+    mWalkTime = tick_time;
 
     setAction(ATTACK);
-    mWalkTime = tick_time;
+
     if (getWeapon() == 2)
         sound.playSfx("sfx/bow_shoot_1.ogg");
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(0x0089);
-    outMsg.writeLong(target->getId());
-    outMsg.writeByte(0);
-    */
-}
-
-void LocalPlayer::stopAttack()
-{
-    mTarget = NULL;
+    Net::GameServer::Player::attack();
 }
 
 Being* LocalPlayer::getTarget() const

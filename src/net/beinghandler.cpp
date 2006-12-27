@@ -53,6 +53,7 @@ BeingHandler::BeingHandler()
         //SMSG_PLAYER_UPDATE_2,
         //SMSG_PLAYER_MOVE,
         //0x0119,
+        GPMSG_BEING_ATTACK,
         GPMSG_BEING_ENTER,
         GPMSG_BEING_LEAVE,
         GPMSG_BEINGS_MOVE,
@@ -84,6 +85,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_BEINGS_MOVE:
             handleBeingsMoveMessage(msg);
+            break;
+        case GPMSG_BEING_ATTACK:
+            handleBeingAttackMessage(msg);
             break;
 
         /*
@@ -432,10 +436,7 @@ void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readShort());
     if (!being) return;
-    if (being == player_node->getTarget())
-    {
-        player_node->stopAttack();
-    }
+
     beingManager->destroyBeing(being);
 }
 
@@ -488,4 +489,12 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
             being->adjustCourse(sx, sy, dx, dy);
         }
     }
+}
+
+void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
+{
+    Being *being = beingManager->findBeing(msg.readShort());
+    if (!being) return;
+
+    being->setAction(Being::ATTACK);
 }

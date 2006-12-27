@@ -509,6 +509,17 @@ void Game::handleInput()
                     }
                     break;
 
+                // attacking
+                // TODO: Reimplement attacking with joystick buttons
+                //       (old code allowed permanent attacking and not 1 attack
+                //       with each button push)
+                //       I would like to do this but i don't own a joystick.
+                case SDLK_LCTRL:
+                case SDLK_RCTRL:
+                    player_node->attack();
+                    used = true;
+                    break;
+
                     // Quitting confirmation dialog
                 case SDLK_ESCAPE:
                     if (!exitConfirm) {
@@ -650,38 +661,6 @@ void Game::handleInput()
         }
 
         player_node->walk(direction);
-
-        // Attacking monsters
-        if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||
-                joystick && joystick->buttonPressed(0))
-        {
-            Being *target = NULL;
-            bool newTarget = keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT];
-
-            // A set target has highest priority
-            if (newTarget || !player_node->getTarget())
-            {
-                Uint16 targetX = x, targetY = y;
-
-                if (player_node->getDirection() & Being::UP)
-                    targetY--;
-                if (player_node->getDirection() & Being::DOWN)
-                    targetY++;
-                if (player_node->getDirection() & Being::LEFT)
-                    targetX--;
-                if (player_node->getDirection() & Being::RIGHT)
-                    targetX++;
-
-                // Attack priority is: Monster, Player, auto target
-                target = beingManager->findBeing(
-                        targetX, targetY, Being::MONSTER);
-                if (!target)
-                    target = beingManager->findBeing(
-                            targetX, targetY, Being::PLAYER);
-            }
-
-            player_node->attack(target, newTarget);
-        }
 
         // Target the nearest monster if 'a' pressed
         if (keys[SDLK_a])

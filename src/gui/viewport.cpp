@@ -291,29 +291,9 @@ Viewport::mousePress(int mx, int my, int button)
         Being *being;
         FloorItem *item;
 
-        // Interact with some being
-        if ((being = beingManager->findBeing(tilex, tiley)))
-        {
-            switch (being->getType())
-            {
-                case Being::NPC:
-                    dynamic_cast<NPC*>(being)->talk();
-                    break;
 
-                case Being::MONSTER:
-                case Being::PLAYER:
-                    if (being->mAction == Being::DEAD)
-                        break;
-
-                    player_node->attack(being, true);
-                    break;
-
-                default:
-                    break;
-            }
-        }
         // Pick up some item
-        else if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
+        if ((item = floorItemManager->findByCoordinates(tilex, tiley)))
         {
                 player_node->pickUp(item);
         }
@@ -325,7 +305,6 @@ Viewport::mousePress(int mx, int my, int button)
             if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT]))
             {
                 player_node->setDestination(mx + mCameraX, my + mCameraY);
-                player_node->stopAttack();
             }
             mPlayerFollowMouse = true;
         }

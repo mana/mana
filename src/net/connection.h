@@ -36,7 +36,8 @@ namespace Net
     {
         public:
             enum State {
-                OK, ERROR
+                OK,
+                NET_ERROR
             };
 
             ~Connection();

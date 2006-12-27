@@ -66,3 +66,10 @@ void Net::GameServer::Player::equip(int itemId, char slot)
 
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::Player::attack()
+{
+    MessageOut msg(PGMSG_ATTACK);
+
+    Net::GameServer::connection->send(msg);
+}

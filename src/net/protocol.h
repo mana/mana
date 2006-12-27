@@ -159,6 +159,8 @@ enum {
     GPMSG_BEING_LEAVE              = 0x0201, // W being id
     PGMSG_WALK                     = 0x0260, // W*2 destination
     GPMSG_BEINGS_MOVE              = 0x0280, // { W being id, B flags [, C position] [, W*2 destination] }*
+    PGMSG_ATTACK                   = 0x0290, // -
+    GPMSG_BEING_ATTACK             = 0x0291, // W being id
     PGMSG_SAY                      = 0x02A0, // S text
     GPMSG_SAY                      = 0x02A1, // W being id, S text
     PGMSG_USE_ITEM                 = 0x0300, // L item id

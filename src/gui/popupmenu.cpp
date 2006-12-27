@@ -136,14 +136,6 @@ void PopupMenu::handleLink(const std::string& link)
         tradePartnerName = mBeing->getName();
     }
 
-    // Attack action
-    else if (link == "attack" &&
-             mBeing != NULL &&
-             mBeing->getType() == Being::PLAYER)
-    {
-        player_node->attack(mBeing, true);
-    }
-
     /*
     // Follow Player action
     else if (link == "follow")

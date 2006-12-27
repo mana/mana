@@ -48,7 +48,7 @@ bool Net::Connection::connect(const std::string &address, short port)
     if (address.empty())
     {
         logger->log("Net::Connection::connect() got empty address!");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 
@@ -63,7 +63,7 @@ bool Net::Connection::connect(const std::string &address, short port)
     if (!mConnection)
     {
         logger->log("Unable to initiate connection to the server.");
-        mState = ERROR;
+        mState = NET_ERROR;
         return false;
     }
 

@@ -103,8 +103,7 @@ class LocalPlayer : public Player
          */
         void setTrading(bool trading) { mTrading = trading; }
 
-        void attack(Being *target=NULL, bool keep=false);
-        void stopAttack();
+        void attack();
         Being* getTarget() const;
 
         /**

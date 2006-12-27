@@ -309,7 +309,6 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     current_npc = 0;
 
     player_node->setAction(Being::STAND);
-    player_node->stopAttack();
 
     player_node->mX = x;
     player_node->mY = y;
