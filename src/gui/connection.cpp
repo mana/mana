@@ -66,6 +66,7 @@ ConnectionDialog::ConnectionDialog(unsigned char previousState):
     add(mProgressBar);
 
     setLocationRelativeTo(getParent());
+    setVisible(true);
 }
 
 void ConnectionDialog::logic()
