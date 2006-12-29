@@ -365,7 +365,7 @@ class Being : public Sprite
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
-        Uint8 mDirection;               /**< Facing direction */
+        Uint8 mOldDirection,mDirection; /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         SpriteIterator mSpriteIterator;
 

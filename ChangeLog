@@ -1,3 +1,8 @@
+2006-12-30  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/being.h, src/being.cpp: Improved movement smoothness by avoiding
+	useless changes of sprite direction.
+
 2006-12-29  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/gui/connection.cpp: Fixed displaying of progress dialog.

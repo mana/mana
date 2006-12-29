@@ -60,7 +60,7 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     mWeapon(0),
     mWalkSpeed(150),
     mSpeedModifier(1024),
-    mDirection(DOWN),
+    mOldDirection(DOWN), mDirection(DOWN),
     mMap(NULL),
     mHairStyle(0), mHairColor(0),
     mSpeechTime(0),
@@ -368,6 +368,9 @@ Being::setAction(Uint8 action)
 void
 Being::setDirection(Uint8 direction)
 {
+    if (mDirection == direction)
+        return;
+    mOldDirection = mDirection;
     mDirection = direction;
     SpriteDirection dir = getSpriteDirection();
 
@@ -383,7 +386,25 @@ Being::getSpriteDirection() const
 {
     SpriteDirection dir;
 
-    if (mDirection & UP)
+    // if the direction has not changed much, keep it for the sprite
+    if (mOldDirection & mDirection & UP)
+    {
+        dir = DIRECTION_UP;
+    }
+    else if (mOldDirection & mDirection & RIGHT)
+    {
+        dir = DIRECTION_RIGHT;
+    }
+    else if (mOldDirection & mDirection & DOWN)
+    {
+        dir = DIRECTION_DOWN;
+    }
+    else if (mOldDirection & mDirection & LEFT)
+    {
+        dir = DIRECTION_LEFT;
+    }
+    // otherwise, use only the new direction
+    else if (mDirection & UP)
     {
         dir = DIRECTION_UP;
     }
@@ -395,7 +416,8 @@ Being::getSpriteDirection() const
     {
         dir = DIRECTION_DOWN;
     }
-    else {
+    else
+    {
         dir = DIRECTION_LEFT;
     }
 

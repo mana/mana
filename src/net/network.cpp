@@ -148,7 +148,7 @@ void Net::flush()
         switch (event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
-                logger->log("Connected.");
+                logger->log("Connected to port %d.", event.peer->address.port);
                 // Store any relevant server information here.
                 event.peer->data = 0;
                 break;
