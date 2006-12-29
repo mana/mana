@@ -57,6 +57,7 @@ BeingHandler::BeingHandler()
         GPMSG_BEING_ENTER,
         GPMSG_BEING_LEAVE,
         GPMSG_BEINGS_MOVE,
+        GPMSG_BEINGS_DAMAGE,
         0
     };
     handledMessages = _messages;
@@ -88,6 +89,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_BEING_ATTACK:
             handleBeingAttackMessage(msg);
+            break;
+        case GPMSG_BEINGS_DAMAGE:
+            handleBeingsDamageMessage(msg);
             break;
 
         /*
@@ -497,4 +501,17 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
     if (!being) return;
 
     being->setAction(Being::ATTACK);
+}
+
+void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
+{
+    while (msg.getUnreadLength())
+    {
+        Being *being = beingManager->findBeing(msg.readShort());
+        int damage = msg.readShort();
+        if (being)
+        {
+            being->setDamage(damage, 0);
+        }
+    }
 }

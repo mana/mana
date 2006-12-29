@@ -67,9 +67,9 @@ void Net::GameServer::Player::equip(int itemId, char slot)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::attack()
+void Net::GameServer::Player::attack(unsigned char direction)
 {
     MessageOut msg(PGMSG_ATTACK);
-
+    msg.writeByte(direction);
     Net::GameServer::connection->send(msg);
 }

@@ -1,4 +1,11 @@
-2006-12-06  Philipp Sehmisch  <tmw@crushnet.org>
+2006-12-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+    * src/localplayer.h, src/net/beinghandler.cpp, src/net/beinghandler.h,
+    src/net/gameserver/player.cpp, src/net/gameserver/player.h,
+    src/net/protocol.h:
+    Implemented catching and displaying of damage notifications.
+
+2006-12-27  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp, src/gui/popupmenu.cpp, src/gui/viewport.cpp,
 	src/localplayer.cpp, src/localplayer.h, src/net/beinghandler.cpp,

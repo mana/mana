@@ -365,7 +365,7 @@ void LocalPlayer::attack()
     else
         sound.playSfx("sfx/fist-swish.ogg");
 
-    Net::GameServer::Player::attack();
+    Net::GameServer::Player::attack(mDirection);
 }
 
 Being* LocalPlayer::getTarget() const

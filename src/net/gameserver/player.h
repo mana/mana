@@ -39,7 +39,7 @@ namespace Net
 //            void pickUp(...);
             void useItem(int itemId);
             void equip(int itemId, char slot);
-            void attack();
+            void attack(unsigned char direction);
         }
     }
 }
