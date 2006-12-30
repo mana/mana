@@ -100,17 +100,3 @@ void Net::AccountServer::Account::changePassword(
 
     Net::AccountServer::connection->send(msg);
 }
-
-void Net::AccountServer::Account::enterWorld()
-{
-    MessageOut msg(PAMSG_ENTER_WORLD);
-
-    Net::AccountServer::connection->send(msg);
-}
-
-void Net::AccountServer::Account::enterChat()
-{
-    MessageOut msg(PAMSG_ENTER_CHAT);
-
-    Net::AccountServer::connection->send(msg);
-}

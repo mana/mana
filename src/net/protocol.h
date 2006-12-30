@@ -129,28 +129,24 @@ enum {
     APMSG_CHAR_CREATE_RESPONSE     = 0x0021, // B error
     PAMSG_CHAR_DELETE              = 0x0022, // B index
     APMSG_CHAR_DELETE_RESPONSE     = 0x0023, // B error
-    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats, S mapname, W*2 position
-    APMSG_CHAR_LIST_RESPONSE       = 0x0025, // B number, { B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats, S mapname, W*2 position }*
+    APMSG_CHAR_INFO                = 0x0024, // B index, S name, B gender, B hair style, B hair color, B level, W money, W*6 stats
     PAMSG_CHAR_SELECT              = 0x0026, // B index
-    APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, S mapname, W*2 position
+    APMSG_CHAR_SELECT_RESPONSE     = 0x0027, // B error, B*32 token, S game address, W game port, S chat address, W chat port
     PAMSG_EMAIL_CHANGE             = 0x0030, // S email
     APMSG_EMAIL_CHANGE_RESPONSE    = 0x0031, // B error
     PAMSG_EMAIL_GET                = 0x0032, // -
     APMSG_EMAIL_GET_RESPONSE       = 0x0033, // B error, S email
     PAMSG_PASSWORD_CHANGE          = 0x0034, // S old password, S new password
     APMSG_PASSWORD_CHANGE_RESPONSE = 0x0035, // B error
-    PAMSG_ENTER_WORLD              = 0x0040, // -
-    APMSG_ENTER_WORLD_RESPONSE     = 0x0041, // B error, S address, W port, B*32 token
-    PAMSG_ENTER_CHAT               = 0x0042, // -
-    APMSG_ENTER_CHAT_RESPONSE      = 0x0043, // B error, S address, W port, B*32 token
+
     PGMSG_CONNECT                  = 0x0050, // B*32 token
     GPMSG_CONNECT_RESPONSE         = 0x0051, // B error
     PCMSG_CONNECT                  = 0x0053, // B*32 token
     CPMSG_CONNECT_RESPONSE         = 0x0054, // B error
 
     // Game
-    GPMSG_PLAYER_MAP_CHANGE        = 0x0100, // S filename, W x, W y, B newserv
-                                             // [, S32 token, S server, W port]
+    GPMSG_PLAYER_MAP_CHANGE        = 0x0100, // S filename, W x, W y
+    GPMSG_PLAYER_SERVER_CHANGE     = 0x0101, // B*32 token, S game address, W game port
     PGMSG_PICKUP                   = 0x0110,
     GPMSG_PICKUP_RESPONSE          = 0x0111,
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id

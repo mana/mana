@@ -49,10 +49,6 @@ namespace Net
 
             void changePassword(const std::string &oldPassowrd,
                     const std::string &newPassword);
-
-            void enterWorld();
-
-            void enterChat();
         }
     }
 }

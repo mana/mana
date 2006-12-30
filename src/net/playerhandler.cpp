@@ -79,6 +79,7 @@ PlayerHandler::PlayerHandler()
         //SMSG_PLAYER_STAT_UPDATE_6,
         //SMSG_PLAYER_ARROW_MESSAGE,
         GPMSG_PLAYER_MAP_CHANGE,
+        GPMSG_PLAYER_SERVER_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -92,6 +93,15 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             handleMapChangeMessage(msg);
             break;
 
+        case GPMSG_PLAYER_SERVER_CHANGE:
+        {   // TODO: Implement reconnecting to another game server
+            std::string token = msg.readString(32);
+            std::string address = msg.readString();
+            int port = msg.readShort();
+            logger->log("Changing server to %s:%d", address.c_str(), port);
+        } break;
+
+        /*
         case SMSG_PLAYER_STAT_UPDATE_1:
             {
                 Sint16 type = msg.readShort();
@@ -287,21 +297,18 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 }
             }
             break;
+        */
     }
 }
 
 void
 PlayerHandler::handleMapChangeMessage(MessageIn &msg)
 {
-    // { "mapname", x, y, B new server [, token, "gameserver", W port] }
-
     std::string mapName = msg.readString();
     unsigned short x = msg.readShort();
     unsigned short y = msg.readShort();
-    unsigned char newServer = msg.readByte();
 
-    logger->log("Changing map to %s (%d, %d) on %s server",
-            mapName.c_str(), x, y, (newServer) ? "another" : "same");
+    logger->log("Changing map to %s (%d, %d)", mapName.c_str(), x, y);
 
     // Switch the actual map, deleting the previous one
     engine->changeMap(mapName);
@@ -309,15 +316,6 @@ PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     current_npc = 0;
 
     player_node->setAction(Being::STAND);
-
     player_node->mX = x;
     player_node->mY = y;
-
-    if (newServer)
-    {
-        // TODO: Implement reconnecting to another game server
-        //std::string token = msg.readString(32);
-        //std::string gameServer = msg.readString();
-        //unsigned short gameServerPort = msg.readShort();
-    }
 }
