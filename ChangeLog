@@ -1,9 +1,11 @@
 2006-12-30  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp: Improved movement smoothness by avoiding
-	useless changes of sprite direction.
+	useless changes of sprite direction. Reduced field of direction
+	components from	180° to 120° when computing being direction.
 	* src/localplayer.cpp: Changed attack message to send the direction
-	the player is visually facing.
+	the player is visually facing. Removed check on beings when setting an
+	absolute destination.
 
 2006-12-29  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 

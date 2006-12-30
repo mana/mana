@@ -422,20 +422,17 @@ Being::nextStep()
     PATH_NODE node = mPath.front();
     mPath.pop_front();
 
-    int dir = 0;
-    if (node.x > mX)
-        dir |= RIGHT;
-    else if (node.x < mX)
-        dir |= LEFT;
-    if (node.y > mY)
-        dir |= DOWN;
-    else if (node.y < mY)
-        dir |= UP;
+    mStepX = node.x - mX;
+    mStepY = node.y - mY;
+
+    int dir = 0, dx = std::abs(mStepX), dy = std::abs(mStepY);
+    if (dx * 2 > dy)
+        dir |= mStepX > 0 ? RIGHT : LEFT;
+    if (dy * 2 > dx)
+        dir |= mStepY > 0 ? DOWN : UP;
 
     setDirection(dir);
 
-    mStepX = node.x - mX;
-    mStepY = node.y - mY;
     mX = node.x;
     mY = node.y;
     setAction(WALK);

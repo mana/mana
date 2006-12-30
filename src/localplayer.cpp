@@ -218,9 +218,9 @@ void LocalPlayer::setDestination(Uint16 x, Uint16 y)
 {
     // Fix coordinates so that the player does not seem to dig into walls.
     int tx = x / 32, ty = y / 32, fx = x % 32, fy = y % 32;
-    if (fx != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty)) fx = 16;
-    if (fy != 16 && !mMap->getWalk(tx, ty + fy / 16 * 2 - 1)) fy = 16;
-    if (fx != 16 && fy != 16 && !mMap->getWalk(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1)) fx = 16;
+    if (fx != 16 && mMap->tileCollides(tx + fx / 16 * 2 - 1, ty)) fx = 16;
+    if (fy != 16 && mMap->tileCollides(tx, ty + fy / 16 * 2 - 1)) fy = 16;
+    if (fx != 16 && fy != 16 && mMap->tileCollides(tx + fx / 16 * 2 - 1, ty + fy / 16 * 2 - 1)) fx = 16;
     x = tx * 32 + fx;
     y = ty * 32 + fy;
 
