@@ -288,9 +288,7 @@ Viewport::mousePress(int mx, int my, int button)
     // Left click can cause different actions
     if (button == gcn::MouseInput::LEFT)
     {
-        Being *being;
         FloorItem *item;
-
 
         // Pick up some item
         if ((item = floorItemManager->findByCoordinates(tilex, tiley)))

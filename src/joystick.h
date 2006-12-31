@@ -32,15 +32,12 @@ class Joystick
         /**
          * Number of buttons we can handle.
          */
-        static const unsigned char MAX_BUTTONS = 6;
+        enum { MAX_BUTTONS = 6 };
 
         /**
          * Directions, to be used as bitmask values.
          */
-        static const char UP = 1;
-        static const char DOWN = 2;
-        static const char LEFT = 4;
-        static const char RIGHT = 8;
+        enum { UP = 1, DOWN = 2, LEFT = 4, RIGHT = 8 };
 
         /**
          * Initializes the joystick subsystem.

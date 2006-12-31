@@ -1,3 +1,9 @@
+2006-12-31  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/being.h, src/being.cpp, src/joystick.h: Scrapped static const
+	integral members and replaced them with enumerations.
+	* src/gui/viewport.cpp: Removed unused variable.
+
 2006-12-31  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/being.cpp: Added some variable definitions since they were

@@ -91,10 +91,7 @@ class Being : public Sprite
         /**
          * Directions, to be used as bitmask values
          */
-        static const char DOWN = 1;
-        static const char LEFT = 2;
-        static const char UP = 4;
-        static const char RIGHT = 8;
+        enum { DOWN = 1, LEFT = 2, UP = 4, RIGHT = 8 };
 
         std::string mName;      /**< Name of character */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */

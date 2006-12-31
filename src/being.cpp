@@ -47,11 +47,6 @@ PATH_NODE::PATH_NODE(Uint16 iX, Uint16 iY):
 {
 }
 
-const char Being::DOWN;
-const char Being::LEFT;
-const char Being::UP;
-const char Being::RIGHT;
-
 Being::Being(Uint16 id, Uint16 job, Map *map):
     mJob(job),
     mX(0), mY(0),
