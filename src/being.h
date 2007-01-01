@@ -299,9 +299,10 @@ class Being : public Sprite
         setAction(Uint8 action);
 
         /**
-         * Returns the current direction.
+         * Returns the direction the being is facing.
          */
-        Uint8 getDirection() const { return mDirection; }
+        SpriteDirection getSpriteDirection() const
+        { return SpriteDirection(mSpriteDirection); }
 
         /**
          * Sets the current direction.
@@ -351,18 +352,13 @@ class Being : public Sprite
         void
         setPath(const Path &path, int mod = 1024);
 
-        /**
-         * Returns the sprite direction of this being.
-         */
-        SpriteDirection
-        getSpriteDirection() const;
-
         Uint16 mId;                     /**< Unique being id */
         Uint8 mSex;                     /**< Character's gender */
         Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
-        Uint8 mFaceDirection,mDirection;/**< Facing direction */
+        Uint8 mSpriteDirection;         /**< Facing direction */
+        Uint8 mDirection;               /**< Walking direction */
         Map *mMap;                      /**< Map on which this being resides */
         SpriteIterator mSpriteIterator;
 

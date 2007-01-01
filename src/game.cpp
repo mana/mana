@@ -489,15 +489,17 @@ void Game::handleInput()
 
                         // If none below the player, try the tile in front of
                         // the player
-                        if (!item) {
-                            if (player_node->getDirection() & Being::UP)
-                                y--;
-                            if (player_node->getDirection() & Being::DOWN)
-                                y++;
-                            if (player_node->getDirection() & Being::LEFT)
-                                x--;
-                            if (player_node->getDirection() & Being::RIGHT)
-                                x++;
+                        if (!item)
+                        {
+                            // Temporary until tile-based picking is removed.
+                            switch (player_node->getSpriteDirection())
+                            {
+                                case DIRECTION_UP   : --y; break;
+                                case DIRECTION_DOWN : ++y; break;
+                                case DIRECTION_LEFT : --x; break;
+                                case DIRECTION_RIGHT: ++x; break;
+                                default: break;
+                            }
 
                             item = floorItemManager->findByCoordinates(x, y);
                         }

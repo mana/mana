@@ -1,3 +1,10 @@
+2007-01-01  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/being.h, src/being.cpp, src/game.cpp: Made getSpriteDirection
+	public and trivial. Removed getDirection: its return value does not
+	match what the user sees, so its use is dubious from a user-interface
+	point of view.
+
 2006-12-31  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp, src/joystick.h: Scrapped static const
