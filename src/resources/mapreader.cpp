@@ -181,7 +181,6 @@ MapReader::readMap(const std::string &filename)
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
             logger->log("Error: Not a map file (%s)!", filename.c_str());
-            return NULL;
         }
         else
         {

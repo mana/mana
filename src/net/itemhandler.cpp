@@ -32,9 +32,7 @@
 ItemHandler::ItemHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_ITEM_VISIBLE,
-        SMSG_ITEM_DROPPED,
-        SMSG_ITEM_REMOVE,
+        GPMSG_ITEMS,
         0
     };
     handledMessages = _messages;
@@ -42,28 +40,26 @@ ItemHandler::ItemHandler()
 
 void ItemHandler::handleMessage(MessageIn &msg)
 {
-    Uint32 id;
-    Uint16 x, y;
-    Sint16 itemId;
-
     switch (msg.getId())
     {
-        case SMSG_ITEM_VISIBLE:
-        case SMSG_ITEM_DROPPED:
-            id = msg.readLong();
-            itemId = msg.readShort();
-            msg.readByte();  // identify flag
-            x = msg.readShort();
-            y = msg.readShort();
+        case GPMSG_ITEMS:
+        {
+            while (msg.getUnreadLength())
+            {
+                int itemId = msg.readShort();
+                int x = msg.readShort();
+                int y = msg.readShort();
+                int id = (x << 16) | y; // dummy id
 
-            floorItemManager->create(id, itemId, x, y, engine->getCurrentMap());
-            break;
-
-        case SMSG_ITEM_REMOVE:
-            FloorItem *item;
-            item = floorItemManager->findById(msg.readLong());
-            if (item)
-                floorItemManager->destroy(item);
-            break;
+                if (itemId)
+                {
+                    floorItemManager->create(id, itemId, x / 32, y / 32, engine->getCurrentMap());
+                }
+                else if (FloorItem *item = floorItemManager->findById(id))
+                {
+                    floorItemManager->destroy(item);
+                }
+            }
+        } break;
     }
 }

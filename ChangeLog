@@ -1,3 +1,9 @@
+2007-01-03  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/resources/mapreader.cpp: Fixed memory leak on error.
+	* src/net/protocol.h, src/net/itemhandler.cpp: Added support for items
+	dropped on map.
+
 2007-01-01  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp, src/game.cpp: Made getSpriteDirection
