@@ -33,6 +33,7 @@ ItemHandler::ItemHandler()
 {
     static const Uint16 _messages[] = {
         GPMSG_ITEMS,
+        GPMSG_ITEM_APPEAR,
         0
     };
     handledMessages = _messages;
@@ -42,6 +43,7 @@ void ItemHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case GPMSG_ITEM_APPEAR:
         case GPMSG_ITEMS:
         {
             while (msg.getUnreadLength())
