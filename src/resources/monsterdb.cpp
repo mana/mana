@@ -34,11 +34,15 @@ namespace
 {
     MonsterDB::MonsterInfos mMonsterInfos;
     MonsterInfo mUnknown;
+    bool mLoaded = false;
 }
 
 void
 MonsterDB::load()
 {
+    if (mLoaded)
+        return;
+
     mUnknown.setSprite("error.xml");
     mUnknown.setName("unnamed");
 
@@ -123,6 +127,8 @@ MonsterDB::load()
         }
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
     }
+
+    mLoaded = true;
 }
 
 void
@@ -131,6 +137,8 @@ MonsterDB::unload()
     for_each (  mMonsterInfos.begin(), mMonsterInfos.end(),
                 make_dtor(mMonsterInfos));
     mMonsterInfos.clear();
+
+    mLoaded = false;
 }
 
 

@@ -153,10 +153,10 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     SDL_FreeSurface(image);
 
     if (hasPink && !hasAlpha) {
-        SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY | SDL_RLEACCEL,
+        SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY,
                 SDL_MapRGB(tmpImage->format, 255, 0, 255));
     } else if (hasAlpha) {
-        SDL_SetAlpha(tmpImage, SDL_SRCALPHA | SDL_RLEACCEL, SDL_ALPHA_OPAQUE);
+        SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
     }
 
 #ifdef USE_OPENGL
@@ -305,7 +305,7 @@ void Image::setAlpha(float a)
 
     if (mImage) {
         // Set the alpha value this image is drawn at
-        SDL_SetAlpha(mImage, SDL_SRCALPHA | SDL_RLEACCEL, (int)(255 * mAlpha));
+        SDL_SetAlpha(mImage, SDL_SRCALPHA, (int) (255 * mAlpha));
     }
 }
 

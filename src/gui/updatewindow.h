@@ -141,6 +141,11 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     std::string mCurrentFile;
 
     /**
+     * The Adler32 checksum of the file currently downloading.
+     */
+    unsigned long mCurrentChecksum;
+
+    /**
      * Absolute path to locally save downloaded files.
      */
     std::string mBasePath;
@@ -179,12 +184,12 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     /**
      * List of files to download
      */
-    std::vector<std::string> mFiles;
+    std::vector<std::string> mLines;
 
     /**
      * Index of the file to be downloaded
      */
-    unsigned int mFileIndex;
+    unsigned int mLineIndex;
 
     gcn::Label *mLabel;           /**< Progress bar caption. */
     Button *mCancelButton;        /**< Button to stop the update process. */

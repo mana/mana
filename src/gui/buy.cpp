@@ -85,7 +85,6 @@ BuyDialog::BuyDialog():
     mShopItemList->setEventId("item");
     mSlider->setEventId("slider");
 
-    mShopItemList->addActionListener(this);
     mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
@@ -112,7 +111,7 @@ void BuyDialog::setMoney(int amount)
 {
     mMoney = amount;
     mShopItemList->setPlayersMoney(amount);
-    mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney)  + " GP");
+    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney)  + " GP");
     mMoneyLabel->adjustSize();
 }
 
@@ -129,7 +128,7 @@ void BuyDialog::reset()
     mDecreaseButton->setEnabled(false);
     mQuantityLabel->setCaption("0");
     mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney) + " GP");
+    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney) + " GP");
     mMoneyLabel->adjustSize();
     mItemDescLabel->setCaption("");
     mItemEffectLabel->setCaption("");
@@ -145,31 +144,7 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 {
     int selectedItem = mShopItemList->getSelected();
 
-    if (eventId == "item")
-    {
-        // Reset amount of items and update labels
-        mAmountItems = 0;
-        mSlider->setValue(0);
-        mQuantityLabel->setCaption("0");
-        mQuantityLabel->adjustSize();
-        mMoneyLabel->setCaption("Price : 0 GP / " + toString(mMoney) + " GP");
-        mMoneyLabel->adjustSize();
-
-        // Disable buttons for buying and decreasing
-        mBuyButton->setEnabled(false);
-        mDecreaseButton->setEnabled(false);
-
-        // If no item was selected, none can be bought, otherwise
-        // calculate how many the player can afford
-        mMaxItems = (mShopItemList->getSelected() == -1) ? 0 :
-            mMoney / mShopItems->at(selectedItem).price;
-
-        // When at least one item can be bought, enable the slider and the
-        // increase button
-        mIncreaseButton->setEnabled(mMaxItems > 0);
-        mSlider->setEnabled(mMaxItems > 0);
-    }
-    else if (eventId == "quit")
+    if (eventId == "quit")
     {
         setVisible(false);
         current_npc = 0;
@@ -253,7 +228,7 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
         mQuantityLabel->adjustSize();
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price : " + toString(price)  + " GP / "
+        mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
                                 + toString(mMoney) + " GP" );
         mMoneyLabel->adjustSize();
     }
@@ -261,19 +236,39 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 
 void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
+    // Reset amount of items and update labels
+    mAmountItems = 0;
+    mSlider->setValue(0);
+    mQuantityLabel->setCaption("0");
+    mQuantityLabel->adjustSize();
+    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney) + " GP");
+    mMoneyLabel->adjustSize();
+
+    // Disable buttons for buying and decreasing
+    mBuyButton->setEnabled(false);
+    mDecreaseButton->setEnabled(false);
+
     int selectedItem = mShopItemList->getSelected();
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info =
-            ItemDB::get(mShopItems->at(selectedItem).id);
+        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());
+
+        // Calculate how many the player can afford
+        mMaxItems = mMoney / mShopItems->at(selectedItem).price;
     }
     else
     {
         mItemDescLabel->setCaption("Description:");
         mItemEffectLabel->setCaption("Effect:");
+        mMaxItems = 0;
     }
+
+    // When at least one item can be bought, enable the slider and the
+    // increase button
+    mIncreaseButton->setEnabled(mMaxItems > 0);
+    mSlider->setEnabled(mMaxItems > 0);
 }

@@ -31,13 +31,23 @@
 #include "../log.h"
 #include "../npc.h"
 
+#include "../gui/buy.h"
 #include "../gui/chat.h"
+#include "../gui/npclistdialog.h"
+#include "../gui/npc_text.h"
 #include "../gui/ok_dialog.h"
+#include "../gui/sell.h"
 #include "../gui/skill.h"
 
 // TODO Move somewhere else
 OkDialog *weightNotice = NULL;
 OkDialog *deathNotice = NULL;
+
+extern NpcListDialog *npcListDialog;
+extern NpcTextDialog *npcTextDialog;
+extern BuyDialog *buyDialog;
+extern SellDialog *sellDialog;
+extern Window *buySellDialog;
 
 /**
  * Listener used for handling the overweigth message.
@@ -64,6 +74,12 @@ namespace {
         {
             player_node->revive();
             deathNotice = NULL;
+            npcListDialog->setVisible(false);
+            npcTextDialog->setVisible(false);
+            buyDialog->setVisible(false);
+            sellDialog->setVisible(false);
+            buySellDialog->setVisible(false);
+            current_npc = 0;
         }
     } deathListener;
 }

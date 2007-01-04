@@ -360,7 +360,7 @@ void Game::logic()
                     get_elapsed_time(mDrawTime / 10) > mMinFrameTime)
             {
                 frame++;
-                engine->draw(graphics);
+                gui->draw();
                 graphics->updateScreen();
                 mDrawTime += mMinFrameTime;
 
@@ -662,7 +662,7 @@ void Game::handleInput()
             direction |= Being::RIGHT;
         }
 
-        player_node->walk(direction);
+        player_node->setWalkingDir(direction);
 
         // Target the nearest monster if 'a' pressed
         if (keys[SDLK_a])

@@ -27,6 +27,7 @@
 namespace gcn {
     class ActionListener;
     class AllegroGraphics;
+    class AllegroImage;
     class AllegroImageLoader;
     class AllegroInput;
     class BasicContainer;
@@ -56,11 +57,13 @@ namespace gcn {
     class MouseInput;
     class MouseListener;
     class OpenGLGraphics;
-    class OpenGLImageLoader;
+    class OpenGLImage;
+    class OpenGLSDLImageLoader;
     class RadioButton;
     class Rectangle;
     class ScrollArea;
     class SDLGraphics;
+    class SDLImage;
     class SDLImageLoader;
     class SDLInput;
     class Slider;

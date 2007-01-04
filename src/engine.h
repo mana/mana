@@ -26,11 +26,11 @@
 
 #include <iosfwd>
 
-class Graphics;
 class Map;
 
 /**
- * Game engine that does the main drawing.
+ * Game engine. Actually hardly does anything anymore except keeping track of
+ * the current map and loading the emotes.
  */
 class Engine
 {
@@ -59,11 +59,6 @@ class Engine
          * Performs engine logic.
          */
         void logic();
-
-        /**
-         * Draws everything on the screen.
-         */
-        void draw(Graphics *graphics);
 
     private:
         Map *mCurrentMap;

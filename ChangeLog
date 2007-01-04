@@ -55,6 +55,187 @@
 	performs an attack and attack messages from the server are received
 	and displayed.
 
+2006-12-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/tiles/christmastree.png, data/maps/new_11-1.tmx.gz:
+	Added Christmas tree by Pauan.
+	* data/graphics/sprites/head-christmastree.xml: Fixed name of image.
+	* src/resources/spriteset.cpp: Fixed index check to prevent crashing.
+	* data/graphics/sprites/head-christmastreehat.png,
+	data/graphics/sprites/head-rangerhat.png,
+	data/graphics/sprites/head-christmastree.xml,
+	data/graphics/sprites/head-antlerhat.xml,
+	data/graphics/sprites/head-santabeardhat.xml,
+	data/graphics/sprites/head-santabeardhat.png,
+	data/graphics/sprites/head-rangerhat.xml: Updates to Pauan's recent
+	sprites by Pauan.
+	* data/items.xml: Fixes to descriptions and weights by Pauan.
+
+2006-12-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp: Don't try to draw an icon when it is not
+	defined or failed to load properly.
+	* src/resources/image.cpp: Major rendering performance increase in
+	software mode, by not using RLE compression on loaded images while
+	most of the time, we're only drawing a small subimage of them.
+	* README, data/help/header.txt, NEWS: Filled in release dates.
+
+2006-12-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, data/graphics/items/Makefile.am,
+	data/graphics/items/CMakeLists.txt, data/graphics/images/Makefile.am,
+	data/graphics/images/CMakeLists.txt,
+	data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/Makefile.am,
+	data/graphics/CMakeLists.txt, data/maps/Makefile.am,
+	data/maps/CMakeLists.txt, data/sfx/Makefile.am,
+	data/sfx/CMakeLists.txt, data/Makefile.am, data/CMakeLists.txt:
+	Removed database files, minimaps, items, monster sprites, maps and
+	sounds from the release. They will be released dynamically only.
+	* data/graphics/tiles/snow_x3.png: Added bottom of Christmas tree by
+	pauan.
+	* src/main.cpp, src/resources/itemdb.h, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/equipmentdb.cpp: Load the
+	databases at the start of the LOGIN state, after the updates are
+	loaded.
+
+2006-12-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/items/armor-head-rangerhat.png,
+	data/graphics/items/generic-redstocking.png,
+	data/graphics/items/armor-head-christmastree.png,
+	data/graphics/items/armor-head-antlerhat.png,
+	data/graphics/items/armor-head-santabeardhat.png,
+	data/graphics/sprites/head-christmastreehat.png,
+	data/graphics/sprites/head-rangerhat.png,
+	data/graphics/sprites/head-christmastree.xml,
+	data/graphics/sprites/head-antlerhat.xml,
+	data/graphics/sprites/head-santabeardhat.xml,
+	data/graphics/sprites/head-antlerhat.png,
+	data/graphics/sprites/head-santabeardhat.png,
+	data/graphics/sprites/head-rangerhat.xml, data/items.xml,
+	data/equipment.xml, data/monsters.xml: Added new Christmas themed
+	headwear by Pauan.
+	* data/graphics/items/Makefile.am, data/graphics/items/CMakeLists.txt,
+	data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt, data/Makefile.am,
+	data/CMakeLists.txt: Updated Makefiles.
+
+2006-12-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac, CMakeLists.txt, README, data/help/header.txt: Updated
+	version to 0.0.22.
+
+2006-12-18  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/armor-chest-vnecksweater.png: New version of
+	the inventory icon for the V-neck sweater by Saphy.
+
+2006-12-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/shoplistbox.h, src/gui/listbox.h,
+	src/gui/shop.cpp, src/gui/buy.cpp, src/gui/shoplistbox.cpp,
+	src/gui/listbox.cpp: Subclassed ShopListBox from ListBox to get rid of
+	some duplicated code, and fixed a problem with scrolling to the
+	current selection. Also aligned the text a bit better and put the
+	price in parenthesis.
+
+2006-12-16  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/connection.cpp, src/gui/chargedialog.cpp: Fixed dialog
+	visibility.
+	* src/localplayer.cpp, src/game.cpp, src/localplayer.h: Fixed issues
+	with walking one tile too many and changing direction towards an
+	obstacle.
+
+2006-12-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert1.png: Removed some unused legacy tiles and 
+	added variant tiles for the cliffs.
+
+2006-12-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/engine.h, src/engine.cpp: Removed the rather
+	useless remaining draw function from the engine class.
+	* src/being.cpp, src/being.h: Fixed an issue with fading out damage
+	texts (they were sometimes fully opaque at the end of fading out).
+
+2006-12-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* The Mana World.dev, tmw.cbp: Updated project files.
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h, src/main.cpp:
+	Added Adler32 checksum for updates.
+	* src/net/playerhandler.cpp: Fixed crash when selecting an item after
+	death.
+	* data/items.xml: Fixed defense values for sweaters.
+	* src/net/playerhandler.cpp: Hide all NPC dialogs after death.
+
+2006-12-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/animatedsprite.h, src/CMakeLists.txt, src/animatedsprite.cpp,
+	src/resources/action.h, src/resources/animation.h,
+	src/resources/spritedef.cpp, src/resources/action.cpp,
+	src/resources/animation.cpp, src/resources/spritedef.h: Moved
+	Action, Animation and Frame (renamed from AnimationPhase) classes into
+	the resources directory, since they are part of the SpriteDef class.
+	* src/CMakeLists.txt, src/utils/base64.cpp, src/utils/base64.h,
+	src/Makefile.am, src/resources/mapreader.cpp: Moved base64 module into
+	utils directory.
+	* src/engine.cpp, src/npc.cpp: Cleaned up some unused stuff.
+
+2006-12-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/sfx/bat-dying1.ogg, data/sfx/bat-hit1.ogg,
+	data/sfx/bow_shoot_1.ogg, data/sfx/fire-goblin-hit1.ogg
+	data/sfx/fire-goblin-hit2.ogg, data/sfx/fire-goblin-miss1.ogg,
+	data/sfx/fist-swish.ogg, data/sfx/flower-hit1.ogg,
+	data/sfx/flower-hit2.ogg, data/sfx/flower-miss1.ogg,
+	data/sfx/fluffy-hit1.ogg, data/sfx/fluffy-hit2.ogg,
+	data/sfx/fluffy-hit3.ogg, data/sfx/fluffy-hurt1.ogg,
+	data/sfx/fluffy-miss1.ogg, data/sfx/knife-hit1.ogg,
+	data/sfx/knife-miss1.ogg, data/sfx/levelup.ogg
+	data/sfx/scorpion-hit1.ogg, data/sfx/scorpion-hit2.ogg
+	data/sfx/scorpion-hit3.ogg, data/sfx/scorpion-hit4.ogg
+	data/sfx/scorpion-miss1.ogg, data/sfx/short-sword-hit1.ogg
+	data/sfx/short-sword-miss1.ogg, data/sfx/shroom-hit1.ogg
+	data/sfx/slime-hit1.ogg:
+	Normalized versions of sound effects by Cosmostrator.
+
+2006-12-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Fixed visibility of the update window.
+
+2006-12-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/equipment.xml, data/items.xml,
+	data/graphics/sprites/chest-tnecksweater-male.png,
+	data/graphics/sprites/chest-tnecksweater-female.png,
+	data/graphics/sprites/chest-vnecksweater-male.png,
+	data/graphics/sprites/chest-vnecksweater-female.png,
+	data/graphics/sprites/chest-tnecksweater-male.xml,
+	data/graphics/sprites/chest-tnecksweater-female.xml,
+	data/graphics/sprites/chest-vnecksweater-male.xml,
+	data/graphics/sprites/chest-vnecksweater-female.xml,
+	data/graphics/sprites/Makefile.AM,
+	data/graphics/sprites/CMakeLists.txt,
+	data/graphics/items/armor-chest-vnecksweater.png,
+	data/graphics/items/armor-chest-tnecksweater.png,
+	data/graphics/items/armor-chest-woolsweater.png,
+	data/graphics/items/Makefile.AM, data/graphics/items/CMakeLists.txt:
+	Added new sweaters by Saphy. Info for server admins: Item IDs are 564
+	for turtleneck (should already be in there) and 624 for v-neck. The
+	visible sprite IDs are 19 for turtleneck and 20 for v-neck.
+
+2006-12-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.h, src/tmw.rc, src/winver.h, The Mana World.dev, tmw.cbp:
+	Fixed windows binary version.
+
+2006-12-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* docs/INSTALL/win32.txt: Added more detailed instructions for Dev-C++
+	users.
+
 2006-12-09  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/graphics/sprites/npcs.png: Added pirate NPC.

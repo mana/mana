@@ -309,11 +309,6 @@ void init_engine()
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
-
-    // Load XML databases
-    EquipmentDB::load();
-    ItemDB::load();
-    MonsterDB::load();
 }
 
 /** Clear the engine */
@@ -411,19 +406,22 @@ void parseOptions(int argc, char *argv[], Options &options)
 }
 
 /**
- * Reads the file "updates/resources.txt" and attempts to load each update
+ * Reads the file "updates/resources2.txt" and attempts to load each update
  * mentioned in it.
  */
 void loadUpdates()
 {
-    const std::string updatesFile = "updates/resources.txt";
+    const std::string updatesFile = "updates/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
     std::string homeDir = config.getValue("homeDir", "");
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {
-        resman->addToSearchPath(homeDir + "/updates/" + lines[i], false);
+        std::stringstream line(lines[i]);
+        std::string filename;
+        line >> filename;
+        resman->addToSearchPath(homeDir + "/updates/" + filename, false);
     }
 }
 
@@ -687,6 +685,12 @@ int main(int argc, char *argv[])
 
                 case STATE_LOGIN:
                     logger->log("State: LOGIN");
+
+                    // Load XML databases
+                    EquipmentDB::load();
+                    ItemDB::load();
+                    MonsterDB::load();
+
                     currentDialog = new LoginDialog(&loginData);
                     // TODO: Restore autologin
                     //if (!loginData.password.empty()) {

@@ -65,7 +65,6 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     mHairStyle(0), mHairColor(0),
     mSpeechTime(0),
     mDamageTime(0),
-    mShowSpeech(false), mShowDamage(false),
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
@@ -272,16 +271,14 @@ void
 Being::setSpeech(const std::string &text, Uint32 time)
 {
     mSpeech = text;
-    mSpeechTime = tick_time;
-    mShowSpeech = true;
+    mSpeechTime = 500;
 }
 
 void
 Being::setDamage(Sint16 amount, Uint32 time)
 {
     mDamage = amount ? toString(amount) : "miss";
-    mDamageTime = tick_time;
-    mShowDamage = true;
+    mDamageTime = 300;
 }
 
 void
@@ -443,17 +440,13 @@ Being::logic()
         nextStep();
     }
 
-    // Determine whether speech should still be displayed
-    if (get_elapsed_time(mSpeechTime) > 5000)
-    {
-        mShowSpeech = false;
-    }
+    // Reduce the time that speech is still displayed
+    if (mSpeechTime > 0)
+        mSpeechTime--;
 
-    // Determine whether damage should still be displayed
-    if (get_elapsed_time(mDamageTime) > 3000)
-    {
-        mShowDamage = false;
-    }
+    // Reduce the time that damage is still displayed
+    if (mDamageTime > 0)
+        mDamageTime--;
 
     // Update pixel coordinates
     mPx = mX - 16 + getXOffset();
@@ -511,7 +504,7 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     int py = mPy + offsetY;
 
     // Draw speech above this being
-    if (mShowSpeech)
+    if (mSpeechTime > 0)
     {
         graphics->setFont(speechFont);
         graphics->setColor(gcn::Color(255, 255, 255));
@@ -519,7 +512,7 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
     }
 
     // Draw damage above this being
-    if (mShowDamage && get_elapsed_time(mDamageTime) > 250)
+    if (mDamageTime > 0 && mDamageTime < 275)
     {
         // Selecting the right color
         if (mDamage == "miss")
@@ -536,13 +529,13 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         }
 
         int textY = (getType() == MONSTER) ? 32 : 70;
-        int ft = get_elapsed_time(mDamageTime) - 1500;
-        float a = (ft > 0) ? 1.0 - ft / 1500.0 : 1.0;
+        int ft = 150 - mDamageTime;
+        float a = (ft > 0) ? 1.0 - ft / 150.0 : 1.0;
 
         graphics->setColor(gcn::Color(255, 255, 255, (int)(255 * a)));
         graphics->drawText(mDamage,
                            px + 16,
-                           py - textY - get_elapsed_time(mDamageTime) / 100,
+                           py - textY - (300 - mDamageTime) / 10,
                            gcn::Graphics::CENTER);
 
         // Reset alpha value

@@ -73,9 +73,9 @@ class ListBox : public gcn::ListBox
         /**
          * Sets the index of the selected element.
          */
-        void setSelected(int selected);
+        virtual void setSelected(int selected);
 
-    private:
+    protected:
         /**
          * Sends out selection events to the list of selection listeners.
          */

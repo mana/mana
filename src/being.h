@@ -368,7 +368,6 @@ class Being : public Sprite
         Uint16 mHairStyle, mHairColor;
         Uint32 mSpeechTime;
         Uint32 mDamageTime;
-        bool mShowSpeech, mShowDamage;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;

@@ -21,10 +21,10 @@
  *  $Id: listbox.h 2655 2006-09-03 21:25:02Z b_lindeijer $
  */
 
-#ifndef _TMW_LISTBOX_H
-#define _TMW_LISTBOX_H
+#ifndef _TMW_SHOPLISTBOX_H
+#define _TMW_SHOPLISTBOX_H
 
-#include <guichan/widgets/listbox.hpp>
+#include "listbox.h"
 #include "shop.h"
 
 class SelectionListener;
@@ -36,7 +36,7 @@ class SelectionListener;
  *
  * \ingroup GUI
  */
-class ShopListBox : public gcn::ListBox
+class ShopListBox : public ListBox
 {
     public:
         /**
@@ -55,8 +55,6 @@ class ShopListBox : public gcn::ListBox
         void draw(gcn::Graphics *graphics);
 
         void mousePress(int x, int y, int button);
-        void mouseRelease(int x, int y, int button);
-        void mouseMotion(int x, int y);
 
         /**
          * Adds a listener to the list that's notified each time a change to
@@ -98,15 +96,6 @@ class ShopListBox : public gcn::ListBox
         void setPriceCheck(bool check);
 
     private:
-        /**
-         * Sends out selection events to the list of selection listeners.
-         */
-        void fireSelectionChangedEvent();
-
-        bool mMousePressed;    /**< Keeps track of mouse pressed status. */
-
-        std::list<SelectionListener*> mListeners;
-
         int mPlayerMoney;
 
         /**
@@ -118,7 +107,6 @@ class ShopListBox : public gcn::ListBox
         int mRowHeight; /**< Row Height */
 
         bool mPriceCheck;
-
 };
 
 #endif

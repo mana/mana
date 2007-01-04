@@ -29,8 +29,7 @@
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
 #elif defined WIN32
-#include "../The_Mana_World_private.h"
-#define PACKAGE_VERSION PRODUCT_VERSION
+#include "winver.h"
 #endif
 
 #ifndef TMW_DATADIR

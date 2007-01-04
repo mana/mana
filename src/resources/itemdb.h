@@ -29,17 +29,17 @@
 #include <map>
 
 /**
- * The namespace that holds the item information
+ * The namespace that holds the item information.
  */
 namespace ItemDB
 {
     /**
-     * Loads the item data from Items.xml
+     * Loads the item data from <code>items.xml</code>.
      */
     void load();
 
     /**
-     * Frees item data
+     * Frees item data.
      */
     void unload();
 

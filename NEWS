@@ -1,13 +1,17 @@
-0.0.22 (...)
+0.0.22 (24 December 2006)
 - Added support for female-specific equipment graphics
 - Added support for monster sounds
+- Added item icons to buy/sell dialogs
+- Enhanced character select dialog to show equipment
 - Changed to new update host (http://updates.themanaworld.org)
 - Worked around a Guichan exception thrown for mice with many buttons
 - Changed mouse walk to keep following mouse while button is held down
-- Extended font support for å and Å.
+- Extended font support for å and Å
+- Disabled RLE compression on all surfaces in software mode
 - Fixed joystick setting not to show disabled when it's actually enabled
 - Fixed money field to no longer hide below the bottom of the window
 - Fixed pathfinding to allow walking through beings when they block your path
+- Fixed an issue with NPC dialogs staying open after player respawn
 
 0.0.21.1 (30 October 2006)
 - Reload wallpaper after loading updates

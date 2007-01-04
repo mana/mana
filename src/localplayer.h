@@ -42,9 +42,15 @@ class LocalPlayer : public Player
             STR = 0, AGI, VIT, INT, DEX, LUK
         };
 
+        /**
+         * Constructor.
+         */
         LocalPlayer();
 
-        virtual ~LocalPlayer();
+        /**
+         * Destructor.
+         */
+        ~LocalPlayer();
 
         virtual void logic();
 
@@ -111,12 +117,15 @@ class LocalPlayer : public Player
          */
         void setTarget(Being* target) { mTarget = target; }
 
-        void walk(unsigned char dir);
-
         /**
          * Sets a new destination for this being to walk to.
          */
         void setDestination(Uint16 x, Uint16 y);
+
+        /**
+         * Sets a new direction to keep walking in.
+         */
+        void setWalkingDir(int dir);
 
         void raiseAttribute(Attribute attr);
         void raiseSkill(Uint16 skillId);
@@ -151,6 +160,8 @@ class LocalPlayer : public Player
         std::auto_ptr<Inventory> mInventory;
 
     protected:
+        void walk(unsigned char dir);
+
         Being *mTarget;
         FloorItem *mPickUpTarget;
 

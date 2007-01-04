@@ -31,7 +31,14 @@ class Item;
 class Inventory
 {
     public:
+        /**
+         * Constructor.
+         */
         Inventory();
+
+        /**
+         * Destructor.
+         */
         ~Inventory();
 
         /**

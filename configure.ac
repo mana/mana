@@ -113,13 +113,10 @@ data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
 data/graphics/images/ambient/Makefile
-data/graphics/items/Makefile
 data/graphics/sprites/Makefile
 data/graphics/tiles/Makefile
 data/help/Makefile
 data/icons/Makefile
-data/maps/Makefile
-data/sfx/Makefile
 docs/Makefile
 ])
 

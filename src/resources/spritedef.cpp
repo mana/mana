@@ -23,11 +23,10 @@
 
 #include "spritedef.h"
 
-#include "../animation.h"
-#include "../action.h"
-#include "../graphics.h"
 #include "../log.h"
 
+#include "animation.h"
+#include "action.h"
 #include "resourcemanager.h"
 #include "spriteset.h"
 #include "image.h"
@@ -208,20 +207,20 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
     Animation *animation = new Animation();
     action->setAnimation(directionType, animation);
 
-    // Get animation phases
-    for (xmlNodePtr phaseNode = animationNode->xmlChildrenNode;
-            phaseNode != NULL;
-            phaseNode = phaseNode->next)
+    // Get animation frames
+    for (xmlNodePtr frameNode = animationNode->xmlChildrenNode;
+            frameNode != NULL;
+            frameNode = frameNode->next)
     {
-        int delay = XML::getProperty(phaseNode, "delay", 0);
-        int offsetX = XML::getProperty(phaseNode, "offsetX", 0);
-        int offsetY = XML::getProperty(phaseNode, "offsetY", 0);
+        int delay = XML::getProperty(frameNode, "delay", 0);
+        int offsetX = XML::getProperty(frameNode, "offsetX", 0);
+        int offsetY = XML::getProperty(frameNode, "offsetY", 0);
         offsetY -= imageset->getHeight() - 32;
         offsetX -= imageset->getWidth() / 2 - 16;
 
-        if (xmlStrEqual(phaseNode->name, BAD_CAST "frame"))
+        if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {
-            int index = XML::getProperty(phaseNode, "index", -1);
+            int index = XML::getProperty(frameNode, "index", -1);
 
             if (index < 0)
             {
@@ -237,12 +236,12 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
                 continue;
             }
 
-            animation->addPhase(img, delay, offsetX, offsetY);
+            animation->addFrame(img, delay, offsetX, offsetY);
         }
-        else if (xmlStrEqual(phaseNode->name, BAD_CAST "sequence"))
+        else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
         {
-            int start = XML::getProperty(phaseNode, "start", -1);
-            int end = XML::getProperty(phaseNode, "end", -1);
+            int start = XML::getProperty(frameNode, "start", -1);
+            int end = XML::getProperty(frameNode, "end", -1);
 
             if (start < 0 || end < 0)
             {
@@ -261,15 +260,15 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
                     continue;
                 }
 
-                animation->addPhase(img, delay, offsetX, offsetY);
+                animation->addFrame(img, delay, offsetX, offsetY);
                 start++;
             }
         }
-        else if (xmlStrEqual(phaseNode->name, BAD_CAST "end"))
+        else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
         {
             animation->addTerminator();
         }
-    } // for phaseNode
+    } // for frameNode
 }
 
 void

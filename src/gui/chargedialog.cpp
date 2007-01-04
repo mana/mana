@@ -37,6 +37,7 @@ ChargeDialog::ChargeDialog():
     mProgBar = new ProgressBar(0.0f, 140, 25, 128, 128, 128);
     mProgBar->setPosition(20, 40);
     add(mProgBar);
+    setVisible(true);
 }
 
 // update the dialog

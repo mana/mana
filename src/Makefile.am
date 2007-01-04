@@ -179,8 +179,12 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/gameserver/internal.h \
 	      net/gameserver/player.cpp \
 	      net/gameserver/player.h \
+	      resources/action.cpp \
+	      resources/action.h \
 	      resources/ambientoverlay.cpp \
 	      resources/ambientoverlay.h \
+	      resources/animation.cpp \
+	      resources/animation.h \
 	      resources/equipmentdb.cpp \
 	      resources/equipmentdb.h \
 	      resources/equipmentinfo.h \
@@ -216,18 +220,14 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/spriteset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
+	      utils/base64.cpp \
+	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/tostring.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
-	      action.cpp \
-	      action.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
-	      animation.cpp \
-	      animation.h \
-	      base64.cpp \
-	      base64.h \
 	      being.cpp \
 	      being.h \
 	      beingmanager.cpp \

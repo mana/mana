@@ -32,10 +32,7 @@
 #include <libxml/tree.h>
 
 class Action;
-class Graphics;
 class Spriteset;
-struct AnimationPhase;
-class Animation;
 
 enum SpriteAction
 {
