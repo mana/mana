@@ -3,6 +3,10 @@
 	* src/resources/mapreader.cpp: Fixed memory leak on error.
 	* src/net/protocol.h, src/net/itemhandler.cpp: Added support for items
 	dropped on map.
+	* src/gui/itemcontainer.cpp, src/inventory.cpp: Fixed inventory bounds.
+	* src/localplayer.cpp, src/net/inventoryhandler.cpp,
+	src/net/gameserver/player.h, src/net/gameserver/player.cpp,
+	src/net/protocol.h: Added item pick-up.
 
 2007-01-01  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 

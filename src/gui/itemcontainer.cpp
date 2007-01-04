@@ -48,7 +48,7 @@ ItemContainer::ItemContainer(Inventory *inventory):
     mSelImg = resman->getImage("graphics/gui/selection.png");
     if (!mSelImg) logger->error("Unable to load selection.png");
 
-    mMaxItems = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    mMaxItems = mInventory->getLastUsedSlot() + 1;
 
     addMouseListener(this);
 }
@@ -62,7 +62,7 @@ void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
-    int i = mInventory->getLastUsedSlot() - 1; // Count from 0, usage from 2
+    int i = mInventory->getLastUsedSlot() + 1;
 
     if (i != mMaxItems) {
         mMaxItems = i;
@@ -89,11 +89,7 @@ void ItemContainer::draw(gcn::Graphics* graphics)
         selectNone();
     }
 
-    /*
-     * eAthena seems to start inventory from the 3rd slot. Still a mystery to
-     * us why, make sure not to copy this oddity to our own server.
-     */
-    for (int i = 2; i < INVENTORY_SIZE; i++)
+    for (int i = 0; i < INVENTORY_SIZE; i++)
     {
         Item *item = mInventory->getItem(i);
 
@@ -101,8 +97,8 @@ void ItemContainer::draw(gcn::Graphics* graphics)
             continue;
         }
 
-        int itemX = ((i - 2) % columns) * gridWidth;
-        int itemY = ((i - 2) / columns) * gridHeight;
+        int itemX = (i % columns) * gridWidth;
+        int itemY = (i / columns) * gridHeight;
 
         // Draw selection image below selected item
         if (mSelectedItem == item)
@@ -141,8 +137,7 @@ void ItemContainer::setWidth(int width)
         columns = 1;
     }
 
-    setHeight(((mMaxItems / columns) +
-            (mMaxItems % columns > 0 ? 1 : 0)) * gridHeight);
+    setHeight((mMaxItems + columns - 1) / columns * gridHeight);
 }
 
 Item* ItemContainer::getItem()
@@ -184,7 +179,7 @@ void ItemContainer::mousePress(int mx, int my, int button)
 
     if (button == gcn::MouseInput::LEFT || gcn::MouseInput::RIGHT)
     {
-        int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
+        int index = mx / gridWidth + ((my / gridHeight) * columns);
 
         if (index > INVENTORY_SIZE) {
             index = INVENTORY_SIZE - 1;

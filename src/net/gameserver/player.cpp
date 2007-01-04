@@ -32,38 +32,30 @@
 void Net::GameServer::Player::say(const std::string &text)
 {
     MessageOut msg(PGMSG_SAY);
-
     msg.writeString(text);
-
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::walk(short x, short y)
+void Net::GameServer::Player::walk(int x, int y)
 {
     MessageOut msg(PGMSG_WALK);
-
     msg.writeShort(x);
     msg.writeShort(y);
-
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::useItem(int itemId)
+void Net::GameServer::Player::pickUp(int x, int y)
 {
-    MessageOut msg(PGMSG_USE_ITEM);
-
-    msg.writeLong(itemId);
-
+    MessageOut msg(PGMSG_PICKUP);
+    msg.writeShort(x);
+    msg.writeShort(y);
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::equip(int itemId, char slot)
+void Net::GameServer::Player::equip(int slot)
 {
     MessageOut msg(PGMSG_EQUIP);
-
-    msg.writeLong(itemId);
     msg.writeByte(slot);
-
     Net::GameServer::connection->send(msg);
 }
 

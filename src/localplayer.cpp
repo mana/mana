@@ -152,11 +152,8 @@ void LocalPlayer::pickUp(FloorItem *item)
     int dy = item->getY() - mY / 32;
 
     if (dx * dx + dy * dy < 4) {
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(CMSG_ITEM_PICKUP);
-        outMsg.writeLong(item->getId());
-        */
+        int id = item->getId();
+        Net::GameServer::Player::pickUp(id >> 16, id & 0xFFFF);
         mPickUpTarget = NULL;
     } else {
         setDestination(item->getX() * 32 + 16, item->getY() * 32 + 16);

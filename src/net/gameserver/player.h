@@ -28,17 +28,14 @@
 
 namespace Net
 {
-    class Connection;
-
     namespace GameServer
     {
         namespace Player
         {
             void say(const std::string &text);
-            void walk(short x, short y);
-//            void pickUp(...);
-            void useItem(int itemId);
-            void equip(int itemId, char slot);
+            void walk(int x, int y);
+            void pickUp(int x, int y);
+            void equip(int slot);
             void attack(unsigned char direction);
         }
     }

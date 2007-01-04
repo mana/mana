@@ -37,11 +37,14 @@
 InventoryHandler::InventoryHandler()
 {
     static const Uint16 _messages[] = {
+        /*
         SMSG_PLAYER_INVENTORY,
         SMSG_PLAYER_INVENTORY_ADD,
         SMSG_PLAYER_INVENTORY_REMOVE,
         SMSG_PLAYER_INVENTORY_USE,
         SMSG_ITEM_USE_RESPONSE,
+        */
+        GPMSG_INVENTORY,
         0
     };
     handledMessages = _messages;
@@ -49,11 +52,22 @@ InventoryHandler::InventoryHandler()
 
 void InventoryHandler::handleMessage(MessageIn &msg)
 {
-    Sint32 number;
-    Sint16 index, amount, itemId, equipType;
-
     switch (msg.getId())
     {
+        case GPMSG_INVENTORY:
+            while (msg.getUnreadLength())
+            {
+                int slot = msg.readByte();
+                int id = msg.readShort();
+                int amount = slot >= 32 ? msg.readByte() : 1;
+                Item *it = player_node->getInvItem(slot - 32);
+                it->setId(id);
+                it->setQuantity(amount);
+            };
+            break;
+
+
+#if 0
         case SMSG_PLAYER_INVENTORY:
             // Only called on map load / warp. First reset all items
             // to not load them twice on map change.
@@ -125,5 +139,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 player_node->getInvItem(index)->setQuantity(amount);
             }
             break;
+#endif
+
     }
 }
