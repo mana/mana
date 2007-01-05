@@ -202,12 +202,12 @@ class Map : public Properties
         /**
          * Tells whether a tile is occupied by a being.
          */
-        bool occupied(int x, int y);
+        bool occupied(int x, int y) const;
 
         /**
          * Tells whether the given coordinates fall within the map boundaries.
          */
-        bool contains(int x, int y);
+        bool contains(int x, int y) const;
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;

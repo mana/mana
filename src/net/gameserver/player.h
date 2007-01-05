@@ -35,6 +35,7 @@ namespace Net
             void say(const std::string &text);
             void walk(int x, int y);
             void pickUp(int x, int y);
+            void drop(int slot, int amount);
             void equip(int slot);
             void attack(unsigned char direction);
         }

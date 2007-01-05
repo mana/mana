@@ -1,4 +1,9 @@
-2006-01-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+2007-01-05  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/net/gameserver/player.h, src/net/gameserver/player.cpp,
+	src/net/protocol.h, src/localplayer.cpp: Implemented item dropping.
+
+2007-01-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h: Declared some methods const.
 

@@ -52,6 +52,14 @@ void Net::GameServer::Player::pickUp(int x, int y)
     Net::GameServer::connection->send(msg);
 }
 
+void Net::GameServer::Player::drop(int slot, int amount)
+{
+    MessageOut msg(PGMSG_DROP);
+    msg.writeByte(slot);
+    msg.writeByte(amount);
+    Net::GameServer::connection->send(msg);
+}
+
 void Net::GameServer::Player::equip(int slot)
 {
     MessageOut msg(PGMSG_EQUIP);

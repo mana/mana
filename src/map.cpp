@@ -286,7 +286,7 @@ Map::getWalk(int x, int y) const
 }
 
 bool
-Map::occupied(int x, int y)
+Map::occupied(int x, int y) const
 {
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
@@ -308,7 +308,7 @@ Map::tileCollides(int x, int y) const
 }
 
 bool
-Map::contains(int x, int y)
+Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }

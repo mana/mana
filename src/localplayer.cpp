@@ -104,10 +104,7 @@ Item* LocalPlayer::getInvItem(int index)
 
 void LocalPlayer::equipItem(Item *item)
 {
-    // XXX What's itemId and slot exactly? Same as eAthena?
-    /*
-    Net::GameServer::Player::equip(itemId, slot));
-    */
+    Net::GameServer::Player::equip(item->getInvIndex());
 }
 
 void LocalPlayer::unequipItem(Item *item)
@@ -138,12 +135,7 @@ void LocalPlayer::useItem(Item *item)
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeShort(quantity);
-    */
+    Net::GameServer::Player::drop(item->getInvIndex(), quantity);
 }
 
 void LocalPlayer::pickUp(FloorItem *item)
