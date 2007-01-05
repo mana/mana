@@ -1,3 +1,7 @@
+2006-01-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/map.cpp, src/map.h: Declared some methods const.
+
 2007-01-03  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/resources/mapreader.cpp: Fixed memory leak on error.

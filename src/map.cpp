@@ -280,7 +280,7 @@ Map::setWalk(int x, int y, bool walkable)
 }
 
 bool
-Map::getWalk(int x, int y)
+Map::getWalk(int x, int y) const
 {
     return !tileCollides(x, y) && !occupied(x, y);
 }
@@ -302,7 +302,7 @@ Map::occupied(int x, int y)
 }
 
 bool
-Map::tileCollides(int x, int y)
+Map::tileCollides(int x, int y) const
 {
     return !(contains(x, y) && mMetaTiles[x + y * mWidth].walkable);
 }
