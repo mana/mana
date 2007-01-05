@@ -1,3 +1,8 @@
+2007-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/CMakeLists.txt, data/graphics/sprites/CMakeLists.txt: Fixed
+	installation when using CMake.
+
 2007-01-05  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/net/gameserver/player.h, src/net/gameserver/player.cpp,
