@@ -44,6 +44,7 @@ InventoryHandler::InventoryHandler()
         SMSG_PLAYER_INVENTORY_USE,
         SMSG_ITEM_USE_RESPONSE,
         */
+        GPMSG_INVENTORY_FULL,
         GPMSG_INVENTORY,
         0
     };
@@ -54,15 +55,22 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
+        case GPMSG_INVENTORY_FULL:
+            player_node->clearInventory();
+            // no break!
+
         case GPMSG_INVENTORY:
             while (msg.getUnreadLength())
             {
                 int slot = msg.readByte();
                 int id = msg.readShort();
-                int amount = slot >= 32 ? msg.readByte() : 1;
-                Item *it = player_node->getInvItem(slot - 32);
-                it->setId(id);
-                it->setQuantity(amount);
+                if (slot >= 32)
+                {
+                    int amount = msg.readByte();
+                    Item *it = player_node->getInvItem(slot - 32);
+                    it->setId(id);
+                    it->setQuantity(amount);
+                }
             };
             break;
 

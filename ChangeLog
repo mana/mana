@@ -2,6 +2,8 @@
 
 	* src/net/gameserver/player.h, src/net/gameserver/player.cpp,
 	src/net/protocol.h, src/localplayer.cpp: Implemented item dropping.
+	* src/net/protocol.h, src/net/inventoryhandling.cpp: Added support for
+	full inventory update.
 
 2007-01-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
