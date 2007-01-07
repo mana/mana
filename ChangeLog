@@ -1,13 +1,18 @@
-﻿2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-01-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* data/graphics/chest-cottonshirt-male.png, 
-	data/graphics/chest-cottonshirt-male.xml, 
+	* data/graphics/sprites/monster-mountsnake.xml,
+	data/graphics/sprites/monster-mountsnake.png, data/monsters.xml: Added
+	brown snake by Pauan.
+
+2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/chest-cottonshirt-male.png,
+	data/graphics/chest-cottonshirt-male.xml,
 	data/graphics/chest-cottonshirt-female.png,
 	data/graphics/chest-cottonshirt-female.xml,
 	data/graphics/item001.png, data/equipment.xml: Added female
 	cottonshirt sprites.
-	* data/equipment.xml: fixed some wrong armor values.
-
+	* data/equipment.xml: Fixed some wrong armor values.
 
 2007-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -206,11 +211,11 @@
 2006-12-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/sprite.h, src/gui/playerbox.h, src/gui/char_select.cpp,
-	src/gui/playerbox.cpp, src/gui/passwordfield.h,src/gui/char_select.h,
-	src/gui/textfield.h, src/main.cpp, src/being.cpp, src/player.h,
-	src/floor_item.h, src/being.h: Use new animation system in character
-	selection/creation. Shows equipment and allowed for some cleanup. Had
-	a bit of help from the patch by VictorSan.
+	src/gui/playerbox.cpp, src/gui/passwordfield.h, src/gui/char_select.h,
+	src/main.cpp, src/being.cpp, src/player.h, src/floor_item.h,
+	src/being.h: Use new animation system in character selection/creation.
+	Shows equipment and allowed for some cleanup. Had a bit of help from
+	the patch by VictorSan.
 
 2006-12-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
