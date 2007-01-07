@@ -6,6 +6,7 @@
 	data/graphics/chest-cottonshirt-female.xml,
 	data/graphics/item001.png, data/equipment.xml: Added female
 	cottonshirt sprites.
+	* data/equipment.xml: fixed some wrong armor values.
 
 
 2007-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
