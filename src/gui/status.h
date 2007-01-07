@@ -71,9 +71,9 @@ class StatusWindow : public Window, public gcn::ActionListener {
          */
         gcn::Label *mLvlLabel, *mMoneyLabel, *mHpLabel, *mHpValueLabel;
         gcn::Label *mMpLabel, *mMpValueLabel;
-        gcn::Label *mXpLabel, *mXpValueLabel, *mJobXpLabel, *mJobValueLabel;
+        gcn::Label *mXpLabel, *mXpValueLabel;
         ProgressBar *mHpBar, *mMpBar;
-        ProgressBar *mXpBar, *mJobXpBar;
+        ProgressBar *mXpBar;
 
         /**
          * Derived Statistics captions
@@ -91,15 +91,15 @@ class StatusWindow : public Window, public gcn::ActionListener {
         /**
          * Stats captions.
          */
-        gcn::Label *mStatsLabel[6];
-        gcn::Label *mPointsLabel[6];
-        gcn::Label *mStatsDisplayLabel[6];
+        gcn::Label *mStatsLabel[7];
+        gcn::Label *mPointsLabel[7];
+        gcn::Label *mStatsDisplayLabel[7];
         gcn::Label *mRemainingStatsPointsLabel;
 
         /**
          * Stats buttons.
          */
-        gcn::Button *mStatsButton[6];
+        gcn::Button *mStatsButton[7];
 };
 
 extern StatusWindow *statusWindow;

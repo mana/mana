@@ -39,7 +39,7 @@ class LocalPlayer : public Player
 {
     public:
         enum Attribute {
-            STR = 0, AGI, VIT, INT, DEX, LUK
+            STR = 0, AGI, DEX, VIT, INT, WIL, CHR
         };
 
         /**
@@ -137,17 +137,16 @@ class LocalPlayer : public Player
 
         Uint32 mCharId;
 
-        Uint32 mXp, mJobXp;
+        Uint32 mXp;
         Uint16 mLevel;
-        Uint32 mJobLevel;
-        Uint32 mXpForNextLevel, mJobXpForNextLevel;
+        Uint32 mXpForNextLevel;
         Uint16 mHp, mMaxHp, mMp, mMaxMp;
         Uint32 mMoney;
 
         Uint32 mTotalWeight, mMaxWeight;
 
-        Uint8 mAttr[6];
-        Uint8 mAttrUp[6];
+        Uint8 mAttr[7];
+        Uint8 mAttrUp[7];
 
         Sint16 ATK, MATK, DEF, MDEF, HIT, FLEE;
         Sint16 ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;

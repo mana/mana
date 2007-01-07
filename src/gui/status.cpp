@@ -40,7 +40,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     setWindowName("Status");
     setResizable(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
-                   (windowContainer->getHeight() - 255) / 2, 365, 255);
+                   (windowContainer->getHeight() - 255) / 2, 365, 280);
     loadWindowState();
 
     // ----------------------
@@ -61,10 +61,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mMpLabel = new gcn::Label("MP:");
     mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
     mMpValueLabel = new gcn::Label("");
-
-    mJobXpLabel = new gcn::Label("Job:");
-    mJobXpBar = new ProgressBar(1.0f, 60, 15, 220, 135, 203);
-    mJobValueLabel = new gcn::Label("");
 
     int y = 3;
     int x = 5;
@@ -95,10 +91,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     x += mMpBar->getWidth() + 5;
     mMpValueLabel->setPosition(x, y);
 
-    mJobXpLabel->setPosition(175, y);
-    mJobXpBar->setPosition(225, y);
-    mJobValueLabel->setPosition(290, y);
-
     add(mLvlLabel);
     add(mMoneyLabel);
     add(mHpLabel);
@@ -107,12 +99,9 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     add(mMpValueLabel);
     add(mXpLabel);
     add(mXpValueLabel);
-    add(mJobXpLabel);
-    add(mJobValueLabel);
     add(mHpBar);
     add(mMpBar);
     add(mXpBar);
-    add(mJobXpBar);
 
     // ----------------------
     // Stats Part
@@ -141,7 +130,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsReflexPoints = new gcn::Label("% Reflex:");
 
     // New labels
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
         mStatsLabel[i] = new gcn::Label();
         mStatsDisplayLabel[i] = new gcn::Label();
         mPointsLabel[i] = new gcn::Label("0");
@@ -151,10 +140,11 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     // Set button events Id
     mStatsButton[0] = new Button("+", "STR", this);
     mStatsButton[1] = new Button("+", "AGI", this);
-    mStatsButton[2] = new Button("+", "VIT", this);
-    mStatsButton[3] = new Button("+", "INT", this);
-    mStatsButton[4] = new Button("+", "DEX", this);
-    mStatsButton[5] = new Button("+", "LUK", this);
+    mStatsButton[2] = new Button("+", "DEX", this);
+    mStatsButton[3] = new Button("+", "VIT", this);
+    mStatsButton[4] = new Button("+", "INT", this);
+    mStatsButton[5] = new Button("+", "WIL", this);
+    mStatsButton[6] = new Button("+", "CHR", this);
 
 
     // Set position
@@ -163,16 +153,17 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     int totalLabelY = mStatsTotalLabel->getY();
     mStatsCostLabel->setPosition(170, totalLabelY);
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 7; i++)
     {
-        mStatsLabel[i]->setPosition(5, mStatsTotalLabel->getY() + (i * 23) + 15);
+        mStatsLabel[i]->setPosition(5,
+                                    mStatsTotalLabel->getY() + (i * 23) + 15);
         mStatsDisplayLabel[i]->setPosition(115,
                                           totalLabelY + (i * 23) + 15);
         mStatsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
         mPointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
     }
 
-    mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[5]->getY() + 25);
+    mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[6]->getY() + 25);
 
     mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
     mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
@@ -180,7 +171,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsMagicDefenseLabel->setPosition(220, mStatsLabel[3]->getY());
     mStatsAccuracyLabel->setPosition(220, mStatsLabel[4]->getY());
     mStatsEvadeLabel->setPosition(220, mStatsLabel[5]->getY());
-    mStatsReflexLabel->setPosition(220, mRemainingStatsPointsLabel->getY());
+    mStatsReflexLabel->setPosition(220, mStatsLabel[6]->getY());
 
     mStatsAttackPoints->setPosition(310, mStatsLabel[0]->getY());
     mStatsDefensePoints->setPosition(310, mStatsLabel[1]->getY());
@@ -188,13 +179,13 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsMagicDefensePoints->setPosition(310, mStatsLabel[3]->getY());
     mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
     mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
-    mStatsReflexPoints->setPosition(310, mRemainingStatsPointsLabel->getY());
+    mStatsReflexPoints->setPosition(310, mStatsLabel[6]->getY());
 
     // Assemble
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
     add(mStatsCostLabel);
-    for(int i = 0; i < 6; i++)
+    for(int i = 0; i < 7; i++)
     {
         add(mStatsLabel[i]);
         add(mStatsDisplayLabel[i]);
@@ -230,9 +221,6 @@ void StatusWindow::update()
     mMoneyLabel->setCaption("Money: " + toString(mPlayer->mMoney) + " GP");
     mMoneyLabel->adjustSize();
 
-    mJobXpLabel->setCaption("Job: " + toString(mPlayer->mJobLevel));
-    mJobXpLabel->adjustSize();
-
     mHpValueLabel->setCaption(toString(mPlayer->mHp) +
             "/" + toString(mPlayer->mMaxHp));
     mHpValueLabel->adjustSize();
@@ -244,10 +232,6 @@ void StatusWindow::update()
     mXpValueLabel->setCaption(toString(mPlayer->mXp) +
             "/" + toString(mPlayer->mXpForNextLevel));
     mXpValueLabel->adjustSize();
-
-    mJobValueLabel->setCaption(toString(mPlayer->mJobXp) +
-            "/" + toString(mPlayer->mJobXpForNextLevel));
-    mJobValueLabel->adjustSize();
 
     // HP Bar coloration
     if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
@@ -267,27 +251,26 @@ void StatusWindow::update()
     // mMpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
 
     mXpBar->setProgress(
-            (float)mPlayer->mXp / (float)mPlayer->mXpForNextLevel);
-    mJobXpBar->setProgress(
-            (float)mPlayer->mJobXp / (float)mPlayer->mJobXpForNextLevel);
+            (float) mPlayer->mXp / (float) mPlayer->mXpForNextLevel);
 
     // Stats Part
     // ----------
-    static const std::string attrNames[6] = {
+    const std::string attrNames[7] = {
         "Strength",
         "Agility",
+        "Dexterity",
         "Vitality",
         "Intelligence",
-        "Dexterity",
-        "Luck"
+        "Willpower",
+        "Charisma"
     };
     int statusPoints = mPlayer->mStatsPointsToAttribute;
 
     // Update labels
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
         mStatsLabel[i]->setCaption(attrNames[i]);
-        mStatsDisplayLabel[i]->setCaption(toString((int)mPlayer->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int)mPlayer->mAttrUp[i]));
+        mStatsDisplayLabel[i]->setCaption(toString((int) mPlayer->mAttr[i]));
+        mPointsLabel[i]->setCaption(toString((int) mPlayer->mAttrUp[i]));
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
@@ -346,12 +329,6 @@ void StatusWindow::update()
     mXpValueLabel->setPosition(
             mXpBar->getX() + mXpBar->getWidth() + 5,
             mXpLabel->getY());
-
-    mJobXpLabel->setPosition(mXpLabel->getX(), mMpLabel->getY());
-    mJobXpBar->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() - mJobXpBar->getWidth(),
-            mJobXpLabel->getY());
-    mJobValueLabel->setPosition(290, mJobXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *g)
@@ -370,25 +347,29 @@ void StatusWindow::action(const std::string &eventId, gcn::Widget *widget)
         {
             mPlayer->raiseAttribute(LocalPlayer::STR);
         }
-        if (eventId == "AGI")
+        else if (eventId == "AGI")
         {
             mPlayer->raiseAttribute(LocalPlayer::AGI);
         }
-        if (eventId == "VIT")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::VIT);
-        }
-        if (eventId == "INT")
-        {
-            mPlayer->raiseAttribute(LocalPlayer::INT);
-        }
-        if (eventId == "DEX")
+        else if (eventId == "DEX")
         {
             mPlayer->raiseAttribute(LocalPlayer::DEX);
         }
-        if (eventId == "LUK")
+        else if (eventId == "VIT")
         {
-            mPlayer->raiseAttribute(LocalPlayer::LUK);
+            mPlayer->raiseAttribute(LocalPlayer::VIT);
+        }
+        else if (eventId == "INT")
+        {
+            mPlayer->raiseAttribute(LocalPlayer::INT);
+        }
+        else if (eventId == "WIL")
+        {
+            mPlayer->raiseAttribute(LocalPlayer::WIL);
+        }
+        else if (eventId == "CHR")
+        {
+            mPlayer->raiseAttribute(LocalPlayer::CHR);
         }
     }
 }

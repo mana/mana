@@ -218,7 +218,7 @@ void initConfiguration(const Options &options)
 /**
  * Do all initialization stuff.
  */
-void init_engine()
+void initEngine()
 {
     // Initialize SDL
     logger->log("Initializing SDL...");
@@ -273,11 +273,11 @@ void init_engine()
     graphics = new Graphics();
 #endif
 
-    int width = (int)config.getValue("screenwidth", defaultScreenWidth);
-    int height = (int)config.getValue("screenheight", defaultScreenHeight);
+    int width = (int) config.getValue("screenwidth", defaultScreenWidth);
+    int height = (int) config.getValue("screenheight", defaultScreenHeight);
     int bpp = 0;
-    bool fullscreen = ((int)config.getValue("screen", 0) == 1);
-    bool hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
+    bool fullscreen = ((int) config.getValue("screen", 0) == 1);
+    bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
@@ -511,16 +511,14 @@ int main(int argc, char *argv[])
     logger->setLogFile(homeDir + std::string("/tmw.log"));
     logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
-    initXML();
-    initConfiguration(options);
-
-
     // Log the tmw version
 #ifdef PACKAGE_VERSION
     logger->log("The Mana World v%s", PACKAGE_VERSION);
 #endif
 
-    init_engine();
+    initXML();
+    initConfiguration(options);
+    initEngine();
 
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
