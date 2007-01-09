@@ -1,4 +1,9 @@
-﻿2007-01-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/icecave.png: Added new tiles and fixes by Nickman and
+	made some other cosmetical corrections.
+
+2007-01-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/sprites/monster-mountsnake.xml,
 	data/graphics/sprites/monster-mountsnake.png, data/monsters.xml: Added
