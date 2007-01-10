@@ -30,7 +30,7 @@
 #include "../protocol.h"
 
 void Net::AccountServer::Account::createCharacter(
-        const std::string &name, char hairColor, char hairStyle, char gender,
+        const std::string &name, char hairStyle, char hairColor, char gender,
         short strength, short agility, short vitality,
         short intelligence, short dexterity, short luck)
 {

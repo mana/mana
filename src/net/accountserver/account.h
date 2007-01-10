@@ -33,7 +33,7 @@ namespace Net
         namespace Account
         {
             void createCharacter(const std::string &name,
-                    char hairColor, char hairStyle, char gender,
+                    char hairStyle, char hairColor, char gender,
                     short strength, short agility, short vitality,
                     short intelligence, short dexterity, short luck);
 

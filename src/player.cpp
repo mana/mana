@@ -140,27 +140,10 @@ Player::setHairColor(Uint16 color)
 {
     if (color != mHairColor)
     {
+        Being::setHairColor(color);
+
         AnimatedSprite *newHairSprite = new AnimatedSprite(
                 "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
-                color);
-        newHairSprite->setDirection(getSpriteDirection());
-
-        delete mSprites[HAIR_SPRITE];
-        mSprites[HAIR_SPRITE] = newHairSprite;
-
-        setAction(mAction);
-    }
-
-    Being::setHairColor(color);
-}
-
-void
-Player::setHairStyle(Uint16 style)
-{
-    if (style != mHairStyle)
-    {
-        AnimatedSprite *newHairSprite = new AnimatedSprite(
-                "graphics/sprites/hairstyle" + toString(style) + ".xml",
                 mHairColor);
         newHairSprite->setDirection(getSpriteDirection());
 
@@ -169,8 +152,25 @@ Player::setHairStyle(Uint16 style)
 
         setAction(mAction);
     }
+}
 
-    Being::setHairStyle(style);
+void
+Player::setHairStyle(Uint16 style)
+{
+    if (style != mHairStyle)
+    {
+        Being::setHairStyle(style);
+
+        AnimatedSprite *newHairSprite = new AnimatedSprite(
+                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
+                mHairColor);
+        newHairSprite->setDirection(getSpriteDirection());
+
+        delete mSprites[HAIR_SPRITE];
+        mSprites[HAIR_SPRITE] = newHairSprite;
+
+        setAction(mAction);
+    }
 }
 
 void

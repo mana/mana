@@ -1,3 +1,13 @@
+2007-01-11  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/gui/char_select.cpp, src/net/accountserver/account.h,
+	src/net/accountserver/account.cpp, src/player.cpp: Fixedd issues
+	with out of range hair style and color, as well as their ordering.
+	* data/graphics/gui/Makefile.am,
+	data/graphics/images/ambient/Makefile.am,
+	data/graphics/sprites/Makefile.am: Some corrections to installed
+	files.
+
 2007-01-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/status.h, src/gui/status.cpp, src/localplayer.h:
