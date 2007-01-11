@@ -1,3 +1,9 @@
+2007-01-11  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* data/graphics/images/ambient/CMakeLists.txt,
+	data/graphics/sprites/CMakeLists.txt: Synchronized CMake configuration
+	with autotools configuration.
+
 2007-01-11  Rogier Polak  <rogier.l.a.polak@gmail.com>
 
 	* src/gui/char_select.cpp, src/net/accountserver/account.h,
