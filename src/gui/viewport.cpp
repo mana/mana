@@ -47,6 +47,7 @@ Viewport::Viewport():
     mCameraX(0),
     mCameraY(0),
     mShowDebugPath(false),
+    mPlayerFollowMouse(false),
     mPopupActive(false)
 {
     setOpaque(false);

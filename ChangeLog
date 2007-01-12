@@ -1,4 +1,10 @@
-﻿2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-01-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.cpp: Fixed initialization of mPlayerFollowMouse,
+	the lack of which sometimes caused the player to start walking when
+	clicking on the GUI.
+
+2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/icecave.png: Added new tiles and fixes by Nickman and
 	made some other cosmetical corrections.
