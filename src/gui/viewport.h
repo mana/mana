@@ -111,6 +111,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void
         optionChanged(const std::string &name);
 
+        /**
+         * Returns camera x offset in tiles.
+         */
+        int
+        getCameraX() { return mCameraX; }
+
+        /**
+         * Returns camera y offset in tiles.
+         */
+        int
+        getCameraY() { return mCameraY; }
+
     private:
         /**
          * Shows a popup for a floor item.
@@ -131,8 +143,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mScrollLaziness;
         float mViewX;              /**< Current viewpoint in pixels. */
         float mViewY;              /**< Current viewpoint in pixels. */
-        int mCameraX;
-        int mCameraY;
+        int mCameraX;              /**< Current viewpoint in tiles. */
+        int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
 
         bool mPlayerFollowMouse;

@@ -1,4 +1,9 @@
-﻿2007-01-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/debugwindow.cpp, src/gui/viewport.h: Fixed mouse coordinates
+	display in debug window.
+
+2007-01-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/viewport.cpp: Fixed initialization of mPlayerFollowMouse,
 	the lack of which sometimes caused the player to start walking when
