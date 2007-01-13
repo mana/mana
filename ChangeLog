@@ -1,4 +1,10 @@
-﻿2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-01-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt: Updated with regard to renaming
+	of cotton equipment.
+
+2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/debugwindow.cpp, src/gui/viewport.h: Fixed mouse coordinates
 	display in debug window.
