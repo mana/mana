@@ -1,4 +1,4 @@
-﻿2006-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows 
 	headers issues.
@@ -42,7 +42,7 @@
 	data/graphics/sprites/CMakeLists.txt: Updated with regard to renaming
 	of cotton equipment.
 
-2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2007-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/debugwindow.cpp, src/gui/viewport.h: Fixed mouse coordinates
 	display in debug window.
