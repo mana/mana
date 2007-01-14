@@ -1,6 +1,6 @@
 ﻿2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows 
+	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows
 	headers issues.
 
 2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
@@ -35,6 +35,8 @@
 	src/gui/chatinput.cpp, src/net/tradehandler.cpp,
 	src/net/playerhandler.cpp: Upgraded to Guichan 0.6.0 (merge from
 	guichan-0.6.0 branch).
+	* src/winver.h, configure.ac, data/help/header.txt, NEWS, README,
+	CMakeLists.txt: Updated version to 0.0.22.1.
 
 2007-01-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

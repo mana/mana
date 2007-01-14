@@ -1,3 +1,8 @@
+0.0.22.1 (14 January 2007)
+- Updated to work with Guichan 0.6.0 (older versions no longer supported)
+- Fixed mouse coordinates in debug window
+- Fixed clicking on GUI to cause the player to start walking sometimes
+
 0.0.22 (24 December 2006)
 - Added support for female-specific equipment graphics
 - Added support for monster sounds
