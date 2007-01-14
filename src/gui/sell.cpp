@@ -91,8 +91,8 @@ SellDialog::SellDialog(Network *network):
 
     quitButton->setPosition(208, 186);
 
-    mShopItemList->setEventId("item");
-    mSlider->setEventId("mSlider");
+    mShopItemList->setActionEventId("item");
+    mSlider->setActionEventId("mSlider");
 
     mShopItemList->setPriceCheck(false);
 
@@ -158,11 +158,11 @@ void SellDialog::addItem(Item *item, int price)
     mShopItemList->adjustSize();
 }
 
-void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
+void SellDialog::action(const gcn::ActionEvent &event)
 {
     int selectedItem = mShopItemList->getSelected();
 
-    if (eventId == "item")
+    if (event.getId() == "item")
     {
         mAmountItems = 0;
         mSlider->setValue(0);
@@ -186,7 +186,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
         }
         mQuantityLabel->adjustSize();
     }
-    else if (eventId == "quit")
+    else if (event.getId() == "quit")
     {
         setVisible(false);
         current_npc = 0;
@@ -199,13 +199,13 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
     bool updateButtonsAndLabels = false;
 
-    if (eventId == "mSlider")
+    if (event.getId() == "mSlider")
     {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "+")
+    else if (event.getId() == "+")
     {
         assert(mAmountItems < mMaxItems);
         mAmountItems++;
@@ -213,7 +213,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "-")
+    else if (event.getId() == "-")
     {
         assert(mAmountItems > 0);
         mAmountItems--;
@@ -222,7 +222,7 @@ void SellDialog::action(const std::string& eventId, gcn::Widget* widget)
 
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "sell")
+    else if (event.getId() == "sell")
     {
         // Attempt sell
         assert(mAmountItems > 0 && mAmountItems <= mMaxItems);

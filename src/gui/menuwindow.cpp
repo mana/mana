@@ -39,7 +39,7 @@ namespace {
         /**
          * Called when receiving actions from widget.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
     } listener;
 }
 
@@ -75,26 +75,26 @@ void MenuWindow::draw(gcn::Graphics *graphics)
 }
 
 
-void MenuWindowListener::action(const std::string& eventId, gcn::Widget* widget)
+void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
-    if (eventId == "Status")
+    if (event.getId() == "Status")
     {
         window = statusWindow;
     }
-    else if (eventId == "Equipment")
+    else if (event.getId() == "Equipment")
     {
         window = equipmentWindow;
     }
-    else if (eventId == "Inventory")
+    else if (event.getId() == "Inventory")
     {
         window = inventoryWindow;
     }
-    else if (eventId == "Skills")
+    else if (event.getId() == "Skills")
     {
         window = skillDialog;
     }
-    else if (eventId == "Setup")
+    else if (event.getId() == "Setup")
     {
         window = setupWindow;
     }

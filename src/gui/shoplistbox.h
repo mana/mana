@@ -54,7 +54,7 @@ class ShopListBox : public ListBox
          */
         void draw(gcn::Graphics *graphics);
 
-        void mousePress(int x, int y, int button);
+        void mousePressed(gcn::MouseEvent &event);
 
         /**
          * Adds a listener to the list that's notified each time a change to

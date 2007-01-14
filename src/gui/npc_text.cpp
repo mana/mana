@@ -67,9 +67,9 @@ NpcTextDialog::addText(const std::string &text)
 }
 
 void
-NpcTextDialog::action(const std::string& eventId, gcn::Widget* widget)
+NpcTextDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         setText("");
         setVisible(false);

@@ -74,7 +74,7 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Returns the number of items in the shop inventory.

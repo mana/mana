@@ -43,7 +43,7 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
 
         void logic();
 
-        void action(const std::string &event, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
         void setOpaque(bool opaque);
 

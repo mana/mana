@@ -58,7 +58,8 @@ ItemContainer::~ItemContainer()
     mSelImg->decRef();
 }
 
-void ItemContainer::logic()
+void
+ItemContainer::logic()
 {
     gcn::Widget::logic();
 
@@ -70,7 +71,8 @@ void ItemContainer::logic()
     }
 }
 
-void ItemContainer::draw(gcn::Graphics* graphics)
+void
+ItemContainer::draw(gcn::Graphics *graphics)
 {
     int gridWidth = 36; //(item icon width + 4)
     int gridHeight = 42; //(item icon height + 10)
@@ -128,7 +130,8 @@ void ItemContainer::draw(gcn::Graphics* graphics)
     }
 }
 
-void ItemContainer::setWidth(int width)
+void
+ItemContainer::setWidth(int width)
 {
     gcn::Widget::setWidth(width);
 
@@ -145,17 +148,20 @@ void ItemContainer::setWidth(int width)
             (mMaxItems % columns > 0 ? 1 : 0)) * gridHeight);
 }
 
-Item* ItemContainer::getItem()
+Item*
+ItemContainer::getItem()
 {
     return mSelectedItem;
 }
 
-void ItemContainer::selectNone()
+void
+ItemContainer::selectNone()
 {
     setSelectedItem(NULL);
 }
 
-void ItemContainer::setSelectedItem(Item *item)
+void
+ItemContainer::setSelectedItem(Item *item)
 {
     if (mSelectedItem != item)
     {
@@ -164,7 +170,8 @@ void ItemContainer::setSelectedItem(Item *item)
     }
 }
 
-void ItemContainer::fireSelectionChangedEvent()
+void
+ItemContainer::fireSelectionChangedEvent()
 {
     SelectionEvent event(this);
     SelectionListeners::iterator i_end = mListeners.end();
@@ -176,14 +183,18 @@ void ItemContainer::fireSelectionChangedEvent()
     }
 }
 
-void ItemContainer::mousePress(int mx, int my, int button)
+void
+ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
-    int gridWidth = 36; //(item icon width + 4)
-    int gridHeight = 42; //(item icon height + 10)
-    int columns = getWidth() / gridWidth;
+    int button = event.getButton();
 
-    if (button == gcn::MouseInput::LEFT || gcn::MouseInput::RIGHT)
+    if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
+        int gridWidth = 36; //(item icon width + 4)
+        int gridHeight = 42; //(item icon height + 10)
+        int columns = getWidth() / gridWidth;
+        int mx = event.getX();
+        int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns) + 2;
 
         if (index > INVENTORY_SIZE) {

@@ -118,13 +118,13 @@ RegisterDialog::~RegisterDialog()
 }
 
 void
-RegisterDialog::action(const std::string& eventId, gcn::Widget* widget)
+RegisterDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "cancel")
+    if (event.getId() == "cancel")
     {
         state = EXIT_STATE;
     }
-    else if (eventId == "register")
+    else if (event.getId() == "register")
     {
         const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());

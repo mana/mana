@@ -41,10 +41,11 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         void apply();
         void cancel();
 
-        void action(const std::string &eventId, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
         /** Called when key is pressed */
-        void keyPress(const gcn::Key &key);
+        void
+        keyPressed(gcn::KeyEvent &event);
 
     private:
         bool mFullScreenEnabled;

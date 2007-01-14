@@ -125,11 +125,12 @@ void ShopListBox::setSelected(int selected)
     fireSelectionChangedEvent();
 }
 
-void ShopListBox::mousePress(int x, int y, int button)
+void ShopListBox::mousePressed(gcn::MouseEvent &event)
 {
-    if (button == gcn::MouseInput::LEFT && hasMouse())
+    if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         bool enoughMoney = false;
+        int y = event.getY();
 
         if (mShopItems && mPriceCheck)
         {
@@ -145,7 +146,6 @@ void ShopListBox::mousePress(int x, int y, int button)
         {
             setSelected(y / mRowHeight);
             generateAction();
-            mMousePressed = true;
         }
     }
 }

@@ -71,7 +71,7 @@ ServerSelectDialog::ServerSelectDialog(LoginData *loginData):
                 100 - 3 * 5 - mCancelButton->getHeight() -
                 mScrollArea->getBorderSize()));
 
-    mServerList->setEventId("ok");
+    mServerList->setActionEventId("ok");
 
     //mServerList->addActionListener(this);
 
@@ -98,16 +98,16 @@ ServerSelectDialog::~ServerSelectDialog()
 }
 
 void
-ServerSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
+ServerSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok") {
+    if (event.getId() == "ok") {
         mOkButton->setEnabled(false);
         const SERVER_INFO *si = server_info[mServerList->getSelected()];
         mLoginData->hostname = iptostring(si->address);
         mLoginData->port = si->port;
         state = CHAR_CONNECT_STATE;
     }
-    else if (eventId == "cancel") {
+    else if (event.getId() == "cancel") {
         state = LOGIN_STATE;
     }
 }

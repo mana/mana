@@ -100,9 +100,9 @@ DebugWindow::logic()
 }
 
 void
-DebugWindow::action(const std::string& eventId, gcn::Widget* widget)
+DebugWindow::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "close")
+    if (event.getId() == "close")
     {
         setVisible(false);
     }

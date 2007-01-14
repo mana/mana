@@ -52,7 +52,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
                          LockedArray<LocalPlayer*> *charInfo,
                          unsigned char sex);
 
-        void action(const std::string &eventId, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
         void updatePlayerInfo();
 
@@ -116,7 +116,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         ~CharCreateDialog();
 
-        void action(const std::string &eventId, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
         std::string getName();
 

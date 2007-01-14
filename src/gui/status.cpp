@@ -361,32 +361,32 @@ void StatusWindow::draw(gcn::Graphics *g)
     Window::draw(g);
 }
 
-void StatusWindow::action(const std::string& eventId, gcn::Widget* widget)
+void StatusWindow::action(const gcn::ActionEvent &event)
 {
     // Stats Part
-    if (eventId.length() == 3)
+    if (event.getId().length() == 3)
     {
-        if (eventId == "STR")
+        if (event.getId() == "STR")
         {
             player_node->raiseAttribute(LocalPlayer::STR);
         }
-        if (eventId == "AGI")
+        if (event.getId() == "AGI")
         {
             player_node->raiseAttribute(LocalPlayer::AGI);
         }
-        if (eventId == "VIT")
+        if (event.getId() == "VIT")
         {
             player_node->raiseAttribute(LocalPlayer::VIT);
         }
-        if (eventId == "INT")
+        if (event.getId() == "INT")
         {
             player_node->raiseAttribute(LocalPlayer::INT);
         }
-        if (eventId == "DEX")
+        if (event.getId() == "DEX")
         {
             player_node->raiseAttribute(LocalPlayer::DEX);
         }
-        if (eventId == "LUK")
+        if (event.getId() == "LUK")
         {
             player_node->raiseAttribute(LocalPlayer::LUK);
         }

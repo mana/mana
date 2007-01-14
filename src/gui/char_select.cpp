@@ -48,7 +48,7 @@ class CharDeleteConfirm : public ConfirmDialog
 {
     public:
         CharDeleteConfirm(CharSelectDialog *master);
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
     private:
         CharSelectDialog *master;
 };
@@ -60,13 +60,13 @@ CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
 {
 }
 
-void CharDeleteConfirm::action(const std::string& eventId, gcn::Widget* widget)
+void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 {
-    //ConfirmDialog::action(eventId);
-    if (eventId == "yes") {
+    //ConfirmDialog::action(event);
+    if (event.getId() == "yes") {
         master->attemptCharDelete();
     }
-    ConfirmDialog::action(eventId, widget);
+    ConfirmDialog::action(event);
 }
 
 CharSelectDialog::CharSelectDialog(Network *network,
@@ -127,9 +127,9 @@ CharSelectDialog::CharSelectDialog(Network *network,
     updatePlayerInfo();
 }
 
-void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
+void CharSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok" && n_character > 0)
+    if (event.getId() == "ok" && n_character > 0)
     {
         // Start game
         mNewCharButton->setEnabled(false);
@@ -140,11 +140,11 @@ void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
         mCharSelected = true;
         attemptCharSelect();
     }
-    else if (eventId == "cancel")
+    else if (event.getId() == "cancel")
     {
         state = EXIT_STATE;
     }
-    else if (eventId == "new")
+    else if (event.getId() == "new")
     {
         if (n_character < MAX_SLOT + 1)
         {
@@ -154,7 +154,7 @@ void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
             mCharInfo->unlock();
         }
     }
-    else if (eventId == "delete")
+    else if (event.getId() == "delete")
     {
         // Delete character
         if (mCharInfo->getEntry())
@@ -162,11 +162,11 @@ void CharSelectDialog::action(const std::string& eventId, gcn::Widget* widget)
             new CharDeleteConfirm(this);
         }
     }
-    else if (eventId == "previous")
+    else if (event.getId() == "previous")
     {
         mCharInfo->prev();
     }
-    else if (eventId == "next")
+    else if (event.getId() == "next")
     {
         mCharInfo->next();
     }
@@ -274,7 +274,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
     mCancelButton = new Button("Cancel", "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
 
-    mNameField->setEventId("create");
+    mNameField->setActionEventId("create");
 
     int w = 200;
     int h = 150;
@@ -319,9 +319,9 @@ CharCreateDialog::~CharCreateDialog()
     delete mPlayer;
 }
 
-void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
+void CharCreateDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "create") {
+    if (event.getId() == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
@@ -333,20 +333,20 @@ void CharCreateDialog::action(const std::string& eventId, gcn::Widget* widget)
                     "Your name needs to be at least 4 characters.", this);
         }
     }
-    else if (eventId == "cancel") {
+    else if (event.getId() == "cancel") {
         scheduleDelete();
     }
-    else if (eventId == "nextcolor") {
+    else if (event.getId() == "nextcolor") {
         mPlayer->setHairColor(mPlayer->getHairColor() % NR_HAIR_COLORS + 1);
     }
-    else if (eventId == "prevcolor") {
+    else if (event.getId() == "prevcolor") {
         int prevColor = mPlayer->getHairColor() + NR_HAIR_COLORS - 2;
         mPlayer->setHairColor(prevColor % NR_HAIR_COLORS + 1);
     }
-    else if (eventId == "nextstyle") {
+    else if (event.getId() == "nextstyle") {
         mPlayer->setHairStyle(mPlayer->getHairStyle() % NR_HAIR_STYLES + 1);
     }
-    else if (eventId == "prevstyle") {
+    else if (event.getId() == "prevstyle") {
         int prevStyle = mPlayer->getHairStyle() + NR_HAIR_STYLES - 2;
         mPlayer->setHairStyle(prevStyle % NR_HAIR_STYLES + 1);
     }

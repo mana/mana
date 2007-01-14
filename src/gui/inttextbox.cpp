@@ -32,12 +32,15 @@ IntTextBox::IntTextBox(int i):
 {
 }
 
-void IntTextBox::keyPress(const gcn::Key &key)
+void
+IntTextBox::keyPressed(gcn::KeyEvent &event)
 {
+    const gcn::Key &key = event.getKey();
+
     if (key.isNumber() || key.getValue() == gcn::Key::BACKSPACE
         || key.getValue() == gcn::Key::DELETE)
     {
-        gcn::TextBox::keyPress(key);
+        gcn::TextBox::keyPressed(event);
     }
 
     std::stringstream s(gcn::TextBox::getText());

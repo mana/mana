@@ -197,6 +197,12 @@ void Window::setContentHeight(int height)
     resizeToContent();
 }
 
+void Window::setContentSize(int width, int height)
+{
+    setContentWidth(width);
+    setContentHeight(height);
+}
+
 void Window::setLocationRelativeTo(gcn::Widget* widget)
 {
     int wx, wy;
@@ -207,12 +213,6 @@ void Window::setLocationRelativeTo(gcn::Widget* widget)
 
     setPosition(getX() + (wx + (widget->getWidth() - getWidth()) / 2 - x),
                 getY() + (wy + (widget->getHeight() - getHeight()) / 2 - y));
-}
-
-void Window::setContentSize(int width, int height)
-{
-    setContentWidth(width);
-    setContentHeight(height);
 }
 
 void Window::setMinWidth(unsigned int width)
@@ -280,86 +280,60 @@ void Window::add(gcn::Widget *w, int x, int y, bool delChild)
     mChrome->add(w, x, y, delChild);
 }
 
-void Window::mousePress(int x, int y, int button)
+void Window::mousePressed(gcn::MouseEvent &event)
 {
     // Let Guichan move window to top and figure out title bar drag
-    gcn::Window::mousePress(x, y, button);
+    gcn::Window::mousePressed(event);
 
-    // If the mouse is not inside the content, the press must have been on the
-    // border, and is a candidate for a resize.
-    if (isResizable() && button == 1 &&
+    int x = event.getX();
+    int y = event.getY();
+
+    // Activate resizing if the left mouse button was pressed on the grip
+    mMouseResize =
+        isResizable() &&
+        event.getButton() == gcn::MouseEvent::LEFT &&
         getGripDimension().isPointInRect(x, y) &&
-        !getChildrenArea().isPointInRect(x, y) &&
-        hasMouse() &&
-        !(mMouseDrag && y > (int)getPadding()))
-    {
-        mMouseResize = true;
-        mMouseXOffset = x;
-        mMouseYOffset = y;
-    }
+        !getChildrenArea().isPointInRect(x, y);
 }
 
-void Window::mouseMotion(int x, int y)
+void Window::mouseDragged(gcn::MouseEvent &event)
 {
-    if (mMouseDrag || mMouseResize)
+    // Let Guichan handle title bar drag
+    gcn::Window::mouseDragged(event);
+
+    // Keep guichan window inside screen
+    int newX = std::max(0, getX());
+    int newY = std::max(0, getY());
+    newX = std::min(windowContainer->getWidth() - getWidth(), newX);
+    newY = std::min(windowContainer->getHeight() - getHeight(), newY);
+    setPosition(newX, newY);
+
+    if (mMouseResize && !mIsMoving)
     {
-        int dx = x - mMouseXOffset;
-        int dy = y - mMouseYOffset;
         gcn::Rectangle newDim = getDimension();
 
-        // Change the dimension according to dragging and moving
-        if (mMouseResize && isResizable())
-        {
-            // We're dragging bottom right
-            newDim.height += dy;
-            newDim.width += dx;
-        }
-        else if (mMouseDrag && isMovable())
-        {
-            newDim.x += dx;
-            newDim.y += dy;
-        }
+        // We're dragging bottom right
+        newDim.width += event.getX() - mDragOffsetX;
+        newDim.height += event.getY() - mDragOffsetY;
 
-        // Keep guichan window inside screen
+        // Keep guichan window inside screen (supports resizing any side)
         if (newDim.x < 0)
         {
-            if (mMouseResize)
-            {
-                newDim.width += newDim.x;
-            }
-
+            newDim.width += newDim.x;
             newDim.x = 0;
         }
         if (newDim.y < 0)
         {
-            if (mMouseResize)
-            {
-                newDim.height += newDim.y;
-            }
-
+            newDim.height += newDim.y;
             newDim.y = 0;
         }
         if (newDim.x + newDim.width > windowContainer->getWidth())
         {
-            if (mMouseResize)
-            {
-                newDim.width = windowContainer->getWidth() - newDim.x;
-            }
-            else
-            {
-                newDim.x = windowContainer->getWidth() - newDim.width;
-            }
+            newDim.width = windowContainer->getWidth() - newDim.x;
         }
         if (newDim.y + newDim.height > windowContainer->getHeight())
         {
-            if (mMouseResize)
-            {
-                newDim.height = windowContainer->getHeight() - newDim.y;
-            }
-            else
-            {
-                newDim.y = windowContainer->getHeight() - newDim.height;
-            }
+            newDim.height = windowContainer->getHeight() - newDim.y;
         }
 
         // Keep the window at least its minimum size
@@ -381,33 +355,14 @@ void Window::mouseMotion(int x, int y)
             newDim.height = mMaxWinHeight;
         }
 
-        // Snap window to edges
-        //if (x < snapSize) x = 0;
-        //if (y < snapSize) y = 0;
-        //if (x + winWidth + snapSize > screen->w) x = screen->w - winWidth;
-        //if (y + winHeight + snapSize > screen->h) y = screen->h - winHeight;
-
         // Update mouse offset when dragging bottom or right border
-        if (mMouseResize)
-        {
-            mMouseYOffset += newDim.height - getHeight();
-            mMouseXOffset += newDim.width - getWidth();
-        }
+        mDragOffsetX += newDim.width - getWidth();
+        mDragOffsetY += newDim.height - getHeight();
 
         // Set the new window and content dimensions
         setDimension(newDim);
         const gcn::Rectangle area = getChildrenArea();
         mChrome->setSize(area.width, area.height);
-    }
-}
-
-void
-Window::mouseRelease(int x, int y, int button)
-{
-    if (button == 1)
-    {
-        mMouseResize = false;
-        mMouseDrag = false;
     }
 }
 

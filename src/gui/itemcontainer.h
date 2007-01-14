@@ -71,7 +71,7 @@ class ItemContainer : public gcn::Widget, public gcn::MouseListener
         /**
          * Handles mouse click.
          */
-        void mousePress(int mx, int my, int button);
+        void mousePressed(gcn::MouseEvent &event);
 
         /**
          * Returns the selected item.

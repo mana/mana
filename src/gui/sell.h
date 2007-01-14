@@ -69,7 +69,7 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Updates labels according to selected item.

@@ -48,9 +48,7 @@ class ListBox : public gcn::ListBox
          */
         void draw(gcn::Graphics *graphics);
 
-        void mousePress(int x, int y, int button);
-        void mouseRelease(int x, int y, int button);
-        void mouseMotion(int x, int y);
+        void mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Adds a listener to the list that's notified each time a change to
@@ -80,8 +78,6 @@ class ListBox : public gcn::ListBox
          * Sends out selection events to the list of selection listeners.
          */
         void fireSelectionChangedEvent();
-
-        bool mMousePressed;    /**< Keeps track of mouse pressed status. */
 
         std::list<SelectionListener*> mListeners;
 };

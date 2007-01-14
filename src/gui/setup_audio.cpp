@@ -46,8 +46,8 @@ Setup_Audio::Setup_Audio():
     gcn::Label *sfxLabel = new gcn::Label("Sfx volume");
     gcn::Label *musicLabel = new gcn::Label("Music volume");
 
-    mSfxSlider->setEventId("sfx");
-    mMusicSlider->setEventId("music");
+    mSfxSlider->setActionEventId("sfx");
+    mMusicSlider->setActionEventId("music");
 
     mSfxSlider->addActionListener(this);
     mMusicSlider->addActionListener(this);
@@ -108,14 +108,14 @@ void Setup_Audio::cancel()
     config.setValue("musicVolume", mMusicVolume);
 }
 
-void Setup_Audio::action(const std::string& event, gcn::Widget* widget)
+void Setup_Audio::action(const gcn::ActionEvent &event)
 {
-    if (event == "sfx")
+    if (event.getId() == "sfx")
     {
         config.setValue("sfxVolume", (int)mSfxSlider->getValue());
         sound.setSfxVolume((int)mSfxSlider->getValue());
     }
-    else if (event == "music")
+    else if (event.getId() == "music")
     {
         config.setValue("musicVolume", (int)mMusicSlider->getValue());
         sound.setMusicVolume((int)mMusicSlider->getValue());

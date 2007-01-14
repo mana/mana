@@ -246,7 +246,7 @@ Viewport::logic()
 }
 
 void
-Viewport::mousePress(int mx, int my, int button)
+Viewport::mousePressed(gcn::MouseEvent &event)
 {
     // Check if we are alive and kickin'
     if (!mMap || !player_node || player_node->mAction == Being::DEAD)
@@ -258,11 +258,11 @@ Viewport::mousePress(int mx, int my, int button)
 
     mPlayerFollowMouse = false;
 
-    int tilex = mx / 32 + mCameraX;
-    int tiley = my / 32 + mCameraY;
+    int tilex = event.getX() / 32 + mCameraX;
+    int tiley = event.getY() / 32 + mCameraY;
 
     // Right click might open a popup
-    if (button == gcn::MouseInput::RIGHT)
+    if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
         Being *being;
         FloorItem *floorItem;
@@ -270,12 +270,12 @@ Viewport::mousePress(int mx, int my, int button)
         if ((being = beingManager->findBeing(tilex, tiley)) &&
                 being->getType() != Being::LOCALPLAYER)
         {
-            showPopup(mx, my, being);
+            showPopup(event.getX(), event.getY(), being);
             return;
         }
         else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
         {
-            showPopup(mx, my, floorItem);
+            showPopup(event.getX(), event.getY(), floorItem);
             return;
         }
     }
@@ -289,7 +289,7 @@ Viewport::mousePress(int mx, int my, int button)
     }
 
     // Left click can cause different actions
-    if (button == gcn::MouseInput::LEFT)
+    if (event.getButton() == gcn::MouseEvent::LEFT)
     {
         Being *being;
         FloorItem *item;
@@ -333,8 +333,7 @@ Viewport::mousePress(int mx, int my, int button)
             mPlayerFollowMouse = true;
         }
     }
-
-    if (button == gcn::MouseInput::MIDDLE)
+    else if (event.getButton() == gcn::MouseEvent::MIDDLE)
     {
         // Find the being nearest to the clicked position
         Being *target = beingManager->findNearestLivingBeing(
@@ -349,19 +348,21 @@ Viewport::mousePress(int mx, int my, int button)
 }
 
 void
-Viewport::mouseMotion(int mx, int my)
+Viewport::mouseMoved(gcn::MouseEvent &event)
 {
     if (!mMap || !player_node)
         return;
 
     if (mPlayerFollowMouse && mWalkTime == player_node->mWalkTime)
     {
-        player_node->setDestination(mx / 32 + mCameraX, my / 32 + mCameraY);
+        int destX = event.getX() / 32 + mCameraX;
+        int destY = event.getY() / 32 + mCameraY;
+        player_node->setDestination(destX, destY);
     }
 }
 
 void
-Viewport::mouseRelease(int mx, int my, int button)
+Viewport::mouseReleased(gcn::MouseEvent &event)
 {
     mPlayerFollowMouse = false;
 }

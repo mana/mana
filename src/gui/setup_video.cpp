@@ -157,16 +157,16 @@ Setup_Video::Setup_Video():
     mFpsSlider->setEnabled(mFps > 0);
     mFpsCheckBox->setMarked(mFps > 0);
 
-    mCustomCursorCheckBox->setEventId("customcursor");
-    mAlphaSlider->setEventId("guialpha");
-    mFpsCheckBox->setEventId("fpslimitcheckbox");
-    mFpsSlider->setEventId("fpslimitslider");
-    mScrollRadiusSlider->setEventId("scrollradiusslider");
-    mScrollRadiusField->setEventId("scrollradiusfield");
-    mScrollLazinessSlider->setEventId("scrolllazinessslider");
-    mScrollLazinessField->setEventId("scrolllazinessfield");
-    mOverlayDetailSlider->setEventId("overlaydetailslider");
-    mOverlayDetailField->setEventId("overlaydetailfield");
+    mCustomCursorCheckBox->setActionEventId("customcursor");
+    mAlphaSlider->setActionEventId("guialpha");
+    mFpsCheckBox->setActionEventId("fpslimitcheckbox");
+    mFpsSlider->setActionEventId("fpslimitslider");
+    mScrollRadiusSlider->setActionEventId("scrollradiusslider");
+    mScrollRadiusField->setActionEventId("scrollradiusfield");
+    mScrollLazinessSlider->setActionEventId("scrolllazinessslider");
+    mScrollLazinessField->setActionEventId("scrolllazinessfield");
+    mOverlayDetailSlider->setActionEventId("overlaydetailslider");
+    mOverlayDetailField->setActionEventId("overlaydetailfield");
 
     mCustomCursorCheckBox->addActionListener(this);
     mAlphaSlider->addActionListener(this);
@@ -330,37 +330,37 @@ void Setup_Video::cancel()
     config.setValue("opengl", mOpenGLEnabled ? 1 : 0);
 }
 
-void Setup_Video::action(const std::string &event, gcn::Widget *widget)
+void Setup_Video::action(const gcn::ActionEvent &event)
 {
-    if (event == "guialpha")
+    if (event.getId() == "guialpha")
     {
         config.setValue("guialpha", mAlphaSlider->getValue());
     }
-    else if (event == "customcursor")
+    else if (event.getId() == "customcursor")
     {
         config.setValue("customcursor",
                 mCustomCursorCheckBox->isMarked() ? 1 : 0);
     }
-    else if (event == "fpslimitslider")
+    else if (event.getId() == "fpslimitslider")
     {
-        mFps = (int)mFpsSlider->getValue();
+        mFps = (int) mFpsSlider->getValue();
         mFpsField->setText(toString(mFps));
     }
-    else if (event == "scrollradiusslider")
+    else if (event.getId() == "scrollradiusslider")
     {
-        int val = (int)mScrollRadiusSlider->getValue();
+        int val = (int) mScrollRadiusSlider->getValue();
         mScrollRadiusField->setText(toString(val));
         config.setValue("ScrollRadius", val);
     }
-    else if (event == "scrolllazinessslider")
+    else if (event.getId() == "scrolllazinessslider")
     {
-        int val = (int)mScrollLazinessSlider->getValue();
+        int val = (int) mScrollLazinessSlider->getValue();
         mScrollLazinessField->setText(toString(val));
         config.setValue("ScrollLaziness", val);
     }
-    else if (event == "overlaydetailslider")
+    else if (event.getId() == "overlaydetailslider")
     {
-        int val = (int)mOverlayDetailSlider->getValue();
+        int val = (int) mOverlayDetailSlider->getValue();
         switch (val)
         {
             case 0:
@@ -375,11 +375,11 @@ void Setup_Video::action(const std::string &event, gcn::Widget *widget)
         }
         config.setValue("OverlayDetail", val);
     }
-    else if (event == "fpslimitcheckbox")
+    else if (event.getId() == "fpslimitcheckbox")
     {
         if (mFpsCheckBox->isMarked())
         {
-            mFps = (int)mFpsSlider->getValue();
+            mFps = (int) mFpsSlider->getValue();
         }
         else
         {
@@ -392,7 +392,8 @@ void Setup_Video::action(const std::string &event, gcn::Widget *widget)
     }
 }
 
-void Setup_Video::keyPress(const gcn::Key &key)
+void
+Setup_Video::keyPressed(gcn::KeyEvent &event)
 {
     std::stringstream tempFps(mFpsField->getText());
 

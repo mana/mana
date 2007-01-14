@@ -139,7 +139,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         /**
          * Performs action.
          */
-        void action(const std::string& actionId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Request focus for typing chat message.
@@ -179,13 +179,16 @@ class ChatWindow : public Window, public gcn::ActionListener,
         chatSend(const std::string &nick, std::string msg);
 
         /** Called when key is pressed */
-        void keyPress(const gcn::Key& key);
+        void
+        keyPressed(gcn::KeyEvent &event);
 
         /** Called to set current text */
-        void setInputText(std::string input_str);
+        void
+        setInputText(std::string input_str);
 
         /** Override to reset mTmpVisible */
-        void setVisible(bool visible);
+        void
+        setVisible(bool visible);
 
     private:
         Network *mNetwork;

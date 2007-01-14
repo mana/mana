@@ -51,7 +51,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
          /**
          * Called when receiving actions from widget.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Draw this window

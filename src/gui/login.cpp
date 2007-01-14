@@ -43,9 +43,9 @@ WrongDataNoticeListener::setTarget(gcn::TextField *textField)
 }
 
 void
-WrongDataNoticeListener::action(const std::string& eventId, gcn::Widget* widget)
+WrongDataNoticeListener::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         // Reset the field
         mTarget->setText("");
@@ -91,9 +91,9 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mRegisterButton->setPosition(mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
             100 - mRegisterButton->getHeight() - 5);
 
-    mUserField->setEventId("ok");
-    mPassField->setEventId("ok");
-    mServerField->setEventId("ok");
+    mUserField->setActionEventId("ok");
+    mPassField->setActionEventId("ok");
+    mServerField->setActionEventId("ok");
 
     mUserField->addActionListener(this);
     mPassField->addActionListener(this);
@@ -129,9 +129,9 @@ LoginDialog::~LoginDialog()
 }
 
 void
-LoginDialog::action(const std::string& eventId, gcn::Widget* widget)
+LoginDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         // Check login
         if (mUserField->getText().empty())
@@ -154,11 +154,11 @@ LoginDialog::action(const std::string& eventId, gcn::Widget* widget)
             state = ACCOUNT_STATE;
         }
     }
-    else if (eventId == "cancel")
+    else if (event.getId() == "cancel")
     {
         state = EXIT_STATE;
     }
-    else if (eventId == "register")
+    else if (event.getId() == "register")
     {
         state = REGISTER_STATE;
     }

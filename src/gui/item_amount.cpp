@@ -49,7 +49,7 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
-    mItemAmountSlide->setEventId("Slide");
+    mItemAmountSlide->setActionEventId("Slide");
 
     // Set position
     mItemAmountTextBox->setPosition(35, 10);
@@ -75,11 +75,11 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     switch (usage) {
         case AMOUNT_TRADE_ADD:
             setCaption("Select amount of items to trade.");
-            okButton->setEventId("AddTrade");
+            okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
             setCaption("Select amount of items to drop.");
-            okButton->setEventId("Drop");
+            okButton->setActionEventId("Drop");
             break;
         default:
             break;
@@ -95,33 +95,33 @@ void ItemAmountWindow::resetAmount()
     mItemAmountTextBox->setInt(1);
 }
 
-void ItemAmountWindow::action(const std::string& eventId, gcn::Widget* widget)
+void ItemAmountWindow::action(const gcn::ActionEvent &event)
 {
     int amount = mItemAmountTextBox->getInt();
 
-    if (eventId == "Cancel")
+    if (event.getId() == "Cancel")
     {
         scheduleDelete();
     }
-    else if (eventId == "Drop")
+    else if (event.getId() == "Drop")
     {
         player_node->dropItem(mItem, mItemAmountTextBox->getInt());
         scheduleDelete();
     }
-    else if (eventId == "AddTrade")
+    else if (event.getId() == "AddTrade")
     {
         tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
         scheduleDelete();
     }
-    else if (eventId == "Plus")
+    else if (event.getId() == "Plus")
     {
         amount++;
     }
-    else if (eventId == "Minus")
+    else if (event.getId() == "Minus")
     {
         amount--;
     }
-    else if (eventId == "Slide")
+    else if (event.getId() == "Slide")
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
     }

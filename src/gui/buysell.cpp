@@ -52,13 +52,13 @@ BuySellDialog::BuySellDialog():
     requestFocus();
 }
 
-void BuySellDialog::action(const std::string& eventId, gcn::Widget* widget)
+void BuySellDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "Buy") {
+    if (event.getId() == "Buy") {
         current_npc->buy();
-    } else if (eventId == "Sell") {
+    } else if (event.getId() == "Sell") {
         current_npc->sell();
-    } else if (eventId == "Cancel") {
+    } else if (event.getId() == "Cancel") {
         current_npc = 0;
     }
     setVisible(false);

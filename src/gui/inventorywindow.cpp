@@ -99,7 +99,7 @@ void InventoryWindow::logic()
     mWeightLabel->adjustSize();
 }
 
-void InventoryWindow::action(const std::string& eventId, gcn::Widget* widget)
+void InventoryWindow::action(const gcn::ActionEvent &event)
 {
     Item *item = mItems->getItem();
 
@@ -107,7 +107,7 @@ void InventoryWindow::action(const std::string& eventId, gcn::Widget* widget)
         return;
     }
 
-    if (eventId == "use") {
+    if (event.getId() == "use") {
         if (item->isEquipment()) {
             if (item->isEquipped()) {
                 player_node->unequipItem(item);
@@ -120,7 +120,7 @@ void InventoryWindow::action(const std::string& eventId, gcn::Widget* widget)
             player_node->useItem(item);
         }
     }
-    else if (eventId == "drop")
+    else if (event.getId() == "drop")
     {
         // Choose amount of items to drop
         new ItemAmountWindow(AMOUNT_ITEM_DROP, this, item);
@@ -155,11 +155,11 @@ void InventoryWindow::selectionChanged(const SelectionEvent &event)
     }
 }
 
-void InventoryWindow::mouseClick(int x, int y, int button, int count)
+void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 {
-    Window::mouseClick(x, y, button, count);
+    Window::mouseClicked(event);
 
-    if (button == gcn::MouseInput::RIGHT)
+    if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
         Item *item = mItems->getItem();
 
@@ -168,16 +168,16 @@ void InventoryWindow::mouseClick(int x, int y, int button, int count)
         /* Convert relative to the window coordinates to
          * absolute screen coordinates.
          */
-        int mx = x + getX();
-        int my = y + getY();
+        int mx = event.getX() + getX();
+        int my = event.getY() + getY();
         viewport->showPopup(mx, my, item);
     }
 }
 
-void InventoryWindow::mouseMotion(int mx, int my)
+void InventoryWindow::mouseDragged(gcn::MouseEvent &event)
 {
     int tmpWidth = getWidth(), tmpHeight = getHeight();
-    Window::mouseMotion(mx, my);
+    Window::mouseDragged(event);
     if (getWidth() != tmpWidth || getHeight() != tmpHeight) {
         updateWidgets();
     }

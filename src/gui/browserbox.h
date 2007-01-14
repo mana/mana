@@ -60,7 +60,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         /**
          * Sets the handler for links.
          */
-        void setLinkHandler(LinkHandler* linkHandler);
+        void setLinkHandler(LinkHandler *linkHandler);
 
         /**
          * Sets the BrowserBox opacity.
@@ -80,7 +80,7 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         /**
          * Adds a text row to the browser.
          */
-        void addRow(const std::string& row);
+        void addRow(const std::string &row);
 
         /**
          * Remove all rows.
@@ -90,13 +90,13 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         /**
          * Handles mouse actions.
          */
-        void mousePress(int mx, int my, int button);
-        void mouseMotion(int mx, int my);
+        void mousePressed(gcn::MouseEvent &event);
+        void mouseMoved(gcn::MouseEvent &event);
 
         /**
          * Draws the browser box.
          */
-        void draw(gcn::Graphics* graphics);
+        void draw(gcn::Graphics *graphics);
 
         /**
          * BrowserBox modes.

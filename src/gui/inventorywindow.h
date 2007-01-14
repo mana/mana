@@ -55,11 +55,11 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string &eventId, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
-        void mouseClick(int x, int y, int button, int count);
+        void mouseClicked(gcn::MouseEvent &event);
 
-        void mouseMotion(int mx, int my);
+        void mouseDragged(gcn::MouseEvent &event);
 
         Item* getItem();
 

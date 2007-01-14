@@ -56,7 +56,7 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
         // Made them public to have the possibility to request focus
         // from external functions.
