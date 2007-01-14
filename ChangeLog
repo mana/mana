@@ -79,7 +79,7 @@
 	* src/CMakeLists.txt, data/graphics/images/ambient/Makefile.am,
 	data/graphics/sprites/CMakeLists.txt: Synchronized build files.
 
-2006-12-12  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2007-01-04  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tools/Purger.java: Removed purger tool.
 
