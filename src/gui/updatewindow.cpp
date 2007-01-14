@@ -28,14 +28,15 @@
 #include <SDL_thread.h>
 #include <zlib.h>
 
-#include <curl/curl.h>
-
 #include <guichan/widgets/label.hpp>
 
 #include "browserbox.h"
 #include "button.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+
+// Curl should be included after Guichan to avoid Windows redefinitions
+#include <curl/curl.h>
 
 #include "../configuration.h"
 #include "../log.h"

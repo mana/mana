@@ -1,4 +1,9 @@
-﻿2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2006-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows 
+	headers issues.
+
+2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/main.cpp, src/gui/trade.cpp, src/gui/sell.cpp,
 	src/gui/connection.cpp, src/gui/buddywindow.cpp, src/gui/browserbox.h,
