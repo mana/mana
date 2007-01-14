@@ -338,8 +338,10 @@ void StatusWindow::draw(gcn::Graphics *g)
     Window::draw(g);
 }
 
-void StatusWindow::action(const std::string &eventId, gcn::Widget *widget)
+void StatusWindow::action(const gcn::ActionEvent &event)
 {
+    const std::string &eventId = event.getId();
+
     // Stats Part
     if (eventId.length() == 3)
     {

@@ -38,7 +38,7 @@ namespace {
         ConnectionActionListener(unsigned char previousState):
             mPreviousState(previousState) {};
 
-        void action(const std::string &eventId, gcn::Widget *widget) {
+        void action(const gcn::ActionEvent &event) {
             state = mPreviousState;
         }
 
@@ -51,9 +51,11 @@ ConnectionDialog::ConnectionDialog(unsigned char previousState):
 {
     setContentSize(200, 100);
 
-    ConnectionActionListener *connectionListener = new ConnectionActionListener(previousState);
+    ConnectionActionListener *connectionListener =
+        new ConnectionActionListener(previousState);
 
-    Button *cancelButton = new Button("Cancel", "cancelButton", connectionListener);
+    Button *cancelButton = new Button("Cancel", "cancelButton",
+                                      connectionListener);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
     gcn::Label *label = new gcn::Label("Connecting...");
 

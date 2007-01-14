@@ -78,9 +78,9 @@ void TabbedContainer::logic()
     Container::logic();
 }
 
-void TabbedContainer::action(const std::string &event, gcn::Widget *widget)
+void TabbedContainer::action(const gcn::ActionEvent &event)
 {
-    std::stringstream ss(event);
+    std::stringstream ss(event.getId());
     int tabNo;
     ss >> tabNo;
 

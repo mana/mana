@@ -56,7 +56,7 @@ extern Window *buySellDialog;
 namespace {
     struct WeightListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId, gcn::Widget *widget)
+        void action(const gcn::ActionEvent &event)
         {
             weightNotice = NULL;
         }
@@ -70,7 +70,7 @@ namespace {
 namespace {
     struct DeathListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId, gcn::Widget *widget)
+        void action(const gcn::ActionEvent &event)
         {
             player_node->revive();
             deathNotice = NULL;

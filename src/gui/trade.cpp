@@ -256,11 +256,11 @@ void TradeWindow::selectionChanged(const SelectionEvent &event)
     }
 }
 
-void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
+void TradeWindow::action(const gcn::ActionEvent &event)
 {
     Item *item = inventoryWindow->getItem();
 
-    if (eventId == "add")
+    if (event.getId() == "add")
     {
         if (!item)
         {
@@ -286,14 +286,14 @@ void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
             new ItemAmountWindow(AMOUNT_TRADE_ADD, this, item);
         }
     }
-    else if (eventId == "cancel")
+    else if (event.getId() == "cancel")
     {
         // XXX Convert for new server
         /*
         MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
         */
     }
-    else if (eventId == "ok")
+    else if (event.getId() == "ok")
     {
         std::stringstream tempMoney(mMoneyField->getText());
         int tempInt;
@@ -317,7 +317,7 @@ void TradeWindow::action(const std::string &eventId, gcn::Widget *widget)
         MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
         */
     }
-    else if (eventId == "trade")
+    else if (event.getId() == "trade")
     {
         // XXX Convert for new server
         /*

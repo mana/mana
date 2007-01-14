@@ -44,9 +44,9 @@
 const short MAX_SERVERLIST = 5;
 
 void
-DropDownListener::action(const std::string &eventId, gcn::Widget *widget)
+DropDownListener::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         // Reset the text fields and give back the server dialog.
         mServerNameField->setText("");
@@ -56,13 +56,14 @@ DropDownListener::action(const std::string &eventId, gcn::Widget *widget)
 
         mServerNameField->requestFocus();
     }
-    else if (eventId == "changeSelection")
+    else if (event.getId() == "changeSelection")
     {
         // Change the textField Values according to new selection
         if (currentSelectedIndex != mServersListBox->getSelected())
         {
             Server myServer;
-            myServer = mServersListModel->getServer(mServersListBox->getSelected());
+            myServer = mServersListModel->getServer(
+                    mServersListBox->getSelected());
             mServerNameField->setText(myServer.serverName);
             mServerPortField->setText(toString(myServer.port));
             currentSelectedIndex = mServersListBox->getSelected();
@@ -131,7 +132,7 @@ ServerDialog::ServerDialog(LoginData *loginData):
         mMostUsedServersScrollArea, mMostUsedServersListBox);
 
     mDropDownListener = new DropDownListener(mServerNameField, mPortField,
-                                mMostUsedServersListModel, mMostUsedServersListBox);
+            mMostUsedServersListModel, mMostUsedServersListBox);
 
     mOkButton = new Button("OK", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
@@ -157,9 +158,9 @@ ServerDialog::ServerDialog(LoginData *loginData):
             mCancelButton->getX() - mOkButton->getWidth() - 5,
             100 - mOkButton->getHeight() - 5);
 
-    mServerNameField->setEventId("ok");
-    mPortField->setEventId("ok");
-    mMostUsedServersDropDown->setEventId("changeSelection");
+    mServerNameField->setActionEventId("ok");
+    mPortField->setActionEventId("ok");
+    mMostUsedServersDropDown->setActionEventId("changeSelection");
 
     mServerNameField->addActionListener(this);
     mPortField->addActionListener(this);
@@ -193,9 +194,9 @@ ServerDialog::~ServerDialog()
 }
 
 void
-ServerDialog::action(const std::string &eventId, gcn::Widget *widget)
+ServerDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         // Check login
         if (mServerNameField->getText().empty() || mPortField->getText().empty())
@@ -240,7 +241,7 @@ ServerDialog::action(const std::string &eventId, gcn::Widget *widget)
             state = STATE_CONNECT_ACCOUNT;
         }
     }
-    else if (eventId == "cancel")
+    else if (event.getId() == "cancel")
     {
         state = STATE_EXIT;
     }

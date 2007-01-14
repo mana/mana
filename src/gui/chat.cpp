@@ -53,7 +53,7 @@ ChatWindow::ChatWindow():
     loadWindowState();
 
     mChatInput = new ChatInput();
-    mChatInput->setEventId("chatinput");
+    mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
@@ -180,9 +180,9 @@ ChatWindow::chatLog(CHATSKILL act)
 }
 
 void
-ChatWindow::action(const std::string &eventId, gcn::Widget *widget)
+ChatWindow::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "chatinput")
+    if (event.getId() == "chatinput")
     {
         std::string message = mChatInput->getText();
 
@@ -360,9 +360,10 @@ ChatWindow::const_msg(CHATSKILL act)
 }
 
 void
-ChatWindow::keyPress(const gcn::Key &key)
+ChatWindow::keyPressed(gcn::KeyEvent &event)
 {
-    if (key.getValue() == key.DOWN && mCurHist != mHistory.end())
+    if (event.getKey().getValue() == gcn::Key::DOWN &&
+            mCurHist != mHistory.end())
     {
         // Move forward through the history
         HistoryIterator prevHist = mCurHist++;
@@ -374,8 +375,8 @@ ChatWindow::keyPress(const gcn::Key &key)
             mCurHist = prevHist;
         }
     }
-    else if (key.getValue() == key.UP && mCurHist != mHistory.begin() &&
-            mHistory.size() > 0)
+    else if (event.getKey().getValue() == gcn::Key::UP &&
+            mCurHist != mHistory.begin() && mHistory.size() > 0)
     {
         // Move backward through the history
         mCurHist--;

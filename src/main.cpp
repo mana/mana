@@ -110,7 +110,8 @@ Net::Connection *chatServerConnection = 0;
 namespace {
     struct ErrorListener : public gcn::ActionListener
     {
-        void action(const std::string &eventId, gcn::Widget *widget) {
+        void action(const gcn::ActionEvent &event)
+        {
             state = STATE_CHOOSE_SERVER;
         }
     } errorListener;
@@ -713,15 +714,16 @@ int main(int argc, char *argv[])
                     logger->log("State: CHAR_SELECT");
                     currentDialog = new CharSelectDialog(&charInfo);
 
-                    if (((CharSelectDialog*)currentDialog)->
+                    if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
                         options.chooseDefault = true;
                     else
-                        ((CharSelectDialog*)currentDialog)->selectByName(
+                        ((CharSelectDialog*) currentDialog)->selectByName(
                             config.getValue("lastCharacter", ""));
 
                     if (options.chooseDefault)
-                        ((CharSelectDialog*)currentDialog)->action("ok", NULL);
+                        ((CharSelectDialog*) currentDialog)->action(
+                            gcn::ActionEvent(NULL, "ok"));
                     break;
 
                 case STATE_ERROR:

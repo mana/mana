@@ -132,9 +132,9 @@ void UpdaterWindow::enable()
     mPlayButton->requestFocus();
 }
 
-void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
+void UpdaterWindow::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "cancel")
+    if (event.getId() == "cancel")
     {
         // Register the user cancel
         mUserCancel=true;
@@ -148,7 +148,7 @@ void UpdaterWindow::action(const std::string &eventId, gcn::Widget *widget)
             mDownloadStatus = UPDATE_ERROR;
         }
     }
-    else if (eventId == "play")
+    else if (event.getId() == "play")
     {
         state = STATE_LOGIN;
     }

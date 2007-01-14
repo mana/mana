@@ -124,9 +124,11 @@ const int MAX_TIME = 10000;
  * Listener used for exitting handling.
  */
 namespace {
-    struct ExitListener : public gcn::ActionListener {
-        void action(const std::string &eventId, gcn::Widget *widget) {
-            if (eventId == "yes") {
+    struct ExitListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            if (event.getId() == "yes") {
                 done = true;
             }
             exitConfirm = NULL;
@@ -386,10 +388,6 @@ void Game::logic()
 
 void Game::handleInput()
 {
-    // Get the state of the keyboard keys
-    Uint8* keys;
-    keys = SDL_GetKeyState(NULL);
-
     if (joystick != NULL)
     {
         joystick->update();
@@ -455,7 +453,7 @@ void Game::handleInput()
                     // Close the config window, cancelling changes if opened
                     else if (setupWindow->isVisible())
                     {
-                        setupWindow->action("cancel", NULL);
+                        setupWindow->action(gcn::ActionEvent(NULL, "cancel"));
                     }
                     // Else, open the chat edit box
                     else
@@ -633,7 +631,12 @@ void Game::handleInput()
         current_npc == 0 &&
         !chatWindow->isFocused())
     {
+        // Get the state of the keyboard keys
+        Uint8* keys;
+        keys = SDL_GetKeyState(NULL);
+
         Uint16 x = player_node->mX / 32, y = player_node->mY / 32;
+
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction

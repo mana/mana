@@ -28,6 +28,8 @@
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
+#include "gui.h"
+#include "viewport.h"
 
 #include "../game.h"
 #include "../engine.h"
@@ -72,15 +74,15 @@ DebugWindow::logic()
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-    //int mouseTileX = mouseX / 32 + camera_x;
-    //int mouseTileY = mouseY / 32 + camera_y;
+    int mouseTileX = mouseX / 32 + viewport->getCameraX();
+    int mouseTileY = mouseY / 32 + viewport->getCameraY();
 
     mFPSLabel->setCaption("[" + toString(fps) + " FPS");
     mFPSLabel->adjustSize();
 
-    //mTileMouseLabel->setCaption("[Mouse: " +
-    //        toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
-    //mTileMouseLabel->adjustSize();
+    mTileMouseLabel->setCaption("[Mouse: " +
+            toString(mouseTileX) + ", " + toString(mouseTileY) + "]");
+    mTileMouseLabel->adjustSize();
 
     Map *currentMap = engine->getCurrentMap();
     if (currentMap != NULL)
@@ -98,9 +100,9 @@ DebugWindow::logic()
 }
 
 void
-DebugWindow::action(const std::string &eventId, gcn::Widget *widget)
+DebugWindow::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "close")
+    if (event.getId() == "close")
     {
         setVisible(false);
     }

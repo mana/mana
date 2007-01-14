@@ -77,12 +77,12 @@ class Window : public gcn::Window
         /**
          * Adds a widget to the window.
          */
-        void add(gcn::Widget *wi, bool delChild=true);
+        void add(gcn::Widget *wi, bool delChild = true);
 
         /**
          * Adds a widget to the window and also specifices its position.
          */
-        void add(gcn::Widget *w, int x, int y, bool delChild=true);
+        void add(gcn::Widget *w, int x, int y, bool delChild = true);
 
         /**
          * Sets the width of the window contents.
@@ -95,14 +95,14 @@ class Window : public gcn::Window
         void setContentHeight(int height);
 
         /**
-         * Sets the location relative to the given widget.
-         */
-        void setLocationRelativeTo(gcn::Widget* widget);
-
-        /**
          * Sets the size of this window.
          */
         void setContentSize(int width, int height);
+
+        /**
+         * Sets the location relative to the given widget.
+         */
+        void setLocationRelativeTo(gcn::Widget *widget);
 
         /**
          * Sets whether of not the window can be resized.
@@ -146,7 +146,7 @@ class Window : public gcn::Window
          */
         bool isSticky();
 
-        /** 
+        /**
          * Overloads window setVisible by guichan to allow sticky window
          * Handling
          */
@@ -171,9 +171,8 @@ class Window : public gcn::Window
          * Window dragging and resizing mouse related. These methods also makes
          * sure the window is not dragged/resized outside of the screen.
          */
-        void mousePress(int x, int y, int button);
-        void mouseMotion(int mx, int my);
-        void mouseRelease(int x, int y, int button);
+        void mousePressed(gcn::MouseEvent &event);
+        void mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Gets the position of the resize grip.

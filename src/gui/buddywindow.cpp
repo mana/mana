@@ -61,9 +61,9 @@ BuddyWindow::BuddyWindow():
     add(cancel);
 }
 
-void BuddyWindow::action(const std::string &eventId, gcn::Widget *widget)
+void BuddyWindow::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "Talk") {
+    if (event.getId() == "Talk") {
         int selected = mListbox->getSelected();
         if ( selected > -1 )
         {
@@ -71,7 +71,7 @@ void BuddyWindow::action(const std::string &eventId, gcn::Widget *widget)
             chatWindow->setInputText(who +": ");
         }
     }
-    else if (eventId == "Remove") {
+    else if (event.getId() == "Remove") {
         int selected = mListbox->getSelected();
         if ( selected > -1 )
         {
@@ -79,7 +79,7 @@ void BuddyWindow::action(const std::string &eventId, gcn::Widget *widget)
             mBuddyList->removeBuddy(who);
         }
     }
-    else if (eventId == "Cancel") {
+    else if (event.getId() == "Cancel") {
         setVisible(false);
     }
 }

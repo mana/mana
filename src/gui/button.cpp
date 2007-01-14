@@ -37,7 +37,7 @@
 ImageRect Button::button[4];
 int Button::mInstances = 0;
 
-Button::Button(const std::string& caption, const std::string &eventId,
+Button::Button(const std::string& caption, const std::string &actionEventId,
         gcn::ActionListener *listener):
     gcn::Button(caption)
 {
@@ -73,7 +73,7 @@ Button::Button(const std::string& caption, const std::string &eventId,
     }
 
     mInstances++;
-    setEventId(eventId);
+    setActionEventId(actionEventId);
     if (listener) {
         addActionListener(listener);
     }
@@ -92,7 +92,8 @@ Button::~Button()
     }
 }
 
-void Button::draw(gcn::Graphics* graphics)
+void
+Button::draw(gcn::Graphics *graphics)
 {
     int mode;
 
@@ -102,7 +103,7 @@ void Button::draw(gcn::Graphics* graphics)
     else if (isPressed()) {
         mode = 2;
     }
-    else if (hasMouse()) {
+    else if (mHasMouse) {
         mode = 1;
     }
     else {

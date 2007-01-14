@@ -50,7 +50,7 @@ NpcListDialog::NpcListDialog():
             cancelButton->getX() - 5 - okButton->getWidth(),
             cancelButton->getY());
 
-    mItemList->setEventId("item");
+    mItemList->setActionEventId("item");
 
     mItemList->addActionListener(this);
 
@@ -91,11 +91,11 @@ NpcListDialog::reset()
 }
 
 void
-NpcListDialog::action(const std::string &eventId, gcn::Widget *widget)
+NpcListDialog::action(const gcn::ActionEvent &event)
 {
     int choice = 0;
 
-    if (eventId == "ok")
+    if (event.getId() == "ok")
     {
         // Send the selected index back to the server
         int selectedIndex = mItemList->getSelected();
@@ -104,7 +104,7 @@ NpcListDialog::action(const std::string &eventId, gcn::Widget *widget)
             choice = selectedIndex + 1;
         }
     }
-    else if (eventId == "cancel")
+    else if (event.getId() == "cancel")
     {
         choice = 0xff; // 0xff means cancel
     }

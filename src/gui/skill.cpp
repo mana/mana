@@ -74,7 +74,7 @@ SkillDialog::SkillDialog():
     mUseButton->setEnabled(false);
     mCloseButton = new Button("Close", "close", this);
 
-    mSkillListBox->setEventId("skill");
+    mSkillListBox->setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
@@ -103,9 +103,9 @@ SkillDialog::~SkillDialog()
     cleanList();
 }
 
-void SkillDialog::action(const std::string &eventId, gcn::Widget *widget)
+void SkillDialog::action(const gcn::ActionEvent &event)
 {
-    if (eventId == "inc")
+    if (event.getId() == "inc")
     {
         // Increment skill
         int selectedSkill = mSkillListBox->getSelected();
@@ -114,13 +114,13 @@ void SkillDialog::action(const std::string &eventId, gcn::Widget *widget)
             player_node->raiseSkill(mSkillList[selectedSkill]->id);
         }
     }
-    else if (eventId == "skill")
+    else if (event.getId() == "skill")
     {
         mIncButton->setEnabled(
                 mSkillListBox->getSelected() > -1 &&
                 player_node->mSkillPoint > 0);
     }
-    else if (eventId == "close")
+    else if (event.getId() == "close")
     {
         setVisible(false);
     }

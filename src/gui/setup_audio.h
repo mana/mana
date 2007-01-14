@@ -38,7 +38,7 @@ class Setup_Audio : public SetupTab, public gcn::ActionListener
         void apply();
         void cancel();
 
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
     private:
         int mMusicVolume, mSfxVolume;

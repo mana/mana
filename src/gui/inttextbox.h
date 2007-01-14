@@ -55,7 +55,8 @@ class IntTextBox : public TextBox
         /**
          * Responds to key presses.
          */
-        void keyPress(const gcn::Key &key);
+        void
+        keyPressed(gcn::KeyEvent &event);
 
     private:
         int mMin;            /**< Minimum value */

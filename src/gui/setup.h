@@ -54,7 +54,7 @@ class Setup : public Window, public gcn::ActionListener
          * Event handling method.
          */
         void
-        action(const std::string& eventId, gcn::Widget* widget);
+        action(const gcn::ActionEvent &event);
 
     private:
         std::list<SetupTab*> mTabs;

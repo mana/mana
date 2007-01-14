@@ -41,7 +41,7 @@ class ChatInput : public TextField
          * Called if the chat input loses focus. It will set itself to
          * invisible as result.
          */
-        void lostFocus();
+        void focusLost();
 };
 
 #endif

@@ -121,46 +121,46 @@ NewSkillDialog::NewSkillDialog():
     setLocationRelativeTo(getParent());
 }
 
-void NewSkillDialog::action(const std::string &eventId, gcn::Widget *widget)
+void NewSkillDialog::action(const gcn::ActionEvent &event)
 {
-     int osp = startPoint;
-    if (eventId == "close")
+    int osp = startPoint;
+    if (event.getId() == "close")
     {
         setVisible(false);
     }
-    else if (eventId == "g1") // weapons group 0-9
+    else if (event.getId() == "g1") // weapons group 0-9
     {
         startPoint =0;
     }
-    else if (eventId == "g2") // magic group 10-19
+    else if (event.getId() == "g2") // magic group 10-19
     {
         startPoint =10;
     }
-    else if (eventId == "g3") // craft group 20-29
+    else if (event.getId() == "g3") // craft group 20-29
     {
         startPoint =20;
     }
-    else if (eventId == "g4") // general group 30-39
+    else if (event.getId() == "g4") // general group 30-39
     {
         startPoint =30;
     }
-    else if (eventId == "g5") // combat group 40-49
+    else if (event.getId() == "g5") // combat group 40-49
     {
         startPoint =40;
     }
-    else if (eventId == "g6") // e. resist group 50-59
+    else if (event.getId() == "g6") // e. resist group 50-59
     {
         startPoint =50;
     }
-    else if (eventId == "g7") // s resist group 60-69
+    else if (event.getId() == "g7") // s resist group 60-69
     {
         startPoint =60;
     }
-    else if (eventId == "g8") // hunting group 70-79
+    else if (event.getId() == "g8") // hunting group 70-79
     {
         startPoint =70;
     }
-    else if (eventId == "g9") // stats group 80-89
+    else if (event.getId() == "g9") // stats group 80-89
     {
         startPoint =80;
     }

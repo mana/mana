@@ -79,37 +79,51 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Toggles whether the path debug graphics are shown
          */
-        void toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
+        void
+        toggleDebugPath() { mShowDebugPath = !mShowDebugPath; }
 
         /**
          * Handles mouse press on map.
          */
         void
-        mousePress(int mx, int my, int button);
+        mousePressed(gcn::MouseEvent &event);
 
         /**
          * Handles mouse move on map
          */
         void
-        mouseMotion(int mx, int my);
+        mouseMoved(gcn::MouseEvent &event);
 
         /**
          * Handles mouse button release on map.
          */
         void
-        mouseRelease(int mx, int my, int button);
+        mouseReleased(gcn::MouseEvent &event);
 
         /**
          * Shows a popup for an item.
          * TODO Find some way to get rid of Item here
          */
-        void showPopup(int x, int y, Item *item);
+        void
+        showPopup(int x, int y, Item *item);
 
         /**
          * A relevant config option changed.
          */
         void
         optionChanged(const std::string &name);
+
+        /**
+         * Returns camera x offset in tiles.
+         */
+        int
+        getCameraX() { return mCameraX; }
+
+        /**
+         * Returns camera y offset in tiles.
+         */
+        int
+        getCameraY() { return mCameraY; }
 
     private:
         /**
@@ -131,8 +145,8 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mScrollLaziness;
         float mViewX;              /**< Current viewpoint in pixels. */
         float mViewY;              /**< Current viewpoint in pixels. */
-        int mCameraX;
-        int mCameraY;
+        int mCameraX;              /**< Current viewpoint in tiles. */
+        int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
 
         bool mPlayerFollowMouse;

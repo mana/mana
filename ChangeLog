@@ -1,3 +1,53 @@
+﻿2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/main.cpp, src/gui/trade.cpp, src/gui/sell.cpp,
+	src/gui/connection.cpp, src/gui/buddywindow.cpp, src/gui/browserbox.h,
+	src/gui/char_server.cpp, src/gui/window.cpp, src/gui/login.cpp,
+	src/gui/inttextbox.h, src/gui/viewport.cpp, src/gui/button.h,
+	src/gui/shoplistbox.h, src/gui/skill.h, src/gui/item_amount.h,
+	src/gui/setup_audio.h, src/gui/newskill.cpp, src/gui/listbox.h,
+	src/gui/register.h, src/gui/setup.cpp, src/gui/npclistdialog.h,
+	src/gui/updatewindow.cpp, src/gui/button.cpp, src/gui/char_select.cpp,
+	src/gui/login.h, src/gui/setup_audio.cpp, src/gui/item_amount.cpp,
+	src/gui/setup_joystick.h, src/gui/chat.h, src/gui/npc_text.cpp,
+	src/gui/setup_video.cpp, src/gui/ok_dialog.cpp,
+	src/gui/inventorywindow.h, src/gui/gccontainer.cpp,
+	src/gui/newskill.h, src/gui/buy.h, src/gui/setup.h,
+	src/gui/itemcontainer.h, src/gui/confirm_dialog.cpp,
+	src/gui/debugwindow.cpp, src/gui/chat.cpp, src/gui/setup_joystick.cpp,
+	src/gui/updatewindow.h, src/gui/char_select.h, src/gui/buysell.h,
+	src/gui/tabbedcontainer.cpp, src/gui/inventorywindow.cpp,
+	src/gui/help.cpp, src/gui/status.h, src/gui/npc_text.h,
+	src/gui/setup_video.h, src/gui/menuwindow.cpp, src/gui/browserbox.cpp,
+	src/gui/ok_dialog.h, src/gui/buy.cpp, src/gui/itemcontainer.cpp,
+	src/gui/gccontainer.h, src/gui/buddywindow.h, src/gui/sell.h,
+	src/gui/trade.h, src/gui/inttextbox.cpp, src/gui/char_server.h,
+	src/gui/window.h, src/gui/shoplistbox.cpp, src/gui/skill.cpp,
+	src/gui/buysell.cpp, src/gui/confirm_dialog.h, src/gui/debugwindow.h,
+	src/gui/status.cpp, src/gui/listbox.cpp, src/gui/register.cpp,
+	src/gui/viewport.h, src/gui/tabbedcontainer.h,
+	src/gui/npclistdialog.cpp, src/gui/help.h, src/gui/chatinput.h,
+	src/gui/chatinput.cpp, src/net/tradehandler.cpp,
+	src/net/playerhandler.cpp: Upgraded to Guichan 0.6.0 (merge from
+	guichan-0.6.0 branch).
+
+2007-01-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt: Updated with regard to renaming
+	of cotton equipment.
+
+2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/debugwindow.cpp, src/gui/viewport.h: Fixed mouse coordinates
+	display in debug window.
+
+2007-01-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.cpp: Fixed initialization of mPlayerFollowMouse,
+	the lack of which sometimes caused the player to start walking when
+	clicking on the GUI.
+
 2007-01-11  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/images/ambient/CMakeLists.txt,
@@ -7,23 +57,43 @@
 2007-01-11  Rogier Polak  <rogier.l.a.polak@gmail.com>
 
 	* src/gui/char_select.cpp, src/net/accountserver/account.h,
-	src/net/accountserver/account.cpp, src/player.cpp: Fixedd issues
+	src/net/accountserver/account.cpp, src/player.cpp: Fixed issues
 	with out of range hair style and color, as well as their ordering.
 	* data/graphics/gui/Makefile.am,
 	data/graphics/images/ambient/Makefile.am,
 	data/graphics/sprites/Makefile.am: Some corrections to installed
 	files.
 
+2007-01-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/icecave.png: Added new tiles and fixes by Nickman and
+	made some other cosmetical corrections.
+
 2007-01-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* data/graphics/sprites/monster-mountsnake.xml,
+	data/graphics/sprites/monster-mountsnake.png, data/monsters.xml: Added
+	brown snake by Pauan.
 	* src/gui/status.h, src/gui/status.cpp, src/localplayer.h:
 	Synchronized player attributes with Attributes page on the wiki.
 	Removed job xp bar.
+
+2007-01-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/chest-cottonshirt-male.png,
+	data/graphics/chest-cottonshirt-male.xml,
+	data/graphics/chest-cottonshirt-female.png,
+	data/graphics/chest-cottonshirt-female.xml,
+	data/graphics/item001.png, data/equipment.xml: Added female
+	cottonshirt sprites.
+	* data/equipment.xml: Fixed some wrong armor values.
 
 2007-01-05  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/CMakeLists.txt, data/graphics/sprites/CMakeLists.txt: Fixed
 	installation when using CMake.
+	* src/CMakeLists.txt, data/graphics/images/ambient/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt: Synchronized build files.
 
 2007-01-05  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
@@ -35,6 +105,10 @@
 2007-01-05  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/map.cpp, src/map.h: Declared some methods const.
+
+2007-01-04  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tools/Purger.java: Removed purger tool.
 
 2007-01-03  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
@@ -285,11 +359,11 @@
 2006-12-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/sprite.h, src/gui/playerbox.h, src/gui/char_select.cpp,
-	src/gui/playerbox.cpp, src/gui/passwordfield.h,src/gui/char_select.h,
-	src/gui/textfield.h, src/main.cpp, src/being.cpp, src/player.h,
-	src/floor_item.h, src/being.h: Use new animation system in character
-	selection/creation. Shows equipment and allowed for some cleanup. Had
-	a bit of help from the patch by VictorSan.
+	src/gui/playerbox.cpp, src/gui/passwordfield.h, src/gui/char_select.h,
+	src/main.cpp, src/being.cpp, src/player.h, src/floor_item.h,
+	src/being.h: Use new animation system in character selection/creation.
+	Shows equipment and allowed for some cleanup. Had a bit of help from
+	the patch by VictorSan.
 
 2006-12-08  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

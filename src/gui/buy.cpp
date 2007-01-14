@@ -82,8 +82,8 @@ BuyDialog::BuyDialog():
     mItemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
     mItemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
 
-    mShopItemList->setEventId("item");
-    mSlider->setEventId("slider");
+    mShopItemList->setActionEventId("item");
+    mSlider->setActionEventId("slider");
 
     mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
@@ -140,11 +140,11 @@ void BuyDialog::addItem(short id, int price)
     mShopItemList->adjustSize();
 }
 
-void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
+void BuyDialog::action(const gcn::ActionEvent &event)
 {
     int selectedItem = mShopItemList->getSelected();
 
-    if (eventId == "quit")
+    if (event.getId() == "quit")
     {
         setVisible(false);
         current_npc = 0;
@@ -158,12 +158,12 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
 
     bool updateButtonsAndLabels = false;
 
-    if (eventId == "slider")
+    if (event.getId() == "slider")
     {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "+")
+    else if (event.getId() == "+")
     {
         if (mAmountItems < mMaxItems) {
             mAmountItems++;
@@ -174,7 +174,7 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
         mSlider->setValue(double(mAmountItems)/double(mMaxItems));
         updateButtonsAndLabels = true;
     }
-    else if (eventId == "-")
+    else if (event.getId() == "-")
     {
         if (mAmountItems > 0) {
             mAmountItems--;
@@ -188,7 +188,7 @@ void BuyDialog::action(const std::string &eventId, gcn::Widget *widget)
     // TODO: Actually we'd have a bug elsewhere if this check for the number
     // of items to be bought ever fails, Bertram removed the assertions, is
     // there a better way to ensure this fails in an _obivous_ way in C++?
-    else if (eventId == "buy" && (mAmountItems > 0 &&
+    else if (event.getId() == "buy" && (mAmountItems > 0 &&
                 mAmountItems <= mMaxItems))
     {
         // XXX Convert for new server

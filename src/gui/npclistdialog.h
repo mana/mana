@@ -54,7 +54,7 @@ class NpcListDialog : public Window, public gcn::ActionListener,
          * Called when receiving actions from the widgets.
          */
         void
-        action(const std::string& eventId, gcn::Widget* widget);
+        action(const gcn::ActionEvent &event);
 
         /**
          * Returns the number of items in the choices list.

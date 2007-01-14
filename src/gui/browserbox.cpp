@@ -98,7 +98,7 @@ void BrowserBox::disableLinksAndUserColors()
     mUseLinksAndUserColors = false;
 }
 
-void BrowserBox::addRow(const std::string& row)
+void BrowserBox::addRow(const std::string &row)
 {
     std::string tmp = row;
     std::string newRow;
@@ -238,25 +238,28 @@ struct MouseOverLink
     int mX, mY;
 };
 
-void BrowserBox::mousePress(int mx, int my, int button)
+void
+BrowserBox::mousePressed(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
-            MouseOverLink(mx, my));
+            MouseOverLink(event.getX(), event.getY()));
 
     if (i != mLinks.end()) {
         mLinkHandler->handleLink(i->link);
     }
 }
 
-void BrowserBox::mouseMotion(int mx, int my)
+void
+BrowserBox::mouseMoved(gcn::MouseEvent &event)
 {
     LinkIterator i = find_if(mLinks.begin(), mLinks.end(),
-            MouseOverLink(mx, my));
+            MouseOverLink(event.getX(), event.getY()));
 
     mSelectedLink = (i != mLinks.end()) ? (i - mLinks.begin()) : -1;
 }
 
-void BrowserBox::draw(gcn::Graphics* graphics)
+void
+BrowserBox::draw(gcn::Graphics *graphics)
 {
     if (mOpaque)
     {

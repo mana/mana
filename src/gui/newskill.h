@@ -55,7 +55,7 @@ class NewSkillDialog : public Window, public gcn::ActionListener
         NewSkillDialog();
 
         // action listener
-        void action(const std::string& eventId, gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
 
     private:
         void resetNSD(); // updates the values in the dialog box

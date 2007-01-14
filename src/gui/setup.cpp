@@ -85,19 +85,19 @@ Setup::~Setup()
     for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
 }
 
-void Setup::action(const std::string& event, gcn::Widget *widget)
+void Setup::action(const gcn::ActionEvent &event)
 {
-    if (event == "Apply")
+    if (event.getId() == "Apply")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::apply));
     }
-    else if (event == "Cancel")
+    else if (event.getId() == "Cancel")
     {
         setVisible(false);
         for_each(mTabs.begin(), mTabs.end(), std::mem_fun(&SetupTab::cancel));
     }
-    else if (event == "Reset Windows")
+    else if (event.getId() == "Reset Windows")
     {
         statusWindow->resetToDefaultSize();
         minimap->resetToDefaultSize();

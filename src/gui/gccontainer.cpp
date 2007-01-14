@@ -55,8 +55,8 @@ void GCContainer::add(gcn::Widget *w, int x, int y, bool delChild)
     Container::add(w, x, y);
 }
 
-void GCContainer::_announceDeath(gcn::Widget *w)
+void GCContainer::death(const gcn::Event &event)
 {
-    mDeathList.remove(w);
-    Container::_announceDeath(w);
+    mDeathList.remove(event.getSource());
+    Container::death(event);
 }

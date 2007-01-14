@@ -98,8 +98,7 @@ class DropDownListener : public gcn::ActionListener
             mServerPortField(serverPortField),
             mServersListModel(serversListModel),
             mServersListBox(serversListBox) {};
-        void action(const std::string& eventId,
-                    gcn::Widget* widget);
+        void action(const gcn::ActionEvent &event);
     private:
         short currentSelectedIndex;
         gcn::TextField *mServerNameField;
@@ -132,7 +131,7 @@ class ServerDialog : public Window, public gcn::ActionListener
         /**
          * Called when receiving actions from the widgets.
          */
-        void action(const std::string &eventId, gcn::Widget *widget);
+        void action(const gcn::ActionEvent &event);
 
     private:
         gcn::TextField *mServerNameField;

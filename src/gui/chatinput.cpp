@@ -28,7 +28,7 @@ ChatInput::ChatInput()
     setVisible(false);
 }
 
-void ChatInput::lostFocus()
+void ChatInput::focusLost()
 {
     setVisible(false);
 }

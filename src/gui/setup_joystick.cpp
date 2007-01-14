@@ -45,7 +45,6 @@ Setup_Joystick::Setup_Joystick():
     mOriginalJoystickEnabled = (int)config.getValue("joystickEnabled", 0) != 0;
     mJoystickEnabled->setMarked(mOriginalJoystickEnabled);
 
-    mJoystickEnabled->setEventId("joystickEnabled");
     mJoystickEnabled->addActionListener(this);
 
     add(mCalibrateLabel);
@@ -53,13 +52,13 @@ Setup_Joystick::Setup_Joystick():
     add(mJoystickEnabled);
 }
 
-void Setup_Joystick::action(const std::string &event, gcn::Widget *widget)
+void Setup_Joystick::action(const gcn::ActionEvent &event)
 {
     if (!joystick) {
         return;
     }
 
-    if (event == "joystickEnabled")
+    if (event.getSource() == mJoystickEnabled)
     {
         joystick->setEnabled(mJoystickEnabled->isMarked());
     }

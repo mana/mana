@@ -65,17 +65,18 @@ ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
     yesButton->requestFocus();
 }
 
-void ConfirmDialog::action(const std::string &eventId, gcn::Widget *widget)
+void ConfirmDialog::action(const gcn::ActionEvent &event)
 {
     // Proxy button events to our listeners
     ActionListenerIterator i;
     for (i = mActionListeners.begin(); i != mActionListeners.end(); ++i)
     {
-        (*i)->action(eventId, widget);
+        (*i)->action(event);
     }
 
     // Can we receive anything else anyway?
-    if (eventId == "yes" || eventId == "no") {
+    if (event.getId() == "yes" || event.getId() == "no")
+    {
         scheduleDelete();
     }
 }

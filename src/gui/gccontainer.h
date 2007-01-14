@@ -32,9 +32,12 @@ class GCContainer : public gcn::Container
 {
     public:
         virtual ~GCContainer();
-        virtual void add(gcn::Widget *w, bool delChild=true);
-        virtual void add(gcn::Widget *w, int x, int y, bool delChild=true);
-        virtual void _announceDeath(gcn::Widget *w);
+
+        virtual void add(gcn::Widget *w, bool delChild = true);
+
+        virtual void add(gcn::Widget *w, int x, int y, bool delChild = true);
+
+        virtual void death(const gcn::Event &event);
 
     protected:
         typedef std::list<gcn::Widget*> Widgets;
