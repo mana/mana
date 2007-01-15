@@ -1,4 +1,9 @@
-﻿2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-01-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.cpp, src/gui/viewport.h: Fixed issue where the
+	player stops walking.
+
+2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/help/header.txt, NEWS, README: Updated release date.
 

@@ -138,7 +138,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "cancel")
     {
         // Register the user cancel
-        mUserCancel=true;
+        mUserCancel = true;
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
@@ -372,13 +372,13 @@ void UpdaterWindow::logic()
         case UPDATE_ERROR:
             if (mThread)
             {
-                if(mUserCancel){
+                if (mUserCancel) {
                     // Kill the thread, because user has canceled
                     SDL_KillThread(mThread);
                     // Set the flag to false again
                     mUserCancel = false;
                 }
-                else{
+                else {
                     SDL_WaitThread(mThread, NULL);
                 }
                 mThread = NULL;
