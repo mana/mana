@@ -2,6 +2,7 @@
 
 	* src/gui/viewport.cpp, src/gui/viewport.h: Fixed issue where the
 	player stops walking.
+	* docs/INSTALL/win32.txt, INSTALL: Updated to mention Guichan 0.6.0.
 
 2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
