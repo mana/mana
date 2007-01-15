@@ -2,7 +2,7 @@
 ##1               T  H  E      M  A  N  A      W  O  R  L  D
 ##1               ==========================================
  
-           ##2Version:##6 0.0.22.1                ##2Date:##314 January 2006
+           ##2Version:##6 0.0.22.1                ##2Date:##315 January 2007
  
 ##2                    Website: http://themanaworld.org
  

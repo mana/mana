@@ -1,4 +1,8 @@
-﻿2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/header.txt, NEWS, README: Updated release date.
+
+2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows
 	headers issues.
