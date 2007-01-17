@@ -200,7 +200,8 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             // No errors detected, register the new user.
             mRegisterButton->setEnabled(false);
 
-            mLoginData->hostname = config.getValue("host", "animesites.de");
+            mLoginData->hostname = config.getValue(
+                    "host", "server.themanaworld.org");
             mLoginData->port = (short)config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();

@@ -1,4 +1,9 @@
-﻿2007-01-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* docs/win32-release.txt, src/gui/register.cpp, src/main.cpp: Changed
+	default server.
+
+2007-01-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/viewport.cpp, src/gui/viewport.h: Fixed issue where the
 	player stops walking.

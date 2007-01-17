@@ -197,7 +197,7 @@ void init_engine(const Options &options)
 
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
-    config.setValue("host", "animesites.de");
+    config.setValue("host", "server.themanaworld.org");
     config.setValue("port", 6901);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL
@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
     if (!options.password.empty()) {
         loginData.password = options.password;
     }
-    loginData.hostname = config.getValue("host", "animesites.de");
+    loginData.hostname = config.getValue("host", "server.themanaworld.org");
     loginData.port = (short)config.getValue("port", 0);
     loginData.remember = config.getValue("remember", 0);
 
