@@ -1,4 +1,9 @@
-﻿2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-01-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Identify ourselves when requesting files from
+	the update server.
+
+2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* docs/win32-release.txt, src/gui/register.cpp, src/main.cpp: Changed
 	default server.
