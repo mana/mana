@@ -269,7 +269,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
             }
 
-#ifdef PACKAGE_VERSIONd
+#ifdef PACKAGE_VERSION
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW/" PACKAGE_VERSION);
 #else
             curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW");
