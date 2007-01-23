@@ -1,7 +1,12 @@
-﻿2007-01-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/gui/updatewindow.cpp: Identify ourselves when requesting files from
-	the update server.
+	* src/gui/shoplistbox.cpp, docs/INSTALL/win32.txt, INSTALL, NEWS:
+	Upgraded to Guichan 0.6.1.
+
+2007-01-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Identify ourselves when requesting files
+	from the update server.
 
 2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
