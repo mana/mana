@@ -28,14 +28,15 @@
 #include <SDL_thread.h>
 #include <zlib.h>
 
-#include <curl/curl.h>
-
 #include <guichan/widgets/label.hpp>
 
 #include "browserbox.h"
 #include "button.h"
 #include "progressbar.h"
 #include "scrollarea.h"
+
+// Curl should be included after Guichan to avoid Windows redefinitions
+#include <curl/curl.h>
 
 #include "../configuration.h"
 #include "../log.h"
@@ -137,7 +138,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     if (event.getId() == "cancel")
     {
         // Register the user cancel
-        mUserCancel=true;
+        mUserCancel = true;
         // Skip the updating process
         if (mDownloadStatus == UPDATE_COMPLETE)
         {
@@ -262,6 +263,11 @@ int UpdaterWindow::downloadThread(void *ptr)
                 curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
             }
 
+#ifdef PACKAGE_VERSION
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW/" PACKAGE_VERSION);
+#else
+            curl_easy_setopt(curl, CURLOPT_USERAGENT, "TMW");
+#endif
             curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, uw->mCurlError);
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
@@ -365,13 +371,13 @@ void UpdaterWindow::logic()
         case UPDATE_ERROR:
             if (mThread)
             {
-                if(mUserCancel){
+                if (mUserCancel) {
                     // Kill the thread, because user has canceled
                     SDL_KillThread(mThread);
                     // Set the flag to false again
                     mUserCancel = false;
                 }
-                else{
+                else {
                     SDL_WaitThread(mThread, NULL);
                 }
                 mThread = NULL;

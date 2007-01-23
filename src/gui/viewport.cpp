@@ -324,7 +324,7 @@ Viewport::mousePressed(gcn::MouseEvent &event)
 }
 
 void
-Viewport::mouseMoved(gcn::MouseEvent &event)
+Viewport::mouseDragged(gcn::MouseEvent &event)
 {
     if (!mMap || !player_node)
         return;

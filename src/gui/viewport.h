@@ -92,7 +92,7 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * Handles mouse move on map
          */
         void
-        mouseMoved(gcn::MouseEvent &event);
+        mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Handles mouse button release on map.

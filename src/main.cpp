@@ -39,8 +39,6 @@
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
 #include <cerrno>
 #include <sys/stat.h>
-#elif defined WIN32
-#define NOGDI
 #endif
 
 #include "configuration.h"
@@ -174,7 +172,7 @@ void initConfiguration(const Options &options)
 {
     // Fill configuration with defaults
     logger->log("Initializing configuration...");
-    config.setValue("host", "animesites.de");
+    config.setValue("host", "server.themanaworld.org");
     config.setValue("port", 9601);
     config.setValue("hwaccel", 0);
 #if (defined __APPLE__ || defined WIN32) && defined USE_OPENGL

@@ -112,7 +112,7 @@ void ShopListBox::setSelected(int selected)
         mSelected = std::min(mListModel->getNumberOfElements() - 1,
                              std::max(-1, selected));
 
-        gcn::BasicContainer *parent = getParent();
+        gcn::Widget *parent = getParent();
         if (parent)
         {
             gcn::Rectangle scroll;

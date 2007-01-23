@@ -1,4 +1,34 @@
-﻿2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp, docs/INSTALL/win32.txt, INSTALL, NEWS:
+	Upgraded to Guichan 0.6.1.
+
+2007-01-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp: Identify ourselves when requesting files
+	from the update server.
+
+2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* docs/win32-release.txt, src/gui/register.cpp, src/main.cpp: Changed
+	default server.
+
+2007-01-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.cpp, src/gui/viewport.h: Fixed issue where the
+	player stops walking.
+	* docs/INSTALL/win32.txt, INSTALL: Updated to mention Guichan 0.6.0.
+
+2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/help/header.txt, NEWS, README: Updated release date.
+
+2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Fixed windows
+	headers issues.
+
+2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/main.cpp, src/gui/trade.cpp, src/gui/sell.cpp,
 	src/gui/connection.cpp, src/gui/buddywindow.cpp, src/gui/browserbox.h,
@@ -30,6 +60,8 @@
 	src/gui/chatinput.cpp, src/net/tradehandler.cpp,
 	src/net/playerhandler.cpp: Upgraded to Guichan 0.6.0 (merge from
 	guichan-0.6.0 branch).
+	* src/winver.h, configure.ac, data/help/header.txt, NEWS, README,
+	CMakeLists.txt: Updated version to 0.0.22.1.
 
 2007-01-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -37,7 +69,7 @@
 	data/graphics/sprites/CMakeLists.txt: Updated with regard to renaming
 	of cotton equipment.
 
-2006-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2007-01-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/debugwindow.cpp, src/gui/viewport.h: Fixed mouse coordinates
 	display in debug window.

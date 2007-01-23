@@ -58,7 +58,8 @@ MenuWindow::MenuWindow():
     };
     int x = 0, y = 3, h = 0;
 
-    for (const char **curBtn = buttonNames; *curBtn; curBtn++) {
+    for (const char **curBtn = buttonNames; *curBtn; curBtn++)
+    {
         gcn::Button *btn = new Button(*curBtn, *curBtn, &listener);
         btn->setPosition(x, y);
         add(btn);

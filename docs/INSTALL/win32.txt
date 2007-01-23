@@ -28,7 +28,7 @@ Besides a C++ compiler, TMW depends on the following libraries:
 1) SDL
 2) SDL_mixer
 3) SDL_image
-4) Guichan 0.4.0
+4) Guichan 0.6.1
 5) libiconv
 5) libxml2
 6) PhysFS

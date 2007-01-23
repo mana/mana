@@ -19,6 +19,7 @@
 				<Compiler>
 					<Add option="-Wall"/>
 					<Add option="-DUSE_OPENGL"/>
+					<Add option="-DNOGDI"/>
 				</Compiler>
 				<Linker>
 					<Add library="enet"/>
@@ -172,16 +173,6 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\gui\buddywindow.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\buddywindow.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\gui\button.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -217,16 +208,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\char_select.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chargedialog.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\chargedialog.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -443,16 +424,6 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\ministatus.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\newskill.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\gui\newskill.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
