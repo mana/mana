@@ -1,4 +1,9 @@
-﻿2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/maps/new_8-1.tmx.gz, data/maps/new_11-1.tmx.gz: Map fixes by
+	Pauan.
+
+2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/shoplistbox.cpp, docs/INSTALL/win32.txt, INSTALL, NEWS:
 	Upgraded to Guichan 0.6.1.
