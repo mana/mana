@@ -30,6 +30,8 @@
 
 /**
  * Used for parsing an incoming message.
+ *
+ * \ingroup Network
  */
 class MessageIn
 {

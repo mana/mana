@@ -28,6 +28,9 @@
 
 #include "equipmentinfo.h"
 
+/**
+ * Equipment information database.
+ */
 namespace EquipmentDB
 {
     /**

@@ -27,7 +27,10 @@
 #include <iosfwd>
 
 /**
- * Used for building an outgoing message.
+ * Used for building an outgoing message. When finished, the message is sent
+ * using Net::Connection::send().
+ *
+ * \ingroup Network
  */
 class MessageOut
 {

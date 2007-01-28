@@ -28,6 +28,9 @@
 
 class MessageIn;
 
+/**
+ * \ingroup Network
+ */
 class MessageHandler
 {
     public:

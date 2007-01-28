@@ -28,6 +28,9 @@
 
 #include "monsterinfo.h"
 
+/**
+ * Monster information database.
+ */
 namespace MonsterDB
 {
     void

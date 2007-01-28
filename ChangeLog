@@ -1,4 +1,12 @@
-﻿2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.h, src/net/messagein.h,
+	src/net/messagehandler.h, src/net/network.h, src/net/connection.h,
+	src/net/messageout.h, src/utils/xml.h, src/main.h,
+	src/resources/monsterdb.h, src/resources/itemdb.h,
+	src/resources/equipmentdb.h: Some work on documentation.
+
+2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/shoplistbox.cpp, docs/INSTALL/win32.txt, INSTALL, NEWS:
 	Upgraded to Guichan 0.6.1.

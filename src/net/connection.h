@@ -32,6 +32,9 @@ class MessageOut;
 
 namespace Net
 {
+    /**
+     * \ingroup Network
+     */
     class Connection
     {
         public:

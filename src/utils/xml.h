@@ -28,6 +28,9 @@
 
 #include <string>
 
+/**
+ * XML helper functions.
+ */
 namespace XML
 {
     /**

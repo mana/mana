@@ -29,7 +29,7 @@
 #include <map>
 
 /**
- * The namespace that holds the item information.
+ * Item information database.
  */
 namespace ItemDB
 {

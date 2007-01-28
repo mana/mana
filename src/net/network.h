@@ -26,9 +26,16 @@
 
 #include <iosfwd>
 
+/**
+ * \defgroup Network Core network layer
+ */
+
 class MessageHandler;
 class MessageOut;
 
+/**
+ * \ingroup Network
+ */
 namespace Net
 {
     class Connection;

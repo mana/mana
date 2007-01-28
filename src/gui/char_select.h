@@ -94,7 +94,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 /**
  * Character creation dialog.
  *
- * \ingroup GUI
+ * \ingroup Interface
  */
 class CharCreateDialog : public Window, public gcn::ActionListener
 {

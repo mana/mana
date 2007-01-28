@@ -24,6 +24,35 @@
 #ifndef _TMW_MAIN_H
 #define _TMW_MAIN_H
 
+/**
+ * \mainpage
+ *
+ * \section Introduction Introduction
+ *
+ * This is the documentation for the client of The Mana World
+ * (http://themanaworld.org). It is always a work in progress, with the intent
+ * to make it easier for new developers to grow familiar with the source code.
+ *
+ * \section General General information
+ *
+ * During the game, the current Map is displayed by the main Viewport, which
+ * is the bottom-most widget in the WindowContainer. Aside the viewport, the
+ * window container keeps track of all the \link Window Windows\endlink
+ * displayed during the game.
+ *
+ * A Map is composed of several layers of \link Image Images\endlink (tiles),
+ * a layer with collision information and \link Sprite Sprites\endlink. The
+ * sprites define the visible part of \link Being Beings\endlink and
+ * \link FloorItem FloorItems\endlink, they are drawn from top to bottom
+ * by the map, interleaved with the tiles in the fringe layer.
+ *
+ * The server is split up into an \link Net::AccountServer account
+ * server\endlink, a \link Net::ChatServer chat server\endlink and a \link
+ * Net::GameServer game server\endlink. There may be multiple game servers.
+ * Handling of incoming messages is spread over several \link MessageHandler
+ * MessageHanders\endlink.
+ */
+
 #include <string>
 
 #ifdef HAVE_CONFIG_H
