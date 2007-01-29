@@ -38,7 +38,7 @@
  * During the game, the current Map is displayed by the main Viewport, which
  * is the bottom-most widget in the WindowContainer. Aside the viewport, the
  * window container keeps track of all the \link Window Windows\endlink
- * displayed during the game.
+ * displayed during the game. It is the <i>top</i> widget for Guichan.
  *
  * A Map is composed of several layers of \link Image Images\endlink (tiles),
  * a layer with collision information and \link Sprite Sprites\endlink. The

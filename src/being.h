@@ -146,7 +146,7 @@ class Being : public Sprite
          * Puts a damage bubble above this being for the specified amount
          * of time.
          *
-         * @param text The text that should appear.
+         * @param amount The amount of damage.
          * @param time The amount of time the text should stay in milliseconds.
          */
         void setDamage(Sint16 amount, Uint32 time);
@@ -160,7 +160,7 @@ class Being : public Sprite
         /**
          * Sets the name for the being.
          *
-         * @param text The name that should appear.
+         * @param name The name that should appear.
          */
         void
         setName(const std::string &name) { mName = name; }
@@ -223,19 +223,19 @@ class Being : public Sprite
          * Draws the speech text above the being.
          */
         void
-        drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        drawSpeech(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
          */
         void
-        drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the name text below the being.
          */
         virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
+        drawName(Graphics *graphics, int offsetX, int offsetY) {};
 
         /**
          * Returns the type of the being.
@@ -315,7 +315,7 @@ class Being : public Sprite
          * @see Sprite::draw(Graphics, int, int)
          */
         virtual void
-        draw(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) const;
+        draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Returns the pixel X coordinate.

@@ -40,7 +40,8 @@ Sound::~Sound()
 {
 }
 
-void Sound::init()
+void
+Sound::init()
 {
     // Don't initialize sound engine twice
     if (mInstalled) return;
@@ -71,7 +72,8 @@ void Sound::init()
     mInstalled = true;
 }
 
-void Sound::info()
+void
+Sound::info()
 {
     SDL_version compiledVersion;
     const SDL_version *linkedVersion;
@@ -110,7 +112,8 @@ void Sound::info()
     logger->log("Sound::info() Channels: %i", channels);
 }
 
-void Sound::setMusicVolume(int volume)
+void
+Sound::setMusicVolume(int volume)
 {
     if (!mInstalled) return;
 
@@ -118,7 +121,8 @@ void Sound::setMusicVolume(int volume)
     Mix_VolumeMusic(volume);
 }
 
-void Sound::setSfxVolume(int volume)
+void
+Sound::setSfxVolume(int volume)
 {
     if (!mInstalled) return;
 
@@ -126,7 +130,8 @@ void Sound::setSfxVolume(int volume)
     Mix_Volume(-1, volume);
 }
 
-void Sound::playMusic(const char *path, int loop)
+void
+Sound::playMusic(const std::string &path, int loop)
 {
     if (!mInstalled) return;
 
@@ -134,9 +139,10 @@ void Sound::playMusic(const char *path, int loop)
         stopMusic();
     }
 
-    logger->log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
+    logger->log("Sound::startMusic() Playing \"%s\" %i times", path.c_str(),
+                loop);
 
-    mMusic = Mix_LoadMUS(path);
+    mMusic = Mix_LoadMUS(path.c_str());
     if (mMusic) {
         Mix_PlayMusic(mMusic, loop);
     }
@@ -145,7 +151,8 @@ void Sound::playMusic(const char *path, int loop)
     }
 }
 
-void Sound::stopMusic()
+void
+Sound::stopMusic()
 {
     if (!mInstalled) return;
 
@@ -158,7 +165,8 @@ void Sound::stopMusic()
     }
 }
 
-void Sound::fadeInMusic(const char *path, int loop, int ms)
+void
+Sound::fadeInMusic(const std::string &path, int loop, int ms)
 {
     if (!mInstalled) return;
 
@@ -166,10 +174,11 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
         stopMusic();
     }
 
-    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
-            loop, ms);
+    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)",
+                path.c_str(),
+                loop, ms);
 
-    mMusic = Mix_LoadMUS(path);
+    mMusic = Mix_LoadMUS(path.c_str());
     if (mMusic) {
         Mix_FadeInMusic(mMusic, loop, ms);
     }
@@ -178,7 +187,8 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
     }
 }
 
-void Sound::fadeOutMusic(int ms)
+void
+Sound::fadeOutMusic(int ms)
 {
     if (!mInstalled) return;
 
@@ -191,7 +201,8 @@ void Sound::fadeOutMusic(int ms)
     }
 }
 
-void Sound::playSfx(const std::string &path)
+void
+Sound::playSfx(const std::string &path)
 {
     if (!mInstalled || path.length() == 0) return;
 
@@ -203,7 +214,8 @@ void Sound::playSfx(const std::string &path)
     }
 }
 
-void Sound::close()
+void
+Sound::close()
 {
     stopMusic();
 

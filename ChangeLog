@@ -1,4 +1,12 @@
-﻿2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/properties.h, src/being.cpp, src/beingmanager.h, src/sound.h,
+	src/gui/window.h, src/sound.cpp, src/main.h, src/being.h,
+	src/resources/soundeffect.h, src/resources/image.h,
+	src/resources/mapreader.h, src/resources/music.h: Some trivial
+	documentation work. Fixes all Doxygen warnings.
+
+2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.h, src/net/messagein.h,
 	src/net/messagehandler.h, src/net/network.h, src/net/connection.h,

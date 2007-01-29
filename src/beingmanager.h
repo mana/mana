@@ -68,8 +68,11 @@ class BeingManager
         /**
          * Return a being nearest to specific coordinates.
          *
-         * \param maxdist maximal distance. If minimal distance is larger,
-         *                no being is returned
+         * @param x       X coordinate.
+         * @param y       Y coordinate.
+         * @param maxdist Maximal distance. If minimal distance is larger,
+         *                no being is returned.
+         * @param type    The type of being to look for.
          */
         Being* findNearestLivingBeing(Uint16 x, Uint16 y, int maxdist,
                                       Being::Type type = Being::UNKNOWN);
