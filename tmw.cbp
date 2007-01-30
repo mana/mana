@@ -967,16 +967,6 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\net\packet.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\packet.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\net\playerhandler.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>

@@ -1,4 +1,8 @@
-﻿2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tmw.cbp: Updated Code::blocks project.
+
+2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt, src/Makefile.am, src/net/packet.h,
 	src/net/packet.cpp, src/net/messageout.cpp: Removed unused Packet
