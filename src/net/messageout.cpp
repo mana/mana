@@ -28,7 +28,6 @@
 #include <SDL_endian.h>
 
 #include "network.h"
-#include "packet.h"
 
 MessageOut::MessageOut(Network *network):
     mNetwork(network),

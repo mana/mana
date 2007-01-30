@@ -1,4 +1,10 @@
-﻿2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt, src/Makefile.am, src/net/packet.h,
+	src/net/packet.cpp, src/net/messageout.cpp: Removed unused Packet
+	class.
+
+2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_8-1.tmx.gz, data/maps/new_11-1.tmx.gz: Map fixes by
 	Pauan.
