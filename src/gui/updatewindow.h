@@ -94,7 +94,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     void download();
 
     /**
-     * The tread function that download the files.
+     * The thread function that download the files.
      */
     static int downloadThread(void *ptr);
 
@@ -124,11 +124,6 @@ class UpdaterWindow : public Window, public gcn::ActionListener
      * A thread that use libcurl to download updates.
      */
     SDL_Thread *mThread;
-
-    /**
-     * A mutex to protect shared data between the threads.
-     */
-    SDL_mutex *mMutex;
 
     /**
      * Status of the current download.

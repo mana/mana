@@ -46,13 +46,41 @@
 
 #include "../resources/resourcemanager.h"
 
+/**
+ * Calculates the Alder-32 checksum for the given file.
+ */
+unsigned long fadler32(FILE *file)
+{
+    // Obtain file size
+    fseek(file, 0, SEEK_END);
+    long fileSize = ftell(file);
+    rewind(file);
+
+    // Calculate Adler-32 checksum
+    char *buffer = (char*) malloc(fileSize);
+    fread(buffer, 1, fileSize, file);
+    unsigned long adler = adler32(0L, Z_NULL, 0);
+    adler = adler32(adler, (Bytef*) buffer, fileSize);
+    free(buffer);
+
+    return adler;
+}
+
 UpdaterWindow::UpdaterWindow():
     Window("Updating..."),
-    mThread(NULL), mMutex(NULL), mDownloadStatus(UPDATE_NEWS),
-    mUpdateHost(""), mCurrentFile("news.txt"), mBasePath(""),
-    mStoreInMemory(true), mDownloadComplete(true), mUserCancel(false),
-    mDownloadedBytes(0), mMemoryBuffer(NULL),
-    mCurlError(new char[CURL_ERROR_SIZE]), mLineIndex(0)
+    mThread(NULL),
+    mDownloadStatus(UPDATE_NEWS),
+    mUpdateHost(""),
+    mCurrentFile("news.txt"),
+    mCurrentChecksum(0),
+    mBasePath(""),
+    mStoreInMemory(true),
+    mDownloadComplete(true),
+    mUserCancel(false),
+    mDownloadedBytes(0),
+    mMemoryBuffer(NULL),
+    mCurlError(new char[CURL_ERROR_SIZE]),
+    mLineIndex(0)
 {
     mCurlError[0] = 0;
 
@@ -212,22 +240,17 @@ int UpdaterWindow::updateProgress(void *ptr,
     return 0;
 }
 
-size_t UpdaterWindow::memoryWrite(void *ptr,
-                                  size_t size, size_t nmemb, FILE *stream)
+size_t
+UpdaterWindow::memoryWrite(void *ptr, size_t size, size_t nmemb, FILE *stream)
 {
     UpdaterWindow *uw = reinterpret_cast<UpdaterWindow *>(stream);
     size_t totalMem = size * nmemb;
-    uw->mMemoryBuffer = (char*)realloc(uw->mMemoryBuffer,
-                                       uw->mDownloadedBytes + totalMem + 1);
+    uw->mMemoryBuffer = (char*) realloc(uw->mMemoryBuffer,
+                                        uw->mDownloadedBytes + totalMem);
     if (uw->mMemoryBuffer)
     {
         memcpy(&(uw->mMemoryBuffer[uw->mDownloadedBytes]), ptr, totalMem);
         uw->mDownloadedBytes += totalMem;
-
-        // Make sure the memory buffer is NULL terminated, because this
-        // function is used to download text files that are later parsed as a
-        // string.
-        uw->mMemoryBuffer[uw->mDownloadedBytes] = 0;
     }
 
     return totalMem;
@@ -242,7 +265,8 @@ int UpdaterWindow::downloadThread(void *ptr)
     std::string outFilename;
     std::string url(uw->mUpdateHost + "/" + uw->mCurrentFile);
 
-    while (attempts < 3 && !uw->mDownloadComplete) {
+    while (attempts < 3 && !uw->mDownloadComplete)
+    {
         FILE *outfile = NULL;
         uw->setLabel(uw->mCurrentFile + " (0%)");
 
@@ -288,14 +312,17 @@ int UpdaterWindow::downloadThread(void *ptr)
                 uw->mDownloadStatus = UPDATE_ERROR;
                 switch (res)
                 {
-                case CURLE_COULDNT_CONNECT: // give more debug info on that error
-                    std::cerr << "curl error " << res << " : " << uw->mCurlError << " " << url.c_str()
-                    << std::endl;
+                case CURLE_COULDNT_CONNECT:
+                    // give more debug info on that error
+                    std::cerr << "curl error " << res << ": "
+                              << uw->mCurlError << " " << url.c_str()
+                              << std::endl;
                     break;
 
                 default:
-                    std::cerr << "curl error " << res << " : " << uw->mCurlError << " host: " << url.c_str()
-                    << std::endl;
+                    std::cerr << "curl error " << res << ": "
+                              << uw->mCurlError << " host: " << url.c_str()
+                              << std::endl;
                 }
             }
 
@@ -305,34 +332,22 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             if (!uw->mStoreInMemory)
             {
-                long fileSize;
-                char *buffer;
-                // Obtain file size.
-                fseek(outfile, 0, SEEK_END);
-                fileSize = ftell(outfile);
-                rewind(outfile);
-                buffer = (char*)malloc(fileSize);
-                fread(buffer, 1, fileSize, outfile);
-                fclose(outfile);
-
                 // Give the file the proper name
                 std::string newName(uw->mBasePath + "/updates/" +
                                     uw->mCurrentFile.c_str());
 
-                // Any existing file with this name is deleted first, otherwise the
-                // rename will fail on Windows.
+                // Any existing file with this name is deleted first, otherwise
+                // the rename will fail on Windows.
                 ::remove(newName.c_str());
                 ::rename(outFilename.c_str(), newName.c_str());
 
                 // Don't check resources2.txt checksum
                 if (uw->mDownloadStatus == UPDATE_RESOURCES)
                 {
-                    // Calculate Adler-32 checksum
-                    unsigned long adler = adler32(0L, Z_NULL, 0);
-                    adler = adler32(adler, (Bytef *)buffer, fileSize);
-                    free(buffer);
+                    unsigned long adler = fadler32(outfile);
 
-                    if (uw->mCurrentChecksum != adler) {
+                    if (uw->mCurrentChecksum != adler)
+                    {
                         uw->mDownloadComplete = false;
                         // Remove the corrupted file
                         ::remove(newName.c_str());
@@ -343,6 +358,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                     }
                 }
 
+                fclose(outfile);
             }
         }
         attempts++;
@@ -403,8 +419,8 @@ void UpdaterWindow::logic()
 
                 mCurrentFile = "resources2.txt";
                 mStoreInMemory = false;
-                download();
                 mDownloadStatus = UPDATE_LIST;
+                download();
             }
             break;
         case UPDATE_LIST:
