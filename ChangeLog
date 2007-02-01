@@ -1,4 +1,9 @@
-﻿2007-02-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp: File handle should be closed before
+	attempting to remove/rename files.
+
+2007-02-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: A bit of cleanup
 	and defined a helper function for calculating the alder32 checksum of

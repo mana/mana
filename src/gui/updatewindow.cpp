@@ -332,15 +332,6 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             if (!uw->mStoreInMemory)
             {
-                // Give the file the proper name
-                std::string newName(uw->mBasePath + "/updates/" +
-                                    uw->mCurrentFile.c_str());
-
-                // Any existing file with this name is deleted first, otherwise
-                // the rename will fail on Windows.
-                ::remove(newName.c_str());
-                ::rename(outFilename.c_str(), newName.c_str());
-
                 // Don't check resources2.txt checksum
                 if (uw->mDownloadStatus == UPDATE_RESOURCES)
                 {
@@ -350,7 +341,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                     {
                         uw->mDownloadComplete = false;
                         // Remove the corrupted file
-                        ::remove(newName.c_str());
+                        ::remove(outFilename.c_str());
                         logger->log(
                             "Checksum for file %s failed: (%lx/%lx)",
                             uw->mCurrentFile.c_str(),
@@ -359,6 +350,15 @@ int UpdaterWindow::downloadThread(void *ptr)
                 }
 
                 fclose(outfile);
+
+                // Give the file the proper name
+                std::string newName(uw->mBasePath + "/updates/" +
+                                    uw->mCurrentFile.c_str());
+
+                // Any existing file with this name is deleted first, otherwise
+                // the rename will fail on Windows.
+                ::remove(newName.c_str());
+                ::rename(outFilename.c_str(), newName.c_str());
             }
         }
         attempts++;
