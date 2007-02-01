@@ -2,6 +2,7 @@
 
 	* src/gui/updatewindow.cpp: File handle should be closed before
 	attempting to remove/rename files.
+	* src/gui/button.h: Fixed buttons loosing focus.
 
 2007-02-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

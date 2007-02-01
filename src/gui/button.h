@@ -53,6 +53,8 @@ class Button : public gcn::Button {
          */
         void draw(gcn::Graphics* graphics);
 
+        void focusLost() {}
+
     private:
         static ImageRect button[4];    /**< Button state graphics */
         static int mInstances;         /**< Number of button instances */
