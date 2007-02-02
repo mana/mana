@@ -1,4 +1,9 @@
-﻿2007-02-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-02-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.h, src/engine.cpp, src/being.h, src/being.cpp: Moved
+	responsibility of loading emoticons to the Being class.
+
+2007-02-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/updatewindow.cpp: File handle should be closed before
 	attempting to remove/rename files.

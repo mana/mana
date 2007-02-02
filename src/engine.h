@@ -31,7 +31,7 @@ class Network;
 
 /**
  * Game engine. Actually hardly does anything anymore except keeping track of
- * the current map and loading the emotes.
+ * the current map.
  */
 class Engine
 {
@@ -40,11 +40,6 @@ class Engine
          * Constructor.
          */
         Engine(Network *network);
-
-        /**
-         * Destructor.
-         */
-        ~Engine();
 
         /**
          * Returns the currently active map.

@@ -43,12 +43,17 @@ class Map;
 class Graphics;
 class Spriteset;
 
+/**
+ * A position along a being's path.
+ */
 struct PATH_NODE
 {
     /**
      * Constructor.
      */
-    PATH_NODE(unsigned short x, unsigned short y);
+    PATH_NODE(unsigned short x, unsigned short y):
+        x(x), y(y)
+    { }
 
     unsigned short x;
     unsigned short y;
@@ -375,6 +380,10 @@ class Being : public Sprite
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mEquipmentSpriteIDs;
+
+    private:
+        static int instances;           /**< Number of Being instances */
+        static Spriteset *emotionset;   /**< Emoticons used by beings */
 };
 
 #endif
