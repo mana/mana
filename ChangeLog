@@ -1,4 +1,18 @@
-﻿2007-02-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/player-female-base.png: Made the standing and
+	walking of the female characters more feminine.
+	* data/equipment.xml, data/graphics/sprites/leg-cotton-male.png,
+	data/graphics/sprites/leg-cotton-male.xml,
+	data/graphics/sprites/leg-cotton-female.png,
+	data/graphics/sprites/leg-cotton-female.xml,
+	data/graphics/sprites/leg-jeans-male.png,
+	data/graphics/sprites/leg-jeans-male.xml,
+	data/graphics/sprites/leg-jeans-female.png,
+	data/graphics/sprites/leg-jeans-female.xml: Added different sprites for
+	male and female pants.
+
+2007-02-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.h, src/engine.cpp, src/being.h, src/being.cpp: Moved
 	responsibility of loading emoticons to the Being class.
