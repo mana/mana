@@ -1,4 +1,9 @@
-﻿2007-02-03  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-02-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/menuwindow.cpp: Fixed a small glitch when dragging the menu
+	window.
+
+2007-02-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/player-female-base.png: Made the standing and
 	walking of the female characters more feminine.
@@ -9,8 +14,8 @@
 	data/graphics/sprites/leg-jeans-male.png,
 	data/graphics/sprites/leg-jeans-male.xml,
 	data/graphics/sprites/leg-jeans-female.png,
-	data/graphics/sprites/leg-jeans-female.xml: Added different sprites for
-	male and female pants.
+	data/graphics/sprites/leg-jeans-female.xml: Added different sprites
+	for male and female pants.
 
 2007-02-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

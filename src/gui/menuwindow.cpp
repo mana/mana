@@ -30,8 +30,11 @@
 #include "button.h"
 #include "windowcontainer.h"
 
-extern Window *setupWindow, *inventoryWindow, *equipmentWindow,
-       *skillDialog, *statusWindow;
+extern Window *setupWindow;
+extern Window *inventoryWindow;
+extern Window *equipmentWindow;
+extern Window *skillDialog;
+extern Window *statusWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -52,9 +55,14 @@ MenuWindow::MenuWindow():
     setTitleBarHeight(0);
 
     // Buttons
-    // ------------
-    const char *buttonNames[] = {
-        "Status", "Equipment", "Inventory", "Skills", "Setup", 0
+    const char *buttonNames[] =
+    {
+        "Status",
+        "Equipment",
+        "Inventory",
+        "Skills",
+        "Setup",
+        0
     };
     int x = 0, y = 3, h = 0;
 
@@ -67,7 +75,11 @@ MenuWindow::MenuWindow():
         h = btn->getHeight();
     }
 
-    setDefaultSize((windowContainer->getWidth() - x - 2), 0, x, (y + h));
+    setContentSize(x - 3, h);
+    setDefaultSize(windowContainer->getWidth() - getWidth() - 1,
+                   0,
+                   x - 3,
+                   y + h);
 }
 
 void MenuWindow::draw(gcn::Graphics *graphics)
@@ -79,6 +91,7 @@ void MenuWindow::draw(gcn::Graphics *graphics)
 void MenuWindowListener::action(const gcn::ActionEvent &event)
 {
     Window *window = NULL;
+
     if (event.getId() == "Status")
     {
         window = statusWindow;
