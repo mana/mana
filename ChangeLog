@@ -1,4 +1,10 @@
-﻿2007-02-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-9.tmx.gz, data/maps/new_1-14.tmx.gz,
+	data/maps/new_1-16.tmx.gz: Restored the cloud shadow overlays in the
+	woodland that got lost somehow during the halloween and christmas chaos.
+
+2007-02-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/sprites/chest_cotton_female.png: Removed this strange
 	duplicate.
