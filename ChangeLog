@@ -1,4 +1,11 @@
-﻿2007-02-10  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-02-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/chest_cotton_female.png: Removed this strange
+	duplicate.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt: Some updates.
+
+2007-02-10  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/viewport.cpp: Fixed the bug in the scrolling limitation that made
 	it possible to scroll outside of the map in the south and east.
