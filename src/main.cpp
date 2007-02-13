@@ -421,6 +421,12 @@ void accountLogin(Network *network, LoginData *loginData)
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
 
+    //remove _M or _F from username after a login for registration purpose
+    if (loginData->registerLogin)
+    {
+        loginData->registerLogin = false;
+        loginData->username = loginData->username.substr(0, loginData->username.length() - 2);
+    }
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
     if (loginData->remember) {
@@ -538,6 +544,7 @@ int main(int argc, char *argv[])
     loginData.hostname = config.getValue("host", "server.themanaworld.org");
     loginData.port = (short)config.getValue("port", 0);
     loginData.remember = config.getValue("remember", 0);
+    loginData.registerLogin = false;
 
     SDLNet_Init();
     Network *network = new Network();

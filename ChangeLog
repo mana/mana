@@ -1,4 +1,9 @@
-﻿2007-02-11  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-02-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/register.cpp, src/logindata.h, src/main.cpp: Fixed the _M/_F
+	username bug.
+
+2007-02-11  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_1-9.tmx.gz, data/maps/new_1-14.tmx.gz,
 	data/maps/new_1-16.tmx.gz: Restored the cloud shadow overlays in the

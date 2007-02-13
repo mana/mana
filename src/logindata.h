@@ -37,6 +37,7 @@ struct LoginData
     char sex;
 
     bool remember;
+    bool registerLogin;
 };
 
 #endif

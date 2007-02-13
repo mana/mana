@@ -206,6 +206,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
             mLoginData->username += mFemaleButton->isMarked() ? "_F" : "_M";
+            mLoginData->registerLogin = true;
 
             state = ACCOUNT_STATE;
         }
