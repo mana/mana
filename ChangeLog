@@ -1,4 +1,9 @@
-﻿2007-02-13  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-02-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, configure.ac, data/help/header.txt, NEWS,
+	CMakeLists.txt: Changed version to 0.0.22.2.
+
+2007-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/register.cpp, src/logindata.h, src/main.cpp: Fixed the _M/_F
 	username bug.
