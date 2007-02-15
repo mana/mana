@@ -274,7 +274,7 @@ void initEngine()
 
     int width = (int) config.getValue("screenwidth", defaultScreenWidth);
     int height = (int) config.getValue("screenheight", defaultScreenHeight);
-    int bpp = 8;
+    int bpp = 0;
     bool fullscreen = ((int) config.getValue("screen", 0) == 1);
     bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
 
