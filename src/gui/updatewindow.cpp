@@ -268,6 +268,7 @@ int UpdaterWindow::downloadThread(void *ptr)
     while (attempts < 3 && !uw->mDownloadComplete)
     {
         FILE *outfile = NULL;
+        FILE *newfile = NULL;
         uw->setLabel(uw->mCurrentFile + " (0%)");
 
         curl = curl_easy_init();
@@ -328,10 +329,9 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             curl_easy_cleanup(curl);
 
-            uw->mDownloadComplete = true;
-
             if (!uw->mStoreInMemory)
             {
+
                 // Don't check resources2.txt checksum
                 if (uw->mDownloadStatus == UPDATE_RESOURCES)
                 {
@@ -339,16 +339,18 @@ int UpdaterWindow::downloadThread(void *ptr)
 
                     if (uw->mCurrentChecksum != adler)
                     {
-                        uw->mDownloadComplete = false;
+                        fclose(outfile);
+
                         // Remove the corrupted file
                         ::remove(outFilename.c_str());
                         logger->log(
                             "Checksum for file %s failed: (%lx/%lx)",
                             uw->mCurrentFile.c_str(),
                             adler, uw->mCurrentChecksum);
+                        attempts++;
+                        continue; //Bail out her to avoid the renaming
                     }
                 }
-
                 fclose(outfile);
 
                 // Give the file the proper name
@@ -359,6 +361,18 @@ int UpdaterWindow::downloadThread(void *ptr)
                 // the rename will fail on Windows.
                 ::remove(newName.c_str());
                 ::rename(outFilename.c_str(), newName.c_str());
+
+                //Check if we can open it and no errors were encountered during renaming
+                newfile = fopen(newName.c_str(), "rb");
+                if (newfile)
+                {
+                    fclose(newfile);
+                    uw->mDownloadComplete = true;
+                }
+            }
+            else
+            {
+                uw->mDownloadComplete = true; // it's stored in memory, we're done
             }
         }
         attempts++;
@@ -420,7 +434,7 @@ void UpdaterWindow::logic()
                 mCurrentFile = "resources2.txt";
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_LIST;
-                download();
+                download(); //download() changes mDownloadComplete to false
             }
             break;
         case UPDATE_LIST:

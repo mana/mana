@@ -1,3 +1,9 @@
+2007-02-16  Rogier Polak     <rogier.l.a.polak@gmail.com>
+
+        * src/gui/updatewindow.cpp: Fixed the update bug (hopefully), by
+        modifying the usage of the synchronisation between threads. Added
+        a check for existence of the updated file.
+
 ﻿2007-02-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/winver.h, README, configure.ac, data/help/header.txt, NEWS,
