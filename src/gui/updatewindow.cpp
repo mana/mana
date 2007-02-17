@@ -331,7 +331,6 @@ int UpdaterWindow::downloadThread(void *ptr)
 
             if (!uw->mStoreInMemory)
             {
-
                 // Don't check resources2.txt checksum
                 if (uw->mDownloadStatus == UPDATE_RESOURCES)
                 {
@@ -348,7 +347,7 @@ int UpdaterWindow::downloadThread(void *ptr)
                             uw->mCurrentFile.c_str(),
                             adler, uw->mCurrentChecksum);
                         attempts++;
-                        continue; //Bail out her to avoid the renaming
+                        continue; // Bail out here to avoid the renaming
                     }
                 }
                 fclose(outfile);
@@ -362,7 +361,8 @@ int UpdaterWindow::downloadThread(void *ptr)
                 ::remove(newName.c_str());
                 ::rename(outFilename.c_str(), newName.c_str());
 
-                //Check if we can open it and no errors were encountered during renaming
+                // Check if we can open it and no errors were encountered
+                // during renaming
                 newfile = fopen(newName.c_str(), "rb");
                 if (newfile)
                 {
@@ -372,7 +372,8 @@ int UpdaterWindow::downloadThread(void *ptr)
             }
             else
             {
-                uw->mDownloadComplete = true; // it's stored in memory, we're done
+                // It's stored in memory, we're done
+                uw->mDownloadComplete = true;
             }
         }
         attempts++;
@@ -434,7 +435,7 @@ void UpdaterWindow::logic()
                 mCurrentFile = "resources2.txt";
                 mStoreInMemory = false;
                 mDownloadStatus = UPDATE_LIST;
-                download(); //download() changes mDownloadComplete to false
+                download(); // download() changes mDownloadComplete to false
             }
             break;
         case UPDATE_LIST:
