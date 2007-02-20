@@ -195,6 +195,7 @@ void init_engine(const Options &options)
     }
 
     // Add the main data directory to our PhysicsFS search path
+    resman->addToSearchPath("data", true);
 #if defined __APPLE__
     CFBundleRef mainBundle = CFBundleGetMainBundle();
     CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
@@ -208,7 +209,6 @@ void init_engine(const Options &options)
     strncat(path, "/data", PATH_MAX - 1);
     resman->addToSearchPath(path, true);
 #else
-    resman->addToSearchPath("data", true);
     resman->addToSearchPath(TMW_DATADIR "data", true);
 #endif
 
