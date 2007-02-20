@@ -20,11 +20,13 @@
  */
 
 #include "log.h"
+
 #ifdef WIN32
-    #include "utils/wingettimeofday.h"
+#include "utils/wingettimeofday.h"
 #else
-    #include <sys/time.h>
+#include <sys/time.h>
 #endif
+
 #ifdef __APPLE__
 #include <Carbon/Carbon.h>
 #endif
@@ -101,9 +103,14 @@ void Logger::error(const std::string &error_text)
     MessageBox(NULL, error_text.c_str(), "Error", MB_ICONERROR | MB_OK);
 #elif defined __APPLE__
     Str255 msg;
-    c2pstrcpy(msg, error_text.c_str());
-    StandardAlert(kAlertStopAlert, "\pError",
-                  (ConstStr255Param)msg, NULL, NULL);
+    CFStringRef error;
+    error = CFStringCreateWithCString(NULL,
+                                      error_text.c_str(),
+                                      kCFStringEncodingMacRoman);
+    CFStringGetPascalString(error, msg, 255, kCFStringEncodingMacRoman);
+    StandardAlert(kAlertStopAlert,
+                  "\pError",
+                  (ConstStr255Param) msg, NULL, NULL);
 #else
     std::cerr << "Error: " << error_text << std::endl;
 #endif

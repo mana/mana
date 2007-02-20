@@ -1,4 +1,9 @@
-﻿2007-02-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/log.cpp: Applied patch by trapdoor to fix the usage of a
+	deprecated function on MacOS X 10.4 and later.
+
+2007-02-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/help/header.txt, NEWS, README: Updated release date.
 	* data/graphics/sprites/Makefile.am,
