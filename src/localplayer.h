@@ -36,6 +36,9 @@ class Inventory;
 class Item;
 class Network;
 
+/**
+ * The local player character.
+ */
 class LocalPlayer : public Player
 {
     public:
@@ -112,9 +115,21 @@ class LocalPlayer : public Player
          */
         void setTrading(bool trading) { mTrading = trading; }
 
-        void attack(Being *target=NULL, bool keep=false);
+        void attack(Being *target = NULL, bool keep = false);
+
         void stopAttack();
+
         Being* getTarget() const;
+
+        /**
+         * Overridden to do nothing. The attacks of the local player are
+         * displayed as soon as the player attacks, not when the server says
+         * the player does.
+         *
+         * @param victim The attacked being.
+         * @param damage The amount of damage dealt (0 means miss).
+         */
+        virtual void handleAttack(Being *victim, int damage) {}
 
         /**
          * Sets the target being of the player.

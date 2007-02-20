@@ -152,10 +152,18 @@ Being::setSpeech(const std::string &text, Uint32 time)
 }
 
 void
-Being::setDamage(Sint16 amount, Uint32 time)
+Being::takeDamage(int amount)
 {
     mDamage = amount ? toString(amount) : "miss";
     mDamageTime = 300;
+}
+
+void
+Being::handleAttack(Being *victim, int damage)
+{
+    setAction(Being::ATTACK);
+    mFrame = 0;
+    mWalkTime = tick_time;
 }
 
 void

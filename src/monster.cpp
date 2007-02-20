@@ -73,11 +73,10 @@ Monster::setAction(Uint8 action)
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
-            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_DIE));
+            sound.playSfx(getInfo().getSound(EVENT_DIE));
             break;
         case ATTACK:
             currentAction = ACTION_ATTACK;
-            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_HIT));
             mSprites[BASE_SPRITE]->reset();
             break;
         case STAND:
@@ -93,4 +92,19 @@ Monster::setAction(Uint8 action)
         mSprites[BASE_SPRITE]->play(currentAction);
         mAction = action;
     }
+}
+
+void
+Monster::handleAttack(Being *victim, int damage)
+{
+    Being::handleAttack(victim, damage);
+
+    const MonsterInfo &mi = getInfo();
+    sound.playSfx(mi.getSound((damage > 0) ? EVENT_HIT : EVENT_MISS));
+}
+
+const MonsterInfo&
+Monster::getInfo() const
+{
+    return MonsterDB::get(mJob - 1002);
 }

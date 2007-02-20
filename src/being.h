@@ -141,13 +141,22 @@ class Being : public Sprite
         void setSpeech(const std::string &text, Uint32 time);
 
         /**
-         * Puts a damage bubble above this being for the specified amount
-         * of time.
+         * Puts a damage bubble above this being for the specified amount of
+         * time.
          *
-         * @param text The text that should appear.
-         * @param time The amount of time the text should stay in milliseconds.
+         * @param amount The amount of damage.
          */
-        void setDamage(Sint16 amount, Uint32 time);
+        virtual void
+        takeDamage(int amount);
+
+        /**
+         * Handles an attack of another being by this being.
+         *
+         * @param victim The attacked being.
+         * @param damage The amount of damage dealt (0 means miss).
+         */
+        virtual void
+        handleAttack(Being *victim, int damage);
 
         /**
          * Returns the name of the being.
