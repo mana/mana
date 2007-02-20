@@ -83,6 +83,14 @@ class ResourceManager
         addToSearchPath(const std::string &path, bool append);
 
         /**
+        * Searches for zip files and adds them to the search path.
+        */
+        void
+        searchAndAddArchives(const std::string &path,
+                             const std::string &ext,
+                             bool append);
+
+        /**
          * Creates a directory in the write path
          */
         bool

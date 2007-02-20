@@ -535,7 +535,7 @@ int main(int argc, char *argv[])
     SDL_Event event;
 
     if (options.skipUpdate && state != ERROR_STATE) {
-        state = LOGIN_STATE;
+        state = LOADDATA_STATE;
     }
     else {
         state = UPDATE_STATE;
@@ -623,6 +623,7 @@ int main(int argc, char *argv[])
                     break;
 
                     // Those states don't cause a network disconnect
+                case LOADDATA_STATE:
                 case ACCOUNT_STATE:
                 case CHAR_CONNECT_STATE:
                 case CONNECTING_STATE:
@@ -643,13 +644,24 @@ int main(int argc, char *argv[])
             }
 
             switch (state) {
-                case LOGIN_STATE:
-                    logger->log("State: LOGIN");
+                case LOADDATA_STATE:
+                    logger->log("State: LOADDATA");
+
+                    //add customdata directory
+                    ResourceManager::getInstance()->searchAndAddArchives(
+                        "customdata/",
+                        "zip",
+                        false);
 
                     // Load XML databases
                     EquipmentDB::load();
                     ItemDB::load();
                     MonsterDB::load();
+                    state = LOGIN_STATE;
+                    break;
+
+                case LOGIN_STATE:
+                    logger->log("State: LOGIN");
 
                     if (!loginData.password.empty()) {
                         state = ACCOUNT_STATE;

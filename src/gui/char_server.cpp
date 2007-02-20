@@ -108,7 +108,7 @@ ServerSelectDialog::action(const gcn::ActionEvent &event)
         state = CHAR_CONNECT_STATE;
     }
     else if (event.getId() == "cancel") {
-        state = LOGIN_STATE;
+        state = LOADDATA_STATE;
     }
 }
 

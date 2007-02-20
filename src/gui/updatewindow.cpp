@@ -179,7 +179,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "play")
     {
-        state = LOGIN_STATE;
+        state = LOADDATA_STATE;
     }
 }
 

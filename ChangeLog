@@ -1,4 +1,15 @@
-﻿2007-02-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/char-server.cpp, src/gui/updatewindow.cpp, src/gui/main.cpp,
+	src/gui/main.h: Added a new state "LOADDATA_STATE" that loads the XML
+	databases.
+	* src/resourcemanager.cpp, src/resourcemanager.h, src/main.cpp, customdata/:
+	Added a customdata dir that allows to add custom user data easily. Just
+	create a zip file with the same structure like the update archives and drop
+	it in the customdata folder and the files in it override the default data
+	and the updates.
+
+2007-02-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/log.cpp: Applied patch by trapdoor to fix the usage of a
 	deprecated function on MacOS X 10.4 and later.
