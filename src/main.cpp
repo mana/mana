@@ -36,9 +36,12 @@
 
 #include <libxml/parser.h>
 
-#if (defined __USE_UNIX98 || defined __FreeBSD__)
+#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
 #include <cerrno>
 #include <sys/stat.h>
+#endif
+#if defined __APPLE__
+#include <CoreFoundation/CFBundle.h>
 #endif
 
 #include "configuration.h"
@@ -138,7 +141,7 @@ struct Options
 void init_engine(const Options &options)
 {
     std::string homeDir = "";
-#if !(defined __USE_UNIX98 || defined __FreeBSD__)
+#if !(defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
     // In Windows and other systems we currently store data next to executable.
     homeDir = ".";
 #else
@@ -149,7 +152,7 @@ void init_engine(const Options &options)
             (errno != EEXIST))
     {
         std::cout << homeDir
-                  << " can't be made, but it doesn't exist! Exitting."
+                  << " can't be made, but it doesn't exist! Exiting."
                   << std::endl;
         exit(1);
     }
@@ -174,7 +177,7 @@ void init_engine(const Options &options)
 
     if (!resman->setWriteDir(homeDir)) {
         std::cout << homeDir
-                  << " couldn't be set as home directory! Exitting."
+                  << " couldn't be set as home directory! Exiting."
                   << std::endl;
         exit(1);
     }
@@ -185,15 +188,29 @@ void init_engine(const Options &options)
     if (!resman->isDirectory("/updates")) {
         if (!resman->mkdir("/updates")) {
             std::cout << homeDir << "/updates "
-                      << "can't be made, but it doesn't exist! Exitting."
+                      << "can't be made, but it doesn't exist! Exiting."
                       << std::endl;
             exit(1);
         }
     }
 
     // Add the main data directory to our PhysicsFS search path
+#if defined __APPLE__
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
+                                          PATH_MAX))
+    {
+        fprintf(stderr, "Can't find Resources directory\n");
+    }
+    CFRelease(resourcesURL);
+    strncat(path, "/data", PATH_MAX - 1);
+    resman->addToSearchPath(path, true);
+#else
     resman->addToSearchPath("data", true);
     resman->addToSearchPath(TMW_DATADIR "data", true);
+#endif
 
     // Fill configuration with defaults
     logger->log("Initializing configuration...");

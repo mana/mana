@@ -5,6 +5,8 @@
 	* src/being.cpp, src/monster.cpp, src/net/beinghandler.cpp,
 	src/localplayer.h, src/being.h, src/monster.h: Now different sounds
 	can play when a monster misses the player.
+	* src/main.cpp: Applied patch by trapdoor which makes TMW use a more
+	standard location for the data on MacOS X.
 
 2007-02-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
