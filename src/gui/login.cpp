@@ -144,7 +144,7 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
     {
-        state = STATE_EXIT;
+        state = STATE_FORCE_QUIT;
     }
     else if (event.getId() == "register")
     {

@@ -34,6 +34,8 @@ namespace Net
     {
         void connect(Net::Connection *connection, const std::string &token);
 
+        void logout();
+
         void chat(short channel, const std::string &text);
 
         void announce(const std::string &text);

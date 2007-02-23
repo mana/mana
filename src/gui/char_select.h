@@ -31,6 +31,8 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include "../logindata.h"
+
 class Player;
 class LocalPlayer;
 class PlayerBox;
@@ -47,7 +49,8 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         /**
          * Constructor.
          */
-        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo);
+        CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
+                         LoginData *loginData);
 
         void action(const gcn::ActionEvent &event);
 
@@ -71,6 +74,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
         gcn::Button *mDelCharButton;
         gcn::Button *mPreviousButton;
         gcn::Button *mNextButton;
+        gcn::Button *mUnRegisterButton;
 
         gcn::Label *mNameLabel;
         gcn::Label *mLevelLabel;
@@ -80,6 +84,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         bool mCharSelected;
 
+        LoginData *mLoginData;
         /**
          * Communicate character deletion to the server.
          */
@@ -129,6 +134,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         PlayerBox *mPlayerBox;
 
         int mSlot;
+
 
         /**
          * Communicate character creation to the server.

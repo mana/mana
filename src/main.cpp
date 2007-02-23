@@ -58,17 +58,21 @@
 #include "gui/gui.h"
 #include "gui/serverdialog.h"
 #include "gui/login.h"
+#include "gui/quitdialog.h"
 #include "gui/ok_dialog.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
 
+
 #include "net/charserverhandler.h"
 #include "net/connection.h"
 #include "net/loginhandler.h"
+#include "net/logouthandler.h"
 #include "net/network.h"
 
 #include "net/accountserver/accountserver.h"
+#include "net/accountserver/account.h"
 
 #include "net/chatserver/chatserver.h"
 
@@ -427,6 +431,7 @@ void loadUpdates()
 CharServerHandler charServerHandler;
 LoginData loginData;
 LoginHandler loginHandler;
+LogoutHandler logoutHandler;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
 // TODO Find some nice place for these functions
@@ -436,6 +441,7 @@ void accountLogin(LoginData *loginData)
 
     Net::registerHandler(&loginHandler);
 
+    charInfo.clear();
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
@@ -461,11 +467,115 @@ void accountRegister(LoginData *loginData)
 
     Net::registerHandler(&loginHandler);
 
+    charInfo.clear();
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
     Net::AccountServer::registerAccount(accountServerConnection, 0,
             loginData->username, loginData->password, loginData->email);
+}
+
+void accountUnRegister(LoginData *loginData)
+{
+    Net::registerHandler(&logoutHandler);
+
+    Net::AccountServer::Account::unregister(loginData->username,
+                                                         loginData->password);
+
+}
+
+void switchCharacter(std::string* passToken)
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_SWITCH_CHARACTER, passToken);
+
+    Net::GameServer::logout(true);
+    Net::ChatServer::logout();
+}
+
+void switchAccountServer()
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_SWITCH_ACCOUNTSERVER);
+
+    //Can't logout if we were not logged in ...
+    if (accountServerConnection->isConnected())
+    {
+        Net::AccountServer::logout();
+    }
+    else
+    {
+        logoutHandler.setAccountLoggedOut();
+    }
+
+    if (gameServerConnection->isConnected())
+    {
+        Net::GameServer::logout(false);
+    }
+    else
+    {
+        logoutHandler.setGameLoggedOut();
+    }
+
+    if (chatServerConnection->isConnected())
+    {
+        Net::ChatServer::logout();
+    }
+    else
+    {
+        logoutHandler.setChatLoggedOut();
+    }
+}
+
+void logoutThenExit()
+{
+    Net::registerHandler(&logoutHandler);
+
+    logoutHandler.reset();
+    logoutHandler.setScenario(LOGOUT_EXIT);
+
+    //Can't logout if we were not logged in ...
+    if (accountServerConnection->isConnected())
+    {
+        Net::AccountServer::logout();
+    }
+    else
+    {
+        logoutHandler.setAccountLoggedOut();
+    }
+
+    if (gameServerConnection->isConnected())
+    {
+        Net::GameServer::logout(false);
+    }
+    else
+    {
+        logoutHandler.setGameLoggedOut();
+    }
+
+    if (chatServerConnection->isConnected())
+    {
+        Net::ChatServer::logout();
+    }
+    else
+    {
+        logoutHandler.setChatLoggedOut();
+    }
+}
+
+void reconnectAccount(const std::string& passToken)
+{
+    Net::registerHandler(&loginHandler);
+
+    charInfo.clear();
+    charServerHandler.setCharInfo(&charInfo);
+    Net::registerHandler(&charServerHandler);
+
+    Net::AccountServer::reconnectAccount(accountServerConnection, passToken);
 }
 
 void xmlNullLogger(void *ctx, const char *msg, ...)
@@ -520,6 +630,7 @@ int main(int argc, char *argv[])
     initEngine();
 
     Window *currentDialog = NULL;
+    QuitDialog* quitDialog = NULL;
     Image *login_wallpaper = NULL;
     Game *game = NULL;
 
@@ -560,18 +671,25 @@ int main(int argc, char *argv[])
     unsigned int oldstate = !state; // We start with a status change.
 
     SDL_Event event;
-    while (state != STATE_EXIT)
+    while (state != STATE_FORCE_QUIT)
     {
         // Handle SDL events
         while (SDL_PollEvent(&event)) {
             switch (event.type) {
                 case SDL_QUIT:
-                    state = STATE_EXIT;
+                    state = STATE_FORCE_QUIT;
                     break;
 
                 case SDL_KEYDOWN:
                     if (event.key.keysym.sym == SDLK_ESCAPE)
-                        state = STATE_EXIT;
+                        if (!quitDialog)
+                        {
+                            quitDialog = new QuitDialog(NULL, &quitDialog);
+                        }
+                        else
+                        {
+                            quitDialog->requestMoveToTop();
+                        }
                     break;
             }
 
@@ -580,15 +698,6 @@ int main(int argc, char *argv[])
 
         gui->logic();
         Net::flush();
-
-        if (state > STATE_CONNECT_ACCOUNT && state < STATE_GAME)
-        {
-            if (!accountServerConnection->isConnected())
-            {
-                state = STATE_ERROR;
-                errorMessage = "Got disconnected from account server!";
-            }
-        }
 
         if (!login_wallpaper)
         {
@@ -608,7 +717,7 @@ int main(int argc, char *argv[])
         gui->draw();
         graphics->updateScreen();
 
-        // TODO: Add connect timeout to go back to choose server
+        // TODO: Add connect timeouts
         if (state == STATE_CONNECT_ACCOUNT &&
                 accountServerConnection->isConnected())
         {
@@ -624,7 +733,15 @@ int main(int argc, char *argv[])
         {
             accountServerConnection->disconnect();
             Net::clearHandlers();
+
             state = STATE_GAME;
+        }
+        else if (state == STATE_RECONNECT_ACCOUNT &&
+                 accountServerConnection->isConnected())
+        {
+            reconnectAccount(token);
+
+            state = STATE_WAIT;
         }
 
         if (state != oldstate) {
@@ -644,6 +761,11 @@ int main(int argc, char *argv[])
             if (currentDialog) {
                 delete currentDialog;
                 currentDialog = NULL;
+            }
+            // State has changed, while the quitDialog was active, it might
+            // not be correct anymore
+            if (quitDialog) {
+                quitDialog->scheduleDelete();
             }
 
             switch (state) {
@@ -699,6 +821,21 @@ int main(int argc, char *argv[])
                     accountLogin(&loginData);
                     break;
 
+                case STATE_SWITCH_ACCOUNTSERVER:
+                    logger->log("State: SWITCH_ACCOUNTSERVER");
+
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+                    accountServerConnection->disconnect();
+
+                    state = STATE_CHOOSE_SERVER;
+                    break;
+
+                case STATE_SWITCH_ACCOUNTSERVER_ATTEMPT:
+                    logger->log("State: SWITCH_ACCOUNTSERVER_ATTEMPT");
+                    switchAccountServer();
+                    break;
+
                 case STATE_REGISTER:
                     logger->log("State: REGISTER");
                     currentDialog = new RegisterDialog(&loginData);
@@ -710,7 +847,8 @@ int main(int argc, char *argv[])
 
                 case STATE_CHAR_SELECT:
                     logger->log("State: CHAR_SELECT");
-                    currentDialog = new CharSelectDialog(&charInfo);
+                    currentDialog =
+                                  new CharSelectDialog(&charInfo, &loginData);
 
                     if (((CharSelectDialog*) currentDialog)->
                             selectByName(options.playername))
@@ -722,6 +860,23 @@ int main(int argc, char *argv[])
                     if (options.chooseDefault)
                         ((CharSelectDialog*) currentDialog)->action(
                             gcn::ActionEvent(NULL, "ok"));
+                    break;
+
+                case STATE_UNREGISTER_ATTEMPT:
+                    logger->log("State: UNREGISTER ATTEMPT");
+                    accountUnRegister(&loginData);
+                    loginData.clear();
+                    break;
+
+                case STATE_UNREGISTER:
+                    logger->log("State: UNREGISTER");
+                    accountServerConnection->disconnect();
+                    currentDialog = new OkDialog("Unregister succesfull",
+                                         "Farewell, come back any time ....");
+
+                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
+                    currentDialog->addActionListener(&errorListener);
+                    currentDialog = NULL; // OkDialog deletes itself
                     break;
 
                 case STATE_ERROR:
@@ -749,29 +904,66 @@ int main(int argc, char *argv[])
                     sound.fadeOutMusic(1000);
 
                     currentDialog = NULL;
-                    login_wallpaper->decRef();
-                    login_wallpaper = NULL;
 
                     logger->log("State: GAME");
                     game = new Game;
                     game->logic();
                     delete game;
-                    state = STATE_EXIT;
+
+                    //If the quitdialog didn't set the next state
+                    if (state == STATE_GAME)
+                    {
+                        state = STATE_EXIT;
+                    }
+                    else if (state != STATE_FORCE_QUIT)
+                    {
+                        //TODO: solve this problem
+                        delete gui; // Crashes otherwise
+                        gui = new Gui(graphics);
+                    }
+                    break;
+
+                case STATE_SWITCH_CHARACTER:
+                    logger->log("State: SWITCH_CHARACTER");
+                    switchCharacter(&token);
+                    break;
+
+                case STATE_RECONNECT_ACCOUNT:
+                    logger->log("State: RECONNECT_ACCOUNT");
+
+                    //done with game&chat
+                    gameServerConnection->disconnect();
+                    chatServerConnection->disconnect();
+
+                    accountServerConnection->connect(loginData.hostname,
+                                                              loginData.port);
+                    break;
+
+                case STATE_WAIT:
+                    break;
+
+                case STATE_EXIT:
+                    logger->log("State: EXIT");
+                    logoutThenExit();
                     break;
 
                 default:
-                    state = STATE_EXIT;
+                    state = STATE_FORCE_QUIT;
                     break;
             }
         }
     }
+
+    accountServerConnection->disconnect();
+    gameServerConnection->disconnect();
+    chatServerConnection->disconnect();
 
     delete accountServerConnection;
     delete gameServerConnection;
     delete chatServerConnection;
     Net::finalize();
 
-    logger->log("State: EXIT");
+    logger->log("Quitting");
     exit_engine();
     PHYSFS_deinit();
     delete logger;

@@ -33,6 +33,8 @@ namespace Net
     namespace GameServer
     {
         void connect(Net::Connection *connection, const std::string &token);
+
+        void logout(bool reconnectAccount);
     }
 }
 

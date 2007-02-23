@@ -72,6 +72,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/popupmenu.h \
 	      gui/progressbar.cpp \
 	      gui/progressbar.h \
+	      gui/quitdialog.cpp \
+	      gui/quitdialog.h \
 	      gui/radiobutton.cpp \
 	      gui/radiobutton.h \
 	      gui/register.cpp \
@@ -110,6 +112,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/unregisterdialog.cpp \
+	      gui/unregisterdialog.h \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \
@@ -146,6 +150,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      net/itemhandler.cpp \
 	      net/loginhandler.h \
 	      net/loginhandler.cpp \
+	      net/logouthandler.cpp \
+	      net/logouthandler.h \
 	      net/messagehandler.cpp \
 	      net/messagehandler.h \
 	      net/messagein.cpp \

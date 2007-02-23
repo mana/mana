@@ -62,6 +62,7 @@
 #include "gui/status.h"
 #include "gui/trade.h"
 #include "gui/viewport.h"
+#include "gui/quitdialog.h"
 
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
@@ -92,7 +93,7 @@ Joystick *joystick = NULL;
 
 extern Window *weightNotice;
 extern Window *deathNotice;
-ConfirmDialog *exitConfirm = NULL;
+QuitDialog *quitDialog = NULL;
 
 ChatWindow *chatWindow;
 MenuWindow *menuWindow;
@@ -119,22 +120,6 @@ BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 
 const int MAX_TIME = 10000;
-
-/**
- * Listener used for exitting handling.
- */
-namespace {
-    struct ExitListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event)
-        {
-            if (event.getId() == "yes") {
-                done = true;
-            }
-            exitConfirm = NULL;
-        }
-    } exitListener;
-}
 
 /**
  * Advances game logic counter.
@@ -245,6 +230,8 @@ Game::Game():
     mSkillHandler(new SkillHandler()),
     mTradeHandler(new TradeHandler())
 {
+    done = false;
+
     createGuiWindows();
     engine = new Engine;
 
@@ -285,6 +272,8 @@ Game::Game():
 
 Game::~Game()
 {
+    Net::clearHandlers();
+
     delete engine;
     delete player_node;
     destroyGuiWindows();
@@ -440,13 +429,8 @@ void Game::handleInput()
                         break;
                     }
 
-                    // Quit by pressing Enter if the exit confirm is there
-                    if (exitConfirm)
-                    {
-                        done = true;
-                    }
                     // Close the Browser if opened
-                    else if (helpWindow->isVisible())
+                    if (helpWindow->isVisible())
                     {
                         helpWindow->setVisible(false);
                     }
@@ -522,12 +506,14 @@ void Game::handleInput()
 
                     // Quitting confirmation dialog
                 case SDLK_ESCAPE:
-                    if (!exitConfirm) {
-                        exitConfirm = new ConfirmDialog(
-                                "Quit", "Are you sure you want to quit?");
-                        exitConfirm->addActionListener(&exitListener);
+                    if (!quitDialog)
+                    {
+                        quitDialog = new QuitDialog(&done, &quitDialog);
                     }
-                    exitConfirm->requestMoveToTop();
+                    else
+                    {
+                        quitDialog->requestMoveToTop();
+                    }
                     break;
 
                 default:

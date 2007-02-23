@@ -33,9 +33,12 @@
 #include "playerbox.h"
 #include "textfield.h"
 
+#include "unregisterdialog.h"
+
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
+#include "../logindata.h"
 
 #include "../net/accountserver/account.h"
 
@@ -54,8 +57,8 @@ class CharDeleteConfirm : public ConfirmDialog
 };
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
-    ConfirmDialog("Confirm", "Are you sure you want to delete this character?",
-            m),
+    ConfirmDialog("Confirm",
+                  "Are you sure you want to delete this character?", m),
     master(m)
 {
 }
@@ -69,16 +72,19 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
     ConfirmDialog::action(event);
 }
 
-CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
+CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
+                                   LoginData *loginData):
     Window("Select Character"),
-    mCharInfo(charInfo), mCharSelected(false)
+    mCharInfo(charInfo), mCharSelected(false), mLoginData(loginData)
 {
+
     mSelectButton = new Button("Ok", "ok", this);
     mCancelButton = new Button("Cancel", "cancel", this);
     mNewCharButton = new Button("New", "new", this);
     mDelCharButton = new Button("Delete", "delete", this);
     mPreviousButton = new Button("Previous", "previous", this);
     mNextButton = new Button("Next", "next", this);
+    mUnRegisterButton = new Button("Unregister", "unregister", this);
 
     mNameLabel = new gcn::Label("Name");
     mLevelLabel = new gcn::Label("Level");
@@ -104,10 +110,14 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo):
     mSelectButton->setPosition(
             mCancelButton->getX() - 5 - mSelectButton->getWidth(),
             mNewCharButton->getY());
+    mUnRegisterButton->setPosition(
+            w - 5 - mUnRegisterButton->getWidth(),
+            mCancelButton->getY() - 5 - mUnRegisterButton->getHeight());
 
     add(mPlayerBox);
     add(mSelectButton);
     add(mCancelButton);
+    add(mUnRegisterButton);
     add(mNewCharButton);
     add(mDelCharButton);
     add(mPreviousButton);
@@ -130,6 +140,7 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
         mNewCharButton->setEnabled(false);
         mDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
+        mUnRegisterButton->setEnabled(false);
         mPreviousButton->setEnabled(false);
         mNextButton->setEnabled(false);
         mCharSelected = true;
@@ -165,6 +176,10 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "next")
     {
         mCharInfo->next();
+    }
+    else if (event.getId() == "unregister")
+    {
+        new UnRegisterDialog(this, mLoginData);
     }
 }
 

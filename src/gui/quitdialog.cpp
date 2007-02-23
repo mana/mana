@@ -1,0 +1,129 @@
+/*
+ *  The Mana World
+ *  Copyright 2004 The Mana World Development Team
+ *
+ *  This file is part of The Mana World.
+ *
+ *  The Mana World is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  The Mana World is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with The Mana World; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
+#include "quitdialog.h"
+#include <iostream>
+#include <string>
+
+#include <guichan/widgets/label.hpp>
+
+#include "../main.h"
+
+#include "button.h"
+#include "radiobutton.h"
+
+QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
+    Window("Quit", true, NULL), mQuitGame(quitGame), mMyPointer(pointerToMe)
+{
+
+    mLogoutQuit = new RadioButton("Quit", "quitdialog");
+    mForceQuit = new RadioButton("Quit", "quitdialog");
+    mSwitchAccountServer = new RadioButton("Switch server", "quitdialog");
+    mSwitchCharacter = new RadioButton("Switch character", "quitdialog");
+    mOkButton = new Button("OK", "ok", this);
+    mCancelButton = new Button("Cancel", "cancel", this);
+
+    setContentSize(200, 91);
+
+    mLogoutQuit->setPosition(5, 5);
+    mForceQuit->setPosition(5, 5);
+    mSwitchAccountServer->setPosition(5, 14 + mLogoutQuit->getHeight());
+    mSwitchCharacter->setPosition(5,
+           23 + mLogoutQuit->getHeight() + mSwitchAccountServer->getHeight());
+    mCancelButton->setPosition(
+           200 - mCancelButton->getWidth() - 5,
+           91 - mCancelButton->getHeight() - 5);
+    mOkButton->setPosition(
+           mCancelButton->getX() - mOkButton->getWidth() - 5,
+           91 - mOkButton->getHeight() - 5);
+
+    //All states, when we're not logged in to someone.
+    if (state == STATE_CHOOSE_SERVER ||
+        state == STATE_CONNECT_ACCOUNT ||
+        state == STATE_LOGIN ||
+        state == STATE_LOGIN_ATTEMPT ||
+        state == STATE_UPDATE)
+    {
+        mForceQuit->setMarked(true);
+        add(mForceQuit);
+    }
+    else
+    {
+        // Only added if we are connected to an accountserver or gameserver
+        mLogoutQuit->setMarked(true);
+        add(mLogoutQuit);
+        add(mSwitchAccountServer);
+
+        // Only added if we are connected to a gameserver
+        if (state == STATE_GAME) add(mSwitchCharacter);
+    }
+
+    add(mOkButton);
+    add(mCancelButton);
+
+    setLocationRelativeTo(getParent());
+    setVisible(true);
+
+    mOkButton->requestFocus();
+
+}
+
+QuitDialog::~QuitDialog()
+{
+    if (mMyPointer) *mMyPointer = NULL;
+}
+
+void
+QuitDialog::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "ok")
+    {
+        if (mForceQuit->isMarked())
+        {
+            state = STATE_FORCE_QUIT;
+        }
+        else if (mLogoutQuit->isMarked())
+        {
+            if ((state == STATE_GAME) && (mQuitGame))
+            {
+                *mQuitGame = true;
+            }
+            state = STATE_EXIT;
+        }
+        else if (mSwitchAccountServer->isMarked())
+        {
+            if ((state == STATE_GAME) && (mQuitGame))
+            {
+                *mQuitGame = true;
+            }
+            state = STATE_SWITCH_ACCOUNTSERVER_ATTEMPT;
+        }
+        else if (mSwitchCharacter->isMarked())
+        {
+            if (mQuitGame) *mQuitGame = true;
+
+            state = STATE_SWITCH_CHARACTER;
+        }
+
+    }
+    scheduleDelete();
+}

@@ -43,6 +43,13 @@ void Net::ChatServer::connect(Net::Connection *connection,
     connection->send(msg);
 }
 
+void Net::ChatServer::logout()
+{
+    MessageOut msg(PCMSG_DISCONNECT);
+
+    connection->send(msg);
+}
+
 void Net::ChatServer::chat(short channel, const std::string &text)
 {
     MessageOut msg(PCMSG_CHAT);

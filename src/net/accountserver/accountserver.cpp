@@ -63,6 +63,14 @@ void Net::AccountServer::logout()
 {
     MessageOut msg(PAMSG_LOGOUT);
     Net::AccountServer::connection->send(msg);
+}
 
-    Net::AccountServer::connection = 0;
+void Net::AccountServer::reconnectAccount(Net::Connection *connection,
+                                          const std::string &passToken)
+{
+    Net::AccountServer::connection = connection;
+
+    MessageOut msg(PAMSG_RECONNECT);
+    msg.writeString(passToken, 32);
+    Net::AccountServer::connection->send(msg);
 }

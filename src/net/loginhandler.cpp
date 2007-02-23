@@ -33,6 +33,7 @@ LoginHandler::LoginHandler()
     static const Uint16 _messages[] = {
         APMSG_LOGIN_RESPONSE,
         APMSG_REGISTER_RESPONSE,
+        APMSG_RECONNECT_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -97,6 +98,35 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         break;
                     case REGISTER_EXISTS_EMAIL:
                         errorMessage = "Email address already exists";
+                        break;
+                    default:
+                        errorMessage = "Unknown error";
+                        break;
+                }
+                state = STATE_ERROR;
+            }
+        }
+            break;
+        case APMSG_RECONNECT_RESPONSE:
+        {
+            int errMsg = msg.readByte();
+            // Successful login
+            if (errMsg == ERRMSG_OK)
+            {
+                state = STATE_CHAR_SELECT;
+            }
+            // Login failed
+            else
+            {
+                switch (errMsg) {
+                    case ERRMSG_INVALID_ARGUMENT:
+                        errorMessage = "Wrong magic_token";
+                        break;
+                    case ERRMSG_FAILURE:
+                        errorMessage = "Already logged in";
+                        break;
+                    case LOGIN_SERVER_FULL:
+                        errorMessage = "Server is full";
                         break;
                     default:
                         errorMessage = "Unknown error";

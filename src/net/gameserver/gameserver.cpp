@@ -40,3 +40,12 @@ void Net::GameServer::connect(Net::Connection *connection,
 
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::logout(bool reconnectAccount)
+{
+    MessageOut msg(PGMSG_DISCONNECT);
+
+    msg.writeByte((unsigned char) reconnectAccount);
+
+    Net::GameServer::connection->send(msg);
+}

@@ -84,7 +84,8 @@ void Net::Connection::disconnect()
 
 bool Net::Connection::isConnected()
 {
-    return mConnection && mConnection->state == ENET_PEER_STATE_CONNECTED;
+    return bool (mConnection) ?
+                    (mConnection->state == ENET_PEER_STATE_CONNECTED) : false;
 }
 
 void Net::Connection::send(const MessageOut &msg)

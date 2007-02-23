@@ -68,9 +68,14 @@ void Net::AccountServer::Account::selectCharacter(char slot)
     Net::AccountServer::connection->send(msg);
 }
 
-void Net::AccountServer::Account::unregister()
+void Net::AccountServer::Account::unregister(const std::string &username,
+                                             const std::string &password)
 {
     MessageOut msg(PAMSG_UNREGISTER);
+
+    msg.writeString(username);
+    msg.writeString(password);
+
     Net::AccountServer::connection->send(msg);
 }
 

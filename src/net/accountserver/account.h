@@ -41,13 +41,14 @@ namespace Net
 
             void selectCharacter(char slot);
 
-            void unregister();
+            void unregister(const std::string &username,
+                            const std::string &password);
 
             void changeEmail(const std::string &email);
 
             void getEmail();
 
-            void changePassword(const std::string &oldPassowrd,
+            void changePassword(const std::string &oldPassword,
                     const std::string &newPassword);
         }
     }

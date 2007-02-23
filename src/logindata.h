@@ -37,6 +37,15 @@ struct LoginData
     int session_ID2;
 
     bool remember;
+
+    void clear()
+    {
+        username = "";
+        password = "";
+        hostname = "";
+        email = "";
+        port = 0;
+    };
 };
 
 #endif

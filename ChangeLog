@@ -1,4 +1,20 @@
-﻿2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-23  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/gui/char_select.h, src/gui/char_select.cpp,
+	src/gui/unregisterdialog.h, src/gui/unregisterdialog.cpp,
+	src/net/accountserver/account.h, src/net/accountserver/account.cpp,
+	src/gui/quitdialog.h, src/gui/quitdialog.cpp,
+	src/net/accountserver/accountserver.h,
+	src/net/accountserver/accountserver.cpp, src/net/loginhandler.cpp,
+	src/net/logouthandler.h, src/net/logouthandler.cpp, src/net/protocol.h,
+	src/net/gameserver/gameserver.h, src/net/gameserver/gameserver.cpp,
+	src/game.cpp, src/main.h, src/main.cpp: Added unregistering,
+	logout_then_exit, switch_character and switch_accountserver.
+	* src/lockedarray.h: Added a clear function that keeps the original
+	size and data type.
+	* src/logindata.h: Added a clear function.
+
+2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/properties.h, src/being.cpp, src/beingmanager.h, src/sound.h,
 	src/gui/window.h, src/sound.cpp, src/main.h, src/being.h,
@@ -314,7 +330,7 @@
 
 2006-12-15  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/tiles/desert1.png: Removed some unused legacy tiles and 
+	* data/graphics/tiles/desert1.png: Removed some unused legacy tiles and
 	added variant tiles for the cliffs.
 
 2006-12-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>

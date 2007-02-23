@@ -40,6 +40,9 @@ namespace Net
                 const std::string &email);
 
         void logout();
+
+        void reconnectAccount(Net::Connection *connection,
+                                                const std::string &passToken);
     }
 }
 
