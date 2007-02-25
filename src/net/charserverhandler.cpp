@@ -71,7 +71,6 @@ CharServerHandler::handleMessage(MessageIn &msg)
                 delete mCharInfo->getEntry();
                 mCharInfo->setEntry(0);
                 mCharInfo->unlock();
-                n_character--;
                 new OkDialog("Info", "Player deleted");
             }
             // Character deletion failed
@@ -100,7 +99,6 @@ CharServerHandler::handleMessage(MessageIn &msg)
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
-            n_character++;
             break;
 
         case APMSG_CHAR_SELECT_RESPONSE:
@@ -184,12 +182,15 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
         player_node = mCharInfo->getEntry();
         mCharInfo->unlock();
         mCharInfo->select(0);
+
         do {
             LocalPlayer *tmp = mCharInfo->getEntry();
             if (tmp != player_node)
                 delete tmp;
             mCharInfo->next();
         } while (mCharInfo->getPos());
+
+        mCharInfo->clear(); //player_node will be deleted by ~Game
 
         state = STATE_CONNECT_GAME;
     }

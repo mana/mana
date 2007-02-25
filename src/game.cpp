@@ -228,7 +228,8 @@ Game::Game():
     mNpcHandler(new NPCHandler()),
     mPlayerHandler(new PlayerHandler()),
     mSkillHandler(new SkillHandler()),
-    mTradeHandler(new TradeHandler())
+    mTradeHandler(new TradeHandler()),
+    mLogicCounterId(0), mSecondsCounterId(0)
 {
     done = false;
 
@@ -240,8 +241,8 @@ Game::Game():
 
     // Initialize timers
     tick_time = 0;
-    SDL_AddTimer(10, nextTick, NULL);                     // Logic counter
-    SDL_AddTimer(1000, nextSecond, NULL);                 // Seconds counter
+    mLogicCounterId =   SDL_AddTimer(10, nextTick, NULL);    //Logic counter
+    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);//Seconds counter
 
     // Initialize frame limiting
     config.addListener("fpslimit", this);
@@ -285,6 +286,9 @@ Game::~Game()
     beingManager = NULL;
     floorItemManager = NULL;
     joystick = NULL;
+
+    SDL_RemoveTimer(mLogicCounterId);
+    SDL_RemoveTimer(mSecondsCounterId);
 }
 
 bool saveScreenshot(SDL_Surface *screenshot)

@@ -88,9 +88,7 @@
 #include "utils/dtor.h"
 #include "utils/tostring.h"
 
-// Account infos
-char n_character;
-std::string token;
+std::string token; //used to store magic_token
 
 Graphics *graphics;
 
@@ -441,7 +439,6 @@ void accountLogin(LoginData *loginData)
 
     Net::registerHandler(&loginHandler);
 
-    charInfo.clear();
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
@@ -467,7 +464,6 @@ void accountRegister(LoginData *loginData)
 
     Net::registerHandler(&loginHandler);
 
-    charInfo.clear();
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 
@@ -571,7 +567,6 @@ void reconnectAccount(const std::string& passToken)
 {
     Net::registerHandler(&loginHandler);
 
-    charInfo.clear();
     charServerHandler.setCharInfo(&charInfo);
     Net::registerHandler(&charServerHandler);
 

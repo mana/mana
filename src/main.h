@@ -115,7 +115,6 @@ const short defaultMusicVolume = 60;
 const std::string defaultAccountServerName = "animesites.de";
 const short defaultAccountServerPort = 9601;
 
-extern char n_character;
 extern std::string token;
 extern unsigned char state;
 extern std::string errorMessage;

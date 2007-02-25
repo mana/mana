@@ -134,7 +134,8 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
 
 void CharSelectDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok" && n_character > 0)
+    // The pointers are set to NULL if there is no character stored
+    if (event.getId() == "ok" && (mCharInfo->getEntry()))
     {
         // Start game
         mNewCharButton->setEnabled(false);
@@ -153,7 +154,9 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "new")
     {
-        if (n_character < MAX_SLOT + 1)
+        //TODO: search the first free slot, and start CharCreateDialog
+        //      maybe add that search to the constructor
+        if (!(mCharInfo->getEntry()))
         {
             // Start new character dialog
             mCharInfo->lock();

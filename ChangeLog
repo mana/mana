@@ -1,4 +1,10 @@
-﻿2007-02-23  Rogier Polak  <rogier.l.a.polak@gmail.com>
+﻿2007-02-25  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/main.h, src/main.cpp, src/game.h, src/game.cpp,
+	src/gui/char_select.cpp, src/net/charserverhandler.cpp: Fixed small
+	issue concerning SDL timers, removed a useless variable.
+
+2007-02-23  Rogier Polak  <rogier.l.a.polak@gmail.com>
 
 	* src/gui/char_select.h, src/gui/char_select.cpp,
 	src/gui/unregisterdialog.h, src/gui/unregisterdialog.cpp,

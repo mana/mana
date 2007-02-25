@@ -27,6 +27,8 @@
 #include <iosfwd>
 #include <memory>
 
+#include "SDL.h"
+
 #include "configlistener.h"
 
 #define SPEECH_TIME 80
@@ -68,6 +70,9 @@ class Game : public ConfigListener
         MessageHandlerPtr mPlayerHandler;
         MessageHandlerPtr mSkillHandler;
         MessageHandlerPtr mTradeHandler;
+
+        SDL_TimerID mLogicCounterId;
+        SDL_TimerID mSecondsCounterId;
 };
 
 /**
