@@ -122,6 +122,8 @@ SET(SRCS
     gui/popupmenu.h
     gui/progressbar.cpp
     gui/progressbar.h
+    gui/quitdialog.cpp
+    gui/quitdialog.h
     gui/radiobutton.cpp
     gui/radiobutton.h
     gui/register.cpp
@@ -160,6 +162,8 @@ SET(SRCS
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
+    gui/unregisterdialog.cpp
+    gui/unregisterdialog.h
     gui/updatewindow.cpp
     gui/updatewindow.h
     gui/vbox.cpp
@@ -192,6 +196,8 @@ SET(SRCS
     net/itemhandler.h
     net/loginhandler.cpp
     net/loginhandler.h
+    net/logouthandler.cpp
+    net/logouthandler.h
     net/messagehandler.cpp
     net/messagehandler.h
     net/messagein.cpp
