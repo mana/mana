@@ -1,19 +1,24 @@
-﻿2007-02-26  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-02-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Made OpenGL enabled by default.
+
+2007-02-26  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* data/sfx/maggot-dying1.ogg, data/sfx/maggot-hit1.ogg,
 	data/sfx/maggot-hit2.ogg, data/sfx/maggot-miss1.ogg,
-	data/sfx/pinkie-hit1.ogg, data/sfx/pinkie-miss1.ogg, , data/monsters.xml:
-	New sound effects by Cosmostrator.
+	data/sfx/pinkie-hit1.ogg, data/sfx/pinkie-miss1.ogg,
+	data/monsters.xml: New sound effects by Cosmostrator.
 
 2007-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char-server.cpp, src/gui/updatewindow.cpp, src/gui/main.cpp,
 	src/gui/main.h: Added a new state "LOADDATA_STATE" that loads the XML
 	databases.
-	* src/resourcemanager.cpp, src/resourcemanager.h, src/main.cpp, customdata/:
-	Added a customdata dir that allows to add custom user data easily. Just
-	create a zip file with the same structure like the update archives and drop
-	it in the customdata folder and the files in it override the default data
-	and the updates.
+	* src/resourcemanager.cpp, src/resourcemanager.h, src/main.cpp,
+	customdata/: Added a customdata dir that allows to add custom user
+	data easily. Just create a zip file with the same structure like the
+	update archives and drop it in the customdata folder and the files in
+	it override the default data and the updates.
 
 2007-02-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

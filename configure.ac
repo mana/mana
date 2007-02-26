@@ -77,15 +77,15 @@ AC_MSG_ERROR([*** Library found but cannot find headers (guichan.sf.net) *** ]))
 AM_INIT_AUTOMAKE
 
 # Option to enable OpenGL
-AC_ARG_WITH(opengl,[  --with-opengl           use OpenGL ] )
-if test "x$with_opengl" == "xyes"; then
+AC_ARG_WITH(opengl,[  --without-opengl        don't use OpenGL ] )
+if test "x$with_opengl" == "xno"; then
+    with_opengl=no
+else
     with_opengl=yes
     OPENGL_CFLAGS=' -DUSE_OPENGL'
     OPENGL_LIBS=' -lGL -lguichan_opengl'
     AC_SUBST(OPENGL_CFLAGS)
     AC_SUBST(OPENGL_LIBS)
-else
-    with_opengl=no
 fi
 
 # Search for sdl-config
