@@ -48,9 +48,12 @@ namespace Net
 
         void unregisterChannel(short channel);
 
-        void enterChannel(short channel, const std::string &password);
+        void enterChannel(const std::string &channel, const std::string &password);
 
         void quitChannel(short channel);
+
+        void getChannelList();
+
     }
 }
 

@@ -26,6 +26,7 @@
 #include "button.h"
 
 #include "../utils/tostring.h"
+#include "../utils/dtor.h"
 
 #define TABWIDTH 60
 #define TABHEIGHT 20
@@ -37,10 +38,7 @@ TabbedContainer::TabbedContainer():
 
 TabbedContainer::~TabbedContainer()
 {
-    for (WidgetIterator i = mTabs.begin(); i != mTabs.end(); i++) {
-        remove(*i);
-        delete (*i);
-    }
+    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
 
     mTabs.clear();
     mContents.clear();
@@ -55,7 +53,7 @@ void TabbedContainer::addTab(gcn::Widget *widget, const std::string &caption)
     tab->setSize(TABWIDTH, TABHEIGHT);
     add(tab, TABWIDTH * tabNumber, 0);
 
-    mTabs.push_back(tab);
+    mTabs[caption] = tab;
 
     mContents.push_back(widget);
     widget->setPosition(0, TABHEIGHT);
@@ -64,7 +62,18 @@ void TabbedContainer::addTab(gcn::Widget *widget, const std::string &caption)
     if (!mActiveContent) {
         mActiveContent = widget;
         add(mActiveContent);
+        tab->setLogged(true);
     }
+
+    mWidgets[widget] = caption;
+}
+
+void TabbedContainer::removeTab(const std::string &caption)
+{
+    gcn::ActionEvent actionEvent(this, "0");
+    action(actionEvent);
+    remove(mTabs[caption]);
+    mTabs.erase(caption);
 }
 
 void TabbedContainer::logic()
@@ -80,16 +89,21 @@ void TabbedContainer::logic()
 
 void TabbedContainer::action(const gcn::ActionEvent &event)
 {
-    std::stringstream ss(event.getId());
     int tabNo;
+    std::stringstream ss(event.getId());
     ss >> tabNo;
 
     gcn::Widget *newContent = mContents[tabNo];
+
     if (newContent) {
         if (mActiveContent) {
+            // Unhighlight old tab
+            ((Button*)mTabs[mWidgets[mActiveContent]])->setLogged(false);
             remove(mActiveContent);
         }
         mActiveContent = newContent;
+        // Highlight new tab
+        ((Button*)mTabs[mWidgets[mActiveContent]])->setLogged(true);
         add(newContent);
     }
 }
@@ -97,4 +111,14 @@ void TabbedContainer::action(const gcn::ActionEvent &event)
 void TabbedContainer::setOpaque(bool opaque)
 {
     Container::setOpaque(opaque);
+}
+
+short TabbedContainer::getNumberOfTabs()
+{
+    return mTabs.size();
+}
+
+std::string TabbedContainer::getActiveWidget()
+{
+    return mWidgets[mActiveContent];
 }

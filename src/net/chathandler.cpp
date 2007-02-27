@@ -25,6 +25,7 @@
 
 #include <SDL_types.h>
 #include <string>
+#include <iostream>
 
 #include "messagein.h"
 #include "protocol.h"
@@ -43,6 +44,11 @@ ChatHandler::ChatHandler()
 {
     static const Uint16 _messages[] = {
         GPMSG_SAY,
+        CPMSG_REGISTER_CHANNEL_RESPONSE,
+        CPMSG_ENTER_CHANNEL_RESPONSE,
+        CPMSG_LIST_CHANNELS_RESPONSE,
+        CPMSG_PUBMSG,
+        CPMSG_QUIT_CHANNEL_RESPONSE,
         /*
         SMSG_BEING_CHAT,
         SMSG_PLAYER_CHAT,
@@ -59,6 +65,9 @@ void ChatHandler::handleMessage(MessageIn &msg)
 {
     Being *being;
     std::string chatMsg;
+    short channelId;
+    std::string userNick;
+    std::string channelName;
     //Sint16 chatMsgLength;
 
     switch (msg.getId())
@@ -76,7 +85,74 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 chatWindow->chatLog("John Doe : " + chatMsg, BY_OTHER);
             }
             break;
+        case CPMSG_REGISTER_CHANNEL_RESPONSE:
+            if(msg.readByte() == ERRMSG_OK)
+            {
+                channelId = msg.readShort();
+                std::string channelName = msg.readString();
+                chatWindow->chatLog("Registered Channel " + channelName, BY_SERVER);
+                chatWindow->addChannel(channelId, channelName);
+                chatWindow->createNewChannelTab(channelName);
+            }
+            else
+            {
+                chatWindow->chatLog("Error registering channel", BY_SERVER);
+            }
+            break;
+        case CPMSG_ENTER_CHANNEL_RESPONSE:
+            if(msg.readByte() == ERRMSG_OK)
+            {
+                channelId = msg.readShort();
+                channelName = msg.readString();
+                std::string announcement = msg.readString();
+                std::vector<std::string> userList;
+                while(msg.getUnreadLength())
+                {
+                    userList.push_back(msg.readString());
+                }
+                chatWindow->addChannel(channelId, channelName);
+                chatWindow->createNewChannelTab(channelName);
+                chatWindow->chatLog(announcement, BY_SERVER, channelName);
+            }
+            else
+            {
+                chatWindow->chatLog("Error joining channel", BY_SERVER);
+            }
+            break;
+			
+        case CPMSG_LIST_CHANNELS_RESPONSE:
+            chatWindow->chatLog("Listing Channels", BY_SERVER);
+            while(msg.getUnreadLength())
+            {
+                channelName = msg.readString();
+                std::ostringstream numUsers;
+                numUsers << msg.readShort();
+                if(channelName != "")
+                {
+                    channelName += " - ";
+                    channelName += numUsers.str();
+                    chatWindow->chatLog(channelName, BY_SERVER);
+                }
+            }
+            chatWindow->chatLog("End of channel list", BY_SERVER);
+            break;
 
+        case CPMSG_PUBMSG:
+            channelId = msg.readShort();
+            userNick = msg.readString();
+            chatMsg = msg.readString();
+			
+            chatWindow->sendToChannel(channelId, userNick, chatMsg);
+            break;
+            
+        case CPMSG_QUIT_CHANNEL_RESPONSE:
+            if(msg.readByte() == ERRMSG_OK)
+            {
+                channelId = msg.readShort();
+                // remove the chat tab
+                chatWindow->removeChannel(channelId);
+            }
+            break;
         /*
         // Received speech from being
         case SMSG_BEING_CHAT:

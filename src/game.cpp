@@ -32,6 +32,7 @@
 #include <guichan/exception.hpp>
 
 #include "beingmanager.h"
+#include "channelmanager.h"
 #include "configuration.h"
 #include "engine.h"
 #include "flooritemmanager.h"
@@ -118,6 +119,7 @@ DebugWindow *debugWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
+ChannelManager *channelManager = NULL;
 
 const int MAX_TIME = 10000;
 
@@ -238,6 +240,7 @@ Game::Game():
 
     beingManager = new BeingManager;
     floorItemManager = new FloorItemManager();
+    channelManager = new ChannelManager();
 
     // Initialize timers
     tick_time = 0;
@@ -281,6 +284,7 @@ Game::~Game()
 
     delete beingManager;
     delete floorItemManager;
+    delete channelManager;
     delete joystick;
 
     beingManager = NULL;
@@ -303,7 +307,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
     do {
         screenshotCount++;
         filename.str("");
-#if (defined __USE_UNIX98 || defined __FreeBSD__)
+#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
         filename << PHYSFS_getUserDir() << "/";
 #endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";

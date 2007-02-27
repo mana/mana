@@ -119,7 +119,7 @@ enum {
     // Login/Register
     PAMSG_REGISTER                 = 0x0000, // L version, S username, S password, S email
     APMSG_REGISTER_RESPONSE        = 0x0002, // B error
-    PAMSG_UNREGISTER               = 0x0003, // S username, S password
+    PAMSG_UNREGISTER               = 0x0003, // -
     APMSG_UNREGISTER_RESPONSE      = 0x0004, // B error
     PAMSG_LOGIN                    = 0x0010, // L version, S username, S password
     APMSG_LOGIN_RESPONSE           = 0x0012, // B error
@@ -175,6 +175,7 @@ enum {
     PGMSG_USE_ITEM                 = 0x0300, // L item id
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
+    GPMSG_BEING_DEAD               = 0xDEAD, // W being id
 
     // Chat
     CPMSG_ERROR                    = 0x0401, // B error
@@ -186,14 +187,16 @@ enum {
     PCMSG_PRIVMSG                  = 0x0412, // S user, S text
     // -- Channeling
     PCMSG_REGISTER_CHANNEL            = 0x0413, // B pub/priv, S name, S announcement, S password
-    CPMSG_REGISTER_CHANNEL_RESPONSE   = 0x0414, // B error
+    CPMSG_REGISTER_CHANNEL_RESPONSE   = 0x0414, // B error, W channel, S channel
     PCMSG_UNREGISTER_CHANNEL          = 0x0415, // W channel
     CPMSG_UNREGISTER_CHANNEL_RESPONSE = 0x0416, // B error
     CPMSG_CHANNEL_EVENT               = 0x0418, // W channel, B event, S user
     PCMSG_ENTER_CHANNEL               = 0x0419, // W channel, S password
-    CPMSG_ENTER_CHANNEL_RESPONSE      = 0x0420, // B error
+    CPMSG_ENTER_CHANNEL_RESPONSE      = 0x0420, // B error, W channel, S channel
     PCMSG_QUIT_CHANNEL                = 0x0421, // W channel
     CPMSG_QUIT_CHANNEL_RESPONSE       = 0x0422, // B error
+    PCMSG_LIST_CHANNELS               = 0x0423, // -
+    CPMSG_LIST_CHANNELS_RESPONSE      = 0x0424, // W number of channels, S channels
 
     XXMSG_INVALID = 0x7FFF
 };

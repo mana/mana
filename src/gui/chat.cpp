@@ -29,16 +29,21 @@
 #include <guichan/key.hpp>
 
 #include "browserbox.h"
+#include "../channelmanager.h"
+#include "../channel.h"
 #include "chatinput.h"
+#include "gccontainer.h"
 #include "scrollarea.h"
+#include "tabbedcontainer.h"
 #include "windowcontainer.h"
 
 #include "../game.h"
 #include "../localplayer.h"
 
 #include "../net/chatserver/chatserver.h"
-
 #include "../net/gameserver/player.h"
+
+#include "../utils/dtor.h"
 
 ChatWindow::ChatWindow():
     Window(""),
@@ -56,22 +61,44 @@ ChatWindow::ChatWindow():
     mChatInput->setActionEventId("chatinput");
     mChatInput->addActionListener(this);
 
-    mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
-    mTextOutput->setOpaque(false);
-    mTextOutput->disableLinksAndUserColors();
-    mScrollArea = new ScrollArea(mTextOutput);
-    mScrollArea->setPosition(
-            mScrollArea->getBorderSize(), mScrollArea->getBorderSize());
-    mScrollArea->setScrollPolicy(
+    BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    textOutput->setOpaque(false);
+    textOutput->disableLinksAndUserColors();
+    ScrollArea *scrollArea = new ScrollArea(textOutput);
+    scrollArea->setPosition(
+            scrollArea->getBorderSize(), scrollArea->getBorderSize());
+    scrollArea->setScrollPolicy(
             gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
-    mScrollArea->setOpaque(false);
+    scrollArea->setOpaque(false);
 
-    add(mScrollArea);
+    GCContainer *tab = new GCContainer();
+    tab->setWidth(getWidth() - 2 * tab->getBorderSize());
+    tab->setHeight(getHeight() - 2 * tab->getBorderSize());
+    tab->setOpaque(false);
+    tab->add(scrollArea);
+
+    mContainer = new TabbedContainer();
+    mContainer->addTab(tab, "General");
+    mContainer->setOpaque(false);
+    mChannelOutput["General"] = textOutput;
+    mChannelScroll["General"] = scrollArea;
+
+    mTabs["General"] = tab;
+
+    mTextOutput = textOutput;
+    mScrollArea = scrollArea;
+
+    add(mContainer);
     add(mChatInput);
 
     // Add key listener to chat input to be able to respond to up/down
     mChatInput->addKeyListener(this);
     mCurHist = mHistory.end();
+}
+
+ChatWindow::~ChatWindow()
+{
+    for_each(mTabs.begin(), mTabs.end(), make_dtor(mTabs));
 }
 
 void
@@ -85,14 +112,17 @@ ChatWindow::logic()
                             area.height - mChatInput->getHeight() -
                                 mChatInput->getBorderSize());
     mChatInput->setWidth(area.width - 2 * mChatInput->getBorderSize());
+    mContainer->setWidth(area.width - 2 * mContainer->getBorderSize());
+    mContainer->setHeight(area.height - 2 * mContainer->getBorderSize() -
+                          mChatInput->getHeight() - 5);
     mScrollArea->setWidth(area.width - 2 * mScrollArea->getBorderSize());
     mScrollArea->setHeight(area.height - 2 * mScrollArea->getBorderSize() -
-            mChatInput->getHeight() - 5);
+            mChatInput->getHeight() - 26);
     mScrollArea->logic();
 }
 
 void
-ChatWindow::chatLog(std::string line, int own)
+ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
     // Delete overhead from the end of the list
     while ((int)mChatlog.size() > mItemsKeep) {
@@ -102,6 +132,9 @@ ChatWindow::chatLog(std::string line, int own)
     CHATLOG tmp;
     tmp.own  = own;
     tmp.nick = "";
+
+    mTextOutput = mChannelOutput[channelName];
+    mScrollArea = mChannelScroll[channelName];
 
     // Fix the owner of welcome message.
     if (line.substr(0, 7) == "Welcome")
@@ -196,7 +229,7 @@ ChatWindow::action(const gcn::ActionEvent &event)
             mCurHist = mHistory.end();
 
             // Send the message to the server
-            chatSend(player_node->getName(), message);
+            chatSend(player_node->getName(), message, mContainer->getActiveWidget());
 
             // Clear the text from the chat input
             mChatInput->setText("");
@@ -241,7 +274,7 @@ ChatWindow::isFocused()
 }
 
 void
-ChatWindow::chatSend(const std::string &nick, std::string msg)
+ChatWindow::chatSend(const std::string &nick, std::string msg, std::string channelName)
 {
     /* Some messages are managed client side, while others
      * require server handling by proper packet. Probably
@@ -249,7 +282,15 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
     // Prepare ordinary message
     if (msg.substr(0, 1) != "/") {
-        Net::GameServer::Player::say(msg);
+        if(mContainer->getActiveWidget() == "General")
+        {
+            Net::GameServer::Player::say(msg);
+        }
+        else
+        {
+            short channelId = channelManager->findByName(channelName)->getId();
+            Net::ChatServer::chat(channelId, msg);
+        }
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {
@@ -258,11 +299,15 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
     }
     else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
     {
-        chatLog("-- Help --", BY_SERVER);
-        chatLog("/help : Display this help.", BY_SERVER);
-        chatLog("/announce : Global announcement (GM only)", BY_SERVER);
-        chatLog("/where : Display map name", BY_SERVER);
-        chatLog("/who : Display number of online users", BY_SERVER);
+        chatLog("-- Help --", BY_SERVER, channelName);
+        chatLog("/help > Display this help.", BY_SERVER, channelName);
+        chatLog("/announce > Global announcement (GM only)", BY_SERVER, channelName);
+        chatLog("/where > Display map name", BY_SERVER, channelName);
+        chatLog("/who > Display number of online users", BY_SERVER, channelName);
+        chatLog("/list > Display all public channels", BY_SERVER, channelName);
+        chatLog("/register > Register a new channel", BY_SERVER, channelName);
+        chatLog("/join > Join an already registered channel", BY_SERVER, channelName);
+        chatLog("/quit > Leave a channel", BY_SERVER, channelName);
     }
     else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
     {
@@ -275,9 +320,46 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
         MessageOut outMsg(0x00c1);
         */
     }
+    else if (msg.substr(0, IS_REGCHANNEL_LENGTH) == IS_REGCHANNEL)
+    {
+        std::string channel = msg.substr(IS_REGCHANNEL_LENGTH, msg.size());
+        chatLog("Requesting to register channel", BY_SERVER);
+        Net::ChatServer::registerChannel(channel, "", "", false);
+    }
+    else if (msg.substr(0, IS_JOINCHANNEL_LENGTH) == IS_JOINCHANNEL)
+    {
+        //TODO: have passwords too
+        msg = msg.substr(IS_JOINCHANNEL_LENGTH, msg.size());
+        chatLog("Requesting to join channel " + msg, BY_SERVER);
+        if(msg != "")
+        {
+            enterChannel(msg, "None");
+        }
+        else
+        {
+            chatLog("No channel name given", BY_SERVER);
+        }
+    }
+    else if (msg.substr(0, IS_LISTCHANNELS_LENGTH) == IS_LISTCHANNELS)
+    {
+        Net::ChatServer::getChannelList();
+    }
+    else if (msg.substr(0, IS_QUITCHANNEL_LENGTH) == IS_QUITCHANNEL)
+    {
+        Channel* channel;
+        channel = channelManager->findByName(channelName);
+        if(channel)
+        {
+            Net::ChatServer::quitChannel(channel->getId());
+        }
+        else
+        {
+            chatLog("Unable to quit this channel", BY_SERVER);
+        }
+    }
     else
     {
-        chatLog("Unknown command", BY_SERVER);
+        chatLog("Unknown command", BY_SERVER, channelName);
     }
 }
 
@@ -357,6 +439,67 @@ ChatWindow::const_msg(CHATSKILL act)
     }
 
     return msg;
+}
+
+void
+ChatWindow::addChannel(short channelId, std::string channelName)
+{
+    Channel* channel = new Channel(channelId);
+    channel->setName(channelName);
+    channelManager->addChannel(channel);
+}
+
+void
+ChatWindow::removeChannel(short channelId)
+{
+    Channel* channel = channelManager->findById(channelId);
+    if(channel)
+    {
+        mContainer->removeTab(channel->getName());
+        mTabs.erase(channel->getName());
+        mChannelOutput.erase(channel->getName());
+        mChannelScroll.erase(channel->getName());
+        channelManager->removeChannel(channel);
+        mTextOutput = mChannelOutput["General"];
+        mScrollArea = mChannelScroll["General"];
+    }
+}
+
+void
+ChatWindow::createNewChannelTab(std::string channelName)
+{
+    BrowserBox *textOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
+    textOutput->setOpaque(false);
+    textOutput->disableLinksAndUserColors();
+    ScrollArea *scrollArea = new ScrollArea(textOutput);
+    scrollArea->setPosition(scrollArea->getBorderSize(), scrollArea->getBorderSize());
+    scrollArea->setScrollPolicy(gcn::ScrollArea::SHOW_NEVER, gcn::ScrollArea::SHOW_ALWAYS);
+    scrollArea->setOpaque(false);
+    GCContainer *tab = new GCContainer();
+    tab->setWidth(getWidth() - 2 * tab->getBorderSize());
+    tab->setHeight(getHeight() - 2 * tab->getBorderSize());
+    tab->add(scrollArea);
+    tab->setOpaque(false);
+    mContainer->addTab(tab, channelName);
+    mTabs[channelName] = tab;
+    mChannelOutput[channelName] = textOutput;
+    mChannelScroll[channelName] = scrollArea;
+    mScrollArea = scrollArea;
+    mTextOutput = textOutput;
+    logic();
+}
+
+void
+ChatWindow::enterChannel(std::string channel, std::string password)
+{
+    Net::ChatServer::enterChannel(channel, password);
+}
+
+void
+ChatWindow::sendToChannel(short channelId, std::string user, std::string msg)
+{
+    std::string channelName = channelManager->findById(channelId)->getName();
+    chatLog(user + ": " + msg, user == player_node->getName() ? BY_PLAYER : BY_OTHER, channelName);
 }
 
 void

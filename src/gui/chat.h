@@ -26,6 +26,7 @@
 
 #include <list>
 #include <string>
+#include <map>
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/keylistener.hpp>
@@ -36,6 +37,8 @@
 
 class BrowserBox;
 class ScrollArea;
+class TabbedContainer;
+class GCContainer;
 
 #define BY_GM         0   // those should be self-explanatory =)
 #define BY_PLAYER     1
@@ -53,6 +56,14 @@ class ScrollArea;
 #define IS_WHERE_LENGTH     6
 #define IS_WHO              "/who"
 #define IS_WHO_LENGTH       4
+#define IS_JOINCHANNEL      "/join "
+#define IS_JOINCHANNEL_LENGTH 6
+#define IS_REGCHANNEL       "/register "
+#define IS_REGCHANNEL_LENGTH 10
+#define IS_LISTCHANNELS     "/list"
+#define IS_LISTCHANNELS_LENGTH 5
+#define IS_QUITCHANNEL      "/quit"
+#define IS_QUITCHANNEL_LENGTH 5
 
 /**
  * gets in between usernick and message text depending on
@@ -118,6 +129,11 @@ class ChatWindow : public Window, public gcn::ActionListener,
         ChatWindow();
 
         /**
+         *
+         */
+        ~ChatWindow();
+
+        /**
          * Logic (updates components' size)
          */
         void logic();
@@ -128,7 +144,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * @param line Text message.
          * @parem own  Type of message (usually the owner-type).
          */
-        void chatLog(std::string line, int own);
+        void chatLog(std::string line, int own, std::string channelName = "General");
 
         /*
          * Calls original chat_log() after processing the packet.
@@ -175,7 +191,27 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
         void
-        chatSend(const std::string &nick, std::string msg);
+        chatSend(const std::string &nick, std::string msg, std::string channelName);
+
+        /** Called to add the channel to the channel manager */
+        void
+        addChannel(short channel, std::string channelName);
+        
+        /** Called to remove the channel from the channel manager */
+        void
+        removeChannel(short channel);
+
+        /** Called to create a new channel tab */
+        void
+        createNewChannelTab(std::string channelName);
+
+        /** Called to join channel */
+        void
+        enterChannel(std::string channel, std::string password = "None");
+
+        /** Called to output text to a specific channel */
+        void
+        sendToChannel(short channel, std::string user, std::string msg);
 
         /** Called when key is pressed */
         void
@@ -192,7 +228,9 @@ class ChatWindow : public Window, public gcn::ActionListener,
     private:
         bool mTmpVisible;
 
-        /** One item in the chat log */
+        int mItems;
+        int mItemsKeep;
+
         typedef struct CHATLOG
         {
             std::string nick;
@@ -200,15 +238,17 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
-        std::list<CHATLOG> mChatlog;               /**< Chat log */
-
-        int mItems;
-        int mItemsKeep;
+        std::list<CHATLOG> mChatlog;
 
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
 
+        std::map<std::string, GCContainer*> mTabs;
+        TabbedContainer *mContainer; /**< Tabbed container for tabbing between channels */
+        GCContainer *mTab; /**< Tabs */
         gcn::TextField *mChatInput; /**< Input box for typing chat messages */
+        std::map<std::string, BrowserBox*> mChannelOutput; /**< Map each TextOutput to a tab */
+        std::map<std::string, ScrollArea*> mChannelScroll; /**< Map each ScrollArea to a tab */
         BrowserBox *mTextOutput;    /**< Text box for displaying chat history */
         ScrollArea *mScrollArea;    /**< Scroll area around text output */
 

@@ -81,14 +81,14 @@ void Net::ChatServer::privMsg(const std::string &recipient,
 }
 
 void Net::ChatServer::registerChannel(const std::string &name,
-        const std::string &annoucement, const std::string &password,
+        const std::string &announcement, const std::string &password,
         char isPrivate)
 {
     MessageOut msg(PCMSG_REGISTER_CHANNEL);
 
     msg.writeByte(isPrivate);
     msg.writeString(name);
-    msg.writeString(annoucement);
+    msg.writeString(announcement);
     msg.writeString(password);
 
     connection->send(msg);
@@ -103,11 +103,11 @@ void Net::ChatServer::unregisterChannel(short channel)
     connection->send(msg);
 }
 
-void Net::ChatServer::enterChannel(short channel, const std::string &password)
+void Net::ChatServer::enterChannel(const std::string &channel, const std::string &password)
 {
     MessageOut msg(PCMSG_ENTER_CHANNEL);
 
-    msg.writeShort(channel);
+    msg.writeString(channel);
     msg.writeString(password);
 
     connection->send(msg);
@@ -118,6 +118,13 @@ void Net::ChatServer::quitChannel(short channel)
     MessageOut msg(PCMSG_QUIT_CHANNEL);
 
     msg.writeShort(channel);
+
+    connection->send(msg);
+}
+
+void Net::ChatServer::getChannelList()
+{
+    MessageOut msg(PCMSG_LIST_CHANNELS);
 
     connection->send(msg);
 }
