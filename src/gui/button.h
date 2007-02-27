@@ -53,11 +53,16 @@ class Button : public gcn::Button {
          */
         void draw(gcn::Graphics* graphics);
 
-        void focusLost() {}
+        /**
+         * Enable/Disable highlighting
+         */
+        void setLogged(bool enable)
+        { mIsLogged = enable; }
 
     private:
         static ImageRect button[4];    /**< Button state graphics */
         static int mInstances;         /**< Number of button instances */
+        bool mIsLogged;                /**< Makes the button appear pressed all the time */
 };
 
 #endif

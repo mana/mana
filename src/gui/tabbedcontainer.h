@@ -26,6 +26,7 @@
 
 #include <iosfwd>
 #include <vector>
+#include <map>
 
 #include <guichan/actionlistener.hpp>
 
@@ -41,18 +42,25 @@ class TabbedContainer : public gcn::Container, public gcn::ActionListener
 
         void addTab(gcn::Widget *widget, const std::string &caption);
 
+        void removeTab(const std::string &caption);
+
         void logic();
 
         void action(const gcn::ActionEvent &event);
 
         void setOpaque(bool opaque);
 
+        short getNumberOfTabs();
+
+        std::string getActiveWidget();
+
     private:
         typedef std::vector<gcn::Widget*> Widgets;
         typedef Widgets::iterator WidgetIterator;
-        Widgets mTabs;      // The actual tabs at the top
+        std::map<std::string, gcn::Widget*> mTabs; // tabs mapped to their channel name
         Widgets mContents;  // The contents of the tabs
 
+        std::map<gcn::Widget*, std::string> mWidgets;
         gcn::Widget *mActiveContent;
 };
 

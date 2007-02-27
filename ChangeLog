@@ -1,4 +1,11 @@
-﻿2007-02-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* gui/button.cpp, src/guibutton.h,
+	src/gui/tabbedcontainer.cpp, src/gui/tabbedcontainer.h:: Tabbed
+	containers now display the button of the active tab pressed all
+	the time.
+
+2007-02-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* configure.ac: Made OpenGL enabled by default.
 

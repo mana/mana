@@ -38,8 +38,9 @@ ImageRect Button::button[4];
 int Button::mInstances = 0;
 
 Button::Button(const std::string& caption, const std::string &actionEventId,
-        gcn::ActionListener *listener):
-    gcn::Button(caption)
+    gcn::ActionListener *listener):
+    gcn::Button(caption),
+    mIsLogged(false)
 {
     setBorderSize(0);
 
@@ -100,7 +101,7 @@ Button::draw(gcn::Graphics *graphics)
     if (!isEnabled()) {
         mode = 3;
     }
-    else if (isPressed()) {
+    else if (isPressed() || mIsLogged) {
         mode = 2;
     }
     else if (mHasMouse) {
@@ -130,7 +131,7 @@ Button::draw(gcn::Graphics *graphics)
             textX = getWidth() - 4;
             break;
         default:
-            throw GCN_EXCEPTION("Button::draw. Uknown alignment.");
+            throw GCN_EXCEPTION("Button::draw. Unknown alignment.");
     }
 
     graphics->setFont(getFont());
