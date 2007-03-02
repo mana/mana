@@ -73,3 +73,10 @@ void Net::GameServer::Player::attack(unsigned char direction)
     msg.writeByte(direction);
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::Player::changeAction(Being::Action action)
+{
+    MessageOut msg(PGMSG_ACTION_CHANGE);
+    msg.writeByte(action);
+    Net::GameServer::connection->send(msg);
+}

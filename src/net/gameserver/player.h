@@ -24,6 +24,8 @@
 #ifndef _TMW_NET_GAMESERVER_PLAYER_H
 #define _TMW_NET_GAMESERVER_PLAYER_H
 
+#include "../../being.h"
+
 #include <iosfwd>
 
 namespace Net
@@ -38,6 +40,7 @@ namespace Net
             void drop(int slot, int amount);
             void equip(int slot);
             void attack(unsigned char direction);
+            void changeAction(Being::Action action);
         }
     }
 }

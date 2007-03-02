@@ -300,7 +300,7 @@ Being::setMap(Map *map)
 }
 
 void
-Being::setAction(Uint8 action)
+Being::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
     switch (action)

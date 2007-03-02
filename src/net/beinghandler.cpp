@@ -58,6 +58,7 @@ BeingHandler::BeingHandler()
         GPMSG_BEING_LEAVE,
         GPMSG_BEINGS_MOVE,
         GPMSG_BEINGS_DAMAGE,
+        GPMSG_BEING_ACTION_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -79,11 +80,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
         case GPMSG_BEING_ENTER:
             handleBeingEnterMessage(msg);
             break;
-
         case GPMSG_BEING_LEAVE:
             handleBeingLeaveMessage(msg);
             break;
-
         case GPMSG_BEINGS_MOVE:
             handleBeingsMoveMessage(msg);
             break;
@@ -92,6 +91,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_BEINGS_DAMAGE:
             handleBeingsDamageMessage(msg);
+            break;
+        case GPMSG_BEING_ACTION_CHANGE:
+            handleBeingActionChangeMessage(msg);
             break;
 
         /*
@@ -406,33 +408,45 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
     int type = msg.readByte(); // type
     int id = msg.readShort();
+    Being::Action action = (Being::Action)msg.readByte();
+    Uint16 px = msg.readShort();
+    Uint16 py = msg.readShort();
 
-    switch (type) {
-    case OBJECT_PLAYER:
+    switch (type)
     {
-        std::string name = msg.readString();
-        Being *being;
-        if (player_node->getName() == name)
+        case OBJECT_PLAYER:
         {
-            being = player_node;
-            being->setId(id);
-        }
-        else
+            std::string name = msg.readString();
+            Being *being;
+            if (player_node->getName() == name)
+            {
+                being = player_node;
+                being->setId(id);
+            }
+            else
+            {
+                being = beingManager->createBeing(id, 0);
+                being->setName(name);
+            }
+            being->setHairStyle(msg.readByte());
+            being->setHairColor(msg.readByte());
+            being->setSex(msg.readByte());
+            being->mX = px;
+            being->mY = py;
+            being->setDestination(px, py);
+            being->setAction(action);
+        } break;
+        case OBJECT_MONSTER:
         {
-            being = beingManager->createBeing(id, 0);
-            being->setName(name);
-        }
-        being->setHairStyle(msg.readByte());
-        being->setHairColor(msg.readByte());
-        being->setSex(msg.readByte());
-    } break;
-    case OBJECT_MONSTER:
-    {
-        int monsterId = msg.readShort();
-        Being *being;
-        being = beingManager->createBeing(id, 1002 + monsterId);
-        being->setWalkSpeed(150); // TODO
-    } break;
+            int monsterId = msg.readShort();
+            Being *being;
+            being = beingManager->createBeing(id, 1002 + monsterId);
+            being->setWalkSpeed(150); // TODO
+            being->mX = px;
+            being->mY = py;
+            being->setDestination(px, py);
+            being->setAction(action);
+        } break;
     }
 }
 
@@ -514,4 +528,12 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
             being->setDamage(damage, 0);
         }
     }
+}
+
+void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
+{
+    Being* being = beingManager->findBeing(msg.readShort());
+    if (!being) return;
+
+    being->setAction((Being::Action)msg.readByte());
 }

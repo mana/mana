@@ -289,20 +289,16 @@ void LocalPlayer::toggleSit()
         return;
     mLastAction = tick_time;
 
-    char type;
+    Being::Action newAction;
     switch (mAction)
     {
-        case STAND: type = 2; break;
-        case SIT: type = 3; break;
+        case Being::STAND: newAction = Being::SIT; break;
+        case Being::SIT: newAction = Being::STAND; break;
         default: return;
     }
 
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(0x0089);
-    outMsg.writeLong(0);
-    outMsg.writeByte(type);
-    */
+    setAction(newAction);
+    Net::GameServer::Player::changeAction(newAction);
 }
 
 void LocalPlayer::emote(Uint8 emotion)

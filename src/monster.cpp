@@ -46,7 +46,7 @@ Monster::getType() const
 }
 
 void
-Monster::setAction(Uint8 action)
+Monster::setAction(Action action)
 {
     SpriteAction currentAction = ACTION_INVALID;
 
@@ -69,6 +69,8 @@ Monster::setAction(Uint8 action)
             break;
         case HURT:
             // Not implemented yet
+            break;
+        default:
             break;
     }
 

@@ -67,6 +67,11 @@ class Being : public Sprite
             MONSTER
         };
 
+        /**
+         * Action the being is currently performing
+         * WARNING: Has to be in sync with the same enum in the Being class
+         * of the server!
+         */
         enum Action {
             STAND,
             WALK,
@@ -96,7 +101,7 @@ class Being : public Sprite
         std::string mName;      /**< Name of character */
         Uint16 mJob;            /**< Job (player job, npc, monster, ) */
         Uint16 mX, mY;          /**< Pixel coordinates (tile center) */
-        Uint8 mAction;          /**< Action the being is performing */
+        Action mAction;         /**< Action the being is performing */
         Uint16 mWalkTime;
         Uint8 mEmotion;         /**< Currently showing emotion */
         Uint8 mEmotionTime;     /**< Time until emotion disappears */
@@ -296,7 +301,7 @@ class Being : public Sprite
          * Sets the current action.
          */
         virtual void
-        setAction(Uint8 action);
+        setAction(Action action);
 
         /**
          * Returns the direction the being is facing.
