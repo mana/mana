@@ -853,8 +853,12 @@ int main(int argc, char *argv[])
                             config.getValue("lastCharacter", ""));
 
                     if (options.chooseDefault)
+                    {
                         ((CharSelectDialog*) currentDialog)->action(
                             gcn::ActionEvent(NULL, "ok"));
+                        options.chooseDefault = false;
+                    }
+
                     break;
 
                 case STATE_UNREGISTER_ATTEMPT:

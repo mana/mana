@@ -1,4 +1,9 @@
-﻿2007-03-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-03  Rogier Polak     <rogier.l.a.polak@gmail.com>
+
+        * src/main.cpp: Fixed a minor annoyance regarding
+        auto-character-select and switch_character.
+
+2007-03-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file.
 	* src/Makefile.am: Updated Makefile.
