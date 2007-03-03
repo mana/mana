@@ -1,4 +1,8 @@
-﻿2007-03-01  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt: Updated CMake file.
+
+2007-03-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/being.cpp, src/being.h, src/localplayer.cpp, src/monster.cpp,
 	src/monster.h, src/net/beinghandler.cpp, src/net/beinghandler.h,

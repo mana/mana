@@ -284,6 +284,10 @@ SET(SRCS
     being.h
     beingmanager.cpp
     beingmanager.h
+    channel.cpp
+    channel.h
+    channelmanager.cpp
+    channelmanager.h
     configlistener.h
     configuration.cpp
     configuration.h
