@@ -1,6 +1,7 @@
 ﻿2007-03-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file.
+	* src/Makefile.am: Updated Makefile.
 
 2007-03-01  Philipp Sehmisch  <tmw@crushnet.org>
 
