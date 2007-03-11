@@ -26,6 +26,8 @@
 
 #include "being.h"
 
+class MonsterInfo;
+
 class Monster : public Being
 {
     public:
@@ -34,6 +36,19 @@ class Monster : public Being
         virtual void setAction(Action action);
 
         virtual Type getType() const;
+
+        /**
+         * Handles an attack of another being by this monster. Plays a hit or
+         * miss sound when appropriate.
+         */
+        virtual void handleAttack();
+
+    protected:
+        /**
+         * Returns the MonsterInfo, with static data about this monster.
+         */
+        const MonsterInfo&
+        getInfo() const;
 };
 
 #endif

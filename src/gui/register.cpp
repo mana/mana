@@ -195,6 +195,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
             mLoginData->email = mEmailField->getText();
+            mLoginData->registerLogin = true;
 
             state = STATE_REGISTER_ATTEMPT;
         }

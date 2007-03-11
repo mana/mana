@@ -37,6 +37,7 @@ struct LoginData
     int session_ID2;
 
     bool remember;
+    bool registerLogin;
 
     void clear()
     {

@@ -19,7 +19,7 @@ and some libraries. The required libraries are:
 * SDL               http://www.libsdl.org/
 * SDL_mixer         http://www.libsdl.org/projects/SDL_mixer/
 * SDL_image         http://www.libsdl.org/projects/SDL_image/
-* SDL_net           http://www.libsdl.org/projects/SDL_net/
+* ENet 1.0          http://enet.bespin.org/
 * Guichan 0.6.x     http://guichan.sourceforge.net/
 * libxml2           http://www.xmlsoft.org/
 * physfs 1.0.x      http://icculus.org/physfs/

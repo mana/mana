@@ -215,29 +215,26 @@ void BeingHandler::handleMessage(MessageIn &msg)
             switch (type)
             {
                 case 0: // Damage
-                    if (dstBeing == NULL) break;
-
-                    dstBeing->setDamage(param1, SPEECH_TIME);
-
-                    if (srcBeing != NULL &&
-                            srcBeing != player_node)
-                    {
-                        srcBeing->setAction(Being::ATTACK);
-                        srcBeing->mFrame = 0;
-                        srcBeing->mWalkTime = tick_time;
+                    if (dstBeing) {
+                        dstBeing->takeDamage(param1);
+                    }
+                    if (srcBeing) {
+                        srcBeing->handleAttack(dstBeing, param1);
                     }
                     break;
 
                 case 2: // Sit
-                    if (srcBeing == NULL) break;
-                    srcBeing->mFrame = 0;
-                    srcBeing->setAction(Being::SIT);
+                    if (srcBeing) {
+                        srcBeing->mFrame = 0;
+                        srcBeing->setAction(Being::SIT);
+                    }
                     break;
 
                 case 3: // Stand up
-                    if (srcBeing == NULL) break;
-                    srcBeing->mFrame = 0;
-                    srcBeing->setAction(Being::STAND);
+                    if (srcBeing) {
+                        srcBeing->mFrame = 0;
+                        srcBeing->setAction(Being::STAND);
+                    }
                     break;
             }
             break;
@@ -525,7 +522,7 @@ void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)
         int damage = msg.readShort();
         if (being)
         {
-            being->setDamage(damage, 0);
+            being->takeDamage(damage);
         }
     }
 }
@@ -535,5 +532,5 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
     Being* being = beingManager->findBeing(msg.readShort());
     if (!being) return;
 
-    being->setAction((Being::Action)msg.readByte());
+    being->setAction((Being::Action) msg.readByte());
 }

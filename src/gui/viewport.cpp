@@ -132,18 +132,22 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         mViewY = player_y;
     };
 
-    if (mMap) {
+    // Don't move camera so that the end of the map is on screen
+    int viewXmax = mMap->getWidth() * 32 - graphics->getWidth();
+    int viewYmax = mMap->getHeight() * 32 - graphics->getHeight();
+    if (mMap)
+    {
         if (mViewX < 0) {
             mViewX = 0;
         }
         if (mViewY < 0) {
             mViewY = 0;
         }
-        if (mViewX > mMap->getWidth() * 32 - midTileX) {
-            mViewX = mMap->getWidth() * 32 - midTileX;
+        if (mViewX > viewXmax) {
+            mViewX = viewXmax;
         }
-        if (mViewY > mMap->getHeight() * 32 - midTileY) {
-            mViewY = mMap->getHeight() * 32 - midTileY;
+        if (mViewY > viewYmax) {
+            mViewY = viewYmax;
         }
     }
 

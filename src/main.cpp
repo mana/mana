@@ -36,9 +36,12 @@
 
 #include <libxml/parser.h>
 
-#if (defined __USE_UNIX98 || defined __FreeBSD__)
+#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
 #include <cerrno>
 #include <sys/stat.h>
+#endif
+#if defined __APPLE__
+#include <CoreFoundation/CFBundle.h>
 #endif
 
 #include "configuration.h"
@@ -150,7 +153,7 @@ struct Options
  */
 void initHomeDir()
 {
-#if !(defined __USE_UNIX98 || defined __FreeBSD__)
+#if !(defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
     homeDir = ".";
 #else
     homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
@@ -160,7 +163,7 @@ void initHomeDir()
             (errno != EEXIST))
     {
         std::cout << homeDir
-                  << " can't be made, but it doesn't exist! Exitting."
+                  << " can't be made, but it doesn't exist! Exiting."
                   << std::endl;
         exit(1);
     }
@@ -259,7 +262,21 @@ void initEngine()
 
     // Add the main data directory to our PhysicsFS search path
     resman->addToSearchPath("data", true);
+#if defined __APPLE__
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    CFURLRef resourcesURL = CFBundleCopyResourcesDirectoryURL(mainBundle);
+    char path[PATH_MAX];
+    if (!CFURLGetFileSystemRepresentation(resourcesURL, TRUE, (UInt8 *)path,
+                                          PATH_MAX))
+    {
+        fprintf(stderr, "Can't find Resources directory\n");
+    }
+    CFRelease(resourcesURL);
+    strncat(path, "/data", PATH_MAX - 1);
+    resman->addToSearchPath(path, true);
+#else
     resman->addToSearchPath(TMW_DATADIR "data", true);
+#endif
 
 #ifdef USE_OPENGL
     bool useOpenGL = (config.getValue("opengl", 0) == 1);
@@ -449,6 +466,12 @@ void accountLogin(LoginData *loginData)
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
 
+    //remove _M or _F from username after a login for registration purpose
+    if (loginData->registerLogin)
+    {
+        loginData->registerLogin = false;
+        loginData->username = loginData->username.substr(0, loginData->username.length() - 2);
+    }
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
     if (loginData->remember) {
@@ -657,6 +680,7 @@ int main(int argc, char *argv[])
     }
 
     loginData.remember = config.getValue("remember", 0);
+    loginData.registerLogin = false;
 
     Net::initialize();
     accountServerConnection = Net::getConnection();
@@ -717,7 +741,7 @@ int main(int argc, char *argv[])
                 accountServerConnection->isConnected())
         {
             if (options.skipUpdate) {
-                state = STATE_LOGIN;
+                state = STATE_LOADDATA;
             } else {
                 state = STATE_UPDATE;
             }
@@ -794,22 +818,32 @@ int main(int argc, char *argv[])
                     logger->log("State: UPDATE");
                     // TODO: Revive later
                     //currentDialog = new UpdaterWindow();
-                    state = STATE_LOGIN;
+                    state = STATE_LOADDATA;
                     break;
 
                 case STATE_LOGIN:
                     logger->log("State: LOGIN");
-
-                    // Load XML databases
-                    EquipmentDB::load();
-                    ItemDB::load();
-                    MonsterDB::load();
-
                     currentDialog = new LoginDialog(&loginData);
                     // TODO: Restore autologin
                     //if (!loginData.password.empty()) {
                     //    accountLogin(&loginData);
                     //}
+                    break;
+
+                case STATE_LOADDATA:
+                    logger->log("State: LOADDATA");
+
+                    // Add customdata directory
+                    ResourceManager::getInstance()->searchAndAddArchives(
+                        "customdata/",
+                        "zip",
+                        false);
+
+                    // Load XML databases
+                    EquipmentDB::load();
+                    ItemDB::load();
+                    MonsterDB::load();
+                    state = STATE_LOGIN;
                     break;
 
                 case STATE_LOGIN_ATTEMPT:

@@ -112,6 +112,33 @@ ResourceManager::addToSearchPath(const std::string &path, bool append)
     PHYSFS_addToSearchPath(path.c_str(), append ? 1 : 0);
 }
 
+void
+ResourceManager::searchAndAddArchives(const std::string &path,
+                                      const std::string &ext,
+                                      bool append)
+{
+    const char *dirSep = PHYSFS_getDirSeparator();
+    char **list = PHYSFS_enumerateFiles(path.c_str());
+
+    for (char **i = list; *i != NULL; i++)
+    {
+        size_t len = strlen(*i);
+
+        if (len > ext.length() && !ext.compare((*i)+(len - ext.length())))
+        {
+            std::string file, realPath, archive;
+
+            file = path + (*i);
+            realPath = std::string(PHYSFS_getRealDir(file.c_str()));
+            archive = realPath + dirSep + file;
+
+            addToSearchPath(archive, append);
+        }
+    }
+
+    PHYSFS_freeList(list);
+}
+
 bool
 ResourceManager::mkdir(const std::string &path)
 {

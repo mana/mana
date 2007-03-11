@@ -53,20 +53,9 @@ extern Minimap *minimap;
 
 char itemCurrenyQ[10] = "0";
 
-Spriteset *emotionset;
-
 Engine::Engine():
     mCurrentMap(NULL)
 {
-    // Load the emotion set
-    ResourceManager *resman = ResourceManager::getInstance();
-    emotionset = resman->getSpriteset("graphics/sprites/emotions.png", 30, 32);
-    if (!emotionset) logger->error("Unable to load emotions spriteset!");
-}
-
-Engine::~Engine()
-{
-    emotionset->decRef();
 }
 
 void Engine::changeMap(const std::string &mapPath)

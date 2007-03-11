@@ -57,11 +57,10 @@ Monster::setAction(Action action)
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
-            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_DIE));
+            sound.playSfx(getInfo().getSound(EVENT_DIE));
             break;
         case ATTACK:
             currentAction = ACTION_ATTACK;
-            sound.playSfx(MonsterDB::get(mJob - 1002).getSound(EVENT_HIT));
             mSprites[BASE_SPRITE]->reset();
             break;
         case STAND:
@@ -79,4 +78,23 @@ Monster::setAction(Action action)
         mSprites[BASE_SPRITE]->play(currentAction);
         mAction = action;
     }
+}
+
+void
+Monster::handleAttack()
+{
+    Being::handleAttack();
+
+    const MonsterInfo &mi = getInfo();
+
+    // TODO: It's not possible to determine hit or miss here, so this stuff probably needs
+    // to be moved somewhere else. We may lose synchronization between attack animation and
+    // the sound, unless we adapt the protocol...
+    sound.playSfx(mi.getSound(EVENT_HIT));
+}
+
+const MonsterInfo&
+Monster::getInfo() const
+{
+    return MonsterDB::get(mJob - 1002);
 }

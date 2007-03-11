@@ -94,15 +94,15 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h malloc.h netdb.h netinet/in.h stdlib.h string.h sys/socket.h unistd.h])
 
 # Option to enable OpenGL
-AC_ARG_WITH(opengl, AS_HELP_STRING([--with-opengl],[use OpenGL (default is no)]))
-if test "x$with_opengl" == "xyes"; then
+AC_ARG_WITH(opengl,[  --without-opengl        don't use OpenGL ] )
+if test "x$with_opengl" == "xno"; then
+    with_opengl=no
+else
     AC_CHECK_LIB([GL], [glBegin], ,
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
     AC_CHECK_LIB([guichan_opengl], [gcnOpenGL], ,
     AC_MSG_ERROR([ *** Unable to find Guichan OpenGL library (guichan.sf.net)]))
     AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
-else
-    with_opengl=no
 fi
 
 AC_CONFIG_FILES([
@@ -113,7 +113,6 @@ data/graphics/Makefile
 data/graphics/gui/Makefile
 data/graphics/images/Makefile
 data/graphics/images/ambient/Makefile
-data/graphics/sprites/Makefile
 data/graphics/tiles/Makefile
 data/help/Makefile
 data/icons/Makefile

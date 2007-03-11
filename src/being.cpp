@@ -33,6 +33,7 @@
 #include "log.h"
 #include "map.h"
 
+#include "resources/resourcemanager.h"
 #include "resources/spriteset.h"
 
 #include "gui/gui.h"
@@ -40,12 +41,8 @@
 #include "utils/dtor.h"
 #include "utils/tostring.h"
 
-extern Spriteset *emotionset;
-
-PATH_NODE::PATH_NODE(unsigned short x, unsigned short y):
-    x(x), y(y)
-{
-}
+int Being::instances = 0;
+Spriteset *Being::emotionset = NULL;
 
 Being::Being(Uint16 id, Uint16 job, Map *map):
     mJob(job),
@@ -70,6 +67,16 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
 {
     setMap(map);
+
+    if (instances == 0)
+    {
+        // Load the emotion set
+        ResourceManager *rm = ResourceManager::getInstance();
+        emotionset = rm->getSpriteset("graphics/sprites/emotions.png", 30, 32);
+        if (!emotionset) logger->error("Unable to load emotions spriteset!");
+    }
+
+    instances++;
 }
 
 Being::~Being()
@@ -77,6 +84,14 @@ Being::~Being()
     std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
     setMap(NULL);
+
+    instances--;
+
+    if (instances == 0)
+    {
+        emotionset->decRef();
+        emotionset = NULL;
+    }
 }
 
 void Being::adjustCourse(Uint16 srcX, Uint16 srcY, Uint16 dstX, Uint16 dstY)
@@ -275,10 +290,16 @@ Being::setSpeech(const std::string &text, Uint32 time)
 }
 
 void
-Being::setDamage(Sint16 amount, Uint32 time)
+Being::takeDamage(int amount)
 {
     mDamage = amount ? toString(amount) : "miss";
     mDamageTime = 300;
+}
+
+void
+Being::handleAttack()
+{
+    setAction(Being::ATTACK);
 }
 
 void

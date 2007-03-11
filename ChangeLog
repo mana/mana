@@ -1,7 +1,20 @@
-﻿2007-03-03  Rogier Polak     <rogier.l.a.polak@gmail.com>
+﻿2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
 
-        * src/main.cpp: Fixed a minor annoyance regarding
-        auto-character-select and switch_character.
+	* src/map.cpp, src/gui/viewport.cpp: Fixed a bug that made the engine
+	not draw the last row and column of the map.
+
+2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/target-cursor-blue.png,
+	data/graphics/gui/target-cursor-red.png: Added targeting cursors by Pauan.
+	* data/graphics/sprites/chest-cotton-male.png,
+	data/graphics/sprites/chest-cotton-female.png: Replaced cotton shirt with
+	improved version by Pauan.
+
+2007-03-03  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/main.cpp: Fixed a minor annoyance regarding
+	auto-character-select and switch_character.
 
 2007-03-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -27,6 +40,17 @@
 	src/channelmanager.h src/net/protocol.h: Implementation of chat
 	channels by Trapdoor.
 	* src/graphics.h: MSVC Compilation fix by Trapdoor.
+
+2007-02-26  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* configure.ac: Made OpenGL enabled by default.
+
+2007-02-26  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/sfx/maggot-dying1.ogg, data/sfx/maggot-hit1.ogg,
+	data/sfx/maggot-hit2.ogg, data/sfx/maggot-miss1.ogg,
+	data/sfx/pinkie-hit1.ogg, data/sfx/pinkie-miss1.ogg,
+	data/monsters.xml: New sound effects by Cosmostrator.
 
 2007-02-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -54,8 +78,126 @@
 	size and data type.
 	* src/logindata.h: Added a clear function.
 
+2007-02-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/char-server.cpp, src/gui/updatewindow.cpp, src/gui/main.cpp,
+	src/gui/main.h: Added a new state "LOADDATA_STATE" that loads the XML
+	databases.
+	* src/resourcemanager.cpp, src/resourcemanager.h, src/main.cpp,
+	customdata/: Added a customdata dir that allows to add custom user
+	data easily. Just create a zip file with the same structure like the
+	update archives and drop it in the customdata folder and the files in
+	it override the default data and the updates.
+
+2007-02-20  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/log.cpp: Applied patch by trapdoor to fix the usage of a
+	deprecated function on MacOS X 10.4 and later.
+	* src/being.cpp, src/monster.cpp, src/net/beinghandler.cpp,
+	src/localplayer.h, src/being.h, src/monster.h: Now different sounds
+	can play when a monster misses the player.
+	* src/main.cpp: Applied patch by trapdoor which makes TMW use a more
+	standard location for the data on MacOS X.
+
+2007-02-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/help/header.txt, NEWS, README: Updated release date.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt, data/graphics/CMakeLists.txt:
+	Excluded sprites directory from installed files.
+
+2007-02-16  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/gui/updatewindow.cpp: Fixed the update bug (hopefully), by
+	modifying the usage of the synchronisation between threads. Added a
+	check for existence of the updated file.
+
+2007-02-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, configure.ac, data/help/header.txt, NEWS,
+	CMakeLists.txt: Changed version to 0.0.22.2.
+
+2007-02-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/register.cpp, src/logindata.h, src/main.cpp: Fixed the _M/_F
+	username bug.
+
+2007-02-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_1-9.tmx.gz, data/maps/new_1-14.tmx.gz,
+	data/maps/new_1-16.tmx.gz: Restored the cloud shadow overlays in the
+	woodland that got lost somehow during the halloween and christmas chaos.
+
+2007-02-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/sprites/chest_cotton_female.png: Removed this strange
+	duplicate.
+	* data/graphics/sprites/Makefile.am,
+	data/graphics/sprites/CMakeLists.txt: Some updates.
+
+2007-02-10  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/viewport.cpp: Fixed the bug in the scrolling limitation that made
+	it possible to scroll outside of the map in the south and east.
+
+2007-02-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/menuwindow.cpp: Fixed a small glitch when dragging the menu
+	window.
+
+2007-02-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/player-female-base.png: Made the standing and
+	walking of the female characters more feminine.
+	* data/equipment.xml, data/graphics/sprites/leg-cotton-male.png,
+	data/graphics/sprites/leg-cotton-male.xml,
+	data/graphics/sprites/leg-cotton-female.png,
+	data/graphics/sprites/leg-cotton-female.xml,
+	data/graphics/sprites/leg-jeans-male.png,
+	data/graphics/sprites/leg-jeans-male.xml,
+	data/graphics/sprites/leg-jeans-female.png,
+	data/graphics/sprites/leg-jeans-female.xml: Added different sprites
+	for male and female pants.
+
+2007-02-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.h, src/engine.cpp, src/being.h, src/being.cpp: Moved
+	responsibility of loading emoticons to the Being class.
+
+2007-02-01  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp: File handle should be closed before
+	attempting to remove/rename files.
+	* src/gui/button.h: Fixed buttons loosing focus.
+
+2007-02-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: A bit of cleanup
+	and defined a helper function for calculating the alder32 checksum of
+	a file. Probably not fixing any bug though.
+
+2007-02-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/equipment.xml, data/items.xml,
+	data/graphics/items/armor-chest-chainmail.png,
+	data/graphics/sprites/chest-chainmail-female.png,
+	data/graphics/sprites/chest-chainmail-female.xml,
+	data/graphics/sprites/chest-chainmail-male.png,
+	data/graphics/sprites/chest-chainmail-male.xml: Added chainmail by
+	"The Judge". The proposed values are: Item ID: 625, Sprite ID: 25,
+	Defence: 12, Weight: 120.
+	* data/graphics/sprites/chest-cotton-female.png: Huh? Shouldn't this
+	be on svn for ages?
+
+2007-01-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tmw.cbp: Updated Code::blocks project.
+
 2007-01-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/CMakeLists.txt, src/Makefile.am, src/net/packet.h,
+	src/net/packet.cpp, src/net/messageout.cpp: Removed unused Packet
+	class.
 	* src/properties.h, src/being.cpp, src/beingmanager.h, src/sound.h,
 	src/gui/window.h, src/sound.cpp, src/main.h, src/being.h,
 	src/resources/soundeffect.h, src/resources/image.h,
@@ -69,6 +211,8 @@
 	src/net/messageout.h, src/utils/xml.h, src/main.h,
 	src/resources/monsterdb.h, src/resources/itemdb.h,
 	src/resources/equipmentdb.h: Some work on documentation.
+	* data/maps/new_8-1.tmx.gz, data/maps/new_11-1.tmx.gz: Map fixes by
+	Pauan.
 
 2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

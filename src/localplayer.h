@@ -35,6 +35,9 @@ class FloorItem;
 class Inventory;
 class Item;
 
+/**
+ * The local player character.
+ */
 class LocalPlayer : public Player
 {
     public:
@@ -110,7 +113,15 @@ class LocalPlayer : public Player
         void setTrading(bool trading) { mTrading = trading; }
 
         void attack();
+
         Being* getTarget() const;
+
+        /**
+         * Overridden to do nothing. The attacks of the local player are
+         * displayed as soon as the player attacks, not when the server says
+         * the player does.
+         */
+        virtual void handleAttack() {}
 
         /**
          * Sets the target being of the player.

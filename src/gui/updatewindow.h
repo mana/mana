@@ -89,7 +89,7 @@ class UpdaterWindow : public Window, public gcn::ActionListener
     void download();
 
     /**
-     * The tread function that download the files.
+     * The thread function that download the files.
      */
     static int downloadThread(void *ptr);
 
@@ -115,80 +115,46 @@ class UpdaterWindow : public Window, public gcn::ActionListener
         UPDATE_RESOURCES
     };
 
-    /**
-     * A thread that use libcurl to download updates.
-     */
+    /** A thread that use libcurl to download updates. */
     SDL_Thread *mThread;
 
-    /**
-     * A mutex to protect shared data between the threads.
-     */
-    SDL_mutex *mMutex;
-
-    /**
-     * Status of the current download.
-     */
+    /** Status of the current download. */
     DownloadStatus mDownloadStatus;
 
-    /**
-     * Host where we get the updated files.
-     */
+    /** Host where we get the updated files. */
     std::string mUpdateHost;
 
-    /**
-     * The file currently downloading.
-     */
+    /** The file currently downloading. */
     std::string mCurrentFile;
 
-    /**
-     * The Adler32 checksum of the file currently downloading.
-     */
+    /** The Adler32 checksum of the file currently downloading. */
     unsigned long mCurrentChecksum;
 
-    /**
-     * Absolute path to locally save downloaded files.
-     */
+    /** Absolute path to locally save downloaded files. */
     std::string mBasePath;
 
-    /**
-     * A flag to know if we must write the downloaded file to a memory buffer
-     * instead of a regular file.
-     */
+    /** A flag to indicate whether to use a memory buffer or a regular file. */
     bool mStoreInMemory;
 
-    /**
-     * Flag that show if current download is complete.
-     */
+    /** Flag that show if current download is complete. */
     bool mDownloadComplete;
 
-    /**
-     * Flag that show if the user has canceled the update
-     */
+    /** Flag that show if the user has canceled the update. */
     bool mUserCancel;
 
-    /**
-     * Byte count currently downloaded in mMemoryBuffer.
-     */
+    /** Byte count currently downloaded in mMemoryBuffer. */
     int mDownloadedBytes;
 
-    /**
-     * Buffer where to put downloaded file which are not stored in file system.
-     */
+    /** Buffer for files downloaded to memory. */
     char *mMemoryBuffer;
 
-    /**
-     * Buffer to handler human readable error provided by curl.
-     */
+    /** Buffer to handler human readable error provided by curl. */
     char *mCurlError;
 
-    /**
-     * List of files to download
-     */
+    /** List of files to download. */
     std::vector<std::string> mLines;
 
-    /**
-     * Index of the file to be downloaded
-     */
+    /** Index of the file to be downloaded. */
     unsigned int mLineIndex;
 
     gcn::Label *mLabel;           /**< Progress bar caption. */

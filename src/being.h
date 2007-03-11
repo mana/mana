@@ -43,12 +43,17 @@ class Map;
 class Graphics;
 class Spriteset;
 
+/**
+ * A position along a being's path.
+ */
 struct PATH_NODE
 {
     /**
      * Constructor.
      */
-    PATH_NODE(unsigned short x, unsigned short y);
+    PATH_NODE(unsigned short x, unsigned short y):
+        x(x), y(y)
+    { }
 
     unsigned short x;
     unsigned short y;
@@ -148,13 +153,19 @@ class Being : public Sprite
         void setSpeech(const std::string &text, Uint32 time);
 
         /**
-         * Puts a damage bubble above this being for the specified amount
-         * of time.
+         * Puts a damage bubble above this being for the specified amount of
+         * time.
          *
          * @param amount The amount of damage.
-         * @param time The amount of time the text should stay in milliseconds.
          */
-        void setDamage(Sint16 amount, Uint32 time);
+        virtual void
+        takeDamage(int amount);
+
+        /**
+         * Handles an attack of another being by this being.
+         */
+        virtual void
+        handleAttack();
 
         /**
          * Returns the name of the being.
@@ -384,6 +395,9 @@ class Being : public Sprite
 
         Sint16 mStepX, mStepY;
         Uint16 mStepTime;
+
+        static int instances;           /**< Number of Being instances */
+        static Spriteset *emotionset;   /**< Emoticons used by beings */
 };
 
 #endif

@@ -147,8 +147,8 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
-    if (endX >= mWidth) endX = mWidth - 1;
-    if (endY >= mHeight) endY = mHeight - 1;
+    if (endX > mWidth) endX = mWidth;
+    if (endY > mHeight) endY = mHeight;
 
     for (int y = startY; y < endY; y++)
     {
