@@ -135,8 +135,8 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     };
 
     // Don't move camera so that the end of the map is on screen
-    int viewXmax = ((mMap->getWidth() - 1) * 32) - graphics->getWidth();
-    int viewYmax = ((mMap->getHeight() - 1) * 32) - graphics->getHeight();
+    int viewXmax = (mMap->getWidth() * 32) - graphics->getWidth();
+    int viewYmax = (mMap->getHeight() * 32) - graphics->getHeight();
     if (mMap)
     {
         if (mViewX < 0) {

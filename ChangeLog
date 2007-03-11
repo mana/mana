@@ -1,4 +1,9 @@
-﻿2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-02-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/map.cpp, src/gui/viewport.cpp: Fixed a bug that made the engine
+	not draw the last row and column of the map.
+
+2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/target-cursor-blue.png,
 	data/graphics/gui/target-cursor-red.png: Added targeting cursors by Pauan.

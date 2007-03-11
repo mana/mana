@@ -150,7 +150,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
     if (endX >= mWidth) endX = mWidth - 1;
     if (endY >= mHeight) endY = mHeight - 1;
 
-    for (int y = startY; y < endY; y++)
+    for (int y = startY; y <= endY; y++)
     {
         // If drawing the fringe layer, make sure all sprites above this row of
         // tiles have been drawn
@@ -163,7 +163,7 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
             }
         }
 
-        for (int x = startX; x < endX; x++)
+        for (int x = startX; x <= endX; x++)
         {
             Image *img = getTile(x, y, layer);
             if (img) {
