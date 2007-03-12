@@ -52,8 +52,8 @@ class SimpleAnimation
     private:
         Animation *mAnimation;          /**< The hosted animation */
         unsigned int mAnimationTime;    /**< Time in game ticks the current frame is shown*/
-        unsigned int mAnimationPhase;   /**< Current animation phase when the appearance is ANIMATION*/
-        Frame *mCurrentFrame;
+        unsigned int mAnimationPhase;   /**< Index of current animation phase*/
+        Frame *mCurrentFrame;           /**< Current animation phase */
 };
 
 #endif

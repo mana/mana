@@ -29,9 +29,9 @@
 void SimpleAnimation::update(unsigned int timePassed)
 {
     mAnimationTime+=timePassed;
-    if (mAnimationTime > mCurrentFrame->delay)
+    while (mAnimationTime > mCurrentFrame->delay)
     {
-        mAnimationTime = 0;
+        mAnimationTime -= mCurrentFrame->delay;
         mAnimationPhase++;
         if (mAnimationPhase >= mAnimation->getLength())
         {
