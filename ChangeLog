@@ -1,4 +1,9 @@
-﻿2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/items/armor-head-rangerhat.png: New version of ranger hat
+	icon by Pauan.
+
+2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/map.cpp, src/gui/viewport.cpp: Fixed a bug that made the engine
 	not draw the last row and column of the map.
