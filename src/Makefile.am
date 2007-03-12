@@ -253,6 +253,8 @@ tmw_SOURCES = gui/browserbox.cpp \
 	      player.h \
 	      properties.h \
 	      serverinfo.h \
+	      simpleanimation.cpp \
+  	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \

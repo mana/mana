@@ -304,6 +304,8 @@ SET(SRCS
     player.h
     properties.h
     serverinfo.h
+    simpleanimation.cpp
+    simpleanimation.h
     sound.cpp
     sound.h
     sprite.h

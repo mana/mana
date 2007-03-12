@@ -1,4 +1,10 @@
-﻿2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/simpleanimation.cpp, src/simpleanimation.h, src/CmakeLists.txt,
+	src/Makefile.am: Added a simple animation class that hosts a looping
+	animation without the action and direction stuff from AnimatedSprite.
+
+2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/items/armor-head-rangerhat.png: New version of ranger hat
 	icon by Pauan.
