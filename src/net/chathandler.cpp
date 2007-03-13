@@ -119,7 +119,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
                 chatWindow->chatLog("Error joining channel", BY_SERVER);
             }
             break;
-			
+
         case CPMSG_LIST_CHANNELS_RESPONSE:
             chatWindow->chatLog("Listing Channels", BY_SERVER);
             while(msg.getUnreadLength())
@@ -141,10 +141,10 @@ void ChatHandler::handleMessage(MessageIn &msg)
             channelId = msg.readShort();
             userNick = msg.readString();
             chatMsg = msg.readString();
-			
+
             chatWindow->sendToChannel(channelId, userNick, chatMsg);
             break;
-            
+
         case CPMSG_QUIT_CHANNEL_RESPONSE:
             if(msg.readByte() == ERRMSG_OK)
             {
