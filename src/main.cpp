@@ -256,7 +256,7 @@ void init_engine(const Options &options)
     }
 
     SDL_WM_SetCaption("The Mana World", NULL);
-    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
+    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw.png"), NULL);
 
 #ifdef USE_OPENGL
     bool useOpenGL = (config.getValue("opengl", 0) == 1);

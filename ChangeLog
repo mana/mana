@@ -1,4 +1,12 @@
-﻿2007-03-12  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp, src/tmw.rc, data/icons/tmw-icon.png,
+	data/icons/tmw-icon.xpm, data/icons/tmw.ico, data/icons/tmw-icon.ico,
+	data/icons/Makefile.am, data/icons/tmw.png, data/icons/tmw.xpm,
+	data/icons/CMakeLists.txt: Renamed icons to make things easier for
+	Debian packaging, and the "-icon" part was superfluous anyway.
+
+2007-03-12  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/simpleanimation.cpp, src/simpleanimation.h, src/CmakeLists.txt,
 	src/Makefile.am: Added a simple animation class that hosts a looping
@@ -6,8 +14,8 @@
 
 2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* data/graphics/items/armor-head-rangerhat.png: New version of ranger hat
-	icon by Pauan.
+	* data/graphics/items/armor-head-rangerhat.png: New version of ranger
+	hat icon by Pauan.
 
 2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -17,10 +25,11 @@
 2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/target-cursor-blue.png,
-	data/graphics/gui/target-cursor-red.png: Added targeting cursors by Pauan.
+	data/graphics/gui/target-cursor-red.png: Added targeting cursors by
+	Pauan.
 	* data/graphics/sprites/chest-cotton-male.png,
-	data/graphics/sprites/chest-cotton-female.png: Replaced cotton shirt with
-	improved version by Pauan.
+	data/graphics/sprites/chest-cotton-female.png: Replaced cotton shirt
+	with improved version by Pauan.
 
 2007-02-27  Philipp Sehmisch  <tmw@crushnet.org>
 
