@@ -332,7 +332,8 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                     10,  // VIT
                     10,  // INT
                     10,  // DEX
-                    10); // LUK
+                    10,  // WILL
+                    10); // CHAR
             scheduleDelete();
         }
         else {

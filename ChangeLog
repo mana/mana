@@ -1,4 +1,10 @@
-﻿2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-16  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/char_select.cpp, src/net/accountserver/account.cpp,
+	src/net/accountserver/account.hpp: Implemented 7 atribute system
+	in character creation.
+
+2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/map.cpp, src/gui/viewport.cpp: Fixed a bug that made the engine
 	not draw the last row and column of the map.
