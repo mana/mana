@@ -4,6 +4,22 @@
 	* src/resources/image.cpp: Restored alpha layer check, since it should
 	be more efficient in software mode when SDL knows an image doesn't use
 	the alpha layer.
+	* data/graphics/gui/thickborder.png,
+	data/graphics/gui/vscroll_grey.png, data/graphics/gui/slider.png,
+	data/graphics/gui/vscroll_blue.png, data/graphics/gui/vscroll_red.png,
+	data/graphics/sprites/monster-slime-red.png,
+	data/graphics/sprites/monster-scorpion-black.png,
+	data/graphics/sprites/monster-scorpion.png,
+	data/graphics/sprites/monster-slime-rudolph.png,
+	data/graphics/sprites/monster-snake.png,
+	data/graphics/sprites/monster-slime-santa.png,
+	data/graphics/sprites/monster-maggot.png,
+	data/graphics/sprites/monster-spider.png,
+	data/graphics/sprites/monster-scorpion-red.png,
+	data/graphics/sprites/monster-slime-yellow.png,
+	data/graphics/sprites/monster-slime-green.png,
+	data/graphics/sprites/monster-maggot-giant.png: Replaced pink pixels
+	with transparent ones.
 
 2007-03-18  Rogier Polak  <rogier.l.a.polak@gmail.com>
 
