@@ -1,4 +1,11 @@
-﻿2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-18  Rogier Polak     <rogier.l.a.polak@gmail.com>
+
+	* src/main.cpp: Added (-v) version to the arguments. (Applied a patch
+	by Patrick Matthäi).
+	* src/resources/image.cpp: Deleted the "pink code", which added
+	transparancy with SDL_SetColorKey.
+
+2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* icons/tmw.ico, icons/tmw.png, icons/tmw.xpm: Replaced icons with the
 	green globe that is also used on the website.

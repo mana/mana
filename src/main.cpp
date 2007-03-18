@@ -122,11 +122,13 @@ struct Options
      */
     Options():
         printHelp(false),
+        printVersion(false),
         skipUpdate(false),
         chooseDefault(false)
     {};
 
     bool printHelp;
+    bool printVersion;
     bool skipUpdate;
     bool chooseDefault;
     std::string username;
@@ -334,6 +336,7 @@ void printHelp()
         << "tmw" << std::endl << std::endl
         << "Options: " << std::endl
         << "  -h --help       : Display this help" << std::endl
+        << "  -v --version    : Display the version" << std::endl
         << "  -u --skipupdate : Skip the update process" << std::endl
         << "  -U --username   : Login with this username" << std::endl
         << "  -P --password   : Login with this password" << std::endl
@@ -343,12 +346,22 @@ void printHelp()
         << std::endl;
 }
 
+void printVersion()
+{
+#ifdef PACKAGE_VERSION
+    std::cout << "The Mana World version " << PACKAGE_VERSION << std::endl;
+#else
+    std::cout << "The Mana World version " <<
+             "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
+#endif
+}
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:C:";
+    const char *optstring = "hvuU:P:Dp:C:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
+        { "version",    no_argument,       0, 'v' },
         { "skipupdate", no_argument,       0, 'u' },
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
@@ -369,6 +382,9 @@ void parseOptions(int argc, char *argv[], Options &options)
             default: // Unknown option
             case 'h':
                 options.printHelp = true;
+                break;
+            case 'v':
+                options.printVersion = true;
                 break;
             case 'u':
                 options.skipUpdate = true;
@@ -503,9 +519,6 @@ void mapLogin(Network *network, LoginData *loginData)
 /** Main */
 int main(int argc, char *argv[])
 {
-#ifdef PACKAGE_VERSION
-    std::cout << "The Mana World v" << PACKAGE_VERSION << std::endl;
-#endif
     logger = new Logger();
 
     Options options;
@@ -517,7 +530,11 @@ int main(int argc, char *argv[])
         printHelp();
         return 0;
     }
-
+    else if (options.printVersion)
+    {
+        printVersion();
+        return 0;
+    }
     // Initialize libxml2 and check for potential ABI mismatches between
     // compiled version and the shared library actually used.
     xmlInitParser();

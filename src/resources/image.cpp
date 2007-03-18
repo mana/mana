@@ -99,66 +99,6 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     amask = 0xff000000;
 #endif
 
-    // Convert the image to a 32 bit software surface for processing
-    SDL_Surface *formatImage = SDL_CreateRGBSurface(SDL_SWSURFACE, 0, 0, 32,
-            rmask, gmask, bmask, amask);
-
-    if (formatImage == NULL) {
-        logger->log("Error, image load failed: not enough memory");
-        SDL_FreeSurface(tmpImage);
-        return NULL;
-    }
-
-    SDL_Surface *image = SDL_ConvertSurface(
-            tmpImage, formatImage->format, SDL_SWSURFACE);
-
-    SDL_FreeSurface(formatImage);
-
-    if (image == NULL) {
-        logger->log("Error, image load failed: not enough memory");
-        return NULL;
-    }
-
-    bool hasPink = false;
-    bool hasAlpha = false;
-    int i;
-    Uint32 pink = SDL_MapRGB(image->format, 255, 0, 255);
-
-    // Figure out whether the image has pink pixels
-    for (i = 0; i < image->w * image->h; ++i)
-    {
-        if (((Uint32*)image->pixels)[i] == pink)
-        {
-            hasPink = true;
-            break;
-        }
-    }
-
-    // Figure out whether the image uses its alpha layer
-    for (i = 0; i < image->w * image->h; ++i)
-    {
-        Uint8 r, g, b, a;
-        SDL_GetRGBA(
-                ((Uint32*)image->pixels)[i],
-                image->format,
-                &r, &g, &b, &a);
-
-        if (a != 255)
-        {
-            hasAlpha = true;
-            break;
-        }
-    }
-
-    SDL_FreeSurface(image);
-
-    if (hasPink && !hasAlpha) {
-        SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY,
-                SDL_MapRGB(tmpImage->format, 255, 0, 255));
-    } else if (hasAlpha) {
-        SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-    }
-
 #ifdef USE_OPENGL
     if (mUseOpenGL)
     {
@@ -246,14 +186,10 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     }
 #endif
 
-    // Set color key and alpha blending optins, and convert the surface to the
-    // current display format
-    if (hasAlpha) {
-        image = SDL_DisplayFormatAlpha(tmpImage);
-    }
-    else {
-        image = SDL_DisplayFormat(tmpImage);
-    }
+    SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+
+    SDL_Surface *image = SDL_DisplayFormatAlpha(tmpImage);
+
     SDL_FreeSurface(tmpImage);
 
     if (image == NULL) {
