@@ -1,4 +1,9 @@
-﻿2007-03-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* icons/tmw.ico, icons/tmw.png, icons/tmw.xpm: Replaced icons with the
+	green globe that is also used on the website.
+
+2007-03-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp, src/tmw.rc, data/icons/tmw-icon.png,
 	data/icons/tmw-icon.xpm, data/icons/tmw.ico, data/icons/tmw-icon.ico,
