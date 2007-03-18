@@ -7,6 +7,7 @@
 	* data/graphics/gui/thickborder.png,
 	data/graphics/gui/vscroll_grey.png, data/graphics/gui/slider.png,
 	data/graphics/gui/vscroll_blue.png, data/graphics/gui/vscroll_red.png,
+	data/graphics/gui/deepbox.png,
 	data/graphics/sprites/monster-slime-red.png,
 	data/graphics/sprites/monster-scorpion-black.png,
 	data/graphics/sprites/monster-scorpion.png,
