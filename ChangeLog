@@ -1,4 +1,11 @@
-﻿2007-03-18  Rogier Polak     <rogier.l.a.polak@gmail.com>
+﻿2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* docs/Makefile.am, docs/tmw.6: Added man page by Patrick Matthäi.
+	* src/resources/image.cpp: Restored alpha layer check, since it should
+	be more efficient in software mode when SDL knows an image doesn't use
+	the alpha layer.
+
+2007-03-18  Rogier Polak  <rogier.l.a.polak@gmail.com>
 
 	* src/main.cpp: Added (-v) version to the arguments. (Applied a patch
 	by Patrick Matthäi).

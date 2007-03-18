@@ -99,6 +99,28 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     amask = 0xff000000;
 #endif
 
+    bool hasAlpha = false;
+
+    // Figure out whether the image uses its alpha layer
+    for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
+    {
+        Uint8 r, g, b, a;
+        SDL_GetRGBA(
+                ((Uint32*) tmpImage->pixels)[i],
+                tmpImage->format,
+                &r, &g, &b, &a);
+
+        if (a != 255)
+        {
+            hasAlpha = true;
+            break;
+        }
+    }
+
+    if (hasAlpha) {
+        SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+    }
+
 #ifdef USE_OPENGL
     if (mUseOpenGL)
     {
@@ -186,10 +208,15 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     }
 #endif
 
-    SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+    SDL_Surface *image;
 
-    SDL_Surface *image = SDL_DisplayFormatAlpha(tmpImage);
-
+    // Convert the surface to the current display format
+    if (hasAlpha) {
+        image = SDL_DisplayFormatAlpha(tmpImage);
+    }
+    else {
+        image = SDL_DisplayFormat(tmpImage);
+    }
     SDL_FreeSurface(tmpImage);
 
     if (image == NULL) {
