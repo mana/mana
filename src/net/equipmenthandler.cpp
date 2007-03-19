@@ -43,6 +43,7 @@ EquipmentHandler::EquipmentHandler()
         0x01d7,
         SMSG_PLAYER_UNEQUIP,
         SMSG_PLAYER_ARROW_EQUIP,
+        SMSG_PLAYER_ATTACK_RANGE,
         0
     };
     handledMessages = _messages;
@@ -190,6 +191,10 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             }
             logger->log("Unequipping: %i %i(%i) %i",
                     index, equipPoint, type, position);
+            break;
+            
+        case SMSG_PLAYER_ATTACK_RANGE:
+            player_node->setAttackRange(msg->readInt16());
             break;
 
         case SMSG_PLAYER_ARROW_EQUIP:

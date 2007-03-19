@@ -44,6 +44,7 @@
 #define SMSG_PLAYER_EQUIPMENT        0x00a4
 #define SMSG_PLAYER_EQUIP            0x00aa
 #define SMSG_PLAYER_UNEQUIP          0x00ac
+#define SMSG_PLAYER_ATTACK_RANGE     0x013a
 #define SMSG_PLAYER_ARROW_EQUIP      0x013c
 #define SMSG_PLAYER_ARROW_MESSAGE    0x013b
 #define SMSG_PLAYER_SKILLS           0x010f

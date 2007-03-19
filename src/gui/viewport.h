@@ -35,6 +35,7 @@ class Being;
 class FloorItem;
 class Item;
 class PopupMenu;
+class SimpleAnimation;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -148,6 +149,12 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mCameraX;              /**< Current viewpoint in tiles. */
         int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
+        
+        /**
+         * Target animated cursor.
+         */
+        SimpleAnimation *mTargetCursorInRange;
+        SimpleAnimation *mTargetCursorOutRange;
 
         bool mPlayerFollowMouse;
         int mWalkTime;

@@ -92,6 +92,16 @@ class LocalPlayer : public Player
         void useItem(Item *item);
         void dropItem(Item *item, int quantity);
         void pickUp(FloorItem *item);
+        
+        /**
+         * Sets the attack range.
+         */
+        void setAttackRange(int range) { mAttackRange = range; }
+        
+        /**
+         * Gets the attack range.
+         */
+        int getAttackRange() const { return mAttackRange; }
 
         /**
          * Sents a trade request to the given being.
@@ -162,6 +172,8 @@ class LocalPlayer : public Player
         Uint32 mXpForNextLevel, mJobXpForNextLevel;
         Uint16 mHp, mMaxHp, mMp, mMaxMp;
         Uint32 mGp;
+        
+        Uint16 mAttackRange;
 
         Uint32 mTotalWeight, mMaxWeight;
 

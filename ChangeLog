@@ -1,3 +1,9 @@
+2007-03-19  David Athay <ko2fan@gmail.com>
+
+	* src/localplayer.cpp, src/gui/viewport.cpp, src/gui/viewport.h,
+	src/net/equipmenthandler.cpp, src/localplayer.h,
+	src/net/protocol.h: Added target cursor.
+
 ﻿2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* docs/Makefile.am, docs/tmw.6: Added man page by Patrick Matthäi.

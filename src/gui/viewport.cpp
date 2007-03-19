@@ -28,6 +28,7 @@
 #include "gui.h"
 #include "popupmenu.h"
 
+#include "../simpleanimation.h"
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../flooritemmanager.h"
@@ -36,7 +37,10 @@
 #include "../map.h"
 #include "../npc.h"
 
+#include "../resources/animation.h"
 #include "../resources/monsterdb.h"
+#include "../resources/resourcemanager.h"
+#include "../resources/spriteset.h"
 
 #include "../utils/tostring.h"
 
@@ -60,11 +64,35 @@ Viewport::Viewport():
     config.addListener("ScrollRadius", this);
 
     mPopupMenu = new PopupMenu();
+    
+    // Load target cursors.
+    ResourceManager *resman = ResourceManager::getInstance();
+    Animation *animInRange = new Animation();
+    //Load animation frames into a spriteset, with each frame being 44x35
+    Spriteset *ssInRange = resman->getSpriteset("graphics/gui/target-cursor-blue.png", 44, 35);
+    for(int i = 0; i < 8; ++i)
+    {
+        //Have a delay of 75
+        animInRange->addFrame(ssInRange->get(i),75,0,0);
+    }
+    mTargetCursorInRange = new SimpleAnimation(animInRange);
+    Animation *animOutRange = new Animation();
+    //Load animation frames into a spriteset, with each frame being 44x35
+    Spriteset *ssOutRange = resman->getSpriteset("graphics/gui/target-cursor-red.png", 44, 35);
+    for(int j = 0; j < 8; ++j)
+    {
+        //Have a delay of 75
+        animOutRange->addFrame(ssOutRange->get(j),75,0,0);
+    }
+    mTargetCursorOutRange = new SimpleAnimation(animOutRange);
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
+
+    delete mTargetCursorInRange;
+    delete mTargetCursorOutRange;
 }
 
 void
@@ -217,6 +245,39 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         {
             int mobId = target->mJob - 1002;
             mobName = MonsterDB::get(mobId).getName();
+            
+            // Find whether target is in range
+            int rangex = target->mX - player_node->mX;
+            int rangey = target->mY - player_node->mY;
+            int attackRange = player_node->getAttackRange();
+            
+            // If either is negative, convert to positive
+            if (rangex < 0)
+            {
+                rangex = -rangex;
+            }
+            if (rangey < 0)
+            {
+                rangey = -rangey;
+            }
+            
+            // Draw the target cursor, which one depends if the target is in range
+            if (rangex > attackRange || rangey > attackRange)
+            {
+                // Update animation frame and then draw the next image
+                mTargetCursorOutRange->update(10);
+                graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
+                                    target->getPixelX() - (int) mViewX,
+                                    target->getPixelY() - (int) mViewY);
+            }
+            else
+            {
+                // Update animation frame and then draw the next image
+                mTargetCursorInRange->update(10);
+                graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
+                                    target->getPixelX() - (int) mViewX,
+                                    target->getPixelY() - (int) mViewY);
+            }
 
             graphics->drawText(mobName,
                     target->getPixelX() - (int) mViewX + 15,
