@@ -35,6 +35,7 @@ class Being;
 class FloorItem;
 class Item;
 class PopupMenu;
+class Graphics;
 class SimpleAnimation;
 
 /**
@@ -138,6 +139,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * TODO Find some way to get rid of Being here
          */
         void showPopup(int x, int y, Being *being);
+        
+        /**
+         * Draws range based target cursor
+         */
+        void
+        drawTargetCursor(Graphics *graphics);
+        
+        /**
+         * Draws target name
+         */
+        void
+        drawTargetName(Graphics *graphics);
 
 
         Map *mMap;                 /**< The current map. */

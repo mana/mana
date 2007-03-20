@@ -1,7 +1,12 @@
 2007-03-20  David Athay  <ko2fan@gmail.com>
 
-    * src/gui/viewport.cpp: Fixed target cursor animation, and changed
-    which layer it is drawn after.
+	* src/gui/viewport.cpp, src/gui/viewport.h: Split drawing the 
+	target cursor and target name into functions.
+
+2007-03-20  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/viewport.cpp: Fixed target cursor animation, and changed
+	which layer it is drawn after.
 
 2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
 
