@@ -68,7 +68,10 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mCancelButton = new Button("Cancel", "cancel", this);
     mRegisterButton = new Button("Register", "register", this);
 
-    setContentSize(200, 100);
+    const int width = 220;
+    const int height = 100;
+
+    setContentSize(width, height);
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());
@@ -78,18 +81,19 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField->setPosition(65, 14 + userLabel->getHeight());
     mServerField->setPosition(
             65, 23 + userLabel->getHeight() + passLabel->getHeight());
-    mUserField->setWidth(130);
-    mPassField->setWidth(130);
-    mServerField->setWidth(130);
+    mUserField->setWidth(width - 70);
+    mPassField->setWidth(width - 70);
+    mServerField->setWidth(width - 70);
     mKeepCheck->setPosition(4, 77);
     mCancelButton->setPosition(
-            200 - mCancelButton->getWidth() - 5,
-            100 - mCancelButton->getHeight() - 5);
+            width - mCancelButton->getWidth() - 5,
+            height - mCancelButton->getHeight() - 5);
     mOkButton->setPosition(
             mCancelButton->getX() - mOkButton->getWidth() - 5,
-            100 - mOkButton->getHeight() - 5);
-    mRegisterButton->setPosition(mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
-            100 - mRegisterButton->getHeight() - 5);
+            height - mOkButton->getHeight() - 5);
+    mRegisterButton->setPosition(
+            mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
+            height - mRegisterButton->getHeight() - 5);
 
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");

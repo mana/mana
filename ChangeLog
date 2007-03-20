@@ -4,6 +4,8 @@
 	src/resources/image.cpp: Reduced amount of useless logging, calculate
 	nearest power of two in a function and only do the alpha check in
 	software mode.
+	* src/gui/login.cpp: Fixed small issue where default server didn't fit
+	in the server entry field properly.
 
 2007-03-20  David Athay  <ko2fan@gmail.com>
 
