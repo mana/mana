@@ -1,3 +1,8 @@
+2007-03-20  David Athay  <ko2fan@gmail.com>
+
+    * src/gui/viewport.cpp: Fixed target cursor animation, and changed
+    which layer it is drawn after.
+
 2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/gui/mouse.png: Positioned the cursor image more

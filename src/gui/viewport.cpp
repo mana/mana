@@ -183,11 +183,63 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
 
     mCameraX = (int) (mViewX + 16) / 32;
     mCameraY = (int) (mViewY + 16) / 32;
-
+    
     // Draw tiles and sprites
     if (mMap)
     {
         mMap->draw(graphics, (int) mViewX, (int) mViewY, 0);
+        // Draw target marker if needed
+        Being *target = player_node->getTarget();
+        if (target)
+        {
+            graphics->setFont(speechFont);
+            graphics->setColor(gcn::Color(255, 32, 32));
+            int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
+            
+            std::string mobName = "";
+            
+            if (target->mJob >= 1002)
+            {
+                int mobId = target->mJob - 1002;
+                mobName = MonsterDB::get(mobId).getName();
+                
+                // Find whether target is in range
+                int rangex = target->mX - player_node->mX;
+                int rangey = target->mY - player_node->mY;
+                int attackRange = player_node->getAttackRange();
+                
+                // If either is negative, convert to positive
+                if (rangex < 0)
+                {
+                    rangex = -rangex;
+                }
+                if (rangey < 0)
+                {
+                    rangey = -rangey;
+                }
+                
+                // Draw the target cursor, which one depends if the target is in range
+                if (rangex > attackRange || rangey > attackRange)
+                {
+                    // Draw the out of range cursor
+                    graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
+                                        target->getPixelX() - (int) mViewX,
+                                        target->getPixelY() - (int) mViewY);
+                }
+                else
+                {
+                    // Draw the in range cursor
+                    graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
+                                        target->getPixelX() - (int) mViewX,
+                                        target->getPixelY() - (int) mViewY);
+                }
+                
+                graphics->drawText(mobName,
+                                   target->getPixelX() - (int) mViewX + 15,
+                                   target->getPixelY() - (int) mViewY - dy,
+                                   gcn::Graphics::CENTER);
+            }
+        }
         mMap->draw(graphics, (int) mViewX, (int) mViewY, 1);
         mMap->draw(graphics, (int) mViewX, (int) mViewY, 2);
         mMap->drawOverlay(graphics, mViewX, mViewY,
@@ -221,7 +273,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
                     squareX + 4, squareY + 12, gcn::Graphics::CENTER);
         }
     }
-
+    
     // Draw player nickname, speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
@@ -229,61 +281,6 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         (*i)->drawSpeech(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawName(graphics, -(int) mViewX, -(int) mViewY);
         (*i)->drawEmotion(graphics, -(int) mViewX, -(int) mViewY);
-    }
-
-    // Draw target marker if needed
-    Being *target = player_node->getTarget();
-    if (target)
-    {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 32, 32));
-        int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
-
-        std::string mobName = "";
-
-        if (target->mJob >= 1002)
-        {
-            int mobId = target->mJob - 1002;
-            mobName = MonsterDB::get(mobId).getName();
-            
-            // Find whether target is in range
-            int rangex = target->mX - player_node->mX;
-            int rangey = target->mY - player_node->mY;
-            int attackRange = player_node->getAttackRange();
-            
-            // If either is negative, convert to positive
-            if (rangex < 0)
-            {
-                rangex = -rangex;
-            }
-            if (rangey < 0)
-            {
-                rangey = -rangey;
-            }
-            
-            // Draw the target cursor, which one depends if the target is in range
-            if (rangex > attackRange || rangey > attackRange)
-            {
-                // Update animation frame and then draw the next image
-                mTargetCursorOutRange->update(10);
-                graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
-                                    target->getPixelX() - (int) mViewX,
-                                    target->getPixelY() - (int) mViewY);
-            }
-            else
-            {
-                // Update animation frame and then draw the next image
-                mTargetCursorInRange->update(10);
-                graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
-                                    target->getPixelX() - (int) mViewX,
-                                    target->getPixelY() - (int) mViewY);
-            }
-
-            graphics->drawText(mobName,
-                    target->getPixelX() - (int) mViewX + 15,
-                    target->getPixelY() - (int) mViewY - dy,
-                    gcn::Graphics::CENTER);
-        }
     }
 
     // Draw contained widgets
@@ -308,6 +305,9 @@ Viewport::logic()
                                     mouseY / 32 + mCameraY);
         mWalkTime = player_node->mWalkTime;
     }
+    
+    mTargetCursorInRange->update(10);
+    mTargetCursorOutRange->update(10);
 }
 
 void
