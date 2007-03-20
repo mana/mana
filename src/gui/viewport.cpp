@@ -255,7 +255,7 @@ Viewport::logic()
                                     mouseY / 32 + mCameraY);
         mWalkTime = player_node->mWalkTime;
     }
-    
+
     mTargetCursorInRange->update(10);
     mTargetCursorOutRange->update(10);
 }

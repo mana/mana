@@ -98,7 +98,7 @@ unsigned char screen_mode;
 Sound sound;
 Music *bgm;
 
-Configuration config;         /**< Xml file configuration reader */
+Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
 
 namespace {

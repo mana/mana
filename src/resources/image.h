@@ -123,6 +123,12 @@ class Image : public Resource
 #ifdef USE_OPENGL
         Image(const std::string &idPath, GLuint glimage, int width, int height,
                 int texWidth, int texHeight);
+
+        /**
+         * Returns the first power of two equal or bigger than the input.
+         */
+        static int
+        powerOfTwo(int input);
 #endif
         Image(const std::string &idPath, SDL_Surface *image);
 
