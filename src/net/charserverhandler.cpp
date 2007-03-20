@@ -145,9 +145,6 @@ CharServerHandler::handleCharCreateResponse(MessageIn &msg)
             case CREATE_RAW_STATS_TOO_LOW:
                 message = "Character's stats are too low";
                 break;
-            case CREATE_RAW_STATS_INVALID_DIFF:
-                message = "Character's stats difference is too high";
-                break;
             case CREATE_RAW_STATS_EQUAL_TO_ZERO:
                 message = "One stat is zero";
                 break;

@@ -31,6 +31,7 @@
 #include "confirm_dialog.h"
 #include "ok_dialog.h"
 #include "playerbox.h"
+#include "slider.h"
 #include "textfield.h"
 
 #include "unregisterdialog.h"
@@ -270,11 +271,26 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
+    mAttributeLable[0] = new gcn::Label("Strength:");
+    mAttributeLable[1] = new gcn::Label("Agility:");
+    mAttributeLable[2] = new gcn::Label("Dexterity:");
+    mAttributeLable[3] = new gcn::Label("Vitality:");
+    mAttributeLable[4] = new gcn::Label("Intelligence:");
+    mAttributeLable[5] = new gcn::Label("Willpower:");
+    mAttributeLable[6] = new gcn::Label("Charisma:");
+    for (int i=0; i<7; i++)
+    {
+        mAttributeLable[i]->setWidth(70);
+        mAttributeSlider[i] = new Slider(1, 20);
+        mAttributeValue[i] = new gcn::Label("1");
+    };
+
+    mAttributesLeft = new gcn::Label("Please distribute # points");
 
     mNameField->setActionEventId("create");
 
     int w = 200;
-    int h = 150;
+    int h = 330;
     setContentSize(w, h);
     mPlayerBox->setDimension(gcn::Rectangle(80, 30, 110, 85));
     mNameLabel->setPosition(5, 5);
@@ -286,6 +302,18 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mPrevHairStyleButton->setPosition(90, 64);
     mNextHairStyleButton->setPosition(165, 64);
     mHairStyleLabel->setPosition(5, 70);
+    for (int i=0; i<7; i++)
+    {
+        mAttributeSlider[i]->setValue(10);
+        mAttributeSlider[i]->setDimension(gcn::Rectangle(   75, 140 + i*20,
+                                                            100, 10));
+        mAttributeSlider[i]->setActionEventId("statslider");
+        mAttributeSlider[i]->addActionListener(this);
+        mAttributeValue[i]->setPosition(180, 140 + i*20);
+        mAttributeLable[i]->setPosition(5, 140 + i*20);
+    };
+    mAttributesLeft->setPosition(15, 280);
+    UpdateSliders();
     mCancelButton->setPosition(
             w - 5 - mCancelButton->getWidth(),
             h - 5 - mCancelButton->getHeight());
@@ -304,6 +332,13 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     add(mNextHairStyleButton);
     add(mPrevHairStyleButton);
     add(mHairStyleLabel);
+    for (int i=0; i<7; i++)
+    {
+        add(mAttributeSlider[i]);
+        add(mAttributeValue[i]);
+        add(mAttributeLable[i]);
+    };
+    add(mAttributesLeft);
     add(mCreateButton);
     add(mCancelButton);
 
@@ -327,13 +362,14 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                     mPlayer->getHairStyle(),
                     mPlayer->getHairColor(),
                     0,   // gender
-                    10,  // STR
-                    10,  // AGI
-                    10,  // VIT
-                    10,  // INT
-                    10,  // DEX
-                    10,  // WILL
-                    10); // CHAR
+                    (int)mAttributeSlider[0]->getValue(),  // STR
+                    (int)mAttributeSlider[1]->getValue(),  // AGI
+                    (int)mAttributeSlider[2]->getValue(),  // DEX
+                    (int)mAttributeSlider[3]->getValue(),  // VIT
+                    (int)mAttributeSlider[4]->getValue(),  // INT
+                    (int)mAttributeSlider[5]->getValue(),  // WILL
+                    (int)mAttributeSlider[6]->getValue()   // CHAR
+            );
             scheduleDelete();
         }
         else {
@@ -358,9 +394,55 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
         int prevStyle = mPlayer->getHairStyle() + NR_HAIR_STYLES - 1;
         mPlayer->setHairStyle(prevStyle % NR_HAIR_STYLES);
     }
+    else if (event.getId() == "statslider") {
+        UpdateSliders();
+    }
 }
 
 std::string CharCreateDialog::getName()
 {
     return mNameField->getText();
+}
+
+void CharCreateDialog::UpdateSliders()
+{
+    for (int i=0; i<=6; i++)
+    {
+        // update captions
+        mAttributeValue[i]->setCaption(toString((int)(mAttributeSlider[i]->getValue())));
+        mAttributeValue[i]->adjustSize();
+    }
+
+    // update distributed points
+    int pointsLeft = 70 - getDistributedPoints();
+    if (pointsLeft == 0)
+    {
+        mAttributesLeft->setCaption("Character stats OK");
+        mCreateButton->setEnabled(true);
+    }
+    else
+    {
+        mCreateButton->setEnabled(false);
+        if (pointsLeft > 0)
+        {
+            mAttributesLeft->setCaption(std::string("Please distribute " + toString(pointsLeft) + " points"));
+        }
+        else
+        {
+            mAttributesLeft->setCaption(std::string("Please remove " + toString(-pointsLeft) + " points"));
+        }
+    }
+
+    mAttributesLeft->adjustSize();
+}
+
+int CharCreateDialog::getDistributedPoints()
+{
+    int points = 0;
+
+    for (int i=0; i<7; i++)
+    {
+        points += (int)mAttributeSlider[i]->getValue();
+    }
+    return points;
 }

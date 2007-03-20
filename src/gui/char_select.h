@@ -119,6 +119,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         std::string getName();
 
     private:
+        int getDistributedPoints();
+        void UpdateSliders();
+
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
         gcn::Button *mNextHairColorButton;
@@ -127,6 +130,12 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Button *mNextHairStyleButton;
         gcn::Button *mPrevHairStyleButton;
         gcn::Label *mHairStyleLabel;
+
+        gcn::Slider *mAttributeSlider[7];
+        gcn::Label *mAttributeLable[7];
+        gcn::Label *mAttributeValue[7];
+        gcn::Label *mAttributesLeft;
+
         gcn::Button *mCreateButton;
         gcn::Button *mCancelButton;
 
@@ -134,6 +143,9 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         PlayerBox *mPlayerBox;
 
         int mSlot;
+
+        static const int mMaxPoints = 70;
+        int mUsedPoints;
 
 
         /**
