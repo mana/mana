@@ -6,6 +6,8 @@
 	software mode.
 	* src/gui/login.cpp: Fixed small issue where default server didn't fit
 	in the server entry field properly.
+	* src/main.cpp: Display a progress bar and connecting status for each
+	server and display the version using a gcn::Label.
 
 2007-03-20  David Athay  <ko2fan@gmail.com>
 

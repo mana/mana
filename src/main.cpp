@@ -31,8 +31,8 @@
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-
 #include <guichan/sdl/sdlinput.hpp>
+#include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
@@ -58,10 +58,10 @@
 
 #include "gui/char_server.h"
 #include "gui/char_select.h"
-#include "gui/connection.h"
 #include "gui/gui.h"
 #include "gui/login.h"
 #include "gui/ok_dialog.h"
+#include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
@@ -454,11 +454,12 @@ void accountLogin(Network *network, LoginData *loginData)
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
 
-    //remove _M or _F from username after a login for registration purpose
+    // Remove _M or _F from username after a login for registration purpose
     if (loginData->registerLogin)
     {
         loginData->registerLogin = false;
-        loginData->username = loginData->username.substr(0, loginData->username.length() - 2);
+        loginData->username = loginData->username.substr(0,
+                loginData->username.length() - 2);
     }
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
@@ -560,9 +561,21 @@ int main(int argc, char *argv[])
 
     unsigned int oldstate = !state; // We start with a status change.
 
+    Game *game = NULL;
     Window *currentDialog = NULL;
     Image *login_wallpaper = NULL;
-    Game *game = NULL;
+
+    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+#ifdef PACKAGE_VERSION
+    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+    top->add(versionLabel, 2, 2);
+#endif
+    ProgressBar *progressBar = new ProgressBar(0.0f, 100, 20);
+    gcn::Label *progressLabel = new gcn::Label();
+    top->add(progressBar, 5, top->getHeight() - 5 - progressBar->getHeight());
+    top->add(progressLabel, 15 + progressBar->getWidth(),
+                            progressBar->getY() + 4);
+    progressBar->setVisible(false);
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
@@ -620,11 +633,14 @@ int main(int argc, char *argv[])
             }
         }
 
+        if (progressBar->isVisible())
+        {
+            progressBar->setProgress(progressBar->getProgress() + 0.005f);
+            if (progressBar->getProgress() == 1.0f)
+                progressBar->setProgress(0.0f);
+        }
+
         graphics->drawImage(login_wallpaper, 0, 0);
-#ifdef PACKAGE_VERSION
-        graphics->setFont(gui->getFont());
-        graphics->drawText(PACKAGE_VERSION, 0, 0);
-#endif
         gui->draw();
         graphics->updateScreen();
 
@@ -641,9 +657,13 @@ int main(int argc, char *argv[])
 
                     // Those states don't cause a network disconnect
                 case LOADDATA_STATE:
+                    break;
+
                 case ACCOUNT_STATE:
                 case CHAR_CONNECT_STATE:
                 case CONNECTING_STATE:
+                    progressBar->setVisible(false);
+                    progressLabel->setCaption("");
                     break;
 
                 default:
@@ -664,7 +684,7 @@ int main(int argc, char *argv[])
                 case LOADDATA_STATE:
                     logger->log("State: LOADDATA");
 
-                    //add customdata directory
+                    // Add customdata directory
                     ResourceManager::getInstance()->searchAndAddArchives(
                         "customdata/",
                         "zip",
@@ -721,6 +741,14 @@ int main(int argc, char *argv[])
                 case GAME_STATE:
                     sound.fadeOutMusic(1000);
 
+#ifdef PACKAGE_VERSION
+                    delete versionLabel;
+                    versionLabel = NULL;
+#endif
+                    delete progressBar;
+                    delete progressLabel;
+                    progressBar = NULL;
+                    progressLabel = NULL;
                     currentDialog = NULL;
                     login_wallpaper->decRef();
                     login_wallpaper = NULL;
@@ -748,17 +776,27 @@ int main(int argc, char *argv[])
 
                 case CONNECTING_STATE:
                     logger->log("State: CONNECTING");
+                    progressBar->setVisible(true);
+                    progressLabel->setCaption("Connecting to map server...");
+                    progressLabel->adjustSize();
                     mapLogin(network, &loginData);
-                    currentDialog = new ConnectionDialog();
                     break;
 
                 case CHAR_CONNECT_STATE:
                     logger->log("Char: %i\n", loginData.sex);
+                    progressBar->setVisible(true);
+                    progressLabel->setCaption(
+                            "Connecting to character server...");
+                    progressLabel->adjustSize();
                     charLogin(network, &loginData);
                     break;
 
                 case ACCOUNT_STATE:
-                    logger->log("Account: %i\n", loginData.sex);
+                    logger->log("Account: %i", loginData.sex);
+                    progressBar->setVisible(true);
+                    progressLabel->setCaption(
+                            "Connecting to account server...");
+                    progressLabel->adjustSize();
                     accountLogin(network, &loginData);
                     break;
 
