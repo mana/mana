@@ -271,16 +271,16 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     mCreateButton = new Button("Create", "create", this);
     mCancelButton = new Button("Cancel", "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
-    mAttributeLable[0] = new gcn::Label("Strength:");
-    mAttributeLable[1] = new gcn::Label("Agility:");
-    mAttributeLable[2] = new gcn::Label("Dexterity:");
-    mAttributeLable[3] = new gcn::Label("Vitality:");
-    mAttributeLable[4] = new gcn::Label("Intelligence:");
-    mAttributeLable[5] = new gcn::Label("Willpower:");
-    mAttributeLable[6] = new gcn::Label("Charisma:");
+    mAttributeLabel[0] = new gcn::Label("Strength:");
+    mAttributeLabel[1] = new gcn::Label("Agility:");
+    mAttributeLabel[2] = new gcn::Label("Dexterity:");
+    mAttributeLabel[3] = new gcn::Label("Vitality:");
+    mAttributeLabel[4] = new gcn::Label("Intelligence:");
+    mAttributeLabel[5] = new gcn::Label("Willpower:");
+    mAttributeLabel[6] = new gcn::Label("Charisma:");
     for (int i=0; i<7; i++)
     {
-        mAttributeLable[i]->setWidth(70);
+        mAttributeLabel[i]->setWidth(70);
         mAttributeSlider[i] = new Slider(1, 20);
         mAttributeValue[i] = new gcn::Label("1");
     };
@@ -310,7 +310,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
         mAttributeSlider[i]->setActionEventId("statslider");
         mAttributeSlider[i]->addActionListener(this);
         mAttributeValue[i]->setPosition(180, 140 + i*20);
-        mAttributeLable[i]->setPosition(5, 140 + i*20);
+        mAttributeLabel[i]->setPosition(5, 140 + i*20);
     };
     mAttributesLeft->setPosition(15, 280);
     UpdateSliders();
@@ -336,7 +336,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
     {
         add(mAttributeSlider[i]);
         add(mAttributeValue[i]);
-        add(mAttributeLable[i]);
+        add(mAttributeLabel[i]);
     };
     add(mAttributesLeft);
     add(mCreateButton);

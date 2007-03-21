@@ -216,7 +216,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         GLenum error = glGetError();
         if (error)
         {
-            std::string errmsg = "Unkown error";
+            std::string errmsg = "Unknown error";
             switch (error)
             {
                 case GL_INVALID_ENUM:

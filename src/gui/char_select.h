@@ -132,7 +132,7 @@ class CharCreateDialog : public Window, public gcn::ActionListener
         gcn::Label *mHairStyleLabel;
 
         gcn::Slider *mAttributeSlider[7];
-        gcn::Label *mAttributeLable[7];
+        gcn::Label *mAttributeLabel[7];
         gcn::Label *mAttributeValue[7];
         gcn::Label *mAttributesLeft;
 
