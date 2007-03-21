@@ -37,34 +37,44 @@ enum SoundEvent
     EVENT_DIE
 };
 
-
+/**
+ * Holds information about a certain type of monster. This includes the name
+ * of the monster, the sprite to display and the sounds the monster makes.
+ *
+ * @see MonsterDB
+ */
 class MonsterInfo
 {
     public:
+        /**
+         * Constructor.
+         */
         MonsterInfo();
 
+        /**
+         * Destructor.
+         */
         ~MonsterInfo();
 
         void
-        setName(std::string name) { mName = name; } ;
+        setName(std::string name) { mName = name; }
 
         void
         setSprite(std::string filename) { mSprite = filename; }
 
         void
-        addSound (SoundEvent event, std::string filename);
+        addSound(SoundEvent event, std::string filename);
 
         const std::string&
-        getName () const { return mName; };
+        getName() const { return mName; }
 
         const std::string&
-        getSprite () const { return mSprite; };
+        getSprite() const { return mSprite; }
 
         std::string
-        getSound (SoundEvent event) const;
+        getSound(SoundEvent event) const;
 
     private:
-
         std::string mName;
         std::string mSprite;
 

@@ -35,10 +35,11 @@
 #include "../graphics.h"
 #include "../localplayer.h"
 #include "../map.h"
+#include "../monster.h"
 #include "../npc.h"
 
 #include "../resources/animation.h"
-#include "../resources/monsterdb.h"
+#include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/spriteset.h"
 
@@ -64,7 +65,7 @@ Viewport::Viewport():
     config.addListener("ScrollRadius", this);
 
     mPopupMenu = new PopupMenu();
-    
+
     // Load target cursors.
     ResourceManager *resman = ResourceManager::getInstance();
     Animation *animInRange = new Animation();
@@ -183,7 +184,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
 
     mCameraX = (int) (mViewX + 16) / 32;
     mCameraY = (int) (mViewY + 16) / 32;
-    
+
     // Draw tiles and sprites
     if (mMap)
     {
@@ -223,7 +224,7 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
                     squareX + 4, squareY + 12, gcn::Graphics::CENTER);
         }
     }
-    
+
     // Draw player nickname, speech, and emotion sprite as needed
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
@@ -267,34 +268,27 @@ Viewport::drawTargetCursor(Graphics *graphics)
     Being *target = player_node->getTarget();
     if (target)
     {
-        if (target->mJob >= 1002)
+        // Find whether target is in range
+        int rangeX = abs(target->mX - player_node->mX);
+        int rangeY = abs(target->mY - player_node->mY);
+        int attackRange = player_node->getAttackRange();
+
+        // Draw the target cursor, which one depends if the target is in range
+        if (rangeX > attackRange || rangeY > attackRange)
         {
-            // Find whether target is in range
-            int rangeX = target->mX - player_node->mX;
-            int rangeY = target->mY - player_node->mY;
-            int attackRange = player_node->getAttackRange();
-            
-            // Make sure the ranges are positive
-            rangeX = abs(rangeX);
-            rangeY = abs(rangeY);
-            
-            // Draw the target cursor, which one depends if the target is in range
-            if (rangeX > attackRange || rangeY > attackRange)
-            {
-                // Draw the out of range cursor
-                graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
-                                    target->getPixelX() - (int) mViewX,
-                                    target->getPixelY() - (int) mViewY);
-            }
-            else
-            {
-                // Draw the in range cursor
-                graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
-                                    target->getPixelX() - (int) mViewX,
-                                    target->getPixelY() - (int) mViewY);
-            }
+            // Draw the out of range cursor
+            graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
+                                target->getPixelX() - (int) mViewX,
+                                target->getPixelY() - (int) mViewY);
         }
-    }    
+        else
+        {
+            // Draw the in range cursor
+            graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
+                                target->getPixelX() - (int) mViewX,
+                                target->getPixelY() - (int) mViewY);
+        }
+    }
 }
 
 void
@@ -302,22 +296,16 @@ Viewport::drawTargetName(Graphics *graphics)
 {
     // Draw target marker if needed
     Being *target = player_node->getTarget();
-    if (target)
+    if (target && target->getType() == Being::MONSTER)
     {
         graphics->setFont(speechFont);
         graphics->setColor(gcn::Color(255, 32, 32));
-        int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
-    
-        std::string mobName = "";
-        if (target->mJob >= 1002)
-        {
-            int mobId = target->mJob - 1002;
-            mobName = MonsterDB::get(mobId).getName();
-            graphics->drawText(mobName,
-                               target->getPixelX() - (int) mViewX + 15,
-                               target->getPixelY() - (int) mViewY - dy,
-                               gcn::Graphics::CENTER);
-        }
+
+        const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
+        graphics->drawText(mi.getName(),
+                           target->getPixelX() - (int) mViewX + 15,
+                           target->getPixelY() - (int) mViewY - 42,
+                           gcn::Graphics::CENTER);
     }
 }
 

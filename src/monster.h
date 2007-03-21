@@ -48,7 +48,6 @@ class Monster : public Being
          */
         virtual void handleAttack(Being *victim, int damage);
 
-    protected:
         /**
          * Returns the MonsterInfo, with static data about this monster.
          */

@@ -8,6 +8,9 @@
 	in the server entry field properly.
 	* src/main.cpp: Display a progress bar and connecting status for each
 	server and display the version using a gcn::Label.
+	* src/gui/viewport.cpp, src/monster.h: Avoiding magic numbers where
+	possible (1002) and also display the target when other players are
+	targeted.
 
 2007-03-20  David Athay  <ko2fan@gmail.com>
 
