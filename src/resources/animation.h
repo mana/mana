@@ -29,7 +29,6 @@
 #include <libxml/tree.h>
 
 class Image;
-class Spriteset;
 
 /**
  * A single frame in an animation, with a delay and an offset.

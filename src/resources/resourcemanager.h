@@ -33,7 +33,7 @@ class Resource;
 class Image;
 class Music;
 class SoundEffect;
-class Spriteset;
+class ImageSet;
 class SpriteDef;
 
 /**
@@ -143,11 +143,11 @@ class ResourceManager
         getSoundEffect(const std::string &idPath);
 
         /**
-         * Creates a spriteset based on the image referenced by the given
+         * Creates a image set based on the image referenced by the given
          * path and the supplied sprite sizes
          */
-        Spriteset*
-        getSpriteset(const std::string &imagePath, int w, int h);
+        ImageSet*
+        getImageSet(const std::string &imagePath, int w, int h);
 
         /**
          * Creates a sprite definition based on a given path and the supplied

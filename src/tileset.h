@@ -24,19 +24,19 @@
 #ifndef _TMW_TILESET_H_
 #define _TMW_TILESET_H_
 
-#include "resources/spriteset.h"
+#include "resources/imageset.h"
 
 /**
- * A tileset, which is basically just a spriteset but it stores a firstgid.
+ * A tileset, which is basically just an image set but it stores a firstgid.
  */
-class Tileset : public Spriteset
+class Tileset : public ImageSet
 {
     public:
         /**
          * Constructor.
          */
         Tileset(Image *img, int w, int h, int firstGid):
-            Spriteset("", img, w, h),
+            ImageSet("", img, w, h),
             mFirstGid(firstGid)
         {
         }

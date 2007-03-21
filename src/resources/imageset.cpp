@@ -21,7 +21,7 @@
  *  $Id$
  */
 
-#include "spriteset.h"
+#include "imageset.h"
 
 #include "../log.h"
 
@@ -29,7 +29,7 @@
 
 #include "../utils/dtor.h"
 
-Spriteset::Spriteset(const std::string& idPath,
+ImageSet::ImageSet(const std::string& idPath,
                      Image *img,
                      int width, int height):
     Resource(idPath)
@@ -38,28 +38,28 @@ Spriteset::Spriteset(const std::string& idPath,
     {
         for (int x = 0; x + width <= img->getWidth(); x += width)
         {
-            mSpriteset.push_back(img->getSubImage(x, y, width, height));
+            mImages.push_back(img->getSubImage(x, y, width, height));
         }
     }
     mWidth = width;
     mHeight = height;
 }
 
-Spriteset::~Spriteset()
+ImageSet::~ImageSet()
 {
-    for_each(mSpriteset.begin(), mSpriteset.end(), make_dtor(mSpriteset));
+    for_each(mImages.begin(), mImages.end(), make_dtor(mImages));
 }
 
 Image*
-Spriteset::get(size_type i)
+ImageSet::get(size_type i)
 {
-    if (i >= mSpriteset.size())
+    if (i >= mImages.size())
     {
-        logger->log("Warning: Sprite #%i does not exist in this spriteset", i);
+        logger->log("Warning: Sprite #%i does not exist in this image set", i);
         return NULL;
     }
     else
     {
-        return mSpriteset[i];
+        return mImages[i];
     }
 }

@@ -77,7 +77,6 @@
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"

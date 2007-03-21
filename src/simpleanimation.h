@@ -27,7 +27,6 @@
 #include "resources/animation.h"
 
 class Frame;
-class Graphics;
 
 /**
  * This class is a leightweight alternative to the AnimatedSprite class.
@@ -50,10 +49,17 @@ class SimpleAnimation
         Image *getCurrentImage() const;
 
     private:
-        Animation *mAnimation;          /**< The hosted animation */
-        unsigned int mAnimationTime;    /**< Time in game ticks the current frame is shown*/
-        unsigned int mAnimationPhase;   /**< Index of current animation phase*/
-        Frame *mCurrentFrame;           /**< Current animation phase */
+        /** The hosted animation. */
+        Animation *mAnimation;
+
+        /** Time in game ticks the current frame is shown. */
+        unsigned int mAnimationTime;
+
+        /** Index of current animation frame. */
+        unsigned int mAnimationPhase;
+
+        /** Current animation frame. */
+        Frame *mCurrentFrame;
 };
 
 #endif

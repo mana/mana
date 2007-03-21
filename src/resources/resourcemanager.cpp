@@ -31,7 +31,7 @@
 #include "image.h"
 #include "music.h"
 #include "soundeffect.h"
-#include "spriteset.h"
+#include "imageset.h"
 #include "spritedef.h"
 
 #include "../log.h"
@@ -46,7 +46,7 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // Release any remaining spritedefs first because they depend on spritesets
+    // Release any remaining spritedefs first because they depend on image sets
     ResourceIterator iter = mResources.begin();
     while (iter != mResources.end())
     {
@@ -63,11 +63,11 @@ ResourceManager::~ResourceManager()
         }
     }
 
-    // Release any remaining spritesets first because they depend on images
+    // Release any remaining image sets first because they depend on images
     iter = mResources.begin();
     while (iter != mResources.end())
     {
-        if (dynamic_cast<Spriteset*>(iter->second) != 0)
+        if (dynamic_cast<ImageSet*>(iter->second) != 0)
         {
             cleanUp(iter->second);
             ResourceIterator toErase = iter;
@@ -229,8 +229,8 @@ ResourceManager::getSoundEffect(const std::string &idPath)
     return dynamic_cast<SoundEffect*>(get(SOUND_EFFECT, idPath));
 }
 
-Spriteset*
-ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
+ImageSet*
+ResourceManager::getImageSet(const std::string &imagePath, int w, int h)
 {
     std::stringstream ss;
     ss << imagePath << "[" << w << "x" << h << "]";
@@ -240,7 +240,7 @@ ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
 
     if (resIter != mResources.end()) {
         resIter->second->incRef();
-        return dynamic_cast<Spriteset*>(resIter->second);
+        return dynamic_cast<ImageSet*>(resIter->second);
     }
 
     Image *img = getImage(imagePath);
@@ -249,13 +249,13 @@ ResourceManager::getSpriteset(const std::string &imagePath, int w, int h)
         return NULL;
     }
 
-    Spriteset *spriteset = new Spriteset(idPath, img, w, h);
-    spriteset->incRef();
-    mResources[idPath] = spriteset;
+    ImageSet *imageSet = new ImageSet(idPath, img, w, h);
+    imageSet->incRef();
+    mResources[idPath] = imageSet;
 
     img->decRef();
 
-    return spriteset;
+    return imageSet;
 }
 
 SpriteDef*

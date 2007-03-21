@@ -41,7 +41,7 @@
 #include "../resources/animation.h"
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
-#include "../resources/spriteset.h"
+#include "../resources/imageset.h"
 
 #include "../utils/tostring.h"
 
@@ -66,25 +66,26 @@ Viewport::Viewport():
 
     mPopupMenu = new PopupMenu();
 
-    // Load target cursors.
+    // Load target cursors
     ResourceManager *resman = ResourceManager::getInstance();
+    mInRangeImages = resman->getImageSet(
+            "graphics/gui/target-cursor-blue.png", 44, 35);
+    mOutRangeImages = resman->getImageSet(
+            "graphics/gui/target-cursor-red.png", 44, 35);
     Animation *animInRange = new Animation();
-    //Load animation frames into a spriteset, with each frame being 44x35
-    Spriteset *ssInRange = resman->getSpriteset("graphics/gui/target-cursor-blue.png", 44, 35);
-    for(int i = 0; i < 8; ++i)
-    {
-        //Have a delay of 75
-        animInRange->addFrame(ssInRange->get(i),75,0,0);
-    }
-    mTargetCursorInRange = new SimpleAnimation(animInRange);
     Animation *animOutRange = new Animation();
-    //Load animation frames into a spriteset, with each frame being 44x35
-    Spriteset *ssOutRange = resman->getSpriteset("graphics/gui/target-cursor-red.png", 44, 35);
-    for(int j = 0; j < 8; ++j)
+
+    for (unsigned int i = 0; i < mInRangeImages->size(); ++i)
     {
-        //Have a delay of 75
-        animOutRange->addFrame(ssOutRange->get(j),75,0,0);
+        animInRange->addFrame(mInRangeImages->get(i), 75, 0, 0);
     }
+
+    for (unsigned int j = 0; j < mOutRangeImages->size(); ++j)
+    {
+        animOutRange->addFrame(mOutRangeImages->get(j), 75, 0, 0);
+    }
+
+    mTargetCursorInRange = new SimpleAnimation(animInRange);
     mTargetCursorOutRange = new SimpleAnimation(animOutRange);
 }
 
@@ -94,6 +95,9 @@ Viewport::~Viewport()
 
     delete mTargetCursorInRange;
     delete mTargetCursorOutRange;
+
+    mInRangeImages->decRef();
+    mOutRangeImages->decRef();
 }
 
 void

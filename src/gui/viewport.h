@@ -33,6 +33,7 @@
 class Map;
 class Being;
 class FloorItem;
+class ImageSet;
 class Item;
 class PopupMenu;
 class Graphics;
@@ -139,13 +140,13 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          * TODO Find some way to get rid of Being here
          */
         void showPopup(int x, int y, Being *being);
-        
+
         /**
          * Draws range based target cursor
          */
         void
         drawTargetCursor(Graphics *graphics);
-        
+
         /**
          * Draws target name
          */
@@ -162,11 +163,14 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mCameraX;              /**< Current viewpoint in tiles. */
         int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
-        
-        /**
-         * Target animated cursor.
-         */
+
+        ImageSet *mInRangeImages;  /**< Images of in range target cursor. */
+        ImageSet *mOutRangeImages; /**< Images of out of range target cursor.*/
+
+        /** Animated in range target cursor. */
         SimpleAnimation *mTargetCursorInRange;
+
+        /** Animated out of range target cursor. */
         SimpleAnimation *mTargetCursorOutRange;
 
         bool mPlayerFollowMouse;

@@ -195,8 +195,8 @@ tmw_SOURCES = gui/browserbox.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/spriteset.h \
-	      resources/spriteset.cpp \
+	      resources/imageset.h \
+	      resources/imageset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/base64.cpp \

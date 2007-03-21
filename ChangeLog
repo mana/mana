@@ -11,6 +11,15 @@
 	* src/gui/viewport.cpp, src/monster.h: Avoiding magic numbers where
 	possible (1002) and also display the target when other players are
 	targeted.
+	* src/floor_item.cpp, src/being.cpp, src/main.cpp, src/CMakeLists.txt,
+	src/gui/equipmentwindow.cpp, src/gui/viewport.cpp,
+	src/gui/itemcontainer.cpp, src/gui/viewport.h, src/engine.cpp,
+	src/animatedsprite.cpp, src/tileset.h, src/npc.cpp, src/Makefile.am,
+	src/being.h, src/resources/imageset.cpp, src/resources/animation.h,
+	src/resources/spritedef.cpp, src/resources/resourcemanager.h,
+	src/resources/spriteset.h, src/resources/imageset.h,
+	src/resources/resourcemanager.cpp, src/resources/spriteset.cpp,
+	src/resources/spritedef.h: Renamed Spriteset to ImageSet.
 
 2007-03-20  David Athay  <ko2fan@gmail.com>
 
