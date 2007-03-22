@@ -37,9 +37,13 @@
 #include "../localplayer.h"
 #include "../main.h"
 
+#include "../net/charserverhandler.h"
 #include "../net/messageout.h"
 
 #include "../utils/tostring.h"
+
+// Defined in main.cpp, used here for setting the char create dialog
+extern CharServerHandler charServerHandler;
 
 /**
  * Listener for confirming character deletion.
@@ -144,15 +148,14 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     {
         state = EXIT_STATE;
     }
-    else if (event.getId() == "new")
+    else if (event.getId() == "new" && n_character <= MAX_SLOT)
     {
-        if (n_character < MAX_SLOT + 1)
-        {
-            // Start new character dialog
-            mCharInfo->lock();
+        // Start new character dialog
+        mCharInfo->lock();
+        CharCreateDialog *charCreateDialog =
             new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
-            mCharInfo->unlock();
-        }
+        charServerHandler.setCharCreateDialog(charCreateDialog);
+        mCharInfo->unlock();
     }
     else if (event.getId() == "delete")
     {
@@ -312,21 +315,25 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
 
     setLocationRelativeTo(getParent());
     setVisible(true);
+    mNameField->requestFocus();
 }
 
 CharCreateDialog::~CharCreateDialog()
 {
     delete mPlayer;
+
+    // Make sure the char server handler knows that we're gone
+    charServerHandler.setCharCreateDialog(0);
 }
 
-void CharCreateDialog::action(const gcn::ActionEvent &event)
+void
+CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "create") {
         if (getName().length() >= 4) {
             // Attempt to create the character
             mCreateButton->setEnabled(false);
             attemptCharCreate();
-            scheduleDelete();
         }
         else {
             new OkDialog("Error",
@@ -352,12 +359,20 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-std::string CharCreateDialog::getName()
+const std::string&
+CharCreateDialog::getName()
 {
     return mNameField->getText();
 }
 
-void CharCreateDialog::attemptCharCreate()
+void
+CharCreateDialog::unlock()
+{
+    mCreateButton->setEnabled(true);
+}
+
+void
+CharCreateDialog::attemptCharCreate()
 {
     // Send character infos
     MessageOut outMsg(mNetwork);

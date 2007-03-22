@@ -1,4 +1,11 @@
-﻿2007-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h,
+	src/net/charserverhandler.h, src/net/charserverhandler.cpp: Clarified
+	the error message when character creation fails and made sure the
+	character creation dialog doesn't close when creation failed.
+
+2007-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/login.cpp, src/gui/login.h, src/gui/register.h,
 	src/gui/register.cpp: Only enable login button when a username,
@@ -7,9 +14,12 @@
 	registration. Fixed a crash caused by deleting an OkDialog twice (it
 	also deletes itself). Made the register dialog a bit wider. Register
 	dialog no longer clears username field when it is invalid.
-    * src/main.cpp, data/icons/CMakeLists.txt, data/icons/Makefile.am,
-    data/icons/tmw-32x32.png: Use a 32x32 non-alpha layered window icon.
-    * tmw.cbp: Updated project file.
+	* src/main.cpp, data/icons/CMakeLists.txt, data/icons/Makefile.am,
+	data/icons/tmw-32x32.png: Use a 32x32 non-alpha layered window icon.
+	* tmw.cbp: Updated project file.
+	* data/icons/CMakeLists.txt, data/icons/Makefile.am, src/main.cpp,
+	data/icons/tmw-32x32.png: Removed 32x32 non-alpha layered window icon
+	again, and instead used the icon in the executable on Windows.
 
 2007-03-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

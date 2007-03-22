@@ -28,9 +28,13 @@
 
 #include "../lockedarray.h"
 
+class CharCreateDialog;
 class LocalPlayer;
 class LoginData;
 
+/**
+ * Deals with incoming messages from the character server.
+ */
 class CharServerHandler : public MessageHandler
 {
     public:
@@ -38,15 +42,26 @@ class CharServerHandler : public MessageHandler
 
         void handleMessage(MessageIn *msg);
 
-        void setCharInfo(LockedArray<LocalPlayer*> *charInfo) { mCharInfo = charInfo; };
+        void setCharInfo(LockedArray<LocalPlayer*> *charInfo)
+        { mCharInfo = charInfo; }
 
-        void setLoginData(LoginData *loginData) { mLoginData = loginData; };
+        void setLoginData(LoginData *loginData)
+        { mLoginData = loginData; }
+
+        /**
+         * Sets the character create dialog. The handler will clean up this
+         * dialog when a new character is succesfully created, and will unlock
+         * the dialog when a new character failed to be created.
+         */
+        void setCharCreateDialog(CharCreateDialog *window)
+        { mCharCreateDialog = window; }
 
     protected:
         LoginData *mLoginData;
         LockedArray<LocalPlayer*> *mCharInfo;
+        CharCreateDialog *mCharCreateDialog;
 
-        LocalPlayer* readPlayerData(MessageIn *msg, int &slot);
+        LocalPlayer* readPlayerData(MessageIn &msg, int &slot);
 };
 
 #endif

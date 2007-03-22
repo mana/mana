@@ -34,8 +34,10 @@
 #include "../main.h"
 
 #include "../gui/ok_dialog.h"
+#include "../gui/char_select.h"
 
-CharServerHandler::CharServerHandler()
+CharServerHandler::CharServerHandler():
+    mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
         0x006b,
@@ -69,7 +71,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
             for (int i = 0; i < n_character; i++)
             {
-                tempPlayer = readPlayerData(msg, slot);
+                tempPlayer = readPlayerData(*msg, slot);
                 mCharInfo->select(slot);
                 mCharInfo->setEntry(tempPlayer);
                 logger->log("CharServer: Player: %s (%d)",
@@ -95,15 +97,26 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             break;
 
         case 0x006d:
-            tempPlayer = readPlayerData(msg, slot);
+            tempPlayer = readPlayerData(*msg, slot);
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
             n_character++;
+
+            // Close the character create dialog
+            if (mCharCreateDialog)
+            {
+                mCharCreateDialog->scheduleDelete();
+                mCharCreateDialog = 0;
+            }
             break;
 
         case 0x006e:
-            new OkDialog("Error", "Failed to create character");
+            new OkDialog("Error", "Failed to create character. Most likely"
+                                  " the name is already taken.");
+
+            if (mCharCreateDialog)
+                mCharCreateDialog->unlock();
             break;
 
         case 0x006f:
@@ -160,49 +173,49 @@ void CharServerHandler::handleMessage(MessageIn *msg)
     }
 }
 
-LocalPlayer* CharServerHandler::readPlayerData(MessageIn *msg, int &slot)
+LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
 {
     LocalPlayer *tempPlayer = new LocalPlayer(mLoginData->account_ID, 0, NULL);
     tempPlayer->setSex(1 - mLoginData->sex);
 
-    tempPlayer->mCharId = msg->readInt32();
+    tempPlayer->mCharId = msg.readInt32();
     tempPlayer->mTotalWeight = 0;
     tempPlayer->mMaxWeight = 0;
     tempPlayer->mLastAttackTime = 0;
-    tempPlayer->mXp = msg->readInt32();
-    tempPlayer->mGp = msg->readInt32();
-    tempPlayer->mJobXp = msg->readInt32();
-    tempPlayer->mJobLevel = msg->readInt32();
-    msg->skip(8);                          // unknown
-    msg->readInt32();                       // option
-    msg->readInt32();                       // karma
-    msg->readInt32();                       // manner
-    msg->skip(2);                          // unknown
-    tempPlayer->mHp = msg->readInt16();
-    tempPlayer->mMaxHp = msg->readInt16();
-    tempPlayer->mMp = msg->readInt16();
-    tempPlayer->mMaxMp = msg->readInt16();
-    msg->readInt16();                       // speed
-    msg->readInt16();                       // class
-    tempPlayer->setHairStyle(msg->readInt16());
-    Uint16 weapon = msg->readInt16();
+    tempPlayer->mXp = msg.readInt32();
+    tempPlayer->mGp = msg.readInt32();
+    tempPlayer->mJobXp = msg.readInt32();
+    tempPlayer->mJobLevel = msg.readInt32();
+    msg.skip(8);                          // unknown
+    msg.readInt32();                       // option
+    msg.readInt32();                       // karma
+    msg.readInt32();                       // manner
+    msg.skip(2);                          // unknown
+    tempPlayer->mHp = msg.readInt16();
+    tempPlayer->mMaxHp = msg.readInt16();
+    tempPlayer->mMp = msg.readInt16();
+    tempPlayer->mMaxMp = msg.readInt16();
+    msg.readInt16();                       // speed
+    msg.readInt16();                       // class
+    tempPlayer->setHairStyle(msg.readInt16());
+    Uint16 weapon = msg.readInt16();
     if (weapon == 11)
         weapon = 2;
     tempPlayer->setWeapon(weapon);
-    tempPlayer->mLevel = msg->readInt16();
-    msg->readInt16();                       // skill point
-    tempPlayer->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg->readInt16()); // head bottom
-    msg->readInt16();                       // shield
-    tempPlayer->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16()); // head option top
-    tempPlayer->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg->readInt16()); // head option mid
-    tempPlayer->setHairColor(msg->readInt16());
-    msg->readInt16();                       // unknown
-    tempPlayer->setName(msg->readString(24));
+    tempPlayer->mLevel = msg.readInt16();
+    msg.readInt16();                       // skill point
+    tempPlayer->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom
+    msg.readInt16();                       // shield
+    tempPlayer->setVisibleEquipment(Being::HAT_SPRITE, msg.readInt16()); // head option top
+    tempPlayer->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg.readInt16()); // head option mid
+    tempPlayer->setHairColor(msg.readInt16());
+    msg.readInt16();                       // unknown
+    tempPlayer->setName(msg.readString(24));
     for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg->readInt8();
+        tempPlayer->mAttr[i] = msg.readInt8();
     }
-    slot = msg->readInt8(); // character slot
-    msg->readInt8();                        // unknown
+    slot = msg.readInt8(); // character slot
+    msg.readInt8();                        // unknown
 
     return tempPlayer;
 }
