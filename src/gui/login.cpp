@@ -36,24 +36,6 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
-void
-WrongDataNoticeListener::setTarget(gcn::TextField *textField)
-{
-    mTarget = textField;
-}
-
-void
-WrongDataNoticeListener::action(const gcn::ActionEvent &event)
-{
-    if (event.getId() == "ok")
-    {
-        // Reset the field
-        mTarget->setText("");
-        mTarget->setCaretPosition(0);
-        mTarget->requestFocus();
-    }
-}
-
 LoginDialog::LoginDialog(LoginData *loginData):
     Window("Login"), mLoginData(loginData)
 {
@@ -99,6 +81,9 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField->setActionEventId("ok");
     mServerField->setActionEventId("ok");
 
+    mUserField->addKeyListener(this);
+    mPassField->addKeyListener(this);
+    mServerField->addKeyListener(this);
     mUserField->addActionListener(this);
     mPassField->addActionListener(this);
     mServerField->addActionListener(this);
@@ -124,39 +109,27 @@ LoginDialog::LoginDialog(LoginData *loginData):
         mPassField->requestFocus();
     }
 
-    mWrongDataNoticeListener = new WrongDataNoticeListener();
+    mOkButton->setEnabled(canSubmit());
 }
 
 LoginDialog::~LoginDialog()
 {
-    delete mWrongDataNoticeListener;
 }
 
 void
 LoginDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok")
+    if (event.getId() == "ok" && canSubmit())
     {
-        // Check login
-        if (mUserField->getText().empty())
-        {
-            mWrongDataNoticeListener->setTarget(mPassField);
-            OkDialog *dlg = new OkDialog("Error", "Enter your username first");
-            dlg->addActionListener(mWrongDataNoticeListener);
-        }
-        else
-        {
-            mLoginData->hostname = mServerField->getText();
-            mLoginData->username = mUserField->getText();
-            mLoginData->password = mPassField->getText();
-            mLoginData->remember = mKeepCheck->isMarked();
+        mLoginData->hostname = mServerField->getText();
+        mLoginData->username = mUserField->getText();
+        mLoginData->password = mPassField->getText();
+        mLoginData->remember = mKeepCheck->isMarked();
 
-            mOkButton->setEnabled(false);
-            //mCancelButton->setEnabled(false);
-            mRegisterButton->setEnabled(false);
+        mOkButton->setEnabled(false);
+        mRegisterButton->setEnabled(false);
 
-            state = ACCOUNT_STATE;
-        }
+        state = ACCOUNT_STATE;
     }
     else if (event.getId() == "cancel")
     {
@@ -164,6 +137,26 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "register")
     {
+        // Transfer these fields on to the register dialog
+        mLoginData->hostname = mServerField->getText();
+        mLoginData->username = mUserField->getText();
+        mLoginData->password = mPassField->getText();
+
         state = REGISTER_STATE;
     }
+}
+
+void
+LoginDialog::keyPressed(gcn::KeyEvent& keyEvent)
+{
+    mOkButton->setEnabled(canSubmit());
+}
+
+bool
+LoginDialog::canSubmit()
+{
+    return !mUserField->getText().empty() &&
+           !mPassField->getText().empty() &&
+           !mServerField->getText().empty() &&
+           state == LOGIN_STATE;
 }

@@ -1,4 +1,14 @@
-﻿2007-03-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/login.cpp, src/gui/login.h, src/gui/register.h,
+	src/gui/register.cpp: Only enable login button when a username,
+	password and server are filled in. Pass username, password and server
+	on to the register dialog. Go back to login dialog when canceling
+	registration. Fixed a crash caused by deleting an OkDialog twice (it
+	also deletes itself). Made the register dialog a bit wider. Register
+	dialog no longer clears username field when it is invalid.
+
+2007-03-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp, src/gui/viewport.cpp, src/resources/image.h,
 	src/resources/image.cpp: Reduced amount of useless logging, calculate

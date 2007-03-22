@@ -41,55 +41,86 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+void
+WrongDataNoticeListener::setTarget(gcn::TextField *textField)
+{
+    mTarget = textField;
+}
+
+void
+WrongDataNoticeListener::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "ok")
+    {
+        mTarget->requestFocus();
+    }
+}
+
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window("Register"),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
-    mWrongRegisterNotice(0),
     mLoginData(loginData)
 {
     gcn::Label *userLabel = new gcn::Label("Name:");
     gcn::Label *passwordLabel = new gcn::Label("Password:");
     gcn::Label *confirmLabel = new gcn::Label("Confirm:");
     gcn::Label *serverLabel = new gcn::Label("Server:");
-    mUserField = new TextField("player");
-    mPasswordField = new PasswordField();
+    mUserField = new TextField(loginData->username);
+    mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField();
-    mServerField = new TextField();
+    mServerField = new TextField(loginData->hostname);
     mMaleButton = new RadioButton("Male", "sex", true);
     mFemaleButton = new RadioButton("Female", "sex", false);
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
-    int width = 200;
-    int height = 150;
+    const int width = 220;
+    const int height = 150;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
-    mUserField->setWidth(130);
+    mUserField->setWidth(width - 70);
     mPasswordField->setPosition(
             65, mUserField->getY() + mUserField->getHeight() + 7);
-    mPasswordField->setWidth(130);
+    mPasswordField->setWidth(mUserField->getWidth());
     mConfirmField->setPosition(
             65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
-    mConfirmField->setWidth(130);
+    mConfirmField->setWidth(mUserField->getWidth());
     mServerField->setPosition(
             65, 23 + mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mServerField->setWidth(130);
+    mServerField->setWidth(mUserField->getWidth());
 
     userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
     confirmLabel->setPosition(5, mConfirmField->getY() + 1);
     serverLabel->setPosition(5, mServerField->getY() + 1);
 
-    mFemaleButton->setPosition(width - mFemaleButton->getWidth() - 10,
-            mConfirmField->getY() + mConfirmField->getHeight() + 7);
     mMaleButton->setPosition(
-            mFemaleButton->getX() - mMaleButton->getWidth() - 5,
-            mFemaleButton->getY());
+            70, mConfirmField->getY() + mConfirmField->getHeight() + 7);
+    mFemaleButton->setPosition(
+            70 + 10 + mMaleButton->getWidth(),
+            mMaleButton->getY());
 
-    mRegisterButton->setPosition(5, height - mRegisterButton->getHeight() - 5);
-    mCancelButton->setPosition(10 + mRegisterButton->getWidth(),
-            mRegisterButton->getY());
+    mCancelButton->setPosition(
+            width - mCancelButton->getWidth() - 5,
+            height - mCancelButton->getHeight() - 5);
+    mRegisterButton->setPosition(
+            mCancelButton->getX() - mRegisterButton->getWidth() - 5,
+            height - mRegisterButton->getHeight() - 5);
+
+    /* TODO:
+     * This is a quick and dirty way to respond to the ENTER key, regardless of
+     * which text field is selected. There may be a better way now with the new
+     * input system of Guichan 0.6.0. See also the login dialog.
+     */
+    mUserField->setActionEventId("register");
+    mPasswordField->setActionEventId("register");
+    mConfirmField->setActionEventId("register");
+    mServerField->setActionEventId("register");
+    mUserField->addActionListener(this);
+    mPasswordField->addActionListener(this);
+    mConfirmField->addActionListener(this);
+    mServerField->addActionListener(this);
 
     add(userLabel);
     add(passwordLabel);
@@ -108,13 +139,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
-
-    mServerField->setText(config.getValue("host", ""));
 }
 
 RegisterDialog::~RegisterDialog()
 {
-    delete mWrongRegisterNotice;
+    delete mWrongDataNoticeListener;
 }
 
 void
@@ -122,7 +151,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        state = EXIT_STATE;
+        state = LOGIN_STATE;
     }
     else if (event.getId() == "register")
     {
@@ -132,14 +161,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
         std::stringstream errorMsg;
         int error = 0;
 
-        // Check login
-        if (user.empty())
-        {
-            // No username
-            errorMsg << "Enter your username first.";
-            error = 1;
-        }
-        else if (user.length() < LEN_MIN_USERNAME)
+        if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
             errorMsg << "The username needs to be at least "
@@ -186,13 +208,15 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             }
             else if (error == 2)
             {
-                mWrongDataNoticeListener->setTarget(this->mPasswordField);
                 // Reset password confirmation
+                mPasswordField->setText("");
                 mConfirmField->setText("");
+
+                mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
-            delete mWrongRegisterNotice;
-            mWrongRegisterNotice = new OkDialog("Error", errorMsg.str());
+            OkDialog *mWrongRegisterNotice = new OkDialog("Error",
+                                                          errorMsg.str());
             mWrongRegisterNotice->addActionListener(mWrongDataNoticeListener);
         }
         else

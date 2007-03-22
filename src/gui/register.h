@@ -32,17 +32,31 @@
 
 class LoginData;
 class OkDialog;
-class WrongDataNoticeListener;
 
 /**
- * The login dialog.
+ * Listener used while dealing with wrong data. It is used to direct the focus
+ * to the field which contained wrong data when the Ok button was pressed on
+ * the error notice.
+ */
+class WrongDataNoticeListener : public gcn::ActionListener {
+    public:
+        void setTarget(gcn::TextField *textField);
+        void action(const gcn::ActionEvent &event);
+    private:
+        gcn::TextField *mTarget;
+};
+
+/**
+ * The registration dialog.
  *
  * \ingroup Interface
  */
-class RegisterDialog : public Window, public gcn::ActionListener {
+class RegisterDialog : public Window, public gcn::ActionListener
+{
     public:
         /**
-         * Constructor
+         * Constructor. Name, password and server fields will be initialized to
+         * the information already present in the LoginData instance.
          *
          * @see Window::Window
          */
@@ -73,7 +87,6 @@ class RegisterDialog : public Window, public gcn::ActionListener {
         gcn::RadioButton *mFemaleButton;
 
         WrongDataNoticeListener *mWrongDataNoticeListener;
-        OkDialog *mWrongRegisterNotice;
 
         LoginData *mLoginData;
 };
