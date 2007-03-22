@@ -1,5 +1,5 @@
 SET(FILES
-    tmw-32x32.png
+    tmw.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/icons)

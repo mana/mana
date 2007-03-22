@@ -81,6 +81,10 @@
 #include "utils/dtor.h"
 #include "utils/tostring.h"
 
+#ifdef WIN32
+#include <SDL_syswm.h>
+#endif
+
 // Account infos
 char n_server, n_character;
 
@@ -257,9 +261,16 @@ void init_engine(const Options &options)
     }
 
     SDL_WM_SetCaption("The Mana World", NULL);
-    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw-32x32.png");
+#ifdef WIN32
+    static SDL_SysWMinfo pInfo;
+    SDL_GetWMInfo(&pInfo);
+    HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
+    SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+#else
+    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
     SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
     SDL_WM_SetIcon(icon, NULL);
+#endif
 
 #ifdef USE_OPENGL
     bool useOpenGL = (config.getValue("opengl", 0) == 1);
