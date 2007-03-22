@@ -72,7 +72,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             msg.readShort();  // length
             n_items = (msg.getLength() - 4) / 11;
             buyDialog->reset();
-            buyDialog->setMoney(player_node->mMoney);
+            buyDialog->setMoney(player_node->getMoney());
             buyDialog->setVisible(true);
 
             for (int k = 0; k < n_items; k++)
@@ -89,7 +89,7 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             msg.readShort();  // length
             n_items = (msg.getLength() - 4) / 10;
             if (n_items > 0) {
-                sellDialog->setMoney(player_node->mMoney);
+                sellDialog->setMoney(player_node->getMoney());
                 sellDialog->reset();
                 sellDialog->setVisible(true);
 

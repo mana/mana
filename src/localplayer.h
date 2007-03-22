@@ -36,6 +36,68 @@ class Inventory;
 class Item;
 
 /**
+ * Stats every being needs
+ */
+enum BeingStats
+{
+    BASE_ATTR_STRENGTH = 0,    // Basic attributes
+    BASE_ATTR_AGILITY,
+    BASE_ATTR_DEXTERITY,
+    BASE_ATTR_VITALITY,
+    BASE_ATTR_INTELLIGENCE,
+    BASE_ATTR_WILLPOWER,
+    BASE_ATTR_CHARISMA,
+    NB_BASE_ATTRIBUTES,
+
+    ATTR_EFF_STRENGTH = NB_BASE_ATTRIBUTES,    // modified basic attributes
+    ATTR_EFF_AGILITY,
+    ATTR_EFF_DEXTERITY,
+    ATTR_EFF_VITALITY,
+    ATTR_EFF_INTELLIGENCE,
+    ATTR_EFF_WILLPOWER,
+    ATTR_EFF_CHARISMA,
+    NB_EFFECTIVE_ATTRIBUTES,
+
+    DERIVED_ATTR_HP_MAXIMUM = NB_EFFECTIVE_ATTRIBUTES,    // Computed stats
+    DERIVED_ATTR_PHYSICAL_ATTACK_MINIMUM,
+    DERIVED_ATTR_PHYSICAL_ATTACK_FLUCTUATION,
+    DERIVED_ATTR_PHYSICAL_DEFENCE,
+    // add new computed statistics when they are needed
+    NB_ATTRIBUTES_BEING
+};
+
+/**
+ * Player character specific stats
+ */
+enum CharacterStats
+{
+    CHAR_SKILL_WEAPON_UNARMED = NB_ATTRIBUTES_BEING,
+    CHAR_SKILL_WEAPON_SWORD,
+    CHAR_SKILL_WEAPON_AXE,
+    CHAR_SKILL_WEAPON_POLEARM,
+    CHAR_SKILL_WEAPON_JAVELIN,
+    CHAR_SKILL_WEAPON_WHIP,
+    CHAR_SKILL_WEAPON_DAGGER,
+    CHAR_SKILL_WEAPON_STAFF,
+    CHAR_SKILL_WEAPON_BOW,
+    CHAR_SKILL_WEAPON_CROSSBOW,
+    CHAR_SKILL_WEAPON_THROWN,
+    NB_CHAR_WEAPONSKILLS,
+
+    CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER = NB_CHAR_WEAPONSKILLS,
+    NB_CHAR_MAGICSKILLS,
+
+    CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER = NB_CHAR_MAGICSKILLS,
+    NB_CHAR_CRAFTSKILLS,
+
+    CHAR_SKILL_IAMJUSTAPLACEHOLDER = NB_CHAR_CRAFTSKILLS,
+    NB_CHAR_OTHERSKILLS,
+
+    NB_ATTRIBUTES_CHAR = NB_CHAR_OTHERSKILLS
+};
+
+
+/**
  * The local player character.
  */
 class LocalPlayer : public Player
@@ -138,32 +200,57 @@ class LocalPlayer : public Player
          */
         void setWalkingDir(int dir);
 
-        void raiseAttribute(Attribute attr);
-        void raiseSkill(Uint16 skillId);
+        void raiseAttribute(size_t attr);
 
         void toggleSit();
         void emote(Uint8 emotion);
 
         void revive();
 
-        Uint32 mCharId;
+        int getHP() const
+        { return mHP; }
 
-        Uint32 mXp;
-        Uint16 mLevel;
-        Uint32 mXpForNextLevel;
-        Uint16 mHp, mMaxHp, mMp, mMaxMp;
-        Uint32 mMoney;
+        int getMaxHP() const
+        { return mMaxHP; }
 
-        Uint32 mTotalWeight, mMaxWeight;
+        void setHP(int value)
+        { mHP = value; }
 
-        Uint8 mAttr[7];
-        Uint8 mAttrUp[7];
+        void setMaxHP(int value)
+        { mMaxHP = value; }
 
-        Sint16 ATK, MATK, DEF, MDEF, HIT, FLEE;
-        Sint16 ATK_BONUS, MATK_BONUS, DEF_BONUS, MDEF_BONUS, FLEE_BONUS;
+        int getLevel() const
+        { return mLevel; }
 
-        Uint16 mStatPoint, mSkillPoint;
-        Uint16 mStatsPointsToAttribute;
+        void setLevel(int value)
+        { mLevel = value; }
+
+        int getMoney() const
+        { return mMoney; }
+
+        void setMoney(int value)
+        { mMoney = value; }
+
+        int getTotalWeight() const
+        { return mTotalWeight; }
+
+        int getMaxWeight() const
+        { return mMaxWeight; }
+
+        int getAttributeBase(size_t num) const
+        { return mAttributeBase.at(num); }
+
+        void setAttributeBase(size_t num, int value)
+        { mAttributeBase.at(num) = value; }
+
+        int getAttributeEffective(size_t num) const
+        { return mAttributeEffective.at(num); }
+
+        void setAttributeEffective(size_t num, int value)
+        { mAttributeEffective.at(num) = value; }
+
+        int getAttributeIncreasePoints() const
+        { return mAttributeIncreasePoints; }
 
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
@@ -171,6 +258,17 @@ class LocalPlayer : public Player
 
     protected:
         void walk(unsigned char dir);
+
+        // Character status:
+        std::vector<int> mAttributeBase;
+        std::vector<int> mAttributeEffective;
+        int mAttributeIncreasePoints;
+        int mLevel;
+        int mMoney;
+        int mTotalWeight;
+        int mMaxWeight;
+        int mHP;
+        int mMaxHP;
 
         Being *mTarget;
         FloorItem *mPickUpTarget;

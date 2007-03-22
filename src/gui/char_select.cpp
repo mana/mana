@@ -194,8 +194,8 @@ void CharSelectDialog::updatePlayerInfo()
     if (pi)
     {
         mNameLabel->setCaption(pi->getName());
-        mLevelLabel->setCaption("Lvl: " + toString(pi->mLevel));
-        mMoneyLabel->setCaption("Money: " + toString(pi->mMoney));
+        mLevelLabel->setCaption("Lvl: " + toString(pi->getLevel()));
+        mMoneyLabel->setCaption("Money: " + toString(pi->getMoney()));
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);

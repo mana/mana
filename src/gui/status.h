@@ -70,14 +70,12 @@ class StatusWindow : public Window, public gcn::ActionListener {
          * Status Part
          */
         gcn::Label *mLvlLabel, *mMoneyLabel, *mHpLabel, *mHpValueLabel;
-        gcn::Label *mMpLabel, *mMpValueLabel;
-        gcn::Label *mXpLabel, *mXpValueLabel;
-        ProgressBar *mHpBar, *mMpBar;
-        ProgressBar *mXpBar;
+        ProgressBar *mHpBar;
 
         /**
          * Derived Statistics captions
          */
+/*
         gcn::Label *mStatsAttackLabel, *mStatsDefenseLabel;
         gcn::Label *mStatsMagicAttackLabel, *mStatsMagicDefenseLabel;
         gcn::Label *mStatsAccuracyLabel, *mStatsEvadeLabel;
@@ -87,7 +85,7 @@ class StatusWindow : public Window, public gcn::ActionListener {
         gcn::Label *mStatsMagicAttackPoints, *mStatsMagicDefensePoints;
         gcn::Label *mStatsAccuracyPoints, *mStatsEvadePoints;
         gcn::Label *mStatsReflexPoints;
-
+*/
         /**
          * Stats captions.
          */

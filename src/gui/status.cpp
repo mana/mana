@@ -54,14 +54,6 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mHpBar = new ProgressBar(1.0f, 80, 15, 0, 171, 34);
     mHpValueLabel = new gcn::Label("");
 
-    mXpLabel = new gcn::Label("Exp:");
-    mXpBar = new ProgressBar(1.0f, 80, 15, 143, 192, 211);
-    mXpValueLabel = new gcn::Label("");
-
-    mMpLabel = new gcn::Label("MP:");
-    mMpBar = new ProgressBar(1.0f, 80, 15, 26, 102, 230);
-    mMpValueLabel = new gcn::Label("");
-
     int y = 3;
     int x = 5;
 
@@ -78,30 +70,14 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     x += mHpBar->getWidth() + 5;
     mHpValueLabel->setPosition(x, y);
 
-    mXpLabel->setPosition(175, y);
-    mXpBar->setPosition(205, y);
-    mXpValueLabel->setPosition(290, y);
-
     y += mHpLabel->getHeight() + 5; // Next Row
     x = 5;
-
-    mMpLabel->setPosition(x, y);
-    x += mMpLabel->getWidth() + 5;
-    mMpBar->setPosition(x, y);
-    x += mMpBar->getWidth() + 5;
-    mMpValueLabel->setPosition(x, y);
 
     add(mLvlLabel);
     add(mMoneyLabel);
     add(mHpLabel);
     add(mHpValueLabel);
-    add(mMpLabel);
-    add(mMpValueLabel);
-    add(mXpLabel);
-    add(mXpValueLabel);
     add(mHpBar);
-    add(mMpBar);
-    add(mXpBar);
 
     // ----------------------
     // Stats Part
@@ -113,6 +89,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     gcn::Label *mStatsCostLabel = new gcn::Label("Cost");
 
     // Derived Stats
+/*
     mStatsAttackLabel = new gcn::Label("Attack:");
     mStatsDefenseLabel= new gcn::Label("Defense:");
     mStatsMagicAttackLabel = new gcn::Label("M.Attack:");
@@ -128,7 +105,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsAccuracyPoints = new gcn::Label("% Accuracy:");
     mStatsEvadePoints = new gcn::Label("% Evade:");
     mStatsReflexPoints = new gcn::Label("% Reflex:");
-
+*/
     // New labels
     for (int i = 0; i < 7; i++) {
         mStatsLabel[i] = new gcn::Label();
@@ -148,7 +125,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
 
 
     // Set position
-    mStatsTitleLabel->setPosition(mMpLabel->getX(), mMpLabel->getY() + 23 );
+    mStatsTitleLabel->setPosition(mHpLabel->getX(), mHpLabel->getY() + 23 );
     mStatsTotalLabel->setPosition(110, mStatsTitleLabel->getY() + 15);
     int totalLabelY = mStatsTotalLabel->getY();
     mStatsCostLabel->setPosition(170, totalLabelY);
@@ -157,14 +134,14 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     {
         mStatsLabel[i]->setPosition(5,
                                     mStatsTotalLabel->getY() + (i * 23) + 15);
-        mStatsDisplayLabel[i]->setPosition(115,
+        mStatsDisplayLabel[i]->setPosition(85,
                                           totalLabelY + (i * 23) + 15);
         mStatsButton[i]->setPosition(145, totalLabelY + (i * 23) + 10);
-        mPointsLabel[i]->setPosition(175, totalLabelY + (i * 23) + 15);
+        mPointsLabel[i]->setPosition(165, totalLabelY + (i * 23) + 15);
     }
 
     mRemainingStatsPointsLabel->setPosition(5, mPointsLabel[6]->getY() + 25);
-
+/*
     mStatsAttackLabel->setPosition(220, mStatsLabel[0]->getY());
     mStatsDefenseLabel->setPosition(220, mStatsLabel[1]->getY());
     mStatsMagicAttackLabel->setPosition(220, mStatsLabel[2]->getY());
@@ -180,7 +157,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mStatsAccuracyPoints->setPosition(310, mStatsLabel[4]->getY());
     mStatsEvadePoints->setPosition(310, mStatsLabel[5]->getY());
     mStatsReflexPoints->setPosition(310, mStatsLabel[6]->getY());
-
+*/
     // Assemble
     add(mStatsTitleLabel);
     add(mStatsTotalLabel);
@@ -191,7 +168,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
         add(mStatsDisplayLabel[i]);
         add(mStatsButton[i]);
         add(mPointsLabel[i]);
-    }
+    }/*
     add(mStatsAttackLabel);
     add(mStatsDefenseLabel);
     add(mStatsMagicAttackLabel);
@@ -206,7 +183,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     add(mStatsMagicDefensePoints);
     add(mStatsAccuracyPoints);
     add(mStatsEvadePoints);
-    add(mStatsReflexPoints);
+    add(mStatsReflexPoints);*/
 
     add(mRemainingStatsPointsLabel);
 }
@@ -215,30 +192,25 @@ void StatusWindow::update()
 {
     // Status Part
     // -----------
-    mLvlLabel->setCaption("Level: " + toString(mPlayer->mLevel));
+    mLvlLabel->setCaption("Level: " + toString(mPlayer->getLevel()));
     mLvlLabel->adjustSize();
 
-    mMoneyLabel->setCaption("Money: " + toString(mPlayer->mMoney) + " GP");
+    mMoneyLabel->setCaption("Money: " + toString(mPlayer->getMoney()) + " GP");
     mMoneyLabel->adjustSize();
 
-    mHpValueLabel->setCaption(toString(mPlayer->mHp) +
-            "/" + toString(mPlayer->mMaxHp));
+    int hp = mPlayer->getHP();
+    int maxHp = mPlayer->getMaxHP();
+
+    mHpValueLabel->setCaption(toString(hp) +
+            " / " + toString(maxHp));
     mHpValueLabel->adjustSize();
 
-    mMpValueLabel->setCaption(toString(mPlayer->mMp) +
-            "/" + toString(mPlayer->mMaxMp));
-    mMpValueLabel->adjustSize();
-
-    mXpValueLabel->setCaption(toString(mPlayer->mXp) +
-            "/" + toString(mPlayer->mXpForNextLevel));
-    mXpValueLabel->adjustSize();
-
     // HP Bar coloration
-    if (mPlayer->mHp < int(mPlayer->mMaxHp / 3))
+    if (hp < int(maxHp / 3))
     {
         mHpBar->setColor(223, 32, 32); // Red
     }
-    else if (mPlayer->mHp < int((mPlayer->mMaxHp / 3) * 2))
+    else if (hp < int((maxHp / 3) * 2))
     {
         mHpBar->setColor(230, 171, 34); // Orange
     }
@@ -247,11 +219,7 @@ void StatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
-    mHpBar->setProgress((float)mPlayer->mHp / (float)mPlayer->mMaxHp);
-    // mMpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
-
-    mXpBar->setProgress(
-            (float) mPlayer->mXp / (float) mPlayer->mXpForNextLevel);
+    mHpBar->setProgress((float)hp / maxHp);
 
     // Stats Part
     // ----------
@@ -264,24 +232,26 @@ void StatusWindow::update()
         "Willpower",
         "Charisma"
     };
-    int statusPoints = mPlayer->mStatsPointsToAttribute;
+    int statusPoints = mPlayer->getAttributeIncreasePoints();
 
     // Update labels
     for (int i = 0; i < 7; i++) {
         mStatsLabel[i]->setCaption(attrNames[i]);
-        mStatsDisplayLabel[i]->setCaption(toString((int) mPlayer->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int) mPlayer->mAttrUp[i]));
+        mStatsDisplayLabel[i]->setCaption(
+                toString(mPlayer->getAttributeEffective(i)) +
+                " / " +
+                toString(mPlayer->getAttributeBase(i))
+            );
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
-        mPointsLabel[i]->adjustSize();
 
-        mStatsButton[i]->setEnabled(mPlayer->mAttrUp[i] <= statusPoints);
+        mStatsButton[i]->setEnabled(statusPoints);
     }
     mRemainingStatsPointsLabel->setCaption("Remaining Status Points: " +
             toString(statusPoints));
     mRemainingStatsPointsLabel->adjustSize();
-
+/*
     // Derived Stats Points
 
     // Attack TODO: Count equipped Weapons and items attack bonuses
@@ -315,20 +285,11 @@ void StatusWindow::update()
     // Reflex %
     mStatsReflexPoints->setCaption(toString(mPlayer->DEX / 4)); // + counter
     mStatsReflexPoints->adjustSize();
-
+*/
     // Update Second column widgets position
     mMoneyLabel->setPosition(mLvlLabel->getX() + mLvlLabel->getWidth() + 20,
                          mLvlLabel->getY());
 
-    mXpLabel->setPosition(
-            mHpValueLabel->getX() + mHpValueLabel->getWidth() + 10,
-            mHpLabel->getY());
-    mXpBar->setPosition(
-            mXpLabel->getX() + mXpLabel->getWidth() + 5,
-            mXpLabel->getY());
-    mXpValueLabel->setPosition(
-            mXpBar->getX() + mXpBar->getWidth() + 5,
-            mXpLabel->getY());
 }
 
 void StatusWindow::draw(gcn::Graphics *g)

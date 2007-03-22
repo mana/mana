@@ -1,4 +1,16 @@
-﻿2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/char_select.cpp, src/gui/inventorywindow.cpp,
+	src/gui/ministatus.cpp, src/gui/ministatus.h, src/gui/skill.cpp,
+	src/gui/skill.h, src/gui/status.cpp, src/gui/status.h, src/localplayer.cpp
+	, src/localplayer.h, src/net/buysellhandler: Redesigned the localplayer
+	class to use getters and setters instead of direct access to the member
+	variables.
+	src/net/charserverhandler.cpp, src/net/playerhandler.cpp,
+	src/net/protocol.h: Implemented communication of attributes between server
+	and client.
+
+2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,
 	src/net/charserverhandler.cpp, src/net/protocol.h: Implemented a GUI for

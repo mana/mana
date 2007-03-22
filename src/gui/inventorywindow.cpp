@@ -94,8 +94,8 @@ void InventoryWindow::logic()
 
     // Update weight information
     mWeightLabel->setCaption(
-            "Total Weight: " + toString(player_node->mTotalWeight) + " - "
-            "Maximum Weight: " + toString(player_node->mMaxWeight));
+            "Total Weight: " + toString(player_node->getTotalWeight()) + " - "
+            "Maximum Weight: " + toString(player_node->getMaxWeight()));
     mWeightLabel->adjustSize();
 }
 

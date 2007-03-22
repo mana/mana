@@ -202,10 +202,10 @@ CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setSex(msg.readByte());
     tempPlayer->setHairStyle(msg.readByte());
     tempPlayer->setHairColor(msg.readByte());
-    tempPlayer->mLevel = msg.readByte();
-    tempPlayer->mMoney = msg.readShort();
-    for (int i = 0; i < 6; i++) {
-        tempPlayer->mAttr[i] = msg.readByte();
+    tempPlayer->setLevel(msg.readByte());
+    tempPlayer->setMoney(msg.readLong());
+    for (int i = 0; i < 7; i++) {
+        tempPlayer->setAttributeBase(i, msg.readByte());
     }
     return tempPlayer;
 }

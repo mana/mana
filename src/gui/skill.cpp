@@ -68,28 +68,17 @@ SkillDialog::SkillDialog():
 
     mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(mSkillListBox);
-    mPointsLabel = new gcn::Label("Skill Points:");
-    mIncButton = new Button("Up", "inc", this);
-    mUseButton = new Button("Use", "use", this);
-    mUseButton->setEnabled(false);
     mCloseButton = new Button("Close", "close", this);
 
     mSkillListBox->setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-    mPointsLabel->setDimension(gcn::Rectangle(8, 190, 200, 16));
-    mIncButton->setPosition(skillScrollArea->getX(), 210);
-    mUseButton->setPosition(mIncButton->getX() + mIncButton->getWidth() + 5,
-        210);
     mCloseButton->setPosition(
         skillScrollArea->getX() + skillScrollArea->getWidth() - mCloseButton->getWidth(),
         210);
 
     add(skillScrollArea);
-    add(mPointsLabel);
-    add(mIncButton);
-    add(mUseButton);
     add(mCloseButton);
 
     mSkillListBox->addActionListener(this);
@@ -105,20 +94,8 @@ SkillDialog::~SkillDialog()
 
 void SkillDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "inc")
+    if (event.getId() == "skill")
     {
-        // Increment skill
-        int selectedSkill = mSkillListBox->getSelected();
-        if (selectedSkill >= 0)
-        {
-            player_node->raiseSkill(mSkillList[selectedSkill]->id);
-        }
-    }
-    else if (event.getId() == "skill")
-    {
-        mIncButton->setEnabled(
-                mSkillListBox->getSelected() > -1 &&
-                player_node->mSkillPoint > 0);
     }
     else if (event.getId() == "close")
     {
@@ -128,14 +105,6 @@ void SkillDialog::action(const gcn::ActionEvent &event)
 
 void SkillDialog::update()
 {
-    if (mPointsLabel != NULL) {
-        char tmp[128];
-        sprintf(tmp, "Skill points: %i", player_node->mSkillPoint);
-        mPointsLabel->setCaption(tmp);
-    }
-
-    mIncButton->setEnabled(mSkillListBox->getSelected() > -1 &&
-            player_node->mSkillPoint > 0);
 }
 
 int SkillDialog::getNumberOfElements()

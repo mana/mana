@@ -38,10 +38,13 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
-    mLevel(1),
     mInventory(new Inventory()),
+    mAttributeBase(NB_BASE_ATTRIBUTES, 0),
+    mAttributeEffective(NB_BASE_ATTRIBUTES, 0),
+    mLevel(1),
     mTarget(NULL), mPickUpTarget(NULL),
-    mTrading(false), mLastAction(-1)
+    mTrading(false),
+    mLastAction(-1)
 {
 }
 
@@ -235,54 +238,6 @@ void LocalPlayer::setWalkingDir(int dir)
     }
 }
 
-void LocalPlayer::raiseAttribute(Attribute attr)
-{
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
-
-    switch (attr)
-    {
-        case STR:
-            outMsg.writeShort(0x000d);
-            break;
-
-        case AGI:
-            outMsg.writeShort(0x000e);
-            break;
-
-        case VIT:
-            outMsg.writeShort(0x000f);
-            break;
-
-        case INT:
-            outMsg.writeShort(0x0010);
-            break;
-
-        case DEX:
-            outMsg.writeShort(0x0011);
-            break;
-
-        case LUK:
-            outMsg.writeShort(0x0012);
-            break;
-    }
-    outMsg.writeByte(1);
-    */
-}
-
-void LocalPlayer::raiseSkill(Uint16 skillId)
-{
-    if (mSkillPoint <= 0)
-        return;
-
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
-    outMsg.writeShort(skillId);
-    */
-}
-
 void LocalPlayer::toggleSit()
 {
     if (mLastAction != -1)
@@ -374,4 +329,10 @@ void LocalPlayer::revive()
     MessageOut outMsg(0x00b2);
     outMsg.writeByte(0);
     */
+}
+
+void LocalPlayer::raiseAttribute(size_t attr)
+{
+    mAttributeBase.at(attr)++;
+    // TODO: Inform the server about our desire to raise the attribute
 }
