@@ -1,7 +1,5 @@
 SET(FILES
-    tmw.ico
-    tmw.png
-    tmw.xpm
+    tmw-32x32.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/icons)

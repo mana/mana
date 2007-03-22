@@ -1109,6 +1109,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\resources\imageset.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\resources\imageset.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\resources\imagewriter.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1239,17 +1249,17 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\resources\spriteset.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\resources\spriteset.h">
-			<Option compilerVar="CPP"/>
+		<Unit filename="src\serverinfo.h">
+			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\serverinfo.h">
+		<Unit filename="src\simpleanimation.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\simpleanimation.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

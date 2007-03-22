@@ -7,6 +7,9 @@
 	registration. Fixed a crash caused by deleting an OkDialog twice (it
 	also deletes itself). Made the register dialog a bit wider. Register
 	dialog no longer clears username field when it is invalid.
+    * src/main.cpp, data/icons/CMakeLists.txt, data/icons/Makefile.am,
+    data/icons/tmw-32x32.png: Use a 32x32 non-alpha layered window icon.
+    * tmw.cbp: Updated project file.
 
 2007-03-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
