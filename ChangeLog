@@ -1,4 +1,8 @@
-﻿2007-03-23  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tmw.cbp: Updated and fixed Code::Blocks project file.
+
+2007-03-23  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/gui/inventorywindow.cpp,
 	src/gui/ministatus.cpp, src/gui/ministatus.h, src/gui/skill.cpp,

@@ -26,7 +26,7 @@
 					<Add library="guichan"/>
 					<Add library="guichan_sdl"/>
 					<Add library="guichan_opengl"/>
-					<Add library="wsock32"/>
+					<Add library="ws2_32"/>
 					<Add library="SDL_image"/>
 					<Add library="SDL_mixer"/>
 					<Add library="mingw32"/>
@@ -38,6 +38,7 @@
 					<Add library="z.dll"/>
 					<Add library="physfs"/>
 					<Add library="curl.dll"/>
+					<Add library="winmm"/>
 				</Linker>
 			</Target>
 		</Build>
@@ -66,6 +67,26 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\beingmanager.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\channel.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\channel.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\channelmanager.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\channelmanager.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -499,6 +520,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\quitdialog.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\quitdialog.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\radiobutton.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -686,6 +717,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\trade.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\unregisterdialog.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\unregisterdialog.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1024,6 +1065,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\net\loginhandler.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\logouthandler.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\logouthandler.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
