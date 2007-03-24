@@ -41,7 +41,7 @@ class Equipment;
 class Item;
 class Map;
 class Graphics;
-class Spriteset;
+class ImageSet;
 
 /**
  * A position along a being's path.
@@ -397,7 +397,7 @@ class Being : public Sprite
         Uint16 mStepTime;
 
         static int instances;           /**< Number of Being instances */
-        static Spriteset *emotionset;   /**< Emoticons used by beings */
+        static ImageSet *emotionSet;    /**< Emoticons used by beings */
 };
 
 #endif

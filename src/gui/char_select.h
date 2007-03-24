@@ -114,9 +114,17 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         ~CharCreateDialog();
 
-        void action(const gcn::ActionEvent &event);
+        void
+        action(const gcn::ActionEvent &event);
 
-        std::string getName();
+        const std::string&
+        getName();
+
+        /**
+         * Unlocks the dialog, enabling the create character button again.
+         */
+        void
+        unlock();
 
     private:
         int getDistributedPoints();

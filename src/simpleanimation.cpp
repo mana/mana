@@ -21,45 +21,30 @@
  *  $Id$
  */
 
-#include "spriteset.h"
+#include "simpleanimation.h"
 
-#include "../log.h"
 
-#include "image.h"
-
-#include "../utils/dtor.h"
-
-Spriteset::Spriteset(const std::string& idPath,
-                     Image *img,
-                     int width, int height):
-    Resource(idPath)
+void SimpleAnimation::update(unsigned int timePassed)
 {
-    for (int y = 0; y + height <= img->getHeight(); y += height)
+    mAnimationTime += timePassed;
+    while (mAnimationTime > mCurrentFrame->delay)
     {
-        for (int x = 0; x + width <= img->getWidth(); x += width)
+        mAnimationTime -= mCurrentFrame->delay;
+        mAnimationPhase++;
+        if (mAnimationPhase >= mAnimation->getLength())
         {
-            mSpriteset.push_back(img->getSubImage(x, y, width, height));
+            mAnimationPhase = 0;
         }
+        mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
     }
-    mWidth = width;
-    mHeight = height;
 }
 
-Spriteset::~Spriteset()
+Image *SimpleAnimation::getCurrentImage() const
 {
-    for_each(mSpriteset.begin(), mSpriteset.end(), make_dtor(mSpriteset));
+    return mCurrentFrame->image;
 }
 
-Image*
-Spriteset::get(size_type i)
+SimpleAnimation::~SimpleAnimation()
 {
-    if (i >= mSpriteset.size())
-    {
-        logger->log("Warning: Sprite #%i does not exist in this spriteset", i);
-        return NULL;
-    }
-    else
-    {
-        return mSpriteset[i];
-    }
+    delete mAnimation;
 }

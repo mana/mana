@@ -28,7 +28,7 @@
 #include "animation.h"
 #include "action.h"
 #include "resourcemanager.h"
-#include "spriteset.h"
+#include "imageset.h"
 #include "image.h"
 
 #include "../utils/xml.h"
@@ -135,30 +135,30 @@ SpriteDef::loadImageSet(xmlNodePtr node)
     std::string imageSrc = XML::getProperty(node, "src", "");
 
     ResourceManager *resman = ResourceManager::getInstance();
-    Spriteset *spriteset = resman->getSpriteset(imageSrc, width, height);
+    ImageSet *imageSet = resman->getImageSet(imageSrc, width, height);
 
-    if (!spriteset)
+    if (!imageSet)
     {
         logger->error("Couldn't load imageset!");
     }
 
-    mSpritesets[name] = spriteset;
+    mImageSets[name] = imageSet;
 }
 
 void
 SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
 {
     const std::string actionName = XML::getProperty(node, "name", "");
-    const std::string imagesetName = XML::getProperty(node, "imageset", "");
+    const std::string imageSetName = XML::getProperty(node, "imageset", "");
 
-    SpritesetIterator si = mSpritesets.find(imagesetName);
-    if (si == mSpritesets.end())
+    ImageSetIterator si = mImageSets.find(imageSetName);
+    if (si == mImageSets.end())
     {
         logger->log("Warning: imageset \"%s\" not defined in %s",
-                imagesetName.c_str(), getIdPath().c_str());
+                imageSetName.c_str(), getIdPath().c_str());
         return;
     }
-    Spriteset *imageset = si->second;
+    ImageSet *imageSet = si->second;
 
     SpriteAction actionType = makeSpriteAction(actionName);
     if (actionType == ACTION_INVALID)
@@ -183,14 +183,14 @@ SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     {
         if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
         {
-            loadAnimation(animationNode, action, imageset, variant_offset);
+            loadAnimation(animationNode, action, imageSet, variant_offset);
         }
     }
 }
 
 void
 SpriteDef::loadAnimation(xmlNodePtr animationNode,
-                         Action *action, Spriteset *imageset,
+                         Action *action, ImageSet *imageSet,
                          int variant_offset)
 {
     std::string directionName =
@@ -215,8 +215,8 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
         int delay = XML::getProperty(frameNode, "delay", 0);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);
         int offsetY = XML::getProperty(frameNode, "offsetY", 0);
-        offsetY -= imageset->getHeight() - 32;
-        offsetX -= imageset->getWidth() / 2 - 16;
+        offsetY -= imageSet->getHeight() - 32;
+        offsetX -= imageSet->getWidth() / 2 - 16;
 
         if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
         {
@@ -228,7 +228,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
                 continue;
             }
 
-            Image *img = imageset->get(index + variant_offset);
+            Image *img = imageSet->get(index + variant_offset);
 
             if (!img)
             {
@@ -251,7 +251,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
 
             while (end >= start)
             {
-                Image *img = imageset->get(start + variant_offset);
+                Image *img = imageSet->get(start + variant_offset);
 
                 if (!img)
                 {
@@ -296,8 +296,8 @@ SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
 
 SpriteDef::~SpriteDef()
 {
-    for (SpritesetIterator i = mSpritesets.begin();
-            i != mSpritesets.end(); ++i)
+    for (ImageSetIterator i = mImageSets.begin();
+            i != mImageSets.end(); ++i)
     {
         i->second->decRef();
     }

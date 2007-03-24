@@ -41,6 +41,21 @@
 #include "textfield.h"
 #include "ok_dialog.h"
 
+void
+WrongDataNoticeListener::setTarget(gcn::TextField *textField)
+{
+    mTarget = textField;
+}
+
+void
+WrongDataNoticeListener::action(const gcn::ActionEvent &event)
+{
+    if (event.getId() == "ok")
+    {
+        mTarget->requestFocus();
+    }
+}
+
 RegisterDialog::RegisterDialog(LoginData *loginData):
     Window("Register"),
     mWrongDataNoticeListener(new WrongDataNoticeListener()),
@@ -50,28 +65,28 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     gcn::Label *passwordLabel = new gcn::Label("Password:");
     gcn::Label *confirmLabel = new gcn::Label("Confirm:");
     gcn::Label *emailLabel = new gcn::Label("Email:");
-    mUserField = new TextField("player");
-    mPasswordField = new PasswordField();
+    mUserField = new TextField(loginData->username);
+    mPasswordField = new PasswordField(loginData->password);
     mConfirmField = new PasswordField();
     mEmailField = new TextField();
     mRegisterButton = new Button("Register", "register", this);
     mCancelButton = new Button("Cancel", "cancel", this);
 
-    const int width = 200;
+    const int width = 220;
     const int height = 130;
     setContentSize(width, height);
 
     mUserField->setPosition(65, 5);
-    mUserField->setWidth(130);
+    mUserField->setWidth(width - 70);
     mPasswordField->setPosition(
             65, mUserField->getY() + mUserField->getHeight() + 7);
-    mPasswordField->setWidth(130);
+    mPasswordField->setWidth(mUserField->getWidth());
     mConfirmField->setPosition(
             65, mPasswordField->getY() + mPasswordField->getHeight() + 7);
-    mConfirmField->setWidth(130);
+    mConfirmField->setWidth(mUserField->getWidth());
     mEmailField->setPosition(
             65, mConfirmField->getY() + mConfirmField->getHeight() + 7);
-    mEmailField->setWidth(130);
+    mEmailField->setWidth(mUserField->getWidth());
 
     userLabel->setPosition(5, mUserField->getY() + 1);
     passwordLabel->setPosition(5, mPasswordField->getY() + 1);
@@ -79,11 +94,30 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     emailLabel->setPosition(5, mEmailField->getY() + 1);
 
     mCancelButton->setPosition(
-            width - 5 - mCancelButton->getWidth(),
-            height - 5 - mCancelButton->getHeight());
+            width - mCancelButton->getWidth() - 5,
+            height - mCancelButton->getHeight() - 5);
     mRegisterButton->setPosition(
-            mCancelButton->getX() - 5 - mRegisterButton->getWidth(),
-            mCancelButton->getY());
+            mCancelButton->getX() - mRegisterButton->getWidth() - 5,
+            height - mRegisterButton->getHeight() - 5);
+
+    mUserField->addKeyListener(this);
+    mPasswordField->addKeyListener(this);
+    mConfirmField->addKeyListener(this);
+    mEmailField->addKeyListener(this);
+
+    /* TODO:
+     * This is a quick and dirty way to respond to the ENTER key, regardless of
+     * which text field is selected. There may be a better way now with the new
+     * input system of Guichan 0.6.0. See also the login dialog.
+     */
+    mUserField->setActionEventId("register");
+    mPasswordField->setActionEventId("register");
+    mConfirmField->setActionEventId("register");
+    mEmailField->setActionEventId("register");
+    mUserField->addActionListener(this);
+    mPasswordField->addActionListener(this);
+    mConfirmField->addActionListener(this);
+    mEmailField->addActionListener(this);
 
     add(userLabel);
     add(passwordLabel);
@@ -100,6 +134,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
+
+    mRegisterButton->setEnabled(canSubmit());
 }
 
 RegisterDialog::~RegisterDialog()
@@ -114,7 +150,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
     {
         state = STATE_LOGIN;
     }
-    else if (event.getId() == "register")
+    else if (event.getId() == "register" && canSubmit())
     {
         const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());
@@ -122,14 +158,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
         std::stringstream errorMsg;
         int error = 0;
 
-        // Check login
-        if (user.empty())
-        {
-            // No username
-            errorMsg << "Enter your username first.";
-            error = 1;
-        }
-        else if (user.length() < LEN_MIN_USERNAME)
+        if (user.length() < LEN_MIN_USERNAME)
         {
             // Name too short
             errorMsg << "The username needs to be at least "
@@ -178,9 +207,11 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             }
             else if (error == 2)
             {
-                mWrongDataNoticeListener->setTarget(this->mPasswordField);
                 // Reset password confirmation
+                mPasswordField->setText("");
                 mConfirmField->setText("");
+
+                mWrongDataNoticeListener->setTarget(this->mPasswordField);
             }
 
             OkDialog *dlg = new OkDialog("Error", errorMsg.str());
@@ -191,7 +222,6 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             // No errors detected, register the new user.
             mRegisterButton->setEnabled(false);
 
-            mLoginData->port = (short)config.getValue("port", 0);
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPasswordField->getText();
             mLoginData->email = mEmailField->getText();
@@ -200,4 +230,19 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             state = STATE_REGISTER_ATTEMPT;
         }
     }
+}
+
+void
+RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    mRegisterButton->setEnabled(canSubmit());
+}
+
+bool
+RegisterDialog::canSubmit()
+{
+    return !mUserField->getText().empty() &&
+           !mPasswordField->getText().empty() &&
+           !mConfirmField->getText().empty() &&
+           state == STATE_REGISTER;
 }

@@ -28,15 +28,20 @@
 #include "gui.h"
 #include "popupmenu.h"
 
+#include "../simpleanimation.h"
 #include "../beingmanager.h"
 #include "../configuration.h"
 #include "../flooritemmanager.h"
 #include "../graphics.h"
 #include "../localplayer.h"
 #include "../map.h"
+#include "../monster.h"
 #include "../npc.h"
 
-#include "../resources/monsterdb.h"
+#include "../resources/animation.h"
+#include "../resources/monsterinfo.h"
+#include "../resources/resourcemanager.h"
+#include "../resources/imageset.h"
 
 #include "../utils/tostring.h"
 
@@ -60,11 +65,39 @@ Viewport::Viewport():
     config.addListener("ScrollRadius", this);
 
     mPopupMenu = new PopupMenu();
+
+    // Load target cursors
+    ResourceManager *resman = ResourceManager::getInstance();
+    mInRangeImages = resman->getImageSet(
+            "graphics/gui/target-cursor-blue.png", 44, 35);
+    mOutRangeImages = resman->getImageSet(
+            "graphics/gui/target-cursor-red.png", 44, 35);
+    Animation *animInRange = new Animation();
+    Animation *animOutRange = new Animation();
+
+    for (unsigned int i = 0; i < mInRangeImages->size(); ++i)
+    {
+        animInRange->addFrame(mInRangeImages->get(i), 75, 0, 0);
+    }
+
+    for (unsigned int j = 0; j < mOutRangeImages->size(); ++j)
+    {
+        animOutRange->addFrame(mOutRangeImages->get(j), 75, 0, 0);
+    }
+
+    mTargetCursorInRange = new SimpleAnimation(animInRange);
+    mTargetCursorOutRange = new SimpleAnimation(animOutRange);
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
+
+    delete mTargetCursorInRange;
+    delete mTargetCursorOutRange;
+
+    mInRangeImages->decRef();
+    mOutRangeImages->decRef();
 }
 
 void
@@ -158,10 +191,12 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
     if (mMap)
     {
         mMap->draw(graphics, mCameraX, mCameraY, 0);
+        drawTargetCursor(graphics);
         mMap->draw(graphics, mCameraX, mCameraY, 1);
         mMap->draw(graphics, mCameraX, mCameraY, 2);
         mMap->drawOverlay(graphics, mViewX, mViewY,
                 (int) config.getValue("OverlayDetail", 2));
+        drawTargetName(graphics);
     }
 
     // Find a path from the player to the mouse, and draw it. This is for debug
@@ -201,28 +236,6 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         (*i)->drawEmotion(graphics, -mCameraX, -mCameraY);
     }
 
-    // Draw target marker if needed
-    Being *target = player_node->getTarget();
-    if (target)
-    {
-        graphics->setFont(speechFont);
-        graphics->setColor(gcn::Color(255, 32, 32));
-        int dy = (target->getType() == Being::PLAYER) ? 80 : 42;
-
-        std::string mobName = "";
-
-        if (target->mJob >= 1002)
-        {
-            int mobId = target->mJob - 1002;
-            mobName = MonsterDB::get(mobId).getName();
-
-            graphics->drawText(mobName,
-                    target->getPixelX() - mCameraX + 15,
-                    target->getPixelY() - mCameraY - dy,
-                    gcn::Graphics::CENTER);
-        }
-    }
-
     // Draw contained widgets
     WindowContainer::draw(gcnGraphics);
 }
@@ -244,6 +257,57 @@ Viewport::logic()
         player_node->setDestination(mouseX + mCameraX,
                                     mouseY + mCameraY);
         mWalkTime = player_node->mWalkTime;
+    }
+
+    mTargetCursorInRange->update(10);
+    mTargetCursorOutRange->update(10);
+}
+
+void
+Viewport::drawTargetCursor(Graphics *graphics)
+{
+    // Draw target marker if needed
+    Being *target = player_node->getTarget();
+    if (target)
+    {
+        // Find whether target is in range
+        int rangeX = abs(target->mX - player_node->mX);
+        int rangeY = abs(target->mY - player_node->mY);
+        int attackRange = player_node->getAttackRange();
+
+        // Draw the target cursor, which one depends if the target is in range
+        if (rangeX > attackRange || rangeY > attackRange)
+        {
+            // Draw the out of range cursor
+            graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
+                                target->getPixelX() - mCameraX,
+                                target->getPixelY() - mCameraY);
+        }
+        else
+        {
+            // Draw the in range cursor
+            graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
+                                target->getPixelX() - mCameraX,
+                                target->getPixelY() - mCameraY);
+        }
+    }
+}
+
+void
+Viewport::drawTargetName(Graphics *graphics)
+{
+    // Draw target marker if needed
+    Being *target = player_node->getTarget();
+    if (target && target->getType() == Being::MONSTER)
+    {
+        graphics->setFont(speechFont);
+        graphics->setColor(gcn::Color(255, 32, 32));
+
+        const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
+        graphics->drawText(mi.getName(),
+                           target->getPixelX() - mCameraX + 15,
+                           target->getPixelY() - mCameraY - 42,
+                           gcn::Graphics::CENTER);
     }
 }
 

@@ -21,33 +21,45 @@
  *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#include "imageset.h"
 
-#include "being.h"
+#include "../log.h"
 
-class MonsterInfo;
+#include "image.h"
 
-class Monster : public Being
+#include "../utils/dtor.h"
+
+ImageSet::ImageSet(const std::string& idPath,
+                     Image *img,
+                     int width, int height):
+    Resource(idPath)
 {
-    public:
-        Monster(Uint16 id, Uint16 job, Map *map);
+    for (int y = 0; y + height <= img->getHeight(); y += height)
+    {
+        for (int x = 0; x + width <= img->getWidth(); x += width)
+        {
+            mImages.push_back(img->getSubImage(x, y, width, height));
+        }
+    }
+    mWidth = width;
+    mHeight = height;
+}
 
-        virtual void setAction(Action action);
+ImageSet::~ImageSet()
+{
+    for_each(mImages.begin(), mImages.end(), make_dtor(mImages));
+}
 
-        virtual Type getType() const;
-
-        /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
-         */
-        virtual void handleAttack();
-
-        /**
-         * Returns the MonsterInfo, with static data about this monster.
-         */
-        const MonsterInfo&
-        getInfo() const;
-};
-
-#endif
+Image*
+ImageSet::get(size_type i)
+{
+    if (i >= mImages.size())
+    {
+        logger->log("Warning: Sprite #%i does not exist in this image set", i);
+        return NULL;
+    }
+    else
+    {
+        return mImages[i];
+    }
+}

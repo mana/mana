@@ -34,7 +34,7 @@
 
 #include "button.h"
 #include "checkbox.h"
-#include "login.h"
+#include "register.h"
 #include "passwordfield.h"
 #include "textfield.h"
 #include "ok_dialog.h"

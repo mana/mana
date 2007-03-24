@@ -30,9 +30,13 @@
 #include <vector>
 #include <SDL_image.h>
 
-#include <guichan/actionlistener.hpp>
+#ifdef WIN32
+#include <SDL_syswm.h>
+#endif
 
+#include <guichan/actionlistener.hpp>
 #include <guichan/sdl/sdlinput.hpp>
+#include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
 
@@ -63,10 +67,10 @@
 #include "gui/login.h"
 #include "gui/quitdialog.h"
 #include "gui/ok_dialog.h"
+#include "gui/progressbar.h"
 #include "gui/register.h"
 #include "gui/updatewindow.h"
 #include "gui/textfield.h"
-
 
 #include "net/charserverhandler.h"
 #include "net/connection.h"
@@ -86,7 +90,6 @@
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -103,22 +106,12 @@ unsigned char screen_mode;
 Sound sound;
 Music *bgm;
 
-Configuration config;         /**< Xml file configuration reader */
+Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
 
 Net::Connection *accountServerConnection = 0;
 Net::Connection *gameServerConnection = 0;
 Net::Connection *chatServerConnection = 0;
-
-namespace {
-    struct ErrorListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event)
-        {
-            state = STATE_CHOOSE_SERVER;
-        }
-    } errorListener;
-}
 
 /**
  * A structure holding the values of various options that can be passed from
@@ -131,12 +124,14 @@ struct Options
      */
     Options():
         printHelp(false),
+        printVersion(false),
         skipUpdate(false),
         chooseDefault(false),
         serverPort(0)
     {};
 
     bool printHelp;
+    bool printVersion;
     bool skipUpdate;
     bool chooseDefault;
     std::string playername;
@@ -237,7 +232,16 @@ void initEngine()
     SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 
     SDL_WM_SetCaption("The Mana World", NULL);
-    SDL_WM_SetIcon(IMG_Load(TMW_DATADIR "data/icons/tmw-icon.png"), NULL);
+#ifdef WIN32
+    static SDL_SysWMinfo pInfo;
+    SDL_GetWMInfo(&pInfo);
+    HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
+    SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+#else
+    SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
+    SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+    SDL_WM_SetIcon(icon, NULL);
+#endif
 
     ResourceManager *resman = ResourceManager::getInstance();
 
@@ -356,6 +360,7 @@ void printHelp()
         "tmw\n\n"
         "Options:\n"
         "  -h --help       : Display this help\n"
+        "  -v --version    : Display the version\n"
         "  -u --skipupdate : Skip the update process\n"
         "  -U --username   : Login with this username\n"
         "  -P --password   : Login with this password\n"
@@ -366,12 +371,23 @@ void printHelp()
         "  -C --configfile : Configuration file to use\n";
 }
 
+void printVersion()
+{
+#ifdef PACKAGE_VERSION
+    std::cout << "The Mana World version " << PACKAGE_VERSION << std::endl;
+#else
+    std::cout << "The Mana World version " <<
+             "(local build?, PACKAGE_VERSION is not defined)" << std::endl;
+#endif
+}
+
 void parseOptions(int argc, char *argv[], Options &options)
 {
-    const char *optstring = "huU:P:Dp:s:o:C:";
+    const char *optstring = "hvuU:P:Dp:s:o:C:";
 
     const struct option long_options[] = {
         { "help",       no_argument,       0, 'h' },
+        { "version",    no_argument,       0, 'v' },
         { "skipupdate", no_argument,       0, 'u' },
         { "username",   required_argument, 0, 'U' },
         { "password",   required_argument, 0, 'P' },
@@ -394,6 +410,9 @@ void parseOptions(int argc, char *argv[], Options &options)
             default: // Unknown option
             case 'h':
                 options.printHelp = true;
+                break;
+            case 'v':
+                options.printVersion = true;
                 break;
             case 'u':
                 options.skipUpdate = true;
@@ -449,6 +468,16 @@ LoginHandler loginHandler;
 LogoutHandler logoutHandler;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 
+namespace {
+    struct ErrorListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            state = STATE_CHOOSE_SERVER;
+        }
+    } errorListener;
+}
+
 // TODO Find some nice place for these functions
 void accountLogin(LoginData *loginData)
 {
@@ -466,15 +495,17 @@ void accountLogin(LoginData *loginData)
     // Clear the password, avoids auto login when returning to login
     loginData->password = "";
 
-    //remove _M or _F from username after a login for registration purpose
+    // Remove _M or _F from username after a login for registration purpose
     if (loginData->registerLogin)
     {
-        loginData->registerLogin = false;
-        loginData->username = loginData->username.substr(0, loginData->username.length() - 2);
+        loginData->username =
+            loginData->username.substr(0, loginData->username.length() - 2);
     }
+
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
-    if (loginData->remember) {
+    if (loginData->remember)
+    {
         config.setValue("host", loginData->hostname);
         config.setValue("username", loginData->username);
     }
@@ -557,7 +588,7 @@ void logoutThenExit()
     logoutHandler.reset();
     logoutHandler.setScenario(LOGOUT_EXIT);
 
-    //Can't logout if we were not logged in ...
+    // Can't logout if we were not logged in ...
     if (accountServerConnection->isConnected())
     {
         Net::AccountServer::logout();
@@ -616,16 +647,17 @@ void initXML()
 /** Main */
 int main(int argc, char *argv[])
 {
-#ifdef PACKAGE_VERSION
-    std::cout << "The Mana World v" << PACKAGE_VERSION << std::endl;
-#endif
-
     // Parse command line options
     Options options;
     parseOptions(argc, argv, options);
     if (options.printHelp)
     {
         printHelp();
+        return 0;
+    }
+    else if (options.printVersion)
+    {
+        printVersion();
         return 0;
     }
 
@@ -647,10 +679,16 @@ int main(int argc, char *argv[])
     initConfiguration(options);
     initEngine();
 
+    Game *game = NULL;
     Window *currentDialog = NULL;
     QuitDialog* quitDialog = NULL;
     Image *login_wallpaper = NULL;
-    Game *game = NULL;
+
+    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+#ifdef PACKAGE_VERSION
+    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+    top->add(versionLabel, 2, 2);
+#endif
 
     sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
@@ -715,8 +753,8 @@ int main(int argc, char *argv[])
             guiInput->pushInput(event);
         }
 
-        gui->logic();
         Net::flush();
+        gui->logic();
 
         if (!login_wallpaper)
         {
@@ -729,10 +767,6 @@ int main(int argc, char *argv[])
         }
 
         graphics->drawImage(login_wallpaper, 0, 0);
-#ifdef PACKAGE_VERSION
-        graphics->setFont(gui->getFont());
-        graphics->drawText(PACKAGE_VERSION, 0, 0);
-#endif
         gui->draw();
         graphics->updateScreen();
 
@@ -759,7 +793,6 @@ int main(int argc, char *argv[])
                  accountServerConnection->isConnected())
         {
             reconnectAccount(token);
-
             state = STATE_WAIT;
         }
 
@@ -936,6 +969,10 @@ int main(int argc, char *argv[])
                     Net::ChatServer::connect(chatServerConnection, token);
                     sound.fadeOutMusic(1000);
 
+#ifdef PACKAGE_VERSION
+                    delete versionLabel;
+                    versionLabel = NULL;
+#endif
                     currentDialog = NULL;
 
                     logger->log("State: GAME");

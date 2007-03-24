@@ -30,7 +30,6 @@
 
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
-#include "../resources/spriteset.h"
 
 #include "../utils/tostring.h"
 

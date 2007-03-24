@@ -36,24 +36,6 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
-void
-WrongDataNoticeListener::setTarget(gcn::TextField *textField)
-{
-    mTarget = textField;
-}
-
-void
-WrongDataNoticeListener::action(const gcn::ActionEvent &event)
-{
-    if (event.getId() == "ok")
-    {
-        // Reset the field
-        mTarget->setText("");
-        mTarget->setCaretPosition(0);
-        mTarget->requestFocus();
-    }
-}
-
 LoginDialog::LoginDialog(LoginData *loginData):
     Window("Login"), mLoginData(loginData)
 {
@@ -66,28 +48,33 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mCancelButton = new Button("Cancel", "cancel", this);
     mRegisterButton = new Button("Register", "register", this);
 
-    setContentSize(200, 91);
+    const int width = 220;
+    const int height = 100;
+
+    setContentSize(width, height);
 
     userLabel->setPosition(5, 5);
     passLabel->setPosition(5, 14 + userLabel->getHeight());
     mUserField->setPosition(65, 5);
     mPassField->setPosition(65, 14 + userLabel->getHeight());
-    mUserField->setWidth(130);
-    mPassField->setWidth(130);
+    mUserField->setWidth(width - 70);
+    mPassField->setWidth(width - 70);
     mKeepCheck->setPosition(4, 68);
     mCancelButton->setPosition(
-            200 - mCancelButton->getWidth() - 5,
-            91 - mCancelButton->getHeight() - 5);
+            width - mCancelButton->getWidth() - 5,
+            height - mCancelButton->getHeight() - 5);
     mOkButton->setPosition(
             mCancelButton->getX() - mOkButton->getWidth() - 5,
-            91 - mOkButton->getHeight() - 5);
+            height - mOkButton->getHeight() - 5);
     mRegisterButton->setPosition(
             mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
-            91 - mRegisterButton->getHeight() - 5);
+            height - mRegisterButton->getHeight() - 5);
 
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
 
+    mUserField->addKeyListener(this);
+    mPassField->addKeyListener(this);
     mUserField->addActionListener(this);
     mPassField->addActionListener(this);
     mKeepCheck->addActionListener(this);
@@ -110,37 +97,27 @@ LoginDialog::LoginDialog(LoginData *loginData):
         mPassField->requestFocus();
     }
 
-    mWrongDataNoticeListener = new WrongDataNoticeListener();
+    mOkButton->setEnabled(canSubmit());
 }
 
 LoginDialog::~LoginDialog()
 {
-    delete mWrongDataNoticeListener;
 }
 
 void
 LoginDialog::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "ok")
+    if (event.getId() == "ok" && canSubmit())
     {
-        // Check login
-        if (mUserField->getText().empty())
-        {
-            mWrongDataNoticeListener->setTarget(mPassField);
-            OkDialog *dlg = new OkDialog("Error", "Enter your username first");
-            dlg->addActionListener(mWrongDataNoticeListener);
-        }
-        else
-        {
-            mLoginData->username = mUserField->getText();
-            mLoginData->password = mPassField->getText();
-            mLoginData->remember = mKeepCheck->isMarked();
+        mLoginData->username = mUserField->getText();
+        mLoginData->password = mPassField->getText();
+        mLoginData->remember = mKeepCheck->isMarked();
+        mLoginData->registerLogin = false;
 
-            mOkButton->setEnabled(false);
-            mRegisterButton->setEnabled(false);
+        mOkButton->setEnabled(false);
+        mRegisterButton->setEnabled(false);
 
-            state = STATE_LOGIN_ATTEMPT;
-        }
+        state = STATE_LOGIN_ATTEMPT;
     }
     else if (event.getId() == "cancel")
     {
@@ -148,6 +125,24 @@ LoginDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "register")
     {
+        // Transfer these fields on to the register dialog
+        mLoginData->username = mUserField->getText();
+        mLoginData->password = mPassField->getText();
+
         state = STATE_REGISTER;
     }
+}
+
+void
+LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    mOkButton->setEnabled(canSubmit());
+}
+
+bool
+LoginDialog::canSubmit()
+{
+    return !mUserField->getText().empty() &&
+           !mPassField->getText().empty() &&
+           state == STATE_LOGIN;
 }

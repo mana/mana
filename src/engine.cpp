@@ -44,7 +44,6 @@
 #include "resources/mapreader.h"
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -77,7 +76,8 @@ void Engine::changeMap(const std::string &mapPath)
 
     // Notify the minimap and beingManager about the map change
     Image *mapImage = NULL;
-    if (newMap->hasProperty("minimap")) {
+    if (newMap->hasProperty("minimap"))
+    {
         ResourceManager *resman = ResourceManager::getInstance();
         mapImage = resman->getImage(newMap->getProperty("minimap"));
     }

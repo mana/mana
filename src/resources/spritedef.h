@@ -32,7 +32,7 @@
 #include <libxml/tree.h>
 
 class Action;
-class Spriteset;
+class ImageSet;
 
 enum SpriteAction
 {
@@ -111,7 +111,7 @@ class SpriteDef : public Resource
          */
         void
         loadAnimation(xmlNodePtr animationNode,
-                      Action *action, Spriteset *imageset,
+                      Action *action, ImageSet *imageSet,
                       int variant_offset);
 
         /**
@@ -140,12 +140,12 @@ class SpriteDef : public Resource
         makeSpriteDirection(const std::string &direction);
 
 
-        typedef std::map<std::string, Spriteset*> Spritesets;
-        typedef Spritesets::iterator SpritesetIterator;
+        typedef std::map<std::string, ImageSet*> ImageSets;
+        typedef ImageSets::iterator ImageSetIterator;
 
         typedef std::map<SpriteAction, Action*> Actions;
 
-        Spritesets mSpritesets;
+        ImageSets mImageSets;
         Actions mActions;
         Action *mAction;
         SpriteDirection mDirection;

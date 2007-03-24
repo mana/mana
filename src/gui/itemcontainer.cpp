@@ -35,7 +35,6 @@
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
-#include "../resources/spriteset.h"
 
 #include "../utils/tostring.h"
 
@@ -65,7 +64,8 @@ ItemContainer::logic()
 
     int i = mInventory->getLastUsedSlot() + 1;
 
-    if (i != mMaxItems) {
+    if (i != mMaxItems)
+    {
         mMaxItems = i;
         setWidth(getWidth());
     }
@@ -192,9 +192,9 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
         int my = event.getY();
         int index = mx / gridWidth + ((my / gridHeight) * columns);
 
-        if (index > INVENTORY_SIZE) {
+        if (index > INVENTORY_SIZE)
             index = INVENTORY_SIZE - 1;
-        }
+
         setSelectedItem(mInventory->getItem(index));
     }
 }

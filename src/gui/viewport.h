@@ -33,8 +33,11 @@
 class Map;
 class Being;
 class FloorItem;
+class ImageSet;
 class Item;
 class PopupMenu;
+class Graphics;
+class SimpleAnimation;
 
 /**
  * The viewport on the map. Displays the current map and handles mouse input
@@ -138,6 +141,18 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
          */
         void showPopup(int x, int y, Being *being);
 
+        /**
+         * Draws range based target cursor
+         */
+        void
+        drawTargetCursor(Graphics *graphics);
+
+        /**
+         * Draws target name
+         */
+        void
+        drawTargetName(Graphics *graphics);
+
 
         Map *mMap;                 /**< The current map. */
 
@@ -148,6 +163,15 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mCameraX;              /**< Current viewpoint in tiles. */
         int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
+
+        ImageSet *mInRangeImages;  /**< Images of in range target cursor. */
+        ImageSet *mOutRangeImages; /**< Images of out of range target cursor.*/
+
+        /** Animated in range target cursor. */
+        SimpleAnimation *mTargetCursorInRange;
+
+        /** Animated out of range target cursor. */
+        SimpleAnimation *mTargetCursorOutRange;
 
         bool mPlayerFollowMouse;
         int mWalkTime;

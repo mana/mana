@@ -26,6 +26,7 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include "window.h"
 #include "../guichanfwd.h"
@@ -33,22 +34,13 @@
 class LoginData;
 
 /**
- * Listener used for handling wrong data.
- */
-class WrongDataNoticeListener : public gcn::ActionListener {
-    public:
-        void setTarget(gcn::TextField *textField);
-        void action(const gcn::ActionEvent &event);
-    private:
-        gcn::TextField *mTarget;
-};
-
-/**
  * The login dialog.
  *
  * \ingroup Interface
  */
-class LoginDialog : public Window, public gcn::ActionListener {
+class LoginDialog : public Window, public gcn::ActionListener,
+                    public gcn::KeyListener
+{
     public:
         /**
          * Constructor
@@ -67,15 +59,25 @@ class LoginDialog : public Window, public gcn::ActionListener {
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Called when a key is pressed in one of the text fields.
+         */
+        void keyPressed(gcn::KeyEvent &keyEvent);
+
     private:
+        /**
+         * Returns whether submit can be enabled. This is true in the login
+         * state, when all necessary fields have some text.
+         */
+        bool
+        canSubmit();
+
         gcn::TextField *mUserField;
         gcn::TextField *mPassField;
         gcn::CheckBox *mKeepCheck;
         gcn::Button *mOkButton;
         gcn::Button *mCancelButton;
         gcn::Button *mRegisterButton;
-
-        WrongDataNoticeListener *mWrongDataNoticeListener;
 
         LoginData *mLoginData;
 };

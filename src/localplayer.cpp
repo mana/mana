@@ -38,6 +38,7 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
+    mAttackRange(0),
     mInventory(new Inventory()),
     mAttributeBase(NB_BASE_ATTRIBUTES, 0),
     mAttributeEffective(NB_BASE_ATTRIBUTES, 0),

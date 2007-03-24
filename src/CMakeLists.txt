@@ -268,10 +268,10 @@ SET(SRCS
     resources/sdlimageloader.h
     resources/soundeffect.cpp
     resources/soundeffect.h
-    resources/spriteset.cpp
     resources/spritedef.h
     resources/spritedef.cpp
-    resources/spriteset.h
+    resources/imageset.h
+    resources/imageset.cpp
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h
@@ -330,6 +330,8 @@ SET(SRCS
     player.h
     properties.h
     serverinfo.h
+    simpleanimation.cpp
+    simpleanimation.h
     sound.cpp
     sound.h
     sprite.h

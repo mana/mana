@@ -21,8 +21,8 @@
  *  $Id$
  */
 
-#ifndef _TMW_SPRITESET_H
-#define _TMW_SPRITESET_H
+#ifndef _TMW_IMAGESET_H
+#define _TMW_IMAGESET_H
 
 #include <vector>
 
@@ -33,21 +33,19 @@ class Image;
 
 /**
  * Stores a set of subimages originating from a single image.
- *
- * TODO: Should probably be renamed to ImageSet or TileSet.
  */
-class Spriteset : public Resource
+class ImageSet : public Resource
 {
     public:
         /*
          * Cuts the passed image in a grid of sub images.
          */
-        Spriteset(const std::string &idPath, Image *img, int w, int h);
+        ImageSet(const std::string &idPath, Image *img, int w, int h);
 
         /**
          * Destructor.
          */
-        ~Spriteset();
+        ~ImageSet();
 
         int getWidth() { return mWidth; };
 
@@ -56,14 +54,13 @@ class Spriteset : public Resource
         typedef std::vector<Image*>::size_type size_type;
         Image* get(size_type i);
 
-        size_type size() { return mSpriteset.size(); }
+        size_type size() { return mImages.size(); }
 
     private:
-        // Vector storing the whole spriteset.
-        std::vector<Image*> mSpriteset;
-        // Height and width of the images in the spriteset
-        int mHeight;
-        int mWidth;
+        std::vector<Image*> mImages;
+
+        int mHeight; /**< Height of the images in the image set. */
+        int mWidth;  /**< Width of the images in the image set. */
 };
 
 #endif

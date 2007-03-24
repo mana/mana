@@ -26,23 +26,39 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include "window.h"
 #include "../guichanfwd.h"
 
 class LoginData;
 class OkDialog;
-class WrongDataNoticeListener;
 
 /**
- * The login dialog.
+ * Listener used while dealing with wrong data. It is used to direct the focus
+ * to the field which contained wrong data when the Ok button was pressed on
+ * the error notice.
+ */
+class WrongDataNoticeListener : public gcn::ActionListener {
+    public:
+        void setTarget(gcn::TextField *textField);
+        void action(const gcn::ActionEvent &event);
+    private:
+        gcn::TextField *mTarget;
+};
+
+/**
+ * The registration dialog.
  *
  * \ingroup Interface
  */
-class RegisterDialog : public Window, public gcn::ActionListener {
+class RegisterDialog : public Window, public gcn::ActionListener,
+                       public gcn::KeyListener
+{
     public:
         /**
-         * Constructor
+         * Constructor. Name, password and server fields will be initialized to
+         * the information already present in the LoginData instance.
          *
          * @see Window::Window
          */
@@ -58,10 +74,19 @@ class RegisterDialog : public Window, public gcn::ActionListener {
          */
         void action(const gcn::ActionEvent &event);
 
-        // Made them public to have the possibility to request focus
-        // from external functions.
+        /**
+         * Called when a key is pressed in one of the text fields.
+         */
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
     private:
+        /**
+         * Returns whether submit can be enabled. This is true in the register
+         * state, when all necessary fields have some text.
+         */
+        bool
+        canSubmit();
+
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;

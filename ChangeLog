@@ -1,4 +1,23 @@
-﻿2007-03-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Changed the order of network message handling and
+	logic, in order to prevent an incoming character delete message from
+	deleting the player character that was about to be drawn.
+	* src/gui/char_select.cpp: Removed useless lock/unlock calls.
+	* src/logindata.h, src/main.cpp, src/gui/login.cpp: Go back to login
+	or register state on error, depending on what the user was doing.
+	* src/gui/register.cpp: Actually use the server that is filled in.
+	* src/net/loginhandler.cpp: Fixed error message.
+	* src/net/charserverhandler.cpp: Fixed crash since now logic is called
+	after non-selected characters are deleted, by properly setting deleted
+	instances to 0 and going back to initial selection.
+	* src/main.cpp, src/net/network.h, src/net/network.cpp: Make sure that
+	when a network error occurs, the error message is available and shown
+	to the user.
+	* src/gui/register.h, src/gui/register.cpp: Only enable Register
+	button when all necessary fields are filled in.
+
+2007-03-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tmw.cbp: Updated and fixed Code::Blocks project file.
 
@@ -6,25 +25,141 @@
 
 	* src/gui/char_select.cpp, src/gui/inventorywindow.cpp,
 	src/gui/ministatus.cpp, src/gui/ministatus.h, src/gui/skill.cpp,
-	src/gui/skill.h, src/gui/status.cpp, src/gui/status.h, src/localplayer.cpp
-	, src/localplayer.h, src/net/buysellhandler: Redesigned the localplayer
-	class to use getters and setters instead of direct access to the member
-	variables.
-	src/net/charserverhandler.cpp, src/net/playerhandler.cpp,
-	src/net/protocol.h: Implemented communication of attributes between server
-	and client.
+	src/gui/skill.h, src/gui/status.cpp, src/gui/status.h,
+	src/localplayer.cpp, src/localplayer.h, src/net/buysellhandler:
+	Redesigned the localplayer class to use getters and setters instead of
+	direct access to the member variables.
+	* src/net/charserverhandler.cpp, src/net/playerhandler.cpp,
+	src/net/protocol.h: Implemented communication of attributes between
+	server and client.
+
+2007-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/char_select.cpp, src/gui/char_select.h,
+	src/net/charserverhandler.h, src/net/charserverhandler.cpp: Clarified
+	the error message when character creation fails and made sure the
+	character creation dialog doesn't close when creation failed.
+
+2007-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/login.cpp, src/gui/login.h, src/gui/register.h,
+	src/gui/register.cpp: Only enable login button when a username,
+	password and server are filled in. Pass username, password and server
+	on to the register dialog. Go back to login dialog when canceling
+	registration. Fixed a crash caused by deleting an OkDialog twice (it
+	also deletes itself). Made the register dialog a bit wider. Register
+	dialog no longer clears username field when it is invalid.
+	* src/main.cpp, data/icons/CMakeLists.txt, data/icons/Makefile.am,
+	data/icons/tmw-32x32.png: Use a 32x32 non-alpha layered window icon.
+	* tmw.cbp: Updated project file.
+	* data/icons/CMakeLists.txt, data/icons/Makefile.am, src/main.cpp,
+	data/icons/tmw-32x32.png: Removed 32x32 non-alpha layered window icon
+	again, and instead used the icon in the executable on Windows.
+
+2007-03-21  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp, src/gui/viewport.cpp, src/resources/image.h,
+	src/resources/image.cpp: Reduced amount of useless logging, calculate
+	nearest power of two in a function and only do the alpha check in
+	software mode.
+	* src/gui/login.cpp: Fixed small issue where default server didn't fit
+	in the server entry field properly.
+	* src/main.cpp: Display a progress bar and connecting status for each
+	server and display the version using a gcn::Label.
+	* src/gui/viewport.cpp, src/monster.h: Avoiding magic numbers where
+	possible (1002) and also display the target when other players are
+	targeted.
+	* src/floor_item.cpp, src/being.cpp, src/main.cpp, src/CMakeLists.txt,
+	src/gui/equipmentwindow.cpp, src/gui/viewport.cpp,
+	src/gui/itemcontainer.cpp, src/gui/viewport.h, src/engine.cpp,
+	src/animatedsprite.cpp, src/tileset.h, src/npc.cpp, src/Makefile.am,
+	src/being.h, src/resources/imageset.cpp, src/resources/animation.h,
+	src/resources/spritedef.cpp, src/resources/resourcemanager.h,
+	src/resources/spriteset.h, src/resources/imageset.h,
+	src/resources/resourcemanager.cpp, src/resources/spriteset.cpp,
+	src/resources/spritedef.h: Renamed Spriteset to ImageSet.
+
+2007-03-20  David Athay  <ko2fan@gmail.com>
+
+	* src/gui/viewport.cpp: Fixed target cursor animation, and changed
+	which layer it is drawn after.
+	* src/gui/viewport.cpp, src/gui/viewport.h: Split drawing the target
+	cursor and target name into functions.
 
 2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* data/graphics/gui/mouse.png: Positioned the cursor image more
+	accurate.
 	* src/gui/char_select.cpp, src/gui/char_select.h,
-	src/net/charserverhandler.cpp, src/net/protocol.h: Implemented a GUI for
-	distributing the characters attributes at character creation.
+	src/net/charserverhandler.cpp, src/net/protocol.h: Implemented a GUI
+	for distributing the characters attributes at character creation.
+
+2007-03-19  David Athay <ko2fan@gmail.com>
+
+	* src/localplayer.cpp, src/gui/viewport.cpp, src/gui/viewport.h,
+	src/net/equipmenthandler.cpp, src/localplayer.h,
+	src/net/protocol.h: Added target cursor.
+
+2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* docs/Makefile.am, docs/tmw.6: Added man page by Patrick Matthäi.
+	* src/resources/image.cpp: Restored alpha layer check, since it should
+	be more efficient in software mode when SDL knows an image doesn't use
+	the alpha layer.
+	* data/graphics/gui/thickborder.png,
+	data/graphics/gui/vscroll_grey.png, data/graphics/gui/slider.png,
+	data/graphics/gui/vscroll_blue.png, data/graphics/gui/vscroll_red.png,
+	data/graphics/gui/deepbox.png,
+	data/graphics/sprites/monster-slime-red.png,
+	data/graphics/sprites/monster-scorpion-black.png,
+	data/graphics/sprites/monster-scorpion.png,
+	data/graphics/sprites/monster-slime-rudolph.png,
+	data/graphics/sprites/monster-snake.png,
+	data/graphics/sprites/monster-slime-santa.png,
+	data/graphics/sprites/monster-maggot.png,
+	data/graphics/sprites/monster-spider.png,
+	data/graphics/sprites/monster-scorpion-red.png,
+	data/graphics/sprites/monster-slime-yellow.png,
+	data/graphics/sprites/monster-slime-green.png,
+	data/graphics/sprites/monster-maggot-giant.png: Replaced pink pixels
+	with transparent ones.
+
+2007-03-18  Rogier Polak  <rogier.l.a.polak@gmail.com>
+
+	* src/main.cpp: Added (-v) version to the arguments. (Applied a patch
+	by Patrick Matthäi).
+	* src/resources/image.cpp: Deleted the "pink code", which added
+	transparancy with SDL_SetColorKey.
+
+2007-03-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* icons/tmw.ico, icons/tmw.png, icons/tmw.xpm: Replaced icons with the
+	green globe that is also used on the website.
 
 2007-03-16  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/char_select.cpp, src/net/accountserver/account.cpp,
 	src/net/accountserver/account.hpp: Implemented 7 atribute system
 	in character creation.
+
+2007-03-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp, src/tmw.rc, data/icons/tmw-icon.png,
+	data/icons/tmw-icon.xpm, data/icons/tmw.ico, data/icons/tmw-icon.ico,
+	data/icons/Makefile.am, data/icons/tmw.png, data/icons/tmw.xpm,
+	data/icons/CMakeLists.txt: Renamed icons to make things easier for
+	Debian packaging, and the "-icon" part was superfluous anyway.
+
+2007-03-12  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/simpleanimation.cpp, src/simpleanimation.h, src/CmakeLists.txt,
+	src/Makefile.am: Added a simple animation class that hosts a looping
+	animation without the action and direction stuff from AnimatedSprite.
+
+2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/items/armor-head-rangerhat.png: New version of ranger
+	hat icon by Pauan.
 
 2007-03-11  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -34,10 +169,11 @@
 2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/target-cursor-blue.png,
-	data/graphics/gui/target-cursor-red.png: Added targeting cursors by Pauan.
+	data/graphics/gui/target-cursor-red.png: Added targeting cursors by
+	Pauan.
 	* data/graphics/sprites/chest-cotton-male.png,
-	data/graphics/sprites/chest-cotton-female.png: Replaced cotton shirt with
-	improved version by Pauan.
+	data/graphics/sprites/chest-cotton-female.png: Replaced cotton shirt
+	with improved version by Pauan.
 
 2007-03-03  Rogier Polak  <rogier.l.a.polak@gmail.com>
 

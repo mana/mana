@@ -34,11 +34,13 @@
 #include "../main.h"
 
 #include "../gui/ok_dialog.h"
+#include "../gui/char_select.h"
 
 extern Net::Connection *gameServerConnection;
 extern Net::Connection *chatServerConnection;
 
-CharServerHandler::CharServerHandler()
+CharServerHandler::CharServerHandler():
+    mCharCreateDialog(0)
 {
     static const Uint16 _messages[] = {
         APMSG_CHAR_CREATE_RESPONSE,
@@ -99,6 +101,13 @@ CharServerHandler::handleMessage(MessageIn &msg)
             mCharInfo->unlock();
             mCharInfo->select(slot);
             mCharInfo->setEntry(tempPlayer);
+
+            // Close the character create dialog
+            if (mCharCreateDialog)
+            {
+                mCharCreateDialog->scheduleDelete();
+                mCharCreateDialog = 0;
+            }
             break;
 
         case APMSG_CHAR_SELECT_RESPONSE:
@@ -154,6 +163,9 @@ CharServerHandler::handleCharCreateResponse(MessageIn &msg)
         }
         new OkDialog("Error", message);
     }
+
+    if (mCharCreateDialog)
+        mCharCreateDialog->unlock();
 }
 
 void
@@ -177,15 +189,20 @@ CharServerHandler::handleCharSelectResponse(MessageIn &msg)
 
         // Keep the selected character and delete the others
         player_node = mCharInfo->getEntry();
+        int slot = mCharInfo->getPos();
         mCharInfo->unlock();
         mCharInfo->select(0);
 
         do {
             LocalPlayer *tmp = mCharInfo->getEntry();
             if (tmp != player_node)
+            {
                 delete tmp;
+                mCharInfo->setEntry(0);
+            }
             mCharInfo->next();
         } while (mCharInfo->getPos());
+        mCharInfo->select(slot);
 
         mCharInfo->clear(); //player_node will be deleted by ~Game
 
@@ -204,8 +221,11 @@ CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->setHairColor(msg.readByte());
     tempPlayer->setLevel(msg.readByte());
     tempPlayer->setMoney(msg.readLong());
-    for (int i = 0; i < 7; i++) {
+
+    for (int i = 0; i < 7; i++)
+    {
         tempPlayer->setAttributeBase(i, msg.readByte());
     }
+
     return tempPlayer;
 }

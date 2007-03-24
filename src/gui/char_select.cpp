@@ -42,8 +42,13 @@
 #include "../logindata.h"
 
 #include "../net/accountserver/account.h"
+#include "../net/charserverhandler.h"
+#include "../net/messageout.h"
 
 #include "../utils/tostring.h"
+
+// Defined in main.cpp, used here for setting the char create dialog
+extern CharServerHandler charServerHandler;
 
 /**
  * Listener for confirming character deletion.
@@ -155,14 +160,14 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "new")
     {
-        //TODO: search the first free slot, and start CharCreateDialog
-        //      maybe add that search to the constructor
+        // TODO: Search the first free slot, and start CharCreateDialog
+        //       maybe add that search to the constructor.
         if (!(mCharInfo->getEntry()))
         {
             // Start new character dialog
-            mCharInfo->lock();
-            new CharCreateDialog(this, mCharInfo->getPos());
-            mCharInfo->unlock();
+            CharCreateDialog *charCreateDialog =
+                new CharCreateDialog(this, mCharInfo->getPos());
+            charServerHandler.setCharCreateDialog(charCreateDialog);
         }
     }
     else if (event.getId() == "delete")
@@ -344,14 +349,19 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
 
     setLocationRelativeTo(getParent());
     setVisible(true);
+    mNameField->requestFocus();
 }
 
 CharCreateDialog::~CharCreateDialog()
 {
     delete mPlayer;
+
+    // Make sure the char server handler knows that we're gone
+    charServerHandler.setCharCreateDialog(0);
 }
 
-void CharCreateDialog::action(const gcn::ActionEvent &event)
+void
+CharCreateDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "create") {
         if (getName().length() >= 4) {
@@ -362,15 +372,14 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
                     mPlayer->getHairStyle(),
                     mPlayer->getHairColor(),
                     0,   // gender
-                    (int)mAttributeSlider[0]->getValue(),  // STR
-                    (int)mAttributeSlider[1]->getValue(),  // AGI
-                    (int)mAttributeSlider[2]->getValue(),  // DEX
-                    (int)mAttributeSlider[3]->getValue(),  // VIT
-                    (int)mAttributeSlider[4]->getValue(),  // INT
-                    (int)mAttributeSlider[5]->getValue(),  // WILL
-                    (int)mAttributeSlider[6]->getValue()   // CHAR
+                    (int) mAttributeSlider[0]->getValue(),  // STR
+                    (int) mAttributeSlider[1]->getValue(),  // AGI
+                    (int) mAttributeSlider[2]->getValue(),  // DEX
+                    (int) mAttributeSlider[3]->getValue(),  // VIT
+                    (int) mAttributeSlider[4]->getValue(),  // INT
+                    (int) mAttributeSlider[5]->getValue(),  // WILL
+                    (int) mAttributeSlider[6]->getValue()   // CHAR
             );
-            scheduleDelete();
         }
         else {
             new OkDialog("Error",
@@ -399,21 +408,23 @@ void CharCreateDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-std::string CharCreateDialog::getName()
+const std::string&
+CharCreateDialog::getName()
 {
     return mNameField->getText();
 }
 
 void CharCreateDialog::UpdateSliders()
 {
-    for (int i=0; i<=6; i++)
+    for (int i = 0; i < 7; i++)
     {
-        // update captions
-        mAttributeValue[i]->setCaption(toString((int)(mAttributeSlider[i]->getValue())));
+        // Update captions
+        mAttributeValue[i]->setCaption(
+                toString((int) (mAttributeSlider[i]->getValue())));
         mAttributeValue[i]->adjustSize();
     }
 
-    // update distributed points
+    // Update distributed points
     int pointsLeft = 70 - getDistributedPoints();
     if (pointsLeft == 0)
     {
@@ -425,24 +436,32 @@ void CharCreateDialog::UpdateSliders()
         mCreateButton->setEnabled(false);
         if (pointsLeft > 0)
         {
-            mAttributesLeft->setCaption(std::string("Please distribute " + toString(pointsLeft) + " points"));
+            mAttributesLeft->setCaption(std::string("Please distribute " +
+                                        toString(pointsLeft) + " points"));
         }
         else
         {
-            mAttributesLeft->setCaption(std::string("Please remove " + toString(-pointsLeft) + " points"));
+            mAttributesLeft->setCaption(std::string("Please remove " +
+                                        toString(-pointsLeft) + " points"));
         }
     }
 
     mAttributesLeft->adjustSize();
 }
 
+void
+CharCreateDialog::unlock()
+{
+    mCreateButton->setEnabled(true);
+}
+
 int CharCreateDialog::getDistributedPoints()
 {
     int points = 0;
 
-    for (int i=0; i<7; i++)
+    for (int i = 0; i < 7; i++)
     {
-        points += (int)mAttributeSlider[i]->getValue();
+        points += (int) mAttributeSlider[i]->getValue();
     }
     return points;
 }

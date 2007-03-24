@@ -88,7 +88,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             {
                 switch (errMsg) {
                     case REGISTER_INVALID_VERSION:
-                    errorMessage = "Client has an insufficient version number to login.";
+                        errorMessage = "Client has an insufficient version number to login.";
                         break;
                     case ERRMSG_INVALID_ARGUMENT:
                         errorMessage = "Wrong username, password or email address";

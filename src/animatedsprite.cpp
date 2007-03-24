@@ -30,7 +30,6 @@
 #include "resources/animation.h"
 #include "resources/image.h"
 #include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
 
 #include "utils/xml.h"
 

@@ -28,8 +28,6 @@
 
 #include "gui/gui.h"
 
-class Spriteset;
-
 NPC *current_npc = 0;
 
 NPC::NPC(Uint16 id, Uint16 job, Map *map):

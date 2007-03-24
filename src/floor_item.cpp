@@ -27,7 +27,6 @@
 
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
-#include "resources/spriteset.h"
 
 
 FloorItem::FloorItem(unsigned int id,

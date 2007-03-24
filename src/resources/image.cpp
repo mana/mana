@@ -80,7 +80,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         tmpImage = IMG_Load_RW(rw, 1);
     }
 
-    if (tmpImage == NULL) {
+    if (!tmpImage) {
         logger->log("Error, image load failed: %s", IMG_GetError());
         return NULL;
     }
@@ -99,87 +99,28 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     amask = 0xff000000;
 #endif
 
-    // Convert the image to a 32 bit software surface for processing
-    SDL_Surface *formatImage = SDL_CreateRGBSurface(SDL_SWSURFACE, 0, 0, 32,
-            rmask, gmask, bmask, amask);
-
-    if (formatImage == NULL) {
-        logger->log("Error, image load failed: not enough memory");
-        SDL_FreeSurface(tmpImage);
-        return NULL;
-    }
-
-    SDL_Surface *image = SDL_ConvertSurface(
-            tmpImage, formatImage->format, SDL_SWSURFACE);
-
-    SDL_FreeSurface(formatImage);
-
-    if (image == NULL) {
-        logger->log("Error, image load failed: not enough memory");
-        return NULL;
-    }
-
-    bool hasPink = false;
-    bool hasAlpha = false;
-    int i;
-    Uint32 pink = SDL_MapRGB(image->format, 255, 0, 255);
-
-    // Figure out whether the image has pink pixels
-    for (i = 0; i < image->w * image->h; ++i)
-    {
-        if (((Uint32*)image->pixels)[i] == pink)
-        {
-            hasPink = true;
-            break;
-        }
-    }
-
-    // Figure out whether the image uses its alpha layer
-    for (i = 0; i < image->w * image->h; ++i)
-    {
-        Uint8 r, g, b, a;
-        SDL_GetRGBA(
-                ((Uint32*)image->pixels)[i],
-                image->format,
-                &r, &g, &b, &a);
-
-        if (a != 255)
-        {
-            hasAlpha = true;
-            break;
-        }
-    }
-
-    SDL_FreeSurface(image);
-
-    if (hasPink && !hasAlpha) {
-        SDL_SetColorKey(tmpImage, SDL_SRCCOLORKEY,
-                SDL_MapRGB(tmpImage->format, 255, 0, 255));
-    } else if (hasAlpha) {
-        SDL_SetAlpha(tmpImage, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-    }
-
 #ifdef USE_OPENGL
     if (mUseOpenGL)
     {
         int width = tmpImage->w;
         int height = tmpImage->h;
-        int realWidth = 1, realHeight = 1;
+        int realWidth = powerOfTwo(width);
+        int realHeight = powerOfTwo(height);
 
-        while (realWidth < width && realWidth < 1024) {
-            realWidth *= 2;
+        if (realWidth < width || realHeight < height)
+        {
+            logger->log("Warning: image too large, cropping to %dx%d texture!",
+                    tmpImage->w, tmpImage->h);
         }
 
-        while (realHeight < height && realHeight < 1024) {
-            realHeight *= 2;
-        }
-
+        // Make sure the alpha channel is not used, but copied to destination
         SDL_SetAlpha(tmpImage, 0, SDL_ALPHA_OPAQUE);
-        SDL_Surface *oldImage = tmpImage;
-        tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight, 32,
-                rmask, gmask, bmask, amask);
 
-        if (tmpImage == NULL) {
+        SDL_Surface *oldImage = tmpImage;
+        tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight,
+            32, rmask, gmask, bmask, amask);
+
+        if (!tmpImage) {
             logger->log("Error, image convert failed: out of memory");
             return NULL;
         }
@@ -189,8 +130,6 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
 
         GLuint texture;
         glGenTextures(1, &texture);
-        logger->log("Binding texture %d (%dx%d)",
-                texture, tmpImage->w, tmpImage->h);
         glBindTexture(GL_TEXTURE_2D, texture);
 
         if (SDL_MUSTLOCK(tmpImage)) {
@@ -246,8 +185,27 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     }
 #endif
 
-    // Set color key and alpha blending optins, and convert the surface to the
-    // current display format
+    bool hasAlpha = false;
+
+    // Figure out whether the image uses its alpha layer
+    for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
+    {
+        Uint8 r, g, b, a;
+        SDL_GetRGBA(
+                ((Uint32*) tmpImage->pixels)[i],
+                tmpImage->format,
+                &r, &g, &b, &a);
+
+        if (a != 255)
+        {
+            hasAlpha = true;
+            break;
+        }
+    }
+
+    SDL_Surface *image;
+
+    // Convert the surface to the current display format
     if (hasAlpha) {
         image = SDL_DisplayFormatAlpha(tmpImage);
     }
@@ -256,7 +214,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     }
     SDL_FreeSurface(tmpImage);
 
-    if (image == NULL) {
+    if (!image) {
         logger->log("Error: Image convert failed.");
         return NULL;
     }
@@ -315,9 +273,21 @@ float Image::getAlpha()
 }
 
 #ifdef USE_OPENGL
-void Image::setLoadAsOpenGL(bool useOpenGL)
+void
+Image::setLoadAsOpenGL(bool useOpenGL)
 {
     Image::mUseOpenGL = useOpenGL;
+}
+
+int
+Image::powerOfTwo(int input)
+{
+    int value = 1;
+    while (value < input && value < 1024)
+    {
+        value <<= 1;
+    }
+    return value;
 }
 #endif
 

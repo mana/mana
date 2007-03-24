@@ -222,8 +222,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/spriteset.h \
-	      resources/spriteset.cpp \
+	      resources/imageset.h \
+	      resources/imageset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/base64.cpp \
@@ -284,6 +284,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      player.h \
 	      properties.h \
 	      serverinfo.h \
+	      simpleanimation.cpp \
+  	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \

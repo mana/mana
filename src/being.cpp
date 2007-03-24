@@ -34,7 +34,7 @@
 #include "map.h"
 
 #include "resources/resourcemanager.h"
-#include "resources/spriteset.h"
+#include "resources/imageset.h"
 
 #include "gui/gui.h"
 
@@ -42,7 +42,7 @@
 #include "utils/tostring.h"
 
 int Being::instances = 0;
-Spriteset *Being::emotionset = NULL;
+ImageSet *Being::emotionSet = NULL;
 
 Being::Being(Uint16 id, Uint16 job, Map *map):
     mJob(job),
@@ -72,8 +72,8 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     {
         // Load the emotion set
         ResourceManager *rm = ResourceManager::getInstance();
-        emotionset = rm->getSpriteset("graphics/sprites/emotions.png", 30, 32);
-        if (!emotionset) logger->error("Unable to load emotions spriteset!");
+        emotionSet = rm->getImageSet("graphics/sprites/emotions.png", 30, 32);
+        if (!emotionSet) logger->error("Unable to load emotions!");
     }
 
     instances++;
@@ -89,8 +89,8 @@ Being::~Being()
 
     if (instances == 0)
     {
-        emotionset->decRef();
-        emotionset = NULL;
+        emotionSet->decRef();
+        emotionSet = NULL;
     }
 }
 
@@ -515,7 +515,7 @@ Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
     int px = mPx + offsetX + 3;
     int py = mPy + offsetY - 60;
 
-    graphics->drawImage(emotionset->get(mEmotion - 1), px, py);
+    graphics->drawImage(emotionSet->get(mEmotion - 1), px, py);
 }
 
 void
