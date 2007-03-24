@@ -151,11 +151,9 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "new" && n_character <= MAX_SLOT)
     {
         // Start new character dialog
-        mCharInfo->lock();
         CharCreateDialog *charCreateDialog =
             new CharCreateDialog(this, mCharInfo->getPos(), mNetwork, mSex);
         charServerHandler.setCharCreateDialog(charCreateDialog);
-        mCharInfo->unlock();
     }
     else if (event.getId() == "delete")
     {

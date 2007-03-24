@@ -625,9 +625,9 @@ int main(int argc, char *argv[])
             guiInput->pushInput(event);
         }
 
-        gui->logic();
         network->flush();
         network->dispatchMessages();
+        gui->logic();
 
         if (network->getState() == Network::NET_ERROR)
         {

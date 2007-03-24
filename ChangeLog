@@ -1,4 +1,11 @@
-﻿2007-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Changed the order of network message handling and
+	logic, in order to prevent an incoming character delete message from
+	deleting the player character that was about to be drawn.
+	* src/gui/char_select.cpp: Removed useless lock/unlock calls.
+
+2007-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.cpp, src/gui/char_select.h,
 	src/net/charserverhandler.h, src/net/charserverhandler.cpp: Clarified
