@@ -1,4 +1,9 @@
-﻿2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/updatewindow.cpp: Cancel button is now disabled after
+	downloading is finished.
+
+2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Changed the order of network message handling and
 	logic, in order to prevent an incoming character delete message from
