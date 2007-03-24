@@ -53,7 +53,8 @@ void LoginHandler::handleMessage(MessageIn *msg)
             msg->skip(2);
 
             n_server = (msg->getLength() - 47) / 32;
-            server_info = (SERVER_INFO**)malloc(sizeof(SERVER_INFO*) * n_server);
+            server_info =
+                (SERVER_INFO**) malloc(sizeof(SERVER_INFO*) * n_server);
 
             mLoginData->session_ID1 = msg->readInt32();
             mLoginData->account_ID = msg->readInt32();
@@ -103,7 +104,7 @@ void LoginHandler::handleMessage(MessageIn *msg)
                     errorMessage = "You have been banned for 5 minutes";
                     break;
                 case 9:
-                    errorMessage = "This account is already logged in";
+                    errorMessage = "This user name is already taken";
                     break;
                 default:
                     errorMessage = "Unknown error";

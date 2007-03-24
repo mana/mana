@@ -134,6 +134,7 @@ void CharServerHandler::handleMessage(MessageIn *msg)
 
         case 0x0071:
             player_node = mCharInfo->getEntry();
+            slot = mCharInfo->getPos();
             msg->skip(4); // CharID, must be the same as player_node->charID
             map_path = msg->readString(16);
             mLoginData->hostname = iptostring(msg->readInt32());
@@ -145,10 +146,14 @@ void CharServerHandler::handleMessage(MessageIn *msg)
             {
                 LocalPlayer *tmp = mCharInfo->getEntry();
                 if (tmp != player_node)
+                {
                     delete tmp;
+                    mCharInfo->setEntry(0);
+                }
                 mCharInfo->next();
             } while (mCharInfo->getPos());
 
+            mCharInfo->select(slot);
             state = CONNECTING_STATE;
             break;
 

@@ -36,8 +36,8 @@ struct LoginData
     int session_ID2;
     char sex;
 
-    bool remember;
-    bool registerLogin;
+    bool remember;            /**< Whether to store the username and host. */
+    bool registerLogin;       /**< Whether an account is being registered. */
 };
 
 #endif

@@ -104,16 +104,6 @@ Music *bgm;
 Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
 
-namespace {
-    struct ErrorListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event)
-        {
-            state = LOGIN_STATE;
-        }
-    } errorListener;
-}
-
 /**
  * A structure holding the values of various options that can be passed from
  * the command line.
@@ -446,6 +436,16 @@ LoginHandler loginHandler;
 LockedArray<LocalPlayer*> charInfo(MAX_SLOT + 1);
 MapLoginHandler mapLoginHandler;
 
+namespace {
+    struct ErrorListener : public gcn::ActionListener
+    {
+        void action(const gcn::ActionEvent &event)
+        {
+            state = loginData.registerLogin ? REGISTER_STATE : LOGIN_STATE;
+        }
+    } errorListener;
+}
+
 // TODO Find some nice place for these functions
 void accountLogin(Network *network, LoginData *loginData)
 {
@@ -469,13 +469,14 @@ void accountLogin(Network *network, LoginData *loginData)
     // Remove _M or _F from username after a login for registration purpose
     if (loginData->registerLogin)
     {
-        loginData->registerLogin = false;
-        loginData->username = loginData->username.substr(0,
-                loginData->username.length() - 2);
+        loginData->username =
+            loginData->username.substr(0, loginData->username.length() - 2);
     }
+
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
-    if (loginData->remember) {
+    if (loginData->remember)
+    {
         config.setValue("host", loginData->hostname);
         config.setValue("username", loginData->username);
     }
@@ -713,6 +714,7 @@ int main(int argc, char *argv[])
                     logger->log("State: LOGIN");
 
                     if (!loginData.password.empty()) {
+                        loginData.registerLogin = false;
                         state = ACCOUNT_STATE;
                     } else {
                         currentDialog = new LoginDialog(&loginData);
