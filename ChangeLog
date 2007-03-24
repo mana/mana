@@ -11,6 +11,11 @@
 	* src/net/charserverhandler.cpp: Fixed crash since now logic is called
 	after non-selected characters are deleted, by properly setting deleted
 	instances to 0 and going back to initial selection.
+	* src/main.cpp, src/net/network.h, src/net/network.cpp: Make sure that
+	when a network error occurs, the error message is available and shown
+	to the user.
+	* src/gui/register.h, src/gui/register.cpp: Only enable Register
+	button when all necessary fields are filled in.
 
 2007-03-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

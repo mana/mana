@@ -41,29 +41,52 @@ class Network
         friend class MessageOut;
 
         Network();
+
         ~Network();
 
-        bool connect(const std::string &address, short port);
-        void disconnect();
+        bool
+        connect(const std::string &address, short port);
 
-        void registerHandler(MessageHandler *handler);
-        void unregisterHandler(MessageHandler *handler);
-        void clearHandlers();
+        void
+        disconnect();
 
-        int getState() const { return mState; }
-        bool isConnected() const { return mState == CONNECTED; }
+        void
+        registerHandler(MessageHandler *handler);
 
-        int getInSize() const { return mInSize; }
+        void
+        unregisterHandler(MessageHandler *handler);
 
-        void skip(int len);
+        void
+        clearHandlers();
 
-        bool messageReady();
-        MessageIn getNextMessage();
+        int
+        getState() const { return mState; }
 
-        void dispatchMessages();
-        void flush();
+        const std::string&
+        getError() const { return mError; }
 
-        // ERROR replaced by NET_ERROR because  already defined in Windows
+        bool
+        isConnected() const { return mState == CONNECTED; }
+
+        int
+        getInSize() const { return mInSize; }
+
+        void
+        skip(int len);
+
+        bool
+        messageReady();
+
+        MessageIn
+        getNextMessage();
+
+        void
+        dispatchMessages();
+
+        void
+        flush();
+
+        // ERROR replaced by NET_ERROR because already defined in Windows
         enum {
             IDLE,
             CONNECTED,
@@ -73,7 +96,17 @@ class Network
         };
 
     protected:
-        Uint16 readWord(int pos);
+        void
+        setError(const std::string& error);
+
+        Uint16
+        readWord(int pos);
+
+        bool
+        realConnect();
+
+        void
+        receive();
 
         TCPsocket mSocket;
 
@@ -86,6 +119,7 @@ class Network
         unsigned int mToSkip;
 
         int mState;
+        std::string mError;
 
         SDL_Thread *mWorkerThread;
         SDL_mutex *mMutex;
@@ -93,9 +127,6 @@ class Network
         typedef std::map<Uint16, MessageHandler*> MessageHandlers;
         typedef MessageHandlers::iterator MessageHandlerIterator;
         MessageHandlers mMessageHandlers;
-
-        bool realConnect();
-        void receive();
 };
 
 /** Convert an address from int format to string */

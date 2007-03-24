@@ -28,6 +28,8 @@
 
 #include "../log.h"
 
+#include <sstream>
+
 /** Warning: buffers and other variables are shared,
     so there can be only one connection active at a time */
 
@@ -126,8 +128,7 @@ bool Network::connect(const std::string &address, short port)
 
     if (address.empty())
     {
-        logger->log("Empty address given to Network::connect()!");
-        mState = NET_ERROR;
+        setError("Empty address given to Network::connect()!");
         return false;
     }
 
@@ -145,8 +146,7 @@ bool Network::connect(const std::string &address, short port)
     mWorkerThread = SDL_CreateThread(networkThread, this);
     if (!mWorkerThread)
     {
-        logger->log("Unable to create network worker thread");
-        mState = NET_ERROR;
+        setError("Unable to create network worker thread");
         return false;
     }
 
@@ -172,12 +172,9 @@ void Network::disconnect()
 
 void Network::registerHandler(MessageHandler *handler)
 {
-    const Uint16 *i = handler->handledMessages;
-
-    while(*i)
+    for (const Uint16 *i = handler->handledMessages; *i; i++)
     {
         mMessageHandlers[*i] = handler;
-        i++;
     }
 
     handler->setNetwork(this);
@@ -232,8 +229,8 @@ void Network::flush()
     ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
     if (ret < (int)mOutSize)
     {
-        logger->log("Error in SDLNet_TCP_Send(): %s", SDLNet_GetError());
-        mState = NET_ERROR;
+        setError("Error in SDLNet_TCP_Send(): " +
+                 std::string(SDLNet_GetError()));
     }
     mOutSize = 0;
     SDL_mutexV(mMutex);
@@ -314,8 +311,9 @@ bool Network::realConnect()
 
     if (SDLNet_ResolveHost(&ipAddress, mAddress.c_str(), mPort) == -1)
     {
-        logger->log("Error in SDLNet_ResolveHost(): %s", SDLNet_GetError());
-        mState = NET_ERROR;
+        std::string error = "Unable to resolve host \"" + mAddress + "\"";
+        setError(error);
+        logger->log("SDLNet_ResolveHost: %s", error.c_str());
         return false;
     }
 
@@ -325,7 +323,7 @@ bool Network::realConnect()
     if (!mSocket)
     {
         logger->log("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        mState = NET_ERROR;
+        setError(SDLNet_GetError());
         return false;
     }
 
@@ -343,15 +341,15 @@ void Network::receive()
 
     if (!(set = SDLNet_AllocSocketSet(1)))
     {
-        logger->log("Error in SDLNet_AllocSocketSet(): %s", SDLNet_GetError());
-        mState = NET_ERROR;
+        setError("Error in SDLNet_AllocSocketSet(): " +
+                 std::string(SDLNet_GetError()));
         return;
     }
 
     if (SDLNet_TCP_AddSocket(set, mSocket) == -1)
     {
-        logger->log("Error in SDLNet_AddSocket(): %s", SDLNet_GetError());
-        mState = NET_ERROR;
+        setError("Error in SDLNet_AddSocket(): " +
+                 std::string(SDLNet_GetError()));
     }
 
     while (mState == CONNECTED)
@@ -381,8 +379,8 @@ void Network::receive()
                 }
                 else if (ret < 0)
                 {
-                    logger->log("Error in SDLNet_TCP_Recv(): %s", SDLNet_GetError());
-                    mState = NET_ERROR;
+                    setError("Error in SDLNet_TCP_Recv(): " +
+                             std::string(SDLNet_GetError()));
                 }
                 else {
                     mInSize += ret;
@@ -407,8 +405,10 @@ void Network::receive()
             default:
                 // more than one socket is ready..
                 // this should not happen since we only listen once socket.
-                logger->log("Error in SDLNet_TCP_Recv(), %d sockets are ready : %s", numReady, SDLNet_GetError());
-                mState = NET_ERROR;
+                std::stringstream errorStream;
+                errorStream << "Error in SDLNet_TCP_Recv(), " << numReady
+                            << " sockets are ready: " << SDLNet_GetError();
+                setError(errorStream.str());
                 break;
         }
     }
@@ -432,6 +432,14 @@ char *iptostring(int address)
             (unsigned char)(address >> 24));
 
     return asciiIP;
+}
+
+void
+Network::setError(const std::string& error)
+{
+    logger->log("Network error: %s", error.c_str());
+    mError = error;
+    mState = NET_ERROR;
 }
 
 Uint16 Network::readWord(int pos)

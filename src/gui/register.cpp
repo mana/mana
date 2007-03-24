@@ -108,6 +108,11 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
             mCancelButton->getX() - mRegisterButton->getWidth() - 5,
             height - mRegisterButton->getHeight() - 5);
 
+    mUserField->addKeyListener(this);
+    mPasswordField->addKeyListener(this);
+    mConfirmField->addKeyListener(this);
+    mServerField->addKeyListener(this);
+
     /* TODO:
      * This is a quick and dirty way to respond to the ENTER key, regardless of
      * which text field is selected. There may be a better way now with the new
@@ -139,6 +144,8 @@ RegisterDialog::RegisterDialog(LoginData *loginData):
     setVisible(true);
     mUserField->requestFocus();
     mUserField->setCaretPosition(mUserField->getText().length());
+
+    mRegisterButton->setEnabled(canSubmit());
 }
 
 RegisterDialog::~RegisterDialog()
@@ -153,7 +160,7 @@ RegisterDialog::action(const gcn::ActionEvent &event)
     {
         state = LOGIN_STATE;
     }
-    else if (event.getId() == "register")
+    else if (event.getId() == "register" && canSubmit())
     {
         const std::string user = mUserField->getText();
         logger->log("RegisterDialog::register Username is %s", user.c_str());
@@ -234,4 +241,20 @@ RegisterDialog::action(const gcn::ActionEvent &event)
             state = ACCOUNT_STATE;
         }
     }
+}
+
+void
+RegisterDialog::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    mRegisterButton->setEnabled(canSubmit());
+}
+
+bool
+RegisterDialog::canSubmit()
+{
+    return !mUserField->getText().empty() &&
+           !mPasswordField->getText().empty() &&
+           !mConfirmField->getText().empty() &&
+           !mServerField->getText().empty() &&
+           state == REGISTER_STATE;
 }

@@ -62,7 +62,7 @@ class LoginDialog : public Window, public gcn::ActionListener,
         /**
          * Called when a key is pressed in one of the text fields.
          */
-        void keyPressed(gcn::KeyEvent& keyEvent);
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
     private:
         /**

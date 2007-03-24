@@ -633,7 +633,12 @@ int main(int argc, char *argv[])
         if (network->getState() == Network::NET_ERROR)
         {
             state = ERROR_STATE;
-            errorMessage = "Got disconnected from server!";
+
+            if (!network->getError().empty()) {
+                errorMessage = network->getError();
+            } else {
+                errorMessage = "Got disconnected from server!";
+            }
         }
 
         if (!login_wallpaper)

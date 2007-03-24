@@ -148,7 +148,7 @@ LoginDialog::action(const gcn::ActionEvent &event)
 }
 
 void
-LoginDialog::keyPressed(gcn::KeyEvent& keyEvent)
+LoginDialog::keyPressed(gcn::KeyEvent &keyEvent)
 {
     mOkButton->setEnabled(canSubmit());
 }

@@ -26,6 +26,7 @@
 
 #include <iosfwd>
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
 
 #include "window.h"
 #include "../guichanfwd.h"
@@ -51,7 +52,8 @@ class WrongDataNoticeListener : public gcn::ActionListener {
  *
  * \ingroup Interface
  */
-class RegisterDialog : public Window, public gcn::ActionListener
+class RegisterDialog : public Window, public gcn::ActionListener,
+                       public gcn::KeyListener
 {
     public:
         /**
@@ -72,10 +74,19 @@ class RegisterDialog : public Window, public gcn::ActionListener
          */
         void action(const gcn::ActionEvent &event);
 
-        // Made them public to have the possibility to request focus
-        // from external functions.
+        /**
+         * Called when a key is pressed in one of the text fields.
+         */
+        void keyPressed(gcn::KeyEvent &keyEvent);
 
     private:
+        /**
+         * Returns whether submit can be enabled. This is true in the register
+         * state, when all necessary fields have some text.
+         */
+        bool
+        canSubmit();
+
         gcn::TextField *mUserField;
         gcn::TextField *mPasswordField;
         gcn::TextField *mConfirmField;
