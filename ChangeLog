@@ -1,4 +1,9 @@
-﻿2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-03-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Icon loading doesn't necessarily succeed, so better
+	not crash when it doesn't.
+
+2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/updatewindow.cpp: Cancel button is now disabled after
 	downloading is finished.
