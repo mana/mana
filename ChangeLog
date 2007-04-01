@@ -1,4 +1,11 @@
-﻿2007-03-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp: Screenshots are no longer saved directly in the users
+	home directory on UNIX systems but in the sub folder /.tmw/. A chatlog
+	message about the success of the screenshot saving does appear now. Based
+	on a patch by Patrick "the-me" Matth�i.
+
+2007-03-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Icon loading doesn't necessarily succeed, so better
 	not crash when it doesn't.

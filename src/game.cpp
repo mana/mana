@@ -307,6 +307,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
 
     // Search for an unused screenshot name
     std::stringstream filename;
+    std::stringstream chatlogentry;
     std::fstream testExists;
     bool found = false;
 
@@ -314,7 +315,7 @@ bool saveScreenshot(SDL_Surface *screenshot)
         screenshotCount++;
         filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
-        filename << PHYSFS_getUserDir() << "/";
+        filename << PHYSFS_getUserDir() << ".tmw/";
 #endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";
         testExists.open(filename.str().c_str(), std::ios::in);
@@ -322,7 +323,18 @@ bool saveScreenshot(SDL_Surface *screenshot)
         testExists.close();
     } while (!found);
 
-    return ImageWriter::writePNG(screenshot, filename.str());
+    if (ImageWriter::writePNG(screenshot, filename.str()))
+    {
+        chatlogentry << "Screenshot saved to " << filename.str().c_str();
+        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+        return true;
+    }
+    else
+    {
+        chatlogentry << "Saving screenshot failed!";
+        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+        return false;
+    }
 }
 
 void Game::optionChanged(const std::string &name)
