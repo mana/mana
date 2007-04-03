@@ -1,4 +1,15 @@
-﻿2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-04-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-easteregg-blue.png,
+	data/graphics/items/generic-easteregg-green.png,
+	data/graphics/items/generic-easteregg-pink.png,
+	data/graphics/items/generic-easteregg-red.png,
+	data/graphics/items/generic-easteregg-teal.png,
+	data/graphics/items/generic-easteregg-yellow.png,
+	data/items.xml: Added six different easter egg item graphics for the easter
+	event. Item IDs are 1208 - 1213.
+
+2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp: Screenshots are no longer saved directly in the users
 	home directory on UNIX systems but in the sub folder /.tmw/. A chatlog
