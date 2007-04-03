@@ -8,6 +8,7 @@
 	data/graphics/items/generic-easteregg-yellow.png,
 	data/items.xml: Added six different easter egg item graphics for the easter
 	event. Item IDs are 1208 - 1213.
+	* data/graphics/sprites/npcs.png: Added bunny girl npc for the easter event.
 
 2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
 
