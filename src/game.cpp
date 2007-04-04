@@ -307,7 +307,6 @@ bool saveScreenshot(SDL_Surface *screenshot)
 
     // Search for an unused screenshot name
     std::stringstream filename;
-    std::stringstream chatlogentry;
     std::fstream testExists;
     bool found = false;
 
@@ -325,14 +324,14 @@ bool saveScreenshot(SDL_Surface *screenshot)
 
     if (ImageWriter::writePNG(screenshot, filename.str()))
     {
+        std::stringstream chatlogentry;
         chatlogentry << "Screenshot saved to " << filename.str().c_str();
         chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
         return true;
     }
     else
     {
-        chatlogentry << "Saving screenshot failed!";
-        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+        chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
         return false;
     }
 }
