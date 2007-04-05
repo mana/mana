@@ -1,4 +1,9 @@
-﻿2007-04-03  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.cpp:  Unified storage of configuration, updates and
+	screenshots in home directory.
+
+2007-04-03  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/items/generic-easteregg-blue.png,
 	data/graphics/items/generic-easteregg-green.png,

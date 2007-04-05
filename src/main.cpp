@@ -135,23 +135,21 @@ struct Options
  */
 void init_engine(const Options &options)
 {
-    std::string homeDir = "";
-#if !(defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
-    // In Windows and other systems we currently store data next to executable.
-    homeDir = ".";
+    std::string homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+#if defined WIN32
+    if (!CreateDirectory(homeDir.c_str(), 0) &&
+            GetLastError() != ERROR_ALREADY_EXISTS)
 #else
-    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
-
     // Checking if /home/user/.tmw folder exists.
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
+#endif
     {
         std::cout << homeDir
-                  << " can't be made, but it doesn't exist! Exiting."
+                  << " can't be created, but it doesn't exist! Exiting."
                   << std::endl;
         exit(1);
     }
-#endif
 
     // Set log file
     logger->setLogFile(homeDir + std::string("/tmw.log"));
