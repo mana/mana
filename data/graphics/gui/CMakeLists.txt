@@ -30,6 +30,8 @@ SET (FILES
     sansserif8.png
     selection.png
     slider.png
+    target-cursor-blue.png
+    target-cursor-red.png
     thickborder.png
     vscroll_blue.png
     vscroll_down_default.png

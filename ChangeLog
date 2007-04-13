@@ -1,3 +1,8 @@
+2007-04-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* data/graphics/gui/CMakeLists.txt: Added target cursor graphics to
+	the set of files to be installed.
+
 2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/main.cpp: Changed the order of network message handling and
