@@ -30,10 +30,9 @@
 
 class ConfigListener;
 class GCContainer;
-class Image;
 class ImageRect;
+class ResizeGrip;
 class WindowContainer;
-
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -98,6 +97,21 @@ class Window : public gcn::Window
          * Sets the size of this window.
          */
         void setContentSize(int width, int height);
+
+        /**
+         * Sets the width of this window.
+         */
+        void setWidth(int width);
+
+        /**
+         * Sets the height of this window.
+         */
+        void setHeight(int height);
+
+        /**
+         * Sets the position and size of this window.
+         */
+        void setDimension(const gcn::Rectangle &dimension);
 
         /**
          * Sets the location relative to the given widget.
@@ -168,16 +182,15 @@ class Window : public gcn::Window
         void scheduleDelete();
 
         /**
-         * Window dragging and resizing mouse related. These methods also makes
-         * sure the window is not dragged/resized outside of the screen.
+         * Starts window resizing when appropriate.
          */
         void mousePressed(gcn::MouseEvent &event);
-        void mouseDragged(gcn::MouseEvent &event);
 
         /**
-         * Gets the position of the resize grip.
+         * Implements window resizing and makes sure the window is not
+         * dragged/resized outside of the screen.
          */
-        gcn::Rectangle getGripDimension();
+        void mouseDragged(gcn::MouseEvent &event);
 
         /**
          * Sets the name of the window. This is not the window title.
@@ -214,37 +227,50 @@ class Window : public gcn::Window
          */
         virtual void resetToDefaultSize();
 
+        enum ResizeHandles
+        {
+            TOP    = 0x01,
+            RIGHT  = 0x02,
+            BOTTOM = 0x04,
+            LEFT   = 0x08
+        };
+
     protected:
-        GCContainer *mChrome;   /**< Contained container */
+        GCContainer *mChrome;      /**< Contained container */
+        ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
         std::string mWindowName;   /**< Name of the window */
-        int mSnapSize;              /**< Snap distance to window edge */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
-        bool mResizable;            /**< Window can be resized */
-        bool mMouseResize;         /**< Window is being resized */
-        bool mSticky;              /**< Window resists minimzation */
-        int mMinWinWidth;           /**< Minimum window width */
-        int mMinWinHeight;          /**< Minimum window height */
-        int mMaxWinWidth;           /**< Maximum window width */
-        int mMaxWinHeight;          /**< Maximum window height */
+        bool mResizable;           /**< Window can be resized */
+        int mMouseResize;          /**< Window is being resized */
+        bool mSticky;              /**< Window resists minimization */
+        int mMinWinWidth;          /**< Minimum window width */
+        int mMinWinHeight;         /**< Minimum window height */
+        int mMaxWinWidth;          /**< Maximum window width */
+        int mMaxWinHeight;         /**< Maximum window height */
         int mDefaultX;             /**< Default window X position */
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
 
         /** The window container windows add themselves to. */
-        static WindowContainer* windowContainer;
+        static WindowContainer *windowContainer;
 
         /**
-         * The config listener that listens to changes relevant to all
-         * windows
+         * The config listener that listens to changes relevant to all windows.
          */
         static ConfigListener *windowConfigListener;
 
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */
-        static Image *resizeGrip;  /**< The grip to resize window */
+
+        /**
+         * The width of the resize border. Is independent of the actual window
+         * border width, and determines mostly the size of the corner area
+         * where two borders are moved at the same time.
+         */
+        static const int resizeBorderWidth = 10;
 };
 
 #endif

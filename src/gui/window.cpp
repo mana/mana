@@ -24,9 +24,12 @@
 #include "window.h"
 
 #include <guichan/exception.hpp>
+#include <guichan/widgets/icon.hpp>
 
 #include "gccontainer.h"
 #include "windowcontainer.h"
+
+#include "widgets/resizegrip.h"
 
 #include "../configlistener.h"
 #include "../configuration.h"
@@ -36,11 +39,10 @@
 #include "../resources/image.h"
 #include "../resources/resourcemanager.h"
 
-ConfigListener *Window::windowConfigListener = NULL;
-WindowContainer *Window::windowContainer = NULL;
+ConfigListener *Window::windowConfigListener = 0;
+WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
 ImageRect Window::border;
-Image *Window::resizeGrip;
 
 class WindowConfigListener : public ConfigListener
 {
@@ -54,13 +56,13 @@ class WindowConfigListener : public ConfigListener
 
 Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
+    mGrip(0),
     mParent(parent),
     mWindowName("window"),
-    mSnapSize(8),
     mShowTitle(true),
     mModal(modal),
     mResizable(false),
-    mMouseResize(false),
+    mMouseResize(0),
     mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(28),
@@ -87,7 +89,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
         border.grid[6] = dBorders->getSubImage(0, 15, 4, 4);
         border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
-        resizeGrip = resman->getImage("graphics/gui/resize.png");
         dBorders->decRef();
         windowConfigListener = new WindowConfigListener();
         // Send GUI alpha changed for initialization
@@ -151,10 +152,10 @@ Window::~Window()
         delete border.grid[6];
         delete border.grid[7];
         delete border.grid[8];
-        resizeGrip->decRef();
     }
 
     delete mChrome;
+    delete mGrip;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -162,22 +163,15 @@ void Window::setWindowContainer(WindowContainer *wc)
     windowContainer = wc;
 }
 
-void Window::draw(gcn::Graphics* graphics)
+void Window::draw(gcn::Graphics *graphics)
 {
-    Graphics *g = (Graphics*)graphics;
+    Graphics *g = static_cast<Graphics*>(graphics);
 
     g->drawImageRect(0, 0, getWidth(), getHeight(), border);
 
-    // Draw grip
-    if (mResizable)
-    {
-        g->drawImage(Window::resizeGrip,
-                     getWidth() - resizeGrip->getWidth(),
-                     getHeight() - resizeGrip->getHeight());
-    }
-
     // Draw title
-    if (mShowTitle) {
+    if (mShowTitle)
+    {
         graphics->setFont(getFont());
         graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
@@ -201,6 +195,37 @@ void Window::setContentSize(int width, int height)
 {
     setContentWidth(width);
     setContentHeight(height);
+}
+
+void Window::setWidth(int width)
+{
+    gcn::Window::setWidth(width);
+
+    if (mGrip)
+    {
+        mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
+    }
+}
+
+void Window::setHeight(int height)
+{
+    gcn::Window::setHeight(height);
+
+    if (mGrip)
+    {
+        mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
+    }
+}
+
+void Window::setDimension(const gcn::Rectangle &dimension)
+{
+    gcn::Window::setDimension(dimension);
+
+    if (mGrip)
+    {
+        mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
+        mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
+    }
 }
 
 void Window::setLocationRelativeTo(gcn::Widget* widget)
@@ -238,6 +263,19 @@ void Window::setMaxHeight(unsigned int height)
 void Window::setResizable(bool r)
 {
     mResizable = r;
+
+    if (mResizable)
+    {
+        mGrip = new ResizeGrip();
+        mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
+        mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
+        gcn::Window::add(mGrip);
+    }
+    else
+    {
+        delete mGrip;
+        mGrip = 0;
+    }
 }
 
 bool Window::isResizable()
@@ -250,16 +288,18 @@ void Window::setSticky(bool sticky)
     mSticky = sticky;
 }
 
-bool Window::isSticky() {
+bool Window::isSticky()
+{
     return mSticky;
 }
 
-void Window::setVisible(bool visible) {
-    if(isSticky()) 
+void Window::setVisible(bool visible)
+{
+    if (isSticky())
     {
         gcn::Window::setVisible(true);
-    } 
-    else 
+    }
+    else
     {
         gcn::Window::setVisible(visible);
     }
@@ -285,15 +325,27 @@ void Window::mousePressed(gcn::MouseEvent &event)
     // Let Guichan move window to top and figure out title bar drag
     gcn::Window::mousePressed(event);
 
-    int x = event.getX();
-    int y = event.getY();
+    const int x = event.getX();
+    const int y = event.getY();
+    mMouseResize = 0;
 
-    // Activate resizing if the left mouse button was pressed on the grip
-    mMouseResize =
-        isResizable() &&
-        event.getButton() == gcn::MouseEvent::LEFT &&
-        getGripDimension().isPointInRect(x, y) &&
-        !getChildrenArea().isPointInRect(x, y);
+    // Activate resizing handles as appropriate
+    if (event.getSource() == this && isResizable() &&
+            event.getButton() == gcn::MouseEvent::LEFT &&
+            !getChildrenArea().isPointInRect(x, y))
+    {
+        mMouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
+                        (x < resizeBorderWidth) ? LEFT : 0;
+        mMouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
+                        (y < resizeBorderWidth) ? TOP : 0;
+    }
+    else if (event.getSource() == mGrip)
+    {
+        mDragOffsetX = x + mGrip->getX();
+        mDragOffsetY = y + mGrip->getY();
+        mMouseResize |= BOTTOM | RIGHT;
+        mIsMoving = false;
+    }
 }
 
 void Window::mouseDragged(gcn::MouseEvent &event)
@@ -301,20 +353,47 @@ void Window::mouseDragged(gcn::MouseEvent &event)
     // Let Guichan handle title bar drag
     gcn::Window::mouseDragged(event);
 
-    // Keep guichan window inside screen
-    int newX = std::max(0, getX());
-    int newY = std::max(0, getY());
-    newX = std::min(windowContainer->getWidth() - getWidth(), newX);
-    newY = std::min(windowContainer->getHeight() - getHeight(), newY);
-    setPosition(newX, newY);
+    // Keep guichan window inside screen when it may be moved
+    if (isMovable() && mIsMoving)
+    {
+        int newX = std::max(0, getX());
+        int newY = std::max(0, getY());
+        newX = std::min(windowContainer->getWidth() - getWidth(), newX);
+        newY = std::min(windowContainer->getHeight() - getHeight(), newY);
+        setPosition(newX, newY);
+    }
 
     if (mMouseResize && !mIsMoving)
     {
+        const int dx = event.getX() - mDragOffsetX +
+            ((event.getSource() == mGrip) ? mGrip->getX() : 0);
+        const int dy = event.getY() - mDragOffsetY +
+            ((event.getSource() == mGrip) ? mGrip->getY() : 0);
         gcn::Rectangle newDim = getDimension();
 
-        // We're dragging bottom right
-        newDim.width += event.getX() - mDragOffsetX;
-        newDim.height += event.getY() - mDragOffsetY;
+        if (mMouseResize & (TOP | BOTTOM))
+        {
+            int newHeight = newDim.height + ((mMouseResize & TOP) ? -dy : dy);
+            newDim.height = std::min(mMaxWinHeight,
+                                     std::max(mMinWinHeight, newHeight));
+
+            if (mMouseResize & TOP)
+            {
+                newDim.y -= newDim.height - getHeight();
+            }
+        }
+
+        if (mMouseResize & (LEFT | RIGHT))
+        {
+            int newWidth = newDim.width + ((mMouseResize & LEFT) ? -dx : dx);
+            newDim.width = std::min(mMaxWinWidth,
+                                    std::max(mMinWinWidth, newWidth));
+
+            if (mMouseResize & LEFT)
+            {
+                newDim.x -= newDim.width - getWidth();
+            }
+        }
 
         // Keep guichan window inside screen (supports resizing any side)
         if (newDim.x < 0)
@@ -336,43 +415,21 @@ void Window::mouseDragged(gcn::MouseEvent &event)
             newDim.height = windowContainer->getHeight() - newDim.y;
         }
 
-        // Keep the window at least its minimum size
-        if (newDim.width < mMinWinWidth)
-        {
-            newDim.width = mMinWinWidth;
-        }
-        else if (newDim.width > mMaxWinWidth)
-        {
-            newDim.width = mMaxWinWidth;
-        }
-
-        if (newDim.height < mMinWinHeight)
-        {
-            newDim.height = mMinWinHeight;
-        }
-        else if (newDim.height > mMaxWinHeight)
-        {
-            newDim.height = mMaxWinHeight;
-        }
-
         // Update mouse offset when dragging bottom or right border
-        mDragOffsetX += newDim.width - getWidth();
-        mDragOffsetY += newDim.height - getHeight();
+        if (mMouseResize & BOTTOM)
+        {
+            mDragOffsetY += newDim.height - getHeight();
+        }
+        if (mMouseResize & RIGHT)
+        {
+            mDragOffsetX += newDim.width - getWidth();
+        }
 
         // Set the new window and content dimensions
         setDimension(newDim);
         const gcn::Rectangle area = getChildrenArea();
         mChrome->setSize(area.width, area.height);
     }
-}
-
-gcn::Rectangle
-Window::getGripDimension()
-{
-    return gcn::Rectangle(getWidth() - resizeGrip->getWidth(),
-                          getHeight() - resizeGrip->getHeight(),
-                          getWidth(),
-                          getHeight());
 }
 
 void

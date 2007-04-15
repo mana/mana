@@ -1,5 +1,7 @@
 bin_PROGRAMS = tmw
-tmw_SOURCES = gui/browserbox.cpp \
+tmw_SOURCES = gui/widgets/resizegrip.cpp \
+	      gui/widgets/resizegrip.h \
+	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
 	      gui/buddywindow.h \

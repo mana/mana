@@ -50,6 +50,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/resizegrip.cpp
+    gui/widgets/resizegrip.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp

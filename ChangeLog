@@ -1,6 +1,13 @@
 2007-04-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp: Rely on default 0 value for z axis.
+	* src/CMakeLists.txt, src/gui/window.cpp, src/gui/widgets,
+	src/gui/widgets/resizegrip.cpp, src/gui/widgets/resizegrip.h,
+	src/gui/inventorywindow.cpp, src/gui/window.h, src/Makefile.am:
+	Reimplemented window resizing. It is now once again possible to resize
+	windows using their borders (except for the top one, since that's the
+	title bar for Guichan) and the resize grip in the bottom right is much
+	easier to grab.
 
 2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
