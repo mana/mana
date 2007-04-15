@@ -8,6 +8,9 @@
 	windows using their borders (except for the top one, since that's the
 	title bar for Guichan) and the resize grip in the bottom right is much
 	easier to grab.
+	* src/gui/window.cpp: Increased minimum window height and fixed a
+	problem with setting window content size which was introduced with the
+	new resize grip.
 
 2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

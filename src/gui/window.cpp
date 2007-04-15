@@ -65,7 +65,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     mMouseResize(0),
     mSticky(false),
     mMinWinWidth(100),
-    mMinWinHeight(28),
+    mMinWinHeight(40),
     mMaxWinWidth(INT_MAX),
     mMaxWinHeight(INT_MAX)
 {
@@ -182,13 +182,13 @@ void Window::draw(gcn::Graphics *graphics)
 void Window::setContentWidth(int width)
 {
     mChrome->setWidth(width);
-    resizeToContent();
+    setWidth(width + 2 * getPadding());
 }
 
 void Window::setContentHeight(int height)
 {
     mChrome->setHeight(height);
-    resizeToContent();
+    setHeight(height + getPadding() + getTitleBarHeight());
 }
 
 void Window::setContentSize(int width, int height)
