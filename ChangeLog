@@ -1,4 +1,8 @@
-﻿2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+2007-04-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp: Rely on default 0 value for z axis.
+
+2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/main.cpp:  Unified storage of configuration, updates and
 	screenshots in home directory.
@@ -11,16 +15,17 @@
 	data/graphics/items/generic-easteregg-red.png,
 	data/graphics/items/generic-easteregg-teal.png,
 	data/graphics/items/generic-easteregg-yellow.png,
-	data/items.xml: Added six different easter egg item graphics for the easter
-	event. Item IDs are 1208 - 1213.
-	* data/graphics/sprites/npcs.png: Added bunny girl npc for the easter event.
+	data/items.xml: Added six different easter egg item graphics for the
+	easter event. Item IDs are 1208 - 1213.
+	* data/graphics/sprites/npcs.png: Added bunny girl npc for the easter
+	event.
 
 2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/game.cpp: Screenshots are no longer saved directly in the users
 	home directory on UNIX systems but in the sub folder /.tmw/. A chatlog
-	message about the success of the screenshot saving does appear now. Based
-	on a patch by Patrick "the-me" Matth�i.
+	message about the success of the screenshot saving does appear now.
+	Based on a patch by Patrick "the-me" Matthäi.
 
 2007-03-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

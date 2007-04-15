@@ -259,7 +259,7 @@ void OpenGLGraphics::drawPoint(int x, int y)
     setTexturingAndBlending(false);
 
     glBegin(GL_POINTS);
-    glVertex3i(x, y, 0);
+    glVertex2i(x, y);
     glEnd();
 }
 
@@ -268,12 +268,12 @@ void OpenGLGraphics::drawLine(int x1, int y1, int x2, int y2)
     setTexturingAndBlending(false);
 
     glBegin(GL_LINES);
-    glVertex3f(x1 + 0.5f, y1 + 0.5f, 0);
-    glVertex3f(x2 + 0.5f, y2 + 0.5f, 0);
+    glVertex2f(x1 + 0.5f, y1 + 0.5f);
+    glVertex2f(x2 + 0.5f, y2 + 0.5f);
     glEnd();
 
     glBegin(GL_POINTS);
-    glVertex3f(x2 + 0.5f, y2 + 0.5f, 0);
+    glVertex2f(x2 + 0.5f, y2 + 0.5f);
     glEnd();
 }
 
@@ -327,10 +327,10 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
     setTexturingAndBlending(false);
 
     glBegin(filled ? GL_QUADS : GL_LINE_LOOP);
-    glVertex3f(rect.x + offset, rect.y + offset, 0);
-    glVertex3f(rect.x + rect.width - offset, rect.y + offset, 0);
-    glVertex3f(rect.x + rect.width - offset, rect.y + rect.height - offset, 0);
-    glVertex3f(rect.x + offset, rect.y + rect.height - offset, 0);
+    glVertex2f(rect.x + offset, rect.y + offset);
+    glVertex2f(rect.x + rect.width - offset, rect.y + offset);
+    glVertex2f(rect.x + rect.width - offset, rect.y + rect.height - offset);
+    glVertex2f(rect.x + offset, rect.y + rect.height - offset);
     glEnd();
 }
 
@@ -342,16 +342,16 @@ void OpenGLGraphics::drawTexedQuad(int x, int y, int w, int h,
     // Draw a textured quad
     glBegin(GL_QUADS);
     glTexCoord2f(texX1, texY1);
-    glVertex3i(x, y, 0);
+    glVertex2i(x, y);
 
     glTexCoord2f(texX2, texY1);
-    glVertex3i(x + w, y, 0);
+    glVertex2i(x + w, y);
 
     glTexCoord2f(texX2, texY2);
-    glVertex3i(x + w, y + h, 0);
+    glVertex2i(x + w, y + h);
 
     glTexCoord2f(texX1, texY2);
-    glVertex3i(x, y + h, 0);
+    glVertex2i(x, y + h);
     glEnd();
 }
 
