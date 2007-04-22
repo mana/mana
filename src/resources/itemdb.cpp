@@ -65,13 +65,13 @@ void ItemDB::load()
         logger->error("ItemDB: Error while parsing item database (items.xml)!");
     }
 
-    xmlNodePtr node = xmlDocGetRootElement(doc);
-    if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
+    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
         logger->error("ItemDB: items.xml is not a valid database file!");
     }
 
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    for_each_xml_child_node(node, rootNode)
     {
         if (!xmlStrEqual(node->name, BAD_CAST "item")) {
             continue;

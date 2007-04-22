@@ -30,6 +30,7 @@
 #include "log.h"
 
 #include "utils/tostring.h"
+#include "utils/xml.h"
 
 void Configuration::init(const std::string &filename)
 {
@@ -48,14 +49,14 @@ void Configuration::init(const std::string &filename)
 
     if (!doc) return;
 
-    xmlNodePtr node = xmlDocGetRootElement(doc);
+    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
 
-    if (!node || !xmlStrEqual(node->name, BAD_CAST "configuration")) {
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "configuration")) {
         logger->log("Warning: No configuration file (%s)", filename.c_str());
         return;
     }
 
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    for_each_xml_child_node(node, rootNode)
     {
         if (!xmlStrEqual(node->name, BAD_CAST "option"))
             continue;

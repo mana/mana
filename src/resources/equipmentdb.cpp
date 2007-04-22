@@ -71,11 +71,8 @@ EquipmentDB::load()
     }
 
     //iterate <equipment>s
-    for (   xmlNodePtr equipmentNode = rootNode->xmlChildrenNode;
-            equipmentNode != NULL;
-            equipmentNode = equipmentNode->next)
+    for_each_xml_child_node(equipmentNode, rootNode)
     {
-
         if (!xmlStrEqual(equipmentNode->name, BAD_CAST "equipment"))
         {
             continue;
@@ -86,9 +83,7 @@ EquipmentDB::load()
         currentInfo->setSlot (XML::getProperty(equipmentNode, "slot", 0));
 
         //iterate <sprite>s
-        for (   xmlNodePtr spriteNode = equipmentNode->xmlChildrenNode;
-                spriteNode != NULL;
-                spriteNode = spriteNode->next)
+        for_each_xml_child_node(spriteNode, equipmentNode)
         {
             if (!xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {

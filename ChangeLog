@@ -2,6 +2,11 @@
 
 	* CMake/Modules/FindENet.cmake: Fixed ENet status always being set to
 	"found".
+	* src/configuration.cpp, src/utils/xml.h, src/resources/mapreader.cpp,
+	src/resources/spritedef.cpp, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/equipmentdb.cpp: Added a macro
+	for XML child node iterations to make the code more terse and easier
+	to read.
 
 2007-04-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 

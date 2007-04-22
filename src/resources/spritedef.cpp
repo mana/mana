@@ -76,22 +76,22 @@ SpriteDef::load(const std::string &animationFile, int variant)
                 "Animation: Error while parsing animation definition file!");
     }
 
-    xmlNodePtr node = xmlDocGetRootElement(doc);
-    if (!node || !xmlStrEqual(node->name, BAD_CAST "sprite")) {
+    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite")) {
         logger->error(
                 "Animation: this is not a valid animation definition file!");
     }
 
     // Get the variant
-    int variant_num = XML::getProperty(node, "variants", 0);
+    int variant_num = XML::getProperty(rootNode, "variants", 0);
     int variant_offset = 0;
 
     if (variant_num > 0 && variant < variant_num)
     {
-        variant_offset = variant * XML::getProperty(node, "variant_offset", 0);
+        variant_offset = variant * XML::getProperty(rootNode, "variant_offset", 0);
     }
 
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    for_each_xml_child_node(node, rootNode)
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
@@ -177,9 +177,7 @@ SpriteDef::loadAction(xmlNodePtr node, int variant_offset)
     }
 
     // Load animations
-    for (xmlNodePtr animationNode = node->xmlChildrenNode;
-            animationNode != NULL;
-            animationNode = animationNode->next)
+    for_each_xml_child_node(animationNode, node)
     {
         if (xmlStrEqual(animationNode->name, BAD_CAST "animation"))
         {
@@ -208,9 +206,7 @@ SpriteDef::loadAnimation(xmlNodePtr animationNode,
     action->setAnimation(directionType, animation);
 
     // Get animation frames
-    for (xmlNodePtr frameNode = animationNode->xmlChildrenNode;
-            frameNode != NULL;
-            frameNode = frameNode->next)
+    for_each_xml_child_node(frameNode, animationNode)
     {
         int delay = XML::getProperty(frameNode, "delay", 0);
         int offsetX = XML::getProperty(frameNode, "offsetX", 0);

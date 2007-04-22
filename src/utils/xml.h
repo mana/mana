@@ -46,4 +46,7 @@ namespace XML
     getProperty(xmlNodePtr node, const char *name, const std::string &def);
 }
 
+#define for_each_xml_child_node(var, parent) \
+    for (xmlNodePtr var = parent->xmlChildrenNode; var; var = var->next)
+
 #endif
