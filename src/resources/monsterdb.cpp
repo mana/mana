@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id:
+ *  $Id$
  */
 
 #include "monsterdb.h"
@@ -72,11 +72,8 @@ MonsterDB::load()
     }
 
     //iterate <monster>s
-    for (   xmlNodePtr monsterNode = rootNode->xmlChildrenNode;
-            monsterNode != NULL;
-            monsterNode = monsterNode->next)
+    for_each_xml_child_node(monsterNode, rootNode)
     {
-
         if (!xmlStrEqual(monsterNode->name, BAD_CAST "monster"))
         {
             continue;
@@ -87,9 +84,7 @@ MonsterDB::load()
         currentInfo->setName (XML::getProperty(monsterNode, "name", "unnamed"));
 
         //iterate <sprite>s and <sound>s
-        for (   xmlNodePtr spriteNode = monsterNode->xmlChildrenNode;
-                spriteNode != NULL;
-                spriteNode = spriteNode->next)
+        for_each_xml_child_node(spriteNode, monsterNode)
         {
             if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {

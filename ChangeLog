@@ -1,3 +1,13 @@
+2007-04-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/configuration.cpp, src/utils/xml.h, src/resources/mapreader.cpp,
+	src/resources/spritedef.cpp, src/resources/monsterdb.cpp,
+	src/resources/itemdb.cpp, src/resources/equipmentdb.cpp: Added a macro
+	for XML child node iterations to make the code more terse and easier
+	to read.
+	* src/resources/itemdb.cpp: Made the parameter checks more terse and
+	manageable.
+
 2007-04-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/openglgraphics.cpp: Rely on default 0 value for z axis.

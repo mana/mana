@@ -65,13 +65,13 @@ void ItemDB::load()
         logger->error("ItemDB: Error while parsing item database (items.xml)!");
     }
 
-    xmlNodePtr node = xmlDocGetRootElement(doc);
-    if (!node || !xmlStrEqual(node->name, BAD_CAST "items"))
+    xmlNodePtr rootNode = xmlDocGetRootElement(doc);
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "items"))
     {
         logger->error("ItemDB: items.xml is not a valid database file!");
     }
 
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    for_each_xml_child_node(node, rootNode)
     {
         if (!xmlStrEqual(node->name, BAD_CAST "item")) {
             continue;
@@ -102,55 +102,26 @@ void ItemDB::load()
             mItemInfos[id] = itemInfo;
         }
 
-
         if (id == 0)
         {
             logger->log("ItemDB: An item has no ID in items.xml!");
         }
-        if (name == "")
-        {
-            logger->log("ItemDB: Missing name for item %d!", id);
-        }
 
-        if (image == "")
-        {
-            logger->log("ItemDB: Missing image parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        /*
-        if (art == 0)
-        {
-            logger->log("Item Manager: Missing art parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        if (description == "")
-        {
-            logger->log("ItemDB: Missing description parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        if (effect == "")
-        {
-            logger->log("ItemDB: Missing effect parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        if (type == 0)
-        {
-            logger->log("Item Manager: Missing type parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        */
-        if (weight == 0)
-        {
-            logger->log("Item Manager: Missing weight parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        /*
-        if (slot == 0)
-        {
-            logger->log("Item Manager: Missing slot parameter for item: %i. %s",
-                    id, name.c_str());
-        }
-        */
+#define CHECK_PARAM(param, error_value) \
+        if (param == error_value) \
+            logger->log("ItemDB: Missing" #param " parameter for item %i! %s", \
+                    id, name.c_str())
+
+        CHECK_PARAM(name, "");
+        CHECK_PARAM(image, "");
+        // CHECK_PARAM(art, 0);
+        // CHECK_PARAM(description, "");
+        // CHECK_PARAM(effect, "");
+        // CHECK_PARAM(type, 0);
+        CHECK_PARAM(weight, 0);
+        // CHECK_PARAM(slot, 0);
+
+#undef CHECK_PARAM
     }
 
     xmlFreeDoc(doc);

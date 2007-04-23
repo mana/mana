@@ -181,7 +181,6 @@ MapReader::readMap(const std::string &filename)
 
         if (!node || !xmlStrEqual(node->name, BAD_CAST "map")) {
             logger->log("Error: Not a map file (%s)!", filename.c_str());
-            return NULL;
         }
         else
         {
@@ -213,24 +212,24 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
     int layerNr = 0;
     Map *map = new Map(w, h, tilew, tileh);
 
-    for (node = node->xmlChildrenNode; node != NULL; node = node->next)
+    for_each_xml_child_node(childNode, node)
     {
-        if (xmlStrEqual(node->name, BAD_CAST "tileset"))
+        if (xmlStrEqual(childNode->name, BAD_CAST "tileset"))
         {
-            Tileset *tileset = readTileset(node, pathDir, map);
+            Tileset *tileset = readTileset(childNode, pathDir, map);
             if (tileset) {
                 map->addTileset(tileset);
             }
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "layer"))
+        else if (xmlStrEqual(childNode->name, BAD_CAST "layer"))
         {
             logger->log("- Loading layer %d", layerNr);
-            readLayer(node, map, layerNr);
+            readLayer(childNode, map, layerNr);
             layerNr++;
         }
-        else if (xmlStrEqual(node->name, BAD_CAST "properties"))
+        else if (xmlStrEqual(childNode->name, BAD_CAST "properties"))
         {
-            readProperties(node, map);
+            readProperties(childNode, map);
         }
     }
 
@@ -242,13 +241,14 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
 void
 MapReader::readProperties(xmlNodePtr node, Properties* props)
 {
-    for (node = node->xmlChildrenNode; node; node = node->next) {
-        if (!xmlStrEqual(node->name, BAD_CAST "property"))
+    for_each_xml_child_node(childNode, node)
+    {
+        if (!xmlStrEqual(childNode->name, BAD_CAST "property"))
             continue;
 
         // Example: <property name="name" value="value"/>
-        xmlChar *name = xmlGetProp(node, BAD_CAST "name");
-        xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+        xmlChar *name = xmlGetProp(childNode, BAD_CAST "name");
+        xmlChar *value = xmlGetProp(childNode, BAD_CAST "value");
 
         if (name && value) {
             props->setProperty((const char*)name, (const char*)value);
@@ -269,12 +269,13 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
 
     // Load the tile data. Layers are assumed to be map size, with (0,0) as
     // origin.
-    for (node = node->xmlChildrenNode; node; node = node->next) {
-        if (!xmlStrEqual(node->name, BAD_CAST "data"))
+    for_each_xml_child_node(childNode, node)
+    {
+        if (!xmlStrEqual(childNode->name, BAD_CAST "data"))
             continue;
 
-        xmlChar *encoding = xmlGetProp(node, BAD_CAST "encoding");
-        xmlChar *compression = xmlGetProp(node, BAD_CAST "compression");
+        xmlChar *encoding = xmlGetProp(childNode, BAD_CAST "encoding");
+        xmlChar *compression = xmlGetProp(childNode, BAD_CAST "compression");
 
         if (encoding && xmlStrEqual(encoding, BAD_CAST "base64"))
         {
@@ -287,7 +288,7 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
             }
 
             // Read base64 encoded map file
-            xmlNodePtr dataChild = node->xmlChildrenNode;
+            xmlNodePtr dataChild = childNode->xmlChildrenNode;
             if (!dataChild)
                 continue;
 
@@ -351,11 +352,12 @@ MapReader::readLayer(xmlNodePtr node, Map *map, int layer)
         }
         else {
             // Read plain XML map file
-            for (xmlNodePtr n2 = node->xmlChildrenNode; n2; n2 = n2->next) {
-                if (!xmlStrEqual(n2->name, BAD_CAST "tile"))
+            for_each_xml_child_node(childNode2, childNode)
+            {
+                if (!xmlStrEqual(childNode2->name, BAD_CAST "tile"))
                     continue;
 
-                int gid = XML::getProperty(n2, "gid", -1);
+                int gid = XML::getProperty(childNode2, "gid", -1);
                 map->setTileWithGid(x, y, layer, gid);
 
                 x++;
@@ -392,11 +394,12 @@ MapReader::readTileset(xmlNodePtr node,
     int tw = XML::getProperty(node, "tilewidth", map->getTileWidth());
     int th = XML::getProperty(node, "tileheight", map->getTileHeight());
 
-    for (node = node->xmlChildrenNode; node; node = node->next) {
-        if (!xmlStrEqual(node->name, BAD_CAST "image"))
+    for_each_xml_child_node(childNode, node)
+    {
+        if (!xmlStrEqual(childNode->name, BAD_CAST "image"))
             continue;
 
-        xmlChar* source = xmlGetProp(node, BAD_CAST "source");
+        xmlChar* source = xmlGetProp(childNode, BAD_CAST "source");
 
         if (source)
         {
