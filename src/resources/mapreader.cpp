@@ -231,6 +231,30 @@ MapReader::readMap(xmlNodePtr node, const std::string &path)
         {
             readProperties(childNode, map);
         }
+        else if (xmlStrEqual(childNode->name, BAD_CAST "objectgroup"))
+        {
+            for_each_xml_child_node(objectNode, childNode)
+            {
+                if (xmlStrEqual(objectNode->name, BAD_CAST "object"))
+                {
+                    std::string objName = XML::getProperty(objectNode, "name", "");
+                    std::string objType = XML::getProperty(objectNode, "type", "");
+                    int objX = XML::getProperty(objectNode, "x", 0);
+                    int objY = XML::getProperty(objectNode, "y", 0);
+
+                    logger->log("- Loading object name: %s type: %s at %d:%d",
+                                objName.c_str(), objType.c_str(), objX, objY);
+                    if (objType == "PARTICLE_EFFECT")
+                    {
+                        map->addParticleEffect(objName, objX, objY);
+                    }
+                    else
+                    {
+                        logger->log("   Warning: Unknown object type");
+                    }
+                }
+            }
+        }
     }
 
     map->initializeOverlays();

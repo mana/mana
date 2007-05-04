@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,47 +18,34 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
  */
 
-#ifndef _TMW_DEBUGWINDOW_H
-#define _TMW_DEBUGWINDOW_H
+#include "animationparticle.h"
 
-#include <iosfwd>
+#include "graphics.h"
+#include "simpleanimation.h"
 
-#include <guichan/actionlistener.hpp>
-
-#include "window.h"
-
-#include "../guichanfwd.h"
-
-/**
- * The chat window.
- *
- * \ingroup Interface
- */
-class DebugWindow : public Window, public gcn::ActionListener
+AnimationParticle::AnimationParticle(Map *map, Animation *animation):
+    ImageParticle(map, 0),
+    mAnimation(new SimpleAnimation(animation))
 {
-    public:
-        /**
-         * Constructor.
-         */
-        DebugWindow();
+}
 
-        /**
-         * Logic (updates components' size and infos)
-         */
-        void logic();
+AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode):
+    ImageParticle(map, 0),
+    mAnimation(new SimpleAnimation(animationNode))
+{
+}
 
-        /**
-         * Performs action.
-         */
-        void action(const gcn::ActionEvent &event);
+AnimationParticle::~AnimationParticle()
+{
+    delete mAnimation;
+}
 
-    private:
-        gcn::Label *mMusicFileLabel, *mMapFileLabel;
-        gcn::Label *mTileMouseLabel, *mFPSLabel;
-        gcn::Label *mParticleCountLabel;
-};
+bool AnimationParticle::update()
+{
+    mAnimation->update(10); // particle engine is updated every 10ms
+    mImage = mAnimation->getCurrentImage();
 
-#endif
+    return Particle::update();
+}

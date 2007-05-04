@@ -40,10 +40,21 @@ namespace XML
     getProperty(xmlNodePtr node, const char *name, int def);
 
     /**
+     * Gets an floating point property from an xmlNodePtr.
+     */
+    double
+    getFloatProperty(xmlNodePtr node, const char *name, double def);
+
+    /**
      * Gets a string property from an xmlNodePtr.
      */
     std::string
     getProperty(xmlNodePtr node, const char *name, const std::string &def);
+
+    /**
+     * Finds the first child node with the given name
+     */
+    xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name);
 }
 
 #define for_each_xml_child_node(var, parent) \

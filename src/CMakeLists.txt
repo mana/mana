@@ -260,6 +260,8 @@ SET(SRCS
     utils/xml.h
     animatedsprite.cpp
     animatedsprite.h
+    animationparticle.cpp
+    animationparticle.h
     being.cpp
     being.h
     beingmanager.cpp
@@ -280,6 +282,8 @@ SET(SRCS
     graphics.cpp
     graphics.h
     guichanfwd.h
+    imageparticle.cpp
+    imageparticle.h
     inventory.cpp
     inventory.h
     item.cpp
@@ -302,6 +306,10 @@ SET(SRCS
     npc.h
     openglgraphics.cpp
     openglgraphics.h
+    particle.cpp
+    particle.h
+    particleemitter.cpp
+    particleemitter.h
     player.cpp
     player.h
     properties.h
@@ -311,6 +319,8 @@ SET(SRCS
     sound.cpp
     sound.h
     sprite.h
+    textparticle.cpp
+    textparticle.h
     tileset.h
     )
 

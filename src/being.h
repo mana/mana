@@ -42,6 +42,7 @@ class Item;
 class Map;
 class Graphics;
 class ImageSet;
+class Particle;
 
 /**
  * A position along a being's path.
@@ -351,6 +352,12 @@ class Being : public Sprite
 
         std::auto_ptr<Equipment> mEquipment;
 
+        /**
+         * Take control of a particle
+         */
+        void
+        controlParticle(Particle *particle);
+
     protected:
         /**
          * Sets the new path for this being.
@@ -380,15 +387,14 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
-        std::string mDamage;
         Uint16 mHairStyle, mHairColor;
         Uint8 mSex;
         Uint32 mSpeechTime;
-        Uint32 mDamageTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mEquipmentSpriteIDs;
+        std::list<Particle *> mChildParticleEffects;
 
     private:
         static int instances;           /**< Number of Being instances */

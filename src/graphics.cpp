@@ -148,6 +148,17 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     return !(SDL_BlitSurface(image->mImage, &srcRect, mScreen, &dstRect) < 0);
 }
 
+bool Graphics::drawImageTransparent(Image *image, int x, int y, float opacity)
+{
+    if (!image) return false;
+
+    float oldalpha = image->getAlpha();
+    image->setAlpha(opacity * oldalpha);
+    bool retval = drawImage(image, x, y);
+    image->setAlpha(oldalpha);
+    return retval;
+}
+
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
 {
     int iw = image->getWidth();

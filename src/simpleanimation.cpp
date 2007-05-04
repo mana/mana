@@ -23,10 +23,95 @@
 
 #include "simpleanimation.h"
 
+#include "graphics.h"
+#include "log.h"
+
+#include "resources/image.h"
+#include "resources/resourcemanager.h"
+#include "resources/imageset.h"
+
+
+SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
+    mAnimationTime(0),
+    mAnimationPhase(0)
+{
+    mAnimation = new Animation();
+
+    ImageSet *imageset = ResourceManager::getInstance()->getImageSet(
+        XML::getProperty(animationNode, "imageset", ""),
+        XML::getProperty(animationNode, "width", 0),
+        XML::getProperty(animationNode, "height", 0)
+    );
+
+    // Get animation frames
+    for (   xmlNodePtr frameNode = animationNode->xmlChildrenNode;
+            frameNode != NULL;
+            frameNode = frameNode->next)
+    {
+        int delay = XML::getProperty(frameNode, "delay", 0);
+        int offsetX = XML::getProperty(frameNode, "offsetX", 0);
+        int offsetY = XML::getProperty(frameNode, "offsetY", 0);
+        offsetY -= imageset->getHeight() - 32;
+        offsetX -= imageset->getWidth() / 2 - 16;
+
+        if (xmlStrEqual(frameNode->name, BAD_CAST "frame"))
+        {
+            int index = XML::getProperty(frameNode, "index", -1);
+
+            if (index < 0)
+            {
+                logger->log("No valid value for 'index'");
+                continue;
+            }
+
+            Image *img = imageset->get(index);
+
+            if (!img)
+            {
+                logger->log("No image at index " + (index));
+                continue;
+            }
+
+            mAnimation->addFrame(img, delay, offsetX, offsetY);
+        }
+        else if (xmlStrEqual(frameNode->name, BAD_CAST "sequence"))
+        {
+            int start = XML::getProperty(frameNode, "start", -1);
+            int end = XML::getProperty(frameNode, "end", -1);
+
+            if (start < 0 || end < 0)
+            {
+                logger->log("No valid value for 'start' or 'end'");
+                continue;
+            }
+
+            while (end >= start)
+            {
+                Image *img = imageset->get(start);
+
+                if (!img)
+                {
+                    logger->log("No image at index " +
+                            (start));
+                    continue;
+                }
+
+                mAnimation->addFrame(img, delay, offsetX, offsetY);
+                start++;
+            }
+        }
+        else if (xmlStrEqual(frameNode->name, BAD_CAST "end"))
+        {
+            mAnimation->addTerminator();
+        }
+    }
+
+    mCurrentFrame = mAnimation->getFrame(0);
+}
 
 void SimpleAnimation::update(unsigned int timePassed)
 {
-    mAnimationTime += timePassed;
+    mAnimationTime+=timePassed;
     while (mAnimationTime > mCurrentFrame->delay)
     {
         mAnimationTime -= mCurrentFrame->delay;

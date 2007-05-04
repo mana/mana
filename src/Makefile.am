@@ -209,6 +209,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
+	      animationparticle.cpp \
+	      animationparticle.h \
 	      being.cpp \
 	      being.h \
 	      beingmanager.cpp \
@@ -229,6 +231,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      graphics.cpp \
 	      graphics.h \
 	      guichanfwd.h \
+	      imageparticle.cpp \
+	      imageparticle.h \
 	      inventory.cpp \
 	      inventory.h \
 	      item.cpp \
@@ -251,15 +255,21 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      npc.h \
 	      openglgraphics.cpp\
 	      openglgraphics.h \
+	      particle.cpp \
+	      particle.h \
+	      particleemitter.cpp \
+	      particleemitter.h \
 	      player.cpp \
 	      player.h \
 	      properties.h \
 	      serverinfo.h \
 	      simpleanimation.cpp \
-  	      simpleanimation.h \
+	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \
+	      textparticle.cpp \
+	      textparticle.h \
 	      tileset.h
 
 # set the include path found by configure

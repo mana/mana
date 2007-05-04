@@ -39,6 +39,20 @@ namespace XML
         return ret;
     }
 
+    double
+    getFloatProperty(xmlNodePtr node, const char* name, double def)
+    {
+        double &ret = def;
+
+        xmlChar *prop = xmlGetProp(node, BAD_CAST name);
+        if (prop) {
+            ret = atof((char*)prop);
+            xmlFree(prop);
+        }
+
+        return ret;
+    }
+
     std::string
     getProperty(xmlNodePtr node, const char *name, const std::string &def)
     {
@@ -50,5 +64,14 @@ namespace XML
         }
 
         return def;
+    }
+
+    xmlNodePtr findFirstChildByName(xmlNodePtr parent, const char *name)
+    {
+        for_each_xml_child_node(child, parent)
+            if (xmlStrEqual(child->name, BAD_CAST name))
+                return child;
+
+        return NULL;
     }
 }

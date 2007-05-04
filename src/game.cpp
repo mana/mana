@@ -40,6 +40,7 @@
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
+#include "particle.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -117,6 +118,7 @@ DebugWindow *debugWindow;
 
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
+Particle* particleEngine = NULL;
 
 const int MAX_TIME = 10000;
 
@@ -251,6 +253,8 @@ Game::Game(Network *network):
 
     beingManager = new BeingManager(network);
     floorItemManager = new FloorItemManager();
+    particleEngine = new Particle(NULL);
+    particleEngine->setupEngine();
 
     // Initialize timers
     tick_time = 0;
@@ -295,6 +299,7 @@ Game::~Game()
     delete beingManager;
     delete floorItemManager;
     delete joystick;
+    delete particleEngine;
 
     beingManager = NULL;
     floorItemManager = NULL;

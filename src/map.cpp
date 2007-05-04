@@ -29,6 +29,7 @@
 #include "beingmanager.h"
 #include "game.h"
 #include "graphics.h"
+#include "particle.h"
 #include "sprite.h"
 #include "tileset.h"
 
@@ -507,4 +508,26 @@ Map::findPath(int startX, int startY, int destX, int destY)
     }
 
     return path;
+}
+
+void
+Map::addParticleEffect (std::string effectFile, int x, int y)
+{
+    ParticleEffectData newEffect;
+    newEffect.file = effectFile;
+    newEffect.x = x;
+    newEffect.y = y;
+    particleEffects.push_back(newEffect);
+}
+
+void
+Map::initializeParticleEffects(Particle* particleEngine)
+{
+    for (std::list<ParticleEffectData>::iterator i = particleEffects.begin();
+         i != particleEffects.end();
+         i++
+        )
+    {
+        particleEngine->addEffect(i->file, i->x, i->y);
+    }
 }

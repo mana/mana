@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,47 +18,32 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
  */
 
-#ifndef _TMW_DEBUGWINDOW_H
-#define _TMW_DEBUGWINDOW_H
+#ifndef _ANIMATION_PARTICLE
+#define _ANIMATION_PARTICLE
 
-#include <iosfwd>
+#include <libxml/tree.h>
 
-#include <guichan/actionlistener.hpp>
+#include "imageparticle.h"
 
-#include "window.h"
+class Animation;
+class Map;
+class SimpleAnimation;
 
-#include "../guichanfwd.h"
-
-/**
- * The chat window.
- *
- * \ingroup Interface
- */
-class DebugWindow : public Window, public gcn::ActionListener
+class AnimationParticle : public ImageParticle
 {
     public:
-        /**
-         * Constructor.
-         */
-        DebugWindow();
+        AnimationParticle(Map *map, Animation *animation);
 
-        /**
-         * Logic (updates components' size and infos)
-         */
-        void logic();
+        AnimationParticle(Map *map, xmlNodePtr animationNode);
 
-        /**
-         * Performs action.
-         */
-        void action(const gcn::ActionEvent &event);
+        ~AnimationParticle();
+
+        virtual bool update();
 
     private:
-        gcn::Label *mMusicFileLabel, *mMapFileLabel;
-        gcn::Label *mTileMouseLabel, *mFPSLabel;
-        gcn::Label *mParticleCountLabel;
+        SimpleAnimation *mAnimation; /**< Used animation for this particle */
 };
 
 #endif

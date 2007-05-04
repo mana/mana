@@ -33,6 +33,7 @@
 
 #include "../game.h"
 #include "../engine.h"
+#include "../particle.h"
 #include "../map.h"
 
 #include "../utils/tostring.h"
@@ -58,6 +59,9 @@ DebugWindow::DebugWindow():
     mTileMouseLabel = new gcn::Label("[Mouse: 0, 0]");
     mTileMouseLabel->setPosition(100, 0);
 
+    mParticleCountLabel = new gcn::Label("[Particle count: 0]");
+    mParticleCountLabel->setPosition(100, 60);
+
     Button *closeButton = new Button("Close", "close", this);
     closeButton->setPosition(5, 60);
 
@@ -65,6 +69,7 @@ DebugWindow::DebugWindow():
     add(mMusicFileLabel);
     add(mMapFileLabel);
     add(mTileMouseLabel);
+    add(mParticleCountLabel);
     add(closeButton);
 }
 
@@ -97,6 +102,11 @@ DebugWindow::logic()
         mMapFileLabel->setCaption(minimap);
         mMapFileLabel->adjustSize();
     }
+
+    mParticleCountLabel->setCaption("[Particle count: " +
+                                    toString(Particle::particleCount)
+                                    +"]");
+    mParticleCountLabel->adjustSize();
 }
 
 void

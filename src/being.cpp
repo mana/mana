@@ -30,11 +30,15 @@
 #include "graphics.h"
 #include "log.h"
 #include "map.h"
+#include "particle.h"
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
 
 #include "gui/gui.h"
+
+#include "resources/resourcemanager.h"
+#include "resources/imageset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -58,7 +62,6 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mHairStyle(0), mHairColor(0),
     mSex(2),
     mSpeechTime(0),
-    mDamageTime(0),
     mPx(0), mPy(0),
     mSprites(VECTOREND_SPRITE, NULL),
     mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
@@ -81,6 +84,13 @@ Being::~Being()
     std::for_each(mSprites.begin(), mSprites.end(), make_dtor(mSprites));
     clearPath();
     setMap(NULL);
+
+    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
+            i != mChildParticleEffects.end();
+            i++)
+    {
+        (*i)->kill();
+    }
 
     instances--;
 
@@ -154,8 +164,34 @@ Being::setSpeech(const std::string &text, Uint32 time)
 void
 Being::takeDamage(int amount)
 {
-    mDamage = amount ? toString(amount) : "miss";
-    mDamageTime = 300;
+    gcn::Font* font;
+    std::string damage = amount ? toString(amount) : "miss";
+
+    // Selecting the right color
+    if (damage == "miss")
+    {
+        font = hitYellowFont;
+    }
+    else
+    {
+        // hit particle effect
+        controlParticle(particleEngine->addEffect("graphics/particles/hit.particle.xml", 0, 0));
+
+        if (getType() == MONSTER)
+        {
+            font = hitBlueFont;
+        }
+        else
+        {
+            font = hitRedFont;
+        }
+    }
+
+    // show damage number
+    particleEngine->addTextSplashEffect(damage,
+                                        font,
+                                        gcn::Color(255, 255, 255),
+                                        mPx + 16, mPy + 16);
 }
 
 void
@@ -181,6 +217,19 @@ Being::setMap(Map *map)
     if (mMap != NULL)
     {
         mSpriteIterator = mMap->addSprite(this);
+    }
+
+    //clear particle effect list because child particles became invalid
+    mChildParticleEffects.clear();
+}
+
+void
+Being::controlParticle(Particle *particle)
+{
+    if (particle)
+    {
+        particle->disableAutoDelete();  //the effect may not die without the beings permission or we segvault
+        mChildParticleEffects.push_back(particle);
     }
 }
 
@@ -321,10 +370,6 @@ Being::logic()
     if (mSpeechTime > 0)
         mSpeechTime--;
 
-    // Reduce the time that damage is still displayed
-    if (mDamageTime > 0)
-        mDamageTime--;
-
     // Update pixel coordinates
     mPx = mX * 32 + getXOffset();
     mPy = mY * 32 + getYOffset();
@@ -344,6 +389,14 @@ Being::logic()
         {
             mSprites[i]->update(tick_time * 10);
         }
+    }
+
+    //Update particle effects
+    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
+        i != mChildParticleEffects.end();
+        i++)
+    {
+        (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
     }
 }
 
@@ -386,37 +439,6 @@ Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
         graphics->setFont(speechFont);
         graphics->setColor(gcn::Color(255, 255, 255));
         graphics->drawText(mSpeech, px + 18, py - 60, gcn::Graphics::CENTER);
-    }
-
-    // Draw damage above this being
-    if (mDamageTime > 0 && mDamageTime < 275)
-    {
-        // Selecting the right color
-        if (mDamage == "miss")
-        {
-            graphics->setFont(hitYellowFont);
-        }
-        else if (getType() == MONSTER)
-        {
-            graphics->setFont(hitBlueFont);
-        }
-        else
-        {
-            graphics->setFont(hitRedFont);
-        }
-
-        int textY = (getType() == MONSTER) ? 32 : 70;
-        int ft = 150 - mDamageTime;
-        float a = (ft > 0) ? 1.0 - ft / 150.0 : 1.0;
-
-        graphics->setColor(gcn::Color(255, 255, 255, (int)(255 * a)));
-        graphics->drawText(mDamage,
-                           px + 16,
-                           py - textY - (300 - mDamageTime) / 10,
-                           gcn::Graphics::CENTER);
-
-        // Reset alpha value
-        graphics->setColor(gcn::Color(255, 255, 255));
     }
 }
 

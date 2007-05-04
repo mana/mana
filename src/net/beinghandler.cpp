@@ -34,6 +34,7 @@
 #include "../localplayer.h"
 #include "../log.h"
 #include "../main.h"
+#include "../particle.h"
 #include "../sound.h"
 
 const int EMOTION_TIME = 150;    /**< Duration of emotion icon */
@@ -212,13 +213,23 @@ void BeingHandler::handleMessage(MessageIn *msg)
             break;
 
         case SMSG_BEING_LEVELUP:
-            if ((Uint32) msg->readInt32() == player_node->getId()) {
+            id = (Uint32)msg->readInt32();
+
+            if (id == player_node->getId()) {
                 logger->log("Level up");
                 sound.playSfx("sfx/levelup.ogg");
-            } else {
+            }
+            else {
                 logger->log("Someone else went level up");
             }
-            msg->readInt32();  // type
+            Particle *levelupFX;
+            if (msg->readInt32() == 0) { // type
+                levelupFX = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+            }
+            else {
+                levelupFX = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
+            }
+            beingManager->findBeing(id)->controlParticle(levelupFX);
             break;
 
         case SMSG_BEING_EMOTION:
