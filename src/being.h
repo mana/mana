@@ -350,6 +350,18 @@ class Being : public Sprite
         int
         getYOffset() const { return getOffset(UP, DOWN); }
 
+        /**
+         * Returns the horizontal size of the current base sprite of the being
+         */
+        virtual int
+        getWidth() const;
+
+        /**
+         * Returns the vertical size of the current base sprite of the being
+         */
+        virtual int
+        getHeight() const;
+
         std::auto_ptr<Equipment> mEquipment;
 
         /**

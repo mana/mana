@@ -511,3 +511,29 @@ Being::getOffset(char pos, char neg) const
 
     return offset;
 }
+
+
+int
+Being::getWidth() const
+{
+    if (mSprites[BASE_SPRITE])
+    {
+        return mSprites[BASE_SPRITE]->getWidth();
+    }
+    else {
+        return 0;
+    }
+};
+
+
+int
+Being::getHeight() const
+{
+    if (mSprites[BASE_SPRITE])
+    {
+        return mSprites[BASE_SPRITE]->getHeight();
+    }
+    else {
+        return 0;
+    }
+};

@@ -197,3 +197,27 @@ AnimatedSprite::setDirection(SpriteDirection direction)
         }
     }
 }
+
+int
+AnimatedSprite::getWidth() const
+{
+    if (mFrame)
+    {
+        return mFrame->image->getWidth();
+    }
+    else {
+        return 0;
+    }
+}
+
+int
+AnimatedSprite::getHeight() const
+{
+    if (mFrame)
+    {
+        return mFrame->image->getHeight();
+    }
+    else {
+        return 0;
+    }
+}

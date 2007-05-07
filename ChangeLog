@@ -1,5 +1,13 @@
 ﻿2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/sprite.h, src/being.cpp, src/being.h, src/animatedsprite.cpp,
+	src/animatedsprite.h: Added methods to get the width and height of the
+	graphical representation of a sprite.
+	* src/gui/viewport.cpp: Fixed positioning of monster names and target
+	circles.
+
+2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
+
 	* src/particle.cpp: Fixed a compiler warning.
 
 2007-05-02  BjÃ¶rn Steinbrink  <B.Steinbrink@gmx.de>

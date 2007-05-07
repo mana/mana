@@ -41,6 +41,7 @@
 #include "../resources/animation.h"
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/image.h"
 #include "../resources/imageset.h"
 
 #include "../utils/tostring.h"
@@ -272,26 +273,28 @@ Viewport::drawTargetCursor(Graphics *graphics)
     Being *target = player_node->getTarget();
     if (target)
     {
+        // Calculate target circle position
+
         // Find whether target is in range
         int rangeX = abs(target->mX - player_node->mX);
         int rangeY = abs(target->mY - player_node->mY);
         int attackRange = player_node->getAttackRange();
 
-        // Draw the target cursor, which one depends if the target is in range
+        // get the correct target cursors graphic
+        Image* targetCursor;
         if (rangeX > attackRange || rangeY > attackRange)
         {
-            // Draw the out of range cursor
-            graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
-                                target->getPixelX() - (int) mViewX,
-                                target->getPixelY() - (int) mViewY);
+            targetCursor = mTargetCursorOutRange->getCurrentImage();
         }
-        else
-        {
-            // Draw the in range cursor
-            graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
-                                target->getPixelX() - (int) mViewX,
-                                target->getPixelY() - (int) mViewY);
+        else {
+            targetCursor = mTargetCursorInRange->getCurrentImage();
         }
+
+        // Draw the target cursor at the correct position
+        int posX = target->getPixelX() + 16 - targetCursor->getWidth() / 2 - (int) mViewX;
+        int posY = target->getPixelY() + 16 - targetCursor->getHeight() / 2 - (int) mViewY;
+
+        graphics->drawImage(targetCursor, posX, posY);
     }
 }
 
@@ -306,10 +309,10 @@ Viewport::drawTargetName(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 32, 32));
 
         const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
-        graphics->drawText(mi.getName(),
-                           target->getPixelX() - (int) mViewX + 15,
-                           target->getPixelY() - (int) mViewY - 42,
-                           gcn::Graphics::CENTER);
+        int posX = target->getPixelX() + 16 - (int)mViewX;
+        int posY = target->getPixelY() + 16 - target->getHeight() - (int)mViewY;
+
+        graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);
     }
 }
 
