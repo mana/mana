@@ -1,4 +1,37 @@
-﻿2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/monster-bat.png,
+	data/graphics/sprites/monster-bat.xml,
+	data/graphics/sprites/monster-flower.xml,
+	data/graphics/sprites/monster-fluffy.xml,
+	data/graphics/sprites/monster-fluffy.png,
+	data/graphics/sprites/monster-goblin-fire.xml,
+	data/graphics/sprites/monster-maggot-giant.xml,
+	data/graphics/sprites/monster-maggot.xml,
+	data/graphics/sprites/monster-mountsnake.xml,
+	data/graphics/sprites/monster-mushroom-red.xml,
+	data/graphics/sprites/monster-mushroom-spiky.xml,
+	data/graphics/sprites/monster-pinkie.xml,
+	data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.png,
+	data/graphics/sprites/monster-scorpion-red.xml,
+	data/graphics/sprites/monster-skull-poison.xml,
+	data/graphics/sprites/monster-slime-green.xml,
+	data/graphics/sprites/monster-slime-red.xml,
+	data/graphics/sprites/monster-slime-rudolph.xml,
+	data/graphics/sprites/monster-slime-santa.png,
+	data/graphics/sprites/monster-slime-santa.xml,
+	data/graphics/sprites/monster-slime-yellow.xml,
+	data/graphics/sprites/monster-snake-cave.png,
+	data/graphics/sprites/monster-snake-cave.xml,
+	data/graphics/sprites/monster-snake.xml,
+	data/graphics/sprites/monster-spider.xml:
+	Adjusted offsets of monster sprites (thanks to Pauan for finding out the
+	correct offsets - I just subtracted 6 of all x offsets to take the new
+	position of the target circle in account) and committed some modifications
+	at some monster graphics by Pauan.
+
+2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/sprite.h, src/being.cpp, src/being.h, src/animatedsprite.cpp,
 	src/animatedsprite.h: Added methods to get the width and height of the
