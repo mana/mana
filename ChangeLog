@@ -1,9 +1,14 @@
-﻿2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between buy
-	and sell dialog. Money label now shows money after transaction instead of
-	current money.
-	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel bug.
+	* tmw.cbp: Updated Code::Blocks project file.
+
+2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between
+	buy and sell dialog. Money label now shows money after transaction
+	instead of current money.
+	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel
+	bug.
 
 2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -33,10 +38,10 @@
 	data/graphics/sprites/monster-snake-cave.xml,
 	data/graphics/sprites/monster-snake.xml,
 	data/graphics/sprites/monster-spider.xml:
-	Adjusted offsets of monster sprites (thanks to Pauan for finding out the
-	correct offsets - I just subtracted 6 of all x offsets to take the new
-	position of the target circle in account) and committed some modifications
-	at some monster graphics by Pauan.
+	Adjusted offsets of monster sprites (thanks to Pauan for finding out
+	the correct offsets - I just subtracted 6 of all x offsets to take the
+	new position of the target circle in account) and committed some
+	modifications at some monster graphics by Pauan.
 
 2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
 
