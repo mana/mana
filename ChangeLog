@@ -4,11 +4,23 @@
 
 2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between
-	buy and sell dialog. Money label now shows money after transaction
-	instead of current money.
-	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel
-	bug.
+	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between buy
+	and sell dialog. Money label now shows money after transaction instead of
+	current money.
+	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel bug.
+	* src/being.h, src/gui/viewport.cpp, src/gui/viewport.h: Added 3 different
+	target cursor sizes.
+	* src/monster.h, src/monster.cpp, src/resources/monsterdb.cpp,
+	scr/resources/monsterinfo.h, data/monsters.xml: Target cursor size for monster
+	is read from the monsters.xml.
+	* data/graphics/gui/target-cursor-blue-s.png,
+	data/graphics/gui/target-cursor-blue-m.png,
+	data/graphics/gui/target-cursor-blue-l.png,
+	data/graphics/gui/target-cursor-red-s.png,
+	data/graphics/gui/target-cursor-red-m.png,
+	data/graphics/gui/target-cursor-red-l.png: Added temporary placeholders for
+	small and large target cursors until better versions based on the original
+	SVG are available.
 
 2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 

@@ -29,9 +29,9 @@
 #include "windowcontainer.h"
 
 #include "../configlistener.h"
+#include "../being.h"
 
 class Map;
-class Being;
 class FloorItem;
 class ImageSet;
 class Item;
@@ -142,6 +142,13 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         void showPopup(int x, int y, Being *being);
 
         /**
+         * Helper function for loading target cursors
+         */
+        void
+        loadTargetCursor(std::string filename, int width, int height,
+                         bool outRange, Being::TargetCursorSize size);
+
+        /**
          * Draws range based target cursor
          */
         void
@@ -164,14 +171,10 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
 
-        ImageSet *mInRangeImages;  /**< Images of in range target cursor. */
-        ImageSet *mOutRangeImages; /**< Images of out of range target cursor.*/
-
-        /** Animated in range target cursor. */
-        SimpleAnimation *mTargetCursorInRange;
-
-        /** Animated out of range target cursor. */
-        SimpleAnimation *mTargetCursorOutRange;
+        ImageSet *mInRangeImages[Being::NUM_TC];  /**< Images of in range target cursor. */
+        ImageSet *mOutRangeImages[Being::NUM_TC]; /**< Images of out of range target cursor.*/
+        SimpleAnimation *mTargetCursorInRange[Being::NUM_TC]; /**< Animated in range target cursor. */
+        SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];/**< Animated out of range target cursor. */
 
         bool mPlayerFollowMouse;
         int mWalkTime;

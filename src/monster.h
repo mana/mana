@@ -39,6 +39,9 @@ class Monster : public Being
 
         virtual Type getType() const;
 
+        virtual TargetCursorSize
+        getTargetCursorSize() const;
+
         /**
          * Handles an attack of another being by this monster. Plays a hit or
          * miss sound when appropriate.

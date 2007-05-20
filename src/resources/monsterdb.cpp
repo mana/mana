@@ -83,6 +83,27 @@ MonsterDB::load()
 
         currentInfo->setName (XML::getProperty(monsterNode, "name", "unnamed"));
 
+        std::string targetCursor;
+        targetCursor = XML::getProperty(monsterNode, "targetCursor", "medium");
+        if (targetCursor == "small")
+        {
+            currentInfo->setTargetCursorSize(Being::TC_SMALL);
+        }
+        else if (targetCursor == "medium")
+        {
+            currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
+        }
+        else if (targetCursor == "large")
+        {
+            currentInfo->setTargetCursorSize(Being::TC_LARGE);
+        }
+        else
+        {
+            logger->log("MonsterDB: Unknown target cursor type \"%s\" for %s - using medium sized one",
+                        targetCursor.c_str(), currentInfo->getName().c_str());
+            currentInfo->setTargetCursorSize(Being::TC_MEDIUM);
+        }
+
         //iterate <sprite>s and <sound>s
         for_each_xml_child_node(spriteNode, monsterNode)
         {

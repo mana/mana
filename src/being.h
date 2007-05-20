@@ -93,6 +93,13 @@ class Being : public Sprite
             VECTOREND_SPRITE
         };
 
+        enum TargetCursorSize {
+            TC_SMALL = 0,
+            TC_MEDIUM,
+            TC_LARGE,
+            NUM_TC
+        };
+
 
         /**
          * Directions, to be used as bitmask values
@@ -361,6 +368,13 @@ class Being : public Sprite
          */
         virtual int
         getHeight() const;
+
+        /**
+         * Returns the required size of a target cursor for this being
+         */
+        virtual Being::TargetCursorSize
+        getTargetCursorSize() const
+        { return TC_MEDIUM; }
 
         std::auto_ptr<Equipment> mEquipment;
 
