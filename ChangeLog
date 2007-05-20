@@ -1,4 +1,11 @@
-﻿2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between buy
+	and sell dialog. Money label now shows money after transaction instead of
+	current money.
+	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel bug.
+
+2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/monster-bat.png,
 	data/graphics/sprites/monster-bat.xml,

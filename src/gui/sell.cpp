@@ -202,7 +202,6 @@ void SellDialog::action(const gcn::ActionEvent &event)
     if (event.getId() == "mSlider")
     {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
-
         updateButtonsAndLabels = true;
     }
     else if (event.getId() == "+")
@@ -255,39 +254,57 @@ void SellDialog::action(const gcn::ActionEvent &event)
     // If anything changed, we need to update the buttons and labels
     if (updateButtonsAndLabels)
     {
-        // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems) + " / " + toString(mMaxItems));
-        mQuantityLabel->adjustSize();
-
-        int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Money: " + toString(price) + " GP / Total: "
-            + toString(price + mPlayerMoney) + " GP");
-        mMoneyLabel->adjustSize();
-
         // Update Buttons
         mSellButton->setEnabled(mAmountItems > 0);
         mDecreaseButton->setEnabled(mAmountItems > 0);
         mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
+
+        // Update labels
+        mQuantityLabel->setCaption(toString(mAmountItems) + " / " + toString(mMaxItems));
+        mQuantityLabel->adjustSize();
+
+        int sellSum = mAmountItems * mShopItems->at(selectedItem).price;
+        mMoneyLabel->setCaption("Money: " + toString(sellSum) + " GP / Total: "
+            + toString(mPlayerMoney + sellSum) + " GP");
+        mMoneyLabel->adjustSize();
     }
 }
 
 void SellDialog::selectionChanged(const SelectionEvent &event)
 {
+    // Reset amount of items and update labels
+    mAmountItems = 0;
+    mSlider->setValue(0);
+    mSlider->setEnabled(true);
+    mMoneyLabel->setCaption("Money: 0 GP / Total: "
+                            + toString(mPlayerMoney) + " GP");
+    mMoneyLabel->adjustSize();
+
+    // Disable buttons for selling and decreasing, enable button for increasing
+    mIncreaseButton->setEnabled(true);
+    mSellButton->setEnabled(false);
+    mDecreaseButton->setEnabled(false);
+
     int selectedItem = mShopItemList->getSelected();
 
     if (selectedItem > -1)
     {
-        const ItemInfo &info =
-            ItemDB::get(mShopItems->at(selectedItem).id);
+        mMaxItems = mShopItems->at(selectedItem).quantity;
+
+        const ItemInfo &info = ItemDB::get(mShopItems->at(selectedItem).id);
 
         mItemDescLabel->setCaption("Description: " + info.getDescription());
         mItemEffectLabel->setCaption("Effect: " + info.getEffect());
     }
     else
     {
+        mMaxItems = 0;
         mItemDescLabel->setCaption("Description");
         mItemEffectLabel->setCaption("Effect");
     }
+
+    mQuantityLabel->setCaption("0 / " + toString(mMaxItems));
+    mQuantityLabel->adjustSize();
 }
 
 void SellDialog::setMoney(int amount)

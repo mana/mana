@@ -230,7 +230,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
         int price = mAmountItems * mShopItems->at(selectedItem).price;
         mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
-                                + toString(mMoney) + " GP" );
+                                + toString(mMoney - price) + " GP" );
         mMoneyLabel->adjustSize();
     }
 }
