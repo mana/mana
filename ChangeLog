@@ -2,6 +2,8 @@
 
 	* src/gui/sell.cpp, src/gui/buy.cpp, src/being.cpp: A bunch of
 	lingering syntactical changes.
+	* src/gui/viewport.cpp: Added a missing include and fixed a bug with
+	cleaning up target cursor animations.
 
 2007-05-23  Philipp Sehmisch  <tmw@crushnet.org>
 

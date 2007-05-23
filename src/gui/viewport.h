@@ -171,10 +171,17 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mCameraY;              /**< Current viewpoint in tiles. */
         bool mShowDebugPath;       /**< Show a path from player to pointer. */
 
-        ImageSet *mInRangeImages[Being::NUM_TC];  /**< Images of in range target cursor. */
-        ImageSet *mOutRangeImages[Being::NUM_TC]; /**< Images of out of range target cursor.*/
-        SimpleAnimation *mTargetCursorInRange[Being::NUM_TC]; /**< Animated in range target cursor. */
-        SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];/**< Animated out of range target cursor. */
+        /** Images of in range target cursor. */
+        ImageSet *mInRangeImages[Being::NUM_TC];
+
+        /** Images of out of range target cursor. */
+        ImageSet *mOutRangeImages[Being::NUM_TC];
+
+        /** Animated in range target cursor. */
+        SimpleAnimation *mTargetCursorInRange[Being::NUM_TC];
+
+        /** Animated out of range target cursor. */
+        SimpleAnimation *mTargetCursorOutRange[Being::NUM_TC];
 
         bool mPlayerFollowMouse;
         int mWalkTime;

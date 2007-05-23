@@ -46,6 +46,8 @@
 
 #include "../utils/tostring.h"
 
+#include <cassert>
+
 Viewport::Viewport():
     mMap(0),
     mViewX(0.0f),
@@ -83,8 +85,8 @@ Viewport::Viewport():
 }
 
 void
-Viewport::loadTargetCursor (std::string filename, int width, int height,
-                            bool outRange, Being::TargetCursorSize size)
+Viewport::loadTargetCursor(std::string filename, int width, int height,
+                           bool outRange, Being::TargetCursorSize size)
 {
     assert(size > -1);
     assert(size < 3);
@@ -117,11 +119,10 @@ Viewport::~Viewport()
 {
     delete mPopupMenu;
 
-    delete[] mTargetCursorInRange;
-    delete[] mTargetCursorOutRange;
-
     for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
+        delete mTargetCursorInRange[i];
+        delete mTargetCursorOutRange[i];
         mInRangeImages[i]->decRef();
         mOutRangeImages[i]->decRef();
     }
@@ -288,7 +289,7 @@ Viewport::logic()
         mWalkTime = player_node->mWalkTime;
     }
 
-    for(int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++)
     {
         mTargetCursorInRange[i]->update(10);
         mTargetCursorOutRange[i]->update(10);

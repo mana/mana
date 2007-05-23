@@ -38,9 +38,8 @@ class Graphics;
 class SimpleAnimation
 {
     public:
-
         /**
-         * Creates a simple animation with an already created animation
+         * Creates a simple animation with an already created animation.
          */
         SimpleAnimation(Animation *animation):
             mAnimation(animation),
@@ -50,7 +49,7 @@ class SimpleAnimation
         {};
 
         /**
-         * Creates a simple animation that creates its animation from XML Data
+         * Creates a simple animation that creates its animation from XML Data.
          */
         SimpleAnimation(xmlNodePtr animationNode);
 
@@ -61,10 +60,17 @@ class SimpleAnimation
         Image *getCurrentImage() const;
 
     private:
-        Animation *mAnimation;          /**< The hosted animation */
-        unsigned int mAnimationTime;    /**< Time in game ticks the current frame is shown*/
-        unsigned int mAnimationPhase;   /**< Index of current animation phase*/
-        Frame *mCurrentFrame;           /**< Current animation phase */
+        /** The hosted animation. */
+        Animation *mAnimation;
+
+        /** Time in game ticks the current frame is shown. */
+        unsigned int mAnimationTime;
+
+        /** Index of current animation phase. */
+        unsigned int mAnimationPhase;
+
+        /** Current animation phase. */
+        Frame *mCurrentFrame;
 };
 
 #endif
