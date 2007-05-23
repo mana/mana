@@ -523,7 +523,7 @@ Being::getWidth() const
     else {
         return 0;
     }
-};
+}
 
 
 int
@@ -536,4 +536,4 @@ Being::getHeight() const
     else {
         return 0;
     }
-};
+}

@@ -1,13 +1,18 @@
-﻿2007-05-23  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-05-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* SRC/gui/viewport.cpp,
+	* src/gui/sell.cpp, src/gui/buy.cpp, src/being.cpp: A bunch of
+	lingering syntactical changes.
+
+2007-05-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/viewport.cpp,
 	data/graphics/gui/target-cursor-blue-s.png,
 	data/graphics/gui/target-cursor-blue-m.png,
 	data/graphics/gui/target-cursor-blue-l.png,
 	data/graphics/gui/target-cursor-red-s.png,
 	data/graphics/gui/target-cursor-red-m.png,
-	data/graphics/gui/target-cursor-red-l.png: Replaced target cursor graphics
-	with higher quality ones by Pauan.
+	data/graphics/gui/target-cursor-red-l.png: Replaced target cursor
+	graphics with higher quality ones by Pauan.
 
 2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -15,23 +20,24 @@
 
 2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between buy
-	and sell dialog. Money label now shows money after transaction instead of
-	current money.
-	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel bug.
-	* src/being.h, src/gui/viewport.cpp, src/gui/viewport.h: Added 3 different
-	target cursor sizes.
+	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between
+	buy and sell dialog. Money label now shows money after transaction
+	instead of current money.
+	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel
+	bug.
+	* src/being.h, src/gui/viewport.cpp, src/gui/viewport.h: Added 3
+	different target cursor sizes.
 	* src/monster.h, src/monster.cpp, src/resources/monsterdb.cpp,
-	scr/resources/monsterinfo.h, data/monsters.xml: Target cursor size for monster
-	is read from the monsters.xml.
+	scr/resources/monsterinfo.h, data/monsters.xml: Target cursor size for
+	monster is read from the monsters.xml.
 	* data/graphics/gui/target-cursor-blue-s.png,
 	data/graphics/gui/target-cursor-blue-m.png,
 	data/graphics/gui/target-cursor-blue-l.png,
 	data/graphics/gui/target-cursor-red-s.png,
 	data/graphics/gui/target-cursor-red-m.png,
-	data/graphics/gui/target-cursor-red-l.png: Added temporary placeholders for
-	small and large target cursors until better versions based on the original
-	SVG are available.
+	data/graphics/gui/target-cursor-red-l.png: Added temporary
+	placeholders for small and large target cursors until better versions
+	based on the original SVG are available.
 
 2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -86,7 +92,7 @@
 	src/animationparticle.h, src/CMakeLists.txt, src/particleemitter.cpp,
 	src/animationparticle.cpp, src/particle.cpp, src/imageparticle.cpp,
 	src/textparticle.cpp, src/utils/xml.cpp, src/utils/xml.h: Split the
-	particle class into subclasses based on their appeareance.
+	particle class into subclasses based on their appearance.
 
 2007-04-24  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -96,10 +102,10 @@
 2007-04-23  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/particles/flame.particle.xml,
-	data/graphics/particles/blaze.png: Added two files I forgot with the last
-	commit.
-	* src/resources/mapreader.cpp, src/particle.cpp, src/particleemitter.cpp:
-	Using XML child node iteration macro.
+	data/graphics/particles/blaze.png: Added two files I forgot with the
+	last commit.
+	* src/resources/mapreader.cpp, src/particle.cpp,
+	src/particleemitter.cpp: Using XML child node iteration macro.
 
 2007-04-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
@@ -116,8 +122,8 @@
 	* src/resources/mapreader.cpp: Emitter positions are now read from map
 	files.
 	* src/engine.cpp: Removed the player follow effect used for testing.
-	* data/maps/new_4-1.tmx.gz, data/maps/new_5-1.tmx.gz: Added flame effect
-	to all lamps on the cave maps
+	* data/maps/new_4-1.tmx.gz, data/maps/new_5-1.tmx.gz: Added flame
+	effect to all lamps on the cave maps
 	* data/maps/new_9-1.tmx.gz: Added waterfall effect to the upper right
 	corner of NW woodland map.
 
@@ -146,14 +152,14 @@
 	src/particleemitter.h: Improved programming style and documentation
 	and added some small tweaks.
 	* src/engine.cpp, src/map.cpp, src/map.h, src/resources/mapreader.cpp:
-	Prepared getting the emitter positions from the map file by storing them
-	in the Map class and setting them up from the MapReader.
+	Prepared getting the emitter positions from the map file by storing
+	them in the Map class and setting them up from the MapReader.
 
 2007-03-22  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/simpleanimation.cpp, src/simpleanimation.h: Added new constructor
-	for simple animation that allows to build the animation based on an
-	xmlNodePtr pointing to an <animation> node.
+	* src/simpleanimation.cpp, src/simpleanimation.h: Added new
+	constructor for simple animation that allows to build the animation
+	based on an xmlNodePtr pointing to an <animation> node.
 	* src/particle.cpp, src/particle.h: Added support for <image> and
 	<animation> childtags for effect root particles.
 	* data/graphics/particles/playerglow.particle.xml: New player follow
@@ -398,40 +404,40 @@
 
 2007-02-15  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/engine.cpp: The name conflict problem with guichan seems to be solved
-	with version 0.6.1.
+	* src/engine.cpp: The name conflict problem with Guichan seems to be
+	solved with version 0.6.1.
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
 	src/particleemitter.h: Added support for animated particles.
-	* data/graphics/particles/playerglow.particle.xml: Created a new player
-	follow particle that spawns a swarm of animated bats that follow the
-	player.
+	* data/graphics/particles/playerglow.particle.xml: Created a new
+	player follow particle that spawns a swarm of animated bats that
+	follow the player.
 
 2007-02-09  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/particle.cpp: Fixed a misspelled include and another optimisation at
-	the vector calculation.
+	* src/particle.cpp: Fixed a misspelled include and another
+	optimisation at the vector calculation.
 
 2007-02-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/utils/fastsqrt.h: Added a faster function to
-	calculate square roots and using it for hypotenuse calculations. Thanks
-	to Rogier aka Avaniel for finding the function.
+	calculate square roots and using it for hypotenuse calculations.
+	Thanks to Rogier aka Avaniel for finding the function.
 
 2007-02-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp: Renamed
 	Particle::MAX_PARTICLES to Particle::maxCount and read the value from
 	config ("particleMaxCount")
-	* src/particle.cpp: Added fast physics mode that replaces the trigonometric
-	calculations made for calculating the acceleration by much less cpu intense
-	but also less accurate formulas. To enable it set the config option
-	"particleFastPhysics" to "1".
+	* src/particle.cpp: Added fast physics mode that replaces the
+	trigonometric calculations made for calculating the acceleration by
+	much less cpu intense but also less accurate formulas. To enable it
+	set the config option "particleFastPhysics" to "1".
 	* src/particle.cpp: Added the config option "particleEmitterSkip" that
-	allows to reduces the output of the emitters by making them spawn particles
-	only every n-th game tick.
+	allows to reduces the output of the emitters by making them spawn
+	particles only every n-th game tick.
 	* src/graphics.cpp, src/graphics.h: Added a new method
-	"drawImageTransparent" to the graphic engine that blits an image with an
-	alpha factor.
+	"drawImageTransparent" to the graphic engine that blits an image with
+	an alpha factor.
 	* src/particle.cpp: Using new drawImageTransparent method.
 
 2007-02-01  Philipp Sehmisch  <tmw@crushnet.org>
@@ -442,13 +448,14 @@
 	* src/particle.cpp: Fixed a bug in the acceleration vector calculation.
 	* src/particle.cpp, src/particle.h: Fixed a problem with particles with
 	unlimited lifetime and fade-in.
-	* data/graphics/particles/playerglow.particle.xml: And again a new player
-	follow particle. This time it demonstrates die-distance and the fixed
-	acceleration vector calculation.
+	* data/graphics/particles/playerglow.particle.xml: And again a new
+	player follow particle. This time it demonstrates die-distance and the
+	fixed acceleration vector calculation.
 	* src/engine.cpp, data/graphics/particles/snow.particle.xml,
-	data/graphics/particles/snowflake.png: I can't stand the begging anymore.
-	Now it snows in the snow area... and the forest... and the desert... and
-	under the earth... and indoors... Are you happy now, Rotonen and Elven? ;-)
+	data/graphics/particles/snowflake.png: I can't stand the begging
+	anymore. Now it snows in the snow area... and the forest... and the
+	desert... and under the earth... and indoors... Are you happy now,
+	Rotonen and Elven? ;-)
 	* src/particle.cpp: Removed some debug log messages.
 	* src/being.cpp: Avoided crash when attempting to control an invalid
 	particle.
@@ -462,8 +469,8 @@
 	* data/graphics/particles/waterfall.particle.xml,
 	data/graphics/particles/waterfall-a.png: New waterfall with Modanungs
 	waterfall particle.
-	* src/particle.cpp: forgot to remove a svn conflict marker and changed the
-	order of initialisations to fix some compiler warnings.
+	* src/particle.cpp: forgot to remove a svn conflict marker and changed
+	the order of initialisations to fix some compiler warnings.
 
 2007-01-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -471,48 +478,49 @@
 
 2007-01-30  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/net/beinghandler.cpp, data/graphics/particles/skillup.particle.xml:
-	Added different particle effect for job levelup.
+	* src/net/beinghandler.cpp,
+	data/graphics/particles/skillup.particle.xml: Added different particle
+	effect for job levelup.
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
-	src/particleemitter.h: Renamed "alphafade" to "fade-out", added new property
-	"fade-in".
-	* data/graphics/particles/playerglow.particle.xml: Added a new player effect
-	(a fire) demonstrating how to use fade-in and fade-out to fade one color
-	into another.
+	src/particleemitter.h: Renamed "alphafade" to "fade-out", added new
+	property "fade-in".
+	* data/graphics/particles/playerglow.particle.xml: Added a new player
+	effect (a fire) demonstrating how to use fade-in and fade-out to fade
+	one color into another.
 
 2007-01-29  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
-	src/particleemitter.h: Added a new particle property "alphafade" that makes
-	the particles fade into alpha before their lifetime ends.
-	* src/particle.cpp, src/particle.h: fixed an issue with particles that have
-	a lifetime of 0 and an issue with the momentum property.
+	src/particleemitter.h: Added a new particle property "alphafade" that
+	makes the particles fade into alpha before their lifetime ends.
+	* src/particle.cpp, src/particle.h: fixed an issue with particles that
+	have a lifetime of 0 and an issue with the momentum property.
 	* data/graphics/particles/waterfall.particle.xml,
 	data/graphics/particles/fog-medium-white-a.png,
 	data/graphics/particles/fog-medium-white-b.png,
-	data/graphics/particles/fog-medium-white-c.png: Added fog to the waterfall
-	effect demonstrating the new alphafade feature.
+	data/graphics/particles/fog-medium-white-c.png: Added fog to the
+	waterfall effect demonstrating the new alphafade feature.
 
 2007-01-28  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/utils/xml.cpp, src/utils/xml.h, src/particleemitter.cpp: Most values
-	are now read as floating point values from the emitter files.
+	* src/utils/xml.cpp, src/utils/xml.h, src/particleemitter.cpp: Most
+	values are now read as floating point values from the emitter files.
 	* data/graphics/particles/fountain.particle.xml,
 	data/graphics/particles/hit.particle.xml,
-	data/graphics/particles/playerglow.particle.xml: Changed some values as
-	floating point values. Made the player follow effect magenta to improve the
-	visibility of the hit effects.
-	* src/engine.cpp, data/graphics/particles/waterfall.particle.xml: Removed
-	the fountain and added a waterfall instead.
-	* src/particle.h: Corrected the drawing order of the particles in relation
-	to the other sprites.
-	* src/gui/debugwindow.cpp, src/gui/debugwindow.h: Added particle count to
-	debug window.
-	* src/particle.cpp: Allowed momentum without acceleration and implement
-	the acceleration properly.
-	* src/utils/minmax.h, src/particleemitter.cpp, src/particleemitter.h: Added
-	a structure to hold a pair of numeric minimum and maximum values and used
-	it to store all numeric emitter properties.
+	data/graphics/particles/playerglow.particle.xml: Changed some values
+	as floating point values. Made the player follow effect magenta to
+	improve the visibility of the hit effects.
+	* src/engine.cpp, data/graphics/particles/waterfall.particle.xml:
+	Removed the fountain and added a waterfall instead.
+	* src/particle.h: Corrected the drawing order of the particles in
+	relation to the other sprites.
+	* src/gui/debugwindow.cpp, src/gui/debugwindow.h: Added particle count
+	to debug window.
+	* src/particle.cpp: Allowed momentum without acceleration and
+	implement the acceleration properly.
+	* src/utils/minmax.h, src/particleemitter.cpp, src/particleemitter.h:
+	Added a structure to hold a pair of numeric minimum and maximum values
+	and used it to store all numeric emitter properties.
 	* src/utils/randbetween.h: Removed (the functionality is now in struct
 	MinMax)
 
@@ -574,6 +582,12 @@
 
 2007-01-15  Philipp Sehmisch  <tmw@crushnet.org>
 
+	* src/game.cpp, src/particle.cpp, src/particle.h,
+	src/particleemitter.h: Made the particle count global and more
+	performant.
+
+2007-01-14  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
 	* src/game.cpp, src/main.cpp, src/gui/trade.cpp, src/gui/sell.cpp,
 	src/gui/connection.cpp, src/gui/buddywindow.cpp, src/gui/browserbox.h,
 	src/gui/char_server.cpp, src/gui/window.cpp, src/gui/login.cpp,
@@ -602,10 +616,10 @@
 	src/gui/viewport.h, src/gui/tabbedcontainer.h,
 	src/gui/npclistdialog.cpp, src/gui/help.h, src/gui/chatinput.h,
 	src/gui/chatinput.cpp, src/net/tradehandler.cpp,
-	src/net/playerhandler.cpp: Upgraded to Guichan 0.6.0 (merge from 0.0
-	branch)
-	* src/game.cpp, src/particle.cpp, src/particle.h, src/particleemitter.h:
-	Made the particle count global and more performant.
+	src/net/playerhandler.cpp: Upgraded to Guichan 0.6.0 (merge from
+	guichan-0.6.0 branch).
+	* src/winver.h, configure.ac, data/help/header.txt, NEWS, README,
+	CMakeLists.txt: Updated version to 0.0.22.1.
 
 2007-01-14  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -1359,7 +1373,7 @@
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
-	debian/tmw-music.install, debian/changelog: Updating debian files for
+	debian/tmw-music.install, debian/changelog: Updating Debian files for
 	bug fixing.
 
 2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
@@ -1534,7 +1548,7 @@
 	* src/animation.h, src/animatedsprite.h,
 	data/graphics/sprites/weapon.xml: Some modifications at the animation
 	system. No more "undefined action foo" warnings in the tmw.log. Not
-	visible actions must now be declared explicitely.
+	visible actions must now be declared explicitly.
 	* data/graphics/images/ambient/sandstorm.png,
 	data/graphics/images/ambient/clouds.png: Improved quality of the overlay
 	graphics.
@@ -1805,7 +1819,7 @@
 	with more distinctive names. (no, i won't list all 114)
 	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
 	spriteset with filenames. added names and descriptions for all missing
-	items. Changed names and dascriptions of some items.
+	items. Changed names and descriptions of some items.
 	* src/engine.cpp: Removed global item spriteset.
 	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
 	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,

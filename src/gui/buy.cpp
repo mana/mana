@@ -154,7 +154,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     }
 
     // The following actions require a valid selection
-    if (selectedItem < 0 || selectedItem >= int(mShopItems->getNumberOfElements()))
+    if (selectedItem < 0 ||
+            selectedItem >= (int) mShopItems->getNumberOfElements())
     {
         return;
     }
@@ -174,7 +175,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
             mAmountItems = mMaxItems;
         }
 
-        mSlider->setValue(double(mAmountItems)/double(mMaxItems));
+        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
         updateButtonsAndLabels = true;
     }
     else if (event.getId() == "-")
