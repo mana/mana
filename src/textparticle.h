@@ -33,8 +33,8 @@
 class TextParticle : public Particle
 {
     public:
-        TextParticle(Map *map, const std::string &text, gcn::Font *font,
-                int colorR, int colorG, int colorB);
+        TextParticle(Map *map, const std::string &text,
+                int colorR, int colorG, int colorB, gcn::Font *font);
         /**
          * Draws the particle image
          */

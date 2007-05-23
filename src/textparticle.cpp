@@ -25,8 +25,8 @@
 
 #include "graphics.h"
 
-TextParticle::TextParticle(Map *map, const std::string &text, gcn::Font *font,
-        int colorR, int colorG, int colorB):
+TextParticle::TextParticle(Map *map, const std::string &text,
+        int colorR, int colorG, int colorB, gcn::Font *font):
     Particle(map),
     mText(text),
     mTextFont(font),

@@ -313,15 +313,13 @@ Particle::addEffect (std::string particleEffectFile, int pixelX, int pixelY)
 
 
 Particle*
-Particle::addTextSplashEffect(std::string text, gcn::Font *font,
-    int colorR, int colorG, int colorB, int x, int y)
+Particle::addTextSplashEffect(std::string text,
+                              int colorR, int colorG, int colorB,
+                              gcn::Font *font, int x, int y)
 {
-    Particle *newParticle = new TextParticle(mMap, text, font,
-                                             colorR, colorG, colorB);
-    newParticle->setPosition(   x,
-                                y,
-                                0
-                            );
+    Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB,
+                                             font);
+    newParticle->setPosition(x, y, 0);
     newParticle->setVector  (   ((rand()%100) - 50) / 200.0f,  //X Vector
                                 ((rand()%100) - 50) / 200.0f,  //Y Vector
                                 ((rand()%100) / 200.0f) + 4.0f //Z Vector

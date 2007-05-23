@@ -188,9 +188,7 @@ Being::takeDamage(int amount)
     }
 
     // show damage number
-    particleEngine->addTextSplashEffect(damage,
-                                        font,
-                                        255, 255, 255,
+    particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
                                         mPx + 16, mPy + 16);
 }
 
