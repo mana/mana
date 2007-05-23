@@ -20,6 +20,10 @@
 	text splash effects fade out.
 	* src/textparticle.cpp: Implemented fading in and out for text
 	particles.
+	* src/being.cpp, src/particle.cpp, src/particle.h,
+	src/textparticle.cpp, src/textparticle.h: The color values of text
+	particles are now stored in 3 integers instead of a Guichan color
+	structure.
 
 2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

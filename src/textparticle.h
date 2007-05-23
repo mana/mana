@@ -34,7 +34,7 @@ class TextParticle : public Particle
 {
     public:
         TextParticle(Map *map, const std::string &text, gcn::Font *font,
-                gcn::Color color);
+                int colorR, int colorG, int colorB);
         /**
          * Draws the particle image
          */
@@ -45,9 +45,9 @@ class TextParticle : public Particle
         virtual int getPixelY() const { return (int)(mPosY + mPosZ); }
 
     private:
-        std::string mText;          /** Text of the particle */
-        gcn::Font *mTextFont;       /** Font used for drawing the text */
-        gcn::Color mTextColor;      /** Color used for drawing the text */
+        std::string mText;              /**< Text of the particle */
+        gcn::Font *mTextFont;           /**< Font used for drawing the text */
+        int mColorR, mColorG, mColorB;  /**< Color used for drawing the text */
 };
 
 #endif

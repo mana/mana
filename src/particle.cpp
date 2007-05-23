@@ -313,9 +313,11 @@ Particle::addEffect (std::string particleEffectFile, int pixelX, int pixelY)
 
 
 Particle*
-Particle::addTextSplashEffect(std::string text, gcn::Font *font, gcn::Color color, int x, int y)
+Particle::addTextSplashEffect(std::string text, gcn::Font *font,
+    int colorR, int colorG, int colorB, int x, int y)
 {
-    Particle *newParticle = new TextParticle(mMap, text, font, color);
+    Particle *newParticle = new TextParticle(mMap, text, font,
+                                             colorR, colorG, colorB);
     newParticle->setPosition(   x,
                                 y,
                                 0

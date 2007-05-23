@@ -26,11 +26,13 @@
 #include "graphics.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text, gcn::Font *font,
-        gcn::Color color):
+        int colorR, int colorG, int colorB):
     Particle(map),
     mText(text),
     mTextFont(font),
-    mTextColor(color)
+    mColorR(colorR),
+    mColorG(colorG),
+    mColorB(colorB)
 {
 }
 
@@ -57,7 +59,6 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 
     graphics->setFont(mTextFont);
-    graphics->setColor(gcn::Color (mTextColor.r, mTextColor.g, mTextColor.b,
-                                   alpha));
+    graphics->setColor(gcn::Color (mColorR, mColorG, mColorB, alpha));
     graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
 }

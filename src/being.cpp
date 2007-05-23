@@ -190,7 +190,7 @@ Being::takeDamage(int amount)
     // show damage number
     particleEngine->addTextSplashEffect(damage,
                                         font,
-                                        gcn::Color(255, 255, 255),
+                                        255, 255, 255,
                                         mPx + 16, mPy + 16);
 }
 

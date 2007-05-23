@@ -112,7 +112,9 @@ class Particle : public Sprite
          * Creates a standalone text particle
          */
         Particle*
-        addTextSplashEffect(std::string text, gcn::Font *font, gcn::Color color, int x, int y);
+        addTextSplashEffect(std::string text, gcn::Font *font,
+                            int colorR, int colorG, int colorB,
+                            int x, int y);
 
         /**
          * Adds an emitter to the particle
