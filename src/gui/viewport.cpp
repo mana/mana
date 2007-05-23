@@ -68,17 +68,17 @@ Viewport::Viewport():
     mPopupMenu = new PopupMenu();
 
     // Load target cursors
-    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 32, 25,
+    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
                      false, Being::TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 32, 25,
+    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
                      true, Being::TC_SMALL);
-    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 44, 35,
+    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
                      false, Being::TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 44, 35,
+    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
                      true, Being::TC_MEDIUM);
-    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 57, 45,
+    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
                      false, Being::TC_LARGE);
-    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 57, 45,
+    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
                      true, Being::TC_LARGE);
 }
 

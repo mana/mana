@@ -1,4 +1,15 @@
-﻿2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-05-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* SRC/gui/viewport.cpp,
+	data/graphics/gui/target-cursor-blue-s.png,
+	data/graphics/gui/target-cursor-blue-m.png,
+	data/graphics/gui/target-cursor-blue-l.png,
+	data/graphics/gui/target-cursor-red-s.png,
+	data/graphics/gui/target-cursor-red-m.png,
+	data/graphics/gui/target-cursor-red-l.png: Replaced target cursor graphics
+	with higher quality ones by Pauan.
+
+2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tmw.cbp: Updated Code::Blocks project file.
 
