@@ -42,7 +42,22 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     int screenX = (int)mPosX + offsetX;
     int screenY = (int)mPosY - int(mPosZ) + offsetY;
 
+    int alpha = 255;
+
+    if (mLifetimeLeft > -1 && mLifetimeLeft < mFadeOut)
+    {
+        alpha *= mLifetimeLeft;
+        alpha /= mFadeOut;
+    };
+
+    if (mLifetimePast < mFadeIn)
+    {
+        alpha *= mLifetimePast;
+        alpha /= mFadeIn;
+    }
+
     graphics->setFont(mTextFont);
-    graphics->setColor(mTextColor);
+    graphics->setColor(gcn::Color (mTextColor.r, mTextColor.g, mTextColor.b,
+                                   alpha));
     graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
 }

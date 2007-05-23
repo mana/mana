@@ -146,7 +146,6 @@ Particle::update()
             {
                 if (mInvDieDistance > 0.0f && invHypotenuse > mInvDieDistance)
                 {
-                    logger->log("killed");
                     mAlive = false;
                 }
                 float accFactor = invHypotenuse * mAcceleration;
@@ -179,7 +178,8 @@ Particle::update()
 
         if (mPosZ > PARTICLE_SKY || mPosZ < 0.0f)
         {
-            if (mBounce && fabs(mVectorZ) > mGravity * 2) {
+            if (mBounce > 0.0f)
+            {
                 mPosZ *= -mBounce;
                 mVectorX *= mBounce;
                 mVectorY *= mBounce;
@@ -326,6 +326,8 @@ Particle::addTextSplashEffect(std::string text, gcn::Font *font, gcn::Color colo
                             );
     newParticle->setGravity(0.1f);
     newParticle->setBounce(0.5f);
+    newParticle->setLifetime(200);
+    newParticle->setFadeOut(100);
 
     mChildParticles.push_back(newParticle);
 

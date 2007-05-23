@@ -13,6 +13,11 @@
 	data/graphics/gui/target-cursor-red-m.png,
 	data/graphics/gui/target-cursor-red-l.png: Replaced target cursor
 	graphics with higher quality ones by Pauan.
+	* src/particle.cpp: Made bouncing particles immune against death by
+	ground contact and removed a nonsensical debugging log message. Made
+	text splash effects fade out.
+	* src/textparticle.cpp: Implemented fading in and out for text
+	particles.
 
 2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
