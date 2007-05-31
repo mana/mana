@@ -1,4 +1,9 @@
-﻿2007-05-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-05-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_16-1.tmx.gz: Fixed an inconsistency with the neighbor
+	map (no new walkmap required).
+
+2007-05-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/sell.cpp, src/gui/buy.cpp, src/being.cpp: A bunch of
 	lingering syntactical changes.
