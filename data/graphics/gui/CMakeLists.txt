@@ -7,6 +7,7 @@ SET (FILES
     buttonhi.png
     buttonpress.png
     checkbox.png
+    deepbox.png
     fixedfont.png
     hits_blue.png
     hits_red.png
@@ -27,7 +28,12 @@ SET (FILES
     selection.png
     sansserif8.png
     slider.png
-    deepbox.png
+    target-cursor-blue-l.png
+    target-cursor-blue-m.png
+    target-cursor-blue-s.png
+    target-cursor-red-l.png
+    target-cursor-red-m.png
+    target-cursor-red-s.png
     thickborder.png
     vscroll_blue.png
     vscroll_down_default.png

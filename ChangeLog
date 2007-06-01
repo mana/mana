@@ -1,4 +1,9 @@
-﻿2007-05-31  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Added target cursors to installed files.
+
+2007-05-31  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/maps/new_16-1.tmx.gz: Fixed an inconsistency with the neighbor
 	map (no new walkmap required).
