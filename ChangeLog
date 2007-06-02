@@ -1,4 +1,10 @@
-﻿2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, NEWS, CMakeLists.txt, configure.ac,
+	data/help/changes.txt, data/help/header.txt: Updated version and
+	release date and summarized changes.
+
+2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
 	Added target cursors to installed files.
