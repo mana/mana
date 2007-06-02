@@ -3,6 +3,8 @@
 	* src/winver.h, README, NEWS, CMakeLists.txt, configure.ac,
 	data/help/changes.txt, data/help/header.txt: Updated version and
 	release date and summarized changes.
+	* src/gui/chat.h, src/gui/chat.cpp: Changed color of chat messages in
+	OpenGL mode from orange to black.
 
 2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -153,13 +153,13 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
         /*
          * Determines whether to send a command or an ordinary message, then
-         * contructs packets & sends them
+         * contructs packets & sends them.
          *
          * @param nick The character's name to display in front.
          * @param msg  The message text which is to be send.
          *
          * NOTE:
-         * the nickname is required by the server, if not specified
+         * The nickname is required by the server, if not specified
          * the message may not be sent unless a command was intended
          * which requires another packet to be constructed! you can
          * achieve this by putting a slash ("/") infront of the
