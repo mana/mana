@@ -5,6 +5,8 @@
 	release date and summarized changes.
 	* src/gui/chat.h, src/gui/chat.cpp: Changed color of chat messages in
 	OpenGL mode from orange to black.
+	* src/gui/sell.cpp, src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h:
+	Some cleanup of buy/sell dialog code.
 
 2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

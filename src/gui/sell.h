@@ -83,6 +83,12 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
          */
         void setMoney(int amount);
 
+        /**
+         * Updates the state of buttons and labels.
+         */
+        void
+        updateButtonsAndLabels();
+
     private:
         Network *mNetwork;
         gcn::Button *mSellButton;

@@ -114,27 +114,21 @@ void BuyDialog::setMoney(int amount)
 {
     mMoney = amount;
     mShopItemList->setPlayersMoney(amount);
-    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney)  + " GP");
-    mMoneyLabel->adjustSize();
+
+    updateButtonsAndLabels();
 }
 
 void BuyDialog::reset()
 {
     mShopItems->clear();
+    mShopItemList->adjustSize();
     mMoney = 0;
     mSlider->setValue(0.0);
-    mAmountItems = 0;
 
     // Reset Previous Selected Items to prevent failing asserts
     mShopItemList->setSelected(-1);
-    mIncreaseButton->setEnabled(false);
-    mDecreaseButton->setEnabled(false);
-    mQuantityLabel->setCaption("0");
-    mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney) + " GP");
-    mMoneyLabel->adjustSize();
-    mItemDescLabel->setCaption("");
-    mItemEffectLabel->setCaption("");
+
+    updateButtonsAndLabels();
 }
 
 void BuyDialog::addItem(short id, int price)
@@ -160,40 +154,30 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         return;
     }
 
-    bool updateButtonsAndLabels = false;
-
     if (event.getId() == "slider")
     {
         mAmountItems = (int)(mSlider->getValue() * mMaxItems);
-        updateButtonsAndLabels = true;
+        updateButtonsAndLabels();
     }
-    else if (event.getId() == "+")
+    else if (event.getId() == "+" && mAmountItems < mMaxItems)
     {
-        if (mAmountItems < mMaxItems) {
-            mAmountItems++;
-        } else {
-            mAmountItems = mMaxItems;
-        }
+        mAmountItems++;
 
         mSlider->setValue((double) mAmountItems / (double) mMaxItems);
-        updateButtonsAndLabels = true;
+        updateButtonsAndLabels();
     }
-    else if (event.getId() == "-")
+    else if (event.getId() == "-" && mAmountItems > 0)
     {
-        if (mAmountItems > 0) {
-            mAmountItems--;
-        } else {
-            mAmountItems = 0;
-        }
+        mAmountItems--;
 
-        mSlider->setValue(double(mAmountItems)/double(mMaxItems));
-        updateButtonsAndLabels = true;
+        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        updateButtonsAndLabels();
     }
     // TODO: Actually we'd have a bug elsewhere if this check for the number
     // of items to be bought ever fails, Bertram removed the assertions, is
     // there a better way to ensure this fails in an _obivous_ way in C++?
-    else if (event.getId() == "buy" && (mAmountItems > 0 &&
-                mAmountItems <= mMaxItems))
+    else if (event.getId() == "buy" && mAmountItems > 0 &&
+                mAmountItems <= mMaxItems)
     {
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_NPC_BUY_REQUEST);
@@ -201,38 +185,15 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt16(mAmountItems);
         outMsg.writeInt16(mShopItems->at(selectedItem).id);
 
-        // update money !
+        // Update money and adjust the max number of items that can be bought
         mMoney -= mAmountItems * mShopItems->at(selectedItem).price;
-        // Update number of items that can be bought at max
         mMaxItems -= mAmountItems;
-
-        if (!mMaxItems) {
-            mSlider->setEnabled(false);
-        }
 
         // Reset selection
         mAmountItems = 0;
-        mSlider->setValue(0);
+        mSlider->setValue(0.0);
 
-        updateButtonsAndLabels = true;
-    }
-
-    // If anything has changed, we have to update the buttons and labels
-    if (updateButtonsAndLabels)
-    {
-        // Update buttons
-        mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
-        mDecreaseButton->setEnabled(mAmountItems > 0);
-        mBuyButton->setEnabled(mAmountItems > 0);
-
-        // Update labels
-        mQuantityLabel->setCaption(toString(mAmountItems));
-        mQuantityLabel->adjustSize();
-
-        int price = mAmountItems * mShopItems->at(selectedItem).price;
-        mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
-                                + toString(mMoney - price) + " GP" );
-        mMoneyLabel->adjustSize();
+        updateButtonsAndLabels();
     }
 }
 
@@ -240,17 +201,16 @@ void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
     // Reset amount of items and update labels
     mAmountItems = 0;
-    mSlider->setValue(0);
-    mQuantityLabel->setCaption("0");
-    mQuantityLabel->adjustSize();
-    mMoneyLabel->setCaption("Price: 0 GP / " + toString(mMoney) + " GP");
-    mMoneyLabel->adjustSize();
+    mSlider->setValue(0.0);
 
-    // Disable buttons for buying and decreasing
-    mBuyButton->setEnabled(false);
-    mDecreaseButton->setEnabled(false);
+    updateButtonsAndLabels();
+}
 
+void
+BuyDialog::updateButtonsAndLabels()
+{
     int selectedItem = mShopItemList->getSelected();
+    int price = 0;
 
     if (selectedItem > -1)
     {
@@ -261,16 +221,32 @@ void BuyDialog::selectionChanged(const SelectionEvent &event)
 
         // Calculate how many the player can afford
         mMaxItems = mMoney / mShopItems->at(selectedItem).price;
+        if (mAmountItems > mMaxItems)
+        {
+            mAmountItems = mMaxItems;
+        }
+
+        // Calculate price of pending purchase
+        price = mAmountItems * mShopItems->at(selectedItem).price;
     }
     else
     {
         mItemDescLabel->setCaption("Description:");
         mItemEffectLabel->setCaption("Effect:");
         mMaxItems = 0;
+        mAmountItems = 0;
     }
 
-    // When at least one item can be bought, enable the slider and the
-    // increase button
-    mIncreaseButton->setEnabled(mMaxItems > 0);
+    // Enable or disable buttons and slider
+    mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
+    mDecreaseButton->setEnabled(mAmountItems > 0);
+    mBuyButton->setEnabled(mAmountItems > 0);
     mSlider->setEnabled(mMaxItems > 0);
+
+    // Update quantity and money labels
+    mQuantityLabel->setCaption(toString(mAmountItems));
+    mQuantityLabel->adjustSize();
+    mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
+                             + toString(mMoney - price) + " GP" );
+    mMoneyLabel->adjustSize();
 }
