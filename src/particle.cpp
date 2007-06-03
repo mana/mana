@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "particle.h"
@@ -92,7 +93,7 @@ Particle::update()
 
     if (mAlive)
     {
-        //update child emitters
+        // Update child emitters
         if (mLifetimePast%Particle::emitterSkip == 0)
         {
             for (   EmitterIterator e = mChildEmitters.begin();
@@ -164,12 +165,12 @@ Particle::update()
 
         mVectorZ -= mGravity;
 
-        // update position
+        // Update position
         mPosX += mVectorX;
         mPosY += mVectorY;
         mPosZ += mVectorZ;
 
-        //update other stuff
+        // Update other stuff
         if (mLifetimeLeft > 0)
         {
             mLifetimeLeft--;
@@ -191,7 +192,7 @@ Particle::update()
         }
     }
 
-    //update child particles
+    // Update child particles
     for (   ParticleIterator p = mChildParticles.begin();
             p != mChildParticles.end();
 
@@ -200,7 +201,7 @@ Particle::update()
         if ((*p)->update())
         {
             p++;
-        }else {
+        } else {
             delete (*p);
             p = mChildParticles.erase(p);
         }
@@ -209,7 +210,7 @@ Particle::update()
     if (!mAlive && mChildParticles.empty() && mAutoDelete)
     {
         return false;
-    };
+    }
 
     return true;
 }
@@ -221,7 +222,7 @@ void Particle::draw(Graphics *graphics, int offsetX, int offsetY) const
 
 
 Particle*
-Particle::addEffect (std::string particleEffectFile, int pixelX, int pixelY)
+Particle::addEffect(std::string particleEffectFile, int pixelX, int pixelY)
 {
     Particle *newParticle = NULL;
 
@@ -246,13 +247,14 @@ Particle::addEffect (std::string particleEffectFile, int pixelX, int pixelY)
     }
 
     xmlNodePtr rootNode = xmlDocGetRootElement(doc);
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "effect")) {
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "effect"))
+    {
         logger->log("Warning: %s is not a valid particle effect definition file!",
                     particleEffectFile.c_str());
         return NULL;
     }
 
-    // parse particles
+    // Parse particles
     for_each_xml_child_node(effectChildNode, rootNode)
     {
         // We're only interested in particles
@@ -320,9 +322,9 @@ Particle::addTextSplashEffect(std::string text,
     Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB,
                                              font);
     newParticle->setPosition(x, y, 0);
-    newParticle->setVector  (   ((rand()%100) - 50) / 200.0f,  //X Vector
-                                ((rand()%100) - 50) / 200.0f,  //Y Vector
-                                ((rand()%100) / 200.0f) + 4.0f //Z Vector
+    newParticle->setVector  (   ((rand()%100) - 50) / 200.0f,  // X vector
+                                ((rand()%100) - 50) / 200.0f,  // Y vector
+                                ((rand()%100) / 200.0f) + 4.0f // Z vector
                             );
     newParticle->setGravity(0.1f);
     newParticle->setBounce(0.5f);
@@ -347,9 +349,9 @@ Particle::setMap(Map *map)
 
 Particle::~Particle()
 {
-    //remove from map sprite list
+    // Remove from map sprite list
     if (mMap) mMap->removeSprite(mSpriteIterator);
-    //delete child emitters and child particles
+    // Delete child emitters and child particles
     clear();
     Particle::particleCount--;
 }

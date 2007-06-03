@@ -187,19 +187,22 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
 
     bool hasAlpha = false;
 
-    // Figure out whether the image uses its alpha layer
-    for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
+    if (tmpImage->format->BitsPerPixel == 32)
     {
-        Uint8 r, g, b, a;
-        SDL_GetRGBA(
-                ((char*) tmpImage->pixels)[i * tmpImage->format->BitsPerPixel],
-                tmpImage->format,
-                &r, &g, &b, &a);
-
-        if (a != 255)
+        // Figure out whether the image uses its alpha layer
+        for (int i = 0; i < tmpImage->w * tmpImage->h; ++i)
         {
-            hasAlpha = true;
-            break;
+            Uint8 r, g, b, a;
+            SDL_GetRGBA(
+                    ((Uint32*) tmpImage->pixels)[i],
+                    tmpImage->format,
+                    &r, &g, &b, &a);
+
+            if (a != 255)
+            {
+                hasAlpha = true;
+                break;
+            }
         }
     }
 

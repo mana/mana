@@ -97,14 +97,6 @@ class Graphics : public gcn::SDLGraphics {
                   int dstX, int dstY,
                   int width, int height);
 
-        /**
-         * Blits an image onto the screen with an alpha factor
-         *
-         * @return <code>true</code> if the image was blitted properly
-         *         <code>false</code> otherwise.
-         */
-        bool drawImageTransparent(Image *image, int x, int y, float opacity);
-
         virtual void
         drawImagePattern(Image *image,
                          int x, int y,

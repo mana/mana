@@ -5,7 +5,9 @@
 	* src/utils/fastsqrt.h: Fixed warning about strict-aliasing rules.
 	* src/Makefile.am: Don't die on warnings by default.
 	* src/resources/image.cpp: Fixed image loading in software mode to not
-	assume all images are 32-bit.
+	check for alpha layer with images aren't 32-bit.
+	* src/graphics.cpp, src/graphics.h, src/imageparticle.cpp: Removed
+	drawImageTransparent from Graphics class, should be set on image.
 
 2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
