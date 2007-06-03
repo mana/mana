@@ -54,8 +54,16 @@ class Particle : public Sprite
         static int maxCount;             /**< Maximum number of particles */
         static int emitterSkip;          /**< Duration of pause between two emitter updates in ticks */
 
+        /**
+         * Constructor.
+         *
+         * @param map the map this particle will add itself to, may be NULL
+         */
         Particle(Map *map);
 
+        /**
+         * Destructor.
+         */
         ~Particle();
 
         /**

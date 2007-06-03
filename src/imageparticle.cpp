@@ -31,6 +31,12 @@ ImageParticle::ImageParticle(Map *map, Image *image):
     Particle(map),
     mImage(image)
 {
+    mImage->incRef();
+}
+
+ImageParticle::~ImageParticle()
+{
+    mImage->decRef();
 }
 
 void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const

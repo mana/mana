@@ -48,7 +48,7 @@ int Particle::fastPhysics = 0;
 int Particle::emitterSkip = 1;
 const float Particle::PARTICLE_SKY = 800.0f;
 
-Particle::Particle(Map *map) :
+Particle::Particle(Map *map):
     mAlive(true),
     mPosX(0.0f), mPosY(0.0f), mPosZ(0.0f),
     mLifetimeLeft(-1),

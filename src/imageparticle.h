@@ -29,10 +29,24 @@
 class Image;
 class Map;
 
+/**
+ * A particle that uses an image for its visualization.
+ */
 class ImageParticle : public Particle
 {
     public:
+        /**
+         * Constructor. The image is reference counted by this particle.
+         *
+         * @param map   the map this particle appears on
+         * @param image an Image instance, may not be NULL
+         */
         ImageParticle(Map *map, Image *image);
+
+        /**
+         * Destructor.
+         */
+        ~ImageParticle();
 
         /**
          * Draws the particle image

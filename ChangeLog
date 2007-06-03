@@ -5,9 +5,13 @@
 	* src/utils/fastsqrt.h: Fixed warning about strict-aliasing rules.
 	* src/Makefile.am: Don't die on warnings by default.
 	* src/resources/image.cpp: Fixed image loading in software mode to not
-	check for alpha layer with images aren't 32-bit.
+	check for alpha layer when images aren't 32-bit.
 	* src/graphics.cpp, src/graphics.h, src/imageparticle.cpp: Removed
 	drawImageTransparent from Graphics class, should be set on image.
+	* src/imageparticle.h, src/particleemitter.h, src/particle.h,
+	src/particleemitter.cpp, src/particle.cpp, src/imageparticle.cpp: Have
+	ParticleEmitter load a possible particle image early on and don't
+	cause a crash when the image can't be found.
 
 2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

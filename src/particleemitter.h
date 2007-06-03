@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _PARTICLEEMITTER_H
@@ -30,6 +31,7 @@
 
 #include "resources/animation.h"
 
+class Image;
 class Map;
 class Particle;
 
@@ -40,8 +42,15 @@ class Particle;
 class ParticleEmitter
 {
     public:
+        /**
+         * Constructor.
+         */
+        ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map);
 
-       ParticleEmitter(xmlNodePtr emitterNode,  Particle *target, Map *map);
+        /**
+         * Destructor.
+         */
+        ~ParticleEmitter();
 
         /**
          * Spawns new particles
@@ -74,14 +83,14 @@ class ParticleEmitter
          */
         MinMax<float> mParticlePower;
 
-        /**
-         * vector changing of particles:
+        /*
+         * Vector changing of particles:
          */
         MinMax<float> mParticleGravity;
         MinMax<int> mParticleRandomnes;
         MinMax<float> mParticleBounce;
 
-        /**
+        /*
          * Properties of targeting particles:
          */
         Particle *mParticleTarget;
@@ -89,20 +98,23 @@ class ParticleEmitter
         MinMax<float> mParticleDieDistance;
         MinMax<float> mParticleMomentum;
 
-        /**
+        /*
          * Behavior over time of the particles:
          */
         MinMax<int> mParticleLifetime;
         MinMax<int> mParticleFadeOut;
         MinMax<int> mParticleFadeIn;
 
-        Map *mMap; /**< Map the particles are supposed to spawn on */
+        Map *mMap;             /**< Map the particles are spawned on */
 
-        MinMax<int> mOutput; /**< Number of particles spawned per update */
+        MinMax<int> mOutput;   /**< Number of particles spawned per update */
 
-        std::string mParticleImage; /**< Filename of particle image */
-        Animation mParticleAnimation; /**< Filename of particle animation file */
+        Image *mParticleImage; /**< Particle image, if used */
 
-        std::list<ParticleEmitter> mParticleChildEmitters; /** List of emitters the spawned particles are equipped with */
+        /** Filename of particle animation file */
+        Animation mParticleAnimation;
+
+        /** List of emitters the spawned particles are equipped with */
+        std::list<ParticleEmitter> mParticleChildEmitters;
 };
 #endif

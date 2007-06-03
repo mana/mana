@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "particleemitter.h"
@@ -37,29 +38,29 @@
 #define SIN45 0.707106781f
 #define DEG_RAD_FACTOR 0.017453293f
 
-ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map)
+ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *map):
+    mParticleImage(0)
 {
     mMap = map;
     mParticleTarget = target;
 
     //initializing default values
-    mParticlePosX.set (0.0f);
-    mParticlePosY.set (0.0f);
-    mParticlePosZ.set (0.0f);
-    mParticleAngleHorizontal.set (0.0f);
-    mParticleAngleVertical.set (0.0f);
-    mParticlePower.set (0.0f);
-    mParticleGravity.set (0.0f);
-    mParticleRandomnes.set (0);
+    mParticlePosX.set(0.0f);
+    mParticlePosY.set(0.0f);
+    mParticlePosZ.set(0.0f);
+    mParticleAngleHorizontal.set(0.0f);
+    mParticleAngleVertical.set(0.0f);
+    mParticlePower.set(0.0f);
+    mParticleGravity.set(0.0f);
+    mParticleRandomnes.set(0);
     mParticleBounce.set(0.0f);
-    mParticleAcceleration.set (0.0f);
+    mParticleAcceleration.set(0.0f);
     mParticleDieDistance.set(-1.0f);
-    mParticleMomentum.set (1.0f);
-    mParticleLifetime.set (-1);
-    mParticleFadeOut.set (0);
-    mParticleFadeIn.set (0);
-    mOutput.set (1);
-    mParticleImage = "";
+    mParticleMomentum.set(1.0f);
+    mParticleLifetime.set(-1);
+    mParticleFadeOut.set(0);
+    mParticleFadeIn.set(0);
+    mOutput.set(1);
 
     for_each_xml_child_node(propertyNode, emitterNode)
     {
@@ -82,7 +83,13 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             }
             else if (name == "image")
             {
-                mParticleImage = XML::getProperty(propertyNode, "value", "");
+                std::string image = XML::getProperty(propertyNode, "value", "");
+                // Don't leak when multiple images are defined
+                if (image != "" && !mParticleImage)
+                {
+                    ResourceManager *resman = ResourceManager::getInstance();
+                    mParticleImage = resman->getImage(image);
+                }
             }
             else if (name == "horizontal-angle")
             {
@@ -227,6 +234,15 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
 }
 
 
+ParticleEmitter::~ParticleEmitter()
+{
+    if (mParticleImage)
+    {
+        mParticleImage->decRef();
+    }
+}
+
+
 template <typename T> MinMax<T>
 ParticleEmitter::readMinMax(xmlNodePtr propertyNode, T def)
 {
@@ -245,18 +261,16 @@ std::list<Particle *>
 ParticleEmitter::createParticles()
 {
     std::list<Particle *> newParticles;
-    ResourceManager *resman = ResourceManager::getInstance();
 
     for (int i = mOutput.value(); i > 0; i--)
     {
-        //limit maximum particles
+        // Limit maximum particles
         if (Particle::particleCount > Particle::maxCount) break;
 
         Particle *newParticle;
-        if (mParticleImage != "")
+        if (mParticleImage)
         {
-            newParticle = new ImageParticle(mMap,
-                    resman->getImage(mParticleImage));
+            newParticle = new ImageParticle(mMap, mParticleImage);
         }
         else if (mParticleAnimation.getLength() > 0)
         {
