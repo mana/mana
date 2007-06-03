@@ -9,15 +9,16 @@
 
 float fastInvSqrt(float x)
 {
-    float xhalf = 0.5f*x;
-    int i = *(int*)&x;
-    i = 0x5f375a86- (i>>1);
-    x = *(float*)&i;
-    x = x*(1.5f-xhalf*x*x);
+    union { int i; float x; } tmp;
+    float xhalf = 0.5f * x;
+    tmp.x = x;
+    tmp.i = 0x5f375a86 - (tmp.i >> 1);
+    x = tmp.x;
+    x = x * (1.5f - xhalf * x * x);
     return x;
 }
 
 float fastSqrt(float x)
 {
-    return 1.0f/fastInvSqrt(x);
+    return 1.0f / fastInvSqrt(x);
 }

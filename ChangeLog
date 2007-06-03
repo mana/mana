@@ -2,6 +2,8 @@
 
 	* src/CMakeLists.txt, src/Makefile.am, docs/Makefile.am: Added some
 	files to be included with the release.
+	* src/utils/fastsqrt.h: Fixed warning about strict-aliasing rules.
+	* src/Makefile.am: Don't die on warnings by default.
 
 2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
