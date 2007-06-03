@@ -255,6 +255,8 @@ SET(SRCS
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h
+    utils/fastsqrt.h
+    utils/minmax.h
     utils/tostring.h
     utils/xml.cpp
     utils/xml.h

@@ -1,4 +1,9 @@
-﻿2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-06-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt, src/Makefile.am, docs/Makefile.am: Added some
+	files to be included with the release.
+
+2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/winver.h, README, NEWS, CMakeLists.txt, configure.ac,
 	data/help/changes.txt, data/help/header.txt: Updated version and
