@@ -4,6 +4,8 @@
 	files to be included with the release.
 	* src/utils/fastsqrt.h: Fixed warning about strict-aliasing rules.
 	* src/Makefile.am: Don't die on warnings by default.
+	* src/resources/image.cpp: Fixed image loading in software mode to not
+	assume all images are 32-bit.
 
 2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

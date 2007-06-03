@@ -192,7 +192,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     {
         Uint8 r, g, b, a;
         SDL_GetRGBA(
-                ((Uint32*) tmpImage->pixels)[i],
+                ((char*) tmpImage->pixels)[i * tmpImage->format->BitsPerPixel],
                 tmpImage->format,
                 &r, &g, &b, &a);
 
