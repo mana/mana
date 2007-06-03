@@ -320,6 +320,8 @@ bool saveScreenshot(SDL_Surface *screenshot)
         filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__)
         filename << PHYSFS_getUserDir() << ".tmw/";
+#elif defined __APPLE__
+        filename << PHYSFS_getUserDir() << "Desktop/";
 #endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";
         testExists.open(filename.str().c_str(), std::ios::in);

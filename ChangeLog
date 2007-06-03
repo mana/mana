@@ -1,3 +1,7 @@
+2007-06-03  David Athay  <ko2fan@gmail.com>
+
+	* src/main.cpp, src/game.cpp: Fixed screenshot taking on OSX.
+
 ﻿2007-06-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt, src/Makefile.am, docs/Makefile.am: Added some

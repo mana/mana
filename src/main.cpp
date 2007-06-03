@@ -36,7 +36,7 @@
 
 #include <libxml/parser.h>
 
-#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
+#ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
 #endif
@@ -150,7 +150,7 @@ void init_engine(const Options &options)
                   << std::endl;
         exit(1);
     }
-
+            
     // Set log file
     logger->setLogFile(homeDir + std::string("/tmw.log"));
 
