@@ -1,3 +1,8 @@
+﻿2007-06-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_17-1.tmx.gz: Changed the minimap image
+	of the lamp snake cave to the correct one.
+
 2007-06-03  David Athay  <ko2fan@gmail.com>
 
 	* src/main.cpp, src/game.cpp: Fixed screenshot taking on OSX.
