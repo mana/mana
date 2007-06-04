@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,36 +21,33 @@
  *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#ifndef _TEXTPARTICLE_H
+#define _TEXTPARTICLE_H
 
-#include "being.h"
+#include "particle.h"
 
-class MonsterInfo;
+#include <guichan/color.hpp>
 
-class Monster : public Being
+#include "guichanfwd.h"
+
+class TextParticle : public Particle
 {
     public:
-        Monster(Uint16 id, Uint16 job, Map *map);
-
-        virtual void setAction(Action action);
-
-        virtual Type getType() const;
-
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
-
+        TextParticle(Map *map, const std::string &text,
+                int colorR, int colorG, int colorB, gcn::Font *font);
         /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
+         * Draws the particle image
          */
-        virtual void handleAttack();
+        virtual void
+        draw(Graphics *graphics, int offsetX, int offsetY) const;
 
-        /**
-         * Returns the MonsterInfo, with static data about this monster.
-         */
-        const MonsterInfo&
-        getInfo() const;
+        // hack to improve text visibility
+        virtual int getPixelY() const { return (int)(mPosY + mPosZ); }
+
+    private:
+        std::string mText;              /**< Text of the particle */
+        gcn::Font *mTextFont;           /**< Font used for drawing the text */
+        int mColorR, mColorG, mColorB;  /**< Color used for drawing the text */
 };
 
 #endif

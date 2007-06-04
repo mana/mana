@@ -93,6 +93,12 @@ Monster::handleAttack()
     sound.playSfx(mi.getSound(EVENT_HIT));
 }
 
+Being::TargetCursorSize
+Monster::getTargetCursorSize() const
+{
+    return getInfo().getTargetCursorSize();
+}
+
 const MonsterInfo&
 Monster::getInfo() const
 {

@@ -58,6 +58,7 @@ class DebugWindow : public Window, public gcn::ActionListener
     private:
         gcn::Label *mMusicFileLabel, *mMapFileLabel;
         gcn::Label *mTileMouseLabel, *mFPSLabel;
+        gcn::Label *mParticleCountLabel;
 };
 
 #endif

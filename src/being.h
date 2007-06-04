@@ -42,6 +42,7 @@ class Item;
 class Map;
 class Graphics;
 class ImageSet;
+class Particle;
 
 /**
  * A position along a being's path.
@@ -95,6 +96,13 @@ class Being : public Sprite
             HAT_SPRITE,
             WEAPON_SPRITE,
             VECTOREND_SPRITE
+        };
+
+        enum TargetCursorSize {
+            TC_SMALL = 0,
+            TC_MEDIUM,
+            TC_LARGE,
+            NUM_TC
         };
 
 
@@ -359,7 +367,32 @@ class Being : public Sprite
         int
         getYOffset() const { return getOffset(mStepY); }
 
+        /**
+         * Returns the horizontal size of the current base sprite of the being
+         */
+        virtual int
+        getWidth() const;
+
+        /**
+         * Returns the vertical size of the current base sprite of the being
+         */
+        virtual int
+        getHeight() const;
+
+        /**
+         * Returns the required size of a target cursor for this being
+         */
+        virtual Being::TargetCursorSize
+        getTargetCursorSize() const
+        { return TC_MEDIUM; }
+
         std::auto_ptr<Equipment> mEquipment;
+
+        /**
+         * Take control of a particle
+         */
+        void
+        controlParticle(Particle *particle);
 
     protected:
         /**
@@ -380,14 +413,13 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
-        std::string mDamage;
         Uint16 mHairStyle, mHairColor;
         Uint32 mSpeechTime;
-        Uint32 mDamageTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
         std::vector<int> mEquipmentSpriteIDs;
+        std::list<Particle *> mChildParticleEffects;
 
     private:
         int

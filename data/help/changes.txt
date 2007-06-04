@@ -3,99 +3,56 @@
  
 ##3                         === RECENT CHANGES ===
  
- 0.0.21 (17 September 2006)
- - Added item pickup messages to the chat dialog
- - Added XP bar to ministatus in the top left
- - Added configurable smooth and lazy scrolling
- - Added option to turn off the joystick
- - Added --playername option for automatic character picking
- - Added --configfile option for specifying which configuration file to use
- - Added shortcut and middle mouse button for targetting nearest monster
- - Added support for map effect overlays
- - Fixed FPS limiter
- - Fixed updating system on Windows
- - Fixed player animations going out of sync on changing equipment or hairstyle
- - Fixed SDL_image configure check on some systems by first checking for libpng
- - Fixed big memory leak when using OpenGL
- - Updated to work with Guichan 0.5.0 (older versions no longer supported)
+ 0.0.23 (3 June 2007)
+ - Added a particle engine along with some particle effects
+ - Added a cursor to indicate targeted enemy
+ - Added new program icon
+ - Added a man page for UNIX like systems
+ - Added the --version command line parameter
+ - Improved MacOS X release
+ - Screenshots are now saved in the .tmw directory on UNIX like systems
+ - Magic pink is no longer used for transparency (fixes issues with that on Mac)
+ - Fixed difficulties with resizing windows
+ - Fixed misleading error message when connecting fails
+ - Fixed wrong error message when account name already exists
+ - Fixed crash when deleting a character
+ - Fixed error message when creating a new character fails
+ - Fixed updating problem when using scrollwheel to change shop selection
  
- 0.0.20 (24 July 2006)
- - Added new hairstyle, and some fixes to the old ones
- - Added slider to set FPS limit
- - Added visible equipments
- - Added new maps and monsters
- - Added female characters
- - Implemented a new animation system
- - Updated the updating system
- - Reduced size of textures to stay within the limits of some OpenGL drivers
- - Fixed connection not being shut down completely in case of an error
- - Fixed min size of a window when resizing
- - Fixed some maps issues
- - Some fixes to monsters and player graphics
- - Minor bug fixes and lots of code cleanups
+ 0.0.22.2 (17 February 2007)
+ - Updated to work with Guichan 0.6.1
+ - Changed to new default server (server.themanaworld.org)
+ - Changed custom mouse cursor
+ - Fixed the issue where _M or _F is appended to the username
+ - Fixed problem with Cancel button in update dialog
  
- 0.0.19 (6 March 2006)
+ 0.0.22.1 (15 January 2007)
+ - Updated to work with Guichan 0.6.0 (older versions no longer supported)
+ - Fixed mouse coordinates in debug window
+ - Fixed clicking on GUI to cause the player to start walking sometimes
  
- - Added --username, --password and --defaults command line options
- - Improved login sequence
- - Enabled 3 slots to create players
- - Improved setup window and added a joystick calibration tool
- - Some maps fixes
- - Reorganized and improved network code
- - Fixed some bugs
- - Made the player walk to items prior to picking them up
- - Added new playerset
- - Lots of cleanups and code re-roganization
+ 0.0.22 (24 December 2006)
+ - Added support for female-specific equipment graphics
+ - Added support for monster sounds
+ - Added item icons to buy/sell dialogs
+ - Enhanced character select dialog to show equipment
+ - Changed to new update host (http://updates.themanaworld.org)
+ - Worked around a Guichan exception thrown for mice with many buttons
+ - Changed mouse walk to keep following mouse while button is held down
+ - Extended font support for å and Å
+ - Disabled RLE compression on all surfaces in software mode
+ - Fixed joystick setting not to show disabled when it's actually enabled
+ - Fixed money field to no longer hide below the bottom of the window
+ - Fixed pathfinding to allow walking through beings when they block your path
+ - Fixed an issue with NPC dialogs staying open after player respawn
  
- 0.0.18.1 (30 December 2005)
- 
- - Fixed a drawing glitch with high tiles at the bottom of the screen
- - Fixed glitches caused by fading out the damage display
- 
- 0.0.18 (20 December 2005)
- 
- - Added new items, npcs, tilesets, maps and monsters
- - Non blocking connection at startup
- - Enabled monster emotions
- - Client version is now displayed during login
- - Fixed setup window behaviour
- - Fixed a Windows crash issue
- - Fixed ScrollArea and BrowserBox behaviour
- - Code cleanups
- 
- 0.0.17 (10 October 2005)
- 
- - Added remembering of window position and sizes
- - Added taking screenshot with Alt+P
- - Added notice about the player being overweight
- - Added time to chat messages
- - Added messagebox on error for MacOS X
- - Added new network layer based on SDL_net
- - Added proper error message for when the map server goes offline
- - Added more international characters to fixed and rpg fonts
- - Improved damage text font, shadow is now translucent
- - Improved GUI layout, new profile window
- - Improved support for building on FreeBSD and MacOS X
- - Improved tile engine to fix graphics glitches and make mapping easier
- - Rearranged keyboard shortcuts
- - Fixed items on map to be removed on map switch
- - Fixed OpenGL checkbox in the setup window to be usable
- - Cleaned up a lot of code
- 
- 0.0.16 (04 September 2005)
-
- - Added inn and casino
- - Improved status window
- - Improved OpenGL support
- - Removed lot of bugs
- - Code cleanups
- 
- 0.0.15 (31 July 2005)
-
- - Added dynamic updating of client data
- - Added much better font for chat and names
- - Added option not to use the custom mouse cursor
- - Added joystick support
- - Improved mouse attack by not walking while pressing shift
- - Fixed items being shown as equipped in inventory although they are not
+ 0.0.21.1 (30 October 2006)
+ - Reload wallpaper after loading updates
+ - Added support for gzip compressed map layer data
+ - Added support for building with CMake
+ - Added slider to setup dialog for configuring overlay effect
+ - Fixed excessive unnecessary reloading of sprites
+ - Fixed problem with OpenGL related redefinition
+ - Fixed problems with hiding windows using h
+ - Fixed trade window positioning
  

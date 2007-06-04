@@ -21,36 +21,41 @@
  *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#ifndef _TMW_RESIZEGRIP_H
+#define _TMW_RESIZEGRIP_H
 
-#include "being.h"
+#include <guichan/widget.hpp>
 
-class MonsterInfo;
+class Image;
 
-class Monster : public Being
+/**
+ * Resize grip. The resize grip is part of a resizable Window. It relies on the
+ * fact that uncaught mouse events are automatically routed to the parent
+ * window.
+ *
+ * \ingroup GUI
+ */
+class ResizeGrip : public gcn::Widget
 {
     public:
-        Monster(Uint16 id, Uint16 job, Map *map);
-
-        virtual void setAction(Action action);
-
-        virtual Type getType() const;
-
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
+        /**
+         * Constructor.
+         */
+        ResizeGrip();
 
         /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
+         * Destructor.
          */
-        virtual void handleAttack();
+        ~ResizeGrip();
 
         /**
-         * Returns the MonsterInfo, with static data about this monster.
+         * Draws the resize grip.
          */
-        const MonsterInfo&
-        getInfo() const;
+        void draw(gcn::Graphics *graphics);
+
+    private:
+        static Image *gripImage;   /**< Resize grip image */
+        static int mInstances;     /**< Number of resize grip instances */
 };
 
 #endif

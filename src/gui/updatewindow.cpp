@@ -157,6 +157,7 @@ void UpdaterWindow::setLabel(const std::string &str)
 
 void UpdaterWindow::enable()
 {
+    mCancelButton->setEnabled(false);
     mPlayButton->setEnabled(true);
     mPlayButton->requestFocus();
 }
@@ -168,11 +169,7 @@ void UpdaterWindow::action(const gcn::ActionEvent &event)
         // Register the user cancel
         mUserCancel = true;
         // Skip the updating process
-        if (mDownloadStatus == UPDATE_COMPLETE)
-        {
-            state = STATE_EXIT;
-        }
-        else
+        if (mDownloadStatus != UPDATE_COMPLETE)
         {
             mDownloadStatus = UPDATE_ERROR;
         }

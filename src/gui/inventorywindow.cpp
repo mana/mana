@@ -165,8 +165,8 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
 
         if (!item) return;
 
-        /* Convert relative to the window coordinates to
-         * absolute screen coordinates.
+        /* Convert relative to the window coordinates to absolute screen
+         * coordinates.
          */
         int mx = event.getX() + getX();
         int my = event.getY() + getY();
@@ -178,7 +178,8 @@ void InventoryWindow::mouseDragged(gcn::MouseEvent &event)
 {
     int tmpWidth = getWidth(), tmpHeight = getHeight();
     Window::mouseDragged(event);
-    if (getWidth() != tmpWidth || getHeight() != tmpHeight) {
+    if (getWidth() != tmpWidth || getHeight() != tmpHeight)
+    {
         updateWidgets();
     }
 }

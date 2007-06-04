@@ -47,6 +47,8 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/resizegrip.cpp
+    gui/widgets/resizegrip.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp
@@ -275,11 +277,15 @@ SET(SRCS
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h
+    utils/fastsqrt.h
+    utils/minmax.h
     utils/tostring.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp
     animatedsprite.h
+    animationparticle.cpp
+    animationparticle.h
     being.cpp
     being.h
     beingmanager.cpp
@@ -304,6 +310,8 @@ SET(SRCS
     graphics.cpp
     graphics.h
     guichanfwd.h
+    imageparticle.cpp
+    imageparticle.h
     inventory.cpp
     inventory.h
     item.cpp
@@ -326,6 +334,10 @@ SET(SRCS
     npc.h
     openglgraphics.cpp
     openglgraphics.h
+    particle.cpp
+    particle.h
+    particleemitter.cpp
+    particleemitter.h
     player.cpp
     player.h
     properties.h
@@ -335,6 +347,8 @@ SET(SRCS
     sound.cpp
     sound.h
     sprite.h
+    textparticle.cpp
+    textparticle.h
     tileset.h
     )
 

@@ -21,36 +21,45 @@
  *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#include "resizegrip.h"
 
-#include "being.h"
+#include <guichan/graphics.hpp>
 
-class MonsterInfo;
+#include "../../graphics.h"
 
-class Monster : public Being
+#include "../../resources/image.h"
+#include "../../resources/resourcemanager.h"
+
+Image *ResizeGrip::gripImage = 0;
+int ResizeGrip::mInstances = 0;
+
+ResizeGrip::ResizeGrip()
 {
-    public:
-        Monster(Uint16 id, Uint16 job, Map *map);
+    if (mInstances == 0)
+    {
+        // Load the grip image
+        ResourceManager *resman = ResourceManager::getInstance();
+        gripImage = resman->getImage("graphics/gui/resize.png");
+    }
 
-        virtual void setAction(Action action);
+    mInstances++;
 
-        virtual Type getType() const;
+    setWidth(gripImage->getWidth() + 2);
+    setHeight(gripImage->getHeight() + 2);
+}
 
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
+ResizeGrip::~ResizeGrip()
+{
+    mInstances--;
 
-        /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
-         */
-        virtual void handleAttack();
+    if (mInstances == 0)
+    {
+        gripImage->decRef();
+    }
+}
 
-        /**
-         * Returns the MonsterInfo, with static data about this monster.
-         */
-        const MonsterInfo&
-        getInfo() const;
-};
-
-#endif
+void
+ResizeGrip::draw(gcn::Graphics *graphics)
+{
+    dynamic_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
+}

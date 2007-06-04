@@ -41,9 +41,12 @@
 #include "../resources/animation.h"
 #include "../resources/monsterinfo.h"
 #include "../resources/resourcemanager.h"
+#include "../resources/image.h"
 #include "../resources/imageset.h"
 
 #include "../utils/tostring.h"
+
+#include <cassert>
 
 Viewport::Viewport():
     mMap(0),
@@ -67,37 +70,62 @@ Viewport::Viewport():
     mPopupMenu = new PopupMenu();
 
     // Load target cursors
+    loadTargetCursor("graphics/gui/target-cursor-blue-s.png", 44, 35,
+                     false, Being::TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-red-s.png", 44, 35,
+                     true, Being::TC_SMALL);
+    loadTargetCursor("graphics/gui/target-cursor-blue-m.png", 62, 44,
+                     false, Being::TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-red-m.png", 62, 44,
+                     true, Being::TC_MEDIUM);
+    loadTargetCursor("graphics/gui/target-cursor-blue-l.png", 82, 60,
+                     false, Being::TC_LARGE);
+    loadTargetCursor("graphics/gui/target-cursor-red-l.png", 82, 60,
+                     true, Being::TC_LARGE);
+}
+
+void
+Viewport::loadTargetCursor(std::string filename, int width, int height,
+                           bool outRange, Being::TargetCursorSize size)
+{
+    assert(size > -1);
+    assert(size < 3);
+
+    ImageSet* currentImageSet;
+    SimpleAnimation* currentCursor;
+
     ResourceManager *resman = ResourceManager::getInstance();
-    mInRangeImages = resman->getImageSet(
-            "graphics/gui/target-cursor-blue.png", 44, 35);
-    mOutRangeImages = resman->getImageSet(
-            "graphics/gui/target-cursor-red.png", 44, 35);
-    Animation *animInRange = new Animation();
-    Animation *animOutRange = new Animation();
 
-    for (unsigned int i = 0; i < mInRangeImages->size(); ++i)
+    currentImageSet = resman->getImageSet(filename, width, height);
+    Animation *anim = new Animation();
+    for (unsigned int i = 0; i < currentImageSet->size(); ++i)
     {
-        animInRange->addFrame(mInRangeImages->get(i), 75, 0, 0);
+        anim->addFrame(currentImageSet->get(i), 75, 0, 0);
     }
+    currentCursor = new SimpleAnimation(anim);
 
-    for (unsigned int j = 0; j < mOutRangeImages->size(); ++j)
+    if (outRange)
     {
-        animOutRange->addFrame(mOutRangeImages->get(j), 75, 0, 0);
+        mOutRangeImages[size] = currentImageSet;
+        mTargetCursorOutRange[size] = currentCursor;
     }
-
-    mTargetCursorInRange = new SimpleAnimation(animInRange);
-    mTargetCursorOutRange = new SimpleAnimation(animOutRange);
+    else {
+        mInRangeImages[size] = currentImageSet;
+        mTargetCursorInRange[size] = currentCursor;
+    }
 }
 
 Viewport::~Viewport()
 {
     delete mPopupMenu;
 
-    delete mTargetCursorInRange;
-    delete mTargetCursorOutRange;
-
-    mInRangeImages->decRef();
-    mOutRangeImages->decRef();
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
+    {
+        delete mTargetCursorInRange[i];
+        delete mTargetCursorOutRange[i];
+        mInRangeImages[i]->decRef();
+        mOutRangeImages[i]->decRef();
+    }
 }
 
 void
@@ -259,8 +287,11 @@ Viewport::logic()
         mWalkTime = player_node->mWalkTime;
     }
 
-    mTargetCursorInRange->update(10);
-    mTargetCursorOutRange->update(10);
+    for (int i = 0; i < 3; i++)
+    {
+        mTargetCursorInRange[i]->update(10);
+        mTargetCursorOutRange[i]->update(10);
+    }
 }
 
 void
@@ -270,26 +301,31 @@ Viewport::drawTargetCursor(Graphics *graphics)
     Being *target = player_node->getTarget();
     if (target)
     {
+        // Calculate target circle position
+
         // Find whether target is in range
         int rangeX = abs(target->mX - player_node->mX);
         int rangeY = abs(target->mY - player_node->mY);
         int attackRange = player_node->getAttackRange();
 
-        // Draw the target cursor, which one depends if the target is in range
+        // Get the correct target cursors graphic
+        Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
+        Image* targetCursor;
         if (rangeX > attackRange || rangeY > attackRange)
         {
-            // Draw the out of range cursor
-            graphics->drawImage(mTargetCursorOutRange->getCurrentImage(),
-                                target->getPixelX() - mCameraX,
-                                target->getPixelY() - mCameraY);
+            targetCursor = mTargetCursorOutRange[cursorSize]->getCurrentImage();
         }
-        else
-        {
-            // Draw the in range cursor
-            graphics->drawImage(mTargetCursorInRange->getCurrentImage(),
-                                target->getPixelX() - mCameraX,
-                                target->getPixelY() - mCameraY);
+        else {
+            targetCursor = mTargetCursorInRange[cursorSize]->getCurrentImage();
         }
+
+        // Draw the target cursor at the correct position
+        int posX = target->getPixelX() + 16 -
+                   targetCursor->getWidth() / 2 - mCameraX;
+        int posY = target->getPixelY() + 16 -
+                   targetCursor->getHeight() / 2 - mCameraY;
+
+        graphics->drawImage(targetCursor, posX, posY);
     }
 }
 
@@ -304,10 +340,10 @@ Viewport::drawTargetName(Graphics *graphics)
         graphics->setColor(gcn::Color(255, 32, 32));
 
         const MonsterInfo &mi = static_cast<Monster*>(target)->getInfo();
-        graphics->drawText(mi.getName(),
-                           target->getPixelX() - mCameraX + 15,
-                           target->getPixelY() - mCameraY - 42,
-                           gcn::Graphics::CENTER);
+        int posX = target->getPixelX() + 16 - mCameraX;
+        int posY = target->getPixelY() + 16 - target->getHeight() - mCameraY;
+
+        graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);
     }
 }
 

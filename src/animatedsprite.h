@@ -86,6 +86,18 @@ class AnimatedSprite
         draw(Graphics* graphics, int posX, int posY) const;
 
         /**
+         * gets the width in pixels of the image of the current frame
+         */
+        int
+        getWidth() const;
+
+        /**
+         * gets the height in pixels of the image of the current frame
+         */
+        int
+        getHeight() const;
+
+        /**
          * Sets the direction.
          */
         void

@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -18,39 +18,32 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#ifndef _ANIMATION_PARTICLE
+#define _ANIMATION_PARTICLE
 
-#include "being.h"
+#include <libxml/tree.h>
 
-class MonsterInfo;
+#include "imageparticle.h"
 
-class Monster : public Being
+class Animation;
+class Map;
+class SimpleAnimation;
+
+class AnimationParticle : public ImageParticle
 {
     public:
-        Monster(Uint16 id, Uint16 job, Map *map);
+        AnimationParticle(Map *map, Animation *animation);
 
-        virtual void setAction(Action action);
+        AnimationParticle(Map *map, xmlNodePtr animationNode);
 
-        virtual Type getType() const;
+        ~AnimationParticle();
 
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
+        virtual bool update();
 
-        /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
-         */
-        virtual void handleAttack();
-
-        /**
-         * Returns the MonsterInfo, with static data about this monster.
-         */
-        const MonsterInfo&
-        getInfo() const;
+    private:
+        SimpleAnimation *mAnimation; /**< Used animation for this particle */
 };
 
 #endif

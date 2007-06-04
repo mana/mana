@@ -160,7 +160,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
             break;
         case BY_OTHER:
             tmp.nick += CAT_NORMAL;
-            lineColor = "##4"; // Equiv. to BrowserBox::ORANGE
+            lineColor = "##0"; // Equiv. to BrowserBox::BLACK
             break;
         case BY_SERVER:
             tmp.nick += std::string("Server: ");
@@ -195,7 +195,7 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     // We look if the Vertical Scroll Bar is set at the max before
     // adding a row, otherwise the max will always be a row higher
     // at comparison.
-    if (mScrollArea->getVerticalScrollAmount() == mScrollArea->getVerticalMaxScroll() )
+    if (mScrollArea->getVerticalScrollAmount() == mScrollArea->getVerticalMaxScroll())
     {
         mTextOutput->addRow(line);
         mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());

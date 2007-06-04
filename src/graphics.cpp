@@ -136,8 +136,6 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
-
-
     SDL_Rect dstRect;
     SDL_Rect srcRect;
     dstRect.x = dstX; dstRect.y = dstY;

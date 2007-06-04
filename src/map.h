@@ -32,8 +32,9 @@
 class AmbientOverlay;
 class Graphics;
 class Image;
-class Tileset;
+class Particle;
 class Sprite;
+class Tileset;
 
 struct PATH_NODE;
 
@@ -185,6 +186,17 @@ class Map : public Properties
         void
         removeSprite(SpriteIterator iterator);
 
+        /**
+         * Adds a particle effect
+         */
+        void addParticleEffect (std::string effectFile, int x, int y);
+
+        /**
+         * Initializes all added particle effects
+         */
+        void
+        initializeParticleEffects(Particle* particleEngine);
+
     private:
         /**
          * Converts a global tile id to the Image* pointing to the associated
@@ -220,10 +232,19 @@ class Map : public Properties
         // Pathfinding members
         int mOnClosedList, mOnOpenList;
 
-        //overlay Data
+        // Overlay Data
         std::list<AmbientOverlay*> mOverlays;
         float mLastScrollX;
         float mLastScrollY;
+
+        // Particle effect data
+        struct ParticleEffectData
+        {
+            std::string file;
+            int x;
+            int y;
+        };
+        std::list<ParticleEffectData> particleEffects;
 };
 
 #endif

@@ -3,6 +3,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
+	      gui/widgets/resizegrip.cpp \
+	      gui/widgets/resizegrip.h \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -229,11 +231,15 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/base64.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
+	      utils/fastsqrt.h \
+	      utils/minmax.h \
 	      utils/tostring.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \
 	      animatedsprite.h \
+	      animationparticle.cpp \
+	      animationparticle.h \
 	      being.cpp \
 	      being.h \
 	      beingmanager.cpp \
@@ -258,6 +264,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      graphics.cpp \
 	      graphics.h \
 	      guichanfwd.h \
+	      imageparticle.cpp \
+	      imageparticle.h \
 	      inventory.cpp \
 	      inventory.h \
 	      item.cpp \
@@ -280,15 +288,21 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      npc.h \
 	      openglgraphics.cpp\
 	      openglgraphics.h \
+	      particle.cpp \
+	      particle.h \
+	      particleemitter.cpp \
+	      particleemitter.h \
 	      player.cpp \
 	      player.h \
 	      properties.h \
 	      serverinfo.h \
 	      simpleanimation.cpp \
-  	      simpleanimation.h \
+	      simpleanimation.h \
 	      sound.cpp \
 	      sound.h \
 	      sprite.h \
+	      textparticle.cpp \
+	      textparticle.h \
 	      tileset.h
 
 # set the include path found by configure

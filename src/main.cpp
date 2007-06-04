@@ -40,7 +40,7 @@
 
 #include <libxml/parser.h>
 
-#if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
+#ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
 #endif
@@ -148,21 +148,21 @@ struct Options
  */
 void initHomeDir()
 {
-#if !(defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
-    homeDir = ".";
-#else
     homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
-
+#if defined WIN32
+    if (!CreateDirectory(homeDir.c_str(), 0) &&
+            GetLastError() != ERROR_ALREADY_EXISTS)
+#else
     // Checking if /home/user/.tmw folder exists.
     if ((mkdir(homeDir.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH) != 0) &&
             (errno != EEXIST))
+#endif
     {
         std::cout << homeDir
-                  << " can't be made, but it doesn't exist! Exiting."
+                  << " can't be created, but it doesn't exist! Exiting."
                   << std::endl;
         exit(1);
     }
-#endif
 }
 
 /**
@@ -236,11 +236,17 @@ void initEngine()
     static SDL_SysWMinfo pInfo;
     SDL_GetWMInfo(&pInfo);
     HICON icon = LoadIcon(GetModuleHandle(NULL), "A");
-    SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+    if (icon)
+    {
+        SetClassLong(pInfo.window, GCL_HICON, (LONG) icon);
+    }
 #else
     SDL_Surface *icon = IMG_Load(TMW_DATADIR "data/icons/tmw.png");
-    SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
-    SDL_WM_SetIcon(icon, NULL);
+    if (icon)
+    {
+        SDL_SetAlpha(icon, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
+        SDL_WM_SetIcon(icon, NULL);
+    }
 #endif
 
     ResourceManager *resman = ResourceManager::getInstance();

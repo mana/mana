@@ -26,7 +26,10 @@
 
 #include "resources/animation.h"
 
+#include "utils/xml.h"
+
 class Frame;
+class Graphics;
 
 /**
  * This class is a leightweight alternative to the AnimatedSprite class.
@@ -35,12 +38,20 @@ class Frame;
 class SimpleAnimation
 {
     public:
+        /**
+         * Creates a simple animation with an already created animation.
+         */
         SimpleAnimation(Animation *animation):
             mAnimation(animation),
             mAnimationTime(0),
             mAnimationPhase(0),
             mCurrentFrame(mAnimation->getFrame(0))
         {};
+
+        /**
+         * Creates a simple animation that creates its animation from XML Data.
+         */
+        SimpleAnimation(xmlNodePtr animationNode);
 
         ~SimpleAnimation();
 
@@ -55,10 +66,10 @@ class SimpleAnimation
         /** Time in game ticks the current frame is shown. */
         unsigned int mAnimationTime;
 
-        /** Index of current animation frame. */
+        /** Index of current animation phase. */
         unsigned int mAnimationPhase;
 
-        /** Current animation frame. */
+        /** Current animation phase. */
         Frame *mCurrentFrame;
 };
 

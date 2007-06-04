@@ -1,3 +1,162 @@
+2007-06-03  David Athay  <ko2fan@gmail.com>
+
+	* src/main.cpp, src/game.cpp: Fixed screenshot taking on OSX.
+
+2007-06-03  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt, src/Makefile.am, docs/Makefile.am: Added some
+	files to be included with the release.
+	* src/utils/fastsqrt.h: Fixed warning about strict-aliasing rules.
+	* src/Makefile.am: Don't die on warnings by default.
+	* src/resources/image.cpp: Fixed image loading in software mode to not
+	check for alpha layer when images aren't 32-bit.
+	* src/graphics.cpp, src/graphics.h, src/imageparticle.cpp: Removed
+	drawImageTransparent from Graphics class, should be set on image.
+	* src/imageparticle.h, src/particleemitter.h, src/particle.h,
+	src/particleemitter.cpp, src/particle.cpp, src/imageparticle.cpp: Have
+	ParticleEmitter load a possible particle image early on and don't
+	cause a crash when the image can't be found.
+
+2007-06-02  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/winver.h, README, NEWS, CMakeLists.txt, configure.ac,
+	data/help/changes.txt, data/help/header.txt: Updated version and
+	release date and summarized changes.
+	* src/gui/chat.h, src/gui/chat.cpp: Changed color of chat messages in
+	OpenGL mode from orange to black.
+	* src/gui/sell.cpp, src/gui/buy.h, src/gui/buy.cpp, src/gui/sell.h:
+	Some cleanup of buy/sell dialog code.
+
+2007-06-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Added target cursors to installed files.
+
+2007-05-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/maps/new_16-1.tmx.gz: Fixed an inconsistency with the neighbor
+	map (no new walkmap required).
+
+2007-05-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/buy.cpp, src/being.cpp: A bunch of
+	lingering syntactical changes.
+	* src/gui/viewport.cpp: Added a missing include and fixed a bug with
+	cleaning up target cursor animations.
+
+2007-05-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/viewport.cpp,
+	data/graphics/gui/target-cursor-blue-s.png,
+	data/graphics/gui/target-cursor-blue-m.png,
+	data/graphics/gui/target-cursor-blue-l.png,
+	data/graphics/gui/target-cursor-red-s.png,
+	data/graphics/gui/target-cursor-red-m.png,
+	data/graphics/gui/target-cursor-red-l.png: Replaced target cursor
+	graphics with higher quality ones by Pauan.
+	* src/particle.cpp: Made bouncing particles immune against death by
+	ground contact and removed a nonsensical debugging log message. Made
+	text splash effects fade out.
+	* src/textparticle.cpp: Implemented fading in and out for text
+	particles.
+	* src/being.cpp, src/particle.cpp, src/particle.h,
+	src/textparticle.cpp, src/textparticle.h: The color values of text
+	particles are now stored in 3 integers instead of a Guichan color
+	structure.
+
+2007-05-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* tmw.cbp: Updated Code::Blocks project file.
+
+2007-05-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/buy.cpp, src/gui/sell.cpp: Unified some differences between
+	buy and sell dialog. Money label now shows money after transaction
+	instead of current money.
+	* src/gui/sell.cpp: Fixed the amount-not-reset-when-using-scrollwheel
+	bug.
+	* src/being.h, src/gui/viewport.cpp, src/gui/viewport.h: Added 3
+	different target cursor sizes.
+	* src/monster.h, src/monster.cpp, src/resources/monsterdb.cpp,
+	scr/resources/monsterinfo.h, data/monsters.xml: Target cursor size for
+	monster is read from the monsters.xml.
+	* data/graphics/gui/target-cursor-blue-s.png,
+	data/graphics/gui/target-cursor-blue-m.png,
+	data/graphics/gui/target-cursor-blue-l.png,
+	data/graphics/gui/target-cursor-red-s.png,
+	data/graphics/gui/target-cursor-red-m.png,
+	data/graphics/gui/target-cursor-red-l.png: Added temporary
+	placeholders for small and large target cursors until better versions
+	based on the original SVG are available.
+
+2007-05-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/monster-bat.png,
+	data/graphics/sprites/monster-bat.xml,
+	data/graphics/sprites/monster-flower.xml,
+	data/graphics/sprites/monster-fluffy.xml,
+	data/graphics/sprites/monster-fluffy.png,
+	data/graphics/sprites/monster-goblin-fire.xml,
+	data/graphics/sprites/monster-maggot-giant.xml,
+	data/graphics/sprites/monster-maggot.xml,
+	data/graphics/sprites/monster-mountsnake.xml,
+	data/graphics/sprites/monster-mushroom-red.xml,
+	data/graphics/sprites/monster-mushroom-spiky.xml,
+	data/graphics/sprites/monster-pinkie.xml,
+	data/graphics/sprites/monster-scorpion-black.xml,
+	data/graphics/sprites/monster-scorpion-red.png,
+	data/graphics/sprites/monster-scorpion-red.xml,
+	data/graphics/sprites/monster-skull-poison.xml,
+	data/graphics/sprites/monster-slime-green.xml,
+	data/graphics/sprites/monster-slime-red.xml,
+	data/graphics/sprites/monster-slime-rudolph.xml,
+	data/graphics/sprites/monster-slime-santa.png,
+	data/graphics/sprites/monster-slime-santa.xml,
+	data/graphics/sprites/monster-slime-yellow.xml,
+	data/graphics/sprites/monster-snake-cave.png,
+	data/graphics/sprites/monster-snake-cave.xml,
+	data/graphics/sprites/monster-snake.xml,
+	data/graphics/sprites/monster-spider.xml:
+	Adjusted offsets of monster sprites (thanks to Pauan for finding out
+	the correct offsets - I just subtracted 6 of all x offsets to take the
+	new position of the target circle in account) and committed some
+	modifications at some monster graphics by Pauan.
+
+2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/sprite.h, src/being.cpp, src/being.h, src/animatedsprite.cpp,
+	src/animatedsprite.h: Added methods to get the width and height of the
+	graphical representation of a sprite.
+	* src/gui/viewport.cpp: Fixed positioning of monster names and target
+	circles.
+
+2007-05-02  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Fixed a compiler warning.
+
+2007-05-02  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/Makefile.am: Add the new particle subclasses to the automake
+	configuration.
+	* src/imageparticle.h, src/textparticle.h, src/particle.h,
+	src/animationparticle.h, src/CMakeLists.txt, src/particleemitter.cpp,
+	src/animationparticle.cpp, src/particle.cpp, src/imageparticle.cpp,
+	src/textparticle.cpp, src/utils/xml.cpp, src/utils/xml.h: Split the
+	particle class into subclasses based on their appearance.
+
+2007-04-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h: Some minor code cleanups, speed
+	optimizations and a bit of documentation.
+
+2007-04-23  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/particles/flame.particle.xml,
+	data/graphics/particles/blaze.png: Added two files I forgot with the
+	last commit.
+	* src/resources/mapreader.cpp, src/particle.cpp,
+	src/particleemitter.cpp: Using XML child node iteration macro.
+
 2007-04-22  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* CMake/Modules/FindENet.cmake: Fixed ENet status always being set to
@@ -10,10 +169,73 @@
 	* src/resources/itemdb.cpp: Made the parameter checks more terse and
 	manageable.
 
+2007-04-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/mapreader.cpp: Emitter positions are now read from map
+	files.
+	* src/engine.cpp: Removed the player follow effect used for testing.
+	* data/maps/new_4-1.tmx.gz, data/maps/new_5-1.tmx.gz: Added flame
+	effect to all lamps on the cave maps
+	* data/maps/new_9-1.tmx.gz: Added waterfall effect to the upper right
+	corner of NW woodland map.
+
+2007-04-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/openglgraphics.cpp: Rely on default 0 value for z axis.
+	* src/CMakeLists.txt, src/gui/window.cpp, src/gui/widgets,
+	src/gui/widgets/resizegrip.cpp, src/gui/widgets/resizegrip.h,
+	src/gui/inventorywindow.cpp, src/gui/window.h, src/Makefile.am:
+	Reimplemented window resizing. It is now once again possible to resize
+	windows using their borders (except for the top one, since that's the
+	title bar for Guichan) and the resize grip in the bottom right is much
+	easier to grab.
+	* src/gui/window.cpp: Increased minimum window height and fixed a
+	problem with setting window content size which was introduced with the
+	new resize grip.
+
 2007-04-13  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* data/graphics/gui/CMakeLists.txt: Added target cursor graphics to
 	the set of files to be installed.
+
+2007-04-05  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/main.cpp:  Unified storage of configuration, updates and
+	screenshots in home directory.
+
+2007-04-03  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/items/generic-easteregg-blue.png,
+	data/graphics/items/generic-easteregg-green.png,
+	data/graphics/items/generic-easteregg-pink.png,
+	data/graphics/items/generic-easteregg-red.png,
+	data/graphics/items/generic-easteregg-teal.png,
+	data/graphics/items/generic-easteregg-yellow.png,
+	data/items.xml: Added six different easter egg item graphics for the
+	easter event. Item IDs are 1208 - 1213.
+	* data/graphics/sprites/npcs.png: Added bunny girl npc for the easter
+	event.
+
+2007-04-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp: Screenshots are no longer saved directly in the users
+	home directory on UNIX systems but in the sub folder /.tmw/. A chatlog
+	message about the success of the screenshot saving does appear now.
+	Based on a patch by Patrick "the-me" Matthäi.
+
+2007-03-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/main.cpp: Icon loading doesn't necessarily succeed, so better
+	not crash when it doesn't.
+
+2007-03-25  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Improved programming style and documentation
+	and added some small tweaks.
+	* src/engine.cpp, src/map.cpp, src/map.h, src/resources/mapreader.cpp:
+	Prepared getting the emitter positions from the map file by storing
+	them in the Map class and setting them up from the MapReader.
 
 2007-03-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -49,6 +271,16 @@
 	src/net/charserverhandler.h, src/net/charserverhandler.cpp: Made sure
 	the character creation dialog doesn't close when creation failed.
 
+2007-03-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/simpleanimation.cpp, src/simpleanimation.h: Added new
+	constructor for simple animation that allows to build the animation
+	based on an xmlNodePtr pointing to an <animation> node.
+	* src/particle.cpp, src/particle.h: Added support for <image> and
+	<animation> childtags for effect root particles.
+	* data/graphics/particles/playerglow.particle.xml: New player follow
+	effect that demonstrates an animated root particle with an emitter.
+
 2007-03-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/login.cpp, src/gui/login.h, src/gui/register.h,
@@ -83,6 +315,11 @@
 	src/resources/spriteset.h, src/resources/imageset.h,
 	src/resources/resourcemanager.cpp, src/resources/spriteset.cpp,
 	src/resources/spritedef.h: Renamed Spriteset to ImageSet.
+
+2007-03-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/updatewindow.cpp: Cancel button is now disabled after
+	downloading is finished.
 
 2007-03-20  David Athay  <ko2fan@gmail.com>
 
@@ -160,6 +397,8 @@
 	* src/simpleanimation.cpp, src/simpleanimation.h, src/CmakeLists.txt,
 	src/Makefile.am: Added a simple animation class that hosts a looping
 	animation without the action and direction stuff from AnimatedSprite.
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp: Used said
+	simple animation class for animated particles.
 
 2007-03-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -170,6 +409,14 @@
 
 	* src/map.cpp, src/gui/viewport.cpp: Fixed a bug that made the engine
 	not draw the last row and column of the map.
+
+2007-03-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Reimplemented physics mode that uses the default
+	square root function as fallback for systems where the fastInvSqrt
+	function doesn't work properly.
+	* src/particle.cpp, src/particle.h: Some performance optimizations
+	suggested by Rogier "Avaniel" Polak.
 
 2007-03-09  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -221,6 +468,10 @@
 	data/sfx/pinkie-hit1.ogg, data/sfx/pinkie-miss1.ogg,
 	data/monsters.xml: New sound effects by Cosmostrator.
 
+2007-02-25 Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.h, src/particleemitter.h: Just some documentation work.
+
 2007-02-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file.
@@ -246,6 +497,12 @@
 	* src/lockedarray.h: Added a clear function that keeps the original
 	size and data type.
 	* src/logindata.h: Added a clear function.
+
+2007-02-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Added new particle property "bounce" that makes
+	particles bounce off the ground and use it with the damage numbers.
 
 2007-02-21  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -286,6 +543,16 @@
 	* src/winver.h, README, configure.ac, data/help/header.txt, NEWS,
 	CMakeLists.txt: Changed version to 0.0.22.2.
 
+2007-02-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/engine.cpp: The name conflict problem with Guichan seems to be
+	solved with version 0.6.1.
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Added support for animated particles.
+	* data/graphics/particles/playerglow.particle.xml: Created a new
+	player follow particle that spawns a swarm of animated bats that
+	follow the player.
+
 2007-02-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/register.cpp, src/logindata.h, src/main.cpp: Fixed the _M/_F
@@ -306,8 +573,36 @@
 
 2007-02-10  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/gui/viewport.cpp: Fixed the bug in the scrolling limitation that made
-	it possible to scroll outside of the map in the south and east.
+	* src/gui/viewport.cpp: Fixed the bug in the scrolling limitation that
+	made it possible to scroll outside of the map in the south and east.
+
+2007-02-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Fixed a misspelled include and another
+	optimisation at the vector calculation.
+
+2007-02-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/utils/fastsqrt.h: Added a faster function to
+	calculate square roots and using it for hypotenuse calculations.
+	Thanks to Rogier aka Avaniel for finding the function.
+
+2007-02-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp: Renamed
+	Particle::MAX_PARTICLES to Particle::maxCount and read the value from
+	config ("particleMaxCount")
+	* src/particle.cpp: Added fast physics mode that replaces the
+	trigonometric calculations made for calculating the acceleration by
+	much less cpu intense but also less accurate formulas. To enable it
+	set the config option "particleFastPhysics" to "1".
+	* src/particle.cpp: Added the config option "particleEmitterSkip" that
+	allows to reduces the output of the emitters by making them spawn
+	particles only every n-th game tick.
+	* src/graphics.cpp, src/graphics.h: Added a new method
+	"drawImageTransparent" to the graphic engine that blits an image with
+	an alpha factor.
+	* src/particle.cpp: Using new drawImageTransparent method.
 
 2007-02-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -357,6 +652,35 @@
 	Defence: 12, Weight: 120.
 	* data/graphics/sprites/chest-cotton-female.png: Huh? Shouldn't this
 	be on svn for ages?
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Implemented die-distance (particles are deleted
+	when they reached a certain proximity to their target)
+	* src/particle.cpp: Fixed a bug in the acceleration vector calculation.
+	* src/particle.cpp, src/particle.h: Fixed a problem with particles with
+	unlimited lifetime and fade-in.
+	* data/graphics/particles/playerglow.particle.xml: And again a new
+	player follow particle. This time it demonstrates die-distance and the
+	fixed acceleration vector calculation.
+	* src/engine.cpp, data/graphics/particles/snow.particle.xml,
+	data/graphics/particles/snowflake.png: I can't stand the begging
+	anymore. Now it snows in the snow area... and the forest... and the
+	desert... and under the earth... and indoors... Are you happy now,
+	Rotonen and Elven? ;-)
+	* src/particle.cpp: Removed some debug log messages.
+	* src/being.cpp: Avoided crash when attempting to control an invalid
+	particle.
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Cleaned the includes up.
+
+2007-01-31  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Changed some variable names.
+	* data/graphics/particles/waterfall.particle.xml,
+	data/graphics/particles/waterfall-a.png: New waterfall with Modanungs
+	waterfall particle.
+	* src/particle.cpp: forgot to remove a svn conflict marker and changed
+	the order of initialisations to fix some compiler warnings.
 
 2007-01-30  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -373,6 +697,54 @@
 	src/resources/mapreader.h, src/resources/music.h: Some trivial
 	documentation work. Fixes all Doxygen warnings.
 
+2007-01-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp,
+	data/graphics/particles/skillup.particle.xml: Added different particle
+	effect for job levelup.
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Renamed "alphafade" to "fade-out", added new
+	property "fade-in".
+	* data/graphics/particles/playerglow.particle.xml: Added a new player
+	effect (a fire) demonstrating how to use fade-in and fade-out to fade
+	one color into another.
+
+2007-01-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Added a new particle property "alphafade" that
+	makes the particles fade into alpha before their lifetime ends.
+	* src/particle.cpp, src/particle.h: fixed an issue with particles that
+	have a lifetime of 0 and an issue with the momentum property.
+	* data/graphics/particles/waterfall.particle.xml,
+	data/graphics/particles/fog-medium-white-a.png,
+	data/graphics/particles/fog-medium-white-b.png,
+	data/graphics/particles/fog-medium-white-c.png: Added fog to the
+	waterfall effect demonstrating the new alphafade feature.
+
+2007-01-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/utils/xml.cpp, src/utils/xml.h, src/particleemitter.cpp: Most
+	values are now read as floating point values from the emitter files.
+	* data/graphics/particles/fountain.particle.xml,
+	data/graphics/particles/hit.particle.xml,
+	data/graphics/particles/playerglow.particle.xml: Changed some values
+	as floating point values. Made the player follow effect magenta to
+	improve the visibility of the hit effects.
+	* src/engine.cpp, data/graphics/particles/waterfall.particle.xml:
+	Removed the fountain and added a waterfall instead.
+	* src/particle.h: Corrected the drawing order of the particles in
+	relation to the other sprites.
+	* src/gui/debugwindow.cpp, src/gui/debugwindow.h: Added particle count
+	to debug window.
+	* src/particle.cpp: Allowed momentum without acceleration and
+	implement the acceleration properly.
+	* src/utils/minmax.h, src/particleemitter.cpp, src/particleemitter.h:
+	Added a structure to hold a pair of numeric minimum and maximum values
+	and used it to store all numeric emitter properties.
+	* src/utils/randbetween.h: Removed (the functionality is now in struct
+	MinMax)
+
 2007-01-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/char_select.h, src/net/messagein.h,
@@ -383,6 +755,39 @@
 	* data/maps/new_8-1.tmx.gz, data/maps/new_11-1.tmx.gz: Map fixes by
 	Pauan.
 
+2007-01-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/shoplistbox.cpp: Fixed compilation against Guichan 0.6.1.
+	* src/utils/randbetween.h: Fixed integer overflow causing the
+	randBetween function not to work properly on Linux.
+
+2007-01-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/net/beinghandler.cpp: Fixed a compiler issue.
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h, src/engine.cpp: Emitter data is read from
+	external xml files. Reimplemented target-based particles with the
+	difference that they don't target beings or locations but other
+	particles (at the moment the host particle of the effect).
+	* src/being.cpp: Beings now move controlled particles to their center
+	instead of their upper left corner.
+	* data/graphics/particles/orb*: Added a bunch of new particles.
+	* data/graphics/particles/fountain.particle.xml: Reimplementation of
+	the fountain effect in XML.
+	* data/graphics/particles/playerglow.particle.xml: New effect that
+	spawns orbs that orbit around the origin.
+	* src/being.cpp, data/graphics/particles/hit.particle.xml: Added
+	particle effect on hit.
+	* src/net/beinghandler.cpp,
+	data/graphics/particles/levelup.particle.xml: Added particle effect on
+	levelup (own or other player).
+
+2007-01-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp: Initialized all variables of the particles in the
+	constructor.
+	* src/particleemitter.cpp, src/particleemitter.h: minor cleanups.
+
 2007-01-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/shoplistbox.cpp, docs/INSTALL/win32.txt, INSTALL, NEWS:
@@ -392,6 +797,39 @@
 
 	* src/gui/updatewindow.cpp: Identify ourselves when requesting files
 	from the update server.
+
+2007-01-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/being.cpp, src/being.h, src/particle.cpp, src/particle.h
+	src/particleemitter.cpp, src/particleemitter.h, src/engine.cpp:
+	Particle effects are now created in child particles of the root
+	particle. Particle emitters have no longer a being they check every
+	frame. Instead beings have the ability to take control of particles.
+
+2007-01-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h, src/particleemitter.cpp,
+	src/particleemitter.h: Implemented emitters that follow a being.
+	* src/engine.cpp: Added an emitter that follows the local player.
+	* src/particle.cpp: Fixed the crash on exit (reason was that the
+	mSpriteIterator wasn't initialized in every case)
+
+2007-01-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/properties.h, src/being.cpp, src/beingmanager.h, src/sound.h,
+	src/gui/window.h, src/sound.cpp, src/main.h, src/being.h,
+	src/resources/soundeffect.h, src/resources/image.h,
+	src/resources/mapreader.h, src/resources/music.h: Some trivial
+	documentation work. Fixes all Doxygen warnings.
+	* src/particle.h, src/particle.cpp, src/CMakeLists.txt,
+	src/Makefile.am: Fixed compilation issues on Linux.
+	* src/gui/char_select.h, src/net/messagein.h,
+	src/net/messagehandler.h, src/net/network.h, src/net/connection.h,
+	src/net/messageout.h, src/utils/xml.h, src/main.h,
+	src/resources/monsterdb.h, src/resources/itemdb.h,
+	src/resources/equipmentdb.h: Some work on documentation.
+	* data/maps/new_8-1.tmx.gz, data/maps/new_11-1.tmx.gz: Map fixes by
+	Pauan.
 
 2007-01-17  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -407,6 +845,12 @@
 2007-01-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/help/header.txt, NEWS, README: Updated release date.
+
+2007-01-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/game.cpp, src/particle.cpp, src/particle.h,
+	src/particleemitter.h: Made the particle count global and more
+	performant.
 
 2007-01-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -447,6 +891,17 @@
 	guichan-0.6.0 branch).
 	* src/winver.h, configure.ac, data/help/header.txt, NEWS, README,
 	CMakeLists.txt: Updated version to 0.0.22.1.
+
+2007-01-14  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particle.h; src/particleemitter.cpp,
+	src/particleemitter.h, src/utils/randbetween.h:
+	Implemented particle engine.
+	* src/engine.cpp, src/game.cpp: added calls to the particle engine
+	* data/graphics/particles/*: added a bunch of particle graphics for
+	testing purpose.
+	* particleengine-todo.txt: Added particle engine todo list (please
+	omit when merging)
 
 2007-01-13  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -1298,7 +1753,7 @@
 2006-10-12  Yohann Ferreira  <bertram@cegetel.net>
 
 	* debian/rules, debian/tmw-data.install, debian/tmw-data.dirs,
-	debian/tmw-music.install, debian/changelog: Updating debian files for
+	debian/tmw-music.install, debian/changelog: Updating Debian files for
 	bug fixing.
 
 2006-10-12  Frode Lindeijer  <f.lindeijer@gmail.com>
@@ -1473,7 +1928,7 @@
 	* src/animation.h, src/animatedsprite.h,
 	data/graphics/sprites/weapon.xml: Some modifications at the animation
 	system. No more "undefined action foo" warnings in the tmw.log. Not
-	visible actions must now be declared explicitely.
+	visible actions must now be declared explicitly.
 	* data/graphics/images/ambient/sandstorm.png,
 	data/graphics/images/ambient/clouds.png: Improved quality of the overlay
 	graphics.
@@ -1892,7 +2347,7 @@
 	with more distinctive names. (no, i won't list all 114)
 	* src/itemmanager.cpp, data/items.xml: Replaced indices on the item
 	spriteset with filenames. added names and descriptions for all missing
-	items. Changed names and dascriptions of some items.
+	items. Changed names and descriptions of some items.
 	* src/engine.cpp: Removed global item spriteset.
 	* src/floor_item.cpp, src/floor_item.h, src/iteminfo.cpp,
 	src/iteminfo.h, src/equipmentwindow.cpp, src/equipmentwindow.h,

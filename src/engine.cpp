@@ -35,6 +35,7 @@
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
+#include "particle.h"
 #include "sound.h"
 
 #include "gui/gui.h"
@@ -63,6 +64,7 @@ void Engine::changeMap(const std::string &mapPath)
     floorItemManager->clear();
 
     beingManager->clear();
+    particleEngine->clear();
 
     // Store full map path in global var
     map_path = "maps/" + mapPath;
@@ -83,7 +85,11 @@ void Engine::changeMap(const std::string &mapPath)
     }
     minimap->setMapImage(mapImage);
     beingManager->setMap(newMap);
+    particleEngine->setMap(newMap);
     viewport->setMap(newMap);
+
+    // Initialize map-based particle effects
+    newMap->initializeParticleEffects(particleEngine);
 
     // Start playing new music file when necessary
     std::string oldMusic = "";
@@ -106,5 +112,6 @@ void Engine::changeMap(const std::string &mapPath)
 void Engine::logic()
 {
     beingManager->logic();
+    particleEngine->update();
     gui->logic();
 }

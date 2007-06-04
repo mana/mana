@@ -54,7 +54,7 @@ class Animation
         Animation();
 
         /**
-         * Appends a new animation at the end of the sequence
+         * Appends a new animation at the end of the sequence.
          */
         void
         addFrame(Image *image, unsigned int delay, int offsetX, int offsetY);

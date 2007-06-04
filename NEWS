@@ -1,3 +1,19 @@
+0.0.23 (3 June 2007)
+- Added a particle engine along with some particle effects
+- Added a cursor to indicate targeted enemy
+- Added new program icon
+- Added a man page for UNIX like systems
+- Added the --version command line parameter
+- Improved MacOS X release
+- Screenshots are now saved in the .tmw directory on UNIX like systems
+- Magic pink is no longer used for transparency (fixes issues with that on Mac)
+- Fixed difficulties with resizing windows
+- Fixed misleading error message when connecting fails
+- Fixed wrong error message when account name already exists
+- Fixed crash when deleting a character
+- Fixed error message when creating a new character fails
+- Fixed updating problem when using scrollwheel to change shop selection
+
 0.0.22.2 (17 February 2007)
 - Updated to work with Guichan 0.6.1
 - Changed to new default server (server.themanaworld.org)

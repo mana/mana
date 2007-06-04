@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2004 The Mana World Development Team
+ *  Copyright 2006 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,36 +21,41 @@
  *  $Id$
  */
 
-#ifndef _TMW_MONSTER_H
-#define _TMW_MONSTER_H
+#ifndef _IMAGEPARTICLE_H
+#define _IMAGEPARTICLE_H
 
-#include "being.h"
+#include "particle.h"
 
-class MonsterInfo;
+class Image;
+class Map;
 
-class Monster : public Being
+/**
+ * A particle that uses an image for its visualization.
+ */
+class ImageParticle : public Particle
 {
     public:
-        Monster(Uint16 id, Uint16 job, Map *map);
-
-        virtual void setAction(Action action);
-
-        virtual Type getType() const;
-
-        virtual TargetCursorSize
-        getTargetCursorSize() const;
+        /**
+         * Constructor. The image is reference counted by this particle.
+         *
+         * @param map   the map this particle appears on
+         * @param image an Image instance, may not be NULL
+         */
+        ImageParticle(Map *map, Image *image);
 
         /**
-         * Handles an attack of another being by this monster. Plays a hit or
-         * miss sound when appropriate.
+         * Destructor.
          */
-        virtual void handleAttack();
+        ~ImageParticle();
 
         /**
-         * Returns the MonsterInfo, with static data about this monster.
+         * Draws the particle image
          */
-        const MonsterInfo&
-        getInfo() const;
+        virtual void
+        draw(Graphics *graphics, int offsetX, int offsetY) const;
+
+    protected:
+        Image *mImage;   /**< The image used for this particle. */
 };
 
 #endif

@@ -28,6 +28,9 @@
 #include <string>
 #include <vector>
 
+#include "../being.h"
+
+
 enum SoundEvent
 {
     EVENT_HIT,
@@ -62,7 +65,11 @@ class MonsterInfo
         setSprite(std::string filename) { mSprite = filename; }
 
         void
-        addSound (SoundEvent event, std::string filename);
+        setTargetCursorSize(Being::TargetCursorSize targetCursorSize)
+        { mTargetCursorSize = targetCursorSize; }
+
+        void
+        addSound(SoundEvent event, std::string filename);
 
         const std::string&
         getName () const { return mName; };
@@ -70,13 +77,16 @@ class MonsterInfo
         const std::string&
         getSprite () const { return mSprite; };
 
+        const Being::TargetCursorSize
+        getTargetCursorSize() const { return mTargetCursorSize; }
+
         std::string
         getSound (SoundEvent event) const;
 
     private:
         std::string mName;
         std::string mSprite;
-
+        Being::TargetCursorSize mTargetCursorSize;
         std::map<SoundEvent, std::vector<std::string>* > mSounds;
 };
 

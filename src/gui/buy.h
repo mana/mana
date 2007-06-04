@@ -92,6 +92,12 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
          */
         std::string getElementAt(int i);
 
+        /**
+         * Updates the state of buttons and labels.
+         */
+        void
+        updateButtonsAndLabels();
+
     private:
         gcn::Button *mBuyButton;
         gcn::Button *mQuitButton;

@@ -41,6 +41,7 @@
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
+#include "particle.h"
 
 #include "gui/buy.h"
 #include "gui/buysell.h"
@@ -120,6 +121,8 @@ DebugWindow *debugWindow;
 BeingManager *beingManager = NULL;
 FloorItemManager *floorItemManager = NULL;
 ChannelManager *channelManager = NULL;
+
+Particle *particleEngine = NULL;
 
 const int MAX_TIME = 10000;
 
@@ -242,6 +245,9 @@ Game::Game():
     floorItemManager = new FloorItemManager();
     channelManager = new ChannelManager();
 
+    particleEngine = new Particle(NULL);
+    particleEngine->setupEngine();
+
     // Initialize timers
     tick_time = 0;
     mLogicCounterId =   SDL_AddTimer(10, nextTick, NULL);    //Logic counter
@@ -286,6 +292,7 @@ Game::~Game()
     delete floorItemManager;
     delete channelManager;
     delete joystick;
+    delete particleEngine;
 
     beingManager = NULL;
     floorItemManager = NULL;
@@ -308,7 +315,9 @@ bool saveScreenshot(SDL_Surface *screenshot)
         screenshotCount++;
         filename.str("");
 #if (defined __USE_UNIX98 || defined __FreeBSD__ || defined __APPLE__)
-        filename << PHYSFS_getUserDir() << "/";
+        filename << PHYSFS_getUserDir() << ".tmw/";
+#elif defined __APPLE__
+        filename << PHYSFS_getUserDir() << "Desktop/";
 #endif
         filename << "TMW_Screenshot_" << screenshotCount << ".png";
         testExists.open(filename.str().c_str(), std::ios::in);
@@ -316,7 +325,18 @@ bool saveScreenshot(SDL_Surface *screenshot)
         testExists.close();
     } while (!found);
 
-    return ImageWriter::writePNG(screenshot, filename.str());
+    if (ImageWriter::writePNG(screenshot, filename.str()))
+    {
+        std::stringstream chatlogentry;
+        chatlogentry << "Screenshot saved to " << filename.str().c_str();
+        chatWindow->chatLog(chatlogentry.str(), BY_SERVER);
+        return true;
+    }
+    else
+    {
+        chatWindow->chatLog("Saving screenshot failed!", BY_SERVER);
+        return false;
+    }
 }
 
 void Game::optionChanged(const std::string &name)
