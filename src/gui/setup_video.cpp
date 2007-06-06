@@ -263,7 +263,7 @@ void Setup_Video::apply()
                 }
             }
         } else {
-            new OkDialog("Switching to FullScreen",
+            new OkDialog("Switching to full screen",
                     "Restart needed for changes to take effect.");
         }
         config.setValue("screen", fullscreen ? 1 : 0);
