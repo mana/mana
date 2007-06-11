@@ -1,4 +1,9 @@
-﻿2007-06-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-06-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.h, src/being.cpp: Fixed a bug that prevented being-controlled
+	particles from being deleted (thanks to tuchs for reporting).
+
+2007-06-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/items.xml: Fixed defense of silk headband.
 

@@ -391,10 +391,19 @@ Being::logic()
 
     //Update particle effects
     for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-        i != mChildParticleEffects.end();
-        i++)
+            i != mChildParticleEffects.end();
+
+        )
     {
         (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
+        if (!(*i)->isAlive())
+        {
+            (*i)->kill();
+            i = mChildParticleEffects.erase(i);
+        }
+        else {
+            i++;
+        }
     }
 }
 

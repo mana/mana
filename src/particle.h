@@ -243,6 +243,9 @@ class Particle : public Sprite
         void setDieDistance(float dist)
         { mInvDieDistance = 1.0f / dist; }
 
+        bool isAlive()
+        { return mAlive; }
+
         /**
          * Manually marks the particle for deletion
          */
