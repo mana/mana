@@ -1,7 +1,13 @@
-Ôªø2007-06-11  Philipp Sehmisch  <tmw@crushnet.org>
+2007-06-12  David Athay  <ko2fan@gmail.com>
 
-	* src/particle.h, src/being.cpp: Fixed a bug that prevented being-controlled
-	particles from being deleted (thanks to tuchs for reporting).
+	* src/net/playerhandler.cpp, data/icons/The Mana World.icns: Fixed bug
+	 with DEF_BONUS not updating Mantis id: 0000087 and add Mac OSX icon.
+
+ªø2007-06-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.h, src/being.cpp: Fixed a bug that prevented 
+	being-controlled particles from being deleted (thanks to tuchs for 
+	reporting).
 
 2007-06-06  Bj√∏rn Lindeijer  <bjorn@lindeijer.nl>
 

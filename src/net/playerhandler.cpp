@@ -174,6 +174,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
                     case 0x0029: player_node->ATK = value; break;
                     case 0x002b: player_node->MATK = value; break;
                     case 0x002d: player_node->DEF = value; break;
+                    case 0x002e: player_node->DEF_BONUS = value; break;
                     case 0x002f: player_node->MDEF = value; break;
                     case 0x0031: player_node->HIT = value; break;
                     case 0x0032: player_node->FLEE = value; break;
