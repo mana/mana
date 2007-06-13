@@ -150,9 +150,15 @@ void init_engine(const Options &options)
                   << std::endl;
         exit(1);
     }
-            
+
     // Set log file
     logger->setLogFile(homeDir + std::string("/tmw.log"));
+
+    #ifdef PACKAGE_VERSION
+        logger->log("Starting The Mana World Version %s", PACKAGE_VERSION);
+    #else
+        logger->log("Starting The Mana World - Version not defined");
+    #endif
 
     // Initialize SDL
     logger->log("Initializing SDL...");

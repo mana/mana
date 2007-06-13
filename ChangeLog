@@ -1,3 +1,7 @@
+﻿2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp: Added logging of version number.
+
 2007-06-12  David Athay  <ko2fan@gmail.com>
 
 	* src/net/playerhandler.cpp: Fixed bug with DEF_BONUS not updating
