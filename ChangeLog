@@ -1,3 +1,8 @@
+2007-06-16  Guillaume Melquiond <guillaume.melquiong@gmail.com>
+
+	* src/resources/image.cpp: Set GL texture index to zero when an image
+	uses the SDL backend.
+
 2007-06-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tmw.cbp: Updated Code::Blocks project file.
