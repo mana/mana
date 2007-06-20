@@ -32,7 +32,11 @@ bool Image::mUseOpenGL = false;
 #endif
 
 Image::Image(const std::string &idPath, SDL_Surface *image):
-    Resource(idPath), mImage(image),
+    Resource(idPath),
+#ifdef USE_OPENGL
+    mGLImage(0),
+#endif
+    mImage(image),
     mAlpha(1.0f)
 {
     mBounds.x = 0;

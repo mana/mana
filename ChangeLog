@@ -1,4 +1,9 @@
-﻿2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-06-20  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/image.cpp: Set GL texture index to zero when an image
+	uses the SDL backend (fix by Guillaume Melquiond from trunk version)
+
+2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* The Mana World.dev: Updated DevCpp project file.
 
