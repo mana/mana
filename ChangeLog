@@ -1,4 +1,10 @@
-﻿2007-06-20  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
+	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
+	Enigmatik (Monster ID is 23).
+
+2007-06-20  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/resources/image.cpp: Set GL texture index to zero when an image
 	uses the SDL backend (fix by Guillaume Melquiond from trunk version)
