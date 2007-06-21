@@ -3,6 +3,13 @@
 	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
 	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
 	Enigmatik (Monster ID is 23).
+	* data/items.xml, data/equipment.xml, 
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/sprites/chest-lightplatemail-male.xml,
+	data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/sprites/chest-lightplatemail-female.xml:
+	Added light platemail (see entry in items.xml for proposed specs).
 
 2007-06-20  Philipp Sehmisch  <tmw@crushnet.org>
 
