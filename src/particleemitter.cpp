@@ -76,10 +76,14 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
             {
 
                 mParticlePosY = readMinMax(propertyNode, 0.0f);
+                mParticlePosY.minVal *= SIN45;
+                mParticlePosY.maxVal *= SIN45;
              }
             else if (name == "position-z")
             {
                 mParticlePosZ = readMinMax(propertyNode, 0.0f);
+                mParticlePosZ.minVal *= SIN45;
+                mParticlePosZ.maxVal *= SIN45;
             }
             else if (name == "image")
             {
@@ -236,10 +240,6 @@ ParticleEmitter::ParticleEmitter(xmlNodePtr emitterNode, Particle *target, Map *
 
 ParticleEmitter::~ParticleEmitter()
 {
-    if (mParticleImage)
-    {
-        mParticleImage->decRef();
-    }
 }
 
 
@@ -294,8 +294,8 @@ ParticleEmitter::createParticles()
         float power = mParticlePower.value();
         newParticle->setVector(
             cos(angleH) * cos(angleV) * power,
-            sin(angleH) * cos(angleV) * SIN45 * power,
-            sin(angleV) * SIN45 * power
+            sin(angleH) * cos(angleV) * power,
+            sin(angleV) * power
         );
 
         newParticle->setRandomnes(mParticleRandomnes.value());

@@ -39,6 +39,8 @@
 #include "utils/fastsqrt.h"
 #include "utils/xml.h"
 
+#define SIN45 0.707106781f
+
 class Graphics;
 class Image;
 
@@ -122,7 +124,7 @@ Particle::update()
 
         if (mTarget && mAcceleration != 0.0f)
         {
-            float distX = mPosX - mTarget->getPosX();
+            float distX = (mPosX - mTarget->getPosX()) * SIN45;
             float distY = mPosY - mTarget->getPosY();
             float distZ = mPosZ - mTarget->getPosZ();
             float invHypotenuse;
@@ -167,8 +169,8 @@ Particle::update()
 
         // Update position
         mPosX += mVectorX;
-        mPosY += mVectorY;
-        mPosZ += mVectorZ;
+        mPosY += mVectorY * SIN45;
+        mPosZ += mVectorZ * SIN45;
 
         // Update other stuff
         if (mLifetimeLeft > 0)

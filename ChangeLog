@@ -1,4 +1,12 @@
-﻿2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-06-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particleemitter.cpp: Corrected some perspective
+	issues of the particle engine and fixed a crash caused by particles
+	with child emitters that have an image than isn't used elsewhere.
+	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point 
+	in Tulimshar.
+
+2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
 	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
