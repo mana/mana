@@ -36,10 +36,12 @@
 
 #include <libxml/parser.h>
 
+#ifdef WIN32
+#include <SDL_syswm.h>
+#endif
 #ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
-#include <SDL_syswm.h>
 #endif
 #if defined __APPLE__
 #include <CoreFoundation/CFBundle.h>
