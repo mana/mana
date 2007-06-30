@@ -523,6 +523,7 @@ void BeingHandler::handleBeingAttackMessage(MessageIn &msg)
     if (!being) return;
 
     being->setAction(Being::ATTACK);
+    being->setDirection(msg.readByte());
 }
 
 void BeingHandler::handleBeingsDamageMessage(MessageIn &msg)

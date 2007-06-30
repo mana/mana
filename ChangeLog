@@ -1,3 +1,10 @@
+﻿2007-06-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp: Changed include order to avoid a problem with guichan
+	on windows.
+	* src/net/beinghandler.cpp: Implemented getting the direction of 
+	attacks from the server.
+
 2007-06-16  Guillaume Melquiond <guillaume.melquiong@gmail.com>
 
 	* src/resources/image.cpp: Set GL texture index to zero when an image

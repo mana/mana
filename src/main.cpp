@@ -30,10 +30,6 @@
 #include <vector>
 #include <SDL_image.h>
 
-#ifdef WIN32
-#include <SDL_syswm.h>
-#endif
-
 #include <guichan/actionlistener.hpp>
 #include <guichan/sdl/sdlinput.hpp>
 #include <guichan/widgets/label.hpp>
@@ -43,6 +39,7 @@
 #ifndef WIN32
 #include <cerrno>
 #include <sys/stat.h>
+#include <SDL_syswm.h>
 #endif
 #if defined __APPLE__
 #include <CoreFoundation/CFBundle.h>
