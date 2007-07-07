@@ -26,10 +26,12 @@
 
 #include "textfield.h"
 
+#include <guichan/focuslistener.hpp>
+
 /**
  * The chat input hides when it loses focus. It is also invisible by default.
  */
-class ChatInput : public TextField
+class ChatInput : public TextField, public gcn::FocusListener
 {
     public:
         /**
@@ -41,7 +43,7 @@ class ChatInput : public TextField
          * Called if the chat input loses focus. It will set itself to
          * invisible as result.
          */
-        void focusLost();
+        void focusLost(const gcn::Event &event);
 };
 
 #endif

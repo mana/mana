@@ -1,4 +1,11 @@
-﻿2007-06-29  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp, src/gui/chatinput.h, src/gui/chatinput.cpp,
+	INSTALL: Ported to Guichan 0.7.0. Unfortunately, since Guichan 0.6.x
+	didn't have a FocusListener, compatibility with older versions is
+	broken.
+
+2007-06-29  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/particle.cpp, src/particleemitter.cpp: Corrected some perspective
 	issues of the particle engine and fixed a crash caused by particles
