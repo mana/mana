@@ -1,4 +1,10 @@
-﻿2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-07-08  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+
+	* src/player.cpp, src/player.h, src/localplayer.h, src/being.h: Changed
+	signatures to prevent the wrong members to be overloaded on
+	architectures with 64-bit integers and to shut some compiler warnings.
+
+2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/gui.cpp, src/gui/chatinput.h, src/gui/chatinput.cpp,
 	INSTALL: Ported to Guichan 0.7.0. Unfortunately, since Guichan 0.6.x
@@ -33,7 +39,7 @@
 	data/graphics/sprites/chest-lightplatemail-female.xml:
 	Added light platemail (see entry in items.xml for proposed specs).
 
-2007-06-16  Guillaume Melquiond <guillaume.melquiong@gmail.com>
+2007-06-16  Guillaume Melquiond <guillaume.melquiond@gmail.com>
 
 	* src/resources/image.cpp: Set GL texture index to zero when an image
 	uses the SDL backend.

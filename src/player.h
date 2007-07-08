@@ -46,7 +46,7 @@ class Player : public Being
         getType() const;
 
         virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        drawName(Graphics *graphics, int offsetX, int offsetY);
 
         virtual void
         setSex(Uint8 sex);

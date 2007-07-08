@@ -129,7 +129,7 @@ class LocalPlayer : public Player
          * Draws the name text below the being.
          */
         virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
+        drawName(Graphics *, int, int) {};
 
         virtual Type getType() const;
 
