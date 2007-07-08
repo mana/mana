@@ -3,6 +3,7 @@
 	* src/player.cpp, src/player.h, src/localplayer.h, src/being.h: Changed
 	signatures to prevent the wrong members to be overloaded on
 	architectures with 64-bit integers and to shut some compiler warnings.
+	* src/localplayer.cpp: Fixed some uninitialized variables.
 
 2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -42,10 +42,14 @@ LocalPlayer::LocalPlayer():
     mInventory(new Inventory()),
     mAttributeBase(NB_BASE_ATTRIBUTES, 0),
     mAttributeEffective(NB_BASE_ATTRIBUTES, 0),
-    mLevel(1),
+    mAttributeIncreasePoints(0),
+    mLevel(1), mMoney(0),
+    mTotalWeight(1), mMaxWeight(1),
+    mHP(1), mMaxHP(1),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false),
-    mLastAction(-1)
+    mLastAction(-1), mWalkingDir(0),
+    mDestX(0), mDestY(0)
 {
 }
 
