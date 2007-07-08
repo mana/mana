@@ -1,9 +1,37 @@
-﻿2007-06-30  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.cpp, src/gui/chatinput.h, src/gui/chatinput.cpp,
+	INSTALL: Ported to Guichan 0.7.0. Unfortunately, since Guichan 0.6.x
+	didn't have a FocusListener, compatibility with older versions is
+	broken.
+
+2007-06-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/main.cpp: Changed include order to avoid a problem with guichan
 	on windows.
 	* src/net/beinghandler.cpp: Implemented getting the direction of 
 	attacks from the server.
+
+2007-06-29  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.cpp, src/particleemitter.cpp: Corrected some perspective
+	issues of the particle engine and fixed a crash caused by particles
+	with child emitters that have an image than isn't used elsewhere.
+	* data/maps/new-3-1.tmx.gz: Added a particle effect at the spawn point 
+	in Tulimshar.
+
+2007-06-21  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
+	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
+	Enigmatik (Monster ID is 23).
+	* data/items.xml, data/equipment.xml, 
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/sprites/chest-lightplatemail-male.xml,
+	data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/sprites/chest-lightplatemail-female.xml:
+	Added light platemail (see entry in items.xml for proposed specs).
 
 2007-06-16  Guillaume Melquiond <guillaume.melquiong@gmail.com>
 
@@ -13,6 +41,33 @@
 2007-06-15  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* tmw.cbp: Updated Code::Blocks project file.
+
+2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* The Mana World.dev: Updated DevCpp project file.
+
+2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/main.cpp: Added logging of version number.
+
+2007-06-12  David Athay  <ko2fan@gmail.com>
+
+	* data/icons/The Mana World.icns: Added Mac OSX icon.
+
+2007-06-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/particle.h, src/being.cpp: Fixed a bug that prevented 
+	being-controlled particles from being deleted (thanks to tuchs for 
+	reporting).
+
+2007-06-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/items.xml: Fixed defense of silk headband.
+
+2007-06-04  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_17-1.tmx.gz: Changed the minimap image of the
+	lamp snake cave to the correct one.
 
 2007-06-03  David Athay  <ko2fan@gmail.com>
 

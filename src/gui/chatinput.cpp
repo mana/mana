@@ -26,9 +26,11 @@
 ChatInput::ChatInput()
 {
     setVisible(false);
+
+    addFocusListener(this);
 }
 
-void ChatInput::focusLost()
+void ChatInput::focusLost(const gcn::Event &event)
 {
     setVisible(false);
 }

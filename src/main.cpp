@@ -678,6 +678,8 @@ int main(int argc, char *argv[])
     // Log the tmw version
 #ifdef PACKAGE_VERSION
     logger->log("The Mana World v%s", PACKAGE_VERSION);
+#else
+    logger->log("The Mana World - version not defined");
 #endif
 
     initXML();
