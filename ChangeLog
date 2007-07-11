@@ -1,4 +1,8 @@
-﻿2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/window.cpp: Fixed resizing windows by their resize grip.
+
+2007-07-07  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/gui.cpp, src/gui/chatinput.h, src/gui/chatinput.cpp,
 	INSTALL: Ported to Guichan 0.7.0. Unfortunately, since Guichan 0.6.x

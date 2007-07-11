@@ -339,10 +339,11 @@ void Window::mousePressed(gcn::MouseEvent &event)
         mMouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
                         (y < resizeBorderWidth) ? TOP : 0;
     }
-    else if (event.getSource() == mGrip)
+    else if (event.getSource() == mGrip &&
+            event.getButton() == gcn::MouseEvent::LEFT)
     {
-        mDragOffsetX = x + mGrip->getX();
-        mDragOffsetY = y + mGrip->getY();
+        mDragOffsetX = x;
+        mDragOffsetY = y;
         mMouseResize |= BOTTOM | RIGHT;
         mIsMoving = false;
     }
@@ -365,10 +366,8 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
     if (mMouseResize && !mIsMoving)
     {
-        const int dx = event.getX() - mDragOffsetX +
-            ((event.getSource() == mGrip) ? mGrip->getX() : 0);
-        const int dy = event.getY() - mDragOffsetY +
-            ((event.getSource() == mGrip) ? mGrip->getY() : 0);
+        const int dx = event.getX() - mDragOffsetX;
+        const int dy = event.getY() - mDragOffsetY;
         gcn::Rectangle newDim = getDimension();
 
         if (mMouseResize & (TOP | BOTTOM))
