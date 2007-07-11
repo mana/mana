@@ -1,4 +1,8 @@
-﻿2007-07-08  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+﻿2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/window.cpp: Fixed resizing windows by their resize grip.
+
+2007-07-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/player.cpp, src/player.h, src/localplayer.h, src/being.h: Changed
 	signatures to prevent the wrong members to be overloaded on
@@ -32,7 +36,7 @@
 	* data/monsters.xml, data/graphics/sprites/monster-logmonster.png, 
 	data/graphics/sprites/monster-logmonster.xml: Added logmonster by
 	Enigmatik (Monster ID is 23).
-	* data/items.xml, data/equipment.xml, 
+	* data/items.xml, data/equipment.xml,
 	data/graphics/items/armor-chest-lightplatemail.png,
 	data/graphics/sprites/chest-lightplatemail-male.xml,
 	data/graphics/sprites/chest-lightplatemail-male.png,
@@ -40,7 +44,7 @@
 	data/graphics/sprites/chest-lightplatemail-female.xml:
 	Added light platemail (see entry in items.xml for proposed specs).
 
-2007-06-16  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2007-06-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/image.cpp: Set GL texture index to zero when an image
 	uses the SDL backend.
@@ -1045,7 +1049,7 @@
 	* src/CMakeLists.txt, data/graphics/images/ambient/Makefile.am,
 	data/graphics/sprites/CMakeLists.txt: Synchronized build files.
 
-2007-01-05  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2007-01-05  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/net/gameserver/player.h, src/net/gameserver/player.cpp,
 	src/net/protocol.h, src/localplayer.cpp: Implemented item dropping.
@@ -1060,7 +1064,7 @@
 
 	* tools/Purger.java: Removed purger tool.
 
-2007-01-03  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2007-01-03  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/mapreader.cpp: Fixed memory leak on error.
 	* src/net/protocol.h, src/net/itemhandler.cpp: Added support for items
@@ -1070,14 +1074,14 @@
 	src/net/gameserver/player.h, src/net/gameserver/player.cpp,
 	src/net/protocol.h: Added item pick-up.
 
-2007-01-01  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2007-01-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp, src/game.cpp: Made getSpriteDirection
 	public and trivial. Removed getDirection: its return value does not
 	match what the user sees, so its use is dubious from a user-interface
 	point of view.
 
-2006-12-31  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2006-12-31  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp, src/joystick.h: Scrapped static const
 	integral members and replaced them with enumerations.
@@ -1088,7 +1092,7 @@
 	* src/being.cpp: Added some variable definitions since they were
 	reported missing by the linker.
 
-2006-12-30  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2006-12-30  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/being.h, src/being.cpp: Improved movement smoothness by avoiding
 	useless changes of sprite direction. Reduced field of direction
@@ -1099,7 +1103,7 @@
 	* src/net/accountserver/account.h, src/net/accountserver/account.cpp,
 	src/net/protocol.h, src/net/playerhandler.cpp: Updated protocol.
 
-2006-12-29  Guillaume Melquiond <guillaume.melquiond@gmail.com>
+2006-12-29  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/connection.cpp: Fixed displaying of progress dialog.
 
