@@ -13,6 +13,8 @@
 	setVisibleEquipment() instead of setWeapon() or setWeaponById().
 	* src/CMakeLists.txt, src/Makefile.AM, tmw.cbp, The Mana World.dev:
 	Updated project	files and buildscripts.
+	* data/graphics/images/login-wallpaper.png: Replaced login wallpaper
+	with a new one by Irukard.
 
 2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
