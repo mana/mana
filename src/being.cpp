@@ -32,13 +32,11 @@
 #include "map.h"
 #include "particle.h"
 
+#include "resources/equipmentdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
 
 #include "gui/gui.h"
-
-#include "resources/resourcemanager.h"
-#include "resources/imageset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -55,10 +53,10 @@ Being::Being(Uint32 id, Uint16 job, Map *map):
     mAttackSpeed(350),
     mEquipment(new Equipment()),
     mId(id),
-    mWeapon(0),
     mWalkSpeed(150),
     mDirection(DOWN),
     mMap(NULL),
+    mEquippedWeapon(NULL),
     mHairStyle(0), mHairColor(0),
     mSex(2),
     mSpeechTime(0),
@@ -244,20 +242,12 @@ Being::setAction(Uint8 action)
             currentAction = ACTION_SIT;
             break;
         case ATTACK:
-            switch (getWeapon())
+            if (mEquippedWeapon)
             {
-                case 3:
-                    currentAction = ACTION_ATTACK;
-                    break;
-                case 2:
-                    currentAction = ACTION_ATTACK_BOW;
-                    break;
-                case 1:
-                    currentAction = ACTION_ATTACK_STAB;
-                    break;
-                case 0:
-                    currentAction = ACTION_ATTACK;
-                    break;
+                currentAction = mEquippedWeapon->getAttackType();
+            }
+            else {
+                currentAction = ACTION_ATTACK;
             }
             for (int i = 0; i < VECTOREND_SPRITE; i++)
             {
@@ -453,46 +443,6 @@ Being::Type
 Being::getType() const
 {
     return UNKNOWN;
-}
-
-void
-Being::setWeaponById(Uint16 weapon)
-{
-    //TODO: Use an external file to map weapon IDs to weapon types
-    switch (weapon)
-    {
-    case 529: // iron arrows
-    case 1199: // arrows
-        break;
-
-    case 623: //scythe
-        setWeapon(3);
-        break;
-
-    case 1200: // bow
-    case 530: // short bow
-    case 545: // forest bow
-        setWeapon(2);
-        break;
-
-    case 521: // sharp knife
-        /*  UNCOMMENT TO TEST SHARP KNIFE AS SCYTHE
-         *  setWeapon(3)
-         *  break;
-         */
-    case 522: // dagger
-    case 536: // short sword
-    case 1201: // knife
-        setWeapon(1);
-        break;
-
-    case 0: // unequip
-        setWeapon(0);
-        break;
-
-    default:
-        logger->log("Not a weapon: %d", weapon);
-    }
 }
 
 int

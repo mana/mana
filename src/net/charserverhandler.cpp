@@ -206,7 +206,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     Uint16 weapon = msg.readInt16();
     if (weapon == 11)
         weapon = 2;
-    tempPlayer->setWeapon(weapon);
+    tempPlayer->setVisibleEquipment(Being::WEAPON_SPRITE, weapon * 10000);
     tempPlayer->mLevel = msg.readInt16();
     msg.readInt16();                       // skill point
     tempPlayer->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg.readInt16()); // head bottom

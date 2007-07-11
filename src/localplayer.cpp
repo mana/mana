@@ -34,6 +34,8 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
+#include "resources/equipmentinfo.h"
+
 LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
@@ -61,7 +63,8 @@ void LocalPlayer::logic()
 
         case ATTACK:
             int frames = 4;
-            if (getWeapon() == 2)
+            if (    mEquippedWeapon
+                &&  mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
             {
                 frames = 5;
             }
@@ -392,10 +395,14 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     setAction(ATTACK);
     mWalkTime = tick_time;
-    if (getWeapon() == 2)
-        sound.playSfx("sfx/bow_shoot_1.ogg");
-    else
+    if (mEquippedWeapon)
+    {
+        std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
+        if (soundFile != "") sound.playSfx(soundFile);
+    }
+    else {
         sound.playSfx("sfx/fist-swish.ogg");
+    }
 
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x0089);

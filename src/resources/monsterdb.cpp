@@ -120,19 +120,19 @@ MonsterDB::load()
 
                 if (event == "hit")
                 {
-                    currentInfo->addSound(EVENT_HIT, filename);
+                    currentInfo->addSound(MONSTER_EVENT_HIT, filename);
                 }
                 else if (event == "miss")
                 {
-                    currentInfo->addSound(EVENT_MISS, filename);
+                    currentInfo->addSound(MONSTER_EVENT_MISS, filename);
                 }
                 else if (event == "hurt")
                 {
-                    currentInfo->addSound(EVENT_HURT, filename);
+                    currentInfo->addSound(MONSTER_EVENT_HURT, filename);
                 }
                 else if (event == "die")
                 {
-                    currentInfo->addSound(EVENT_DIE, filename);
+                    currentInfo->addSound(MONSTER_EVENT_DIE, filename);
                 }
                 else
                 {

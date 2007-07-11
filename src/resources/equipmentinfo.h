@@ -24,29 +24,53 @@
 #ifndef _TMW_EQUIPMENTINFO_H_
 #define _TMW_EQUIPMENTINFO_H_
 
-#include <string>
 #include <map>
+#include <string>
+#include <vector>
+
+#include "spritedef.h"
+
+enum EquipmentSoundEvent
+{
+    EQUIP_EVENT_STRIKE,
+    EQUIP_EVENT_HIT
+};
 
 class EquipmentInfo
 {
     public:
         EquipmentInfo():
-            mSlot (0)
+            mSlot (0),
+            mAttackType(ACTION_DEFAULT)
         {
         };
 
         void
-        setSlot (int slot) { mSlot = slot; };
+        setSlot (int slot) { mSlot = slot; }
 
         const std::string&
-        getSprite(int gender) {return animationFiles[gender]; };
+        getSprite(int gender) {return animationFiles[gender]; }
 
         void
-        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; };
+        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; }
+
+        void
+        setAttackType(std::string attackType);
+
+        const SpriteAction
+        getAttackType() { return mAttackType; }
+
+        void
+        addSound(EquipmentSoundEvent event, std::string filename);
+
+        std::string
+        getSound(EquipmentSoundEvent event) const;
 
     private:
         int mSlot;   //not used at the moment but maybe useful on our own server
+        SpriteAction mAttackType;
         std::map<int, std::string> animationFiles;
+        std::map<EquipmentSoundEvent, std::vector<std::string>* > mSounds;
 };
 
 #endif

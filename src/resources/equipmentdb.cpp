@@ -81,26 +81,46 @@ EquipmentDB::load()
         EquipmentInfo *currentInfo = new EquipmentInfo();
 
         currentInfo->setSlot (XML::getProperty(equipmentNode, "slot", 0));
+        currentInfo->setAttackType (XML::getProperty(equipmentNode, "attacktype", ""));
 
-        //iterate <sprite>s
+        //iterate <sprite>s and <sound>s
         for_each_xml_child_node(spriteNode, equipmentNode)
         {
-            if (!xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
+            if (xmlStrEqual(spriteNode->name, BAD_CAST "sprite"))
             {
-                continue;
+                std::string gender = XML::getProperty(spriteNode, "gender", "unisex");
+                std::string filename = (const char*) spriteNode->xmlChildrenNode->content;
+
+                if (gender == "male" || gender == "unisex")
+                {
+                    currentInfo->setSprite(filename, 0);
+                }
+
+                if (gender == "female" || gender == "unisex")
+                {
+                    currentInfo->setSprite(filename, 1);
+                }
             }
 
-            std::string gender = XML::getProperty(spriteNode, "gender", "unisex");
-            std::string filename = (const char*) spriteNode->xmlChildrenNode->content;
-
-            if (gender == "male" || gender == "unisex")
+            if (xmlStrEqual(spriteNode->name, BAD_CAST "sound"))
             {
-                currentInfo->setSprite(filename, 0);
-            }
+                std::string event = XML::getProperty(spriteNode, "event", "");
+                const char *filename;
+                filename = (const char*) spriteNode->xmlChildrenNode->content;
 
-            if (gender == "female" || gender == "unisex")
-            {
-                currentInfo->setSprite(filename, 1);
+                if (event == "hit")
+                {
+                    currentInfo->addSound(EQUIP_EVENT_HIT, filename);
+                }
+                else if (event == "strike")
+                {
+                    currentInfo->addSound(EQUIP_EVENT_STRIKE, filename);
+                }
+                else
+                {
+                    logger->log("EquipmentDB: Warning, sound effect %s for unknown event %s",
+                                filename, event.c_str());
+                }
             }
         }
 

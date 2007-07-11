@@ -107,7 +107,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
-            dstBeing->setWeapon(msg->readInt16());
+            dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, msg->readInt16() * 10000);
             dstBeing->setVisibleEquipment(
                     Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
@@ -257,22 +257,20 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setWeapon(id);
+                    dstBeing->setVisibleEquipment(
+                            Being::WEAPON_SPRITE, id * 10000);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
                     dstBeing->setVisibleEquipment(
-                            Being::BOTTOMCLOTHES_SPRITE,
-                            id);
+                            Being::BOTTOMCLOTHES_SPRITE, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
                     dstBeing->setVisibleEquipment(
-                            Being::HAT_SPRITE,
-                            id);
+                            Being::HAT_SPRITE, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
                      dstBeing->setVisibleEquipment(
-                            Being::TOPCLOTHES_SPRITE,
-                            id);
+                            Being::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:
                     dstBeing->setHairColor(id);
@@ -312,7 +310,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
-            dstBeing->setWeaponById(msg->readInt16());  // item id 1
+            dstBeing->setVisibleEquipment(
+                    Being::WEAPON_SPRITE, msg->readInt16());
             msg->readInt16();  // item id 2
             headBottom = msg->readInt16();
 

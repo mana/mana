@@ -125,7 +125,8 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
             item = player_node->getInvItem(index);
             player_node->mEquipment->setEquipment(position, item);
-            player_node->setWeaponById(item->getId());
+            player_node->setVisibleEquipment(
+                    Being::WEAPON_SPRITE, item->getId());
             break;
 
         case 0x01d7:
@@ -138,7 +139,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             if (!being)
                 break;
 
-            being->setWeaponById(itemId);
+            being->setVisibleEquipment(Being::WEAPON_SPRITE, itemId);
             break;
 
         case SMSG_PLAYER_UNEQUIP:
@@ -181,7 +182,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
                 case 536:
                 case 1200:
                 case 1201:
-                    player_node->setWeapon(0);
+                    player_node->setVisibleEquipment(Being::WEAPON_SPRITE, 0);
                     // TODO: Why this break? Shouldn't a weapon be
                     //       unequipped in inventory too?
                     break;
@@ -192,7 +193,7 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
             logger->log("Unequipping: %i %i(%i) %i",
                     index, equipPoint, type, position);
             break;
-            
+
         case SMSG_PLAYER_ATTACK_RANGE:
             player_node->setAttackRange(msg->readInt16());
             break;

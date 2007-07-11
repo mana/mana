@@ -36,7 +36,6 @@
 Player::Player(Uint32 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    setWeapon(0);
 }
 
 void
@@ -52,7 +51,8 @@ Player::logic()
 
         case ATTACK:
             int frames = 4;
-            if (getWeapon() == 2)
+            if (    mEquippedWeapon
+                &&  mEquippedWeapon->getAttackType() == ACTION_ATTACK_BOW)
             {
                 frames = 5;
             }
@@ -120,41 +120,6 @@ Player::setSex(Uint8 sex)
     Being::setSex(sex);
 }
 
-
-void
-Player::setWeapon(Uint16 weapon)
-{
-    if (weapon != mWeapon)
-    {
-        AnimatedSprite *newWeaponSprite = NULL;
-
-        switch (weapon)
-        {
-            case 0:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-fist.xml");
-                break;
-            case 1:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-dagger.xml");
-                break;
-            case 2:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-bow.xml");
-                break;
-            case 3:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-scythe.xml");
-                break;
-        }
-
-        delete mSprites[WEAPON_SPRITE];
-        mSprites[WEAPON_SPRITE] = newWeaponSprite;
-    }
-    Being::setWeapon(weapon);
-}
-
-
 void
 Player::setHairColor(Uint16 color)
 {
@@ -220,6 +185,11 @@ Player::setVisibleEquipment(Uint8 slot, int id)
 
         delete mSprites[slot];
         mSprites[slot] = equipmentSprite;
+
+        if (slot == WEAPON_SPRITE)
+        {
+            mEquippedWeapon = EquipmentDB::get(id);
+        }
 
         setAction(mAction);
     }

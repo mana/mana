@@ -73,7 +73,7 @@ Monster::setAction(Uint8 action)
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
-            sound.playSfx(getInfo().getSound(EVENT_DIE));
+            sound.playSfx(getInfo().getSound(MONSTER_EVENT_DIE));
             break;
         case ATTACK:
             currentAction = ACTION_ATTACK;
@@ -100,7 +100,7 @@ Monster::handleAttack(Being *victim, int damage)
     Being::handleAttack(victim, damage);
 
     const MonsterInfo &mi = getInfo();
-    sound.playSfx(mi.getSound((damage > 0) ? EVENT_HIT : EVENT_MISS));
+    sound.playSfx(mi.getSound((damage > 0) ? MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
 Being::TargetCursorSize

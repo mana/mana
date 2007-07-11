@@ -1,4 +1,20 @@
-﻿2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-07-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/monsterdb.cpp, src/resources/monsterinfo.cpp,
+	src/resources/monsterinfo.h, src/monster.cpp: Renamed SoundEvent
+	to MonsterSoundEvent.
+	* src/resources/equipmentdb.cpp, src/resources/equipmentinfo.cpp,
+	src/resources/equipmentinfo.h: EquipmentDB now holds the type of
+	attack animation and the sounds of weapons.
+	* src/being.cpp. src/being.h, src/localplayer.cpp,
+	src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
+	src/net/equipmenthandler.cpp, src/player.cpp, src/player.h: The
+	type of weapon player characters are using is now set using
+	setVisibleEquipment() instead of setWeapon() or setWeaponById().
+	* src/CMakeLists.txt, src/Makefile.AM, tmw.cbp, The Mana World.dev:
+	Updated project	files and buildscripts.
+
+2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/window.cpp: Fixed resizing windows by their resize grip.
 

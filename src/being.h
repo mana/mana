@@ -38,6 +38,7 @@
 
 class AnimatedSprite;
 class Equipment;
+class EquipmentInfo;
 class Item;
 class Map;
 class Graphics;
@@ -258,27 +259,6 @@ class Being : public Sprite
         virtual Type getType() const;
 
         /**
-         * Gets the weapon picture id.
-         */
-        Uint16 getWeapon() const { return mWeapon; }
-
-        /**
-         * Sets the weapon picture id.
-         *
-         * @param weapon the picture id
-         */
-        virtual void
-        setWeapon(Uint16 weapon) { mWeapon = weapon; }
-
-        /**
-         * Sets the weapon picture id with the weapon id.
-         *
-         * @param weapon the weapon id
-         */
-        void
-        setWeaponById(Uint16 weapon);
-
-        /**
          * Gets the walk speed.
          */
         Uint16
@@ -404,12 +384,13 @@ class Being : public Sprite
         getSpriteDirection() const;
 
         Uint32 mId;                     /**< Unique sprite id */
-        Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint8 mDirection;               /**< Facing direction */
         Map *mMap;                      /**< Map on which this being resides */
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
+
+        EquipmentInfo* mEquippedWeapon; /**< Engine-related infos about weapon */
 
         Path mPath;
         std::string mSpeech;

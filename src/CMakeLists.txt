@@ -219,6 +219,7 @@ SET(SRCS
     resources/animation.h
     resources/equipmentdb.cpp
     resources/equipmentdb.h
+    resources/equipmentinfo.cpp
     resources/equipmentinfo.h
     resources/image.cpp
     resources/image.h
