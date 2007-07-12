@@ -1,4 +1,9 @@
-﻿2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-07-12  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/beinghandler.cpp, src/net/beinghandler.h, src/net/protocol.h:
+	Added support for visible equipment.
+
+2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/window.cpp: Fixed resizing windows by their resize grip.
 

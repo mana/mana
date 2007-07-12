@@ -60,6 +60,7 @@ BeingHandler::BeingHandler()
         GPMSG_BEINGS_MOVE,
         GPMSG_BEINGS_DAMAGE,
         GPMSG_BEING_ACTION_CHANGE,
+        GPMSG_BEING_LOOKS_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -95,6 +96,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
             break;
         case GPMSG_BEING_ACTION_CHANGE:
             handleBeingActionChangeMessage(msg);
+            break;
+        case GPMSG_BEING_LOOKS_CHANGE:
+            handleBeingLooksChangeMessage(msg);
             break;
 
         /*
@@ -411,6 +415,14 @@ void BeingHandler::handleMessage(MessageIn &msg)
     }
 }
 
+static void handleLooks(Being *being, MessageIn &msg)
+{
+    being->setWeapon(msg.readShort());
+    being->setVisibleEquipment(Being::HAT_SPRITE, msg.readShort());
+    being->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg.readShort());
+    being->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg.readShort());
+}
+
 void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
@@ -443,7 +455,9 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             being->mY = py;
             being->setDestination(px, py);
             being->setAction(action);
+            handleLooks(being, msg);
         } break;
+
         case OBJECT_MONSTER:
         {
             int monsterId = msg.readShort();
@@ -546,3 +560,11 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 
     being->setAction((Being::Action) msg.readByte());
 }
+
+void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
+{
+    Being *being = beingManager->findBeing(msg.readShort());
+    if (!being) return;
+    handleLooks(being, msg);
+}
+
