@@ -417,10 +417,34 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
 static void handleLooks(Being *being, MessageIn &msg)
 {
-    being->setWeapon(msg.readShort());
-    being->setVisibleEquipment(Being::HAT_SPRITE, msg.readShort());
-    being->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, msg.readShort());
-    being->setVisibleEquipment(Being::BOTTOMCLOTHES_SPRITE, msg.readShort());
+    // Order of sent slots. Has to be in sync with the server code.
+    static int const nb_slots = 4;
+    static int const slots[nb_slots] =
+        { Being::WEAPON_SPRITE, Being::HAT_SPRITE, Being::TOPCLOTHES_SPRITE,
+          Being::BOTTOMCLOTHES_SPRITE };
+
+    int mask = msg.readByte();
+    if (mask & (1 << 8))
+    {
+        // The equipment has to be cleared first.
+        being->setWeaponById(0);
+        for (int i = 0; i < nb_slots; ++i)
+        {
+            if (slots[i] != Being::WEAPON_SPRITE)
+                being->setVisibleEquipment(slots[i], 0);
+        }
+    }
+
+    // Fill slots enumerated by the bitmask.
+    for (int i = 0; i < nb_slots; ++i)
+    {
+        if (!(mask & (1 << i))) continue;
+        int id = msg.readShort();
+        if (slots[i] != Being::WEAPON_SPRITE)
+            being->setVisibleEquipment(slots[i], id);
+        else
+            being->setWeaponById(id);
+    }
 }
 
 void

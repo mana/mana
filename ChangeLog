@@ -1,4 +1,9 @@
-﻿2007-07-12  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+﻿2007-07-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/beinghandler.cpp, src/net/protocol.h: Reduced size of
+	equipment packets.
+
+2007-07-12  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/net/beinghandler.cpp, src/net/beinghandler.h, src/net/protocol.h:
 	Added support for visible equipment.
