@@ -1,7 +1,7 @@
 [Project]
 FileName=The Mana World.dev
 Name=tmw
-UnitCount=278
+UnitCount=281
 Type=0
 Ver=1
 ObjFiles=
@@ -2550,7 +2550,7 @@ BuildCmd=
 [Unit250]
 FileName=src\animationparticle.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2560,7 +2560,7 @@ BuildCmd=
 [Unit251]
 FileName=src\animationparticle.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2570,7 +2570,7 @@ BuildCmd=
 [Unit252]
 FileName=src\imageparticle.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2580,7 +2580,7 @@ BuildCmd=
 [Unit253]
 FileName=src\imageparticle.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2590,7 +2590,7 @@ BuildCmd=
 [Unit254]
 FileName=src\particle.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2600,7 +2600,7 @@ BuildCmd=
 [Unit255]
 FileName=src\particle.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2610,7 +2610,7 @@ BuildCmd=
 [Unit256]
 FileName=src\particleemitter.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2620,7 +2620,7 @@ BuildCmd=
 [Unit257]
 FileName=src\particleemitter.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2630,7 +2630,7 @@ BuildCmd=
 [Unit258]
 FileName=src\simpleanimation.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2640,7 +2640,7 @@ BuildCmd=
 [Unit259]
 FileName=src\simpleanimation.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2650,7 +2650,7 @@ BuildCmd=
 [Unit260]
 FileName=src\textparticle.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2660,7 +2660,7 @@ BuildCmd=
 [Unit261]
 FileName=src\textparticle.h
 CompileCpp=1
-Folder=tmw
+Folder=
 Compile=1
 Link=1
 Priority=1000
@@ -2828,9 +2828,39 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit278]
-FileName=src\resources\equipmentinfo.cpp
+FileName=..\tmw_3367_CR0000016\src\keyboardconfig.cpp
 CompileCpp=1
-Folder=tmw
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit279]
+FileName=..\tmw_3367_CR0000016\src\keyboardconfig.h
+CompileCpp=1
+Folder=header
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit280]
+FileName=..\tmw_3367_CR0000016\src\gui\setup_keyboard.cpp
+CompileCpp=1
+Folder=gui/source
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit281]
+FileName=..\tmw_3367_CR0000016\src\gui\setup_keyboard.h
+CompileCpp=1
+Folder=gui/header
 Compile=1
 Link=1
 Priority=1000

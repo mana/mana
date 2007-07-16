@@ -45,6 +45,7 @@
 #endif
 
 #include "configuration.h"
+#include "keyboardconfig.h"
 #include "game.h"
 #include "graphics.h"
 #include "lockedarray.h"
@@ -103,6 +104,7 @@ Music *bgm;
 
 Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
+KeyboardConfig keyboard;
 
 /**
  * A structure holding the values of various options that can be passed from
@@ -318,12 +320,20 @@ void init_engine(const Options &options)
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
+
+    //Initialize keyboard
+    keyboard.init();
 }
 
 /** Clear the engine */
 void exit_engine()
 {
+    // Store keys and Remove Keyboard configuration.
+    keyboard.store();
+    keyboard.destroy();
+
     config.write();
+
     delete gui;
     delete graphics;
 

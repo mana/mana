@@ -37,6 +37,7 @@ class ImageRect;
  */
 class Button : public gcn::Button {
     public:
+        Button();
         /**
          * Constructor, sets the caption of the button to the given string.
          */
@@ -60,6 +61,8 @@ class Button : public gcn::Button {
         { mIsLogged = enable; }
 
     private:
+        void init();
+
         static ImageRect button[4];    /**< Button state graphics */
         static int mInstances;         /**< Number of button instances */
         bool mIsLogged;                /**< Makes the button appear pressed all the time */

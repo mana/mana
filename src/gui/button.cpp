@@ -37,10 +37,25 @@
 ImageRect Button::button[4];
 int Button::mInstances = 0;
 
+Button::Button():
+    mIsLogged(false)
+{
+    init();
+}
+
 Button::Button(const std::string& caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
     gcn::Button(caption),
     mIsLogged(false)
+{
+    init();
+    setActionEventId(actionEventId);
+    if (listener) {
+        addActionListener(listener);
+    }
+}
+
+void Button::init()
 {
     setBorderSize(0);
 
@@ -72,12 +87,7 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
             btn[mode]->decRef();
         }
     }
-
     mInstances++;
-    setActionEventId(actionEventId);
-    if (listener) {
-        addActionListener(listener);
-    }
 }
 
 Button::~Button()

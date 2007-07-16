@@ -37,6 +37,7 @@
 #include "flooritemmanager.h"
 #include "graphics.h"
 #include "joystick.h"
+#include "keyboardconfig.h"
 #include "localplayer.h"
 #include "log.h"
 #include "npc.h"
@@ -426,6 +427,14 @@ void Game::handleInput()
         {
             gcn::Window *requestedWindow = NULL;
 
+            if (//setupWindow->isVisible() &&
+                keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
+            {
+                keyboard.setNewKey((int) event.key.keysym.sym);
+                keyboard.callbackNewKey();
+                keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
+                return;
+            }
             switch (event.key.keysym.sym)
             {
                 case SDLK_F1:
@@ -484,54 +493,7 @@ void Game::handleInput()
                         used = true;
                     }
                     break;
-
-                // Hide certain windows
-                case SDLK_h:
-                    if (!chatWindow->isFocused())
-                    {
-                        statusWindow->setVisible(false);
-                        inventoryWindow->setVisible(false);
-                        skillDialog->setVisible(false);
-                        setupWindow->setVisible(false);
-                        equipmentWindow->setVisible(false);
-                        helpWindow->setVisible(false);
-                        debugWindow->setVisible(false);
-                    }
-                break;
-
-                // Picking up items on the floor
-                case SDLK_g:
-                case SDLK_z:
-                    if (!chatWindow->isFocused())
-                    {
-                        FloorItem *item = floorItemManager->findByCoordinates(
-                                player_node->mX, player_node->mY);
-
-                        // If none below the player, try the tile in front of
-                        // the player
-                        if (!item) {
-                            Uint16 x = player_node->mX;
-                            Uint16 y = player_node->mY;
-                            if (player_node->getDirection() & Being::UP)
-                                y--;
-                            if (player_node->getDirection() & Being::DOWN)
-                                y++;
-                            if (player_node->getDirection() & Being::LEFT)
-                                x--;
-                            if (player_node->getDirection() & Being::RIGHT)
-                                x++;
-
-                            item = floorItemManager->findByCoordinates(x, y);
-                        }
-
-                        if (item)
-                            player_node->pickUp(item);
-
-                        used = true;
-                    }
-                    break;
-
-                    // Quitting confirmation dialog
+                   // Quitting confirmation dialog
                 case SDLK_ESCAPE:
                     if (!exitConfirm) {
                         exitConfirm = new ConfirmDialog(
@@ -545,6 +507,58 @@ void Game::handleInput()
                     break;
             }
 
+            if (keyboard.isEnabled() && !chatWindow->isFocused())
+            {
+                switch (keyboard.getKeyIndex(event.key.keysym.sym)) {
+                    case KeyboardConfig::KEY_PICKUP:
+                        {
+                            FloorItem *item = floorItemManager->findByCoordinates(
+                                    player_node->mX, player_node->mY);
+
+                            // If none below the player, try the tile in front of
+                            // the player
+                            if (!item) {
+                                Uint16 x = player_node->mX;
+                                Uint16 y = player_node->mY;
+                                if (player_node->getDirection() & Being::UP)
+                                    y--;
+                                if (player_node->getDirection() & Being::DOWN)
+                                    y++;
+                                if (player_node->getDirection() & Being::LEFT)
+                                    x--;
+                                if (player_node->getDirection() & Being::RIGHT)
+                                    x++;
+
+                                item = floorItemManager->findByCoordinates(x, y);
+                            }
+
+                            if (item)
+                                player_node->pickUp(item);
+
+                            used = true;
+                        }
+                        break;
+                    case KeyboardConfig::KEY_SIT:
+                        // Player sit action
+                        player_node->toggleSit();
+                        used = true;
+                        break;
+                    case KeyboardConfig::KEY_HIDE_WINDOWS:
+                         // Hide certain windows
+                        if (!chatWindow->isFocused())
+                        {
+                            statusWindow->setVisible(false);
+                            inventoryWindow->setVisible(false);
+                            skillDialog->setVisible(false);
+                            setupWindow->setVisible(false);
+                            equipmentWindow->setVisible(false);
+                            helpWindow->setVisible(false);
+                            debugWindow->setVisible(false);
+                        }
+                        break;
+                }
+            }
+
             if (requestedWindow)
             {
                 requestedWindow->setVisible(!requestedWindow->isVisible());
@@ -555,18 +569,13 @@ void Game::handleInput()
                 used = true;
             }
 
+
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
             if (event.key.keysym.mod & KMOD_ALT)
             {
                 switch (event.key.keysym.sym)
                 {
-                    case SDLK_s:
-                        // Player sit action
-                        player_node->toggleSit();
-                        used = true;
-                        break;
-
                     case SDLK_p:
                         // Screenshot (picture, hence the p)
                         {
@@ -636,41 +645,42 @@ void Game::handleInput()
         }
 
     } // End while
-
+    // If the user is configuring the keys then don't respond.
+    if (!keyboard.isEnabled())
+    {
+       return;
+    }
     // Moving player around
     if (player_node->mAction != Being::DEAD &&
         current_npc == 0 &&
         !chatWindow->isFocused())
     {
         // Get the state of the keyboard keys
-        Uint8* keys;
-        keys = SDL_GetKeyState(NULL);
+        keyboard.refreshActiveKeys();
 
         Uint16 x = player_node->mX;
         Uint16 y = player_node->mY;
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
-        if (keys[SDLK_UP] || keys[SDLK_KP8] ||
-                keys[SDLK_KP7] || keys[SDLK_KP9] ||
+        if ( keyboard.isKeyActive(keyboard.KEY_MOVE_UP) ||
                 joystick && joystick->isUp())
         {
             direction |= Being::UP;
         }
-        else if (keys[SDLK_DOWN] || keys[SDLK_KP2] ||
-                keys[SDLK_KP1] || keys[SDLK_KP3] ||
+
+        else if ( keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
                 joystick && joystick->isDown())
         {
             direction |= Being::DOWN;
         }
-        if (keys[SDLK_LEFT] || keys[SDLK_KP4] ||
-                keys[SDLK_KP1] || keys[SDLK_KP7] ||
+
+        if ( keyboard.isKeyActive(keyboard.KEY_MOVE_LEFT) ||
                 joystick && joystick->isLeft())
         {
             direction |= Being::LEFT;
         }
-        else if (keys[SDLK_RIGHT] || keys[SDLK_KP6] ||
-                keys[SDLK_KP3] || keys[SDLK_KP9] ||
+        else if ( keyboard.isKeyActive(keyboard.KEY_MOVE_RIGHT) ||
                 joystick && joystick->isRight())
         {
             direction |= Being::RIGHT;
@@ -679,12 +689,11 @@ void Game::handleInput()
         player_node->setWalkingDir(direction);
 
         // Attacking monsters
-        if (keys[SDLK_LCTRL] || keys[SDLK_RCTRL] ||
+        if ( keyboard.isKeyActive(keyboard.KEY_ATTACK) ||
                 joystick && joystick->buttonPressed(0))
         {
             Being *target = NULL;
-            bool newTarget = keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT];
-
+            bool newTarget = keyboard.isKeyActive(keyboard.KEY_TARGET);
             // A set target has highest priority
             if (newTarget || !player_node->getTarget())
             {
@@ -711,7 +720,8 @@ void Game::handleInput()
         }
 
         // Target the nearest monster if 'a' pressed
-        if (keys[SDLK_a])
+        if ( keyboard.isKeyActive(keyboard.KEY_TARGET_CLOSEST) )
+        //if (keys[SDLK_a])
         {
             Being *target =
                 beingManager->findNearestLivingBeing(x, y, 20, Being::MONSTER);
