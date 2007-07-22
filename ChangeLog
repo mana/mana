@@ -1,4 +1,8 @@
-﻿2007-07-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-07-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_1-1.tar.gz: Fixed insecure filenames.
+
+2007-07-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_1-1.tar.gz, data/maps/new_3-1.tar.gz: Added warp and
 	spawn areas.
