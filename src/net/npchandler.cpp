@@ -38,10 +38,8 @@ extern NpcTextDialog *npcTextDialog;
 NPCHandler::NPCHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_NPC_CHOICE,
-        SMSG_NPC_MESSAGE,
-        SMSG_NPC_NEXT,
-        SMSG_NPC_CLOSE,
+        GPMSG_NPC_CHOICE,
+        GPMSG_NPC_MESSAGE,
         0
     };
     handledMessages = _messages;
@@ -49,30 +47,26 @@ NPCHandler::NPCHandler()
 
 void NPCHandler::handleMessage(MessageIn &msg)
 {
-    int id;
+    Being *being = beingManager->findBeing(msg.readShort());
+    if (!being || being->getType() != Being::NPC)
+    {
+        return;
+    }
+
+    current_npc = static_cast< NPC * >(being);
+    std::string text = msg.readString(msg.getUnreadLength());
 
     switch (msg.getId())
     {
-        case SMSG_NPC_CHOICE:
-            msg.readShort();  // length
-            id = msg.readLong();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
-            npcListDialog->parseItems(msg.readString(msg.getLength() - 8));
+        case GPMSG_NPC_CHOICE:
+            npcListDialog->parseItems(text);
             npcListDialog->setVisible(true);
             break;
 
-        case SMSG_NPC_MESSAGE:
-            msg.readShort();  // length
-            id = msg.readLong();
-            current_npc = dynamic_cast<NPC*>(beingManager->findBeing(id));
-            npcTextDialog->addText(msg.readString(msg.getLength() - 8));
+        case GPMSG_NPC_MESSAGE:
+            npcTextDialog->addText(text);
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
-            break;
-
-        case SMSG_NPC_NEXT:
-        case SMSG_NPC_CLOSE:
-            // Next/Close button in NPC dialog, currently unused
             break;
     }
 }

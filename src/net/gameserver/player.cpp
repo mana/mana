@@ -67,7 +67,7 @@ void Net::GameServer::Player::equip(int slot)
     Net::GameServer::connection->send(msg);
 }
 
-void Net::GameServer::Player::attack(unsigned char direction)
+void Net::GameServer::Player::attack(int direction)
 {
     MessageOut msg(PGMSG_ATTACK);
     msg.writeByte(direction);
@@ -78,5 +78,20 @@ void Net::GameServer::Player::changeAction(Being::Action action)
 {
     MessageOut msg(PGMSG_ACTION_CHANGE);
     msg.writeByte(action);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::talkToNPC(int id, bool restart)
+{
+    MessageOut msg(restart ? PGMSG_NPC_TALK : PGMSG_NPC_TALK_NEXT);
+    msg.writeShort(id);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::selectFromNPC(int id, int choice)
+{
+    MessageOut msg(PGMSG_NPC_SELECT);
+    msg.writeShort(id);
+    msg.writeByte(choice);
     Net::GameServer::connection->send(msg);
 }

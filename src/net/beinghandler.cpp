@@ -486,8 +486,19 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
         {
             int monsterId = msg.readShort();
             Being *being;
-            being = beingManager->createBeing(id, 1002 + monsterId);
+            being = beingManager->createBeing(id, monsterId);
             being->setWalkSpeed(150); // TODO
+            being->mX = px;
+            being->mY = py;
+            being->setDestination(px, py);
+            being->setAction(action);
+        } break;
+
+        case OBJECT_NPC:
+        {
+            int npcId = msg.readShort();
+            Being *being;
+            being = beingManager->createBeing(id, npcId);
             being->mX = px;
             being->mY = py;
             being->setDestination(px, py);

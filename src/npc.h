@@ -41,7 +41,7 @@ class NPC : public Being
 
         void talk();
         void nextDialog();
-        void dialogChoice(char choice);
+        void dialogChoice(int choice);
 
         void buy();
         void sell();

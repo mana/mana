@@ -72,19 +72,7 @@ Being* BeingManager::createBeing(Uint16 id, Uint16 job)
     else
         being = new Being(id, job, mMap);
 
-    // Player or NPC
-    if (job < 200)
-    {
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(mNetwork);
-        outMsg.writeInt16(0x0094);
-        outMsg.writeInt32(id);//readLong(2));
-        */
-    }
-
     mBeings.push_back(being);
-
     return being;
 }
 

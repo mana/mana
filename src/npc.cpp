@@ -27,6 +27,8 @@
 #include "graphics.h"
 
 #include "gui/gui.h"
+#include "net/messageout.h"
+#include "net/gameserver/player.h"
 
 NPC *current_npc = 0;
 
@@ -57,34 +59,20 @@ NPC::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 void
 NPC::talk()
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_NPC_TALK);
-    outMsg.writeLong(mId);
-    outMsg.writeByte(0);
+    Net::GameServer::Player::talkToNPC(mId, true);
     current_npc = this;
-    */
 }
 
 void
 NPC::nextDialog()
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
-    outMsg.writeLong(mId);
-    */
+    Net::GameServer::Player::talkToNPC(mId, false);
 }
 
 void
-NPC::dialogChoice(char choice)
+NPC::dialogChoice(int choice)
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
-    outMsg.writeLong(mId);
-    outMsg.writeByte(choice);
-    */
+    Net::GameServer::Player::selectFromNPC(mId, choice);
 }
 
 /*

@@ -165,6 +165,7 @@ enum {
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position
                                              // player: S name, B hair style, B hair color, B gender, B item bitmask, { W item id }*
                                              // monster: W type id
+                                             // npc: W type id
     GPMSG_BEING_LEAVE              = 0x0201, // W being id
     GPMSG_ITEM_APPEAR              = 0x0202, // W item id, W*2 position
     GPMSG_BEING_LOOKS_CHANGE       = 0x0210, // W weapon, W hat, W top clothes, W bottom clothes
@@ -177,6 +178,11 @@ enum {
     GPMSG_BEING_ATTACK             = 0x0291, // W being id
     PGMSG_SAY                      = 0x02A0, // S text
     GPMSG_SAY                      = 0x02A1, // W being id, S text
+    GPMSG_NPC_CHOICE               = 0x02B0, // W being id, B* text
+    GPMSG_NPC_MESSAGE              = 0x02B1, // W being id, B* text
+    PGMSG_NPC_TALK                 = 0x02B2, // W being id
+    PGMSG_NPC_TALK_NEXT            = 0x02B3, // W being id
+    PGMSG_NPC_SELECT               = 0x02B4, // W being id, B choice
     PGMSG_USE_ITEM                 = 0x0300, // L item id
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*

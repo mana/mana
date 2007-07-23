@@ -2,6 +2,11 @@
 
 	* src/main.cpp, src/game.cpp: Fixed segfault on exit when OpenGL
 	configuration changed.
+	* src/beingmanager.cpp: Removed dead code.
+	* src/npc.cpp, src/npc.h, src/net/protocol.h, src/net/npchandler.cpp,
+	src/net/gameserver/player.cpp, src/net/gameserver/player.h: Converted
+	to new server.
+	* src/beinghandler.cpp: Added support for NPCs.
 
 2007-07-22  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
