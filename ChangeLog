@@ -1,3 +1,8 @@
+2007-07-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/maps/new_1-1.tar.gz, data/maps/new_3-1.tar.gz: Fixed warp
+	coordinates.
+
 2007-07-23  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/main.cpp, src/game.cpp: Fixed segfault on exit when OpenGL
