@@ -294,6 +294,8 @@ Game::~Game()
     delete joystick;
     delete particleEngine;
 
+    viewport->setMap(NULL);
+    player_node = NULL;
     beingManager = NULL;
     floorItemManager = NULL;
     joystick = NULL;

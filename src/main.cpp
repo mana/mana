@@ -992,12 +992,6 @@ int main(int argc, char *argv[])
                     {
                         state = STATE_EXIT;
                     }
-                    else if (state != STATE_FORCE_QUIT)
-                    {
-                        //TODO: solve this problem
-                        delete gui; // Crashes otherwise
-                        gui = new Gui(graphics);
-                    }
                     break;
 
                 case STATE_SWITCH_CHARACTER:
