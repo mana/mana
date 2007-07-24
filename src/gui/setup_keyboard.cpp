@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #include "setup_keyboard.h"
@@ -43,7 +44,7 @@ Setup_Keyboard::Setup_Keyboard()
     mKeyLabel = new gcn::Label[keyboard.KEY_TOTAL];
     mKeyButton = new Button[keyboard.KEY_TOTAL];
 
-    for (int i=0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
         mKeyLabel[i].setPosition(10, 10+(i*20));
@@ -97,7 +98,7 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
         refreshKeys();
         return;
     }
-    for (int i=0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         if (event.getId() == "sk"+toString(i))
         {
@@ -111,7 +112,7 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 
 void Setup_Keyboard::enableSetButtons(bool bValue)
 {
-    for (int i=0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         mKeyButton[i].setEnabled(bValue);
     }
@@ -134,7 +135,7 @@ void Setup_Keyboard::newKeyCallback(const int index)
 
 void Setup_Keyboard::refreshKeys()
 {
-    for(int i=0; i < keyboard.KEY_TOTAL; i++)
+    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
     }

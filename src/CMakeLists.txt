@@ -138,6 +138,8 @@ SET(SRCS
     gui/setup.h
     gui/setup_joystick.cpp
     gui/setup_joystick.h
+    gui/setup_keyboard.cpp
+    gui/setup_keyboard.h
     gui/setuptab.h
     gui/setup_video.cpp
     gui/setup_video.h
@@ -293,6 +295,8 @@ SET(SRCS
     item.h
     joystick.cpp
     joystick.h
+    keyboardconfig.cpp
+    keyboardconfig.h
     localplayer.cpp
     localplayer.h
     lockedarray.h

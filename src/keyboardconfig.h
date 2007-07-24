@@ -18,6 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
+ *  $Id$
  */
 
 #ifndef _TMW_KEYBOARDCONFIG_H
@@ -34,12 +35,15 @@
  */
 struct KeyFunction
 {
-    KeyFunction(){}
-    KeyFunction(std::string configField, int defaultValue, std::string caption):
+    KeyFunction() {}
+
+    KeyFunction(std::string configField,
+                int defaultValue,
+                std::string caption):
         configField(configField),
-        defaultValue(defaultValue),
-        caption(caption)
-    { }
+        caption(caption),
+        defaultValue(defaultValue)
+    {}
 
     std::string configField;    /** Field index that is in the config file. */
     std::string caption;        /** The caption value for the key function. */
@@ -89,33 +93,25 @@ class KeyboardConfig
          * Obtain the value stored in memory.
          */
         int getKeyValue(int index) const
-        {
-            return mKey[index].value;
-        };
+        { return mKey[index].value; }
 
         /**
          * Get the index of the new key to be assigned.
          */
         int getNewKeyIndex() const
-        {
-            return mNewKeyIndex;
-        };
+        { return mNewKeyIndex; }
 
         /**
          * Get the enable flag, which will stop the user from doing actions.
          */
         bool isEnabled() const
-        {
-            return mEnabled;
-        };
+        { return mEnabled; }
 
         /**
          * Get the key caption, providing more meaning to the user.
          */
         std::string& getKeyCaption(int index)
-        {
-            return mKey[index].caption;
-        };
+        { return mKey[index].caption; }
 
         /**
          * Get the key function index by providing the keys value.
@@ -126,33 +122,25 @@ class KeyboardConfig
          * Set the enable flag, which will stop the user from doing actions.
          */
         void setEnabled(bool flag)
-        {
-            mEnabled = flag;
-        };
+        { mEnabled = flag; }
 
         /**
          * Set the index of the new key to be assigned.
          */
         void setNewKeyIndex(int value)
-        {
-            mNewKeyIndex = value;
-        };
+        { mNewKeyIndex = value; }
 
         /**
          * Set the value of the new key.
          */
         void setNewKey(int value)
-        {
-            mKey[mNewKeyIndex].value = value;
-        };
+        { mKey[mNewKeyIndex].value = value; }
 
         /**
          * Set a reference to the key setup window.
          */
         void setSetupKeyboard(Setup_Keyboard *setupKey)
-        {
-            mSetupKey = setupKey;
-        };
+        { mSetupKey = setupKey; }
 
         /**
          * Checks if the key is active, by providing the key function index.
@@ -188,6 +176,7 @@ class KeyboardConfig
             KEY_HIDE_WINDOWS,
             KEY_TOTAL
         };
+
     private:
         int mNewKeyIndex;          /** Index of new key to be assigned */
         bool mEnabled;             /** Flag to determine respond to key input */
@@ -197,10 +186,8 @@ class KeyboardConfig
         KeyFunction mKey[KEY_TOTAL];   /** Pointer to all the key data */
 
         Uint8 *mActiveKeys;        /** Stores a list of all the keys */
-
 };
+
 extern KeyboardConfig keyboard;
 
 #endif
-
-

@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id:
+ *  $Id$
  */
 
 #ifndef _TMW_EQUIPMENTINFO_H_
@@ -43,16 +43,17 @@ class EquipmentInfo
             mSlot (0),
             mAttackType(ACTION_DEFAULT)
         {
-        };
+        }
 
         void
         setSlot (int slot) { mSlot = slot; }
 
         const std::string&
-        getSprite(int gender) {return animationFiles[gender]; }
+        getSprite(int gender) { return animationFiles[gender]; }
 
         void
-        setSprite(std::string animationFile, int gender) {animationFiles[gender] = animationFile; }
+        setSprite(const std::string &animationFile, int gender)
+        { animationFiles[gender] = animationFile; }
 
         void
         setAttackType(std::string attackType);
