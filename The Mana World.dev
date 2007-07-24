@@ -2828,7 +2828,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit278]
-FileName=..\tmw_3367_CR0000016\src\keyboardconfig.cpp
+FileName=src\keyboardconfig.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -2838,7 +2838,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit279]
-FileName=..\tmw_3367_CR0000016\src\keyboardconfig.h
+FileName=src\keyboardconfig.h
 CompileCpp=1
 Folder=header
 Compile=1
@@ -2848,7 +2848,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit280]
-FileName=..\tmw_3367_CR0000016\src\gui\setup_keyboard.cpp
+FileName=src\gui\setup_keyboard.cpp
 CompileCpp=1
 Folder=gui/source
 Compile=1
@@ -2858,7 +2858,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit281]
-FileName=..\tmw_3367_CR0000016\src\gui\setup_keyboard.h
+FileName=src\gui\setup_keyboard.h
 CompileCpp=1
 Folder=gui/header
 Compile=1

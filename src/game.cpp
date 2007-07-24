@@ -427,7 +427,7 @@ void Game::handleInput()
         {
             gcn::Window *requestedWindow = NULL;
 
-            if (//setupWindow->isVisible() &&
+            if (setupWindow->isVisible() &&
                 keyboard.getNewKeyIndex() > keyboard.KEY_NO_VALUE)
             {
                 keyboard.setNewKey((int) event.key.keysym.sym);
@@ -569,7 +569,6 @@ void Game::handleInput()
                 used = true;
             }
 
-
             // Keys pressed together with Alt/Meta
             // Emotions and some internal gui windows
             if (event.key.keysym.mod & KMOD_ALT)
@@ -668,7 +667,6 @@ void Game::handleInput()
         {
             direction |= Being::UP;
         }
-
         else if ( keyboard.isKeyActive(keyboard.KEY_MOVE_DOWN) ||
                 joystick && joystick->isDown())
         {

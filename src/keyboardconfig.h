@@ -29,8 +29,6 @@
 
 #include <guichan/sdl/sdlinput.hpp>
 
-#define CALL_MEMBER_FN(object,ptrToMember)  ((object).*(ptrToMember))
-
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.
  */
@@ -43,52 +41,52 @@ struct KeyFunction
         caption(caption)
     { }
 
-    std::string configField;
-    std::string caption;
-    int defaultValue;
-    int value;
+    std::string configField;    /** Field index that is in the config file. */
+    std::string caption;        /** The caption value for the key function. */
+    int defaultValue;           /** The default key value used. */
+    int value;                  /** The actual value that is used. */
 };
 
 class KeyboardConfig
 {
     public:
         /**
-         * initialize the keyboard config.
+         * Initializes the keyboard config explicitly.
          */
         void init();
 
         /**
-         * destroy the object by releasing any memory.
+         * Destroys the keyboard config explicitly.
          */
         void destroy();
 
         /**
-         * retrieve the key values from config file.
+         * Retrieve the key values from config file.
          */
         void retrieve();
 
         /**
-         * store the key values to config file.
+         * Store the key values to config file.
          */
         void store();
 
         /**
-         * make the keys their default values.
+         * Make the keys their default values.
          */
         void makeDefault();
 
         /**
-         * determines if any key assignments are the same as each other.
+         * Determines if any key assignments are the same as each other.
          */
         bool hasConflicts();
 
         /**
-         * calls a function back so the key re-assignment(s) can be seen.
+         * Calls a function back so the key re-assignment(s) can be seen.
          */
         void callbackNewKey();
 
         /**
-         * obtain the value stored in memory.
+         * Obtain the value stored in memory.
          */
         int getKeyValue(int index) const
         {
@@ -96,7 +94,7 @@ class KeyboardConfig
         };
 
         /**
-         * get the index of the new key to be assigned.
+         * Get the index of the new key to be assigned.
          */
         int getNewKeyIndex() const
         {
@@ -104,7 +102,7 @@ class KeyboardConfig
         };
 
         /**
-         * get the enable flag, which will stop the user from doing actions.
+         * Get the enable flag, which will stop the user from doing actions.
          */
         bool isEnabled() const
         {
@@ -112,7 +110,7 @@ class KeyboardConfig
         };
 
         /**
-         * get the key caption, providing more meaning to the user.
+         * Get the key caption, providing more meaning to the user.
          */
         std::string& getKeyCaption(int index)
         {
@@ -120,12 +118,12 @@ class KeyboardConfig
         };
 
         /**
-         * get the key function index by providing the keys value.
+         * Get the key function index by providing the keys value.
          */
         int getKeyIndex(int keyValue) const;
 
         /**
-         * set the enable flag, which will stop the user from doing actions.
+         * Set the enable flag, which will stop the user from doing actions.
          */
         void setEnabled(bool flag)
         {
@@ -133,7 +131,7 @@ class KeyboardConfig
         };
 
         /**
-         * set the index of the new key to be assigned.
+         * Set the index of the new key to be assigned.
          */
         void setNewKeyIndex(int value)
         {
@@ -141,7 +139,7 @@ class KeyboardConfig
         };
 
         /**
-         * set the value of the new key.
+         * Set the value of the new key.
          */
         void setNewKey(int value)
         {
@@ -149,7 +147,7 @@ class KeyboardConfig
         };
 
         /**
-         * set a reference to the key setup window.
+         * Set a reference to the key setup window.
          */
         void setSetupKeyboard(Setup_Keyboard *setupKey)
         {
@@ -157,12 +155,12 @@ class KeyboardConfig
         };
 
         /**
-         * checks if the key is active, by providing the key function index.
+         * Checks if the key is active, by providing the key function index.
          */
         bool isKeyActive(const int index);
 
         /**
-         * takes a snapshot of all the active keys.
+         * Takes a snapshot of all the active keys.
          */
         void refreshActiveKeys();
 
@@ -191,14 +189,14 @@ class KeyboardConfig
             KEY_TOTAL
         };
     private:
-        int mNewKeyIndex;          /** index of new key to be assigned */
-        bool mEnabled;             /** flag to determine respond to key input */
+        int mNewKeyIndex;          /** Index of new key to be assigned */
+        bool mEnabled;             /** Flag to determine respond to key input */
 
-        Setup_Keyboard *mSetupKey; /** reference to setup window */
+        Setup_Keyboard *mSetupKey; /** Reference to setup window */
 
-        KeyFunction mKey[KEY_TOTAL];         /** pointer to all the key data */
+        KeyFunction mKey[KEY_TOTAL];   /** Pointer to all the key data */
 
-        Uint8 *mActiveKeys;         /** stores a list of all the keys */
+        Uint8 *mActiveKeys;        /** Stores a list of all the keys */
 
 };
 extern KeyboardConfig keyboard;

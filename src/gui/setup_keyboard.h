@@ -35,7 +35,14 @@
 class Setup_Keyboard : public SetupTab, public gcn::ActionListener
 {
     public:
+        /**
+         * Constructor
+         */
         Setup_Keyboard();
+
+        /**
+         * Destructor
+         */
         ~Setup_Keyboard();
 
         void apply();
@@ -44,22 +51,22 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * easy way to disable/enable all the set buttons.
+         * Easy way to disable/enable all the set buttons.
          */
-        void enableButtons(bool bValue);
+        void enableSetButtons(bool bValue);
 
         /**
-         * get an update on the assigned key.
+         * Get an update on the assigned key.
          */
         void refreshAssignedKey(const int index);
 
         /**
-         * the callback function when a new key has been pressed.
+         * The callback function when a new key has been pressed.
          */
         void newKeyCallback(const int index);
 
         /**
-         * shorthand method to update all the keys.
+         * Shorthand method to update all the keys.
          */
         void refreshKeys();
 

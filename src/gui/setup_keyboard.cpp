@@ -29,7 +29,6 @@
 
 #include "../configuration.h"
 #include "../keyboardconfig.h"
-#include "../log.h"
 
 #include "../utils/tostring.h"
 
@@ -104,14 +103,13 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
         {
             keyboard.setEnabled(false);
             keyboard.setNewKeyIndex(i);
-            enableButtons(false);
+            enableSetButtons(false);
             mKeyLabel[i].setCaption(keyboard.getKeyCaption(i) + ": ?");
         }
     }
 }
 
-
-void Setup_Keyboard::enableButtons(bool bValue)
+void Setup_Keyboard::enableSetButtons(bool bValue)
 {
     for (int i=0; i < keyboard.KEY_TOTAL; i++)
     {
@@ -121,17 +119,17 @@ void Setup_Keyboard::enableButtons(bool bValue)
 
 void Setup_Keyboard::refreshAssignedKey(const int index)
 {
-     char *temp = SDL_GetKeyName(
-         (SDLKey) keyboard.getKeyValue(index));
-     mKeyLabel[index].setCaption(
-         keyboard.getKeyCaption(index) + ": " + toString(temp));
-     mKeyLabel[index].adjustSize();
+    char *temp = SDL_GetKeyName(
+        (SDLKey) keyboard.getKeyValue(index));
+    mKeyLabel[index].setCaption(
+        keyboard.getKeyCaption(index) + ": " + toString(temp));
+    mKeyLabel[index].adjustSize();
 }
 
 void Setup_Keyboard::newKeyCallback(const int index)
 {
     refreshAssignedKey(index);
-    enableButtons(true);
+    enableSetButtons(true);
 }
 
 void Setup_Keyboard::refreshKeys()
@@ -141,5 +139,3 @@ void Setup_Keyboard::refreshKeys()
         refreshAssignedKey(i);
     }
 }
-
-

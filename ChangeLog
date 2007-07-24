@@ -1,14 +1,14 @@
-﻿2007-07-17 Joshua Langley <joshlangley[at]optusnet.com.au>
+﻿2007-07-17  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
-  * src/game.cpp: only one key per function.
-  * src/main.cpp: keyboard configuration included.
-  * src/gui/button.cpp, src/gui/button.h: default constructor and
-  init function added.
-  * src/gui/setup.cpp: keyboard setup tab added.
-  * src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h:
-  Add to project file, it is the keyboard setup tab.
-  * src/keyboardconfig.cpp, src/keyboardconfig.h: Add to project file, 
-  the main keyboard config operations.
+	* src/game.cpp: only one key per function.
+	* src/main.cpp: keyboard configuration included.
+	* src/gui/button.cpp, src/gui/button.h: default constructor and
+	init function added.
+	* src/gui/setup.cpp: keyboard setup tab added.
+	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h:
+	Add to project file, it is the keyboard setup tab.
+	* src/keyboardconfig.cpp, src/keyboardconfig.h: Add to project file, 
+	the main keyboard config operations.
 
 2007-07-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 

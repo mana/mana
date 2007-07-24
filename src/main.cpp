@@ -328,8 +328,7 @@ void init_engine(const Options &options)
 /** Clear the engine */
 void exit_engine()
 {
-    // Store keys and Remove Keyboard configuration.
-    keyboard.store();
+    // Remove Keyboard configuration.
     keyboard.destroy();
 
     config.write();

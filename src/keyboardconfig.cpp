@@ -28,11 +28,6 @@
 
 #include "gui/setup_keyboard.h"
 
-void KeyboardConfig::destroy()
-{
-
-}
-
 void KeyboardConfig::init()
 {
     mKey[KEY_MOVE_UP] = KeyFunction("keyMoveUp", SDLK_UP, "Move Up");
@@ -44,7 +39,7 @@ void KeyboardConfig::init()
     mKey[KEY_ATTACK] = KeyFunction("keyAttack", SDLK_LCTRL, "Attack");
     mKey[KEY_TARGET] = KeyFunction("keyTarget", SDLK_LSHIFT, "Target");
     mKey[KEY_TARGET_CLOSEST] =
-        KeyFunction("mKeyTargetClosest", SDLK_a, "Target Closest");
+        KeyFunction("keyTargetClosest", SDLK_a, "Target Closest");
     mKey[KEY_PICKUP] = KeyFunction("keyPickup", SDLK_z, "Pickup");
     mKey[KEY_HIDE_WINDOWS] =
         KeyFunction("keyHideWindows", SDLK_h, "Hide Windows");
@@ -58,6 +53,13 @@ void KeyboardConfig::init()
     mEnabled = true;
 
     retrieve();
+}
+
+void KeyboardConfig::destroy()
+{
+    store();
+
+    delete [] mActiveKeys;
 }
 
 void KeyboardConfig::retrieve()
@@ -103,7 +105,7 @@ bool KeyboardConfig::hasConflicts()
 
 void KeyboardConfig::callbackNewKey()
 {
-    mSetupKey->newKeyCallback((const int) mNewKeyIndex);
+    mSetupKey->newKeyCallback(mNewKeyIndex);
 }
 
 int KeyboardConfig::getKeyIndex(const int keyValue) const
@@ -120,7 +122,7 @@ int KeyboardConfig::getKeyIndex(const int keyValue) const
 
 bool KeyboardConfig::isKeyActive(int index)
 {
-    return mActiveKeys[mKey[index].value];
+    return mActiveKeys[ mKey[index].value];
 }
 
 void KeyboardConfig::refreshActiveKeys()
