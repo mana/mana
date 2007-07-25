@@ -328,9 +328,6 @@ void init_engine(const Options &options)
 /** Clear the engine */
 void exit_engine()
 {
-    // Remove Keyboard configuration.
-    keyboard.destroy();
-
     config.write();
 
     delete gui;

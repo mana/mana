@@ -24,9 +24,12 @@
 #include "setup_keyboard.h"
 
 #include <guichan/widgets/label.hpp>
+#include <guichan/listmodel.hpp>
 
 #include "button.h"
+#include "listbox.h"
 #include "ok_dialog.h"
+#include "scrollarea.h"
 
 #include "../configuration.h"
 #include "../keyboardconfig.h"
@@ -35,38 +38,71 @@
 
 #include <SDL_keyboard.h>
 
-Setup_Keyboard::Setup_Keyboard()
+/**
+ * The list model for key function list.
+ *
+ * \ingroup Interface
+ */
+class KeyListModel : public gcn::ListModel
 {
+    public:
+        /**
+         * Returns the number of elements in container.
+         */
+        int getNumberOfElements() { return keyboard.KEY_TOTAL; }
+
+        /**
+         * Returns element from container.
+         */
+        std::string getElementAt(int i) { return mKeyFunctions[i]; }
+
+        /**
+         * Sets element from container.
+         */
+        void setElementAt(int i, std::string caption)
+        {
+            mKeyFunctions[i] = caption;
+        }
+
+    private:
+        std::string mKeyFunctions[keyboard.KEY_TOTAL];
+};
+
+Setup_Keyboard::Setup_Keyboard():
+    mKeyListModel(new KeyListModel()),
+    mKeyList(new ListBox(mKeyListModel))
+{
+    keyboard.setSetupKeyboard(this);
     setOpaque(false);
 
-    keyboard.setSetupKeyboard(this);
+    refreshKeys();
 
-    mKeyLabel = new gcn::Label[keyboard.KEY_TOTAL];
-    mKeyButton = new Button[keyboard.KEY_TOTAL];
+    mKeyList->setDimension(gcn::Rectangle(0, 0, 180, 140));
+    mKeyList->addActionListener(this);
+    mKeyList->setSelected(-1);
 
-    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
-    {
-        refreshAssignedKey(i);
-        mKeyLabel[i].setPosition(10, 10+(i*20));
-        add(&mKeyLabel[i]);
+    ScrollArea *scrollArea = new ScrollArea(mKeyList);
+    scrollArea->setDimension(gcn::Rectangle(10, 10, 180, 140));
+    add(scrollArea);
 
-        mKeyButton[i].setCaption("Set");
-        mKeyButton[i].adjustSize();
-        mKeyButton[i].addActionListener(this);
-        mKeyButton[i].setActionEventId("sk"+toString(i));
-        mKeyButton[i].setPosition(150,5+(i*20));
-        add(&mKeyButton[i]);
-    }
+    mAssignKeyButton = new Button("Assign", "assign", this);
+    mAssignKeyButton->setPosition(145, 155);
+    mAssignKeyButton->addActionListener(this);
+    mAssignKeyButton->setEnabled(false);
+    add(mAssignKeyButton);
+
     mMakeDefaultButton = new Button("Default", "makeDefault", this);
-    mMakeDefaultButton->setPosition(200, 5);
+    mMakeDefaultButton->setPosition(10, 155);
     mMakeDefaultButton->addActionListener(this);
     add(mMakeDefaultButton);
 }
 
 Setup_Keyboard::~Setup_Keyboard()
 {
-    delete [] mKeyLabel;
-    delete [] mKeyButton;
+    delete mKeyList;
+    delete mKeyListModel;
+
+    delete mAssignKeyButton;
     delete mMakeDefaultButton;
 }
 
@@ -75,9 +111,7 @@ void Setup_Keyboard::apply()
     if (keyboard.hasConflicts())
     {
         new OkDialog("Key Conflict(s) Detected.",
-            "One or more key conflicts has been detected. "
-            "Resolve them immediately, "
-            "or gameplay might result in unpredictable behaviour");
+            "Resolve them, or gameplay may result in strange behaviour.");
     }
     keyboard.setEnabled(true);
     keyboard.store();
@@ -92,50 +126,43 @@ void Setup_Keyboard::cancel()
 
 void Setup_Keyboard::action(const gcn::ActionEvent &event)
 {
-    if (event.getId() == "makeDefault")
+    if (event.getSource() == mKeyList)
+    {
+        mAssignKeyButton->setEnabled(true);
+    }
+    else if (event.getId() == "assign")
+    {
+        int i(mKeyList->getSelected());
+        mAssignKeyButton->setEnabled(false);
+        keyboard.setEnabled(false);
+        keyboard.setNewKeyIndex(i);
+        mKeyListModel->setElementAt(i, keyboard.getKeyCaption(i) + ": ?");
+    }
+    else if (event.getId() == "makeDefault")
     {
         keyboard.makeDefault();
         refreshKeys();
-        return;
-    }
-    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
-    {
-        if (event.getId() == "sk"+toString(i))
-        {
-            keyboard.setEnabled(false);
-            keyboard.setNewKeyIndex(i);
-            enableSetButtons(false);
-            mKeyLabel[i].setCaption(keyboard.getKeyCaption(i) + ": ?");
-        }
     }
 }
 
-void Setup_Keyboard::enableSetButtons(bool bValue)
+void Setup_Keyboard::refreshAssignedKey(int index)
 {
-    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
-    {
-        mKeyButton[i].setEnabled(bValue);
-    }
-}
-
-void Setup_Keyboard::refreshAssignedKey(const int index)
-{
+    std::string caption;
     char *temp = SDL_GetKeyName(
         (SDLKey) keyboard.getKeyValue(index));
-    mKeyLabel[index].setCaption(
-        keyboard.getKeyCaption(index) + ": " + toString(temp));
-    mKeyLabel[index].adjustSize();
+    caption = keyboard.getKeyCaption(index) + ": " + toString(temp);
+    mKeyListModel->setElementAt(index, caption);
 }
 
-void Setup_Keyboard::newKeyCallback(const int index)
+void Setup_Keyboard::newKeyCallback(int index)
 {
     refreshAssignedKey(index);
-    enableSetButtons(true);
+    mAssignKeyButton->setEnabled(true);
 }
 
 void Setup_Keyboard::refreshKeys()
 {
-    for (int i = 0; i < keyboard.KEY_TOTAL; i++)
+    for(int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
     }

@@ -60,11 +60,6 @@ class KeyboardConfig
         void init();
 
         /**
-         * Destroys the keyboard config explicitly.
-         */
-        void destroy();
-
-        /**
          * Retrieve the key values from config file.
          */
         void retrieve();
@@ -110,7 +105,7 @@ class KeyboardConfig
         /**
          * Get the key caption, providing more meaning to the user.
          */
-        std::string& getKeyCaption(int index)
+        std::string const &getKeyCaption(int index) const
         { return mKey[index].caption; }
 
         /**
@@ -145,7 +140,7 @@ class KeyboardConfig
         /**
          * Checks if the key is active, by providing the key function index.
          */
-        bool isKeyActive(const int index);
+        bool isKeyActive(int index);
 
         /**
          * Takes a snapshot of all the active keys.
@@ -178,14 +173,14 @@ class KeyboardConfig
         };
 
     private:
-        int mNewKeyIndex;          /** Index of new key to be assigned */
-        bool mEnabled;             /** Flag to determine respond to key input */
+        int mNewKeyIndex;              /**< Index of new key to be assigned */
+        bool mEnabled;                 /**< Flag to respond to key input */
 
-        Setup_Keyboard *mSetupKey; /** Reference to setup window */
+        Setup_Keyboard *mSetupKey;     /**< Reference to setup window */
 
-        KeyFunction mKey[KEY_TOTAL];   /** Pointer to all the key data */
+        KeyFunction mKey[KEY_TOTAL];   /**< Pointer to all the key data */
 
-        Uint8 *mActiveKeys;        /** Stores a list of all the keys */
+        Uint8 *mActiveKeys;            /**< Stores a list of all the keys */
 };
 
 extern KeyboardConfig keyboard;

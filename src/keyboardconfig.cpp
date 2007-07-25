@@ -56,13 +56,6 @@ void KeyboardConfig::init()
     retrieve();
 }
 
-void KeyboardConfig::destroy()
-{
-    store();
-
-    delete [] mActiveKeys;
-}
-
 void KeyboardConfig::retrieve()
 {
     for (int i = 0; i < KEY_TOTAL; i++)
@@ -109,7 +102,7 @@ void KeyboardConfig::callbackNewKey()
     mSetupKey->newKeyCallback(mNewKeyIndex);
 }
 
-int KeyboardConfig::getKeyIndex(const int keyValue) const
+int KeyboardConfig::getKeyIndex(int keyValue) const
 {
     for (int i = 0; i < KEY_TOTAL; i++)
     {

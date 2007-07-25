@@ -1,4 +1,11 @@
-﻿2007-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+  * src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
+  src/gui/setup_keyboard.h, src/keyboardconfig.cpp,
+  src/keyboardconfig.h, src/main.cpp: minor changes to
+  keyboard config, keyboard setup gui re-designed.
+
+2007-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt, src/Makefile.am: Added setup_keyboard.* and
 	keyboardconfig.* to the list of source files.

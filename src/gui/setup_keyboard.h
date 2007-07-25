@@ -52,19 +52,14 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
         void action(const gcn::ActionEvent &event);
 
         /**
-         * Easy way to disable/enable all the set buttons.
-         */
-        void enableSetButtons(bool bValue);
-
-        /**
          * Get an update on the assigned key.
          */
-        void refreshAssignedKey(const int index);
+        void refreshAssignedKey(int index);
 
         /**
          * The callback function when a new key has been pressed.
          */
-        void newKeyCallback(const int index);
+        void newKeyCallback(int index);
 
         /**
          * Shorthand method to update all the keys.
@@ -72,10 +67,10 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
         void refreshKeys();
 
     private:
-        gcn::Label *mKeyLabel;
+        class KeyListModel *mKeyListModel;
+        gcn::ListBox *mKeyList;
 
-        Button *mKeyButton;
-
+        gcn::Button *mAssignKeyButton;
         gcn::Button *mMakeDefaultButton;
 };
 
