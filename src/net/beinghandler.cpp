@@ -487,7 +487,6 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             int monsterId = msg.readShort();
             Being *being;
             being = beingManager->createBeing(id, monsterId);
-            being->setWalkSpeed(150); // TODO
             being->mX = px;
             being->mY = py;
             being->setDestination(px, py);
@@ -519,16 +518,17 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
 {
     while (msg.getUnreadLength())
     {
-        Uint16 id = msg.readShort();
-        Uint8 flags = msg.readByte();
+        int id = msg.readShort();
+        int flags = msg.readByte();
         Being *being = beingManager->findBeing(id);
-        int sx = 0, sy = 0, dx = 0, dy = 0;
+        int sx = 0, sy = 0, dx = 0, dy = 0, speed = 0;
         if (flags & MOVING_POSITION)
         {
             Uint16 sx2, sy2;
             msg.readCoordinates(sx2, sy2);
             sx = sx2 * 32 + 16;
             sy = sy2 * 32 + 16;
+            speed = msg.readByte();
         }
         if (flags & MOVING_DESTINATION)
         {
@@ -543,6 +543,10 @@ void BeingHandler::handleBeingsMoveMessage(MessageIn &msg)
         if (!being || !(flags & (MOVING_POSITION | MOVING_DESTINATION)))
         {
             continue;
+        }
+        if (speed)
+        {
+            being->setWalkSpeed(speed * 10);
         }
         if (abs(being->mX - sx) + abs(being->mY - sy) > 4 * 32)
         {
