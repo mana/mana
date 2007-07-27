@@ -1,5 +1,16 @@
 2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
+	* src/resources/image.cpp: Added support for subimages of subimages.
+	* src/gui/equipmentwindow.cpp, src/gui/button.cpp, src/gui/slider.cpp,
+	src/gui/widgets/resizegrip.cpp, src/gui/widgets/dropdown.cpp,
+	src/gui/progressbar.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
+	src/gui/radiobutton.cpp, src/gui/textfield.cpp, src/gui/playerbox.cpp,
+	src/gui/itemcontainer.cpp, src/gui/checkbox.cpp, src/gui/minimap.cpp,
+	src/gui/scrollarea.cpp, src/gui/popupmenu.cpp: Removed useless yet
+	costly dynamic casts.
+
+2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
 	* src/net/beinghandler.cpp, src/net/protocol.h: Added being speed to
 	protocol.
 

@@ -105,16 +105,13 @@ ItemContainer::draw(gcn::Graphics *graphics)
         // Draw selection image below selected item
         if (mSelectedItem == item)
         {
-            dynamic_cast<Graphics*>(graphics)->drawImage(
-                    mSelImg, itemX, itemY);
+            static_cast<Graphics*>(graphics)->drawImage(mSelImg, itemX, itemY);
         }
 
         // Draw item icon
-        Image* image;
-        if ((image = item->getInfo().getImage()) != NULL)
+        if (Image *image = item->getInfo().getImage())
         {
-            dynamic_cast<Graphics*>(graphics)->drawImage(
-                    image, itemX, itemY);
+            static_cast<Graphics*>(graphics)->drawImage(image, itemX, itemY);
         }
 
         // Draw item caption

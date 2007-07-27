@@ -213,9 +213,8 @@ Gui::draw()
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
             && mCustomCursor)
     {
-        dynamic_cast<Graphics*>(mGraphics)->drawImage(mMouseCursor,
-                                                      mouseX - 5,
-                                                      mouseY - 2);
+        static_cast<Graphics*>(mGraphics)->
+            drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
     }
 
     mGraphics->popClipArea();

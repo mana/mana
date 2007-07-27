@@ -111,9 +111,8 @@ Button::draw(gcn::Graphics *graphics)
         mode = 0;
     }
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0,
-                                                     getWidth(), getHeight(),
-                                                     button[mode]);
+    static_cast<Graphics*>(graphics)->
+        drawImageRect(0, 0, getWidth(), getHeight(), button[mode]);
 
     graphics->setColor(getForegroundColor());
 

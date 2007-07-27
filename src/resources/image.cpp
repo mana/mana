@@ -343,5 +343,5 @@ SubImage::~SubImage()
 
 Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
-    return NULL;
+    return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }

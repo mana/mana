@@ -65,8 +65,8 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         }
 
         image = item->getInfo().getImage();
-        dynamic_cast<Graphics*>(graphics)->drawImage(
-                image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
+        static_cast<Graphics*>(graphics)->
+            drawImage(image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
 
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
@@ -77,7 +77,7 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
     image = item->getInfo().getImage();
 
-    dynamic_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
+    static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     graphics->drawText(toString(item->getQuantity()), 170, 62,
             gcn::Graphics::CENTER);
 }

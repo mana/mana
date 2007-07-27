@@ -80,7 +80,7 @@ PlayerBox::draw(gcn::Graphics *graphics)
     if (mPlayer)
     {
         // Draw character
-        mPlayer->draw(dynamic_cast<Graphics*>(graphics), 40, 42);
+        mPlayer->draw(static_cast<Graphics*>(graphics), 40, 42);
     }
 }
 
@@ -92,5 +92,5 @@ PlayerBox::drawBorder(gcn::Graphics *graphics)
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
+    static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, background);
 }

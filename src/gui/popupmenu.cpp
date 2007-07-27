@@ -124,7 +124,7 @@ void PopupMenu::handleLink(const std::string& link)
         mBeing->getType() == Being::NPC &&
         current_npc == 0)
     {
-        dynamic_cast<NPC*>(mBeing)->talk();
+        static_cast<NPC*>(mBeing)->talk();
     }
 
     // Trade action

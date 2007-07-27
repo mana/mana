@@ -104,7 +104,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
+    gcn::ImageFont *font = static_cast<gcn::ImageFont*>(getFont());
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -294,7 +294,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
     unsigned int i, j;
     int x = 0, y = 0;
     int wrappedLines = 0;
-    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
+    gcn::ImageFont *font = static_cast<gcn::ImageFont*>(getFont());
 
     graphics->setColor(BLACK);
     for (i = 0; i < mTextRows.size(); i++)

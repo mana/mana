@@ -145,7 +145,7 @@ void DropDown::draw(gcn::Graphics* graphics)
         graphics->setColor(highlightColor);
         graphics->drawLine(0, h, getWidth(), h);
         graphics->setColor(shadowColor);
-        graphics->drawLine(0, h + 1,getWidth(),h + 1);
+        graphics->drawLine(0, h + 1, getWidth(), h + 1);
     }
 }
 
@@ -156,34 +156,13 @@ void DropDown::drawBorder(gcn::Graphics *graphics)
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+    static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
 }
 
 void DropDown::drawButton(gcn::Graphics *graphics)
 {
+    int height = mDroppedDown ? mOldH : getHeight();
 
-    unsigned short state = 0;
-    unsigned short dir = 0;
-    gcn::Rectangle dim;
-
-    if (mPushed)
-        state = 1;
-
-    if (mDroppedDown)
-        dir = 1;
-
-    int height;
-        if (mDroppedDown)
-        {
-            height = mOldH;
-        }
-        else
-        {
-            height = getHeight();
-        }
-        int x = getWidth() - height;
-        int y = 0;
-
-    dynamic_cast<Graphics*>(graphics)->drawImage(
-            buttons[dir][state], x, y + 1);
+    static_cast<Graphics*>(graphics)->
+        drawImage(buttons[mDroppedDown][mPushed], getWidth() - height, 1);
 }
