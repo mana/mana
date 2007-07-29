@@ -74,16 +74,8 @@
 #define SMSG_PLAYER_CHAT             0x008e /**< Player talks */
 #define SMSG_GM_CHAT                 0x009a /**< GM announce */
 #define SMSG_WALK_RESPONSE           0x0087
-#define SMSG_TRADE_REQUEST           0x00e5 /**< Receiving a request to trade */
-#define SMSG_TRADE_RESPONSE          0x00e7
-#define SMSG_TRADE_ITEM_ADD          0x00e9
-#define SMSG_TRADE_ITEM_ADD_RESPONSE 0x01b1 /**< Not standard eAthena! */
-#define SMSG_TRADE_OK                0x00ec
-#define SMSG_TRADE_CANCEL            0x00ee
-#define SMSG_TRADE_COMPLETE          0x00f0
 
 // Packets from client to server
-#define CMSG_TRADE_RESPONSE          0x00e6
 #define CMSG_ITEM_PICKUP             0x009f
 #define CMSG_MAP_LOADED              0x007d
 #define CMSG_NPC_BUY_REQUEST         0x00c8
@@ -94,12 +86,7 @@
 #define CMSG_NPC_SELL_REQUEST        0x00c9
 #define CMSG_SKILL_LEVELUP_REQUEST   0x0112
 #define CMSG_STAT_UPDATE_REQUEST     0x00bb
-#define CMSG_TRADE_ITEM_ADD_REQUEST  0x00e8
-#define CMSG_TRADE_CANCEL_REQUEST    0x00ed
-#define CMSG_TRADE_ADD_COMPLETE      0x00eb
-#define CMSG_TRADE_OK                0x00ef
 #define CMSG_NPC_TALK                0x0090
-#define CMSG_TRADE_REQUEST           0x00e4
 #define CMSG_PLAYER_INVENTORY_USE    0x00a7
 #define CMSG_PLAYER_INVENTORY_DROP   0x00a2
 #define CMSG_PLAYER_EQUIP            0x00a9
@@ -183,6 +170,16 @@ enum {
     PGMSG_NPC_TALK                 = 0x02B2, // W being id
     PGMSG_NPC_TALK_NEXT            = 0x02B3, // W being id
     PGMSG_NPC_SELECT               = 0x02B4, // W being id, B choice
+    PGMSG_TRADE_REQUEST            = 0x02C0, // W being id
+    GPMSG_TRADE_REQUEST            = 0x02C1, // W being id
+    GPMSG_TRADE_START              = 0x02C2, // -
+    GPMSG_TRADE_COMPLETE           = 0x02C3, // -
+    PGMSG_TRADE_CANCEL             = 0x02C4, // -
+    GPMSG_TRADE_CANCEL             = 0x02C5, // -
+    PGMSG_TRADE_ACCEPT             = 0x02C6, // -
+    GPMSG_TRADE_ACCEPT             = 0x02C7, // -
+    PGMSG_TRADE_ADD_ITEM           = 0x02C8, // B slot, B amount
+    GPMSG_TRADE_ADD_ITEM           = 0x02C9, // W item id, B amount
     PGMSG_USE_ITEM                 = 0x0300, // L item id
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*

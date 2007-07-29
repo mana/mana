@@ -1,3 +1,9 @@
+2007-07-29  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/localplayer.cpp, src/gui/trade.cpp, src/net/tradehandler.cpp,
+	src/net/gameserver/player.h, src/net/gameserver/player.cpp,
+	src/net/protocol.h: Converted trading to new server.
+
 2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/image.cpp: Added support for subimages of subimages.

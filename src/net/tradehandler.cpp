@@ -26,6 +26,9 @@
 #include "messagein.h"
 #include "protocol.h"
 
+#include "gameserver/player.h"
+
+#include "../beingmanager.h"
 #include "../item.h"
 #include "../localplayer.h"
 
@@ -34,6 +37,7 @@
 #include "../gui/trade.h"
 
 std::string tradePartnerName;
+int tradePartnerID;
 
 /**
  * Listener for request trade dialogs
@@ -43,21 +47,23 @@ namespace {
     {
         void action(const gcn::ActionEvent &event)
         {
-            player_node->tradeReply(event.getId() == "yes");
-        };
+            if (event.getId() == "yes")
+                Net::GameServer::Player::requestTrade(tradePartnerID);
+            else
+                Net::GameServer::Player::acceptTrade(false);
+        }
     } listener;
 }
 
 TradeHandler::TradeHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_TRADE_REQUEST,
-        SMSG_TRADE_RESPONSE,
-        SMSG_TRADE_ITEM_ADD,
-        SMSG_TRADE_ITEM_ADD_RESPONSE,
-        SMSG_TRADE_OK,
-        SMSG_TRADE_CANCEL,
-        SMSG_TRADE_COMPLETE,
+        GPMSG_TRADE_REQUEST,
+        GPMSG_TRADE_CANCEL,
+        GPMSG_TRADE_START,
+        GPMSG_TRADE_COMPLETE,
+        GPMSG_TRADE_ACCEPT,
+        GPMSG_TRADE_ADD_ITEM,
         0
     };
     handledMessages = _messages;
@@ -67,6 +73,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
+#if 0
         case SMSG_TRADE_REQUEST:
                 // If a trade window or request window is already open, send a
                 // trade cancel to any other trade request.
@@ -186,6 +193,54 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_TRADE_COMPLETE:
+            chatWindow->chatLog("Trade completed.", BY_SERVER);
+            tradeWindow->setVisible(false);
+            tradeWindow->reset();
+            player_node->setTrading(false);
+            break;
+#endif
+
+        case GPMSG_TRADE_REQUEST:
+        {
+            Being *being = beingManager->findBeing(msg.readShort());
+            if (!being)
+            {
+                Net::GameServer::Player::acceptTrade(false);
+                break;
+            }
+            player_node->setTrading(true);
+            tradePartnerName = being->getName();
+            tradePartnerID = being->getId();
+            ConfirmDialog *dlg = new ConfirmDialog("Request for trade",
+                tradePartnerName + " wants to trade with you, do you accept?");
+            dlg->addActionListener(&listener);
+        }   break;
+
+        case GPMSG_TRADE_ADD_ITEM:
+        {
+            int type = msg.readShort();
+            int amount = msg.readByte();
+            tradeWindow->addItem(type, false, amount, false);
+        }   break;
+
+        case GPMSG_TRADE_START:
+            tradeWindow->reset();
+            tradeWindow->setCaption("Trading with " + tradePartnerName);
+            tradeWindow->setVisible(true);
+            break;
+
+        case GPMSG_TRADE_ACCEPT:
+            tradeWindow->receivedOk(false);
+            break;
+
+        case GPMSG_TRADE_CANCEL:
+            chatWindow->chatLog("Trade canceled.", BY_SERVER);
+            tradeWindow->setVisible(false);
+            tradeWindow->reset();
+            player_node->setTrading(false);
+            break;
+
+        case GPMSG_TRADE_COMPLETE:
             chatWindow->chatLog("Trade completed.", BY_SERVER);
             tradeWindow->setVisible(false);
             tradeWindow->reset();

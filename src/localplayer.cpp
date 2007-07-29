@@ -274,25 +274,13 @@ void LocalPlayer::emote(Uint8 emotion)
     */
 }
 
-void LocalPlayer::tradeReply(bool accept)
-{
-    if (!accept)
-        mTrading = false;
-
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_TRADE_RESPONSE);
-    outMsg.writeByte(accept ? 3 : 4);
-    */
-}
-
 void LocalPlayer::trade(Being *being) const
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_TRADE_REQUEST);
-    outMsg.writeLong(being->getId());
-    */
+    extern std::string tradePartnerName;
+    extern int tradePartnerID;
+    tradePartnerName = being->getName();
+    tradePartnerID = being->getId();
+    Net::GameServer::Player::requestTrade(tradePartnerID);
 }
 
 bool LocalPlayer::tradeRequestOk() const

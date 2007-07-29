@@ -37,6 +37,9 @@
 
 #include "../inventory.h"
 #include "../item.h"
+#include "../localplayer.h"
+
+#include "../net/gameserver/player.h"
 
 #include "../resources/iteminfo.h"
 
@@ -213,12 +216,9 @@ void TradeWindow::receivedOk(bool own)
 
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeLong(quantity);
-    */
+    Net::GameServer::Player::tradeItem(item->getInvIndex(), quantity);
+    addItem(item->getId(), true, quantity, item->isEquipment());
+    item->increaseQuantity(-quantity);
 }
 
 void TradeWindow::selectionChanged(const SelectionEvent &event)
@@ -262,13 +262,10 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
+        chatWindow->chatLog("Adding item.", BY_SERVER);
         if (!item)
         {
-            return;
-        }
-
-        if (mMyInventory->getFreeSlot() < 1)
-        {
+            chatWindow->chatLog("Nothing to add.", BY_SERVER);
             return;
         }
 
@@ -288,34 +285,14 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "cancel")
     {
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
-        */
+        setVisible(false);
+        reset();
+        player_node->setTrading(false);
+        Net::GameServer::Player::acceptTrade(false);
     }
     else if (event.getId() == "ok")
     {
-        std::stringstream tempMoney(mMoneyField->getText());
-        int tempInt;
-        if (tempMoney >> tempInt)
-        {
-            mMoneyField->setText(toString(tempInt));
-
-            // XXX Convert for new server
-            /*
-            MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
-            outMsg.writeShort(0);
-            outMsg.writeLong(tempInt);
-            */
-        } else {
-            mMoneyField->setText("");
-        }
-        mMoneyField->setEnabled(false);
-
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
-        */
+        Net::GameServer::Player::acceptTrade(true);
     }
     else if (event.getId() == "trade")
     {

@@ -95,3 +95,25 @@ void Net::GameServer::Player::selectFromNPC(int id, int choice)
     msg.writeByte(choice);
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::Player::requestTrade(int id)
+{
+    MessageOut msg(PGMSG_TRADE_REQUEST);
+    msg.writeShort(id);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::acceptTrade(bool accept)
+{
+    MessageOut msg(accept ? PGMSG_TRADE_ACCEPT : PGMSG_TRADE_CANCEL);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::tradeItem(int slot, int amount)
+{
+    MessageOut msg(PGMSG_TRADE_ADD_ITEM);
+    msg.writeByte(slot);
+    msg.writeByte(amount);
+    Net::GameServer::connection->send(msg);
+}
+

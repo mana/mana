@@ -43,6 +43,9 @@ namespace Net
             void changeAction(Being::Action action);
             void talkToNPC(int id, bool restart);
             void selectFromNPC(int id, int choice);
+            void requestTrade(int id);
+            void acceptTrade(bool accept);
+            void tradeItem(int slot, int amount);
         }
     }
 }
