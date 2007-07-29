@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id $
+ *  $Id$
  */
 
 #include "trade.h"
@@ -262,10 +262,8 @@ void TradeWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "add")
     {
-        chatWindow->chatLog("Adding item.", BY_SERVER);
         if (!item)
         {
-            chatWindow->chatLog("Nothing to add.", BY_SERVER);
             return;
         }
 
