@@ -1,3 +1,9 @@
+2007-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindLibcurl.cmake,
+	src/CMakeLists.txt: Switch to upstream CMake modules for libxml2 and
+	curl.
+
 2007-07-29  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/localplayer.cpp, src/gui/trade.cpp, src/net/tradehandler.cpp,
