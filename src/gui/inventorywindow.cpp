@@ -109,12 +109,7 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "use") {
         if (item->isEquipment()) {
-            if (item->isEquipped()) {
-                player_node->unequipItem(item);
-            }
-            else {
-                player_node->equipItem(item);
-            }
+            player_node->equipItem(item);
         }
         else {
             player_node->useItem(item);
@@ -215,12 +210,7 @@ void InventoryWindow::updateButtons()
 
     if ((item = mItems->getItem()) && item->isEquipment())
     {
-        if (item->isEquipped()) {
-            mUseButton->setCaption("Unequip");
-        }
-        else {
-            mUseButton->setCaption("Equip");
-        }
+        mUseButton->setCaption("Equip");
     }
     else {
         mUseButton ->setCaption("Use");

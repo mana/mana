@@ -1,3 +1,17 @@
+2007-07-31  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/equipmenthandler.cpp, src/net/equipmenthandler.h,
+	src/Makefile.am, src/game.h, src/game.cpp: Deleted dead handler.
+	* src/net/buysellhandler.cpp, src/net/skillhandler.cpp,
+	src/net/protocol.h: No need to compile legacy handlers.
+	* src/localplayer.cpp, src/item.cpp, src/inventory.h,
+	src/gui/trade.cpp, src/gui/equipmentwindow.cpp, src/item.h,
+	src/gui/inventorywindow.cpp, src/gui/itemcontainer.cpp,
+	src/gui/trade.h, src/gui/popupmenu.cpp, src/inventory.cpp,
+	src/equipment.h, src/net/tradehandler.cpp, src/equipment.cpp,
+	src/localplayer.h: Removed legacy inventory code.
+	* src/net/inventoryhandler.cpp: Added display of equipment.
+
 2007-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindLibcurl.cmake,

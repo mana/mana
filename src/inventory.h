@@ -49,12 +49,12 @@ class Inventory
         /**
          * Adds a new item in a free slot.
          */
-        void addItem(int id, int quantity, bool equipment);
+        void addItem(int id, int quantity);
 
         /**
          * Adds a new item at a given position.
          */
-        void addItem(int index, int id, int quantity, bool equipment);
+        void addItem(int index, int id, int quantity);
 
         /**
          * Remove a item from the inventory.

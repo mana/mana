@@ -21,3 +21,13 @@
  *  $Id$
  */
 
+#include "item.h"
+
+Item::Item(int id, int quantity) :
+    mId(id),
+    mQuantity(quantity)
+{
+    // Either type or slot, both are unused anyway. -- silene
+    mEquipment = getInfo().getType();
+}
+

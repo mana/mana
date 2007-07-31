@@ -69,7 +69,6 @@
 #include "net/beinghandler.h"
 #include "net/buysellhandler.h"
 #include "net/chathandler.h"
-#include "net/equipmenthandler.h"
 #include "net/inventoryhandler.h"
 #include "net/itemhandler.h"
 #include "net/network.h"
@@ -227,7 +226,6 @@ Game::Game():
     mBeingHandler(new BeingHandler()),
     mBuySellHandler(new BuySellHandler()),
     mChatHandler(new ChatHandler()),
-    mEquipmentHandler(new EquipmentHandler()),
     mInventoryHandler(new InventoryHandler()),
     mItemHandler(new ItemHandler()),
     mNpcHandler(new NPCHandler()),
@@ -271,7 +269,6 @@ Game::Game():
     Net::registerHandler(mBeingHandler.get());
     Net::registerHandler(mBuySellHandler.get());
     Net::registerHandler(mChatHandler.get());
-    Net::registerHandler(mEquipmentHandler.get());
     Net::registerHandler(mInventoryHandler.get());
     Net::registerHandler(mItemHandler.get());
     Net::registerHandler(mNpcHandler.get());

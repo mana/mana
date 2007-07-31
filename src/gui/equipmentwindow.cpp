@@ -50,9 +50,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     // Draw window graphics
     Window::draw(graphics);
 
-    Item *item;
-    Image *image;
-
     // Rectangles around items are black
     graphics->setColor(gcn::Color(0, 0, 0));
 
@@ -60,17 +57,17 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         graphics->drawRectangle(gcn::Rectangle(10 + 36 * (i % 4),
                 36 * (i / 4) + 25, 32, 32));
 
-        if (!(item = mEquipment->getEquipment(i))) {
-            continue;
-        }
+        int item = mEquipment->getEquipment(i);
+        if (!item) continue;
 
-        image = item->getInfo().getImage();
+        Image *image = Item(item).getInfo().getImage();
         static_cast<Graphics*>(graphics)->
             drawImage(image, 36 * (i % 4) + 10, 36 * (i / 4) + 25);
     }
 
     graphics->drawRectangle(gcn::Rectangle(160, 25, 32, 32));
 
+    /*
     if (!(item = mEquipment->getArrows())) {
         return;
     }
@@ -80,4 +77,6 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
     static_cast<Graphics*>(graphics)->drawImage(image, 160, 25);
     graphics->drawText(toString(item->getQuantity()), 170, 62,
             gcn::Graphics::CENTER);
+    */
+    return;
 }

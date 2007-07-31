@@ -44,11 +44,6 @@ extern Window *buySellDialog;
 BuySellHandler::BuySellHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_NPC_BUY_SELL_CHOICE,
-        SMSG_NPC_BUY,
-        SMSG_NPC_SELL,
-        SMSG_NPC_BUY_RESPONSE,
-        SMSG_NPC_SELL_RESPONSE,
         0
     };
     handledMessages = _messages;
@@ -56,9 +51,9 @@ BuySellHandler::BuySellHandler()
 
 void BuySellHandler::handleMessage(MessageIn &msg)
 {
-    int n_items;
     switch (msg.getId())
     {
+#if 0
         case SMSG_NPC_BUY_SELL_CHOICE:
             buyDialog->setVisible(false);
             buyDialog->reset();
@@ -126,5 +121,6 @@ void BuySellHandler::handleMessage(MessageIn &msg)
                 chatWindow->chatLog("Unable to sell", BY_SERVER);
             }
             break;
+#endif
     }
 }

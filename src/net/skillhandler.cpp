@@ -34,8 +34,6 @@
 SkillHandler::SkillHandler()
 {
     static const Uint16 _messages[] = {
-        SMSG_PLAYER_SKILLS,
-        SMSG_SKILL_FAILED,
         0
     };
     handledMessages = _messages;
@@ -43,10 +41,9 @@ SkillHandler::SkillHandler()
 
 void SkillHandler::handleMessage(MessageIn &msg)
 {
-    int skillCount;
-
     switch (msg.getId())
     {
+#if 0
         case SMSG_PLAYER_SKILLS:
             msg.readShort();  // length
             skillCount = (msg.getLength() - 4) / 37;
@@ -91,5 +88,6 @@ void SkillHandler::handleMessage(MessageIn &msg)
             }
             chatWindow->chatLog(action);
             break;
+#endif
     }
 }

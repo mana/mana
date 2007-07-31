@@ -35,19 +35,7 @@ class Item
         /**
          * Constructor.
          */
-        Item(int id = -1, int quantity = 0,
-             bool equipment = false, bool equipped = false):
-            mId(id),
-            mQuantity(quantity),
-            mEquipment(equipment),
-            mEquipped(equipped)
-        {
-        }
-
-        /**
-         * Destructor.
-         */
-        ~Item() {}
+        Item(int id = -1, int quantity = 0);
 
         /**
          * Sets the item id, identifying the item type.
@@ -80,28 +68,10 @@ class Item
         getQuantity() const { return mQuantity; }
 
         /**
-         * Sets whether this item is considered equipment.
-         */
-        void
-        setEquipment(bool equipment) { mEquipment = equipment; }
-
-        /**
          * Returns whether this item is considered equipment.
          */
         bool
         isEquipment() const { return mEquipment; }
-
-        /**
-         * Sets whether this item is equipped.
-         */
-        void
-        setEquipped(bool equipped) { mEquipped = equipped; }
-
-        /**
-         * Returns whether this item is equipped.
-         */
-        bool
-        isEquipped() const { return mEquipped; }
 
         /**
          * Sets the inventory index of this item.
@@ -125,7 +95,6 @@ class Item
         int mId;              /**< Item type id. */
         int mQuantity;        /**< Number of items. */
         bool mEquipment;      /**< Item is equipment. */
-        bool mEquipped;       /**< Item is equipped. */
         int mInvIndex;        /**< Inventory index. */
 };
 

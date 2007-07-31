@@ -134,8 +134,6 @@ class LocalPlayer : public Player
         virtual Type getType() const;
 
         void clearInventory();
-        void addInvItem(int id, int quantity, bool equipment);
-        void addInvItem(int index, int id, int quantity, bool equipment);
         Item* getInvItem(int index);
 
         /**
@@ -146,7 +144,7 @@ class LocalPlayer : public Player
         /**
          * Unequips an item.
          */
-        void unequipItem(Item *item);
+        void unequipItem(int slot);
 
         void useItem(Item *item);
         void dropItem(Item *item, int quantity);

@@ -137,12 +137,12 @@ void TradeWindow::addMoney(int amount)
     mMoneyLabel->adjustSize();
 }
 
-void TradeWindow::addItem(int id, bool own, int quantity, bool equipment)
+void TradeWindow::addItem(int id, bool own, int quantity)
 {
     if (own) {
-        mMyInventory->addItem(id, quantity, equipment);
+        mMyInventory->addItem(id, quantity);
     } else {
-        mPartnerInventory->addItem(id, quantity, equipment);
+        mPartnerInventory->addItem(id, quantity);
     }
 }
 
@@ -217,7 +217,7 @@ void TradeWindow::receivedOk(bool own)
 void TradeWindow::tradeItem(Item *item, int quantity)
 {
     Net::GameServer::Player::tradeItem(item->getInvIndex(), quantity);
-    addItem(item->getId(), true, quantity, item->isEquipment());
+    addItem(item->getId(), true, quantity);
     item->increaseQuantity(-quantity);
 }
 

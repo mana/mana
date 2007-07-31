@@ -220,7 +220,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
         {
             int type = msg.readShort();
             int amount = msg.readByte();
-            tradeWindow->addItem(type, false, amount, false);
+            tradeWindow->addItem(type, false, amount);
         }   break;
 
         case GPMSG_TRADE_START:

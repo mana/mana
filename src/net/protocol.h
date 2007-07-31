@@ -24,74 +24,6 @@
 #ifndef _TMW_PROTOCOL_
 #define _TMW_PROTOCOL_
 
-// Packets from server to client
-#define SMSG_LOGIN_SUCCESS           0x0073 /**< Contains starting location */
-#define SMSG_PLAYER_UPDATE_1         0x01d8
-#define SMSG_PLAYER_UPDATE_2         0x01d9
-#define SMSG_PLAYER_MOVE             0x01da /**< A nearby player moves */
-#define SMSG_PLAYER_STAT_UPDATE_1    0x00b0
-#define SMSG_PLAYER_STAT_UPDATE_2    0x00b1
-#define SMSG_PLAYER_STAT_UPDATE_3    0x0141
-#define SMSG_PLAYER_STAT_UPDATE_4    0x00bc
-#define SMSG_PLAYER_STAT_UPDATE_5    0x00bd
-#define SMSG_PLAYER_STAT_UPDATE_6    0x00be
-#define SMSG_WHO_ANSWER              0x00c2
-#define SMSG_PLAYER_WARP             0x0091 /**< Warp player to map/location */
-#define SMSG_PLAYER_INVENTORY        0x01ee
-#define SMSG_PLAYER_INVENTORY_ADD    0x00a0
-#define SMSG_PLAYER_INVENTORY_REMOVE 0x00af
-#define SMSG_PLAYER_INVENTORY_USE    0x01c8
-#define SMSG_PLAYER_EQUIPMENT        0x00a4
-#define SMSG_PLAYER_EQUIP            0x00aa
-#define SMSG_PLAYER_UNEQUIP          0x00ac
-#define SMSG_PLAYER_ATTACK_RANGE     0x013a
-#define SMSG_PLAYER_ARROW_EQUIP      0x013c
-#define SMSG_PLAYER_ARROW_MESSAGE    0x013b
-#define SMSG_PLAYER_SKILLS           0x010f
-#define SMSG_SKILL_FAILED            0x0110
-#define SMSG_ITEM_USE_RESPONSE       0x00a8
-#define SMSG_ITEM_VISIBLE            0x009d /**< An item is on the floor */
-#define SMSG_ITEM_DROPPED            0x009e /**< An item is dropped */
-#define SMSG_ITEM_REMOVE             0x00a1 /**< An item disappers */
-#define SMSG_BEING_VISIBLE           0x0078
-#define SMSG_BEING_MOVE              0x007b /**< A nearby monster moves */
-#define SMSG_BEING_REMOVE            0x0080
-#define SMSG_BEING_CHANGE_LOOKS      0x00c3
-#define SMSG_BEING_LEVELUP           0x019b
-#define SMSG_BEING_EMOTION           0x00c0
-#define SMSG_BEING_ACTION            0x008a /**< Attack, sit, stand up, ... */
-#define SMSG_BEING_CHAT              0x008d /**< A being talks */
-#define SMSG_BEING_NAME_RESPONSE     0x0095 /**< Has to be requested */
-#define SMSG_NPC_MESSAGE             0x00b4
-#define SMSG_NPC_NEXT                0x00b5
-#define SMSG_NPC_CLOSE               0x00b6
-#define SMSG_NPC_CHOICE              0x00b7 /**< Display a choice */
-#define SMSG_NPC_BUY_SELL_CHOICE     0x00c4
-#define SMSG_NPC_BUY                 0x00c6
-#define SMSG_NPC_SELL                0x00c7
-#define SMSG_NPC_BUY_RESPONSE        0x00ca
-#define SMSG_NPC_SELL_RESPONSE       0x00cb
-#define SMSG_PLAYER_CHAT             0x008e /**< Player talks */
-#define SMSG_GM_CHAT                 0x009a /**< GM announce */
-#define SMSG_WALK_RESPONSE           0x0087
-
-// Packets from client to server
-#define CMSG_ITEM_PICKUP             0x009f
-#define CMSG_MAP_LOADED              0x007d
-#define CMSG_NPC_BUY_REQUEST         0x00c8
-#define CMSG_NPC_BUY_SELL_REQUEST    0x00c5
-#define CMSG_CHAT_MESSAGE            0x008c
-#define CMSG_NPC_LIST_CHOICE         0x00b8
-#define CMSG_NPC_NEXT_REQUEST        0x00b9
-#define CMSG_NPC_SELL_REQUEST        0x00c9
-#define CMSG_SKILL_LEVELUP_REQUEST   0x0112
-#define CMSG_STAT_UPDATE_REQUEST     0x00bb
-#define CMSG_NPC_TALK                0x0090
-#define CMSG_PLAYER_INVENTORY_USE    0x00a7
-#define CMSG_PLAYER_INVENTORY_DROP   0x00a2
-#define CMSG_PLAYER_EQUIP            0x00a9
-#define CMSG_PLAYER_UNEQUIP          0x00ab
-
 /**
  * Enumerated type for communicated messages
  * - PAMSG_*: from client to account server
@@ -146,6 +78,7 @@ enum {
     PGMSG_PICKUP                   = 0x0110, // W*2 position
     PGMSG_DROP                     = 0x0111, // B slot, B amount
     PGMSG_EQUIP                    = 0x0112, // B slot
+    PGMSG_UNEQUIP                  = 0x0113, // B slot
     GPMSG_INVENTORY                = 0x0120, // { B slot, W item id [, B amount] }*
     GPMSG_INVENTORY_FULL           = 0x0121, // { B slot, W item id [, B amount] }*
     GPMSG_PLAYER_ATTRIBUTE_UPDATE  = 0x0130, // { W attribute, W value }*

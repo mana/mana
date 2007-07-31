@@ -116,7 +116,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
 
         // Draw item caption
         graphics->drawText(
-                (item->isEquipped() ? "Eq." : toString(item->getQuantity())),
+                toString(item->getQuantity()),
                 itemX + gridWidth / 2,
                 itemY + gridHeight - 11,
                 gcn::Graphics::CENTER);

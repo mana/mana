@@ -168,14 +168,7 @@ void PopupMenu::handleLink(const std::string& link)
         assert(mItem);
         if (mItem->isEquipment())
         {
-            if (mItem->isEquipped())
-            {
-                player_node->unequipItem(mItem);
-            }
-            else
-            {
-                player_node->equipItem(mItem);
-            }
+            player_node->equipItem(mItem);
         }
         else
         {
@@ -221,10 +214,7 @@ void PopupMenu::showPopup(int x, int y, Item *item)
 
     if (item->isEquipment())
     {
-        if (item->isEquipped())
-            mBrowserBox->addRow("@@use|Unequip@@");
-        else
-            mBrowserBox->addRow("@@use|Equip@@");
+        mBrowserBox->addRow("@@use|Equip@@");
     }
     else
         mBrowserBox->addRow("@@use|Use@@");

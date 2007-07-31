@@ -95,16 +95,6 @@ void LocalPlayer::clearInventory()
     mInventory->clear();
 }
 
-void LocalPlayer::addInvItem(int id, int quantity, bool equipment)
-{
-    mInventory->addItem(id, quantity, equipment);
-}
-
-void LocalPlayer::addInvItem(int index, int id, int quantity, bool equipment)
-{
-    mInventory->addItem(index, id, quantity, equipment);
-}
-
 Item* LocalPlayer::getInvItem(int index)
 {
     return mInventory->getItem(index);
@@ -115,11 +105,8 @@ void LocalPlayer::equipItem(Item *item)
     Net::GameServer::Player::equip(item->getInvIndex());
 }
 
-void LocalPlayer::unequipItem(Item *item)
+void LocalPlayer::unequipItem(int slot)
 {
-    if (!item)
-        return;
-
     // XXX Convert for new server
     /*
     MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
@@ -127,7 +114,7 @@ void LocalPlayer::unequipItem(Item *item)
     */
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
-    mEquipment->removeEquipment(item);
+    mEquipment->setEquipment(slot, 0);
 }
 
 void LocalPlayer::useItem(Item *item)

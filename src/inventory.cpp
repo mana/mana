@@ -49,7 +49,7 @@ Inventory::~Inventory()
 
 Item* Inventory::getItem(int index)
 {
-    if (index < 0 || index > INVENTORY_SIZE)
+    if (index < 0 || index >= INVENTORY_SIZE)
     {
         return 0;
     }
@@ -57,16 +57,15 @@ Item* Inventory::getItem(int index)
     return &mItems[index];
 }
 
-void Inventory::addItem(int id, int quantity, bool equipment)
+void Inventory::addItem(int id, int quantity)
 {
-    addItem(getFreeSlot(), id, quantity, equipment);
+    addItem(getFreeSlot(), id, quantity);
 }
 
-void Inventory::addItem(int index, int id, int quantity, bool equipment)
+void Inventory::addItem(int index, int id, int quantity)
 {
     mItems[index].setId(id);
     mItems[index].increaseQuantity(quantity);
-    mItems[index].setEquipment(equipment);
 }
 
 
@@ -75,7 +74,6 @@ void Inventory::clear()
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         mItems[i].setId(-1);
         mItems[i].setQuantity(0);
-        mItems[i].setEquipped(false);
     }
 }
 
@@ -85,7 +83,6 @@ void Inventory::removeItem(int id)
         if (mItems[i].getId() == id) {
             mItems[i].setId(-1);
             mItems[i].setQuantity(0);
-            mItems[i].setEquipped(false);
         }
     }
 }

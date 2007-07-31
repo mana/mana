@@ -21,29 +21,12 @@
  *  $Id$
  */
 
-#include "equipment.h"
-
 #include <algorithm>
 
-#include "item.h"
+#include "equipment.h"
 
-Equipment::Equipment():
-    mArrows(0)
+Equipment::Equipment()
 {
-    std::fill_n(mEquipment, EQUIPMENT_SIZE, (Item*)0);
+    std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
 }
 
-void
-Equipment::removeEquipment(Item *item)
-{
-    Item **i = std::find(mEquipment, mEquipment+EQUIPMENT_SIZE, item);
-    if (i != mEquipment+EQUIPMENT_SIZE) {
-        *i = 0;
-    }
-}
-
-void Equipment::setEquipment(int index, Item *item)
-{
-    mEquipment[index] = item;
-    item->setEquipped(true);
-}
