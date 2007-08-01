@@ -31,3 +31,9 @@ Item::Item(int id, int quantity) :
     mEquipment = getInfo().getType();
 }
 
+void Item::setId(int id)
+{
+    mId = id;
+    mEquipment = getInfo().getType();
+}
+

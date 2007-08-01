@@ -40,8 +40,7 @@ class Item
         /**
          * Sets the item id, identifying the item type.
          */
-        void
-        setId(int id) { mId = id; }
+        void setId(int id);
 
         /**
          * Returns the item id.
