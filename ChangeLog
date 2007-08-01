@@ -1,3 +1,8 @@
+2007-08-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/item.cpp, src/item.h: Fixed update of equipment flag, so that
+	items can be equipped properly.
+
 2007-07-31  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/net/equipmenthandler.cpp, src/net/equipmenthandler.h,
