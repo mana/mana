@@ -1,9 +1,17 @@
-﻿2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
+﻿2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
 
-  * src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
-  src/gui/setup_keyboard.h, src/keyboardconfig.cpp,
-  src/keyboardconfig.h, src/main.cpp: minor changes to
-  keyboard config, keyboard setup gui re-designed.
+	* data/graphics/tiles/woodland_indoor.png,
+	data/graphics/tiles/woodland_indoor_x2.png,
+	data/graphics/tiles/woodland_indoor_x3.png: Added woodland
+	village indoor tilesets.
+	* data/maps/new_20-1.tmx.gz: Added woodland village indoor map.
+
+2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
+	src/gui/setup_keyboard.h, src/keyboardconfig.cpp,
+	src/keyboardconfig.h, src/main.cpp: minor changes to
+	keyboard config, keyboard setup gui re-designed.
 
 2007-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
