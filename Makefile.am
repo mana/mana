@@ -1,5 +1,5 @@
 # Subdirectories to build
-SUBDIRS = data docs src
+SUBDIRS = data docs po src
 
 desktopdir = $(datadir)/applications
 

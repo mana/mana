@@ -1,0 +1,33 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR The Mana World Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2007-08-05 18:09+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/gui/inventorywindow.cpp:48
+msgid "Inventory"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:56 src/gui/inventorywindow.cpp:216
+msgid "Use"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:57
+msgid "Drop"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:213
+msgid "Equip"
+msgstr ""

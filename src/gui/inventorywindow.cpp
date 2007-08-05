@@ -39,22 +39,22 @@
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../resources/gettext.h"
 #include "../resources/iteminfo.h"
 
 #include "../utils/tostring.h"
 
 InventoryWindow::InventoryWindow():
-    Window("Inventory")
+    Window(_("Inventory"))
 {
-    setWindowName("Inventory");
     setResizable(true);
     setMinWidth(240);
     setMinHeight(172);
     // If you adjust these defaults, don't forget to adjust the trade window's.
     setDefaultSize(115, 25, 322, 172);
 
-    mUseButton = new Button("Use", "use", this);
-    mDropButton = new Button("Drop", "drop", this);
+    mUseButton = new Button(_("Use"), "use", this);
+    mDropButton = new Button(_("Drop"), "drop", this);
 
     mItems = new ItemContainer(player_node->mInventory.get());
     mItems->addSelectionListener(this);
@@ -210,10 +210,10 @@ void InventoryWindow::updateButtons()
 
     if ((item = mItems->getItem()) && item->isEquipment())
     {
-        mUseButton->setCaption("Equip");
+        mUseButton->setCaption(_("Equip"));
     }
     else {
-        mUseButton ->setCaption("Use");
+        mUseButton ->setCaption(_("Use"));
     }
 
     mUseButton->setEnabled(!!item);

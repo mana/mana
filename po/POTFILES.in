@@ -1,0 +1,4 @@
+# List of source files which contain translatable strings.
+
+src/gui/inventorywindow.cpp
+

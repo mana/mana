@@ -85,6 +85,7 @@
 #include "net/gameserver/gameserver.h"
 
 #include "resources/equipmentdb.h"
+#include "resources/gettext.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -665,6 +666,12 @@ int main(int argc, char *argv[])
         printVersion();
         return 0;
     }
+
+#if ENABLE_NLS
+    setlocale(LC_MESSAGES, "");
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
 
     // Initialize PhysicsFS
     PHYSFS_init(argv[0]);

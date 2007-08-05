@@ -1,3 +1,12 @@
+2007-08-05  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* configure.ac, Makefile.am, po, src/Makefile.am, src/main.cpp,
+	src/resources/gettext.h: Added support for internationalization.
+	* src/gui/inventorywindow.cpp: Marked a few strings as translatable for
+	testing purpose.
+	* po/tmw.pot: Generated the main template.
+	* po/LINGUAS, po/fr.po: Added the french translation.
+
 2007-08-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/item.cpp, src/item.h: Fixed update of equipment flag, so that
