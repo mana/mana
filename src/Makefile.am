@@ -307,5 +307,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
+	-DHAS_CONFIG_H                          \
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"      \
 	-DLOCALEDIR=\""$(localedir)"\"

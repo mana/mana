@@ -24,7 +24,9 @@
 #ifndef _TMW_RESOURCES_GETTEXT_H
 #define _TMW_RESOURCES_GETTEXT_H
 
+#ifdef HAS_CONFIG_H
 #include "../../config.h"
+#endif
 
 #if ENABLE_NLS
 
