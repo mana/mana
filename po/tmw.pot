@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2007-08-05 18:09+0200\n"
+"POT-Creation-Date: 2007-08-06 08:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,18 +16,38 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/gui/inventorywindow.cpp:48
+#: src/gui/inventorywindow.cpp:49
 msgid "Inventory"
 msgstr ""
 
-#: src/gui/inventorywindow.cpp:56 src/gui/inventorywindow.cpp:216
+#: src/gui/inventorywindow.cpp:57 src/gui/inventorywindow.cpp:205
 msgid "Use"
 msgstr ""
 
-#: src/gui/inventorywindow.cpp:57
+#: src/gui/inventorywindow.cpp:58
 msgid "Drop"
 msgstr ""
 
-#: src/gui/inventorywindow.cpp:213
+#: src/gui/inventorywindow.cpp:67 src/gui/inventorywindow.cpp:131
+#, c-format
+msgid "Name: %s"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:68 src/gui/inventorywindow.cpp:135
+#, c-format
+msgid "Description: %s"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:69 src/gui/inventorywindow.cpp:133
+#, c-format
+msgid "Effect: %s"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:70 src/gui/inventorywindow.cpp:97
+#, c-format
+msgid "Total Weight: %d - Maximum Weight: %d"
+msgstr ""
+
+#: src/gui/inventorywindow.cpp:202
 msgid "Equip"
 msgstr ""

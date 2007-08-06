@@ -42,7 +42,7 @@
 #include "../resources/gettext.h"
 #include "../resources/iteminfo.h"
 
-#include "../utils/tostring.h"
+#include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow():
     Window(_("Inventory"))
@@ -63,10 +63,10 @@ InventoryWindow::InventoryWindow():
     mInvenScroll->setPosition(8, 8);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mItemNameLabel = new gcn::Label("Name:");
-    mItemDescriptionLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
-    mWeightLabel = new gcn::Label("Total Weight: - Maximum Weight: ");
+    mItemNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
+    mItemDescriptionLabel = new gcn::Label(strprintf(_("Description: %s"), ""));
+    mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
+    mWeightLabel = new gcn::Label(strprintf(_("Total Weight: %d - Maximum Weight: %d"), 0, 0));
     mWeightLabel->setPosition(8, 8);
     mInvenScroll->setPosition(8,
             mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
@@ -93,9 +93,8 @@ void InventoryWindow::logic()
     updateButtons();
 
     // Update weight information
-    mWeightLabel->setCaption(
-            "Total Weight: " + toString(player_node->getTotalWeight()) + " - "
-            "Maximum Weight: " + toString(player_node->getMaxWeight()));
+    mWeightLabel->setCaption(strprintf(_("Total Weight: %d - Maximum Weight: %d"),
+        player_node->getTotalWeight(), player_node->getMaxWeight()));
     mWeightLabel->adjustSize();
 }
 
@@ -125,29 +124,18 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
 void InventoryWindow::selectionChanged(const SelectionEvent &event)
 {
     Item *item = mItems->getItem();
+    ItemInfo const *info = item ? &item->getInfo() : NULL;
 
-    // Update name, effect and description
-    if (!item)
-    {
-        mItemNameLabel->setCaption("Name:");
-        mItemEffectLabel->setCaption("Effect:");
-        mItemDescriptionLabel->setCaption("Description:");
-    }
-    else
-    {
-        const ItemInfo& itemInfo = item->getInfo();
-        std::string SomeText;
-        SomeText = "Name: " + itemInfo.getName();
-        mItemNameLabel->setCaption(SomeText);
-        SomeText = "Effect: " + itemInfo.getEffect();
-        mItemEffectLabel->setCaption(SomeText);
-        SomeText = "Description: " + itemInfo.getDescription();
-        mItemDescriptionLabel->setCaption(SomeText);
+    mItemNameLabel->setCaption
+        (strprintf(_("Name: %s"), info ? info->getName().c_str() : ""));
+    mItemEffectLabel->setCaption
+        (strprintf(_("Effect: %s"), info ? info->getEffect().c_str() : ""));
+    mItemDescriptionLabel->setCaption
+        (strprintf(_("Description: %s"), info ? info->getDescription().c_str() : ""));
 
-        mItemNameLabel->adjustSize();
-        mItemEffectLabel->adjustSize();
-        mItemDescriptionLabel->adjustSize();
-    }
+    mItemNameLabel->adjustSize();
+    mItemEffectLabel->adjustSize();
+    mItemDescriptionLabel->adjustSize();
 }
 
 void InventoryWindow::mouseClicked(gcn::MouseEvent &event)

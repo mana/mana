@@ -1,3 +1,13 @@
+2007-08-06  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/Makefile.am, src/utils/strprintf.h, src/utils/strprintf.cpp:
+	Added a helper function for printf-formatting a (gettext) C string into
+	a dynamically-sized C++ string.
+	* src/gui/inventory.cpp: Completed marking of translatable strings for
+	inventory window.
+	* po/tmw.pot: Updated with new translatable strings.
+	* po/fr.po: Completed translation of inventory window in french.
+
 2007-08-05  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* configure.ac, Makefile.am, po, src/Makefile.am, src/main.cpp,

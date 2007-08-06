@@ -232,6 +232,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
 	      utils/minmax.h \
+	      utils/strprintf.h \
+	      utils/strprintf.cpp \
 	      utils/tostring.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
