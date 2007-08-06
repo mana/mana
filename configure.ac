@@ -21,6 +21,7 @@ AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
 
 # Checks for internationalization support
 AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.16.1])
 
 # Search for *-config
 AC_PATH_PROG(SDL_CONFIG, sdl-config)

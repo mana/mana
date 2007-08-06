@@ -194,7 +194,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/equipmentdb.cpp \
 	      resources/equipmentdb.h \
 	      resources/equipmentinfo.h \
-	      resources/gettext.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imagewriter.cpp \
@@ -231,6 +230,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/base64.h \
 	      utils/dtor.h \
 	      utils/fastsqrt.h \
+	      utils/gettext.h \
 	      utils/minmax.h \
 	      utils/strprintf.h \
 	      utils/strprintf.cpp \
@@ -309,6 +309,5 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 # set the include path found by configure
 INCLUDES =					\
 	$(all_includes)				\
-	-DHAS_CONFIG_H                          \
 	-DTMW_DATADIR=\""$(pkgdatadir)/"\"      \
 	-DLOCALEDIR=\""$(localedir)"\"

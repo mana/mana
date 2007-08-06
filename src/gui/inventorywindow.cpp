@@ -39,9 +39,9 @@
 #include "../item.h"
 #include "../localplayer.h"
 
-#include "../resources/gettext.h"
 #include "../resources/iteminfo.h"
 
+#include "../utils/gettext.h"
 #include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow():

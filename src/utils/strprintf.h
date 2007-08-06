@@ -22,7 +22,7 @@
  */
 
 #ifndef _TMW_UTILS_STRPRINTF_H
-#define _TMW_UTISL_STRPRINTF_H
+#define _TMW_UTILS_STRPRINTF_H
 
 #include <string>
 

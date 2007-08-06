@@ -7,6 +7,12 @@
 	inventory window.
 	* po/tmw.pot: Updated with new translatable strings.
 	* po/fr.po: Completed translation of inventory window in french.
+	* src/resources/gettext.h, src/main.cpp: Moved header to utils
+	directory.
+	* src/utils/tostring.h: Fixed typo in macro guard.
+	* po/Makefile.in.in, po/remove-potcdate.sin, configure.ac, Makefile.am,
+	autogen.sh: Used autopoint for generating gettext environment, and
+	removed conflicting files.
 
 2007-08-05  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

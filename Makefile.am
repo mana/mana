@@ -7,3 +7,6 @@ desktop_DATA = tmw.desktop
 
 # Extra files to include
 EXTRA_DIST = $(desktop_DATA)
+
+# Autopoint m4 stuff
+ACLOCAL_AMFLAGS = -I m4

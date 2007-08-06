@@ -85,13 +85,13 @@
 #include "net/gameserver/gameserver.h"
 
 #include "resources/equipmentdb.h"
-#include "resources/gettext.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
 #include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
+#include "utils/gettext.h"
 #include "utils/tostring.h"
 
 std::string token; //used to store magic_token
