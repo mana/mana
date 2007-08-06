@@ -1,4 +1,14 @@
-﻿2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/npcs.png: Added two new NPCs and gave some
+	of the older NPCs a makeover to look more like the style of the new
+	playerset.
+	* data/maps/new_20-1.tmx.gz: Corrected a few mapping errors in the 
+	new woodland village.
+	* data/items.xml: Tweaked description and values of the scythe.
+	
+
+2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/woodland_indoor.png,
 	data/graphics/tiles/woodland_indoor_x2.png,
