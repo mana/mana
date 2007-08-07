@@ -30,12 +30,14 @@
 #include "../configuration.h"
 #include "../joystick.h"
 
+#include "../utils/gettext.h"
+
 extern Joystick *joystick;
 
 Setup_Joystick::Setup_Joystick():
-    mCalibrateLabel(new gcn::Label("Press the button to start calibration")),
-    mCalibrateButton(new Button("Calibrate", "calibrate", this)),
-    mJoystickEnabled(new CheckBox("Enable joystick"))
+    mCalibrateLabel(new gcn::Label(_("Press the button to start calibration"))),
+    mCalibrateButton(new Button(_("Calibrate"), "calibrate", this)),
+    mJoystickEnabled(new CheckBox(_("Enable joystick")))
 {
     setOpaque(false);
     mJoystickEnabled->setPosition(10, 10);
@@ -65,13 +67,13 @@ void Setup_Joystick::action(const gcn::ActionEvent &event)
     else
     {
         if (joystick->isCalibrating()) {
-            mCalibrateButton->setCaption("Calibrate");
-            mCalibrateLabel->setCaption(
-                    "Press the button to start calibration");
+            mCalibrateButton->setCaption(_("Calibrate"));
+            mCalibrateLabel->setCaption
+                (_("Press the button to start calibration"));
             joystick->finishCalibration();
         } else {
-            mCalibrateButton->setCaption("Stop");
-            mCalibrateLabel->setCaption("Rotate the stick");
+            mCalibrateButton->setCaption(_("Stop"));
+            mCalibrateLabel->setCaption(_("Rotate the stick"));
             joystick->startCalibration();
         }
     }

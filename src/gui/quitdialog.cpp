@@ -31,16 +31,18 @@
 #include "button.h"
 #include "radiobutton.h"
 
+#include "../utils/gettext.h"
+
 QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
-    Window("Quit", true, NULL), mQuitGame(quitGame), mMyPointer(pointerToMe)
+    Window(_("Quit"), true, NULL), mQuitGame(quitGame), mMyPointer(pointerToMe)
 {
 
-    mLogoutQuit = new RadioButton("Quit", "quitdialog");
-    mForceQuit = new RadioButton("Quit", "quitdialog");
-    mSwitchAccountServer = new RadioButton("Switch server", "quitdialog");
-    mSwitchCharacter = new RadioButton("Switch character", "quitdialog");
-    mOkButton = new Button("OK", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
+    mForceQuit = new RadioButton(_("Quit"), "quitdialog");
+    mSwitchAccountServer = new RadioButton(_("Switch server"), "quitdialog");
+    mSwitchCharacter = new RadioButton(_("Switch character"), "quitdialog");
+    mOkButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(200, 91);
 

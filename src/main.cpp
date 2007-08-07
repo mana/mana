@@ -669,8 +669,9 @@ int main(int argc, char *argv[])
 
 #if ENABLE_NLS
     setlocale(LC_MESSAGES, "");
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
+    bindtextdomain("tmw", LOCALEDIR);
+    bind_textdomain_codeset("tmw", "UTF-8");
+    textdomain("tmw");
 #endif
 
     // Initialize PhysicsFS

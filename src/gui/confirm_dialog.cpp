@@ -27,14 +27,15 @@
 
 #include "button.h"
 
+#include "../utils/gettext.h"
 
 ConfirmDialog::ConfirmDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
-    gcn::Button *yesButton = new Button("Yes", "yes", this);
-    gcn::Button *noButton = new Button("No", "no", this);
+    gcn::Button *yesButton = new Button(_("Yes"), "yes", this);
+    gcn::Button *noButton = new Button(_("No"), "no", this);
 
     int w = textLabel->getWidth() + 20;
     int inWidth = yesButton->getWidth() + noButton->getWidth() + 5;

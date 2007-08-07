@@ -39,6 +39,7 @@
 #include "../logindata.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 const short MAX_SERVERLIST = 5;
@@ -98,10 +99,10 @@ void ServersListModel::addElement(Server server)
 }
 
 ServerDialog::ServerDialog(LoginData *loginData):
-    Window("Choose your Mana World Server"), mLoginData(loginData)
+    Window(_("Choose your Mana World Server")), mLoginData(loginData)
 {
-    gcn::Label *serverLabel = new gcn::Label("Server:");
-    gcn::Label *portLabel = new gcn::Label("Port:");
+    gcn::Label *serverLabel = new gcn::Label(_("Server:"));
+    gcn::Label *portLabel = new gcn::Label(_("Port:"));
     mServerNameField = new TextField(mLoginData->hostname);
     mPortField = new TextField(toString(mLoginData->port));
 
@@ -134,8 +135,8 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mDropDownListener = new DropDownListener(mServerNameField, mPortField,
             mMostUsedServersListModel, mMostUsedServersListBox);
 
-    mOkButton = new Button("OK", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mOkButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(200, 100);
 
@@ -201,7 +202,7 @@ ServerDialog::action(const gcn::ActionEvent &event)
         // Check login
         if (mServerNameField->getText().empty() || mPortField->getText().empty())
         {
-            OkDialog *dlg = new OkDialog("Error", "Enter the chosen server.");
+            OkDialog *dlg = new OkDialog(_("Error"), "Enter the chosen server.");
             dlg->addActionListener(mDropDownListener);
         }
         else

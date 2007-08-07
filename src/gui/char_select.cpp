@@ -45,6 +45,8 @@
 #include "../net/charserverhandler.h"
 #include "../net/messageout.h"
 
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 // Defined in main.cpp, used here for setting the char create dialog
@@ -63,8 +65,8 @@ class CharDeleteConfirm : public ConfirmDialog
 };
 
 CharDeleteConfirm::CharDeleteConfirm(CharSelectDialog *m):
-    ConfirmDialog("Confirm",
-                  "Are you sure you want to delete this character?", m),
+    ConfirmDialog(_("Confirm"),
+                  _("Are you sure you want to delete this character?"), m),
     master(m)
 {
 }
@@ -80,21 +82,21 @@ void CharDeleteConfirm::action(const gcn::ActionEvent &event)
 
 CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
                                    LoginData *loginData):
-    Window("Select Character"),
+    Window(_("Select Character")),
     mCharInfo(charInfo), mCharSelected(false), mLoginData(loginData)
 {
 
-    mSelectButton = new Button("Ok", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mNewCharButton = new Button("New", "new", this);
-    mDelCharButton = new Button("Delete", "delete", this);
-    mPreviousButton = new Button("Previous", "previous", this);
-    mNextButton = new Button("Next", "next", this);
-    mUnRegisterButton = new Button("Unregister", "unregister", this);
+    mSelectButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mNewCharButton = new Button(_("New"), "new", this);
+    mDelCharButton = new Button(_("Delete"), "delete", this);
+    mPreviousButton = new Button(_("Previous"), "previous", this);
+    mNextButton = new Button(_("Next"), "next", this);
+    mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
 
-    mNameLabel = new gcn::Label("Name");
-    mLevelLabel = new gcn::Label("Level");
-    mMoneyLabel = new gcn::Label("Money");
+    mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
+    mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
+    mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
     mPlayerBox = new PlayerBox();
 
     int w = 195;
@@ -198,9 +200,9 @@ void CharSelectDialog::updatePlayerInfo()
 
     if (pi)
     {
-        mNameLabel->setCaption(pi->getName());
-        mLevelLabel->setCaption("Lvl: " + toString(pi->getLevel()));
-        mMoneyLabel->setCaption("Money: " + toString(pi->getMoney()));
+        mNameLabel->setCaption(strprintf(_("Name: %s"), pi->getName().c_str()));
+        mLevelLabel->setCaption(strprintf(_("Level: %d"), pi->getLevel()));
+        mMoneyLabel->setCaption(strprintf(_("Money: %d"), pi->getMoney()));
         if (!mCharSelected)
         {
             mNewCharButton->setEnabled(false);
@@ -209,9 +211,9 @@ void CharSelectDialog::updatePlayerInfo()
         }
     }
     else {
-        mNameLabel->setCaption("Name");
-        mLevelLabel->setCaption("Level");
-        mMoneyLabel->setCaption("Money");
+        mNameLabel->setCaption(strprintf(_("Name: %s"), ""));
+        mLevelLabel->setCaption(strprintf(_("Level: %d"), 0));
+        mMoneyLabel->setCaption(strprintf(_("Money: %d"), 0));
         mNewCharButton->setEnabled(true);
         mDelCharButton->setEnabled(false);
         mSelectButton->setEnabled(false);
@@ -259,30 +261,30 @@ std::string CharSelectDialog::getName()
 }
 
 CharCreateDialog::CharCreateDialog(Window *parent, int slot):
-    Window("Create Character", true, parent), mSlot(slot)
+    Window(_("Create Character"), true, parent), mSlot(slot)
 {
     mPlayer = new Player(0, 0, NULL);
     mPlayer->setHairStyle(rand() % NR_HAIR_STYLES);
     mPlayer->setHairColor(rand() % NR_HAIR_COLORS);
 
     mNameField = new TextField("");
-    mNameLabel = new gcn::Label("Name:");
+    mNameLabel = new gcn::Label(_("Name:"));
     mNextHairColorButton = new Button(">", "nextcolor", this);
     mPrevHairColorButton = new Button("<", "prevcolor", this);
-    mHairColorLabel = new gcn::Label("Hair Color:");
+    mHairColorLabel = new gcn::Label(_("Hair Color:"));
     mNextHairStyleButton = new Button(">", "nextstyle", this);
     mPrevHairStyleButton = new Button("<", "prevstyle", this);
-    mHairStyleLabel = new gcn::Label("Hair Style:");
-    mCreateButton = new Button("Create", "create", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
+    mHairStyleLabel = new gcn::Label(_("Hair Style:"));
+    mCreateButton = new Button(_("Create"), "create", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
     mPlayerBox = new PlayerBox(mPlayer);
-    mAttributeLabel[0] = new gcn::Label("Strength:");
-    mAttributeLabel[1] = new gcn::Label("Agility:");
-    mAttributeLabel[2] = new gcn::Label("Dexterity:");
-    mAttributeLabel[3] = new gcn::Label("Vitality:");
-    mAttributeLabel[4] = new gcn::Label("Intelligence:");
-    mAttributeLabel[5] = new gcn::Label("Willpower:");
-    mAttributeLabel[6] = new gcn::Label("Charisma:");
+    mAttributeLabel[0] = new gcn::Label(_("Strength:"));
+    mAttributeLabel[1] = new gcn::Label(_("Agility:"));
+    mAttributeLabel[2] = new gcn::Label(_("Dexterity:"));
+    mAttributeLabel[3] = new gcn::Label(_("Vitality:"));
+    mAttributeLabel[4] = new gcn::Label(_("Intelligence:"));
+    mAttributeLabel[5] = new gcn::Label(_("Willpower:"));
+    mAttributeLabel[6] = new gcn::Label(_("Charisma:"));
     for (int i=0; i<7; i++)
     {
         mAttributeLabel[i]->setWidth(70);
@@ -290,7 +292,7 @@ CharCreateDialog::CharCreateDialog(Window *parent, int slot):
         mAttributeValue[i] = new gcn::Label("1");
     };
 
-    mAttributesLeft = new gcn::Label("Please distribute # points");
+    mAttributesLeft = new gcn::Label(strprintf(_("Please distribute %d points"), 99));
 
     mNameField->setActionEventId("create");
 
@@ -382,8 +384,8 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
             );
         }
         else {
-            new OkDialog("Error",
-                    "Your name needs to be at least 4 characters.", this);
+            new OkDialog(_("Error"),
+                    _("Your name needs to be at least 4 characters."), this);
         }
     }
     else if (event.getId() == "cancel") {
@@ -428,7 +430,7 @@ void CharCreateDialog::UpdateSliders()
     int pointsLeft = 70 - getDistributedPoints();
     if (pointsLeft == 0)
     {
-        mAttributesLeft->setCaption("Character stats OK");
+        mAttributesLeft->setCaption(_("Character stats OK"));
         mCreateButton->setEnabled(true);
     }
     else
@@ -436,13 +438,11 @@ void CharCreateDialog::UpdateSliders()
         mCreateButton->setEnabled(false);
         if (pointsLeft > 0)
         {
-            mAttributesLeft->setCaption(std::string("Please distribute " +
-                                        toString(pointsLeft) + " points"));
+            mAttributesLeft->setCaption(strprintf(_("Please distribute %d points"), pointsLeft));
         }
         else
         {
-            mAttributesLeft->setCaption(std::string("Please remove " +
-                                        toString(-pointsLeft) + " points"));
+            mAttributesLeft->setCaption(strprintf(_("Please remove %d points"), -pointsLeft));
         }
     }
 

@@ -31,8 +31,10 @@
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../utils/gettext.h"
+
 ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
-    Window("Select amount of items to drop.", true, parent),
+    Window("", true, parent),
     mItem(item)
 {
     // New labels
@@ -41,8 +43,8 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     // New buttons
     Button *minusButton = new Button("-", "Minus", this);
     Button *plusButton = new Button("+", "Plus", this);
-    Button *okButton = new Button("Okay", "Drop", this);
-    Button *cancelButton = new Button("Cancel", "Cancel", this);
+    Button *okButton = new Button(_("Ok"), "Drop", this);
+    Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
     mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
 
     mItemAmountTextBox->setRange(1, mItem->getQuantity());
@@ -74,11 +76,11 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
 
     switch (usage) {
         case AMOUNT_TRADE_ADD:
-            setCaption("Select amount of items to trade.");
+            setCaption(_("Select amount of items to trade."));
             okButton->setActionEventId("AddTrade");
             break;
         case AMOUNT_ITEM_DROP:
-            setCaption("Select amount of items to drop.");
+            setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
             break;
         default:

@@ -31,12 +31,11 @@
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
 
-#include "../utils/tostring.h"
+#include "../utils/gettext.h"
 
 EquipmentWindow::EquipmentWindow(Equipment *equipment):
-    Window("Equipment"), mEquipment(equipment)
+    Window(_("Equipment")), mEquipment(equipment)
 {
-    setWindowName("Equipment");
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
 }

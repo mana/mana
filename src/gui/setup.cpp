@@ -30,6 +30,7 @@
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
 
 extern Window *statusWindow;
 extern Window *minimap;
@@ -40,18 +41,18 @@ extern Window *helpWindow;
 extern Window *skillDialog;
 
 Setup::Setup():
-    Window("Setup")
+    Window(_("Setup"))
 {
     int width = 230;
     int height = 245;
     setContentSize(width, height);
 
-    const char *buttonNames[] = {
-        "Apply", "Cancel", "Reset Windows", 0
+    static char const *buttonNames[] = {
+        N_("Apply"), N_("Cancel"), N_("Reset Windows"), 0
     };
     int x = width;
     for (const char **curBtn = buttonNames; *curBtn; ++curBtn) {
-        Button *btn = new Button(*curBtn, *curBtn, this);
+        Button *btn = new Button(gettext(*curBtn), *curBtn, this);
         x -= btn->getWidth() + 5;
         btn->setPosition(x, height - btn->getHeight() - 5);
         add(btn);
@@ -64,15 +65,15 @@ Setup::Setup():
     SetupTab *tab;
 
     tab = new Setup_Video();
-    panel->addTab(tab, "Video");
+    panel->addTab(tab, _("Video"));
     mTabs.push_back(tab);
 
     tab = new Setup_Audio();
-    panel->addTab(tab, "Audio");
+    panel->addTab(tab, _("Audio"));
     mTabs.push_back(tab);
 
     tab = new Setup_Joystick();
-    panel->addTab(tab, "Joystick");
+    panel->addTab(tab, _("Joystick"));
     mTabs.push_back(tab);
 
     add(panel);

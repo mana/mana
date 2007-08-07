@@ -44,6 +44,7 @@
 #include "../log.h"
 #include "../main.h"
 
+#include "../utils/gettext.h"
 #include "../utils/tostring.h"
 
 extern Graphics *graphics;
@@ -109,11 +110,11 @@ Setup_Video::Setup_Video():
     mFps((int)config.getValue("fpslimit", 60)),
     mModeListModel(new ModeListModel()),
     mModeList(new ListBox(mModeListModel)),
-    mFsCheckBox(new CheckBox("Full screen", mFullScreenEnabled)),
-    mOpenGLCheckBox(new CheckBox("OpenGL", mOpenGLEnabled)),
-    mCustomCursorCheckBox(new CheckBox("Custom cursor", mCustomCursorEnabled)),
+    mFsCheckBox(new CheckBox(_("Full screen"), mFullScreenEnabled)),
+    mOpenGLCheckBox(new CheckBox(_("OpenGL"), mOpenGLEnabled)),
+    mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mAlphaSlider(new Slider(0.2, 1.0)),
-    mFpsCheckBox(new CheckBox("FPS Limit: ")),
+    mFpsCheckBox(new CheckBox(_("FPS Limit:"))),
     mFpsSlider(new Slider(10, 200)),
     mFpsField(new TextField()),
     mOriginalScrollLaziness((int) config.getValue("ScrollLaziness", 32)),
@@ -129,7 +130,7 @@ Setup_Video::Setup_Video():
     setOpaque(false);
 
     ScrollArea *scrollArea = new ScrollArea(mModeList);
-    gcn::Label *alphaLabel = new gcn::Label("Gui opacity");
+    gcn::Label *alphaLabel = new gcn::Label(_("Gui opacity"));
 
     mModeList->setEnabled(false);
 #ifndef USE_OPENGL
@@ -182,7 +183,7 @@ Setup_Video::Setup_Video():
     mOverlayDetailField->addKeyListener(this);
 
     mScrollRadiusSlider->setDimension(gcn::Rectangle(10, 120, 75, 10));
-    gcn::Label *scrollRadiusLabel = new gcn::Label("Scroll radius");
+    gcn::Label *scrollRadiusLabel = new gcn::Label(_("Scroll radius"));
     scrollRadiusLabel->setPosition(90, 120);
     mScrollRadiusField->setPosition(180, 120);
     mScrollRadiusField->setWidth(30);
@@ -190,7 +191,7 @@ Setup_Video::Setup_Video():
     mScrollRadiusSlider->setValue(mOriginalScrollRadius);
 
     mScrollLazinessSlider->setDimension(gcn::Rectangle(10, 140, 75, 10));
-    gcn::Label *scrollLazinessLabel = new gcn::Label("Scroll laziness");
+    gcn::Label *scrollLazinessLabel = new gcn::Label(_("Scroll laziness"));
     scrollLazinessLabel->setPosition(90, 140);
     mScrollLazinessField->setPosition(180, 140);
     mScrollLazinessField->setWidth(30);
@@ -198,20 +199,20 @@ Setup_Video::Setup_Video():
     mScrollLazinessSlider->setValue(mOriginalScrollLaziness);
 
     mOverlayDetailSlider->setDimension(gcn::Rectangle(10, 160, 75, 10));
-    gcn::Label *overlayDetailLabel = new gcn::Label("Ambient FX");
+    gcn::Label *overlayDetailLabel = new gcn::Label(_("Ambient FX"));
     overlayDetailLabel->setPosition(90, 160);
     mOverlayDetailField->setPosition(180, 160);
     mOverlayDetailField->setWidth(30);
     switch (mOverlayDetail)
     {
         case 0:
-            mOverlayDetailField->setCaption("off");
+            mOverlayDetailField->setCaption(_("off"));
             break;
         case 1:
-            mOverlayDetailField->setCaption("low");
+            mOverlayDetailField->setCaption(_("low"));
             break;
         case 2:
-            mOverlayDetailField->setCaption("high");
+            mOverlayDetailField->setCaption(_("high"));
             break;
     }
     mOverlayDetailSlider->setValue(mOverlayDetail);
@@ -264,8 +265,8 @@ void Setup_Video::apply()
                 }
             }
         } else {
-            new OkDialog("Switching to full screen",
-                    "Restart needed for changes to take effect.");
+            new OkDialog(_("Switching to full screen"),
+                    _("Restart needed for changes to take effect."));
         }
         config.setValue("screen", fullscreen ? 1 : 0);
     }
@@ -276,8 +277,8 @@ void Setup_Video::apply()
         config.setValue("opengl", mOpenGLCheckBox->isMarked() ? 1 : 0);
 
         // OpenGL can currently only be changed by restarting, notify user.
-        new OkDialog("Changing OpenGL",
-                "Applying change to OpenGL requires restart.");
+        new OkDialog(_("Changing OpenGL"),
+                _("Applying change to OpenGL requires restart."));
     }
 
     // FPS change
@@ -365,13 +366,13 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         switch (val)
         {
             case 0:
-                mOverlayDetailField->setCaption("off");
+                mOverlayDetailField->setCaption(_("off"));
                 break;
             case 1:
-                mOverlayDetailField->setCaption("low");
+                mOverlayDetailField->setCaption(_("low"));
                 break;
             case 2:
-                mOverlayDetailField->setCaption("high");
+                mOverlayDetailField->setCaption(_("high"));
                 break;
         }
         config.setValue("OverlayDetail", val);

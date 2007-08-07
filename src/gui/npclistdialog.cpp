@@ -31,13 +31,15 @@
 
 #include "../npc.h"
 
+#include "../utils/gettext.h"
+
 NpcListDialog::NpcListDialog():
-    Window("NPC")
+    Window(_("NPC"))
 {
     mItemList = new ListBox(this);
     ScrollArea *scrollArea = new ScrollArea(mItemList);
-    Button *okButton = new Button("OK", "ok", this);
-    Button *cancelButton = new Button("Cancel", "cancel", this);
+    Button *okButton = new Button(_("Ok"), "ok", this);
+    Button *cancelButton = new Button(_("Cancel"), "cancel", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

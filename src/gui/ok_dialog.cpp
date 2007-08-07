@@ -27,13 +27,14 @@
 
 #include "button.h"
 
+#include "../utils/gettext.h"
 
 OkDialog::OkDialog(const std::string &title, const std::string &msg,
         Window *parent):
     Window(title, true, parent)
 {
     gcn::Label *textLabel = new gcn::Label(msg);
-    gcn::Button *okButton = new Button("Ok", "ok", this);
+    gcn::Button *okButton = new Button(_("Ok"), "ok", this);
 
     int w = textLabel->getWidth() + 20;
     int h = textLabel->getHeight() + 25 + okButton->getHeight();

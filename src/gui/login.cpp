@@ -36,17 +36,19 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
+#include "../utils/gettext.h"
+
 LoginDialog::LoginDialog(LoginData *loginData):
-    Window("Login"), mLoginData(loginData)
+    Window(_("Login")), mLoginData(loginData)
 {
-    gcn::Label *userLabel = new gcn::Label("Name:");
-    gcn::Label *passLabel = new gcn::Label("Password:");
+    gcn::Label *userLabel = new gcn::Label(_("Name:"));
+    gcn::Label *passLabel = new gcn::Label(_("Password:"));
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
-    mKeepCheck = new CheckBox("Keep", mLoginData->remember);
-    mOkButton = new Button("OK", "ok", this);
-    mCancelButton = new Button("Cancel", "cancel", this);
-    mRegisterButton = new Button("Register", "register", this);
+    mKeepCheck = new CheckBox(_("Keep"), mLoginData->remember);
+    mOkButton = new Button(_("Ok"), "ok", this);
+    mCancelButton = new Button(_("Cancel"), "cancel", this);
+    mRegisterButton = new Button(_("Register"), "register", this);
 
     const int width = 220;
     const int height = 100;

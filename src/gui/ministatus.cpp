@@ -35,9 +35,8 @@
 #include "../utils/tostring.h"
 
 MiniStatusWindow::MiniStatusWindow():
-    Window("")
+    Window()
 {
-    setWindowName("MiniStatus");
     setResizable(false);
     setMovable(false);
     setTitleBarHeight(0);

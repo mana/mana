@@ -31,13 +31,15 @@
 
 #include "../npc.h"
 
+#include "../utils/gettext.h"
+
 NpcTextDialog::NpcTextDialog():
-    Window("NPC")
+    Window(_("NPC"))
 {
     mTextBox = new TextBox();
     mTextBox->setEditable(false);
     gcn::ScrollArea *scrollArea = new ScrollArea(mTextBox);
-    Button *okButton = new Button("OK", "ok", this);
+    Button *okButton = new Button(_("Ok"), "ok", this);
 
     setContentSize(260, 175);
     scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

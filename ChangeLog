@@ -1,3 +1,16 @@
+2007-08-07  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* po/Makevars, src/main.cpp: Replaced PACKAGE by tmw to	reduce
+	preprocessing hell. Set gettext charset to utf8.
+	* src/gui/menuwindow.cpp, src/gui/connection.cpp, src/gui/register.cpp,
+	src/gui/equipmentwindow.cpp, src/gui/quitdialog.cpp, src/gui/login.cpp,
+	src/gui/item_amount.cpp, src/gui/npclistdialog.cpp, src/gui/setup.cpp,
+	src/gui/char_select.cpp, src/gui/setup_audio.cpp, src/gui/npc_text.cpp,
+	src/gui/setup_video.cpp, src/gui/ministatus.cpp, src/gui/ok_dialog.cpp,
+	src/gui/confirm_dialog.cpp, src/gui/setup_joystick.cpp,
+	src/gui/serverdialog.cpp, src/gui/minimap.cpp, src/gui/popupmenu.cpp:
+	Marked as translatable.
+
 2007-08-06  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/Makefile.am, src/utils/strprintf.h, src/utils/strprintf.cpp:

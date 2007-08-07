@@ -30,6 +30,8 @@
 #include "button.h"
 #include "windowcontainer.h"
 
+#include "../utils/gettext.h"
+
 extern Window *setupWindow;
 extern Window *inventoryWindow;
 extern Window *equipmentWindow;
@@ -47,28 +49,27 @@ namespace {
 }
 
 MenuWindow::MenuWindow():
-    Window("")
+    Window()
 {
     setResizable(false);
-    setWindowName("Menu");
     setMovable(false);
     setTitleBarHeight(0);
 
     // Buttons
-    const char *buttonNames[] =
+    static char const *buttonNames[] =
     {
-        "Status",
-        "Equipment",
-        "Inventory",
-        "Skills",
-        "Setup",
+        N_("Status"),
+        N_("Equipment"),
+        N_("Inventory"),
+        N_("Skills"),
+        N_("Setup"),
         0
     };
     int x = 0, y = 3, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
-        gcn::Button *btn = new Button(*curBtn, *curBtn, &listener);
+        gcn::Button *btn = new Button(gettext(*curBtn), *curBtn, &listener);
         btn->setPosition(x, y);
         add(btn);
         x += btn->getWidth() + 3;

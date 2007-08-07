@@ -33,18 +33,20 @@
 #include "../log.h"
 #include "../sound.h"
 
+#include "../utils/gettext.h"
+
 Setup_Audio::Setup_Audio():
     mMusicVolume((int)config.getValue("musicVolume", 60)),
     mSfxVolume((int)config.getValue("sfxVolume", 100)),
     mSoundEnabled(config.getValue("sound", 0)),
-    mSoundCheckBox(new CheckBox("Sound", mSoundEnabled)),
+    mSoundCheckBox(new CheckBox(_("Sound"), mSoundEnabled)),
     mSfxSlider(new Slider(0, 128)),
     mMusicSlider(new Slider(0, 128))
 {
     setOpaque(false);
 
-    gcn::Label *sfxLabel = new gcn::Label("Sfx volume");
-    gcn::Label *musicLabel = new gcn::Label("Music volume");
+    gcn::Label *sfxLabel = new gcn::Label(_("Sfx volume"));
+    gcn::Label *musicLabel = new gcn::Label(_("Music volume"));
 
     mSfxSlider->setActionEventId("sfx");
     mMusicSlider->setActionEventId("music");

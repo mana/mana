@@ -29,11 +29,12 @@
 
 #include "../resources/image.h"
 
+#include "../utils/gettext.h"
+
 Minimap::Minimap():
-    Window("Map"),
+    Window(_("MiniMap")),
     mMapImage(NULL)
 {
-    setWindowName("MiniMap");
     setDefaultSize(5, 25, 100, 100);
     loadWindowState();
 }
