@@ -17,6 +17,8 @@
 	src/gui/minimap.cpp: Fixed window dimensions not being restored at
 	start time. Cleaned resizing notification. Improved access control on
 	window members.
+	* data/items.xml, data/equipment.xml: Modified item database, so that
+	equipment can be tested.
 
 2007-08-06  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
