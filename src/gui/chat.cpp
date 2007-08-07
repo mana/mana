@@ -46,16 +46,16 @@
 #include "../utils/dtor.h"
 
 ChatWindow::ChatWindow():
-    Window(""),
+    Window(),
     mTmpVisible(false)
 {
-    setWindowName("Chat");
     mItems = 0;
     mItemsKeep = 20;
 
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
-    loadWindowState();
+    setTitleBarHeight(0);
+    loadWindowState("Chat");
 
     mChatInput = new ChatInput();
     mChatInput->setActionEventId("chatinput");

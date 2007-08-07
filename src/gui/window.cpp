@@ -58,8 +58,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     mGrip(0),
     mParent(parent),
-    mWindowName("window"),
-    mShowTitle(true),
     mModal(modal),
     mResizable(false),
     mMouseResize(0),
@@ -122,16 +120,19 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 Window::~Window()
 {
     logger->log("Window::~Window(\"%s\")", getCaption().c_str());
-    const std::string &name = mWindowName;
 
-    // Saving X, Y and Width and Height for resizables in the config
-    config.setValue(name + "WinX", getX());
-    config.setValue(name + "WinY", getY());
-
-    if (mResizable)
+    std::string const &name = mConfigName;
+    if (!name.empty())
     {
-        config.setValue(name + "WinWidth", getWidth());
-        config.setValue(name + "WinHeight", getHeight());
+        // Saving X, Y and Width and Height for resizables in the config
+        config.setValue(name + "WinX", getX());
+        config.setValue(name + "WinY", getY());
+
+        if (mResizable)
+        {
+            config.setValue(name + "WinWidth", getWidth());
+            config.setValue(name + "WinHeight", getHeight());
+        }
     }
 
     instances--;
@@ -170,7 +171,7 @@ void Window::draw(gcn::Graphics *graphics)
     g->drawImageRect(0, 0, getWidth(), getHeight(), border);
 
     // Draw title
-    if (mShowTitle)
+    if (getTitleBarHeight())
     {
         graphics->setFont(getFont());
         graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
@@ -428,13 +429,13 @@ void Window::mouseDragged(gcn::MouseEvent &event)
         setDimension(newDim);
         const gcn::Rectangle area = getChildrenArea();
         mChrome->setSize(area.width, area.height);
+        updateContentSize();
     }
 }
 
-void
-Window::loadWindowState()
+void Window::loadWindowState(std::string const &name)
 {
-    const std::string &name = mWindowName;
+    mConfigName = name;
 
     setPosition((int) config.getValue(name + "WinX", getX()),
                 (int) config.getValue(name + "WinY", getY()));
@@ -465,4 +466,5 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setContentSize(mDefaultWidth, mDefaultHeight);
+    updateContentSize();
 }

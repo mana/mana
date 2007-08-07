@@ -37,7 +37,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window(_("Equipment")), mEquipment(equipment)
 {
     setDefaultSize(5, 230, 200, 120);
-    loadWindowState();
+    loadWindowState("Equipment");
 }
 
 EquipmentWindow::~EquipmentWindow()

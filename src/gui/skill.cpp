@@ -63,7 +63,6 @@ const char *skill_db[] = {
 SkillDialog::SkillDialog():
     Window("Skills")
 {
-    setWindowName("Skills");
     setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
 
     mSkillListBox = new ListBox(this);
@@ -84,7 +83,7 @@ SkillDialog::SkillDialog():
     mSkillListBox->addActionListener(this);
 
     setLocationRelativeTo(getParent());
-    loadWindowState();
+    loadWindowState("Skills");
 }
 
 SkillDialog::~SkillDialog()

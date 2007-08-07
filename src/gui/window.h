@@ -99,6 +99,12 @@ class Window : public gcn::Window
         void setContentSize(int width, int height);
 
         /**
+         * Called when either the user or resetToDefaultSize resizes the
+         * windows, so that the windows can manage its widgets.
+         */
+        virtual void updateContentSize() {}
+
+        /**
          * Sets the width of this window.
          */
         void setWidth(int width);
@@ -193,39 +199,27 @@ class Window : public gcn::Window
         void mouseDragged(gcn::MouseEvent &event);
 
         /**
-         * Sets the name of the window. This is not the window title.
-         */
-        void
-        setWindowName(const std::string &name) { mWindowName = name; }
-
-        /**
-         * Returns the name of the window. This is not the window title.
-         */
-        const std::string&
-        getWindowName() { return mWindowName; }
-
-        /**
          * Read the x, y, and width and height for resizables in the config
-         * based on the name of the window.
+         * based on the given string.
          * That function let the values set with set{X, Y, Height, width}()
          * if no config value is found.
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
-        virtual void loadWindowState();
+        void loadWindowState(std::string const &);
 
         /**
          * Set the default win pos and size.
          * (which can be different of the actual ones.)
          */
-        virtual void setDefaultSize(int defaultX, int defaultY,
-                                    int defaultWidth, int defaultHeight);
+        void setDefaultSize(int defaultX, int defaultY,
+                            int defaultWidth, int defaultHeight);
 
         /**
          * Reset the win pos and size to default.
          * Don't forget to set defaults first.
          */
-        virtual void resetToDefaultSize();
+        void resetToDefaultSize();
 
         enum ResizeHandles
         {
@@ -235,12 +229,14 @@ class Window : public gcn::Window
             LEFT   = 0x08
         };
 
-    protected:
+        /** The window container windows add themselves to. */
+        static WindowContainer *windowContainer;
+
+    private:
         GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
-        std::string mWindowName;   /**< Name of the window */
-        bool mShowTitle;           /**< Window has a title bar */
+        std::string mConfigName;   /**< Name used for saving window-related data */
         bool mModal;               /**< Window is modal */
         bool mResizable;           /**< Window can be resized */
         int mMouseResize;          /**< Window is being resized */
@@ -253,9 +249,6 @@ class Window : public gcn::Window
         int mDefaultY;             /**< Default window Y position */
         int mDefaultWidth;         /**< Default window width */
         int mDefaultHeight;        /**< Default window height */
-
-        /** The window container windows add themselves to. */
-        static WindowContainer *windowContainer;
 
         /**
          * The config listener that listens to changes relevant to all windows.

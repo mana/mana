@@ -37,11 +37,10 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     Window(player->getName()),
     mPlayer(player)
 {
-    setWindowName("Status");
     setResizable(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
                    (windowContainer->getHeight() - 255) / 2, 365, 280);
-    loadWindowState();
+    loadWindowState("Status");
 
     // ----------------------
     // Status Part

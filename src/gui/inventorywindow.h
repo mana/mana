@@ -59,13 +59,7 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
 
         void mouseClicked(gcn::MouseEvent &event);
 
-        void mouseDragged(gcn::MouseEvent &event);
-
         Item* getItem();
-
-        void loadWindowState();
-
-        void resetToDefaultSize();
 
         /**
          * Updates labels to currently selected item.
@@ -74,10 +68,10 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
          */
         void selectionChanged(const SelectionEvent &event);
 
+        void updateContentSize();    /**< Updates widgets size/position. */
+
     private:
         void updateButtons();    /**< Updates button states. */
-
-        void updateWidgets();    /**< Updates widgets size/position. */
 
         ItemContainer *mItems;
 

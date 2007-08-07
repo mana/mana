@@ -10,6 +10,13 @@
 	src/gui/confirm_dialog.cpp, src/gui/setup_joystick.cpp,
 	src/gui/serverdialog.cpp, src/gui/minimap.cpp, src/gui/popupmenu.cpp:
 	Marked as translatable.
+	* src/gui/trade.cpp, src/gui/equipmentwindow.cpp, src/gui/window.cpp,
+	src/gui/inventorywindow.h, src/gui/chat.cpp, src/gui/debugwindow.cpp,
+	src/gui/skill.cpp, src/gui/help.cpp, src/gui/inventorywindow.cpp,
+	src/gui/window.h, src/gui/status.cpp, src/gui/popupmenu.cpp,
+	src/gui/minimap.cpp: Fixed window dimensions not being restored at
+	start time. Cleaned resizing notification. Improved access control on
+	window members.
 
 2007-08-06  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

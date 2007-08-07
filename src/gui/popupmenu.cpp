@@ -55,7 +55,6 @@ PopupMenu::PopupMenu():
 {
     setResizable(false);
     setTitleBarHeight(0);
-    mShowTitle = false;
 
     mBrowserBox = new BrowserBox();
     mBrowserBox->setPosition(4, 4);

@@ -41,11 +41,9 @@
 DebugWindow::DebugWindow():
     Window("Debug")
 {
-    setWindowName("Debug");
-
     setResizable(true);
     setDefaultSize(0, 0, 400, 100);
-    loadWindowState();
+    loadWindowState("Debug");
 
     mFPSLabel = new gcn::Label("[0 FPS]");
     mFPSLabel->setPosition(0,0);
