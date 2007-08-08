@@ -67,6 +67,13 @@ void Net::GameServer::Player::equip(int slot)
     Net::GameServer::connection->send(msg);
 }
 
+void Net::GameServer::Player::unequip(int slot)
+{
+    MessageOut msg(PGMSG_UNEQUIP);
+    msg.writeByte(slot);
+    Net::GameServer::connection->send(msg);
+}
+
 void Net::GameServer::Player::attack(int direction)
 {
     MessageOut msg(PGMSG_ATTACK);

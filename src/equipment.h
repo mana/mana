@@ -26,7 +26,7 @@
 
 class Item;
 
-#define EQUIPMENT_SIZE 10
+#define EQUIPMENT_SIZE 11
 
 class Equipment
 {

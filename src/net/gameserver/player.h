@@ -39,6 +39,7 @@ namespace Net
             void pickUp(int x, int y);
             void drop(int slot, int amount);
             void equip(int slot);
+            void unequip(int slot);
             void attack(int direction);
             void changeAction(Being::Action action);
             void talkToNPC(int id, bool restart);

@@ -107,11 +107,7 @@ void LocalPlayer::equipItem(Item *item)
 
 void LocalPlayer::unequipItem(int slot)
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
-    outMsg.writeShort(item->getInvIndex());
-    */
+    Net::GameServer::Player::unequip(slot);
 
     // Tidy equipment directly to avoid weapon still shown bug, by instance
     mEquipment->setEquipment(slot, 0);

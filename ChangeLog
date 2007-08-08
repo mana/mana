@@ -1,3 +1,9 @@
+2007-08-08  Josh Langley  <joshlangley[at]optusnet.com.au>
+	* src/equipment.h, src/gui/equipmentwindow.cpp, src/gui/equipmentwindow.h,
+	src/localplayer.cpp, src/net/gameserver/player.cpp,
+	src/net/gameserver/player.h, data/graphics/images/EquipBackground.png:
+	Re-designed equipment window, un-equip created.
+
 2007-08-07  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* po/Makevars, src/main.cpp: Replaced PACKAGE by tmw to	reduce
