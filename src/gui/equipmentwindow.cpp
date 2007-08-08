@@ -73,7 +73,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     }
 
     ResourceManager *resman = ResourceManager::getInstance();
-    mBackground = resman->getImage("graphics/images/equipBackground.png");
+    mBackground = resman->getImage("graphics/gui/equip_bg.png");
     mBackground->setAlpha(0.3);
 }
 

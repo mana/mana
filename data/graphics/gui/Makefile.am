@@ -11,6 +11,7 @@ gui_DATA =				\
 	buttonpress.png			\
 	checkbox.png			\
 	deepbox.png			\
+	equip_bg.png                    \
 	fixedfont.png			\
 	hits_blue.png			\
 	hits_red.png			\

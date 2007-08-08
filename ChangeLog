@@ -1,4 +1,11 @@
+2007-08-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/equipmentwindow.cpp, data/graphics/gui/Makefile.am,
+	data/graphics/images/EquipBackground.png: Moved equipment background to
+	the gui directory. Changed name to lowercase only.
+
 2007-08-08  Josh Langley  <joshlangley[at]optusnet.com.au>
+
 	* src/equipment.h, src/gui/equipmentwindow.cpp, src/gui/equipmentwindow.h,
 	src/localplayer.cpp, src/net/gameserver/player.cpp,
 	src/net/gameserver/player.h, data/graphics/images/EquipBackground.png:
@@ -34,7 +41,7 @@
 	* src/gui/inventory.cpp: Completed marking of translatable strings for
 	inventory window.
 	* po/tmw.pot: Updated with new translatable strings.
-	* po/fr.po: Completed translation of inventory window in french.
+	* po/fr.po: Completed translation of inventory window in French.
 	* src/resources/gettext.h, src/main.cpp: Moved header to utils
 	directory.
 	* src/utils/tostring.h: Fixed typo in macro guard.
@@ -49,7 +56,7 @@
 	* src/gui/inventorywindow.cpp: Marked a few strings as translatable for
 	testing purpose.
 	* po/tmw.pot: Generated the main template.
-	* po/LINGUAS, po/fr.po: Added the french translation.
+	* po/LINGUAS, po/fr.po: Added French translation.
 
 2007-08-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
