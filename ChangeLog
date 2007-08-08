@@ -1,4 +1,15 @@
-﻿2007-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/particles/cookingfire.particle.xml,
+	data/graphics/particles/fireplace.particle.xml,
+	data/maps/new_20-1.tmx.gz: Added particle effects and music to the
+	woodland village indoor map.
+	* data/maps/new_19-1.tmx.gz: Added overlay effect and music to
+	woodland village outdoor map.
+	* data/maps/new_18-1.tmx.gz: Fixed some collision map errors and added
+	music and overlay effect to the surrounding of the woodland village.
+
+2007-08-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/npcs.png: Added two new NPCs and gave some
 	of the older NPCs a makeover to look more like the style of the new
