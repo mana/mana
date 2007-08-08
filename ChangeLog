@@ -3,6 +3,10 @@
 	* src/gui/equipmentwindow.cpp, data/graphics/gui/Makefile.am,
 	data/graphics/images/EquipBackground.png: Moved equipment background to
 	the gui directory. Changed name to lowercase only.
+	* src/localplayer.cpp, src/equipment.h, src/equipment.cpp: Ensured that
+	equipment is cleared at the same time as the inventory.
+	* src/net/beinghandler.cpp: Fixed position of the cleaning bit for
+	looks, so that it actually fits into network data.
 
 2007-08-08  Josh Langley  <joshlangley[at]optusnet.com.au>
 

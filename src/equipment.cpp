@@ -25,7 +25,7 @@
 
 #include "equipment.h"
 
-Equipment::Equipment()
+void Equipment::clear()
 {
     std::fill_n(mEquipment, EQUIPMENT_SIZE, 0);
 }

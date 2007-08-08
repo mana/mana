@@ -24,8 +24,6 @@
 #ifndef _TMW_EQUIPMENT_H_
 #define _TMW_EQUIPMENT_H_
 
-class Item;
-
 #define EQUIPMENT_SIZE 11
 
 class Equipment
@@ -34,7 +32,13 @@ class Equipment
         /**
          * Constructor.
          */
-        Equipment();
+        Equipment()
+        { clear(); }
+
+        /**
+         * Clears equipment.
+         */
+        void clear();
 
         /**
          * Get equipment at the given slot.

@@ -424,7 +424,8 @@ static void handleLooks(Being *being, MessageIn &msg)
           Being::BOTTOMCLOTHES_SPRITE };
 
     int mask = msg.readByte();
-    if (mask & (1 << 8))
+
+    if (mask & (1 << 7))
     {
         // The equipment has to be cleared first.
         being->setWeaponById(0);

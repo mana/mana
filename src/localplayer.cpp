@@ -92,6 +92,7 @@ Being::Type LocalPlayer::getType() const
 
 void LocalPlayer::clearInventory()
 {
+    mEquipment->clear();
     mInventory->clear();
 }
 
