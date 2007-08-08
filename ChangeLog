@@ -1,4 +1,13 @@
-﻿2007-08-08  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/tiles/woodland_indoor_x2.png: Gave the platemail
+	armor a blue tint. Looks less boring and makes recoloring through
+	hue shifting possible.
+
+2007-08-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/particles/cookingfire.particle.xml,
 	data/graphics/particles/fireplace.particle.xml,
