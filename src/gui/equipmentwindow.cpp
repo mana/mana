@@ -38,7 +38,7 @@
 #include "../utils/gettext.h"
 
 // Positions of the boxes, 2nd dimension is X and Y respectively.
-const int boxPosition[][2] = {
+static const int boxPosition[][2] = {
     {90, 100},   // EQUIP_TORSO_SLOT
     {135, 60},  // EQUIP_ARMS_SLOT
     {90, 10},    // EQUIP_HEAD_SLOT
