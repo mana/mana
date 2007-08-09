@@ -1,4 +1,23 @@
 # List of source files which contain translatable strings.
 
+src/gui/char_select.cpp
+src/gui/confirm_dialog.cpp
+src/gui/connection.cpp
+src/gui/equipmentwindow.cpp
 src/gui/inventorywindow.cpp
+src/gui/item_amount.cpp
+src/gui/login.cpp
+src/gui/menuwindow.cpp
+src/gui/minimap.cpp
+src/gui/npclistdialog.cpp
+src/gui/npc_text.cpp
+src/gui/ok_dialog.cpp
+src/gui/popupmenu.cpp
+src/gui/quitdialog.cpp
+src/gui/register.cpp
+src/gui/serverdialog.cpp
+src/gui/setup_audio.cpp
+src/gui/setup.cpp
+src/gui/setup_joystick.cpp
+src/gui/setup_video.cpp
 
