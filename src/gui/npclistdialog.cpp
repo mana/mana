@@ -75,15 +75,9 @@ NpcListDialog::getElementAt(int i)
     return mItems[i];
 }
 
-void
-NpcListDialog::parseItems(const std::string &itemString)
+void NpcListDialog::addItem(std::string const &item)
 {
-    std::istringstream iss(itemString);
-
-    std::string tmp;
-    while(getline(iss, tmp, ':')) {
-        mItems.push_back(tmp);
-    }
+    mItems.push_back(item);
 }
 
 void

@@ -69,12 +69,9 @@ class NpcListDialog : public Window, public gcn::ActionListener,
         getElementAt(int i);
 
         /**
-         * Fills the options list for an NPC dialog.
-         *
-         * @param itemString A string with the options separated with colons.
+         * Adds an item to the option list.
          */
-        void
-        parseItems(const std::string &itemString);
+        void addItem(std::string const &);
 
         /**
          * Resets the list by removing all items.

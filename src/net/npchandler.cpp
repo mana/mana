@@ -54,17 +54,20 @@ void NPCHandler::handleMessage(MessageIn &msg)
     }
 
     current_npc = static_cast< NPC * >(being);
-    std::string text = msg.readString(msg.getUnreadLength());
 
     switch (msg.getId())
     {
         case GPMSG_NPC_CHOICE:
-            npcListDialog->parseItems(text);
+            npcListDialog->reset();
+            while (msg.getUnreadLength())
+            {
+                npcListDialog->addItem(msg.readString());
+            }
             npcListDialog->setVisible(true);
             break;
 
         case GPMSG_NPC_MESSAGE:
-            npcTextDialog->addText(text);
+            npcTextDialog->addText(msg.readString(msg.getUnreadLength()));
             npcListDialog->setVisible(false);
             npcTextDialog->setVisible(true);
             break;
