@@ -1,6 +1,7 @@
 2007-08-13  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/main.cpp, tmw.cbp: Fixed internationalization support on Windows.
+	* po/it.po, po/LINGUAS: Added first draft of Italian translation.
 
 2007-08-10  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
