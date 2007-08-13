@@ -126,22 +126,9 @@ void SellDialog::reset()
     updateButtonsAndLabels();
 }
 
-void SellDialog::addItem(Item *item, int price)
+void SellDialog::addItem(int item, int amount, int price)
 {
-    if (!item)
-        return;
-
-    ITEM_SHOP item_shop;
-
-    item_shop.name = item->getInfo().getName()
-        + " (" + toString(price) + " GP)";
-    item_shop.price = price;
-    item_shop.index = item->getInvIndex();
-    item_shop.id = item->getId();
-    item_shop.quantity = item->getQuantity();
-    item_shop.image = item->getInfo().getImage();
-
-    mShopItems->push_back(item_shop);
+    mShopItems->addItem(item, amount, price);
     mShopItemList->adjustSize();
 }
 

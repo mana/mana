@@ -50,7 +50,7 @@ class ShopItems : public gcn::ListModel
         /**
          * Adds an item and its associated picture
          */
-        void addItem(short id, int price);
+        void addItem(int id, int amount, int price);
 
         /**
          * Convenience function for adding items

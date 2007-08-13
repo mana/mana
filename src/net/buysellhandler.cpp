@@ -44,6 +44,8 @@ extern Window *buySellDialog;
 BuySellHandler::BuySellHandler()
 {
     static const Uint16 _messages[] = {
+        GPMSG_NPC_BUY,
+        GPMSG_NPC_SELL,
         0
     };
     handledMessages = _messages;
@@ -51,6 +53,14 @@ BuySellHandler::BuySellHandler()
 
 void BuySellHandler::handleMessage(MessageIn &msg)
 {
+    Being *being = beingManager->findBeing(msg.readShort());
+    if (!being || being->getType() != Being::NPC)
+    {
+        return;
+    }
+
+    current_npc = static_cast< NPC * >(being);
+
     switch (msg.getId())
     {
 #if 0
@@ -62,65 +72,34 @@ void BuySellHandler::handleMessage(MessageIn &msg)
             buySellDialog->setVisible(true);
             current_npc = dynamic_cast<NPC*>(beingManager->findBeing(msg.readLong()));
             break;
+#endif
 
-        case SMSG_NPC_BUY:
-            msg.readShort();  // length
-            n_items = (msg.getLength() - 4) / 11;
+        case GPMSG_NPC_BUY:
             buyDialog->reset();
             buyDialog->setMoney(player_node->getMoney());
             buyDialog->setVisible(true);
 
-            for (int k = 0; k < n_items; k++)
+            while (msg.getUnreadLength())
             {
-                Sint32 value = msg.readLong();
-                msg.readLong();  // DCvalue
-                msg.readByte();  // type
-                Sint16 itemId = msg.readShort();
-                buyDialog->addItem(itemId, value);
+                int itemId = msg.readShort();
+                int amount = msg.readShort();
+                int value = msg.readShort();
+                buyDialog->addItem(itemId, amount, value);
             }
             break;
 
-        case SMSG_NPC_SELL:
-            msg.readShort();  // length
-            n_items = (msg.getLength() - 4) / 10;
-            if (n_items > 0) {
-                sellDialog->setMoney(player_node->getMoney());
-                sellDialog->reset();
-                sellDialog->setVisible(true);
+        case GPMSG_NPC_SELL:
+            sellDialog->setMoney(player_node->getMoney());
+            sellDialog->reset();
+            sellDialog->setVisible(true);
 
-                for (int k = 0; k < n_items; k++)
-                {
-                    Sint16 index = msg.readShort();
-                    Sint32 value = msg.readLong();
-                    msg.readLong();  // OCvalue
-
-                    Item *item = player_node->getInvItem(index);
-                    if (item && !(item->isEquipped())) {
-                        sellDialog->addItem(item, value);
-                    }
-                }
-            }
-            else {
-                chatWindow->chatLog("Nothing to sell", BY_SERVER);
-                current_npc = 0;
+            while (msg.getUnreadLength())
+            {
+                int itemId = msg.readShort();
+                int amount = msg.readShort();
+                int value = msg.readShort();
+                sellDialog->addItem(itemId, amount, value);
             }
             break;
-
-        case SMSG_NPC_BUY_RESPONSE:
-            if (msg.readByte() == 0) {
-                chatWindow->chatLog("Thanks for buying", BY_SERVER);
-            } else {
-                chatWindow->chatLog("Unable to buy", BY_SERVER);
-            }
-            break;
-
-        case SMSG_NPC_SELL_RESPONSE:
-            if (msg.readByte() == 0) {
-                chatWindow->chatLog("Thanks for selling", BY_SERVER);
-            } else {
-                chatWindow->chatLog("Unable to sell", BY_SERVER);
-            }
-            break;
-#endif
     }
 }

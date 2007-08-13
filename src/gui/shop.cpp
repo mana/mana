@@ -40,15 +40,17 @@ std::string ShopItems::getElementAt(int i)
     return mItemsShop.at(i).name;
 }
 
-void ShopItems::addItem(short id, int price)
+void ShopItems::addItem(int id, int amount, int price)
 {
     ITEM_SHOP item_shop;
+    ItemInfo const &item = ItemDB::get(id);
 
-    item_shop.name = ItemDB::get(id).getName()
+    item_shop.name = item.getName()
                      + " (" + toString(price) + " GP)";
     item_shop.price = price;
     item_shop.id = id;
-    item_shop.image = ItemDB::get(id).getImage();
+    item_shop.quantity = amount;
+    item_shop.image = item.getImage();
 
     mItemsShop.push_back(item_shop);
 }

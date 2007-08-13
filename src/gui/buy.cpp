@@ -128,9 +128,9 @@ void BuyDialog::reset()
     updateButtonsAndLabels();
 }
 
-void BuyDialog::addItem(short id, int price)
+void BuyDialog::addItem(int id, int amount, int price)
 {
-    mShopItems->addItem(id, price);
+    mShopItems->addItem(id, amount, price);
     mShopItemList->adjustSize();
 }
 

@@ -63,7 +63,7 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
         /**
          * Adds an item to the inventory.
          */
-        void addItem(Item *item, int price);
+        void addItem(int item, int amount, int price);
 
         /**
          * Called when receiving actions from the widgets.
