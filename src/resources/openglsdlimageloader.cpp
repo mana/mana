@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: sdlimageloader.cpp 2121 2006-01-31 02:55:26Z der_doener $
+ *  $Id$
  */
 
 #include "openglsdlimageloader.h"
