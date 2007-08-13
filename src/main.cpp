@@ -650,6 +650,8 @@ void initXML()
     xmlSetGenericErrorFunc(NULL, xmlNullLogger);
 }
 
+extern "C" char const *_nl_locale_name_default(void);
+
 /** Main */
 int main(int argc, char *argv[])
 {
@@ -668,6 +670,9 @@ int main(int argc, char *argv[])
     }
 
 #if ENABLE_NLS
+#ifdef WIN32
+    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+#endif
     setlocale(LC_MESSAGES, "");
     bindtextdomain("tmw", LOCALEDIR);
     bind_textdomain_codeset("tmw", "UTF-8");

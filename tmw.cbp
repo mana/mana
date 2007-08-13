@@ -20,6 +20,8 @@
 					<Add option="-Wall"/>
 					<Add option="-DUSE_OPENGL"/>
 					<Add option="-DNOGDI"/>
+					<Add option="-DENABLE_NLS"/>
+					<Add option="-DLOCALEDIR=\&quot;locale\&quot;"/>
 				</Compiler>
 				<Linker>
 					<Add library="enet"/>
@@ -39,6 +41,7 @@
 					<Add library="physfs"/>
 					<Add library="curl.dll"/>
 					<Add library="winmm"/>
+					<Add library="intl.dll"/>
 				</Linker>
 			</Target>
 		</Build>
@@ -1020,16 +1023,6 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
-		<Unit filename="src\net\equipmenthandler.cpp">
-			<Option compilerVar="CPP"/>
-			<Option target="default"/>
-		</Unit>
-		<Unit filename="src\net\equipmenthandler.h">
-			<Option compilerVar=""/>
-			<Option compile="0"/>
-			<Option link="0"/>
-			<Option target="default"/>
-		</Unit>
 		<Unit filename="src\net\gameserver\gameserver.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -1165,6 +1158,12 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\net\playerhandler.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\net\protocol.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
@@ -1516,6 +1515,22 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\utils\dtor.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\gettext.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\strprintf.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\utils\strprintf.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
