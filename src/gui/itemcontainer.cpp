@@ -32,8 +32,6 @@
 #include "../item.h"
 #include "../localplayer.h"
 
-#include "../log.h"
-
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
@@ -246,7 +244,6 @@ ItemContainer::mouseReleased(gcn::MouseEvent &event)
         mDragged = false;
 
         const int index = getSlotIndex(event.getX(), event.getY());
-        logger->log("index=%d", index);
         if (index == Inventory::NO_SLOT_INDEX) {
             return;
         }
