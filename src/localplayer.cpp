@@ -101,6 +101,17 @@ Item* LocalPlayer::getInvItem(int index)
     return mInventory->getItem(index);
 }
 
+void
+LocalPlayer::moveInvItem(Item *item, int newIndex)
+{
+    // special case, the old and new cannot copy over each other.
+    if (item->getInvIndex() == newIndex)
+        return;
+
+    Net::GameServer::Player::moveItem(
+        item->getInvIndex(), newIndex, item->getQuantity());
+}
+
 void LocalPlayer::equipItem(Item *item)
 {
     Net::GameServer::Player::equip(item->getInvIndex());
@@ -114,20 +125,25 @@ void LocalPlayer::unequipItem(int slot)
     mEquipment->setEquipment(slot, 0);
 }
 
-void LocalPlayer::useItem(Item *item)
+void LocalPlayer::useItem(int slot)
 {
-    // XXX Convert for new server
-    /*
-    MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
-    outMsg.writeShort(item->getInvIndex());
-    outMsg.writeLong(item->getId());
-    // Note: id is dest of item, usually player_node->account_ID ??
-    */
+    Net::GameServer::Player::useItem(slot);
 }
 
 void LocalPlayer::dropItem(Item *item, int quantity)
 {
     Net::GameServer::Player::drop(item->getInvIndex(), quantity);
+}
+
+void LocalPlayer::splitItem(Item *item, int quantity)
+{
+    int newIndex = mInventory->getFreeSlot();
+    if (newIndex > Inventory::NO_SLOT_INDEX)
+    {
+        Net::GameServer::Player::moveItem(
+            item->getInvIndex(), newIndex, quantity);
+    }
+
 }
 
 void LocalPlayer::pickUp(FloorItem *item)

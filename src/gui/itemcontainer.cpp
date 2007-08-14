@@ -30,7 +30,7 @@
 #include "../graphics.h"
 #include "../inventory.h"
 #include "../item.h"
-#include "../log.h"
+#include "../localplayer.h"
 
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
@@ -38,18 +38,30 @@
 
 #include "../utils/tostring.h"
 
-ItemContainer::ItemContainer(Inventory *inventory):
+static const int BOX_WIDTH = 36;
+static const int BOX_HEIGHT = 44;
+
+ItemContainer::ItemContainer(Inventory *inventory,
+        int gridColumns = 1, int gridRows = 1):
     mInventory(inventory),
-    mSelectedItem(NULL)
+    mGridColumns(gridColumns),
+    mGridRows(gridRows),
+    mSelectedItem(NULL),
+    mHighlightedItem(NULL),
+    mDragged(false),
+    mSwapItems(false)
 {
+    setFocusable(true);
+
     ResourceManager *resman = ResourceManager::getInstance();
 
     mSelImg = resman->getImage("graphics/gui/selection.png");
-    if (!mSelImg) logger->error("Unable to load selection.png");
 
-    mMaxItems = mInventory->getLastUsedSlot() + 1;
-
+    addKeyListener(this);
     addMouseListener(this);
+
+    setSize((BOX_WIDTH - 1) * mGridColumns + 1,
+        (BOX_HEIGHT - 1) * mGridRows + 1);
 }
 
 ItemContainer::~ItemContainer()
@@ -58,92 +70,67 @@ ItemContainer::~ItemContainer()
 }
 
 void
-ItemContainer::logic()
-{
-    gcn::Widget::logic();
-
-    int i = mInventory->getLastUsedSlot() + 1;
-
-    if (i != mMaxItems)
-    {
-        mMaxItems = i;
-        setWidth(getWidth());
-    }
-}
-
-void
 ItemContainer::draw(gcn::Graphics *graphics)
 {
-    int gridWidth = 36; //(item icon width + 4)
-    int gridHeight = 42; //(item icon height + 10)
-    int columns = getWidth() / gridWidth;
+    Graphics *g = static_cast<Graphics*>(graphics);
 
-    // Have at least 1 column
-    if (columns < 1)
+    for (int i = 0; i < mGridColumns; i++)
     {
-        columns = 1;
-    }
-
-    // Reset selected item when quantity not above 0 (should probably be made
-    // sure somewhere else)
-    if (mSelectedItem && mSelectedItem->getQuantity() <= 0)
-    {
-        selectNone();
-    }
-
-    for (int i = 0; i < INVENTORY_SIZE; i++)
-    {
-        Item *item = mInventory->getItem(i);
-
-        if (item->getQuantity() <= 0) {
-            continue;
-        }
-
-        int itemX = (i % columns) * gridWidth;
-        int itemY = (i / columns) * gridHeight;
-
-        // Draw selection image below selected item
-        if (mSelectedItem == item)
+        for (int j = 0; j < mGridRows; j++)
         {
-            static_cast<Graphics*>(graphics)->drawImage(mSelImg, itemX, itemY);
+            // Items positions made to overlap on another.
+            int itemX = i * (BOX_WIDTH - 1);
+            int itemY = j * (BOX_HEIGHT - 1);
+
+            // Set color to black.
+            g->setColor(gcn::Color(0, 0, 0));
+            // Draw box border.
+            g->drawRectangle(
+                gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
+
+            Item *item = mInventory->getItem((j * mGridColumns) + i);
+
+            if (!item)
+                return;
+            Image *image = item->getInfo().getImage();
+            if (image)
+            {
+                if (item == mSelectedItem)
+                {
+                    if (mDragged) {
+                        // Reposition the coords to that of the cursor.
+                        itemX = mDragPosX - (BOX_WIDTH / 2);
+                        itemY = mDragPosY - (BOX_HEIGHT / 2);
+                    }
+                    else {
+                        // Draw selected image.
+                        g->drawImage(mSelImg, itemX, itemY);
+                    }
+                }
+                g->drawImage(image, itemX, itemY);
+            }
+            if (item->getQuantity() > 1) {
+                // Draw item caption
+                g->drawText(
+                    toString(item->getQuantity()),
+                    itemX + BOX_WIDTH / 2,
+                    itemY + BOX_HEIGHT - 14,
+                    gcn::Graphics::CENTER);
+            }
+
         }
-
-        // Draw item icon
-        if (Image *image = item->getInfo().getImage())
-        {
-            static_cast<Graphics*>(graphics)->drawImage(image, itemX, itemY);
-        }
-
-        // Draw item caption
-        graphics->drawText(
-                toString(item->getQuantity()),
-                itemX + gridWidth / 2,
-                itemY + gridHeight - 11,
-                gcn::Graphics::CENTER);
-    }
-}
-
-void
-ItemContainer::setWidth(int width)
-{
-    gcn::Widget::setWidth(width);
-
-    int gridWidth = 36; //item icon width + 4
-    int gridHeight = 46; //item icon height + 14
-    int columns = getWidth() / gridWidth;
-
-    if (columns < 1)
-    {
-        columns = 1;
     }
 
-    setHeight((mMaxItems + columns - 1) / columns * gridHeight);
-}
-
-Item*
-ItemContainer::getItem()
-{
-    return mSelectedItem;
+    if (isFocused() && mHighlightedItem) {
+        // Items positions made to overlap on another.
+        const int i = mHighlightedItem->getInvIndex();
+        const int itemX = (i % mGridColumns) * (BOX_WIDTH - 1);
+        const int itemY = (i / mGridColumns) * (BOX_HEIGHT - 1);
+        // Set color to orange.
+        g->setColor(gcn::Color(255, 128, 0));
+        // Draw box border.
+        g->drawRectangle(gcn::Rectangle(itemX, itemY, BOX_WIDTH, BOX_HEIGHT));
+    }
 }
 
 void
@@ -155,8 +142,7 @@ ItemContainer::selectNone()
 void
 ItemContainer::setSelectedItem(Item *item)
 {
-    if (mSelectedItem != item)
-    {
+    if (mSelectedItem != item) {
         mSelectedItem = item;
         fireSelectionChangedEvent();
     }
@@ -169,29 +155,199 @@ ItemContainer::fireSelectionChangedEvent()
     SelectionListeners::iterator i_end = mListeners.end();
     SelectionListeners::iterator i;
 
-    for (i = mListeners.begin(); i != i_end; ++i)
-    {
+    for (i = mListeners.begin(); i != i_end; ++i) {
         (*i)->selectionChanged(event);
+    }
+}
+
+void
+ItemContainer::keyPressed(gcn::KeyEvent &event)
+{
+    switch (event.getKey().getValue())
+    {
+        case gcn::Key::LEFT:
+            moveHighlight(ItemContainer::MOVE_SELECTED_LEFT);
+            break;
+        case gcn::Key::RIGHT:
+            moveHighlight(ItemContainer::MOVE_SELECTED_RIGHT);
+            break;
+        case gcn::Key::UP:
+            moveHighlight(ItemContainer::MOVE_SELECTED_UP);
+            break;
+        case gcn::Key::DOWN:
+            moveHighlight(ItemContainer::MOVE_SELECTED_DOWN);
+            break;
+        case gcn::Key::SPACE:
+            keyAction();
+            break;
+        case gcn::Key::LEFT_ALT:
+        case gcn::Key::RIGHT_ALT:
+            mSwapItems = true;
+    }
+}
+
+void
+ItemContainer::keyReleased(gcn::KeyEvent &event)
+{
+    switch (event.getKey().getValue())
+    {
+        case gcn::Key::LEFT_ALT:
+        case gcn::Key::RIGHT_ALT:
+            mSwapItems = false;
     }
 }
 
 void
 ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
-    int button = event.getButton();
 
+    const int button = event.getButton();
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
-        int gridWidth = 36; //(item icon width + 4)
-        int gridHeight = 42; //(item icon height + 10)
-        int columns = getWidth() / gridWidth;
-        int mx = event.getX();
-        int my = event.getY();
-        int index = mx / gridWidth + ((my / gridHeight) * columns);
+        const int index = getSlotIndex(event.getX(), event.getY());
+        if (index == Inventory::NO_SLOT_INDEX) {
+            return;
+        }
 
-        if (index > INVENTORY_SIZE)
-            index = INVENTORY_SIZE - 1;
+        Item *item = mInventory->getItem(index);
 
-        setSelectedItem(mInventory->getItem(index));
+        if (mSelectedItem && mSelectedItem == item) {
+            setSelectedItem(NULL);
+        }
+        else if (item->getId()) {
+            setSelectedItem(item);
+        }
+        else {
+            setSelectedItem(NULL);
+        }
+    }
+}
+
+void
+ItemContainer::mouseDragged(gcn::MouseEvent &event)
+{
+    if (mSelectedItem)
+    {
+        if (!mDragged) {
+            mDragged = true;
+        }
+        mDragPosX = event.getX();
+        mDragPosY = event.getY();
+    }
+}
+
+void
+ItemContainer::mouseReleased(gcn::MouseEvent &event)
+{
+    if (mDragged)
+    {
+        mDragged = false;
+
+        const int index = getSlotIndex(event.getX(), event.getY());
+        if (index == Inventory::NO_SLOT_INDEX) {
+            return;
+        }
+
+        if (mSelectedItem) {
+            player_node->moveInvItem(mSelectedItem, index);
+            setSelectedItem(NULL);
+        }
+    }
+}
+
+int
+ItemContainer::getSlotIndex(const int posX, const int posY) const
+{
+    if(gcn::Rectangle(0, 0, (getWidth() - 1), (getHeight() - 1))
+        .isPointInRect(posX, posY))
+    {
+        // Takes into account, boxes are overlapping each other.
+        return (posY / (BOX_HEIGHT - 1)) * mGridColumns +
+                    (posX / (BOX_WIDTH - 1));
+    }
+    return Inventory::NO_SLOT_INDEX;
+}
+
+void
+ItemContainer::keyAction()
+{
+    // If there is no highlight then return.
+    if (!mHighlightedItem)
+        return;
+
+    // If the highlight is on the selected item, then deselect it.
+    if (mHighlightedItem == mSelectedItem)
+    {
+        setSelectedItem(NULL);
+    }
+    // Check and swap items if necessary.
+    else if (mSwapItems &&
+        mSelectedItem &&
+        mHighlightedItem->getId())
+    {
+        player_node->moveInvItem(
+            mSelectedItem, mHighlightedItem->getInvIndex());
+        setSelectedItem(mHighlightedItem);
+    }
+    // If the highlight is on an item the select it.
+    else if (mHighlightedItem->getId())
+    {
+        setSelectedItem(mHighlightedItem);
+    }
+    // If the highlight is on a blank space then move it.
+    else if (mSelectedItem)
+    {
+        player_node->moveInvItem(
+            mSelectedItem, mHighlightedItem->getInvIndex());
+        setSelectedItem(NULL);
+    }
+}
+
+void
+ItemContainer::moveHighlight(int direction)
+{
+    if (!mHighlightedItem)
+    {
+        if (mSelectedItem) {
+            mHighlightedItem = mSelectedItem;
+        }
+        else {
+            mHighlightedItem = mInventory->getItem(0);
+        }
+        return;
+    }
+
+    switch (direction)
+    {
+        case MOVE_SELECTED_LEFT:
+            if (mHighlightedItem->getInvIndex() % mGridColumns == 0)
+            {
+                mHighlightedItem += mGridColumns;
+            }
+            mHighlightedItem--;
+            break;
+        case MOVE_SELECTED_RIGHT:
+            if ((mHighlightedItem->getInvIndex() % mGridColumns) ==
+                (mGridColumns - 1))
+            {
+                mHighlightedItem -= mGridColumns;
+            }
+            mHighlightedItem++;
+            break;
+        case MOVE_SELECTED_UP:
+            if (mHighlightedItem->getInvIndex() / mGridColumns == 0)
+            {
+                mHighlightedItem += (mGridColumns * mGridRows);
+            }
+            mHighlightedItem -= mGridColumns;
+            break;
+        case MOVE_SELECTED_DOWN:
+            if ((mHighlightedItem->getInvIndex() / mGridColumns) ==
+                (mGridRows - 1))
+            {
+                mHighlightedItem -= (mGridColumns * mGridRows);
+            }
+            mHighlightedItem += mGridColumns;
+            break;
     }
 }

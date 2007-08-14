@@ -30,7 +30,7 @@
 struct SlotUsed : public std::unary_function<Item, bool>
 {
     bool operator()(const Item &item) const {
-        return (item.getId() != -1 && item.getQuantity() > 0);
+        return (item.getId() && item.getQuantity());
     }
 };
 
@@ -72,8 +72,7 @@ void Inventory::addItem(int index, int id, int quantity)
 void Inventory::clear()
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
-        mItems[i].setId(-1);
-        mItems[i].setQuantity(0);
+        removeItemIndex(i);
     }
 }
 
@@ -81,10 +80,15 @@ void Inventory::removeItem(int id)
 {
     for (int i = 0; i < INVENTORY_SIZE; i++) {
         if (mItems[i].getId() == id) {
-            mItems[i].setId(-1);
-            mItems[i].setQuantity(0);
+            removeItemIndex(i);
         }
     }
+}
+
+void Inventory::removeItemIndex(int index)
+{
+    mItems[index].setId(0);
+    mItems[index].setQuantity(0);
 }
 
 bool Inventory::contains(Item *item)

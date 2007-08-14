@@ -25,6 +25,9 @@
 #define _TMW_INVENTORYWINDOW_H
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/keylistener.hpp>
+
+#include <guichan/widgets/checkbox.hpp>
 
 #include "window.h"
 #include "selectionlistener.h"
@@ -39,13 +42,21 @@ class ItemContainer;
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
+class InventoryWindow : public Window,
+                        public gcn::ActionListener,
+                        public gcn::KeyListener,
+                        public SelectionListener
 {
     public:
         /**
          * Constructor.
          */
         InventoryWindow();
+
+        /**
+         * Destructor.
+         */
+        ~InventoryWindow();
 
         /**
          * Logic (updates buttons and weight information).
@@ -57,7 +68,20 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
          */
         void action(const gcn::ActionEvent &event);
 
+        /**
+         * Handles the mouse clicks.
+         */
         void mouseClicked(gcn::MouseEvent &event);
+
+        /**
+         * Handles the key presses.
+         */
+        void keyPressed(gcn::KeyEvent &event);
+
+        /**
+         * Handles the key releases.
+         */
+        void keyReleased(gcn::KeyEvent &event);
 
         Item* getItem();
 
@@ -75,8 +99,9 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
 
         ItemContainer *mItems;
 
-        gcn::Button *mUseButton, *mDropButton;
-        gcn::ScrollArea *mInvenScroll;
+        gcn::Button *mUseButton, *mDropButton; /**< Use, Drop Item Buttons. */
+        gcn::CheckBox *mSplitBox;              /**< Split item checkbox. */
+        gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
         gcn::Label *mItemNameLabel;
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mItemEffectLabel;

@@ -137,6 +137,11 @@ class LocalPlayer : public Player
         Item* getInvItem(int index);
 
         /**
+         * Move the Inventory item from the old slot to the new slot.
+         */
+        void moveInvItem(Item *item, int newIndex);
+
+        /**
          * Equips an item.
          */
         void equipItem(Item *item);
@@ -146,8 +151,12 @@ class LocalPlayer : public Player
          */
         void unequipItem(int slot);
 
-        void useItem(Item *item);
+        void useItem(int slot);
+
         void dropItem(Item *item, int quantity);
+
+        void splitItem(Item *item, int quantity);
+
         void pickUp(FloorItem *item);
 
         /**

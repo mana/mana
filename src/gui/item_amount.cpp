@@ -83,6 +83,10 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
             setCaption(_("Select amount of items to drop."));
             okButton->setActionEventId("Drop");
             break;
+        case AMOUNT_ITEM_SPLIT:
+            setCaption(_("Select amount of items to split."));
+            okButton->setActionEventId("Split");
+            break;
         default:
             break;
     }
@@ -105,16 +109,6 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         scheduleDelete();
     }
-    else if (event.getId() == "Drop")
-    {
-        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
-        scheduleDelete();
-    }
-    else if (event.getId() == "AddTrade")
-    {
-        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
-        scheduleDelete();
-    }
     else if (event.getId() == "Plus")
     {
         amount++;
@@ -126,6 +120,21 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "Slide")
     {
         amount = static_cast<int>(mItemAmountSlide->getValue());
+    }
+    else if (event.getId() == "Drop")
+    {
+        player_node->dropItem(mItem, mItemAmountTextBox->getInt());
+        scheduleDelete();
+    }
+    else if (event.getId() == "AddTrade")
+    {
+        tradeWindow->tradeItem(mItem, mItemAmountTextBox->getInt());
+        scheduleDelete();
+    }
+    else if (event.getId() == "Split")
+    {
+        player_node->splitItem(mItem, mItemAmountTextBox->getInt());
+        scheduleDelete();
     }
     mItemAmountTextBox->setInt(amount);
     mItemAmountSlide->setValue(amount);

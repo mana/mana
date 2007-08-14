@@ -79,6 +79,7 @@ enum {
     PGMSG_DROP                     = 0x0111, // B slot, B amount
     PGMSG_EQUIP                    = 0x0112, // B slot
     PGMSG_UNEQUIP                  = 0x0113, // B slot
+    PGMSG_MOVE_ITEM                = 0x0114, // B slot1, B slot2, B amount
     GPMSG_INVENTORY                = 0x0120, // { B slot, W item id [, B amount] }*
     GPMSG_INVENTORY_FULL           = 0x0121, // { B slot, W item id [, B amount] }*
     GPMSG_PLAYER_ATTRIBUTE_UPDATE  = 0x0130, // { W attribute, W value }*
@@ -116,7 +117,7 @@ enum {
     GPMSG_TRADE_ACCEPT             = 0x02C7, // -
     PGMSG_TRADE_ADD_ITEM           = 0x02C8, // B slot, B amount
     GPMSG_TRADE_ADD_ITEM           = 0x02C9, // W item id, B amount
-    PGMSG_USE_ITEM                 = 0x0300, // L item id
+    PGMSG_USE_ITEM                 = 0x0300, // B slot
     GPMSG_USE_RESPONSE             = 0x0301, // B error
     GPMSG_BEINGS_DAMAGE            = 0x0310, // { W being id, W amount }*
 

@@ -52,6 +52,15 @@ void Net::GameServer::Player::pickUp(int x, int y)
     Net::GameServer::connection->send(msg);
 }
 
+void Net::GameServer::Player::moveItem(int oldSlot, int newSlot, int amount)
+{
+    MessageOut msg(PGMSG_MOVE_ITEM);
+    msg.writeByte(oldSlot);
+    msg.writeByte(newSlot);
+    msg.writeByte(amount);
+    Net::GameServer::connection->send(msg);
+}
+
 void Net::GameServer::Player::drop(int slot, int amount)
 {
     MessageOut msg(PGMSG_DROP);
@@ -70,6 +79,13 @@ void Net::GameServer::Player::equip(int slot)
 void Net::GameServer::Player::unequip(int slot)
 {
     MessageOut msg(PGMSG_UNEQUIP);
+    msg.writeByte(slot);
+    Net::GameServer::connection->send(msg);
+}
+
+void Net::GameServer::Player::useItem(int slot)
+{
+    MessageOut msg(PGMSG_USE_ITEM);
     msg.writeByte(slot);
     Net::GameServer::connection->send(msg);
 }
@@ -123,4 +139,3 @@ void Net::GameServer::Player::tradeItem(int slot, int amount)
     msg.writeByte(amount);
     Net::GameServer::connection->send(msg);
 }
-

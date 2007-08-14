@@ -26,7 +26,7 @@
 
 class Item;
 
-#define INVENTORY_SIZE 100
+#define INVENTORY_SIZE 50
 
 class Inventory
 {
@@ -62,6 +62,11 @@ class Inventory
         void removeItem(int id);
 
         /**
+         * Remove a item from the inventory, specified by the index.
+         */
+        void removeItemIndex(int index);
+
+        /**
          * Checks if the given item is in the inventory
          */
         bool contains(Item *item);
@@ -86,6 +91,7 @@ class Inventory
          */
         int getLastUsedSlot();
 
+        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
     protected:
         Item *mItems;  /**< The holder of items */
 };

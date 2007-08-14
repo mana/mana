@@ -174,10 +174,13 @@ void PopupMenu::handleLink(const std::string& link)
         }
         else
         {
-            player_node->useItem(mItem);
+            player_node->useItem(mItem->getInvIndex());
         }
     }
-
+    else if (link == "split")
+    {
+        new ItemAmountWindow(AMOUNT_ITEM_SPLIT, inventoryWindow, mItem);
+    }
     else if (link == "drop")
     {
         new ItemAmountWindow(AMOUNT_ITEM_DROP, inventoryWindow, mItem);
@@ -220,9 +223,10 @@ void PopupMenu::showPopup(int x, int y, Item *item)
     }
     else
         mBrowserBox->addRow(_("@@use|Use@@"));
-
     mBrowserBox->addRow(_("@@drop|Drop@@"));
     mBrowserBox->addRow(_("@@description|Description@@"));
+    if (!item->isEquipment())
+    { mBrowserBox->addRow(_("@@split|Split@@")); }
     mBrowserBox->addRow("##3---");
     mBrowserBox->addRow(_("@@cancel|Cancel@@"));
 

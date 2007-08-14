@@ -57,14 +57,15 @@ TradeWindow::TradeWindow():
     mCancelButton = new Button("Cancel", "cancel", this);
     mTradeButton = new Button("Trade", "trade", this);
 
-    mMyItemContainer = new ItemContainer(mMyInventory.get());
+    mMyItemContainer = new ItemContainer(mMyInventory.get(), 5, 3);
     mMyItemContainer->addSelectionListener(this);
     mMyItemContainer->setPosition(2, 2);
 
     mMyScroll = new ScrollArea(mMyItemContainer);
     mMyScroll->setPosition(8, 8);
 
-    mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
+    mPartnerItemContainer = new ItemContainer(
+        mPartnerInventory.get(), 5, 3);
     mPartnerItemContainer->addSelectionListener(this);
     mPartnerItemContainer->setPosition(2, 58);
 

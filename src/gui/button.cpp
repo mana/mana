@@ -34,8 +34,31 @@
 
 #include "../utils/dtor.h"
 
-ImageRect Button::button[4];
 int Button::mInstances = 0;
+
+enum{
+    BUTTON_STANDARD,    // 0
+    BUTTON_HIGHLIGHTED, // 1
+    BUTTON_PRESSED,     // 2
+    BUTTON_DISABLED,    // 3
+    BUTTON_COUNT        // 4 - Must be last.
+};
+
+struct ButtonData
+{
+    char *const file;
+    int gridX;
+    int gridY;
+};
+
+static ButtonData const data[BUTTON_COUNT] = {
+    {"graphics/gui/button.png", 0, 0},
+    {"graphics/gui/buttonhi.png", 9, 4},
+    {"graphics/gui/buttonpress.png", 16, 19},
+    {"graphics/gui/button_disabled.png", 25, 24}
+};
+
+ImageRect Button::button[BUTTON_COUNT];
 
 Button::Button(const std::string& caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
@@ -48,24 +71,20 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
     {
         // Load the skin
         ResourceManager *resman = ResourceManager::getInstance();
-        Image *btn[4];
-        btn[0] = resman->getImage("graphics/gui/button.png");
-        btn[1] = resman->getImage("graphics/gui/buttonhi.png");
-        btn[2] = resman->getImage("graphics/gui/buttonpress.png");
-        btn[3] = resman->getImage("graphics/gui/button_disabled.png");
-        int bgridx[4] = {0, 9, 16, 25};
-        int bgridy[4] = {0, 4, 19, 24};
+        Image *btn[BUTTON_COUNT];
+
         int a, x, y, mode;
 
-        for (mode = 0; mode < 4; mode++)
+        for (mode = 0; mode < BUTTON_COUNT; mode++)
         {
+            btn[mode] = resman->getImage(data[mode].file);
             a = 0;
             for (y = 0; y < 3; y++) {
                 for (x = 0; x < 3; x++) {
                     button[mode].grid[a] = btn[mode]->getSubImage(
-                            bgridx[x], bgridy[y],
-                            bgridx[x + 1] - bgridx[x] + 1,
-                            bgridy[y + 1] - bgridy[y] + 1);
+                            data[x].gridX, data[y].gridY,
+                            data[x + 1].gridX - data[x].gridX + 1,
+                            data[y + 1].gridY - data[y].gridY + 1);
                     a++;
                 }
             }
@@ -86,7 +105,7 @@ Button::~Button()
 
     if (mInstances == 0)
     {
-        for (int mode = 0; mode < 4; mode++)
+        for (int mode = 0; mode < BUTTON_COUNT; mode++)
         {
             for_each(button[mode].grid, button[mode].grid + 9, dtor<Image*>());
         }
@@ -99,16 +118,16 @@ Button::draw(gcn::Graphics *graphics)
     int mode;
 
     if (!isEnabled()) {
-        mode = 3;
+        mode = BUTTON_DISABLED;
     }
     else if (isPressed() || mIsLogged) {
-        mode = 2;
+        mode = BUTTON_PRESSED;
     }
-    else if (mHasMouse) {
-        mode = 1;
+    else if (mHasMouse || isFocused()) {
+        mode = BUTTON_HIGHLIGHTED;
     }
     else {
-        mode = 0;
+        mode = BUTTON_STANDARD;
     }
 
     static_cast<Graphics*>(graphics)->
