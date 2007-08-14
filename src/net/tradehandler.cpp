@@ -64,6 +64,7 @@ TradeHandler::TradeHandler()
         GPMSG_TRADE_COMPLETE,
         GPMSG_TRADE_ACCEPT,
         GPMSG_TRADE_ADD_ITEM,
+        GPMSG_TRADE_SET_MONEY,
         0
     };
     handledMessages = _messages;
@@ -73,133 +74,6 @@ void TradeHandler::handleMessage(MessageIn &msg)
 {
     switch (msg.getId())
     {
-#if 0
-        case SMSG_TRADE_REQUEST:
-                // If a trade window or request window is already open, send a
-                // trade cancel to any other trade request.
-                //
-                // Note that it would be nice if the server would prevent this
-                // situation, and that the requesting player would get a
-                // special message about the player being occupied.
-                if (!player_node->tradeRequestOk())
-                {
-                    player_node->tradeReply(false);
-                    break;
-                }
-
-                player_node->setTrading(true);
-                tradePartnerName = msg.readString(24);
-                ConfirmDialog *dlg;
-                dlg = new ConfirmDialog("Request for trade",
-                        tradePartnerName +
-                        " wants to trade with you, do you accept?");
-                dlg->addActionListener(&listener);
-            break;
-
-        case SMSG_TRADE_RESPONSE:
-            switch (msg.readByte())
-            {
-                case 0: // Too far away
-                    chatWindow->chatLog("Trading isn't possible. "
-                            "Trade partner is too far away.",
-                            BY_SERVER);
-                    break;
-                case 1: // Character doesn't exist
-                    chatWindow->chatLog("Trading isn't possible. "
-                            "Character doesn't exist.",
-                            BY_SERVER);
-                    break;
-                case 2: // Invite request check failed...
-                    chatWindow->chatLog("Trade cancelled due to an "
-                            "unknown reason.", BY_SERVER);
-                    break;
-                case 3: // Trade accepted
-                    tradeWindow->reset();
-                    tradeWindow->setCaption(
-                            "Trade: You and " + tradePartnerName);
-                    tradeWindow->setVisible(true);
-                    break;
-                case 4: // Trade cancelled
-                    chatWindow->chatLog("Trade cancelled.", BY_SERVER);
-                    tradeWindow->setVisible(false);
-                    player_node->setTrading(false);
-                    break;
-                default: // Shouldn't happen as well, but to be sure
-                    chatWindow->chatLog("Unhandled trade cancel packet",
-                            BY_SERVER);
-                    break;
-            }
-            break;
-
-        case SMSG_TRADE_ITEM_ADD:
-            {
-                Sint32 amount = msg.readLong();
-                Sint16 type = msg.readShort();
-                msg.readByte();  // identified flag
-                msg.readByte();  // attribute
-                msg.readByte();  // refine
-
-                // TODO: handle also identified, etc
-                if (type == 0) {
-                    tradeWindow->addMoney(amount);
-                } else {
-                    tradeWindow->addItem(type, false, amount, false);
-                }
-            }
-            break;
-
-        case SMSG_TRADE_ITEM_ADD_RESPONSE:
-            // Trade: New Item add response (was 0x00ea, now 01b1)
-            {
-                Item *item = player_node->getInvItem(msg.readShort());
-                Sint16 quantity = msg.readShort();
-
-                switch (msg.readByte())
-                {
-                    case 0:
-                        // Successfully added item
-                        if (item->isEquipment() && item->isEquipped())
-                        {
-                            player_node->unequipItem(item);
-                        }
-                        tradeWindow->addItem(item->getId(), true, quantity,
-                                item->isEquipment());
-                        item->increaseQuantity(-quantity);
-                        break;
-                    case 1:
-                        // Add item failed - player overweighted
-                        chatWindow->chatLog("Failed adding item. Trade "
-                                "partner is over weighted.",
-                                BY_SERVER);
-                        break;
-                    default:
-                        chatWindow->chatLog("Failed adding item for "
-                                "unknown reason.", BY_SERVER);
-                        break;
-                }
-            }
-            break;
-
-        case SMSG_TRADE_OK:
-            // 0 means ok from myself, 1 means ok from other;
-            tradeWindow->receivedOk(msg.readByte() == 0);
-            break;
-
-        case SMSG_TRADE_CANCEL:
-            chatWindow->chatLog("Trade canceled.", BY_SERVER);
-            tradeWindow->setVisible(false);
-            tradeWindow->reset();
-            player_node->setTrading(false);
-            break;
-
-        case SMSG_TRADE_COMPLETE:
-            chatWindow->chatLog("Trade completed.", BY_SERVER);
-            tradeWindow->setVisible(false);
-            tradeWindow->reset();
-            player_node->setTrading(false);
-            break;
-#endif
-
         case GPMSG_TRADE_REQUEST:
         {
             Being *being = beingManager->findBeing(msg.readShort());
@@ -222,6 +96,10 @@ void TradeHandler::handleMessage(MessageIn &msg)
             int amount = msg.readByte();
             tradeWindow->addItem(type, false, amount);
         }   break;
+
+        case GPMSG_TRADE_SET_MONEY:
+            tradeWindow->setMoney(msg.readLong());
+            break;
 
         case GPMSG_TRADE_START:
             tradeWindow->reset();

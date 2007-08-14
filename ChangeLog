@@ -5,6 +5,9 @@
 	* src/net/inventoryhandler.cpp: Handled money as an inventory part.
 	* src/gui/sell.cpp, src/gui/buy.cpp, src/net/gameserver/player.h,
 	src/net/gameserver/player.cpp: Enabled buying and selling from NPCs.
+	* src/gui/trade.cpp, src/gui/trade.h, src/net/tradehandler.cpp,
+	src/net/protocol.h: Removed old code. Added support for money received
+	while trading.
 
 2007-08-14  Josh Langley  <joshlangley[at]optusnet.com.au>
 

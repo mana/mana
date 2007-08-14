@@ -131,7 +131,7 @@ TradeWindow::~TradeWindow()
 {
 }
 
-void TradeWindow::addMoney(int amount)
+void TradeWindow::setMoney(int amount)
 {
     mMoneyLabel->setCaption("You get: " + toString(amount) + "z");
     mMoneyLabel->adjustSize();

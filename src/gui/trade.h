@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id $
+ *  $Id$
  */
 
 #ifndef _TMW_TRADE_H
@@ -57,9 +57,9 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         ~TradeWindow();
 
         /**
-         * Add money to the trade window.
+         * Displays expected money in the trade window.
          */
-        void addMoney(int quantity);
+        void setMoney(int quantity);
 
         /**
          * Add an item to the trade window.
