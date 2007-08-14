@@ -36,37 +36,33 @@ MessageIn::MessageIn(const char *data, unsigned int length):
     mId = readShort();
 }
 
-MessageIn::~MessageIn()
+int MessageIn::readByte()
 {
-}
-
-char MessageIn::readByte()
-{
-    char value = -1;
+    int value = -1;
     if (mPos < mLength)
     {
-        value = mData[mPos];
+        value = (unsigned char) mData[mPos];
     }
     mPos += 1;
     return value;
 }
 
-short MessageIn::readShort()
+int MessageIn::readShort()
 {
-    short value = -1;
+    int value = -1;
     if (mPos + 2 <= mLength)
     {
         uint16_t t;
         memcpy(&t, mData + mPos, 2);
-        value = ENET_NET_TO_HOST_16(t);
+        value = (unsigned short) ENET_NET_TO_HOST_16(t);
     }
     mPos += 2;
     return value;
 }
 
-long MessageIn::readLong()
+int MessageIn::readLong()
 {
-    long value = -1;
+    int value = -1;
     if (mPos + 4 <= mLength)
     {
         uint32_t t;

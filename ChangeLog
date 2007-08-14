@@ -1,4 +1,11 @@
+2007-08-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/net/messagein.h, src/net/messagein.cpp: Fixed error-prone
+	interface.
+	* src/net/inventoryhandler.cpp: Handled money as an inventory part.
+
 2007-08-14  Josh Langley  <joshlangley[at]optusnet.com.au>
+
 	* gui/button.cpp, gui/inventorywindow.cpp, gui/inventorywindow.h,
 	gui/item_amount.cpp, gui/item_amount.h, gui/itemcontainer.cpp,
 	gui/itemcontainer.h, gui/popupmenu.cpp, gui/trade.cpp, inventory.cpp,

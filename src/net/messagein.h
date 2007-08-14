@@ -41,16 +41,11 @@ class MessageIn
          */
         MessageIn(const char *data, unsigned int length);
 
-        /**
-         * Destructor.
-         */
-        ~MessageIn();
+        int getId() { return mId; } /**< Returns the message ID. */
 
-        short getId() { return mId; } /**< Returns the message ID. */
-
-        char readByte();              /**< Reads a byte. */
-        short readShort();            /**< Reads a short. */
-        long readLong();              /**< Reads a long. */
+        int readByte();              /**< Reads a byte. */
+        int readShort();            /**< Reads a short. */
+        int readLong();              /**< Reads a long. */
 
         /**
          * Reads a 3-byte block containing tile-based coordinates.
@@ -79,7 +74,7 @@ class MessageIn
     private:
         const char* mData;             /**< The message data. */
         unsigned int mLength;          /**< The length of the data. */
-        short mId;                     /**< The message ID. */
+        unsigned short mId;                     /**< The message ID. */
 
         /**
          * Actual position in the packet. From 0 to packet->length.

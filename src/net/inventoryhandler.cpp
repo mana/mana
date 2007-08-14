@@ -58,6 +58,12 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             while (msg.getUnreadLength())
             {
                 int slot = msg.readByte();
+                if (slot == 255)
+                {
+                    player_node->setMoney(msg.readLong());
+                    continue;
+                }
+
                 int id = msg.readShort();
                 if (slot < EQUIPMENT_SIZE)
                 {
