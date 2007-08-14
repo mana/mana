@@ -47,7 +47,8 @@
 #include "../utils/strprintf.h"
 
 InventoryWindow::InventoryWindow():
-    Window(_("Inventory"))
+    Window(_("Inventory")),
+    mSplit(false)
 {
     setResizable(true);
     setMinWidth(240);
@@ -58,8 +59,11 @@ InventoryWindow::InventoryWindow():
 
     mUseButton = new Button(_("Use"), "use", this);
     mDropButton = new Button(_("Drop"), "drop", this);
+    mSplitButton = new Button(_("Split"), "split", this);
 
-    mSplitBox = new gcn::CheckBox(_("Split"));
+    mUseButton->adjustSize();
+    mDropButton->adjustSize();
+    mSplitButton->adjustSize();
 
     mItems = new ItemContainer(player_node->mInventory.get(), 10, 5);
     mItems->addSelectionListener(this);
@@ -79,15 +83,22 @@ InventoryWindow::InventoryWindow():
 
     add(mUseButton);
     add(mDropButton);
-    add(mSplitBox);
+    add(mSplitButton);
     add(mInvenScroll);
     add(mItemNameLabel);
     add(mItemDescriptionLabel);
     add(mItemEffectLabel);
     add(mWeightLabel);
 
-    mUseButton->setWidth(48);
-    mDropButton->setWidth(48);
+    if (mUseButton->getWidth() < 48) {
+        mUseButton->setWidth(48);
+    }
+    if (mDropButton->getWidth() < 48) {
+        mDropButton->setWidth(48);
+    }
+    if (mSplitButton->getWidth() < 48) {
+        mSplitButton->setWidth(48);
+    }
 
     loadWindowState("Inventory");
     updateContentSize();
@@ -97,7 +108,7 @@ InventoryWindow::~InventoryWindow()
 {
     delete mUseButton;
     delete mDropButton;
-    delete mSplitBox;
+    delete mSplitButton;
     delete mItems;
     delete mInvenScroll;
 
@@ -149,6 +160,13 @@ void InventoryWindow::action(const gcn::ActionEvent &event)
         }
         mItems->selectNone();
     }
+    else if (event.getId() == "split")
+    {
+        if (item && !item->isEquipment() && item->getQuantity() > 1) {
+            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item,
+                (item->getQuantity() - 1));
+        }
+    }
 }
 
 void InventoryWindow::selectionChanged(const SelectionEvent &event)
@@ -167,11 +185,12 @@ void InventoryWindow::selectionChanged(const SelectionEvent &event)
     mItemEffectLabel->adjustSize();
     mItemDescriptionLabel->adjustSize();
 
-    if (mSplitBox->isMarked())
+    if (mSplit)
     {
         if (item && !item->isEquipment() && item->getQuantity() > 1) {
-            mSplitBox->setMarked(false);
-            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item);
+            mSplit = false;
+            new ItemAmountWindow(AMOUNT_ITEM_SPLIT, this, item,
+                (item->getQuantity() - 1));
         }
     }
 }
@@ -187,7 +206,6 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
         if (!item) {
             return;
         }
-
         /* Convert relative to the window coordinates to absolute screen
          * coordinates.
          */
@@ -203,8 +221,10 @@ void InventoryWindow::updateContentSize()
 
     // Resize widgets
     mUseButton->setPosition(8, area.height - 24);
-    mDropButton->setPosition(64, area.height - 24); // 8 + 48 + 8 = 64.
-    mSplitBox->setPosition(128, area.height - 20);
+    mDropButton->setPosition(mUseButton->getWidth() + 16, area.height - 24);
+    mSplitButton->setPosition(
+        mUseButton->getWidth() + mDropButton->getWidth() + 24,
+        area.height - 24);
     mInvenScroll->setSize(area.width - 16, area.height - 110);
 
     mItemNameLabel->setPosition(8,
@@ -227,6 +247,12 @@ void InventoryWindow::updateButtons()
     }
     mUseButton->setEnabled(!!item);
     mDropButton->setEnabled(!!item);
+    if (item && !item->isEquipment() && item->getQuantity() > 1) {
+        mSplitButton->setEnabled(true);
+    }
+    else {
+        mSplitButton->setEnabled(false);
+    }
 }
 
 Item* InventoryWindow::getItem()
@@ -241,8 +267,7 @@ InventoryWindow::keyPressed(gcn::KeyEvent &event)
     {
         case gcn::Key::LEFT_SHIFT:
         case gcn::Key::RIGHT_SHIFT:
-            mSplitBox->setMarked(true);
-            break;
+            mSplit = true;
     }
 }
 
@@ -253,7 +278,6 @@ InventoryWindow::keyReleased(gcn::KeyEvent &event)
     {
         case gcn::Key::LEFT_SHIFT:
         case gcn::Key::RIGHT_SHIFT:
-            mSplitBox->setMarked(false);
-            break;
+            mSplit = false;
     }
 }

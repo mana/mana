@@ -32,6 +32,8 @@
 #include "../item.h"
 #include "../localplayer.h"
 
+#include "../log.h"
+
 #include "../resources/image.h"
 #include "../resources/iteminfo.h"
 #include "../resources/resourcemanager.h"
@@ -244,6 +246,7 @@ ItemContainer::mouseReleased(gcn::MouseEvent &event)
         mDragged = false;
 
         const int index = getSlotIndex(event.getX(), event.getY());
+        logger->log("index=%d", index);
         if (index == Inventory::NO_SLOT_INDEX) {
             return;
         }
@@ -258,8 +261,7 @@ ItemContainer::mouseReleased(gcn::MouseEvent &event)
 int
 ItemContainer::getSlotIndex(const int posX, const int posY) const
 {
-    if(gcn::Rectangle(0, 0, (getWidth() - 1), (getHeight() - 1))
-        .isPointInRect(posX, posY))
+    if (getDimension().isPointInRect(posX, posY))
     {
         // Takes into account, boxes are overlapping each other.
         return (posY / (BOX_HEIGHT - 1)) * mGridColumns +

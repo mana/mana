@@ -33,7 +33,8 @@
 
 #include "../utils/gettext.h"
 
-ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
+ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item,
+    int maxRange):
     Window("", true, parent),
     mItem(item)
 {
@@ -45,9 +46,12 @@ ItemAmountWindow::ItemAmountWindow(int usage, Window *parent, Item *item):
     Button *plusButton = new Button("+", "Plus", this);
     Button *okButton = new Button(_("Ok"), "Drop", this);
     Button *cancelButton = new Button(_("Cancel"), "Cancel", this);
-    mItemAmountSlide = new Slider(1.0, mItem->getQuantity());
+    if (!maxRange) {
+        maxRange = mItem->getQuantity();
+    }
+    mItemAmountSlide = new Slider(1.0, maxRange);
 
-    mItemAmountTextBox->setRange(1, mItem->getQuantity());
+    mItemAmountTextBox->setRange(1, maxRange);
     mItemAmountSlide->setDimension(gcn::Rectangle(5, 120, 180, 10));
 
     // Set button events Id
@@ -139,4 +143,3 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     mItemAmountTextBox->setInt(amount);
     mItemAmountSlide->setValue(amount);
 }
-

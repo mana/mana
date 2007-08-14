@@ -99,13 +99,16 @@ class InventoryWindow : public Window,
 
         ItemContainer *mItems;
 
-        gcn::Button *mUseButton, *mDropButton; /**< Use, Drop Item Buttons. */
-        gcn::CheckBox *mSplitBox;              /**< Split item checkbox. */
+        /**< Use, Drop, Split Item Buttons. */
+        gcn::Button *mUseButton, *mDropButton, *mSplitButton;
+
         gcn::ScrollArea *mInvenScroll;         /**< Inventory Scroll Area. */
         gcn::Label *mItemNameLabel;
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mItemEffectLabel;
         gcn::Label *mWeightLabel;
+
+        bool mSplit;
 };
 
 extern InventoryWindow *inventoryWindow;
