@@ -1,4 +1,9 @@
-﻿2007-08-09  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/popupmenu.cpp, src/gui/viewport.cpp, src/gui/viewport.h,
+	tmw.cbp: Fixed popup menu requiring one more click after being used.
+
+2007-08-09  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/chest-lightplatemail-male.png,
 	data/graphics/sprites/chest-lightplatemail-female.png,

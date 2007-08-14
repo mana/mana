@@ -187,7 +187,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         int mWalkTime;
 
         PopupMenu *mPopupMenu;     /**< Popup menu. */
-        bool mPopupActive;
 };
 
 #endif

@@ -55,8 +55,7 @@ Viewport::Viewport():
     mCameraX(0),
     mCameraY(0),
     mShowDebugPath(false),
-    mPlayerFollowMouse(false),
-    mPopupActive(false)
+    mPlayerFollowMouse(false)
 {
     setOpaque(false);
     addMouseListener(this);
@@ -383,10 +382,9 @@ Viewport::mousePressed(gcn::MouseEvent &event)
     }
 
     // If a popup is active, just remove it
-    if (mPopupActive)
+    if (mPopupMenu->isVisible())
     {
         mPopupMenu->setVisible(false);
-        mPopupActive = false;
         return;
     }
 
@@ -473,21 +471,18 @@ void
 Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
-    mPopupActive = true;
 }
 
 void
 Viewport::showPopup(int x, int y, FloorItem *floorItem)
 {
     mPopupMenu->showPopup(x, y, floorItem);
-    mPopupActive = true;
 }
 
 void
 Viewport::showPopup(int x, int y, Being *being)
 {
     mPopupMenu->showPopup(x, y, being);
-    mPopupActive = true;
 }
 
 void

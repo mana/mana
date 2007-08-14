@@ -583,6 +583,16 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\setup_keyboard.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\setup_keyboard.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\setup_video.cpp">
 			<Option compilerVar="CPP"/>
 			<Option target="default"/>
@@ -790,6 +800,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\joystick.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\keyboardconfig.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\keyboardconfig.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>
