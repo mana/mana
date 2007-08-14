@@ -35,10 +35,9 @@
 
 #include "../item.h"
 #include "../npc.h"
-
-#include "../resources/iteminfo.h"
+#include "../net/gameserver/player.h"
 #include "../resources/itemdb.h"
-
+#include "../resources/iteminfo.h"
 #include "../utils/tostring.h"
 
 SellDialog::SellDialog():
@@ -177,14 +176,8 @@ void SellDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "sell" && mAmountItems > 0
             && mAmountItems <= mMaxItems)
     {
-        // Attempt sell
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
-        outMsg.writeShort(8);
-        outMsg.writeShort(mShopItems->at(selectedItem).index);
-        outMsg.writeShort(mAmountItems);
-        */
+        Net::GameServer::Player::tradeWithNPC
+            (mShopItems->at(selectedItem).id, mAmountItems);
 
         mMaxItems -= mAmountItems;
         mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;

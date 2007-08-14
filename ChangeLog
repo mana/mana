@@ -3,6 +3,8 @@
 	* src/net/messagein.h, src/net/messagein.cpp: Fixed error-prone
 	interface.
 	* src/net/inventoryhandler.cpp: Handled money as an inventory part.
+	* src/gui/sell.cpp, src/gui/buy.cpp, src/net/gameserver/player.h,
+	src/net/gameserver/player.cpp: Enabled buying and selling from NPCs.
 
 2007-08-14  Josh Langley  <joshlangley[at]optusnet.com.au>
 

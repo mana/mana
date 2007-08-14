@@ -31,9 +31,8 @@
 #include "slider.h"
 
 #include "../npc.h"
-
+#include "../net/gameserver/player.h"
 #include "../resources/itemdb.h"
-
 #include "../utils/tostring.h"
 
 
@@ -176,13 +175,8 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "buy" && mAmountItems > 0 &&
                 mAmountItems <= mMaxItems)
     {
-        // XXX Convert for new server
-        /*
-        MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
-        outMsg.writeShort(8);
-        outMsg.writeShort(mAmountItems);
-        outMsg.writeShort(mShopItems->at(selectedItem).id);
-        */
+        Net::GameServer::Player::tradeWithNPC
+            (mShopItems->at(selectedItem).id, mAmountItems);
 
         // Update money and adjust the max number of items that can be bought
         mMoney -= mAmountItems * mShopItems->at(selectedItem).price;

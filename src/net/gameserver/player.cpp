@@ -139,3 +139,11 @@ void Net::GameServer::Player::tradeItem(int slot, int amount)
     msg.writeByte(amount);
     Net::GameServer::connection->send(msg);
 }
+
+void Net::GameServer::Player::tradeWithNPC(int item, int amount)
+{
+    MessageOut msg(PGMSG_NPC_BUYSELL);
+    msg.writeShort(item);
+    msg.writeShort(amount);
+    Net::GameServer::connection->send(msg);
+}
