@@ -1,4 +1,9 @@
-﻿2007-08-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-08-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/npcs.png, data/graphics/sprites/npc.xml:
+	Added farmer NPC for woodland village.
+
+2007-08-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/popupmenu.cpp, src/gui/viewport.cpp, src/gui/viewport.h,
 	tmw.cbp: Fixed popup menu requiring one more click after being used.
