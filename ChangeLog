@@ -2,6 +2,8 @@
 
 	* tools/adler32.c: Added little program for calculating adler32
 	checksums of files.
+	* src/gui/setup_keyboard.cpp: Fixed compile issue related to array
+	bound not being an integer constant.
 
 2007-08-15  Philipp Sehmisch  <tmw@crushnet.org>
 

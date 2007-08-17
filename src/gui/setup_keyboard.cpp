@@ -65,7 +65,7 @@ class KeyListModel : public gcn::ListModel
         }
 
     private:
-        std::string mKeyFunctions[keyboard.KEY_TOTAL];
+        std::string mKeyFunctions[KeyboardConfig::KEY_TOTAL];
 };
 
 Setup_Keyboard::Setup_Keyboard():
