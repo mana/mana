@@ -1,4 +1,9 @@
-﻿2007-08-15  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tools/adler32.c: Added little program for calculating adler32
+	checksums of files.
+
+2007-08-15  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/npcs.png, data/graphics/sprites/npc.xml:
 	Added farmer NPC for woodland village.
