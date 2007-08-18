@@ -82,7 +82,7 @@ enum {
     PGMSG_MOVE_ITEM                = 0x0114, // B slot1, B slot2, B amount
     GPMSG_INVENTORY                = 0x0120, // { B slot, W item id [, B amount] }*
     GPMSG_INVENTORY_FULL           = 0x0121, // { B slot, W item id [, B amount] }*
-    GPMSG_PLAYER_ATTRIBUTE_UPDATE  = 0x0130, // { W attribute, W value }*
+    GPMSG_PLAYER_ATTRIBUTE_CHANGE  = 0x0130, // { B attribute, W base value, W modified value }*
     GPMSG_BEING_ENTER              = 0x0200, // B type, W being id, B action, W*2 position
                                              // player: S name, B hair style, B hair color, B gender, B item bitmask, { W item id }*
                                              // monster: W type id

@@ -87,16 +87,9 @@ namespace {
 PlayerHandler::PlayerHandler()
 {
     static const Uint16 _messages[] = {
-        //SMSG_PLAYER_STAT_UPDATE_1,
-        //SMSG_PLAYER_STAT_UPDATE_2,
-        //SMSG_PLAYER_STAT_UPDATE_3,
-        //SMSG_PLAYER_STAT_UPDATE_4,
-        //SMSG_PLAYER_STAT_UPDATE_5,
-        //SMSG_PLAYER_STAT_UPDATE_6,
-        //SMSG_PLAYER_ARROW_MESSAGE,
         GPMSG_PLAYER_MAP_CHANGE,
         GPMSG_PLAYER_SERVER_CHANGE,
-        GPMSG_PLAYER_ATTRIBUTE_UPDATE,
+        GPMSG_PLAYER_ATTRIBUTE_CHANGE,
         0
     };
     handledMessages = _messages;
@@ -118,26 +111,25 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             logger->log("Changing server to %s:%d", address.c_str(), port);
         } break;
 
-        case GPMSG_PLAYER_ATTRIBUTE_UPDATE:
+        case GPMSG_PLAYER_ATTRIBUTE_CHANGE:
         {
             logger->log("ATTRIBUTE UPDATE:");
             while (msg.getUnreadLength())
             {
-                int stat = msg.readShort();
+                int stat = msg.readByte();
+                int base = msg.readShort();
                 int value = msg.readShort();
-                logger->log("%d set to %d", stat, value);
+                logger->log("%d set to %d %d", stat, base, value);
 
-                if (stat < NB_BASE_ATTRIBUTES)
+                if (stat == BASE_ATTR_HP)
                 {
-                    player_node->setAttributeBase(stat, value);
+                    player_node->setMaxHP(base);
+                    player_node->setHP(value);
                 }
-                else if (stat < NB_EFFECTIVE_ATTRIBUTES)
+                else if (stat < NB_CHARACTER_ATTRIBUTES)
                 {
-                    player_node->setAttributeEffective(stat - NB_BASE_ATTRIBUTES, value);
-                }
-                else if (stat == DERIVED_ATTR_HP_MAXIMUM)
-                {
-                    player_node->setMaxHP(value);
+                    player_node->setAttributeBase(stat, base);
+                    player_node->setAttributeEffective(stat, value);
                 }
                 else
                 {

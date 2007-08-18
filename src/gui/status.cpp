@@ -31,6 +31,7 @@
 
 #include "../localplayer.h"
 
+#include "../utils/strprintf.h"
 #include "../utils/tostring.h"
 
 StatusWindow::StatusWindow(LocalPlayer *player):
@@ -237,10 +238,9 @@ void StatusWindow::update()
     for (int i = 0; i < 7; i++) {
         mStatsLabel[i]->setCaption(attrNames[i]);
         mStatsDisplayLabel[i]->setCaption(
-                toString(mPlayer->getAttributeEffective(i)) +
-                " / " +
-                toString(mPlayer->getAttributeBase(i))
-            );
+            strprintf("%d / %d",
+                mPlayer->getAttributeEffective(CHAR_ATTR_BEGIN + i),
+                mPlayer->getAttributeBase(CHAR_ATTR_BEGIN + i)));
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();

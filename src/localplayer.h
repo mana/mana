@@ -36,64 +36,74 @@ class Inventory;
 class Item;
 
 /**
- * Stats every being needs
+ * Attributes used during combat. Available to all the beings.
  */
-enum BeingStats
+enum
 {
-    BASE_ATTR_STRENGTH = 0,    // Basic attributes
-    BASE_ATTR_AGILITY,
-    BASE_ATTR_DEXTERITY,
-    BASE_ATTR_VITALITY,
-    BASE_ATTR_INTELLIGENCE,
-    BASE_ATTR_WILLPOWER,
-    BASE_ATTR_CHARISMA,
-    NB_BASE_ATTRIBUTES,
+    BASE_ATTR_BEGIN = 0,
+    BASE_ATTR_PHY_ATK = BASE_ATTR_BEGIN,
+    BASE_ATTR_MAG_ATK,
+    BASE_ATTR_PHY_RES,
+    BASE_ATTR_MAG_RES,
+    BASE_ATTR_EVADE,
+    BASE_ATTR_HP,
+    BASE_ATTR_END,
+    BASE_ATTR_NB = BASE_ATTR_END - BASE_ATTR_BEGIN,
 
-    ATTR_EFF_STRENGTH = NB_BASE_ATTRIBUTES,    // modified basic attributes
-    ATTR_EFF_AGILITY,
-    ATTR_EFF_DEXTERITY,
-    ATTR_EFF_VITALITY,
-    ATTR_EFF_INTELLIGENCE,
-    ATTR_EFF_WILLPOWER,
-    ATTR_EFF_CHARISMA,
-    NB_EFFECTIVE_ATTRIBUTES,
+    BASE_ELEM_BEGIN = BASE_ATTR_END,
+    BASE_ELEM_NEUTRAL = BASE_ELEM_BEGIN,
+    BASE_ELEM_FIRE,
+    BASE_ELEM_WATER,
+    BASE_ELEM_EARTH,
+    BASE_ELEM_AIR,
+    BASE_ELEM_SACRED,
+    BASE_ELEM_DEATH,
+    BASE_ELEM_END,
+    BASE_ELEM_NB = BASE_ELEM_END - BASE_ELEM_BEGIN,
 
-    DERIVED_ATTR_HP_MAXIMUM = NB_EFFECTIVE_ATTRIBUTES,    // Computed stats
-    DERIVED_ATTR_PHYSICAL_ATTACK_MINIMUM,
-    DERIVED_ATTR_PHYSICAL_ATTACK_FLUCTUATION,
-    DERIVED_ATTR_PHYSICAL_DEFENCE,
-    // add new computed statistics when they are needed
-    NB_ATTRIBUTES_BEING
+    NB_BEING_ATTRIBUTES = BASE_ELEM_END
 };
 
 /**
- * Player character specific stats
+ * Attributes of characters. Used to derive being attributes.
  */
-enum CharacterStats
+enum
 {
-    CHAR_SKILL_WEAPON_UNARMED = NB_ATTRIBUTES_BEING,
+    CHAR_ATTR_BEGIN = BASE_ATTR_END,
+    CHAR_ATTR_STRENGTH = CHAR_ATTR_BEGIN,
+    CHAR_ATTR_AGILITY,
+    CHAR_ATTR_DEXTERITY,
+    CHAR_ATTR_VITALITY,
+    CHAR_ATTR_INTELLIGENCE,
+    CHAR_ATTR_WILLPOWER,
+    CHAR_ATTR_CHARISMA,
+    CHAR_ATTR_END,
+    CHAR_ATTR_NB = CHAR_ATTR_END - CHAR_ATTR_BEGIN,
+
+    CHAR_SKILL_WEAPON_BEGIN = CHAR_ATTR_END,
+    CHAR_SKILL_WEAPON_NONE = CHAR_SKILL_WEAPON_BEGIN,
+    CHAR_SKILL_WEAPON_KNIFE,
     CHAR_SKILL_WEAPON_SWORD,
-    CHAR_SKILL_WEAPON_AXE,
-    CHAR_SKILL_WEAPON_POLEARM,
+    CHAR_SKILL_WEAPON_SPEAR,
     CHAR_SKILL_WEAPON_JAVELIN,
-    CHAR_SKILL_WEAPON_WHIP,
-    CHAR_SKILL_WEAPON_DAGGER,
+    CHAR_SKILL_WEAPON_ROD,
     CHAR_SKILL_WEAPON_STAFF,
+    CHAR_SKILL_WEAPON_WHIP,
+    CHAR_SKILL_WEAPON_PROJECTILE,
+    CHAR_SKILL_WEAPON_BOOMERANG,
     CHAR_SKILL_WEAPON_BOW,
+    CHAR_SKILL_WEAPON_SICKLE,
     CHAR_SKILL_WEAPON_CROSSBOW,
-    CHAR_SKILL_WEAPON_THROWN,
-    NB_CHAR_WEAPONSKILLS,
+    CHAR_SKILL_WEAPON_STICK,
+    CHAR_SKILL_WEAPON_HAMMER,
+    CHAR_SKILL_WEAPON_AXE,
+    CHAR_SKILL_WEAPON_HAND_PROJECTILE,
+    CHAR_SKILL_WEAPON_END,
+    CHAR_SKILL_WEAPON_NB = CHAR_SKILL_WEAPON_END - CHAR_SKILL_WEAPON_BEGIN,
 
-    CHAR_SKILL_MAGIC_IAMJUSTAPLACEHOLDER = NB_CHAR_WEAPONSKILLS,
-    NB_CHAR_MAGICSKILLS,
+    // Magic skills should follow.
 
-    CHAR_SKILL_CRAFT_IAMJUSTAPLACEHOLDER = NB_CHAR_MAGICSKILLS,
-    NB_CHAR_CRAFTSKILLS,
-
-    CHAR_SKILL_IAMJUSTAPLACEHOLDER = NB_CHAR_CRAFTSKILLS,
-    NB_CHAR_OTHERSKILLS,
-
-    NB_ATTRIBUTES_CHAR = NB_CHAR_OTHERSKILLS
+    NB_CHARACTER_ATTRIBUTES = CHAR_SKILL_WEAPON_END
 };
 
 
@@ -256,17 +266,17 @@ class LocalPlayer : public Player
         int getMaxWeight() const
         { return mMaxWeight; }
 
-        int getAttributeBase(size_t num) const
-        { return mAttributeBase.at(num); }
+        int getAttributeBase(int num) const
+        { return mAttributeBase[num]; }
 
-        void setAttributeBase(size_t num, int value)
-        { mAttributeBase.at(num) = value; }
+        void setAttributeBase(int num, int value)
+        { mAttributeBase[num] = value; }
 
-        int getAttributeEffective(size_t num) const
-        { return mAttributeEffective.at(num); }
+        int getAttributeEffective(int num) const
+        { return mAttributeEffective[num]; }
 
-        void setAttributeEffective(size_t num, int value)
-        { mAttributeEffective.at(num) = value; }
+        void setAttributeEffective(int num, int value)
+        { mAttributeEffective[num] = value; }
 
         int getAttributeIncreasePoints() const
         { return mAttributeIncreasePoints; }
