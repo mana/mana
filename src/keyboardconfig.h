@@ -154,8 +154,8 @@ class KeyboardConfig
             KEY_TARGET,
             KEY_TARGET_CLOSEST,
             KEY_PICKUP,
-            KEY_SIT,
             KEY_HIDE_WINDOWS,
+            KEY_SIT,
             KEY_TOTAL
         };
 

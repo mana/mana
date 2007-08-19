@@ -36,6 +36,7 @@ struct KeyData
     const char *caption;
 };
 
+// keyData must be in same order as enum keyAction.
 static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyMoveUp", SDLK_UP, "Move Up"},
     {"keyMoveDown", SDLK_DOWN, "Move Down"},
