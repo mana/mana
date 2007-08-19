@@ -1,6 +1,10 @@
 ﻿2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
-	* src/keyboardconfig.cpp, src/keyboardconfig.h - minor cleanup.
+	* src/gui/buy.cpp, src/gui/sell.cpp: buy/sell fixed minimum quantity 1.
+
+2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/keyboardconfig.cpp, src/keyboardconfig.h: minor cleanup.
 
 2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

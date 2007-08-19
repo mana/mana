@@ -39,7 +39,6 @@
 
 #include "../utils/tostring.h"
 
-
 BuyDialog::BuyDialog(Network *network):
     Window("Buy"), mNetwork(network),
     mMoney(0), mAmountItems(0), mMaxItems(0)
@@ -123,7 +122,7 @@ void BuyDialog::reset()
     mShopItems->clear();
     mShopItemList->adjustSize();
     mMoney = 0;
-    mSlider->setValue(0.0);
+    mSlider->setValue(0);
 
     // Reset Previous Selected Items to prevent failing asserts
     mShopItemList->setSelected(-1);
@@ -145,6 +144,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         current_npc = 0;
+        return;
     }
 
     // The following actions require a valid selection
@@ -156,21 +156,19 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "slider")
     {
-        mAmountItems = (int)(mSlider->getValue() * mMaxItems);
+        mAmountItems = (int) mSlider->getValue();
         updateButtonsAndLabels();
     }
     else if (event.getId() == "+" && mAmountItems < mMaxItems)
     {
         mAmountItems++;
-
-        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "-" && mAmountItems > 0)
+    else if (event.getId() == "-" && mAmountItems > 1)
     {
         mAmountItems--;
-
-        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
     // TODO: Actually we'd have a bug elsewhere if this check for the number
@@ -190,8 +188,9 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         mMaxItems -= mAmountItems;
 
         // Reset selection
-        mAmountItems = 0;
-        mSlider->setValue(0.0);
+        mAmountItems = 1;
+        mSlider->setValue(1);
+        mSlider->gcn::Slider::setScale(1, mMaxItems);
 
         updateButtonsAndLabels();
     }
@@ -199,11 +198,13 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
 void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
+
     // Reset amount of items and update labels
-    mAmountItems = 0;
-    mSlider->setValue(0.0);
+    mAmountItems = 1;
+    mSlider->setValue(1);
 
     updateButtonsAndLabels();
+    mSlider->gcn::Slider::setScale(1, mMaxItems);
 }
 
 void
@@ -239,12 +240,13 @@ BuyDialog::updateButtonsAndLabels()
 
     // Enable or disable buttons and slider
     mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
-    mDecreaseButton->setEnabled(mAmountItems > 0);
+    mDecreaseButton->setEnabled(mAmountItems > 1);
     mBuyButton->setEnabled(mAmountItems > 0);
-    mSlider->setEnabled(mMaxItems > 0);
+    mSlider->setEnabled(mMaxItems > 1);
 
     // Update quantity and money labels
-    mQuantityLabel->setCaption(toString(mAmountItems));
+    mQuantityLabel->setCaption(
+        toString(mAmountItems) + " / " + toString(mMaxItems));
     mQuantityLabel->adjustSize();
     mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
                              + toString(mMoney - price) + " GP" );
