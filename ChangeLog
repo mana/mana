@@ -1,6 +1,7 @@
 ﻿2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/equipment.xml: Fixed typo in female light plate mail.
+	* NEWS: Updated with changes since 0.0.23.
 
 2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
@@ -49,10 +50,9 @@
 	* data/graphics/sprites/npcs.png: Added two new NPCs and gave some
 	of the older NPCs a makeover to look more like the style of the new
 	playerset.
-	* data/maps/new_20-1.tmx.gz: Corrected a few mapping errors in the 
+	* data/maps/new_20-1.tmx.gz: Corrected a few mapping errors in the
 	new woodland village.
 	* data/items.xml: Tweaked description and values of the scythe.
-	
 
 2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -66,8 +66,8 @@
 
 	* src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
 	src/gui/setup_keyboard.h, src/keyboardconfig.cpp,
-	src/keyboardconfig.h, src/main.cpp: minor changes to
-	keyboard config, keyboard setup gui re-designed.
+	src/keyboardconfig.h, src/main.cpp: Minor changes to keyboard config,
+	keyboard setup gui re-designed.
 
 2007-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -82,14 +82,14 @@
 	* src/gui/button.cpp, src/gui/button.h: Default constructor and
 	init function added.
 	* src/gui/setup.cpp: Keyboard setup tab added.
-	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h:
-	Add to project file, it is the keyboard setup tab.
+	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h: Add to project
+	file, it is the keyboard setup tab.
 	* src/keyboardconfig.cpp, src/keyboardconfig.h: Add to project file,
 	the main keyboard config operations.
 
 2007-07-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
-	* tmw.cbp: Fixed description of silk headband.
+	* data/items.xml: Fixed description of silk headband.
 
 2007-07-11  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -105,7 +105,7 @@
 	type of weapon player characters are using is now set using
 	setVisibleEquipment() instead of setWeapon() or setWeaponById().
 	* src/CMakeLists.txt, src/Makefile.AM, tmw.cbp, The Mana World.dev:
-	Updated project	files and buildscripts.
+	Updated project files and buildscripts.
 	* data/graphics/images/login-wallpaper.png: Replaced login wallpaper
 	with a new one by Irukard.
 
@@ -141,10 +141,10 @@
 	data/graphics/sprites/chest-lightplatemail-female.xml:
 	Added light platemail (see entry in items.xml for proposed specs).
 
-2007-06-20  Philipp Sehmisch  <tmw@crushnet.org>
+2007-06-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/image.cpp: Set GL texture index to zero when an image
-	uses the SDL backend (fix by Guillaume Melquiond from trunk version)
+	uses the SDL backend.
 
 2007-06-13  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -162,8 +162,8 @@
 
 2007-06-11  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/particle.h, src/being.cpp: Fixed a bug that prevented 
-	being-controlled particles from being deleted (thanks to tuchs for 
+	* src/particle.h, src/being.cpp: Fixed a bug that prevented
+	being-controlled particles from being deleted (thanks to tuchs for
 	reporting).
 
 2007-06-06  Bjørn Lindeijer  <bjorn@lindeijer.nl>
