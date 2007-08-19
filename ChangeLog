@@ -1,10 +1,11 @@
-﻿2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
+﻿2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/gui/buy.cpp, src/gui/sell.cpp: buy/sell fixed minimum quantity 1.
+	* data/equipment.xml: Fixed typo in female light plate mail.
 
 2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
-	* src/keyboardconfig.cpp, src/keyboardconfig.h: minor cleanup.
+	* src/keyboardconfig.cpp, src/keyboardconfig.h: Minor cleanup.
+	* src/gui/buy.cpp, src/gui/sell.cpp: Buy/sell fixed minimum quantity.
 
 2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
