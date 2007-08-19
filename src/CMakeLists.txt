@@ -188,8 +188,6 @@ SET(SRCS
     net/chathandler.h
     net/connection.cpp
     net/connection.h
-    net/equipmenthandler.cpp
-    net/equipmenthandler.h
     net/internal.cpp
     net/internal.h
     net/inventoryhandler.cpp
@@ -278,7 +276,10 @@ SET(SRCS
     utils/base64.h
     utils/dtor.h
     utils/fastsqrt.h
+    utils/gettext.h
     utils/minmax.h
+    utils/strprintf.cpp
+    utils/strprintf.h
     utils/tostring.h
     utils/xml.cpp
     utils/xml.h
