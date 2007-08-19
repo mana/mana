@@ -1,3 +1,7 @@
+2007-08-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/localplayer.h: Fixed typo.
+
 2007-08-18  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/localplayer.cpp, src/gui/status.cpp, src/net/protocol.h,
