@@ -7,6 +7,8 @@
 
 	* src/keyboardconfig.cpp, src/keyboardconfig.h: Minor cleanup.
 	* src/gui/buy.cpp, src/gui/sell.cpp: Buy/sell fixed minimum quantity.
+	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h: fixed bug - reverts
+	unassigned key.
 
 2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

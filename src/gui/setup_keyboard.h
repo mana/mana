@@ -66,12 +66,19 @@ class Setup_Keyboard : public SetupTab, public gcn::ActionListener
          */
         void refreshKeys();
 
+        /**
+         * If a key function is unresolved, then this reverts it.
+         */
+        void keyUnresolved();
+
     private:
         class KeyListModel *mKeyListModel;
         gcn::ListBox *mKeyList;
 
         gcn::Button *mAssignKeyButton;
         gcn::Button *mMakeDefaultButton;
+
+        bool mKeySetting; /**< flag to check if key being set. */
 };
 
 #endif

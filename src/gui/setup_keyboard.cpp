@@ -70,7 +70,8 @@ class KeyListModel : public gcn::ListModel
 
 Setup_Keyboard::Setup_Keyboard():
     mKeyListModel(new KeyListModel()),
-    mKeyList(new ListBox(mKeyListModel))
+    mKeyList(new ListBox(mKeyListModel)),
+    mKeySetting(false)
 {
     keyboard.setSetupKeyboard(this);
     setOpaque(false);
@@ -108,6 +109,8 @@ Setup_Keyboard::~Setup_Keyboard()
 
 void Setup_Keyboard::apply()
 {
+    keyUnresolved();
+
     if (keyboard.hasConflicts())
     {
         new OkDialog("Key Conflict(s) Detected.",
@@ -119,8 +122,11 @@ void Setup_Keyboard::apply()
 
 void Setup_Keyboard::cancel()
 {
+    keyUnresolved();
+
     keyboard.retrieve();
     keyboard.setEnabled(true);
+
     refreshKeys();
 }
 
@@ -128,13 +134,16 @@ void Setup_Keyboard::action(const gcn::ActionEvent &event)
 {
     if (event.getSource() == mKeyList)
     {
-        mAssignKeyButton->setEnabled(true);
+        if (!mKeySetting) {
+            mAssignKeyButton->setEnabled(true);
+        }
     }
     else if (event.getId() == "assign")
     {
-        int i(mKeyList->getSelected());
+        mKeySetting = true;
         mAssignKeyButton->setEnabled(false);
         keyboard.setEnabled(false);
+        int i(mKeyList->getSelected());
         keyboard.setNewKeyIndex(i);
         mKeyListModel->setElementAt(i, keyboard.getKeyCaption(i) + ": ?");
     }
@@ -156,6 +165,7 @@ void Setup_Keyboard::refreshAssignedKey(int index)
 
 void Setup_Keyboard::newKeyCallback(int index)
 {
+    mKeySetting = false;
     refreshAssignedKey(index);
     mAssignKeyButton->setEnabled(true);
 }
@@ -165,5 +175,13 @@ void Setup_Keyboard::refreshKeys()
     for(int i = 0; i < keyboard.KEY_TOTAL; i++)
     {
         refreshAssignedKey(i);
+    }
+}
+
+void Setup_Keyboard::keyUnresolved()
+{
+    if (mKeySetting) {
+        newKeyCallback(keyboard.getNewKeyIndex());
+        keyboard.setNewKeyIndex(keyboard.KEY_NO_VALUE);
     }
 }
