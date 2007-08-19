@@ -35,19 +35,9 @@
  */
 struct KeyFunction
 {
-    KeyFunction() {}
-
-    KeyFunction(std::string configField,
-                int defaultValue,
-                std::string caption):
-        configField(configField),
-        caption(caption),
-        defaultValue(defaultValue)
-    {}
-
-    std::string configField;    /** Field index that is in the config file. */
-    std::string caption;        /** The caption value for the key function. */
+    const char* configField;    /** Field index that is in the config file. */
     int defaultValue;           /** The default key value used. */
+    std::string caption;        /** The caption value for the key function. */
     int value;                  /** The actual value that is used. */
 };
 
@@ -105,7 +95,7 @@ class KeyboardConfig
         /**
          * Get the key caption, providing more meaning to the user.
          */
-        std::string const &getKeyCaption(int index) const
+        const std::string &getKeyCaption(int index) const
         { return mKey[index].caption; }
 
         /**
@@ -150,10 +140,7 @@ class KeyboardConfig
         /**
          * All the key functions.
          * KEY_NO_VALUE is used in initialization, and should be unchanged.
-         * KEY_MIN and KEY_TOTAL should always be first and last respectively,
-         * the bare used in control loops.
-         * The third element (after KEY_NO_VALUE and KEY_MIN),
-         * should always equal KEY_MIN.
+         * KEY_TOTAL should always be last (used as a conditional in loops).
          * The key assignment view gets arranged according to the order of
          * these values.
          */

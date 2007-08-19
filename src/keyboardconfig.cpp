@@ -29,25 +29,33 @@
 
 #include "gui/setup_keyboard.h"
 
+struct KeyData
+{
+    const char *configField;
+    int defaultValue;
+    const char *caption;
+};
+
+static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
+    {"keyMoveUp", SDLK_UP, "Move Up"},
+    {"keyMoveDown", SDLK_DOWN, "Move Down"},
+    {"keyMoveLeft", SDLK_LEFT, "Move Left"},
+    {"keyMoveRight", SDLK_RIGHT, "Move Right"},
+    {"keyAttack", SDLK_LCTRL, "Attack"},
+    {"keyTarget", SDLK_LSHIFT, "Target"},
+    {"keyTargetClosest", SDLK_a, "Target Closest"},
+    {"keyPickup", SDLK_z, "Pickup"},
+    {"keyHideWindows", SDLK_h, "Hide Windows"},
+    {"keyBeingSit", SDLK_g, "Sit"}
+};
+
 void KeyboardConfig::init()
 {
-    mKey[KEY_MOVE_UP] = KeyFunction("keyMoveUp", SDLK_UP, "Move Up");
-    mKey[KEY_MOVE_DOWN] = KeyFunction("keyMoveDown", SDLK_DOWN, "Move Down");
-    mKey[KEY_MOVE_LEFT] = KeyFunction("keyMoveLeft", SDLK_LEFT, "Move Left");
-    mKey[KEY_MOVE_RIGHT] =
-        KeyFunction("keyMoveRight", SDLK_RIGHT, "Move Right");
-
-    mKey[KEY_ATTACK] = KeyFunction("keyAttack", SDLK_LCTRL, "Attack");
-    mKey[KEY_TARGET] = KeyFunction("keyTarget", SDLK_LSHIFT, "Target");
-    mKey[KEY_TARGET_CLOSEST] =
-        KeyFunction("keyTargetClosest", SDLK_a, "Target Closest");
-    mKey[KEY_PICKUP] = KeyFunction("keyPickup", SDLK_z, "Pickup");
-    mKey[KEY_HIDE_WINDOWS] =
-        KeyFunction("keyHideWindows", SDLK_h, "Hide Windows");
-    mKey[KEY_SIT] = KeyFunction("keyBeingSit", SDLK_g, "Sit");
-
     for (int i = 0; i < KEY_TOTAL; i++)
     {
+        mKey[i].configField = keyData[i].configField;
+        mKey[i].defaultValue = keyData[i].defaultValue;
+        mKey[i].caption = keyData[i].caption;
         mKey[i].value = KEY_NO_VALUE;
     }
     mNewKeyIndex = KEY_NO_VALUE;

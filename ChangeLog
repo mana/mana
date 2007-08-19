@@ -1,4 +1,8 @@
-﻿2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/keyboardconfig.cpp, src/keyboardconfig.h - minor cleanup.
+
+2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* tools/adler32.c: Added little program for calculating adler32
 	checksums of files.
