@@ -92,12 +92,12 @@ class LocalPlayer : public Player
         void useItem(Item *item);
         void dropItem(Item *item, int quantity);
         void pickUp(FloorItem *item);
-        
+
         /**
          * Sets the attack range.
          */
         void setAttackRange(int range) { mAttackRange = range; }
-        
+
         /**
          * Gets the attack range.
          */
@@ -164,6 +164,12 @@ class LocalPlayer : public Player
 
         void revive();
 
+        /**
+         * Updates the xp value, if a monster was killed then it makes a call
+         * to show xp.
+         */
+        void refreshXp(Uint32 xp);
+
         Uint32 mCharId;
 
         Uint32 mXp, mJobXp;
@@ -172,7 +178,7 @@ class LocalPlayer : public Player
         Uint32 mXpForNextLevel, mJobXpForNextLevel;
         Uint16 mHp, mMaxHp, mMp, mMaxMp;
         Uint32 mGp;
-        
+
         Uint16 mAttackRange;
 
         Uint32 mTotalWeight, mMaxWeight;

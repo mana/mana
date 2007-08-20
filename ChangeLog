@@ -5,6 +5,10 @@
 	src/gui/skill.cpp, src/gui/skill.h, src/gui/status.cpp, src/gui/window.cpp,
 	src/gui/window.h, data/graphics/gui/close_button.png: Added close button
 	functionality, resize cursor cues.
+	* data/graphics/gui/hits_yellow.png, src/being.cpp, src/being.h,
+	src/gui/gui.cpp, src/localplayer.cpp, src/localplayer.h,
+	src/net/charserverhandler.cpp, src/net/playerhandler.cpp, src/particle.cpp
+	src/particle.h: Added monster killed xp notification effect.
 
 2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

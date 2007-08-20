@@ -159,6 +159,15 @@ class Being : public Sprite
         takeDamage(int amount);
 
         /**
+         * Puts xp above this being for the specified amount of
+         * time.
+         *
+         * @param amount The amount of experience points.
+         */
+        void
+        showXP(int amount);
+
+        /**
          * Handles an attack of another being by this being.
          *
          * @param victim The attacked being.

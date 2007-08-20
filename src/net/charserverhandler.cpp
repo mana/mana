@@ -187,7 +187,7 @@ LocalPlayer* CharServerHandler::readPlayerData(MessageIn &msg, int &slot)
     tempPlayer->mTotalWeight = 0;
     tempPlayer->mMaxWeight = 0;
     tempPlayer->mLastAttackTime = 0;
-    tempPlayer->mXp = msg.readInt32();
+    tempPlayer->refreshXp(msg.readInt32());
     tempPlayer->mGp = msg.readInt32();
     tempPlayer->mJobXp = msg.readInt32();
     tempPlayer->mJobLevel = msg.readInt32();

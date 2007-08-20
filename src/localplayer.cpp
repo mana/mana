@@ -40,6 +40,7 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
+    mXp(0),
     mAttackRange(0),
     mInventory(new Inventory()),
     mTarget(NULL), mPickUpTarget(NULL),
@@ -425,4 +426,13 @@ void LocalPlayer::revive()
     MessageOut outMsg(mNetwork);
     outMsg.writeInt16(0x00b2);
     outMsg.writeInt8(0);
+}
+
+void LocalPlayer::refreshXp(Uint32 xp)
+{
+    if (mTarget && xp > mXp)
+    {
+        mTarget->showXP(xp-mXp);
+    }
+    mXp = xp;
 }

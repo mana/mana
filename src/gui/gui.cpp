@@ -149,7 +149,7 @@ Gui::Gui(Graphics *graphics):
         hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
                 "0123456789");
         hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
-                "mis");
+                "0123456789misxp ");
     }
     catch (gcn::Exception e)
     {

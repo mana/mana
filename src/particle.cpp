@@ -338,6 +338,25 @@ Particle::addTextSplashEffect(std::string text,
     return newParticle;
 }
 
+Particle*
+Particle::addTextRiseFadeOutEffect(std::string text, gcn::Font *font,
+    int x, int y)
+{
+    Particle *newParticle = new TextParticle(mMap, text, 255, 255, 255, font);
+    newParticle->setPosition(x, y, 0);
+    newParticle->setVector  (   0.0f,  // X vector
+                                0.0f,  // Y vector
+                                0.5f // Z vector
+                            );
+    newParticle->setGravity(0.0015f);
+    newParticle->setLifetime(300);
+    newParticle->setFadeOut(50);
+    newParticle->setFadeIn(200);
+
+    mChildParticles.push_back(newParticle);
+
+    return newParticle;
+}
 
 void
 Particle::setMap(Map *map)
