@@ -74,7 +74,6 @@ class SkillDialog : public Window, public gcn::ActionListener,
         gcn::Label *mPointsLabel;
         gcn::Button *mIncButton;
         gcn::Button *mUseButton;
-        gcn::Button *mCloseButton;
 
         std::vector<SKILL*> mSkillList;
 };

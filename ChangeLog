@@ -1,4 +1,12 @@
-﻿2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-20  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* data/graphics/gui/mouse.png, src/gui/equipmentwindow.cpp, src/gui/gui.cpp,
+	src/gui/gui.h, src/gui/inventorywindow.cpp, src/gui/setup.cpp,
+	src/gui/skill.cpp, src/gui/skill.h, src/gui/status.cpp, src/gui/window.cpp,
+	src/gui/window.h, data/graphics/gui/close_button.png: Added close button
+	functionality, resize cursor cues.
+
+2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/equipment.xml: Fixed typo in female light plate mail.
 	* NEWS: Updated with changes since 0.0.23.

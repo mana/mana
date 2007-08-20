@@ -33,6 +33,7 @@ class GCContainer;
 class ImageRect;
 class ResizeGrip;
 class WindowContainer;
+class Image;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -119,9 +120,14 @@ class Window : public gcn::Window
         void setLocationRelativeTo(gcn::Widget *widget);
 
         /**
-         * Sets whether of not the window can be resized.
+         * Sets whether or not the window can be resized.
          */
         void setResizable(bool resize);
+
+        /**
+         * Sets whether or not the window has a close button.
+         */
+        void setCloseButton(bool flag);
 
         /**
          * Returns whether the window can be resized.
@@ -193,6 +199,24 @@ class Window : public gcn::Window
         void mouseDragged(gcn::MouseEvent &event);
 
         /**
+         * Implements custom cursor image changing context,
+         * based on mouse relative position.
+         */
+        void mouseMoved(gcn::MouseEvent &event);
+
+        /**
+         * When the mouse button has been let go, this ensures that the mouse
+         * custom cursor is restored back to it's standard image.
+         */
+        void mouseReleased(gcn::MouseEvent &event);
+
+        /**
+         * When the mouse leaves the window this ensures that the custom cursor
+         * is restored back to it's standard image.
+         */
+        void mouseExited(gcn::MouseEvent &event);
+
+        /**
          * Sets the name of the window. This is not the window title.
          */
         void
@@ -243,7 +267,7 @@ class Window : public gcn::Window
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
         bool mResizable;           /**< Window can be resized */
-        int mMouseResize;          /**< Window is being resized */
+        bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
         int mMinWinWidth;          /**< Minimum window width */
         int mMinWinHeight;         /**< Minimum window height */
@@ -263,6 +287,7 @@ class Window : public gcn::Window
         static ConfigListener *windowConfigListener;
 
         static int instances;      /**< Number of Window instances */
+        static int mouseResize;    /**< Window is being resized */
         static ImageRect border;   /**< The window border and background */
 
         /**
@@ -271,6 +296,8 @@ class Window : public gcn::Window
          * where two borders are moved at the same time.
          */
         static const int resizeBorderWidth = 10;
+        static Image *closeImage;  /**< Close Button Image */
+
 };
 
 #endif

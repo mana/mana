@@ -48,6 +48,7 @@ InventoryWindow::InventoryWindow():
 {
     setWindowName("Inventory");
     setResizable(true);
+    setCloseButton(true);
     setMinWidth(240);
     setMinHeight(172);
     // If you adjust these defaults, don't forget to adjust the trade window's.

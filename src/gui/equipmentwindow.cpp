@@ -37,6 +37,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     Window("Equipment"), mEquipment(equipment)
 {
     setWindowName("Equipment");
+    setCloseButton(true);
     setDefaultSize(5, 230, 200, 120);
     loadWindowState();
 }

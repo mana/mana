@@ -44,7 +44,7 @@
 #include "../graphics.h"
 #include "../log.h"
 
-#include "../resources/image.h"
+#include "../resources/imageset.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/sdlimageloader.h"
 
@@ -59,6 +59,7 @@ gcn::Font *hitBlueFont;
 gcn::Font *hitYellowFont;
 // Font used to display speech and player names
 gcn::Font *speechFont;
+ImageSet *Gui::mMouseCursor = NULL;
 
 class GuiConfigListener : public ConfigListener
 {
@@ -80,7 +81,6 @@ class GuiConfigListener : public ConfigListener
 
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
-    mMouseCursor(NULL),
     mCustomCursor(false)
 {
     logger->log("Initializing GUI...");
@@ -180,8 +180,8 @@ Gui::~Gui()
 
     if (mMouseCursor) {
         mMouseCursor->decRef();
+        mMouseCursor = NULL;
     }
-
     delete mGuiFont;
     delete speechFont;
     delete viewport;
@@ -210,9 +210,11 @@ Gui::draw()
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
             && mCustomCursor)
     {
-        dynamic_cast<Graphics*>(mGraphics)->drawImage(mMouseCursor,
-                                                      mouseX - 5,
-                                                      mouseY - 2);
+
+        static_cast<Graphics*>(mGraphics)->drawImage(
+            mMouseCursor->get(mCursorType),
+            mouseX - 15,
+            mouseY - 17);
     }
 
     mGraphics->popClipArea();
@@ -232,10 +234,13 @@ Gui::setUseCustomCursor(bool customCursor)
 
             // Load the mouse cursor
             ResourceManager *resman = ResourceManager::getInstance();
-            mMouseCursor = resman->getImage("graphics/gui/mouse.png");
+            mMouseCursor =
+                resman->getImageSet("graphics/gui/mouse.png", 40, 40);
+
             if (!mMouseCursor) {
-                logger->error("Unable to load mouse cursor.");
+                logger->error("Unable to load mouse cursors.");
             }
+            mCursorType = CURSOR_POINTER;
         }
         else
         {

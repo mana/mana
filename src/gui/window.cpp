@@ -26,6 +26,7 @@
 #include <guichan/exception.hpp>
 #include <guichan/widgets/icon.hpp>
 
+#include "gui.h"
 #include "gccontainer.h"
 #include "windowcontainer.h"
 
@@ -42,7 +43,9 @@
 ConfigListener *Window::windowConfigListener = 0;
 WindowContainer *Window::windowContainer = 0;
 int Window::instances = 0;
+int Window::mouseResize = 0;
 ImageRect Window::border;
+Image *Window::closeImage = NULL;
 
 class WindowConfigListener : public ConfigListener
 {
@@ -62,7 +65,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     mShowTitle(true),
     mModal(modal),
     mResizable(false),
-    mMouseResize(0),
+    mCloseButton(false),
     mSticky(false),
     mMinWinWidth(100),
     mMinWinHeight(40),
@@ -90,6 +93,8 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
         border.grid[7] = dBorders->getSubImage(4, 15, 3, 4);
         border.grid[8] = dBorders->getSubImage(7, 15, 4, 4);
         dBorders->decRef();
+        closeImage = resman->getImage("graphics/gui/close_button.png");
+
         windowConfigListener = new WindowConfigListener();
         // Send GUI alpha changed for initialization
         windowConfigListener->optionChanged("guialpha");
@@ -112,6 +117,10 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     if (mModal)
     {
+        if (gui->isCustomCursor())
+        {
+            gui->setCursorType(Gui::CURSOR_POINTER);
+        }
         requestModalFocus();
     }
 
@@ -152,6 +161,9 @@ Window::~Window()
         delete border.grid[6];
         delete border.grid[7];
         delete border.grid[8];
+
+        closeImage->decRef();
+        closeImage = NULL;
     }
 
     delete mChrome;
@@ -172,10 +184,18 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw title
     if (mShowTitle)
     {
-        graphics->setFont(getFont());
-        graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
+        g->setFont(getFont());
+        g->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }
 
+    // Draw Close Button
+    if (mCloseButton)
+    {
+        g->drawImage(closeImage,
+            getWidth() - closeImage->getWidth() - getPadding(),
+            getPadding()
+        );
+    }
     drawChildren(graphics);
 }
 
@@ -278,6 +298,11 @@ void Window::setResizable(bool r)
     }
 }
 
+void Window::setCloseButton(bool flag)
+{
+    mCloseButton = flag;
+}
+
 bool Window::isResizable()
 {
     return mResizable;
@@ -327,25 +352,112 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
     const int x = event.getX();
     const int y = event.getY();
-    mMouseResize = 0;
+    mouseResize = 0;
 
-    // Activate resizing handles as appropriate
-    if (event.getSource() == this && isResizable() &&
-            event.getButton() == gcn::MouseEvent::LEFT &&
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        // Close Button Handler
+        if (mCloseButton)
+        {
+            gcn::Rectangle tCloseButtonRect(
+                getWidth() - closeImage->getWidth() - getPadding(),
+                getPadding(),
+                closeImage->getWidth(),
+                closeImage->getHeight()
+            );
+            if (tCloseButtonRect.isPointInRect(x, y))
+            {
+                setVisible(false);
+                return;
+            }
+        }
+        // Resize Window Handler
+        if (mResizable &&
+            event.getSource() == this &&
             !getChildrenArea().isPointInRect(x, y))
-    {
-        mMouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
-                        (x < resizeBorderWidth) ? LEFT : 0;
-        mMouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
-                        (y < resizeBorderWidth) ? TOP : 0;
+        {
+            mouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
+                            (x < resizeBorderWidth) ? LEFT : 0;
+            mouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
+                            (y < resizeBorderWidth) ? TOP : 0;
+            return;
+        }
+        if (event.getSource() == mGrip &&
+                event.getButton() == gcn::MouseEvent::LEFT)
+        {
+            mDragOffsetX = x;
+            mDragOffsetY = y;
+            mouseResize |= BOTTOM | RIGHT;
+            mIsMoving = false;
+        }
     }
-    else if (event.getSource() == mGrip &&
-            event.getButton() == gcn::MouseEvent::LEFT)
+}
+
+void Window::mouseReleased(gcn::MouseEvent &event)
+{
+    if (mResizable &&
+        mouseResize &&
+        gui->isCustomCursor())
     {
-        mDragOffsetX = x;
-        mDragOffsetY = y;
-        mMouseResize |= BOTTOM | RIGHT;
-        mIsMoving = false;
+        mouseResize = 0;
+        gui->setCursorType(Gui::CURSOR_POINTER);
+    }
+}
+
+void Window::mouseExited(gcn::MouseEvent &event)
+{
+    if (mResizable &&
+        !mouseResize &&
+        gui->isCustomCursor())
+    {
+        gui->setCursorType(Gui::CURSOR_POINTER);
+    }
+}
+
+void Window::mouseMoved(gcn::MouseEvent &event)
+{
+    const int x = event.getX();
+    const int y = event.getY();
+
+    // changes the custom mouse cursor based on it's current position.
+    if (mResizable &&
+        !mouseResize &&
+        gui->isCustomCursor())
+    {
+        gcn::Rectangle tContainerRect(
+            getPadding(),
+            getPadding(),
+            getWidth()-(getPadding() * 2),
+            getHeight()-(getPadding() * 2)
+        );
+        if (!tContainerRect.isPointInRect(x, y))
+        {
+            int tMouseResize = 0;
+            tMouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
+                            (x < resizeBorderWidth) ? LEFT : 0;
+            tMouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
+                            (y < resizeBorderWidth) ? TOP : 0;
+            switch (tMouseResize)
+            {
+                case BOTTOM | RIGHT:
+                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_RIGHT);
+                    break;
+                case BOTTOM | LEFT:
+                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_LEFT);
+                    break;
+                case BOTTOM:
+                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN);
+                    break;
+                case RIGHT:
+                case LEFT:
+                    gui->setCursorType(Gui::CURSOR_RESIZE_ACROSS);
+                    break;
+            }
+        }
+        else
+        {
+            gui->setCursorType(Gui::CURSOR_POINTER);
+        }
     }
 }
 
@@ -364,31 +476,31 @@ void Window::mouseDragged(gcn::MouseEvent &event)
         setPosition(newX, newY);
     }
 
-    if (mMouseResize && !mIsMoving)
+    if (mouseResize && !mIsMoving)
     {
         const int dx = event.getX() - mDragOffsetX;
         const int dy = event.getY() - mDragOffsetY;
         gcn::Rectangle newDim = getDimension();
 
-        if (mMouseResize & (TOP | BOTTOM))
+        if (mouseResize & (TOP | BOTTOM))
         {
-            int newHeight = newDim.height + ((mMouseResize & TOP) ? -dy : dy);
+            int newHeight = newDim.height + ((mouseResize & TOP) ? -dy : dy);
             newDim.height = std::min(mMaxWinHeight,
                                      std::max(mMinWinHeight, newHeight));
 
-            if (mMouseResize & TOP)
+            if (mouseResize & TOP)
             {
                 newDim.y -= newDim.height - getHeight();
             }
         }
 
-        if (mMouseResize & (LEFT | RIGHT))
+        if (mouseResize & (LEFT | RIGHT))
         {
-            int newWidth = newDim.width + ((mMouseResize & LEFT) ? -dx : dx);
+            int newWidth = newDim.width + ((mouseResize & LEFT) ? -dx : dx);
             newDim.width = std::min(mMaxWinWidth,
                                     std::max(mMinWinWidth, newWidth));
 
-            if (mMouseResize & LEFT)
+            if (mouseResize & LEFT)
             {
                 newDim.x -= newDim.width - getWidth();
             }
@@ -415,11 +527,11 @@ void Window::mouseDragged(gcn::MouseEvent &event)
         }
 
         // Update mouse offset when dragging bottom or right border
-        if (mMouseResize & BOTTOM)
+        if (mouseResize & BOTTOM)
         {
             mDragOffsetY += newDim.height - getHeight();
         }
-        if (mMouseResize & RIGHT)
+        if (mouseResize & RIGHT)
         {
             mDragOffsetX += newDim.width - getWidth();
         }

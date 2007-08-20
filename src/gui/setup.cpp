@@ -43,7 +43,8 @@ extern Window *skillDialog;
 Setup::Setup():
     Window("Setup")
 {
-    int width = 260;
+    setCloseButton(true);
+    int width = 250;
     int height = 245;
     setContentSize(width, height);
 

@@ -30,7 +30,7 @@
 
 class GuiConfigListener;
 class Graphics;
-class Image;
+class ImageSet;
 class Viewport;
 
 /**
@@ -84,13 +84,44 @@ class Gui : public gcn::Gui
         void
         setUseCustomCursor(bool customCursor);
 
+        /**
+         * Sets which cursor should be used.
+         */
+        void setCursorType(int index)
+        {
+            mCursorType = index;
+        }
+
+        /**
+         * Gets the custom cursor flag.
+         */
+        bool isCustomCursor()
+        {
+                return mCustomCursor;
+        }
+
+        /**
+         * Cursors are in graphic order from left to right.
+         * CURSOR_POINTER should be left untouched.
+         * CURSOR_TOTAL should always be last.
+         */
+        enum{
+            CURSOR_POINTER = 0,
+            CURSOR_RESIZE_ACROSS,
+            CURSOR_RESIZE_DOWN,
+            CURSOR_RESIZE_DOWN_LEFT,
+            CURSOR_RESIZE_DOWN_RIGHT,
+            CURSOR_TOTAL
+        };
     private:
         GuiConfigListener *mConfigListener;
         gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
         gcn::ImageLoader *mImageLoader;       /**< For loading images */
         gcn::Font *mGuiFont;                  /**< The global GUI font */
-        Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
+        int mCursorType;
+
+        static ImageSet *mMouseCursor;        /**< Mouse cursor images */
 };
 
 extern Gui *gui;                              /**< The GUI system */

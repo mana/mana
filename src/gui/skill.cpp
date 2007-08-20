@@ -64,6 +64,7 @@ SkillDialog::SkillDialog():
     Window("Skills")
 {
     setWindowName("Skills");
+    setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
 
     mSkillListBox = new ListBox(this);
@@ -72,7 +73,6 @@ SkillDialog::SkillDialog():
     mIncButton = new Button("Up", "inc", this);
     mUseButton = new Button("Use", "use", this);
     mUseButton->setEnabled(false);
-    mCloseButton = new Button("Close", "close", this);
 
     mSkillListBox->setActionEventId("skill");
 
@@ -82,15 +82,11 @@ SkillDialog::SkillDialog():
     mIncButton->setPosition(skillScrollArea->getX(), 210);
     mUseButton->setPosition(mIncButton->getX() + mIncButton->getWidth() + 5,
         210);
-    mCloseButton->setPosition(
-        skillScrollArea->getX() + skillScrollArea->getWidth() - mCloseButton->getWidth(),
-        210);
 
     add(skillScrollArea);
     add(mPointsLabel);
     add(mIncButton);
     add(mUseButton);
-    add(mCloseButton);
 
     mSkillListBox->addActionListener(this);
 
