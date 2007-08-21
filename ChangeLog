@@ -1,4 +1,16 @@
-﻿2007-08-22  Joshua Langley  <joshlangley[at]optusnet.com.au>
+﻿2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/tiles/woodland_indoor_x2.png: Another color
+	correction at the light platemail (looks more metalic now)
+	* data/maps/new_18-1.tmx.gz, data/maps/new_19-1.tmx.gz, 
+	data/images/minimap_new_18-1.png, data/images/minimap_new_19-1.png:
+	Removed a tree that prevented people from sitting on one of the
+	benches properly. Added correct minimap to woodland village and surrounding.
+
+2007-08-22  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
 	* data/graphics/gui/item_shortcut_bgr.png, src/game.cpp, src/gui/gui.cpp,
 	src/gui/itemcontainer.cpp, src/gui/itemshortcutcontainer.cpp,
