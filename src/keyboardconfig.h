@@ -156,6 +156,16 @@ class KeyboardConfig
             KEY_PICKUP,
             KEY_HIDE_WINDOWS,
             KEY_SIT,
+            KEY_SHORTCUT_0,
+            KEY_SHORTCUT_1,
+            KEY_SHORTCUT_2,
+            KEY_SHORTCUT_3,
+            KEY_SHORTCUT_4,
+            KEY_SHORTCUT_5,
+            KEY_SHORTCUT_6,
+            KEY_SHORTCUT_7,
+            KEY_SHORTCUT_8,
+            KEY_SHORTCUT_9,
             KEY_TOTAL
         };
 

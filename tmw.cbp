@@ -387,6 +387,26 @@
 			<Option link="0"/>
 			<Option target="default"/>
 		</Unit>
+		<Unit filename="src\gui\itemshortcutcontainer.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\itemshortcutcontainer.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\itemshortcutwindow.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\itemshortcutwindow.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
 		<Unit filename="src\gui\linkhandler.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
@@ -790,6 +810,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\item.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\itemshortcut.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\itemshortcut.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

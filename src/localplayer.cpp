@@ -128,6 +128,17 @@ Item* LocalPlayer::getInvItem(int index)
     return mInventory->getItem(index);
 }
 
+Item* LocalPlayer::searchForItem(int itemId)
+{
+    for(int i = 0; i < INVENTORY_SIZE; i++)
+    {
+        if (itemId == mInventory->getItem(i)->getId()) {
+            return mInventory->getItem(i);
+        }
+    }
+    return NULL;
+}
+
 void LocalPlayer::equipItem(Item *item)
 {
     MessageOut outMsg(mNetwork);

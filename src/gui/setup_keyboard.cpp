@@ -78,16 +78,16 @@ Setup_Keyboard::Setup_Keyboard():
 
     refreshKeys();
 
-    mKeyList->setDimension(gcn::Rectangle(0, 0, 180, 140));
+    mKeyList->setDimension(gcn::Rectangle(0, 0, 185, 140));
     mKeyList->addActionListener(this);
     mKeyList->setSelected(-1);
 
     ScrollArea *scrollArea = new ScrollArea(mKeyList);
-    scrollArea->setDimension(gcn::Rectangle(10, 10, 180, 140));
+    scrollArea->setDimension(gcn::Rectangle(10, 10, 200, 140));
     add(scrollArea);
 
     mAssignKeyButton = new Button("Assign", "assign", this);
-    mAssignKeyButton->setPosition(145, 155);
+    mAssignKeyButton->setPosition(165, 155);
     mAssignKeyButton->addActionListener(this);
     mAssignKeyButton->setEnabled(false);
     add(mAssignKeyButton);

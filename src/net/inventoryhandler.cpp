@@ -30,6 +30,7 @@
 
 #include "../resources/iteminfo.h"
 #include "../item.h"
+#include "../itemshortcut.h"
 #include "../localplayer.h"
 
 #include "../gui/chat.h"
@@ -72,13 +73,13 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                 msg->skip(8);    // card (4 shorts)
 
                 player_node->addInvItem(index, itemId, amount, false);
-
                 // Trick because arrows are not considered equipment
                 if (itemId == 1199 || itemId == 529)
                 {
                     player_node->getInvItem(index)->setEquipment(true);
                 }
             }
+            itemShortcut->load();
             break;
 
         case SMSG_PLAYER_INVENTORY_ADD:

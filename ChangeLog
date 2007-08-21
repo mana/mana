@@ -1,4 +1,16 @@
-﻿2007-08-20  Joshua Langley  <joshlangley[at]optusnet.com.au>
+﻿2007-08-22  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* data/graphics/gui/item_shortcut_bgr.png, src/game.cpp, src/gui/gui.cpp,
+	src/gui/itemcontainer.cpp, src/gui/itemshortcutcontainer.cpp,
+	src/gui/itemshortcutcontainer.h, src/gui/itemshortcutwindow.cpp,
+	src/gui/itemshortcutwindow.h, src/gui/menuwindow.cpp,
+	src/gui/setup_keyboard.cpp, src/gui/window.h, src/itemshortcut.cpp,
+	src/itemshortcut.h, src/keyboardconfig.cpp, src/keyboardconfig.h,
+	src/localplayer.cpp, src/localplayer.h, src/main.cpp,
+	src/net/inventoryhandler.cpp, src/utils/tostring.h, tmw.cbp: Added Item
+	Shortcut Bar.
+
+2007-08-20  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
 	* data/graphics/gui/mouse.png, src/gui/equipmentwindow.cpp, src/gui/gui.cpp,
 	src/gui/gui.h, src/gui/inventorywindow.cpp, src/gui/setup.cpp,

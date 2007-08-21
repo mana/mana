@@ -48,6 +48,7 @@
 #include "keyboardconfig.h"
 #include "game.h"
 #include "graphics.h"
+#include "itemshortcut.h"
 #include "lockedarray.h"
 #include "localplayer.h"
 #include "log.h"
@@ -300,9 +301,11 @@ void init_engine(const Options &options)
             bpp << " video mode: " << SDL_GetError() << std::endl;
         exit(1);
     }
-
     // Initialize for drawing
     graphics->_beginDraw();
+
+    // Initialize the item shortcuts.
+    itemShortcut = new ItemShortcut();
 
     gui = new Gui(graphics);
     state = UPDATE_STATE; /**< Initial game state */
@@ -328,6 +331,7 @@ void init_engine(const Options &options)
 /** Clear the engine */
 void exit_engine()
 {
+    delete itemShortcut;
     config.write();
 
     delete gui;

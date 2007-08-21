@@ -80,6 +80,14 @@ class LocalPlayer : public Player
         Item* getInvItem(int index);
 
         /**
+         * Searches for the specified item by it's identification.
+         *
+         * @param itemId The id of the item to be searched.
+         * @return Item found on success, NULL on failure.
+         */
+        Item* searchForItem(int itemId);
+
+        /**
          * Equips an item.
          */
         void equipItem(Item *item);

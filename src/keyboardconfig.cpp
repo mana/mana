@@ -47,7 +47,17 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     {"keyTargetClosest", SDLK_a, "Target Closest"},
     {"keyPickup", SDLK_z, "Pickup"},
     {"keyHideWindows", SDLK_h, "Hide Windows"},
-    {"keyBeingSit", SDLK_g, "Sit"}
+    {"keyBeingSit", SDLK_g, "Sit"},
+    {"keyShortcut0", SDLK_0, "Item Shortcut 0"},
+    {"keyShortcut1", SDLK_1, "Item Shortcut 1"},
+    {"keyShortcut2", SDLK_2, "Item Shortcut 2"},
+    {"keyShortcut3", SDLK_3, "Item Shortcut 3"},
+    {"keyShortcut4", SDLK_4, "Item Shortcut 4"},
+    {"keyShortcut5", SDLK_5, "Item Shortcut 5"},
+    {"keyShortcut6", SDLK_6, "Item Shortcut 6"},
+    {"keyShortcut7", SDLK_7, "Item Shortcut 7"},
+    {"keyShortcut8", SDLK_8, "Item Shortcut 8"},
+    {"keyShortcut9", SDLK_9, "Item Shortcut 9"}
 };
 
 void KeyboardConfig::init()

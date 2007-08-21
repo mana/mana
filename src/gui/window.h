@@ -155,6 +155,12 @@ class Window : public gcn::Window
         void setMaxHeight(unsigned int height);
 
         /**
+         * Sets flag to show a title or not.
+         */
+        void setShowTitle(bool flag)
+        { mShowTitle = flag; }
+
+        /**
           * Sets whether the window is sticky.
           * A sticky window will not have its visibility set to false
           * on a general setVisible(false) call.
