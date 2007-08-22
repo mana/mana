@@ -199,6 +199,7 @@ void createGuiWindows(Network *network)
     helpWindow = new HelpWindow();
     debugWindow = new DebugWindow();
     itemShortcutWindow = new ItemShortcutWindow();
+
     // Initialize window positions
     //chargeDialog->setPosition(
     //        graphics->getWidth() - 5 - chargeDialog->getWidth(),
@@ -522,7 +523,7 @@ void Game::handleInput()
                 {
                     if (tKey == i) {
                         itemShortcut->useItem(
-                            i - KeyboardConfig::KEY_SHORTCUT_0);
+                                i - KeyboardConfig::KEY_SHORTCUT_0);
                         break;
                     }
                 }

@@ -208,7 +208,7 @@ Gui::draw()
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
     if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1)) &&
-        mCustomCursor)
+            mCustomCursor)
     {
         static_cast<Graphics*>(mGraphics)->drawImage(
             mMouseCursor->get(mCursorType),

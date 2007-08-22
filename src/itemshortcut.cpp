@@ -45,9 +45,9 @@ ItemShortcut::~ItemShortcut()
 
 void ItemShortcut::load()
 {
-    for(int i = 0; i < SHORTCUT_ITEMS; i++)
+    for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
-        int itemId = (int) config.getValue("itemShortcut"+toString(i), -1.0);
+        int itemId = (int) config.getValue("itemShortcut" + toString(i), -1);
 
         if (itemId != -1)
         {
@@ -62,15 +62,15 @@ void ItemShortcut::load()
 
 void ItemShortcut::save()
 {
-    for(int i = 0; i < SHORTCUT_ITEMS; i++)
+    for (int i = 0; i < SHORTCUT_ITEMS; i++)
     {
         if (mItems[i])
         {
-            config.setValue("shortcut"+toString(i), mItems[i]->getId());
+            config.setValue("shortcut" + toString(i), mItems[i]->getId());
         }
         else
         {
-            config.setValue("shortcut"+toString(i), -1);
+            config.setValue("shortcut" + toString(i), -1);
         }
     }
 }

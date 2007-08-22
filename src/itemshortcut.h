@@ -32,7 +32,8 @@
  */
 typedef Item* ItemPtr;
 
-class ItemShortcut {
+class ItemShortcut
+{
     public:
         /**
          * Constructor.
@@ -123,5 +124,7 @@ class ItemShortcut {
         ItemPtr mItemSelected;              /**< the item held by cursor */
 
 };
+
 extern ItemShortcut *itemShortcut;
+
 #endif

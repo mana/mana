@@ -2,6 +2,9 @@
 
 	* src/gui/itemshortcutcontainer.h: Fixed compiler warning.
 	* src/CMakeLists.txt, src/Makefile.am: Updated source lists.
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Added close button and item shortcut backgrounds to files that will be
+	installed.
 
 2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
 

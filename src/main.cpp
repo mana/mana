@@ -301,6 +301,7 @@ void init_engine(const Options &options)
             bpp << " video mode: " << SDL_GetError() << std::endl;
         exit(1);
     }
+
     // Initialize for drawing
     graphics->_beginDraw();
 
@@ -324,14 +325,16 @@ void init_engine(const Options &options)
         logger->log("Warning: %s", err);
     }
 
-    //Initialize keyboard
+    // Initialize keyboard
     keyboard.init();
 }
 
 /** Clear the engine */
 void exit_engine()
 {
+    // Before config.write() since it writes the shortcuts to the config
     delete itemShortcut;
+
     config.write();
 
     delete gui;

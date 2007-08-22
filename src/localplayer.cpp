@@ -130,7 +130,7 @@ Item* LocalPlayer::getInvItem(int index)
 
 Item* LocalPlayer::searchForItem(int itemId)
 {
-    for(int i = 0; i < INVENTORY_SIZE; i++)
+    for (int i = 0; i < INVENTORY_SIZE; i++)
     {
         if (itemId == mInventory->getItem(i)->getId()) {
             return mInventory->getItem(i);

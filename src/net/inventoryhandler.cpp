@@ -73,6 +73,7 @@ void InventoryHandler::handleMessage(MessageIn *msg)
                 msg->skip(8);    // card (4 shorts)
 
                 player_node->addInvItem(index, itemId, amount, false);
+
                 // Trick because arrows are not considered equipment
                 if (itemId == 1199 || itemId == 529)
                 {

@@ -65,5 +65,7 @@ class ItemShortcutWindow : public Window
 
         gcn::ScrollArea *mInvenScroll;
 };
+
 extern ItemShortcutWindow *itemShortcutWindow;
+
 #endif
