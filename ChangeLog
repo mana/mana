@@ -12,6 +12,8 @@
 	* src/net/equipmenthandler.cpp: Removed a line that attempted to set
 	the player's weapon sprite with each kind of equipment. Seems to work
 	fine without as well.
+	* src/gui/chat.cpp, src/utils/trim.h, src/CMakeLists.txt,
+	src/Makefile.am: Added trimming of chat messages.
 
 2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
 

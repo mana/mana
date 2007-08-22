@@ -265,6 +265,7 @@ SET(SRCS
     utils/fastsqrt.h
     utils/minmax.h
     utils/tostring.h
+    utils/trim.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp

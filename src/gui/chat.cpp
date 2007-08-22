@@ -39,6 +39,8 @@
 #include "../net/messageout.h"
 #include "../net/protocol.h"
 
+#include "../utils/trim.h"
+
 ChatWindow::ChatWindow(Network *network):
     Window(""),
     mNetwork(network),
@@ -109,11 +111,14 @@ ChatWindow::chatLog(std::string line, int own)
         own = BY_SERVER;
     }
 
-    int pos = line.find(" : ");
-    if (pos > 0) {
+    std::string::size_type pos = line.find(" : ");
+    if (pos != std::string::npos) {
         tmp.nick = line.substr(0, pos);
         line.erase(0, pos + 3);
     }
+
+    // Trim whitespace
+    trim(line);
 
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
