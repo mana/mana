@@ -98,8 +98,7 @@ class ItemShortcutContainer : public gcn::Widget, public gcn::MouseListener
          * @param pointY Y coordinate of the point.
          * @return index on success, -1 on failure.
          */
-        int ItemShortcutContainer::getIndexFromGrid(
-                int pointX, int pointY) const;
+        int getIndexFromGrid(int pointX, int pointY) const;
 
         Image *mBackgroundImg;
 

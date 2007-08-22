@@ -1,38 +1,46 @@
-﻿2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/itemshortcutcontainer.h: Fixed compiler warning.
+	* src/CMakeLists.txt, src/Makefile.am: Updated source lists.
+
+2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/chest-lightplatemail-male.png,
 	data/graphics/sprites/chest-lightplatemail-female.png,
 	data/graphics/items/armor-chest-lightplatemail.png,
-	data/graphics/tiles/woodland_indoor_x2.png: Another color
-	correction at the light platemail (looks more metalic now)
-	* data/maps/new_18-1.tmx.gz, data/maps/new_19-1.tmx.gz, 
+	data/graphics/tiles/woodland_indoor_x2.png: Another color correction
+	at the light platemail (looks more metalic now)
+	* data/maps/new_18-1.tmx.gz, data/maps/new_19-1.tmx.gz,
 	data/images/minimap_new_18-1.png, data/images/minimap_new_19-1.png:
 	Removed a tree that prevented people from sitting on one of the
-	benches properly. Added correct minimap to woodland village and surrounding.
+	benches properly. Added correct minimap to woodland village and
+	surrounding.
 
 2007-08-22  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
-	* data/graphics/gui/item_shortcut_bgr.png, src/game.cpp, src/gui/gui.cpp,
-	src/gui/itemcontainer.cpp, src/gui/itemshortcutcontainer.cpp,
-	src/gui/itemshortcutcontainer.h, src/gui/itemshortcutwindow.cpp,
-	src/gui/itemshortcutwindow.h, src/gui/menuwindow.cpp,
-	src/gui/setup_keyboard.cpp, src/gui/window.h, src/itemshortcut.cpp,
-	src/itemshortcut.h, src/keyboardconfig.cpp, src/keyboardconfig.h,
-	src/localplayer.cpp, src/localplayer.h, src/main.cpp,
-	src/net/inventoryhandler.cpp, src/utils/tostring.h, tmw.cbp: Added Item
-	Shortcut Bar.
+	* data/graphics/gui/item_shortcut_bgr.png, src/game.cpp,
+	src/gui/gui.cpp, src/gui/itemcontainer.cpp,
+	src/gui/itemshortcutcontainer.cpp, src/gui/itemshortcutcontainer.h,
+	src/gui/itemshortcutwindow.cpp, src/gui/itemshortcutwindow.h,
+	src/gui/menuwindow.cpp, src/gui/setup_keyboard.cpp, src/gui/window.h,
+	src/itemshortcut.cpp, src/itemshortcut.h, src/keyboardconfig.cpp,
+	src/keyboardconfig.h, src/localplayer.cpp, src/localplayer.h,
+	src/main.cpp, src/net/inventoryhandler.cpp, src/utils/tostring.h,
+	tmw.cbp: Added item shortcut bar.
 
 2007-08-20  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
-	* data/graphics/gui/mouse.png, src/gui/equipmentwindow.cpp, src/gui/gui.cpp,
-	src/gui/gui.h, src/gui/inventorywindow.cpp, src/gui/setup.cpp,
-	src/gui/skill.cpp, src/gui/skill.h, src/gui/status.cpp, src/gui/window.cpp,
-	src/gui/window.h, data/graphics/gui/close_button.png: Added close button
-	functionality, resize cursor cues.
+	* data/graphics/gui/mouse.png, src/gui/equipmentwindow.cpp,
+	src/gui/gui.cpp, src/gui/gui.h, src/gui/inventorywindow.cpp,
+	src/gui/setup.cpp, src/gui/skill.cpp, src/gui/skill.h,
+	src/gui/status.cpp, src/gui/window.cpp, src/gui/window.h,
+	data/graphics/gui/close_button.png: Added close button functionality,
+	resize cursor cues.
 	* data/graphics/gui/hits_yellow.png, src/being.cpp, src/being.h,
 	src/gui/gui.cpp, src/localplayer.cpp, src/localplayer.h,
-	src/net/charserverhandler.cpp, src/net/playerhandler.cpp, src/particle.cpp
-	src/particle.h: Added monster killed xp notification effect.
+	src/net/charserverhandler.cpp, src/net/playerhandler.cpp,
+	src/particle.cpp, src/particle.h: Added monster killed xp notification
+	effect.
 
 2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -43,6 +43,10 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
+	      gui/itemshortcutcontainer.cpp \
+	      gui/itemshortcutcontainer.h \
+	      gui/itemshortcutwindow.cpp \
+	      gui/itemshortcutwindow.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
 	      gui/linkhandler.h \
@@ -242,6 +246,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
+	      itemshortcut.cpp \
+	      itemshortcut.h \
 	      joystick.cpp \
 	      joystick.h \
 	      keyboardconfig.cpp \
