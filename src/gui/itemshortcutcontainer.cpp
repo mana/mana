@@ -33,6 +33,8 @@
 #include "../utils/tostring.h"
 
 ItemShortcutContainer::ItemShortcutContainer():
+    mGridWidth(1),
+    mGridHeight(1),
     mItemClicked(false),
     mItemMoved(NULL)
 {
@@ -126,8 +128,8 @@ ItemShortcutContainer::setWidth(int width)
         mGridWidth = 1;
     }
 
-    setHeight(((mMaxItems / mGridWidth) +
-            (mMaxItems % mGridWidth > 0 ? 1 : 0)) * mBoxHeight);
+    setHeight((mMaxItems / mGridWidth +
+                (mMaxItems % mGridWidth > 0 ? 1 : 0)) * mBoxHeight);
 
     mGridHeight = getHeight() / mBoxHeight;
     if (mGridHeight < 1) {
@@ -213,7 +215,7 @@ ItemShortcutContainer::getIndexFromGrid(int pointX, int pointY) const
         return -1;
     }
     const int index = ((pointY / mBoxHeight) * mGridWidth) +
-        (pointX / mBoxWidth);
+        pointX / mBoxWidth;
     if (index >= mMaxItems)
     {
         return -1;

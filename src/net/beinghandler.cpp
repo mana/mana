@@ -107,7 +107,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
-            dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, msg->readInt16() * 10000);
+            dstBeing->setVisibleEquipment(
+                    Being::WEAPON_SPRITE, msg->readInt16() * 10000);
             dstBeing->setVisibleEquipment(
                     Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
@@ -117,9 +118,10 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
 
             msg->readInt16();  // shield
-            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, msg->readInt16());
-            dstBeing->setVisibleEquipment(
-                    Being::TOPCLOTHES_SPRITE, msg->readInt16());
+            headTop = msg->readInt16();
+            headMid = msg->readInt16();
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
+            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
             dstBeing->setHairColor(msg->readInt16());
             msg->readInt16();  // unknown
             msg->readInt16();  // head dir
@@ -224,10 +226,12 @@ void BeingHandler::handleMessage(MessageIn *msg)
             }
             Particle *levelupFX;
             if (msg->readInt32() == 0) { // type
-                levelupFX = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+                levelupFX = particleEngine->addEffect(
+                        "graphics/particles/levelup.particle.xml", 0, 0);
             }
             else {
-                levelupFX = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
+                levelupFX = particleEngine->addEffect(
+                        "graphics/particles/skillup.particle.xml", 0, 0);
             }
             beingManager->findBeing(id)->controlParticle(levelupFX);
             break;

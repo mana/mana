@@ -125,16 +125,18 @@ void EquipmentHandler::handleMessage(MessageIn *msg)
 
             item = player_node->getInvItem(index);
             player_node->mEquipment->setEquipment(position, item);
-            player_node->setVisibleEquipment(
-                    Being::WEAPON_SPRITE, item->getId());
             break;
 
         case 0x01d7:
-            // Equipment related
+            // Equipment related. At least confirmed to be required for weapon
+            // changes to appear on the local player.
             being = beingManager->findBeing(msg->readInt32());
             msg->readInt8();  // equip point
             itemId = msg->readInt16();
             msg->readInt16(); // item id 2
+            logger->log("0x01d7 (%s, itemId = %d)",
+                    (being == player_node) ? "player" : "somebody else",
+                    itemId);
 
             if (!being)
                 break;

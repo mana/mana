@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <cassert>
+
 #include "equipmentdb.h"
 
 #include "resourcemanager.h"
@@ -135,8 +137,8 @@ void
 EquipmentDB::unload()
 {
     // kill EquipmentInfos
-    for_each (  mEquipmentInfos.begin(), mEquipmentInfos.end(),
-                make_dtor(mEquipmentInfos));
+    for_each(mEquipmentInfos.begin(), mEquipmentInfos.end(),
+             make_dtor(mEquipmentInfos));
     mEquipmentInfos.clear();
 
     mLoaded = false;
@@ -151,7 +153,9 @@ EquipmentDB::get(int id)
 
     EquipmentInfoIterator i = mEquipmentInfos.find(id);
 
-    if (i == mEquipmentInfos.end() )
+    assert(i != mEquipmentInfos.end());
+
+    if (i == mEquipmentInfos.end())
     {
         logger->log("EquipmentDB: Error, unknown equipment ID# %d", id);
         return &mUnknown;
