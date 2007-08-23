@@ -192,16 +192,6 @@ Being::takeDamage(int amount)
 }
 
 void
-Being::showXP(int amount)
-{
-    const std::string xp = toString(amount) + " xp";
-
-    // Show XP number
-    particleEngine->addTextRiseFadeOutEffect(xp, hitYellowFont,
-                                             mPx + 16, mPy - 16);
-}
-
-void
 Being::handleAttack(Being *victim, int damage)
 {
     setAction(Being::ATTACK);

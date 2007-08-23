@@ -194,7 +194,7 @@ void PlayerHandler::handleMessage(MessageIn *msg)
         case SMSG_PLAYER_STAT_UPDATE_2:
             switch (msg->readInt16()) {
                 case 0x0001:
-                    player_node->refreshXp(msg->readInt32());
+                    player_node->setXp(msg->readInt32());
                     break;
                 case 0x0002:
                     player_node->mJobXp = msg->readInt32();

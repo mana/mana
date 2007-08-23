@@ -6,6 +6,10 @@
 	button functionality.
 	* src/particle.h, src/particleemitter.cpp, src/particle.cpp: Renamed
 	Particle::mVector to Particle::mVelocity for clarity.
+	* src/localplayer.cpp, src/gui/ministatus.cpp, src/gui/status.cpp,
+	src/being.cpp, src/net/charserverhandler.cpp,
+	src/net/playerhandler.cpp, src/localplayer.h, src/being.h: Changed XP
+	gaining effect to appear on the player instead.
 
 2007-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

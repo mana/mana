@@ -98,7 +98,8 @@ void MiniStatusWindow::update()
 
     mHpBar->setProgress((float) player_node->mHp / player_node->mMaxHp);
     // mMpBar->setProgress((float) player_node->mMp / player_node->mMaxMp);
-    mXpBar->setProgress((float) player_node->mXp / player_node->mXpForNextLevel);
+    mXpBar->setProgress(
+            (float) player_node->getXp() / player_node->mXpForNextLevel);
 
     // Update labels
     mHpLabel->setCaption(toString(player_node->mHp));
@@ -106,7 +107,7 @@ void MiniStatusWindow::update()
 
     std::stringstream updatedText;
     updatedText << (int) (
-            (float) player_node->mXp /
+            (float) player_node->getXp() /
             player_node->mXpForNextLevel * 100) << "%";
 
     // Displays the number of monsters to next lvl

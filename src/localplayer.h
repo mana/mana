@@ -173,14 +173,19 @@ class LocalPlayer : public Player
         void revive();
 
         /**
-         * Updates the xp value, if a monster was killed then it makes a call
-         * to show xp.
+         * Sets the amount of XP. Shows XP gaining effect if the player is on
+         * a map.
          */
-        void refreshXp(Uint32 xp);
+        void setXp(int xp);
+
+        /**
+         * Returns the amount of experience points.
+         */
+        int getXp() const { return mXp; }
 
         Uint32 mCharId;
 
-        Uint32 mXp, mJobXp;
+        Uint32 mJobXp;
         Uint16 mLevel;
         Uint32 mJobLevel;
         Uint32 mXpForNextLevel, mJobXpForNextLevel;
@@ -206,6 +211,8 @@ class LocalPlayer : public Player
 
     protected:
         void walk(unsigned char dir);
+
+        int mXp;            /**< Experience points. */
 
         Network *mNetwork;
         Being *mTarget;

@@ -150,22 +150,12 @@ class Being : public Sprite
         void setSpeech(const std::string &text, Uint32 time);
 
         /**
-         * Puts a damage bubble above this being for the specified amount of
-         * time.
+         * Puts a damage bubble above this being.
          *
          * @param amount The amount of damage.
          */
         virtual void
         takeDamage(int amount);
-
-        /**
-         * Puts xp above this being for the specified amount of
-         * time.
-         *
-         * @param amount The amount of experience points.
-         */
-        void
-        showXP(int amount);
 
         /**
          * Handles an attack of another being by this being.

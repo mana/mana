@@ -29,12 +29,17 @@
 #include "inventory.h"
 #include "item.h"
 #include "main.h"
+#include "particle.h"
 #include "sound.h"
+
+#include "gui/gui.h"
 
 #include "net/messageout.h"
 #include "net/protocol.h"
 
 #include "resources/equipmentinfo.h"
+
+#include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;
 
@@ -439,11 +444,15 @@ void LocalPlayer::revive()
     outMsg.writeInt8(0);
 }
 
-void LocalPlayer::refreshXp(Uint32 xp)
+void LocalPlayer::setXp(int xp)
 {
-    if (mTarget && xp > mXp)
+    if (mMap && xp > mXp)
     {
-        mTarget->showXP(xp-mXp);
+        const std::string text = toString(xp - mXp) + " xp";
+
+        // Show XP number
+        particleEngine->addTextRiseFadeOutEffect(text, hitYellowFont,
+                                                 mPx + 16, mPy - 16);
     }
     mXp = xp;
 }

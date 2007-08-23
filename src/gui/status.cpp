@@ -242,7 +242,7 @@ void StatusWindow::update()
             "/" + toString(mPlayer->mMaxMp));
     mMpValueLabel->adjustSize();
 
-    mXpValueLabel->setCaption(toString(mPlayer->mXp) +
+    mXpValueLabel->setCaption(toString(mPlayer->getXp()) +
             "/" + toString(mPlayer->mXpForNextLevel));
     mXpValueLabel->adjustSize();
 
@@ -264,13 +264,13 @@ void StatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
-    mHpBar->setProgress((float)mPlayer->mHp / (float)mPlayer->mMaxHp);
+    mHpBar->setProgress((float) mPlayer->mHp / (float) mPlayer->mMaxHp);
     // mMpBar->setProgress((float)mPlayer->mp / (float)mPlayer->maxMp);
 
     mXpBar->setProgress(
-            (float)mPlayer->mXp / (float)mPlayer->mXpForNextLevel);
+            (float) mPlayer->getXp() / (float) mPlayer->mXpForNextLevel);
     mJobXpBar->setProgress(
-            (float)mPlayer->mJobXp / (float)mPlayer->mJobXpForNextLevel);
+            (float) mPlayer->mJobXp / (float) mPlayer->mJobXpForNextLevel);
 
     // Stats Part
     // ----------
@@ -285,10 +285,11 @@ void StatusWindow::update()
     int statusPoints = mPlayer->mStatsPointsToAttribute;
 
     // Update labels
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++)
+    {
         mStatsLabel[i]->setCaption(attrNames[i]);
-        mStatsDisplayLabel[i]->setCaption(toString((int)mPlayer->mAttr[i]));
-        mPointsLabel[i]->setCaption(toString((int)mPlayer->mAttrUp[i]));
+        mStatsDisplayLabel[i]->setCaption(toString((int) mPlayer->mAttr[i]));
+        mPointsLabel[i]->setCaption(toString((int) mPlayer->mAttrUp[i]));
 
         mStatsLabel[i]->adjustSize();
         mStatsDisplayLabel[i]->adjustSize();
