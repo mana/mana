@@ -162,7 +162,7 @@ Being::setSpeech(const std::string &text, Uint32 time)
 void
 Being::takeDamage(int amount)
 {
-    gcn::Font* font;
+    gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
 
     // Selecting the right color
@@ -172,8 +172,9 @@ Being::takeDamage(int amount)
     }
     else
     {
-        // hit particle effect
-        controlParticle(particleEngine->addEffect("graphics/particles/hit.particle.xml", 0, 0));
+        // Hit particle effect
+        controlParticle(particleEngine->addEffect(
+                    "graphics/particles/hit.particle.xml", 0, 0));
 
         if (getType() == MONSTER)
         {
@@ -185,7 +186,7 @@ Being::takeDamage(int amount)
         }
     }
 
-    // show damage number
+    // Show damage number
     particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
                                         mPx + 16, mPy + 16);
 }
@@ -193,13 +194,11 @@ Being::takeDamage(int amount)
 void
 Being::showXP(int amount)
 {
-    gcn::Font* font;
-    std::string xp = (amount ? toString(amount) : "") + " xp";
+    const std::string xp = toString(amount) + " xp";
 
-    font = hitYellowFont;
-
-    // show xp number
-    particleEngine->addTextRiseFadeOutEffect(xp, font, mPx + 16, mPy - 16);
+    // Show XP number
+    particleEngine->addTextRiseFadeOutEffect(xp, hitYellowFont,
+                                             mPx + 16, mPy - 16);
 }
 
 void
@@ -214,7 +213,7 @@ void
 Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
-    if (mMap != NULL)
+    if (mMap)
     {
         mMap->removeSprite(mSpriteIterator);
     }
@@ -222,12 +221,12 @@ Being::setMap(Map *map)
     mMap = map;
 
     // Add sprite to potential new map
-    if (mMap != NULL)
+    if (mMap)
     {
         mSpriteIterator = mMap->addSprite(this);
     }
 
-    //clear particle effect list because child particles became invalid
+    // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
 }
 
@@ -236,7 +235,8 @@ Being::controlParticle(Particle *particle)
 {
     if (particle)
     {
-        particle->disableAutoDelete();  //the effect may not die without the beings permission or we segvault
+        // The effect may not die without the beings permission or we segfault
+        particle->disableAutoDelete();
         mChildParticleEffects.push_back(particle);
     }
 }

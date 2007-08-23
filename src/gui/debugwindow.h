@@ -33,11 +33,11 @@
 #include "../guichanfwd.h"
 
 /**
- * The chat window.
+ * The debug window.
  *
  * \ingroup Interface
  */
-class DebugWindow : public Window, public gcn::ActionListener
+class DebugWindow : public Window
 {
     public:
         /**
@@ -49,11 +49,6 @@ class DebugWindow : public Window, public gcn::ActionListener
          * Logic (updates components' size and infos)
          */
         void logic();
-
-        /**
-         * Performs action.
-         */
-        void action(const gcn::ActionEvent &event);
 
     private:
         gcn::Label *mMusicFileLabel, *mMapFileLabel;

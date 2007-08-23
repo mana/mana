@@ -248,10 +248,9 @@ ParticleEmitter::readMinMax(xmlNodePtr propertyNode, T def)
 {
     MinMax<T> retval;
 
-    def = (T)XML::getFloatProperty(propertyNode, "value", (double)def);
-    retval.set  (   (T)XML::getFloatProperty(propertyNode, "min", (double)def),
-                    (T)XML::getFloatProperty(propertyNode, "max", (double)def)
-                );
+    def = (T) XML::getFloatProperty(propertyNode, "value", (double) def);
+    retval.set((T) XML::getFloatProperty(propertyNode, "min", (double) def),
+               (T) XML::getFloatProperty(propertyNode, "max", (double) def));
 
     return retval;
 }
@@ -284,19 +283,17 @@ ParticleEmitter::createParticles()
 
 
         newParticle->setPosition(
-            mParticlePosX.value(),
-            mParticlePosY.value(),
-            mParticlePosZ.value()
-        );
+                mParticlePosX.value(),
+                mParticlePosY.value(),
+                mParticlePosZ.value());
 
         float angleH = mParticleAngleHorizontal.value();
         float angleV = mParticleAngleVertical.value();
         float power = mParticlePower.value();
-        newParticle->setVector(
-            cos(angleH) * cos(angleV) * power,
-            sin(angleH) * cos(angleV) * power,
-            sin(angleV) * power
-        );
+        newParticle->setVelocity(
+                cos(angleH) * cos(angleV) * power,
+                sin(angleH) * cos(angleV) * power,
+                sin(angleV) * power);
 
         newParticle->setRandomnes(mParticleRandomnes.value());
         newParticle->setGravity(mParticleGravity.value());
@@ -312,10 +309,9 @@ ParticleEmitter::createParticles()
         newParticle->setFadeOut(mParticleFadeOut.value());
         newParticle->setFadeIn(mParticleFadeIn.value());
 
-        for (   std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
-                i != mParticleChildEmitters.end();
-                i++
-            )
+        for (std::list<ParticleEmitter>::iterator i = mParticleChildEmitters.begin();
+             i != mParticleChildEmitters.end();
+             i++)
         {
             newParticle->addEmitter(new ParticleEmitter(*i));
         }

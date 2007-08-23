@@ -44,6 +44,7 @@ DebugWindow::DebugWindow():
     setWindowName("Debug");
 
     setResizable(true);
+    setCloseButton(true);
     setDefaultSize(0, 0, 400, 100);
     loadWindowState();
 
@@ -62,15 +63,11 @@ DebugWindow::DebugWindow():
     mParticleCountLabel = new gcn::Label("[Particle count: 0]");
     mParticleCountLabel->setPosition(100, 60);
 
-    Button *closeButton = new Button("Close", "close", this);
-    closeButton->setPosition(5, 60);
-
     add(mFPSLabel);
     add(mMusicFileLabel);
     add(mMapFileLabel);
     add(mTileMouseLabel);
     add(mParticleCountLabel);
-    add(closeButton);
 }
 
 void
@@ -107,13 +104,4 @@ DebugWindow::logic()
                                     toString(Particle::particleCount)
                                     +"]");
     mParticleCountLabel->adjustSize();
-}
-
-void
-DebugWindow::action(const gcn::ActionEvent &event)
-{
-    if (event.getId() == "close")
-    {
-        setVisible(false);
-    }
 }

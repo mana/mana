@@ -26,7 +26,8 @@
 #include "graphics.h"
 
 TextParticle::TextParticle(Map *map, const std::string &text,
-        int colorR, int colorG, int colorB, gcn::Font *font):
+                           int colorR, int colorG, int colorB,
+                           gcn::Font *font):
     Particle(map),
     mText(text),
     mTextFont(font),
@@ -41,8 +42,8 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (!mAlive)
         return;
 
-    int screenX = (int)mPosX + offsetX;
-    int screenY = (int)mPosY - int(mPosZ) + offsetY;
+    int screenX = (int) mPosX + offsetX;
+    int screenY = (int) mPosY - (int) mPosZ + offsetY;
 
     int alpha = 255;
 
@@ -50,7 +51,7 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     {
         alpha *= mLifetimeLeft;
         alpha /= mFadeOut;
-    };
+    }
 
     if (mLifetimePast < mFadeIn)
     {
@@ -59,6 +60,6 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     }
 
     graphics->setFont(mTextFont);
-    graphics->setColor(gcn::Color (mColorR, mColorG, mColorB, alpha));
+    graphics->setColor(gcn::Color(mColorR, mColorG, mColorB, alpha));
     graphics->drawText(mText, screenX, screenY, gcn::Graphics::CENTER);
 }

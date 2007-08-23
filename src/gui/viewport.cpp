@@ -371,12 +371,12 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         if ((being = beingManager->findBeing(tilex, tiley)) &&
                 being->getType() != Being::LOCALPLAYER)
         {
-            showPopup(event.getX(), event.getY(), being);
+            mPopupMenu->showPopup(event.getX(), event.getY(), being);
             return;
         }
         else if((floorItem = floorItemManager->findByCoordinates(tilex, tiley)))
         {
-            showPopup(event.getX(), event.getY(), floorItem);
+            mPopupMenu->showPopup(event.getX(), event.getY(), floorItem);
             return;
         }
     }
@@ -471,18 +471,6 @@ void
 Viewport::showPopup(int x, int y, Item *item)
 {
     mPopupMenu->showPopup(x, y, item);
-}
-
-void
-Viewport::showPopup(int x, int y, FloorItem *floorItem)
-{
-    mPopupMenu->showPopup(x, y, floorItem);
-}
-
-void
-Viewport::showPopup(int x, int y, Being *being)
-{
-    mPopupMenu->showPopup(x, y, being);
 }
 
 void

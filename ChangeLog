@@ -1,4 +1,13 @@
-﻿2007-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.h, src/gui/viewport.cpp: Removed two useless popup
+	related methods.
+	* src/gui/debugwindow.h, src/gui/debugwindow.cpp: Use generic close
+	button functionality.
+	* src/particle.h, src/particleemitter.cpp, src/particle.cpp: Renamed
+	Particle::mVector to Particle::mVelocity for clarity.
+
+2007-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/itemshortcutcontainer.h: Fixed compiler warning.
 	* src/CMakeLists.txt, src/Makefile.am: Updated source lists.

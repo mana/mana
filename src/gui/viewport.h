@@ -130,18 +130,6 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
 
     private:
         /**
-         * Shows a popup for a floor item.
-         * TODO Find some way to get rid of FloorItem here
-         */
-        void showPopup(int x, int y, FloorItem *floorItem);
-
-        /**
-         * Shows a popup for a being.
-         * TODO Find some way to get rid of Being here
-         */
-        void showPopup(int x, int y, Being *being);
-
-        /**
          * Helper function for loading target cursors
          */
         void

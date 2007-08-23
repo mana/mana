@@ -67,43 +67,37 @@ class Particle : public Sprite
         ~Particle();
 
         /**
-         * Deletes all child particles and emitters
+         * Deletes all child particles and emitters.
          */
         void
         clear();
 
         /**
          * Gives a particle the properties of an engine root particle and loads
-         * the particle-related config settings
+         * the particle-related config settings.
          */
         void
         setupEngine();
 
         /**
          * Updates particle position, returns false when the particle should
-         * be deleted
+         * be deleted.
          */
         virtual bool
         update();
 
         /**
-         * Draws the particle image
+         * Draws the particle image.
          */
         virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const;
+        draw(Graphics *graphics, int offsetX, int offsetY) const {}
 
         /**
-         * Necessary for sorting with the other sprites
+         * Necessary for sorting with the other sprites.
          */
         virtual int
         getPixelY() const
-        {
-            return (int)(mPosY + mPosZ) - 64;
-        };
-
-        /*
-            Basic Particle properties:
-         */
+        { return (int) (mPosY + mPosZ) - 64; }
 
         /**
          * Sets the map the particle is on.
@@ -115,21 +109,23 @@ class Particle : public Sprite
          * particleEffectFile.
          */
         Particle*
-        addEffect(std::string particleEffectFile, int pixelX, int pixelY);
+        addEffect(const std::string &particleEffectFile,
+                  int pixelX, int pixelY);
 
         /**
          * Creates a standalone text particle.
          */
         Particle*
-        addTextSplashEffect(std::string text, int colorR, int colorG, int colorB,
+        addTextSplashEffect(const std::string &text,
+                            int colorR, int colorG, int colorB,
                             gcn::Font *font, int x, int y);
 
         /**
          * Creates a standalone text particle.
          */
         Particle*
-        addTextRiseFadeOutEffect(std::string text, gcn::Font *font,
-            int x, int y);
+        addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
+                                 int x, int y);
 
         /**
          * Adds an emitter to the particle.
@@ -139,14 +135,14 @@ class Particle : public Sprite
         { mChildEmitters.push_back(emitter); }
 
         /**
-         * Sets the position in 3 dimensional space in pixels relative to map
+         * Sets the position in 3 dimensional space in pixels relative to map.
          */
         void
         setPosition(float x, float y, float z)
         { mPosX = x; mPosY = y; mPosZ = z; }
 
         /**
-         * Sets the position in 2 dimensional space in pixels relative to map
+         * Sets the position in 2 dimensional space in pixels relative to map.
          */
         void
         setPosition(float x, float y)
@@ -177,7 +173,7 @@ class Particle : public Sprite
 
         /**
          * Sets the age of the pixel in game ticks where the particle has
-         * faded in completely
+         * faded in completely.
          */
         void
         setFadeOut (int fadeOut)
@@ -185,7 +181,7 @@ class Particle : public Sprite
 
         /**
          * Sets the remaining particle lifetime where the particle starts to
-         * fade out
+         * fade out.
          */
         void
         setFadeIn (int fadeIn)
@@ -193,32 +189,32 @@ class Particle : public Sprite
 
         /**
          * Sets the sprite iterator of the particle on the current map to make
-         * it easier to remove the particle from the map when it is destroyed
+         * it easier to remove the particle from the map when it is destroyed.
          */
         void
         setSpriteIterator(std::list<Sprite*>::iterator spriteIterator)
         { mSpriteIterator = spriteIterator; }
 
         /**
-         * Gets the sprite iterator of the particle on the current map
+         * Gets the sprite iterator of the particle on the current map.
          */
         std::list<Sprite*>::iterator
         getSpriteIterator() const
         { return mSpriteIterator; }
 
         /**
-         * Sets the current velocity in 3 dimensional space
+         * Sets the current velocity in 3 dimensional space.
          */
         void
-        setVector(float x, float y, float z)
-        { mVectorX = x; mVectorY = y; mVectorZ = z; }
+        setVelocity(float x, float y, float z)
+        { mVelocityX = x; mVelocityY = y; mVelocityZ = z; }
 
         /**
-         * Sets the downward acceleration
+         * Sets the downward acceleration.
          */
         void
-        setGravity(float g)
-        { mGravity = g; }
+        setGravity(float gravity)
+        { mGravity = gravity; }
 
         /**
          * Sets the ammount of random vector changes
@@ -244,8 +240,8 @@ class Particle : public Sprite
 
         /**
          * Sets the distance in pixel the particle can come near the target
-         * particle before it is destroyed. Does only make sense after a
-         * target particle has been set using setDestination.
+         * particle before it is destroyed. Does only make sense after a target
+         * particle has been set using setDestination.
          */
         void setDieDistance(float dist)
         { mInvDieDistance = 1.0f / dist; }
@@ -254,7 +250,7 @@ class Particle : public Sprite
         { return mAlive; }
 
         /**
-         * Manually marks the particle for deletion
+         * Manually marks the particle for deletion.
          */
         void kill()
         { mAlive = false; mAutoDelete = true; }
@@ -276,17 +272,21 @@ class Particle : public Sprite
 
     private:
         // generic properties
-        bool mAutoDelete;           /**< May the particle request its deletion by the parent particle?*/
-        Map *mMap;                  /**< Map the particle is on*/
+        bool mAutoDelete;           /**< May the particle request its deletion by the parent particle? */
+        Map *mMap;                  /**< Map the particle is on. */
         std::list<Sprite*>::iterator mSpriteIterator;   /**< iterator of the particle on the current map */
-        Emitters mChildEmitters;    /**< List of child emitters*/
-        Particles mChildParticles;  /**< List of particles controlled by this particle*/
-        //dynamic particle
-        float mVectorX, mVectorY, mVectorZ; /**< Speed in 3 dimensional space in pixels per game-tick */
-        float mGravity;             /**< Downward acceleration in pixels per game-tick²*/
-        int mRandomnes;             /**< Ammount of random vector change*/
-        float mBounce;              /**< How much the particle bounces off when hitting the ground*/
-        //follow-point particles
+        Emitters mChildEmitters;    /**< List of child emitters. */
+        Particles mChildParticles;  /**< List of particles controlled by this particle */
+
+        // dynamic particle
+        float mVelocityX;           /**< X speed in pixels per game-tick. */
+        float mVelocityY;           /**< Y speed in pixels per game-tick. */
+        float mVelocityZ;           /**< Z speed in pixels per game-tick. */
+        float mGravity;             /**< Downward acceleration in pixels per game-tick² */
+        int mRandomnes;             /**< Ammount of random vector change */
+        float mBounce;              /**< How much the particle bounces off when hitting the ground */
+
+        // follow-point particles
         Particle *mTarget;          /**< The particle that attracts this particle*/
         float mAcceleration;        /**< Acceleration towards the target particle in pixels per game-tick²*/
         float mInvDieDistance;      /**< Distance in pixels from the target particle that causes the destruction of the particle*/
