@@ -41,6 +41,7 @@
 #include "../net/messageout.h"
 
 #include "../utils/tostring.h"
+#include "../utils/trim.h"
 
 // Defined in main.cpp, used here for setting the char create dialog
 extern CharServerHandler charServerHandler;
@@ -249,11 +250,6 @@ bool CharSelectDialog::selectByName(const std::string &name)
     return false;
 }
 
-std::string CharSelectDialog::getName()
-{
-    return mNameLabel->getCaption();
-}
-
 CharCreateDialog::CharCreateDialog(Window *parent, int slot, Network *network,
                                    unsigned char sex):
     Window("Create Character", true, parent), mNetwork(network), mSlot(slot)
@@ -357,10 +353,12 @@ CharCreateDialog::action(const gcn::ActionEvent &event)
     }
 }
 
-const std::string&
+std::string
 CharCreateDialog::getName()
 {
-    return mNameField->getText();
+    std::string name = mNameField->getText();
+    trim(name);
+    return name;
 }
 
 void

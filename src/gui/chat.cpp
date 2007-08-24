@@ -97,7 +97,7 @@ void
 ChatWindow::chatLog(std::string line, int own)
 {
     // Delete overhead from the end of the list
-    while ((int)mChatlog.size() > mItemsKeep) {
+    while ((int) mChatlog.size() > mItemsKeep) {
         mChatlog.pop_back();
     }
 

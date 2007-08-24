@@ -36,6 +36,7 @@
 #include "../gui/chat.h"
 
 #include "../utils/tostring.h"
+#include "../utils/trim.h"
 
 extern Being *player_node;
 
@@ -73,6 +74,7 @@ void ChatHandler::handleMessage(MessageIn *msg)
             chatMsg = msg->readString(chatMsgLength);
             chatWindow->chatLog(chatMsg, BY_OTHER);
             chatMsg.erase(0, chatMsg.find(" : ", 0) + 3);
+            trim(chatMsg);
             being->setSpeech(chatMsg, SPEECH_TIME);
             break;
 

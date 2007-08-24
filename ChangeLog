@@ -5,6 +5,13 @@
 	instance so there is no point in supporting a shared resource.
 	* src/gui/window.cpp, src/gui/gui.h: Removed unnecessary
 	Gui::isCustomCursor method.
+	* src/gui/char_select.h, src/gui/char_select.cpp, src/utils/trim.h:
+	Added trimming of name for new character creation.
+	* src/net/chathandler.cpp: Added trimming of chat messages appearing
+	above players.
+	* src/gui/window.cpp, src/gui/window.h: Improved resize mouse cursor
+	indication, removing duplicated code and fixing indicator above resize
+	grip.
 
 2007-08-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

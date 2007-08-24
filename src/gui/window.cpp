@@ -345,63 +345,46 @@ void Window::mousePressed(gcn::MouseEvent &event)
     // Let Guichan move window to top and figure out title bar drag
     gcn::Window::mousePressed(event);
 
-    const int x = event.getX();
-    const int y = event.getY();
-    mouseResize = 0;
-
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        // Close Button Handler
+        const int x = event.getX();
+        const int y = event.getY();
+
+        // Handle close button
         if (mCloseButton)
         {
-            gcn::Rectangle tCloseButtonRect(
+            gcn::Rectangle closeButtonRect(
                 getWidth() - closeImage->getWidth() - getPadding(),
                 getPadding(),
                 closeImage->getWidth(),
-                closeImage->getHeight()
-            );
-            if (tCloseButtonRect.isPointInRect(x, y))
+                closeImage->getHeight());
+
+            if (closeButtonRect.isPointInRect(x, y))
             {
                 setVisible(false);
-                return;
             }
         }
-        // Resize Window Handler
-        if (mResizable &&
-            event.getSource() == this &&
-            !getChildrenArea().isPointInRect(x, y))
-        {
-            mouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
-                            (x < resizeBorderWidth) ? LEFT : 0;
-            mouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
-                            (y < resizeBorderWidth) ? TOP : 0;
-            return;
-        }
-        if (event.getSource() == mGrip &&
-                event.getButton() == gcn::MouseEvent::LEFT)
-        {
-            mDragOffsetX = x;
-            mDragOffsetY = y;
-            mouseResize |= BOTTOM | RIGHT;
-            mIsMoving = false;
-        }
+
+        // Handle window resizing
+        mouseResize = getResizeHandles(event);
     }
 }
 
 void Window::mouseReleased(gcn::MouseEvent &event)
 {
-    if (mResizable &&
-        mouseResize)
+    if (mResizable && mouseResize)
     {
         mouseResize = 0;
         gui->setCursorType(Gui::CURSOR_POINTER);
     }
+
+    // This should be the responsibility of Guichan (and is from 0.8.0 on)
+    mIsMoving = false;
 }
 
 void Window::mouseExited(gcn::MouseEvent &event)
 {
-    if (mResizable &&
-        !mouseResize)
+    if (mResizable && !mouseResize)
     {
         gui->setCursorType(Gui::CURSOR_POINTER);
     }
@@ -409,47 +392,26 @@ void Window::mouseExited(gcn::MouseEvent &event)
 
 void Window::mouseMoved(gcn::MouseEvent &event)
 {
-    const int x = event.getX();
-    const int y = event.getY();
+    int resizeHandles = getResizeHandles(event);
 
-    // changes the custom mouse cursor based on it's current position.
-    if (mResizable &&
-        !mouseResize)
+    // Changes the custom mouse cursor based on it's current position.
+    switch (resizeHandles)
     {
-        gcn::Rectangle tContainerRect(
-            getPadding(),
-            getPadding(),
-            getWidth()-(getPadding() * 2),
-            getHeight()-(getPadding() * 2)
-        );
-        if (!tContainerRect.isPointInRect(x, y))
-        {
-            int tMouseResize = 0;
-            tMouseResize |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
-                            (x < resizeBorderWidth) ? LEFT : 0;
-            tMouseResize |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
-                            (y < resizeBorderWidth) ? TOP : 0;
-            switch (tMouseResize)
-            {
-                case BOTTOM | RIGHT:
-                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_RIGHT);
-                    break;
-                case BOTTOM | LEFT:
-                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_LEFT);
-                    break;
-                case BOTTOM:
-                    gui->setCursorType(Gui::CURSOR_RESIZE_DOWN);
-                    break;
-                case RIGHT:
-                case LEFT:
-                    gui->setCursorType(Gui::CURSOR_RESIZE_ACROSS);
-                    break;
-            }
-        }
-        else
-        {
+        case BOTTOM | RIGHT:
+            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_RIGHT);
+            break;
+        case BOTTOM | LEFT:
+            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN_LEFT);
+            break;
+        case BOTTOM:
+            gui->setCursorType(Gui::CURSOR_RESIZE_DOWN);
+            break;
+        case RIGHT:
+        case LEFT:
+            gui->setCursorType(Gui::CURSOR_RESIZE_ACROSS);
+            break;
+        default:
             gui->setCursorType(Gui::CURSOR_POINTER);
-        }
     }
 }
 
@@ -569,4 +531,33 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setContentSize(mDefaultWidth, mDefaultHeight);
+}
+
+int Window::getResizeHandles(gcn::MouseEvent &event)
+{
+    int resizeHandles = 0;
+    const int y = event.getY();
+
+    if (mResizable && y > (int) mTitleBarHeight)
+    {
+        const int x = event.getX();
+
+        if (!getChildrenArea().isPointInRect(x, y) &&
+                event.getSource() == this)
+        {
+            resizeHandles |= (x > getWidth() - resizeBorderWidth) ? RIGHT :
+                              (x < resizeBorderWidth) ? LEFT : 0;
+            resizeHandles |= (y > getHeight() - resizeBorderWidth) ? BOTTOM :
+                              (y < resizeBorderWidth) ? TOP : 0;
+        }
+
+        if (event.getSource() == mGrip)
+        {
+            mDragOffsetX = x;
+            mDragOffsetY = y;
+            resizeHandles |= BOTTOM | RIGHT;
+        }
+    }
+
+    return resizeHandles;
 }

@@ -21,6 +21,9 @@
  *  $Id$
  */
 
+#ifndef _TMW_UTILS_TRIM_H_
+#define _TMW_UTILS_TRIM_H_
+
 #include <string>
 
 /**
@@ -28,7 +31,7 @@
  *
  * @param str the string to trim spaces off
  */
-void trim(std::string &str)
+static void trim(std::string &str)
 {
     std::string::size_type pos = str.find_last_not_of(' ');
     if (pos != std::string::npos)
@@ -46,3 +49,5 @@ void trim(std::string &str)
         str.clear();
     }
 }
+
+#endif

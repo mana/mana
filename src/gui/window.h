@@ -175,7 +175,6 @@ class Window : public gcn::Window
          * Overloads window setVisible by Guichan to allow sticky window
          * handling.
          */
-
         void setVisible(bool visible);
 
         /**
@@ -265,6 +264,15 @@ class Window : public gcn::Window
         };
 
     protected:
+        /**
+         * Determines if the mouse is in a resize area and returns appropriate
+         * resize handles. Also initializes drag offset in case the resize
+         * grip is used.
+         *
+         * @see ResizeHandles
+         */
+        int getResizeHandles(gcn::MouseEvent &event);
+
         GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
@@ -291,8 +299,8 @@ class Window : public gcn::Window
          */
         static ConfigListener *windowConfigListener;
 
+        static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
-        static int mouseResize;    /**< Window is being resized */
         static ImageRect border;   /**< The window border and background */
         static Image *closeImage;  /**< Close Button Image */
 
