@@ -295,6 +295,7 @@ class Window : public gcn::Window
         static int instances;      /**< Number of Window instances */
         static int mouseResize;    /**< Window is being resized */
         static ImageRect border;   /**< The window border and background */
+        static Image *closeImage;  /**< Close Button Image */
 
         /**
          * The width of the resize border. Is independent of the actual window
@@ -302,8 +303,6 @@ class Window : public gcn::Window
          * where two borders are moved at the same time.
          */
         static const int resizeBorderWidth = 10;
-        static Image *closeImage;  /**< Close Button Image */
-
 };
 
 #endif

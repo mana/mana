@@ -60,12 +60,6 @@ class Gui : public gcn::Gui
         ~Gui();
 
         /**
-         * Works around Guichan bug
-         */
-        void
-        logic();
-
-        /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */
@@ -119,9 +113,8 @@ class Gui : public gcn::Gui
         gcn::ImageLoader *mImageLoader;       /**< For loading images */
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         bool mCustomCursor;                   /**< Show custom cursor */
+        ImageSet *mMouseCursors;              /**< Mouse cursor images */
         int mCursorType;
-
-        static ImageSet *mMouseCursor;        /**< Mouse cursor images */
 };
 
 extern Gui *gui;                              /**< The GUI system */

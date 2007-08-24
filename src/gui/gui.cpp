@@ -59,7 +59,6 @@ gcn::Font *hitBlueFont;
 gcn::Font *hitYellowFont;
 // Font used to display speech and player names
 gcn::Font *speechFont;
-ImageSet *Gui::mMouseCursor = NULL;
 
 class GuiConfigListener : public ConfigListener
 {
@@ -81,7 +80,9 @@ class GuiConfigListener : public ConfigListener
 
 Gui::Gui(Graphics *graphics):
     mHostImageLoader(NULL),
-    mCustomCursor(false)
+    mCustomCursor(false),
+    mMouseCursors(NULL),
+    mCursorType(CURSOR_POINTER)
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -178,10 +179,10 @@ Gui::~Gui()
     delete hitBlueFont;
     delete hitYellowFont;
 
-    if (mMouseCursor) {
-        mMouseCursor->decRef();
-        mMouseCursor = NULL;
+    if (mMouseCursors) {
+        mMouseCursors->decRef();
     }
+
     delete mGuiFont;
     delete speechFont;
     delete viewport;
@@ -190,12 +191,6 @@ Gui::~Gui()
     delete mHostImageLoader;
 
     delete guiInput;
-}
-
-void
-Gui::logic()
-{
-    gcn::Gui::logic();
 }
 
 void
@@ -211,7 +206,7 @@ Gui::draw()
             mCustomCursor)
     {
         static_cast<Graphics*>(mGraphics)->drawImage(
-            mMouseCursor->get(mCursorType),
+            mMouseCursors->get(mCursorType),
             mouseX - 15,
             mouseY - 17);
     }
@@ -233,13 +228,12 @@ Gui::setUseCustomCursor(bool customCursor)
 
             // Load the mouse cursor
             ResourceManager *resman = ResourceManager::getInstance();
-            mMouseCursor =
+            mMouseCursors =
                 resman->getImageSet("graphics/gui/mouse.png", 40, 40);
 
-            if (!mMouseCursor) {
+            if (!mMouseCursors) {
                 logger->error("Unable to load mouse cursors.");
             }
-            mCursorType = CURSOR_POINTER;
         }
         else
         {
@@ -247,9 +241,9 @@ Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_ENABLE);
 
             // Unload the mouse cursor
-            if (mMouseCursor) {
-                mMouseCursor->decRef();
-                mMouseCursor = NULL;
+            if (mMouseCursors) {
+                mMouseCursors->decRef();
+                mMouseCursors = NULL;
             }
         }
     }

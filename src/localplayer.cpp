@@ -45,9 +45,9 @@ LocalPlayer *player_node = NULL;
 
 LocalPlayer::LocalPlayer(Uint32 id, Uint16 job, Map *map):
     Player(id, job, map),
-    mXp(0),
     mAttackRange(0),
     mInventory(new Inventory()),
+    mXp(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false), mLastAction(-1)
 {
