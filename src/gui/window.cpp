@@ -117,10 +117,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
 
     if (mModal)
     {
-        if (gui->isCustomCursor())
-        {
-            gui->setCursorType(Gui::CURSOR_POINTER);
-        }
+        gui->setCursorType(Gui::CURSOR_POINTER);
         requestModalFocus();
     }
 
@@ -161,9 +158,7 @@ Window::~Window()
         delete border.grid[6];
         delete border.grid[7];
         delete border.grid[8];
-
         closeImage->decRef();
-        closeImage = NULL;
     }
 
     delete mChrome;
@@ -396,8 +391,7 @@ void Window::mousePressed(gcn::MouseEvent &event)
 void Window::mouseReleased(gcn::MouseEvent &event)
 {
     if (mResizable &&
-        mouseResize &&
-        gui->isCustomCursor())
+        mouseResize)
     {
         mouseResize = 0;
         gui->setCursorType(Gui::CURSOR_POINTER);
@@ -407,8 +401,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
 void Window::mouseExited(gcn::MouseEvent &event)
 {
     if (mResizable &&
-        !mouseResize &&
-        gui->isCustomCursor())
+        !mouseResize)
     {
         gui->setCursorType(Gui::CURSOR_POINTER);
     }
@@ -421,8 +414,7 @@ void Window::mouseMoved(gcn::MouseEvent &event)
 
     // changes the custom mouse cursor based on it's current position.
     if (mResizable &&
-        !mouseResize &&
-        gui->isCustomCursor())
+        !mouseResize)
     {
         gcn::Rectangle tContainerRect(
             getPadding(),

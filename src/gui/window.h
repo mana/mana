@@ -161,9 +161,8 @@ class Window : public gcn::Window
         { mShowTitle = flag; }
 
         /**
-          * Sets whether the window is sticky.
-          * A sticky window will not have its visibility set to false
-          * on a general setVisible(false) call.
+          * Sets whether the window is sticky. A sticky window will not have
+          * its visibility set to false on a general setVisible(false) call.
           */
         void setSticky(bool sticky);
 
@@ -173,8 +172,8 @@ class Window : public gcn::Window
         bool isSticky();
 
         /**
-         * Overloads window setVisible by guichan to allow sticky window
-         * Handling
+         * Overloads window setVisible by Guichan to allow sticky window
+         * handling.
          */
 
         void setVisible(bool visible);
@@ -205,8 +204,8 @@ class Window : public gcn::Window
         void mouseDragged(gcn::MouseEvent &event);
 
         /**
-         * Implements custom cursor image changing context,
-         * based on mouse relative position.
+         * Implements custom cursor image changing context, based on mouse
+         * relative position.
          */
         void mouseMoved(gcn::MouseEvent &event);
 
@@ -252,8 +251,8 @@ class Window : public gcn::Window
                                     int defaultWidth, int defaultHeight);
 
         /**
-         * Reset the win pos and size to default.
-         * Don't forget to set defaults first.
+         * Reset the win pos and size to default. Don't forget to set defaults
+         * first.
          */
         virtual void resetToDefaultSize();
 

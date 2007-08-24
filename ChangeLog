@@ -3,6 +3,8 @@
 	* src/gui/gui.h, src/gui/gui.cpp: Removed useless logic method and
 	reverted mouse cursor to non-static since there can be only one Gui
 	instance so there is no point in supporting a shared resource.
+	* src/gui/window.cpp, src/gui/gui.h: Removed unnecessary
+	Gui::isCustomCursor method.
 
 2007-08-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
