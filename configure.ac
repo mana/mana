@@ -100,8 +100,6 @@ else
     with_opengl=yes
     AC_CHECK_LIB([GL], [glBegin], ,
     AC_MSG_ERROR([ *** Unable to find OpenGL library]))
-    AC_CHECK_LIB([guichan_opengl], [gcnOpenGL], ,
-    AC_MSG_ERROR([ *** Unable to find Guichan OpenGL library (guichan.sf.net)]))
     AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
 fi
 

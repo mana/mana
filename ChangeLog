@@ -1,3 +1,17 @@
+2007-08-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* configure.ac: Removed dependency on Guichan's OpenGL library.
+	* src/Makefile.am, src/resources/sdlimageloader.cpp,
+	src/resources/sdlimageloader.h, src/resources/openglsdlimageloader.h,
+	src/resources/openglsdlimageloader.cpp, src/resources/imageloader.cpp,
+	src/resources/imageloader.h, src/gui/gui.cpp, src/gui/gui.h: Replaced
+	Guichan's image loaders with our owns, so that we have control over all
+	the images used as textures.
+	* src/resources/image.cpp, src/openglgraphics.h, src/resources/image.h,
+	src/openglgraphics.cpp, src/graphics.cpp, src/graphics.h: Added support
+	for rectangle OpenGL textures when available, in order to reduce video
+	memory usage.
+
 2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Updated CMake file.

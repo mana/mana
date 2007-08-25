@@ -50,11 +50,6 @@ class OpenGLGraphics : public Graphics
 
         void setColor(const gcn::Color &color);
 
-        void drawImage(const gcn::Image* image,
-                       int srcX, int srcY,
-                       int dstX, int dstY,
-                       int width, int height);
-
         void drawPoint(int x, int y);
 
         void drawLine(int x1, int y1, int x2, int y2);
@@ -74,8 +69,6 @@ class OpenGLGraphics : public Graphics
 
     protected:
         void setTexturingAndBlending(bool enable);
-        void drawTexedQuad(int x, int y, int w, int h,
-                           float texX1, float texY1, float texX2, float texY2);
 
     private:
         bool mAlpha, mTexture;

@@ -29,6 +29,8 @@
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
+int Image::mTextureType = 0;
+int Image::mTextureSize = 0;
 #endif
 
 Image::Image(const std::string &idPath, SDL_Surface *image):
@@ -89,23 +91,21 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         return NULL;
     }
 
-    // Determine 32-bit masks based on byte order
-    Uint32 rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-    rmask = 0xff000000;
-    gmask = 0x00ff0000;
-    bmask = 0x0000ff00;
-    amask = 0x000000ff;
-#else
-    rmask = 0x000000ff;
-    gmask = 0x0000ff00;
-    bmask = 0x00ff0000;
-    amask = 0xff000000;
-#endif
+    Image *image = load(tmpImage, idPath);
 
+    SDL_FreeSurface(tmpImage);
+
+    return image;
+}
+
+Image *Image::load(SDL_Surface *tmpImage, std::string const &idPath)
+{
 #ifdef USE_OPENGL
     if (mUseOpenGL)
     {
+        // Flush current error flag.
+        glGetError();
+
         int width = tmpImage->w;
         int height = tmpImage->h;
         int realWidth = powerOfTwo(width);
@@ -120,6 +120,20 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         // Make sure the alpha channel is not used, but copied to destination
         SDL_SetAlpha(tmpImage, 0, SDL_ALPHA_OPAQUE);
 
+        // Determine 32-bit masks based on byte order
+        Uint32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        rmask = 0xff000000;
+        gmask = 0x00ff0000;
+        bmask = 0x0000ff00;
+        amask = 0x000000ff;
+#else
+        rmask = 0x000000ff;
+        gmask = 0x0000ff00;
+        bmask = 0x00ff0000;
+        amask = 0xff000000;
+#endif
+
         SDL_Surface *oldImage = tmpImage;
         tmpImage = SDL_CreateRGBSurface(SDL_SWSURFACE, realWidth, realHeight,
             32, rmask, gmask, bmask, amask);
@@ -130,25 +144,24 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         }
 
         SDL_BlitSurface(oldImage, NULL, tmpImage, NULL);
-        SDL_FreeSurface(oldImage);
 
         GLuint texture;
         glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(mTextureType, texture);
 
         if (SDL_MUSTLOCK(tmpImage)) {
             SDL_LockSurface(tmpImage);
         }
 
         glTexImage2D(
-                GL_TEXTURE_2D, 0, 4,
+                mTextureType, 0, 4,
                 tmpImage->w, tmpImage->h,
                 0, GL_RGBA, GL_UNSIGNED_BYTE,
                 tmpImage->pixels);
 
         glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(mTextureType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(mTextureType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         if (SDL_MUSTLOCK(tmpImage)) {
             SDL_UnlockSurface(tmpImage);
@@ -219,7 +232,6 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
     else {
         image = SDL_DisplayFormat(tmpImage);
     }
-    SDL_FreeSurface(tmpImage);
 
     if (!image) {
         logger->log("Error: Image convert failed.");
@@ -289,12 +301,20 @@ Image::setLoadAsOpenGL(bool useOpenGL)
 int
 Image::powerOfTwo(int input)
 {
-    int value = 1;
-    while (value < input && value < 1024)
+    int value;
+    if (mTextureType == GL_TEXTURE_2D)
     {
-        value <<= 1;
+        value = 1;
+        while (value < input && value < mTextureSize)
+        {
+            value <<= 1;
+        }
     }
-    return value;
+    else
+    {
+        value = input;
+    }
+    return value >= mTextureSize ? mTextureSize : value;
 }
 #endif
 

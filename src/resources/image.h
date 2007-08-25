@@ -71,6 +71,11 @@ class Image : public Resource
         load(void* buffer, unsigned int bufferSize, const std::string &idPath);
 
         /**
+         * Loads an image from an SDL surface.
+         */
+        static Image *load(SDL_Surface *, std::string const &idPath);
+
+        /**
          * Frees the resources created by SDL.
          */
         virtual void
@@ -143,6 +148,8 @@ class Image : public Resource
         int mTexWidth, mTexHeight;
 
         static bool mUseOpenGL;
+        static int mTextureType;
+        static int mTextureSize;
 #endif
         SDL_Surface *mImage;
         float mAlpha;
