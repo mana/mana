@@ -101,7 +101,8 @@ class Graphics : public gcn::SDLGraphics {
         drawImage(Image *image,
                   int srcX, int srcY,
                   int dstX, int dstY,
-                  int width, int height);
+                  int width, int height,
+                  bool useColor = false);
 
         virtual void
         drawImagePattern(Image *image,

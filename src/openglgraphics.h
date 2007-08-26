@@ -38,7 +38,8 @@ class OpenGLGraphics : public Graphics
         bool drawImage(Image *image,
                        int srcX, int srcY,
                        int dstX, int dstY,
-                       int width, int height);
+                       int width, int height,
+                       bool useColor);
 
         void updateScreen();
 

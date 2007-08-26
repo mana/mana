@@ -105,12 +105,16 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
 }
 
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
-        int dstX, int dstY, int width, int height)
+        int dstX, int dstY, int width, int height, bool useColor)
 {
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
-    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+    if (!useColor)
+    {
+        glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+    }
+
     glBindTexture(Image::mTextureType, image->mGLImage);
 
     setTexturingAndBlending(true);
@@ -148,7 +152,11 @@ bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
     }
 
     glEnd();
-    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+
+    if (!useColor)
+    {
+        glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+    }
 
     return true;
 }

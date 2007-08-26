@@ -2,6 +2,9 @@
 
 	* src/gui/button.cpp: Fixed incorrect button dimensions, as they mess
 	OpenGL display with rectangle textures.
+	* src/graphics.cpp, src/openglgraphics.h, src/graphics.h,
+	src/openglgraphics.cpp: Fixed fonts not being recolored by adding an
+	explicit parameter to require it.
 
 2007-08-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
