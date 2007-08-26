@@ -1,3 +1,8 @@
+2007-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/button.cpp: Fixed incorrect button dimensions, as they mess
+	OpenGL display with rectangle textures.
+
 2007-08-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* configure.ac: Removed dependency on Guichan's OpenGL library.

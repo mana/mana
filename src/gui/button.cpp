@@ -55,7 +55,7 @@ static ButtonData const data[BUTTON_COUNT] = {
     {"graphics/gui/button.png", 0, 0},
     {"graphics/gui/buttonhi.png", 9, 4},
     {"graphics/gui/buttonpress.png", 16, 19},
-    {"graphics/gui/button_disabled.png", 25, 24}
+    {"graphics/gui/button_disabled.png", 25, 23}
 };
 
 ImageRect Button::button[BUTTON_COUNT];
