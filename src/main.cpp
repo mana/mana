@@ -87,6 +87,8 @@
 #include <SDL_syswm.h>
 #endif
 
+std::string homeDir;
+
 // Account infos
 char n_server, n_character;
 
@@ -138,7 +140,7 @@ struct Options
  */
 void init_engine(const Options &options)
 {
-    std::string homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
+    homeDir = std::string(PHYSFS_getUserDir()) + "/.tmw";
 #if defined WIN32
     if (!CreateDirectory(homeDir.c_str(), 0) &&
             GetLastError() != ERROR_ALREADY_EXISTS)
@@ -233,7 +235,6 @@ void init_engine(const Options &options)
     config.setValue("fpslimit", 60);
     config.setValue("updatehost", "http://updates.themanaworld.org");
     config.setValue("customcursor", 1);
-    config.setValue("homeDir", homeDir);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !
@@ -442,7 +443,6 @@ void loadUpdates()
     const std::string updatesFile = "updates/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
-    std::string homeDir = config.getValue("homeDir", "");
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {

@@ -46,6 +46,8 @@
 
 #include "../resources/resourcemanager.h"
 
+extern std::string homeDir;
+
 /**
  * Calculates the Alder-32 checksum for the given file.
  */
@@ -119,7 +121,7 @@ UpdaterWindow::UpdaterWindow():
 
     mUpdateHost =
         config.getValue("updatehost", "http://updates.themanaworld.org");
-    mBasePath = config.getValue("homeDir", ".");
+    mBasePath = homeDir;
 
     // Try to download the updates list
     download();

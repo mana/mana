@@ -1,4 +1,9 @@
-﻿2007-08-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Removed home dir
+	from config file to avoid encoding issues.
+
+2007-08-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/gui.h, src/gui/gui.cpp: Removed useless logic method and
 	reverted mouse cursor to non-static since there can be only one Gui
