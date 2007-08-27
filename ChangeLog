@@ -1,6 +1,8 @@
 2007-08-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_1-1.tmx.gz: Added test npcs.
+	* src/openglgraphics.cpp, tmw.cbp: Fixed compilation with old OpenGL
+	headers.
 
 2007-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
