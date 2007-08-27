@@ -1,3 +1,8 @@
+2007-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/chat.h, src/gui/chat.cpp: Added "/admin" chat command for
+	sending raw messages to the game server.
+
 2007-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/button.cpp: Fixed incorrect button dimensions, as they mess

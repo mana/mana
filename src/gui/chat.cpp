@@ -151,28 +151,20 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {
         case BY_GM:
-            tmp.nick += std::string("Global announcement: ");
+            tmp.nick += "Global announcement: ";
             lineColor = "##1"; // Equiv. to BrowserBox::RED
             break;
         case BY_PLAYER:
-            tmp.nick += CAT_NORMAL;
+            tmp.nick += ": ";
             lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
         case BY_OTHER:
-            tmp.nick += CAT_NORMAL;
+            tmp.nick += ": ";
             lineColor = "##0"; // Equiv. to BrowserBox::BLACK
             break;
         case BY_SERVER:
-            tmp.nick += std::string("Server: ");
+            tmp.nick += "Server: ";
             lineColor = "##7"; // Equiv. to BrowserBox::PINK
-            break;
-        case ACT_WHISPER:
-            tmp.nick += CAT_WHISPER;
-            lineColor = "##3"; // Equiv. to BrowserBox::BLUE
-            break;
-        case ACT_IS:
-            tmp.nick += CAT_IS;
-            lineColor = "##5"; // Equiv. to BrowserBox::YELLOW
             break;
     }
 
@@ -206,11 +198,13 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
     }
 }
 
+#if 0
 void
 ChatWindow::chatLog(CHATSKILL act)
 {
     chatLog(const_msg(act), BY_SERVER);
 }
+#endif
 
 void
 ChatWindow::action(const gcn::ActionEvent &event)
@@ -273,31 +267,38 @@ ChatWindow::isFocused()
     return mChatInput->isFocused();
 }
 
-void
-ChatWindow::chatSend(const std::string &nick, std::string msg, std::string channelName)
+void ChatWindow::chatSend(std::string const &nick, std::string const &msg,
+                          std::string const &channelName)
 {
     /* Some messages are managed client side, while others
      * require server handling by proper packet. Probably
      * those if elses should be replaced by protocol calls */
 
+    if (msg.empty()) return;
+
     // Prepare ordinary message
-    if (msg.substr(0, 1) != "/") {
-        if(mContainer->getActiveWidget() == "General")
+    if (msg[0] != '/') {
+        if (mContainer->getActiveWidget() == "General")
         {
             Net::GameServer::Player::say(msg);
         }
         else
         {
-            short channelId = channelManager->findByName(channelName)->getId();
+            int channelId = channelManager->findByName(channelName)->getId();
             Net::ChatServer::chat(channelId, msg);
         }
+        return;
     }
-    else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
+
+    std::string::size_type pos = msg.find(' ', 1);
+    std::string command(msg, 1, pos == std::string::npos ? pos : pos - 1);
+    std::string arg(msg, pos == std::string::npos ? msg.size() : pos + 1);
+
+    if (command == "announce")
     {
-        msg.erase(0, IS_ANNOUNCE_LENGTH);
-        Net::ChatServer::announce(msg);
+        Net::ChatServer::announce(arg);
     }
-    else if (msg.substr(0, IS_HELP_LENGTH) == IS_HELP)
+    else if (command == "help")
     {
         chatLog("-- Help --", BY_SERVER, channelName);
         chatLog("/help > Display this help.", BY_SERVER, channelName);
@@ -308,47 +309,37 @@ ChatWindow::chatSend(const std::string &nick, std::string msg, std::string chann
         chatLog("/register > Register a new channel", BY_SERVER, channelName);
         chatLog("/join > Join an already registered channel", BY_SERVER, channelName);
         chatLog("/quit > Leave a channel", BY_SERVER, channelName);
+        chatLog("/admin > Send a command to the server (GM only)", BY_SERVER, channelName);
     }
-    else if (msg.substr(0, IS_WHERE_LENGTH) == IS_WHERE)
+    else if (command == "where")
     {
         chatLog(map_path, BY_SERVER);
     }
-    else if (msg.substr(0, IS_WHO_LENGTH) == IS_WHO)
+    else if (command == "who")
     {
         // XXX Convert for new server
         /*
         MessageOut outMsg(0x00c1);
         */
     }
-    else if (msg.substr(0, IS_REGCHANNEL_LENGTH) == IS_REGCHANNEL)
+    else if (command == "register")
     {
-        std::string channel = msg.substr(IS_REGCHANNEL_LENGTH, msg.size());
-        chatLog("Requesting to register channel", BY_SERVER);
-        Net::ChatServer::registerChannel(channel, "", "", false);
+        chatLog("Requesting to register channel " + arg, BY_SERVER);
+        Net::ChatServer::registerChannel(arg, "", "", false);
     }
-    else if (msg.substr(0, IS_JOINCHANNEL_LENGTH) == IS_JOINCHANNEL)
+    else if (command == "join")
     {
         //TODO: have passwords too
-        msg = msg.substr(IS_JOINCHANNEL_LENGTH, msg.size());
-        chatLog("Requesting to join channel " + msg, BY_SERVER);
-        if(msg != "")
-        {
-            enterChannel(msg, "None");
-        }
-        else
-        {
-            chatLog("No channel name given", BY_SERVER);
-        }
+        chatLog("Requesting to join channel " + arg, BY_SERVER);
+        enterChannel(arg, "None");
     }
-    else if (msg.substr(0, IS_LISTCHANNELS_LENGTH) == IS_LISTCHANNELS)
+    else if (command == "list")
     {
         Net::ChatServer::getChannelList();
     }
-    else if (msg.substr(0, IS_QUITCHANNEL_LENGTH) == IS_QUITCHANNEL)
+    else if (command == "quit")
     {
-        Channel* channel;
-        channel = channelManager->findByName(channelName);
-        if(channel)
+        if (Channel *channel = channelManager->findByName(channelName))
         {
             Net::ChatServer::quitChannel(channel->getId());
         }
@@ -357,12 +348,17 @@ ChatWindow::chatSend(const std::string &nick, std::string msg, std::string chann
             chatLog("Unable to quit this channel", BY_SERVER);
         }
     }
+    else if (command == "admin")
+    {
+        Net::GameServer::Player::say("/" + arg);
+    }
     else
     {
         chatLog("Unknown command", BY_SERVER, channelName);
     }
 }
 
+#if 0
 std::string
 ChatWindow::const_msg(CHATSKILL act)
 {
@@ -440,6 +436,7 @@ ChatWindow::const_msg(CHATSKILL act)
 
     return msg;
 }
+#endif
 
 void
 ChatWindow::addChannel(short channelId, std::string channelName)

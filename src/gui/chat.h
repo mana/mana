@@ -40,31 +40,15 @@ class ScrollArea;
 class TabbedContainer;
 class GCContainer;
 
-#define BY_GM         0   // those should be self-explanatory =)
-#define BY_PLAYER     1
-#define BY_OTHER      2
-#define BY_SERVER     3
+enum
+{
+    BY_GM     = 0,
+    BY_PLAYER = 1,
+    BY_OTHER  = 2,
+    BY_SERVER = 3
+};
 
-#define ACT_WHISPER   4   // getting whispered at
-#define ACT_IS        5   // equivalent to "/me" in irc
-
-#define IS_ANNOUNCE         "/announce "
-#define IS_ANNOUNCE_LENGTH  10
-#define IS_HELP             "/help"
-#define IS_HELP_LENGTH      5
-#define IS_WHERE            "/where"
-#define IS_WHERE_LENGTH     6
-#define IS_WHO              "/who"
-#define IS_WHO_LENGTH       4
-#define IS_JOINCHANNEL      "/join "
-#define IS_JOINCHANNEL_LENGTH 6
-#define IS_REGCHANNEL       "/register "
-#define IS_REGCHANNEL_LENGTH 10
-#define IS_LISTCHANNELS     "/list"
-#define IS_LISTCHANNELS_LENGTH 5
-#define IS_QUITCHANNEL      "/quit"
-#define IS_QUITCHANNEL_LENGTH 5
-
+#if 0
 /**
  * gets in between usernick and message text depending on
  * message type
@@ -113,6 +97,7 @@ struct CHATSKILL
     char success;
     char reason;
 };
+#endif
 
 /**
  * The chat window.
@@ -146,10 +131,12 @@ class ChatWindow : public Window, public gcn::ActionListener,
          */
         void chatLog(std::string line, int own, std::string channelName = "General");
 
+#if 0
         /*
          * Calls original chat_log() after processing the packet.
          */
         void chatLog(CHATSKILL);
+#endif
 
         /**
          * Performs action.
@@ -190,8 +177,8 @@ class ChatWindow : public Window, public gcn::ActionListener,
          * // for simple message by a user /- message
          * chatlog.chat_send("Zaeiru", "Hello to all users on the screen!");
          */
-        void
-        chatSend(const std::string &nick, std::string msg, std::string channelName);
+        void chatSend(std::string const &nick, std::string const &msg,
+                      std::string const &channelName);
 
         /** Called to add the channel to the channel manager */
         void
@@ -240,8 +227,10 @@ class ChatWindow : public Window, public gcn::ActionListener,
 
         std::list<CHATLOG> mChatlog;
 
+#if 0
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
+#endif
 
         std::map<std::string, GCContainer*> mTabs;
         TabbedContainer *mContainer; /**< Tabbed container for tabbing between channels */
