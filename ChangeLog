@@ -1,4 +1,9 @@
-﻿2007-08-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-08-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/game.cpp: Assigned unused emotions to Alt +/-. (Applyed a patch by
+	Quiche_on_a_leash).
+
+2007-08-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Removed home dir
 	from config file to avoid encoding issues.

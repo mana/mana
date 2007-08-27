@@ -630,6 +630,8 @@ void Game::handleInput()
                     case SDLK_8: emotion = 8; break;
                     case SDLK_9: emotion = 9; break;
                     case SDLK_0: emotion = 10; break;
+                    case SDLK_MINUS: emotion = 11; break;
+                    case SDLK_EQUALS: emotion = 12; break;
                     default: emotion = 0; break;
                 }
 
