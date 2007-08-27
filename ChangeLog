@@ -2,6 +2,27 @@
 
 	* src/game.cpp: Assigned unused emotions to Alt +/-. (Applyed a patch by
 	Quiche_on_a_leash).
+	* data/maps/new_1-1.tmx, data/maps/new_1-1.tmx.gz,
+	data/maps/new_10-1.tmx, data/maps/new_10-1.tmx.gz,
+	data/maps/new_11-1.tmx, data/maps/new_11-1.tmx.gz,
+	data/maps/new_12-1.tmx, data/maps/new_12-1.tmx.gz,
+	data/maps/new_13-1.tmx, data/maps/new_13-1.tmx.gz,
+	data/maps/new_14-1.tmx, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx, data/maps/new_15-1.tmx.gz,
+	data/maps/new_16-1.tmx, data/maps/new_16-1.tmx.gz,
+	data/maps/new_17-1.tmx, data/maps/new_17-1.tmx.gz,
+	data/maps/new_18-1.tmx, data/maps/new_18-1.tmx.gz,
+	data/maps/new_19-1.tmx, data/maps/new_19-1.tmx.gz,
+	data/maps/new_2-1.tmx, data/maps/new_2-1.tmx.gz,
+	data/maps/new_20-1.tmx, data/maps/new_20-1.tmx.gz,
+	data/maps/new_3-1.tmx, data/maps/new_3-1.tmx.gz, data/maps/new_4-1.tmx,
+	data/maps/new_4-1.tmx.gz, data/maps/new_5-1.tmx,
+	data/maps/new_5-1.tmx.gz, data/maps/new_6-1.tmx,
+	data/maps/new_6-1.tmx.gz, data/maps/new_7-1.tmx,
+	data/maps/new_7-1.tmx.gz, data/maps/new_8-1.tmx,
+	data/maps/new_8-1.tmx.gz, data/maps/new_9-1.tmx,
+	data/maps/new_9-1.tmx.gz: Replaced compressed maps with layer
+	compressed maps.
 
 2007-08-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
