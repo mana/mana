@@ -67,7 +67,12 @@ void Engine::changeMap(const std::string &mapPath)
     particleEngine->clear();
 
     // Store full map path in global var
-    map_path = "maps/" + mapPath;
+    map_path = "maps/" + mapPath + ".tmx";
+    ResourceManager *resman = ResourceManager::getInstance();
+    if (!resman->exists(map_path))
+    {
+        map_path += ".gz";
+    }
 
     // Attempt to load the new map
     Map *newMap = MapReader::readMap(map_path);
@@ -80,7 +85,6 @@ void Engine::changeMap(const std::string &mapPath)
     Image *mapImage = NULL;
     if (newMap->hasProperty("minimap"))
     {
-        ResourceManager *resman = ResourceManager::getInstance();
         mapImage = resman->getImage(newMap->getProperty("minimap"));
     }
     minimap->setMapImage(mapImage);

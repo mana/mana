@@ -13,6 +13,8 @@
 
 	* src/gui/chat.h, src/gui/chat.cpp: Added "/admin" chat command for
 	sending raw messages to the game server.
+	* src/engine.cpp, src/resources/mapreader.cpp: Ported patch from 0.0,
+	in order to support missing extensions and uncompressed maps.
 
 2007-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

@@ -160,16 +160,27 @@ MapReader::readMap(const std::string &filename)
         return NULL;
     }
 
-    // Inflate the gzipped map data
     unsigned char *inflated;
-    unsigned int inflatedSize = inflateMemory((unsigned char*) buffer,
-                                              fileSize, inflated);
-    free(buffer);
+    unsigned int inflatedSize;
 
-    if (inflated == NULL)
+    if (filename.find(".gz", filename.length() - 3) != std::string::npos)
     {
-        logger->log("Could not decompress map file (%s)\n", filename.c_str());
-        return NULL;
+        // Inflate the gzipped map data
+        inflatedSize =
+            inflateMemory((unsigned char*) buffer, fileSize, inflated);
+        free(buffer);
+
+        if (inflated == NULL)
+        {
+            logger->log("Could not decompress map file (%s)",
+                    filename.c_str());
+            return NULL;
+        }
+    }
+    else
+    {
+        inflated = (unsigned char*) buffer;
+        inflatedSize = fileSize;
     }
 
     xmlDocPtr doc = xmlParseMemory((char*) inflated, inflatedSize);
