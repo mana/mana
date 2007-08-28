@@ -1,4 +1,14 @@
-﻿2007-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/window.cpp, src/gui/inventorywindow.h,
+	src/gui/selectionlistener.h, src/gui/buy.h,
+	src/gui/itemshortcutwindow.cpp, src/gui/inventorywindow.cpp,
+	src/gui/buy.cpp, src/gui/window.h, src/gui/windowlistener.h,
+	src/gui/itemshortcutwindow.h, src/CMakeLists.txt, src/Makefile.am:
+	Made buy dialog resizable and added a WindowListener class for
+	listening for window resize and move events.
+
+2007-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/engine.cpp, src/resources/mapreader.cpp: Made client search for
 	both compressed and non-compressed map files.

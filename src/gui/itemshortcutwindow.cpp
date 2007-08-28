@@ -38,7 +38,7 @@ ItemShortcutWindow::ItemShortcutWindow()
 
     mItems = new ItemShortcutContainer();
 
-    int border = (SCROLL_PADDING * 2) + (getPadding() * 2);
+    int border = SCROLL_PADDING * 2 + getPadding() * 2;
     setMinWidth(mItems->getBoxWidth() + border);
     setMinHeight(mItems->getBoxHeight() + border);
     setMaxWidth(mItems->getBoxWidth() * mItems->getMaxItems() + border);
@@ -50,6 +50,7 @@ ItemShortcutWindow::ItemShortcutWindow()
 
     add(mInvenScroll);
 
+    addWindowListener(this);
     loadWindowState();
 }
 
@@ -64,32 +65,11 @@ void ItemShortcutWindow::logic()
     Window::logic();
 }
 
-void ItemShortcutWindow::mouseDragged(gcn::MouseEvent &event)
-{
-    const int tWidth = getWidth(), tHeight = getHeight();
-    Window::mouseDragged(event);
-    if (getWidth() != tWidth || getHeight() != tHeight)
-    {
-        updateWidgets();
-    }
-}
-
-void ItemShortcutWindow::updateWidgets()
+void ItemShortcutWindow::windowResized(const WindowEvent &event)
 {
     const gcn::Rectangle area = getChildrenArea();
 
-    mInvenScroll->setSize(area.width - SCROLL_PADDING,
-        area.height - SCROLL_PADDING);
-}
-
-void ItemShortcutWindow::loadWindowState()
-{
-    Window::loadWindowState();
-    updateWidgets();
-}
-
-void ItemShortcutWindow::resetToDefaultSize()
-{
-    Window::resetToDefaultSize();
-    updateWidgets();
+    mInvenScroll->setSize(
+            area.width - SCROLL_PADDING,
+            area.height - SCROLL_PADDING);
 }

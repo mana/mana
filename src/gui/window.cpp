@@ -220,6 +220,8 @@ void Window::setWidth(int width)
     {
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
     }
+
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
 }
 
 void Window::setHeight(int height)
@@ -230,6 +232,8 @@ void Window::setHeight(int height)
     {
         mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
     }
+
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
 }
 
 void Window::setDimension(const gcn::Rectangle &dimension)
@@ -241,9 +245,30 @@ void Window::setDimension(const gcn::Rectangle &dimension)
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
         mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
     }
+
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
 }
 
-void Window::setLocationRelativeTo(gcn::Widget* widget)
+void Window::setPosition(int x, int y)
+{
+    gcn::Window::setPosition(x, y);
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+}
+
+void Window::setX(int x)
+{
+    gcn::Window::setX(x);
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+}
+
+void Window::setY(int y)
+{
+    gcn::Window::setY(y);
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+}
+
+void Window::setLocationRelativeTo(gcn::Widget *widget)
 {
     int wx, wy;
     int x, y;
@@ -560,4 +585,22 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     }
 
     return resizeHandles;
+}
+
+void Window::fireWindowEvent(const WindowEvent &event)
+{
+    WindowListeners::iterator i_end = mListeners.end();
+    WindowListeners::iterator i = mListeners.begin();
+
+    switch (event.getType())
+    {
+        case WindowEvent::WINDOW_MOVED:
+            for (; i != i_end; ++i)
+            { (*i)->windowMoved(event); }
+            break;
+        case WindowEvent::WINDOW_RESIZED:
+            for (; i != i_end; ++i)
+            { (*i)->windowResized(event); }
+            break;
+    }
 }

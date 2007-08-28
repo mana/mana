@@ -82,6 +82,7 @@ InventoryWindow::InventoryWindow():
 
     mUseButton->setSize(48, mUseButton->getHeight());
 
+    addWindowListener(this);
     loadWindowState();
 }
 
@@ -175,17 +176,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::mouseDragged(gcn::MouseEvent &event)
-{
-    int tmpWidth = getWidth(), tmpHeight = getHeight();
-    Window::mouseDragged(event);
-    if (getWidth() != tmpWidth || getHeight() != tmpHeight)
-    {
-        updateWidgets();
-    }
-}
-
-void InventoryWindow::updateWidgets()
+void InventoryWindow::windowResized(const WindowEvent &event)
 {
     gcn::Rectangle area = getChildrenArea();
     int width = area.width;
@@ -234,16 +225,4 @@ void InventoryWindow::updateButtons()
 Item* InventoryWindow::getItem()
 {
     return mItems->getItem();
-}
-
-void InventoryWindow::loadWindowState()
-{
-    Window::loadWindowState();
-    updateWidgets();
-}
-
-void InventoryWindow::resetToDefaultSize()
-{
-    Window::resetToDefaultSize();
-    updateWidgets();
 }

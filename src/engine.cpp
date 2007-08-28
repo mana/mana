@@ -72,15 +72,11 @@ void Engine::changeMap(const std::string &mapPath)
     particleEngine->clear();
 
     // Store full map path in global var
-    const std::string base = "maps/" + mapPath.substr(0, mapPath.rfind("."));
+    map_path = "maps/" + mapPath.substr(0, mapPath.rfind(".")) + ".tmx";
     ResourceManager *resman = ResourceManager::getInstance();
-    if (resman->exists(base + ".tmx"))
+    if (!resman->exists(map_path))
     {
-        map_path = base + ".tmx";
-    }
-    else
-    {
-        map_path = base + ".tmx.gz";
+        map_path += ".gz";
     }
 
     // Attempt to load the new map

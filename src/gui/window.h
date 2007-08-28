@@ -28,6 +28,8 @@
 
 #include "../guichanfwd.h"
 
+#include "windowlistener.h"
+
 class ConfigListener;
 class GCContainer;
 class ImageRect;
@@ -113,6 +115,21 @@ class Window : public gcn::Window
          * Sets the position and size of this window.
          */
         void setDimension(const gcn::Rectangle &dimension);
+
+        /**
+         * Sets the position of this window.
+         */
+        void setPosition(int x, int y);
+
+        /**
+         * Sets the window x coordinate.
+         */
+        void setX(int x);
+
+        /**
+         * Sets the window y coordinate.
+         */
+        void setY(int y);
 
         /**
          * Sets the location relative to the given widget.
@@ -255,6 +272,20 @@ class Window : public gcn::Window
          */
         virtual void resetToDefaultSize();
 
+        /**
+         * Adds a listener to the list that's notified when the window is
+         * moved or resized.
+         */
+        void addWindowListener(WindowListener *listener)
+        { mListeners.push_back(listener); }
+
+        /**
+         * Removes a listener from the list that's notified when the window is
+         * moved or resized.
+         */
+        void removeWindowListener(WindowListener *listener)
+        { mListeners.remove(listener); }
+
         enum ResizeHandles
         {
             TOP    = 0x01,
@@ -310,6 +341,14 @@ class Window : public gcn::Window
          * where two borders are moved at the same time.
          */
         static const int resizeBorderWidth = 10;
+
+    private:
+        /**
+         * Sends out a window event to the list of selection listeners.
+         */
+        void fireWindowEvent(const WindowEvent &event);
+
+        WindowListeners mListeners;
 };
 
 #endif

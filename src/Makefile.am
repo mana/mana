@@ -1,6 +1,8 @@
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
+	      gui/box.h \
+	      gui/box.cpp \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -37,8 +39,12 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
+	      gui/hbox.h \
+	      gui/hbox.cpp \
 	      gui/help.cpp \
 	      gui/help.h \
+	      gui/inttextbox.h \
+	      gui/inttextbox.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
@@ -114,22 +120,17 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/textfield.h \
 	      gui/trade.cpp \
 	      gui/trade.h \
+	      gui/updatewindow.h \
+	      gui/updatewindow.cpp \
+	      gui/vbox.h \
+	      gui/vbox.cpp \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      gui/inttextbox.h \
-	      gui/inttextbox.cpp \
-	      gui/box.h \
-	      gui/box.cpp \
-	      gui/vbox.h \
-	      gui/vbox.cpp \
-	      gui/hbox.h \
-	      gui/hbox.cpp \
-	      gui/updatewindow.h \
-	      gui/updatewindow.cpp \
+	      gui/windowlistener.h
 	      net/beinghandler.h \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \

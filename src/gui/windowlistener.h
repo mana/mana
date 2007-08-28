@@ -21,48 +21,66 @@
  *  $Id$
  */
 
-#ifndef _TMW_SELECTIONLISTENER_H__
-#define _TMW_SELECTIONLISTENER_H__
+#ifndef _TMW_WINDOW_LISTENER_H_
+#define _TMW_WINDOW_LISTENER_H_
 
-#include <guichan/widget.hpp>
+#include <guichan/widgets/window.hpp>
 #include <guichan/event.hpp>
 
 /**
- * An event that characterizes a change in the current selection.
+ * An event that characterizes a window move or resize.
  *
  * \ingroup GUI
  */
-class SelectionEvent : public gcn::Event
+class WindowEvent : public gcn::Event
 {
     public:
         /**
          * Constructor.
          */
-        SelectionEvent(gcn::Widget *source):
+        WindowEvent(gcn::Window *source, int type):
             gcn::Event(source)
         {
+            mType = type;
         }
+
+        /**
+         * Returns the event type.
+         */
+        int getType() const
+        { return mType; }
+
+        enum WindowEventType
+        {
+            WINDOW_MOVED,
+            WINDOW_RESIZED
+        };
 };
 
 /**
- * The listener that's notified when a selection value changes.
+ * The listener that's notified when a window is moved or resized.
  *
  * \ingroup GUI
  */
-class SelectionListener
+class WindowListener
 {
     public:
         /**
          * Virtual destructor.
          */
-        virtual ~SelectionListener() {}
+        virtual ~WindowListener() {}
 
         /**
-         * Called whenever the value of the selection changes.
+         * Called whenever the window is moved.
          */
-        virtual void selectionChanged(const SelectionEvent &event) = 0;
+        virtual void windowMoved(const WindowEvent &event) {}
+
+        /**
+         * Called whenever the window is resized.
+         */
+        virtual void windowResized(const WindowEvent &event) {}
 };
 
-typedef std::list<SelectionListener*> SelectionListeners;
+typedef std::list<WindowListener*> WindowListeners;
 
 #endif

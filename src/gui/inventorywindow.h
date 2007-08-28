@@ -26,8 +26,9 @@
 
 #include <guichan/actionlistener.hpp>
 
-#include "window.h"
 #include "selectionlistener.h"
+#include "window.h"
+#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -39,7 +40,8 @@ class ItemContainer;
  *
  * \ingroup Interface
  */
-class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
+class InventoryWindow : public Window, gcn::ActionListener, SelectionListener,
+    WindowListener
 {
     public:
         /**
@@ -59,13 +61,7 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
 
         void mouseClicked(gcn::MouseEvent &event);
 
-        void mouseDragged(gcn::MouseEvent &event);
-
         Item* getItem();
-
-        void loadWindowState();
-
-        void resetToDefaultSize();
 
         /**
          * Updates labels to currently selected item.
@@ -74,10 +70,13 @@ class InventoryWindow : public Window, gcn::ActionListener, SelectionListener
          */
         void selectionChanged(const SelectionEvent &event);
 
+        /**
+         * Called whenever the window is resized.
+         */
+        void windowResized(const WindowEvent &event);
+
     private:
         void updateButtons();    /**< Updates button states. */
-
-        void updateWidgets();    /**< Updates widgets size/position. */
 
         ItemContainer *mItems;
 
