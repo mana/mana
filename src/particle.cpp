@@ -52,14 +52,12 @@ const float Particle::PARTICLE_SKY = 800.0f;
 
 Particle::Particle(Map *map):
     mAlive(true),
-    mPosX(0.0f), mPosY(0.0f), mPosZ(0.0f),
     mLifetimeLeft(-1),
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
     mAutoDelete(true),
     mMap(map),
-    mVelocityX(0.0f), mVelocityY(0.0f), mVelocityZ(0.0f),
     mGravity(0.0f),
     mRandomnes(0),
     mBounce(0.0f),
@@ -109,7 +107,7 @@ Particle::update()
                         p++
                     )
                 {
-                    (*p)->moveBy(mPosX, mPosY, mPosZ);
+                    (*p)->moveBy(mPos.x, mPos.y, mPos.z);
                     mChildParticles.push_back (*p);
                 }
             }
@@ -117,31 +115,28 @@ Particle::update()
 
         if (mMomentum != 1.0f)
         {
-            mVelocityX *= mMomentum;
-            mVelocityY *= mMomentum;
-            mVelocityZ *= mMomentum;
+            mVelocity *= mMomentum;
         }
 
         if (mTarget && mAcceleration != 0.0f)
         {
-            float distX = (mPosX - mTarget->getPosX()) * SIN45;
-            float distY = mPosY - mTarget->getPosY();
-            float distZ = mPosZ - mTarget->getPosZ();
+            Vector dist = mPos - mTarget->getPosition();
+            dist.x *= SIN45;
             float invHypotenuse;
 
-            switch(Particle::fastPhysics)
+            switch (Particle::fastPhysics)
             {
                 case 1:
                     invHypotenuse = fastInvSqrt(
-                        distX * distX + distY * distY + distZ * distZ);
+                        dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
                     break;
                 case 2:
                     invHypotenuse = 2.0f /
-                        fabs(distX) + fabs(distY) + fabs(distZ);
+                        fabs(dist.x) + fabs(dist.y) + fabs(dist.z);
                     break;
                 default:
                     invHypotenuse = 1.0f / sqrt(
-                        distX * distX + distY * distY + distZ * distZ);
+                        dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
                     break;
             }
 
@@ -152,25 +147,23 @@ Particle::update()
                     mAlive = false;
                 }
                 float accFactor = invHypotenuse * mAcceleration;
-                mVelocityX -= distX * accFactor;
-                mVelocityY -= distY * accFactor;
-                mVelocityZ -= distZ * accFactor;
+                mVelocity -= dist * accFactor;
             }
         }
 
         if (mRandomnes > 0)
         {
-            mVelocityX += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocityY += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVelocityZ += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.x += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.y += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.z += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
         }
 
-        mVelocityZ -= mGravity;
+        mVelocity.z -= mGravity;
 
         // Update position
-        mPosX += mVelocityX;
-        mPosY += mVelocityY * SIN45;
-        mPosZ += mVelocityZ * SIN45;
+        mPos.x += mVelocity.x;
+        mPos.y += mVelocity.y * SIN45;
+        mPos.z += mVelocity.z * SIN45;
 
         // Update other stuff
         if (mLifetimeLeft > 0)
@@ -179,14 +172,13 @@ Particle::update()
         }
         mLifetimePast++;
 
-        if (mPosZ > PARTICLE_SKY || mPosZ < 0.0f)
+        if (mPos.z > PARTICLE_SKY || mPos.z < 0.0f)
         {
             if (mBounce > 0.0f)
             {
-                mPosZ *= -mBounce;
-                mVelocityX *= mBounce;
-                mVelocityY *= mBounce;
-                mVelocityZ *= -mBounce;
+                mPos.z *= -mBounce;
+                mVelocity *= mBounce;
+                mVelocity.z = -mVelocity.z;
             }
             else {
                 mAlive = false;
@@ -282,9 +274,9 @@ Particle::addEffect(const std::string &particleEffectFile,
         int offsetY = XML::getProperty(effectChildNode, "position-y", 0);
         int offsetZ = XML::getProperty(effectChildNode, "position-z", 0);
 
-        int particleX = (int)mPosX + pixelX + offsetX;
-        int particleY = (int)mPosY + pixelY + offsetY;
-        int particleZ = (int)mPosZ          + offsetZ;
+        int particleX = (int) mPos.x + pixelX + offsetX;
+        int particleY = (int) mPos.y + pixelY + offsetY;
+        int particleZ = (int) mPos.z          + offsetZ;
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
 

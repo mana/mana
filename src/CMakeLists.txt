@@ -337,6 +337,7 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    vector.h
     )
 
 ADD_EXECUTABLE(tmw ${SRCS})

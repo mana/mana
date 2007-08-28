@@ -7,6 +7,10 @@
 	src/gui/itemshortcutwindow.h, src/CMakeLists.txt, src/Makefile.am:
 	Made buy dialog resizable and added a WindowListener class for
 	listening for window resize and move events.
+	* src/textparticle.h, src/particle.h, src/CMakeLists.txt,
+	src/particle.cpp, src/imageparticle.cpp, src/vector.h,
+	src/textparticle.cpp, src/Makefile.am: Added Vector class and used it
+	in the particle engine.
 
 2007-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

@@ -285,7 +285,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      sprite.h \
 	      textparticle.cpp \
 	      textparticle.h \
-	      tileset.h
+	      tileset.h \
+	      vector.h
 
 # set the include path found by configure
 INCLUDES =					\

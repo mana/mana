@@ -42,8 +42,8 @@ void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (!mAlive)
         return;
 
-    int screenX = (int) mPosX + offsetX;
-    int screenY = (int) mPosY - (int) mPosZ + offsetY;
+    int screenX = (int) mPos.x + offsetX;
+    int screenY = (int) mPos.y - (int) mPos.z + offsetY;
 
     int alpha = 255;
 

@@ -31,7 +31,7 @@
 
 #include "guichanfwd.h"
 #include "sprite.h"
-
+#include "vector.h"
 
 class Map;
 class Particle;
@@ -97,7 +97,7 @@ class Particle : public Sprite
          */
         virtual int
         getPixelY() const
-        { return (int) (mPosY + mPosZ) - 64; }
+        { return (int) (mPos.y + mPos.z) - 64; }
 
         /**
          * Sets the map the particle is on.
@@ -139,30 +139,27 @@ class Particle : public Sprite
          */
         void
         setPosition(float x, float y, float z)
-        { mPosX = x; mPosY = y; mPosZ = z; }
+        { mPos.x = x; mPos.y = y; mPos.z = z; }
 
         /**
          * Sets the position in 2 dimensional space in pixels relative to map.
          */
         void
         setPosition(float x, float y)
-        { mPosX = x; mPosY = y; }
+        { mPos.x = x; mPos.y = y; }
 
-        float getPosX() const
-        { return mPosX; }
-
-        float getPosY() const
-        { return mPosY; }
-
-        float getPosZ() const
-        { return mPosZ; }
+        /**
+         * Returns the particle position.
+         */
+        const Vector& getPosition() const
+        { return mPos; }
 
         /**
          * Changes the particle position relative
          */
         void
         moveBy(float x, float y, float z)
-        { mPosX += x; mPosY += y; mPosZ += z; }
+        { mPos.x += x; mPos.y += y; mPos.z += z; }
 
         /**
          * Sets the time in game ticks until the particle is destroyed.
@@ -176,7 +173,7 @@ class Particle : public Sprite
          * faded in completely.
          */
         void
-        setFadeOut (int fadeOut)
+        setFadeOut(int fadeOut)
         { mFadeOut = fadeOut; }
 
         /**
@@ -184,7 +181,7 @@ class Particle : public Sprite
          * fade out.
          */
         void
-        setFadeIn (int fadeIn)
+        setFadeIn(int fadeIn)
         { mFadeIn = fadeIn; }
 
         /**
@@ -207,7 +204,7 @@ class Particle : public Sprite
          */
         void
         setVelocity(float x, float y, float z)
-        { mVelocityX = x; mVelocityY = y; mVelocityZ = z; }
+        { mVelocity.x = x; mVelocity.y = y; mVelocity.z = z; }
 
         /**
          * Sets the downward acceleration.
@@ -264,7 +261,7 @@ class Particle : public Sprite
 
     protected:
         bool mAlive;                /**< Is the particle supposed to be drawn and updated?*/
-        float mPosX, mPosY, mPosZ;  /**< Position in 3 dimensonal space - pixel based relative to map */
+        Vector mPos;                /**< Position in pixels relative to map. */
         int mLifetimeLeft;          /**< Lifetime left in game ticks*/
         int mLifetimePast;          /**< Age of the particle in game ticks*/
         int mFadeOut;               /**< Lifetime in game ticks left where fading out begins*/
@@ -279,9 +276,7 @@ class Particle : public Sprite
         Particles mChildParticles;  /**< List of particles controlled by this particle */
 
         // dynamic particle
-        float mVelocityX;           /**< X speed in pixels per game-tick. */
-        float mVelocityY;           /**< Y speed in pixels per game-tick. */
-        float mVelocityZ;           /**< Z speed in pixels per game-tick. */
+        Vector mVelocity;           /**< Speed in pixels per game-tick. */
         float mGravity;             /**< Downward acceleration in pixels per game-tick² */
         int mRandomnes;             /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
