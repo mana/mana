@@ -18,7 +18,7 @@
  *  along with The Mana World; if not, write to the Free Software
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
- *  $Id: tileset.h 3218 2007-03-21 21:56:12Z b_lindeijer $
+ *  $Id$
  */
 
 #ifndef _TMW_VECTOR_H_

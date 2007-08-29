@@ -61,7 +61,6 @@ InventoryWindow::InventoryWindow():
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
-    mInvenScroll->setPosition(8, 8);
     mInvenScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mItemNameLabel = new gcn::Label("Name:");
@@ -80,7 +79,7 @@ InventoryWindow::InventoryWindow():
     add(mItemEffectLabel);
     add(mWeightLabel);
 
-    mUseButton->setSize(48, mUseButton->getHeight());
+    mUseButton->setSize(60, mUseButton->getHeight());
 
     addWindowListener(this);
     loadWindowState();
@@ -98,7 +97,6 @@ void InventoryWindow::logic()
     mWeightLabel->setCaption(
             "Total Weight: " + toString(player_node->mTotalWeight) + " - "
             "Maximum Weight: " + toString(player_node->mMaxWeight));
-    mWeightLabel->adjustSize();
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -150,10 +148,6 @@ void InventoryWindow::selectionChanged(const SelectionEvent &event)
         mItemEffectLabel->setCaption(SomeText);
         SomeText = "Description: " + itemInfo.getDescription();
         mItemDescriptionLabel->setCaption(SomeText);
-
-        mItemNameLabel->adjustSize();
-        mItemEffectLabel->adjustSize();
-        mItemDescriptionLabel->adjustSize();
     }
 }
 
@@ -188,17 +182,28 @@ void InventoryWindow::windowResized(const WindowEvent &event)
         columns = 1;
     }
 
-    // Resize widgets
-    mUseButton->setPosition(8, height - 24);
-    mDropButton->setPosition(48 + 16, height - 24);
-    mInvenScroll->setSize(width - 16, height - 110);
+    // Adjust widgets
+    mUseButton->setPosition(8, height - 8 - mUseButton->getHeight());
+    mDropButton->setPosition(8 + mUseButton->getWidth() + 5,
+            mUseButton->getY());
 
-    mItemNameLabel->setPosition(8,
-            mInvenScroll->getY() + mInvenScroll->getHeight() + 4);
-    mItemEffectLabel->setPosition(8,
-            mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
-    mItemDescriptionLabel->setPosition(8,
-            mItemEffectLabel->getY() + mItemEffectLabel->getHeight() + 4);
+    mItemNameLabel->setDimension(gcn::Rectangle(8,
+            mUseButton->getY() - 5 - mItemNameLabel->getHeight(),
+            width - 16,
+            mItemNameLabel->getHeight()));
+    mItemEffectLabel->setDimension(gcn::Rectangle(8,
+            mItemNameLabel->getY() - 5 - mItemEffectLabel->getHeight(),
+            width - 16,
+            mItemEffectLabel->getHeight()));
+    mItemDescriptionLabel->setDimension(gcn::Rectangle(8,
+            mItemEffectLabel->getY() - 5 - mItemDescriptionLabel->getHeight(),
+            width - 16,
+            mItemDescriptionLabel->getHeight()));
+
+    mInvenScroll->setSize(width - 16,
+            mItemDescriptionLabel->getY() - mWeightLabel->getHeight() - 18);
+
+    mWeightLabel->setWidth(width - 16);
 }
 
 void InventoryWindow::updateButtons()

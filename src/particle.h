@@ -277,7 +277,7 @@ class Particle : public Sprite
 
         // dynamic particle
         Vector mVelocity;           /**< Speed in pixels per game-tick. */
-        float mGravity;             /**< Downward acceleration in pixels per game-tick² */
+        float mGravity;             /**< Downward acceleration in pixels per game-tick. */
         int mRandomnes;             /**< Ammount of random vector change */
         float mBounce;              /**< How much the particle bounces off when hitting the ground */
 

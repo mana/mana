@@ -1,4 +1,10 @@
-﻿2007-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/inventorywindow.cpp, src/gui/sell.h: Made
+	sell dialog resizable and tweaked inventory resize code a bit.
+	* data/items.xml: Fixed typo in chainmail description.
+
+2007-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/window.cpp, src/gui/inventorywindow.h,
 	src/gui/selectionlistener.h, src/gui/buy.h,

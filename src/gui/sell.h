@@ -28,6 +28,7 @@
 
 #include "window.h"
 #include "selectionlistener.h"
+#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -41,7 +42,8 @@ class ShopListBox;
  *
  * \ingroup Interface
  */
-class SellDialog : public Window, gcn::ActionListener, SelectionListener
+class SellDialog : public Window, gcn::ActionListener, SelectionListener,
+    WindowListener
 {
     public:
         /**
@@ -79,22 +81,28 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener
         void selectionChanged(const SelectionEvent &event);
 
         /**
+         * Called whenever the window is resized.
+         */
+        void windowResized(const WindowEvent &event);
+
+        /**
          * Gives Player's Money amount
          */
         void setMoney(int amount);
 
+    private:
         /**
          * Updates the state of buttons and labels.
          */
-        void
-        updateButtonsAndLabels();
+        void updateButtonsAndLabels();
 
-    private:
         Network *mNetwork;
         gcn::Button *mSellButton;
+        gcn::Button *mQuitButton;
         gcn::Button *mIncreaseButton;
         gcn::Button *mDecreaseButton;
         ShopListBox *mShopItemList;
+        gcn::ScrollArea *mScrollArea;
         gcn::Label *mMoneyLabel;
         gcn::Label *mItemDescLabel;
         gcn::Label *mItemEffectLabel;
