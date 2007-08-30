@@ -14,6 +14,10 @@
 	fallback item icon and use it for unknown items or when item image
 	fails to load.
 	* NEWS: Updated with changes since last update.
+	* data/items.xml, data/equipment.xml: Reverted equipment database and
+	included original low-ID items in items.xml for compatibility with
+	eAthena, which doesn't support View ID to come above 255.
+	* src/resources/itemdb.cpp: Accept items without a name.
 
 2007-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

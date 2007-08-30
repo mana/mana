@@ -109,11 +109,11 @@ void ItemDB::load()
         std::string effect = XML::getProperty(node, "effect", "");
         std::string attackType = XML::getProperty(node, "attacktype", "");
 
-        if (id && name != "")
+        if (id)
         {
             ItemInfo *itemInfo = new ItemInfo();
             itemInfo->setImage(image);
-            itemInfo->setName(name);
+            itemInfo->setName((name == "") ? "Unnamed" : name);
             itemInfo->setDescription(description);
             itemInfo->setEffect(effect);
             itemInfo->setType(type);
