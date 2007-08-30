@@ -38,7 +38,7 @@
 
 class AnimatedSprite;
 class Equipment;
-class EquipmentInfo;
+class ItemInfo;
 class Item;
 class Map;
 class Graphics;
@@ -349,26 +349,23 @@ class Being : public Sprite
         getHeight() const;
 
         /**
-         * Returns the required size of a target cursor for this being
+         * Returns the required size of a target cursor for this being.
          */
-        virtual Being::TargetCursorSize
-        getTargetCursorSize() const
+        virtual Being::TargetCursorSize getTargetCursorSize() const
         { return TC_MEDIUM; }
 
         std::auto_ptr<Equipment> mEquipment;
 
         /**
-         * Take control of a particle
+         * Take control of a particle.
          */
-        void
-        controlParticle(Particle *particle);
+        void controlParticle(Particle *particle);
 
     protected:
         /**
          * Sets the new path for this being.
          */
-        void
-        setPath(const Path &path);
+        void setPath(const Path &path);
 
         /**
          * Calculates the offset in the given directions.
@@ -379,8 +376,7 @@ class Being : public Sprite
         /**
          * Returns the sprite direction of this being.
          */
-        SpriteDirection
-        getSpriteDirection() const;
+        SpriteDirection getSpriteDirection() const;
 
         Uint32 mId;                     /**< Unique sprite id */
         Uint16 mWalkSpeed;              /**< Walking speed */
@@ -389,7 +385,8 @@ class Being : public Sprite
         std::string mName;              /**< Name of character */
         SpriteIterator mSpriteIterator;
 
-        EquipmentInfo* mEquippedWeapon; /**< Engine-related infos about weapon */
+        /** Engine-related infos about weapon. */
+        const ItemInfo* mEquippedWeapon;
 
         Path mPath;
         std::string mSpeech;

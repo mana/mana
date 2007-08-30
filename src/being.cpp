@@ -32,9 +32,9 @@
 #include "map.h"
 #include "particle.h"
 
-#include "resources/equipmentdb.h"
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/iteminfo.h"
 
 #include "gui/gui.h"
 

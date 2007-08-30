@@ -37,8 +37,6 @@
 #include "net/messageout.h"
 #include "net/protocol.h"
 
-#include "resources/equipmentinfo.h"
-
 #include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;

@@ -27,7 +27,8 @@
 #include "game.h"
 #include "graphics.h"
 
-#include "resources/equipmentdb.h"
+#include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
 #include "utils/tostring.h"
 
@@ -104,13 +105,13 @@ Player::setSex(Uint8 sex)
         mSprites[BASE_SPRITE] = newBaseSprite;
 
         // Reload equipment
-        for (int i=1; i<VECTOREND_SPRITE ; i++)
+        for (int i = 1; i < VECTOREND_SPRITE; i++)
         {
             if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
             {
                 AnimatedSprite *newEqSprite = new AnimatedSprite(
-                        "graphics/sprites/" + EquipmentDB::get(
-                            mEquipmentSpriteIDs.at(i))->getSprite(sex));
+                        "graphics/sprites/" + ItemDB::get(
+                            mEquipmentSpriteIDs.at(i)).getSprite(sex));
                 delete mSprites[i];
                 mSprites[i] = newEqSprite;
             }
@@ -174,11 +175,11 @@ Player::setVisibleEquipment(Uint8 slot, int id)
         if (mSex == 0)
         {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0));
+                "graphics/sprites/" + ItemDB::get(id).getSprite(0));
         }
         else {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1));
+                "graphics/sprites/" + ItemDB::get(id).getSprite(1));
         }
 
         equipmentSprite->setDirection(getSpriteDirection());
@@ -188,7 +189,7 @@ Player::setVisibleEquipment(Uint8 slot, int id)
 
         if (slot == WEAPON_SPRITE)
         {
-            mEquippedWeapon = EquipmentDB::get(id);
+            mEquippedWeapon = &ItemDB::get(id);
         }
 
         setAction(mAction);

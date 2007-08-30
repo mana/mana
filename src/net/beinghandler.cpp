@@ -82,7 +82,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing = beingManager->findBeing(id);
 
-            if (dstBeing == NULL)
+            if (!dstBeing)
             {
                 // Being with id >= 110000000 and job 0 are better
                 // known as ghosts, so don't create those.
@@ -108,7 +108,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
             dstBeing->mJob = job;
             dstBeing->setHairStyle(msg->readInt16());
             dstBeing->setVisibleEquipment(
-                    Being::WEAPON_SPRITE, msg->readInt16() * 10000);
+                    Being::WEAPON_SPRITE, msg->readInt16());
             dstBeing->setVisibleEquipment(
                     Being::BOTTOMCLOTHES_SPRITE, msg->readInt16());
 
@@ -261,8 +261,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setVisibleEquipment(
-                            Being::WEAPON_SPRITE, id * 10000);
+                    dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, id);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
                     dstBeing->setVisibleEquipment(
@@ -280,7 +279,8 @@ void BeingHandler::handleMessage(MessageIn *msg)
                     dstBeing->setHairColor(id);
                     break;
                 default:
-                    logger->log("c3: %i\n", id); // unsupported
+                    logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
+                            "%d, id: %d", type, id);
                     break;
             }
         }
@@ -306,7 +306,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
             dstBeing = beingManager->findBeing(id);
 
-            if (dstBeing == NULL)
+            if (!dstBeing)
             {
                 dstBeing = beingManager->createBeing(id, job);
             }
@@ -378,7 +378,7 @@ void BeingHandler::handleMessage(MessageIn *msg)
 
         case 0x0119:
             // Change in players look
-            logger->log("0x0119 %i %i %i %x %i\n", msg->readInt32(),
+            logger->log("0x0119 %i %i %i %x %i", msg->readInt32(),
                     msg->readInt16(), msg->readInt16(), msg->readInt16(),
                     msg->readInt8());
             break;

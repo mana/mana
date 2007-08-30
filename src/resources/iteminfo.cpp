@@ -24,11 +24,11 @@
 
 #include "resourcemanager.h"
 #include "image.h"
-
+#include "itemdb.h"
 
 ItemInfo::~ItemInfo()
 {
-    if (mImage != NULL)
+    if (mImage)
     {
         mImage->decRef();
     }
@@ -37,19 +37,87 @@ ItemInfo::~ItemInfo()
 void
 ItemInfo::setImage(const std::string &image)
 {
-    mImageName = "graphics/items/" + image;
-
-    if (mImageName != "")
+    if (mImage)
     {
-        if (mImage != NULL)
-        {
-            mImage->decRef();
-        }
+        mImage->decRef();
+    }
 
-        mImage = ResourceManager::getInstance()->getImage(mImageName);
+    ResourceManager *resman = ResourceManager::getInstance();
+    mImageName = "graphics/items/" + image;
+    mImage = ResourceManager::getInstance()->getImage(mImageName);
+
+    if (!mImage)
+    {
+        mImage = resman->getImage("graphics/gui/unknown-item.png");
+    }
+}
+
+const std::string&
+ItemInfo::getSprite(int gender) const
+{
+    if (mView)
+    {
+        // Forward the request to the item defining how to view this item
+        return ItemDB::get(mView).getSprite(gender);
     }
     else
     {
-        mImage = NULL;
+        static const std::string empty = "";
+        std::map<int, std::string>::const_iterator i =
+            mAnimationFiles.find(gender);
+
+        return (i != mAnimationFiles.end()) ? i->second : empty;
     }
+}
+
+void
+ItemInfo::setAttackType(const std::string &attackType)
+{
+    if (attackType == "swing")
+    {
+        mAttackType = ACTION_ATTACK_SWING;
+    }
+    else if (attackType == "stab")
+    {
+        mAttackType = ACTION_ATTACK_STAB;
+    }
+    else if (attackType == "bow")
+    {
+        mAttackType = ACTION_ATTACK_BOW;
+    }
+    else if (attackType == "throw")
+    {
+        mAttackType = ACTION_ATTACK_THROW;
+    }
+    else if (attackType == "none")
+    {
+        mAttackType = ACTION_DEFAULT;
+    }
+    else
+    {
+        mAttackType = ACTION_ATTACK;
+    }
+}
+
+void
+ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
+{
+    if (mSounds.find(event) == mSounds.end())
+    {
+        mSounds[event] = new std::vector<std::string>;
+    }
+
+    mSounds[event]->push_back("sfx/" + filename);
+}
+
+
+const std::string&
+ItemInfo::getSound(EquipmentSoundEvent event) const
+{
+    static const std::string empty = "";
+    std::map<EquipmentSoundEvent, std::vector<std::string>*>::const_iterator i;
+    i = mSounds.find(event);
+
+    return (i == mSounds.end()) ? empty :
+        i->second->at(rand() % i->second->size());
 }

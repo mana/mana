@@ -74,7 +74,6 @@
 #include "net/messageout.h"
 #include "net/network.h"
 
-#include "resources/equipmentdb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -348,7 +347,6 @@ void exit_engine()
     sound.close();
 
     // Unload XML databases
-    EquipmentDB::unload();
     ItemDB::unload();
     MonsterDB::unload();
 
@@ -732,7 +730,6 @@ int main(int argc, char *argv[])
                         false);
 
                     // Load XML databases
-                    EquipmentDB::load();
                     ItemDB::load();
                     MonsterDB::load();
                     state = LOGIN_STATE;
@@ -825,7 +822,6 @@ int main(int argc, char *argv[])
                     break;
 
                 case CHAR_CONNECT_STATE:
-                    logger->log("Char: %i\n", loginData.sex);
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
                             "Connecting to character server...");
@@ -834,7 +830,6 @@ int main(int argc, char *argv[])
                     break;
 
                 case ACCOUNT_STATE:
-                    logger->log("Account: %i", loginData.sex);
                     progressBar->setVisible(true);
                     progressLabel->setCaption(
                             "Connecting to account server...");

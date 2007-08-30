@@ -1,4 +1,21 @@
-﻿2007-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-08-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/localplayer.cpp, src/player.cpp, src/main.cpp, src/being.cpp,
+	src/CMakeLists.txt, src/Makefile.am, src/resources/iteminfo.h,
+	src/resources/equipmentdb.h, src/resources/equipmentinfo.h,
+	src/resources/itemdb.cpp, src/resources/iteminfo.cpp,
+	src/resources/equipmentdb.cpp, src/resources/equipmentinfo.cpp,
+	src/resources/spritedef.h, src/being.h, data/items.xml,
+	data/equipment.xml: Merged equipment database with items database and
+	got rid of the unused item art attribute.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Removed the
+	now unnecessary multiplication of weapon IDs with 10000.
+	* src/resources/iteminfo.cpp, data/graphics/items/unknown.png: Added
+	fallback item icon and use it for unknown items or when item image
+	fails to load.
+	* NEWS: Updated with changes since last update.
+
+2007-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/sell.cpp, src/gui/inventorywindow.cpp, src/gui/sell.h: Made
 	sell dialog resizable and tweaked inventory resize code a bit.

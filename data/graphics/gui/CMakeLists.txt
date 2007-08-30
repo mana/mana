@@ -27,6 +27,8 @@ SET (FILES
     menuitemP.png
     radioin.png
     radioout.png
+    resize.png
+    rpgfont_wider.png
     selection.png
     sansserif8.png
     slider.png
@@ -37,6 +39,7 @@ SET (FILES
     target-cursor-red-m.png
     target-cursor-red-s.png
     thickborder.png
+    unknown-item.png
     vscroll_blue.png
     vscroll_down_default.png
     vscroll_down_highlight.png
@@ -46,8 +49,6 @@ SET (FILES
     vscroll_up_default.png
     vscroll_up_highlight.png
     vscroll_up_pressed.png
-    rpgfont_wider.png
-    resize.png
     )
 
 INSTALL(FILES ${FILES} DESTINATION ${DATA_DIR}/graphics/gui)

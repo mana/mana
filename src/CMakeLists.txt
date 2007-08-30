@@ -224,10 +224,6 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
-    resources/equipmentdb.cpp
-    resources/equipmentdb.h
-    resources/equipmentinfo.cpp
-    resources/equipmentinfo.h
     resources/image.cpp
     resources/image.h
     resources/imagewriter.cpp

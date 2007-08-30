@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <cassert>
+
 #include "itemdb.h"
 
 #include <libxml/tree.h>
@@ -36,10 +38,13 @@
 namespace
 {
     ItemDB::ItemInfos mItemInfos;
-    ItemInfo mUnknown;
+    ItemInfo *mUnknown;
     bool mLoaded = false;
 }
 
+// Forward declarations
+static void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
+static void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
 
 void ItemDB::load()
 {
@@ -47,11 +52,16 @@ void ItemDB::load()
         return;
 
     logger->log("Initializing item database...");
-    mUnknown.setName("Unknown item");
+
+    mUnknown = new ItemInfo();
+    mUnknown->setName("Unknown item");
+    mUnknown->setImage("");
+    mUnknown->setSprite("error.xml", 0);
+    mUnknown->setSprite("error.xml", 1);
 
     ResourceManager *resman = ResourceManager::getInstance();
     int size;
-    char *data = (char*)resman->loadFile("items.xml", size);
+    char *data = (char*) resman->loadFile("items.xml", size);
 
     if (!data) {
         logger->error("ItemDB: Could not find items.xml!");
@@ -73,48 +83,66 @@ void ItemDB::load()
 
     for_each_xml_child_node(node, rootNode)
     {
-        if (!xmlStrEqual(node->name, BAD_CAST "item")) {
+        if (!xmlStrEqual(node->name, BAD_CAST "item"))
             continue;
-        }
 
         int id = XML::getProperty(node, "id", 0);
-        int art = XML::getProperty(node, "art", 0);
+
+        if (id == 0)
+        {
+            logger->log("ItemDB: Invalid or missing item ID in items.xml!");
+            continue;
+        }
+        else if (mItemInfos.find(id) != mItemInfos.end())
+        {
+            logger->log("ItemDB: Redefinition of item ID %d", id);
+        }
+
         int type = XML::getProperty(node, "type", 0);
         int weight = XML::getProperty(node, "weight", 0);
+        int view = XML::getProperty(node, "view", 0);
         int slot = XML::getProperty(node, "slot", 0);
 
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
         std::string effect = XML::getProperty(node, "effect", "");
+        std::string attackType = XML::getProperty(node, "attacktype", "");
 
         if (id && name != "")
         {
             ItemInfo *itemInfo = new ItemInfo();
             itemInfo->setImage(image);
-            itemInfo->setArt(art);
             itemInfo->setName(name);
             itemInfo->setDescription(description);
             itemInfo->setEffect(effect);
             itemInfo->setType(type);
+            itemInfo->setView(view);
             itemInfo->setWeight(weight);
             itemInfo->setSlot(slot);
-            mItemInfos[id] = itemInfo;
-        }
+            itemInfo->setAttackType(attackType);
 
-        if (id == 0)
-        {
-            logger->log("ItemDB: An item has no ID in items.xml!");
+            for_each_xml_child_node(itemChild, node)
+            {
+                if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
+                {
+                    loadSpriteRef(itemInfo, itemChild);
+                }
+                else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
+                {
+                    loadSoundRef(itemInfo, itemChild);
+                }
+            }
+
+            mItemInfos[id] = itemInfo;
         }
 
 #define CHECK_PARAM(param, error_value) \
         if (param == error_value) \
-            logger->log("ItemDB: Missing" #param " parameter for item %i! %s", \
-                    id, name.c_str())
+            logger->log("ItemDB: Missing " #param " attribute for item %i!",id)
 
         CHECK_PARAM(name, "");
         CHECK_PARAM(image, "");
-        // CHECK_PARAM(art, 0);
         // CHECK_PARAM(description, "");
         // CHECK_PARAM(effect, "");
         // CHECK_PARAM(type, 0);
@@ -131,19 +159,65 @@ void ItemDB::load()
 
 void ItemDB::unload()
 {
-    for (ItemInfoIterator i = mItemInfos.begin(); i != mItemInfos.end(); i++)
-    {
-        delete i->second;
-    }
-    mItemInfos.clear();
+    logger->log("Unloading item database...");
 
+    delete mUnknown;
+    mUnknown = NULL;
+
+    for_each(mItemInfos.begin(), mItemInfos.end(), make_dtor(mItemInfos));
+    mItemInfos.clear();
     mLoaded = false;
 }
 
-const ItemInfo&
-ItemDB::get(int id)
+const ItemInfo& ItemDB::get(int id)
 {
+    assert(mLoaded);
+
     ItemInfoIterator i = mItemInfos.find(id);
 
-    return (i != mItemInfos.end()) ? *(i->second) : mUnknown;
+    if (i == mItemInfos.end())
+    {
+        logger->log("ItemDB: Error, unknown item ID# %d", id);
+        return *mUnknown;
+    }
+    else
+    {
+        return *(i->second);
+    }
+}
+
+void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node)
+{
+    std::string gender = XML::getProperty(node, "gender", "unisex");
+    std::string filename = (const char*) node->xmlChildrenNode->content;
+
+    if (gender == "male" || gender == "unisex")
+    {
+        itemInfo->setSprite(filename, 0);
+    }
+
+    if (gender == "female" || gender == "unisex")
+    {
+        itemInfo->setSprite(filename, 1);
+    }
+}
+
+void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node)
+{
+    std::string event = XML::getProperty(node, "event", "");
+    std::string filename = (const char*) node->xmlChildrenNode->content;
+
+    if (event == "hit")
+    {
+        itemInfo->addSound(EQUIP_EVENT_HIT, filename);
+    }
+    else if (event == "strike")
+    {
+        itemInfo->addSound(EQUIP_EVENT_STRIKE, filename);
+    }
+    else
+    {
+        logger->log("ItemDB: Ignoring unknown sound event '%s'",
+                event.c_str());
+    }
 }
