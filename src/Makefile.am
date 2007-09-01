@@ -130,7 +130,7 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      gui/windowlistener.h
+	      gui/windowlistener.h \
 	      net/beinghandler.h \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \

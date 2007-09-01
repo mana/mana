@@ -1,4 +1,8 @@
-﻿2007-08-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-09-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/Makefile.am: Fixed the entry for windowlistener.h.
+
+2007-08-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/localplayer.cpp, src/player.cpp, src/main.cpp, src/being.cpp,
 	src/CMakeLists.txt, src/Makefile.am, src/resources/iteminfo.h,
