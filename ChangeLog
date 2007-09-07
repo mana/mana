@@ -1,7 +1,7 @@
 ﻿2007-09-06  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* src/animationparticle.cpp, src/imageparticle.cpp:
-	Fixed animated particles.
+	* src/animationparticle.cpp, src/imageparticle.cpp: Fixed animated
+	particles.
 
 2007-09-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
