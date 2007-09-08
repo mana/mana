@@ -1,3 +1,8 @@
+2007-09-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* po/LINGUAS: Added German to the list of available languages.
+	* po/de.po: Fixed two syntax errors preventing compilation.
+
 2007-08-27  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* po/de.po: Added german translation.

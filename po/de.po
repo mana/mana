@@ -1,9 +1,8 @@
-﻿# German translation of The Mana World.
+# German translation of The Mana World.
 # Copyright (C) 2007 The Mana World Development Team
 # This file is distributed under the same license as the The Mana World package.
 # Matthias Hartmann <hartmann.matthias@gmail.com>, 2007.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
