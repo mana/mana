@@ -1,0 +1,473 @@
+# Polish translation of The Mana World.
+# Copyright (C) 2007 The Mana World Development Team
+# This file is distributed under the same license as the The Mana World package.
+# Mateusz Jedrasik <m.jedrasik@gmail.com>, 2007.
+# Zuzanna K. Filutowska <platyna@platinum.linux.pl>, 2007.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: The Mana World 0.1.0\n"
+"Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2007-09-08 16:15+0200\n"
+"PO-Revision-Date: 2007-09-09 03:20+0200\n"
+"Last-Translator: Zuzanna K. Filutowska <platyna@platinum.linux.pl>\n"
+"Language-Team:  <pl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: src/gui/char_select.cpp:68
+msgid "Confirm"
+msgstr "Potwierdź."
+
+#: src/gui/char_select.cpp:69
+msgid "Are you sure you want to delete this character?"
+msgstr "Czy jesteś pewien, że chcesz usunąć tę postać?"
+
+#: src/gui/char_select.cpp:85
+msgid "Select Character"
+msgstr "Wybierz postać."
+
+#: src/gui/char_select.cpp:89 src/gui/item_amount.cpp:47 src/gui/login.cpp:49
+#: src/gui/npclistdialog.cpp:41 src/gui/npc_text.cpp:42
+#: src/gui/ok_dialog.cpp:37 src/gui/quitdialog.cpp:44
+#: src/gui/serverdialog.cpp:138
+msgid "Ok"
+msgstr "Ok"
+
+#: src/gui/char_select.cpp:90 src/gui/char_select.cpp:279
+#: src/gui/connection.cpp:59 src/gui/item_amount.cpp:48 src/gui/login.cpp:50
+#: src/gui/npclistdialog.cpp:42 src/gui/quitdialog.cpp:45
+#: src/gui/register.cpp:76 src/gui/serverdialog.cpp:139 src/gui/setup.cpp:51
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: src/gui/char_select.cpp:91
+msgid "New"
+msgstr "Nowa"
+
+#: src/gui/char_select.cpp:92
+msgid "Delete"
+msgstr "Usuń"
+
+#: src/gui/char_select.cpp:93
+msgid "Previous"
+msgstr "Poprzedni"
+
+#: src/gui/char_select.cpp:94
+msgid "Next"
+msgstr "Następny"
+
+#: src/gui/char_select.cpp:95
+msgid "Unregister"
+msgstr "Wyrejestruj"
+
+#: src/gui/char_select.cpp:97 src/gui/char_select.cpp:203
+#: src/gui/char_select.cpp:214 src/gui/inventorywindow.cpp:74
+#: src/gui/inventorywindow.cpp:177
+#, c-format
+msgid "Name: %s"
+msgstr "Imię: %s"
+
+#: src/gui/char_select.cpp:98 src/gui/char_select.cpp:204
+#: src/gui/char_select.cpp:215
+#, c-format
+msgid "Level: %d"
+msgstr "Poziom: %d"
+
+#: src/gui/char_select.cpp:99 src/gui/char_select.cpp:205
+#: src/gui/char_select.cpp:216
+#, c-format
+msgid "Money: %d"
+msgstr "Pieniądze: %d"
+
+#: src/gui/char_select.cpp:264
+msgid "Create Character"
+msgstr "Stwórz postać"
+
+#: src/gui/char_select.cpp:271 src/gui/login.cpp:44 src/gui/register.cpp:67
+msgid "Name:"
+msgstr "Imię:"
+
+#: src/gui/char_select.cpp:274
+msgid "Hair Color:"
+msgstr "Kolor włosów:"
+
+#: src/gui/char_select.cpp:277
+msgid "Hair Style:"
+msgstr "Fryzura:"
+
+#: src/gui/char_select.cpp:278
+msgid "Create"
+msgstr "Stwórz"
+
+#: src/gui/char_select.cpp:281
+msgid "Strength:"
+msgstr "Siła:"
+
+#: src/gui/char_select.cpp:282
+msgid "Agility:"
+msgstr "Zwinność:"
+
+#: src/gui/char_select.cpp:283
+msgid "Dexterity:"
+msgstr "Zręczność:"
+
+#: src/gui/char_select.cpp:284
+msgid "Vitality:"
+msgstr "Witalność:"
+
+#: src/gui/char_select.cpp:285
+msgid "Intelligence:"
+msgstr "Inteligencja:"
+
+#: src/gui/char_select.cpp:286
+msgid "Willpower:"
+msgstr "Siła woli:"
+
+#: src/gui/char_select.cpp:287
+msgid "Charisma:"
+msgstr "Charyzma:"
+
+#: src/gui/char_select.cpp:295 src/gui/char_select.cpp:441
+#, c-format
+msgid "Please distribute %d points"
+msgstr "Proszę wykorzystać %d punktów"
+
+#: src/gui/char_select.cpp:387 src/gui/register.cpp:220
+#: src/gui/serverdialog.cpp:205
+msgid "Error"
+msgstr "Błąd"
+
+#: src/gui/char_select.cpp:388
+msgid "Your name needs to be at least 4 characters."
+msgstr "Twoje imię musi mieć conajmniej 4 znaki."
+
+#: src/gui/char_select.cpp:433
+msgid "Character stats OK"
+msgstr "Statystyki postaci w porządku."
+
+#: src/gui/char_select.cpp:445
+#, c-format
+msgid "Please remove %d points"
+msgstr "Proszę usunąć %d punktów"
+
+#: src/gui/confirm_dialog.cpp:37
+msgid "Yes"
+msgstr "Tak"
+
+#: src/gui/confirm_dialog.cpp:38
+msgid "No"
+msgstr "Nie"
+
+#: src/gui/connection.cpp:62
+msgid "Connecting..."
+msgstr "Łączenie..."
+
+#: src/gui/equipmentwindow.cpp:57 src/gui/menuwindow.cpp:62
+msgid "Equipment"
+msgstr "Ekwipunek"
+
+#: src/gui/equipmentwindow.cpp:65
+msgid "Unequip"
+msgstr "Zdejmij"
+
+#: src/gui/inventorywindow.cpp:50 src/gui/menuwindow.cpp:63
+msgid "Inventory"
+msgstr "Inwentarz"
+
+#: src/gui/inventorywindow.cpp:60 src/gui/inventorywindow.cpp:246
+msgid "Use"
+msgstr "Użyj"
+
+#: src/gui/inventorywindow.cpp:61
+msgid "Drop"
+msgstr "Upuść"
+
+#: src/gui/inventorywindow.cpp:62
+msgid "Split"
+msgstr "Podziel"
+
+#: src/gui/inventorywindow.cpp:76 src/gui/inventorywindow.cpp:181
+#, c-format
+msgid "Description: %s"
+msgstr "Opis: %s"
+
+#: src/gui/inventorywindow.cpp:77 src/gui/inventorywindow.cpp:179
+#, c-format
+msgid "Effect: %s"
+msgstr "Efekt: %s"
+
+#: src/gui/inventorywindow.cpp:79 src/gui/inventorywindow.cpp:131
+#, c-format
+msgid "Total Weight: %d - Maximum Weight: %d"
+msgstr "Całkowita waga: %d - Maksymalna waga: %d"
+
+#: src/gui/inventorywindow.cpp:243
+msgid "Equip"
+msgstr "Załóż"
+
+#: src/gui/item_amount.cpp:83
+msgid "Select amount of items to trade."
+msgstr "Wybierz ilość przedmiotów do wymiany."
+
+#: src/gui/item_amount.cpp:87
+msgid "Select amount of items to drop."
+msgstr "Wybierz ilość przedmiotów do upuszczenia."
+
+#: src/gui/item_amount.cpp:91
+#, fuzzy
+msgid "Select amount of items to split."
+msgstr "Wybierz ilość przedmiotów do upuszczenia."
+
+#: src/gui/login.cpp:42
+msgid "Login"
+msgstr "Użytkownik"
+
+#: src/gui/login.cpp:45 src/gui/register.cpp:68
+msgid "Password:"
+msgstr "Hasło:"
+
+#: src/gui/login.cpp:48
+msgid "Keep"
+msgstr "Zachowaj"
+
+#: src/gui/login.cpp:51 src/gui/register.cpp:63 src/gui/register.cpp:75
+msgid "Register"
+msgstr "Rejestruj"
+
+#: src/gui/menuwindow.cpp:61
+msgid "Status"
+msgstr "Stan"
+
+#: src/gui/menuwindow.cpp:64
+msgid "Skills"
+msgstr "Zdolności"
+
+#: src/gui/menuwindow.cpp:65 src/gui/setup.cpp:44
+msgid "Setup"
+msgstr "Konfiguracja"
+
+#: src/gui/minimap.cpp:35
+msgid "MiniMap"
+msgstr "MiniMapa"
+
+#: src/gui/npclistdialog.cpp:37 src/gui/npc_text.cpp:37
+msgid "NPC"
+msgstr "NPC"
+
+#: src/gui/popupmenu.cpp:79
+#, c-format
+msgid "@@trade|Trade With %s@@"
+msgstr "@@targ|Targ z %s@@"
+
+#: src/gui/popupmenu.cpp:81
+#, c-format
+msgid "@@attack|Attack %s@@"
+msgstr "@@atak|Atakuj %s@@"
+
+#: src/gui/popupmenu.cpp:90
+msgid "@@talk|Talk To NPC@@"
+msgstr "@@rozmowa|Rozmawiaj z NPC@@"
+
+#: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
+#: src/gui/popupmenu.cpp:231
+msgid "@@cancel|Cancel@@"
+msgstr "@@anulowanie|Anuluj@@"
+
+#: src/gui/popupmenu.cpp:112
+#, c-format
+msgid "@@pickup|Pick Up %s@@"
+msgstr "@@podniesienie|Podnieś %s@@"
+
+#: src/gui/popupmenu.cpp:222
+msgid "@@use|Equip@@"
+msgstr "@@użycie|Załóż@@"
+
+#: src/gui/popupmenu.cpp:225
+msgid "@@use|Use@@"
+msgstr "@@użycie|Użyj@@"
+
+#: src/gui/popupmenu.cpp:226
+msgid "@@drop|Drop@@"
+msgstr "@@upuszczenie|Upuść@@"
+
+#: src/gui/popupmenu.cpp:227
+msgid "@@description|Description@@"
+msgstr "@@opis|Opis@@"
+
+#: src/gui/popupmenu.cpp:229
+msgid "@@split|Split@@"
+msgstr "@@rozdzielenie|Rozdziel@@"
+
+#: src/gui/quitdialog.cpp:37 src/gui/quitdialog.cpp:40
+#: src/gui/quitdialog.cpp:41
+msgid "Quit"
+msgstr "Wyjdź"
+
+#: src/gui/quitdialog.cpp:42
+msgid "Switch server"
+msgstr "Zmień serwer"
+
+#: src/gui/quitdialog.cpp:43
+msgid "Switch character"
+msgstr "Zmień postać"
+
+#: src/gui/register.cpp:69
+msgid "Confirm:"
+msgstr "Potwierdź:"
+
+#: src/gui/register.cpp:70
+msgid "Email:"
+msgstr "Adres e-mail:"
+
+#: src/gui/register.cpp:168
+#, c-format
+msgid "The username needs to be at least %d characters long."
+msgstr "Nazwa użytkownika musi być długa na conajmniej %d znaków."
+
+#: src/gui/register.cpp:176
+#, c-format
+msgid "The username needs to be less than %d characters long."
+msgstr "Nazwa użytkownika musi mieć mniej niż %d znaków."
+
+#: src/gui/register.cpp:184
+#, c-format
+msgid "The password needs to be at least %d characters long."
+msgstr "Hasło musi mieć conajmniej %d znaków."
+
+#: src/gui/register.cpp:192
+#, c-format
+msgid "The password needs to be less than %d characters long."
+msgstr "Hasło nie może mieć więcej jak %d znaków."
+
+#: src/gui/register.cpp:199
+msgid "Passwords do not match."
+msgstr "Hasła nie zgadzają się."
+
+#: src/gui/serverdialog.cpp:102
+msgid "Choose your Mana World Server"
+msgstr "Wybierz serwer Mana World"
+
+#: src/gui/serverdialog.cpp:104
+msgid "Server:"
+msgstr "Serwer:"
+
+#: src/gui/serverdialog.cpp:105
+msgid "Port:"
+msgstr "Port:"
+
+#: src/gui/setup_audio.cpp:42
+msgid "Sound"
+msgstr "Dźwięk"
+
+#: src/gui/setup_audio.cpp:48
+msgid "Sfx volume"
+msgstr "Głośność efektów dźwiękowych"
+
+#: src/gui/setup_audio.cpp:49
+msgid "Music volume"
+msgstr "Głośność muzyki"
+
+#: src/gui/setup.cpp:51
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: src/gui/setup.cpp:51
+msgid "Reset Windows"
+msgstr "Zresetuj okna"
+
+#: src/gui/setup.cpp:68
+msgid "Video"
+msgstr "Obraz"
+
+#: src/gui/setup.cpp:72
+msgid "Audio"
+msgstr "Dźwięk"
+
+#: src/gui/setup.cpp:76
+msgid "Joystick"
+msgstr "Joystick"
+
+#: src/gui/setup_joystick.cpp:38 src/gui/setup_joystick.cpp:72
+msgid "Press the button to start calibration"
+msgstr "Wciśnij przycisk aby rozpocząć kalibrację"
+
+#: src/gui/setup_joystick.cpp:39 src/gui/setup_joystick.cpp:70
+msgid "Calibrate"
+msgstr "Kalibruj"
+
+#: src/gui/setup_joystick.cpp:40
+msgid "Enable joystick"
+msgstr "Włącz joystick"
+
+#: src/gui/setup_joystick.cpp:75
+msgid "Stop"
+msgstr "Zatrzymaj"
+
+#: src/gui/setup_joystick.cpp:76
+msgid "Rotate the stick"
+msgstr "Obróć drążek"
+
+#: src/gui/setup_video.cpp:113
+msgid "Full screen"
+msgstr "Pełen ekran"
+
+#: src/gui/setup_video.cpp:114
+msgid "OpenGL"
+msgstr "OpenGL"
+
+#: src/gui/setup_video.cpp:115
+msgid "Custom cursor"
+msgstr "Własny kursor"
+
+#: src/gui/setup_video.cpp:117
+msgid "FPS Limit:"
+msgstr "Limit FPS:"
+
+#: src/gui/setup_video.cpp:133
+msgid "Gui opacity"
+msgstr "Nieprzezroczystość GUI"
+
+#: src/gui/setup_video.cpp:186
+msgid "Scroll radius"
+msgstr "Skok przy przewijaniu ekranu"
+
+#: src/gui/setup_video.cpp:194
+msgid "Scroll laziness"
+msgstr "Opóźnienie przy przewijaniu ekranu"
+
+#: src/gui/setup_video.cpp:202
+msgid "Ambient FX"
+msgstr "Dźwięki otoczenia"
+
+#: src/gui/setup_video.cpp:209 src/gui/setup_video.cpp:369
+msgid "off"
+msgstr "wyłączone"
+
+#: src/gui/setup_video.cpp:212 src/gui/setup_video.cpp:372
+msgid "low"
+msgstr "niskie"
+
+#: src/gui/setup_video.cpp:215 src/gui/setup_video.cpp:375
+msgid "high"
+msgstr "wysokie"
+
+#: src/gui/setup_video.cpp:268
+msgid "Switching to full screen"
+msgstr "Przełączanie na pełen ekran"
+
+#: src/gui/setup_video.cpp:269
+msgid "Restart needed for changes to take effect."
+msgstr "Wymagane ponowne uruchomienia aby zastosować zmiany."
+
+#: src/gui/setup_video.cpp:280
+msgid "Changing OpenGL"
+msgstr "Zmień ustawienia OpenGL"
+
+#: src/gui/setup_video.cpp:281
+msgid "Applying change to OpenGL requires restart."
+msgstr "Zastosowywanie zmian w konfiguracji OpenGL wymaga ponownego uruchomienia."
+

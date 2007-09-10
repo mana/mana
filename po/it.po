@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: The Mana World 0.1.0\n"
 "Report-Msgid-Bugs-To: themanaworld-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2007-08-13 12:30+0200\n"
-"PO-Revision-Date: 2007-08-13 20:39+0100\n"
+"PO-Revision-Date: 2007-09-10 09:51+0100\n"
 "Last-Translator: Eugenio Favalli <elvenprogrammer@gmail.com>\n"
 "Language-Team: Italian\n"
 "MIME-Version: 1.0\n"
@@ -181,7 +181,7 @@ msgstr "No"
 
 #: src/gui/connection.cpp:62
 msgid "Connecting..."
-msgstr "Connesione..."
+msgstr "Connessione..."
 
 #: src/gui/equipmentwindow.cpp:57
 #: src/gui/menuwindow.cpp:62

@@ -5,6 +5,8 @@
 	src/gui/truetypefont.cpp, src/gui/truetypefont.h, src/gui/window.cpp,
 	src/main.cpp, src/Makefile.am, src/openglgraphics.cpp, tmw.cbp: Added
 	support for True Type Fonts.
+	* po/it.po, po/LINGUAS, po/pl.po: Added Polish translation and fixed
+	Italian one.
 
 2007-09-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
