@@ -27,7 +27,6 @@
 					<Add library="enet"/>
 					<Add library="guichan"/>
 					<Add library="guichan_sdl"/>
-					<Add library="guichan_opengl"/>
 					<Add library="ws2_32"/>
 					<Add library="SDL_image"/>
 					<Add library="SDL_mixer"/>
@@ -36,12 +35,13 @@
 					<Add library="SDL.dll"/>
 					<Add library="xml2.dll"/>
 					<Add library="opengl32"/>
-					<Add library="png12.dll"/>
+					<Add library="png.dll"/>
 					<Add library="z.dll"/>
 					<Add library="physfs"/>
 					<Add library="curl.dll"/>
 					<Add library="winmm"/>
 					<Add library="intl.dll"/>
+					<Add library="SDL_ttf"/>
 				</Linker>
 			</Target>
 		</Build>
@@ -730,6 +730,16 @@
 			<Option target="default"/>
 		</Unit>
 		<Unit filename="src\gui\trade.h">
+			<Option compilerVar=""/>
+			<Option compile="0"/>
+			<Option link="0"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\truetypefont.cpp">
+			<Option compilerVar="CPP"/>
+			<Option target="default"/>
+		</Unit>
+		<Unit filename="src\gui\truetypefont.h">
 			<Option compilerVar=""/>
 			<Option compile="0"/>
 			<Option link="0"/>

@@ -655,387 +655,395 @@ extern "C" char const *_nl_locale_name_default(void);
 /** Main */
 int main(int argc, char *argv[])
 {
-    // Parse command line options
-    Options options;
-    parseOptions(argc, argv, options);
-    if (options.printHelp)
+    try
     {
-        printHelp();
-        return 0;
-    }
-    else if (options.printVersion)
-    {
-        printVersion();
-        return 0;
-    }
+        // Parse command line options
+        Options options;
+        parseOptions(argc, argv, options);
+        if (options.printHelp)
+        {
+            printHelp();
+            return 0;
+        }
+        else if (options.printVersion)
+        {
+            printVersion();
+            return 0;
+        }
 
 #if ENABLE_NLS
 #ifdef WIN32
-    putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
+        putenv(("LANG=" + std::string(_nl_locale_name_default())).c_str());
 #endif
-    setlocale(LC_MESSAGES, "");
-    bindtextdomain("tmw", LOCALEDIR);
-    bind_textdomain_codeset("tmw", "UTF-8");
-    textdomain("tmw");
+        setlocale(LC_MESSAGES, "");
+        bindtextdomain("tmw", LOCALEDIR);
+        bind_textdomain_codeset("tmw", "UTF-8");
+        textdomain("tmw");
 #endif
 
-    // Initialize PhysicsFS
-    PHYSFS_init(argv[0]);
+        // Initialize PhysicsFS
+        PHYSFS_init(argv[0]);
 
-    initHomeDir();
-    // Configure logger
-    logger = new Logger();
-    logger->setLogFile(homeDir + std::string("/tmw.log"));
-    logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
+        initHomeDir();
+        // Configure logger
+        logger = new Logger();
+        logger->setLogFile(homeDir + std::string("/tmw.log"));
+        logger->setLogToStandardOut(config.getValue("logToStandardOut", 0));
 
-    // Log the tmw version
+        // Log the tmw version
 #ifdef PACKAGE_VERSION
-    logger->log("The Mana World v%s", PACKAGE_VERSION);
+        logger->log("The Mana World v%s", PACKAGE_VERSION);
 #else
-    logger->log("The Mana World - version not defined");
+        logger->log("The Mana World - version not defined");
 #endif
 
-    initXML();
-    initConfiguration(options);
-    initEngine();
+        initXML();
+        initConfiguration(options);
+        initEngine();
 
-    Game *game = NULL;
-    Window *currentDialog = NULL;
-    QuitDialog* quitDialog = NULL;
-    Image *login_wallpaper = NULL;
+        Game *game = NULL;
+        Window *currentDialog = NULL;
+        QuitDialog* quitDialog = NULL;
+        Image *login_wallpaper = NULL;
 
-    gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
+        gcn::Container *top = static_cast<gcn::Container*>(gui->getTop());
 #ifdef PACKAGE_VERSION
-    gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
-    top->add(versionLabel, 2, 2);
+        gcn::Label *versionLabel = new gcn::Label(PACKAGE_VERSION);
+        top->add(versionLabel, 2, 2);
 #endif
 
-    sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
+        sound.playMusic(TMW_DATADIR "data/music/Magick - Real.ogg");
 
-    // Server choice
-    if (options.serverName.empty()) {
-        loginData.hostname = config.getValue("MostUsedServerName0",
-                                defaultAccountServerName.c_str());
-    }
-    else {
-        loginData.hostname = options.serverName;
-    }
-    if (options.serverPort == 0) {
-        loginData.port = (short)config.getValue("MostUsedServerPort0",
-                                                defaultAccountServerPort);
-    } else {
-        loginData.port = options.serverPort;
-    }
-
-    loginData.username = options.playername;
-    if (loginData.username.empty()) {
-        if (config.getValue("remember", 0)) {
-            loginData.username = config.getValue("username", "");
+        // Server choice
+        if (options.serverName.empty()) {
+            loginData.hostname = config.getValue("MostUsedServerName0",
+                                    defaultAccountServerName.c_str());
         }
-    }
-    if (!options.password.empty()) {
-        loginData.password = options.password;
-    }
+        else {
+            loginData.hostname = options.serverName;
+        }
+        if (options.serverPort == 0) {
+            loginData.port = (short)config.getValue("MostUsedServerPort0",
+                                                    defaultAccountServerPort);
+        } else {
+            loginData.port = options.serverPort;
+        }
 
-    loginData.remember = config.getValue("remember", 0);
-    loginData.registerLogin = false;
+        loginData.username = options.playername;
+        if (loginData.username.empty()) {
+            if (config.getValue("remember", 0)) {
+                loginData.username = config.getValue("username", "");
+            }
+        }
+        if (!options.password.empty()) {
+            loginData.password = options.password;
+        }
 
-    Net::initialize();
-    accountServerConnection = Net::getConnection();
-    gameServerConnection = Net::getConnection();
-    chatServerConnection = Net::getConnection();
+        loginData.remember = config.getValue("remember", 0);
+        loginData.registerLogin = false;
 
-    unsigned int oldstate = !state; // We start with a status change.
+        Net::initialize();
+        accountServerConnection = Net::getConnection();
+        gameServerConnection = Net::getConnection();
+        chatServerConnection = Net::getConnection();
 
-    SDL_Event event;
-    while (state != STATE_FORCE_QUIT)
-    {
-        // Handle SDL events
-        while (SDL_PollEvent(&event)) {
-            switch (event.type) {
-                case SDL_QUIT:
-                    state = STATE_FORCE_QUIT;
-                    break;
+        unsigned int oldstate = !state; // We start with a status change.
 
-                case SDL_KEYDOWN:
-                    if (event.key.keysym.sym == SDLK_ESCAPE)
-                        if (!quitDialog)
-                        {
-                            quitDialog = new QuitDialog(NULL, &quitDialog);
-                        }
-                        else
-                        {
-                            quitDialog->requestMoveToTop();
-                        }
-                    break;
+        SDL_Event event;
+        while (state != STATE_FORCE_QUIT)
+        {
+            // Handle SDL events
+            while (SDL_PollEvent(&event)) {
+                switch (event.type) {
+                    case SDL_QUIT:
+                        state = STATE_FORCE_QUIT;
+                        break;
+
+                    case SDL_KEYDOWN:
+                        if (event.key.keysym.sym == SDLK_ESCAPE)
+                            if (!quitDialog)
+                            {
+                                quitDialog = new QuitDialog(NULL, &quitDialog);
+                            }
+                            else
+                            {
+                                quitDialog->requestMoveToTop();
+                            }
+                        break;
+                }
+
+                guiInput->pushInput(event);
             }
 
-            guiInput->pushInput(event);
-        }
+            Net::flush();
+            gui->logic();
 
-        Net::flush();
-        gui->logic();
-
-        if (!login_wallpaper)
-        {
-            login_wallpaper = ResourceManager::getInstance()->
-                    getImage("graphics/images/login_wallpaper.png");
             if (!login_wallpaper)
             {
-                logger->error("Couldn't load login_wallpaper.png");
-            }
-        }
-
-        graphics->drawImage(login_wallpaper, 0, 0);
-        gui->draw();
-        graphics->updateScreen();
-
-        // TODO: Add connect timeouts
-        if (state == STATE_CONNECT_ACCOUNT &&
-                accountServerConnection->isConnected())
-        {
-            if (options.skipUpdate) {
-                state = STATE_LOADDATA;
-            } else {
-                state = STATE_UPDATE;
-            }
-        }
-        else if (state == STATE_CONNECT_GAME &&
-                gameServerConnection->isConnected() &&
-                chatServerConnection->isConnected())
-        {
-            accountServerConnection->disconnect();
-            Net::clearHandlers();
-
-            state = STATE_GAME;
-        }
-        else if (state == STATE_RECONNECT_ACCOUNT &&
-                 accountServerConnection->isConnected())
-        {
-            reconnectAccount(token);
-            state = STATE_WAIT;
-        }
-
-        if (state != oldstate) {
-            // Load updates after exiting the update state
-            if (oldstate == STATE_UPDATE)
-            {
-                loadUpdates();
-                // Reload the wallpaper in case that it was updated
-                login_wallpaper->decRef();
                 login_wallpaper = ResourceManager::getInstance()->
-                    getImage("graphics/images/login_wallpaper.png");
+                        getImage("graphics/images/login_wallpaper.png");
+                if (!login_wallpaper)
+                {
+                    logger->error("Couldn't load login_wallpaper.png");
+                }
             }
 
-            oldstate = state;
+            graphics->drawImage(login_wallpaper, 0, 0);
+            gui->draw();
+            graphics->updateScreen();
 
-            // Get rid of the dialog of the previous state
-            if (currentDialog) {
-                delete currentDialog;
-                currentDialog = NULL;
-            }
-            // State has changed, while the quitDialog was active, it might
-            // not be correct anymore
-            if (quitDialog) {
-                quitDialog->scheduleDelete();
-            }
-
-            switch (state) {
-                case STATE_CHOOSE_SERVER:
-                    logger->log("State: CHOOSE_SERVER");
-
-                    // Allow changing this using a server choice dialog
-                    // We show the dialog box only if the command-line options
-                    // weren't set.
-                    if (options.serverName.empty() && options.serverPort == 0) {
-                        currentDialog = new ServerDialog(&loginData);
-                    } else {
-                        state = STATE_CONNECT_ACCOUNT;
-
-                        // Reset options so that cancelling or connect timeout
-                        // will show the server dialog
-                        options.serverName = "";
-                        options.serverPort = 0;
-                    }
-                    break;
-
-                case STATE_CONNECT_ACCOUNT:
-                    logger->log("State: CONNECT_ACCOUNT");
-                    logger->log("Trying to connect to account server...");
-                    accountServerConnection->connect(loginData.hostname,
-                            loginData.port);
-                    currentDialog = new ConnectionDialog(STATE_CHOOSE_SERVER);
-                    break;
-
-                case STATE_UPDATE:
-                    logger->log("State: UPDATE");
-                    // TODO: Revive later
-                    //currentDialog = new UpdaterWindow();
+            // TODO: Add connect timeouts
+            if (state == STATE_CONNECT_ACCOUNT &&
+                    accountServerConnection->isConnected())
+            {
+                if (options.skipUpdate) {
                     state = STATE_LOADDATA;
-                    break;
+                } else {
+                    state = STATE_UPDATE;
+                }
+            }
+            else if (state == STATE_CONNECT_GAME &&
+                    gameServerConnection->isConnected() &&
+                    chatServerConnection->isConnected())
+            {
+                accountServerConnection->disconnect();
+                Net::clearHandlers();
 
-                case STATE_LOGIN:
-                    logger->log("State: LOGIN");
-                    currentDialog = new LoginDialog(&loginData);
-                    // TODO: Restore autologin
-                    //if (!loginData.password.empty()) {
-                    //    accountLogin(&loginData);
-                    //}
-                    break;
+                state = STATE_GAME;
+            }
+            else if (state == STATE_RECONNECT_ACCOUNT &&
+                     accountServerConnection->isConnected())
+            {
+                reconnectAccount(token);
+                state = STATE_WAIT;
+            }
 
-                case STATE_LOADDATA:
-                    logger->log("State: LOADDATA");
+            if (state != oldstate) {
+                // Load updates after exiting the update state
+                if (oldstate == STATE_UPDATE)
+                {
+                    loadUpdates();
+                    // Reload the wallpaper in case that it was updated
+                    login_wallpaper->decRef();
+                    login_wallpaper = ResourceManager::getInstance()->
+                        getImage("graphics/images/login_wallpaper.png");
+                }
 
-                    // Add customdata directory
-                    ResourceManager::getInstance()->searchAndAddArchives(
-                        "customdata/",
-                        "zip",
-                        false);
+                oldstate = state;
 
-                    // Load XML databases
-                    EquipmentDB::load();
-                    ItemDB::load();
-                    MonsterDB::load();
-                    state = STATE_LOGIN;
-                    break;
+                // Get rid of the dialog of the previous state
+                if (currentDialog) {
+                    delete currentDialog;
+                    currentDialog = NULL;
+                }
+                // State has changed, while the quitDialog was active, it might
+                // not be correct anymore
+                if (quitDialog) {
+                    quitDialog->scheduleDelete();
+                }
 
-                case STATE_LOGIN_ATTEMPT:
-                    accountLogin(&loginData);
-                    break;
+                switch (state) {
+                    case STATE_CHOOSE_SERVER:
+                        logger->log("State: CHOOSE_SERVER");
 
-                case STATE_SWITCH_ACCOUNTSERVER:
-                    logger->log("State: SWITCH_ACCOUNTSERVER");
+                        // Allow changing this using a server choice dialog
+                        // We show the dialog box only if the command-line options
+                        // weren't set.
+                        if (options.serverName.empty() && options.serverPort == 0) {
+                            currentDialog = new ServerDialog(&loginData);
+                        } else {
+                            state = STATE_CONNECT_ACCOUNT;
 
-                    gameServerConnection->disconnect();
-                    chatServerConnection->disconnect();
-                    accountServerConnection->disconnect();
+                            // Reset options so that cancelling or connect timeout
+                            // will show the server dialog
+                            options.serverName = "";
+                            options.serverPort = 0;
+                        }
+                        break;
 
-                    state = STATE_CHOOSE_SERVER;
-                    break;
+                    case STATE_CONNECT_ACCOUNT:
+                        logger->log("State: CONNECT_ACCOUNT");
+                        logger->log("Trying to connect to account server...");
+                        accountServerConnection->connect(loginData.hostname,
+                                loginData.port);
+                        currentDialog = new ConnectionDialog(STATE_CHOOSE_SERVER);
+                        break;
 
-                case STATE_SWITCH_ACCOUNTSERVER_ATTEMPT:
-                    logger->log("State: SWITCH_ACCOUNTSERVER_ATTEMPT");
-                    switchAccountServer();
-                    break;
+                    case STATE_UPDATE:
+                        logger->log("State: UPDATE");
+                        // TODO: Revive later
+                        //currentDialog = new UpdaterWindow();
+                        state = STATE_LOADDATA;
+                        break;
 
-                case STATE_REGISTER:
-                    logger->log("State: REGISTER");
-                    currentDialog = new RegisterDialog(&loginData);
-                    break;
+                    case STATE_LOGIN:
+                        logger->log("State: LOGIN");
+                        currentDialog = new LoginDialog(&loginData);
+                        // TODO: Restore autologin
+                        //if (!loginData.password.empty()) {
+                        //    accountLogin(&loginData);
+                        //}
+                        break;
 
-                case STATE_REGISTER_ATTEMPT:
-                    accountRegister(&loginData);
-                    break;
+                    case STATE_LOADDATA:
+                        logger->log("State: LOADDATA");
 
-                case STATE_CHAR_SELECT:
-                    logger->log("State: CHAR_SELECT");
-                    currentDialog =
-                                  new CharSelectDialog(&charInfo, &loginData);
+                        // Add customdata directory
+                        ResourceManager::getInstance()->searchAndAddArchives(
+                            "customdata/",
+                            "zip",
+                            false);
 
-                    if (((CharSelectDialog*) currentDialog)->
-                            selectByName(options.playername))
-                        options.chooseDefault = true;
-                    else
-                        ((CharSelectDialog*) currentDialog)->selectByName(
-                            config.getValue("lastCharacter", ""));
+                        // Load XML databases
+                        EquipmentDB::load();
+                        ItemDB::load();
+                        MonsterDB::load();
+                        state = STATE_LOGIN;
+                        break;
 
-                    if (options.chooseDefault)
-                    {
-                        ((CharSelectDialog*) currentDialog)->action(
-                            gcn::ActionEvent(NULL, "ok"));
-                        options.chooseDefault = false;
-                    }
+                    case STATE_LOGIN_ATTEMPT:
+                        accountLogin(&loginData);
+                        break;
 
-                    break;
+                    case STATE_SWITCH_ACCOUNTSERVER:
+                        logger->log("State: SWITCH_ACCOUNTSERVER");
 
-                case STATE_UNREGISTER_ATTEMPT:
-                    logger->log("State: UNREGISTER ATTEMPT");
-                    accountUnRegister(&loginData);
-                    loginData.clear();
-                    break;
+                        gameServerConnection->disconnect();
+                        chatServerConnection->disconnect();
+                        accountServerConnection->disconnect();
 
-                case STATE_UNREGISTER:
-                    logger->log("State: UNREGISTER");
-                    accountServerConnection->disconnect();
-                    currentDialog = new OkDialog("Unregister succesfull",
-                                         "Farewell, come back any time ....");
+                        state = STATE_CHOOSE_SERVER;
+                        break;
 
-                    //The errorlistener sets the state to STATE_CHOOSE_SERVER
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    break;
+                    case STATE_SWITCH_ACCOUNTSERVER_ATTEMPT:
+                        logger->log("State: SWITCH_ACCOUNTSERVER_ATTEMPT");
+                        switchAccountServer();
+                        break;
 
-                case STATE_ERROR:
-                    logger->log("State: ERROR");
-                    currentDialog = new OkDialog("Error", errorMessage);
-                    currentDialog->addActionListener(&errorListener);
-                    currentDialog = NULL; // OkDialog deletes itself
-                    gameServerConnection->disconnect();
-                    chatServerConnection->disconnect();
-                    Net::clearHandlers();
-                    break;
+                    case STATE_REGISTER:
+                        logger->log("State: REGISTER");
+                        currentDialog = new RegisterDialog(&loginData);
+                        break;
 
-                case STATE_CONNECT_GAME:
-                    logger->log("State: CONNECT_GAME");
-                    currentDialog = new ConnectionDialog(STATE_CHAR_SELECT);
-                    break;
+                    case STATE_REGISTER_ATTEMPT:
+                        accountRegister(&loginData);
+                        break;
 
-                case STATE_GAME:
-                    logger->log("Memorizing selected character %s",
-                            player_node->getName().c_str());
-                    config.setValue("lastCharacter", player_node->getName());
+                    case STATE_CHAR_SELECT:
+                        logger->log("State: CHAR_SELECT");
+                        currentDialog =
+                                      new CharSelectDialog(&charInfo, &loginData);
 
-                    Net::GameServer::connect(gameServerConnection, token);
-                    Net::ChatServer::connect(chatServerConnection, token);
-                    sound.fadeOutMusic(1000);
+                        if (((CharSelectDialog*) currentDialog)->
+                                selectByName(options.playername))
+                            options.chooseDefault = true;
+                        else
+                            ((CharSelectDialog*) currentDialog)->selectByName(
+                                config.getValue("lastCharacter", ""));
+
+                        if (options.chooseDefault)
+                        {
+                            ((CharSelectDialog*) currentDialog)->action(
+                                gcn::ActionEvent(NULL, "ok"));
+                            options.chooseDefault = false;
+                        }
+
+                        break;
+
+                    case STATE_UNREGISTER_ATTEMPT:
+                        logger->log("State: UNREGISTER ATTEMPT");
+                        accountUnRegister(&loginData);
+                        loginData.clear();
+                        break;
+
+                    case STATE_UNREGISTER:
+                        logger->log("State: UNREGISTER");
+                        accountServerConnection->disconnect();
+                        currentDialog = new OkDialog("Unregister succesfull",
+                                             "Farewell, come back any time ....");
+
+                        //The errorlistener sets the state to STATE_CHOOSE_SERVER
+                        currentDialog->addActionListener(&errorListener);
+                        currentDialog = NULL; // OkDialog deletes itself
+                        break;
+
+                    case STATE_ERROR:
+                        logger->log("State: ERROR");
+                        currentDialog = new OkDialog("Error", errorMessage);
+                        currentDialog->addActionListener(&errorListener);
+                        currentDialog = NULL; // OkDialog deletes itself
+                        gameServerConnection->disconnect();
+                        chatServerConnection->disconnect();
+                        Net::clearHandlers();
+                        break;
+
+                    case STATE_CONNECT_GAME:
+                        logger->log("State: CONNECT_GAME");
+                        currentDialog = new ConnectionDialog(STATE_CHAR_SELECT);
+                        break;
+
+                    case STATE_GAME:
+                        logger->log("Memorizing selected character %s",
+                                player_node->getName().c_str());
+                        config.setValue("lastCharacter", player_node->getName());
+
+                        Net::GameServer::connect(gameServerConnection, token);
+                        Net::ChatServer::connect(chatServerConnection, token);
+                        sound.fadeOutMusic(1000);
 
 #ifdef PACKAGE_VERSION
-                    delete versionLabel;
-                    versionLabel = NULL;
+                        delete versionLabel;
+                        versionLabel = NULL;
 #endif
-                    currentDialog = NULL;
+                        currentDialog = NULL;
 
-                    logger->log("State: GAME");
-                    game = new Game;
-                    game->logic();
-                    delete game;
+                        logger->log("State: GAME");
+                        game = new Game;
+                        game->logic();
+                        delete game;
 
-                    //If the quitdialog didn't set the next state
-                    if (state == STATE_GAME)
-                    {
-                        state = STATE_EXIT;
-                    }
-                    break;
+                        //If the quitdialog didn't set the next state
+                        if (state == STATE_GAME)
+                        {
+                            state = STATE_EXIT;
+                        }
+                        break;
 
-                case STATE_SWITCH_CHARACTER:
-                    logger->log("State: SWITCH_CHARACTER");
-                    switchCharacter(&token);
-                    break;
+                    case STATE_SWITCH_CHARACTER:
+                        logger->log("State: SWITCH_CHARACTER");
+                        switchCharacter(&token);
+                        break;
 
-                case STATE_RECONNECT_ACCOUNT:
-                    logger->log("State: RECONNECT_ACCOUNT");
+                    case STATE_RECONNECT_ACCOUNT:
+                        logger->log("State: RECONNECT_ACCOUNT");
 
-                    //done with game&chat
-                    gameServerConnection->disconnect();
-                    chatServerConnection->disconnect();
+                        //done with game&chat
+                        gameServerConnection->disconnect();
+                        chatServerConnection->disconnect();
 
-                    accountServerConnection->connect(loginData.hostname,
-                                                              loginData.port);
-                    break;
+                        accountServerConnection->connect(loginData.hostname,
+                                                                  loginData.port);
+                        break;
 
-                case STATE_WAIT:
-                    break;
+                    case STATE_WAIT:
+                        break;
 
-                case STATE_EXIT:
-                    logger->log("State: EXIT");
-                    logoutThenExit();
-                    break;
+                    case STATE_EXIT:
+                        logger->log("State: EXIT");
+                        logoutThenExit();
+                        break;
 
-                default:
-                    state = STATE_FORCE_QUIT;
-                    break;
+                    default:
+                        state = STATE_FORCE_QUIT;
+                        break;
+                }
             }
         }
+
+    }
+    catch (...)
+    {
+        logger->log("Exception");
     }
 
     accountServerConnection->disconnect();
@@ -1051,5 +1059,6 @@ int main(int argc, char *argv[])
     exit_engine();
     PHYSFS_deinit();
     delete logger;
+
     return 0;
 }

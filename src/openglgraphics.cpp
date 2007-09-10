@@ -41,7 +41,6 @@
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
-#include <guichan/opengl/openglimage.hpp>
 
 #include "log.h"
 

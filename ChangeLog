@@ -1,3 +1,11 @@
+2007-09-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* configure.ac, data/fonts/dejavusans.ttf,
+	src/gui/browserbox.cpp, src/gui/browserbox.h, src/gui/gui.cpp,
+	src/gui/truetypefont.cpp, src/gui/truetypefont.h, src/gui/window.cpp,
+	src/main.cpp, src/Makefile.am, src/openglgraphics.cpp, tmw.cbp: Added
+	support for True Type Fonts.
+
 2007-09-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* po/LINGUAS: Added German to the list of available languages.
@@ -6,7 +14,7 @@
 2007-08-27  Matthias Hartmann  <hartmann.matthias@gmail.com>
 
 	* po/de.po: Added german translation.
-	
+
 2007-08-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/maps/new_1-1.tmx.gz: Added test npcs.

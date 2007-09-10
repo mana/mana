@@ -173,6 +173,7 @@ void Window::draw(gcn::Graphics *graphics)
     // Draw title
     if (getTitleBarHeight())
     {
+        graphics->setColor(gcn::Color(0, 0, 0));
         graphics->setFont(getFont());
         graphics->drawText(getCaption(), 7, 5, gcn::Graphics::LEFT);
     }

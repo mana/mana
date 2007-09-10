@@ -158,11 +158,6 @@ class BrowserBox : public gcn::Widget, public gcn::MouseListener
         bool mOpaque;
         bool mUseLinksAndUserColors;
         int mSelectedLink;
-
-#ifdef USE_OPENGL
-        static int instances;      /**< Number of Window instances */
-        static gcn::ImageFont* browserFont;
-#endif
 };
 
 #endif
