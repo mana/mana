@@ -55,6 +55,9 @@ AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
 
+AC_CHECK_LIB(SDL_ttf, TTF_Quit, ,
+AC_MSG_ERROR([ *** Unable to find SDL_ttf library (http://www.libsdl.org/projects/SDL_ttf/)]))
+
 AC_CHECK_LIB([SDL_mixer], [Mix_OpenAudio], ,
 AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/projects/SDL_mixer/)]))
 

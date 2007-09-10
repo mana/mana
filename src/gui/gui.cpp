@@ -24,11 +24,13 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
+#include <SDL/SDL_ttf.h>
 
 // Should stay here because of Guichan being sensitive to headers order
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
+#include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
 #include "windowcontainer.h"
@@ -106,24 +108,12 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font (based on ISO-8859-15)
     try {
-        mGuiFont = new gcn::ImageFont("graphics/gui/sansserif8.png",
-                " !\"#$%&'()*+,-./"
-                "0123456789:;<=>?"
-                "@ABCDEFGHIJKLMNO"
-                "PQRSTUVWXYZ[\\]^_"
-                "`abcdefghijklmno"
-                "pqrstuvwxyz{|}~|"
-                " ¡¢£¤¥¦§¨©ª«¬­®¯"
-                "°±²³´µ¶·¸¹º»¼½¾¿"
-                "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏ"
-                "ÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞß"
-                "àáâãäåæçèéêëìíîï"
-                "ðñòóôõö÷øùúûüýþÿ"
-                );
+        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 12);
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load sansserif8.png!");
+        logger->error(std::string("Unable to load dejavusans.ttf: ")
+            + e.getMessage());
     }
 
     // Set speech font
@@ -136,7 +126,8 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load rpgfont_wider.png!");
+        logger->error(std::string("Unable to load rpgfont_wider.png: ")
+            + e.getMessage());
     }
 
     gcn::Widget::setGlobalFont(mGuiFont);
@@ -152,7 +143,8 @@ Gui::Gui(Graphics *graphics):
     }
     catch (gcn::Exception e)
     {
-        logger->error("Unable to load colored hits' fonts!");
+        logger->error(std::string("Unable to load colored hits' fonts: ")
+                + e.getMessage());
     }
 
     // Initialize mouse cursor and listen for changes to the option

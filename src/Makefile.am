@@ -70,6 +70,8 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      gui/npc_text.h \
 	      gui/ok_dialog.cpp \
 	      gui/ok_dialog.h \
+	      gui/truetypefont.cpp \
+	      gui/truetypefont.h \
 	      gui/passwordfield.cpp \
 	      gui/passwordfield.h \
 	      gui/playerbox.cpp \

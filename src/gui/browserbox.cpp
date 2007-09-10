@@ -27,14 +27,7 @@
 
 #include "browserbox.h"
 #include "linkhandler.h"
-
-#ifdef USE_OPENGL
-#include "../configuration.h"
-#include "../resources/resourcemanager.h"
-
-int BrowserBox::instances = 0;
-gcn::ImageFont* BrowserBox::browserFont = NULL;
-#endif
+#include "truetypefont.h"
 
 BrowserBox::BrowserBox(unsigned int mode):
     gcn::Widget(),
@@ -46,35 +39,10 @@ BrowserBox::BrowserBox(unsigned int mode):
 {
     setFocusable(true);
     addMouseListener(this);
-
-#ifdef USE_OPENGL
-    if (config.getValue("opengl", 0.0f)) {
-        if (instances == 0) {
-            browserFont = new gcn::ImageFont(
-                    "graphics/gui/browserfont.png",
-                    " abcdefghijklmnopqrstuvwxyz"
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ01234567"
-                    "89:@!\"$%&/=?^+*#[]{}()<>_;'.,\\|-~`"
-                    "¯Â·¡È…ÌÕÛ”˙⁄ÁÎ•£¢°ø‡„ıÍÒ—ˆ¸‰÷‹ƒﬂË»≈");
-        }
-        setFont(browserFont);
-        instances++;
-    }
-#endif
 }
 
 BrowserBox::~BrowserBox()
 {
-#ifdef USE_OPENGL
-    instances--;
-
-    if (instances == 0)
-    {
-        // Clean up static resource font
-        delete browserFont;
-        browserFont = NULL;
-    }
-#endif
 }
 
 void BrowserBox::setLinkHandler(LinkHandler* linkHandler)
@@ -103,7 +71,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
+    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -177,7 +145,7 @@ void BrowserBox::addRow(const std::string &row)
     {
         unsigned int j, y = 0;
         unsigned int nextChar;
-        char hyphen = '~';
+        char *hyphen = "~";
         int hyphenWidth = font->getWidth(hyphen);
         int x = 0;
 
@@ -186,7 +154,8 @@ void BrowserBox::addRow(const std::string &row)
             std::string row = *i;
             for (j = 0; j < row.size(); j++)
             {
-                x += font->getWidth(row.at(j));
+                std::string character = row.substr(j, 1);
+                x += font->getWidth(character);
                 nextChar = j + 1;
 
                 // Wraping between words (at blank spaces)
@@ -300,7 +269,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
     unsigned int j;
     int x = 0, y = 0;
     int wrappedLines = 0;
-    gcn::ImageFont *font = dynamic_cast<gcn::ImageFont*>(getFont());
+    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
@@ -383,22 +352,23 @@ BrowserBox::draw(gcn::Graphics *graphics)
             {
                 for (x = 0; x < getWidth(); x++)
                 {
-                    font->drawGlyph(graphics, '-', x, y);
-                    x += font->getWidth('-') - 2;
+                    font->drawString(graphics, "-", x, y);
+                    x += font->getWidth("-") - 2;
                 }
                 break;
             }
             // Draw each char
             else
             {
-                font->drawGlyph(graphics, row.at(j), x, y);
-                x += font->getWidth(row.at(j));
+                std::string character = row.substr(j, 1);
+                font->drawString(graphics, character, x, y);
+                x += font->getWidth(character.c_str());
 
                 // Auto wrap mode
                 if (mMode == AUTO_WRAP)
                 {
                     unsigned int nextChar = j + 1;
-                    char hyphen = '~';
+                    char *hyphen = "~";
                     int hyphenWidth =  font->getWidth(hyphen);
 
                     // Wraping between words (at blank spaces)
@@ -425,7 +395,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
                     // Wrapping looong lines (brutal force)
                     else if ((x + 2 * hyphenWidth) > getWidth())
                     {
-                        font->drawGlyph(graphics, hyphen,
+                        font->drawString(graphics, hyphen,
                                 getWidth() - hyphenWidth, y);
                         x = 15; // Ident in new line
                         y += font->getHeight();
