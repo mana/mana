@@ -24,9 +24,7 @@
 #include "browserbox.h"
 #include "colour.h"
 #include "linkhandler.h"
-
-#include "../graphics.h"
-#include "../sdltruetypefont.hpp"
+#include "truetypefont.h"
 
 BrowserBox::BrowserBox(unsigned int mode):
     gcn::Widget(),
@@ -70,7 +68,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-    gcn::contrib::SDLTrueTypeFont *font = static_cast<gcn::contrib::SDLTrueTypeFont*>(getFont());
+    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -268,7 +266,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
     int x = 0, y = 0;
     int wrappedLines = 0;
-    gcn::contrib::SDLTrueTypeFont *font = static_cast<gcn::contrib::SDLTrueTypeFont*>(getFont());
+    TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)

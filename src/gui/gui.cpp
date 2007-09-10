@@ -22,12 +22,14 @@
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
 #include <guichan/imagefont.hpp>
+#include <SDL/SDL_ttf.h>
 
 // Should stay here because of Guichan being sensitive to headers order
 #include <guichan/sdl/sdlinput.hpp>
 
 #include "focushandler.h"
 #include "gui.h"
+#include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
 #include "windowcontainer.h"
@@ -36,7 +38,6 @@
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
-#include "../sdltruetypefont.hpp"
 
 #include "../resources/image.h"
 #include "../resources/imageset.h"
@@ -113,12 +114,12 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font
     try {
-        mGuiFont = new gcn::contrib::SDLTrueTypeFont("/usr/local/share/aethyra/data/fonts/dejavusans.ttf", 10);
+        mGuiFont = new TrueTypeFont("/usr/local/share/aethyra/data/fonts/dejavusans.ttf", 10);
     }
     catch (gcn::Exception e)
     {
         try {
-            mGuiFont = new gcn::contrib::SDLTrueTypeFont("data/fonts/dejavusans.ttf", 10);
+            mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 10);
         }
         catch (gcn::Exception e)
         {
