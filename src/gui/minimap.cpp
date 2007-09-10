@@ -83,12 +83,12 @@ void Minimap::draw(gcn::Graphics *graphics)
     for (bi = beings.begin(); bi != beings.end(); bi++)
     {
         Being *being = (*bi);
-        int dotSize = 1;
+        int dotSize = 2;
 
         switch (being->getType()) {
             case Being::LOCALPLAYER:
                 dotSize = 3;
-                graphics->setColor(gcn::Color(209, 52, 61));
+                graphics->setColor(gcn::Color(61, 209, 52));
                 break;
 
             case Being::PLAYER:
@@ -106,8 +106,8 @@ void Minimap::draw(gcn::Graphics *graphics)
         int offset = (dotSize - 1) / 2;
 
         graphics->fillRectangle(gcn::Rectangle(
-                    being->mX / 2 + getPadding() - offset,
-                    being->mY / 2 + getTitleBarHeight() - offset,
+                    being->mX / 64 + getPadding() - offset,
+                    being->mY / 64 + getTitleBarHeight() - offset,
                     dotSize, dotSize));
     }
 }

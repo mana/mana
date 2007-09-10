@@ -7,6 +7,7 @@
 	support for True Type Fonts.
 	* po/it.po, po/LINGUAS, po/pl.po: Added Polish translation and fixed
 	Italian one.
+	* src/gui/minimap.cpp: Fixed minimap coordinates and improved look.
 
 2007-09-08  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
