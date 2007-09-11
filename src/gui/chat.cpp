@@ -258,8 +258,9 @@ ChatWindow::chatSend(const std::string &nick, std::string msg)
 
         MessageOut outMsg(mNetwork);
         outMsg.writeInt16(CMSG_CHAT_MESSAGE);
-        outMsg.writeInt16(msg.length() + 4);
-        outMsg.writeString(msg, msg.length());
+        // Added + 1 in order to let eAthena parse admin commands correctly
+        outMsg.writeInt16(msg.length() + 4 + 1);
+        outMsg.writeString(msg, msg.length() + 1);
     }
     else if (msg.substr(0, IS_ANNOUNCE_LENGTH) == IS_ANNOUNCE)
     {

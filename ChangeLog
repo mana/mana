@@ -1,4 +1,8 @@
-﻿2007-09-08  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/chat.cpp, tmw.cbp: Fixed admin commands.
+
+2007-09-08  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/particles/aniblaze.png, 
 	data/graphics/particles/cookingfire.particle.xml,
