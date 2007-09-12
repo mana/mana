@@ -1,4 +1,9 @@
-﻿2007-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/items.xml: Added temporary weapon IDs below 256 to use as
+	view-ID in eAthena's item DB.
+
+2007-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/chat.cpp, tmw.cbp: Fixed admin commands.
 
