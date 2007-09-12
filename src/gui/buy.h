@@ -28,12 +28,12 @@
 
 #include "window.h"
 #include "selectionlistener.h"
-#include "shoplistbox.h"
 
 #include "../guichanfwd.h"
 
 class Network;
 class ShopItems;
+class ShopListBox;
 class ListBox;
 
 /**

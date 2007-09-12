@@ -129,24 +129,8 @@ void ShopListBox::mousePressed(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        bool enoughMoney = false;
-        int y = event.getY();
-
-        if (mShopItems && mPriceCheck)
-        {
-            if (mPlayerMoney >= mShopItems->at(y / mRowHeight).price)
-                enoughMoney = true;
-        }
-        else // Old Behaviour
-        {
-            enoughMoney = true;
-        }
-
-        if (enoughMoney)
-        {
-            setSelected(y / mRowHeight);
-            generateAction();
-        }
+        setSelected(event.getY() / mRowHeight);
+        generateAction();
     }
 }
 

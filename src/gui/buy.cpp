@@ -28,6 +28,7 @@
 #include "button.h"
 #include "scrollarea.h"
 #include "shop.h"
+#include "shoplistbox.h"
 #include "slider.h"
 
 #include "../npc.h"
@@ -111,13 +112,12 @@ void BuyDialog::reset()
 {
     mShopItems->clear();
     mShopItemList->adjustSize();
-    mMoney = 0;
+
+    // Reset previous selected items to prevent failing asserts
+    mShopItemList->setSelected(-1);
     mSlider->setValue(0);
 
-    // Reset Previous Selected Items to prevent failing asserts
-    mShopItemList->setSelected(-1);
-
-    updateButtonsAndLabels();
+    setMoney(0);
 }
 
 void BuyDialog::addItem(short id, int price)
@@ -173,16 +173,14 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         outMsg.writeInt16(mAmountItems);
         outMsg.writeInt16(mShopItems->at(selectedItem).id);
 
-        // Update money and adjust the max number of items that can be bought
-        mMoney -= mAmountItems * mShopItems->at(selectedItem).price;
-        mMaxItems -= mAmountItems;
-
         // Reset selection
         mAmountItems = 1;
         mSlider->setValue(1);
         mSlider->gcn::Slider::setScale(1, mMaxItems);
 
-        updateButtonsAndLabels();
+        // Update money and adjust the max number of items that can be bought
+        mMaxItems -= mAmountItems;
+        setMoney(mMoney - mAmountItems * mShopItems->at(selectedItem).price);
     }
 }
 
