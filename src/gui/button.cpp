@@ -46,7 +46,7 @@ enum{
 
 struct ButtonData
 {
-    char *const file;
+    char const *file;
     int gridX;
     int gridY;
 };
