@@ -152,6 +152,14 @@ class LocalPlayer : public Player
         void moveInvItem(Item *item, int newIndex);
 
         /**
+         * Searches for the specified item by it's identification.
+         *
+         * @param itemId The id of the item to be searched.
+         * @return Item found on success, NULL on failure.
+         */
+        Item* searchForItem(int itemId);
+
+        /**
          * Equips an item.
          */
         void equipItem(Item *item);
@@ -237,6 +245,19 @@ class LocalPlayer : public Player
         int getHP() const
         { return mHP; }
 
+        /**
+         * Sets the amount of XP. Shows XP gaining effect if the player is on
+         * a map.
+         */
+        void setXp(int xp);
+
+        /**
+         * Returns the amount of experience points.
+         */
+        int getXp() const { return mXp; }
+
+        Uint32 mCharId;
+
         int getMaxHP() const
         { return mMaxHP; }
 
@@ -298,6 +319,7 @@ class LocalPlayer : public Player
         int mMaxWeight;
         int mHP;
         int mMaxHP;
+        int mXp;            /**< Experience points. */
 
         Being *mTarget;
         FloorItem *mPickUpTarget;

@@ -24,10 +24,10 @@
 #ifndef _TMW_SPRITEDEF_H
 #define _TMW_SPRITEDEF_H
 
-#include "resource.h"
-
 #include <map>
 #include <string>
+
+#include "resource.h"
 
 #include <libxml/tree.h>
 

@@ -44,58 +44,44 @@ SellDialog::SellDialog():
     Window("Sell"),
     mMaxItems(0), mAmountItems(0)
 {
+    setResizable(true);
+    setMinWidth(260);
+    setMinHeight(230);
+    setDefaultSize(0, 0, 260, 230);
+
     mShopItems = new ShopItems();
 
     mShopItemList = new ShopListBox(mShopItems, mShopItems);
-    ScrollArea *scrollArea = new ScrollArea(mShopItemList);
+    mScrollArea = new ScrollArea(mShopItemList);
     mSlider = new Slider(1.0);
     mQuantityLabel = new gcn::Label("0");
     mMoneyLabel = new gcn::Label("Money: 0 GP / Total: 0 GP");
-    mItemDescLabel = new gcn::Label("Description:");
-    mItemEffectLabel = new gcn::Label("Effect:");
     mIncreaseButton = new Button("+", "+", this);
     mDecreaseButton = new Button("-", "-", this);
     mSellButton = new Button("Sell", "sell", this);
-    Button *quitButton = new Button("Quit", "quit", this);
+    mQuitButton = new Button("Quit", "quit", this);
+    mItemDescLabel = new gcn::Label("Description:");
+    mItemEffectLabel = new gcn::Label("Effect:");
+
+    mIncreaseButton->setSize(20, 20);
+    mDecreaseButton->setSize(20, 20);
+    mQuantityLabel->setWidth(60);
+
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mIncreaseButton->setEnabled(false);
+    mDecreaseButton->setEnabled(false);
     mSellButton->setEnabled(false);
-
-    setContentSize(260, 210);
-    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    scrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    mShopItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
-
-    mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
     mSlider->setEnabled(false);
 
-    mQuantityLabel->setPosition(215, 120);
-
-    mIncreaseButton->setPosition(40, 186);
-    mIncreaseButton->setSize(20, 20);
-    mIncreaseButton->setEnabled(false);
-
-    mDecreaseButton->setPosition(10, 186);
-    mDecreaseButton->setSize(20, 20);
-    mDecreaseButton->setEnabled(false);
-
-    mMoneyLabel->setPosition(5, 130);
-    mItemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
-    mItemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
-
-    mSellButton->setPosition(175, 186);
-    mSellButton->setEnabled(false);
-
-    quitButton->setPosition(208, 186);
-
+    mShopItemList->setPriceCheck(false);
     mShopItemList->setActionEventId("item");
     mSlider->setActionEventId("slider");
-
-    mShopItemList->setPriceCheck(false);
 
     mShopItemList->addActionListener(this);
     mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
 
-    add(scrollArea);
+    add(mScrollArea);
     add(mSlider);
     add(mQuantityLabel);
     add(mMoneyLabel);
@@ -104,8 +90,10 @@ SellDialog::SellDialog():
     add(mIncreaseButton);
     add(mDecreaseButton);
     add(mSellButton);
-    add(quitButton);
+    add(mQuitButton);
 
+    addWindowListener(this);
+    loadWindowState("Sell");
     setLocationRelativeTo(getParent());
 }
 
@@ -117,7 +105,7 @@ SellDialog::~SellDialog()
 void SellDialog::reset()
 {
     mShopItems->clear();
-    mSlider->setValue(0.0);
+    mSlider->setValue(0);
 
     // Reset previous selected item to prevent failing asserts
     mShopItemList->setSelected(-1);
@@ -135,16 +123,11 @@ void SellDialog::action(const gcn::ActionEvent &event)
 {
     int selectedItem = mShopItemList->getSelected();
 
-    if (event.getId() == "item")
-    {
-        mAmountItems = 0;
-        mSlider->setValue(0);
-        updateButtonsAndLabels();
-    }
-    else if (event.getId() == "quit")
+    if (event.getId() == "quit")
     {
         setVisible(false);
         current_npc = 0;
+        return;
     }
 
     // The following actions require a valid item selection
@@ -156,21 +139,19 @@ void SellDialog::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "slider")
     {
-        mAmountItems = (int) (mSlider->getValue() * mMaxItems);
+        mAmountItems = (int) mSlider->getValue();
         updateButtonsAndLabels();
     }
     else if (event.getId() == "+" && mAmountItems < mMaxItems)
     {
         mAmountItems++;
-
-        mSlider->setValue((double) mAmountItems /(double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "-" && mAmountItems > 0)
+    else if (event.getId() == "-" && mAmountItems > 1)
     {
         mAmountItems--;
-
-        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
     else if (event.getId() == "sell" && mAmountItems > 0
@@ -182,8 +163,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
         mMaxItems -= mAmountItems;
         mShopItems->getShop()->at(selectedItem).quantity = mMaxItems;
         mPlayerMoney += (mAmountItems * mShopItems->at(selectedItem).price);
-        mAmountItems = 0;
-        mSlider->setValue(0);
+        mAmountItems = 1;
 
         if (!mMaxItems)
         {
@@ -194,6 +174,7 @@ void SellDialog::action(const gcn::ActionEvent &event)
         }
         else
         {
+            mSlider->gcn::Slider::setScale(1, mMaxItems);
             // Update only when there are items left, the entry doesn't exist
             // otherwise and can't be updated
             updateButtonsAndLabels();
@@ -204,10 +185,54 @@ void SellDialog::action(const gcn::ActionEvent &event)
 void SellDialog::selectionChanged(const SelectionEvent &event)
 {
     // Reset amount of items and update labels
-    mAmountItems = 0;
+    mAmountItems = 1;
     mSlider->setValue(0);
 
     updateButtonsAndLabels();
+    mSlider->gcn::Slider::setScale(1, mMaxItems);
+}
+
+void SellDialog::windowResized(const WindowEvent &event)
+{
+    gcn::Rectangle area = getChildrenArea();
+    int width = area.width;
+    int height = area.height;
+
+    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
+    mIncreaseButton->setPosition(
+            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
+            mDecreaseButton->getY());
+
+    mQuitButton->setPosition(
+            width - 8 - mQuitButton->getWidth(),
+            height - 8 - mQuitButton->getHeight());
+    mSellButton->setPosition(
+            mQuitButton->getX() - 5 - mSellButton->getWidth(),
+            mQuitButton->getY());
+
+    mItemDescLabel->setDimension(gcn::Rectangle(8,
+                mSellButton->getY() - 5 - mItemDescLabel->getHeight(),
+                width - 16,
+                mItemDescLabel->getHeight()));
+    mItemEffectLabel->setDimension(gcn::Rectangle(8,
+                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
+                width - 16,
+                mItemEffectLabel->getHeight()));
+    mMoneyLabel->setDimension(gcn::Rectangle(8,
+                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
+                width - 16,
+                mMoneyLabel->getHeight()));
+
+    mQuantityLabel->setPosition(
+            width - mQuantityLabel->getWidth() - 8,
+            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
+    mSlider->setDimension(gcn::Rectangle(8,
+                mQuantityLabel->getY(),
+                mQuantityLabel->getX() - 8 - 8,
+                10));
+
+    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
+                mSlider->getY() - 5 - 8));
 }
 
 void SellDialog::setMoney(int amount)
@@ -246,15 +271,13 @@ SellDialog::updateButtonsAndLabels()
 
     // Update Buttons and slider
     mSellButton->setEnabled(mAmountItems > 0);
-    mDecreaseButton->setEnabled(mAmountItems > 0);
+    mDecreaseButton->setEnabled(mAmountItems > 1);
     mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
-    mSlider->setEnabled(selectedItem > -1);
+    mSlider->setEnabled(mMaxItems > 1);
 
     // Update the quantity and money labels
     mQuantityLabel->setCaption(
             toString(mAmountItems) + " / " + toString(mMaxItems));
-    mQuantityLabel->adjustSize();
     mMoneyLabel->setCaption("Money: " + toString(income) + " GP / Total: "
                             + toString(mPlayerMoney + income) + " GP");
-    mMoneyLabel->adjustSize();
 }

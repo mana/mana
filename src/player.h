@@ -59,9 +59,6 @@ class Player : public Being
 
         virtual void
         setVisibleEquipment(Uint8 slot, int id);
-
-        virtual void
-        setWeapon(Uint16 weapon);
 };
 
 #endif

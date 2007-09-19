@@ -97,6 +97,12 @@ SET(SRCS
     gui/item_amount.h
     gui/itemcontainer.cpp
     gui/itemcontainer.h
+    gui/itemshortcutcontainer.cpp
+    gui/itemshortcutcontainer.h
+    gui/itemshortcutwindow.cpp
+    gui/itemshortcutwindow.h
+    gui/item_amount.cpp
+    gui/item_amount.h
     gui/linkhandler.h
     gui/listbox.cpp
     gui/listbox.h
@@ -143,6 +149,8 @@ SET(SRCS
     gui/setup.h
     gui/setup_joystick.cpp
     gui/setup_joystick.h
+    gui/setup_keyboard.cpp
+    gui/setup_keyboard.h
     gui/setuptab.h
     gui/setup_video.cpp
     gui/setup_video.h
@@ -170,12 +178,13 @@ SET(SRCS
     gui/updatewindow.h
     gui/vbox.cpp
     gui/vbox.h
-    gui/windowcontainer.cpp
-    gui/windowcontainer.h
     gui/viewport.cpp
     gui/viewport.h
     gui/window.cpp
     gui/window.h
+    gui/windowcontainer.cpp
+    gui/windowcontainer.h
+    gui/windowlistener.h
     gui/widgets/dropdown.cpp
     gui/widgets/dropdown.h
     net/beinghandler.cpp
@@ -239,9 +248,6 @@ SET(SRCS
     resources/buddylist.h
     resources/animation.cpp
     resources/animation.h
-    resources/equipmentdb.cpp
-    resources/equipmentdb.h
-    resources/equipmentinfo.h
     resources/image.cpp
     resources/image.h
     resources/imagewriter.cpp
@@ -281,6 +287,7 @@ SET(SRCS
     utils/strprintf.cpp
     utils/strprintf.h
     utils/tostring.h
+    utils/trim.h
     utils/xml.cpp
     utils/xml.h
     animatedsprite.cpp
@@ -317,8 +324,12 @@ SET(SRCS
     inventory.h
     item.cpp
     item.h
+    itemshortcut.cpp
+    itemshortcut.h
     joystick.cpp
     joystick.h
+    keyboardconfig.cpp
+    keyboardconfig.h
     localplayer.cpp
     localplayer.h
     lockedarray.h
@@ -351,6 +362,7 @@ SET(SRCS
     textparticle.cpp
     textparticle.h
     tileset.h
+    vector.h
     )
 
 ADD_EXECUTABLE(tmw ${SRCS})

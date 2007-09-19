@@ -33,21 +33,26 @@
 class TextParticle : public Particle
 {
     public:
-        TextParticle(Map *map, const std::string &text,
-                int colorR, int colorG, int colorB, gcn::Font *font);
         /**
-         * Draws the particle image
+         * Constructor.
+         */
+        TextParticle(Map *map, const std::string &text,
+                     int colorR, int colorG, int colorB,
+                     gcn::Font *font);
+        /**
+         * Draws the particle image.
          */
         virtual void
         draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         // hack to improve text visibility
-        virtual int getPixelY() const { return (int)(mPosY + mPosZ); }
+        virtual int getPixelY() const
+        { return (int) (mPos.y + mPos.z); }
 
     private:
-        std::string mText;              /**< Text of the particle */
-        gcn::Font *mTextFont;           /**< Font used for drawing the text */
-        int mColorR, mColorG, mColorB;  /**< Color used for drawing the text */
+        std::string mText;             /**< Text of the particle. */
+        gcn::Font *mTextFont;          /**< Font used for drawing the text. */
+        int mColorR, mColorG, mColorB; /**< Color used for drawing the text. */
 };
 
 #endif

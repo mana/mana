@@ -31,6 +31,7 @@
 #include "../equipment.h"
 #include "../inventory.h"
 #include "../item.h"
+#include "../itemshortcut.h"
 #include "../localplayer.h"
 
 #include "../gui/chat.h"
@@ -77,6 +78,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                     it->setQuantity(amount);
                 }
             };
+            itemShortcut->load();
             break;
     }
 }

@@ -57,7 +57,7 @@ Monster::setAction(Action action)
             break;
         case DEAD:
             currentAction = ACTION_DEAD;
-            sound.playSfx(getInfo().getSound(EVENT_DIE));
+            sound.playSfx(getInfo().getSound(MONSTER_EVENT_DIE));
             break;
         case ATTACK:
             currentAction = ACTION_ATTACK;
@@ -87,10 +87,10 @@ Monster::handleAttack()
 
     const MonsterInfo &mi = getInfo();
 
-    // TODO: It's not possible to determine hit or miss here, so this stuff probably needs
-    // to be moved somewhere else. We may lose synchronization between attack animation and
-    // the sound, unless we adapt the protocol...
-    sound.playSfx(mi.getSound(EVENT_HIT));
+    // TODO: It's not possible to determine hit or miss here, so this stuff
+    // probably needs to be moved somewhere else. We may lose synchronization
+    // between attack animation and the sound, unless we adapt the protocol...
+    sound.playSfx(mi.getSound(MONSTER_EVENT_HIT));
 }
 
 Being::TargetCursorSize

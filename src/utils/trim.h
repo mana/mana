@@ -1,6 +1,6 @@
 /*
  *  The Mana World
- *  Copyright 2006 The Mana World Development Team
+ *  Copyright 2007 The Mana World Development Team
  *
  *  This file is part of The Mana World.
  *
@@ -21,35 +21,33 @@
  *  $Id$
  */
 
-#ifndef _TMW_EQUIPMENT_DB_H
-#define _TMW_EQUIPMENT_DB_H
+#ifndef _TMW_UTILS_TRIM_H_
+#define _TMW_UTILS_TRIM_H_
 
-#include <map>
-
-#include "equipmentinfo.h"
+#include <string>
 
 /**
- * Equipment information database.
+ * Trims spaces off the end and the beginning of the given string.
+ *
+ * @param str the string to trim spaces off
  */
-namespace EquipmentDB
+static void trim(std::string &str)
 {
-    /**
-     * Loads the equipment info from Items.xml
-     */
-    void load();
-
-    /**
-     * Frees equipment data
-     */
-    void unload();
-
-    void setEquipment(int id, EquipmentInfo* equipmentInfo);
-
-    EquipmentInfo* get(int id);
-
-    // Equipment database types
-    typedef std::map<int, EquipmentInfo*> EquipmentInfos;
-    typedef EquipmentInfos::iterator EquipmentInfoIterator;
+    std::string::size_type pos = str.find_last_not_of(' ');
+    if (pos != std::string::npos)
+    {
+        str.erase(pos + 1);
+        pos = str.find_first_not_of(' ');
+        if (pos != std::string::npos)
+        {
+            str.erase(0, pos);
+        }
+    }
+    else
+    {
+        // There is nothing else but whitespace in the string
+        str.clear();
+    }
 }
 
 #endif

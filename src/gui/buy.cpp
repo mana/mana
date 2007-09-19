@@ -28,6 +28,7 @@
 #include "button.h"
 #include "scrollarea.h"
 #include "shop.h"
+#include "shoplistbox.h"
 #include "slider.h"
 
 #include "../npc.h"
@@ -35,11 +36,15 @@
 #include "../resources/itemdb.h"
 #include "../utils/tostring.h"
 
-
 BuyDialog::BuyDialog():
     Window("Buy"),
     mMoney(0), mAmountItems(0), mMaxItems(0)
 {
+    setResizable(true);
+    setMinWidth(260);
+    setMinHeight(230);
+    setDefaultSize(0, 0, 260, 230);
+
     mShopItems = new ShopItems;
 
     mShopItemList = new ShopListBox(mShopItems, mShopItems);
@@ -54,32 +59,15 @@ BuyDialog::BuyDialog():
     mItemDescLabel = new gcn::Label("Description:");
     mItemEffectLabel = new gcn::Label("Effect:");
 
-    setContentSize(260, 210);
-    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-    mScrollArea->setDimension(gcn::Rectangle(5, 5, 250, 110));
-    mShopItemList->setDimension(gcn::Rectangle(5, 5, 238, 110));
-
-    mSlider->setDimension(gcn::Rectangle(5, 120, 200, 10));
-    mSlider->setEnabled(false);
-
-    mQuantityLabel->setPosition(215, 120);
-    mMoneyLabel->setPosition(5, 130);
-
-    mIncreaseButton->setPosition(40, 186);
     mIncreaseButton->setSize(20, 20);
-    mIncreaseButton->setEnabled(false);
-
-    mDecreaseButton->setPosition(10, 186);
     mDecreaseButton->setSize(20, 20);
+    mQuantityLabel->setWidth(60);
+
+    mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+    mIncreaseButton->setEnabled(false);
     mDecreaseButton->setEnabled(false);
-
-    mBuyButton->setPosition(180, 186);
     mBuyButton->setEnabled(false);
-
-    mQuitButton->setPosition(212, 186);
-
-    mItemEffectLabel->setDimension(gcn::Rectangle(5, 150, 240, 14));
-    mItemDescLabel->setDimension(gcn::Rectangle(5, 169, 240, 14));
+    mSlider->setEnabled(false);
 
     mShopItemList->setActionEventId("item");
     mSlider->setActionEventId("slider");
@@ -98,6 +86,8 @@ BuyDialog::BuyDialog():
     add(mItemDescLabel);
     add(mItemEffectLabel);
 
+    addWindowListener(this);
+    loadWindowState("Buy");
     setLocationRelativeTo(getParent());
 }
 
@@ -118,13 +108,12 @@ void BuyDialog::reset()
 {
     mShopItems->clear();
     mShopItemList->adjustSize();
-    mMoney = 0;
-    mSlider->setValue(0.0);
 
-    // Reset Previous Selected Items to prevent failing asserts
+    // Reset previous selected items to prevent failing asserts
     mShopItemList->setSelected(-1);
+    mSlider->setValue(0);
 
-    updateButtonsAndLabels();
+    setMoney(0);
 }
 
 void BuyDialog::addItem(int id, int amount, int price)
@@ -141,6 +130,7 @@ void BuyDialog::action(const gcn::ActionEvent &event)
     {
         setVisible(false);
         current_npc = 0;
+        return;
     }
 
     // The following actions require a valid selection
@@ -152,21 +142,19 @@ void BuyDialog::action(const gcn::ActionEvent &event)
 
     if (event.getId() == "slider")
     {
-        mAmountItems = (int)(mSlider->getValue() * mMaxItems);
+        mAmountItems = (int) mSlider->getValue();
         updateButtonsAndLabels();
     }
     else if (event.getId() == "+" && mAmountItems < mMaxItems)
     {
         mAmountItems++;
-
-        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
-    else if (event.getId() == "-" && mAmountItems > 0)
+    else if (event.getId() == "-" && mAmountItems > 1)
     {
         mAmountItems--;
-
-        mSlider->setValue((double) mAmountItems / (double) mMaxItems);
+        mSlider->setValue(mAmountItems);
         updateButtonsAndLabels();
     }
     // TODO: Actually we'd have a bug elsewhere if this check for the number
@@ -178,25 +166,69 @@ void BuyDialog::action(const gcn::ActionEvent &event)
         Net::GameServer::Player::tradeWithNPC
             (mShopItems->at(selectedItem).id, mAmountItems);
 
-        // Update money and adjust the max number of items that can be bought
-        mMoney -= mAmountItems * mShopItems->at(selectedItem).price;
-        mMaxItems -= mAmountItems;
-
         // Reset selection
-        mAmountItems = 0;
-        mSlider->setValue(0.0);
+        mAmountItems = 1;
+        mSlider->setValue(1);
+        mSlider->gcn::Slider::setScale(1, mMaxItems);
 
-        updateButtonsAndLabels();
+        // Update money and adjust the max number of items that can be bought
+        mMaxItems -= mAmountItems;
+        setMoney(mMoney - mAmountItems * mShopItems->at(selectedItem).price);
     }
 }
 
 void BuyDialog::selectionChanged(const SelectionEvent &event)
 {
+
     // Reset amount of items and update labels
-    mAmountItems = 0;
-    mSlider->setValue(0.0);
+    mAmountItems = 1;
+    mSlider->setValue(1);
 
     updateButtonsAndLabels();
+    mSlider->gcn::Slider::setScale(1, mMaxItems);
+}
+
+void BuyDialog::windowResized(const WindowEvent &event)
+{
+    gcn::Rectangle area = getChildrenArea();
+    int width = area.width;
+    int height = area.height;
+
+    mDecreaseButton->setPosition(8, height - 8 - mDecreaseButton->getHeight());
+    mIncreaseButton->setPosition(
+            mDecreaseButton->getX() + mDecreaseButton->getWidth() + 5,
+            mDecreaseButton->getY());
+
+    mQuitButton->setPosition(
+            width - 8 - mQuitButton->getWidth(),
+            height - 8 - mQuitButton->getHeight());
+    mBuyButton->setPosition(
+            mQuitButton->getX() - 5 - mBuyButton->getWidth(),
+            mQuitButton->getY());
+
+    mItemDescLabel->setDimension(gcn::Rectangle(8,
+                mBuyButton->getY() - 5 - mItemDescLabel->getHeight(),
+                width - 16,
+                mItemDescLabel->getHeight()));
+    mItemEffectLabel->setDimension(gcn::Rectangle(8,
+                mItemDescLabel->getY() - 5 - mItemEffectLabel->getHeight(),
+                width - 16,
+                mItemEffectLabel->getHeight()));
+    mMoneyLabel->setDimension(gcn::Rectangle(8,
+                mItemEffectLabel->getY() - 5 - mMoneyLabel->getHeight(),
+                width - 16,
+                mMoneyLabel->getHeight()));
+
+    mQuantityLabel->setPosition(
+            width - mQuantityLabel->getWidth() - 8,
+            mMoneyLabel->getY() - 5 - mQuantityLabel->getHeight());
+    mSlider->setDimension(gcn::Rectangle(8,
+                mQuantityLabel->getY(),
+                mQuantityLabel->getX() - 8 - 8,
+                10));
+
+    mScrollArea->setDimension(gcn::Rectangle(8, 8, width - 16,
+                mSlider->getY() - 5 - 8));
 }
 
 void
@@ -232,14 +264,13 @@ BuyDialog::updateButtonsAndLabels()
 
     // Enable or disable buttons and slider
     mIncreaseButton->setEnabled(mAmountItems < mMaxItems);
-    mDecreaseButton->setEnabled(mAmountItems > 0);
+    mDecreaseButton->setEnabled(mAmountItems > 1);
     mBuyButton->setEnabled(mAmountItems > 0);
-    mSlider->setEnabled(mMaxItems > 0);
+    mSlider->setEnabled(mMaxItems > 1);
 
     // Update quantity and money labels
-    mQuantityLabel->setCaption(toString(mAmountItems));
-    mQuantityLabel->adjustSize();
+    mQuantityLabel->setCaption(
+        toString(mAmountItems) + " / " + toString(mMaxItems));
     mMoneyLabel->setCaption("Price: " + toString(price)  + " GP / "
                              + toString(mMoney - price) + " GP" );
-    mMoneyLabel->adjustSize();
 }

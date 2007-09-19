@@ -29,10 +29,18 @@
 #include "inventory.h"
 #include "item.h"
 #include "main.h"
+#include "particle.h"
 #include "sound.h"
 #include "log.h"
 
 #include "net/gameserver/player.h"
+
+#include "gui/gui.h"
+
+#include "net/messageout.h"
+#include "net/protocol.h"
+
+#include "utils/tostring.h"
 
 LocalPlayer *player_node = NULL;
 
@@ -46,6 +54,7 @@ LocalPlayer::LocalPlayer():
     mLevel(1), mMoney(0),
     mTotalWeight(1), mMaxWeight(1),
     mHP(1), mMaxHP(1),
+    mXp(0),
     mTarget(NULL), mPickUpTarget(NULL),
     mTrading(false),
     mLastAction(-1), mWalkingDir(0),
@@ -110,6 +119,17 @@ LocalPlayer::moveInvItem(Item *item, int newIndex)
 
     Net::GameServer::Player::moveItem(
         item->getInvIndex(), newIndex, item->getQuantity());
+}
+
+Item* LocalPlayer::searchForItem(int itemId)
+{
+    for (int i = 0; i < INVENTORY_SIZE; i++)
+    {
+        if (itemId == mInventory->getItem(i)->getId()) {
+            return mInventory->getItem(i);
+        }
+    }
+    return NULL;
 }
 
 void LocalPlayer::equipItem(Item *item)
@@ -302,10 +322,14 @@ void LocalPlayer::attack()
 
     setAction(ATTACK);
 
-    if (getWeapon() == 2)
-        sound.playSfx("sfx/bow_shoot_1.ogg");
-    else
+    if (mEquippedWeapon)
+    {
+        std::string soundFile = mEquippedWeapon->getSound(EQUIP_EVENT_STRIKE);
+        if (soundFile != "") sound.playSfx(soundFile);
+    }
+    else {
         sound.playSfx("sfx/fist-swish.ogg");
+    }
 
     Net::GameServer::Player::attack(getSpriteDirection());
 }
@@ -328,4 +352,17 @@ void LocalPlayer::raiseAttribute(size_t attr)
 {
     mAttributeBase.at(attr)++;
     // TODO: Inform the server about our desire to raise the attribute
+}
+
+void LocalPlayer::setXp(int xp)
+{
+    if (mMap && xp > mXp)
+    {
+        const std::string text = toString(xp - mXp) + " xp";
+
+        // Show XP number
+        particleEngine->addTextRiseFadeOutEffect(text, hitYellowFont,
+                                                 mPx + 16, mPy - 16);
+    }
+    mXp = xp;
 }

@@ -59,6 +59,7 @@ EquipmentWindow::EquipmentWindow(Equipment *equipment):
     mBackground(NULL),
     mSelected(-1)
 {
+    setCloseButton(true);
     setDefaultSize(5, 195, 216, 260);
     loadWindowState("Equipment");
 

@@ -2,6 +2,19 @@
 
 	* src/gui/button.cpp: Fixed improper const qualifier.
 
+2007-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* data/items.xml, data/equipment.xml: Added temporary weapon IDs below
+	256 to use as view-ID in eAthena's item DB.
+	* src/gui/shoplistbox.cpp, src/gui/buy.h, src/gui/buy.cpp: Allowed
+	selection of items that cannot be afforded, so that their descriptions
+	are still accessible. Also made sure the player's money value of
+	ShopItemList gets updated.
+
+2007-09-11  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/chat.cpp, tmw.cbp: Fixed admin commands.
+
 2007-09-10  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* configure.ac, data/fonts/dejavusans.ttf,
@@ -18,16 +31,102 @@
 	* po/LINGUAS: Added German to the list of available languages.
 	* po/de.po: Fixed two syntax errors preventing compilation.
 
-2007-08-27  Matthias Hartmann  <hartmann.matthias@gmail.com>
+2007-09-08  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* po/de.po: Added german translation.
+	* data/graphics/particles/aniblaze.png,
+	data/graphics/particles/cookingfire.particle.xml,
+	data/graphics/particles/fireplace.particle.xml,
+	data/graphics/particles/flame.particle.xml: Improved fire effects by
+	using animated particles.
+
+2007-09-06  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/animationparticle.cpp, src/imageparticle.cpp: Fixed animated
+	particles.
+
+2007-09-01  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/Makefile.am: Fixed the entry for windowlistener.h.
+
+2007-08-30  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/localplayer.cpp, src/player.cpp, src/main.cpp, src/being.cpp,
+	src/CMakeLists.txt, src/Makefile.am, src/resources/iteminfo.h,
+	src/resources/equipmentdb.h, src/resources/equipmentinfo.h,
+	src/resources/itemdb.cpp, src/resources/iteminfo.cpp,
+	src/resources/equipmentdb.cpp, src/resources/equipmentinfo.cpp,
+	src/resources/spritedef.h, src/being.h, data/items.xml,
+	data/equipment.xml: Merged equipment database with items database and
+	got rid of the unused item art attribute.
+	* src/net/beinghandler.cpp, src/net/charserverhandler.cpp: Removed the
+	now unnecessary multiplication of weapon IDs with 10000.
+	* src/resources/iteminfo.cpp, data/graphics/items/unknown.png: Added
+	fallback item icon and use it for unknown items or when item image
+	fails to load.
+	* NEWS: Updated with changes since last update.
+	* data/items.xml, data/equipment.xml: Reverted equipment database and
+	included original low-ID items in items.xml for compatibility with
+	eAthena, which doesn't support View ID to come above 255.
+	* src/resources/itemdb.cpp: Accept items without a name.
+
+2007-08-29  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/sell.cpp, src/gui/inventorywindow.cpp, src/gui/sell.h: Made
+	sell dialog resizable and tweaked inventory resize code a bit.
+	* data/items.xml: Fixed typo in chainmail description.
+
+2007-08-28  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/window.cpp, src/gui/inventorywindow.h,
+	src/gui/selectionlistener.h, src/gui/buy.h,
+	src/gui/itemshortcutwindow.cpp, src/gui/inventorywindow.cpp,
+	src/gui/buy.cpp, src/gui/window.h, src/gui/windowlistener.h,
+	src/gui/itemshortcutwindow.h, src/CMakeLists.txt, src/Makefile.am:
+	Made buy dialog resizable and added a WindowListener class for
+	listening for window resize and move events.
+	* src/textparticle.h, src/particle.h, src/CMakeLists.txt,
+	src/particle.cpp, src/imageparticle.cpp, src/vector.h,
+	src/textparticle.cpp, src/Makefile.am: Added Vector class and used it
+	in the particle engine.
+
+2007-08-27  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/engine.cpp, src/resources/mapreader.cpp: Made client search for
+	both compressed and non-compressed map files.
 
 2007-08-27  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
+	* src/game.cpp: Assigned unused emotions to Alt +/-. (applied a patch
+	by Quiche_on_a_leash).
+	* data/maps/new_1-1.tmx, data/maps/new_1-1.tmx.gz,
+	data/maps/new_10-1.tmx, data/maps/new_10-1.tmx.gz,
+	data/maps/new_11-1.tmx, data/maps/new_11-1.tmx.gz,
+	data/maps/new_12-1.tmx, data/maps/new_12-1.tmx.gz,
+	data/maps/new_13-1.tmx, data/maps/new_13-1.tmx.gz,
+	data/maps/new_14-1.tmx, data/maps/new_14-1.tmx.gz,
+	data/maps/new_15-1.tmx, data/maps/new_15-1.tmx.gz,
+	data/maps/new_16-1.tmx, data/maps/new_16-1.tmx.gz,
+	data/maps/new_17-1.tmx, data/maps/new_17-1.tmx.gz,
+	data/maps/new_18-1.tmx, data/maps/new_18-1.tmx.gz,
+	data/maps/new_19-1.tmx, data/maps/new_19-1.tmx.gz,
+	data/maps/new_2-1.tmx, data/maps/new_2-1.tmx.gz,
+	data/maps/new_20-1.tmx, data/maps/new_20-1.tmx.gz,
+	data/maps/new_3-1.tmx, data/maps/new_3-1.tmx.gz,
+	data/maps/new_4-1.tmx, data/maps/new_4-1.tmx.gz,
+	data/maps/new_5-1.tmx, data/maps/new_5-1.tmx.gz,
+	data/maps/new_6-1.tmx, data/maps/new_6-1.tmx.gz,
+	data/maps/new_7-1.tmx, data/maps/new_7-1.tmx.gz,
+	data/maps/new_8-1.tmx, data/maps/new_8-1.tmx.gz,
+	data/maps/new_9-1.tmx, data/maps/new_9-1.tmx.gz: Replaced compressed
+	maps with layer compressed maps.
 	* data/maps/new_1-1.tmx.gz: Added test npcs.
 	* src/openglgraphics.cpp, tmw.cbp: Fixed compilation with old OpenGL
 	headers.
 	* po/it.po: Updated italian translation.
+
+2007-08-27  Matthias Hartmann  <hartmann.matthias@gmail.com>
+
+	* po/de.po: Added German translation.
 
 2007-08-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -35,6 +134,11 @@
 	sending raw messages to the game server.
 	* src/engine.cpp, src/resources/mapreader.cpp: Ported patch from 0.0,
 	in order to support missing extensions and uncompressed maps.
+
+2007-08-26  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Removed home dir
+	from config file to avoid encoding issues.
 
 2007-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -58,10 +162,103 @@
 	for rectangle OpenGL textures when available, in order to reduce video
 	memory usage.
 
+2007-08-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/gui.h, src/gui/gui.cpp: Removed useless logic method and
+	reverted mouse cursor to non-static since there can be only one Gui
+	instance so there is no point in supporting a shared resource.
+	* src/gui/window.cpp, src/gui/gui.h: Removed unnecessary
+	Gui::isCustomCursor method.
+	* src/gui/char_select.h, src/gui/char_select.cpp, src/utils/trim.h:
+	Added trimming of name for new character creation.
+	* src/net/chathandler.cpp: Added trimming of chat messages appearing
+	above players.
+	* src/gui/window.cpp, src/gui/window.h: Improved resize mouse cursor
+	indication, removing duplicated code and fixing indicator above resize
+	grip.
+
+2007-08-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.h, src/gui/viewport.cpp: Removed two useless popup
+	related methods.
+	* src/gui/debugwindow.h, src/gui/debugwindow.cpp: Use generic close
+	button functionality.
+	* src/particle.h, src/particleemitter.cpp, src/particle.cpp: Renamed
+	Particle::mVector to Particle::mVelocity for clarity.
+	* src/localplayer.cpp, src/gui/ministatus.cpp, src/gui/status.cpp,
+	src/being.cpp, src/net/charserverhandler.cpp,
+	src/net/playerhandler.cpp, src/localplayer.h, src/being.h: Changed XP
+	gaining effect to appear on the player instead.
+	* data/graphics/gui/hits_yellow.png: Restored shadow of yellow font.
+
+2007-08-22  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/itemshortcutcontainer.h: Fixed compiler warning.
+	* src/CMakeLists.txt, src/Makefile.am: Updated source lists.
+	* data/graphics/gui/CMakeLists.txt, data/graphics/gui/Makefile.am:
+	Added close button and item shortcut backgrounds to files that will be
+	installed.
+	* src/gui/itemshortcutcontainer.cpp: Make sure mGridWidth and
+	mGridHeight are initialized properly (fixes arithmetic exception in
+	ItemShortcutContainer::draw).
+	* src/keyboardconfig.cpp: Changed default sitting key back to 's'.
+	* src/net/equipmenthandler.cpp: Removed a line that attempted to set
+	the player's weapon sprite with each kind of equipment. Seems to work
+	fine without as well.
+	* src/gui/chat.cpp, src/utils/trim.h, src/CMakeLists.txt,
+	src/Makefile.am: Added trimming of chat messages.
+
+2007-08-22  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/tiles/woodland_indoor_x2.png: Another color correction
+	at the light platemail (looks more metalic now)
+	* data/maps/new_18-1.tmx.gz, data/maps/new_19-1.tmx.gz,
+	data/images/minimap_new_18-1.png, data/images/minimap_new_19-1.png:
+	Removed a tree that prevented people from sitting on one of the
+	benches properly. Added correct minimap to woodland village and
+	surrounding.
+
+2007-08-22  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* data/graphics/gui/item_shortcut_bgr.png, src/game.cpp,
+	src/gui/gui.cpp, src/gui/itemcontainer.cpp,
+	src/gui/itemshortcutcontainer.cpp, src/gui/itemshortcutcontainer.h,
+	src/gui/itemshortcutwindow.cpp, src/gui/itemshortcutwindow.h,
+	src/gui/menuwindow.cpp, src/gui/setup_keyboard.cpp, src/gui/window.h,
+	src/itemshortcut.cpp, src/itemshortcut.h, src/keyboardconfig.cpp,
+	src/keyboardconfig.h, src/localplayer.cpp, src/localplayer.h,
+	src/main.cpp, src/net/inventoryhandler.cpp, src/utils/tostring.h,
+	tmw.cbp: Added item shortcut bar.
+
+2007-08-20  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* data/graphics/gui/mouse.png, src/gui/equipmentwindow.cpp,
+	src/gui/gui.cpp, src/gui/gui.h, src/gui/inventorywindow.cpp,
+	src/gui/setup.cpp, src/gui/skill.cpp, src/gui/skill.h,
+	src/gui/status.cpp, src/gui/window.cpp, src/gui/window.h,
+	data/graphics/gui/close_button.png: Added close button functionality,
+	resize cursor cues.
+	* data/graphics/gui/hits_yellow.png, src/being.cpp, src/being.h,
+	src/gui/gui.cpp, src/localplayer.cpp, src/localplayer.h,
+	src/net/charserverhandler.cpp, src/net/playerhandler.cpp,
+	src/particle.cpp, src/particle.h: Added monster killed xp notification
+	effect.
+
 2007-08-19  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
-	* src/CMakeLists.txt: Updated CMake file.
 	* data/equipment.xml: Fixed typo in female light plate mail.
+	* NEWS: Updated with changes since 0.0.23.
+	* src/CMakeLists.txt: Updated CMake file.
+
+2007-08-19  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/keyboardconfig.cpp, src/keyboardconfig.h: Minor cleanup.
+	* src/gui/buy.cpp, src/gui/sell.cpp: Buy/sell fixed minimum quantity.
+	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h: Fixed bug -
+	reverts unassigned key.
 
 2007-08-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -72,6 +269,23 @@
 	* src/localplayer.cpp, src/gui/status.cpp, src/net/protocol.h,
 	src/net/playerhandler.cpp, src/localplayer.h: Adapted to new server
 	handling of character attributes.
+
+2007-08-17  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* tools/adler32.c: Added little program for calculating adler32
+	checksums of files.
+	* src/gui/setup_keyboard.cpp: Fixed compile issue related to array
+	bound not being an integer constant.
+
+2007-08-15  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/npcs.png, data/graphics/sprites/npc.xml:
+	Added farmer NPC for woodland village.
+
+2007-08-14  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/popupmenu.cpp, src/gui/viewport.cpp, src/gui/viewport.h,
+	tmw.cbp: Fixed popup menu requiring one more click after being used.
 
 2007-08-14  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -111,6 +325,15 @@
 	* src/gui/npclistdialog.cpp, src/gui/npclistdialog.h,
 	src/net/npchandler.cpp: Removed colon in NPC choice messages.
 
+2007-08-09  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/chest-lightplatemail-male.png,
+	data/graphics/sprites/chest-lightplatemail-female.png,
+	data/graphics/items/armor-chest-lightplatemail.png,
+	data/graphics/tiles/woodland_indoor_x2.png: Gave the platemail
+	armor a blue tint. Looks less boring and makes recoloring through
+	hue shifting possible.
+
 2007-08-09  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* po/POTFILES.in: Updated list of translatable source files.
@@ -133,9 +356,29 @@
 	data/graphics/images/EquipBackground.png: Re-designed equipment
 	window, un-equip created.
 
+2007-08-08  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/particles/cookingfire.particle.xml,
+	data/graphics/particles/fireplace.particle.xml,
+	data/maps/new_20-1.tmx.gz: Added particle effects and music to the
+	woodland village indoor map.
+	* data/maps/new_19-1.tmx.gz: Added overlay effect and music to
+	woodland village outdoor map.
+	* data/maps/new_18-1.tmx.gz: Fixed some collision map errors and added
+	music and overlay effect to the surrounding of the woodland village.
+
+2007-08-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/npcs.png: Added two new NPCs and gave some
+	of the older NPCs a makeover to look more like the style of the new
+	playerset.
+	* data/maps/new_20-1.tmx.gz: Corrected a few mapping errors in the
+	new woodland village.
+	* data/items.xml: Tweaked description and values of the scythe.
+
 2007-08-07  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
-	* po/Makevars, src/main.cpp: Replaced PACKAGE by tmw to	reduce
+	* po/Makevars, src/main.cpp: Replaced PACKAGE by tmw to reduce
 	preprocessing hell. Set gettext charset to utf8.
 	* src/gui/menuwindow.cpp, src/gui/connection.cpp,
 	src/gui/register.cpp, src/gui/equipmentwindow.cpp,
@@ -171,6 +414,14 @@
 	* po/Makefile.in.in, po/remove-potcdate.sin, configure.ac,
 	Makefile.am, autogen.sh: Used autopoint for generating gettext
 	environment, and removed conflicting files.
+
+2007-08-05  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/woodland_indoor.png,
+	data/graphics/tiles/woodland_indoor_x2.png,
+	data/graphics/tiles/woodland_indoor_x3.png: Added woodland
+	village indoor tilesets.
+	* data/maps/new_20-1.tmx.gz: Added woodland village indoor map.
 
 2007-08-05  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -222,11 +473,21 @@
 	src/gui/itemcontainer.cpp, src/gui/checkbox.cpp, src/gui/minimap.cpp,
 	src/gui/scrollarea.cpp, src/gui/popupmenu.cpp: Removed useless yet
 	costly dynamic casts.
-
-2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
-
 	* src/net/beinghandler.cpp, src/net/protocol.h: Added being speed to
 	protocol.
+
+2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
+	src/gui/setup_keyboard.h, src/keyboardconfig.cpp,
+	src/keyboardconfig.h, src/main.cpp: Minor changes to keyboard config,
+	keyboard setup gui re-designed.
+
+2007-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/CMakeLists.txt, src/Makefile.am: Added setup_keyboard.* and
+	keyboardconfig.* to the list of source files.
+	* src/keyboardconfig.h: Fixed initialization order.
 
 2007-07-23  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
@@ -247,8 +508,21 @@
 
 	* data/maps/new_1-1.tar.gz: Fixed insecure filenames.
 
+2007-07-17  Joshua Langley  <joshlangley[at]optusnet.com.au>
+
+	* src/game.cpp: Only one key per function.
+	* src/main.cpp: Keyboard configuration included.
+	* src/gui/button.cpp, src/gui/button.h: Default constructor and
+	init function added.
+	* src/gui/setup.cpp: Keyboard setup tab added.
+	* src/gui/setup_keyboard.cpp, src/gui/setup_keyboard.h: Add to project
+	file, it is the keyboard setup tab.
+	* src/keyboardconfig.cpp, src/keyboardconfig.h: Add to project file,
+	the main keyboard config operations.
+
 2007-07-16  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
+	* data/items.xml: Fixed description of silk headband.
 	* data/maps/new_1-1.tar.gz, data/maps/new_3-1.tar.gz: Added warp and
 	spawn areas.
 
@@ -261,6 +535,24 @@
 
 	* src/net/beinghandler.cpp, src/net/beinghandler.h,
 	src/net/protocol.h: Added support for visible equipment.
+
+2007-07-11  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/resources/monsterdb.cpp, src/resources/monsterinfo.cpp,
+	src/resources/monsterinfo.h, src/monster.cpp: Renamed SoundEvent
+	to MonsterSoundEvent.
+	* src/resources/equipmentdb.cpp, src/resources/equipmentinfo.cpp,
+	src/resources/equipmentinfo.h: EquipmentDB now holds the type of
+	attack animation and the sounds of weapons.
+	* src/being.cpp. src/being.h, src/localplayer.cpp,
+	src/net/beinghandler.cpp, src/net/charserverhandler.cpp,
+	src/net/equipmenthandler.cpp, src/player.cpp, src/player.h: The
+	type of weapon player characters are using is now set using
+	setVisibleEquipment() instead of setWeapon() or setWeaponById().
+	* src/CMakeLists.txt, src/Makefile.AM, tmw.cbp, The Mana World.dev:
+	Updated project files and buildscripts.
+	* data/graphics/images/login-wallpaper.png: Replaced login wallpaper
+	with a new one by Irukard.
 
 2007-07-11  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

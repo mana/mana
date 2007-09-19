@@ -24,12 +24,23 @@
 #ifndef _TMW_ITEMINFO_H_
 #define _TMW_ITEMINFO_H_
 
+#include <map>
 #include <string>
+#include <vector>
+
+#include "spritedef.h"
 
 class Image;
 
+enum EquipmentSoundEvent
+{
+    EQUIP_EVENT_STRIKE,
+    EQUIP_EVENT_HIT
+};
+
 /**
- * Defines a class for storing item infos.
+ * Defines a class for storing item infos. This includes information used when
+ * the item is equipped.
  */
 class ItemInfo
 {
@@ -40,10 +51,11 @@ class ItemInfo
         ItemInfo():
             mImageName(""),
             mImage(NULL),
-            mArt(0),
             mType(0),
             mWeight(0),
-            mSlot(0)
+            mView(0),
+            mSlot(0),
+            mAttackType(ACTION_DEFAULT)
         {
         }
 
@@ -52,73 +64,89 @@ class ItemInfo
          */
         ~ItemInfo();
 
-        void
-        setArt(short art) { mArt = art; }
+        void setName(const std::string &name)
+        { mName = name; }
 
-        short
-        getArt() const { return mArt; }
+        const std::string& getName() const
+        { return mName; }
 
-        void
-        setName(const std::string &name) { mName = name; }
+        void setImage(const std::string &image);
 
-        const std::string&
-        getName() const { return mName; }
+        Image* getImage() const
+        { return mImage; }
 
-        void
-        setImage(const std::string &image);
+        void setDescription(const std::string &description)
+        { mDescription = description; }
 
-        Image*
-        getImage() const { return mImage; }
+        const std::string& getDescription() const
+        { return mDescription; }
 
-        void
-        setDescription(const std::string &description)
-        {
-            mDescription = description;
-        }
-
-        const std::string&
-        getDescription() const { return mDescription; }
-
-        void
-        setEffect(const std::string &effect) { mEffect = effect; }
+        void setEffect(const std::string &effect)
+        { mEffect = effect; }
 
         const std::string&
         getEffect() const { return mEffect; }
 
-        void
-        setType(short type) { mType = type; }
+        void setType(short type)
+        { mType = type; }
 
-        short
-        getType() const { return mType; }
+        short getType() const
+        { return mType; }
 
-        void
-        setWeight(short weight) { mWeight = weight; }
+        void setWeight(short weight)
+        { mWeight = weight; }
 
-        short
-        getWeight() const { return mWeight; }
+        short getWeight() const
+        { return mWeight; }
 
-        void
-        setSlot(char slot) { mSlot = slot; }
+        void setView(int view)
+        { mView = view; }
 
-        char
-        getSlot() const { return mSlot; }
+        void setSlot(char slot)
+        { mSlot = slot; }
+
+        char getSlot() const
+        { return mSlot; }
+
+        void setSprite(const std::string &animationFile, int gender)
+        { mAnimationFiles[gender] = animationFile; }
+
+        const std::string& getSprite(int gender) const;
+
+        void setAttackType(const std::string &attackType);
+
+        const SpriteAction getAttackType() const
+        { return mAttackType; }
+
+        void addSound(EquipmentSoundEvent event, const std::string &filename);
+
+        const std::string& getSound(EquipmentSoundEvent event) const;
 
     protected:
-        std::string mImageName;
+        std::string mImageName;        /**< The filename of the icon image. */
 
         /* TODO (BL): I do not think the item info should keep a reference to
          * the item icon. It would probably be better if this was kept in the
          * Item class, so that the images can be lazily instantiated and also
          * unloaded when no longer used.
          */
-        Image *mImage;
-        short mArt;
+        Image *mImage;                 /**< The loaded icon image. */
         std::string mName;
-        std::string mDescription;
-        std::string mEffect;
-        short mType;
-        short mWeight;
-        char mSlot;
+        std::string mDescription;      /**< Short description. */
+        std::string mEffect;           /**< Description of effects. */
+        short mType;                   /**< Item type (never used). */
+        short mWeight;                 /**< Weight in grams. */
+        int mView;                     /**< Item ID of how this item looks. */
+
+        // Equipment related members
+        char mSlot;                    /**< Equipment slot. */
+        SpriteAction mAttackType;      /**< Attack type, in case of weapon. */
+
+        /** Maps gender to sprite filenames. */
+        std::map<int, std::string> mAnimationFiles;
+
+        /** Stores the names of sounds to be played at certain event. */
+        std::map<EquipmentSoundEvent, std::vector<std::string>* > mSounds;
 };
 
 #endif

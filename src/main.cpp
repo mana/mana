@@ -48,8 +48,10 @@
 #endif
 
 #include "configuration.h"
+#include "keyboardconfig.h"
 #include "game.h"
 #include "graphics.h"
+#include "itemshortcut.h"
 #include "lockedarray.h"
 #include "localplayer.h"
 #include "log.h"
@@ -84,7 +86,6 @@
 
 #include "net/gameserver/gameserver.h"
 
-#include "resources/equipmentdb.h"
 #include "resources/image.h"
 #include "resources/itemdb.h"
 #include "resources/monsterdb.h"
@@ -108,6 +109,7 @@ Music *bgm;
 
 Configuration config;         /**< XML file configuration reader */
 Logger *logger;               /**< Log object */
+KeyboardConfig keyboard;
 
 Net::Connection *accountServerConnection = 0;
 Net::Connection *gameServerConnection = 0;
@@ -189,7 +191,6 @@ void initConfiguration(const Options &options)
     config.setValue("fpslimit", 0);
     config.setValue("updatehost", "http://updates.themanaworld.org");
     config.setValue("customcursor", 1);
-    config.setValue("homeDir", homeDir);
 
     // Checking if the configuration file exists... otherwise create it with
     // default options.
@@ -319,6 +320,9 @@ void initEngine()
     // Initialize for drawing
     graphics->_beginDraw();
 
+    // Initialize the item shortcuts.
+    itemShortcut = new ItemShortcut();
+
     gui = new Gui(graphics);
     state = STATE_CHOOSE_SERVER; /**< Initial game state */
 
@@ -337,12 +341,19 @@ void initEngine()
         errorMessage = err;
         logger->log("Warning: %s", err);
     }
+
+    // Initialize keyboard
+    keyboard.init();
 }
 
 /** Clear the engine */
 void exit_engine()
 {
+    // Before config.write() since it writes the shortcuts to the config
+    delete itemShortcut;
+
     config.write();
+
     delete gui;
     delete graphics;
 
@@ -353,7 +364,6 @@ void exit_engine()
     sound.close();
 
     // Unload XML databases
-    EquipmentDB::unload();
     ItemDB::unload();
     MonsterDB::unload();
 
@@ -457,7 +467,6 @@ void loadUpdates()
     const std::string updatesFile = "updates/resources2.txt";
     ResourceManager *resman = ResourceManager::getInstance();
     std::vector<std::string> lines = resman->loadTextFile(updatesFile);
-    std::string homeDir = config.getValue("homeDir", "");
 
     for (unsigned int i = 0; i < lines.size(); ++i)
     {
@@ -895,7 +904,6 @@ int main(int argc, char *argv[])
                             false);
 
                         // Load XML databases
-                        EquipmentDB::load();
                         ItemDB::load();
                         MonsterDB::load();
                         state = STATE_LOGIN;
@@ -1039,7 +1047,6 @@ int main(int argc, char *argv[])
                 }
             }
         }
-
     }
     catch (...)
     {

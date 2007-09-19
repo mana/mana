@@ -52,14 +52,12 @@ const float Particle::PARTICLE_SKY = 800.0f;
 
 Particle::Particle(Map *map):
     mAlive(true),
-    mPosX(0.0f), mPosY(0.0f), mPosZ(0.0f),
     mLifetimeLeft(-1),
     mLifetimePast(0),
     mFadeOut(0),
     mFadeIn(0),
     mAutoDelete(true),
     mMap(map),
-    mVectorX(0.0f), mVectorY(0.0f), mVectorZ(0.0f),
     mGravity(0.0f),
     mRandomnes(0),
     mBounce(0.0f),
@@ -109,7 +107,7 @@ Particle::update()
                         p++
                     )
                 {
-                    (*p)->moveBy(mPosX, mPosY, mPosZ);
+                    (*p)->moveBy(mPos.x, mPos.y, mPos.z);
                     mChildParticles.push_back (*p);
                 }
             }
@@ -117,31 +115,28 @@ Particle::update()
 
         if (mMomentum != 1.0f)
         {
-            mVectorX *= mMomentum;
-            mVectorY *= mMomentum;
-            mVectorZ *= mMomentum;
+            mVelocity *= mMomentum;
         }
 
         if (mTarget && mAcceleration != 0.0f)
         {
-            float distX = (mPosX - mTarget->getPosX()) * SIN45;
-            float distY = mPosY - mTarget->getPosY();
-            float distZ = mPosZ - mTarget->getPosZ();
+            Vector dist = mPos - mTarget->getPosition();
+            dist.x *= SIN45;
             float invHypotenuse;
 
-            switch(Particle::fastPhysics)
+            switch (Particle::fastPhysics)
             {
                 case 1:
                     invHypotenuse = fastInvSqrt(
-                        distX * distX + distY * distY + distZ * distZ);
+                        dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
                     break;
                 case 2:
                     invHypotenuse = 2.0f /
-                        fabs(distX) + fabs(distY) + fabs(distZ);
+                        fabs(dist.x) + fabs(dist.y) + fabs(dist.z);
                     break;
                 default:
                     invHypotenuse = 1.0f / sqrt(
-                        distX * distX + distY * distY + distZ * distZ);
+                        dist.x * dist.x + dist.y * dist.y + dist.z * dist.z);
                     break;
             }
 
@@ -152,25 +147,23 @@ Particle::update()
                     mAlive = false;
                 }
                 float accFactor = invHypotenuse * mAcceleration;
-                mVectorX -= distX * accFactor;
-                mVectorY -= distY * accFactor;
-                mVectorZ -= distZ * accFactor;
+                mVelocity -= dist * accFactor;
             }
         }
 
         if (mRandomnes > 0)
         {
-            mVectorX += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVectorY += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
-            mVectorZ += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.x += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.y += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
+            mVelocity.z += (rand()%mRandomnes - rand()%mRandomnes) / 1000.0f;
         }
 
-        mVectorZ -= mGravity;
+        mVelocity.z -= mGravity;
 
         // Update position
-        mPosX += mVectorX;
-        mPosY += mVectorY * SIN45;
-        mPosZ += mVectorZ * SIN45;
+        mPos.x += mVelocity.x;
+        mPos.y += mVelocity.y * SIN45;
+        mPos.z += mVelocity.z * SIN45;
 
         // Update other stuff
         if (mLifetimeLeft > 0)
@@ -179,14 +172,13 @@ Particle::update()
         }
         mLifetimePast++;
 
-        if (mPosZ > PARTICLE_SKY || mPosZ < 0.0f)
+        if (mPos.z > PARTICLE_SKY || mPos.z < 0.0f)
         {
             if (mBounce > 0.0f)
             {
-                mPosZ *= -mBounce;
-                mVectorX *= mBounce;
-                mVectorY *= mBounce;
-                mVectorZ *= -mBounce;
+                mPos.z *= -mBounce;
+                mVelocity *= mBounce;
+                mVelocity.z = -mVelocity.z;
             }
             else {
                 mAlive = false;
@@ -195,10 +187,8 @@ Particle::update()
     }
 
     // Update child particles
-    for (   ParticleIterator p = mChildParticles.begin();
-            p != mChildParticles.end();
-
-        )
+    for (ParticleIterator p = mChildParticles.begin();
+         p != mChildParticles.end();)
     {
         if ((*p)->update())
         {
@@ -217,14 +207,9 @@ Particle::update()
     return true;
 }
 
-
-void Particle::draw(Graphics *graphics, int offsetX, int offsetY) const
-{
-}
-
-
 Particle*
-Particle::addEffect(std::string particleEffectFile, int pixelX, int pixelY)
+Particle::addEffect(const std::string &particleEffectFile,
+                    int pixelX, int pixelY)
 {
     Particle *newParticle = NULL;
 
@@ -289,9 +274,9 @@ Particle::addEffect(std::string particleEffectFile, int pixelX, int pixelY)
         int offsetY = XML::getProperty(effectChildNode, "position-y", 0);
         int offsetZ = XML::getProperty(effectChildNode, "position-z", 0);
 
-        int particleX = (int)mPosX + pixelX + offsetX;
-        int particleY = (int)mPosY + pixelY + offsetY;
-        int particleZ = (int)mPosZ          + offsetZ;
+        int particleX = (int) mPos.x + pixelX + offsetX;
+        int particleY = (int) mPos.y + pixelY + offsetY;
+        int particleZ = (int) mPos.z          + offsetZ;
 
         int lifetime = XML::getProperty(effectChildNode, "lifetime", -1);
 
@@ -317,17 +302,16 @@ Particle::addEffect(std::string particleEffectFile, int pixelX, int pixelY)
 
 
 Particle*
-Particle::addTextSplashEffect(std::string text,
+Particle::addTextSplashEffect(const std::string &text,
                               int colorR, int colorG, int colorB,
                               gcn::Font *font, int x, int y)
 {
     Particle *newParticle = new TextParticle(mMap, text, colorR, colorG, colorB,
                                              font);
     newParticle->setPosition(x, y, 0);
-    newParticle->setVector  (   ((rand()%100) - 50) / 200.0f,  // X vector
-                                ((rand()%100) - 50) / 200.0f,  // Y vector
-                                ((rand()%100) / 200.0f) + 4.0f // Z vector
-                            );
+    newParticle->setVelocity(((rand() % 100) - 50) / 200.0f,    // X
+                             ((rand() % 100) - 50) / 200.0f,    // Y
+                             ((rand() % 100) / 200.0f) + 4.0f); // Z
     newParticle->setGravity(0.1f);
     newParticle->setBounce(0.5f);
     newParticle->setLifetime(200);
@@ -338,14 +322,28 @@ Particle::addTextSplashEffect(std::string text,
     return newParticle;
 }
 
+Particle*
+Particle::addTextRiseFadeOutEffect(const std::string &text, gcn::Font *font,
+                                   int x, int y)
+{
+    Particle *newParticle = new TextParticle(mMap, text, 255, 255, 255, font);
+    newParticle->setPosition(x, y, 0);
+    newParticle->setVelocity(0.0f, 0.0f, 0.5f);
+    newParticle->setGravity(0.0015f);
+    newParticle->setLifetime(300);
+    newParticle->setFadeOut(50);
+    newParticle->setFadeIn(200);
+
+    mChildParticles.push_back(newParticle);
+
+    return newParticle;
+}
 
 void
 Particle::setMap(Map *map)
 {
     mMap = map;
     if (mMap) setSpriteIterator(mMap->addSprite(this));
-
-    // TODO: Create map emitters based on emitter data in map data
 }
 
 

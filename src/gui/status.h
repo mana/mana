@@ -41,7 +41,8 @@ class ProgressBar;
  *
  * \ingroup Interface
  */
-class StatusWindow : public Window, public gcn::ActionListener {
+class StatusWindow : public Window, public gcn::ActionListener
+{
     public:
         /**
          * Constructor.

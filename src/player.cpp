@@ -28,7 +28,8 @@
 #include "graphics.h"
 #include "log.h"
 
-#include "resources/equipmentdb.h"
+#include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
 #include "utils/tostring.h"
 
@@ -37,7 +38,6 @@
 Player::Player(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    setWeapon(0);
 }
 
 Being::Type
@@ -93,46 +93,13 @@ Player::setSex(Uint8 sex)
             if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
             {
                 AnimatedSprite *newEqSprite = new AnimatedSprite(
-                        "graphics/sprites/" + EquipmentDB::get(
-                            mEquipmentSpriteIDs.at(i))->getSprite(sex));
+                        "graphics/sprites/" + ItemDB::get(
+                            mEquipmentSpriteIDs.at(i)).getSprite(sex));
                 delete mSprites[i];
                 mSprites[i] = newEqSprite;
             }
         }
     }
-}
-
-void
-Player::setWeapon(Uint16 weapon)
-{
-    if (weapon != mWeapon)
-    {
-        AnimatedSprite *newWeaponSprite = NULL;
-
-        switch (weapon)
-        {
-            case 0:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-fist.xml");
-                break;
-            case 1:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-dagger.xml");
-                break;
-            case 2:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-bow.xml");
-                break;
-            case 3:
-                newWeaponSprite =
-                    new AnimatedSprite("graphics/sprites/weapon-scythe.xml");
-                break;
-        }
-
-        delete mSprites[WEAPON_SPRITE];
-        mSprites[WEAPON_SPRITE] = newWeaponSprite;
-    }
-    Being::setWeapon(weapon);
 }
 
 void
@@ -189,17 +156,22 @@ Player::setVisibleEquipment(Uint8 slot, int id)
         if (mSex == 0)
         {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(0));
+                "graphics/sprites/" + ItemDB::get(id).getSprite(0));
         }
         else {
             equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + EquipmentDB::get(id)->getSprite(1));
+                "graphics/sprites/" + ItemDB::get(id).getSprite(1));
         }
 
         equipmentSprite->setDirection(getSpriteDirection());
 
         delete mSprites[slot];
         mSprites[slot] = equipmentSprite;
+
+        if (slot == WEAPON_SPRITE)
+        {
+            mEquippedWeapon = &ItemDB::get(id);
+        }
 
         setAction(mAction);
     }

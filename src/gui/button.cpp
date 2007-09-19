@@ -60,10 +60,25 @@ static ButtonData const data[BUTTON_COUNT] = {
 
 ImageRect Button::button[BUTTON_COUNT];
 
+Button::Button():
+    mIsLogged(false)
+{
+    init();
+}
+
 Button::Button(const std::string& caption, const std::string &actionEventId,
     gcn::ActionListener *listener):
     gcn::Button(caption),
     mIsLogged(false)
+{
+    init();
+    setActionEventId(actionEventId);
+    if (listener) {
+        addActionListener(listener);
+    }
+}
+
+void Button::init()
 {
     setBorderSize(0);
 
@@ -91,12 +106,7 @@ Button::Button(const std::string& caption, const std::string &actionEventId,
             btn[mode]->decRef();
         }
     }
-
     mInstances++;
-    setActionEventId(actionEventId);
-    if (listener) {
-        addActionListener(listener);
-    }
 }
 
 Button::~Button()

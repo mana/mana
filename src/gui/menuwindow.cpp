@@ -37,6 +37,7 @@ extern Window *inventoryWindow;
 extern Window *equipmentWindow;
 extern Window *skillDialog;
 extern Window *statusWindow;
+extern Window *itemShortcutWindow;
 
 namespace {
     struct MenuWindowListener : public gcn::ActionListener
@@ -62,6 +63,7 @@ MenuWindow::MenuWindow():
         N_("Equipment"),
         N_("Inventory"),
         N_("Skills"),
+        N_("Shortcut"),
         N_("Setup"),
         0
     };
@@ -109,14 +111,20 @@ void MenuWindowListener::action(const gcn::ActionEvent &event)
     {
         window = skillDialog;
     }
+    else if (event.getId() == "Shortcut")
+    {
+        window = itemShortcutWindow;
+    }
     else if (event.getId() == "Setup")
     {
         window = setupWindow;
     }
 
-    if (window) {
+    if (window)
+    {
         window->setVisible(!window->isVisible());
-        if (window->isVisible()) {
+        if (window->isVisible())
+        {
             window->requestMoveToTop();
         }
     }

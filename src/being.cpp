@@ -36,11 +36,9 @@
 
 #include "resources/resourcemanager.h"
 #include "resources/imageset.h"
+#include "resources/iteminfo.h"
 
 #include "gui/gui.h"
-
-#include "resources/resourcemanager.h"
-#include "resources/imageset.h"
 
 #include "utils/dtor.h"
 #include "utils/tostring.h"
@@ -58,11 +56,11 @@ Being::Being(Uint16 id, Uint16 job, Map *map):
     mEquipment(new Equipment()),
     mId(id),
     mSex(2),
-    mWeapon(0),
     mWalkSpeed(150),
     mSpeedModifier(1024),
     mSpriteDirection(DIRECTION_DOWN), mDirection(DOWN),
     mMap(NULL),
+    mEquippedWeapon(NULL),
     mHairStyle(0), mHairColor(0),
     mSpeechTime(0),
     mPx(0), mPy(0),
@@ -302,7 +300,7 @@ Being::setSpeech(const std::string &text, Uint32 time)
 void
 Being::takeDamage(int amount)
 {
-    gcn::Font* font;
+    gcn::Font *font;
     std::string damage = amount ? toString(amount) : "miss";
 
     // Selecting the right color
@@ -312,8 +310,9 @@ Being::takeDamage(int amount)
     }
     else
     {
-        // hit particle effect
-        controlParticle(particleEngine->addEffect("graphics/particles/hit.particle.xml", 0, 0));
+        // Hit particle effect
+        controlParticle(particleEngine->addEffect(
+                    "graphics/particles/hit.particle.xml", 0, 0));
 
         if (getType() == MONSTER)
         {
@@ -325,7 +324,7 @@ Being::takeDamage(int amount)
         }
     }
 
-    // show damage number
+    // Show damage number
     particleEngine->addTextSplashEffect(damage, 255, 255, 255, font,
                                         mPx + 16, mPy + 16);
 }
@@ -340,7 +339,7 @@ void
 Being::setMap(Map *map)
 {
     // Remove sprite from potential previous map
-    if (mMap != NULL)
+    if (mMap)
     {
         mMap->removeSprite(mSpriteIterator);
     }
@@ -348,12 +347,12 @@ Being::setMap(Map *map)
     mMap = map;
 
     // Add sprite to potential new map
-    if (mMap != NULL)
+    if (mMap)
     {
         mSpriteIterator = mMap->addSprite(this);
     }
 
-    //clear particle effect list because child particles became invalid
+    // Clear particle effect list because child particles became invalid
     mChildParticleEffects.clear();
 }
 
@@ -362,7 +361,8 @@ Being::controlParticle(Particle *particle)
 {
     if (particle)
     {
-        particle->disableAutoDelete();  //the effect may not die without the beings permission or we segvault
+        // The effect may not die without the beings permission or we segfault
+        particle->disableAutoDelete();
         mChildParticleEffects.push_back(particle);
     }
 }
@@ -380,20 +380,12 @@ Being::setAction(Action action)
             currentAction = ACTION_SIT;
             break;
         case ATTACK:
-            switch (getWeapon())
+            if (mEquippedWeapon)
             {
-                case 3:
-                    currentAction = ACTION_ATTACK;
-                    break;
-                case 2:
-                    currentAction = ACTION_ATTACK_BOW;
-                    break;
-                case 1:
-                    currentAction = ACTION_ATTACK_STAB;
-                    break;
-                case 0:
-                    currentAction = ACTION_ATTACK;
-                    break;
+                currentAction = mEquippedWeapon->getAttackType();
+            }
+            else {
+                currentAction = ACTION_ATTACK;
             }
             for (int i = 0; i < VECTOREND_SPRITE; i++)
             {
@@ -533,11 +525,9 @@ Being::logic()
         }
     }
 
-    //Update particle effects
-    for (   std::list<Particle *>::iterator i = mChildParticleEffects.begin();
-            i != mChildParticleEffects.end();
-
-        )
+    // Update particle effects
+    for (std::list<Particle *>::iterator i = mChildParticleEffects.begin();
+         i != mChildParticleEffects.end();)
     {
         (*i)->setPosition((float)mPx + 16.0f, (float)mPy + 32.0f);
         if (!(*i)->isAlive())
@@ -597,46 +587,6 @@ Being::Type
 Being::getType() const
 {
     return UNKNOWN;
-}
-
-void
-Being::setWeaponById(Uint16 weapon)
-{
-    //TODO: Use an external file to map weapon IDs to weapon types
-    switch (weapon)
-    {
-    case 529: // iron arrows
-    case 1199: // arrows
-        break;
-
-    case 623: //scythe
-        setWeapon(3);
-        break;
-
-    case 1200: // bow
-    case 530: // short bow
-    case 545: // forest bow
-        setWeapon(2);
-        break;
-
-    case 521: // sharp knife
-        /*  UNCOMMENT TO TEST SHARP KNIFE AS SCYTHE
-         *  setWeapon(3)
-         *  break;
-         */
-    case 522: // dagger
-    case 536: // short sword
-    case 1201: // knife
-        setWeapon(1);
-        break;
-
-    case 0: // unequip
-        setWeapon(0);
-        break;
-
-    default:
-        logger->log("Not a weapon: %d", weapon);
-    }
 }
 
 int Being::getOffset(int step) const

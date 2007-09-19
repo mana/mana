@@ -27,6 +27,7 @@
 #include "setup_audio.h"
 #include "setup_joystick.h"
 #include "setup_video.h"
+#include "setup_keyboard.h"
 #include "tabbedcontainer.h"
 
 #include "../utils/dtor.h"
@@ -43,7 +44,8 @@ extern Window *skillDialog;
 Setup::Setup():
     Window(_("Setup"))
 {
-    int width = 230;
+    setCloseButton(true);
+    int width = 250;
     int height = 245;
     setContentSize(width, height);
 
@@ -59,7 +61,7 @@ Setup::Setup():
     }
 
     TabbedContainer *panel = new TabbedContainer();
-    panel->setDimension(gcn::Rectangle(5, 5, 220, 205));
+    panel->setDimension(gcn::Rectangle(5, 5, 250, 205));
     panel->setOpaque(false);
 
     SetupTab *tab;
@@ -74,6 +76,10 @@ Setup::Setup():
 
     tab = new Setup_Joystick();
     panel->addTab(tab, _("Joystick"));
+    mTabs.push_back(tab);
+
+    tab = new Setup_Keyboard();
+    panel->addTab(tab, "Keyboard");
     mTabs.push_back(tab);
 
     add(panel);

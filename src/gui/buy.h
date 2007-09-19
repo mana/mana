@@ -28,11 +28,11 @@
 
 #include "window.h"
 #include "selectionlistener.h"
-#include "shoplistbox.h"
 
 #include "../guichanfwd.h"
 
 class ShopItems;
+class ShopListBox;
 class ListBox;
 
 /**
@@ -40,7 +40,8 @@ class ListBox;
  *
  * \ingroup Interface
  */
-class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
+class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
+    WindowListener
 {
     public:
         /**
@@ -97,6 +98,11 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
          */
         void
         updateButtonsAndLabels();
+
+        /**
+         * Called whenever the window is resized.
+         */
+        void windowResized(const WindowEvent &event);
 
     private:
         gcn::Button *mBuyButton;

@@ -51,6 +51,7 @@ InventoryWindow::InventoryWindow():
     mSplit(false)
 {
     setResizable(true);
+    setCloseButton(true);
     setMinWidth(240);
     setMinHeight(172);
     // If you adjust these defaults, don't forget to adjust the trade window's.
@@ -69,7 +70,6 @@ InventoryWindow::InventoryWindow():
     mItems->addSelectionListener(this);
 
     mInvenScroll = new ScrollArea(mItems);
-    mInvenScroll->setPosition(8, 8);
 
     mItemNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mItemDescriptionLabel = new gcn::Label(
@@ -100,8 +100,8 @@ InventoryWindow::InventoryWindow():
         mSplitButton->setWidth(48);
     }
 
+    addWindowListener(this);
     loadWindowState("Inventory");
-    updateContentSize();
 }
 
 InventoryWindow::~InventoryWindow()
@@ -130,7 +130,6 @@ void InventoryWindow::logic()
     mWeightLabel->setCaption(
         strprintf(_("Total Weight: %d - Maximum Weight: %d"),
         player_node->getTotalWeight(), player_node->getMaxWeight()));
-    mWeightLabel->adjustSize();
 }
 
 void InventoryWindow::action(const gcn::ActionEvent &event)
@@ -215,7 +214,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
     }
 }
 
-void InventoryWindow::updateContentSize()
+void InventoryWindow::windowResized(const WindowEvent &event)
 {
     const gcn::Rectangle area = getChildrenArea();
 
@@ -260,8 +259,7 @@ Item* InventoryWindow::getItem()
     return mItems->getItem();
 }
 
-void
-InventoryWindow::keyPressed(gcn::KeyEvent &event)
+void InventoryWindow::keyPressed(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {
@@ -271,8 +269,7 @@ InventoryWindow::keyPressed(gcn::KeyEvent &event)
     }
 }
 
-void
-InventoryWindow::keyReleased(gcn::KeyEvent &event)
+void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {

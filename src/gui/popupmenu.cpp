@@ -200,12 +200,6 @@ void PopupMenu::handleLink(const std::string& link)
 
     setVisible(false);
 
-    /*
-     * This is need cause of a bug in guichan that leave
-     * the focus on the popup menu even if is not visible.
-     */
-    _getFocusHandler()->focusNone();
-
     mBeing = NULL;
     mFloorItem = NULL;
     mItem = NULL;

@@ -156,7 +156,7 @@ MapReader::readMap(const std::string &filename)
 
     if (buffer == NULL)
     {
-        logger->log("Map file not found (%s)\n", filename.c_str());
+        logger->log("Map file not found (%s)", filename.c_str());
         return NULL;
     }
 

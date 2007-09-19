@@ -30,7 +30,7 @@
 
 class GuiConfigListener;
 class Graphics;
-class Image;
+class ImageSet;
 class Viewport;
 
 /**
@@ -60,35 +60,48 @@ class Gui : public gcn::Gui
         ~Gui();
 
         /**
-         * Works around Guichan bug
-         */
-        void
-        logic();
-
-        /**
          * Draws the whole Gui by calling draw functions down in the
          * Gui hierarchy. It also draws the mouse pointer.
          */
-        void
-        draw();
+        void draw();
 
         /**
-         * Return game font
+         * Return game font.
          */
-        gcn::Font*
-        getFont() { return mGuiFont; }
+        gcn::Font* getFont() const
+        { return mGuiFont; }
 
         /**
          * Sets whether a custom cursor should be rendered.
          */
-        void
-        setUseCustomCursor(bool customCursor);
+        void setUseCustomCursor(bool customCursor);
+
+        /**
+         * Sets which cursor should be used.
+         */
+        void setCursorType(int index)
+        { mCursorType = index; }
+
+        /**
+         * Cursors are in graphic order from left to right.
+         * CURSOR_POINTER should be left untouched.
+         * CURSOR_TOTAL should always be last.
+         */
+        enum {
+            CURSOR_POINTER = 0,
+            CURSOR_RESIZE_ACROSS,
+            CURSOR_RESIZE_DOWN,
+            CURSOR_RESIZE_DOWN_LEFT,
+            CURSOR_RESIZE_DOWN_RIGHT,
+            CURSOR_TOTAL
+        };
 
     private:
         GuiConfigListener *mConfigListener;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
-        Image *mMouseCursor;                  /**< Mouse cursor image */
         bool mCustomCursor;                   /**< Show custom cursor */
+        ImageSet *mMouseCursors;              /**< Mouse cursor images */
+        int mCursorType;
 };
 
 extern Gui *gui;                              /**< The GUI system */

@@ -5,6 +5,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
+	      gui/box.h \
+	      gui/box.cpp \
 	      gui/browserbox.cpp \
 	      gui/browserbox.h \
 	      gui/buddywindow.cpp \
@@ -39,12 +41,20 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/gccontainer.h \
 	      gui/gui.cpp \
 	      gui/gui.h \
+	      gui/hbox.h \
+	      gui/hbox.cpp \
 	      gui/help.cpp \
 	      gui/help.h \
+	      gui/inttextbox.h \
+	      gui/inttextbox.cpp \
 	      gui/inventorywindow.cpp \
 	      gui/inventorywindow.h \
 	      gui/itemcontainer.cpp \
 	      gui/itemcontainer.h \
+	      gui/itemshortcutcontainer.cpp \
+	      gui/itemshortcutcontainer.h \
+	      gui/itemshortcutwindow.cpp \
+	      gui/itemshortcutwindow.h \
 	      gui/item_amount.cpp \
 	      gui/item_amount.h \
 	      gui/linkhandler.h \
@@ -95,6 +105,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/setup.h \
 	      gui/setup_joystick.cpp \
 	      gui/setup_joystick.h \
+	      gui/setup_keyboard.cpp \
+	      gui/setup_keyboard.h \
 	      gui/setuptab.h \
 	      gui/setup_video.cpp \
 	      gui/setup_video.h \
@@ -118,22 +130,17 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/trade.h \
 	      gui/unregisterdialog.cpp \
 	      gui/unregisterdialog.h \
+	      gui/updatewindow.h \
+	      gui/updatewindow.cpp \
+	      gui/vbox.h \
+	      gui/vbox.cpp \
 	      gui/viewport.cpp \
 	      gui/viewport.h \
 	      gui/window.cpp \
 	      gui/window.h \
 	      gui/windowcontainer.cpp \
 	      gui/windowcontainer.h \
-	      gui/inttextbox.h \
-	      gui/inttextbox.cpp \
-	      gui/box.h \
-	      gui/box.cpp \
-	      gui/vbox.h \
-	      gui/vbox.cpp \
-	      gui/hbox.h \
-	      gui/hbox.cpp \
-	      gui/updatewindow.h \
-	      gui/updatewindow.cpp \
+	      gui/windowlistener.h \
 	      net/beinghandler.h \
 	      net/beinghandler.cpp \
 	      net/buysellhandler.h \
@@ -193,9 +200,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/ambientoverlay.h \
 	      resources/animation.cpp \
 	      resources/animation.h \
-	      resources/equipmentdb.cpp \
-	      resources/equipmentdb.h \
-	      resources/equipmentinfo.h \
 	      resources/image.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \
@@ -235,6 +239,7 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      utils/strprintf.h \
 	      utils/strprintf.cpp \
 	      utils/tostring.h \
+	      utils/trim.h \
 	      utils/xml.cpp \
 	      utils/xml.h \
 	      animatedsprite.cpp \
@@ -271,8 +276,12 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      inventory.h \
 	      item.cpp \
 	      item.h \
+	      itemshortcut.cpp \
+	      itemshortcut.h \
 	      joystick.cpp \
 	      joystick.h \
+	      keyboardconfig.cpp \
+	      keyboardconfig.h \
 	      localplayer.cpp \
 	      localplayer.h \
 	      lockedarray.h \
@@ -304,7 +313,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      sprite.h \
 	      textparticle.cpp \
 	      textparticle.h \
-	      tileset.h
+	      tileset.h \
+	      vector.h
 
 # set the include path found by configure
 INCLUDES =					\

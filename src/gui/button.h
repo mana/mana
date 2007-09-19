@@ -38,7 +38,13 @@ class ImageRect;
 class Button : public gcn::Button {
     public:
         /**
-         * Constructor, sets the caption of the button to the given string.
+         * Default constructor.
+         */
+        Button();
+
+        /**
+         * Constructor, sets the caption of the button to the given string and
+         * adds the given action listener.
          */
         Button(const std::string& caption, const std::string &actionEventId,
                 gcn::ActionListener *listener);
@@ -60,6 +66,8 @@ class Button : public gcn::Button {
         { mIsLogged = enable; }
 
     private:
+        void init();
+
         static ImageRect button[4];    /**< Button state graphics */
         static int mInstances;         /**< Number of button instances */
         bool mIsLogged;                /**< Makes the button appear pressed all the time */

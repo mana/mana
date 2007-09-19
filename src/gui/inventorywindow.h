@@ -29,8 +29,9 @@
 
 #include <guichan/widgets/checkbox.hpp>
 
-#include "window.h"
 #include "selectionlistener.h"
+#include "window.h"
+#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -45,7 +46,8 @@ class ItemContainer;
 class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
-                        public SelectionListener
+                        public SelectionListener,
+                        public WindowListener
 {
     public:
         /**
@@ -92,7 +94,10 @@ class InventoryWindow : public Window,
          */
         void selectionChanged(const SelectionEvent &event);
 
-        void updateContentSize();    /**< Updates widgets size/position. */
+        /**
+         * Called whenever the window is resized.
+         */
+        void windowResized(const WindowEvent &event);
 
     private:
         void updateButtons();    /**< Updates button states. */

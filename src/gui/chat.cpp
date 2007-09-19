@@ -44,6 +44,7 @@
 #include "../net/gameserver/player.h"
 
 #include "../utils/dtor.h"
+#include "../utils/trim.h"
 
 ChatWindow::ChatWindow():
     Window(),
@@ -125,7 +126,7 @@ void
 ChatWindow::chatLog(std::string line, int own, std::string channelName)
 {
     // Delete overhead from the end of the list
-    while ((int)mChatlog.size() > mItemsKeep) {
+    while ((int) mChatlog.size() > mItemsKeep) {
         mChatlog.pop_back();
     }
 
@@ -142,11 +143,14 @@ ChatWindow::chatLog(std::string line, int own, std::string channelName)
         own = BY_SERVER;
     }
 
-    int pos = line.find(" : ");
-    if (pos > 0) {
+    std::string::size_type pos = line.find(" : ");
+    if (pos != std::string::npos) {
         tmp.nick = line.substr(0, pos);
         line.erase(0, pos + 3);
     }
+
+    // Trim whitespace
+    trim(line);
 
     std::string lineColor = "##0"; // Equiv. to BrowserBox::BLACK
     switch (own) {

@@ -26,7 +26,7 @@
 #include "simpleanimation.h"
 
 AnimationParticle::AnimationParticle(Map *map, Animation *animation):
-    ImageParticle(map, 0),
+    ImageParticle(map, NULL),
     mAnimation(new SimpleAnimation(animation))
 {
 }
@@ -40,6 +40,7 @@ AnimationParticle::AnimationParticle(Map *map, xmlNodePtr animationNode):
 AnimationParticle::~AnimationParticle()
 {
     delete mAnimation;
+    mImage = NULL;
 }
 
 bool AnimationParticle::update()

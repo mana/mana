@@ -60,11 +60,6 @@ class CharSelectDialog : public Window, public gcn::ActionListener
 
         bool selectByName(const std::string &name);
 
-        /**
-         * Returns name of selected player
-         */
-        std::string getName();
-
     private:
         LockedArray<LocalPlayer*> *mCharInfo;
 
@@ -114,21 +109,27 @@ class CharCreateDialog : public Window, public gcn::ActionListener
          */
         ~CharCreateDialog();
 
-        void
-        action(const gcn::ActionEvent &event);
-
-        const std::string&
-        getName();
+        void action(const gcn::ActionEvent &event);
 
         /**
          * Unlocks the dialog, enabling the create character button again.
          */
-        void
-        unlock();
+        void unlock();
 
     private:
         int getDistributedPoints();
+
         void UpdateSliders();
+
+        /**
+         * Returns the name of the character to create.
+         */
+        std::string getName();
+
+        /**
+         * Communicate character creation to the server.
+         */
+        void attemptCharCreate();
 
         gcn::TextField *mNameField;
         gcn::Label *mNameLabel;
@@ -154,12 +155,6 @@ class CharCreateDialog : public Window, public gcn::ActionListener
 
         static const int mMaxPoints = 70;
         int mUsedPoints;
-
-
-        /**
-         * Communicate character creation to the server.
-         */
-        void attemptCharCreate();
 };
 
 #endif

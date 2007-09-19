@@ -28,11 +28,14 @@
 
 #include "../guichanfwd.h"
 
+#include "windowlistener.h"
+
 class ConfigListener;
 class GCContainer;
 class ImageRect;
 class ResizeGrip;
 class WindowContainer;
+class Image;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -120,14 +123,34 @@ class Window : public gcn::Window
         void setDimension(const gcn::Rectangle &dimension);
 
         /**
+         * Sets the position of this window.
+         */
+        void setPosition(int x, int y);
+
+        /**
+         * Sets the window x coordinate.
+         */
+        void setX(int x);
+
+        /**
+         * Sets the window y coordinate.
+         */
+        void setY(int y);
+
+        /**
          * Sets the location relative to the given widget.
          */
         void setLocationRelativeTo(gcn::Widget *widget);
 
         /**
-         * Sets whether of not the window can be resized.
+         * Sets whether or not the window can be resized.
          */
         void setResizable(bool resize);
+
+        /**
+         * Sets whether or not the window has a close button.
+         */
+        void setCloseButton(bool flag);
 
         /**
          * Returns whether the window can be resized.
@@ -155,9 +178,14 @@ class Window : public gcn::Window
         void setMaxHeight(unsigned int height);
 
         /**
-          * Sets whether the window is sticky.
-          * A sticky window will not have its visibility set to false
-          * on a general setVisible(false) call.
+         * Sets flag to show a title or not.
+         */
+        void setShowTitle(bool flag)
+        { mShowTitle = flag; }
+
+        /**
+          * Sets whether the window is sticky. A sticky window will not have
+          * its visibility set to false on a general setVisible(false) call.
           */
         void setSticky(bool sticky);
 
@@ -167,10 +195,9 @@ class Window : public gcn::Window
         bool isSticky();
 
         /**
-         * Overloads window setVisible by guichan to allow sticky window
-         * Handling
+         * Overloads window setVisible by Guichan to allow sticky window
+         * handling.
          */
-
         void setVisible(bool visible);
 
         /**
@@ -199,6 +226,24 @@ class Window : public gcn::Window
         void mouseDragged(gcn::MouseEvent &event);
 
         /**
+         * Implements custom cursor image changing context, based on mouse
+         * relative position.
+         */
+        void mouseMoved(gcn::MouseEvent &event);
+
+        /**
+         * When the mouse button has been let go, this ensures that the mouse
+         * custom cursor is restored back to it's standard image.
+         */
+        void mouseReleased(gcn::MouseEvent &event);
+
+        /**
+         * When the mouse leaves the window this ensures that the custom cursor
+         * is restored back to it's standard image.
+         */
+        void mouseExited(gcn::MouseEvent &event);
+
+        /**
          * Read the x, y, and width and height for resizables in the config
          * based on the given string.
          * That function let the values set with set{X, Y, Height, width}()
@@ -216,10 +261,24 @@ class Window : public gcn::Window
                             int defaultWidth, int defaultHeight);
 
         /**
-         * Reset the win pos and size to default.
-         * Don't forget to set defaults first.
+         * Reset the win pos and size to default. Don't forget to set defaults
+         * first.
          */
         void resetToDefaultSize();
+
+        /**
+         * Adds a listener to the list that's notified when the window is
+         * moved or resized.
+         */
+        void addWindowListener(WindowListener *listener)
+        { mListeners.push_back(listener); }
+
+        /**
+         * Removes a listener from the list that's notified when the window is
+         * moved or resized.
+         */
+        void removeWindowListener(WindowListener *listener)
+        { mListeners.remove(listener); }
 
         enum ResizeHandles
         {
@@ -233,13 +292,23 @@ class Window : public gcn::Window
         static WindowContainer *windowContainer;
 
     private:
+        /**
+         * Determines if the mouse is in a resize area and returns appropriate
+         * resize handles. Also initializes drag offset in case the resize
+         * grip is used.
+         *
+         * @see ResizeHandles
+         */
+        int getResizeHandles(gcn::MouseEvent &event);
+
         GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
         std::string mConfigName;   /**< Name used for saving window-related data */
+        bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
         bool mResizable;           /**< Window can be resized */
-        int mMouseResize;          /**< Window is being resized */
+        bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
         int mMinWinWidth;          /**< Minimum window width */
         int mMinWinHeight;         /**< Minimum window height */
@@ -255,8 +324,10 @@ class Window : public gcn::Window
          */
         static ConfigListener *windowConfigListener;
 
+        static int mouseResize;    /**< Active resize handles */
         static int instances;      /**< Number of Window instances */
         static ImageRect border;   /**< The window border and background */
+        static Image *closeImage;  /**< Close Button Image */
 
         /**
          * The width of the resize border. Is independent of the actual window
@@ -264,6 +335,14 @@ class Window : public gcn::Window
          * where two borders are moved at the same time.
          */
         static const int resizeBorderWidth = 10;
+
+    private:
+        /**
+         * Sends out a window event to the list of selection listeners.
+         */
+        void fireWindowEvent(const WindowEvent &event);
+
+        WindowListeners mListeners;
 };
 
 #endif

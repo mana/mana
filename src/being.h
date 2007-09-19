@@ -38,6 +38,7 @@
 
 class AnimatedSprite;
 class Equipment;
+class ItemInfo;
 class Item;
 class Map;
 class Graphics;
@@ -161,8 +162,7 @@ class Being : public Sprite
         void setSpeech(const std::string &text, Uint32 time);
 
         /**
-         * Puts a damage bubble above this being for the specified amount of
-         * time.
+         * Puts a damage bubble above this being.
          *
          * @param amount The amount of damage.
          */
@@ -267,27 +267,6 @@ class Being : public Sprite
         virtual Type getType() const;
 
         /**
-         * Gets the weapon picture id.
-         */
-        Uint16 getWeapon() const { return mWeapon; }
-
-        /**
-         * Sets the weapon picture id.
-         *
-         * @param weapon the picture id
-         */
-        virtual void
-        setWeapon(Uint16 weapon) { mWeapon = weapon; }
-
-        /**
-         * Sets the weapon picture id with the weapon id.
-         *
-         * @param weapon the weapon id
-         */
-        void
-        setWeaponById(Uint16 weapon);
-
-        /**
          * Gets the walk speed.
          */
         Uint16
@@ -380,36 +359,35 @@ class Being : public Sprite
         getHeight() const;
 
         /**
-         * Returns the required size of a target cursor for this being
+         * Returns the required size of a target cursor for this being.
          */
-        virtual Being::TargetCursorSize
-        getTargetCursorSize() const
+        virtual Being::TargetCursorSize getTargetCursorSize() const
         { return TC_MEDIUM; }
 
         std::auto_ptr<Equipment> mEquipment;
 
         /**
-         * Take control of a particle
+         * Take control of a particle.
          */
-        void
-        controlParticle(Particle *particle);
+        void controlParticle(Particle *particle);
 
     protected:
         /**
          * Sets the new path for this being.
          */
-        void
-        setPath(const Path &path, int mod = 1024);
+        void setPath(const Path &path, int mod = 1024);
 
         Uint16 mId;                     /**< Unique being id */
         Uint8 mSex;                     /**< Character's gender */
-        Uint16 mWeapon;                 /**< Weapon picture id */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
         Uint8 mSpriteDirection;         /**< Facing direction */
         Uint8 mDirection;               /**< Walking direction */
         Map *mMap;                      /**< Map on which this being resides */
         SpriteIterator mSpriteIterator;
+
+        /** Engine-related infos about weapon. */
+        const ItemInfo* mEquippedWeapon;
 
         Path mPath;
         std::string mSpeech;

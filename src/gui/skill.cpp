@@ -63,22 +63,18 @@ const char *skill_db[] = {
 SkillDialog::SkillDialog():
     Window("Skills")
 {
+    setCloseButton(true);
     setDefaultSize(windowContainer->getWidth() - 255, 25, 240, 240);
 
     mSkillListBox = new ListBox(this);
     ScrollArea *skillScrollArea = new ScrollArea(mSkillListBox);
-    mCloseButton = new Button("Close", "close", this);
 
     mSkillListBox->setActionEventId("skill");
 
     skillScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     skillScrollArea->setDimension(gcn::Rectangle(5, 5, 230, 180));
-    mCloseButton->setPosition(
-        skillScrollArea->getX() + skillScrollArea->getWidth() - mCloseButton->getWidth(),
-        210);
 
     add(skillScrollArea);
-    add(mCloseButton);
 
     mSkillListBox->addActionListener(this);
 

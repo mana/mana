@@ -114,7 +114,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             dstBeing = beingManager->findBeing(id);
 
-            if (dstBeing == NULL)
+            if (!dstBeing)
             {
                 // Being with id >= 110000000 and job 0 are better
                 // known as ghosts, so don't create those.
@@ -138,30 +138,32 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg.readShort());
-            dstBeing->setWeapon(msg.readShort());
+            dstBeing->setHairStyle(msg->readShort());
             dstBeing->setVisibleEquipment(
-                    Being::BOTTOMCLOTHES_SPRITE, msg.readShort());
+                    Being::WEAPON_SPRITE, msg->readShort());
+            dstBeing->setVisibleEquipment(
+                    Being::BOTTOMCLOTHES_SPRITE, msg->readShort());
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
                 msg.readLong(); // server tick
             }
 
-            msg.readShort();  // shield
-            dstBeing->setVisibleEquipment(Being::HAIT_SPRITE, msg.readShort());
-            dstBeing->setVisibleEquipment(
-                    Being::TOPCLOTHES_SPRITE, msg.readShort());
-            dstBeing->setHairColor(msg.readShort());
-            msg.readShort();  // unknown
-            msg.readShort();  // head dir
-            msg.readShort();  // guild
-            msg.readShort();  // unknown
-            msg.readShort();  // unknown
-            msg.readShort();  // manner
-            msg.readShort();  // karma
-            msg.readByte();   // unknown
-            dstBeing->setSex(1 - msg.readByte());   // sex
+            msg->readShort();  // shield
+            headTop = msg->readShort();
+            headMid = msg->readShort();
+            dstBeing->setVisibleEquipment(Being::HAT_SPRITE, headTop);
+            dstBeing->setVisibleEquipment(Being::TOPCLOTHES_SPRITE, headMid);
+            dstBeing->setHairColor(msg->readShort());
+            msg->readShort();  // unknown
+            msg->readShort();  // head dir
+            msg->readShort();  // guild
+            msg->readShort();  // unknown
+            msg->readShort();  // unknown
+            msg->readShort();  // manner
+            msg->readShort();  // karma
+            msg->readByte();   // unknown
+            dstBeing->setSex(1 - msg->readByte());   // sex
 
             if (msg.getId() == SMSG_BEING_MOVE)
             {
@@ -256,10 +258,12 @@ void BeingHandler::handleMessage(MessageIn &msg)
             }
             Particle *levelupFX;
             if (msg->readLong() == 0) { // type
-                levelupFX = particleEngine->addEffect("graphics/particles/levelup.particle.xml", 0, 0);
+                levelupFX = particleEngine->addEffect(
+                        "graphics/particles/levelup.particle.xml", 0, 0);
             }
             else {
-                levelupFX = particleEngine->addEffect("graphics/particles/skillup.particle.xml", 0, 0);
+                levelupFX = particleEngine->addEffect(
+                        "graphics/particles/skillup.particle.xml", 0, 0);
             }
             beingManager->findBeing(id)->controlParticle(levelupFX);
             break;
@@ -289,28 +293,26 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     dstBeing->setHairStyle(id);
                     break;
                 case 2:
-                    dstBeing->setWeapon(id);
+                    dstBeing->setVisibleEquipment(Being::WEAPON_SPRITE, id);
                     break;
                 case 3:     // Change lower headgear for eAthena, pants for us
                     dstBeing->setVisibleEquipment(
-                            Being::BOTTOMCLOTHES_SPRITE,
-                            id);
+                            Being::BOTTOMCLOTHES_SPRITE, id);
                     break;
                 case 4:     // Change upper headgear for eAthena, hat for us
                     dstBeing->setVisibleEquipment(
-                            Being::HAT_SPRITE,
-                            id);
+                            Being::HAT_SPRITE, id);
                     break;
                 case 5:     // Change middle headgear for eathena, armor for us
                      dstBeing->setVisibleEquipment(
-                            Being::TOPCLOTHES_SPRITE,
-                            id);
+                            Being::TOPCLOTHES_SPRITE, id);
                     break;
                 case 6:
                     dstBeing->setHairColor(id);
                     break;
                 default:
-                    logger->log("c3: %i\n", id); // unsupported
+                    logger->log("SMSG_BEING_CHANGE_LOOKS: unsupported type: "
+                            "%d, id: %d", type, id);
                     break;
             }
         }
@@ -336,17 +338,18 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
             dstBeing = beingManager->findBeing(id);
 
-            if (dstBeing == NULL)
+            if (!dstBeing)
             {
                 dstBeing = beingManager->createBeing(id, job);
             }
 
             dstBeing->setWalkSpeed(speed);
             dstBeing->mJob = job;
-            dstBeing->setHairStyle(msg.readShort());
-            dstBeing->setWeaponById(msg.readShort());  // item id 1
-            msg.readShort();  // item id 2
-            headBottom = msg.readShort();
+            dstBeing->setHairStyle(msg->readShort());
+            dstBeing->setVisibleEquipment(
+                    Being::WEAPON_SPRITE, msg->readShort());
+            msg->readShort();  // item id 2
+            headBottom = msg->readShort();
 
             if (msg.getId() == SMSG_PLAYER_MOVE)
             {
@@ -407,9 +410,9 @@ void BeingHandler::handleMessage(MessageIn &msg)
 
         case 0x0119:
             // Change in players look
-            logger->log("0x0119 %li %i %i %x %i\n", msg.readLong(),
-                   msg.readShort(), msg.readShort(), msg.readShort(),
-                   msg.readByte());
+            logger->log("0x0119 %i %i %i %x %i", msg->readLong(),
+                    msg->readShort(), msg->readShort(), msg->readShort(),
+                    msg->readByte());
             break;
         */
     }
@@ -428,11 +431,9 @@ static void handleLooks(Being *being, MessageIn &msg)
     if (mask & (1 << 7))
     {
         // The equipment has to be cleared first.
-        being->setWeaponById(0);
         for (int i = 0; i < nb_slots; ++i)
         {
-            if (slots[i] != Being::WEAPON_SPRITE)
-                being->setVisibleEquipment(slots[i], 0);
+            being->setVisibleEquipment(slots[i], 0);
         }
     }
 
@@ -441,10 +442,7 @@ static void handleLooks(Being *being, MessageIn &msg)
     {
         if (!(mask & (1 << i))) continue;
         int id = msg.readShort();
-        if (slots[i] != Being::WEAPON_SPRITE)
-            being->setVisibleEquipment(slots[i], id);
-        else
-            being->setWeaponById(id);
+        being->setVisibleEquipment(slots[i], id);
     }
 }
 

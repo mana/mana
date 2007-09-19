@@ -31,12 +31,12 @@ ImageParticle::ImageParticle(Map *map, Image *image):
     Particle(map),
     mImage(image)
 {
-    mImage->incRef();
+    if (mImage) mImage->incRef();
 }
 
 ImageParticle::~ImageParticle()
 {
-    mImage->decRef();
+    if (mImage) mImage->decRef();
 }
 
 void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
@@ -44,8 +44,8 @@ void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (!mAlive)
         return;
 
-    int screenX = (int) mPosX + offsetX - mImage->getWidth() / 2;
-    int screenY = (int) mPosY - (int) mPosZ + offsetY - mImage->getHeight()/2;
+    int screenX = (int) mPos.x + offsetX - mImage->getWidth() / 2;
+    int screenY = (int) mPos.y - (int)mPos.z + offsetY - mImage->getHeight()/2;
 
     // Check if on screen
     if (screenX + mImage->getWidth() < 0 ||

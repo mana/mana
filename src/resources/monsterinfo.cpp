@@ -33,15 +33,15 @@ MonsterInfo::MonsterInfo():
 
 MonsterInfo::~MonsterInfo()
 {
-    //kill vectors in mSoundEffects
-    for_each (  mSounds.begin(), mSounds.end(),
-                make_dtor(mSounds));
+    // kill vectors in mSoundEffects
+    for_each (mSounds.begin(), mSounds.end(),
+              make_dtor(mSounds));
     mSounds.clear();
 }
 
 
 void
-MonsterInfo::addSound (SoundEvent event, std::string filename)
+MonsterInfo::addSound(MonsterSoundEvent event, std::string filename)
 {
     if (mSounds.find(event) == mSounds.end())
     {
@@ -53,9 +53,9 @@ MonsterInfo::addSound (SoundEvent event, std::string filename)
 
 
 std::string
-MonsterInfo::getSound (SoundEvent event) const
+MonsterInfo::getSound(MonsterSoundEvent event) const
 {
-    std::map<SoundEvent, std::vector<std::string>* >::const_iterator i;
+    std::map<MonsterSoundEvent, std::vector<std::string>* >::const_iterator i;
 
     i = mSounds.find(event);
 

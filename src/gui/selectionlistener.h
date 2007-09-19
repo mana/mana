@@ -25,33 +25,23 @@
 #define _TMW_SELECTIONLISTENER_H__
 
 #include <guichan/widget.hpp>
+#include <guichan/event.hpp>
 
 /**
  * An event that characterizes a change in the current selection.
  *
  * \ingroup GUI
  */
-class SelectionEvent
+class SelectionEvent : public gcn::Event
 {
     public:
         /**
          * Constructor.
          */
         SelectionEvent(gcn::Widget *source):
-            mSource(source)
+            gcn::Event(source)
         {
         }
-
-        /**
-         * The widget from which the event originated.
-         */
-        gcn::Widget* getSource() const
-        {
-            return mSource;
-        }
-
-    private:
-        gcn::Widget *mSource;
 };
 
 /**

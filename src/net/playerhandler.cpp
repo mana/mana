@@ -133,7 +133,8 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 }
                 else
                 {
-                    logger->log("Warning: server wants to update unknown attribute %d to %d", stat, value);
+                    logger->log("Warning: server wants to update unknown "
+                                "attribute %d to %d", stat, value);
                 }
             }
         } break;

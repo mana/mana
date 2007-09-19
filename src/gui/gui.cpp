@@ -42,7 +42,7 @@
 #include "../graphics.h"
 #include "../log.h"
 
-#include "../resources/image.h"
+#include "../resources/imageset.h"
 #include "../resources/resourcemanager.h"
 #include "../resources/imageloader.h"
 
@@ -77,8 +77,9 @@ class GuiConfigListener : public ConfigListener
 };
 
 Gui::Gui(Graphics *graphics):
-    mMouseCursor(NULL),
-    mCustomCursor(false)
+    mCustomCursor(false),
+    mMouseCursors(NULL),
+    mCursorType(CURSOR_POINTER)
 {
     logger->log("Initializing GUI...");
     // Set graphics
@@ -106,7 +107,7 @@ Gui::Gui(Graphics *graphics):
 
     // Set global font
     try {
-        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 12);
+        mGuiFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
     }
     catch (gcn::Exception e)
     {
@@ -139,7 +140,7 @@ Gui::Gui(Graphics *graphics):
         hitBlueFont = new gcn::ImageFont("graphics/gui/hits_blue.png",
                 "0123456789");
         hitYellowFont = new gcn::ImageFont("graphics/gui/hits_yellow.png",
-                "mis");
+                "0123456789misxp ");
     }
     catch (gcn::Exception e)
     {
@@ -169,8 +170,8 @@ Gui::~Gui()
     delete hitBlueFont;
     delete hitYellowFont;
 
-    if (mMouseCursor) {
-        mMouseCursor->decRef();
+    if (mMouseCursors) {
+        mMouseCursors->decRef();
     }
 
     delete mGuiFont;
@@ -182,12 +183,6 @@ Gui::~Gui()
 }
 
 void
-Gui::logic()
-{
-    gcn::Gui::logic();
-}
-
-void
 Gui::draw()
 {
     mGraphics->pushClipArea(mTop->getDimension());
@@ -196,11 +191,13 @@ Gui::draw()
     int mouseX, mouseY;
     Uint8 button = SDL_GetMouseState(&mouseX, &mouseY);
 
-    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1))
-            && mCustomCursor)
+    if ((SDL_GetAppState() & SDL_APPMOUSEFOCUS || button & SDL_BUTTON(1)) &&
+            mCustomCursor)
     {
-        static_cast<Graphics*>(mGraphics)->
-            drawImage(mMouseCursor, mouseX - 5, mouseY - 2);
+        static_cast<Graphics*>(mGraphics)->drawImage(
+                mMouseCursors->get(mCursorType),
+                mouseX - 15,
+                mouseY - 17);
     }
 
     mGraphics->popClipArea();
@@ -220,9 +217,11 @@ Gui::setUseCustomCursor(bool customCursor)
 
             // Load the mouse cursor
             ResourceManager *resman = ResourceManager::getInstance();
-            mMouseCursor = resman->getImage("graphics/gui/mouse.png");
-            if (!mMouseCursor) {
-                logger->error("Unable to load mouse cursor.");
+            mMouseCursors =
+                resman->getImageSet("graphics/gui/mouse.png", 40, 40);
+
+            if (!mMouseCursors) {
+                logger->error("Unable to load mouse cursors.");
             }
         }
         else
@@ -231,9 +230,9 @@ Gui::setUseCustomCursor(bool customCursor)
             SDL_ShowCursor(SDL_ENABLE);
 
             // Unload the mouse cursor
-            if (mMouseCursor) {
-                mMouseCursor->decRef();
-                mMouseCursor = NULL;
+            if (mMouseCursors) {
+                mMouseCursors->decRef();
+                mMouseCursors = NULL;
             }
         }
     }

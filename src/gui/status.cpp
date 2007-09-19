@@ -39,6 +39,7 @@ StatusWindow::StatusWindow(LocalPlayer *player):
     mPlayer(player)
 {
     setResizable(true);
+    setCloseButton(true);
     setDefaultSize((windowContainer->getWidth() - 365) / 2,
                    (windowContainer->getHeight() - 255) / 2, 365, 280);
     loadWindowState("Status");
@@ -219,7 +220,7 @@ void StatusWindow::update()
         mHpBar->setColor(0, 171, 34); // Green
     }
 
-    mHpBar->setProgress((float)hp / maxHp);
+    mHpBar->setProgress((float) hp / maxHp);
 
     // Stats Part
     // ----------
@@ -235,7 +236,8 @@ void StatusWindow::update()
     int statusPoints = mPlayer->getAttributeIncreasePoints();
 
     // Update labels
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         mStatsLabel[i]->setCaption(attrNames[i]);
         mStatsDisplayLabel[i]->setCaption(
             strprintf("%d / %d",
