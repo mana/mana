@@ -1,3 +1,21 @@
+0.0.24 (... 2007)
+- Added user-definable key settings
+- Added shortcut bar for quick access to inventory items
+- Added XP gaining notification
+- Added close button to most windows
+- Updated to work with Guichan 0.7.x
+- Mouse cursor now indicates when resize is possible
+- Changed amount slider in buy and sell dialogs to start at 1
+- Made weapon sprites and sounds customizable
+- Made buy and sell dialogs resizable
+- Merged equipment database with items database
+- Fixed segmentation fault with some OpenGL drivers
+- Fixed updating of defence when increasing vitality
+- Fixed a bug that prevented being-controlled particles from being deleted
+- Fixed a crash in the particle engine related to child emitters
+- Fixed encoding issues with user home directory
+- Fixed a crash in equipment window on failure to load an item icon
+
 0.0.23 (3 June 2007)
 - Added a particle engine along with some particle effects
 - Added a cursor to indicate targeted enemy
