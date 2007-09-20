@@ -1,4 +1,17 @@
-﻿2007-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-09-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* data/equipment.xml, data/graphics/items/armor-head-funkyhat.png,
+	data/graphics/items/armor-head-mushroomhat.png,
+	data/graphics/items/armor-head-shroomhat.png,
+	data/graphics/items/armor-head-tophat.png,
+	data/graphics/sprites/item019.png, data/graphics/sprites/item019.xml,
+	data/graphics/sprites/item020.png, data/graphics/sprites/item020.xml,
+	data/graphics/sprites/item021.png, data/graphics/sprites/item021.xml,
+	data/graphics/sprites/item022.png, data/graphics/sprites/item022.xml,
+	data/items.xml, data/maps/new_21-1.tmx: Added 4 new items and a new ice
+	cave map.
+
+2007-09-12  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/items.xml, data/equipment.xml: Added temporary weapon IDs below
 	256 to use as view-ID in eAthena's item DB.
