@@ -256,7 +256,7 @@
 	village indoor tilesets.
 	* data/maps/new_20-1.tmx.gz: Added woodland village indoor map.
 
-2007-07-29  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+2007-07-29  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindLibcurl.cmake,
 	src/CMakeLists.txt: Switch to upstream CMake modules for libxml2 and
