@@ -31,7 +31,6 @@
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-#include <guichan/sdl/sdlinput.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
@@ -64,14 +63,15 @@
 #include "gui/char_select.h"
 #include "gui/connection.h"
 #include "gui/gui.h"
-#include "gui/serverdialog.h"
 #include "gui/login.h"
-#include "gui/quitdialog.h"
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
+#include "gui/quitdialog.h"
 #include "gui/register.h"
-#include "gui/updatewindow.h"
+#include "gui/sdlinput.h"
+#include "gui/serverdialog.h"
 #include "gui/textfield.h"
+#include "gui/updatewindow.h"
 
 #include "net/charserverhandler.h"
 #include "net/connection.h"

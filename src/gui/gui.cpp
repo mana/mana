@@ -28,10 +28,8 @@
 #include <guichan/imagefont.hpp>
 #include <SDL/SDL_ttf.h>
 
-// Should stay here because of Guichan being sensitive to headers order
-#include <guichan/sdl/sdlinput.hpp>
-
 #include "focushandler.h"
+#include "sdlinput.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
@@ -48,8 +46,8 @@
 
 // Guichan stuff
 Gui *gui;
-Viewport *viewport;                    /**< Viewport on the map. */
-gcn::SDLInput *guiInput;               /**< GUI input. */
+Viewport *viewport;
+SDLInput *guiInput;
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont;
@@ -90,12 +88,12 @@ Gui::Gui(Graphics *graphics):
     gcn::Image::setImageLoader(&imageLoader);
 
     // Set input
-    guiInput = new gcn::SDLInput();
+    guiInput = new SDLInput;
     setInput(guiInput);
 
     // Set focus handler
     delete mFocusHandler;
-    mFocusHandler = new FocusHandler();
+    mFocusHandler = new FocusHandler;
 
     // Initialize top GUI widget
     WindowContainer *guiTop = new WindowContainer();
@@ -117,16 +115,14 @@ Gui::Gui(Graphics *graphics):
     }
 
     // Set speech font
-    try {
-        speechFont = new gcn::ImageFont("graphics/gui/rpgfont_wider.png",
-                " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                "0123456789.,!?-+/():;%&`'*#=[]\"<>{}^~|_@$\\"
-                "áÁéÉíÍóÓúÚçë¥£¢¡¿àãõêñÑöüäÖÜÄßøèÈåÅ"
-                );
+    try
+    {
+        // FIXME: use another font?
+        speechFont = new TrueTypeFont("data/fonts/dejavusans.ttf", 11);
     }
     catch (gcn::Exception e)
     {
-        logger->log("Unable to load rpgfont_wider.png: %s",
+        logger->log("Unable to load dejavusans.ttf: %s",
             e.getMessage().c_str());
         throw;
     }

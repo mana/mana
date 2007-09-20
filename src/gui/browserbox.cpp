@@ -273,6 +273,8 @@ BrowserBox::draw(gcn::Graphics *graphics)
         std::string row = mTextRows[i];
         x = 0;
 
+        /* FIXME: This code has to be rewritten from scratch, so that it does
+           not display strings one character at a time. */
         for (j = 0; j < row.size(); j++)
         {
             if (mUseLinksAndUserColors || (!mUseLinksAndUserColors && (j == 0)))
@@ -354,7 +356,11 @@ BrowserBox::draw(gcn::Graphics *graphics)
             // Draw each char
             else
             {
-                std::string character = row.substr(j, 1);
+                unsigned j_end = j + 1;
+                while (j_end < row.size() && (row[j_end] & 192) == 128)
+                    ++j_end;
+                std::string character = row.substr(j, j_end - j);
+                j = j_end - 1;
                 font->drawString(graphics, character, x, y);
                 x += font->getWidth(character.c_str());
 

@@ -5,6 +5,14 @@
 	* src/particle.h, src/particle.cpp: Moved function out of header file.
 	* src/net/chathandler.cpp: Removed useless include.
 	* src/utils/trim.h: Fixed storage qualifier.
+	* src/Makefile.am, src/gui/sdlinput.cpp, src/gui/sdlinput.h: Modified
+	Guichan SDL input handler, so that it supports high characters.
+	* src/gui/textfield.cpp, src/gui/textfield.h: Took over handling of
+	keypresses in textfields, so that utf8 characters are supported.
+	* src/gui/browserbox.cpp: Fixed improper splitting of characters.
+	* src/gui/gui.cpp, src/gui/gui.h, src/game.cpp, src/main.cpp: Changed
+	the input handler. Moved away from image font so that non-latin
+	characters are supported.
 
 2007-09-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

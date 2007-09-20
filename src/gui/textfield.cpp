@@ -25,6 +25,8 @@
 
 #include <guichan/font.hpp>
 
+#include "sdlinput.h"
+
 #include "../graphics.h"
 
 #include "../resources/image.h"
@@ -99,4 +101,100 @@ void TextField::drawBorder(gcn::Graphics *graphics)
     h = getHeight() + bs * 2;
 
     static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+}
+
+void TextField::keyPressed(gcn::KeyEvent &keyEvent)
+{
+    int val = keyEvent.getKey().getValue();
+
+    if (val >= 32)
+    {
+        int l;
+        if (val < 128) l = 1;            // 0xxxxxxx
+        else if (val < 0x800) l = 2;     // 110xxxxx 10xxxxxx
+        else if (val < 0x10000) l = 3;   // 1110xxxx 10xxxxxx 10xxxxxx
+        else l = 4;                      // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+        char buf[4];
+        for (int i = 0; i < l; ++i)
+        {
+            buf[i] = val >> (6 * (l - i - 1));
+            if (i > 0) buf[i] = (buf[i] & 63) | 128;
+        }
+
+        if (l > 1) buf[0] |= 255 << (8 - l);
+
+        mText.insert(mCaretPosition, std::string(buf, buf + l));
+        mCaretPosition += l;
+    }
+
+    /* In UTF-8, 10xxxxxx is only used for inner parts of characters. So skip
+       them when processing key presses. */
+
+    switch (val)
+    {
+        case Key::LEFT:
+        {
+            while (mCaretPosition > 0)
+            {
+                --mCaretPosition;
+                if ((mText[mCaretPosition] & 192) != 128)
+                    break;
+            }
+        } break;
+
+        case Key::RIGHT:
+        {
+            unsigned sz = mText.size();
+            while (mCaretPosition < sz)
+            {
+                ++mCaretPosition;
+                if (mCaretPosition == sz ||
+                    (mText[mCaretPosition] & 192) != 128)
+                    break;
+            }
+        } break;
+
+        case Key::DELETE:
+        {
+            unsigned sz = mText.size();
+            while (mCaretPosition < sz)
+            {
+                --sz;
+                mText.erase(mCaretPosition, 1);
+                if (mCaretPosition == sz ||
+                    (mText[mCaretPosition] & 192) != 128)
+                    break;
+            }
+        } break;
+
+        case Key::BACKSPACE:
+        {
+            while (mCaretPosition > 0)
+            {
+                --mCaretPosition;
+                int v = mText[mCaretPosition];
+                mText.erase(mCaretPosition, 1);
+                if ((v & 192) != 128) break;
+            }
+        } break;
+
+        case Key::ENTER:
+            generateAction();
+            break;
+
+        case Key::HOME:
+            mCaretPosition = 0;
+            break;
+
+        case Key::END:
+            mCaretPosition = mText.size();
+            break;
+
+        case Key::TAB:
+            return;
+    }
+
+    keyEvent.consume();
+    fixScroll();
 }

@@ -31,6 +31,7 @@
 class GuiConfigListener;
 class Graphics;
 class ImageSet;
+class SDLInput;
 class Viewport;
 
 /**
@@ -106,7 +107,7 @@ class Gui : public gcn::Gui
 
 extern Gui *gui;                              /**< The GUI system */
 extern Viewport *viewport;                    /**< The viewport */
-extern gcn::SDLInput *guiInput;               /**< GUI input */
+extern SDLInput *guiInput;                    /**< GUI input */
 
 /**
  * Fonts used in showing hits
