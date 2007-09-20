@@ -25,8 +25,8 @@
 #include <iosfwd>
 #include <vector>
 
-#include <guichan/widget.hpp>
 #include <guichan/mouselistener.hpp>
+#include <guichan/widget.hpp>
 
 #include "../guichanfwd.h"
 #include "../main.h"

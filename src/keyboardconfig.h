@@ -24,9 +24,8 @@
 
 #include <string>
 
+#include "gui/sdlinput.h"
 #include "gui/setup_keyboard.h"
-
-#include <guichan/sdl/sdlinput.hpp>
 
 /**
  * Each key represents a key function. Such as 'Move up', 'Attack' etc.

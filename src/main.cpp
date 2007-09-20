@@ -29,7 +29,6 @@
 #include <SDL_image.h>
 
 #include <guichan/actionlistener.hpp>
-#include <guichan/sdl/sdlinput.hpp>
 #include <guichan/widgets/label.hpp>
 
 #include <libxml/parser.h>
@@ -67,9 +66,10 @@
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
+#include "gui/sdlinput.h"
 #include "gui/setup.h"
-#include "gui/updatewindow.h"
 #include "gui/textfield.h"
+#include "gui/updatewindow.h"
 
 #include "net/charserverhandler.h"
 #include "net/loginhandler.h"

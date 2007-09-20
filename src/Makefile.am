@@ -90,6 +90,8 @@ tmw_SOURCES = gui/widgets/layout.cpp \
 	      gui/register.h \
 	      gui/scrollarea.cpp \
 	      gui/scrollarea.h \
+	      gui/sdlinput.cpp \
+	      gui/sdlinput.h \
 	      gui/sell.cpp \
 	      gui/sell.h \
 	      gui/setup_audio.cpp \
