@@ -26,6 +26,7 @@
 
 #include <guichan/sdl/sdlinput.hpp>
 
+#include "gui/sdlinput.h"
 #include "gui/setup_keyboard.h"
 
 /**

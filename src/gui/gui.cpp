@@ -24,11 +24,9 @@
 #include <guichan/imagefont.hpp>
 #include <SDL/SDL_ttf.h>
 
-// Should stay here because of Guichan being sensitive to headers order
-#include <guichan/sdl/sdlinput.hpp>
-
 #include "focushandler.h"
 #include "gui.h"
+#include "sdlinput.h"
 #include "truetypefont.h"
 #include "viewport.h"
 #include "window.h"
@@ -47,7 +45,7 @@
 // Guichan stuff
 Gui *gui;
 Viewport *viewport;                    /**< Viewport on the map. */
-gcn::SDLInput *guiInput;               /**< GUI input. */
+SDLInput *guiInput;                    /**< GUI input. */
 
 // Fonts used in showing hits
 gcn::Font *hitRedFont;
@@ -97,7 +95,7 @@ Gui::Gui(Graphics *graphics):
     gcn::Image::setImageLoader(&imageLoader);
 
     // Set input
-    guiInput = new gcn::SDLInput();
+    guiInput = new SDLInput;
     setInput(guiInput);
 
     // Set focus handler

@@ -74,7 +74,7 @@ class TextField : public gcn::TextField {
         void setRange(int min, int max) {mMinimum = min; mMaximum = max; }
 
         /**
-         * Restrict keyboard input if numeric
+         * Processes one keypress.
          */
         void keyPressed(gcn::KeyEvent &keyEvent);
 

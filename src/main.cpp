@@ -61,8 +61,8 @@
 #include "gui/ok_dialog.h"
 #include "gui/progressbar.h"
 #include "gui/register.h"
+#include "gui/sdlinput.h"
 #include "gui/setup.h"
-#include "gui/updatewindow.h"
 #include "gui/textfield.h"
 #include "gui/updatewindow.h"
 
