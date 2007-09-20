@@ -415,7 +415,7 @@ Being::draw(Graphics *graphics, int offsetX, int offsetY) const
 }
 
 void
-Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+Being::drawEmotion(Graphics *graphics, int offsetX, int offsetY)
 {
     if (!mEmotion)
         return;
@@ -427,7 +427,7 @@ Being::drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
 }
 
 void
-Being::drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;

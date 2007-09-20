@@ -256,6 +256,12 @@
 	village indoor tilesets.
 	* data/maps/new_20-1.tmx.gz: Added woodland village indoor map.
 
+2007-07-29  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* CMake/Modules/FindLibXml2.cmake, CMake/Modules/FindLibcurl.cmake,
+	src/CMakeLists.txt: Switch to upstream CMake modules for libxml2 and
+	curl.
+
 2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
 	* src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
@@ -2422,8 +2428,14 @@
 	* data/graphics/sprites/item003.png, data/graphics/sprites/item003.xml:
 	Added the leather shirt
 
+2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/image.cpp: Added support for subimages of subimages.
+
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
+	* src/log.cpp, src/log.h: Added support for writing log to standard
+	output.
 	* src/gui/updatewindow.cpp: Fixed updating on Windows.
 
 2006-07-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>

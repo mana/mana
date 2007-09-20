@@ -148,8 +148,8 @@ Map::draw(Graphics *graphics, int scrollX, int scrollY, int layer)
 
     if (startX < 0) startX = 0;
     if (startY < 0) startY = 0;
-    if (endX >= mWidth) endX = mWidth;
-    if (endY >= mHeight) endY = mHeight;
+    if (endX > mWidth) endX = mWidth;
+    if (endY > mHeight) endY = mHeight;
 
     for (int y = startY; y < endY; y++)
     {
@@ -281,13 +281,13 @@ Map::setWalk(int x, int y, bool walkable)
 }
 
 bool
-Map::getWalk(int x, int y)
+Map::getWalk(int x, int y) const
 {
     return !tileCollides(x, y) && !occupied(x, y);
 }
 
 bool
-Map::occupied(int x, int y)
+Map::occupied(int x, int y) const
 {
     Beings &beings = beingManager->getAll();
     for (BeingIterator i = beings.begin(); i != beings.end(); i++)
@@ -303,13 +303,13 @@ Map::occupied(int x, int y)
 }
 
 bool
-Map::tileCollides(int x, int y)
+Map::tileCollides(int x, int y) const
 {
     return !(contains(x, y) && mMetaTiles[x + y * mWidth].walkable);
 }
 
 bool
-Map::contains(int x, int y)
+Map::contains(int x, int y) const
 {
     return x >= 0 && y >= 0 && x < mWidth && y < mHeight;
 }

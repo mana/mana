@@ -159,7 +159,7 @@ Image* Image::load(void *buffer, unsigned int bufferSize,
         GLenum error = glGetError();
         if (error)
         {
-            std::string errmsg = "Unkown error";
+            std::string errmsg = "Unknown error";
             switch (error)
             {
                 case GL_INVALID_ENUM:
@@ -343,5 +343,5 @@ SubImage::~SubImage()
 
 Image *SubImage::getSubImage(int x, int y, int w, int h)
 {
-    return NULL;
+    return mParent->getSubImage(mBounds.x + x, mBounds.y + y, w, h);
 }

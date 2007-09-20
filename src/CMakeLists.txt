@@ -2,8 +2,7 @@ FIND_PACKAGE(SDL REQUIRED)
 FIND_PACKAGE(SDL_image REQUIRED)
 FIND_PACKAGE(SDL_mixer REQUIRED)
 FIND_PACKAGE(SDL_net REQUIRED)
-
-FIND_PACKAGE(Libcurl REQUIRED)
+FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
 FIND_PACKAGE(PhysFS REQUIRED)
 FIND_PACKAGE(PNG REQUIRED)
@@ -31,7 +30,7 @@ INCLUDE_DIRECTORIES(
     ${SDLNET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
-    ${LIBCURL_INCLUDE_DIR}
+    ${CURL_INCLUDE_DIR}
     ${LIBXML2_INCLUDE_DIR}
     ${GUICHAN_INCLUDE_DIR}
     )
@@ -52,8 +51,8 @@ MARK_AS_ADVANCED(SDL_LIBRARY)
 SET(SRCS
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
-    gui/box.h
     gui/box.cpp
+    gui/box.h
     gui/browserbox.cpp
     gui/browserbox.h
     gui/buddywindow.cpp
@@ -90,8 +89,8 @@ SET(SRCS
     gui/gccontainer.h
     gui/gui.cpp
     gui/gui.h
-    gui/hbox.h
     gui/hbox.cpp
+    gui/hbox.h
     gui/help.cpp
     gui/help.h
     gui/inttextbox.cpp
@@ -345,7 +344,7 @@ TARGET_LINK_LIBRARIES(tmw
     ${SDLNET_LIBRARY}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}
-    ${LIBCURL_LIBRARIES}
+    ${CURL_LIBRARIES}
     ${LIBXML2_LIBRARIES}
     ${GUICHAN_LIBRARIES}
     ${OPENGL_LIBRARIES}

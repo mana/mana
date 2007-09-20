@@ -74,7 +74,7 @@ Player::getType() const
 }
 
 void
-Player::drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY)
+Player::drawName(Graphics *graphics, int offsetX, int offsetY)
 {
     int px = mPx + offsetX;
     int py = mPy + offsetY;

@@ -55,8 +55,9 @@ class MapReader
         /**
          * Reads the properties element.
          *
-         * @param props the Properties instance to which the properties will
-         *              be assigned
+         * @param node  The <code>properties</code> element.
+         * @param props The Properties instance to which the properties will
+         *              be assigned.
          */
         static void
         readProperties(xmlNodePtr node, Properties* props);

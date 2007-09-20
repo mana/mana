@@ -62,8 +62,8 @@ class Sound {
         /**
          * Starts background music.
          *
-         * \param in   Full path to file
-         * \param loop The number of times the song is played (-1 = infinite)
+         * @param path The full path to the music file.
+         * @param loop The number of times the song is played (-1 = infinite)
          */
         void playMusic(const char *path, int loop = -1);
 
@@ -75,37 +75,37 @@ class Sound {
         /**
          * Fades in background music.
          *
-         * \param in   Full path to file
-         * \param loop The number of times the song is played (-1 = infinite)
-         * \param ms   Duration of fade-in effect (ms)
+         * @param path The full path to the music file.
+         * @param loop The number of times the song is played (-1 = infinite)
+         * @param ms   Duration of fade-in effect (ms)
          */
         void fadeInMusic(const char *path, int loop = -1, int ms = 2000);
 
         /**
          * Fades out currently running background music track.
          *
-         * \param ms   Duration of fade-out effect (ms)
+         * @param ms   Duration of fade-out effect (ms)
          */
         void fadeOutMusic(int ms);
 
         /**
          * Sets music volume.
          *
-         * \param volume Volume value
+         * @param volume Volume value
          */
         void setMusicVolume(int volume);
 
         /**
          * Sets sfx volume.
          *
-         * \param volume Volume value
+         * @param volume Volume value
          */
         void setSfxVolume(int volume);
 
         /**
          * Plays an item.
          *
-         * \param path     Full path to file
+         * @param path The resource path to the sound file.
          */
         void playSfx(const std::string &path);
 

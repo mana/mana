@@ -137,36 +137,36 @@ class Map : public Properties
         /**
          * Tell if a tile is walkable or not, includes checking beings.
          */
-        bool getWalk(int x, int y);
+        bool getWalk(int x, int y) const;
 
         /**
          * Tell if a tile collides, not including a check on beings.
          */
-        bool tileCollides(int x, int y);
+        bool tileCollides(int x, int y) const;
 
         /**
          * Returns the width of this map.
          */
         int
-        getWidth() { return mWidth; }
+        getWidth() const { return mWidth; }
 
         /**
          * Returns the height of this map.
          */
         int
-        getHeight() { return mHeight; }
+        getHeight() const { return mHeight; }
 
         /**
          * Returns the tile width of this map.
          */
         int
-        getTileWidth() { return mTileWidth; }
+        getTileWidth() const { return mTileWidth; }
 
         /**
          * Returns the tile height used by this map.
          */
         int
-        getTileHeight() { return mTileHeight; }
+        getTileHeight() const { return mTileHeight; }
 
         /**
          * Find a path from one location to the next.
@@ -214,12 +214,12 @@ class Map : public Properties
         /**
          * Tells whether a tile is occupied by a being.
          */
-        bool occupied(int x, int y);
+        bool occupied(int x, int y) const;
 
         /**
          * Tells whether the given coordinates fall within the map boundaries.
          */
-        bool contains(int x, int y);
+        bool contains(int x, int y) const;
 
         int mWidth, mHeight;
         int mTileWidth, mTileHeight;

@@ -29,7 +29,7 @@
 class Image;
 class ImageRect;
 
-class SDL_Surface;
+struct SDL_Surface;
 
 /**
  * 9 images defining a rectangle. 4 corners, 4 sides and a middle area. The

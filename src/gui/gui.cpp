@@ -206,9 +206,9 @@ Gui::draw()
             mCustomCursor)
     {
         static_cast<Graphics*>(mGraphics)->drawImage(
-            mMouseCursors->get(mCursorType),
-            mouseX - 15,
-            mouseY - 17);
+                mMouseCursors->get(mCursorType),
+                mouseX - 15,
+                mouseY - 17);
     }
 
     mGraphics->popClipArea();

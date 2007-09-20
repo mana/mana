@@ -45,6 +45,7 @@ class SoundEffect : public Resource
          *
          * @param buffer     The memory buffer containing the sample data.
          * @param bufferSize The size of the memory buffer in bytes.
+         * @param idPath     The path identifying the resource.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.

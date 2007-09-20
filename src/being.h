@@ -238,19 +238,19 @@ class Being : public Sprite
          * Draws the speech text above the being.
          */
         void
-        drawSpeech(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        drawSpeech(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the emotion picture above the being.
          */
         void
-        drawEmotion(Graphics *graphics, Sint32 offsetX, Sint32 offsetY);
+        drawEmotion(Graphics *graphics, int offsetX, int offsetY);
 
         /**
          * Draws the name text below the being.
          */
         virtual void
-        drawName(Graphics *graphics, Sint32 offsetX, Sint32 offsetY) {};
+        drawName(Graphics *, int, int) {};
 
         /**
          * Returns the type of the being.

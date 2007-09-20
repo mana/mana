@@ -61,5 +61,5 @@ ResizeGrip::~ResizeGrip()
 void
 ResizeGrip::draw(gcn::Graphics *graphics)
 {
-    dynamic_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
+    static_cast<Graphics*>(graphics)->drawImage(gripImage, 0, 0);
 }

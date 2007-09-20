@@ -34,13 +34,17 @@
 class Properties
 {
     public:
+        /**
+         * Destructor.
+         */
         virtual
         ~Properties() {}
 
         /**
          * Get a map property.
          *
-         * @param def default value, empty string by default
+         * @param name The name of the property.
+         * @param def  Default value, empty string by default.
          * @return the value of the given property or the given default when it
          *         doesn't exist.
          */
@@ -54,7 +58,8 @@ class Properties
         /**
          * Gets a map property as a float.
          *
-         * @param def default value, 0.0f by default
+         * @param name The name of the property.
+         * @param def  Default value, 0.0f by default.
          * @return the value of the given property, or 0.0f when it doesn't
          *         exist.
          */
@@ -74,6 +79,10 @@ class Properties
 
         /**
          * Returns whether a certain property is available.
+         *
+         * @param name The name of the property.
+         * @return <code>true</code> when a property is defined,
+         *         <code>false</code> otherwise.
          */
         bool
         hasProperty(const std::string &name)
@@ -83,6 +92,9 @@ class Properties
 
         /**
          * Set a map property.
+         *
+         * @param name  The name of the property.
+         * @param value The value of the property.
          */
         void
         setProperty(const std::string &name, const std::string &value)

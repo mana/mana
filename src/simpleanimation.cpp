@@ -111,7 +111,7 @@ SimpleAnimation::SimpleAnimation(xmlNodePtr animationNode):
 
 void SimpleAnimation::update(unsigned int timePassed)
 {
-    mAnimationTime+=timePassed;
+    mAnimationTime += timePassed;
     while (mAnimationTime > mCurrentFrame->delay)
     {
         mAnimationTime -= mCurrentFrame->delay;

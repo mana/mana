@@ -52,11 +52,11 @@ class Window : public gcn::Window
          * Constructor. Initializes the title to the given text and hooks
          * itself into the window container.
          *
-         * @param text   The initial window title, "Window" by default.
-         * @param modal  Block input to other windows.
-         * @param parent The parent window. This is the window standing above
-         *               this one in the window hiearchy. When reordering,
-         *               a window will never go below its parent window.
+         * @param caption The initial window title, "Window" by default.
+         * @param modal   Block input to other windows.
+         * @param parent  The parent window. This is the window standing above
+         *                this one in the window hiearchy. When reordering,
+         *                a window will never go below its parent window.
          */
         Window(const std::string &caption = "Window", bool modal = false,
                 Window *parent = NULL);

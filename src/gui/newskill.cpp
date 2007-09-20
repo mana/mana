@@ -123,7 +123,7 @@ NewSkillDialog::NewSkillDialog():
 
 void NewSkillDialog::action(const gcn::ActionEvent &event)
 {
-     int osp = startPoint;
+    int osp = startPoint;
     if (event.getId() == "close")
     {
         setVisible(false);

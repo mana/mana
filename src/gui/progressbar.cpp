@@ -93,9 +93,8 @@ void ProgressBar::logic()
 void
 ProgressBar::draw(gcn::Graphics *graphics)
 {
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0,
-            getWidth(), getHeight(),
-            mBorder);
+    static_cast<Graphics*>(graphics)->
+        drawImageRect(0, 0, getWidth(), getHeight(), mBorder);
 
     // The bar
     if (mProgress > 0)

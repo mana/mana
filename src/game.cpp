@@ -677,8 +677,8 @@ void Game::handleInput()
         // Get the state of the keyboard keys
         keyboard.refreshActiveKeys();
 
-        Uint16 x = player_node->mX;
-        Uint16 y = player_node->mY;
+        const Uint16 x = player_node->mX;
+        const Uint16 y = player_node->mY;
         unsigned char direction = 0;
 
         // Translate pressed keys to movement and direction
@@ -754,8 +754,7 @@ void Game::handleInput()
         {
             if (joystick->buttonPressed(1))
             {
-                FloorItem *item = floorItemManager->findByCoordinates(
-                        player_node->mX, player_node->mY);
+                FloorItem *item = floorItemManager->findByCoordinates(x, y);
 
                 if (item)
                     player_node->pickUp(item);
