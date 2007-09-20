@@ -140,7 +140,7 @@ void BrowserBox::addRow(const std::string &row)
     {
         unsigned int i, j, y = 0;
         unsigned int nextChar;
-        char *hyphen = "~";
+        char const *hyphen = "~";
         int hyphenWidth = font->getWidth(hyphen);
         int x = 0;
         for (i = 0; i < mTextRows.size(); i++)
@@ -362,7 +362,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
                 if (mMode == AUTO_WRAP)
                 {
                     unsigned int nextChar = j + 1;
-                    char *hyphen = "~";
+                    char const *hyphen = "~";
                     int hyphenWidth =  font->getWidth(hyphen);
 
                     // Wraping between words (at blank spaces)

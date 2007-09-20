@@ -37,7 +37,6 @@
 #include "../gui/chat.h"
 
 #include "../utils/tostring.h"
-#include "../utils/trim.h"
 
 extern Being *player_node;
 

@@ -31,7 +31,7 @@
  *
  * @param str the string to trim spaces off
  */
-static void trim(std::string &str)
+inline void trim(std::string &str)
 {
     std::string::size_type pos = str.find_last_not_of(' ');
     if (pos != std::string::npos)

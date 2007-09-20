@@ -1,3 +1,11 @@
+2007-09-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/browserbox.cpp: Fixed missing const qualifier.
+	* src/gui/windowlistener.h: Reduced warning about unused parameter.
+	* src/particle.h, src/particle.cpp: Moved function out of header file.
+	* src/net/chathandler.cpp: Removed useless include.
+	* src/utils/trim.h: Fixed storage qualifier.
+
 2007-09-16  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/button.cpp: Fixed improper const qualifier.
