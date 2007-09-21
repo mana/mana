@@ -21,14 +21,10 @@
 
 #include <algorithm>
 
-#include <guichan/graphics.hpp>
-#include <guichan/imagefont.hpp>
-#include <guichan/mouseinput.hpp>
-
 #include "browserbox.h"
-#include "colour.h"
 #include "linkhandler.h"
 
+#include "../graphics.h"
 #include "../sdltruetypefont.hpp"
 
 BrowserBox::BrowserBox(unsigned int mode):
@@ -73,7 +69,7 @@ void BrowserBox::addRow(const std::string &row)
     std::string newRow;
     BROWSER_LINK bLink;
     int idx1, idx2, idx3;
-    gcn::Font *font = getFont();
+    gcn::contrib::SDLTrueTypeFont *font = static_cast<gcn::contrib::SDLTrueTypeFont*>(getFont());
 
     // Use links and user defined colors
     if (mUseLinksAndUserColors)
@@ -103,12 +99,12 @@ void BrowserBox::addRow(const std::string &row)
 
             mLinks.push_back(bLink);
 
-            newRow += "##<" + bLink.caption;
+            newRow += "##L" + bLink.caption;
 
             tmp.erase(0, idx3 + 2);
             if(tmp != "")
             {
-                newRow += "##>";
+                newRow += "##P";
             }
             idx1 = tmp.find("@@");
         }
@@ -145,7 +141,7 @@ void BrowserBox::addRow(const std::string &row)
 
     if (mMode == AUTO_WRAP)
     {
-        unsigned int j, y = 0;
+        unsigned int y = 0;
         unsigned int nextChar;
         const char *hyphen = "~";
         int hyphenWidth = font->getWidth(hyphen);
@@ -154,7 +150,7 @@ void BrowserBox::addRow(const std::string &row)
         for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
         {
             std::string row = *i;
-            for (j = 0; j < row.size(); j++)
+            for (unsigned int j = 0; j < row.size(); j++)
             {
                 std::string character = row.substr(j, 1);
                 x += font->getWidth(character);
@@ -259,8 +255,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
 
         if ((mHighMode & UNDERLINE))
         {
-            bool valid;
-            graphics->setColor(gcn::Color(textColour->getColour('<', valid)));
+            graphics->setColor(gcn::Color(LINK));
             graphics->drawLine(
                     mLinks[mSelectedLink].x1,
                     mLinks[mSelectedLink].y2,
@@ -269,10 +264,9 @@ BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    unsigned int j;
     int x = 0, y = 0;
     int wrappedLines = 0;
-    gcn::Font *font = getFont();
+    gcn::contrib::SDLTrueTypeFont *font = static_cast<gcn::contrib::SDLTrueTypeFont*>(getFont());
 
     graphics->setColor(BLACK);
     for (TextRowIterator i = mTextRows.begin(); i != mTextRows.end(); i++)
@@ -280,103 +274,148 @@ BrowserBox::draw(gcn::Graphics *graphics)
         int selColor = BLACK;
         int prevColor = selColor;
         std::string row = *(i);
+        bool wrapped = false;
         x = 0;
 
-        for (j = 0; j < row.size(); j++)
+        // Check for separator lines
+        if (row.find("---", 0) == 0)
         {
-            if ( (mUseLinksAndUserColors && (j + 3) <= row.size()) ||
-                    (!mUseLinksAndUserColors && (j == 0)) )
+            for (x = 0; x < getWidth(); x++)
             {
-                // Check for color change in format "##x"
-                if ((row.at(j) == '#') && (row.at(j + 1) == '#'))
-                {
-                    char c = row.at(j + 2);
-                    if (c == '>')
-                    {
-                        selColor = prevColor;
-                    }
-                    else
-                    {
-                        bool valid;
-                        int rgb = textColour->getColour(c, valid);
-                        if (c == '<')
-                        {
-                            prevColor = selColor;
-                        }
-                        if (valid)
-                        {
-                            selColor = rgb;
-                        }
-                    }
-                    j += 3;
+                font->drawString(graphics, "-", x, y);
+                x += font->getWidth("-") - 2;
+            }
+            y += font->getHeight();
+            continue;
+        }
 
-                    if (j == row.size())
+        // TODO: Check if we must take texture size limits into account here
+        // TODO: Check if some of the O(n) calls can be removed
+        for (std::string::size_type start = 0, end = std::string::npos;
+                start != std::string::npos;
+                start = end, end = std::string::npos)
+        {
+            // Wrapped line continuation shall be indented
+            if (wrapped)
+            {
+                y += font->getHeight();
+                x = 15;
+            }
+
+            // "Tokenize" the string at control sequences
+            if (mUseLinksAndUserColors)
+                end = row.find("##", start + 1);
+
+            if (mUseLinksAndUserColors ||
+                    (!mUseLinksAndUserColors && (start == 0)))
+            {
+                // Check for color change in format "##x", x = [L,P,0..9]
+                if (row.find("##", start) == start && row.size() > start + 2)
+                {
+                    switch (row.at(start + 2))
                     {
-                        break;
+                        case 'L': // Link color
+                            prevColor = selColor;
+                            selColor = LINK;
+                            break;
+                        case 'P': // Previous color
+                            selColor = prevColor;
+                            break;
+                        case '1':
+                            prevColor = selColor;
+                            selColor = RED;
+                            break;
+                        case '2':
+                            prevColor = selColor;
+                            selColor = GREEN;
+                            break;
+                        case '3':
+                            prevColor = selColor;
+                            selColor = BLUE;
+                            break;
+                        case '4':
+                            prevColor = selColor;
+                            selColor = ORANGE;
+                            break;
+                        case '5':
+                            prevColor = selColor;
+                            selColor = YELLOW;
+                            break;
+                        case '6':
+                            prevColor = selColor;
+                            selColor = PINK;
+                            break;
+                        case '7':
+                            prevColor = selColor;
+                            selColor = PURPLE;
+                            break;
+                        case '8':
+                            prevColor = selColor;
+                            selColor = GRAY;
+                            break;
+                        case '9':
+                            prevColor = selColor;
+                            selColor = BROWN;
+                            break;
+                        case '0':
+                        default:
+                            prevColor = selColor;
+                            selColor = BLACK;
                     }
+                    start += 3;
                 }
                 graphics->setColor(gcn::Color(selColor));
             }
 
-            // Check for line separators in format "---"
-            if (row == "---")
-            {
-                for (x = 0; x < getWidth(); x++)
-                {
-                    const std::string dash = "-";
-                    font->drawString(graphics, dash, x, y);
-                    x += font->getWidth("-") - 2;
-                }
-                break;
-            }
-            // Draw each char
-            else
-            {
-                std::string character = row.substr(j, 1);
-                font->drawString(graphics, character, x, y);
-                x += font->getWidth(character.c_str());
+            std::string::size_type len =
+                end == std::string::npos ? end : end - start;
+            std::string part = row.substr(start, len);
 
-                // Auto wrap mode
-                if (mMode == AUTO_WRAP)
-                {
-                    unsigned int nextChar = j + 1;
-                    const std::string hyphen = "~";
-                    int hyphenWidth =  font->getWidth(hyphen);
+            // Auto wrap mode
+            if (mMode == AUTO_WRAP &&
+                    (x + font->getWidth(part.c_str()) + 10) > getWidth())
+            {
+                bool forced = false;
+                char const *hyphen = "~";
+                int hyphenWidth =  font->getWidth(hyphen);
 
-                    // Wraping between words (at blank spaces)
-                    if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
+                do
+                {
+                    if (!forced)
+                        end = row.rfind(" ", end);
+
+                    // Check if we have to (stupidly) force-wrap
+                    if (end == std::string::npos || end <= start)
                     {
-                        int nextSpacePos = row.find(" ", (nextChar + 1));
-                        if (nextSpacePos <= 0)
-                        {
-                            nextSpacePos = row.size() - 1;
-                        }
-                        int nextWordWidth = font->getWidth(
-                                row.substr(nextChar,
-                                    (nextSpacePos - nextChar)));
-
-                        if ((x + nextWordWidth + 10) > getWidth())
-                        {
-                            x = 15; // Ident in new line
-                            y += font->getHeight();
-                            wrappedLines++;
-                            j++;
-                        }
+                        forced = true;
+                        end = row.size();
+                        x += hyphenWidth * 2; // Account for the wrap-notifier
+                        continue;
                     }
 
-                    // Wrapping looong lines (brutal force)
-                    else if ((x + 2 * hyphenWidth) > getWidth())
-                    {
-                        font->drawString(graphics, hyphen,
-                                getWidth() - hyphenWidth, y);
-                        x = 15; // Ident in new line
-                        y += font->getHeight();
-                        wrappedLines++;
-                    }
+                    end--;
+
+                    part = row.substr(start, end - start + 1);
+                } while ((x + font->getWidth(part.c_str()) + 10) > getWidth());
+
+                if (forced)
+                {
+                    x -= hyphenWidth; // Remove the wrap-notifier accounting
+                    font->drawString(graphics, hyphen,
+                            getWidth() - hyphenWidth, y);
+                    end++; // Skip to the next character
                 }
+                else
+                    end += 2; // Skip to after the space
+
+                wrapped = true;
+                wrappedLines++;
             }
+            font->drawString(graphics, part, x, y);
+            x += font->getWidth(part.c_str());
         }
         y += font->getHeight();
         setHeight((mTextRows.size() + wrappedLines) * font->getHeight());
     }
 }
+
