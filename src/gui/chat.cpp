@@ -119,7 +119,7 @@ ChatWindow::logic()
     mScrollArea->setWidth(area.width - 2 * mScrollArea->getBorderSize());
     mScrollArea->setHeight(area.height - 2 * mScrollArea->getBorderSize() -
             mChatInput->getHeight() - 26);
-    mScrollArea->logic();
+    Window::logic();
 }
 
 void

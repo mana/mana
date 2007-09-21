@@ -1,3 +1,7 @@
+2007-09-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/chat.cpp: Fixed resizing of chat window.
+
 2007-09-21  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/CMakeLists.txt: Added new files to build, removed old files and
