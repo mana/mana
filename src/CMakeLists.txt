@@ -1,6 +1,7 @@
 FIND_PACKAGE(SDL REQUIRED)
 FIND_PACKAGE(SDL_image REQUIRED)
 FIND_PACKAGE(SDL_mixer REQUIRED)
+FIND_PACKAGE(SDL_ttf REQUIRED)
 FIND_PACKAGE(ENet REQUIRED)
 FIND_PACKAGE(CURL REQUIRED)
 FIND_PACKAGE(LibXml2 REQUIRED)
@@ -27,6 +28,7 @@ INCLUDE_DIRECTORIES(
     ${SDL_INCLUDE_DIR}
     ${SDLIMAGE_INCLUDE_DIR}
     ${SDLMIXER_INCLUDE_DIR}
+    ${SDLTTF_INCLUDE_DIR}
     ${ENET_INCLUDE_DIR}
     ${PNG_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
@@ -101,8 +103,6 @@ SET(SRCS
     gui/itemshortcutcontainer.h
     gui/itemshortcutwindow.cpp
     gui/itemshortcutwindow.h
-    gui/item_amount.cpp
-    gui/item_amount.h
     gui/linkhandler.h
     gui/listbox.cpp
     gui/listbox.h
@@ -138,6 +138,8 @@ SET(SRCS
     gui/register.h
     gui/scrollarea.cpp
     gui/scrollarea.h
+    gui/sdlinput.cpp
+    gui/sdlinput.h
     gui/selectionlistener.h
     gui/sell.cpp
     gui/sell.h
@@ -172,6 +174,8 @@ SET(SRCS
     gui/textfield.h
     gui/trade.cpp
     gui/trade.h
+    gui/truetypefont.cpp
+    gui/truetypefont.h
     gui/unregisterdialog.cpp
     gui/unregisterdialog.h
     gui/updatewindow.cpp
@@ -250,6 +254,8 @@ SET(SRCS
     resources/animation.h
     resources/image.cpp
     resources/image.h
+    resources/imageloader.cpp
+    resources/imageloader.h
     resources/imagewriter.cpp
     resources/imagewriter.h
     resources/iteminfo.cpp
@@ -264,14 +270,10 @@ SET(SRCS
     resources/monsterinfo.h
     resources/monsterinfo.cpp
     resources/music.h
-    resources/openglsdlimageloader.cpp
-    resources/openglsdlimageloader.h
     resources/resource.cpp
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
-    resources/sdlimageloader.cpp
-    resources/sdlimageloader.h
     resources/soundeffect.cpp
     resources/soundeffect.h
     resources/spritedef.h
@@ -371,6 +373,7 @@ TARGET_LINK_LIBRARIES(tmw
     ${SDL_LIBRARY}
     ${SDLIMAGE_LIBRARY}
     ${SDLMIXER_LIBRARY}
+    ${SDLTTF_LIBRARY}
     ${ENET_LIBRARIES}
     ${PNG_LIBRARIES}
     ${PHYSFS_LIBRARY}

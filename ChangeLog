@@ -1,3 +1,8 @@
+2007-09-21  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/CMakeLists.txt: Added new files to build, removed old files and
+	added SDL_tff to the required libraries.
+
 2007-09-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/browserbox.cpp: Fixed missing const qualifier.
