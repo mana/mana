@@ -24,6 +24,7 @@
 #include "browserbox.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include <guichan/graphics.hpp>
 #include <guichan/imagefont.hpp>
@@ -271,18 +272,45 @@ BrowserBox::draw(gcn::Graphics *graphics)
         int selColor = BLACK;
         int prevColor = selColor;
         std::string row = mTextRows[i];
+        bool wrapped = false;
         x = 0;
 
-        /* FIXME: This code has to be rewritten from scratch, so that it does
-           not display strings one character at a time. */
-        for (j = 0; j < row.size(); j++)
+        // Check for separator lines
+        if (row.find("---", 0) == 0)
         {
-            if (mUseLinksAndUserColors || (!mUseLinksAndUserColors && (j == 0)))
+            for (x = 0; x < getWidth(); x++)
+            {
+                font->drawString(graphics, "-", x, y);
+                x += font->getWidth("-") - 2;
+            }
+            y += font->getHeight();
+            continue;
+        }
+
+        // TODO: Check if we must take texture size limits into account here
+        // TODO: Check if some of the O(n) calls can be removed
+        for (std::string::size_type start = 0, end = std::string::npos;
+                start != std::string::npos;
+                start = end, end = std::string::npos)
+        {
+            // Wrapped line continuation shall be indented
+            if (wrapped)
+            {
+                y += font->getHeight();
+                x = 15;
+            }
+
+            // "Tokenize" the string at control sequences
+            if (mUseLinksAndUserColors)
+                end = row.find("##", start + 1);
+
+            if (mUseLinksAndUserColors ||
+                    (!mUseLinksAndUserColors && (start == 0)))
             {
                 // Check for color change in format "##x", x = [L,P,0..9]
-                if ((row.at(j) == '#') && (row.at(j + 1) == '#'))
+                if (row.find("##", start) == start)
                 {
-                    switch (row.at(j + 2))
+                    switch (row.at(start + 2))
                     {
                         case 'L': // Link color
                             prevColor = selColor;
@@ -332,77 +360,57 @@ BrowserBox::draw(gcn::Graphics *graphics)
                             prevColor = selColor;
                             selColor = BLACK;
                     }
-                    j += 3;
-
-                    if (j == row.size())
-                    {
-                        break;
-                    }
+                    start += 3;
                 }
                 graphics->setColor(gcn::Color(selColor));
             }
 
-            // Check for line separators in format "---"
-            if ((j <= 3) && (row.at(j) == '-') && (row.at(j + 1) == '-') &&
-                    (row.at(j + 2) == '-'))
-            {
-                for (x = 0; x < getWidth(); x++)
-                {
-                    font->drawString(graphics, "-", x, y);
-                    x += font->getWidth("-") - 2;
-                }
-                break;
-            }
-            // Draw each char
-            else
-            {
-                unsigned j_end = j + 1;
-                while (j_end < row.size() && (row[j_end] & 192) == 128)
-                    ++j_end;
-                std::string character = row.substr(j, j_end - j);
-                j = j_end - 1;
-                font->drawString(graphics, character, x, y);
-                x += font->getWidth(character.c_str());
+            std::string::size_type len =
+                end == std::string::npos ? end : end - start;
+            std::string part = row.substr(start, len);
 
-                // Auto wrap mode
-                if (mMode == AUTO_WRAP)
-                {
-                    unsigned int nextChar = j + 1;
-                    char const *hyphen = "~";
-                    int hyphenWidth =  font->getWidth(hyphen);
+            // Auto wrap mode
+            if (mMode == AUTO_WRAP &&
+                    (x + font->getWidth(part.c_str()) + 10) > getWidth())
+            {
+                bool forced = false;
+                char const *hyphen = "~";
+                int hyphenWidth =  font->getWidth(hyphen);
 
-                    // Wraping between words (at blank spaces)
-                    if ((nextChar < row.size()) && (row.at(nextChar) == ' '))
+                do
+                {
+                    if (!forced)
+                        end = row.rfind(" ", end);
+
+                    // Check if we have to (stupidly) force-wrap
+                    if (end == std::string::npos || end <= start)
                     {
-                        int nextSpacePos = row.find(" ", (nextChar + 1));
-                        if (nextSpacePos <= 0)
-                        {
-                            nextSpacePos = row.size() - 1;
-                        }
-                        int nextWordWidth = font->getWidth(
-                                row.substr(nextChar,
-                                    (nextSpacePos - nextChar)));
-
-                        if ((x + nextWordWidth + 10) > getWidth())
-                        {
-                            x = 15; // Ident in new line
-                            y += font->getHeight();
-                            wrappedLines++;
-                            j++;
-                        }
+                        forced = true;
+                        end = row.size();
+                        x += hyphenWidth * 2; // Account for the wrap-notifier
+                        continue;
                     }
 
-                    // Wrapping looong lines (brutal force)
-                    else if ((x + 2 * hyphenWidth) > getWidth())
-                    {
-                        font->drawString(graphics, hyphen,
-                                getWidth() - hyphenWidth, y);
-                        x = 15; // Ident in new line
-                        y += font->getHeight();
-                        wrappedLines++;
-                    }
+                    end--;
+
+                    part = row.substr(start, end - start + 1);
+                } while ((x + font->getWidth(part.c_str()) + 10) > getWidth());
+
+                if (forced)
+                {
+                    x -= hyphenWidth; // Remove the wrap-notifier accounting
+                    font->drawString(graphics, hyphen,
+                            getWidth() - hyphenWidth, y);
+                    end++; // Skip to the next character
                 }
+                else
+                    end += 2; // Skip to after the space
+
+                wrapped = true;
+                wrappedLines++;
             }
+            font->drawString(graphics, part, x, y);
+            x += font->getWidth(part.c_str());
         }
         y += font->getHeight();
         setHeight((mTextRows.size() + wrappedLines) * font->getHeight());
