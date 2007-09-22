@@ -55,7 +55,7 @@ Channel* ChannelManager::findById(int id)
     return NULL;
 }
 
-Channel* ChannelManager::findByName(std::string name)
+Channel *ChannelManager::findByName(std::string const &name)
 {
     Channel* channel;
     if(name != "")

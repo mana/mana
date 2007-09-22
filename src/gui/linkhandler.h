@@ -24,6 +24,8 @@
 #ifndef _TMW_LINK_HANDLER_H_
 #define _TMW_LINK_HANDLER_H_
 
+#include <string>
+
 /**
  * A simple interface to windows that need to handle links from BrowserBox
  * widget.

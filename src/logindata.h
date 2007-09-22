@@ -24,6 +24,8 @@
 #ifndef _TMW_LOGINDATA_H
 #define _TMW_LOGINDATA_H
 
+#include <string>
+
 struct LoginData
 {
     std::string username;
@@ -31,10 +33,6 @@ struct LoginData
     std::string hostname;
     std::string email;
     short port;
-
-    int account_ID;
-    int session_ID1;
-    int session_ID2;
 
     bool remember;            /**< Whether to store the username and host. */
     bool registerLogin;       /**< Whether an account is being registered. */

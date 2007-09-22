@@ -1,4 +1,11 @@
-2007-09-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+2007-09-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/browserbox.cpp: Removed some useless things.
+	* src/logindata.h, src/gui/linkhandler.h, src/channelmanager.h,
+	src/channelmanager.cpp, src/utils/minmax.h: Fixed missing includes and
+	cleaned a bit.
+
+2007-09-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/chat.cpp: Fixed resizing of chat window.
 

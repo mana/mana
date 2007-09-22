@@ -21,14 +21,9 @@
  *  $Id$
  */
 
-#include "browserbox.h"
-
 #include <algorithm>
-#include <iostream>
 
-#include <guichan/graphics.hpp>
-#include <guichan/imagefont.hpp>
-#include <guichan/mouseinput.hpp>
+#include "browserbox.h"
 
 #include "linkhandler.h"
 #include "truetypefont.h"
@@ -261,7 +256,7 @@ BrowserBox::draw(gcn::Graphics *graphics)
         }
     }
 
-    unsigned int i, j;
+    unsigned int i;
     int x = 0, y = 0;
     int wrappedLines = 0;
     TrueTypeFont *font = static_cast<TrueTypeFont*>(getFont());

@@ -24,6 +24,9 @@
 #ifndef _TMW_CHANNELMANAGER_H
 #define _TMW_CHANNELMANAGER_H
 
+#include <list>
+#include <string>
+
 class Channel;
 
 class ChannelManager
@@ -32,7 +35,7 @@ public:
     ChannelManager();
     ~ChannelManager();
     Channel* findById(int id);
-    Channel* findByName(std::string name);
+    Channel *findByName(std::string const &name);
     void addChannel(Channel *channel);
     void removeChannel(Channel *channel);
 private:
