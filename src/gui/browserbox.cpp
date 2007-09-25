@@ -386,7 +386,10 @@ BrowserBox::draw(gcn::Graphics *graphics)
                         continue;
                     }
 
-                    end--;
+                    // Skip to the start of the current character
+                    while ((row[end] & 192) == 128)
+                        end--;
+                    end--; // And then to the last byte of the previous one
 
                     part = row.substr(start, end - start + 1);
                 } while ((x + font->getWidth(part.c_str()) + 10) > getWidth());
