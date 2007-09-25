@@ -69,12 +69,12 @@ class Inventory
         /**
          * Checks if the given item is in the inventory
          */
-        bool contains(Item *item);
+        bool contains(Item *item) const;
 
         /**
          * Returns id of next free slot or -1 if all occupied.
          */
-        int getFreeSlot();
+        int getFreeSlot() const;
 
         /**
          * Reset all item slots.
@@ -84,12 +84,12 @@ class Inventory
         /**
          * Get the number of slots filled with an item
          */
-        int getNumberOfSlotsUsed();
+        int getNumberOfSlotsUsed() const;
 
         /**
          * Returns the index of the last occupied slot or 0 if none occupied.
          */
-        int getLastUsedSlot();
+        int getLastUsedSlot() const;
 
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
     protected:

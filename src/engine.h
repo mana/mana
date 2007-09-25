@@ -51,7 +51,7 @@ class Engine
         void changeMap(const std::string &mapName);
 
         /**
-         * Performs engine logic.
+         * Performs engine logic. This method is called 100 times per second.
          */
         void logic();
 

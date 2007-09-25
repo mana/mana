@@ -256,6 +256,8 @@ SET(SRCS
     resources/image.h
     resources/imageloader.cpp
     resources/imageloader.h
+    resources/imageset.h
+    resources/imageset.cpp
     resources/imagewriter.cpp
     resources/imagewriter.h
     resources/iteminfo.cpp
@@ -278,8 +280,6 @@ SET(SRCS
     resources/soundeffect.h
     resources/spritedef.h
     resources/spritedef.cpp
-    resources/imageset.h
-    resources/imageset.cpp
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h

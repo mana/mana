@@ -206,6 +206,8 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/image.h \
 	      resources/imageloader.cpp \
 	      resources/imageloader.h \
+	      resources/imageset.h \
+	      resources/imageset.cpp \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
 	      resources/itemdb.cpp \
@@ -228,8 +230,6 @@ tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/imageset.h \
-	      resources/imageset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/base64.cpp \

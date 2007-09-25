@@ -252,10 +252,10 @@ Game::Game():
     particleEngine = new Particle(NULL);
     particleEngine->setupEngine();
 
-    // Initialize timers
+    // Initialize logic and seconds counters
     tick_time = 0;
-    mLogicCounterId =   SDL_AddTimer(10, nextTick, NULL);    //Logic counter
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);//Seconds counter
+    mLogicCounterId = SDL_AddTimer(10, nextTick, NULL);
+    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, NULL);
 
     // Initialize frame limiting
     config.addListener("fpslimit", this);

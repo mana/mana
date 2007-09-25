@@ -1,3 +1,7 @@
+2007-09-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/inventory.h, src/inventory.cpp: Added some const qualifiers.
+
 2007-09-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/browserbox.cpp: Removed some useless things.
@@ -498,7 +502,7 @@
 	src/net/gameserver/player.h, src/net/gameserver/player.cpp,
 	src/net/protocol.h: Converted trading to new server.
 
-2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+2007-07-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/resources/image.cpp: Added support for subimages of subimages.
 	* src/gui/equipmentwindow.cpp, src/gui/button.cpp, src/gui/slider.cpp,
@@ -508,6 +512,9 @@
 	src/gui/itemcontainer.cpp, src/gui/checkbox.cpp, src/gui/minimap.cpp,
 	src/gui/scrollarea.cpp, src/gui/popupmenu.cpp: Removed useless yet
 	costly dynamic casts.
+
+2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
 	* src/net/beinghandler.cpp, src/net/protocol.h: Added being speed to
 	protocol.
 
