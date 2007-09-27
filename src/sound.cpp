@@ -40,8 +40,7 @@ Sound::~Sound()
 {
 }
 
-void
-Sound::init()
+void Sound::init()
 {
     // Don't initialize sound engine twice
     if (mInstalled) return;
@@ -72,8 +71,7 @@ Sound::init()
     mInstalled = true;
 }
 
-void
-Sound::info()
+void Sound::info()
 {
     SDL_version compiledVersion;
     const SDL_version *linkedVersion;
@@ -112,8 +110,7 @@ Sound::info()
     logger->log("Sound::info() Channels: %i", channels);
 }
 
-void
-Sound::setMusicVolume(int volume)
+void Sound::setMusicVolume(int volume)
 {
     if (!mInstalled) return;
 
@@ -121,8 +118,7 @@ Sound::setMusicVolume(int volume)
     Mix_VolumeMusic(volume);
 }
 
-void
-Sound::setSfxVolume(int volume)
+void Sound::setSfxVolume(int volume)
 {
     if (!mInstalled) return;
 
@@ -130,8 +126,7 @@ Sound::setSfxVolume(int volume)
     Mix_Volume(-1, volume);
 }
 
-void
-Sound::playMusic(const std::string &path, int loop)
+void Sound::playMusic(const std::string &path, int loop)
 {
     if (!mInstalled) return;
 
@@ -151,8 +146,7 @@ Sound::playMusic(const std::string &path, int loop)
     }
 }
 
-void
-Sound::stopMusic()
+void Sound::stopMusic()
 {
     if (!mInstalled) return;
 
@@ -165,8 +159,7 @@ Sound::stopMusic()
     }
 }
 
-void
-Sound::fadeInMusic(const std::string &path, int loop, int ms)
+void Sound::fadeInMusic(const std::string &path, int loop, int ms)
 {
     if (!mInstalled) return;
 
@@ -187,8 +180,7 @@ Sound::fadeInMusic(const std::string &path, int loop, int ms)
     }
 }
 
-void
-Sound::fadeOutMusic(int ms)
+void Sound::fadeOutMusic(int ms)
 {
     if (!mInstalled) return;
 
@@ -201,8 +193,7 @@ Sound::fadeOutMusic(int ms)
     }
 }
 
-void
-Sound::playSfx(const std::string &path)
+void Sound::playSfx(const std::string &path)
 {
     if (!mInstalled || path.length() == 0) return;
 
@@ -214,8 +205,7 @@ Sound::playSfx(const std::string &path)
     }
 }
 
-void
-Sound::close()
+void Sound::close()
 {
     stopMusic();
 

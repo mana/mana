@@ -146,7 +146,8 @@ ItemContainer::selectNone()
 void
 ItemContainer::setSelectedItem(Item *item)
 {
-    if (mSelectedItem != item) {
+    if (mSelectedItem != item)
+    {
         mSelectedItem = item;
         fireSelectionChangedEvent();
     }
@@ -159,7 +160,8 @@ ItemContainer::fireSelectionChangedEvent()
     SelectionListeners::iterator i_end = mListeners.end();
     SelectionListeners::iterator i;
 
-    for (i = mListeners.begin(); i != i_end; ++i) {
+    for (i = mListeners.begin(); i != i_end; ++i)
+    {
         (*i)->selectionChanged(event);
     }
 }

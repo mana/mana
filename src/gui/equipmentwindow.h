@@ -91,6 +91,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         int mSelected;                      /**< Index of selected item. */
 };
+
 extern EquipmentWindow *equipmentWindow;
 
 #endif

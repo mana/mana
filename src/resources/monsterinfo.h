@@ -59,7 +59,7 @@ class MonsterInfo
         ~MonsterInfo();
 
         void
-        setName(std::string name) { mName = name; } ;
+        setName(std::string name) { mName = name; }
 
         void
         setSprite(std::string filename) { mSprite = filename; }
@@ -72,10 +72,10 @@ class MonsterInfo
         addSound(MonsterSoundEvent event, std::string filename);
 
         const std::string&
-        getName () const { return mName; };
+        getName() const { return mName; }
 
         const std::string&
-        getSprite () const { return mSprite; };
+        getSprite() const { return mSprite; }
 
         const Being::TargetCursorSize
         getTargetCursorSize() const { return mTargetCursorSize; }

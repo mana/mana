@@ -117,7 +117,6 @@ class AnimatedSprite
         Action *mAction;               /**< The currently active action. */
         Animation *mAnimation;         /**< The currently active animation. */
         Frame *mFrame;                 /**< The currently active frame. */
-        std::string mAnimationFile;
 };
 
 #endif
