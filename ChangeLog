@@ -1,4 +1,9 @@
-﻿2007-09-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
+﻿2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_x3.png,
+	data/graphics/tiles/desert_x5.png: Added new desert tiles by Len.
+
+2007-09-20  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* data/equipment.xml, data/graphics/items/armor-head-funkyhat.png,
 	data/graphics/items/armor-head-mushroomhat.png,
