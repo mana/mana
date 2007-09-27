@@ -81,6 +81,8 @@ Particle::setupEngine()
     logger->log("Particle engine set up");
 }
 
+void Particle::draw(Graphics *, int, int) const {}
+
 bool
 Particle::update()
 {

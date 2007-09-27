@@ -65,7 +65,7 @@ class Sound {
          * @param path The full path to the music file.
          * @param loop The number of times the song is played (-1 = infinite)
          */
-        void playMusic(const char *path, int loop = -1);
+        void playMusic(const std::string &path, int loop = -1);
 
         /**
          * Stops currently running background music track.
@@ -79,7 +79,8 @@ class Sound {
          * @param loop The number of times the song is played (-1 = infinite)
          * @param ms   Duration of fade-in effect (ms)
          */
-        void fadeInMusic(const char *path, int loop = -1, int ms = 2000);
+        void fadeInMusic(const std::string &path, int loop = -1,
+                         int ms = 2000);
 
         /**
          * Fades out currently running background music track.

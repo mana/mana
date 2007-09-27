@@ -24,6 +24,8 @@
 #ifndef _TMW_LOGINDATA_H
 #define _TMW_LOGINDATA_H
 
+#include <string>
+
 struct LoginData
 {
     std::string username;

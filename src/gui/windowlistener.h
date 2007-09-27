@@ -73,12 +73,12 @@ class WindowListener
         /**
          * Called whenever the window is moved.
          */
-        virtual void windowMoved(const WindowEvent &event) {}
+        virtual void windowMoved(const WindowEvent &) {}
 
         /**
          * Called whenever the window is resized.
          */
-        virtual void windowResized(const WindowEvent &event) {}
+        virtual void windowResized(const WindowEvent &) {}
 };
 
 typedef std::list<WindowListener*> WindowListeners;

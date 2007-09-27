@@ -110,7 +110,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
         // Draw selection image below selected item
         if (mSelectedItem == item)
         {
-            dynamic_cast<Graphics*>(graphics)->drawImage(
+            static_cast<Graphics*>(graphics)->drawImage(
                     mSelImg, itemX, itemY);
         }
 
@@ -118,7 +118,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
         Image* image;
         if ((image = item->getInfo().getImage()) != NULL)
         {
-            dynamic_cast<Graphics*>(graphics)->drawImage(
+            static_cast<Graphics*>(graphics)->drawImage(
                     image, itemX, itemY);
         }
 

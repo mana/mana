@@ -109,22 +109,22 @@ void Slider::draw(gcn::Graphics *graphics)
     int x = 0;
     int y = (h - hStart->getHeight()) / 2;
 
-    dynamic_cast<Graphics*>(graphics)->drawImage(hStart, x, y);
+    static_cast<Graphics*>(graphics)->drawImage(hStart, x, y);
 
     w -= hStart->getWidth() + hEnd->getWidth();
     x += hStart->getWidth();
 
-    dynamic_cast<Graphics*>(graphics)->drawImagePattern(
-            hMid, x, y, w, hMid->getHeight());
+    static_cast<Graphics*>(graphics)->
+        drawImagePattern(hMid, x, y, w, hMid->getHeight());
 
     x += w;
-    dynamic_cast<Graphics*>(graphics)->drawImage(hEnd, x, y);
+    static_cast<Graphics*>(graphics)->drawImage(hEnd, x, y);
 
     drawMarker(graphics);
 }
 
 void Slider::drawMarker(gcn::Graphics *graphics)
 {
-    dynamic_cast<Graphics*>(graphics)->drawImage(hGrip,
-            getMarkerPosition(), (getHeight() - hGrip->getHeight()) / 2);
+    static_cast<Graphics*>(graphics)->
+       drawImage(hGrip, getMarkerPosition(), (getHeight() - hGrip->getHeight()) / 2);
 }

@@ -66,7 +66,7 @@ CheckBox::~CheckBox()
 
 void CheckBox::drawBox(gcn::Graphics* graphics)
 {
-    Image *box = NULL;
+    Image *box;
 
     if (mMarked) {
         if (isEnabled()) {
@@ -80,7 +80,5 @@ void CheckBox::drawBox(gcn::Graphics* graphics)
         box = checkBoxDisabled;
     }
 
-    if (box != NULL) {
-        dynamic_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
-    }
+    static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
 }

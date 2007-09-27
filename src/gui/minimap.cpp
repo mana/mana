@@ -72,8 +72,8 @@ void Minimap::draw(gcn::Graphics *graphics)
 
     if (mMapImage != NULL)
     {
-        dynamic_cast<Graphics*>(graphics)->drawImage(
-                mMapImage, getPadding(), getTitleBarHeight());
+        static_cast<Graphics*>(graphics)->
+            drawImage(mMapImage, getPadding(), getTitleBarHeight());
     }
 
     Beings &beings = beingManager->getAll();

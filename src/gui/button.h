@@ -37,9 +37,14 @@ class ImageRect;
  */
 class Button : public gcn::Button {
     public:
-        Button();
         /**
-         * Constructor, sets the caption of the button to the given string.
+         * Default constructor.
+         */
+        Button();
+
+        /**
+         * Constructor, sets the caption of the button to the given string and
+         * adds the given action listener.
          */
         Button(const std::string& caption, const std::string &actionEventId,
                 gcn::ActionListener *listener);

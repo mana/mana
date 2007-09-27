@@ -98,5 +98,5 @@ void TextField::drawBorder(gcn::Graphics *graphics)
     w = getWidth() + bs * 2;
     h = getHeight() + bs * 2;
 
-    dynamic_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
+    static_cast<Graphics*>(graphics)->drawImageRect(0, 0, w, h, skin);
 }

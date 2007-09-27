@@ -80,6 +80,6 @@ void RadioButton::drawBox(gcn::Graphics* graphics)
     }
 
     if (box != NULL) {
-        dynamic_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
+        static_cast<Graphics*>(graphics)->drawImage(box, 2, 2);
     }
 }

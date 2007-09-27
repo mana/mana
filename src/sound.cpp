@@ -126,7 +126,7 @@ void Sound::setSfxVolume(int volume)
     Mix_Volume(-1, volume);
 }
 
-void Sound::playMusic(const char *path, int loop)
+void Sound::playMusic(const std::string &path, int loop)
 {
     if (!mInstalled) return;
 
@@ -134,9 +134,10 @@ void Sound::playMusic(const char *path, int loop)
         stopMusic();
     }
 
-    logger->log("Sound::startMusic() Playing \"%s\" %i times", path, loop);
+    logger->log("Sound::startMusic() Playing \"%s\" %i times", path.c_str(),
+                loop);
 
-    mMusic = Mix_LoadMUS(path);
+    mMusic = Mix_LoadMUS(path.c_str());
     if (mMusic) {
         Mix_PlayMusic(mMusic, loop);
     }
@@ -158,7 +159,7 @@ void Sound::stopMusic()
     }
 }
 
-void Sound::fadeInMusic(const char *path, int loop, int ms)
+void Sound::fadeInMusic(const std::string &path, int loop, int ms)
 {
     if (!mInstalled) return;
 
@@ -166,10 +167,11 @@ void Sound::fadeInMusic(const char *path, int loop, int ms)
         stopMusic();
     }
 
-    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)", path,
-            loop, ms);
+    logger->log("Sound::fadeInMusic() Fading \"%s\" %i times (%i ms)",
+                path.c_str(),
+                loop, ms);
 
-    mMusic = Mix_LoadMUS(path);
+    mMusic = Mix_LoadMUS(path.c_str());
     if (mMusic) {
         Mix_FadeInMusic(mMusic, loop, ms);
     }

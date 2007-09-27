@@ -275,6 +275,17 @@
 	src/CMakeLists.txt: Switch to upstream CMake modules for libxml2 and
 	curl.
 
+2007-07-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/resources/image.cpp: Added support for subimages of subimages.
+	* src/gui/equipmentwindow.cpp, src/gui/button.cpp, src/gui/slider.cpp,
+	src/gui/widgets/resizegrip.cpp, src/gui/widgets/dropdown.cpp,
+	src/gui/progressbar.cpp, src/gui/browserbox.cpp, src/gui/gui.cpp,
+	src/gui/radiobutton.cpp, src/gui/textfield.cpp, src/gui/playerbox.cpp,
+	src/gui/itemcontainer.cpp, src/gui/checkbox.cpp, src/gui/minimap.cpp,
+	src/gui/scrollarea.cpp, src/gui/popupmenu.cpp: Removed useless yet
+	costly dynamic casts.
+
 2007-07-25  Joshua Langley  <joshlangley[at]optusnet.com.au>
 
 	* src/gui/setup.cpp, src/gui/setup_keyboard.cpp,
@@ -1638,6 +1649,11 @@
 	src/player.h, src/being.cpp, src/being.h, data/items.xml: Added scythe
 	as a permanent weapon (ID: 623)
 
+2006-11-04  Björn Steinbrink  <B.Steinbrink@gmx.de>
+
+	* src/gui/updatewindow.cpp, src/gui/updatewindow.h: Removed useless
+	addRow method.
+
 2006-11-04  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* data/maps/new_1-1.tmx.gz, data/maps/new_10-1.tmx.gz,
@@ -2440,10 +2456,6 @@
 	lampposts, rocks and benches.
 	* data/graphics/sprites/item003.png, data/graphics/sprites/item003.xml:
 	Added the leather shirt
-
-2007-07-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
-
-	* src/resources/image.cpp: Added support for subimages of subimages.
 
 2006-07-25  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

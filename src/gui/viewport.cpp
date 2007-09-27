@@ -309,7 +309,7 @@ Viewport::drawTargetCursor(Graphics *graphics)
         int rangeY = abs(target->mY - player_node->mY);
         int attackRange = player_node->getAttackRange();
 
-        // get the correct target cursors graphic
+        // Get the correct target cursors graphic
         Being::TargetCursorSize cursorSize = target->getTargetCursorSize();
         Image* targetCursor;
         if (rangeX > attackRange || rangeY > attackRange)

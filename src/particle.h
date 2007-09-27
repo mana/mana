@@ -89,8 +89,7 @@ class Particle : public Sprite
         /**
          * Draws the particle image.
          */
-        virtual void
-        draw(Graphics *graphics, int offsetX, int offsetY) const {}
+        virtual void draw(Graphics *graphics, int offsetX, int offsetY) const;
 
         /**
          * Necessary for sorting with the other sprites.
