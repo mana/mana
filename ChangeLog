@@ -1,4 +1,9 @@
-﻿2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert_x3.png: Removed the purple line from the
+	ruin tile.
+
+2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_x3.png,
 	data/graphics/tiles/desert_x5.png: Added new desert tiles by Len.
