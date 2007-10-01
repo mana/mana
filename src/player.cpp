@@ -126,9 +126,16 @@ Player::setHairColor(Uint16 color)
 {
     if (color != mHairColor && mHairStyle > 0)
     {
+        std::string sex;
+        if (mSex == 0)
+        {
+            sex = "-male";
+        } else{
+            sex = "-female";
+        }
         AnimatedSprite *newHairSprite = new AnimatedSprite(
-                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
-                color - 1);
+            "graphics/sprites/hairstyle" + toString(mHairStyle) + sex + ".xml",
+            color - 1);
         newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
@@ -145,9 +152,16 @@ Player::setHairStyle(Uint16 style)
 {
     if (style != mHairStyle && mHairColor > 0)
     {
+        std::string sex;
+        if (mSex == 0)
+        {
+            sex = "-male";
+        } else{
+            sex = "-female";
+        }
         AnimatedSprite *newHairSprite = new AnimatedSprite(
-                "graphics/sprites/hairstyle" + toString(style) + ".xml",
-                mHairColor - 1);
+            "graphics/sprites/hairstyle" + toString(style) + sex + ".xml",
+            mHairColor - 1);
         newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];

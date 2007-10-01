@@ -1,4 +1,11 @@
-﻿2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-10-01  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/player.cpp, data/graphics/sprites/hairstyle*:
+	Added support for different hairstyles for male and female characters
+	(current female hairstyles are copies of the male ones until the 
+	real female ones are finished)
+
+2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/tiles/desert_x3.png: Removed the purple line from the
 	ruin tile.
