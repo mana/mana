@@ -550,11 +550,18 @@ void Game::handleInput()
                             used = true;
                         }
                         break;
+
+                    case KeyboardConfig::KEY_ATTACK:
+                        player_node->attack();
+                        used = true;
+                        break;
+
                     case KeyboardConfig::KEY_SIT:
                         // Player sit action
                         player_node->toggleSit();
                         used = true;
                         break;
+
                     case KeyboardConfig::KEY_HIDE_WINDOWS:
                          // Hide certain windows
                         if (!chatWindow->isFocused())

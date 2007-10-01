@@ -3,6 +3,7 @@
 	* src/item.cpp, src/gui/itemcontainer.cpp, src/resources/itemdb.cpp:
 	Fixed inventory display so that empty slots are not unknown items.
 	Adjusted "type" meaning to tmwserv one.
+	* src/game.cpp: Fixed attacking with keyboard.
 
 2007-09-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
