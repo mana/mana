@@ -171,7 +171,7 @@ void ItemDB::unload()
 
 const ItemInfo& ItemDB::get(int id)
 {
-    assert(mLoaded);
+    assert(mLoaded && id);
 
     ItemInfoIterator i = mItemInfos.find(id);
 

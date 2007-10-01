@@ -1,3 +1,9 @@
+2007-10-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/item.cpp, src/gui/itemcontainer.cpp, src/resources/itemdb.cpp:
+	Fixed inventory display so that empty slots are not unknown items.
+	Adjusted "type" meaning to tmwserv one.
+
 2007-09-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
 	* src/gui/browserbox.cpp: Fix wrapping of UTF-8 multi-byte characters.

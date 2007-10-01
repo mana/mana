@@ -24,16 +24,15 @@
 #include "item.h"
 
 Item::Item(int id, int quantity) :
-    mId(id),
     mQuantity(quantity)
 {
-    // Either type or slot, both are unused anyway. -- silene
-    mEquipment = getInfo().getType();
+    setId(id);
 }
 
 void Item::setId(int id)
 {
     mId = id;
-    mEquipment = getInfo().getType();
+    // Types 0 and 1 are not equippable items.
+    mEquipment = id && getInfo().getType() >= 2;
 }
 

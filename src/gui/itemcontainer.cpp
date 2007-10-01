@@ -96,6 +96,8 @@ ItemContainer::draw(gcn::Graphics *graphics)
 
             if (!item)
                 return;
+            if (item->getId() == 0)
+                continue;
             Image *image = item->getInfo().getImage();
             if (image)
             {
