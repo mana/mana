@@ -1,4 +1,8 @@
-﻿2007-10-01  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
+
+2007-10-01  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/player.cpp, data/graphics/sprites/hairstyle*:
 	Added support for different hairstyles for male and female characters
