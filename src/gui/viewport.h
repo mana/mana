@@ -132,21 +132,24 @@ class Viewport : public WindowContainer, public gcn::MouseListener,
         /**
          * Helper function for loading target cursors
          */
-        void
-        loadTargetCursor(std::string filename, int width, int height,
-                         bool outRange, Being::TargetCursorSize size);
+        void loadTargetCursor(std::string filename, int width, int height,
+                              bool outRange, Being::TargetCursorSize size);
 
         /**
          * Draws range based target cursor
          */
-        void
-        drawTargetCursor(Graphics *graphics);
+        void drawTargetCursor(Graphics *graphics);
 
         /**
          * Draws target name
          */
-        void
-        drawTargetName(Graphics *graphics);
+        void drawTargetName(Graphics *graphics);
+
+        /**
+         * Finds a path from the player to the mouse, and draws it. This is for
+         * debug purposes.
+         */
+        void drawDebugPath(Graphics *graphics);
 
 
         Map *mMap;                 /**< The current map. */

@@ -1,3 +1,9 @@
+2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/gui/viewport.h, src/gui/viewport.cpp: Put drawing of debug path
+	into a private method.
+	* po/LINGUAS, po/nl.po: Added Dutch translation (incomplete).
+
 2007-10-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/item.cpp, src/gui/itemcontainer.cpp, src/resources/itemdb.cpp:

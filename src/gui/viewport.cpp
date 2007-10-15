@@ -87,8 +87,8 @@ void
 Viewport::loadTargetCursor(std::string filename, int width, int height,
                            bool outRange, Being::TargetCursorSize size)
 {
-    assert(size > -1);
-    assert(size < 3);
+    assert(size >= Being::TC_SMALL);
+    assert(size < Being::NUM_TC);
 
     ImageSet* currentImageSet;
     SimpleAnimation* currentCursor;
@@ -226,32 +226,9 @@ Viewport::draw(gcn::Graphics *gcnGraphics)
         drawTargetName(graphics);
     }
 
-    // Find a path from the player to the mouse, and draw it. This is for debug
-    // purposes.
     if (mShowDebugPath && mMap)
     {
-        // Get the current mouse position
-        int mouseX, mouseY;
-        SDL_GetMouseState(&mouseX, &mouseY);
-
-        int mouseTileX = (mouseX + mCameraX) / 32;
-        int mouseTileY = (mouseY + mCameraY) / 32;
-
-        Path debugPath = mMap->findPath(
-                player_node->mX / 32, player_node->mY / 32,
-                mouseTileX, mouseTileY);
-
-        graphics->setColor(gcn::Color(255, 0, 0));
-        for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
-        {
-            int squareX = i->x * 32 - mCameraX + 12;
-            int squareY = i->y * 32 - mCameraY + 12;
-
-            graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
-            graphics->drawText(
-                    toString(mMap->getMetaTile(i->x, i->y)->Gcost),
-                    squareX + 4, squareY + 12, gcn::Graphics::CENTER);
-        }
+        drawDebugPath(graphics);
     }
 
     // Draw player nickname, speech, and emotion sprite as needed
@@ -286,7 +263,7 @@ Viewport::logic()
         mWalkTime = player_node->mWalkTime;
     }
 
-    for (int i = 0; i < 3; i++)
+    for (int i = Being::TC_SMALL; i < Being::NUM_TC; i++)
     {
         mTargetCursorInRange[i]->update(10);
         mTargetCursorOutRange[i]->update(10);
@@ -343,6 +320,33 @@ Viewport::drawTargetName(Graphics *graphics)
         int posY = target->getPixelY() + 16 - target->getHeight() - mCameraY;
 
         graphics->drawText(mi.getName(), posX, posY, gcn::Graphics::CENTER);
+    }
+}
+
+void
+Viewport::drawDebugPath(Graphics *graphics)
+{
+    // Get the current mouse position
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+
+    int mouseTileX = (mouseX + mCameraX) / 32;
+    int mouseTileY = (mouseY + mCameraY) / 32;
+
+    Path debugPath = mMap->findPath(
+            player_node->mX / 32, player_node->mY / 32,
+            mouseTileX, mouseTileY);
+
+    graphics->setColor(gcn::Color(255, 0, 0));
+    for (PathIterator i = debugPath.begin(); i != debugPath.end(); i++)
+    {
+        int squareX = i->x * 32 - mCameraX + 12;
+        int squareY = i->y * 32 - mCameraY + 12;
+
+        graphics->fillRectangle(gcn::Rectangle(squareX, squareY, 8, 8));
+        graphics->drawText(
+                toString(mMap->getMetaTile(i->x, i->y)->Gcost),
+                squareX + 4, squareY + 12, gcn::Graphics::CENTER);
     }
 }
 
