@@ -46,26 +46,22 @@
 int Being::instances = 0;
 ImageSet *Being::emotionSet = NULL;
 
-Being::Being(Uint16 id, Uint16 job, Map *map):
+Being::Being(int id, int job, Map *map):
     mJob(job),
     mX(0), mY(0),
     mAction(STAND),
     mWalkTime(0),
     mEmotion(0), mEmotionTime(0),
     mAttackSpeed(350),
-    mEquipment(new Equipment()),
     mId(id),
-    mSex(2),
     mWalkSpeed(150),
     mSpeedModifier(1024),
     mSpriteDirection(DIRECTION_DOWN), mDirection(DOWN),
     mMap(NULL),
     mEquippedWeapon(NULL),
-    mHairStyle(0), mHairColor(0),
     mSpeechTime(0),
     mPx(0), mPy(0),
-    mSprites(VECTOREND_SPRITE, NULL),
-    mEquipmentSpriteIDs(VECTOREND_SPRITE, 0)
+    mSprites(VECTOREND_SPRITE, NULL)
 {
     setMap(map);
 
@@ -270,24 +266,6 @@ Being::setPath(const Path &path, int mod)
         mStepTime = 0;
         nextStep();
     }
-}
-
-void
-Being::setHairColor(Uint16 color)
-{
-    mHairColor = (color < NR_HAIR_COLORS) ? color : 0;
-}
-
-void
-Being::setHairStyle(Uint16 style)
-{
-    mHairStyle = (style < NR_HAIR_STYLES) ? style : 0;
-}
-
-void
-Being::setVisibleEquipment(Uint8 slot, int id)
-{
-    mEquipmentSpriteIDs[slot] = id;
 }
 
 void

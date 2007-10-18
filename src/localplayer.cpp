@@ -47,7 +47,8 @@ LocalPlayer *player_node = NULL;
 LocalPlayer::LocalPlayer():
     Player(65535, 0, NULL),
     mAttackRange(0),
-    mInventory(new Inventory()),
+    mInventory(new Inventory),
+    mEquipment(new Equipment),
     mAttributeBase(NB_CHARACTER_ATTRIBUTES, 0),
     mAttributeEffective(NB_CHARACTER_ATTRIBUTES, 0),
     mAttributeIncreasePoints(0),
@@ -92,11 +93,6 @@ void LocalPlayer::nextStep()
     }
 
     Player::nextStep();
-}
-
-Being::Type LocalPlayer::getType() const
-{
-    return LOCALPLAYER;
 }
 
 void LocalPlayer::clearInventory()

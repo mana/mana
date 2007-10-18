@@ -141,8 +141,6 @@ class LocalPlayer : public Player
         virtual void
         drawName(Graphics *, int, int) {};
 
-        virtual Type getType() const;
-
         void clearInventory();
         Item* getInvItem(int index);
 
@@ -305,6 +303,7 @@ class LocalPlayer : public Player
         float mLastAttackTime; /**< Used to synchronize the charge dialog */
 
         std::auto_ptr<Inventory> mInventory;
+        std::auto_ptr<Equipment> mEquipment;
 
     protected:
         void walk(unsigned char dir);

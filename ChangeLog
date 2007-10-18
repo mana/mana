@@ -7,6 +7,21 @@
 	* src/monster.cpp: Removed compatibility hack.
 	* data/monsters.xml: Merged client and server monster data.
 	* data/items.xml: Merged server item data. Removed obsolete fields.
+	* src/localplayer.cpp, src/localplayer.h: Moved equipment and inventory
+	storage to local player. Removed specific type.
+	* src/gui/viewport.cpp, src/gui/minimap.cpp: Changed identification of
+	local player to a check of player_node.
+	* src/animatedsprite.cpp, src/animatedsprite.h, src/npc.cpp,
+	src/player.cpp, src/monster.cpp:
+	* src/being.cpp, src/being.h, src/player.h, src/net/beinghandler.cpp,
+	src/net/charserverhandler.cpp: Removed hair style, hair color, gender,
+	and equipment from generic being.
+	* src/resources/spritedef.cpp: Added filename to fatal error messages.
+	* src/resources/resourcemanager.cpp: Prevented client from exiting on
+	missing sprite.
+	* src/resources/iteminfo.cpp, src/resources/iteminfo.h,
+	src/resources/itemdb.cpp, data/items.xml: Merged weapon_type and
+	attacktype field.
 
 2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

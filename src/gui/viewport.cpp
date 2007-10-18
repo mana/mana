@@ -373,7 +373,7 @@ Viewport::mousePressed(gcn::MouseEvent &event)
         FloorItem *floorItem;
 
         if ((being = beingManager->findBeing(tilex, tiley)) &&
-                being->getType() != Being::LOCALPLAYER)
+            being != player_node)
         {
             mPopupMenu->showPopup(event.getX(), event.getY(), being);
             return;

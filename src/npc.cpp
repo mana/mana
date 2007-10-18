@@ -35,7 +35,7 @@ NPC *current_npc = 0;
 NPC::NPC(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
-    mSprites[BASE_SPRITE] = new AnimatedSprite("graphics/sprites/npc.xml",
+    mSprites[BASE_SPRITE] = AnimatedSprite::load("graphics/sprites/npc.xml",
             job - 100);
 }
 

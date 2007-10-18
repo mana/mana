@@ -40,7 +40,7 @@ class Player : public Being
         /**
          * Constructor.
          */
-        Player(Uint16 id, Uint16 job, Map *map);
+        Player(int id, int job, Map *map);
 
         virtual Type
         getType() const;
@@ -48,17 +48,42 @@ class Player : public Being
         virtual void
         drawName(Graphics *graphics, int offsetX, int offsetY);
 
-        virtual void
-        setSex(Uint8 sex);
+        /**
+         * Sets the sex for this player.
+         */
+        void setGender(int);
 
-        virtual void
-        setHairColor(Uint16 color);
+        /**
+         * Gets the hair color for this player.
+         */
+        int getHairColor() const
+        { return mHairColor; }
 
-        virtual void
-        setHairStyle(Uint16 style);
+        /**
+         * Sets the hair color for this player.
+         */
+        void setHairColor(int color);
 
-        virtual void
-        setVisibleEquipment(Uint8 slot, int id);
+        /**
+         * Gets the hair style for this player.
+         */
+        int getHairStyle() const
+        { return mHairStyle; }
+
+        /**
+         * Sets the hair style for this player.
+         */
+        void setHairStyle(int style);
+
+        /**
+         * Sets visible equipments for this player.
+         */
+        void setVisibleEquipment(int slot, int id);
+
+    private:
+
+        std::vector<int> mEquipmentSpriteIDs;
+        Uint8 mGender, mHairStyle, mHairColor;
 };
 
 #endif

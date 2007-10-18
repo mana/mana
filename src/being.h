@@ -68,7 +68,6 @@ class Being : public Sprite
     public:
         enum Type {
             UNKNOWN,
-            LOCALPLAYER,
             PLAYER,
             NPC,
             MONSTER
@@ -125,7 +124,7 @@ class Being : public Sprite
         /**
          * Constructor.
          */
-        Being(Uint16 id, Uint16 job, Map *map);
+        Being(int id, int job, Map *map);
 
         /**
          * Destructor.
@@ -188,48 +187,6 @@ class Being : public Sprite
          */
         void
         setName(const std::string &name) { mName = name; }
-
-        /**
-         * Sets the hair color for this being.
-         */
-        virtual void
-        setHairColor(Uint16 color);
-
-        /**
-         * Gets the hair color for this being.
-         */
-        Uint16
-        getHairColor() const { return mHairColor; }
-
-        /**
-         * Sets the hair style for this being.
-         */
-        virtual void
-        setHairStyle(Uint16 style);
-
-        /**
-         * Gets the hair style for this being.
-         */
-        Uint16
-        getHairStyle() const { return mHairStyle; }
-
-        /**
-         * Sets visible equipments for this being.
-         */
-        virtual void
-        setVisibleEquipment(Uint8 slot, int id);
-
-        /**
-         * Sets the sex for this being.
-         */
-        virtual void
-        setSex(Uint8 sex) { mSex = sex; }
-
-        /**
-         * Gets the sex for this being.
-         */
-        Uint8
-        getSex() const { return mSex; }
 
         /**
          * Makes this being take the next step of his path.
@@ -364,8 +321,6 @@ class Being : public Sprite
         virtual Being::TargetCursorSize getTargetCursorSize() const
         { return TC_MEDIUM; }
 
-        std::auto_ptr<Equipment> mEquipment;
-
         /**
          * Take control of a particle.
          */
@@ -378,7 +333,6 @@ class Being : public Sprite
         void setPath(const Path &path, int mod = 1024);
 
         Uint16 mId;                     /**< Unique being id */
-        Uint8 mSex;                     /**< Character's gender */
         Uint16 mWalkSpeed;              /**< Walking speed */
         Uint16 mSpeedModifier;          /**< Modifier to keep course on sync (1024 = normal speed) */
         Uint8 mSpriteDirection;         /**< Facing direction */
@@ -391,12 +345,10 @@ class Being : public Sprite
 
         Path mPath;
         std::string mSpeech;
-        Uint16 mHairStyle, mHairColor;
         Uint32 mSpeechTime;
         Sint32 mPx, mPy;                /**< Pixel coordinates */
 
         std::vector<AnimatedSprite*> mSprites;
-        std::vector<int> mEquipmentSpriteIDs;
         std::list<Particle *> mChildParticleEffects;
 
     private:

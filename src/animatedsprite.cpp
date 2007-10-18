@@ -54,20 +54,14 @@ AnimatedSprite::AnimatedSprite(SpriteDef *sprite):
     play(ACTION_STAND);
 }
 
-AnimatedSprite::AnimatedSprite(const std::string& filename, int variant):
-    mDirection(DIRECTION_DOWN),
-    mLastTime(0),
-    mFrameIndex(0),
-    mFrameTime(0),
-    mAnimation(0),
-    mFrame(0)
+AnimatedSprite *AnimatedSprite::load(const std::string& filename, int variant)
 {
     ResourceManager *resman = ResourceManager::getInstance();
-    mSprite = resman->getSprite(filename, variant);
-    assert(mSprite);
-
-    // Play the stand animation by default
-    play(ACTION_STAND);
+    SpriteDef *s = resman->getSprite(filename, variant);
+    if (!s) return NULL;
+    AnimatedSprite *as = new AnimatedSprite(s);
+    s->decRef();
+    return as;
 }
 
 AnimatedSprite::~AnimatedSprite()

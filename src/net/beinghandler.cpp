@@ -418,7 +418,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
     }
 }
 
-static void handleLooks(Being *being, MessageIn &msg)
+static void handleLooks(Player *being, MessageIn &msg)
 {
     // Order of sent slots. Has to be in sync with the server code.
     static int const nb_slots = 4;
@@ -471,10 +471,11 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
                 being = beingManager->createBeing(id, type, 0);
                 being->setName(name);
             }
-            being->setHairStyle(msg.readByte());
-            being->setHairColor(msg.readByte());
-            being->setSex(msg.readByte());
-            handleLooks(being, msg);
+            Player *p = static_cast< Player * >(being);
+            p->setHairStyle(msg.readByte());
+            p->setHairColor(msg.readByte());
+            p->setGender(msg.readByte());
+            handleLooks(p, msg);
         } break;
 
         case OBJECT_MONSTER:
@@ -591,7 +592,7 @@ void BeingHandler::handleBeingActionChangeMessage(MessageIn &msg)
 void BeingHandler::handleBeingLooksChangeMessage(MessageIn &msg)
 {
     Being *being = beingManager->findBeing(msg.readShort());
-    if (!being) return;
-    handleLooks(being, msg);
+    if (!being || being->getType() != Being::PLAYER) return;
+    handleLooks(static_cast< Player * >(being), msg);
 }
 

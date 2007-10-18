@@ -35,8 +35,10 @@
 
 #include "gui/gui.h"
 
-Player::Player(Uint16 id, Uint16 job, Map *map):
-    Being(id, job, map)
+Player::Player(int id, int job, Map *map):
+    Being(id, job, map),
+    mEquipmentSpriteIDs(VECTOREND_SPRITE, 0),
+    mGender(2), mHairStyle(0), mHairColor(0)
 {
 }
 
@@ -57,8 +59,7 @@ Player::drawName(Graphics *graphics, int offsetX, int offsetY)
     graphics->drawText(mName, px + 15, py + 30, gcn::Graphics::CENTER);
 }
 
-void
-Player::setSex(Uint8 sex)
+void Player::setGender(int sex)
 {
     // Players can only be male or female
     if (sex > 1)
@@ -67,20 +68,20 @@ Player::setSex(Uint8 sex)
         sex = 0;
     }
 
-    if (sex != mSex)
+    if (sex != mGender)
     {
-        Being::setSex(sex);
+        mGender = sex;
 
         // Reload base sprite
         AnimatedSprite *newBaseSprite;
         if (sex == 0)
         {
-            newBaseSprite = new AnimatedSprite(
+            newBaseSprite = AnimatedSprite::load(
                     "graphics/sprites/player_male_base.xml");
         }
         else
         {
-            newBaseSprite = new AnimatedSprite(
+            newBaseSprite = AnimatedSprite::load(
                     "graphics/sprites/player_female_base.xml");
         }
 
@@ -92,7 +93,7 @@ Player::setSex(Uint8 sex)
         {
             if (i != HAIR_SPRITE && mEquipmentSpriteIDs.at(i) != 0)
             {
-                AnimatedSprite *newEqSprite = new AnimatedSprite(
+                AnimatedSprite *newEqSprite = AnimatedSprite::load(
                         "graphics/sprites/" + ItemDB::get(
                             mEquipmentSpriteIDs.at(i)).getSprite(sex));
                 delete mSprites[i];
@@ -102,17 +103,17 @@ Player::setSex(Uint8 sex)
     }
 }
 
-void
-Player::setHairColor(Uint16 color)
+void Player::setHairColor(int color)
 {
     if (color != mHairColor)
     {
-        Being::setHairColor(color);
+        mHairColor = color < NR_HAIR_COLORS ? color : 0;
 
-        AnimatedSprite *newHairSprite = new AnimatedSprite(
-                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
+        AnimatedSprite *newHairSprite = AnimatedSprite::load(
+                "graphics/sprites/hairstyle" + toString(getHairStyle()) + ".xml",
                 mHairColor);
-        newHairSprite->setDirection(getSpriteDirection());
+        if (newHairSprite)
+            newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
@@ -121,17 +122,17 @@ Player::setHairColor(Uint16 color)
     }
 }
 
-void
-Player::setHairStyle(Uint16 style)
+void Player::setHairStyle(int style)
 {
     if (style != mHairStyle)
     {
-        Being::setHairStyle(style);
+        mHairStyle = style < NR_HAIR_STYLES ? style : 0;
 
-        AnimatedSprite *newHairSprite = new AnimatedSprite(
-                "graphics/sprites/hairstyle" + toString(mHairStyle) + ".xml",
+        AnimatedSprite *newHairSprite = AnimatedSprite::load(
+                "graphics/sprites/hairstyle" + toString(getHairStyle()) + ".xml",
                 mHairColor);
-        newHairSprite->setDirection(getSpriteDirection());
+        if (newHairSprite)
+            newHairSprite->setDirection(getSpriteDirection());
 
         delete mSprites[HAIR_SPRITE];
         mSprites[HAIR_SPRITE] = newHairSprite;
@@ -140,8 +141,7 @@ Player::setHairStyle(Uint16 style)
     }
 }
 
-void
-Player::setVisibleEquipment(Uint8 slot, int id)
+void Player::setVisibleEquipment(int slot, int id)
 {
     // id = 0 means unequip
     if (id == 0)
@@ -151,19 +151,11 @@ Player::setVisibleEquipment(Uint8 slot, int id)
     }
     else
     {
-        AnimatedSprite *equipmentSprite;
+        AnimatedSprite *equipmentSprite = AnimatedSprite::load(
+            "graphics/sprites/" + ItemDB::get(id).getSprite(mGender));
 
-        if (mSex == 0)
-        {
-            equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + ItemDB::get(id).getSprite(0));
-        }
-        else {
-            equipmentSprite = new AnimatedSprite(
-                "graphics/sprites/" + ItemDB::get(id).getSprite(1));
-        }
-
-        equipmentSprite->setDirection(getSpriteDirection());
+        if (equipmentSprite)
+            equipmentSprite->setDirection(getSpriteDirection());
 
         delete mSprites[slot];
         mSprites[slot] = equipmentSprite;
@@ -176,5 +168,5 @@ Player::setVisibleEquipment(Uint8 slot, int id)
         setAction(mAction);
     }
 
-    Being::setVisibleEquipment(slot, id);
+    mEquipmentSpriteIDs[slot] = id;
 }
