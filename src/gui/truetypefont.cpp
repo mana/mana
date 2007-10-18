@@ -82,15 +82,17 @@ class TextChunk
 static std::list<TextChunk> cache;
 typedef std::list<TextChunk>::iterator CacheIterator;
 
+static int fontCounter;
 
 TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
 {
-    if (!TTF_WasInit() && TTF_Init() == -1)
+    if (fontCounter == 0 && TTF_Init() == -1)
     {
         throw GCN_EXCEPTION("Unable to initialize SDL_ttf: " +
             std::string(TTF_GetError()));
     }
 
+    ++fontCounter;
     mFont = TTF_OpenFont(filename.c_str(), size);
 
     if (mFont == NULL)
@@ -103,8 +105,9 @@ TrueTypeFont::TrueTypeFont(const std::string& filename, int size)
 TrueTypeFont::~TrueTypeFont()
 {
     TTF_CloseFont(mFont);
+    --fontCounter;
 
-    if (TTF_WasInit())
+    if (fontCounter == 0)
     {
         TTF_Quit();
     }
