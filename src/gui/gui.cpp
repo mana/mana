@@ -30,14 +30,10 @@
 // Should stay here because of Guichan being sensitive to headers order
 #include <guichan/sdl/sdlinput.hpp>
 
-#ifdef USE_OPENGL
-#include "../resources/openglsdlimageloader.h"
-#endif
-
 #include "focushandler.h"
+#include "viewport.h"
 #include "window.h"
 #include "windowcontainer.h"
-#include "viewport.h"
 
 #include "../configlistener.h"
 #include "../configuration.h"
@@ -46,7 +42,7 @@
 
 #include "../resources/imageset.h"
 #include "../resources/resourcemanager.h"
-#include "../resources/sdlimageloader.h"
+#include "../resources/imageloader.h"
 
 // Guichan stuff
 Gui *gui;
@@ -79,7 +75,6 @@ class GuiConfigListener : public ConfigListener
 };
 
 Gui::Gui(Graphics *graphics):
-    mHostImageLoader(NULL),
     mCustomCursor(false),
     mMouseCursors(NULL),
     mCursorType(CURSOR_POINTER)
@@ -89,24 +84,16 @@ Gui::Gui(Graphics *graphics):
     setGraphics(graphics);
 
     // Set image loader
-#ifdef USE_OPENGL
-    if (config.getValue("opengl", 0)) {
-        mImageLoader = new OpenGLSDLImageLoader();
-    } else
-#endif
-    {
-        mImageLoader = new SDLImageLoader();
-    }
+    static ImageLoader imageLoader;
+    gcn::Image::setImageLoader(&imageLoader);
 
     // Set input
     guiInput = new gcn::SDLInput();
     setInput(guiInput);
 
-    gcn::Image::setImageLoader(mImageLoader);
-
     // Set focus handler
     delete mFocusHandler;
-    mFocusHandler = new FocusHandler();
+    mFocusHandler = new FocusHandler;
 
     // Initialize top GUI widget
     WindowContainer *guiTop = new WindowContainer();
@@ -187,8 +174,6 @@ Gui::~Gui()
     delete speechFont;
     delete viewport;
     delete mTop;
-    delete mImageLoader;
-    delete mHostImageLoader;
 
     delete guiInput;
 }

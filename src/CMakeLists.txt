@@ -223,38 +223,36 @@ SET(SRCS
     resources/ambientoverlay.h
     resources/animation.cpp
     resources/animation.h
+    resources/buddylist.cpp
+    resources/buddylist.h
     resources/image.cpp
     resources/image.h
+    resources/imageloader.cpp
+    resources/imageloader.h
+    resources/imageset.h
+    resources/imageset.cpp
     resources/imagewriter.cpp
     resources/imagewriter.h
     resources/itemdb.cpp
     resources/itemdb.h
-    resources/iteminfo.h
     resources/iteminfo.cpp
+    resources/iteminfo.h
     resources/mapreader.cpp
     resources/mapreader.h
-    resources/monsterdb.h
     resources/monsterdb.cpp
-    resources/monsterinfo.h
+    resources/monsterdb.h
     resources/monsterinfo.cpp
-    resources/music.h
+    resources/monsterinfo.h
     resources/music.cpp
-    resources/openglsdlimageloader.h
-    resources/openglsdlimageloader.cpp
+    resources/music.h
     resources/resource.cpp
     resources/resource.h
     resources/resourcemanager.cpp
     resources/resourcemanager.h
-    resources/sdlimageloader.h
-    resources/sdlimageloader.cpp
-    resources/soundeffect.h
     resources/soundeffect.cpp
+    resources/soundeffect.h
     resources/spritedef.h
     resources/spritedef.cpp
-    resources/imageset.h
-    resources/imageset.cpp
-    resources/buddylist.h
-    resources/buddylist.cpp
     utils/base64.cpp
     utils/base64.h
     utils/dtor.h

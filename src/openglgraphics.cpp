@@ -21,10 +21,18 @@
  *  $Id$
  */
 
+#include "main.h"
+
 #ifdef USE_OPENGL
+
+#ifndef GL_TEXTURE_RECTANGLE_ARB
+#define GL_TEXTURE_RECTANGLE_ARB 0x84F5
+#define GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB 0x84F8
+#endif
 
 #include "openglgraphics.h"
 
+#include <cstring>
 #include <SDL.h>
 
 #ifdef __APPLE__
@@ -33,7 +41,6 @@
 
 #include <guichan/exception.hpp>
 #include <guichan/image.hpp>
-#include <guichan/opengl/openglimage.hpp>
 
 #include "log.h"
 
@@ -81,27 +88,79 @@ bool OpenGLGraphics::setVideoMode(int w, int h, int bpp, bool fs, bool hwaccel)
     logger->log("Using OpenGL %s double buffering.",
             (gotDoubleBuffer ? "with" : "without"));
 
+    char const *glExtensions = (char const *)glGetString(GL_EXTENSIONS);
+    int texSize;
+    bool rectTex = strstr(glExtensions, "GL_ARB_texture_rectangle");
+    if (rectTex)
+    {
+        Image::mTextureType = GL_TEXTURE_RECTANGLE_ARB;
+        glGetIntegerv(GL_MAX_RECTANGLE_TEXTURE_SIZE_ARB, &texSize);
+    }
+    else
+    {
+        Image::mTextureType = GL_TEXTURE_2D;
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &texSize);
+    }
+    Image::mTextureSize = texSize;
+    logger->log("OpenGL texture size: %d pixels%s", Image::mTextureSize,
+                rectTex ? " (rectangle textures)" : "");
+
     return true;
 }
 
 bool OpenGLGraphics::drawImage(Image *image, int srcX, int srcY,
-        int dstX, int dstY, int width, int height)
+        int dstX, int dstY, int width, int height, bool useColor)
 {
     srcX += image->mBounds.x;
     srcY += image->mBounds.y;
 
-    // Find OpenGL texture coordinates
-    float texX1 = srcX / (float)image->mTexWidth;
-    float texY1 = srcY / (float)image->mTexHeight;
-    float texX2 = (srcX + width) / (float)image->mTexWidth;
-    float texY2 = (srcY + height) / (float)image->mTexHeight;
+    if (!useColor)
+    {
+        glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
+    }
 
-    glColor4f(1.0f, 1.0f, 1.0f, image->mAlpha);
-    glBindTexture(GL_TEXTURE_2D, image->mGLImage);
+    glBindTexture(Image::mTextureType, image->mGLImage);
 
-    drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
+    setTexturingAndBlending(true);
 
-    glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+    // Draw a textured quad.
+    glBegin(GL_QUADS);
+
+    if (Image::mTextureType == GL_TEXTURE_2D)
+    {
+        // Find OpenGL normalized texture coordinates.
+        float texX1 = srcX / (float)image->mTexWidth;
+        float texY1 = srcY / (float)image->mTexHeight;
+        float texX2 = (srcX + width) / (float)image->mTexWidth;
+        float texY2 = (srcY + height) / (float)image->mTexHeight;
+
+        glTexCoord2f(texX1, texY1);
+        glVertex2i(dstX, dstY);
+        glTexCoord2f(texX2, texY1);
+        glVertex2i(dstX + width, dstY);
+        glTexCoord2f(texX2, texY2);
+        glVertex2i(dstX + width, dstY + height);
+        glTexCoord2f(texX1, texY2);
+        glVertex2i(dstX, dstY + height);
+    }
+    else
+    {
+        glTexCoord2i(srcX, srcY);
+        glVertex2i(dstX, dstY);
+        glTexCoord2i(srcX + width, srcY);
+        glVertex2i(dstX + width, dstY);
+        glTexCoord2i(srcX + width, srcY + height);
+        glVertex2i(dstX + width, dstY + height);
+        glTexCoord2i(srcX, srcY + height);
+        glVertex2i(dstX, dstY + height);
+    }
+
+    glEnd();
+
+    if (!useColor)
+    {
+        glColor4ub(mColor.r, mColor.g, mColor.b, mColor.a);
+    }
 
     return true;
 }
@@ -227,33 +286,6 @@ void OpenGLGraphics::setColor(const gcn::Color& color)
     mColorAlpha = (color.a != 255);
 }
 
-void OpenGLGraphics::drawImage(const gcn::Image* image,
-                               int srcX, int srcY,
-                               int dstX, int dstY,
-                               int width, int height)
-{
-    const gcn::OpenGLImage* srcImage =
-        dynamic_cast<const gcn::OpenGLImage*>(image);
-
-    if (srcImage == NULL)
-    {
-        throw GCN_EXCEPTION("Trying to draw an image of unknown format, "
-                            "must be an SDLImage.");
-    }
-
-    // Find OpenGL texture coordinates
-    float texX1 = srcX / (float)srcImage->getTextureWidth();
-    float texY1 = srcY / (float)srcImage->getTextureHeight();
-    float texX2 = (srcX + width) / (float)srcImage->getTextureWidth();
-    float texY2 = (srcY + height) / (float)srcImage->getTextureHeight();
-
-    // Please dont look too closely at the next line, it is not pretty.
-    // It uses the image data as a pointer to a GLuint
-    glBindTexture(GL_TEXTURE_2D, srcImage->getTextureHandle());
-
-    drawTexedQuad(dstX, dstY, width, height, texX1, texY1, texX2, texY2);
-}
-
 void OpenGLGraphics::drawPoint(int x, int y)
 {
     setTexturingAndBlending(false);
@@ -295,9 +327,9 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
 {
     if (enable) {
         if (!mTexture) {
-            glEnable(GL_TEXTURE_2D);
+            glEnable(Image::mTextureType);
             mTexture = true;
-        };
+        }
 
         if (!mAlpha)
         {
@@ -314,7 +346,7 @@ void OpenGLGraphics::setTexturingAndBlending(bool enable)
         }
 
         if (mTexture) {
-            glDisable(GL_TEXTURE_2D);
+            glDisable(Image::mTextureType);
             mTexture = false;
         }
     }
@@ -331,27 +363,6 @@ void OpenGLGraphics::drawRectangle(const gcn::Rectangle& rect, bool filled)
     glVertex2f(rect.x + rect.width - offset, rect.y + offset);
     glVertex2f(rect.x + rect.width - offset, rect.y + rect.height - offset);
     glVertex2f(rect.x + offset, rect.y + rect.height - offset);
-    glEnd();
-}
-
-void OpenGLGraphics::drawTexedQuad(int x, int y, int w, int h,
-        float texX1, float texY1, float texX2, float texY2)
-{
-    setTexturingAndBlending(true);
-
-    // Draw a textured quad
-    glBegin(GL_QUADS);
-    glTexCoord2f(texX1, texY1);
-    glVertex2i(x, y);
-
-    glTexCoord2f(texX2, texY1);
-    glVertex2i(x + w, y);
-
-    glTexCoord2f(texX2, texY2);
-    glVertex2i(x + w, y + h);
-
-    glTexCoord2f(texX1, texY2);
-    glVertex2i(x, y + h);
     glEnd();
 }
 

@@ -24,6 +24,8 @@
 #ifndef _TMW_IMAGE_H
 #define _TMW_IMAGE_H
 
+#include "../main.h"
+
 #include <SDL.h>
 #ifdef USE_OPENGL
 
@@ -67,6 +69,11 @@ class Image : public Resource
          */
         static Image*
         load(void* buffer, unsigned int bufferSize, const std::string &idPath);
+
+        /**
+         * Loads an image from an SDL surface.
+         */
+        static Image *load(SDL_Surface *, std::string const &idPath);
 
         /**
          * Frees the resources created by SDL.
@@ -141,6 +148,8 @@ class Image : public Resource
         int mTexWidth, mTexHeight;
 
         static bool mUseOpenGL;
+        static int mTextureType;
+        static int mTextureSize;
 #endif
         SDL_Surface *mImage;
         float mAlpha;

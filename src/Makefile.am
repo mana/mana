@@ -175,6 +175,10 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      resources/animation.h \
 	      resources/image.cpp \
 	      resources/image.h \
+	      resources/imageloader.cpp \
+	      resources/imageloader.h \
+	      resources/imageset.h \
+	      resources/imageset.cpp \
 	      resources/imagewriter.cpp \
 	      resources/imagewriter.h \
 	      resources/itemdb.cpp \
@@ -189,20 +193,14 @@ tmw_SOURCES = gui/widgets/resizegrip.cpp \
 	      resources/monsterinfo.cpp \
 	      resources/music.h \
 	      resources/music.cpp \
-	      resources/openglsdlimageloader.h \
-	      resources/openglsdlimageloader.cpp \
 	      resources/resource.cpp \
 	      resources/resource.h \
 	      resources/resourcemanager.cpp \
 	      resources/resourcemanager.h \
-	      resources/sdlimageloader.h \
-	      resources/sdlimageloader.cpp \
 	      resources/soundeffect.h \
 	      resources/soundeffect.cpp \
 	      resources/spritedef.h \
 	      resources/spritedef.cpp \
-	      resources/imageset.h \
-	      resources/imageset.cpp \
 	      resources/buddylist.h \
 	      resources/buddylist.cpp \
 	      utils/base64.cpp \
@@ -291,6 +289,6 @@ INCLUDES =					\
 
 # the library search path.
 tmw_LDFLAGS = $(all_libraries) $(LIBSDL_RPATH) `pkg-config --libs libxml-2.0`
-tmw_CXXFLAGS = -Wall $(OPENGL_CFLAGS) $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
-tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(OPENGL_LIBS) $(CURL_LIBS)
+tmw_CXXFLAGS = -Wall $(LIBSDL_CFLAGS) `pkg-config --cflags libxml-2.0` $(CURL_CFLAGS)
+tmw_LDADD = $(LIBSDL_LIBS) -lguichan_sdl $(CURL_LIBS)
 tmw_TARGET = tmw

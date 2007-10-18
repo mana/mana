@@ -288,17 +288,18 @@ void init_engine(const Options &options)
     graphics = new Graphics();
 #endif
 
-    int width = (int)config.getValue("screenwidth", 800);
-    int height = (int)config.getValue("screenheight", 600);
+    int width = (int) config.getValue("screenwidth", defaultScreenWidth);
+    int height = (int) config.getValue("screenheight", defaultScreenHeight);
     int bpp = 0;
-    bool fullscreen = ((int)config.getValue("screen", 0) == 1);
-    bool hwaccel = ((int)config.getValue("hwaccel", 0) == 1);
+    bool fullscreen = ((int) config.getValue("screen", 0) == 1);
+    bool hwaccel = ((int) config.getValue("hwaccel", 0) == 1);
 
     // Try to set the desired video mode
     if (!graphics->setVideoMode(width, height, bpp, fullscreen, hwaccel))
     {
-        std::cerr << "Couldn't set " << width << "x" << height << "x" <<
-            bpp << " video mode: " << SDL_GetError() << std::endl;
+        std::cerr << "Couldn't set "
+                  << width << "x" << height << "x" << bpp << " video mode: "
+                  << SDL_GetError() << std::endl;
         exit(1);
     }
 
@@ -316,8 +317,10 @@ void init_engine(const Options &options)
         if (config.getValue("sound", 0) == 1) {
             sound.init();
         }
-        sound.setSfxVolume((int) config.getValue("sfxVolume", 100));
-        sound.setMusicVolume((int) config.getValue("musicVolume", 60));
+        sound.setSfxVolume((int) config.getValue("sfxVolume",
+                    defaultSfxVolume));
+        sound.setMusicVolume((int) config.getValue("musicVolume",
+                    defaultMusicVolume));
     }
     catch (const char *err) {
         state = ERROR_STATE;

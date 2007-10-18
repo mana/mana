@@ -86,6 +86,12 @@ class Graphics : public gcn::SDLGraphics {
         bool drawImage(Image *image, int x, int y);
 
         /**
+         * Overrides with our own drawing method.
+         */
+        void drawImage(gcn::Image const *image, int srcX, int srcY,
+                       int dstX, int dstY, int width, int height);
+
+        /**
          * Blits an image onto the screen.
          *
          * @return <code>true</code> if the image was blitted properly
@@ -95,7 +101,8 @@ class Graphics : public gcn::SDLGraphics {
         drawImage(Image *image,
                   int srcX, int srcY,
                   int dstX, int dstY,
-                  int width, int height);
+                  int width, int height,
+                  bool useColor = false);
 
         virtual void
         drawImagePattern(Image *image,

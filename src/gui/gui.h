@@ -98,8 +98,6 @@ class Gui : public gcn::Gui
 
     private:
         GuiConfigListener *mConfigListener;
-        gcn::ImageLoader *mHostImageLoader;   /**< For loading images in GL */
-        gcn::ImageLoader *mImageLoader;       /**< For loading images */
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         bool mCustomCursor;                   /**< Show custom cursor */
         ImageSet *mMouseCursors;              /**< Mouse cursor images */

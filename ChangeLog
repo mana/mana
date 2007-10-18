@@ -58,11 +58,11 @@
 
 2007-09-08  Philipp Sehmisch  <tmw@crushnet.org>
 
-	* data/graphics/particles/aniblaze.png, 
+	* data/graphics/particles/aniblaze.png,
 	data/graphics/particles/cookingfire.particle.xml,
 	data/graphics/particles/fireplace.particle.xml,
-	data/graphics/particles/flame.particle.xml:
-	Improved fire effects by using animated particles.
+	data/graphics/particles/flame.particle.xml: Improved fire effects by
+	using animated particles.
 
 2007-09-06  Philipp Sehmisch  <tmw@crushnet.org>
 
@@ -149,6 +149,28 @@
 
 	* src/gui/updatewindow.cpp, src/main.cpp, tmw.cbp: Removed home dir
 	from config file to avoid encoding issues.
+
+2007-08-26  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/button.cpp: Fixed incorrect button dimensions, as they mess
+	OpenGL display with rectangle textures.
+	* src/graphics.cpp, src/openglgraphics.h, src/graphics.h,
+	src/openglgraphics.cpp: Fixed fonts not being recolored by adding an
+	explicit parameter to require it.
+
+2007-08-25  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* configure.ac: Removed dependency on Guichan's OpenGL library.
+	* src/Makefile.am, src/resources/sdlimageloader.cpp,
+	src/resources/sdlimageloader.h, src/resources/openglsdlimageloader.h,
+	src/resources/openglsdlimageloader.cpp, src/resources/imageloader.cpp,
+	src/resources/imageloader.h, src/gui/gui.cpp, src/gui/gui.h: Replaced
+	Guichan's image loaders with our owns, so that we have control over all
+	the images used as textures.
+	* src/resources/image.cpp, src/openglgraphics.h, src/resources/image.h,
+	src/openglgraphics.cpp, src/graphics.cpp, src/graphics.h: Added support
+	for rectangle OpenGL textures when available, in order to reduce video
+	memory usage.
 
 2007-08-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
@@ -4270,9 +4292,9 @@
 	src/gui/status.h: Improving General Layout.
 	* src/games.cpp, src/playerinfo.h, src/gui/char_server.cpp,
 	src/gui/char_select.cpp, src/gui/ministatus.cpp, src/gui/skill.cpp,
-	src/gui/status.cpp, src/gui/status.h : Now the derived stats values
+	src/gui/status.cpp, src/gui/status.h: Now the derived stats values
 	are got from the server, and then, are correct ones.
-	* src/gui/minimap.cpp : Only shows the Minimap Window if there's
+	* src/gui/minimap.cpp: Only shows the Minimap Window if there's
 	actually a minimap to the current map.
 	* src/gui/status.cpp, src/game.cpp: The derived stats are now updated
 	correctly upon equipping/unequipping.

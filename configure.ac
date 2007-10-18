@@ -5,7 +5,6 @@ AC_LANG_CPLUSPLUS
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
@@ -25,16 +24,13 @@ AC_CHECK_FUNCS([atexit floor getcwd gethostbyname memset mkdir select socket])
 
 # Checks for libraries
 AC_CHECK_LIB([pthread], [pthread_create], ,
-AC_MSG_ERROR([ *** Unable to find pthread library ]))
+AC_MSG_ERROR([ *** Unable to find pthread library]))
 
 AC_CHECK_LIB([guichan], [gcnGuichanVersion], ,
 AC_MSG_ERROR([ *** Unable to find Guichan library (guichan.sf.net)]))
 
 #AC_CHECK_LIB([guichan_sdl], [gcnSDL], ,
 #AC_MSG_ERROR([ *** Unable to find Guichan SDL library (guichan.sf.net)]))
-
-#AC_CHECK_LIB([guichan_opengl], [gcnOpenGL], ,
-#AC_MSG_ERROR([ *** Unable to find Guichan OpenGL library (guichan.sf.net)]))
 
 AC_CHECK_LIB([z], [inflate], ,
 AC_MSG_ERROR([ *** Unable to find zlib (http://www.gzip.org/zlib/)]))
@@ -59,9 +55,8 @@ AC_CHECK_LIB(SDL_image, IMG_LoadPNG_RW, ,
 AC_MSG_ERROR([ *** Unable to find SDL_image library with PNG support
 (http://www.libsdl.org/projects/SDL_image/)]))
 
-AC_CHECK_LIB(SDL_mixer, Mix_OpenAudio, ,
-AC_MSG_ERROR([ *** Unable to find SDL_mixer library
-(http://www.libsdl.org/projects/SDL_mixer/)]))
+AC_CHECK_LIB([SDL_mixer], [Mix_OpenAudio], ,
+AC_MSG_ERROR([ *** Unable to find SDL_mixer library (http://www.libsdl.org/projects/SDL_mixer/)]))
 
 AC_CHECK_LIB(SDL_net, SDLNet_Init, ,
 AC_MSG_ERROR([ *** Unable to find SDL_net library]))
@@ -82,10 +77,9 @@ if test "x$with_opengl" == "xno"; then
     with_opengl=no
 else
     with_opengl=yes
-    OPENGL_CFLAGS=' -DUSE_OPENGL'
-    OPENGL_LIBS=' -lGL -lguichan_opengl'
-    AC_SUBST(OPENGL_CFLAGS)
-    AC_SUBST(OPENGL_LIBS)
+    AC_CHECK_LIB([GL], [glBegin], ,
+    AC_MSG_ERROR([ *** Unable to find OpenGL library]))
+    AC_DEFINE(USE_OPENGL, 1, [Defines if tmw should use an OpenGL display])
 fi
 
 # Search for sdl-config

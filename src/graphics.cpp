@@ -21,11 +21,13 @@
  *  $Id$
  */
 
-#include "graphics.h"
+#include <cassert>
 
+#include "graphics.h"
 #include "log.h"
 
 #include "resources/image.h"
+#include "resources/imageloader.h"
 
 Graphics::Graphics():
     mScreen(0)
@@ -125,7 +127,7 @@ bool Graphics::drawImage(Image *image, int x, int y)
 }
 
 bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
-        int width, int height)
+        int width, int height, bool)
 {
     // Check that preconditions for blitting are met.
     if (!mScreen || !image || !image->mImage) return false;
@@ -144,6 +146,15 @@ bool Graphics::drawImage(Image *image, int srcX, int srcY, int dstX, int dstY,
     srcRect.h = height;
 
     return !(SDL_BlitSurface(image->mImage, &srcRect, mScreen, &dstRect) < 0);
+}
+
+void Graphics::drawImage(gcn::Image const *image, int srcX, int srcY,
+               int dstX, int dstY, int width, int height)
+{
+    ProxyImage const *srcImage =
+        dynamic_cast< ProxyImage const * >(image);
+    assert(srcImage);
+    drawImage(srcImage->getImage(), srcX, srcY, dstX, dstY, width, height, true);
 }
 
 void Graphics::drawImagePattern(Image *image, int x, int y, int w, int h)
