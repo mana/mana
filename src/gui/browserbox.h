@@ -31,6 +31,7 @@
 #include <guichan/mouselistener.hpp>
 
 #include "../guichanfwd.h"
+#include "../main.h"
 
 class LinkHandler;
 

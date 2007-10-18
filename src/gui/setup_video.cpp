@@ -42,6 +42,7 @@
 #include "../configuration.h"
 #include "../graphics.h"
 #include "../log.h"
+#include "../main.h"
 
 #include "../utils/tostring.h"
 

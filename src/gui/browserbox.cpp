@@ -21,14 +21,13 @@
  *  $Id$
  */
 
-#include "browserbox.h"
-
 #include <algorithm>
 
 #include <guichan/graphics.hpp>
 #include <guichan/imagefont.hpp>
 #include <guichan/mouseinput.hpp>
 
+#include "browserbox.h"
 #include "linkhandler.h"
 
 #ifdef USE_OPENGL
