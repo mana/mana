@@ -1,4 +1,9 @@
-﻿2007-10-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-10-18  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/sprites/hairstyle7-male.png,
+	data/graphics/sprites/hairstyle7-female.png; Readded hairstyle number 7.
+
+2007-10-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/game.cpp, src/net/tradehandler.h, src/net/tradehandler.cpp:
 	Implemented automatic denying of trade requests based on a patch
