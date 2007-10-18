@@ -36,7 +36,7 @@ Monster::Monster(Uint16 id, Uint16 job, Map *map):
     Being(id, job, map)
 {
     mSprites[BASE_SPRITE] = new AnimatedSprite(
-            "graphics/sprites/" + MonsterDB::get(job - 1002).getSprite());
+            "graphics/sprites/" + getInfo().getSprite());
 }
 
 Being::Type
@@ -102,5 +102,5 @@ Monster::getTargetCursorSize() const
 const MonsterInfo&
 Monster::getInfo() const
 {
-    return MonsterDB::get(mJob - 1002);
+    return MonsterDB::get(mJob);
 }
