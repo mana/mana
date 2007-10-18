@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <cassert>
+
 #include "beingmanager.h"
 
 #include "localplayer.h"
@@ -28,6 +30,7 @@
 #include "npc.h"
 #include "player.h"
 
+#include "net/protocol.h"
 #include "utils/dtor.h"
 
 class FindBeingFunctor
@@ -59,18 +62,24 @@ void BeingManager::setPlayer(LocalPlayer *player)
     mBeings.push_back(player);
 }
 
-Being* BeingManager::createBeing(Uint16 id, Uint16 job)
+Being* BeingManager::createBeing(int id, int type, int subtype)
 {
     Being *being;
 
-    if (job < 10)
-        being = new Player(id, job, mMap);
-    else if (job >= 100 & job < 200)
-        being = new NPC(id, job, mMap);
-    else if (job >= 1000 && job < 1200)
-        being = new Monster(id, job, mMap);
-    else
-        being = new Being(id, job, mMap);
+    switch (type)
+    {
+        case OBJECT_PLAYER:
+            being = new Player(id, subtype, mMap);
+            break;
+        case OBJECT_NPC:
+            being = new NPC(id, subtype, mMap);
+            break;
+        case OBJECT_MONSTER:
+            being = new Monster(id, subtype, mMap);
+            break;
+        default:
+            assert(false);
+    }
 
     mBeings.push_back(being);
     return being;

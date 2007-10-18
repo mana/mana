@@ -449,18 +449,18 @@ static void handleLooks(Being *being, MessageIn &msg)
 void
 BeingHandler::handleBeingEnterMessage(MessageIn &msg)
 {
-    int type = msg.readByte(); // type
+    int type = msg.readByte();
     int id = msg.readShort();
     Being::Action action = (Being::Action)msg.readByte();
-    Uint16 px = msg.readShort();
-    Uint16 py = msg.readShort();
+    int px = msg.readShort();
+    int py = msg.readShort();
+    Being *being;
 
     switch (type)
     {
         case OBJECT_PLAYER:
         {
             std::string name = msg.readString();
-            Being *being;
             if (player_node->getName() == name)
             {
                 being = player_node;
@@ -468,41 +468,30 @@ BeingHandler::handleBeingEnterMessage(MessageIn &msg)
             }
             else
             {
-                being = beingManager->createBeing(id, 0);
+                being = beingManager->createBeing(id, type, 0);
                 being->setName(name);
             }
             being->setHairStyle(msg.readByte());
             being->setHairColor(msg.readByte());
             being->setSex(msg.readByte());
-            being->mX = px;
-            being->mY = py;
-            being->setDestination(px, py);
-            being->setAction(action);
             handleLooks(being, msg);
         } break;
 
         case OBJECT_MONSTER:
-        {
-            int monsterId = msg.readShort();
-            Being *being;
-            being = beingManager->createBeing(id, monsterId);
-            being->mX = px;
-            being->mY = py;
-            being->setDestination(px, py);
-            being->setAction(action);
-        } break;
-
         case OBJECT_NPC:
         {
-            int npcId = msg.readShort();
-            Being *being;
-            being = beingManager->createBeing(id, npcId);
-            being->mX = px;
-            being->mY = py;
-            being->setDestination(px, py);
-            being->setAction(action);
+            int subtype = msg.readShort();
+            being = beingManager->createBeing(id, type, subtype);
         } break;
+
+        default:
+            return;
     }
+
+    being->mX = px;
+    being->mY = py;
+    being->setDestination(px, py);
+    being->setAction(action);
 }
 
 void BeingHandler::handleBeingLeaveMessage(MessageIn &msg)

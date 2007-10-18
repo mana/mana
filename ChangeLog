@@ -1,3 +1,9 @@
+2007-10-18  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/beingmanager.h, src/beingmanager.cpp, src/net/beinghandler.cpp:
+	Removed guess of being type from class number. Factored handler for new
+	beings.
+
 2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/gui/viewport.h, src/gui/viewport.cpp: Put drawing of debug path
