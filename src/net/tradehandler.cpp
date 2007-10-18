@@ -48,7 +48,8 @@ namespace {
     } listener;
 }
 
-TradeHandler::TradeHandler()
+TradeHandler::TradeHandler():
+    mAcceptTradeRequests(true)
 {
     static const Uint16 _messages[] = {
         SMSG_TRADE_REQUEST,
@@ -63,6 +64,16 @@ TradeHandler::TradeHandler()
     handledMessages = _messages;
 }
 
+void TradeHandler::setAcceptTradeRequests(bool acceptTradeRequests)
+{
+    mAcceptTradeRequests = acceptTradeRequests;
+    if (mAcceptTradeRequests) {
+        chatWindow->chatLog("Accepting incoming trade requests", BY_SERVER);
+    } else {
+        chatWindow->chatLog("Ignoring incoming trade requests", BY_SERVER);
+    }
+}
+
 void TradeHandler::handleMessage(MessageIn *msg)
 {
     switch (msg->getId())
@@ -74,19 +85,28 @@ void TradeHandler::handleMessage(MessageIn *msg)
                 // Note that it would be nice if the server would prevent this
                 // situation, and that the requesting player would get a
                 // special message about the player being occupied.
-                if (!player_node->tradeRequestOk())
+                tradePartnerName = msg->readString(24);
+
+                if (mAcceptTradeRequests)
+                {
+                    if (!player_node->tradeRequestOk())
+                    {
+                        player_node->tradeReply(false);
+                        break;
+                    }
+
+                    player_node->setTrading(true);
+                    ConfirmDialog *dlg;
+                    dlg = new ConfirmDialog("Request for trade",
+                            tradePartnerName +
+                            " wants to trade with you, do you accept?");
+                    dlg->addActionListener(&listener);
+                }
+                else
                 {
                     player_node->tradeReply(false);
                     break;
                 }
-
-                player_node->setTrading(true);
-                tradePartnerName = msg->readString(24);
-                ConfirmDialog *dlg;
-                dlg = new ConfirmDialog("Request for trade",
-                        tradePartnerName +
-                        " wants to trade with you, do you accept?");
-                dlg->addActionListener(&listener);
             break;
 
         case SMSG_TRADE_RESPONSE:
@@ -113,7 +133,8 @@ void TradeHandler::handleMessage(MessageIn *msg)
                     tradeWindow->setVisible(true);
                     break;
                 case 4: // Trade cancelled
-                    chatWindow->chatLog("Trade cancelled.", BY_SERVER);
+                    chatWindow->chatLog("Trade with " + tradePartnerName +
+                            " cancelled", BY_SERVER);
                     tradeWindow->setVisible(false);
                     player_node->setTrading(false);
                     break;

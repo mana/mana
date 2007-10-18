@@ -1,4 +1,10 @@
-﻿2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-10-18  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+
+	* src/game.cpp, src/net/tradehandler.h, src/net/tradehandler.cpp:
+	Implemented automatic denying of trade requests based on a patch
+	submitted by Quiche_on_a_leash.
+
+2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
 
