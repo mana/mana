@@ -33,6 +33,8 @@
 #include "../log.h"
 
 #include "../utils/dtor.h"
+#include "../utils/gettext.h"
+#include "../utils/strprintf.h"
 #include "../utils/xml.h"
 
 namespace
@@ -45,6 +47,14 @@ namespace
 // Forward declarations
 static void loadSpriteRef(ItemInfo *itemInfo, xmlNodePtr node);
 static void loadSoundRef(ItemInfo *itemInfo, xmlNodePtr node);
+
+static char const *const fields[][2] =
+{
+    { "attack",    N_("Attack %+d")    },
+    { "defense",   N_("Defense %+d")   },
+    { "hp",        N_("HP %+d")        },
+    { "mp",        N_("MP %+d")        }
+};
 
 void ItemDB::load()
 {
@@ -105,35 +115,41 @@ void ItemDB::load()
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
         std::string description = XML::getProperty(node, "description", "");
-        std::string effect = XML::getProperty(node, "effect", "");
         int weaponType = XML::getProperty(node, "weapon_type", 0);
 
-        if (id)
+        ItemInfo *itemInfo = new ItemInfo;
+        itemInfo->setImage(image);
+        itemInfo->setName(name.empty() ? "Unnamed" : name);
+        itemInfo->setDescription(description);
+        itemInfo->setType(type);
+        itemInfo->setView(view);
+        itemInfo->setWeight(weight);
+        itemInfo->setWeaponType(weaponType);
+
+        std::string effect;
+        for (int i = 0; i < int(sizeof(fields) / sizeof(fields[0])); ++i)
         {
-            ItemInfo *itemInfo = new ItemInfo();
-            itemInfo->setImage(image);
-            itemInfo->setName((name == "") ? "Unnamed" : name);
-            itemInfo->setDescription(description);
-            itemInfo->setEffect(effect);
-            itemInfo->setType(type);
-            itemInfo->setView(view);
-            itemInfo->setWeight(weight);
-            itemInfo->setWeaponType(weaponType);
-
-            for_each_xml_child_node(itemChild, node)
-            {
-                if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
-                {
-                    loadSpriteRef(itemInfo, itemChild);
-                }
-                else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
-                {
-                    loadSoundRef(itemInfo, itemChild);
-                }
-            }
-
-            mItemInfos[id] = itemInfo;
+            int value = XML::getProperty(node, fields[i][0], 0);
+            if (!value) continue;
+            if (!effect.empty()) effect += " / ";
+            effect += strprintf(gettext(fields[i][1]), value);
         }
+        itemInfo->setEffect(effect);
+
+
+        for_each_xml_child_node(itemChild, node)
+        {
+            if (xmlStrEqual(itemChild->name, BAD_CAST "sprite"))
+            {
+                loadSpriteRef(itemInfo, itemChild);
+            }
+            else if (xmlStrEqual(itemChild->name, BAD_CAST "sound"))
+            {
+                loadSoundRef(itemInfo, itemChild);
+            }
+        }
+
+        mItemInfos[id] = itemInfo;
 
 #define CHECK_PARAM(param, error_value) \
         if (param == error_value) \
