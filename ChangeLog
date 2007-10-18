@@ -6,6 +6,7 @@
 	* src/gui/truetypefont.cpp: Fixed double-free of true-type resources.
 	* src/monster.cpp: Removed compatibility hack.
 	* data/monsters.xml: Merged client and server monster data.
+	* data/items.xml: Merged server item data. Removed obsolete fields.
 
 2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
