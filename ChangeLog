@@ -12,13 +12,12 @@
 	* src/gui/viewport.cpp, src/gui/minimap.cpp: Changed identification of
 	local player to a check of player_node.
 	* src/animatedsprite.cpp, src/animatedsprite.h, src/npc.cpp,
-	src/player.cpp, src/monster.cpp:
+	src/player.cpp, src/monster.cpp, src/resources/resourcemanager.cpp:
+	Prevented client from exiting on missing sprites.
 	* src/being.cpp, src/being.h, src/player.h, src/net/beinghandler.cpp,
 	src/net/charserverhandler.cpp: Removed hair style, hair color, gender,
 	and equipment from generic being.
 	* src/resources/spritedef.cpp: Added filename to fatal error messages.
-	* src/resources/resourcemanager.cpp: Prevented client from exiting on
-	missing sprite.
 	* src/resources/iteminfo.cpp, src/resources/iteminfo.h,
 	src/resources/itemdb.cpp, data/items.xml: Merged weapon_type and
 	attacktype field.
