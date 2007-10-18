@@ -21,6 +21,8 @@
 	* src/resources/iteminfo.cpp, src/resources/iteminfo.h,
 	src/resources/itemdb.cpp, data/items.xml: Merged weapon_type and
 	attacktype field.
+	* src/resources/iteminfo.h, src/resources/itemdb.cpp: Removed unused
+	slot field.
 
 2007-10-15  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
