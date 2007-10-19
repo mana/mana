@@ -1,5 +1,6 @@
 # List of source files which contain translatable strings.
 
+src/gui/buy.cpp
 src/gui/char_select.cpp
 src/gui/confirm_dialog.cpp
 src/gui/connection.cpp
@@ -15,6 +16,7 @@ src/gui/ok_dialog.cpp
 src/gui/popupmenu.cpp
 src/gui/quitdialog.cpp
 src/gui/register.cpp
+src/gui/sell.cpp
 src/gui/serverdialog.cpp
 src/gui/setup_audio.cpp
 src/gui/setup.cpp

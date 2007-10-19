@@ -9,6 +9,8 @@
 	deselections.
 	* src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Allowed dragging
 	of already selected items.
+	* src/gui/buy.cpp, src/gui/sell.cpp, po/POTFILES.in: Marked buy and
+	sell dialog boxes as translatable.
 
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 
