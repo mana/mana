@@ -1,4 +1,9 @@
-﻿2007-10-18  Philipp Sehmisch  <tmw@crushnet.org>
+﻿2007-10-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/images/ambient/fog.png: Added fog effect overlay
+	graphic.
+
+2007-10-18  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* data/graphics/sprites/hairstyle7-male.png,
 	data/graphics/sprites/hairstyle7-female.png; Readded hairstyle number 7.
