@@ -1,3 +1,8 @@
+2007-10-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* data/equipment.xml: Removed obsolete file.
+	* data/items.xml: Fixed equipment types.
+
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 
 	* src/gui/truetypefont.cpp: Increased text chunk cache size to improve
