@@ -30,7 +30,7 @@
 #include "../graphics.h"
 #include "../resources/image.h"
 
-#define CACHE_SIZE 30
+#define CACHE_SIZE 256
 
 class TextChunk
 {

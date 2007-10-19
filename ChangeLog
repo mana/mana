@@ -1,3 +1,8 @@
+2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
+
+	* src/gui/truetypefont.cpp: Increased text chunk cache size to improve
+	performance when a lot of text is on the screen.
+
 2007-10-18  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/beingmanager.h, src/beingmanager.cpp, src/net/beinghandler.cpp:
