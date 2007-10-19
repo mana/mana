@@ -3,6 +3,10 @@
 	* data/equipment.xml: Removed obsolete file.
 	* data/items.xml: Fixed equipment types.
 	* src/item.h: Fixed invalid item ID.
+	* src/gui/inventorywindow.cpp, src/gui/itemcontainer.cpp: Fixed key
+	special values.
+	* src/gui/itemcontainer.cpp: Reduced amount of spurious item
+	deselections.
 
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 

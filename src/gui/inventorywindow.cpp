@@ -35,6 +35,7 @@
 #include "item_amount.h"
 #include "itemcontainer.h"
 #include "scrollarea.h"
+#include "sdlinput.h"
 #include "viewport.h"
 
 #include "../item.h"
@@ -263,8 +264,8 @@ void InventoryWindow::keyPressed(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {
-        case gcn::Key::LEFT_SHIFT:
-        case gcn::Key::RIGHT_SHIFT:
+        case Key::LEFT_SHIFT:
+        case Key::RIGHT_SHIFT:
             mSplit = true;
     }
 }
@@ -273,8 +274,8 @@ void InventoryWindow::keyReleased(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {
-        case gcn::Key::LEFT_SHIFT:
-        case gcn::Key::RIGHT_SHIFT:
+        case Key::LEFT_SHIFT:
+        case Key::RIGHT_SHIFT:
             mSplit = false;
     }
 }

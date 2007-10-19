@@ -25,6 +25,7 @@
 
 #include <guichan/mouseinput.hpp>
 
+#include "sdlinput.h"
 #include "selectionlistener.h"
 
 #include "../graphics.h"
@@ -173,23 +174,23 @@ ItemContainer::keyPressed(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {
-        case gcn::Key::LEFT:
+        case Key::LEFT:
             moveHighlight(ItemContainer::MOVE_SELECTED_LEFT);
             break;
-        case gcn::Key::RIGHT:
+        case Key::RIGHT:
             moveHighlight(ItemContainer::MOVE_SELECTED_RIGHT);
             break;
-        case gcn::Key::UP:
+        case Key::UP:
             moveHighlight(ItemContainer::MOVE_SELECTED_UP);
             break;
-        case gcn::Key::DOWN:
+        case Key::DOWN:
             moveHighlight(ItemContainer::MOVE_SELECTED_DOWN);
             break;
-        case gcn::Key::SPACE:
+        case Key::SPACE:
             keyAction();
             break;
-        case gcn::Key::LEFT_ALT:
-        case gcn::Key::RIGHT_ALT:
+        case Key::LEFT_ALT:
+        case Key::RIGHT_ALT:
             mSwapItems = true;
     }
 }
@@ -199,8 +200,8 @@ ItemContainer::keyReleased(gcn::KeyEvent &event)
 {
     switch (event.getKey().getValue())
     {
-        case gcn::Key::LEFT_ALT:
-        case gcn::Key::RIGHT_ALT:
+        case Key::LEFT_ALT:
+        case Key::RIGHT_ALT:
             mSwapItems = false;
     }
 }
@@ -244,23 +245,18 @@ ItemContainer::mouseDragged(gcn::MouseEvent &event)
     }
 }
 
-void
-ItemContainer::mouseReleased(gcn::MouseEvent &event)
+void ItemContainer::mouseReleased(gcn::MouseEvent &event)
 {
-    if (mDragged)
-    {
-        mDragged = false;
-
-        const int index = getSlotIndex(event.getX(), event.getY());
-        if (index == Inventory::NO_SLOT_INDEX) {
-            return;
-        }
-
-        if (mSelectedItem) {
-            player_node->moveInvItem(mSelectedItem, index);
-            setSelectedItem(NULL);
-        }
-    }
+    if (!mDragged) return;
+    mDragged = false;
+    if (!mSelectedItem) return;
+    int index = getSlotIndex(event.getX(), event.getY());
+    if (index == Inventory::NO_SLOT_INDEX) return;
+    Item *item = mInventory->getItem(index);
+    if (item == mSelectedItem) return;
+    player_node->moveInvItem(mSelectedItem, index);
+    item = mInventory->getItem(index);
+    setSelectedItem(item->getId() ? item : NULL);
 }
 
 int
@@ -296,7 +292,7 @@ ItemContainer::keyAction()
             mSelectedItem, mHighlightedItem->getInvIndex());
         setSelectedItem(mHighlightedItem);
     }
-    // If the highlight is on an item the select it.
+    // If the highlight is on an item then select it.
     else if (mHighlightedItem->getId())
     {
         setSelectedItem(mHighlightedItem);
