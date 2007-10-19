@@ -35,7 +35,7 @@ class Item
         /**
          * Constructor.
          */
-        Item(int id = -1, int quantity = 0);
+        Item(int id = 0, int quantity = 0);
 
         /**
          * Sets the item id, identifying the item type.

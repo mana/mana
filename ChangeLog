@@ -2,6 +2,7 @@
 
 	* data/equipment.xml: Removed obsolete file.
 	* data/items.xml: Fixed equipment types.
+	* src/item.h: Fixed invalid item ID.
 
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 
