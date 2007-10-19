@@ -7,6 +7,8 @@
 	special values.
 	* src/gui/itemcontainer.cpp: Reduced amount of spurious item
 	deselections.
+	* src/gui/itemcontainer.cpp, src/gui/itemcontainer.h: Allowed dragging
+	of already selected items.
 
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 

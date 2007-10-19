@@ -46,6 +46,15 @@
 static const int BOX_WIDTH = 36;
 static const int BOX_HEIGHT = 44;
 
+enum
+{
+    SEL_NONE = 0,
+    SEL_SELECTED,
+    SEL_SELECTING,
+    SEL_DESELECTING,
+    SEL_DRAGGING
+};
+
 ItemContainer::ItemContainer(Inventory *inventory,
         int gridColumns = 1, int gridRows = 1):
     mInventory(inventory),
@@ -53,7 +62,7 @@ ItemContainer::ItemContainer(Inventory *inventory,
     mGridRows(gridRows),
     mSelectedItem(NULL),
     mHighlightedItem(NULL),
-    mDragged(false),
+    mSelectionStatus(SEL_NONE),
     mSwapItems(false)
 {
     setFocusable(true);
@@ -104,7 +113,7 @@ ItemContainer::draw(gcn::Graphics *graphics)
             {
                 if (item == mSelectedItem)
                 {
-                    if (mDragged) {
+                    if (mSelectionStatus == SEL_DRAGGING) {
                         // Reposition the coords to that of the cursor.
                         itemX = mDragPosX - (BOX_WIDTH / 2);
                         itemY = mDragPosY - (BOX_HEIGHT / 2);
@@ -146,8 +155,7 @@ ItemContainer::selectNone()
     setSelectedItem(NULL);
 }
 
-void
-ItemContainer::setSelectedItem(Item *item)
+void ItemContainer::setSelectedItem(Item *item)
 {
     if (mSelectedItem != item)
     {
@@ -175,16 +183,16 @@ ItemContainer::keyPressed(gcn::KeyEvent &event)
     switch (event.getKey().getValue())
     {
         case Key::LEFT:
-            moveHighlight(ItemContainer::MOVE_SELECTED_LEFT);
+            moveHighlight(MOVE_SELECTED_LEFT);
             break;
         case Key::RIGHT:
-            moveHighlight(ItemContainer::MOVE_SELECTED_RIGHT);
+            moveHighlight(MOVE_SELECTED_RIGHT);
             break;
         case Key::UP:
-            moveHighlight(ItemContainer::MOVE_SELECTED_UP);
+            moveHighlight(MOVE_SELECTED_UP);
             break;
         case Key::DOWN:
-            moveHighlight(ItemContainer::MOVE_SELECTED_DOWN);
+            moveHighlight(MOVE_SELECTED_DOWN);
             break;
         case Key::SPACE:
             keyAction();
@@ -220,14 +228,19 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
 
         Item *item = mInventory->getItem(index);
 
-        if (mSelectedItem && mSelectedItem == item) {
-            setSelectedItem(NULL);
+        if (mSelectedItem && mSelectedItem == item)
+        {
+            mSelectionStatus = SEL_DESELECTING;
         }
-        else if (item->getId()) {
+        else if (item->getId())
+        {
             setSelectedItem(item);
+            mSelectionStatus = SEL_SELECTING;
         }
-        else {
+        else
+        {
             setSelectedItem(NULL);
+            mSelectionStatus = SEL_NONE;
         }
     }
 }
@@ -235,11 +248,9 @@ ItemContainer::mousePressed(gcn::MouseEvent &event)
 void
 ItemContainer::mouseDragged(gcn::MouseEvent &event)
 {
-    if (mSelectedItem)
+    if (mSelectionStatus != SEL_NONE)
     {
-        if (!mDragged) {
-            mDragged = true;
-        }
+        mSelectionStatus = SEL_DRAGGING;
         mDragPosX = event.getX();
         mDragPosY = event.getY();
     }
@@ -247,16 +258,29 @@ ItemContainer::mouseDragged(gcn::MouseEvent &event)
 
 void ItemContainer::mouseReleased(gcn::MouseEvent &event)
 {
-    if (!mDragged) return;
-    mDragged = false;
-    if (!mSelectedItem) return;
+    switch (mSelectionStatus)
+    {
+        case SEL_SELECTING:
+            mSelectionStatus = SEL_SELECTED;
+            return;
+        case SEL_DESELECTING:
+            setSelectedItem(NULL);
+            mSelectionStatus = SEL_NONE;
+            return;
+        case SEL_DRAGGING:
+            mSelectionStatus = SEL_SELECTED;
+            break;
+        default:
+            return;
+    };
+
     int index = getSlotIndex(event.getX(), event.getY());
     if (index == Inventory::NO_SLOT_INDEX) return;
     Item *item = mInventory->getItem(index);
     if (item == mSelectedItem) return;
     player_node->moveInvItem(mSelectedItem, index);
-    item = mInventory->getItem(index);
-    setSelectedItem(item->getId() ? item : NULL);
+    setSelectedItem(NULL);
+    mSelectionStatus = SEL_NONE;
 }
 
 int
@@ -282,6 +306,7 @@ ItemContainer::keyAction()
     if (mHighlightedItem == mSelectedItem)
     {
         setSelectedItem(NULL);
+        mSelectionStatus = SEL_NONE;
     }
     // Check and swap items if necessary.
     else if (mSwapItems &&
@@ -296,6 +321,7 @@ ItemContainer::keyAction()
     else if (mHighlightedItem->getId())
     {
         setSelectedItem(mHighlightedItem);
+        mSelectionStatus = SEL_SELECTED;
     }
     // If the highlight is on a blank space then move it.
     else if (mSelectedItem)
@@ -303,6 +329,7 @@ ItemContainer::keyAction()
         player_node->moveInvItem(
             mSelectedItem, mHighlightedItem->getInvIndex());
         setSelectedItem(NULL);
+        mSelectionStatus = SEL_NONE;
     }
 }
 

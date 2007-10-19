@@ -160,7 +160,8 @@ class ItemContainer : public gcn::Widget,
         int mGridColumns, mGridRows;
         Image *mSelImg;
         Item *mSelectedItem, *mHighlightedItem;
-        bool mDragged, mSwapItems;
+        int mSelectionStatus;
+        bool mSwapItems;
         int mDragPosX, mDragPosY;
 
         std::list<SelectionListener*> mListeners;
