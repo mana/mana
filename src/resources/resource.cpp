@@ -27,12 +27,6 @@
 
 #include "resourcemanager.h"
 
-
-Resource::Resource(const std::string &idPath):
-    mRefCount(0), mIdPath(idPath)
-{
-}
-
 Resource::~Resource()
 {
 }

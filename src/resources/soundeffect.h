@@ -45,13 +45,11 @@ class SoundEffect : public Resource
          *
          * @param buffer     The memory buffer containing the sample data.
          * @param bufferSize The size of the memory buffer in bytes.
-         * @param idPath     The path identifying the resource.
          *
          * @return <code>NULL</code> if the an error occurred, a valid pointer
          *         otherwise.
          */
-        static SoundEffect*
-        load(void* buffer, unsigned int bufferSize, const std::string &idPath);
+        static Resource *load(void *buffer, unsigned bufferSize);
 
         /**
          * Plays the sample.
@@ -69,7 +67,7 @@ class SoundEffect : public Resource
         /**
          * Constructor.
          */
-        SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect);
+        SoundEffect(Mix_Chunk *soundEffect): mChunk(soundEffect) {}
 
         Mix_Chunk *mChunk;
 };

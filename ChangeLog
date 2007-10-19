@@ -11,6 +11,18 @@
 	of already selected items.
 	* src/gui/buy.cpp, src/gui/sell.cpp, po/POTFILES.in: Marked buy and
 	sell dialog boxes as translatable.
+	* src/resources/resource.cpp, src/resources/resource.h,
+	src/resources/imageset.cpp, src/resources/imageset.h: Removed mandatory
+	identifier path.
+	* src/resources/resourcemanager.cpp, src/resources/resourcemanager.h:
+	Factored code between resource handlers.
+	* src/resources/soundeffect.h, src/resources/soundeffect.cpp,
+	src/resources/music.h, src/resources/music.cpp, src/resources/image.h,
+	src/resources/image.cpp: Reworked resource loaders.
+	* src/resources/spritedef.h, src/resources/spritedef.cpp: Implemented
+	a failure-friendly loader.
+	* src/gui/truetypefont.cpp, src/resources/imageloader.cpp,
+	src/tileset.h: Removed dummy parameter.
 
 2007-10-19  Philipp Sehmisch <tmw@crushnet.org>
 

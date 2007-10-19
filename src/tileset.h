@@ -36,7 +36,7 @@ class Tileset : public ImageSet
          * Constructor.
          */
         Tileset(Image *img, int w, int h, int firstGid):
-            ImageSet("", img, w, h),
+            ImageSet(img, w, h),
             mFirstGid(firstGid)
         {
         }

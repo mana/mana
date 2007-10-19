@@ -33,16 +33,6 @@
 
 #include "../utils/xml.h"
 
-SpriteDef::SpriteDef(const std::string &idPath,
-                     const std::string &file, int variant):
-    Resource(idPath),
-    mAction(NULL),
-    mDirection(DIRECTION_DOWN),
-    mLastTime(0)
-{
-    load(file, variant);
-}
-
 Action*
 SpriteDef::getAction(SpriteAction action) const
 {
@@ -57,29 +47,29 @@ SpriteDef::getAction(SpriteAction action) const
     return i->second;
 }
 
-void
-SpriteDef::load(const std::string &animationFile, int variant)
+SpriteDef *SpriteDef::load(std::string const &animationFile, int variant)
 {
     int size;
     ResourceManager *resman = ResourceManager::getInstance();
     char *data = (char*) resman->loadFile(animationFile.c_str(), size);
 
-    if (!data) {
-        logger->error("Animation: Could not find " + animationFile + "!");
-    }
+    if (!data) return NULL;
 
     xmlDocPtr doc = xmlParseMemory(data, size);
     free(data);
 
-    if (!doc) {
-        logger->error(
-                "Animation: Error while parsing " + animationFile + " file!");
+    if (!doc)
+    {
+        logger->log("Error, failed to parse %s.", animationFile.c_str());
+        return NULL;
     }
 
     xmlNodePtr rootNode = xmlDocGetRootElement(doc);
-    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite")) {
-        logger->error(
-                "Animation: this is not a valid " + animationFile + " file!");
+    if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "sprite"))
+    {
+        logger->log("Error, failed to parse %s.", animationFile.c_str());
+        xmlFreeDoc(doc);
+        return NULL;
     }
 
     // Get the variant
@@ -91,25 +81,32 @@ SpriteDef::load(const std::string &animationFile, int variant)
         variant_offset = variant * XML::getProperty(rootNode, "variant_offset", 0);
     }
 
+    SpriteDef *def = new SpriteDef;
+
     for_each_xml_child_node(node, rootNode)
     {
         if (xmlStrEqual(node->name, BAD_CAST "imageset"))
         {
-            loadImageSet(node);
+            def->loadImageSet(node);
         }
         else if (xmlStrEqual(node->name, BAD_CAST "action"))
         {
-            loadAction(node, variant_offset);
+            def->loadAction(node, variant_offset);
         }
         else if (xmlStrEqual(node->name, BAD_CAST "include"))
         {
-            includeSprite(node);
+            def->includeSprite(node);
         }
     }
 
     xmlFreeDoc(doc);
 
-    // Complete missing actions
+    def->substituteActions();
+    return def;
+}
+
+void SpriteDef::substituteActions()
+{
     substituteAction(ACTION_STAND, ACTION_DEFAULT);
     substituteAction(ACTION_WALK, ACTION_STAND);
     substituteAction(ACTION_WALK, ACTION_RUN);

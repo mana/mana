@@ -29,10 +29,7 @@
 
 #include "../utils/dtor.h"
 
-ImageSet::ImageSet(const std::string& idPath,
-                     Image *img,
-                     int width, int height):
-    Resource(idPath)
+ImageSet::ImageSet(Image *img, int width, int height)
 {
     for (int y = 0; y + height <= img->getHeight(); y += height)
     {

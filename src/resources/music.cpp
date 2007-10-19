@@ -23,8 +23,9 @@
 
 #include "music.h"
 
-Music::Music(const std::string &idPath, Mix_Chunk *music):
-    Resource(idPath),
+#include "../log.h"
+
+Music::Music(Mix_Chunk *music):
     mChunk(music),
     mChannel(-1)
 {
@@ -36,20 +37,24 @@ Music::~Music()
     Mix_FreeChunk(mChunk);
 }
 
-Music*
-Music::load(void *buffer, unsigned int bufferSize, const std::string &idPath)
+Resource *Music::load(void *buffer, unsigned bufferSize)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
 
     // Use Mix_LoadMUS to load the raw music data
     //Mix_Music* music = Mix_LoadMUS_RW(rw); Need to be implemeted
-    Mix_Chunk *tmpMusic = Mix_LoadWAV_RW(rw, 0);
+    Mix_Chunk *tmpMusic = Mix_LoadWAV_RW(rw, 1);
 
-    // Now free the SDL_RWops data
-    SDL_FreeRW(rw);
-
-    return new Music(idPath, tmpMusic);
+    if (tmpMusic)
+    {
+        return new Music(tmpMusic);
+    }
+    else
+    {
+        logger->log("Error, failed to load music: %s", Mix_GetError());
+        return NULL;
+    }
 }
 
 bool

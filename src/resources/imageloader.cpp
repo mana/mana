@@ -85,7 +85,7 @@ void ProxyImage::convertToDisplayFormat()
        font. Get rid of them. */
     SDL_SetColorKey(mSDLImage, SDL_SRCCOLORKEY,
                     SDL_MapRGB(mSDLImage->format, 255, 0, 255));
-    mImage = ::Image::load(mSDLImage, std::string());
+    mImage = ::Image::load(mSDLImage);
     SDL_FreeSurface(mSDLImage);
     mSDLImage = NULL;
 }

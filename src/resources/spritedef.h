@@ -71,28 +71,26 @@ class SpriteDef : public Resource
 {
     public:
         /**
+         * Loads a sprite definition file.
+         */
+        static SpriteDef *load(std::string const &file, int variant);
+
+        /**
+         * Returns the specified action.
+         */
+        Action *getAction(SpriteAction action) const;
+
+    private:
+
+        /**
          * Constructor.
          */
-        SpriteDef(const std::string &idPath,
-                  const std::string &file, int variant);
+        SpriteDef(): mAction(NULL), mDirection(DIRECTION_DOWN), mLastTime(0) {}
 
         /**
          * Destructor.
          */
         ~SpriteDef();
-
-        /**
-         * Returns the specified action.
-         */
-        Action*
-        getAction(SpriteAction action) const;
-
-    private:
-        /**
-         * Loads a sprite definition file.
-         */
-        void
-        load(const std::string &file, int variant);
 
         /**
          * Loads an imageset element.
@@ -119,6 +117,11 @@ class SpriteDef : public Resource
          */
         void
         includeSprite(xmlNodePtr includeNode);
+
+        /**
+         * Complete missing actions by copying existing ones.
+         */
+        void substituteActions();
 
         /**
          * When there are no animations defined for the action "complete", its

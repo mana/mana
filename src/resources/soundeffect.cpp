@@ -25,20 +25,12 @@
 
 #include "../log.h"
 
-SoundEffect::SoundEffect(const std::string &idPath, Mix_Chunk *soundEffect):
-    Resource(idPath),
-    mChunk(soundEffect)
-{
-}
-
 SoundEffect::~SoundEffect()
 {
     Mix_FreeChunk(mChunk);
 }
 
-SoundEffect*
-SoundEffect::load(void *buffer, unsigned int bufferSize,
-                  const std::string &idPath)
+Resource *SoundEffect::load(void *buffer, unsigned bufferSize)
 {
     // Load the raw file data from the buffer in an RWops structure
     SDL_RWops *rw = SDL_RWFromMem(buffer, bufferSize);
@@ -48,11 +40,11 @@ SoundEffect::load(void *buffer, unsigned int bufferSize,
 
     if (tmpSoundEffect)
     {
-        return new SoundEffect(idPath, tmpSoundEffect);
+        return new SoundEffect(tmpSoundEffect);
     }
     else
     {
-        logger->log("Error while loading sound effect (%s)", idPath.c_str());
+        logger->log("Error, failed to load sound effect: %s", Mix_GetError());
         return NULL;
     }
 }

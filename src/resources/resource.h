@@ -37,7 +37,7 @@ class Resource
         /**
          * Constructor
          */
-        Resource(const std::string &idPath);
+        Resource(): mRefCount(0) {}
 
         /**
          * Increments the internal reference count.

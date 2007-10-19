@@ -67,7 +67,7 @@ class TextChunk
                     std::string(TTF_GetError());
             }
 
-            img = Image::load(surface, std::string());
+            img = Image::load(surface);
 
             SDL_FreeSurface(surface);
         }

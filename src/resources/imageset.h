@@ -40,7 +40,7 @@ class ImageSet : public Resource
         /*
          * Cuts the passed image in a grid of sub images.
          */
-        ImageSet(const std::string &idPath, Image *img, int w, int h);
+        ImageSet(Image *img, int w, int h);
 
         /**
          * Destructor.
