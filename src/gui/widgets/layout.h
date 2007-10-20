@@ -58,20 +58,20 @@ class Cell
          * Sets the horizontal alignment of the cell content.
          */
         Cell &setHAlign(Alignment a)
-        { mHAlign = a; return *this; }
+        { mAlign[0] = a; return *this; }
 
         /**
          * Sets the vertical alignment of the cell content.
          */
         Cell &setVAlign(Alignment a)
-        { mVAlign = a; return *this; }
+        { mAlign[1] = a; return *this; }
 
     private:
 
         gcn::Widget *mWidget;
-        int mColExtent, mRowExtent;
         int mPadding;
-        Alignment mHAlign, mVAlign;
+        int mExtent[2];
+        Alignment mAlign[2];
 };
 
 /**
@@ -85,17 +85,34 @@ class Layout
 {
     public:
 
-        Layout(): mPadding(4) {}
+        Layout(): mPadding(4), mX(0), mY(0), mW(0), mH(0) {}
 
         /**
-         * Sets the width of a column.
+         * Sets the minimum width of a column.
          */
         void setColWidth(int n, int w);
 
         /**
-         * Sets the height of a row.
+         * Sets the minimum height of a row.
          */
         void setRowHeight(int n, int h);
+
+        /**
+         * Matchs widths of two columns.
+         */
+        void matchColWidth(int n1, int n2);
+
+        /**
+         * Sets the minimum width of the layout.
+         */
+        void setWidth(int w)
+        { mW = w; }
+
+        /**
+         * Sets the minimum height of the layout.
+         */
+        void setHeight(int h)
+        { mH = h; }
 
         /**
          * Sets the padding between cells.
@@ -113,18 +130,39 @@ class Layout
          */
         void reflow();
 
+        /**
+         * Reflows the current layout. Then starts a new layout just below with
+         * the same width.
+         */
+        void flush();
+
+        enum
+        {
+            FILL = -1, /**< Expand until the layout as the expected size. */
+        };
+
     private:
+
+        /**
+         * Gets the position and size of a widget along a given axis
+         */
+        void align(int &pos, int &size, int dim, Cell &cell, int *sizes);
 
         /**
          * Ensures the private vectors are large enough.
          */
         void resizeGrid(int w, int h);
 
-        std::vector< int > mColWidths;
-        std::vector< int > mRowHeights;
+        /**
+         * Gets the column/row sizes along a given axis.
+         */
+        std::vector< int > compute(int dim, int upp);
+
+        std::vector< int > mSizes[2];
         std::vector< std::vector < Cell > > mCells;
 
         int mPadding;
+        int mX, mY, mW, mH, mNW, mNH;
 };
 
 #endif

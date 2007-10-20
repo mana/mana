@@ -36,6 +36,8 @@
 
 #include "unregisterdialog.h"
 
+#include "widgets/layout.h"
+
 #include "../game.h"
 #include "../localplayer.h"
 #include "../main.h"
@@ -100,40 +102,28 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
     mPlayerBox = new PlayerBox();
 
-    int w = 195;
-    int h = 220;
-    setContentSize(w, h);
-    mPlayerBox->setDimension(gcn::Rectangle(5, 5, w - 10, 90));
-    mNameLabel->setDimension(gcn::Rectangle(10, 100, 128, 16));
-    mLevelLabel->setDimension(gcn::Rectangle(10, 116, 128, 16));
-    mMoneyLabel->setDimension(gcn::Rectangle(10, 148, 128, 16));
-    mPreviousButton->setPosition(5, 170);
-    mNextButton->setPosition(mPreviousButton->getWidth() + 10, 170);
-    mNewCharButton->setPosition(5, h - 5 - mNewCharButton->getHeight());
-    mDelCharButton->setPosition(
-            5 + mNewCharButton->getWidth() + 5,
-            mNewCharButton->getY());
-    mCancelButton->setPosition(
-            w - 5 - mCancelButton->getWidth(),
-            mNewCharButton->getY());
-    mSelectButton->setPosition(
-            mCancelButton->getX() - 5 - mSelectButton->getWidth(),
-            mNewCharButton->getY());
-    mUnRegisterButton->setPosition(
-            w - 5 - mUnRegisterButton->getWidth(),
-            mCancelButton->getY() - 5 - mUnRegisterButton->getHeight());
-
-    add(mPlayerBox);
-    add(mSelectButton);
-    add(mCancelButton);
-    add(mUnRegisterButton);
-    add(mNewCharButton);
-    add(mDelCharButton);
-    add(mPreviousButton);
-    add(mNextButton);
-    add(mNameLabel);
-    add(mLevelLabel);
-    add(mMoneyLabel);
+    setPadding(8);
+    Layout &layout = getLayout();
+    place(0, 0, mPlayerBox, 1, 5).setPadding(3);
+    place(1, 0, mNameLabel, 3);
+    place(1, 1, mLevelLabel, 3);
+    place(1, 2, mMoneyLabel, 3);
+    place(1, 3, mPreviousButton);
+    place(2, 3, mNextButton);
+    place(1, 4, mNewCharButton);
+    place(2, 4, mDelCharButton);
+    layout.setWidth(230);
+    layout.setColWidth(0, 80);
+    layout.setColWidth(3, Layout::FILL);
+    layout.matchColWidth(1, 2);
+    layout.setRowHeight(5, 5);
+    layout.flush();
+    place(0, 0, mUnRegisterButton);
+    place(2, 0, mSelectButton);
+    place(3, 0, mCancelButton);
+    layout.setColWidth(1, Layout::FILL);
+    reflowLayout();
+    forgetLayout();
 
     setLocationRelativeTo(getParent());
     setVisible(true);
