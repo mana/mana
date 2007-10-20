@@ -7,6 +7,7 @@
 	container. Fixed dangling resize widget. Added layout handler.
 	* src/gui/login.cpp: Fixed layout of login dialog box when native
 	language is not English.
+	* src/gui/playerbox.cpp: Centered sprite inside selection box.
 
 2007-10-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
