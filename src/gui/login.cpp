@@ -36,6 +36,8 @@
 #include "passwordfield.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../utils/gettext.h"
 
 LoginDialog::LoginDialog(LoginData *loginData):
@@ -50,28 +52,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mCancelButton = new Button(_("Cancel"), "cancel", this);
     mRegisterButton = new Button(_("Register"), "register", this);
 
-    const int width = 220;
-    const int height = 100;
-
-    setContentSize(width, height);
-
-    userLabel->setPosition(5, 5);
-    passLabel->setPosition(5, 14 + userLabel->getHeight());
-    mUserField->setPosition(65, 5);
-    mPassField->setPosition(65, 14 + userLabel->getHeight());
-    mUserField->setWidth(width - 70);
-    mPassField->setWidth(width - 70);
-    mKeepCheck->setPosition(4, 68);
-    mCancelButton->setPosition(
-            width - mCancelButton->getWidth() - 5,
-            height - mCancelButton->getHeight() - 5);
-    mOkButton->setPosition(
-            mCancelButton->getX() - mOkButton->getWidth() - 5,
-            height - mOkButton->getHeight() - 5);
-    mRegisterButton->setPosition(
-            mKeepCheck->getX() + mKeepCheck->getWidth() + 10,
-            height - mRegisterButton->getHeight() - 5);
-
     mUserField->setActionEventId("ok");
     mPassField->setActionEventId("ok");
 
@@ -81,14 +61,18 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField->addActionListener(this);
     mKeepCheck->addActionListener(this);
 
-    add(userLabel);
-    add(passLabel);
-    add(mUserField);
-    add(mPassField);
-    add(mKeepCheck);
-    add(mOkButton);
-    add(mCancelButton);
-    add(mRegisterButton);
+    setPadding(8);
+    place(0, 0, userLabel);
+    place(0, 1, passLabel);
+    place(1, 0, mUserField, 3).setPadding(2);
+    place(1, 1, mPassField, 3).setPadding(2);
+    place(0, 2, mKeepCheck, 4);
+    place(0, 3, mRegisterButton).setHAlign(Cell::LEFT);
+    place(2, 3, mOkButton);
+    place(3, 3, mCancelButton);
+    getLayout().setColWidth(1, 20);
+    reflowLayout();
+    forgetLayout();
 
     setLocationRelativeTo(getParent());
     setVisible(true);

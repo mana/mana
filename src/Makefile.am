@@ -3,6 +3,8 @@ AUTOMAKE_OPTIONS = subdir-objects
 bin_PROGRAMS = tmw
 tmw_SOURCES = gui/widgets/dropdown.cpp \
 	      gui/widgets/dropdown.h \
+	      gui/widgets/layout.cpp \
+	      gui/widgets/layout.h \
 	      gui/widgets/resizegrip.cpp \
 	      gui/widgets/resizegrip.h \
 	      gui/box.h \

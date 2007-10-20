@@ -30,12 +30,13 @@
 
 #include "windowlistener.h"
 
+class Cell;
 class ConfigListener;
-class GCContainer;
+class Image;
 class ImageRect;
+class Layout;
 class ResizeGrip;
 class WindowContainer;
-class Image;
 
 /**
  * A window. This window can be dragged around and has a title bar. Windows are
@@ -62,7 +63,7 @@ class Window : public gcn::Window
                 Window *parent = NULL);
 
         /**
-         * Destructor.
+         * Destructor. Deletes all the added widgets.
          */
         ~Window();
 
@@ -75,16 +76,6 @@ class Window : public gcn::Window
          * Draws the window.
          */
         void draw(gcn::Graphics *graphics);
-
-        /**
-         * Adds a widget to the window.
-         */
-        void add(gcn::Widget *wi, bool delChild = true);
-
-        /**
-         * Adds a widget to the window and also specifices its position.
-         */
-        void add(gcn::Widget *w, int x, int y, bool delChild = true);
 
         /**
          * Sets the width of the window contents.
@@ -291,6 +282,26 @@ class Window : public gcn::Window
         /** The window container windows add themselves to. */
         static WindowContainer *windowContainer;
 
+        /**
+         * Gets the layout handler for this window.
+         */
+        Layout &getLayout();
+
+        /**
+         * Deletes the layout handler.
+         */
+        void forgetLayout();
+
+        /**
+         * Resizes the window after computing the position of the widgets.
+         */
+        void reflowLayout();
+
+        /**
+         * Adds a widget to the window and sets it at given cell.
+         */
+        Cell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
+
     private:
         /**
          * Determines if the mouse is in a resize area and returns appropriate
@@ -301,9 +312,9 @@ class Window : public gcn::Window
          */
         int getResizeHandles(gcn::MouseEvent &event);
 
-        GCContainer *mChrome;      /**< Contained container */
         ResizeGrip *mGrip;         /**< Resize grip */
         Window *mParent;           /**< The parent window */
+        Layout *mLayout;           /**< Layout handler */
         std::string mConfigName;   /**< Name used for saving window-related data */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */

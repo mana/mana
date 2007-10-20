@@ -1,3 +1,13 @@
+2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/widgets/layout.h, src/gui/widgets/layout.cpp,
+	src/Makefile.am: Added a layout handler for automatically positioning
+	widgets in a window.
+	* src/gui/window.h, src/gui/window.cpp: Removed garbage-collected
+	container. Fixed dangling resize widget. Added layout handler.
+	* src/gui/login.cpp: Fixed layout of login dialog box when native
+	language is not English.
+
 2007-10-19  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* data/equipment.xml: Removed obsolete file.

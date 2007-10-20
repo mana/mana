@@ -30,6 +30,7 @@
 #include "gccontainer.h"
 #include "windowcontainer.h"
 
+#include "widgets/layout.h"
 #include "widgets/resizegrip.h"
 
 #include "../configlistener.h"
@@ -61,6 +62,7 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     gcn::Window(caption),
     mGrip(0),
     mParent(parent),
+    mLayout(NULL),
     mModal(modal),
     mResizable(false),
     mCloseButton(false),
@@ -105,11 +107,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     setPadding(3);
     setTitleBarHeight(20);
 
-    // Add chrome
-    mChrome = new GCContainer();
-    mChrome->setOpaque(false);
-    gcn::Window::add(mChrome);
-
     // Add this window to the window container
     windowContainer->add(this);
 
@@ -141,6 +138,15 @@ Window::~Window()
         }
     }
 
+    delete mLayout;
+
+    while (!mWidgets.empty())
+    {
+        gcn::Widget *w = mWidgets.front();
+        remove(w);
+        delete(w);
+    }
+
     instances--;
 
     if (instances == 0)
@@ -161,9 +167,6 @@ Window::~Window()
         delete border.grid[8];
         closeImage->decRef();
     }
-
-    delete mChrome;
-    delete mGrip;
 }
 
 void Window::setWindowContainer(WindowContainer *wc)
@@ -198,13 +201,11 @@ void Window::draw(gcn::Graphics *graphics)
 
 void Window::setContentWidth(int width)
 {
-    mChrome->setWidth(width);
     setWidth(width + 2 * getPadding());
 }
 
 void Window::setContentHeight(int height)
 {
-    mChrome->setHeight(height);
     setHeight(height + getPadding() + getTitleBarHeight());
 }
 
@@ -304,6 +305,7 @@ void Window::setMaxHeight(unsigned int height)
 
 void Window::setResizable(bool r)
 {
+    if (mResizable == r) return;
     mResizable = r;
 
     if (mResizable)
@@ -311,10 +313,11 @@ void Window::setResizable(bool r)
         mGrip = new ResizeGrip();
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
         mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
-        gcn::Window::add(mGrip);
+        add(mGrip);
     }
     else
     {
+        remove(mGrip);
         delete mGrip;
         mGrip = 0;
     }
@@ -355,16 +358,6 @@ void Window::setVisible(bool visible)
 void Window::scheduleDelete()
 {
     windowContainer->scheduleDelete(this);
-}
-
-void Window::add(gcn::Widget *w, bool delChild)
-{
-    mChrome->add(w, delChild);
-}
-
-void Window::add(gcn::Widget *w, int x, int y, bool delChild)
-{
-    mChrome->add(w, x, y, delChild);
 }
 
 void Window::mousePressed(gcn::MouseEvent &event)
@@ -519,8 +512,6 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
         // Set the new window and content dimensions
         setDimension(newDim);
-        const gcn::Rectangle area = getChildrenArea();
-        mChrome->setSize(area.width, area.height);
         updateContentSize();
     }
 }
@@ -536,9 +527,6 @@ void Window::loadWindowState(std::string const &name)
     {
         setSize((int) config.getValue(name + "WinWidth", getWidth()),
                 (int) config.getValue(name + "WinHeight", getHeight()));
-
-        const gcn::Rectangle area = getChildrenArea();
-        mChrome->setSize(area.width, area.height);
     }
 }
 
@@ -606,4 +594,29 @@ void Window::fireWindowEvent(const WindowEvent &event)
             { (*i)->windowResized(event); }
             break;
     }
+}
+
+Layout &Window::getLayout()
+{
+    if (!mLayout) mLayout = new Layout;
+    return *mLayout;
+}
+
+void Window::forgetLayout()
+{
+    delete mLayout;
+    mLayout = 0;
+}
+
+Cell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
+{
+    add(wg);
+    return getLayout().place(wg, x, y, w, h);
+}
+
+void Window::reflowLayout()
+{
+    if (!mLayout) return;
+    mLayout->reflow();
+    resizeToContent();
 }
