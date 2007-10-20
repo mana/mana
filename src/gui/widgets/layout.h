@@ -28,6 +28,13 @@
 
 #include <guichan/widget.hpp>
 
+/**
+ * This class describes the formatting of a widget in the cell of a layout
+ * table. Horizontally, a widget can either fill the width of the cell (minus
+ * the cell padding), or it can retain its size and be flushed left, or flush
+ * right, or centered in the cell. The process is similar for the vertical
+ * alignment, except that top is represented by LEFT and bottom by RIGHT.
+ */
 class Cell
 {
     friend class Layout;
@@ -42,19 +49,19 @@ class Cell
         Cell(): mWidget(0) {}
 
         /**
-         * Sets padding.
+         * Sets the padding around the cell content.
          */
         Cell &setPadding(int p)
         { mPadding = p; return *this; }
 
         /**
-         * Sets horizontal alignment of cell content.
+         * Sets the horizontal alignment of the cell content.
          */
         Cell &setHAlign(Alignment a)
         { mHAlign = a; return *this; }
 
         /**
-         * Sets vertical alignment of cell content.
+         * Sets the vertical alignment of the cell content.
          */
         Cell &setVAlign(Alignment a)
         { mVAlign = a; return *this; }
@@ -67,6 +74,13 @@ class Cell
         Alignment mHAlign, mVAlign;
 };
 
+/**
+ * This class is an helper for setting the position of widgets. They are
+ * positioned along the cells of a rectangular table. The size of a given
+ * table column can either be set manually or be chosen from the widest widget
+ * of the column. The process is similar for table rows. By default, there is a
+ * padding of 4 pixels between rows and between columns.
+ */
 class Layout
 {
     public:
@@ -84,18 +98,18 @@ class Layout
         void setRowHeight(int n, int h);
 
         /**
-         * Sets padding between cells.
+         * Sets the padding between cells.
          */
         void setPadding(int p)
         { mPadding = p; }
 
         /**
-         * Places a widget in given cell.
+         * Places a widget in a given cell.
          */
         Cell &place(gcn::Widget *, int x, int y, int w, int h);
 
         /**
-         * Computes position of all the widgets.
+         * Computes the positions of all the widgets.
          */
         void reflow();
 
