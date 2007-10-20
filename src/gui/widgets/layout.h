@@ -76,10 +76,14 @@ class Cell
 
 /**
  * This class is an helper for setting the position of widgets. They are
- * positioned along the cells of a rectangular table. The size of a given
- * table column can either be set manually or be chosen from the widest widget
- * of the column. The process is similar for table rows. By default, there is a
- * padding of 4 pixels between rows and between columns.
+ * positioned along the cells of a rectangular table.
+ *
+ * The size of a given table column can either be set manually or be chosen
+ * from the widest widget of the column. An empty column has a FILL width,
+ * which means it will be extended so that the layout fits its minimum width.
+ *
+ * The process is similar for table rows. By default, there is a padding of 4
+ * pixels between rows and between columns.
  */
 class Layout
 {
@@ -89,11 +93,15 @@ class Layout
 
         /**
          * Sets the minimum width of a column.
+         * @note Setting the width to FILL and then placing a widget in the
+         * column will reset the width to zero.
          */
         void setColWidth(int n, int w);
 
         /**
          * Sets the minimum height of a row.
+         * @note Setting the height to FILL and then placing a widget in the
+         * row will reset the height to zero.
          */
         void setRowHeight(int n, int h);
 
@@ -138,7 +146,7 @@ class Layout
 
         enum
         {
-            FILL = -1, /**< Expand until the layout as the expected size. */
+            FILL = -42, /**< Expand until the layout as the expected size. */
         };
 
     private:

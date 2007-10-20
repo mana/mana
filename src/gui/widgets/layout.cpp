@@ -31,14 +31,14 @@ void Layout::resizeGrid(int w, int h)
 
     if (extH)
     {
-        mSizes[1].resize(h, 0);
+        mSizes[1].resize(h, FILL);
         mCells.resize(h);
         if (!extW) w = mSizes[0].size();
     }
 
     if (extW)
     {
-        mSizes[0].resize(w, 0);
+        mSizes[0].resize(w, FILL);
     }
 
     for (std::vector< std::vector< Cell > >::iterator
@@ -79,6 +79,9 @@ Cell &Layout::place(gcn::Widget *widget, int x, int y, int w, int h)
     cell.mPadding = 0;
     cell.mAlign[0] = Cell::FILL;
     cell.mAlign[1] = Cell::FILL;
+    int &cs = mSizes[0][x], &rs = mSizes[1][y];
+    if (cs == FILL) cs = 0;
+    if (rs == FILL) rs = 0;
     return cell;
 }
 
@@ -137,8 +140,8 @@ std::vector< int > Layout::compute(int dim, int upp)
     for (int i = 0; i < nb; ++i)
     {
         if (mSizes[dim][i] == FILL) ++nbFill;
-        if (sizes[i] > 0) upp -= sizes[i];
-        upp -= mPadding;
+        if (sizes[i] == FILL) sizes[i] = 0;
+        else upp -= sizes[i];
     }
     upp += mPadding;
 

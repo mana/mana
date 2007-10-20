@@ -34,6 +34,8 @@
 #include "scrollarea.h"
 #include "textfield.h"
 
+#include "widgets/layout.h"
+
 #include "../configuration.h"
 #include "../log.h"
 #include "../logindata.h"
@@ -138,27 +140,6 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mOkButton = new Button(_("Ok"), "ok", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    setContentSize(200, 100);
-
-    serverLabel->setPosition(10, 5);
-    portLabel->setPosition(10, 14 + serverLabel->getHeight());
-
-    mServerNameField->setPosition(60, 5);
-    mPortField->setPosition(60, 14 + serverLabel->getHeight());
-    mServerNameField->setWidth(130);
-    mPortField->setWidth(130);
-
-    mMostUsedServersDropDown->setPosition(10, 10 +
-        portLabel->getY() + portLabel->getHeight());
-    mMostUsedServersDropDown->setWidth(180);
-
-    mCancelButton->setPosition(
-            200 - mCancelButton->getWidth() - 5,
-            100 - mCancelButton->getHeight() - 5);
-    mOkButton->setPosition(
-            mCancelButton->getX() - mOkButton->getWidth() - 5,
-            100 - mOkButton->getHeight() - 5);
-
     mServerNameField->setActionEventId("ok");
     mPortField->setActionEventId("ok");
     mMostUsedServersDropDown->setActionEventId("changeSelection");
@@ -167,13 +148,19 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mPortField->addActionListener(this);
     mMostUsedServersDropDown->addActionListener(mDropDownListener);
 
-    add(serverLabel);
-    add(portLabel);
-    add(mServerNameField);
-    add(mPortField);
-    add(mMostUsedServersDropDown);
-    add(mOkButton);
-    add(mCancelButton);
+    setPadding(8);
+    place(0, 0, serverLabel);
+    place(0, 1, portLabel);
+    place(1, 0, mServerNameField, 3).setPadding(3);
+    place(1, 1, mPortField, 3).setPadding(3);
+    place(0, 2, mMostUsedServersDropDown, 4).setPadding(3);
+    place(2, 3, mOkButton);
+    place(3, 3, mCancelButton);
+    Layout &layout = getLayout();
+    layout.setWidth(250);
+    layout.setColWidth(1, Layout::FILL);
+    reflowLayout();
+    forgetLayout();
 
     setLocationRelativeTo(getParent());
     setVisible(true);
