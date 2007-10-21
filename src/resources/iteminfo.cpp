@@ -100,22 +100,16 @@ void ItemInfo::setWeaponType(int type)
 void
 ItemInfo::addSound(EquipmentSoundEvent event, const std::string &filename)
 {
-    if (mSounds.find(event) == mSounds.end())
-    {
-        mSounds[event] = new std::vector<std::string>;
-    }
-
-    mSounds[event]->push_back("sfx/" + filename);
+    mSounds[event].push_back("sfx/" + filename);
 }
 
 
 const std::string&
 ItemInfo::getSound(EquipmentSoundEvent event) const
 {
-    static const std::string empty = "";
-    std::map<EquipmentSoundEvent, std::vector<std::string>*>::const_iterator i;
+    static const std::string empty;
+    std::map< EquipmentSoundEvent, std::vector<std::string> >::const_iterator i;
     i = mSounds.find(event);
 
-    return (i == mSounds.end()) ? empty :
-        i->second->at(rand() % i->second->size());
+    return i == mSounds.end() ? empty : i->second[rand() % i->second.size()];
 }

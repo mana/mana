@@ -49,7 +49,6 @@ class ItemInfo
          * Constructor.
          */
         ItemInfo():
-            mImageName(""),
             mImage(NULL),
             mType(0),
             mWeight(0),
@@ -138,7 +137,7 @@ class ItemInfo
         std::map<int, std::string> mAnimationFiles;
 
         /** Stores the names of sounds to be played at certain event. */
-        std::map<EquipmentSoundEvent, std::vector<std::string>* > mSounds;
+        std::map< EquipmentSoundEvent, std::vector<std::string> > mSounds;
 };
 
 #endif

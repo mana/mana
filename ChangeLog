@@ -19,6 +19,8 @@
 	* src/resources/monsterdb.cpp: Plugged memory leak in database reader.
 	* src/resources/spritedef.cpp: Plugged memory leak in sprites.
 	* src/gui/quitdialog.cpp: Plugged memory leak in quit dialog.
+	* src/resources/iteminfo.cpp, src/resources/iteminfo.h: Plugged memory
+	leak in equipment sound.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
