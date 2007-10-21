@@ -233,7 +233,8 @@ void Window::setSize(int width, int height)
     {
         mLayout->setWidth(width - 2 * getPadding());
         mLayout->setHeight(height - getPadding() - getTitleBarHeight());
-        mLayout->reflow();
+        int w, h;
+        mLayout->reflow(w, h);
     }
 
     fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
@@ -621,10 +622,13 @@ Cell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
 void Window::reflowLayout()
 {
     if (!mLayout) return;
-    mLayout->reflow();
+    int w, h;
+    mLayout->reflow(w, h);
+    w += mLayout->getX();
+    h += mLayout->getY();
     Layout *tmp = mLayout;
     // Hide it so that the incoming resize does not reflow the layout again.
     mLayout = NULL;
-    resizeToContent();
+    setContentSize(w, h);
     mLayout = tmp;
 }

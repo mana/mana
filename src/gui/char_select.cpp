@@ -102,7 +102,6 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
     mPlayerBox = new PlayerBox();
 
-    setPadding(8);
     Layout &layout = getLayout();
     place(0, 0, mPlayerBox, 1, 5).setPadding(3);
     place(1, 0, mNameLabel, 3);
@@ -112,7 +111,7 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place(2, 3, mNextButton);
     place(1, 4, mNewCharButton);
     place(2, 4, mDelCharButton);
-    layout.setWidth(230);
+    layout.setWidth(250);
     layout.setColWidth(0, 80);
     layout.setColWidth(3, Layout::FILL);
     layout.matchColWidth(1, 2);

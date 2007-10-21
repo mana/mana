@@ -6,6 +6,12 @@
 	* src/gui/widgets/layout.cpp: Allowed for decreasing sizes in layout.
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.cpp: Delegated
 	resizing events to layout handler.
+	* src/gui/widgets/layout.cpp, src/gui/widgets/layout.h: Renamed padding
+	to spacing. Added margin around layout. Constified code.
+	* src/gui/window.cpp, src/gui/login.cpp, src/gui/char_select.cpp,
+	src/gui/serverdialog.cpp, src/gui/inventorywindow.cpp: Removed window
+	padding and replaced it by layout margin, so that the grip on resizable
+	window is not outside the inner clip area.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

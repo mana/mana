@@ -61,7 +61,6 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mPassField->addActionListener(this);
     mKeepCheck->addActionListener(this);
 
-    setPadding(8);
     place(0, 0, userLabel);
     place(0, 1, passLabel);
     place(1, 0, mUserField, 3).setPadding(2);

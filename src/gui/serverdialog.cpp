@@ -148,7 +148,6 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mPortField->addActionListener(this);
     mMostUsedServersDropDown->addActionListener(mDropDownListener);
 
-    setPadding(8);
     place(0, 0, serverLabel);
     place(0, 1, portLabel);
     place(1, 0, mServerNameField, 3).setPadding(3);

@@ -81,7 +81,6 @@ InventoryWindow::InventoryWindow():
     mWeightLabel = new gcn::Label(
         strprintf(_("Total Weight: %d - Maximum Weight: %d"), 0, 0));
 
-    setPadding(8);
     place(0, 0, mWeightLabel, 4);
     place(0, 1, mInvenScroll, 4).setPadding(3);
     place(0, 2, mItemNameLabel, 4);

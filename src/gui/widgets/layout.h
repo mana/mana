@@ -82,14 +82,27 @@ class Cell
  * from the widest widget of the column. An empty column has a FILL width,
  * which means it will be extended so that the layout fits its minimum width.
  *
- * The process is similar for table rows. By default, there is a padding of 4
- * pixels between rows and between columns.
+ * The process is similar for table rows. By default, there is a spacing of 4
+ * pixels between rows and between columns, and a margin of 6 pixels around the
+ * whole layout.
  */
 class Layout
 {
     public:
 
-        Layout(): mPadding(4), mX(0), mY(0), mW(0), mH(0) {}
+        Layout(): mSpacing(4), mMargin(6), mX(0), mY(0), mW(0), mH(0) {}
+
+        /**
+         * Gets the x-coordinate of the top left point of the layout.
+         */
+        int getX() const
+        { return mX; }
+
+        /**
+         * Gets the y-coordinate of the top left point of the layout.
+         */
+        int getY() const
+        { return mY; }
 
         /**
          * Sets the minimum width of a column.
@@ -123,10 +136,16 @@ class Layout
         { mH = h; }
 
         /**
-         * Sets the padding between cells.
+         * Sets the spacing between cells.
          */
-        void setPadding(int p)
-        { mPadding = p; }
+        void setSpacing(int p)
+        { mSpacing = p; }
+
+        /**
+         * Sets the margin around the layout.
+         */
+        void setMargin(int m)
+        { mMargin = m; }
 
         /**
          * Places a widget in a given cell.
@@ -134,9 +153,10 @@ class Layout
         Cell &place(gcn::Widget *, int x, int y, int w, int h);
 
         /**
-         * Computes the positions of all the widgets.
+         * Computes the positions of all the widgets. Returns the size of the
+         * layout.
          */
-        void reflow();
+        void reflow(int &nW, int &nH);
 
         /**
          * Reflows the current layout. Then starts a new layout just below with
@@ -154,7 +174,8 @@ class Layout
         /**
          * Gets the position and size of a widget along a given axis
          */
-        void align(int &pos, int &size, int dim, Cell &cell, int *sizes);
+        void align(int &pos, int &size, int dim,
+                   Cell const &cell, int *sizes) const;
 
         /**
          * Ensures the private vectors are large enough.
@@ -164,12 +185,12 @@ class Layout
         /**
          * Gets the column/row sizes along a given axis.
          */
-        std::vector< int > compute(int dim, int upp);
+        std::vector< int > compute(int dim, int upp) const;
 
         std::vector< int > mSizes[2];
         std::vector< std::vector < Cell > > mCells;
 
-        int mPadding;
+        int mSpacing, mMargin;
         int mX, mY, mW, mH, mNW, mNH;
 };
 

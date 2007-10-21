@@ -85,11 +85,12 @@ Cell &Layout::place(gcn::Widget *widget, int x, int y, int w, int h)
     return cell;
 }
 
-void Layout::align(int &pos, int &size, int dim, Cell &cell, int *sizes)
+void Layout::align(int &pos, int &size, int dim,
+                   Cell const &cell, int *sizes) const
 {
     int size_max = sizes[0] - cell.mPadding * 2;
     for (int i = 1; i < cell.mExtent[dim]; ++i)
-        size_max += sizes[i] + mPadding;
+        size_max += sizes[i] + mSpacing;
     size = std::min(dim == 0 ? cell.mWidget->getWidth()
                              : cell.mWidget->getHeight(), size_max);
     pos += cell.mPadding;
@@ -110,7 +111,7 @@ void Layout::align(int &pos, int &size, int dim, Cell &cell, int *sizes)
     }
 }
 
-std::vector< int > Layout::compute(int dim, int upp)
+std::vector< int > Layout::compute(int dim, int upp) const
 {
     int gridW = mSizes[0].size(), gridH = mSizes[1].size();
     std::vector< int > sizes = mSizes[dim];
@@ -120,7 +121,7 @@ std::vector< int > Layout::compute(int dim, int upp)
     {
         for (int gridX = 0; gridX < gridW; ++gridX)
         {
-            Cell &cell = mCells[gridY][gridX];
+            Cell const &cell = mCells[gridY][gridX];
             if (!cell.mWidget) continue;
 
             if (cell.mExtent[dim] == 1)
@@ -142,9 +143,9 @@ std::vector< int > Layout::compute(int dim, int upp)
         if (mSizes[dim][i] == FILL) ++nbFill;
         if (sizes[i] == FILL) sizes[i] = 0;
         else upp -= sizes[i];
-        upp -= mPadding;
+        upp -= mSpacing;
     }
-    upp += mPadding;
+    upp = upp + mSpacing - mMargin * 2;
 
     if (nbFill == 0) return sizes;
 
@@ -160,17 +161,17 @@ std::vector< int > Layout::compute(int dim, int upp)
     return sizes;
 }
 
-void Layout::reflow()
+void Layout::reflow(int &nw, int &nh)
 {
     int gridW = mSizes[0].size(), gridH = mSizes[1].size();
 
     std::vector< int > widths = compute(0, mW);
     std::vector< int > heights = compute(1, mH);
 
-    int y = mY;
+    int x, y = mY + mMargin;
     for (int gridY = 0; gridY < gridH; ++gridY)
     {
-        int x = mX;
+        x = mX + mMargin;
         for (int gridX = 0; gridX < gridW; ++gridX)
         {
             Cell &cell = mCells[gridY][gridX];
@@ -181,19 +182,21 @@ void Layout::reflow()
                 align(dy, dh, 1, cell, &heights[gridY]);
                 cell.mWidget->setDimension(gcn::Rectangle(dx, dy, dw, dh));
             }
-            x += widths[gridX] + mPadding;
-            mNW = x - mX;
+            x += widths[gridX] + mSpacing;
         }
-        y += heights[gridY] + mPadding;
-        mNH = y - mY;
+        y += heights[gridY] + mSpacing;
     }
+
+    nw = x - mX - mSpacing + mMargin;
+    nh = y - mY - mSpacing + mMargin;
 }
 
 void Layout::flush()
 {
-    reflow();
-    mY += mNH;
-    mW = mNW - mPadding;
+    int w, h;
+    reflow(w, h);
+    mY += h;
+    mW = w;
     mSizes[0].clear();
     mSizes[1].clear();
     mCells.clear();
