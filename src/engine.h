@@ -41,6 +41,11 @@ class Engine
         Engine();
 
         /**
+         * Destructor.
+         */
+        ~Engine();
+
+        /**
          * Returns the currently active map.
          */
         Map *getCurrentMap() { return mCurrentMap; }

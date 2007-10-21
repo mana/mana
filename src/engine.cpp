@@ -58,6 +58,11 @@ Engine::Engine():
 {
 }
 
+Engine::~Engine()
+{
+    delete mCurrentMap;
+}
+
 void Engine::changeMap(const std::string &mapPath)
 {
     // Clean up floor items

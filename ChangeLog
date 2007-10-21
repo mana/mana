@@ -12,6 +12,8 @@
 	src/gui/serverdialog.cpp, src/gui/inventorywindow.cpp: Removed window
 	padding and replaced it by layout margin, so that the grip on resizable
 	window is not outside the inner clip area.
+	* src/engine.cpp, src/engine.h: Fixed current map not deleted on server
+	change.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
