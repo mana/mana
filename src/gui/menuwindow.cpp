@@ -67,22 +67,19 @@ MenuWindow::MenuWindow():
         N_("Setup"),
         0
     };
-    int x = 0, y = 3, h = 0;
+    int x = 0, h = 0;
 
     for (const char **curBtn = buttonNames; *curBtn; curBtn++)
     {
         gcn::Button *btn = new Button(gettext(*curBtn), *curBtn, &listener);
-        btn->setPosition(x, y);
+        btn->setPosition(x, 0);
         add(btn);
         x += btn->getWidth() + 3;
         h = btn->getHeight();
     }
 
+    setPosition(windowContainer->getWidth() - x - 3, 3);
     setContentSize(x - 3, h);
-    setDefaultSize(windowContainer->getWidth() - getWidth() - 1,
-                   0,
-                   x - 3,
-                   y + h);
 }
 
 void MenuWindow::draw(gcn::Graphics *graphics)
