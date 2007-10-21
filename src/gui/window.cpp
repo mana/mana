@@ -64,7 +64,6 @@ Window::Window(const std::string& caption, bool modal, Window *parent):
     mParent(parent),
     mLayout(NULL),
     mModal(modal),
-    mResizable(false),
     mCloseButton(false),
     mSticky(false),
     mMinWinWidth(100),
@@ -131,7 +130,7 @@ Window::~Window()
         config.setValue(name + "WinX", getX());
         config.setValue(name + "WinY", getY());
 
-        if (mResizable)
+        if (mGrip)
         {
             config.setValue(name + "WinWidth", getWidth());
             config.setValue(name + "WinHeight", getHeight());
@@ -211,64 +210,63 @@ void Window::setContentHeight(int height)
 
 void Window::setContentSize(int width, int height)
 {
-    setContentWidth(width);
-    setContentHeight(height);
+    setSize(width + 2 * getPadding(),
+            height + getPadding() + getTitleBarHeight());
+}
+
+void Window::setSize(int width, int height)
+{
+    if (width == mDimension.width && height == mDimension.height) return;
+
+    // No call to ancestor! Infinite loop otherwise.
+    mDimension.width = width;
+    mDimension.height = height;
+
+    if (mGrip)
+    {
+        gcn::Rectangle const &area = getChildrenArea();
+        mGrip->setPosition(width - mGrip->getWidth() - area.x,
+                           height - mGrip->getHeight() - area.y);
+    }
+
+    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
 }
 
 void Window::setWidth(int width)
 {
-    gcn::Window::setWidth(width);
-
-    if (mGrip)
-    {
-        mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
-    }
-
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
+    setSize(width, mDimension.height);
 }
 
 void Window::setHeight(int height)
 {
-    gcn::Window::setHeight(height);
-
-    if (mGrip)
-    {
-        mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
-    }
-
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
-}
-
-void Window::setDimension(const gcn::Rectangle &dimension)
-{
-    gcn::Window::setDimension(dimension);
-
-    if (mGrip)
-    {
-        mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
-        mGrip->setY(getHeight() - mGrip->getHeight() - getChildrenArea().y);
-    }
-
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+    setSize(mDimension.width, height);
 }
 
 void Window::setPosition(int x, int y)
 {
-    gcn::Window::setPosition(x, y);
+    if (x == mDimension.x && y == mDimension.y) return;
+
+    // No call to ancestor!
+    mDimension.x = x;
+    mDimension.y = y;
+
     fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+}
+
+void Window::setDimension(const gcn::Rectangle &dimension)
+{
+    setPosition(dimension.x, dimension.y);
+    setSize(dimension.width, dimension.height);
 }
 
 void Window::setX(int x)
 {
-    gcn::Window::setX(x);
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+    setPosition(x, mDimension.y);
 }
 
 void Window::setY(int y)
 {
-    gcn::Window::setY(y);
-    fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_MOVED));
+    setPosition(mDimension.x, y);
 }
 
 void Window::setLocationRelativeTo(gcn::Widget *widget)
@@ -305,10 +303,9 @@ void Window::setMaxHeight(unsigned int height)
 
 void Window::setResizable(bool r)
 {
-    if (mResizable == r) return;
-    mResizable = r;
+    if ((bool)mGrip == r) return;
 
-    if (mResizable)
+    if (r)
     {
         mGrip = new ResizeGrip();
         mGrip->setX(getWidth() - mGrip->getWidth() - getChildrenArea().x);
@@ -330,7 +327,7 @@ void Window::setCloseButton(bool flag)
 
 bool Window::isResizable()
 {
-    return mResizable;
+    return mGrip;
 }
 
 void Window::setSticky(bool sticky)
@@ -392,7 +389,7 @@ void Window::mousePressed(gcn::MouseEvent &event)
 
 void Window::mouseReleased(gcn::MouseEvent &event)
 {
-    if (mResizable && mouseResize)
+    if (mGrip && mouseResize)
     {
         mouseResize = 0;
         gui->setCursorType(Gui::CURSOR_POINTER);
@@ -404,7 +401,7 @@ void Window::mouseReleased(gcn::MouseEvent &event)
 
 void Window::mouseExited(gcn::MouseEvent &event)
 {
-    if (mResizable && !mouseResize)
+    if (mGrip && !mouseResize)
     {
         gui->setCursorType(Gui::CURSOR_POINTER);
     }
@@ -523,7 +520,7 @@ void Window::loadWindowState(std::string const &name)
     setPosition((int) config.getValue(name + "WinX", getX()),
                 (int) config.getValue(name + "WinY", getY()));
 
-    if (mResizable)
+    if (mGrip)
     {
         setSize((int) config.getValue(name + "WinWidth", getWidth()),
                 (int) config.getValue(name + "WinHeight", getHeight()));
@@ -554,7 +551,7 @@ int Window::getResizeHandles(gcn::MouseEvent &event)
     int resizeHandles = 0;
     const int y = event.getY();
 
-    if (mResizable && y > (int) mTitleBarHeight)
+    if (mGrip && y > (int) mTitleBarHeight)
     {
         const int x = event.getX();
 
