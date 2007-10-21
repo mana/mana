@@ -41,8 +41,7 @@ class ShopListBox;
  *
  * \ingroup Interface
  */
-class SellDialog : public Window, gcn::ActionListener, SelectionListener,
-    WindowListener
+class SellDialog : public Window, gcn::ActionListener, SelectionListener
 {
     public:
         /**
@@ -78,11 +77,6 @@ class SellDialog : public Window, gcn::ActionListener, SelectionListener,
          * @see SelectionListener::selectionChanged
          */
         void selectionChanged(const SelectionEvent &event);
-
-        /**
-         * Called whenever the window is resized.
-         */
-        void windowResized(const WindowEvent &event);
 
         /**
          * Gives Player's Money amount

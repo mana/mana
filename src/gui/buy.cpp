@@ -64,7 +64,6 @@ BuyDialog::BuyDialog():
 
     mIncreaseButton->setSize(20, 20);
     mDecreaseButton->setSize(20, 20);
-    mQuantityLabel->setWidth(60);
 
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
     mIncreaseButton->setEnabled(false);
@@ -72,11 +71,9 @@ BuyDialog::BuyDialog():
     mBuyButton->setEnabled(false);
     mSlider->setEnabled(false);
 
-    mShopItemList->setActionEventId("item");
     mSlider->setActionEventId("slider");
-
-    mShopItemList->addSelectionListener(this);
     mSlider->addActionListener(this);
+    mShopItemList->addSelectionListener(this);
 
     place(0, 0, mScrollArea, 5).setPadding(3);
     place(0, 1, mQuantityLabel, 2);

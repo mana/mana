@@ -27,7 +27,8 @@
 	* src/gui/menuwindow.cpp: Fixed missing pixels at bottom and right.
 	* src/gui/window.cpp, src/gui/window.h: Changed to use default values
 	when restoring missing settings.
-	* src/gui/buy.cpp, src/gui/buy.h: Converted to layout handler.
+	* src/gui/buy.cpp, src/gui/buy.h, src/gui/sell.cpp, src/gui/sell.h:
+	Converted to layout handler.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
