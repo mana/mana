@@ -23,6 +23,7 @@
 	leak in equipment sound.
 	* src/resources/action.cpp: Fixed double-free of sprite actions.
 	* data/maps/new_1-1.tmx: Added back a Lua script for testing.
+	* src/gui/trade.cpp: Added persistent positioning.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

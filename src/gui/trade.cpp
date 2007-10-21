@@ -98,6 +98,8 @@ TradeWindow::TradeWindow():
     add(mMoneyField);
     add(mMoneyLabel);
 
+    loadWindowState("Trade");
+
     gcn::Rectangle area = getChildrenArea();
     int width = area.width;
     int height = area.height;
