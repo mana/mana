@@ -229,6 +229,13 @@ void Window::setSize(int width, int height)
                            height - mGrip->getHeight() - area.y);
     }
 
+    if (mLayout)
+    {
+        mLayout->setWidth(width - 2 * getPadding());
+        mLayout->setHeight(height - getPadding() - getTitleBarHeight());
+        mLayout->reflow();
+    }
+
     fireWindowEvent(WindowEvent(this, WindowEvent::WINDOW_RESIZED));
 }
 
@@ -615,5 +622,9 @@ void Window::reflowLayout()
 {
     if (!mLayout) return;
     mLayout->reflow();
+    Layout *tmp = mLayout;
+    // Hide it so that the incoming resize does not reflow the layout again.
+    mLayout = NULL;
     resizeToContent();
+    mLayout = tmp;
 }
