@@ -92,6 +92,11 @@ QuitDialog::QuitDialog(bool* quitGame, QuitDialog** pointerToMe):
 QuitDialog::~QuitDialog()
 {
     if (mMyPointer) *mMyPointer = NULL;
+    // Optional widgets, so delete them by hand.
+    delete mForceQuit;
+    delete mLogoutQuit;
+    delete mSwitchAccountServer;
+    delete mSwitchCharacter;
 }
 
 void

@@ -18,6 +18,7 @@
 	redundant destructor.
 	* src/resources/monsterdb.cpp: Plugged memory leak in database reader.
 	* src/resources/spritedef.cpp: Plugged memory leak in sprites.
+	* src/gui/quitdialog.cpp: Plugged memory leak in quit dialog.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
