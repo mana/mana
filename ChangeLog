@@ -25,6 +25,8 @@
 	* data/maps/new_1-1.tmx: Added back a Lua script for testing.
 	* src/gui/trade.cpp: Added persistent positioning.
 	* src/gui/menuwindow.cpp: Fixed missing pixels at bottom and right.
+	* src/gui/window.cpp, src/gui/window.h: Changed to use default values
+	when restoring missing settings.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

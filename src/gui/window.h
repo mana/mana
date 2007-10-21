@@ -240,10 +240,9 @@ class Window : public gcn::Window
         void mouseExited(gcn::MouseEvent &event);
 
         /**
-         * Read the x, y, and width and height for resizables in the config
-         * based on the given string.
-         * That function let the values set with set{X, Y, Height, width}()
-         * if no config value is found.
+         * Reads the position (and the size for resizable windows) in the
+         * configuration based on the given string.
+         * Uses the default values when config values are missing.
          * Don't forget to set these default values and resizable before
          * calling this function.
          */
