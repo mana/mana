@@ -287,7 +287,6 @@ Game::~Game()
 {
     Net::clearHandlers();
 
-    delete engine;
     delete player_node;
     destroyGuiWindows();
 
@@ -296,6 +295,7 @@ Game::~Game()
     delete channelManager;
     delete joystick;
     delete particleEngine;
+    delete engine;
 
     viewport->setMap(NULL);
     player_node = NULL;
