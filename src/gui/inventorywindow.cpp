@@ -98,20 +98,6 @@ InventoryWindow::InventoryWindow():
     loadWindowState("Inventory");
 }
 
-InventoryWindow::~InventoryWindow()
-{
-    delete mUseButton;
-    delete mDropButton;
-    delete mSplitButton;
-    delete mItems;
-    delete mInvenScroll;
-
-    delete mItemNameLabel;
-    delete mItemDescriptionLabel;
-    delete mItemEffectLabel;
-    delete mWeightLabel;
-}
-
 void InventoryWindow::logic()
 {
     Window::logic();

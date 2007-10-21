@@ -54,11 +54,6 @@ class InventoryWindow : public Window,
         InventoryWindow();
 
         /**
-         * Destructor.
-         */
-        ~InventoryWindow();
-
-        /**
          * Logic (updates buttons and weight information).
          */
         void logic();

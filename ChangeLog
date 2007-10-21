@@ -14,6 +14,8 @@
 	window is not outside the inner clip area.
 	* src/engine.cpp, src/engine.h: Fixed current map not deleted on server
 	change.
+	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.h: Removed
+	redundant destructor.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
