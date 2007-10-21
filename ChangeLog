@@ -17,6 +17,7 @@
 	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.h: Removed
 	redundant destructor.
 	* src/resources/monsterdb.cpp: Plugged memory leak in database reader.
+	* src/resources/spritedef.cpp: Plugged memory leak in sprites.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
