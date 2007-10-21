@@ -142,15 +142,16 @@ std::vector< int > Layout::compute(int dim, int upp)
         if (mSizes[dim][i] == FILL) ++nbFill;
         if (sizes[i] == FILL) sizes[i] = 0;
         else upp -= sizes[i];
+        upp -= mPadding;
     }
     upp += mPadding;
 
-    if (upp <= 0 || nbFill == 0) return sizes;
+    if (nbFill == 0) return sizes;
 
     for (int i = 0; i < nb; ++i)
     {
         if (mSizes[dim][i] != FILL) continue;
-        int s = (upp + nbFill / 2) / nbFill;
+        int s = upp / nbFill;
         sizes[i] += s;
         upp -= s;
         --nbFill;
