@@ -21,6 +21,7 @@
 	* src/gui/quitdialog.cpp: Plugged memory leak in quit dialog.
 	* src/resources/iteminfo.cpp, src/resources/iteminfo.h: Plugged memory
 	leak in equipment sound.
+	* src/resources/action.cpp: Fixed double-free of sprite actions.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
