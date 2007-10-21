@@ -38,6 +38,8 @@
 #include "sdlinput.h"
 #include "viewport.h"
 
+#include "widgets/layout.h"
+
 #include "../item.h"
 #include "../localplayer.h"
 #include "../log.h"
@@ -78,30 +80,22 @@ InventoryWindow::InventoryWindow():
     mItemEffectLabel = new gcn::Label(strprintf(_("Effect: %s"), ""));
     mWeightLabel = new gcn::Label(
         strprintf(_("Total Weight: %d - Maximum Weight: %d"), 0, 0));
-    mWeightLabel->setPosition(8, 8);
-    mInvenScroll->setPosition(8,
-            mWeightLabel->getY() + mWeightLabel->getHeight() + 5);
 
-    add(mUseButton);
-    add(mDropButton);
-    add(mSplitButton);
-    add(mInvenScroll);
-    add(mItemNameLabel);
-    add(mItemDescriptionLabel);
-    add(mItemEffectLabel);
-    add(mWeightLabel);
+    setPadding(8);
+    place(0, 0, mWeightLabel, 4);
+    place(0, 1, mInvenScroll, 4).setPadding(3);
+    place(0, 2, mItemNameLabel, 4);
+    place(0, 3, mItemDescriptionLabel, 4);
+    place(0, 4, mItemEffectLabel, 4);
+    place(0, 5, mUseButton);
+    place(1, 5, mDropButton);
+    place(2, 5, mSplitButton);
+    Layout &layout = getLayout();
+    layout.setColWidth(0, 48);
+    layout.setColWidth(1, 48);
+    layout.setColWidth(2, 48);
+    layout.setRowHeight(1, Layout::FILL);
 
-    if (mUseButton->getWidth() < 48) {
-        mUseButton->setWidth(48);
-    }
-    if (mDropButton->getWidth() < 48) {
-        mDropButton->setWidth(48);
-    }
-    if (mSplitButton->getWidth() < 48) {
-        mSplitButton->setWidth(48);
-    }
-
-    addWindowListener(this);
     loadWindowState("Inventory");
 }
 
@@ -213,26 +207,6 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
         const int my = event.getY() + getY();
         viewport->showPopup(mx, my, item);
     }
-}
-
-void InventoryWindow::windowResized(const WindowEvent &event)
-{
-    const gcn::Rectangle area = getChildrenArea();
-
-    // Resize widgets
-    mUseButton->setPosition(8, area.height - 24);
-    mDropButton->setPosition(mUseButton->getWidth() + 16, area.height - 24);
-    mSplitButton->setPosition(
-        mUseButton->getWidth() + mDropButton->getWidth() + 24,
-        area.height - 24);
-    mInvenScroll->setSize(area.width - 16, area.height - 110);
-
-    mItemNameLabel->setPosition(8,
-        mInvenScroll->getY() + mInvenScroll->getHeight() + 4);
-    mItemEffectLabel->setPosition(8,
-        mItemNameLabel->getY() + mItemNameLabel->getHeight() + 4);
-    mItemDescriptionLabel->setPosition(8,
-        mItemEffectLabel->getY() + mItemEffectLabel->getHeight() + 4);
 }
 
 void InventoryWindow::updateButtons()

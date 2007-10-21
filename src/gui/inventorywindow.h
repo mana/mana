@@ -31,7 +31,6 @@
 
 #include "selectionlistener.h"
 #include "window.h"
-#include "windowlistener.h"
 
 #include "../guichanfwd.h"
 
@@ -46,8 +45,7 @@ class ItemContainer;
 class InventoryWindow : public Window,
                         public gcn::ActionListener,
                         public gcn::KeyListener,
-                        public SelectionListener,
-                        public WindowListener
+                        public SelectionListener
 {
     public:
         /**
@@ -93,11 +91,6 @@ class InventoryWindow : public Window,
          * @see SelectionListener::selectionChanged.
          */
         void selectionChanged(const SelectionEvent &event);
-
-        /**
-         * Called whenever the window is resized.
-         */
-        void windowResized(const WindowEvent &event);
 
     private:
         void updateButtons();    /**< Updates button states. */

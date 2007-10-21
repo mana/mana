@@ -4,6 +4,8 @@
 	flag. Factored moving/resizing code, so that events are fired only
 	once per size change. Added automatic layout reflowing on resize.
 	* src/gui/widgets/layout.cpp: Allowed for decreasing sizes in layout.
+	* src/gui/inventorywindow.cpp, src/gui/inventorywindow.cpp: Delegated
+	resizing events to layout handler.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
