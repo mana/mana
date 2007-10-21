@@ -144,6 +144,8 @@ MonsterDB::load()
         mMonsterInfos[XML::getProperty(monsterNode, "id", 0)] = currentInfo;
     }
 
+    xmlFreeDoc(doc);
+
     mLoaded = true;
 }
 
