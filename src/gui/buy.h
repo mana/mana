@@ -40,8 +40,7 @@ class ListBox;
  *
  * \ingroup Interface
  */
-class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
-    WindowListener
+class BuyDialog : public Window, public gcn::ActionListener, SelectionListener
 {
     public:
         /**
@@ -98,11 +97,6 @@ class BuyDialog : public Window, public gcn::ActionListener, SelectionListener,
          */
         void
         updateButtonsAndLabels();
-
-        /**
-         * Called whenever the window is resized.
-         */
-        void windowResized(const WindowEvent &event);
 
     private:
         gcn::Button *mBuyButton;
