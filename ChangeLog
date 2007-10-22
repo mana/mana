@@ -1,6 +1,8 @@
 2007-10-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/particle.cpp: Plugged memory leak.
+	* src/gui/connection.cpp, src/gui/connection.h: Simplified code.
+	Plugged memory leak.
 
 2007-10-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

@@ -23,8 +23,6 @@
 
 #include "connection.h"
 
-#include <guichan/actionlistener.hpp>
-
 #include <guichan/widgets/label.hpp>
 
 #include "button.h"
@@ -34,30 +32,12 @@
 
 #include "../utils/gettext.h"
 
-namespace {
-    struct ConnectionActionListener : public gcn::ActionListener
-    {
-        ConnectionActionListener(unsigned char previousState):
-            mPreviousState(previousState) {};
-
-        void action(const gcn::ActionEvent &event) {
-            state = mPreviousState;
-        }
-
-        unsigned char mPreviousState;
-    };
-}
-
-ConnectionDialog::ConnectionDialog(unsigned char previousState):
-    Window("Info"), mProgress(0)
+ConnectionDialog::ConnectionDialog(int previousState):
+    Window("Info"), mProgress(0), mPreviousState(previousState)
 {
     setContentSize(200, 100);
 
-    ConnectionActionListener *connectionListener =
-        new ConnectionActionListener(previousState);
-
-    Button *cancelButton = new Button(_("Cancel"), "cancelButton",
-                                      connectionListener);
+    Button *cancelButton = new Button(_("Cancel"), "cancelButton", this);
     mProgressBar = new ProgressBar(0.0, 200 - 10, 20, 128, 128, 128);
     gcn::Label *label = new gcn::Label(_("Connecting..."));
 
@@ -71,6 +51,11 @@ ConnectionDialog::ConnectionDialog(unsigned char previousState):
 
     setLocationRelativeTo(getParent());
     setVisible(true);
+}
+
+void ConnectionDialog::action(gcn::ActionEvent const &)
+{
+    state = mPreviousState;
 }
 
 void ConnectionDialog::logic()
