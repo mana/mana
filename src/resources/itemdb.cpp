@@ -101,7 +101,6 @@ void ItemDB::load()
         int type = XML::getProperty(node, "type", 0);
         int weight = XML::getProperty(node, "weight", 0);
         int view = XML::getProperty(node, "view", 0);
-        int slot = XML::getProperty(node, "slot", 0);
 
         std::string name = XML::getProperty(node, "name", "");
         std::string image = XML::getProperty(node, "image", "");
@@ -119,7 +118,6 @@ void ItemDB::load()
             itemInfo->setType(type);
             itemInfo->setView(view);
             itemInfo->setWeight(weight);
-            itemInfo->setSlot(slot);
             itemInfo->setAttackType(attackType);
 
             for_each_xml_child_node(itemChild, node)

@@ -102,6 +102,11 @@ class Window : public gcn::Window
         void setContentSize(int width, int height);
 
         /**
+         * Sets the size of this window.
+         */
+        void setSize(int width, int height);
+
+        /**
          * Sets the width of this window.
          */
         void setWidth(int width);
@@ -310,7 +315,6 @@ class Window : public gcn::Window
         std::string mWindowName;   /**< Name of the window */
         bool mShowTitle;           /**< Window has a title bar */
         bool mModal;               /**< Window is modal */
-        bool mResizable;           /**< Window can be resized */
         bool mCloseButton;         /**< Window has a close button */
         bool mSticky;              /**< Window resists minimization */
         int mMinWinWidth;          /**< Minimum window width */

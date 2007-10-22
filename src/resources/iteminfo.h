@@ -54,7 +54,6 @@ class ItemInfo
             mType(0),
             mWeight(0),
             mView(0),
-            mSlot(0),
             mAttackType(ACTION_DEFAULT)
         {
         }
@@ -102,12 +101,6 @@ class ItemInfo
         void setView(int view)
         { mView = view; }
 
-        void setSlot(char slot)
-        { mSlot = slot; }
-
-        char getSlot() const
-        { return mSlot; }
-
         void setSprite(const std::string &animationFile, int gender)
         { mAnimationFiles[gender] = animationFile; }
 
@@ -134,12 +127,11 @@ class ItemInfo
         std::string mName;
         std::string mDescription;      /**< Short description. */
         std::string mEffect;           /**< Description of effects. */
-        short mType;                   /**< Item type (never used). */
+        char mType;                    /**< Item type. */
         short mWeight;                 /**< Weight in grams. */
         int mView;                     /**< Item ID of how this item looks. */
 
         // Equipment related members
-        char mSlot;                    /**< Equipment slot. */
         SpriteAction mAttackType;      /**< Attack type, in case of weapon. */
 
         /** Maps gender to sprite filenames. */

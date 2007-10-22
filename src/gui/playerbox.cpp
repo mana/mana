@@ -80,7 +80,11 @@ PlayerBox::draw(gcn::Graphics *graphics)
     if (mPlayer)
     {
         // Draw character
-        mPlayer->draw(static_cast<Graphics*>(graphics), 40, 42);
+        int x, y, bs;
+        bs = getBorderSize();
+        x = getWidth() / 2 - 16 + bs;
+        y = getHeight() / 2 + bs;
+        mPlayer->draw(static_cast<Graphics*>(graphics), x, y);
     }
 }
 
