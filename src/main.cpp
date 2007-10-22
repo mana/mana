@@ -1053,6 +1053,10 @@ int main(int argc, char *argv[])
         logger->log("Exception");
     }
 
+#ifdef PACKAGE_VERSION
+        delete versionLabel;
+#endif
+
     accountServerConnection->disconnect();
     gameServerConnection->disconnect();
     chatServerConnection->disconnect();

@@ -53,6 +53,7 @@ void Configuration::init(const std::string &filename)
 
     if (!rootNode || !xmlStrEqual(rootNode->name, BAD_CAST "configuration")) {
         logger->log("Warning: No configuration file (%s)", filename.c_str());
+        xmlFreeDoc(doc);
         return;
     }
 
@@ -61,15 +62,13 @@ void Configuration::init(const std::string &filename)
         if (!xmlStrEqual(node->name, BAD_CAST "option"))
             continue;
 
-        xmlChar *name = xmlGetProp(node, BAD_CAST "name");
-        xmlChar *value = xmlGetProp(node, BAD_CAST "value");
+        std::string name = XML::getProperty(node, "name", std::string());
+        std::string value = XML::getProperty(node, "value", std::string());
 
-        if (name && value) {
-            mOptions[(const char*)name] = (const char*)value;
+        if (!name.empty() && !value.empty())
+        {
+            mOptions[name] = value;
         }
-
-        if (name) xmlFree(name);
-        if (value) xmlFree(value);
     }
 
     xmlFreeDoc(doc);
