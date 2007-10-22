@@ -84,31 +84,6 @@ class ServersListModel : public gcn::ListModel
 };
 
 /**
- * Listener used for handling the DropDown in the server Dialog.
- */
-class DropDownListener : public gcn::ActionListener
-{
-    public:
-        DropDownListener(gcn::TextField *serverNameField,
-                         gcn::TextField *serverPortField,
-                         ServersListModel *serversListModel,
-                         gcn::ListBox *serversListBox):
-            currentSelectedIndex(0),
-            mServerNameField(serverNameField),
-            mServerPortField(serverPortField),
-            mServersListModel(serversListModel),
-            mServersListBox(serversListBox) {};
-        void action(const gcn::ActionEvent &event);
-    private:
-        short currentSelectedIndex;
-        gcn::TextField *mServerNameField;
-        gcn::TextField *mServerPortField;
-        ServersListModel *mServersListModel;
-        gcn::ListBox *mServersListBox;
-};
-
-
-/**
  * The server choice dialog.
  *
  * \ingroup Interface
@@ -143,8 +118,6 @@ class ServerDialog : public Window, public gcn::ActionListener
         gcn::ListBox *mMostUsedServersListBox;
         gcn::ScrollArea *mMostUsedServersScrollArea;
         ServersListModel *mMostUsedServersListModel;
-
-        DropDownListener *mDropDownListener;
 
         LoginData *mLoginData;
 };

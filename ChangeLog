@@ -5,6 +5,9 @@
 	Plugged memory leak.
 	* src/configuration.cpp, src/main.cpp: Plugged memory leak. Cleaned
 	code.
+	* src/gui/serverdialog.cpp, src/gui/serverdialog.h: Plugged memory
+	leak. Simplified code. Removed annoying reset of text fields. Changed
+	error message and marked it as translatable.
 
 2007-10-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

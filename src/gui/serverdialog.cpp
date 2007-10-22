@@ -46,34 +46,6 @@
 
 const short MAX_SERVERLIST = 5;
 
-void
-DropDownListener::action(const gcn::ActionEvent &event)
-{
-    if (event.getId() == "ok")
-    {
-        // Reset the text fields and give back the server dialog.
-        mServerNameField->setText("");
-        mServerNameField->setCaretPosition(0);
-        mServerPortField->setText("");
-        mServerPortField->setCaretPosition(0);
-
-        mServerNameField->requestFocus();
-    }
-    else if (event.getId() == "changeSelection")
-    {
-        // Change the textField Values according to new selection
-        if (currentSelectedIndex != mServersListBox->getSelected())
-        {
-            Server myServer;
-            myServer = mServersListModel->getServer(
-                    mServersListBox->getSelected());
-            mServerNameField->setText(myServer.serverName);
-            mServerPortField->setText(toString(myServer.port));
-            currentSelectedIndex = mServersListBox->getSelected();
-        }
-    }
-}
-
 int ServersListModel::getNumberOfElements()
 {
     return servers.size();
@@ -134,19 +106,16 @@ ServerDialog::ServerDialog(LoginData *loginData):
     mMostUsedServersDropDown = new DropDown(mMostUsedServersListModel,
         mMostUsedServersScrollArea, mMostUsedServersListBox);
 
-    mDropDownListener = new DropDownListener(mServerNameField, mPortField,
-            mMostUsedServersListModel, mMostUsedServersListBox);
-
-    mOkButton = new Button(_("Ok"), "ok", this);
+    mOkButton = new Button(_("Ok"), "connect", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
 
-    mServerNameField->setActionEventId("ok");
-    mPortField->setActionEventId("ok");
+    mServerNameField->setActionEventId("connect");
+    mPortField->setActionEventId("connect");
     mMostUsedServersDropDown->setActionEventId("changeSelection");
 
     mServerNameField->addActionListener(this);
     mPortField->addActionListener(this);
-    mMostUsedServersDropDown->addActionListener(mDropDownListener);
+    mMostUsedServersDropDown->addActionListener(this);
 
     place(0, 0, serverLabel);
     place(0, 1, portLabel);
@@ -177,7 +146,8 @@ ServerDialog::ServerDialog(LoginData *loginData):
 
 ServerDialog::~ServerDialog()
 {
-    delete mDropDownListener;
+    delete mMostUsedServersListModel;
+    delete mMostUsedServersScrollArea;
 }
 
 void
@@ -185,11 +155,25 @@ ServerDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
+        // Give focus back to the server dialog.
+        mServerNameField->requestFocus();
+    }
+    else if (event.getId() == "changeSelection")
+    {
+        // Change the textField Values according to new selection
+        Server myServer = mMostUsedServersListModel->getServer
+            (mMostUsedServersListBox->getSelected());
+        mServerNameField->setText(myServer.serverName);
+        mPortField->setText(toString(myServer.port));
+    }
+    else if (event.getId() == "connect")
+    {
         // Check login
         if (mServerNameField->getText().empty() || mPortField->getText().empty())
         {
-            OkDialog *dlg = new OkDialog(_("Error"), "Enter the chosen server.");
-            dlg->addActionListener(mDropDownListener);
+            OkDialog *dlg = new OkDialog(_("Error"),
+                _("Please type both the address and the port of a server."));
+            dlg->addActionListener(this);
         }
         else
         {
