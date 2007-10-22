@@ -49,8 +49,12 @@ MARK_AS_ADVANCED(SDL_INCLUDE_DIR)
 MARK_AS_ADVANCED(SDL_LIBRARY)
 
 SET(SRCS
+    gui/widgets/dropdown.cpp
+    gui/widgets/dropdown.h
     gui/widgets/resizegrip.cpp
     gui/widgets/resizegrip.h
+    gui/widgets/layout.cpp
+    gui/widgets/layout.h
     gui/box.cpp
     gui/box.h
     gui/browserbox.cpp
@@ -189,8 +193,6 @@ SET(SRCS
     gui/windowcontainer.cpp
     gui/windowcontainer.h
     gui/windowlistener.h
-    gui/widgets/dropdown.cpp
-    gui/widgets/dropdown.h
     net/beinghandler.cpp
     net/beinghandler.h
     net/buysellhandler.cpp
