@@ -46,7 +46,7 @@
 
 // Guichan stuff
 Gui *gui;
-Viewport *viewport;
+Viewport *viewport;                    /**< Viewport on the map. */
 SDLInput *guiInput;
 
 // Fonts used in showing hits

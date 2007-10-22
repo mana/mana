@@ -24,8 +24,8 @@
 #include <cassert>
 
 #include "graphics.h"
-
 #include "log.h"
+
 #include "resources/image.h"
 #include "resources/imageloader.h"
 
