@@ -1047,15 +1047,16 @@ int main(int argc, char *argv[])
                 }
             }
         }
+
+#ifdef PACKAGE_VERSION
+        delete versionLabel;
+#endif
+
     }
     catch (...)
     {
         logger->log("Exception");
     }
-
-#ifdef PACKAGE_VERSION
-        delete versionLabel;
-#endif
 
     accountServerConnection->disconnect();
     gameServerConnection->disconnect();
