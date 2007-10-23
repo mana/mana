@@ -299,7 +299,6 @@ Game::Game(Network *network):
 
 Game::~Game()
 {
-    delete engine;
     delete player_node;
     destroyGuiWindows();
 
@@ -307,6 +306,7 @@ Game::~Game()
     delete floorItemManager;
     delete joystick;
     delete particleEngine;
+    delete engine;
 
     beingManager = NULL;
     floorItemManager = NULL;

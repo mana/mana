@@ -240,6 +240,7 @@ Particle::addEffect(const std::string &particleEffectFile,
     {
         logger->log("Warning: %s is not a valid particle effect definition file!",
                     particleEffectFile.c_str());
+        xmlFreeDoc(doc);
         return NULL;
     }
 
@@ -298,6 +299,8 @@ Particle::addEffect(const std::string &particleEffectFile,
 
         mChildParticles.push_back(newParticle);
     }
+
+    xmlFreeDoc(doc);
 
     return newParticle;
 }

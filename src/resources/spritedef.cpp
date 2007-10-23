@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <set>
+
 #include "spritedef.h"
 
 #include "../log.h"
@@ -292,6 +294,20 @@ SpriteDef::substituteAction(SpriteAction complete, SpriteAction with)
 
 SpriteDef::~SpriteDef()
 {
+    // Actions are shared, so ensure they are deleted only once.
+    std::set< Action * > actions;
+    for (Actions::const_iterator i = mActions.begin(),
+         i_end = mActions.end(); i != i_end; ++i)
+    {
+        actions.insert(i->second);
+    }
+
+    for (std::set< Action * >::const_iterator i = actions.begin(),
+         i_end = actions.end(); i != i_end; ++i)
+    {
+        delete *i;
+    }
+
     for (ImageSetIterator i = mImageSets.begin();
             i != mImageSets.end(); ++i)
     {

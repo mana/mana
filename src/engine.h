@@ -42,6 +42,11 @@ class Engine
         Engine(Network *network);
 
         /**
+         * Destructor.
+         */
+        ~Engine();
+
+        /**
          * Returns the currently active map.
          */
         Map *getCurrentMap() { return mCurrentMap; }

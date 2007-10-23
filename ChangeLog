@@ -1,8 +1,21 @@
-﻿2007-10-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+﻿2007-10-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/particle.cpp: Plugged memory leak.
+	* src/configuration.cpp, src/main.cpp: Plugged memory leak. Cleaned
+	code.
+
+2007-10-21  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/gui/window.cpp, src/gui/window.h: Removed redundant resizable
 	flag. Factored moving/resizing code, so that events are fired only
 	once per size change.
+	* src/resources/spritedef.cpp: Plugged memory leak in sprites.
+	* src/resources/action.cpp: Fixed double-free of sprite actions.
+	* src/resources/iteminfo.cpp, src/resources/iteminfo.h: Plugged memory
+	leak in equipment sound.
+	* src/resources/monsterdb.cpp: Plugged memory leak in database reader.
+	* src/engine.cpp, src/engine.h, src/game.cpp: Fixed current map not
+	deleted on server change.
 
 2007-10-20  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 

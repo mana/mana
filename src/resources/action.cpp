@@ -45,10 +45,11 @@ Action::getAnimation(int direction) const
 {
     Animations::const_iterator i = mAnimations.find(direction);
 
-    // When the direction isn't defined, try the default
+    // When the given direction is not available, return the first one.
+    // (either DEFAULT, or more usually DOWN).
     if (i == mAnimations.end())
     {
-        i = mAnimations.find(0);
+        i = mAnimations.begin();
     }
 
     return (i == mAnimations.end()) ? NULL : i->second;
@@ -57,11 +58,5 @@ Action::getAnimation(int direction) const
 void
 Action::setAnimation(int direction, Animation *animation)
 {
-    // Set first direction as default direction
-    if (mAnimations.empty())
-    {
-        mAnimations[0] = animation;
-    }
-
     mAnimations[direction] = animation;
 }

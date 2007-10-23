@@ -847,6 +847,10 @@ int main(int argc, char *argv[])
         }
     }
 
+#ifdef PACKAGE_VERSION
+    delete versionLabel;
+#endif
+
     delete network;
     SDLNet_Quit();
 
