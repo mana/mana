@@ -306,7 +306,7 @@ msgstr "@@use|Ausrüsten@@"
 
 #: src/gui/popupmenu.cpp:222
 msgid "@@use|Use@@"
-msgstr "@@usa|Nutzen@@"
+msgstr "@@use|Nutzen@@"
 
 #: src/gui/popupmenu.cpp:224
 msgid "@@drop|Drop@@"
