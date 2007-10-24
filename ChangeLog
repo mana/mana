@@ -1,4 +1,9 @@
-﻿2007-10-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+﻿2007-10-24  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/items.xml, data/graphics/items/generic-darkcrystal.png:
+	Added a new quest loot item for the halloween event.
+
+2007-10-22  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/particle.cpp: Plugged memory leak.
 	* src/configuration.cpp, src/main.cpp: Plugged memory leak. Cleaned
