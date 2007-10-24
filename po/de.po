@@ -278,7 +278,7 @@ msgstr "NPC"
 #: src/gui/popupmenu.cpp:79
 #, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr "@@trade|Tausche mit %s@@"
+msgstr "@@trade|Handeln mit %s@@"
 
 #: src/gui/popupmenu.cpp:81
 #, c-format
@@ -298,7 +298,7 @@ msgstr "@@cancel|Abbrechen@@"
 #: src/gui/popupmenu.cpp:112
 #, c-format
 msgid "@@pickup|Pick Up %s@@"
-msgstr "@@pickup|Aufheben %s@@"
+msgstr "@@pickup|%s aufheben@@"
 
 #: src/gui/popupmenu.cpp:219
 msgid "@@use|Equip@@"
@@ -306,11 +306,11 @@ msgstr "@@use|Ausrüsten@@"
 
 #: src/gui/popupmenu.cpp:222
 msgid "@@use|Use@@"
-msgstr "@@usa|Nutze@@"
+msgstr "@@usa|Nutzen@@"
 
 #: src/gui/popupmenu.cpp:224
 msgid "@@drop|Drop@@"
-msgstr "@@drop|Lasse @@ fallen"
+msgstr "@@drop|Fallen lassen@@"
 
 #: src/gui/popupmenu.cpp:225
 msgid "@@description|Description@@"
