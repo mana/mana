@@ -1,7 +1,26 @@
-2007-10-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
+﻿2007-10-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* po/nl.po: Completed Dutch translation.
 	* po/de.po: Some small fixes.
+
+2007-10-19  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/images/ambient/fog.png: Added fog effect overlay
+	graphic.
+
+2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
+
+2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert_x3.png: Removed the purple line from the
+	ruin tile.
+
+2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_x3.png,
+	data/graphics/tiles/desert_x5.png: Added new desert tiles by Len.
 
 2007-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
