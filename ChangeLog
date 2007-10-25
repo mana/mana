@@ -3,25 +3,6 @@
 	* po/nl.po: Completed Dutch translation.
 	* po/de.po: Some small fixes.
 
-2007-10-19  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/graphics/images/ambient/fog.png: Added fog effect overlay
-	graphic.
-
-2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
-
-2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/graphics/tiles/desert_x3.png: Removed the purple line from the
-	ruin tile.
-
-2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
-
-	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_x3.png,
-	data/graphics/tiles/desert_x5.png: Added new desert tiles by Len.
-
 2007-10-23  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 
 	* src/CMakeLists.txt: Added Layout source files.
@@ -113,6 +94,8 @@
 
 	* src/gui/truetypefont.cpp: Increased text chunk cache size to improve
 	performance when a lot of text is on the screen.
+	* data/graphics/images/ambient/fog.png: Added fog effect overlay
+	graphic.
 
 2007-10-18  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
@@ -149,12 +132,26 @@
 	into a private method.
 	* po/LINGUAS, po/nl.po: Added Dutch translation (incomplete).
 
+2007-10-07  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/maps/new_18-1.tmx: Fixed some collision layer problems.
+
 2007-10-01  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/item.cpp, src/gui/itemcontainer.cpp, src/resources/itemdb.cpp:
 	Fixed inventory display so that empty slots are not unknown items.
 	Adjusted "type" meaning to tmwserv one.
 	* src/game.cpp: Fixed attacking with keyboard.
+
+2007-09-30  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert_x3.png: Removed the purple line from the
+	ruin tile.
+
+2007-09-27  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* data/graphics/tiles/desert2.png, data/graphics/tiles/desert_x3.png,
+	data/graphics/tiles/desert_x5.png: Added new desert tiles by Len.
 
 2007-09-25  Björn Steinbrink  <B.Steinbrink@gmx.de>
 
