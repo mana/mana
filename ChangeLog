@@ -7,6 +7,11 @@
 	for the chatlog (length set by the config option "ChatLogLength").
 	* src/chat.cpp, src/chat.h: Removed some completely useless code
 	from the chat class.
+	* src/monster.cpp, src/monster.h, data/sfx/logmonster-hurt1.ogg,
+	data/sfx/logmonster-hurt2.ogg, data/sfx/logmonster-hurt3.ogg,
+	data/sfx/logmonster-hurt4.ogg, data/sfx/logmonster-hurt5.ogg:
+	Implemented monster hurt sounds and added new sound effects by
+	Cosmostrator.
 
 2007-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 

@@ -103,6 +103,13 @@ Monster::handleAttack(Being *victim, int damage)
     sound.playSfx(mi.getSound((damage > 0) ? MONSTER_EVENT_HIT : MONSTER_EVENT_MISS));
 }
 
+void
+Monster::takeDamage(int amount)
+{
+    if (amount > 0) sound.playSfx(getInfo().getSound(MONSTER_EVENT_HURT));
+    Being::takeDamage(amount);
+}
+
 Being::TargetCursorSize
 Monster::getTargetCursorSize() const
 {
