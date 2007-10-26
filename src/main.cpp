@@ -234,6 +234,7 @@ void init_engine(const Options &options)
     config.setValue("fpslimit", 60);
     config.setValue("updatehost", "http://updates.themanaworld.org");
     config.setValue("customcursor", 1);
+    config.setValue("ChatLogLength", 64);
 
     // Checking if the configuration file exists... otherwise creates it with
     // default options !

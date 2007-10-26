@@ -33,6 +33,7 @@
 #include "scrollarea.h"
 #include "windowcontainer.h"
 
+#include "../configuration.h"
 #include "../game.h"
 #include "../localplayer.h"
 
@@ -61,6 +62,7 @@ ChatWindow::ChatWindow(Network *network):
     mTextOutput = new BrowserBox(BrowserBox::AUTO_WRAP);
     mTextOutput->setOpaque(false);
     mTextOutput->disableLinksAndUserColors();
+    mTextOutput->setMaxRow((int) config.getValue("ChatLogLength", 0));
     mScrollArea = new ScrollArea(mTextOutput);
     mScrollArea->setPosition(
             mScrollArea->getBorderSize(), mScrollArea->getBorderSize());
