@@ -202,11 +202,6 @@ class ChatWindow : public Window, public gcn::ActionListener,
             int own;
         };
 
-        std::list<CHATLOG> mChatlog;               /**< Chat log */
-
-        int mItems;
-        int mItemsKeep;
-
         /** Constructs failed messages for actions */
         std::string const_msg(CHATSKILL);
 

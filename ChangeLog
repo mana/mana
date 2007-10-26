@@ -5,6 +5,8 @@
 	* src/browserbox.cpp, src/browserbox.h, src/chat.h, src/main.cpp:
 	Added possibility of length limitation to browserbox and used it
 	for the chatlog (length set by the config option "ChatLogLength").
+	* src/chat.cpp, src/chat.h: Removed some completely useless code
+	from the chat class.
 
 2007-10-24  Philipp Sehmisch  <tmw@crushnet.org>
 

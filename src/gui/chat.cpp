@@ -48,8 +48,6 @@ ChatWindow::ChatWindow(Network *network):
     mTmpVisible(false)
 {
     setWindowName("Chat");
-    mItems = 0;
-    mItemsKeep = 20;
 
     setResizable(true);
     setDefaultSize(0, (windowContainer->getHeight() - 123), 600, 100);
@@ -98,10 +96,6 @@ ChatWindow::logic()
 void
 ChatWindow::chatLog(std::string line, int own)
 {
-    // Delete overhead from the end of the list
-    while ((int) mChatlog.size() > mItemsKeep) {
-        mChatlog.pop_back();
-    }
 
     CHATLOG tmp;
     tmp.own  = own;
