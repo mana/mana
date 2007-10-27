@@ -14,6 +14,12 @@
 	src/resources/monsterinfo.cpp, src/resources/itemdb.cpp: Fixed missing
 	dependencies, spurious const qualifiers, and weak brackets, so that it
 	compiles with GCC 4.3.
+	* src/gui/widgets/layout.h, src/gui/widgets/layout.cpp: Improved layout
+	handler to support trees of nested arrays.
+	* src/gui/window.cpp, src/gui/window.h: Removed unused function
+	updateContentSize. Simplified layout accessors.
+	* src/gui/char_select.cpp: Replaced flushed-layout hack with a tree.
+	* src/gui/serverdialog.cpp, src/gui/buy.cpp: Simplified layouts.
 
 ﻿2007-10-24  Bjørn Lindeijer  <bjorn@lindeijer.nl>
 

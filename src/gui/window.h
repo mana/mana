@@ -30,11 +30,12 @@
 
 #include "windowlistener.h"
 
-class Cell;
 class ConfigListener;
+class ContainerPlacer;
 class Image;
 class ImageRect;
 class Layout;
+class LayoutCell;
 class ResizeGrip;
 class WindowContainer;
 
@@ -91,12 +92,6 @@ class Window : public gcn::Window
          * Sets the size of this window.
          */
         void setContentSize(int width, int height);
-
-        /**
-         * Called when either the user or resetToDefaultSize resizes the
-         * windows, so that the windows can manage its widgets.
-         */
-        virtual void updateContentSize() {}
 
         /**
          * Sets the size of this window.
@@ -292,19 +287,24 @@ class Window : public gcn::Window
         Layout &getLayout();
 
         /**
-         * Deletes the layout handler.
+         * Computes the position of the widgets according to the current
+         * layout. Resizes the window so that the layout fits. Deletes the
+         * layout.
+         * @param w if non-zero, force the window to this width.
+         * @param h if non-zero, force the window to this height.
+         * @note This function is meant to be called with fixed-size windows.
          */
-        void forgetLayout();
-
-        /**
-         * Resizes the window after computing the position of the widgets.
-         */
-        void reflowLayout();
+        void reflowLayout(int w = 0, int h = 0);
 
         /**
          * Adds a widget to the window and sets it at given cell.
          */
-        Cell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
+        LayoutCell &place(int x, int y, gcn::Widget *, int w = 1, int h = 1);
+
+        /**
+         * Returns a proxy for adding widgets in an inner table of the layout.
+         */
+        ContainerPlacer getPlacer(int x, int y);
 
     private:
         /**

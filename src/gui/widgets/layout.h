@@ -26,7 +26,127 @@
 
 #include <vector>
 
-#include <guichan/widget.hpp>
+#include <guichan/widgets/container.hpp>
+
+class LayoutCell;
+
+/**
+ * This class is a helper for adding widgets to nested tables in a window.
+ */
+class ContainerPlacer
+{
+    public:
+
+        ContainerPlacer(gcn::Container *c = NULL, LayoutCell *l = NULL):
+            mContainer(c), mCell(l)
+        {}
+
+        /**
+         * Gets the pointed cell.
+         */
+        LayoutCell &getCell()
+        { return *mCell; }
+
+        /**
+         * Returns a placer for the same container but to an inner cell.
+         */
+        ContainerPlacer at(int x, int y);
+
+        /**
+         * Adds the given widget to the container and places it in the layout.
+         * @see LayoutArray::place
+         */
+        LayoutCell &operator()
+            (int x, int y, gcn::Widget *, int w = 1, int h = 1);
+
+    private:
+
+        gcn::Container *mContainer;
+        LayoutCell *mCell;
+};
+
+/**
+ * This class contains a rectangular array of cells.
+ */
+class LayoutArray
+{
+    friend class LayoutCell;
+
+    public:
+
+        LayoutArray();
+
+        ~LayoutArray();
+
+        /**
+         * Returns a reference on the cell at given position.
+         */
+        LayoutCell &at(int x, int y, int w = 1, int h = 1);
+
+        /**
+         * Places a widget in a given cell.
+         * @param w number of columns the widget spawns.
+         * @param h number of rows the widget spawns.
+         * @note When @a w is 1, the width of column @a x is reset to zero if
+         *       it was FILL.
+         */
+        LayoutCell &place(gcn::Widget *, int x, int y, int w = 1, int h = 1);
+
+        /**
+         * Sets the minimum width of a column.
+         */
+        void setColWidth(int n, int w);
+
+        /**
+         * Sets the minimum height of a row.
+         */
+        void setRowHeight(int n, int h);
+
+        /**
+         * Sets the widths of two columns to the maximum of their widths.
+         */
+        void matchColWidth(int n1, int n2);
+
+        /**
+         * Computes and sets the positions of all the widgets.
+         * @param nW width of the array, used to resize the FILL columns.
+         * @param nH height of the array, used to resize the FILL rows.
+         */
+        void reflow(int nX, int nY, int nW, int nH);
+
+    private:
+
+        // Copy not allowed, as the array owns all its cells.
+        LayoutArray(LayoutArray const &);
+        LayoutArray &operator=(LayoutArray const &);
+
+        /**
+         * Gets the position and size of a widget along a given axis
+         */
+        void align(int &pos, int &size, int dim,
+                   LayoutCell const &cell, short *sizes) const;
+
+        /**
+         * Ensures the private vectors are large enough.
+         */
+        void resizeGrid(int w, int h);
+
+        /**
+         * Gets the column/row sizes along a given axis.
+         * @param upp target size for the array. Ignored if FILL.
+         */
+        std::vector< short > getSizes(int dim, int upp) const;
+
+        /**
+         * Gets the total size along a given axis.
+         */
+        int getSize(int dim) const;
+
+        std::vector< short > mSizes[2];
+        std::vector< std::vector < LayoutCell * > > mCells;
+
+        char mSpacing;
+};
 
 /**
  * This class describes the formatting of a widget in the cell of a layout
@@ -35,9 +155,10 @@
  * right, or centered in the cell. The process is similar for the vertical
  * alignment, except that top is represented by LEFT and bottom by RIGHT.
  */
-class Cell
+class LayoutCell
 {
     friend class Layout;
+    friend class LayoutArray;
 
     public:
 
@@ -46,37 +167,104 @@ class Cell
             LEFT, RIGHT, CENTER, FILL
         };
 
-        Cell(): mWidget(0) {}
+        LayoutCell(): mType(NONE) {}
+
+        ~LayoutCell();
 
         /**
          * Sets the padding around the cell content.
          */
-        Cell &setPadding(int p)
+        LayoutCell &setPadding(int p)
         { mPadding = p; return *this; }
 
         /**
          * Sets the horizontal alignment of the cell content.
          */
-        Cell &setHAlign(Alignment a)
+        LayoutCell &setHAlign(Alignment a)
         { mAlign[0] = a; return *this; }
 
         /**
          * Sets the vertical alignment of the cell content.
          */
-        Cell &setVAlign(Alignment a)
+        LayoutCell &setVAlign(Alignment a)
         { mAlign[1] = a; return *this; }
+
+        /**
+         * @see LayoutArray::at
+         */
+        LayoutCell &at(int x, int y)
+        { return getArray().at(x, y); }
+
+        /**
+         * @see LayoutArray::place
+         */
+        LayoutCell &place(gcn::Widget *wg, int x, int y, int w = 1, int h = 1)
+        { return getArray().place(wg, x, y, w, h); }
+
+        /**
+         * @see LayoutArray::matchColWidth
+         */
+        void matchColWidth(int n1, int n2)
+        { getArray().matchColWidth(n1, n2); }
+
+        /**
+         * @see LayoutArray::setColWidth
+         */
+        void setColWidth(int n, int w)
+        { getArray().setColWidth(n, w); }
+
+        /**
+         * @see LayoutArray::setRowHeight
+         */
+        void setRowHeight(int n, int h)
+        { getArray().setRowHeight(n, h); }
+
+        /**
+         * Sets the minimum widths and heights of this cell and of all the
+         * inner cells.
+         */
+        void computeSizes();
 
     private:
 
-        gcn::Widget *mWidget;
-        int mPadding;
-        int mExtent[2];
-        Alignment mAlign[2];
+        // Copy not allowed, as the cell may own an array.
+        LayoutCell(LayoutCell const &);
+        LayoutCell &operator=(LayoutCell const &);
+
+        union
+        {
+            gcn::Widget *mWidget;
+            LayoutArray *mArray;
+        };
+
+        enum
+        {
+            NONE, WIDGET, ARRAY
+        };
+
+        /**
+         * Returns the embedded array. Creates it if the cell does not contain
+         * anything yet. Aborts if it contains a widget.
+         */
+        LayoutArray &getArray();
+
+        /**
+         * @see LayoutArray::reflow
+         */
+        void reflow(int nx, int ny, int nw, int nh);
+
+        short mSize[2];
+        char mPadding;
+        char mExtent[2];
+        char mAlign[2];
+        char mNbFill[2];
+        char mType;
 };
 
 /**
  * This class is an helper for setting the position of widgets. They are
- * positioned along the cells of a rectangular table.
+ * positioned along the cells of some rectangular tables. The layout may either
+ * be a single table or a tree of nested tables.
  *
  * The size of a given table column can either be set manually or be chosen
  * from the widest widget of the column. An empty column has a FILL width,
@@ -86,83 +274,23 @@ class Cell
  * pixels between rows and between columns, and a margin of 6 pixels around the
  * whole layout.
  */
-class Layout
+class Layout: public LayoutCell
 {
     public:
 
-        Layout(): mSpacing(4), mMargin(6), mX(0), mY(0), mW(0), mH(0) {}
-
-        /**
-         * Gets the x-coordinate of the top left point of the layout.
-         */
-        int getX() const
-        { return mX; }
-
-        /**
-         * Gets the y-coordinate of the top left point of the layout.
-         */
-        int getY() const
-        { return mY; }
-
-        /**
-         * Sets the minimum width of a column.
-         * @note Setting the width to FILL and then placing a widget in the
-         * column will reset the width to zero.
-         */
-        void setColWidth(int n, int w);
-
-        /**
-         * Sets the minimum height of a row.
-         * @note Setting the height to FILL and then placing a widget in the
-         * row will reset the height to zero.
-         */
-        void setRowHeight(int n, int h);
-
-        /**
-         * Matchs widths of two columns.
-         */
-        void matchColWidth(int n1, int n2);
-
-        /**
-         * Sets the minimum width of the layout.
-         */
-        void setWidth(int w)
-        { mW = w; }
-
-        /**
-         * Sets the minimum height of the layout.
-         */
-        void setHeight(int h)
-        { mH = h; }
-
-        /**
-         * Sets the spacing between cells.
-         */
-        void setSpacing(int p)
-        { mSpacing = p; }
+        Layout();
 
         /**
          * Sets the margin around the layout.
          */
         void setMargin(int m)
-        { mMargin = m; }
+        { setPadding(m); }
 
         /**
-         * Places a widget in a given cell.
-         */
-        Cell &place(gcn::Widget *, int x, int y, int w, int h);
-
-        /**
-         * Computes the positions of all the widgets. Returns the size of the
-         * layout.
+         * Sets the positions of all the widgets.
+         * @see LayoutArray::reflow
          */
         void reflow(int &nW, int &nH);
-
-        /**
-         * Reflows the current layout. Then starts a new layout just below with
-         * the same width.
-         */
-        void flush();
 
         enum
         {
@@ -171,27 +299,7 @@ class Layout
 
     private:
 
-        /**
-         * Gets the position and size of a widget along a given axis
-         */
-        void align(int &pos, int &size, int dim,
-                   Cell const &cell, int *sizes) const;
-
-        /**
-         * Ensures the private vectors are large enough.
-         */
-        void resizeGrid(int w, int h);
-
-        /**
-         * Gets the column/row sizes along a given axis.
-         */
-        std::vector< int > compute(int dim, int upp) const;
-
-        std::vector< int > mSizes[2];
-        std::vector< std::vector < Cell > > mCells;
-
-        int mSpacing, mMargin;
-        int mX, mY, mW, mH, mNW, mNH;
+        bool mComputed;
 };
 
 #endif

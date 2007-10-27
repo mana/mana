@@ -22,6 +22,7 @@
  */
 
 #include <algorithm>
+#include <cassert>
 #include <climits>
 
 #include <guichan/exception.hpp>
@@ -234,9 +235,8 @@ void Window::setSize(int width, int height)
 
     if (mLayout)
     {
-        mLayout->setWidth(width - 2 * getPadding());
-        mLayout->setHeight(height - getPadding() - getTitleBarHeight());
-        int w, h;
+        int w = width - 2 * getPadding(),
+            h = height - getPadding() - getTitleBarHeight();
         mLayout->reflow(w, h);
     }
 
@@ -520,7 +520,6 @@ void Window::mouseDragged(gcn::MouseEvent &event)
 
         // Set the new window and content dimensions
         setDimension(newDim);
-        updateContentSize();
     }
 }
 
@@ -555,7 +554,6 @@ void Window::resetToDefaultSize()
 {
     setPosition(mDefaultX, mDefaultY);
     setContentSize(mDefaultWidth, mDefaultHeight);
-    updateContentSize();
 }
 
 int Window::getResizeHandles(gcn::MouseEvent &event)
@@ -611,28 +609,22 @@ Layout &Window::getLayout()
     return *mLayout;
 }
 
-void Window::forgetLayout()
-{
-    delete mLayout;
-    mLayout = 0;
-}
-
-Cell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
+LayoutCell &Window::place(int x, int y, gcn::Widget *wg, int w, int h)
 {
     add(wg);
     return getLayout().place(wg, x, y, w, h);
 }
 
-void Window::reflowLayout()
+ContainerPlacer Window::getPlacer(int x, int y)
 {
-    if (!mLayout) return;
-    int w, h;
+    return ContainerPlacer(this, &getLayout().at(x, y));
+}
+
+void Window::reflowLayout(int w, int h)
+{
+    assert(mLayout);
     mLayout->reflow(w, h);
-    w += mLayout->getX();
-    h += mLayout->getY();
-    Layout *tmp = mLayout;
-    // Hide it so that the incoming resize does not reflow the layout again.
+    delete mLayout;
     mLayout = NULL;
     setContentSize(w, h);
-    mLayout = tmp;
 }

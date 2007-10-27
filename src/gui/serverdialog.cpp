@@ -120,16 +120,12 @@ ServerDialog::ServerDialog(LoginData *loginData):
 
     place(0, 0, serverLabel);
     place(0, 1, portLabel);
-    place(1, 0, mServerNameField, 3).setPadding(3);
-    place(1, 1, mPortField, 3).setPadding(3);
-    place(0, 2, mMostUsedServersDropDown, 4).setPadding(3);
+    place(1, 0, mServerNameField, 3).setPadding(2);
+    place(1, 1, mPortField, 3).setPadding(2);
+    place(0, 2, mMostUsedServersDropDown, 4).setPadding(2);
     place(2, 3, mOkButton);
     place(3, 3, mCancelButton);
-    Layout &layout = getLayout();
-    layout.setWidth(250);
-    layout.setColWidth(1, Layout::FILL);
-    reflowLayout();
-    forgetLayout();
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);

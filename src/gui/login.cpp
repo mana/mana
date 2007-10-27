@@ -66,12 +66,10 @@ LoginDialog::LoginDialog(LoginData *loginData):
     place(1, 0, mUserField, 3).setPadding(2);
     place(1, 1, mPassField, 3).setPadding(2);
     place(0, 2, mKeepCheck, 4);
-    place(0, 3, mRegisterButton).setHAlign(Cell::LEFT);
+    place(0, 3, mRegisterButton).setHAlign(LayoutCell::LEFT);
     place(2, 3, mOkButton);
     place(3, 3, mCancelButton);
-    getLayout().setColWidth(1, 20);
-    reflowLayout();
-    forgetLayout();
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);

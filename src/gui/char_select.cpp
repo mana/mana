@@ -100,9 +100,11 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     mNameLabel = new gcn::Label(strprintf(_("Name: %s"), ""));
     mLevelLabel = new gcn::Label(strprintf(_("Level: %d"), 0));
     mMoneyLabel = new gcn::Label(strprintf(_("Money: %d"), 0));
-    mPlayerBox = new PlayerBox();
+    mPlayerBox = new PlayerBox;
+    mPlayerBox->setWidth(74);
 
-    Layout &layout = getLayout();
+    ContainerPlacer place;
+    place = getPlacer(0, 0);
     place(0, 0, mPlayerBox, 1, 5).setPadding(3);
     place(1, 0, mNameLabel, 3);
     place(1, 1, mLevelLabel, 3);
@@ -111,18 +113,12 @@ CharSelectDialog::CharSelectDialog(LockedArray<LocalPlayer*> *charInfo,
     place(2, 3, mNextButton);
     place(1, 4, mNewCharButton);
     place(2, 4, mDelCharButton);
-    layout.setWidth(250);
-    layout.setColWidth(0, 80);
-    layout.setColWidth(3, Layout::FILL);
-    layout.matchColWidth(1, 2);
-    layout.setRowHeight(5, 5);
-    layout.flush();
+    place.getCell().matchColWidth(1, 2);
+    place = getPlacer(0, 1);
     place(0, 0, mUnRegisterButton);
     place(2, 0, mSelectButton);
     place(3, 0, mCancelButton);
-    layout.setColWidth(1, Layout::FILL);
-    reflowLayout();
-    forgetLayout();
+    reflowLayout(250, 0);
 
     setLocationRelativeTo(getParent());
     setVisible(true);
