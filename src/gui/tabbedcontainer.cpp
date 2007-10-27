@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "tabbedcontainer.h"
 
 #include "button.h"

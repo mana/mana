@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "setup.h"
 
 #include "button.h"

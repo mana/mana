@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "windowcontainer.h"
 
 #include "../utils/dtor.h"

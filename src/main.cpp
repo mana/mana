@@ -770,6 +770,7 @@ int main(int argc, char *argv[])
 
                     case SDL_KEYDOWN:
                         if (event.key.keysym.sym == SDLK_ESCAPE)
+                        {
                             if (!quitDialog)
                             {
                                 quitDialog = new QuitDialog(NULL, &quitDialog);
@@ -778,6 +779,7 @@ int main(int argc, char *argv[])
                             {
                                 quitDialog->requestMoveToTop();
                             }
+                        }
                         break;
                 }
 

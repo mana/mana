@@ -24,7 +24,7 @@
 #ifndef _TMW_LOCALPLAYER_H
 #define _TMW_LOCALPLAYER_H
 
-#include <memory.h>
+#include <memory>
 
 #include "player.h"
 

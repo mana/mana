@@ -107,7 +107,7 @@ class ItemInfo
 
         void setWeaponType(int);
 
-        const SpriteAction getAttackType() const
+        SpriteAction getAttackType() const
         { return mAttackType; }
 
         void addSound(EquipmentSoundEvent event, const std::string &filename);

@@ -63,8 +63,7 @@ class Properties
          * @return the value of the given property, or 0.0f when it doesn't
          *         exist.
          */
-        const float
-        getFloatProperty(const std::string &name, float def = 0.0f)
+        float getFloatProperty(std::string const &name, float def = 0.0f)
         {
             PropertyMap::const_iterator i = mProperties.find(name);
             float ret = def;

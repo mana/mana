@@ -218,7 +218,7 @@ class ChatWindow : public Window, public gcn::ActionListener,
         int mItems;
         int mItemsKeep;
 
-        typedef struct CHATLOG
+        struct CHATLOG
         {
             std::string nick;
             std::string text;

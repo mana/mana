@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "flooritemmanager.h"
 
 #include "floor_item.h"

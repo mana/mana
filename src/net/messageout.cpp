@@ -21,11 +21,12 @@
  *  $Id$
  */
 
-#include "messageout.h"
-
+#include <cstring>
 #include <string>
 
 #include <enet/enet.h>
+
+#include "messageout.h"
 
 MessageOut::MessageOut(short id):
     mData(0),

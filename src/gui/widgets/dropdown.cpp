@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "dropdown.h"
 
 #include "../../graphics.h"

@@ -21,11 +21,11 @@
  *  $Id$
  */
 
+#include <algorithm>
 #include <cassert>
+#include <libxml/tree.h>
 
 #include "itemdb.h"
-
-#include <libxml/tree.h>
 
 #include "iteminfo.h"
 #include "resourcemanager.h"

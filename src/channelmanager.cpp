@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include <algorithm>
 #include <list>
 
 #include "channelmanager.h"

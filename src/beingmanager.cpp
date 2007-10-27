@@ -21,6 +21,7 @@
  *  $Id$
  */
 
+#include <algorithm>
 #include <cassert>
 
 #include "beingmanager.h"

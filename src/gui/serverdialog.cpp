@@ -21,12 +21,13 @@
  *  $Id$
  */
 
-#include "serverdialog.h"
-
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
 #include <guichan/widgets/label.hpp>
+
+#include "serverdialog.h"
 
 #include "button.h"
 #include "listbox.h"

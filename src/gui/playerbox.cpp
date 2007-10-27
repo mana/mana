@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "playerbox.h"
 
 #include "../player.h"

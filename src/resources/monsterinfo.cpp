@@ -21,6 +21,8 @@
  *  $Id$
  */
 
+#include <algorithm>
+
 #include "monsterinfo.h"
 
 #include "../utils/dtor.h"

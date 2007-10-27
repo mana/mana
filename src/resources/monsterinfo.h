@@ -77,7 +77,7 @@ class MonsterInfo
         const std::string&
         getSprite() const { return mSprite; }
 
-        const Being::TargetCursorSize
+        Being::TargetCursorSize
         getTargetCursorSize() const { return mTargetCursorSize; }
 
         std::string

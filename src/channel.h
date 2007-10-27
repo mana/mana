@@ -30,8 +30,8 @@ class Channel
         Channel(short id);
         std::string getName() const;
         void setName(const std::string &channelName);
-        const short getId() const;
-        const int getUserListSize() const;
+        int getId() const { return mID; }
+        int getUserListSize() const;
         std::string getUser(unsigned int i) const;
     private:
         typedef std::vector<std::string> Users;

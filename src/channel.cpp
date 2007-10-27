@@ -40,12 +40,7 @@ void Channel::setName(const std::string &channelName)
     mName = channelName;
 }
 
-const short Channel::getId() const
-{
-    return mID;
-}
-
-const int Channel::getUserListSize() const
+int Channel::getUserListSize() const
 {
     return userList.size();
 }
