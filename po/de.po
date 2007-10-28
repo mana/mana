@@ -17,13 +17,13 @@ msgstr ""
 
 #: src/gui/buy.cpp:43 src/gui/buy.cpp:60
 msgid "Buy"
-msgstr ""
+msgstr "Kaufen"
 
 #: src/gui/buy.cpp:57 src/gui/buy.cpp:234 src/gui/sell.cpp:61
 #: src/gui/sell.cpp:241
 #, c-format
 msgid "Price: %d GP / Total: %d GP"
-msgstr ""
+msgstr "Preis: %d GP / Summe: %d GP"
 
 #: src/gui/buy.cpp:61 src/gui/quitdialog.cpp:37 src/gui/quitdialog.cpp:40
 #: src/gui/quitdialog.cpp:41 src/gui/sell.cpp:65
@@ -162,7 +162,7 @@ msgstr "Charisma:"
 #: src/gui/char_select.cpp:276 src/gui/char_select.cpp:424
 #, c-format
 msgid "Please distribute %d points"
-msgstr "Bitte verteile %d points"
+msgstr "Bitte verteile %d Punkte"
 
 #: src/gui/char_select.cpp:368 src/gui/register.cpp:220
 #: src/gui/serverdialog.cpp:171
@@ -171,7 +171,7 @@ msgstr "Fehler"
 
 #: src/gui/char_select.cpp:369
 msgid "Your name needs to be at least 4 characters."
-msgstr "Dein Name muss auch mindestens 4 Zeichen bestehen."
+msgstr "Dein Name muss aus mindestens 4 Zeichen bestehen."
 
 #: src/gui/char_select.cpp:416
 msgid "Character stats OK"
@@ -216,7 +216,7 @@ msgstr "Wegwerfen"
 
 #: src/gui/inventorywindow.cpp:66
 msgid "Split"
-msgstr ""
+msgstr "Aufteilen"
 
 #: src/gui/inventorywindow.cpp:78 src/gui/inventorywindow.cpp:107
 #, c-format
@@ -266,7 +266,7 @@ msgstr "Fähigkeiten"
 
 #: src/gui/menuwindow.cpp:66
 msgid "Shortcut"
-msgstr ""
+msgstr "Tastenkombination"
 
 #: src/gui/menuwindow.cpp:67 src/gui/setup.cpp:47
 msgid "Setup"
@@ -283,16 +283,16 @@ msgstr "NPC"
 #: src/gui/popupmenu.cpp:79
 #, c-format
 msgid "@@trade|Trade With %s@@"
-msgstr "@@trade|Handeln mit %s@@"
+msgstr "@@trade|Mit %s handeln@@"
 
 #: src/gui/popupmenu.cpp:81
 #, c-format
 msgid "@@attack|Attack %s@@"
-msgstr "@@attack|Greife %s@@ an"
+msgstr "@@attack|%s angreifen@@"
 
 #: src/gui/popupmenu.cpp:90
 msgid "@@talk|Talk To NPC@@"
-msgstr "@@talk|Rede mit NPC@@"
+msgstr "@@talk|Mit NPC reden@@"
 
 #: src/gui/popupmenu.cpp:100 src/gui/popupmenu.cpp:116
 #: src/gui/popupmenu.cpp:225
@@ -322,7 +322,7 @@ msgstr "@@description|Beschreibung@@"
 
 #: src/gui/popupmenu.cpp:223
 msgid "@@split|Split@@"
-msgstr ""
+msgstr "@@split|Aufteilen@@"
 
 #: src/gui/quitdialog.cpp:42
 msgid "Switch server"
@@ -383,7 +383,7 @@ msgstr "Port:"
 
 #: src/gui/serverdialog.cpp:172
 msgid "Please type both the address and the port of a server."
-msgstr ""
+msgstr "Bitte die Adresse und den Port eines Servers eingeben"
 
 #: src/gui/setup_audio.cpp:42
 msgid "Sound"
@@ -495,17 +495,15 @@ msgstr "Ändere OpenGL"
 
 #: src/gui/setup_video.cpp:281
 msgid "Applying change to OpenGL requires restart."
-msgstr ""
-"Änderungen an OpenGL werden erst nach einem Neustart der Anwendung "
-"übernommen."
+msgstr "Änderungen an OpenGL werden erst nach einem Neustart der Anwendung übernommen."
 
 #: src/gui/trade.cpp:61
 msgid "Add"
-msgstr ""
+msgstr "Hinzufügen"
 
 #: src/gui/trade.cpp:63 src/gui/trade.cpp:65 src/gui/trade.cpp:181
 msgid "Propose trade"
-msgstr ""
+msgstr "Handel vorschlagen"
 
 #: src/gui/trade.cpp:66 src/gui/trade.cpp:181
 #, fuzzy
@@ -515,11 +513,11 @@ msgstr "Bestätigen"
 #: src/gui/trade.cpp:76 src/gui/trade.cpp:118 src/gui/trade.cpp:132
 #, c-format
 msgid "You get %d GP."
-msgstr ""
+msgstr "Du erhälst %d GP."
 
 #: src/gui/trade.cpp:77
 msgid "You give:"
-msgstr ""
+msgstr "Du gibst:"
 
 #: src/gui/trade.cpp:80
 #, fuzzy
@@ -529,19 +527,19 @@ msgstr "Abbrechen"
 #: src/resources/itemdb.cpp:53
 #, c-format
 msgid "Attack %+d"
-msgstr ""
+msgstr "Angriff %+d"
 
 #: src/resources/itemdb.cpp:54
 #, c-format
 msgid "Defense %+d"
-msgstr ""
+msgstr "Verteidigung %+d"
 
 #: src/resources/itemdb.cpp:55
 #, c-format
 msgid "HP %+d"
-msgstr ""
+msgstr "HP %+d"
 
 #: src/resources/itemdb.cpp:56
 #, c-format
 msgid "MP %+d"
-msgstr ""
+msgstr "MP %+d"
