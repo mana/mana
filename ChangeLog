@@ -8,6 +8,8 @@
 	Fixed money handling. Fixed transaction handling.
 	* src/net/tradehandler.cpp, src/net/gameserver/player.h,
 	src/net/gameserver/player.cpp: Implemented missing trade messages.
+	* po/POTFILES.in: Marked trade window as translatable.
+	* po/tmw.pot, po/*.po: Updated translation objects.
 
 2007-10-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
