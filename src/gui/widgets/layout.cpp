@@ -125,14 +125,14 @@ void LayoutArray::resizeGrid(int w, int h)
 
     if (extH)
     {
-        mSizes[1].resize(h, Layout::FILL);
+        mSizes[1].resize(h, Layout::AUTO_DEF);
         mCells.resize(h);
         if (!extW) w = mSizes[0].size();
     }
 
     if (extW)
     {
-        mSizes[0].resize(w, Layout::FILL);
+        mSizes[0].resize(w, Layout::AUTO_DEF);
     }
 
     for (std::vector< std::vector< LayoutCell * > >::iterator
@@ -157,10 +157,17 @@ void LayoutArray::setRowHeight(int n, int h)
 void LayoutArray::matchColWidth(int n1, int n2)
 {
     resizeGrid(std::max(n1, n2) + 1, 0);
-    std::vector< short > widths = getSizes(0, Layout::FILL);
+    std::vector< short > widths = getSizes(0, Layout::AUTO_DEF);
     int s = std::max(widths[n1], widths[n2]);
     mSizes[0][n1] = s;
     mSizes[0][n2] = s;
+}
+
+void LayoutArray::extend(int x, int y, int w, int h)
+{
+    LayoutCell &cell = at(x, y, w, h);
+    cell.mExtent[0] = w;
+    cell.mExtent[1] = h;
 }
 
 LayoutCell &LayoutArray::place(gcn::Widget *widget, int x, int y, int w, int h)
@@ -177,8 +184,8 @@ LayoutCell &LayoutArray::place(gcn::Widget *widget, int x, int y, int w, int h)
     cell.mAlign[0] = LayoutCell::FILL;
     cell.mAlign[1] = LayoutCell::FILL;
     short &cs = mSizes[0][x], &rs = mSizes[1][y];
-    if (cs == Layout::FILL && w == 1) cs = 0;
-    if (rs == Layout::FILL && h == 1) rs = 0;
+    if (cs == Layout::AUTO_DEF && w == 1) cs = 0;
+    if (rs == Layout::AUTO_DEF && h == 1) rs = 0;
     return cell;
 }
 
@@ -228,17 +235,23 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
         }
     }
 
-    if (upp == Layout::FILL) return sizes;
+    if (upp == Layout::AUTO_DEF) return sizes;
 
     // Compute the FILL sizes.
     int nb = sizes.size();
     int nbFill = 0;
     for (int i = 0; i < nb; ++i)
     {
-        if (mSizes[dim][i] == Layout::FILL) ++nbFill;
-        if (sizes[i] == Layout::FILL) sizes[i] = 0;
-        else upp -= sizes[i];
-        upp -= mSpacing;
+        if (mSizes[dim][i] <= Layout::AUTO_DEF)
+        {
+            ++nbFill;
+            if (mSizes[dim][i] == Layout::AUTO_SET ||
+                sizes[i] <= Layout::AUTO_DEF)
+            {
+                sizes[i] = 0;
+            }
+        }
+        upp -= sizes[i] + mSpacing;
     }
     upp = upp + mSpacing;
 
@@ -246,7 +259,7 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
 
     for (int i = 0; i < nb; ++i)
     {
-        if (mSizes[dim][i] != Layout::FILL) continue;
+        if (mSizes[dim][i] > Layout::AUTO_DEF) continue;
         int s = upp / nbFill;
         sizes[i] += s;
         upp -= s;
@@ -258,12 +271,12 @@ std::vector< short > LayoutArray::getSizes(int dim, int upp) const
 
 int LayoutArray::getSize(int dim) const
 {
-    std::vector< short > sizes = getSizes(dim, Layout::FILL);
+    std::vector< short > sizes = getSizes(dim, Layout::AUTO_DEF);
     int size = 0;
     int nb = sizes.size();
     for (int i = 0; i < nb; ++i)
     {
-        if (sizes[i] != Layout::FILL) size += sizes[i];
+        if (sizes[i] > Layout::AUTO_DEF) size += sizes[i];
         size += mSpacing;
     }
     return size - mSpacing;

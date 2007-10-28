@@ -88,7 +88,7 @@ class LayoutArray
          * @param w number of columns the widget spawns.
          * @param h number of rows the widget spawns.
          * @note When @a w is 1, the width of column @a x is reset to zero if
-         *       it was FILL.
+         *       it was AUTO_DEF. Similarly for @a h.
          */
         LayoutCell &place(gcn::Widget *, int x, int y, int w = 1, int h = 1);
 
@@ -108,9 +108,14 @@ class LayoutArray
         void matchColWidth(int n1, int n2);
 
         /**
+         * Spawns a cell over several columns/rows.
+         */
+        void extend(int x, int y, int w, int h);
+
+        /**
          * Computes and sets the positions of all the widgets.
-         * @param nW width of the array, used to resize the FILL columns.
-         * @param nH height of the array, used to resize the FILL rows.
+         * @param nW width of the array, used to resize the AUTO_ columns.
+         * @param nH height of the array, used to resize the AUTO_ rows.
          */
         void reflow(int nX, int nY, int nW, int nH);
 
@@ -133,7 +138,7 @@ class LayoutArray
 
         /**
          * Gets the column/row sizes along a given axis.
-         * @param upp target size for the array. Ignored if FILL.
+         * @param upp target size for the array. Ignored if AUTO_DEF.
          */
         std::vector< short > getSizes(int dim, int upp) const;
 
@@ -220,6 +225,12 @@ class LayoutCell
         { getArray().setRowHeight(n, h); }
 
         /**
+         * @see LayoutArray::extend.
+         */
+        void extend(int x, int y, int w, int h)
+        { getArray().extend(x, y, w, h); }
+
+        /**
          * Sets the minimum widths and heights of this cell and of all the
          * inner cells.
          */
@@ -267,7 +278,7 @@ class LayoutCell
  * be a single table or a tree of nested tables.
  *
  * The size of a given table column can either be set manually or be chosen
- * from the widest widget of the column. An empty column has a FILL width,
+ * from the widest widget of the column. An empty column has a AUTO_DEF width,
  * which means it will be extended so that the layout fits its minimum width.
  *
  * The process is similar for table rows. By default, there is a spacing of 4
@@ -292,9 +303,15 @@ class Layout: public LayoutCell
          */
         void reflow(int &nW, int &nH);
 
+        /**
+         * When the minimum size of the layout is less than the available size,
+         * the remaining pixels are equally split amongst the FILL items.
+         */
         enum
         {
-            FILL = -42, /**< Expand until the layout as the expected size. */
+            AUTO_DEF = -42, /**< Default value, behaves like AUTO_ADD. */
+            AUTO_SET = -43, /**< Uses the share as the new size. */
+            AUTO_ADD = -44, /**< Adds the share to the current size. */
         };
 
     private:

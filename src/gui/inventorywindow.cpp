@@ -65,10 +65,6 @@ InventoryWindow::InventoryWindow():
     mDropButton = new Button(_("Drop"), "drop", this);
     mSplitButton = new Button(_("Split"), "split", this);
 
-    mUseButton->adjustSize();
-    mDropButton->adjustSize();
-    mSplitButton->adjustSize();
-
     mItems = new ItemContainer(player_node->mInventory.get(), 10, 5);
     mItems->addSelectionListener(this);
 
@@ -93,7 +89,7 @@ InventoryWindow::InventoryWindow():
     layout.setColWidth(0, 48);
     layout.setColWidth(1, 48);
     layout.setColWidth(2, 48);
-    layout.setRowHeight(1, Layout::FILL);
+    layout.setRowHeight(1, Layout::AUTO_SET);
 
     loadWindowState("Inventory");
 }
@@ -159,10 +155,6 @@ void InventoryWindow::selectionChanged(const SelectionEvent &event)
         info ? info->getEffect().c_str() : ""));
     mItemDescriptionLabel->setCaption(strprintf(_("Description: %s"),
         info ? info->getDescription().c_str() : ""));
-
-    mItemNameLabel->adjustSize();
-    mItemEffectLabel->adjustSize();
-    mItemDescriptionLabel->adjustSize();
 
     if (mSplit)
     {

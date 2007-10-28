@@ -86,7 +86,7 @@ BuyDialog::BuyDialog():
     place(3, 5, mBuyButton);
     place(4, 5, mQuitButton);
     Layout &layout = getLayout();
-    layout.setRowHeight(0, Layout::FILL);
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState("Buy");
     setLocationRelativeTo(getParent());

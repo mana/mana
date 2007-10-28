@@ -1,3 +1,10 @@
+2007-10-28  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
+
+	* src/gui/widgets/layout.h, src/gui/widgets/layout.cpp: Separated
+	auto-resizing into two categories: "set" and "add".
+	* src/gui/sell.cpp, src/gui/inventorywindow.cpp, src/gui/buy.cpp:
+	Removed useless code. Updated constant names.
+
 2007-10-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
 	* src/gui/debugwindow.cpp, tmw.cbp: Fixed coordinates in the debug

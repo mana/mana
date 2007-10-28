@@ -91,8 +91,7 @@ SellDialog::SellDialog():
     place(3, 5, mSellButton);
     place(4, 5, mQuitButton);
     Layout &layout = getLayout();
-    layout.setRowHeight(0, Layout::FILL);
-    layout.setColWidth(2, Layout::FILL);
+    layout.setRowHeight(0, Layout::AUTO_SET);
 
     loadWindowState("Sell");
     setLocationRelativeTo(getParent());
