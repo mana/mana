@@ -1,3 +1,9 @@
+2007-10-28  Philipp Sehmisch  <tmw@crushnet.org>
+
+	* src/gui/textfield.cpp: Fixed a windows compilation problem
+	caused by a define macro of the Windows API that conflicts
+	with a guichan identifier. 
+
 2007-10-27  Guillaume Melquiond  <guillaume.melquiond@gmail.com>
 
 	* src/properties.h, src/game.cpp, src/channel.h, src/log.cpp,

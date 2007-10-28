@@ -36,6 +36,8 @@
 
 #include "../utils/dtor.h"
 
+#undef DELETE //Win32 compatibility hack
+
 int TextField::instances = 0;
 ImageRect TextField::skin;
 
