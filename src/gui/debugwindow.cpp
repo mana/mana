@@ -74,8 +74,8 @@ DebugWindow::logic()
     // Get the current mouse position
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-    int mouseTileX = mouseX / 32 + viewport->getCameraX();
-    int mouseTileY = mouseY / 32 + viewport->getCameraY();
+    int mouseTileX = mouseX + viewport->getCameraX();
+    int mouseTileY = mouseY + viewport->getCameraY();
 
     mFPSLabel->setCaption("[" + toString(fps) + " FPS");
     mFPSLabel->adjustSize();

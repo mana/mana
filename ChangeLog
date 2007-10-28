@@ -1,3 +1,8 @@
+2007-10-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
+
+	* src/gui/debugwindow.cpp, tmw.cbp: Fixed coordinates in the debug
+	window and updated project file.
+
 2007-10-28  Philipp Sehmisch  <tmw@crushnet.org>
 
 	* src/gui/textfield.cpp: Fixed a windows compilation problem
