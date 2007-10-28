@@ -49,6 +49,7 @@ namespace Net
             void requestTrade(int id);
             void acceptTrade(bool accept);
             void tradeItem(int slot, int amount);
+            void tradeMoney(int amount);
             void tradeWithNPC(int item, int amount);
         }
     }

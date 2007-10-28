@@ -108,7 +108,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
             break;
 
         case GPMSG_TRADE_ACCEPT:
-            tradeWindow->receivedOk(false);
+            tradeWindow->receivedOk();
             break;
 
         case GPMSG_TRADE_CANCEL:

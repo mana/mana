@@ -24,8 +24,6 @@
 #ifndef _TMW_TRADE_H
 #define _TMW_TRADE_H
 
-#include <memory>
-
 #include <guichan/actionlistener.hpp>
 
 #include "window.h"
@@ -67,34 +65,14 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         void addItem(int id, bool own, int quantity);
 
         /**
-         * Remove a item from the trade window.
-         */
-        void removeItem(int id, bool own);
-
-        /**
          * Reset both item containers
          */
         void reset();
 
         /**
-         * Change quantity of an item.
-         */
-        void changeQuantity(int index, bool own, int quantity);
-
-        /**
-         * Increase quantity of an item.
-         */
-        void increaseQuantity(int index, bool own, int quantity);
-
-        /**
-         * Set trade Button disabled
-         */
-        void setTradeButton(bool enabled);
-
-        /**
          * Player received ok message from server
          */
-        void receivedOk(bool own);
+        void receivedOk();
 
         /**
          * Send trade packet.
@@ -114,9 +92,21 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         void action(const gcn::ActionEvent &event);
 
     private:
-        typedef std::auto_ptr<Inventory> InventoryPtr;
-        InventoryPtr mMyInventory;
-        InventoryPtr mPartnerInventory;
+
+        enum Status
+        {
+            PREPARING, /**< Players are adding items. */
+            PROPOSING, /**< Local player is proposing a trade. */
+            ACCEPTING, /**< Distant player is proposing a trade. */
+        };
+
+        /**
+         * Sets the current status of the trade.
+         */
+        void setStatus(Status);
+
+        Inventory *mMyInventory;
+        Inventory *mPartnerInventory;
 
         ItemContainer *mMyItemContainer;
         ItemContainer *mPartnerItemContainer;
@@ -124,11 +114,10 @@ class TradeWindow : public Window, gcn::ActionListener, SelectionListener
         gcn::Label *mItemNameLabel;
         gcn::Label *mItemDescriptionLabel;
         gcn::Label *mMoneyLabel;
-        gcn::Label *mMoneyLabel2;
-        gcn::Button *mAddButton, *mOkButton, *mCancelButton, *mTradeButton;
-        ScrollArea *mMyScroll, *mPartnerScroll;
+        gcn::Button *mTradeButton;
         gcn::TextField *mMoneyField;
-        bool mOkOther, mOkMe;
+
+        Status mStatus;
 };
 
 extern TradeWindow *tradeWindow;

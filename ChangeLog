@@ -4,6 +4,10 @@
 	auto-resizing into two categories: "set" and "add".
 	* src/gui/sell.cpp, src/gui/inventorywindow.cpp, src/gui/buy.cpp:
 	Removed useless code. Updated constant names.
+	* src/gui/trade.cpp, src/gui/trade.h: Converted to layout handler.
+	Fixed money handling. Fixed transaction handling.
+	* src/net/tradehandler.cpp, src/net/gameserver/player.h,
+	src/net/gameserver/player.cpp: Implemented missing trade messages.
 
 2007-10-28  Eugenio Favalli  <elvenprogrammer@gmail.com>
 
